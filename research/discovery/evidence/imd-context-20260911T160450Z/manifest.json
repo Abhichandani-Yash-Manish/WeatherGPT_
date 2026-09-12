@@ -1,0 +1,30 @@
+{
+  "results": [
+    {
+      "id": "imd-chart-code",
+      "url": "https://mausamgram.imd.gov.in/intitializepubliccharts.js",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:04:50.067147+00:00",
+      "http_status": 200,
+      "final_url": "https://mausamgram.imd.gov.in/intitializepubliccharts.js",
+      "content_type": "application/javascript",
+      "truncated": false,
+      "bytes_saved": 12006,
+      "sha256": "7aea4aaea3fd91ba473b4fd634756d9b87b5062c83ec01d9b63337a96ea5e498",
+      "snapshot": "evidence/imd-context-20260911T160450Z/imd-chart-code.response"
+    },
+    {
+      "id": "imd-temperature-bc",
+      "url": "https://mausamgram.imd.gov.in/rtbc_proxy.php?lat=23.000&lon=72.500&date=20260911&fcst_ic_utc=00",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:04:50.067373+00:00",
+      "http_status": 200,
+      "final_url": "https://mausamgram.imd.gov.in/rtbc_proxy.php?lat=23.000&lon=72.500&date=20260911&fcst_ic_utc=00",
+      "content_type": "application/json",
+      "truncated": false,
+      "bytes_saved": 948,
+      "sha256": "eea67877dc23a7214253ea71a0dc58272ebdc029f33912ace48fae8ed2961844",
+      "snapshot": "evidence/imd-context-20260911T160450Z/imd-temperature-bc.response"
+    }
+  ]
+}

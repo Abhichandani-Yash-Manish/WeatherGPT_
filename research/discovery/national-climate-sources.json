@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "items": [
+    {
+      "id": "rainfall-usefulness",
+      "title": "National rainfall history",
+      "queries": [
+        {
+          "id": "rainfall-audit",
+          "source": {
+            "label": "Supplied table and IMD Data Service Portal",
+            "files": [
+              {
+                "label": "rainfall.csv"
+              }
+            ],
+            "links": [
+              {
+                "label": "IMD rainfall series",
+                "href": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php"
+              }
+            ],
+            "caveats": [
+              "National aggregates cannot establish Ahmedabad conditions, daily extremes or future forecasts.",
+              "2024 monthly rainfall sums to 1204.1 mm versus the published annual 1206.6 mm; the difference is present in the official source. Cause unresolved."
+            ],
+            "evidenceFlow": [
+              {
+                "kind": "validation",
+                "title": "Structure and source comparison",
+                "detail": "124 unique consecutive years; no empty cells or nonfinite numeric values. All 2108 numeric values match the corresponding saved official table."
+              }
+            ]
+          },
+          "reportingPeriod": "1901\u20132024",
+          "summary": "Monthly, seasonal and annual rainfall in mm.",
+          "methods": [
+            {
+              "language": "python",
+              "code": "import csv, math, statistics, re, html, json\nfrom pathlib import Path\ndata_dir = Path(\"evidence/pasted-climate-check\")\nresults = {}\nfor kind in [\"rainfall\", \"temperature\"]:\n    rows = list(csv.DictReader((data_dir / (kind + \".csv\")).open()))\n    years = [int(r[\"Year\"]) for r in rows]\n    measures = list(rows[0])[1:18]\n    numeric = [float(r[c]) for r in rows for c in measures]\n    raw = (data_dir / (kind + \"-selected.html\")).read_text()\n    cells = [html.unescape(re.sub(\"<[^>]*>\", \"\", x)).strip()\n             for x in re.findall(r\"<t[dh]\\b[^>]*>(.*?)</t[dh]>\", raw, re.S | re.I)]\n    source = {}\n    for i, cell in enumerate(cells):\n        if re.fullmatch(r\"(19|20)\\d{2}\", cell) and i + 17 < len(cells):\n            try: values = [float(x) for x in cells[i+1:i+18]]\n            except ValueError: continue\n            source.setdefault(cell, values)\n    differences = [r[\"Year\"] for r in rows if source.get(r[\"Year\"]) != [float(r[c]) for c in measures]]\n    result = {\"rows\": len(rows), \"columns\": len(rows[0]), \"year_range\": [min(years), max(years)],\n              \"duplicate_years\": len(years)-len(set(years)),\n              \"missing_years\": sorted(set(range(1901,2025))-set(years)),\n              \"empty_cells\": sum(v == \"\" for r in rows for v in r.values()),\n              \"nonfinite_values\": sum(not math.isfinite(v) for v in numeric),\n              \"source_comparison_different_years\": differences,\n              \"source_numeric_values_compared\": len(rows)*len(measures)}\n    if kind == \"rainfall\":\n        months = measures[:12]\n        discrepancies = [{\"year\": int(r[\"Year\"]), \"annual_minus_months_mm\": round(float(r[\"Annual\"])-sum(float(r[m]) for m in months), 5)} for r in rows]\n        result[\"annual_sum_discrepancies\"] = discrepancies\n        result[\"annual_discrepancies_above_0_65mm\"] = sum(abs(x[\"annual_minus_months_mm\"]) > 0.65 for x in discrepancies)\n        result[\"2024_month_sum_mm\"] = sum(float(rows[-1][m]) for m in months)\n        result[\"2024_annual_mm\"] = float(rows[-1][\"Annual\"])\n    else:\n        baseline = statistics.mean(float(r[\"Annual\"]) for r in rows if 1991 <= int(r[\"Year\"]) <= 2020)\n        result[\"baseline_1991_2020_mean_c\"] = baseline\n        result[\"2024_mean_c\"] = float(rows[-1][\"Annual\"])\n        result[\"2024_anomaly_c\"] = result[\"2024_mean_c\"] - baseline\n    results[kind] = result\nprint(json.dumps(results, indent=2))\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "temperature-usefulness",
+      "title": "National temperature history",
+      "queries": [
+        {
+          "id": "temperature-audit",
+          "source": {
+            "label": "Supplied table and IMD Data Service Portal",
+            "files": [
+              {
+                "label": "temperature.csv"
+              }
+            ],
+            "links": [
+              {
+                "label": "IMD temperature series",
+                "href": "https://dsp.imdpune.gov.in/home_ogd_temp.php"
+              }
+            ],
+            "caveats": [
+              "National aggregates cannot establish Ahmedabad conditions, daily extremes or future forecasts.",
+              "2024 anomaly uses the supplied published annual means and a 1991-2020 baseline; it is not a trend or attribution result."
+            ],
+            "evidenceFlow": [
+              {
+                "kind": "validation",
+                "title": "Structure and source comparison",
+                "detail": "124 unique consecutive years; no empty cells or nonfinite numeric values. All 2108 numeric values match the corresponding saved official table."
+              }
+            ]
+          },
+          "reportingPeriod": "1901\u20132024",
+          "summary": "Monthly, seasonal and annual mean temperature in degrees Celsius.",
+          "methods": [
+            {
+              "language": "python",
+              "code": "import csv, math, statistics, re, html, json\nfrom pathlib import Path\ndata_dir = Path(\"evidence/pasted-climate-check\")\nresults = {}\nfor kind in [\"rainfall\", \"temperature\"]:\n    rows = list(csv.DictReader((data_dir / (kind + \".csv\")).open()))\n    years = [int(r[\"Year\"]) for r in rows]\n    measures = list(rows[0])[1:18]\n    numeric = [float(r[c]) for r in rows for c in measures]\n    raw = (data_dir / (kind + \"-selected.html\")).read_text()\n    cells = [html.unescape(re.sub(\"<[^>]*>\", \"\", x)).strip()\n             for x in re.findall(r\"<t[dh]\\b[^>]*>(.*?)</t[dh]>\", raw, re.S | re.I)]\n    source = {}\n    for i, cell in enumerate(cells):\n        if re.fullmatch(r\"(19|20)\\d{2}\", cell) and i + 17 < len(cells):\n            try: values = [float(x) for x in cells[i+1:i+18]]\n            except ValueError: continue\n            source.setdefault(cell, values)\n    differences = [r[\"Year\"] for r in rows if source.get(r[\"Year\"]) != [float(r[c]) for c in measures]]\n    result = {\"rows\": len(rows), \"columns\": len(rows[0]), \"year_range\": [min(years), max(years)],\n              \"duplicate_years\": len(years)-len(set(years)),\n              \"missing_years\": sorted(set(range(1901,2025))-set(years)),\n              \"empty_cells\": sum(v == \"\" for r in rows for v in r.values()),\n              \"nonfinite_values\": sum(not math.isfinite(v) for v in numeric),\n              \"source_comparison_different_years\": differences,\n              \"source_numeric_values_compared\": len(rows)*len(measures)}\n    if kind == \"rainfall\":\n        months = measures[:12]\n        discrepancies = [{\"year\": int(r[\"Year\"]), \"annual_minus_months_mm\": round(float(r[\"Annual\"])-sum(float(r[m]) for m in months), 5)} for r in rows]\n        result[\"annual_sum_discrepancies\"] = discrepancies\n        result[\"annual_discrepancies_above_0_65mm\"] = sum(abs(x[\"annual_minus_months_mm\"]) > 0.65 for x in discrepancies)\n        result[\"2024_month_sum_mm\"] = sum(float(rows[-1][m]) for m in months)\n        result[\"2024_annual_mm\"] = float(rows[-1][\"Annual\"])\n    else:\n        baseline = statistics.mean(float(r[\"Annual\"]) for r in rows if 1991 <= int(r[\"Year\"]) <= 2020)\n        result[\"baseline_1991_2020_mean_c\"] = baseline\n        result[\"2024_mean_c\"] = float(rows[-1][\"Annual\"])\n        result[\"2024_anomaly_c\"] = result[\"2024_mean_c\"] - baseline\n    results[kind] = result\nprint(json.dumps(results, indent=2))\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+test_failed_refresh_revalidates_legacy_cache (test_hardening.HardeningTests) ... ok
+test_full_payload_cache_and_changed_valid_payload (test_hardening.HardeningTests) ... ok
+test_history_does_not_require_today (test_hardening.HardeningTests) ... ok
+test_marine_uses_same_interval_contract (test_hardening.HardeningTests) ... FAIL
+test_midnight_cache_does_not_satisfy_new_day (test_hardening.HardeningTests) ... FAIL
+test_missing_or_invalid_grid_never_published (test_hardening.HardeningTests) ... test_null_values_are_explicit_not_zero (test_hardening.HardeningTests) ... ERROR
+test_old_or_short_river_never_published (test_hardening.HardeningTests) ... FAIL
+test_same_day_outage_returns_validated_degraded_data (test_hardening.HardeningTests) ... ERROR
+test_schema_rejection_preserves_good_cache_and_evidence (test_hardening.HardeningTests) ... ERROR
+test_short_forecast_never_published (test_hardening.HardeningTests) ... FAIL
+test_wrong_units_refresh_keeps_good (test_hardening.HardeningTests) ... ERROR
+
+======================================================================
+ERROR: test_null_values_are_explicit_not_zero (test_hardening.HardeningTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yashabhichandani/Desktop/WeatherGPT/tests/test_hardening.py", line 74, in test_null_values_are_explicit_not_zero
+    self.assertEqual(r['quality']['value_coverage'],'partial');self.assertEqual(r['quality']['missing_value_count'],1)
+KeyError: 'quality'
+
+======================================================================
+ERROR: test_same_day_outage_returns_validated_degraded_data (test_hardening.HardeningTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yashabhichandani/Desktop/WeatherGPT/tests/test_hardening.py", line 61, in test_same_day_outage_returns_validated_degraded_data
+    self.assertEqual(result['quality']['interval_coverage'],'complete')
+KeyError: 'quality'
+
+======================================================================
+ERROR: test_schema_rejection_preserves_good_cache_and_evidence (test_hardening.HardeningTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yashabhichandani/Desktop/WeatherGPT/tests/test_hardening.py", line 42, in test_schema_rejection_preserves_good_cache_and_evidence
+    fallback=self.f.forecast(23,72.5,refresh=True)
+  File "/Users/yashabhichandani/Desktop/WeatherGPT/weathergpt_data/foundation.py", line 22, in forecast
+    return hourly(data,meta,FORECAST,'weather_forecast','Open-Meteo GFS delivery; upstream run unspecified',point)
+  File "/Users/yashabhichandani/Desktop/WeatherGPT/weathergpt_data/adapters.py", line 26, in hourly
+    if data.get('utc_offset_seconds')!=0:raise SourceError('Adapter requires UTC data')
+weathergpt_data.transport.SourceError: Adapter requires UTC data
+
+======================================================================
+ERROR: test_wrong_units_refresh_keeps_good (test_hardening.HardeningTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yashabhichandani/Desktop/WeatherGPT/tests/test_hardening.py", line 71, in test_wrong_units_refresh_keeps_good
+    r=self.f.forecast(23,72.5,refresh=True);self.assertEqual(r['provenance']['sha256'],good['provenance']['sha256'])
+  File "/Users/yashabhichandani/Desktop/WeatherGPT/weathergpt_data/foundation.py", line 22, in forecast
+    return hourly(data,meta,FORECAST,'weather_forecast','Open-Meteo GFS delivery; upstream run unspecified',point)
+  File "/Users/yashabhichandani/Desktop/WeatherGPT/weathergpt_data/adapters.py", line 35, in hourly
+    if units.get(var)!=unit:raise SourceError(f'Unexpected unit for {var}: {units.get(var)}')
+weathergpt_data.transport.SourceError: Unexpected unit for precipitation: inch
+
+======================================================================
+FAIL: test_marine_uses_same_interval_contract (test_hardening.HardeningTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yashabhichandani/Desktop/WeatherGPT/tests/test_hardening.py", line 77, in test_marine_uses_same_interval_contract
+    with self.assertRaises(SourceError):self.f.marine(20,69,days=3)
+AssertionError: SourceError not raised
+
+======================================================================
+FAIL: test_midnight_cache_does_not_satisfy_new_day (test_hardening.HardeningTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yashabhichandani/Desktop/WeatherGPT/tests/test_hardening.py", line 55, in test_midnight_cache_does_not_satisfy_new_day
+    with self.assertRaises(SourceError):self.f.forecast(23,72.5)
+AssertionError: SourceError not raised
+
+======================================================================
+FAIL: test_missing_or_invalid_grid_never_published (test_hardening.HardeningTests) (field='latitude', value=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yashabhichandani/Desktop/WeatherGPT/tests/test_hardening.py", line 33, in test_missing_or_invalid_grid_never_published
+    with self.assertRaises(SourceError):self.f.forecast(23,72.5)
+AssertionError: SourceError not raised
+
+======================================================================
+FAIL: test_missing_or_invalid_grid_never_published (test_hardening.HardeningTests) (field='longitude', value=181)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yashabhichandani/Desktop/WeatherGPT/tests/test_hardening.py", line 33, in test_missing_or_invalid_grid_never_published
+    with self.assertRaises(SourceError):self.f.forecast(23,72.5)
+AssertionError: SourceError not raised
+
+======================================================================
+FAIL: test_missing_or_invalid_grid_never_published (test_hardening.HardeningTests) (field='latitude', value=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yashabhichandani/Desktop/WeatherGPT/tests/test_hardening.py", line 33, in test_missing_or_invalid_grid_never_published
+    with self.assertRaises(SourceError):self.f.forecast(23,72.5)
+AssertionError: SourceError not raised
+
+======================================================================
+FAIL: test_old_or_short_river_never_published (test_hardening.HardeningTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yashabhichandani/Desktop/WeatherGPT/tests/test_hardening.py", line 38, in test_old_or_short_river_never_published
+    with self.assertRaises(SourceError):self.f.river(23,72.5)
+AssertionError: SourceError not raised
+
+======================================================================
+FAIL: test_short_forecast_never_published (test_hardening.HardeningTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yashabhichandani/Desktop/WeatherGPT/tests/test_hardening.py", line 27, in test_short_forecast_never_published
+    with self.assertRaises(SourceError):self.f.forecast(23,72.5)
+AssertionError: SourceError not raised
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.025s
+
+FAILED (failures=7, errors=4)

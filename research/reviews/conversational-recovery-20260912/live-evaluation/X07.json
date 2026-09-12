@@ -1,0 +1,529 @@
+{
+  "id": "X07",
+  "question": "कल सुबह वडोदरा, गुजरात में मौसम कैसा रहेगा?",
+  "origin": "additional_authored_test",
+  "checked_at_utc": "2026-09-12T16:17:47.771233+00:00",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "8cc97865-b973-46bd-aa5d-687fd09e645d",
+    "question": "कल सुबह वडोदरा, गुजरात में मौसम कैसा रहेगा?",
+    "status": "answered",
+    "answer": "2026-09-13 की सुबह (06:30–12:30 IST) वडोदरा, गुजरात में मौसम का पूर्वानुमान है। तापमान 24.8–27.9 °C के बीच रहेगा [f1]। आर्द्रता 81–92 % होगी [f2]। इस दौरान 4.3 mm की बारिश की संभावना है [f3]। हवा की गति 12.6–14.2 km/h तक हो सकती है [f4]। यह एक मॉडल पूर्वानुमान है, न कि वास्तविक अवलोकन। सटीकता के लिए स्थानीय मौसम विभाग की सूचनाओं की जाँच करें।",
+    "facts": [
+      {
+        "id": "f1",
+        "label": "Temperature samples",
+        "value": "24.8–27.9",
+        "unit": "°C",
+        "place": "Vadodara, Vadodara, State of Gujarāt",
+        "start": "2026-09-13T06:30:00+05:30",
+        "end": "2026-09-13T12:30:00+05:30",
+        "source_id": "S21",
+        "method": "range_of_hourly_samples; not continuous extrema",
+        "source_locators": [
+          "$.hourly.temperature_2m[25]",
+          "$.hourly.temperature_2m[26]",
+          "$.hourly.temperature_2m[27]",
+          "$.hourly.temperature_2m[28]",
+          "$.hourly.temperature_2m[29]",
+          "$.hourly.temperature_2m[30]"
+        ]
+      },
+      {
+        "id": "f2",
+        "label": "Humidity samples",
+        "value": "81–92",
+        "unit": "%",
+        "place": "Vadodara, Vadodara, State of Gujarāt",
+        "start": "2026-09-13T06:30:00+05:30",
+        "end": "2026-09-13T12:30:00+05:30",
+        "source_id": "S21",
+        "method": "range_of_hourly_samples; not continuous extrema",
+        "source_locators": [
+          "$.hourly.relative_humidity_2m[25]",
+          "$.hourly.relative_humidity_2m[26]",
+          "$.hourly.relative_humidity_2m[27]",
+          "$.hourly.relative_humidity_2m[28]",
+          "$.hourly.relative_humidity_2m[29]",
+          "$.hourly.relative_humidity_2m[30]"
+        ]
+      },
+      {
+        "id": "f3",
+        "label": "Forecast rainfall",
+        "value": "4.3",
+        "unit": "mm",
+        "place": "Vadodara, Vadodara, State of Gujarāt",
+        "start": "2026-09-13T06:30:00+05:30",
+        "end": "2026-09-13T12:30:00+05:30",
+        "source_id": "S21",
+        "method": "preceding_hour_sum",
+        "source_locators": [
+          "$.hourly.precipitation[26]",
+          "$.hourly.precipitation[27]",
+          "$.hourly.precipitation[28]",
+          "$.hourly.precipitation[29]",
+          "$.hourly.precipitation[30]",
+          "$.hourly.precipitation[31]"
+        ]
+      },
+      {
+        "id": "f4",
+        "label": "Wind samples",
+        "value": "12.6–14.2",
+        "unit": "km/h",
+        "place": "Vadodara, Vadodara, State of Gujarāt",
+        "start": "2026-09-13T06:30:00+05:30",
+        "end": "2026-09-13T12:30:00+05:30",
+        "source_id": "S21",
+        "method": "range_of_hourly_samples; not continuous extrema",
+        "source_locators": [
+          "$.hourly.wind_speed_10m[25]",
+          "$.hourly.wind_speed_10m[26]",
+          "$.hourly.wind_speed_10m[27]",
+          "$.hourly.wind_speed_10m[28]",
+          "$.hourly.wind_speed_10m[29]",
+          "$.hourly.wind_speed_10m[30]"
+        ]
+      }
+    ],
+    "citations": [
+      {
+        "source_id": "S21",
+        "provider": "Open-Meteo",
+        "product": "GFS forecast delivery",
+        "evidence_kind": "model_forecast",
+        "url": "https://api.open-meteo.com/v1/gfs?latitude=22.29941&longitude=73.20812&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "response_sha256": "6e0c038f1cc805e89c14e0bf91aeaddf81b5726f40e4c43f98d8251be35fcb4f",
+        "raw_relative_path": "b597fdc5d981989b1038ccca9ea98dfaf10a59e6a7c8003dd60171f062a3d7a2/3a776851878543318dd7e61128de986e/blobs/6e0c038f1cc805e89c14e0bf91aeaddf81b5726f40e4c43f98d8251be35fcb4f.bin",
+        "published_job_id": "b597fdc5d981989b1038ccca9ea98dfaf10a59e6a7c8003dd60171f062a3d7a2",
+        "source_locators": [
+          "$.hourly.temperature_2m[25]",
+          "$.hourly.temperature_2m[26]",
+          "$.hourly.temperature_2m[27]",
+          "$.hourly.temperature_2m[28]",
+          "$.hourly.temperature_2m[29]",
+          "$.hourly.temperature_2m[30]",
+          "$.hourly.relative_humidity_2m[25]",
+          "$.hourly.relative_humidity_2m[26]",
+          "$.hourly.relative_humidity_2m[27]",
+          "$.hourly.relative_humidity_2m[28]",
+          "$.hourly.relative_humidity_2m[29]",
+          "$.hourly.relative_humidity_2m[30]",
+          "$.hourly.precipitation[26]",
+          "$.hourly.precipitation[27]",
+          "$.hourly.precipitation[28]",
+          "$.hourly.precipitation[29]",
+          "$.hourly.precipitation[30]",
+          "$.hourly.precipitation[31]",
+          "$.hourly.wind_speed_10m[25]",
+          "$.hourly.wind_speed_10m[26]",
+          "$.hourly.wind_speed_10m[27]",
+          "$.hourly.wind_speed_10m[28]",
+          "$.hourly.wind_speed_10m[29]",
+          "$.hourly.wind_speed_10m[30]"
+        ],
+        "retrieved_at_utc": "2026-09-12T16:17:54.092314+00:00",
+        "issue_time_utc": null
+      },
+      {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/1253573",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      }
+    ],
+    "notes": [
+      "Tomorrow is interpreted as the next local calendar date: 2026-09-13.",
+      "Morning is defaulted to 06:30–12:30 IST.",
+      "Model forecasts at the selected place point, not observations or district averages. Source model run time and local representativeness remain unverified."
+    ],
+    "choices": [],
+    "follow_up": null,
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-12T16:17:47.771265+00:00",
+    "expires_at_utc": "2026-09-12T17:17:54.092314+00:00",
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 787,
+        "output_tokens": 330,
+        "duration_seconds": 5.266156125
+      },
+      "generation": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 1544,
+        "output_tokens": 210,
+        "duration_seconds": 4.06543725,
+        "validation": "numeric-token and evidence-ID checks passed; semantic evaluation remains necessary",
+        "evidence_ids": [
+          "f1",
+          "f2",
+          "f3",
+          "f4"
+        ]
+      },
+      "tools": [
+        {
+          "name": "gazetteer_search",
+          "query": {
+            "name": "Vadodara",
+            "state": "",
+            "district": "",
+            "kind": "settlement"
+          },
+          "matches": 1
+        },
+        {
+          "name": "point_forecast",
+          "location": "Vadodara, Vadodara, State of Gujarāt",
+          "status": "prototype_answer",
+          "refresh": {
+            "state": "succeeded",
+            "job_id": "b597fdc5d981989b1038ccca9ea98dfaf10a59e6a7c8003dd60171f062a3d7a2",
+            "worker_state": "succeeded",
+            "claims_this_action": 1,
+            "job_provider_attempts": 1,
+            "retry_due_utc_epoch": 1789228800.0,
+            "message": "Collection completed; answer checked against the stored evidence."
+          }
+        }
+      ],
+      "provider": "local_ollama",
+      "duration_seconds": 10.396
+    },
+    "plan": {
+      "intent": "forecast",
+      "language": "hi",
+      "places": [
+        {
+          "name": "Vadodara",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "start_local": "2026-09-13T06:30:00+05:30",
+      "end_local": "2026-09-13T12:30:00+05:30",
+      "explicit_times": false,
+      "variables": [
+        "temperature_2m",
+        "precipitation",
+        "wind_speed_10m"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "assumptions": [
+        "Tomorrow is interpreted as the next local calendar date: 2026-09-13.",
+        "Morning is defaulted to 06:30–12:30 IST."
+      ],
+      "clarification": "",
+      "requested_outcome": "Forecast for Vadodara, Gujarat on the morning of September 13, 2026."
+    },
+    "resolved_points": {
+      "Vadodara": {
+        "id": "1253573",
+        "name": "Vadodara",
+        "latitude": 22.29941,
+        "longitude": 73.20812,
+        "feature": "PPL",
+        "admin1": "State of Gujarāt",
+        "admin2": "Vadodara",
+        "modified": "2026-01-15",
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:1253573",
+        "label": "Vadodara, Vadodara, State of Gujarāt",
+        "coordinates": {
+          "latitude": 22.29941,
+          "longitude": 73.20812
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1253573",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Vadodara"
+      }
+    },
+    "tool_answers": [
+      {
+        "schema_version": "weather-answer-v1",
+        "question": "What is the weather forecast for selected point on 2026-09-13 from 06:30 to 12:30?",
+        "answered_at_utc": "2026-09-12T16:17:54.096695+00:00",
+        "status": "prototype_answer",
+        "answer": "For selected point, 2026-09-13T06:30:00+05:30 to 2026-09-13T12:30:00+05:30, hourly temperature samples range from 24.8 to 27.9 °C; hourly relative humidity samples range from 81 to 92 %; forecast rainfall totals 4.3 mm; hourly wind speed samples range from 12.6 to 14.2 km/h. These are modeled values at 22.316956, 73.24219, 4.0 km from the selected point. Source: GFS via Open-Meteo; retrieved 2026-09-12T16:17:54.092314+00:00. Model issue time and local representativeness are unverified.",
+        "request": {
+          "intent": "point_forecast",
+          "place_name": "selected point",
+          "variables": [
+            "temperature_2m",
+            "relative_humidity_2m",
+            "precipitation",
+            "wind_speed_10m"
+          ],
+          "timezone": "Asia/Kolkata",
+          "start_local": "2026-09-13T06:30:00+05:30",
+          "end_local": "2026-09-13T12:30:00+05:30",
+          "start_utc": "2026-09-13T01:00:00+00:00",
+          "end_utc": "2026-09-13T07:00:00+00:00",
+          "interval_convention": "start inclusive, end exclusive",
+          "overnight": false,
+          "language": "en"
+        },
+        "location": {
+          "status": "selected_point",
+          "entity_id": "6e8b47e80ff9b7c1373ca5141f2f43bcd21a5926e40fbab38d6786f0e70631bb",
+          "label": "selected point",
+          "requested_point": {
+            "latitude": 22.29941,
+            "longitude": 73.20812
+          },
+          "basis": "explicit_user_coordinates",
+          "administrative_mapping": "unresolved",
+          "returned_grid": {
+            "latitude": 22.316956,
+            "longitude": 73.24219
+          },
+          "grid_distance_km": 4.011,
+          "support_description": "Value at the returned model grid for the selected source point",
+          "spatial_applicability": "model_point_reference_only"
+        },
+        "values": [
+          {
+            "parameter": "temperature_2m",
+            "unit": "°C",
+            "coverage": "complete",
+            "method": "range_of_hourly_samples; not continuous extrema",
+            "source_locators": [
+              "$.hourly.temperature_2m[25]",
+              "$.hourly.temperature_2m[26]",
+              "$.hourly.temperature_2m[27]",
+              "$.hourly.temperature_2m[28]",
+              "$.hourly.temperature_2m[29]",
+              "$.hourly.temperature_2m[30]"
+            ],
+            "support": {
+              "aggregation": "instant",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "missing": [],
+            "min_decimal": "24.8",
+            "max_decimal": "27.9",
+            "sample_count": 6
+          },
+          {
+            "parameter": "relative_humidity_2m",
+            "unit": "%",
+            "coverage": "complete",
+            "method": "range_of_hourly_samples; not continuous extrema",
+            "source_locators": [
+              "$.hourly.relative_humidity_2m[25]",
+              "$.hourly.relative_humidity_2m[26]",
+              "$.hourly.relative_humidity_2m[27]",
+              "$.hourly.relative_humidity_2m[28]",
+              "$.hourly.relative_humidity_2m[29]",
+              "$.hourly.relative_humidity_2m[30]"
+            ],
+            "support": {
+              "aggregation": "instant",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "missing": [],
+            "min_decimal": "81",
+            "max_decimal": "92",
+            "sample_count": 6
+          },
+          {
+            "parameter": "precipitation",
+            "unit": "mm",
+            "coverage": "complete",
+            "method": "preceding_hour_sum",
+            "source_locators": [
+              "$.hourly.precipitation[26]",
+              "$.hourly.precipitation[27]",
+              "$.hourly.precipitation[28]",
+              "$.hourly.precipitation[29]",
+              "$.hourly.precipitation[30]",
+              "$.hourly.precipitation[31]"
+            ],
+            "support": {
+              "aggregation": "preceding_hour_sum",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00",
+              "interval_start_utc": "2026-09-11T23:00:00+00:00",
+              "interval_end_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "missing": [],
+            "value_decimal": "4.3",
+            "sample_count": 6
+          },
+          {
+            "parameter": "wind_speed_10m",
+            "unit": "km/h",
+            "coverage": "complete",
+            "method": "range_of_hourly_samples; not continuous extrema",
+            "source_locators": [
+              "$.hourly.wind_speed_10m[25]",
+              "$.hourly.wind_speed_10m[26]",
+              "$.hourly.wind_speed_10m[27]",
+              "$.hourly.wind_speed_10m[28]",
+              "$.hourly.wind_speed_10m[29]",
+              "$.hourly.wind_speed_10m[30]"
+            ],
+            "support": {
+              "aggregation": "instant",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "missing": [],
+            "min_decimal": "12.6",
+            "max_decimal": "14.2",
+            "sample_count": 6
+          }
+        ],
+        "citations": [
+          {
+            "source_id": "S21",
+            "provider": "Open-Meteo",
+            "product": "GFS forecast delivery",
+            "evidence_kind": "model_forecast",
+            "url": "https://api.open-meteo.com/v1/gfs?latitude=22.29941&longitude=73.20812&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+            "response_sha256": "6e0c038f1cc805e89c14e0bf91aeaddf81b5726f40e4c43f98d8251be35fcb4f",
+            "raw_relative_path": "b597fdc5d981989b1038ccca9ea98dfaf10a59e6a7c8003dd60171f062a3d7a2/3a776851878543318dd7e61128de986e/blobs/6e0c038f1cc805e89c14e0bf91aeaddf81b5726f40e4c43f98d8251be35fcb4f.bin",
+            "published_job_id": "b597fdc5d981989b1038ccca9ea98dfaf10a59e6a7c8003dd60171f062a3d7a2",
+            "source_locators": [
+              "$.hourly.temperature_2m[25]",
+              "$.hourly.temperature_2m[26]",
+              "$.hourly.temperature_2m[27]",
+              "$.hourly.temperature_2m[28]",
+              "$.hourly.temperature_2m[29]",
+              "$.hourly.temperature_2m[30]",
+              "$.hourly.relative_humidity_2m[25]",
+              "$.hourly.relative_humidity_2m[26]",
+              "$.hourly.relative_humidity_2m[27]",
+              "$.hourly.relative_humidity_2m[28]",
+              "$.hourly.relative_humidity_2m[29]",
+              "$.hourly.relative_humidity_2m[30]",
+              "$.hourly.precipitation[26]",
+              "$.hourly.precipitation[27]",
+              "$.hourly.precipitation[28]",
+              "$.hourly.precipitation[29]",
+              "$.hourly.precipitation[30]",
+              "$.hourly.precipitation[31]",
+              "$.hourly.wind_speed_10m[25]",
+              "$.hourly.wind_speed_10m[26]",
+              "$.hourly.wind_speed_10m[27]",
+              "$.hourly.wind_speed_10m[28]",
+              "$.hourly.wind_speed_10m[29]",
+              "$.hourly.wind_speed_10m[30]"
+            ],
+            "retrieved_at_utc": "2026-09-12T16:17:54.092314+00:00",
+            "issue_time_utc": null
+          }
+        ],
+        "freshness": {
+          "retrieved_at_utc": "2026-09-12T16:17:54.092314+00:00",
+          "retrieval_age_seconds": 0.004380941390991211,
+          "source_issue_time_utc": null,
+          "source_issue_freshness": "unknown",
+          "collection_cycle_at": "2026-09-12T16:00:00+00:00",
+          "committed_at": "2026-09-12T16:17:54.095367+00:00",
+          "refresh_health": "succeeded",
+          "snapshot_status": "prototype_snapshot",
+          "refresh_scope": "all_forecast_horizons_at_exact_requested_point",
+          "latest_collection_jobs": [
+            {
+              "id": "b597fdc5d981989b1038ccca9ea98dfaf10a59e6a7c8003dd60171f062a3d7a2",
+              "state": "succeeded",
+              "cycle": 1789228800.0,
+              "expires": 1789257600.0,
+              "due": 1789228800.0,
+              "lease_until": null,
+              "last_error": null
+            }
+          ],
+          "next_planned_collection": null,
+          "maximum_retrieval_age_seconds": 3600
+        },
+        "coverage": {
+          "entity_id": "6e8b47e80ff9b7c1373ca5141f2f43bcd21a5926e40fbab38d6786f0e70631bb",
+          "entity_version": null,
+          "source_id": "S21",
+          "source_sha256": "6e0c038f1cc805e89c14e0bf91aeaddf81b5726f40e4c43f98d8251be35fcb4f",
+          "published_job_id": "b597fdc5d981989b1038ccca9ea98dfaf10a59e6a7c8003dd60171f062a3d7a2",
+          "requested_start_utc": "2026-09-13T01:00:00+00:00",
+          "requested_end_utc": "2026-09-13T07:00:00+00:00",
+          "variables": {
+            "temperature_2m": {
+              "aggregation": "instant",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "relative_humidity_2m": {
+              "aggregation": "instant",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "precipitation": {
+              "aggregation": "preceding_hour_sum",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00",
+              "interval_start_utc": "2026-09-11T23:00:00+00:00",
+              "interval_end_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "wind_speed_10m": {
+              "aggregation": "instant",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00"
+            }
+          },
+          "status": "complete",
+          "publication_policy": "prototype_model_point_reference",
+          "operational_eligible": false
+        },
+        "missing_information": [
+          "Upstream model issue/run identity and independently validated local representativeness"
+        ],
+        "eligibility": {
+          "prototype_numeric": true,
+          "operational": false
+        },
+        "limitations": [
+          "Model grid forecasts are not station observations or district averages.",
+          "Source issue/run freshness and local representativeness remain unverified."
+        ],
+        "provider_calls": 0,
+        "answer_id": "299e3b8660c668dd0c80d6325af2ab4a3ef54db0af447c1a5d9af35b57d85dc2"
+      }
+    ]
+  }
+}

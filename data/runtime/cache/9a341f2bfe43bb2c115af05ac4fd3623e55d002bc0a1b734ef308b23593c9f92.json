@@ -1,0 +1,10 @@
+{
+  "source_id": "S57",
+  "url": "https://mausam.imd.gov.in/responsive/agrometinformation/district_current_en_get.php?s=Karnataka&step1=true",
+  "retrieved_at_utc": "2026-09-11T19:41:41.299002+00:00",
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "bytes": 1544,
+  "sha256": "e73a048050602bfd05fade1bcd7e013f8c10c5281a71bdedf55436b15e9ce3a5",
+  "blob": "blobs/e73a048050602bfd05fade1bcd7e013f8c10c5281a71bdedf55436b15e9ce3a5.bin"
+}

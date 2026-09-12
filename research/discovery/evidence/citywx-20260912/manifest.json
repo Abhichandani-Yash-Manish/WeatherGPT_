@@ -1,0 +1,54 @@
+{
+  "files": [
+    {
+      "path": "research/discovery/evidence/citywx-20260912/access-errors.json",
+      "sha256": "009d5d39d3a0ab62184c69f52daaf34f836f982f4c87b3e92b3be751ff7b4dbc",
+      "bytes": 496
+    },
+    {
+      "path": "research/discovery/evidence/citywx-20260912/ahmedabad-city-fetch.json",
+      "sha256": "4d88b33edc24ce9fd0b41c3e17815462efc4db5b13f95cdbee54def795405ae2",
+      "bytes": 356
+    },
+    {
+      "path": "research/discovery/evidence/citywx-20260912/ahmedabad-city.response",
+      "sha256": "78342a0905a72ce44da083dcb5d23b8ea0c16992ba2a82eece97e033d76ba3d3",
+      "bytes": 9
+    },
+    {
+      "path": "research/discovery/evidence/citywx-20260912/app-fetch.json",
+      "sha256": "07858450f5139b9893153a3fc97086ad0445835e879db779af6c2cd3417e670e",
+      "bytes": 508
+    },
+    {
+      "path": "research/discovery/evidence/citywx-20260912/app.js",
+      "sha256": "cc9accbf6ee7b221d2fe9ac688c50fe697b43adcf94d12ba5160884d7ef1f433",
+      "bytes": 696544
+    },
+    {
+      "path": "research/discovery/evidence/citywx-20260912/assessment.json",
+      "sha256": "bc615db0d4953d60adca18e1e204f1e710e1de622589cec16dea6dff680c7660",
+      "bytes": 262
+    },
+    {
+      "path": "research/discovery/evidence/citywx-20260912/index-fetch.json",
+      "sha256": "9de40954bb2f2683b77ebe839966661f8a9ee54c6aedea1c490ca6a155f8d89a",
+      "bytes": 484
+    },
+    {
+      "path": "research/discovery/evidence/citywx-20260912/index.html",
+      "sha256": "8d509b125f6701b8120c9201819797d1a3b067da86f7a493499d04cf48a4ecc3",
+      "bytes": 1073
+    },
+    {
+      "path": "research/discovery/evidence/citywx-20260912/search-ahmedabad-fetch.json",
+      "sha256": "bfbfa992dd7a7242bdd6336b2ca99af83020d33542ba0349f76e9698d0eb5d72",
+      "bytes": 505
+    },
+    {
+      "path": "research/discovery/evidence/citywx-20260912/search-ahmedabad.json",
+      "sha256": "29ac55683be2a8c2b2064ebdc5227d6d473b33f0b9170acc445ee37955e058c4",
+      "bytes": 696
+    }
+  ]
+}

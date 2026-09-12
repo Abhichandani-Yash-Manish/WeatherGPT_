@@ -1,0 +1,268 @@
+[
+  {
+    "question": "Any warning for Ahmedabad tonight?",
+    "expected_intent": "warning",
+    "actual_intent": "warning",
+    "pass": true,
+    "plan": {
+      "intent": "warning",
+      "language": "en",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "start_local": "2026-09-12T18:30:00+05:30",
+      "end_local": "2026-09-13T06:30:00+05:30",
+      "explicit_times": false,
+      "variables": [
+        "temperature_2m",
+        "precipitation",
+        "wind_speed_10m",
+        "relative_humidity_2m"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "assumptions": [
+        "Tonight is defined as 18:30 IST on 2026-09-12 to 06:30 IST on 2026-09-13."
+      ],
+      "clarification": "",
+      "requested_outcome": "Retrieve weather warnings for Ahmedabad tonight."
+    },
+    "model": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 770,
+      "output_tokens": 314,
+      "duration_seconds": 7.04275425
+    }
+  },
+  {
+    "question": "Any warnings for Ahmedabad tonight?",
+    "expected_intent": "warning",
+    "actual_intent": "warning",
+    "pass": true,
+    "plan": {
+      "intent": "warning",
+      "language": "en",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "start_local": "2026-09-12T18:30:00+05:30",
+      "end_local": "2026-09-13T06:30:00+05:30",
+      "explicit_times": false,
+      "variables": [
+        "temperature_2m",
+        "precipitation",
+        "wind_speed_10m",
+        "relative_humidity_2m"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "assumptions": [
+        "Tonight defaults to 18:30 IST on 2026-09-12 to 06:30 IST on 2026-09-13."
+      ],
+      "clarification": "",
+      "requested_outcome": "Retrieve weather warnings for Ahmedabad tonight."
+    },
+    "model": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 770,
+      "output_tokens": 313,
+      "duration_seconds": 4.861812209
+    }
+  },
+  {
+    "question": "Are the roads flooded from Ahmedabad to Vadodara now?",
+    "expected_intent": "travel",
+    "actual_intent": "travel",
+    "pass": true,
+    "plan": {
+      "intent": "travel",
+      "language": "en",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        },
+        {
+          "name": "Vadodara",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "start_local": "2026-09-12T22:30:00+05:30",
+      "end_local": "2026-09-13T10:30:00+05:30",
+      "explicit_times": false,
+      "variables": [
+        "precipitation",
+        "wind_speed_10m",
+        "temperature_2m",
+        "relative_humidity_2m"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [
+        "road_conditions"
+      ],
+      "assumptions": [
+        "Time 'now' is interpreted as the next available source boundary (22:30 IST) for upcoming hours. The plan covers the immediate night period until 10:30 IST next day to capture potential overnight rainfall affecting road conditions."
+      ],
+      "clarification": "",
+      "requested_outcome": "Check current and near-future weather conditions along the Ahmedabad to Vadodara route to assess potential for flooding or heavy rain impacting travel."
+    },
+    "model": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 776,
+      "output_tokens": 395,
+      "duration_seconds": 6.027586708
+    }
+  },
+  {
+    "question": "Can I sow cotton near Vadodara tomorrow?",
+    "expected_intent": "agriculture",
+    "actual_intent": "agriculture",
+    "pass": true,
+    "plan": {
+      "intent": "agriculture",
+      "language": "en",
+      "places": [
+        {
+          "name": "Vadodara",
+          "state": "",
+          "district": "Vadodara",
+          "kind": "district"
+        }
+      ],
+      "start_local": "2026-09-13T00:30:00+05:30",
+      "end_local": "2026-09-14T00:30:00+05:30",
+      "explicit_times": false,
+      "variables": [
+        "temperature_2m",
+        "precipitation",
+        "wind_speed_10m",
+        "relative_humidity_2m"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "assumptions": [
+        "Tomorrow is interpreted as the full calendar day of 2026-09-13 (00:30 to 00:30 next date) to align with source accumulation hours."
+      ],
+      "clarification": "",
+      "requested_outcome": "Forecast for Vadodara district on 2026-09-13 to assess sowing conditions for cotton."
+    },
+    "model": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 773,
+      "output_tokens": 331,
+      "duration_seconds": 5.037559792
+    }
+  },
+  {
+    "question": "I plan sowing cotton near Vadodara tomorrow. What weather should I consider?",
+    "expected_intent": "agriculture",
+    "actual_intent": "agriculture",
+    "pass": true,
+    "plan": {
+      "intent": "agriculture",
+      "language": "en",
+      "places": [
+        {
+          "name": "Vadodara",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "start_local": "2026-09-13T00:30:00+05:30",
+      "end_local": "2026-09-14T00:30:00+05:30",
+      "explicit_times": false,
+      "variables": [
+        "temperature_2m",
+        "precipitation",
+        "wind_speed_10m",
+        "relative_humidity_2m"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [
+        "soil_moisture",
+        "evapotranspiration"
+      ],
+      "assumptions": [
+        "Tomorrow is interpreted as the full calendar day of 2026-09-13 (00:30 to 00:30 next date) to cover sowing conditions."
+      ],
+      "clarification": "",
+      "requested_outcome": "Weather forecast for Vadodara on 2026-09-13 to assess suitability for cotton sowing"
+    },
+    "model": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 780,
+      "output_tokens": 352,
+      "duration_seconds": 5.390932708
+    }
+  },
+  {
+    "question": "How much precipitation did India record during June to September 2024?",
+    "expected_intent": "history",
+    "actual_intent": "history",
+    "pass": true,
+    "plan": {
+      "intent": "history",
+      "language": "en",
+      "places": [
+        {
+          "name": "India",
+          "state": "",
+          "district": "",
+          "kind": "country"
+        }
+      ],
+      "start_local": "",
+      "end_local": "",
+      "explicit_times": false,
+      "variables": [
+        "precipitation"
+      ],
+      "year": 2024,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "assumptions": [
+        "Period is June to September (JJAS) 2024 as specified."
+      ],
+      "clarification": "",
+      "requested_outcome": "Retrieve total precipitation for India during JJAS 2024"
+    },
+    "model": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 779,
+      "output_tokens": 205,
+      "duration_seconds": 3.277576583
+    }
+  }
+]

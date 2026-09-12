@@ -1,0 +1,133 @@
+{
+  "id": "IN-014",
+  "question": "What will the temperature and humidity feel like in Karaikudi tomorrow afternoon?",
+  "origin": "included_report",
+  "checked_at_utc": "2026-09-12T16:15:52.274632+00:00",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "98350d2d-6d0b-4b68-9d68-2a43690d4ac2",
+    "question": "What will the temperature and humidity feel like in Karaikudi tomorrow afternoon?",
+    "status": "needs_selection",
+    "answer": "I found 2 possible places for Karaikudi. Please confirm the intended location and spelling.",
+    "facts": [],
+    "citations": [],
+    "notes": [
+      "Tomorrow afternoon is defaulted to 12:30–18:30 IST on 2026-09-13."
+    ],
+    "choices": [
+      {
+        "id": "11661079",
+        "name": "Kāraikudi",
+        "latitude": 10.13979,
+        "longitude": 78.36314,
+        "feature": "PPL",
+        "admin1": "State of Tamil Nādu",
+        "admin2": "Madurai",
+        "modified": "2024-01-06",
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:11661079",
+        "label": "Kāraikudi, Madurai, State of Tamil Nādu",
+        "coordinates": {
+          "latitude": 10.13979,
+          "longitude": 78.36314
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/11661079",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Karaikudi"
+      },
+      {
+        "id": "1267885",
+        "name": "Kāraikkudi",
+        "latitude": 10.06615,
+        "longitude": 78.76784,
+        "feature": "PPL",
+        "admin1": "State of Tamil Nādu",
+        "admin2": "Sivaganga",
+        "modified": "2024-01-06",
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:1267885",
+        "label": "Kāraikkudi, Sivaganga, State of Tamil Nādu",
+        "coordinates": {
+          "latitude": 10.06615,
+          "longitude": 78.76784
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1267885",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Karaikudi"
+      }
+    ],
+    "follow_up": "Choose a place, or add its district and state.",
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-12T16:15:52.274670+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 778,
+        "output_tokens": 290,
+        "duration_seconds": 4.888906708
+      },
+      "generation": null,
+      "tools": [
+        {
+          "name": "gazetteer_search",
+          "query": {
+            "name": "Karaikudi",
+            "state": "",
+            "district": "",
+            "kind": "settlement"
+          },
+          "matches": 2
+        }
+      ],
+      "provider": "local_ollama",
+      "duration_seconds": 4.89
+    },
+    "plan": {
+      "intent": "forecast",
+      "language": "en",
+      "places": [
+        {
+          "name": "Karaikudi",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "start_local": "2026-09-13T12:30:00+05:30",
+      "end_local": "2026-09-13T18:30:00+05:30",
+      "explicit_times": false,
+      "variables": [
+        "temperature_2m",
+        "relative_humidity_2m"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "assumptions": [
+        "Tomorrow afternoon is defaulted to 12:30–18:30 IST on 2026-09-13."
+      ],
+      "clarification": "",
+      "requested_outcome": "Forecast of temperature and humidity for Karaikudi tomorrow afternoon"
+    },
+    "resolved_points": {}
+  }
+}

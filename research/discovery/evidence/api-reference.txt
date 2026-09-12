@@ -1,0 +1,1283 @@
+IMD API Reference
+body { background:#f7f9fc; color:#212529; }
+    .imd-topbar {
+      background:#fff;
+      border-bottom:1px solid #dee2e6;
+    }
+    .imd-brand-logo {
+      width:52px;
+      height:52px;
+      object-fit:contain;
+    }
+    .imd-brand-title {
+      font-size:1rem;
+      font-weight:700;
+      line-height:1.2;
+      margin:0;
+    }
+    .imd-brand-subtitle {
+      font-size:.8rem;
+      margin:0;
+      color:#495057;
+    }
+    .page-title { padding:0; }
+    .page-title .container {
+      background:#0d6efd;
+      color:#fff;
+      padding:14px 16px;
+      border-radius:8px;
+    }
+    .section-card { border:1px solid #dfe4ea; border-radius:8px; background:#fff; }
+    .section-head { border-bottom:1px solid #e9ecef; padding:10px 14px; font-weight:600; }
+    .section-body { padding:14px; }
+    .label { font-weight:600; }
+    pre.sample {
+      background:#f8f9fa;
+      border:1px solid #dee2e6;
+      border-radius:6px;
+      padding:10px;
+      white-space:pre-wrap;
+      word-break:break-word;
+      margin-bottom:0;
+    }
+    table.ref-table { font-size:0.93rem; }
+    @media (max-width: 767.98px) {
+      .section-head { font-size:0.98rem; }
+      .section-body { padding:10px; }
+      pre.sample { font-size:0.82rem; }
+      table.ref-table { font-size:0.82rem; }
+    }
+India Meteorological Department
+Ministry of Earth Sciences
+Government of India
+Home
+List of APIs of India Meteorological Department
+API Index
+Weather Forecast APIs
+City Weather Forecast (7 Days)
+City Weather Forecast with Latitude & Longitude
+Subdivision Rainfall Forecast (7 Days)
+State District Rainfall Forecast (5 Days)
+All India Weather Forecast Bulletin
+Weather at your location (Mausamgram)
+Current Weather & Nowcast
+Current Weather API
+District-wise Nowcast
+Station-wise Nowcast
+AWS/ARG Data
+Warning APIs
+District-wise Warnings
+Subdivision-wise Warnings
+Rainfall APIs
+District-wise Rainfall
+State-wise Rainfall
+River Basin (QPF)
+Marine APIs
+Port Warning
+Sea Area Bulletin
+Coastal Bulletin
+Fishermen Warning
+Cyclone APIs
+Cyclone Track
+Cyclone Wind Warning
+Cyclone Cone of Uncertainty
+Astronomical API
+Sun Moon (Rise/Set) Time
+NHAI API
+Highway Nowcast Warning
+Highway Warning - 5 Days
+RADAR & Lightning API
+Radar Image
+Lightning Data
+Agromet Advisory API
+Agromet Advisory
+1) City Weather forecast for 7 days
+URL:
+https://api.imd.gov.in/api/v1/cityforecast?id=42182
+Or:
+https://api.imd.gov.in/api/v1/cityforecast
+Visualize Data:
+https://city.imd.gov.in
+City Forecast Mapping Data:
+https://api.imd.gov.in/api/v1/cityforecast_mapping
+Field Reference
+Field
+Description
+Date
+Date of Observation in YYYY-mm-dd
+Station_Code
+Station Code is unique for each station
+Station_Name
+Station name
+Today_Max_temp
+Max Temp records at 1730 Hr IST (oC)
+Today_Max_Departure_from_Normal
+Departure of today max temp from normal (oC)
+Previous_Day_Max_temp
+Max Temp of previous day records at 1730 Hr IST (oC)
+Previous_Day_Max_Departure_from_Normal
+Departure of previous day max temp from normal (oC)
+Today_Min_temp
+Min Temp records at 0530 Hr IST (oC)
+Today_Min_Departure_from_Normal
+Departure of today min temp from normal (oC)
+Past_24_hrs_Rainfall
+Recorded from 0830 hrs IST of previous day to 0830 hrs IST of today
+Relative_Humidity_at_0830
+Relative Humidity recorded at 0830 hrs (%)
+Relative_Humidity_at_1730
+Relative Humidity recorded at 1730 hrs (%)
+Previous_Day_Relative_Humidity_at_1730
+Relative Humidity of previous day recorded at 1730 hrs (%)
+Sunset_time
+Sunset Time
+Sunrise_time
+Sunrise Time
+Moonset_time
+Moonset Time
+Moonrise_time
+Moonrise Time
+Todays_Forecast_Max_Temp
+Forecasted Max Temp of Day-1 (i.e. Today) (oC)
+Todays_Forecast_Min_temp
+Forecasted Min Temp of Day-1 (i.e. Today) (oC)
+Todays_Forecast
+Weather Forecast of Day-1 (i.e. Today)
+Day_2_Max_Temp
+Forecasted Max Temp of Day-2 (oC)
+Day_2_Min_temp
+Forecasted Min Temp of Day-2 (oC)
+Day_2_Forecast
+Weather Forecast of Day-2
+Day_3_Max_Temp
+Forecasted Max Temp of Day-3 (oC)
+Day_3_Min_temp
+Forecasted Min Temp of Day-3 (oC)
+Day_3_Forecast
+Weather Forecast of Day-3
+Day_4_Max_Temp
+Forecasted Max Temp of Day-4 (oC)
+Day_4_Min_temp
+Forecasted Min Temp of Day-4 (oC)
+Day_4_Forecast
+Weather Forecast of Day-4
+Day_5_Max_Temp
+Forecasted Max Temp of Day-5 (oC)
+Day_5_Min_temp
+Forecasted Min Temp of Day-5 (oC)
+Day_5_Forecast
+Weather Forecast of Day-5
+Day_6_Max_Temp
+Forecasted Max Temp of Day-6 (oC)
+Day_6_Min_temp
+Forecasted Min Temp of Day-6 (oC)
+Day_6_Forecast
+Weather Forecast of Day-6
+Day_7_Max_Temp
+Forecasted Max Temp of Day-7 (oC)
+Day_7_Min_temp
+Forecasted Min Temp of Day-7 (oC)
+Day_7_Forecast
+Weather Forecast of Day-7
+2) City Weather forecast for 7 days with latitude and longitude
+URL:
+https://api.imd.gov.in/api/v1/cityforecastloc?id=42182
+Or:
+https://api.imd.gov.in/api/v1/cityforecastloc
+Visualize Data:
+https://city.imd.gov.in
+City Forecast Mapping Data:
+https://api.imd.gov.in/api/v1/cityforecast_mapping
+Field Reference
+Field
+Description
+Date
+Date of Observation in YYYY-mm-dd
+Station_Code
+Station Code is unique for each station
+Station_Name
+Station name
+Today_Max_temp
+Max Temp records at 1730 Hr IST (oC)
+Today_Max_Departure_from_Normal
+Departure of today max temp from normal (oC)
+Previous_Day_Max_temp
+Max Temp of previous day records at 1730 Hr IST (oC)
+Previous_Day_Max_Departure_from_Normal
+Departure of previous day max temp from normal (oC)
+Today_Min_temp
+Min Temp records at 0530 Hr IST (oC)
+Today_Min_Departure_from_Normal
+Departure of today min temp from normal (oC)
+Past_24_hrs_Rainfall
+Recorded from 0830 hrs IST of previous day to 0830 hrs IST of today
+Relative_Humidity_at_0830
+Relative Humidity recorded at 0830 hrs (%)
+Relative_Humidity_at_1730
+Relative Humidity recorded at 1730 hrs (%)
+Previous_Day_Relative_Humidity_at_1730
+Relative Humidity of previous day recorded at 1730 hrs (%)
+Sunset_time
+Sunset Time
+Sunrise_time
+Sunrise Time
+Moonset_time
+Moonset Time
+Moonrise_time
+Moonrise Time
+Todays_Forecast_Max_Temp
+Forecasted Max Temp of Day-1 (i.e. Today) (oC)
+Todays_Forecast_Min_temp
+Forecasted Min Temp of Day-1 (i.e. Today) (oC)
+Todays_Forecast
+Weather Forecast of Day-1 (i.e. Today)
+Day_2_Max_Temp
+Forecasted Max Temp of Day-2 (oC)
+Day_2_Min_temp
+Forecasted Min Temp of Day-2 (oC)
+Day_2_Forecast
+Weather Forecast of Day-2
+Day_3_Max_Temp
+Forecasted Max Temp of Day-3 (oC)
+Day_3_Min_temp
+Forecasted Min Temp of Day-3 (oC)
+Day_3_Forecast
+Weather Forecast of Day-3
+Day_4_Max_Temp
+Forecasted Max Temp of Day-4 (oC)
+Day_4_Min_temp
+Forecasted Min Temp of Day-4 (oC)
+Day_4_Forecast
+Weather Forecast of Day-4
+Day_5_Max_Temp
+Forecasted Max Temp of Day-5 (oC)
+Day_5_Min_temp
+Forecasted Min Temp of Day-5 (oC)
+Day_5_Forecast
+Weather Forecast of Day-5
+Day_6_Max_Temp
+Forecasted Max Temp of Day-6 (oC)
+Day_6_Min_temp
+Forecasted Min Temp of Day-6 (oC)
+Day_6_Forecast
+Weather Forecast of Day-6
+Day_7_Max_Temp
+Forecasted Max Temp of Day-7 (oC)
+Day_7_Min_temp
+Forecasted Min Temp of Day-7 (oC)
+Day_7_Forecast
+Weather Forecast of Day-7
+Latitude
+Station latitude
+Longitude
+Station longitude
+3) Current Weather API
+URL:
+https://api.imd.gov.in/api/v1/current_wx
+Or:
+https://api.imd.gov.in/api/v1/current_wx?id=StationId
+Field / Value / Description
+Field
+Value
+Description
+Station Id
+Station ID is unique for each station
+Station Id
+Station
+Station name
+Station name
+Date of Observation
+YYYY-mm-dd
+Date of Observation
+Time of Observation
+UTC
+It is time of observation in UTC
+M.S.L.P
+hPa
+Mean Sea Level Pressure in hPa
+Wind Direction
+Code
+Wind Direction Description is given below
+Wind Speed
+KMPH
+Wind Speed in KMPH
+Temperature
+deg C
+Current Temperature in deg C
+Weather Code
+01-99
+Weather code for current weather
+Nebulosity
+0-8
+Cloud coverage on scale of 0-8
+Humidity
+%
+Humidity in percentage (%)
+Last 24 hrs Rainfall
+mm
+Rainfall in last 24 hrs in mm
+Wind Direction Description
+Value
+Direction
+0
+Calm
+20
+North-northeasterly
+50
+Northeasterly
+70
+East-northeasterly
+90
+Easterly
+110
+East-southeasterly
+140
+Southeasterly
+160
+South-southeasterly
+180
+Southerly
+200
+South-southwesterly
+230
+Southwesterly
+250
+West-southwesterly
+270
+Westerly
+290
+West-northwesterly
+320
+Northwesterly
+340
+North-northwesterly
+360
+Northerly
+Weather Code Description
+Weather Code
+Description
+01
+Clouds generally dissolving or becoming less developed
+02
+State of sky on the whole unchanged
+03
+Clouds generally forming or developing
+04
+Visibility reduced by smoke (e.g. veldt/forest fires, industrial smoke, volcanic ashes)
+05
+Haze
+06
+Widespread dust in suspension in the air, not raised by wind at or near the station
+07
+Dust or sand raised by wind at or near the station, no well-developed whirl(s), no duststorm/sandstorm seen
+08
+Well-developed dust/sand whirl(s) at or near station, but no duststorm/sandstorm
+09
+Duststorm or sandstorm within sight
+10
+Mist
+11
+Patches of shallow fog/ice fog at station (not deeper than about 2 m on land / 10 m at sea)
+12
+More or less continuous shallow fog/ice fog at station
+13
+Lightning visible, no thunder heard
+14
+Precipitation within sight, not reaching ground/sea surface
+15
+Precipitation within sight, reaching ground/sea, but distant (> 5 km)
+16
+Precipitation within sight, reaching ground/sea, near but not at station
+17
+Thunderstorm, no precipitation at observation time
+18
+Squalls at or within sight during preceding hour / at observation
+19
+Funnel cloud(s) at or within sight during preceding hour / at observation
+20
+Drizzle (not freezing) or snow grains not falling as showers
+21
+Rain (not freezing) not falling as showers
+22
+Snow not falling as showers
+23
+Rain and snow / ice pellets type (a), not falling as showers
+24
+Freezing drizzle / freezing rain not falling as showers
+25
+Showers of rain
+26
+Showers of snow, or rain and snow
+27
+Showers of hail, or rain and hail
+28
+Fog or ice fog
+29
+Thunderstorm (with or without precipitation)
+30
+Slight/moderate duststorm or sandstorm - decreased during preceding hour
+31
+Slight/moderate duststorm or sandstorm - no appreciable change
+32
+Slight/moderate duststorm or sandstorm - begun/increased during preceding hour
+33
+Severe duststorm or sandstorm - decreased during preceding hour
+34
+Severe duststorm or sandstorm - no appreciable change
+35
+Severe duststorm or sandstorm - begun/increased during preceding hour
+36
+Slight/moderate blowing snow generally low (below eye level)
+37
+Heavy drifting snow generally low (below eye level)
+38
+Slight/moderate blowing snow generally high (above eye level)
+39
+Heavy drifting snow generally high (above eye level)
+40
+Fog/ice fog at a distance, not at station during preceding hour
+41
+Fog or ice fog in patches
+42
+Fog/ice fog, sky visible, becoming thinner
+43
+Fog/ice fog, sky invisible, becoming thinner
+44
+Fog/ice fog, sky visible, no appreciable change
+45
+Fog/ice fog, sky invisible, no appreciable change
+46
+Fog/ice fog, sky visible, begun/become thicker
+47
+Fog/ice fog, sky invisible, begun/become thicker
+48
+Fog depositing rime, sky visible
+49
+Fog depositing rime, sky invisible
+50
+Drizzle, not freezing, intermittent slight
+51
+Drizzle, not freezing, continuous slight
+52
+Drizzle, not freezing, intermittent moderate
+53
+Drizzle, not freezing, continuous moderate
+54
+Drizzle, not freezing, intermittent heavy (dense)
+55
+Drizzle, not freezing, continuous heavy (dense)
+56
+Drizzle, freezing, slight
+57
+Drizzle, freezing, moderate or heavy (dense)
+58
+Drizzle and rain, slight
+59
+Drizzle and rain, moderate or heavy
+60
+Rain, not freezing, intermittent slight
+61
+Rain, not freezing, continuous slight
+62
+Rain, not freezing, intermittent moderate
+63
+Rain, not freezing, continuous moderate
+64
+Rain, not freezing, intermittent heavy
+65
+Rain, not freezing, continuous heavy
+66
+Rain, freezing, slight
+67
+Rain, freezing, moderate or heavy
+68
+Rain, or drizzle and snow, slight
+69
+Rain, or drizzle and snow, moderate or heavy
+70
+Intermittent fall of snowflakes, slight
+71
+Continuous fall of snowflakes, slight
+72
+Intermittent fall of snowflakes, moderate
+73
+Continuous fall of snowflakes, moderate
+74
+Intermittent fall of snowflakes, heavy
+75
+Continuous fall of snowflakes, heavy
+76
+Ice prisms (with or without fog)
+77
+Snow grains (with or without fog)
+78
+Isolated star-like snow crystals (with or without fog)
+79
+Ice pellets, type (a)
+80
+Rain shower(s), slight
+81
+Rain shower(s), moderate or heavy
+82
+Rain shower(s), violent
+83
+Shower(s) of rain and snow mixed, slight
+84
+Shower(s) of rain and snow mixed, moderate or heavy
+85
+Snow shower(s), slight
+86
+Snow shower(s), moderate or heavy
+87
+Shower(s) of snow pellets/ice pellets type (b), slight
+88
+Shower(s) of snow pellets/ice pellets type (b), moderate or heavy
+89
+Shower(s) of hail, with/without rain or rain and snow mixed, not associated with thunder, slight
+90
+Shower(s) of hail, with/without rain or rain and snow mixed, not associated with thunder, moderate or heavy
+91
+Slight rain at observation; thunderstorm during preceding hour but not at observation
+92
+Moderate/heavy rain at observation; thunderstorm during preceding hour but not at observation
+93
+Slight snow/rain+snow mixed/hail at observation; thunderstorm during preceding hour but not at observation
+94
+Moderate/heavy snow/rain+snow mixed/hail at observation; thunderstorm during preceding hour but not at observation
+95
+Thunderstorm, slight/moderate, without hail, with rain and/or snow at observation
+96
+Thunderstorm, slight/moderate, with hail at observation
+97
+Thunderstorm, heavy, without hail, with rain and/or snow at observation
+98
+Thunderstorm combined with duststorm/sandstorm at observation
+99
+Thunderstorm, heavy, with hail at observation
+4) District-wise Nowcast
+URL:
+https://api.imd.gov.in/api/v1/districtnowcast
+Or:
+https://api.imd.gov.in/api/v1/districtnowcast?id=1
+Visualize Data:
+https://mausam.imd.gov.in/responsive/districtWiseNowcastGIS.php
+Field
+Value
+Description
+Station
+Station name
+Station name
+Date
+YYYY-mm-dd
+Date of warning issued
+Cat1
+1
+No Weather
+Cat2
+2
+Light rain: < 5 mm/hr
+Cat3
+3
+Light snow: < 5 cm/hr
+Cat4
+4
+Light Thunderstorms with maximum surface wind speed less than 40 kmph (in gusts)
+Cat5
+5
+Slight dust storm: wind speed up to 41 kmph and visibility less than 1000 m but more than 500 m
+Cat6
+6
+Low cloud to ground Lightning probability (< 30%)
+Cat7
+7
+Moderate rain: 5-15 mm/hr
+Cat8
+8
+Moderate snow: 5-15 cm/hr
+Cat9
+9
+Moderate Thunderstorms with maximum surface wind speed between 41 - 61 kmph (in gusts)
+Cat10
+10
+Moderate dust storm: wind speed between 41-61 kmph and visibility between 200 and 500 m due to dust
+Cat11
+11
+Moderate cloud to ground Lightning probability (30 - 60%)
+Cat12
+12
+Heavy rain: > 15 mm/hr
+Cat13
+13
+Heavy snow: > 15 cm/hr
+Cat14
+14
+Severe Thunderstorms with maximum surface wind speed 62 - 87 kmph (in gusts)
+Cat15
+15
+Very Severe Thunderstorms with maximum surface wind speed > 87 kmph (in gusts)
+Cat16
+Text
+Other Warnings (text warnings can be entered)
+Cat17
+31
+Thunderstorms with Hail
+Cat18
+32
+Severe dust storm: surface wind speed (in gusts) exceeding 61 kmph and visibility less than 200 m due to dust
+Cat19
+33
+High cloud to ground Lightning probability (> 60%)
+message
+text
+Consolidated warning message
+toi
+HHmm
+Time of issue of warning
+Vupto
+HHmm
+Warning valid upto
+color
+1, 2, 3 or 4
+Color code for warning severity
+Color Code Note
+Color Code
+Usage
+Color
+1
+Cat1
+Green (#008000)
+2
+Cat2 to Cat6
+Yellow (#FFFF00)
+3
+Cat7 to Cat11
+Orange (#FFA500)
+4
+Cat12 to Cat19
+Red (#ff0000)
+5) District-wise Rainfall
+URL:
+https://api.imd.gov.in/api/v1/districtrainfall
+Or:
+https://api.imd.gov.in/api/v1/districtrainfall?id=164
+Visualize Data:
+https://mausam.imd.gov.in/responsive/rainfallinformation.php
+Sample data (Fields are self-explanatory)
+{
+            "OBJ_ID": "164",
+            "District": "ADILABAD",
+            "Date": "2023-01-31",
+            "Daily Actual": "0.00",
+            "Daily Normal": "1.70",
+            "Daily Departure Per": "-100%",
+            "Daily Category": "NR",
+            "Week Date": "19-01-2023 To 25-01-2023",
+            "Weekly Actual": "0.00",
+            "Weekly Normal": "1.70",
+            "Weekly Departure Per": "-100%",
+            "Weekly Category": "NR",
+            "Cumulative Date": "2023-01-01",
+            "Cumulative Actual": "0.00",
+            "Cumulative Normal": "11.60",
+            "Cumulative Departure Per": "-100%",
+            "Cumulative Category": "NR",
+            "Monthly Date": "01-12-2022 To 31-12-2022\r",
+            "Monthly Actual": "5.10",
+            "Monthly Normal": "5.00",
+            "Monthly Departure Per": "1%",
+            "Monthly Category": "N"
+          }
+Note:- Category used for rainfall
+Code
+Description
+LE
+Large Excess (60% or more)
+E
+Excess (20% to 59%)
+N
+Normal (-19% to 19%)
+D
+Deficient (-59% to -20%)
+LD
+Large Deficient (-99% to -60%)
+NR
+No Rain (-100%)
+ND
+No Data
+6) District-wise Warnings
+URL:
+https://api.imd.gov.in/api/v1/districtwarning
+Or:
+https://api.imd.gov.in/api/v1/districtwarning?id=573
+Visualize Data:
+https://mausam.imd.gov.in/responsive/districtWiseWarningGIS.php
+Field
+Description
+Obj_id
+Object ID for a district
+Date
+Date of Issue
+UTC
+Time of Issue in UTC
+District
+District Name
+Day_1
+Warning Code for Day 1 (multiple codes can be added separated with ',')
+Day_2
+Warning Code for Day 2 (multiple codes can be added separated with ',')
+Day_3
+Warning Code for Day 3 (multiple codes can be added separated with ',')
+Day_4
+Warning Code for Day 4 (multiple codes can be added separated with ',')
+Day_5
+Warning Code for Day 5 (multiple codes can be added separated with ',')
+Day1_Color
+Color code as 1, 2, 3 or 4
+Day2_Color
+Color code as 1, 2, 3 or 4
+Day3_Color
+Color code as 1, 2, 3 or 4
+Day4_Color
+Color code as 1, 2, 3 or 4
+Day5_Color
+Color code as 1, 2, 3 or 4
+Description of Warning Code
+Warning Code
+Description
+1
+No Warning
+2
+Heavy Rain
+3
+Heavy Snow
+4
+Thunderstorm & Lightning, Squall etc
+5
+Hailstorm
+6
+Dust Storm
+7
+Dust Raising Winds
+8
+Strong Surface Winds
+9
+Heat Wave
+10
+Hot Day
+11
+Warm Night
+12
+Cold Wave
+13
+Cold Day
+14
+Ground Frost
+15
+Fog
+16
+Very Heavy Rain
+17
+Extremely Heavy Rain
+Day Color Code Description
+Color Code
+Description
+1
+#FF0000 (Red)
+2
+#ffa500 (Orange)
+3
+#ffff00 (Yellow)
+4
+#7cfc00 (Green)
+7) Station-wise Nowcast
+URL:
+https://api.imd.gov.in/api/v1/stationnowcast
+Or:
+https://api.imd.gov.in/api/v1/stationnowcast?id=Adilabad
+Visualize Data:
+https://mausam.imd.gov.in/responsive/stationWiseNowcastGIS.php
+Field
+Value
+Description
+Station
+Station name
+Station name
+Date
+YYYY-mm-dd
+Date of warning issued
+Cat1
+1
+No Weather
+Cat2
+2
+Light rain: < 5 mm/hr
+Cat3
+3
+Light snow: < 5 cm/hr
+Cat4
+4
+Light Thunderstorms with maximum surface wind speed less than 40 kmph (in gusts)
+Cat5
+5
+Slight dust storm: wind speed up to 41 kmph and visibility less than 1000 m but more than 500 m
+Cat6
+6
+Low cloud to ground Lightning probability (< 30%)
+Cat7
+7
+Moderate rain: 5-15 mm/hr
+Cat8
+8
+Moderate snow: 5-15 cm/hr
+Cat9
+9
+Moderate Thunderstorms with maximum surface wind speed between 41 - 61 kmph (in gusts)
+Cat10
+10
+Moderate dust storm: wind speed between 41-61 kmph and visibility between 200 and 500 m due to dust
+Cat11
+11
+Moderate cloud to ground Lightning probability (30 - 60%)
+Cat12
+12
+Heavy rain: > 15 mm/hr
+Cat13
+13
+Heavy snow: > 15 cm/hr
+Cat14
+14
+Severe Thunderstorms with maximum surface wind speed 62 - 87 kmph (in gusts)
+Cat15
+15
+Very Severe Thunderstorms with maximum surface wind speed > 87 kmph (in gusts)
+Cat16
+Text
+Other Warnings (text warnings can be entered)
+Cat17
+31
+Thunderstorms with Hail
+Cat18
+32
+Severe dust storm: surface wind speed (in gusts) exceeding 61 kmph and visibility less than 200 m due to dust
+Cat19
+33
+High cloud to ground Lightning probability (> 60%)
+message
+text
+Consolidated warning message
+toi
+HHmm
+Time of issue of warning
+Vupto
+HHmm
+Warning valid upto
+color
+1, 2, 3 or 4
+Color code as 1, 2, 3 or 4
+Note:- Color Code can be used for warnings as
+Color Code
+Usage
+Color
+1
+for Cat1
+Green (#008000)
+2
+for Cat2 to Cat6
+Yellow (#FFFF00)
+3
+for Cat7 to Cat11
+Orange (#FFA500)
+4
+for Cat12 to Cat19
+Red (#ff0000)
+8) State-wise Rainfall
+URL:
+https://api.imd.gov.in/api/v1/staterainfall
+Or:
+https://api.imd.gov.in/api/v1/staterainfall?id=jammu
+Visualize Data:
+https://mausam.imd.gov.in/responsive/rainfallinformation_state.php
+Sample data (Fields are self-explanatory)
+{
+            "State": "DADAR & NAGAR HAVELI (UT)",
+            "Date": "31-05-2022",
+            "Daily Actual": "0.00",
+            "Daily Normal": "3.30",
+            "Daily Departure Per": "-100%",
+            "Daily Category": "NR",
+            "Week Date": "26-05-2022 To 01-06-2022",
+            "Weekly Actual": "0.00",
+            "Weekly Normal": "11.00",
+            "Weekly Departure Per": "-100%",
+            "Weekly Category": "NR",
+            "Cumulative Date": "01-03-2022 To 31-05-2022\r",
+            "Cumulative Actual": "0.00",
+            "Cumulative Normal": "9.00",
+            "Cumulative Departue Per": "-100%",
+            "Cumulative Category": "NR",
+            "Monthly Date": "01-05-2022 To 31-05-2022\r",
+            "Monthly Acutual": "0.00",
+            "Monthly Normal": "9.00",
+            "Monthly Departure Per": "-100%",
+            "Monthly Category": "NR"
+          }
+Note:- Category used for rainfall
+Code
+Description
+LE
+Large Excess (60% or more)
+E
+Excess (20% to 59%)
+N
+Normal (-19% to 19%)
+D
+Deficient (-59% to -20%)
+LD
+Large Deficient (-99% to -60%)
+NR
+No Rain (-100%)
+ND
+No Data
+9) AWS/ARG Data
+URL:
+https://api.imd.gov.in/api/v1/aws_data
+Or:
+https://api.imd.gov.in/api/v1/aws_data?id=NDL
+State-wise:
+https://api.imd.gov.in/api/v1/aws_data?sid=7
+AWS Mapping Data:
+https://api.imd.gov.in/api/v1/aws_data_mapping
+State IDs :
+          "1": "TELANGANA",
+          "2": "ANDHRA_PRADESH",
+          "3": "HIMACHAL_PRADESH",
+          "4": "KERALA",
+          "5": "UTTAR_PRADESH",
+          "6": "MEGHALAYA",
+          "7": "DELHI",
+          "8": "RAJASTHAN",
+          "9": "GUJARAT",
+          "10": "ODISHA",
+          "11": "BIHAR",
+          "12": "CHHATTISGARH",
+          "13": "KARNATAKA",
+          "14": "MIZORAM",
+          "15": "JHARKHAND",
+          "16": "TRIPURA",
+          "17": "CHANDIGARH",
+          "18": "JAMMU_AND_KASHMIR",
+          "19": "GOA",
+          "20": "SIKKIM",
+          "21": "MAHARASHTRA",
+          "22": "HARYANA",
+          "23": "LADAKH",
+          "24": "ASSAM",
+          "25": "TAMIL_NADU",
+          "26": "WEST_BENGAL",
+          "27": "MADHYA_PRADESH",
+          "28": "ARUNACHAL_PRADESH",
+          "29": "LAKSHADWEEP",
+          "30": "MANIPUR",
+          "31": "UTTARAKHAND",
+          "32": "NAGALAND",
+          "33": "PUDUCHERRY",
+          "34": "PUNJAB",
+          "35": "ANDAMAN_AND_NICOBAR",
+          "36": "DAMAN_AND_DIU"
+Sample data (Fields are self-explanatory)
+{
+            "ID": "B48970CA",
+            "CALL_SIGN": "NDL",
+            "DISTRICT": "NEW_DELHI",
+            "STATE": "DELHI",
+            "STATION": "LODI ROAD",
+            "DATE": "2024-06-06",
+            "TIME": "07:00:00",
+            "CURR_TEMP": "40.8",
+            "DEW_POINT_TEMP": "13.7",
+            "RH": "20",
+            "WIND_DIRECTION": "189",
+            "WIND_SPEED": "1",
+            "MSLP": "1003.0",
+            "MIN_TEMP": "39.9",
+            "MAX_TEMP": "40.9",
+            "Latitude": "28.5885",
+            "Longitude": "77.2224",
+            "WEATHER_CODE": "5",
+            "NEBULOSITY": "4",
+            "Feel Like": "40.5",
+          }
+10) River Basin (QPF)
+URL:
+https://api.imd.gov.in/api/v1/basinqpf
+Or:
+https://api.imd.gov.in/api/v1/basinqpf?id=100
+Visualize Data:
+https://mausam.imd.gov.in/responsive/quantPrecipForecast.php
+Field Description
+Field
+Description
+Obj_Id
+ID is unique for each basin
+Date
+Date of issue in YYYY-mm-dd
+FMO
+Name of Flood Met Office
+Basin
+Name of river basin
+SubBasin
+Name of Sub-basin
+Area (Sq. Km.)
+Area of Basin
+Day1
+Forecast for Day-1
+Day2
+Forecast for Day-2
+Day3
+Forecast for Day-3
+Day4
+Forecast for Day-4
+Day5
+Forecast for Day-5
+AAP
+Average Areal Precipitation
+11) Port Warning
+URL:
+https://api.imd.gov.in/api/v1/portwarning
+Or:
+https://api.imd.gov.in/api/v1/portwarning?id=PortId
+Visualize Data:
+https://rsmcnewdelhi.imd.gov.in/port-warning.php
+Field Description
+Field
+Description
+Port Id
+Port ID is unique for each port
+Port Name
+Port name
+Issued By
+Issued by CWC or ACWC
+Date of Issue
+Date of issue in YYYY-mm-dd
+Warning
+Warning
+12) Sea Area Bulletin
+URL:
+https://api.imd.gov.in/api/v1/seabulletin
+Or:
+https://api.imd.gov.in/api/v1/seabulletin?id=108
+Visualize Data:
+https://mausam.imd.gov.in/responsive/marine_forecast.php
+Sample: (Fields are self-explanatory)
+[{
+            "Id": "109",
+            "Date of Observation": "2023-03-28",
+            "Layer": "South West Bay ",
+            "Issued by": "ACWC KOLKATA",
+            "Valid From": "2023-03-28 21:00:00",
+            "Validity": "12",
+            "TTT Warning": "NIL",
+            "Wind": "East/ South Easterly, 5 - 10 Knots ",
+            "Synoptic Situation": "Weather seasonal over bay of bengal and andaman sea.",
+            "Weather": "Isolated Rain/ Thunderstorm ",
+            "Visibility": "Good Becoming Moderate ",
+            "Sea Condition": "Smooth to Smooth",
+            "Part 4": "NIL",
+            "Part 5": "NIL",
+            "Part 6": "nil",
+            "Update Time": "2023-03-28 20:40:07"
+          }]
+13) Coastal Bulletin
+URL:
+https://api.imd.gov.in/api/v1/coastalbulletin
+Visualize Data:
+https://mausam.imd.gov.in/responsive/coastal_forecast.php
+Sample: (Fields are self-explanatory)
+[ {
+            "Id": "108",
+            "Date of Observation": "2023-03-28",
+            "Layer": "South Tamilnadu coast",
+            "Issued by": "ACWC CHENNAI",
+            "Valid From": "2023-03-28 22:00:00",
+            "Validity": "12",
+            "TTT Warning": "",
+            "Wind": "South Westerly/ South Easterly, 10 - 15 Knots ",
+            "Synoptic Situation": "NIL",
+            "Weather": "Isolated Rain/ Thunderstorm ",
+            "Visibility": "Good Becoming Poor ",
+            "Sea Condition": "Smooth to Slight",
+            "Port Signal": "NIL at all Ports",
+            "Update Time": "2023-03-28 22:27:17"
+          } ]
+14) Subdivisional-wise Warnings
+URL:
+https://api.imd.gov.in/api/v1/subdivisionwarning
+Visualize Data:
+https://mausam.imd.gov.in/responsive/subDivisionWiseWarningGIS.php
+Sample: Fields are self-explanatory
+[{
+            "date_obs": "2023-09-18",
+            "SUBDIV": "Gangetic West Bengal",
+            "day1_color": "#FFFF00",
+            "day1_warning": "Heavy Rain and Thunderstorm & Lightning",
+            "day2_color": "#FFFF00",
+            "day2_warning": "Thunderstorm & Lightning",
+            "day3_color": "#FFFF00",
+            "day3_warning": "Thunderstorm & Lightning",
+            "day4_color": "#FFFF00",
+            "day4_warning": "Heavy Rain",
+            "day5_color": "#FFFF00",
+            "day5_warning": "Heavy Rain"
+          }]
+15) Sun Moon (Rise/Set) Time
+URL:
+https://api.imd.gov.in/api/v1/sunmoon?lat=26.9124&lon=75.7873
+Sample: Fields are self-explanatory. Note: Time in IST
+{
+            "status": true,
+            "message": "SunMoon Time",
+            "totalCount": null,
+            "data": [
+              {
+                "sunrise": "06:45",
+                "sunset": "18:31"
+              },
+              {
+                "moonrise": "22:14",
+                "moonset": "08:39"
+              }
+            ]
+          }
+16) Subdivisional Rainfall Forecast - 7 Days
+URL:
+https://api.imd.gov.in/api/v1/subdivision_rainfall_forecast
+Sample: Fields are self-explanatory
+[{
+            "date_obs": "2026-06-06",
+            "SUBDIV": "Andaman & Nicobar Islands",
+            "day1_color": "#004de6",
+            "day1_distribution": "Widespread",
+            "day1_distribution_percentage": "Stations [76-100]%",
+            "day2_color": "#004de6",
+            "day2_distribution": "Widespread",
+            "day2_distribution_percentage": "Stations [76-100]%",
+            "day3_color": "#004de6",
+            "day3_distribution": "Widespread",
+            "day3_distribution_percentage": "Stations [76-100]%",
+            "day4_color": "#004de6",
+            "day4_distribution": "Widespread",
+            "day4_distribution_percentage": "Stations [76-100]%",
+            "day5_color": "#004de6",
+            "day5_distribution": "Widespread",
+            "day5_distribution_percentage": "Stations [76-100]%",
+            "day6_color": "#004de6",
+            "day6_distribution": "Widespread",
+            "day6_distribution_percentage": "Stations [76-100]%",
+            "day7_color": "#004de6",
+            "day7_distribution": "Widespread",
+            "day7_distribution_percentage": "Stations [76-100]%"
+          }]
+17) State District Rainfall Forecast - 5 Days
+URL:
+https://api.imd.gov.in/api/v1/state_district_rainfall_forecast
+Sample: Fields are self-explanatory
+[{
+            "date_obs": "2026-06-06",
+            "Obj_id": "573",
+            "District": "NICOBAR",
+            "State": "ANDAMAN AND NICOBAR",
+            "day1_color": "#004de6",
+            "day1_distribution": "Widespread",
+            "day1_distribution_percentage": "Stations [76-100]%",
+            "day2_color": "#004de6",
+            "day2_distribution": "Widespread",
+            "day2_distribution_percentage": "Stations [76-100]%",
+            "day3_color": "#004de6",
+            "day3_distribution": "Widespread",
+            "day3_distribution_percentage": "Stations [76-100]%",
+            "day4_color": "#004de6",
+            "day4_distribution": "Widespread",
+            "day4_distribution_percentage": "Stations [76-100]%",
+            "day5_color": "#004de6",
+            "day5_distribution": "Widespread",
+            "day5_distribution_percentage": "Stations [76-100]%"
+          }]
+18) Cyclone Track
+URL:
+https://api.imd.gov.in/api/v1/cyclone_track
+Sample: Fields are self-explanatory
+{
+            "status": true,
+            "message": "Cyclone Track",
+            "totalCount": {
+              "observed": 9,
+              "forecast": 7
+            },
+            "data": {
+              "observed": [
+                {
+                  "CYCLONE_NAME": "BULBUL",
+                  "Hour": "12",
+                  "Date/Time": "05.11.19/1200",
+                  "lat": "13.2",
+                  "lon": "91.2",
+                  "MSW range (kmph)": "50-60",
+                  "Mean MSW (kmph)": "55",
+                  "MSW (kt)": "29.7",
+                  "Category": "DEEP DEPRESSION"
+                }
+              ]
+            }
+          }
+19) Cyclone Wind Warning
+URL:
+https://api.imd.gov.in/api/v1/cyclone_wind
+Sample: Fields are self-explanatory
+{
+            "status": true,
+            "message": "Cyclone Wind Warning",
+            "totalCount": {
+              "27kt": 1,
+              "34kt": 1,
+              "50kt": 1,
+              "64kt": 1
+            },
+            "data": {
+              "27kt": {
+                "type": "MultiPolygon",
+                "coordinates": [
+                  [
+                    [
+                      [80.685399494754, 9.7315954161175],
+                      [80.656202956528, 9.7321064634526],
+                      [80.62701983373, 9.7331284015843],
+                      [80.597859065414, 9.7346609174839],
+                      [80.568729583786, 9.7367035417279],
+                    ]
+                  ]
+                ]
+              }
+            }
+          }
+20) Cyclone Cone of Uncertainty
+URL:
+https://api.imd.gov.in/api/v1/cyclone_cou
+Sample: Fields are self-explanatory
+{
+            "status": true,
+            "message": "Cone of Uncertainty",
+            "totalCount": 1,
+            "data": {
+              "type": "MultiPolygon",
+              "coordinates": [
+                [
+                  [
+                    [80.698599865156, 11.240006126297],
+                    [80.695800024341, 11.24005513386],
+                    [80.693001470016, 11.240153133975],
+                    [80.690205059405, 11.240300096623],
+                  ]
+                ]
+              ]
+            }
+          }

@@ -1,0 +1,9 @@
+{
+  "status": "blocked",
+  "attempted_url": "http://127.0.0.1:8765",
+  "reason": "Browser tool could not verify the admin-enforced policy before granting access.",
+  "screenshots_taken": 0,
+  "visual_and_mobile_verified": false,
+  "bypass_attempted": false,
+  "independent_HTTP_tests": "tests/test_workspace.py"
+}

@@ -1,0 +1,79 @@
+{
+  "status": "needs_selection",
+  "candidates": [
+    {
+      "attributes": {
+        "lgd_mapping": "unresolved",
+        "provider_fields": {
+          "admin1": "Gujarat",
+          "admin1_id": 1270770,
+          "admin2": "Ahmadābād District",
+          "admin2_id": 1279234,
+          "admin3": "Sabarmati",
+          "admin3_id": 12684092,
+          "country": "India",
+          "country_code": "IN",
+          "country_id": 1269750,
+          "elevation": 56.0,
+          "feature_code": "PPL",
+          "id": 1279233,
+          "latitude": 23.02579,
+          "longitude": 72.58727,
+          "name": "Ahmedabad",
+          "population": 6357693,
+          "timezone": "Asia/Kolkata"
+        }
+      },
+      "crs": "EPSG:4326",
+      "effective_dates_known": false,
+      "effective_from": null,
+      "effective_to": null,
+      "entity_id": "561ffd73856dcd649bc696839ab9068f5b5d3a067b1bdf698e2470c9e761afb2",
+      "evidence": {
+        "artifact": "place-ahmedabad.json",
+        "locator": "$.records[0]",
+        "retrieved_at_utc": "2026-09-11T19:34:54.380999+00:00",
+        "sha256": "685e84c92f03f83f3973dab54a09b38a0af79c3e459d201603f71b7a2d72eb7a",
+        "source_id": "S24",
+        "url": "https://geocoding-api.open-meteo.com/v1/search?name=Ahmedabad&count=10&language=en&format=json&countryCode=IN"
+      },
+      "geometry_status": "valid_source_geometry",
+      "kind": "place",
+      "label": "Ahmedabad",
+      "namespace": "S24",
+      "source_code": "1279233",
+      "source_locator": "$.records[0]",
+      "status": "source_record",
+      "version": "685e84c92f03f83f3973dab54a09b38a0af79c3e459d201603f71b7a2d72eb7a"
+    },
+    {
+      "attributes": {
+        "lgd_mapping": "unresolved",
+        "source_state": "Gujarat"
+      },
+      "crs": null,
+      "effective_dates_known": false,
+      "effective_from": null,
+      "effective_to": null,
+      "entity_id": "8698a9107dd4641e2b27db7114a8aae2edbfc073dbdbe1301afd0540e0e7939c",
+      "evidence": {
+        "artifact": "advisory-directory.json",
+        "locator": "$.results[10].records[0]",
+        "retrieved_at_utc": "2026-09-11T19:35:56.011239+00:00",
+        "sha256": "40f22e74f947c532eac467a0bf76d0712cf843ef08d49cdd82c6570581170ff2",
+        "source_id": "S57",
+        "url": "https://mausam.imd.gov.in/responsive/agrometinformation/district_current_en_get.php?s=Gujarat&step1=true"
+      },
+      "geometry_status": "missing",
+      "kind": "district",
+      "label": "Ahmedabad",
+      "namespace": "S57",
+      "source_code": "Gujarat/Ahmedabad",
+      "source_locator": "$.results[10].records[0]",
+      "status": "source_record",
+      "version": "40f22e74f947c532eac467a0bf76d0712cf843ef08d49cdd82c6570581170ff2"
+    }
+  ],
+  "administrative_mapping": "not_established_by_name_search",
+  "limitation": "No fuzzy, transliteration or cross-provider identity inference; unknown effective dates fail dated resolution."
+}

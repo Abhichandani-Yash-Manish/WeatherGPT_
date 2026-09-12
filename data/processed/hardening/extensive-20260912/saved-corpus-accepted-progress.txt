@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/heer/WeatherGPT/scripts/audit_saved_corpus.py", line 98, in <module>
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',required=True);r=run(p.parse_args().output);print(json.dumps(r['counts'],indent=2))
+                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/heer/WeatherGPT/scripts/audit_saved_corpus.py", line 75, in run
+    if len(r['records'])!=len(sample['records']) or r['coverage']['quarantined']!=sample['coverage']['quarantined']:raise ValueError('Warning counts or quarantine changed')
+                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Warning counts or quarantine changed

@@ -1,0 +1,10 @@
+{
+  "rainfall": {
+    "source_rows": 124,
+    "differences": []
+  },
+  "temperature": {
+    "source_rows": 124,
+    "differences": []
+  }
+}

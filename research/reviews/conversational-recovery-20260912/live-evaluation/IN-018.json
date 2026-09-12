@@ -1,0 +1,106 @@
+{
+  "id": "IN-018",
+  "question": "Will strong winds affect Zuluk village over the next two days?",
+  "origin": "included_report",
+  "checked_at_utc": "2026-09-12T16:16:17.858196+00:00",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "e213d4f7-9abe-4af7-b59f-40870e66f3fc",
+    "question": "Will strong winds affect Zuluk village over the next two days?",
+    "status": "needs_selection",
+    "answer": "I found 1 possible places for Zuluk. Please confirm the intended location and spelling.",
+    "facts": [],
+    "citations": [],
+    "notes": [
+      "Timeframe 'next two days' defaults to the coming full calendar days starting from tomorrow (2026-09-13) to 2026-09-14, covering 00:30 IST to 00:30 IST on 2026-09-15."
+    ],
+    "choices": [
+      {
+        "id": "10448251",
+        "name": "Zulum",
+        "latitude": 21.12416,
+        "longitude": 81.61681,
+        "feature": "PPL",
+        "admin1": "State of Chhattīsgarh",
+        "admin2": "Raipur",
+        "modified": "2024-01-07",
+        "match_type": "approximate_name_requires_confirmation",
+        "selection_id": "geonames:10448251",
+        "label": "Zulum, Raipur, State of Chhattīsgarh",
+        "coordinates": {
+          "latitude": 21.12416,
+          "longitude": 81.61681
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/10448251",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Zuluk"
+      }
+    ],
+    "follow_up": "Choose a place, or add its district and state.",
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-12T16:16:17.858229+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 776,
+        "output_tokens": 361,
+        "duration_seconds": 5.65838075
+      },
+      "generation": null,
+      "tools": [
+        {
+          "name": "gazetteer_search",
+          "query": {
+            "name": "Zuluk",
+            "state": "",
+            "district": "",
+            "kind": "settlement"
+          },
+          "matches": 1
+        }
+      ],
+      "provider": "local_ollama",
+      "duration_seconds": 5.681
+    },
+    "plan": {
+      "intent": "forecast",
+      "language": "en",
+      "places": [
+        {
+          "name": "Zuluk",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "start_local": "2026-09-13T00:30:00+05:30",
+      "end_local": "2026-09-15T00:30:00+05:30",
+      "explicit_times": false,
+      "variables": [
+        "wind_speed_10m"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [
+        "wind_impact_assessment"
+      ],
+      "assumptions": [
+        "Timeframe 'next two days' defaults to the coming full calendar days starting from tomorrow (2026-09-13) to 2026-09-14, covering 00:30 IST to 00:30 IST on 2026-09-15."
+      ],
+      "clarification": "",
+      "requested_outcome": "Forecast wind speed for Zuluk village for the next two days"
+    },
+    "resolved_points": {}
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "mode": "live_single_bounded_check",
+  "checked_at_utc": "2026-09-12T07:38:40.748222+00:00",
+  "target_job_id": "7084f122595d9a95344d75d972f31331ed4e0c53563a39a1e18eccdc7df6427f",
+  "worker": {
+    "results": [
+      {
+        "state": "succeeded",
+        "promoted": true,
+        "job_id": "7084f122595d9a95344d75d972f31331ed4e0c53563a39a1e18eccdc7df6427f"
+      }
+    ],
+    "status": {
+      "jobs": {
+        "succeeded": 1
+      },
+      "versions": 1,
+      "heads": 1,
+      "network_attempts_reserved": 1,
+      "operational_ready": false
+    },
+    "scheduled_background_work": false
+  },
+  "governed_attempts_reserved": 1,
+  "answer_status": "prototype_answer",
+  "answer_provider_calls": 0,
+  "operational_ready": false
+}

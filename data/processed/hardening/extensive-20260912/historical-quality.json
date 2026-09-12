@@ -1,0 +1,35 @@
+{
+  "status": "PASS_WITH_PRESERVED_SOURCE_LIMITATIONS",
+  "counts": {
+    "files": 32,
+    "rows": 60568,
+    "missing_month_cells": 15817,
+    "rows_with_missing_months": 5018,
+    "numeric_cells_validated": 999571,
+    "aggregate_slots_checked": 302840,
+    "aggregates_comparable": 288572,
+    "aggregates_not_comparable": 14268,
+    "series": 640,
+    "series_with_missing_months": 555,
+    "series_with_internal_year_gaps": 329
+  },
+  "aggregate_discrepancies": [
+    {
+      "series_id": "IMD110-P1403",
+      "district": "Kendrapada",
+      "year": 1920,
+      "field": "annual_mm",
+      "difference_mm": "12.5",
+      "source_quality_flags": "annual_sum_mismatch;ond_sum_mismatch"
+    },
+    {
+      "series_id": "IMD110-P1403",
+      "district": "Kendrapada",
+      "year": 1920,
+      "field": "ond_mm",
+      "difference_mm": "12.5",
+      "source_quality_flags": "annual_sum_mismatch;ond_sum_mismatch"
+    }
+  ],
+  "interpretation": "No imputation or silent total correction. Transcription matches the PDF; missingness and internal source inconsistencies remain factual limitations."
+}

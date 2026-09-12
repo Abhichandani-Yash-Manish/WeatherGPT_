@@ -1,0 +1,95 @@
+{
+  "results": [
+    {
+      "id": "imd-city-current-page",
+      "url": "https://city.imd.gov.in/citywx/responsive/?id=42647",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:01:13.218970+00:00",
+      "http_status": 200,
+      "final_url": "https://city.imd.gov.in/citywx/responsive/?id=42647",
+      "content_type": "text/html; charset=UTF-8",
+      "truncated": false,
+      "bytes_saved": 1073,
+      "sha256": "8d509b125f6701b8120c9201819797d1a3b067da86f7a493499d04cf48a4ecc3",
+      "snapshot": "evidence/broad-20260911T160113Z/imd-city-current-page.response"
+    },
+    {
+      "id": "imd-warning-map",
+      "url": "https://mausam.imd.gov.in/responsive/districtWiseWarningGIS.php",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:01:13.219206+00:00",
+      "http_status": 200,
+      "final_url": "https://mausam.imd.gov.in/responsive/districtWiseWarningGIS.php",
+      "content_type": "text/html; charset=UTF-8",
+      "truncated": false,
+      "bytes_saved": 43175,
+      "sha256": "4c6bb393cce784cf7827368497c8293b7b7ac455e33c684326dddfe531e86d32",
+      "snapshot": "evidence/broad-20260911T160113Z/imd-warning-map.response"
+    },
+    {
+      "id": "imd-api-home",
+      "url": "https://api.imd.gov.in/public/index.php",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:01:13.219323+00:00",
+      "http_status": 200,
+      "final_url": "https://api.imd.gov.in/public/index.php",
+      "content_type": "text/html; charset=UTF-8",
+      "truncated": false,
+      "bytes_saved": 9466,
+      "sha256": "7f2feb286c773f1849e9e3cd6a606e0bd901c98c655c570382cc93ea6f2f90fa",
+      "snapshot": "evidence/broad-20260911T160113Z/imd-api-home.response"
+    },
+    {
+      "id": "openmeteo-geocode",
+      "url": "https://geocoding-api.open-meteo.com/v1/search?name=Ahmedabad&count=3&language=en&format=json",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:01:13.615406+00:00",
+      "http_status": 200,
+      "final_url": "https://geocoding-api.open-meteo.com/v1/search?name=Ahmedabad&count=3&language=en&format=json",
+      "content_type": "application/json; charset=utf-8",
+      "truncated": false,
+      "bytes_saved": 984,
+      "sha256": "f107dd7a396dc603708b0c869294234922973c5457f3271dfe1ec38e1214da8d",
+      "snapshot": "evidence/broad-20260911T160113Z/openmeteo-geocode.response"
+    },
+    {
+      "id": "awc-station",
+      "url": "https://aviationweather.gov/api/data/stationinfo?ids=VAAH&format=json",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:01:13.620945+00:00",
+      "http_status": 200,
+      "final_url": "https://aviationweather.gov/api/data/stationinfo?ids=VAAH&format=json",
+      "content_type": "application/json; charset=utf-8",
+      "truncated": false,
+      "bytes_saved": 209,
+      "sha256": "6d2a746215bc3a44b93f6478c89d904580ccab1a138c34ed24a55aee080cc3be",
+      "snapshot": "evidence/broad-20260911T160113Z/awc-station.response"
+    },
+    {
+      "id": "awc-metar",
+      "url": "https://aviationweather.gov/api/data/metar?ids=VAAH&format=json&hours=3",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:01:13.812240+00:00",
+      "http_status": 200,
+      "final_url": "https://aviationweather.gov/api/data/metar?ids=VAAH&format=json&hours=3",
+      "content_type": "application/json; charset=utf-8",
+      "truncated": false,
+      "bytes_saved": 2245,
+      "sha256": "45f3bc4122b1afb9e04deb0756008cef03a24f1934be396ae668839bcac4a742",
+      "snapshot": "evidence/broad-20260911T160113Z/awc-metar.response"
+    },
+    {
+      "id": "awc-taf",
+      "url": "https://aviationweather.gov/api/data/taf?ids=VAAH&format=json",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:01:14.282693+00:00",
+      "http_status": 200,
+      "final_url": "https://aviationweather.gov/api/data/taf?ids=VAAH&format=json",
+      "content_type": "application/json; charset=utf-8",
+      "truncated": false,
+      "bytes_saved": 1482,
+      "sha256": "2f27e8268ae5936a59c1f912462fdf93c852ee0183c00a0f51e297dae94849c1",
+      "snapshot": "evidence/broad-20260911T160113Z/awc-taf.response"
+    }
+  ]
+}

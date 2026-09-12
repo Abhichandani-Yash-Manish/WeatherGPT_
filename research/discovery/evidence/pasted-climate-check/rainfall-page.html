@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>IMD-DSP</title>
+        <!-- Favicon-->
+        <!-- Bootstrap Icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
+        <!-- SimpleLightbox plugin CSS-->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <!-- 
+		<link href="css/styles.css" rel="stylesheet" /> 
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+		-->
+		<link rel="stylesheet" href="jscss/adt1.css">
+		<link rel="stylesheet" href="jscss/adt4.css">
+
+</head>
+<body id="page-top" style="background-color:#fefcf5;">
+
+<nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" style="background-image:url(images/bg-masthead.jpg)" id="mainNav">
+	<div class="container">
+	
+		<a class="navbar-brand" href="#page-top"><img src="images/imd_logoc.gif" width="16" title="title="भारत मौसम विज्ञान विभाग"" />&emsp; <img src="images/esso.png" width="22" /></a>
+
+     	<button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+
+		<table align="center" width="100%" border="0" cellpadding="0" cellspacing="0">
+		<tr><td style="text-align:center;"><h3 class="text-capitalize font-weight-bold" style="padding-top:10px; color:#FFFFFF;">IMD - Data Service Portal</h3></td></tr>
+		</table>
+
+		<div class="collapse navbar-collapse" id="navbarResponsive">
+			<ul class="navbar-nav ms-auto my-2 my-lg-0">
+				<li class="nav-item"><a class="nav-link" style="color:#FFFF00;" href="index.php">Home</a></li>							</ul>
+		</div>
+
+                 
+	</div>
+</nav>
+
+<section class="page-section bg-warning py-0" id="procedure1">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-lg-12 text-center">
+				<h2 class="text-white mt-0">&nbsp;</h2>
+			</div>
+		</div>
+	</div>
+</section>
+    
+<!--  Form -->
+<section class="page-section py-5" id="form">
+<div class="container" style="padding-top:0px; padding-bottom:0px; margin-top:0px; margin-bottom:0px;">
+<div class="row justify-content-center">
+	<div class="col-lg-12 text-center"><p><br></p>
+		<h6 class="text-info font-weight-bold"><a href='home_freedataaccess.php' style="color:#0000FF;">&lArr; Back</a>&emsp;&emsp;&emsp;&emsp;&emsp;This information is also available on Open Government Data Platform (https://data.gov.in/).</h6>
+		<hr class="divider my-4" />
+	</div>
+</div>
+
+
+<form  name="form16" method="post" action="#" onSubmit="return form_emp_Validator(this);" AUTOCOMPLETE="OFF">
+
+<div class="row">
+	<div class="col-lg-12">
+		<!-- Card 1 -->
+    	<div class="card shadow mb-4">
+			<div class="card-header py-3">
+				<table width="100%" border="0" cellpadding="0" cellspacing="0">
+					<tr>
+						<td align="left"><h5 class="m-0 font-weight-bold text-primary">All India Monthly and Seasonal Rainfall (mm) Series</h5></td>
+						<td align="right">
+						<select class="form-control" name="region1" style="width:270px; background-color:#EEFFEE;" onChange="form16.submit();" >
+							<option value="0" style="color:#660000;">Select Region</option>
+							<option value="" style="color:#999999;" disabled="disabled">--------------------------------</option>
+							<option value="WHI"  >Whole India</option>
+							<option value="NEI"  >North-East India</option>
+							<option value="NWI"  >North-West India</option>
+							<option value="PNI"  >Peninsular India</option>
+							<option value="CNI"  >Central India</option>
+							<option value="" style="color:#999999;" disabled="disabled">--------------------------------</option>
+						</select>
+					</tr>
+				</table>
+			</div>	
+	</form>					
+

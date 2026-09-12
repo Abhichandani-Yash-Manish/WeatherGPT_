@@ -1,0 +1,11 @@
+{
+  "source_id": "S56",
+  "url": "https://marine-api.open-meteo.com/v1/marine?latitude=10.0&longitude=93.0&hourly=wave_height%2Cwave_direction%2Cwave_period&forecast_days=3&timezone=UTC&timeformat=unixtime&cell_selection=sea",
+  "retrieved_at_utc": "2026-09-11T20:00:00+00:00",
+  "http_status": 200,
+  "content_type": "application/json",
+  "bytes": 2198,
+  "sha256": "832ccd12a570620af9d484c8ffa9195d00b40d9d3607afa286691bda05d8f009",
+  "blob": "blobs/832ccd12a570620af9d484c8ffa9195d00b40d9d3607afa286691bda05d8f009.bin",
+  "validation_scope": "product"
+}

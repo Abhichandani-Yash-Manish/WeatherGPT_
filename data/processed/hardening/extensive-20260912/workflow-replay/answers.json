@@ -1,0 +1,1866 @@
+{
+  "ambiguous_location": {
+    "schema_version": "weather-answer-v1",
+    "question": "How much rain is forecast for Ahmedabad today from 09:30 to 12:30?",
+    "answered_at_utc": "2026-09-11T20:00:00+00:00",
+    "status": "needs_selection",
+    "answer": "Historical replay, not current weather. Select the intended place point. A city, district and airport have different spatial support.",
+    "request": {
+      "intent": "point_forecast",
+      "place_name": "Ahmedabad",
+      "variables": [
+        "precipitation"
+      ],
+      "timezone": "Asia/Kolkata",
+      "start_local": "2026-09-12T09:30:00+05:30",
+      "end_local": "2026-09-12T12:30:00+05:30",
+      "start_utc": "2026-09-12T04:00:00+00:00",
+      "end_utc": "2026-09-12T07:00:00+00:00",
+      "interval_convention": "start inclusive, end exclusive",
+      "overnight": false,
+      "language": "en"
+    },
+    "location": {
+      "status": "needs_selection",
+      "candidates": [
+        {
+          "attributes": {
+            "lgd_mapping": "unresolved",
+            "provider_fields": {
+              "admin1": "Gujarat",
+              "admin1_id": 1270770,
+              "admin2": "Ahmadābād District",
+              "admin2_id": 1279234,
+              "admin3": "Sabarmati",
+              "admin3_id": 12684092,
+              "country": "India",
+              "country_code": "IN",
+              "country_id": 1269750,
+              "elevation": 56.0,
+              "feature_code": "PPL",
+              "id": 1279233,
+              "latitude": 23.02579,
+              "longitude": 72.58727,
+              "name": "Ahmedabad",
+              "population": 6357693,
+              "timezone": "Asia/Kolkata"
+            }
+          },
+          "crs": "EPSG:4326",
+          "effective_dates_known": false,
+          "effective_from": null,
+          "effective_to": null,
+          "entity_id": "561ffd73856dcd649bc696839ab9068f5b5d3a067b1bdf698e2470c9e761afb2",
+          "evidence": {
+            "artifact": "place-ahmedabad.json",
+            "locator": "$.records[0]",
+            "retrieved_at_utc": "2026-09-11T19:34:54.380999+00:00",
+            "sha256": "685e84c92f03f83f3973dab54a09b38a0af79c3e459d201603f71b7a2d72eb7a",
+            "source_id": "S24",
+            "url": "https://geocoding-api.open-meteo.com/v1/search?name=Ahmedabad&count=10&language=en&format=json&countryCode=IN"
+          },
+          "geometry_status": "valid_source_geometry",
+          "kind": "place",
+          "label": "Ahmedabad",
+          "namespace": "S24",
+          "source_code": "1279233",
+          "source_locator": "$.records[0]",
+          "status": "source_record",
+          "version": "685e84c92f03f83f3973dab54a09b38a0af79c3e459d201603f71b7a2d72eb7a"
+        },
+        {
+          "attributes": {
+            "lgd_mapping": "unresolved",
+            "source_state": "Gujarat"
+          },
+          "crs": null,
+          "effective_dates_known": false,
+          "effective_from": null,
+          "effective_to": null,
+          "entity_id": "8698a9107dd4641e2b27db7114a8aae2edbfc073dbdbe1301afd0540e0e7939c",
+          "evidence": {
+            "artifact": "advisory-directory.json",
+            "locator": "$.results[10].records[0]",
+            "retrieved_at_utc": "2026-09-11T19:35:56.011239+00:00",
+            "sha256": "40f22e74f947c532eac467a0bf76d0712cf843ef08d49cdd82c6570581170ff2",
+            "source_id": "S57",
+            "url": "https://mausam.imd.gov.in/responsive/agrometinformation/district_current_en_get.php?s=Gujarat&step1=true"
+          },
+          "geometry_status": "missing",
+          "kind": "district",
+          "label": "Ahmedabad",
+          "namespace": "S57",
+          "source_code": "Gujarat/Ahmedabad",
+          "source_locator": "$.results[10].records[0]",
+          "status": "source_record",
+          "version": "40f22e74f947c532eac467a0bf76d0712cf843ef08d49cdd82c6570581170ff2"
+        }
+      ]
+    },
+    "values": [],
+    "citations": [],
+    "freshness": null,
+    "coverage": null,
+    "missing_information": [
+      "An unambiguous place point or explicit coordinates are required"
+    ],
+    "eligibility": {
+      "prototype_numeric": false,
+      "operational": false
+    },
+    "limitations": [
+      "Model grid forecasts are not station observations or district averages.",
+      "Source issue/run freshness and local representativeness remain unverified."
+    ],
+    "provider_calls": 0,
+    "evidence_mode": "historical_saved_response_replay"
+  },
+  "ahmedabad_rain": {
+    "schema_version": "weather-answer-v1",
+    "question": "How much rain is forecast for Ahmedabad today from 09:30 to 12:30?",
+    "answered_at_utc": "2026-09-11T20:00:00+00:00",
+    "status": "prototype_answer",
+    "answer": "Historical replay, not current weather. For Ahmedabad, 2026-09-12T09:30:00+05:30 to 2026-09-12T12:30:00+05:30, forecast rainfall totals 0.0 mm. These are modeled values at 23.019852, 72.53906, 5.0 km from the selected point. Source: GFS via Open-Meteo; retrieved 2026-09-11T20:00:00+00:00. Model issue time and local representativeness are unverified.",
+    "request": {
+      "intent": "point_forecast",
+      "place_name": "Ahmedabad",
+      "variables": [
+        "precipitation"
+      ],
+      "timezone": "Asia/Kolkata",
+      "start_local": "2026-09-12T09:30:00+05:30",
+      "end_local": "2026-09-12T12:30:00+05:30",
+      "start_utc": "2026-09-12T04:00:00+00:00",
+      "end_utc": "2026-09-12T07:00:00+00:00",
+      "interval_convention": "start inclusive, end exclusive",
+      "overnight": false,
+      "language": "en"
+    },
+    "location": {
+      "status": "selected_point",
+      "entity_id": "561ffd73856dcd649bc696839ab9068f5b5d3a067b1bdf698e2470c9e761afb2",
+      "label": "Ahmedabad",
+      "namespace": "S24",
+      "source_version": "685e84c92f03f83f3973dab54a09b38a0af79c3e459d201603f71b7a2d72eb7a",
+      "requested_point": {
+        "latitude": 23.02579,
+        "longitude": 72.58727
+      },
+      "basis": "source_place_point",
+      "location_evidence": {
+        "artifact": "place-ahmedabad.json",
+        "locator": "$.records[0]",
+        "retrieved_at_utc": "2026-09-11T19:34:54.380999+00:00",
+        "sha256": "685e84c92f03f83f3973dab54a09b38a0af79c3e459d201603f71b7a2d72eb7a",
+        "source_id": "S24",
+        "url": "https://geocoding-api.open-meteo.com/v1/search?name=Ahmedabad&count=10&language=en&format=json&countryCode=IN"
+      },
+      "administrative_mapping": "unresolved",
+      "returned_grid": {
+        "latitude": 23.019852,
+        "longitude": 72.53906
+      },
+      "grid_distance_km": 4.978,
+      "support_description": "Value at the returned model grid for the selected source point",
+      "spatial_applicability": "model_point_reference_only"
+    },
+    "values": [
+      {
+        "parameter": "precipitation",
+        "unit": "mm",
+        "coverage": "complete",
+        "method": "preceding_hour_sum",
+        "source_locators": [
+          "$.hourly.precipitation[29]",
+          "$.hourly.precipitation[30]",
+          "$.hourly.precipitation[31]"
+        ],
+        "support": {
+          "aggregation": "preceding_hour_sum",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00",
+          "interval_start_utc": "2026-09-10T23:00:00+00:00",
+          "interval_end_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "missing": [],
+        "value_decimal": "0.0",
+        "sample_count": 3
+      }
+    ],
+    "citations": [
+      {
+        "source_id": "S21",
+        "provider": "Open-Meteo",
+        "product": "GFS forecast delivery",
+        "evidence_kind": "model_forecast",
+        "url": "https://api.open-meteo.com/v1/gfs?latitude=23.02579&longitude=72.58727&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "response_sha256": "ccfb46b4c954cb12be2758e55bb71b9be5733d23ef9f3508a12f47a92556ad72",
+        "raw_relative_path": "f625ec359eafcf1deb272d129d65b2e72e1d678547bd577452ef0b6082764fc1/2b611808ac7e41199400a192250a33e9/blobs/ccfb46b4c954cb12be2758e55bb71b9be5733d23ef9f3508a12f47a92556ad72.bin",
+        "published_job_id": "f625ec359eafcf1deb272d129d65b2e72e1d678547bd577452ef0b6082764fc1",
+        "source_locators": [
+          "$.hourly.precipitation[29]",
+          "$.hourly.precipitation[30]",
+          "$.hourly.precipitation[31]"
+        ],
+        "retrieved_at_utc": "2026-09-11T20:00:00+00:00",
+        "issue_time_utc": null
+      }
+    ],
+    "freshness": {
+      "retrieved_at_utc": "2026-09-11T20:00:00+00:00",
+      "retrieval_age_seconds": 0.0,
+      "source_issue_time_utc": null,
+      "source_issue_freshness": "unknown",
+      "collection_cycle_at": "2026-09-11T20:00:00+00:00",
+      "committed_at": "2026-09-11T20:00:00+00:00",
+      "refresh_health": "succeeded",
+      "snapshot_status": "prototype_snapshot",
+      "next_planned_collection": null,
+      "maximum_retrieval_age_seconds": 3600
+    },
+    "coverage": {
+      "entity_id": "561ffd73856dcd649bc696839ab9068f5b5d3a067b1bdf698e2470c9e761afb2",
+      "entity_version": "685e84c92f03f83f3973dab54a09b38a0af79c3e459d201603f71b7a2d72eb7a",
+      "source_id": "S21",
+      "source_sha256": "ccfb46b4c954cb12be2758e55bb71b9be5733d23ef9f3508a12f47a92556ad72",
+      "published_job_id": "f625ec359eafcf1deb272d129d65b2e72e1d678547bd577452ef0b6082764fc1",
+      "requested_start_utc": "2026-09-12T04:00:00+00:00",
+      "requested_end_utc": "2026-09-12T07:00:00+00:00",
+      "variables": {
+        "temperature_2m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "relative_humidity_2m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "precipitation": {
+          "aggregation": "preceding_hour_sum",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00",
+          "interval_start_utc": "2026-09-10T23:00:00+00:00",
+          "interval_end_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "wind_speed_10m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        }
+      },
+      "status": "complete",
+      "publication_policy": "prototype_model_point_reference",
+      "operational_eligible": false
+    },
+    "missing_information": [
+      "Upstream model issue/run identity and independently validated local representativeness"
+    ],
+    "eligibility": {
+      "prototype_numeric": true,
+      "operational": false
+    },
+    "limitations": [
+      "Model grid forecasts are not station observations or district averages.",
+      "Source issue/run freshness and local representativeness remain unverified."
+    ],
+    "provider_calls": 0,
+    "answer_id": "863bb5d8121dc417d0ec8cb773e85ead07a1d2e3627cb273427ce76cff17f61f",
+    "evidence_mode": "historical_saved_response_replay"
+  },
+  "ahmedabad_weather": {
+    "schema_version": "weather-answer-v1",
+    "question": "What is the weather forecast for Ahmedabad today from 09:30 to 12:30?",
+    "answered_at_utc": "2026-09-11T20:00:00+00:00",
+    "status": "prototype_answer",
+    "answer": "Historical replay, not current weather. For Ahmedabad, 2026-09-12T09:30:00+05:30 to 2026-09-12T12:30:00+05:30, hourly temperature samples range from 30.5 to 32.5 °C; hourly relative humidity samples range from 52 to 62 %; forecast rainfall totals 0.0 mm; hourly wind speed samples range from 12.6 to 15.1 km/h. These are modeled values at 23.019852, 72.53906, 5.0 km from the selected point. Source: GFS via Open-Meteo; retrieved 2026-09-11T20:00:00+00:00. Model issue time and local representativeness are unverified.",
+    "request": {
+      "intent": "point_forecast",
+      "place_name": "Ahmedabad",
+      "variables": [
+        "temperature_2m",
+        "relative_humidity_2m",
+        "precipitation",
+        "wind_speed_10m"
+      ],
+      "timezone": "Asia/Kolkata",
+      "start_local": "2026-09-12T09:30:00+05:30",
+      "end_local": "2026-09-12T12:30:00+05:30",
+      "start_utc": "2026-09-12T04:00:00+00:00",
+      "end_utc": "2026-09-12T07:00:00+00:00",
+      "interval_convention": "start inclusive, end exclusive",
+      "overnight": false,
+      "language": "en"
+    },
+    "location": {
+      "status": "selected_point",
+      "entity_id": "561ffd73856dcd649bc696839ab9068f5b5d3a067b1bdf698e2470c9e761afb2",
+      "label": "Ahmedabad",
+      "namespace": "S24",
+      "source_version": "685e84c92f03f83f3973dab54a09b38a0af79c3e459d201603f71b7a2d72eb7a",
+      "requested_point": {
+        "latitude": 23.02579,
+        "longitude": 72.58727
+      },
+      "basis": "source_place_point",
+      "location_evidence": {
+        "artifact": "place-ahmedabad.json",
+        "locator": "$.records[0]",
+        "retrieved_at_utc": "2026-09-11T19:34:54.380999+00:00",
+        "sha256": "685e84c92f03f83f3973dab54a09b38a0af79c3e459d201603f71b7a2d72eb7a",
+        "source_id": "S24",
+        "url": "https://geocoding-api.open-meteo.com/v1/search?name=Ahmedabad&count=10&language=en&format=json&countryCode=IN"
+      },
+      "administrative_mapping": "unresolved",
+      "returned_grid": {
+        "latitude": 23.019852,
+        "longitude": 72.53906
+      },
+      "grid_distance_km": 4.978,
+      "support_description": "Value at the returned model grid for the selected source point",
+      "spatial_applicability": "model_point_reference_only"
+    },
+    "values": [
+      {
+        "parameter": "temperature_2m",
+        "unit": "°C",
+        "coverage": "complete",
+        "method": "range_of_hourly_samples; not continuous extrema",
+        "source_locators": [
+          "$.hourly.temperature_2m[28]",
+          "$.hourly.temperature_2m[29]",
+          "$.hourly.temperature_2m[30]"
+        ],
+        "support": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "missing": [],
+        "min_decimal": "30.5",
+        "max_decimal": "32.5",
+        "sample_count": 3
+      },
+      {
+        "parameter": "relative_humidity_2m",
+        "unit": "%",
+        "coverage": "complete",
+        "method": "range_of_hourly_samples; not continuous extrema",
+        "source_locators": [
+          "$.hourly.relative_humidity_2m[28]",
+          "$.hourly.relative_humidity_2m[29]",
+          "$.hourly.relative_humidity_2m[30]"
+        ],
+        "support": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "missing": [],
+        "min_decimal": "52",
+        "max_decimal": "62",
+        "sample_count": 3
+      },
+      {
+        "parameter": "precipitation",
+        "unit": "mm",
+        "coverage": "complete",
+        "method": "preceding_hour_sum",
+        "source_locators": [
+          "$.hourly.precipitation[29]",
+          "$.hourly.precipitation[30]",
+          "$.hourly.precipitation[31]"
+        ],
+        "support": {
+          "aggregation": "preceding_hour_sum",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00",
+          "interval_start_utc": "2026-09-10T23:00:00+00:00",
+          "interval_end_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "missing": [],
+        "value_decimal": "0.0",
+        "sample_count": 3
+      },
+      {
+        "parameter": "wind_speed_10m",
+        "unit": "km/h",
+        "coverage": "complete",
+        "method": "range_of_hourly_samples; not continuous extrema",
+        "source_locators": [
+          "$.hourly.wind_speed_10m[28]",
+          "$.hourly.wind_speed_10m[29]",
+          "$.hourly.wind_speed_10m[30]"
+        ],
+        "support": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "missing": [],
+        "min_decimal": "12.6",
+        "max_decimal": "15.1",
+        "sample_count": 3
+      }
+    ],
+    "citations": [
+      {
+        "source_id": "S21",
+        "provider": "Open-Meteo",
+        "product": "GFS forecast delivery",
+        "evidence_kind": "model_forecast",
+        "url": "https://api.open-meteo.com/v1/gfs?latitude=23.02579&longitude=72.58727&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "response_sha256": "ccfb46b4c954cb12be2758e55bb71b9be5733d23ef9f3508a12f47a92556ad72",
+        "raw_relative_path": "f625ec359eafcf1deb272d129d65b2e72e1d678547bd577452ef0b6082764fc1/2b611808ac7e41199400a192250a33e9/blobs/ccfb46b4c954cb12be2758e55bb71b9be5733d23ef9f3508a12f47a92556ad72.bin",
+        "published_job_id": "f625ec359eafcf1deb272d129d65b2e72e1d678547bd577452ef0b6082764fc1",
+        "source_locators": [
+          "$.hourly.temperature_2m[28]",
+          "$.hourly.temperature_2m[29]",
+          "$.hourly.temperature_2m[30]",
+          "$.hourly.relative_humidity_2m[28]",
+          "$.hourly.relative_humidity_2m[29]",
+          "$.hourly.relative_humidity_2m[30]",
+          "$.hourly.precipitation[29]",
+          "$.hourly.precipitation[30]",
+          "$.hourly.precipitation[31]",
+          "$.hourly.wind_speed_10m[28]",
+          "$.hourly.wind_speed_10m[29]",
+          "$.hourly.wind_speed_10m[30]"
+        ],
+        "retrieved_at_utc": "2026-09-11T20:00:00+00:00",
+        "issue_time_utc": null
+      }
+    ],
+    "freshness": {
+      "retrieved_at_utc": "2026-09-11T20:00:00+00:00",
+      "retrieval_age_seconds": 0.0,
+      "source_issue_time_utc": null,
+      "source_issue_freshness": "unknown",
+      "collection_cycle_at": "2026-09-11T20:00:00+00:00",
+      "committed_at": "2026-09-11T20:00:00+00:00",
+      "refresh_health": "succeeded",
+      "snapshot_status": "prototype_snapshot",
+      "next_planned_collection": null,
+      "maximum_retrieval_age_seconds": 3600
+    },
+    "coverage": {
+      "entity_id": "561ffd73856dcd649bc696839ab9068f5b5d3a067b1bdf698e2470c9e761afb2",
+      "entity_version": "685e84c92f03f83f3973dab54a09b38a0af79c3e459d201603f71b7a2d72eb7a",
+      "source_id": "S21",
+      "source_sha256": "ccfb46b4c954cb12be2758e55bb71b9be5733d23ef9f3508a12f47a92556ad72",
+      "published_job_id": "f625ec359eafcf1deb272d129d65b2e72e1d678547bd577452ef0b6082764fc1",
+      "requested_start_utc": "2026-09-12T04:00:00+00:00",
+      "requested_end_utc": "2026-09-12T07:00:00+00:00",
+      "variables": {
+        "temperature_2m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "relative_humidity_2m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "precipitation": {
+          "aggregation": "preceding_hour_sum",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00",
+          "interval_start_utc": "2026-09-10T23:00:00+00:00",
+          "interval_end_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "wind_speed_10m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        }
+      },
+      "status": "complete",
+      "publication_policy": "prototype_model_point_reference",
+      "operational_eligible": false
+    },
+    "missing_information": [
+      "Upstream model issue/run identity and independently validated local representativeness"
+    ],
+    "eligibility": {
+      "prototype_numeric": true,
+      "operational": false
+    },
+    "limitations": [
+      "Model grid forecasts are not station observations or district averages.",
+      "Source issue/run freshness and local representativeness remain unverified."
+    ],
+    "provider_calls": 0,
+    "answer_id": "460739bc4424fb07de4526f164913528dd1cd67cadd417570d96e531448ec128",
+    "evidence_mode": "historical_saved_response_replay"
+  },
+  "half_hour_boundary": {
+    "schema_version": "weather-answer-v1",
+    "question": "How much rain is forecast for Ahmedabad today from 09:00 to 12:00?",
+    "answered_at_utc": "2026-09-11T20:00:00+00:00",
+    "status": "partial",
+    "answer": "Historical replay, not current weather. For Ahmedabad, 2026-09-12T09:00:00+05:30 to 2026-09-12T12:00:00+05:30, precipitation unavailable: Requested boundary splits a source hourly rain interval; an exact total is unavailable; Rain intervals do not cover the requested window exactly. These are modeled values at 23.019852, 72.53906, 5.0 km from the selected point. Source: GFS via Open-Meteo; retrieved 2026-09-11T20:00:00+00:00. Model issue time and local representativeness are unverified.",
+    "request": {
+      "intent": "point_forecast",
+      "place_name": "Ahmedabad",
+      "variables": [
+        "precipitation"
+      ],
+      "timezone": "Asia/Kolkata",
+      "start_local": "2026-09-12T09:00:00+05:30",
+      "end_local": "2026-09-12T12:00:00+05:30",
+      "start_utc": "2026-09-12T03:30:00+00:00",
+      "end_utc": "2026-09-12T06:30:00+00:00",
+      "interval_convention": "start inclusive, end exclusive",
+      "overnight": false,
+      "language": "en"
+    },
+    "location": {
+      "status": "selected_point",
+      "entity_id": "561ffd73856dcd649bc696839ab9068f5b5d3a067b1bdf698e2470c9e761afb2",
+      "label": "Ahmedabad",
+      "namespace": "S24",
+      "source_version": "685e84c92f03f83f3973dab54a09b38a0af79c3e459d201603f71b7a2d72eb7a",
+      "requested_point": {
+        "latitude": 23.02579,
+        "longitude": 72.58727
+      },
+      "basis": "source_place_point",
+      "location_evidence": {
+        "artifact": "place-ahmedabad.json",
+        "locator": "$.records[0]",
+        "retrieved_at_utc": "2026-09-11T19:34:54.380999+00:00",
+        "sha256": "685e84c92f03f83f3973dab54a09b38a0af79c3e459d201603f71b7a2d72eb7a",
+        "source_id": "S24",
+        "url": "https://geocoding-api.open-meteo.com/v1/search?name=Ahmedabad&count=10&language=en&format=json&countryCode=IN"
+      },
+      "administrative_mapping": "unresolved",
+      "returned_grid": {
+        "latitude": 23.019852,
+        "longitude": 72.53906
+      },
+      "grid_distance_km": 4.978,
+      "support_description": "Value at the returned model grid for the selected source point",
+      "spatial_applicability": "model_point_reference_only"
+    },
+    "values": [
+      {
+        "parameter": "precipitation",
+        "unit": "mm",
+        "coverage": "partial",
+        "method": "preceding_hour_sum",
+        "source_locators": [
+          "$.hourly.precipitation[28]",
+          "$.hourly.precipitation[29]",
+          "$.hourly.precipitation[30]",
+          "$.hourly.precipitation[31]"
+        ],
+        "support": {
+          "aggregation": "preceding_hour_sum",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00",
+          "interval_start_utc": "2026-09-10T23:00:00+00:00",
+          "interval_end_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "missing": [
+          "Requested boundary splits a source hourly rain interval; an exact total is unavailable",
+          "Rain intervals do not cover the requested window exactly"
+        ],
+        "value_decimal": null,
+        "sample_count": 4
+      }
+    ],
+    "citations": [
+      {
+        "source_id": "S21",
+        "provider": "Open-Meteo",
+        "product": "GFS forecast delivery",
+        "evidence_kind": "model_forecast",
+        "url": "https://api.open-meteo.com/v1/gfs?latitude=23.02579&longitude=72.58727&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "response_sha256": "ccfb46b4c954cb12be2758e55bb71b9be5733d23ef9f3508a12f47a92556ad72",
+        "raw_relative_path": "f625ec359eafcf1deb272d129d65b2e72e1d678547bd577452ef0b6082764fc1/2b611808ac7e41199400a192250a33e9/blobs/ccfb46b4c954cb12be2758e55bb71b9be5733d23ef9f3508a12f47a92556ad72.bin",
+        "published_job_id": "f625ec359eafcf1deb272d129d65b2e72e1d678547bd577452ef0b6082764fc1",
+        "source_locators": [
+          "$.hourly.precipitation[28]",
+          "$.hourly.precipitation[29]",
+          "$.hourly.precipitation[30]",
+          "$.hourly.precipitation[31]"
+        ],
+        "retrieved_at_utc": "2026-09-11T20:00:00+00:00",
+        "issue_time_utc": null
+      }
+    ],
+    "freshness": {
+      "retrieved_at_utc": "2026-09-11T20:00:00+00:00",
+      "retrieval_age_seconds": 0.0,
+      "source_issue_time_utc": null,
+      "source_issue_freshness": "unknown",
+      "collection_cycle_at": "2026-09-11T20:00:00+00:00",
+      "committed_at": "2026-09-11T20:00:00+00:00",
+      "refresh_health": "succeeded",
+      "snapshot_status": "prototype_snapshot",
+      "next_planned_collection": null,
+      "maximum_retrieval_age_seconds": 3600
+    },
+    "coverage": {
+      "entity_id": "561ffd73856dcd649bc696839ab9068f5b5d3a067b1bdf698e2470c9e761afb2",
+      "entity_version": "685e84c92f03f83f3973dab54a09b38a0af79c3e459d201603f71b7a2d72eb7a",
+      "source_id": "S21",
+      "source_sha256": "ccfb46b4c954cb12be2758e55bb71b9be5733d23ef9f3508a12f47a92556ad72",
+      "published_job_id": "f625ec359eafcf1deb272d129d65b2e72e1d678547bd577452ef0b6082764fc1",
+      "requested_start_utc": "2026-09-12T03:30:00+00:00",
+      "requested_end_utc": "2026-09-12T06:30:00+00:00",
+      "variables": {
+        "temperature_2m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "relative_humidity_2m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "precipitation": {
+          "aggregation": "preceding_hour_sum",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00",
+          "interval_start_utc": "2026-09-10T23:00:00+00:00",
+          "interval_end_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "wind_speed_10m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        }
+      },
+      "status": "partial",
+      "publication_policy": "prototype_model_point_reference",
+      "operational_eligible": false
+    },
+    "missing_information": [
+      "Upstream model issue/run identity and independently validated local representativeness",
+      "Requested boundary splits a source hourly rain interval; an exact total is unavailable",
+      "Rain intervals do not cover the requested window exactly"
+    ],
+    "eligibility": {
+      "prototype_numeric": false,
+      "operational": false
+    },
+    "limitations": [
+      "Model grid forecasts are not station observations or district averages.",
+      "Source issue/run freshness and local representativeness remain unverified."
+    ],
+    "provider_calls": 0,
+    "answer_id": "87c10f5bbecc551799337586aac1d7a515ce70d814601d6efd16ce8999e498e6",
+    "evidence_mode": "historical_saved_response_replay"
+  },
+  "vadodara_source_candidates": {
+    "schema_version": "weather-answer-v1",
+    "question": "How much rain is forecast for Vadodara today from 09:30 to 12:30?",
+    "answered_at_utc": "2026-09-11T20:00:00+00:00",
+    "status": "needs_selection",
+    "answer": "Historical replay, not current weather. Select the intended place point. A city, district and airport have different spatial support.",
+    "request": {
+      "intent": "point_forecast",
+      "place_name": "Vadodara",
+      "variables": [
+        "precipitation"
+      ],
+      "timezone": "Asia/Kolkata",
+      "start_local": "2026-09-12T09:30:00+05:30",
+      "end_local": "2026-09-12T12:30:00+05:30",
+      "start_utc": "2026-09-12T04:00:00+00:00",
+      "end_utc": "2026-09-12T07:00:00+00:00",
+      "interval_convention": "start inclusive, end exclusive",
+      "overnight": false,
+      "language": "en"
+    },
+    "location": {
+      "status": "needs_selection",
+      "candidates": [
+        {
+          "attributes": {
+            "lgd_mapping": "unresolved",
+            "source_state": "Gujarat"
+          },
+          "crs": null,
+          "effective_dates_known": false,
+          "effective_from": null,
+          "effective_to": null,
+          "entity_id": "03338643d2eda7bb863eddfb19ae639fe1ea2ecd89fb089975d8ec5e9c4b76ae",
+          "evidence": {
+            "artifact": "advisory-directory.json",
+            "locator": "$.results[10].records[31]",
+            "retrieved_at_utc": "2026-09-11T19:35:56.011239+00:00",
+            "sha256": "40f22e74f947c532eac467a0bf76d0712cf843ef08d49cdd82c6570581170ff2",
+            "source_id": "S57",
+            "url": "https://mausam.imd.gov.in/responsive/agrometinformation/district_current_en_get.php?s=Gujarat&step1=true"
+          },
+          "geometry_status": "missing",
+          "kind": "district",
+          "label": "Vadodara",
+          "namespace": "S57",
+          "source_code": "Gujarat/Vadodara",
+          "source_locator": "$.results[10].records[31]",
+          "status": "source_record",
+          "version": "40f22e74f947c532eac467a0bf76d0712cf843ef08d49cdd82c6570581170ff2"
+        },
+        {
+          "attributes": {
+            "boundary_edition": "unknown",
+            "lgd_mapping": "unresolved",
+            "native_feature_id": "district_warnings_india.fid-2bfa195d_1a091f57d4c_58ce",
+            "quarantine_reason": null
+          },
+          "crs": "EPSG:4326",
+          "effective_dates_known": false,
+          "effective_from": null,
+          "effective_to": null,
+          "entity_id": "ad5e6357ea7ea80a613533c68ac4a711a3f1460d4768eb99354711b4435ac008",
+          "evidence": {
+            "artifact": "national-warning-snapshot.json",
+            "locator": "$.features[453]",
+            "retrieved_at_utc": "2026-09-11T19:35:16.854798+00:00",
+            "sha256": "d7501bfb4ae0586e280f15788aceb93ba2b8c42ed57ee4181f4943001b6930a5",
+            "source_id": "S15",
+            "url": "https://reactjs.imd.gov.in/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=imd%3Adistrict_warnings_india&srsname=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=2000"
+          },
+          "geometry_status": "valid_source_geometry",
+          "kind": "district",
+          "label": "VADODARA",
+          "namespace": "S15",
+          "source_code": "244",
+          "source_locator": "$.features[453]",
+          "status": "source_record",
+          "version": "d7501bfb4ae0586e280f15788aceb93ba2b8c42ed57ee4181f4943001b6930a5"
+        }
+      ]
+    },
+    "values": [],
+    "citations": [],
+    "freshness": null,
+    "coverage": null,
+    "missing_information": [
+      "An unambiguous place point or explicit coordinates are required"
+    ],
+    "eligibility": {
+      "prototype_numeric": false,
+      "operational": false
+    },
+    "limitations": [
+      "Model grid forecasts are not station observations or district averages.",
+      "Source issue/run freshness and local representativeness remain unverified."
+    ],
+    "provider_calls": 0,
+    "evidence_mode": "historical_saved_response_replay"
+  },
+  "unknown_location": {
+    "schema_version": "weather-answer-v1",
+    "question": "How much rain is forecast for Unlisted test locality today from 09:30 to 12:30?",
+    "answered_at_utc": "2026-09-11T20:00:00+00:00",
+    "status": "unavailable",
+    "answer": "Historical replay, not current weather. Select the intended place point. A city, district and airport have different spatial support.",
+    "request": {
+      "intent": "point_forecast",
+      "place_name": "Unlisted test locality",
+      "variables": [
+        "precipitation"
+      ],
+      "timezone": "Asia/Kolkata",
+      "start_local": "2026-09-12T09:30:00+05:30",
+      "end_local": "2026-09-12T12:30:00+05:30",
+      "start_utc": "2026-09-12T04:00:00+00:00",
+      "end_utc": "2026-09-12T07:00:00+00:00",
+      "interval_convention": "start inclusive, end exclusive",
+      "overnight": false,
+      "language": "en"
+    },
+    "location": {
+      "status": "unresolved",
+      "candidates": []
+    },
+    "values": [],
+    "citations": [],
+    "freshness": null,
+    "coverage": null,
+    "missing_information": [
+      "An unambiguous place point or explicit coordinates are required"
+    ],
+    "eligibility": {
+      "prototype_numeric": false,
+      "operational": false
+    },
+    "limitations": [
+      "Model grid forecasts are not station observations or district averages.",
+      "Source issue/run freshness and local representativeness remain unverified."
+    ],
+    "provider_calls": 0,
+    "evidence_mode": "historical_saved_response_replay"
+  },
+  "official_warning_gate": {
+    "schema_version": "weather-answer-v1",
+    "question": "Is there an official warning for Ahmedabad?",
+    "answered_at_utc": "2026-09-11T20:00:00+00:00",
+    "status": "unavailable",
+    "answer": "Historical replay, not current weather. Official warning answers require verified area, validity, completeness and update/cancel lifecycle.",
+    "request": null,
+    "location": null,
+    "values": [],
+    "citations": [],
+    "freshness": null,
+    "coverage": null,
+    "missing_information": [
+      "Official warning answers require verified area, validity, completeness and update/cancel lifecycle."
+    ],
+    "eligibility": {
+      "prototype_numeric": false,
+      "operational": false
+    },
+    "limitations": [
+      "Model grid forecasts are not station observations or district averages.",
+      "Source issue/run freshness and local representativeness remain unverified."
+    ],
+    "provider_calls": 0,
+    "evidence_mode": "historical_saved_response_replay"
+  },
+  "crop_advice_gate": {
+    "schema_version": "weather-answer-v1",
+    "question": "What is the current advisory for my crop?",
+    "answered_at_utc": "2026-09-11T20:00:00+00:00",
+    "status": "unavailable",
+    "answer": "Historical replay, not current weather. Crop advice requires a reviewed bulletin with place, issue/expiry, crop/stage and activity context.",
+    "request": null,
+    "location": null,
+    "values": [],
+    "citations": [],
+    "freshness": null,
+    "coverage": null,
+    "missing_information": [
+      "Crop advice requires a reviewed bulletin with place, issue/expiry, crop/stage and activity context."
+    ],
+    "eligibility": {
+      "prototype_numeric": false,
+      "operational": false
+    },
+    "limitations": [
+      "Model grid forecasts are not station observations or district averages.",
+      "Source issue/run freshness and local representativeness remain unverified."
+    ],
+    "provider_calls": 0,
+    "evidence_mode": "historical_saved_response_replay"
+  },
+  "aviation_gate": {
+    "schema_version": "weather-answer-v1",
+    "question": "Is my flight safe?",
+    "answered_at_utc": "2026-09-11T20:00:00+00:00",
+    "status": "unavailable",
+    "answer": "Historical replay, not current weather. Aviation answers need a dedicated briefing contract; this workflow only serves land model forecasts.",
+    "request": null,
+    "location": null,
+    "values": [],
+    "citations": [],
+    "freshness": null,
+    "coverage": null,
+    "missing_information": [
+      "Aviation answers need a dedicated briefing contract; this workflow only serves land model forecasts."
+    ],
+    "eligibility": {
+      "prototype_numeric": false,
+      "operational": false
+    },
+    "limitations": [
+      "Model grid forecasts are not station observations or district averages.",
+      "Source issue/run freshness and local representativeness remain unverified."
+    ],
+    "provider_calls": 0,
+    "evidence_mode": "historical_saved_response_replay"
+  },
+  "marine_gate": {
+    "schema_version": "weather-answer-v1",
+    "question": "Is it safe for fishing?",
+    "answered_at_utc": "2026-09-11T20:00:00+00:00",
+    "status": "unavailable",
+    "answer": "Historical replay, not current weather. Marine answers need a dedicated region and validity contract; land forecasts cannot substitute.",
+    "request": null,
+    "location": null,
+    "values": [],
+    "citations": [],
+    "freshness": null,
+    "coverage": null,
+    "missing_information": [
+      "Marine answers need a dedicated region and validity contract; land forecasts cannot substitute."
+    ],
+    "eligibility": {
+      "prototype_numeric": false,
+      "operational": false
+    },
+    "limitations": [
+      "Model grid forecasts are not station observations or district averages.",
+      "Source issue/run freshness and local representativeness remain unverified."
+    ],
+    "provider_calls": 0,
+    "evidence_mode": "historical_saved_response_replay"
+  },
+  "national_land_sample_0": {
+    "schema_version": "weather-answer-v1",
+    "question": "How much rain is forecast for selected point today from 09:30 to 12:30?",
+    "answered_at_utc": "2026-09-11T20:00:00+00:00",
+    "status": "prototype_answer",
+    "answer": "Historical replay, not current weather. For selected point, 2026-09-12T09:30:00+05:30 to 2026-09-12T12:30:00+05:30, forecast rainfall totals 0.0 mm. These are modeled values at 34.03189, 74.765625, 6.5 km from the selected point. Source: GFS via Open-Meteo; retrieved 2026-09-11T20:00:00+00:00. Model issue time and local representativeness are unverified.",
+    "request": {
+      "intent": "point_forecast",
+      "place_name": "selected point",
+      "variables": [
+        "precipitation"
+      ],
+      "timezone": "Asia/Kolkata",
+      "start_local": "2026-09-12T09:30:00+05:30",
+      "end_local": "2026-09-12T12:30:00+05:30",
+      "start_utc": "2026-09-12T04:00:00+00:00",
+      "end_utc": "2026-09-12T07:00:00+00:00",
+      "interval_convention": "start inclusive, end exclusive",
+      "overnight": false,
+      "language": "en"
+    },
+    "location": {
+      "status": "selected_point",
+      "entity_id": "f1210af512de2507eda9f475e74506043798b9055c2a42c57ae1a2c8616a37c8",
+      "label": "selected point",
+      "requested_point": {
+        "latitude": 34.0837,
+        "longitude": 74.7973
+      },
+      "basis": "explicit_user_coordinates",
+      "administrative_mapping": "unresolved",
+      "returned_grid": {
+        "latitude": 34.03189,
+        "longitude": 74.765625
+      },
+      "grid_distance_km": 6.458,
+      "support_description": "Value at the returned model grid for the selected source point",
+      "spatial_applicability": "model_point_reference_only"
+    },
+    "values": [
+      {
+        "parameter": "precipitation",
+        "unit": "mm",
+        "coverage": "complete",
+        "method": "preceding_hour_sum",
+        "source_locators": [
+          "$.hourly.precipitation[29]",
+          "$.hourly.precipitation[30]",
+          "$.hourly.precipitation[31]"
+        ],
+        "support": {
+          "aggregation": "preceding_hour_sum",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00",
+          "interval_start_utc": "2026-09-10T23:00:00+00:00",
+          "interval_end_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "missing": [],
+        "value_decimal": "0.0",
+        "sample_count": 3
+      }
+    ],
+    "citations": [
+      {
+        "source_id": "S21",
+        "provider": "Open-Meteo",
+        "product": "GFS forecast delivery",
+        "evidence_kind": "model_forecast",
+        "url": "https://api.open-meteo.com/v1/gfs?latitude=34.0837&longitude=74.7973&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "response_sha256": "d7d1c10dcb00c6db73106382c59541ba6a98cb730adb27b47878797050e80687",
+        "raw_relative_path": "04a8e5291f4540b6a2d898c766c82ac0b947941e5fcc678a062b9946f5651777/21140136ea4e4a679f1d346382e613a3/blobs/d7d1c10dcb00c6db73106382c59541ba6a98cb730adb27b47878797050e80687.bin",
+        "published_job_id": "04a8e5291f4540b6a2d898c766c82ac0b947941e5fcc678a062b9946f5651777",
+        "source_locators": [
+          "$.hourly.precipitation[29]",
+          "$.hourly.precipitation[30]",
+          "$.hourly.precipitation[31]"
+        ],
+        "retrieved_at_utc": "2026-09-11T20:00:00+00:00",
+        "issue_time_utc": null
+      }
+    ],
+    "freshness": {
+      "retrieved_at_utc": "2026-09-11T20:00:00+00:00",
+      "retrieval_age_seconds": 0.0,
+      "source_issue_time_utc": null,
+      "source_issue_freshness": "unknown",
+      "collection_cycle_at": "2026-09-11T20:00:00+00:00",
+      "committed_at": "2026-09-11T20:00:00+00:00",
+      "refresh_health": "succeeded",
+      "snapshot_status": "prototype_snapshot",
+      "next_planned_collection": null,
+      "maximum_retrieval_age_seconds": 3600
+    },
+    "coverage": {
+      "entity_id": "f1210af512de2507eda9f475e74506043798b9055c2a42c57ae1a2c8616a37c8",
+      "entity_version": null,
+      "source_id": "S21",
+      "source_sha256": "d7d1c10dcb00c6db73106382c59541ba6a98cb730adb27b47878797050e80687",
+      "published_job_id": "04a8e5291f4540b6a2d898c766c82ac0b947941e5fcc678a062b9946f5651777",
+      "requested_start_utc": "2026-09-12T04:00:00+00:00",
+      "requested_end_utc": "2026-09-12T07:00:00+00:00",
+      "variables": {
+        "temperature_2m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "relative_humidity_2m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "precipitation": {
+          "aggregation": "preceding_hour_sum",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00",
+          "interval_start_utc": "2026-09-10T23:00:00+00:00",
+          "interval_end_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "wind_speed_10m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        }
+      },
+      "status": "complete",
+      "publication_policy": "prototype_model_point_reference",
+      "operational_eligible": false
+    },
+    "missing_information": [
+      "Upstream model issue/run identity and independently validated local representativeness"
+    ],
+    "eligibility": {
+      "prototype_numeric": true,
+      "operational": false
+    },
+    "limitations": [
+      "Model grid forecasts are not station observations or district averages.",
+      "Source issue/run freshness and local representativeness remain unverified."
+    ],
+    "provider_calls": 0,
+    "answer_id": "a4f2391a102dd55f63dcae2bc093b1758a92174515ef1315e8349a8d5ef3d5df",
+    "evidence_mode": "historical_saved_response_replay"
+  },
+  "national_land_sample_2": {
+    "schema_version": "weather-answer-v1",
+    "question": "How much rain is forecast for selected point today from 09:30 to 12:30?",
+    "answered_at_utc": "2026-09-11T20:00:00+00:00",
+    "status": "prototype_answer",
+    "answer": "Historical replay, not current weather. For selected point, 2026-09-12T09:30:00+05:30 to 2026-09-12T12:30:00+05:30, forecast rainfall totals 0.7 mm. These are modeled values at 26.182884, 91.75781, 4.8 km from the selected point. Source: GFS via Open-Meteo; retrieved 2026-09-11T20:00:00+00:00. Model issue time and local representativeness are unverified.",
+    "request": {
+      "intent": "point_forecast",
+      "place_name": "selected point",
+      "variables": [
+        "precipitation"
+      ],
+      "timezone": "Asia/Kolkata",
+      "start_local": "2026-09-12T09:30:00+05:30",
+      "end_local": "2026-09-12T12:30:00+05:30",
+      "start_utc": "2026-09-12T04:00:00+00:00",
+      "end_utc": "2026-09-12T07:00:00+00:00",
+      "interval_convention": "start inclusive, end exclusive",
+      "overnight": false,
+      "language": "en"
+    },
+    "location": {
+      "status": "selected_point",
+      "entity_id": "a99c104c7ac413964d2749125f6871d6444173e94c6e3c66b7fcf7b275ab7494",
+      "label": "selected point",
+      "requested_point": {
+        "latitude": 26.1445,
+        "longitude": 91.7362
+      },
+      "basis": "explicit_user_coordinates",
+      "administrative_mapping": "unresolved",
+      "returned_grid": {
+        "latitude": 26.182884,
+        "longitude": 91.75781
+      },
+      "grid_distance_km": 4.782,
+      "support_description": "Value at the returned model grid for the selected source point",
+      "spatial_applicability": "model_point_reference_only"
+    },
+    "values": [
+      {
+        "parameter": "precipitation",
+        "unit": "mm",
+        "coverage": "complete",
+        "method": "preceding_hour_sum",
+        "source_locators": [
+          "$.hourly.precipitation[29]",
+          "$.hourly.precipitation[30]",
+          "$.hourly.precipitation[31]"
+        ],
+        "support": {
+          "aggregation": "preceding_hour_sum",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00",
+          "interval_start_utc": "2026-09-10T23:00:00+00:00",
+          "interval_end_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "missing": [],
+        "value_decimal": "0.7",
+        "sample_count": 3
+      }
+    ],
+    "citations": [
+      {
+        "source_id": "S21",
+        "provider": "Open-Meteo",
+        "product": "GFS forecast delivery",
+        "evidence_kind": "model_forecast",
+        "url": "https://api.open-meteo.com/v1/gfs?latitude=26.1445&longitude=91.7362&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "response_sha256": "c26a0903d69bff9b81329b2b22eaacfcd9a22f71107c9e13535d654a3696f277",
+        "raw_relative_path": "0845da7238050a984de32e09774928a353b14fe637857eb990bcf4ab25b53572/60d7dc5c8a2d46ac82d6eb86ab389fa4/blobs/c26a0903d69bff9b81329b2b22eaacfcd9a22f71107c9e13535d654a3696f277.bin",
+        "published_job_id": "0845da7238050a984de32e09774928a353b14fe637857eb990bcf4ab25b53572",
+        "source_locators": [
+          "$.hourly.precipitation[29]",
+          "$.hourly.precipitation[30]",
+          "$.hourly.precipitation[31]"
+        ],
+        "retrieved_at_utc": "2026-09-11T20:00:00+00:00",
+        "issue_time_utc": null
+      }
+    ],
+    "freshness": {
+      "retrieved_at_utc": "2026-09-11T20:00:00+00:00",
+      "retrieval_age_seconds": 0.0,
+      "source_issue_time_utc": null,
+      "source_issue_freshness": "unknown",
+      "collection_cycle_at": "2026-09-11T20:00:00+00:00",
+      "committed_at": "2026-09-11T20:00:00+00:00",
+      "refresh_health": "succeeded",
+      "snapshot_status": "prototype_snapshot",
+      "next_planned_collection": null,
+      "maximum_retrieval_age_seconds": 3600
+    },
+    "coverage": {
+      "entity_id": "a99c104c7ac413964d2749125f6871d6444173e94c6e3c66b7fcf7b275ab7494",
+      "entity_version": null,
+      "source_id": "S21",
+      "source_sha256": "c26a0903d69bff9b81329b2b22eaacfcd9a22f71107c9e13535d654a3696f277",
+      "published_job_id": "0845da7238050a984de32e09774928a353b14fe637857eb990bcf4ab25b53572",
+      "requested_start_utc": "2026-09-12T04:00:00+00:00",
+      "requested_end_utc": "2026-09-12T07:00:00+00:00",
+      "variables": {
+        "temperature_2m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "relative_humidity_2m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "precipitation": {
+          "aggregation": "preceding_hour_sum",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00",
+          "interval_start_utc": "2026-09-10T23:00:00+00:00",
+          "interval_end_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "wind_speed_10m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        }
+      },
+      "status": "complete",
+      "publication_policy": "prototype_model_point_reference",
+      "operational_eligible": false
+    },
+    "missing_information": [
+      "Upstream model issue/run identity and independently validated local representativeness"
+    ],
+    "eligibility": {
+      "prototype_numeric": true,
+      "operational": false
+    },
+    "limitations": [
+      "Model grid forecasts are not station observations or district averages.",
+      "Source issue/run freshness and local representativeness remain unverified."
+    ],
+    "provider_calls": 0,
+    "answer_id": "0824a1c85ba9c7fd4417a45fdede013d633fef9090863a16477c612918b7a200",
+    "evidence_mode": "historical_saved_response_replay"
+  },
+  "national_land_sample_4": {
+    "schema_version": "weather-answer-v1",
+    "question": "How much rain is forecast for selected point today from 09:30 to 12:30?",
+    "answered_at_utc": "2026-09-11T20:00:00+00:00",
+    "status": "prototype_answer",
+    "answer": "Historical replay, not current weather. For selected point, 2026-09-12T09:30:00+05:30 to 2026-09-12T12:30:00+05:30, forecast rainfall totals 0.0 mm. These are modeled values at 28.64302, 77.22656, 3.7 km from the selected point. Source: GFS via Open-Meteo; retrieved 2026-09-11T20:00:00+00:00. Model issue time and local representativeness are unverified.",
+    "request": {
+      "intent": "point_forecast",
+      "place_name": "selected point",
+      "variables": [
+        "precipitation"
+      ],
+      "timezone": "Asia/Kolkata",
+      "start_local": "2026-09-12T09:30:00+05:30",
+      "end_local": "2026-09-12T12:30:00+05:30",
+      "start_utc": "2026-09-12T04:00:00+00:00",
+      "end_utc": "2026-09-12T07:00:00+00:00",
+      "interval_convention": "start inclusive, end exclusive",
+      "overnight": false,
+      "language": "en"
+    },
+    "location": {
+      "status": "selected_point",
+      "entity_id": "fd9f561f6077883f4987c25ea49f1f3fb1c483bef44872e1e2f792572bfc25bc",
+      "label": "selected point",
+      "requested_point": {
+        "latitude": 28.6139,
+        "longitude": 77.209
+      },
+      "basis": "explicit_user_coordinates",
+      "administrative_mapping": "unresolved",
+      "returned_grid": {
+        "latitude": 28.64302,
+        "longitude": 77.22656
+      },
+      "grid_distance_km": 3.664,
+      "support_description": "Value at the returned model grid for the selected source point",
+      "spatial_applicability": "model_point_reference_only"
+    },
+    "values": [
+      {
+        "parameter": "precipitation",
+        "unit": "mm",
+        "coverage": "complete",
+        "method": "preceding_hour_sum",
+        "source_locators": [
+          "$.hourly.precipitation[29]",
+          "$.hourly.precipitation[30]",
+          "$.hourly.precipitation[31]"
+        ],
+        "support": {
+          "aggregation": "preceding_hour_sum",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00",
+          "interval_start_utc": "2026-09-10T23:00:00+00:00",
+          "interval_end_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "missing": [],
+        "value_decimal": "0.0",
+        "sample_count": 3
+      }
+    ],
+    "citations": [
+      {
+        "source_id": "S21",
+        "provider": "Open-Meteo",
+        "product": "GFS forecast delivery",
+        "evidence_kind": "model_forecast",
+        "url": "https://api.open-meteo.com/v1/gfs?latitude=28.6139&longitude=77.209&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "response_sha256": "6fdb3bde42b3219cc5efd22625a8cfa85c5ece095a95a95067db374401dd40d5",
+        "raw_relative_path": "6f57cbc2a790a4f4c17da69106206cb47db07bea281c3dcee7f0057f87b2562f/660e6db92073428d89ada1863f97846d/blobs/6fdb3bde42b3219cc5efd22625a8cfa85c5ece095a95a95067db374401dd40d5.bin",
+        "published_job_id": "6f57cbc2a790a4f4c17da69106206cb47db07bea281c3dcee7f0057f87b2562f",
+        "source_locators": [
+          "$.hourly.precipitation[29]",
+          "$.hourly.precipitation[30]",
+          "$.hourly.precipitation[31]"
+        ],
+        "retrieved_at_utc": "2026-09-11T20:00:00+00:00",
+        "issue_time_utc": null
+      }
+    ],
+    "freshness": {
+      "retrieved_at_utc": "2026-09-11T20:00:00+00:00",
+      "retrieval_age_seconds": 0.0,
+      "source_issue_time_utc": null,
+      "source_issue_freshness": "unknown",
+      "collection_cycle_at": "2026-09-11T20:00:00+00:00",
+      "committed_at": "2026-09-11T20:00:00+00:00",
+      "refresh_health": "succeeded",
+      "snapshot_status": "prototype_snapshot",
+      "next_planned_collection": null,
+      "maximum_retrieval_age_seconds": 3600
+    },
+    "coverage": {
+      "entity_id": "fd9f561f6077883f4987c25ea49f1f3fb1c483bef44872e1e2f792572bfc25bc",
+      "entity_version": null,
+      "source_id": "S21",
+      "source_sha256": "6fdb3bde42b3219cc5efd22625a8cfa85c5ece095a95a95067db374401dd40d5",
+      "published_job_id": "6f57cbc2a790a4f4c17da69106206cb47db07bea281c3dcee7f0057f87b2562f",
+      "requested_start_utc": "2026-09-12T04:00:00+00:00",
+      "requested_end_utc": "2026-09-12T07:00:00+00:00",
+      "variables": {
+        "temperature_2m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "relative_humidity_2m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "precipitation": {
+          "aggregation": "preceding_hour_sum",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00",
+          "interval_start_utc": "2026-09-10T23:00:00+00:00",
+          "interval_end_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "wind_speed_10m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        }
+      },
+      "status": "complete",
+      "publication_policy": "prototype_model_point_reference",
+      "operational_eligible": false
+    },
+    "missing_information": [
+      "Upstream model issue/run identity and independently validated local representativeness"
+    ],
+    "eligibility": {
+      "prototype_numeric": true,
+      "operational": false
+    },
+    "limitations": [
+      "Model grid forecasts are not station observations or district averages.",
+      "Source issue/run freshness and local representativeness remain unverified."
+    ],
+    "provider_calls": 0,
+    "answer_id": "7eb20d2c0407cfe6827b49ae3bc3c0be4349e79cd3dcd07a7e02fd4e67a147d8",
+    "evidence_mode": "historical_saved_response_replay"
+  },
+  "national_land_sample_5": {
+    "schema_version": "weather-answer-v1",
+    "question": "How much rain is forecast for selected point today from 09:30 to 12:30?",
+    "answered_at_utc": "2026-09-11T20:00:00+00:00",
+    "status": "prototype_answer",
+    "answer": "Historical replay, not current weather. For selected point, 2026-09-12T09:30:00+05:30 to 2026-09-12T12:30:00+05:30, forecast rainfall totals 0.0 mm. These are modeled values at 13.062157, 80.15625, 12.6 km from the selected point. Source: GFS via Open-Meteo; retrieved 2026-09-11T20:00:00+00:00. Model issue time and local representativeness are unverified.",
+    "request": {
+      "intent": "point_forecast",
+      "place_name": "selected point",
+      "variables": [
+        "precipitation"
+      ],
+      "timezone": "Asia/Kolkata",
+      "start_local": "2026-09-12T09:30:00+05:30",
+      "end_local": "2026-09-12T12:30:00+05:30",
+      "start_utc": "2026-09-12T04:00:00+00:00",
+      "end_utc": "2026-09-12T07:00:00+00:00",
+      "interval_convention": "start inclusive, end exclusive",
+      "overnight": false,
+      "language": "en"
+    },
+    "location": {
+      "status": "selected_point",
+      "entity_id": "60c6dd75b3377fc7aef4d037f41b7398d2f62646c7f96a0f14a7743ce31539f0",
+      "label": "selected point",
+      "requested_point": {
+        "latitude": 13.0827,
+        "longitude": 80.2707
+      },
+      "basis": "explicit_user_coordinates",
+      "administrative_mapping": "unresolved",
+      "returned_grid": {
+        "latitude": 13.062157,
+        "longitude": 80.15625
+      },
+      "grid_distance_km": 12.605,
+      "support_description": "Value at the returned model grid for the selected source point",
+      "spatial_applicability": "model_point_reference_only"
+    },
+    "values": [
+      {
+        "parameter": "precipitation",
+        "unit": "mm",
+        "coverage": "complete",
+        "method": "preceding_hour_sum",
+        "source_locators": [
+          "$.hourly.precipitation[29]",
+          "$.hourly.precipitation[30]",
+          "$.hourly.precipitation[31]"
+        ],
+        "support": {
+          "aggregation": "preceding_hour_sum",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00",
+          "interval_start_utc": "2026-09-10T23:00:00+00:00",
+          "interval_end_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "missing": [],
+        "value_decimal": "0.0",
+        "sample_count": 3
+      }
+    ],
+    "citations": [
+      {
+        "source_id": "S21",
+        "provider": "Open-Meteo",
+        "product": "GFS forecast delivery",
+        "evidence_kind": "model_forecast",
+        "url": "https://api.open-meteo.com/v1/gfs?latitude=13.0827&longitude=80.2707&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "response_sha256": "9ccf745080071bc3ec3bf5dfe87b45d06a287114444a2059a45cc9d6a280e838",
+        "raw_relative_path": "8e9565900346f214c6a24bc160f3ae9f2d0e69ee430b6cdcdafeea34a26512e4/715f3768ea704921b879bf3b488c7b94/blobs/9ccf745080071bc3ec3bf5dfe87b45d06a287114444a2059a45cc9d6a280e838.bin",
+        "published_job_id": "8e9565900346f214c6a24bc160f3ae9f2d0e69ee430b6cdcdafeea34a26512e4",
+        "source_locators": [
+          "$.hourly.precipitation[29]",
+          "$.hourly.precipitation[30]",
+          "$.hourly.precipitation[31]"
+        ],
+        "retrieved_at_utc": "2026-09-11T20:00:00+00:00",
+        "issue_time_utc": null
+      }
+    ],
+    "freshness": {
+      "retrieved_at_utc": "2026-09-11T20:00:00+00:00",
+      "retrieval_age_seconds": 0.0,
+      "source_issue_time_utc": null,
+      "source_issue_freshness": "unknown",
+      "collection_cycle_at": "2026-09-11T20:00:00+00:00",
+      "committed_at": "2026-09-11T20:00:00+00:00",
+      "refresh_health": "succeeded",
+      "snapshot_status": "prototype_snapshot",
+      "next_planned_collection": null,
+      "maximum_retrieval_age_seconds": 3600
+    },
+    "coverage": {
+      "entity_id": "60c6dd75b3377fc7aef4d037f41b7398d2f62646c7f96a0f14a7743ce31539f0",
+      "entity_version": null,
+      "source_id": "S21",
+      "source_sha256": "9ccf745080071bc3ec3bf5dfe87b45d06a287114444a2059a45cc9d6a280e838",
+      "published_job_id": "8e9565900346f214c6a24bc160f3ae9f2d0e69ee430b6cdcdafeea34a26512e4",
+      "requested_start_utc": "2026-09-12T04:00:00+00:00",
+      "requested_end_utc": "2026-09-12T07:00:00+00:00",
+      "variables": {
+        "temperature_2m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "relative_humidity_2m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "precipitation": {
+          "aggregation": "preceding_hour_sum",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00",
+          "interval_start_utc": "2026-09-10T23:00:00+00:00",
+          "interval_end_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "wind_speed_10m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        }
+      },
+      "status": "complete",
+      "publication_policy": "prototype_model_point_reference",
+      "operational_eligible": false
+    },
+    "missing_information": [
+      "Upstream model issue/run identity and independently validated local representativeness"
+    ],
+    "eligibility": {
+      "prototype_numeric": true,
+      "operational": false
+    },
+    "limitations": [
+      "Model grid forecasts are not station observations or district averages.",
+      "Source issue/run freshness and local representativeness remain unverified."
+    ],
+    "provider_calls": 0,
+    "answer_id": "db2392baf3b9fc17b7032e45a2e0815d05b7cbf8cea07bf30a0f235e89ca6a05",
+    "evidence_mode": "historical_saved_response_replay"
+  },
+  "national_land_sample_6": {
+    "schema_version": "weather-answer-v1",
+    "question": "How much rain is forecast for selected point today from 09:30 to 12:30?",
+    "answered_at_utc": "2026-09-11T20:00:00+00:00",
+    "status": "prototype_answer",
+    "answer": "Historical replay, not current weather. For selected point, 2026-09-12T09:30:00+05:30 to 2026-09-12T12:30:00+05:30, forecast rainfall totals 0.0 mm. These are modeled values at 19.153923, 72.890625, 8.8 km from the selected point. Source: GFS via Open-Meteo; retrieved 2026-09-11T20:00:00+00:00. Model issue time and local representativeness are unverified.",
+    "request": {
+      "intent": "point_forecast",
+      "place_name": "selected point",
+      "variables": [
+        "precipitation"
+      ],
+      "timezone": "Asia/Kolkata",
+      "start_local": "2026-09-12T09:30:00+05:30",
+      "end_local": "2026-09-12T12:30:00+05:30",
+      "start_utc": "2026-09-12T04:00:00+00:00",
+      "end_utc": "2026-09-12T07:00:00+00:00",
+      "interval_convention": "start inclusive, end exclusive",
+      "overnight": false,
+      "language": "en"
+    },
+    "location": {
+      "status": "selected_point",
+      "entity_id": "1eb6b69f69bc7f0fa3ec4b134e382ed953b394e38e208316b0785cb015e65751",
+      "label": "selected point",
+      "requested_point": {
+        "latitude": 19.076,
+        "longitude": 72.8777
+      },
+      "basis": "explicit_user_coordinates",
+      "administrative_mapping": "unresolved",
+      "returned_grid": {
+        "latitude": 19.153923,
+        "longitude": 72.890625
+      },
+      "grid_distance_km": 8.77,
+      "support_description": "Value at the returned model grid for the selected source point",
+      "spatial_applicability": "model_point_reference_only"
+    },
+    "values": [
+      {
+        "parameter": "precipitation",
+        "unit": "mm",
+        "coverage": "complete",
+        "method": "preceding_hour_sum",
+        "source_locators": [
+          "$.hourly.precipitation[29]",
+          "$.hourly.precipitation[30]",
+          "$.hourly.precipitation[31]"
+        ],
+        "support": {
+          "aggregation": "preceding_hour_sum",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00",
+          "interval_start_utc": "2026-09-10T23:00:00+00:00",
+          "interval_end_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "missing": [],
+        "value_decimal": "0.0",
+        "sample_count": 3
+      }
+    ],
+    "citations": [
+      {
+        "source_id": "S21",
+        "provider": "Open-Meteo",
+        "product": "GFS forecast delivery",
+        "evidence_kind": "model_forecast",
+        "url": "https://api.open-meteo.com/v1/gfs?latitude=19.076&longitude=72.8777&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "response_sha256": "d5fe3212057abd3d68a677ca6b6372d2799358c091a3c756654214604b4105f4",
+        "raw_relative_path": "8f9e0fcf700f672b833f5773dd80c1f1f99a588ce7e1656dd77b87a087cdff4b/b91dd305df524434a773e90c8c9f6b15/blobs/d5fe3212057abd3d68a677ca6b6372d2799358c091a3c756654214604b4105f4.bin",
+        "published_job_id": "8f9e0fcf700f672b833f5773dd80c1f1f99a588ce7e1656dd77b87a087cdff4b",
+        "source_locators": [
+          "$.hourly.precipitation[29]",
+          "$.hourly.precipitation[30]",
+          "$.hourly.precipitation[31]"
+        ],
+        "retrieved_at_utc": "2026-09-11T20:00:00+00:00",
+        "issue_time_utc": null
+      }
+    ],
+    "freshness": {
+      "retrieved_at_utc": "2026-09-11T20:00:00+00:00",
+      "retrieval_age_seconds": 0.0,
+      "source_issue_time_utc": null,
+      "source_issue_freshness": "unknown",
+      "collection_cycle_at": "2026-09-11T20:00:00+00:00",
+      "committed_at": "2026-09-11T20:00:00+00:00",
+      "refresh_health": "succeeded",
+      "snapshot_status": "prototype_snapshot",
+      "next_planned_collection": null,
+      "maximum_retrieval_age_seconds": 3600
+    },
+    "coverage": {
+      "entity_id": "1eb6b69f69bc7f0fa3ec4b134e382ed953b394e38e208316b0785cb015e65751",
+      "entity_version": null,
+      "source_id": "S21",
+      "source_sha256": "d5fe3212057abd3d68a677ca6b6372d2799358c091a3c756654214604b4105f4",
+      "published_job_id": "8f9e0fcf700f672b833f5773dd80c1f1f99a588ce7e1656dd77b87a087cdff4b",
+      "requested_start_utc": "2026-09-12T04:00:00+00:00",
+      "requested_end_utc": "2026-09-12T07:00:00+00:00",
+      "variables": {
+        "temperature_2m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "relative_humidity_2m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "precipitation": {
+          "aggregation": "preceding_hour_sum",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00",
+          "interval_start_utc": "2026-09-10T23:00:00+00:00",
+          "interval_end_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "wind_speed_10m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        }
+      },
+      "status": "complete",
+      "publication_policy": "prototype_model_point_reference",
+      "operational_eligible": false
+    },
+    "missing_information": [
+      "Upstream model issue/run identity and independently validated local representativeness"
+    ],
+    "eligibility": {
+      "prototype_numeric": true,
+      "operational": false
+    },
+    "limitations": [
+      "Model grid forecasts are not station observations or district averages.",
+      "Source issue/run freshness and local representativeness remain unverified."
+    ],
+    "provider_calls": 0,
+    "answer_id": "aae722b5f4d664e40752239e7e11d41afd9abe82be379aff53b6ee53d734f6e5",
+    "evidence_mode": "historical_saved_response_replay"
+  },
+  "national_land_sample_9": {
+    "schema_version": "weather-answer-v1",
+    "question": "How much rain is forecast for selected point today from 09:30 to 12:30?",
+    "answered_at_utc": "2026-09-11T20:00:00+00:00",
+    "status": "prototype_answer",
+    "answer": "Historical replay, not current weather. For selected point, 2026-09-12T09:30:00+05:30 to 2026-09-12T12:30:00+05:30, forecast rainfall totals 0.0 mm. These are modeled values at 23.019852, 72.53906, 5.0 km from the selected point. Source: GFS via Open-Meteo; retrieved 2026-09-11T20:00:00+00:00. Model issue time and local representativeness are unverified.",
+    "request": {
+      "intent": "point_forecast",
+      "place_name": "selected point",
+      "variables": [
+        "precipitation"
+      ],
+      "timezone": "Asia/Kolkata",
+      "start_local": "2026-09-12T09:30:00+05:30",
+      "end_local": "2026-09-12T12:30:00+05:30",
+      "start_utc": "2026-09-12T04:00:00+00:00",
+      "end_utc": "2026-09-12T07:00:00+00:00",
+      "interval_convention": "start inclusive, end exclusive",
+      "overnight": false,
+      "language": "en"
+    },
+    "location": {
+      "status": "selected_point",
+      "entity_id": "0c6f04f93952d4dab9ea766b246d3c7d4c9a528d58605a76b5d19bc9a6200df6",
+      "label": "selected point",
+      "requested_point": {
+        "latitude": 23.02579,
+        "longitude": 72.58727
+      },
+      "basis": "explicit_user_coordinates",
+      "administrative_mapping": "unresolved",
+      "returned_grid": {
+        "latitude": 23.019852,
+        "longitude": 72.53906
+      },
+      "grid_distance_km": 4.978,
+      "support_description": "Value at the returned model grid for the selected source point",
+      "spatial_applicability": "model_point_reference_only"
+    },
+    "values": [
+      {
+        "parameter": "precipitation",
+        "unit": "mm",
+        "coverage": "complete",
+        "method": "preceding_hour_sum",
+        "source_locators": [
+          "$.hourly.precipitation[29]",
+          "$.hourly.precipitation[30]",
+          "$.hourly.precipitation[31]"
+        ],
+        "support": {
+          "aggregation": "preceding_hour_sum",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00",
+          "interval_start_utc": "2026-09-10T23:00:00+00:00",
+          "interval_end_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "missing": [],
+        "value_decimal": "0.0",
+        "sample_count": 3
+      }
+    ],
+    "citations": [
+      {
+        "source_id": "S21",
+        "provider": "Open-Meteo",
+        "product": "GFS forecast delivery",
+        "evidence_kind": "model_forecast",
+        "url": "https://api.open-meteo.com/v1/gfs?latitude=23.02579&longitude=72.58727&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "response_sha256": "ccfb46b4c954cb12be2758e55bb71b9be5733d23ef9f3508a12f47a92556ad72",
+        "raw_relative_path": "f625ec359eafcf1deb272d129d65b2e72e1d678547bd577452ef0b6082764fc1/2b611808ac7e41199400a192250a33e9/blobs/ccfb46b4c954cb12be2758e55bb71b9be5733d23ef9f3508a12f47a92556ad72.bin",
+        "published_job_id": "f625ec359eafcf1deb272d129d65b2e72e1d678547bd577452ef0b6082764fc1",
+        "source_locators": [
+          "$.hourly.precipitation[29]",
+          "$.hourly.precipitation[30]",
+          "$.hourly.precipitation[31]"
+        ],
+        "retrieved_at_utc": "2026-09-11T20:00:00+00:00",
+        "issue_time_utc": null
+      }
+    ],
+    "freshness": {
+      "retrieved_at_utc": "2026-09-11T20:00:00+00:00",
+      "retrieval_age_seconds": 0.0,
+      "source_issue_time_utc": null,
+      "source_issue_freshness": "unknown",
+      "collection_cycle_at": "2026-09-11T20:00:00+00:00",
+      "committed_at": "2026-09-11T20:00:00+00:00",
+      "refresh_health": "succeeded",
+      "snapshot_status": "prototype_snapshot",
+      "next_planned_collection": null,
+      "maximum_retrieval_age_seconds": 3600
+    },
+    "coverage": {
+      "entity_id": "0c6f04f93952d4dab9ea766b246d3c7d4c9a528d58605a76b5d19bc9a6200df6",
+      "entity_version": null,
+      "source_id": "S21",
+      "source_sha256": "ccfb46b4c954cb12be2758e55bb71b9be5733d23ef9f3508a12f47a92556ad72",
+      "published_job_id": "f625ec359eafcf1deb272d129d65b2e72e1d678547bd577452ef0b6082764fc1",
+      "requested_start_utc": "2026-09-12T04:00:00+00:00",
+      "requested_end_utc": "2026-09-12T07:00:00+00:00",
+      "variables": {
+        "temperature_2m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "relative_humidity_2m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "precipitation": {
+          "aggregation": "preceding_hour_sum",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00",
+          "interval_start_utc": "2026-09-10T23:00:00+00:00",
+          "interval_end_utc": "2026-09-13T23:00:00+00:00"
+        },
+        "wind_speed_10m": {
+          "aggregation": "instant",
+          "sample_count": 72,
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-11T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-13T23:00:00+00:00"
+        }
+      },
+      "status": "complete",
+      "publication_policy": "prototype_model_point_reference",
+      "operational_eligible": false
+    },
+    "missing_information": [
+      "Upstream model issue/run identity and independently validated local representativeness"
+    ],
+    "eligibility": {
+      "prototype_numeric": true,
+      "operational": false
+    },
+    "limitations": [
+      "Model grid forecasts are not station observations or district averages.",
+      "Source issue/run freshness and local representativeness remain unverified."
+    ],
+    "provider_calls": 0,
+    "answer_id": "a5fe0b9ae4797d5f9e50476704a1493e7e95c5c99c5084f4c3180f2cf5e00409",
+    "evidence_mode": "historical_saved_response_replay"
+  }
+}

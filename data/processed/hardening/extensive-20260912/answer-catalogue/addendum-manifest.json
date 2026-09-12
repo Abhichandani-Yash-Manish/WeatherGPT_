@@ -1,0 +1,34 @@
+{
+  "schema_version": "answer-catalogue-addendum-v1",
+  "created_at_utc": "2026-09-12T08:47:02.467737+00:00",
+  "report": "docs/11-extensive-validation-and-rag-gate.md",
+  "report_sha256": "bee31f8f112b323bbc14e9ff1f3bf6c5f95aa5f8ef02a8dbfbacf4c691d61619",
+  "inputs": {
+    "data/processed/hardening/extensive-20260912/workflow-replay/answers.json": "30a6b58c61cd71955eedeb34a04fd2d776c38aa3bcc84468ded478aea5c1f0a6",
+    "data/processed/hardening/extensive-20260912/rag-replay/contexts.json": "2815b206360229329700a01a694ad36cf5857356fccedcd8efa83fd8fc36802b",
+    "data/processed/hardening/extensive-20260912/rag-replay/current-store-status.json": "7a0842a463a7344c40fc381417e9f11c12f033de159644749fede6521d8a23f7",
+    "data/processed/hardening/answers-batch-four-20260912/live/answer.json": "99cec5700937e8ac0e4f0b5484cebed8ccfe0a83ea5e52856522f68fc2fa02f9",
+    "data/processed/hardening/extensive-20260912/answer-catalogue/automated-test-answers.json": "c58edb07889c3612f2e6c6034c7b2e719549a66d9fcf7a6a5616c67c99aea6f4",
+    "data/processed/hardening/extensive-20260912/answer-catalogue/capture-summary.json": "87409ca83fb7f607b5dea2ea1d35f4057166fd7f60d4d1ab717810dbfcdfc825",
+    "data/processed/hardening/extensive-20260912/answer-catalogue/capture-tests.txt": "773e28378e03ac0acb045bcd5d2d5a316a0488d836c4277b2c360953849c05eb"
+  },
+  "counts": {
+    "saved_workflow_answers": 16,
+    "earlier_live_answer": 1,
+    "rag_responses": 6,
+    "automated_test_answer_responses": 85,
+    "total_recorded_responses": 108
+  },
+  "tests_rerun": {
+    "tests_run": 178,
+    "tests_passed": true,
+    "answer_responses_captured": 85,
+    "tests_producing_answers": 33,
+    "note": "New offline capture of actual automated test responses; synthetic fixture values are not weather observations or live forecasts."
+  },
+  "scope": "Actual recorded answer strings appended verbatim. Original frozen checkpoint preserved. No new weather retrieval or LLM call.",
+  "reproduction_scripts": {
+    "data/processed/hardening/extensive-20260912/answer-catalogue/capture_test_answers.py": "bce19a268b58d3093ee47801a6039c2214832cb4987c4d604cda9c280c4168b4",
+    "data/processed/hardening/extensive-20260912/answer-catalogue/append_answer_catalogue.py": "64affb3112d7ec2bb9a64a6ac080e1efabe8869e3908b111f6765a88cdb338bb"
+  }
+}

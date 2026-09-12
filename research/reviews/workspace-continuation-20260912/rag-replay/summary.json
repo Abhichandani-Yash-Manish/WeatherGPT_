@@ -1,0 +1,14 @@
+{
+  "historical_replay_statuses": {
+    "selected_ahmedabad": "eligible_prototype",
+    "ambiguous_ahmedabad": "abstain",
+    "split_rain_interval": "abstain",
+    "crop_advice": "abstain",
+    "official_warning": "abstain"
+  },
+  "current_store_status": "abstain",
+  "current_answer_status": "stale",
+  "real_provider_calls": 0,
+  "llm_calls": 0,
+  "scope": "Evidence gate only. No language-model generation or unrestricted document retrieval has been evaluated."
+}

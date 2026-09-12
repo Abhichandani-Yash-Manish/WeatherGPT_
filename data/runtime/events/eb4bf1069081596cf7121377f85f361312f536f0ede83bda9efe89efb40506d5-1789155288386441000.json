@@ -1,0 +1,10 @@
+{
+  "source_id": "S19",
+  "url": "https://aviationweather.gov/api/data/taf?ids=VAAH%2CVIDP%2CVABB%2CVOMM%2CVECC%2CVEGT&format=json",
+  "retrieved_at_utc": "2026-09-11T19:34:48.386414+00:00",
+  "http_status": 200,
+  "content_type": "application/json; charset=utf-8",
+  "bytes": 15759,
+  "sha256": "84e7ee7f633c529f9a22857cc4e54a0772330f64c769f8aa3c690cec9b54c26e",
+  "blob": "blobs/84e7ee7f633c529f9a22857cc4e54a0772330f64c769f8aa3c690cec9b54c26e.bin"
+}

@@ -1,0 +1,4 @@
+# Tested dependencies for PDF extraction and warning-geometry validation.
+# The national climate-only pipeline needs neither package.
+pypdf==6.10.2
+shapely==2.0.7

@@ -1,0 +1,34 @@
+{
+  "status": "single_source_candidate",
+  "candidates": [
+    {
+      "attributes": {
+        "district_representativeness": "unverified",
+        "reported_wmo_id": "42647"
+      },
+      "crs": "EPSG:4326",
+      "effective_dates_known": false,
+      "effective_from": null,
+      "effective_to": null,
+      "entity_id": "17055a7ded3810b2117b6aec1533e02f44aa337ce9d0e400241ad4c1a35b59b6",
+      "evidence": {
+        "artifact": "aviation-stationinfo.json",
+        "locator": "$[0]",
+        "retrieved_at_utc": "2026-09-11T19:34:48.388427+00:00",
+        "sha256": "ec46f4110f08e812da0d446a31d431906593b8e441489237b6ec10c94dcb755e",
+        "source_id": "S20",
+        "url": "https://aviationweather.gov/api/data/stationinfo?ids=VAAH%2CVIDP%2CVABB%2CVOMM%2CVECC%2CVEGT&format=json"
+      },
+      "geometry_status": "valid_source_geometry",
+      "kind": "airport",
+      "label": "Ahmadabad/Patel Intl",
+      "namespace": "S20",
+      "source_code": "VAAH",
+      "source_locator": "$[0]",
+      "status": "source_record",
+      "version": "ec46f4110f08e812da0d446a31d431906593b8e441489237b6ec10c94dcb755e"
+    }
+  ],
+  "administrative_mapping": "not_established_by_name_search",
+  "limitation": "No fuzzy, transliteration or cross-provider identity inference; unknown effective dates fail dated resolution."
+}

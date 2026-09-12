@@ -1,0 +1,49 @@
+{
+  "status": "blocked",
+  "eligible": false,
+  "reasons": [
+    "Spatial applicability not validated",
+    "Temporal applicability not validated",
+    "Publication policy: reference_only",
+    "Publisher freshness: unknown",
+    "Assessment freshness deadline unknown or expired"
+  ],
+  "coverage": {
+    "assessed_at": "2026-09-12T05:42:51.005429+00:00",
+    "coverage_id": "e0ca00baf8620e9cde6e35b48291ab90319bc1d157a81e4f38f9517690dbb79b",
+    "entity_id": "e62f2ee5a1a1c8fbe3136f3afd72a208bf7409d7d11fcfdc6e48bd498d416775",
+    "evidence": {
+      "blob": "blobs/d7501bfb4ae0586e280f15788aceb93ba2b8c42ed57ee4181f4943001b6930a5.bin",
+      "bytes": 18936941,
+      "checked_at_utc": "2026-09-11T19:48:49.638395+00:00",
+      "content_type": "application/json;charset=utf-8",
+      "delivery": "cache",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-09-11T19:35:16.854798+00:00",
+      "sha256": "d7501bfb4ae0586e280f15788aceb93ba2b8c42ed57ee4181f4943001b6930a5",
+      "source_id": "S15",
+      "url": "https://reactjs.imd.gov.in/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=imd%3Adistrict_warnings_india&srsname=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=2000"
+    },
+    "expected": 1,
+    "fetched": 1,
+    "freshness_deadline": null,
+    "missing": 0,
+    "not_applicable_reason": null,
+    "notes": [
+      "Counts source features, not current administrative districts or active alerts.",
+      "Day validity and CAP lifecycle unresolved. No alert eligibility."
+    ],
+    "policy": "reference_only",
+    "product": "official_warning_snapshot",
+    "quarantined": 0,
+    "source_freshness": "unknown",
+    "source_id": "S15",
+    "spatial": "source_identity",
+    "temporal": "unresolved",
+    "validated": 1,
+    "variable": "source_feature",
+    "version": "3ec6669143a0db82203a3dca470908047ebc2d6b199c44f8548fd80e253b22d2",
+    "window_end": null,
+    "window_start": null
+  }
+}

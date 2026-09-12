@@ -1,0 +1,8 @@
+{
+  "at_utc": "2026-09-12T15:48:46.849127+00:00",
+  "page_http_status": 200,
+  "answer_status": "prototype_answer",
+  "context_status": "eligible_prototype",
+  "answer_provider_calls": 0,
+  "verification": "HTTP only, not browser visual QA"
+}

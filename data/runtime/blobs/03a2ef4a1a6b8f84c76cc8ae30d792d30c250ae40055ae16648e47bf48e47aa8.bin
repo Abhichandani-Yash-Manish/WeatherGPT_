@@ -1,0 +1,1 @@
+<br/><select class='form-select mySelection' onchange='selectDistrict(this.value);'><option>Select district name here ...</option><option value="Nicobar"> Nicobar </option><option value="North And Middle Andaman"> North And Middle Andaman </option><option value="South Andaman"> South Andaman </option></select><div id="txtHintd"></div>

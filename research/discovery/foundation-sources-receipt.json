@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "items": [
+    {
+      "id": "foundation",
+      "title": "Data foundation checks and sources",
+      "queries": [
+        {
+          "id": "checkpoint-validation",
+          "source": {
+            "label": "WeatherGPT recorded foundation checkpoint",
+            "files": [
+              {
+                "label": "foundation-checkpoint.ipynb"
+              },
+              {
+                "label": "foundation-checkpoint-summary.json"
+              },
+              {
+                "label": "smoke-report.json"
+              },
+              {
+                "label": "tests.txt"
+              },
+              {
+                "label": "ahmedabad-reconciliation.json"
+              },
+              {
+                "label": "readiness.json"
+              }
+            ],
+            "links": [
+              {
+                "label": "IMD district farmer bulletins",
+                "url": "https://mausam.imd.gov.in/responsive/agromet_adv_ser_district_current_en.php"
+              },
+              {
+                "label": "RSMC sea-area bulletins",
+                "url": "https://rsmcnewdelhi.imd.gov.in/sea-area-bulletin.php"
+              },
+              {
+                "label": "AWC API",
+                "url": "https://aviationweather.gov/data/api/"
+              },
+              {
+                "label": "Open-Meteo GFS documentation",
+                "url": "https://open-meteo.com/en/docs/gfs-api"
+              },
+              {
+                "label": "Original IMD historical rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf"
+              }
+            ],
+            "caveats": [
+              "Checks recorded on 11 September UTC / 12 September 2026 IST; cached deliveries are explicitly identified in individual samples.",
+              "17 representative retrievals returned 14 ok, two reference_only and one needs_selection results. Zero adapter errors is not zero validation gaps.",
+              "National and specialist operational acceptance is incomplete. Invalid geometry, expired alerts and missing values are retained or quarantined.",
+              "698 advisory directory entries are not 698 verified current bulletins.",
+              "Only Ahmedabad was reconciled against the original district rainfall publication; reuse restrictions remain."
+            ]
+          },
+          "reportingPeriod": "12 September 2026 IST checkpoint",
+          "columns": [
+            "check",
+            "observed"
+          ],
+          "rows": [
+            {
+              "check": "source entries",
+              "observed": "59"
+            },
+            {
+              "check": "tracked evidence assets",
+              "observed": "206"
+            },
+            {
+              "check": "representative smoke checks",
+              "observed": "17"
+            },
+            {
+              "check": "smoke errors",
+              "observed": "0"
+            },
+            {
+              "check": "warning source features",
+              "observed": "764"
+            },
+            {
+              "check": "warning accepted features",
+              "observed": "742"
+            },
+            {
+              "check": "warning quarantined features",
+              "observed": "22"
+            },
+            {
+              "check": "cap messages",
+              "observed": "9"
+            },
+            {
+              "check": "cap time eligible info blocks",
+              "observed": "0"
+            },
+            {
+              "check": "district rows",
+              "observed": "60568"
+            },
+            {
+              "check": "historical district series",
+              "observed": "640"
+            },
+            {
+              "check": "district missing month cells",
+              "observed": "15817"
+            },
+            {
+              "check": "ahmedabad values reconciled",
+              "observed": "1870"
+            },
+            {
+              "check": "national climate records",
+              "observed": "4216"
+            },
+            {
+              "check": "tests passed",
+              "observed": "30"
+            },
+            {
+              "check": "advisory listed regions",
+              "observed": "36"
+            },
+            {
+              "check": "advisory listed district entries",
+              "observed": "698"
+            },
+            {
+              "check": "sea area pdf links",
+              "observed": "2"
+            },
+            {
+              "check": "coastal pdf links",
+              "observed": "15"
+            },
+            {
+              "check": "operational ready",
+              "observed": "False"
+            }
+          ],
+          "methods": [
+            {
+              "language": "python",
+              "code": "\"\"\"Offline verification and reproducible summary of the frozen handoff evidence.\"\"\"\nimport json,hashlib,sqlite3,re\nfrom pathlib import Path\nROOT=Path(__file__).resolve().parents[1]\ndef audit():\n def read(p):return json.loads((ROOT/p).read_text())\n reg=read('data/registry/sources.json');manifest=read(reg['foundation_checkpoint']);out=Path(reg['foundation_checkpoint']).parent\n for path,digest in {**manifest['files'],**manifest['implementation_files']}.items():\n  assert hashlib.sha256((ROOT/path).read_bytes()).hexdigest()==digest,path\n smoke=read(out/'smoke-report.json');assert len(smoke['results'])==17\n assert not any(x['status']=='error' for x in smoke['results'])\n warning=read(out/'national-warning-snapshot.json');assert warning['count']+len(warning['coverage']['quarantined'])==warning['coverage']['source_features']\n cap=read(out/'cap-messages.json');active=sum(bool(info['active_by_time_and_status']) for r in cap['records'] for info in r['info'])\n district=Path(manifest['district_build']['directory']);a=read(district/'audit.json')\n with sqlite3.connect((ROOT/district/'districts.sqlite').as_uri()+'?mode=ro',uri=True) as c:\n  rows,series=c.execute('select count(*),count(distinct series_id) from rainfall').fetchone()\n  assert c.execute('PRAGMA integrity_check').fetchone()[0]=='ok'\n assert (rows,series)==(a['rows'],a['series'])\n reconciliation=read('research/discovery/evidence/foundation-20260912/ahmedabad-reconciliation.json')\n assert not reconciliation['differences'] and not reconciliation['extraction_problems']\n directory=read(out/'advisory-directory.json')\n assert len(directory['results'])==directory['listed_regions'] and not directory['errors']\n assert sum(x['count'] for x in directory['results'])==directory['listed_district_entries']\n with sqlite3.connect((ROOT/manifest['national_build']/'climate.sqlite').as_uri()+'?mode=ro',uri=True) as c:\n  national_count=c.execute('select count(*) from climate_records').fetchone()[0]\n test_count=int(re.search(r'Ran (\\d+) tests',(ROOT/out/'tests.txt').read_text())[1])\n result={'source_entries':len(reg['products']),'tracked_evidence_assets':len(read('data/registry/assets.json')['files']),'representative_smoke_checks':len(smoke['results']),'smoke_errors':0,'smoke_statuses':{s:sum(r['status']==s for r in smoke['results']) for s in sorted({r['status'] for r in smoke['results']})},'warning_source_features':warning['coverage']['source_features'],'warning_accepted_features':warning['count'],'warning_quarantined_features':len(warning['coverage']['quarantined']),'cap_messages':cap['count'],'cap_time_eligible_info_blocks':active,'district_rows':rows,'historical_district_series':series,'district_missing_month_cells':a['missing_month_cells'],'ahmedabad_values_reconciled':reconciliation['numeric_cells_compared'],'national_climate_records':national_count,'tests_passed':test_count,'advisory_listed_regions':directory['listed_regions'],'advisory_listed_district_entries':directory['listed_district_entries'],'sea_area_pdf_links':read(out/'marine-catalog-sea.json')['count'],'coastal_pdf_links':read(out/'marine-catalog-coastal.json')['count'],'operational_ready':read('data/registry/readiness.json')['operational_ready'],'limitations':'Representative retrieval and adapter tests, not exhaustive national coverage or scientific/operational validation.'}\n return result\nif __name__=='__main__':print(json.dumps(audit(),indent=2))\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

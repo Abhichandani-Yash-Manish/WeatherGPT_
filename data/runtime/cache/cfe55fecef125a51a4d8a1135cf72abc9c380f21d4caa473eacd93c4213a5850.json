@@ -1,0 +1,10 @@
+{
+  "source_id": "S57",
+  "url": "https://mausam.imd.gov.in/responsive/agrometinformation/district_current_en_get.php?s=Manipur&step1=true",
+  "retrieved_at_utc": "2026-09-11T19:41:41.797171+00:00",
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "bytes": 580,
+  "sha256": "33ed7048f39eb081dfe9b65d39bcbb7fa8a62c5415d11c5e1d44c9a2f5bc2135",
+  "blob": "blobs/33ed7048f39eb081dfe9b65d39bcbb7fa8a62c5415d11c5e1d44c9a2f5bc2135.bin"
+}

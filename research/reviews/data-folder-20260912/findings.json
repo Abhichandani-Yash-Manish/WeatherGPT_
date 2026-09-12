@@ -1,0 +1,78 @@
+{
+  "rainfall_coverage": {
+    "receipt_start": "2026-09-12T00:00:00+00:00",
+    "receipt_end": "2026-09-15T00:00:00+00:00",
+    "actual_first_rain_interval_start": "2026-09-11T23:00:00+00:00",
+    "actual_last_rain_interval_end": "2026-09-14T23:00:00+00:00",
+    "explanation": "The shared receipt window describes sample labels; preceding-hour rain starts and ends one hour earlier. It cannot certify complete rain accumulation over that window."
+  },
+  "future_job_masks_failed_refresh": {
+    "before_future_enqueue": "refresh_failed_or_missed",
+    "after_future_enqueue": "prototype_snapshot",
+    "reported_latest_state": "pending",
+    "published_version_unchanged": true
+  },
+  "incomplete_backup_accepted": {
+    "restore_returned_success": true,
+    "restored_tables": []
+  },
+  "district_profile": {
+    "rows": 60568,
+    "series": 640,
+    "min_year": 1901,
+    "max_year": 2010,
+    "missing_months": 15817,
+    "series_with_missing_months": 555,
+    "series_with_internal_missing_years": 329,
+    "rows_by_quality_flag": {
+      "missing_months": 5018,
+      "annual_sum_mismatch": 1,
+      "ond_sum_mismatch": 1
+    },
+    "most_missing_months_by_source_state": [
+      [
+        "Uttar Pradesh",
+        2929
+      ],
+      [
+        "Assam",
+        1030
+      ],
+      [
+        "Orissa",
+        1005
+      ],
+      [
+        "Bihar",
+        975
+      ],
+      [
+        "Madhya Pradesh",
+        925
+      ],
+      [
+        "Arunachal Pradesh",
+        794
+      ],
+      [
+        "West Bengal",
+        787
+      ],
+      [
+        "Jammu & Kashmir",
+        778
+      ]
+    ]
+  },
+  "inventory": {
+    "files": 702,
+    "logical_bytes": 342353556,
+    "top_level_bytes": {
+      "runtime": 30417919,
+      "registry": 482350,
+      "processed": 298251700,
+      "raw": 13201007,
+      "reference": 580
+    }
+  }
+}

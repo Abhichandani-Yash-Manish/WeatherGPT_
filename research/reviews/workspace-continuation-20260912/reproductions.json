@@ -1,0 +1,25 @@
+{
+  "mode": "synthetic_offline_review",
+  "provider_calls": 0,
+  "llm_calls": 0,
+  "findings": [
+    {
+      "id": "WC01",
+      "worker_state": "failed",
+      "newer_failed_job": "f2c5b378756e43b17ac1328373c5ac5152eecd4f6ac7306d8fbf6872825cc9c5",
+      "answer_status": "prototype_answer",
+      "rag_status": "eligible_prototype",
+      "reported_refresh_health": "succeeded",
+      "gap_reproduced": true,
+      "expected": "A newer failed due collection for this point must be disclosed; ordinary RAG evidence must abstain."
+    },
+    {
+      "id": "WC02",
+      "answer_candidate_count": 2,
+      "rag_status": "abstain",
+      "candidate_ids_present_in_packet": false,
+      "gap_reproduced": true,
+      "expected": "Keep numeric abstention, but return structured candidate choices or an explicit resolver action."
+    }
+  ]
+}

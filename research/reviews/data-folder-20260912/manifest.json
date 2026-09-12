@@ -1,0 +1,34 @@
+{
+  "reviewed_at_utc": "2026-09-12T06:59:41.336990+00:00",
+  "scope": "Local data and current architecture review; offline weather checks; additional synthetic probes.",
+  "weather_provider_calls": 0,
+  "production_code_changes": false,
+  "existing_data_changes": false,
+  "artifacts": {
+    "research/reviews/data-folder-20260912/registry-check.json": "8832cd9a6226ad113d5b753232fc511c91fd6d79ab206ff566e8ec4a22c93da8",
+    "research/reviews/data-folder-20260912/tests.txt": "981a24adbe5befa7dc9ac4cc043bb91cc1b61bb03bc2ab8262b63b2f57790ed0",
+    "research/reviews/data-folder-20260912/reproduce.py": "b1d8faab56bc91c2df7750c73f087b65fc2e1042d1f23485821c15bd83335ef4",
+    "research/reviews/data-folder-20260912/tracker-check.txt": "03bf7b2c69e72be803aebfbb54923363104275a9f6e6069b5ca4034da8762359",
+    "research/reviews/data-folder-20260912/storage-check.json": "fb269c8cfced011a8600bb18f88ae515f8164b65154a8bb140a0c4b60520748b",
+    "research/reviews/data-folder-20260912/checkpoint-check.json": "62098fc34c8b001acdaacea460f758abf65563572641d43b58232c1bbd77a62a",
+    "research/reviews/data-folder-20260912/geography-check.json": "0d4da17c11227c9b31f8f4a16d422b880e2065a00375632995fca00aadbb4829",
+    "research/reviews/data-folder-20260912/findings.json": "cf10790cc9141447daeaac98db033e090c730e9a839a20d06c7f1856c9fee3cf",
+    "research/reviews/data-folder-20260912/environment.txt": "47a8656ea4d483b6f78c64bed8ddfa1849667f0b17feb1180e3f08c8218f66a6",
+    "research/reviews/data-folder-20260912/review.md": "302ea305dad78b63730ce2ea8907db49f9c9b380b06f80b5554ca4b25b5b37b2",
+    "research/reviews/data-folder-20260912/rehearsal.txt": "540c0f3491b9a423ad11c19b1127e80f99fc714d4a73fccc0d0ad07f55ffcfc7"
+  },
+  "reviewed_implementation": {
+    "weathergpt_data/ingestion.py": "b469cf3928e8c1e8378dc7f56aa60a6a69f01b57f31ec8fd80285f6ddfe3805f",
+    "weathergpt_data/bulletins.py": "bde9e88b732c98596dead50455adbcc0c460a66d1f95e2c242d7874191dab755",
+    "weathergpt_data/geography.py": "9738c3c3e118153b65e3af31292371c32409e368aa0bcbf3d49289598ba59f42",
+    "weathergpt_data/transport.py": "8a7259b1670049433543c899df5316a8583c7785b46062a88f3481668b55e9b3",
+    "weathergpt_data/__init__.py": "3a881f00637804f2bd6a5ecb1f882993251a93b9f64bee6b384e6217ff7a7174",
+    "weathergpt_data/foundation.py": "f8c527421824c555ef35b7449c56786b25aa4a1f38e623cb72c58fe45a338fb1",
+    "weathergpt_data/coverage.py": "72b8f509c08df869869792b5facccae9a8a7b80d35d948a48318dd1acbeb06d8",
+    "weathergpt_data/advisories.py": "8b7d2515259c869b1965fcfa9cddfda0c2015228cf483bb13c21beb79585dc40",
+    "weathergpt_data/districts.py": "689727597275e8fb9a76567cbd55640567db6d52e28255c5db5c55231d97d592",
+    "weathergpt_data/climate.py": "ec5d10e72a4d16fa5eabbb4812c96890decee086214743ac7aa2d995a975df42",
+    "weathergpt_data/__main__.py": "568a7e127a77cb16f53940c60280bfce62281f6a8e8cd8960db098757fe5e3e2",
+    "weathergpt_data/adapters.py": "858c689c753e237598424627200f8bd88f092ee70d555a8f747ebf66ab59f623"
+  }
+}

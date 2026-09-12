@@ -1,0 +1,43 @@
+ 
+ 
+ 
+About this CD-ROM  
+ 
+This CD-ROM contains actual monthly, annual and sea sonal rainfall series for 110 years ( 1901 – 2010 )  along with their 
+mean, standard deviation and coefficient of variati on values for 100 years ( 1901 – 2000 ) of all Indi a, Four Homogeneous 
+Regions, Met Sub-divisions, States and Districts.  
+This CD-ROM is basically designed for the use in pe rsonal computers with the Window Operating System.  This CD-ROM 
+will automatically open with the AUTORUN facility. The data are in a tabular form as simple text (ASCI I). The data sheet 
+can be printed for your use. The data sheet can be exported to EXCEL spread sheet or as a MS Word file . If AUTORUN 
+facility does not work, the CD-ROM data can be acce ssed through Microsoft Explorer by opening the e-bo ok file. 
+METHODOLOGY USED IN THE PREPARATION OF DISTRICTS, S TATES, SUBDIVISIONS AND ALL INDIA MONTHLY 
+RAINFALL  SERIES  : 
+ 
+ 
+a. Monthly Rainfall    : It is the sum of daily rainfall considering all the days in a month. If rainfall data of even a 
+single day in the month is missing, the monthly rainfall data of that whole month is not considered and is left 
+blank. 
+ 
+b. District series     : It is calculated by taking simple arithmetic mean of the monthly rainfall data of all the   
+available 
+                stations  in the district for a particular month. 
+ 
+ c. Subdivision series   & State series  : It is calculated by district area weighted method. 
+        
+ d. All India series  : It is calculated by subdivision area weighted method.  
+  
+ e. All rainfall values are in mm 
+ 
+NOTE  1 :  The data in excel format is also available in this CD-ROM. 
+           2 : All the District / State / Sub-division data series is computed based on recent geographical bifurcation. 
+           3 :  The following notations are used in this CD – ROM 
+ 
+  JF      -  January + February ( Winter Season ) 
+  MAM  -  March + April + May ( Pre Monsoon Season ) 
+  JJAS -  June + July + August + September ( Monsoo n Season ) 
+  OND -  October + November + December ( Post Monso on Season )  
+ 
+DISCLAIMER & LIMITATIONS  :  
+The data has been checked and the authenticity assured within limitations of human errors.   
+The India Meteorological  Department is not respons ible for any errors, omissions or representations o n any of our pages or on any links on any of our 
+pages.The India Meteorological  Department will not be responsible for any adverse implication due to the use of this data. 

@@ -1,0 +1,66 @@
+{
+  "schema_version": "foundation-v1",
+  "family": "advisory_document",
+  "source_id": "S57",
+  "status": "reference_only",
+  "records": [
+    {
+      "physical_page": 1,
+      "text": "Gramin Krishi Mausam Sewa\nAgromet Advisory Bulletin for KAMRUP District\nAssam Agricultural University\nJorhat, Assam\nAgromet Advisory Bulletin\nDate : 2026-09-11\nWeather Forecast of District KAMRUP (Assam) Issued On : 2026-09-11 (Valid Till 08:30 IST of the next 5 days)\nParameter 2026-09-12 2026-09-13 2026-09-14 2026-09-15 2026-09-16\nRainfall(mm) 17.0 8.3 2.7 2.2 10.6\nTmax(°C) 35.5 36.6 36.3 36.5 34.8\nTmin(°C) 26.1 26.3 26.2 25.9 26.2\nRH-I(%) 86 84 81 79 83\nRH-II(%) 80 77 75 74 77\nWindSpeed(kmph) 2 6 1 1 4\nWindDirection(Degree) 68 263 63 207 236\nCloudCover(Octa) 5 4 3 3 4\nWarning Thunderstorms &Lightning, Squalletc\nThunderstorms &Lightning, Squalletc\nThunderstorms &Lightning, Squalletc\nNoWarning\nThunderstorms &Lightning, Squalletc\nForecast Summary:\nForecast received from Regional Meteorological Centre (RMC), Guwahati for the coming five daysstated that the weather will be partly cloudy sky with possibility of getting light to moderate rainfall.Moreover, temperature will be high in day time and night time and weather will be wet in condition.Moreover, Extended range forecast (ERFS) received from IMD suggests that rainfall, maximum andminimum temperature will normal over Assam-Meghalaya region during 13th September to 19thSeptember, 2026.\nWeather Warnings (Valid Till 08:30 IST of the next day)\nDuring the five days from 12.09.2026 to 16.09.2026 thunderstorms, lightning and squall may beobserved in the district and except 15.09.2026.\nLikely impacts of weather warnings on Agriculture and associated Agromet advisories\nNA\nGeneral Advisory:\nDue to rise of air temperature use ORS (Oral rehydration solution), homemade drink like lassi, lemmonwater, buttermilk etc to keep yourself hydrated.\nSMS Advisory:",
+      "district_requested": "Kamrup",
+      "state_requested": "Assam",
+      "source_locator": "physical PDF page 1",
+      "extraction_status": "page_text_only_not_crop_structured"
+    },
+    {
+      "physical_page": 2,
+      "text": "Those farmers who used to cultivate the winter vegetables regularly at the same place are advised to testtheir soil before the winter vegetables is grown.\nCrop Specific Advisory:\nCrop (Stage) Crop Specific Advisory\nRICE (Tillering)\nDue to favourable weather condition there may be seen swarming caterpillarin the Sali rice field. To control the pest apply Fipronil 5 SC @1.5 to 2ml/litof water in the clear weather condition only. Farmers are advised to take theadvantages of fair weather condition by top dressing of Urea @ 4.5 kg/bighaat tillering stage in Sali rice field. Before fertilizer application, go forwedding by paddy weeder.\nMAIZE (Sowing)\nFor Rabi maize optimum time of sowing is mid of September to mid ofOctober. Therefore, farmers are suggested to select hybrid or compositevariety for cultivation. Well drained sandy loam soil is most preferable formaize cultivation. Plough the field thoroughly to obtain deep, fine and firmtilth. Laddering should be done properly for leveling a well as to conservesoil moisture.\nHorticulture Specific Advisory:\nHorticulture (Stage) Horticulture Specific Advisory\nBRINJAL (Nursery BedPreparation)\nThose farmers who had sown the seeds of winter vegetable in the nursery bedare suggested to monitor the seed beds as most important disease in thenursery bed is the damping off. Young seedling shows a rot in the crown, laterthe tissue become soft and constricted which lead the seedling wilt and fallover. To manage the diseases, use soil solarization in the nursery bed. Moistthe prepared nursery bed then cover with white plastic (250-300 gauge) sothat it is air tight for up to 21 days. After that remove the plastic and leave thebed for up to 3 days. Secondly, if symptoms of damping off appear, thenspray Azoxystrobin @ 0.4 gm/liter of water or Trifloxystrobin in nurseryseedling @ 0.6 gm/litter of water.\nCAULIFLOWER(Nursery/ seedling)\nDue to sufficient moisture in the soil and no heavy rainfall is predicted for thecoming week therefore sowing of seeds of early cauliflower varieties may becontinued. The recommended early varieties are Early Kunwari, Pusa Dipali,Pusa Katki etc. To transplant one bigha of land sows 85 gram seeds in theseedbed. Suitable protection like (bamboo net or polyethene cover) may begiven to protect the seedbed from rain.\nRADISH (Sowing)\nThose farmers who are interested for sowing of early radish variety seed inthe field are suggested to sow the seed in the main field as there is no chanceof heavy rainfall for the coming five days. Moreover, land should be preparedto a fine tilth and FYM to be applied.\nPoultry Specific Advisory:\nPoultry Poultry Specific Advisory\nCHICKEN\nDuring the rainy season fowl pox is a major problem in poultry. Healthy birdshould be vaccinated within age of 6th to 10th week in wing web of birds toprovide them lifetime immunity. Isolate or cull infected birds from the flock.Also, get rid of the stagnant water around the farm to control the vectors likemosquitoes.\nLikely impacts of weather warnings (General)\nNA\nImpact based advisories (General)",
+      "district_requested": "Kamrup",
+      "state_requested": "Assam",
+      "source_locator": "physical PDF page 2",
+      "extraction_status": "page_text_only_not_crop_structured"
+    },
+    {
+      "physical_page": 3,
+      "text": "NA\nFarmers are advised to download Unified “Mausam” and \"Meghdoot\" android application onmobile for Weather forecast and weather based Agromet Advisories and \"Damini\" androidapplication for forecast of Thunderstorm and lightening.\nMausam MobileApp link: https://play.google.com/store/apps/details/\nMeghdoot MobileApp link: https://play.google.com/store/apps/details\nDamini MobileApp link : https://play.google.com/store/apps/details",
+      "district_requested": "Kamrup",
+      "state_requested": "Assam",
+      "source_locator": "physical PDF page 3",
+      "extraction_status": "page_text_only_not_crop_structured"
+    }
+  ],
+  "count": 3,
+  "provenance": {
+    "source_id": "S57",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Assam&district=Kamrup&language=English",
+    "retrieved_at_utc": "2026-09-11T19:38:53.415126+00:00",
+    "http_status": 200,
+    "content_type": "application/pdf",
+    "bytes": 646836,
+    "sha256": "f5e9fbe91b5fe14b3b9a3290517696b279cf93b327c4067b9c7ee0225df71e07",
+    "blob": "blobs/f5e9fbe91b5fe14b3b9a3290517696b279cf93b327c4067b9c7ee0225df71e07.bin",
+    "delivery": "network",
+    "checked_at_utc": "2026-09-11T19:38:53.416748+00:00"
+  },
+  "limitations": [
+    "Original page context preserved. Crop/stage and issue/validity require structured verification before current advice generation.",
+    "The source selector supplies the document association; verify printed geography before relying on it."
+  ],
+  "coverage": {
+    "requested_state": "Assam",
+    "requested_district": "Kamrup",
+    "selection_provenance": {
+      "source_id": "S57",
+      "url": "https://mausam.imd.gov.in/responsive/agrometinformation/district_current_en_get.php?s=Kamrup&step2=true",
+      "retrieved_at_utc": "2026-09-11T19:37:34.496535+00:00",
+      "http_status": 200,
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 540,
+      "sha256": "b3c30de0f6c92294e140f478a748eef7c39cccb24b821fe6b17090743797a72f",
+      "blob": "blobs/b3c30de0f6c92294e140f478a748eef7c39cccb24b821fe6b17090743797a72f.bin",
+      "delivery": "cache",
+      "checked_at_utc": "2026-09-11T19:38:52.521054+00:00"
+    }
+  },
+  "actionable_advice": false
+}

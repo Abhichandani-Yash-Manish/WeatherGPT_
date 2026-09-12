@@ -1,0 +1,19 @@
+Name                            Stmts   Miss Branch BrPart  Cover
+-----------------------------------------------------------------
+weathergpt_data/__init__.py         0      0      0      0   100%
+weathergpt_data/__main__.py        88     30     46     10    57%
+weathergpt_data/adapters.py       159      7    114     22    89%
+weathergpt_data/advisories.py      51      0     18      5    93%
+weathergpt_data/answers.py        227      3     90     10    96%
+weathergpt_data/bulletins.py       34      0     12      1    98%
+weathergpt_data/climate.py        157      7     60      9    93%
+weathergpt_data/coverage.py        61      2     38      8    90%
+weathergpt_data/districts.py       61      0     36      7    93%
+weathergpt_data/documents.py       12      0      6      0   100%
+weathergpt_data/foundation.py     150      9     68      9    91%
+weathergpt_data/geography.py      126      6     62     10    91%
+weathergpt_data/ingestion.py      375     15    162     40    90%
+weathergpt_data/rag.py             21      0      6      0   100%
+weathergpt_data/transport.py      107      1     40      3    97%
+-----------------------------------------------------------------
+TOTAL                            1629     80    758    134    90%

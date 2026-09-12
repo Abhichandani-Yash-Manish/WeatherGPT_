@@ -1,0 +1,25 @@
+{
+  "checked_at_utc": "2026-09-12T15:43:08.028022+00:00",
+  "mode": "real_local_HTTP_API_and_governed_provider_check",
+  "browser_verified": false,
+  "before_status": "stale",
+  "after_status": "prototype_answer",
+  "context_status": "eligible_prototype",
+  "refresh": {
+    "state": "succeeded",
+    "job_id": "50286de623e32573513447c5fb78b9a352e2db503b15da62223210efa8f4029b",
+    "worker_state": "succeeded",
+    "claims_this_action": 1,
+    "job_provider_attempts": 1,
+    "retry_due_utc_epoch": 1789225200.0,
+    "message": "Collection completed; answer checked against the stored evidence."
+  },
+  "repeat_refresh": {
+    "state": "already_fresh",
+    "provider_attempts": 0,
+    "message": "The stored forecast is still within its serving lifetime."
+  },
+  "answer_provider_calls": 0,
+  "operational_ready": false,
+  "llm_calls": 0
+}

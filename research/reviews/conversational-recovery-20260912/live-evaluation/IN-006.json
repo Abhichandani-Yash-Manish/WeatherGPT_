@@ -1,0 +1,74 @@
+{
+  "id": "IN-006",
+  "question": "Is there any weather warning for Punsari village tonight?",
+  "origin": "included_report",
+  "checked_at_utc": "2026-09-12T16:15:03.799733+00:00",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "86071085-5c1f-49a7-9305-34352f3e64c4",
+    "question": "Is there any weather warning for Punsari village tonight?",
+    "status": "unavailable",
+    "answer": "I cannot verify a current official weather warning for Punsari village tonight (18:30 IST on 2026-09-12 to 06:30 IST on 2026-09-13). The necessary data to confirm the existence, validity, or specific areas of any active warnings is missing. Please note that the absence of available data does not guarantee there is no warning in effect. To proceed, I can provide a point forecast for Punsari village during this window or look up published historical rainfall and temperature data. Which would you prefer?",
+    "facts": [],
+    "citations": [],
+    "notes": [
+      "Tonight defaults to 18:30 IST on 2026-09-12 to 06:30 IST on 2026-09-13."
+    ],
+    "choices": [],
+    "follow_up": "I can help with a point forecast or a published historical rainfall/temperature lookup.",
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-12T16:15:03.799771+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 775,
+        "output_tokens": 314,
+        "duration_seconds": 4.934088166
+      },
+      "generation": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 370,
+        "output_tokens": 143,
+        "duration_seconds": 2.246042,
+        "validation": "numeric-token and evidence-ID checks passed; semantic evaluation remains necessary",
+        "evidence_ids": []
+      },
+      "tools": [],
+      "provider": "local_ollama",
+      "duration_seconds": 7.182
+    },
+    "plan": {
+      "intent": "warning",
+      "language": "en",
+      "places": [
+        {
+          "name": "Punsari",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "start_local": "2026-09-12T18:30:00+05:30",
+      "end_local": "2026-09-13T06:30:00+05:30",
+      "explicit_times": false,
+      "variables": [
+        "wind_speed_10m",
+        "temperature_2m",
+        "precipitation",
+        "relative_humidity_2m"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "assumptions": [
+        "Tonight defaults to 18:30 IST on 2026-09-12 to 06:30 IST on 2026-09-13."
+      ],
+      "clarification": "",
+      "requested_outcome": "Retrieve weather warnings for Punsari village tonight."
+    }
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "record_count": 4216,
+  "records_per_source": {
+    "S25": 2108,
+    "S26": 2108
+  },
+  "years": [
+    1901,
+    2024
+  ],
+  "grain": "source × All India × year × distinct month/season/annual period",
+  "missing_values": 0,
+  "round_trip_cells_checked": 4216,
+  "unique_record_ids": 4216,
+  "rainfall_reconciliations": 620,
+  "rainfall_totals_beyond_rounding_bound": [
+    {
+      "source_id": "S25",
+      "year": 2022,
+      "period_code": "ANNUAL",
+      "published_value": "1257.0",
+      "computed_month_sum": "1257.7",
+      "difference_mm": "-0.7",
+      "rounding_bound_mm": "0.65",
+      "status": "beyond_rounding_bound",
+      "source_row": 123,
+      "source_column": "Annual",
+      "asset_sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90"
+    },
+    {
+      "source_id": "S25",
+      "year": 2023,
+      "period_code": "JJAS",
+      "published_value": "821.6",
+      "computed_month_sum": "822.2",
+      "difference_mm": "-0.6",
+      "rounding_bound_mm": "0.25",
+      "status": "beyond_rounding_bound",
+      "source_row": 124,
+      "source_column": "Monsoon Season Jun-Sep",
+      "asset_sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90"
+    },
+    {
+      "source_id": "S25",
+      "year": 2024,
+      "period_code": "MAM",
+      "published_value": "126.7",
+      "computed_month_sum": "127.2",
+      "difference_mm": "-0.5",
+      "rounding_bound_mm": "0.20",
+      "status": "beyond_rounding_bound",
+      "source_row": 125,
+      "source_column": "Pre-Monsoon Season Mar-May",
+      "asset_sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90"
+    },
+    {
+      "source_id": "S25",
+      "year": 2024,
+      "period_code": "JJAS",
+      "published_value": "935.9",
+      "computed_month_sum": "933.1",
+      "difference_mm": "2.8",
+      "rounding_bound_mm": "0.25",
+      "status": "beyond_rounding_bound",
+      "source_row": 125,
+      "source_column": "Monsoon Season Jun-Sep",
+      "asset_sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90"
+    },
+    {
+      "source_id": "S25",
+      "year": 2024,
+      "period_code": "OND",
+      "published_value": "117.3",
+      "computed_month_sum": "116.9",
+      "difference_mm": "0.4",
+      "rounding_bound_mm": "0.20",
+      "status": "beyond_rounding_bound",
+      "source_row": 125,
+      "source_column": "Post-Monsoon Season Oct-Dec",
+      "asset_sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90"
+    },
+    {
+      "source_id": "S25",
+      "year": 2024,
+      "period_code": "ANNUAL",
+      "published_value": "1206.6",
+      "computed_month_sum": "1204.1",
+      "difference_mm": "2.5",
+      "rounding_bound_mm": "0.65",
+      "status": "beyond_rounding_bound",
+      "source_row": 125,
+      "source_column": "Annual",
+      "asset_sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90"
+    }
+  ],
+  "limitations": [
+    "Monthly, seasonal and annual periods overlap; never sum across period types.",
+    "Source table match is not a scientific homogeneity assessment.",
+    "Historical national aggregates cannot answer district weather or daily dry spells."
+  ]
+}

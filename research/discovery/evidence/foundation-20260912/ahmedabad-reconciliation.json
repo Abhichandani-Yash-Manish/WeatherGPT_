@@ -1,0 +1,19 @@
+{
+  "source_id": "S27",
+  "source_url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+  "pdf_sha256": "829d2145e06750343d05ccfc4b58aeb368202e012d48b872e51897648f97a91e",
+  "csv_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+  "physical_pages": [
+    611,
+    612,
+    613
+  ],
+  "csv_years": 110,
+  "pdf_years_parsed": 110,
+  "numeric_cells_compared": 1870,
+  "differences": [],
+  "extraction_problems": [],
+  "result": "matched",
+  "geography_homogeneity": "not established by transcription comparison",
+  "usage_note": "PDF page 3 contains reuse/redistribution restrictions; public redistribution clearance unresolved."
+}

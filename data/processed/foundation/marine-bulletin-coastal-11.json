@@ -1,0 +1,46 @@
+{
+  "schema_version": "foundation-v1",
+  "family": "official_marine_bulletin",
+  "source_id": "S59",
+  "status": "reference_only",
+  "records": [
+    {
+      "physical_page": 1,
+      "text": "India Meteorological Department/ भारत  मौसम  िव\u0000ान  िवभाग\nCWC AHMEDABAD / सी  . डब\u0000ू  . सी  अहमदाबाद\nCoastal Weather Bulletin\nDAILY TWO Bulletin Valid for 12 hrs from 22 UTC of 2026-09-11 to 10 UTC of 2026-09-12\n \nSynoptic Situation DUE TO STEEP PRESSURE GRADIENT STRONG WINDS ALONG AND OFF\nGUJARAT COASTVERY LIKELY TO PREVAIL.\n \nNorth Gujrath coast\nWind SOUTH WESTERLY/ WEST, 15 - 20 KNOTS GUSTING TO 25 KNOTS\nWeather ISOL RAIN/THUNDERSHOWERS\nVisibility GOOD BECOMING POOR IN RAIN/THUNDERSHOWERS\nSea Condition MODERATE TO ROUGH\nPort Signal NIL AT ALL PORTS\nStorm Surge/Tidal\nWarning NIL\nSouth Gujrath coast\nWind SOUTH WESTERLY/ WEST, 15 - 20 KNOTS GUSTING TO 25 KNOTS\nWeather ISOL RAIN/THUNDERSHOWERS\nVisibility GOOD BECOMING POOR IN RAIN/THUNDERSHOWERS\nSea Condition MODERATE TO ROUGH\nPort Signal NIL AT ALL PORTS\nStorm Surge/Tidal\nWarning NIL\nTime of Issue 21:39 IST of 2026-09-11\n11/09/2026, 21:40 mausam.imd.gov.in/Forecast/coastal_bulletin_new.php?id=3\nhttps://mausam.imd.gov.in/Forecast/coastal_bulletin_new.php?id=3 1/1",
+      "source_locator": "physical PDF page 1",
+      "extraction_status": "text_extracted_reading_order_unverified"
+    }
+  ],
+  "count": 1,
+  "provenance": {
+    "source_id": "S59",
+    "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_f135d3_mausam.imd.gov.in_Forecast_coastal_bulletin_new.php_id_3.pdf",
+    "retrieved_at_utc": "2026-09-11T19:50:36.289040+00:00",
+    "http_status": 200,
+    "content_type": "application/pdf",
+    "bytes": 192774,
+    "sha256": "65be240fa76b093ecb8d0757e276dcbe738ef970b036defaf40938287a5842a4",
+    "blob": "blobs/65be240fa76b093ecb8d0757e276dcbe738ef970b036defaf40938287a5842a4.bin",
+    "delivery": "network",
+    "checked_at_utc": "2026-09-11T19:50:36.289499+00:00"
+  },
+  "limitations": [
+    "Original regional bulletin; structured issue/validity and region matching are not validated.",
+    "Do not infer current navigation or fishing clearance from document availability."
+  ],
+  "coverage": {
+    "catalog_provenance": {
+      "source_id": "S59",
+      "url": "https://rsmcnewdelhi.imd.gov.in/coastal-weather-bulletin.php",
+      "retrieved_at_utc": "2026-09-11T19:50:35.540493+00:00",
+      "http_status": 200,
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 38939,
+      "sha256": "f6531b835e142d269dcdfd67117fb68310cf63d2536c039c9a8c54f322c3afd3",
+      "blob": "blobs/f6531b835e142d269dcdfd67117fb68310cf63d2536c039c9a8c54f322c3afd3.bin",
+      "delivery": "cache",
+      "checked_at_utc": "2026-09-11T19:50:35.552021+00:00"
+    }
+  },
+  "actionable_current_alerts": false
+}

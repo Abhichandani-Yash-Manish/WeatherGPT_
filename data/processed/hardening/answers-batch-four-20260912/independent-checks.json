@@ -1,0 +1,7 @@
+{
+  "legacy_batch_three_backup_restore": "PASS",
+  "live_raw_hash": "PASS",
+  "live_independent_rain_sum_mm": "1.7",
+  "live_selected_intervals": 3,
+  "live_answer_matches_raw": true
+}

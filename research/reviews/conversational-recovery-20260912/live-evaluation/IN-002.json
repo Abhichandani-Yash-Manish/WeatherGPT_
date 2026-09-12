@@ -1,0 +1,107 @@
+{
+  "id": "IN-002",
+  "question": "What is the chance of rain in Vadodara this evening?",
+  "origin": "included_report",
+  "checked_at_utc": "2026-09-12T16:14:43.271039+00:00",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "e6ac0561-1bed-41fb-b6ef-db0500ff6650",
+    "question": "What is the chance of rain in Vadodara this evening?",
+    "status": "needs_clarification",
+    "answer": "No future hourly samples remain in that window. Should I check tomorrow?",
+    "facts": [],
+    "citations": [],
+    "notes": [
+      "Evening default time: 18:30–22:30 IST on 2026-09-12.",
+      "Only the remaining forecast period is included, starting 2026-09-12T22:30:00+05:30."
+    ],
+    "choices": [],
+    "follow_up": null,
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-12T16:14:43.271074+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 776,
+        "output_tokens": 285,
+        "duration_seconds": 4.711938708
+      },
+      "generation": null,
+      "tools": [
+        {
+          "name": "gazetteer_search",
+          "query": {
+            "name": "Vadodara",
+            "state": "",
+            "district": "",
+            "kind": "settlement"
+          },
+          "matches": 1
+        }
+      ],
+      "provider": "local_ollama",
+      "duration_seconds": 4.713
+    },
+    "plan": {
+      "intent": "forecast",
+      "language": "en",
+      "places": [
+        {
+          "name": "Vadodara",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "start_local": "2026-09-12T18:30:00+05:30",
+      "end_local": "2026-09-12T22:30:00+05:30",
+      "explicit_times": false,
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [
+        "rain_probability"
+      ],
+      "assumptions": [
+        "Evening default time: 18:30–22:30 IST on 2026-09-12."
+      ],
+      "clarification": "",
+      "requested_outcome": "Rainfall forecast for Vadodara this evening"
+    },
+    "resolved_points": {
+      "Vadodara": {
+        "id": "1253573",
+        "name": "Vadodara",
+        "latitude": 22.29941,
+        "longitude": 73.20812,
+        "feature": "PPL",
+        "admin1": "State of Gujarāt",
+        "admin2": "Vadodara",
+        "modified": "2026-01-15",
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:1253573",
+        "label": "Vadodara, Vadodara, State of Gujarāt",
+        "coordinates": {
+          "latitude": 22.29941,
+          "longitude": 73.20812
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1253573",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Vadodara"
+      }
+    }
+  }
+}

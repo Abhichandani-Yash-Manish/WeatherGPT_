@@ -1,0 +1,26 @@
+{
+  "mode": "actual_local_Ollama_current_clock",
+  "checked_at_utc": "2026-09-12T16:18:17.547383+00:00",
+  "provided_report_questions": 26,
+  "additional_authored_questions": 10,
+  "statuses": {
+    "needs_selection": 13,
+    "needs_clarification": 8,
+    "unavailable": 3,
+    "partial": 5,
+    "error": 1,
+    "answered": 6
+  },
+  "with_numeric_evidence": 10,
+  "generic_format_responses": 0,
+  "generation_fallbacks": 1,
+  "errors": [
+    "IN-020"
+  ],
+  "limitations": [
+    "Not the missing original 111-case suite.",
+    "Current-clock results differ from the original historical replay.",
+    "Clarifications and partial results are not completed user tasks.",
+    "No claim of scientifically validated weather accuracy or fluent multilingual review."
+  ]
+}

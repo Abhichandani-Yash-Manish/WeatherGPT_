@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Agricultural Meteorology Division</title>
+
+<link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="css/bootstrap.min.css" rel="stylesheet" />
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+<script src="js/jquery-3.7.1.min.js"></script>
+<script src="js/accessibilityOptionsApply.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="referrer" content="no-referrer" />
+<meta name="referrer" content="unsafe-url" />
+<meta name="referrer" content="origin" />
+<meta name="referrer" content="no-referrer-when-downgrade" />
+<meta name="referrer" content="origin-when-cross-origin" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+</head>
+
+
+
+<script type="text/javascript">
+function get_district(selected_dateStr)
+{
+var stat_name=document.getElementById("select_state").value;
+
+var request = $.ajax({
+            type: 'POST',
+            cache: false,
+             url: 'cropAdvisoryDistrictSelect.php',
+              data: {
+                         state_name: stat_name,
+						 date_selected: selected_dateStr
+              },
+             success: function (resp) {
+			
+          document.getElementById("select_dist").innerHTML=resp;
+
+			   }
+
+        });  
+document.getElementById("select_dist").innerHTML="Processing.......";
+}
+function get_category(selected_dateStr){
+var select_dist=document.getElementById("select_dist").value;
+var stat_name=document.getElementById("select_state").value;
+var request = $.ajax({
+            type: 'POST',
+            cache: false,
+             url: 'cropAdvisoryCategorySelect.php',
+              data: {
+                         stat_name : stat_name,
+						 select_dist: select_dist,
+						 date_selected: selected_dateStr
+              },
+             success: function (resp) {
+				document.getElementById("select_cat").innerHTML=resp;
+			   }
+        });  
+document.getElementById("select_cat").innerHTML="Processing.......";
+}
+function get_crop(selected_dateStr){
+	var select_dist=document.getElementById("select_dist").value;
+var stat_name = document.getElementById("select_state").value;
+var category_name = document.getElementById("select_cat").value;
+var request = $.ajax({
+            type: 'POST',
+            cache: false,
+             url: 'cropAdvisoryCropSelect.php',
+              data: {
+                         select_dist: select_dist,
+						 date_selected: selected_dateStr,
+						 stat_name : stat_name,
+						 category_name : category_name
+              },
+             success: function (resp) {
+				document.getElementById("select_crop").innerHTML=resp;
+			   }
+        });  
+document.getElementById("select_crop").innerHTML="Processing.......";
+}
+</script>   
+<body style="background-color:#F0F8FF" onload="javascript:applyAccessibilityOptions()">
+<script>
+    if(top != self) {
+        top.location = self.location;
+    }
+</script>
+<script>
+$(document).ready(function(){
+if(!navigator.onLine)
+{
+alert("Browser  in  offline mode");
+document.body.innerHTML="";
+}
+/*function disableBack()
+{
+window.history.forward()
+}
+window.onload=disableBack();*/
+window.onpageshow=function(evt){if(evt.persisted)disableBack()}
+$(function()
+{
+$(document).bind('contextmenu',function(e){e.preventDefault();});
+});
+});
+</script>
+
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+	<a class="navbar-brand " href="">
+		<img src="images/imd150t.webp" class='150Logo' alt />
+		<img src="images/esso.png" class='essoLogo' alt />
+		<img src="images/IMD_LOGO.png" class='imdLogo' alt />
+	</a>
+
+		
+	<div class="pageTitle ">
+	
+	<div class="headerTitleContainer">
+	    <span class="headerTitle1">Agricultural Meteorology Division / कृषि मौसम विज्ञान प्रभाग</span><br> <!--18px-->
+		<span class="headerTitle2"> Climate Research and Services/ जलवायु अनुसंधान और सेवाएँ</span><br><!--16px-->
+		<span class="headerTitle3">India Meteorological Department / भारत मौसम विज्ञान विभाग</span><br><!--13px-->
+		<span class="headerTitle4">Ministry of Earth Sciences / पृथ्वी विज्ञान मंत्रालय</span><br><br><!--13px-->
+	</div>	
+	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+<div class="serclog">
+			
+					
+					<div id="navbarCollapse" >
+							<form class="navbar-form navbar-left" method="post">
+								<div class="form-group">
+									<input type="text" placeholder="Search" class="form-control">
+								</div>
+							<button type="submit" class="btn btn-default">Go</button>
+							
+						
+						      
+						<button type="submit"  name="English" value="English" class="btn btn-default">English</button>
+											
+								      
+						<button type="submit"  name="Hindi" value="Hindi" class="btn btn-default">हिंदी</button>
+												
+						<!--<a href="hitcountOldWebsite.php" style="background-color:#144A6E;padding: 5px 1px;font-size: 12px;color:#fff;font-weight:600" target="_blank">Old Bulletins</a>-->
+				</div>
+				</form>
+				<div class="nav navbar-nav navbar-right headerLeftMenu">
+				<span style="width:100%;margin-bottom:5px;" id="stopwatch"></span>
+				<p style="margin-right:10px;"><!--<a href="images/IMD_Vision.pdf" class="vision" target="_blank"><strong>Vision- 2030</strong></a>--></p>
+							
+						<p >
+						<a class="loginLogutText" href="https://imdagrimet.gov.in/AGLogin.php?token=" > <span class="fa fa-user"><h8>LOGIN </h8></span></a></p>
+												</div>
+					
+		</div>
+		
+	</div> 
+		  
+<div class="collapse navbar-collapse" id="collapsibleNavbar">
+       
+<ul>
+	<script>
+function toggleVisibilityOfId(id){
+		console.log("screen.width....."+screen.width);
+		console.log("id....."+id);
+if(screen.width < 600){
+	
+	
+	var displayCurrent = document.getElementById(id).style.display ;
+
+	if(displayCurrent == 'none'){
+		document.getElementById(id).style.display = 'block';
+	}
+	else if(displayCurrent == 'block') {
+		document.getElementById(id).style.display = 'none';
+	}
+	else{
+		document.getElementById(id).style.display = 'block';
+	}
+}	
+}
+
+</script>
+
+<li id="menu-5000" class="menu-path-node-307" ><a href="../">Home</a></li>
+	<li><a href="javascript:toggleVisibilityOfId('agrimetSubMenu')">About Agrimet</a>
+		<ul id="agrimetSubMenu">
+			<li id="menu-5001" class="menu-path-node-307" ><a href="AGBackground.php" title="background" id="dhtml_menu-5001">Background</a> </li>
+			<li><a href="AGOrganization.php">Organization</a></li>
+			<li><a href=" javascript:toggleVisibilityOfId('agrimentSubSubmenu')">Division Activities</a>
+				<ul  id="agrimentSubSubmenu" class="submenuList-65">
+					<li id="menu-5002" class="menu-path-observational organisation"><a href="AGObsOrganization.php" title="" id="dhtml_menu-5002">Observational Organization</a></li>
+					<li id="menu-5003" class="menu-path-node-97"><a href="AGNetworkObservatories.php">Network of Observatories</a></li>
+					<li id="menu-5004" class="menu-path-node-221"><a href="javascript:toggleVisibilityOfId('agroClimaticInfoSubmenu')">AgroClimatic Information</a>
+					<ul  id="agroClimaticInfoSubmenu" class="submenuList-75">
+						<li><a href="AGAgroclimaticClassification.php">Agroclimatic Classification</a></li>
+						<li><a href="AGDryWetSpells.php">Dry and Wet Spells </a></li>
+						<li><a href="AGAssuredRF.php">Assured Rainfall</a></li>
+						<li><a href="AGEvaporation.php">Evaporation</a></li>
+						<li><a href="AGPET.php">Potential Evapotranspiration</a></li>
+						<li><a href="AGAET.php">Actual Evapotranspiration</a></li>
+						<li><a href="AGSoilTemp.php">Soil Temperature</a></li>
+						<li><a href="AGSowingDates.php">Sowing Dates</a></li>
+						<li><a href="AGResearchSMStudies.php">Soil Moisture Studies</a></li>
+						<li><a href="AGGrassMinTemp.php">Grass Minimum Temperature</a></li>
+						<li><a href="AGBSSH.php">Hours of Bright Sunshine</a></li>
+						<li><a href="AGGlobalSolarRad.php">Global Solar Radiation</a></li>
+						<li><a href="AGWindRose.php">Wind Rose</a></li>
+					</ul>
+					</li>
+					<li id="menu-5005" class="menu-path-node-307"><a href="AGTechAssistance.php" title="" id="dhtml_menu-5005">Technical Assistance</a></li>
+					<li id="menu-5006" class="menu-path-crop_yield_view"><a href="AGCropModelling.php" title="" id="dhtml_menu-5006">Crop Modelling And Yield Forecast</a></li>
+					<li id="menu-5007" class="menu-path-node-318"><a href="AGCropWxStudies.php" title="" id="dhtml_menu-5007">Crop Weather Studies &amp; Crop Weather Calendar</a></li>
+					<li id="menu-5008" class="menu-path-node-386"><a href="AGPestDiseaseStudies.php" title="" id="dhtml_menu-5008">Pest &amp; Disease Studies</a></li>
+					<li id="menu-5009" class="menu-path-node-104"><a href="AGCollaborativeProjects.php" title="" id="dhtml_menu-5009">Collaborative Projects</a></li>
+					<li id="menu-5010" class="menu-path-Agro_observatories"><a href="AGAgroclimaticObsNormals.php" title="" id="dhtml_menu-5010">Normals of Agroclimatic Observatories in India </a></li>
+					<li id="menu-5011" class="menu-path-node-187"><a href="AGResearchActivities.php" title="" id="dhtml_menu-5011">Research</a></li>
+				</ul>
+			</li>
+			</li>
+			
+			
+			<li id="menu-5012" class="menu-path-node-26619"><a href="AGTraining.php" title="" id="dhtml_menu-5012">Training</a></li>
+			<li id="menu-5013" class="menuparent menu-path-home_page">
+				<a href=" javascript:toggleVisibilityOfId('researchSubmenu')" title="" id="dhtml_menu-5013" class="active">Research and Publications</a>
+				<ul id="researchSubmenu" class="submenuList">
+					<li id="menu-5014" class="menu-path-https--imdagrimet.gov.in-sites-default-files-Bibliography of Research Papers_F.pdf"><a href="Files/Bibliography/Bibliography of Research Papers_F.pdf" target="_blank" title="" id="dhtml_menu-5014">Bibliography of research papers</a></li>
+					<li id="menu-5015" class="menu-path-node-86"><a href="AGDeptPub.php" title="Departmental Publications" id="dhtml_menu-5015">Departmental Publications</a></li>
+				</ul>
+			</li>
+			<li id="menu-5016" class="menu-path-node-26619"><a href="AGBrochures.php" title="" id="dhtml_menu-5016">Brochures</a></li>
+		</ul>
+	</li>
+	
+	
+	
+	<li><a href="javascript:toggleVisibilityOfId('obsForecastSubMenu')">Observations & Forecast</a>
+		<ul class="nice-menu nice-menu-left" id="obsForecastSubMenu">
+			
+			<li id="menu-5017" class="menu-path-imdagrimet.gov.in-agrometdata-ADMain.php"><a href="javascript:toggleVisibilityOfId('observatorySubmenu')" title="Observed Data" id="dhtml_menu-5017">Agromet Observatories Data</a>
+				<ul id="observatorySubmenu" class="submenuList">
+					<li><a href="../agrometdata/SPAboutObs.php" title="" id="dhtml_menu-5018" >About Agromet Observatories</a></li>
+										<li><a href="../agrometdata/CwsDataPublicList.php">View Agromet data</a></li>
+										<li><a href="../agrometdata/CwsDataDatewiseList.php">View CWS Daily</a></li>
+				</ul>
+			</li>
+			<li id="menu-5019" class="menu-path-weatherdata-DistrictWindow.php"><a href="../weatherdata/DistrictWindow.php" title="" id="dhtml_menu-5019">District Past Week Weather</a></li>
+			<li id="menu-5020" class="menu-path-surface-SurfaceDataList.php"><a href="../surface/SurfaceDataList.php" title="" id="dhtml_menu-5020">Realized Weather - Surface Observations</a></li>
+			<li id="menu-5021" class="menu-path-weatherdata-DistrictWindowForecast.php"><a href="javascript:toggleVisibilityOfId('DistForecastSubmenu')"  title="" id="dhtml_menu-5021 ">District Forecast Weather</a>
+				<ul id="DistForecastSubmenu" class="submenuList">
+					
+					<li><a href="../weatherdata/DistrictWindowForecast.php">NWP Product</a></li>
+					<li><a href="../weatherdata/DistrictModeratedForecastWindow.php">Moderated Forecast</a></li>
+				</ul>
+			</li>
+			
+			<li id="menu-5022" class="menu-path-weatherdata-DistrictWindowForecast.php"><a href="javascript:toggleVisibilityOfId('DistForecastSubmenu')"  title="" id="dhtml_menu-5022">Block Forecast Weather</a>
+				<ul id="DistForecastSubmenu" class="submenuList">
+					
+					<li><a href="../weatherdata/BlockWindow.php">NWP Product</a></li>
+					<li><a href="../weatherdata/BlockWindow_P.php">Probability Rainfall Forecast</a></li>
+				</ul>
+			</li>
+						
+			<li id="menu-5023" class="menu-path-www.imd.gov.in-pages-radar_main.php"><a href="https://mausam.imd.gov.in/imd_latest/contents/index_radar.php" title="" id="dhtml_menu-5023" target="_blank">Radar Images and Products</a></li>
+			<li id="menu-5024" class="menu-path-satellite.imd.gov.in-insat.htm"><a href="https://mausam.imd.gov.in/imd_latest/contents/satellite.php" title="" id="dhtml_menu-5024" target="_blank">Satellite Images and Products</a></li>
+		</ul>
+	</li>
+	<li><a href="javascript:toggleVisibilityOfId('nice-menu-5')">Agromet Products</a>
+		<ul class="nice-menu nice-menu-left" id="nice-menu-5">
+			<li id="menu-5025" class="menuparent menu-path-home_page"><a href="javascript:toggleVisibilityOfId('satelliteSub')" title="" id="dhtml_menu-5025" class="active">Sattelite Products</a>
+				<ul  id="satelliteSub" class="submenuList">
+					<li id="menu-5026" class="menuparent menu-path-home_page"><a href="javascript:toggleVisibilityOfId('ndviSubmenu')" title="NDVI Composite Maps (India) and Statewise - updated weekly" id="dhtml_menu-5026" class="active">NDVI Composite</a>
+						<ul id="ndviSubmenu">
+							<li id="menu-5027" class="menu-path-ndvi"><a href="AGSPNDVIIndiaView.php" title="" id="dhtml_menu-5027">NDVI Composite (India)</a></li>
+							<li id="menu-5028" class="menu-path-ndvistate"><a href="AGSPNDVIStateView.php" title="" id="dhtml_menu-5028">NDVI Composite (Statewise)</a></li>
+						</ul>
+					</li>
+					<li id="menu-5029" class="menu-path-insolation"><a href="AGTCIView.php" title="" id="dhtml_menu-5029">Temperature Condition Index (TCI)</a></li>
+					<li id="menu-5030" class="menu-path-insolation"><a href="AGVCIView.php" title="" id="dhtml_menu-5030">Vegetation Condition Index (VCI)</a></li>
+					<!--<li id="menu-5031" class="menu-path-insolation"><a href="AGSPInsolationView.php" title="" id="dhtml_menu-5031">Insolation</a></li>
+					<li id="menu-5032" class="menu-path-evapotranspiration"><a href="AGSPRefEvpView.php" title="" id="dhtml_menu-5032">Reference Evapotranspiration</a></li>-->
+				</ul>
+			</li>
+			<li id="menu-5034" class="menuparent menu-path-home_page"><a href="javascript:toggleVisibilityOfId('weatherSubmenu')" title="" id="dhtml_menu-5034" class="active">Weather Parameters</a>
+				<ul id="weatherSubmenu"  class="submenuList">
+					<li id="menu-5035" class="menu-path-daily_contour_maps"><a href="AGWPDSDView.php" title="" id="dhtml_menu-5035">Daily Spatial Distribution</a></li>
+					<li id="menu-5036" class="menu-path-weekly_contour_maps"><a href="AGWPWSDView.php" title="" id="dhtml_menu-5036">Weekly Spatial Distribution</a></li>
+					<li id="menu-5037" class="menu-path-fortnightly_contour_maps"><a href="AGWPFSDView.php" title="" id="dhtml_menu-5037">Fortnightly Spatial Distribution</a></li>
+					<li id="menu-5038" class="menu-path-monthly_contour_maps"><a href="AGWPMSDView.php" title="" id="dhtml_menu-5038">Monthly Spatial Distribution</a></li>
+					<li id="menu-5039" class="menu-path-seasonal_contour_maps"><a href="AGWPSSDView.php " title="" id="dhtml_menu-5039">Seasonal Spatial Distribution</a></li>
+				</ul>
+			</li>
+			<li id="menu-5040" class="menuparent menu-path-home_page"><a href="javascript:toggleVisibilityOfId('soilTempSubmenu')" title="Soil Temperature Maps Daily and Weekly in pdf" id="dhtml_menu-5040" class="active">Soil Temperature</a>
+				<ul id="soilTempSubmenu"  class="submenuList">
+					<li id="menu-5041" class="menu-path-daily_soil_temperature"><a href="AGSTDView.php" title="Daily Soil Temperature Maps" id="dhtml_menu-5041">Daily Soil Temperature</a></li>
+					<li id="menu-5042" class="menu-path-weekly_soil_temperature"><a href="AGSTWView.php" title="Weekly Soil Temperature Maps" id="dhtml_menu-5042">Weekly Soil Temperature</a></li>
+				</ul>
+			</li>
+		
+			<!--<li id="menu-3463" class="menu-path-node-385531"><a href="AGSoilMoisture.php" title="Soil Moisture" id="dhtml_menu-3463">Soil Moisture</a></li>-->
+			<!--<li id="menu-3368" class="menu-path-soil_moisture_forecast_biweekly"><a href="AGSMFView.php" title="Biweekly Soil Moisture Forecast - updated on Tuesday and Friday " id="dhtml_menu-3368">Soil Moisture Forecast</a></li>-->
+			<!--<li id="menu-5043" class="menu-path-realised_forecast_spi"><a href="AGSPIView.php" title="Standardised Precipitation Index - updated on every Thursday" id="dhtml_menu-5043">Standardised Precipitation Index </a></li>-->
+			<li id="menu-5044" class="menu-path-weekrfview"><a href="AGWRDView.php" title="" id="dhtml_menu-5044">Weekly Rainfall Distribution</a></li>
+			<li id="menu-5045" class="menuparent menu-path-home_page"><a href="javascript:toggleVisibilityOfId('distRainSubmenu')" title="" id="dhtml_menu-5045" class="active">Districtwise Rainfall Maps</a>
+				<ul id="distRainSubmenu" class="submenuList">
+					<li id="menu-5046" class="menu-path-hydro.imd.gov.in-hydrometweb-%28S%28gsdpky45cbsztumtppqwmm31%29%29-Statewise.aspx"><a href="http://hydro.imd.gov.in/hydrometweb/%28S%28gsdpky45cbsztumtppqwmm31%29%29/Statewise.aspx" title="" id="dhtml_menu-5046" target="_blank">Seasonal</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+	</li>
+	
+		<li><a href="javascript:toggleVisibilityOfId('agrometAdvisorySubmenu')">Agromet Advisories</a>
+		<ul id="agrometAdvisorySubmenu" class="menu">
+		<li class="expanded last dhtml-menu  active-trail"><a href="AGNationalAasBulletinView.php" title="" id="dhtml_menu-3119-1" class="active"> National AAS Bulletin </a>
+			</li>
+		<li class="expanded last dhtml-menu  active-trail"><a href="http://www.cropweatheroutlook.in/crida/amis/contingencyPlan/NAAS.jsp" title="" id="dhtml_menu-3119-1" target="_blank" class="active"> National AAS Bulletin based on ERFS</a></li>
+			<li class="expanded last dhtml-menu  active-trail"><a href="AGStateAasBulletinView.php" title="" id="dhtml_menu-3119-1" class="active">State Composite AAS Bulletin</a></li>
+			<li class="expanded last dhtml-menu  active-trail"><a href="AGDistrictBulletin.php" title="" id="dhtml_menu-3119-1" class="active">District AAS Bulletin</a></li>
+			<li class="expanded last dhtml-menu  active-trail"><a href="cropAdvisory_3.php" title="" id="dhtml_menu-3119-2" class="active">Crop specific Advisory</a></li>
+			</ul>
+		</li>	
+		
+		
+		<li><a href="javascript:toggleVisibilityOfId('otherServSubmenu')">Other Services</a>
+		<ul class="nice-menu nice-menu-right" id="otherServSubmenu">
+			<!--<li id="menu-5047" class="menu-path-samc_list"><a href="AGSAMCSelect.php" title="" id="dhtml_menu-5047">SAMC / RMC In-Charge List</a></li>-->
+			<li id="menu-5048" class="menuparent menu-path-home_page"><a href="javascript:toggleVisibilityOfId('faqSubmenu')" title="" id="dhtml_menu-5048" class="active">FAQ</a>
+			<ul id ="faqSubmenu" class="submenuList">
+					<li id="menu-5049" class="menu-path-expert"><a href="AGExpertSelect.php" title="" id="dhtml_menu-5049">Experts List</a></li>
+					<li id="menu-5050" class="menu-path-node-add-faq"><a href="AGAskQuestion.php" title="" id="dhtml_menu-5050">Ask Question</a></li>
+					<li id="menu-5051" class="menu-path-node-537"><a href="AGFAQList.php" title="" id="dhtml_menu-5051">FAQ</a></li>
+					
+				</ul>
+			<li id="menu-5052" class="menu-path-node-537"><a href="AGGKMSNewsletterView.php" title="" id="dhtml_menu-5052">GKMS Newsletter</a></li>	
+				
+			</li>
+			
+		</ul>
+	</li>
+	
+	<li><a href="javascript:toggleVisibilityOfId('DosDontsSubmenu')">Do's & Dont's</a>
+	<ul class="nice-menu nice-menu-right" id="DosDontsSubmenu">
+		<li id="menu-5053" class="menuparent menu-path-home_page">
+				<a href=" javascript:toggleVisibilityOfId('cycloneSubmenu')" title="" id="dhtml_menu-5053" class="active">Cyclone</a>
+				<ul id="cycloneSubmenu" class="subsubmenuList1">
+					<li id="menu-5054" class="menu-path-https--imdagrimet.gov.in-sites-default-files-Cyclone_Dos_and_Donts.pdf"><a href="Files/Dos_Donts/Cyclone_Dos_and_Donts.pdf" target="_blank" title="" id="dhtml_menu-5054">English</a></li>
+					<li id="menu-5055" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Assamese/Dos_Donts_Cyclone_Assamese.pdf" target="_blank" title="cyclone_Assamese" id="dhtml_menu-5055">অসমীয়া</a></li>
+					<li id="menu-5056" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Bengali/Dos_Donts_Cyclone_Bengali.pdf" target="_blank" title="cyclone_Bangla" id="dhtml_menu-5056">বাংলা</a></li>
+					<li id="menu-5057" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Gujarati/Dos_Donts_Cyclone_Gujarati.pdf" target="_blank" title="cyclone_Gujarati" id="dhtml_menu-5057">ગુજરાતી</a></li>
+					<li id="menu-5058" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Hindi/Dos_Donts_Cyclone_Hindi.pdf" target="_blank" title="cyclone_Hindi" id="dhtml_menu-5058">हिंदी</a></li>
+					<li id="menu-5059" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Kannada/Dos_Donts_Cyclone_Kannada.pdf" target="_blank" title="cyclone_Kannada" id="dhtml_menu-5059">ಕನ್ನಡ</a></li>
+					<li id="menu-5060" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Khasi/Dos_Donts_Cyclone_Khasi.pdf" target="_blank" title="cyclone_Khasi" id="dhtml_menu-5060">Khasi(Roman)</a></li>
+					<li id="menu-5061" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Malayalam/Dos_Donts_Cyclone_Malayalam.pdf" target="_blank" title="cyclone_Malayalam" id="dhtml_menu-5061">മലയാളം</a></li>
+					<li id="menu-5062" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Marathi/Dos_Donts_Cyclone_Marathi.pdf" target="_blank" title="cyclone_Marathi" id="dhtml_menu-5062">मराठी</a></li>
+					<li id="menu-5063" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Mizo/Dos_Donts_Cyclone_Mizo.pdf"  target="_blank" title="cyclone_Mizo" id="dhtml_menu-5063">Mizo(Roman)</a></li>
+					<li id="menu-5064" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Nagamese/Dos_Donts_Cyclone_Nagamese.pdf"  target="_blank" title="cyclone_Nagamese" id="dhtml_menu-5064">Nagamese(Roman)</a></li>
+					<li id="menu-5065" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Odia/Dos_Donts_Cyclone_Odia.pdf" target="_blank" title="cyclone_Odia" id="dhtml_menu-5065">ଓଡିଆ</a></li>
+					<li id="menu-5066" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Punjabi/Dos_Donts_Cyclone_Punjabi.pdf" target="_blank" title="cyclone_Punjabi" id="dhtml_menu-5066">ਪੰਜਾਬੀ</a></li>
+					<li id="menu-5067" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Tamil/Dos_Donts_Cyclone_Tamil.pdf" target="_blank" title="cyclone_Tamil" id="dhtml_menu-5067">தமிழ்</a></li>
+					<li id="menu-5068" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Telugu/Dos_Donts_Cyclone_Telugu.pdf" target="_blank" title="cyclone_Telugu" id="dhtml_menu-5068">తెలుగు</a></li>
+					
+				</ul>
+			</li>
+		
+		
+		<li id="menu-5069" class="menuparent menu-path-home_page">
+				<a href=" javascript:toggleVisibilityOfId('droughtSubmenu')" title="" id="dhtml_menu-5069" class="active">Drought</a>
+				<ul id="droughtSubmenu" class="subsubmenuList1">
+					<li id="menu-5070" class="menu-path-https--imdagrimet.gov.in-sites-default-files-Drought_Dos_and_Donts.pdf"><a href="Files/Dos_Donts/Drought_Dos_and_Donts.pdf" target="_blank" title="" id="dhtml_menu-5070">English</a></li>
+					<li id="menu-5071" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Assamese/Dos_Donts_Drought_Assamese.pdf" target="_blank" title="drought_Assamese" id="dhtml_menu-5071">অসমীয়া</a></li>
+					<li id="menu-5072" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Bengali/Dos_Donts_Drought_Bengali.pdf" target="_blank" title="drought_Bangla" id="dhtml_menu-5072">বাংলা</a></li>
+					<li id="menu-5073" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Gujarati/Dos_Donts_Drought_Gujarati.pdf" target="_blank" title="drought_Gujarati" id="dhtml_menu-5073">ગુજરાતી</a></li>
+					<li id="menu-5074" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Hindi/Dos_Donts_Drought_Hindi.pdf" target="_blank" title="drought_Hindi" id="dhtml_menu-5074">हिंदी</a></li>
+					<li id="menu-5075" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Kannada/Dos_Donts_Drought_Kannada.pdf" target="_blank" title="drought_Kannada" id="dhtml_menu-5075">ಕನ್ನಡ</a></li>
+					<li id="menu-5076" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Khasi/Dos_Donts_Drought_Khasi.pdf" target="_blank" title="drought_Meghalaya" id="dhtml_menu-5076">Khasi(Roman)</a></li>
+					<li id="menu-5077" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Malayalam/Dos_Donts_Drought_Malayalam.pdf" target="_blank" title="drought_Malayalam" id="dhtml_menu-5077">മലയാളം</a></li>
+					<li id="menu-5078" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Marathi/Dos_Donts_Drought_Marathi.pdf" target="_blank" title="drought_Marathi" id="dhtml_menu-5078">मराठी</a></li>
+					<li id="menu-5079" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Mizo/Dos_Donts_Drought_Mizo.pdf" target="_blank" title="drought_Mizo" id="dhtml_menu-5079">Mizo(Roman)</a></li>
+					<li id="menu-5080" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Nagamese/Dos_Donts_Drought_Nagamese.pdf" target="_blank" title="drought_Nagamese" id="dhtml_menu-5080">Nagamese(Roman)</a></li>
+					<li id="menu-5081" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Odia/Dos_Donts_Drought_Odia.pdf" target="_blank" title="drought_Odia" id="dhtml_menu-5081">ଓଡିଆ</a></li>
+					<li id="menu-5082" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Punjabi/Dos_Donts_Drought_Punjabi.pdf" target="_blank" title="drought_Punjabi" id="dhtml_menu-5082">ਪੰਜਾਬੀ</a></li>
+					<li id="menu-5083" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Tamil/Dos_Donts_Drought_Tamil.pdf" target="_blank" title="drought_Tamil" id="dhtml_menu-5083">தமிழ்</a></li>
+					<li id="menu-5084" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Telugu/Dos_Donts_Drought_Telugu.pdf" target="_blank" title="drought_Telugu" id="dhtml_menu-5084">తెలుగు</a></li>
+					
+				</ul>
+			</li>
+	
+			<li id="menu-5085" class="menuparent menu-path-home_page">
+				<a href=" javascript:toggleVisibilityOfId('floodSubmenu')" title="" id="dhtml_menu-5085" class="active">Flood</a>
+				<ul id="floodSubmenu" class="subsubmenuList1">
+					<li id="menu-5086" class="menu-path-https--imdagrimet.gov.in-sites-default-files-Floods_Dos_and_Donts.pdf"><a href="Files/Dos_Donts/Floods_Dos_and_Donts.pdf" target="_blank" title="" id="dhtml_menu-5086">English</a></li>
+					<li id="menu-5087" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Assamese/Dos_Donts_Floods_Assamese.pdf" target="_blank" title="floods_Assamese" id="dhtml_menu-5087">অসমীয়া</a></li>
+					<li id="menu-5088" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Bengali/Dos_Donts_Floods_Bengali.pdf" target="_blank" title="floods_Bangla" id="dhtml_menu-5088">বাংলা</a></li>
+					<li id="menu-5089" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Gujarati/Dos_Donts_Floods_Gujarati.pdf" target="_blank" title="floods_Gujarat" id="dhtml_menu-5089">ગુજરાતી</a></li>
+					<li id="menu-5090" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Hindi/Dos_Donts_Floods_Hindi.pdf" target="_blank" title="floods_Hindi" id="dhtml_menu-5090">हिंदी</a></li>
+					<li id="menu-5091" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Kannada/Dos_Donts_Floods_Kannada.pdf" target="_blank" title="floods_Kannada" id="dhtml_menu-5091">ಕನ್ನಡ</a></li>
+					<li id="menu-5092" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Khasi/Dos_Donts_Floods_Khasi.pdf" target="_blank" title="floods_Meghalaya" id="dhtml_menu-5092">Khasi(Roman)</a></li>
+					<li id="menu-5093" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Malayalam/Dos_Donts_Floods_Malayalam.pdf" target="_blank" title="floods_Malayalam" id="dhtml_menu-5093">മലയാളം</a></li>
+					<li id="menu-5094" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Marathi/Dos_Donts_Floods_Marathi.pdf" target="_blank" title="floods_Marathi" id="dhtml_menu-5094">मराठी</a></li>
+					<li id="menu-5095" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Mizo/Dos_Donts_Floods_Mizo.pdf" target="_blank" title="floods_Mizo" id="dhtml_menu-5095">Mizo(Roman)</a></li>
+					<li id="menu-5096" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Nagamese/Dos_Donts_Floods_Nagamese.pdf" target="_blank" title="floods_Nagamese" id="dhtml_menu-5096">Nagamese(Roman)</a></li>
+					<li id="menu-5097" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Odia/Dos_Donts_Floods_Odia.pdf" target="_blank" title="floods_Odia" id="dhtml_menu-5097">ଓଡିଆ</a></li>
+					<li id="menu-5098" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Punjabi/Dos_Donts_Floods_Punjabi.pdf" target="_blank" title="floods_Punjab" id="dhtml_menu-5098">ਪੰਜਾਬੀ</a></li>
+					<li id="menu-5099" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Tamil/Dos_Donts_Floods_Tamil.pdf" target="_blank" title="floods_Tamil" id="dhtml_menu-5099">தமிழ்</a></li>
+					<li id="menu-5100" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Telugu/Dos_Donts_Floods_Telugu.pdf" target="_blank" title="floods_Telugu" id="dhtml_menu-5100">తెలుగు</a></li>
+					
+				</ul>
+			</li>
+	
+	
+				<li id="menu-5101" class="menuparent menu-path-home_page">
+				<a href=" javascript:toggleVisibilityOfId('thunderstormSubmenu')" title="" id="dhtml_menu-5101" class="active">Thunderstorm & Lightning</a>
+				<ul id="thunderstormSubmenu" class="subsubmenuList1">
+					<li id="menu-5102" class="menu-path-https--imdagrimet.gov.in-sites-default-files-Thunderstorm_Dos_and_Donts.pdf"><a href="Files/Dos_Donts/Thunderstorm_dos_and_donts.pdf" target="_blank" title="" id="dhtml_menu-5102">English</a></li>
+					<li id="menu-5103" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Assamese/Dos_Donts_Thunderstorm_Assamese.pdf" target="_blank" title="thunderstorm_Assamese" id="dhtml_menu-5103">অসমীয়া</a></li>
+					<li id="menu-5104" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Bengali/Dos_Donts_Thunderstorm_Bengali.pdf" target="_blank" title="thunderstorm_Bangla" id="dhtml_menu-5104">বাংলা</a></li>
+					<li id="menu-5105" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Gujarati/Dos_Donts_Thunderstorm_Gujarati.pdf" target="_blank" title="thunderstorm_Gujarati" id="dhtml_menu-5105">ગુજરાતી</a></li>
+					<li id="menu-5106" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Hindi/Dos_Donts_Thunderstorm_Hindi.pdf" target="_blank" title="thunderstorm_Hindi" id="dhtml_menu-5106">हिंदी</a></li>
+					<li id="menu-5107" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Kannada/Dos_Donts_Thunderstorm_Kannada.pdf" target="_blank" title="thunderstorm_Kannada" id="dhtml_menu-5107">ಕನ್ನಡ</a></li>
+					<li id="menu-5108" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Khasi/Dos_Donts_Thunderstorm_Khasi.pdf" target="_blank" title="thunderstorm_Meghalaya" id="dhtml_menu-5108">Khasi(Roman)</a></li>
+					<li id="menu-5109" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Malayalam/Dos_Donts_Thunderstorm_Malayalam.pdf" target="_blank" title="thunderstorm_Malayalam" id="dhtml_menu-5109">മലയാളം</a></li>
+					<li id="menu-5110" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Marathi/Dos_Donts_Thunderstorm_Marathi.pdf" target="_blank" title="thunderstorm_Marathi" id="dhtml_menu-5110">मराठी</a></li>
+					<li id="menu-5111" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Mizo/Dos_Donts_Thunderstorm_Mizo.pdf" target="_blank" title="thunderstorm_Mizo" id="dhtml_menu-5111">Mizo(Roman)</a></li>
+					<li id="menu-5112" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Nagamese/Dos_Donts_Thunderstorm_Nagamese.pdf" target="_blank" title="thunderstorm_Nagamese" id="dhtml_menu-5112">Nagamese(Roman)</a></li>
+					<li id="menu-5113" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Odia/Dos_Donts_Thunderstorm_Odia.pdf" target="_blank" title="thunderstorm_Odia" id="dhtml_menu-5113">ଓଡିଆ</a></li>
+					<li id="menu-5114" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Punjabi/Dos_Donts_Thunderstorm_Punjabi.pdf" target="_blank" title="thunderstorm_Punjabi" id="dhtml_menu-5114">ਪੰਜਾਬੀ</a></li>
+					<li id="menu-5115" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Tamil/Dos_Donts_Thunderstorm_Tamil.pdf" target="_blank" title="thunderstorm_Tamil" id="dhtml_menu-5115">தமிழ்</a></li>
+					<li id="menu-5116" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Telugu/Dos_Donts_Thunderstorm_Telugu.pdf" target="_blank" title="thunderstorm_Telugu" id="dhtml_menu-5116">తెలుగు</a></li>
+					
+				</ul>
+			</li>
+	
+
+				<li id="menu-5117" class="menuparent menu-path-home_page">
+				<a href=" javascript:toggleVisibilityOfId('coldwaveSubmenu')" title="" id="dhtml_menu-5117" class="active">Cold wave</a>
+				<ul id="coldwaveSubmenu" class="subsubmenuList1">
+					<li id="menu-5118" class="menu-path-https--imdagrimet.gov.in-sites-default-files-ColdWave_Dos_and_Donts.pdf"><a href="Files/Dos_Donts/Cold wave_Dos_and_Donts.pdf" target="_blank" title="" id="dhtml_menu-5118">English</a></li>
+					<li id="menu-5119" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Assamese/Dos_Donts_ColdWave_Assamese.pdf" target="_blank" title="coldwave_Assamese" id="dhtml_menu-5119">অসমীয়া</a></li>
+					<li id="menu-5120" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Bengali/Dos_Donts_ColdWave_Bengali.pdf" target="_blank" title="coldwave_Bangla" id="dhtml_menu-5120">বাংলা</a></li>
+					<li id="menu-5121" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Gujarati/Dos_Donts_ColdWave_Gujarati.pdf" target="_blank" title="coldwave_Gujarati" id="dhtml_menu-5121">ગુજરાતી</a></li>
+					<li id="menu-5122" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Hindi/Dos_Donts_ColdWave_Hindi.pdf" target="_blank" title="coldwave_Hindi" id="dhtml_menu-5122">हिंदी</a></li>
+					<li id="menu-5123" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Kannada/Dos_Donts_ColdWave_Kannada.pdf" target="_blank" title="coldwave_Kannada" id="dhtml_menu-5123">ಕನ್ನಡ</a></li>
+					<li id="menu-5124" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Khasi/Dos_Donts_ColdWave_Khasi.pdf" target="_blank" title="coldwave_Meghalaya" id="dhtml_menu-5124">Khasi(Roman)</a></li>
+					<li id="menu-5125" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Malayalam/Dos_Donts_ColdWave_Malayalam.pdf" target="_blank" title="coldwave_Malayalam" id="dhtml_menu-5125">മലയാളം</a></li>
+					<li id="menu-5126" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Marathi/Dos_Donts_ColdWave_Marathi.pdf" target="_blank" title="coldwave_Marathi" id="dhtml_menu-5126">मराठी</a></li>
+					<li id="menu-5127" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Mizo/Dos_Donts_ColdWave_Mizo.pdf" target="_blank" title="coldwave_Mizo" id="dhtml_menu-5127">Mizo(Roman)</a></li>
+					<li id="menu-5128" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Nagamese/Dos_Donts_ColdWave_Nagamese.pdf" target="_blank" title="coldwave_Nagamese" id="dhtml_menu-5128">Nagamese(Roman)</a></li>
+					<li id="menu-5129" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Odia/Dos_Donts_ColdWave_Odia.pdf" target="_blank" title="coldwave_Odia" id="dhtml_menu-5129">ଓଡିଆ</a></li>
+					<li id="menu-5130" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Punjabi/Dos_Donts_ColdWave_Punjabi.pdf" target="_blank" title="coldwave_Punjabi" id="dhtml_menu-5130">ਪੰਜਾਬੀ</a></li>
+					<li id="menu-5131" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Tamil/Dos_Donts_ColdWave_Tamil.pdf" target="_blank" title="coldwave_Tamil" id="dhtml_menu-5131">தமிழ்</a></li>
+					<li id="menu-5132" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Telugu/Dos_Donts_ColdWave_Telugu.pdf" target="_blank" title="coldwave_Telugu" id="dhtml_menu-5132">తెలుగు</a></li>
+					
+				</ul>
+			</li>	
+	
+
+					<li id="menu-5133" class="menuparent menu-path-home_page">
+				<a href=" javascript:toggleVisibilityOfId('heatwaveSubmenu')" title="" id="dhtml_menu-5133" class="active">Heat wave</a>
+				<ul id="heatwaveSubmenu" class="submenuList1">
+					<li id="menu-5134" class="menu-path-https--imdagrimet.gov.in-sites-default-files-HeatWave_Dos_and_Donts.pdf"><a href="Files/Dos_Donts/Heat_wave_Dos_and_Donts.pdf" target="_blank" title="" id="dhtml_menu-5134">English</a></li>
+					<li id="menu-5135" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Assamese/Dos_Donts_HeatWave_Assamese.pdf" target="_blank" title="heatwave_Assamese" id="dhtml_menu-5135">অসমীয়া</a></li>
+					<li id="menu-5136" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Bengali/Dos_Donts_HeatWave_Bengali.pdf" target="_blank" title="heatwave_Bangla" id="dhtml_menu-5136">বাংলা</a></li>
+					<li id="menu-5137" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Gujarati/Dos_Donts_HeatWave_Gujarati.pdf" target="_blank" title="heatwave_Gujarati" id="dhtml_menu-5137">ગુજરાતી</a></li>
+					<li id="menu-5138" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Hindi/Dos_Donts_HeatWave_Hindi.pdf" target="_blank" title="coldwave_Hindi" id="dhtml_menu-5138">हिंदी</a></li>
+					<li id="menu-5139" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Kannada/Dos_Donts_HeatWave_Kannada.pdf" target="_blank" title="heatwave_Kannada" id="dhtml_menu-5139">ಕನ್ನಡ</a></li>
+					<li id="menu-5140" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Khasi/Dos_Donts_HeatWave_Khasi.pdf" target="_blank" title="heatwave_Meghalaya" id="dhtml_menu-5140">Khasi(Roman)</a></li>
+					<li id="menu-5141" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Malayalam/Dos_Donts_HeatWave_Malayalam.pdf" target="_blank" title="heatwave_Malayalam" id="dhtml_menu-5141">മലയാളം</a></li>
+					<li id="menu-5142" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Marathi/Dos_Donts_HeatWave_Marathi.pdf" target="_blank" title="heatwave_Marathi" id="dhtml_menu-5142">मराठी</a></li>
+					<li id="menu-5143" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Mizo/Dos_Donts_HeatWave_Mizo.pdf" target="_blank" title="heatwave_Mizo" id="dhtml_menu-5143">Mizo(Roman)</a></li>
+					<li id="menu-5144" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Nagamese/Dos_Donts_HeatWave_Nagamese.pdf" target="_blank" title="heatwave_Nagamese" id="dhtml_menu-5144">Nagamese(Roman)</a></li>
+					<li id="menu-5145" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Odia/Dos_Donts_HeatWave_Odia.pdf" target="_blank" title="heatwave_Odia" id="dhtml_menu-5145">ଓଡିଆ</a></li>
+					<li id="menu-5146" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Punjabi/Dos_Donts_HeatWave_Punjabi.pdf" target="_blank" title="heatwave_Punjabi" id="dhtml_menu-5146">ਪੰਜਾਬੀ</a></li>
+					<li id="menu-5147" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Tamil/Dos_Donts_HeatWave_Tamil.pdf" target="_blank" title="heatwave_Tamil" id="dhtml_menu-5147">தமிழ்</a></li>
+					<li id="menu-5148" class="menu-path-node-86"><a href="Files/Dos_Donts/Dos_Donts_Telugu/Dos_Donts_HeatWave_Telugu.pdf" target="_blank" title="heatwave_Telugu" id="dhtml_menu-5148">తెలుగు</a></li>
+					
+				</ul>
+			</li>	
+			</ul>
+			</li>
+			<li><a href="javascript:toggleVisibilityOfId('linksSubmenu')">Links</a>
+		<ul class="nice-menu nice-menu-right" id="linksSubmenu">
+			<li id="menu-5149" class="menu-path-nwp.imd.gov.in-"><a href="https://mausam.imd.gov.in/" title="" id="dhtml_menu-1582" target="_blank">IMD Delhi</a></li>
+			<li id="menu-5150" class="menu-path-nwp.imd.gov.in-"><a href="https://www.tropmet.res.in/" title="" id="dhtml_menu-1582" target="_blank">IITM Pune</a></li>
+			<li id="menu-5151" class="menu-path-nwp.imd.gov.in-"><a href="https://mausam.imd.gov.in/imd_latest/contents/monsoon.php" title="" id="dhtml_menu-1582" target="_blank">Monsoon</a></li>
+			<li id="menu-5152" class="menu-path-nwp.imd.gov.in-"><a href="https://mausam.imd.gov.in/imd_latest/contents/cyclone.php" title="" id="dhtml_menu-1582" target="_blank">Cyclone</a></li>
+			<li id="menu-5153" class="menu-path-nwp.imd.gov.in-"><a href="https://mausam.imd.gov.in/imd_latest/contents/rainfallinformation.php" title="" id="dhtml_menu-1582" target="_blank">Rainfall Information</a></li>
+			<li id="menu-5154" class="menu-path-nwp.imd.gov.in-"><a href="http://nwp.imd.gov.in/gfsproducts_cycle00_mausam.php" title="" id="dhtml_menu-1582" target="_blank">NWP Model Products</a></li>
+			<li id="menu-5155" class="menu-path-nwp.imd.gov.in-"><a href="https://icar.org.in/" title="" id="dhtml_menu-1582" target="_blank">Indian Council of Agricultural Research</a></li>
+			
+		</ul>
+	</li>
+	
+	
+			<li id="loginItem" ><a href="AGLogin.php?token=" >Login</a><li>
+</ul>
+ 
+
+</div>
+	 	 	
+</nav><Script language='javascript'>window.history.forward(1);</Script>
+<script type="text/javaScript" > var a=navigator.onLine; if(!a)
+{ window.location.assign("ADErrorPage.php"); } </script>
+
+<!--<link rel="stylesheet" href="../AGCalendar/Calendar_jquery-ui.css">
+<script src="../AGCalendar/Calendar_jquery-1.8.0.js"></script>
+<script src="../AGCalendar/Calendar_jquery-ui.js"></script>-->
+
+<link rel="stylesheet" href="../js/jquery-ui-1.14.1/jquery-ui.css">
+<script src="../js/jquery-ui-1.14.1/jquery-ui.min.js"></script>
+<script>
+	$(function() {
+	$( "#datepicker" ).datepicker({
+	dateFormat: "dd-mm-yy"
+	});
+	});
+	
+	$(function() {
+	$( "#datepicker1" ).datepicker({
+	dateFormat: "dd-mm-yy"
+	});
+	});
+	
+	$(function() {
+	$( "#from_date" ).datepicker({
+	dateFormat: "dd-mm-yy"
+	});
+	});
+	
+	
+	$(function() {
+	$( "#to_date" ).datepicker({
+	dateFormat: "dd-mm-yy"
+	});
+	});
+</script>
+
+
+
+
+
+select max(custom_date) from district_aas  
+   <div class="container contentHeight" >
+			
+     
+   
+
+<!--CENTER PART OF WEB PAGE--------------------------------------------------------------------------------------->			
+<form id="cropAdvisory" method="post" action="cropAdvisory_3.php?token="  enctype="multipart/form-data"> 
+		<input type="hidden" name="frmuser" value=""></input>
+			<div class="postion centre">
+			<div class="panel panel-primary">			
+	                   <div class="panel-heading">
+                           <h3 class="panel-title">
+                      Crop Specific Advisory for date 31-07-2026 </h3>
+                 
+                  </div>
+		           
+						<br>
+                         
+									<div class="form-group">
+										<p class='notePara'>Note: Agromet advisories are updated on Tuesday and Friday only! </p>
+									</div>										
+                                       <div class="form-group">										
+										<label for="file_id"><font size=4 color="red">*</font>Select State:</label>
+											<select id="select_state" name="select_state" class="form-control" onchange="get_district('2026-07-31')" > 
+											<option value="" >Select State</option>								   
+											<option value='Andhra Pradesh'>Andhra Pradesh</option><option value='Arunachal Pradesh'>Arunachal Pradesh</option><option value='Assam'>Assam</option><option value='Bihar'>Bihar</option><option value='Chhattisgarh'>Chhattisgarh</option><option value='Gujarat'>Gujarat</option><option value='Himachal Pradesh'>Himachal Pradesh</option><option value='Jammu &amp;amp; Kashmir'>Jammu &amp;amp; Kashmir</option><option value='Jharkhand'>Jharkhand</option><option value='Karnataka'>Karnataka</option><option value='Kerala'>Kerala</option><option value='Madhya Pradesh'>Madhya Pradesh</option><option value='Maharashtra'>Maharashtra</option><option value='Manipur'>Manipur</option><option value='Meghalaya'>Meghalaya</option><option value='Mizoram'>Mizoram</option><option value='Nagaland'>Nagaland</option><option value='NCT of Delhi'>NCT of Delhi</option><option value='Odisha'>Odisha</option><option value='Rajasthan'>Rajasthan</option><option value='Tamil Nadu'>Tamil Nadu</option><option value='Telangana'>Telangana</option><option value='Tripura'>Tripura</option><option value='Uttarakhand'>Uttarakhand</option><option value='Uttar Pradesh'>Uttar Pradesh</option><option value='West Bengal'>West Bengal</option>											
+										    </select>										
+										</div>
+										
+										
+										<div class="form-group">
+				                          <label for="select_dist"><font size=4 color="red">*</font>Select District:</label>
+										   <select id="select_dist"  class="form-control" name="select_dist" onchange="get_category('2026-07-31')" > 
+										   <option value="" >Select District</option> 
+										                               
+										   </select>										
+										</div>
+
+								<div class="form-group">
+											<label for="select_cat"><font size=4 color="red">*</font>Select Category :</label>
+										   <select id="select_cat"  class="form-control" name="select_cat" onchange="get_crop('2026-07-31')" > 
+										   <option value="" >Select Category</option>     
+										     </select> 
+								</div>
+								
+								<div class="form-group">
+											   <label for="select_crop"><font size=4 color="red">*</font>Select Crop/Livestock:</label>
+										   <select id="select_crop" class="form-control" name="select_crop"  > 
+										   <option value="" >Select Crop/Livestock</option> 
+										                               
+										   </select>  
+								</div>
+							
+							<div class="form-group">
+								<button type="submit" name="submit" Value="Upload"  class="btn btn-primary">Submit</button>	
+								<button type="submit" title='Want advisory for other dates? click here!' name="prev" value="prev" class="btn btn-warning" >Advisory for previous dates</button>								
+								<button type="submit" title='Go Home' name="Back" value="Back" class="btn ">Back</button>	
+								
+								          
+										   
+											   										   
+								</div>	
+                                
+	  </form> 									   
+										       
+										  
+							
+						
+				</div>	
+                </div> 
+  
+     
+<!--CENTER PART OF WEB PAGE--------------------------------------------------------------------------------------->		  
+	  
+                                                                                
+				
+				 
+	   </div>
+	 
+ 
+     
+ 
+
+
+
+<footer class="container-fluid bg-dark">
+	<div class="flt-left">
+		
+		<div>
+
+Total Visitors: 10199240 (Since 18<sup>th</sup> Aug 2023)</div>
+		<div><strong>Visitors on this page:</strong> 9579  (Since 31<sup>st</sup> Aug 2023)</div>
+		<div class="text-left">
+			<a href="https://rti.gov.in" target="_blank">RTI</a>
+			<a href="AGSiteMap.php">Site Map</a>
+			<a href="AGContactUs.php">Contact Us</a>
+			<a href="AGDisclaimer.php">Disclaimer</a>
+			
+		</div>
+	</div>
+	<div class="flt-right">
+		<a href="http://india.gov.in" target="_blank"><img src="images/indiaimage.jpg" /></a>
+	</div>
+	<div class="text-left">Developed by <a href="">Agricultural Meteorology Division, IMD, Pune and National Informatics Center,Pune.</a></div>
+</footer>  <style>
+.sidepanel  {
+  width: 0;
+  position: fixed;
+  z-index: 700;
+  height: 100vh;
+  top: 0;
+  right: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidepanel a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidepanel a:hover {
+  color: #f1f1f1;
+}
+
+.sidepanel .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+}
+
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #111;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+}
+
+.openbtn:hover {
+  background-color:#444;
+}
+
+body.dark *:not(.uwaw, .uwaw *, .uw-widget-custom-trigger, .uw-widget-custom-trigger img, .uw-widget-custom-trigger span, .dark-disabled,.dark-disabled2 * ) {
+    color: var(--color-white) !important;
+    background-color: var(--color-black3) !important;
+}
+</style>  
+
+  <div id="mySidepanel" class="sidepanel">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+  <a href="javascript:changeFontSizes(true, 1)">Bigger Text </a>
+  <a href="javascript:changeFontSizes(false, 1)">smaller Text</a>
+  <a href="javascript:applyLetterSpacing()">Text Spacing </a>
+  <a href="javascript:increaseLineheight()">Increase Line height</a>
+ <!-- <a href="javascript:darkMode()">Dark mode</a>-->
+    <a href="javascript:void(0)"  id="speak" >Text to speech</a>
+</div>
+	
+		<style>
+#accessibilityOpt {
+    border: none;
+    border-radius: 152px;
+    bottom: 52px;
+    cursor: pointer;
+    height: 70px;
+    padding: 25px;
+    position: fixed;
+    right: 95px;
+    display: flex;
+    overflow: hidden;
+    align-items: center;
+    width: 70px;
+    max-width: 70px;
+    transition: all 400ms;
+    color: var(--color-white);
+    background-color: cornflowerblue;
+	text-align: center
+}
+	</style>
+				<button name = "accessibility" value="accessibility"   id="accessibilityOpt" class="navbar-form btn btn-default" onclick="openNav()">
+						<!--<span class="fa fa-user-plus"></span>
+						<span class="fa fa-user-plus"></span>-->
+						
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M112 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm40 304l0 128c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-223.1L59.4 304.5c-9.1 15.1-28.8 20-43.9 10.9s-20-28.8-10.9-43.9l58.3-97c17.4-28.9 48.6-46.6 82.3-46.6l29.7 0c33.7 0 64.9 17.7 82.3 46.6l58.3 97c9.1 15.1 4.2 34.8-10.9 43.9s-34.8 4.2-43.9-10.9L232 256.9 232 480c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-128-16 0z" /></svg>
+						</button>		
+
+
+<script>
+function openNav() {
+  document.getElementById("mySidepanel").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidepanel").style.width = "0";
+}
+
+
+function changeFontSizes(increase, addsize) {
+
+var elements = document.querySelectorAll('*:not(.uw-widget-custom-trigger, .uw-widget-custom-trigger span)');
+if(increase){
+		var localStorageIncreaseClickCount = sessionStorage.getItem("increaseBy");	
+	if(localStorageIncreaseClickCount){
+		localStorageIncreaseClickCount = parseInt(localStorageIncreaseClickCount, 10);
+	}else{
+		localStorageIncreaseClickCount = 0;
+	}
+	console.log("localStorageIncreaseClickCount : "+localStorageIncreaseClickCount);
+	 localStorageIncreaseClickCount = localStorageIncreaseClickCount +1 ;
+	 if(localStorageIncreaseClickCount >= 0){
+		
+		if(localStorageIncreaseClickCount == 5){
+			localStorageIncreaseClickCount = 0;
+		}
+	sessionStorage.setItem("increaseBy", localStorageIncreaseClickCount);	
+	}
+
+}
+else{
+		 var localStorageDecreaseClickCount = sessionStorage.getItem("decreaseBy");
+		 if(localStorageDecreaseClickCount){
+		localStorageDecreaseClickCount = parseInt(localStorageDecreaseClickCount, 10);
+	}else{
+		localStorageDecreaseClickCount = 0;
+	}
+	  console.log("localStorageDecreaseClickCount : "+localStorageDecreaseClickCount);
+	localStorageDecreaseClickCount = localStorageDecreaseClickCount + 1;
+	 if(localStorageDecreaseClickCount >= 0){
+		 if(localStorageDecreaseClickCount == 5){
+		localStorageDecreaseClickCount = 0;
+	}
+		sessionStorage.setItem("decreaseBy", localStorageDecreaseClickCount);
+		
+	 }
+}
+
+elements.forEach(function(element) {
+// Exclude elements inside #uw-main and with class .uwaw-features__item__name
+if (!isExcludedElement(element)) {
+var currentSize = window.getComputedStyle(element).fontSize;
+if(increase){
+if(localStorageIncreaseClickCount > 0){
+	var newSize =  parseFloat(currentSize) + 2;
+	element.style.setProperty('font-size', newSize + 'px', 'important');
+	 }else{
+		 var newSize =  parseFloat(currentSize) - (2*5) ;
+	element.style.setProperty('font-size', newSize + 'px', 'important');
+	 }
+}
+else{
+	if(localStorageDecreaseClickCount > 0){
+		var newSize =  parseFloat(currentSize) - 2;
+	element.style.setProperty('font-size', newSize + 'px', 'important');
+	}
+	else{
+		 var newSize =  parseFloat(currentSize) + (2*5) ;
+	element.style.setProperty('font-size', newSize + 'px', 'important');
+	}
+}
+        }
+    });
+}
+
+function isExcludedElement(element) {
+  // Check if the element is inside #uw-main or has class .uwaw-features__item__name
+  if (
+        element.closest('#uw-main') ||
+        element.classList.contains('uwaw-features__item__name') ||
+        element.classList.contains('ux4g-text-spacing') ||
+        element.classList.contains('feature-image') ||
+        element.classList.contains('icon_global') ||
+        element.classList.contains('copyright-text') ||
+        element.classList.contains('ux4g-copy')
+      ) {
+          return true;
+      }
+  
+      // Exclude script and svg elements
+      if (element.tagName === 'SCRIPT' || element.tagName === 'DIV' || element.tagName === 'LINK'
+     || element.tagName === 'HTML'
+     || element.tagName === 'HEAD'
+     || element.tagName === 'BODY'
+	   || element.tagName === 'SECTION'
+      || (element.tagName === 'svg' && element.namespaceURI === 'http://www.w3.org/2000/svg')) {
+          return true;
+      }
+  
+      return false;
+  }
+  
+  
+function applyLetterSpacing(){
+const elements = document.querySelectorAll('*:not(.uw-widget-custom-trigger, .uw-widget-custom-trigger span)'); // Select all elements except buttons
+
+var localStorageSpacingClickCount = sessionStorage.getItem("letterSpacing");	
+var resetCount = false;
+if(localStorageSpacingClickCount){
+		localStorageSpacingClickCount = parseInt(localStorageSpacingClickCount, 10)+1;
+		if(localStorageSpacingClickCount === 4){
+			localStorageSpacingClickCount = 0;
+			resetCount = true;
+		}
+	}else{
+		localStorageSpacingClickCount = 1;
+	}
+  elements.forEach(function(element) {
+  if (!isExcludedElement(element)) {
+        var currentSize_ts = parseFloat(window.getComputedStyle(element).letterSpacing);
+        currentSize_ts = isNaN(currentSize_ts) ? 0 : currentSize_ts; // Handle cases where lineHeight is 'normal' or an invalid value
+        // Convert to pixels (optional, depending on your needs)
+        currentSize_ts = currentSize_ts + 'px';
+		if(resetCount){
+			var newSize_ts = parseFloat(currentSize_ts) - (0.7*3);
+			 element.style.setProperty('letter-spacing', '', 'important');
+		}
+		else{
+			var newSize_ts = parseFloat(currentSize_ts) + (0.7);
+			 element.style.setProperty('letter-spacing', newSize_ts + 'px', 'important');
+		}
+          
+        }
+      });
+	  		sessionStorage.setItem("letterSpacing", localStorageSpacingClickCount);	 
+}
+	
+	
+	function increaseLineheight() {
+var elements = document.querySelectorAll('*:not(.uw-widget-custom-trigger, .uw-widget-custom-trigger span)');
+
+var localStorageLineHeightClickCount = sessionStorage.getItem("lineHeight");	
+var resetCount = false;
+if(localStorageLineHeightClickCount){
+	localStorageLineHeightClickCount = parseInt(localStorageLineHeightClickCount, 10)+1;
+		if(localStorageLineHeightClickCount === 4){
+			localStorageLineHeightClickCount = 0;
+			resetCount = true;
+		}
+}
+else{
+	localStorageLineHeightClickCount = 1;
+}
+
+  elements.forEach(function(element) {
+     // Exclude elements inside #uw-main and with class .uwaw-features__item__name
+     if (!isExcludedElement(element)) {
+        var currentSize_lh = parseFloat(window.getComputedStyle(element).lineHeight);
+        currentSize_lh = isNaN(currentSize_lh) ? 0 : currentSize_lh; // Handle cases where lineHeight is 'normal' or an invalid value
+
+  // Convert to pixels (optional, depending on your needs)
+  currentSize_lh = currentSize_lh + 'px';
+  if(resetCount){
+	    element.style.setProperty('line-height', '', 'important');
+  }else{
+	   var newSize_lh = parseFloat(currentSize_lh) + (5*localStorageLineHeightClickCount) + 'px';
+	    element.style.setProperty('line-height', newSize_lh, 'important');
+  }
+
+  //localStorage.setItem('lh-height', parseFloat(newSize_lh));
+  // element.style.lineHeight = newSize_lh;
+  /*add er*/
+
+     }
+ });
+ 
+ sessionStorage.setItem("lineHeight", localStorageLineHeightClickCount);	 
+}
+
+  document.getElementById('speak').addEventListener('click', function() {
+    // Toggle the tick icon
+   /* var tickIcon_sp = document.getElementById('tickIcon_sp');
+    tickIcon_sp.style.display = tickIcon_sp.style.display === 'none' ? 'inline-block' : 'none';
+  
+    var featureItem_sp = document.getElementById('featureItem_sp');
+  
+    // Toggle the feature-active class on featureItem
+    featureItem_sp.classList.toggle('feature-active'); 
+
+    // Save state in local storage*/
+	var speaker = sessionStorage.getItem("speak");  
+if(speaker && speaker == "true"){
+		sessionStorage.setItem("speak", false);
+}else{
+	  sessionStorage.setItem("speak",true); 
+}
+     
+  });
+
+
+
+// grab the UI elements to work with
+const speakEl = document.getElementById('speak');
+
+let utterance = null;
+let previousSelectedElement = null; 
+
+// Create audio elements for sound effects
+const speakOnSound = new Audio(''); 
+const speakOffSound = new Audio(''); 
+
+document.addEventListener('mouseup', function (event) {
+  if (isReading) {
+    const clickedElement = event.target;
+
+    // Check if the clicked element can contain text content
+    const allowedTags = ['P', 'SPAN', 'DIV', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'A', 'LI', 'LABEL', 'BUTTON', 'TD', 'TH', 'STRONG', 'EM', 'B', 'I', 'U', 'SMALL', 'BIG', 'SUB', 'SUP','SECTION'];
+
+    if (allowedTags.includes(clickedElement.tagName.toUpperCase())) {
+      selectAndSpeak(clickedElement);
+    }
+  }
+});
+
+// click handler for the "Speak On" button
+speakEl.addEventListener('click', toggleSpeech);
+
+function toggleSpeech() {
+  if (!isReading) {
+    // Enable speech
+    speakOnSound.play(); 
+    isReading = true;
+  } else {
+    // Disable speech
+    resetspeech();
+  }
+}
+
+function resetspeech() {
+  //speakOffSound.play(); 
+  window.speechSynthesis.cancel();
+  isReading = false;
+  previousSelectedElement = null; 
+}
+
+function startReading(text) {
+  utterance = new SpeechSynthesisUtterance(text);
+
+  // Set properties for a more formal voice
+  utterance.rate = 0.7; // Adjust the rate (0.5 is slower, 2.0 is faster)
+  utterance.pitch = 10.0; // Set pitch to 1.0 for a natural voice
+
+  // Attempt to set a female voice
+  const voices = window.speechSynthesis.getVoices();
+  const femaleVoice = voices.find(voice => voice.name.includes('female') && voice.lang.includes('en'));
+  if (femaleVoice) {
+    utterance.voice = femaleVoice;
+  }
+
+  window.speechSynthesis.speak(utterance);
+
+  // Add an event listener for the 'end' event to reset the selection
+  utterance.addEventListener('end', function () {
+    resetSelection();
+  });
+}
+
+function selectAndSpeak(element) {
+  const range = document.createRange();
+  range.selectNodeContents(element);
+  const selection = window.getSelection();
+  selection.removeAllRanges();
+  selection.addRange(range);
+
+  if (previousSelectedElement !== element) {
+    // If a different element is clicked, cancel the current speech
+    window.speechSynthesis.cancel();
+    startReading(selection.toString());
+    previousSelectedElement = element; 
+  } else {
+    // If the same element is clicked, toggle between play/pause
+    if (isReading) {
+      window.speechSynthesis.pause();
+    } else {
+      window.speechSynthesis.resume();
+    }
+  }
+}
+
+function resetSelection() {
+  const selection = window.getSelection();
+  selection.removeAllRanges();
+  previousSelectedElement = null;
+}
+
+document.addEventListener('DOMContentLoaded', function() { 
+  var GetspeakState = JSON.parse(sessionStorage.getItem('speak'));
+ // var tickIcon_sp = document.getElementById('tickIcon_sp');
+  //var featureItem_sp = document.getElementById('featureItem_sp');
+
+  if (GetspeakState == true || GetspeakState == "true") { 
+  //  tickIcon_sp.style.display = 'inline-block';
+    //featureItem_sp.classList.add('feature-active');
+    //speakOnSound.play(); 
+    isReading = true;
+  }
+});
+
+function darkMode(){
+	  const isDarkMode = JSON.parse(sessionStorage.getItem('darkMode'));
+	  if(isDarkMode){
+		    if (isDarkMode === true) {
+			// checkbox.checked = isDarkMode;
+			document.body.classList.add("dark");
+			}else{
+				document.body.classList.remove("dark");
+			}
+	  }else{
+		  	document.body.classList.add("dark");
+	  }
+
+}
+</script> 
+   
+</body>
+ </html>
+		

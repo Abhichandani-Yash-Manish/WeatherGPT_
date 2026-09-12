@@ -1,0 +1,414 @@
+{
+  "id": "IN-005",
+  "question": "How hot will Dholavira village be between noon and 4 pm tomorrow?",
+  "origin": "included_report",
+  "checked_at_utc": "2026-09-12T16:14:58.422649+00:00",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "82d43561-fd50-4e11-95b6-22ee275180a5",
+    "question": "How hot will Dholavira village be between noon and 4 pm tomorrow?",
+    "status": "needs_selection",
+    "answer": "I found 12 possible places for Dholavira. Please confirm the intended location and spelling.",
+    "facts": [],
+    "citations": [],
+    "notes": [
+      "Tomorrow is interpreted as the next local calendar date: 2026-09-13.",
+      "Explicit times 'noon' and '4 pm' are recorded exactly as 12:00 and 16:00 IST."
+    ],
+    "choices": [
+      {
+        "id": "1272732",
+        "name": "Dholovira",
+        "latitude": 23.87486,
+        "longitude": 70.21715,
+        "feature": "PPL",
+        "admin1": "State of Gujarāt",
+        "admin2": "Kutch",
+        "modified": "2024-01-06",
+        "match_type": "approximate_name_requires_confirmation",
+        "selection_id": "geonames:1272732",
+        "label": "Dholovira, Kutch, State of Gujarāt",
+        "coordinates": {
+          "latitude": 23.87486,
+          "longitude": 70.21715
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1272732",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Dholavira"
+      },
+      {
+        "id": "10568230",
+        "name": "Dholmāra",
+        "latitude": 21.23819,
+        "longitude": 79.50831,
+        "feature": "PPL",
+        "admin1": "State of Mahārāshtra",
+        "admin2": "Nagpur Division",
+        "modified": "2024-01-06",
+        "match_type": "approximate_name_requires_confirmation",
+        "selection_id": "geonames:10568230",
+        "label": "Dholmāra, Nagpur Division, State of Mahārāshtra",
+        "coordinates": {
+          "latitude": 21.23819,
+          "longitude": 79.50831
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/10568230",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Dholavira"
+      },
+      {
+        "id": "10735435",
+        "name": "Dholpāra",
+        "latitude": 21.04408,
+        "longitude": 82.84337,
+        "feature": "PPL",
+        "admin1": "State of Odisha",
+        "admin2": "Baragarh",
+        "modified": "2024-01-06",
+        "match_type": "approximate_name_requires_confirmation",
+        "selection_id": "geonames:10735435",
+        "label": "Dholpāra, Baragarh, State of Odisha",
+        "coordinates": {
+          "latitude": 21.04408,
+          "longitude": 82.84337
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/10735435",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Dholavira"
+      },
+      {
+        "id": "10801661",
+        "name": "Dholwāra",
+        "latitude": 22.0716,
+        "longitude": 76.20664,
+        "feature": "PPL",
+        "admin1": "Madhya Pradesh",
+        "admin2": "Khargone",
+        "modified": "2024-01-06",
+        "match_type": "approximate_name_requires_confirmation",
+        "selection_id": "geonames:10801661",
+        "label": "Dholwāra, Khargone, Madhya Pradesh",
+        "coordinates": {
+          "latitude": 22.0716,
+          "longitude": 76.20664
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/10801661",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Dholavira"
+      },
+      {
+        "id": "11721031",
+        "name": "Dholmāra",
+        "latitude": 20.36716,
+        "longitude": 85.0384,
+        "feature": "PPL",
+        "admin1": "State of Odisha",
+        "admin2": "Nayagarh District",
+        "modified": "2024-01-06",
+        "match_type": "approximate_name_requires_confirmation",
+        "selection_id": "geonames:11721031",
+        "label": "Dholmāra, Nayagarh District, State of Odisha",
+        "coordinates": {
+          "latitude": 20.36716,
+          "longitude": 85.0384
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/11721031",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Dholavira"
+      },
+      {
+        "id": "11739155",
+        "name": "Dholpāra",
+        "latitude": 20.70007,
+        "longitude": 84.0288,
+        "feature": "PPL",
+        "admin1": "State of Odisha",
+        "admin2": "Baudh",
+        "modified": "2024-01-06",
+        "match_type": "approximate_name_requires_confirmation",
+        "selection_id": "geonames:11739155",
+        "label": "Dholpāra, Baudh, State of Odisha",
+        "coordinates": {
+          "latitude": 20.70007,
+          "longitude": 84.0288
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/11739155",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Dholavira"
+      },
+      {
+        "id": "1272740",
+        "name": "Dholar",
+        "latitude": 20.38333,
+        "longitude": 72.83333,
+        "feature": "PPL",
+        "admin1": "Dadra and Nagar Haveli and Daman and Diu",
+        "admin2": "Daman District",
+        "modified": "2024-01-07",
+        "match_type": "approximate_name_requires_confirmation",
+        "selection_id": "geonames:1272740",
+        "label": "Dholar, Daman District, Dadra and Nagar Haveli and Daman and Diu",
+        "coordinates": {
+          "latitude": 20.38333,
+          "longitude": 72.83333
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1272740",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Dholavira"
+      },
+      {
+        "id": "6992905",
+        "name": "Dholai",
+        "latitude": 27.83792,
+        "longitude": 79.06321,
+        "feature": "PPL",
+        "admin1": "Uttar Pradesh",
+        "admin2": "Budaun",
+        "modified": "2024-01-06",
+        "match_type": "approximate_name_requires_confirmation",
+        "selection_id": "geonames:6992905",
+        "label": "Dholai, Budaun, Uttar Pradesh",
+        "coordinates": {
+          "latitude": 27.83792,
+          "longitude": 79.06321
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/6992905",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Dholavira"
+      },
+      {
+        "id": "6992950",
+        "name": "Dholai",
+        "latitude": 27.79196,
+        "longitude": 79.04472,
+        "feature": "PPL",
+        "admin1": "Uttar Pradesh",
+        "admin2": "Kasganj",
+        "modified": "2024-01-07",
+        "match_type": "approximate_name_requires_confirmation",
+        "selection_id": "geonames:6992950",
+        "label": "Dholai, Kasganj, Uttar Pradesh",
+        "coordinates": {
+          "latitude": 27.79196,
+          "longitude": 79.04472
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/6992950",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Dholavira"
+      },
+      {
+        "id": "7001705",
+        "name": "Dholai",
+        "latitude": 26.82751,
+        "longitude": 75.59091,
+        "feature": "PPL",
+        "admin1": "State of Rājasthān",
+        "admin2": "Jaipur",
+        "modified": "2024-01-06",
+        "match_type": "approximate_name_requires_confirmation",
+        "selection_id": "geonames:7001705",
+        "label": "Dholai, Jaipur, State of Rājasthān",
+        "coordinates": {
+          "latitude": 26.82751,
+          "longitude": 75.59091
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/7001705",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Dholavira"
+      },
+      {
+        "id": "10152831",
+        "name": "Dholra",
+        "latitude": 30.00675,
+        "longitude": 77.12947,
+        "feature": "PPL",
+        "admin1": "State of Haryāna",
+        "admin2": "Yamunanagar",
+        "modified": "2024-01-06",
+        "match_type": "approximate_name_requires_confirmation",
+        "selection_id": "geonames:10152831",
+        "label": "Dholra, Yamunanagar, State of Haryāna",
+        "coordinates": {
+          "latitude": 30.00675,
+          "longitude": 77.12947
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/10152831",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Dholavira"
+      },
+      {
+        "id": "10723104",
+        "name": "Dholāi",
+        "latitude": 32.11734,
+        "longitude": 76.38388,
+        "feature": "PPL",
+        "admin1": "State of Himāchal Pradesh",
+        "admin2": "Kāngra",
+        "modified": "2024-01-06",
+        "match_type": "approximate_name_requires_confirmation",
+        "selection_id": "geonames:10723104",
+        "label": "Dholāi, Kāngra, State of Himāchal Pradesh",
+        "coordinates": {
+          "latitude": 32.11734,
+          "longitude": 76.38388
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/10723104",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Dholavira"
+      }
+    ],
+    "follow_up": "Choose a place, or add its district and state.",
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-12T16:14:58.422687+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 780,
+        "output_tokens": 324,
+        "duration_seconds": 5.337502959
+      },
+      "generation": null,
+      "tools": [
+        {
+          "name": "gazetteer_search",
+          "query": {
+            "name": "Dholavira",
+            "state": "",
+            "district": "",
+            "kind": "settlement"
+          },
+          "matches": 12
+        }
+      ],
+      "provider": "local_ollama",
+      "duration_seconds": 5.375
+    },
+    "plan": {
+      "intent": "forecast",
+      "language": "en",
+      "places": [
+        {
+          "name": "Dholavira",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "start_local": "2026-09-13T12:00:00+05:30",
+      "end_local": "2026-09-13T16:00:00+05:30",
+      "explicit_times": true,
+      "variables": [
+        "temperature_2m"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "temperature",
+      "unsupported_parameters": [],
+      "assumptions": [
+        "Tomorrow is interpreted as the next local calendar date: 2026-09-13.",
+        "Explicit times 'noon' and '4 pm' are recorded exactly as 12:00 and 16:00 IST."
+      ],
+      "clarification": "",
+      "requested_outcome": "Forecast of maximum temperature in Dholavira between 12:00 PM and 4:00 PM on September 13, 2026."
+    },
+    "resolved_points": {}
+  }
+}

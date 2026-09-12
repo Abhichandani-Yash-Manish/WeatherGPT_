@@ -1,0 +1,100 @@
+{
+  "schema_version": "foundation-v1",
+  "family": "marine_bulletin_catalog",
+  "source_id": "S59",
+  "status": "reference_only",
+  "records": [
+    {
+      "document_index": 0,
+      "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_2b510a_coastal.pdf",
+      "source_locator": "uploads/archive/49/49_2b510a_coastal.pdf"
+    },
+    {
+      "document_index": 1,
+      "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_21ebcb_coastal.pdf",
+      "source_locator": "uploads/archive/49/49_21ebcb_coastal.pdf"
+    },
+    {
+      "document_index": 2,
+      "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_87a814_DTB11.pdf",
+      "source_locator": "uploads/archive/49/49_87a814_DTB11.pdf"
+    },
+    {
+      "document_index": 3,
+      "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_86d8bf_DTB11.pdf",
+      "source_locator": "uploads/archive/49/49_86d8bf_DTB11.pdf"
+    },
+    {
+      "document_index": 4,
+      "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_d39ac5_TWO_BULLETIN_STN.pdf",
+      "source_locator": "uploads/archive/49/49_d39ac5_TWO_BULLETIN_STN.pdf"
+    },
+    {
+      "document_index": 5,
+      "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_e263fe_TWO_BULLETIN_NTN.pdf",
+      "source_locator": "uploads/archive/49/49_e263fe_TWO_BULLETIN_NTN.pdf"
+    },
+    {
+      "document_index": 6,
+      "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_17f8a5_coastal_bulletin.pdf",
+      "source_locator": "uploads/archive/49/49_17f8a5_coastal_bulletin.pdf"
+    },
+    {
+      "document_index": 7,
+      "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_9fa027_coastal_bulletin.pdf",
+      "source_locator": "uploads/archive/49/49_9fa027_coastal_bulletin.pdf"
+    },
+    {
+      "document_index": 8,
+      "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_79fda0_coastal_bulletin.pdf",
+      "source_locator": "uploads/archive/49/49_79fda0_coastal_bulletin.pdf"
+    },
+    {
+      "document_index": 9,
+      "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_677278_coastal_rsmc.pdf",
+      "source_locator": "uploads/archive/49/49_677278_coastal_rsmc.pdf"
+    },
+    {
+      "document_index": 10,
+      "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_e20f30_coastal_rsmc.pdf",
+      "source_locator": "uploads/archive/49/49_e20f30_coastal_rsmc.pdf"
+    },
+    {
+      "document_index": 11,
+      "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_f135d3_mausam.imd.gov.in_Forecast_coastal_bulletin_new.php_id_3.pdf",
+      "source_locator": "uploads/archive/49/49_f135d3_mausam.imd.gov.in_Forecast_coastal_bulletin_new.php_id_3.pdf"
+    },
+    {
+      "document_index": 12,
+      "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_19940e_mausam.imd.gov.in_Forecast_coastal_bulletin_new.php_id_3.pdf",
+      "source_locator": "uploads/archive/49/49_19940e_mausam.imd.gov.in_Forecast_coastal_bulletin_new.php_id_3.pdf"
+    },
+    {
+      "document_index": 13,
+      "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_3f02a4_coastal_rsmc.pdf",
+      "source_locator": "uploads/archive/49/49_3f02a4_coastal_rsmc.pdf"
+    },
+    {
+      "document_index": 14,
+      "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_7929dc_coastal.pdf",
+      "source_locator": "uploads/archive/49/49_7929dc_coastal.pdf"
+    }
+  ],
+  "count": 15,
+  "provenance": {
+    "source_id": "S59",
+    "url": "https://rsmcnewdelhi.imd.gov.in/coastal-weather-bulletin.php",
+    "retrieved_at_utc": "2026-09-11T19:50:35.540493+00:00",
+    "http_status": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "bytes": 38939,
+    "sha256": "f6531b835e142d269dcdfd67117fb68310cf63d2536c039c9a8c54f322c3afd3",
+    "blob": "blobs/f6531b835e142d269dcdfd67117fb68310cf63d2536c039c9a8c54f322c3afd3.bin",
+    "delivery": "network",
+    "checked_at_utc": "2026-09-11T19:50:35.542603+00:00"
+  },
+  "limitations": [
+    "Publisher-listed documents; each PDF issue time, region and validity must be checked."
+  ],
+  "coverage": {}
+}

@@ -1,0 +1,12 @@
+{
+  "source_id": "S21",
+  "url": "https://api.open-meteo.com/v1/gfs?latitude=24.80805&longitude=93.9442&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+  "retrieved_at_utc": "2026-09-12T16:16:29.831599+00:00",
+  "http_status": 200,
+  "content_type": "application/json; charset=utf-8",
+  "bytes": 2420,
+  "sha256": "4338a1e36a99efc06724582c2f869a53fe18be1bce4d21fc6f1b28ab464331ef",
+  "blob": "blobs/4338a1e36a99efc06724582c2f869a53fe18be1bce4d21fc6f1b28ab464331ef.bin",
+  "validation_scope": "product",
+  "stage": "validated"
+}

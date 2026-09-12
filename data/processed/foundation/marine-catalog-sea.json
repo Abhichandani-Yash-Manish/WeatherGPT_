@@ -1,0 +1,35 @@
+{
+  "schema_version": "foundation-v1",
+  "family": "marine_bulletin_catalog",
+  "source_id": "S58",
+  "status": "reference_only",
+  "records": [
+    {
+      "document_index": 0,
+      "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/59/59_6e569f_sab_rsmc.pdf",
+      "source_locator": "uploads/archive/59/59_6e569f_sab_rsmc.pdf"
+    },
+    {
+      "document_index": 1,
+      "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/60/60_8beba5_sab.pdf",
+      "source_locator": "uploads/archive/60/60_8beba5_sab.pdf"
+    }
+  ],
+  "count": 2,
+  "provenance": {
+    "source_id": "S58",
+    "url": "https://rsmcnewdelhi.imd.gov.in/sea-area-bulletin.php",
+    "retrieved_at_utc": "2026-09-11T19:50:33.518265+00:00",
+    "http_status": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "bytes": 23038,
+    "sha256": "da7a8c3bfe5e281e2b1aed06d74b5ccc44238a2663ede8faf1ba6a02a129a7ec",
+    "blob": "blobs/da7a8c3bfe5e281e2b1aed06d74b5ccc44238a2663ede8faf1ba6a02a129a7ec.bin",
+    "delivery": "network",
+    "checked_at_utc": "2026-09-11T19:50:33.518933+00:00"
+  },
+  "limitations": [
+    "Publisher-listed documents; each PDF issue time, region and validity must be checked."
+  ],
+  "coverage": {}
+}

@@ -1,0 +1,43 @@
+{
+  "review_date": "2026-09-12",
+  "runtime_fixes_applied": false,
+  "reviewed_inputs": {
+    "data/registry/sources.json": "d0bb769dabd943f9ff666137192cf36399a4fc65301542a4fbbd883fb7e16a70",
+    "data/registry/readiness.json": "db35008ceaabc26f5fee4f7d10506428eae8c702c9755981d7e3edb5636240ae",
+    "weathergpt_data/transport.py": "0f43abfce903410b14f5757aadd29505fb5b323cda1fbe3f5b8b0c1e9cea1426",
+    "weathergpt_data/adapters.py": "66ff007659579aaf059289317fd425b35aea94894af48cd426e944aec900ff1f",
+    "weathergpt_data/foundation.py": "df2afbcc2014ca5cae10c40381b8eb820ed47ce36b513c96a301ad5215f24f44",
+    "scripts/finalize_foundation_checkpoint.py": "ad1d3f7a30eb5a790a5aa3b74efba8b8c39851643863cd958a8d861c26fb8405"
+  },
+  "artifacts": {
+    "registry-check.json": "8832cd9a6226ad113d5b753232fc511c91fd6d79ab206ff566e8ec4a22c93da8",
+    "tests.txt": "89ed4776f6989751247e8f5413dd8158e62c909f8e9004a2be97672d036918fd",
+    "reproduce.py": "a24710451afbaa561ad4dda21726c7ea67698f293a5010dde6a715a27bf3f11a",
+    "reproductions.json": "86d7994b13ea32ce66e7cda6b2f763e140846e394d81bbdb0ff81d4573a2fade",
+    "review.md": "abd85887b2415359bc24246fe8f4ead34d072fd913709f8a69836705c14460dd",
+    "review.ipynb": "60facc88b69706805ec9405d7509c84384a71ebb71ba401a40cbe384eb0b7ff3"
+  },
+  "registry_version": 6,
+  "sources": [
+    {
+      "title": "Open-Meteo pricing and call accounting",
+      "url": "https://open-meteo.com/en/pricing"
+    },
+    {
+      "title": "Local Government Directory",
+      "url": "https://lgdirectory.gov.in/"
+    },
+    {
+      "title": "NCEP GFS products",
+      "url": "https://www.nco.ncep.noaa.gov/pmb/products/gfs/"
+    },
+    {
+      "title": "PostGIS data management",
+      "url": "https://postgis.net/docs/using_postgis_dbmanagement.html"
+    },
+    {
+      "title": "Parquet overview",
+      "url": "https://parquet.apache.org/docs/overview/"
+    }
+  ]
+}

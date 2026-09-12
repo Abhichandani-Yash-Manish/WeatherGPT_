@@ -1,0 +1,16 @@
+[
+  {
+    "source_id": "candidate-citywx",
+    "url": "https://city.imd.gov.in/citywx/responsive/api/",
+    "checked_at_utc": "2026-09-11T20:05:09.308092+00:00",
+    "error": "HTTP Error 403: Forbidden",
+    "error_type": "HTTPError"
+  },
+  {
+    "source_id": "candidate-citywx",
+    "url": "https://city.imd.gov.in/citywx/responsive/api/fetchCity_static.php",
+    "checked_at_utc": "2026-09-11T20:05:09.329080+00:00",
+    "error": "HTTP Error 403: Forbidden",
+    "error_type": "HTTPError"
+  }
+]

@@ -1,0 +1,32 @@
+{
+  "run_id": "national-climate-v1-a203fc0eb4a31c58",
+  "built_at_utc": "2026-09-11T19:02:17.942391+00:00",
+  "transformation_version": "national-climate-v1",
+  "implementation_sha256": "ec5d10e72a4d16fa5eabbb4812c96890decee086214743ac7aa2d995a975df42",
+  "inputs": [
+    {
+      "source_id": "S25",
+      "path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+      "sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+      "published_years": 124,
+      "normalised_records": 2108
+    },
+    {
+      "source_id": "S26",
+      "path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+      "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+      "published_years": 124,
+      "normalised_records": 2108
+    }
+  ],
+  "outputs": {
+    "audit.json": "d563dbd1a49b78466592e0ff1af148148efd72854cf013e87436aa800061d29d",
+    "reconciliation.json": "6f31d953d833856ca334c160d8223a20a1be3fb9bc3de98b6f59430e70a3ffba",
+    "example-answer.md": "59bc8577abd9850cf9694e77b1da4446fd387c028cc240e83b4a96aa74f29866",
+    "records.jsonl": "ccf45ff5c6c2f64a4e84c69a8840fafba8dd437cd01a372803897a3b624cf1e2",
+    "climate.sqlite": "9914717c6f9695d46570bdde1460d50b4c1e75ffe6ebb18f11f48de7a54b3fe0",
+    "records.csv": "b9bf19c4a2d9f6513ace4a3853e97072a3140d6ac31186f5aa083c8a3f090e01",
+    "example-answer.json": "a042f6cf497d03e87c6a785206ec4733d7c5c0a41ab40545f35658c1b8854659"
+  },
+  "note": "No network, LLM, inferred missing values or source-total repair."
+}

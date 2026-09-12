@@ -1,0 +1,57 @@
+{"completed": "forecast-ahmedabad", "exact_interval_oracles": 10512, "order_invariance_checks": 4, "half_hour_rejections": 71}
+{"completed": "forecast-chennai", "exact_interval_oracles": 10512, "order_invariance_checks": 4, "half_hour_rejections": 71}
+{"completed": "forecast-delhi", "exact_interval_oracles": 10512, "order_invariance_checks": 4, "half_hour_rejections": 71}
+{"completed": "forecast-guwahati", "exact_interval_oracles": 10512, "order_invariance_checks": 4, "half_hour_rejections": 71}
+{"completed": "forecast-mumbai", "exact_interval_oracles": 10512, "order_invariance_checks": 4, "half_hour_rejections": 71}
+{"completed": "forecast-srinagar", "exact_interval_oracles": 10512, "order_invariance_checks": 4, "half_hour_rejections": 71}
+{
+  "status": "PASS",
+  "counts": {
+    "registered_assets_hash_verified": 219,
+    "national_cells_and_locators_matched": 4216,
+    "national_flagged_aggregate_discrepancies": 6,
+    "exact_interval_oracles": 63072,
+    "order_invariance_checks": 24,
+    "half_hour_rejections": 426,
+    "saved_land_locations": 6
+  },
+  "per_source": {
+    "forecast-ahmedabad": {
+      "exact_interval_oracles": 10512,
+      "order_invariance_checks": 4,
+      "half_hour_rejections": 71
+    },
+    "forecast-chennai": {
+      "exact_interval_oracles": 10512,
+      "order_invariance_checks": 4,
+      "half_hour_rejections": 71
+    },
+    "forecast-delhi": {
+      "exact_interval_oracles": 10512,
+      "order_invariance_checks": 4,
+      "half_hour_rejections": 71
+    },
+    "forecast-guwahati": {
+      "exact_interval_oracles": 10512,
+      "order_invariance_checks": 4,
+      "half_hour_rejections": 71
+    },
+    "forecast-mumbai": {
+      "exact_interval_oracles": 10512,
+      "order_invariance_checks": 4,
+      "half_hour_rejections": 71
+    },
+    "forecast-srinagar": {
+      "exact_interval_oracles": 10512,
+      "order_invariance_checks": 4,
+      "half_hour_rejections": 71
+    }
+  },
+  "real_provider_calls": 0,
+  "scope": "All registered asset bytes, all national cells, every contiguous interval in all six saved land forecast arrays. Historical replay; not current weather or scientific forecast skill.",
+  "limitations": [
+    "The interval cases are data-driven oracle checks, not additional unittest methods.",
+    "Stored sample geography is six points; this does not establish nationwide live reliability.",
+    "Native national aggregate discrepancies are retained."
+  ]
+}

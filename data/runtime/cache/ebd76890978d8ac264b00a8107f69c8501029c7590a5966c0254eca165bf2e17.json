@@ -1,0 +1,10 @@
+{
+  "source_id": "S59",
+  "url": "https://rsmcnewdelhi.imd.gov.in/coastal-weather-bulletin.php",
+  "retrieved_at_utc": "2026-09-11T19:50:35.540493+00:00",
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "bytes": 38939,
+  "sha256": "f6531b835e142d269dcdfd67117fb68310cf63d2536c039c9a8c54f322c3afd3",
+  "blob": "blobs/f6531b835e142d269dcdfd67117fb68310cf63d2536c039c9a8c54f322c3afd3.bin"
+}

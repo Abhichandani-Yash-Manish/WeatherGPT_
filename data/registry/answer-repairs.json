@@ -1,0 +1,35 @@
+{
+  "schema_version": "answer-repairs-v1",
+  "review": "research/reviews/data-folder-20260912/review.md",
+  "updated_at_utc": "2026-09-12T07:43:22.970275+00:00",
+  "operational_ready": false,
+  "findings": [
+    {
+      "id": "DF01",
+      "status": "verified_scoped",
+      "evidence": [
+        "tests/test_repairs_four.py",
+        "tests/test_answers.py",
+        "docs/10-grounded-answer-workflow.md"
+      ]
+    },
+    {
+      "id": "DF02",
+      "status": "verified_scoped",
+      "evidence": [
+        "tests/test_repairs_four.py",
+        "tests/test_answers.py",
+        "docs/10-grounded-answer-workflow.md"
+      ]
+    },
+    {
+      "id": "DF03",
+      "status": "verified_scoped",
+      "evidence": [
+        "tests/test_repairs_four.py",
+        "tests/test_answers.py",
+        "docs/10-grounded-answer-workflow.md"
+      ]
+    }
+  ]
+}

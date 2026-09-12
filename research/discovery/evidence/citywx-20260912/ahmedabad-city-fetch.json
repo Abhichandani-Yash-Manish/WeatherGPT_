@@ -1,0 +1,12 @@
+{
+  "url": "https://city.imd.gov.in/citywx/responsive/api/fetchCity_static.php",
+  "method": "POST",
+  "form": {
+    "ID": "42647"
+  },
+  "http_status": 403,
+  "retrieved_at_utc": "2026-09-11T20:05:26.759371+00:00",
+  "bytes": 9,
+  "sha256": "78342a0905a72ce44da083dcb5d23b8ea0c16992ba2a82eece97e033d76ba3d3",
+  "content_type": "text/html; charset=UTF-8"
+}

@@ -1,0 +1,159 @@
+{
+  "source_pdf_pages": 2418,
+  "source_pages_checked": 2026,
+  "district_series": 640,
+  "csv_database_rows_matched": 60568,
+  "csv_database_measure_cells_matched": 1029656,
+  "counts": {
+    "matched": 59818,
+    "matched_cells_including_blanks": 1016906,
+    "matched_nonmissing_cells": 987572,
+    "unresolved": 750
+  },
+  "series_fully_matched": 629,
+  "by_state": {
+    "Andhra Pradesh": {
+      "matched": 1428
+    },
+    "Arunachal Pradesh": {
+      "unresolved": 71,
+      "matched": 499
+    },
+    "Assam": {
+      "matched": 2422
+    },
+    "Bihar": {
+      "matched": 3910
+    },
+    "Gujarat": {
+      "matched": 2782
+    },
+    "Haryana": {
+      "matched": 2135
+    },
+    "Himachal Pradesh": {
+      "matched": 1089
+    },
+    "Jammu & Kashmir": {
+      "matched": 1537
+    },
+    "Karnataka": {
+      "matched": 3205
+    },
+    "Kerala": {
+      "matched": 1535
+    },
+    "Madhya Pradesh": {
+      "matched": 5254
+    },
+    "Maharashtra": {
+      "matched": 3674
+    },
+    "Manipur": {
+      "matched": 252,
+      "unresolved": 116
+    },
+    "Meghalaya": {
+      "matched": 388
+    },
+    "Mizoram": {
+      "unresolved": 262,
+      "matched": 166
+    },
+    "Nagaland": {
+      "matched": 418
+    },
+    "Orissa": {
+      "matched": 2921,
+      "unresolved": 90
+    },
+    "Punjab": {
+      "matched": 1884
+    },
+    "Rajasthan": {
+      "matched": 3496
+    },
+    "Tamil Nadu": {
+      "matched": 3490
+    },
+    "Tripura": {
+      "matched": 305
+    },
+    "Uttar Pradesh": {
+      "matched": 7222,
+      "unresolved": 110
+    },
+    "West Bengal": {
+      "matched": 2062
+    },
+    "Sikkim": {
+      "matched": 123
+    },
+    "Jharkhand": {
+      "matched": 2561
+    },
+    "Uttarakhand": {
+      "matched": 1196
+    },
+    "chhattisgarh": {
+      "unresolved": 101,
+      "matched": 1667
+    },
+    "Delhi": {
+      "matched": 310
+    },
+    "Goa": {
+      "matched": 220
+    },
+    "Islands": {
+      "matched": 328
+    },
+    "Union Terr.": {
+      "matched": 247
+    },
+    "Telangana": {
+      "matched": 1092
+    }
+  },
+  "inputs": {
+    "research/discovery/evidence/foundation-20260912/imd-110-year-rainfall.pdf": "829d2145e06750343d05ccfc4b58aeb368202e012d48b872e51897648f97a91e",
+    "data/raw/imports/2026-09-11/states/andhra_pradesh.csv": "94e0051827001a17d56d0bc0bd4c859dd66e00b089843cfb90fe6619f9b9c26a",
+    "data/raw/imports/2026-09-11/states/arunachal_pradesh.csv": "40cb815a5243b2a12609a7db46c0db95080670b54bd9169f00d47ae29358e635",
+    "data/raw/imports/2026-09-11/states/assam.csv": "39d66d3d270b399d84c7ad4511bbe44c7b89df2e6eda54bee5d32b319ff82120",
+    "data/raw/imports/2026-09-11/states/bihar.csv": "104d9d2eed99e30b7209ef06083e98487d22eb4109e7830df5636f351c6976fc",
+    "data/raw/imports/2026-09-11/states/chhattisgarh.csv": "8639ff84a052bb88b8ef02e886b9e952634ddaaddb2f800eccd69052e8bdc424",
+    "data/raw/imports/2026-09-11/states/delhi.csv": "cf82ed8574f3d74f540ce27116c90568197eb3b011b76b0d0e45e2b369fa1a2c",
+    "data/raw/imports/2026-09-11/states/goa.csv": "e28085b390f0c2f37390fa93a73543747e702cf175514cd0190f01ce75671d34",
+    "data/raw/imports/2026-09-11/states/gujarat.csv": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+    "data/raw/imports/2026-09-11/states/haryana.csv": "58c59c46c99209e5a05faffa169eaaf614b317b43eb879a475f4f7086a0535da",
+    "data/raw/imports/2026-09-11/states/himachal_pradesh.csv": "7127dc4f1d64bad4f3b1c9985ffb2a7282366ecce505307b6063243b0121ad5f",
+    "data/raw/imports/2026-09-11/states/islands.csv": "ca4ca8da680ed4725fcebb52efef55671e69130682fe987b870675d81fcab602",
+    "data/raw/imports/2026-09-11/states/jammu_kashmir.csv": "242bb515027ba423d8bda47d09c2dc8bbc399be5ed1eada1c116301890a34a7b",
+    "data/raw/imports/2026-09-11/states/jharkhand.csv": "5eafe5b4477f183eb29c7456b25e7872515c7411e381b65c9a65563d30d9b8ff",
+    "data/raw/imports/2026-09-11/states/karnataka.csv": "894b0696ce2f8d608fa4f00adda579d08befaa3c2a52ff5ef116850eb709d81c",
+    "data/raw/imports/2026-09-11/states/kerala.csv": "77009d9e76d92d9ac7de8b2eb2905587fb4f15efdf8f64dfd55ea98c403ed39a",
+    "data/raw/imports/2026-09-11/states/madhya_pradesh.csv": "52e4bcd8907a58faa657f43d300552f5dbf809eacc160611203a14ca5e61a99f",
+    "data/raw/imports/2026-09-11/states/maharashtra.csv": "faf6840b6a6f717416ec0f8a70bf5ef9e54f88b77b84eb0ca1f74d8fc32ae44e",
+    "data/raw/imports/2026-09-11/states/manipur.csv": "e78becc591fa4aa716fc0c39ac08be8ae20708b7d11632c064437ea3e75c4524",
+    "data/raw/imports/2026-09-11/states/meghalaya.csv": "afb14005934dc782441fd37f0bfe8c703f6e6c7be4161449f1e5b440029bbc82",
+    "data/raw/imports/2026-09-11/states/mizoram.csv": "ec0916240858c53fd5bfd66bfe4dc52679c93c9449facf179f5e9aff816cb7f8",
+    "data/raw/imports/2026-09-11/states/nagaland.csv": "498ba1fd5f1619b9359eb6ed1f90075bc6aae9978f4c42aedddf415a2ed7ce6d",
+    "data/raw/imports/2026-09-11/states/orissa.csv": "6e1ee5b499cb58e623151ef2facf56f384ff3a3214e9d87afbc3bf5473ffb30f",
+    "data/raw/imports/2026-09-11/states/punjab.csv": "1156b81fd84d9bc1fdf5e20f1828fb509e5962ca2a12e2c80c0bce57a69cbb39",
+    "data/raw/imports/2026-09-11/states/rajasthan.csv": "c513a483a81eb88584e3bf0703f2791c45db49d6b57ed085a1fc6ce1b6da1703",
+    "data/raw/imports/2026-09-11/states/sikkim.csv": "cdbb71269485d4b8d34fd46b94baf7aea01b1d14aa7e8406f188d3ca1f2d5bdb",
+    "data/raw/imports/2026-09-11/states/tamil_nadu.csv": "01562aab1ec1e7bf889100d0da3c72affb72d9677a0c4b3a1a5b5d8f5157c0c2",
+    "data/raw/imports/2026-09-11/states/telangana.csv": "f1871cfabc2d5a2590302df228263f4f793fbe977984da6c60e948bef5ab088f",
+    "data/raw/imports/2026-09-11/states/tripura.csv": "9db539871072fcf10cafd0d54b0a8ace7f485aba95f424f183f9983b5d28f395",
+    "data/raw/imports/2026-09-11/states/union_terr.csv": "e6fabf61003702c21b6ed13861b59a939ffb24309575a77b5f4472ab72bd239f",
+    "data/raw/imports/2026-09-11/states/uttar_pradesh.csv": "520e4607508c45b65635e2cf2f1c4d142de0115f19cc4381b73b90bae73813f1",
+    "data/raw/imports/2026-09-11/states/uttarakhand.csv": "63d99db9d73a586778dfff5af6827cd0869b1421539e75babddab5b6e83008b4",
+    "data/raw/imports/2026-09-11/states/west_bengal.csv": "47120202b3b00bb86b0de8d73c26d783d7f404962f1209d07729b50d1e3e4bbd"
+  },
+  "pdfplumber_version": "0.11.9",
+  "method": "PDF coordinate/column and district/year checks, independent of CSV value order. Missing cells are compared explicitly.",
+  "limitations": [
+    "Transcription agreement does not establish measurement accuracy, modern boundary comparability or reuse rights.",
+    "No unclear extraction is promoted to a match."
+  ]
+}

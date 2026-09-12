@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IMD API Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+    .imd-topbar {
+        background: #ffffff;
+        border-bottom: 1px solid #dee2e6;
+    }
+    .imd-brand-logo {
+        width: 52px;
+        height: 52px;
+        object-fit: contain;
+    }
+    .imd-brand-title {
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1.2;
+        margin: 0;
+    }
+    .imd-brand-subtitle {
+        font-size: 0.8rem;
+        margin: 0;
+        color: #495057;
+    }
+    .hero-shell {
+        position: relative;
+        overflow: hidden;
+        border-radius: 1rem;
+        background: linear-gradient(135deg, #0d6efd 0%, #0b3a82 55%, #0a1f44 100%);
+        color: #fff;
+        box-shadow: 0 18px 40px rgba(13, 110, 253, 0.25);
+    }
+    .hero-shell::before,
+    .hero-shell::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(4px);
+        opacity: 0.45;
+        animation: floatBlob 8s ease-in-out infinite;
+    }
+    .hero-shell::before {
+        width: 260px;
+        height: 260px;
+        background: #59c3ff;
+        top: -70px;
+        right: -70px;
+    }
+    .hero-shell::after {
+        width: 220px;
+        height: 220px;
+        background: #00d4aa;
+        left: -70px;
+        bottom: -70px;
+        animation-delay: 1.2s;
+    }
+    .hero-content {
+        position: relative;
+        z-index: 2;
+    }
+    .stat-chip {
+        background: rgba(255, 255, 255, 0.16);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        border-radius: 0.75rem;
+        padding: 0.75rem 1rem;
+        backdrop-filter: blur(4px);
+    }
+    .feature-card {
+        border: 1px solid #e9ecef;
+        border-radius: 0.9rem;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        height: 100%;
+    }
+    .feature-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 24px rgba(16, 24, 40, 0.08);
+    }
+    .icon-badge {
+        width: 46px;
+        height: 46px;
+        border-radius: 0.8rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        color: #0d6efd;
+        background: #eaf2ff;
+    }
+    .quick-links-card {
+        border: 1px solid #e9ecef;
+        border-radius: 0.9rem;
+        background: #fff;
+    }
+    .quick-links-card a {
+        text-decoration: none;
+    }
+    .quick-links-card a:hover {
+        text-decoration: underline;
+    }
+    @keyframes floatBlob {
+        0%, 100% { transform: translateY(0px) translateX(0px); }
+        50% { transform: translateY(12px) translateX(-8px); }
+    }
+    @media (max-width: 767px) {
+        .hero-shell {
+            border-radius: 0.8rem;
+        }
+        .hero-title {
+            font-size: 1.5rem;
+        }
+    }
+    </style>
+</head>
+<body class="bg-light">
+
+<header class="imd-topbar py-2">
+  <div class="container">
+    <div class="d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center gap-2">
+        <img src="../assets/img/imd-logo.png" alt="IMD Logo" class="imd-brand-logo">
+        <div>
+          <p class="imd-brand-title">India Meteorological Department</p>
+          <p class="imd-brand-subtitle">Ministry of Earth Sciences</p>
+          <p class="imd-brand-subtitle">Government of India</p>
+        </div>
+      </div>
+      <div class="d-flex gap-2">
+        <a href="contact.php" class="btn btn-outline-secondary btn-sm"><i class="bi bi-telephone me-1"></i>Contact Us</a>
+        <a href="register.php" class="btn btn-outline-success btn-sm"><i class="bi bi-person-plus me-1"></i>Register</a>
+        <a href="login.php" class="btn btn-outline-primary btn-sm"><i class="bi bi-box-arrow-in-right me-1"></i>Login</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="container my-4 my-md-5">
+  <section class="hero-shell p-4 p-md-5">
+    <div class="hero-content">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-7">
+          <p class="mb-2 text-uppercase fw-semibold small">Official Data Access Portal</p>
+          <h1 class="hero-title fw-bold mb-3">IMD API Management Platform</h1>
+          <p class="mb-4 text-white-50">
+            Unified gateway for real time weather observations, forecasts, warnings, and specialized bulletins from India Meteorological Department.
+          </p>
+          <div class="d-flex flex-wrap gap-2">
+            <a href="register.php" class="btn btn-light fw-semibold"><i class="bi bi-person-plus me-1"></i>Create Account</a>
+            <a href="api_reference.html" class="btn btn-outline-light"><i class="bi bi-code-slash me-1"></i>Explore APIs</a>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <!-- <div class="row g-2">
+            <div class="col-6">
+              <div class="stat-chip">
+                <div class="small text-white-50">Coverage</div>
+                <div class="fw-bold">Nationwide</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="stat-chip">
+                <div class="small text-white-50">Access</div>
+                <div class="fw-bold">Secure JWT</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="stat-chip">
+                <div class="small text-white-50">Data Types</div>
+                <div class="fw-bold">Forecast + Obs</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="stat-chip">
+                <div class="small text-white-50">Reliability</div>
+                <div class="fw-bold">Official IMD</div>
+              </div>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- <section class="mt-4 mt-md-5">
+    <div class="row g-3 g-md-4">
+      <div class="col-md-4">
+        <div class="feature-card bg-white p-3 p-md-4">
+          <div class="icon-badge mb-3"><i class="bi bi-cloud-sun"></i></div>
+          <h5 class="mb-2">Multi-Category APIs</h5>
+          <p class="text-muted mb-0">Get city forecasts, nowcast, rainfall, marine bulletins, and warning services from one platform.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card bg-white p-3 p-md-4">
+          <div class="icon-badge mb-3"><i class="bi bi-shield-check"></i></div>
+          <h5 class="mb-2">Trusted Access Control</h5>
+          <p class="text-muted mb-0">Authenticated user onboarding with profile validation and controlled key-based API consumption.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card bg-white p-3 p-md-4">
+          <div class="icon-badge mb-3"><i class="bi bi-file-earmark-code"></i></div>
+          <h5 class="mb-2">Clear Documentation</h5>
+          <p class="text-muted mb-0">Technical field-level references and sample JSON responses to help users integrate quickly.</p>
+        </div>
+      </div>
+    </div>
+  </section> -->
+
+  <section class="mt-4 mt-md-5">
+    <div class="quick-links-card p-3 p-md-4">
+      <h5 class="mb-2">Useful IMD and MoES Links</h5>
+      <p class="text-muted mb-3">Access official services, forecast platforms, specialized weather portals, and Mausam app links from one place.</p>
+      <div class="row g-2">
+        <div class="col-md-4"><a href="https://mausam.imd.gov.in/" target="_blank" rel="noopener noreferrer"><i class="bi bi-link-45deg"></i> Mausam Official Website</a></div>
+        <div class="col-md-4"><a href="https://city.imd.gov.in/" target="_blank" rel="noopener noreferrer"><i class="bi bi-link-45deg"></i> City Forecast Portal</a></div>
+        <div class="col-md-4"><a href="https://www.moes.gov.in/" target="_blank" rel="noopener noreferrer"><i class="bi bi-link-45deg"></i> Ministry of Earth Sciences (MoES)</a></div>
+        <div class="col-md-4"><a href="https://rsmcnewdelhi.imd.gov.in/" target="_blank" rel="noopener noreferrer"><i class="bi bi-link-45deg"></i> RSMC Website</a></div>
+        <div class="col-md-4"><a href="https://dsp.imdpune.gov.in/" target="_blank" rel="noopener noreferrer"><i class="bi bi-link-45deg"></i> IMD - Data Service Portal</a></div>
+        <div class="col-md-4"><a href="https://mausamgram.imd.gov.in/" target="_blank" rel="noopener noreferrer"><i class="bi bi-link-45deg"></i> Mausamgram - "हर हर मौसम , हर घर मौसम"</a></div>
+        <div class="col-md-4"><a href="https://play.google.com/store/apps/details?id=com.imd.masuam" target="_blank" rel="noopener noreferrer"><i class="bi bi-android2"></i> Mausam App (Android)</a></div>
+        <div class="col-md-4"><a href="https://apps.apple.com/us/app/mausam/id1522893967" target="_blank" rel="noopener noreferrer"><i class="bi bi-apple"></i> Mausam App (Apple iOS)</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="py-3 border-top bg-white">
+  <div class="container text-center text-muted small">
+        <div class="fw-semibold mb-1">
+      <i class="bi bi-people me-1"></i>
+      Visitors: 115,679    </div>
+        <div class="mb-1"><a href="contact.php" class="text-decoration-none">Contact Us</a></div>
+    Developed by ISSD Team, DGM Office, IMD
+  </div>
+</footer>
+
+</body>
+</html>

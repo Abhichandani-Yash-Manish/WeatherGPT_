@@ -1,0 +1,19 @@
+{
+  "source_id": "S48",
+  "source_url": "https://api.imd.gov.in/public/api_reference.html",
+  "raw_evidence": "research/discovery/evidence/recheck-20260911T185811Z/imd-reference.response",
+  "scope": "Documented code dictionaries; no live warning applicability asserted.",
+  "district_warning_colour": {
+    "1": "red",
+    "2": "orange",
+    "3": "yellow",
+    "4": "green"
+  },
+  "nowcast_colour": {
+    "1": "green",
+    "2": "yellow",
+    "3": "orange",
+    "4": "red"
+  },
+  "do_not_use_as": "A single universal colour-number scale; product validity or warning lifecycle."
+}

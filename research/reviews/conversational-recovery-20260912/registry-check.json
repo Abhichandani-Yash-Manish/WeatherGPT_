@@ -1,0 +1,29 @@
+{
+  "result": "PASS",
+  "source_entries": 61,
+  "evidence_assets": 223,
+  "evidence_bytes": 159004573,
+  "evidence_levels": {
+    "access_blocked": 9,
+    "sample_inspected": 25,
+    "catalogue_or_page_inspected": 21,
+    "lead": 6
+  },
+  "processing_states": {
+    "sample_missing": 32,
+    "sample_ready_for_processing": 19,
+    "source_missing": 4,
+    "processed_snapshot": 4,
+    "deferred": 2
+  },
+  "checks": [
+    "unique IDs",
+    "question references",
+    "lineage references and cycles",
+    "local evidence paths",
+    "asset hashes",
+    "import hashes",
+    "generated views"
+  ]
+}
+

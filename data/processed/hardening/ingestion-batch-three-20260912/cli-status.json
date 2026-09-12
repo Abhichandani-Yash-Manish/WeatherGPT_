@@ -1,0 +1,9 @@
+{
+  "jobs": {
+    "succeeded": 3
+  },
+  "versions": 3,
+  "heads": 3,
+  "network_attempts_reserved": 3,
+  "operational_ready": false
+}

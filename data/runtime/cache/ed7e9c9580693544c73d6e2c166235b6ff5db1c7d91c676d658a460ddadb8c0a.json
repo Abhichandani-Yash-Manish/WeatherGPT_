@@ -1,0 +1,10 @@
+{
+  "source_id": "S57",
+  "url": "https://mausam.imd.gov.in/responsive/agrometinformation/district_current_en_get.php?s=Dadra+And+Nagar+Haveli&step1=true",
+  "retrieved_at_utc": "2026-09-11T19:41:40.583792+00:00",
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "bytes": 236,
+  "sha256": "ea7f8f554c9a9c03cb2f4b89281049266262112eec16263f15ef19eeaa02648e",
+  "blob": "blobs/ea7f8f554c9a9c03cb2f4b89281049266262112eec16263f15ef19eeaa02648e.bin"
+}

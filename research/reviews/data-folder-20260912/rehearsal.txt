@@ -1,0 +1,21 @@
+{
+  "scope": "Offline replay at fixed historical clock; measured local work, not network latency or current forecast freshness.",
+  "jobs": 10,
+  "duplicate_enqueues": 10,
+  "simulated_network_calls": 10,
+  "real_provider_calls": 0,
+  "measurements": {
+    "sqlite_bytes": 1081344,
+    "raw_payload_bytes": 21663,
+    "raw_tree_bytes_including_cache_events": 33737,
+    "published_scalar_records": 2383,
+    "local_elapsed_seconds": 0.04881712499627611
+  },
+  "backup_restore": "PASS",
+  "backup": {
+    "directory": "/private/tmp/weathergpt-data-review-rehearsal-20260912/backup",
+    "files": 11,
+    "bytes": 1103007
+  },
+  "operational_ready": false
+}

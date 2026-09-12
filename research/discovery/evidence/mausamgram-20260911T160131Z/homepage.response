@@ -1,0 +1,2951 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+  <!--    103.215.208.134/webgis_MME_ubuntu/webgis_MME http://103.215.208.134 -->
+  <!-- if index.html is in the same folder that contains `resources/` -->
+  <link rel="stylesheet" href="resources/css/ol-layerswitcher.css" />
+  <link rel="stylesheet" href="resources/css/ol.css" type="text/css">
+  <link rel="stylesheet" href="resources/css/layout.css" type="text/css">
+  <link rel="stylesheet" href="resources/css/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="resources/css/ol-geocoder.min.css" type="text/css">
+  <link rel="stylesheet" href="resources/css/select2.min.css" type="text/css">
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+
+  <script src="resources/js/jquery.min.js"></script>
+  <script src="resources/js/jquery-ui.js"></script>
+  <script src="resources/js/ol.js"></script>
+  <script src="resources/js/FileSaver.js"></script>
+  <script src="resources/js/moment.js"></script>
+  <script src="resources/js/moment-timezone-with-data-10-year-range.min.js"></script>
+  <script src="resources/js/popper.min.js"></script>
+  <script src="resources/js/bootstrap.min.js"></script>
+
+ 
+  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+  <!-- <script src="103.215.208.134/webgis_MME/libs/ol-layerswitcher/dist/ol-layerswitcher.js"></script>-->
+  <!--<script src="https://code.highcharts.com/gantt/modules/current-date-indicator.js"></script>-->
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script> -->
+
+<script src="resources/js/bootstrap.min.js"></script>
+<script src="resources/js/highcharts.js"></script>
+<script src="resources/js/highcharts-more.js"></script>
+<script src="resources/js/windbarb.js"></script>
+<script src="resources/js/exporting.js"></script>
+<script src="resources/js/export-data.js"></script>
+<script src="resources/js/accessibility.js"></script>
+
+
+<script src="resources/js/dom-to-image.min.js"></script>
+<script src="resources/js/html2canvas.js"></script>
+
+
+<script src="resources/js/ol-popup.js"></script>
+<script src="resources/js/ol-geocoder.js"></script>
+<!--<script src="resources/js/jquery-3.6.0.js"></script>-->
+<script src="resources/js/jquery-3.7.1.js"></script>
+<script src="resources/js/jquery-ui.js"></script>
+<script src="resources/js/1.13.2_jquery-ui.js"></script>
+<script src="resources/js/ol-layerswitcher.js"></script>
+<!--<script src="resources/js/jquery-3.6.0.min.js"></script>-->
+<script src="resources/js/jquery-3.7.1.min.js"></script>
+<script src="resources/js/select2.min.js"></script>
+
+<style>
+    
+  
+.container {
+  padding-left: 1px !important;
+  padding-right: 0 !important;
+}
+
+
+/* your custom.css (loaded after Bootstrap) */
+.my-responsive-grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -0.5rem; /* optional gutter */
+}
+.my-responsive-grid > div {
+  flex: 0 0 100%;
+  max-width: 100%;
+  padding: 0.5rem; /* optional gutter */
+}
+
+/* ≥576px → 2 cols */
+@media (min-width: 576px) {
+  .my-responsive-grid > div {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+/* ≥768px → 3 cols */
+@media (min-width: 768px) {
+  .my-responsive-grid > div {
+    flex: 0 0 33.3333%;
+    max-width: 33.3333%;
+  }
+}
+/* ≥992px → 4 cols */
+@media (min-width: 992px) {
+  .my-responsive-grid > div {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+}
+
+
+
+
+    #suggestions {
+      border: 0px solid #ccc;
+      max-height: 200px;
+      overflow-y: auto;
+      position: absolute;
+      background: white;
+      width: 30%;
+      z-index: 1000;
+    }
+    .suggestion-item {
+      padding: 8px;
+      cursor: pointer;
+    }
+    .suggestion-item:hover {
+      background-color: #ddd;
+    }
+  </style>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+    #map {
+
+      width: 100%;
+      height: 50%;
+      overflow: scroll;
+      border: 0.5px solid #4CAF50;
+    }
+
+
+
+    body {
+      font-family: "Lato", sans-serif;
+    }
+
+
+    .openbtn {
+      font-size: 20px;
+      cursor: pointer;
+      background-color: #111;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+    }
+
+    .openbtn:hover {
+      background-color: #444;
+    }
+
+
+
+    .grid-container {
+      display: grid;
+
+      padding: 2px;
+    }
+
+    .grid-item {
+
+
+      font-size: 30px;
+      text-align: center;
+    }
+
+
+
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: auto auto auto;
+      background-color: #2196F3;
+      grid-gap: -10px;
+
+    }
+
+    .grid-item {
+      background-color: rgba(255, 255, 255, 0.8);
+      /* border: 0.5px solid rgba(0, 0, 0, 0.8);*/
+
+      text-align: center;
+    }
+
+
+    .highcharts-figure,
+    .highcharts-data-table table {
+      min-width: 400px;
+      max-width: 100%;
+      margin: 0 0 0 0;
+      max-height: 380px;
+    }
+
+
+    .highcharts-data-table table {
+      font-family: Verdana, sans-serif;
+      text-align: center;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .highcharts-data-table caption {
+      padding: 1em 0;
+      font-size: 1.2em;
+      color: #555;
+    }
+
+    .highcharts-data-table th {
+      font-weight: 600;
+
+    }
+
+    .highcharts-data-table td,
+    .highcharts-data-table th,
+    .highcharts-data-table caption {
+      padding: 0.5em;
+    }
+
+    .highcharts-data-table thead tr,
+    .highcharts-data-table tr:nth-child(even) {
+      background: #f8f8f8;
+    }
+
+    .highcharts-data-table tr:hover {
+      background: #f1f7ff;
+    }
+
+
+
+    .block_container {
+      text-align: center;
+    }
+
+    .bloc1 {
+      display: inline-block;
+    }
+
+
+    .floatBlock {
+      margin: 0 1.81em 0 0;
+    }
+
+    .labelish {
+      color: #000000;
+      margin: 0;
+    }
+
+    .searchOptions {
+      border: none;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      break-before: always;
+      margin: 0 0 1em 0;
+    }
+
+    #purchaseOrder {
+      margin: 0 0 2em 0;
+    }
+
+    .header {
+
+      text-align: center;
+      background: linear-gradient(90deg, rgba(14, 144, 235, 1) 7%, rgba(245, 238, 13, 1) 30%, rgba(120, 253, 29, 1) 51%, rgba(252, 176, 69, 1) 89%);
+      color: white;
+      font-size: 30px;
+      height: 100px
+    }
+
+    .element {
+      height: 50px;
+      width: 50px;
+      margin: 10px;
+    }
+    .element .p{
+     margin-bottom: 0px !important;
+}
+    .Bancontainer {
+      display: flex;
+      justify-content: right;
+      flex-direction: column;
+      align-items: right;
+      height: 10vh;
+      background: linear-gradient(to bottom, #57c1eb 0%, #246fa8 100%);
+
+    }
+
+    .elements {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+
+
+    }
+
+    .telements {
+
+      margin-top: 2px;
+
+    }
+
+
+
+    .white {
+      fill: #FFFFFF
+    }
+
+    .gray {
+      fill: #E0E0E0
+    }
+
+    .yellow {
+      fill: #FFEB3B
+    }
+
+
+    .demo {
+padding-right: 0px;
+padding-bottom: 10px;
+padding-left: 0px;
+      text-align: center;
+
+    }
+
+.element .p {
+  margin: 0 !important;
+  
+}
+
+
+    .nav>li>a:hover, .nav>li>a:focus, .nav>li>a.active {
+    background-color: #cad8da;
+  }
+  .panel-group {
+    height: auto !important;
+  }
+  </style>
+  
+    <style>
+@keyframes flash {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.2; }
+  100% { opacity: 1; }
+}
+</style>
+
+<style>
+  .warning-container {
+      display: flex;
+      align-items: flex-start;
+      margin: 20px;
+  }
+  
+  .warning-label {
+      margin-bottom: 0px;
+      font-weight: bold;
+    white-space: nowrap;
+  }
+  
+  .color-bars {
+      display: flex;
+      justify-content:flex-start ;
+  }
+  
+  .color-bar-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0; /* Remove any extra margin between bars */
+  }
+  
+  .color-bar {
+      width: 100px;
+      height: 20px;
+      border: 1px solid #000;
+      margin: 0; /* Ensure no space between color bars */
+  }
+  
+  .day-label {
+      margin-top: 5px;
+      font-weight: bold;
+      text-align: center;
+  }
+   
+/*
+.tooltip-container {
+      position: relative;
+      display: inline-block;
+      overflow: visible !important;
+      z-index: 99999999 !important;
+      width: 100%;
+    }
+
+    .tooltip-container::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(0, 0, 0, 0.85);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 6px;
+      white-space: pre-line;
+      font-size: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease-in-out;
+      z-index: 999999 !important;
+      max-width: 260px;
+      text-align: left;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    }
+
+    .tooltip-container:hover::after {
+      opacity: 1;
+    }
+  */
+
+  </style>
+  <script src="https://mausamgram.imd.gov.in/intitializepubliccharts.js"></script>
+
+</head>
+
+<body>
+
+
+  <div>
+
+    <div class="Bancontainer">
+
+
+      <div class="elements" class="m-0">
+        <img class="m-0" src="https://mausamgram.imd.gov.in/150_Logo_W.jpg" width="120" height="74">
+
+        <div class="demo" class="m-0">
+          <p class="m-0" style="color:white;font-size:24px">India Meteorological Department, Ministry of Earth Sciences
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+          <p class="m-0" style="color:yellow;font-size:18px;font-weight:bold"> भारतीय मौसम विज्ञान विभाग ,पृथ्वी विज्ञान मंत्रालय
+          </p>
+        </div>
+
+        <div class="demo" class="m-0">
+          <p class="m-0" style="color:white;font-size:24px;font-weight:bold;">Weather Forecast </p>
+
+          <p class="m-0" style="color:yellow;font-size:20px;font-weight:bold"> "हर हर मौसम , हर घर मौसम"</p>
+
+        </div>
+        <!-- Cloudy -->
+
+
+        <!-- Rainy -->
+        <div class="m-0" class="element">
+          <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px" y="0px" viewBox="0 0 55.1 60" style="enable-background:new 0 0 55.1 49.5;" xml:space="preserve">
+            <g id="Cloud_2">
+              <g id="Rain_2">
+                <path id="rain_2_left" class="white"
+                  d="M20.7,46.4c0,1.7-1.4,3.1-3.1,3.1s-3.1-1.4-3.1-3.1c0-1.7,3.1-7.8,3.1-7.8 S20.7,44.7,20.7,46.4z">
+                </path>
+                <path id="rain_2_mid" class="white"
+                  d="M31.4,46.4c0,1.7-1.4,3.1-3.1,3.1c-1.7,0-3.1-1.4-3.1-3.1c0-1.7,3.1-7.8,3.1-7.8 S31.4,44.7,31.4,46.4z">
+                </path>
+                <path id="rain_2_right" class="white"
+                  d="M41.3,46.4c0,1.7-1.4,3.1-3.1,3.1c-1.7,0-3.1-1.4-3.1-3.1c0-1.7,3.1-7.8,3.1-7.8 S41.3,44.7,41.3,46.4z">
+                </path>
+                <animateTransform attributeName="transform" attributeType="XML" dur="1s" keyTimes="0;1"
+                  repeatCount="indefinite" type="translate" values="0 0;0 10" calcMode="linear">
+                </animateTransform>
+                <animate attributeType="CSS" attributeName="opacity" attributeType="XML" dur="1s" keyTimes="0;1"
+                  repeatCount="indefinite" values="1;0" calcMode="linear" />
+              </g>
+              <g id="White_cloud_2">
+                <path id="XMLID_14_" class="white"
+                  d="M47.2,34.5H7.9c-4.3,0-7.9-3.5-7.9-7.9l0,0c0-4.3,3.5-7.9,7.9-7.9h39.4c4.3,0,7.9,3.5,7.9,7.9 v0C55.1,30.9,51.6,34.5,47.2,34.5z" />
+                <circle id="XMLID_13_" class="white" cx="17.4" cy="17.3" r="9.3" />
+                <circle id="XMLID_10_" class="white" cx="34.5" cy="15.6" r="15.6" />
+              </g>
+            </g>
+          </svg>
+        </div>
+
+
+
+        <!-- Cloudy with lightning -->
+        <div class="m-0"  class="element">
+          <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px" y="0px" viewBox="0 0 60.7 48.7" style="enable-background:new 0 0 60.7 48.7;" xml:space="preserve">
+            <g id="Cloud_4">
+              <g id="White_cloud_4">
+                <path id="XMLID_69_" class="white"
+                  d="M47.2,40H7.9C3.5,40,0,36.5,0,32.1l0,0c0-4.3,3.5-7.9,7.9-7.9h39.4c4.3,0,7.9,3.5,7.9,7.9v0 C55.1,36.5,51.6,40,47.2,40z" />
+                <circle id="XMLID_68_" class="white" cx="17.4" cy="22.8" r="9.3" />
+                <circle id="XMLID_67_" class="white" cx="34.5" cy="21.1" r="15.6" />
+                <animateTransform attributeName="transform" attributeType="XML" dur="6s" keyTimes="0;0.5;1"
+                  repeatCount="indefinite" type="translate" values="0;5;0" calcMode="linear">
+                </animateTransform>
+              </g>
+              <g id="Gray_cloud_4">
+                <path id="XMLID_65_" class="gray"
+                  d="M54.7,22.3H33.4c-3.3,0-6-2.7-6-6v0c0-3.3,2.7-6,6-6h21.3c3.3,0,6,2.7,6,6v0 C60.7,19.6,58,22.3,54.7,22.3z" />
+                <circle id="XMLID_64_" class="gray" cx="45.7" cy="10.7" r="10.7" />
+                <animateTransform attributeName="transform" attributeType="XML" dur="6s" keyTimes="0;0.5;1"
+                  repeatCount="indefinite" type="translate" values="0;-3;0" calcMode="linear">
+                </animateTransform>
+              </g>
+              <g id="Lightning_4">
+                <path id="XMLID_79_" class="yellow"
+                  d="M43.6,22.7c-0.2,0.6-0.4,1.3-0.6,1.9c-0.2,0.6-0.4,1.2-0.7,1.8c-0.4,1.2-0.9,2.4-1.5,3.5
+      			c-1,2.3-2.2,4.6-3.4,6.8l-1.7-2.9c3.2-0.1,6.3-0.1,9.5,0l3,0.1l-1.3,2.5c-1.1,2.1-2.2,4.2-3.5,6.2c-0.6,1-1.3,2-2,3
+      			c-0.7,1-1.4,2-2.2,2.9c0.2-1.2,0.5-2.4,0.8-3.5c0.3-1.2,0.6-2.3,1-3.4c0.7-2.3,1.5-4.5,2.4-6.7l1.7,2.7c-3.2,0.1-6.3,0.2-9.5,0
+      			l-3.4-0.1l1.8-2.8c1.4-2.1,2.8-4.2,4.3-6.2c0.8-1,1.6-2,2.4-3c0.4-0.5,0.8-1,1.3-1.5C42.7,23.7,43.1,23.2,43.6,22.7z" />
+                <animate attributeType="CSS" attributeName="opacity" attributeType="XML" dur="1.5s" keyTimes="0;0.5;1"
+                  repeatCount="indefinite" values="1;0;1" calcMode="linear" />
+              </g>
+            </g>
+          </svg>
+        </div>
+
+        <!-- Cloudy with moon -->
+        <div class="m-0" class="element">
+          <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px" y="0px" viewBox="0 0 60.7 44.4" style="enable-background:new 0 0 60.7 44.4;" xml:space="preserve">
+            <g id="Cloud_5">
+              <g id="White_cloud_5">
+                <path id="XMLID_49_" class="white"
+                  d="M47.2,44.4H7.9c-4.3,0-7.9-3.5-7.9-7.9l0,0c0-4.3,3.5-7.9,7.9-7.9h39.4c4.3,0,7.9,3.5,7.9,7.9 v0C55.1,40.9,51.6,44.4,47.2,44.4z" />
+                <circle id="XMLID_48_" class="white" cx="17.4" cy="27.2" r="9.3" />
+                <circle id="XMLID_47_" class="white" cx="34.5" cy="25.5" r="15.6" />
+                <animateTransform attributeName="transform" attributeType="XML" dur="6s" keyTimes="0;0.5;1"
+                  repeatCount="indefinite" type="translate" values="0;5;0" calcMode="linear">
+                </animateTransform>
+              </g>
+              <path id="Moon_5" class="yellow"
+                d="M33.6,17.9c-0.2-7.7,4.9-14.4,12-16.4c-2.3-1-4.9-1.5-7.6-1.5c-9.8,0.3-17.5,8.5-17.2,18.3 c0.3,9.8,8.5,17.5,18.3,17.2c2.7-0.1,5.2-0.8,7.5-1.9C39.3,32,33.8,25.6,33.6,17.9z" />
+              <g id="Gray_cloud_5">
+                <path id="XMLID_45_" class="gray"
+                  d="M54.7,26.8H33.4c-3.3,0-6-2.7-6-6v0c0-3.3,2.7-6,6-6h21.3c3.3,0,6,2.7,6,6v0 C60.7,24.1,58,26.8,54.7,26.8z" />
+                <circle id="XMLID_43_" class="gray" cx="45.7" cy="15.1" r="10.7" />
+                <animateTransform attributeName="transform" attributeType="XML" dur="6s" keyTimes="0;0.5;1"
+                  repeatCount="indefinite" type="translate" values="0;-3;0" calcMode="linear">
+                </animateTransform>
+              </g>
+            </g>
+          </svg>
+        </div>
+
+        <!-- Cloudy with rain and lightning -->
+        <div class="m-0"  class="element">
+          <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px" y="0px" viewBox="0 0 60.7 80" style="enable-background:new 0 0 60.7 55;" xml:space="preserve">
+            <g id="Cloud_6">
+              <g id="White_cloud_6">
+                <path id="XMLID_81_" class="white"
+                  d="M47.2,40H7.9C3.5,40,0,36.5,0,32.1l0,0c0-4.3,3.5-7.9,7.9-7.9h39.4c4.3,0,7.9,3.5,7.9,7.9v0 C55.1,36.5,51.6,40,47.2,40z" />
+                <circle id="XMLID_80_" class="white" cx="17.4" cy="22.8" r="9.3" />
+                <circle id="XMLID_77_" class="white" cx="34.5" cy="21.1" r="15.6" />
+              </g>
+              <g id="Gray_cloud_6">
+                <path id="XMLID_75_" class="gray"
+                  d="M54.7,22.3H33.4c-3.3,0-6-2.7-6-6v0c0-3.3,2.7-6,6-6h21.3c3.3,0,6,2.7,6,6v0 C60.7,19.6,58,22.3,54.7,22.3z" />
+                <circle id="XMLID_74_" class="gray" cx="45.7" cy="10.7" r="10.7" />
+                <animateTransform attributeName="transform" attributeType="XML" dur="6s" keyTimes="0;0.5;1"
+                  repeatCount="indefinite" type="translate" values="0;-3;0" calcMode="linear">
+                </animateTransform>
+              </g>
+              <g id="Lightning_6">
+                <path id="XMLID_94_" class="yellow"
+                  d="M43.6,22.7c-0.2,0.6-0.4,1.3-0.6,1.9c-0.2,0.6-0.4,1.2-0.7,1.8c-0.4,1.2-0.9,2.4-1.5,3.5
+    			c-1,2.3-2.2,4.6-3.4,6.8l-1.7-2.9c3.2-0.1,6.3-0.1,9.5,0l3,0.1l-1.3,2.5c-1.1,2.1-2.2,4.2-3.5,6.2c-0.6,1-1.3,2-2,3
+    			c-0.7,1-1.4,2-2.2,2.9c0.2-1.2,0.5-2.4,0.8-3.5c0.3-1.2,0.6-2.3,1-3.4c0.7-2.3,1.5-4.5,2.4-6.7l1.7,2.7c-3.2,0.1-6.3,0.2-9.5,0
+    			l-3.4-0.1l1.8-2.8c1.4-2.1,2.8-4.2,4.3-6.2c0.8-1,1.6-2,2.4-3c0.4-0.5,0.8-1,1.3-1.5C42.7,23.7,43.1,23.2,43.6,22.7z" />
+                <animate attributeType="CSS" attributeName="opacity" attributeType="XML" dur="1.5s" keyTimes="0;0.5;1"
+                  repeatCount="indefinite" values="1;0;1" calcMode="linear" />
+              </g>
+              <g id="Rain_6">
+                <path id="Rain_6_right" class="white"
+                  d="M36.3,51.9c0,1.7-1.4,3.1-3.1,3.1c-1.7,0-3.1-1.4-3.1-3.1c0-1.7,3.1-7.8,3.1-7.8 S36.3,50.2,36.3,51.9z" />
+                <path id="Rain_6_mid" class="white"
+                  d="M26.4,51.9c0,1.7-1.4,3.1-3.1,3.1c-1.7,0-3.1-1.4-3.1-3.1c0-1.7,3.1-7.8,3.1-7.8 S26.4,50.2,26.4,51.9z" />
+                <path id="Rain_6_left" class="white"
+                  d="M15.7,51.9c0,1.7-1.4,3.1-3.1,3.1s-3.1-1.4-3.1-3.1c0-1.7,3.1-7.8,3.1-7.8 S15.7,50.2,15.7,51.9z" />
+                <animateTransform attributeName="transform" attributeType="XML" dur="1s" keyTimes="0;1"
+                  repeatCount="indefinite" type="translate" values="0 0;0 10" calcMode="linear">
+                </animateTransform>
+                <animate attributeType="CSS" attributeName="opacity" attributeType="XML" dur="1s" keyTimes="0;1"
+                  repeatCount="indefinite" values="1;0" calcMode="linear" />
+              </g>
+            </g>
+          </svg>
+        </div>
+
+        <!-- Sunny -->
+        <div class="m-0" class="element">
+          <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px" y="0px" viewBox="0 0 44.9 44.9" style="enable-background:new 0 0 44.9 44.9;" xml:space="preserve"
+            height="40px" width="40px">
+            <g id="Sun">
+              <circle id="XMLID_61_" class="yellow" cx="22.4" cy="22.6" r="11" />
+              <g>
+                <path id="XMLID_60_" class="yellow"
+                  d="M22.6,8.1h-0.3c-0.3,0-0.6-0.3-0.6-0.6v-7c0-0.3,0.3-0.6,0.6-0.6l0.3,0c0.3,0,0.6,0.3,0.6,0.6 v7C23.2,7.8,22.9,8.1,22.6,8.1z" />
+                <path id="XMLID_59_" class="yellow"
+                  d="M22.6,36.8h-0.3c-0.3,0-0.6,0.3-0.6,0.6v7c0,0.3,0.3,0.6,0.6,0.6h0.3c0.3,0,0.6-0.3,0.6-0.6v-7 C23.2,37,22.9,36.8,22.6,36.8z" />
+                <path id="XMLID_58_" class="yellow"
+                  d="M8.1,22.3v0.3c0,0.3-0.3,0.6-0.6,0.6h-7c-0.3,0-0.6-0.3-0.6-0.6l0-0.3c0-0.3,0.3-0.6,0.6-0.6h7 C7.8,21.7,8.1,21.9,8.1,22.3z" />
+                <path id="XMLID_57_" class="yellow"
+                  d="M36.8,22.3v0.3c0,0.3,0.3,0.6,0.6,0.6h7c0.3,0,0.6-0.3,0.6-0.6v-0.3c0-0.3-0.3-0.6-0.6-0.6h-7 C37,21.7,36.8,21.9,36.8,22.3z" />
+                <path id="XMLID_56_" class="yellow"
+                  d="M11.4,31.6l0.2,0.3c0.2,0.2,0.2,0.6-0.1,0.8l-5.3,4.5c-0.2,0.2-0.6,0.2-0.8-0.1l-0.2-0.3 c-0.2-0.2-0.2-0.6,0.1-0.8l5.3-4.5C10.9,31.4,11.2,31.4,11.4,31.6z" />
+                <path id="XMLID_55_" class="yellow"
+                  d="M33.2,13l0.2,0.3c0.2,0.2,0.6,0.3,0.8,0.1l5.3-4.5c0.2-0.2,0.3-0.6,0.1-0.8l-0.2-0.3 c-0.2-0.2-0.6-0.3-0.8-0.1l-5.3,4.5C33,12.4,33,12.7,33.2,13z" />
+                <path id="XMLID_54_" class="yellow"
+                  d="M11.4,13.2l0.2-0.3c0.2-0.2,0.2-0.6-0.1-0.8L6.3,7.6C6.1,7.4,5.7,7.5,5.5,7.7L5.3,7.9 C5.1,8.2,5.1,8.5,5.4,8.7l5.3,4.5C10.9,13.5,11.2,13.5,11.4,13.2z" />
+                <path id="XMLID_53_" class="yellow"
+                  d="M33.2,31.9l0.2-0.3c0.2-0.2,0.6-0.3,0.8-0.1l5.3,4.5c0.2,0.2,0.3,0.6,0.1,0.8l-0.2,0.3 c-0.2,0.2-0.6,0.3-0.8,0.1l-5.3-4.5C33,32.5,33,32.1,33.2,31.9z" />
+                <animate attributeType="CSS" attributeName="opacity" attributeType="XML" dur="0.5s" keyTimes="0;0.5;1"
+                  repeatCount="indefinite" values="1;0.6;1" calcMode="linear" />
+              </g>
+            </g>
+          </svg>
+        </div>
+
+        <!-- Clear night -->
+        <div class="m-0" class="element">
+          <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px" y="0px" viewBox="0 0 30.8 42.5" style="enable-background:new 0 0 30.8 42.5;" xml:space="preserve"
+            height="40px" width="40px">
+            <path id="Moon" class="yellow"
+              d="M15.3,21.4C15,12.1,21.1,4.2,29.7,1.7c-2.8-1.2-5.8-1.8-9.1-1.7C8.9,0.4-0.3,10.1,0,21.9 c0.3,11.7,10.1,20.9,21.9,20.6c3.2-0.1,6.3-0.9,8.9-2.3C22.2,38.3,15.6,30.7,15.3,21.4z" />
+          </svg>
+        </div>
+
+        <!-- Sunny with wind -->
+        <div class="m-0" class="element">
+          <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px" y="0px" viewBox="0 0 45.1 47.6" style="enable-background:new 0 0 45.1 47.6;" xml:space="preserve"
+            height="45px" width="45px">
+            <style type="text/css">
+              .st1 {
+                fill: none;
+                stroke: #FFFFFF;
+                stroke-width: 2;
+                stroke-miterlimit: 10;
+              }
+            </style>
+            <g id="Wind_Sun">
+              <g id="Sun_1_">
+                <circle id="XMLID_25_" class="yellow" cx="27.1" cy="18.1" r="8.9" />
+                <g>
+                  <path id="XMLID_21_" class="yellow"
+                    d="M27.2,6.5L27.2,6.5c-0.4,0-0.6-0.3-0.6-0.6V0.6c0-0.3,0.3-0.6,0.6-0.6l0.1,0 c0.3,0,0.6,0.3,0.6,0.6v5.4C27.7,6.2,27.5,6.5,27.2,6.5z" />
+                  <path id="XMLID_18_" class="yellow"
+                    d="M27.2,29.5L27.2,29.5c-0.4,0-0.6,0.3-0.6,0.6v5.4c0,0.3,0.3,0.6,0.6,0.6h0.1 c0.3,0,0.6-0.3,0.6-0.6v-5.4C27.7,29.8,27.5,29.5,27.2,29.5z" />
+                  <path id="XMLID_17_" class="yellow"
+                    d="M15.6,18L15.6,18c0,0.4-0.3,0.6-0.6,0.6H9.7c-0.3,0-0.6-0.3-0.6-0.6V18c0-0.3,0.3-0.6,0.6-0.6 h5.4C15.4,17.4,15.6,17.7,15.6,18z" />
+                  <path id="XMLID_16_" class="yellow"
+                    d="M38.7,18L38.7,18c0,0.4,0.3,0.6,0.6,0.6h5.4c0.3,0,0.6-0.3,0.6-0.6V18c0-0.3-0.3-0.6-0.6-0.6 h-5.4C38.9,17.4,38.7,17.7,38.7,18z" />
+                  <path id="XMLID_15_" class="yellow"
+                    d="M18.4,25.5L18.4,25.5c0.2,0.3,0.2,0.6,0,0.8l-4.1,3.5c-0.2,0.2-0.6,0.2-0.8-0.1l0,0 c-0.2-0.2-0.2-0.6,0.1-0.8l4.1-3.5C17.8,25.2,18.2,25.2,18.4,25.5z" />
+                  <path id="XMLID_12_" class="yellow"
+                    d="M35.9,10.5L35.9,10.5c0.2,0.3,0.6,0.3,0.8,0.1l4.1-3.5C41,6.9,41,6.5,40.8,6.3l0,0 C40.6,6,40.2,6,40,6.2l-4.1,3.5C35.7,9.9,35.7,10.2,35.9,10.5z" />
+                  <path id="XMLID_11_" class="yellow"
+                    d="M18.4,10.5L18.4,10.5c0.2-0.3,0.2-0.6,0-0.8l-4.1-3.5C14.1,6,13.7,6,13.5,6.3l0,0 c-0.2,0.2-0.2,0.6,0.1,0.8l4.1,3.5C17.8,10.8,18.2,10.8,18.4,10.5z" />
+                  <path id="XMLID_9_" class="yellow"
+                    d="M35.9,25.5L35.9,25.5c0.2-0.3,0.6-0.3,0.8-0.1l4.1,3.5c0.2,0.2,0.3,0.6,0.1,0.8l0,0 C40.6,30,40.2,30,40,29.8l-4.1-3.5C35.7,26.1,35.7,25.8,35.9,25.5z" />
+                  <animate attributeType="CSS" attributeName="opacity" attributeType="XML" dur="0.5s" keyTimes="0;0.5;1"
+                    repeatCount="indefinite" values="1;0.6;1" calcMode="linear" />
+                </g>
+              </g>
+              <g id="Wind">
+                <path id="XMLID_27_" class="st1" d="M1.3,33.1h19.3c2.1,0,3.8-1.3,3.8-3v0v0c0-1.7-1.7-3-3.8-3h-2.1" />
+                <path id="XMLID_40_" class="st1"
+                  d="M2.4,42.4h18.2c2,0,3.6,0.9,3.6,2.1l0,0v0c0,1.2-1.6,2.1-3.6,2.1h-2" />
+                <line id="XMLID_28_" class="st1" x1="5.3" y1="36.3" x2="25.5" y2="36.3" />
+                <line id="XMLID_29_" class="st1" x1="0" y1="39.3" x2="27" y2="39.3" />
+                <animateTransform attributeName="transform" attributeType="XML" dur="1.5s" keyTimes="0;1"
+                  repeatCount="indefinite" type="translate" values="0;3" calcMode="linear">
+                </animateTransform>
+                <animate attributeType="CSS" attributeName="opacity" attributeType="XML" dur="1.5s" keyTimes="0;1"
+                  repeatCount="indefinite" values="0.3;0.9" calcMode="linear" />
+              </g>
+            </g>
+          </svg>
+        </div>
+
+        <!-- Snowy -->
+
+      </div>
+    </div>
+
+
+  </div>
+  <div id="logo" style="height:60%; width:100%">
+
+
+    <div   class="container" style="display: flex; height: 100%; width:100%;">
+
+      <div class="panel-group" style="width: 30%;height: 100%;">
+        <div id="map" style="width: 100%;height: 100%;"></div>
+
+
+
+
+
+
+        <div class="panel-group" style="height:250px; width:100%">
+          <div class="panel panel-info" style="height: 100%; width:100%">
+            <div class="panel-heading"
+              style="height: 24px;padding:1px;align-items:left;font-size:14px;font-weight:bold;color:#000000">User
+              Selection
+
+
+            </div>
+
+            <div class="panel-body" style="height: 80%; width:100%">
+              <!--  <form style="display:inline">
+
+  <input type="radio" id="default" name="selection" value="Default">
+  <label for="default">Default</label>
+  <input type="radio" id="usersel" name="selection" value="UserSel">
+  <label for="usersel">User Selection</label>
+  
+  
+</form>-->
+              <form>
+                <form action="">
+                  <label for="datadate" id="displaydate" style="display:none"></label>
+                  <!-- <input type="date" id="datadate" name="datadate" style="display:block">-->
+
+                </form>
+                <label id="lbldate">Date</label>
+                <p>
+                  <select name="Date" id="datesel" onchange="dateselchange(this.value)" style="display:none">
+                    <!--  <option value="" selected="selected">Select Date</option>-->
+                  </select>
+                  <!--  <button id = "submit" onclick="GotoLocation()">Go to location</button>-->
+              </form>
+
+
+              <div>
+
+
+                <label>lat: </label><input type="text" id='lat' value='28.61' style="width: 50px;"></input>
+                <label> lon:</label> <input type="text" id='lon' value='77.21' style="width: 50px;"></input>
+                <button id="submit" onclick="GotoLocation()">Get Forecast</button>
+              </div>
+
+
+              <div class="form-check">
+                <label>Forecast:</label>
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" checked
+                  onclick="sendforecastHour('1hr')">
+                <label class="form-check-label" for="flexRadioDefault3">
+                  1-hr 1.5 day
+                </label>
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked
+                  onclick="sendforecastHour('3hr')">
+                <label class="form-check-label" for="flexRadioDefault2">
+                  3-hr 5 days
+                </label>
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
+                  onclick="sendforecastHour('6hr')">
+                <label class="form-check-label" for="flexRadioDefault1">
+                  6-hr 10 days
+                </label>
+              </div>
+
+              <div>
+								<!-- Nav tabs -->
+								<ul class="nav nav-tabs" id="myTabs" role="tablist">
+                  <li class="nav-item">
+										<a class="nav-link active" id="search-tab" data-toggle="tab" href="#searchtab" role="tab" aria-controls="valuetab" aria-selected="false">Search by location </a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link " id="pincode-tab" data-toggle="tab" href="#pincode" role="tab" aria-controls="pincode" aria-selected="true">Pincode</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" id="gpcode-tab" data-toggle="tab" href="#gpcode" role="tab" aria-controls="gpcode" aria-selected="false">Gram Panchayat</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" id="value-tab" data-toggle="tab" href="#valuetab" role="tab" aria-controls="valuetab" aria-selected="false">Search </a>
+									</li>
+                 
+								</ul>
+								<!-- Tab panes -->
+								<div class="tab-content">
+									<!-- Pincode tab -->
+									<div class="tab-pane fade in " id="pincode" role="tabpanel" aria-labelledby="pincode-tab">
+										<div class="form-row align-items-center">
+											<div class="col-auto">
+												<label for="pincodeState">State</label>
+												<select class="form-control" id="pincodeState">
+													<!-- Options for states -->
+												</select>
+											</div>
+											<div class="col-auto">
+												<label for="pincodeDistrict">District</label>
+												<select class="form-control" id="pincodeDistrict">
+													<!-- Options for districts -->
+												</select>
+											</div>
+											<div class="col-auto">
+												<label for="pincodePin">Pincode</label>
+												<select class="form-control" id="pincodePin">
+													<!-- Options for pincodes -->
+												</select>
+											</div>
+											<div class="col-auto">
+												<label for="pincodeArea">Area</label>
+												<select class="form-control" id="pincodeArea">
+													<!-- Options for pincodes -->
+												</select>
+											</div>
+										</div>
+									</div>
+									<!-- GP Code tab -->
+									<div class="tab-pane fade in " id="gpcode" role="tabpanel" aria-labelledby="gpcode-tab">
+										<div class="form-row align-items-center">
+											<div class="col-auto">
+												<label for="gpcodeState">State</label>
+												<select class="form-control" id="gpcodeState">
+													<!-- Options for states -->
+												</select>
+											</div>
+											<div class="col-auto">
+												<label for="gpcodeDistrict">District</label>
+												<select class="form-control" id="gpcodeDistrict">
+													<!-- Options for districts -->
+												</select>
+											</div>
+											<div class="col-auto">
+												<label for="gpcodeBlock">Block</label>
+												<select class="form-control" id="gpcodeBlock">
+													<!-- Options for areas -->
+												</select>
+											</div>
+											<div class="col-auto">
+												<label for="gpcodeGP">Gram Panchyat</label>
+												<select class="form-control" id="gpcodeGP">
+													<!-- Options for GP codes -->
+												</select>
+											</div>
+										</div>
+										<div class="col-auto" style="margin-top: 10px;">
+  <a href="https://mausamgram.imd.gov.in/gp/gplist.php" target="_blank" class="btn btn-link">
+    📋 View Full Gram Panchayat List (GP List)
+  </a>
+</div>
+									</div>
+									<div class="tab-pane fade in " id="valuetab" role="tabpanel" aria-labelledby="value-tab">
+										<div class="form-row align-items-center">
+											<div class="col-auto">
+												<label for="searchPincode">Pincode</label>
+												<input type="text" class="form-control" id="searchPincode">
+												<button class="btn btn-primary" id="searchPincodeButton">Search</button>
+											</div>
+										</div>
+										<div class="form-row align-items-center mt-2">
+											<div class="col-auto">
+												<label for="searchGPCode">GP Code</label>
+												<input type="text" class="form-control" id="searchGPCode">
+                        
+
+												<button class="btn btn-primary" id="searchGPCodeButton">Search</button>
+											</div>
+										</div>
+									</div>
+                  <div class="tab-pane fade in active show" id="searchtab" role="tabpanel" aria-labelledby="search-tab">
+										<div class="form-row align-items-center">
+											<div class="col-auto">
+                        <input type="text" id="geocoder-input" placeholder="Search for ...">
+                        <div id="suggestions"></div>
+                      </div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+<!-- 
+              <div id="searchContainer" name="searchContainer" class="searchOptions">
+                <label>Search by:</label>
+                <div id="searchLOC" class="floatBlock">
+                  <label for="sLOC"> <input id="sLOC" name="searchType" type="radio" value="Location" checked
+                      onclick="searchOption('Location')" /> Location </label>
+                </div>
+
+                <div id="searchPin" class="floatBlock">
+                  <label for="sPin"> <input id="sPin" name="searchType" type="radio" value="Pincode"
+                      onclick="searchOption('Pincode')" /> Pincode </label>
+                </div>
+
+                <div id="searchBlock" class="floatBlock">
+                  <label for="sBlock"> <input id="sBlock" name="searchType" type="radio" value="Block"
+                      onclick="searchOption('Block')" /> Block </label>
+                </div>
+
+              </div>
+
+              <div id="divloc_search">
+                <select id="loc_search" style="width:300px;">
+                  <option selected value> -- Select/Type a location -- </option>
+                </select>
+
+              </div>
+              <div id="divloc_search_pin" style="display:none">
+
+                <select id="loc_search_pin" style="width:300px">
+                  <option selected value> -- Select/Type a pincode -- </option>-->
+
+
+                  <!-- Dropdown List Option -->
+                <!-- </select>
+              </div>
+              <div id="divloc_search_block" style="display:none">
+
+                <select id="loc_search_block" style="width:300px">
+                  <option selected value> -- Select/Type a Block -- </option>
+                 
+                </select> 
+              </div> --> 
+
+              <br>
+              <b>Total Vistis:</b>
+              <a href="https://www.hitwebcounter.com" target="_blank">
+                <img
+                  src="https://hitwebcounter.com/counter/counter.php?page=12967093&style=0007&nbdigits=1&type=page&initCount=0"
+                  title="Counter Widget" Alt="Visit counter For Websites" border="0" width="30" height="20" /></a>
+
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="container" style="height:100%;width:70%">
+
+        <div class="panel-group">
+          <div class="panel panel-info">
+            <div class="panel-heading"
+              style="height: 30px;padding:1px;align-items:left;font-size:16px;font-weight:bold;color:#000000"><b><a
+                  href="AboutMausamgram.pdf" target='_blank'>About MausamGram</a>       <a
+                  href="MausamGram_User_Manual_Final.pdf" target='_blank'>User Manual</a></b> <img src="downlaod.png"
+                style="width:30px; height:30px;" onclick="downloadImage()" title="Download Meteogram"
+                style="text-align:right">
+            <b><a href="#" >Click anywhere on the map to get weather forecast target </a></b>
+          <b>
+  <a href="https://mausamgram.imd.gov.in/gp/gplist.php" target="_blank">
+    📍 Click anywhere on the map to get weather forecast
+  </a>
+</b>
+            </div>
+            
+            <div class="panel-body">
+              <div id="meteoDiv" style="width:100%;height:100%">
+
+
+
+
+                <div class="container" style="width:100%;height:100%">
+                  <div style="width:100%;height:940px;overflow:auto">
+
+                    <div id="menu6" class="tab-pane fade in" style="width:100%;height:80%;background-color:#FFFFFF">
+                      <div class="block_container" style="width:100%">
+                        <img src="imd_logo_enamble.png" style="width:50px; height:70px;padding-left:0px;" />
+                        <div class="bloc1">
+
+                          <b>
+                            <p id="MMEPLocation"></p>
+                          </b>
+                          <b>
+                            <p id="MMELocationAddr">New Delhi</p>
+                          </b>
+                        </div>
+
+                      </div>
+                      <br>
+                      <div class="warning-container">
+												<label class="warning-label">❗&nbsp; Warning: &nbsp;</label>
+												<div class="color-bars">
+													<div class="color-bar-container">
+														 <div class="tooltip-container">
+                            <div class="color-bar" id="colorBar1"></div>
+                          </div>
+                          <label class="day-label">Day 1</label>
+                        </div>
+
+                        <div class="color-bar-container">
+                          <div class="tooltip-container">
+                            <div class="color-bar" id="colorBar2"></div>
+                          </div>
+                          <label class="day-label">Day 2</label>
+                        </div>
+
+                        <div class="color-bar-container">
+                          <div class="tooltip-container">
+                            <div class="color-bar" id="colorBar3"></div>
+                          </div>
+                          <label class="day-label">Day 3</label>
+                        </div>
+
+                        <div class="color-bar-container">
+                          <div class="tooltip-container">
+                            <div class="color-bar" id="colorBar4"></div>
+                          </div>
+                          <label class="day-label">Day 4</label>
+                        </div>
+
+                        <div class="color-bar-container">
+                          <div class="tooltip-container">
+                            <div class="color-bar" id="colorBar5"></div>
+                          </div>
+                          <label class="day-label">Day 5</label>
+													</div>
+												</div>
+											</div>
+                      <p> <b>Rainfall (mm)</b></p>
+                      <div class="grid-item">
+                        <figure class="highcharts-figure">
+                          <div id="myMMEchartRF" style="height:250px"></div>
+                        </figure>
+                      </div>
+                      <p> <b>Temperature (&#8451;)</b></p>
+
+                      <div class="grid-item">
+                        <figure class="highcharts-figure">
+                          <div id="myMMEchartTemp" style="height:250px"></div>
+                        </figure>
+                      </div>
+                      
+
+                      <p> <b>Relative Humidity (%)</b></p>
+                      <div class="grid-item">
+                        <figure class="highcharts-figure">
+                          <div id="myMMEchartRH" style="height:250px"></div>
+                        </figure>
+                      </div>
+
+                      <p> <b>Cloud Cover (%)</b></p>
+                      <div class="grid-item">
+                        <figure class="highcharts-figure">
+                          <div id="myMMEchartCC" style="height:250px"></div>
+                        </figure>
+                      </div>
+
+
+                     
+                      <p> <b>Wind Speed (m/s) and Wind Direction</b></p>
+                      <div class="grid-item">
+                        <figure class="highcharts-figure">
+                          <div id="myMMEchartWSWD" style="height:250px"></div>
+                        </figure>
+                      </div>
+
+
+                    </div>
+
+                  </div>
+                  <p style="font-size:14px;color:#000000" style="text-align:right">Disclaimer: The output result is for
+                    the area of 12 x 12 km</p>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+    </div>
+
+
+
+  </div>
+ 
+  <script>
+  //for alert
+
+  
+  
+    // Example of dynamically changing the color bar and label
+
+
+
+
+
+
+    // Example usage:
+    // updateWarningColor('yellow');
+    // updateWarningColor('green');
+</script>
+	<script>
+	
+// Map numeric levels to hex colors
+const colorMap = {
+  1: "#FF0000", // Red
+  2: "#FFA500", // Orange
+  3: "#FFFF00", // Yellow
+  4: "#00FF00", // Green
+  5: "#800080"  // Purple
+};
+
+// Map hex colors to tooltip text
+const tooltipTextMap = {
+  "#FF0000": "Heavy Rain: 5–15 mm/hr\nCloud to Ground Lightning\nProbability > 60%",
+  "#FFA500": "Moderate Rain: 5–15 mm/hr\nModerate Thunderstorm.",
+  "#FFFF00": "Light Rain: <5 mm\nModerate Rain: 5–15 mm/hr",
+  "#00FF00": "No Warning.",
+  "#800080": "Extreme Weather Warning."
+};
+
+function updateWarningColor(value, day) {
+  const colorBar = document.getElementById(`colorBar${day}`);
+  const tooltipContainer = colorBar?.parentElement;
+
+  let hexColor = null;
+
+  if (!value) return; // nothing to process
+
+  // Case 1: numeric string or number (e.g., "1" or 1)
+  if (!isNaN(value)) {
+    const numeric = Number(value);
+    hexColor = colorMap[numeric] || null;
+  } else {
+    // Case 2: color name string (e.g., "green")
+    const nameMap = {
+      red: "#FF0000",
+      orange: "#FFA500",
+      yellow: "#FFFF00",
+      green: "#00FF00",
+      purple: "#800080"
+    };
+    hexColor = nameMap[value.toLowerCase()] || null;
+  }
+
+  if (colorBar) {
+    colorBar.style.backgroundColor = hexColor || "transparent";
+
+    // Tooltip text based on hex
+    const tooltip = hexColor ? tooltipTextMap[hexColor] : "No data available.";
+    if (tooltipContainer) {
+      tooltipContainer.setAttribute("data-tooltip", tooltip);
+    }
+  }
+}
+
+
+	 const colorBar = document.getElementById('colorBar');
+    const colorName = document.getElementById('colorName');
+
+function fetchWarningColor(lat, lon) {
+
+    console.log("fetchWarningColor() called with lat:", lat, "lon:", lon);
+
+    for (let day = 1; day <= 5; day++) {
+
+        const xhr = new XMLHttpRequest();
+
+        xhr.open('GET',
+            `get_warning_color_working.php?lat=${lat}&lon=${lon}&day=${day}`,
+            true
+        );
+
+        xhr.onreadystatechange = function () {
+
+            if (xhr.readyState === 4) {
+
+                console.log("Day", day, "Status:", xhr.status);
+                console.log("Raw response:", xhr.responseText);
+
+                if (xhr.status === 200) {
+
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        console.log("Parsed response:", response);
+
+                        if (response.content_color) {
+                            updateWarningColor(response.content_color, day);
+                        } else {
+                            console.log("No content_color returned");
+                        }
+
+                    } catch (e) {
+                        console.error("JSON Parse Error:", e);
+                    }
+
+                }
+            }
+        };
+
+        xhr.send();
+    }
+}
+
+
+ function displayAddress(addr){
+   console.log(addr);
+  document.getElementById('MMELocationAddr').innerHTML = addr;
+  }
+
+$(document).ready(function() {
+
+    fetchOptions('pincodeState', '', '#pincodeState', 'Select State');
+    fetchOptions('gpcodeState', '', '#gpcodeState', 'Select State');
+
+    /* PINCODE */
+    $('#pincodeState').change(function() {
+        fetchOptions('pincodeDistrict', $(this).val(), '#pincodeDistrict', 'Select District');
+    });
+
+    $('#pincodeDistrict').change(function() {
+        fetchOptions('pincodePin', $(this).val(), '#pincodePin', 'Select Pincode');
+    });
+
+    $('#pincodePin').change(function() {
+        fetchOptions('pincodeArea', $(this).val(), '#pincodeArea', 'Select Area');
+    });
+
+    $('#pincodeArea').change(function() {
+        var selectedOption = $(this).find('option:selected');
+        var lat = selectedOption.data('lat');
+        var lon = selectedOption.data('lon');
+
+        if (lat && lon) {
+            onmapclick(lat, lon);
+
+            var addr = "State: " + $('#pincodeState').val() +
+                       ", District: " + $('#pincodeDistrict').val() +
+                       ", Area: " + $('#pincodeArea').val();
+
+            displayAddress(addr);
+        }
+    });
+
+    /* GP CODE */
+    $('#gpcodeState').change(function() {
+        fetchOptions('gpcodeDistrict', $(this).val(), '#gpcodeDistrict', 'Select District');
+        $('#gpcodeBlock').html('<option value="">Select Block</option>');
+        $('#gpcodeGP').html('<option value="">Select Gram Panchayat</option>');
+    });
+
+    $('#gpcodeDistrict').change(function() {
+        fetchOptions('gpcodeBlock', $(this).val(), '#gpcodeBlock', 'Select Block');
+        $('#gpcodeGP').html('<option value="">Select Gram Panchayat</option>');
+    });
+
+    $('#gpcodeBlock').change(function() {
+        fetchOptions('gpcodeGP', $(this).val(), '#gpcodeGP', 'Select Gram Panchayat');
+    });
+
+    $('#gpcodeGP').change(function() {
+        var selectedOption = $(this).find('option:selected');
+        var lat = selectedOption.data('lat');
+        var lon = selectedOption.data('lon');
+        var gpcode = selectedOption.data('gpcode');
+
+        if (lat && lon) {
+            onmapclick(lat, lon);
+
+            var addr = "State: " + $('#gpcodeState').val() +
+                       ", District: " + $('#gpcodeDistrict').val() +
+                       ", Block: " + $('#gpcodeBlock').val() +
+                       ", Gram Panchayat: " + $('#gpcodeGP').val() +
+                       ", GP Code: " + gpcode;
+
+            displayAddress(addr);
+        }
+    });
+
+    /* SEARCH BUTTON */
+    $('#searchPincodeButton').click(function() {
+
+        var pincode = $('#searchPincode').val();
+
+        $.ajax({
+            url: 'search_lat_lon.php',
+            method: 'GET',
+            dataType: 'json',
+            data: { type: 'pincode', value: pincode },
+            success: function(result) {
+
+                if (result && result.lat && result.lon) {
+
+                    var pin_addr = "State: " + result.state +
+                                   " District: " + result.district +
+                                   " Area: " + result.area;
+
+                    displayAddress(pin_addr);
+                    onmapclick(parseFloat(result.lat), parseFloat(result.lon));
+
+                } else {
+                    alert('No coordinates found for the given pincode.');
+                }
+            }
+        });
+
+    });
+
+    $('#searchGPCodeButton').click(function() {
+        var gpcode = $('#searchGPCode').val();
+        $.ajax({
+            url: 'search_lat_lon.php',
+            method: 'GET',
+            dataType: 'json',
+            data: { type: 'gpcode', value: gpcode },
+            success: function(result) {
+                if (result.lat && result.lon) {
+                    gp_addr = "State: " + result.state + " District: " + result.district + " block: " + result.block + " Gram Panchayat: " + result.gp;
+                    displayAddress(gp_addr);
+                    onmapclick(parseFloat(result.lat), parseFloat(result.lon));
+                } else {
+                    alert('No coordinates found for the given GP code.');
+                }
+            }
+        });
+    });
+
+});
+
+
+function fetchOptions(type, parentValue, targetDropdown, defaultText) {
+
+    $.ajax({
+        url: 'test4_pincode.php',
+        method: 'GET',
+        dataType: 'json',
+        data: {
+            type: type,
+            parent_value: parentValue
+        },
+        success: function(options) {
+
+            $(targetDropdown).empty();
+            $(targetDropdown).append('<option value="">' + defaultText + '</option>');
+
+            for (var i = 0; i < options.length; i++) {
+
+                var option = options[i];
+
+                for (var key in option) {
+
+                    if (key !== 'lat' && key !== 'lon' && key !== 'gpcode') {
+
+                        $(targetDropdown).append(
+                            '<option value="' + option[key] + '" ' +
+                            'data-lat="' + (option.lat || '') + '" ' +
+                            'data-lon="' + (option.lon || '') + '" ' +
+                            'data-gpcode="' + (option.gpcode || '') + '">' +
+                            option[key] +
+                            '</option>'
+                        );
+
+                    }
+
+                }
+            }
+
+        }
+    });
+}
+
+
+
+       
+
+
+    
+
+ 
+
+
+
+</script>
+
+
+  <!--------------------------------------      progressbar modal               ------------------------>
+  <script>
+
+
+    $(function () {
+      $("#datepicker").datepicker({ minDate: -5, maxDate: 0 });
+    });
+
+    var recDate = '';
+    var datearr = [];
+    var dailydatearr = [];
+    var senddate = '';
+    var hrstr = '3hr';
+    var y;
+    var m;
+    var d;
+    var tickint = 3;
+    var mjrtickint = 6;
+    var addday = 5;
+    var tutc;
+    var tutc_1;
+
+
+    var MMEchartRF;
+    var MMEcharttemp;
+    var MMEchartRH;
+    var MMEchartCC;
+    var MMEchartWSWD;
+    var selectFile = '_3hr';
+    var dd;
+    var arr_pincodes = [];
+    var arr_block = [];
+var dateSel;
+fetch("https://mausamgram.imd.gov.in/mmem" + selectFile + ".txt").then(response => response.text())
+    .then(data => {
+
+
+      recDate = data;
+
+      datearr = recDate.split(",");
+      //final_selecteddt=dd;
+      //senddate=final_selecteddt+'_3hr';
+      //senddate=datearr[0]+'_3hr_0p125';
+
+      console.log('rec date:' + datearr[0]);
+      console.log('rec date1:' + datearr[1]);
+
+      var dtstr = datearr[1];
+      //console.log('dtstr rec date1:'+datearr[1]);
+
+      var dtarr = dtstr.split(' ');
+      console.log('dtstr rec date1:' + dtarr[1]);
+      document.getElementById('lbldate').innerHTML = "Date: " + dtarr[1];
+      // document.getElementById('lbldate').innerHTML="Date: 11-01-2024";
+      // dd="2023081800";	
+      dd = datearr[0];
+      setparams(dd, '3hr');
+      map.setView(
+    new ol.View({
+      projection: 'EPSG:4326',
+      center: [82.00, 24.00],
+      zoom:4.3
+    }));
+ 
+
+      var arr = [];
+
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          // document.getElementById("txtHint").innerHTML = this.responseText;
+          var out = this.responseText;
+          arr = out;
+          //arr=out;
+          const obj = JSON.parse(out);
+          //console.log("pincode"+obj);
+          //console.log("pincode"+obj[0]['pincode']);
+          var newlocarr = [];
+          var newlocarr_coord = [];
+          for (var i = 0; i < obj.length; i++) {
+            var loc_name = obj[i]['loc_name'] + ', ' + obj[i]['dist_name'];
+            var loc_pin = obj[i]['pincode'];
+            newlocarr[i] = loc_name;
+            newlocarr_coord[i] = loc_pin;
+            //arr_pincodes[i].pincode=obj[i]['pincode']
+
+
+
+            //console.log("new_arr"+newlocarr[i]);
+          }
+          arr_pincodes = obj.map(({ pincode, lat, long, loc_name }) => ({ pincode, lat, long, loc_name }));
+          //console.log("length"+arr_pincodes.length);
+
+
+          $("#loc_search").select2({
+            data: newlocarr
+          });
+          $("#loc_search_pin").select2({
+            data: newlocarr_coord
+          });
+        }
+      };
+      //alert('infgs'+senddate)
+      xmlhttp.open("GET", "https://mausamgram.imd.gov.in/pincode.php");
+      xmlhttp.send();
+
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+    var latpin;
+    var longpin;
+
+    //search by pincode location name
+    $("#loc_search").change(function () {
+      // Pure JS
+      // var selectedVal = this.value;
+      // var selectedText = this.options[this.selectedIndex].text;
+
+      // jQuery
+      var selectedVal = $(this).find(':selected').val();
+      var selectedText = $(this).find(':selected').text();
+      //alert(selectedText);
+      //console.log("selected value"+selectedText);
+
+      var myarray = selectedText.split(',');
+
+      var seltext = myarray[0];
+      //console.log("seltext"+seltext);
+
+      for (var i = 0; i < arr_pincodes.length; i++) {
+
+        if (arr_pincodes[i]['loc_name'] == seltext) {
+
+          latpin = parseFloat(arr_pincodes[i]['lat']);
+          longpin = parseFloat(arr_pincodes[i]['long']);
+
+        }
+        //console.log('latpin'+latpin);
+        //console.log('longpin'+longpin);
+
+      }
+      //var searchPlace = arr_pincodes.find(loc => findPlace(loc,seltext));
+      map.setView(
+        new ol.View({
+          projection: 'EPSG:4326',
+          center: [longpin, latpin],
+          zoom: 8
+        }));
+
+
+
+      onmapclick(latpin, longpin);
+      //console.log("searchPlace"+searchPlace);
+    });
+
+
+
+    //search by pincode
+    $("#loc_search_pin").change(function () {
+      // Pure JS
+      // var selectedVal = this.value;
+      // var selectedText = this.options[this.selectedIndex].text;
+
+      // jQuery
+      var selectedVal = $(this).find(':selected').val();
+      var selectedText = $(this).find(':selected').text();
+
+      //console.log("selected value"+selectedText);
+
+      //var myarray = selectedText.split(',');
+
+      //var seltext=myarray[0];
+      //console.log("seltext"+seltext);
+
+      for (var i = 0; i < arr_pincodes.length; i++) {
+
+        if (arr_pincodes[i]['pincode'] == selectedText) {
+
+          latpin = parseFloat(arr_pincodes[i]['lat']);
+          longpin = parseFloat(arr_pincodes[i]['long']);
+
+        }
+        //console.log('latpin'+latpin);
+        //console.log('longpin'+longpin);
+
+      }
+      //var searchPlace = arr_pincodes.find(loc => findPlace(loc,seltext));
+      map.setView(
+        new ol.View({
+          projection: 'EPSG:4326',
+          center: [longpin, latpin],
+          zoom: 8
+        }));
+      onmapclick(latpin, longpin);
+      //console.log("searchPlace"+searchPlace);
+    });
+
+    ////search by block name
+
+    var latblock;
+    var lonblock;
+    $("#loc_search_block").change(function () {
+      // Pure JS
+      // var selectedVal = this.value;
+      // var selectedText = this.options[this.selectedIndex].text;
+
+      // jQuery
+      var selectedVal = $(this).find(':selected').val();
+      var selectedText = $(this).find(':selected').text();
+
+      //console.log("selected value"+selectedText);
+
+      var myarray = selectedText.split(',');
+
+      var seltext = myarray[0];
+      //console.log("seltext"+seltext);
+
+      for (var i = 0; i < arr_block.length; i++) {
+
+        if (arr_block[i]['Block'] == seltext) {
+
+          latblock = parseFloat(arr_block[i]['lat']);
+          lonblock = parseFloat(arr_block[i]['lon']);
+
+        }
+        //console.log('latblock'+latblock);
+        //console.log('lonblock'+lonblock);
+
+      }
+      //var searchPlace = arr_pincodes.find(loc => findPlace(loc,seltext));
+      map.setView(
+        new ol.View({
+          projection: 'EPSG:4326',
+          center: [lonblock, latblock],
+          zoom: 8
+        }));
+      onmapclick(latblock, lonblock);
+      //console.log("searchPlace"+searchPlace);
+    });
+
+    //selection option for search
+
+    function searchOption(selopt) {
+
+      if (selopt == 'Location') {
+        //alert(selopt);
+        document.getElementById('divloc_search').style.display = 'block';
+        document.getElementById('divloc_search_pin').style.display = 'none';
+        document.getElementById('divloc_search_block').style.display = 'none';
+        $('#loc_search').prop('selected', false).find('option:first').prop('selected', true);
+
+      }
+      else if (selopt == 'Pincode') {
+        //alert(selopt);
+        document.getElementById('divloc_search').style.display = 'none';
+        document.getElementById('divloc_search_pin').style.display = 'block';
+        document.getElementById('divloc_search_block').style.display = 'none';
+
+      }
+      else if (selopt == 'Block') {
+        //alert(selopt);
+        document.getElementById('divloc_search').style.display = 'none';
+        document.getElementById('divloc_search_pin').style.display = 'none';
+        document.getElementById('divloc_search_block').style.display = 'block';
+
+
+      }
+
+    }
+
+
+
+
+    var getSelectedtab = 'home';
+    function showselectedtab(selecttab) {
+
+      getSelectedtab = selecttab;
+      //console.log('inf'+getSelectedtab);
+    }
+
+    /*var y=2022;
+var m=10;
+var d=17;  */
+
+
+
+
+
+
+
+    var newdatearr = [];
+    var interimdatearr = [];
+    var combinedatearr = [];
+
+
+
+    var final_selecteddt;
+
+    function setparams(dd, hrstr) {
+
+      newdatearr = [];
+
+      // var lastMod = null;
+      //http://103.215.208.134/mmem
+      /*fetch("https://mausamgram.imd.gov.in/latest/mmem"+selectFile+".txt").then(response => response.text())
+        .then(data => {
+          	
+      })*/
+      //dd="2023032100";
+
+      //recDate=data;
+
+      //datearr=recDate.split(",");
+      final_selecteddt = dd;
+      //final_selecteddt='2024011100'
+
+      //senddate=final_selecteddt+'_3hr'+'_0p125';
+
+      //console.log('rec final_selecteddt'+final_selecteddt);
+      //var dd=final_selecteddt;
+
+
+
+      datearr = final_selecteddt.split(",");
+      //final_selecteddt=datearr[0];
+      senddate = final_selecteddt + '_' + hrstr + '_0p125';
+
+      //console.log('rec date:'+datearr[0]);
+      var dd1 = datearr[0];
+      dailydatearr = dd1.split('');
+
+      //dailydatearr=final_selecteddt.split(" ");
+      //console.log('d'+dailydatearr.length);
+      y = parseInt('' + dailydatearr[0] + dailydatearr[1] + dailydatearr[2] + dailydatearr[3]);
+      m = parseInt('' + dailydatearr[4] + dailydatearr[5]);
+      d = parseInt('' + dailydatearr[6] + dailydatearr[7]);
+      tutc = parseInt('' + dailydatearr[8] + '' + dailydatearr[9]);
+      tutc_1 = '' + dailydatearr[8] + '' + dailydatearr[9];
+
+
+      var startdt = y + '-' + m + '-' + d;
+
+
+      //console.log('startdate'+startdt);
+
+      var dateTo = moment(startdt, 'YYYY-MM-DD').format('YYYY-MM-DD');
+      var datefrom = moment(startdt, 'YYYY-MM-DD').subtract(5, 'd').format('YYYY-MM-DD');
+
+
+      var a = getDaterange(datefrom, dateTo, []);
+      // var b = getDaterangeinter("2023-01-10", "2023-01-18", []);
+      var tr = "";
+      for (var i = 0; i < a.length; i++) {
+
+        var str_00 = a[i] + ' 00 UTC';
+        var str_12 = a[i] + ' 12 UTC';
+
+
+        newdatearr.push(str_00);
+        newdatearr.push(str_12);
+
+        console.log("for" + newdatearr[i]);
+
+      }
+
+      newdatearr.reverse();
+      dateSel = document.getElementById("datesel");
+      for (var x in newdatearr) {
+        console.log("double" + newdatearr[x]);
+        dateSel.options[dateSel.options.length] = new Option(newdatearr[x]);
+      }
+      //alert(y);
+      //alert(m);
+      //alert(d);
+      //alert(senddate);
+      console.log('ytc' + tutc);
+      //document.getElementById("displaydate").innerHTML = "last Modified Date :"+ datearr[0]+','+datearr[1]+" \n Current Date : "+ d + "/" + m + "/" + y;
+
+      //console.log('ddate'+dailydatearr[8]+dailydatearr[9]);
+
+
+
+
+
+
+
+      initializeCharts();
+
+
+
+
+
+
+
+      onmapclick(lat, lon);
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+    function sendforecastHour(sendhr) {
+      if (sendhr == '3hr') {
+        //selectFile="_3hr";
+        tickint = 3;
+        mjrtickint = 6;
+        addday = 5;
+        hrstr = sendhr;
+      }
+      else if (sendhr == '6hr') {
+        //selectFile="_6hr";
+        tickint = 6;
+        mjrtickint = 12;
+        addday = 10;
+        hrstr = sendhr;
+      }
+
+      else if (sendhr == '1hr') {
+        //selectFile="_6hr";
+        tickint = 1;
+        mjrtickint = 6;
+        addday = 2;
+        hrstr = sendhr;
+      }
+      //hrstr=sendhr;
+
+      senddate = final_selecteddt + '_' + hrstr + '_0p125';
+      //senddate=datearr[0]+'_'+hrstr;
+      console.log('senddate radioclik' + senddate);
+      setparams(final_selecteddt, hrstr);
+
+
+
+
+
+
+
+
+
+
+
+      calculateMME();
+
+      //setLabeltext();
+    }
+
+
+    var view = new ol.View({
+      projection: 'EPSG:4326',
+      center: [78.0, 23.0],
+      zoom: 4,
+      extent: [60, 0, 100, 40]
+
+    });
+    var view_ov = new ol.View({
+      projection: 'EPSG:4326',
+      center: [78.0, 23.0],
+      zoom: 4,
+    });
+
+
+    var base_maps = new ol.layer.Group({
+      'title': 'Base maps',
+      layers: [
+        new ol.layer.Tile({
+          source: new ol.source.TileArcGISRest({
+
+            url: 'https://services.arcgisonline.com/arcgis/rest/services/World_Street_Map/MapServer',
+            params: { 'LAYERS': '0' },
+          })
+
+        })
+      ]
+    });
+
+    var OSM = new ol.layer.Tile({
+      source: new ol.source.OSM(),
+      type: 'base',
+      title: 'Open Street Map',
+      visible: true
+    });
+    var StateLayer = new ol.layer.Image({
+      visible: true,
+      title:'State Boundary',
+      // extent: [-180, -90, -180, 90],
+      source: new ol.source.ImageWMS({
+        url: 'https://webgis.imd.gov.in/geoserver/IMD_Data/wms',
+        params: { 'LAYERS': 'IMD_Data:Admin2' },
+       
+
+        serverType: 'geoserver'
+      })
+    });
+
+
+    var cyclone_cou= new ol.layer.Image({
+      visible: false,
+      title: 'Cyclone COU',
+      // extent: [-180, -90, -180, 90],
+      source: new ol.source.ImageWMS({
+        url: 'https://geoserver3.imd.gov.in/geoserver/static/wms',
+        params: { 'LAYERS': 'static:cou' },
+       
+
+        serverType: 'geoserver'
+      })
+    });
+
+    var map = new ol.Map({
+      target: 'map',
+      layers:[base_maps,StateLayer,cyclone_cou],
+      view: view
+
+    });
+   // map.addLayer(base_maps);
+   
+
+    const layerSwitcher = new ol.control.LayerSwitcher({
+            tipLabel: 'Layers' // Optional label for the button
+        });
+        map.addControl(layerSwitcher);
+
+    //map.addLayer(OSM);
+  
+    // map.addLayer(IndiaStTile);date
+    //  map.addLayer(IndiaDsTile);
+    // map.addLayer(grid);
+
+
+  
+
+
+   // map.addLayer(StateLayer);
+    // map.addLayer(overlays);
+
+    var mouse_position = new ol.control.MousePosition();
+
+    map.addControl(mouse_position);
+
+    var overview = new ol.control.OverviewMap({
+      view: view_ov,
+      collapseLabel: 'O',
+      label: 'O',
+      layers: [OSM]
+    });
+
+    map.addControl(overview);
+
+    var full_sc = new ol.control.FullScreen({ label: 'F' });
+    map.addControl(full_sc);
+
+    var zoom = new ol.control.Zoom({ zoomInLabel: '+', zoomOutLabel: '-' });
+    map.addControl(zoom);
+
+    var slider = new ol.control.ZoomSlider();
+    //map.addControl(slider);
+
+
+
+    var zoom_ex = new ol.control.ZoomToExtent({
+      extent: [
+        65.90, 7.48,
+        98.96, 40.30
+      ]
+    });
+    //map.addControl(zoom_ex);
+
+    /*var layerSwitcher = new ol.control.LayerSwitcher({
+        activationMode: 'click',
+        startActive: true,
+      tipLabel: 'Layers', // Optional label for button
+        groupSelectStyle: 'children', // Can be 'children' [default], 'group' or 'none'
+        collapseTipLabel: 'Collapse layers',
+      });
+      map.addControl(layerSwitcher);*/
+
+
+
+    var latValue = 0;
+    var longValue = 0;
+
+    function legend() {
+
+      $('#legend').empty();
+
+      var no_layers = overlays.getLayers().get('length');
+
+      var head = document.createElement("h4");
+
+      var txt = document.createTextNode("Legend");
+
+      head.appendChild(txt);
+      var element = document.getElementById("legend");
+      element.appendChild(head);
+      var ar = [];
+      var i;
+      for (i = 0; i < no_layers; i++) {
+        ar.push("http://103.215.208.134:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=" + overlays.getLayers().item(i).get('title'));
+        //alert(overlays.getLayers().item(i).get('title'));
+      }
+      for (i = 0; i < no_layers; i++) {
+        var head = document.createElement("p");
+
+        var txt = document.createTextNode(overlays.getLayers().item(i).get('title'));
+        //alert(txt[i]);
+        head.appendChild(txt);
+        var element = document.getElementById("legend");
+        element.appendChild(head);
+        var img = new Image();
+        img.src = ar[i];
+
+        var src = document.getElementById("legend");
+        src.appendChild(img);
+
+      }
+
+    }
+
+    // legend();
+
+
+    /*var wmssource = new ol.source.ImageWMS({
+                url: 'http://103.215.208.134/geoserver/wms',
+                params: {'LAYERS': 'MME:2011_Dist'},
+          serverType: 'geoserver',
+          crossOrigin: 'anonymous',
+              });*/
+
+    map.on('pointermove', function (evt) {
+      if (evt.dragging) {
+        return;
+      }
+      const pixel = map.getEventPixel(evt.originalEvent);
+      const hit = map.forEachLayerAtPixel(pixel, function () {
+        return true;
+      });
+      map.getTargetElement().style.cursor = hit ? 'pointer' : '';
+
+    });
+
+    var timearr = [];
+    var precipArr = [];
+    var tmaxArr = [];
+    var tminArr = [];
+    var tempArr = [];
+    var rhArr = [];
+    var cloudCoverArr = [];
+    var readfilename;
+    var latValue;
+    var longValue;
+    var latPrecision;
+    var longPrecision;
+
+    var latValue_gfs;
+    var longValue_gfs;
+
+    var latValue_jma;
+    var longValue_jma;
+
+    var latValue_ncep;
+    var longValue_ncep;
+
+    var latValue_ncum;
+    var longValue_ncum;
+
+    var latValue_ECMWF;
+    var longValue_ECMWF;
+
+    var latValue_MME;
+    var longValue_MME;
+
+    var numprecipArr = [];
+    var numtmaxArr = [];
+    var numtminArr = [];
+    var numrhArr = [];
+    var numtempArr = [];
+    var numcloudCoverArr = [];
+
+    var windirArr = [];
+    var windspeedArr = [];
+    var windjoinArr = [];
+    var windCombined = [];
+
+
+
+    var numprecipArr_JMA = [];
+    var numtmaxArr_JMA = [];
+    var numtminArr_JMA = [];
+    var numrhArr_JMA = [];
+    var numtempArr_JMA = [];
+    var numcloudCoverArr_JMA = [];
+    var windirArr_JMA = [];
+    var windspeedArr_JMA = [];
+    var windCombined_JMA = [];
+
+
+    var numprecipArr_NCEP = [];
+    var numtmaxArr_NCEP = [];
+    var numtminArr_NCEP = [];
+    var numrhArr_NCEP = [];
+    var numtempArr_NCEP = [];
+    var numcloudCoverArr_NCEP = [];
+    var windirArr_NCEP = [];
+    var windspeedArr_NCEP = [];
+
+    var windCombined_NCEP = [];
+
+
+    var numprecipArr_NCUM = [];
+    var numtmaxArr_NCUM = [];
+    var numtminArr_NCUM = [];
+    var numrhArr_NCUM = [];
+    var numtempArr_NCUM = [];
+    var numcloudCoverArr_NCUM = [];
+
+    var windspeedArr_NCUM = [];
+
+    var windCombined_NCUM = [];
+
+    var windirArr = [];
+    var windspeedArr = [];
+
+    var numprecipArr_ECMWF = [];
+    var numtmaxArr_ECMWF = [];
+    var numtminArr_ECMWF = [];
+    var numrhArr_ECMWF = [];
+    var numtempArr_ECMWF = [];
+    var numcloudCoverArr_ECMWF = [];
+
+    var MME_precipArr = [];
+    var MME_tmaxArr = [];
+    var MME_tminArr = [];
+    var MME_tempArr = [];
+    var MME_rhArr = [];
+    var MME_cloudCoverArr = [];
+
+    var MME_cloudCoverArr = [];
+    var MME_windspeedArr = [];
+    var MME_windirArr = [];
+    var MME_windCombined = [];
+
+
+
+
+
+    var lat = 28.6138954;
+    var lon = 77.2090057;
+$(document).ready(function() {
+      var view = map.getView();
+      view.setCenter(ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:4326')); // Make sure to transform to 'EPSG:3857'
+      view.setZoom(4);
+    });
+
+    map.on('singleclick', function (evt) {
+
+      //const pixel = map.getEventPixel(evt.originalEvent);
+      //console.info(pixel);
+      //console.info(evt.pixel);
+      // console.info(map.getPixelFromCoordinate(evt.coordinate));
+      // console.info(ol.proj.toLonLat(evt.coordinate));
+
+      // var prettyCoord = ol.coordinate.toStringHDMS(ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326'), 2);
+      //console.info(prettyCoord);
+      //var coord1=map.getPixelFromCoordinate(evt.coordinate);
+      //console.info(coord1);
+      var coords = ol.proj.transform(evt.coordinate, 'EPSG:4326', 'EPSG:4326');
+      //console.info(coords);
+      lat = coords[1];
+      lon = coords[0];
+      //var locTxt = "Latitude: " + lat + " Longitude: " + lon;
+      // coords is a div in HTML below the map to display
+
+      //var inputF = document.getElementById("latTxt");
+      //document.getElementById("latTxt").value = lat.toFixed(3);
+      //document.getElementById("longTxt").value = lon.toFixed(3);
+
+
+      //latPrecision=(latValue%1).toFixed(3); //to get decimal part alone
+      //longPrecision=(longValue%1).toFixed(3);
+     // document.getElementById('MMELocationAddr').innerHTML = '';
+
+      //onmapclick(lat, lon);
+      //console.log();	
+
+      //callgfs(callPhPGFS)	;
+//       var view = map.getView();
+// view.setCenter(ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:4326')); // Make sure to transform to 'EPSG:3857'
+// view.setZoom(10);
+ // Always update the displayed coordinates in the input fields
+  document.getElementById("lat").value = parseFloat(lat).toFixed(2);
+  document.getElementById("lon").value = parseFloat(lon).toFixed(2);
+
+      //const coord = [latp, lonp]
+  fetch('https://nominatim.openstreetmap.org/reverse?lat=' + lat + '&lon=' + lon + '&format=json', {
+    headers: {
+      'User-Agent': 'ID of your APP/service/website/etc. v0.1'
+    }
+  })
+       .then(response => response.json())
+    .then(data => {
+      let addressString = '';
+
+      // Safely extract address if it exists
+      if (data && data.address) {
+        const addr = data.address;
+
+        // Build address from available fields
+        const parts = [];
+        if (addr.village) parts.push('Village: ' + addr.village);
+        if (addr.county) parts.push('Block/Taluk: ' + addr.county);
+        if (addr.state_district) parts.push('District: ' + addr.state_district);
+        if (addr.state) parts.push('State: ' + addr.state);
+        if (addr.country) parts.push(addr.country);
+
+        addressString = parts.join(', ');
+      }
+
+      // If no address was built, use coordinates as fallback
+      if (!addressString) {
+        addressString = 'Ocean / Remote area (' + lat.toFixed(4) + ', ' + lon.toFixed(4) + ')';
+      }
+
+      document.getElementById('MMELocationAddr').innerHTML = addressString;
+    })
+    .catch(error => {
+      console.warn('Reverse geocoding failed:', error);
+      document.getElementById('MMELocationAddr').innerHTML = 'Coordinates: ' + lat.toFixed(4) + ', ' + lon.toFixed(4);
+    })
+    .finally(() => {
+      // ALWAYS call the functions that load weather data
+      onmapclick(lat, lon);
+      fetchWarningColor(lat, lon);
+    });
+});
+
+    var layer;
+
+    ///////////////////////////////////////////////////////
+   // Load layers once at initialization:
+const pakistanLayer = new ol.layer.Vector({
+  source: new ol.source.Vector({
+    url: './geoBoundaries-PAK-ADM0_simplified.geojson',
+    format: new ol.format.GeoJSON()
+  }),
+  // render Pakistan boundary but make it fully transparent
+  style: new ol.style.Style({
+    fill: new ol.style.Fill({ color: 'rgba(0,0,0,0)' }),
+    stroke: new ol.style.Stroke({ color: 'rgba(0,0,0,0)', width: 0 })
+  })
+});
+map.addLayer(pakistanLayer);
+
+// India-claimed areas (highlighted)
+const indiaClaimedLayer = new ol.layer.Vector({
+  source: new ol.source.Vector({
+    url: './geoBoundaries-IND-ADM1_simplified.geojson',
+    format: new ol.format.GeoJSON()
+  }),
+  style: new ol.style.Style({
+    //fill:   new ol.style.Fill({ color: 'rgba(0, 123, 255, 0.2)' }),
+    stroke: new ol.style.Stroke({ color: '#556B2F', width: 2 })
+  })
+});
+map.addLayer(indiaClaimedLayer);
+
+function onmapclick(lat, lon) {
+  // transform to map projection
+  const viewProj = map.getView().getProjection();
+  const coord = ol.proj.transform([lon, lat], 'EPSG:4326', viewProj);
+
+  // check if inside Pakistan
+  let inPak = false;
+  pakistanLayer.getSource().getFeatures().forEach(f => {
+    if (f.getGeometry().intersectsCoordinate(coord)) inPak = true;
+  });
+
+  // if it is in Pakistan, block unless it's in an Indian-claimed area
+  if (inPak) {
+    let inClaimed = false;
+    indiaClaimedLayer.getSource().getFeatures().forEach(f => {
+      if (f.getGeometry().intersectsCoordinate(coord)) inClaimed = true;
+    });
+
+    if (!inClaimed) {
+      alert('No data available for this region');
+      return; // block only unclaimed Pakistan No data for this region
+    }
+  }
+
+ map.removeLayer(layer);
+
+      var latValue = lat;
+      var longValue = lon;
+      //console.log("in"+latValue+","+longValue);
+      //latValue = Math.floor(latValue).toFixed(3);
+     // longValue = Math.floor(longValue).toFixed(3);
+
+      var latp = latValue;
+      var lonp = longValue;
+    
+  // otherwise allow marker
+  if (layer) map.removeLayer(layer);
+  layer = new ol.layer.Vector({
+    source: new ol.source.Vector({
+      features: [ new ol.Feature({
+        geometry: new ol.geom.Point(
+          ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:4326')
+        )
+      }) ]
+    }),
+    style: new ol.style.Style({
+      image: new ol.style.Icon({
+        anchor: [0.5,1],
+        crossOrigin: 'anonymous',
+        src: 'marker.png'
+      })
+    })
+  });
+
+  ///////////////////////////////////////////////////////////////
+      map.addLayer(layer);
+      
+      var view = map.getView();
+view.setCenter(ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:4326')); // Make sure to transform to 'EPSG:3857'
+ view.setZoom(10);
+
+//       const coord = [latp, lonp]
+//       fetch('https://nominatim.openstreetmap.org/reverse?lat=' + lat + '&lon=' + lon + '&format=json', {
+//         headers: {
+//           'User-Agent': 'ID of your APP/service/website/etc. v0.1'
+//         }
+//       }).then(res => res.json())
+//         .then(res => {
+//           //  console.log(res.display_name)
+//           //  console.log(res.address)
+//           var obj = res.address;
+//           var addstr = '';
+//           if (obj['village'] === undefined || obj['county'] === undefined || obj['state_district'] === undefined) {
+//             if (obj['state'] === 'Xinjiang') {
+//               addstr = 'State: Ladhak';
+//             }
+//             else {
+//               addstr = 'State:' + obj['state'];
+//             }
+//           }
+//           else if (obj['village'] === undefined || obj['county'] === undefined) {
+//             addstr = 'District:' + obj['state_district'] + ', State:' + obj['state'];
+//           }
+//           else {
+//             addstr = "Village:" + obj['village'] + ', Block/Taluk:' + obj['county'] + ',District:' + obj['state_district'] + ', State:' + obj['state'];
+//           }
+
+//           document.getElementById('MMELocationAddr').innerHTML = addstr;
+//         })
+
+
+
+
+
+      //document.getElementById("latTxt").innerHTML = lat.toFixed(2)+'\xB0'+'N'+" "+lon.toFixed(2)+'\xB0'+'E';
+
+      document.getElementById("lat").value = parseFloat(lat).toFixed(2);
+      document.getElementById("lon").value = parseFloat(lon).toFixed(2);
+      //var latPrecision_ecmwf=(latValue%1).toFixed(2); //to get decimal part alone
+      //var longPrecision_ecmwf=(longValue%1).toFixed(2);
+
+      // here 0.125 is horizontal resolution of GFS. For other model may need to update here.
+      latValue_gfs = (Math.floor(latValue / 0.125) * 0.125).toFixed(3);  // here we bring to 0.125 lat precision intervals
+      longValue_gfs = (Math.floor(longValue / 0.125) * 0.125).toFixed(3); // here we bring to 0.125 lon precision intervals
+    console.log(latValue_gfs+","+longValue_gfs);
+    
+      /*latValue_jma = (Math.floor(latValue/0.125) * 0.125).toFixed(2);  // here we bring to 0.25 lat precision intervals
+      longValue_jma = (Math.floor(longValue/0.25) * 0.25).toFixed(2); // here we bring to 0.25 lon precision intervals
+    	
+      latValue_ncep = (Math.floor(latValue/0.25) * 0.25).toFixed(2);  // here we bring to 0.25 lat precision intervals
+      longValue_ncep = (Math.floor(longValue/0.25) * 0.25).toFixed(2); // here we bring to 0.25 lon precision intervals
+    
+      latValue_ncum = (Math.floor(latValue/0.12) * 0.12).toFixed(2);  // here we bring to 0.12 lat precision intervals
+      longValue_ncum =(Math.floor(longValue/0.18) * 0.18).toFixed(2) ; // here we bring to 0.18 lon precision intervals
+    	
+      //latValue_ECMWF = Math.floor(latValue) + (Math.floor(latPrecision_ecmwf/0.4) * 0.4);  // here we bring to 0.12 lat precision intervals
+      //longValue_ECMWF = Math.floor(longValue) + (Math.floor(longPrecision_ecmwf/0.4) * 0.4) ; // here we bring to 0.18 lon precision intervals
+    	
+      latValue_ECMWF = (Math.floor(latValue/0.4) * 0.4).toFixed(1);  // here we bring to 0.12 lat precision intervals
+      longValue_ECMWF = (Math.floor(longValue/0.4) * 0.4).toFixed(1) ; // here we bring to 0.18 lon precision intervals*/
+
+
+      //latValue_MME = (Math.floor(latValue / 0.125) * 0.125).toFixed(3);  // here we bring to 0.125 lat precision intervals
+     // longValue_MME = (Math.floor(longValue / 0.125) * 0.125).toFixed(3); // here we bring to 0.125 lon precision intervals
+      document.getElementById("displaydate").innerHTML = " \n Data last update :" + d + "/" + m + "/" + y + ' ' + tutc_1 + 'Z,   ' + datearr[1];
+
+
+      document.getElementById('MMEPLocation').innerHTML = "Location :" + parseFloat(lat).toFixed(2) + '\xB0' + 'N' + "  " + parseFloat(lon).toFixed(2) + '\xB0' + 'E' + " &nbsp;&nbsp;  \n Initial Condition :" + d + "/" + m + "/" + y + ' ' + tutc_1 + 'Z';
+
+      //console.log("gfs : "+latValue_gfs,longValue_gfs);
+      //console.log("ncep : "+latValue_ncep,longValue_ncep);
+      //console.log("jma : "+latValue_jma,longValue_jma);
+      //console.log("ncum : "+latValue_ncum,longValue_ncum);
+      //console.log("ECMWF : "+latValue_ECMWF,longValue_ECMWF);
+      //alert(latValue_ncum +','+longValue_ncum);
+      crdt = "20220207";
+
+
+
+      calculateMME();
+      fetchWarningColor(lat, lon);
+    }
+
+    function calculateMME() {
+      //alert('in');
+
+      //chartRH.reflow();
+      MME_precipArr = [];
+      MME_tempArr = [];
+      MME_rhArr = [];
+      MME_cloudCoverArr = [];
+      MME_windspeedArr = [];
+      MME_windirArr = [];
+      MME_windCombined = [];
+
+
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          // document.getElementById("txtHint").innerHTML = this.responseText;
+          var out = this.responseText;
+          //console.log(out);
+          //var text = out.replace(/< br>$/, '');
+          //out=this.responseText;
+          const obj = JSON.parse(out);
+          console.log(obj);
+          //var tmin=obj.tmin;
+          //console.log("MME");
+          //console.log(obj);
+          //MME_precipArr.push('NaN');
+          //MME_tempArr.push('NaN');
+          //MME_rhArr.push('NaN');
+          //MME_cloudCoverArr.push('NaN');
+
+          MME_windCombined = [];
+          MME_precipArr = [];
+          MME_tempArr = [];
+          MME_rhArr = [];
+          MME_cloudCoverArr = [];
+          MME_windirArr = [];
+          MME_windspeedArr = [];
+          MME_precipArr = obj.apcp;
+          //numtmaxArr=obj.tmax;
+          //numtminArr=obj.tmin;
+          //console.log("MME::"+MME_precipArr);
+          MME_tempArr = obj.temp;
+          MME_rhArr = obj.rh;
+          MME_cloudCoverArr = obj.tcdc;
+          console.log("mmetemp" + MME_tempArr);
+          //console.log("ecmwf"+numprecipArr_ECMWF,numtempArr_ECMWF,numrhArr_ECMWF,numcloudCoverArr_ECMWF);
+          MME_windirArr = obj.wdir;
+          MME_windspeedArr = obj.wspd;
+          MME_windCombined.push([NaN, NaN]);
+
+          //MME_precipArr.push('NaN')
+
+          for (var i = 1; i < MME_windirArr.length; i++) {
+
+            //windjoinArr.push(windspeedArr[i]);
+            //windjoinArr.push(windirArr[i]);
+            MME_windCombined.push([MME_windspeedArr[i], MME_windirArr[i]]);
+            //alert(windjoinArr[i])
+           // console.log(MME_windCombined[i]);
+          }
+
+          MMEchartRF.series[0].setData(MME_precipArr);
+         // MMEcharttemp.series[0].setData(MME_tempArr);
+          MMEchartRH.series[0].setData(MME_rhArr);
+          MMEchartCC.series[0].setData(MME_cloudCoverArr);
+          MMEchartWSWD.series[0].setData(MME_windCombined);
+          MMEchartWSWD.series[1].setData(MME_windCombined);
+
+
+fetchRTBCData();   // <-- Load bias-corrected realtime series
+
+
+        }
+      };
+      xmlhttp.open("GET", "https://mausamgram.imd.gov.in/test4_mme.php?lat_gfs=" + latValue_gfs + "&lon_gfs=" + longValue_gfs + "&date=" + senddate, true);
+      xmlhttp.send();
+
+
+
+    }
+
+
+
+
+
+//start
+function fetchRTBCData() {
+    if (!senddate) {
+        console.error("senddate not defined");
+        return;
+    }
+    var apiDate = senddate.split('_')[0].substring(0,8); // YYYYMMDD
+    var fcstIcUtc = '00';
+
+    var url = "rtbc_proxy.php?lat=" + latValue_gfs + "&lon=" + longValue_gfs +
+              "&date=" + apiDate + "&fcst_ic_utc=" + fcstIcUtc;
+
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                try {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.fcsthours && response.temp_bc_realtime) {
+                        var year = parseInt(apiDate.substring(0,4));
+                        var month = parseInt(apiDate.substring(4,6)) - 1;
+                        var day = parseInt(apiDate.substring(6,8));
+                        var baseTimestamp = Date.UTC(year, month, day);
+
+                        var bcRealtimePairs = [];
+                        for (var i = 0; i < response.fcsthours.length; i++) {
+                            var hour = response.fcsthours[i];
+                            var temp = response.temp_bc_realtime[i];
+                            if (temp === "NaN" || temp === null || temp === undefined) temp = NaN;
+                            var timestamp = baseTimestamp + hour * 3600 * 1000;
+                            bcRealtimePairs.push([timestamp, temp]);
+                        }
+                        
+                        
+                           // Helper: Find series by name in a chart
+    function findSeriesByName(chart, name) {
+        if (!chart || !chart.series) return null;
+        for (var i = 0; i < chart.series.length; i++) {
+            if (chart.series[i].name === name) return chart.series[i];
+        }
+        return null;
+    }
+
+                           // ---- Update MMEcharttemp ----
+    if (MMEcharttemp) {
+        var targetName = 'Bias-corrected Realtime(+P15)';
+        var existing = findSeriesByName(MMEcharttemp, targetName);
+        if (existing) {
+            existing.setData(bcRealtimePairs);
+            // Optionally ensure it's visible
+            if (!existing.visible) existing.show();
+        } else {
+            MMEcharttemp.addSeries({
+                name: targetName,
+                color: '#E60000',
+                data: bcRealtimePairs,
+                showInLegend: true
+            });
+        }
+    }
+
+    // ---- Update main charttemp (if it exists) ----
+    if (typeof charttemp !== 'undefined' && charttemp) {
+        var targetNameMain = 'Bias-corrected Realtime(+P15)';
+        var existingMain = findSeriesByName(charttemp, targetNameMain);
+        if (existingMain) {
+            existingMain.setData(bcRealtimePairs);
+            if (!existingMain.visible) existingMain.show();
+        } else {
+            charttemp.addSeries({
+                name: targetNameMain,
+                color: '#ff7f0e',
+                data: bcRealtimePairs,
+                showInLegend: true
+            });
+        }
+    }
+
+                    } else {
+                        console.error("RTBC API: invalid response structure", response);
+                        clearRTSeries();
+                    }
+                } catch (e) {
+                    console.error("Error parsing RTBC data", e);
+                    clearRTSeries();
+                }
+            } else {
+                console.error("HTTP error fetching RTBC data", xhr.status);
+                clearRTSeries();
+            }
+        }
+    };
+    xhr.onerror = function() { console.error("Network error fetching RTBC data"); clearRTSeries(); };
+    xhr.open("GET", url, true);
+    xhr.send();
+
+    function clearRTSeries() {
+        if (MMEcharttemp && MMEcharttemp.series[3]) MMEcharttemp.series[3].setData([]);
+        if (charttemp && charttemp.series[7]) charttemp.series[7].setData([]);
+    }
+}
+
+//end
+
+
+
+
+
+
+
+
+
+    var modal = document.getElementById("myModal");
+
+    //function to pass lat lon to php	
+
+
+    // popup
+    var popup = new ol.Overlay.Popup();
+    map.addOverlay(popup);
+
+    //Instantiate with some options and add the Control
+    // var geocoder = new Geocoder('nominatim', {
+    //   provider: 'osm',
+    //   lang: 'en',
+    //   placeholder: 'Search for ...',
+    //   limit: 5,
+    //   debug: false,
+    //   autoComplete: true,
+    //   keepOpen: true
+    // });
+    // map.addControl(geocoder);
+
+    // //Listen when an address is chosen
+    // geocoder.on('addresschosen', function (evt) {
+    //   console.info(evt);
+    //   window.setTimeout(function () {
+    //     popup.show(evt.coordinate, evt.address.formatted);
+    //   }, 3000);
+
+      //console.log("coordinate"+evt.coordinate);
+
+    //   var coords = ol.proj.transform(evt.coordinate, 'EPSG:4326', 'EPSG:4326');
+
+    //   lat = coords[1];
+    //   lon = coords[0];
+    //   console.log("coordinate" + evt.address.formatted);
+    //   //document.getElementById('LocationAddr').innerHTML=evt.address.formatted;
+    //   //document.getElementById('GFSLocationAddr').innerHTML=evt.address.formatted;
+    //   //document.getElementById('JMALocationAddr').innerHTML=evt.address.formatted;
+    //   //document.getElementById('NCEPLocationAddr').innerHTML=evt.address.formatted;
+    //   //document.getElementById('ECMWFLocationAddr').innerHTML=evt.address.formatted;
+    //   // document.getElementById('NCUMLocationAddr').innerHTML=evt.address.formatted;
+    //   document.getElementById('MMELocationAddr').innerHTML = evt.address.formatted;
+
+    //   onmapclick(lat, lon);
+    // });
+      
+document.getElementById('geocoder-input').addEventListener('input', function () {
+  performGeocode();
+});
+
+function performGeocode() {
+  var query = document.getElementById('geocoder-input').value.trim();
+  if (!query) {
+    clearSuggestions();
+    return;
+  }
+
+  var url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&countrycodes=IN&format=json&limit=5`;
+
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      displaySuggestions(data);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      clearSuggestions();
+    });
+}
+
+function displaySuggestions(data) {
+  var suggestionsDiv = document.getElementById('suggestions');
+  suggestionsDiv.innerHTML = ''; // Clear previous suggestions
+
+  if (data.length > 0) {
+    data.forEach(item => {
+      var div = document.createElement('div');
+      div.className = 'suggestion-item';
+      div.innerText = item.display_name;
+      div.addEventListener('click', function () {
+        selectSuggestion(item);
+      });
+      suggestionsDiv.appendChild(div);
+    });
+  } else {
+    suggestionsDiv.innerHTML = 'No results found.';
+  }
+}
+
+function selectSuggestion(item) {
+  document.getElementById('geocoder-input').value = item.display_name;
+  clearSuggestions();
+  var lat = item.lat;
+  var lon = item.lon;
+
+  // Call the onMapClick function with the selected latitude and longitude
+  onmapclick(lat, lon);
+  var addr=document.getElementById('geocoder-input').value;
+  document.getElementById('MMELocationAddr').innerHTML = addr;
+  document.getElementById('geocoder-input').value='';
+  // Optionally, perform additional actions with the selected item
+  // For example, show the selected location on a map
+  console.log('Selected item:', item);
+}
+
+function clearSuggestions() {
+  document.getElementById('suggestions').innerHTML = '';
+ 
+}
+
+
+
+
+
+
+  </script>
+
+  <script>
+//////////////////////////////////////////////////////////////////////
+ 
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+
+    //for toggle layer
+    function toggleLayer(eve) {
+      var lyrname = eve.target.value;
+      var checkedStatus = eve.target.checked;
+      var lyrList = map.getLayers();
+
+      lyrList.forEach(function (element) {
+        if (lyrname == element.get('title')) {
+          element.setVisible(checkedStatus);
+        }
+      });
+    }
+
+
+    function printDiv() {
+      var divContents = document.getElementById("meteoDiv").innerHTML;
+      var a = window.open('', '', 'height=800, width=800');
+      a.document.write('<html>');
+      a.document.write('<body > <h1>Div contents are <br>');
+      a.document.write(divContents);
+      a.document.write('</body></html>');
+      a.document.close();
+      a.print();
+    }
+
+
+    function downloadImage() {
+      //alert('helo');
+      /*var source=img1.src;
+        const fileName = source.split('/').pop();
+      var el = document.createElement("a");
+      el.setAttribute("href", source);
+      el.setAttribute("download", fileName);
+      document.body.appendChild(el);
+        el.click();
+      el.remove();*/
+
+
+      // let imagePath = downImg.getAttribute('src');
+      //let fileName = getFileName(imagePath);
+      // saveAs(imagePath, fileName);
+      //console.log(getSelectedtab);
+      domtoimage.toBlob(document.getElementById('menu6'))
+        .then(function (blob) {
+          window.saveAs(blob, "mausamgram");
+        });
+
+
+      /* var divContents = document.getElementById(getSelectedtab).innerHTML;
+              var a = window.open('', '', 'height=500, width=500');
+              a.document.write('<html>');
+              a.document.write('<body > <h1>Div contents are <br>');
+              a.document.write(divContents);
+              a.document.write('</body></html>');
+              a.document.close();
+              a.print();*/
+
+
+
+    }
+
+    function downloadImage1() {
+      /*var container = document.getElementById("image-wrap");*/ /*specific element on page*/
+      var container = document.getElementById(getSelectedtab); /* full page */
+      html2canvas(container, { allowTaint: true }).then(function (canvas) {
+
+        var link = document.createElement("a");
+        document.body.appendChild(link);
+        link.download = "html_image.jpg";
+        link.href = canvas.toDataURL();
+        link.target = '_blank';
+        link.click();
+      });
+    }
+
+    /* function getFileName(str) {
+        return str.substring(str.lastIndexOf('/') + 1)
+    }*/
+
+    ////go to location
+
+    function GotoLocation() {
+
+      lat = parseFloat(document.getElementById('lat').value);
+      lon = parseFloat(document.getElementById('lon').value);
+
+      // Converting lat long to mercator projection
+      //  proj_lat_long = ol.proj.fromLonLat([lat, lon])
+
+      // Zoom to lat lon
+      map.setView(
+        new ol.View({
+          projection: 'EPSG:4326',
+          center: [lon, lat],
+          zoom: 8
+        }));
+      // overlay.element.innerHTML = 'Lat: ' + lat + '<br/> Lon: ' + lon;
+
+
+      //onmapclick(lat,lon);
+      // Set popup position to lat lon
+
+      popup.show([lon, lat]);
+      // overlay.setPosition([lon,lat]);
+
+      onmapclick(lat, lon)
+    }
+
+
+    //array of past 10 dates
+
+    function getDaterange(start, end, arr) {
+      if (!moment(start).isSameOrAfter(end)) {
+        if (arr.length == 0) {
+          arr.push(moment(start).format("ddd, Do MMM YYYY"));
+          console.log("in daterange" + arr[0]);
+          // interimdatearr.push(moment(start).format("YYYYMMDD"));
+        }
+        var next = moment(start).add(1, 'd');
+        arr.push(next.format("ddd, Do MMM YYYY"));
+        console.log("in daterange-->" + arr[0]);
+        //interimdatearr.push(next.format("YYYYMMDD"));
+        getDaterange(next, end, arr);
+      } else {
+        return arr;
+      }
+      return arr;
+    }
+
+
+
+
+
+
+
+
+    function dateselchange(value) {
+      //empty Chapters- and Topics- dropdowns
+      var text = value;
+
+      console.log("text" + text);
+      var substring = text.slice(0, -7);
+      var utcval = text.slice(-6, -4)
+      var substring1 = '"' + substring + '"';
+
+      var datestr = moment(substring1, 'ddd, Do MMM YYYY').format("YYYYMMDD")
+
+
+      final_selecteddt = datestr + utcval;
+      console.log("utcval" + final_selecteddt);
+
+      senddate = final_selecteddt + '_' + hrstr + '_0p125';
+        console.log("utcval_senddate" + senddate);
+  
+        setparams(final_selecteddt, hrstr);
+  
+        calculateMME();
+  
+      }
+      // console.log(tr); datesel
+  
+    </script>
+     <!-- <script>
+    var geocoder = new Geocoder('nominatim', {
+  provider: 'osm',
+  lang: 'en',
+  placeholder: 'Search for ...',
+  limit: 5,
+  debug: false,
+  autoComplete: true,
+  keepOpen: true
+});
+
+// Bind the geocoder to the input field
+var inputField = document.getElementById('geocoder-input');
+inputField.addEventListener('keydown', function (event) {
+  if (event.key === 'Enter') {
+    event.preventDefault(); // Prevent the default form submission behavior (if any)
+    console.log(inputField.value);
+    geocoder._input.value = inputField.value; // Sync input field value with geocoder
+    
+    geocoder._search(); // Trigger geocoder search
+  }
+});
+
+// Add geocoder to the map
+map.addControl(geocoder);
+
+// Listen when an address is chosen
+geocoder.on('addresschosen', function (evt) {
+  console.info(evt);
+  window.setTimeout(function () {
+    popup.show(evt.coordinate, evt.address.formatted);
+  }, 3000);
+});
+
+  </script> -->
+<script>
+
+</script>
+
+
+</body>
+
+<!--<script src="https://mausamgram.imd.gov.in/jma_chart.js" defer>
+
+
+</script>-->
+<!--<script src="https://mausamgram.imd.gov.in/ncep_chart.js" defer></script>
+<script src="https://mausamgram.imd.gov.in/ecmwf_chart.js" defer></script>
+<script src="https://mausamgram.imd.gov.in/ncum_chart.js" defer></script>
+<script src="https://mausamgram.imd.gov.in/MME_chart.js" defer></script>-->
+
+</html>

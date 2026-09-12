@@ -1,0 +1,70 @@
+{
+  "id": "X05",
+  "question": "Ahmedabad district rainfall in 2025?",
+  "origin": "additional_authored_test",
+  "checked_at_utc": "2026-09-12T16:17:39.710701+00:00",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "bebdc2db-ed32-4a46-9a83-84102c928eb4",
+    "question": "Ahmedabad district rainfall in 2025?",
+    "status": "unavailable",
+    "answer": "The stored Ahmedabad, Gujarat series covers 1901–2010, with 110 published years. It cannot supply 2025.",
+    "facts": [],
+    "citations": [],
+    "notes": [],
+    "choices": [],
+    "follow_up": null,
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-12T16:17:39.710731+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 775,
+        "output_tokens": 195,
+        "duration_seconds": 3.272585334
+      },
+      "generation": null,
+      "tools": [
+        {
+          "name": "historical_lookup",
+          "status": "unavailable"
+        }
+      ],
+      "provider": "local_ollama",
+      "duration_seconds": 3.278
+    },
+    "plan": {
+      "intent": "history",
+      "language": "en",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "",
+          "district": "Ahmedabad",
+          "kind": "district"
+        }
+      ],
+      "start_local": "",
+      "end_local": "",
+      "explicit_times": false,
+      "variables": [
+        "precipitation"
+      ],
+      "year": 2025,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "assumptions": [],
+      "clarification": "",
+      "requested_outcome": "Retrieve total rainfall data for Ahmedabad district in the year 2025."
+    },
+    "historical_evidence": {
+      "status": "unavailable",
+      "text": "The stored Ahmedabad, Gujarat series covers 1901–2010, with 110 published years. It cannot supply 2025.",
+      "facts": [],
+      "citations": []
+    }
+  }
+}

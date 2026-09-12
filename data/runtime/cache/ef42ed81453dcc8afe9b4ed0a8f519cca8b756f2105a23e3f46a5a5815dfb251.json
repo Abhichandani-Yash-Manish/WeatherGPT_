@@ -1,0 +1,10 @@
+{
+  "source_id": "S57",
+  "url": "https://mausam.imd.gov.in/responsive/agrometinformation/district_current_lo_get.php?s=Gujarat&step1=true",
+  "retrieved_at_utc": "2026-09-11T19:48:49.955965+00:00",
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "bytes": 1619,
+  "sha256": "0b7102d4346d04bcfacb928a8ec8de88226e61d51a77eaa90f2451149ce475e1",
+  "blob": "blobs/0b7102d4346d04bcfacb928a8ec8de88226e61d51a77eaa90f2451149ce475e1.bin"
+}

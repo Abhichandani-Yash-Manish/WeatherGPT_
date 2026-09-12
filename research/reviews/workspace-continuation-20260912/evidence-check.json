@@ -1,0 +1,15 @@
+{
+  "snapshot_changes": [],
+  "current_implementation_changes": [
+    "docs/11-extensive-validation-and-rag-gate.md"
+  ],
+  "report_changes": [],
+  "addendum_matches": true,
+  "district_input_hash_mismatches": [],
+  "district_report_rows": {
+    "matched": 60568
+  },
+  "district_report_series": 640,
+  "root_report_is_duplicate": true,
+  "root_report_broken_local_links": 18
+}

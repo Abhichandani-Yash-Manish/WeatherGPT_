@@ -1,0 +1,16 @@
+{
+  "schema_version": "answer-acceptance-v1",
+  "scope": "Nationwide weather, official warnings, agriculture, aviation, marine, hydrology and climate; Gujarat is the first answer demonstration.",
+  "operational_ready": false,
+  "cases": [
+    {"id": "point_forecast", "question_ids": ["Q02", "Q18"], "state": "prototype_verified", "evidence": "data/processed/hardening/answers-batch-four-20260912/replay-final/report.json", "next_gate": "Broader geographic applicability and publisher run/freshness evidence; the six-point replay is not nationwide coverage."},
+    {"id": "source_outage", "question_ids": ["Q16"], "state": "prototype_verified", "evidence": "tests/test_answers.py", "next_gate": "Measure sustained cycles and source freshness; current tests cover bounded retrieval age and explicit failed-refresh reporting."},
+    {"id": "official_warning", "question_ids": ["Q03", "Q08", "Q09"], "state": "blocked", "next_gate": "Complete source timing, current administrative mapping, feed completeness and update/cancel lifecycle."},
+    {"id": "crop_advisory", "question_ids": ["Q04", "Q05", "Q06"], "state": "blocked", "next_gate": "Reviewed document extraction with place, crop/stage, source issue/expiry and activity context."},
+    {"id": "aviation_briefing", "question_ids": [], "acceptance_question": "What do applicable airport and en-route products say for the selected route and interval?", "state": "blocked", "next_gate": "A dedicated specialist evidence contract and completeness checks; METAR/TAF samples alone are insufficient."},
+    {"id": "marine_briefing", "question_ids": [], "acceptance_question": "What do applicable official marine bulletins and model products say for this sea region and interval?", "state": "blocked", "next_gate": "Structured official geography/validity and the required wind, sea and warning products; land forecasts cannot substitute."},
+    {"id": "flood_impact", "question_ids": ["Q20"], "state": "blocked", "next_gate": "Named river/gauge mapping, observed hydrology, exposure and validated impact interpretation."},
+    {"id": "climate_history", "question_ids": ["Q10", "Q11", "Q12", "Q13"], "state": "separate_tools_partial", "next_gate": "Use existing deterministic historical tools; preserve missingness, spatial comparability, source reconciliation and permitted-use gates."},
+    {"id": "multilingual_voice", "question_ids": ["Q14", "Q15"], "state": "not_implemented", "next_gate": "Evaluate place names, numbers, units, time and negation; the current question parser is explicitly English only."}
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "schema_version": "foundation-v1",
+  "family": "official_marine_bulletin",
+  "source_id": "S58",
+  "status": "reference_only",
+  "records": [
+    {
+      "physical_page": 1,
+      "text": "India Meteorological Department/ भारत  मौसम  िव\u0000ान  िवभाग\nACWC KOLKATA / ए  . सी  . ड\u0000ू  . सी  कोलकाता\nSea Area Bulletin\nBulletin Valid for 12 hrs from 21 UTC of 2026-09-11 to 09 UTC of 2026-09-12\n TTT Warning No Storm Warning\n \nSynoptic Situation\nThe Low Pressure Area over Northwest-Westcentral Bay of Bengal & adjoining south Odishanorth Andhra Pradeshcoasts lay over Coastal areas of south Odisha - north Andhra Pradesh at 1730 hrs IST of today, the 11th September2026. The associated cyclonic circulation extends upto 9.4 km above mean sea level tilting southwestwards withheight. It is likely to become more marked and move west-northwestwards across south Odisha - north CoastalAndhra Pradesh during next 24 hours. .Southwest Monsoon Moderate over South Bay of Bengal ; Weak to Moderateover Eastcentral Bay of Bengal and Andaman Sea.\n South West BayWind South to Southwesterly, 15 - 20 kts\nWeather Scattered rain or thundershowers\nVisibility Good becoming Moderate in rain/thundershower\nSea Condition Slight to Moderate\nSouth East BayWind Mainly Southwesterly, 15 - 20 kts\nWeather Scattered rain or thundershowers\nVisibility Good becoming Moderate in rain/thundershower\nSea Condition Slight to Moderate\nWest Central BayWind South to Southwesterly, 15 - 20 kts gusting 25 kts\nWeather Fairly widespread rain or thundershowers with isolated heavy rain\nVisibility Moderate becoming Poor in heavy rain/thundershower\nSea Condition Slight to Moderate ocassionally Rough\nEast Central BayWind Southeast to Southerly, 10 - 15 kts\nWeather Fairly widespread rain or thundershowers\nVisibility Good becoming Moderate in rain/thundershower\nSea Condition Smooth to Slight\nNorth West BayWind Mainly Southeasterly, 15 - 20 kts gusting 25 kts\nWeather Fairly widespread rain or thundershowers\nVisibility Moderate becoming Poor in rain/thunder shower\nSea Condition Slight to Moderate ocassionally Rough\nNorth East BayWind Mainly Southeasterly, 15 - 20 kts\nWeather Fairly widespread rain or thundershowers\nVisibility Good becoming Moderate in rain/thundershower\nSea Condition Slight to Moderate\nSouth Andaman SeaWind Mainly Westerly, 10 - 15 kts",
+      "source_locator": "physical PDF page 1",
+      "extraction_status": "text_extracted_reading_order_unverified"
+    },
+    {
+      "physical_page": 2,
+      "text": "Weather Fairly widespread rain or thundershowers\nVisibility Good becoming Moderate in rain/thundershower\nSea Condition Smooth to Slight\nNorth Andaman SeaWind South to Southwesterly, 10 - 15 kts\nWeather Fairly widespread rain or thundershowers\nVisibility Good becoming Moderate in rain/thundershower\nSea Condition Smooth to Slight\nPart 4\nPart 5 NIL\nPart 6\nAAXX,01112,,, 99942,,,, 807,21595,50901,10294,40057 811,21596,70000,10288,40056901,22596,41403,10300,40050 806,22596,60000,10290,40058 903,32996,41304,10294,40055895,21495,60000,10282,40055 976,21495,61405,10292,40048= 99943,,,, 049,21496,82002,10268,40021053,21595,61812,10292,40034 105,22597,82004,10276,40019 150,21496,82702,10258,40031185,21597,80000,10302,40024 245,32597,70902,10340,40031 346,32597,41105,10314,40040279,32597,81404,10316,40041=\nTime of Issue 21:29 IST of 2026-09-11",
+      "source_locator": "physical PDF page 2",
+      "extraction_status": "text_extracted_reading_order_unverified"
+    }
+  ],
+  "count": 2,
+  "provenance": {
+    "source_id": "S58",
+    "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/60/60_8beba5_sab.pdf",
+    "retrieved_at_utc": "2026-09-11T19:50:41.642581+00:00",
+    "http_status": 200,
+    "content_type": "application/pdf",
+    "bytes": 3653450,
+    "sha256": "f9761b0f1d633a55f22d010c1feb7ced67f30b7b47a18951e665d76f75019cd3",
+    "blob": "blobs/f9761b0f1d633a55f22d010c1feb7ced67f30b7b47a18951e665d76f75019cd3.bin",
+    "delivery": "network",
+    "checked_at_utc": "2026-09-11T19:50:41.643901+00:00"
+  },
+  "limitations": [
+    "Original regional bulletin; structured issue/validity and region matching are not validated.",
+    "Do not infer current navigation or fishing clearance from document availability."
+  ],
+  "coverage": {
+    "catalog_provenance": {
+      "source_id": "S58",
+      "url": "https://rsmcnewdelhi.imd.gov.in/sea-area-bulletin.php",
+      "retrieved_at_utc": "2026-09-11T19:50:33.518265+00:00",
+      "http_status": 200,
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 23038,
+      "sha256": "da7a8c3bfe5e281e2b1aed06d74b5ccc44238a2663ede8faf1ba6a02a129a7ec",
+      "blob": "blobs/da7a8c3bfe5e281e2b1aed06d74b5ccc44238a2663ede8faf1ba6a02a129a7ec.bin",
+      "delivery": "cache",
+      "checked_at_utc": "2026-09-11T19:50:35.551881+00:00"
+    }
+  },
+  "actionable_current_alerts": false
+}

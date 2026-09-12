@@ -1,0 +1,163 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "7bdccaa6-23a3-440a-81bb-fa2bf4a9d4f9",
+  "question": "What was India annual rainfall in 2024?",
+  "status": "answered",
+  "answer": "India's published annual rainfall for 2024 was 1206.6 mm.",
+  "facts": [
+    {
+      "label": "rainfall",
+      "value": "1206.6",
+      "unit": "mm",
+      "year": 2024,
+      "period": "annual",
+      "source_id": "S25"
+    }
+  ],
+  "citations": [
+    {
+      "source_id": "S25",
+      "url": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php",
+      "provider": "IMD",
+      "product": "Published All India historical table",
+      "raw_asset_path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+      "sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+      "row": 125,
+      "column": "Annual"
+    }
+  ],
+  "notes": [
+    "No time specified: defaulting to annual period for the requested year.",
+    "This is the published All India aggregate; it does not describe an individual village or district.",
+    "The source aggregate differs from the sum of its published months; the original total and reconciliation are retained."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 775,
+      "output_tokens": 203,
+      "duration_seconds": 3.412557583
+    },
+    "generation": null,
+    "tools": [
+      {
+        "name": "historical_lookup",
+        "status": "answered"
+      }
+    ],
+    "provider": "local_ollama",
+    "duration_seconds": 3.42
+  },
+  "plan": {
+    "intent": "history",
+    "language": "en",
+    "places": [
+      {
+        "name": "India",
+        "state": "",
+        "district": "",
+        "kind": "country"
+      }
+    ],
+    "start_local": "",
+    "end_local": "",
+    "explicit_times": false,
+    "variables": [
+      "precipitation"
+    ],
+    "year": 2024,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "assumptions": [
+      "No time specified: defaulting to annual period for the requested year."
+    ],
+    "clarification": "",
+    "requested_outcome": "Retrieve India's total annual rainfall for the year 2024."
+  },
+  "historical_evidence": {
+    "status": "answered",
+    "text": "India's published annual rainfall for 2024 was 1206.6 mm.",
+    "facts": [
+      {
+        "label": "rainfall",
+        "value": "1206.6",
+        "unit": "mm",
+        "year": 2024,
+        "period": "annual",
+        "source_id": "S25"
+      }
+    ],
+    "citations": [
+      {
+        "source_id": "S25",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+        "sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+        "row": 125,
+        "column": "Annual"
+      }
+    ],
+    "notes": [
+      "This is the published All India aggregate; it does not describe an individual village or district.",
+      "The source aggregate differs from the sum of its published months; the original total and reconciliation are retained."
+    ],
+    "raw": {
+      "status": "ok",
+      "scope": "Published historical All India aggregate; not current or district weather.",
+      "record": {
+        "record_id": "6625ac7d34e0bd5d15c07cb10d9cb3d4896831aaf8024598052fa0f2a38eca3e",
+        "source_id": "S25",
+        "source_series_id": "historical_rain_whi",
+        "geography_id": "all-india-aggregate",
+        "geography_label": "All India aggregate",
+        "parameter": "precipitation_amount",
+        "year": 2024,
+        "period_type": "year",
+        "period_code": "ANNUAL",
+        "period_start": "2024-01-01",
+        "period_end_exclusive": "2025-01-01",
+        "value_decimal": "1206.6",
+        "native_value": "1206.6",
+        "unit": "mm",
+        "quality_flags": [
+          "published_total_differs_from_month_sum"
+        ],
+        "asset_sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+        "source_row": 125,
+        "source_column": "Annual",
+        "source_url": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php",
+        "retrieved_at_utc": "2026-09-11T16:27:58.620400+00:00",
+        "transformation_version": "national-climate-v1"
+      },
+      "reconciliation": {
+        "source_id": "S25",
+        "year": 2024,
+        "period_code": "ANNUAL",
+        "published_value": "1206.6",
+        "computed_month_sum": "1204.1",
+        "difference_mm": "2.5",
+        "rounding_bound_mm": "0.65",
+        "status": "beyond_rounding_bound",
+        "source_row": 125,
+        "source_column": "Annual",
+        "asset_sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90"
+      },
+      "citation": {
+        "source_id": "S25",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+        "sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+        "row": 125,
+        "column": "Annual"
+      }
+    }
+  }
+}

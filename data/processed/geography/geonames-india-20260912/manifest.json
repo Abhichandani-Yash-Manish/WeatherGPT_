@@ -1,0 +1,14 @@
+{
+  "source_id": "S61",
+  "url": "https://download.geonames.org/export/dump/IN.zip",
+  "archive_sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+  "member_sha256": "641c95706399c4470bdb875539dffdf9e95df27526614fa7cb2b41f8a90a8ea8",
+  "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00",
+  "records_in_extract": 660026,
+  "settlement_records": 549021,
+  "alias_records": 581131,
+  "license": "CC BY 4.0",
+  "attribution": "GeoNames",
+  "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+  "database_sha256": "3116236be9072cd88e7f807f760a7b440b14465cdbc5e1ce2e61d9ba4e2a5aca"
+}

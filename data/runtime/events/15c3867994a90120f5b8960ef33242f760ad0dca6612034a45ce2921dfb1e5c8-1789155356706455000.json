@@ -1,0 +1,10 @@
+{
+  "source_id": "S57",
+  "url": "https://mausam.imd.gov.in/responsive/agrometinformation/district_current_en_get.php?s=Tamil+Nadu&step1=true",
+  "retrieved_at_utc": "2026-09-11T19:35:56.706408+00:00",
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "bytes": 1678,
+  "sha256": "138d5e2aac6049bd1843e7d58b160e8793f2638e2a9e6b4e45e871ebb76da2b8",
+  "blob": "blobs/138d5e2aac6049bd1843e7d58b160e8793f2638e2a9e6b4e45e871ebb76da2b8.bin"
+}

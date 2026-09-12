@@ -1,0 +1,23 @@
+{
+  "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-09-09-07-24-34.xml",
+  "checked_at_utc": "2026-09-11T13:21:17.636257+00:00",
+  "identifier": "urn:oid:2.49.0.1.356.0.2026.9.9.7.24.34",
+  "sender": "rainfallnwfc@gmail.com",
+  "sent": "2026-09-09T12:54:34+05:30",
+  "status": "Actual",
+  "msgType": "Alert",
+  "scope": "Public",
+  "references": null,
+  "info": [
+    {
+      "language": "en",
+      "event": "Extremely heavy",
+      "severity": "Severe",
+      "urgency": "Expected",
+      "certainty": "Likely",
+      "effective": null,
+      "onset": "2026-09-09T07:00:00+05:30",
+      "expires": "2026-09-10T07:00:00+05:30"
+    }
+  ]
+}

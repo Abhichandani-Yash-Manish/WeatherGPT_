@@ -1,0 +1,94 @@
+{
+  "schema_version": "source-geography-v1",
+  "assessed_at_utc": "2026-09-12T05:42:51.005429+00:00",
+  "scope": "Saved source footprint inventory; not an authoritative nationwide administrative catalogue.",
+  "entities_by_type": {
+    "airport": 6,
+    "district": 1462,
+    "model_point": 10,
+    "place": 2,
+    "state": 36
+  },
+  "entities_by_source": {
+    "S15": 764,
+    "S20": 6,
+    "S21": 6,
+    "S24": 2,
+    "S37": 1,
+    "S56": 3,
+    "S57": 734
+  },
+  "coverage_assessments_by_product": {
+    "advisory_directory": 698,
+    "marine_forecast": 9,
+    "official_warning_snapshot": 764,
+    "river_discharge": 1,
+    "weather_forecast": 24
+  },
+  "source_warning_features": 764,
+  "warning_quarantines": 22,
+  "gujarat_advisory_directory_entries": 33,
+  "reviewed_crosswalks": 0,
+  "current_lgd_inventory_imported": false,
+  "eligible_assessments": 0,
+  "numeric_replays": [
+    {
+      "sample": "forecast-ahmedabad",
+      "records": 288,
+      "result": "pass"
+    },
+    {
+      "sample": "forecast-chennai",
+      "records": 288,
+      "result": "pass"
+    },
+    {
+      "sample": "forecast-delhi",
+      "records": 288,
+      "result": "pass"
+    },
+    {
+      "sample": "forecast-guwahati",
+      "records": 288,
+      "result": "pass"
+    },
+    {
+      "sample": "forecast-mumbai",
+      "records": 288,
+      "result": "pass"
+    },
+    {
+      "sample": "forecast-srinagar",
+      "records": 288,
+      "result": "pass"
+    },
+    {
+      "sample": "marine-andaman-sea",
+      "records": 216,
+      "result": "pass"
+    },
+    {
+      "sample": "marine-arabian-sea",
+      "records": 216,
+      "result": "pass"
+    },
+    {
+      "sample": "marine-bay-of-bengal",
+      "records": 216,
+      "result": "pass"
+    },
+    {
+      "sample": "river-ahmedabad",
+      "records": 7,
+      "result": "pass"
+    }
+  ],
+  "open_dependencies": [
+    "Dated authoritative administrative export and changes",
+    "Reviewed source-to-administration crosswalks",
+    "Boundary provenance and spatial representativeness",
+    "Coverage expectations for every PS capability",
+    "Current official warnings, lifecycle and source freshness",
+    "Scheduler and serving integration"
+  ]
+}

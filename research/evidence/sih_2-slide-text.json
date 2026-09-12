@@ -1,0 +1,253 @@
+{
+  "source": "/Users/yashabhichandani/Downloads/sih_2.pptx",
+  "sha256": "db82195e44c8fd8dc85fec718f9da3a1f7dc80a5fbf73ff8b1f3b38ee1a63e7b",
+  "slides": [
+    {
+      "slide": 1,
+      "text": [
+        "TITLE PAGE",
+        "SMART INDIA HACKATHON 2026",
+        "Problem Statement ID – 26068",
+        "Problem Statement Title- WeatherGPT: Conversational AI for Weather Forecasting, Alerts, and Climate Information",
+        "Theme- Disaster Management",
+        "PS Category- Software",
+        "Team ID- 18",
+        "Team Name (Registered on portal)- Void Pointer"
+      ],
+      "notes": [],
+      "hyperlinks": [],
+      "images": [
+        "../media/image1.png",
+        "../media/image2.png"
+      ]
+    },
+    {
+      "slide": 2,
+      "text": [
+        "@SIH Idea submission- Template",
+        "WEATHERGPT: VERIFIED WEATHER INTELLIGENCE",
+        "Void Pointer",
+        "A location-aware, multilingual conversational layer for verified and actionable weather intelligence.",
+        "Proposed Solution",
+        "•  Intent & Location Agent: ",
+        "Understands the user’s question, language, location, time range, and use case.",
+        "•  Multi-Source Retrieval Layer: ",
+        "Queries relevant weather, forecast, warning, AQI, radar, and historical-data services in parallel.",
+        "•  Forecast Verification Agent: ",
+        "Cross-checks observations and model outputs, resolves source conflicts, tracks freshness, and reports confidence.",
+        "•  Evidence-Grounded Response Agent: ",
+        "Generates concise answers with source, issue time, validity period, location, and uncertainty.",
+        "•  Personalized Advisory Layer: ",
+        "Converts verified data into farmer, commuter, aviation, marine, and disaster-preparedness guidance.",
+        "•  Multilingual Voice Interface: ",
+        "Delivers text, audio, and alert notifications in Indian languages, including low-connectivity use cases.",
+        "How It Addresses the Problem",
+        "•  Unified access: ",
+        "Consolidates scattered weather portals, bulletins, model outputs, and warning systems into one conversational interface.",
+        "•  Local relevance: ",
+        "Uses the user’s precise location and administrative region to provide locally relevant information.",
+        "•  Official-first warnings: ",
+        "Prioritizes IMD warnings and preserves their severity, affected area, issue time, and validity.",
+        "•  Historical context: ",
+        "Uses historical and climate data for anomaly detection, comparisons, and explanations—not as a replacement for numerical forecasts.",
+        "•  Inclusive access: ",
+        "Provides voice and local-language responses for rural and low-literacy users.",
+        "•  Trustworthy alerts: ",
+        "Delivers timely, explainable alerts instead of unverified generic predictions.",
+        "Innovation / USP",
+        "•  Provenance-aware fusion: ",
+        "Every answer is linked to its source, timestamp, model, and confidence.",
+        "•  Agentic orchestration: ",
+        "Specialized agents select the right data source and workflow for each query instead of relying on one API.",
+        "•  Disagreement detection: ",
+        "Identifies when providers or models disagree and communicates uncertainty clearly.",
+        "•  Location-to-action intelligence: ",
+        "Converts raw weather values into region-specific recommendations and preparedness actions.",
+        "•  One interface, many users: ",
+        "Supports citizens, farmers, disaster managers, aviation, marine operations, and researchers.",
+        "•  Text + voice + alerts: ",
+        "Makes actionable weather intelligence accessible across languages, literacy levels, and connectivity conditions."
+      ],
+      "notes": [],
+      "hyperlinks": [],
+      "images": [
+        "../media/image2.png"
+      ]
+    },
+    {
+      "slide": 3,
+      "text": [
+        "@SIH Idea submission- Template",
+        "TECHNICAL APPROACH",
+        "Void Pointer",
+        "TECHNOLOGIES USED",
+        "CLIENT",
+        "React Native, WebSocket",
+        "VOICE",
+        "Gemini (STT), Groq (TTS)",
+        "LANGUAGE",
+        "Sarvam AI",
+        "LIVE DATA",
+        "WeatherAPI, Open-Meteo, OpenWeatherMap, IMD",
+        "RAG",
+        "pgvector / PostgreSQL, IMD, ERA5",
+        "GENERATION",
+        "Ollama (self-hosted)",
+        "ALERTS",
+        "NDMA Sachet, MQTT, FCM",
+        "INFRASTRUCTURE",
+        "FastAPI, Redis, Docker, Kubernetes"
+      ],
+      "notes": [],
+      "hyperlinks": [],
+      "images": [
+        "../media/image2.png",
+        "../media/image3.png"
+      ]
+    },
+    {
+      "slide": 4,
+      "text": [
+        "@SIH Idea submission- Template",
+        "FEASIBILITY AND VIABILITY",
+        "FEASIBILITY",
+        "Technical foundations and implementation readiness",
+        "•  Uses existing AI/LLM services, weather APIs, satellite feeds, GPS, and mobile technologies; no unproven hardware dependency.",
+        "•  Forecast differences and data errors are managed through verified sources, model comparison, freshness checks, and forecast-confidence display.",
+        "•  Provider-agnostic backend adapters allow weather-data providers to be added or replaced without rebuilding the complete application.",
+        "•  Recommendations become more useful when the system understands the user’s location, activity, preferences, and previous queries.",
+        "VIABILITY",
+        "Trust, adoption and a clear path to scale",
+        "•  User privacy is protected through secure login, encryption, and limited collection of location and personal data.",
+        "•  Future versions can notify users about significant weather changes or risks instead of waiting for users to check the application.",
+        "•  The system can grow from a local service into a regional or national platform by adding languages, locations, and industry-specific features.",
+        "•  Users receive one relevant answer instead of manually interpreting multiple weather parameters and charts.",
+        "Void Pointer"
+      ],
+      "notes": [],
+      "hyperlinks": [],
+      "images": [
+        "../media/image2.png"
+      ]
+    },
+    {
+      "slide": 5,
+      "text": [
+        "@SIH Idea submission- Template",
+        "IMPACT AND BENEFITS",
+        "POTENTIAL IMPACT",
+        "Who benefits—and why it matters",
+        "•  WeatherGPT delivers clear, location-based weather intelligence that helps citizens make safer decisions while connecting authorities, researchers, and industries through one common platform.",
+        "•  Rural and low-literacy users can access weather information through voice-based interaction.",
+        "•  By combining accessibility, personalisation, and reliable data, WeatherGPT has strong potential for large-scale social and economic impact.",
+        "BENEFITS OF THE SOLUTION",
+        "Safety, resilience and sustainable action",
+        "•  It improves public safety by providing timely warnings and practical guidance during extreme weather events.",
+        "•  WeatherGPT transforms reliable weather and climate data into timely actions that protect lives, reduce losses, support sustainable development, and strengthen community resilience.",
+        "Void Pointer"
+      ],
+      "notes": [],
+      "hyperlinks": [],
+      "images": [
+        "../media/image2.png"
+      ]
+    },
+    {
+      "slide": 6,
+      "text": [
+        "@SIH Idea submission- Template",
+        "RESEARCH  AND REFERENCES",
+        "Selected official portals and technical references for WeatherGPT.",
+        "OFFICIAL SOURCES",
+        "Warnings • observations • standards",
+        "IMD",
+        "  •  ",
+        "WMO",
+        "  •  ",
+        "NOAA",
+        "  •  ",
+        "NASA",
+        "WEATHER APIs",
+        "Conditions • forecasts • alerts",
+        "OpenWeather",
+        "  •  ",
+        "WeatherAPI",
+        "AI & DEVELOPMENT",
+        "LLMs • RAG • agent workflows",
+        "OpenAI",
+        "  •  ",
+        "Hugging Face",
+        "  •  ",
+        "LangChain",
+        "  •  ",
+        "LangGraph",
+        "RESEARCH PAPERS",
+        "Verification • conversational AI • human factors",
+        "Google Scholar",
+        "  •  ",
+        "IEEE Xplore",
+        "CLIMATE DATA",
+        "Baselines • anomalies • vulnerability",
+        "Copernicus",
+        "  •  ",
+        "World Bank Climate Data",
+        "Together, these references support reliable, explainable and locally relevant weather answers.",
+        "Void Pointer"
+      ],
+      "notes": [
+        "[Sources]",
+        "IMD: https://mausam.imd.gov.in/",
+        "WMO: https://wmo.int/",
+        "NOAA NCEI: https://www.ncei.noaa.gov/",
+        "NASA Earthdata: https://earthdata.nasa.gov/",
+        "OpenWeather: https://openweathermap.org/api",
+        "WeatherAPI: https://www.weatherapi.com/docs/",
+        "OpenAI: https://developers.openai.com/api/docs/",
+        "Hugging Face: https://huggingface.co/docs",
+        "LangChain: https://docs.langchain.com/oss/python/langchain/overview",
+        "LangGraph: https://docs.langchain.com/oss/python/langgraph/overview",
+        "Google Scholar: https://scholar.google.com/",
+        "IEEE Xplore: https://ieeexplore.ieee.org/",
+        "Copernicus: https://climate.copernicus.eu/",
+        "World Bank Climate Data: https://climateknowledgeportal.worldbank.org/"
+      ],
+      "hyperlinks": [
+        "https://mausam.imd.gov.in/",
+        "https://wmo.int/",
+        "https://www.ncei.noaa.gov/",
+        "https://earthdata.nasa.gov/",
+        "https://openweathermap.org/api",
+        "https://www.weatherapi.com/docs/",
+        "https://developers.openai.com/api/docs/",
+        "https://huggingface.co/docs",
+        "https://docs.langchain.com/oss/python/langchain/overview",
+        "https://docs.langchain.com/oss/python/langgraph/overview",
+        "https://scholar.google.com/",
+        "https://ieeexplore.ieee.org/",
+        "https://climate.copernicus.eu/",
+        "https://climateknowledgeportal.worldbank.org/"
+      ],
+      "images": [
+        "../media/image2.png"
+      ]
+    },
+    {
+      "slide": 7,
+      "text": [
+        "@SIH Idea submission- Template",
+        "THANK YOU",
+        "Void Pointer",
+        "QUESTIONS?",
+        "Team Void Pointer  •  Team ID 18",
+        "PS 26068 — WeatherGPT: Conversational AI for Weather Forecasting, Alerts, and Climate Information",
+        "Theme: Disaster Management  •  Category: Software  •  We welcome your questions and feedback."
+      ],
+      "notes": [],
+      "hyperlinks": [],
+      "images": [
+        "../media/image2.png",
+        "../media/image3.png"
+      ]
+    }
+  ]
+}

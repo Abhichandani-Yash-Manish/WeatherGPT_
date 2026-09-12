@@ -1,0 +1,10 @@
+{
+  "source_id": "S06",
+  "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/rss.xml",
+  "retrieved_at_utc": "2026-09-11T19:34:49.354298+00:00",
+  "http_status": 200,
+  "content_type": "text/xml",
+  "bytes": 6163,
+  "sha256": "2ebb682f2306815b36d6a1276b20bee0e2367046f8042ea5b2a71a8ab30226fb",
+  "blob": "blobs/2ebb682f2306815b36d6a1276b20bee0e2367046f8042ea5b2a71a8ab30226fb.bin"
+}

@@ -1,0 +1,7 @@
+{
+  "id": "IN-020",
+  "question": "What is the weather forecast for Aizawl over the next week?",
+  "origin": "included_report",
+  "checked_at_utc": "2026-09-12T16:16:33.064656+00:00",
+  "error": "ValueError: Choose an interval within the next seven UTC calendar days"
+}

@@ -1,0 +1,74 @@
+{
+  "id": "IN-021",
+  "question": "Is there a heat warning for Agartala today?",
+  "origin": "included_report",
+  "checked_at_utc": "2026-09-12T16:16:43.273279+00:00",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "289ea37d-6a0f-479e-9c06-5434b94a2cc5",
+    "question": "Is there a heat warning for Agartala today?",
+    "status": "unavailable",
+    "answer": "I cannot verify a current official heat warning for Agartala today, 2026-09-12. The necessary data to confirm the existence or status of such a warning is missing from the available evidence. Warning validity, updates, cancellations, and specific applicable areas must be checked through official channels; the absence of this data does not guarantee that no warning exists. For further assistance, I can provide a point forecast or look up published historical rainfall or temperature data for Agartala.",
+    "facts": [],
+    "citations": [],
+    "notes": [
+      "Today is interpreted as the full calendar day of 2026-09-12 (00:30 to 00:30 next day) to capture all potential heat warnings issued during this period."
+    ],
+    "choices": [],
+    "follow_up": "I can help with a point forecast or a published historical rainfall/temperature lookup.",
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-12T16:16:43.273315+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 774,
+        "output_tokens": 320,
+        "duration_seconds": 5.117221667
+      },
+      "generation": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 373,
+        "output_tokens": 118,
+        "duration_seconds": 1.916194042,
+        "validation": "numeric-token and evidence-ID checks passed; semantic evaluation remains necessary",
+        "evidence_ids": []
+      },
+      "tools": [],
+      "provider": "local_ollama",
+      "duration_seconds": 7.035
+    },
+    "plan": {
+      "intent": "warning",
+      "language": "en",
+      "places": [
+        {
+          "name": "Agartala",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "start_local": "2026-09-12T00:30:00+05:30",
+      "end_local": "2026-09-13T00:30:00+05:30",
+      "explicit_times": false,
+      "variables": [
+        "temperature_2m",
+        "wind_speed_10m",
+        "relative_humidity_2m",
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "temperature",
+      "unsupported_parameters": [],
+      "assumptions": [
+        "Today is interpreted as the full calendar day of 2026-09-12 (00:30 to 00:30 next day) to capture all potential heat warnings issued during this period."
+      ],
+      "clarification": "",
+      "requested_outcome": "Check for any heat warnings or alerts in Agartala for today."
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": "foundation-v1",
+  "family": "place_candidates",
+  "source_id": "S24",
+  "status": "needs_selection",
+  "records": [
+    {
+      "id": 1279233,
+      "name": "Ahmedabad",
+      "latitude": 23.02579,
+      "longitude": 72.58727,
+      "elevation": 56.0,
+      "feature_code": "PPL",
+      "country_code": "IN",
+      "admin1_id": 1270770,
+      "admin2_id": 1279234,
+      "admin3_id": 12684092,
+      "timezone": "Asia/Kolkata",
+      "population": 6357693,
+      "country_id": 1269750,
+      "country": "India",
+      "admin1": "Gujarat",
+      "admin2": "Ahmadābād District",
+      "admin3": "Sabarmati"
+    },
+    {
+      "id": 10752522,
+      "name": "Ahmedābād",
+      "latitude": 28.88983,
+      "longitude": 78.99889,
+      "elevation": 198.0,
+      "feature_code": "PPL",
+      "country_code": "IN",
+      "admin1_id": 1253626,
+      "admin2_id": 1258622,
+      "admin3_id": 12682886,
+      "timezone": "Asia/Kolkata",
+      "country_id": 1269750,
+      "country": "India",
+      "admin1": "Uttar Pradesh",
+      "admin2": "Rampur",
+      "admin3": "Tanda"
+    }
+  ],
+  "count": 2,
+  "provenance": {
+    "source_id": "S24",
+    "url": "https://geocoding-api.open-meteo.com/v1/search?name=Ahmedabad&count=10&language=en&format=json&countryCode=IN",
+    "retrieved_at_utc": "2026-09-11T19:34:54.380999+00:00",
+    "http_status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "bytes": 719,
+    "sha256": "685e84c92f03f83f3973dab54a09b38a0af79c3e459d201603f71b7a2d72eb7a",
+    "blob": "blobs/685e84c92f03f83f3973dab54a09b38a0af79c3e459d201603f71b7a2d72eb7a.bin",
+    "delivery": "network",
+    "checked_at_utc": "2026-09-11T19:34:54.382053+00:00"
+  },
+  "limitations": [
+    "User/application must select a candidate; place ID is not a station or district code."
+  ],
+  "coverage": {}
+}

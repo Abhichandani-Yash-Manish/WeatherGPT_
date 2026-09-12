@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "items": [
+    {
+      "id": "national-review",
+      "title": "National ingestion readiness review",
+      "queries": [
+        {
+          "id": "review-cases",
+          "source": {
+            "label": "Existing code and isolated synthetic review cases",
+            "files": [
+              {
+                "label": "reproduce.py"
+              },
+              {
+                "label": "reproductions.json"
+              },
+              {
+                "label": "review.ipynb"
+              },
+              {
+                "label": "tests.txt"
+              },
+              {
+                "label": "registry-check.json"
+              }
+            ],
+            "caveats": [
+              "All 30 existing tests passed; four additional demonstrations reproduce missing acceptance checks.",
+              "These are synthetic payloads in temporary caches, not newly observed faults in provider data.",
+              "No runtime fixes or scheduled ingestion were applied."
+            ]
+          },
+          "columns": [
+            "case",
+            "reproduced"
+          ],
+          "rows": [
+            {
+              "case": "incomplete_forecast_accepted",
+              "reproduced": true
+            },
+            {
+              "case": "missing_grid_identity_accepted",
+              "reproduced": true
+            },
+            {
+              "case": "schema_invalid_response_replaces_active_cache",
+              "reproduced": true
+            },
+            {
+              "case": "obsolete_incomplete_river_forecast_accepted",
+              "reproduced": true
+            }
+          ],
+          "methods": [
+            {
+              "language": "python",
+              "code": "\"\"\"Isolated review demonstrations. Synthetic payloads; no provider requests or production mutations.\"\"\"\nimport sys,json,tempfile,hashlib,subprocess\nfrom pathlib import Path\nfrom datetime import datetime,timezone,timedelta\nROOT=Path(__file__).resolve().parents[3];sys.path.insert(0,str(ROOT))\nfrom weathergpt_data.foundation import Foundation\nfrom weathergpt_data.adapters import FORECAST,json_payload\nfrom weathergpt_data.transport import Store,SourceError\nNOW=datetime(2026,9,12,tzinfo=timezone.utc)\nMETA={'source_id':'S21','sha256':'synthetic-review','retrieved_at_utc':NOW.isoformat(),'checked_at_utc':NOW.isoformat(),'delivery':'network'}\ndef forecast_payload():\n return {'utc_offset_seconds':0,'latitude':23.0,'longitude':72.5,'hourly_units':{k:v[0] for k,v in FORECAST.items()},'hourly':{'time':[int(NOW.timestamp())+3600,int(NOW.timestamp())+7200],'temperature_2m':[30,31],'relative_humidity_2m':[60,60],'precipitation':[0,1],'wind_speed_10m':[3,4]}}\nclass FakeStore:\n def __init__(self,payload):self.payload=payload;self.clock=lambda:NOW\n def fetch(self,*a,**kw):return json.dumps(self.payload).encode(),META\nclass Response:\n status=200;headers={'Content-Type':'application/json'}\n def __init__(self,payload):self.payload=payload\n def __enter__(self):return self\n def __exit__(self,*args):pass\n def read(self,n):return self.payload[:n]\ndef review():\n r=Foundation(FakeStore(forecast_payload())).forecast(23,72.5,days=3)\n partial={'requested_days':3,'supplied_hours':2,'returned_status':r['status'],'issue_reproduced':r['status']=='ok'}\n d=forecast_payload();d.pop('latitude');d.pop('longitude');r=Foundation(FakeStore(d)).forecast(23,72.5)\n geo={'returned_grid':r['coverage']['returned_grid'],'status':r['status'],'issue_reproduced':r['status']=='ok'}\n with tempfile.TemporaryDirectory() as t:\n  store=Store(t,opener=lambda *a,**k:Response(json.dumps(forecast_payload()).encode()),clock=lambda:NOW);f=Foundation(store)\n  f.forecast(23,72.5)\n  store.opener=lambda *a,**k:Response(b'{}')\n  rejected=False\n  try:f.forecast(23,72.5,refresh=True)\n  except SourceError:rejected=True\n  saved=json.loads(next((Path(t)/'cache').glob('*.json')).read_text());cached=(Path(t)/saved['blob']).read_bytes()\n  poison={'adapter_rejected_bad_schema':rejected,'active_cache_body':cached.decode(),'issue_reproduced':rejected and cached==b'{}'}\n d={'utc_offset_seconds':0,'latitude':23,'longitude':72.5,'daily_units':{'river_discharge':'m\u00b3/s'},'daily':{'time':['2000-01-01'],'river_discharge':[10]}}\n r=Foundation(FakeStore(d)).river(23,72.5,days=7)\n river={'requested_days':7,'supplied_days':1,'supplied_date':'2000-01-01','status':r['status'],'issue_reproduced':r['status']=='ok'}\n scenarios=[]\n for label,points,refreshes in [('Illustrative small state footprint',300,4),('Illustrative national footprint',5000,4),('Illustrative national hourly refresh',5000,24)]:\n  records=points*4*72*refreshes\n  scenarios.append({'scenario':label,'hypothetical_points_not_admin_counts':points,'refreshes_per_day':refreshes,'products':1,'http_requests_per_day_without_batching':points*refreshes,'normalized_scalar_rows_per_day_if_each_snapshot_stored':records,'rows_30_days':records*30,'payload_gb_30_days_at_assumed_100_bytes_per_row':records*30*100/1e9})\n return {'scope':'Synthetic isolated demonstrations, not new observations of provider faults. Capacity scenarios are illustrative, not measured infrastructure requirements.','findings':{'incomplete_forecast_accepted':partial,'missing_grid_identity_accepted':geo,'schema_invalid_response_replaces_active_cache':poison,'obsolete_incomplete_river_forecast_accepted':river},'capacity_scenarios':scenarios}\nif __name__=='__main__':print(json.dumps(review(),indent=2))\n"
+            }
+          ]
+        },
+        {
+          "id": "capacity",
+          "source": {
+            "label": "Illustrative capacity arithmetic and official provider limits",
+            "files": [
+              {
+                "label": "reproductions.json"
+              }
+            ],
+            "links": [
+              {
+                "label": "Open-Meteo pricing and call accounting",
+                "url": "https://open-meteo.com/en/pricing"
+              },
+              {
+                "label": "Local Government Directory",
+                "url": "https://lgdirectory.gov.in/"
+              },
+              {
+                "label": "NCEP GFS products",
+                "url": "https://www.nco.ncep.noaa.gov/pmb/products/gfs/"
+              }
+            ],
+            "caveats": [
+              "Point counts are hypothetical, not Gujarat or India administrative counts.",
+              "One product, four variables, 72 hourly values; one separate HTTP request per point per refresh.",
+              "Provider-accounted calls may differ with batching, variables and duration; no claim that batching evades quotas.",
+              "Storage assumes every forecast snapshot retained; real storage must be measured and includes overhead."
+            ]
+          },
+          "columns": [
+            "points",
+            "refreshes_per_day",
+            "separate_requests_per_day",
+            "scalar_rows_per_day"
+          ],
+          "rows": [
+            {
+              "points": 300,
+              "refreshes_per_day": 4,
+              "separate_requests_per_day": 1200,
+              "scalar_rows_per_day": 345600
+            },
+            {
+              "points": 5000,
+              "refreshes_per_day": 4,
+              "separate_requests_per_day": 20000,
+              "scalar_rows_per_day": 5760000
+            },
+            {
+              "points": 5000,
+              "refreshes_per_day": 24,
+              "separate_requests_per_day": 120000,
+              "scalar_rows_per_day": 34560000
+            }
+          ],
+          "methods": [
+            {
+              "language": "calculation",
+              "code": "requests_per_day = points * refreshes_per_day\nscalar_rows_per_day = points * 4 variables * 72 hours * refreshes_per_day"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

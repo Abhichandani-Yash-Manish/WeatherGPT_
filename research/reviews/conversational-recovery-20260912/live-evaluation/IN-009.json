@@ -1,0 +1,66 @@
+{
+  "id": "IN-009",
+  "question": "How likely is rain in Barmer district this weekend?",
+  "origin": "included_report",
+  "checked_at_utc": "2026-09-12T16:15:21.110211+00:00",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "06a400fb-b003-4d40-a2d9-59758fc79d7e",
+    "question": "How likely is rain in Barmer district this weekend?",
+    "status": "needs_clarification",
+    "answer": "Which village or town within Barmer should I check? I can retrieve a forecast for a precise place; I cannot yet give a verified map of weather across that whole area.",
+    "facts": [],
+    "citations": [],
+    "notes": [
+      "Weekend default: Saturday 2026-09-19 to Sunday 2026-09-20. Full day coverage (00:30–00:30 next date) used for source accumulation alignment."
+    ],
+    "choices": [],
+    "follow_up": "Name a village/town and state, or supply a pin.",
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-12T16:15:21.110240+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 774,
+        "output_tokens": 305,
+        "duration_seconds": 4.743977584
+      },
+      "generation": null,
+      "tools": [],
+      "provider": "local_ollama",
+      "duration_seconds": 4.745
+    },
+    "plan": {
+      "intent": "forecast",
+      "language": "en",
+      "places": [
+        {
+          "name": "Barmer",
+          "state": "",
+          "district": "Barmer",
+          "kind": "district"
+        }
+      ],
+      "start_local": "2026-09-18T00:30:00+05:30",
+      "end_local": "2026-09-21T00:30:00+05:30",
+      "explicit_times": false,
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [
+        "rain_probability"
+      ],
+      "assumptions": [
+        "Weekend default: Saturday 2026-09-19 to Sunday 2026-09-20. Full day coverage (00:30–00:30 next date) used for source accumulation alignment."
+      ],
+      "clarification": "",
+      "requested_outcome": "Rainfall forecast for Barmer district over the upcoming weekend"
+    },
+    "resolved_points": {}
+  }
+}

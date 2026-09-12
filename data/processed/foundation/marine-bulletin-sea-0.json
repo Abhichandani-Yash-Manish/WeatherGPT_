@@ -1,0 +1,58 @@
+{
+  "schema_version": "foundation-v1",
+  "family": "official_marine_bulletin",
+  "source_id": "S58",
+  "status": "reference_only",
+  "records": [
+    {
+      "physical_page": 1,
+      "text": "India Meteorological Department/ भारत  मौसम  िव\u0000ान  िवभाग\nACWC MUMBAI / ए  . सी  . ड\u0000ू  . सी  मुंबई\nSea Area Bulletin\nBulletin Valid for 12 hrs from 21 UTC of 2026-09-11 to 09 UTC of 2026-09-12\n \nTTT Warning NIL\n \nSynoptic Situation\nThe trough from South Interior Karnataka to Gulf of Mannar across Tamil Nadu\nat 0.9 km above mean sea level persists. The upper air cyclonic circulation over\nEastcentral Arabian sea off south Konkan now lies over south Konkan off\nEastcentral Arabian sea at 5.8 km above mean sea level. Southwest monsoon\nmoderate over Westcentral and Southwest Arabian sea and Weak to moderate over\nNorth Arabian sea Eastcentral and Southeast Arabian sea.\n \nNorth West Arabian Sea\nWind\nNorth of Latitude 22 Deg. North : Southwesterly to Southerly 10 to 15 Knots\nGusting to 20 Knots; South of Latitude 22 Deg. North : Southeasterly to Easterly\n10 to 15 Knots Gusting to 20 Knots.\nWeather Isolated Rain/Thundershowers.\nVisibility Good except in Rain/Thundershowers.\nSea Condition Slight to Moderate.\nNorth East Arabian Sea\nWind Southwesterly to Westerly 10 to 15 Knots Gusting to 20 Knots.\nWeather Isolated Rain/Thundershowers.\nVisibility Good except in Rain/Thundershowers.\nSea Condition Slight to Moderate.\nWest Central Arabian Sea\nWind Southwesterly to Westerly 15 to 20 Knots Gusting to 25 Knots.\nWeather Isolated Rain/Thundershowers.\nVisibility Good except in Rain/Thundershowers.\nSea Condition Moderate to Rough\nEast Central Arabian Sea",
+      "source_locator": "physical PDF page 1",
+      "extraction_status": "text_extracted_reading_order_unverified"
+    },
+    {
+      "physical_page": 2,
+      "text": "Wind\nNorth of Latitude 15 Deg. North : Westerly to Northwesterly 10 to 15 Knots\nGusting to 20 Knots ; South of Latitude 15 Deg. North : Northwesterly to\nNortherly 10 to 15 Knots Gusting to 20 Knots.\nWeather Scattered Rain/Thundershowers.\nVisibility Good becoming poor in Rain or Thundershowers.\nSea Condition Moderate\nSouth West Arabian Sea\nWind\nEast of Longitude 60 Deg. East : Westerly to Northwesterly 10 to 15 Knots\nGusting to 20 Knots; West of Longitude 60 Deg. East : Southerly to\nSouthwesterly 15 to 20 Knots Gusting to 25 Knots.\nWeather Isolated Rain/Thundershowers.\nVisibility Good except in Rain/Thundershowers.\nSea Condition Moderate to Rough\nSouth East Arabian Sea\nWind Northwesterly to Westerly 10 to 15 Knots Gusting to 20 Knots.\nWeather Scattered Rain/Thundershowers with isolated squall.\nVisibility Good becoming poor in Rain or Thundershowers and very poor in squall.\nSea Condition Moderate\nLakshadweep Area\nWind Mainly Northwesterly 15 to 20 Knots Gusting to 25 Knots.\nWeather Isolated Rain/Thundershowers.\nVisibility Good except in Rain/Thundershowers.\nSea Condition Moderate to Rough\nMaldives Area\nWind Northwesterly to Westerly 10 to 15 Knots Gusting to 20 Knots.\nWeather Scattered Rain/Thundershowers with isolated squall.\nVisibility Good becoming poor in Rain or Thundershowers and very poor in squall.\nSea Condition Moderate to Rough",
+      "source_locator": "physical PDF page 2",
+      "extraction_status": "text_extracted_reading_order_unverified"
+    },
+    {
+      "physical_page": 3,
+      "text": "Part 4\nPart 5 NIL\nPart 6\nAAXX 01112 99942 339 31995 10000 10378 40037 539 32996 52706 10340\n40052 634 32596 53602 10356 40064 731 32596 42702 10296 40075 754 32596\n63407 10314 40032 838 32596 31410 10332 40060 840 32996 02303 10314\n40067 909 32996 22703 10306 40071 933 32596 72701 10300 40032 99943 057\n31595 40000 10304 40070 109 31596 33204 10290 40093 110 32597 33205\n10297 40079 117 32597 73602 10334 40031 192 32596 32303 10294 40072 226\n32897 22707 10284 40033 284 32497 63208 10292 40065 311 32597 32702\n10318 40075 314 32597 50000 10302 40066 353 32496 43206 10288 40071 369\n32597 33602 10302 40084 371 32496 33204 10304 40069 PPAA 61111 43003\n44385 33003 02008 03509 PPAA 61121 43110 44385 34011 02004 23002 PPAA\n61121 43353 44385 31507 06503 21504 PPAA 61121 43371 44385 33007 24002\n18002\nTime of Issue 21:11 IST of 2026-09-11",
+      "source_locator": "physical PDF page 3",
+      "extraction_status": "text_extracted_reading_order_unverified"
+    }
+  ],
+  "count": 3,
+  "provenance": {
+    "source_id": "S58",
+    "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/59/59_6e569f_sab_rsmc.pdf",
+    "retrieved_at_utc": "2026-09-11T19:50:40.761510+00:00",
+    "http_status": 200,
+    "content_type": "application/pdf",
+    "bytes": 3653985,
+    "sha256": "2112af9f4b548e80fad2851f2ae5363a097aa82e0749d5a029204ccb08247a49",
+    "blob": "blobs/2112af9f4b548e80fad2851f2ae5363a097aa82e0749d5a029204ccb08247a49.bin",
+    "delivery": "network",
+    "checked_at_utc": "2026-09-11T19:50:40.762088+00:00"
+  },
+  "limitations": [
+    "Original regional bulletin; structured issue/validity and region matching are not validated.",
+    "Do not infer current navigation or fishing clearance from document availability."
+  ],
+  "coverage": {
+    "catalog_provenance": {
+      "source_id": "S58",
+      "url": "https://rsmcnewdelhi.imd.gov.in/sea-area-bulletin.php",
+      "retrieved_at_utc": "2026-09-11T19:50:33.518265+00:00",
+      "http_status": 200,
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 23038,
+      "sha256": "da7a8c3bfe5e281e2b1aed06d74b5ccc44238a2663ede8faf1ba6a02a129a7ec",
+      "blob": "blobs/da7a8c3bfe5e281e2b1aed06d74b5ccc44238a2663ede8faf1ba6a02a129a7ec.bin",
+      "delivery": "cache",
+      "checked_at_utc": "2026-09-11T19:50:35.551714+00:00"
+    }
+  },
+  "actionable_current_alerts": false
+}

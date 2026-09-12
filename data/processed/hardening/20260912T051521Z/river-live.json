@@ -1,0 +1,126 @@
+{
+  "schema_version": "foundation-v1",
+  "family": "river_discharge",
+  "source_id": "S37",
+  "status": "ok",
+  "records": [
+    {
+      "date": "2026-09-12",
+      "period_start_utc": "2026-09-12T00:00:00+00:00",
+      "period_end_utc": "2026-09-13T00:00:00+00:00",
+      "parameter": "river_discharge",
+      "value": 1.19,
+      "unit": "m³/s",
+      "model": "GloFAS default selection via Open-Meteo",
+      "quality_flags": [],
+      "source_locator": "$.daily.river_discharge[0]"
+    },
+    {
+      "date": "2026-09-13",
+      "period_start_utc": "2026-09-13T00:00:00+00:00",
+      "period_end_utc": "2026-09-14T00:00:00+00:00",
+      "parameter": "river_discharge",
+      "value": 2.86,
+      "unit": "m³/s",
+      "model": "GloFAS default selection via Open-Meteo",
+      "quality_flags": [],
+      "source_locator": "$.daily.river_discharge[1]"
+    },
+    {
+      "date": "2026-09-14",
+      "period_start_utc": "2026-09-14T00:00:00+00:00",
+      "period_end_utc": "2026-09-15T00:00:00+00:00",
+      "parameter": "river_discharge",
+      "value": 7.15,
+      "unit": "m³/s",
+      "model": "GloFAS default selection via Open-Meteo",
+      "quality_flags": [],
+      "source_locator": "$.daily.river_discharge[2]"
+    },
+    {
+      "date": "2026-09-15",
+      "period_start_utc": "2026-09-15T00:00:00+00:00",
+      "period_end_utc": "2026-09-16T00:00:00+00:00",
+      "parameter": "river_discharge",
+      "value": 5.78,
+      "unit": "m³/s",
+      "model": "GloFAS default selection via Open-Meteo",
+      "quality_flags": [],
+      "source_locator": "$.daily.river_discharge[3]"
+    },
+    {
+      "date": "2026-09-16",
+      "period_start_utc": "2026-09-16T00:00:00+00:00",
+      "period_end_utc": "2026-09-17T00:00:00+00:00",
+      "parameter": "river_discharge",
+      "value": 3.13,
+      "unit": "m³/s",
+      "model": "GloFAS default selection via Open-Meteo",
+      "quality_flags": [],
+      "source_locator": "$.daily.river_discharge[4]"
+    },
+    {
+      "date": "2026-09-17",
+      "period_start_utc": "2026-09-17T00:00:00+00:00",
+      "period_end_utc": "2026-09-18T00:00:00+00:00",
+      "parameter": "river_discharge",
+      "value": 3.17,
+      "unit": "m³/s",
+      "model": "GloFAS default selection via Open-Meteo",
+      "quality_flags": [],
+      "source_locator": "$.daily.river_discharge[5]"
+    },
+    {
+      "date": "2026-09-18",
+      "period_start_utc": "2026-09-18T00:00:00+00:00",
+      "period_end_utc": "2026-09-19T00:00:00+00:00",
+      "parameter": "river_discharge",
+      "value": 5.24,
+      "unit": "m³/s",
+      "model": "GloFAS default selection via Open-Meteo",
+      "quality_flags": [],
+      "source_locator": "$.daily.river_discharge[6]"
+    }
+  ],
+  "count": 7,
+  "provenance": {
+    "source_id": "S37",
+    "url": "https://flood-api.open-meteo.com/v1/flood?latitude=23.02579&longitude=72.58727&daily=river_discharge&forecast_days=7",
+    "retrieved_at_utc": "2026-09-12T05:25:18.306346+00:00",
+    "http_status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "bytes": 395,
+    "sha256": "f6505bab458ebbce8e978679645606a5e20440a4b049150b8ae8edcdf4909b55",
+    "blob": "blobs/f6505bab458ebbce8e978679645606a5e20440a4b049150b8ae8edcdf4909b55.bin",
+    "validation_scope": "product",
+    "delivery": "network",
+    "checked_at_utc": "2026-09-12T05:25:18.307161+00:00"
+  },
+  "limitations": [
+    "Model-derived daily data; not direct gauge measurements.",
+    "River-cell identity has not been matched to a local gauge.",
+    "Discharge does not describe inundation, damage or an official flood warning."
+  ],
+  "coverage": {
+    "requested_point": {
+      "latitude": 23.02579,
+      "longitude": 72.58727
+    },
+    "returned_grid": {
+      "latitude": 23.025002,
+      "longitude": 72.57501
+    },
+    "time_basis": "UTC"
+  },
+  "quality": {
+    "schema": "validated",
+    "interval_coverage": "complete",
+    "value_coverage": "complete",
+    "missing_value_count": 0,
+    "spatial_identity": "present",
+    "spatial_applicability": "not_independently_validated",
+    "freshness": "retrieved_now",
+    "source_issue_freshness": "unknown",
+    "temporal_applicability": "requested_window_present"
+  }
+}

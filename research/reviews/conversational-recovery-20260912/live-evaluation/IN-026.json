@@ -1,0 +1,1045 @@
+{
+  "id": "IN-026",
+  "question": "Can I drive from Mumbai to Pune tonight without getting stuck in rain?",
+  "origin": "included_report",
+  "checked_at_utc": "2026-09-12T16:17:12.729727+00:00",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "a0127230-17c3-46bd-9d78-701c8c8745ad",
+    "question": "Can I drive from Mumbai to Pune tonight without getting stuck in rain?",
+    "status": "partial",
+    "answer": "For the window from 2026-09-12T22:30 to 2026-09-13T06:30 IST, Mumbai forecasts 6.0 mm of rain [f3] with humidity 78–84% [f2], while Pune forecasts 0.0 mm [f7] with humidity 82–86% [f6]. This indicates wet conditions in Mumbai but dry conditions in Pune during this period. However, I do not have verified road closures, bridge conditions, or live transport status for the route between these endpoints. Endpoint weather cannot establish conditions along the full route or whether travel is safe. To better assess your specific travel needs, please clarify if you require information on potential flood risks or current traffic congestion levels.",
+    "facts": [
+      {
+        "id": "f1",
+        "label": "Temperature samples",
+        "value": "26.6–27.7",
+        "unit": "°C",
+        "place": "Mumbai, , State of Mahārāshtra",
+        "start": "2026-09-12T22:30:00+05:30",
+        "end": "2026-09-13T06:30:00+05:30",
+        "source_id": "S21",
+        "method": "range_of_hourly_samples; not continuous extrema",
+        "source_locators": [
+          "$.hourly.temperature_2m[17]",
+          "$.hourly.temperature_2m[18]",
+          "$.hourly.temperature_2m[19]",
+          "$.hourly.temperature_2m[20]",
+          "$.hourly.temperature_2m[21]",
+          "$.hourly.temperature_2m[22]",
+          "$.hourly.temperature_2m[23]",
+          "$.hourly.temperature_2m[24]"
+        ]
+      },
+      {
+        "id": "f2",
+        "label": "Humidity samples",
+        "value": "78–84",
+        "unit": "%",
+        "place": "Mumbai, , State of Mahārāshtra",
+        "start": "2026-09-12T22:30:00+05:30",
+        "end": "2026-09-13T06:30:00+05:30",
+        "source_id": "S21",
+        "method": "range_of_hourly_samples; not continuous extrema",
+        "source_locators": [
+          "$.hourly.relative_humidity_2m[17]",
+          "$.hourly.relative_humidity_2m[18]",
+          "$.hourly.relative_humidity_2m[19]",
+          "$.hourly.relative_humidity_2m[20]",
+          "$.hourly.relative_humidity_2m[21]",
+          "$.hourly.relative_humidity_2m[22]",
+          "$.hourly.relative_humidity_2m[23]",
+          "$.hourly.relative_humidity_2m[24]"
+        ]
+      },
+      {
+        "id": "f3",
+        "label": "Forecast rainfall",
+        "value": "6.0",
+        "unit": "mm",
+        "place": "Mumbai, , State of Mahārāshtra",
+        "start": "2026-09-12T22:30:00+05:30",
+        "end": "2026-09-13T06:30:00+05:30",
+        "source_id": "S21",
+        "method": "preceding_hour_sum",
+        "source_locators": [
+          "$.hourly.precipitation[18]",
+          "$.hourly.precipitation[19]",
+          "$.hourly.precipitation[20]",
+          "$.hourly.precipitation[21]",
+          "$.hourly.precipitation[22]",
+          "$.hourly.precipitation[23]",
+          "$.hourly.precipitation[24]",
+          "$.hourly.precipitation[25]"
+        ]
+      },
+      {
+        "id": "f4",
+        "label": "Wind samples",
+        "value": "9.2–13.3",
+        "unit": "km/h",
+        "place": "Mumbai, , State of Mahārāshtra",
+        "start": "2026-09-12T22:30:00+05:30",
+        "end": "2026-09-13T06:30:00+05:30",
+        "source_id": "S21",
+        "method": "range_of_hourly_samples; not continuous extrema",
+        "source_locators": [
+          "$.hourly.wind_speed_10m[17]",
+          "$.hourly.wind_speed_10m[18]",
+          "$.hourly.wind_speed_10m[19]",
+          "$.hourly.wind_speed_10m[20]",
+          "$.hourly.wind_speed_10m[21]",
+          "$.hourly.wind_speed_10m[22]",
+          "$.hourly.wind_speed_10m[23]",
+          "$.hourly.wind_speed_10m[24]"
+        ]
+      },
+      {
+        "id": "f5",
+        "label": "Temperature samples",
+        "value": "22.3–23.4",
+        "unit": "°C",
+        "place": "Pune, Pune Division, State of Mahārāshtra",
+        "start": "2026-09-12T22:30:00+05:30",
+        "end": "2026-09-13T06:30:00+05:30",
+        "source_id": "S21",
+        "method": "range_of_hourly_samples; not continuous extrema",
+        "source_locators": [
+          "$.hourly.temperature_2m[17]",
+          "$.hourly.temperature_2m[18]",
+          "$.hourly.temperature_2m[19]",
+          "$.hourly.temperature_2m[20]",
+          "$.hourly.temperature_2m[21]",
+          "$.hourly.temperature_2m[22]",
+          "$.hourly.temperature_2m[23]",
+          "$.hourly.temperature_2m[24]"
+        ]
+      },
+      {
+        "id": "f6",
+        "label": "Humidity samples",
+        "value": "82–86",
+        "unit": "%",
+        "place": "Pune, Pune Division, State of Mahārāshtra",
+        "start": "2026-09-12T22:30:00+05:30",
+        "end": "2026-09-13T06:30:00+05:30",
+        "source_id": "S21",
+        "method": "range_of_hourly_samples; not continuous extrema",
+        "source_locators": [
+          "$.hourly.relative_humidity_2m[17]",
+          "$.hourly.relative_humidity_2m[18]",
+          "$.hourly.relative_humidity_2m[19]",
+          "$.hourly.relative_humidity_2m[20]",
+          "$.hourly.relative_humidity_2m[21]",
+          "$.hourly.relative_humidity_2m[22]",
+          "$.hourly.relative_humidity_2m[23]",
+          "$.hourly.relative_humidity_2m[24]"
+        ]
+      },
+      {
+        "id": "f7",
+        "label": "Forecast rainfall",
+        "value": "0.0",
+        "unit": "mm",
+        "place": "Pune, Pune Division, State of Mahārāshtra",
+        "start": "2026-09-12T22:30:00+05:30",
+        "end": "2026-09-13T06:30:00+05:30",
+        "source_id": "S21",
+        "method": "preceding_hour_sum",
+        "source_locators": [
+          "$.hourly.precipitation[18]",
+          "$.hourly.precipitation[19]",
+          "$.hourly.precipitation[20]",
+          "$.hourly.precipitation[21]",
+          "$.hourly.precipitation[22]",
+          "$.hourly.precipitation[23]",
+          "$.hourly.precipitation[24]",
+          "$.hourly.precipitation[25]"
+        ]
+      },
+      {
+        "id": "f8",
+        "label": "Wind samples",
+        "value": "9.5–12.0",
+        "unit": "km/h",
+        "place": "Pune, Pune Division, State of Mahārāshtra",
+        "start": "2026-09-12T22:30:00+05:30",
+        "end": "2026-09-13T06:30:00+05:30",
+        "source_id": "S21",
+        "method": "range_of_hourly_samples; not continuous extrema",
+        "source_locators": [
+          "$.hourly.wind_speed_10m[17]",
+          "$.hourly.wind_speed_10m[18]",
+          "$.hourly.wind_speed_10m[19]",
+          "$.hourly.wind_speed_10m[20]",
+          "$.hourly.wind_speed_10m[21]",
+          "$.hourly.wind_speed_10m[22]",
+          "$.hourly.wind_speed_10m[23]",
+          "$.hourly.wind_speed_10m[24]"
+        ]
+      }
+    ],
+    "citations": [
+      {
+        "source_id": "S21",
+        "provider": "Open-Meteo",
+        "product": "GFS forecast delivery",
+        "evidence_kind": "model_forecast",
+        "url": "https://api.open-meteo.com/v1/gfs?latitude=19.07283&longitude=72.88261&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "response_sha256": "cc00883a93cf82599ff1c7d3b17f74d290f9b8323f30be91387da950edd14202",
+        "raw_relative_path": "933033931ba159c6862704d530cc61ded66a9f1f9c0a988bc049901b90dc0be4/7002bffa3bb34741a6e11a1c980c764f/blobs/cc00883a93cf82599ff1c7d3b17f74d290f9b8323f30be91387da950edd14202.bin",
+        "published_job_id": "933033931ba159c6862704d530cc61ded66a9f1f9c0a988bc049901b90dc0be4",
+        "source_locators": [
+          "$.hourly.temperature_2m[17]",
+          "$.hourly.temperature_2m[18]",
+          "$.hourly.temperature_2m[19]",
+          "$.hourly.temperature_2m[20]",
+          "$.hourly.temperature_2m[21]",
+          "$.hourly.temperature_2m[22]",
+          "$.hourly.temperature_2m[23]",
+          "$.hourly.temperature_2m[24]",
+          "$.hourly.relative_humidity_2m[17]",
+          "$.hourly.relative_humidity_2m[18]",
+          "$.hourly.relative_humidity_2m[19]",
+          "$.hourly.relative_humidity_2m[20]",
+          "$.hourly.relative_humidity_2m[21]",
+          "$.hourly.relative_humidity_2m[22]",
+          "$.hourly.relative_humidity_2m[23]",
+          "$.hourly.relative_humidity_2m[24]",
+          "$.hourly.precipitation[18]",
+          "$.hourly.precipitation[19]",
+          "$.hourly.precipitation[20]",
+          "$.hourly.precipitation[21]",
+          "$.hourly.precipitation[22]",
+          "$.hourly.precipitation[23]",
+          "$.hourly.precipitation[24]",
+          "$.hourly.precipitation[25]",
+          "$.hourly.wind_speed_10m[17]",
+          "$.hourly.wind_speed_10m[18]",
+          "$.hourly.wind_speed_10m[19]",
+          "$.hourly.wind_speed_10m[20]",
+          "$.hourly.wind_speed_10m[21]",
+          "$.hourly.wind_speed_10m[22]",
+          "$.hourly.wind_speed_10m[23]",
+          "$.hourly.wind_speed_10m[24]"
+        ],
+        "retrieved_at_utc": "2026-09-12T16:17:19.906828+00:00",
+        "issue_time_utc": null
+      },
+      {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/1275339",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      {
+        "source_id": "S21",
+        "provider": "Open-Meteo",
+        "product": "GFS forecast delivery",
+        "evidence_kind": "model_forecast",
+        "url": "https://api.open-meteo.com/v1/gfs?latitude=18.51957&longitude=73.85535&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "response_sha256": "376dcfa8cfe7a77f3bb1641a1756279d3bf1021b12eb1ac8cad0061a38f58b17",
+        "raw_relative_path": "da8d6010f796380850ca06cdd909e7ffa47de4d1e4152febe624280cf5739e0b/46d77151fcf74b348106aad2000e4bad/blobs/376dcfa8cfe7a77f3bb1641a1756279d3bf1021b12eb1ac8cad0061a38f58b17.bin",
+        "published_job_id": "da8d6010f796380850ca06cdd909e7ffa47de4d1e4152febe624280cf5739e0b",
+        "source_locators": [
+          "$.hourly.temperature_2m[17]",
+          "$.hourly.temperature_2m[18]",
+          "$.hourly.temperature_2m[19]",
+          "$.hourly.temperature_2m[20]",
+          "$.hourly.temperature_2m[21]",
+          "$.hourly.temperature_2m[22]",
+          "$.hourly.temperature_2m[23]",
+          "$.hourly.temperature_2m[24]",
+          "$.hourly.relative_humidity_2m[17]",
+          "$.hourly.relative_humidity_2m[18]",
+          "$.hourly.relative_humidity_2m[19]",
+          "$.hourly.relative_humidity_2m[20]",
+          "$.hourly.relative_humidity_2m[21]",
+          "$.hourly.relative_humidity_2m[22]",
+          "$.hourly.relative_humidity_2m[23]",
+          "$.hourly.relative_humidity_2m[24]",
+          "$.hourly.precipitation[18]",
+          "$.hourly.precipitation[19]",
+          "$.hourly.precipitation[20]",
+          "$.hourly.precipitation[21]",
+          "$.hourly.precipitation[22]",
+          "$.hourly.precipitation[23]",
+          "$.hourly.precipitation[24]",
+          "$.hourly.precipitation[25]",
+          "$.hourly.wind_speed_10m[17]",
+          "$.hourly.wind_speed_10m[18]",
+          "$.hourly.wind_speed_10m[19]",
+          "$.hourly.wind_speed_10m[20]",
+          "$.hourly.wind_speed_10m[21]",
+          "$.hourly.wind_speed_10m[22]",
+          "$.hourly.wind_speed_10m[23]",
+          "$.hourly.wind_speed_10m[24]"
+        ],
+        "retrieved_at_utc": "2026-09-12T16:17:20.855449+00:00",
+        "issue_time_utc": null
+      },
+      {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/1259229",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      }
+    ],
+    "notes": [
+      "Tonight is defined as 18:30 IST on 2026-09-12 to 06:30 IST on 2026-09-13.",
+      "Only the remaining forecast period is included, starting 2026-09-12T22:30:00+05:30.",
+      "Model forecasts at the selected place point, not observations or district averages. Source model run time and local representativeness remain unverified.",
+      "I can describe forecast weather at the named places, but I do not have verified road closures, bridge conditions or live transport status. Endpoint weather cannot establish conditions along the full route or whether travel is safe.",
+      "Not supplied by this forecast contract: road_conditions, flood_risk. Rainfall amount must not be interpreted as probability, a warning or an impact prediction."
+    ],
+    "choices": [],
+    "follow_up": null,
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-12T16:17:12.729758+00:00",
+    "expires_at_utc": "2026-09-12T22:30:00+05:30",
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 777,
+        "output_tokens": 380,
+        "duration_seconds": 5.911825584
+      },
+      "generation": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 3062,
+        "output_tokens": 216,
+        "duration_seconds": 5.245255417,
+        "validation": "numeric-token and evidence-ID checks passed; semantic evaluation remains necessary",
+        "evidence_ids": [
+          "f3",
+          "f2",
+          "f7",
+          "f6"
+        ]
+      },
+      "tools": [
+        {
+          "name": "gazetteer_search",
+          "query": {
+            "name": "Mumbai",
+            "state": "",
+            "district": "",
+            "kind": "settlement"
+          },
+          "matches": 1
+        },
+        {
+          "name": "gazetteer_search",
+          "query": {
+            "name": "Pune",
+            "state": "",
+            "district": "",
+            "kind": "settlement"
+          },
+          "matches": 1
+        },
+        {
+          "name": "point_forecast",
+          "location": "Mumbai, , State of Mahārāshtra",
+          "status": "prototype_answer",
+          "refresh": {
+            "state": "succeeded",
+            "job_id": "933033931ba159c6862704d530cc61ded66a9f1f9c0a988bc049901b90dc0be4",
+            "worker_state": "succeeded",
+            "claims_this_action": 1,
+            "job_provider_attempts": 1,
+            "retry_due_utc_epoch": 1789228800.0,
+            "message": "Collection completed; answer checked against the stored evidence."
+          }
+        },
+        {
+          "name": "point_forecast",
+          "location": "Pune, Pune Division, State of Mahārāshtra",
+          "status": "prototype_answer",
+          "refresh": {
+            "state": "succeeded",
+            "job_id": "da8d6010f796380850ca06cdd909e7ffa47de4d1e4152febe624280cf5739e0b",
+            "worker_state": "succeeded",
+            "claims_this_action": 1,
+            "job_provider_attempts": 1,
+            "retry_due_utc_epoch": 1789228800.0,
+            "message": "Collection completed; answer checked against the stored evidence."
+          }
+        }
+      ],
+      "provider": "local_ollama",
+      "duration_seconds": 13.385
+    },
+    "plan": {
+      "intent": "travel",
+      "language": "en",
+      "places": [
+        {
+          "name": "Mumbai",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        },
+        {
+          "name": "Pune",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "start_local": "2026-09-12T18:30:00+05:30",
+      "end_local": "2026-09-13T06:30:00+05:30",
+      "explicit_times": false,
+      "variables": [
+        "temperature_2m",
+        "precipitation",
+        "wind_speed_10m",
+        "relative_humidity_2m"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [
+        "road_conditions",
+        "flood_risk"
+      ],
+      "assumptions": [
+        "Tonight is defined as 18:30 IST on 2026-09-12 to 06:30 IST on 2026-09-13."
+      ],
+      "clarification": "",
+      "requested_outcome": "Forecast of precipitation and wind for the Mumbai-Pune route tonight to assess driving conditions."
+    },
+    "resolved_points": {
+      "Mumbai": {
+        "id": "1275339",
+        "name": "Mumbai",
+        "latitude": 19.07283,
+        "longitude": 72.88261,
+        "feature": "PPLA",
+        "admin1": "State of Mahārāshtra",
+        "admin2": "",
+        "modified": "2024-09-05",
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:1275339",
+        "label": "Mumbai, , State of Mahārāshtra",
+        "coordinates": {
+          "latitude": 19.07283,
+          "longitude": 72.88261
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1275339",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Mumbai"
+      },
+      "Pune": {
+        "id": "1259229",
+        "name": "Pune",
+        "latitude": 18.51957,
+        "longitude": 73.85535,
+        "feature": "PPL",
+        "admin1": "State of Mahārāshtra",
+        "admin2": "Pune Division",
+        "modified": "2025-02-26",
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:1259229",
+        "label": "Pune, Pune Division, State of Mahārāshtra",
+        "coordinates": {
+          "latitude": 18.51957,
+          "longitude": 73.85535
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1259229",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Pune"
+      }
+    },
+    "tool_answers": [
+      {
+        "schema_version": "weather-answer-v1",
+        "question": "What is the weather forecast for selected point on 2026-09-12 from 22:30 to 06:30?",
+        "answered_at_utc": "2026-09-12T16:17:19.917004+00:00",
+        "status": "prototype_answer",
+        "answer": "For selected point, 2026-09-12T22:30:00+05:30 to 2026-09-13T06:30:00+05:30, hourly temperature samples range from 26.6 to 27.7 °C; hourly relative humidity samples range from 78 to 84 %; forecast rainfall totals 6.0 mm; hourly wind speed samples range from 9.2 to 13.3 km/h. These are modeled values at 19.153923, 72.890625, 9.1 km from the selected point. Source: GFS via Open-Meteo; retrieved 2026-09-12T16:17:19.906828+00:00. Model issue time and local representativeness are unverified.",
+        "request": {
+          "intent": "point_forecast",
+          "place_name": "selected point",
+          "variables": [
+            "temperature_2m",
+            "relative_humidity_2m",
+            "precipitation",
+            "wind_speed_10m"
+          ],
+          "timezone": "Asia/Kolkata",
+          "start_local": "2026-09-12T22:30:00+05:30",
+          "end_local": "2026-09-13T06:30:00+05:30",
+          "start_utc": "2026-09-12T17:00:00+00:00",
+          "end_utc": "2026-09-13T01:00:00+00:00",
+          "interval_convention": "start inclusive, end exclusive",
+          "overnight": true,
+          "language": "en"
+        },
+        "location": {
+          "status": "selected_point",
+          "entity_id": "15b84638da56020bc441fc42818aff5251438f5aee53bcd5feaac2b7befe58ac",
+          "label": "selected point",
+          "requested_point": {
+            "latitude": 19.07283,
+            "longitude": 72.88261
+          },
+          "basis": "explicit_user_coordinates",
+          "administrative_mapping": "unresolved",
+          "returned_grid": {
+            "latitude": 19.153923,
+            "longitude": 72.890625
+          },
+          "grid_distance_km": 9.056,
+          "support_description": "Value at the returned model grid for the selected source point",
+          "spatial_applicability": "model_point_reference_only"
+        },
+        "values": [
+          {
+            "parameter": "temperature_2m",
+            "unit": "°C",
+            "coverage": "complete",
+            "method": "range_of_hourly_samples; not continuous extrema",
+            "source_locators": [
+              "$.hourly.temperature_2m[17]",
+              "$.hourly.temperature_2m[18]",
+              "$.hourly.temperature_2m[19]",
+              "$.hourly.temperature_2m[20]",
+              "$.hourly.temperature_2m[21]",
+              "$.hourly.temperature_2m[22]",
+              "$.hourly.temperature_2m[23]",
+              "$.hourly.temperature_2m[24]"
+            ],
+            "support": {
+              "aggregation": "instant",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "missing": [],
+            "min_decimal": "26.6",
+            "max_decimal": "27.7",
+            "sample_count": 8
+          },
+          {
+            "parameter": "relative_humidity_2m",
+            "unit": "%",
+            "coverage": "complete",
+            "method": "range_of_hourly_samples; not continuous extrema",
+            "source_locators": [
+              "$.hourly.relative_humidity_2m[17]",
+              "$.hourly.relative_humidity_2m[18]",
+              "$.hourly.relative_humidity_2m[19]",
+              "$.hourly.relative_humidity_2m[20]",
+              "$.hourly.relative_humidity_2m[21]",
+              "$.hourly.relative_humidity_2m[22]",
+              "$.hourly.relative_humidity_2m[23]",
+              "$.hourly.relative_humidity_2m[24]"
+            ],
+            "support": {
+              "aggregation": "instant",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "missing": [],
+            "min_decimal": "78",
+            "max_decimal": "84",
+            "sample_count": 8
+          },
+          {
+            "parameter": "precipitation",
+            "unit": "mm",
+            "coverage": "complete",
+            "method": "preceding_hour_sum",
+            "source_locators": [
+              "$.hourly.precipitation[18]",
+              "$.hourly.precipitation[19]",
+              "$.hourly.precipitation[20]",
+              "$.hourly.precipitation[21]",
+              "$.hourly.precipitation[22]",
+              "$.hourly.precipitation[23]",
+              "$.hourly.precipitation[24]",
+              "$.hourly.precipitation[25]"
+            ],
+            "support": {
+              "aggregation": "preceding_hour_sum",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00",
+              "interval_start_utc": "2026-09-11T23:00:00+00:00",
+              "interval_end_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "missing": [],
+            "value_decimal": "6.0",
+            "sample_count": 8
+          },
+          {
+            "parameter": "wind_speed_10m",
+            "unit": "km/h",
+            "coverage": "complete",
+            "method": "range_of_hourly_samples; not continuous extrema",
+            "source_locators": [
+              "$.hourly.wind_speed_10m[17]",
+              "$.hourly.wind_speed_10m[18]",
+              "$.hourly.wind_speed_10m[19]",
+              "$.hourly.wind_speed_10m[20]",
+              "$.hourly.wind_speed_10m[21]",
+              "$.hourly.wind_speed_10m[22]",
+              "$.hourly.wind_speed_10m[23]",
+              "$.hourly.wind_speed_10m[24]"
+            ],
+            "support": {
+              "aggregation": "instant",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "missing": [],
+            "min_decimal": "9.2",
+            "max_decimal": "13.3",
+            "sample_count": 8
+          }
+        ],
+        "citations": [
+          {
+            "source_id": "S21",
+            "provider": "Open-Meteo",
+            "product": "GFS forecast delivery",
+            "evidence_kind": "model_forecast",
+            "url": "https://api.open-meteo.com/v1/gfs?latitude=19.07283&longitude=72.88261&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+            "response_sha256": "cc00883a93cf82599ff1c7d3b17f74d290f9b8323f30be91387da950edd14202",
+            "raw_relative_path": "933033931ba159c6862704d530cc61ded66a9f1f9c0a988bc049901b90dc0be4/7002bffa3bb34741a6e11a1c980c764f/blobs/cc00883a93cf82599ff1c7d3b17f74d290f9b8323f30be91387da950edd14202.bin",
+            "published_job_id": "933033931ba159c6862704d530cc61ded66a9f1f9c0a988bc049901b90dc0be4",
+            "source_locators": [
+              "$.hourly.temperature_2m[17]",
+              "$.hourly.temperature_2m[18]",
+              "$.hourly.temperature_2m[19]",
+              "$.hourly.temperature_2m[20]",
+              "$.hourly.temperature_2m[21]",
+              "$.hourly.temperature_2m[22]",
+              "$.hourly.temperature_2m[23]",
+              "$.hourly.temperature_2m[24]",
+              "$.hourly.relative_humidity_2m[17]",
+              "$.hourly.relative_humidity_2m[18]",
+              "$.hourly.relative_humidity_2m[19]",
+              "$.hourly.relative_humidity_2m[20]",
+              "$.hourly.relative_humidity_2m[21]",
+              "$.hourly.relative_humidity_2m[22]",
+              "$.hourly.relative_humidity_2m[23]",
+              "$.hourly.relative_humidity_2m[24]",
+              "$.hourly.precipitation[18]",
+              "$.hourly.precipitation[19]",
+              "$.hourly.precipitation[20]",
+              "$.hourly.precipitation[21]",
+              "$.hourly.precipitation[22]",
+              "$.hourly.precipitation[23]",
+              "$.hourly.precipitation[24]",
+              "$.hourly.precipitation[25]",
+              "$.hourly.wind_speed_10m[17]",
+              "$.hourly.wind_speed_10m[18]",
+              "$.hourly.wind_speed_10m[19]",
+              "$.hourly.wind_speed_10m[20]",
+              "$.hourly.wind_speed_10m[21]",
+              "$.hourly.wind_speed_10m[22]",
+              "$.hourly.wind_speed_10m[23]",
+              "$.hourly.wind_speed_10m[24]"
+            ],
+            "retrieved_at_utc": "2026-09-12T16:17:19.906828+00:00",
+            "issue_time_utc": null
+          }
+        ],
+        "freshness": {
+          "retrieved_at_utc": "2026-09-12T16:17:19.906828+00:00",
+          "retrieval_age_seconds": 0.01017618179321289,
+          "source_issue_time_utc": null,
+          "source_issue_freshness": "unknown",
+          "collection_cycle_at": "2026-09-12T16:00:00+00:00",
+          "committed_at": "2026-09-12T16:17:19.914313+00:00",
+          "refresh_health": "succeeded",
+          "snapshot_status": "prototype_snapshot",
+          "refresh_scope": "all_forecast_horizons_at_exact_requested_point",
+          "latest_collection_jobs": [
+            {
+              "id": "933033931ba159c6862704d530cc61ded66a9f1f9c0a988bc049901b90dc0be4",
+              "state": "succeeded",
+              "cycle": 1789228800.0,
+              "expires": 1789257600.0,
+              "due": 1789228800.0,
+              "lease_until": null,
+              "last_error": null
+            }
+          ],
+          "next_planned_collection": null,
+          "maximum_retrieval_age_seconds": 3600
+        },
+        "coverage": {
+          "entity_id": "15b84638da56020bc441fc42818aff5251438f5aee53bcd5feaac2b7befe58ac",
+          "entity_version": null,
+          "source_id": "S21",
+          "source_sha256": "cc00883a93cf82599ff1c7d3b17f74d290f9b8323f30be91387da950edd14202",
+          "published_job_id": "933033931ba159c6862704d530cc61ded66a9f1f9c0a988bc049901b90dc0be4",
+          "requested_start_utc": "2026-09-12T17:00:00+00:00",
+          "requested_end_utc": "2026-09-13T01:00:00+00:00",
+          "variables": {
+            "temperature_2m": {
+              "aggregation": "instant",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "relative_humidity_2m": {
+              "aggregation": "instant",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "precipitation": {
+              "aggregation": "preceding_hour_sum",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00",
+              "interval_start_utc": "2026-09-11T23:00:00+00:00",
+              "interval_end_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "wind_speed_10m": {
+              "aggregation": "instant",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00"
+            }
+          },
+          "status": "complete",
+          "publication_policy": "prototype_model_point_reference",
+          "operational_eligible": false
+        },
+        "missing_information": [
+          "Upstream model issue/run identity and independently validated local representativeness"
+        ],
+        "eligibility": {
+          "prototype_numeric": true,
+          "operational": false
+        },
+        "limitations": [
+          "Model grid forecasts are not station observations or district averages.",
+          "Source issue/run freshness and local representativeness remain unverified."
+        ],
+        "provider_calls": 0,
+        "answer_id": "944bc3b13f5eff13c24bf300c8f7335f9f7e7d83efa3fd4c2031d2c047a8f880"
+      },
+      {
+        "schema_version": "weather-answer-v1",
+        "question": "What is the weather forecast for selected point on 2026-09-12 from 22:30 to 06:30?",
+        "answered_at_utc": "2026-09-12T16:17:20.862794+00:00",
+        "status": "prototype_answer",
+        "answer": "For selected point, 2026-09-12T22:30:00+05:30 to 2026-09-13T06:30:00+05:30, hourly temperature samples range from 22.3 to 23.4 °C; hourly relative humidity samples range from 82 to 86 %; forecast rainfall totals 0.0 mm; hourly wind speed samples range from 9.5 to 12.0 km/h. These are modeled values at 18.568176, 73.828125, 6.1 km from the selected point. Source: GFS via Open-Meteo; retrieved 2026-09-12T16:17:20.855449+00:00. Model issue time and local representativeness are unverified.",
+        "request": {
+          "intent": "point_forecast",
+          "place_name": "selected point",
+          "variables": [
+            "temperature_2m",
+            "relative_humidity_2m",
+            "precipitation",
+            "wind_speed_10m"
+          ],
+          "timezone": "Asia/Kolkata",
+          "start_local": "2026-09-12T22:30:00+05:30",
+          "end_local": "2026-09-13T06:30:00+05:30",
+          "start_utc": "2026-09-12T17:00:00+00:00",
+          "end_utc": "2026-09-13T01:00:00+00:00",
+          "interval_convention": "start inclusive, end exclusive",
+          "overnight": true,
+          "language": "en"
+        },
+        "location": {
+          "status": "selected_point",
+          "entity_id": "ef6c98dd60bfd1d0a8314cf289b33f9c834c40e64a64a0f3662b03dee429d201",
+          "label": "selected point",
+          "requested_point": {
+            "latitude": 18.51957,
+            "longitude": 73.85535
+          },
+          "basis": "explicit_user_coordinates",
+          "administrative_mapping": "unresolved",
+          "returned_grid": {
+            "latitude": 18.568176,
+            "longitude": 73.828125
+          },
+          "grid_distance_km": 6.12,
+          "support_description": "Value at the returned model grid for the selected source point",
+          "spatial_applicability": "model_point_reference_only"
+        },
+        "values": [
+          {
+            "parameter": "temperature_2m",
+            "unit": "°C",
+            "coverage": "complete",
+            "method": "range_of_hourly_samples; not continuous extrema",
+            "source_locators": [
+              "$.hourly.temperature_2m[17]",
+              "$.hourly.temperature_2m[18]",
+              "$.hourly.temperature_2m[19]",
+              "$.hourly.temperature_2m[20]",
+              "$.hourly.temperature_2m[21]",
+              "$.hourly.temperature_2m[22]",
+              "$.hourly.temperature_2m[23]",
+              "$.hourly.temperature_2m[24]"
+            ],
+            "support": {
+              "aggregation": "instant",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "missing": [],
+            "min_decimal": "22.3",
+            "max_decimal": "23.4",
+            "sample_count": 8
+          },
+          {
+            "parameter": "relative_humidity_2m",
+            "unit": "%",
+            "coverage": "complete",
+            "method": "range_of_hourly_samples; not continuous extrema",
+            "source_locators": [
+              "$.hourly.relative_humidity_2m[17]",
+              "$.hourly.relative_humidity_2m[18]",
+              "$.hourly.relative_humidity_2m[19]",
+              "$.hourly.relative_humidity_2m[20]",
+              "$.hourly.relative_humidity_2m[21]",
+              "$.hourly.relative_humidity_2m[22]",
+              "$.hourly.relative_humidity_2m[23]",
+              "$.hourly.relative_humidity_2m[24]"
+            ],
+            "support": {
+              "aggregation": "instant",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "missing": [],
+            "min_decimal": "82",
+            "max_decimal": "86",
+            "sample_count": 8
+          },
+          {
+            "parameter": "precipitation",
+            "unit": "mm",
+            "coverage": "complete",
+            "method": "preceding_hour_sum",
+            "source_locators": [
+              "$.hourly.precipitation[18]",
+              "$.hourly.precipitation[19]",
+              "$.hourly.precipitation[20]",
+              "$.hourly.precipitation[21]",
+              "$.hourly.precipitation[22]",
+              "$.hourly.precipitation[23]",
+              "$.hourly.precipitation[24]",
+              "$.hourly.precipitation[25]"
+            ],
+            "support": {
+              "aggregation": "preceding_hour_sum",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00",
+              "interval_start_utc": "2026-09-11T23:00:00+00:00",
+              "interval_end_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "missing": [],
+            "value_decimal": "0.0",
+            "sample_count": 8
+          },
+          {
+            "parameter": "wind_speed_10m",
+            "unit": "km/h",
+            "coverage": "complete",
+            "method": "range_of_hourly_samples; not continuous extrema",
+            "source_locators": [
+              "$.hourly.wind_speed_10m[17]",
+              "$.hourly.wind_speed_10m[18]",
+              "$.hourly.wind_speed_10m[19]",
+              "$.hourly.wind_speed_10m[20]",
+              "$.hourly.wind_speed_10m[21]",
+              "$.hourly.wind_speed_10m[22]",
+              "$.hourly.wind_speed_10m[23]",
+              "$.hourly.wind_speed_10m[24]"
+            ],
+            "support": {
+              "aggregation": "instant",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "missing": [],
+            "min_decimal": "9.5",
+            "max_decimal": "12.0",
+            "sample_count": 8
+          }
+        ],
+        "citations": [
+          {
+            "source_id": "S21",
+            "provider": "Open-Meteo",
+            "product": "GFS forecast delivery",
+            "evidence_kind": "model_forecast",
+            "url": "https://api.open-meteo.com/v1/gfs?latitude=18.51957&longitude=73.85535&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+            "response_sha256": "376dcfa8cfe7a77f3bb1641a1756279d3bf1021b12eb1ac8cad0061a38f58b17",
+            "raw_relative_path": "da8d6010f796380850ca06cdd909e7ffa47de4d1e4152febe624280cf5739e0b/46d77151fcf74b348106aad2000e4bad/blobs/376dcfa8cfe7a77f3bb1641a1756279d3bf1021b12eb1ac8cad0061a38f58b17.bin",
+            "published_job_id": "da8d6010f796380850ca06cdd909e7ffa47de4d1e4152febe624280cf5739e0b",
+            "source_locators": [
+              "$.hourly.temperature_2m[17]",
+              "$.hourly.temperature_2m[18]",
+              "$.hourly.temperature_2m[19]",
+              "$.hourly.temperature_2m[20]",
+              "$.hourly.temperature_2m[21]",
+              "$.hourly.temperature_2m[22]",
+              "$.hourly.temperature_2m[23]",
+              "$.hourly.temperature_2m[24]",
+              "$.hourly.relative_humidity_2m[17]",
+              "$.hourly.relative_humidity_2m[18]",
+              "$.hourly.relative_humidity_2m[19]",
+              "$.hourly.relative_humidity_2m[20]",
+              "$.hourly.relative_humidity_2m[21]",
+              "$.hourly.relative_humidity_2m[22]",
+              "$.hourly.relative_humidity_2m[23]",
+              "$.hourly.relative_humidity_2m[24]",
+              "$.hourly.precipitation[18]",
+              "$.hourly.precipitation[19]",
+              "$.hourly.precipitation[20]",
+              "$.hourly.precipitation[21]",
+              "$.hourly.precipitation[22]",
+              "$.hourly.precipitation[23]",
+              "$.hourly.precipitation[24]",
+              "$.hourly.precipitation[25]",
+              "$.hourly.wind_speed_10m[17]",
+              "$.hourly.wind_speed_10m[18]",
+              "$.hourly.wind_speed_10m[19]",
+              "$.hourly.wind_speed_10m[20]",
+              "$.hourly.wind_speed_10m[21]",
+              "$.hourly.wind_speed_10m[22]",
+              "$.hourly.wind_speed_10m[23]",
+              "$.hourly.wind_speed_10m[24]"
+            ],
+            "retrieved_at_utc": "2026-09-12T16:17:20.855449+00:00",
+            "issue_time_utc": null
+          }
+        ],
+        "freshness": {
+          "retrieved_at_utc": "2026-09-12T16:17:20.855449+00:00",
+          "retrieval_age_seconds": 0.007344961166381836,
+          "source_issue_time_utc": null,
+          "source_issue_freshness": "unknown",
+          "collection_cycle_at": "2026-09-12T16:00:00+00:00",
+          "committed_at": "2026-09-12T16:17:20.860743+00:00",
+          "refresh_health": "succeeded",
+          "snapshot_status": "prototype_snapshot",
+          "refresh_scope": "all_forecast_horizons_at_exact_requested_point",
+          "latest_collection_jobs": [
+            {
+              "id": "da8d6010f796380850ca06cdd909e7ffa47de4d1e4152febe624280cf5739e0b",
+              "state": "succeeded",
+              "cycle": 1789228800.0,
+              "expires": 1789257600.0,
+              "due": 1789228800.0,
+              "lease_until": null,
+              "last_error": null
+            }
+          ],
+          "next_planned_collection": null,
+          "maximum_retrieval_age_seconds": 3600
+        },
+        "coverage": {
+          "entity_id": "ef6c98dd60bfd1d0a8314cf289b33f9c834c40e64a64a0f3662b03dee429d201",
+          "entity_version": null,
+          "source_id": "S21",
+          "source_sha256": "376dcfa8cfe7a77f3bb1641a1756279d3bf1021b12eb1ac8cad0061a38f58b17",
+          "published_job_id": "da8d6010f796380850ca06cdd909e7ffa47de4d1e4152febe624280cf5739e0b",
+          "requested_start_utc": "2026-09-12T17:00:00+00:00",
+          "requested_end_utc": "2026-09-13T01:00:00+00:00",
+          "variables": {
+            "temperature_2m": {
+              "aggregation": "instant",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "relative_humidity_2m": {
+              "aggregation": "instant",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "precipitation": {
+              "aggregation": "preceding_hour_sum",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00",
+              "interval_start_utc": "2026-09-11T23:00:00+00:00",
+              "interval_end_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "wind_speed_10m": {
+              "aggregation": "instant",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00"
+            }
+          },
+          "status": "complete",
+          "publication_policy": "prototype_model_point_reference",
+          "operational_eligible": false
+        },
+        "missing_information": [
+          "Upstream model issue/run identity and independently validated local representativeness"
+        ],
+        "eligibility": {
+          "prototype_numeric": true,
+          "operational": false
+        },
+        "limitations": [
+          "Model grid forecasts are not station observations or district averages.",
+          "Source issue/run freshness and local representativeness remain unverified."
+        ],
+        "provider_calls": 0,
+        "answer_id": "63734728d1b5f55c60c63f7694adb7660a19d2b82a2bd60b7c21ea4e0441c2fe"
+      }
+    ]
+  }
+}

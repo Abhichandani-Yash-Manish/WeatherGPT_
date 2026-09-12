@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "items": [
+    {
+      "id": "coverage",
+      "title": "What is collected and what remains incomplete?",
+      "queries": [
+        {
+          "id": "registry-review",
+          "source": {
+            "label": "WeatherGPT coverage review",
+            "files": [
+              {
+                "label": "sources.json"
+              },
+              {
+                "label": "coverage-audit.md"
+              },
+              {
+                "label": "recheck manifest.json"
+              },
+              {
+                "label": "payload-checks.json"
+              }
+            ],
+            "links": [
+              {
+                "label": "IMD API reference",
+                "href": "https://api.imd.gov.in/public/api_reference.html"
+              }
+            ],
+            "metricDefinitions": [
+              {
+                "label": "Registry scope",
+                "definition": "The 55 entries include saved data, product documentation, identity/reference material and explicit gaps; the count does not represent 55 working integrations."
+              }
+            ],
+            "caveats": [
+              "Fourteen selected GET requests were rechecked; remaining access statuses are historical.",
+              "Six managed routes tested in this pass returned 401, and the daily rainfall catalogue attempt timed out.",
+              "Administrative geography, warning lifecycle, field context and language evaluation remain incomplete."
+            ],
+            "evidenceFlow": [
+              {
+                "kind": "validation",
+                "title": "Requirement review",
+                "detail": "Reviewed the original 38 entries against the eight supplied features and added 17 explicit product/reference/gap entries."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "climate-pipeline",
+      "title": "What processing is working now?",
+      "queries": [
+        {
+          "id": "national-normalisation",
+          "source": {
+            "label": "S25/S26 historical climate build",
+            "files": [
+              {
+                "label": "rainfall.csv"
+              },
+              {
+                "label": "temperature.csv"
+              },
+              {
+                "label": "audit.json"
+              },
+              {
+                "label": "processing-checkpoint.ipynb"
+              },
+              {
+                "label": "test_climate.py"
+              }
+            ],
+            "sql": "SELECT source_id, COUNT(*) FROM climate_records GROUP BY source_id",
+            "metricDefinitions": [
+              {
+                "label": "Processed records",
+                "definition": "The build preserves 17 published monthly, seasonal and annual measures per year for each of two All India climate series from 1901 to 2024."
+              }
+            ],
+            "caveats": [
+              "Monthly, seasonal and annual periods overlap and must not be added across period types.",
+              "All 4,216 cells round-trip to source values; this does not establish scientific homogeneity or district representativeness.",
+              "Six rainfall totals exceed the stated rounding bound; published values are preserved and flagged."
+            ],
+            "evidenceFlow": [
+              {
+                "kind": "validation",
+                "title": "Processing verification",
+                "detail": "SQLite integrity returned ok; 4,216 original cells matched, and all 11 targeted unit tests passed."
+              }
+            ]
+          },
+          "reportingPeriod": "1901–2024",
+          "columns": [
+            {
+              "field": "source",
+              "label": "Source"
+            },
+            {
+              "field": "records",
+              "label": "Records"
+            }
+          ],
+          "rows": [
+            {
+              "source": "S25 rainfall",
+              "records": 2108
+            },
+            {
+              "source": "S26 mean temperature",
+              "records": 2108
+            }
+          ],
+          "methods": [
+            {
+              "language": "python",
+              "code": "from pathlib import Path\nimport csv, io, json, sqlite3, hashlib\nfrom collections import Counter\n\nroot = next(p for p in [Path.cwd(), *Path.cwd().parents] if (p / \"weathergpt_data/climate.py\").exists())\nregistry = json.loads((root / \"data/registry/sources.json\").read_text())\nby_id = {s[\"id\"]: s for s in registry[\"products\"]}\noutput = root / by_id[\"S25\"][\"processing_outputs\"][\"directory\"]\nmanifest = json.loads((output / \"build-manifest.json\").read_text())\nfor name, expected in manifest[\"outputs\"].items():\n    assert hashlib.sha256((output / name).read_bytes()).hexdigest() == expected\nfor item in manifest[\"inputs\"]:\n    assert hashlib.sha256((root / item[\"path\"]).read_bytes()).hexdigest() == item[\"sha256\"]\nwith sqlite3.connect(output / \"climate.sqlite\") as con:\n    print(\"SQLite integrity:\", con.execute(\"PRAGMA integrity_check\").fetchone()[0])\n    print(\"Rows by source:\", con.execute(\"SELECT source_id, COUNT(*) FROM climate_records GROUP BY source_id\").fetchall())\n    checked = 0\n    for item in manifest[\"inputs\"]:\n        raw = list(csv.DictReader(io.StringIO((root / item[\"path\"]).read_text())))\n        rows = con.execute(\"SELECT source_row, source_column, native_value FROM climate_records WHERE source_id=?\", (item[\"source_id\"],)).fetchall()\n        for row, col, native in rows:\n            assert raw[row-2][col] == native\n            checked += 1\n    print(\"Original CSV cells matched:\", checked)\n    print(\"2024 published annual rainfall:\", con.execute(\"SELECT value_decimal, unit, quality_flags FROM climate_records WHERE source_id='S25' AND year=2024 AND period_code='ANNUAL'\").fetchone())\naudit = json.loads((output / \"audit.json\").read_text())\nprint(\"Missing values:\", audit[\"missing_values\"])\nprint(\"Rainfall totals exceeding rounding bound:\", len(audit[\"rainfall_totals_beyond_rounding_bound\"]))\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

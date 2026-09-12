@@ -1,0 +1,10 @@
+{
+  "source_id": "S57",
+  "url": "https://mausam.imd.gov.in/responsive/agrometinformation/district_current_en_get.php?s=Madhya+Pradesh&step1=true",
+  "retrieved_at_utc": "2026-09-11T19:41:41.631913+00:00",
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "bytes": 2298,
+  "sha256": "586ca0bb81502c929c1e3d0d2b32f16c4d7b882b86f99693ff83970d53f22b4c",
+  "blob": "blobs/586ca0bb81502c929c1e3d0d2b32f16c4d7b882b86f99693ff83970d53f22b4c.bin"
+}

@@ -1,0 +1,169 @@
+{
+  "results": [
+    {
+      "state": "succeeded",
+      "promoted": true,
+      "job_id": "5bf6587aecf4efef97d60193a92f00e5c52e902a479c063282ecb737d8560918"
+    },
+    {
+      "state": "succeeded",
+      "promoted": true,
+      "job_id": "90d8be08c8f249d5e3f3a9e4c97d5af2c4d4f3517e0b272c5f1580fc9bc46d65"
+    },
+    {
+      "state": "succeeded",
+      "promoted": true,
+      "job_id": "c6cb1056b8313641a361f25f20fe95c9de5a9b6fa4e88c675bb7f1eae06c9a5f"
+    }
+  ],
+  "status": {
+    "jobs": {
+      "succeeded": 3
+    },
+    "versions": 3,
+    "heads": 3,
+    "network_attempts_reserved": 3,
+    "operational_ready": false
+  },
+  "scheduled_background_work": false,
+  "elapsed_seconds": 5.144034125,
+  "checked_at_utc": "2026-09-12T05:57:40.278089+00:00",
+  "scope": "Three fresh numeric jobs through the governed worker, not national coverage or scientific accuracy validation.",
+  "published": [
+    {
+      "job_id": "5bf6587aecf4efef97d60193a92f00e5c52e902a479c063282ecb737d8560918",
+      "records": 7,
+      "provenance": {
+        "blob": "blobs/3aa8c42d5827950952fe8b8ed2a5c5d70e52e53ed25e314a3989908184e7ce13.bin",
+        "bytes": 394,
+        "checked_at_utc": "2026-09-12T05:57:36.735281+00:00",
+        "content_type": "application/json; charset=utf-8",
+        "delivery": "network",
+        "http_status": 200,
+        "ingestion_attempt": {
+          "job_id": "5bf6587aecf4efef97d60193a92f00e5c52e902a479c063282ecb737d8560918",
+          "relative_root": "5bf6587aecf4efef97d60193a92f00e5c52e902a479c063282ecb737d8560918/c7899de588f1424ea69d8a50aad413c7",
+          "token": "c7899de588f1424ea69d8a50aad413c7"
+        },
+        "retrieved_at_utc": "2026-09-12T05:57:36.734196+00:00",
+        "sha256": "3aa8c42d5827950952fe8b8ed2a5c5d70e52e53ed25e314a3989908184e7ce13",
+        "source_id": "S37",
+        "url": "https://flood-api.open-meteo.com/v1/flood?latitude=23.02579&longitude=72.58727&daily=river_discharge&forecast_days=7",
+        "validation_scope": "product"
+      },
+      "coverage": {
+        "expected": 7,
+        "missing": 0,
+        "operational_eligible": false,
+        "product": "river_discharge",
+        "quarantined": 0,
+        "requested_point": {
+          "latitude": 23.02579,
+          "longitude": 72.58727
+        },
+        "returned_point": {
+          "latitude": 23.025002,
+          "longitude": 72.57501
+        },
+        "scope": "Numeric schema/window evidence; timestamps are samples, not a district area average or warning.",
+        "source_id": "S37",
+        "source_issue_freshness": "unknown",
+        "source_sha256": "3aa8c42d5827950952fe8b8ed2a5c5d70e52e53ed25e314a3989908184e7ce13",
+        "spatial_applicability": "unresolved",
+        "validated": 7,
+        "window_end": "2026-09-19T00:00:00+00:00",
+        "window_start": "2026-09-12T00:00:00+00:00"
+      }
+    },
+    {
+      "job_id": "90d8be08c8f249d5e3f3a9e4c97d5af2c4d4f3517e0b272c5f1580fc9bc46d65",
+      "records": 216,
+      "provenance": {
+        "blob": "blobs/99f802a58b2c6202afe61befe7936422bf4b0eb135a25bb47fa59941aedd7c19.bin",
+        "bytes": 2186,
+        "checked_at_utc": "2026-09-12T05:57:39.070895+00:00",
+        "content_type": "application/json; charset=utf-8",
+        "delivery": "network",
+        "http_status": 200,
+        "ingestion_attempt": {
+          "job_id": "90d8be08c8f249d5e3f3a9e4c97d5af2c4d4f3517e0b272c5f1580fc9bc46d65",
+          "relative_root": "90d8be08c8f249d5e3f3a9e4c97d5af2c4d4f3517e0b272c5f1580fc9bc46d65/abc81f6607814377851832522ae2c0cf",
+          "token": "abc81f6607814377851832522ae2c0cf"
+        },
+        "retrieved_at_utc": "2026-09-12T05:57:39.068531+00:00",
+        "sha256": "99f802a58b2c6202afe61befe7936422bf4b0eb135a25bb47fa59941aedd7c19",
+        "source_id": "S56",
+        "url": "https://marine-api.open-meteo.com/v1/marine?latitude=20.0&longitude=69.0&hourly=wave_height%2Cwave_direction%2Cwave_period&forecast_days=3&timezone=UTC&timeformat=unixtime&cell_selection=sea",
+        "validation_scope": "product"
+      },
+      "coverage": {
+        "expected": 216,
+        "missing": 0,
+        "operational_eligible": false,
+        "product": "marine_forecast",
+        "quarantined": 0,
+        "requested_point": {
+          "latitude": 20.0,
+          "longitude": 69.0
+        },
+        "returned_point": {
+          "latitude": 20.041664,
+          "longitude": 68.95834
+        },
+        "scope": "Numeric schema/window evidence; timestamps are samples, not a district area average or warning.",
+        "source_id": "S56",
+        "source_issue_freshness": "unknown",
+        "source_sha256": "99f802a58b2c6202afe61befe7936422bf4b0eb135a25bb47fa59941aedd7c19",
+        "spatial_applicability": "unresolved",
+        "validated": 216,
+        "window_end": "2026-09-15T00:00:00+00:00",
+        "window_start": "2026-09-12T00:00:00+00:00"
+      }
+    },
+    {
+      "job_id": "c6cb1056b8313641a361f25f20fe95c9de5a9b6fa4e88c675bb7f1eae06c9a5f",
+      "records": 288,
+      "provenance": {
+        "blob": "blobs/6125e610b0c850a78afa5605e1f9baf1fc758a3cd9c66861bcbb110cbb6fdc91.bin",
+        "bytes": 2462,
+        "checked_at_utc": "2026-09-12T05:57:40.272801+00:00",
+        "content_type": "application/json; charset=utf-8",
+        "delivery": "network",
+        "http_status": 200,
+        "ingestion_attempt": {
+          "job_id": "c6cb1056b8313641a361f25f20fe95c9de5a9b6fa4e88c675bb7f1eae06c9a5f",
+          "relative_root": "c6cb1056b8313641a361f25f20fe95c9de5a9b6fa4e88c675bb7f1eae06c9a5f/787ae2bd9ecc4a029faca83124fe5016",
+          "token": "787ae2bd9ecc4a029faca83124fe5016"
+        },
+        "retrieved_at_utc": "2026-09-12T05:57:40.269320+00:00",
+        "sha256": "6125e610b0c850a78afa5605e1f9baf1fc758a3cd9c66861bcbb110cbb6fdc91",
+        "source_id": "S21",
+        "url": "https://api.open-meteo.com/v1/gfs?latitude=23.02579&longitude=72.58727&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "validation_scope": "product"
+      },
+      "coverage": {
+        "expected": 288,
+        "missing": 0,
+        "operational_eligible": false,
+        "product": "weather_forecast",
+        "quarantined": 0,
+        "requested_point": {
+          "latitude": 23.02579,
+          "longitude": 72.58727
+        },
+        "returned_point": {
+          "latitude": 23.019852,
+          "longitude": 72.53906
+        },
+        "scope": "Numeric schema/window evidence; timestamps are samples, not a district area average or warning.",
+        "source_id": "S21",
+        "source_issue_freshness": "unknown",
+        "source_sha256": "6125e610b0c850a78afa5605e1f9baf1fc758a3cd9c66861bcbb110cbb6fdc91",
+        "spatial_applicability": "unresolved",
+        "validated": 288,
+        "window_end": "2026-09-15T00:00:00+00:00",
+        "window_start": "2026-09-12T00:00:00+00:00"
+      }
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "source_id": "candidate-citywx",
+  "url": "https://city.imd.gov.in/citywx/responsive/assets/index-C8XcC-ir.js",
+  "retrieved_at_utc": "2026-09-11T20:04:49.495139+00:00",
+  "http_status": 200,
+  "content_type": "application/javascript",
+  "bytes": 696544,
+  "sha256": "cc9accbf6ee7b221d2fe9ac688c50fe697b43adcf94d12ba5160884d7ef1f433",
+  "blob": "blobs/cc9accbf6ee7b221d2fe9ac688c50fe697b43adcf94d12ba5160884d7ef1f433.bin"
+}

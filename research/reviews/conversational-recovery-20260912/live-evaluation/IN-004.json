@@ -1,0 +1,274 @@
+{
+  "id": "IN-004",
+  "question": "Will it rain in Dhordo village today, and should I carry an umbrella?",
+  "origin": "included_report",
+  "checked_at_utc": "2026-09-12T16:14:53.016746+00:00",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "ca571f7f-e7fb-424d-b365-d3f7b34e52c3",
+    "question": "Will it rain in Dhordo village today, and should I carry an umbrella?",
+    "status": "needs_selection",
+    "answer": "I found 7 possible places for Dhordo. Please confirm the intended location and spelling.",
+    "facts": [],
+    "citations": [],
+    "notes": [
+      "Today is treated as the full day from 2026-09-12T00:30:00+05:30 to 2026-09-13T00:30:00+05:30."
+    ],
+    "choices": [
+      {
+        "id": "10612966",
+        "name": "Dhondo",
+        "latitude": 25.04468,
+        "longitude": 81.49778,
+        "feature": "PPL",
+        "admin1": "Madhya Pradesh",
+        "admin2": "Rewa",
+        "modified": "2024-01-06",
+        "match_type": "approximate_name_requires_confirmation",
+        "selection_id": "geonames:10612966",
+        "label": "Dhondo, Rewa, Madhya Pradesh",
+        "coordinates": {
+          "latitude": 25.04468,
+          "longitude": 81.49778
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/10612966",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Dhordo"
+      },
+      {
+        "id": "10723181",
+        "name": "Dhorot",
+        "latitude": 32.09526,
+        "longitude": 76.45701,
+        "feature": "PPL",
+        "admin1": "State of Himāchal Pradesh",
+        "admin2": "Kāngra",
+        "modified": "2024-01-06",
+        "match_type": "approximate_name_requires_confirmation",
+        "selection_id": "geonames:10723181",
+        "label": "Dhorot, Kāngra, State of Himāchal Pradesh",
+        "coordinates": {
+          "latitude": 32.09526,
+          "longitude": 76.45701
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/10723181",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Dhordo"
+      },
+      {
+        "id": "11016287",
+        "name": "Dhorio",
+        "latitude": 24.71837,
+        "longitude": 87.58016,
+        "feature": "PPL",
+        "admin1": "State of Jhārkhand",
+        "admin2": "Pakur",
+        "modified": "2024-01-07",
+        "match_type": "approximate_name_requires_confirmation",
+        "selection_id": "geonames:11016287",
+        "label": "Dhorio, Pakur, State of Jhārkhand",
+        "coordinates": {
+          "latitude": 24.71837,
+          "longitude": 87.58016
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/11016287",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Dhordo"
+      },
+      {
+        "id": "1272900",
+        "name": "Dhod",
+        "latitude": 27.49376,
+        "longitude": 74.98588,
+        "feature": "PPL",
+        "admin1": "State of Rājasthān",
+        "admin2": "Sikar District",
+        "modified": "2024-01-06",
+        "match_type": "approximate_name_requires_confirmation",
+        "selection_id": "geonames:1272900",
+        "label": "Dhod, Sikar District, State of Rājasthān",
+        "coordinates": {
+          "latitude": 27.49376,
+          "longitude": 74.98588
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1272900",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Dhordo"
+      },
+      {
+        "id": "10678662",
+        "name": "Dhor",
+        "latitude": 32.51403,
+        "longitude": 75.37978,
+        "feature": "PPL",
+        "admin1": "State of Jammu and Kashmīr",
+        "admin2": "Kathua",
+        "modified": "2024-01-06",
+        "match_type": "approximate_name_requires_confirmation",
+        "selection_id": "geonames:10678662",
+        "label": "Dhor, Kathua, State of Jammu and Kashmīr",
+        "coordinates": {
+          "latitude": 32.51403,
+          "longitude": 75.37978
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/10678662",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Dhordo"
+      },
+      {
+        "id": "10715588",
+        "name": "Dhor",
+        "latitude": 32.70381,
+        "longitude": 76.0145,
+        "feature": "PPL",
+        "admin1": "State of Himāchal Pradesh",
+        "admin2": "Chamba",
+        "modified": "2024-01-06",
+        "match_type": "approximate_name_requires_confirmation",
+        "selection_id": "geonames:10715588",
+        "label": "Dhor, Chamba, State of Himāchal Pradesh",
+        "coordinates": {
+          "latitude": 32.70381,
+          "longitude": 76.0145
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/10715588",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Dhordo"
+      },
+      {
+        "id": "10736668",
+        "name": "Dhor",
+        "latitude": 25.54048,
+        "longitude": 75.32422,
+        "feature": "PPL",
+        "admin1": "State of Rājasthān",
+        "admin2": "Bhilwara District",
+        "modified": "2024-01-06",
+        "match_type": "approximate_name_requires_confirmation",
+        "selection_id": "geonames:10736668",
+        "label": "Dhor, Bhilwara District, State of Rājasthān",
+        "coordinates": {
+          "latitude": 25.54048,
+          "longitude": 75.32422
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/10736668",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Dhordo"
+      }
+    ],
+    "follow_up": "Choose a place, or add its district and state.",
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-12T16:14:53.016772+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 779,
+        "output_tokens": 320,
+        "duration_seconds": 5.369438334
+      },
+      "generation": null,
+      "tools": [
+        {
+          "name": "gazetteer_search",
+          "query": {
+            "name": "Dhordo",
+            "state": "",
+            "district": "",
+            "kind": "settlement"
+          },
+          "matches": 7
+        }
+      ],
+      "provider": "local_ollama",
+      "duration_seconds": 5.404
+    },
+    "plan": {
+      "intent": "forecast",
+      "language": "en",
+      "places": [
+        {
+          "name": "Dhordo",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "start_local": "2026-09-12T00:30:00+05:30",
+      "end_local": "2026-09-13T00:30:00+05:30",
+      "explicit_times": false,
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [
+        "umbrella_feasibility"
+      ],
+      "assumptions": [
+        "Today is treated as the full day from 2026-09-12T00:30:00+05:30 to 2026-09-13T00:30:00+05:30."
+      ],
+      "clarification": "",
+      "requested_outcome": "Forecast of rainfall for Dhordo village today and assessment of umbrella necessity"
+    },
+    "resolved_points": {}
+  }
+}

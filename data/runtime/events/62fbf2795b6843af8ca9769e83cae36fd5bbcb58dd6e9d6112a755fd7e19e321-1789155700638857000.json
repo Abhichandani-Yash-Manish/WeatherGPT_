@@ -1,0 +1,10 @@
+{
+  "source_id": "S57",
+  "url": "https://mausam.imd.gov.in/responsive/agrometinformation/district_current_en_get.php?s=Daman+And+Diu&step1=true",
+  "retrieved_at_utc": "2026-09-11T19:41:40.638841+00:00",
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "bytes": 236,
+  "sha256": "b7cdfc0ad78948d837bb9fdd5a36353f3222a553011f1c8caf8b79f16c82bdc6",
+  "blob": "blobs/b7cdfc0ad78948d837bb9fdd5a36353f3222a553011f1c8caf8b79f16c82bdc6.bin"
+}

@@ -1,0 +1,11 @@
+{
+  "source_id": "S20",
+  "url": "https://aviationweather.gov/api/data/stationinfo?ids=VAAH%2CVIDP%2CVABB%2CVOMM%2CVECC%2CVEGT&format=json",
+  "retrieved_at_utc": "2026-09-11T19:48:49.636959+00:00",
+  "http_status": 200,
+  "content_type": "application/json",
+  "bytes": 1237,
+  "sha256": "ec46f4110f08e812da0d446a31d431906593b8e441489237b6ec10c94dcb755e",
+  "blob": "blobs/ec46f4110f08e812da0d446a31d431906593b8e441489237b6ec10c94dcb755e.bin",
+  "validation_scope": "product"
+}

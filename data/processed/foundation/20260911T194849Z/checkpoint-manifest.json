@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "created_at_utc": "2026-09-11T19:54:18.613789+00:00",
+  "scope": "Prototype reference/data integration; operational acceptance incomplete",
+  "source_registry_version": 5,
+  "files": {
+    "data/processed/foundation/20260911T194849Z/advisory-ahmedabad-gujarati.json": "b1295030e3dc62e4d6c998b4b9c2c348c4fa528b54cac6cb0f2a07adfa839413",
+    "data/processed/foundation/20260911T194849Z/advisory-ahmedabad.json": "a73280766d83c654d5db2feef7884b3dd0adba6c12b397bc6e39696c76193227",
+    "data/processed/foundation/20260911T194849Z/advisory-coimbatore.json": "9d43dbb9fa811bcea18b9ca453d814cdef686e8f266a0c98d2e9fdc7cec6162b",
+    "data/processed/foundation/20260911T194849Z/advisory-directory.json": "5429328e750027c432f90e6b19e67fd76e61701fa2fb1c3bfc8cbe37647c5b7d",
+    "data/processed/foundation/20260911T194849Z/advisory-kamrup.json": "0584691f569d45b035d400bfb74c6618076fa26af4b689948dac194d82fd96b9",
+    "data/processed/foundation/20260911T194849Z/aviation-metar.json": "c825f5b137569aa423349c019b4cbdf5a20277ae2daf26dbb53f8030e505ef8f",
+    "data/processed/foundation/20260911T194849Z/aviation-stationinfo.json": "cba69890bf93629e7cd34c7d1e18df43eaa1c08c838f86521af2daf8f7fcdaa5",
+    "data/processed/foundation/20260911T194849Z/aviation-taf.json": "64fc34f7b98a0e6e1a66f5187139a8499bd7792acb75a9a4bb36b1877c957ffc",
+    "data/processed/foundation/20260911T194849Z/cap-messages.json": "29569447374649adef8e6d330d63d8401806cc43b3c9d57c6bb021eace20541c",
+    "data/processed/foundation/20260911T194849Z/forecast-ahmedabad.json": "97fdda09c41a99e8a36f5362b045127f9889ba89dd2bf4a3d9186df7b5a0f330",
+    "data/processed/foundation/20260911T194849Z/forecast-chennai.json": "62077349a1b858c18046a6dac988cc46b7d66707d92fb49f93cc75bd7b04bc0b",
+    "data/processed/foundation/20260911T194849Z/forecast-delhi.json": "f758ad00b4cb742876243097cc82985e395fb0c29471ea9790894898143c9b8c",
+    "data/processed/foundation/20260911T194849Z/forecast-guwahati.json": "ff56f06921b077d9ab0a2eef5074aeff56da69f561542d2aeba68323642d4cd9",
+    "data/processed/foundation/20260911T194849Z/forecast-mumbai.json": "a09f327c70bf4befc34335ecb2b57034593e0bbfe5c2c6fd8741f0ce7068b46f",
+    "data/processed/foundation/20260911T194849Z/forecast-srinagar.json": "cb59cf485b364d7333edc3a0b5e150494ec4561b417f1b60b3e7b8ae30c22bd3",
+    "data/processed/foundation/20260911T194849Z/history-ahmedabad.json": "53fa762b2382354028cf3dee17f4d07156414e16356d729ac7dc7aa37ea68cf1",
+    "data/processed/foundation/20260911T194849Z/marine-andaman-sea.json": "b221f041777803f026857614173333660e1ad5e299b6dc82f12bb94aa831d981",
+    "data/processed/foundation/20260911T194849Z/marine-arabian-sea.json": "9f7d0ec61f2a174dd1fa220a28f32635b46f464253f927dff86888bcb7fc8572",
+    "data/processed/foundation/20260911T194849Z/marine-bay-of-bengal.json": "3f537f2eb349936d6524b485a9fdb2b2ba7d9ae8e7de836cb28d666e16deff48",
+    "data/processed/foundation/20260911T194849Z/marine-bulletin-coastal-11.json": "8d1c68b2eb6eca07471b29fc07db583279f08adf3c9f4e85045f776763cfc89a",
+    "data/processed/foundation/20260911T194849Z/marine-bulletin-sea-0.json": "9078fcb3927efa5a07bb9f5f9421a80d5972b4ddd74b0f2ae66db7df2c92dffc",
+    "data/processed/foundation/20260911T194849Z/marine-bulletin-sea-1.json": "24cd89c14fe05e860522f2c2545d8a312197f97a3be6dd803f29a0fb71a7cc32",
+    "data/processed/foundation/20260911T194849Z/marine-catalog-coastal.json": "048c61df8ce4cda3c7391f3ea55942a21f2112dbe4c6a465f6ca6ef480ec83e5",
+    "data/processed/foundation/20260911T194849Z/marine-catalog-sea.json": "5951eabf22bbe1e31d1081c08fc761bedca54841ade443b30fa60e6235c5141c",
+    "data/processed/foundation/20260911T194849Z/national-warning-snapshot.json": "45e0041d51a2add9da46aeca40af58778fae25210f88cd2cecb382ef2b6f8a50",
+    "data/processed/foundation/20260911T194849Z/place-ahmedabad.json": "ed888d3f044b5381a70723b3adbf7e95ed229c9c74aa0da3a88c8b476966a278",
+    "data/processed/foundation/20260911T194849Z/river-ahmedabad.json": "05e582a82602f0f91a42efeaeced0c05f6fab4064d8733e286d8d4cfd43d9153",
+    "data/processed/foundation/20260911T194849Z/smoke-report.json": "1e85f517aa6c014c37f2460c4a17c9fbe8ff16fc1aaafdde1060de0431af113e",
+    "data/processed/foundation/20260911T194849Z/tests.txt": "edba9937c62c4ce28e6ccb4f602166629e119a73f0dc6538842175f15ce22977"
+  },
+  "implementation_files": {
+    "weathergpt_data/__init__.py": "3a881f00637804f2bd6a5ecb1f882993251a93b9f64bee6b384e6217ff7a7174",
+    "weathergpt_data/__main__.py": "7cb35695d56376b566ba7f3a0d31577b94bbf1b72d5ac865b261a01d254e5613",
+    "weathergpt_data/adapters.py": "66ff007659579aaf059289317fd425b35aea94894af48cd426e944aec900ff1f",
+    "weathergpt_data/advisories.py": "8b7d2515259c869b1965fcfa9cddfda0c2015228cf483bb13c21beb79585dc40",
+    "weathergpt_data/bulletins.py": "bde9e88b732c98596dead50455adbcc0c460a66d1f95e2c242d7874191dab755",
+    "weathergpt_data/climate.py": "ec5d10e72a4d16fa5eabbb4812c96890decee086214743ac7aa2d995a975df42",
+    "weathergpt_data/districts.py": "689727597275e8fb9a76567cbd55640567db6d52e28255c5db5c55231d97d592",
+    "weathergpt_data/foundation.py": "df2afbcc2014ca5cae10c40381b8eb820ed47ce36b513c96a301ad5215f24f44",
+    "weathergpt_data/transport.py": "0f43abfce903410b14f5757aadd29505fb5b323cda1fbe3f5b8b0c1e9cea1426"
+  },
+  "tests": {
+    "command": "python3 -m unittest discover -s tests -v",
+    "exit_code": 0,
+    "log": "data/processed/foundation/20260911T194849Z/tests.txt"
+  },
+  "district_build": {
+    "directory": "data/processed/districts/district-v1-c8b978172b77182e",
+    "manifest": "data/processed/districts/district-v1-c8b978172b77182e/build-manifest.json"
+  },
+  "national_build": "data/processed/climate/national-climate-v1-a203fc0eb4a31c58"
+}

@@ -1,0 +1,55 @@
+{
+  "S06": {
+    "rss_items": 9
+  },
+  "S15": {
+    "features": 1,
+    "properties": {
+      "id": 273,
+      "ID": 1945,
+      "Obj_id": 273,
+      "Date": "2026-09-11",
+      "UTC": 6,
+      "District": "AHMADABAD",
+      "Day_1": "4",
+      "Day_2": "2,4",
+      "Day_3": "4",
+      "Day_4": "4",
+      "Day_5": "4",
+      "lat": 0,
+      "lon": 0,
+      "lat1": 0,
+      "lon1": 0,
+      "lat2": 92.1,
+      "lon2": 0,
+      "Day1_Color": 3,
+      "Day2_Color": 3,
+      "Day3_Color": 3,
+      "Day4_Color": 3,
+      "Day5_Color": 3,
+      "Day1_text": "",
+      "Day2_text": "",
+      "Day3_text": "",
+      "Day4_text": "",
+      "Day5_text": "",
+      "updated_at": "2026-09-11T14:37:30Z",
+      "mc": "",
+      "rmc": "",
+      "state": "",
+      "sub": ""
+    }
+  },
+  "S18": {
+    "report_count": 6,
+    "latest_report_time": "2026-09-11T18:30:00.000Z"
+  },
+  "S20": {
+    "stations": 1
+  },
+  "S21": {
+    "hourly_records": 72,
+    "first_valid_local": "2026-09-11T00:00",
+    "last_valid_local": "2026-09-13T23:00",
+    "timezone": "Asia/Kolkata"
+  }
+}

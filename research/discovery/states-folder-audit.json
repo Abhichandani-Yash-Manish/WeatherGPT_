@@ -1,0 +1,45 @@
+{
+  "files": 32,
+  "rows": 60568,
+  "series": 640,
+  "common_schema": true,
+  "year_range": [
+    1901,
+    2010
+  ],
+  "duplicate_series_year_keys": 0,
+  "rows_missing_months": 5018,
+  "missing_month_cells": 15817,
+  "invalid_numeric_values": 0,
+  "flag_mismatches": 0,
+  "rows_with_duplicate_source_pages": 294,
+  "ahmedabad": {
+    "rows": 110,
+    "years": [
+      1901,
+      2010
+    ],
+    "missing_months": 0,
+    "source_pages": [
+      "611",
+      "612",
+      "613"
+    ]
+  },
+  "aggregate_discrepancies_beyond_rounding_bounds": [
+    {
+      "series_id": "IMD110-P1403",
+      "district": "Kendrapada",
+      "year": 1920,
+      "field": "annual_mm",
+      "difference_mm": 12.5
+    },
+    {
+      "series_id": "IMD110-P1403",
+      "district": "Kendrapada",
+      "year": 1920,
+      "field": "ond_mm",
+      "difference_mm": 12.5
+    }
+  ]
+}

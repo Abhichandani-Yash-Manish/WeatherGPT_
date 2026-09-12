@@ -1,0 +1,234 @@
+{
+  "status": "PASS",
+  "counts": {
+    "frozen_artifact_hashes_verified": 29,
+    "source_references_verified": 35,
+    "document_pages_reproduced": 27,
+    "documents_reproduced": 7,
+    "document_pages_with_stricter_current_status": 13,
+    "aviation_records_reproduced": 48,
+    "cap_messages_reproduced": 9,
+    "hourly_scalar_records_reproduced": 2376,
+    "daily_scalar_records_reproduced": 28,
+    "warning_quarantine_diagnostics_updated": 8,
+    "warning_features_reproduced": 742,
+    "warning_features_quarantined": 22,
+    "place_records_reproduced": 2,
+    "runtime_blob_hashes_verified": 82,
+    "sqlite_integrity_checks": 23
+  },
+  "products": [
+    {
+      "file": "data/processed/foundation/20260911T194849Z/advisory-ahmedabad-gujarati.json",
+      "family": "advisory_document",
+      "raw_hash_verified": true,
+      "records_reproduced": 8,
+      "scope": "parser reproduction"
+    },
+    {
+      "file": "data/processed/foundation/20260911T194849Z/advisory-ahmedabad.json",
+      "family": "advisory_document",
+      "raw_hash_verified": true,
+      "records_reproduced": 7,
+      "scope": "parser reproduction"
+    },
+    {
+      "file": "data/processed/foundation/20260911T194849Z/advisory-coimbatore.json",
+      "family": "advisory_document",
+      "raw_hash_verified": true,
+      "records_reproduced": 3,
+      "scope": "parser reproduction"
+    },
+    {
+      "file": "data/processed/foundation/20260911T194849Z/advisory-kamrup.json",
+      "family": "advisory_document",
+      "raw_hash_verified": true,
+      "records_reproduced": 3,
+      "scope": "parser reproduction"
+    },
+    {
+      "file": "data/processed/foundation/20260911T194849Z/aviation-metar.json",
+      "family": "aviation_metar",
+      "raw_hash_verified": true,
+      "records_reproduced": 36,
+      "scope": "parser reproduction"
+    },
+    {
+      "file": "data/processed/foundation/20260911T194849Z/aviation-stationinfo.json",
+      "family": "aviation_stationinfo",
+      "raw_hash_verified": true,
+      "records_reproduced": 6,
+      "scope": "parser reproduction"
+    },
+    {
+      "file": "data/processed/foundation/20260911T194849Z/aviation-taf.json",
+      "family": "aviation_taf",
+      "raw_hash_verified": true,
+      "records_reproduced": 6,
+      "scope": "parser reproduction"
+    },
+    {
+      "file": "data/processed/foundation/20260911T194849Z/cap-messages.json",
+      "family": "official_cap_messages",
+      "raw_hash_verified": true,
+      "records_reproduced": 9,
+      "scope": "parser reproduction"
+    },
+    {
+      "file": "data/processed/foundation/20260911T194849Z/forecast-ahmedabad.json",
+      "family": "weather_forecast",
+      "raw_hash_verified": true,
+      "records_reproduced": 288,
+      "scope": "parser reproduction"
+    },
+    {
+      "file": "data/processed/foundation/20260911T194849Z/forecast-chennai.json",
+      "family": "weather_forecast",
+      "raw_hash_verified": true,
+      "records_reproduced": 288,
+      "scope": "parser reproduction"
+    },
+    {
+      "file": "data/processed/foundation/20260911T194849Z/forecast-delhi.json",
+      "family": "weather_forecast",
+      "raw_hash_verified": true,
+      "records_reproduced": 288,
+      "scope": "parser reproduction"
+    },
+    {
+      "file": "data/processed/foundation/20260911T194849Z/forecast-guwahati.json",
+      "family": "weather_forecast",
+      "raw_hash_verified": true,
+      "records_reproduced": 288,
+      "scope": "parser reproduction"
+    },
+    {
+      "file": "data/processed/foundation/20260911T194849Z/forecast-mumbai.json",
+      "family": "weather_forecast",
+      "raw_hash_verified": true,
+      "records_reproduced": 288,
+      "scope": "parser reproduction"
+    },
+    {
+      "file": "data/processed/foundation/20260911T194849Z/forecast-srinagar.json",
+      "family": "weather_forecast",
+      "raw_hash_verified": true,
+      "records_reproduced": 288,
+      "scope": "parser reproduction"
+    },
+    {
+      "file": "data/processed/foundation/20260911T194849Z/history-ahmedabad.json",
+      "family": "reanalysis",
+      "raw_hash_verified": true,
+      "records_reproduced": 21,
+      "scope": "parser reproduction"
+    },
+    {
+      "file": "data/processed/foundation/20260911T194849Z/marine-andaman-sea.json",
+      "family": "marine_forecast",
+      "raw_hash_verified": true,
+      "records_reproduced": 216,
+      "scope": "parser reproduction"
+    },
+    {
+      "file": "data/processed/foundation/20260911T194849Z/marine-arabian-sea.json",
+      "family": "marine_forecast",
+      "raw_hash_verified": true,
+      "records_reproduced": 216,
+      "scope": "parser reproduction"
+    },
+    {
+      "file": "data/processed/foundation/20260911T194849Z/marine-bay-of-bengal.json",
+      "family": "marine_forecast",
+      "raw_hash_verified": true,
+      "records_reproduced": 216,
+      "scope": "parser reproduction"
+    },
+    {
+      "file": "data/processed/foundation/20260911T194849Z/marine-bulletin-coastal-11.json",
+      "family": "official_marine_bulletin",
+      "raw_hash_verified": true,
+      "records_reproduced": 1,
+      "scope": "parser reproduction"
+    },
+    {
+      "file": "data/processed/foundation/20260911T194849Z/marine-bulletin-sea-0.json",
+      "family": "official_marine_bulletin",
+      "raw_hash_verified": true,
+      "records_reproduced": 3,
+      "scope": "parser reproduction"
+    },
+    {
+      "file": "data/processed/foundation/20260911T194849Z/marine-bulletin-sea-1.json",
+      "family": "official_marine_bulletin",
+      "raw_hash_verified": true,
+      "records_reproduced": 2,
+      "scope": "parser reproduction"
+    },
+    {
+      "file": "data/processed/foundation/20260911T194849Z/marine-catalog-coastal.json",
+      "family": "marine_bulletin_catalog",
+      "raw_hash_verified": true,
+      "records_reproduced": null,
+      "scope": "raw integrity only"
+    },
+    {
+      "file": "data/processed/foundation/20260911T194849Z/marine-catalog-sea.json",
+      "family": "marine_bulletin_catalog",
+      "raw_hash_verified": true,
+      "records_reproduced": null,
+      "scope": "raw integrity only"
+    },
+    {
+      "file": "data/processed/foundation/20260911T194849Z/national-warning-snapshot.json",
+      "family": "official_warning_snapshot",
+      "raw_hash_verified": true,
+      "records_reproduced": 742,
+      "scope": "parser reproduction"
+    },
+    {
+      "file": "data/processed/foundation/20260911T194849Z/place-ahmedabad.json",
+      "family": "place_candidates",
+      "raw_hash_verified": true,
+      "records_reproduced": 2,
+      "scope": "parser reproduction"
+    },
+    {
+      "file": "data/processed/foundation/20260911T194849Z/river-ahmedabad.json",
+      "family": "river_discharge",
+      "raw_hash_verified": true,
+      "records_reproduced": 7,
+      "scope": "parser reproduction"
+    }
+  ],
+  "databases": [
+    "data/processed/climate/national-climate-v1-a203fc0eb4a31c58/climate.sqlite",
+    "data/processed/districts/district-v1-473ac6903c63f221/districts.sqlite",
+    "data/processed/districts/district-v1-c8b978172b77182e/districts.sqlite",
+    "data/processed/geography/source-inventory-20260912-v1/coverage.sqlite",
+    "data/processed/geography/source-inventory-20260912-v1/geography.sqlite",
+    "data/processed/hardening/answers-batch-four-20260912/live/backup/ingestion.sqlite",
+    "data/processed/hardening/answers-batch-four-20260912/replay/ingestion/backup/ingestion.sqlite",
+    "data/processed/hardening/answers-batch-four-20260912/replay/ingestion/ingestion.sqlite",
+    "data/processed/hardening/answers-batch-four-20260912/replay/ingestion/restored/ingestion.sqlite",
+    "data/processed/hardening/answers-batch-four-20260912/replay-final/ingestion/backup/ingestion.sqlite",
+    "data/processed/hardening/answers-batch-four-20260912/replay-final/ingestion/ingestion.sqlite",
+    "data/processed/hardening/answers-batch-four-20260912/replay-final/ingestion/restored/ingestion.sqlite",
+    "data/processed/hardening/extensive-20260912/workflow-replay/ingestion/backup/ingestion.sqlite",
+    "data/processed/hardening/extensive-20260912/workflow-replay/ingestion/ingestion.sqlite",
+    "data/processed/hardening/extensive-20260912/workflow-replay/ingestion/restored/ingestion.sqlite",
+    "data/processed/hardening/ingestion-batch-three-20260912/live/ingestion.sqlite",
+    "data/processed/hardening/ingestion-batch-three-20260912/rehearsal/backup/ingestion.sqlite",
+    "data/processed/hardening/ingestion-batch-three-20260912/rehearsal/ingestion.sqlite",
+    "data/processed/hardening/ingestion-batch-three-20260912/rehearsal/restored/ingestion.sqlite",
+    "data/processed/hardening/ingestion-batch-three-20260912/rehearsal-final/backup/ingestion.sqlite",
+    "data/processed/hardening/ingestion-batch-three-20260912/rehearsal-final/ingestion.sqlite",
+    "data/processed/hardening/ingestion-batch-three-20260912/rehearsal-final/restored/ingestion.sqlite",
+    "data/runtime/ingestion/ingestion.sqlite"
+  ],
+  "real_provider_calls": 0,
+  "limitations": [
+    "Parser reproduction is not independent validation of document reading order, scientific truth, bulletin currency or source rights.",
+    "Catalog-only products have raw hash checks; directory completeness and nation-wide coverage remain separate acceptance gates."
+  ]
+}

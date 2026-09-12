@@ -1,0 +1,143 @@
+{
+  "id": "IN-024",
+  "question": "Is it safe to travel from Bhuj to Dhordo by car tomorrow morning?",
+  "origin": "included_report",
+  "checked_at_utc": "2026-09-12T16:17:01.278410+00:00",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "a54165ec-4a6e-40de-8dcd-6417f9e2c5a4",
+    "question": "Is it safe to travel from Bhuj to Dhordo by car tomorrow morning?",
+    "status": "needs_selection",
+    "answer": "I found 2 possible places for Bhuj. Please confirm the intended location and spelling.",
+    "facts": [],
+    "citations": [],
+    "notes": [
+      "Tomorrow morning default to 06:30–12:30 IST."
+    ],
+    "choices": [
+      {
+        "id": "10520195",
+        "name": "Bhūj",
+        "latitude": 20.37432,
+        "longitude": 79.86291,
+        "feature": "PPL",
+        "admin1": "State of Mahārāshtra",
+        "admin2": "Chandrapur",
+        "modified": "2024-01-06",
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:10520195",
+        "label": "Bhūj, Chandrapur, State of Mahārāshtra",
+        "coordinates": {
+          "latitude": 20.37432,
+          "longitude": 79.86291
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/10520195",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Bhuj"
+      },
+      {
+        "id": "1275812",
+        "name": "Bhuj",
+        "latitude": 23.25397,
+        "longitude": 69.66928,
+        "feature": "PPLA2",
+        "admin1": "State of Gujarāt",
+        "admin2": "Kutch",
+        "modified": "2025-01-03",
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:1275812",
+        "label": "Bhuj, Kutch, State of Gujarāt",
+        "coordinates": {
+          "latitude": 23.25397,
+          "longitude": 69.66928
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1275812",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Bhuj"
+      }
+    ],
+    "follow_up": "Choose a place, or add its district and state.",
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-12T16:17:01.278434+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 779,
+        "output_tokens": 363,
+        "duration_seconds": 5.700217042
+      },
+      "generation": null,
+      "tools": [
+        {
+          "name": "gazetteer_search",
+          "query": {
+            "name": "Bhuj",
+            "state": "",
+            "district": "",
+            "kind": "settlement"
+          },
+          "matches": 2
+        }
+      ],
+      "provider": "local_ollama",
+      "duration_seconds": 5.701
+    },
+    "plan": {
+      "intent": "travel",
+      "language": "en",
+      "places": [
+        {
+          "name": "Bhuj",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        },
+        {
+          "name": "Dhordo",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "start_local": "2026-09-13T06:30:00+05:30",
+      "end_local": "2026-09-13T12:30:00+05:30",
+      "explicit_times": false,
+      "variables": [
+        "temperature_2m",
+        "precipitation",
+        "wind_speed_10m"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [
+        "road_conditions",
+        "safety_assessment"
+      ],
+      "assumptions": [
+        "Tomorrow morning default to 06:30–12:30 IST."
+      ],
+      "clarification": "",
+      "requested_outcome": "Weather forecast for Bhuj to Dhordo travel on 2026-09-13 morning"
+    },
+    "resolved_points": {}
+  }
+}

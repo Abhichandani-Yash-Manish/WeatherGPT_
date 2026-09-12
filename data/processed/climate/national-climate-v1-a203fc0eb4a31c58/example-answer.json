@@ -1,0 +1,51 @@
+{
+  "status": "ok",
+  "scope": "Published historical All India aggregate; not current or district weather.",
+  "record": {
+    "record_id": "6625ac7d34e0bd5d15c07cb10d9cb3d4896831aaf8024598052fa0f2a38eca3e",
+    "source_id": "S25",
+    "source_series_id": "historical_rain_whi",
+    "geography_id": "all-india-aggregate",
+    "geography_label": "All India aggregate",
+    "parameter": "precipitation_amount",
+    "year": 2024,
+    "period_type": "year",
+    "period_code": "ANNUAL",
+    "period_start": "2024-01-01",
+    "period_end_exclusive": "2025-01-01",
+    "value_decimal": "1206.6",
+    "native_value": "1206.6",
+    "unit": "mm",
+    "quality_flags": [
+      "published_total_differs_from_month_sum"
+    ],
+    "asset_sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+    "raw_asset_path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+    "source_row": 125,
+    "source_column": "Annual",
+    "source_url": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php",
+    "retrieved_at_utc": "2026-09-11T16:27:58.620400+00:00",
+    "transformation_version": "national-climate-v1"
+  },
+  "reconciliation": {
+    "source_id": "S25",
+    "year": 2024,
+    "period_code": "ANNUAL",
+    "published_value": "1206.6",
+    "computed_month_sum": "1204.1",
+    "difference_mm": "2.5",
+    "rounding_bound_mm": "0.65",
+    "status": "beyond_rounding_bound",
+    "source_row": 125,
+    "source_column": "Annual",
+    "asset_sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90"
+  },
+  "citation": {
+    "source_id": "S25",
+    "url": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php",
+    "raw_asset_path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+    "sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+    "row": 125,
+    "column": "Annual"
+  }
+}

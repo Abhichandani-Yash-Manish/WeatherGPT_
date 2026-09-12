@@ -1,0 +1,179 @@
+{
+  "ahmedabad": {
+    "status": "needs_selection",
+    "candidates": [
+      {
+        "attributes": {
+          "lgd_mapping": "unresolved",
+          "provider_fields": {
+            "admin1": "Gujarat",
+            "admin1_id": 1270770,
+            "admin2": "Ahmadābād District",
+            "admin2_id": 1279234,
+            "admin3": "Sabarmati",
+            "admin3_id": 12684092,
+            "country": "India",
+            "country_code": "IN",
+            "country_id": 1269750,
+            "elevation": 56.0,
+            "feature_code": "PPL",
+            "id": 1279233,
+            "latitude": 23.02579,
+            "longitude": 72.58727,
+            "name": "Ahmedabad",
+            "population": 6357693,
+            "timezone": "Asia/Kolkata"
+          }
+        },
+        "crs": "EPSG:4326",
+        "effective_dates_known": false,
+        "effective_from": null,
+        "effective_to": null,
+        "entity_id": "561ffd73856dcd649bc696839ab9068f5b5d3a067b1bdf698e2470c9e761afb2",
+        "evidence": {
+          "artifact": "place-ahmedabad.json",
+          "locator": "$.records[0]",
+          "retrieved_at_utc": "2026-09-11T19:34:54.380999+00:00",
+          "sha256": "685e84c92f03f83f3973dab54a09b38a0af79c3e459d201603f71b7a2d72eb7a",
+          "source_id": "S24",
+          "url": "https://geocoding-api.open-meteo.com/v1/search?name=Ahmedabad&count=10&language=en&format=json&countryCode=IN"
+        },
+        "geometry_status": "valid_source_geometry",
+        "kind": "place",
+        "label": "Ahmedabad",
+        "namespace": "S24",
+        "source_code": "1279233",
+        "source_locator": "$.records[0]",
+        "status": "source_record",
+        "version": "685e84c92f03f83f3973dab54a09b38a0af79c3e459d201603f71b7a2d72eb7a"
+      },
+      {
+        "attributes": {
+          "lgd_mapping": "unresolved",
+          "source_state": "Gujarat"
+        },
+        "crs": null,
+        "effective_dates_known": false,
+        "effective_from": null,
+        "effective_to": null,
+        "entity_id": "8698a9107dd4641e2b27db7114a8aae2edbfc073dbdbe1301afd0540e0e7939c",
+        "evidence": {
+          "artifact": "advisory-directory.json",
+          "locator": "$.results[10].records[0]",
+          "retrieved_at_utc": "2026-09-11T19:35:56.011239+00:00",
+          "sha256": "40f22e74f947c532eac467a0bf76d0712cf843ef08d49cdd82c6570581170ff2",
+          "source_id": "S57",
+          "url": "https://mausam.imd.gov.in/responsive/agrometinformation/district_current_en_get.php?s=Gujarat&step1=true"
+        },
+        "geometry_status": "missing",
+        "kind": "district",
+        "label": "Ahmedabad",
+        "namespace": "S57",
+        "source_code": "Gujarat/Ahmedabad",
+        "source_locator": "$.results[10].records[0]",
+        "status": "source_record",
+        "version": "40f22e74f947c532eac467a0bf76d0712cf843ef08d49cdd82c6570581170ff2"
+      }
+    ],
+    "administrative_mapping": "not_established_by_name_search",
+    "limitation": "No fuzzy, transliteration or cross-provider identity inference; unknown effective dates fail dated resolution."
+  },
+  "airport_vaah": {
+    "status": "single_source_candidate",
+    "candidates": [
+      {
+        "attributes": {
+          "district_representativeness": "unverified",
+          "reported_wmo_id": "42647"
+        },
+        "crs": "EPSG:4326",
+        "effective_dates_known": false,
+        "effective_from": null,
+        "effective_to": null,
+        "entity_id": "17055a7ded3810b2117b6aec1533e02f44aa337ce9d0e400241ad4c1a35b59b6",
+        "evidence": {
+          "artifact": "aviation-stationinfo.json",
+          "locator": "$[0]",
+          "retrieved_at_utc": "2026-09-11T19:34:48.388427+00:00",
+          "sha256": "ec46f4110f08e812da0d446a31d431906593b8e441489237b6ec10c94dcb755e",
+          "source_id": "S20",
+          "url": "https://aviationweather.gov/api/data/stationinfo?ids=VAAH%2CVIDP%2CVABB%2CVOMM%2CVECC%2CVEGT&format=json"
+        },
+        "geometry_status": "valid_source_geometry",
+        "kind": "airport",
+        "label": "Ahmadabad/Patel Intl",
+        "namespace": "S20",
+        "source_code": "VAAH",
+        "source_locator": "$[0]",
+        "status": "source_record",
+        "version": "ec46f4110f08e812da0d446a31d431906593b8e441489237b6ec10c94dcb755e"
+      }
+    ],
+    "administrative_mapping": "not_established_by_name_search",
+    "limitation": "No fuzzy, transliteration or cross-provider identity inference; unknown effective dates fail dated resolution."
+  },
+  "warning_point_ahmedabad": {
+    "status": "source_polygon_match",
+    "matches": [
+      {
+        "entity_id": "c8fe73345f74c0427d5a572c6bb32d240c4962ecdafda69d38f3755e2d2e9bb3",
+        "label": "AHMADABAD",
+        "on_boundary": false
+      }
+    ],
+    "source_records": 764,
+    "excluded_records": 22,
+    "administrative_mapping": "unverified",
+    "actionable_current_alerts": false,
+    "limitation": "Geometric match only; source CRS/boundary edition, validity and complete coverage need independent acceptance."
+  },
+  "warning_coverage_example": {
+    "status": "blocked",
+    "eligible": false,
+    "reasons": [
+      "Spatial applicability not validated",
+      "Temporal applicability not validated",
+      "Publication policy: reference_only",
+      "Publisher freshness: unknown",
+      "Assessment freshness deadline unknown or expired"
+    ],
+    "coverage": {
+      "assessed_at": "2026-09-12T05:42:51.005429+00:00",
+      "coverage_id": "e0ca00baf8620e9cde6e35b48291ab90319bc1d157a81e4f38f9517690dbb79b",
+      "entity_id": "e62f2ee5a1a1c8fbe3136f3afd72a208bf7409d7d11fcfdc6e48bd498d416775",
+      "evidence": {
+        "blob": "blobs/d7501bfb4ae0586e280f15788aceb93ba2b8c42ed57ee4181f4943001b6930a5.bin",
+        "bytes": 18936941,
+        "checked_at_utc": "2026-09-11T19:48:49.638395+00:00",
+        "content_type": "application/json;charset=utf-8",
+        "delivery": "cache",
+        "http_status": 200,
+        "retrieved_at_utc": "2026-09-11T19:35:16.854798+00:00",
+        "sha256": "d7501bfb4ae0586e280f15788aceb93ba2b8c42ed57ee4181f4943001b6930a5",
+        "source_id": "S15",
+        "url": "https://reactjs.imd.gov.in/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=imd%3Adistrict_warnings_india&srsname=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=2000"
+      },
+      "expected": 1,
+      "fetched": 1,
+      "freshness_deadline": null,
+      "missing": 0,
+      "not_applicable_reason": null,
+      "notes": [
+        "Counts source features, not current administrative districts or active alerts.",
+        "Day validity and CAP lifecycle unresolved. No alert eligibility."
+      ],
+      "policy": "reference_only",
+      "product": "official_warning_snapshot",
+      "quarantined": 0,
+      "source_freshness": "unknown",
+      "source_id": "S15",
+      "spatial": "source_identity",
+      "temporal": "unresolved",
+      "validated": 1,
+      "variable": "source_feature",
+      "version": "3ec6669143a0db82203a3dca470908047ebc2d6b199c44f8548fd80e253b22d2",
+      "window_end": null,
+      "window_start": null
+    }
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "items": [
+    {
+      "id": "citywx",
+      "title": "IMD CityWx inspection",
+      "queries": [
+        {
+          "id": "access-check",
+          "source": {
+            "label": "CityWx static page, application code and endpoint responses",
+            "files": [
+              {
+                "label": "index.html"
+              },
+              {
+                "label": "app.js"
+              },
+              {
+                "label": "search-ahmedabad.json"
+              },
+              {
+                "label": "ahmedabad-city-fetch.json"
+              },
+              {
+                "label": "access-errors.json"
+              },
+              {
+                "label": "citywx-assessment.ipynb"
+              }
+            ],
+            "links": [
+              {
+                "label": "IMD CityWx portal",
+                "url": "https://city.imd.gov.in/citywx/responsive/"
+              }
+            ],
+            "caveats": [
+              "Remote JavaScript was inspected as text and not executed; the unrelated external destination was not visited.",
+              "Station search returned JSON; the city weather data request returned HTTP 403.",
+              "Weather features were observed in application code; current weather payload completeness and correctness were not verified.",
+              "Suspicious page code does not establish its origin or compromise of other IMD services."
+            ]
+          },
+          "reportingPeriod": "12 September 2026 IST",
+          "columns": [
+            "check",
+            "observed"
+          ],
+          "rows": [
+            {
+              "check": "station candidates",
+              "observed": "11"
+            },
+            {
+              "check": "ahmedabad station id",
+              "observed": "42647"
+            },
+            {
+              "check": "search status",
+              "observed": "1"
+            },
+            {
+              "check": "city weather post http status",
+              "observed": "403"
+            },
+            {
+              "check": "android external window script present",
+              "observed": "True"
+            },
+            {
+              "check": "weather payload obtained",
+              "observed": "False"
+            },
+            {
+              "check": "integration status",
+              "observed": "candidate_on_hold"
+            }
+          ],
+          "methods": [
+            {
+              "language": "python",
+              "code": "import json\nfrom pathlib import Path\nroot=Path.cwd()\nwhile not (root/'weathergpt_data').is_dir() and root!=root.parent:root=root.parent\np=root/'research/discovery/evidence/citywx-20260912'\nsearch=json.loads((p/'search-ahmedabad.json').read_text())\nhtml=(p/'index.html').read_text()\npost=json.loads((p/'ahmedabad-city-fetch.json').read_text())\nsummary={'station_candidates':len(search['data']),'ahmedabad_station_id':next(r['station_id'] for r in search['data'] if r['station']=='Ahmedabad'),'search_status':search['status'],'city_weather_post_http_status':post['http_status'],'android_external_window_script_present':all(s in html for s in ['isAndroid','window.open','setInterval','filmm.me']),'weather_payload_obtained':False,'integration_status':'candidate_on_hold'}\nprint(json.dumps(summary,indent=2))"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

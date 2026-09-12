@@ -1,0 +1,80 @@
+{
+  "id": "IN-015",
+  "question": "Will there be thunderstorms in Mawlynnong village tomorrow?",
+  "origin": "included_report",
+  "checked_at_utc": "2026-09-12T16:15:57.167014+00:00",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "8c84806b-a288-46ce-82ee-2c0c59a3b730",
+    "question": "Will there be thunderstorms in Mawlynnong village tomorrow?",
+    "status": "needs_clarification",
+    "answer": "I could not find a settlement named Mawlynnong. Please give its district/state, an alternative spelling, or a pin. I will not replace it with a nearby city.",
+    "facts": [],
+    "citations": [],
+    "notes": [
+      "Tomorrow defaults to the full calendar day of 2026-09-13 (00:30 IST to 00:30 IST next day) to align with source accumulation hours."
+    ],
+    "choices": [],
+    "follow_up": "District/state, alternative spelling, or coordinates",
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-12T16:15:57.167041+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 777,
+        "output_tokens": 358,
+        "duration_seconds": 5.9591625
+      },
+      "generation": null,
+      "tools": [
+        {
+          "name": "gazetteer_search",
+          "query": {
+            "name": "Mawlynnong",
+            "state": "",
+            "district": "",
+            "kind": "settlement"
+          },
+          "matches": 0
+        }
+      ],
+      "provider": "local_ollama",
+      "duration_seconds": 5.985
+    },
+    "plan": {
+      "intent": "forecast",
+      "language": "en",
+      "places": [
+        {
+          "name": "Mawlynnong",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "start_local": "2026-09-13T00:30:00+05:30",
+      "end_local": "2026-09-14T00:30:00+05:30",
+      "explicit_times": false,
+      "variables": [
+        "temperature_2m",
+        "precipitation",
+        "wind_speed_10m",
+        "relative_humidity_2m"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [
+        "thunderstorm_probability"
+      ],
+      "assumptions": [
+        "Tomorrow defaults to the full calendar day of 2026-09-13 (00:30 IST to 00:30 IST next day) to align with source accumulation hours."
+      ],
+      "clarification": "",
+      "requested_outcome": "Forecast for Mawlynnong village on 2026-09-13 including precipitation data to assess thunderstorm likelihood, noting that direct thunderstorm probability is unsupported."
+    },
+    "resolved_points": {}
+  }
+}

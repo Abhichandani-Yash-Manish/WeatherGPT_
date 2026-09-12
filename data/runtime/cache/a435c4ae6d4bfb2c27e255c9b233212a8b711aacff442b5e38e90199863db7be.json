@@ -1,0 +1,10 @@
+{
+  "source_id": "S57",
+  "url": "https://mausam.imd.gov.in/responsive/agrometinformation/district_current_en_get.php?s=Jammu+and+Kashmir&step1=true",
+  "retrieved_at_utc": "2026-09-11T19:41:40.981624+00:00",
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "bytes": 1276,
+  "sha256": "98913037032a78293029114ff2a1a7d4ddbca2b84b126c780923674611677429",
+  "blob": "blobs/98913037032a78293029114ff2a1a7d4ddbca2b84b126c780923674611677429.bin"
+}

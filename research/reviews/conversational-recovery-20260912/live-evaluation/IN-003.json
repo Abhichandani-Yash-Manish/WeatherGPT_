@@ -1,0 +1,64 @@
+{
+  "id": "IN-003",
+  "question": "Which parts of Kutch district will get rain over the next two days?",
+  "origin": "included_report",
+  "checked_at_utc": "2026-09-12T16:14:47.985309+00:00",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "ec1d423f-adec-4154-9b35-579f2e2ae805",
+    "question": "Which parts of Kutch district will get rain over the next two days?",
+    "status": "needs_clarification",
+    "answer": "Which village or town within Kutch should I check? I can retrieve a forecast for a precise place; I cannot yet give a verified map of weather across that whole area.",
+    "facts": [],
+    "citations": [],
+    "notes": [
+      "Timeframe 'next two days' defaults to the coming full calendar days starting from tomorrow (2026-09-13) through 2026-09-14, covering source accumulation hours 00:30–00:30."
+    ],
+    "choices": [],
+    "follow_up": "Name a village/town and state, or supply a pin.",
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-12T16:14:47.985339+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 778,
+        "output_tokens": 303,
+        "duration_seconds": 5.029625833
+      },
+      "generation": null,
+      "tools": [],
+      "provider": "local_ollama",
+      "duration_seconds": 5.03
+    },
+    "plan": {
+      "intent": "forecast",
+      "language": "en",
+      "places": [
+        {
+          "name": "Kutch",
+          "state": "",
+          "district": "Kutch",
+          "kind": "district"
+        }
+      ],
+      "start_local": "2026-09-13T00:30:00+05:30",
+      "end_local": "2026-09-15T00:30:00+05:30",
+      "explicit_times": false,
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "assumptions": [
+        "Timeframe 'next two days' defaults to the coming full calendar days starting from tomorrow (2026-09-13) through 2026-09-14, covering source accumulation hours 00:30–00:30."
+      ],
+      "clarification": "",
+      "requested_outcome": "Rainfall forecast for Kutch district over the next two days"
+    },
+    "resolved_points": {}
+  }
+}

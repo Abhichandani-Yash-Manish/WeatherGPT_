@@ -1,0 +1,20 @@
+[
+  {
+    "source_id": "S35",
+    "url": "https://lgdirectory.gov.in/downloadDirectory.do",
+    "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1129)>"
+  },
+  {
+    "source_id": "geography-evidence-vavtharad",
+    "url": "https://vavtharad.nic.in/",
+    "retrieved_at_utc": "2026-09-12T05:35:26.134038+00:00",
+    "http_status": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "bytes": 149635,
+    "sha256": "34c82683273f2f5ad266f80e89e64fedbc68683cc4ba7d6426af93d160e29ece",
+    "blob": "blobs/34c82683273f2f5ad266f80e89e64fedbc68683cc4ba7d6426af93d160e29ece.bin",
+    "validation_scope": "transport_only",
+    "delivery": "network",
+    "checked_at_utc": "2026-09-12T05:35:26.135017+00:00"
+  }
+]

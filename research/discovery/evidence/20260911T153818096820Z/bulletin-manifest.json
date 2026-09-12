@@ -1,0 +1,18 @@
+[
+  {
+    "url": "https://mausam.imd.gov.in/ahmedabad/mcdata/agromet.pdf",
+    "checked_at_utc": "2026-09-11T15:39:39.109261+00:00",
+    "http_status": 200,
+    "path": "research/discovery/evidence/20260911T153818096820Z/gujarat-agromet.pdf",
+    "bytes": 3485121,
+    "sha256": "183a22729b843eb61cba70255bdb73829e7e525133e4acfa85d30da2685f9d97"
+  },
+  {
+    "url": "https://mausam.imd.gov.in/ahmedabad/mcdata/district.pdf",
+    "checked_at_utc": "2026-09-11T15:39:44.149121+00:00",
+    "http_status": 200,
+    "path": "research/discovery/evidence/20260911T153818096820Z/gujarat-district-forecast.pdf",
+    "bytes": 1174804,
+    "sha256": "b81ca84edcb21f123b8a5558d26425ae4c47ad68696d8b66e2db73ac28be059c"
+  }
+]

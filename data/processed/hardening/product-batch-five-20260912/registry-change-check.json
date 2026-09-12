@@ -1,0 +1,29 @@
+{
+  "changed_registered_evidence_assets": [
+    "research/discovery/question-evidence-map.md"
+  ],
+  "product_fields_changed": {
+    "S18": [
+      "supports_questions"
+    ],
+    "S19": [
+      "supports_questions"
+    ],
+    "S20": [
+      "supports_questions"
+    ],
+    "S56": [
+      "supports_questions"
+    ],
+    "S57": [
+      "supports_questions"
+    ],
+    "S58": [
+      "supports_questions"
+    ],
+    "S59": [
+      "supports_questions"
+    ]
+  },
+  "source_access_or_readiness_promoted": false
+}

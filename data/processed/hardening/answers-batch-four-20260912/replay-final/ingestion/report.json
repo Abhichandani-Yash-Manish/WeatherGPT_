@@ -1,0 +1,107 @@
+{
+  "scope": "Offline replay at fixed historical clock; measured local work, not network latency or current forecast freshness.",
+  "inputs": {
+    "data/processed/foundation/20260911T194849Z/forecast-ahmedabad.json": "97fdda09c41a99e8a36f5362b045127f9889ba89dd2bf4a3d9186df7b5a0f330",
+    "data/runtime/blobs/ccfb46b4c954cb12be2758e55bb71b9be5733d23ef9f3508a12f47a92556ad72.bin": "ccfb46b4c954cb12be2758e55bb71b9be5733d23ef9f3508a12f47a92556ad72",
+    "data/processed/foundation/20260911T194849Z/forecast-delhi.json": "f758ad00b4cb742876243097cc82985e395fb0c29471ea9790894898143c9b8c",
+    "data/runtime/blobs/6fdb3bde42b3219cc5efd22625a8cfa85c5ece095a95a95067db374401dd40d5.bin": "6fdb3bde42b3219cc5efd22625a8cfa85c5ece095a95a95067db374401dd40d5",
+    "data/processed/foundation/20260911T194849Z/forecast-mumbai.json": "a09f327c70bf4befc34335ecb2b57034593e0bbfe5c2c6fd8741f0ce7068b46f",
+    "data/runtime/blobs/d5fe3212057abd3d68a677ca6b6372d2799358c091a3c756654214604b4105f4.bin": "d5fe3212057abd3d68a677ca6b6372d2799358c091a3c756654214604b4105f4",
+    "data/processed/foundation/20260911T194849Z/forecast-chennai.json": "62077349a1b858c18046a6dac988cc46b7d66707d92fb49f93cc75bd7b04bc0b",
+    "data/runtime/blobs/9ccf745080071bc3ec3bf5dfe87b45d06a287114444a2059a45cc9d6a280e838.bin": "9ccf745080071bc3ec3bf5dfe87b45d06a287114444a2059a45cc9d6a280e838",
+    "data/processed/foundation/20260911T194849Z/forecast-guwahati.json": "ff56f06921b077d9ab0a2eef5074aeff56da69f561542d2aeba68323642d4cd9",
+    "data/runtime/blobs/c26a0903d69bff9b81329b2b22eaacfcd9a22f71107c9e13535d654a3696f277.bin": "c26a0903d69bff9b81329b2b22eaacfcd9a22f71107c9e13535d654a3696f277",
+    "data/processed/foundation/20260911T194849Z/forecast-srinagar.json": "cb59cf485b364d7333edc3a0b5e150494ec4561b417f1b60b3e7b8ae30c22bd3",
+    "data/runtime/blobs/d7d1c10dcb00c6db73106382c59541ba6a98cb730adb27b47878797050e80687.bin": "d7d1c10dcb00c6db73106382c59541ba6a98cb730adb27b47878797050e80687",
+    "data/processed/foundation/20260911T194849Z/marine-arabian-sea.json": "9f7d0ec61f2a174dd1fa220a28f32635b46f464253f927dff86888bcb7fc8572",
+    "data/runtime/blobs/c64730c7d57fa8b38c0d7e3ad9692e9a401b8796b6ef023ef5d44631ed5dedd4.bin": "c64730c7d57fa8b38c0d7e3ad9692e9a401b8796b6ef023ef5d44631ed5dedd4",
+    "data/processed/foundation/20260911T194849Z/marine-bay-of-bengal.json": "3f537f2eb349936d6524b485a9fdb2b2ba7d9ae8e7de836cb28d666e16deff48",
+    "data/runtime/blobs/d9f3283166c64ae156f315c0bef744822327191c15afbbf654f3722e2d7008c4.bin": "d9f3283166c64ae156f315c0bef744822327191c15afbbf654f3722e2d7008c4",
+    "data/processed/foundation/20260911T194849Z/marine-andaman-sea.json": "b221f041777803f026857614173333660e1ad5e299b6dc82f12bb94aa831d981",
+    "data/runtime/blobs/832ccd12a570620af9d484c8ffa9195d00b40d9d3607afa286691bda05d8f009.bin": "832ccd12a570620af9d484c8ffa9195d00b40d9d3607afa286691bda05d8f009",
+    "data/processed/foundation/20260911T194849Z/river-ahmedabad.json": "05e582a82602f0f91a42efeaeced0c05f6fab4064d8733e286d8d4cfd43d9153",
+    "data/runtime/blobs/f5717ccf09e64ce6d841b6e8017411c233947bc1e37c2fed529690299e352b54.bin": "f5717ccf09e64ce6d841b6e8017411c233947bc1e37c2fed529690299e352b54"
+  },
+  "jobs": 10,
+  "duplicate_enqueues": 10,
+  "simulated_network_calls": 10,
+  "real_provider_calls": 0,
+  "results": {
+    "results": [
+      {
+        "state": "succeeded",
+        "promoted": true,
+        "job_id": "04a8e5291f4540b6a2d898c766c82ac0b947941e5fcc678a062b9946f5651777"
+      },
+      {
+        "state": "succeeded",
+        "promoted": true,
+        "job_id": "076ede5d97e67d42d0062ff9eb4fdc3c6043327b20bdf9dbb3bc6dd9e56bcd94"
+      },
+      {
+        "state": "succeeded",
+        "promoted": true,
+        "job_id": "0845da7238050a984de32e09774928a353b14fe637857eb990bcf4ab25b53572"
+      },
+      {
+        "state": "succeeded",
+        "promoted": true,
+        "job_id": "59b6e845034260dab029550a036ce36767ed9bcdafa7a760a3d954630bc1e66a"
+      },
+      {
+        "state": "succeeded",
+        "promoted": true,
+        "job_id": "6f57cbc2a790a4f4c17da69106206cb47db07bea281c3dcee7f0057f87b2562f"
+      },
+      {
+        "state": "succeeded",
+        "promoted": true,
+        "job_id": "8e9565900346f214c6a24bc160f3ae9f2d0e69ee430b6cdcdafeea34a26512e4"
+      },
+      {
+        "state": "succeeded",
+        "promoted": true,
+        "job_id": "8f9e0fcf700f672b833f5773dd80c1f1f99a588ce7e1656dd77b87a087cdff4b"
+      },
+      {
+        "state": "succeeded",
+        "promoted": true,
+        "job_id": "99ab2a0992ea607bc4053b99e9239b2577ddf46a72f945ab4f10cbf0de37d0b6"
+      },
+      {
+        "state": "succeeded",
+        "promoted": true,
+        "job_id": "afff4f303d6011a42c1e09f2ae6e41e358a7fbd514d14dc2cc5df65b5baafc39"
+      },
+      {
+        "state": "succeeded",
+        "promoted": true,
+        "job_id": "f625ec359eafcf1deb272d129d65b2e72e1d678547bd577452ef0b6082764fc1"
+      }
+    ],
+    "status": {
+      "jobs": {
+        "succeeded": 10
+      },
+      "versions": 10,
+      "heads": 10,
+      "network_attempts_reserved": 10,
+      "operational_ready": false
+    },
+    "scheduled_background_work": false
+  },
+  "measurements": {
+    "sqlite_bytes": 1097728,
+    "raw_payload_bytes": 21663,
+    "raw_tree_bytes_including_cache_events": 33737,
+    "published_scalar_records": 2383,
+    "local_elapsed_seconds": 0.04651025000202935
+  },
+  "backup_restore": "PASS",
+  "backup": {
+    "directory": "/Users/heer/WeatherGPT/data/processed/hardening/answers-batch-four-20260912/replay-final/ingestion/backup",
+    "files": 11,
+    "bytes": 1119391
+  },
+  "operational_ready": false
+}

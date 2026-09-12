@@ -1,0 +1,10 @@
+{
+  "source_id": "S57",
+  "url": "https://mausam.imd.gov.in/responsive/agrometinformation/district_current_en_get.php?s=Coimbatore&step2=true",
+  "retrieved_at_utc": "2026-09-11T19:37:34.853572+00:00",
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "bytes": 562,
+  "sha256": "3d004ae0499c6c6bce001b931e726e451df0155c923a83aab848f9a3b526e997",
+  "blob": "blobs/3d004ae0499c6c6bce001b931e726e451df0155c923a83aab848f9a3b526e997.bin"
+}

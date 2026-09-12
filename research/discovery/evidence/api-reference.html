@@ -1,0 +1,1069 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IMD API Reference</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body { background:#f7f9fc; color:#212529; }
+    .imd-topbar {
+      background:#fff;
+      border-bottom:1px solid #dee2e6;
+    }
+    .imd-brand-logo {
+      width:52px;
+      height:52px;
+      object-fit:contain;
+    }
+    .imd-brand-title {
+      font-size:1rem;
+      font-weight:700;
+      line-height:1.2;
+      margin:0;
+    }
+    .imd-brand-subtitle {
+      font-size:.8rem;
+      margin:0;
+      color:#495057;
+    }
+    .page-title { padding:0; }
+    .page-title .container {
+      background:#0d6efd;
+      color:#fff;
+      padding:14px 16px;
+      border-radius:8px;
+    }
+    .section-card { border:1px solid #dfe4ea; border-radius:8px; background:#fff; }
+    .section-head { border-bottom:1px solid #e9ecef; padding:10px 14px; font-weight:600; }
+    .section-body { padding:14px; }
+    .label { font-weight:600; }
+    pre.sample {
+      background:#f8f9fa;
+      border:1px solid #dee2e6;
+      border-radius:6px;
+      padding:10px;
+      white-space:pre-wrap;
+      word-break:break-word;
+      margin-bottom:0;
+    }
+    table.ref-table { font-size:0.93rem; }
+    @media (max-width: 767.98px) {
+      .section-head { font-size:0.98rem; }
+      .section-body { padding:10px; }
+      pre.sample { font-size:0.82rem; }
+      table.ref-table { font-size:0.82rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="imd-topbar py-2 mb-3">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center gap-2">
+          <img src="../assets/img/imd-logo.png" alt="IMD Logo" class="imd-brand-logo">
+          <div>
+            <p class="imd-brand-title">India Meteorological Department</p>
+            <p class="imd-brand-subtitle">Ministry of Earth Sciences</p>
+            <p class="imd-brand-subtitle">Government of India</p>
+          </div>
+        </div>
+        <a href="index.php" class="btn btn-outline-primary btn-sm"><i class="bi bi-house-door me-1"></i>Home</a>
+      </div>
+    </div>
+  </header>
+
+  <header class="page-title mb-3">
+    <div class="container">
+      <h1 class="h5 mb-0">List of APIs of India Meteorological Department</h1>
+    </div>
+  </header>
+
+  <main class="container pb-4">
+    <section class="section-card mb-3" id="api-index">
+      <div class="section-head">API Index</div>
+      <div class="section-body">
+        <div class="row">
+          <!-- Column 1 -->
+          <div class="col-lg-4 col-md-6 mb-4">
+            <h6 class="fw-bold text-primary">Weather Forecast APIs</h6>
+            <ol>
+              <li><a href="#api-1">City Weather Forecast (7 Days)</a></li>
+              <li><a href="#api-2">City Weather Forecast with Latitude & Longitude</a></li>
+              <li><a href="#api-16">Subdivision Rainfall Forecast (7 Days)</a></li>
+              <li><a href="#api-17">State District Rainfall Forecast (5 Days)</a></li>
+              <li><a href="#api-24">All India Weather Forecast Bulletin</a></li>
+              <li><a href="#api-27">Weather at your location (Mausamgram)</a></li>
+            </ol>
+
+            <h6 class="fw-bold text-primary mt-4">Current Weather & Nowcast</h6>
+            <ol start="7">
+              <li><a href="#api-3">Current Weather API</a></li>
+              <li><a href="#api-4">District-wise Nowcast</a></li>
+              <li><a href="#api-7">Station-wise Nowcast</a></li>
+              <li><a href="#api-9">AWS/ARG Data</a></li>
+            </ol>
+
+            <h6 class="fw-bold text-primary mt-4">Warning APIs</h6>
+            <ol start="11">
+              <li><a href="#api-6">District-wise Warnings</a></li>
+              <li><a href="#api-14">Subdivision-wise Warnings</a></li>
+            </ol>
+          </div>
+
+          <!-- Column 2 -->
+          <div class="col-lg-4 col-md-6 mb-4">
+            <h6 class="fw-bold text-primary">Rainfall APIs</h6>
+            <ol start="13">
+              <li><a href="#api-5">District-wise Rainfall</a></li>
+              <li><a href="#api-8">State-wise Rainfall</a></li>
+              <li><a href="#api-10">River Basin (QPF)</a></li>
+            </ol>
+
+            <h6 class="fw-bold text-primary mt-4">Marine APIs</h6>
+            <ol start="16">
+              <li><a href="#api-11">Port Warning</a></li>
+              <li><a href="#api-12">Sea Area Bulletin</a></li>
+              <li><a href="#api-13">Coastal Bulletin</a></li>
+              <li><a href="#api-23">Fishermen Warning</a></li>
+            </ol>
+
+            <h6 class="fw-bold text-primary mt-4">Cyclone APIs</h6>
+            <ol start="20">
+              <li><a href="#api-18">Cyclone Track</a></li>
+              <li><a href="#api-19">Cyclone Wind Warning</a></li>
+              <li><a href="#api-20">Cyclone Cone of Uncertainty</a></li>
+            </ol>
+
+            <h6 class="fw-bold text-primary mt-4">Astronomical API</h6>
+            <ol start="23">
+              <li><a href="#api-15">Sun Moon (Rise/Set) Time</a></li>
+            </ol>
+          </div>
+
+          <!-- Column 3 -->
+          <div class="col-lg-4 col-md-12 mb-4">
+            <h6 class="fw-bold text-primary">NHAI API</h6>
+            <ol start="24">
+              <li><a href="#api-21">Highway Nowcast Warning</a></li>
+              <li><a href="#api-22">Highway Warning - 5 Days</a></li>
+            </ol>
+
+            <h6 class="fw-bold text-primary mt-4">RADAR & Lightning API</h6>
+            <ol start="26">
+              <li><a href="#api-25">Radar Image</a></li>
+              <li><a href="#api-26">Lightning Data</a></li>
+            </ol>
+
+            <h6 class="fw-bold text-primary mt-4">Agromet Advisory API</h6>
+            <ol start="28">
+              <li><a href="#api-28">Agromet Advisory</a></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-card mb-3" id="api-1">
+      <div class="section-head">1) City Weather forecast for 7 days</div>
+      <div class="section-body">
+        <div><span class="label">URL:</span> https://api.imd.gov.in/api/v1/cityforecast?id=42182</div>
+        <div><span class="label">Or:</span> https://api.imd.gov.in/api/v1/cityforecast</div>
+        <div><span class="label">Visualize Data:</span> https://city.imd.gov.in</div>
+        <div><span class="label">City Forecast Mapping Data:</span> https://api.imd.gov.in/api/v1/cityforecast_mapping</div>
+        <div class="mt-3 label">Field Reference</div>
+        <table class="table table-bordered table-sm ref-table mb-0">
+          <thead><tr><th>Field</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Date</td><td>Date of Observation in YYYY-mm-dd</td></tr>
+            <tr><td>Station_Code</td><td>Station Code is unique for each station</td></tr>
+            <tr><td>Station_Name</td><td>Station name</td></tr>
+            <tr><td>Today_Max_temp</td><td>Max Temp records at 1730 Hr IST (oC)</td></tr>
+            <tr><td>Today_Max_Departure_from_Normal</td><td>Departure of today max temp from normal (oC)</td></tr>
+            <tr><td>Previous_Day_Max_temp</td><td>Max Temp of previous day records at 1730 Hr IST (oC)</td></tr>
+            <tr><td>Previous_Day_Max_Departure_from_Normal</td><td>Departure of previous day max temp from normal (oC)</td></tr>
+            <tr><td>Today_Min_temp</td><td>Min Temp records at 0530 Hr IST (oC)</td></tr>
+            <tr><td>Today_Min_Departure_from_Normal</td><td>Departure of today min temp from normal (oC)</td></tr>
+            <tr><td>Past_24_hrs_Rainfall</td><td>Recorded from 0830 hrs IST of previous day to 0830 hrs IST of today</td></tr>
+            <tr><td>Relative_Humidity_at_0830</td><td>Relative Humidity recorded at 0830 hrs (%)</td></tr>
+            <tr><td>Relative_Humidity_at_1730</td><td>Relative Humidity recorded at 1730 hrs (%)</td></tr>
+            <tr><td>Previous_Day_Relative_Humidity_at_1730</td><td>Relative Humidity of previous day recorded at 1730 hrs (%)</td></tr>
+            <tr><td>Sunset_time</td><td>Sunset Time</td></tr>
+            <tr><td>Sunrise_time</td><td>Sunrise Time</td></tr>
+            <tr><td>Moonset_time</td><td>Moonset Time</td></tr>
+            <tr><td>Moonrise_time</td><td>Moonrise Time</td></tr>
+            <tr><td>Todays_Forecast_Max_Temp</td><td>Forecasted Max Temp of Day-1 (i.e. Today) (oC)</td></tr>
+            <tr><td>Todays_Forecast_Min_temp</td><td>Forecasted Min Temp of Day-1 (i.e. Today) (oC)</td></tr>
+            <tr><td>Todays_Forecast</td><td>Weather Forecast of Day-1 (i.e. Today)</td></tr>
+            <tr><td>Day_2_Max_Temp</td><td>Forecasted Max Temp of Day-2 (oC)</td></tr>
+            <tr><td>Day_2_Min_temp</td><td>Forecasted Min Temp of Day-2 (oC)</td></tr>
+            <tr><td>Day_2_Forecast</td><td>Weather Forecast of Day-2</td></tr>
+            <tr><td>Day_3_Max_Temp</td><td>Forecasted Max Temp of Day-3 (oC)</td></tr>
+            <tr><td>Day_3_Min_temp</td><td>Forecasted Min Temp of Day-3 (oC)</td></tr>
+            <tr><td>Day_3_Forecast</td><td>Weather Forecast of Day-3</td></tr>
+            <tr><td>Day_4_Max_Temp</td><td>Forecasted Max Temp of Day-4 (oC)</td></tr>
+            <tr><td>Day_4_Min_temp</td><td>Forecasted Min Temp of Day-4 (oC)</td></tr>
+            <tr><td>Day_4_Forecast</td><td>Weather Forecast of Day-4</td></tr>
+            <tr><td>Day_5_Max_Temp</td><td>Forecasted Max Temp of Day-5 (oC)</td></tr>
+            <tr><td>Day_5_Min_temp</td><td>Forecasted Min Temp of Day-5 (oC)</td></tr>
+            <tr><td>Day_5_Forecast</td><td>Weather Forecast of Day-5</td></tr>
+            <tr><td>Day_6_Max_Temp</td><td>Forecasted Max Temp of Day-6 (oC)</td></tr>
+            <tr><td>Day_6_Min_temp</td><td>Forecasted Min Temp of Day-6 (oC)</td></tr>
+            <tr><td>Day_6_Forecast</td><td>Weather Forecast of Day-6</td></tr>
+            <tr><td>Day_7_Max_Temp</td><td>Forecasted Max Temp of Day-7 (oC)</td></tr>
+            <tr><td>Day_7_Min_temp</td><td>Forecasted Min Temp of Day-7 (oC)</td></tr>
+            <tr><td>Day_7_Forecast</td><td>Weather Forecast of Day-7</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section-card mb-3" id="api-2">
+      <div class="section-head">2) City Weather forecast for 7 days with latitude and longitude</div>
+      <div class="section-body">
+        <div><span class="label">URL:</span> https://api.imd.gov.in/api/v1/cityforecastloc?id=42182</div>
+        <div><span class="label">Or:</span> https://api.imd.gov.in/api/v1/cityforecastloc</div>
+        <div><span class="label">Visualize Data:</span> https://city.imd.gov.in</div>
+        <div><span class="label">City Forecast Mapping Data:</span> https://api.imd.gov.in/api/v1/cityforecast_mapping</div>
+        <div class="mt-3 label">Field Reference</div>
+        <table class="table table-bordered table-sm ref-table mb-0">
+          <thead><tr><th>Field</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Date</td><td>Date of Observation in YYYY-mm-dd</td></tr>
+            <tr><td>Station_Code</td><td>Station Code is unique for each station</td></tr>
+            <tr><td>Station_Name</td><td>Station name</td></tr>
+            <tr><td>Today_Max_temp</td><td>Max Temp records at 1730 Hr IST (oC)</td></tr>
+            <tr><td>Today_Max_Departure_from_Normal</td><td>Departure of today max temp from normal (oC)</td></tr>
+            <tr><td>Previous_Day_Max_temp</td><td>Max Temp of previous day records at 1730 Hr IST (oC)</td></tr>
+            <tr><td>Previous_Day_Max_Departure_from_Normal</td><td>Departure of previous day max temp from normal (oC)</td></tr>
+            <tr><td>Today_Min_temp</td><td>Min Temp records at 0530 Hr IST (oC)</td></tr>
+            <tr><td>Today_Min_Departure_from_Normal</td><td>Departure of today min temp from normal (oC)</td></tr>
+            <tr><td>Past_24_hrs_Rainfall</td><td>Recorded from 0830 hrs IST of previous day to 0830 hrs IST of today</td></tr>
+            <tr><td>Relative_Humidity_at_0830</td><td>Relative Humidity recorded at 0830 hrs (%)</td></tr>
+            <tr><td>Relative_Humidity_at_1730</td><td>Relative Humidity recorded at 1730 hrs (%)</td></tr>
+            <tr><td>Previous_Day_Relative_Humidity_at_1730</td><td>Relative Humidity of previous day recorded at 1730 hrs (%)</td></tr>
+            <tr><td>Sunset_time</td><td>Sunset Time</td></tr>
+            <tr><td>Sunrise_time</td><td>Sunrise Time</td></tr>
+            <tr><td>Moonset_time</td><td>Moonset Time</td></tr>
+            <tr><td>Moonrise_time</td><td>Moonrise Time</td></tr>
+            <tr><td>Todays_Forecast_Max_Temp</td><td>Forecasted Max Temp of Day-1 (i.e. Today) (oC)</td></tr>
+            <tr><td>Todays_Forecast_Min_temp</td><td>Forecasted Min Temp of Day-1 (i.e. Today) (oC)</td></tr>
+            <tr><td>Todays_Forecast</td><td>Weather Forecast of Day-1 (i.e. Today)</td></tr>
+            <tr><td>Day_2_Max_Temp</td><td>Forecasted Max Temp of Day-2 (oC)</td></tr>
+            <tr><td>Day_2_Min_temp</td><td>Forecasted Min Temp of Day-2 (oC)</td></tr>
+            <tr><td>Day_2_Forecast</td><td>Weather Forecast of Day-2</td></tr>
+            <tr><td>Day_3_Max_Temp</td><td>Forecasted Max Temp of Day-3 (oC)</td></tr>
+            <tr><td>Day_3_Min_temp</td><td>Forecasted Min Temp of Day-3 (oC)</td></tr>
+            <tr><td>Day_3_Forecast</td><td>Weather Forecast of Day-3</td></tr>
+            <tr><td>Day_4_Max_Temp</td><td>Forecasted Max Temp of Day-4 (oC)</td></tr>
+            <tr><td>Day_4_Min_temp</td><td>Forecasted Min Temp of Day-4 (oC)</td></tr>
+            <tr><td>Day_4_Forecast</td><td>Weather Forecast of Day-4</td></tr>
+            <tr><td>Day_5_Max_Temp</td><td>Forecasted Max Temp of Day-5 (oC)</td></tr>
+            <tr><td>Day_5_Min_temp</td><td>Forecasted Min Temp of Day-5 (oC)</td></tr>
+            <tr><td>Day_5_Forecast</td><td>Weather Forecast of Day-5</td></tr>
+            <tr><td>Day_6_Max_Temp</td><td>Forecasted Max Temp of Day-6 (oC)</td></tr>
+            <tr><td>Day_6_Min_temp</td><td>Forecasted Min Temp of Day-6 (oC)</td></tr>
+            <tr><td>Day_6_Forecast</td><td>Weather Forecast of Day-6</td></tr>
+            <tr><td>Day_7_Max_Temp</td><td>Forecasted Max Temp of Day-7 (oC)</td></tr>
+            <tr><td>Day_7_Min_temp</td><td>Forecasted Min Temp of Day-7 (oC)</td></tr>
+            <tr><td>Day_7_Forecast</td><td>Weather Forecast of Day-7</td></tr>
+            <tr><td>Latitude</td><td>Station latitude</td></tr>
+            <tr><td>Longitude</td><td>Station longitude</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section-card mb-3" id="api-3">
+      <div class="section-head">3) Current Weather API</div>
+      <div class="section-body">
+        <div><span class="label">URL:</span> https://api.imd.gov.in/api/v1/current_wx</div>
+        <div><span class="label">Or:</span> https://api.imd.gov.in/api/v1/current_wx?id=StationId</div>
+        <div class="mt-3 label">Field / Value / Description</div>
+        <table class="table table-bordered table-sm ref-table mb-3">
+          <thead><tr><th>Field</th><th>Value</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Station Id</td><td>Station ID is unique for each station</td><td>Station Id</td></tr>
+            <tr><td>Station</td><td>Station name</td><td>Station name</td></tr>
+            <tr><td>Date of Observation</td><td>YYYY-mm-dd</td><td>Date of Observation</td></tr>
+            <tr><td>Time of Observation</td><td>UTC</td><td>It is time of observation in UTC</td></tr>
+            <tr><td>M.S.L.P</td><td>hPa</td><td>Mean Sea Level Pressure in hPa</td></tr>
+            <tr><td>Wind Direction</td><td>Code</td><td>Wind Direction Description is given below</td></tr>
+            <tr><td>Wind Speed</td><td>KMPH</td><td>Wind Speed in KMPH</td></tr>
+            <tr><td>Temperature</td><td>deg C</td><td>Current Temperature in deg C</td></tr>
+            <tr><td>Weather Code</td><td>01-99</td><td>Weather code for current weather</td></tr>
+            <tr><td>Nebulosity</td><td>0-8</td><td>Cloud coverage on scale of 0-8</td></tr>
+            <tr><td>Humidity</td><td>%</td><td>Humidity in percentage (%)</td></tr>
+            <tr><td>Last 24 hrs Rainfall</td><td>mm</td><td>Rainfall in last 24 hrs in mm</td></tr>
+          </tbody>
+        </table>
+
+        <div class="label">Wind Direction Description</div>
+        <table class="table table-bordered table-sm ref-table mb-3">
+          <thead><tr><th>Value</th><th>Direction</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>Calm</td></tr>
+            <tr><td>20</td><td>North-northeasterly</td></tr>
+            <tr><td>50</td><td>Northeasterly</td></tr>
+            <tr><td>70</td><td>East-northeasterly</td></tr>
+            <tr><td>90</td><td>Easterly</td></tr>
+            <tr><td>110</td><td>East-southeasterly</td></tr>
+            <tr><td>140</td><td>Southeasterly</td></tr>
+            <tr><td>160</td><td>South-southeasterly</td></tr>
+            <tr><td>180</td><td>Southerly</td></tr>
+            <tr><td>200</td><td>South-southwesterly</td></tr>
+            <tr><td>230</td><td>Southwesterly</td></tr>
+            <tr><td>250</td><td>West-southwesterly</td></tr>
+            <tr><td>270</td><td>Westerly</td></tr>
+            <tr><td>290</td><td>West-northwesterly</td></tr>
+            <tr><td>320</td><td>Northwesterly</td></tr>
+            <tr><td>340</td><td>North-northwesterly</td></tr>
+            <tr><td>360</td><td>Northerly</td></tr>
+          </tbody>
+        </table>
+
+        <div class="label">Weather Code Description</div>
+        <table class="table table-bordered table-sm ref-table mb-0">
+          <thead><tr><th>Weather Code</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>01</td><td>Clouds generally dissolving or becoming less developed</td></tr>
+            <tr><td>02</td><td>State of sky on the whole unchanged</td></tr>
+            <tr><td>03</td><td>Clouds generally forming or developing</td></tr>
+            <tr><td>04</td><td>Visibility reduced by smoke (e.g. veldt/forest fires, industrial smoke, volcanic ashes)</td></tr>
+            <tr><td>05</td><td>Haze</td></tr>
+            <tr><td>06</td><td>Widespread dust in suspension in the air, not raised by wind at or near the station</td></tr>
+            <tr><td>07</td><td>Dust or sand raised by wind at or near the station, no well-developed whirl(s), no duststorm/sandstorm seen</td></tr>
+            <tr><td>08</td><td>Well-developed dust/sand whirl(s) at or near station, but no duststorm/sandstorm</td></tr>
+            <tr><td>09</td><td>Duststorm or sandstorm within sight</td></tr>
+            <tr><td>10</td><td>Mist</td></tr>
+            <tr><td>11</td><td>Patches of shallow fog/ice fog at station (not deeper than about 2 m on land / 10 m at sea)</td></tr>
+            <tr><td>12</td><td>More or less continuous shallow fog/ice fog at station</td></tr>
+            <tr><td>13</td><td>Lightning visible, no thunder heard</td></tr>
+            <tr><td>14</td><td>Precipitation within sight, not reaching ground/sea surface</td></tr>
+            <tr><td>15</td><td>Precipitation within sight, reaching ground/sea, but distant (&gt; 5 km)</td></tr>
+            <tr><td>16</td><td>Precipitation within sight, reaching ground/sea, near but not at station</td></tr>
+            <tr><td>17</td><td>Thunderstorm, no precipitation at observation time</td></tr>
+            <tr><td>18</td><td>Squalls at or within sight during preceding hour / at observation</td></tr>
+            <tr><td>19</td><td>Funnel cloud(s) at or within sight during preceding hour / at observation</td></tr>
+            <tr><td>20</td><td>Drizzle (not freezing) or snow grains not falling as showers</td></tr>
+            <tr><td>21</td><td>Rain (not freezing) not falling as showers</td></tr>
+            <tr><td>22</td><td>Snow not falling as showers</td></tr>
+            <tr><td>23</td><td>Rain and snow / ice pellets type (a), not falling as showers</td></tr>
+            <tr><td>24</td><td>Freezing drizzle / freezing rain not falling as showers</td></tr>
+            <tr><td>25</td><td>Showers of rain</td></tr>
+            <tr><td>26</td><td>Showers of snow, or rain and snow</td></tr>
+            <tr><td>27</td><td>Showers of hail, or rain and hail</td></tr>
+            <tr><td>28</td><td>Fog or ice fog</td></tr>
+            <tr><td>29</td><td>Thunderstorm (with or without precipitation)</td></tr>
+            <tr><td>30</td><td>Slight/moderate duststorm or sandstorm - decreased during preceding hour</td></tr>
+            <tr><td>31</td><td>Slight/moderate duststorm or sandstorm - no appreciable change</td></tr>
+            <tr><td>32</td><td>Slight/moderate duststorm or sandstorm - begun/increased during preceding hour</td></tr>
+            <tr><td>33</td><td>Severe duststorm or sandstorm - decreased during preceding hour</td></tr>
+            <tr><td>34</td><td>Severe duststorm or sandstorm - no appreciable change</td></tr>
+            <tr><td>35</td><td>Severe duststorm or sandstorm - begun/increased during preceding hour</td></tr>
+            <tr><td>36</td><td>Slight/moderate blowing snow generally low (below eye level)</td></tr>
+            <tr><td>37</td><td>Heavy drifting snow generally low (below eye level)</td></tr>
+            <tr><td>38</td><td>Slight/moderate blowing snow generally high (above eye level)</td></tr>
+            <tr><td>39</td><td>Heavy drifting snow generally high (above eye level)</td></tr>
+            <tr><td>40</td><td>Fog/ice fog at a distance, not at station during preceding hour</td></tr>
+            <tr><td>41</td><td>Fog or ice fog in patches</td></tr>
+            <tr><td>42</td><td>Fog/ice fog, sky visible, becoming thinner</td></tr>
+            <tr><td>43</td><td>Fog/ice fog, sky invisible, becoming thinner</td></tr>
+            <tr><td>44</td><td>Fog/ice fog, sky visible, no appreciable change</td></tr>
+            <tr><td>45</td><td>Fog/ice fog, sky invisible, no appreciable change</td></tr>
+            <tr><td>46</td><td>Fog/ice fog, sky visible, begun/become thicker</td></tr>
+            <tr><td>47</td><td>Fog/ice fog, sky invisible, begun/become thicker</td></tr>
+            <tr><td>48</td><td>Fog depositing rime, sky visible</td></tr>
+            <tr><td>49</td><td>Fog depositing rime, sky invisible</td></tr>
+            <tr><td>50</td><td>Drizzle, not freezing, intermittent slight</td></tr>
+            <tr><td>51</td><td>Drizzle, not freezing, continuous slight</td></tr>
+            <tr><td>52</td><td>Drizzle, not freezing, intermittent moderate</td></tr>
+            <tr><td>53</td><td>Drizzle, not freezing, continuous moderate</td></tr>
+            <tr><td>54</td><td>Drizzle, not freezing, intermittent heavy (dense)</td></tr>
+            <tr><td>55</td><td>Drizzle, not freezing, continuous heavy (dense)</td></tr>
+            <tr><td>56</td><td>Drizzle, freezing, slight</td></tr>
+            <tr><td>57</td><td>Drizzle, freezing, moderate or heavy (dense)</td></tr>
+            <tr><td>58</td><td>Drizzle and rain, slight</td></tr>
+            <tr><td>59</td><td>Drizzle and rain, moderate or heavy</td></tr>
+            <tr><td>60</td><td>Rain, not freezing, intermittent slight</td></tr>
+            <tr><td>61</td><td>Rain, not freezing, continuous slight</td></tr>
+            <tr><td>62</td><td>Rain, not freezing, intermittent moderate</td></tr>
+            <tr><td>63</td><td>Rain, not freezing, continuous moderate</td></tr>
+            <tr><td>64</td><td>Rain, not freezing, intermittent heavy</td></tr>
+            <tr><td>65</td><td>Rain, not freezing, continuous heavy</td></tr>
+            <tr><td>66</td><td>Rain, freezing, slight</td></tr>
+            <tr><td>67</td><td>Rain, freezing, moderate or heavy</td></tr>
+            <tr><td>68</td><td>Rain, or drizzle and snow, slight</td></tr>
+            <tr><td>69</td><td>Rain, or drizzle and snow, moderate or heavy</td></tr>
+            <tr><td>70</td><td>Intermittent fall of snowflakes, slight</td></tr>
+            <tr><td>71</td><td>Continuous fall of snowflakes, slight</td></tr>
+            <tr><td>72</td><td>Intermittent fall of snowflakes, moderate</td></tr>
+            <tr><td>73</td><td>Continuous fall of snowflakes, moderate</td></tr>
+            <tr><td>74</td><td>Intermittent fall of snowflakes, heavy</td></tr>
+            <tr><td>75</td><td>Continuous fall of snowflakes, heavy</td></tr>
+            <tr><td>76</td><td>Ice prisms (with or without fog)</td></tr>
+            <tr><td>77</td><td>Snow grains (with or without fog)</td></tr>
+            <tr><td>78</td><td>Isolated star-like snow crystals (with or without fog)</td></tr>
+            <tr><td>79</td><td>Ice pellets, type (a)</td></tr>
+            <tr><td>80</td><td>Rain shower(s), slight</td></tr>
+            <tr><td>81</td><td>Rain shower(s), moderate or heavy</td></tr>
+            <tr><td>82</td><td>Rain shower(s), violent</td></tr>
+            <tr><td>83</td><td>Shower(s) of rain and snow mixed, slight</td></tr>
+            <tr><td>84</td><td>Shower(s) of rain and snow mixed, moderate or heavy</td></tr>
+            <tr><td>85</td><td>Snow shower(s), slight</td></tr>
+            <tr><td>86</td><td>Snow shower(s), moderate or heavy</td></tr>
+            <tr><td>87</td><td>Shower(s) of snow pellets/ice pellets type (b), slight</td></tr>
+            <tr><td>88</td><td>Shower(s) of snow pellets/ice pellets type (b), moderate or heavy</td></tr>
+            <tr><td>89</td><td>Shower(s) of hail, with/without rain or rain and snow mixed, not associated with thunder, slight</td></tr>
+            <tr><td>90</td><td>Shower(s) of hail, with/without rain or rain and snow mixed, not associated with thunder, moderate or heavy</td></tr>
+            <tr><td>91</td><td>Slight rain at observation; thunderstorm during preceding hour but not at observation</td></tr>
+            <tr><td>92</td><td>Moderate/heavy rain at observation; thunderstorm during preceding hour but not at observation</td></tr>
+            <tr><td>93</td><td>Slight snow/rain+snow mixed/hail at observation; thunderstorm during preceding hour but not at observation</td></tr>
+            <tr><td>94</td><td>Moderate/heavy snow/rain+snow mixed/hail at observation; thunderstorm during preceding hour but not at observation</td></tr>
+            <tr><td>95</td><td>Thunderstorm, slight/moderate, without hail, with rain and/or snow at observation</td></tr>
+            <tr><td>96</td><td>Thunderstorm, slight/moderate, with hail at observation</td></tr>
+            <tr><td>97</td><td>Thunderstorm, heavy, without hail, with rain and/or snow at observation</td></tr>
+            <tr><td>98</td><td>Thunderstorm combined with duststorm/sandstorm at observation</td></tr>
+            <tr><td>99</td><td>Thunderstorm, heavy, with hail at observation</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section-card mb-3" id="api-4">
+      <div class="section-head">4) District-wise Nowcast</div>
+      <div class="section-body">
+        <div><span class="label">URL:</span> https://api.imd.gov.in/api/v1/districtnowcast</div>
+        <div><span class="label">Or:</span> https://api.imd.gov.in/api/v1/districtnowcast?id=1</div>
+        <div><span class="label">Visualize Data:</span> https://mausam.imd.gov.in/responsive/districtWiseNowcastGIS.php</div>
+        <table class="table table-bordered table-sm ref-table mb-3">
+          <thead><tr><th>Field</th><th>Value</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Station</td><td>Station name</td><td>Station name</td></tr>
+            <tr><td>Date</td><td>YYYY-mm-dd</td><td>Date of warning issued</td></tr>
+            <tr><td>Cat1</td><td>1</td><td>No Weather</td></tr>
+            <tr><td>Cat2</td><td>2</td><td>Light rain: &lt; 5 mm/hr</td></tr>
+            <tr><td>Cat3</td><td>3</td><td>Light snow: &lt; 5 cm/hr</td></tr>
+            <tr><td>Cat4</td><td>4</td><td>Light Thunderstorms with maximum surface wind speed less than 40 kmph (in gusts)</td></tr>
+            <tr><td>Cat5</td><td>5</td><td>Slight dust storm: wind speed up to 41 kmph and visibility less than 1000 m but more than 500 m</td></tr>
+            <tr><td>Cat6</td><td>6</td><td>Low cloud to ground Lightning probability (&lt; 30%)</td></tr>
+            <tr><td>Cat7</td><td>7</td><td>Moderate rain: 5-15 mm/hr</td></tr>
+            <tr><td>Cat8</td><td>8</td><td>Moderate snow: 5-15 cm/hr</td></tr>
+            <tr><td>Cat9</td><td>9</td><td>Moderate Thunderstorms with maximum surface wind speed between 41 - 61 kmph (in gusts)</td></tr>
+            <tr><td>Cat10</td><td>10</td><td>Moderate dust storm: wind speed between 41-61 kmph and visibility between 200 and 500 m due to dust</td></tr>
+            <tr><td>Cat11</td><td>11</td><td>Moderate cloud to ground Lightning probability (30 - 60%)</td></tr>
+            <tr><td>Cat12</td><td>12</td><td>Heavy rain: &gt; 15 mm/hr</td></tr>
+            <tr><td>Cat13</td><td>13</td><td>Heavy snow: &gt; 15 cm/hr</td></tr>
+            <tr><td>Cat14</td><td>14</td><td>Severe Thunderstorms with maximum surface wind speed 62 - 87 kmph (in gusts)</td></tr>
+            <tr><td>Cat15</td><td>15</td><td>Very Severe Thunderstorms with maximum surface wind speed &gt; 87 kmph (in gusts)</td></tr>
+            <tr><td>Cat16</td><td>Text</td><td>Other Warnings (text warnings can be entered)</td></tr>
+            <tr><td>Cat17</td><td>31</td><td>Thunderstorms with Hail</td></tr>
+            <tr><td>Cat18</td><td>32</td><td>Severe dust storm: surface wind speed (in gusts) exceeding 61 kmph and visibility less than 200 m due to dust</td></tr>
+            <tr><td>Cat19</td><td>33</td><td>High cloud to ground Lightning probability (&gt; 60%)</td></tr>
+            <tr><td>message</td><td>text</td><td>Consolidated warning message</td></tr>
+            <tr><td>toi</td><td>HHmm</td><td>Time of issue of warning</td></tr>
+            <tr><td>Vupto</td><td>HHmm</td><td>Warning valid upto</td></tr>
+            <tr><td>color</td><td>1, 2, 3 or 4</td><td>Color code for warning severity</td></tr>
+          </tbody>
+        </table>
+        <div class="label">Color Code Note</div>
+        <table class="table table-bordered table-sm ref-table mb-0">
+          <thead><tr><th>Color Code</th><th>Usage</th><th>Color</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Cat1</td><td>Green (#008000)</td></tr>
+            <tr><td>2</td><td>Cat2 to Cat6</td><td>Yellow (#FFFF00)</td></tr>
+            <tr><td>3</td><td>Cat7 to Cat11</td><td>Orange (#FFA500)</td></tr>
+            <tr><td>4</td><td>Cat12 to Cat19</td><td>Red (#ff0000)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section-card mb-3" id="api-5">
+      <div class="section-head">5) District-wise Rainfall</div>
+      <div class="section-body">
+        <div><span class="label">URL:</span> https://api.imd.gov.in/api/v1/districtrainfall</div>
+        <div><span class="label">Or:</span> https://api.imd.gov.in/api/v1/districtrainfall?id=164</div>
+        <div><span class="label">Visualize Data:</span> https://mausam.imd.gov.in/responsive/rainfallinformation.php</div>
+        <div class="mt-3 label">Sample data (Fields are self-explanatory)</div>
+        <pre class="sample">
+          {
+            "OBJ_ID": "164",
+            "District": "ADILABAD",
+            "Date": "2023-01-31",
+            "Daily Actual": "0.00",
+            "Daily Normal": "1.70",
+            "Daily Departure Per": "-100%",
+            "Daily Category": "NR",
+            "Week Date": "19-01-2023 To 25-01-2023",
+            "Weekly Actual": "0.00",
+            "Weekly Normal": "1.70",
+            "Weekly Departure Per": "-100%",
+            "Weekly Category": "NR",
+            "Cumulative Date": "2023-01-01",
+            "Cumulative Actual": "0.00",
+            "Cumulative Normal": "11.60",
+            "Cumulative Departure Per": "-100%",
+            "Cumulative Category": "NR",
+            "Monthly Date": "01-12-2022 To 31-12-2022\r",
+            "Monthly Actual": "5.10",
+            "Monthly Normal": "5.00",
+            "Monthly Departure Per": "1%",
+            "Monthly Category": "N"
+          }
+        </pre>
+        <div class="mt-3 label">Note:- Category used for rainfall</div>
+        <table class="table table-bordered table-sm ref-table mb-0">
+          <thead><tr><th>Code</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>LE</td><td>Large Excess (60% or more)</td></tr>
+            <tr><td>E</td><td>Excess (20% to 59%)</td></tr>
+            <tr><td>N</td><td>Normal (-19% to 19%)</td></tr>
+            <tr><td>D</td><td>Deficient (-59% to -20%)</td></tr>
+            <tr><td>LD</td><td>Large Deficient (-99% to -60%)</td></tr>
+            <tr><td>NR</td><td>No Rain (-100%)</td></tr>
+            <tr><td>ND</td><td>No Data</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section-card mb-3" id="api-6">
+      <div class="section-head">6) District-wise Warnings</div>
+      <div class="section-body">
+        <div><span class="label">URL:</span> https://api.imd.gov.in/api/v1/districtwarning</div>
+        <div><span class="label">Or:</span> https://api.imd.gov.in/api/v1/districtwarning?id=573</div>
+        <div><span class="label">Visualize Data:</span> https://mausam.imd.gov.in/responsive/districtWiseWarningGIS.php</div>
+        <table class="table table-bordered table-sm ref-table mb-3">
+          <thead><tr><th>Field</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Obj_id</td><td>Object ID for a district</td></tr>
+            <tr><td>Date</td><td>Date of Issue</td></tr>
+            <tr><td>UTC</td><td>Time of Issue in UTC</td></tr>
+            <tr><td>District</td><td>District Name</td></tr>
+            <tr><td>Day_1</td><td>Warning Code for Day 1 (multiple codes can be added separated with ',')</td></tr>
+            <tr><td>Day_2</td><td>Warning Code for Day 2 (multiple codes can be added separated with ',')</td></tr>
+            <tr><td>Day_3</td><td>Warning Code for Day 3 (multiple codes can be added separated with ',')</td></tr>
+            <tr><td>Day_4</td><td>Warning Code for Day 4 (multiple codes can be added separated with ',')</td></tr>
+            <tr><td>Day_5</td><td>Warning Code for Day 5 (multiple codes can be added separated with ',')</td></tr>
+            <tr><td>Day1_Color</td><td>Color code as 1, 2, 3 or 4</td></tr>
+            <tr><td>Day2_Color</td><td>Color code as 1, 2, 3 or 4</td></tr>
+            <tr><td>Day3_Color</td><td>Color code as 1, 2, 3 or 4</td></tr>
+            <tr><td>Day4_Color</td><td>Color code as 1, 2, 3 or 4</td></tr>
+            <tr><td>Day5_Color</td><td>Color code as 1, 2, 3 or 4</td></tr>
+          </tbody>
+        </table>
+        <div class="label">Description of Warning Code</div>
+        <table class="table table-bordered table-sm ref-table mb-3">
+          <thead><tr><th>Warning Code</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>No Warning</td></tr>
+            <tr><td>2</td><td>Heavy Rain</td></tr>
+            <tr><td>3</td><td>Heavy Snow</td></tr>
+            <tr><td>4</td><td>Thunderstorm & Lightning, Squall etc</td></tr>
+            <tr><td>5</td><td>Hailstorm</td></tr>
+            <tr><td>6</td><td>Dust Storm</td></tr>
+            <tr><td>7</td><td>Dust Raising Winds</td></tr>
+            <tr><td>8</td><td>Strong Surface Winds</td></tr>
+            <tr><td>9</td><td>Heat Wave</td></tr>
+            <tr><td>10</td><td>Hot Day</td></tr>
+            <tr><td>11</td><td>Warm Night</td></tr>
+            <tr><td>12</td><td>Cold Wave</td></tr>
+            <tr><td>13</td><td>Cold Day</td></tr>
+            <tr><td>14</td><td>Ground Frost</td></tr>
+            <tr><td>15</td><td>Fog</td></tr>
+            <tr><td>16</td><td>Very Heavy Rain</td></tr>
+            <tr><td>17</td><td>Extremely Heavy Rain</td></tr>
+          </tbody>
+        </table>
+        <div class="label">Day Color Code Description</div>
+        <table class="table table-bordered table-sm ref-table mb-0">
+          <thead><tr><th>Color Code</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>#FF0000 (Red)</td></tr>
+            <tr><td>2</td><td>#ffa500 (Orange)</td></tr>
+            <tr><td>3</td><td>#ffff00 (Yellow)</td></tr>
+            <tr><td>4</td><td>#7cfc00 (Green)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section-card mb-3" id="api-7">
+      <div class="section-head">7) Station-wise Nowcast</div>
+      <div class="section-body">
+        <div><span class="label">URL:</span> https://api.imd.gov.in/api/v1/stationnowcast</div>
+        <div><span class="label">Or:</span> https://api.imd.gov.in/api/v1/stationnowcast?id=Adilabad</div>
+        <div><span class="label">Visualize Data:</span> https://mausam.imd.gov.in/responsive/stationWiseNowcastGIS.php</div>
+        <table class="table table-bordered table-sm ref-table mb-3">
+          <thead><tr><th>Field</th><th>Value</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Station</td><td>Station name</td><td>Station name</td></tr>
+            <tr><td>Date</td><td>YYYY-mm-dd</td><td>Date of warning issued</td></tr>
+            <tr><td>Cat1</td><td>1</td><td>No Weather</td></tr>
+            <tr><td>Cat2</td><td>2</td><td>Light rain: &lt; 5 mm/hr</td></tr>
+            <tr><td>Cat3</td><td>3</td><td>Light snow: &lt; 5 cm/hr</td></tr>
+            <tr><td>Cat4</td><td>4</td><td>Light Thunderstorms with maximum surface wind speed less than 40 kmph (in gusts)</td></tr>
+            <tr><td>Cat5</td><td>5</td><td>Slight dust storm: wind speed up to 41 kmph and visibility less than 1000 m but more than 500 m</td></tr>
+            <tr><td>Cat6</td><td>6</td><td>Low cloud to ground Lightning probability (&lt; 30%)</td></tr>
+            <tr><td>Cat7</td><td>7</td><td>Moderate rain: 5-15 mm/hr</td></tr>
+            <tr><td>Cat8</td><td>8</td><td>Moderate snow: 5-15 cm/hr</td></tr>
+            <tr><td>Cat9</td><td>9</td><td>Moderate Thunderstorms with maximum surface wind speed between 41 - 61 kmph (in gusts)</td></tr>
+            <tr><td>Cat10</td><td>10</td><td>Moderate dust storm: wind speed between 41-61 kmph and visibility between 200 and 500 m due to dust</td></tr>
+            <tr><td>Cat11</td><td>11</td><td>Moderate cloud to ground Lightning probability (30 - 60%)</td></tr>
+            <tr><td>Cat12</td><td>12</td><td>Heavy rain: &gt; 15 mm/hr</td></tr>
+            <tr><td>Cat13</td><td>13</td><td>Heavy snow: &gt; 15 cm/hr</td></tr>
+            <tr><td>Cat14</td><td>14</td><td>Severe Thunderstorms with maximum surface wind speed 62 - 87 kmph (in gusts)</td></tr>
+            <tr><td>Cat15</td><td>15</td><td>Very Severe Thunderstorms with maximum surface wind speed &gt; 87 kmph (in gusts)</td></tr>
+            <tr><td>Cat16</td><td>Text</td><td>Other Warnings (text warnings can be entered)</td></tr>
+            <tr><td>Cat17</td><td>31</td><td>Thunderstorms with Hail</td></tr>
+            <tr><td>Cat18</td><td>32</td><td>Severe dust storm: surface wind speed (in gusts) exceeding 61 kmph and visibility less than 200 m due to dust</td></tr>
+            <tr><td>Cat19</td><td>33</td><td>High cloud to ground Lightning probability (&gt; 60%)</td></tr>
+            <tr><td>message</td><td>text</td><td>Consolidated warning message</td></tr>
+            <tr><td>toi</td><td>HHmm</td><td>Time of issue of warning</td></tr>
+            <tr><td>Vupto</td><td>HHmm</td><td>Warning valid upto</td></tr>
+            <tr><td>color</td><td>1, 2, 3 or 4</td><td>Color code as 1, 2, 3 or 4</td></tr>
+          </tbody>
+        </table>
+        <div class="label">Note:- Color Code can be used for warnings as</div>
+        <table class="table table-bordered table-sm ref-table mb-0">
+          <thead><tr><th>Color Code</th><th>Usage</th><th>Color</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>for Cat1</td><td>Green (#008000)</td></tr>
+            <tr><td>2</td><td>for Cat2 to Cat6</td><td>Yellow (#FFFF00)</td></tr>
+            <tr><td>3</td><td>for Cat7 to Cat11</td><td>Orange (#FFA500)</td></tr>
+            <tr><td>4</td><td>for Cat12 to Cat19</td><td>Red (#ff0000)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section class="section-card mb-3" id="api-8">
+      <div class="section-head">8) State-wise Rainfall</div>
+      <div class="section-body">
+        <div><span class="label">URL:</span> https://api.imd.gov.in/api/v1/staterainfall</div>
+        <div><span class="label">Or:</span> https://api.imd.gov.in/api/v1/staterainfall?id=jammu</div>
+        <div><span class="label">Visualize Data:</span> https://mausam.imd.gov.in/responsive/rainfallinformation_state.php</div>
+        <div class="mt-3 label">Sample data (Fields are self-explanatory)</div>
+        <pre class="sample">
+          {
+            "State": "DADAR & NAGAR HAVELI (UT)",
+            "Date": "31-05-2022",
+            "Daily Actual": "0.00",
+            "Daily Normal": "3.30",
+            "Daily Departure Per": "-100%",
+            "Daily Category": "NR",
+            "Week Date": "26-05-2022 To 01-06-2022",
+            "Weekly Actual": "0.00",
+            "Weekly Normal": "11.00",
+            "Weekly Departure Per": "-100%",
+            "Weekly Category": "NR",
+            "Cumulative Date": "01-03-2022 To 31-05-2022\r",
+            "Cumulative Actual": "0.00",
+            "Cumulative Normal": "9.00",
+            "Cumulative Departue Per": "-100%",
+            "Cumulative Category": "NR",
+            "Monthly Date": "01-05-2022 To 31-05-2022\r",
+            "Monthly Acutual": "0.00",
+            "Monthly Normal": "9.00",
+            "Monthly Departure Per": "-100%",
+            "Monthly Category": "NR"
+          }
+        </pre>
+        <div class="mt-3 label">Note:- Category used for rainfall</div>
+        <table class="table table-bordered table-sm ref-table mb-0">
+          <thead><tr><th>Code</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>LE</td><td>Large Excess (60% or more)</td></tr>
+            <tr><td>E</td><td>Excess (20% to 59%)</td></tr>
+            <tr><td>N</td><td>Normal (-19% to 19%)</td></tr>
+            <tr><td>D</td><td>Deficient (-59% to -20%)</td></tr>
+            <tr><td>LD</td><td>Large Deficient (-99% to -60%)</td></tr>
+            <tr><td>NR</td><td>No Rain (-100%)</td></tr>
+            <tr><td>ND</td><td>No Data</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section class="section-card mb-3" id="api-9">
+      <div class="section-head">9) AWS/ARG Data</div>
+      <div class="section-body">
+        <div><span class="label">URL:</span> https://api.imd.gov.in/api/v1/aws_data</div>
+        <div><span class="label">Or:</span> https://api.imd.gov.in/api/v1/aws_data?id=NDL</div>
+        <div><span class="label">State-wise:</span> https://api.imd.gov.in/api/v1/aws_data?sid=7</div>
+        <div><span class="label">AWS Mapping Data:</span> https://api.imd.gov.in/api/v1/aws_data_mapping</div>
+        <pre class="sample">State IDs :
+          "1": "TELANGANA",
+          "2": "ANDHRA_PRADESH",
+          "3": "HIMACHAL_PRADESH",
+          "4": "KERALA",
+          "5": "UTTAR_PRADESH",
+          "6": "MEGHALAYA",
+          "7": "DELHI",
+          "8": "RAJASTHAN",
+          "9": "GUJARAT",
+          "10": "ODISHA",
+          "11": "BIHAR",
+          "12": "CHHATTISGARH",
+          "13": "KARNATAKA",
+          "14": "MIZORAM",
+          "15": "JHARKHAND",
+          "16": "TRIPURA",
+          "17": "CHANDIGARH",
+          "18": "JAMMU_AND_KASHMIR",
+          "19": "GOA",
+          "20": "SIKKIM",
+          "21": "MAHARASHTRA",
+          "22": "HARYANA",
+          "23": "LADAKH",
+          "24": "ASSAM",
+          "25": "TAMIL_NADU",
+          "26": "WEST_BENGAL",
+          "27": "MADHYA_PRADESH",
+          "28": "ARUNACHAL_PRADESH",
+          "29": "LAKSHADWEEP",
+          "30": "MANIPUR",
+          "31": "UTTARAKHAND",
+          "32": "NAGALAND",
+          "33": "PUDUCHERRY",
+          "34": "PUNJAB",
+          "35": "ANDAMAN_AND_NICOBAR",
+          "36": "DAMAN_AND_DIU"
+        </pre>
+        <div class="mt-3 label">Sample data (Fields are self-explanatory)</div>
+        <pre class="sample">
+          {
+            "ID": "B48970CA",
+            "CALL_SIGN": "NDL",
+            "DISTRICT": "NEW_DELHI",
+            "STATE": "DELHI",
+            "STATION": "LODI ROAD",
+            "DATE": "2024-06-06",
+            "TIME": "07:00:00",
+            "CURR_TEMP": "40.8",
+            "DEW_POINT_TEMP": "13.7",
+            "RH": "20",
+            "WIND_DIRECTION": "189",
+            "WIND_SPEED": "1",
+            "MSLP": "1003.0",
+            "MIN_TEMP": "39.9",
+            "MAX_TEMP": "40.9",
+            "Latitude": "28.5885",
+            "Longitude": "77.2224",
+            "WEATHER_CODE": "5",
+            "NEBULOSITY": "4",
+            "Feel Like": "40.5",
+          }
+        </pre>
+      </div>
+    </section>
+    <section class="section-card mb-3" id="api-10">
+      <div class="section-head">10) River Basin (QPF)</div>
+      <div class="section-body">
+        <div><span class="label">URL:</span> https://api.imd.gov.in/api/v1/basinqpf</div>
+        <div><span class="label">Or:</span> https://api.imd.gov.in/api/v1/basinqpf?id=100</div>
+        <div><span class="label">Visualize Data:</span> https://mausam.imd.gov.in/responsive/quantPrecipForecast.php</div>
+        <div class="mt-3 label">Field Description</div>
+        <table class="table table-bordered table-sm ref-table mb-0">
+          <thead><tr><th>Field</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Obj_Id</td><td>ID is unique for each basin</td></tr>
+            <tr><td>Date</td><td>Date of issue in YYYY-mm-dd</td></tr>
+            <tr><td>FMO</td><td>Name of Flood Met Office</td></tr>
+            <tr><td>Basin</td><td>Name of river basin</td></tr>
+            <tr><td>SubBasin</td><td>Name of Sub-basin</td></tr>
+            <tr><td>Area (Sq. Km.)</td><td>Area of Basin</td></tr>
+            <tr><td>Day1</td><td>Forecast for Day-1</td></tr>
+            <tr><td>Day2</td><td>Forecast for Day-2</td></tr>
+            <tr><td>Day3</td><td>Forecast for Day-3</td></tr>
+            <tr><td>Day4</td><td>Forecast for Day-4</td></tr>
+            <tr><td>Day5</td><td>Forecast for Day-5</td></tr>
+            <tr><td>AAP</td><td>Average Areal Precipitation</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section class="section-card mb-3" id="api-11">
+      <div class="section-head">11) Port Warning</div>
+      <div class="section-body">
+        <div><span class="label">URL:</span> https://api.imd.gov.in/api/v1/portwarning</div>
+        <div><span class="label">Or:</span> https://api.imd.gov.in/api/v1/portwarning?id=PortId</div>
+        <div><span class="label">Visualize Data:</span> https://rsmcnewdelhi.imd.gov.in/port-warning.php</div>
+        <div class="mt-3 label">Field Description</div>
+        <table class="table table-bordered table-sm ref-table mb-0">
+          <thead><tr><th>Field</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Port Id</td><td>Port ID is unique for each port</td></tr>
+            <tr><td>Port Name</td><td>Port name</td></tr>
+            <tr><td>Issued By</td><td>Issued by CWC or ACWC</td></tr>
+            <tr><td>Date of Issue</td><td>Date of issue in YYYY-mm-dd</td></tr>
+            <tr><td>Warning</td><td>Warning</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section class="section-card mb-3" id="api-12">
+      <div class="section-head">12) Sea Area Bulletin</div>
+      <div class="section-body">
+        <div><span class="label">URL:</span> https://api.imd.gov.in/api/v1/seabulletin</div>
+        <div><span class="label">Or:</span> https://api.imd.gov.in/api/v1/seabulletin?id=108</div>
+        <div><span class="label">Visualize Data:</span> https://mausam.imd.gov.in/responsive/marine_forecast.php</div>
+        <div class="mt-3 label">Sample: (Fields are self-explanatory)</div>
+        <pre class="sample">
+          [{
+            "Id": "109",
+            "Date of Observation": "2023-03-28",
+            "Layer": "South West Bay ",
+            "Issued by": "ACWC KOLKATA",
+            "Valid From": "2023-03-28 21:00:00",
+            "Validity": "12",
+            "TTT Warning": "NIL",
+            "Wind": "East/ South Easterly, 5 - 10 Knots ",
+            "Synoptic Situation": "Weather seasonal over bay of bengal and andaman sea.",
+            "Weather": "Isolated Rain/ Thunderstorm ",
+            "Visibility": "Good Becoming Moderate ",
+            "Sea Condition": "Smooth to Smooth",
+            "Part 4": "NIL",
+            "Part 5": "NIL",
+            "Part 6": "nil",
+            "Update Time": "2023-03-28 20:40:07"
+          }]
+        </pre>
+      </div>
+    </section>
+    <section class="section-card mb-3" id="api-13">
+      <div class="section-head">13) Coastal Bulletin</div>
+      <div class="section-body">
+        <div><span class="label">URL:</span> https://api.imd.gov.in/api/v1/coastalbulletin</div>
+        <div><span class="label">Visualize Data:</span> https://mausam.imd.gov.in/responsive/coastal_forecast.php</div>
+        <div class="mt-3 label">Sample: (Fields are self-explanatory)</div>
+        <pre class="sample">
+          [ {
+            "Id": "108",
+            "Date of Observation": "2023-03-28",
+            "Layer": "South Tamilnadu coast",
+            "Issued by": "ACWC CHENNAI",
+            "Valid From": "2023-03-28 22:00:00",
+            "Validity": "12",
+            "TTT Warning": "",
+            "Wind": "South Westerly/ South Easterly, 10 - 15 Knots ",
+            "Synoptic Situation": "NIL",
+            "Weather": "Isolated Rain/ Thunderstorm ",
+            "Visibility": "Good Becoming Poor ",
+            "Sea Condition": "Smooth to Slight",
+            "Port Signal": "NIL at all Ports",
+            "Update Time": "2023-03-28 22:27:17"
+          } ]
+        </pre>
+      </div>
+    </section>
+    <section class="section-card mb-3" id="api-14">
+      <div class="section-head">14) Subdivisional-wise Warnings</div>
+      <div class="section-body">
+        <div><span class="label">URL:</span> https://api.imd.gov.in/api/v1/subdivisionwarning</div>
+        <div><span class="label">Visualize Data:</span> https://mausam.imd.gov.in/responsive/subDivisionWiseWarningGIS.php</div>
+        <div class="mt-3 label">Sample: Fields are self-explanatory</div>
+        <pre class="sample">
+          [{
+            "date_obs": "2023-09-18",
+            "SUBDIV": "Gangetic West Bengal",
+            "day1_color": "#FFFF00",
+            "day1_warning": "Heavy Rain and Thunderstorm &amp; Lightning",
+            "day2_color": "#FFFF00",
+            "day2_warning": "Thunderstorm &amp; Lightning",
+            "day3_color": "#FFFF00",
+            "day3_warning": "Thunderstorm &amp; Lightning",
+            "day4_color": "#FFFF00",
+            "day4_warning": "Heavy Rain",
+            "day5_color": "#FFFF00",
+            "day5_warning": "Heavy Rain"
+          }]
+        </pre>
+      </div>
+    </section>
+    <section class="section-card mb-3" id="api-15">
+      <div class="section-head">15) Sun Moon (Rise/Set) Time</div>
+      <div class="section-body">
+        <div><span class="label">URL:</span> https://api.imd.gov.in/api/v1/sunmoon?lat=26.9124&lon=75.7873</div>
+        <div class="mt-3 label">Sample: Fields are self-explanatory. Note: Time in IST</div>
+        <pre class="sample">
+
+          {
+            "status": true,
+            "message": "SunMoon Time",
+            "totalCount": null,
+            "data": [
+              {
+                "sunrise": "06:45",
+                "sunset": "18:31"
+              },
+              {
+                "moonrise": "22:14",
+                "moonset": "08:39"
+              }
+            ]
+          }
+        </pre>
+      </div>
+    </section>
+    <section class="section-card mb-3" id="api-16">
+      <div class="section-head">16) Subdivisional Rainfall Forecast - 7 Days</div>
+      <div class="section-body">
+        <div><span class="label">URL:</span> https://api.imd.gov.in/api/v1/subdivision_rainfall_forecast</div>
+        <div class="mt-3 label">Sample: Fields are self-explanatory</div>
+        <pre class="sample">
+          [{
+            "date_obs": "2026-06-06",
+            "SUBDIV": "Andaman & Nicobar Islands",
+            "day1_color": "#004de6",
+            "day1_distribution": "Widespread",
+            "day1_distribution_percentage": "Stations [76-100]%",
+            "day2_color": "#004de6",
+            "day2_distribution": "Widespread",
+            "day2_distribution_percentage": "Stations [76-100]%",
+            "day3_color": "#004de6",
+            "day3_distribution": "Widespread",
+            "day3_distribution_percentage": "Stations [76-100]%",
+            "day4_color": "#004de6",
+            "day4_distribution": "Widespread",
+            "day4_distribution_percentage": "Stations [76-100]%",
+            "day5_color": "#004de6",
+            "day5_distribution": "Widespread",
+            "day5_distribution_percentage": "Stations [76-100]%",
+            "day6_color": "#004de6",
+            "day6_distribution": "Widespread",
+            "day6_distribution_percentage": "Stations [76-100]%",
+            "day7_color": "#004de6",
+            "day7_distribution": "Widespread",
+            "day7_distribution_percentage": "Stations [76-100]%"
+          }]
+        </pre>
+      </div>
+    </section>
+    <section class="section-card mb-3" id="api-17">
+      <div class="section-head">17) State District Rainfall Forecast - 5 Days</div>
+      <div class="section-body">
+        <div><span class="label">URL:</span> https://api.imd.gov.in/api/v1/state_district_rainfall_forecast</div>
+        <div class="mt-3 label">Sample: Fields are self-explanatory</div>
+        <pre class="sample">
+          [{
+            "date_obs": "2026-06-06",
+            "Obj_id": "573",
+            "District": "NICOBAR",
+            "State": "ANDAMAN AND NICOBAR",
+            "day1_color": "#004de6",
+            "day1_distribution": "Widespread",
+            "day1_distribution_percentage": "Stations [76-100]%",
+            "day2_color": "#004de6",
+            "day2_distribution": "Widespread",
+            "day2_distribution_percentage": "Stations [76-100]%",
+            "day3_color": "#004de6",
+            "day3_distribution": "Widespread",
+            "day3_distribution_percentage": "Stations [76-100]%",
+            "day4_color": "#004de6",
+            "day4_distribution": "Widespread",
+            "day4_distribution_percentage": "Stations [76-100]%",
+            "day5_color": "#004de6",
+            "day5_distribution": "Widespread",
+            "day5_distribution_percentage": "Stations [76-100]%"
+          }]
+        </pre>
+      </div>
+    </section>
+    <section class="section-card mb-3" id="api-18">
+      <div class="section-head">18) Cyclone Track</div>
+      <div class="section-body">
+        <div><span class="label">URL:</span> https://api.imd.gov.in/api/v1/cyclone_track</div>
+        <div class="mt-3 label">Sample: Fields are self-explanatory</div>
+        <pre class="sample">
+          {
+            "status": true,
+            "message": "Cyclone Track",
+            "totalCount": {
+              "observed": 9,
+              "forecast": 7
+            },
+            "data": {
+              "observed": [
+                {
+                  "CYCLONE_NAME": "BULBUL",
+                  "Hour": "12",
+                  "Date/Time": "05.11.19/1200",
+                  "lat": "13.2",
+                  "lon": "91.2",
+                  "MSW range (kmph)": "50-60",
+                  "Mean MSW (kmph)": "55",
+                  "MSW (kt)": "29.7",
+                  "Category": "DEEP DEPRESSION"
+                }
+              ]
+            }
+          }
+        </pre>
+      </div>
+    </section>
+    <section class="section-card mb-3" id="api-19">
+      <div class="section-head">19) Cyclone Wind Warning</div>
+      <div class="section-body">
+        <div><span class="label">URL:</span> https://api.imd.gov.in/api/v1/cyclone_wind</div>
+        <div class="mt-3 label">Sample: Fields are self-explanatory</div>
+        <pre class="sample">
+          {
+            "status": true,
+            "message": "Cyclone Wind Warning",
+            "totalCount": {
+              "27kt": 1,
+              "34kt": 1,
+              "50kt": 1,
+              "64kt": 1
+            },
+            "data": {
+              "27kt": {
+                "type": "MultiPolygon",
+                "coordinates": [
+                  [
+                    [
+                      [80.685399494754, 9.7315954161175],
+                      [80.656202956528, 9.7321064634526],
+                      [80.62701983373, 9.7331284015843],
+                      [80.597859065414, 9.7346609174839],
+                      [80.568729583786, 9.7367035417279],
+                    ]
+                  ]
+                ]
+              }
+            }
+          }
+        </pre>
+      </div>
+    </section>
+    <section class="section-card mb-3" id="api-20">
+      <div class="section-head">20) Cyclone Cone of Uncertainty</div>
+      <div class="section-body">
+        <div><span class="label">URL:</span> https://api.imd.gov.in/api/v1/cyclone_cou</div>
+        <div class="mt-3 label">Sample: Fields are self-explanatory</div>
+        <pre class="sample">
+          {
+            "status": true,
+            "message": "Cone of Uncertainty",
+            "totalCount": 1,
+            "data": {
+              "type": "MultiPolygon",
+              "coordinates": [
+                [
+                  [
+                    [80.698599865156, 11.240006126297],
+                    [80.695800024341, 11.24005513386],
+                    [80.693001470016, 11.240153133975],
+                    [80.690205059405, 11.240300096623],
+                  ]
+                ]
+              ]
+            }
+          }
+        </pre>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

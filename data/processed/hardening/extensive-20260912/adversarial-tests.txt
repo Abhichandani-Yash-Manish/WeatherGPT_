@@ -1,0 +1,41 @@
+test_bad_question_and_timezone_types_fail_without_crash (test_extensive.AnswerIntegrityTests.test_bad_question_and_timezone_types_fail_without_crash) ... ok
+test_calculator_rejects_illegal_numeric_values (test_extensive.AnswerIntegrityTests.test_calculator_rejects_illegal_numeric_values) ... ok
+test_calculator_rejects_reversed_equal_or_naive_interval (test_extensive.AnswerIntegrityTests.test_calculator_rejects_reversed_equal_or_naive_interval) ... ok
+test_coherently_rehashed_normalization_tampering_rejected (test_extensive.AnswerIntegrityTests.test_coherently_rehashed_normalization_tampering_rejected) ... ok
+test_freshness_boundary_is_explicit (test_extensive.AnswerIntegrityTests.test_freshness_boundary_is_explicit) ... ok
+test_question_cannot_inject_extra_instructions (test_extensive.AnswerIntegrityTests.test_question_cannot_inject_extra_instructions) ... ok
+test_source_receipt_tampering_rejected (test_extensive.AnswerIntegrityTests.test_source_receipt_tampering_rejected) ... ok
+test_cap_cancel_with_reference_never_active (test_extensive.CapBoundaryTests.test_cap_cancel_with_reference_never_active) ... ok
+test_cap_exact_expiry_and_future_effective_are_inactive (test_extensive.CapBoundaryTests.test_cap_exact_expiry_and_future_effective_are_inactive) ... ok
+test_cap_feed_truncation_explicit_and_not_all_clear (test_extensive.CapBoundaryTests.test_cap_feed_truncation_explicit_and_not_all_clear) ... ok
+test_cap_malformed_identity_namespace_chronology_rejected (test_extensive.CapBoundaryTests.test_cap_malformed_identity_namespace_chronology_rejected) ... ok
+test_invalid_feed_cannot_replace_cached_feed (test_extensive.CapBoundaryTests.test_invalid_feed_cannot_replace_cached_feed) ... ok
+test_malformed_cap_refresh_cannot_poison_message_cache (test_extensive.CapBoundaryTests.test_malformed_cap_refresh_cannot_poison_message_cache) ... ok
+test_nonpublic_or_nonactual_messages_never_active (test_extensive.CapBoundaryTests.test_nonpublic_or_nonactual_messages_never_active) ... ok
+test_public_time_eligible_still_has_unresolved_geography (test_extensive.CapBoundaryTests.test_public_time_eligible_still_has_unresolved_geography) ... ok
+test_advisory_catalog_rejects_duplicate_ids_and_retains_last_good (test_extensive.SourceBoundaryTests.test_advisory_catalog_rejects_duplicate_ids_and_retains_last_good) ... ok
+test_advisory_document_context_and_malformed_pdf (test_extensive.SourceBoundaryTests.test_advisory_document_context_and_malformed_pdf) ... EOF marker not found
+ok
+test_aviation_nonobject_report_rejected (test_extensive.SourceBoundaryTests.test_aviation_nonobject_report_rejected) ... ok
+test_bad_geocoding_never_promoted (test_extensive.SourceBoundaryTests.test_bad_geocoding_never_promoted) ... ok
+test_blob_traversal_is_rejected_before_read (test_extensive.SourceBoundaryTests.test_blob_traversal_is_rejected_before_read) ... ok
+test_corrupt_cache_index_recovers_via_validated_fetch (test_extensive.SourceBoundaryTests.test_corrupt_cache_index_recovers_via_validated_fetch) ... ok
+test_daily_bad_shapes_and_offset_rejected (test_extensive.SourceBoundaryTests.test_daily_bad_shapes_and_offset_rejected) ... ok
+test_duplicate_json_keys_rejected_at_any_depth (test_extensive.SourceBoundaryTests.test_duplicate_json_keys_rejected_at_any_depth) ... ok
+test_geocoding_valid_empty_result_is_explicit (test_extensive.SourceBoundaryTests.test_geocoding_valid_empty_result_is_explicit) ... ok
+test_hourly_boolean_offset_and_bad_shapes_rejected (test_extensive.SourceBoundaryTests.test_hourly_boolean_offset_and_bad_shapes_rejected) ... ok
+test_indexerror_in_product_parser_does_not_promote_bad_refresh (test_extensive.SourceBoundaryTests.test_indexerror_in_product_parser_does_not_promote_bad_refresh) ... ok
+test_invalid_index_offline_cannot_supply_fallback (test_extensive.SourceBoundaryTests.test_invalid_index_offline_cannot_supply_fallback) ... ok
+test_marine_catalog_changed_html_retains_good_reference (test_extensive.SourceBoundaryTests.test_marine_catalog_changed_html_retains_good_reference) ... ok
+test_marine_pdf_rejection_preserves_accepted_bytes (test_extensive.SourceBoundaryTests.test_marine_pdf_rejection_preserves_accepted_bytes) ... ok
+test_pdf_wrong_type_corrupt_empty_encrypted_and_overbudget (test_extensive.SourceBoundaryTests.test_pdf_wrong_type_corrupt_empty_encrypted_and_overbudget) ... EOF marker not found
+ok
+test_scanned_pdf_is_ocr_required_not_grounding_ready (test_extensive.SourceBoundaryTests.test_scanned_pdf_is_ocr_required_not_grounding_ready) ... ok
+test_timestamp_types_fail_as_source_errors (test_extensive.SourceBoundaryTests.test_timestamp_types_fail_as_source_errors) ... ok
+test_warning_malformed_features_quarantined (test_extensive.SourceBoundaryTests.test_warning_malformed_features_quarantined) ... ok
+test_warning_total_count_contract (test_extensive.SourceBoundaryTests.test_warning_total_count_contract) ... ok
+
+----------------------------------------------------------------------
+Ran 34 tests in 0.277s
+
+OK

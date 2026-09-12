@@ -1,0 +1,197 @@
+{
+  "schema_version": "foundation-v1",
+  "family": "aviation_stationinfo",
+  "source_id": "S20",
+  "status": "ok",
+  "records": [
+    {
+      "station_id": "VAAH",
+      "wmo_id": "42647",
+      "name": "Ahmadabad/Patel Intl",
+      "latitude": 23.077,
+      "longitude": 72.635,
+      "country": "IN",
+      "raw_fields": {
+        "id": "VAAH",
+        "icaoId": "VAAH",
+        "iataId": "AMD",
+        "faaId": null,
+        "wmoId": "42647",
+        "site": "Ahmadabad/Patel Intl",
+        "lat": 23.077,
+        "lon": 72.635,
+        "elev": 52,
+        "state": "GJ",
+        "country": "IN",
+        "priority": 1,
+        "siteType": [
+          "METAR",
+          "TAF"
+        ]
+      },
+      "source_locator": "$[0]"
+    },
+    {
+      "station_id": "VABB",
+      "wmo_id": "43003",
+      "name": "Mumbai/Shivaji Intl",
+      "latitude": 19.1,
+      "longitude": 72.859,
+      "country": "IN",
+      "raw_fields": {
+        "id": "VABB",
+        "icaoId": "VABB",
+        "iataId": "BOM",
+        "faaId": null,
+        "wmoId": "43003",
+        "site": "Mumbai/Shivaji Intl",
+        "lat": 19.1,
+        "lon": 72.859,
+        "elev": 14,
+        "state": "MM",
+        "country": "IN",
+        "priority": 0,
+        "siteType": [
+          "METAR",
+          "TAF"
+        ]
+      },
+      "source_locator": "$[1]"
+    },
+    {
+      "station_id": "VECC",
+      "wmo_id": "42809",
+      "name": "Kolkata/Bose Intl",
+      "latitude": 22.651,
+      "longitude": 88.445,
+      "country": "IN",
+      "raw_fields": {
+        "id": "VECC",
+        "icaoId": "VECC",
+        "iataId": "CCU",
+        "faaId": null,
+        "wmoId": "42809",
+        "site": "Kolkata/Bose Intl",
+        "lat": 22.651,
+        "lon": 88.445,
+        "elev": 11,
+        "state": "WB",
+        "country": "IN",
+        "priority": 0,
+        "siteType": [
+          "METAR",
+          "TAF"
+        ]
+      },
+      "source_locator": "$[2]"
+    },
+    {
+      "station_id": "VEGT",
+      "wmo_id": "42410",
+      "name": "Guwahati/Bordoloi Intl",
+      "latitude": 26.107,
+      "longitude": 91.587,
+      "country": "IN",
+      "raw_fields": {
+        "id": "VEGT",
+        "icaoId": "VEGT",
+        "iataId": "GAU",
+        "faaId": null,
+        "wmoId": "42410",
+        "site": "Guwahati/Bordoloi Intl",
+        "lat": 26.107,
+        "lon": 91.587,
+        "elev": 50,
+        "state": "AS",
+        "country": "IN",
+        "priority": 2,
+        "siteType": [
+          "METAR",
+          "TAF"
+        ]
+      },
+      "source_locator": "$[3]"
+    },
+    {
+      "station_id": "VIDP",
+      "wmo_id": "42181",
+      "name": "New Delhi/Gandhi Intl",
+      "latitude": 28.567,
+      "longitude": 77.117,
+      "country": "IN",
+      "raw_fields": {
+        "id": "VIDP",
+        "icaoId": "VIDP",
+        "iataId": "DEL",
+        "faaId": null,
+        "wmoId": "42181",
+        "site": "New Delhi/Gandhi Intl",
+        "lat": 28.567,
+        "lon": 77.117,
+        "elev": 236,
+        "state": "DL",
+        "country": "IN",
+        "priority": 0,
+        "siteType": [
+          "METAR",
+          "TAF"
+        ]
+      },
+      "source_locator": "$[4]"
+    },
+    {
+      "station_id": "VOMM",
+      "wmo_id": "43279",
+      "name": "Chennai Intl",
+      "latitude": 12.994,
+      "longitude": 80.18,
+      "country": "IN",
+      "raw_fields": {
+        "id": "VOMM",
+        "icaoId": "VOMM",
+        "iataId": "MAA",
+        "faaId": null,
+        "wmoId": "43279",
+        "site": "Chennai Intl",
+        "lat": 12.994,
+        "lon": 80.18,
+        "elev": 7,
+        "state": "TN",
+        "country": "IN",
+        "priority": 1,
+        "siteType": [
+          "METAR",
+          "TAF"
+        ]
+      },
+      "source_locator": "$[5]"
+    }
+  ],
+  "count": 6,
+  "provenance": {
+    "source_id": "S20",
+    "url": "https://aviationweather.gov/api/data/stationinfo?ids=VAAH%2CVIDP%2CVABB%2CVOMM%2CVECC%2CVEGT&format=json",
+    "retrieved_at_utc": "2026-09-11T19:34:48.388427+00:00",
+    "http_status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "bytes": 1237,
+    "sha256": "ec46f4110f08e812da0d446a31d431906593b8e441489237b6ec10c94dcb755e",
+    "blob": "blobs/ec46f4110f08e812da0d446a31d431906593b8e441489237b6ec10c94dcb755e.bin",
+    "delivery": "network",
+    "checked_at_utc": "2026-09-11T19:34:48.390800+00:00"
+  },
+  "limitations": [
+    "Reports concern their airports; not a complete operational aviation briefing."
+  ],
+  "coverage": {
+    "requested_stations": [
+      "VAAH",
+      "VIDP",
+      "VABB",
+      "VOMM",
+      "VECC",
+      "VEGT"
+    ],
+    "missing_stations": []
+  }
+}

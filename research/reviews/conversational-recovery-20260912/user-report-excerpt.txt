@@ -1,0 +1,708 @@
+# India real-life scenario testing report
+
+**Result: the current implementation reliably supplies its tested, narrowly defined point-forecast answers, but it does not yet function as a general conversational assistant for rural weather, travel, farming or research.** All six supported coordinate-based forecast controls returned complete cited results. None of the 84 authored natural-language scenarios completed the requested task in one turn.
+
+This is an evaluation of the actual local `AnswerService`, restricted RAG context gate and existing research lookup tools. It is not a simulation in which an LLM invents plausible replies. The report includes every observed scenario answer, ten structured research-probe results, and twelve wording-diagnostic responses.
+
+**Test date:** 12 September 2026. **Main replay clock:** 11 September 2026, 20:00 UTC, equivalent to 12 September, 01:30 IST. Most “today” questions therefore refer to 12 September. Forecast examples use genuine saved source values with simulated replay receipt times. One boundary case checks the stored replay at the actual run clock, 2026-09-12T15:15:57.489148+00:00. **No live weather/travel/agricultural requests or LLM calls were made.**
+
+## Report navigation
+
+- [Scope and method](#scope-and-method)
+- [Results by user need](#results-by-user-need)
+- [Successful forecast examples](#successful-forecast-examples)
+- [Strengths](#strengths)
+- [Weaknesses and observed gaps](#weaknesses-and-observed-gaps)
+- [Improvements and acceptance criteria](#improvements-and-acceptance-criteria)
+- [Every scenario question and actual answer](#every-scenario-question-and-actual-answer)
+- [Structured research probes](#structured-research-probes)
+- [Wording diagnostics](#wording-diagnostics)
+
+## Scope and method
+
+The test contains **111 scenarios**: **84 natural user queries** and **27 labelled controls**. It spans **68 distinct place/route expressions**, with **29 state/territory labels** in the authored inputs. Ten named village inputs include Dhordo, Dholavira, Punsari, Hiware Bazar, Kainakary, Hampi, Mawlynnong, Khonoma, Nako and Zuluk. Smaller-place probes also include Mandvi, Bhuj, Karaikudi and Ziro. District questions include Kutch, Junagadh, Amreli, Barmer, Sehore, Bathinda, Karnal, Thanjavur, Guntur, Nizamabad, Bastar and others.
+
+These are **scenario location labels, not verified administrative mappings**. A successful test at one saved point does not demonstrate coverage of its surrounding city, district or villages. Route expressions are counted as routes, not as proof of coverage along their paths.
+
+**Regional labels in the scenarios:** Andhra Pradesh, Arunachal Pradesh, Assam, Bihar, Chhattisgarh, Delhi, Gujarat, Haryana, Himachal Pradesh, Jammu and Kashmir, Jharkhand, Karnataka, Kerala, Ladakh, Madhya Pradesh, Maharashtra, Manipur, Meghalaya, Mizoram, Nagaland, Odisha, Punjab, Rajasthan, Sikkim, Tamil Nadu, Telangana, Tripura, Uttar Pradesh, West Bengal.
+
+The perspectives include everyday residents, parents/event planners, bus and car travellers, farmers with field decisions, and researchers studying rural environmental or demographic questions. Eight language cases cover Gujarati, Hindi, Marathi, Tamil, Kannada and Hindi-English transliteration.
+
+For each scenario, the same unmodified query was sent to the answer service and then to the RAG gate. No location was silently replaced. Only six explicitly labelled controls supply coordinates from the saved national forecast samples. Additional coverage controls use the accepted English grammar without supplying a missing place point. The evaluator separately inspected local catalogue matches; this diagnostic information was not injected into the answer.
+
+Returned numerical controls were checked independently against raw source arrays: **24 variable-level comparisons passed**. Source files and databases were hashed before and after; inputs remained unchanged. The two calls per scenario are not counted as separate user scenarios.
+
+The ten research probes were **manually routed to structured lookup functions**. Their successful results show data accessibility through those functions, not natural-language routing by the assistant. Six paired wording diagnostics add twelve supplementary responses. These diagnostic responses are not included in the 111-scenario completion rate.
+
+### Evaluation criteria
+
+| Dimension | How it was assessed | What it does not establish |
+|---|---|---|
+| Task completion | A complete answer to the requested forecast, as opposed to an error, generic formatting instruction or abstention | Long-term user satisfaction or scientific accuracy |
+| Evidence controls | No operational promotion; rejected requests have no values; RAG abstentions have no grounding evidence; no provider requests during serving | A future LLM’s hallucination resistance |
+| Numerical fidelity | Recalculate each successful variable directly from its cited raw response | Actual future weather or local representativeness |
+| Location usability | Inspect exact source candidates and distinguish places, districts and model points | An authoritative village inventory or crosswalk |
+| Response usefulness | Review whether the response addresses the user’s domain and asks for relevant missing details | A population-representative UX score |
+
+**An appropriate abstention can pass an evidence-control test while still leaving the user’s task unfinished.** This report keeps those outcomes separate. No 100% answer-quality or nationwide accuracy claim is made.
+
+## Results by user need
+
+| Scenario group | Queries | Completed requested task | Actual outcomes |
+|---|---:|---:|---|
+| Weather and daily life | 22 | 0 | 19 needs clarification; 3 unavailable |
+| Travel feasibility | 16 | 0 | 4 unavailable; 12 needs clarification |
+| Agriculture and crop health | 20 | 0 | 12 unavailable; 8 needs clarification |
+| Environmental and rural research | 18 | 0 | 17 needs clarification; 1 unavailable |
+| Language and accessibility | 8 | 0 | 8 needs clarification |
+| Local coverage controls | 14 | 0 | 11 unavailable; 3 needs selection |
+| Stored forecast controls | 6 | 6 | 6 prototype answer |
+| Evidence boundary controls | 7 | 0 | 2 partial; 2 stale; 1 outside validity; 2 needs clarification |
+
+**Natural queries:** 0/84 completed the requested task in one turn; 64 received the generic forecast-format instruction and 20 received capability abstentions. **Controls:** 6/27 returned complete numeric forecasts; the remainder exposed location, time, probability or request-boundary limitations. These controls intentionally include requests that should be rejected.
+
+**RAG:** six eligible prototype contexts; 105 abstentions. **Measured evidence-contract violations:** zero for the stated checks. **Research probes:** five returned historical values and five rejected unsupported years, geography or source names. These are not additional conversational successes.
+
+[Full measured summary](../research/testing/india-real-life-20260912/results-final/summary.json) · [All answer and RAG payloads](../research/testing/india-real-life-20260912/results-final/responses.json) · [Authored scenario inputs](../research/testing/india-real-life-20260912/scenarios.json).
+
+## Successful forecast examples
+
+All rows below concern **12 September 2026, 09:30–12:30 IST**, using the selected stored coordinate sample. They are historical replay examples, not current conditions. “Temperature,” “humidity” and “wind” are ranges of hourly samples; they are not continuous extrema. Rainfall is an exact sum over matching source accumulation intervals.
+
+| Sample label / case | Temperature (°C) | Humidity (%) | Rainfall (mm) | Wind (km/h) |
+|---|---:|---:|---:|---:|
+| Ahmedabad / IN-099 | 30.5–32.5 | 52–62 | 0.0 | 12.6–15.1 |
+| Delhi / IN-100 | 31.8–34.1 | 46–54 | 0.0 | 17.9–19.6 |
+| Mumbai / IN-101 | 29.5–30.7 | 61–66 | 0.0 | 9.4–14.5 |
+| Chennai / IN-102 | 33.7–36.6 | 42–51 | 0.0 | 18.0–19.5 |
+| Guwahati / IN-103 | 26.8–26.8 | 87–89 | 0.7 | 5.4–6.4 |
+| Srinagar / IN-104 | 21.2–26.2 | 44–62 | 0.0 | 3.4–7.5 |
+
+The source is GFS via Open-Meteo. Each answer retains the actual returned grid, distance from the selected point, retrieval timestamp, source hash/locators, validity and missing model-issue/representativeness information. Providing these six points explicitly does not solve village name resolution.
+
+## Strengths
+
+1. **Deterministic values are grounded in saved evidence.** All six complete forecast controls reproduce the source for four variables each. Units and local/UTC time windows remain explicit.
+2. **Unsupported evidence is withheld.** The test returned no operationally eligible output, unsupported travel clearance, pest diagnosis or invented demographic measurement. RAG did not admit partial, stale or unrecognised scenarios. This observation applies to this deterministic system and the inspected cases.
+3. **Rain boundaries and freshness remain protected.** A half-hour split does not become a fabricated rainfall total; a request beyond the saved horizon is partial; old evidence and past requests are rejected.
+4. **Research data is useful through its existing tools.** Structured calls return India annual/monsoon rainfall and temperature, Ahmedabad history and Kendrapada history, retaining published discrepancies.
+5. **Source ambiguity is visible.** Named Ahmedabad, Vadodara and Amreli requests can expose multiple source candidates instead of silently merging different entities.
+
+## Weaknesses and observed gaps
+
+| Finding | Observed evidence | Consequence |
+|---|---|---|
+| F01 — Rigid question understanding | IN-001 asks “Will it rain in Ahmedabad tomorrow morning?” and receives a command-format example. 64/84 natural queries get that generic instruction. | Users must learn an exact grammar; the system does not ask targeted questions about morning time windows, crop context or travel plans. |
+| F02 — Keyword-based routing is brittle | D01–D03 show warning/warnings, flood/flooded and sowing/sow receiving different types of response. IN-023 is treated as an observation request because it includes “now”; road feasibility is not addressed. | Small wording changes alter capability recognition. Better phrasing alone does not supply missing specialist evidence. |
+| F03 — Village and small-town resolution is missing | Supported-grammar queries IN-085–IN-094 have zero candidates for seven village labels and three town labels. The entire saved catalogue contains zero entities of kind village. | The assistant cannot resolve the requested local place or select local evidence. It asks users to select a point even when it offers no candidates. |
+| F04 — Source names and types are not unified | Kutch has no exact match, while Kachchh has two district candidates. Delhi has no exact match, while New Delhi yields different source kinds. Vadodara and Amreli matches are districts, not usable point selections. | More name matches alone will not establish the intended village, current district or compatible forecast support. Reviewed aliases and dated crosswalks are required. |
+| F05 — Rain probability is absent | IN-002, IN-009, IN-019 and control IN-110 cannot answer rainfall chance. The current forecast contract contains precipitation amount, temperature, humidity and wind. | A rainfall total cannot be presented as a probability, heavy-rain likelihood or guaranteed outcome. |
+| F06 — Travel feasibility has no route evidence workflow | 0/16 travel queries are completed. IN-024 needs route/mode/departure context; IN-025 concerns bus delay; IN-033 concerns rail disruption; IN-035 concerns a local bridge. | Endpoint forecasts do not establish road closure, bridge passability, train service or travel safety. No route-aware reasoning or current closure evidence is available through this service. |
+| F07 — Agricultural questions lack field and specialist context | Twelve farmer queries receive a capability abstention; eight receive a generic formatting reply. Pesticide timing, yellowing/curling leaves, frost protection, grape disease and paddy water management remain unanswered. | Hourly weather alone cannot identify a pest, diagnose symptoms or justify an irrigation/pesticide recommendation. |
+| F08 — Research data is not connected to question routing | IN-059 cannot answer Ahmedabad 2010 rainfall, while structured probe H04 returns 1096.8 mm. H07 fails for Odisha; H10 succeeds with the stored historical label Orissa. | Useful stored evidence remains inaccessible in conversation; source labels require explicit handling rather than implicit modern-boundary equivalence. |
+| F09 — Rural environmental/demographic questions lack a tested data path | Population/literacy, groundwater, soils, salinity, air/water quality, land cover and erosion queries return generic responses. | No answer from the tested interface supplies the requested dataset, village code, reference year, methods or uncertainty. This test does not assert that such data is unavailable elsewhere. |
+| F10 — Local languages are unsupported | All eight Gujarati, Hindi, Marathi, Tamil, Kannada or transliterated questions return the same English formatting instruction. | Local-language farmers and residents cannot use the current front end naturally. |
+| F11 — Research metadata and uncertainty need clearer presentation | H10 preserves annual/OND discrepancy flags but its legacy source-transcription field is older than the completed full-PDF audit. H05/H06/H07 share a generic “No unique source district/year match” error for different causes. | Users cannot reliably distinguish outdated verification metadata, unsupported years, unknown villages and source-name mismatches. |
+
+### Local coverage checks
+
+| Requested label | Exact source matches | Kinds / result |
+|---|---:|---|
+| Dhordo | 0 | No candidate; unavailable |
+| Punsari | 0 | No candidate; unavailable |
+| Dholavira | 0 | No candidate; unavailable |
+| Mandvi | 0 | No candidate; unavailable |
+| Bhuj | 0 | No candidate; unavailable |
+| Mawlynnong | 0 | No candidate; unavailable |
+| Khonoma | 0 | No candidate; unavailable |
+| Nako | 0 | No candidate; unavailable |
+| Ziro | 0 | No candidate; unavailable |
+| Kainakary | 0 | No candidate; unavailable |
+| Kutch | 0 | No candidate; unavailable |
+| Amreli | 2 | 2 district; needs_selection |
+| Ahmedabad | 2 | 1 place, 1 district; needs_selection |
+| Vadodara | 2 | 2 district; needs_selection |
+
+Catalogue totals are 1,462 source district entries, 36 state entries, ten model points, six airports and two place entries. The two place labels are Ahmedabad and Ahmedābād; source records and aliases are not automatically equivalent. There are **zero village entries** and **zero reviewed crosswalks in the prior catalogue summary**. These counts are an inventory of stored source entities, not counts of official Indian administrative units. No national village coverage percentage can be calculated without an authoritative target denominator. See [direct geography diagnostics](../research/testing/india-real-life-20260912/results-final/geography-diagnostics.json).
+
+## Improvements and acceptance criteria
+
+| Priority | Improvement | Evidence required before declaring it complete |
+|---|---|---|
+| P0 | Add intent/slot extraction and targeted clarification before tool execution. Route forecasts, observations, travel, agriculture and research separately. | Paraphrases and plural/inflected forms reach the same intended capability; missing dates, ambiguous “morning” windows and compound requests trigger relevant clarification. Numerical calculations remain in tools. |
+| P0 | Build a dated place resolver with state/district/taluka context, reviewed aliases, village IDs and explicit pin selection. Connect selected places to collected model points without asserting village-wide representativeness. | Test same-name villages, script variants, source-name changes, boundary changes and points with no governed collection. Never substitute a neighbouring city or district silently. |
+| P0 | Improve refusals and expose coverage reasons. | Unknown village, ambiguous entity, missing forecast, expired evidence, unsupported parameter and missing specialist data produce distinct explanations and useful next questions. They do not all ask for forecast syntax. |
+| P1 | Route research requests to the existing climate/district tools; version verification metadata alongside the new full-source audit. | IN-059–IN-062 produce the same stored values/flags as manual probes when correctly scoped; historical aliases are reviewed; village/national substitutions and unsupported years remain rejected. |
+| P1 | Add verified probability inputs if rain chance is a product requirement. | Probability source, forecast window, units/definition and calibration are documented; no probability is derived from rain amount alone. |
+| P1 | Design a travel evidence workflow. | Collect route, departure and mode; associate timestamped official restrictions, route-segment weather and applicable hazard evidence. Unknown closures remain unknown; no inferred safety guarantee. |
+| P1 | Add reviewed agriculture contracts and field context. | Dated local advisory, printed geography, crop/stage, activity and relevant field observations are checked. Pest/disease risks require a validated method; symptoms and pesticide dosage do not become weather-only conclusions. |
+| P1 | Integrate research datasets explicitly. | Dataset/version, rural administrative ID, geography, period, units, method, missingness and permitted use are required for demographic and environmental outputs. Document availability alone does not qualify a scientific claim. |
+| P1 | Evaluate multilingual understanding and rendering. | Gujarati/Hindi plus representative regional languages preserve names, time, units, uncertainty and abstention; evaluate transliteration and code switching with fluent reviewers. |
+| P2 | Conduct held-out user and operational evaluation. | Use new questions not used to implement routing, real users from each persona, fresh multi-cycle collections and relevant observation benchmarks. Report task completion, clarification quality, citation fidelity and unsafe-output rate separately. |
+
+**Recommended next implementation batch:** F01/F02 question routing, F03/F04 place clarification, F08 research routing, and F11 explicit coverage/verification metadata. Re-run this suite as a regression check, then evaluate newly authored held-out questions. Adding a broad document index alone will not resolve route feasibility, village identity, missing probability or specialist validation.
+
+### Example target behaviour — proposed, not observed
+
+- For a village forecast: ask for the village’s district/state or an explicit map pin, then explain whether an eligible local model sample is available and what it represents.
+- For a journey: ask for the route, mode and departure time; explain that the available point forecast cannot verify current route opening or safety.
+- For a crop symptom: recognise the farming question, request crop/stage and field/symptom context, and state which reviewed advisory or diagnostic evidence is missing.
+- For research: select the correctly scoped historical tool when available; otherwise name the missing dataset and reference period instead of asking for a weather-forecast format.
+
+## Every scenario question and actual answer
+
+All 111 primary responses are reproduced verbatim below. Each case also includes the actual RAG response, the required information for a useful answer, and the observed outcome. The source JSON retains complete structured values, provenance, metadata, selection options and diagnostics. These answers concern a historical replay unless a clock exception is stated.
+
+### IN-001 — Ahmedabad: Weather and daily life
+
+**Perspective:** Civilian · **Input region:** Gujarat · **Requested scale:** city · **Language:** English · **Test type:** natural.
+
+**Question:** Will it rain in Ahmedabad tomorrow morning?
+
+**Actual answer — `needs_clarification`:**
+
+> Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Actual RAG response — `abstain`:**
+
+> No eligible grounding evidence. Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Assessment:** generic format clarification.
+
+**Information needed for the user’s task:** Resolved local place and time; Relevant forecast variables and spatial support; Probability or impact evidence if requested.
+
+**Separate place diagnostic:** 2 exact source candidates; 1 place, 1 district. This diagnostic was not injected into the answer.
+
+**Returned missing information:** Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?.
+
+### IN-002 — Vadodara: Weather and daily life
+
+**Perspective:** Civilian · **Input region:** Gujarat · **Requested scale:** city · **Language:** English · **Test type:** natural.
+
+**Question:** What is the chance of rain in Vadodara this evening?
+
+**Actual answer — `needs_clarification`:**
+
+> Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Actual RAG response — `abstain`:**
+
+> No eligible grounding evidence. Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Assessment:** generic format clarification.
+
+**Information needed for the user’s task:** Resolved local place and time; Relevant forecast variables and spatial support; Probability or impact evidence if requested.
+
+**Separate place diagnostic:** 2 exact source candidates; 2 district. This diagnostic was not injected into the answer.
+
+**Returned missing information:** Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?.
+
+### IN-003 — Kutch: Weather and daily life
+
+**Perspective:** Civilian · **Input region:** Gujarat · **Requested scale:** district · **Language:** English · **Test type:** natural.
+
+**Question:** Which parts of Kutch district will get rain over the next two days?
+
+**Actual answer — `needs_clarification`:**
+
+> Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Actual RAG response — `abstain`:**
+
+> No eligible grounding evidence. Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Assessment:** generic format clarification.
+
+**Information needed for the user’s task:** Resolved local place and time; Relevant forecast variables and spatial support; Probability or impact evidence if requested.
+
+**Separate place diagnostic:** 0 exact source candidates; none. This diagnostic was not injected into the answer.
+
+**Returned missing information:** Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?.
+
+### IN-004 — Dhordo: Weather and daily life
+
+**Perspective:** Civilian · **Input region:** Gujarat · **Requested scale:** village · **Language:** English · **Test type:** natural.
+
+**Question:** Will it rain in Dhordo village today, and should I carry an umbrella?
+
+**Actual answer — `needs_clarification`:**
+
+> Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Actual RAG response — `abstain`:**
+
+> No eligible grounding evidence. Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Assessment:** generic format clarification.
+
+**Information needed for the user’s task:** Resolved local place and time; Relevant forecast variables and spatial support; Probability or impact evidence if requested.
+
+**Separate place diagnostic:** 0 exact source candidates; none. This diagnostic was not injected into the answer.
+
+**Returned missing information:** Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?.
+
+### IN-005 — Dholavira: Weather and daily life
+
+**Perspective:** Civilian · **Input region:** Gujarat · **Requested scale:** village · **Language:** English · **Test type:** natural.
+
+**Question:** How hot will Dholavira village be between noon and 4 pm tomorrow?
+
+**Actual answer — `needs_clarification`:**
+
+> Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Actual RAG response — `abstain`:**
+
+> No eligible grounding evidence. Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Assessment:** generic format clarification.
+
+**Information needed for the user’s task:** Resolved local place and time; Relevant forecast variables and spatial support; Probability or impact evidence if requested.
+
+**Separate place diagnostic:** 0 exact source candidates; none. This diagnostic was not injected into the answer.
+
+**Returned missing information:** Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?.
+
+### IN-006 — Punsari: Weather and daily life
+
+**Perspective:** Civilian · **Input region:** Gujarat · **Requested scale:** village · **Language:** English · **Test type:** natural.
+
+**Question:** Is there any weather warning for Punsari village tonight?
+
+**Actual answer — `unavailable`:**
+
+> Official warning answers require verified area, validity, completeness and update/cancel lifecycle.
+
+**Actual RAG response — `abstain`:**
+
+> No eligible grounding evidence. Official warning answers require verified area, validity, completeness and update/cancel lifecycle.
+
+**Assessment:** specific capability abstention.
+
+**Information needed for the user’s task:** Resolved local place and time; Relevant forecast variables and spatial support; Probability or impact evidence if requested.
+
+**Separate place diagnostic:** 0 exact source candidates; none. This diagnostic was not injected into the answer.
+
+**Returned missing information:** Official warning answers require verified area, validity, completeness and update/cancel lifecycle..
+
+### IN-007 — Mandvi: Weather and daily life
+
+**Perspective:** Civilian · **Input region:** Gujarat · **Requested scale:** town · **Language:** English · **Test type:** natural.
+
+**Question:** What will the weather be like in Mandvi tomorrow morning?
+
+**Actual answer — `needs_clarification`:**
+
+> Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Actual RAG response — `abstain`:**
+
+> No eligible grounding evidence. Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Assessment:** generic format clarification.
+
+**Information needed for the user’s task:** Resolved local place and time; Relevant forecast variables and spatial support; Probability or impact evidence if requested.
+
+**Separate place diagnostic:** 0 exact source candidates; none. This diagnostic was not injected into the answer.
+
+**Returned missing information:** Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?.
+
+### IN-008 — Bhuj: Weather and daily life
+
+**Perspective:** Civilian · **Input region:** Gujarat · **Requested scale:** town · **Language:** English · **Test type:** natural.
+
+**Question:** Is it raining in Bhuj now?
+
+**Actual answer — `unavailable`:**
+
+> Current observations require an applicable station and observation timestamp; a model forecast cannot substitute.
+
+**Actual RAG response — `abstain`:**
+
+> No eligible grounding evidence. Current observations require an applicable station and observation timestamp; a model forecast cannot substitute.
+
+**Assessment:** specific capability abstention.
+
+**Information needed for the user’s task:** Resolved local place and time; Relevant forecast variables and spatial support; Probability or impact evidence if requested.
+
+**Separate place diagnostic:** 0 exact source candidates; none. This diagnostic was not injected into the answer.
+
+**Returned missing information:** Current observations require an applicable station and observation timestamp; a model forecast cannot substitute..
+
+### IN-009 — Barmer: Weather and daily life
+
+**Perspective:** Civilian · **Input region:** Rajasthan · **Requested scale:** district · **Language:** English · **Test type:** natural.
+
+**Question:** How likely is rain in Barmer district this weekend?
+
+**Actual answer — `needs_clarification`:**
+
+> Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Actual RAG response — `abstain`:**
+
+> No eligible grounding evidence. Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Assessment:** generic format clarification.
+
+**Information needed for the user’s task:** Resolved local place and time; Relevant forecast variables and spatial support; Probability or impact evidence if requested.
+
+**Separate place diagnostic:** 2 exact source candidates; 2 district. This diagnostic was not injected into the answer.
+
+**Returned missing information:** Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?.
+
+### IN-010 — Sehore: Weather and daily life
+
+**Perspective:** Civilian · **Input region:** Madhya Pradesh · **Requested scale:** district · **Language:** English · **Test type:** natural.
+
+**Question:** Will heavy rain affect Sehore district in the next 24 hours?
+
+**Actual answer — `needs_clarification`:**
+
+> Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Actual RAG response — `abstain`:**
+
+> No eligible grounding evidence. Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Assessment:** generic format clarification.
+
+**Information needed for the user’s task:** Resolved local place and time; Relevant forecast variables and spatial support; Probability or impact evidence if requested.
+
+**Separate place diagnostic:** 2 exact source candidates; 2 district. This diagnostic was not injected into the answer.
+
+**Returned missing information:** Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?.
+
+### IN-011 — Hiware Bazar: Weather and daily life
+
+**Perspective:** Civilian · **Input region:** Maharashtra · **Requested scale:** village · **Language:** English · **Test type:** natural.
+
+**Question:** Will Hiware Bazar village get enough rain to refill our rainwater tank this week?
+
+**Actual answer — `needs_clarification`:**
+
+> Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Actual RAG response — `abstain`:**
+
+> No eligible grounding evidence. Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Assessment:** generic format clarification.
+
+**Information needed for the user’s task:** Resolved local place and time; Relevant forecast variables and spatial support; Probability or impact evidence if requested.
+
+**Separate place diagnostic:** 0 exact source candidates; none. This diagnostic was not injected into the answer.
+
+**Returned missing information:** Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?.
+
+### IN-012 — Kainakary: Weather and daily life
+
+**Perspective:** Civilian · **Input region:** Kerala · **Requested scale:** village · **Language:** English · **Test type:** natural.
+
+**Question:** Will our lane in Kainakary be waterlogged tomorrow?
+
+**Actual answer — `needs_clarification`:**
+
+> Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Actual RAG response — `abstain`:**
+
+> No eligible grounding evidence. Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Assessment:** generic format clarification.
+
+**Information needed for the user’s task:** Resolved local place and time; Relevant forecast variables and spatial support; Probability or impact evidence if requested.
+
+**Separate place diagnostic:** 0 exact source candidates; none. This diagnostic was not injected into the answer.
+
+**Returned missing information:** Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?.
+
+### IN-013 — Hampi: Weather and daily life
+
+**Perspective:** Civilian · **Input region:** Karnataka · **Requested scale:** village · **Language:** English · **Test type:** natural.
+
+**Question:** Can we hold an outdoor school event in Hampi from 3 pm to 5 pm tomorrow?
+
+**Actual answer — `needs_clarification`:**
+
+> Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Actual RAG response — `abstain`:**
+
+> No eligible grounding evidence. Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Assessment:** generic format clarification.
+
+**Information needed for the user’s task:** Resolved local place and time; Relevant forecast variables and spatial support; Probability or impact evidence if requested.
+
+**Separate place diagnostic:** 0 exact source candidates; none. This diagnostic was not injected into the answer.
+
+**Returned missing information:** Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?.
+
+### IN-014 — Karaikudi: Weather and daily life
+
+**Perspective:** Civilian · **Input region:** Tamil Nadu · **Requested scale:** town · **Language:** English · **Test type:** natural.
+
+**Question:** What will the temperature and humidity feel like in Karaikudi tomorrow afternoon?
+
+**Actual answer — `needs_clarification`:**
+
+> Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Actual RAG response — `abstain`:**
+
+> No eligible grounding evidence. Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Assessment:** generic format clarification.
+
+**Information needed for the user’s task:** Resolved local place and time; Relevant forecast variables and spatial support; Probability or impact evidence if requested.
+
+**Separate place diagnostic:** 0 exact source candidates; none. This diagnostic was not injected into the answer.
+
+**Returned missing information:** Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?.
+
+### IN-015 — Mawlynnong: Weather and daily life
+
+**Perspective:** Civilian · **Input region:** Meghalaya · **Requested scale:** village · **Language:** English · **Test type:** natural.
+
+**Question:** Will there be thunderstorms in Mawlynnong village tomorrow?
+
+**Actual answer — `needs_clarification`:**
+
+> Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Actual RAG response — `abstain`:**
+
+> No eligible grounding evidence. Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Assessment:** generic format clarification.
+
+**Information needed for the user’s task:** Resolved local place and time; Relevant forecast variables and spatial support; Probability or impact evidence if requested.
+
+**Separate place diagnostic:** 0 exact source candidates; none. This diagnostic was not injected into the answer.
+
+**Returned missing information:** Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?.
+
+### IN-016 — Khonoma: Weather and daily life
+
+**Perspective:** Civilian · **Input region:** Nagaland · **Requested scale:** village · **Language:** English · **Test type:** natural.
+
+**Question:** Will fog reduce visibility around Khonoma early tomorrow morning?
+
+**Actual answer — `needs_clarification`:**
+
+> Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Actual RAG response — `abstain`:**
+
+> No eligible grounding evidence. Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Assessment:** generic format clarification.
+
+**Information needed for the user’s task:** Resolved local place and time; Relevant forecast variables and spatial support; Probability or impact evidence if requested.
+
+**Separate place diagnostic:** 0 exact source candidates; none. This diagnostic was not injected into the answer.
+
+**Returned missing information:** Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?.
+
+### IN-017 — Nako: Weather and daily life
+
+**Perspective:** Civilian · **Input region:** Himachal Pradesh · **Requested scale:** village · **Language:** English · **Test type:** natural.
+
+**Question:** Could temperatures drop below freezing in Nako village tonight?
+
+**Actual answer — `needs_clarification`:**
+
+> Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Actual RAG response — `abstain`:**
+
+> No eligible grounding evidence. Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Assessment:** generic format clarification.
+
+**Information needed for the user’s task:** Resolved local place and time; Relevant forecast variables and spatial support; Probability or impact evidence if requested.
+
+**Separate place diagnostic:** 0 exact source candidates; none. This diagnostic was not injected into the answer.
+
+**Returned missing information:** Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?.
+
+### IN-018 — Zuluk: Weather and daily life
+
+**Perspective:** Civilian · **Input region:** Sikkim · **Requested scale:** village · **Language:** English · **Test type:** natural.
+
+**Question:** Will strong winds affect Zuluk village over the next two days?
+
+**Actual answer — `needs_clarification`:**
+
+> Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Actual RAG response — `abstain`:**
+
+> No eligible grounding evidence. Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Assessment:** generic format clarification.
+
+**Information needed for the user’s task:** Resolved local place and time; Relevant forecast variables and spatial support; Probability or impact evidence if requested.
+
+**Separate place diagnostic:** 0 exact source candidates; none. This diagnostic was not injected into the answer.
+
+**Returned missing information:** Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?.
+
+### IN-019 — Imphal: Weather and daily life
+
+**Perspective:** Civilian · **Input region:** Manipur · **Requested scale:** city · **Language:** English · **Test type:** natural.
+
+**Question:** What is the rainfall probability in Imphal tomorrow?
+
+**Actual answer — `needs_clarification`:**
+
+> Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Actual RAG response — `abstain`:**
+
+> No eligible grounding evidence. Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Assessment:** generic format clarification.
+
+**Information needed for the user’s task:** Resolved local place and time; Relevant forecast variables and spatial support; Probability or impact evidence if requested.
+
+**Separate place diagnostic:** 0 exact source candidates; none. This diagnostic was not injected into the answer.
+
+**Returned missing information:** Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?.
+
+### IN-020 — Aizawl: Weather and daily life
+
+**Perspective:** Civilian · **Input region:** Mizoram · **Requested scale:** city · **Language:** English · **Test type:** natural.
+
+**Question:** What is the weather forecast for Aizawl over the next week?
+
+**Actual answer — `needs_clarification`:**
+
+> Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Actual RAG response — `abstain`:**
+
+> No eligible grounding evidence. Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Assessment:** generic format clarification.
+
+**Information needed for the user’s task:** Resolved local place and time; Relevant forecast variables and spatial support; Probability or impact evidence if requested.
+
+**Separate place diagnostic:** 2 exact source candidates; 2 district. This diagnostic was not injected into the answer.
+
+**Returned missing information:** Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?.
+
+### IN-021 — Agartala: Weather and daily life
+
+**Perspective:** Civilian · **Input region:** Tripura · **Requested scale:** city · **Language:** English · **Test type:** natural.
+
+**Question:** Is there a heat warning for Agartala today?
+
+**Actual answer — `unavailable`:**
+
+> Official warning answers require verified area, validity, completeness and update/cancel lifecycle.
+
+**Actual RAG response — `abstain`:**
+
+> No eligible grounding evidence. Official warning answers require verified area, validity, completeness and update/cancel lifecycle.
+
+**Assessment:** specific capability abstention.
+
+**Information needed for the user’s task:** Resolved local place and time; Relevant forecast variables and spatial support; Probability or impact evidence if requested.
+
+**Separate place diagnostic:** 0 exact source candidates; none. This diagnostic was not injected into the answer.
+
+**Returned missing information:** Official warning answers require verified area, validity, completeness and update/cancel lifecycle..
+
+### IN-022 — my village near Purnea: Weather and daily life
+
+**Perspective:** Civilian · **Input region:** Bihar · **Requested scale:** relative_village · **Language:** English · **Test type:** natural.
+
+**Question:** I live in a small village near Purnea. What is the local weather tonight?
+
+**Actual answer — `needs_clarification`:**
+
+> Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Actual RAG response — `abstain`:**
+
+> No eligible grounding evidence. Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Assessment:** generic format clarification.
+
+**Information needed for the user’s task:** Resolved local place and time; Relevant forecast variables and spatial support; Probability or impact evidence if requested.
+
+**Separate place diagnostic:** 0 exact source candidates; none. This diagnostic was not injected into the answer.
+
+**Returned missing information:** Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?.
+
+### IN-023 — Ahmedabad → Vadodara: Travel feasibility
+
+**Perspective:** Traveller · **Input region:** Gujarat · **Requested scale:** route · **Language:** English · **Test type:** natural.
+
+**Question:** Can I drive from Ahmedabad to Vadodara now, or are roads flooded?
+
+**Actual answer — `unavailable`:**
+
+> Current observations require an applicable station and observation timestamp; a model forecast cannot substitute.
+
+**Actual RAG response — `abstain`:**
+
+> No eligible grounding evidence. Current observations require an applicable station and observation timestamp; a model forecast cannot substitute.
+
+**Assessment:** specific capability abstention.
+
+**Information needed for the user’s task:** Both endpoints, route, mode and departure time; Time-stamped road/rail closures and route hazard evidence; Avoid a safe/open guarantee from point weather alone.
+
+**Returned missing information:** Current observations require an applicable station and observation timestamp; a model forecast cannot substitute..
+
+### IN-024 — Bhuj → Dhordo: Travel feasibility
+
+**Perspective:** Traveller · **Input region:** Gujarat · **Requested scale:** route · **Language:** English · **Test type:** natural.
+
+**Question:** Is it safe to travel from Bhuj to Dhordo by car tomorrow morning?
+
+**Actual answer — `needs_clarification`:**
+
+> Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Actual RAG response — `abstain`:**
+
+> No eligible grounding evidence. Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Assessment:** generic format clarification.
+
+**Information needed for the user’s task:** Both endpoints, route, mode and departure time; Time-stamped road/rail closures and route hazard evidence; Avoid a safe/open guarantee from point weather alone.
+
+**Returned missing information:** Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?.
+
+### IN-025 — Mandvi → Bhuj: Travel feasibility
+
+**Perspective:** Traveller · **Input region:** Gujarat · **Requested scale:** route · **Language:** English · **Test type:** natural.
+
+**Question:** Will rain delay my bus from Mandvi to Bhuj this evening?
+
+**Actual answer — `needs_clarification`:**
+
+> Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Actual RAG response — `abstain`:**
+
+> No eligible grounding evidence. Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?
+
+**Assessment:** generic format clarification.
+
+**Information needed for the user’s task:** Both endpoints, route, mode and departure time; Time-stamped road/rail closures and route hazard evidence; Avoid a safe/open guarantee from point weather alone.
+
+**Returned missing information:** Use an explicit forecast question, place, date and 24-hour start/end times. Example: How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?.
+
+### IN-026 — Mumbai → Pune: Travel feasibility
+
+**Perspective:** Traveller · **Input region:** Maharashtra · **Requested scale:** route · **Language:** English · **Test type:** natural.
+
+**Question:** Can I drive from Mumbai to Pune tonight without getting stuck in rain?
+
+**Actual answer — `needs_clarification`:**
+
+> Use an e... (126 KB left)

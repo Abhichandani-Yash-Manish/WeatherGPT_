@@ -1,0 +1,39 @@
+{"pages_checked": 100, "pages_targeted": 2026, "rows": 2709}
+{"pages_checked": 200, "pages_targeted": 2026, "rows": 5442}
+{"pages_checked": 300, "pages_targeted": 2026, "rows": 8148}
+{"pages_checked": 400, "pages_targeted": 2026, "rows": 11515}
+{"pages_checked": 500, "pages_targeted": 2026, "rows": 14852}
+{"pages_checked": 600, "pages_targeted": 2026, "rows": 17655}
+{"pages_checked": 700, "pages_targeted": 2026, "rows": 20394}
+{"pages_checked": 800, "pages_targeted": 2026, "rows": 23941}
+{"pages_checked": 900, "pages_targeted": 2026, "rows": 27556}
+{"pages_checked": 1000, "pages_targeted": 2026, "rows": 30671}
+{"pages_checked": 1100, "pages_targeted": 2026, "rows": 33373}
+{"pages_checked": 1200, "pages_targeted": 2026, "rows": 36181}
+{"pages_checked": 1300, "pages_targeted": 2026, "rows": 39317}
+{"pages_checked": 1400, "pages_targeted": 2026, "rows": 42102}
+{"pages_checked": 1500, "pages_targeted": 2026, "rows": 45172}
+{"pages_checked": 1600, "pages_targeted": 2026, "rows": 48557}
+{"pages_checked": 1700, "pages_targeted": 2026, "rows": 51498}
+{"pages_checked": 1800, "pages_targeted": 2026, "rows": 54223}
+{"pages_checked": 1900, "pages_targeted": 2026, "rows": 57153}
+{"pages_checked": 2000, "pages_targeted": 2026, "rows": 59866}
+{
+  "source_pdf_pages": 2418,
+  "source_pages_checked": 2026,
+  "district_series": 640,
+  "csv_database_rows_matched": 60568,
+  "csv_database_measure_cells_matched": 1029656,
+  "counts": {
+    "matched": 60568,
+    "matched_cells_including_blanks": 1029656,
+    "matched_nonmissing_cells": 999571
+  },
+  "series_fully_matched": 640,
+  "pdfplumber_version": "0.11.9",
+  "method": "PDF coordinate/column and district/year checks, independent of CSV value order. Missing cells are compared explicitly.",
+  "limitations": [
+    "Transcription agreement does not establish measurement accuracy, modern boundary comparability or reuse rights.",
+    "No unclear extraction is promoted to a match."
+  ]
+}

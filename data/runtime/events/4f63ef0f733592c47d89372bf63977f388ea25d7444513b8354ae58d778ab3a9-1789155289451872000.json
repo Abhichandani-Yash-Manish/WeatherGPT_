@@ -1,0 +1,10 @@
+{
+  "source_id": "S22",
+  "url": "https://archive-api.open-meteo.com/v1/archive?latitude=23.02579&longitude=72.58727&start_date=2025-07-01&end_date=2025-07-07&daily=precipitation_sum%2Ctemperature_2m_max%2Ctemperature_2m_min&models=era5&timezone=UTC",
+  "retrieved_at_utc": "2026-09-11T19:34:49.451831+00:00",
+  "http_status": 200,
+  "content_type": "application/json; charset=utf-8",
+  "bytes": 559,
+  "sha256": "4714bf17589474f1714777338677b9864c0f6dddc79f2e8d6fbb74650a2fff42",
+  "blob": "blobs/4714bf17589474f1714777338677b9864c0f6dddc79f2e8d6fbb74650a2fff42.bin"
+}

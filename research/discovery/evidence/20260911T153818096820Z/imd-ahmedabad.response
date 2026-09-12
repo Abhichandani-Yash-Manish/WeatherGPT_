@@ -1,0 +1,1542 @@
+
+<!doctype html>
+<html lang="en">
+  
+   <head>
+       
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-143177612-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-143177612-1');
+</script>
+      
+     <title>Gujarat</title>
+
+     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-143177612-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-143177612-1');
+</script>
+
+ 
+      <meta charset="utf-8">
+      <meta name="robots" content="noodp">
+      <meta name="viewport" id="viewport" content="width=device-width">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      
+      <meta http-equiv="content-type" content="text/html;charset=UTF-8" /> 
+      <meta name="keywords" content="IMD">
+      
+          
+      <link rel="stylesheet" href="https://mausam.imd.gov.in/ahmedabad/css/home.css" type="text/css">
+      
+      <link rel="shortcut icon" href="https://mausam.imd.gov.in/ico/favicon.png">
+    
+      
+
+      <link rel="stylesheet" href="https://mausam.imd.gov.in/ahmedabad/css/all.css" />
+
+      <style type="text/css" media="screen">
+
+         .sun-rise{
+            background-image: url('img/sunrise.jpg');
+           }
+           
+           .sun-set{
+               background-image: url('img/sunset.jpg');
+           }
+           
+
+           .moon-rise{
+               background-image: url('img/moonrise.jpg');
+           }
+           
+
+
+           .moon-set{
+               background-image: url('img/moonset.jpg');
+           }
+           
+
+           .moon-set p span, .moon-rise p span, .sun-set p span, .sun-rise p span{
+             background-color: #0000008a;
+             padding:5px;
+           }
+
+           .moon-set p, .moon-rise p, .sun-set p, .sun-rise p{
+                   color: #fff;
+                   padding-left: 10px;
+                   font-weight: 400;
+                   line-height: 36.5px;
+                   bottom: 0px !important;
+                   font-family: sans-serif;
+                   font-size: 14px;
+                   margin:0;
+
+           }
+
+           .right-box-equal{
+               height: 38px;
+               margin-bottom: 5px;
+           }
+         
+      </style>
+      <link href="https://fonts.googleapis.com/css?family=Signika" rel="stylesheet">
+
+
+ <script src="https://www.amcharts.com/lib/3/ammap.js"></script>
+<script src="https://www.amcharts.com/lib/3/maps/js/indiaLow.js"></script>
+<!--<script src="js/telangana.js"></script>-->
+<!--<script src="indiaLow.js"></script>-->
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<!--<script src="https://www.amcharts.com/lib/3/maps/js/indiaHigh.js"></script>-->
+<!--<script src="india_low.js"></script>-->
+<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<!--<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />-->
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+
+
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/all.css" />
+<style>
+ .sun-rise{
+            background-image: url('../img/sunrise.jpg');
+           }
+           
+           .sun-set{
+               background-image: url('../img/sunset.jpg');
+           }
+           
+
+           .moon-rise{
+               background-image: url('../img/moonrise.jpg');
+           }
+           
+
+
+           .moon-set{
+               background-image: url('../img/moonset.jpg');
+           }
+           
+
+           .moon-set p span, .moon-rise p span, .sun-set p span, .sun-rise p span{
+             background-color: #0000008a;
+             padding:5px 3px 5px 3px;
+           }
+
+           .moon-set p, .moon-rise p, .sun-set p, .sun-rise p{
+                   color: #fff;
+                   padding-left: 3px;
+                   font-weight: 400;
+                   line-height: 36.5px;
+                   bottom: 0px !important;
+                   font-family: sans-serif;
+                   font-size: 14px;
+                   margin:0;
+
+           }
+
+           .right-box-equal{
+               height: 38px;
+               margin-bottom: 5px;
+           }
+ #selector {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 10px;
+  font-size: 16px;
+}
+
+#selector input,
+#selector select {
+  padding: 0px;
+}
+.ammapDescriptionWindow {
+max-width: 0px;
+  max-height: 0px;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 0px;
+  border-radius: 0px;
+  border: 0px solid rgba(255, 255, 255, 1);
+
+}
+
+.ammapDescriptionWindowCloseButton{
+max-width: 0px;
+  max-height: 0px;
+
+}
+
+.ammapDescriptionTitle {
+  font-size: 0px;
+  font-weight: bold;
+  margin-bottom: 0px;
+}
+.ammapDescriptionText {
+  max-height: 0px;
+  overflow: auto;
+}
+.ammapDescriptionText img, .ammapDescriptionText p {
+  max-width: 0px;
+}
+
+/*.amcharts-chart-div > a {
+    display: none !important;
+}*/
+.amcharts-label-xx {
+  text-decoration: underline;  // make the text underline imitating the link
+}
+.inlineList {
+   display: flex;
+   flex-direction: row;
+  padding:0;
+   justify-content:flex-start;
+   list-style: none;
+   white-space: nowrap;
+ width:410px;
+ height:350px;
+ 
+ }
+</style>
+
+
+   </head>
+   <body>
+
+
+<style>
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 999; /* Sit on top */
+/*  padding-top: 100px; /* Location of the box */*/
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+}
+
+/* Modal Content (image) */
+.modal-content {
+  margin: auto;
+  display: block;
+  width: 100%;
+  max-width: 600px;
+  padding: 4px;
+}
+
+/* Caption of Modal Image */
+#caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 900px;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+
+#countDown {
+  color: #b13f23;
+  font-weight: bold;
+  font-size: 12px;
+  padding: 10px;
+  text-align: center;
+  display: block;
+  margin: 1px auto;
+  max-width: 700px;
+  border-radius: 5px;
+  background: #e5faf9;
+}
+
+/* Add Animation */
+.modal-content, #caption {  
+  -webkit-animation-name: zoom;
+  -webkit-animation-duration: 0.6s;
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+.link-cross {
+  position: relative;
+  display: block;
+  margin: 13% auto;
+  max-width: 600px;
+  text-align: center;
+}
+
+@-webkit-keyframes zoom {
+  from {-webkit-transform:scale(0)} 
+  to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+  from {transform:scale(0)} 
+  to {transform:scale(1)}
+}
+
+/* The Close Button */
+.close {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  color: #f1f1f1;
+  font-size: 28px;
+  transition: 0.3s;
+  z-index: 10;
+  padding: 0;
+  line-height: 50px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+  background: rgba(150,150,150,0.75);
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 1000px){
+  .modal-content {
+    width: 100%;
+  }
+  #countDown {
+    font-size: 16px;
+    padding: 10px;
+  }
+  .close {
+    color: #fff;
+    top: 5px;
+    right: 5px;
+    width: 30px;
+    line-height: 30px;
+  height: 30px;
+  border-radius: 30px;
+  }
+  .link-cross {
+    margin: 40% auto;
+  }
+}
+</style>
+
+<script>
+  // function for close button 
+  function clocse() { 
+    document.getElementById("myModal").style.display = "none";
+  }
+</script>
+
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal" style='display:block'>
+
+      <!-- ################################################# -->
+      <!-- ######### CHANGE THE IMAGE LINK HERE ONLY FOR DISPLAY IMAGE ####### -->  
+      <!-- ################################################# -->
+      <!--<img class="modal-content" id="img01" style="position:relative;z-index:1;" src="https://mausam.imd.gov.in/responsive/images/saveEarth.png> -->
+      <!-- ################################################# -->
+      <!-- MODAL WITH TIMER AND OTHER PAGE REDIRECT LINK -->
+      <!-- ################################################# -->
+       <div class="link-cross">
+         <a href="https://mausam.imd.gov.in/survey_app/survey.php?survey=hw_gp" target="_blank">
+
+          
+          <img class="modal-content" id="img01" style="position:relative;z-index:1;" src="https://mausam.imd.gov.in/responsive/images/HW_GP_GeneralPublic.png">    
+         
+</a>
+
+                <div id="countDown"> Share your feedback. Take the IMD Heat Wave Alert Survey (13 Aug 2026 to 20 Sept 2026). </div>
+        
+       <span class="close" onclick="clocse();">&times;</span>
+      </div>
+    </div>
+
+
+
+     <!--This cover the whole page -->
+      <div id="pageheight">
+      <!--This cover the website page -->
+         <div id="pagewrap">
+           
+           <h1 class="accessible">India Meteorological Department<BR>Met Centre Ahmedabad</h1>
+<p id="jumplinks"><a href="#content">Skip to main content (press enter)</a></p>
+
+        
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-157746104-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-157746104-1');
+</script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-157746104-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-157746104-1');
+</script>
+
+<script>
+ function changeLang(){
+  document.getElementById('form_lang').submit();
+ }
+ </script>
+ 
+<header id="header">
+<title>MC Ahmedabad</title>
+   <div class="l_content">
+      <div id="header-logo"><a id="logo" href="#"><img src="https://mausam.imd.gov.in/imd_latest/contents/img/logo-india-big.png" alt="India Meteorological Department" width="80" height="110" style="z-index: 1;"></a>
+      
+<div style="width:500px">	 	
+				
+		<h1 style="color:#FFF; text-align:center; font-size:11px; padding-top:0px; padding-left:0px; font-weight:200">Ministry of Earth Sciences</h1>
+		<h1 style="color:#FFF; text-align:center; font-size:13px; padding-top:0px; padding-left:0px; font-weight:200"> India Meteorological Department</h1> 
+		<h1 style="color:#FFF; text-align:center; font-size:15px; padding-top:0px; padding-left:0px; font-weight:200"> Met Centre Ahmedabad</h1> 
+	</div>
+      
+	 
+      
+      </div>
+	  
+	   
+	   
+      <div id="header-main">
+         <div class="l_top">
+          
+            <div id="header-search">
+
+         <form action="/search_RV/index.php" method="post">
+         <input type="text" name="sr" maxlength="45" />
+          <input type="submit" value="Search" />
+		  
+            </form>
+			
+			
+
+			 <!-- Language -->
+		 <form method='get' action='' id='form_lang' >
+		  <select name='lang' onchange='changeLang();' >
+		   <option value='en'  selected >English</option>
+		   <option value='hi'  >Hindi</option>
+		   <option value='gu'  >Gujarati</option>
+		  </select>
+		 </form>
+		 
+		
+		 
+            </div>
+			
+            
+ <div id="social_media" >
+
+            
+			
+	   
+         </div>
+         
+         
+         <div class="l_bottom" >
+            <ul class="sf-menu">             
+              
+<li class="no-menu"><a href="https://mausam.imd.gov.in/ahmedabad" title="Home"><img src="https://mausam.imd.gov.in/ahmedabad/img/home.gif" height="18"/></a></li>                      
+                       
+<li  class="no-menu"><a href="https://mausam.imd.gov.in/ahmedabad/organization.php">Organisation</a></li>
+			   
+			<div class="sf-menu-pointer"></div>
+
+<li  class="no-menu"><a href="https://mausam.imd.gov.in/ahmedabad/aboutus.php" >About Us</a></li>
+			   
+			<div class="sf-menu-pointer"></div>
+
+<li  class="no-menu"><a href="https://mausam.imd.gov.in/ahmedabad/contactus.php">Contact Us</a></li>
+			   
+			<div class="sf-menu-pointer"></div>
+
+<li class="dropdown "> <a style="cursor:pointer;" class="dropdown-toggle" data-toggle="dropdown">Data Supply</a>
+                  <ul class="dropdown-menu">
+                   
+                        <li><a href="/ahmedabad/docs/data-request.pdf" target="_blank">Data Supply Form</a></li>
+                        <li><a href="/ahmedabad/docs/data-procedure.pdf" target="_blank">Data Supply Procedure</a></li>
+						<li><a href="/ahmedabad/docs/address.pdf" target="_blank">Communication Address</a></li>
+		  </ul>
+</li>
+
+<!--
+<li class="dropdown "> <a style="cursor:pointer;" class="dropdown-toggle" data-toggle="dropdown">Public Safety</a>
+                  <ul class="dropdown-menu">
+                   
+                        <li><a href="/ahmedabad/docs/drought-en.pdf" target="_blank">Drought</a></li>
+                        <li><a href="/ahmedabad/docs/flood-en.pdf" target="_blank">Flood</a></li>
+						<li><a href="/ahmedabad/docs/heatwave-en.pdf" target="_blank">Heatwave</a></li>
+						<li><a href="/ahmedabad/docs/thunderstorm-en.pdf" target="_blank">Thunderstorm</a></li>
+		  </ul>
+</li>
+-->
+
+			   
+			<div class="sf-menu-pointer"></div>
+
+<li  class="no-menu"><a href="/ahmedabad/mcdata/tender.pdf" target="_blank">Tender</a></li>
+			   
+			<div class="sf-menu-pointer"></div>
+<li  class="no-menu"><a href="/ahmedabad/mcdata/press.pdf" target="_blank">Press Release</a></li>
+			   
+			<div class="sf-menu-pointer"></div>
+
+
+			
+<li id="sf-menu-vic">
+                <abbr ><a href="#">Others</a></abbr>
+                  <ul>
+                     <li class="accessible">
+                        <h2 class="accessible">Others</h2>
+                     </li>
+
+                    <!--<li><a href="http://117.203.102.123:8088/entermobile.php" target="_blank" >SMS Alerts</a></li>-->
+                    <li><a href="https://mausam.imd.gov.in/ahmedabad/rti.php"target="_blank" >RTI</a></li>
+                    <li><a href="https://mausam.imd.gov.in/Forecast/feedback.php" target="_blank">Feedback</a></li>
+                    
+                    <li><a href="https://mausam.imd.gov.in/imd_latest/contents/faq.php" target="_blank">FAQs</a></li>
+                    <li><a href="https://mausam.imd.gov.in/ahmedabad/disclaimer.php" target="_blank">Disclaimer</a></li>
+
+
+                    
+                  </ul>
+                 <!-- <div class="sf-menu-pointer"></div>-->
+               
+               </li>
+
+<!--<li  class="no-menu"><a href="http://117.203.102.123:8088/entermobile.php" target="_blank">SMS Alerts</a></li>
+			   
+			<div class="sf-menu-pointer"></div>
+
+<li  class="no-menu"><a href="https://mausam.imd.gov.in/ahmedabad/rti.php">RTI</a></li>
+			   
+			<div class="sf-menu-pointer"></div>
+<li  class="no-menu"><a href="https://mausam.imd.gov.in/Forecast/feedback.php" target="_blank">Feedback</a></li>
+			   
+			<div class="sf-menu-pointer"></div>-->
+
+         
+              
+
+
+
+            </ul>
+
+
+
+
+
+
+
+
+
+         </div>
+      </div>
+      <div id="second_logo">
+      <a href="#"><img src="https://mausam.imd.gov.in/imd_latest/img/imd_logo_enamble.png" alt="India Meteorological Department"></a>
+      </div>
+   </div>
+</header>        <div id="columns">
+          
+<!-- This section shows the warning links and specialized forecasts dropdown-->
+           
+<section id="content">
+
+
+<div id="current">
+<!-- Warnings-->
+      <div id="warning_content">
+        <h2>Warnings</h2>
+         <ul >
+            <li><a href="https://mausam.imd.gov.in/imd_latest/contents/subdivisionwise-warning_mc.php?id=9" title="Subdivision Wise" class="tip" style="font-size:12px;">Subdivision Wise</a>
+&nbsp;&nbsp;&nbsp;<a href="https://mausam.imd.gov.in/imd_latest/contents/districtwise-warning_mc.php?id=9" title="District Wise" class="tip"  style="font-size:12px;">District Wise</a></li>
+           
+         </ul>
+      </div>
+	  
+<!-- Nowcast-->  
+      <div id="nowcast_content"  >
+         <h2>Nowcast</h2>
+         <ul>
+             <li><a href="https://mausam.imd.gov.in/imd_latest/contents/districtwisewarnings_mc.php?id=9" title="District Wise" class="tip"  style="font-size:12px;">District Wise</a>
+&nbsp;&nbsp;&nbsp;<a href="https://mausam.imd.gov.in/imd_latest/contents/stationwise-nowcast-warning_mc.php?id=9" title="Station Wise" class="tip"  style="font-size:12px;">Station Wise</a></li>
+         </ul>
+      </div>
+	  
+
+<!-- Weather Observations-->  	  
+      <div id="nowcast_content2" >
+         <h2>Weather Observations</h2>
+         <ul>
+             <li><a href="https://mausam.imd.gov.in/imd_latest/contents/Todaysweather_mc.php?id=9"  title="Temperature" class="tip"  style="font-size:12px;">Daily</a>
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;<a href="http://aws.imd.gov.in:8091/state/GUJARAT" target="_blank" title="Temperature" class="tip"  style="font-size:12px;">AWS</a></li>
+
+         </ul>
+      </div>
+   </div>
+   
+  
+		   
+
+
+   <div class="other" >
+      <ul class="sf-menu">
+         <li class="">
+           <a href="#" class="nonclick">Forecast</a>
+             <ul>
+				   <li class=""><a href="http://internal.imd.gov.in/pages/city_weather_main_mausam.php"target="_blank">City Forecast</a></li>	  
+
+				   
+				   <li class=""><a href=https://mausam.imd.gov.in/ahmedabad/mcdata/district.pdf target=_blank>District Forecast</a></li>		
+
+				   <li class=""><a href=https://mausam.imd.gov.in/ahmedabad/mcdata/state.pdf target="_blank">State Forecast</a></li> 
+				   
+				   <li class=""><a href="https://mausam.imd.gov.in/imd_latest/contents/all_india_forcast_bulletin.php" target="_blank">National Forecast</a></li>  
+				   <li class=""><a href="https://mausam.imd.gov.in/ahmedabad/mcdata/extended.pdf" target=_blank>Extended Range Forecast</a></li>
+				   <li class=""><a href="https://mausam.imd.gov.in/ahmedabad/mcdata/impact.pdf" target=_blank>Impact Based Forecast</a></li> 
+					
+				   <li class=""><a href="https://mausam.imd.gov.in/ahmedabad/mcdata/media.pdf" target=_blank>Media Forecast</a></li> 	
+				
+					<li class=""><a href="https://mausam.imd.gov.in/ahmedabad/mcdata/highway.png" target="_blank">Highway Forecast</a></li> 
+					<li class=""><a href="https://internal.imd.gov.in/pages/tourism_forecast_mausam.php" target="_blank">Tourism Forecast</a></li> 
+					<li class=""><a href="https://mausam.imd.gov.in/ahmedabad/ums.php" target="_blank">Urban Area Forecast of Gujarat</a></li> 
+             </ul>
+            
+         </li>
+      </ul>  
+   </div> 
+   
+  
+  
+  
+  
+  
+  
+ 
+</section>
+
+		
+<!-- This section shows the map application and the wheather video imd_latest/contents-->
+<!--<marquee direction="scroll" style="width: 100%; padding: 6px 0; background-color: #85c5e3; " ><a href="Forecast/marquee_data/appreciation_2020.pdf" target=_blank><font color="black">DG, IMD appreciates contribution and cooperation of colleagues in sustaining IMD services.</font></a></marquee>-->
+
+<section id="banner" class="clearfix">
+
+<!-- Marquee -->
+<marquee direction="scroll" scrollamount="4" onmouseover="this.stop();" onmouseout="this.start();" style="width: 100%; padding: 6px 0; background-color: #85c5e3;" >
+			<font color="black">
+			<!--Welcome to the new website of IMD dedicated to general public &nbsp;&nbsp;&nbsp;&nbsp;-->
+
+
+			&#9830;&nbsp;<font color='black'><a href='https://internal.imd.gov.in/recruits/20260907_rec_288.pdf' style='color: #000000' target='_blank'>RECRUITMENT TO THE POST OF SCIENTIFIC ASSISTANT IN IMD THROUGH SSC JE EXAMINATION</a></font>&nbsp;&nbsp;&nbsp;			</font>
+		</marquee>
+
+<!-- End: Marquee -->
+
+	<div class="mask" >
+        <div id="chartdiv" style="background-color: #FFFFFF;  float: left;width:400px; height:350px; border-bottom:1px solid #999"><a href="imd_latest/contents/current_weather.php">City Forecast</a></div>
+                  
+        <div id="city_weather" style="width: 200px; float: left; height: 350px; overflow:hidden; ">
+
+			<div id="label"  >Current Weather<h3 style="color:#fff; font-size: 18px;text-align:center;">
+			 <img style="width: 13px;" src="../img/blue_square.png"></h3></div>
+                        
+<!--### commented for displaying current weather on main page###-->                        
+							<div style="float: left; padding:5px 3px 0px 25px; " >
+					<img style="height:30px;width:30px; " src="../img/4.png" title="">
+				</div>
+			
+            <div style="padding:5px 3px 5px 5px; ">
+                <div id="temperature" class="temp"><i class="fa fa-thermometer-half"></i> 31.4<sup>o</sup>C</div>
+                           
+				<div id="temperature1" style=" padding:5px 3px 5px 5px;" class="temp"><i class="fa fa-tint"></i> 60%</div>
+            </div>
+                     
+            <div style="float: left; ">
+                <ul style="padding:1% 0 1% 0">
+                    <li class="sun-info"><i class="fa fa-wind"></i> Calm 0 km/h</li>              
+				</ul>
+                <small class="small">Observation Time: 11 Sep, 20.30 IST </small>
+                <div class="col-md-2 slider-right-side no-padding" style="padding-top:2%">
+                    <div class="right-box-equal sun-rise"><p><span> 
+					Sunrise:  
+					06:25 (IST) </span></p>
+					</div>
+                    <div class="right-box-equal sun-set"><p><span> Sunset: 18:48 (IST) </span></p></div>
+                    <div class="right-box-equal moon-rise"><p><span> Moonrise: 06:23 (IST) </span> </p></div>
+                    <div class="right-box-equal moon-set"><p><span> Moonset: 18:52 (IST) </span> </p></div>
+                </div>                    
+            </div>
+        </div>
+	
+		<!-- Change - Station Name -->
+		<div   style="float:left; width:400px; height:350px; background:#fff;  padding-top:0px; text-align:center;"> <?//= _Bhuj ?> <?//= _Radar ?>   <?//= _Animation ?>
+			<!--<a href="index_radar.php?id=Hyderabad"><img src='../Radar/caz_bhj.gif' style="height: 90%; width: 100%; object-fit: contain;"></a>-->
+			<!-- Change -- id -->
+			<!-- war <a href="index_radar.php?id=Bhuj">
+				<img src='../Radar/animation/Converted/BHJ_MAXZ.gif' style="height: 90%; width: 100%; object-fit: contain;">
+			</a> war -->
+			<a href="https://mausam.imd.gov.in/responsive/satellite.php">
+				<img src='https://mausam.imd.gov.in/Satellite/3Dasiasec_ir1.jpg' style="height: 90%; width: 100%; object-fit: contain;">
+			</a>
+			
+			
+		</div>                       
+    </div>      
+</section>
+               
+        <style>
+.arrow {
+  border: solid black;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+.right {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
+
+
+</style>
+<section id="services1">
+    <h2>Our Services</h2>
+    <ul>
+		<li class="nwp" style="background-color: #c39300">	
+		Weather Reports <BR>
+			<a href="https://mausam.imd.gov.in/ahmedabad/mcdata/daily_report.pdf"target="_blank">Daily</a>|
+			<a href="https://mausam.imd.gov.in/ahmedabad/mcdata/weekly.pdf"target="_blank">Weekly</a>|
+			<a href="https://mausam.imd.gov.in/ahmedabad/mcdata/monsoon.pdf" target="_blank">Monsoon</a>
+		</li>
+		<li class="nwp" style="background-color: #008000">
+		Agriculture <BR>
+			<a href="https://mausam.imd.gov.in/ahmedabad/mcdata/agromet.pdf"target="_blank">Agromet Advisory</a>|
+			<a href="https://mausam.imd.gov.in/ahmedabad/mcdata/block.pdf"target="_blank">Block Level Forecast</a>
+		</li>
+		
+		<li class="nwp" style="background-color: #3294c3">
+		Climatology <BR>
+			<a href="https://mausam.imd.gov.in/ahmedabad/mcdata/climate.pdf" target="_blank">Ahmedabad</a>|
+						
+		<a  href="https://city.imd.gov.in/citywx/extreme/SEP/ahmedabad2.htm" target="_blank">Extremes</a>
+		</li>
+		<li class="nwp" style="background-color: #c39300">	
+		Radar & Satellite  <BR>
+			<a href="https://mausam.imd.gov.in/ahmedabad/index_radar.php"target="_blank">Bhuj Radar</a>|
+			<a href="https://mausam.imd.gov.in/imd_latest/contents/satellite.php"target="_blank">Satellite Products</a>
+		</li>
+        <li class="nwp" style="background-color: #008000">
+		Warnings<BR>
+			<a href="https://mausam.imd.gov.in/imd_latest/contents/index_port.php" target="_blank">Port </a>|
+			<a href="https://mausam.imd.gov.in/imd_latest/contents/index_fisherman.php" target="_blank">Fisherman </a>|
+			<a href="https://mausam.imd.gov.in/imd_latest/contents/index_coastal.php" target="_blank">Coastal </a>|
+			<a href="https://mausam.imd.gov.in/ahmedabad/mcdata/cyclone.pdf" target="_blank">Cyclone</a>
+		</li>
+		<li class="nwp" style="background-color: #3294c3">
+		FMO<BR>
+			<a href="https://mausam.imd.gov.in/ahmedabad/mcdata/hydro.pdf" target="_blank">Hydro Bulletin  </a>|
+			<a href="https://mausam.imd.gov.in/ahmedabad/mcdata/qpf.pdf" target="_blank">QPF Bulletin </a>
+			
+		</li>
+
+		<li class="" style="background-color:  #c39300;height:50px;">Geospatial Weather Services<BR>
+			<a href="https://imdgeospatial.imd.gov.in/" target=_blank>Geospatial Services</a>&nbsp;|
+			<a href="https://mausamgram.imd.gov.in/" target=_blank>Mausamgram</a>
+		</li>
+		
+    </ul>
+	<hr>
+</section>
+
+<section id="" style="margin-bottom: 10px;display: inline-flex;">
+	<hr>
+	<div class="" style="margin-right: 10px;">
+		<h2>Rainfall Statistics</h2>
+		<ul>
+
+			<li><i class="arrow right"> </i>&nbsp; &nbsp;  <a href="https://mausam.imd.gov.in/ClimateInformation/imdweb/DAY_WEEK/onset_SW.gif" style="color:black; line-height: 1.8;"  target="_blank"> Progress of southwest monsoon</a></li>
+			<li><i class="arrow right"> </i>&nbsp; &nbsp;  <a href="https://mausam.imd.gov.in/ahmedabad/mcdata/rain_chief.pdf" style="color:black; line-height: 1.8;"  target="_blank"> Chief amount of rainfall over Gujarat state</a></li>
+			<li><i class="arrow right"> </i>&nbsp; &nbsp;  <a href="https://mausam.imd.gov.in/ahmedabad/mcdata/rain_cum.pdf" style="color:black; line-height: 1.8;" target="_blank">Cumulative rainfall </a></li>
+			<li><i class="arrow right"> </i>&nbsp; &nbsp;   <a href="https://mausam.imd.gov.in/ahmedabad/mcdata/rain_dep.jpg" style="color:black; line-height: 1.8;" target="_blank"> Rainfall departure from long Period average (Map) </a></li>
+			<li><i class="arrow right"> </i>&nbsp; &nbsp;  <a href="https://mausam.imd.gov.in/ahmedabad/mcdata/rain_district.pdf" style="color:black; line-height: 1.8;" target="_blank">Rainfall over Ahmedabad</a></li>
+			<li><i class="arrow right"> </i>&nbsp; &nbsp;  <a href="https://mausam.imd.gov.in/ClimateInformation/imdweb/DAY_WEEK/withdrawal_SW.gif" style="color:black; line-height: 1.8;" target="_blank">Withdrawal of SouthWest Monsoon</a></li>
+			<li><i class="arrow right"> </i>&nbsp; &nbsp;  <a href="https://mausam.imd.gov.in/ahmedabad/mcdata/daily_rain_stats.pdf" style="color:black; line-height: 1.8;" target="_blank">Daily Rainfall Statistics</a></li>
+			<li><i class="arrow right"> </i>&nbsp; &nbsp;  <a href="https://mausam.imd.gov.in/ahmedabad/mcdata/daily_rain_maps.pdf" style="color:black; line-height: 1.8;" target="_blank">Daily Rainfall Maps</a></li>
+
+		</ul>
+	</div>
+	<div class="" style="float: right;">
+		<h2>Extra Links</h2>
+		<ul>
+
+			<li><i class="arrow right"> </i>&nbsp; &nbsp;  <a href="https://nwp.imd.gov.in/gfsproducts_cycle00_mausam.php" style="color:black; line-height: 1.8;"  target="_blank"> Short to Medium Range Model Guidance</a></li>
+			<li><i class="arrow right"> </i>&nbsp; &nbsp;  <a href="https://internal.imd.gov.in/section/nhac/dynamic/extended.pdf" style="color:black; line-height: 1.8;"  target="_blank"> Extended Range Outlook</a></li>
+			<li><i class="arrow right"> </i>&nbsp; &nbsp;  <a href="https://hydro.imd.gov.in/hydrometweb/" style="color:black; line-height: 1.8;" target="_blank">Customized Rainfall Information System (CRIS) </a></li>
+			<li><i class="arrow right"> </i>&nbsp; &nbsp;   <a href="https://mausam.imd.gov.in/responsive/radar.php" style="color:black; line-height: 1.8;" target="_blank"> Radar </a></li>
+			<li><i class="arrow right"> </i>&nbsp; &nbsp;  <a href="https://mausam.imd.gov.in/imd_latest/contents/satellite.php" style="color:black; line-height: 1.8;" target="_blank">Satellite</a></li>
+			<li><i class="arrow right"> </i>&nbsp; &nbsp;  <a href="https://mausam.imd.gov.in/responsive/all_india_forcast_bulletin.php" style="color:black; line-height: 1.8;" target="_blank">All India Weather Forecast Bulletin</a></li>
+			<li><i class="arrow right"> </i>&nbsp; &nbsp;  <a href="https://mausam.imd.gov.in/mumbai/" style="color:black; line-height: 1.8;" target="_blank">RMC Mumbai</a></li>
+		</ul>
+	</div>
+
+</section>        
+<section id="today">
+    <div style="height:265px">
+        <h2>Current Weather across Major Cities</h2>
+        <div class="capitals clearfix">
+		            <div class="capital">
+
+                <h3>Ahmedabad</h3>
+
+                <p class="now"><span class="val">31.4&deg;</span></p>
+                <p class="wind">Calm<br /> 0km/h</p>
+                <p class="minmax"><span class="max"><i class="fas fa-tint"></i> 60%</span></p>
+                <p class="precis"><img src="../img/4.png" style="height:30px;width:30px;"></p>
+                <a href="https://city.imd.gov.in/citywx/city_weather.php?id=42647" target=_blank>Forecast</a>               
+            </div>
+		            <div class="capital">
+
+                <h3>Baroda</h3>
+
+                <p class="now"><span class="val">31.6&deg;</span></p>
+                <p class="wind">West-southwesterly<br /> 5.6km/h</p>
+                <p class="minmax"><span class="max"><i class="fas fa-tint"></i> 65%</span></p>
+                <p class="precis"><img src="../img/5.png" style="height:30px;width:30px;"></p>
+                <a href="https://city.imd.gov.in/citywx/city_weather.php?id=42748" target=_blank>Forecast</a>               
+            </div>
+		            <div class="capital">
+
+                <h3>Surat</h3>
+
+                <p class="now"><span class="val">28&deg;</span></p>
+                <p class="wind"><br /> 11.1km/h</p>
+                <p class="minmax"><span class="max"><i class="fas fa-tint"></i> 84%</span></p>
+                <p class="precis"><img src="../img/NW0.png" style="height:30px;width:30px;"></p>
+                <a href="https://city.imd.gov.in/citywx/city_weather.php?id=42840" target=_blank>Forecast</a>               
+            </div>
+		            <div class="capital">
+
+                <h3>Rajkot</h3>
+
+                <p class="now"><span class="val">31.8&deg;</span></p>
+                <p class="wind">Southwesterly<br /> 11.1km/h</p>
+                <p class="minmax"><span class="max"><i class="fas fa-tint"></i> 53%</span></p>
+                <p class="precis"><img src="../img/NW3.png" style="height:30px;width:30px;"></p>
+                <a href="https://city.imd.gov.in/citywx/city_weather.php?id=42737" target=_blank>Forecast</a>               
+            </div>
+		            <div class="capital">
+
+                <h3>Dwarka</h3>
+
+                <p class="now"><span class="val">29.6&deg;</span></p>
+                <p class="wind">Westerly<br /> 3.7km/h</p>
+                <p class="minmax"><span class="max"><i class="fas fa-tint"></i> 77%</span></p>
+                <p class="precis"><img src="../img/NW4.png" style="height:30px;width:30px;"></p>
+                <a href="https://city.imd.gov.in/citywx/city_weather.php?id=42731" target=_blank>Forecast</a>               
+            </div>
+		            <div class="capital">
+
+                <h3>Bhuj</h3>
+
+                <p class="now"><span class="val">31&deg;</span></p>
+                <p class="wind">South-southwesterly<br /> 9.3km/h</p>
+                <p class="minmax"><span class="max"><i class="fas fa-tint"></i> 55%</span></p>
+                <p class="precis"><img src="../img/NW5.png" style="height:30px;width:30px;"></p>
+                <a href="https://city.imd.gov.in/citywx/city_weather.php?id=42634" target=_blank>Forecast</a>               
+            </div>
+		            <div class="capital">
+
+                <h3>Deesa</h3>
+
+                <p class="now"><span class="val">31.8&deg;</span></p>
+                <p class="wind">Westerly<br /> 3.7km/h</p>
+                <p class="minmax"><span class="max"><i class="fas fa-tint"></i> 63%</span></p>
+                <p class="precis"><img src="../img/NW4.png" style="height:30px;width:30px;"></p>
+                <a href="https://city.imd.gov.in/citywx/city_weather.php?id=42539" target=_blank>Forecast</a>               
+            </div>
+		            <div class="capital">
+
+                <h3>Veraval</h3>
+
+                <p class="now"><span class="val">30.6&deg;</span></p>
+                <p class="wind">Westerly<br /> 5.6km/h</p>
+                <p class="minmax"><span class="max"><i class="fas fa-tint"></i> 70%</span></p>
+                <p class="precis"><img src="../img/NW2.png" style="height:30px;width:30px;"></p>
+                <a href="https://city.imd.gov.in/citywx/city_weather.php?id=42909" target=_blank>Forecast</a>               
+            </div>
+		                                            
+        </div>
+    </div>
+</section>
+              
+ 
+              
+               <div class="clr"></div>
+            </div>
+         
+          
+<footer id="footer">
+          
+
+
+<p id="copyright">&#169; Copyright <a href="https://moes.gov.in/" target="_blank"> Met Centre Ahmedabad<BR>India Meteorological Department<br>Ministry of Earth Sciences</a>, New Delhi, India </p>
+<p  align="center "> 
+		<a href="https://twitter.com/IMDAHMEDABAD" target="_blank" ><img src="https://mausam.imd.gov.in/ahmedabad/img/twitter.png" style="width:30px;height:30px;"></a>
+        <a href="https://www.facebook.com/Imd-Ahmedabad-107746457448982" target="_blank"><img src="https://mausam.imd.gov.in/ahmedabad/img/facebook.png" style="width:30px;height:30px;"></a>
+        <a href="https://www.youtube.com/channel/UCrCoV3hgjMWUV1BgEAjHJiA" target="_blank"><img src="https://mausam.imd.gov.in/ahmedabad/img/youtube.png" style="width:30px;height:30px;"></a>
+        <a href="https://www.instagram.com/imdahmedabad/" target="_blank"><img src="https://mausam.imd.gov.in/ahmedabad/img/instagram.png" style="width:30px;height:30px;"></a>
+		 <p align="center " style="font-size:20px"><b><FONT COLOR="RED"> Total Visits: 8812005</font></b> </p>
+
+</p>
+               
+
+	
+         </footer>
+         
+         </div>
+        
+       
+        
+        
+        
+      </div>
+
+ 
+ 
+      <!--
+<script src="../js/libs/jquery-1.10.2.min.js"></script>
+      <script src="../js/home.js"></script>
+      <script src="../libs/easyab/easyab.min.js" type="text/javascript"></script>
+      <script src="../js/jquery.magnifier.js"></script>
+-->      
+
+<script type="text/javascript">
+
+
+
+
+var GujaratdataProvider={
+
+"map": "indiaLow",
+    "getAreasFromMap": true,
+ "images": [
+
+
+//synop
+{
+  "latitude": 23.0225,
+      "longitude": 72.5714,
+      "imageURL":  "../img/4.png",
+      "width": 28,
+      "height": 28,
+      "label": "Ahmedabad",
+       "ajaxUrl": "../LIP/sample4.php"    ,
+       "selectable":true,description:"</br>"
+
+},
+//synop
+{
+  "latitude": 22.3297 ,
+      "longitude": 73.2161	,
+      "imageURL":  "../img/5.png",
+      "width": 28,
+      "height": 28,
+      "label": "Vadodara",
+       "ajaxUrl": "../LIP/sample4.php"    ,
+       "selectable":true,description:"</br>"
+
+},
+//synop
+{
+  "latitude": 23.2420,
+      "longitude": 69.6669,
+      "imageURL":  "../img/NW5.png",
+      "width": 28,
+      "height": 28,
+      "label": "Bhuj",
+       "ajaxUrl": "../LIP/sample4.php"    ,
+       "selectable":true,description:"</br>"
+
+},
+//synop
+{
+  "latitude": 22.2442,
+      "longitude": 68.9685,
+      "imageURL":  "../img/NW4.png",
+      "width": 28,
+      "height": 28,
+      "label": "Dwarka",
+       "ajaxUrl": "../LIP/sample4.php"    ,
+       "selectable":true,description:"</br>"
+
+},
+//synop
+{
+  "latitude": 23.2609,
+      "longitude": 68.8273,
+      "imageURL":  "../img/NW1.png",
+      "width": 28,
+      "height": 28,
+      "label": "Naliya",
+	  "labelPosition": "left",
+       "ajaxUrl": "../LIP/sample4.php"    ,
+       "selectable":true,description:"</br>"
+},
+//synop
+{
+    "latitude": 22.4649,
+      "longitude": 69.0702,
+      "imageURL":  "../img/NW3.png",
+      "width": 28,
+      "height": 28,
+      "label": "Okha",
+       "ajaxUrl": "../LIP/sample4.php"    ,
+       "selectable":true,description:"</br>"
+
+},
+//synop
+{
+  "latitude": 21.6417,
+      "longitude": 69.6293,
+      "imageURL":  "../img/5.png",
+      "width": 28,
+      "height": 28,
+      "label": "Porbandar",
+       "ajaxUrl": "../LIP/sample4.php"    ,
+       "selectable":true,description:"</br>"
+
+},
+//synop
+{
+  "latitude": 22.3039,
+      "longitude": 70.8022,
+      "imageURL":  "../img/NW3.png",
+      "width": 28,
+      "height": 28,
+      "label": "Rajkot",
+       "ajaxUrl": "../LIP/sample4.php"    ,
+       "selectable":true,description:"</br>"
+
+},
+//synop
+{
+  "latitude": 21.1702,
+      "longitude": 72.8311,
+      "imageURL":  "../img/NW0.png",
+      "width": 28,
+      "height": 28,
+      "label": "Surat",
+       "ajaxUrl": "../LIP/sample4.php"    ,
+       "selectable":true,description:"</br>"
+},
+//synop
+{
+ "latitude": 20.9159,
+      "longitude": 70.3629,
+      "imageURL":  "../img/NW2.png",
+      "width": 28,
+      "height": 28,
+      "label": "Veraval",
+       "ajaxUrl": "../LIP/sample4.php"    ,
+       "selectable":true,description:"</br>"
+
+},
+
+
+
+//synop
+{
+  "latitude": 24.2,
+      "longitude": 72.2,
+      "imageURL":  "../img/NW4.png",
+      "width": 28,
+      "height": 28,
+      "label": "Deesa",
+       "ajaxUrl": "../LIP/sample4.php"    ,
+       "selectable":true,description:"</br>"
+
+},
+
+
+
+{
+  "latitude": 21.60,
+      "longitude": 71.22,
+      "imageURL":  "../img/NW2.png",
+      "width": 28,
+      "height": 28,
+      "label": "Amreli",
+       "ajaxUrl": "../LIP/sample4.php"    ,
+       "selectable":true,description:"</br>"
+
+},
+
+{
+  "latitude": 21.76,
+      "longitude": 72.15,
+      "imageURL":  "../img/NW3.png",
+      "width": 28,
+      "height": 28,
+      "label": "Bhavnagar",
+       "ajaxUrl": "../LIP/sample4.php"    ,
+       "selectable":true,description:"</br>"
+
+},
+
+{
+  "latitude": 20.71,
+      "longitude": 70.98,
+      "imageURL":  "../img/5.png",
+      "width": 28,
+      "height": 28,
+      "label": "Diu",
+       "ajaxUrl": "../LIP/sample4.php"    ,
+       "selectable":true,description:"</br>"
+
+},
+
+{
+  "latitude": 23.83,
+      "longitude": 73.03,
+       "imageURL":  "../img/0.png",
+      "width": 28,
+      "height": 28,
+      "label": "Idar",
+       "ajaxUrl": "../LIP/sample4.php"    ,
+       "selectable":true,description:"</br>"
+
+}
+
+],
+							 areas :
+[
+	{
+		"id": "IN-DL",
+                   "label":"Delhi",
+                   "ajaxUrl": "LIP/sample4.php",
+                   "passZoomValuesToTarget": true,
+		           "mouseEnabled":false, "color":"#FFFFFF"
+	},
+{
+"id":"IN-AR",
+"label":"Arunachal",
+                   "ajaxUrl": "LIP/sample4.php",
+                   "passZoomValuesToTarget": true,
+		           "mouseEnabled":false, "color":"#FFFFFF"
+},
+
+
+{
+"id":"IN-MN",
+"label":"Manipur",
+                   "ajaxUrl": "LIP/sample4.php",
+                   "passZoomValuesToTarget": true,
+		           "mouseEnabled":false, "color":"#FFFFFF"
+},
+
+
+{
+"id":"IN-TR",
+"label":"Tripura",
+                   "ajaxUrl": "LIP/sample4.php",
+                   "passZoomValuesToTarget": true,
+		           "mouseEnabled":false, "color":"#FFFFFF"
+},
+
+
+{
+"id":"IN-ML",
+"label":"Meghalaya",
+                   "ajaxUrl": "LIP/sample4.php",
+                   "passZoomValuesToTarget": true,
+		           "mouseEnabled":false, "color":"#FFFFFF"
+},
+
+{
+"id":"IN-NL",
+"label":"Nagaland",
+                   "ajaxUrl": "LIP/sample4.php",
+                   "passZoomValuesToTarget": true,
+		           "mouseEnabled":false, "color":"#FFFFFF"
+},
+
+
+
+{
+"id":"IN-AS",
+"label":"Assam",
+                   "ajaxUrl": "LIP/sample4.php",
+                   "passZoomValuesToTarget": true,
+		           "mouseEnabled":false, "color":"#FFFFFF"
+},
+
+{
+"id":"IN-MZ",
+"label":"Mizoram",
+                   "ajaxUrl": "LIP/sample4.php",
+                   "passZoomValuesToTarget": true,
+		           "mouseEnabled":false, "color":"#FFFFFF"
+},
+
+
+{
+"id":"IN-KL",
+"label":"Kerala",
+                   "ajaxUrl": "LIP/sample4.php",
+                   "passZoomValuesToTarget": true,
+		           "mouseEnabled":false, "color":"#FFFFFF"
+},
+
+
+{
+"id":"IN-TN",
+"label":"TamilNadu",
+                   "ajaxUrl": "LIP/sample4.php",
+                   "passZoomValuesToTarget": true,
+		           "mouseEnabled":false, "color":"#FFFFFF"
+},
+
+{
+"id":"IN-KA",
+"label":"Karnataka",
+                   "ajaxUrl": "LIP/sample4.php",
+                   "passZoomValuesToTarget": true,
+		           "mouseEnabled":false, "color":"#FFFFFF"
+},
+
+
+{
+	"id":"IN-AP",
+	"label":"AndhraPradesh",
+	"mouseEnabled":false, 
+	"color":"#FFFFFF"
+},
+
+{
+"id":"IN-TG",
+
+"label":"Telangana",
+                   "ajaxUrl": "LIP/sample4.php",
+                   "passZoomValuesToTarget": true,
+		           "mouseEnabled":false,
+				   "color":"#FFFFFF"
+},
+
+
+{
+	"id":"IN-MH",
+	"label":"Maharashtra",
+        "mouseEnabled":false, 
+	"color":"#FFFFFF"
+},
+
+{
+	"id":"IN-OR",
+	"label":"Orissa",
+        "mouseEnabled":false, 
+	"color":"#FFFFFF"
+},
+
+{
+	"id":"IN-CT",
+	"label":"Chhatisgarh",
+        "mouseEnabled":false, 
+	"color":"#FFFFFF"
+},
+{
+	"id":"IN-WB",
+	"label":"WestBengal",
+        "mouseEnabled":false, 
+	"color":"#FFFFFF"
+},
+
+{
+	"id":"IN-JH",
+	"label":"Jharkhand",
+        "mouseEnabled":false, 
+	"color":"#FFFFFF"
+},
+
+
+
+
+{
+	"id":"IN-BR",
+	"label":"Bihar",
+        "mouseEnabled":false, 
+	"color":"#FFFFFF"
+
+},
+
+
+{
+	"id":"IN-UP",
+	"label":"UttarPradesh",
+        "mouseEnabled":false,
+"color":"#FFFFFF"		
+},
+
+
+
+{
+	"id":"IN-RJ",
+	"label":"Rajasthan",
+        "mouseEnabled":false, 
+	"color":"#FFFFFF"
+},
+
+
+{
+	"id":"IN-MP",
+	"label":"MadhyaPradesh",
+        "mouseEnabled":false, 
+	"color":"#FFFFFF"
+},
+
+{
+	"id":"IN-GJ",
+	"label":"Gujarat",
+			"linkToObject": GujaratdataProvider,
+			"mouseEnabled":false
+},
+
+{
+	"id":"IN-HR",
+	"label":"Haryana",
+        "mouseEnabled":false, 
+	"color":"#FFFFFF"
+},
+
+
+{
+	"id":"IN-PB",
+	"label":"Punjab",
+        "mouseEnabled":false, 
+	"color":"#FFFFFF"
+},
+
+
+{
+	"id":"IN-UT",
+	"label":"Uttarakhand",
+        "mouseEnabled":false, 
+	"color":"#FFFFFF"
+},
+
+
+{
+	"id":"IN-HP",
+	"label":"HimachalPradesh",
+        "mouseEnabled":false, 
+	"color":"#FFFFFF"
+},
+
+{
+	"id":"IN-JK",
+	"label":"JammuandKashmir",
+        "mouseEnabled":false, 
+	"color":"#FFFFFF"
+},
+{
+        "id": "IN-CH",
+        "mouseEnabled":false,
+	"color":"#FFFFFF"
+        },
+
+
+{
+          "id": "IN-SK",
+          "mouseEnabled":false,
+	"color":"#FFFFFF"
+        },
+
+
+{
+        "id": "IN-DD",
+        "mouseEnabled":false,
+	"color":"#FFFFFF"
+        },
+
+
+{
+       "id": "IN-DN",
+       "mouseEnabled":false,
+	"color":"#FFFFFF"
+        },
+
+{
+        "id": "IN-GA",
+        "mouseEnabled":false,
+	"color":"#FFFFFF"
+        },
+{
+        "id": "IN-AN",
+        "mouseEnabled":false,
+	"color":"#FFFFFF"
+        },
+
+{
+        "id": "IN-PY",
+        "mouseEnabled":false,
+	"color":"#FFFFFF"
+        },
+
+
+],
+
+"areasSettings": {
+    "autoZoom": true,
+      "selectable": true,
+//    "selectedColor": "#C2DFFF",
+    "unlistedAreasAlpha": 0.3
+  },
+"imagesSettings": {
+ //   "labelRollOverColor": "#000",
+  //  "labelPosition": "bottom"
+  //   useTargetsZoomValues: true
+  "selectable" :true
+  }
+};
+
+
+
+
+
+
+
+
+var map = AmCharts.makeChart( "chartdiv", {
+  "type": "map",
+  "theme": "light",
+"zoomControl": {
+		"zoomControlEnabled": false
+		//"minZoomLevel": 1.3
+	},
+ // "color": "#FFCC00",
+//  "colorSteps": 10,
+//"imagesSettings": {
+ //   "labelRollOverColor": "#000",
+  //  "labelPosition": "bottom"
+     useTargetsZoomValues: true,
+        "autoZoom": true,
+
+  //},
+ "listeners": [ 
+{
+	"event": "rendered",
+	"method": function check(){
+	//Zoomed to center of the state...
+	map.zoomToLongLat(5,71.1924,22.2587,true);
+
+	}
+},
+
+{
+    "event": "clickMapObject",
+    "method": function( e ) {
+       //alert(e.mapObject.ajaxUrl);
+       if ( e.mapObject.ajaxUrl !== undefined ) {
+        // add "description" if it was emptyi
+         e.mapObject.description =undefined;
+        if ( e.mapObject.description === undefined )
+          e.mapObject.description = "<div id='mapcontent'>Loading...</div>";
+        
+  //        alert( e.mapObject.description); 
+//           e.mapObject.description=e.mapObject.ajaxUrl;
+        // delay loading by a bit so that map can finish displaying description box and zoom
+        setTimeout( function() {
+           if(e.mapObject.label=="New Delhi")
+           {
+             e.mapObject.label="NewDelhi";
+            }
+          $( "#mapcontent" ).load( e.mapObject.ajaxUrl+"?id="+e.mapObject.label );
+         
+        }, 1000 );
+   document.getElementById( "city_weather" ).innerHTML =   e.mapObject.description ;
+//   document.getElementById('temperature').innerHTML=10; 
+
+ e.mapObject.description ="";
+    }
+ e.mapObject.description =undefined;
+    }
+  } ],
+ "areasSettings": {
+    "autoZoom": true,
+    "selectedColor": "#C2CFFD",
+      "rollOverColor": "#C2DFFF",
+
+    "unlistedAreasAlpha": 0.3
+  },
+ "dataProvider": GujaratdataProvider,
+// "dataProvider": countrydataprovider,
+"allLabels": [{
+    "id": "xx",   /// id which is used for css customization
+    "text": "Current Weather",
+    "bold": true,
+    "x": "80%",
+    "y": "3%",
+    "rotation": 0,
+    "width": "100%",
+    "size": 13,
+    "align": "middle",
+  }],
+"hideCredits":"true"
+
+
+
+} );
+
+
+function handleGoHome() {
+
+map.zoomToMapXY(2,-1.277,-2.2461,true);
+map.zoomToLongLat(5,71.1924,22.2587,true);
+
+
+}
+
+function handleMapObjectClick(event) {
+  if (event.mapObject.id == "backButton") {
+    handleGoHome();
+  }
+}
+
+function handleZoom()
+{
+
+}
+
+// monitor when home icon was clicked and also go to continents map
+map.addListener("homeButtonClicked", handleGoHome);
+map.addListener("clickMapObject", handleMapObjectClick);
+map.addListener("zoomed", handleZoom);
+
+
+</script>
+
+</div>
+  </body>
+  
+</html>

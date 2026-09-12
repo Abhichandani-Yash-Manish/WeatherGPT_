@@ -1,0 +1,338 @@
+{
+  "scope": "Offline structural and integrity audit of bounded saved samples",
+  "audited_at_utc": "2026-09-11T16:08:12.467963+00:00",
+  "outcome": "passed",
+  "request_count": 21,
+  "http_200_count": 18,
+  "warning": "HTTP 200 counts include pages, code and a no-data response; not a count of usable weather APIs",
+  "sample_results": {
+    "imd_mausamgram": {
+      "arrays": 15,
+      "entries_each": 41,
+      "initial_missing_marker": "NaN",
+      "grid": [
+        23.0,
+        72.5
+      ],
+      "cycle": "2026091100"
+    },
+    "imd_warning": {
+      "district": "AHMADABAD",
+      "object_id": 273,
+      "issue_date": "2026-09-11",
+      "geometry_checked": "type only; validity and containment not tested"
+    },
+    "awc": {
+      "station": "VAAH",
+      "wmo_id": "42647",
+      "metar_count": 5,
+      "taf_count": 1
+    },
+    "gfs_via_openmeteo": {
+      "hourly_count": 72,
+      "variables": [
+        "time",
+        "temperature_2m",
+        "relative_humidity_2m",
+        "precipitation",
+        "wind_speed_10m"
+      ],
+      "returned_grid": [
+        23.019852,
+        72.53906
+      ]
+    },
+    "era5_via_openmeteo": {
+      "daily_count": 7,
+      "time_basis": "Asia/Kolkata"
+    },
+    "power": {
+      "daily_count": 7,
+      "time_basis": "UTC",
+      "sources": [
+        "MERRA2"
+      ]
+    }
+  },
+  "requests": [
+    {
+      "id": "imd-city-current-page",
+      "url": "https://city.imd.gov.in/citywx/responsive/?id=42647",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:01:13.218970+00:00",
+      "http_status": 200,
+      "final_url": "https://city.imd.gov.in/citywx/responsive/?id=42647",
+      "content_type": "text/html; charset=UTF-8",
+      "truncated": false,
+      "bytes_saved": 1073,
+      "sha256": "8d509b125f6701b8120c9201819797d1a3b067da86f7a493499d04cf48a4ecc3",
+      "snapshot": "evidence/broad-20260911T160113Z/imd-city-current-page.response"
+    },
+    {
+      "id": "imd-warning-map",
+      "url": "https://mausam.imd.gov.in/responsive/districtWiseWarningGIS.php",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:01:13.219206+00:00",
+      "http_status": 200,
+      "final_url": "https://mausam.imd.gov.in/responsive/districtWiseWarningGIS.php",
+      "content_type": "text/html; charset=UTF-8",
+      "truncated": false,
+      "bytes_saved": 43175,
+      "sha256": "4c6bb393cce784cf7827368497c8293b7b7ac455e33c684326dddfe531e86d32",
+      "snapshot": "evidence/broad-20260911T160113Z/imd-warning-map.response"
+    },
+    {
+      "id": "imd-api-home",
+      "url": "https://api.imd.gov.in/public/index.php",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:01:13.219323+00:00",
+      "http_status": 200,
+      "final_url": "https://api.imd.gov.in/public/index.php",
+      "content_type": "text/html; charset=UTF-8",
+      "truncated": false,
+      "bytes_saved": 9466,
+      "sha256": "7f2feb286c773f1849e9e3cd6a606e0bd901c98c655c570382cc93ea6f2f90fa",
+      "snapshot": "evidence/broad-20260911T160113Z/imd-api-home.response"
+    },
+    {
+      "id": "openmeteo-geocode",
+      "url": "https://geocoding-api.open-meteo.com/v1/search?name=Ahmedabad&count=3&language=en&format=json",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:01:13.615406+00:00",
+      "http_status": 200,
+      "final_url": "https://geocoding-api.open-meteo.com/v1/search?name=Ahmedabad&count=3&language=en&format=json",
+      "content_type": "application/json; charset=utf-8",
+      "truncated": false,
+      "bytes_saved": 984,
+      "sha256": "f107dd7a396dc603708b0c869294234922973c5457f3271dfe1ec38e1214da8d",
+      "snapshot": "evidence/broad-20260911T160113Z/openmeteo-geocode.response"
+    },
+    {
+      "id": "awc-station",
+      "url": "https://aviationweather.gov/api/data/stationinfo?ids=VAAH&format=json",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:01:13.620945+00:00",
+      "http_status": 200,
+      "final_url": "https://aviationweather.gov/api/data/stationinfo?ids=VAAH&format=json",
+      "content_type": "application/json; charset=utf-8",
+      "truncated": false,
+      "bytes_saved": 209,
+      "sha256": "6d2a746215bc3a44b93f6478c89d904580ccab1a138c34ed24a55aee080cc3be",
+      "snapshot": "evidence/broad-20260911T160113Z/awc-station.response"
+    },
+    {
+      "id": "awc-metar",
+      "url": "https://aviationweather.gov/api/data/metar?ids=VAAH&format=json&hours=3",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:01:13.812240+00:00",
+      "http_status": 200,
+      "final_url": "https://aviationweather.gov/api/data/metar?ids=VAAH&format=json&hours=3",
+      "content_type": "application/json; charset=utf-8",
+      "truncated": false,
+      "bytes_saved": 2245,
+      "sha256": "45f3bc4122b1afb9e04deb0756008cef03a24f1934be396ae668839bcac4a742",
+      "snapshot": "evidence/broad-20260911T160113Z/awc-metar.response"
+    },
+    {
+      "id": "awc-taf",
+      "url": "https://aviationweather.gov/api/data/taf?ids=VAAH&format=json",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:01:14.282693+00:00",
+      "http_status": 200,
+      "final_url": "https://aviationweather.gov/api/data/taf?ids=VAAH&format=json",
+      "content_type": "application/json; charset=utf-8",
+      "truncated": false,
+      "bytes_saved": 1482,
+      "sha256": "2f27e8268ae5936a59c1f912462fdf93c852ee0183c00a0f51e297dae94849c1",
+      "snapshot": "evidence/broad-20260911T160113Z/awc-taf.response"
+    },
+    {
+      "id": "imd-mausamgram-run",
+      "url": "https://mausamgram.imd.gov.in/mmem_3hr.txt",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:02:21.347389+00:00",
+      "http_status": 200,
+      "final_url": "https://mausamgram.imd.gov.in/mmem_3hr.txt",
+      "content_type": "text/plain",
+      "truncated": false,
+      "bytes_saved": 32,
+      "sha256": "e05b16f9b49f986043e2f290542fdaad2d7558d6710259f3e03477f19eefee05",
+      "snapshot": "evidence/numeric-20260911T160221Z/imd-mausamgram-run.response"
+    },
+    {
+      "id": "imd-city-app",
+      "url": "https://city.imd.gov.in/citywx/responsive/assets/index-C8XcC-ir.js",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:02:21.347575+00:00",
+      "http_status": 200,
+      "final_url": "https://city.imd.gov.in/citywx/responsive/assets/index-C8XcC-ir.js",
+      "content_type": "application/javascript",
+      "truncated": false,
+      "bytes_saved": 696544,
+      "sha256": "cc9accbf6ee7b221d2fe9ac688c50fe697b43adcf94d12ba5160884d7ef1f433",
+      "snapshot": "evidence/numeric-20260911T160221Z/imd-city-app.response"
+    },
+    {
+      "id": "imd-warning-feature",
+      "url": "https://reactjs.imd.gov.in/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=imd%3Adistrict_warnings_india&srsname=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=1",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:02:21.347690+00:00",
+      "http_status": 200,
+      "final_url": "https://reactjs.imd.gov.in/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=imd%3Adistrict_warnings_india&srsname=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=1",
+      "content_type": "application/json;charset=utf-8",
+      "truncated": false,
+      "bytes_saved": 635178,
+      "sha256": "215d734bb6633ea212349e1d79e0726f5b58db4c8d19743902e2d24c18486d43",
+      "snapshot": "evidence/numeric-20260911T160221Z/imd-warning-feature.response"
+    },
+    {
+      "id": "imd-v1-city",
+      "url": "https://api.imd.gov.in/api/v1/cityforecast?id=42647",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:02:21.699117+00:00",
+      "http_status": 401,
+      "final_url": "https://api.imd.gov.in/api/v1/cityforecast?id=42647",
+      "content_type": "application/json",
+      "truncated": false,
+      "bytes_saved": 27,
+      "sha256": "8822d082580a062c206859ed757108c68432cfccf11393297e57c9fb3ef0d013",
+      "snapshot": "evidence/numeric-20260911T160221Z/imd-v1-city.response"
+    },
+    {
+      "id": "imd-v1-current",
+      "url": "https://api.imd.gov.in/api/v1/current_wx?id=42647",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:02:22.433363+00:00",
+      "http_status": 401,
+      "final_url": "https://api.imd.gov.in/api/v1/current_wx?id=42647",
+      "content_type": "application/json",
+      "truncated": false,
+      "bytes_saved": 27,
+      "sha256": "8822d082580a062c206859ed757108c68432cfccf11393297e57c9fb3ef0d013",
+      "snapshot": "evidence/numeric-20260911T160221Z/imd-v1-current.response"
+    },
+    {
+      "id": "openmeteo-gfs",
+      "url": "https://api.open-meteo.com/v1/gfs?latitude=23.02579&longitude=72.58727&hourly=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m&forecast_days=3&timezone=Asia%2FKolkata",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:02:22.664951+00:00",
+      "http_status": 200,
+      "final_url": "https://api.open-meteo.com/v1/gfs?latitude=23.02579&longitude=72.58727&hourly=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m&forecast_days=3&timezone=Asia%2FKolkata",
+      "content_type": "application/json; charset=utf-8",
+      "truncated": false,
+      "bytes_saved": 3056,
+      "sha256": "6f2cd579adee289015fd831ff4a2294a8f979b27eb0cb275d39a2ef426327cab",
+      "snapshot": "evidence/numeric-20260911T160221Z/openmeteo-gfs.response"
+    },
+    {
+      "id": "openmeteo-era5",
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=23.02579&longitude=72.58727&start_date=2025-07-01&end_date=2025-07-07&daily=precipitation_sum,temperature_2m_max,temperature_2m_min&models=era5&timezone=Asia%2FKolkata",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:02:22.692995+00:00",
+      "http_status": 200,
+      "final_url": "https://archive-api.open-meteo.com/v1/archive?latitude=23.02579&longitude=72.58727&start_date=2025-07-01&end_date=2025-07-07&daily=precipitation_sum,temperature_2m_max,temperature_2m_min&models=era5&timezone=Asia%2FKolkata",
+      "content_type": "application/json; charset=utf-8",
+      "truncated": false,
+      "bytes_saved": 576,
+      "sha256": "2bbfbadcbb67d48cf15928f010a65fb2be4e5047e334ad8bfe39d8b218c8bd30",
+      "snapshot": "evidence/numeric-20260911T160221Z/openmeteo-era5.response"
+    },
+    {
+      "id": "nasa-power-daily",
+      "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M,PRECTOTCORR&community=AG&longitude=72.58727&latitude=23.02579&start=20250701&end=20250707&format=JSON&time-standard=UTC",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:02:22.821387+00:00",
+      "http_status": 200,
+      "final_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M,PRECTOTCORR&community=AG&longitude=72.58727&latitude=23.02579&start=20250701&end=20250707&format=JSON&time-standard=UTC",
+      "content_type": "application/json",
+      "truncated": false,
+      "bytes_saved": 782,
+      "sha256": "5a67c69dc5635a1acadd4a2b428d080d357d72f44d6526580bcb958aecf1e0cd",
+      "snapshot": "evidence/numeric-20260911T160221Z/nasa-power-daily.response"
+    },
+    {
+      "id": "imd-mausamgram-3hr",
+      "url": "https://mausamgram.imd.gov.in/test4_mme.php?lat_gfs=23.02579&lon_gfs=72.58727&date=2026091100_3hr_0p125",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:03:37.071722+00:00",
+      "http_status": 200,
+      "final_url": "https://mausamgram.imd.gov.in/test4_mme.php?lat_gfs=23.02579&lon_gfs=72.58727&date=2026091100_3hr_0p125",
+      "content_type": "application/json",
+      "truncated": false,
+      "bytes_saved": 27,
+      "sha256": "dc8fa5cdc1f5578058fc2d5b5c80155b2829ade309e1fc5ad1111a9fabf8a2f5",
+      "snapshot": "evidence/imd-live-20260911T160337Z/imd-mausamgram-3hr.response"
+    },
+    {
+      "id": "imd-ahmedabad-warning",
+      "url": "https://reactjs.imd.gov.in/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=imd%3Adistrict_warnings_india&srsname=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=1&CQL_FILTER=District+ILIKE+%27%25AHM%25%27",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:03:37.071921+00:00",
+      "http_status": 200,
+      "final_url": "https://reactjs.imd.gov.in/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=imd%3Adistrict_warnings_india&srsname=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=1&CQL_FILTER=District+ILIKE+%27%25AHM%25%27",
+      "content_type": "application/json;charset=utf-8",
+      "truncated": false,
+      "bytes_saved": 11717,
+      "sha256": "7d078fc1ca9f6d1bc3e38f53e82a9aee1981f085190fbcbdd9664d3a339af5c0",
+      "snapshot": "evidence/imd-live-20260911T160337Z/imd-ahmedabad-warning.response"
+    },
+    {
+      "id": "imd-city-json",
+      "url": "https://city.imd.gov.in/citywx/responsive/api/fetchCity_static.php",
+      "method": "POST",
+      "form": {
+        "ID": "42647"
+      },
+      "purpose": "Read-only city selection, matching public frontend",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:03:37.519650+00:00",
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "id": "imd-mausamgram-grid",
+      "url": "https://mausamgram.imd.gov.in/test4_mme.php?lat_gfs=23.000&lon_gfs=72.500&date=2026091100_3hr_0p125",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:04:16.059560+00:00",
+      "http_status": 200,
+      "final_url": "https://mausamgram.imd.gov.in/test4_mme.php?lat_gfs=23.000&lon_gfs=72.500&date=2026091100_3hr_0p125",
+      "content_type": "application/json",
+      "truncated": false,
+      "bytes_saved": 3742,
+      "sha256": "69a939c206070dc393072251a43540f7d2909068c02ee52d033aa7f35c50cc10",
+      "snapshot": "evidence/imd-grid-20260911T160416Z/imd-mausamgram-grid.response"
+    },
+    {
+      "id": "imd-chart-code",
+      "url": "https://mausamgram.imd.gov.in/intitializepubliccharts.js",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:04:50.067147+00:00",
+      "http_status": 200,
+      "final_url": "https://mausamgram.imd.gov.in/intitializepubliccharts.js",
+      "content_type": "application/javascript",
+      "truncated": false,
+      "bytes_saved": 12006,
+      "sha256": "7aea4aaea3fd91ba473b4fd634756d9b87b5062c83ec01d9b63337a96ea5e498",
+      "snapshot": "evidence/imd-context-20260911T160450Z/imd-chart-code.response"
+    },
+    {
+      "id": "imd-temperature-bc",
+      "url": "https://mausamgram.imd.gov.in/rtbc_proxy.php?lat=23.000&lon=72.500&date=20260911&fcst_ic_utc=00",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:04:50.067373+00:00",
+      "http_status": 200,
+      "final_url": "https://mausamgram.imd.gov.in/rtbc_proxy.php?lat=23.000&lon=72.500&date=20260911&fcst_ic_utc=00",
+      "content_type": "application/json",
+      "truncated": false,
+      "bytes_saved": 948,
+      "sha256": "eea67877dc23a7214253ea71a0dc58272ebdc029f33912ace48fae8ed2961844",
+      "snapshot": "evidence/imd-context-20260911T160450Z/imd-temperature-bc.response"
+    }
+  ],
+  "not_established": [
+    "Forecast skill",
+    "Production reliability",
+    "Supported IMD public-site API contract",
+    "District/village representativeness",
+    "User usefulness"
+  ]
+}

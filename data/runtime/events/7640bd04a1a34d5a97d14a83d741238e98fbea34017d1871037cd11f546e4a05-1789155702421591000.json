@@ -1,0 +1,10 @@
+{
+  "source_id": "S57",
+  "url": "https://mausam.imd.gov.in/responsive/agrometinformation/district_current_en_get.php?s=Puducherry&step1=true",
+  "retrieved_at_utc": "2026-09-11T19:41:42.421533+00:00",
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "bytes": 330,
+  "sha256": "20a8d83c13587875b1a3377cf2fbf148187b13f116b1f25fc5060c33b391de52",
+  "blob": "blobs/20a8d83c13587875b1a3377cf2fbf148187b13f116b1f25fc5060c33b391de52.bin"
+}

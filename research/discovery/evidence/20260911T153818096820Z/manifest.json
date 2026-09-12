@@ -1,0 +1,110 @@
+{
+  "scope": "Single requests; availability and content only, no reliability/SLA claim",
+  "sample_geography": "National endpoints; Ahmedabad regional page. No district ID assumed.",
+  "results": [
+    {
+      "id": "imd-city-mapping",
+      "url": "https://api.imd.gov.in/api/v1/cityforecast_mapping",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T15:38:18.099104+00:00",
+      "http_status": 401,
+      "final_url": "https://api.imd.gov.in/api/v1/cityforecast_mapping",
+      "content_type": "application/json",
+      "truncated": false,
+      "bytes_saved": 27,
+      "sha256": "8822d082580a062c206859ed757108c68432cfccf11393297e57c9fb3ef0d013",
+      "snapshot": "evidence/20260911T153818096820Z/imd-city-mapping.response"
+    },
+    {
+      "id": "imd-current",
+      "url": "https://api.imd.gov.in/api/v1/current_wx",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T15:38:18.099342+00:00",
+      "http_status": 401,
+      "final_url": "https://api.imd.gov.in/api/v1/current_wx",
+      "content_type": "application/json",
+      "truncated": false,
+      "bytes_saved": 27,
+      "sha256": "8822d082580a062c206859ed757108c68432cfccf11393297e57c9fb3ef0d013",
+      "snapshot": "evidence/20260911T153818096820Z/imd-current.response"
+    },
+    {
+      "id": "imd-city-forecast",
+      "url": "https://api.imd.gov.in/api/v1/cityforecast",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T15:38:18.099476+00:00",
+      "http_status": 401,
+      "final_url": "https://api.imd.gov.in/api/v1/cityforecast",
+      "content_type": "application/json",
+      "truncated": false,
+      "bytes_saved": 27,
+      "sha256": "8822d082580a062c206859ed757108c68432cfccf11393297e57c9fb3ef0d013",
+      "snapshot": "evidence/20260911T153818096820Z/imd-city-forecast.response"
+    },
+    {
+      "id": "imd-nowcast",
+      "url": "https://api.imd.gov.in/api/v1/districtnowcast",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T15:38:18.406643+00:00",
+      "http_status": 401,
+      "final_url": "https://api.imd.gov.in/api/v1/districtnowcast",
+      "content_type": "application/json",
+      "truncated": false,
+      "bytes_saved": 27,
+      "sha256": "8822d082580a062c206859ed757108c68432cfccf11393297e57c9fb3ef0d013",
+      "snapshot": "evidence/20260911T153818096820Z/imd-nowcast.response"
+    },
+    {
+      "id": "imd-warning",
+      "url": "https://api.imd.gov.in/api/v1/districtwarning",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T15:38:18.443385+00:00",
+      "http_status": 401,
+      "final_url": "https://api.imd.gov.in/api/v1/districtwarning",
+      "content_type": "application/json",
+      "truncated": false,
+      "bytes_saved": 27,
+      "sha256": "8822d082580a062c206859ed757108c68432cfccf11393297e57c9fb3ef0d013",
+      "snapshot": "evidence/20260911T153818096820Z/imd-warning.response"
+    },
+    {
+      "id": "imd-cap-rss",
+      "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/rss.xml",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T15:38:18.467999+00:00",
+      "http_status": 200,
+      "final_url": "https://cap-sources.s3.amazonaws.com/in-imd-en/rss.xml",
+      "content_type": "text/xml",
+      "truncated": false,
+      "bytes_saved": 6163,
+      "sha256": "2ebb682f2306815b36d6a1276b20bee0e2367046f8042ea5b2a71a8ab30226fb",
+      "snapshot": "evidence/20260911T153818096820Z/imd-cap-rss.response"
+    },
+    {
+      "id": "imd-ahmedabad",
+      "url": "https://mausam.imd.gov.in/ahmedabad/",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T15:38:18.714399+00:00",
+      "http_status": 200,
+      "final_url": "https://mausam.imd.gov.in/ahmedabad/",
+      "content_type": "text/html; charset=UTF-8",
+      "truncated": false,
+      "bytes_saved": 46108,
+      "sha256": "d5dc566e13c09d32bf3e2e1dfc4ea87dafe674cb152e7cbb2cc58860cba584d9",
+      "snapshot": "evidence/20260911T153818096820Z/imd-ahmedabad.response"
+    },
+    {
+      "id": "imd-agromet-crop",
+      "url": "https://imdagrimet.gov.in/cropAdvisory_3.php",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T15:38:18.793141+00:00",
+      "http_status": 200,
+      "final_url": "https://imdagrimet.gov.in/cropAdvisory_3.php",
+      "content_type": "text/html; charset=utf-8",
+      "truncated": false,
+      "bytes_saved": 62260,
+      "sha256": "ce6bf08060accc1ea10dd502def7e3104eb8805ce04f1bb2db2d1c23a1c1245a",
+      "snapshot": "evidence/20260911T153818096820Z/imd-agromet-crop.response"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "id": "X09",
+  "question": "Why are the leaves of my cotton crop turning yellow?",
+  "origin": "additional_authored_test",
+  "checked_at_utc": "2026-09-12T16:18:07.724394+00:00",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "fa564c2b-b3b2-4472-90d0-52031a80c144",
+    "question": "Why are the leaves of my cotton crop turning yellow?",
+    "status": "needs_clarification",
+    "answer": "I cannot diagnose why your cotton leaves are turning yellow because no specific location or field details were provided. Weather data alone cannot determine crop health issues like nutrient deficiencies, pests, or diseases. To help you plan effectively, please specify the location of your field and the current growth stage of your cotton. Additionally, describe any other symptoms such as leaf spots, wilting, or insect presence. This context is essential for providing relevant agricultural advice based on local conditions.",
+    "facts": [],
+    "citations": [],
+    "notes": [
+      "No specific location provided; general agricultural explanation requested.",
+      "No time specified for history; using annual period."
+    ],
+    "choices": [],
+    "follow_up": "Which crop and growth stage, where is the field, and what activity or symptoms are you asking about?",
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-12T16:18:07.724429+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 774,
+        "output_tokens": 171,
+        "duration_seconds": 2.991472875
+      },
+      "generation": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 359,
+        "output_tokens": 105,
+        "duration_seconds": 1.792206125,
+        "validation": "numeric-token and evidence-ID checks passed; semantic evaluation remains necessary",
+        "evidence_ids": []
+      },
+      "tools": [],
+      "provider": "local_ollama",
+      "duration_seconds": 4.785
+    },
+    "plan": {
+      "intent": "agriculture",
+      "language": "en",
+      "places": [],
+      "start_local": "",
+      "end_local": "",
+      "explicit_times": false,
+      "variables": [],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [
+        "crop_symptoms"
+      ],
+      "assumptions": [
+        "No specific location provided; general agricultural explanation requested.",
+        "No time specified for history; using annual period."
+      ],
+      "clarification": "",
+      "requested_outcome": "Identify causes of yellowing cotton leaves and provide relevant agricultural advice."
+    }
+  }
+}

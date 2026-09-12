@@ -1,0 +1,10 @@
+{
+  "source_id": "S57",
+  "url": "https://mausam.imd.gov.in/responsive/agrometinformation/district_current_en_get.php?s=Bihar&step1=true",
+  "retrieved_at_utc": "2026-09-11T19:41:40.266691+00:00",
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "bytes": 1828,
+  "sha256": "c39751ef59094e7877c15e0d3670b5316a6ff346a3e5eb3de305f54d67f7fa85",
+  "blob": "blobs/c39751ef59094e7877c15e0d3670b5316a6ff346a3e5eb3de305f54d67f7fa85.bin"
+}

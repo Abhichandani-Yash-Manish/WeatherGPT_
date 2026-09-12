@@ -1,0 +1,129 @@
+{
+  "sqlite_checks": [
+    {
+      "path": "data/processed/geography/source-inventory-20260912-v1/coverage.sqlite",
+      "integrity": "ok",
+      "foreign_key_violations": 0
+    },
+    {
+      "path": "data/processed/geography/source-inventory-20260912-v1/geography.sqlite",
+      "integrity": "ok",
+      "foreign_key_violations": 0
+    },
+    {
+      "path": "data/processed/climate/national-climate-v1-a203fc0eb4a31c58/climate.sqlite",
+      "integrity": "ok",
+      "foreign_key_violations": 0
+    },
+    {
+      "path": "data/processed/hardening/ingestion-batch-three-20260912/rehearsal-final/ingestion.sqlite",
+      "integrity": "ok",
+      "foreign_key_violations": 0
+    },
+    {
+      "path": "data/processed/hardening/ingestion-batch-three-20260912/rehearsal/ingestion.sqlite",
+      "integrity": "ok",
+      "foreign_key_violations": 0
+    },
+    {
+      "path": "data/processed/hardening/ingestion-batch-three-20260912/live/ingestion.sqlite",
+      "integrity": "ok",
+      "foreign_key_violations": 0
+    },
+    {
+      "path": "data/processed/hardening/ingestion-batch-three-20260912/rehearsal/restored/ingestion.sqlite",
+      "integrity": "ok",
+      "foreign_key_violations": 0
+    },
+    {
+      "path": "data/processed/hardening/ingestion-batch-three-20260912/rehearsal/backup/ingestion.sqlite",
+      "integrity": "ok",
+      "foreign_key_violations": 0
+    },
+    {
+      "path": "data/processed/hardening/ingestion-batch-three-20260912/rehearsal-final/restored/ingestion.sqlite",
+      "integrity": "ok",
+      "foreign_key_violations": 0
+    },
+    {
+      "path": "data/processed/hardening/ingestion-batch-three-20260912/rehearsal-final/backup/ingestion.sqlite",
+      "integrity": "ok",
+      "foreign_key_violations": 0
+    },
+    {
+      "path": "data/processed/districts/district-v1-473ac6903c63f221/districts.sqlite",
+      "integrity": "ok",
+      "foreign_key_violations": 0
+    },
+    {
+      "path": "data/processed/districts/district-v1-c8b978172b77182e/districts.sqlite",
+      "integrity": "ok",
+      "foreign_key_violations": 0
+    }
+  ],
+  "identical_content_extra_logical_bytes": 73324339,
+  "largest_identical_file_groups": [
+    {
+      "bytes_each": 50798592,
+      "paths": [
+        "data/processed/districts/district-v1-473ac6903c63f221/districts.sqlite",
+        "data/processed/districts/district-v1-c8b978172b77182e/districts.sqlite"
+      ]
+    },
+    {
+      "bytes_each": 18936941,
+      "paths": [
+        "data/processed/hardening/20260912T051521Z/replay-runtime/national-warning-snapshot/blobs/d7501bfb4ae0586e280f15788aceb93ba2b8c42ed57ee4181f4943001b6930a5.bin",
+        "data/runtime/blobs/d7501bfb4ae0586e280f15788aceb93ba2b8c42ed57ee4181f4943001b6930a5.bin"
+      ]
+    },
+    {
+      "bytes_each": 1081344,
+      "paths": [
+        "data/processed/hardening/ingestion-batch-three-20260912/rehearsal/restored/ingestion.sqlite",
+        "data/processed/hardening/ingestion-batch-three-20260912/rehearsal/backup/ingestion.sqlite"
+      ]
+    },
+    {
+      "bytes_each": 1081344,
+      "paths": [
+        "data/processed/hardening/ingestion-batch-three-20260912/rehearsal-final/restored/ingestion.sqlite",
+        "data/processed/hardening/ingestion-batch-three-20260912/rehearsal-final/backup/ingestion.sqlite"
+      ]
+    },
+    {
+      "bytes_each": 192853,
+      "paths": [
+        "data/registry/sources.json",
+        "data/processed/hardening/20260912T051521Z/before/data/registry/sources.json",
+        "data/processed/checkpoints/hardening-batch-two-20260912/data/registry/sources.json",
+        "data/processed/checkpoints/hardening-batch-one-20260912/data/registry/sources.json",
+        "data/processed/checkpoints/hardening-batch-three-20260912/data/registry/sources.json"
+      ]
+    },
+    {
+      "bytes_each": 99094,
+      "paths": [
+        "data/processed/foundation/advisory-directory.json",
+        "data/processed/foundation/20260911T194849Z/advisory-directory.json"
+      ]
+    },
+    {
+      "bytes_each": 14223,
+      "paths": [
+        "data/processed/hardening/20260912T051521Z/before/weathergpt_data/climate.py",
+        "data/processed/checkpoints/hardening-batch-two-20260912/weathergpt_data/climate.py",
+        "data/processed/checkpoints/hardening-batch-one-20260912/weathergpt_data/climate.py",
+        "data/processed/checkpoints/hardening-batch-three-20260912/weathergpt_data/climate.py"
+      ]
+    },
+    {
+      "bytes_each": 31245,
+      "paths": [
+        "data/processed/foundation/advisory-ahmedabad-gujarati.json",
+        "data/processed/foundation/20260911T194849Z/advisory-ahmedabad-gujarati.json"
+      ]
+    }
+  ],
+  "note": "Logical duplicate bytes are not a deletion recommendation; frozen checkpoints and backup copies may be intentional."
+}

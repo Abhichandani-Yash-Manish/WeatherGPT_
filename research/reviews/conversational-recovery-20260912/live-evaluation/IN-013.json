@@ -1,0 +1,467 @@
+{
+  "id": "IN-013",
+  "question": "Can we hold an outdoor school event in Hampi from 3 pm to 5 pm tomorrow?",
+  "origin": "included_report",
+  "checked_at_utc": "2026-09-12T16:15:41.178503+00:00",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "8b163581-485a-456e-8db1-774ec16ef8b5",
+    "question": "Can we hold an outdoor school event in Hampi from 3 pm to 5 pm tomorrow?",
+    "status": "partial",
+    "answer": "For Hampi on 2026-09-13 from 3 pm to 5 pm, the forecast indicates temperatures of 34.1–34.1 °C [f1], humidity of 35–35 % [f2], and wind speeds of 15.7–16.1 km/h [f3]. These conditions suggest a hot and dry environment with moderate breezes, which may be uncomfortable for prolonged outdoor activity without shade or hydration. However, the supplied evidence does not include rain probability, thunderstorm risk, visibility, or air quality data [notes]. Therefore, it is unknown whether precipitation or other hazards will occur during this window. To better assess suitability for an outdoor school event, please specify if you need information on potential rainfall or wind gusts.",
+    "facts": [
+      {
+        "id": "f1",
+        "label": "Temperature samples",
+        "value": "34.1–34.1",
+        "unit": "°C",
+        "place": "Hampi, Vijayanagar, State of Karnataka",
+        "start": "2026-09-13T15:00:00+05:30",
+        "end": "2026-09-13T17:00:00+05:30",
+        "source_id": "S21",
+        "method": "range_of_hourly_samples; not continuous extrema",
+        "source_locators": [
+          "$.hourly.temperature_2m[34]",
+          "$.hourly.temperature_2m[35]"
+        ]
+      },
+      {
+        "id": "f2",
+        "label": "Humidity samples",
+        "value": "35–35",
+        "unit": "%",
+        "place": "Hampi, Vijayanagar, State of Karnataka",
+        "start": "2026-09-13T15:00:00+05:30",
+        "end": "2026-09-13T17:00:00+05:30",
+        "source_id": "S21",
+        "method": "range_of_hourly_samples; not continuous extrema",
+        "source_locators": [
+          "$.hourly.relative_humidity_2m[34]",
+          "$.hourly.relative_humidity_2m[35]"
+        ]
+      },
+      {
+        "id": "f3",
+        "label": "Wind samples",
+        "value": "15.7–16.1",
+        "unit": "km/h",
+        "place": "Hampi, Vijayanagar, State of Karnataka",
+        "start": "2026-09-13T15:00:00+05:30",
+        "end": "2026-09-13T17:00:00+05:30",
+        "source_id": "S21",
+        "method": "range_of_hourly_samples; not continuous extrema",
+        "source_locators": [
+          "$.hourly.wind_speed_10m[34]",
+          "$.hourly.wind_speed_10m[35]"
+        ]
+      }
+    ],
+    "citations": [
+      {
+        "source_id": "S21",
+        "provider": "Open-Meteo",
+        "product": "GFS forecast delivery",
+        "evidence_kind": "model_forecast",
+        "url": "https://api.open-meteo.com/v1/gfs?latitude=15.3352&longitude=76.4603&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "response_sha256": "b5394aa39d1d8cdb4d2f46f354d3ae84f81babebc302397a272bf1aa780906f2",
+        "raw_relative_path": "b4415ff585220feb0cf8cc46f0f1f67ebf5c7aef81e66bad979038cd2866b7fa/59bb553f00b147c98c264298c2f99134/blobs/b5394aa39d1d8cdb4d2f46f354d3ae84f81babebc302397a272bf1aa780906f2.bin",
+        "published_job_id": "b4415ff585220feb0cf8cc46f0f1f67ebf5c7aef81e66bad979038cd2866b7fa",
+        "source_locators": [
+          "$.hourly.temperature_2m[34]",
+          "$.hourly.temperature_2m[35]",
+          "$.hourly.relative_humidity_2m[34]",
+          "$.hourly.relative_humidity_2m[35]",
+          "$.hourly.precipitation[34]",
+          "$.hourly.precipitation[35]",
+          "$.hourly.precipitation[36]",
+          "$.hourly.wind_speed_10m[34]",
+          "$.hourly.wind_speed_10m[35]"
+        ],
+        "retrieved_at_utc": "2026-09-12T16:15:48.329307+00:00",
+        "issue_time_utc": null
+      },
+      {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/1270448",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      }
+    ],
+    "notes": [
+      "Tomorrow is interpreted as the next local calendar date: 2026-09-13.",
+      "The event time is explicitly 3 pm to 5 pm, so no default time is applied.",
+      "Model forecasts at the selected place point, not observations or district averages. Source model run time and local representativeness remain unverified.",
+      "Not supplied by this forecast contract: rain_probability, thunderstorms, fog/visibility, snow, apparent_temperature, air_quality, road/field_impacts. Rainfall amount must not be interpreted as probability, a warning or an impact prediction."
+    ],
+    "choices": [],
+    "follow_up": null,
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-12T16:15:41.178532+00:00",
+    "expires_at_utc": "2026-09-12T17:15:48.329307+00:00",
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 783,
+        "output_tokens": 396,
+        "duration_seconds": 6.19047875
+      },
+      "generation": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 1134,
+        "output_tokens": 208,
+        "duration_seconds": 3.931314375,
+        "validation": "numeric-token and evidence-ID checks passed; semantic evaluation remains necessary",
+        "evidence_ids": [
+          "f1",
+          "f2",
+          "f3"
+        ]
+      },
+      "tools": [
+        {
+          "name": "gazetteer_search",
+          "query": {
+            "name": "Hampi",
+            "state": "",
+            "district": "",
+            "kind": "settlement"
+          },
+          "matches": 1
+        },
+        {
+          "name": "point_forecast",
+          "location": "Hampi, Vijayanagar, State of Karnataka",
+          "status": "partial",
+          "refresh": {
+            "state": "succeeded",
+            "job_id": "b4415ff585220feb0cf8cc46f0f1f67ebf5c7aef81e66bad979038cd2866b7fa",
+            "worker_state": "succeeded",
+            "claims_this_action": 1,
+            "job_provider_attempts": 1,
+            "retry_due_utc_epoch": 1789228800.0,
+            "message": "Collection completed; answer checked against the stored evidence."
+          }
+        }
+      ],
+      "provider": "local_ollama",
+      "duration_seconds": 11.091
+    },
+    "plan": {
+      "intent": "forecast",
+      "language": "en",
+      "places": [
+        {
+          "name": "Hampi",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "start_local": "2026-09-13T15:00:00+05:30",
+      "end_local": "2026-09-13T17:00:00+05:30",
+      "explicit_times": true,
+      "variables": [
+        "temperature_2m",
+        "precipitation",
+        "wind_speed_10m",
+        "relative_humidity_2m"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [
+        "rain_probability",
+        "thunderstorms",
+        "fog/visibility",
+        "snow",
+        "apparent_temperature",
+        "air_quality",
+        "road/field_impacts"
+      ],
+      "assumptions": [
+        "Tomorrow is interpreted as the next local calendar date: 2026-09-13.",
+        "The event time is explicitly 3 pm to 5 pm, so no default time is applied."
+      ],
+      "clarification": "",
+      "requested_outcome": "Forecast for Hampi on 2026-09-13 from 15:00 to 17:00 IST to assess suitability for an outdoor school event."
+    },
+    "resolved_points": {
+      "Hampi": {
+        "id": "1270448",
+        "name": "Hampi",
+        "latitude": 15.3352,
+        "longitude": 76.4603,
+        "feature": "PPL",
+        "admin1": "State of Karnataka",
+        "admin2": "Vijayanagar",
+        "modified": "2024-01-06",
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:1270448",
+        "label": "Hampi, Vijayanagar, State of Karnataka",
+        "coordinates": {
+          "latitude": 15.3352,
+          "longitude": 76.4603
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1270448",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Hampi"
+      }
+    },
+    "tool_answers": [
+      {
+        "schema_version": "weather-answer-v1",
+        "question": "What is the weather forecast for selected point on 2026-09-13 from 15:00 to 17:00?",
+        "answered_at_utc": "2026-09-12T16:15:48.335135+00:00",
+        "status": "partial",
+        "answer": "For selected point, 2026-09-13T15:00:00+05:30 to 2026-09-13T17:00:00+05:30, hourly temperature samples range from 34.1 to 34.1 °C; hourly relative humidity samples range from 35 to 35 %; precipitation unavailable: Requested boundary splits a source hourly rain interval; an exact total is unavailable; Rain intervals do not cover the requested window exactly; hourly wind speed samples range from 15.7 to 16.1 km/h. These are modeled values at 15.287994, 76.40625, 7.8 km from the selected point. Source: GFS via Open-Meteo; retrieved 2026-09-12T16:15:48.329307+00:00. Model issue time and local representativeness are unverified.",
+        "request": {
+          "intent": "point_forecast",
+          "place_name": "selected point",
+          "variables": [
+            "temperature_2m",
+            "relative_humidity_2m",
+            "precipitation",
+            "wind_speed_10m"
+          ],
+          "timezone": "Asia/Kolkata",
+          "start_local": "2026-09-13T15:00:00+05:30",
+          "end_local": "2026-09-13T17:00:00+05:30",
+          "start_utc": "2026-09-13T09:30:00+00:00",
+          "end_utc": "2026-09-13T11:30:00+00:00",
+          "interval_convention": "start inclusive, end exclusive",
+          "overnight": false,
+          "language": "en"
+        },
+        "location": {
+          "status": "selected_point",
+          "entity_id": "4fc396ef5b0414b1cb570e209067c4cf8c28da13525fb27a63f1e24c406b4fbd",
+          "label": "selected point",
+          "requested_point": {
+            "latitude": 15.3352,
+            "longitude": 76.4603
+          },
+          "basis": "explicit_user_coordinates",
+          "administrative_mapping": "unresolved",
+          "returned_grid": {
+            "latitude": 15.287994,
+            "longitude": 76.40625
+          },
+          "grid_distance_km": 7.82,
+          "support_description": "Value at the returned model grid for the selected source point",
+          "spatial_applicability": "model_point_reference_only"
+        },
+        "values": [
+          {
+            "parameter": "temperature_2m",
+            "unit": "°C",
+            "coverage": "complete",
+            "method": "range_of_hourly_samples; not continuous extrema",
+            "source_locators": [
+              "$.hourly.temperature_2m[34]",
+              "$.hourly.temperature_2m[35]"
+            ],
+            "support": {
+              "aggregation": "instant",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "missing": [],
+            "min_decimal": "34.1",
+            "max_decimal": "34.1",
+            "sample_count": 2
+          },
+          {
+            "parameter": "relative_humidity_2m",
+            "unit": "%",
+            "coverage": "complete",
+            "method": "range_of_hourly_samples; not continuous extrema",
+            "source_locators": [
+              "$.hourly.relative_humidity_2m[34]",
+              "$.hourly.relative_humidity_2m[35]"
+            ],
+            "support": {
+              "aggregation": "instant",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "missing": [],
+            "min_decimal": "35",
+            "max_decimal": "35",
+            "sample_count": 2
+          },
+          {
+            "parameter": "precipitation",
+            "unit": "mm",
+            "coverage": "partial",
+            "method": "preceding_hour_sum",
+            "source_locators": [
+              "$.hourly.precipitation[34]",
+              "$.hourly.precipitation[35]",
+              "$.hourly.precipitation[36]"
+            ],
+            "support": {
+              "aggregation": "preceding_hour_sum",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00",
+              "interval_start_utc": "2026-09-11T23:00:00+00:00",
+              "interval_end_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "missing": [
+              "Requested boundary splits a source hourly rain interval; an exact total is unavailable",
+              "Rain intervals do not cover the requested window exactly"
+            ],
+            "value_decimal": null,
+            "sample_count": 3
+          },
+          {
+            "parameter": "wind_speed_10m",
+            "unit": "km/h",
+            "coverage": "complete",
+            "method": "range_of_hourly_samples; not continuous extrema",
+            "source_locators": [
+              "$.hourly.wind_speed_10m[34]",
+              "$.hourly.wind_speed_10m[35]"
+            ],
+            "support": {
+              "aggregation": "instant",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "missing": [],
+            "min_decimal": "15.7",
+            "max_decimal": "16.1",
+            "sample_count": 2
+          }
+        ],
+        "citations": [
+          {
+            "source_id": "S21",
+            "provider": "Open-Meteo",
+            "product": "GFS forecast delivery",
+            "evidence_kind": "model_forecast",
+            "url": "https://api.open-meteo.com/v1/gfs?latitude=15.3352&longitude=76.4603&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+            "response_sha256": "b5394aa39d1d8cdb4d2f46f354d3ae84f81babebc302397a272bf1aa780906f2",
+            "raw_relative_path": "b4415ff585220feb0cf8cc46f0f1f67ebf5c7aef81e66bad979038cd2866b7fa/59bb553f00b147c98c264298c2f99134/blobs/b5394aa39d1d8cdb4d2f46f354d3ae84f81babebc302397a272bf1aa780906f2.bin",
+            "published_job_id": "b4415ff585220feb0cf8cc46f0f1f67ebf5c7aef81e66bad979038cd2866b7fa",
+            "source_locators": [
+              "$.hourly.temperature_2m[34]",
+              "$.hourly.temperature_2m[35]",
+              "$.hourly.relative_humidity_2m[34]",
+              "$.hourly.relative_humidity_2m[35]",
+              "$.hourly.precipitation[34]",
+              "$.hourly.precipitation[35]",
+              "$.hourly.precipitation[36]",
+              "$.hourly.wind_speed_10m[34]",
+              "$.hourly.wind_speed_10m[35]"
+            ],
+            "retrieved_at_utc": "2026-09-12T16:15:48.329307+00:00",
+            "issue_time_utc": null
+          }
+        ],
+        "freshness": {
+          "retrieved_at_utc": "2026-09-12T16:15:48.329307+00:00",
+          "retrieval_age_seconds": 0.005827903747558594,
+          "source_issue_time_utc": null,
+          "source_issue_freshness": "unknown",
+          "collection_cycle_at": "2026-09-12T16:00:00+00:00",
+          "committed_at": "2026-09-12T16:15:48.333170+00:00",
+          "refresh_health": "succeeded",
+          "snapshot_status": "prototype_snapshot",
+          "refresh_scope": "all_forecast_horizons_at_exact_requested_point",
+          "latest_collection_jobs": [
+            {
+              "id": "b4415ff585220feb0cf8cc46f0f1f67ebf5c7aef81e66bad979038cd2866b7fa",
+              "state": "succeeded",
+              "cycle": 1789228800.0,
+              "expires": 1789257600.0,
+              "due": 1789228800.0,
+              "lease_until": null,
+              "last_error": null
+            }
+          ],
+          "next_planned_collection": null,
+          "maximum_retrieval_age_seconds": 3600
+        },
+        "coverage": {
+          "entity_id": "4fc396ef5b0414b1cb570e209067c4cf8c28da13525fb27a63f1e24c406b4fbd",
+          "entity_version": null,
+          "source_id": "S21",
+          "source_sha256": "b5394aa39d1d8cdb4d2f46f354d3ae84f81babebc302397a272bf1aa780906f2",
+          "published_job_id": "b4415ff585220feb0cf8cc46f0f1f67ebf5c7aef81e66bad979038cd2866b7fa",
+          "requested_start_utc": "2026-09-13T09:30:00+00:00",
+          "requested_end_utc": "2026-09-13T11:30:00+00:00",
+          "variables": {
+            "temperature_2m": {
+              "aggregation": "instant",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "relative_humidity_2m": {
+              "aggregation": "instant",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "precipitation": {
+              "aggregation": "preceding_hour_sum",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00",
+              "interval_start_utc": "2026-09-11T23:00:00+00:00",
+              "interval_end_utc": "2026-09-14T23:00:00+00:00"
+            },
+            "wind_speed_10m": {
+              "aggregation": "instant",
+              "sample_count": 72,
+              "cadence_seconds": 3600,
+              "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+              "last_sample_at_utc": "2026-09-14T23:00:00+00:00"
+            }
+          },
+          "status": "partial",
+          "publication_policy": "prototype_model_point_reference",
+          "operational_eligible": false
+        },
+        "missing_information": [
+          "Upstream model issue/run identity and independently validated local representativeness",
+          "Requested boundary splits a source hourly rain interval; an exact total is unavailable",
+          "Rain intervals do not cover the requested window exactly"
+        ],
+        "eligibility": {
+          "prototype_numeric": true,
+          "operational": false
+        },
+        "limitations": [
+          "Model grid forecasts are not station observations or district averages.",
+          "Source issue/run freshness and local representativeness remain unverified."
+        ],
+        "provider_calls": 0,
+        "answer_id": "c33a0a8cb1568f1845febd919b60a7a23ebf4472d3c8c4e5ba267d9bb0224877"
+      }
+    ]
+  }
+}

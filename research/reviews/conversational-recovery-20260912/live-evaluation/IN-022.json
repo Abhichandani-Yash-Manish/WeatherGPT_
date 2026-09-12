@@ -1,0 +1,67 @@
+{
+  "id": "IN-022",
+  "question": "I live in a small village near Purnea. What is the local weather tonight?",
+  "origin": "included_report",
+  "checked_at_utc": "2026-09-12T16:16:50.309507+00:00",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "a3116292-ab0c-4676-88e2-9b7925d6f0d4",
+    "question": "I live in a small village near Purnea. What is the local weather tonight?",
+    "status": "needs_clarification",
+    "answer": "Which village or town near Purnea should I check? I can retrieve a forecast for a precise place; I cannot yet give a verified map of weather across that whole area.",
+    "facts": [],
+    "citations": [],
+    "notes": [
+      "Tonight is defined as 18:30 IST on 2026-09-12 to 06:30 IST on 2026-09-13."
+    ],
+    "choices": [],
+    "follow_up": "Name a village/town and state, or supply a pin.",
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-12T16:16:50.309537+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 781,
+        "output_tokens": 315,
+        "duration_seconds": 5.030466417
+      },
+      "generation": null,
+      "tools": [],
+      "provider": "local_ollama",
+      "duration_seconds": 5.031
+    },
+    "plan": {
+      "intent": "forecast",
+      "language": "en",
+      "places": [
+        {
+          "name": "Purnea",
+          "state": "",
+          "district": "",
+          "kind": "relative"
+        }
+      ],
+      "start_local": "2026-09-12T18:30:00+05:30",
+      "end_local": "2026-09-13T06:30:00+05:30",
+      "explicit_times": false,
+      "variables": [
+        "temperature_2m",
+        "precipitation",
+        "wind_speed_10m",
+        "relative_humidity_2m"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "assumptions": [
+        "Tonight is defined as 18:30 IST on 2026-09-12 to 06:30 IST on 2026-09-13."
+      ],
+      "clarification": "",
+      "requested_outcome": "Forecast for tonight in a village near Purnea"
+    },
+    "resolved_points": {}
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "id": "X04",
+  "question": "What was the rainfall in Kendrapada, Odisha in 1920?",
+  "origin": "additional_authored_test",
+  "checked_at_utc": "2026-09-12T16:17:36.336325+00:00",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "5d28c3ab-4cb6-4af4-9c19-b46fa83d9d69",
+    "question": "What was the rainfall in Kendrapada, Odisha in 1920?",
+    "status": "answered",
+    "answer": "The historical Kendrapada district series reports 1493.9 mm of rainfall for annual 1920.",
+    "facts": [
+      {
+        "label": "rainfall",
+        "value": "1493.9",
+        "unit": "mm",
+        "year": 1920,
+        "period": "annual",
+        "source_id": "S27"
+      }
+    ],
+    "citations": [
+      {
+        "source_id": "S27",
+        "provider": "IMD",
+        "product": "Historical district rainfall publication",
+        "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+        "page": "1403",
+        "source_file": "data/raw/imports/2026-09-11/states/orissa.csv",
+        "sha256": "6e1ee5b499cb58e623151ef2facf56f384ff3a3214e9d87afbc3bf5473ffb30f",
+        "row": 1641,
+        "column": "annual_mm"
+      }
+    ],
+    "notes": [
+      "Historical source geography; modern district compatibility and homogeneity unresolved.",
+      "Local research use; original publication restricts redistribution.",
+      "The publication uses the historical label Orissa. This lookup does not establish equivalence with current Odisha district boundaries.",
+      "Source quality flags: annual_sum_mismatch, ond_sum_mismatch. The source value is preserved."
+    ],
+    "choices": [],
+    "follow_up": null,
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-12T16:17:36.336360+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 781,
+        "output_tokens": 201,
+        "duration_seconds": 3.35584375
+      },
+      "generation": null,
+      "tools": [
+        {
+          "name": "historical_lookup",
+          "status": "answered"
+        }
+      ],
+      "provider": "local_ollama",
+      "duration_seconds": 3.373
+    },
+    "plan": {
+      "intent": "history",
+      "language": "en",
+      "places": [
+        {
+          "name": "Kendrapada",
+          "state": "Odisha",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "start_local": "",
+      "end_local": "",
+      "explicit_times": false,
+      "variables": [
+        "precipitation"
+      ],
+      "year": 1920,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "assumptions": [],
+      "clarification": "",
+      "requested_outcome": "Retrieve historical annual rainfall data for Kendrapada, Odisha in the year 1920."
+    },
+    "historical_evidence": {
+      "status": "answered",
+      "text": "The historical Kendrapada district series reports 1493.9 mm of rainfall for annual 1920.",
+      "facts": [
+        {
+          "label": "rainfall",
+          "value": "1493.9",
+          "unit": "mm",
+          "year": 1920,
+          "period": "annual",
+          "source_id": "S27"
+        }
+      ],
+      "citations": [
+        {
+          "source_id": "S27",
+          "provider": "IMD",
+          "product": "Historical district rainfall publication",
+          "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+          "page": "1403",
+          "source_file": "data/raw/imports/2026-09-11/states/orissa.csv",
+          "sha256": "6e1ee5b499cb58e623151ef2facf56f384ff3a3214e9d87afbc3bf5473ffb30f",
+          "row": 1641,
+          "column": "annual_mm"
+        }
+      ],
+      "notes": [
+        "Historical source geography; modern district compatibility and homogeneity unresolved.",
+        "Local research use; original publication restricts redistribution.",
+        "The publication uses the historical label Orissa. This lookup does not establish equivalence with current Odisha district boundaries.",
+        "Source quality flags: annual_sum_mismatch, ond_sum_mismatch. The source value is preserved."
+      ],
+      "verification": {
+        "scope": "Previous full source-transcription audit; not a new scientific validation",
+        "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+      },
+      "raw": {
+        "status": "ok",
+        "source_id": "S27",
+        "state": "Orissa",
+        "district": "Kendrapada",
+        "year": 1920,
+        "period": "annual",
+        "value_decimal": "1493.9",
+        "native_value": "1493.9",
+        "unit": "mm",
+        "quality_flags": [
+          "annual_sum_mismatch",
+          "ond_sum_mismatch"
+        ],
+        "provenance": {
+          "series_id": "IMD110-P1403",
+          "year": 1920,
+          "state": "Orissa",
+          "district": "Kendrapada",
+          "source_row": 1641,
+          "source_file": "data/raw/imports/2026-09-11/states/orissa.csv",
+          "asset_sha256": "6e1ee5b499cb58e623151ef2facf56f384ff3a3214e9d87afbc3bf5473ffb30f",
+          "column": "annual_mm",
+          "original_publication_page": "1403"
+        },
+        "source_transcription": "not_yet_reconciled_against_original",
+        "limitations": [
+          "Historical source geography; modern district compatibility and homogeneity unresolved.",
+          "Local research use; original publication restricts redistribution."
+        ]
+      }
+    }
+  }
+}

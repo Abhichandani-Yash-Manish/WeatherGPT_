@@ -1,0 +1,12 @@
+{
+  "source_id": "S18",
+  "url": "https://aviationweather.gov/api/data/metar?ids=VAAH%2CVIDP%2CVABB%2CVOMM%2CVECC%2CVEGT&format=json&hours=3",
+  "retrieved_at_utc": "2026-09-11T19:48:50.837295+00:00",
+  "http_status": 200,
+  "content_type": "application/json",
+  "bytes": 17472,
+  "sha256": "c22bc6b3d7afb2866bd7793684f7a5086ec4677b10c9285a263e64b687bc7a73",
+  "blob": "blobs/c22bc6b3d7afb2866bd7793684f7a5086ec4677b10c9285a263e64b687bc7a73.bin",
+  "validation_scope": "product",
+  "stage": "validated"
+}

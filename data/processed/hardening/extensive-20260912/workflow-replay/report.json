@@ -1,0 +1,42 @@
+{
+  "mode": "historical_saved_response_replay",
+  "replay_clock_utc": "2026-09-11T20:00:00+00:00",
+  "scope": "Actual saved source values replayed through ingestion and answering; retrieval timestamps in replay are simulated.",
+  "original_ahmedabad_provenance": {
+    "source_id": "S21",
+    "url": "https://api.open-meteo.com/v1/gfs?latitude=23.02579&longitude=72.58727&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+    "retrieved_at_utc": "2026-09-11T19:34:43.274943+00:00",
+    "http_status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "bytes": 2464,
+    "sha256": "ccfb46b4c954cb12be2758e55bb71b9be5733d23ef9f3508a12f47a92556ad72",
+    "blob": "blobs/ccfb46b4c954cb12be2758e55bb71b9be5733d23ef9f3508a12f47a92556ad72.bin",
+    "delivery": "cache",
+    "checked_at_utc": "2026-09-11T19:48:49.613096+00:00"
+  },
+  "real_provider_calls": 0,
+  "ingestion_jobs": 10,
+  "published_scalar_records": 2383,
+  "normal_backup_restore": "PASS",
+  "independent_raw_rain_sum_mm": "0.0",
+  "answer_count": 16,
+  "statuses": {
+    "ambiguous_location": "needs_selection",
+    "ahmedabad_rain": "prototype_answer",
+    "ahmedabad_weather": "prototype_answer",
+    "half_hour_boundary": "partial",
+    "vadodara_source_candidates": "needs_selection",
+    "unknown_location": "unavailable",
+    "official_warning_gate": "unavailable",
+    "crop_advice_gate": "unavailable",
+    "aviation_gate": "unavailable",
+    "marine_gate": "unavailable",
+    "national_land_sample_0": "prototype_answer",
+    "national_land_sample_2": "prototype_answer",
+    "national_land_sample_4": "prototype_answer",
+    "national_land_sample_5": "prototype_answer",
+    "national_land_sample_6": "prototype_answer",
+    "national_land_sample_9": "prototype_answer"
+  },
+  "operational_ready": false
+}

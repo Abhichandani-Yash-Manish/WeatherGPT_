@@ -1,0 +1,742 @@
+{
+  "version": 2,
+  "scope": "Checkpoint 1 plus broad pass; exact source products at distinct evidence stages",
+  "sample_geography": "Ahmedabad district, Gujarat",
+  "review_date": "2026-09-11",
+  "review_policy": "Agent findings are evidence-backed proposals; user review remains pending until supplied",
+  "products": [
+    {
+      "id": "S01",
+      "product": "IMD Current Weather",
+      "category": "observation",
+      "access_url": "https://api.imd.gov.in/api/v1/current_wx",
+      "documentation_url": "https://api.imd.gov.in/public/api_reference.html",
+      "evidence_stage": "access_tested_unauthorized",
+      "supports_questions": [
+        "Q01",
+        "Q12",
+        "Q16"
+      ],
+      "documented": {
+        "time_basis": "Observation time documented as UTC",
+        "spatial_representation": "Station"
+      },
+      "observed": {
+        "http_status": 401,
+        "authentication": "none",
+        "data_payload_obtained": false
+      },
+      "open_questions": [
+        "Ahmedabad station mapping and coverage",
+        "Missing-value conventions",
+        "Actual update latency"
+      ],
+      "evidence_files": [
+        "evidence/20260911T153818096820Z/manifest.json",
+        "evidence/20260911T153818096820Z/imd-current.response",
+        "evidence/api-reference.html"
+      ],
+      "usage_terms": "Not established for production redistribution",
+      "selection": "proposed; no production source selected",
+      "user_review": "pending"
+    },
+    {
+      "id": "S02",
+      "product": "IMD City Forecast",
+      "category": "forecast",
+      "access_url": "https://api.imd.gov.in/api/v1/cityforecast",
+      "documentation_url": "https://api.imd.gov.in/public/api_reference.html",
+      "evidence_stage": "access_tested_unauthorized",
+      "supports_questions": [
+        "Q02",
+        "Q07",
+        "Q17"
+      ],
+      "documented": {
+        "horizon": "7 days",
+        "spatial_representation": "City/station",
+        "resolution": "Daily forecast fields in public reference"
+      },
+      "observed": {
+        "http_status": 401,
+        "authentication": "none",
+        "data_payload_obtained": false
+      },
+      "open_questions": [
+        "Subdaily product needed for afternoon questions",
+        "Run identity and revision archive",
+        "Separation of observed and forecast fields"
+      ],
+      "evidence_files": [
+        "evidence/20260911T153818096820Z/manifest.json",
+        "evidence/20260911T153818096820Z/imd-city-forecast.response",
+        "evidence/api-reference.html"
+      ],
+      "usage_terms": "Not established for production redistribution",
+      "selection": "proposed; no production source selected",
+      "user_review": "pending"
+    },
+    {
+      "id": "S03",
+      "product": "IMD District Nowcast",
+      "category": "nowcast",
+      "access_url": "https://api.imd.gov.in/api/v1/districtnowcast",
+      "documentation_url": "https://api.imd.gov.in/public/api_reference.html",
+      "evidence_stage": "access_tested_unauthorized",
+      "supports_questions": [
+        "Q03",
+        "Q08",
+        "Q09"
+      ],
+      "documented": {
+        "spatial_representation": "District",
+        "schema": "Category, issue/valid-until fields and consolidated message"
+      },
+      "observed": {
+        "http_status": 401,
+        "authentication": "none",
+        "data_payload_obtained": false
+      },
+      "open_questions": [
+        "District identifier mapping",
+        "Timezone and rollover semantics",
+        "Update/cancellation behavior"
+      ],
+      "evidence_files": [
+        "evidence/20260911T153818096820Z/manifest.json",
+        "evidence/20260911T153818096820Z/imd-nowcast.response",
+        "evidence/api-reference.html"
+      ],
+      "usage_terms": "Not established for production redistribution",
+      "selection": "proposed; no production source selected",
+      "user_review": "pending"
+    },
+    {
+      "id": "S04",
+      "product": "IMD District Warning",
+      "category": "warning",
+      "access_url": "https://api.imd.gov.in/api/v1/districtwarning",
+      "documentation_url": "https://api.imd.gov.in/public/api_reference.html",
+      "evidence_stage": "access_tested_unauthorized",
+      "supports_questions": [
+        "Q03",
+        "Q08",
+        "Q09"
+      ],
+      "documented": {
+        "horizon": "Five day-labelled warning fields in reference",
+        "spatial_representation": "District"
+      },
+      "observed": {
+        "http_status": 401,
+        "authentication": "none",
+        "data_payload_obtained": false
+      },
+      "open_questions": [
+        "Ahmedabad district object ID",
+        "Exact day-boundary convention",
+        "Supersession and all-clear semantics"
+      ],
+      "evidence_files": [
+        "evidence/20260911T153818096820Z/manifest.json",
+        "evidence/20260911T153818096820Z/imd-warning.response",
+        "evidence/api-reference.html"
+      ],
+      "usage_terms": "Not established for production redistribution",
+      "selection": "proposed; no production source selected",
+      "user_review": "pending"
+    },
+    {
+      "id": "S05",
+      "product": "IMD City Forecast Mapping",
+      "category": "mapping",
+      "access_url": "https://api.imd.gov.in/api/v1/cityforecast_mapping",
+      "documentation_url": "https://api.imd.gov.in/public/api_reference.html",
+      "evidence_stage": "access_tested_unauthorized",
+      "supports_questions": [
+        "Q01",
+        "Q02",
+        "Q03"
+      ],
+      "documented": {},
+      "observed": {
+        "http_status": 401,
+        "authentication": "none",
+        "data_payload_obtained": false
+      },
+      "open_questions": [
+        "Mapping fields and identifier semantics",
+        "Whether city IDs align across products",
+        "City point versus district coverage"
+      ],
+      "evidence_files": [
+        "evidence/20260911T153818096820Z/manifest.json",
+        "evidence/20260911T153818096820Z/imd-city-mapping.response",
+        "evidence/api-reference.html"
+      ],
+      "usage_terms": "Not established for production redistribution",
+      "selection": "proposed; no production source selected",
+      "user_review": "pending"
+    },
+    {
+      "id": "S06",
+      "product": "IMD-linked CAP RSS",
+      "category": "alert_feed",
+      "access_url": "https://cap-sources.s3.amazonaws.com/in-imd-en/rss.xml",
+      "documentation_url": "https://cap-sources.s3.amazonaws.com/in-imd-en/rss.xml",
+      "evidence_stage": "feed_accessed",
+      "supports_questions": [
+        "Q03",
+        "Q08",
+        "Q09"
+      ],
+      "documented": {},
+      "observed": {
+        "http_status": 200,
+        "item_count": 9,
+        "scope": "National feed; Ahmedabad applicability not established"
+      },
+      "open_questions": [
+        "Feed completeness and cadence",
+        "Active Ahmedabad coverage",
+        "Update and cancellation examples",
+        "Language pairing"
+      ],
+      "evidence_files": [
+        "evidence/20260911T153818096820Z/manifest.json",
+        "evidence/20260911T153818096820Z/imd-cap-rss.response"
+      ],
+      "usage_terms": "Not established for production redistribution",
+      "selection": "proposed; no production source selected",
+      "user_review": "pending"
+    },
+    {
+      "id": "S07",
+      "product": "Gujarat composite agromet bulletin, issue 70/2026",
+      "category": "guidance",
+      "access_url": "https://mausam.imd.gov.in/ahmedabad/mcdata/agromet.pdf",
+      "documentation_url": "https://mausam.imd.gov.in/ahmedabad/mcdata/agromet.pdf",
+      "evidence_stage": "sample_inspected",
+      "supports_questions": [
+        "Q04",
+        "Q05",
+        "Q06",
+        "Q14"
+      ],
+      "documented": {},
+      "observed": {
+        "http_status": 200,
+        "pages": 89,
+        "printed_issue_date": "2026-09-09",
+        "printed_state": "Gujarat",
+        "embedded_pdf_title_state": "Maharashtra",
+        "relevant_section": "AMFU Arnej / AHMEDABAD begins on physical PDF page 62",
+        "format": "PDF; tables continue across pages"
+      },
+      "open_questions": [
+        "Explicit validity of each advisory section",
+        "Current Gujarati counterpart",
+        "Archive/revision route",
+        "Crop-stage and district inheritance during extraction"
+      ],
+      "evidence_files": [
+        "evidence/20260911T153818096820Z/bulletin-manifest.json",
+        "evidence/20260911T153818096820Z/gujarat-agromet.pdf"
+      ],
+      "usage_terms": "Not established for production redistribution",
+      "selection": "proposed; no production source selected",
+      "user_review": "pending"
+    },
+    {
+      "id": "S08",
+      "product": "Gujarat district forecast and warnings bulletin",
+      "category": "forecast_warning_bulletin",
+      "access_url": "https://mausam.imd.gov.in/ahmedabad/mcdata/district.pdf",
+      "documentation_url": "https://mausam.imd.gov.in/ahmedabad/mcdata/district.pdf",
+      "evidence_stage": "sample_inspected",
+      "supports_questions": [
+        "Q02",
+        "Q03",
+        "Q08",
+        "Q17"
+      ],
+      "documented": {},
+      "observed": {
+        "http_status": 200,
+        "pages": 6,
+        "printed_issue_time": "2026-09-11T12:00:00+05:30",
+        "forecast_dates": "2026-09-11 to 2026-09-17",
+        "Ahmedabad_row_page": 2,
+        "format": "PDF table"
+      },
+      "open_questions": [
+        "Machine-readable equivalent",
+        "Historical revision retention",
+        "Meaning of probability terms",
+        "No hourly detail demonstrated"
+      ],
+      "evidence_files": [
+        "evidence/20260911T153818096820Z/bulletin-manifest.json",
+        "evidence/20260911T153818096820Z/gujarat-district-forecast.pdf"
+      ],
+      "usage_terms": "Not established for production redistribution",
+      "selection": "proposed; no production source selected",
+      "user_review": "pending"
+    },
+    {
+      "id": "S09",
+      "product": "IMD crop-specific advisory web interface",
+      "category": "guidance_catalog",
+      "access_url": "https://imdagrimet.gov.in/cropAdvisory_3.php",
+      "documentation_url": "https://imdagrimet.gov.in/cropAdvisory_3.php",
+      "evidence_stage": "page_accessed",
+      "supports_questions": [
+        "Q04",
+        "Q05",
+        "Q14"
+      ],
+      "documented": {
+        "page_note": "Advisories updated Tuesday and Friday; not measured and not generalized to every bulletin"
+      },
+      "observed": {
+        "http_status": 200,
+        "displayed_default_date": "2026-07-31",
+        "default_page_has_Ahmedabad_payload": false
+      },
+      "open_questions": [
+        "Whether selecting a district gives newer content",
+        "Exact district product link",
+        "Usable documented API route"
+      ],
+      "evidence_files": [
+        "evidence/20260911T153818096820Z/imd-agromet-crop.response"
+      ],
+      "usage_terms": "Not established for production redistribution",
+      "selection": "proposed; no production source selected",
+      "user_review": "pending"
+    },
+    {
+      "id": "S10",
+      "product": "Ahmedabad city forecast link on IMD regional homepage",
+      "category": "mapping_evidence",
+      "access_url": "https://mausam.imd.gov.in/ahmedabad/",
+      "documentation_url": "https://mausam.imd.gov.in/ahmedabad/",
+      "evidence_stage": "link_verified",
+      "supports_questions": [
+        "Q01",
+        "Q02",
+        "Q03"
+      ],
+      "documented": {},
+      "observed": {
+        "linked_city_url": "https://city.imd.gov.in/citywx/city_weather.php?id=42647",
+        "city_id_in_link": "42647",
+        "is_district_id": false
+      },
+      "open_questions": [
+        "Confirm cross-product identifier compatibility",
+        "District/village code crosswalk",
+        "Coordinates and station representation"
+      ],
+      "evidence_files": [
+        "evidence/20260911T153818096820Z/imd-ahmedabad.response"
+      ],
+      "usage_terms": "Not established for production redistribution",
+      "selection": "proposed; no production source selected",
+      "user_review": "pending"
+    },
+    {
+      "id": "S11",
+      "product": "IMD 0.25 degree daily gridded rainfall catalogue",
+      "category": "historical",
+      "access_url": "https://www.imdpune.gov.in/cmpg/Griddata/Rainfall_25_NetCDF.html",
+      "documentation_url": "https://www.imdpune.gov.in/cmpg/Griddata/Rainfall_25_NetCDF.html",
+      "evidence_stage": "prior_catalog_check_only",
+      "supports_questions": [
+        "Q10",
+        "Q11",
+        "Q13"
+      ],
+      "documented": {},
+      "observed": {
+        "prior_assessment": "Catalogue inspected earlier on 2026-09-11; no numerical file sample inspected"
+      },
+      "open_questions": [
+        "Download representative NetCDF",
+        "Read actual time coverage and missing values",
+        "Resolve catalogue description/year-selector discrepancy"
+      ],
+      "evidence_files": [
+        "../evidence/imd_gridded_rainfall_catalog.html"
+      ],
+      "usage_terms": "Not established for production redistribution",
+      "selection": "proposed; no production source selected",
+      "user_review": "pending"
+    },
+    {
+      "id": "S12",
+      "product": "NOAA GFS numerical forecast output",
+      "category": "nwp",
+      "access_url": "https://www.ncei.noaa.gov/products/weather-climate-models/global-forecast",
+      "documentation_url": "https://www.ncei.noaa.gov/products/weather-climate-models/global-forecast",
+      "evidence_stage": "queued_for_sample_discovery",
+      "supports_questions": [
+        "Q02",
+        "Q07",
+        "Q12",
+        "Q18"
+      ],
+      "documented": {},
+      "observed": {},
+      "open_questions": [
+        "Choose exact distribution/product and small subset",
+        "Record run, valid time, level and accumulation interval",
+        "Identify forecast archive access"
+      ],
+      "evidence_files": [],
+      "usage_terms": "Not established for production redistribution",
+      "selection": "proposed; no production source selected",
+      "user_review": "pending"
+    },
+    {
+      "id": "S13",
+      "product": "ERA5 hourly single-level reanalysis",
+      "category": "reanalysis",
+      "access_url": "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=overview",
+      "documentation_url": "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=overview",
+      "evidence_stage": "queued_for_sample_discovery",
+      "supports_questions": [
+        "Q10",
+        "Q11",
+        "Q13"
+      ],
+      "documented": {},
+      "observed": {},
+      "open_questions": [
+        "Obtain representative subset",
+        "Document revised/preliminary state",
+        "Inspect variable-specific units and accumulation semantics"
+      ],
+      "evidence_files": [],
+      "usage_terms": "Not established for production redistribution",
+      "selection": "proposed; no production source selected",
+      "user_review": "pending"
+    },
+    {
+      "id": "S14",
+      "product": "Ahmedabad district/village boundaries and gazetteer",
+      "category": "mapping",
+      "access_url": null,
+      "documentation_url": null,
+      "evidence_stage": "source_not_selected",
+      "supports_questions": [
+        "Q01",
+        "Q03",
+        "Q08",
+        "Q10",
+        "Q15"
+      ],
+      "documented": {},
+      "observed": {},
+      "open_questions": [
+        "Select authoritative compatible boundary/gazetteer sources",
+        "Record version and identifiers",
+        "Establish local-script place aliases and ambiguous-name behavior"
+      ],
+      "evidence_files": [],
+      "usage_terms": "Not established for production redistribution",
+      "selection": "proposed; no production source selected",
+      "user_review": "pending"
+    },
+    {
+      "id": "S15",
+      "product": "IMD public warning-map WFS",
+      "category": "warning",
+      "access_url": "https://reactjs.imd.gov.in/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=imd%3Adistrict_warnings_india&srsname=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=1&CQL_FILTER=District+ILIKE+%27%25AHM%25%27",
+      "documentation_url": "https://mausam.imd.gov.in/responsive/districtWiseWarningGIS.php",
+      "evidence_stage": "sample_inspected",
+      "supports_questions": [
+        "Q03",
+        "Q08",
+        "Q09"
+      ],
+      "observed": {
+        "http_status": 200,
+        "checked_at_utc": "2026-09-11T16:03:37.071921+00:00",
+        "note": "Ahmedabad Obj_id 273 and polygon sampled; lifecycle and boundary version unresolved"
+      },
+      "evidence_files": [
+        "evidence/imd-live-20260911T160337Z/imd-ahmedabad-warning.response",
+        "broad-sample-audit.json"
+      ],
+      "open_questions": [
+        "Confirm update and revision behavior",
+        "Confirm suitability for intended location and question",
+        "Supported interface contract and access policy for public-site service"
+      ],
+      "usage_terms": "Production integration and redistribution terms not established in this sample test",
+      "selection": "proposed; no production source selected",
+      "user_review": "pending"
+    },
+    {
+      "id": "S16",
+      "product": "IMD Mausamgram public forecast data",
+      "category": "forecast",
+      "access_url": "https://mausamgram.imd.gov.in/test4_mme.php?lat_gfs=23.000&lon_gfs=72.500&date=2026091100_3hr_0p125",
+      "documentation_url": "https://mausamgram.imd.gov.in/",
+      "evidence_stage": "sample_inspected",
+      "supports_questions": [
+        "Q02",
+        "Q05",
+        "Q07",
+        "Q18"
+      ],
+      "observed": {
+        "http_status": 200,
+        "checked_at_utc": "2026-09-11T16:04:16.059560+00:00",
+        "note": "15 arrays of 41 entries; preserve grid conversion, cycle and NaN; accumulation semantics and model lineage unresolved"
+      },
+      "evidence_files": [
+        "evidence/imd-grid-20260911T160416Z/imd-mausamgram-grid.response",
+        "broad-sample-audit.json"
+      ],
+      "open_questions": [
+        "Confirm update and revision behavior",
+        "Confirm suitability for intended location and question",
+        "Supported interface contract and access policy for public-site service"
+      ],
+      "usage_terms": "Production integration and redistribution terms not established in this sample test",
+      "selection": "proposed; no production source selected",
+      "user_review": "pending"
+    },
+    {
+      "id": "S17",
+      "product": "IMD Mausamgram public temperature variants",
+      "category": "forecast",
+      "access_url": "https://mausamgram.imd.gov.in/rtbc_proxy.php?lat=23.000&lon=72.500&date=20260911&fcst_ic_utc=00",
+      "documentation_url": "https://mausamgram.imd.gov.in/",
+      "evidence_stage": "sample_inspected",
+      "supports_questions": [
+        "Q02",
+        "Q07",
+        "Q17"
+      ],
+      "observed": {
+        "http_status": 200,
+        "checked_at_utc": "2026-09-11T16:04:50.067373+00:00",
+        "note": "Forecast lead hours and temperature variants sampled; no relative-skill assessment"
+      },
+      "evidence_files": [
+        "evidence/imd-context-20260911T160450Z/imd-temperature-bc.response",
+        "broad-sample-audit.json"
+      ],
+      "open_questions": [
+        "Confirm update and revision behavior",
+        "Confirm suitability for intended location and question",
+        "Supported interface contract and access policy for public-site service"
+      ],
+      "usage_terms": "Production integration and redistribution terms not established in this sample test",
+      "selection": "proposed; no production source selected",
+      "user_review": "pending"
+    },
+    {
+      "id": "S18",
+      "product": "NOAA AWC VAAH METAR dissemination",
+      "category": "observation",
+      "access_url": "https://aviationweather.gov/api/data/metar?ids=VAAH&format=json&hours=3",
+      "documentation_url": "https://aviationweather.gov/data/api/",
+      "evidence_stage": "sample_inspected",
+      "supports_questions": [
+        "Q01",
+        "Q12"
+      ],
+      "observed": {
+        "http_status": 200,
+        "checked_at_utc": "2026-09-11T16:01:13.812240+00:00",
+        "note": "Five airport reports; not district-wide measurements"
+      },
+      "evidence_files": [
+        "evidence/broad-20260911T160113Z/awc-metar.response",
+        "broad-sample-audit.json"
+      ],
+      "open_questions": [
+        "Confirm update and revision behavior",
+        "Confirm suitability for intended location and question"
+      ],
+      "usage_terms": "Production integration and redistribution terms not established in this sample test",
+      "selection": "proposed; no production source selected",
+      "user_review": "pending"
+    },
+    {
+      "id": "S19",
+      "product": "NOAA AWC VAAH TAF dissemination",
+      "category": "forecast",
+      "access_url": "https://aviationweather.gov/api/data/taf?ids=VAAH&format=json",
+      "documentation_url": "https://aviationweather.gov/data/api/",
+      "evidence_stage": "sample_inspected",
+      "supports_questions": [
+        "Q02",
+        "Q07"
+      ],
+      "observed": {
+        "http_status": 200,
+        "checked_at_utc": "2026-09-11T16:01:14.282693+00:00",
+        "note": "One terminal forecast; not complete aviation briefing"
+      },
+      "evidence_files": [
+        "evidence/broad-20260911T160113Z/awc-taf.response",
+        "broad-sample-audit.json"
+      ],
+      "open_questions": [
+        "Confirm update and revision behavior",
+        "Confirm suitability for intended location and question"
+      ],
+      "usage_terms": "Production integration and redistribution terms not established in this sample test",
+      "selection": "proposed; no production source selected",
+      "user_review": "pending"
+    },
+    {
+      "id": "S20",
+      "product": "NOAA AWC airport station metadata",
+      "category": "mapping",
+      "access_url": "https://aviationweather.gov/api/data/stationinfo?ids=VAAH&format=json",
+      "documentation_url": "https://aviationweather.gov/data/api/",
+      "evidence_stage": "sample_inspected",
+      "supports_questions": [
+        "Q01",
+        "Q15"
+      ],
+      "observed": {
+        "http_status": 200,
+        "checked_at_utc": "2026-09-11T16:01:13.620945+00:00",
+        "note": "VAAH mapped to WMO 42647; no LGD mapping"
+      },
+      "evidence_files": [
+        "evidence/broad-20260911T160113Z/awc-station.response",
+        "broad-sample-audit.json"
+      ],
+      "open_questions": [
+        "Confirm update and revision behavior",
+        "Confirm suitability for intended location and question"
+      ],
+      "usage_terms": "Production integration and redistribution terms not established in this sample test",
+      "selection": "proposed; no production source selected",
+      "user_review": "pending"
+    },
+    {
+      "id": "S21",
+      "product": "Open-Meteo GFS forecast delivery",
+      "category": "nwp",
+      "access_url": "https://api.open-meteo.com/v1/gfs?latitude=23.02579&longitude=72.58727&hourly=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m&forecast_days=3&timezone=Asia%2FKolkata",
+      "documentation_url": "https://open-meteo.com/en/docs/gfs-api",
+      "evidence_stage": "sample_inspected",
+      "supports_questions": [
+        "Q02",
+        "Q07",
+        "Q18"
+      ],
+      "observed": {
+        "http_status": 200,
+        "checked_at_utc": "2026-09-11T16:02:22.664951+00:00",
+        "note": "72 hourly records, four variables; exact run metadata absent in sample"
+      },
+      "evidence_files": [
+        "evidence/numeric-20260911T160221Z/openmeteo-gfs.response",
+        "broad-sample-audit.json"
+      ],
+      "open_questions": [
+        "Confirm update and revision behavior",
+        "Confirm suitability for intended location and question"
+      ],
+      "usage_terms": "Hosted free tier for non-commercial prototyping, subject to limits; data attribution required; review product-specific upstream and commercial terms",
+      "selection": "proposed; no production source selected",
+      "user_review": "pending"
+    },
+    {
+      "id": "S22",
+      "product": "Open-Meteo ERA5 historical delivery",
+      "category": "reanalysis",
+      "access_url": "https://archive-api.open-meteo.com/v1/archive?latitude=23.02579&longitude=72.58727&start_date=2025-07-01&end_date=2025-07-07&daily=precipitation_sum,temperature_2m_max,temperature_2m_min&models=era5&timezone=Asia%2FKolkata",
+      "documentation_url": "https://open-meteo.com/en/docs/historical-weather-api",
+      "evidence_stage": "sample_inspected",
+      "supports_questions": [
+        "Q10",
+        "Q11",
+        "Q13"
+      ],
+      "observed": {
+        "http_status": 200,
+        "checked_at_utc": "2026-09-11T16:02:22.692995+00:00",
+        "note": "Seven daily records; local-day basis; no long-period analysis"
+      },
+      "evidence_files": [
+        "evidence/numeric-20260911T160221Z/openmeteo-era5.response",
+        "broad-sample-audit.json"
+      ],
+      "open_questions": [
+        "Confirm update and revision behavior",
+        "Confirm suitability for intended location and question"
+      ],
+      "usage_terms": "Hosted free tier for non-commercial prototyping, subject to limits; data attribution required; review product-specific upstream and commercial terms",
+      "selection": "proposed; no production source selected",
+      "user_review": "pending"
+    },
+    {
+      "id": "S23",
+      "product": "NASA POWER daily point delivery",
+      "category": "reanalysis",
+      "access_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M,PRECTOTCORR&community=AG&longitude=72.58727&latitude=23.02579&start=20250701&end=20250707&format=JSON&time-standard=UTC",
+      "documentation_url": "https://power.larc.nasa.gov/docs/services/api/temporal/daily/",
+      "evidence_stage": "sample_inspected",
+      "supports_questions": [
+        "Q10",
+        "Q11",
+        "Q13"
+      ],
+      "observed": {
+        "http_status": 200,
+        "checked_at_utc": "2026-09-11T16:02:22.821387+00:00",
+        "note": "Seven days, two variables, UTC; MERRA2 lineage and fill value returned"
+      },
+      "evidence_files": [
+        "evidence/numeric-20260911T160221Z/nasa-power-daily.response",
+        "broad-sample-audit.json"
+      ],
+      "open_questions": [
+        "Confirm update and revision behavior",
+        "Confirm suitability for intended location and question"
+      ],
+      "usage_terms": "Production integration and redistribution terms not established in this sample test",
+      "selection": "proposed; no production source selected",
+      "user_review": "pending"
+    },
+    {
+      "id": "S24",
+      "product": "Open-Meteo GeoNames place search",
+      "category": "mapping",
+      "access_url": "https://geocoding-api.open-meteo.com/v1/search?name=Ahmedabad&count=3&language=en&format=json",
+      "documentation_url": "https://open-meteo.com/en/docs/geocoding-api",
+      "evidence_stage": "sample_inspected",
+      "supports_questions": [
+        "Q01",
+        "Q15"
+      ],
+      "observed": {
+        "http_status": 200,
+        "checked_at_utc": "2026-09-11T16:01:13.615406+00:00",
+        "note": "Three alternatives across two countries; not official district boundary or LGD ID"
+      },
+      "evidence_files": [
+        "evidence/broad-20260911T160113Z/openmeteo-geocode.response",
+        "broad-sample-audit.json"
+      ],
+      "open_questions": [
+        "Confirm update and revision behavior",
+        "Confirm suitability for intended location and question"
+      ],
+      "usage_terms": "Hosted free tier for non-commercial prototyping, subject to limits; data attribution required; review product-specific upstream and commercial terms",
+      "selection": "proposed; no production source selected",
+      "user_review": "pending"
+    }
+  ]
+}

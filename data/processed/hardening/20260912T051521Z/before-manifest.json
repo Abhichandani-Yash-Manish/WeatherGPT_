@@ -1,0 +1,15 @@
+{
+  "weathergpt_data/bulletins.py": "bde9e88b732c98596dead50455adbcc0c460a66d1f95e2c242d7874191dab755",
+  "weathergpt_data/transport.py": "0f43abfce903410b14f5757aadd29505fb5b323cda1fbe3f5b8b0c1e9cea1426",
+  "weathergpt_data/__init__.py": "3a881f00637804f2bd6a5ecb1f882993251a93b9f64bee6b384e6217ff7a7174",
+  "weathergpt_data/foundation.py": "df2afbcc2014ca5cae10c40381b8eb820ed47ce36b513c96a301ad5215f24f44",
+  "weathergpt_data/advisories.py": "8b7d2515259c869b1965fcfa9cddfda0c2015228cf483bb13c21beb79585dc40",
+  "weathergpt_data/districts.py": "689727597275e8fb9a76567cbd55640567db6d52e28255c5db5c55231d97d592",
+  "weathergpt_data/climate.py": "ec5d10e72a4d16fa5eabbb4812c96890decee086214743ac7aa2d995a975df42",
+  "weathergpt_data/__main__.py": "7cb35695d56376b566ba7f3a0d31577b94bbf1b72d5ac865b261a01d254e5613",
+  "weathergpt_data/adapters.py": "66ff007659579aaf059289317fd425b35aea94894af48cd426e944aec900ff1f",
+  "scripts/finalize_foundation_checkpoint.py": "ad1d3f7a30eb5a790a5aa3b74efba8b8c39851643863cd958a8d861c26fb8405",
+  "scripts/audit_foundation_checkpoint.py": "620a4263f87d0c4e946aee943a569ed35fa382f181276e94c999c4766f4f0546",
+  "data/registry/sources.json": "d0bb769dabd943f9ff666137192cf36399a4fc65301542a4fbbd883fb7e16a70",
+  "data/registry/readiness.json": "db35008ceaabc26f5fee4f7d10506428eae8c702c9755981d7e3edb5636240ae"
+}

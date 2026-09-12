@@ -1,0 +1,7 @@
+{
+  "tests_run": 178,
+  "tests_passed": true,
+  "answer_responses_captured": 85,
+  "tests_producing_answers": 33,
+  "note": "New offline capture of actual automated test responses; synthetic fixture values are not weather observations or live forecasts."
+}

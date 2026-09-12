@@ -1,0 +1,10 @@
+{
+  "result": "PASS",
+  "entities": 1516,
+  "coverage_assessments": 1496,
+  "source_warning_quarantines": 22,
+  "orphaned_coverage_entities": 0,
+  "input_and_output_hashes_verified": true,
+  "implementation_changes_since_build": [],
+  "operational_ready": false
+}

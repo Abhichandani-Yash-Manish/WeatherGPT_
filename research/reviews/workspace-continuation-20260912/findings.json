@@ -1,0 +1,46 @@
+{
+  "as_of_utc": "2026-09-12T15:17:08.023751+00:00",
+  "findings": [
+    {
+      "id": "WC01",
+      "priority": "P1",
+      "status": "open",
+      "title": "Different-horizon failure hidden from answer and RAG freshness",
+      "file": "weathergpt_data/answers.py",
+      "line": 222,
+      "review_ids": [
+        "R06",
+        "R11"
+      ],
+      "evidence": "research/reviews/workspace-continuation-20260912/cross-horizon-reproduction.json",
+      "next_action": "Resolve point/product due-job health across horizons; keep older evidence degraded and exclude it from ordinary RAG."
+    },
+    {
+      "id": "WC02",
+      "priority": "P2",
+      "status": "open",
+      "title": "RAG packet drops structured place-selection choices",
+      "file": "weathergpt_data/rag.py",
+      "line": 17,
+      "review_ids": [
+        "R01",
+        "R11"
+      ],
+      "evidence": "research/reviews/workspace-continuation-20260912/clarification-reproduction.json",
+      "next_action": "Preserve structured clarification candidates or expose an explicit resolver action without admitting numeric evidence."
+    },
+    {
+      "id": "WC03",
+      "priority": "P3",
+      "status": "open",
+      "title": "Root duplicate report has 18 broken local link targets",
+      "file": "11-extensive-validation-and-rag-gate.md",
+      "line": 14,
+      "review_ids": [
+        "R12"
+      ],
+      "evidence": "research/reviews/workspace-continuation-20260912/evidence-check.json",
+      "next_action": "Use the canonical docs report and make the root copy a pointer or correct its relative paths."
+    }
+  ]
+}

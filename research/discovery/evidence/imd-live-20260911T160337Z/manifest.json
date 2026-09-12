@@ -1,0 +1,42 @@
+{
+  "results": [
+    {
+      "id": "imd-mausamgram-3hr",
+      "url": "https://mausamgram.imd.gov.in/test4_mme.php?lat_gfs=23.02579&lon_gfs=72.58727&date=2026091100_3hr_0p125",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:03:37.071722+00:00",
+      "http_status": 200,
+      "final_url": "https://mausamgram.imd.gov.in/test4_mme.php?lat_gfs=23.02579&lon_gfs=72.58727&date=2026091100_3hr_0p125",
+      "content_type": "application/json",
+      "truncated": false,
+      "bytes_saved": 27,
+      "sha256": "dc8fa5cdc1f5578058fc2d5b5c80155b2829ade309e1fc5ad1111a9fabf8a2f5",
+      "snapshot": "evidence/imd-live-20260911T160337Z/imd-mausamgram-3hr.response"
+    },
+    {
+      "id": "imd-ahmedabad-warning",
+      "url": "https://reactjs.imd.gov.in/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=imd%3Adistrict_warnings_india&srsname=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=1&CQL_FILTER=District+ILIKE+%27%25AHM%25%27",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:03:37.071921+00:00",
+      "http_status": 200,
+      "final_url": "https://reactjs.imd.gov.in/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=imd%3Adistrict_warnings_india&srsname=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=1&CQL_FILTER=District+ILIKE+%27%25AHM%25%27",
+      "content_type": "application/json;charset=utf-8",
+      "truncated": false,
+      "bytes_saved": 11717,
+      "sha256": "7d078fc1ca9f6d1bc3e38f53e82a9aee1981f085190fbcbdd9664d3a339af5c0",
+      "snapshot": "evidence/imd-live-20260911T160337Z/imd-ahmedabad-warning.response"
+    },
+    {
+      "id": "imd-city-json",
+      "url": "https://city.imd.gov.in/citywx/responsive/api/fetchCity_static.php",
+      "method": "POST",
+      "form": {
+        "ID": "42647"
+      },
+      "purpose": "Read-only city selection, matching public frontend",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:03:37.519650+00:00",
+      "error": "HTTP Error 403: Forbidden"
+    }
+  ]
+}

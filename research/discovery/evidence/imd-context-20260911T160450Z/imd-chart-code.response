@@ -1,0 +1,591 @@
+function initializeCharts()
+{
+	
+var dateFormat = '%e/%m/%Y/%H:%M';
+ 
+Highcharts.setOptions( {
+       
+        global : {
+            useUTC : false
+        }
+    } );
+
+MMEchartRF	=	Highcharts.chart('myMMEchartRF', {
+
+chart: {
+        type: 'column',
+		zoomType: 'x',
+        panning: true,
+        panKey: 'shift'
+		
+		
+    },
+credits: {
+    enabled: false
+},
+    title: {
+        text: ''
+    },
+exporting: {
+         enabled: true,
+		 
+},
+ time: {
+    timezone: 'Asia/Calcutta'
+  },
+
+    yAxis: {
+		lineColor: '#000000',
+        lineWidth: 2,
+        title: {
+            text: ''
+        },
+		 gridLineWidth: 1, 
+		 labels: {
+                style: {
+				fontSize: 14,
+                    fontWeight: 'bold',
+                    color:'#000000'
+                }
+            },
+		 
+    },
+
+    xAxis: {
+		lineColor: '#000000',
+        lineWidth: 2,
+	title: {
+      text: ''
+    },
+       type: "datetime",
+	    minorTickInterval: tickint * 3600 * 1000,
+		tickInterval: mjrtickint * 3600 * 1000,
+      	minorTickPosition:'outside',
+      	minorTickLength:10,
+        minorTickWidth: 1,
+        minorGridLineWidth: 0,
+				gridLineWidth: 1, 
+         min: Date.UTC(y, m-1, d,tutc),
+        max: Date.UTC(y, m-1, d+addday),       
+      labels: {
+         formatter: function() {
+        return Highcharts.dateFormat('%d/%m <br/> %I %p',
+                                      this.value);
+      },
+	   style: {
+				fontSize: 14,
+                    fontWeight: 'bold',
+                    color:'#000000',
+					
+					textoverflow:"none",
+                },
+				overflow:false,
+      
+      }
+    },
+
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle'
+    },
+
+    plotOptions: {
+       column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+
+    series: [{
+	 showInLegend: false, 
+	 name: 'Rainfall',
+		color:'#0000DD',
+        data: [],
+        pointStart: Date.UTC(y, m-1, d,tutc),
+		pointInterval: 3600 * tickint * 1000 // one hour
+    }
+	],
+
+    responsive: {
+        rules: [{
+            condition: {
+                maxWidth: 500
+            },
+            chartOptions: {
+                legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                }
+            }
+        }]
+    }
+
+});
+
+MMEcharttemp	= Highcharts.chart('myMMEchartTemp', {
+	
+	chart: {
+        
+		zoomType: 'x',
+        panning: true,
+        panKey: 'shift',
+		
+		
+    },
+	
+ credits: {
+    enabled: false
+},
+ title: {
+        text: ''
+    },
+ time: {
+    timezone: 'Asia/Calcutta'
+  },
+  exporting: {
+         enabled: true
+},
+
+
+    yAxis: {
+		lineColor: '#000000',
+        lineWidth: 2,
+	gridLineWidth: 1,
+        title: {
+            text: ''
+        },
+		
+		labels: {
+                style: {
+				fontSize: 14,
+                    fontWeight: 'bold',
+                    color:'#000000'
+                }
+            },
+    },
+
+    xAxis: {
+		 
+		lineColor: '#000000',
+        lineWidth: 2,
+	 
+		type: "datetime",
+	  gridLineWidth: 1, 
+       type: "datetime",
+	    minorTickInterval: tickint * 3600 * 1000,
+		tickInterval: mjrtickint * 3600 * 1000,
+      	minorTickPosition:'outside',
+      	minorTickLength:10,
+        minorTickWidth: 1,
+        minorGridLineWidth: 0,
+				gridLineWidth: 1, 
+         min: Date.UTC(y, m-1, d,tutc) ,
+        max: Date.UTC(y, m-1, d +addday) ,       
+      labels: {
+         formatter: function() {
+        return Highcharts.dateFormat('%d/%m <br/> %I %p',
+                                      this.value);
+      },
+	   style: {
+				fontSize: 14,
+                    fontWeight: 'bold',
+                    color:'#000000'
+                }
+      
+      }        
+     
+    },
+
+   
+
+    plotOptions: {
+        label: {
+                connectorAllowed: false
+            },
+            pointStart: 0
+    },
+
+    series: [{
+        showInLegend: false, 
+		 name: 'Temperature',
+		color:'#FF5B0D',
+        data: [],//max temp
+        pointStart: Date.UTC(y, m-1, d,tutc),
+    pointInterval: 3600 * tickint * 1000 // one hour
+    }
+    ],
+
+    responsive: {
+        rules: [{
+            condition: {
+                maxWidth: 500
+            },
+            chartOptions: {
+                legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                }
+            }
+        }]
+    }
+
+});
+
+MMEchartRH	=	Highcharts.chart('myMMEchartRH', {
+	
+	chart: {
+        
+		zoomType: 'x',
+        panning: true,
+        panKey: 'shift'
+		
+		
+    },
+credits: {
+    enabled: false
+},
+    title: {
+        text: ''
+    },
+	time: {
+    timezone: 'Asia/Calcutta'
+  },
+
+  exporting: {
+         enabled: true
+},
+
+
+    yAxis: {
+		lineColor: '#000000',
+        lineWidth: 2,
+        title: {
+            text: ''
+        },
+		 gridLineWidth: 1, 
+		 labels: {
+                style: {
+				fontSize: 14,
+                    fontWeight: 'bold',
+                    color:'#000000'
+                }
+            },
+    },
+
+    xAxis: {
+	
+	lineColor: '#000000',
+        lineWidth: 2,
+       type: "datetime",
+	    
+		  gridLineWidth: 1, 
+       type: "datetime",
+	    minorTickInterval: tickint * 3600 * 1000,
+		tickInterval: mjrtickint * 3600 * 1000,
+      	minorTickPosition:'outside',
+      	minorTickLength:10,
+        minorTickWidth: 1,
+        minorGridLineWidth: 0,
+				gridLineWidth: 1, 
+         min: Date.UTC(y, m-1, d,tutc),
+        max: Date.UTC(y, m-1, d+addday),       
+      labels: {
+         formatter: function() {
+        return Highcharts.dateFormat('%d/%m <br/> %I %p',
+                                      this.value);
+      },
+	  style: {
+				fontSize: 14,
+                    fontWeight: 'bold',
+                    color:'#000000'
+                }
+      
+      } 
+               
+     
+    },
+
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle'
+    },
+
+    plotOptions: {
+        series: {
+            label: {
+                connectorAllowed: false
+            },
+            pointStart: 0
+        }
+    },
+
+    series: [{
+	 showInLegend: false, 
+	 color:'#005E8A',
+        name: 'Relative Humidity',
+        data: [],
+        pointStart: Date.UTC(y, m-1, d,tutc),
+    pointInterval: 3600 * tickint * 1000 
+    }
+	],
+
+    responsive: {
+        rules: [{
+            condition: {
+                maxWidth: 500
+            },
+            chartOptions: {
+                legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                }
+            }
+        }]
+    }
+
+});
+
+
+MMEchartCC	=	Highcharts.chart('myMMEchartCC', {
+	chart: {
+        
+		zoomType: 'x',
+        panning: true,
+        panKey: 'shift'
+		
+		
+    },
+credits: {
+    enabled: false
+},
+    title: {
+        text: ''
+    },
+exporting: {
+         enabled: true
+},
+
+   time: {
+    timezone: 'Asia/Calcutta'
+  },
+
+    yAxis: {
+		lineColor: '#000000',
+        lineWidth: 2,
+        title: {
+            text: ''
+        },
+		 gridLineWidth: 1, 
+		 max:100,
+		 labels: {
+                style: {
+				fontSize: 14,
+                    fontWeight: 'bold',
+                    color:'#000000'
+                }
+            },
+    },
+
+    xAxis: {
+		lineColor: '#000000',
+        lineWidth: 2,
+	
+       type: "datetime",
+	    gridLineWidth: 1, 
+               
+     type: "datetime",
+	  gridLineWidth: 1, 
+       type: "datetime",
+	    minorTickInterval: tickint * 3600 * 1000,
+		tickInterval: mjrtickint * 3600 * 1000,
+      	minorTickPosition:'outside',
+      	minorTickLength:10,
+        minorTickWidth: 1,
+        minorGridLineWidth: 0,
+				gridLineWidth: 1, 
+         min: Date.UTC(y, m-1, d,tutc),
+        max: Date.UTC(y, m-1, d+addday),       
+      labels: {
+         formatter: function() {
+        return Highcharts.dateFormat('%d/%m <br/> %I %p',
+                                      this.value);
+      },
+	  style: {
+				fontSize: 14,
+                    fontWeight: 'bold',
+                    color:'#000000'
+                }
+      
+      }        
+    },
+
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle'
+    },
+
+    plotOptions: {
+        series: {
+            label: {
+                connectorAllowed: false
+            },
+            pointStart: 0
+        }
+    },
+
+    series: [{
+	 showInLegend: false, 
+	 color:'#4b0082',
+        name: 'Cloud Cover',
+        data: [],
+        pointStart: Date.UTC(y, m-1, d,tutc),
+    pointInterval: 3600 * tickint * 1000 
+    }],
+
+    responsive: {
+        rules: [{
+            condition: {
+                maxWidth: 500
+            },
+            chartOptions: {
+                legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                }
+            }
+        }]
+    }
+
+});
+
+
+MMEchartWSWD = Highcharts.chart('myMMEchartWSWD', {
+credits: {
+    enabled: false
+},
+chart: {
+       
+        zoomType: 'x',
+        panning: true,
+        panKey: 'shift'
+    },
+
+    title: {
+        text: ''
+    },
+time: {
+    timezone: 'Asia/Calcutta'
+  },
+    xAxis: {
+		 lineColor: '#000000',
+        lineWidth: 2,
+     
+        type: 'datetime',
+        offset: 40,  
+		gridLineWidth: 1, 
+               
+    
+	
+       
+	    minorTickInterval: tickint * 3600 * 1000,
+		tickInterval: mjrtickint * 3600 * 1000,
+      	minorTickPosition:'outside',
+      	minorTickLength:10,
+        minorTickWidth: 1,
+        minorGridLineWidth: 0,
+				gridLineWidth: 1, 
+         min: Date.UTC(y, m-1, d,tutc),
+        max: Date.UTC(y, m-1, d+addday),       
+      labels: {
+         formatter: function() {
+        return Highcharts.dateFormat('%d/%m <br/> %I %p',
+                                      this.value);
+      },
+	  style: {
+				fontSize: 14,
+                    fontWeight: 'bold',
+                    color:'#000000'
+                }
+      
+      } 
+    },
+ yAxis: {
+	  lineColor: '#000000',
+        lineWidth: 2,
+     
+        title: {
+            text: ''
+        },
+		 gridLineWidth: 1, 
+		 labels: {
+                style: {
+				fontSize: 14,
+                    fontWeight: 'bold',
+                    color:'#000000'
+                }
+            },
+		
+    },
+    plotOptions: {
+        series: {
+            pointStart: Date.UTC(y, m-1, d,tutc),
+            pointInterval: 3600 * tickint * 1000 
+        }
+    },
+
+    series: [{
+        type: 'windbarb',
+        data: [ ],
+        name: 'Wind',
+        color: '#000000',
+        showInLegend: false,
+		name: 'Wind direction',
+        tooltip: {
+            valueSuffix: ' m/s'
+        },
+		
+    }, {
+        type: 'line',
+        keys: ['y', 'rotation'], // rotation is not used here
+        data: [ ],
+        color: '#59ACFF',
+		showInLegend: false,
+        fillColor: {
+            linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
+            stops: [
+                [0, Highcharts.getOptions().colors[0]],
+                [
+                    1,
+                    Highcharts.color(Highcharts.getOptions().colors[0])
+                        .setOpacity(0.25).get()
+                ]
+            ]
+        },
+        name: 'Wind speed',
+        tooltip: {
+            valueSuffix: ' m/s'
+        },
+        states: {
+            inactive: {
+                opacity: 1
+            }
+        }
+    }
+	
+	
+	
+	
+	
+	
+	]
+
+});
+
+}

@@ -1,0 +1,64 @@
+{
+  "id": "IN-010",
+  "question": "Will heavy rain affect Sehore district in the next 24 hours?",
+  "origin": "included_report",
+  "checked_at_utc": "2026-09-12T16:15:25.863562+00:00",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "90efdc10-5f02-4c4d-bd24-f60ba0076173",
+    "question": "Will heavy rain affect Sehore district in the next 24 hours?",
+    "status": "needs_clarification",
+    "answer": "Which village or town within Sehore should I check? I can retrieve a forecast for a precise place; I cannot yet give a verified map of weather across that whole area.",
+    "facts": [],
+    "citations": [],
+    "notes": [
+      "Timeframe is the next 24 hours from current IST time."
+    ],
+    "choices": [],
+    "follow_up": "Name a village/town and state, or supply a pin.",
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-12T16:15:25.863590+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 778,
+        "output_tokens": 263,
+        "duration_seconds": 4.181251083
+      },
+      "generation": null,
+      "tools": [],
+      "provider": "local_ollama",
+      "duration_seconds": 4.182
+    },
+    "plan": {
+      "intent": "forecast",
+      "language": "en",
+      "places": [
+        {
+          "name": "Sehore",
+          "state": "",
+          "district": "Sehore",
+          "kind": "district"
+        }
+      ],
+      "start_local": "2026-09-12T21:45:25+05:30",
+      "end_local": "2026-09-13T21:45:25+05:30",
+      "explicit_times": false,
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "assumptions": [
+        "Timeframe is the next 24 hours from current IST time."
+      ],
+      "clarification": "",
+      "requested_outcome": "Forecast of heavy rain in Sehore district for the next 24 hours"
+    },
+    "resolved_points": {}
+  }
+}

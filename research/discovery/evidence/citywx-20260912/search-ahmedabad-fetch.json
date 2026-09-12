@@ -1,0 +1,12 @@
+{
+  "source_id": "candidate-citywx",
+  "url": "https://city.imd.gov.in/citywx/responsive/api/search.php?query=Ahmedabad",
+  "retrieved_at_utc": "2026-09-11T20:05:09.335744+00:00",
+  "http_status": 200,
+  "content_type": "application/json",
+  "bytes": 696,
+  "sha256": "29ac55683be2a8c2b2064ebdc5227d6d473b33f0b9170acc445ee37955e058c4",
+  "blob": "blobs/29ac55683be2a8c2b2064ebdc5227d6d473b33f0b9170acc445ee37955e058c4.bin",
+  "delivery": "network",
+  "checked_at_utc": "2026-09-11T20:05:09.336303+00:00"
+}

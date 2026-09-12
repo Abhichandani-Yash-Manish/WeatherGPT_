@@ -1,0 +1,95 @@
+{
+  "scope": "Offline replay of prior saved payloads at their recorded check times; no claim of current freshness or new provider calls.",
+  "results": [
+    {
+      "sample": "aviation-metar",
+      "result": "pass",
+      "records": 36,
+      "status": "ok"
+    },
+    {
+      "sample": "aviation-stationinfo",
+      "result": "pass",
+      "records": 6,
+      "status": "ok"
+    },
+    {
+      "sample": "aviation-taf",
+      "result": "pass",
+      "records": 6,
+      "status": "ok"
+    },
+    {
+      "sample": "forecast-ahmedabad",
+      "result": "pass",
+      "records": 288,
+      "status": "ok"
+    },
+    {
+      "sample": "forecast-chennai",
+      "result": "pass",
+      "records": 288,
+      "status": "ok"
+    },
+    {
+      "sample": "forecast-delhi",
+      "result": "pass",
+      "records": 288,
+      "status": "ok"
+    },
+    {
+      "sample": "forecast-guwahati",
+      "result": "pass",
+      "records": 288,
+      "status": "ok"
+    },
+    {
+      "sample": "forecast-mumbai",
+      "result": "pass",
+      "records": 288,
+      "status": "ok"
+    },
+    {
+      "sample": "forecast-srinagar",
+      "result": "pass",
+      "records": 288,
+      "status": "ok"
+    },
+    {
+      "sample": "history-ahmedabad",
+      "result": "pass",
+      "records": 21,
+      "status": "ok"
+    },
+    {
+      "sample": "marine-andaman-sea",
+      "result": "pass",
+      "records": 216,
+      "status": "ok"
+    },
+    {
+      "sample": "marine-arabian-sea",
+      "result": "pass",
+      "records": 216,
+      "status": "ok"
+    },
+    {
+      "sample": "marine-bay-of-bengal",
+      "result": "pass",
+      "records": 216,
+      "status": "ok"
+    },
+    {
+      "sample": "national-warning-snapshot",
+      "result": "pass",
+      "records": 742,
+      "status": "reference_only"
+    },
+    {
+      "sample": "river-ahmedabad",
+      "result": "pass",
+      "records": 7,
+      "status": "ok"
+    }
+  ]
+}

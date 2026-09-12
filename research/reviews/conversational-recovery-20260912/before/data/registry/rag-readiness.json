@@ -1,0 +1,130 @@
+{
+  "schema_version": "rag-readiness-v1",
+  "as_of_utc": "2026-09-12T08:35:06.896763+00:00",
+  "user_intent": "Ground AI answers with stored evidence (RAG)",
+  "decision": "scoped_point_forecast_context_repaired_ready_for_controlled_generation_evaluation",
+  "unrestricted_corpus_rag_ready": false,
+  "operational_ready": false,
+  "scientific_accuracy_established": false,
+  "universal_correctness_claim": false,
+  "llm_generation_evaluated": false,
+  "implemented_gate": "weathergpt_data/rag.py",
+  "command": "python -m weathergpt_data rag-context",
+  "report": "docs/11-extensive-validation-and-rag-gate.md",
+  "evidence_directory": "data/processed/hardening/extensive-20260912",
+  "verified": {
+    "automated_tests_passed": 178,
+    "additional_test_methods": 48,
+    "statement_coverage_percent": 95.0890116635973,
+    "branch_coverage_percent": 79.41952506596306,
+    "combined_coverage_percent": 90.11311269375786,
+    "district_series_fully_source_matched": 640,
+    "district_rows_source_matched": 60568,
+    "district_cells_including_blanks_source_matched": 1029656,
+    "numeric_matrix": {
+      "registered_assets_hash_verified": 219,
+      "national_cells_and_locators_matched": 4216,
+      "national_flagged_aggregate_discrepancies": 6,
+      "exact_interval_oracles": 63072,
+      "order_invariance_checks": 24,
+      "half_hour_rejections": 426,
+      "saved_land_locations": 6
+    },
+    "saved_corpus": {
+      "frozen_artifact_hashes_verified": 29,
+      "source_references_verified": 35,
+      "document_pages_reproduced": 27,
+      "documents_reproduced": 7,
+      "document_pages_with_stricter_current_status": 13,
+      "aviation_records_reproduced": 48,
+      "cap_messages_reproduced": 9,
+      "hourly_scalar_records_reproduced": 2376,
+      "daily_scalar_records_reproduced": 28,
+      "warning_quarantine_diagnostics_updated": 8,
+      "warning_features_reproduced": 742,
+      "warning_features_quarantined": 22,
+      "place_records_reproduced": 2,
+      "runtime_blob_hashes_verified": 82,
+      "sqlite_integrity_checks": 23
+    },
+    "rag_replay": {
+      "historical_replay_statuses": {
+        "selected_ahmedabad": "eligible_prototype",
+        "ambiguous_ahmedabad": "abstain",
+        "split_rain_interval": "abstain",
+        "crop_advice": "abstain",
+        "official_warning": "abstain"
+      },
+      "current_store_status": "eligible_prototype",
+      "current_answer_status": "prototype_answer",
+      "real_provider_calls": 0,
+      "llm_calls": 0,
+      "scope": "Evidence gate only. No language-model generation or unrestricted document retrieval has been evaluated."
+    }
+  },
+  "allowed_context": [
+    "S21 fresh complete deterministic model-point forecasts that pass AnswerService and context expiry checks"
+  ],
+  "excluded_from_automatic_grounding": [
+    "Stale, degraded or incomplete forecasts",
+    "Ambiguous or unsupported locations and intervals",
+    "Official observations or warning claims",
+    "Agriculture, aviation, marine and flood-impact decisions",
+    "Historical corpus document embedding pending permitted-use and geographic review",
+    "Unreviewed source PDF text"
+  ],
+  "source_limitations": {
+    "district_monthly_missing_cells": 15817,
+    "district_rows_with_missing_months": 5018,
+    "district_series_with_missing_months": 555,
+    "district_series_with_internal_year_gaps": 329,
+    "district_aggregate_discrepancies": [
+      {
+        "series_id": "IMD110-P1403",
+        "district": "Kendrapada",
+        "year": 1920,
+        "field": "annual_mm",
+        "difference_mm": "12.5",
+        "source_quality_flags": "annual_sum_mismatch;ond_sum_mismatch"
+      },
+      {
+        "series_id": "IMD110-P1403",
+        "district": "Kendrapada",
+        "year": 1920,
+        "field": "ond_mm",
+        "difference_mm": "12.5",
+        "source_quality_flags": "annual_sum_mismatch;ond_sum_mismatch"
+      }
+    ],
+    "national_aggregate_discrepancies": 6,
+    "warning_quarantines": 22
+  },
+  "next_step": "Complete UI browser verification and evaluate a held-out tool-grounded LLM client. In parallel, finish dated geography mappings and warning lifecycle/validity before broadening current warning answers. Specialist and unrestricted-corpus gates remain in force.",
+  "continuation_review": {
+    "as_of_utc": "2026-09-12T15:17:08.023751+00:00",
+    "report": "research/reviews/workspace-continuation-20260912/review.md",
+    "findings": "research/reviews/workspace-continuation-20260912/findings.json",
+    "blocking_before_generation_evaluation": [],
+    "implementation_modified": true,
+    "existing_tests_passed": 178,
+    "resolved_in": "docs/12-product-workspace-and-repairs.md",
+    "resolution_status": {
+      "WC01": "verified_scoped",
+      "WC02": "verified_scoped",
+      "WC03": "verified_scoped"
+    },
+    "resolution_evidence": "data/processed/hardening/product-batch-five-20260912/repaired-review-probes.json"
+  },
+  "updated_at_utc": "2026-09-12T15:44:56.098467+00:00",
+  "product_workspace": {
+    "entrypoint": "python3 -m weathergpt_data.workspace",
+    "report": "docs/12-product-workspace-and-repairs.md",
+    "evidence_directory": "data/processed/hardening/product-batch-five-20260912",
+    "automated_tests_passed": 194,
+    "live_http_check": "data/processed/hardening/product-batch-five-20260912/live/report.json",
+    "browser_visual_qa": "blocked_admin_policy_verification_unavailable",
+    "llm_generation": false,
+    "scope": "Local English model-point forecast prototype; national and specialist final acceptance remains incomplete."
+  },
+  "verified_checkpoint_note": "The verified object is the earlier extensive checkpoint; current product-batch results are recorded separately under product_workspace."
+}

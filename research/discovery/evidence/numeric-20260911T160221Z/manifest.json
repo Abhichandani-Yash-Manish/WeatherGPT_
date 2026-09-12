@@ -1,0 +1,108 @@
+{
+  "results": [
+    {
+      "id": "imd-mausamgram-run",
+      "url": "https://mausamgram.imd.gov.in/mmem_3hr.txt",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:02:21.347389+00:00",
+      "http_status": 200,
+      "final_url": "https://mausamgram.imd.gov.in/mmem_3hr.txt",
+      "content_type": "text/plain",
+      "truncated": false,
+      "bytes_saved": 32,
+      "sha256": "e05b16f9b49f986043e2f290542fdaad2d7558d6710259f3e03477f19eefee05",
+      "snapshot": "evidence/numeric-20260911T160221Z/imd-mausamgram-run.response"
+    },
+    {
+      "id": "imd-city-app",
+      "url": "https://city.imd.gov.in/citywx/responsive/assets/index-C8XcC-ir.js",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:02:21.347575+00:00",
+      "http_status": 200,
+      "final_url": "https://city.imd.gov.in/citywx/responsive/assets/index-C8XcC-ir.js",
+      "content_type": "application/javascript",
+      "truncated": false,
+      "bytes_saved": 696544,
+      "sha256": "cc9accbf6ee7b221d2fe9ac688c50fe697b43adcf94d12ba5160884d7ef1f433",
+      "snapshot": "evidence/numeric-20260911T160221Z/imd-city-app.response"
+    },
+    {
+      "id": "imd-warning-feature",
+      "url": "https://reactjs.imd.gov.in/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=imd%3Adistrict_warnings_india&srsname=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=1",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:02:21.347690+00:00",
+      "http_status": 200,
+      "final_url": "https://reactjs.imd.gov.in/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=imd%3Adistrict_warnings_india&srsname=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=1",
+      "content_type": "application/json;charset=utf-8",
+      "truncated": false,
+      "bytes_saved": 635178,
+      "sha256": "215d734bb6633ea212349e1d79e0726f5b58db4c8d19743902e2d24c18486d43",
+      "snapshot": "evidence/numeric-20260911T160221Z/imd-warning-feature.response"
+    },
+    {
+      "id": "imd-v1-city",
+      "url": "https://api.imd.gov.in/api/v1/cityforecast?id=42647",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:02:21.699117+00:00",
+      "http_status": 401,
+      "final_url": "https://api.imd.gov.in/api/v1/cityforecast?id=42647",
+      "content_type": "application/json",
+      "truncated": false,
+      "bytes_saved": 27,
+      "sha256": "8822d082580a062c206859ed757108c68432cfccf11393297e57c9fb3ef0d013",
+      "snapshot": "evidence/numeric-20260911T160221Z/imd-v1-city.response"
+    },
+    {
+      "id": "imd-v1-current",
+      "url": "https://api.imd.gov.in/api/v1/current_wx?id=42647",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:02:22.433363+00:00",
+      "http_status": 401,
+      "final_url": "https://api.imd.gov.in/api/v1/current_wx?id=42647",
+      "content_type": "application/json",
+      "truncated": false,
+      "bytes_saved": 27,
+      "sha256": "8822d082580a062c206859ed757108c68432cfccf11393297e57c9fb3ef0d013",
+      "snapshot": "evidence/numeric-20260911T160221Z/imd-v1-current.response"
+    },
+    {
+      "id": "openmeteo-gfs",
+      "url": "https://api.open-meteo.com/v1/gfs?latitude=23.02579&longitude=72.58727&hourly=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m&forecast_days=3&timezone=Asia%2FKolkata",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:02:22.664951+00:00",
+      "http_status": 200,
+      "final_url": "https://api.open-meteo.com/v1/gfs?latitude=23.02579&longitude=72.58727&hourly=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m&forecast_days=3&timezone=Asia%2FKolkata",
+      "content_type": "application/json; charset=utf-8",
+      "truncated": false,
+      "bytes_saved": 3056,
+      "sha256": "6f2cd579adee289015fd831ff4a2294a8f979b27eb0cb275d39a2ef426327cab",
+      "snapshot": "evidence/numeric-20260911T160221Z/openmeteo-gfs.response"
+    },
+    {
+      "id": "openmeteo-era5",
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=23.02579&longitude=72.58727&start_date=2025-07-01&end_date=2025-07-07&daily=precipitation_sum,temperature_2m_max,temperature_2m_min&models=era5&timezone=Asia%2FKolkata",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:02:22.692995+00:00",
+      "http_status": 200,
+      "final_url": "https://archive-api.open-meteo.com/v1/archive?latitude=23.02579&longitude=72.58727&start_date=2025-07-01&end_date=2025-07-07&daily=precipitation_sum,temperature_2m_max,temperature_2m_min&models=era5&timezone=Asia%2FKolkata",
+      "content_type": "application/json; charset=utf-8",
+      "truncated": false,
+      "bytes_saved": 576,
+      "sha256": "2bbfbadcbb67d48cf15928f010a65fb2be4e5047e334ad8bfe39d8b218c8bd30",
+      "snapshot": "evidence/numeric-20260911T160221Z/openmeteo-era5.response"
+    },
+    {
+      "id": "nasa-power-daily",
+      "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M,PRECTOTCORR&community=AG&longitude=72.58727&latitude=23.02579&start=20250701&end=20250707&format=JSON&time-standard=UTC",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:02:22.821387+00:00",
+      "http_status": 200,
+      "final_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M,PRECTOTCORR&community=AG&longitude=72.58727&latitude=23.02579&start=20250701&end=20250707&format=JSON&time-standard=UTC",
+      "content_type": "application/json",
+      "truncated": false,
+      "bytes_saved": 782,
+      "sha256": "5a67c69dc5635a1acadd4a2b428d080d357d72f44d6526580bcb958aecf1e0cd",
+      "snapshot": "evidence/numeric-20260911T160221Z/nasa-power-daily.response"
+    }
+  ]
+}

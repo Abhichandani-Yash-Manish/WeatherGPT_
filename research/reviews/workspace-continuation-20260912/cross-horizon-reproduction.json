@@ -1,0 +1,12 @@
+{
+  "scenario": "Newer seven-day collection fails while older three-day collection exists for the same point",
+  "worker": {
+    "state": "failed",
+    "job_id": "f2c5b378756e43b17ac1328373c5ac5152eecd4f6ac7306d8fbf6872825cc9c5",
+    "error": "Product validation failed: Adapter requires numeric UTC offset zero"
+  },
+  "answer_status": "prototype_answer",
+  "rag_status": "eligible_prototype",
+  "answer_refresh_health": "succeeded",
+  "latest_due_failed_job": "f2c5b378756e43b17ac1328373c5ac5152eecd4f6ac7306d8fbf6872825cc9c5"
+}

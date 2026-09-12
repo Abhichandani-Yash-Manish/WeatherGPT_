@@ -1,0 +1,160 @@
+{
+  "id": "IN-017",
+  "question": "Could temperatures drop below freezing in Nako village tonight?",
+  "origin": "included_report",
+  "checked_at_utc": "2026-09-12T16:16:13.378974+00:00",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "8420d1e7-9557-478e-98e0-1fd0eb549f38",
+    "question": "Could temperatures drop below freezing in Nako village tonight?",
+    "status": "needs_selection",
+    "answer": "I found 3 possible places for Nako. Please confirm the intended location and spelling.",
+    "facts": [],
+    "citations": [],
+    "notes": [
+      "Tonight defaults to 18:30–06:30 next local calendar date."
+    ],
+    "choices": [
+      {
+        "id": "10516127",
+        "name": "Nāko",
+        "latitude": 24.7121,
+        "longitude": 83.2596,
+        "feature": "PPL",
+        "admin1": "Uttar Pradesh",
+        "admin2": "Sonbhadra",
+        "modified": "2024-01-07",
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:10516127",
+        "label": "Nāko, Sonbhadra, Uttar Pradesh",
+        "coordinates": {
+          "latitude": 24.7121,
+          "longitude": 83.2596
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/10516127",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Nako"
+      },
+      {
+        "id": "10714969",
+        "name": "Nāko",
+        "latitude": 32.80304,
+        "longitude": 76.1549,
+        "feature": "PPL",
+        "admin1": "State of Himāchal Pradesh",
+        "admin2": "Chamba",
+        "modified": "2024-01-06",
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:10714969",
+        "label": "Nāko, Chamba, State of Himāchal Pradesh",
+        "coordinates": {
+          "latitude": 32.80304,
+          "longitude": 76.1549
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/10714969",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Nako"
+      },
+      {
+        "id": "1262098",
+        "name": "Nako",
+        "latitude": 31.8888,
+        "longitude": 78.61825,
+        "feature": "PPL",
+        "admin1": "State of Himāchal Pradesh",
+        "admin2": "Kinnaur",
+        "modified": "2024-01-06",
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:1262098",
+        "label": "Nako, Kinnaur, State of Himāchal Pradesh",
+        "coordinates": {
+          "latitude": 31.8888,
+          "longitude": 78.61825
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1262098",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Nako"
+      }
+    ],
+    "follow_up": "Choose a place, or add its district and state.",
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-12T16:16:13.379003+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 774,
+        "output_tokens": 274,
+        "duration_seconds": 4.476908583
+      },
+      "generation": null,
+      "tools": [
+        {
+          "name": "gazetteer_search",
+          "query": {
+            "name": "Nako",
+            "state": "",
+            "district": "",
+            "kind": "settlement"
+          },
+          "matches": 3
+        }
+      ],
+      "provider": "local_ollama",
+      "duration_seconds": 4.478
+    },
+    "plan": {
+      "intent": "forecast",
+      "language": "en",
+      "places": [
+        {
+          "name": "Nako",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "start_local": "2026-09-12T18:30:00+05:30",
+      "end_local": "2026-09-13T06:30:00+05:30",
+      "explicit_times": false,
+      "variables": [
+        "temperature_2m"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "assumptions": [
+        "Tonight defaults to 18:30–06:30 next local calendar date."
+      ],
+      "clarification": "",
+      "requested_outcome": "Forecast of minimum temperature in Nako village for tonight to check if it drops below freezing."
+    },
+    "resolved_points": {}
+  }
+}

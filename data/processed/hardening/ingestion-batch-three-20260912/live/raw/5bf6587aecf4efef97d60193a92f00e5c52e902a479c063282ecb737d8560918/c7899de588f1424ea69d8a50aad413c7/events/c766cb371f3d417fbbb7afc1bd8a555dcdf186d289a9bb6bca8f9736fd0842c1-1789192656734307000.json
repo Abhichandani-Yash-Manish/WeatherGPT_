@@ -1,0 +1,12 @@
+{
+  "source_id": "S37",
+  "url": "https://flood-api.open-meteo.com/v1/flood?latitude=23.02579&longitude=72.58727&daily=river_discharge&forecast_days=7",
+  "retrieved_at_utc": "2026-09-12T05:57:36.734196+00:00",
+  "http_status": 200,
+  "content_type": "application/json; charset=utf-8",
+  "bytes": 394,
+  "sha256": "3aa8c42d5827950952fe8b8ed2a5c5d70e52e53ed25e314a3989908184e7ce13",
+  "blob": "blobs/3aa8c42d5827950952fe8b8ed2a5c5d70e52e53ed25e314a3989908184e7ce13.bin",
+  "validation_scope": "product",
+  "stage": "validated"
+}

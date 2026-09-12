@@ -1,0 +1,26 @@
+{
+  "scenario": "Ambiguous name through rag-context",
+  "answer_status": "needs_selection",
+  "answer_candidate_count": 2,
+  "rag_status": "abstain",
+  "packet_keys": [
+    "schema_version",
+    "status",
+    "scope",
+    "user_question",
+    "question_is_untrusted_input",
+    "provider_calls",
+    "operational_eligible",
+    "evidence",
+    "expires_at_utc",
+    "missing_information",
+    "limitations",
+    "answer_status",
+    "deterministic_answer",
+    "generation_constraints"
+  ],
+  "candidate_ids_present_in_packet": false,
+  "missing_information": [
+    "An unambiguous place point or explicit coordinates are required"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "schema_version": "geonames-index-v1",
+  "built_at_utc": "2026-09-12T16:04:58.236553+00:00",
+  "inputs": [
+    {
+      "source_id": "S61",
+      "path": "data/raw/geonames/IN-20260912.zip",
+      "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0"
+    }
+  ],
+  "outputs": {
+    "state-aliases.json": "3ff3a34227593ad1dfb1fd7a51929fb7081d2f9d8c9f0bdb6839bb523859de3a",
+    "manifest.json": "cc943fe2223b505250e718f8f1198663c8f3f837720dacc1396e8754d8fc33ae",
+    "places.sqlite": "3116236be9072cd88e7f807f760a7b440b14465cdbc5e1ce2e61d9ba4e2a5aca"
+  },
+  "scope": "Indexed source settlements and source aliases; no authoritative administrative crosswalk."
+}

@@ -1,0 +1,8 @@
+{
+  "source_id": "S35",
+  "url": "https://lgdirectory.gov.in/downloadDirectory.do",
+  "checked_at_utc": "2026-09-12T05:35:22.243286+00:00",
+  "stage": "fetch_failed",
+  "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1129)>",
+  "error_type": "URLError"
+}

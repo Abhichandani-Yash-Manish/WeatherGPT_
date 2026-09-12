@@ -1,0 +1,10 @@
+{
+  "source_id": "S57",
+  "url": "https://mausam.imd.gov.in/responsive/agrometinformation/district_current_en_get.php?s=Lakshadweep&step1=true",
+  "retrieved_at_utc": "2026-09-11T19:41:41.500947+00:00",
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "bytes": 214,
+  "sha256": "60452323ecf86a4d5948bfb96fcec34e785e611da1ae2aa8695e8ef2f7780107",
+  "blob": "blobs/60452323ecf86a4d5948bfb96fcec34e785e611da1ae2aa8695e8ef2f7780107.bin"
+}

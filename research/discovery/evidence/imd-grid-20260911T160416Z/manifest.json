@@ -1,0 +1,18 @@
+{
+  "derivation": "Public frontend floors coordinates to 0.125-degree grid and formats 3 decimals; homepage lines 2372-2374",
+  "results": [
+    {
+      "id": "imd-mausamgram-grid",
+      "url": "https://mausamgram.imd.gov.in/test4_mme.php?lat_gfs=23.000&lon_gfs=72.500&date=2026091100_3hr_0p125",
+      "authentication": "none",
+      "checked_at_utc": "2026-09-11T16:04:16.059560+00:00",
+      "http_status": 200,
+      "final_url": "https://mausamgram.imd.gov.in/test4_mme.php?lat_gfs=23.000&lon_gfs=72.500&date=2026091100_3hr_0p125",
+      "content_type": "application/json",
+      "truncated": false,
+      "bytes_saved": 3742,
+      "sha256": "69a939c206070dc393072251a43540f7d2909068c02ee52d033aa7f35c50cc10",
+      "snapshot": "evidence/imd-grid-20260911T160416Z/imd-mausamgram-grid.response"
+    }
+  ]
+}

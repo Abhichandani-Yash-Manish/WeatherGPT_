@@ -1,0 +1,43 @@
+[
+  {
+    "name": "imd_warning_sample",
+    "url": "https://api.imd.gov.in/api/v1/districtwarning?id=573",
+    "checked_at_utc": "2026-09-11T13:20:21.278573+00:00",
+    "authenticated": false,
+    "status": 401,
+    "error": "HTTP Error 401: Unauthorized"
+  },
+  {
+    "name": "imd_linked_cap_rss",
+    "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/rss.xml",
+    "checked_at_utc": "2026-09-11T13:20:21.279042+00:00",
+    "authenticated": false,
+    "status": 200,
+    "content_type": "text/xml",
+    "bytes_read": 6163,
+    "final_url": "https://cap-sources.s3.amazonaws.com/in-imd-en/rss.xml",
+    "rss_item_count": 9,
+    "sample_items": [
+      {
+        "title": "Heavy to very heavy with extremely heavy rainfall",
+        "pubDate": "Wed, 09 Sep 2026 07:24:34 +0000",
+        "link": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-09-09-07-24-34.xml"
+      },
+      {
+        "title": "Heavy to very heavy with extremely heavy rainfall",
+        "pubDate": "Thu, 03 Sep 2026 07:21:21 +0000",
+        "link": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-09-03-07-21-21.xml"
+      }
+    ]
+  },
+  {
+    "name": "imd_gridded_rainfall_catalog",
+    "url": "https://www.imdpune.gov.in/cmpg/Griddata/Rainfall_25_NetCDF.html",
+    "checked_at_utc": "2026-09-11T13:20:21.279450+00:00",
+    "authenticated": false,
+    "status": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "bytes_read": 14141,
+    "final_url": "https://www.imdpune.gov.in/cmpg/Griddata/Rainfall_25_NetCDF.html"
+  }
+]

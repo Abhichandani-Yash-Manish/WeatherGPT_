@@ -1,0 +1,74 @@
+{
+  "id": "IN-008",
+  "question": "Is it raining in Bhuj now?",
+  "origin": "included_report",
+  "checked_at_utc": "2026-09-12T16:15:16.252793+00:00",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "66b299a4-b88a-45c3-9f9e-82eddf23287f",
+    "question": "Is it raining in Bhuj now?",
+    "status": "partial",
+    "answer": "I do not have a verified live station observation for Bhuj to confirm if it is raining right now. A forecast cannot establish whether it is raining there at this moment. Would you like the upcoming weather forecast for Bhuj?",
+    "facts": [],
+    "citations": [],
+    "notes": [
+      "Current time is used for observation."
+    ],
+    "choices": [],
+    "follow_up": "Would you like the upcoming weather forecast for a named place?",
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-12T16:15:16.252821+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 771,
+        "output_tokens": 230,
+        "duration_seconds": 3.725168792
+      },
+      "generation": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 315,
+        "output_tokens": 64,
+        "duration_seconds": 1.125587833,
+        "validation": "numeric-token and evidence-ID checks passed; semantic evaluation remains necessary",
+        "evidence_ids": []
+      },
+      "tools": [],
+      "provider": "local_ollama",
+      "duration_seconds": 4.852
+    },
+    "plan": {
+      "intent": "observation",
+      "language": "en",
+      "places": [
+        {
+          "name": "Bhuj",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "start_local": "",
+      "end_local": "",
+      "explicit_times": false,
+      "variables": [
+        "precipitation",
+        "temperature_2m",
+        "wind_speed_10m",
+        "relative_humidity_2m"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "assumptions": [
+        "Current time is used for observation."
+      ],
+      "clarification": "",
+      "requested_outcome": "Check current weather conditions in Bhuj to determine if it is raining."
+    }
+  }
+}

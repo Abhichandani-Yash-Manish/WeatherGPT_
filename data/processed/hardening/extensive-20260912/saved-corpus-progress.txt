@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/heer/WeatherGPT/scripts/audit_saved_corpus.py", line 88, in <module>
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',required=True);r=run(p.parse_args().output);print(json.dumps(r['counts'],indent=2))
+                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/heer/WeatherGPT/scripts/audit_saved_corpus.py", line 55, in run
+    if any(actual[k]!=stored[k] for k in ['physical_page','text','source_locator','extraction_status']):raise ValueError('Document extraction mismatch')
+                                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Document extraction mismatch

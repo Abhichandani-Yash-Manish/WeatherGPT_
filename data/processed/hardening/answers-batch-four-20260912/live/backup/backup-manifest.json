@@ -1,0 +1,9 @@
+{
+  "schema_version": "ingestion-backup-v2",
+  "created_at": "2026-09-12T07:44:13.447126+00:00",
+  "files": {
+    "ingestion.sqlite": "3efaf47df82ad8d110e57990741e40c495b84d7d685a69867a7ea561b1e4aa6c",
+    "raw/7084f122595d9a95344d75d972f31331ed4e0c53563a39a1e18eccdc7df6427f/298fb8d74fd14c91ad2a8d245038bb49/blobs/63a135ccb5b3e522bfbaff6079321a5e466ff7dae9a3b840ac3e69b945b361e3.bin": "63a135ccb5b3e522bfbaff6079321a5e466ff7dae9a3b840ac3e69b945b361e3"
+  },
+  "scope": "Queue state, published versions, coverage receipts and their raw payloads. Failed-attempt raw objects and request caches excluded."
+}

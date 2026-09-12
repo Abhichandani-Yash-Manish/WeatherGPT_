@@ -1,0 +1,23 @@
+Ministry of  Earth and Science
+    India Meteorolo gical Department
+O/O Additional Director Gener al of  Meteorolo gy (Research )
+                         Clima te Applica tion Group
+110 Y ears ( 1901-2010 ) Monthly R ainfall Data Series for 
+   Districts, States and Met Sub-divisions and All India
+            ( All the rainfall values are in mm )
+1. All India Rainfall Series
+2. Region wise Rainfall Series
+3. Sub - division Rainfall Series
+4. State Rainfall Series
+5. District Rainfall Series
+6. Mean, Standard Deviation and Coef ficient of Variation
+      
+***
+a. All India Rainfall Series
+b. Region wise Rainfall Series
+c.Sub-division Rainfall Series
+d. State Rainfall Series
+e. District Rainfall Series
+Based on the period 1901 - 2000
+ 
+*** 

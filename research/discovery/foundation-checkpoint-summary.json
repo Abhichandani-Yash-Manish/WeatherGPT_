@@ -1,0 +1,28 @@
+{
+  "source_entries": 59,
+  "tracked_evidence_assets": 206,
+  "representative_smoke_checks": 17,
+  "smoke_errors": 0,
+  "smoke_statuses": {
+    "needs_selection": 1,
+    "ok": 14,
+    "reference_only": 2
+  },
+  "warning_source_features": 764,
+  "warning_accepted_features": 742,
+  "warning_quarantined_features": 22,
+  "cap_messages": 9,
+  "cap_time_eligible_info_blocks": 0,
+  "district_rows": 60568,
+  "historical_district_series": 640,
+  "district_missing_month_cells": 15817,
+  "ahmedabad_values_reconciled": 1870,
+  "national_climate_records": 4216,
+  "tests_passed": 30,
+  "advisory_listed_regions": 36,
+  "advisory_listed_district_entries": 698,
+  "sea_area_pdf_links": 2,
+  "coastal_pdf_links": 15,
+  "operational_ready": false,
+  "limitations": "Representative retrieval and adapter tests, not exhaustive national coverage or scientific/operational validation."
+}

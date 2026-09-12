@@ -1,0 +1,143 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "e76e99d9-6be8-495c-8ac7-6f91cffe7fba",
+  "question": "What was Ahmedabad district rainfall in 2010?",
+  "status": "answered",
+  "answer": "The historical Ahmedabad district series reports 1096.8 mm of rainfall for annual 2010.",
+  "facts": [
+    {
+      "label": "rainfall",
+      "value": "1096.8",
+      "unit": "mm",
+      "year": 2010,
+      "period": "annual",
+      "source_id": "S27"
+    }
+  ],
+  "citations": [
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 111,
+      "column": "annual_mm"
+    }
+  ],
+  "notes": [
+    "Historical source geography; modern district compatibility and homogeneity unresolved.",
+    "Local research use; original publication restricts redistribution."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 776,
+      "output_tokens": 196,
+      "duration_seconds": 3.352264292
+    },
+    "generation": null,
+    "tools": [
+      {
+        "name": "historical_lookup",
+        "status": "answered"
+      }
+    ],
+    "provider": "local_ollama",
+    "duration_seconds": 3.412
+  },
+  "plan": {
+    "intent": "history",
+    "language": "en",
+    "places": [
+      {
+        "name": "Ahmedabad",
+        "state": "",
+        "district": "Ahmedabad",
+        "kind": "district"
+      }
+    ],
+    "start_local": "",
+    "end_local": "",
+    "explicit_times": false,
+    "variables": [
+      "precipitation"
+    ],
+    "year": 2010,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "assumptions": [],
+    "clarification": "",
+    "requested_outcome": "Retrieve historical annual rainfall data for Ahmedabad district in the year 2010."
+  },
+  "historical_evidence": {
+    "status": "answered",
+    "text": "The historical Ahmedabad district series reports 1096.8 mm of rainfall for annual 2010.",
+    "facts": [
+      {
+        "label": "rainfall",
+        "value": "1096.8",
+        "unit": "mm",
+        "year": 2010,
+        "period": "annual",
+        "source_id": "S27"
+      }
+    ],
+    "citations": [
+      {
+        "source_id": "S27",
+        "provider": "IMD",
+        "product": "Historical district rainfall publication",
+        "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+        "page": "613",
+        "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+        "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+        "row": 111,
+        "column": "annual_mm"
+      }
+    ],
+    "notes": [
+      "Historical source geography; modern district compatibility and homogeneity unresolved.",
+      "Local research use; original publication restricts redistribution."
+    ],
+    "verification": {
+      "scope": "Previous full source-transcription audit; not a new scientific validation",
+      "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+    },
+    "raw": {
+      "status": "ok",
+      "source_id": "S27",
+      "state": "Gujarat",
+      "district": "Ahmedabad",
+      "year": 2010,
+      "period": "annual",
+      "value_decimal": "1096.8",
+      "native_value": "1096.8",
+      "unit": "mm",
+      "quality_flags": [],
+      "provenance": {
+        "series_id": "IMD110-P611",
+        "year": 2010,
+        "state": "Gujarat",
+        "district": "Ahmedabad",
+        "source_row": 111,
+        "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+        "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+        "column": "annual_mm",
+        "original_publication_page": "613"
+      },
+      "source_transcription": "matched_1870_cells",
+      "limitations": [
+        "Historical source geography; modern district compatibility and homogeneity unresolved.",
+        "Local research use; original publication restricts redistribution."
+      ]
+    }
+  }
+}

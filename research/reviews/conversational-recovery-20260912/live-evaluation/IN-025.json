@@ -1,0 +1,312 @@
+{
+  "id": "IN-025",
+  "question": "Will rain delay my bus from Mandvi to Bhuj this evening?",
+  "origin": "included_report",
+  "checked_at_utc": "2026-09-12T16:17:06.980672+00:00",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "c6b543ce-ed1d-475e-acdb-dd9284d65327",
+    "question": "Will rain delay my bus from Mandvi to Bhuj this evening?",
+    "status": "needs_selection",
+    "answer": "I found 8 possible places for Mandvi. Please confirm the intended location and spelling.",
+    "facts": [],
+    "citations": [],
+    "notes": [
+      "Evening default time: 18:30–22:30 IST on 2026-09-12."
+    ],
+    "choices": [
+      {
+        "id": "10687375",
+        "name": "Māndvi",
+        "latitude": 22.14315,
+        "longitude": 74.93963,
+        "feature": "PPL",
+        "admin1": "Madhya Pradesh",
+        "admin2": "Dhār",
+        "modified": "2024-01-06",
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:10687375",
+        "label": "Māndvi, Dhār, Madhya Pradesh",
+        "coordinates": {
+          "latitude": 22.14315,
+          "longitude": 74.93963
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/10687375",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Mandvi"
+      },
+      {
+        "id": "1263823",
+        "name": "Mandvi",
+        "latitude": 18.95,
+        "longitude": 72.83333,
+        "feature": "PPLX",
+        "admin1": "State of Mahārāshtra",
+        "admin2": "Mumbai",
+        "modified": "2024-01-06",
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:1263823",
+        "label": "Mandvi, Mumbai, State of Mahārāshtra",
+        "coordinates": {
+          "latitude": 18.95,
+          "longitude": 72.83333
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1263823",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Mandvi"
+      },
+      {
+        "id": "1263824",
+        "name": "Māndvi",
+        "latitude": 22.83282,
+        "longitude": 69.35237,
+        "feature": "PPL",
+        "admin1": "State of Gujarāt",
+        "admin2": "Kutch",
+        "modified": "2024-12-31",
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:1263824",
+        "label": "Māndvi, Kutch, State of Gujarāt",
+        "coordinates": {
+          "latitude": 22.83282,
+          "longitude": 69.35237
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1263824",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Mandvi"
+      },
+      {
+        "id": "1263825",
+        "name": "Māndvi",
+        "latitude": 21.58333,
+        "longitude": 73.38333,
+        "feature": "PPL",
+        "admin1": "State of Gujarāt",
+        "admin2": "Bharūch",
+        "modified": "2024-01-06",
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:1263825",
+        "label": "Māndvi, Bharūch, State of Gujarāt",
+        "coordinates": {
+          "latitude": 21.58333,
+          "longitude": 73.38333
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1263825",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Mandvi"
+      },
+      {
+        "id": "1263826",
+        "name": "Māndvi",
+        "latitude": 21.25526,
+        "longitude": 73.30412,
+        "feature": "PPL",
+        "admin1": "State of Gujarāt",
+        "admin2": "Sūrat",
+        "modified": "2024-01-06",
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:1263826",
+        "label": "Māndvi, Sūrat, State of Gujarāt",
+        "coordinates": {
+          "latitude": 21.25526,
+          "longitude": 73.30412
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1263826",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Mandvi"
+      },
+      {
+        "id": "1263827",
+        "name": "Māndvi",
+        "latitude": 19.47816,
+        "longitude": 72.89786,
+        "feature": "PPL",
+        "admin1": "State of Mahārāshtra",
+        "admin2": "Palghar",
+        "modified": "2024-01-06",
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:1263827",
+        "label": "Māndvi, Palghar, State of Mahārāshtra",
+        "coordinates": {
+          "latitude": 19.47816,
+          "longitude": 72.89786
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1263827",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Mandvi"
+      },
+      {
+        "id": "8433321",
+        "name": "Māndvi",
+        "latitude": 23.78329,
+        "longitude": 71.66948,
+        "feature": "PPL",
+        "admin1": "State of Gujarāt",
+        "admin2": "Patan",
+        "modified": "2024-01-06",
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:8433321",
+        "label": "Māndvi, Patan, State of Gujarāt",
+        "coordinates": {
+          "latitude": 23.78329,
+          "longitude": 71.66948
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/8433321",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Mandvi"
+      },
+      {
+        "id": "8990070",
+        "name": "Mandvi",
+        "latitude": 21.65699,
+        "longitude": 78.4014,
+        "feature": "PPL",
+        "admin1": "Madhya Pradesh",
+        "admin2": "Chhindwāra",
+        "modified": "2024-01-06",
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:8990070",
+        "label": "Mandvi, Chhindwāra, Madhya Pradesh",
+        "coordinates": {
+          "latitude": 21.65699,
+          "longitude": 78.4014
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/8990070",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Mandvi"
+      }
+    ],
+    "follow_up": "Choose a place, or add its district and state.",
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-12T16:17:06.980703+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 777,
+        "output_tokens": 370,
+        "duration_seconds": 5.746222333
+      },
+      "generation": null,
+      "tools": [
+        {
+          "name": "gazetteer_search",
+          "query": {
+            "name": "Mandvi",
+            "state": "",
+            "district": "",
+            "kind": "settlement"
+          },
+          "matches": 8
+        }
+      ],
+      "provider": "local_ollama",
+      "duration_seconds": 5.748
+    },
+    "plan": {
+      "intent": "travel",
+      "language": "en",
+      "places": [
+        {
+          "name": "Mandvi",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        },
+        {
+          "name": "Bhuj",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "start_local": "2026-09-12T18:30:00+05:30",
+      "end_local": "2026-09-12T22:30:00+05:30",
+      "explicit_times": false,
+      "variables": [
+        "precipitation",
+        "wind_speed_10m",
+        "temperature_2m",
+        "relative_humidity_2m"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [
+        "road_conditions",
+        "bus_schedule"
+      ],
+      "assumptions": [
+        "Evening default time: 18:30–22:30 IST on 2026-09-12."
+      ],
+      "clarification": "",
+      "requested_outcome": "Forecast of precipitation and wind for Mandvi to Bhuj route this evening to assess potential travel delays."
+    },
+    "resolved_points": {}
+  }
+}

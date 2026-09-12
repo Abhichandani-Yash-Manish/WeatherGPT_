@@ -1,0 +1,10 @@
+{
+  "source_id": "S24",
+  "url": "https://geocoding-api.open-meteo.com/v1/search?name=Ahmedabad&count=10&language=en&format=json&countryCode=IN",
+  "retrieved_at_utc": "2026-09-11T19:34:54.380999+00:00",
+  "http_status": 200,
+  "content_type": "application/json; charset=utf-8",
+  "bytes": 719,
+  "sha256": "685e84c92f03f83f3973dab54a09b38a0af79c3e459d201603f71b7a2d72eb7a",
+  "blob": "blobs/685e84c92f03f83f3973dab54a09b38a0af79c3e459d201603f71b7a2d72eb7a.bin"
+}

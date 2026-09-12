@@ -1,0 +1,606 @@
+{
+  "checked_at_utc": "2026-09-11T19:35:18.635379+00:00",
+  "scope": "Representative locations, not exhaustive Indian territory/station coverage; reference_only is not an operational warning pass.",
+  "results": [
+    {
+      "name": "forecast-ahmedabad",
+      "status": "ok",
+      "records": 288,
+      "source_id": "S21",
+      "coverage": {
+        "requested_point": {
+          "latitude": 23.02579,
+          "longitude": 72.58727
+        },
+        "returned_grid": {
+          "latitude": 23.019852,
+          "longitude": 72.53906
+        },
+        "time_basis": "UTC",
+        "first_valid_time_utc": "2026-09-11T00:00:00+00:00",
+        "last_valid_time_utc": "2026-09-13T23:00:00+00:00"
+      },
+      "provenance": {
+        "source_id": "S21",
+        "url": "https://api.open-meteo.com/v1/gfs?latitude=23.02579&longitude=72.58727&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "retrieved_at_utc": "2026-09-11T19:34:43.274943+00:00",
+        "http_status": 200,
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 2464,
+        "sha256": "ccfb46b4c954cb12be2758e55bb71b9be5733d23ef9f3508a12f47a92556ad72",
+        "blob": "blobs/ccfb46b4c954cb12be2758e55bb71b9be5733d23ef9f3508a12f47a92556ad72.bin",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-11T19:34:43.275356+00:00"
+      }
+    },
+    {
+      "name": "forecast-delhi",
+      "status": "ok",
+      "records": 288,
+      "source_id": "S21",
+      "coverage": {
+        "requested_point": {
+          "latitude": 28.6139,
+          "longitude": 77.209
+        },
+        "returned_grid": {
+          "latitude": 28.64302,
+          "longitude": 77.22656
+        },
+        "time_basis": "UTC",
+        "first_valid_time_utc": "2026-09-11T00:00:00+00:00",
+        "last_valid_time_utc": "2026-09-13T23:00:00+00:00"
+      },
+      "provenance": {
+        "source_id": "S21",
+        "url": "https://api.open-meteo.com/v1/gfs?latitude=28.6139&longitude=77.209&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "retrieved_at_utc": "2026-09-11T19:34:43.235344+00:00",
+        "http_status": 200,
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 2477,
+        "sha256": "6fdb3bde42b3219cc5efd22625a8cfa85c5ece095a95a95067db374401dd40d5",
+        "blob": "blobs/6fdb3bde42b3219cc5efd22625a8cfa85c5ece095a95a95067db374401dd40d5.bin",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-11T19:34:43.236119+00:00"
+      }
+    },
+    {
+      "name": "forecast-mumbai",
+      "status": "ok",
+      "records": 288,
+      "source_id": "S21",
+      "coverage": {
+        "requested_point": {
+          "latitude": 19.076,
+          "longitude": 72.8777
+        },
+        "returned_grid": {
+          "latitude": 19.153923,
+          "longitude": 72.890625
+        },
+        "time_basis": "UTC",
+        "first_valid_time_utc": "2026-09-11T00:00:00+00:00",
+        "last_valid_time_utc": "2026-09-13T23:00:00+00:00"
+      },
+      "provenance": {
+        "source_id": "S21",
+        "url": "https://api.open-meteo.com/v1/gfs?latitude=19.076&longitude=72.8777&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "retrieved_at_utc": "2026-09-11T19:34:43.280986+00:00",
+        "http_status": 200,
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 2444,
+        "sha256": "d5fe3212057abd3d68a677ca6b6372d2799358c091a3c756654214604b4105f4",
+        "blob": "blobs/d5fe3212057abd3d68a677ca6b6372d2799358c091a3c756654214604b4105f4.bin",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-11T19:34:43.281374+00:00"
+      }
+    },
+    {
+      "name": "forecast-chennai",
+      "status": "ok",
+      "records": 288,
+      "source_id": "S21",
+      "coverage": {
+        "requested_point": {
+          "latitude": 13.0827,
+          "longitude": 80.2707
+        },
+        "returned_grid": {
+          "latitude": 13.062157,
+          "longitude": 80.15625
+        },
+        "time_basis": "UTC",
+        "first_valid_time_utc": "2026-09-11T00:00:00+00:00",
+        "last_valid_time_utc": "2026-09-13T23:00:00+00:00"
+      },
+      "provenance": {
+        "source_id": "S21",
+        "url": "https://api.open-meteo.com/v1/gfs?latitude=13.0827&longitude=80.2707&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "retrieved_at_utc": "2026-09-11T19:34:44.123212+00:00",
+        "http_status": 200,
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 2479,
+        "sha256": "9ccf745080071bc3ec3bf5dfe87b45d06a287114444a2059a45cc9d6a280e838",
+        "blob": "blobs/9ccf745080071bc3ec3bf5dfe87b45d06a287114444a2059a45cc9d6a280e838.bin",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-11T19:34:44.124505+00:00"
+      }
+    },
+    {
+      "name": "forecast-guwahati",
+      "status": "ok",
+      "records": 288,
+      "source_id": "S21",
+      "coverage": {
+        "requested_point": {
+          "latitude": 26.1445,
+          "longitude": 91.7362
+        },
+        "returned_grid": {
+          "latitude": 26.182884,
+          "longitude": 91.75781
+        },
+        "time_basis": "UTC",
+        "first_valid_time_utc": "2026-09-11T00:00:00+00:00",
+        "last_valid_time_utc": "2026-09-13T23:00:00+00:00"
+      },
+      "provenance": {
+        "source_id": "S21",
+        "url": "https://api.open-meteo.com/v1/gfs?latitude=26.1445&longitude=91.7362&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "retrieved_at_utc": "2026-09-11T19:34:44.211564+00:00",
+        "http_status": 200,
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 2418,
+        "sha256": "c26a0903d69bff9b81329b2b22eaacfcd9a22f71107c9e13535d654a3696f277",
+        "blob": "blobs/c26a0903d69bff9b81329b2b22eaacfcd9a22f71107c9e13535d654a3696f277.bin",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-11T19:34:44.212006+00:00"
+      }
+    },
+    {
+      "name": "forecast-srinagar",
+      "status": "ok",
+      "records": 288,
+      "source_id": "S21",
+      "coverage": {
+        "requested_point": {
+          "latitude": 34.0837,
+          "longitude": 74.7973
+        },
+        "returned_grid": {
+          "latitude": 34.03189,
+          "longitude": 74.765625
+        },
+        "time_basis": "UTC",
+        "first_valid_time_utc": "2026-09-11T00:00:00+00:00",
+        "last_valid_time_utc": "2026-09-13T23:00:00+00:00"
+      },
+      "provenance": {
+        "source_id": "S21",
+        "url": "https://api.open-meteo.com/v1/gfs?latitude=34.0837&longitude=74.7973&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "retrieved_at_utc": "2026-09-11T19:34:44.199444+00:00",
+        "http_status": 200,
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 2428,
+        "sha256": "d7d1c10dcb00c6db73106382c59541ba6a98cb730adb27b47878797050e80687",
+        "blob": "blobs/d7d1c10dcb00c6db73106382c59541ba6a98cb730adb27b47878797050e80687.bin",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-11T19:34:44.200086+00:00"
+      }
+    },
+    {
+      "name": "marine-arabian-sea",
+      "status": "ok",
+      "records": 216,
+      "source_id": "S56",
+      "coverage": {
+        "requested_point": {
+          "latitude": 20,
+          "longitude": 69
+        },
+        "returned_grid": {
+          "latitude": 20.041664,
+          "longitude": 68.95834
+        },
+        "time_basis": "UTC",
+        "first_valid_time_utc": "2026-09-11T00:00:00+00:00",
+        "last_valid_time_utc": "2026-09-13T23:00:00+00:00"
+      },
+      "provenance": {
+        "source_id": "S56",
+        "url": "https://marine-api.open-meteo.com/v1/marine?latitude=20&longitude=69&hourly=wave_height%2Cwave_direction%2Cwave_period&forecast_days=3&timezone=UTC&timeformat=unixtime&cell_selection=sea",
+        "retrieved_at_utc": "2026-09-11T19:34:45.452534+00:00",
+        "http_status": 200,
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 2194,
+        "sha256": "c64730c7d57fa8b38c0d7e3ad9692e9a401b8796b6ef023ef5d44631ed5dedd4",
+        "blob": "blobs/c64730c7d57fa8b38c0d7e3ad9692e9a401b8796b6ef023ef5d44631ed5dedd4.bin",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-11T19:34:45.453432+00:00"
+      }
+    },
+    {
+      "name": "marine-bay-of-bengal",
+      "status": "ok",
+      "records": 216,
+      "source_id": "S56",
+      "coverage": {
+        "requested_point": {
+          "latitude": 15,
+          "longitude": 85
+        },
+        "returned_grid": {
+          "latitude": 15.041664,
+          "longitude": 84.95836
+        },
+        "time_basis": "UTC",
+        "first_valid_time_utc": "2026-09-11T00:00:00+00:00",
+        "last_valid_time_utc": "2026-09-13T23:00:00+00:00"
+      },
+      "provenance": {
+        "source_id": "S56",
+        "url": "https://marine-api.open-meteo.com/v1/marine?latitude=15&longitude=85&hourly=wave_height%2Cwave_direction%2Cwave_period&forecast_days=3&timezone=UTC&timeformat=unixtime&cell_selection=sea",
+        "retrieved_at_utc": "2026-09-11T19:34:45.508266+00:00",
+        "http_status": 200,
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 2167,
+        "sha256": "d9f3283166c64ae156f315c0bef744822327191c15afbbf654f3722e2d7008c4",
+        "blob": "blobs/d9f3283166c64ae156f315c0bef744822327191c15afbbf654f3722e2d7008c4.bin",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-11T19:34:45.510222+00:00"
+      }
+    },
+    {
+      "name": "marine-andaman-sea",
+      "status": "ok",
+      "records": 216,
+      "source_id": "S56",
+      "coverage": {
+        "requested_point": {
+          "latitude": 10,
+          "longitude": 93
+        },
+        "returned_grid": {
+          "latitude": 10.041664,
+          "longitude": 92.95836
+        },
+        "time_basis": "UTC",
+        "first_valid_time_utc": "2026-09-11T00:00:00+00:00",
+        "last_valid_time_utc": "2026-09-13T23:00:00+00:00"
+      },
+      "provenance": {
+        "source_id": "S56",
+        "url": "https://marine-api.open-meteo.com/v1/marine?latitude=10&longitude=93&hourly=wave_height%2Cwave_direction%2Cwave_period&forecast_days=3&timezone=UTC&timeformat=unixtime&cell_selection=sea",
+        "retrieved_at_utc": "2026-09-11T19:34:45.510100+00:00",
+        "http_status": 200,
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 2198,
+        "sha256": "832ccd12a570620af9d484c8ffa9195d00b40d9d3607afa286691bda05d8f009",
+        "blob": "blobs/832ccd12a570620af9d484c8ffa9195d00b40d9d3607afa286691bda05d8f009.bin",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-11T19:34:45.513022+00:00"
+      }
+    },
+    {
+      "name": "aviation-metar",
+      "status": "ok",
+      "records": 31,
+      "source_id": "S18",
+      "coverage": {
+        "requested_stations": [
+          "VAAH",
+          "VIDP",
+          "VABB",
+          "VOMM",
+          "VECC",
+          "VEGT"
+        ],
+        "missing_stations": []
+      },
+      "provenance": {
+        "source_id": "S18",
+        "url": "https://aviationweather.gov/api/data/metar?ids=VAAH%2CVIDP%2CVABB%2CVOMM%2CVECC%2CVEGT&format=json&hours=3",
+        "retrieved_at_utc": "2026-09-11T19:34:46.764321+00:00",
+        "http_status": 200,
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 14996,
+        "sha256": "1536ab3b6c3c4862553819c51dbcf5b87c36a6e8109e6f130f7a878102aa6587",
+        "blob": "blobs/1536ab3b6c3c4862553819c51dbcf5b87c36a6e8109e6f130f7a878102aa6587.bin",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-11T19:34:46.765552+00:00"
+      }
+    },
+    {
+      "name": "aviation-taf",
+      "status": "ok",
+      "records": 6,
+      "source_id": "S19",
+      "coverage": {
+        "requested_stations": [
+          "VAAH",
+          "VIDP",
+          "VABB",
+          "VOMM",
+          "VECC",
+          "VEGT"
+        ],
+        "missing_stations": []
+      },
+      "provenance": {
+        "source_id": "S19",
+        "url": "https://aviationweather.gov/api/data/taf?ids=VAAH%2CVIDP%2CVABB%2CVOMM%2CVECC%2CVEGT&format=json",
+        "retrieved_at_utc": "2026-09-11T19:34:48.386414+00:00",
+        "http_status": 200,
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 15759,
+        "sha256": "84e7ee7f633c529f9a22857cc4e54a0772330f64c769f8aa3c690cec9b54c26e",
+        "blob": "blobs/84e7ee7f633c529f9a22857cc4e54a0772330f64c769f8aa3c690cec9b54c26e.bin",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-11T19:34:48.388065+00:00"
+      }
+    },
+    {
+      "name": "aviation-stationinfo",
+      "status": "ok",
+      "records": 6,
+      "source_id": "S20",
+      "coverage": {
+        "requested_stations": [
+          "VAAH",
+          "VIDP",
+          "VABB",
+          "VOMM",
+          "VECC",
+          "VEGT"
+        ],
+        "missing_stations": []
+      },
+      "provenance": {
+        "source_id": "S20",
+        "url": "https://aviationweather.gov/api/data/stationinfo?ids=VAAH%2CVIDP%2CVABB%2CVOMM%2CVECC%2CVEGT&format=json",
+        "retrieved_at_utc": "2026-09-11T19:34:48.388427+00:00",
+        "http_status": 200,
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 1237,
+        "sha256": "ec46f4110f08e812da0d446a31d431906593b8e441489237b6ec10c94dcb755e",
+        "blob": "blobs/ec46f4110f08e812da0d446a31d431906593b8e441489237b6ec10c94dcb755e.bin",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-11T19:34:48.390800+00:00"
+      }
+    },
+    {
+      "name": "national-warning-snapshot",
+      "status": "reference_only",
+      "records": 742,
+      "source_id": "S15",
+      "coverage": {
+        "source_features": 764,
+        "total_features_reported": 764,
+        "quarantined": [
+          {
+            "feature_index": 17,
+            "district": "KARAIKAL",
+            "reason": "Invalid source geometry"
+          },
+          {
+            "feature_index": 22,
+            "district": "SAHEBGANJ",
+            "reason": "Invalid source geometry"
+          },
+          {
+            "feature_index": 30,
+            "district": "",
+            "reason": "Invalid isoformat string: ''"
+          },
+          {
+            "feature_index": 40,
+            "district": "TAMULPUR",
+            "reason": "Invalid source geometry"
+          },
+          {
+            "feature_index": 64,
+            "district": "SOUTH 24 PARGANAS",
+            "reason": "Invalid source geometry"
+          },
+          {
+            "feature_index": 77,
+            "district": "",
+            "reason": "Duplicate district object ID"
+          },
+          {
+            "feature_index": 78,
+            "district": "",
+            "reason": "Duplicate district object ID"
+          },
+          {
+            "feature_index": 119,
+            "district": "",
+            "reason": "Duplicate district object ID"
+          },
+          {
+            "feature_index": 124,
+            "district": "",
+            "reason": "Duplicate district object ID"
+          },
+          {
+            "feature_index": 238,
+            "district": "GAUTAMBUDHNAGAR",
+            "reason": "Invalid source geometry"
+          },
+          {
+            "feature_index": 242,
+            "district": "GOODA",
+            "reason": "Invalid source geometry"
+          },
+          {
+            "feature_index": 329,
+            "district": "",
+            "reason": "Duplicate district object ID"
+          },
+          {
+            "feature_index": 463,
+            "district": "YANAM",
+            "reason": "Missing/unknown hazard code"
+          },
+          {
+            "feature_index": 469,
+            "district": "KATHUA",
+            "reason": "Invalid source geometry"
+          },
+          {
+            "feature_index": 473,
+            "district": "RI BHOI",
+            "reason": "Invalid source geometry"
+          },
+          {
+            "feature_index": 617,
+            "district": "NORTH & MIDDLE ANDAMAN",
+            "reason": "Invalid source geometry"
+          },
+          {
+            "feature_index": 618,
+            "district": "SOUTH ANDAMAN",
+            "reason": "Invalid source geometry"
+          },
+          {
+            "feature_index": 628,
+            "district": "TAMENGLONG",
+            "reason": "Invalid source geometry"
+          },
+          {
+            "feature_index": 703,
+            "district": "THIRUVARUR",
+            "reason": "Invalid source geometry"
+          },
+          {
+            "feature_index": 716,
+            "district": "",
+            "reason": "Duplicate district object ID"
+          },
+          {
+            "feature_index": 717,
+            "district": "",
+            "reason": "Duplicate district object ID"
+          },
+          {
+            "feature_index": 763,
+            "district": "LAKSHADWEEP",
+            "reason": "Invalid source geometry"
+          }
+        ],
+        "requested_point": null,
+        "independent_national_completeness": "unverified"
+      },
+      "provenance": {
+        "source_id": "S15",
+        "url": "https://reactjs.imd.gov.in/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=imd%3Adistrict_warnings_india&srsname=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=2000",
+        "retrieved_at_utc": "2026-09-11T19:35:16.854798+00:00",
+        "http_status": 200,
+        "content_type": "application/json;charset=utf-8",
+        "bytes": 18936941,
+        "sha256": "d7501bfb4ae0586e280f15788aceb93ba2b8c42ed57ee4181f4943001b6930a5",
+        "blob": "blobs/d7501bfb4ae0586e280f15788aceb93ba2b8c42ed57ee4181f4943001b6930a5.bin",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-11T19:35:16.855364+00:00"
+      }
+    },
+    {
+      "name": "cap-messages",
+      "status": "ok",
+      "records": 9,
+      "source_id": "S06",
+      "coverage": {
+        "message_errors": []
+      },
+      "provenance": {
+        "source_id": "S06",
+        "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/rss.xml",
+        "retrieved_at_utc": "2026-09-11T19:34:49.354298+00:00",
+        "http_status": 200,
+        "content_type": "text/xml",
+        "bytes": 6163,
+        "sha256": "2ebb682f2306815b36d6a1276b20bee0e2367046f8042ea5b2a71a8ab30226fb",
+        "blob": "blobs/2ebb682f2306815b36d6a1276b20bee0e2367046f8042ea5b2a71a8ab30226fb.bin",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-11T19:34:49.355421+00:00"
+      }
+    },
+    {
+      "name": "history-ahmedabad",
+      "status": "ok",
+      "records": 21,
+      "source_id": "S22",
+      "coverage": {
+        "requested_point": {
+          "latitude": 23.02579,
+          "longitude": 72.58727
+        },
+        "returned_grid": {
+          "latitude": 23.0,
+          "longitude": 72.5
+        },
+        "time_basis": "UTC"
+      },
+      "provenance": {
+        "source_id": "S22",
+        "url": "https://archive-api.open-meteo.com/v1/archive?latitude=23.02579&longitude=72.58727&start_date=2025-07-01&end_date=2025-07-07&daily=precipitation_sum%2Ctemperature_2m_max%2Ctemperature_2m_min&models=era5&timezone=UTC",
+        "retrieved_at_utc": "2026-09-11T19:34:49.451831+00:00",
+        "http_status": 200,
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 559,
+        "sha256": "4714bf17589474f1714777338677b9864c0f6dddc79f2e8d6fbb74650a2fff42",
+        "blob": "blobs/4714bf17589474f1714777338677b9864c0f6dddc79f2e8d6fbb74650a2fff42.bin",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-11T19:34:49.453133+00:00"
+      }
+    },
+    {
+      "name": "river-ahmedabad",
+      "status": "ok",
+      "records": 7,
+      "source_id": "S37",
+      "coverage": {
+        "requested_point": {
+          "latitude": 23.02579,
+          "longitude": 72.58727
+        },
+        "returned_grid": {
+          "latitude": 23.025002,
+          "longitude": 72.57501
+        },
+        "time_basis": "UTC"
+      },
+      "provenance": {
+        "source_id": "S37",
+        "url": "https://flood-api.open-meteo.com/v1/flood?latitude=23.02579&longitude=72.58727&daily=river_discharge&forecast_days=7",
+        "retrieved_at_utc": "2026-09-11T19:34:51.188856+00:00",
+        "http_status": 200,
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 394,
+        "sha256": "f5717ccf09e64ce6d841b6e8017411c233947bc1e37c2fed529690299e352b54",
+        "blob": "blobs/f5717ccf09e64ce6d841b6e8017411c233947bc1e37c2fed529690299e352b54.bin",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-11T19:34:51.190179+00:00"
+      }
+    },
+    {
+      "name": "place-ahmedabad",
+      "status": "needs_selection",
+      "records": 2,
+      "source_id": "S24",
+      "coverage": {},
+      "provenance": {
+        "source_id": "S24",
+        "url": "https://geocoding-api.open-meteo.com/v1/search?name=Ahmedabad&count=10&language=en&format=json&countryCode=IN",
+        "retrieved_at_utc": "2026-09-11T19:34:54.380999+00:00",
+        "http_status": 200,
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 719,
+        "sha256": "685e84c92f03f83f3973dab54a09b38a0af79c3e459d201603f71b7a2d72eb7a",
+        "blob": "blobs/685e84c92f03f83f3973dab54a09b38a0af79c3e459d201603f71b7a2d72eb7a.bin",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-11T19:34:54.382053+00:00"
+      }
+    }
+  ]
+}

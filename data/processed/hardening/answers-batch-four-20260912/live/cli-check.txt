@@ -1,0 +1,1 @@
+{"output": "data/processed/hardening/answers-batch-four-20260912/live/cli-check.json", "status": "prototype_answer", "answer_id": "8a5889920e63b12c81675009f73beeeabd2e10c3add824a84dac65f81d1c10a4", "values": 1}

@@ -1,0 +1,10 @@
+{
+  "source_id": "S57",
+  "url": "https://mausam.imd.gov.in/responsive/agrometinformation/district_current_en_get.php?s=Chandigarh&step1=true",
+  "retrieved_at_utc": "2026-09-11T19:41:40.321594+00:00",
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "bytes": 212,
+  "sha256": "08723e094183b2661336d343d9bc3d0433b9b2247b763f1477dc7c339ae8d771",
+  "blob": "blobs/08723e094183b2661336d343d9bc3d0433b9b2247b763f1477dc7c339ae8d771.bin"
+}

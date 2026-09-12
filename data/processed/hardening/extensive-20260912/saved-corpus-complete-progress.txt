@@ -1,0 +1,17 @@
+{
+  "frozen_artifact_hashes_verified": 29,
+  "source_references_verified": 35,
+  "document_pages_reproduced": 27,
+  "documents_reproduced": 7,
+  "document_pages_with_stricter_current_status": 13,
+  "aviation_records_reproduced": 48,
+  "cap_messages_reproduced": 9,
+  "hourly_scalar_records_reproduced": 2376,
+  "daily_scalar_records_reproduced": 28,
+  "warning_quarantine_diagnostics_updated": 8,
+  "warning_features_reproduced": 742,
+  "warning_features_quarantined": 22,
+  "place_records_reproduced": 2,
+  "runtime_blob_hashes_verified": 82,
+  "sqlite_integrity_checks": 23
+}

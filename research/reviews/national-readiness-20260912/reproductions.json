@@ -1,0 +1,63 @@
+{
+  "scope": "Synthetic isolated demonstrations, not new observations of provider faults. Capacity scenarios are illustrative, not measured infrastructure requirements.",
+  "findings": {
+    "incomplete_forecast_accepted": {
+      "requested_days": 3,
+      "supplied_hours": 2,
+      "returned_status": "ok",
+      "issue_reproduced": true
+    },
+    "missing_grid_identity_accepted": {
+      "returned_grid": {
+        "latitude": null,
+        "longitude": null
+      },
+      "status": "ok",
+      "issue_reproduced": true
+    },
+    "schema_invalid_response_replaces_active_cache": {
+      "adapter_rejected_bad_schema": true,
+      "active_cache_body": "{}",
+      "issue_reproduced": true
+    },
+    "obsolete_incomplete_river_forecast_accepted": {
+      "requested_days": 7,
+      "supplied_days": 1,
+      "supplied_date": "2000-01-01",
+      "status": "ok",
+      "issue_reproduced": true
+    }
+  },
+  "capacity_scenarios": [
+    {
+      "scenario": "Illustrative small state footprint",
+      "hypothetical_points_not_admin_counts": 300,
+      "refreshes_per_day": 4,
+      "products": 1,
+      "http_requests_per_day_without_batching": 1200,
+      "normalized_scalar_rows_per_day_if_each_snapshot_stored": 345600,
+      "rows_30_days": 10368000,
+      "payload_gb_30_days_at_assumed_100_bytes_per_row": 1.0368
+    },
+    {
+      "scenario": "Illustrative national footprint",
+      "hypothetical_points_not_admin_counts": 5000,
+      "refreshes_per_day": 4,
+      "products": 1,
+      "http_requests_per_day_without_batching": 20000,
+      "normalized_scalar_rows_per_day_if_each_snapshot_stored": 5760000,
+      "rows_30_days": 172800000,
+      "payload_gb_30_days_at_assumed_100_bytes_per_row": 17.28
+    },
+    {
+      "scenario": "Illustrative national hourly refresh",
+      "hypothetical_points_not_admin_counts": 5000,
+      "refreshes_per_day": 24,
+      "products": 1,
+      "http_requests_per_day_without_batching": 120000,
+      "normalized_scalar_rows_per_day_if_each_snapshot_stored": 34560000,
+      "rows_30_days": 1036800000,
+      "payload_gb_30_days_at_assumed_100_bytes_per_row": 103.68
+    }
+  ]
+}

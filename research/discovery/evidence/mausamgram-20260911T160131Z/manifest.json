@@ -1,0 +1,13 @@
+{
+  "id": "homepage",
+  "url": "https://mausamgram.imd.gov.in/",
+  "authentication": "none",
+  "checked_at_utc": "2026-09-11T16:01:31.097794+00:00",
+  "http_status": 200,
+  "final_url": "https://mausamgram.imd.gov.in/",
+  "content_type": "text/html",
+  "truncated": false,
+  "bytes_saved": 98277,
+  "sha256": "e990ba0565a84420bf11f2e49e52d983fbebb4a897f443d0691e6ef01cf74e53",
+  "snapshot": "evidence/mausamgram-20260911T160131Z/homepage.response"
+}
