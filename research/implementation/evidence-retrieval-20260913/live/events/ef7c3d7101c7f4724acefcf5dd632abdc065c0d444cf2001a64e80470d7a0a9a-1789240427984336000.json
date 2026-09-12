@@ -1,0 +1,12 @@
+{
+  "source_id": "S06",
+  "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-09-01-07-00-31.xml",
+  "retrieved_at_utc": "2026-09-12T19:13:47.984222+00:00",
+  "http_status": 200,
+  "content_type": "application/xml",
+  "bytes": 4338,
+  "sha256": "449ad0b821a6c2dcbaf256962ea775c553c1d0284f226efeb64b9d3de51dbb34",
+  "blob": "blobs/449ad0b821a6c2dcbaf256962ea775c553c1d0284f226efeb64b9d3de51dbb34.bin",
+  "validation_scope": "product",
+  "stage": "validated"
+}

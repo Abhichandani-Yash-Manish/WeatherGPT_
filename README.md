@@ -1,10 +1,26 @@
 # WeatherGPT — SIH26068
 
-A working data foundation for a conversational weather product, with nationwide source discovery and representative agriculture, aviation, marine, hydrology and climate integrations. Current checkpoint: **development prototype; ingestion correctness and coverage gates must pass before scheduled state/national operation**. A local forecast web workspace is now implemented; no native mobile app or live warning-distribution service has been built yet.
+**Current implementation:** [Context and retrieval coverage](docs/19-context-and-retrieval-coverage.md) repairs pending crop/place replies, multi-crop questions and explicit all-passages retrieval. Earlier source cross-checks, Hinglish forecasts and airport tools remain connected. Follow the [standing product plan](data/registry/product-progress.json) and [critical review](docs/14-product-review-and-progress-plan.md). Desktop work continues; hosting/sharing stays on hold.
 
-Start the local workspace with `python3 -m weathergpt_data.workspace`, then open [WeatherGPT](http://127.0.0.1:8765). Ask a forecast question, resolve the place, refresh stale evidence and inspect cited values. The [fifth batch and product guide](docs/12-product-workspace-and-repairs.md) records the review repairs, 194 passing tests and successful live HTTP refresh. Browser/mobile visual verification is still blocked by the browser tool's policy-verification failure.
+A local conversational weather prototype using **Ollama, source-backed forecasts and historical climate tables**. Ask ordinary questions, confirm ambiguous places and follow up in the same conversation. Nationwide and specialist operational acceptance remains incomplete.
 
-The [extensive validation and RAG gate](docs/11-extensive-validation-and-rag-gate.md) now verify all 640 historical district series against the original PDF, with 178 passing tests and 63,072 independent forecast interval checks. Use `rag-context` for controlled, verified point-forecast grounding. Full-corpus RAG, generated-answer faithfulness and operational accuracy remain unverified; see the [current RAG readiness decision](data/registry/rag-readiness.json).
+```sh
+python3 scripts/start_weather.py
+```
+
+Open [WeatherGPT](http://127.0.0.1:8765) and reload any older tab. The launcher uses the installed `qwen3.6:latest` model; no paid model gateway is required. Forecast questions check stored evidence and can trigger a bounded refresh automatically.
+
+Try “kal ahmedabad me barish padne ki sambhavna kitni hai”, choose “Gujarat wala”, then ask “aur shaam ko?” and “kitni mm barish hogi us time?”. Or ask “What was Ahmedabad district rainfall in 2010?”—the historical source lookup returns **1096.8 mm** with provenance.
+
+Read the [current context and retrieval results](docs/19-context-and-retrieval-coverage.md): **340 passing automated tests** and 18 real local-model HTTP turns, with 26 passage instances and 50 hourly forecast values replayed against source bytes. The [previous bulletin/lifecycle batch](docs/18-bulletin-retrieval-and-warning-lifecycle.md) retains its separate 15-turn results; the prior [conversation-engine checkpoint](docs/17-conversation-engine-refinement.md) retains its separate 23-turn results. Partial answers and clarifications are counted separately from completed requests. The earlier [conversational recovery](docs/13-conversational-recovery.md) remains a separate historical checkpoint. A GeoNames India snapshot supplies 549,021 source settlement points; this is not an official village count or complete location coverage. Hinglish forecast follow-ups and Hindi historical lookups have scoped acceptance; broader language quality and browser/mobile visual QA remain unverified.
+
+This is structured retrieval-augmented answering: tools retrieve and calculate values, and the model interprets/explains. Hourly rain probability and up to seven daily ERA5 values per question are now supported. Actionable official warnings, exact rain onset, validated crop advice and route clearance remain unsupported. Published agricultural passages now use a versioned, crop/stage-filtered lexical and semantic retrieval path; unrestricted document grounding remains disabled. See the [current RAG readiness decision](data/registry/rag-readiness.json) and [living review checklist](docs/08-hardening-progress.md).
+
+Try “What does the bulletin say about groundnut in Ahmedabad district, Gujarat?”, then “Show all the matching passages, not just three.” Or ask for cotton and groundnut in the same question. The original dated passages and saved PDF pages are available; individual field decisions remain unresolved. For another machine, install `requirements-bulletins.txt` and run `python3 scripts/setup_bulletin_retrieval.py` to fetch the pinned local embedding model.
+
+Try “What is the chance of rain in Ahmedabad, Gujarat tomorrow morning?” or “Show daily rainfall in Ahmedabad city, Gujarat from 1 July through 7 July 2025, including the total.” ERA5 recent-date availability and all source/model distinctions remain explicit.
+
+Earlier milestones below are historical evidence, not current completion claims. The [extensive validation checkpoint](docs/11-extensive-validation-and-rag-gate.md) verified historical source transcription and numerical contracts before this conversation layer existed.
 
 The [fourth repair batch and first grounded answer workflow](docs/10-grounded-answer-workflow.md) are implemented: place/time resolution, stored forecast selection, deterministic totals and cited answers. Verified with 130 tests, 16 saved-data answer scenarios and one governed live forecast request. Start there for the `answer` command and its explicit prototype limits.
 

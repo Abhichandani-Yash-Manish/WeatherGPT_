@@ -1,0 +1,11 @@
+{
+  "source_id": "S22",
+  "url": "https://archive-api.open-meteo.com/v1/archive?latitude=13.08784&longitude=80.27847&start_date=2025-07-01&end_date=2025-07-03&daily=precipitation_sum%2Ctemperature_2m_mean%2Ctemperature_2m_max%2Ctemperature_2m_min&models=era5&timezone=Asia%2FKolkata",
+  "retrieved_at_utc": "2026-09-12T18:10:35.435035+00:00",
+  "http_status": 200,
+  "content_type": "application/json; charset=utf-8",
+  "bytes": 530,
+  "sha256": "0780c775684e19ed34f48d8135090fd8e72b783911b405bd8643c98d456c1b02",
+  "blob": "blobs/0780c775684e19ed34f48d8135090fd8e72b783911b405bd8643c98d456c1b02.bin",
+  "validation_scope": "product"
+}

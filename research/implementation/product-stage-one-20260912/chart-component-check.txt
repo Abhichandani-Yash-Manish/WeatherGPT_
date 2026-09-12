@@ -1,0 +1,1 @@
+PASS: missing-year plot gaps, exact source precision, keyboard point inspection (component only)

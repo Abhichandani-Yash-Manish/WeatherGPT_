@@ -1,0 +1,78 @@
+[
+  {
+    "file": "1-1.json",
+    "question": "Can I spray tomorrow?",
+    "status": "needs_clarification",
+    "answer": "Which district and state should I look up in the IMD agricultural bulletin?",
+    "seconds": 11.18
+  },
+  {
+    "file": "1-2.json",
+    "question": "Ahmedabad, Gujarat",
+    "status": "needs_clarification",
+    "answer": "Which crop and growth stage are involved? I can retrieve the district bulletin and relevant weather, but those details determine which passages apply.",
+    "seconds": 6.0
+  },
+  {
+    "file": "1-3.json",
+    "question": "cotton",
+    "status": null,
+    "answer": {
+      "error": "HTTP Error 400: Bad Request",
+      "detail": "{\"error\": \"Question interpretation did not preserve the requested tasks: Every task request_quote must copy its supporting clause exactly from the current question\"}"
+    },
+    "seconds": 16.3
+  },
+  {
+    "file": "1-4.json",
+    "question": "flowering stage",
+    "status": "needs_clarification",
+    "answer": "Which crop and growth stage are involved? I can retrieve the district bulletin and relevant weather, but those details determine which passages apply.",
+    "seconds": 6.59
+  },
+  {
+    "file": "2-1.json",
+    "question": "What does the IMD bulletin say for cotton and groundnut pests in Ahmedabad district, Gujarat?",
+    "status": null,
+    "answer": {
+      "error": "HTTP Error 400: Bad Request",
+      "detail": "{\"error\": \"Question interpretation did not preserve the requested tasks: Overlapping supporting quotes created duplicate or unrequested tasks; retain only the explicitly requested time windows\"}"
+    },
+    "seconds": 15.19
+  },
+  {
+    "file": "3-1.json",
+    "question": "What does the bulletin say about groundnut in Ahmedabad district, Gujarat?",
+    "status": "answered",
+    "answer": "From the Ahmedabad, Gujarat bulletin issued 2026-09-11, for groundnut:\n\nShowing 3 of 4 matching source passages; this is a selected extract, not the complete bulletin.\n\nGroundnut · Flowering/ Pod formation · page 3:\n“White grubs in groundnut can be controlled by spraying Chlorpyrifos 20 EC with 4 litres per hectare through drip irrigation or along with irrigation. If irrigation is not being given but intermittent rainfall is occurring, prepare the insecticide solution in a spray pump, remove the nozzle and apply the solution directly into the furrows in the required quantity.”\n\nGroundnut · Flowering/ Pod formation · page 3:\n“Leaf-eating caterpillar (Spodoptera) in groundnut can be controlled by installing one light trap per hectare in the affected area and destroy the adult moths and leaf- eating caterpillar moths attracted to the trap.”\n\nGroundnut · Flowering/ Pod formation · page 3:\n“Leaf-eating caterpillar (Spodoptera) in groundnut can be controlled by installing pheromone traps with 40 traps per hectare on a community basis to keep the pest population under control. At the initial stage of infestation, spray either neem seed kernel powder extract at 500 g (5% extract) or a neem-based insecticide at 20 ml (1 EC) to 40 ml (0.15 EC) mixed in 10 litres of water. If the infestation becomes severe, spray Chlorantraniliprole 18.5 SC at 3 ml or Flubendiamide 20 WG at 6 g or Thiamethoxam 12.6% + Lambda-cyhalothrin 9.5% ZC at 3 ml 10 litres of water.”\n\nThese are original English source excerpts, including their conditions. The bulletin is district guidance; it has not been validated for your individual field.",
+    "seconds": 6.12
+  },
+  {
+    "file": "3-2.json",
+    "question": "Show all the matching passages, not just three.",
+    "status": "answered",
+    "answer": "From the Ahmedabad, Gujarat bulletin issued 2026-09-11, for groundnut:\n\nShowing 3 of 4 matching source passages; this is a selected extract, not the complete bulletin.\n\nGroundnut · Flowering/ Pod formation · page 3:\n“Leaf-eating caterpillar (Spodoptera) in groundnut can be controlled by installing one light trap per hectare in the affected area and destroy the adult moths and leaf- eating caterpillar moths attracted to the trap.”\n\nGroundnut · Flowering/ Pod formation · page 3:\n“White grubs in groundnut can be controlled by spraying Chlorpyrifos 20 EC with 4 litres per hectare through drip irrigation or along with irrigation. If irrigation is not being given but intermittent rainfall is occurring, prepare the insecticide solution in a spray pump, remove the nozzle and apply the solution directly into the furrows in the required quantity.”\n\nGroundnut · Flowering/ Pod formation · page 4:\n“Cutworms in groundnut can be controlled by installing one light trap per hectare to attract and destroy the moths. Prepare a 5% neem extract by mixing 500 g of neem seed kernel powder or neem leaves in 10 litres of water and spray it on the crop. If the infestation is severe, spray either Indoxacarb 14.5 SC with 10 ml per 10 litres of water or Emamectin benzoate 5 SG with 5 g per 10 litres of water.”\n\nThese are original English source excerpts, including their conditions. The bulletin is district guidance; it has not been validated for your individual field.",
+    "seconds": 6.4
+  },
+  {
+    "file": "4-1.json",
+    "question": "Show rice advice in Kamrup district, Assam.",
+    "status": "answered",
+    "answer": "From the Kamrup, Assam bulletin issued 2026-09-11, for rice:\n\nRICE · Tillering · page 2:\n“Due to favourable weather condition there may be seen swarming caterpillar in the Sali rice field. To control the pest apply Fipronil 5 SC @1.5 to 2ml/lit of water in the clear weather condition only. Farmers are advised to take the advantages of fair weather condition by top dressing of Urea @ 4.5 kg/bigha at tillering stage in Sali rice field. Before fertilizer application, go for wedding by paddy weeder.”\n\nThese are original English source excerpts, including their conditions. The bulletin is district guidance; it has not been validated for your individual field.",
+    "seconds": 5.1
+  },
+  {
+    "file": "4-2.json",
+    "question": "Not rice, maize at sowing stage.",
+    "status": "answered",
+    "answer": "From the Kamrup, Assam bulletin issued 2026-09-11, for maize:\n\nMAIZE · Sowing · page 2:\n“For Rabi maize optimum time of sowing is mid of September to mid of October. Therefore, farmers are suggested to select hybrid or composite variety for cultivation. Well drained sandy loam soil is most preferable for maize cultivation. Plough the field thoroughly to obtain deep, fine and firm tilth. Laddering should be done properly for leveling a well as to conserve soil moisture.”\n\nThese are original English source excerpts, including their conditions. The bulletin is district guidance; it has not been validated for your individual field.",
+    "seconds": 5.65
+  },
+  {
+    "file": "5-1.json",
+    "question": "What does the IMD bulletin say about irrigation for turmeric in Coimbatore district, Tamil Nadu?",
+    "status": "answered",
+    "answer": "From the Coimbatore, Tamil Nadu bulletin issued 2026-09-11, for turmeric:\n\nTurmeric · Bulking · page 3:\n“Turmeric is at bulking stage, which is critical for both moisture stress and excess water. Hence, care to keep sufficient moisture and avoid excess moisture or over dry. Prevailing high relative humidity and wind speed would spread the spores of turmeric leaf spot from endemic area. Spray Mancozeb @ 1 kg/ha or copper oxy chloride @ 1.25 kg/ha.”\n\nThese are original English source excerpts, including their conditions. The bulletin is district guidance; it has not been validated for your individual field.",
+    "seconds": 5.61
+  }
+]

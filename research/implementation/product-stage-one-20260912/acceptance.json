@@ -1,0 +1,11 @@
+{
+  "cases_checked": 8,
+  "expected_outcomes_passed": 8,
+  "answered": 5,
+  "partial": 2,
+  "unavailable": 1,
+  "browser_visual_qa": "unverified",
+  "tests_passed": 229,
+  "chart_component_checks": "PASS",
+  "scope": "Task/source behavior for the declared sample; not universal language or scientific validation."
+}

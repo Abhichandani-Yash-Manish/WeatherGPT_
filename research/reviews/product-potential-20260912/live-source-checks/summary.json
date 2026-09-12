@@ -1,0 +1,160 @@
+[
+  {
+    "name": "imd_city",
+    "url": "https://api.imd.gov.in/api/v1/current_wx",
+    "checked_at_utc": "2026-09-12T17:08:29.044514+00:00",
+    "serving_readiness_promoted": false,
+    "http_status": 401,
+    "error": "HTTP rejection",
+    "seconds": 0.51
+  },
+  {
+    "name": "probability",
+    "url": "https://api.open-meteo.com/v1/forecast?latitude=23.02579&longitude=72.58727&hourly=precipitation_probability,precipitation,apparent_temperature,wind_gusts_10m,visibility,weather_code&forecast_days=1&timezone=UTC",
+    "checked_at_utc": "2026-09-12T17:08:29.555398+00:00",
+    "serving_readiness_promoted": false,
+    "http_status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "bytes": 1644,
+    "sha256": "c5de5c109d43ac203b7d7e5801733ecf9fdd28bd0f962f9f430ef79640d71369",
+    "evidence_file": "live-source-checks/probability.body",
+    "top_level_keys": [
+      "latitude",
+      "longitude",
+      "generationtime_ms",
+      "utc_offset_seconds",
+      "timezone",
+      "timezone_abbreviation",
+      "elevation",
+      "hourly_units",
+      "hourly"
+    ],
+    "hourly_non_null_counts": {
+      "time": 24,
+      "precipitation_probability": 24,
+      "precipitation": 24,
+      "apparent_temperature": 24,
+      "wind_gusts_10m": 24,
+      "visibility": 24,
+      "weather_code": 24
+    },
+    "seconds": 0.94
+  },
+  {
+    "name": "metar",
+    "url": "https://aviationweather.gov/api/data/metar?ids=VAAH&format=json&hours=3",
+    "checked_at_utc": "2026-09-12T17:08:30.498363+00:00",
+    "serving_readiness_promoted": false,
+    "http_status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "bytes": 3217,
+    "sha256": "6476eb484d5a2915ee3b7c8bcc603ca64762c65582067ad76cd6d6180932a157",
+    "evidence_file": "live-source-checks/metar.body",
+    "record_count": 6,
+    "first_record_keys": [
+      "icaoId",
+      "receiptTime",
+      "obsTime",
+      "reportTime",
+      "temp",
+      "dewp",
+      "wdir",
+      "wspd",
+      "visib",
+      "altim",
+      "qcField",
+      "wxString",
+      "metarType",
+      "rawOb",
+      "lat",
+      "lon",
+      "elev",
+      "name",
+      "cover",
+      "clouds",
+      "fltCat"
+    ],
+    "seconds": 1.38
+  },
+  {
+    "name": "marine",
+    "url": "https://marine-api.open-meteo.com/v1/marine?latitude=20.85&longitude=70.3&hourly=wave_height,wave_period&forecast_days=1&timezone=UTC",
+    "checked_at_utc": "2026-09-12T17:08:31.877344+00:00",
+    "serving_readiness_promoted": false,
+    "http_status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "bytes": 1007,
+    "sha256": "977777f8114889684aefeb33f32226b0da68ea624e9bd5d1f12a78590d63a8e4",
+    "evidence_file": "live-source-checks/marine.body",
+    "top_level_keys": [
+      "latitude",
+      "longitude",
+      "generationtime_ms",
+      "utc_offset_seconds",
+      "timezone",
+      "timezone_abbreviation",
+      "elevation",
+      "hourly_units",
+      "hourly"
+    ],
+    "hourly_non_null_counts": {
+      "time": 24,
+      "wave_height": 24,
+      "wave_period": 24
+    },
+    "seconds": 1.3
+  },
+  {
+    "name": "history",
+    "url": "https://archive-api.open-meteo.com/v1/archive?latitude=23.02579&longitude=72.58727&start_date=2025-07-01&end_date=2025-07-07&daily=precipitation_sum,temperature_2m_max,temperature_2m_min&models=era5&timezone=UTC",
+    "checked_at_utc": "2026-09-12T17:08:33.178588+00:00",
+    "serving_readiness_promoted": false,
+    "http_status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "bytes": 558,
+    "sha256": "44a0bb142b01a771d2c16a39e7f422a04b4e2cb03545bf561289ddfdae064a4d",
+    "evidence_file": "live-source-checks/history.body",
+    "top_level_keys": [
+      "latitude",
+      "longitude",
+      "generationtime_ms",
+      "utc_offset_seconds",
+      "timezone",
+      "timezone_abbreviation",
+      "elevation",
+      "daily_units",
+      "daily"
+    ],
+    "daily_non_null_counts": {
+      "time": 7,
+      "precipitation_sum": 7,
+      "temperature_2m_max": 7,
+      "temperature_2m_min": 7
+    },
+    "seconds": 1.09
+  },
+  {
+    "name": "advisory_catalog",
+    "url": "https://mausam.imd.gov.in/responsive/agromet_adv_ser_district_current_en.php",
+    "checked_at_utc": "2026-09-12T17:08:34.267104+00:00",
+    "serving_readiness_promoted": false,
+    "http_status": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "bytes": 41036,
+    "sha256": "8f1de61eaa6837797e04830ee2266542cb8aeccc2cb6cc87a02827c38bc86f11",
+    "evidence_file": "live-source-checks/advisory_catalog.body",
+    "seconds": 0.97
+  },
+  {
+    "name": "cap_rss",
+    "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/rss.xml",
+    "checked_at_utc": "2026-09-12T17:08:35.236899+00:00",
+    "serving_readiness_promoted": false,
+    "http_status": 200,
+    "content_type": "text/xml",
+    "bytes": 6163,
+    "sha256": "2ebb682f2306815b36d6a1276b20bee0e2367046f8042ea5b2a71a8ab30226fb",
+    "evidence_file": "live-source-checks/cap_rss.body",
+    "seconds": 0.93
+  }
+]

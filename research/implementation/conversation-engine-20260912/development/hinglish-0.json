@@ -1,0 +1,171 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "c4ae7255-25c8-4cfe-ac23-0b1318f43a05",
+  "question": "kal ahmedabad me barish padne ki sambhavna kitni hai",
+  "status": "needs_clarification",
+  "answer": "Which village or town within Ahmedabad should I check? I can retrieve model data for a precise place; I cannot yet give a verified map of weather across that whole area.",
+  "facts": [],
+  "citations": [],
+  "notes": [
+    "Current date is 2026-09-13. 'Kal' refers to the next local date, 2026-09-14.",
+    "Time window for 'kal' (tomorrow) is assumed to be the full day: 2026-09-14T00:00:00+05:30 to 2026-09-15T00:00:00+05:30."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T18:36:57.189232+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 2441,
+      "output_tokens": 405,
+      "duration_seconds": 7.481372166
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "forecast",
+        "task_id": "t1",
+        "status": "needs_clarification"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "new",
+      "changed_fields": [
+        "parameters",
+        "places",
+        "time"
+      ],
+      "inherited_fields": []
+    },
+    "duration_seconds": 7.501
+  },
+  "plan": {
+    "language": "hi-Latn",
+    "places": [
+      {
+        "name": "Ahmedabad",
+        "state": "",
+        "district": "Ahmedabad",
+        "kind": "district"
+      }
+    ],
+    "assumptions": [
+      "Current date is 2026-09-13. 'Kal' refers to the next local date, 2026-09-14.",
+      "Time window for 'kal' (tomorrow) is assumed to be the full day: 2026-09-14T00:00:00+05:30 to 2026-09-15T00:00:00+05:30."
+    ],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "kal ahmedabad me barish padne ki sambhavna kitni hai",
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation_probability"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-14T00:00:00+05:30",
+        "end_local": "2026-09-15T00:00:00+05:30",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "context_action": "new",
+    "changed_fields": [
+      "places",
+      "time",
+      "parameters"
+    ],
+    "intent": "forecast",
+    "start_local": "2026-09-14T00:00:00+05:30",
+    "end_local": "2026-09-15T00:00:00+05:30",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "kal ahmedabad me barish padne ki sambhavna kitni hai",
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation_probability"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-14T00:00:00+05:30",
+        "end_local": "2026-09-15T00:00:00+05:30",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "needs_clarification",
+      "answer": "Which village or town within Ahmedabad should I check? I can retrieve model data for a precise place; I cannot yet give a verified map of weather across that whole area.",
+      "fact_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "forecast",
+      "parameters": [
+        "precipitation_probability"
+      ],
+      "candidates": [
+        {
+          "tool": "hourly_forecast",
+          "selected": true,
+          "available": true,
+          "reason": "Hourly evidence; exact onset and whole-period probability unavailable",
+          "sources": [
+            {
+              "source_id": "S62",
+              "product": "Open-Meteo best-match extended hourly forecast",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        },
+        {
+          "tool": "forecast_summary",
+          "selected": false,
+          "available": true,
+          "reason": "Exact-window GFS model summary",
+          "sources": [
+            {
+              "source_id": "S21",
+              "product": "Open-Meteo GFS forecast delivery",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "needs_clarification",
+      "returned_source_ids": []
+    }
+  ],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

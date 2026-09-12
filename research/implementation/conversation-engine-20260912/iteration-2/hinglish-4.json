@@ -1,0 +1,234 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "659f049d-77c5-4c52-836c-54cf8a2cf470",
+  "question": "nahi, Surat ke liye batao",
+  "status": "needs_selection",
+  "answer": "Aap kis jagah ki baat kar rahe hain? Surat, Sūrat, State of Gujarāt / Jalalpore, Navsari, State of Gujarāt. Ek chuniye, ya uska rajya/zila likhiye.",
+  "facts": [],
+  "citations": [],
+  "notes": [],
+  "choices": [
+    {
+      "id": "1255364",
+      "name": "Surat",
+      "latitude": 21.19594,
+      "longitude": 72.83023,
+      "feature": "PPLA2",
+      "admin1": "State of Gujarāt",
+      "admin2": "Sūrat",
+      "modified": "2026-08-30",
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:1255364",
+      "label": "Surat, Sūrat, State of Gujarāt",
+      "coordinates": {
+        "latitude": 21.19594,
+        "longitude": 72.83023
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/1255364",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Surat"
+    },
+    {
+      "id": "1269439",
+      "name": "Jalalpore",
+      "latitude": 20.94896,
+      "longitude": 72.89829,
+      "feature": "PPL",
+      "admin1": "State of Gujarāt",
+      "admin2": "Navsari",
+      "modified": "2024-01-06",
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:1269439",
+      "label": "Jalalpore, Navsari, State of Gujarāt",
+      "coordinates": {
+        "latitude": 20.94896,
+        "longitude": 72.89829
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/1269439",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Surat"
+    }
+  ],
+  "follow_up": "Choose a place, or add its district and state.",
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T18:47:10.966224+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 3217,
+      "output_tokens": 270,
+      "duration_seconds": 5.032941416
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "gazetteer_search",
+        "query": {
+          "name": "Surat",
+          "state": "Gujarat",
+          "district": "",
+          "kind": "settlement"
+        },
+        "matches": 2
+      },
+      {
+        "name": "forecast",
+        "task_id": "t1",
+        "status": "needs_selection"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "correction",
+      "changed_fields": [
+        "places"
+      ],
+      "inherited_fields": [
+        "parameters",
+        "time",
+        "operation"
+      ]
+    },
+    "duration_seconds": 5.083
+  },
+  "plan": {
+    "language": "hi-Latn",
+    "places": [
+      {
+        "name": "Surat",
+        "state": "Gujarat",
+        "district": "",
+        "kind": "settlement"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "nahi, Surat ke liye batao",
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-14T18:30:00+05:30",
+        "end_local": "2026-09-14T22:30:00+05:30",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "context_action": "correction",
+    "changed_fields": [
+      "places"
+    ],
+    "intent": "forecast",
+    "start_local": "2026-09-14T18:30:00+05:30",
+    "end_local": "2026-09-14T22:30:00+05:30",
+    "variables": [
+      "precipitation"
+    ],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "nahi, Surat ke liye batao",
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-14T18:30:00+05:30",
+        "end_local": "2026-09-14T22:30:00+05:30",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "needs_selection",
+      "answer": "I found 2 possible places for Surat. Please confirm the intended location and spelling.",
+      "fact_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "forecast",
+      "parameters": [
+        "precipitation"
+      ],
+      "candidates": [
+        {
+          "tool": "forecast_summary",
+          "selected": true,
+          "available": true,
+          "reason": "Exact-window GFS model summary",
+          "sources": [
+            {
+              "source_id": "S21",
+              "product": "Open-Meteo GFS forecast delivery",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        },
+        {
+          "tool": "hourly_forecast",
+          "selected": false,
+          "available": true,
+          "reason": "Hourly evidence; exact onset and whole-period probability unavailable",
+          "sources": [
+            {
+              "source_id": "S62",
+              "product": "Open-Meteo best-match extended hourly forecast",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "needs_selection",
+      "returned_source_ids": []
+    }
+  ],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

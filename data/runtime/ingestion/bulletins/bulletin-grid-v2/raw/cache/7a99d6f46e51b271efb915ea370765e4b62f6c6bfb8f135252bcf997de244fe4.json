@@ -1,0 +1,11 @@
+{
+  "source_id": "S57",
+  "url": "https://mausam.imd.gov.in/responsive/agrometinformation/district_current_en_get.php?s=Nagpur&step2=true",
+  "retrieved_at_utc": "2026-09-12T20:59:39.807571+00:00",
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "bytes": 552,
+  "sha256": "6a75a90c7f46a4313e0b4104930daa847153adcc458294782175a4a335450c51",
+  "blob": "blobs/6a75a90c7f46a4313e0b4104930daa847153adcc458294782175a4a335450c51.bin",
+  "validation_scope": "product"
+}

@@ -1,5 +1,5 @@
 {
-  "created_at_utc": "2026-09-12T16:18:40.304186+00:00",
+  "created_at_utc": "2026-09-12T20:47:38.375756+00:00",
   "scope": "Referenced local evidence and supplied imports; hashes establish file integrity, not source authenticity.",
   "files": [
     {
@@ -1156,6 +1156,15 @@
       "sha256": "ff28ff1011b0344488db70a193ff0ab6d86fe16c09c6c2f47dc793b1fc2d4958"
     },
     {
+      "path": "docs/18-bulletin-retrieval-and-warning-lifecycle.md",
+      "source_ids": [
+        "S06",
+        "S57"
+      ],
+      "bytes": 12258,
+      "sha256": "4c48084861023712851a8f267b438b6f4f89edc0c35b6938e44b3c777d258020"
+    },
+    {
       "path": "research/discovery/broad-sample-audit.json",
       "source_ids": [
         "S15",
@@ -1867,6 +1876,119 @@
       ],
       "bytes": 14141,
       "sha256": "5a68a976b9f0e47d6851fe4a8433d73bcddc718956167db7e6f28bf4eecc0e60"
+    },
+    {
+      "path": "research/implementation/context-and-retrieval-20260913/districts/dibrugarh.json",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 9763,
+      "sha256": "d4fb1f8e7083d7fcc6b54d2d0d24ba43e81c15ab7db320a249fea94e447e1b08"
+    },
+    {
+      "path": "research/implementation/context-and-retrieval-20260913/source-pdfs/2a5c1798e89380e862a2c429522f7a1c18b459f912bf600c1d449c787954b730.pdf",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 196686,
+      "sha256": "2a5c1798e89380e862a2c429522f7a1c18b459f912bf600c1d449c787954b730"
+    },
+    {
+      "path": "research/implementation/context-and-retrieval-20260913/source-pdfs/57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee.pdf",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 677275,
+      "sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee"
+    },
+    {
+      "path": "research/implementation/context-and-retrieval-20260913/source-pdfs/5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb.pdf",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 235062,
+      "sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb"
+    },
+    {
+      "path": "research/implementation/context-and-retrieval-20260913/source-review.json",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 1891,
+      "sha256": "f49eb9f91eacfca251729b98a119c46dacede918c42d5ea28c9a29181cf0f347"
+    },
+    {
+      "path": "research/implementation/context-and-retrieval-20260913/verified-evidence/da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca.bin",
+      "source_ids": [
+        "S62"
+      ],
+      "bytes": 4151,
+      "sha256": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+    },
+    {
+      "path": "research/implementation/conversation-engine-20260912/verified-evidence/3706c5d848587746c55ea186ee66adfe53fdccf0f91acb06b86f36a00cdfd774.bin",
+      "source_ids": [
+        "S18"
+      ],
+      "bytes": 3134,
+      "sha256": "3706c5d848587746c55ea186ee66adfe53fdccf0f91acb06b86f36a00cdfd774"
+    },
+    {
+      "path": "research/implementation/conversation-engine-20260912/verified-evidence/47d3adee96e8c8e608e54a05d5e377042a355ab2854cef17333db07322c1d5f7.bin",
+      "source_ids": [
+        "S19"
+      ],
+      "bytes": 1690,
+      "sha256": "47d3adee96e8c8e608e54a05d5e377042a355ab2854cef17333db07322c1d5f7"
+    },
+    {
+      "path": "research/implementation/conversation-engine-20260912/verified-evidence/6d2a746215bc3a44b93f6478c89d904580ccab1a138c34ed24a55aee080cc3be.bin",
+      "source_ids": [
+        "S20"
+      ],
+      "bytes": 209,
+      "sha256": "6d2a746215bc3a44b93f6478c89d904580ccab1a138c34ed24a55aee080cc3be"
+    },
+    {
+      "path": "research/implementation/evidence-retrieval-20260913/acceptance.json",
+      "source_ids": [
+        "S06",
+        "S57"
+      ],
+      "bytes": 688,
+      "sha256": "be43ef6298a4a608f60ab554ee4a72f89b10c155146d44daf6309771caecf060"
+    },
+    {
+      "path": "research/implementation/point-tools-20260912/live-sources/extended_forecast.json",
+      "source_ids": [
+        "S62"
+      ],
+      "bytes": 324653,
+      "sha256": "71aa7f1794091fe737fcbf13894dbc28c27cfa070096fd0bb66498bd1bcc4fbe"
+    },
+    {
+      "path": "research/implementation/point-tools-20260912/live-sources/history_local.json",
+      "source_ids": [
+        "S22"
+      ],
+      "bytes": 11829,
+      "sha256": "15400e6f39eacd28cdb34a3f3edf04a46c99f7bed30abf19c9e2e058b939d34c"
+    },
+    {
+      "path": "research/implementation/point-tools-20260912/live-sources/raw/4827bc45b591615ba396fe5081c6d764382b8108d49bb622b72340d0fdadf26c/58de344670a74a52ae7f1dcf5f9624cb/blobs/d328dcf011dfcdf085d42e5a99dc8692bf9889710265fed8d47469c99f89027f.bin",
+      "source_ids": [
+        "S22"
+      ],
+      "bytes": 664,
+      "sha256": "d328dcf011dfcdf085d42e5a99dc8692bf9889710265fed8d47469c99f89027f"
+    },
+    {
+      "path": "research/implementation/point-tools-20260912/live-sources/raw/96c2c9d9df0847b7e859d366972284d7695a804df3f9a75f554167c0b9f4d651/e8b3f8cbd7424220a4e79af5eba30a97/blobs/569c5612afbdd2695f510b2b7e90ef964f2ed126c13c662c375a7b85e166c683.bin",
+      "source_ids": [
+        "S62"
+      ],
+      "bytes": 4149,
+      "sha256": "569c5612afbdd2695f510b2b7e90ef964f2ed126c13c662c375a7b85e166c683"
     }
   ]
 }

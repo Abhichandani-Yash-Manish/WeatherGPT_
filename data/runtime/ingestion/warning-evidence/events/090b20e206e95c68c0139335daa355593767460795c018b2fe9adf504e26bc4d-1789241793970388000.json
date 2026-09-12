@@ -1,0 +1,12 @@
+{
+  "source_id": "S06",
+  "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-09-03-07-21-21.xml",
+  "checked_at_utc": "2026-09-12T19:36:33.970352+00:00",
+  "stage": "fetch_failed",
+  "error": "<urlopen error [Errno 54] Connection reset by peer>",
+  "error_type": "URLError",
+  "retryable": false,
+  "retry_at": null,
+  "http_status": null,
+  "deferred": false
+}

@@ -1,0 +1,168 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "472516a7-84a4-4104-88fb-6e2f226fe6b7",
+  "question": "Show banana advice in Surat district, Gujarat.",
+  "status": "unavailable",
+  "answer": "The task could not retrieve verified evidence: Bulletin retrieval is unavailable: Compound crop aliases and growth-stage headings need reviewed separation before serving",
+  "facts": [],
+  "citations": [],
+  "notes": [],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T20:44:43.914681+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 2872,
+      "output_tokens": 279,
+      "duration_seconds": 4.866019875
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "agriculture",
+        "task_id": "t1",
+        "status": "unavailable"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "new",
+      "changed_fields": [
+        "crop",
+        "places"
+      ],
+      "inherited_fields": []
+    },
+    "duration_seconds": 5.178
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Surat",
+        "state": "Gujarat",
+        "district": "Surat",
+        "kind": "district"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "Show banana advice in Surat district, Gujarat.",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "Show banana advice in Surat district, Gujarat.",
+          "crop": "banana",
+          "growth_stage": "",
+          "topic": "general",
+          "mode": "source_lookup"
+        }
+      }
+    ],
+    "context_action": "new",
+    "changed_fields": [
+      "crop",
+      "places"
+    ],
+    "intent": "agriculture",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "Show banana advice in Surat district, Gujarat.",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "Show banana advice in Surat district, Gujarat.",
+          "crop": "banana",
+          "growth_stage": "",
+          "topic": "general",
+          "mode": "source_lookup"
+        }
+      },
+      "status": "unavailable",
+      "answer": "The task could not retrieve verified evidence: Bulletin retrieval is unavailable: Compound crop aliases and growth-stage headings need reviewed separation before serving",
+      "fact_ids": [],
+      "passage_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "pending_slots": [],
+  "retrieval_coverage": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "agriculture",
+      "parameters": [
+        "agricultural_advisory"
+      ],
+      "candidates": [
+        {
+          "tool": "crop_advisory",
+          "selected": true,
+          "available": true,
+          "reason": "Published district crop/stage passages; strict printed geography and dates, hybrid retrieval in reviewed PDF families; individual field decisions remain partial",
+          "sources": [
+            {
+              "source_id": "S57",
+              "product": "IMD district farmer bulletin delivery (English and local language)",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "unavailable",
+      "returned_source_ids": []
+    }
+  ],
+  "document_evidence": [],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

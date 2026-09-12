@@ -1,0 +1,13 @@
+..........E...........
+======================================================================
+ERROR: test_unselected_place_candidates_cannot_supply_state (test_engine_refinement.DialogueContracts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yashabhichandani/Desktop/WeatherGPT/tests/test_engine_refinement.py", line 69, in test_unselected_place_candidates_cannot_supply_state
+    from weathergpt_data.language import OllamaModel
+ImportError: cannot import name 'OllamaModel' from 'weathergpt_data.language' (/Users/yashabhichandani/Desktop/WeatherGPT/weathergpt_data/language.py)
+
+----------------------------------------------------------------------
+Ran 22 tests in 0.522s
+
+FAILED (errors=1)

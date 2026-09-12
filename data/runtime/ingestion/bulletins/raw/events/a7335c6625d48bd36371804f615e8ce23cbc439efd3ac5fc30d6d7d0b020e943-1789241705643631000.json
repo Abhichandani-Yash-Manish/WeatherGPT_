@@ -1,0 +1,12 @@
+{
+  "source_id": "S57",
+  "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Tamil+Nadu&district=Coimbatore&language=English",
+  "retrieved_at_utc": "2026-09-12T19:35:05.598255+00:00",
+  "http_status": 200,
+  "content_type": "application/pdf",
+  "bytes": 344738,
+  "sha256": "99b77dc84e6bec60bfe3a5cd64b0d8247761b43abed6af3a63b056b0edfe7b9f",
+  "blob": "blobs/99b77dc84e6bec60bfe3a5cd64b0d8247761b43abed6af3a63b056b0edfe7b9f.bin",
+  "validation_scope": "product",
+  "stage": "validated"
+}

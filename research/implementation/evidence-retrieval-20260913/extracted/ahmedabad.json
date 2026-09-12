@@ -1,0 +1,629 @@
+{
+  "state": "Gujarat",
+  "district": "Ahmedabad",
+  "issue_date": "2026-09-11",
+  "forecast_start": "2026-09-12",
+  "forecast_end": "2026-09-16",
+  "advice_valid_until": null,
+  "family": "arnej_grid",
+  "issuer_context": "Gramin Krishi Mausam Sewa Agricultural Research Station, Anand Agricultural University, Arnej- 382 230, Taluka Dholka, District Ahmedabad, Gujarat Email: amfuarnej@gmail.com Ahmedabad district agromet advisory bulletin: 47/2026-27 Date: Friday, 11-09-2026 (Issued jointly by Anand Agricultural University and India Meteorological Department) ",
+  "language": "en",
+  "sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+  "pages": 7,
+  "chunks": [
+    {
+      "page": 2,
+      "row": 2,
+      "crop": "General advice",
+      "stage": "",
+      "text": "Undertake interculturing and weeding operations to conserve moisture in standing monsoon crops and apply need based light irrigation by considering weather and soil moisture condition in standing crops. Application of fertilizer or top dressing should undertake only under optimum soil moisture condition in standing crops. Farmers are advised to download MEGHDOOT mobile application for acquiring information regarding Agromet Advisory in Gujarati language. Click on following link to download this application user: https://play,google.com/store/apps/details?id=com.aas.meghdoot",
+      "bbox": [
+        41.5,
+        84.6,
+        553.9,
+        251.6
+      ],
+      "crop_key": "general advice",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "ee6c93c0d74ec75d32d756c7f888ed10036dbfd64c12f3e7a21809eea0d6537e"
+    },
+    {
+      "page": 2,
+      "row": 4,
+      "crop": "Rice",
+      "stage": "Booting/ Heading/ Flowering",
+      "text": "Maintain 5-7 cm stagnant water in rice field.",
+      "bbox": [
+        41.5,
+        272.1,
+        553.9,
+        771.6
+      ],
+      "crop_key": "rice",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "a012161ebdbf3e514d443e046d446ef0cbf21cfe6615502cf0946d650b436992"
+    },
+    {
+      "page": 2,
+      "row": 4,
+      "crop": "Rice",
+      "stage": "Booting/ Heading/ Flowering",
+      "text": "Spray mixture of streptocycline 1 g + copper oxychloride 20 g fungicides in 400-500 litres of water per hectare to control bacterial leaf blight disease.",
+      "bbox": [
+        41.5,
+        272.1,
+        553.9,
+        771.6
+      ],
+      "crop_key": "rice",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "d4f81a8115655990849743fd92e51cf7618e35f0d1c76d1277de7b3c161eaaea"
+    },
+    {
+      "page": 2,
+      "row": 4,
+      "crop": "Rice",
+      "stage": "Booting/ Heading/ Flowering",
+      "text": "Spray tricyclazole 75 WP 6 g or Iprobenfos 48 EC 10 ml in 10 litres of water at an interval of 15 to 20 days to control blast disease.",
+      "bbox": [
+        41.5,
+        272.1,
+        553.9,
+        771.6
+      ],
+      "crop_key": "rice",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "930e7291ddb81e0415ef3544eef91275888427064534ce572f83829af6d7a037"
+    },
+    {
+      "page": 2,
+      "row": 4,
+      "crop": "Rice",
+      "stage": "Booting/ Heading/ Flowering",
+      "text": "For proper nutrient management in transplanted rice, first top dressing of nitrogen fertilizer should be applied 30\u201340 days after transplanting. Apply 32 kg of nitrogen per hectare for early-maturing varieties, 40 kg of nitrogen per hectare for medium to late-maturing varieties and 48 kg of nitrogen per hectare for late- maturing varieties.",
+      "bbox": [
+        41.5,
+        272.1,
+        553.9,
+        771.6
+      ],
+      "crop_key": "rice",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "81ddaf9dae9a3ab41e094b6c6badb37ff33faa3c916192df97ba5a053a6380dc"
+    },
+    {
+      "page": 2,
+      "row": 4,
+      "crop": "Rice",
+      "stage": "Booting/ Heading/ Flowering",
+      "text": "The rice yellow stem borer in rice can be effectively managed by installing five pheromone traps per hectare baited with lures that attract the male moths. Spray neem-based insecticides by mixing 10 ml (5 EC) to 60 ml (0.03 EC) in 10 litres of water. Alternatively, apply Cartap Hydrochloride 4G @ 8 kg per acre or Fipronil 0.3G with 10 kg per acre or Chlorantraniliprole 0.4G with 4 kg per acre after reducing the water level in the field. These granular insecticides should be applied twice, first application at the onset of pest infestation or 30\u201335 days after transplanting and second application at 15\u201320 days later. This schedule helps keep the pest infestation under control.",
+      "bbox": [
+        41.5,
+        272.1,
+        553.9,
+        771.6
+      ],
+      "crop_key": "rice",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "599b70ee796762863ee8b475ba4e092d14675e3ed19a47043b48af9403c0d1f7"
+    },
+    {
+      "page": 3,
+      "row": 1,
+      "crop": "Cotton",
+      "stage": "Squaring/ Flowering/ Boll formation",
+      "text": "If irrigation facilities are available then apply need based irrigation through drip irrigation/alternate furrow irrigation method by considering soil moisture condition in standing crop.",
+      "bbox": [
+        41.5,
+        64.1,
+        553.9,
+        389.8
+      ],
+      "crop_key": "cotton",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "046338c22ff630bf223a23818eab9155eee56f111a158795a1aca53a7fa609c2"
+    },
+    {
+      "page": 3,
+      "row": 1,
+      "crop": "Cotton",
+      "stage": "Squaring/ Flowering/ Boll formation",
+      "text": "Avoid application of fertilizers during long dry spell condition or it should apply under optimum soil moisture condition. Spray 2 % urea during dry spell in standing cotton crop.",
+      "bbox": [
+        41.5,
+        64.1,
+        553.9,
+        389.8
+      ],
+      "crop_key": "cotton",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "24fbeaf06fe1791cb9025054538853a47ef62f136aa3366d474a6e395a271348"
+    },
+    {
+      "page": 3,
+      "row": 1,
+      "crop": "Cotton",
+      "stage": "Squaring/ Flowering/ Boll formation",
+      "text": "Sucking pest infestation in cotton at initial stage can be controlled by spraying 500 g of neem seed kernel extract (5% NSKE) or 50 ml of neem oil or a neem-based insecticide by mixing 10 ml (5 EC) to 50 ml (0.03 EC) in 10 litres of water. If the infestation is severe, spray Flonicamid 50 WG with 3 g or Diafenthiuron 50 WP with 10 g or Dinotefuran 20 SG with 3 g by mixing the recommended quantity in 10 litres of water.",
+      "bbox": [
+        41.5,
+        64.1,
+        553.9,
+        389.8
+      ],
+      "crop_key": "cotton",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "3256ea42d4ec08ae4914d62095b6ce01fd75cebce4566dcdb57b632e29d82ece"
+    },
+    {
+      "page": 3,
+      "row": 1,
+      "crop": "Cotton",
+      "stage": "Squaring/ Flowering/ Boll formation",
+      "text": "To prevent an increase in the population of whiteflies and jassids (leafhoppers), do not use synthetic pyrethroid insecticides until the month of November.",
+      "bbox": [
+        41.5,
+        64.1,
+        553.9,
+        389.8
+      ],
+      "crop_key": "cotton",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "a24fb655f215710e1e541bd43559090a82fd25fbf63d57647aea1671d11dce32"
+    },
+    {
+      "page": 3,
+      "row": 2,
+      "crop": "Groundnut",
+      "stage": "Flowering/ Pod formation",
+      "text": "Leaf-eating caterpillar (Spodoptera) in groundnut can be controlled by installing one light trap per hectare in the affected area and destroy the adult moths and leaf- eating caterpillar moths attracted to the trap.",
+      "bbox": [
+        41.5,
+        389.8,
+        553.9,
+        765.6
+      ],
+      "crop_key": "groundnut",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "eadcb25255af755677dd70aac814e6b8625c8aa82f310d7659c736af52873391"
+    },
+    {
+      "page": 3,
+      "row": 2,
+      "crop": "Groundnut",
+      "stage": "Flowering/ Pod formation",
+      "text": "White grubs in groundnut can be controlled by spraying Chlorpyrifos 20 EC with 4 litres per hectare through drip irrigation or along with irrigation. If irrigation is not being given but intermittent rainfall is occurring, prepare the insecticide solution in a spray pump, remove the nozzle and apply the solution directly into the furrows in the required quantity.",
+      "bbox": [
+        41.5,
+        389.8,
+        553.9,
+        765.6
+      ],
+      "crop_key": "groundnut",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "4057357a8b3653d305846f333b286a54041a4f4ca0b4b159e162a8c726d35f86"
+    },
+    {
+      "page": 3,
+      "row": 2,
+      "crop": "Groundnut",
+      "stage": "Flowering/ Pod formation",
+      "text": "Leaf-eating caterpillar (Spodoptera) in groundnut can be controlled by installing pheromone traps with 40 traps per hectare on a community basis to keep the pest population under control. At the initial stage of infestation, spray either neem seed kernel powder extract at 500 g (5% extract) or a neem-based insecticide at 20 ml (1 EC) to 40 ml (0.15 EC) mixed in 10 litres of water. If the infestation becomes severe, spray Chlorantraniliprole 18.5 SC at 3 ml or Flubendiamide 20 WG at 6 g or Thiamethoxam 12.6% + Lambda-cyhalothrin 9.5% ZC at 3 ml 10 litres of water.",
+      "bbox": [
+        41.5,
+        389.8,
+        553.9,
+        765.6
+      ],
+      "crop_key": "groundnut",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "25661a2172c9f574e9c41c6684f91f1368499da1ab852b63c80053220abbc5ed"
+    },
+    {
+      "page": 4,
+      "row": 1,
+      "crop": "Groundnut",
+      "stage": "Flowering/ Pod formation",
+      "text": "Cutworms in groundnut can be controlled by installing one light trap per hectare to attract and destroy the moths. Prepare a 5% neem extract by mixing 500 g of neem seed kernel powder or neem leaves in 10 litres of water and spray it on the crop. If the infestation is severe, spray either Indoxacarb 14.5 SC with 10 ml per 10 litres of water or Emamectin benzoate 5 SG with 5 g per 10 litres of water.",
+      "bbox": [
+        41.5,
+        64.1,
+        553.9,
+        202.1
+      ],
+      "crop_key": "groundnut",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "ef89660094e58e1cff9acd7dbbd6d51227cc8ab78c19be2ef4df1921a5b5f103"
+    },
+    {
+      "page": 4,
+      "row": 2,
+      "crop": "Green gram",
+      "stage": "Flowering/ Pod formation",
+      "text": "Apply need based light irrigation by considering weather and soil moisture condition in green gram crop.",
+      "bbox": [
+        41.5,
+        202.1,
+        553.9,
+        647.4
+      ],
+      "crop_key": "green gram",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "3a89576cb7dc620cb64deb3b1bddf357aea6c30ab0f5bf614647d9882c2c0f26"
+    },
+    {
+      "page": 4,
+      "row": 2,
+      "crop": "Green gram",
+      "stage": "Flowering/ Pod formation",
+      "text": "Mosaic of leaf curl disease is transmitted due to white fly so to control it, spray imidacloprid 17.8 SC 3 ml or acetamiprid 20 SP 2 g or azadirachtin 40 ml in 10 litres of water in green gram crop.",
+      "bbox": [
+        41.5,
+        202.1,
+        553.9,
+        647.4
+      ],
+      "crop_key": "green gram",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "fea1deb58f373082b12f8bb8893175fca524984c9f0336cb9cceeb1c351cae54"
+    },
+    {
+      "page": 4,
+      "row": 2,
+      "crop": "Green gram",
+      "stage": "Flowering/ Pod formation",
+      "text": "Hairy caterpillar in green gram can be controlled by installing one light trap per hectare to attract and destroy the adult moths of. Spray 500 g of neem seed kernel powder or neem leaves (5% extract) mixed in 10 litres of water to control hairy caterpillar in clear and calm weather condition. If the infestation is severe, spray Chlorantraniliprole 18.5 SC with 4 ml or Indoxacarb 15.8 EC with 6 ml or Emamectin Benzoate 5 SG with 5 g mixed in 10 litres of water.",
+      "bbox": [
+        41.5,
+        202.1,
+        553.9,
+        647.4
+      ],
+      "crop_key": "green gram",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "f38fa0edcbde8c83a404a8784d4866807273c011cb019c71e8c96758dc9ddae9"
+    },
+    {
+      "page": 4,
+      "row": 2,
+      "crop": "Green gram",
+      "stage": "Flowering/ Pod formation",
+      "text": "The infestation by aphids, whiteflies, leafhoppers and thrips in green gram at initial stage can be controlled by spraying 500 g of neem seed kernel powder (5% extract) or 40 g of the fungal biocontrol agent Verticillium lecanii powder mixed in 10 litres of water.",
+      "bbox": [
+        41.5,
+        202.1,
+        553.9,
+        647.4
+      ],
+      "crop_key": "green gram",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "aa185b135cba8d064a63f3fee309317491ef59079a97fb861db9c2eb44ef4f1f"
+    },
+    {
+      "page": 4,
+      "row": 2,
+      "crop": "Green gram",
+      "stage": "Flowering/ Pod formation",
+      "text": "If there is a severe infestation of aphids in green gram and predatory insects are absent, spray Imidacloprid 17.8 SL with 2.5 ml or Thiamethoxam 25 WG with 4 g per 10 litres of water.",
+      "bbox": [
+        41.5,
+        202.1,
+        553.9,
+        647.4
+      ],
+      "crop_key": "green gram",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "875d61f935420d4f2d0bce461705e33e335dcdc1698e134c62a075b2f962ca73"
+    },
+    {
+      "page": 4,
+      "row": 3,
+      "crop": "Black gram",
+      "stage": "Flowering/ Pod formation",
+      "text": "Apply need based light irrigation by considering weather and soil moisture condition in black gram crop.",
+      "bbox": [
+        41.5,
+        647.4,
+        553.9,
+        756.6
+      ],
+      "crop_key": "black gram",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "e3119c56101cc317b16e18ab1771284dca91ad52f39ff1941ef76e2b3e147bf5"
+    },
+    {
+      "page": 4,
+      "row": 3,
+      "crop": "Black gram",
+      "stage": "Flowering/ Pod formation",
+      "text": "Mosaic of leaf curl disease is transmitted due to white fly so to control it, spray imidacloprid 17.8 SC 3 ml or acetamiprid 20 SP 2 g or azadirachtin 40 ml in 10 litres of water in green gram crop.",
+      "bbox": [
+        41.5,
+        647.4,
+        553.9,
+        756.6
+      ],
+      "crop_key": "black gram",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "c41bc79dda9637dc56fc1dbf1ea5e0bfb64c30aa4d00c9ae62f909d2acbb4359"
+    },
+    {
+      "page": 5,
+      "row": 1,
+      "crop": "Black gram",
+      "stage": "Flowering/ Pod formation",
+      "text": "Hairy caterpillar in black gram can be controlled by installing one light trap per hectare to attract and destroy the adult moths. Spray 500 g of neem seed kernel powder or neem leaves (5% extract) mixed in 10 litres of water to control hairy caterpillar in clear and calm weather condition. If the infestation is severe, spray Chlorantraniliprole 18.5 SC with 4 ml or Indoxacarb 15.8 EC with 6 ml or Emamectin Benzoate 5 SG with 5 g, mixed in 10 litres of water.",
+      "bbox": [
+        41.5,
+        64.1,
+        553.9,
+        384.9
+      ],
+      "crop_key": "black gram",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "cb1a3d2773242adf0f5770780cf4fae2891fa1623d2d9a5edbf5800054f71649"
+    },
+    {
+      "page": 5,
+      "row": 1,
+      "crop": "Black gram",
+      "stage": "Flowering/ Pod formation",
+      "text": "The infestation by aphids, whiteflies, leafhoppers and thrips in black gram at initial stage can be controlled by spraying 500 g of neem seed kernel powder (5% extract) or 40 g of the fungal biocontrol agent Verticillium lecanii powder mixed in 10 litres of water.",
+      "bbox": [
+        41.5,
+        64.1,
+        553.9,
+        384.9
+      ],
+      "crop_key": "black gram",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "a3febba04ef2b28bf3d46f845eed541739dcae60bd1f89153b1727d3dec05a8c"
+    },
+    {
+      "page": 5,
+      "row": 1,
+      "crop": "Black gram",
+      "stage": "Flowering/ Pod formation",
+      "text": "If there is a severe infestation of aphids in black gram and predatory insects are absent, spray either Imidacloprid 17.8 SL with 2.5 ml per 10 litres of water or Thiamethoxam 25 WG with 4 g per 10 litres of water.",
+      "bbox": [
+        41.5,
+        64.1,
+        553.9,
+        384.9
+      ],
+      "crop_key": "black gram",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "f093128698d228a10bf8306662c79d21dfac4d3030c29453fb6beddf30b9366b"
+    },
+    {
+      "page": 5,
+      "row": 2,
+      "crop": "Pigeon pea",
+      "stage": "Vegetative",
+      "text": "Apply need based light irrigation by considering weather and soil moisture condition in pigeon pea crop.",
+      "bbox": [
+        41.5,
+        384.9,
+        553.9,
+        453.7
+      ],
+      "crop_key": "pigeon pea",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "9f426aae3ea6da841c887eba4fc2e1c97d6da34c8ae7bc81390a875d4fc260ca"
+    },
+    {
+      "page": 5,
+      "row": 2,
+      "crop": "Pigeon pea",
+      "stage": "Vegetative",
+      "text": "Perform hand weeding three times at 40 and 60 days after sowing.",
+      "bbox": [
+        41.5,
+        384.9,
+        553.9,
+        453.7
+      ],
+      "crop_key": "pigeon pea",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "12e9e02529412cf5a27c7bffb460faaf7d74ef8efc951ea9c342c72a63117d10"
+    },
+    {
+      "page": 5,
+      "row": 3,
+      "crop": "Pearl millet",
+      "stage": "Heading/ Flowering",
+      "text": "Shoot fly in pearl millet can be controlled by removing and destroying plants damaged by the pest during the early crop stage. At the initial stage of infestation, spray Beauveria bassiana 1.15% WP at 40 g mixed in 10 litres of water in clear and calm weather condition. In case of severe infestation, spray either Quinalphos 25 EC at 20 ml or Cypermethrin 10 EC at 5 ml mixed in 10 litres of water.",
+      "bbox": [
+        41.5,
+        453.7,
+        553.9,
+        652.8
+      ],
+      "crop_key": "pearl millet",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "df6a4cd19e9967271387604cdeb61d37121e7a5925334120176f924d06a04395"
+    },
+    {
+      "page": 5,
+      "row": 3,
+      "crop": "Pearl millet",
+      "stage": "Heading/ Flowering",
+      "text": "Downy mildew in pearl millet can be controlled by spraying Metalaxyl-MZ 72 WP with 15 g per 10 litres of water, as required, ensuring thorough coverage of both the upper and lower surfaces of the leaves.",
+      "bbox": [
+        41.5,
+        453.7,
+        553.9,
+        652.8
+      ],
+      "crop_key": "pearl millet",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "5a37bf3ae0408161d2e1c15882a3c7da9c20f688784441ab51515ab9b51eca85"
+    },
+    {
+      "page": 5,
+      "row": 5,
+      "crop": "Chilli",
+      "stage": "Vegetative",
+      "text": "Apply need based light irrigation by considering weather and soil moisture condition in chilli crop.",
+      "bbox": [
+        41.5,
+        671.4,
+        553.9,
+        772.8
+      ],
+      "crop_key": "chilli",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "575440a7ff64b89f020fba7def10519f28b70bf52924e51fa6b40e0b513859b7"
+    },
+    {
+      "page": 5,
+      "row": 5,
+      "crop": "Chilli",
+      "stage": "Vegetative",
+      "text": "Thrips in chilli can be controlled by spraying neem seed oil 30 to 50 ml in 10 litres. In case of heavy attack, spray of spinosad 45 SC 3 ml or spinetoram 11.7 SC 10 ml in 10 litres of water.",
+      "bbox": [
+        41.5,
+        671.4,
+        553.9,
+        772.8
+      ],
+      "crop_key": "chilli",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "be7ec5bbce14596468ac51af424bbb0ef3cad7265dc6f6aff0b10aa24c13706f"
+    },
+    {
+      "page": 6,
+      "row": 1,
+      "crop": "Tomato",
+      "stage": "Vegetative",
+      "text": "Apply need based light irrigation by considering weather and soil moisture condition in tomato crop.",
+      "bbox": [
+        41.5,
+        64.1,
+        553.9,
+        181.7
+      ],
+      "crop_key": "tomato",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "b39b20c57090d17cd9f89abcb6b97fd3b7801622798981fe621374ad5cb1add6"
+    },
+    {
+      "page": 6,
+      "row": 1,
+      "crop": "Tomato",
+      "stage": "Vegetative",
+      "text": "Pinworm at initial incidence in tomato can be controlled by installing 40 yellow sticky traps per hectare. In heavy incidence, spray Chlorantraniliprole 18.5 SC 3 ml or Flubendiamide 480 SC 3 ml in 10 litres of water.",
+      "bbox": [
+        41.5,
+        64.1,
+        553.9,
+        181.7
+      ],
+      "crop_key": "tomato",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "309fc40665e91eaba567883a6f60d174706922ffb523deeda95cfbefeb80047a"
+    },
+    {
+      "page": 6,
+      "row": 2,
+      "crop": "Brinjal",
+      "stage": "Vegetative",
+      "text": "Apply need based light irrigation by considering weather and soil moisture condition in brinjal crop",
+      "bbox": [
+        41.5,
+        181.7,
+        553.9,
+        266.8
+      ],
+      "crop_key": "brinjal",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "66ae0a821abfd060ca056d84cb16e326053d7a7bcad1627dc02244f6ed56927d"
+    },
+    {
+      "page": 6,
+      "row": 2,
+      "crop": "Brinjal",
+      "stage": "Vegetative",
+      "text": "Sucking pest like white fly and jassid in brinjal can be controlled by spraying Difenthiuron 50 WP 4 ml or Thiamethoxam 25 WG 4 g in 10 litres of water.",
+      "bbox": [
+        41.5,
+        181.7,
+        553.9,
+        266.8
+      ],
+      "crop_key": "brinjal",
+      "source_id": "S57",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "3c456a2c153e3683afcd1a69db95d532d68684e2bcdf523506a8d25fe77fa0c1"
+    }
+  ],
+  "extraction_status": "reviewed_family_rules",
+  "scope": "Published source passages; no personalized prescription or independent agronomic validation"
+}

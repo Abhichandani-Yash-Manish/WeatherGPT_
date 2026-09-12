@@ -1,0 +1,110 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "120ae016-6094-4c09-9f29-169c14ed0ce9",
+  "question": "How much rain fell in Ahmedabad, Gujarat yesterday?",
+  "status": "unavailable",
+  "answer": "ERA5 daily reanalysis is published with about a five-day delay. This recent date is not eligible for this history tool yet; yesterday is not being replaced with an annual value or a forecast.",
+  "facts": [],
+  "citations": [],
+  "notes": [],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T18:17:40.926816+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 1450,
+      "output_tokens": 243,
+      "duration_seconds": 4.234278458
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "history",
+        "task_id": "t1",
+        "status": "unavailable"
+      }
+    ],
+    "provider": "local_ollama",
+    "duration_seconds": 4.247
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Ahmedabad",
+        "state": "Gujarat",
+        "district": "",
+        "kind": "settlement"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "How much rain fell in Ahmedabad, Gujarat yesterday",
+        "kind": "history",
+        "operation": "daily",
+        "parameters": [
+          "rainfall"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-11T00:00:00+05:30",
+        "end_local": "2026-09-12T00:00:00+05:30",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "intent": "history",
+    "start_local": "2026-09-11T00:00:00+05:30",
+    "end_local": "2026-09-12T00:00:00+05:30",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "How much rain fell in Ahmedabad, Gujarat yesterday",
+        "kind": "history",
+        "operation": "daily",
+        "parameters": [
+          "rainfall"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-11T00:00:00+05:30",
+        "end_local": "2026-09-12T00:00:00+05:30",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "unavailable",
+      "answer": "ERA5 daily reanalysis is published with about a five-day delay. This recent date is not eligible for this history tool yet; yesterday is not being replaced with an annual value or a forecast.",
+      "fact_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

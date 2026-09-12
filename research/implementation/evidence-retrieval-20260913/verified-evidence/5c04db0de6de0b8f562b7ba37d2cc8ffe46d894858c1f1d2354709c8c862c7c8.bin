@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="https://cap-sources.s3.amazonaws.com/in-imd-en/alert-style.xsl" ?>
+<cap:alert xmlns:cap="urn:oasis:names:tc:emergency:cap:1.2">
+  <cap:identifier>urn:oid:2.49.0.1.356.0.2026.9.3.7.21.21</cap:identifier>
+  <cap:sender>rainfallnwfc@gmail.com</cap:sender>
+  <cap:sent>2026-09-03T12:51:21+05:30</cap:sent>
+  <cap:status>Actual</cap:status>
+  <cap:msgType>Alert</cap:msgType>
+  <cap:scope>Public</cap:scope>
+  <cap:info>
+    <cap:language>en</cap:language>
+    <cap:category>Met</cap:category>
+    <cap:event>Extremely heavy</cap:event>
+    <cap:responseType>Monitor</cap:responseType>
+    <cap:urgency>Expected</cap:urgency>
+    <cap:severity>Severe</cap:severity>
+    <cap:certainty>Likely</cap:certainty>
+    <cap:onset>2026-09-03T07:00:00+05:30</cap:onset>
+    <cap:expires>2026-09-04T07:00:00+05:30</cap:expires>
+    <cap:senderName>NWFC DIVISION, IMD, NEW DELHI</cap:senderName>
+    <cap:headline>Heavy to very heavy with extremely heavy rainfall</cap:headline>
+    <cap:description>Heavy to Very heavy rainfall at few places and extremely Heavy Rainfall at isolated places very likely over East Madhya Pradesh.</cap:description>
+    <cap:instruction>Action suggested
+
+	Avoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.
+	      Stay away from power lines or electrical wires.
+	      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.
+	       Drive carefully.</cap:instruction>
+    <cap:web>https://mausam.imd.gov.in/imd_latest/contents/subdivisionwise-warning.php</cap:web>
+    <cap:area>
+      <cap:areaDesc>ODISHA</cap:areaDesc>
+      <cap:polygon>25.1254,80.2881 24.5271,78.5303 23.7250,79.1455 22.5531,78.3545 21.4531,79.5850 21.4531,81.0791 22.7154,81.5625 23.6848,81.8262 24.8067,82.6172 25.1254,80.2881</cap:polygon>
+    </cap:area>
+  </cap:info>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+  <ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+    <ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+  <ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>FfsgKfG5Jn9F/FtIwmx6mmKTn0mXZ34RK8rFF0ovJRY=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>sLGDd5x/fEhLsX+MEPbnEFdGWV77ObgrUEk5weWp8pk2h2Y+hjyuaiO6MhzVBo7x54cxpniQ18iq4uY89vU50ZERR193cMfg6uDpvk1docGiFEJdeLRt/Hp8k0BeuEblp4RDhw3bMMPj51Os5N7r3qC2RBfkgZtyGBRE0POP/UD32vKbAoPYfOIv6o+JXEJaddOm87remIZ/VbuRoiIqotleLP58lo+ASVenoGikhFxMHBNsbQiQwncpCdzxIMyxDYncfTQ9bpUI72BSicjritL6EO2QhxYW/3eAvmPpaWljqbhCwu6u9bgTEnkKwvZDVIUZ4JvjmDuk2FDypCId1A==</ds:SignatureValue>
+<ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIECzCCAvOgAwIBAgIBADANBgkqhkiG9w0BAQsFADCBnzELMAkGA1UEBhMCVVMxETAPBgNVBAgMCFZpcmdpbmlhMQ8wDQYDVQQHDAZSZXN0b24xFjAUBgNVBAoMDWFsZXJ0LWh1Yi5vcmcxDjAMBgNVBAsMBWFkbWluMRgwFgYDVQQDDA9FbGlvdCBDaHJpc3RpYW4xKjAoBgkqhkiG9w0BCQEWG2VsaW90LmouY2hyaXN0aWFuQGdtYWlsLmNvbTAeFw0xOTA3MjIxMDQzMzRaFw0yOTA3MTkxMDQzMzRaMIGfMQswCQYDVQQGEwJVUzERMA8GA1UECAwIVmlyZ2luaWExDzANBgNVBAcMBlJlc3RvbjEWMBQGA1UECgwNYWxlcnQtaHViLm9yZzEOMAwGA1UECwwFYWRtaW4xGDAWBgNVBAMMD0VsaW90IENocmlzdGlhbjEqMCgGCSqGSIb3DQEJARYbZWxpb3Quai5jaHJpc3RpYW5AZ21haWwuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw5KiaOWF0XAG8LmFOFmGpbf4a+Ro3Y7t85+ytyiPLWcdLyjvbiwzRBVu5A2MCBHjJQWmHm3Et3nJxnI58pN3VZ7/3cEEOYpsveR1EJuWwC6Ow9bU1qJjLvIfw+IQ9dmZ1XZuJZCUooeVdWb0JVjedUZ7gwBs3qHxypxEAFFYljDZsK3hjQVUBerE8U0TMSnpiol3slLcKtvY3ZDiSv+EIpmjjOVJqT4BlMB9+W+tYDDhb1uwBY+f9pa2kYgE4KUxA1uyn/HOi+KAYPK525EWnbfGM2xf001lwHDEo7W0fuooTi/WkUpz+WMKuxxhivCnE3WOTu1FCdBTCujfaLGsQwIDAQABo1AwTjAdBgNVHQ4EFgQU78XZNJmiTJXTwsXoPa1oXLbC0pkwHwYDVR0jBBgwFoAU78XZNJmiTJXTwsXoPa1oXLbC0pkwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAQf+N3RFE0qrcJ1R6PkfVBok3Pv3YV3C0BxKQkA4+3C56W16bVT27fBbLh2HL9UPfux2rzWJjBfthroz6hxFKs/OWmdKhBkjvpM5J261+HTQEbIuZEASq2DjS7CfUq4xAzL2GhBL440xmmWuMrcu7Mw6T8YedsVfid4P5bN4Wsa30Ffj+FgPdApiDOu4BLz7n632hZrKUk951ChdomJs/vLk1fu737IyzVzw0m3iMtR7MrU0FPBC+W9AxubmLTruaSnhOs6j9sJKhRmGqw9AyAxey19NaMy0O6qILTrlA2Pe+S1t2Xa0wWzB6cQu8v8viLnp5SKaWf/j69hwkf5139g==</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature></cap:alert>
+

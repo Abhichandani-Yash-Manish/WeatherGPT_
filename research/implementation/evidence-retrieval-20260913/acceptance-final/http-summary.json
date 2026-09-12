@@ -1,0 +1,137 @@
+[
+  {
+    "file": "http-1-1.json",
+    "question": "What does the latest IMD bulletin say about cotton pests in Ahmedabad district, Gujarat?",
+    "status": "answered",
+    "passages": 2,
+    "facts": 0,
+    "seconds": 11.69,
+    "error": null
+  },
+  {
+    "file": "http-1-2.json",
+    "question": "What does that mean?",
+    "status": "answered",
+    "passages": 2,
+    "facts": 0,
+    "seconds": 4.16,
+    "error": null
+  },
+  {
+    "file": "http-1-3.json",
+    "question": "aur groundnut ke liye?",
+    "status": "answered",
+    "passages": 3,
+    "facts": 0,
+    "seconds": 6.5,
+    "error": null
+  },
+  {
+    "file": "http-1-4.json",
+    "question": "nahi, irrigation ke bare me batao",
+    "status": "unavailable",
+    "passages": 0,
+    "facts": 0,
+    "seconds": 7.47,
+    "error": null
+  },
+  {
+    "file": "http-1-5.json",
+    "question": "What does that mean?",
+    "status": "needs_clarification",
+    "passages": 0,
+    "facts": 0,
+    "seconds": 4.61,
+    "error": null
+  },
+  {
+    "file": "http-2-1.json",
+    "question": "What does the latest IMD bulletin say about rice at tillering stage in Kamrup district, Assam?",
+    "status": "answered",
+    "passages": 1,
+    "facts": 0,
+    "seconds": 5.51,
+    "error": null
+  },
+  {
+    "file": "http-3-1.json",
+    "question": "What does IMD say about banana in Coimbatore district, Tamil Nadu?",
+    "status": "answered",
+    "passages": 1,
+    "facts": 0,
+    "seconds": 5.37,
+    "error": null
+  },
+  {
+    "file": "http-3-2.json",
+    "question": "What does it say about irrigation for groundnut?",
+    "status": "unavailable",
+    "passages": 0,
+    "facts": 0,
+    "seconds": 5.49,
+    "error": null
+  },
+  {
+    "file": "http-4-1.json",
+    "question": "What does the current IMD bulletin say about wheat at flowering in Ahmedabad district, Gujarat?",
+    "status": "unavailable",
+    "passages": 0,
+    "facts": 0,
+    "seconds": 6.2,
+    "error": null
+  },
+  {
+    "file": "http-5-1.json",
+    "question": "Can I spray my cotton field tomorrow in Ahmedabad, Gujarat? Also tell me the rain probability tomorrow.",
+    "status": "partial",
+    "passages": 2,
+    "facts": 23,
+    "seconds": 8.84,
+    "error": null
+  },
+  {
+    "file": "http-6-1.json",
+    "question": "Any current official warnings for Ahmedabad, Gujarat?",
+    "status": "unavailable",
+    "passages": 0,
+    "facts": 0,
+    "seconds": 3.22,
+    "error": null
+  },
+  {
+    "file": "http-7-1.json",
+    "question": "kal ahmedabad me barish padne ki sambhavna kitni hai",
+    "status": "needs_selection",
+    "passages": 0,
+    "facts": 0,
+    "seconds": 11.29,
+    "error": null
+  },
+  {
+    "file": "http-7-2.json",
+    "question": "Gujarat wala",
+    "status": "partial",
+    "passages": 0,
+    "facts": 23,
+    "seconds": 0.01,
+    "error": null
+  },
+  {
+    "file": "http-7-3.json",
+    "question": "aur shaam ko?",
+    "status": "answered",
+    "passages": 0,
+    "facts": 4,
+    "seconds": 5.98,
+    "error": null
+  },
+  {
+    "file": "http-8-1.json",
+    "question": "\u092d\u093e\u0930\u0924 \u0915\u0940 2024 \u092e\u0947\u0902 \u0915\u0941\u0932 \u0935\u0930\u094d\u0937\u093e \u0914\u0930 \u0914\u0938\u0924 \u0924\u093e\u092a\u092e\u093e\u0928 \u0915\u093f\u0924\u0928\u093e \u0925\u093e?",
+    "status": "answered",
+    "passages": 0,
+    "facts": 2,
+    "seconds": 3.16,
+    "error": null
+  }
+]

@@ -1,0 +1,2 @@
+PASS: missing-year plot gaps, exact source precision, keyboard point inspection (component only)
+PASS: hourly axes, exact IST interval labels and evidence inspection (component only)

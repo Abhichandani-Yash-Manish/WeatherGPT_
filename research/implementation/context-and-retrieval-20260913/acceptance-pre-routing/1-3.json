@@ -1,0 +1,4 @@
+{
+  "error": "HTTP Error 400: Bad Request",
+  "detail": "{\"error\": \"Invalid bulletin request schema\"}"
+}

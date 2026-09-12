@@ -1,0 +1,219 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "79f2cd3f-f082-4019-b97e-910a313aa046",
+  "question": "અમદાવાદ, ગુજરાતમાં કાલે સવારે વરસાદ પડશે?",
+  "status": "answered",
+  "answer": "પસંદ કરેલા સ્થળ માટે મોડેલની આગાહી:\nAhmedabad, Ahmadābād, State of Gujarāt · 2026-09-13 06:30 → 2026-09-13 12:30 IST\nવરસાદની અંદાજિત માત્રા: 3.3 mm [t1-f1]\nઆ પસંદ કરેલા સ્થળ-બિંદુ માટે મોડેલની આગાહી છે, સ્થળ પરનું અવલોકન કે આખા જિલ્લાની સરેરાશ નથી. આગાહી બદલાઈ શકે છે.",
+  "facts": [
+    {
+      "id": "t1-f1",
+      "label": "Forecast rainfall",
+      "value": "3.3",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "start": "2026-09-13T06:30:00+05:30",
+      "end": "2026-09-13T12:30:00+05:30",
+      "source_id": "S21",
+      "method": "preceding_hour_sum",
+      "source_locators": [
+        "$.hourly.precipitation[26]",
+        "$.hourly.precipitation[27]",
+        "$.hourly.precipitation[28]",
+        "$.hourly.precipitation[29]",
+        "$.hourly.precipitation[30]",
+        "$.hourly.precipitation[31]"
+      ],
+      "parameter": "precipitation",
+      "entity_id": "geonames:1279233",
+      "evidence_version": "94be85d37193427acca2f8055a4661f425ff59594b9bc8b7b233e22cf91b6dc2",
+      "citation_ids": [
+        "t1-c-94be85d37193427acca2f8055a4661f425ff59594b9bc8b7b233e22cf91b6dc2"
+      ],
+      "task_id": "t1"
+    }
+  ],
+  "citations": [
+    {
+      "source_id": "S21",
+      "provider": "Open-Meteo",
+      "product": "GFS forecast delivery",
+      "evidence_kind": "model_forecast",
+      "url": "https://api.open-meteo.com/v1/gfs?latitude=23.02579&longitude=72.58727&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+      "response_sha256": "94be85d37193427acca2f8055a4661f425ff59594b9bc8b7b233e22cf91b6dc2",
+      "raw_relative_path": "a1f1d5c2c17901fafcd5785a7c41a5e541eb0abcf895be9474ba5ecf32603923/9d5c08ad5b034855ac141db812e0feb6/blobs/94be85d37193427acca2f8055a4661f425ff59594b9bc8b7b233e22cf91b6dc2.bin",
+      "published_job_id": "a1f1d5c2c17901fafcd5785a7c41a5e541eb0abcf895be9474ba5ecf32603923",
+      "source_locators": [
+        "$.hourly.precipitation[26]",
+        "$.hourly.precipitation[27]",
+        "$.hourly.precipitation[28]",
+        "$.hourly.precipitation[29]",
+        "$.hourly.precipitation[30]",
+        "$.hourly.precipitation[31]"
+      ],
+      "retrieved_at_utc": "2026-09-12T17:42:29.962429+00:00",
+      "issue_time_utc": null,
+      "id": "t1-c-94be85d37193427acca2f8055a4661f425ff59594b9bc8b7b233e22cf91b6dc2"
+    },
+    {
+      "source_id": "S61",
+      "url": "https://www.geonames.org/1279233",
+      "provider": "GeoNames",
+      "product": "India place catalogue",
+      "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+      "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+    }
+  ],
+  "notes": [
+    "Tomorrow is 2026-09-13. Morning defaults to 06:30–12:30 IST.",
+    "Model forecasts at the selected place point, not observations or district averages. Source model run time and local representativeness remain unverified."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T17:50:39.759178+00:00",
+  "expires_at_utc": "2026-09-12T18:42:29.962429+00:00",
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 1306,
+      "output_tokens": 287,
+      "duration_seconds": 4.604017208
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "gazetteer_search",
+        "query": {
+          "name": "Ahmedabad",
+          "state": "Gujarat",
+          "district": "",
+          "kind": "settlement"
+        },
+        "matches": 1
+      },
+      {
+        "name": "point_forecast",
+        "location": "Ahmedabad, Ahmadābād, State of Gujarāt",
+        "status": "prototype_answer",
+        "refresh": null
+      },
+      {
+        "name": "forecast",
+        "task_id": "t1",
+        "status": "answered"
+      }
+    ],
+    "provider": "local_ollama",
+    "duration_seconds": 4.663
+  },
+  "plan": {
+    "language": "gu",
+    "places": [
+      {
+        "name": "Ahmedabad",
+        "state": "Gujarat",
+        "district": "",
+        "kind": "settlement"
+      }
+    ],
+    "assumptions": [
+      "Tomorrow is 2026-09-13. Morning defaults to 06:30–12:30 IST."
+    ],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "કાલે સવારે વરસાદ પડશે?",
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-13T06:30:00+05:30",
+        "end_local": "2026-09-13T12:30:00+05:30",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "intent": "forecast",
+    "start_local": "2026-09-13T06:30:00+05:30",
+    "end_local": "2026-09-13T12:30:00+05:30",
+    "variables": [
+      "precipitation"
+    ],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "કાલે સવારે વરસાદ પડશે?",
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-13T06:30:00+05:30",
+        "end_local": "2026-09-13T12:30:00+05:30",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "answered",
+      "answer": "પસંદ કરેલા સ્થળ માટે મોડેલની આગાહી:\nAhmedabad, Ahmadābād, State of Gujarāt · 2026-09-13 06:30 → 2026-09-13 12:30 IST\nવરસાદની અંદાજિત માત્રા: 3.3 mm [t1-f1]\nઆ પસંદ કરેલા સ્થળ-બિંદુ માટે મોડેલની આગાહી છે, સ્થળ પરનું અવલોકન કે આખા જિલ્લાની સરેરાશ નથી. આગાહી બદલાઈ શકે છે.",
+      "fact_ids": [
+        "t1-f1"
+      ]
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "resolved_points": {
+    "Ahmedabad": {
+      "id": "1279233",
+      "name": "Ahmedabad",
+      "latitude": 23.02579,
+      "longitude": 72.58727,
+      "feature": "PPL",
+      "admin1": "State of Gujarāt",
+      "admin2": "Ahmadābād",
+      "modified": "2024-01-06",
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:1279233",
+      "label": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "coordinates": {
+        "latitude": 23.02579,
+        "longitude": 72.58727
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/1279233",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Ahmedabad"
+    }
+  },
+  "task_coverage": {
+    "requested": 1,
+    "completed": 1,
+    "incomplete_ids": []
+  }
+}

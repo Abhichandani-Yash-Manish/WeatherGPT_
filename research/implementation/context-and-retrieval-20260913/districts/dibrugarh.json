@@ -1,0 +1,198 @@
+{
+  "advice_valid_until": null,
+  "chunks": [
+    {
+      "bbox": [
+        80.60984408225634,
+        202.23728386784617,
+        515.8422678015713,
+        425.9278762278615
+      ],
+      "crop": "RICE",
+      "crop_key": "rice",
+      "document_sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "62b8169ee791d533d50944d2ff700baad2cba9f0407df0a3f33532a848dcb581",
+      "page": 2,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "",
+      "table": 1,
+      "text": "Since there is possibility of getting light rainfall in the coming 5 days, repair the bunds in the paddy fields to conserve rain water. Maintain standing water of 5±2 cm depth in the field."
+    },
+    {
+      "bbox": [
+        80.60984408225634,
+        202.23728386784617,
+        515.8422678015713,
+        425.9278762278615
+      ],
+      "crop": "RICE",
+      "crop_key": "rice",
+      "document_sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "dbf11cc688b06b2e14b5889cd34fc551b2e3f4f8b566c1228cdcf6ba8c4b0b99",
+      "page": 2,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "",
+      "table": 1,
+      "text": "Considering suitable weather condition in the coming 5 days, go for second top dressing with Urea @ 4.5 kg per bigha in the medium and long duration semi dwarf varieties and 1.5 kg per bigha in medium and long duration tall varieties of sali rice which are at panicle initiation stage. In case of short duration (about 100 days) semi dwarf varieties the dose of urea for top dressing should be 9 kg per bigha."
+    },
+    {
+      "bbox": [
+        80.60984408225634,
+        202.23728386784617,
+        515.8422678015713,
+        425.9278762278615
+      ],
+      "crop": "RICE",
+      "crop_key": "rice",
+      "document_sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "69b23e94611dd2854aed63052c32ff31a584ec124ce3a063243edf8c7a61f13f",
+      "page": 2,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "",
+      "table": 1,
+      "text": "Since the weather condition has become favourable for the attack of swarming caterpillar in rice crop, farmers can go for traditionally controlling the pest by sweeping coconut ropes, dipped in kerosene oil across the rice crop, causing the caterpillars to fall into water and die, or place bird perches in the field. Periodically release ducks into the fields, which will in turn consume the larvae and reduce the pest infestation. To stop the movement of swarming caterpillars from one field to another, spray the bunds with Fipronil 5% SC @ 1ml/lit of water. In infested crop, spray Lambda-cyhalothrin 5 EC @ 1.5 ml/lit of water or Chlorantraniliprole 18.50% SC @ 1ml per 3 liters of water at 7 days interval during evening hours. Three sprayings are necessary to control the pest."
+    },
+    {
+      "bbox": [
+        80.60984408225634,
+        481.66571715299426,
+        515.8422678015713,
+        554.110125782477
+      ],
+      "crop": "CAULIFLOWER",
+      "crop_key": "cauliflower",
+      "document_sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "5dd501eff65dbeb918fb816887c9c5198c2816e253b8b5f180d994469478f630",
+      "page": 2,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "",
+      "table": 2,
+      "text": "Continue nursery sowing of mid-season varieties of Cauliflower and Broccoli under shed-nets or poly houses. For sowing, collect recommended varieties of Cauliflower like Improved Japanese, Pusa Synthetic, Pusa Snowball and Main Crop Patna and Broccoli like Green Sprouting Medium, Corsair, Cruiser, Emerald, Corona etc."
+    },
+    {
+      "bbox": [
+        80.60984408225634,
+        481.66571715299426,
+        515.8422678015713,
+        554.110125782477
+      ],
+      "crop": "CAULIFLOWER",
+      "crop_key": "cauliflower",
+      "document_sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "b37ef15fe2f1d99d9185b140ca44d0e92a1deb66c7c5530a62923d1c584a9bc7",
+      "page": 2,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "",
+      "table": 2,
+      "text": "Prior to sowing, treat the seeds with fungicides like Carboxin @ 2g/kg seeds."
+    },
+    {
+      "bbox": [
+        80.60984408225634,
+        554.110125782477,
+        515.8422678015713,
+        638.0865014999184
+      ],
+      "crop": "RADISH",
+      "crop_key": "radish",
+      "document_sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "ec2cd1076dd96b35e5eebc0045b00321488eee3f624c4d0eb2adc006e4ebb4c6",
+      "page": 2,
+      "row": 3,
+      "source_id": "S57",
+      "stage": "",
+      "table": 2,
+      "text": "Continue sowing of seeds of early radish varieties in the main field. The recommended early varieties are Pusa Deshi, Pusa Chetki, Pusa Himani etc. The seeds of Radish can be directly sown either on ridges spaced at distance of 45 cm or in flat beds with a row spacing of 20cm and a recommended plant to plant spacing of 10 cm. During the time of final land preparation 26 quintals of FYM along with 7.35 kg Urea, 42 kg SSP and 22.7 kg MOP per bigha is required to be applied in the fields."
+    },
+    {
+      "bbox": [
+        80.60984408225634,
+        693.8243424250512,
+        515.8422678015713,
+        766.1578667556113
+      ],
+      "crop": "CHICKEN",
+      "crop_key": "chicken",
+      "document_sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "8a6c0910f736a99969587fc92dd6d30629f61241c2bdd60ca859dc67eb77b2e4",
+      "page": 2,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "",
+      "table": 3,
+      "text": "Increase the number of feeders and drinkers during feeding time to reduce competition among birds. Adding antioxidants such as vitamin E, vitamin C, selenium is shown to be helpful to reduce stress and improve feed consumption while maintaining or improving body weight gain. A high energy diet should be provided during summer because birds lose more energy while panting."
+    },
+    {
+      "bbox": [
+        80.59097835084243,
+        43.76523335084869,
+        515.8611335329854,
+        81.17020352076528
+      ],
+      "crop": "Muga",
+      "crop_key": "muga",
+      "document_sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "b478d155f94352d09dcbe805086d455702b6130dc2d08226f280d26e22750a5f",
+      "page": 3,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "",
+      "table": 2,
+      "text": "Prepare the ‘jali’ (mountage) for ‘Bhodia’ muga crop before 3-4 days of ripening. Do not prepare the jali with wet leaves. Hang the jali in a well aerated, semi dark and rat proof room."
+    }
+  ],
+  "district": "Dibrugarh",
+  "extraction_status": "reviewed_family_rules",
+  "extraction_version": "bulletin-grid-v2",
+  "family": "gkms_grid",
+  "forecast_end": "2026-09-16",
+  "forecast_start": "2026-09-12",
+  "issue_date": "2026-09-11",
+  "issuer_context": "9/11/26, 5:39 PM District Advisory Gramin Krishi Mausam Sewa Agromet Advisory Bulletin for DIBRUGARH District Assam Agricultural University Jorhat, Assam Agromet Advisory Bulletin Date : 2026-09-11 Weather Forecast of District DIBRUGARH (Assam) Issued On : 2026-09-11 (Valid Till 08:30 IST of the next 5 days) 2026-09-2026-09- Parameter 2026-09-12 2026-09-13 2026-09-14 15 16 Rainfall(mm) 15.3 9.9 7.4 4.0 9.0 Tmax(°C) 36.7 36.3 35.9 35.7 33.9 Tmin(°C) 24.4 24.1 24.1 24.4 23.8 RH-I(%) 87 84 83 82 84 RH-II(%) 82 79 78 76 78 Wind 2 2 1 1 3 Speed(kmph) Wind 59 68 90 56 27 Direction(Degree) Cloud 5 4 3 4 5 Cover(Octa) Thunderstorms & Heavy Rain; Heav",
+  "language": "en",
+  "pages": 3,
+  "provenance": {
+    "blob": "blobs/57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee.bin",
+    "bytes": 677275,
+    "checked_at_utc": "2026-09-12T20:19:48.783116+00:00",
+    "content_type": "application/pdf",
+    "delivery": "network",
+    "http_status": 200,
+    "raw_file": "/Users/yashabhichandani/Desktop/WeatherGPT/data/runtime/ingestion/bulletins/bulletin-grid-v2/raw/blobs/57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee.bin",
+    "retrieved_at_utc": "2026-09-12T20:19:48.750678+00:00",
+    "selection_provenance": {
+      "blob": "blobs/6a208e89ae1dd66220cbaaf6bbd584b793e00b034f845ea64dcaedb7de034959.bin",
+      "bytes": 549,
+      "checked_at_utc": "2026-09-12T20:19:47.082653+00:00",
+      "content_type": "text/html; charset=UTF-8",
+      "delivery": "network",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-09-12T20:19:47.081192+00:00",
+      "sha256": "6a208e89ae1dd66220cbaaf6bbd584b793e00b034f845ea64dcaedb7de034959",
+      "source_id": "S57",
+      "url": "https://mausam.imd.gov.in/responsive/agrometinformation/district_current_en_get.php?s=Dibrugarh&step2=true",
+      "validation_scope": "product"
+    },
+    "sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+    "source_id": "S57",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Assam&district=Dibrugarh&language=English",
+    "validation_scope": "product"
+  },
+  "quarantined_passages": [],
+  "scope": "Published source passages; no personalized prescription or independent agronomic validation",
+  "sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+  "state": "Assam"
+}

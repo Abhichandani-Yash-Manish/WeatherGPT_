@@ -1,0 +1,354 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "e705ed77-d876-45dc-a322-e62c544e480a",
+  "question": "Show all the matching passages, not just three.",
+  "status": "answered",
+  "answer": "From the Ahmedabad, Gujarat bulletin issued 2026-09-11, for groundnut:\n\nReturned 4 of 4 matching indexed passages.\n\nGroundnut · Flowering/ Pod formation · page 3:\n“White grubs in groundnut can be controlled by spraying Chlorpyrifos 20 EC with 4 litres per hectare through drip irrigation or along with irrigation. If irrigation is not being given but intermittent rainfall is occurring, prepare the insecticide solution in a spray pump, remove the nozzle and apply the solution directly into the furrows in the required quantity.”\n\nGroundnut · Flowering/ Pod formation · page 3:\n“Leaf-eating caterpillar (Spodoptera) in groundnut can be controlled by installing one light trap per hectare in the affected area and destroy the adult moths and leaf- eating caterpillar moths attracted to the trap.”\n\nGroundnut · Flowering/ Pod formation · page 3:\n“Leaf-eating caterpillar (Spodoptera) in groundnut can be controlled by installing pheromone traps with 40 traps per hectare on a community basis to keep the pest population under control. At the initial stage of infestation, spray either neem seed kernel powder extract at 500 g (5% extract) or a neem-based insecticide at 20 ml (1 EC) to 40 ml (0.15 EC) mixed in 10 litres of water. If the infestation becomes severe, spray Chlorantraniliprole 18.5 SC at 3 ml or Flubendiamide 20 WG at 6 g or Thiamethoxam 12.6% + Lambda-cyhalothrin 9.5% ZC at 3 ml 10 litres of water.”\n\nGroundnut · Flowering/ Pod formation · page 4:\n“Cutworms in groundnut can be controlled by installing one light trap per hectare to attract and destroy the moths. Prepare a 5% neem extract by mixing 500 g of neem seed kernel powder or neem leaves in 10 litres of water and spray it on the crop. If the infestation is severe, spray either Indoxacarb 14.5 SC with 10 ml per 10 litres of water or Emamectin benzoate 5 SG with 5 g per 10 litres of water.”\n\nThese are original English source excerpts, including their conditions. The bulletin is district guidance; it has not been validated for your individual field.",
+  "facts": [],
+  "citations": [
+    {
+      "id": "t1-doc-653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "source_id": "S57",
+      "provider": "IMD and named issuing agricultural institution",
+      "product": "Ahmedabad district agromet advisory",
+      "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Gujarat&district=Ahmedabad&language=English",
+      "response_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "retrieved_at_utc": "2026-09-12T19:42:08.731077+00:00",
+      "original_retrieved_at_utc": "2026-09-12T19:42:12.479759+00:00",
+      "issue_date": "2026-09-11",
+      "local_document_path": "/api/documents/653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90"
+    }
+  ],
+  "notes": [
+    "1 source passages were excluded because their body names a different crop from the row heading.",
+    "Printed district, state, issue date and five-day forecast context verified. Forecast dates are not an asserted expiry for every crop recommendation.",
+    "Source passages are retained in their original English. Chemical amounts and conditional instructions are not rewritten or personalized."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T20:24:26.906212+00:00",
+  "expires_at_utc": "2026-09-12T20:42:08.731077+00:00",
+  "trace": {
+    "planning": {
+      "provider": "literal_document_context",
+      "model_calls": 0,
+      "filled_fields": [
+        "detail"
+      ]
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "district_bulletin_retrieval",
+        "source_id": "S57",
+        "mode": "bm25_plus_multilingual_e5_rrf",
+        "candidates": 4,
+        "model": "intfloat/multilingual-e5-small",
+        "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+        "metadata_filters": {
+          "state": "Gujarat",
+          "district": "Ahmedabad",
+          "crop": "groundnut",
+          "stage": ""
+        },
+        "scores_are_confidence": false,
+        "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90"
+      },
+      {
+        "name": "agriculture",
+        "task_id": "t1",
+        "status": "answered"
+      }
+    ],
+    "provider": "local_ollama",
+    "duration_seconds": 0.875
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Ahmedabad",
+        "state": "Gujarat",
+        "district": "Ahmedabad",
+        "kind": "district"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "Show all the matching passages, not just three.",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "What does the bulletin say about groundnut in Ahmedabad district, Gujarat?",
+          "crop": "groundnut",
+          "growth_stage": "",
+          "topic": "general",
+          "mode": "source_lookup",
+          "selection": "all"
+        }
+      }
+    ],
+    "context_action": "follow_up",
+    "changed_fields": [
+      "detail"
+    ],
+    "intent": "agriculture",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "Show all the matching passages, not just three.",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "What does the bulletin say about groundnut in Ahmedabad district, Gujarat?",
+          "crop": "groundnut",
+          "growth_stage": "",
+          "topic": "general",
+          "mode": "source_lookup",
+          "selection": "all"
+        }
+      },
+      "status": "answered",
+      "answer": "From the Ahmedabad, Gujarat bulletin issued 2026-09-11, for groundnut:\n\nReturned 4 of 4 matching indexed passages.\n\nGroundnut · Flowering/ Pod formation · page 3:\n“White grubs in groundnut can be controlled by spraying Chlorpyrifos 20 EC with 4 litres per hectare through drip irrigation or along with irrigation. If irrigation is not being given but intermittent rainfall is occurring, prepare the insecticide solution in a spray pump, remove the nozzle and apply the solution directly into the furrows in the required quantity.”\n\nGroundnut · Flowering/ Pod formation · page 3:\n“Leaf-eating caterpillar (Spodoptera) in groundnut can be controlled by installing one light trap per hectare in the affected area and destroy the adult moths and leaf- eating caterpillar moths attracted to the trap.”\n\nGroundnut · Flowering/ Pod formation · page 3:\n“Leaf-eating caterpillar (Spodoptera) in groundnut can be controlled by installing pheromone traps with 40 traps per hectare on a community basis to keep the pest population under control. At the initial stage of infestation, spray either neem seed kernel powder extract at 500 g (5% extract) or a neem-based insecticide at 20 ml (1 EC) to 40 ml (0.15 EC) mixed in 10 litres of water. If the infestation becomes severe, spray Chlorantraniliprole 18.5 SC at 3 ml or Flubendiamide 20 WG at 6 g or Thiamethoxam 12.6% + Lambda-cyhalothrin 9.5% ZC at 3 ml 10 litres of water.”\n\nGroundnut · Flowering/ Pod formation · page 4:\n“Cutworms in groundnut can be controlled by installing one light trap per hectare to attract and destroy the moths. Prepare a 5% neem extract by mixing 500 g of neem seed kernel powder or neem leaves in 10 litres of water and spray it on the crop. If the infestation is severe, spray either Indoxacarb 14.5 SC with 10 ml per 10 litres of water or Emamectin benzoate 5 SG with 5 g per 10 litres of water.”\n\nThese are original English source excerpts, including their conditions. The bulletin is district guidance; it has not been validated for your individual field.",
+      "fact_ids": [],
+      "passage_ids": [
+        "418ee448ec71ce1809b131df0494ed9e3e252020c7f8250ccc97d0ddba7d0050",
+        "a9bb83e74618ebe08145f8adb564d8097d158c7657650d884042bf4ed4e30c7d",
+        "9a5a7244ddcc31c14b0303293c2e008e4ecfd520efd244ecb952aba2aec3ff3b",
+        "c874b9dcd59071dcbfebefd891571ea86c34a3e610b53b53bc4aff459e15bb18"
+      ]
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "pending_slots": [],
+  "retrieval_coverage": [
+    {
+      "selection": "all",
+      "matched": 4,
+      "returned": 4,
+      "omitted": 0,
+      "scope": "Indexed passages matching this district, crop, stage and topic; not a completeness claim for the original PDF",
+      "task_id": "t1"
+    }
+  ],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "agriculture",
+      "parameters": [
+        "agricultural_advisory"
+      ],
+      "candidates": [
+        {
+          "tool": "crop_advisory",
+          "selected": true,
+          "available": true,
+          "reason": "Published district crop/stage passages; strict printed geography and dates, hybrid retrieval in reviewed PDF families; individual field decisions remain partial",
+          "sources": [
+            {
+              "source_id": "S57",
+              "product": "IMD district farmer bulletin delivery (English and local language)",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "answered",
+      "returned_source_ids": [
+        "S57"
+      ]
+    }
+  ],
+  "passages": [
+    {
+      "bbox": [
+        41.5,
+        389.8,
+        553.9,
+        765.6
+      ],
+      "crop": "Groundnut",
+      "crop_key": "groundnut",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "418ee448ec71ce1809b131df0494ed9e3e252020c7f8250ccc97d0ddba7d0050",
+      "page": 3,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "Flowering/ Pod formation",
+      "text": "White grubs in groundnut can be controlled by spraying Chlorpyrifos 20 EC with 4 litres per hectare through drip irrigation or along with irrigation. If irrigation is not being given but intermittent rainfall is occurring, prepare the insecticide solution in a spray pump, remove the nozzle and apply the solution directly into the furrows in the required quantity.",
+      "retrieval": {
+        "rrf_score": 0.03252247488101534,
+        "lexical_score": 0.5134832719100098,
+        "semantic_score": 0.790376158109574
+      },
+      "citation_ids": [
+        "t1-doc-653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90"
+      ],
+      "state": "Gujarat",
+      "district": "Ahmedabad",
+      "issue_date": "2026-09-11",
+      "forecast_start": "2026-09-12",
+      "forecast_end": "2026-09-16",
+      "evidence_kind": "published_advisory_passage",
+      "task_id": "t1"
+    },
+    {
+      "bbox": [
+        41.5,
+        389.8,
+        553.9,
+        765.6
+      ],
+      "crop": "Groundnut",
+      "crop_key": "groundnut",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "a9bb83e74618ebe08145f8adb564d8097d158c7657650d884042bf4ed4e30c7d",
+      "page": 3,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "Flowering/ Pod formation",
+      "text": "Leaf-eating caterpillar (Spodoptera) in groundnut can be controlled by installing one light trap per hectare in the affected area and destroy the adult moths and leaf- eating caterpillar moths attracted to the trap.",
+      "retrieval": {
+        "rrf_score": 0.03252247488101534,
+        "lexical_score": 0.5194260340391338,
+        "semantic_score": 0.7807536812831841
+      },
+      "citation_ids": [
+        "t1-doc-653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90"
+      ],
+      "state": "Gujarat",
+      "district": "Ahmedabad",
+      "issue_date": "2026-09-11",
+      "forecast_start": "2026-09-12",
+      "forecast_end": "2026-09-16",
+      "evidence_kind": "published_advisory_passage",
+      "task_id": "t1"
+    },
+    {
+      "bbox": [
+        41.5,
+        389.8,
+        553.9,
+        765.6
+      ],
+      "crop": "Groundnut",
+      "crop_key": "groundnut",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "9a5a7244ddcc31c14b0303293c2e008e4ecfd520efd244ecb952aba2aec3ff3b",
+      "page": 3,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "Flowering/ Pod formation",
+      "text": "Leaf-eating caterpillar (Spodoptera) in groundnut can be controlled by installing pheromone traps with 40 traps per hectare on a community basis to keep the pest population under control. At the initial stage of infestation, spray either neem seed kernel powder extract at 500 g (5% extract) or a neem-based insecticide at 20 ml (1 EC) to 40 ml (0.15 EC) mixed in 10 litres of water. If the infestation becomes severe, spray Chlorantraniliprole 18.5 SC at 3 ml or Flubendiamide 20 WG at 6 g or Thiamethoxam 12.6% + Lambda-cyhalothrin 9.5% ZC at 3 ml 10 litres of water.",
+      "retrieval": {
+        "rrf_score": 0.03149801587301587,
+        "lexical_score": 0.40419207362154785,
+        "semantic_score": 0.7740523201283818
+      },
+      "citation_ids": [
+        "t1-doc-653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90"
+      ],
+      "state": "Gujarat",
+      "district": "Ahmedabad",
+      "issue_date": "2026-09-11",
+      "forecast_start": "2026-09-12",
+      "forecast_end": "2026-09-16",
+      "evidence_kind": "published_advisory_passage",
+      "task_id": "t1"
+    },
+    {
+      "bbox": [
+        41.5,
+        64.1,
+        553.9,
+        202.1
+      ],
+      "crop": "Groundnut",
+      "crop_key": "groundnut",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "c874b9dcd59071dcbfebefd891571ea86c34a3e610b53b53bc4aff459e15bb18",
+      "page": 4,
+      "row": 1,
+      "source_id": "S57",
+      "stage": "Flowering/ Pod formation",
+      "text": "Cutworms in groundnut can be controlled by installing one light trap per hectare to attract and destroy the moths. Prepare a 5% neem extract by mixing 500 g of neem seed kernel powder or neem leaves in 10 litres of water and spray it on the crop. If the infestation is severe, spray either Indoxacarb 14.5 SC with 10 ml per 10 litres of water or Emamectin benzoate 5 SG with 5 g per 10 litres of water.",
+      "retrieval": {
+        "rrf_score": 0.03149801587301587,
+        "lexical_score": 0.4398376066016743,
+        "semantic_score": 0.7618856981712983
+      },
+      "citation_ids": [
+        "t1-doc-653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90"
+      ],
+      "state": "Gujarat",
+      "district": "Ahmedabad",
+      "issue_date": "2026-09-11",
+      "forecast_start": "2026-09-12",
+      "forecast_end": "2026-09-16",
+      "evidence_kind": "published_advisory_passage",
+      "task_id": "t1"
+    }
+  ],
+  "document_evidence": [
+    {
+      "district": "Ahmedabad",
+      "state": "Gujarat",
+      "issue_date": "2026-09-11",
+      "forecast_start": "2026-09-12",
+      "forecast_end": "2026-09-16",
+      "advice_valid_until": null,
+      "sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "family": "arnej_grid",
+      "scope": "Published source passages; no personalized prescription or independent agronomic validation"
+    }
+  ],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 1,
+    "incomplete_ids": []
+  }
+}

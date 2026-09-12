@@ -1,0 +1,11 @@
+{
+  "source_id": "S57",
+  "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Maharashtra&district=Nagpur&language=English",
+  "retrieved_at_utc": "2026-09-12T20:59:40.597882+00:00",
+  "http_status": 200,
+  "content_type": "application/pdf",
+  "bytes": 333312,
+  "sha256": "6457f6a9c1b5d449a3b4963b374e0d9e7aa386d0d95663dd94632f3152cba235",
+  "blob": "blobs/6457f6a9c1b5d449a3b4963b374e0d9e7aa386d0d95663dd94632f3152cba235.bin",
+  "validation_scope": "product"
+}

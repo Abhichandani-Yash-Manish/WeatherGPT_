@@ -1,0 +1,37 @@
+{
+  "cross_place_attribution": {
+    "input_facts": [
+      {
+        "id": "f1",
+        "label": "Forecast rainfall",
+        "value": "3.5",
+        "unit": "mm",
+        "place": "Ahmedabad"
+      },
+      {
+        "id": "f2",
+        "label": "Forecast rainfall",
+        "value": "11.0",
+        "unit": "mm",
+        "place": "Delhi"
+      }
+    ],
+    "answer": "Delhi will receive 3.5 mm [f1], and Ahmedabad will receive 11.0 mm [f2].",
+    "generation": {
+      "provider": "audit_stub",
+      "validation": "tool-number, measurement-unit and evidence-ID checks passed; semantic evaluation remains necessary",
+      "evidence_ids": [
+        "f1",
+        "f2"
+      ]
+    },
+    "wrong_place_answer_accepted": true
+  },
+  "historical_copy_mutation": {
+    "before": "1206.6",
+    "after": "9999.9",
+    "same_citation": true,
+    "status": "ok",
+    "serving_database_unchanged": true
+  }
+}

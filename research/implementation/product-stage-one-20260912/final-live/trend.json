@@ -1,0 +1,3597 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "6c21f8af-1e3b-4b55-8e29-305f174f0525",
+  "question": "Show the annual rainfall trend for Ahmedabad district, Gujarat from 1981 to 2010.",
+  "status": "answered",
+  "answer": "Ahmedabad, Gujarat: descriptive rainfall trend 54.654 mm/decade over 1981–2010 (30 values).",
+  "facts": [
+    {
+      "label": "rainfall",
+      "value": "880.4",
+      "unit": "mm",
+      "year": 1981,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f1",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c1"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "582.0",
+      "unit": "mm",
+      "year": 1982,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f2",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c2"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "942.2",
+      "unit": "mm",
+      "year": 1983,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f3",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c3"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "706.4",
+      "unit": "mm",
+      "year": 1984,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f4",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c4"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "589.6",
+      "unit": "mm",
+      "year": 1985,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f5",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c5"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "387.5",
+      "unit": "mm",
+      "year": 1986,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f6",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c6"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "225.8",
+      "unit": "mm",
+      "year": 1987,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f7",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c7"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "810.9",
+      "unit": "mm",
+      "year": 1988,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f8",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c8"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "637.0",
+      "unit": "mm",
+      "year": 1989,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f9",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c9"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "983.6",
+      "unit": "mm",
+      "year": 1990,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f10",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c10"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "541.1",
+      "unit": "mm",
+      "year": 1991,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f11",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c11"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "549.4",
+      "unit": "mm",
+      "year": 1992,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f12",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c12"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "716.6",
+      "unit": "mm",
+      "year": 1993,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f13",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c13"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "1132.3",
+      "unit": "mm",
+      "year": 1994,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f14",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c14"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "416.7",
+      "unit": "mm",
+      "year": 1995,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f15",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c15"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "651.0",
+      "unit": "mm",
+      "year": 1996,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f16",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c16"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "1042.9",
+      "unit": "mm",
+      "year": 1997,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f17",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c17"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "732.8",
+      "unit": "mm",
+      "year": 1998,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f18",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c18"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "597.8",
+      "unit": "mm",
+      "year": 1999,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f19",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c19"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "730.2",
+      "unit": "mm",
+      "year": 2000,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f20",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c20"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "701.5",
+      "unit": "mm",
+      "year": 2001,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f21",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c21"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "340.3",
+      "unit": "mm",
+      "year": 2002,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f22",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c22"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "834.3",
+      "unit": "mm",
+      "year": 2003,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f23",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c23"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "764.2",
+      "unit": "mm",
+      "year": 2004,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f24",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c24"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "1128.7",
+      "unit": "mm",
+      "year": 2005,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f25",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c25"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "995.0",
+      "unit": "mm",
+      "year": 2006,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f26",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c26"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "845.7",
+      "unit": "mm",
+      "year": 2007,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f27",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c27"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "679.4",
+      "unit": "mm",
+      "year": 2008,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f28",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c28"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "375.7",
+      "unit": "mm",
+      "year": 2009,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f29",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c29"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "rainfall",
+      "value": "1096.8",
+      "unit": "mm",
+      "year": 2010,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f30",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c30"
+      ],
+      "task_id": "t1"
+    }
+  ],
+  "citations": [
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "612",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 82,
+      "column": "annual_mm",
+      "id": "t1-c1"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 83,
+      "column": "annual_mm",
+      "id": "t1-c2"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 84,
+      "column": "annual_mm",
+      "id": "t1-c3"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 85,
+      "column": "annual_mm",
+      "id": "t1-c4"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 86,
+      "column": "annual_mm",
+      "id": "t1-c5"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 87,
+      "column": "annual_mm",
+      "id": "t1-c6"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 88,
+      "column": "annual_mm",
+      "id": "t1-c7"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 89,
+      "column": "annual_mm",
+      "id": "t1-c8"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 90,
+      "column": "annual_mm",
+      "id": "t1-c9"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 91,
+      "column": "annual_mm",
+      "id": "t1-c10"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 92,
+      "column": "annual_mm",
+      "id": "t1-c11"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 93,
+      "column": "annual_mm",
+      "id": "t1-c12"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 94,
+      "column": "annual_mm",
+      "id": "t1-c13"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 95,
+      "column": "annual_mm",
+      "id": "t1-c14"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 96,
+      "column": "annual_mm",
+      "id": "t1-c15"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 97,
+      "column": "annual_mm",
+      "id": "t1-c16"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 98,
+      "column": "annual_mm",
+      "id": "t1-c17"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 99,
+      "column": "annual_mm",
+      "id": "t1-c18"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 100,
+      "column": "annual_mm",
+      "id": "t1-c19"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 101,
+      "column": "annual_mm",
+      "id": "t1-c20"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 102,
+      "column": "annual_mm",
+      "id": "t1-c21"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 103,
+      "column": "annual_mm",
+      "id": "t1-c22"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 104,
+      "column": "annual_mm",
+      "id": "t1-c23"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 105,
+      "column": "annual_mm",
+      "id": "t1-c24"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 106,
+      "column": "annual_mm",
+      "id": "t1-c25"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 107,
+      "column": "annual_mm",
+      "id": "t1-c26"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 108,
+      "column": "annual_mm",
+      "id": "t1-c27"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 109,
+      "column": "annual_mm",
+      "id": "t1-c28"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 110,
+      "column": "annual_mm",
+      "id": "t1-c29"
+    },
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 111,
+      "column": "annual_mm",
+      "id": "t1-c30"
+    }
+  ],
+  "notes": [
+    "Historical source geography; modern district compatibility and homogeneity unresolved.",
+    "Local research use; original publication restricts redistribution.",
+    "Source transcription is verified, but historical boundary comparability and homogeneity are unresolved. The descriptive slope is not proof of a statistically significant climate trend, causation or future conditions."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T17:42:13.979828+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 1186,
+      "output_tokens": 159,
+      "duration_seconds": 2.728988875
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "history",
+        "task_id": "t1",
+        "status": "answered"
+      }
+    ],
+    "provider": "local_ollama",
+    "duration_seconds": 3.18
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Ahmedabad",
+        "state": "Gujarat",
+        "district": "Ahmedabad",
+        "kind": "district"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "kind": "history",
+        "operation": "trend",
+        "parameters": [
+          "rainfall"
+        ],
+        "years": [
+          1981,
+          2010
+        ],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "intent": "history",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 1981,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "kind": "history",
+        "operation": "trend",
+        "parameters": [
+          "rainfall"
+        ],
+        "years": [
+          1981,
+          2010
+        ],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "answered",
+      "answer": "Ahmedabad, Gujarat: descriptive rainfall trend 54.654 mm/decade over 1981–2010 (30 values).",
+      "fact_ids": [
+        "t1-f1",
+        "t1-f2",
+        "t1-f3",
+        "t1-f4",
+        "t1-f5",
+        "t1-f6",
+        "t1-f7",
+        "t1-f8",
+        "t1-f9",
+        "t1-f10",
+        "t1-f11",
+        "t1-f12",
+        "t1-f13",
+        "t1-f14",
+        "t1-f15",
+        "t1-f16",
+        "t1-f17",
+        "t1-f18",
+        "t1-f19",
+        "t1-f20",
+        "t1-f21",
+        "t1-f22",
+        "t1-f23",
+        "t1-f24",
+        "t1-f25",
+        "t1-f26",
+        "t1-f27",
+        "t1-f28",
+        "t1-f29",
+        "t1-f30"
+      ],
+      "historical_evidence": [
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 1981,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 880.4 mm of rainfall for annual 1981.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "880.4",
+                "unit": "mm",
+                "year": 1981,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "612",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 82,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 1981,
+              "period": "annual",
+              "value_decimal": "880.4",
+              "native_value": "880.4",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 1981,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 82,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "612"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 1982,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 582.0 mm of rainfall for annual 1982.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "582.0",
+                "unit": "mm",
+                "year": 1982,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 83,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 1982,
+              "period": "annual",
+              "value_decimal": "582.0",
+              "native_value": "582.0",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 1982,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 83,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 1983,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 942.2 mm of rainfall for annual 1983.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "942.2",
+                "unit": "mm",
+                "year": 1983,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 84,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 1983,
+              "period": "annual",
+              "value_decimal": "942.2",
+              "native_value": "942.2",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 1983,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 84,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 1984,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 706.4 mm of rainfall for annual 1984.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "706.4",
+                "unit": "mm",
+                "year": 1984,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 85,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 1984,
+              "period": "annual",
+              "value_decimal": "706.4",
+              "native_value": "706.4",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 1984,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 85,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 1985,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 589.6 mm of rainfall for annual 1985.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "589.6",
+                "unit": "mm",
+                "year": 1985,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 86,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 1985,
+              "period": "annual",
+              "value_decimal": "589.6",
+              "native_value": "589.6",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 1985,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 86,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 1986,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 387.5 mm of rainfall for annual 1986.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "387.5",
+                "unit": "mm",
+                "year": 1986,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 87,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 1986,
+              "period": "annual",
+              "value_decimal": "387.5",
+              "native_value": "387.5",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 1986,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 87,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 1987,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 225.8 mm of rainfall for annual 1987.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "225.8",
+                "unit": "mm",
+                "year": 1987,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 88,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 1987,
+              "period": "annual",
+              "value_decimal": "225.8",
+              "native_value": "225.8",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 1987,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 88,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 1988,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 810.9 mm of rainfall for annual 1988.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "810.9",
+                "unit": "mm",
+                "year": 1988,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 89,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 1988,
+              "period": "annual",
+              "value_decimal": "810.9",
+              "native_value": "810.9",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 1988,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 89,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 1989,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 637.0 mm of rainfall for annual 1989.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "637.0",
+                "unit": "mm",
+                "year": 1989,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 90,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 1989,
+              "period": "annual",
+              "value_decimal": "637.0",
+              "native_value": "637.0",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 1989,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 90,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 1990,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 983.6 mm of rainfall for annual 1990.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "983.6",
+                "unit": "mm",
+                "year": 1990,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 91,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 1990,
+              "period": "annual",
+              "value_decimal": "983.6",
+              "native_value": "983.6",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 1990,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 91,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 1991,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 541.1 mm of rainfall for annual 1991.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "541.1",
+                "unit": "mm",
+                "year": 1991,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 92,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 1991,
+              "period": "annual",
+              "value_decimal": "541.1",
+              "native_value": "541.1",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 1991,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 92,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 1992,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 549.4 mm of rainfall for annual 1992.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "549.4",
+                "unit": "mm",
+                "year": 1992,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 93,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 1992,
+              "period": "annual",
+              "value_decimal": "549.4",
+              "native_value": "549.4",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 1992,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 93,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 1993,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 716.6 mm of rainfall for annual 1993.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "716.6",
+                "unit": "mm",
+                "year": 1993,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 94,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 1993,
+              "period": "annual",
+              "value_decimal": "716.6",
+              "native_value": "716.6",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 1993,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 94,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 1994,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 1132.3 mm of rainfall for annual 1994.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "1132.3",
+                "unit": "mm",
+                "year": 1994,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 95,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 1994,
+              "period": "annual",
+              "value_decimal": "1132.3",
+              "native_value": "1132.3",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 1994,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 95,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 1995,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 416.7 mm of rainfall for annual 1995.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "416.7",
+                "unit": "mm",
+                "year": 1995,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 96,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 1995,
+              "period": "annual",
+              "value_decimal": "416.7",
+              "native_value": "416.7",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 1995,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 96,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 1996,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 651.0 mm of rainfall for annual 1996.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "651.0",
+                "unit": "mm",
+                "year": 1996,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 97,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 1996,
+              "period": "annual",
+              "value_decimal": "651.0",
+              "native_value": "651.0",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 1996,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 97,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 1997,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 1042.9 mm of rainfall for annual 1997.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "1042.9",
+                "unit": "mm",
+                "year": 1997,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 98,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 1997,
+              "period": "annual",
+              "value_decimal": "1042.9",
+              "native_value": "1042.9",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 1997,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 98,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 1998,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 732.8 mm of rainfall for annual 1998.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "732.8",
+                "unit": "mm",
+                "year": 1998,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 99,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 1998,
+              "period": "annual",
+              "value_decimal": "732.8",
+              "native_value": "732.8",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 1998,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 99,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 1999,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 597.8 mm of rainfall for annual 1999.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "597.8",
+                "unit": "mm",
+                "year": 1999,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 100,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 1999,
+              "period": "annual",
+              "value_decimal": "597.8",
+              "native_value": "597.8",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 1999,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 100,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 2000,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 730.2 mm of rainfall for annual 2000.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "730.2",
+                "unit": "mm",
+                "year": 2000,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 101,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 2000,
+              "period": "annual",
+              "value_decimal": "730.2",
+              "native_value": "730.2",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 2000,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 101,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 2001,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 701.5 mm of rainfall for annual 2001.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "701.5",
+                "unit": "mm",
+                "year": 2001,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 102,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 2001,
+              "period": "annual",
+              "value_decimal": "701.5",
+              "native_value": "701.5",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 2001,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 102,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 2002,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 340.3 mm of rainfall for annual 2002.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "340.3",
+                "unit": "mm",
+                "year": 2002,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 103,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 2002,
+              "period": "annual",
+              "value_decimal": "340.3",
+              "native_value": "340.3",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 2002,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 103,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 2003,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 834.3 mm of rainfall for annual 2003.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "834.3",
+                "unit": "mm",
+                "year": 2003,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 104,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 2003,
+              "period": "annual",
+              "value_decimal": "834.3",
+              "native_value": "834.3",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 2003,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 104,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 2004,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 764.2 mm of rainfall for annual 2004.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "764.2",
+                "unit": "mm",
+                "year": 2004,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 105,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 2004,
+              "period": "annual",
+              "value_decimal": "764.2",
+              "native_value": "764.2",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 2004,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 105,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 2005,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 1128.7 mm of rainfall for annual 2005.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "1128.7",
+                "unit": "mm",
+                "year": 2005,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 106,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 2005,
+              "period": "annual",
+              "value_decimal": "1128.7",
+              "native_value": "1128.7",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 2005,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 106,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 2006,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 995.0 mm of rainfall for annual 2006.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "995.0",
+                "unit": "mm",
+                "year": 2006,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 107,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 2006,
+              "period": "annual",
+              "value_decimal": "995.0",
+              "native_value": "995.0",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 2006,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 107,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 2007,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 845.7 mm of rainfall for annual 2007.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "845.7",
+                "unit": "mm",
+                "year": 2007,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 108,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 2007,
+              "period": "annual",
+              "value_decimal": "845.7",
+              "native_value": "845.7",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 2007,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 108,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 2008,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 679.4 mm of rainfall for annual 2008.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "679.4",
+                "unit": "mm",
+                "year": 2008,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 109,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 2008,
+              "period": "annual",
+              "value_decimal": "679.4",
+              "native_value": "679.4",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 2008,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 109,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 2009,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 375.7 mm of rainfall for annual 2009.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "375.7",
+                "unit": "mm",
+                "year": 2009,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 110,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 2009,
+              "period": "annual",
+              "value_decimal": "375.7",
+              "native_value": "375.7",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 2009,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 110,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "Ahmedabad",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 2010,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 1096.8 mm of rainfall for annual 2010.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "1096.8",
+                "unit": "mm",
+                "year": 2010,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 111,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 2010,
+              "period": "annual",
+              "value_decimal": "1096.8",
+              "native_value": "1096.8",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 2010,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 111,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "charts": [
+    {
+      "kind": "historical_series",
+      "title": "Ahmedabad, Gujarat · rainfall · annual",
+      "unit": "mm",
+      "points": [
+        {
+          "year": 1981,
+          "value": "880.4",
+          "evidence_id": "t1-f1"
+        },
+        {
+          "year": 1982,
+          "value": "582.0",
+          "evidence_id": "t1-f2"
+        },
+        {
+          "year": 1983,
+          "value": "942.2",
+          "evidence_id": "t1-f3"
+        },
+        {
+          "year": 1984,
+          "value": "706.4",
+          "evidence_id": "t1-f4"
+        },
+        {
+          "year": 1985,
+          "value": "589.6",
+          "evidence_id": "t1-f5"
+        },
+        {
+          "year": 1986,
+          "value": "387.5",
+          "evidence_id": "t1-f6"
+        },
+        {
+          "year": 1987,
+          "value": "225.8",
+          "evidence_id": "t1-f7"
+        },
+        {
+          "year": 1988,
+          "value": "810.9",
+          "evidence_id": "t1-f8"
+        },
+        {
+          "year": 1989,
+          "value": "637.0",
+          "evidence_id": "t1-f9"
+        },
+        {
+          "year": 1990,
+          "value": "983.6",
+          "evidence_id": "t1-f10"
+        },
+        {
+          "year": 1991,
+          "value": "541.1",
+          "evidence_id": "t1-f11"
+        },
+        {
+          "year": 1992,
+          "value": "549.4",
+          "evidence_id": "t1-f12"
+        },
+        {
+          "year": 1993,
+          "value": "716.6",
+          "evidence_id": "t1-f13"
+        },
+        {
+          "year": 1994,
+          "value": "1132.3",
+          "evidence_id": "t1-f14"
+        },
+        {
+          "year": 1995,
+          "value": "416.7",
+          "evidence_id": "t1-f15"
+        },
+        {
+          "year": 1996,
+          "value": "651.0",
+          "evidence_id": "t1-f16"
+        },
+        {
+          "year": 1997,
+          "value": "1042.9",
+          "evidence_id": "t1-f17"
+        },
+        {
+          "year": 1998,
+          "value": "732.8",
+          "evidence_id": "t1-f18"
+        },
+        {
+          "year": 1999,
+          "value": "597.8",
+          "evidence_id": "t1-f19"
+        },
+        {
+          "year": 2000,
+          "value": "730.2",
+          "evidence_id": "t1-f20"
+        },
+        {
+          "year": 2001,
+          "value": "701.5",
+          "evidence_id": "t1-f21"
+        },
+        {
+          "year": 2002,
+          "value": "340.3",
+          "evidence_id": "t1-f22"
+        },
+        {
+          "year": 2003,
+          "value": "834.3",
+          "evidence_id": "t1-f23"
+        },
+        {
+          "year": 2004,
+          "value": "764.2",
+          "evidence_id": "t1-f24"
+        },
+        {
+          "year": 2005,
+          "value": "1128.7",
+          "evidence_id": "t1-f25"
+        },
+        {
+          "year": 2006,
+          "value": "995.0",
+          "evidence_id": "t1-f26"
+        },
+        {
+          "year": 2007,
+          "value": "845.7",
+          "evidence_id": "t1-f27"
+        },
+        {
+          "year": 2008,
+          "value": "679.4",
+          "evidence_id": "t1-f28"
+        },
+        {
+          "year": 2009,
+          "value": "375.7",
+          "evidence_id": "t1-f29"
+        },
+        {
+          "year": 2010,
+          "value": "1096.8",
+          "evidence_id": "t1-f30"
+        }
+      ],
+      "source_ids": [
+        "S27"
+      ],
+      "missing_values": "Explicit gaps, never interpolated",
+      "task_id": "t1"
+    }
+  ],
+  "calculations": [
+    {
+      "operation": "linear_trend",
+      "label": "Ahmedabad, Gujarat · rainfall",
+      "value": "54.654",
+      "unit": "mm/decade",
+      "input_ids": [
+        "t1-f1",
+        "t1-f2",
+        "t1-f3",
+        "t1-f4",
+        "t1-f5",
+        "t1-f6",
+        "t1-f7",
+        "t1-f8",
+        "t1-f9",
+        "t1-f10",
+        "t1-f11",
+        "t1-f12",
+        "t1-f13",
+        "t1-f14",
+        "t1-f15",
+        "t1-f16",
+        "t1-f17",
+        "t1-f18",
+        "t1-f19",
+        "t1-f20",
+        "t1-f21",
+        "t1-f22",
+        "t1-f23",
+        "t1-f24",
+        "t1-f25",
+        "t1-f26",
+        "t1-f27",
+        "t1-f28",
+        "t1-f29",
+        "t1-f30"
+      ],
+      "sample_count": 30,
+      "method": "OLS against actual calendar year; slope multiplied by 10; rounded to 0.001",
+      "interpretation": "Descriptive source-series slope, not homogenized climate change attribution or a future projection",
+      "task_id": "t1"
+    }
+  ],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 1,
+    "incomplete_ids": []
+  }
+}

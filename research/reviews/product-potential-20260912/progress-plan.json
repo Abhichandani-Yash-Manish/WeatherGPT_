@@ -1,0 +1,169 @@
+{
+  "schema_version": "product-progress-plan-v1",
+  "as_of_utc": "2026-09-12T17:16:16.479348+00:00",
+  "status": "proposed_not_implemented",
+  "user_direction": "Desktop web now. Hosting/sharing on hold. Preserve final nationwide and specialist scope.",
+  "next_batch": [
+    "P01",
+    "P02",
+    "P03",
+    "P09"
+  ],
+  "parallel_discovery_note": "Begin official access/validity/geography work early; no requirement to wait for every other stage.",
+  "stages": [
+    {
+      "id": "S1",
+      "title": "Answer fidelity and task coverage",
+      "depends_on": [],
+      "finding_ids": [
+        "P01",
+        "P02",
+        "P03",
+        "P08",
+        "P12"
+      ],
+      "deliverables": [
+        "Claim attribution tuples and deterministic factual rendering",
+        "Verified national/district serving manifests",
+        "Typed task list, operations and date ranges",
+        "Task-level coverage status and accepted entity state"
+      ],
+      "exit_checks": [
+        "Wrong entity/time/unit swaps rejected",
+        "Altered copied historical artifacts rejected",
+        "Every requested subtask completed or explicitly missing"
+      ],
+      "status": "proposed",
+      "distribution_hold": false
+    },
+    {
+      "id": "S2",
+      "title": "Everyday forecast and research answers",
+      "depends_on": [
+        "S1"
+      ],
+      "finding_ids": [
+        "P03",
+        "P05",
+        "P09"
+      ],
+      "deliverables": [
+        "Extended forecast contract",
+        "Hourly timeline and exact supported interval operations",
+        "Daily reanalysis and range lookup",
+        "Descriptive comparisons, baselines, trends and charts"
+      ],
+      "exit_checks": [
+        "Probability semantics and variable lineage validated",
+        "Daily questions never become annual lookups",
+        "Independent calculation oracles and missingness gates pass"
+      ],
+      "status": "proposed",
+      "distribution_hold": false
+    },
+    {
+      "id": "S3",
+      "title": "Specialist adapter activation",
+      "depends_on": [
+        "S1"
+      ],
+      "finding_ids": [
+        "P04",
+        "P08",
+        "P10"
+      ],
+      "deliverables": [
+        "METAR/TAF/station tools",
+        "Marine wave tool",
+        "River discharge tool",
+        "Typed specialist entities and unified source budgets"
+      ],
+      "exit_checks": [
+        "Airport/sea/river identity and time verified",
+        "Data type distinctions visible",
+        "No closure, flight disruption or flood impact claims without evidence"
+      ],
+      "status": "proposed",
+      "distribution_hold": false
+    },
+    {
+      "id": "S4",
+      "title": "Official warnings and document retrieval",
+      "depends_on": [
+        "S1"
+      ],
+      "finding_ids": [
+        "P06",
+        "P07",
+        "P08"
+      ],
+      "deliverables": [
+        "Warning lifecycle and applicability",
+        "Reviewed document-family extraction",
+        "Versioned chunks and metadata filters",
+        "Lexical plus dense retrieval with citations"
+      ],
+      "exit_checks": [
+        "Wrong-area/expired/cancelled/test events excluded",
+        "Updated bulletins supersede current retrieval versions",
+        "Wrong-place/time/crop retrieval and citation-support tests pass"
+      ],
+      "status": "proposed",
+      "distribution_hold": false
+    },
+    {
+      "id": "S5",
+      "title": "Language, resilience and desktop usability",
+      "depends_on": [
+        "S2",
+        "S3",
+        "S4"
+      ],
+      "finding_ids": [
+        "P10",
+        "P11",
+        "P12",
+        "P13",
+        "P14"
+      ],
+      "deliverables": [
+        "Complete Hindi/Gujarati dialogue paths",
+        "Queue, cancel, progress and recovery",
+        "Source health/retention/restore rehearsal",
+        "Desktop answer charts and source inspection"
+      ],
+      "exit_checks": [
+        "Representative sustained run measured",
+        "No lost correction context",
+        "Fluent review and desktop journey checks pass"
+      ],
+      "status": "proposed",
+      "distribution_hold": false
+    },
+    {
+      "id": "S6",
+      "title": "Later voice, mobile and distribution",
+      "depends_on": [
+        "S5"
+      ],
+      "finding_ids": [
+        "P06",
+        "P13",
+        "P14"
+      ],
+      "deliverables": [
+        "STT/transcript/TTS",
+        "Mobile acceptance",
+        "Subscriptions/outbox/delivery lifecycle",
+        "Private hosting and release packaging"
+      ],
+      "exit_checks": [
+        "Voice preserves entities/time/units/negation",
+        "Notifications update/expire/revoke correctly",
+        "User-approved sharing readiness and verified deployed journeys"
+      ],
+      "status": "proposed",
+      "distribution_hold": true
+    }
+  ]
+}

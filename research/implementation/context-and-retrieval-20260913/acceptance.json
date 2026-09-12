@@ -1,0 +1,23 @@
+{
+  "http_turns": 18,
+  "statuses": {
+    "answered": 7,
+    "needs_clarification": 2,
+    "needs_selection": 1,
+    "partial": 5,
+    "unavailable": 3
+  },
+  "source_passage_instances": 26,
+  "numeric_forecast_facts": 50,
+  "source_documents_replayed": 3,
+  "saved_pdf_http_hashes": {
+    "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90": 200,
+    "f5e9fbe91b5fe14b3b9a3290517696b279cf93b327c4067b9c7ee0225df71e07": 200,
+    "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee": 200
+  },
+  "latency_seconds": {
+    "median": 5.68,
+    "max": 15.4
+  },
+  "scope": "Recorded local HTTP journeys using Ollama and source-byte replay. Decision support, national corpus completeness, general-section retrieval, scientific skill and browser acceptance remain unverified."
+}

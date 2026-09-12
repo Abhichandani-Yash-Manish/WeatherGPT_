@@ -1,0 +1,114 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "fec408ac-e0a1-4a46-854f-a1fd27cf4771",
+  "question": "How much rain fell in Ahmedabad, Gujarat yesterday?",
+  "status": "needs_clarification",
+  "answer": "Which year or year range should I look up?",
+  "facts": [],
+  "citations": [],
+  "notes": [
+    "Yesterday refers to the calendar date of September 11, 2026. The period covers 00:30 IST on Sep 11 to 00:30 IST on Sep 12 to align with source accumulation hours."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T17:39:01.758782+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 1169,
+      "output_tokens": 449,
+      "duration_seconds": 6.93978
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "history",
+        "task_id": "t1",
+        "status": "needs_clarification"
+      }
+    ],
+    "provider": "local_ollama",
+    "duration_seconds": 6.952
+  },
+  "plan": {
+    "intent": "history",
+    "language": "en",
+    "places": [
+      {
+        "name": "Ahmedabad",
+        "state": "Gujarat",
+        "district": "",
+        "kind": "settlement"
+      }
+    ],
+    "start_local": "2026-09-11T00:30:00+05:30",
+    "end_local": "2026-09-12T00:30:00+05:30",
+    "explicit_times": false,
+    "variables": [
+      "precipitation"
+    ],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "assumptions": [
+      "Yesterday refers to the calendar date of September 11, 2026. The period covers 00:30 IST on Sep 11 to 00:30 IST on Sep 12 to align with source accumulation hours."
+    ],
+    "clarification": "",
+    "requested_outcome": "Retrieve the total rainfall amount for Ahmedabad, Gujarat for September 11, 2026.",
+    "tasks": [
+      {
+        "kind": "history",
+        "operation": "series",
+        "parameters": [
+          "rainfall"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-11T00:30:00+05:30",
+        "end_local": "2026-09-12T00:30:00+05:30",
+        "place_indices": [
+          0
+        ]
+      }
+    ]
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "kind": "history",
+        "operation": "series",
+        "parameters": [
+          "rainfall"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-11T00:30:00+05:30",
+        "end_local": "2026-09-12T00:30:00+05:30",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "needs_clarification",
+      "answer": "Which year or year range should I look up?",
+      "fact_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

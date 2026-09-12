@@ -1,0 +1,110 @@
+[
+  {
+    "file": "1-1.json",
+    "question": "Can I spray tomorrow?",
+    "status": "needs_clarification",
+    "seconds": 12.15
+  },
+  {
+    "file": "1-2.json",
+    "question": "Ahmedabad, Gujarat",
+    "status": "partial",
+    "seconds": 1.71
+  },
+  {
+    "file": "1-3.json",
+    "question": "cotton",
+    "status": null,
+    "seconds": 4.91
+  },
+  {
+    "file": "1-4.json",
+    "question": "flowering stage",
+    "status": null,
+    "seconds": 5.16
+  },
+  {
+    "file": "2-1.json",
+    "question": "What does the IMD bulletin say for cotton and groundnut pests in Ahmedabad district, Gujarat?",
+    "status": "answered",
+    "seconds": 19.78
+  },
+  {
+    "file": "3-1.json",
+    "question": "What does the bulletin say about groundnut in Ahmedabad district, Gujarat?",
+    "status": "answered",
+    "seconds": 5.87
+  },
+  {
+    "file": "3-2.json",
+    "question": "Show all the matching passages, not just three.",
+    "status": "answered",
+    "seconds": 0.86
+  },
+  {
+    "file": "4-1.json",
+    "question": "Show rice advice in Kamrup district, Assam.",
+    "status": "answered",
+    "seconds": 5.04
+  },
+  {
+    "file": "4-2.json",
+    "question": "Not rice, maize at sowing stage.",
+    "status": "answered",
+    "seconds": 4.95
+  },
+  {
+    "file": "5-1.json",
+    "question": "Show rice advice in Dibrugarh district, Assam.",
+    "status": "answered",
+    "seconds": 5.29
+  },
+  {
+    "file": "5-2.json",
+    "question": "Only at tillering stage.",
+    "status": "unavailable",
+    "seconds": 5.87
+  },
+  {
+    "file": "6-1.json",
+    "question": "What does the bulletin say about cotton and rice in Ahmedabad district, Gujarat?",
+    "status": "answered",
+    "seconds": 9.31
+  },
+  {
+    "file": "7-1.json",
+    "question": "Show banana advice in Surat district, Gujarat.",
+    "status": "unavailable",
+    "seconds": 5.06
+  },
+  {
+    "file": "8-1.json",
+    "question": "Show rice advice in Madurai district, Tamil Nadu.",
+    "status": "unavailable",
+    "seconds": 5.07
+  },
+  {
+    "file": "9-1.json",
+    "question": "kal ahmedabad me barish padne ki sambhavna kitni hai",
+    "status": "needs_selection",
+    "seconds": 6.01
+  },
+  {
+    "file": "9-2.json",
+    "question": "Gujarat wala",
+    "status": "partial",
+    "seconds": 0.01
+  },
+  {
+    "file": "9-3.json",
+    "question": "aur shaam ko?",
+    "status": "answered",
+    "seconds": 5.98
+  },
+  {
+    "file": "10-1.json",
+    "question": "Can I spray my cotton field tomorrow in Ahmedabad, Gujarat? Also tell me the rain probability tomorrow.",
+    "status": "partial",
+    "seconds": 9.2
+  }
+]

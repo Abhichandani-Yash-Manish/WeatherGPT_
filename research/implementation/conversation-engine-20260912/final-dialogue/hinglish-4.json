@@ -1,0 +1,401 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "9e5cb0f3-82a6-400f-909c-6bf6e0ae9de3",
+  "question": "nahi, Surat ke liye batao",
+  "status": "answered",
+  "answer": "Surat · 14 Sep, 18:30–14 Sep, 22:30 IST: Is poore samay ki kul anumaanit barish: 0.4 mm. Alag-alag ghanton mein barish ki matra: 0.0–0.2 mm. Srot: Open-Meteo best-match ka poorvanuman; mausam badal sakta hai.",
+  "facts": [
+    {
+      "id": "t1-f1",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "0.1",
+      "unit": "mm",
+      "place": "Surat, Sūrat, State of Gujarāt",
+      "entity_id": "geonames:1255364",
+      "start": "2026-09-14T18:30:00+05:30",
+      "end": "2026-09-14T19:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "a86c874f0e209575d73c5725ee933d059ab4c4ad5aeb67d42f2ef080e9f9cea9",
+      "citation_ids": [
+        "t1-c-a86c874f0e209575d73c5725ee933d059ab4c4ad5aeb67d42f2ef080e9f9cea9"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[62]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f2",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "0.2",
+      "unit": "mm",
+      "place": "Surat, Sūrat, State of Gujarāt",
+      "entity_id": "geonames:1255364",
+      "start": "2026-09-14T19:30:00+05:30",
+      "end": "2026-09-14T20:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "a86c874f0e209575d73c5725ee933d059ab4c4ad5aeb67d42f2ef080e9f9cea9",
+      "citation_ids": [
+        "t1-c-a86c874f0e209575d73c5725ee933d059ab4c4ad5aeb67d42f2ef080e9f9cea9"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[63]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f3",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "0.1",
+      "unit": "mm",
+      "place": "Surat, Sūrat, State of Gujarāt",
+      "entity_id": "geonames:1255364",
+      "start": "2026-09-14T20:30:00+05:30",
+      "end": "2026-09-14T21:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "a86c874f0e209575d73c5725ee933d059ab4c4ad5aeb67d42f2ef080e9f9cea9",
+      "citation_ids": [
+        "t1-c-a86c874f0e209575d73c5725ee933d059ab4c4ad5aeb67d42f2ef080e9f9cea9"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[64]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f4",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "0.0",
+      "unit": "mm",
+      "place": "Surat, Sūrat, State of Gujarāt",
+      "entity_id": "geonames:1255364",
+      "start": "2026-09-14T21:30:00+05:30",
+      "end": "2026-09-14T22:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "a86c874f0e209575d73c5725ee933d059ab4c4ad5aeb67d42f2ef080e9f9cea9",
+      "citation_ids": [
+        "t1-c-a86c874f0e209575d73c5725ee933d059ab4c4ad5aeb67d42f2ef080e9f9cea9"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[65]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    }
+  ],
+  "citations": [
+    {
+      "id": "t1-c-a86c874f0e209575d73c5725ee933d059ab4c4ad5aeb67d42f2ef080e9f9cea9",
+      "source_id": "S62",
+      "provider": "Open-Meteo",
+      "product": "Best-match hourly model forecast",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=21.19594&longitude=72.83023&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m%2Cprecipitation_probability%2Capparent_temperature%2Cwind_gusts_10m%2Cvisibility&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+      "response_sha256": "a86c874f0e209575d73c5725ee933d059ab4c4ad5aeb67d42f2ef080e9f9cea9",
+      "retrieved_at_utc": "2026-09-12T18:53:25.948000+00:00",
+      "requested_point": {
+        "latitude": 21.19594,
+        "longitude": 72.83023
+      },
+      "returned_grid": {
+        "latitude": 21.195078,
+        "longitude": 72.787384
+      },
+      "grid_distance_km": 4.443,
+      "model_run_time": null
+    },
+    {
+      "source_id": "S61",
+      "url": "https://www.geonames.org/1255364",
+      "provider": "GeoNames",
+      "product": "India place catalogue",
+      "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+      "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+    }
+  ],
+  "notes": [
+    "Precipitation includes rain, showers and snow water equivalent; it is not a rain-only gauge measurement.",
+    "Source hours are on UTC boundaries (:30 in IST). Each probability is for >0.1 mm in its preceding hour. Hourly probabilities are never combined into a period probability.",
+    "Best-match model selection may differ by variable; upstream run and local representativeness are unverified. Hourly values cannot determine an exact rain start minute or issue an official warning."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T18:57:12.630872+00:00",
+  "expires_at_utc": "2026-09-12T19:53:25.948000+00:00",
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 3325,
+      "output_tokens": 270,
+      "duration_seconds": 5.156767583
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "gazetteer_search",
+        "query": {
+          "name": "Surat",
+          "state": "Gujarat",
+          "district": "",
+          "kind": "settlement"
+        },
+        "matches": 1
+      },
+      {
+        "name": "extended_forecast",
+        "job_id": "8128ed24598583207a0f645bee36ba8fb2153e19a19ea4776333133a860bd2db",
+        "worker": {
+          "state": "already_collected"
+        },
+        "source_sha256": "a86c874f0e209575d73c5725ee933d059ab4c4ad5aeb67d42f2ef080e9f9cea9"
+      },
+      {
+        "name": "forecast",
+        "task_id": "t1",
+        "status": "answered"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "correction",
+      "changed_fields": [
+        "places"
+      ],
+      "inherited_fields": [
+        "parameters",
+        "time",
+        "operation"
+      ]
+    },
+    "duration_seconds": 5.221
+  },
+  "retrieval_preferences": {
+    "forecast_source": "S62",
+    "reason": "Continue the established forecast product for follow-up measures."
+  },
+  "plan": {
+    "language": "hi-Latn",
+    "places": [
+      {
+        "name": "Surat",
+        "state": "Gujarat",
+        "district": "",
+        "kind": "settlement"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "nahi, Surat ke liye batao",
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-14T18:30:00+05:30",
+        "end_local": "2026-09-14T22:30:00+05:30",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "context_action": "correction",
+    "changed_fields": [
+      "places"
+    ],
+    "intent": "forecast",
+    "start_local": "2026-09-14T18:30:00+05:30",
+    "end_local": "2026-09-14T22:30:00+05:30",
+    "variables": [
+      "precipitation"
+    ],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "nahi, Surat ke liye batao",
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-14T18:30:00+05:30",
+        "end_local": "2026-09-14T22:30:00+05:30",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "answered",
+      "answer": "Surat · 14 Sep, 18:30–14 Sep, 22:30 IST: Is poore samay ki kul anumaanit barish: 0.4 mm. Alag-alag ghanton mein barish ki matra: 0.0–0.2 mm. Srot: Open-Meteo best-match ka poorvanuman; mausam badal sakta hai.",
+      "fact_ids": [
+        "t1-f1",
+        "t1-f2",
+        "t1-f3",
+        "t1-f4"
+      ]
+    }
+  ],
+  "charts": [
+    {
+      "kind": "hourly_series",
+      "axis_label": "Time (IST)",
+      "title": "Surat, Sūrat, State of Gujarāt · Hourly precipitation amount",
+      "unit": "mm",
+      "points": [
+        {
+          "x": 1789390800.0,
+          "label": "14 Sep 18:30–19:30",
+          "value": "0.1",
+          "evidence_id": "t1-f1"
+        },
+        {
+          "x": 1789394400.0,
+          "label": "14 Sep 19:30–20:30",
+          "value": "0.2",
+          "evidence_id": "t1-f2"
+        },
+        {
+          "x": 1789398000.0,
+          "label": "14 Sep 20:30–21:30",
+          "value": "0.1",
+          "evidence_id": "t1-f3"
+        },
+        {
+          "x": 1789401600.0,
+          "label": "14 Sep 21:30–22:30",
+          "value": "0.0",
+          "evidence_id": "t1-f4"
+        }
+      ],
+      "source_ids": [
+        "S62"
+      ],
+      "task_id": "t1"
+    }
+  ],
+  "calculations": [
+    {
+      "label": "Surat, Sūrat, State of Gujarāt · Precipitation total across requested hours",
+      "value": "0.4",
+      "unit": "mm",
+      "method": "sum of complete forecast hourly precipitation values",
+      "input_ids": [
+        "t1-f1",
+        "t1-f2",
+        "t1-f3",
+        "t1-f4"
+      ],
+      "source_ids": [
+        "S62"
+      ],
+      "task_id": "t1"
+    }
+  ],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "forecast",
+      "parameters": [
+        "precipitation"
+      ],
+      "candidates": [
+        {
+          "tool": "hourly_forecast",
+          "selected": true,
+          "available": true,
+          "reason": "Hourly evidence; exact onset and whole-period probability unavailable",
+          "sources": [
+            {
+              "source_id": "S62",
+              "product": "Open-Meteo best-match extended hourly forecast",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        },
+        {
+          "tool": "forecast_summary",
+          "selected": false,
+          "available": true,
+          "reason": "Exact-window GFS model summary",
+          "sources": [
+            {
+              "source_id": "S21",
+              "product": "Open-Meteo GFS forecast delivery",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "answered",
+      "returned_source_ids": [
+        "S61",
+        "S62"
+      ]
+    }
+  ],
+  "resolved_points": {
+    "Surat": {
+      "id": "1255364",
+      "name": "Surat",
+      "latitude": 21.19594,
+      "longitude": 72.83023,
+      "feature": "PPLA2",
+      "admin1": "State of Gujarāt",
+      "admin2": "Sūrat",
+      "modified": "2026-08-30",
+      "name_match_basis": "canonical",
+      "other_alias_matches": 1,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:1255364",
+      "label": "Surat, Sūrat, State of Gujarāt",
+      "coordinates": {
+        "latitude": 21.19594,
+        "longitude": 72.83023
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/1255364",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Surat"
+    }
+  },
+  "task_coverage": {
+    "requested": 1,
+    "completed": 1,
+    "incomplete_ids": []
+  }
+}

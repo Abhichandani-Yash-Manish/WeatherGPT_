@@ -1,0 +1,406 @@
+[
+  {
+    "id": "comparison",
+    "question": "Compare annual rainfall in Ahmedabad district, Gujarat in 2010 and 2011.",
+    "plan": {
+      "intent": "history",
+      "language": "en",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "Gujarat",
+          "district": "Ahmedabad",
+          "kind": "district"
+        }
+      ],
+      "start_local": "2010-04-01T00:30:00+05:30",
+      "end_local": "2011-03-31T00:30:00+05:30",
+      "explicit_times": false,
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "assumptions": [
+        "Annual rainfall comparison for Ahmedabad district between the calendar years 2010 and 2011."
+      ],
+      "clarification": "",
+      "requested_outcome": "Retrieve annual rainfall data for Ahmedabad district, Gujarat for the years 2010 and 2011 to compare them."
+    },
+    "model": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 785,
+      "output_tokens": 284,
+      "duration_seconds": 4.533105125
+    },
+    "historical_result": {
+      "status": "needs_clarification",
+      "text": "Which year and month or season should I look up?",
+      "facts": [],
+      "citations": []
+    }
+  },
+  {
+    "id": "trend",
+    "question": "Has annual rainfall increased in Ahmedabad district, Gujarat between 1981 and 2010? Give the trend per decade.",
+    "plan": {
+      "intent": "research",
+      "language": "en",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "Gujarat",
+          "district": "Ahmedabad",
+          "kind": "district"
+        }
+      ],
+      "start_local": "",
+      "end_local": "",
+      "explicit_times": false,
+      "variables": [],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "assumptions": [
+        "No specific time of day requested; defaulting to annual period for historical trend analysis."
+      ],
+      "clarification": "",
+      "requested_outcome": "Retrieve annual rainfall data for Ahmedabad district, Gujarat from 1981 to 2010 and calculate the decadal trend."
+    },
+    "model": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 792,
+      "output_tokens": 217,
+      "duration_seconds": 11.09033225
+    }
+  },
+  {
+    "id": "daily_history",
+    "question": "How much rain fell in Ahmedabad, Gujarat yesterday?",
+    "plan": {
+      "intent": "history",
+      "language": "en",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "Gujarat",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "start_local": "2026-09-11T00:30:00+05:30",
+      "end_local": "2026-09-12T00:30:00+05:30",
+      "explicit_times": false,
+      "variables": [
+        "precipitation"
+      ],
+      "year": 2026,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "assumptions": [
+        "Yesterday refers to the calendar date 2026-09-11. The period covers 00:30 IST on 2026-09-11 to 00:30 IST on 2026-09-12."
+      ],
+      "clarification": "",
+      "requested_outcome": "Retrieve historical rainfall amount for Ahmedabad, Gujarat on 2026-09-11."
+    },
+    "model": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 774,
+      "output_tokens": 320,
+      "duration_seconds": 4.903993625
+    },
+    "historical_result": {
+      "status": "unavailable",
+      "text": "The stored Ahmedabad, Gujarat series covers 1901–2010, with 110 published years. It cannot supply 2026.",
+      "facts": [],
+      "citations": []
+    }
+  },
+  {
+    "id": "two_parameters",
+    "question": "What were the annual rainfall and mean temperature for India in 2024?",
+    "plan": {
+      "intent": "history",
+      "language": "en",
+      "places": [
+        {
+          "name": "India",
+          "state": "",
+          "district": "",
+          "kind": "country"
+        }
+      ],
+      "start_local": "",
+      "end_local": "",
+      "explicit_times": false,
+      "variables": [
+        "precipitation",
+        "temperature_2m"
+      ],
+      "year": 2024,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "assumptions": [
+        "No time specified: defaulting to annual period for the requested year."
+      ],
+      "clarification": "",
+      "requested_outcome": "Retrieve historical annual rainfall and mean temperature data for India in 2024."
+    },
+    "model": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 780,
+      "output_tokens": 213,
+      "duration_seconds": 3.523981875
+    },
+    "historical_result": {
+      "status": "answered",
+      "text": "India's published annual rainfall for 2024 was 1206.6 mm.",
+      "facts": [
+        {
+          "label": "rainfall",
+          "value": "1206.6",
+          "unit": "mm",
+          "year": 2024,
+          "period": "annual",
+          "source_id": "S25"
+        }
+      ],
+      "citations": [
+        {
+          "source_id": "S25",
+          "url": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php",
+          "provider": "IMD",
+          "product": "Published All India historical table",
+          "raw_asset_path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+          "sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+          "row": 125,
+          "column": "Annual"
+        }
+      ],
+      "notes": [
+        "This is the published All India aggregate; it does not describe an individual village or district.",
+        "The source aggregate differs from the sum of its published months; the original total and reconciliation are retained."
+      ],
+      "raw": {
+        "status": "ok",
+        "scope": "Published historical All India aggregate; not current or district weather.",
+        "record": {
+          "record_id": "6625ac7d34e0bd5d15c07cb10d9cb3d4896831aaf8024598052fa0f2a38eca3e",
+          "source_id": "S25",
+          "source_series_id": "historical_rain_whi",
+          "geography_id": "all-india-aggregate",
+          "geography_label": "All India aggregate",
+          "parameter": "precipitation_amount",
+          "year": 2024,
+          "period_type": "year",
+          "period_code": "ANNUAL",
+          "period_start": "2024-01-01",
+          "period_end_exclusive": "2025-01-01",
+          "value_decimal": "1206.6",
+          "native_value": "1206.6",
+          "unit": "mm",
+          "quality_flags": [
+            "published_total_differs_from_month_sum"
+          ],
+          "asset_sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+          "raw_asset_path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+          "source_row": 125,
+          "source_column": "Annual",
+          "source_url": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php",
+          "retrieved_at_utc": "2026-09-11T16:27:58.620400+00:00",
+          "transformation_version": "national-climate-v1"
+        },
+        "reconciliation": {
+          "source_id": "S25",
+          "year": 2024,
+          "period_code": "ANNUAL",
+          "published_value": "1206.6",
+          "computed_month_sum": "1204.1",
+          "difference_mm": "2.5",
+          "rounding_bound_mm": "0.65",
+          "status": "beyond_rounding_bound",
+          "source_row": 125,
+          "source_column": "Annual",
+          "asset_sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90"
+        },
+        "citation": {
+          "source_id": "S25",
+          "url": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php",
+          "raw_asset_path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+          "sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+          "row": 125,
+          "column": "Annual"
+        }
+      }
+    }
+  },
+  {
+    "id": "combined",
+    "question": "What is the forecast in Ahmedabad, Gujarat tomorrow morning, and are there any official warnings?",
+    "plan": {
+      "intent": "forecast",
+      "language": "en",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "Gujarat",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "start_local": "2026-09-13T06:30:00+05:30",
+      "end_local": "2026-09-13T12:30:00+05:30",
+      "explicit_times": false,
+      "variables": [
+        "temperature_2m",
+        "precipitation",
+        "wind_speed_10m",
+        "relative_humidity_2m"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [
+        "warning"
+      ],
+      "assumptions": [
+        "Tomorrow morning defaulted to 06:30–12:30 IST."
+      ],
+      "clarification": "",
+      "requested_outcome": "Retrieve weather forecast for Ahmedabad, Gujarat for tomorrow morning (06:30-12:30 IST) and check for official weather warnings."
+    },
+    "model": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 782,
+      "output_tokens": 319,
+      "duration_seconds": 4.930533209
+    }
+  },
+  {
+    "id": "aviation",
+    "question": "Give me the latest METAR for VAAH airport.",
+    "plan": {
+      "intent": "observation",
+      "language": "en",
+      "places": [
+        {
+          "name": "VAAH",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "start_local": "",
+      "end_local": "",
+      "explicit_times": false,
+      "variables": [
+        "wind_speed_10m"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "assumptions": [
+        "METAR is an observation of current weather conditions."
+      ],
+      "clarification": "",
+      "requested_outcome": "Retrieve the latest METAR report for VAAH airport."
+    },
+    "model": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 775,
+      "output_tokens": 215,
+      "duration_seconds": 3.497543625
+    }
+  },
+  {
+    "id": "marine",
+    "question": "What is the wave height off Veraval, Gujarat tomorrow morning?",
+    "plan": {
+      "intent": "forecast",
+      "language": "en",
+      "places": [
+        {
+          "name": "Veraval",
+          "state": "Gujarat",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "start_local": "2026-09-13T06:30:00+05:30",
+      "end_local": "2026-09-13T12:30:00+05:30",
+      "explicit_times": false,
+      "variables": [
+        "wind_speed_10m"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [
+        "wave_height"
+      ],
+      "assumptions": [
+        "Tomorrow morning defaulted to 06:30–12:30 IST."
+      ],
+      "clarification": "",
+      "requested_outcome": "Forecast wind conditions for Veraval, Gujarat on the morning of September 13, 2026, as wave height is unsupported."
+    },
+    "model": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 776,
+      "output_tokens": 311,
+      "duration_seconds": 4.870933208
+    }
+  },
+  {
+    "id": "rain_time",
+    "question": "At what time will rain start in Ahmedabad, Gujarat tomorrow?",
+    "plan": {
+      "intent": "forecast",
+      "language": "en",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "Gujarat",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "start_local": "2026-09-13T00:00:00+05:30",
+      "end_local": "2026-09-14T00:00:00+05:30",
+      "explicit_times": false,
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "assumptions": [
+        "Tomorrow refers to the next local calendar date: 2026-09-13.",
+        "A whole day is defined as 00:30–00:30 the following date for source accumulation alignment."
+      ],
+      "clarification": "",
+      "requested_outcome": "Forecast of rain start time in Ahmedabad, Gujarat for tomorrow (2026-09-13)."
+    },
+    "model": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 776,
+      "output_tokens": 308,
+      "duration_seconds": 4.80113175
+    }
+  }
+]

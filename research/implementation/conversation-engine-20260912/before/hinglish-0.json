@@ -1,0 +1,182 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "015d2f29-4063-42ff-87e6-031b1affe56d",
+  "question": "kal ahmedabad me barish padne ki sambhavna kitni hai",
+  "status": "needs_selection",
+  "answer": "I found 2 possible places for Ahmedabad. Please confirm the intended location and spelling.",
+  "facts": [],
+  "citations": [],
+  "notes": [
+    "Tomorrow is 2026-09-13. The user asks about rain probability for 'kal' (tomorrow) without specifying a time window; defaulting to the upcoming twelve hours from the current time (2026-09-12T23:53 IST) until 2026-09-13T11:53 IST.",
+    "Only the remaining forecast period is included, starting 2026-09-13T00:30:00+05:30."
+  ],
+  "choices": [
+    {
+      "id": "10752522",
+      "name": "Ahmedābād",
+      "latitude": 28.88983,
+      "longitude": 78.99889,
+      "feature": "PPL",
+      "admin1": "Uttar Pradesh",
+      "admin2": "District Rampur",
+      "modified": "2024-01-06",
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:10752522",
+      "label": "Ahmedābād, District Rampur, Uttar Pradesh",
+      "coordinates": {
+        "latitude": 28.88983,
+        "longitude": 78.99889
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/10752522",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Ahmedabad"
+    },
+    {
+      "id": "1279233",
+      "name": "Ahmedabad",
+      "latitude": 23.02579,
+      "longitude": 72.58727,
+      "feature": "PPL",
+      "admin1": "State of Gujarāt",
+      "admin2": "Ahmadābād",
+      "modified": "2024-01-06",
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:1279233",
+      "label": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "coordinates": {
+        "latitude": 23.02579,
+        "longitude": 72.58727
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/1279233",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Ahmedabad"
+    }
+  ],
+  "follow_up": "Choose a place, or add its district and state.",
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T18:23:49.264597+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 1455,
+      "output_tokens": 337,
+      "duration_seconds": 5.149453667
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "gazetteer_search",
+        "query": {
+          "name": "Ahmedabad",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        },
+        "matches": 2
+      },
+      {
+        "name": "forecast",
+        "task_id": "t1",
+        "status": "needs_selection"
+      }
+    ],
+    "provider": "local_ollama",
+    "duration_seconds": 5.202
+  },
+  "plan": {
+    "language": "hi",
+    "places": [
+      {
+        "name": "Ahmedabad",
+        "state": "",
+        "district": "",
+        "kind": "settlement"
+      }
+    ],
+    "assumptions": [
+      "Tomorrow is 2026-09-13. The user asks about rain probability for 'kal' (tomorrow) without specifying a time window; defaulting to the upcoming twelve hours from the current time (2026-09-12T23:53 IST) until 2026-09-13T11:53 IST."
+    ],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "kal ahmedabad me barish padne ki sambhavna kitni hai",
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation_probability"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-12T23:53:49+05:30",
+        "end_local": "2026-09-13T11:53:49+05:30",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "intent": "forecast",
+    "start_local": "2026-09-12T23:53:49+05:30",
+    "end_local": "2026-09-13T11:53:49+05:30",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "kal ahmedabad me barish padne ki sambhavna kitni hai",
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation_probability"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-12T23:53:49+05:30",
+        "end_local": "2026-09-13T11:53:49+05:30",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "needs_selection",
+      "answer": "I found 2 possible places for Ahmedabad. Please confirm the intended location and spelling.",
+      "fact_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

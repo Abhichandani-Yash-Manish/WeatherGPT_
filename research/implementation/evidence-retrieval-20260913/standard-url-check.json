@@ -1,0 +1,22 @@
+[
+  {
+    "question": "What does IMD say about banana in Coimbatore district, Tamil Nadu?",
+    "status": "answered",
+    "passages": 1,
+    "forecast_facts": 0,
+    "stored_pdf_sha256": "99b77dc84e6bec60bfe3a5cd64b0d8247761b43abed6af3a63b056b0edfe7b9f",
+    "pdf_http": 200,
+    "pdf_hash_verified": true,
+    "seconds": 12.184
+  },
+  {
+    "question": "Can I spray my cotton field tomorrow in Ahmedabad, Gujarat? Also tell me the rain probability tomorrow.",
+    "status": "partial",
+    "passages": 2,
+    "forecast_facts": 23,
+    "stored_pdf_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+    "pdf_http": 200,
+    "pdf_hash_verified": true,
+    "seconds": 9.03
+  }
+]

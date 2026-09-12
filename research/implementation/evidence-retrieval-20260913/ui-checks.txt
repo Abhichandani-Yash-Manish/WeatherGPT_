@@ -1,0 +1,4 @@
+PASS: passage uses its bound citation, page locator, literal source text and HTTPS-only link (component only)
+PASS: immutable stored PDF page is preferred to a changing publisher URL
+PASS: missing-year plot gaps, exact source precision, keyboard point inspection (component only)
+PASS: hourly axes, exact IST interval labels and evidence inspection (component only)

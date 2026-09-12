@@ -1,0 +1,147 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "f3b25b87-2d12-4579-83ae-ede7f747d131",
+  "question": "Latest VAAH METAR please",
+  "status": "needs_clarification",
+  "answer": "Which city or village should I check?",
+  "facts": [],
+  "citations": [],
+  "notes": [],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T18:37:36.060367+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 2432,
+      "output_tokens": 191,
+      "duration_seconds": 3.5272925
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "aviation",
+        "task_id": "t1",
+        "status": "needs_clarification"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "new",
+      "changed_fields": [
+        "places"
+      ],
+      "inherited_fields": []
+    },
+    "duration_seconds": 3.54
+  },
+  "plan": {
+    "language": "en",
+    "places": [],
+    "assumptions": [],
+    "clarification": "METAR reports are specific to individual airports. Please specify which airport (e.g., VIDP, VABB) you need the METAR for.",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "Latest VAAH METAR",
+        "kind": "aviation",
+        "operation": "lookup",
+        "parameters": [
+          "metar"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": []
+      }
+    ],
+    "context_action": "new",
+    "changed_fields": [
+      "places"
+    ],
+    "intent": "research",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "Latest VAAH METAR",
+        "kind": "aviation",
+        "operation": "lookup",
+        "parameters": [
+          "metar"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": []
+      },
+      "status": "needs_clarification",
+      "answer": "Which Indian airport? Give its four-letter ICAO code, such as VAAH for Ahmedabad airport. An airport report cannot stand in for conditions across a city.",
+      "fact_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "aviation",
+      "parameters": [
+        "metar"
+      ],
+      "candidates": [
+        {
+          "tool": "airport_reports",
+          "selected": true,
+          "available": true,
+          "reason": "Indian ICAO airport observations/TAF with station identity; no flight status or city-wide observation",
+          "sources": [
+            {
+              "source_id": "S18",
+              "product": "NOAA AWC VAAH METAR dissemination",
+              "registry_status": "prototype_adapter_tested"
+            },
+            {
+              "source_id": "S19",
+              "product": "NOAA AWC VAAH TAF dissemination",
+              "registry_status": "prototype_adapter_tested"
+            },
+            {
+              "source_id": "S20",
+              "product": "NOAA AWC airport station metadata",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "needs_clarification",
+      "returned_source_ids": []
+    }
+  ],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

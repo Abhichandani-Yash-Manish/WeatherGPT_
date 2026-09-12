@@ -1,0 +1,4 @@
+{
+  "error": "HTTP Error 400: Bad Request",
+  "body": "{\"error\": \"Question interpretation did not preserve the requested tasks: The relative day in the requested clause must resolve to 2026-09-14. Preserve that date; do not replace it with an upcoming-hours window.\"}"
+}

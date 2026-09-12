@@ -1,0 +1,39 @@
+{
+  "historical_checkpoint_implementation_matches_current": false,
+  "implementation_changed_since_checkpoint": [
+    "weathergpt_data/__main__.py",
+    "weathergpt_data/adapters.py",
+    "weathergpt_data/advisories.py",
+    "weathergpt_data/bulletins.py",
+    "weathergpt_data/climate.py",
+    "weathergpt_data/districts.py",
+    "weathergpt_data/foundation.py",
+    "weathergpt_data/transport.py"
+  ],
+  "source_entries": 62,
+  "tracked_evidence_assets": 238,
+  "representative_smoke_checks": 17,
+  "smoke_errors": 0,
+  "smoke_statuses": {
+    "needs_selection": 1,
+    "ok": 14,
+    "reference_only": 2
+  },
+  "warning_source_features": 764,
+  "warning_accepted_features": 742,
+  "warning_quarantined_features": 22,
+  "cap_messages": 9,
+  "cap_time_eligible_info_blocks": 0,
+  "district_rows": 60568,
+  "historical_district_series": 640,
+  "district_missing_month_cells": 15817,
+  "ahmedabad_values_reconciled": 1870,
+  "national_climate_records": 4216,
+  "tests_passed": 30,
+  "advisory_listed_regions": 36,
+  "advisory_listed_district_entries": 698,
+  "sea_area_pdf_links": 2,
+  "coastal_pdf_links": 15,
+  "operational_ready": false,
+  "limitations": "Representative retrieval and adapter tests, not exhaustive national coverage or scientific/operational validation."
+}

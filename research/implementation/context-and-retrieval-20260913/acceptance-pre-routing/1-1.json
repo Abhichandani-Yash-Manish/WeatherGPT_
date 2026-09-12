@@ -1,0 +1,180 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "53d10726-33c9-4e20-986b-1e42dddf9aeb",
+  "question": "Can I spray tomorrow?",
+  "status": "needs_clarification",
+  "answer": "Which city or village should I check?",
+  "facts": [],
+  "citations": [],
+  "notes": [
+    "The user has not specified a location; places is empty. A forecast cannot be generated without a place.",
+    "The user has not specified parameters (e.g., rain, wind) or a specific time window within 'tomorrow'. Defaulting to general weather conditions for the next 12 hours from the current time."
+  ],
+  "choices": [],
+  "follow_up": "Place name and state, or an explicit pin",
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T20:40:10.156931+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 3190,
+      "output_tokens": 289,
+      "duration_seconds": 5.10289675,
+      "repair_attempts": [
+        "The relative day in the requested clause must resolve to 2026-09-14. Preserve that date; do not replace it with an upcoming-hours window."
+      ]
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "forecast",
+        "task_id": "t1",
+        "status": "needs_clarification"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "new",
+      "changed_fields": [
+        "time"
+      ],
+      "inherited_fields": []
+    },
+    "duration_seconds": 12.104
+  },
+  "plan": {
+    "language": "en",
+    "places": [],
+    "assumptions": [
+      "The user has not specified a location; places is empty. A forecast cannot be generated without a place.",
+      "The user has not specified parameters (e.g., rain, wind) or a specific time window within 'tomorrow'. Defaulting to general weather conditions for the next 12 hours from the current time."
+    ],
+    "clarification": "Please specify the location and any specific weather factors (like rain or wind) relevant to your spraying activity.",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "Can I spray tomorrow?",
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation",
+          "temperature_2m",
+          "wind_speed_10m"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-14T00:00:00+05:30",
+        "end_local": "2026-09-15T00:00:00+05:30",
+        "place_indices": []
+      }
+    ],
+    "context_action": "new",
+    "changed_fields": [
+      "time"
+    ],
+    "intent": "forecast",
+    "start_local": "2026-09-14T00:00:00+05:30",
+    "end_local": "2026-09-15T00:00:00+05:30",
+    "variables": [
+      "precipitation",
+      "temperature_2m",
+      "wind_speed_10m"
+    ],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "Can I spray tomorrow?",
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation",
+          "temperature_2m",
+          "wind_speed_10m"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-14T00:00:00+05:30",
+        "end_local": "2026-09-15T00:00:00+05:30",
+        "place_indices": []
+      },
+      "status": "needs_clarification",
+      "answer": "Which village, town or city should I check? Add its state if the name is shared.",
+      "fact_ids": [],
+      "passage_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "pending_slots": [
+    {
+      "field": "place",
+      "reason": "Requested location is missing",
+      "task_index": 0,
+      "task_id": "t1"
+    }
+  ],
+  "retrieval_coverage": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "forecast",
+      "parameters": [
+        "precipitation",
+        "temperature_2m",
+        "wind_speed_10m"
+      ],
+      "candidates": [
+        {
+          "tool": "hourly_forecast",
+          "selected": true,
+          "available": true,
+          "reason": "Hourly evidence; exact onset and whole-period probability unavailable",
+          "sources": [
+            {
+              "source_id": "S62",
+              "product": "Open-Meteo best-match extended hourly forecast",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        },
+        {
+          "tool": "forecast_summary",
+          "selected": false,
+          "available": true,
+          "reason": "Exact-window GFS model summary",
+          "sources": [
+            {
+              "source_id": "S21",
+              "product": "Open-Meteo GFS forecast delivery",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "needs_clarification",
+      "returned_source_ids": []
+    }
+  ],
+  "document_evidence": [],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

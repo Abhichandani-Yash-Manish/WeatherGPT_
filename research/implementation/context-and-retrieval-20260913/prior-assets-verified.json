@@ -1,0 +1,1927 @@
+{
+  "verified": 230,
+  "files": [
+    {
+      "path": "data/processed/districts/district-v1-c8b978172b77182e/audit.json",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 487,
+      "sha256": "a45311e90a7754c4ab36f4669f9ac3828bb1a74f34a2c7702c4eecd763f32bdf"
+    },
+    {
+      "path": "data/processed/districts/district-v1-c8b978172b77182e/build-manifest.json",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 6427,
+      "sha256": "422283e72296d7374ed21ceead64a834285c22dc5842826897b8005646d01cf1"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/advisory-ahmedabad-gujarati.json",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 31245,
+      "sha256": "b1295030e3dc62e4d6c998b4b9c2c348c4fa528b54cac6cb0f2a07adfa839413"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/advisory-ahmedabad.json",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 15279,
+      "sha256": "a73280766d83c654d5db2feef7884b3dd0adba6c12b397bc6e39696c76193227"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/advisory-coimbatore.json",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 7776,
+      "sha256": "9d43dbb9fa811bcea18b9ca453d814cdef686e8f266a0c98d2e9fdc7cec6162b"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/advisory-directory.json",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 99094,
+      "sha256": "5429328e750027c432f90e6b19e67fd76e61701fa2fb1c3bfc8cbe37647c5b7d"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/advisory-kamrup.json",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 7708,
+      "sha256": "0584691f569d45b035d400bfb74c6618076fa26af4b689948dac194d82fd96b9"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/aviation-metar.json",
+      "source_ids": [
+        "S18"
+      ],
+      "bytes": 45852,
+      "sha256": "c825f5b137569aa423349c019b4cbdf5a20277ae2daf26dbb53f8030e505ef8f"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/aviation-stationinfo.json",
+      "source_ids": [
+        "S20"
+      ],
+      "bytes": 4624,
+      "sha256": "cba69890bf93629e7cd34c7d1e18df43eaa1c08c838f86521af2daf8f7fcdaa5"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/aviation-taf.json",
+      "source_ids": [
+        "S19"
+      ],
+      "bytes": 37657,
+      "sha256": "64fc34f7b98a0e6e1a66f5187139a8499bd7792acb75a9a4bb36b1877c957ffc"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/cap-messages.json",
+      "source_ids": [
+        "S06"
+      ],
+      "bytes": 21097,
+      "sha256": "29569447374649adef8e6d330d63d8401806cc43b3c9d57c6bb021eace20541c"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/forecast-ahmedabad.json",
+      "source_ids": [
+        "S21"
+      ],
+      "bytes": 151791,
+      "sha256": "97fdda09c41a99e8a36f5362b045127f9889ba89dd2bf4a3d9186df7b5a0f330"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/forecast-chennai.json",
+      "source_ids": [
+        "S21"
+      ],
+      "bytes": 151802,
+      "sha256": "62077349a1b858c18046a6dac988cc46b7d66707d92fb49f93cc75bd7b04bc0b"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/forecast-delhi.json",
+      "source_ids": [
+        "S21"
+      ],
+      "bytes": 151797,
+      "sha256": "f758ad00b4cb742876243097cc82985e395fb0c29471ea9790894898143c9b8c"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/forecast-guwahati.json",
+      "source_ids": [
+        "S21"
+      ],
+      "bytes": 151743,
+      "sha256": "ff56f06921b077d9ab0a2eef5074aeff56da69f561542d2aeba68323642d4cd9"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/forecast-mumbai.json",
+      "source_ids": [
+        "S21"
+      ],
+      "bytes": 151766,
+      "sha256": "a09f327c70bf4befc34335ecb2b57034593e0bbfe5c2c6fd8741f0ce7068b46f"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/forecast-srinagar.json",
+      "source_ids": [
+        "S21"
+      ],
+      "bytes": 151750,
+      "sha256": "cb59cf485b364d7333edc3a0b5e150494ec4561b417f1b60b3e7b8ae30c22bd3"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/history-ahmedabad.json",
+      "source_ids": [
+        "S22"
+      ],
+      "bytes": 8513,
+      "sha256": "53fa762b2382354028cf3dee17f4d07156414e16356d729ac7dc7aa37ea68cf1"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/marine-andaman-sea.json",
+      "source_ids": [
+        "S56"
+      ],
+      "bytes": 111625,
+      "sha256": "b221f041777803f026857614173333660e1ad5e299b6dc82f12bb94aa831d981"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/marine-arabian-sea.json",
+      "source_ids": [
+        "S56"
+      ],
+      "bytes": 111620,
+      "sha256": "9f7d0ec61f2a174dd1fa220a28f32635b46f464253f927dff86888bcb7fc8572"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/marine-bay-of-bengal.json",
+      "source_ids": [
+        "S56"
+      ],
+      "bytes": 111587,
+      "sha256": "3f537f2eb349936d6524b485a9fdb2b2ba7d9ae8e7de836cb28d666e16deff48"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/marine-bulletin-coastal-11.json",
+      "source_ids": [
+        "S59"
+      ],
+      "bytes": 2876,
+      "sha256": "8d1c68b2eb6eca07471b29fc07db583279f08adf3c9f4e85045f776763cfc89a"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/marine-bulletin-sea-0.json",
+      "source_ids": [
+        "S58"
+      ],
+      "bytes": 5836,
+      "sha256": "9078fcb3927efa5a07bb9f5f9421a80d5972b4ddd74b0f2ae66db7df2c92dffc"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/marine-bulletin-sea-1.json",
+      "source_ids": [
+        "S58"
+      ],
+      "bytes": 4951,
+      "sha256": "24cd89c14fe05e860522f2c2545d8a312197f97a3be6dd803f29a0fb71a7cc32"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/marine-catalog-coastal.json",
+      "source_ids": [
+        "S59"
+      ],
+      "bytes": 4081,
+      "sha256": "048c61df8ce4cda3c7391f3ea55942a21f2112dbe4c6a465f6ca6ef480ec83e5"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/marine-catalog-sea.json",
+      "source_ids": [
+        "S58"
+      ],
+      "bytes": 1206,
+      "sha256": "5951eabf22bbe1e31d1081c08fc761bedca54841ade443b30fa60e6235c5141c"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/national-warning-snapshot.json",
+      "source_ids": [
+        "S15"
+      ],
+      "bytes": 65390075,
+      "sha256": "45e0041d51a2add9da46aeca40af58778fae25210f88cd2cecb382ef2b6f8a50"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/place-ahmedabad.json",
+      "source_ids": [
+        "S24"
+      ],
+      "bytes": 1832,
+      "sha256": "ed888d3f044b5381a70723b3adbf7e95ed229c9c74aa0da3a88c8b476966a278"
+    },
+    {
+      "path": "data/processed/foundation/20260911T194849Z/river-ahmedabad.json",
+      "source_ids": [
+        "S37"
+      ],
+      "bytes": 3771,
+      "sha256": "05e582a82602f0f91a42efeaeced0c05f6fab4064d8733e286d8d4cfd43d9153"
+    },
+    {
+      "path": "data/processed/geography/geonames-india-20260912/build-manifest.json",
+      "source_ids": [
+        "S61"
+      ],
+      "bytes": 684,
+      "sha256": "b86da6ea459c94e67778233b22165b4fbcb734f224a84abe4882d54d0c67ace9"
+    },
+    {
+      "path": "data/processed/geography/geonames-india-20260912/manifest.json",
+      "source_ids": [
+        "S61"
+      ],
+      "bytes": 646,
+      "sha256": "cc943fe2223b505250e718f8f1198663c8f3f837720dacc1396e8754d8fc33ae"
+    },
+    {
+      "path": "data/processed/geography/geonames-india-20260912/state-aliases.json",
+      "source_ids": [
+        "S61"
+      ],
+      "bytes": 4118204,
+      "sha256": "3ff3a34227593ad1dfb1fd7a51929fb7081d2f9d8c9f0bdb6839bb523859de3a"
+    },
+    {
+      "path": "data/raw/geonames/IN-20260912.zip",
+      "source_ids": [
+        "S61"
+      ],
+      "bytes": 15747443,
+      "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/IAE 2026.pdf",
+      "source_ids": [
+        "S28"
+      ],
+      "bytes": 4678404,
+      "sha256": "58a16722e98f3e9dd23e8e188c39b577e24135306f20674b52fbbb172db2e25a"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/andhra_pradesh.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 210670,
+      "sha256": "94e0051827001a17d56d0bc0bd4c859dd66e00b089843cfb90fe6619f9b9c26a"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/arunachal_pradesh.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 88319,
+      "sha256": "40cb815a5243b2a12609a7db46c0db95080670b54bd9169f00d47ae29358e635"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/assam.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 342331,
+      "sha256": "39d66d3d270b399d84c7ad4511bbe44c7b89df2e6eda54bee5d32b319ff82120"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/bihar.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 523711,
+      "sha256": "104d9d2eed99e30b7209ef06083e98487d22eb4109e7830df5636f351c6976fc"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/chhattisgarh.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 252797,
+      "sha256": "8639ff84a052bb88b8ef02e886b9e952634ddaaddb2f800eccd69052e8bdc424"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/delhi.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 42916,
+      "sha256": "cf82ed8574f3d74f540ce27116c90568197eb3b011b76b0d0e45e2b369fa1a2c"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/goa.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 30888,
+      "sha256": "e28085b390f0c2f37390fa93a73543747e702cf175514cd0190f01ce75671d34"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 361225,
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/haryana.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 277898,
+      "sha256": "58c59c46c99209e5a05faffa169eaaf614b317b43eb879a475f4f7086a0535da"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/himachal_pradesh.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 159398,
+      "sha256": "7127dc4f1d64bad4f3b1c9985ffb2a7282366ecce505307b6063243b0121ad5f"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/islands.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 50470,
+      "sha256": "ca4ca8da680ed4725fcebb52efef55671e69130682fe987b870675d81fcab602"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/jammu_kashmir.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 220719,
+      "sha256": "242bb515027ba423d8bda47d09c2dc8bbc399be5ed1eada1c116301890a34a7b"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/jharkhand.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 362608,
+      "sha256": "5eafe5b4477f183eb29c7456b25e7872515c7411e381b65c9a65563d30d9b8ff"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/karnataka.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 450049,
+      "sha256": "894b0696ce2f8d608fa4f00adda579d08befaa3c2a52ff5ef116850eb709d81c"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/kerala.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 224808,
+      "sha256": "77009d9e76d92d9ac7de8b2eb2905587fb4f15efdf8f64dfd55ea98c403ed39a"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/madhya_pradesh.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 737787,
+      "sha256": "52e4bcd8907a58faa657f43d300552f5dbf809eacc160611203a14ca5e61a99f"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/maharashtra.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 514855,
+      "sha256": "faf6840b6a6f717416ec0f8a70bf5ef9e54f88b77b84eb0ca1f74d8fc32ae44e"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/manipur.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 53760,
+      "sha256": "e78becc591fa4aa716fc0c39ac08be8ae20708b7d11632c064437ea3e75c4524"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/meghalaya.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 62681,
+      "sha256": "afb14005934dc782441fd37f0bfe8c703f6e6c7be4161449f1e5b440029bbc82"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/mizoram.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 61652,
+      "sha256": "ec0916240858c53fd5bfd66bfe4dc52679c93c9449facf179f5e9aff816cb7f8"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/nagaland.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 59008,
+      "sha256": "498ba1fd5f1619b9359eb6ed1f90075bc6aae9978f4c42aedddf415a2ed7ce6d"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/orissa.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 421634,
+      "sha256": "6e1ee5b499cb58e623151ef2facf56f384ff3a3214e9d87afbc3bf5473ffb30f"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/punjab.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 253605,
+      "sha256": "1156b81fd84d9bc1fdf5e20f1828fb509e5962ca2a12e2c80c0bce57a69cbb39"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/rajasthan.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 462766,
+      "sha256": "c513a483a81eb88584e3bf0703f2791c45db49d6b57ed085a1fc6ce1b6da1703"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/sikkim.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 18499,
+      "sha256": "cdbb71269485d4b8d34fd46b94baf7aea01b1d14aa7e8406f188d3ca1f2d5bdb"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/tamil_nadu.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 514395,
+      "sha256": "01562aab1ec1e7bf889100d0da3c72affb72d9677a0c4b3a1a5b5d8f5157c0c2"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/telangana.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 154500,
+      "sha256": "f1871cfabc2d5a2590302df228263f4f793fbe977984da6c60e948bef5ab088f"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/tripura.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 46819,
+      "sha256": "9db539871072fcf10cafd0d54b0a8ace7f485aba95f424f183f9983b5d28f395"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/union_terr.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 33010,
+      "sha256": "e6fabf61003702c21b6ed13861b59a939ffb24309575a77b5f4472ab72bd239f"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/uttar_pradesh.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 1042068,
+      "sha256": "520e4607508c45b65635e2cf2f1c4d142de0115f19cc4381b73b90bae73813f1"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/uttarakhand.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 176909,
+      "sha256": "63d99db9d73a586778dfff5af6827cd0869b1421539e75babddab5b6e83008b4"
+    },
+    {
+      "path": "data/raw/imports/2026-09-11/states/west_bengal.csv",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 309848,
+      "sha256": "47120202b3b00bb86b0de8d73c26d783d7f404962f1209d07729b50d1e3e4bbd"
+    },
+    {
+      "path": "data/reference/imd-code-namespaces.json",
+      "source_ids": [
+        "S03",
+        "S04",
+        "S15",
+        "S48"
+      ],
+      "bytes": 580,
+      "sha256": "d4f6a4d6f53ded8b9ab7783991d3577f938ceb1a6e5188872e24202a72606ffa"
+    },
+    {
+      "path": "data/registry/imports.json",
+      "source_ids": [],
+      "bytes": 9789,
+      "sha256": "98389a28e2ece61563a5ddeefb44562d94436490fb96231b90c86dbca44cd629"
+    },
+    {
+      "path": "data/runtime/blobs/03a2ef4a1a6b8f84c76cc8ae30d792d30c250ae40055ae16648e47bf48e47aa8.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 336,
+      "sha256": "03a2ef4a1a6b8f84c76cc8ae30d792d30c250ae40055ae16648e47bf48e47aa8"
+    },
+    {
+      "path": "data/runtime/blobs/0789f600dc4f172d4ed0b83acd06275492ca92ea4b096d2facb9646341ebdbec.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 1138,
+      "sha256": "0789f600dc4f172d4ed0b83acd06275492ca92ea4b096d2facb9646341ebdbec"
+    },
+    {
+      "path": "data/runtime/blobs/08723e094183b2661336d343d9bc3d0433b9b2247b763f1477dc7c339ae8d771.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 212,
+      "sha256": "08723e094183b2661336d343d9bc3d0433b9b2247b763f1477dc7c339ae8d771"
+    },
+    {
+      "path": "data/runtime/blobs/138d5e2aac6049bd1843e7d58b160e8793f2638e2a9e6b4e45e871ebb76da2b8.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 1678,
+      "sha256": "138d5e2aac6049bd1843e7d58b160e8793f2638e2a9e6b4e45e871ebb76da2b8"
+    },
+    {
+      "path": "data/runtime/blobs/1c37a1f0d2f0daa204307ccb2140dd28d732a58e4f4e3245d8ff163c33dab26e.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 256,
+      "sha256": "1c37a1f0d2f0daa204307ccb2140dd28d732a58e4f4e3245d8ff163c33dab26e"
+    },
+    {
+      "path": "data/runtime/blobs/1f9de548ac30e07ea7154282bb29c9599b6a2827ea884c24992cf6301e57f74a.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 41576,
+      "sha256": "1f9de548ac30e07ea7154282bb29c9599b6a2827ea884c24992cf6301e57f74a"
+    },
+    {
+      "path": "data/runtime/blobs/20a8d83c13587875b1a3377cf2fbf148187b13f116b1f25fc5060c33b391de52.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 330,
+      "sha256": "20a8d83c13587875b1a3377cf2fbf148187b13f116b1f25fc5060c33b391de52"
+    },
+    {
+      "path": "data/runtime/blobs/2112af9f4b548e80fad2851f2ae5363a097aa82e0749d5a029204ccb08247a49.bin",
+      "source_ids": [
+        "S58"
+      ],
+      "bytes": 3653985,
+      "sha256": "2112af9f4b548e80fad2851f2ae5363a097aa82e0749d5a029204ccb08247a49"
+    },
+    {
+      "path": "data/runtime/blobs/23a35e008076236a93ec62b95647be21ecd8d07623a20d773aa97fbe7bc694d8.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 548,
+      "sha256": "23a35e008076236a93ec62b95647be21ecd8d07623a20d773aa97fbe7bc694d8"
+    },
+    {
+      "path": "data/runtime/blobs/24e302167e261f53854e7e31c8ff66bfa178507f4e8b055ff7067f9e740f24e3.bin",
+      "source_ids": [
+        "S06"
+      ],
+      "bytes": 4337,
+      "sha256": "24e302167e261f53854e7e31c8ff66bfa178507f4e8b055ff7067f9e740f24e3"
+    },
+    {
+      "path": "data/runtime/blobs/25133c0bfd098857ef1505acf2eae9eb6759934b1fe637ab8a6b100ae660aedf.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 1002,
+      "sha256": "25133c0bfd098857ef1505acf2eae9eb6759934b1fe637ab8a6b100ae660aedf"
+    },
+    {
+      "path": "data/runtime/blobs/2ced79b3396100d4bdf55401fca92193c2a8a99913ad62a01b986c7c2dfb103b.bin",
+      "source_ids": [
+        "S06"
+      ],
+      "bytes": 4385,
+      "sha256": "2ced79b3396100d4bdf55401fca92193c2a8a99913ad62a01b986c7c2dfb103b"
+    },
+    {
+      "path": "data/runtime/blobs/2ebb682f2306815b36d6a1276b20bee0e2367046f8042ea5b2a71a8ab30226fb.bin",
+      "source_ids": [
+        "S06"
+      ],
+      "bytes": 6163,
+      "sha256": "2ebb682f2306815b36d6a1276b20bee0e2367046f8042ea5b2a71a8ab30226fb"
+    },
+    {
+      "path": "data/runtime/blobs/33ed7048f39eb081dfe9b65d39bcbb7fa8a62c5415d11c5e1d44c9a2f5bc2135.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 580,
+      "sha256": "33ed7048f39eb081dfe9b65d39bcbb7fa8a62c5415d11c5e1d44c9a2f5bc2135"
+    },
+    {
+      "path": "data/runtime/blobs/34ce38e2c5d7c4daf0ebc595274a1f2398de2f477386c755c0cad6463956eaea.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 964370,
+      "sha256": "34ce38e2c5d7c4daf0ebc595274a1f2398de2f477386c755c0cad6463956eaea"
+    },
+    {
+      "path": "data/runtime/blobs/3d004ae0499c6c6bce001b931e726e451df0155c923a83aab848f9a3b526e997.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 562,
+      "sha256": "3d004ae0499c6c6bce001b931e726e451df0155c923a83aab848f9a3b526e997"
+    },
+    {
+      "path": "data/runtime/blobs/40f22e74f947c532eac467a0bf76d0712cf843ef08d49cdd82c6570581170ff2.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 1620,
+      "sha256": "40f22e74f947c532eac467a0bf76d0712cf843ef08d49cdd82c6570581170ff2"
+    },
+    {
+      "path": "data/runtime/blobs/449ad0b821a6c2dcbaf256962ea775c553c1d0284f226efeb64b9d3de51dbb34.bin",
+      "source_ids": [
+        "S06"
+      ],
+      "bytes": 4338,
+      "sha256": "449ad0b821a6c2dcbaf256962ea775c553c1d0284f226efeb64b9d3de51dbb34"
+    },
+    {
+      "path": "data/runtime/blobs/4714bf17589474f1714777338677b9864c0f6dddc79f2e8d6fbb74650a2fff42.bin",
+      "source_ids": [
+        "S22"
+      ],
+      "bytes": 559,
+      "sha256": "4714bf17589474f1714777338677b9864c0f6dddc79f2e8d6fbb74650a2fff42"
+    },
+    {
+      "path": "data/runtime/blobs/4731d0c2311768cdf3a2bf71cb37a299cad55665b2cb7db34b5c5be21c8f4fb1.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 1774,
+      "sha256": "4731d0c2311768cdf3a2bf71cb37a299cad55665b2cb7db34b5c5be21c8f4fb1"
+    },
+    {
+      "path": "data/runtime/blobs/479f58bf07dd627a1c6cc68c422daaf0c682823aa3c6122627b577b375dc242d.bin",
+      "source_ids": [
+        "S06"
+      ],
+      "bytes": 4385,
+      "sha256": "479f58bf07dd627a1c6cc68c422daaf0c682823aa3c6122627b577b375dc242d"
+    },
+    {
+      "path": "data/runtime/blobs/4a8331f4ea823a381a6579f029661fb2f964ad930b0833d0bab14abaafc72af6.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 764,
+      "sha256": "4a8331f4ea823a381a6579f029661fb2f964ad930b0833d0bab14abaafc72af6"
+    },
+    {
+      "path": "data/runtime/blobs/4d94c3c8ee6a75d5b55884a8308ea8f8b90cbda6ba639b6d82df0c4307828855.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 1056,
+      "sha256": "4d94c3c8ee6a75d5b55884a8308ea8f8b90cbda6ba639b6d82df0c4307828855"
+    },
+    {
+      "path": "data/runtime/blobs/56aa6e1e875f5e2d2268972507de2b782b824c1a86946af1ae4c62aa9d9714a3.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 1212,
+      "sha256": "56aa6e1e875f5e2d2268972507de2b782b824c1a86946af1ae4c62aa9d9714a3"
+    },
+    {
+      "path": "data/runtime/blobs/586ca0bb81502c929c1e3d0d2b32f16c4d7b882b86f99693ff83970d53f22b4c.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 2298,
+      "sha256": "586ca0bb81502c929c1e3d0d2b32f16c4d7b882b86f99693ff83970d53f22b4c"
+    },
+    {
+      "path": "data/runtime/blobs/5c04db0de6de0b8f562b7ba37d2cc8ffe46d894858c1f1d2354709c8c862c7c8.bin",
+      "source_ids": [
+        "S06"
+      ],
+      "bytes": 4413,
+      "sha256": "5c04db0de6de0b8f562b7ba37d2cc8ffe46d894858c1f1d2354709c8c862c7c8"
+    },
+    {
+      "path": "data/runtime/blobs/5d46eb24caf9e231a943310814b321007b2b26cedb29fc88062d2d3381036781.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 1652,
+      "sha256": "5d46eb24caf9e231a943310814b321007b2b26cedb29fc88062d2d3381036781"
+    },
+    {
+      "path": "data/runtime/blobs/60452323ecf86a4d5948bfb96fcec34e785e611da1ae2aa8695e8ef2f7780107.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 214,
+      "sha256": "60452323ecf86a4d5948bfb96fcec34e785e611da1ae2aa8695e8ef2f7780107"
+    },
+    {
+      "path": "data/runtime/blobs/653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 986646,
+      "sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90"
+    },
+    {
+      "path": "data/runtime/blobs/658e09d09f652ee7723739386ae7e0c611babc7e30fd30ca187632a4a6cd923d.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 556,
+      "sha256": "658e09d09f652ee7723739386ae7e0c611babc7e30fd30ca187632a4a6cd923d"
+    },
+    {
+      "path": "data/runtime/blobs/65be240fa76b093ecb8d0757e276dcbe738ef970b036defaf40938287a5842a4.bin",
+      "source_ids": [
+        "S59"
+      ],
+      "bytes": 192774,
+      "sha256": "65be240fa76b093ecb8d0757e276dcbe738ef970b036defaf40938287a5842a4"
+    },
+    {
+      "path": "data/runtime/blobs/685e84c92f03f83f3973dab54a09b38a0af79c3e459d201603f71b7a2d72eb7a.bin",
+      "source_ids": [
+        "S24"
+      ],
+      "bytes": 719,
+      "sha256": "685e84c92f03f83f3973dab54a09b38a0af79c3e459d201603f71b7a2d72eb7a"
+    },
+    {
+      "path": "data/runtime/blobs/6ecf3ec63903834eca990a3ba345ba206a1858cab1b4f70f2b9042bbd83a8f8c.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 1570,
+      "sha256": "6ecf3ec63903834eca990a3ba345ba206a1858cab1b4f70f2b9042bbd83a8f8c"
+    },
+    {
+      "path": "data/runtime/blobs/6fdb3bde42b3219cc5efd22625a8cfa85c5ece095a95a95067db374401dd40d5.bin",
+      "source_ids": [
+        "S21"
+      ],
+      "bytes": 2477,
+      "sha256": "6fdb3bde42b3219cc5efd22625a8cfa85c5ece095a95a95067db374401dd40d5"
+    },
+    {
+      "path": "data/runtime/blobs/832ccd12a570620af9d484c8ffa9195d00b40d9d3607afa286691bda05d8f009.bin",
+      "source_ids": [
+        "S56"
+      ],
+      "bytes": 2198,
+      "sha256": "832ccd12a570620af9d484c8ffa9195d00b40d9d3607afa286691bda05d8f009"
+    },
+    {
+      "path": "data/runtime/blobs/84e7ee7f633c529f9a22857cc4e54a0772330f64c769f8aa3c690cec9b54c26e.bin",
+      "source_ids": [
+        "S19"
+      ],
+      "bytes": 15759,
+      "sha256": "84e7ee7f633c529f9a22857cc4e54a0772330f64c769f8aa3c690cec9b54c26e"
+    },
+    {
+      "path": "data/runtime/blobs/86b914598b7e299e97fd92dc20636e3c0a4b7a74b076a78a0bebe722c977a48a.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 1222,
+      "sha256": "86b914598b7e299e97fd92dc20636e3c0a4b7a74b076a78a0bebe722c977a48a"
+    },
+    {
+      "path": "data/runtime/blobs/8778052f32989753f7990e7fd08350b403ebbc81a8116f4d0747043ac254e7ed.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 808,
+      "sha256": "8778052f32989753f7990e7fd08350b403ebbc81a8116f4d0747043ac254e7ed"
+    },
+    {
+      "path": "data/runtime/blobs/881867d07db24eb59e7bcc98e0748e7096b105238deb4f34b03ee299d9193099.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 674,
+      "sha256": "881867d07db24eb59e7bcc98e0748e7096b105238deb4f34b03ee299d9193099"
+    },
+    {
+      "path": "data/runtime/blobs/8b165e577dc7f0f0f77906412e271c62a11910e8020f2b2f1782165b8ed933b9.bin",
+      "source_ids": [
+        "S06"
+      ],
+      "bytes": 4353,
+      "sha256": "8b165e577dc7f0f0f77906412e271c62a11910e8020f2b2f1782165b8ed933b9"
+    },
+    {
+      "path": "data/runtime/blobs/8e0c32c7e73799686f1886feb6dfc4105e45a56963e9dc51f57464347ed45570.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 1386,
+      "sha256": "8e0c32c7e73799686f1886feb6dfc4105e45a56963e9dc51f57464347ed45570"
+    },
+    {
+      "path": "data/runtime/blobs/8ed6d568fe51d1d25bce026fbb8bbb934006db89b2a0ec4b8f083b8c249b47e5.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 1512,
+      "sha256": "8ed6d568fe51d1d25bce026fbb8bbb934006db89b2a0ec4b8f083b8c249b47e5"
+    },
+    {
+      "path": "data/runtime/blobs/9499bcd6c1a0d4b2d55d7d9c7bbee5d71244e674aafcfbacb62b3e7a8c29bf5d.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 616,
+      "sha256": "9499bcd6c1a0d4b2d55d7d9c7bbee5d71244e674aafcfbacb62b3e7a8c29bf5d"
+    },
+    {
+      "path": "data/runtime/blobs/98913037032a78293029114ff2a1a7d4ddbca2b84b126c780923674611677429.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 1276,
+      "sha256": "98913037032a78293029114ff2a1a7d4ddbca2b84b126c780923674611677429"
+    },
+    {
+      "path": "data/runtime/blobs/99b77dc84e6bec60bfe3a5cd64b0d8247761b43abed6af3a63b056b0edfe7b9f.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 344738,
+      "sha256": "99b77dc84e6bec60bfe3a5cd64b0d8247761b43abed6af3a63b056b0edfe7b9f"
+    },
+    {
+      "path": "data/runtime/blobs/9ccf745080071bc3ec3bf5dfe87b45d06a287114444a2059a45cc9d6a280e838.bin",
+      "source_ids": [
+        "S21"
+      ],
+      "bytes": 2479,
+      "sha256": "9ccf745080071bc3ec3bf5dfe87b45d06a287114444a2059a45cc9d6a280e838"
+    },
+    {
+      "path": "data/runtime/blobs/acb3456e7acb7f0e21de80da03c6d6ee9b1d7dde0384206cccc89cd297eed391.bin",
+      "source_ids": [
+        "S06"
+      ],
+      "bytes": 4318,
+      "sha256": "acb3456e7acb7f0e21de80da03c6d6ee9b1d7dde0384206cccc89cd297eed391"
+    },
+    {
+      "path": "data/runtime/blobs/b3c30de0f6c92294e140f478a748eef7c39cccb24b821fe6b17090743797a72f.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 540,
+      "sha256": "b3c30de0f6c92294e140f478a748eef7c39cccb24b821fe6b17090743797a72f"
+    },
+    {
+      "path": "data/runtime/blobs/b7cdfc0ad78948d837bb9fdd5a36353f3222a553011f1c8caf8b79f16c82bdc6.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 236,
+      "sha256": "b7cdfc0ad78948d837bb9fdd5a36353f3222a553011f1c8caf8b79f16c82bdc6"
+    },
+    {
+      "path": "data/runtime/blobs/bd21a43acde8ab270139dbda229debcdb3903a816d6d17d298cd693bbd65cf0f.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 3376,
+      "sha256": "bd21a43acde8ab270139dbda229debcdb3903a816d6d17d298cd693bbd65cf0f"
+    },
+    {
+      "path": "data/runtime/blobs/c22bc6b3d7afb2866bd7793684f7a5086ec4677b10c9285a263e64b687bc7a73.bin",
+      "source_ids": [
+        "S18"
+      ],
+      "bytes": 17472,
+      "sha256": "c22bc6b3d7afb2866bd7793684f7a5086ec4677b10c9285a263e64b687bc7a73"
+    },
+    {
+      "path": "data/runtime/blobs/c26a0903d69bff9b81329b2b22eaacfcd9a22f71107c9e13535d654a3696f277.bin",
+      "source_ids": [
+        "S21"
+      ],
+      "bytes": 2418,
+      "sha256": "c26a0903d69bff9b81329b2b22eaacfcd9a22f71107c9e13535d654a3696f277"
+    },
+    {
+      "path": "data/runtime/blobs/c2dc438d95e870bc466731104d0fa71889bb1723a2471d0a66ad4d2121a226ff.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 1114,
+      "sha256": "c2dc438d95e870bc466731104d0fa71889bb1723a2471d0a66ad4d2121a226ff"
+    },
+    {
+      "path": "data/runtime/blobs/c39751ef59094e7877c15e0d3670b5316a6ff346a3e5eb3de305f54d67f7fa85.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 1828,
+      "sha256": "c39751ef59094e7877c15e0d3670b5316a6ff346a3e5eb3de305f54d67f7fa85"
+    },
+    {
+      "path": "data/runtime/blobs/c5066d5c2fb6ee002c17212bd22ce02b43bd31baa9118d08365f5b48dd5396cd.bin",
+      "source_ids": [
+        "S06"
+      ],
+      "bytes": 4413,
+      "sha256": "c5066d5c2fb6ee002c17212bd22ce02b43bd31baa9118d08365f5b48dd5396cd"
+    },
+    {
+      "path": "data/runtime/blobs/c64730c7d57fa8b38c0d7e3ad9692e9a401b8796b6ef023ef5d44631ed5dedd4.bin",
+      "source_ids": [
+        "S56"
+      ],
+      "bytes": 2194,
+      "sha256": "c64730c7d57fa8b38c0d7e3ad9692e9a401b8796b6ef023ef5d44631ed5dedd4"
+    },
+    {
+      "path": "data/runtime/blobs/c822401b77da2b9896a5027b0e4a20b88dc04953587deef150aea9e066a3cf11.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 384,
+      "sha256": "c822401b77da2b9896a5027b0e4a20b88dc04953587deef150aea9e066a3cf11"
+    },
+    {
+      "path": "data/runtime/blobs/c9b510f7d5c91a2f19f1329719c4f2b9576d6f61c02f992a38e1c0b9503fc4a1.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 788,
+      "sha256": "c9b510f7d5c91a2f19f1329719c4f2b9576d6f61c02f992a38e1c0b9503fc4a1"
+    },
+    {
+      "path": "data/runtime/blobs/ccfb46b4c954cb12be2758e55bb71b9be5733d23ef9f3508a12f47a92556ad72.bin",
+      "source_ids": [
+        "S21"
+      ],
+      "bytes": 2464,
+      "sha256": "ccfb46b4c954cb12be2758e55bb71b9be5733d23ef9f3508a12f47a92556ad72"
+    },
+    {
+      "path": "data/runtime/blobs/d5fe3212057abd3d68a677ca6b6372d2799358c091a3c756654214604b4105f4.bin",
+      "source_ids": [
+        "S21"
+      ],
+      "bytes": 2444,
+      "sha256": "d5fe3212057abd3d68a677ca6b6372d2799358c091a3c756654214604b4105f4"
+    },
+    {
+      "path": "data/runtime/blobs/d7501bfb4ae0586e280f15788aceb93ba2b8c42ed57ee4181f4943001b6930a5.bin",
+      "source_ids": [
+        "S15"
+      ],
+      "bytes": 18936941,
+      "sha256": "d7501bfb4ae0586e280f15788aceb93ba2b8c42ed57ee4181f4943001b6930a5"
+    },
+    {
+      "path": "data/runtime/blobs/d7d1c10dcb00c6db73106382c59541ba6a98cb730adb27b47878797050e80687.bin",
+      "source_ids": [
+        "S21"
+      ],
+      "bytes": 2428,
+      "sha256": "d7d1c10dcb00c6db73106382c59541ba6a98cb730adb27b47878797050e80687"
+    },
+    {
+      "path": "data/runtime/blobs/d9e6cc9e4c8344c21ed8321a43919e487624b80fcf9e42da1cc357289fb6b020.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 530,
+      "sha256": "d9e6cc9e4c8344c21ed8321a43919e487624b80fcf9e42da1cc357289fb6b020"
+    },
+    {
+      "path": "data/runtime/blobs/d9f3283166c64ae156f315c0bef744822327191c15afbbf654f3722e2d7008c4.bin",
+      "source_ids": [
+        "S56"
+      ],
+      "bytes": 2167,
+      "sha256": "d9f3283166c64ae156f315c0bef744822327191c15afbbf654f3722e2d7008c4"
+    },
+    {
+      "path": "data/runtime/blobs/da7a8c3bfe5e281e2b1aed06d74b5ccc44238a2663ede8faf1ba6a02a129a7ec.bin",
+      "source_ids": [
+        "S58"
+      ],
+      "bytes": 23038,
+      "sha256": "da7a8c3bfe5e281e2b1aed06d74b5ccc44238a2663ede8faf1ba6a02a129a7ec"
+    },
+    {
+      "path": "data/runtime/blobs/e73a048050602bfd05fade1bcd7e013f8c10c5281a71bdedf55436b15e9ce3a5.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 1544,
+      "sha256": "e73a048050602bfd05fade1bcd7e013f8c10c5281a71bdedf55436b15e9ce3a5"
+    },
+    {
+      "path": "data/runtime/blobs/e9c546456ad59688ec411b2cb047fba419b1d9d40a23bbe801ff368d01d4aa46.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 1386,
+      "sha256": "e9c546456ad59688ec411b2cb047fba419b1d9d40a23bbe801ff368d01d4aa46"
+    },
+    {
+      "path": "data/runtime/blobs/ea7f8f554c9a9c03cb2f4b89281049266262112eec16263f15ef19eeaa02648e.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 236,
+      "sha256": "ea7f8f554c9a9c03cb2f4b89281049266262112eec16263f15ef19eeaa02648e"
+    },
+    {
+      "path": "data/runtime/blobs/ec46f4110f08e812da0d446a31d431906593b8e441489237b6ec10c94dcb755e.bin",
+      "source_ids": [
+        "S20"
+      ],
+      "bytes": 1237,
+      "sha256": "ec46f4110f08e812da0d446a31d431906593b8e441489237b6ec10c94dcb755e"
+    },
+    {
+      "path": "data/runtime/blobs/f262d4dde93f23b406912747a0af630dc491b3d3b4937a01aaf5e65170b8eea7.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 632,
+      "sha256": "f262d4dde93f23b406912747a0af630dc491b3d3b4937a01aaf5e65170b8eea7"
+    },
+    {
+      "path": "data/runtime/blobs/f2c3924fa398b55ac80313583b682e5680868313b7ac425e87a66a5627da13b3.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 553,
+      "sha256": "f2c3924fa398b55ac80313583b682e5680868313b7ac425e87a66a5627da13b3"
+    },
+    {
+      "path": "data/runtime/blobs/f5717ccf09e64ce6d841b6e8017411c233947bc1e37c2fed529690299e352b54.bin",
+      "source_ids": [
+        "S37"
+      ],
+      "bytes": 394,
+      "sha256": "f5717ccf09e64ce6d841b6e8017411c233947bc1e37c2fed529690299e352b54"
+    },
+    {
+      "path": "data/runtime/blobs/f5e9fbe91b5fe14b3b9a3290517696b279cf93b327c4067b9c7ee0225df71e07.bin",
+      "source_ids": [
+        "S57"
+      ],
+      "bytes": 646836,
+      "sha256": "f5e9fbe91b5fe14b3b9a3290517696b279cf93b327c4067b9c7ee0225df71e07"
+    },
+    {
+      "path": "data/runtime/blobs/f6531b835e142d269dcdfd67117fb68310cf63d2536c039c9a8c54f322c3afd3.bin",
+      "source_ids": [
+        "S59"
+      ],
+      "bytes": 38939,
+      "sha256": "f6531b835e142d269dcdfd67117fb68310cf63d2536c039c9a8c54f322c3afd3"
+    },
+    {
+      "path": "data/runtime/blobs/f9761b0f1d633a55f22d010c1feb7ced67f30b7b47a18951e665d76f75019cd3.bin",
+      "source_ids": [
+        "S58"
+      ],
+      "bytes": 3653450,
+      "sha256": "f9761b0f1d633a55f22d010c1feb7ced67f30b7b47a18951e665d76f75019cd3"
+    },
+    {
+      "path": "data/runtime/blobs/ff28ff1011b0344488db70a193ff0ab6d86fe16c09c6c2f47dc793b1fc2d4958.bin",
+      "source_ids": [
+        "S06"
+      ],
+      "bytes": 4413,
+      "sha256": "ff28ff1011b0344488db70a193ff0ab6d86fe16c09c6c2f47dc793b1fc2d4958"
+    },
+    {
+      "path": "research/discovery/broad-sample-audit.json",
+      "source_ids": [
+        "S15",
+        "S16",
+        "S17",
+        "S18",
+        "S19",
+        "S20",
+        "S21",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "bytes": 15333,
+      "sha256": "d36ec1e0cf2b32c1332c817d684bd5d9fc53c33df39784ef8e2d29de07574576"
+    },
+    {
+      "path": "research/discovery/broad-spectrum-analysis.md",
+      "source_ids": [
+        "S29",
+        "S30",
+        "S31",
+        "S32",
+        "S33",
+        "S34",
+        "S35",
+        "S36",
+        "S37",
+        "S38"
+      ],
+      "bytes": 16956,
+      "sha256": "dc4fbcb85184f01a402cb58d0aac3fe3ebf9b91b8f3100512fcd5e1ff41e44d3"
+    },
+    {
+      "path": "research/discovery/citywx-assessment.ipynb",
+      "source_ids": [
+        "S60"
+      ],
+      "bytes": 2241,
+      "sha256": "deb75c142fceb4c9476a38b749dc5f6b07eb4f25a4734a26021b1fd81c6ab80f"
+    },
+    {
+      "path": "research/discovery/citywx-assessment.md",
+      "source_ids": [
+        "S60"
+      ],
+      "bytes": 3787,
+      "sha256": "22fda67597957eecb47395214d0affbb807f387f0706b945ae76c5c816891b50"
+    },
+    {
+      "path": "research/discovery/evidence/20260911T153818096820Z/bulletin-manifest.json",
+      "source_ids": [
+        "S07",
+        "S08"
+      ],
+      "bytes": 711,
+      "sha256": "33da024d3176b171af3bd62b9fa25ab2ecd52258cac39f794e72d62ff26a5629"
+    },
+    {
+      "path": "research/discovery/evidence/20260911T153818096820Z/gujarat-agromet.pdf",
+      "source_ids": [
+        "S07"
+      ],
+      "bytes": 3485121,
+      "sha256": "183a22729b843eb61cba70255bdb73829e7e525133e4acfa85d30da2685f9d97"
+    },
+    {
+      "path": "research/discovery/evidence/20260911T153818096820Z/gujarat-district-forecast.pdf",
+      "source_ids": [
+        "S08"
+      ],
+      "bytes": 1174804,
+      "sha256": "b81ca84edcb21f123b8a5558d26425ae4c47ad68696d8b66e2db73ac28be059c"
+    },
+    {
+      "path": "research/discovery/evidence/20260911T153818096820Z/imd-agromet-crop.response",
+      "source_ids": [
+        "S09"
+      ],
+      "bytes": 62260,
+      "sha256": "ce6bf08060accc1ea10dd502def7e3104eb8805ce04f1bb2db2d1c23a1c1245a"
+    },
+    {
+      "path": "research/discovery/evidence/20260911T153818096820Z/imd-ahmedabad.response",
+      "source_ids": [
+        "S10"
+      ],
+      "bytes": 46108,
+      "sha256": "d5dc566e13c09d32bf3e2e1dfc4ea87dafe674cb152e7cbb2cc58860cba584d9"
+    },
+    {
+      "path": "research/discovery/evidence/20260911T153818096820Z/imd-cap-rss.response",
+      "source_ids": [
+        "S06"
+      ],
+      "bytes": 6163,
+      "sha256": "2ebb682f2306815b36d6a1276b20bee0e2367046f8042ea5b2a71a8ab30226fb"
+    },
+    {
+      "path": "research/discovery/evidence/20260911T153818096820Z/imd-city-forecast.response",
+      "source_ids": [
+        "S02"
+      ],
+      "bytes": 27,
+      "sha256": "8822d082580a062c206859ed757108c68432cfccf11393297e57c9fb3ef0d013"
+    },
+    {
+      "path": "research/discovery/evidence/20260911T153818096820Z/imd-city-mapping.response",
+      "source_ids": [
+        "S05"
+      ],
+      "bytes": 27,
+      "sha256": "8822d082580a062c206859ed757108c68432cfccf11393297e57c9fb3ef0d013"
+    },
+    {
+      "path": "research/discovery/evidence/20260911T153818096820Z/imd-current.response",
+      "source_ids": [
+        "S01"
+      ],
+      "bytes": 27,
+      "sha256": "8822d082580a062c206859ed757108c68432cfccf11393297e57c9fb3ef0d013"
+    },
+    {
+      "path": "research/discovery/evidence/20260911T153818096820Z/imd-nowcast.response",
+      "source_ids": [
+        "S03"
+      ],
+      "bytes": 27,
+      "sha256": "8822d082580a062c206859ed757108c68432cfccf11393297e57c9fb3ef0d013"
+    },
+    {
+      "path": "research/discovery/evidence/20260911T153818096820Z/imd-warning.response",
+      "source_ids": [
+        "S04"
+      ],
+      "bytes": 27,
+      "sha256": "8822d082580a062c206859ed757108c68432cfccf11393297e57c9fb3ef0d013"
+    },
+    {
+      "path": "research/discovery/evidence/20260911T153818096820Z/manifest.json",
+      "source_ids": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S09",
+        "S10"
+      ],
+      "bytes": 4550,
+      "sha256": "20cbedc7058d8b35d5708f953310fa0d10dd5bdc15e2d1af1fdd3bb2594863bf"
+    },
+    {
+      "path": "research/discovery/evidence/api-reference.html",
+      "source_ids": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05"
+      ],
+      "bytes": 58564,
+      "sha256": "15290a325911f201397f84cd4dbf1aa1e4cd2f77ed4af471f21a65d6f98bdb11"
+    },
+    {
+      "path": "research/discovery/evidence/broad-20260911T160113Z/awc-metar.response",
+      "source_ids": [
+        "S18"
+      ],
+      "bytes": 2245,
+      "sha256": "45f3bc4122b1afb9e04deb0756008cef03a24f1934be396ae668839bcac4a742"
+    },
+    {
+      "path": "research/discovery/evidence/broad-20260911T160113Z/awc-station.response",
+      "source_ids": [
+        "S20"
+      ],
+      "bytes": 209,
+      "sha256": "6d2a746215bc3a44b93f6478c89d904580ccab1a138c34ed24a55aee080cc3be"
+    },
+    {
+      "path": "research/discovery/evidence/broad-20260911T160113Z/awc-taf.response",
+      "source_ids": [
+        "S19"
+      ],
+      "bytes": 1482,
+      "sha256": "2f27e8268ae5936a59c1f912462fdf93c852ee0183c00a0f51e297dae94849c1"
+    },
+    {
+      "path": "research/discovery/evidence/broad-20260911T160113Z/imd-warning-map.response",
+      "source_ids": [
+        "S15"
+      ],
+      "bytes": 43175,
+      "sha256": "4c6bb393cce784cf7827368497c8293b7b7ac455e33c684326dddfe531e86d32"
+    },
+    {
+      "path": "research/discovery/evidence/broad-20260911T160113Z/manifest.json",
+      "source_ids": [
+        "S15",
+        "S18",
+        "S19",
+        "S20",
+        "S24"
+      ],
+      "bytes": 4178,
+      "sha256": "4a444f296ddf30bbd139d6ba6cdf5ecd27efd23208661ebc3d7051cc47522af7"
+    },
+    {
+      "path": "research/discovery/evidence/broad-20260911T160113Z/openmeteo-geocode.response",
+      "source_ids": [
+        "S24"
+      ],
+      "bytes": 984,
+      "sha256": "f107dd7a396dc603708b0c869294234922973c5457f3271dfe1ec38e1214da8d"
+    },
+    {
+      "path": "research/discovery/evidence/citywx-20260912/access-errors.json",
+      "source_ids": [
+        "S60"
+      ],
+      "bytes": 496,
+      "sha256": "009d5d39d3a0ab62184c69f52daaf34f836f982f4c87b3e92b3be751ff7b4dbc"
+    },
+    {
+      "path": "research/discovery/evidence/citywx-20260912/ahmedabad-city-fetch.json",
+      "source_ids": [
+        "S60"
+      ],
+      "bytes": 356,
+      "sha256": "4d88b33edc24ce9fd0b41c3e17815462efc4db5b13f95cdbee54def795405ae2"
+    },
+    {
+      "path": "research/discovery/evidence/citywx-20260912/ahmedabad-city.response",
+      "source_ids": [
+        "S60"
+      ],
+      "bytes": 9,
+      "sha256": "78342a0905a72ce44da083dcb5d23b8ea0c16992ba2a82eece97e033d76ba3d3"
+    },
+    {
+      "path": "research/discovery/evidence/citywx-20260912/app-fetch.json",
+      "source_ids": [
+        "S60"
+      ],
+      "bytes": 508,
+      "sha256": "07858450f5139b9893153a3fc97086ad0445835e879db779af6c2cd3417e670e"
+    },
+    {
+      "path": "research/discovery/evidence/citywx-20260912/app.js",
+      "source_ids": [
+        "S60"
+      ],
+      "bytes": 696544,
+      "sha256": "cc9accbf6ee7b221d2fe9ac688c50fe697b43adcf94d12ba5160884d7ef1f433"
+    },
+    {
+      "path": "research/discovery/evidence/citywx-20260912/assessment.json",
+      "source_ids": [
+        "S60"
+      ],
+      "bytes": 262,
+      "sha256": "bc615db0d4953d60adca18e1e204f1e710e1de622589cec16dea6dff680c7660"
+    },
+    {
+      "path": "research/discovery/evidence/citywx-20260912/index-fetch.json",
+      "source_ids": [
+        "S60"
+      ],
+      "bytes": 484,
+      "sha256": "9de40954bb2f2683b77ebe839966661f8a9ee54c6aedea1c490ca6a155f8d89a"
+    },
+    {
+      "path": "research/discovery/evidence/citywx-20260912/index.html",
+      "source_ids": [
+        "S60"
+      ],
+      "bytes": 1073,
+      "sha256": "8d509b125f6701b8120c9201819797d1a3b067da86f7a493499d04cf48a4ecc3"
+    },
+    {
+      "path": "research/discovery/evidence/citywx-20260912/manifest.json",
+      "source_ids": [
+        "S60"
+      ],
+      "bytes": 1976,
+      "sha256": "fd180007785384bed39a0c3c4a123764cf0133125c6b500dba7b93be26b19ad7"
+    },
+    {
+      "path": "research/discovery/evidence/citywx-20260912/search-ahmedabad-fetch.json",
+      "source_ids": [
+        "S60"
+      ],
+      "bytes": 505,
+      "sha256": "bfbfa992dd7a7242bdd6336b2ca99af83020d33542ba0349f76e9698d0eb5d72"
+    },
+    {
+      "path": "research/discovery/evidence/citywx-20260912/search-ahmedabad.json",
+      "source_ids": [
+        "S60"
+      ],
+      "bytes": 696,
+      "sha256": "29ac55683be2a8c2b2064ebdc5227d6d473b33f0b9170acc445ee37955e058c4"
+    },
+    {
+      "path": "research/discovery/evidence/foundation-20260912/ahmedabad-reconciliation.json",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 663,
+      "sha256": "f843be9c7602efea55fb7fb2c0dba169a789d194d473c5299c07e46a77e96068"
+    },
+    {
+      "path": "research/discovery/evidence/foundation-20260912/imd-110-year-rainfall.pdf",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 22260117,
+      "sha256": "829d2145e06750343d05ccfc4b58aeb368202e012d48b872e51897648f97a91e"
+    },
+    {
+      "path": "research/discovery/evidence/foundation-20260912/rainfall-download.json",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 288,
+      "sha256": "77d78b431fb10510993d8279ec04e08391cbbfef4a2bafcdb60b7e06a2e60349"
+    },
+    {
+      "path": "research/discovery/evidence/imd-context-20260911T160450Z/imd-chart-code.response",
+      "source_ids": [
+        "S16",
+        "S17"
+      ],
+      "bytes": 12006,
+      "sha256": "7aea4aaea3fd91ba473b4fd634756d9b87b5062c83ec01d9b63337a96ea5e498"
+    },
+    {
+      "path": "research/discovery/evidence/imd-context-20260911T160450Z/imd-temperature-bc.response",
+      "source_ids": [
+        "S17"
+      ],
+      "bytes": 948,
+      "sha256": "eea67877dc23a7214253ea71a0dc58272ebdc029f33912ace48fae8ed2961844"
+    },
+    {
+      "path": "research/discovery/evidence/imd-context-20260911T160450Z/manifest.json",
+      "source_ids": [
+        "S16",
+        "S17"
+      ],
+      "bytes": 1261,
+      "sha256": "7790d2da9b4aa311ed437d6905f10a53b0e1019f4238546c058b3525880ac44e"
+    },
+    {
+      "path": "research/discovery/evidence/imd-grid-20260911T160416Z/imd-mausamgram-grid.response",
+      "source_ids": [
+        "S16"
+      ],
+      "bytes": 3742,
+      "sha256": "69a939c206070dc393072251a43540f7d2909068c02ee52d033aa7f35c50cc10"
+    },
+    {
+      "path": "research/discovery/evidence/imd-grid-20260911T160416Z/manifest.json",
+      "source_ids": [
+        "S16"
+      ],
+      "bytes": 812,
+      "sha256": "c3ffca09c18bb8821875f676f9c4b874ce51bed6a8b2e48331d5d90b89814546"
+    },
+    {
+      "path": "research/discovery/evidence/imd-live-20260911T160337Z/imd-ahmedabad-warning.response",
+      "source_ids": [
+        "S15"
+      ],
+      "bytes": 11717,
+      "sha256": "7d078fc1ca9f6d1bc3e38f53e82a9aee1981f085190fbcbdd9664d3a339af5c0"
+    },
+    {
+      "path": "research/discovery/evidence/imd-live-20260911T160337Z/imd-mausamgram-3hr.response",
+      "source_ids": [
+        "S16"
+      ],
+      "bytes": 27,
+      "sha256": "dc8fa5cdc1f5578058fc2d5b5c80155b2829ade309e1fc5ad1111a9fabf8a2f5"
+    },
+    {
+      "path": "research/discovery/evidence/imd-live-20260911T160337Z/manifest.json",
+      "source_ids": [
+        "S15",
+        "S16"
+      ],
+      "bytes": 2046,
+      "sha256": "324cb4c1aedd65d00dfb1dbbc4dc44245b90a7582c752be3dbf4ed220b941a8f"
+    },
+    {
+      "path": "research/discovery/evidence/mausamgram-20260911T160131Z/homepage.response",
+      "source_ids": [
+        "S16"
+      ],
+      "bytes": 98277,
+      "sha256": "e990ba0565a84420bf11f2e49e52d983fbebb4a897f443d0691e6ef01cf74e53"
+    },
+    {
+      "path": "research/discovery/evidence/mausamgram-20260911T160131Z/manifest.json",
+      "source_ids": [
+        "S16"
+      ],
+      "bytes": 449,
+      "sha256": "80134e5e49062deac17ef9b792dac5d2c233830b862b32f3272a2600b40ca60a"
+    },
+    {
+      "path": "research/discovery/evidence/numeric-20260911T160221Z/imd-mausamgram-run.response",
+      "source_ids": [
+        "S16"
+      ],
+      "bytes": 32,
+      "sha256": "e05b16f9b49f986043e2f290542fdaad2d7558d6710259f3e03477f19eefee05"
+    },
+    {
+      "path": "research/discovery/evidence/numeric-20260911T160221Z/manifest.json",
+      "source_ids": [
+        "S16",
+        "S21",
+        "S22",
+        "S23"
+      ],
+      "bytes": 5713,
+      "sha256": "e2269eebfb2d0268198c544c20e5d8a8898bb02527c26f98f2f8771c57354727"
+    },
+    {
+      "path": "research/discovery/evidence/numeric-20260911T160221Z/nasa-power-daily.response",
+      "source_ids": [
+        "S23"
+      ],
+      "bytes": 782,
+      "sha256": "5a67c69dc5635a1acadd4a2b428d080d357d72f44d6526580bcb958aecf1e0cd"
+    },
+    {
+      "path": "research/discovery/evidence/numeric-20260911T160221Z/openmeteo-era5.response",
+      "source_ids": [
+        "S22"
+      ],
+      "bytes": 576,
+      "sha256": "2bbfbadcbb67d48cf15928f010a65fb2be4e5047e334ad8bfe39d8b218c8bd30"
+    },
+    {
+      "path": "research/discovery/evidence/numeric-20260911T160221Z/openmeteo-gfs.response",
+      "source_ids": [
+        "S21"
+      ],
+      "bytes": 3056,
+      "sha256": "6f2cd579adee289015fd831ff4a2294a8f979b27eb0cb275d39a2ef426327cab"
+    },
+    {
+      "path": "research/discovery/evidence/pasted-climate-check/audit-results.json",
+      "source_ids": [
+        "S25",
+        "S26"
+      ],
+      "bytes": 10483,
+      "sha256": "b76812416aa567c0972eb214725834b7874ea6592143a64534232535ff1db04e"
+    },
+    {
+      "path": "research/discovery/evidence/pasted-climate-check/rainfall-selected.html",
+      "source_ids": [
+        "S25"
+      ],
+      "bytes": 536179,
+      "sha256": "5f8a70116e4a55f4d66d35bf5f7f2cf3edf6804be86d2023ecb559d3906b6b95"
+    },
+    {
+      "path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+      "source_ids": [
+        "S25"
+      ],
+      "bytes": 28021,
+      "sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90"
+    },
+    {
+      "path": "research/discovery/evidence/pasted-climate-check/source-comparison.json",
+      "source_ids": [
+        "S25",
+        "S26"
+      ],
+      "bytes": 139,
+      "sha256": "bfaf9ce56e1d9a34f8064793b7593aa0555ac124b6d582e6718809e0216e142a"
+    },
+    {
+      "path": "research/discovery/evidence/pasted-climate-check/temperature-selected.html",
+      "source_ids": [
+        "S26"
+      ],
+      "bytes": 542175,
+      "sha256": "2edec94938db54c1650f675b1bf19b75851767b39abaed81dec16b7ded7f5a37"
+    },
+    {
+      "path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+      "source_ids": [
+        "S26"
+      ],
+      "bytes": 32356,
+      "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9"
+    },
+    {
+      "path": "research/discovery/evidence/recheck-20260911T185811Z/S01.response",
+      "source_ids": [
+        "S01"
+      ],
+      "bytes": 27,
+      "sha256": "8822d082580a062c206859ed757108c68432cfccf11393297e57c9fb3ef0d013"
+    },
+    {
+      "path": "research/discovery/evidence/recheck-20260911T185811Z/S02.response",
+      "source_ids": [
+        "S02"
+      ],
+      "bytes": 27,
+      "sha256": "8822d082580a062c206859ed757108c68432cfccf11393297e57c9fb3ef0d013"
+    },
+    {
+      "path": "research/discovery/evidence/recheck-20260911T185811Z/S06.response",
+      "source_ids": [
+        "S06"
+      ],
+      "bytes": 6163,
+      "sha256": "2ebb682f2306815b36d6a1276b20bee0e2367046f8042ea5b2a71a8ab30226fb"
+    },
+    {
+      "path": "research/discovery/evidence/recheck-20260911T185811Z/S15.response",
+      "source_ids": [
+        "S15"
+      ],
+      "bytes": 11716,
+      "sha256": "758365dfb271c2ddde308961ce4cb11c67194a4f0e2685a90b6b537b2078b848"
+    },
+    {
+      "path": "research/discovery/evidence/recheck-20260911T185811Z/S18.response",
+      "source_ids": [
+        "S18"
+      ],
+      "bytes": 2823,
+      "sha256": "8964d80ad76c7f3303d59078c10debfe980ade4cb2ea42fe2cc93ebfdbda7ee1"
+    },
+    {
+      "path": "research/discovery/evidence/recheck-20260911T185811Z/S20.response",
+      "source_ids": [
+        "S20"
+      ],
+      "bytes": 209,
+      "sha256": "6d2a746215bc3a44b93f6478c89d904580ccab1a138c34ed24a55aee080cc3be"
+    },
+    {
+      "path": "research/discovery/evidence/recheck-20260911T185811Z/S21.response",
+      "source_ids": [
+        "S21"
+      ],
+      "bytes": 3057,
+      "sha256": "f6f16a08896a69b346923a971cfcb948363cd1f3c0b782d57d321b7385b12112"
+    },
+    {
+      "path": "research/discovery/evidence/recheck-20260911T185811Z/imd-aws.response",
+      "source_ids": [
+        "S39"
+      ],
+      "bytes": 27,
+      "sha256": "8822d082580a062c206859ed757108c68432cfccf11393297e57c9fb3ef0d013"
+    },
+    {
+      "path": "research/discovery/evidence/recheck-20260911T185811Z/imd-cyclone-track.response",
+      "source_ids": [
+        "S43"
+      ],
+      "bytes": 27,
+      "sha256": "8822d082580a062c206859ed757108c68432cfccf11393297e57c9fb3ef0d013"
+    },
+    {
+      "path": "research/discovery/evidence/recheck-20260911T185811Z/imd-district-rainfall.response",
+      "source_ids": [
+        "S41"
+      ],
+      "bytes": 27,
+      "sha256": "8822d082580a062c206859ed757108c68432cfccf11393297e57c9fb3ef0d013"
+    },
+    {
+      "path": "research/discovery/evidence/recheck-20260911T185811Z/imd-qpf.response",
+      "source_ids": [
+        "S42"
+      ],
+      "bytes": 27,
+      "sha256": "8822d082580a062c206859ed757108c68432cfccf11393297e57c9fb3ef0d013"
+    },
+    {
+      "path": "research/discovery/evidence/recheck-20260911T185811Z/imd-reference.response",
+      "source_ids": [
+        "S03",
+        "S04",
+        "S15",
+        "S39",
+        "S40",
+        "S41",
+        "S42",
+        "S43",
+        "S44",
+        "S45",
+        "S46",
+        "S47",
+        "S48",
+        "S52",
+        "S53",
+        "S54",
+        "S55"
+      ],
+      "bytes": 58564,
+      "sha256": "15290a325911f201397f84cd4dbf1aa1e4cd2f77ed4af471f21a65d6f98bdb11"
+    },
+    {
+      "path": "research/discovery/evidence/recheck-20260911T185811Z/imd-run.response",
+      "source_ids": [
+        "S16"
+      ],
+      "bytes": 32,
+      "sha256": "e05b16f9b49f986043e2f290542fdaad2d7558d6710259f3e03477f19eefee05"
+    },
+    {
+      "path": "research/discovery/evidence/recheck-20260911T185811Z/manifest.json",
+      "source_ids": [
+        "S01",
+        "S02",
+        "S06",
+        "S11",
+        "S15",
+        "S16",
+        "S18",
+        "S20",
+        "S21",
+        "S39",
+        "S40",
+        "S41",
+        "S42",
+        "S43",
+        "S44",
+        "S45",
+        "S46",
+        "S47",
+        "S48",
+        "S52",
+        "S53",
+        "S54",
+        "S55"
+      ],
+      "bytes": 8179,
+      "sha256": "6c63b96d2ba4bd775710ed7430fcb84c8e8ad68a8a6c23241808b4311c622381"
+    },
+    {
+      "path": "research/discovery/evidence/recheck-20260911T185811Z/payload-checks.json",
+      "source_ids": [
+        "S06",
+        "S15",
+        "S18",
+        "S20",
+        "S21"
+      ],
+      "bytes": 1065,
+      "sha256": "454ff81f25068cdbc5d6187d62d72d5acd05b521c12e455dccc01b71609e5b43"
+    },
+    {
+      "path": "research/discovery/national-climate-audit.ipynb",
+      "source_ids": [
+        "S25",
+        "S26"
+      ],
+      "bytes": 24082,
+      "sha256": "0f67c0c0d7e0a5008536a2059fec62809a98954539da801c0e14c42e9f48a150"
+    },
+    {
+      "path": "research/discovery/question-evidence-map.md",
+      "source_ids": [],
+      "bytes": 5937,
+      "sha256": "f64ce036a22ac3a055fce8744cda5efe8d6af58bb102ff3cb14de7f0d8bd17d6"
+    },
+    {
+      "path": "research/discovery/source-register.json",
+      "source_ids": [],
+      "bytes": 27853,
+      "sha256": "84408f2321384d6c89c9f82c2abe42052034b8d01514aa972351fe7a0831e30f"
+    },
+    {
+      "path": "research/discovery/states-folder-audit.ipynb",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 5513,
+      "sha256": "aeeaab37fb9e3d975b91d9ffeba13e6d1b11e511a57af810b53ec58b1d161b84"
+    },
+    {
+      "path": "research/discovery/states-folder-audit.json",
+      "source_ids": [
+        "S27"
+      ],
+      "bytes": 857,
+      "sha256": "b65854e564d0fd79a3ce68e65a06cdfeb41e8bc689aff111b7d86629810ef72f"
+    },
+    {
+      "path": "research/evidence/imd_gridded_rainfall_catalog.html",
+      "source_ids": [
+        "S11"
+      ],
+      "bytes": 14141,
+      "sha256": "5a68a976b9f0e47d6851fe4a8433d73bcddc718956167db7e6f28bf4eecc0e60"
+    },
+    {
+      "path": "research/implementation/conversation-engine-20260912/verified-evidence/3706c5d848587746c55ea186ee66adfe53fdccf0f91acb06b86f36a00cdfd774.bin",
+      "source_ids": [
+        "S18"
+      ],
+      "bytes": 3134,
+      "sha256": "3706c5d848587746c55ea186ee66adfe53fdccf0f91acb06b86f36a00cdfd774"
+    },
+    {
+      "path": "research/implementation/conversation-engine-20260912/verified-evidence/47d3adee96e8c8e608e54a05d5e377042a355ab2854cef17333db07322c1d5f7.bin",
+      "source_ids": [
+        "S19"
+      ],
+      "bytes": 1690,
+      "sha256": "47d3adee96e8c8e608e54a05d5e377042a355ab2854cef17333db07322c1d5f7"
+    },
+    {
+      "path": "research/implementation/conversation-engine-20260912/verified-evidence/6d2a746215bc3a44b93f6478c89d904580ccab1a138c34ed24a55aee080cc3be.bin",
+      "source_ids": [
+        "S20"
+      ],
+      "bytes": 209,
+      "sha256": "6d2a746215bc3a44b93f6478c89d904580ccab1a138c34ed24a55aee080cc3be"
+    },
+    {
+      "path": "research/implementation/point-tools-20260912/live-sources/extended_forecast.json",
+      "source_ids": [
+        "S62"
+      ],
+      "bytes": 324653,
+      "sha256": "71aa7f1794091fe737fcbf13894dbc28c27cfa070096fd0bb66498bd1bcc4fbe"
+    },
+    {
+      "path": "research/implementation/point-tools-20260912/live-sources/history_local.json",
+      "source_ids": [
+        "S22"
+      ],
+      "bytes": 11829,
+      "sha256": "15400e6f39eacd28cdb34a3f3edf04a46c99f7bed30abf19c9e2e058b939d34c"
+    },
+    {
+      "path": "research/implementation/point-tools-20260912/live-sources/raw/4827bc45b591615ba396fe5081c6d764382b8108d49bb622b72340d0fdadf26c/58de344670a74a52ae7f1dcf5f9624cb/blobs/d328dcf011dfcdf085d42e5a99dc8692bf9889710265fed8d47469c99f89027f.bin",
+      "source_ids": [
+        "S22"
+      ],
+      "bytes": 664,
+      "sha256": "d328dcf011dfcdf085d42e5a99dc8692bf9889710265fed8d47469c99f89027f"
+    },
+    {
+      "path": "research/implementation/point-tools-20260912/live-sources/raw/96c2c9d9df0847b7e859d366972284d7695a804df3f9a75f554167c0b9f4d651/e8b3f8cbd7424220a4e79af5eba30a97/blobs/569c5612afbdd2695f510b2b7e90ef964f2ed126c13c662c375a7b85e166c683.bin",
+      "source_ids": [
+        "S62"
+      ],
+      "bytes": 4149,
+      "sha256": "569c5612afbdd2695f510b2b7e90ef964f2ed126c13c662c375a7b85e166c683"
+    }
+  ]
+}

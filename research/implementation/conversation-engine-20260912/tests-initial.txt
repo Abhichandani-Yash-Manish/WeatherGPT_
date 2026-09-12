@@ -1,0 +1,14 @@
+EOF marker not found
+EOF marker not found
+======================================================================
+FAIL: test_probability_retains_each_hour_never_summed (test_point_tasks.PointJourneys)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yashabhichandani/Desktop/WeatherGPT/tests/test_point_tasks.py", line 53, in test_probability_retains_each_hour_never_summed
+    self.assertFalse(r['calculations']);self.assertIn('not the chance for the whole',r['answer'])
+AssertionError: 'not the chance for the whole' not found in 'Ahmedabad · 13 Sep, 06:30–13 Sep, 12:30 IST: Hourly rain chances: 20.0–80.0 %. The highest hourly value is 80.0% for 13 Sep, 08:30–09:30 IST. These percentages are for individual hours, not one probability for the whole day. Source: Open-Meteo best-match forecast; conditions can change.'
+
+----------------------------------------------------------------------
+Ran 252 tests in 4.870s
+
+FAILED (failures=1)

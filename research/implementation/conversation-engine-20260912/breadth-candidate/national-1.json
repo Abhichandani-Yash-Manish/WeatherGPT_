@@ -1,0 +1,161 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "915898e9-c6c4-4710-ae36-a293d12e00a0",
+  "question": "और 2023 में?",
+  "status": "needs_clarification",
+  "answer": "किस शहर या गाँव का मौसम बताऊँ?",
+  "facts": [],
+  "citations": [],
+  "notes": [
+    "Time window is the full year of 2023."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T18:54:20.863657+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 2845,
+      "output_tokens": 197,
+      "duration_seconds": 3.717001084
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "history",
+        "task_id": "t1",
+        "status": "needs_clarification"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "follow_up",
+      "changed_fields": [
+        "time"
+      ],
+      "inherited_fields": [
+        "parameters",
+        "operation"
+      ]
+    },
+    "duration_seconds": 3.732
+  },
+  "plan": {
+    "language": "hi",
+    "places": [],
+    "assumptions": [
+      "Time window is the full year of 2023."
+    ],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "और 2023 में?",
+        "kind": "history",
+        "operation": "lookup",
+        "parameters": [
+          "rainfall",
+          "temperature"
+        ],
+        "years": [
+          2023
+        ],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": []
+      }
+    ],
+    "context_action": "follow_up",
+    "changed_fields": [
+      "time"
+    ],
+    "intent": "history",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 2023,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "और 2023 में?",
+        "kind": "history",
+        "operation": "lookup",
+        "parameters": [
+          "rainfall",
+          "temperature"
+        ],
+        "years": [
+          2023
+        ],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": []
+      },
+      "status": "needs_clarification",
+      "answer": "Which historical district and state, or All India, should I check?",
+      "fact_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "history",
+      "parameters": [
+        "rainfall",
+        "temperature"
+      ],
+      "candidates": [
+        {
+          "tool": "published_history",
+          "selected": true,
+          "available": true,
+          "reason": "Published India aggregates and historical district rainfall; no district temperature",
+          "sources": [
+            {
+              "source_id": "S25",
+              "product": "IMD All India historical rainfall table (supplied CSV)",
+              "registry_status": "sample_inspected"
+            },
+            {
+              "source_id": "S26",
+              "product": "IMD All India historical mean temperature table (supplied CSV)",
+              "registry_status": "sample_inspected"
+            },
+            {
+              "source_id": "S27",
+              "product": "Supplied district historical rainfall collection (32 CSVs)",
+              "registry_status": "sample_inspected"
+            }
+          ]
+        }
+      ],
+      "status": "needs_clarification",
+      "returned_source_ids": []
+    }
+  ],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

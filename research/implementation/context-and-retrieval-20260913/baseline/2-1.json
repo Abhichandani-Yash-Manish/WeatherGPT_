@@ -1,0 +1,4 @@
+{
+  "error": "HTTP Error 400: Bad Request",
+  "detail": "{\"error\": \"Question interpretation did not preserve the requested tasks: Overlapping supporting quotes created duplicate or unrequested tasks; retain only the explicitly requested time windows\"}"
+}

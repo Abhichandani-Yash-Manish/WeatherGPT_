@@ -1,0 +1,12 @@
+{
+  "source_id": "S62",
+  "url": "https://api.open-meteo.com/v1/forecast?latitude=19.07283&longitude=72.88261&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m%2Cprecipitation_probability%2Capparent_temperature%2Cwind_gusts_10m%2Cvisibility&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+  "retrieved_at_utc": "2026-09-12T18:10:20.172307+00:00",
+  "http_status": 200,
+  "content_type": "application/json; charset=utf-8",
+  "bytes": 4190,
+  "sha256": "b41a6faaa66111f11835aae7a2f60e53c867803a689404c606b99ebe66721157",
+  "blob": "blobs/b41a6faaa66111f11835aae7a2f60e53c867803a689404c606b99ebe66721157.bin",
+  "validation_scope": "product",
+  "stage": "validated"
+}

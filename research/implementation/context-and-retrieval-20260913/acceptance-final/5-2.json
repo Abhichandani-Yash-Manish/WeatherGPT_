@@ -1,0 +1,218 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "59cacd78-7968-405e-b152-47df12c750dd",
+  "question": "Only at tillering stage.",
+  "status": "unavailable",
+  "answer": "The Dibrugarh bulletin dated 2026-09-11 has no indexed passage matching rice at tillering. No passage for another crop, stage or topic has been substituted.",
+  "facts": [],
+  "citations": [
+    {
+      "id": "t1-doc-57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+      "source_id": "S57",
+      "provider": "IMD and named issuing agricultural institution",
+      "product": "Dibrugarh district agromet advisory",
+      "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Assam&district=Dibrugarh&language=English",
+      "response_sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+      "retrieved_at_utc": "2026-09-12T20:19:44.760212+00:00",
+      "original_retrieved_at_utc": "2026-09-12T20:19:48.750678+00:00",
+      "issue_date": "2026-09-11",
+      "local_document_path": "/api/documents/57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee"
+    }
+  ],
+  "notes": [],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T20:44:28.234262+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 4125,
+      "output_tokens": 277,
+      "duration_seconds": 5.794876375
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "district_bulletin_retrieval",
+        "source_id": "S57",
+        "mode": "metadata_filtered",
+        "candidates": 0,
+        "requested_crop": "rice",
+        "requested_stage": "tillering",
+        "document_sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee"
+      },
+      {
+        "name": "agriculture",
+        "task_id": "t1",
+        "status": "unavailable"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "follow_up",
+      "changed_fields": [
+        "growth_stage"
+      ],
+      "inherited_fields": [
+        "places",
+        "parameters",
+        "time",
+        "operation"
+      ]
+    },
+    "duration_seconds": 6.155
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Dibrugarh",
+        "state": "Assam",
+        "district": "Dibrugarh",
+        "kind": "district"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "Only at tillering stage.",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "Only at tillering stage. rice tillering general",
+          "crop": "rice",
+          "growth_stage": "tillering",
+          "topic": "general",
+          "mode": "source_lookup",
+          "selection": "top"
+        }
+      }
+    ],
+    "context_action": "follow_up",
+    "changed_fields": [
+      "growth_stage"
+    ],
+    "intent": "agriculture",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "Only at tillering stage.",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "Only at tillering stage. rice tillering general",
+          "crop": "rice",
+          "growth_stage": "tillering",
+          "topic": "general",
+          "mode": "source_lookup",
+          "selection": "top"
+        }
+      },
+      "status": "unavailable",
+      "answer": "The Dibrugarh bulletin dated 2026-09-11 has no indexed passage matching rice at tillering. No passage for another crop, stage or topic has been substituted.",
+      "fact_ids": [],
+      "passage_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "pending_slots": [],
+  "retrieval_coverage": [
+    {
+      "selection": "top",
+      "matched": 0,
+      "returned": 0,
+      "omitted": 0,
+      "scope": "Indexed passages matching this district, crop, stage and topic; not a completeness claim for the original PDF",
+      "task_id": "t1"
+    }
+  ],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "agriculture",
+      "parameters": [
+        "agricultural_advisory"
+      ],
+      "candidates": [
+        {
+          "tool": "crop_advisory",
+          "selected": true,
+          "available": true,
+          "reason": "Published district crop/stage passages; strict printed geography and dates, hybrid retrieval in reviewed PDF families; individual field decisions remain partial",
+          "sources": [
+            {
+              "source_id": "S57",
+              "product": "IMD district farmer bulletin delivery (English and local language)",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "unavailable",
+      "returned_source_ids": [
+        "S57"
+      ]
+    }
+  ],
+  "document_evidence": [
+    {
+      "district": "Dibrugarh",
+      "state": "Assam",
+      "issue_date": "2026-09-11",
+      "forecast_start": "2026-09-12",
+      "forecast_end": "2026-09-16",
+      "advice_valid_until": null,
+      "sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+      "family": "gkms_grid",
+      "scope": "Published source passages; no personalized prescription or independent agronomic validation"
+    }
+  ],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+Collecting pdfplumber==0.11.8
+  Downloading pdfplumber-0.11.8-py3-none-any.whl.metadata (43 kB)
+Collecting pdfminer.six==20251107 (from pdfplumber==0.11.8)
+  Downloading pdfminer_six-20251107-py3-none-any.whl.metadata (4.2 kB)
+Requirement already satisfied: Pillow>=9.1 in /Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages (from pdfplumber==0.11.8) (10.4.0)
+Collecting pypdfium2>=4.18.0 (from pdfplumber==0.11.8)
+  Downloading pypdfium2-5.13.0-py3-none-macosx_13_0_arm64.whl.metadata (66 kB)
+Requirement already satisfied: charset-normalizer>=2.0.0 in /Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages (from pdfminer.six==20251107->pdfplumber==0.11.8) (3.4.6)
+Requirement already satisfied: cryptography>=36.0.0 in /Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages (from pdfminer.six==20251107->pdfplumber==0.11.8) (47.0.0)
+Requirement already satisfied: cffi>=2.0.0 in /Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages (from cryptography>=36.0.0->pdfminer.six==20251107->pdfplumber==0.11.8) (2.0.0)
+Requirement already satisfied: typing-extensions>=4.13.2 in /Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages (from cryptography>=36.0.0->pdfminer.six==20251107->pdfplumber==0.11.8) (4.15.0)
+Requirement already satisfied: pycparser in /Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages (from cffi>=2.0.0->cryptography>=36.0.0->pdfminer.six==20251107->pdfplumber==0.11.8) (2.23)
+Downloading pdfplumber-0.11.8-py3-none-any.whl (60 kB)
+Downloading pdfminer_six-20251107-py3-none-any.whl (5.6 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.6/5.6 MB 991.3 kB/s  0:00:05
+Downloading pypdfium2-5.13.0-py3-none-macosx_13_0_arm64.whl (3.5 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.5/3.5 MB 709.3 kB/s  0:00:04
+Installing collected packages: pypdfium2, pdfminer.six, pdfplumber
+  WARNING: The script pypdfium2 is installed in '/Users/yashabhichandani/Library/Python/3.9/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The script pdfplumber is installed in '/Users/yashabhichandani/Library/Python/3.9/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+
+Successfully installed pdfminer.six-20251107 pdfplumber-0.11.8 pypdfium2-5.13.0

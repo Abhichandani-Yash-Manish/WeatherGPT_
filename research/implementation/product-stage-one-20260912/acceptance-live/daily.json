@@ -1,0 +1,108 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "a490242a-5f2e-400b-a2da-b2ef0b11afe8",
+  "question": "How much rain fell in Ahmedabad, Gujarat yesterday?",
+  "status": "unavailable",
+  "answer": "This is a daily historical request. The daily reanalysis adapter is not connected to chat yet; an annual or monthly table cannot answer it.",
+  "facts": [],
+  "citations": [],
+  "notes": [],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T17:46:33.344913+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 1219,
+      "output_tokens": 225,
+      "duration_seconds": 3.695318417
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "history",
+        "task_id": "t1",
+        "status": "unavailable"
+      }
+    ],
+    "provider": "local_ollama",
+    "duration_seconds": 3.708
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Ahmedabad",
+        "state": "Gujarat",
+        "district": "",
+        "kind": "settlement"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "kind": "history",
+        "operation": "daily",
+        "parameters": [
+          "rainfall"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-11T00:30:00+05:30",
+        "end_local": "2026-09-12T00:30:00+05:30",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "intent": "history",
+    "start_local": "2026-09-11T00:30:00+05:30",
+    "end_local": "2026-09-12T00:30:00+05:30",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "kind": "history",
+        "operation": "daily",
+        "parameters": [
+          "rainfall"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-11T00:30:00+05:30",
+        "end_local": "2026-09-12T00:30:00+05:30",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "unavailable",
+      "answer": "This is a daily historical request. The daily reanalysis adapter is not connected to chat yet; an annual or monthly table cannot answer it.",
+      "fact_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

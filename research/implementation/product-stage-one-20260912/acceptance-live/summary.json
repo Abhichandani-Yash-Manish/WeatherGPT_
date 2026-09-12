@@ -1,0 +1,177 @@
+[
+  {
+    "case": "both_measures",
+    "status": "answered",
+    "facts": 2,
+    "coverage": {
+      "requested": 1,
+      "completed": 1,
+      "incomplete_ids": []
+    },
+    "charts": 0,
+    "calculations": [],
+    "answer": "All India · annual 2024\nrainfall: 1206.6 mm [t1-f1]\ntemperature: 25.7431 degC [t1-f2]\nRetrieved 2 published historical values for the requested places, parameters and years.",
+    "seconds": 2.79
+  },
+  {
+    "case": "followup_year",
+    "status": "answered",
+    "facts": 2,
+    "coverage": {
+      "requested": 1,
+      "completed": 1,
+      "incomplete_ids": []
+    },
+    "charts": 0,
+    "calculations": [],
+    "answer": "All India · annual 2023\nrainfall: 1102.8 mm [t1-f1]\ntemperature: 25.4672 degC [t1-f2]\nRetrieved 2 published historical values for the requested places, parameters and years.",
+    "seconds": 2.46
+  },
+  {
+    "case": "compare",
+    "status": "answered",
+    "facts": 2,
+    "coverage": {
+      "requested": 1,
+      "completed": 1,
+      "incomplete_ids": []
+    },
+    "charts": 1,
+    "calculations": [
+      {
+        "operation": "difference",
+        "label": "Ahmedabad, Gujarat · rainfall",
+        "value": "721.1",
+        "unit": "mm",
+        "expression": "2010 minus 2009",
+        "input_ids": [
+          "t1-f1",
+          "t1-f2"
+        ],
+        "method": "Decimal subtraction of published values",
+        "task_id": "t1"
+      }
+    ],
+    "answer": "Ahmedabad, Gujarat · annual 2009\nrainfall: 375.7 mm [t1-f1]\nAhmedabad, Gujarat · annual 2010\nrainfall: 1096.8 mm [t1-f2]\nAhmedabad, Gujarat: rainfall changed by 721.1 mm (2010 minus 2009).",
+    "seconds": 2.89
+  },
+  {
+    "case": "missing_year",
+    "status": "partial",
+    "facts": 1,
+    "coverage": {
+      "requested": 1,
+      "completed": 0,
+      "incomplete_ids": [
+        "t1"
+      ]
+    },
+    "charts": 1,
+    "calculations": [],
+    "answer": "Ahmedabad, Gujarat · annual 2010\nrainfall: 1096.8 mm [t1-f1]\nSome requested information is missing; see the task results and limitations below.\nAhmedabad, rainfall, 2011: The stored Ahmedabad, Gujarat series covers 1901–2010, with 110 published years. It cannot supply 2011.",
+    "seconds": 2.85
+  },
+  {
+    "case": "trend",
+    "status": "answered",
+    "facts": 30,
+    "coverage": {
+      "requested": 1,
+      "completed": 1,
+      "incomplete_ids": []
+    },
+    "charts": 1,
+    "calculations": [
+      {
+        "operation": "linear_trend",
+        "label": "Ahmedabad, Gujarat · rainfall",
+        "value": "54.654",
+        "unit": "mm/decade",
+        "input_ids": [
+          "t1-f1",
+          "t1-f2",
+          "t1-f3",
+          "t1-f4",
+          "t1-f5",
+          "t1-f6",
+          "t1-f7",
+          "t1-f8",
+          "t1-f9",
+          "t1-f10",
+          "t1-f11",
+          "t1-f12",
+          "t1-f13",
+          "t1-f14",
+          "t1-f15",
+          "t1-f16",
+          "t1-f17",
+          "t1-f18",
+          "t1-f19",
+          "t1-f20",
+          "t1-f21",
+          "t1-f22",
+          "t1-f23",
+          "t1-f24",
+          "t1-f25",
+          "t1-f26",
+          "t1-f27",
+          "t1-f28",
+          "t1-f29",
+          "t1-f30"
+        ],
+        "sample_count": 30,
+        "method": "OLS against actual calendar year; slope multiplied by 10; rounded to 0.001",
+        "interpretation": "Descriptive source-series slope, not homogenized climate change attribution or a future projection",
+        "task_id": "t1"
+      }
+    ],
+    "answer": "Ahmedabad, Gujarat: descriptive rainfall trend 54.654 mm/decade over 1981–2010 (30 values).",
+    "seconds": 3.2
+  },
+  {
+    "case": "daily",
+    "status": "unavailable",
+    "facts": 0,
+    "coverage": {
+      "requested": 1,
+      "completed": 0,
+      "incomplete_ids": [
+        "t1"
+      ]
+    },
+    "charts": 0,
+    "calculations": [],
+    "answer": "This is a daily historical request. The daily reanalysis adapter is not connected to chat yet; an annual or monthly table cannot answer it.",
+    "seconds": 3.71
+  },
+  {
+    "case": "forecast_warning",
+    "status": "partial",
+    "facts": 12,
+    "coverage": {
+      "requested": 3,
+      "completed": 2,
+      "incomplete_ids": [
+        "t3"
+      ]
+    },
+    "charts": 0,
+    "calculations": [],
+    "answer": "Task 1: Ahmedabad, Ahmadābād, State of Gujarāt · 13 Sep 2026, 06:30–13 Sep 2026, 12:30 IST\nTemperature samples: 25.4–30.6 °C [t1-f1]\nHumidity samples: 69–93 % [t1-f2]\nForecast rainfall: 3.3 mm [t1-f3]\nWind samples: 10.5–14.8 km/h [t1-f4]\nThese are model forecasts for the selected points, not observed conditions or district averages.\n\nTask 2: Ahmedabad, Ahmadābād, State of Gujarāt · 13 Sep 2026, 00:30–13 Sep 2026, 23:30 IST\nTemperature samples: 24.6–32.1 °C [t2-f1]\nHumidity samples: 63–97 % [t2-f2]\nForecast rainfall: 62.8 mm [t2-f3]\nWind samples: 4.3–18.6 km/h [t2-f4]\nAhmedabad, Ahmadābād, State of Gujarāt · 13 Sep 2026, 23:30–14 Sep 2026, 00:30 IST\nTemperature samples: 25.1–25.1 °C [t2-f5]\nHumidity samples: 96–96 % [t2-f6]\nForecast rainfall: 1.6 mm [t2-f7]\nWind samples: 12.3–12.3 km/h [t2-f8]\nThese are model forecasts for the selected points, not observed conditions or district averages.",
+    "seconds": 8.84
+  },
+  {
+    "case": "gujarati",
+    "status": "answered",
+    "facts": 1,
+    "coverage": {
+      "requested": 1,
+      "completed": 1,
+      "incomplete_ids": []
+    },
+    "charts": 0,
+    "calculations": [],
+    "answer": "પસંદ કરેલા સ્થળ માટે મોડેલની આગાહી:\nAhmedabad, Ahmadābād, State of Gujarāt · 2026-09-13 06:30 → 2026-09-13 12:30 IST\nવરસાદની અંદાજિત માત્રા: 3.3 mm [t1-f1]\nઆ પસંદ કરેલા સ્થળ-બિંદુ માટે મોડેલની આગાહી છે, સ્થળ પરનું અવલોકન કે આખા જિલ્લાની સરેરાશ નથી. આગાહી બદલાઈ શકે છે.",
+    "seconds": 4.29
+  }
+]

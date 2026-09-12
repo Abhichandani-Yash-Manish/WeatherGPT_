@@ -1,0 +1,130 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "58fb8dcc-f773-429d-b66b-90c2f03d1246",
+  "question": "Will it rain tomorrow?",
+  "status": "needs_clarification",
+  "answer": "I could not find a settlement named Current Location. Please give its district/state, an alternative spelling, or a pin. I will not replace it with a nearby city.",
+  "facts": [],
+  "citations": [],
+  "notes": [
+    "The user's current location is inferred as the place for the forecast.",
+    "Tomorrow is defined as 2026-09-13.",
+    "The time window for 'tomorrow' is assumed to be the upcoming 12 hours from the current time (2026-09-12T23:54 IST) until 2026-09-13T11:54 IST, as no specific time was requested."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T18:24:24.799531+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 1444,
+      "output_tokens": 343,
+      "duration_seconds": 5.074511208
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "gazetteer_search",
+        "query": {
+          "name": "Current Location",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        },
+        "matches": 0
+      },
+      {
+        "name": "forecast",
+        "task_id": "t1",
+        "status": "needs_clarification"
+      }
+    ],
+    "provider": "local_ollama",
+    "duration_seconds": 5.156
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Current Location",
+        "state": "",
+        "district": "",
+        "kind": "settlement"
+      }
+    ],
+    "assumptions": [
+      "The user's current location is inferred as the place for the forecast.",
+      "Tomorrow is defined as 2026-09-13.",
+      "The time window for 'tomorrow' is assumed to be the upcoming 12 hours from the current time (2026-09-12T23:54 IST) until 2026-09-13T11:54 IST, as no specific time was requested."
+    ],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "Will it rain tomorrow?",
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-12T23:54:24+05:30",
+        "end_local": "2026-09-13T11:54:24+05:30",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "intent": "forecast",
+    "start_local": "2026-09-12T23:54:24+05:30",
+    "end_local": "2026-09-13T11:54:24+05:30",
+    "variables": [
+      "precipitation"
+    ],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "Will it rain tomorrow?",
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-12T23:54:24+05:30",
+        "end_local": "2026-09-13T11:54:24+05:30",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "needs_clarification",
+      "answer": "I could not find a settlement named Current Location. Please give its district/state, an alternative spelling, or a pin. I will not replace it with a nearby city.",
+      "fact_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

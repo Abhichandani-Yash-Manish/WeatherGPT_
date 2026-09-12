@@ -1,0 +1,12 @@
+{
+  "source_id": "S15",
+  "url": "https://reactjs.imd.gov.in/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=imd%3Adistrict_warnings_india&srsname=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=2000",
+  "retrieved_at_utc": "2026-09-12T19:14:28.531317+00:00",
+  "http_status": 200,
+  "content_type": "application/json;charset=utf-8",
+  "bytes": 18945005,
+  "sha256": "f82af61d0cb02bb082318f30d1d75d6c5acdcfd1e63b81227b646e13f8fee83d",
+  "blob": "blobs/f82af61d0cb02bb082318f30d1d75d6c5acdcfd1e63b81227b646e13f8fee83d.bin",
+  "validation_scope": "product",
+  "stage": "validated"
+}

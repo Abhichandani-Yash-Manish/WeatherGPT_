@@ -1,0 +1,121 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "2ffd15dd-7328-4692-b459-392fba359474",
+  "question": "Will my VAAH flight be cancelled tomorrow?",
+  "status": "explanation",
+  "answer": "I cannot determine if your VAAH flight will be cancelled tomorrow because I do not have access to real-time airline schedules or specific flight status data. Flight cancellations are typically caused by factors such as severe weather, mechanical issues, or operational decisions made by the airline. To get accurate information about your specific flight, please check the airline's official website, mobile app, or contact their customer service directly. These sources provide up-to-date status updates that are not available through general weather data.",
+  "facts": [],
+  "citations": [],
+  "notes": [
+    "The user is asking about a specific flight (VAAH) cancellation, which depends on weather conditions at the departure and arrival airports. However, no specific airport codes or locations were provided in the question. Without a location, I cannot retrieve METAR/TAF data or forecasts.",
+    "Flight cancellations are influenced by many factors beyond weather (airline policy, mechanical issues, etc.). This plan only addresses the weather aspect if locations were known."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T18:54:55.917364+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 2480,
+      "output_tokens": 274,
+      "duration_seconds": 4.619818
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "explanation",
+        "task_id": "t1",
+        "status": "explanation"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "new",
+      "changed_fields": [
+        "places"
+      ],
+      "inherited_fields": []
+    },
+    "duration_seconds": 6.508
+  },
+  "plan": {
+    "language": "en",
+    "places": [],
+    "assumptions": [
+      "The user is asking about a specific flight (VAAH) cancellation, which depends on weather conditions at the departure and arrival airports. However, no specific airport codes or locations were provided in the question. Without a location, I cannot retrieve METAR/TAF data or forecasts.",
+      "Flight cancellations are influenced by many factors beyond weather (airline policy, mechanical issues, etc.). This plan only addresses the weather aspect if locations were known."
+    ],
+    "clarification": "Please provide the departure and arrival airport codes or city names for flight VAAH to check relevant weather conditions.",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "Will my VAAH flight be cancelled tomorrow?",
+        "kind": "explanation",
+        "operation": "lookup",
+        "parameters": [],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": []
+      }
+    ],
+    "context_action": "new",
+    "changed_fields": [
+      "places"
+    ],
+    "intent": "explanation",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "Will my VAAH flight be cancelled tomorrow?",
+        "kind": "explanation",
+        "operation": "lookup",
+        "parameters": [],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": []
+      },
+      "status": "explanation",
+      "answer": "I cannot determine if your VAAH flight will be cancelled tomorrow because I do not have access to real-time airline schedules or specific flight status data. Flight cancellations are typically caused by factors such as severe weather, mechanical issues, or operational decisions made by the airline. To get accurate information about your specific flight, please check the airline's official website, mobile app, or contact their customer service directly. These sources provide up-to-date status updates that are not available through general weather data.",
+      "fact_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "explanation",
+      "parameters": [],
+      "candidates": [],
+      "status": "explanation",
+      "returned_source_ids": []
+    }
+  ],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 1,
+    "incomplete_ids": []
+  }
+}

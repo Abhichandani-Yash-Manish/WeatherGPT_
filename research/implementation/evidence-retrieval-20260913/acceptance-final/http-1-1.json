@@ -1,0 +1,283 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "554bd56d-a4c9-45ec-9c50-f91969831100",
+  "question": "What does the latest IMD bulletin say about cotton pests in Ahmedabad district, Gujarat?",
+  "status": "answered",
+  "answer": "From the Ahmedabad, Gujarat bulletin issued 2026-09-11, for cotton:\n\nCotton · Squaring/ Flowering/ Boll formation · page 3:\n“To prevent an increase in the population of whiteflies and jassids (leafhoppers), do not use synthetic pyrethroid insecticides until the month of November.”\n\nCotton · Squaring/ Flowering/ Boll formation · page 3:\n“Sucking pest infestation in cotton at initial stage can be controlled by spraying 500 g of neem seed kernel extract (5% NSKE) or 50 ml of neem oil or a neem-based insecticide by mixing 10 ml (5 EC) to 50 ml (0.03 EC) in 10 litres of water. If the infestation is severe, spray Flonicamid 50 WG with 3 g or Diafenthiuron 50 WP with 10 g or Dinotefuran 20 SG with 3 g by mixing the recommended quantity in 10 litres of water.”\n\nThese are original English source excerpts, including their conditions. The bulletin is district guidance; it has not been validated for your individual field.",
+  "facts": [],
+  "citations": [
+    {
+      "id": "t1-doc-653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "source_id": "S57",
+      "provider": "IMD and named issuing agricultural institution",
+      "product": "Ahmedabad district agromet advisory",
+      "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Gujarat&district=Ahmedabad&language=English",
+      "response_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "retrieved_at_utc": "2026-09-12T19:42:08.731077+00:00",
+      "original_retrieved_at_utc": "2026-09-12T19:42:12.479759+00:00",
+      "issue_date": "2026-09-11"
+    }
+  ],
+  "notes": [
+    "1 source passages were excluded because their body names a different crop from the row heading.",
+    "Printed district, state, issue date and five-day forecast context verified. Forecast dates are not an asserted expiry for every crop recommendation.",
+    "Source passages are retained in their original English. Chemical amounts and conditional instructions are not rewritten or personalized."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T19:47:05.854897+00:00",
+  "expires_at_utc": "2026-09-12T20:42:08.731077+00:00",
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 2767,
+      "output_tokens": 303,
+      "duration_seconds": 5.075495416
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "district_bulletin_retrieval",
+        "source_id": "S57",
+        "mode": "bm25_plus_multilingual_e5_rrf",
+        "candidates": 2,
+        "model": "intfloat/multilingual-e5-small",
+        "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+        "metadata_filters": {
+          "state": "Gujarat",
+          "district": "Ahmedabad",
+          "crop": "cotton",
+          "stage": ""
+        },
+        "scores_are_confidence": false,
+        "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90"
+      },
+      {
+        "name": "agriculture",
+        "task_id": "t1",
+        "status": "answered"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "new",
+      "changed_fields": [
+        "crop",
+        "places",
+        "topic"
+      ],
+      "inherited_fields": []
+    },
+    "duration_seconds": 11.645
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Ahmedabad",
+        "state": "Gujarat",
+        "district": "Ahmedabad",
+        "kind": "district"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "What does the latest IMD bulletin say about cotton pests in Ahmedabad district, Gujarat?",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "What does the latest IMD bulletin say about cotton pests in Ahmedabad district, Gujarat?",
+          "crop": "cotton",
+          "growth_stage": "",
+          "topic": "pest",
+          "mode": "source_lookup"
+        }
+      }
+    ],
+    "context_action": "new",
+    "changed_fields": [
+      "crop",
+      "places",
+      "topic"
+    ],
+    "intent": "agriculture",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "What does the latest IMD bulletin say about cotton pests in Ahmedabad district, Gujarat?",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "What does the latest IMD bulletin say about cotton pests in Ahmedabad district, Gujarat?",
+          "crop": "cotton",
+          "growth_stage": "",
+          "topic": "pest",
+          "mode": "source_lookup"
+        }
+      },
+      "status": "answered",
+      "answer": "From the Ahmedabad, Gujarat bulletin issued 2026-09-11, for cotton:\n\nCotton · Squaring/ Flowering/ Boll formation · page 3:\n“To prevent an increase in the population of whiteflies and jassids (leafhoppers), do not use synthetic pyrethroid insecticides until the month of November.”\n\nCotton · Squaring/ Flowering/ Boll formation · page 3:\n“Sucking pest infestation in cotton at initial stage can be controlled by spraying 500 g of neem seed kernel extract (5% NSKE) or 50 ml of neem oil or a neem-based insecticide by mixing 10 ml (5 EC) to 50 ml (0.03 EC) in 10 litres of water. If the infestation is severe, spray Flonicamid 50 WG with 3 g or Diafenthiuron 50 WP with 10 g or Dinotefuran 20 SG with 3 g by mixing the recommended quantity in 10 litres of water.”\n\nThese are original English source excerpts, including their conditions. The bulletin is district guidance; it has not been validated for your individual field.",
+      "fact_ids": [],
+      "passage_ids": [
+        "add2468c23b804247a8d0e7ea5cc7341fdd0db54146928fc6ec62640a8bf3198",
+        "f61bc47a009f3b720f7482a2588cbf69177daf34c925dc5b3ee572454b1c7cee"
+      ]
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "agriculture",
+      "parameters": [
+        "agricultural_advisory"
+      ],
+      "candidates": [
+        {
+          "tool": "crop_advisory",
+          "selected": true,
+          "available": true,
+          "reason": "Published district crop/stage passages; strict printed geography and dates, hybrid retrieval in reviewed PDF families; individual field decisions remain partial",
+          "sources": [
+            {
+              "source_id": "S57",
+              "product": "IMD district farmer bulletin delivery (English and local language)",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "answered",
+      "returned_source_ids": [
+        "S57"
+      ]
+    }
+  ],
+  "passages": [
+    {
+      "bbox": [
+        41.5,
+        64.1,
+        553.9,
+        389.8
+      ],
+      "crop": "Cotton",
+      "crop_key": "cotton",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "add2468c23b804247a8d0e7ea5cc7341fdd0db54146928fc6ec62640a8bf3198",
+      "page": 3,
+      "row": 1,
+      "source_id": "S57",
+      "stage": "Squaring/ Flowering/ Boll formation",
+      "text": "To prevent an increase in the population of whiteflies and jassids (leafhoppers), do not use synthetic pyrethroid insecticides until the month of November.",
+      "retrieval": {
+        "rrf_score": 0.03252247488101534,
+        "lexical_score": 0.759998617919193,
+        "semantic_score": 0.7862326662149491
+      },
+      "citation_ids": [
+        "t1-doc-653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90"
+      ],
+      "state": "Gujarat",
+      "district": "Ahmedabad",
+      "issue_date": "2026-09-11",
+      "forecast_start": "2026-09-12",
+      "forecast_end": "2026-09-16",
+      "evidence_kind": "published_advisory_passage",
+      "task_id": "t1"
+    },
+    {
+      "bbox": [
+        41.5,
+        64.1,
+        553.9,
+        389.8
+      ],
+      "crop": "Cotton",
+      "crop_key": "cotton",
+      "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "f61bc47a009f3b720f7482a2588cbf69177daf34c925dc5b3ee572454b1c7cee",
+      "page": 3,
+      "row": 1,
+      "source_id": "S57",
+      "stage": "Squaring/ Flowering/ Boll formation",
+      "text": "Sucking pest infestation in cotton at initial stage can be controlled by spraying 500 g of neem seed kernel extract (5% NSKE) or 50 ml of neem oil or a neem-based insecticide by mixing 10 ml (5 EC) to 50 ml (0.03 EC) in 10 litres of water. If the infestation is severe, spray Flonicamid 50 WG with 3 g or Diafenthiuron 50 WP with 10 g or Dinotefuran 20 SG with 3 g by mixing the recommended quantity in 10 litres of water.",
+      "retrieval": {
+        "rrf_score": 0.03252247488101534,
+        "lexical_score": 0.6937190754776288,
+        "semantic_score": 0.7946704467034437
+      },
+      "citation_ids": [
+        "t1-doc-653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90"
+      ],
+      "state": "Gujarat",
+      "district": "Ahmedabad",
+      "issue_date": "2026-09-11",
+      "forecast_start": "2026-09-12",
+      "forecast_end": "2026-09-16",
+      "evidence_kind": "published_advisory_passage",
+      "task_id": "t1"
+    }
+  ],
+  "document_evidence": [
+    {
+      "district": "Ahmedabad",
+      "state": "Gujarat",
+      "issue_date": "2026-09-11",
+      "forecast_start": "2026-09-12",
+      "forecast_end": "2026-09-16",
+      "advice_valid_until": null,
+      "sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "family": "arnej_grid",
+      "scope": "Published source passages; no personalized prescription or independent agronomic validation"
+    }
+  ],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 1,
+    "incomplete_ids": []
+  }
+}

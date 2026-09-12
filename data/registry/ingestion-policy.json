@@ -44,6 +44,21 @@
       "host": "flood-api.open-meteo.com",
       "path": "/v1/flood",
       "variables": 1
+    },
+    "extended_forecast": {
+      "source_id": "S62",
+      "host": "api.open-meteo.com",
+      "path": "/v1/forecast",
+      "variables": 8
+    },
+    "history_local": {
+      "source_id": "S22",
+      "host": "archive-api.open-meteo.com",
+      "path": "/v1/archive",
+      "variables": 4,
+      "max_days": 7,
+      "timezone": "Asia/Kolkata",
+      "model": "era5"
     }
   },
   "accounting": "One attempt unit per fixed, single-location numeric request. Review accounting before widening query contracts.",

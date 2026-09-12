@@ -1,0 +1,273 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "295f9e3e-31c5-46c6-8dd3-9350bce88088",
+  "question": "What were the rainfall and mean temperature in Ahmedabad city, Gujarat on 1 July 2025?",
+  "status": "answered",
+  "answer": "Ahmedabad, Ahmadābād, State of Gujarāt · 01 Jul 2025, 00:00–02 Jul 2025, 00:00 IST\nDaily precipitation total: 1.0 mm [t1-f1]\nDaily mean temperature: 29.8 °C [t1-f2]\nERA5 reanalysis uses Indian calendar days here; these point values are not station observations or district averages.",
+  "facts": [
+    {
+      "id": "t1-f1",
+      "parameter": "precipitation_sum",
+      "label": "Daily precipitation total",
+      "value": "1.0",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2025-07-01T00:00:00+05:30",
+      "end": "2025-07-02T00:00:00+05:30",
+      "source_id": "S22",
+      "evidence_kind": "reanalysis",
+      "evidence_version": "fac9fc235ad49873ff4a8ecc1e8cf46b7611fb5e70dad463b90ce2b2453f7434",
+      "citation_ids": [
+        "t1-c-fac9fc235ad49873ff4a8ecc1e8cf46b7611fb5e70dad463b90ce2b2453f7434"
+      ],
+      "source_locators": [
+        "$.daily.precipitation_sum[0]"
+      ],
+      "method": "daily_calendar_value_Asia/Kolkata",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f2",
+      "parameter": "temperature_2m_mean",
+      "label": "Daily mean temperature",
+      "value": "29.8",
+      "unit": "°C",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2025-07-01T00:00:00+05:30",
+      "end": "2025-07-02T00:00:00+05:30",
+      "source_id": "S22",
+      "evidence_kind": "reanalysis",
+      "evidence_version": "fac9fc235ad49873ff4a8ecc1e8cf46b7611fb5e70dad463b90ce2b2453f7434",
+      "citation_ids": [
+        "t1-c-fac9fc235ad49873ff4a8ecc1e8cf46b7611fb5e70dad463b90ce2b2453f7434"
+      ],
+      "source_locators": [
+        "$.daily.temperature_2m_mean[0]"
+      ],
+      "method": "daily_calendar_value_Asia/Kolkata",
+      "task_id": "t1"
+    }
+  ],
+  "citations": [
+    {
+      "id": "t1-c-fac9fc235ad49873ff4a8ecc1e8cf46b7611fb5e70dad463b90ce2b2453f7434",
+      "source_id": "S22",
+      "provider": "Open-Meteo / ERA5",
+      "product": "ERA5 daily reanalysis, Asia/Kolkata",
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=23.02579&longitude=72.58727&start_date=2025-07-01&end_date=2025-07-01&daily=precipitation_sum%2Ctemperature_2m_mean%2Ctemperature_2m_max%2Ctemperature_2m_min&models=era5&timezone=Asia%2FKolkata",
+      "response_sha256": "fac9fc235ad49873ff4a8ecc1e8cf46b7611fb5e70dad463b90ce2b2453f7434",
+      "retrieved_at_utc": "2026-09-12T18:10:25.141179+00:00",
+      "requested_point": {
+        "latitude": 23.02579,
+        "longitude": 72.58727
+      },
+      "returned_grid": {
+        "latitude": 23.0,
+        "longitude": 72.5
+      },
+      "grid_distance_km": 9.381,
+      "model_run_time": null
+    },
+    {
+      "source_id": "S61",
+      "url": "https://www.geonames.org/1279233",
+      "provider": "GeoNames",
+      "product": "India place catalogue",
+      "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+      "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+    }
+  ],
+  "notes": [
+    "Precipitation includes rain, showers and snow water equivalent; it is not a rain-only gauge measurement.",
+    "ERA5 reanalysis for the selected grid point, with provider daily aggregation in Asia/Kolkata; not observed station data or district averages."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T18:14:07.733798+00:00",
+  "expires_at_utc": "2026-09-13T00:00:00+00:00",
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 1420,
+      "output_tokens": 228,
+      "duration_seconds": 3.647047666
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "gazetteer_search",
+        "query": {
+          "name": "Ahmedabad",
+          "state": "Gujarat",
+          "district": "",
+          "kind": "settlement"
+        },
+        "matches": 1
+      },
+      {
+        "name": "history_local",
+        "job_id": "a1e21b8b5b05dbdefc03f25b0cf1e06ece231fbbeb0c7a5978407d5934e522b7",
+        "worker": {
+          "state": "already_collected"
+        },
+        "source_sha256": "fac9fc235ad49873ff4a8ecc1e8cf46b7611fb5e70dad463b90ce2b2453f7434"
+      },
+      {
+        "name": "history",
+        "task_id": "t1",
+        "status": "answered"
+      }
+    ],
+    "provider": "local_ollama",
+    "duration_seconds": 3.699
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Ahmedabad",
+        "state": "Gujarat",
+        "district": "",
+        "kind": "settlement"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": true,
+    "tasks": [
+      {
+        "request_quote": "What were the rainfall and mean temperature in Ahmedabad city, Gujarat on 1 July 2025?",
+        "kind": "history",
+        "operation": "daily",
+        "parameters": [
+          "rainfall",
+          "temperature"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2025-07-01T00:00:00+05:30",
+        "end_local": "2025-07-02T00:00:00+05:30",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "intent": "history",
+    "start_local": "2025-07-01T00:00:00+05:30",
+    "end_local": "2025-07-02T00:00:00+05:30",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "What were the rainfall and mean temperature in Ahmedabad city, Gujarat on 1 July 2025?",
+        "kind": "history",
+        "operation": "daily",
+        "parameters": [
+          "rainfall",
+          "temperature"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2025-07-01T00:00:00+05:30",
+        "end_local": "2025-07-02T00:00:00+05:30",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "answered",
+      "answer": "Ahmedabad, Ahmadābād, State of Gujarāt · 01 Jul 2025, 00:00–02 Jul 2025, 00:00 IST\nDaily precipitation total: 1.0 mm [t1-f1]\nDaily mean temperature: 29.8 °C [t1-f2]\nERA5 reanalysis uses Indian calendar days here; these point values are not station observations or district averages.",
+      "fact_ids": [
+        "t1-f1",
+        "t1-f2"
+      ]
+    }
+  ],
+  "charts": [
+    {
+      "kind": "daily_series",
+      "axis_label": "Date (IST)",
+      "title": "Ahmedabad, Ahmadābād, State of Gujarāt · Daily precipitation total",
+      "unit": "mm",
+      "points": [
+        {
+          "x": 1751308200.0,
+          "label": "2025-07-01",
+          "value": "1.0",
+          "evidence_id": "t1-f1"
+        }
+      ],
+      "source_ids": [
+        "S22"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "kind": "daily_series",
+      "axis_label": "Date (IST)",
+      "title": "Ahmedabad, Ahmadābād, State of Gujarāt · Daily mean temperature",
+      "unit": "°C",
+      "points": [
+        {
+          "x": 1751308200.0,
+          "label": "2025-07-01",
+          "value": "29.8",
+          "evidence_id": "t1-f2"
+        }
+      ],
+      "source_ids": [
+        "S22"
+      ],
+      "task_id": "t1"
+    }
+  ],
+  "calculations": [],
+  "resolved_points": {
+    "Ahmedabad": {
+      "id": "1279233",
+      "name": "Ahmedabad",
+      "latitude": 23.02579,
+      "longitude": 72.58727,
+      "feature": "PPL",
+      "admin1": "State of Gujarāt",
+      "admin2": "Ahmadābād",
+      "modified": "2024-01-06",
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:1279233",
+      "label": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "coordinates": {
+        "latitude": 23.02579,
+        "longitude": 72.58727
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/1279233",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Ahmedabad"
+    }
+  },
+  "task_coverage": {
+    "requested": 1,
+    "completed": 1,
+    "incomplete_ids": []
+  }
+}

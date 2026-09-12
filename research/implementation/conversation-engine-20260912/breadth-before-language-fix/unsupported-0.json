@@ -1,0 +1,166 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "3995e294-a107-4914-8833-973ca6ac3f06",
+  "question": "Will my VAAH flight be cancelled tomorrow?",
+  "status": "unavailable",
+  "answer": "No current airport evidence was retrieved. VAAH: TAF does not cover the whole requested period",
+  "facts": [],
+  "citations": [],
+  "notes": [
+    "Tomorrow is 2026-09-14. Flight cancellation risk depends on weather conditions (wind, visibility, precipitation) at the airport. I will retrieve the TAF (Terminal Aerodrome Forecast) for VAAH to assess potential weather-related disruptions.",
+    "VAAH: TAF does not cover the whole requested period",
+    "Airport reports concern their stated station and validity. No flight status, operational clearance or city-wide weather is inferred."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T19:00:05.473466+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 2480,
+      "output_tokens": 330,
+      "duration_seconds": 5.460220042
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "aviation",
+        "task_id": "t1",
+        "status": "unavailable"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "new",
+      "changed_fields": [
+        "places",
+        "time"
+      ],
+      "inherited_fields": []
+    },
+    "duration_seconds": 5.477
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "VAAH",
+        "state": "",
+        "district": "",
+        "kind": "settlement"
+      }
+    ],
+    "assumptions": [
+      "Tomorrow is 2026-09-14. Flight cancellation risk depends on weather conditions (wind, visibility, precipitation) at the airport. I will retrieve the TAF (Terminal Aerodrome Forecast) for VAAH to assess potential weather-related disruptions."
+    ],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "Will my VAAH flight be cancelled tomorrow?",
+        "kind": "aviation",
+        "operation": "lookup",
+        "parameters": [
+          "taf"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-14T00:00:00+05:30",
+        "end_local": "2026-09-15T00:00:00+05:30",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "context_action": "new",
+    "changed_fields": [
+      "places",
+      "time"
+    ],
+    "intent": "research",
+    "start_local": "2026-09-14T00:00:00+05:30",
+    "end_local": "2026-09-15T00:00:00+05:30",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "Will my VAAH flight be cancelled tomorrow?",
+        "kind": "aviation",
+        "operation": "lookup",
+        "parameters": [
+          "taf"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-14T00:00:00+05:30",
+        "end_local": "2026-09-15T00:00:00+05:30",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "unavailable",
+      "answer": "No current airport evidence was retrieved. VAAH: TAF does not cover the whole requested period",
+      "fact_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "aviation",
+      "parameters": [
+        "taf"
+      ],
+      "candidates": [
+        {
+          "tool": "airport_reports",
+          "selected": true,
+          "available": true,
+          "reason": "Indian ICAO airport observations/TAF with station identity; no flight status or city-wide observation",
+          "sources": [
+            {
+              "source_id": "S18",
+              "product": "NOAA AWC VAAH METAR dissemination",
+              "registry_status": "prototype_adapter_tested"
+            },
+            {
+              "source_id": "S19",
+              "product": "NOAA AWC VAAH TAF dissemination",
+              "registry_status": "prototype_adapter_tested"
+            },
+            {
+              "source_id": "S20",
+              "product": "NOAA AWC airport station metadata",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "unavailable",
+      "returned_source_ids": []
+    }
+  ],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

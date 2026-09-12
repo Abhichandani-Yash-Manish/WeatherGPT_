@@ -1,0 +1,49 @@
+{
+  "prior_registered_assets": 230,
+  "current_registered_assets": 238,
+  "new_batch_assets": 6,
+  "older_referenced_assets_newly_inventoried": 2,
+  "previous_report_matches_delivery_hash": true,
+  "checkpoints": [
+    {
+      "checkpoint": "data/processed/checkpoints/context-retrieval-20260913",
+      "verified_files": 61
+    },
+    {
+      "checkpoint": "data/processed/checkpoints/conversation-engine-20260913",
+      "verified_files": 52
+    },
+    {
+      "checkpoint": "data/processed/checkpoints/conversational-recovery-20260912",
+      "verified_files": 38
+    },
+    {
+      "checkpoint": "data/processed/checkpoints/evidence-retrieval-20260913",
+      "verified_files": 59
+    },
+    {
+      "checkpoint": "data/processed/checkpoints/hardening-batch-one-20260912",
+      "verified_files": 15
+    },
+    {
+      "checkpoint": "data/processed/checkpoints/hardening-batch-three-20260912",
+      "verified_files": 20
+    },
+    {
+      "checkpoint": "data/processed/checkpoints/hardening-batch-two-20260912",
+      "verified_files": 18
+    },
+    {
+      "checkpoint": "data/processed/checkpoints/point-tools-20260912",
+      "verified_files": 46
+    },
+    {
+      "checkpoint": "data/processed/checkpoints/product-batch-five-20260912",
+      "verified_files": 31
+    },
+    {
+      "checkpoint": "data/processed/checkpoints/product-stage-one-20260912",
+      "verified_files": 44
+    }
+  ]
+}

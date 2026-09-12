@@ -1,0 +1,144 @@
+[
+  {
+    "case": "both_measures",
+    "status": "partial",
+    "facts": 2,
+    "coverage": {
+      "requested": 1,
+      "completed": 0,
+      "incomplete_ids": [
+        "t1"
+      ]
+    },
+    "charts": 0,
+    "calculations": [],
+    "answer": "All India · annual 2024\nrainfall: 1206.6 mm [t1-f1]\ntemperature: 25.7431 degC [t1-f2]\nSome requested information is missing; see the task results and limitations below.\nTrend withheld: provide at least ten years for this descriptive annual/seasonal/monthly series.\nTrend withheld: provide at least ten years for this descriptive annual/seasonal/monthly series.",
+    "seconds": 5.5
+  },
+  {
+    "case": "followup_year",
+    "status": "partial",
+    "facts": 2,
+    "coverage": {
+      "requested": 1,
+      "completed": 0,
+      "incomplete_ids": [
+        "t1"
+      ]
+    },
+    "charts": 0,
+    "calculations": [],
+    "answer": "All India · annual 2023\nrainfall: 1102.8 mm [t1-f1]\ntemperature: 25.4672 degC [t1-f2]\nSome requested information is missing; see the task results and limitations below.\nTrend withheld: provide at least ten years for this descriptive annual/seasonal/monthly series.\nTrend withheld: provide at least ten years for this descriptive annual/seasonal/monthly series.",
+    "seconds": 5.3
+  },
+  {
+    "case": "compare",
+    "status": "partial",
+    "facts": 2,
+    "coverage": {
+      "requested": 1,
+      "completed": 0,
+      "incomplete_ids": [
+        "t1"
+      ]
+    },
+    "charts": 1,
+    "calculations": [
+      {
+        "operation": "difference",
+        "label": "Ahmedabad, Gujarat · rainfall",
+        "value": "721.1",
+        "unit": "mm",
+        "expression": "2010 minus 2009",
+        "input_ids": [
+          "t1-f1",
+          "t1-f2"
+        ],
+        "method": "Decimal subtraction of published values",
+        "task_id": "t1"
+      }
+    ],
+    "answer": "Ahmedabad, Gujarat · annual 2009\nrainfall: 375.7 mm [t1-f1]\nAhmedabad, Gujarat · annual 2010\nrainfall: 1096.8 mm [t1-f2]\nSome requested information is missing; see the task results and limitations below.\nAhmedabad, Gujarat: rainfall changed by 721.1 mm (2010 minus 2009).\nHistorical parameters not implemented: temperature_2m.",
+    "seconds": 5.55
+  },
+  {
+    "case": "missing_year",
+    "status": "partial",
+    "facts": 1,
+    "coverage": {
+      "requested": 1,
+      "completed": 0,
+      "incomplete_ids": [
+        "t1"
+      ]
+    },
+    "charts": 1,
+    "calculations": [],
+    "answer": "Ahmedabad, Gujarat · annual 2010\nrainfall: 1096.8 mm [t1-f1]\nSome requested information is missing; see the task results and limitations below.\nAhmedabad district, rainfall, 2011: The stored Ahmedabad, Gujarat series covers 1901–2010, with 110 published years. It cannot supply 2011.",
+    "seconds": 5.31
+  },
+  {
+    "case": "trend",
+    "status": "unavailable",
+    "facts": 0,
+    "coverage": {
+      "requested": 1,
+      "completed": 0,
+      "incomplete_ids": [
+        "t1"
+      ]
+    },
+    "charts": 0,
+    "calculations": [],
+    "answer": "Historical parameters not implemented: temperature_2m, precipitation.",
+    "seconds": 6.09
+  },
+  {
+    "case": "daily",
+    "status": "needs_clarification",
+    "facts": 0,
+    "coverage": {
+      "requested": 1,
+      "completed": 0,
+      "incomplete_ids": [
+        "t1"
+      ]
+    },
+    "charts": 0,
+    "calculations": [],
+    "answer": "Which year or year range should I look up?",
+    "seconds": 6.95
+  },
+  {
+    "case": "forecast_warning",
+    "status": "partial",
+    "facts": 4,
+    "coverage": {
+      "requested": 2,
+      "completed": 1,
+      "incomplete_ids": [
+        "t2"
+      ]
+    },
+    "charts": 0,
+    "calculations": [],
+    "answer": "Task 1: Ahmedabad, Ahmadābād, State of Gujarāt · 13 Sep 2026, 06:30–13 Sep 2026, 12:30 IST\nTemperature samples: 25.0–30.7 °C [t1-f1]\nHumidity samples: 67–92 % [t1-f2]\nForecast rainfall: 3.5 mm [t1-f3]\nWind samples: 11.4–18.5 km/h [t1-f4]\nThese are model forecasts for the selected points, not observed conditions or district averages.\n\nTask 2: Current official warning applicability and update/cancel handling are not verified yet. Missing evidence is not an all-clear.",
+    "seconds": 9.31
+  },
+  {
+    "case": "gujarati",
+    "status": "needs_clarification",
+    "facts": 0,
+    "coverage": {
+      "requested": 1,
+      "completed": 0,
+      "incomplete_ids": [
+        "t1"
+      ]
+    },
+    "charts": 0,
+    "calculations": [],
+    "answer": "I could not find a settlement named અમદાવાદ in ગુજરાત. Please give its district/state, an alternative spelling, or a pin. I will not replace it with a nearby city.",
+    "seconds": 6.4
+  }
+]

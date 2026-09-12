@@ -1,0 +1,242 @@
+[
+  {
+    "case": "probability",
+    "status": "answered",
+    "facts": 6,
+    "coverage": {
+      "requested": 1,
+      "completed": 1,
+      "incomplete_ids": []
+    },
+    "charts": 1,
+    "sources": [
+      "S62"
+    ],
+    "parameters": [
+      "precipitation_probability"
+    ],
+    "seconds": 6.08,
+    "answer": "Ahmedabad, Ahmadābād, State of Gujarāt · 13 Sep 2026, 06:30–13 Sep 2026, 07:30 IST\nHourly precipitation probability (>0.1 mm): 58 % [t1-f1]\nAhmedabad, Ahmadābād, State of Gujarāt · 13 Sep 2026, 07:30–13 Sep 2026, 08:30 IST\nHourly precipitation probability (>0.1 mm): 49 % [t1-f2]\nAhmedabad, Ahmadābād, State of Gujarāt · 13 Sep 2026, 08:30–13 Sep 2026, 09:30 IST\nHourly precipitation probability (>0.1 mm): 49 % [t1-f3]\nAhmedabad, Ahmadābād, State of Gujarāt · 13 Sep 2026, 09:30–13 Sep 2026, 10:30 IST\nHourly precipitation probability (>0.1 mm): 54 % [t1-f4]\nAhmedabad, Ahmadābād, State of Gujarāt · 13 Sep 2026, 10:30–13 Sep 2026, 11:30 IST\nHourly ",
+    "notes": [
+      "Precipitation includes rain, showers and snow water equivalent; it is not a rain-only gauge measurement.",
+      "Source hours are on UTC boundaries (:30 in IST). Each probability is for >0.1 mm in its preceding hour. Hourly probabilities are never combined into a period probability.",
+      "Best-match model selection may differ by variable; upstream run and local representativeness are unverified. Hourly values cannot determine an exact rain start minute or issue an official warning."
+    ]
+  },
+  {
+    "case": "extended",
+    "status": "answered",
+    "facts": 18,
+    "coverage": {
+      "requested": 1,
+      "completed": 1,
+      "incomplete_ids": []
+    },
+    "charts": 3,
+    "sources": [
+      "S62"
+    ],
+    "parameters": [
+      "apparent_temperature",
+      "visibility",
+      "wind_gusts_10m"
+    ],
+    "seconds": 4.94,
+    "answer": "Ahmedabad, Ahmadābād, State of Gujarāt · Feels-like temperature sample: 32.5–37.3 °C across 6 hourly values.\nAhmedabad, Ahmadābād, State of Gujarāt · Maximum gust in the hour: 9.7–25.2 km/h across 6 hourly values.\nAhmedabad, Ahmadābād, State of Gujarāt · Visibility sample: 5660.0–9620.0 m across 6 hourly values.\nExact dates, times, values and evidence IDs are in the charts and tables below.\nThese are model forecasts. Each probability concerns its own hour (>0.1 mm), not the chance for the whole requested period. Hourly detail does not establish an exact rain-start minute.",
+    "notes": [
+      "Precipitation includes rain, showers and snow water equivalent; it is not a rain-only gauge measurement.",
+      "Source hours are on UTC boundaries (:30 in IST). Each probability is for >0.1 mm in its preceding hour. Hourly probabilities are never combined into a period probability.",
+      "Best-match model selection may differ by variable; upstream run and local representativeness are unverified. Hourly values cannot determine an exact rain start minute or issue an official warning."
+    ]
+  },
+  {
+    "case": "hourly",
+    "status": "answered",
+    "facts": 6,
+    "coverage": {
+      "requested": 1,
+      "completed": 1,
+      "incomplete_ids": []
+    },
+    "charts": 1,
+    "sources": [
+      "S62"
+    ],
+    "parameters": [
+      "precipitation"
+    ],
+    "seconds": 5.7,
+    "answer": "Mumbai, , State of Mahārāshtra · 13 Sep 2026, 06:30–13 Sep 2026, 07:30 IST\nHourly precipitation amount: 2.6 mm [t1-f1]\nMumbai, , State of Mahārāshtra · 13 Sep 2026, 07:30–13 Sep 2026, 08:30 IST\nHourly precipitation amount: 2.4 mm [t1-f2]\nMumbai, , State of Mahārāshtra · 13 Sep 2026, 08:30–13 Sep 2026, 09:30 IST\nHourly precipitation amount: 3.6 mm [t1-f3]\nMumbai, , State of Mahārāshtra · 13 Sep 2026, 09:30–13 Sep 2026, 10:30 IST\nHourly precipitation amount: 4.1 mm [t1-f4]\nMumbai, , State of Mahārāshtra · 13 Sep 2026, 10:30–13 Sep 2026, 11:30 IST\nHourly precipitation amount: 5.7 mm [t1-f5]\nMumbai, , State of Mahārāshtra · 13 Sep 2026, 11:30–13 ",
+    "notes": [
+      "Precipitation includes rain, showers and snow water equivalent; it is not a rain-only gauge measurement.",
+      "Source hours are on UTC boundaries (:30 in IST). Each probability is for >0.1 mm in its preceding hour. Hourly probabilities are never combined into a period probability.",
+      "Best-match model selection may differ by variable; upstream run and local representativeness are unverified. Hourly values cannot determine an exact rain start minute or issue an official warning."
+    ]
+  },
+  {
+    "case": "daily",
+    "status": "answered",
+    "facts": 2,
+    "coverage": {
+      "requested": 1,
+      "completed": 1,
+      "incomplete_ids": []
+    },
+    "charts": 2,
+    "sources": [
+      "S22"
+    ],
+    "parameters": [
+      "precipitation_sum",
+      "temperature_2m_mean"
+    ],
+    "seconds": 4.96,
+    "answer": "Ahmedabad, Ahmadābād, State of Gujarāt · 01 Jul 2025, 00:00–02 Jul 2025, 00:00 IST\nDaily precipitation total: 1.0 mm [t1-f1]\nDaily mean temperature: 29.8 °C [t1-f2]\nThese are ERA5 reanalysis values for the selected point, using Indian calendar days, not station observations or district averages.",
+    "notes": [
+      "Precipitation includes rain, showers and snow water equivalent; it is not a rain-only gauge measurement.",
+      "ERA5 reanalysis for the selected grid point, with provider daily aggregation in Asia/Kolkata; not observed station data or district averages."
+    ]
+  },
+  {
+    "case": "daily_series",
+    "status": "answered",
+    "facts": 7,
+    "coverage": {
+      "requested": 1,
+      "completed": 1,
+      "incomplete_ids": []
+    },
+    "charts": 1,
+    "sources": [
+      "S22"
+    ],
+    "parameters": [
+      "precipitation_sum"
+    ],
+    "seconds": 4.84,
+    "answer": "Ahmedabad, Ahmadābād, State of Gujarāt · 01 Jul 2025, 00:00–02 Jul 2025, 00:00 IST\nDaily precipitation total: 1.0 mm [t1-f1]\nAhmedabad, Ahmadābād, State of Gujarāt · 02 Jul 2025, 00:00–03 Jul 2025, 00:00 IST\nDaily precipitation total: 10.9 mm [t1-f2]\nAhmedabad, Ahmadābād, State of Gujarāt · 03 Jul 2025, 00:00–04 Jul 2025, 00:00 IST\nDaily precipitation total: 9.5 mm [t1-f3]\nAhmedabad, Ahmadābād, State of Gujarāt · 04 Jul 2025, 00:00–05 Jul 2025, 00:00 IST\nDaily precipitation total: 4.4 mm [t1-f4]\nAhmedabad, Ahmadābād, State of Gujarāt · 05 Jul 2025, 00:00–06 Jul 2025, 00:00 IST\nDaily precipitation total: 24.4 mm [t1-f5]\nAhmedabad, Ahmadābād, S",
+    "notes": [
+      "Precipitation includes rain, showers and snow water equivalent; it is not a rain-only gauge measurement.",
+      "ERA5 reanalysis for the selected grid point, with provider daily aggregation in Asia/Kolkata; not observed station data or district averages."
+    ]
+  },
+  {
+    "case": "daily_temp",
+    "status": "answered",
+    "facts": 6,
+    "coverage": {
+      "requested": 1,
+      "completed": 1,
+      "incomplete_ids": []
+    },
+    "charts": 2,
+    "sources": [
+      "S22"
+    ],
+    "parameters": [
+      "temperature_2m_max",
+      "temperature_2m_min"
+    ],
+    "seconds": 5.45,
+    "answer": "Chennai, Chennai, State of Tamil Nādu · 01 Jul 2025, 00:00–02 Jul 2025, 00:00 IST\nDaily maximum temperature: 33.7 °C [t1-f1]\nChennai, Chennai, State of Tamil Nādu · 02 Jul 2025, 00:00–03 Jul 2025, 00:00 IST\nDaily maximum temperature: 34.1 °C [t1-f2]\nChennai, Chennai, State of Tamil Nādu · 03 Jul 2025, 00:00–04 Jul 2025, 00:00 IST\nDaily maximum temperature: 33.4 °C [t1-f3]\nChennai, Chennai, State of Tamil Nādu · 01 Jul 2025, 00:00–02 Jul 2025, 00:00 IST\nDaily minimum temperature: 30.3 °C [t1-f4]\nChennai, Chennai, State of Tamil Nādu · 02 Jul 2025, 00:00–03 Jul 2025, 00:00 IST\nDaily minimum temperature: 27.6 °C [t1-f5]\nChennai, Chennai, State o",
+    "notes": [
+      "Precipitation includes rain, showers and snow water equivalent; it is not a rain-only gauge measurement.",
+      "ERA5 reanalysis for the selected grid point, with provider daily aggregation in Asia/Kolkata; not observed station data or district averages."
+    ]
+  },
+  {
+    "case": "yesterday",
+    "status": "unavailable",
+    "facts": 0,
+    "coverage": {
+      "requested": 1,
+      "completed": 0,
+      "incomplete_ids": [
+        "t1"
+      ]
+    },
+    "charts": 0,
+    "sources": [],
+    "parameters": [],
+    "seconds": 4.18,
+    "answer": "ERA5 daily reanalysis is published with about a five-day delay. This recent date is not eligible for this history tool yet; yesterday is not being replaced with an annual value or a forecast.",
+    "notes": []
+  },
+  {
+    "case": "mixed_warning",
+    "status": "partial",
+    "facts": 6,
+    "coverage": {
+      "requested": 2,
+      "completed": 1,
+      "incomplete_ids": [
+        "t2"
+      ]
+    },
+    "charts": 1,
+    "sources": [
+      "S62"
+    ],
+    "parameters": [
+      "precipitation_probability"
+    ],
+    "seconds": 15.24,
+    "answer": "Task 1: Ahmedabad, Ahmadābād, State of Gujarāt · 13 Sep 2026, 06:30–13 Sep 2026, 07:30 IST\nHourly precipitation probability (>0.1 mm): 58 % [t1-f1]\nAhmedabad, Ahmadābād, State of Gujarāt · 13 Sep 2026, 07:30–13 Sep 2026, 08:30 IST\nHourly precipitation probability (>0.1 mm): 49 % [t1-f2]\nAhmedabad, Ahmadābād, State of Gujarāt · 13 Sep 2026, 08:30–13 Sep 2026, 09:30 IST\nHourly precipitation probability (>0.1 mm): 49 % [t1-f3]\nAhmedabad, Ahmadābād, State of Gujarāt · 13 Sep 2026, 09:30–13 Sep 2026, 10:30 IST\nHourly precipitation probability (>0.1 mm): 54 % [t1-f4]\nAhmedabad, Ahmadābād, State of Gujarāt · 13 Sep 2026, 10:30–13 Sep 2026, 11:30 IST",
+    "notes": [
+      "Precipitation includes rain, showers and snow water equivalent; it is not a rain-only gauge measurement.",
+      "Source hours are on UTC boundaries (:30 in IST). Each probability is for >0.1 mm in its preceding hour. Hourly probabilities are never combined into a period probability.",
+      "Best-match model selection may differ by variable; upstream run and local representativeness are unverified. Hourly values cannot determine an exact rain start minute or issue an official warning."
+    ]
+  },
+  {
+    "case": "onset",
+    "status": "partial",
+    "facts": 6,
+    "coverage": {
+      "requested": 1,
+      "completed": 0,
+      "incomplete_ids": [
+        "t1"
+      ]
+    },
+    "charts": 1,
+    "sources": [
+      "S62"
+    ],
+    "parameters": [
+      "precipitation"
+    ],
+    "seconds": 4.77,
+    "answer": "Ahmedabad, Ahmadābād, State of Gujarāt · 13 Sep 2026, 06:30–13 Sep 2026, 07:30 IST\nHourly precipitation amount: 0.3 mm [t1-f1]\nAhmedabad, Ahmadābād, State of Gujarāt · 13 Sep 2026, 07:30–13 Sep 2026, 08:30 IST\nHourly precipitation amount: 0.1 mm [t1-f2]\nAhmedabad, Ahmadābād, State of Gujarāt · 13 Sep 2026, 08:30–13 Sep 2026, 09:30 IST\nHourly precipitation amount: 0.1 mm [t1-f3]\nAhmedabad, Ahmadābād, State of Gujarāt · 13 Sep 2026, 09:30–13 Sep 2026, 10:30 IST\nHourly precipitation amount: 0.2 mm [t1-f4]\nAhmedabad, Ahmadābād, State of Gujarāt · 13 Sep 2026, 10:30–13 Sep 2026, 11:30 IST\nHourly precipitation amount: 0.1 mm [t1-f5]\nAhmedabad, Ahma",
+    "notes": [
+      "Precipitation includes rain, showers and snow water equivalent; it is not a rain-only gauge measurement.",
+      "Source hours are on UTC boundaries (:30 in IST). Each probability is for >0.1 mm in its preceding hour. Hourly probabilities are never combined into a period probability.",
+      "Best-match model selection may differ by variable; upstream run and local representativeness are unverified. Hourly values cannot determine an exact rain start minute or issue an official warning."
+    ]
+  },
+  {
+    "case": "legacy",
+    "status": "answered",
+    "facts": 2,
+    "coverage": {
+      "requested": 1,
+      "completed": 1,
+      "incomplete_ids": []
+    },
+    "charts": 0,
+    "sources": [
+      "S25",
+      "S26"
+    ],
+    "parameters": [
+      "rainfall",
+      "temperature"
+    ],
+    "seconds": 2.8,
+    "answer": "All India · annual 2024\nrainfall: 1206.6 mm [t1-f1]\ntemperature: 25.7431 degC [t1-f2]\nRetrieved 2 published historical values for the requested places, parameters and years.",
+    "notes": [
+      "This is the published All India aggregate; it does not describe an individual village or district.",
+      "The source aggregate differs from the sum of its published months; the original total and reconciliation are retained."
+    ]
+  }
+]

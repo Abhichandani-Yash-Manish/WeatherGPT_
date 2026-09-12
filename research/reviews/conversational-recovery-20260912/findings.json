@@ -1,0 +1,87 @@
+{
+  "schema_version": "conversational-recovery-findings-v1",
+  "as_of_utc": "2026-09-12T16:54:12.612510+00:00",
+  "report": "docs/13-conversational-recovery.md",
+  "supplied_report": "research/reviews/conversational-recovery-20260912/user-report-excerpt.txt",
+  "supplied_report_truncated": true,
+  "supplied_questions_available": 26,
+  "missing_original_suite_not_claimed_rerun": true,
+  "operational_ready": false,
+  "findings": [
+    {
+      "id": "F01",
+      "status": "implemented_scoped",
+      "evidence_summary": "Local Ollama planning, chat UI/CLI, targeted refresh and follow-ups replace the rigid product input path.",
+      "remaining": "Expand held-out completion and semantic faithfulness evaluation."
+    },
+    {
+      "id": "F02",
+      "status": "implemented_scoped",
+      "evidence_summary": "Semantic intent planning; six separate real-model wording checks passed.",
+      "remaining": "Broaden paraphrase and language coverage."
+    },
+    {
+      "id": "F03",
+      "status": "partial",
+      "evidence_summary": "549021 source settlement records indexed locally with exact/approximate match distinction.",
+      "remaining": "Missing names and source completeness remain; not an official village denominator."
+    },
+    {
+      "id": "F04",
+      "status": "partial",
+      "evidence_summary": "Source aliases, settlement types, explicit ambiguity, source-backed state filtering.",
+      "remaining": "Reviewed LGD and dated historical boundary mapping remain open."
+    },
+    {
+      "id": "F05",
+      "status": "open",
+      "evidence_summary": "Unavailable probability is identified separately from retrieved rainfall amount.",
+      "remaining": "Implement and validate a probability contract."
+    },
+    {
+      "id": "F06",
+      "status": "partial",
+      "evidence_summary": "Route questions can resolve both endpoints and retrieve their weather.",
+      "remaining": "Route segments, closures, service status and travel clearance are unsupported."
+    },
+    {
+      "id": "F07",
+      "status": "partial",
+      "evidence_summary": "Crop intent and missing field context are recognized.",
+      "remaining": "No validated crop diagnosis or contextual advisory answers yet."
+    },
+    {
+      "id": "F08",
+      "status": "implemented_scoped",
+      "evidence_summary": "Natural-language access to existing national and historical district tables.",
+      "remaining": "Daily dry spells, additional datasets and unsupported years remain unavailable."
+    },
+    {
+      "id": "F09",
+      "status": "open",
+      "evidence_summary": "Specific coverage explanation replaces forecast-format messages.",
+      "remaining": "No soil, groundwater or demographic pipelines added."
+    },
+    {
+      "id": "F10",
+      "status": "partial",
+      "evidence_summary": "Local model interpretation plus controlled Hindi/Gujarati forecast rendering.",
+      "remaining": "Fluent review, other languages and voice remain open."
+    },
+    {
+      "id": "F11",
+      "status": "implemented_scoped",
+      "evidence_summary": "Historical replies distinguish missing values/ranges and cite prior full audit with matching source hash.",
+      "remaining": "Source rights, comparability and missingness remain unresolved."
+    }
+  ],
+  "live_evaluation": "research/reviews/conversational-recovery-20260912/live-evaluation/summary.json",
+  "targeted_http_journeys": "research/reviews/conversational-recovery-20260912/final-journeys",
+  "final_code_checks": "research/reviews/conversational-recovery-20260912/final-code-checks/summary.json",
+  "tests": {
+    "passed": 213,
+    "evidence": "research/reviews/conversational-recovery-20260912/tests-final.txt"
+  },
+  "final_code_checks_completed": 4,
+  "final_code_checks_answered": 4
+}

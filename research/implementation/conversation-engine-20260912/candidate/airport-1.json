@@ -1,0 +1,240 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "50c81383-b5ac-4e5e-8391-0f69b8f917ba",
+  "question": "What does that mean in simple words?",
+  "status": "answered",
+  "answer": "VAAH · Ahmadabad/Patel Intl, airport report at 13 Sep, 00:00 IST: Observed airport temperature: 26 °C. Observed airport wind: 2 kt. This report describes the airport, not conditions across the whole city.\n\nA METAR is a snapshot of conditions measured at the airport at the stated time. Temperature is reported in Celsius and wind speed in knots. It is an observation, so it does not predict what happens later.",
+  "facts": [
+    {
+      "id": "t1-f1",
+      "parameter": "temperature_c",
+      "label": "Airport temperature",
+      "value": "26",
+      "unit": "°C",
+      "place": "VAAH · Ahmadabad/Patel Intl",
+      "entity_id": "icao:VAAH",
+      "observed_at": "2026-09-12T18:30:00+00:00",
+      "start": "2026-09-12T18:30:00+00:00",
+      "end": "2026-09-12T18:30:00+00:00",
+      "sample_at": "2026-09-12T18:30:00+00:00",
+      "source_id": "S18",
+      "evidence_kind": "observation",
+      "evidence_version": "3706c5d848587746c55ea186ee66adfe53fdccf0f91acb06b86f36a00cdfd774",
+      "citation_ids": [
+        "t1-c-3706c5d848587746c55ea186ee66adfe53fdccf0f91acb06b86f36a00cdfd774",
+        "t1-c-6d2a746215bc3a44b93f6478c89d904580ccab1a138c34ed24a55aee080cc3be"
+      ],
+      "source_locators": [
+        "$[0].temp"
+      ],
+      "method": "reported_airport_observation",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f2",
+      "parameter": "wind_speed_kt",
+      "label": "Airport wind speed",
+      "value": "2",
+      "unit": "kt",
+      "place": "VAAH · Ahmadabad/Patel Intl",
+      "entity_id": "icao:VAAH",
+      "observed_at": "2026-09-12T18:30:00+00:00",
+      "start": "2026-09-12T18:30:00+00:00",
+      "end": "2026-09-12T18:30:00+00:00",
+      "sample_at": "2026-09-12T18:30:00+00:00",
+      "source_id": "S18",
+      "evidence_kind": "observation",
+      "evidence_version": "3706c5d848587746c55ea186ee66adfe53fdccf0f91acb06b86f36a00cdfd774",
+      "citation_ids": [
+        "t1-c-3706c5d848587746c55ea186ee66adfe53fdccf0f91acb06b86f36a00cdfd774",
+        "t1-c-6d2a746215bc3a44b93f6478c89d904580ccab1a138c34ed24a55aee080cc3be"
+      ],
+      "source_locators": [
+        "$[0].wspd"
+      ],
+      "method": "reported_airport_observation",
+      "task_id": "t1"
+    }
+  ],
+  "citations": [
+    {
+      "id": "t1-c-3706c5d848587746c55ea186ee66adfe53fdccf0f91acb06b86f36a00cdfd774",
+      "source_id": "S18",
+      "provider": "NOAA Aviation Weather Center",
+      "product": "VAAH METAR",
+      "url": "https://aviationweather.gov/api/data/metar?ids=VAAH&format=json&hours=3",
+      "response_sha256": "3706c5d848587746c55ea186ee66adfe53fdccf0f91acb06b86f36a00cdfd774",
+      "retrieved_at_utc": "2026-09-12T18:53:40.349305+00:00"
+    },
+    {
+      "id": "t1-c-6d2a746215bc3a44b93f6478c89d904580ccab1a138c34ed24a55aee080cc3be",
+      "source_id": "S20",
+      "provider": "NOAA Aviation Weather Center",
+      "product": "VAAH station identity",
+      "url": "https://aviationweather.gov/api/data/stationinfo?ids=VAAH&format=json",
+      "response_sha256": "6d2a746215bc3a44b93f6478c89d904580ccab1a138c34ed24a55aee080cc3be",
+      "retrieved_at_utc": "2026-09-12T18:47:30.482412+00:00"
+    }
+  ],
+  "notes": [
+    "Airport reports concern their stated station and validity. No flight status, operational clearance or city-wide weather is inferred.",
+    "Explaining the previous verified evidence; no new observation or forecast was fetched."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T18:53:40.352329+00:00",
+  "expires_at_utc": "2026-09-12T18:58:40.349305+00:00",
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 2892,
+      "output_tokens": 192,
+      "duration_seconds": 3.727559625
+    },
+    "generation": null,
+    "tools": [
+      {
+        "name": "previous_evidence",
+        "freshness": "within_original_lifetime"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "explain_previous",
+      "changed_fields": [],
+      "inherited_fields": [
+        "places"
+      ]
+    },
+    "duration_seconds": 3.742
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "VAAH",
+        "state": "",
+        "district": "",
+        "kind": "unknown"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "What does that mean in simple words?",
+        "kind": "explanation",
+        "operation": "lookup",
+        "parameters": [],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "context_action": "explain_previous",
+    "changed_fields": [],
+    "intent": "explanation",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "airport_reports": [
+    {
+      "station": "VAAH",
+      "kind": "metar",
+      "raw_report": "METAR VAAH 121830Z 25002KT 2000 -DZ BR SCT012 SCT018 OVC080 26/24 Q1007 NOSIG",
+      "source_locator": "$[0]",
+      "citation_ids": [
+        "t1-c-3706c5d848587746c55ea186ee66adfe53fdccf0f91acb06b86f36a00cdfd774"
+      ],
+      "observed_at": "2026-09-12T18:30:00+00:00",
+      "valid_start": null,
+      "valid_end": null
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "Latest VAAH METAR",
+        "kind": "aviation",
+        "operation": "lookup",
+        "parameters": [
+          "metar"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "answered",
+      "answer": "VAAH · Ahmadabad/Patel Intl, airport report at 13 Sep, 00:00 IST: Observed airport temperature: 26 °C. Observed airport wind: 2 kt. This report describes the airport, not conditions across the whole city.",
+      "fact_ids": [
+        "t1-f1",
+        "t1-f2"
+      ]
+    }
+  ],
+  "task_coverage": {
+    "requested": 1,
+    "completed": 1,
+    "incomplete_ids": []
+  },
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "aviation",
+      "parameters": [
+        "metar"
+      ],
+      "candidates": [
+        {
+          "tool": "airport_reports",
+          "selected": true,
+          "available": true,
+          "reason": "Indian ICAO airport observations/TAF with station identity; no flight status or city-wide observation",
+          "sources": [
+            {
+              "source_id": "S18",
+              "product": "NOAA AWC VAAH METAR dissemination",
+              "registry_status": "prototype_adapter_tested"
+            },
+            {
+              "source_id": "S19",
+              "product": "NOAA AWC VAAH TAF dissemination",
+              "registry_status": "prototype_adapter_tested"
+            },
+            {
+              "source_id": "S20",
+              "product": "NOAA AWC airport station metadata",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "answered",
+      "returned_source_ids": [
+        "S18",
+        "S20"
+      ]
+    }
+  ]
+}

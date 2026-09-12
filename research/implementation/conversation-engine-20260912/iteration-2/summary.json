@@ -1,0 +1,596 @@
+[
+  {
+    "scenario": "hinglish",
+    "turn": 0,
+    "question": "kal ahmedabad me barish padne ki sambhavna kitni hai",
+    "status": "needs_selection",
+    "answer": "Aap kis jagah ki baat kar rahe hain? Ahmedābād, District Rampur, Uttar Pradesh / Ahmedabad, Ahmadābād, State of Gujarāt. Ek chuniye, ya uska rajya/zila likhiye.",
+    "plan": {
+      "language": "hi-Latn",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [
+        "Current date is 2026-09-13. 'Kal' refers to the next local date, 2026-09-14.",
+        "Time window for 'kal' (tomorrow) is assumed to be the full day: 2026-09-14T00:00:00+05:30 to 2026-09-15T00:00:00+05:30."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "kal ahmedabad me barish padne ki sambhavna kitni hai",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation_probability"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T00:00:00+05:30",
+          "end_local": "2026-09-15T00:00:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "new",
+      "changed_fields": [
+        "places",
+        "time",
+        "parameters"
+      ],
+      "intent": "forecast",
+      "start_local": "2026-09-14T00:00:00+05:30",
+      "end_local": "2026-09-15T00:00:00+05:30",
+      "variables": [],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 6.72
+  },
+  {
+    "scenario": "hinglish",
+    "turn": 1,
+    "question": "Gujarat wala",
+    "status": "partial",
+    "answer": "Ahmedabad · 14 Sep, 00:30–14 Sep, 23:30 IST: Har ghante barish ki sambhavna: 61–95 %. Sabse zyada 95% sambhavna 14 Sep, 15:30–16:30 IST ke ghante mein hai. Ye alag-alag ghanton ki sambhavnayein hain; poore din ka ek pratishat nahi. Srot: Open-Meteo best-match ka poorvanuman; mausam badal sakta hai.\n\nSawal ka kuch hissa abhi adhura hai; jo samay ya jaankari nahi mili, woh neeche di gayi hai.",
+    "plan": {
+      "language": "hi-Latn",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "State of Gujarāt",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [
+        "Current date is 2026-09-13. 'Kal' refers to the next local date, 2026-09-14.",
+        "Time window for 'kal' (tomorrow) is assumed to be the full day: 2026-09-14T00:00:00+05:30 to 2026-09-15T00:00:00+05:30."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "kal ahmedabad me barish padne ki sambhavna kitni hai",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation_probability"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T00:00:00+05:30",
+          "end_local": "2026-09-15T00:00:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "clarification_answer",
+      "changed_fields": [
+        "places"
+      ],
+      "intent": "forecast",
+      "start_local": "2026-09-14T00:00:00+05:30",
+      "end_local": "2026-09-15T00:00:00+05:30",
+      "variables": [],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 0.01
+  },
+  {
+    "scenario": "hinglish",
+    "turn": 2,
+    "question": "aur shaam ko?",
+    "status": "answered",
+    "answer": "Ahmedabad · 14 Sep, 18:30–14 Sep, 22:30 IST: Har ghante barish ki sambhavna: 65–83 %. Sabse zyada 83% sambhavna 14 Sep, 18:30–19:30 IST ke ghante mein hai. Ye alag-alag ghanton ki sambhavnayein hain; poore din ka ek pratishat nahi. Srot: Open-Meteo best-match ka poorvanuman; mausam badal sakta hai.",
+    "plan": {
+      "language": "hi-Latn",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "State of Gujarāt",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [
+        "Current date is 2026-09-13. 'Kal' refers to the next local date, 2026-09-14.",
+        "Time window for 'shaam ko' (evening) defaults to 18:30–22:30 IST on 2026-09-14."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "aur shaam ko?",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation_probability"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T18:30:00+05:30",
+          "end_local": "2026-09-14T22:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "follow_up",
+      "changed_fields": [
+        "time"
+      ],
+      "intent": "forecast",
+      "start_local": "2026-09-14T18:30:00+05:30",
+      "end_local": "2026-09-14T22:30:00+05:30",
+      "variables": [],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 6.33
+  },
+  {
+    "scenario": "hinglish",
+    "turn": 3,
+    "question": "kitni mm barish hogi us time?",
+    "status": "answered",
+    "answer": "Ahmedabad · 14 Sep, 18:30–14 Sep, 22:30 IST: Barish ki anumaanit matra: 0.0 mm. Srot: GFS ka poorvanuman; mausam badal sakta hai.",
+    "plan": {
+      "language": "hi-Latn",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "State of Gujarāt",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [
+        "Time window 'us time' refers to the previously established evening period: 18:30–22:30 IST on 2026-09-14."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "kitni mm barish hogi us time?",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T18:30:00+05:30",
+          "end_local": "2026-09-14T22:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "follow_up",
+      "changed_fields": [
+        "parameters"
+      ],
+      "intent": "forecast",
+      "start_local": "2026-09-14T18:30:00+05:30",
+      "end_local": "2026-09-14T22:30:00+05:30",
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 5.86
+  },
+  {
+    "scenario": "hinglish",
+    "turn": 4,
+    "question": "nahi, Surat ke liye batao",
+    "status": "needs_selection",
+    "answer": "Aap kis jagah ki baat kar rahe hain? Surat, Sūrat, State of Gujarāt / Jalalpore, Navsari, State of Gujarāt. Ek chuniye, ya uska rajya/zila likhiye.",
+    "plan": {
+      "language": "hi-Latn",
+      "places": [
+        {
+          "name": "Surat",
+          "state": "Gujarat",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "nahi, Surat ke liye batao",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T18:30:00+05:30",
+          "end_local": "2026-09-14T22:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "correction",
+      "changed_fields": [
+        "places"
+      ],
+      "intent": "forecast",
+      "start_local": "2026-09-14T18:30:00+05:30",
+      "end_local": "2026-09-14T22:30:00+05:30",
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 5.09
+  },
+  {
+    "scenario": "evidence",
+    "turn": 0,
+    "question": "What is the rain forecast in Ahmedabad, Gujarat tomorrow morning?",
+    "status": "answered",
+    "answer": "Ahmedabad · 14 Sep, 06:30–14 Sep, 12:30 IST: Forecast precipitation: 4.6 mm. Source: GFS forecast; conditions can change.",
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "Gujarat",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [
+        "Tomorrow is 2026-09-14. Morning defaults to 06:30–12:30 IST."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "rain forecast in Ahmedabad, Gujarat tomorrow morning",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T06:30:00+05:30",
+          "end_local": "2026-09-14T12:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "new",
+      "changed_fields": [
+        "places",
+        "time"
+      ],
+      "intent": "forecast",
+      "start_local": "2026-09-14T06:30:00+05:30",
+      "end_local": "2026-09-14T12:30:00+05:30",
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 5.11
+  },
+  {
+    "scenario": "evidence",
+    "turn": 1,
+    "question": "Check another model too. Do they agree?",
+    "status": "answered",
+    "answer": "Ahmedabad · 14 Sep, 06:30–14 Sep, 12:30 IST: Forecast precipitation: 4.6 mm. Source: GFS forecast; conditions can change.\n\nAhmedabad · 14 Sep, 06:30–14 Sep, 12:30 IST: Forecast precipitation: 0.1–0.5 mm. Source: Open-Meteo best-match forecast; conditions can change.\n\nAhmedabad, Ahmadābād, State of Gujarāt · Precipitation total across requested hours: 1.5 mm.\n\nFor the same point and interval, GFS: 4.6 mm; best-match: 1.5 mm. Best-match minus GFS: -3.1 mm. Best-match may include GFS upstream. These are not independent confirmations, and agreement does not establish accuracy; neither an average nor a confidence score is produced.",
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "Gujarat",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [
+        "Retains the established time window: 2026-09-14 06:30–12:30 IST."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "Check another model too. Do they agree?",
+          "kind": "forecast",
+          "operation": "crosscheck",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T06:30:00+05:30",
+          "end_local": "2026-09-14T12:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "follow_up",
+      "changed_fields": [
+        "operation"
+      ],
+      "intent": "forecast",
+      "start_local": "2026-09-14T06:30:00+05:30",
+      "end_local": "2026-09-14T12:30:00+05:30",
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 5.44
+  },
+  {
+    "scenario": "airport",
+    "turn": 0,
+    "question": "Latest VAAH METAR please",
+    "status": "answered",
+    "answer": "VAAH · Ahmadabad/Patel Intl, airport report at 13 Sep, 00:00 IST: Observed airport temperature: 26 °C. Observed airport wind: 2 kt. This report describes the airport, not conditions across the whole city.",
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "VAAH",
+          "state": "",
+          "district": "",
+          "kind": "unknown"
+        }
+      ],
+      "assumptions": [],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "Latest VAAH METAR please",
+          "kind": "aviation",
+          "operation": "lookup",
+          "parameters": [
+            "metar"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "new",
+      "changed_fields": [
+        "places"
+      ],
+      "intent": "research",
+      "start_local": "",
+      "end_local": "",
+      "variables": [],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 4.59
+  },
+  {
+    "scenario": "airport",
+    "turn": 1,
+    "question": "What does that mean in simple words?",
+    "status": "answered",
+    "answer": "VAAH · Ahmadabad/Patel Intl, airport report at 13 Sep, 00:00 IST: Observed airport temperature: 26 °C. Observed airport wind: 2 kt. This report describes the airport, not conditions across the whole city.",
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "VAAH",
+          "state": "",
+          "district": "",
+          "kind": "unknown"
+        }
+      ],
+      "assumptions": [],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "What does that mean in simple words?",
+          "kind": "explanation",
+          "operation": "lookup",
+          "parameters": [],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "explain_previous",
+      "changed_fields": [],
+      "intent": "explanation",
+      "start_local": "",
+      "end_local": "",
+      "variables": [],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 3.71
+  },
+  {
+    "scenario": "clarify",
+    "turn": 0,
+    "question": "Will it rain tomorrow?",
+    "status": "needs_clarification",
+    "answer": "Which city or village should I check?",
+    "plan": {
+      "language": "en",
+      "places": [],
+      "assumptions": [
+        "User did not specify a location; places is empty. The system cannot provide a forecast without a place. This plan assumes the user intends to ask about their current location, but per instructions, missing location means places=[].",
+        "Time: 'tomorrow' refers to the next local date from current_time_IST (2026-09-14). The default time window for an unspecified part of day is the upcoming twelve hours or the full day? Standard forecast defaults often imply the whole day or specific parts. However, without a place, this is moot. If a place were provided, 'tomorrow' would be 2026-09-14 00:00 to 2026-09-15 00:00 IST."
+      ],
+      "clarification": "Please specify the location for which you want the rain forecast.",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "Will it rain tomorrow?",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": []
+        }
+      ],
+      "context_action": "new",
+      "changed_fields": [
+        "places"
+      ],
+      "intent": "forecast",
+      "start_local": "",
+      "end_local": "",
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 5.58
+  },
+  {
+    "scenario": "clarify",
+    "turn": 1,
+    "question": "Ahmedabad, Gujarat",
+    "status": "needs_clarification",
+    "answer": "When should I check the weather for this plan? A day and approximate time are enough.",
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "Gujarat",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [
+        "Time: 'tomorrow' refers to the next local date from current_time_IST (2026-09-14). The default time window for an unspecified part of day is the full day (00:00 to next 00:00 IST)."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "Ahmedabad, Gujarat",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "clarification_answer",
+      "changed_fields": [
+        "places"
+      ],
+      "intent": "forecast",
+      "start_local": "2026-09-14T00:00:00+05:30",
+      "end_local": "2026-09-15T00:00:00+05:30",
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 5.79
+  }
+]

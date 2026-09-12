@@ -1,13 +1,13 @@
 {
   "schema_version": "rag-readiness-v1",
-  "as_of_utc": "2026-09-12T08:35:06.896763+00:00",
+  "as_of_utc": "2026-09-12T19:04:32.132999+00:00",
   "user_intent": "Ground AI answers with stored evidence (RAG)",
-  "decision": "scoped_point_forecast_context_repaired_ready_for_controlled_generation_evaluation",
+  "decision": "bounded_context_resolution_and_typed_multisource_retrieval_verified_scoped_document_rag_open",
   "unrestricted_corpus_rag_ready": false,
   "operational_ready": false,
   "scientific_accuracy_established": false,
   "universal_correctness_claim": false,
-  "llm_generation_evaluated": false,
+  "llm_generation_evaluated": true,
   "implemented_gate": "weathergpt_data/rag.py",
   "command": "python -m weathergpt_data rag-context",
   "report": "docs/11-extensive-validation-and-rag-gate.md",
@@ -63,10 +63,12 @@
     }
   },
   "allowed_context": [
-    "S21 fresh complete deterministic model-point forecasts that pass AnswerService and context expiry checks"
+    "S21 fresh complete per-variable model-point forecast intervals passing conversation health and expiry checks",
+    "S25/S26 typed national historical table lookups",
+    "S27 typed local historical district lookups with source provenance and discrepancy flags; no unrestricted document embedding"
   ],
   "excluded_from_automatic_grounding": [
-    "Stale, degraded or incomplete forecasts",
+    "Stale/degraded forecasts and incomplete variable intervals (healthy complete variables may be independently admitted by the conversation gate)",
     "Ambiguous or unsupported locations and intervals",
     "Official observations or warning claims",
     "Agriculture, aviation, marine and flood-impact decisions",
@@ -99,7 +101,7 @@
     "national_aggregate_discrepancies": 6,
     "warning_quarantines": 22
   },
-  "next_step": "Complete UI browser verification and evaluate a held-out tool-grounded LLM client. In parallel, finish dated geography mappings and warning lifecycle/validity before broadening current warning answers. Specialist and unrestricted-corpus gates remain in force.",
+  "next_step": "Activate extended forecast and daily reanalysis tools, then specialist adapters. Continue warning/access/geography work and reviewed bulletin extraction; follow product-progress.json.",
   "continuation_review": {
     "as_of_utc": "2026-09-12T15:17:08.023751+00:00",
     "report": "research/reviews/workspace-continuation-20260912/review.md",
@@ -115,16 +117,88 @@
     },
     "resolution_evidence": "data/processed/hardening/product-batch-five-20260912/repaired-review-probes.json"
   },
-  "updated_at_utc": "2026-09-12T15:44:56.098467+00:00",
+  "updated_at_utc": "2026-09-12T19:56:46.526883+00:00",
   "product_workspace": {
-    "entrypoint": "python3 -m weathergpt_data.workspace",
-    "report": "docs/12-product-workspace-and-repairs.md",
-    "evidence_directory": "data/processed/hardening/product-batch-five-20260912",
-    "automated_tests_passed": 194,
-    "live_http_check": "data/processed/hardening/product-batch-five-20260912/live/report.json",
-    "browser_visual_qa": "blocked_admin_policy_verification_unavailable",
-    "llm_generation": false,
-    "scope": "Local English model-point forecast prototype; national and specialist final acceptance remains incomplete."
+    "entrypoint": "python3 scripts/start_weather.py",
+    "report": "docs/15-answer-fidelity-and-historical-analysis.md",
+    "evidence_directory": "research/implementation/product-stage-one-20260912",
+    "automated_tests_passed": 229,
+    "live_http_check": "research/implementation/product-stage-one-20260912/release-live/summary.json",
+    "browser_visual_qa": "unverified_prior_admin_policy_verification_failure",
+    "llm_generation": true,
+    "llm_provider": "local Ollama",
+    "model": "qwen3.6:latest",
+    "factual_response_rendering": "controlled_tool_owned_tuples",
+    "scope": "Desktop conversational forecast and historical lookup/comparison/descriptive trend prototype; nationwide/specialist operational acceptance incomplete."
   },
-  "verified_checkpoint_note": "The verified object is the earlier extensive checkpoint; current product-batch results are recorded separately under product_workspace."
+  "verified_checkpoint_note": "The verified object is the earlier extensive checkpoint; current product-batch results are recorded separately under product_workspace.",
+  "conversational_review": {
+    "report": "docs/13-conversational-recovery.md",
+    "findings": "research/reviews/conversational-recovery-20260912/findings.json",
+    "operational_ready": false
+  },
+  "conversation_gate": {
+    "implementation": "weathergpt_data/task_dispatch.py",
+    "report": "docs/15-answer-fidelity-and-historical-analysis.md",
+    "evidence_directory": "research/reviews/conversational-recovery-20260912",
+    "eligibility": "Complete per-variable intervals may be retrieved independently from a partial answer only when snapshot_status is prototype_snapshot and freshness/expiry pass. The older rag-context gate remains stricter and unchanged. Historical typed lookups are local and preserve provenance/missingness; no document embedding/export.",
+    "language_scope": "English local synthesis; controlled Hindi/Gujarati forecast wording; broader semantic and language accuracy unverified.",
+    "factual_claim_policy": "Typed evidence tuple rendering; no free-form model rewriting of retrieved numeric clauses."
+  },
+  "product_potential_review": {
+    "report": "docs/14-product-review-and-progress-plan.md",
+    "findings": "research/reviews/product-potential-20260912/findings.json",
+    "progress_plan": "research/reviews/product-potential-20260912/progress-plan.json",
+    "implementation_changed": false,
+    "new_reproduced_correctness_gaps": [
+      "P01",
+      "P02",
+      "P03"
+    ],
+    "sharing_and_hosting": "on_hold_by_user"
+  },
+  "product_progress": "data/registry/product-progress.json",
+  "product_stage_one": {
+    "report": "docs/15-answer-fidelity-and-historical-analysis.md",
+    "resolved_scoped": [
+      "P01",
+      "P02"
+    ],
+    "partial": [
+      "P03",
+      "P09"
+    ],
+    "tests": "research/implementation/product-stage-one-20260912/tests-release.txt",
+    "implementation_changed": true
+  },
+  "point_tools_batch": {
+    "report": "docs/16-hourly-and-daily-point-tools.md",
+    "decision": "governed_typed_hourly_and_daily_tools_connected",
+    "unrestricted_document_rag": false
+  },
+  "latest_conversation_engine": {
+    "report": "docs/17-conversation-engine-refinement.md",
+    "acceptance": "research/implementation/conversation-engine-20260912/acceptance.json",
+    "automated_tests_passed": 280,
+    "note": "Structured numeric/airport retrieval, not unrestricted document embeddings; scientific accuracy and universal semantic correctness remain unestablished."
+  },
+  "bulletin_retrieval_batch": {
+    "report": "docs/18-bulletin-retrieval-and-warning-lifecycle.md",
+    "evidence_directory": "research/implementation/evidence-retrieval-20260913",
+    "source_ids": [
+      "S57",
+      "S06"
+    ],
+    "operational_ready": false,
+    "scope": "Published crop/stage passages in three inspected families and CAP feed lifecycle/source assessment; current official applicability and nationwide document acceptance remain open."
+  },
+  "context_retrieval_batch": {
+    "report": "docs/19-context-and-retrieval-coverage.md",
+    "evidence_directory": "research/implementation/context-and-retrieval-20260913",
+    "source_ids": [
+      "S57"
+    ],
+    "operational_ready": false,
+    "scope": "Pending document slots, multi-crop coverage and explicit all-matches retrieval; four inspected districts in three PDF families, with Surat and Madurai held. National corpus completeness, personalized advice and general-section retrieval remain open."
+  }
 }

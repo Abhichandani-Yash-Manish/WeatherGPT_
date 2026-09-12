@@ -1,0 +1,512 @@
+[
+  {
+    "scenario": "hinglish",
+    "turn": 0,
+    "question": "kal ahmedabad me barish padne ki sambhavna kitni hai",
+    "status": "needs_selection",
+    "answer": "I found 2 possible places for Ahmedabad. Please confirm the intended location and spelling.",
+    "plan": {
+      "language": "hi",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [
+        "Tomorrow is 2026-09-13. The user asks about rain probability for 'kal' (tomorrow) without specifying a time window; defaulting to the upcoming twelve hours from the current time (2026-09-12T23:53 IST) until 2026-09-13T11:53 IST."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "kal ahmedabad me barish padne ki sambhavna kitni hai",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation_probability"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-12T23:53:49+05:30",
+          "end_local": "2026-09-13T11:53:49+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "intent": "forecast",
+      "start_local": "2026-09-12T23:53:49+05:30",
+      "end_local": "2026-09-13T11:53:49+05:30",
+      "variables": [],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 5.2
+  },
+  {
+    "scenario": "hinglish",
+    "turn": 1,
+    "question": "aur shaam ko?",
+    "status": "needs_selection",
+    "answer": "I found 2 possible places for Ahmedabad. Please confirm the intended location and spelling.",
+    "plan": {
+      "language": "hi",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [
+        "The user asks for 'shaam' (evening) on the next day. Based on the previous context, this refers to 2026-09-13. Evening defaults to 18:30–22:30 IST."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "aur shaam ko?",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation_probability"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-13T18:30:00+05:30",
+          "end_local": "2026-09-13T22:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "intent": "forecast",
+      "start_local": "2026-09-13T18:30:00+05:30",
+      "end_local": "2026-09-13T22:30:00+05:30",
+      "variables": [],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 4.07
+  },
+  {
+    "scenario": "hinglish",
+    "turn": 2,
+    "question": "kitni mm barish hogi us time?",
+    "status": "needs_selection",
+    "answer": "I found 2 possible places for Ahmedabad. Please confirm the intended location and spelling.",
+    "plan": {
+      "language": "hi",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [
+        "The user asks for 'us time' (that time) referring to the previously established evening window on 2026-09-13. Evening defaults to 18:30–22:30 IST."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "kitni mm barish hogi us time?",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-13T18:30:00+05:30",
+          "end_local": "2026-09-13T22:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "intent": "forecast",
+      "start_local": "2026-09-13T18:30:00+05:30",
+      "end_local": "2026-09-13T22:30:00+05:30",
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 4.19
+  },
+  {
+    "scenario": "hinglish",
+    "turn": 3,
+    "question": "nahi, Surat ke liye batao",
+    "status": "needs_selection",
+    "answer": "I found 3 possible places for Surat. Please confirm the intended location and spelling.",
+    "plan": {
+      "language": "hi",
+      "places": [
+        {
+          "name": "Surat",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [
+        "The user explicitly overrides the previous place (Ahmedabad) with Surat. The time context ('us time' / evening) from the prior turn is retained for this new location as no new time was specified, defaulting to the established evening window on 2026-09-13."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "nahi, Surat ke liye batao",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-13T18:30:00+05:30",
+          "end_local": "2026-09-13T22:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "intent": "forecast",
+      "start_local": "2026-09-13T18:30:00+05:30",
+      "end_local": "2026-09-13T22:30:00+05:30",
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 5.09
+  },
+  {
+    "scenario": "evidence",
+    "turn": 0,
+    "question": "What is the rain forecast in Ahmedabad, Gujarat tomorrow morning?",
+    "status": "answered",
+    "answer": "Ahmedabad, Ahmadābād, State of Gujarāt · 13 Sep 2026, 06:30–13 Sep 2026, 12:30 IST\nForecast rainfall: 3.3 mm [t1-f1]\nThese are model forecasts for the selected points, not observed conditions or district averages.",
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "Gujarat",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [
+        "Tomorrow is 2026-09-13. Morning defaults to 06:30–12:30 IST."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "rain forecast in Ahmedabad, Gujarat tomorrow morning",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-13T06:30:00+05:30",
+          "end_local": "2026-09-13T12:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "intent": "forecast",
+      "start_local": "2026-09-13T06:30:00+05:30",
+      "end_local": "2026-09-13T12:30:00+05:30",
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 4.46
+  },
+  {
+    "scenario": "evidence",
+    "turn": 1,
+    "question": "Check another model too. Do they agree?",
+    "status": "answered",
+    "answer": "Ahmedabad, Ahmadābād, State of Gujarāt · 13 Sep 2026, 06:30–13 Sep 2026, 12:30 IST\nForecast rainfall: 3.3 mm [t1-f1]\nThese are model forecasts for the selected points, not observed conditions or district averages.",
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "Gujarat",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [
+        "The user wants to compare the forecast for the same time window as the previous turn (tomorrow morning, 06:30–12:30 IST on 2026-09-13) using a different model."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "Check another model too",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-13T06:30:00+05:30",
+          "end_local": "2026-09-13T12:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "intent": "forecast",
+      "start_local": "2026-09-13T06:30:00+05:30",
+      "end_local": "2026-09-13T12:30:00+05:30",
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 5.22
+  },
+  {
+    "scenario": "airport",
+    "turn": 0,
+    "question": "Latest VAAH METAR please",
+    "status": "unavailable",
+    "answer": "The airport report adapter exists, but its conversational tool is not connected yet. No METAR, TAF or flight status has been retrieved.",
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "VAAH",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "Latest VAAH METAR",
+          "kind": "aviation",
+          "operation": "lookup",
+          "parameters": [
+            "metar"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "intent": "research",
+      "start_local": "",
+      "end_local": "",
+      "variables": [],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 2.91
+  },
+  {
+    "scenario": "airport",
+    "turn": 1,
+    "question": "What does that mean in simple words?",
+    "status": "explanation",
+    "answer": "The phrase \"What does that mean in simple words?\" is a request to explain a complex topic or concept using clear, easy-to-understand language. It implies that the original information was too technical, detailed, or confusing, and the user wants a simplified summary or definition without jargon. Since no specific context was provided in your query, I cannot give a targeted explanation for a particular subject. If you have a specific term, sentence, or concept you would like explained simply, please provide it so I can assist you further.",
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "VAAH",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "What does that mean in simple words?",
+          "kind": "explanation",
+          "operation": "lookup",
+          "parameters": [],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "intent": "explanation",
+      "start_local": "",
+      "end_local": "",
+      "variables": [],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 4.37
+  },
+  {
+    "scenario": "clarify",
+    "turn": 0,
+    "question": "Will it rain tomorrow?",
+    "status": "needs_clarification",
+    "answer": "I could not find a settlement named Current Location. Please give its district/state, an alternative spelling, or a pin. I will not replace it with a nearby city.",
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "Current Location",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [
+        "The user's current location is inferred as the place for the forecast.",
+        "Tomorrow is defined as 2026-09-13.",
+        "The time window for 'tomorrow' is assumed to be the upcoming 12 hours from the current time (2026-09-12T23:54 IST) until 2026-09-13T11:54 IST, as no specific time was requested."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "Will it rain tomorrow?",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-12T23:54:24+05:30",
+          "end_local": "2026-09-13T11:54:24+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "intent": "forecast",
+      "start_local": "2026-09-12T23:54:24+05:30",
+      "end_local": "2026-09-13T11:54:24+05:30",
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 5.16
+  },
+  {
+    "scenario": "clarify",
+    "turn": 1,
+    "question": "Ahmedabad, Gujarat",
+    "status": "unavailable",
+    "answer": "I could not retrieve a usable forecast for that window. Only the remaining forecast period is included, starting 2026-09-13T00:30:00+05:30. Forecast rainfall: Requested boundary splits a source hourly rain interval; an exact total is unavailable; Rain intervals do not cover the requested window exactly",
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "Gujarat",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [
+        "The user's current location is inferred as the place for the forecast.",
+        "Tomorrow is defined as 2026-09-13.",
+        "The time window for 'tomorrow' is assumed to be the upcoming 12 hours from the current time (2026-09-12T23:54 IST) until 2026-09-13T11:54 IST, as no specific time was requested."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "Ahmedabad, Gujarat",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-12T23:54:29+05:30",
+          "end_local": "2026-09-13T11:54:29+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "intent": "forecast",
+      "start_local": "2026-09-12T23:54:29+05:30",
+      "end_local": "2026-09-13T11:54:29+05:30",
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 10.87
+  }
+]

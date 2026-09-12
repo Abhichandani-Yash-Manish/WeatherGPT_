@@ -1,0 +1,30 @@
+{
+  "http_turns": 15,
+  "statuses": {
+    "answered": 7,
+    "needs_clarification": 1,
+    "needs_selection": 1,
+    "partial": 2,
+    "unavailable": 4
+  },
+  "source_passage_instances": 11,
+  "numeric_forecast_facts": 50,
+  "historical_cells": 2,
+  "cap_records": 9,
+  "source_documents": 3,
+  "indexed_passages": 48,
+  "quarantined_passages": 1,
+  "latency_seconds": {
+    "median": 5.51,
+    "max": 11.69
+  },
+  "source_ids": [
+    "S06",
+    "S25",
+    "S26",
+    "S57",
+    "S61",
+    "S62"
+  ],
+  "scope": "Recorded local Ollama HTTP cases and source-byte replay; corpus ranking benchmarks, scientific skill, nationwide bulletin coverage and browser/voice acceptance remain open."
+}

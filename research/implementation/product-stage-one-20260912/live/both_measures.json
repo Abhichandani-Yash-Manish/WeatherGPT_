@@ -1,0 +1,354 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "83437cca-c7d5-48bb-86b0-7ec952761268",
+  "question": "What were the annual rainfall and mean temperature for India in 2024?",
+  "status": "partial",
+  "answer": "All India · annual 2024\nrainfall: 1206.6 mm [t1-f1]\ntemperature: 25.7431 degC [t1-f2]\nSome requested information is missing; see the task results and limitations below.\nTrend withheld: provide at least ten years for this descriptive annual/seasonal/monthly series.\nTrend withheld: provide at least ten years for this descriptive annual/seasonal/monthly series.",
+  "facts": [
+    {
+      "label": "rainfall",
+      "value": "1206.6",
+      "unit": "mm",
+      "year": 2024,
+      "period": "annual",
+      "source_id": "S25",
+      "place": "All India",
+      "id": "t1-f1",
+      "parameter": "rainfall",
+      "entity_id": "all-india",
+      "citation_ids": [
+        "t1-c1"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "temperature",
+      "value": "25.7431",
+      "unit": "degC",
+      "year": 2024,
+      "period": "annual",
+      "source_id": "S26",
+      "place": "All India",
+      "id": "t1-f2",
+      "parameter": "temperature",
+      "entity_id": "all-india",
+      "citation_ids": [
+        "t1-c2"
+      ],
+      "task_id": "t1"
+    }
+  ],
+  "citations": [
+    {
+      "source_id": "S25",
+      "url": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php",
+      "provider": "IMD",
+      "product": "Published All India historical table",
+      "raw_asset_path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+      "sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+      "row": 125,
+      "column": "Annual",
+      "id": "t1-c1"
+    },
+    {
+      "source_id": "S26",
+      "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+      "provider": "IMD",
+      "product": "Published All India historical table",
+      "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+      "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+      "row": 125,
+      "column": "Annual",
+      "id": "t1-c2"
+    }
+  ],
+  "notes": [
+    "The user is asking for historical annual data for the entire country of India.",
+    "This is the published All India aggregate; it does not describe an individual village or district.",
+    "The source aggregate differs from the sum of its published months; the original total and reconciliation are retained.",
+    "Source transcription is verified, but historical boundary comparability and homogeneity are unresolved. The descriptive slope is not proof of a statistically significant climate trend, causation or future conditions."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T17:38:34.068238+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 1175,
+      "output_tokens": 315,
+      "duration_seconds": 5.423082083
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "history",
+        "task_id": "t1",
+        "status": "partial"
+      }
+    ],
+    "provider": "local_ollama",
+    "duration_seconds": 5.445
+  },
+  "plan": {
+    "intent": "history",
+    "language": "en",
+    "places": [
+      {
+        "name": "India",
+        "state": "",
+        "district": "",
+        "kind": "country"
+      }
+    ],
+    "start_local": "",
+    "end_local": "",
+    "explicit_times": false,
+    "variables": [
+      "precipitation",
+      "temperature_2m"
+    ],
+    "year": 2024,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "assumptions": [
+      "The user is asking for historical annual data for the entire country of India."
+    ],
+    "clarification": "",
+    "requested_outcome": "Retrieve the annual total rainfall and mean temperature for India in 2024.",
+    "tasks": [
+      {
+        "kind": "history",
+        "operation": "trend",
+        "parameters": [
+          "rainfall",
+          "temperature"
+        ],
+        "years": [
+          2024
+        ],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      }
+    ]
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "kind": "history",
+        "operation": "trend",
+        "parameters": [
+          "rainfall",
+          "temperature"
+        ],
+        "years": [
+          2024
+        ],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "partial",
+      "answer": "All India · annual 2024\nrainfall: 1206.6 mm [t1-f1]\ntemperature: 25.7431 degC [t1-f2]\nSome requested information is missing; see the task results and limitations below.\nTrend withheld: provide at least ten years for this descriptive annual/seasonal/monthly series.\nTrend withheld: provide at least ten years for this descriptive annual/seasonal/monthly series.",
+      "fact_ids": [
+        "t1-f1",
+        "t1-f2"
+      ],
+      "historical_evidence": [
+        {
+          "place": {
+            "name": "India",
+            "state": "",
+            "district": "",
+            "kind": "country"
+          },
+          "parameter": "rainfall",
+          "year": 2024,
+          "evidence": {
+            "status": "answered",
+            "text": "India's published annual rainfall for 2024 was 1206.6 mm.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "1206.6",
+                "unit": "mm",
+                "year": 2024,
+                "period": "annual",
+                "source_id": "S25",
+                "place": "All India"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S25",
+                "url": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php",
+                "provider": "IMD",
+                "product": "Published All India historical table",
+                "raw_asset_path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+                "sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+                "row": 125,
+                "column": "Annual"
+              }
+            ],
+            "notes": [
+              "This is the published All India aggregate; it does not describe an individual village or district.",
+              "The source aggregate differs from the sum of its published months; the original total and reconciliation are retained."
+            ],
+            "raw": {
+              "status": "ok",
+              "scope": "Published historical All India aggregate; not current or district weather.",
+              "record": {
+                "record_id": "6625ac7d34e0bd5d15c07cb10d9cb3d4896831aaf8024598052fa0f2a38eca3e",
+                "source_id": "S25",
+                "source_series_id": "historical_rain_whi",
+                "geography_id": "all-india-aggregate",
+                "geography_label": "All India aggregate",
+                "parameter": "precipitation_amount",
+                "year": 2024,
+                "period_type": "year",
+                "period_code": "ANNUAL",
+                "period_start": "2024-01-01",
+                "period_end_exclusive": "2025-01-01",
+                "value_decimal": "1206.6",
+                "native_value": "1206.6",
+                "unit": "mm",
+                "quality_flags": [
+                  "published_total_differs_from_month_sum"
+                ],
+                "asset_sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+                "raw_asset_path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+                "source_row": 125,
+                "source_column": "Annual",
+                "source_url": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php",
+                "retrieved_at_utc": "2026-09-11T16:27:58.620400+00:00",
+                "transformation_version": "national-climate-v1"
+              },
+              "reconciliation": {
+                "source_id": "S25",
+                "year": 2024,
+                "period_code": "ANNUAL",
+                "published_value": "1206.6",
+                "computed_month_sum": "1204.1",
+                "difference_mm": "2.5",
+                "rounding_bound_mm": "0.65",
+                "status": "beyond_rounding_bound",
+                "source_row": 125,
+                "source_column": "Annual",
+                "asset_sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90"
+              },
+              "citation": {
+                "source_id": "S25",
+                "url": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php",
+                "raw_asset_path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+                "sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+                "row": 125,
+                "column": "Annual"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "India",
+            "state": "",
+            "district": "",
+            "kind": "country"
+          },
+          "parameter": "temperature",
+          "year": 2024,
+          "evidence": {
+            "status": "answered",
+            "text": "India's published annual temperature for 2024 was 25.7431 degC.",
+            "facts": [
+              {
+                "label": "temperature",
+                "value": "25.7431",
+                "unit": "degC",
+                "year": 2024,
+                "period": "annual",
+                "source_id": "S26",
+                "place": "All India"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S26",
+                "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                "provider": "IMD",
+                "product": "Published All India historical table",
+                "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                "row": 125,
+                "column": "Annual"
+              }
+            ],
+            "notes": [
+              "This is the published All India aggregate; it does not describe an individual village or district."
+            ],
+            "raw": {
+              "status": "ok",
+              "scope": "Published historical All India aggregate; not current or district weather.",
+              "record": {
+                "record_id": "7667a0061c6d0acfa33fbfad9270e176ca2209f755d59637afb2c54c50705e85",
+                "source_id": "S26",
+                "source_series_id": "historical_temp",
+                "geography_id": "all-india-aggregate",
+                "geography_label": "All India aggregate",
+                "parameter": "mean_temperature",
+                "year": 2024,
+                "period_type": "year",
+                "period_code": "ANNUAL",
+                "period_start": "2024-01-01",
+                "period_end_exclusive": "2025-01-01",
+                "value_decimal": "25.7431",
+                "native_value": "25.7431",
+                "unit": "degC",
+                "quality_flags": [],
+                "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                "source_row": 125,
+                "source_column": "Annual",
+                "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                "transformation_version": "national-climate-v1"
+              },
+              "reconciliation": null,
+              "citation": {
+                "source_id": "S26",
+                "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                "row": 125,
+                "column": "Annual"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

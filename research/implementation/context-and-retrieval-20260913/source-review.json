@@ -1,0 +1,36 @@
+{
+  "reviewed_at_utc": "2026-09-12T20:47:38.081226+00:00",
+  "source_id": "S57",
+  "method": "Publisher-directory selection, stored original hashes, text/table extraction and visual inspection of Dibrugarh pages 1-3 and Surat pages 2-3. Madurai inspected as text; unsupported extraction held.",
+  "districts": [
+    {
+      "district": "Dibrugarh",
+      "state": "Assam",
+      "sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+      "status": "source_passages_only",
+      "accepted_passages": 8,
+      "issue_date": "2026-09-11",
+      "forecast_context": [
+        "2026-09-12",
+        "2026-09-16"
+      ],
+      "note": "Rice row has no stage label; body contains a panicle-initiation condition retained in full. Warning and general-advisory sections are outside this crop index. Not a field decision or whole-document synthesis."
+    },
+    {
+      "district": "Surat",
+      "state": "Gujarat",
+      "sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "status": "held_layout_and_semantics_review",
+      "accepted_passages": 0,
+      "note": "Initial 36 extracted passages are rejected, not accepted coverage. Compound crop aliases, split sorghum row, castor text referring to maize, and general heavy-rain/withhold-irrigation guidance conflicting with a dry-weather banana instruction require review. New layout gates reject before serving; no automatic contradiction resolution claimed."
+    },
+    {
+      "district": "Madurai",
+      "state": "Tamil Nadu",
+      "sha256": "2a5c1798e89380e862a2c429522f7a1c18b459f912bf600c1d449c787954b730",
+      "status": "held_unsupported_family",
+      "accepted_passages": 0,
+      "note": "Text names Madurai, MSSRF and IMD Chennai; District:/Release Date:/Forecast Period heading family is unsupported. This is not evidence of a wrong-district publisher response."
+    }
+  ]
+}

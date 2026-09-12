@@ -1,0 +1,168 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "a569b3d8-5197-4567-9b36-c40e81b31950",
+  "question": "Can I spray tomorrow?",
+  "status": "needs_clarification",
+  "answer": "Which district and state should I look up in the IMD agricultural bulletin?",
+  "facts": [],
+  "citations": [],
+  "notes": [
+    "The user has not specified a location; places is empty. A forecast cannot be generated without a place.",
+    "The user has not specified what to spray (e.g., pesticide, fertilizer) or for which crop, so specific agricultural advisory details are missing.",
+    "The user asks about 'tomorrow', which is 2026-09-14. However, without a location, no weather data can be retrieved.",
+    "Resolved the stated relative day to 2026-09-14T00:00:00+05:30 through 2026-09-15T00:00:00+05:30; this remains known even when the place is missing."
+  ],
+  "choices": [],
+  "follow_up": "District and state",
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T20:30:23.766288+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 2868,
+      "output_tokens": 327,
+      "duration_seconds": 5.491695375
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "agriculture",
+        "task_id": "t1",
+        "status": "needs_clarification"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "new",
+      "changed_fields": [],
+      "inherited_fields": []
+    },
+    "duration_seconds": 5.522
+  },
+  "plan": {
+    "language": "en",
+    "places": [],
+    "assumptions": [
+      "The user has not specified a location; places is empty. A forecast cannot be generated without a place.",
+      "The user has not specified what to spray (e.g., pesticide, fertilizer) or for which crop, so specific agricultural advisory details are missing.",
+      "The user asks about 'tomorrow', which is 2026-09-14. However, without a location, no weather data can be retrieved.",
+      "Resolved the stated relative day to 2026-09-14T00:00:00+05:30 through 2026-09-15T00:00:00+05:30; this remains known even when the place is missing."
+    ],
+    "clarification": "Please specify the location (city/district) and the crop or area you are asking about to provide a relevant forecast or advisory.",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "Can I spray tomorrow?",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-14T00:00:00+05:30",
+        "end_local": "2026-09-15T00:00:00+05:30",
+        "place_indices": [],
+        "document_request": {
+          "query": "Can I spray tomorrow?",
+          "crop": "",
+          "growth_stage": "",
+          "topic": "pest",
+          "mode": "decision_support"
+        }
+      }
+    ],
+    "context_action": "new",
+    "changed_fields": [],
+    "intent": "agriculture",
+    "start_local": "2026-09-14T00:00:00+05:30",
+    "end_local": "2026-09-15T00:00:00+05:30",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "Can I spray tomorrow?",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-14T00:00:00+05:30",
+        "end_local": "2026-09-15T00:00:00+05:30",
+        "place_indices": [],
+        "document_request": {
+          "query": "Can I spray tomorrow?",
+          "crop": "",
+          "growth_stage": "",
+          "topic": "pest",
+          "mode": "decision_support"
+        }
+      },
+      "status": "needs_clarification",
+      "answer": "Which district and state should I look up in the IMD agricultural bulletin?",
+      "fact_ids": [],
+      "passage_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "pending_slots": [
+    {
+      "field": "place",
+      "reason": "District and state are needed",
+      "task_index": 0,
+      "task_id": "t1"
+    }
+  ],
+  "retrieval_coverage": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "agriculture",
+      "parameters": [
+        "agricultural_advisory"
+      ],
+      "candidates": [
+        {
+          "tool": "crop_advisory",
+          "selected": true,
+          "available": true,
+          "reason": "Published district crop/stage passages; strict printed geography and dates, hybrid retrieval in reviewed PDF families; individual field decisions remain partial",
+          "sources": [
+            {
+              "source_id": "S57",
+              "product": "IMD district farmer bulletin delivery (English and local language)",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "needs_clarification",
+      "returned_source_ids": []
+    }
+  ],
+  "document_evidence": [],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

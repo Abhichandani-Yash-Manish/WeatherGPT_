@@ -1,0 +1,25 @@
+{
+  "files": {
+    "docs/14-product-review-and-progress-plan.md": "d70bcd458026df48e0bf45ab9e37869ad9d803d7812e5b1916dd69668e107a5c",
+    "research/reviews/product-potential-20260912/build_review_records.py": "dfba7807eb7cb6f6217b1548d91d906f545138cc35b144a17daa4eacf795c2d1",
+    "research/reviews/product-potential-20260912/findings.json": "c2b6275347d64947c132d5bd4eb31547e407d18ecf1dbf0404762c31890fa5ca",
+    "research/reviews/product-potential-20260912/isolated-probes.json": "1037a251137616610caa5af42735c093bc79e2d088daf5e17da7ae15c6563b22",
+    "research/reviews/product-potential-20260912/live-source-checks/advisory_catalog.body": "8f1de61eaa6837797e04830ee2266542cb8aeccc2cb6cc87a02827c38bc86f11",
+    "research/reviews/product-potential-20260912/live-source-checks/cap_rss.body": "2ebb682f2306815b36d6a1276b20bee0e2367046f8042ea5b2a71a8ab30226fb",
+    "research/reviews/product-potential-20260912/live-source-checks/history.body": "44a0bb142b01a771d2c16a39e7f422a04b4e2cb03545bf561289ddfdae064a4d",
+    "research/reviews/product-potential-20260912/live-source-checks/marine.body": "977777f8114889684aefeb33f32226b0da68ea624e9bd5d1f12a78590d63a8e4",
+    "research/reviews/product-potential-20260912/live-source-checks/metar.body": "6476eb484d5a2915ee3b7c8bcc603ca64762c65582067ad76cd6d6180932a157",
+    "research/reviews/product-potential-20260912/live-source-checks/probability.body": "c5de5c109d43ac203b7d7e5801733ecf9fdd28bd0f962f9f430ef79640d71369",
+    "research/reviews/product-potential-20260912/live-source-checks/summary.json": "843d3f405f58367f66bb4676c4204f6f8ff4cf2c103490e72a3be524aeaefd9a",
+    "research/reviews/product-potential-20260912/planner-probes.json": "7fdb560438eee268ce269ff7ceb51f36e7623b76c63ea1e935b65eda03777b04",
+    "research/reviews/product-potential-20260912/probe_product.py": "ebee9bfd20fdec47661d94479cdbdbd59e2325fe143f7438b2c9cb939c979a30",
+    "research/reviews/product-potential-20260912/probe_sources.py": "1588ab032a821557890b061259801127a949cc26dbd1772ca3e5045fc392b2b3",
+    "research/reviews/product-potential-20260912/progress-plan.json": "1395172340dfa5ad7ad2d35c638591484c4a865f439ebecab6b963237c5bec2b",
+    "research/reviews/product-potential-20260912/registry-check.json": "1d37f410e6a3e96b11d2fce20f7271d9aae6ea0a85e36639863e43742b8bcebd",
+    "research/reviews/product-potential-20260912/review-baseline.json": "e875698656268b828e4a4071e3d99ae6a039d50bd04f748649c54a7dbc0ca852",
+    "research/reviews/product-potential-20260912/review-validation.json": "c14f9e8b5d49133ca5d5aeb3bfb3fbbcf33ab448b03ad5bf6bf05cfef594fb42",
+    "research/reviews/product-potential-20260912/source-utilization.csv": "f559f48f08fce398c4eacabd03548b7ad3a1948e6282bba3464ced3e25b08b2e",
+    "research/reviews/product-potential-20260912/source-utilization.json": "fdcff7a42feae82576a8f4ae998149c53d93672f35ac48e043e8f6c1c93d084b",
+    "research/reviews/product-potential-20260912/tests.txt": "3eae51bf5863c9e317c8c1fb6b57a6d8a1296f23a608859e9d962134d9cea004"
+  }
+}

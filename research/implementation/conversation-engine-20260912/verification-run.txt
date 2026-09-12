@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/yashabhichandani/Desktop/WeatherGPT/research/implementation/conversation-engine-20260912/verify_acceptance.py", line 89, in <module>
+    assert Decimal(c['value'])==oracle,(name,c);counts['derived_calculations']+=1
+AssertionError: ('multi_source-1', {'operation': 'difference', 'label': 'Ahmedabad, Gujarat · rainfall', 'value': '721.1', 'unit': 'mm', 'expression': '2010 minus 2009', 'input_ids': ['t1-f1', 't1-f2'], 'method': 'Decimal subtraction of published values', 'task_id': 't1'})

@@ -1,0 +1,400 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "144b3857-42f9-4648-9028-214b0a923e30",
+  "question": "Show hourly rain amounts for Mumbai, Maharashtra tomorrow morning.",
+  "status": "answered",
+  "answer": "Mumbai, , State of Mahārāshtra · 2026-09-13 06:30 to 2026-09-13 12:30 IST\nHourly precipitation amount: 2.4–6.3 mm across 6 hourly values.\nExact dates, times, values and evidence IDs are in the charts and tables below.\nModel forecast for the selected point; source model run and local representativeness are unverified.\nMumbai, , State of Mahārāshtra · Precipitation total across requested hours: 24.7 mm.",
+  "facts": [
+    {
+      "id": "t1-f1",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "2.6",
+      "unit": "mm",
+      "place": "Mumbai, , State of Mahārāshtra",
+      "entity_id": "geonames:1275339",
+      "start": "2026-09-13T06:30:00+05:30",
+      "end": "2026-09-13T07:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "b41a6faaa66111f11835aae7a2f60e53c867803a689404c606b99ebe66721157",
+      "citation_ids": [
+        "t1-c-b41a6faaa66111f11835aae7a2f60e53c867803a689404c606b99ebe66721157"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[26]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f2",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "2.4",
+      "unit": "mm",
+      "place": "Mumbai, , State of Mahārāshtra",
+      "entity_id": "geonames:1275339",
+      "start": "2026-09-13T07:30:00+05:30",
+      "end": "2026-09-13T08:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "b41a6faaa66111f11835aae7a2f60e53c867803a689404c606b99ebe66721157",
+      "citation_ids": [
+        "t1-c-b41a6faaa66111f11835aae7a2f60e53c867803a689404c606b99ebe66721157"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[27]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f3",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "3.6",
+      "unit": "mm",
+      "place": "Mumbai, , State of Mahārāshtra",
+      "entity_id": "geonames:1275339",
+      "start": "2026-09-13T08:30:00+05:30",
+      "end": "2026-09-13T09:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "b41a6faaa66111f11835aae7a2f60e53c867803a689404c606b99ebe66721157",
+      "citation_ids": [
+        "t1-c-b41a6faaa66111f11835aae7a2f60e53c867803a689404c606b99ebe66721157"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[28]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f4",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "4.1",
+      "unit": "mm",
+      "place": "Mumbai, , State of Mahārāshtra",
+      "entity_id": "geonames:1275339",
+      "start": "2026-09-13T09:30:00+05:30",
+      "end": "2026-09-13T10:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "b41a6faaa66111f11835aae7a2f60e53c867803a689404c606b99ebe66721157",
+      "citation_ids": [
+        "t1-c-b41a6faaa66111f11835aae7a2f60e53c867803a689404c606b99ebe66721157"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[29]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f5",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "5.7",
+      "unit": "mm",
+      "place": "Mumbai, , State of Mahārāshtra",
+      "entity_id": "geonames:1275339",
+      "start": "2026-09-13T10:30:00+05:30",
+      "end": "2026-09-13T11:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "b41a6faaa66111f11835aae7a2f60e53c867803a689404c606b99ebe66721157",
+      "citation_ids": [
+        "t1-c-b41a6faaa66111f11835aae7a2f60e53c867803a689404c606b99ebe66721157"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[30]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f6",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "6.3",
+      "unit": "mm",
+      "place": "Mumbai, , State of Mahārāshtra",
+      "entity_id": "geonames:1275339",
+      "start": "2026-09-13T11:30:00+05:30",
+      "end": "2026-09-13T12:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "b41a6faaa66111f11835aae7a2f60e53c867803a689404c606b99ebe66721157",
+      "citation_ids": [
+        "t1-c-b41a6faaa66111f11835aae7a2f60e53c867803a689404c606b99ebe66721157"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[31]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    }
+  ],
+  "citations": [
+    {
+      "id": "t1-c-b41a6faaa66111f11835aae7a2f60e53c867803a689404c606b99ebe66721157",
+      "source_id": "S62",
+      "provider": "Open-Meteo",
+      "product": "Best-match hourly model forecast",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=19.07283&longitude=72.88261&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m%2Cprecipitation_probability%2Capparent_temperature%2Cwind_gusts_10m%2Cvisibility&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+      "response_sha256": "b41a6faaa66111f11835aae7a2f60e53c867803a689404c606b99ebe66721157",
+      "retrieved_at_utc": "2026-09-12T18:10:20.172307+00:00",
+      "requested_point": {
+        "latitude": 19.07283,
+        "longitude": 72.88261
+      },
+      "returned_grid": {
+        "latitude": 19.086115,
+        "longitude": 72.85291
+      },
+      "grid_distance_km": 3.453,
+      "model_run_time": null
+    },
+    {
+      "source_id": "S61",
+      "url": "https://www.geonames.org/1275339",
+      "provider": "GeoNames",
+      "product": "India place catalogue",
+      "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+      "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+    }
+  ],
+  "notes": [
+    "Tomorrow is 2026-09-13. Morning defaults to 06:30–12:30 IST.",
+    "Precipitation includes rain, showers and snow water equivalent; it is not a rain-only gauge measurement.",
+    "Source hours are on UTC boundaries (:30 in IST). Each probability is for >0.1 mm in its preceding hour. Hourly probabilities are never combined into a period probability.",
+    "Best-match model selection may differ by variable; upstream run and local representativeness are unverified. Hourly values cannot determine an exact rain start minute or issue an official warning."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T18:14:03.299086+00:00",
+  "expires_at_utc": "2026-09-12T19:10:20.172307+00:00",
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 1408,
+      "output_tokens": 280,
+      "duration_seconds": 4.3764385
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "gazetteer_search",
+        "query": {
+          "name": "Mumbai",
+          "state": "Maharashtra",
+          "district": "",
+          "kind": "settlement"
+        },
+        "matches": 1
+      },
+      {
+        "name": "extended_forecast",
+        "job_id": "bf2e03357104aed4efe8668ba99940a717628e71bd2d7fccfca9247d3cf226dd",
+        "worker": {
+          "state": "already_collected"
+        },
+        "source_sha256": "b41a6faaa66111f11835aae7a2f60e53c867803a689404c606b99ebe66721157"
+      },
+      {
+        "name": "forecast",
+        "task_id": "t1",
+        "status": "answered"
+      }
+    ],
+    "provider": "local_ollama",
+    "duration_seconds": 4.433
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Mumbai",
+        "state": "Maharashtra",
+        "district": "",
+        "kind": "settlement"
+      }
+    ],
+    "assumptions": [
+      "Tomorrow is 2026-09-13. Morning defaults to 06:30–12:30 IST."
+    ],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "Show hourly rain amounts for Mumbai, Maharashtra tomorrow morning.",
+        "kind": "forecast",
+        "operation": "timeline",
+        "parameters": [
+          "precipitation"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-13T06:30:00+05:30",
+        "end_local": "2026-09-13T12:30:00+05:30",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "intent": "forecast",
+    "start_local": "2026-09-13T06:30:00+05:30",
+    "end_local": "2026-09-13T12:30:00+05:30",
+    "variables": [
+      "precipitation"
+    ],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "Show hourly rain amounts for Mumbai, Maharashtra tomorrow morning.",
+        "kind": "forecast",
+        "operation": "timeline",
+        "parameters": [
+          "precipitation"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-13T06:30:00+05:30",
+        "end_local": "2026-09-13T12:30:00+05:30",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "answered",
+      "answer": "Mumbai, , State of Mahārāshtra · 2026-09-13 06:30 to 2026-09-13 12:30 IST\nHourly precipitation amount: 2.4–6.3 mm across 6 hourly values.\nExact dates, times, values and evidence IDs are in the charts and tables below.\nModel forecast for the selected point; source model run and local representativeness are unverified.\nMumbai, , State of Mahārāshtra · Precipitation total across requested hours: 24.7 mm.",
+      "fact_ids": [
+        "t1-f1",
+        "t1-f2",
+        "t1-f3",
+        "t1-f4",
+        "t1-f5",
+        "t1-f6"
+      ]
+    }
+  ],
+  "charts": [
+    {
+      "kind": "hourly_series",
+      "axis_label": "Time (IST)",
+      "title": "Mumbai, , State of Mahārāshtra · Hourly precipitation amount",
+      "unit": "mm",
+      "points": [
+        {
+          "x": 1789261200.0,
+          "label": "13 Sep 06:30–07:30",
+          "value": "2.6",
+          "evidence_id": "t1-f1"
+        },
+        {
+          "x": 1789264800.0,
+          "label": "13 Sep 07:30–08:30",
+          "value": "2.4",
+          "evidence_id": "t1-f2"
+        },
+        {
+          "x": 1789268400.0,
+          "label": "13 Sep 08:30–09:30",
+          "value": "3.6",
+          "evidence_id": "t1-f3"
+        },
+        {
+          "x": 1789272000.0,
+          "label": "13 Sep 09:30–10:30",
+          "value": "4.1",
+          "evidence_id": "t1-f4"
+        },
+        {
+          "x": 1789275600.0,
+          "label": "13 Sep 10:30–11:30",
+          "value": "5.7",
+          "evidence_id": "t1-f5"
+        },
+        {
+          "x": 1789279200.0,
+          "label": "13 Sep 11:30–12:30",
+          "value": "6.3",
+          "evidence_id": "t1-f6"
+        }
+      ],
+      "source_ids": [
+        "S62"
+      ],
+      "task_id": "t1"
+    }
+  ],
+  "calculations": [
+    {
+      "label": "Mumbai, , State of Mahārāshtra · Precipitation total across requested hours",
+      "value": "24.7",
+      "unit": "mm",
+      "method": "sum of complete forecast hourly precipitation values",
+      "input_ids": [
+        "t1-f1",
+        "t1-f2",
+        "t1-f3",
+        "t1-f4",
+        "t1-f5",
+        "t1-f6"
+      ],
+      "source_ids": [
+        "S62"
+      ],
+      "task_id": "t1"
+    }
+  ],
+  "resolved_points": {
+    "Mumbai": {
+      "id": "1275339",
+      "name": "Mumbai",
+      "latitude": 19.07283,
+      "longitude": 72.88261,
+      "feature": "PPLA",
+      "admin1": "State of Mahārāshtra",
+      "admin2": "",
+      "modified": "2024-09-05",
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:1275339",
+      "label": "Mumbai, , State of Mahārāshtra",
+      "coordinates": {
+        "latitude": 19.07283,
+        "longitude": 72.88261
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/1275339",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Mumbai"
+    }
+  },
+  "task_coverage": {
+    "requested": 1,
+    "completed": 1,
+    "incomplete_ids": []
+  }
+}

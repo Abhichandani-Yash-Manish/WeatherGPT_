@@ -1,0 +1,12 @@
+{
+  "source_id": "S18",
+  "url": "https://aviationweather.gov/api/data/metar?ids=VAAH&format=json&hours=3",
+  "retrieved_at_utc": "2026-09-12T18:47:31.192933+00:00",
+  "http_status": 200,
+  "content_type": "application/json; charset=utf-8",
+  "bytes": 3134,
+  "sha256": "3706c5d848587746c55ea186ee66adfe53fdccf0f91acb06b86f36a00cdfd774",
+  "blob": "blobs/3706c5d848587746c55ea186ee66adfe53fdccf0f91acb06b86f36a00cdfd774.bin",
+  "validation_scope": "product",
+  "stage": "validated"
+}

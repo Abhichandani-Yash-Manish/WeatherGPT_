@@ -1,0 +1,188 @@
+{
+  "state": "Tamil Nadu",
+  "district": "Coimbatore",
+  "issue_date": "2026-09-11",
+  "forecast_start": "2026-09-12",
+  "forecast_end": "2026-09-16",
+  "advice_valid_until": null,
+  "family": "tnau_grid",
+  "issuer_context": "Tamil Nadu Agricultural University & India Meteorological Department Agromet Advisory Bulletin for the Coimbatore District Bulletin No.073/2026 Issued on 11.09.2026 (From 12th September 2026 to 16th September 2026) Issued jointly by Agro Climate Research Centre, TNAU Past Weather for Tamil Nadu Weather Summary for the period since the issue of last bulletin 072 (08.09.2026) for Tamil Nadu. Maximum temperature ranged from 33\u00b0C to 41\u00b0C and minimum temperature ranged from 22\u00b0C to 30\u00b0C, over the State. Kodaikanal and Udhagamandalam recorded maximum temperature ranged from 20oC to 22oC and minimum temperature ranged from 09oC to14\u00b0C. Coimbatore Di",
+  "language": "en",
+  "sha256": "99b77dc84e6bec60bfe3a5cd64b0d8247761b43abed6af3a63b056b0edfe7b9f",
+  "pages": 3,
+  "chunks": [
+    {
+      "page": 2,
+      "row": 2,
+      "table": 3,
+      "crop": "General",
+      "stage": "",
+      "text": "Drizzling or Light rainfall is expected in the western zone for the forth coming week. 15th & 16th September may get 15-20mm of rainfall in all three districts. Isolated places along the Western Ghats may receive thunderstorm. Hence, avoid trespassing and animal grazing near Western Ghats. Irrigation may be continued based on the soil moisture. Provide adequate draining to young crops.",
+      "bbox": [
+        30.599999999999994,
+        209.89999999999995,
+        558.3599899999999,
+        355.36999499999996
+      ],
+      "crop_key": "general",
+      "source_id": "S57",
+      "document_sha256": "99b77dc84e6bec60bfe3a5cd64b0d8247761b43abed6af3a63b056b0edfe7b9f",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "f2e2713b2372cf878f135b3b24cbe36fabaf4dea4dded4db7a089b87e0341c53"
+    },
+    {
+      "page": 2,
+      "row": 3,
+      "table": 3,
+      "crop": "Rice",
+      "stage": "Nursery Sowing",
+      "text": "Due to prevailing weather, Thrips insect attack is observed in Samba paddy nursery. Spray Azadirachtin 0.15% @ 2ml per lit of water. Also watch for diseases. In the absence of wet nursery and if sufficient ground water is available, direct dry seeding of medium duration rice can be done with the anticipated rain for Samba season.",
+      "bbox": [
+        30.599999999999994,
+        355.36999499999996,
+        558.3599899999999,
+        480.0699949999999
+      ],
+      "crop_key": "rice",
+      "source_id": "S57",
+      "document_sha256": "99b77dc84e6bec60bfe3a5cd64b0d8247761b43abed6af3a63b056b0edfe7b9f",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "819fcb8136c75d1a4b25d5e1ed0ea068621fb978934cc839f8d97a068704ccc7"
+    },
+    {
+      "page": 2,
+      "row": 4,
+      "table": 3,
+      "crop": "Sorghum, Cumbu",
+      "stage": "Land preparation",
+      "text": "By utilizing the anticipated rainfall, land preparation may be initiated in rainfed black soil towards pre monsoon sowing.",
+      "bbox": [
+        30.599999999999994,
+        480.0699949999999,
+        558.3599899999999,
+        521.9499799999999
+      ],
+      "crop_key": "sorghum, cumbu",
+      "source_id": "S57",
+      "document_sha256": "99b77dc84e6bec60bfe3a5cd64b0d8247761b43abed6af3a63b056b0edfe7b9f",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "dc41967bde331a2908eedf254f77e118e5c01b9a3d181e4b56974e79be70bbfd"
+    },
+    {
+      "page": 2,
+      "row": 5,
+      "table": 3,
+      "crop": "Groundnut",
+      "stage": "Land preparation",
+      "text": "With the receipt of anticipated rainfall dry lands may be prepared for sowing groundnut and millets during North East Monsoon.",
+      "bbox": [
+        30.599999999999994,
+        521.9499799999999,
+        558.3599899999999,
+        563.82998
+      ],
+      "crop_key": "groundnut",
+      "source_id": "S57",
+      "document_sha256": "99b77dc84e6bec60bfe3a5cd64b0d8247761b43abed6af3a63b056b0edfe7b9f",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "79b5fd2a24a729f0b3083e4ea25a27ba24e6abe4bb48ac0a7aea01e50004c0f8"
+    },
+    {
+      "page": 2,
+      "row": 6,
+      "table": 3,
+      "crop": "Sugarcane",
+      "stage": "Vegetative",
+      "text": "Prevailing wind speed is more than 10 km per hour along with light rainfall. Hence, five months old sugarcane may be propped against lodging.",
+      "bbox": [
+        30.599999999999994,
+        563.82998,
+        558.3599899999999,
+        626.49998
+      ],
+      "crop_key": "sugarcane",
+      "source_id": "S57",
+      "document_sha256": "99b77dc84e6bec60bfe3a5cd64b0d8247761b43abed6af3a63b056b0edfe7b9f",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "3ebae0fe575c496b7ac1c8aebec37dacc278ae8e20ce7a00b01b650bedc6051b"
+    },
+    {
+      "page": 2,
+      "row": 7,
+      "table": 3,
+      "crop": "Tomato",
+      "stage": "Vegetative",
+      "text": "Prevailing weather is favourable for sucking pests and leaf minor in tomato. Spray 3% neem Seed Kernel Extract to control the pests.",
+      "bbox": [
+        30.599999999999994,
+        626.49998,
+        558.3599899999999,
+        668.3799799999999
+      ],
+      "crop_key": "tomato",
+      "source_id": "S57",
+      "document_sha256": "99b77dc84e6bec60bfe3a5cd64b0d8247761b43abed6af3a63b056b0edfe7b9f",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "cbb10e52a63f5e7852cfa44153399fee17d2a5e732ccbe3e3531750d79c7b723"
+    },
+    {
+      "page": 2,
+      "row": 8,
+      "table": 3,
+      "crop": "Banana",
+      "stage": "5 months old",
+      "text": "Prevailing wind speed is more than 10 km per hour along with light rainfall. Hence, five months old banana may be propped against lodging.",
+      "bbox": [
+        30.599999999999994,
+        668.3799799999999,
+        558.3599899999999,
+        731.0200099999998
+      ],
+      "crop_key": "banana",
+      "source_id": "S57",
+      "document_sha256": "99b77dc84e6bec60bfe3a5cd64b0d8247761b43abed6af3a63b056b0edfe7b9f",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "33e3f2a3e0e3158a296f2603534c5fb76a5bfaa82fbb80d2e26fad774c2508a3"
+    },
+    {
+      "page": 3,
+      "row": 1,
+      "table": 1,
+      "crop": "Turmeric",
+      "stage": "Bulking",
+      "text": "Turmeric is at bulking stage, which is critical for both moisture stress and excess water. Hence, care to keep sufficient moisture and avoid excess moisture or over dry. Prevailing high relative humidity and wind speed would spread the spores of turmeric leaf spot from endemic area. Spray Mancozeb @ 1 kg/ha or copper oxy chloride @ 1.25 kg/ha.",
+      "bbox": [
+        30.6,
+        48.479999999999905,
+        558.3599899999999,
+        173.17999999999995
+      ],
+      "crop_key": "turmeric",
+      "source_id": "S57",
+      "document_sha256": "99b77dc84e6bec60bfe3a5cd64b0d8247761b43abed6af3a63b056b0edfe7b9f",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "aebcfeec4b5d2f4ab2bda24858c886bfb7220307fae91567f8a9fa371b1dd813"
+    },
+    {
+      "page": 3,
+      "row": 2,
+      "table": 1,
+      "crop": "Animals",
+      "stage": "",
+      "text": "Present high wind speed and relative humidity may force the animals to take more drinking water. Provide enough clean drinking water to the animals. Due to the prevailing wind speed, feeds of the poultry chicken gets wasted to avoid plant based oils may be mixed feeds of the poultry.",
+      "bbox": [
+        30.6,
+        173.17999999999995,
+        558.3599899999999,
+        277.249995
+      ],
+      "crop_key": "animals",
+      "source_id": "S57",
+      "document_sha256": "99b77dc84e6bec60bfe3a5cd64b0d8247761b43abed6af3a63b056b0edfe7b9f",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "51bb7ee1b39b1e4f369444fa5dc2c4bdd29063732e1fc827c6abddd98dd7bb4f"
+    }
+  ],
+  "extraction_status": "reviewed_family_rules",
+  "scope": "Published source passages; no personalized prescription or independent agronomic validation"
+}

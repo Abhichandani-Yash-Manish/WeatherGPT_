@@ -1,0 +1,271 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "71002b00-6711-42b0-908c-2424eb081b63",
+  "question": "Compare annual rainfall in Ahmedabad district, Gujarat in 2010 and 2011.",
+  "status": "partial",
+  "answer": "Ahmedabad, Gujarat · annual 2010\nrainfall: 1096.8 mm [t1-f1]\nSome requested information is missing; see the task results and limitations below.\nAhmedabad, rainfall, 2011: The stored Ahmedabad, Gujarat series covers 1901–2010, with 110 published years. It cannot supply 2011.",
+  "facts": [
+    {
+      "label": "rainfall",
+      "value": "1096.8",
+      "unit": "mm",
+      "year": 2010,
+      "period": "annual",
+      "source_id": "S27",
+      "place": "Ahmedabad, Gujarat",
+      "id": "t1-f1",
+      "parameter": "rainfall",
+      "entity_id": "IMD110-P611",
+      "citation_ids": [
+        "t1-c1"
+      ],
+      "task_id": "t1"
+    }
+  ],
+  "citations": [
+    {
+      "source_id": "S27",
+      "provider": "IMD",
+      "product": "Historical district rainfall publication",
+      "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+      "page": "613",
+      "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+      "row": 111,
+      "column": "annual_mm",
+      "id": "t1-c1"
+    }
+  ],
+  "notes": [
+    "Historical source geography; modern district compatibility and homogeneity unresolved.",
+    "Local research use; original publication restricts redistribution."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T17:50:22.630396+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 1298,
+      "output_tokens": 183,
+      "duration_seconds": 3.069042
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "history",
+        "task_id": "t1",
+        "status": "partial"
+      }
+    ],
+    "provider": "local_ollama",
+    "duration_seconds": 3.106
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Ahmedabad",
+        "state": "Gujarat",
+        "district": "",
+        "kind": "district"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "Compare annual rainfall in Ahmedabad district, Gujarat in 2010 and 2011.",
+        "kind": "history",
+        "operation": "compare",
+        "parameters": [
+          "rainfall"
+        ],
+        "years": [
+          2010,
+          2011
+        ],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "intent": "history",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 2010,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "Compare annual rainfall in Ahmedabad district, Gujarat in 2010 and 2011.",
+        "kind": "history",
+        "operation": "compare",
+        "parameters": [
+          "rainfall"
+        ],
+        "years": [
+          2010,
+          2011
+        ],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "partial",
+      "answer": "Ahmedabad, Gujarat · annual 2010\nrainfall: 1096.8 mm [t1-f1]\nSome requested information is missing; see the task results and limitations below.\nAhmedabad, rainfall, 2011: The stored Ahmedabad, Gujarat series covers 1901–2010, with 110 published years. It cannot supply 2011.",
+      "fact_ids": [
+        "t1-f1"
+      ],
+      "historical_evidence": [
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 2010,
+          "evidence": {
+            "status": "answered",
+            "text": "The historical Ahmedabad district series reports 1096.8 mm of rainfall for annual 2010.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "1096.8",
+                "unit": "mm",
+                "year": 2010,
+                "period": "annual",
+                "source_id": "S27",
+                "place": "Ahmedabad, Gujarat"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S27",
+                "provider": "IMD",
+                "product": "Historical district rainfall publication",
+                "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                "page": "613",
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "row": 111,
+                "column": "annual_mm"
+              }
+            ],
+            "notes": [
+              "Historical source geography; modern district compatibility and homogeneity unresolved.",
+              "Local research use; original publication restricts redistribution."
+            ],
+            "verification": {
+              "scope": "Previous full source-transcription audit; not a new scientific validation",
+              "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+              "input_hash_matches_audited_source": true,
+              "all_series_matched": true,
+              "legacy_index_status": "matched_1870_cells"
+            },
+            "raw": {
+              "status": "ok",
+              "source_id": "S27",
+              "state": "Gujarat",
+              "district": "Ahmedabad",
+              "year": 2010,
+              "period": "annual",
+              "value_decimal": "1096.8",
+              "native_value": "1096.8",
+              "unit": "mm",
+              "quality_flags": [],
+              "provenance": {
+                "series_id": "IMD110-P611",
+                "year": 2010,
+                "state": "Gujarat",
+                "district": "Ahmedabad",
+                "source_row": 111,
+                "source_file": "data/raw/imports/2026-09-11/states/gujarat.csv",
+                "asset_sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f",
+                "column": "annual_mm",
+                "original_publication_page": "613"
+              },
+              "limitations": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "source_transcription": {
+                "status": "covered_by_previous_full_source_audit",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "",
+            "kind": "district"
+          },
+          "parameter": "rainfall",
+          "year": 2011,
+          "evidence": {
+            "status": "unavailable",
+            "text": "The stored Ahmedabad, Gujarat series covers 1901–2010, with 110 published years. It cannot supply 2011.",
+            "facts": [],
+            "citations": []
+          }
+        }
+      ]
+    }
+  ],
+  "charts": [
+    {
+      "kind": "historical_series",
+      "title": "Ahmedabad, Gujarat · rainfall · annual",
+      "unit": "mm",
+      "points": [
+        {
+          "year": 2010,
+          "value": "1096.8",
+          "evidence_id": "t1-f1"
+        },
+        {
+          "year": 2011,
+          "value": null
+        }
+      ],
+      "source_ids": [
+        "S27"
+      ],
+      "missing_values": "Explicit gaps, never interpolated",
+      "task_id": "t1"
+    }
+  ],
+  "calculations": [],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

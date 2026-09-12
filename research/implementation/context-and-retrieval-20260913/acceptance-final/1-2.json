@@ -1,0 +1,170 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "4b9aba4e-71c5-497e-b90b-0bb8d3b76a6f",
+  "question": "Ahmedabad, Gujarat",
+  "status": "needs_clarification",
+  "answer": "Which crop and growth stage are involved? I can retrieve the district bulletin and relevant weather, but those details determine which passages apply.",
+  "facts": [],
+  "citations": [],
+  "notes": [
+    "Resolved the stated relative day to 2026-09-14T00:00:00+05:30 through 2026-09-15T00:00:00+05:30; this remains known even when the place is missing."
+  ],
+  "choices": [],
+  "follow_up": "Crop and growth stage",
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T20:43:39.059292+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "literal_pending_place",
+      "model_calls": 0,
+      "filled_fields": [
+        "places"
+      ]
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "agriculture",
+        "task_id": "t1",
+        "status": "needs_clarification"
+      }
+    ],
+    "provider": "local_ollama",
+    "duration_seconds": 0.075
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Ahmedabad",
+        "state": "Gujarat",
+        "district": "",
+        "kind": "settlement"
+      }
+    ],
+    "assumptions": [
+      "Resolved the stated relative day to 2026-09-14T00:00:00+05:30 through 2026-09-15T00:00:00+05:30; this remains known even when the place is missing."
+    ],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "Ahmedabad, Gujarat",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-14T00:00:00+05:30",
+        "end_local": "2026-09-15T00:00:00+05:30",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "Can I spray tomorrow?",
+          "crop": "",
+          "growth_stage": "",
+          "topic": "pest",
+          "mode": "decision_support"
+        }
+      }
+    ],
+    "context_action": "clarification_answer",
+    "changed_fields": [
+      "places"
+    ],
+    "intent": "agriculture",
+    "start_local": "2026-09-14T00:00:00+05:30",
+    "end_local": "2026-09-15T00:00:00+05:30",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "Ahmedabad, Gujarat",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-14T00:00:00+05:30",
+        "end_local": "2026-09-15T00:00:00+05:30",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "Can I spray tomorrow?",
+          "crop": "",
+          "growth_stage": "",
+          "topic": "pest",
+          "mode": "decision_support"
+        }
+      },
+      "status": "needs_clarification",
+      "answer": "Which crop and growth stage are involved? I can retrieve the district bulletin and relevant weather, but those details determine which passages apply.",
+      "fact_ids": [],
+      "passage_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "pending_slots": [
+    {
+      "field": "crop",
+      "reason": "Crop is not yet supplied",
+      "task_index": 0,
+      "task_id": "t1"
+    }
+  ],
+  "retrieval_coverage": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "agriculture",
+      "parameters": [
+        "agricultural_advisory"
+      ],
+      "candidates": [
+        {
+          "tool": "crop_advisory",
+          "selected": true,
+          "available": true,
+          "reason": "Published district crop/stage passages; strict printed geography and dates, hybrid retrieval in reviewed PDF families; individual field decisions remain partial",
+          "sources": [
+            {
+              "source_id": "S57",
+              "product": "IMD district farmer bulletin delivery (English and local language)",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "needs_clarification",
+      "returned_source_ids": []
+    }
+  ],
+  "document_evidence": [],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

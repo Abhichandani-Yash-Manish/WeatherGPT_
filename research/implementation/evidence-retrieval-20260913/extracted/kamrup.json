@@ -1,0 +1,131 @@
+{
+  "state": "Assam",
+  "district": "Kamrup",
+  "issue_date": "2026-09-11",
+  "forecast_start": "2026-09-12",
+  "forecast_end": "2026-09-16",
+  "advice_valid_until": null,
+  "family": "gkms_grid",
+  "issuer_context": "Gramin Krishi Mausam Sewa Agromet Advisory Bulletin for KAMRUP District Assam Agricultural University Jorhat, Assam Agromet Advisory Bulletin Date : 2026-09-11 Weather Forecast of District KAMRUP (Assam) Issued On : 2026-09-11 (Valid Till 08:30 IST of the next 5 days) 2026- Parameter 2026-09-12 2026-09-13 2026-09-14 2026-09-16 09-15 Rainfall(mm) 17.0 8.3 2.7 2.2 10.6 Tmax(\u00b0C) 35.5 36.6 36.3 36.5 34.8 Tmin(\u00b0C) 26.1 26.3 26.2 25.9 26.2 RH-I(%) 86 84 81 79 83 RH-II(%) 80 77 75 74 77 Wind 2 6 1 1 4 Speed(kmph) Wind 68 263 63 207 236 Direction(Degree) Cloud 5 4 3 3 4 Cover(Octa) Thunderstorms & Thunderstorms & Thunderstorms & Thunderstorms & No Wa",
+  "language": "en",
+  "sha256": "f5e9fbe91b5fe14b3b9a3290517696b279cf93b327c4067b9c7ee0225df71e07",
+  "pages": 3,
+  "chunks": [
+    {
+      "page": 2,
+      "row": 2,
+      "table": 1,
+      "crop": "RICE",
+      "stage": "Tillering",
+      "text": "Due to favourable weather condition there may be seen swarming caterpillar in the Sali rice field. To control the pest apply Fipronil 5 SC @1.5 to 2ml/lit of water in the clear weather condition only. Farmers are advised to take the advantages of fair weather condition by top dressing of Urea @ 4.5 kg/bigha at tillering stage in Sali rice field. Before fertilizer application, go for wedding by paddy weeder.",
+      "bbox": [
+        80.62048265260255,
+        122.67779939082484,
+        515.8316292312252,
+        195.12220802030765
+      ],
+      "crop_key": "rice",
+      "source_id": "S57",
+      "document_sha256": "f5e9fbe91b5fe14b3b9a3290517696b279cf93b327c4067b9c7ee0225df71e07",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "bca5e5d11064d1f59eae812830409ae6cd63e6ece5fcb3d0511a8f95770b298f"
+    },
+    {
+      "page": 2,
+      "row": 3,
+      "table": 1,
+      "crop": "MAIZE",
+      "stage": "Sowing",
+      "text": "For Rabi maize optimum time of sowing is mid of September to mid of October. Therefore, farmers are suggested to select hybrid or composite variety for cultivation. Well drained sandy loam soil is most preferable for maize cultivation. Plough the field thoroughly to obtain deep, fine and firm tilth. Laddering should be done properly for leveling a well as to conserve soil moisture.",
+      "bbox": [
+        80.62048265260255,
+        195.12220802030765,
+        515.8316292312252,
+        267.45573235086783
+      ],
+      "crop_key": "maize",
+      "source_id": "S57",
+      "document_sha256": "f5e9fbe91b5fe14b3b9a3290517696b279cf93b327c4067b9c7ee0225df71e07",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "8b02562b369fb5e1325bb8a1d91f678a27aafb155dee0badcd9f05805cf30c03"
+    },
+    {
+      "page": 2,
+      "row": 2,
+      "table": 2,
+      "crop": "BRINJAL",
+      "stage": "Nursery Bed Preparation",
+      "text": "Those farmers who had sown the seeds of winter vegetable in the nursery bed are suggested to monitor the seed beds as most important disease in the nursery bed is the damping off. Young seedling shows a rot in the crown, later the tissue become soft and constricted which lead the seedling wilt and fall over. To manage the diseases, use soil solarization in the nursery bed. Moist the prepared nursery bed then cover with white plastic (250-300 gauge) so that it is air tight for up to 21 days. After that remove the plastic and leave the bed for up to 3 days. Secondly, if symptoms of damping off appear, then spray Azoxystrobin @ 0.4 gm/liter of water or Trifloxystrobin in nursery seedling @ 0.6 gm/litter of water.",
+      "bbox": [
+        80.62048265260255,
+        323.8403983530494,
+        515.8316292312252,
+        442.856212530057
+      ],
+      "crop_key": "brinjal",
+      "source_id": "S57",
+      "document_sha256": "f5e9fbe91b5fe14b3b9a3290517696b279cf93b327c4067b9c7ee0225df71e07",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "8cce4b42d98a148ab53219597a1670f7e733adc5a1e77dfaf0e81e3b70bdbca7"
+    },
+    {
+      "page": 2,
+      "row": 3,
+      "table": 2,
+      "crop": "CAULIFLOWER",
+      "stage": "Nursery/ seedling",
+      "text": "Due to sufficient moisture in the soil and no heavy rainfall is predicted for the coming week therefore sowing of seeds of early cauliflower varieties may be continued. The recommended early varieties are Early Kunwari, Pusa Dipali, Pusa Katki etc. To transplant one bigha of land sows 85 gram seeds in the seedbed. Suitable protection like (bamboo net or polyethene cover) may be given to protect the seedbed from rain.",
+      "bbox": [
+        80.62048265260255,
+        442.856212530057,
+        515.8316292312252,
+        515.30062115954
+      ],
+      "crop_key": "cauliflower",
+      "source_id": "S57",
+      "document_sha256": "f5e9fbe91b5fe14b3b9a3290517696b279cf93b327c4067b9c7ee0225df71e07",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "696dd05a1ebca2b16bede696e9e2bfc25e8fa02d769f418f6430cc4ba5d33d75"
+    },
+    {
+      "page": 2,
+      "row": 4,
+      "table": 2,
+      "crop": "RADISH",
+      "stage": "Sowing",
+      "text": "Those farmers who are interested for sowing of early radish variety seed in the field are suggested to sow the seed in the main field as there is no chance of heavy rainfall for the coming five days. Moreover, land should be prepared to a fine tilth and FYM to be applied.",
+      "bbox": [
+        80.62048265260255,
+        515.30062115954,
+        515.8316292312252,
+        564.3484427163377
+      ],
+      "crop_key": "radish",
+      "source_id": "S57",
+      "document_sha256": "f5e9fbe91b5fe14b3b9a3290517696b279cf93b327c4067b9c7ee0225df71e07",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "fc26d8afafe11ef91e35fd868f34f072d98948e2159c5290ef83664da636bbfe"
+    },
+    {
+      "page": 2,
+      "row": 2,
+      "table": 3,
+      "crop": "CHICKEN",
+      "stage": "",
+      "text": "During the rainy season fowl pox is a major problem in poultry. Healthy bird should be vaccinated within age of 6th to 10th week in wing web of birds to provide them lifetime immunity. Isolate or cull infected birds from the flock. Also, get rid of the stagnant water around the farm to control the vectors like mosquitoes.",
+      "bbox": [
+        80.62048265260255,
+        620.0862836414706,
+        515.8316292312252,
+        680.7769565851495
+      ],
+      "crop_key": "chicken",
+      "source_id": "S57",
+      "document_sha256": "f5e9fbe91b5fe14b3b9a3290517696b279cf93b327c4067b9c7ee0225df71e07",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "7d97a866d0a3bf519d4a50f3b951b1b3cd2718f4580a449f0c732da11af5de0e"
+    }
+  ],
+  "extraction_status": "reviewed_family_rules",
+  "scope": "Published source passages; no personalized prescription or independent agronomic validation"
+}

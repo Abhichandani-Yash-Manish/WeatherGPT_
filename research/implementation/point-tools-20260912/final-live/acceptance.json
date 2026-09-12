@@ -1,0 +1,80 @@
+{
+  "cases": [
+    {
+      "case": "probability",
+      "expected_behavior_verified": true,
+      "status": "answered",
+      "facts": 6
+    },
+    {
+      "case": "extended",
+      "expected_behavior_verified": true,
+      "status": "answered",
+      "facts": 18
+    },
+    {
+      "case": "hourly",
+      "expected_behavior_verified": true,
+      "status": "answered",
+      "facts": 6
+    },
+    {
+      "case": "daily",
+      "expected_behavior_verified": true,
+      "status": "answered",
+      "facts": 2
+    },
+    {
+      "case": "daily_series",
+      "expected_behavior_verified": true,
+      "status": "answered",
+      "facts": 7
+    },
+    {
+      "case": "daily_temp",
+      "expected_behavior_verified": true,
+      "status": "answered",
+      "facts": 6
+    },
+    {
+      "case": "yesterday",
+      "expected_behavior_verified": true,
+      "status": "unavailable",
+      "facts": 0
+    },
+    {
+      "case": "mixed_warning",
+      "expected_behavior_verified": true,
+      "status": "partial",
+      "facts": 6
+    },
+    {
+      "case": "onset",
+      "expected_behavior_verified": true,
+      "status": "partial",
+      "facts": 6
+    },
+    {
+      "case": "old_forecast",
+      "expected_behavior_verified": true,
+      "status": "answered",
+      "facts": 1
+    },
+    {
+      "case": "gujarati",
+      "expected_behavior_verified": true,
+      "status": "answered",
+      "facts": 1
+    },
+    {
+      "case": "legacy",
+      "expected_behavior_verified": true,
+      "status": "answered",
+      "facts": 2
+    }
+  ],
+  "complete_information_cases": 9,
+  "explicit_gap_or_partial_cases": 3,
+  "raw_numeric_claims_matched": 57,
+  "scope": "Saved real HTTP/model responses checked against exact raw values, units, dates/hours, source identity, chart references and arithmetic. Partial/gap cases are not counted as completed information tasks. Not browser, scientific or nationwide acceptance."
+}

@@ -1,0 +1,21 @@
+..........E.........E........................
+======================================================================
+ERROR: test_unselected_place_candidates_cannot_supply_state (test_engine_refinement.DialogueContracts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yashabhichandani/Desktop/WeatherGPT/tests/test_engine_refinement.py", line 69, in test_unselected_place_candidates_cannot_supply_state
+    from weathergpt_data.language import Ollama
+ImportError: cannot import name 'Ollama' from 'weathergpt_data.language' (/Users/yashabhichandani/Desktop/WeatherGPT/weathergpt_data/language.py)
+
+======================================================================
+ERROR: test_taf_current_validity_and_requested_window (test_engine_refinement.EngineJourneys)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/yashabhichandani/Desktop/WeatherGPT/tests/test_engine_refinement.py", line 168, in test_taf_current_validity_and_requested_window
+    r=self.chat();self.assertEqual(r['status'],'unavailable');self.assertFalse(r['airport_reports'])
+KeyError: 'airport_reports'
+
+----------------------------------------------------------------------
+Ran 45 tests in 1.159s
+
+FAILED (errors=2)

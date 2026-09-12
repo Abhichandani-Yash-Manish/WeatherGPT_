@@ -1,0 +1,10 @@
+{
+  "application_code_tests_and_web_unchanged": true,
+  "verified_baseline_files": 38,
+  "review_local_links": "PASS",
+  "all_15_findings_present": true,
+  "all_61_registry_entries_classified": true,
+  "existing_tests_passed": 213,
+  "registry_assets_verified": 223,
+  "implementation_repairs_not_yet_applied": true
+}

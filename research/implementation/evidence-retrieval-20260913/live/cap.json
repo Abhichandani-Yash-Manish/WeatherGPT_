@@ -1,0 +1,467 @@
+{
+  "schema_version": "foundation-v1",
+  "family": "official_cap_messages",
+  "source_id": "S06",
+  "status": "reference_only",
+  "records": [
+    {
+      "identifier": "urn:oid:2.49.0.1.356.0.2026.9.9.7.24.34",
+      "sender": "rainfallnwfc@gmail.com",
+      "sent": "2026-09-09T12:54:34+05:30",
+      "status": "Actual",
+      "msg_type": "Alert",
+      "scope": "Public",
+      "references": "",
+      "info": [
+        {
+          "language": "en",
+          "event": "Extremely heavy",
+          "headline": "Heavy to very heavy with extremely heavy rainfall",
+          "description": "Isolated extremely rainfall likely over Odisha on 10th September.",
+          "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+          "severity": "Severe",
+          "urgency": "Expected",
+          "certainty": "Likely",
+          "effective": "2026-09-09T12:54:34+05:30",
+          "expires": "2026-09-10T07:00:00+05:30",
+          "active_by_time_and_status": false,
+          "areas": [
+            {
+              "description": "ODISHA",
+              "polygons": [
+                "21.7228,83.2412 21.3303,82.5732 18.2210,82.1865 18.7545,84.1904 20.6410,87.0732 22.3094,86.6162 22.4720,84.6123 21.7228,83.2412"
+              ],
+              "circles": [],
+              "geocodes": []
+            }
+          ]
+        }
+      ],
+      "provenance": {
+        "source_id": "S06",
+        "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-09-09-07-24-34.xml",
+        "retrieved_at_utc": "2026-09-12T19:13:44.049360+00:00",
+        "http_status": 200,
+        "content_type": "application/xml",
+        "bytes": 4318,
+        "sha256": "acb3456e7acb7f0e21de80da03c6d6ee9b1d7dde0384206cccc89cd297eed391",
+        "blob": "blobs/acb3456e7acb7f0e21de80da03c6d6ee9b1d7dde0384206cccc89cd297eed391.bin",
+        "validation_scope": "product",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-12T19:13:44.049922+00:00"
+      },
+      "geographic_applicability": "Not established by time/status alone."
+    },
+    {
+      "identifier": "urn:oid:2.49.0.1.356.0.2026.9.3.7.21.21",
+      "sender": "rainfallnwfc@gmail.com",
+      "sent": "2026-09-03T12:51:21+05:30",
+      "status": "Actual",
+      "msg_type": "Alert",
+      "scope": "Public",
+      "references": "",
+      "info": [
+        {
+          "language": "en",
+          "event": "Extremely heavy",
+          "headline": "Heavy to very heavy with extremely heavy rainfall",
+          "description": "Heavy to Very heavy rainfall at few places and extremely Heavy Rainfall at isolated places very likely over East Madhya Pradesh.",
+          "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+          "severity": "Severe",
+          "urgency": "Expected",
+          "certainty": "Likely",
+          "effective": "2026-09-03T12:51:21+05:30",
+          "expires": "2026-09-04T07:00:00+05:30",
+          "active_by_time_and_status": false,
+          "areas": [
+            {
+              "description": "ODISHA",
+              "polygons": [
+                "25.1254,80.2881 24.5271,78.5303 23.7250,79.1455 22.5531,78.3545 21.4531,79.5850 21.4531,81.0791 22.7154,81.5625 23.6848,81.8262 24.8067,82.6172 25.1254,80.2881"
+              ],
+              "circles": [],
+              "geocodes": []
+            }
+          ]
+        }
+      ],
+      "provenance": {
+        "source_id": "S06",
+        "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-09-03-07-21-21.xml",
+        "retrieved_at_utc": "2026-09-12T19:13:44.858221+00:00",
+        "http_status": 200,
+        "content_type": "application/xml",
+        "bytes": 4413,
+        "sha256": "5c04db0de6de0b8f562b7ba37d2cc8ffe46d894858c1f1d2354709c8c862c7c8",
+        "blob": "blobs/5c04db0de6de0b8f562b7ba37d2cc8ffe46d894858c1f1d2354709c8c862c7c8.bin",
+        "validation_scope": "product",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-12T19:13:44.858734+00:00"
+      },
+      "geographic_applicability": "Not established by time/status alone."
+    },
+    {
+      "identifier": "urn:oid:2.49.0.1.356.0.2026.9.3.7.19.24",
+      "sender": "rainfallnwfc@gmail.com",
+      "sent": "2026-09-03T12:49:24+05:30",
+      "status": "Actual",
+      "msg_type": "Alert",
+      "scope": "Public",
+      "references": "",
+      "info": [
+        {
+          "language": "en",
+          "event": "Extremely heavy",
+          "headline": "Heavy to very heavy with extremely heavy rainfall",
+          "description": "Heavy to Very heavy rainfall at few places and extremely Heavy Rainfall at isolated places very likely over East Madhya Pradesh.",
+          "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+          "severity": "Severe",
+          "urgency": "Expected",
+          "certainty": "Likely",
+          "effective": "2026-09-03T12:49:24+05:30",
+          "expires": "2026-09-04T09:00:00+05:30",
+          "active_by_time_and_status": false,
+          "areas": [
+            {
+              "description": "ODISHA",
+              "polygons": [
+                "25.1254,80.2881 24.5271,78.5303 23.7250,79.1455 22.5531,78.3545 21.4531,79.5850 21.4531,81.0791 22.7154,81.5625 23.6848,81.8262 24.8067,82.6172 25.1254,80.2881"
+              ],
+              "circles": [],
+              "geocodes": []
+            }
+          ]
+        }
+      ],
+      "provenance": {
+        "source_id": "S06",
+        "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-09-03-07-19-24.xml",
+        "retrieved_at_utc": "2026-09-12T19:13:45.648250+00:00",
+        "http_status": 200,
+        "content_type": "application/xml",
+        "bytes": 4413,
+        "sha256": "ff28ff1011b0344488db70a193ff0ab6d86fe16c09c6c2f47dc793b1fc2d4958",
+        "blob": "blobs/ff28ff1011b0344488db70a193ff0ab6d86fe16c09c6c2f47dc793b1fc2d4958.bin",
+        "validation_scope": "product",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-12T19:13:45.648732+00:00"
+      },
+      "geographic_applicability": "Not established by time/status alone."
+    },
+    {
+      "identifier": "urn:oid:2.49.0.1.356.0.2026.9.2.8.41.21",
+      "sender": "rainfallnwfc@gmail.com",
+      "sent": "2026-09-02T14:11:21+05:30",
+      "status": "Actual",
+      "msg_type": "Alert",
+      "scope": "Public",
+      "references": "",
+      "info": [
+        {
+          "language": "en",
+          "event": "Extremely heavy",
+          "headline": "Heavy to very heavy with extremely heavy rainfall",
+          "description": "Heavy to Very heavy rainfall at few places and extremely Heavy Rainfall at isolated places very likely over East Madhya Pradesh.",
+          "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+          "severity": "Severe",
+          "urgency": "Expected",
+          "certainty": "Likely",
+          "effective": "2026-09-02T14:11:21+05:30",
+          "expires": "2026-09-03T09:00:00+05:30",
+          "active_by_time_and_status": false,
+          "areas": [
+            {
+              "description": "ODISHA",
+              "polygons": [
+                "25.6811,78.9697 24.6470,78.0029 23.2817,77.6514 22.7964,78.9697 21.5757,80.6396 22.9584,81.6064 24.0063,82.4854 24.8864,81.9580 25.2844,80.5518 25.6811,78.9697"
+              ],
+              "circles": [],
+              "geocodes": []
+            }
+          ]
+        }
+      ],
+      "provenance": {
+        "source_id": "S06",
+        "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-09-02-08-41-21.xml",
+        "retrieved_at_utc": "2026-09-12T19:13:46.424498+00:00",
+        "http_status": 200,
+        "content_type": "application/xml",
+        "bytes": 4413,
+        "sha256": "c5066d5c2fb6ee002c17212bd22ce02b43bd31baa9118d08365f5b48dd5396cd",
+        "blob": "blobs/c5066d5c2fb6ee002c17212bd22ce02b43bd31baa9118d08365f5b48dd5396cd.bin",
+        "validation_scope": "product",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-12T19:13:46.425011+00:00"
+      },
+      "geographic_applicability": "Not established by time/status alone."
+    },
+    {
+      "identifier": "urn:oid:2.49.0.1.356.0.2026.9.1.7.7.6",
+      "sender": "rainfallnwfc@gmail.com",
+      "sent": "2026-09-01T12:37:06+05:30",
+      "status": "Actual",
+      "msg_type": "Alert",
+      "scope": "Public",
+      "references": "",
+      "info": [
+        {
+          "language": "en",
+          "event": "Extremely heavy",
+          "headline": "Heavy to very heavy with extremely heavy rainfall",
+          "description": "Heavy to Very heavy rainfall at few places and extremely Heavy Rainfall at isolated places very likely over Jharkhand.",
+          "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+          "severity": "Severe",
+          "urgency": "Expected",
+          "certainty": "Likely",
+          "effective": "2026-09-01T12:37:06+05:30",
+          "expires": "2026-09-02T09:00:00+05:30",
+          "active_by_time_and_status": false,
+          "areas": [
+            {
+              "description": "ODISHA",
+              "polygons": [
+                "24.6310,83.4521 22.8288,83.8037 22.8612,85.9482 24.3431,87.6709 24.7588,86.7568 24.6310,83.4521"
+              ],
+              "circles": [],
+              "geocodes": []
+            }
+          ]
+        }
+      ],
+      "provenance": {
+        "source_id": "S06",
+        "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-09-01-07-07-06.xml",
+        "retrieved_at_utc": "2026-09-12T19:13:47.235251+00:00",
+        "http_status": 200,
+        "content_type": "application/xml",
+        "bytes": 4337,
+        "sha256": "24e302167e261f53854e7e31c8ff66bfa178507f4e8b055ff7067f9e740f24e3",
+        "blob": "blobs/24e302167e261f53854e7e31c8ff66bfa178507f4e8b055ff7067f9e740f24e3.bin",
+        "validation_scope": "product",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-12T19:13:47.235787+00:00"
+      },
+      "geographic_applicability": "Not established by time/status alone."
+    },
+    {
+      "identifier": "urn:oid:2.49.0.1.356.0.2026.9.1.7.0.31",
+      "sender": "rainfallnwfc@gmail.com",
+      "sent": "2026-09-01T12:30:31+05:30",
+      "status": "Actual",
+      "msg_type": "Alert",
+      "scope": "Public",
+      "references": "",
+      "info": [
+        {
+          "language": "en",
+          "event": "Extremely heavy",
+          "headline": "Heavy to very heavy with extremely heavy rainfall",
+          "description": "Heavy to Very heavy rainfall at few places and extremely Heavy Rainfall at isolated places very likely over Jharkhand.",
+          "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+          "severity": "Severe",
+          "urgency": "Expected",
+          "certainty": "Likely",
+          "effective": "2026-09-01T12:30:31+05:30",
+          "expires": "2026-09-02T09:00:00+05:30",
+          "active_by_time_and_status": false,
+          "areas": [
+            {
+              "description": "ODISHA",
+              "polygons": [
+                "24.7588,83.5576 23.0555,83.6279 22.7964,85.8428 23.5398,87.6357 24.7588,87.3545 24.7588,83.5576"
+              ],
+              "circles": [],
+              "geocodes": []
+            }
+          ]
+        }
+      ],
+      "provenance": {
+        "source_id": "S06",
+        "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-09-01-07-00-31.xml",
+        "retrieved_at_utc": "2026-09-12T19:13:47.984222+00:00",
+        "http_status": 200,
+        "content_type": "application/xml",
+        "bytes": 4338,
+        "sha256": "449ad0b821a6c2dcbaf256962ea775c553c1d0284f226efeb64b9d3de51dbb34",
+        "blob": "blobs/449ad0b821a6c2dcbaf256962ea775c553c1d0284f226efeb64b9d3de51dbb34.bin",
+        "validation_scope": "product",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-12T19:13:47.984694+00:00"
+      },
+      "geographic_applicability": "Not established by time/status alone."
+    },
+    {
+      "identifier": "urn:oid:2.49.0.1.356.0.2026.8.31.7.53.57",
+      "sender": "rainfallnwfc@gmail.com",
+      "sent": "2026-08-31T13:23:57+05:30",
+      "status": "Actual",
+      "msg_type": "Alert",
+      "scope": "Public",
+      "references": "",
+      "info": [
+        {
+          "language": "en",
+          "event": "Extremely heavy",
+          "headline": "Heavy to very heavy with extremely heavy rainfall",
+          "description": "Heavy to Very heavy rainfall at few places and extremely Heavy Rainfall at isolated places very likely over Odisha and Chattisgarh.",
+          "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+          "severity": "Severe",
+          "urgency": "Expected",
+          "certainty": "Likely",
+          "effective": "2026-08-31T13:23:57+05:30",
+          "expires": "2026-09-01T09:00:00+05:30",
+          "active_by_time_and_status": false,
+          "areas": [
+            {
+              "description": "ODISHA",
+              "polygons": [
+                "22.7640,80.0068 18.5546,80.4639 19.2199,84.7178 21.6574,86.7920 23.7652,83.5928 22.7640,80.0068"
+              ],
+              "circles": [],
+              "geocodes": []
+            }
+          ]
+        }
+      ],
+      "provenance": {
+        "source_id": "S06",
+        "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-08-31-07-53-57.xml",
+        "retrieved_at_utc": "2026-09-12T19:13:48.825379+00:00",
+        "http_status": 200,
+        "content_type": "application/xml",
+        "bytes": 4353,
+        "sha256": "8b165e577dc7f0f0f77906412e271c62a11910e8020f2b2f1782165b8ed933b9",
+        "blob": "blobs/8b165e577dc7f0f0f77906412e271c62a11910e8020f2b2f1782165b8ed933b9.bin",
+        "validation_scope": "product",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-12T19:13:48.825899+00:00"
+      },
+      "geographic_applicability": "Not established by time/status alone."
+    },
+    {
+      "identifier": "urn:oid:2.49.0.1.356.0.2026.8.30.9.34.22",
+      "sender": "rainfallnwfc@gmail.com",
+      "sent": "2026-08-30T15:04:22+05:30",
+      "status": "Actual",
+      "msg_type": "Alert",
+      "scope": "Public",
+      "references": "",
+      "info": [
+        {
+          "language": "en",
+          "event": "Extremely heavy",
+          "headline": "Heavy to very heavy with extremely heavy rainfall",
+          "description": "Heavy to Very heavy rainfall at few places and extremely Heavy Rainfall at isolated places very likely over Odisha.",
+          "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+          "severity": "Severe",
+          "urgency": "Expected",
+          "certainty": "Likely",
+          "effective": "2026-08-30T15:04:22+05:30",
+          "expires": "2026-08-31T09:00:00+05:30",
+          "active_by_time_and_status": false,
+          "areas": [
+            {
+              "description": "ODISHA",
+              "polygons": [
+                "21.5348,87.4072 22.3501,86.0010 22.3501,83.9355 20.7150,82.8809 19.6012,82.1777 18.8127,83.3203 19.0621,84.7705 20.5917,86.7920 21.5348,87.4072"
+              ],
+              "circles": [],
+              "geocodes": []
+            }
+          ]
+        }
+      ],
+      "provenance": {
+        "source_id": "S06",
+        "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-08-30-09-34-22.xml",
+        "retrieved_at_utc": "2026-09-12T19:13:49.782933+00:00",
+        "http_status": 200,
+        "content_type": "application/xml",
+        "bytes": 4385,
+        "sha256": "479f58bf07dd627a1c6cc68c422daaf0c682823aa3c6122627b577b375dc242d",
+        "blob": "blobs/479f58bf07dd627a1c6cc68c422daaf0c682823aa3c6122627b577b375dc242d.bin",
+        "validation_scope": "product",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-12T19:13:49.783421+00:00"
+      },
+      "geographic_applicability": "Not established by time/status alone."
+    },
+    {
+      "identifier": "urn:oid:2.49.0.1.356.0.2026.8.29.8.52.26",
+      "sender": "rainfallnwfc@gmail.com",
+      "sent": "2026-08-29T14:22:26+05:30",
+      "status": "Actual",
+      "msg_type": "Alert",
+      "scope": "Public",
+      "references": "",
+      "info": [
+        {
+          "language": "en",
+          "event": "Extremely heavy",
+          "headline": "Heavy to very heavy with extremely heavy rainfall",
+          "description": "Heavy to Very heavy rainfall at few places and extremely Heavy Rainfall at isolated places very likely over Odisha.",
+          "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+          "severity": "Severe",
+          "urgency": "Expected",
+          "certainty": "Likely",
+          "effective": "2026-08-29T14:22:26+05:30",
+          "expires": "2026-08-31T09:00:00+05:30",
+          "active_by_time_and_status": false,
+          "areas": [
+            {
+              "description": "ODISHA",
+              "polygons": [
+                "21.5348,87.4072 22.3501,86.0010 22.3501,83.9355 20.7150,82.8809 19.6012,82.1777 18.8127,83.3203 19.0621,84.7705 20.5917,86.7920 21.5348,87.4072"
+              ],
+              "circles": [],
+              "geocodes": []
+            }
+          ]
+        }
+      ],
+      "provenance": {
+        "source_id": "S06",
+        "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-08-29-08-52-26.xml",
+        "retrieved_at_utc": "2026-09-12T19:13:50.561288+00:00",
+        "http_status": 200,
+        "content_type": "application/xml",
+        "bytes": 4385,
+        "sha256": "2ced79b3396100d4bdf55401fca92193c2a8a99913ad62a01b986c7c2dfb103b",
+        "blob": "blobs/2ced79b3396100d4bdf55401fca92193c2a8a99913ad62a01b986c7c2dfb103b.bin",
+        "validation_scope": "product",
+        "delivery": "network",
+        "checked_at_utc": "2026-09-12T19:13:50.561849+00:00"
+      },
+      "geographic_applicability": "Not established by time/status alone."
+    }
+  ],
+  "count": 9,
+  "provenance": {
+    "source_id": "S06",
+    "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/rss.xml",
+    "retrieved_at_utc": "2026-09-12T19:13:43.304309+00:00",
+    "http_status": 200,
+    "content_type": "text/xml",
+    "bytes": 6163,
+    "sha256": "2ebb682f2306815b36d6a1276b20bee0e2367046f8042ea5b2a71a8ab30226fb",
+    "blob": "blobs/2ebb682f2306815b36d6a1276b20bee0e2367046f8042ea5b2a71a8ab30226fb.bin",
+    "validation_scope": "product",
+    "delivery": "network",
+    "checked_at_utc": "2026-09-12T19:13:43.304812+00:00"
+  },
+  "limitations": [
+    "Feed completeness and geographic coverage are unverified; no active message is not an all-clear.",
+    "Use msgType/references and per-language area/validity fields before dissemination.",
+    "CAP update/cancel chains and geographic applicability have not been resolved; time/status eligibility is not dissemination eligibility."
+  ],
+  "coverage": {
+    "message_errors": [],
+    "feed_item_count": 9,
+    "attempted_item_count": 9,
+    "omitted_item_count": 0,
+    "feed_items_complete": true
+  },
+  "actionable_current_alerts": false
+}

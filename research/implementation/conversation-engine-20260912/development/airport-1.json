@@ -1,0 +1,64 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "f3b25b87-2d12-4579-83ae-ede7f747d131",
+  "question": "What does that mean in simple words?",
+  "status": "needs_clarification",
+  "answer": "Which city or village should I check?",
+  "facts": [],
+  "citations": [],
+  "notes": [],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T18:37:39.602931+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 2725,
+      "output_tokens": 146,
+      "duration_seconds": 3.018629958
+    },
+    "generation": null,
+    "tools": [],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "explain_previous",
+      "changed_fields": [],
+      "inherited_fields": []
+    },
+    "duration_seconds": 3.031
+  },
+  "plan": {
+    "language": "en",
+    "places": [],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "What does that mean in simple words?",
+        "kind": "explanation",
+        "operation": "lookup",
+        "parameters": [],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": []
+      }
+    ],
+    "context_action": "explain_previous",
+    "changed_fields": [],
+    "intent": "explanation",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  }
+}

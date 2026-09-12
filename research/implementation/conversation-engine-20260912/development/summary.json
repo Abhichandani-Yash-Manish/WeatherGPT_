@@ -1,0 +1,527 @@
+[
+  {
+    "scenario": "hinglish",
+    "turn": 0,
+    "question": "kal ahmedabad me barish padne ki sambhavna kitni hai",
+    "status": "needs_clarification",
+    "answer": "Which village or town within Ahmedabad should I check? I can retrieve model data for a precise place; I cannot yet give a verified map of weather across that whole area.",
+    "plan": {
+      "language": "hi-Latn",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "",
+          "district": "Ahmedabad",
+          "kind": "district"
+        }
+      ],
+      "assumptions": [
+        "Current date is 2026-09-13. 'Kal' refers to the next local date, 2026-09-14.",
+        "Time window for 'kal' (tomorrow) is assumed to be the full day: 2026-09-14T00:00:00+05:30 to 2026-09-15T00:00:00+05:30."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "kal ahmedabad me barish padne ki sambhavna kitni hai",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation_probability"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T00:00:00+05:30",
+          "end_local": "2026-09-15T00:00:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "new",
+      "changed_fields": [
+        "places",
+        "time",
+        "parameters"
+      ],
+      "intent": "forecast",
+      "start_local": "2026-09-14T00:00:00+05:30",
+      "end_local": "2026-09-15T00:00:00+05:30",
+      "variables": [],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 7.55
+  },
+  {
+    "scenario": "hinglish",
+    "turn": 1,
+    "question": "Gujarat wala",
+    "status": "needs_clarification",
+    "answer": "Which village or town within Ahmedabad should I check? I can retrieve model data for a precise place; I cannot yet give a verified map of weather across that whole area.",
+    "plan": {
+      "language": "hi-Latn",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "",
+          "district": "Ahmedabad",
+          "kind": "district"
+        }
+      ],
+      "assumptions": [],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "Gujarat wala",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation_probability"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T00:00:00+05:30",
+          "end_local": "2026-09-15T00:00:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "clarification_answer",
+      "changed_fields": [
+        "places"
+      ],
+      "intent": "forecast",
+      "start_local": "2026-09-14T00:00:00+05:30",
+      "end_local": "2026-09-15T00:00:00+05:30",
+      "variables": [],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 4.92
+  },
+  {
+    "scenario": "hinglish",
+    "turn": 2,
+    "question": "aur shaam ko?",
+    "status": "needs_clarification",
+    "answer": "Which village or town within Ahmedabad should I check? I can retrieve model data for a precise place; I cannot yet give a verified map of weather across that whole area.",
+    "plan": {
+      "language": "hi-Latn",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "",
+          "district": "Ahmedabad",
+          "kind": "district"
+        }
+      ],
+      "assumptions": [
+        "Evening is assumed to be 18:30–22:30 IST."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "aur shaam ko?",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation_probability"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T18:30:00+05:30",
+          "end_local": "2026-09-14T22:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "follow_up",
+      "changed_fields": [
+        "time"
+      ],
+      "intent": "forecast",
+      "start_local": "2026-09-14T18:30:00+05:30",
+      "end_local": "2026-09-14T22:30:00+05:30",
+      "variables": [],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 5.22
+  },
+  {
+    "scenario": "hinglish",
+    "turn": 3,
+    "question": "kitni mm barish hogi us time?",
+    "status": "needs_clarification",
+    "answer": "Which village or town within Ahmedabad should I check? I can retrieve model data for a precise place; I cannot yet give a verified map of weather across that whole area.",
+    "plan": {
+      "language": "hi-Latn",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "",
+          "district": "Ahmedabad",
+          "kind": "district"
+        }
+      ],
+      "assumptions": [
+        "Evening is assumed to be 18:30–22:30 IST."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "kitni mm barish hogi us time?",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T18:30:00+05:30",
+          "end_local": "2026-09-14T22:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "follow_up",
+      "changed_fields": [
+        "parameters"
+      ],
+      "intent": "forecast",
+      "start_local": "2026-09-14T18:30:00+05:30",
+      "end_local": "2026-09-14T22:30:00+05:30",
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 5.29
+  },
+  {
+    "scenario": "hinglish",
+    "turn": 4,
+    "question": "nahi, Surat ke liye batao",
+    "status": "needs_clarification",
+    "answer": "Which village or town within Surat should I check? I can retrieve model data for a precise place; I cannot yet give a verified map of weather across that whole area.",
+    "plan": {
+      "language": "hi-Latn",
+      "places": [
+        {
+          "name": "Surat",
+          "state": "",
+          "district": "Surat",
+          "kind": "district"
+        }
+      ],
+      "assumptions": [
+        "Evening is assumed to be 18:30–22:30 IST."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "nahi, Surat ke liye batao",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T18:30:00+05:30",
+          "end_local": "2026-09-14T22:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "correction",
+      "changed_fields": [
+        "places"
+      ],
+      "intent": "forecast",
+      "start_local": "2026-09-14T18:30:00+05:30",
+      "end_local": "2026-09-14T22:30:00+05:30",
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 5.27
+  },
+  {
+    "scenario": "evidence",
+    "turn": 0,
+    "question": "What is the rain forecast in Ahmedabad, Gujarat tomorrow morning?",
+    "status": "answered",
+    "answer": "Ahmedabad · 14 Sep, 06:30–14 Sep, 12:30 IST: Forecast precipitation: 4.6 mm. Source: GFS forecast; conditions can change.",
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "Gujarat",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [
+        "Tomorrow is 2026-09-14. Morning defaults to 06:30–12:30 IST."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "rain forecast in Ahmedabad, Gujarat tomorrow morning",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T06:30:00+05:30",
+          "end_local": "2026-09-14T12:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "new",
+      "changed_fields": [
+        "places",
+        "time"
+      ],
+      "intent": "forecast",
+      "start_local": "2026-09-14T06:30:00+05:30",
+      "end_local": "2026-09-14T12:30:00+05:30",
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 5.15
+  },
+  {
+    "scenario": "evidence",
+    "turn": 1,
+    "question": "Check another model too. Do they agree?",
+    "status": "answered",
+    "answer": "Ahmedabad · 14 Sep, 06:30–14 Sep, 12:30 IST: Forecast precipitation: 4.6 mm. Source: GFS forecast; conditions can change.\n\nAhmedabad · 14 Sep, 06:30–14 Sep, 12:30 IST: Forecast precipitation: 0.1–0.5 mm. Source: Open-Meteo best-match forecast; conditions can change.\n\nAhmedabad, Ahmadābād, State of Gujarāt · Precipitation total across requested hours: 1.5 mm.\n\nFor the same point and interval, GFS: 4.6 mm; best-match: 1.5 mm. Best-match minus GFS: -3.1 mm. Best-match may include GFS upstream. These are not independent confirmations, and agreement does not establish accuracy; neither an average nor a confidence score is produced.",
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "Gujarat",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [
+        "Retains the established time window: 2026-09-14 06:30–12:30 IST."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "Check another model too. Do they agree?",
+          "kind": "forecast",
+          "operation": "crosscheck",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T06:30:00+05:30",
+          "end_local": "2026-09-14T12:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "follow_up",
+      "changed_fields": [
+        "operation"
+      ],
+      "intent": "forecast",
+      "start_local": "2026-09-14T06:30:00+05:30",
+      "end_local": "2026-09-14T12:30:00+05:30",
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 5.51
+  },
+  {
+    "scenario": "airport",
+    "turn": 0,
+    "question": "Latest VAAH METAR please",
+    "status": "needs_clarification",
+    "answer": "Which city or village should I check?",
+    "plan": {
+      "language": "en",
+      "places": [],
+      "assumptions": [],
+      "clarification": "METAR reports are specific to individual airports. Please specify which airport (e.g., VIDP, VABB) you need the METAR for.",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "Latest VAAH METAR",
+          "kind": "aviation",
+          "operation": "lookup",
+          "parameters": [
+            "metar"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": []
+        }
+      ],
+      "context_action": "new",
+      "changed_fields": [
+        "places"
+      ],
+      "intent": "research",
+      "start_local": "",
+      "end_local": "",
+      "variables": [],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 3.54
+  },
+  {
+    "scenario": "airport",
+    "turn": 1,
+    "question": "What does that mean in simple words?",
+    "status": "needs_clarification",
+    "answer": "Which city or village should I check?",
+    "plan": {
+      "language": "en",
+      "places": [],
+      "assumptions": [],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "What does that mean in simple words?",
+          "kind": "explanation",
+          "operation": "lookup",
+          "parameters": [],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": []
+        }
+      ],
+      "context_action": "explain_previous",
+      "changed_fields": [],
+      "intent": "explanation",
+      "start_local": "",
+      "end_local": "",
+      "variables": [],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 3.03
+  },
+  {
+    "scenario": "clarify",
+    "turn": 0,
+    "question": "Will it rain tomorrow?",
+    "status": "needs_clarification",
+    "answer": "Which city or village should I check?",
+    "plan": {
+      "language": "en",
+      "places": [],
+      "assumptions": [
+        "Current location is assumed as the user has not specified a place.",
+        "Tomorrow refers to the next local date from the current time (2026-09-14).",
+        "Forecast window for 'tomorrow' is the full day: 2026-09-14T00:00:00+05:30 to 2026-09-15T00:00:00+05:30."
+      ],
+      "clarification": "No specific location provided; using current location.",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "Will it rain tomorrow?",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T00:00:00+05:30",
+          "end_local": "2026-09-15T00:00:00+05:30",
+          "place_indices": []
+        }
+      ],
+      "context_action": "new",
+      "changed_fields": [
+        "places"
+      ],
+      "intent": "forecast",
+      "start_local": "2026-09-14T00:00:00+05:30",
+      "end_local": "2026-09-15T00:00:00+05:30",
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "seconds": 5.31
+  },
+  {
+    "scenario": "clarify",
+    "turn": 1,
+    "question": "Ahmedabad, Gujarat",
+    "error": "HTTP Error 400: Bad Request"
+  }
+]

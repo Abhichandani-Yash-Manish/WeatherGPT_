@@ -1,0 +1,363 @@
+{
+  "result": {
+    "count": 28,
+    "coverage": {
+      "requested_point": {
+        "latitude": 23.02579,
+        "longitude": 72.58727
+      },
+      "returned_grid": {
+        "latitude": 23.0,
+        "longitude": 72.5
+      },
+      "time_basis": "Asia/Kolkata"
+    },
+    "family": "reanalysis",
+    "limitations": [
+      "Model-derived daily data; not direct gauge measurements."
+    ],
+    "provenance": {
+      "blob": "blobs/435fc7ea4b767c937ebbb38fd9105974942f4e124cb904b7e9bf732f45bae148.bin",
+      "bytes": 664,
+      "checked_at_utc": "2026-09-12T18:10:29.988259+00:00",
+      "content_type": "application/json; charset=utf-8",
+      "delivery": "network",
+      "http_status": 200,
+      "ingestion_attempt": {
+        "job_id": "8647d0a24bcc9e33a38dd2ab3e5f0ae84de59d6268dd81ecf076d7ee7287c54e",
+        "relative_root": "8647d0a24bcc9e33a38dd2ab3e5f0ae84de59d6268dd81ecf076d7ee7287c54e/b3d71632e9a143138f89a346a607b398",
+        "token": "b3d71632e9a143138f89a346a607b398"
+      },
+      "retrieved_at_utc": "2026-09-12T18:10:29.987695+00:00",
+      "sha256": "435fc7ea4b767c937ebbb38fd9105974942f4e124cb904b7e9bf732f45bae148",
+      "source_id": "S22",
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=23.02579&longitude=72.58727&start_date=2025-07-01&end_date=2025-07-07&daily=precipitation_sum%2Ctemperature_2m_mean%2Ctemperature_2m_max%2Ctemperature_2m_min&models=era5&timezone=Asia%2FKolkata",
+      "validation_scope": "product"
+    },
+    "quality": {
+      "freshness": "retrieved_now",
+      "interval_coverage": "complete",
+      "missing_value_count": 0,
+      "schema": "validated",
+      "source_issue_freshness": "unknown",
+      "spatial_applicability": "not_independently_validated",
+      "spatial_identity": "present",
+      "temporal_applicability": "requested_window_present",
+      "value_coverage": "complete"
+    },
+    "records": [
+      {
+        "date": "2025-07-01",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "precipitation_sum",
+        "period_end_utc": "2025-07-01T18:30:00+00:00",
+        "period_start_utc": "2025-06-30T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.precipitation_sum[0]",
+        "unit": "mm",
+        "value": 1.0
+      },
+      {
+        "date": "2025-07-02",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "precipitation_sum",
+        "period_end_utc": "2025-07-02T18:30:00+00:00",
+        "period_start_utc": "2025-07-01T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.precipitation_sum[1]",
+        "unit": "mm",
+        "value": 10.9
+      },
+      {
+        "date": "2025-07-03",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "precipitation_sum",
+        "period_end_utc": "2025-07-03T18:30:00+00:00",
+        "period_start_utc": "2025-07-02T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.precipitation_sum[2]",
+        "unit": "mm",
+        "value": 9.5
+      },
+      {
+        "date": "2025-07-04",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "precipitation_sum",
+        "period_end_utc": "2025-07-04T18:30:00+00:00",
+        "period_start_utc": "2025-07-03T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.precipitation_sum[3]",
+        "unit": "mm",
+        "value": 4.4
+      },
+      {
+        "date": "2025-07-05",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "precipitation_sum",
+        "period_end_utc": "2025-07-05T18:30:00+00:00",
+        "period_start_utc": "2025-07-04T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.precipitation_sum[4]",
+        "unit": "mm",
+        "value": 24.4
+      },
+      {
+        "date": "2025-07-06",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "precipitation_sum",
+        "period_end_utc": "2025-07-06T18:30:00+00:00",
+        "period_start_utc": "2025-07-05T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.precipitation_sum[5]",
+        "unit": "mm",
+        "value": 47.9
+      },
+      {
+        "date": "2025-07-07",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "precipitation_sum",
+        "period_end_utc": "2025-07-07T18:30:00+00:00",
+        "period_start_utc": "2025-07-06T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.precipitation_sum[6]",
+        "unit": "mm",
+        "value": 3.7
+      },
+      {
+        "date": "2025-07-01",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "temperature_2m_mean",
+        "period_end_utc": "2025-07-01T18:30:00+00:00",
+        "period_start_utc": "2025-06-30T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.temperature_2m_mean[0]",
+        "unit": "\u00b0C",
+        "value": 29.8
+      },
+      {
+        "date": "2025-07-02",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "temperature_2m_mean",
+        "period_end_utc": "2025-07-02T18:30:00+00:00",
+        "period_start_utc": "2025-07-01T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.temperature_2m_mean[1]",
+        "unit": "\u00b0C",
+        "value": 28.1
+      },
+      {
+        "date": "2025-07-03",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "temperature_2m_mean",
+        "period_end_utc": "2025-07-03T18:30:00+00:00",
+        "period_start_utc": "2025-07-02T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.temperature_2m_mean[2]",
+        "unit": "\u00b0C",
+        "value": 28.1
+      },
+      {
+        "date": "2025-07-04",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "temperature_2m_mean",
+        "period_end_utc": "2025-07-04T18:30:00+00:00",
+        "period_start_utc": "2025-07-03T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.temperature_2m_mean[3]",
+        "unit": "\u00b0C",
+        "value": 28.3
+      },
+      {
+        "date": "2025-07-05",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "temperature_2m_mean",
+        "period_end_utc": "2025-07-05T18:30:00+00:00",
+        "period_start_utc": "2025-07-04T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.temperature_2m_mean[4]",
+        "unit": "\u00b0C",
+        "value": 28.2
+      },
+      {
+        "date": "2025-07-06",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "temperature_2m_mean",
+        "period_end_utc": "2025-07-06T18:30:00+00:00",
+        "period_start_utc": "2025-07-05T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.temperature_2m_mean[5]",
+        "unit": "\u00b0C",
+        "value": 27.2
+      },
+      {
+        "date": "2025-07-07",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "temperature_2m_mean",
+        "period_end_utc": "2025-07-07T18:30:00+00:00",
+        "period_start_utc": "2025-07-06T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.temperature_2m_mean[6]",
+        "unit": "\u00b0C",
+        "value": 28.0
+      },
+      {
+        "date": "2025-07-01",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "temperature_2m_max",
+        "period_end_utc": "2025-07-01T18:30:00+00:00",
+        "period_start_utc": "2025-06-30T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.temperature_2m_max[0]",
+        "unit": "\u00b0C",
+        "value": 33.0
+      },
+      {
+        "date": "2025-07-02",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "temperature_2m_max",
+        "period_end_utc": "2025-07-02T18:30:00+00:00",
+        "period_start_utc": "2025-07-01T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.temperature_2m_max[1]",
+        "unit": "\u00b0C",
+        "value": 28.8
+      },
+      {
+        "date": "2025-07-03",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "temperature_2m_max",
+        "period_end_utc": "2025-07-03T18:30:00+00:00",
+        "period_start_utc": "2025-07-02T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.temperature_2m_max[2]",
+        "unit": "\u00b0C",
+        "value": 30.2
+      },
+      {
+        "date": "2025-07-04",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "temperature_2m_max",
+        "period_end_utc": "2025-07-04T18:30:00+00:00",
+        "period_start_utc": "2025-07-03T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.temperature_2m_max[3]",
+        "unit": "\u00b0C",
+        "value": 29.9
+      },
+      {
+        "date": "2025-07-05",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "temperature_2m_max",
+        "period_end_utc": "2025-07-05T18:30:00+00:00",
+        "period_start_utc": "2025-07-04T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.temperature_2m_max[4]",
+        "unit": "\u00b0C",
+        "value": 31.0
+      },
+      {
+        "date": "2025-07-06",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "temperature_2m_max",
+        "period_end_utc": "2025-07-06T18:30:00+00:00",
+        "period_start_utc": "2025-07-05T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.temperature_2m_max[5]",
+        "unit": "\u00b0C",
+        "value": 28.5
+      },
+      {
+        "date": "2025-07-07",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "temperature_2m_max",
+        "period_end_utc": "2025-07-07T18:30:00+00:00",
+        "period_start_utc": "2025-07-06T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.temperature_2m_max[6]",
+        "unit": "\u00b0C",
+        "value": 30.8
+      },
+      {
+        "date": "2025-07-01",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "temperature_2m_min",
+        "period_end_utc": "2025-07-01T18:30:00+00:00",
+        "period_start_utc": "2025-06-30T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.temperature_2m_min[0]",
+        "unit": "\u00b0C",
+        "value": 27.3
+      },
+      {
+        "date": "2025-07-02",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "temperature_2m_min",
+        "period_end_utc": "2025-07-02T18:30:00+00:00",
+        "period_start_utc": "2025-07-01T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.temperature_2m_min[1]",
+        "unit": "\u00b0C",
+        "value": 27.5
+      },
+      {
+        "date": "2025-07-03",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "temperature_2m_min",
+        "period_end_utc": "2025-07-03T18:30:00+00:00",
+        "period_start_utc": "2025-07-02T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.temperature_2m_min[2]",
+        "unit": "\u00b0C",
+        "value": 27.0
+      },
+      {
+        "date": "2025-07-04",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "temperature_2m_min",
+        "period_end_utc": "2025-07-04T18:30:00+00:00",
+        "period_start_utc": "2025-07-03T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.temperature_2m_min[3]",
+        "unit": "\u00b0C",
+        "value": 26.9
+      },
+      {
+        "date": "2025-07-05",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "temperature_2m_min",
+        "period_end_utc": "2025-07-05T18:30:00+00:00",
+        "period_start_utc": "2025-07-04T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.temperature_2m_min[4]",
+        "unit": "\u00b0C",
+        "value": 26.7
+      },
+      {
+        "date": "2025-07-06",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "temperature_2m_min",
+        "period_end_utc": "2025-07-06T18:30:00+00:00",
+        "period_start_utc": "2025-07-05T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.temperature_2m_min[5]",
+        "unit": "\u00b0C",
+        "value": 26.3
+      },
+      {
+        "date": "2025-07-07",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "temperature_2m_min",
+        "period_end_utc": "2025-07-07T18:30:00+00:00",
+        "period_start_utc": "2025-07-06T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.temperature_2m_min[6]",
+        "unit": "\u00b0C",
+        "value": 26.3
+      }
+    ],
+    "schema_version": "foundation-v1",
+    "source_id": "S22",
+    "status": "ok"
+  },
+  "sha256": "6e5ea637d7633426c7c002c5ba1514b6f4f6bfff805b0934cf6625fd22e91084"
+}

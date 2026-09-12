@@ -1,0 +1,345 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "07cce2e7-fd0f-4e09-b3f9-c102a87fe0b6",
+  "question": "And for 2023?",
+  "status": "answered",
+  "answer": "All India · annual 2023\nrainfall: 1102.8 mm [t1-f1]\ntemperature: 25.4672 degC [t1-f2]\nRetrieved 2 published historical values for the requested places, parameters and years.",
+  "facts": [
+    {
+      "label": "rainfall",
+      "value": "1102.8",
+      "unit": "mm",
+      "year": 2023,
+      "period": "annual",
+      "source_id": "S25",
+      "place": "All India",
+      "id": "t1-f1",
+      "parameter": "rainfall",
+      "entity_id": "all-india",
+      "citation_ids": [
+        "t1-c1"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "label": "temperature",
+      "value": "25.4672",
+      "unit": "degC",
+      "year": 2023,
+      "period": "annual",
+      "source_id": "S26",
+      "place": "All India",
+      "id": "t1-f2",
+      "parameter": "temperature",
+      "entity_id": "all-india",
+      "citation_ids": [
+        "t1-c2"
+      ],
+      "task_id": "t1"
+    }
+  ],
+  "citations": [
+    {
+      "source_id": "S25",
+      "url": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php",
+      "provider": "IMD",
+      "product": "Published All India historical table",
+      "raw_asset_path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+      "sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+      "row": 124,
+      "column": "Annual",
+      "id": "t1-c1"
+    },
+    {
+      "source_id": "S26",
+      "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+      "provider": "IMD",
+      "product": "Published All India historical table",
+      "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+      "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+      "row": 124,
+      "column": "Annual",
+      "id": "t1-c2"
+    }
+  ],
+  "notes": [
+    "This is the published All India aggregate; it does not describe an individual village or district.",
+    "The source aggregate differs from the sum of its published months; the original total and reconciliation are retained."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T17:50:16.312855+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 1607,
+      "output_tokens": 161,
+      "duration_seconds": 3.109207166
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "history",
+        "task_id": "t1",
+        "status": "answered"
+      }
+    ],
+    "provider": "local_ollama",
+    "duration_seconds": 3.127
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "India",
+        "state": "",
+        "district": "",
+        "kind": "country"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "And for 2023?",
+        "kind": "history",
+        "operation": "lookup",
+        "parameters": [
+          "rainfall",
+          "temperature"
+        ],
+        "years": [
+          2023
+        ],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "intent": "history",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 2023,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "And for 2023?",
+        "kind": "history",
+        "operation": "lookup",
+        "parameters": [
+          "rainfall",
+          "temperature"
+        ],
+        "years": [
+          2023
+        ],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "answered",
+      "answer": "All India · annual 2023\nrainfall: 1102.8 mm [t1-f1]\ntemperature: 25.4672 degC [t1-f2]\nRetrieved 2 published historical values for the requested places, parameters and years.",
+      "fact_ids": [
+        "t1-f1",
+        "t1-f2"
+      ],
+      "historical_evidence": [
+        {
+          "place": {
+            "name": "India",
+            "state": "",
+            "district": "",
+            "kind": "country"
+          },
+          "parameter": "rainfall",
+          "year": 2023,
+          "evidence": {
+            "status": "answered",
+            "text": "India's published annual rainfall for 2023 was 1102.8 mm.",
+            "facts": [
+              {
+                "label": "rainfall",
+                "value": "1102.8",
+                "unit": "mm",
+                "year": 2023,
+                "period": "annual",
+                "source_id": "S25",
+                "place": "All India"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S25",
+                "url": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php",
+                "provider": "IMD",
+                "product": "Published All India historical table",
+                "raw_asset_path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+                "sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+                "row": 124,
+                "column": "Annual"
+              }
+            ],
+            "notes": [
+              "This is the published All India aggregate; it does not describe an individual village or district.",
+              "The source aggregate differs from the sum of its published months; the original total and reconciliation are retained."
+            ],
+            "raw": {
+              "status": "ok",
+              "scope": "Published historical All India aggregate; not current or district weather.",
+              "record": {
+                "record_id": "f2544fc4b2c3c92ba30371b382562012c0bb3a63aae6e073f90d930355d8eecf",
+                "source_id": "S25",
+                "source_series_id": "historical_rain_whi",
+                "geography_id": "all-india-aggregate",
+                "geography_label": "All India aggregate",
+                "parameter": "precipitation_amount",
+                "year": 2023,
+                "period_type": "year",
+                "period_code": "ANNUAL",
+                "period_start": "2023-01-01",
+                "period_end_exclusive": "2024-01-01",
+                "value_decimal": "1102.8",
+                "native_value": "1102.8",
+                "unit": "mm",
+                "quality_flags": [],
+                "asset_sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+                "raw_asset_path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+                "source_row": 124,
+                "source_column": "Annual",
+                "source_url": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php",
+                "retrieved_at_utc": "2026-09-11T16:27:58.620400+00:00",
+                "transformation_version": "national-climate-v1"
+              },
+              "reconciliation": {
+                "source_id": "S25",
+                "year": 2023,
+                "period_code": "ANNUAL",
+                "published_value": "1102.8",
+                "computed_month_sum": "1103.1",
+                "difference_mm": "-0.3",
+                "rounding_bound_mm": "0.65",
+                "status": "within_rounding_bound",
+                "source_row": 124,
+                "source_column": "Annual",
+                "asset_sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90"
+              },
+              "citation": {
+                "source_id": "S25",
+                "url": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php",
+                "raw_asset_path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+                "sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+                "row": 124,
+                "column": "Annual"
+              }
+            }
+          }
+        },
+        {
+          "place": {
+            "name": "India",
+            "state": "",
+            "district": "",
+            "kind": "country"
+          },
+          "parameter": "temperature",
+          "year": 2023,
+          "evidence": {
+            "status": "answered",
+            "text": "India's published annual temperature for 2023 was 25.4672 degC.",
+            "facts": [
+              {
+                "label": "temperature",
+                "value": "25.4672",
+                "unit": "degC",
+                "year": 2023,
+                "period": "annual",
+                "source_id": "S26",
+                "place": "All India"
+              }
+            ],
+            "citations": [
+              {
+                "source_id": "S26",
+                "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                "provider": "IMD",
+                "product": "Published All India historical table",
+                "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                "row": 124,
+                "column": "Annual"
+              }
+            ],
+            "notes": [
+              "This is the published All India aggregate; it does not describe an individual village or district."
+            ],
+            "raw": {
+              "status": "ok",
+              "scope": "Published historical All India aggregate; not current or district weather.",
+              "record": {
+                "record_id": "3843f264ae8a2080cc82305a4a9fb48ccb9c0fa3df8c08225f4690b4bc1e09ba",
+                "source_id": "S26",
+                "source_series_id": "historical_temp",
+                "geography_id": "all-india-aggregate",
+                "geography_label": "All India aggregate",
+                "parameter": "mean_temperature",
+                "year": 2023,
+                "period_type": "year",
+                "period_code": "ANNUAL",
+                "period_start": "2023-01-01",
+                "period_end_exclusive": "2024-01-01",
+                "value_decimal": "25.4672",
+                "native_value": "25.4672",
+                "unit": "degC",
+                "quality_flags": [],
+                "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                "source_row": 124,
+                "source_column": "Annual",
+                "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                "transformation_version": "national-climate-v1"
+              },
+              "reconciliation": null,
+              "citation": {
+                "source_id": "S26",
+                "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                "row": 124,
+                "column": "Annual"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 1,
+    "incomplete_ids": []
+  }
+}

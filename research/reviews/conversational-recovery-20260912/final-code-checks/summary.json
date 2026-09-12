@@ -1,0 +1,30 @@
+[
+  {
+    "name": "gujarati",
+    "status": "answered",
+    "facts": 1,
+    "seconds": 7.24,
+    "answer": "પસંદ કરેલા સ્થળ માટે મોડેલની આગાહી:\nAhmedabad, Ahmadābād, State of Gujarāt · 2026-09-13 06:30 → 2026-09-13 12:30 IST\nવરસાદની અંદાજિત માત્રા: 3.5 mm [f1]\nઆ પસંદ કરેલા સ્થળ-બિંદુ માટે મોડેલની આગાહી છે, સ્થળ પરનું અવલોકન કે આખા જિલ્લાની સરેરાશ નથી. આગાહી બદલાઈ શકે છે."
+  },
+  {
+    "name": "english",
+    "status": "answered",
+    "facts": 4,
+    "seconds": 8.92,
+    "answer": "For Ahmedabad, Gujarat, during the morning window of 06:30 to 12:30 IST on 2026-09-13, the forecast indicates rainfall of 3.5 mm [f3]. This suggests rain is expected in that location and time frame. The model also predicts temperatures between 25.0–30.7 °C [f1], humidity levels from 67–92% [f2], and wind speeds ranging from 11.4–18.5 km/h [f4]. Please note that this is a modeled forecast for the specific place point, not an observation or district average, and local representativeness remains unverified. Do not treat the rain amount as a probability guarantee. Would you like details on wind conditions or temperature variations for this period?"
+  },
+  {
+    "name": "followup",
+    "status": "answered",
+    "facts": 4,
+    "seconds": 8.46,
+    "answer": "For Ahmedabad, Ahmadābād, State of Gujarāt, during the window 2026-09-13T12:30:00+05:30 to 2026-09-13T18:30:00+05:30, the forecast indicates temperatures ranging from 29.6–31.7 °C [f1] and humidity between 63–76 % [f2]. Wind speeds are modeled at 7.3–12.5 km/h [f4]. The system provides a forecast rainfall amount of 11.0 mm [f3]; this is a modeled quantity, not a probability or guarantee of dry conditions. Note that the source model run time and local representativeness remain unverified. Do you need details for a different location or time window?"
+  },
+  {
+    "name": "history",
+    "status": "answered",
+    "facts": 1,
+    "seconds": 3.27,
+    "answer": "The historical Ahmedabad district series reports 1096.8 mm of rainfall for annual 2010."
+  }
+]

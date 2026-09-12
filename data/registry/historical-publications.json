@@ -1,0 +1,23 @@
+{
+  "schema_version": "historical-publications-v1",
+  "publications": {
+    "S25": {
+      "manifest": "data/processed/climate/national-climate-v1-a203fc0eb4a31c58/build-manifest.json",
+      "manifest_sha256": "676eed1c2250389d39872788298c2000a177891bf2fdaaa374df978b07da513f",
+      "database": "data/processed/climate/national-climate-v1-a203fc0eb4a31c58/climate.sqlite",
+      "database_sha256": "9914717c6f9695d46570bdde1460d50b4c1e75ffe6ebb18f11f48de7a54b3fe0"
+    },
+    "S26": {
+      "manifest": "data/processed/climate/national-climate-v1-a203fc0eb4a31c58/build-manifest.json",
+      "manifest_sha256": "676eed1c2250389d39872788298c2000a177891bf2fdaaa374df978b07da513f",
+      "database": "data/processed/climate/national-climate-v1-a203fc0eb4a31c58/climate.sqlite",
+      "database_sha256": "9914717c6f9695d46570bdde1460d50b4c1e75ffe6ebb18f11f48de7a54b3fe0"
+    },
+    "S27": {
+      "manifest": "data/processed/districts/district-v1-c8b978172b77182e/build-manifest.json",
+      "manifest_sha256": "422283e72296d7374ed21ceead64a834285c22dc5842826897b8005646d01cf1",
+      "database": "data/processed/districts/district-v1-c8b978172b77182e/districts.sqlite",
+      "database_sha256": "db12593f5d243f0ab531f4f418de6913d8d57b5c9b163bcccb21682589c20716"
+    }
+  }
+}

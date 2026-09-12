@@ -1,0 +1,75 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "554bd56d-a4c9-45ec-9c50-f91969831100",
+  "question": "What does that mean?",
+  "status": "needs_clarification",
+  "answer": "The previous topic was: The Ahmedabad bulletin dated 2026-09-11 has no indexed passage matching groundnut for irrigation. No passage for another crop, stage or topic has been substituted. The earlier evidence is missing or expired; ask for a fresh retrieval to discuss current values.",
+  "facts": [],
+  "citations": [],
+  "notes": [],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T19:47:35.632109+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 3606,
+      "output_tokens": 197,
+      "duration_seconds": 4.596280375
+    },
+    "generation": null,
+    "tools": [],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "explain_previous",
+      "changed_fields": [],
+      "inherited_fields": [
+        "places"
+      ]
+    },
+    "duration_seconds": 4.61
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Ahmedabad",
+        "state": "Gujarat",
+        "district": "Ahmedabad",
+        "kind": "district"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "What does that mean?",
+        "kind": "explanation",
+        "operation": "lookup",
+        "parameters": [],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "context_action": "explain_previous",
+    "changed_fields": [],
+    "intent": "explanation",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  }
+}

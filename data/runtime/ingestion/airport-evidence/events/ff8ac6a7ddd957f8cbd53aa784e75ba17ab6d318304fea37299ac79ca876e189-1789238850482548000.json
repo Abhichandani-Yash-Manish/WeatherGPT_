@@ -1,0 +1,12 @@
+{
+  "source_id": "S20",
+  "url": "https://aviationweather.gov/api/data/stationinfo?ids=VAAH&format=json",
+  "retrieved_at_utc": "2026-09-12T18:47:30.482412+00:00",
+  "http_status": 200,
+  "content_type": "application/json; charset=utf-8",
+  "bytes": 209,
+  "sha256": "6d2a746215bc3a44b93f6478c89d904580ccab1a138c34ed24a55aee080cc3be",
+  "blob": "blobs/6d2a746215bc3a44b93f6478c89d904580ccab1a138c34ed24a55aee080cc3be.bin",
+  "validation_scope": "product",
+  "stage": "validated"
+}

@@ -1,0 +1,218 @@
+{
+  "cases": [
+    {
+      "case": "hinglish-0",
+      "status": "needs_selection",
+      "fact_count": 0,
+      "source_ids": []
+    },
+    {
+      "case": "airport-0",
+      "status": "answered",
+      "fact_count": 2,
+      "source_ids": [
+        "S18",
+        "S20"
+      ]
+    },
+    {
+      "case": "airport-1",
+      "status": "answered",
+      "fact_count": 2,
+      "source_ids": [
+        "S18",
+        "S20"
+      ]
+    },
+    {
+      "case": "hinglish-1",
+      "status": "partial",
+      "fact_count": 23,
+      "source_ids": [
+        "S61",
+        "S62"
+      ]
+    },
+    {
+      "case": "evidence-1",
+      "status": "answered",
+      "fact_count": 7,
+      "source_ids": [
+        "S21",
+        "S61",
+        "S62"
+      ]
+    },
+    {
+      "case": "hinglish-2",
+      "status": "answered",
+      "fact_count": 4,
+      "source_ids": [
+        "S61",
+        "S62"
+      ]
+    },
+    {
+      "case": "hinglish-3",
+      "status": "answered",
+      "fact_count": 4,
+      "source_ids": [
+        "S61",
+        "S62"
+      ]
+    },
+    {
+      "case": "evidence-0",
+      "status": "answered",
+      "fact_count": 1,
+      "source_ids": [
+        "S21",
+        "S61"
+      ]
+    },
+    {
+      "case": "hinglish-4",
+      "status": "answered",
+      "fact_count": 4,
+      "source_ids": [
+        "S61",
+        "S62"
+      ]
+    },
+    {
+      "case": "clarify-0",
+      "status": "needs_clarification",
+      "fact_count": 0,
+      "source_ids": []
+    },
+    {
+      "case": "clarify-1",
+      "status": "partial",
+      "fact_count": 23,
+      "source_ids": [
+        "S61",
+        "S62"
+      ]
+    },
+    {
+      "case": "time_correction-0",
+      "status": "answered",
+      "fact_count": 4,
+      "source_ids": [
+        "S61",
+        "S62"
+      ]
+    },
+    {
+      "case": "time_correction-1",
+      "status": "partial",
+      "fact_count": 1,
+      "source_ids": [
+        "S61",
+        "S62"
+      ]
+    },
+    {
+      "case": "taf-1",
+      "status": "answered",
+      "fact_count": 0,
+      "source_ids": [
+        "S19",
+        "S20"
+      ]
+    },
+    {
+      "case": "daily-0",
+      "status": "answered",
+      "fact_count": 3,
+      "source_ids": [
+        "S22",
+        "S61"
+      ]
+    },
+    {
+      "case": "multi_source-0",
+      "status": "answered",
+      "fact_count": 2,
+      "source_ids": [
+        "S21",
+        "S27",
+        "S61"
+      ]
+    },
+    {
+      "case": "multi_source-1",
+      "status": "answered",
+      "fact_count": 2,
+      "source_ids": [
+        "S27"
+      ]
+    },
+    {
+      "case": "taf-0",
+      "status": "answered",
+      "fact_count": 0,
+      "source_ids": [
+        "S19",
+        "S20"
+      ]
+    },
+    {
+      "case": "national-0",
+      "status": "answered",
+      "fact_count": 2,
+      "source_ids": [
+        "S25",
+        "S26"
+      ]
+    },
+    {
+      "case": "unsupported-0",
+      "status": "unavailable",
+      "fact_count": 0,
+      "source_ids": []
+    },
+    {
+      "case": "national-1",
+      "status": "answered",
+      "fact_count": 2,
+      "source_ids": [
+        "S25",
+        "S26"
+      ]
+    },
+    {
+      "case": "time_correction-2",
+      "status": "partial",
+      "fact_count": 1,
+      "source_ids": [
+        "S61",
+        "S62"
+      ]
+    },
+    {
+      "case": "warning-0",
+      "status": "partial",
+      "fact_count": 1,
+      "source_ids": [
+        "S21",
+        "S61"
+      ]
+    }
+  ],
+  "raw_numeric_facts": 81,
+  "historical_source_cells": 7,
+  "raw_airport_reports": 4,
+  "derived_calculations": 6,
+  "unique_raw_responses": 8,
+  "complete_turns": 15,
+  "partial_turns": 5,
+  "clarification_turns": 2,
+  "explanation_turns": 0,
+  "latency_seconds": {
+    "median": 5.185,
+    "max": 6.869
+  },
+  "scope": "Saved real local-model HTTP journeys with source/slot/calculation checks. Not scientific, browser, voice, nationwide coverage, independent forecast skill or universal semantic acceptance.",
+  "unavailable_turns": 1
+}

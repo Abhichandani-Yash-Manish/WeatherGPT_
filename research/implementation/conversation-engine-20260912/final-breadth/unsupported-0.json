@@ -1,0 +1,164 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "9c706cf3-6312-4c3c-9587-a12fdf8f8935",
+  "question": "Will my VAAH flight be cancelled tomorrow?",
+  "status": "unavailable",
+  "answer": "I cannot retrieve flight status, cancellations or delays from the weather sources. Airport observations and TAF cannot establish whether your flight will operate; check the airline for that outcome.",
+  "facts": [],
+  "citations": [],
+  "notes": [
+    "The user is asking about a specific flight (VAAH) cancellation, which depends on weather conditions at the departure and arrival airports. However, no specific airport codes or locations were provided in the question. Without a location, I cannot retrieve METAR/TAF data or forecasts.",
+    "Flight cancellations are influenced by many factors beyond weather (airline policy, mechanical issues, etc.). This plan only addresses the weather aspect if locations were known."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T19:02:21.597244+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 2480,
+      "output_tokens": 274,
+      "duration_seconds": 4.910398542
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "aviation",
+        "task_id": "t1",
+        "status": "unavailable"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "new",
+      "changed_fields": [
+        "places"
+      ],
+      "inherited_fields": []
+    },
+    "duration_seconds": 4.925
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "VAAH",
+        "state": "",
+        "district": "",
+        "kind": "unknown"
+      }
+    ],
+    "assumptions": [
+      "The user is asking about a specific flight (VAAH) cancellation, which depends on weather conditions at the departure and arrival airports. However, no specific airport codes or locations were provided in the question. Without a location, I cannot retrieve METAR/TAF data or forecasts.",
+      "Flight cancellations are influenced by many factors beyond weather (airline policy, mechanical issues, etc.). This plan only addresses the weather aspect if locations were known."
+    ],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "Will my VAAH flight be cancelled tomorrow?",
+        "kind": "aviation",
+        "operation": "lookup",
+        "parameters": [
+          "flight_status"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "context_action": "new",
+    "changed_fields": [
+      "places"
+    ],
+    "intent": "research",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "Will my VAAH flight be cancelled tomorrow?",
+        "kind": "aviation",
+        "operation": "lookup",
+        "parameters": [
+          "flight_status"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "unavailable",
+      "answer": "I cannot retrieve flight status, cancellations or delays from the weather sources. Airport observations and TAF cannot establish whether your flight will operate; check the airline for that outcome.",
+      "fact_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "aviation",
+      "parameters": [
+        "flight_status"
+      ],
+      "candidates": [
+        {
+          "tool": "airport_reports",
+          "selected": true,
+          "available": true,
+          "reason": "Indian ICAO airport observations/TAF with station identity; no flight status or city-wide observation",
+          "sources": [
+            {
+              "source_id": "S18",
+              "product": "NOAA AWC VAAH METAR dissemination",
+              "registry_status": "prototype_adapter_tested"
+            },
+            {
+              "source_id": "S19",
+              "product": "NOAA AWC VAAH TAF dissemination",
+              "registry_status": "prototype_adapter_tested"
+            },
+            {
+              "source_id": "S20",
+              "product": "NOAA AWC airport station metadata",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "unavailable",
+      "returned_source_ids": []
+    }
+  ],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

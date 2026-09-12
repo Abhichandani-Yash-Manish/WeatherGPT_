@@ -1,0 +1,247 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "3e8ed5a9-5df2-45dc-a215-4af3368fd7fe",
+  "question": "What does the latest IMD bulletin say about rice at tillering stage in Kamrup district, Assam?",
+  "status": "answered",
+  "answer": "From the Kamrup, Assam bulletin issued 2026-09-11, for rice:\n\nRICE · Tillering · page 2:\n“Due to favourable weather condition there may be seen swarming caterpillar in the Sali rice field. To control the pest apply Fipronil 5 SC @1.5 to 2ml/lit of water in the clear weather condition only. Farmers are advised to take the advantages of fair weather condition by top dressing of Urea @ 4.5 kg/bigha at tillering stage in Sali rice field. Before fertilizer application, go for wedding by paddy weeder.”\n\nThese are original English source excerpts, including their conditions. The bulletin is district guidance; it has not been validated for your individual field.",
+  "facts": [],
+  "citations": [
+    {
+      "id": "t1-doc-f5e9fbe91b5fe14b3b9a3290517696b279cf93b327c4067b9c7ee0225df71e07",
+      "source_id": "S57",
+      "provider": "IMD and named issuing agricultural institution",
+      "product": "Kamrup district agromet advisory",
+      "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Assam&district=Kamrup&language=English",
+      "response_sha256": "f5e9fbe91b5fe14b3b9a3290517696b279cf93b327c4067b9c7ee0225df71e07",
+      "retrieved_at_utc": "2026-09-12T19:34:56.676917+00:00",
+      "original_retrieved_at_utc": "2026-09-12T19:34:58.497490+00:00",
+      "issue_date": "2026-09-11"
+    }
+  ],
+  "notes": [
+    "Printed district, state, issue date and five-day forecast context verified. Forecast dates are not an asserted expiry for every crop recommendation.",
+    "Source passages are retained in their original English. Chemical amounts and conditional instructions are not rewritten or personalized."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T19:34:51.438937+00:00",
+  "expires_at_utc": "2026-09-12T20:34:56.676917+00:00",
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 2753,
+      "output_tokens": 308,
+      "duration_seconds": 5.225838
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "district_bulletin_retrieval",
+        "source_id": "S57",
+        "mode": "bm25_plus_multilingual_e5_rrf",
+        "candidates": 1,
+        "model": "intfloat/multilingual-e5-small",
+        "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+        "metadata_filters": {
+          "state": "Assam",
+          "district": "Kamrup",
+          "crop": "rice",
+          "stage": "tillering"
+        },
+        "scores_are_confidence": false,
+        "document_sha256": "f5e9fbe91b5fe14b3b9a3290517696b279cf93b327c4067b9c7ee0225df71e07"
+      },
+      {
+        "name": "agriculture",
+        "task_id": "t1",
+        "status": "answered"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "new",
+      "changed_fields": [
+        "language",
+        "places"
+      ],
+      "inherited_fields": []
+    },
+    "duration_seconds": 7.676
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Kamrup",
+        "state": "Assam",
+        "district": "Kamrup",
+        "kind": "district"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "What does the latest IMD bulletin say about rice at tillering stage in Kamrup district, Assam?",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "What does the latest IMD bulletin say about rice at tillering stage in Kamrup district, Assam?",
+          "crop": "rice",
+          "growth_stage": "tillering",
+          "topic": "general",
+          "mode": "source_lookup"
+        }
+      }
+    ],
+    "context_action": "new",
+    "changed_fields": [
+      "places",
+      "language"
+    ],
+    "intent": "agriculture",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "What does the latest IMD bulletin say about rice at tillering stage in Kamrup district, Assam?",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "What does the latest IMD bulletin say about rice at tillering stage in Kamrup district, Assam?",
+          "crop": "rice",
+          "growth_stage": "tillering",
+          "topic": "general",
+          "mode": "source_lookup"
+        }
+      },
+      "status": "answered",
+      "answer": "From the Kamrup, Assam bulletin issued 2026-09-11, for rice:\n\nRICE · Tillering · page 2:\n“Due to favourable weather condition there may be seen swarming caterpillar in the Sali rice field. To control the pest apply Fipronil 5 SC @1.5 to 2ml/lit of water in the clear weather condition only. Farmers are advised to take the advantages of fair weather condition by top dressing of Urea @ 4.5 kg/bigha at tillering stage in Sali rice field. Before fertilizer application, go for wedding by paddy weeder.”\n\nThese are original English source excerpts, including their conditions. The bulletin is district guidance; it has not been validated for your individual field.",
+      "fact_ids": [],
+      "passage_ids": [
+        "bca5e5d11064d1f59eae812830409ae6cd63e6ece5fcb3d0511a8f95770b298f"
+      ]
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "agriculture",
+      "parameters": [
+        "agricultural_advisory"
+      ],
+      "candidates": [
+        {
+          "tool": "crop_advisory",
+          "selected": true,
+          "available": true,
+          "reason": "Published district crop/stage passages; strict printed geography and dates, hybrid retrieval in reviewed PDF families; individual field decisions remain partial",
+          "sources": [
+            {
+              "source_id": "S57",
+              "product": "IMD district farmer bulletin delivery (English and local language)",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "answered",
+      "returned_source_ids": [
+        "S57"
+      ]
+    }
+  ],
+  "passages": [
+    {
+      "bbox": [
+        80.62048265260255,
+        122.67779939082484,
+        515.8316292312252,
+        195.12220802030765
+      ],
+      "crop": "RICE",
+      "crop_key": "rice",
+      "document_sha256": "f5e9fbe91b5fe14b3b9a3290517696b279cf93b327c4067b9c7ee0225df71e07",
+      "extraction_version": "bulletin-grid-v1",
+      "id": "bca5e5d11064d1f59eae812830409ae6cd63e6ece5fcb3d0511a8f95770b298f",
+      "page": 2,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "Tillering",
+      "table": 1,
+      "text": "Due to favourable weather condition there may be seen swarming caterpillar in the Sali rice field. To control the pest apply Fipronil 5 SC @1.5 to 2ml/lit of water in the clear weather condition only. Farmers are advised to take the advantages of fair weather condition by top dressing of Urea @ 4.5 kg/bigha at tillering stage in Sali rice field. Before fertilizer application, go for wedding by paddy weeder.",
+      "retrieval": {
+        "rrf_score": 0.03278688524590164,
+        "lexical_score": 2.3619172349509534,
+        "semantic_score": 0.8156305063271684
+      },
+      "citation_ids": [
+        "t1-doc-f5e9fbe91b5fe14b3b9a3290517696b279cf93b327c4067b9c7ee0225df71e07"
+      ],
+      "state": "Assam",
+      "district": "Kamrup",
+      "issue_date": "2026-09-11",
+      "forecast_start": "2026-09-12",
+      "forecast_end": "2026-09-16",
+      "evidence_kind": "published_advisory_passage",
+      "task_id": "t1"
+    }
+  ],
+  "document_evidence": [
+    {
+      "district": "Kamrup",
+      "state": "Assam",
+      "issue_date": "2026-09-11",
+      "forecast_start": "2026-09-12",
+      "forecast_end": "2026-09-16",
+      "advice_valid_until": null,
+      "sha256": "f5e9fbe91b5fe14b3b9a3290517696b279cf93b327c4067b9c7ee0225df71e07",
+      "family": "gkms_grid",
+      "scope": "Published source passages; no personalized prescription or independent agronomic validation"
+    }
+  ],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 1,
+    "incomplete_ids": []
+  }
+}

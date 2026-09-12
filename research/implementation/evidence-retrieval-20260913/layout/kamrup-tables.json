@@ -1,0 +1,149 @@
+[
+  {
+    "page": 1,
+    "tables": [
+      [
+        [
+          "Parameter",
+          "2026-09-12",
+          "2026-09-13",
+          "2026-09-14",
+          "2026-\n09-15",
+          "2026-09-16"
+        ],
+        [
+          "Rainfall(mm)",
+          "17.0",
+          "8.3",
+          "2.7",
+          "2.2",
+          "10.6"
+        ],
+        [
+          "Tmax(\u00b0C)",
+          "35.5",
+          "36.6",
+          "36.3",
+          "36.5",
+          "34.8"
+        ],
+        [
+          "Tmin(\u00b0C)",
+          "26.1",
+          "26.3",
+          "26.2",
+          "25.9",
+          "26.2"
+        ],
+        [
+          "RH-I(%)",
+          "86",
+          "84",
+          "81",
+          "79",
+          "83"
+        ],
+        [
+          "RH-II(%)",
+          "80",
+          "77",
+          "75",
+          "74",
+          "77"
+        ],
+        [
+          "Wind\nSpeed(kmph)",
+          "2",
+          "6",
+          "1",
+          "1",
+          "4"
+        ],
+        [
+          "Wind\nDirection(Degree)",
+          "68",
+          "263",
+          "63",
+          "207",
+          "236"
+        ],
+        [
+          "Cloud\nCover(Octa)",
+          "5",
+          "4",
+          "3",
+          "3",
+          "4"
+        ],
+        [
+          "Warning",
+          "Thunderstorms &\nLightning, Squall\netc",
+          "Thunderstorms &\nLightning, Squall\netc",
+          "Thunderstorms &\nLightning, Squall\netc",
+          "No\nWarning",
+          "Thunderstorms &\nLightning, Squall\netc"
+        ]
+      ]
+    ]
+  },
+  {
+    "page": 2,
+    "tables": [
+      [
+        [
+          "Crop (Stage)",
+          "Crop Specific Advisory"
+        ],
+        [
+          "RICE (Tillering)",
+          "Due to favourable weather condition there may be seen swarming caterpillar\nin the Sali rice field. To control the pest apply Fipronil 5 SC @1.5 to 2ml/lit\nof water in the clear weather condition only. Farmers are advised to take the\nadvantages of fair weather condition by top dressing of Urea @ 4.5 kg/bigha\nat tillering stage in Sali rice field. Before fertilizer application, go for\nwedding by paddy weeder."
+        ],
+        [
+          "MAIZE (Sowing)",
+          "For Rabi maize optimum time of sowing is mid of September to mid of\nOctober. Therefore, farmers are suggested to select hybrid or composite\nvariety for cultivation. Well drained sandy loam soil is most preferable for\nmaize cultivation. Plough the field thoroughly to obtain deep, fine and firm\ntilth. Laddering should be done properly for leveling a well as to conserve\nsoil moisture."
+        ]
+      ],
+      [
+        [
+          "Horticulture (Stage)",
+          "Horticulture Specific Advisory"
+        ],
+        [
+          "BRINJAL (Nursery Bed\nPreparation)",
+          "Those farmers who had sown the seeds of winter vegetable in the nursery bed\nare suggested to monitor the seed beds as most important disease in the\nnursery bed is the damping off. Young seedling shows a rot in the crown, later\nthe tissue become soft and constricted which lead the seedling wilt and fall\nover. To manage the diseases, use soil solarization in the nursery bed. Moist\nthe prepared nursery bed then cover with white plastic (250-300 gauge) so\nthat it is air tight for up to 21 days. After that remove the plastic and leave the\nbed for up to 3 days. Secondly, if symptoms of damping off appear, then\nspray Azoxystrobin @ 0.4 gm/liter of water or Trifloxystrobin in nursery\nseedling @ 0.6 gm/litter of water."
+        ],
+        [
+          "CAULIFLOWER\n(Nursery/ seedling)",
+          "Due to sufficient moisture in the soil and no heavy rainfall is predicted for the\ncoming week therefore sowing of seeds of early cauliflower varieties may be\ncontinued. The recommended early varieties are Early Kunwari, Pusa Dipali,\nPusa Katki etc. To transplant one bigha of land sows 85 gram seeds in the\nseedbed. Suitable protection like (bamboo net or polyethene cover) may be\ngiven to protect the seedbed from rain."
+        ],
+        [
+          "RADISH (Sowing)",
+          "Those farmers who are interested for sowing of early radish variety seed in\nthe field are suggested to sow the seed in the main field as there is no chance\nof heavy rainfall for the coming five days. Moreover, land should be prepared\nto a fine tilth and FYM to be applied."
+        ]
+      ],
+      [
+        [
+          "Poultry",
+          "Poultry Specific Advisory"
+        ],
+        [
+          "CHICKEN",
+          "During the rainy season fowl pox is a major problem in poultry. Healthy bird\nshould be vaccinated within age of 6th to 10th week in wing web of birds to\nprovide them lifetime immunity. Isolate or cull infected birds from the flock.\nAlso, get rid of the stagnant water around the farm to control the vectors like\nmosquitoes."
+        ]
+      ]
+    ]
+  },
+  {
+    "page": 3,
+    "tables": [
+      [
+        [
+          "NA\nFarmers are advised to download Unified \u201cMausam\u201d and \"Meghdoot\" android application on\nmobile for Weather forecast and weather based Agromet Advisories and \"Damini\" android\napplication for forecast of Thunderstorm and lightening.\nMausam MobileApp link: https://play.google.com/store/apps/details/\nMeghdoot MobileApp link: https://play.google.com/store/apps/details\nDamini MobileApp link : https://play.google.com/store/apps/details"
+        ],
+        [
+          ""
+        ]
+      ]
+    ]
+  }
+]

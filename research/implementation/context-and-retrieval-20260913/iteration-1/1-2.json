@@ -1,0 +1,4 @@
+{
+  "error": "HTTP Error 400: Bad Request",
+  "detail": "{\"error\": \"Question interpretation did not preserve the requested tasks: Every task request_quote must copy its supporting clause exactly from the current question\"}"
+}

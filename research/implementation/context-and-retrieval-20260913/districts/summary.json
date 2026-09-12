@@ -1,0 +1,34 @@
+[
+  {
+    "state": "Tamil Nadu",
+    "district": "Madurai",
+    "status": "held",
+    "reason": "Bulletin retrieval is unavailable: Printed bulletin district does not match the source selection",
+    "checked_at_utc": "2026-09-12T20:19:44.760172+00:00",
+    "seconds": 3.02
+  },
+  {
+    "state": "Assam",
+    "district": "Dibrugarh",
+    "status": "parsed",
+    "issue_date": "2026-09-11",
+    "family": "gkms_grid",
+    "chunks": 8,
+    "quarantines": 0,
+    "sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+    "checked_at_utc": "2026-09-12T20:19:53.767942+00:00",
+    "seconds": 9.01
+  },
+  {
+    "state": "Gujarat",
+    "district": "Surat",
+    "status": "parsed",
+    "issue_date": "2026-09-11",
+    "family": "gkms_grid",
+    "chunks": 36,
+    "quarantines": 0,
+    "sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+    "checked_at_utc": "2026-09-12T20:19:55.605389+00:00",
+    "seconds": 1.84
+  }
+]

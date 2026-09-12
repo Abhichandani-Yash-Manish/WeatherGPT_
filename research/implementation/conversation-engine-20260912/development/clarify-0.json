@@ -1,0 +1,160 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "fc1fef00-1406-49ef-9891-d2e5b073f1aa",
+  "question": "Will it rain tomorrow?",
+  "status": "needs_clarification",
+  "answer": "Which city or village should I check?",
+  "facts": [],
+  "citations": [],
+  "notes": [
+    "Current location is assumed as the user has not specified a place.",
+    "Tomorrow refers to the next local date from the current time (2026-09-14).",
+    "Forecast window for 'tomorrow' is the full day: 2026-09-14T00:00:00+05:30 to 2026-09-15T00:00:00+05:30."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T18:37:42.635861+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 2430,
+      "output_tokens": 335,
+      "duration_seconds": 5.297687
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "forecast",
+        "task_id": "t1",
+        "status": "needs_clarification"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "new",
+      "changed_fields": [
+        "places"
+      ],
+      "inherited_fields": []
+    },
+    "duration_seconds": 5.31
+  },
+  "plan": {
+    "language": "en",
+    "places": [],
+    "assumptions": [
+      "Current location is assumed as the user has not specified a place.",
+      "Tomorrow refers to the next local date from the current time (2026-09-14).",
+      "Forecast window for 'tomorrow' is the full day: 2026-09-14T00:00:00+05:30 to 2026-09-15T00:00:00+05:30."
+    ],
+    "clarification": "No specific location provided; using current location.",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "Will it rain tomorrow?",
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-14T00:00:00+05:30",
+        "end_local": "2026-09-15T00:00:00+05:30",
+        "place_indices": []
+      }
+    ],
+    "context_action": "new",
+    "changed_fields": [
+      "places"
+    ],
+    "intent": "forecast",
+    "start_local": "2026-09-14T00:00:00+05:30",
+    "end_local": "2026-09-15T00:00:00+05:30",
+    "variables": [
+      "precipitation"
+    ],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "Will it rain tomorrow?",
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-14T00:00:00+05:30",
+        "end_local": "2026-09-15T00:00:00+05:30",
+        "place_indices": []
+      },
+      "status": "needs_clarification",
+      "answer": "Which village, town or city should I check? Add its state if the name is shared.",
+      "fact_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "forecast",
+      "parameters": [
+        "precipitation"
+      ],
+      "candidates": [
+        {
+          "tool": "forecast_summary",
+          "selected": true,
+          "available": true,
+          "reason": "Exact-window GFS model summary",
+          "sources": [
+            {
+              "source_id": "S21",
+              "product": "Open-Meteo GFS forecast delivery",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        },
+        {
+          "tool": "hourly_forecast",
+          "selected": false,
+          "available": true,
+          "reason": "Hourly evidence; exact onset and whole-period probability unavailable",
+          "sources": [
+            {
+              "source_id": "S62",
+              "product": "Open-Meteo best-match extended hourly forecast",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "needs_clarification",
+      "returned_source_ids": []
+    }
+  ],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

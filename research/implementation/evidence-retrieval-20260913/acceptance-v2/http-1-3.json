@@ -1,0 +1,204 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "3adc80bb-f30d-4934-ab38-f9447a0d75e9",
+  "question": "nahi, irrigation ke bare me batao",
+  "status": "unavailable",
+  "answer": "The Ahmedabad bulletin dated 2026-09-11 has no indexed passage matching groundnut for irrigation. No passage for another crop, stage or topic has been substituted.",
+  "facts": [],
+  "citations": [
+    {
+      "id": "t1-doc-653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "source_id": "S57",
+      "provider": "IMD and named issuing agricultural institution",
+      "product": "Ahmedabad district agromet advisory",
+      "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Gujarat&district=Ahmedabad&language=English",
+      "response_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "retrieved_at_utc": "2026-09-12T19:42:08.731077+00:00",
+      "original_retrieved_at_utc": "2026-09-12T19:42:12.479759+00:00",
+      "issue_date": "2026-09-11"
+    }
+  ],
+  "notes": [],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T19:42:25.935617+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 4230,
+      "output_tokens": 288,
+      "duration_seconds": 5.92762725
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "district_bulletin_retrieval",
+        "source_id": "S57",
+        "mode": "metadata_filtered",
+        "candidates": 0,
+        "requested_crop": "groundnut",
+        "requested_stage": "",
+        "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90"
+      },
+      {
+        "name": "agriculture",
+        "task_id": "t1",
+        "status": "unavailable"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "follow_up",
+      "changed_fields": [
+        "topic"
+      ],
+      "inherited_fields": [
+        "places",
+        "parameters",
+        "time",
+        "operation"
+      ]
+    },
+    "duration_seconds": 6.802
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Ahmedabad",
+        "state": "Gujarat",
+        "district": "Ahmedabad",
+        "kind": "district"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "nahi, irrigation ke bare me batao",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "nahi, irrigation ke bare me batao groundnut  irrigation",
+          "crop": "groundnut",
+          "growth_stage": "",
+          "topic": "irrigation",
+          "mode": "source_lookup"
+        }
+      }
+    ],
+    "context_action": "follow_up",
+    "changed_fields": [
+      "topic"
+    ],
+    "intent": "agriculture",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "nahi, irrigation ke bare me batao",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "nahi, irrigation ke bare me batao groundnut  irrigation",
+          "crop": "groundnut",
+          "growth_stage": "",
+          "topic": "irrigation",
+          "mode": "source_lookup"
+        }
+      },
+      "status": "unavailable",
+      "answer": "The Ahmedabad bulletin dated 2026-09-11 has no indexed passage matching groundnut for irrigation. No passage for another crop, stage or topic has been substituted.",
+      "fact_ids": [],
+      "passage_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "agriculture",
+      "parameters": [
+        "agricultural_advisory"
+      ],
+      "candidates": [
+        {
+          "tool": "crop_advisory",
+          "selected": true,
+          "available": true,
+          "reason": "Published district crop/stage passages; strict printed geography and dates, hybrid retrieval in reviewed PDF families; individual field decisions remain partial",
+          "sources": [
+            {
+              "source_id": "S57",
+              "product": "IMD district farmer bulletin delivery (English and local language)",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "unavailable",
+      "returned_source_ids": [
+        "S57"
+      ]
+    }
+  ],
+  "document_evidence": [
+    {
+      "district": "Ahmedabad",
+      "state": "Gujarat",
+      "issue_date": "2026-09-11",
+      "forecast_start": "2026-09-12",
+      "forecast_end": "2026-09-16",
+      "advice_valid_until": null,
+      "sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "family": "arnej_grid",
+      "scope": "Published source passages; no personalized prescription or independent agronomic validation"
+    }
+  ],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

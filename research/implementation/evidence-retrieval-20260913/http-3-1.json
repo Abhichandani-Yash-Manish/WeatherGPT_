@@ -1,0 +1,201 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "d62c005c-135e-4142-b10c-07fae2b401b5",
+  "question": "What does IMD say about irrigation for banana in Coimbatore district, Tamil Nadu?",
+  "status": "unavailable",
+  "answer": "The Coimbatore bulletin dated 2026-09-11 has no indexed passage matching banana for irrigation. No passage for another crop, stage or topic has been substituted.",
+  "facts": [],
+  "citations": [
+    {
+      "id": "t1-doc-99b77dc84e6bec60bfe3a5cd64b0d8247761b43abed6af3a63b056b0edfe7b9f",
+      "source_id": "S57",
+      "provider": "IMD and named issuing agricultural institution",
+      "product": "Coimbatore district agromet advisory",
+      "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Tamil+Nadu&district=Coimbatore&language=English",
+      "response_sha256": "99b77dc84e6bec60bfe3a5cd64b0d8247761b43abed6af3a63b056b0edfe7b9f",
+      "retrieved_at_utc": "2026-09-12T19:35:04.199153+00:00",
+      "original_retrieved_at_utc": "2026-09-12T19:35:05.598255+00:00",
+      "issue_date": "2026-09-11"
+    }
+  ],
+  "notes": [],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T19:34:59.116010+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 2750,
+      "output_tokens": 303,
+      "duration_seconds": 5.069381917
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "district_bulletin_retrieval",
+        "source_id": "S57",
+        "mode": "metadata_filtered",
+        "candidates": 0,
+        "requested_crop": "banana",
+        "requested_stage": "",
+        "document_sha256": "99b77dc84e6bec60bfe3a5cd64b0d8247761b43abed6af3a63b056b0edfe7b9f"
+      },
+      {
+        "name": "agriculture",
+        "task_id": "t1",
+        "status": "unavailable"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "new",
+      "changed_fields": [
+        "language",
+        "places"
+      ],
+      "inherited_fields": []
+    },
+    "duration_seconds": 7.198
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Coimbatore",
+        "state": "Tamil Nadu",
+        "district": "Coimbatore",
+        "kind": "district"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "What does IMD say about irrigation for banana in Coimbatore district, Tamil Nadu?",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "What does IMD say about irrigation for banana in Coimbatore district, Tamil Nadu?",
+          "crop": "banana",
+          "growth_stage": "",
+          "topic": "irrigation",
+          "mode": "source_lookup"
+        }
+      }
+    ],
+    "context_action": "new",
+    "changed_fields": [
+      "places",
+      "language"
+    ],
+    "intent": "agriculture",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "What does IMD say about irrigation for banana in Coimbatore district, Tamil Nadu?",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "What does IMD say about irrigation for banana in Coimbatore district, Tamil Nadu?",
+          "crop": "banana",
+          "growth_stage": "",
+          "topic": "irrigation",
+          "mode": "source_lookup"
+        }
+      },
+      "status": "unavailable",
+      "answer": "The Coimbatore bulletin dated 2026-09-11 has no indexed passage matching banana for irrigation. No passage for another crop, stage or topic has been substituted.",
+      "fact_ids": [],
+      "passage_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "agriculture",
+      "parameters": [
+        "agricultural_advisory"
+      ],
+      "candidates": [
+        {
+          "tool": "crop_advisory",
+          "selected": true,
+          "available": true,
+          "reason": "Published district crop/stage passages; strict printed geography and dates, hybrid retrieval in reviewed PDF families; individual field decisions remain partial",
+          "sources": [
+            {
+              "source_id": "S57",
+              "product": "IMD district farmer bulletin delivery (English and local language)",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "unavailable",
+      "returned_source_ids": [
+        "S57"
+      ]
+    }
+  ],
+  "document_evidence": [
+    {
+      "district": "Coimbatore",
+      "state": "Tamil Nadu",
+      "issue_date": "2026-09-11",
+      "forecast_start": "2026-09-12",
+      "forecast_end": "2026-09-16",
+      "advice_valid_until": null,
+      "sha256": "99b77dc84e6bec60bfe3a5cd64b0d8247761b43abed6af3a63b056b0edfe7b9f",
+      "family": "tnau_grid",
+      "scope": "Published source passages; no personalized prescription or independent agronomic validation"
+    }
+  ],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

@@ -1,0 +1,143 @@
+[
+  {
+    "scenario": "multi_source",
+    "turn": 0,
+    "question": "What is the rain forecast in Ahmedabad, Gujarat tomorrow morning, and what was Ahmedabad district rainfall in 2010?",
+    "status": "answered",
+    "answer": "Task 1: Ahmedabad · 14 Sep, 06:30–14 Sep, 12:30 IST: Forecast precipitation: 4.6 mm. Source: GFS forecast; conditions can change.\n\nTask 2: Ahmedabad, Gujarat · annual 2010\nrainfall: 1096.8 mm [t2-f1]\nRetrieved 1 published historical values for the requested places, parameters and years.",
+    "sources": [
+      "S21",
+      "S27",
+      "S61"
+    ],
+    "seconds": 6.9
+  },
+  {
+    "scenario": "multi_source",
+    "turn": 1,
+    "question": "Only the historical part: compare 2009 and 2010.",
+    "status": "answered",
+    "answer": "Ahmedabad, Gujarat · annual 2009\nrainfall: 375.7 mm [t1-f1]\nAhmedabad, Gujarat · annual 2010\nrainfall: 1096.8 mm [t1-f2]\nAhmedabad, Gujarat: rainfall changed by 721.1 mm (2010 minus 2009).",
+    "sources": [
+      "S27"
+    ],
+    "seconds": 4.57
+  },
+  {
+    "scenario": "national",
+    "turn": 0,
+    "question": "भारत की 2024 में कुल वर्षा और औसत तापमान कितना था?",
+    "status": "answered",
+    "answer": "पूरे भारत · 2024 (वार्षिक): कुल वर्षा 1206.6 mm. [t1-f1]\nपूरे भारत · 2024 (वार्षिक): औसत तापमान 25.7431 degC. [t1-f2]",
+    "sources": [
+      "S25",
+      "S26"
+    ],
+    "seconds": 3.56
+  },
+  {
+    "scenario": "national",
+    "turn": 1,
+    "question": "और 2023 में?",
+    "status": "answered",
+    "answer": "पूरे भारत · 2023 (वार्षिक): कुल वर्षा 1102.8 mm. [t1-f1]\nपूरे भारत · 2023 (वार्षिक): औसत तापमान 25.4672 degC. [t1-f2]",
+    "sources": [
+      "S25",
+      "S26"
+    ],
+    "seconds": 3.88
+  },
+  {
+    "scenario": "time_correction",
+    "turn": 0,
+    "question": "Ahmedabad Gujarat mein kal shaam ko barish ki sambhavna kitni hai?",
+    "status": "answered",
+    "answer": "Ahmedabad · 14 Sep, 18:30–14 Sep, 22:30 IST: Har ghante barish ki sambhavna: 65–83 %. Sabse zyada 83% sambhavna 14 Sep, 18:30–19:30 IST ke ghante mein hai. Ye alag-alag ghanton ki sambhavnayein hain; poore din ka ek pratishat nahi. Srot: Open-Meteo best-match ka poorvanuman; mausam badal sakta hai.",
+    "sources": [
+      "S61",
+      "S62"
+    ],
+    "seconds": 6.85
+  },
+  {
+    "scenario": "time_correction",
+    "turn": 1,
+    "question": "nahi, aaj nahi, kal subah 8 se 10 baje tak batao",
+    "status": "partial",
+    "answer": "Ahmedabad · 14 Sep, 08:30–14 Sep, 09:30 IST: Har ghante barish ki sambhavna: 76 %. Sabse zyada 76% sambhavna 14 Sep, 08:30–09:30 IST ke ghante mein hai. Ye alag-alag ghanton ki sambhavnayein hain; poore din ka ek pratishat nahi. Srot: Open-Meteo best-match ka poorvanuman; mausam badal sakta hai.\n\nSawal ka kuch hissa abhi adhura hai; jo samay ya jaankari nahi mili, woh neeche di gayi hai.",
+    "sources": [
+      "S61",
+      "S62"
+    ],
+    "seconds": 6.33
+  },
+  {
+    "scenario": "time_correction",
+    "turn": 2,
+    "question": "English please",
+    "status": "partial",
+    "answer": "Ahmedabad · 14 Sep, 08:30–14 Sep, 09:30 IST: Hourly rain chances: 76 %. The highest hourly value is 76% for 14 Sep, 08:30–09:30 IST. These percentages are for individual hours, not the chance for the whole day. Source: Open-Meteo best-match forecast; conditions can change.\n\nPart of the request is still unresolved; the missing intervals or tasks are listed below.",
+    "sources": [
+      "S61",
+      "S62"
+    ],
+    "seconds": 5.17
+  },
+  {
+    "scenario": "warning",
+    "turn": 0,
+    "question": "What is the rain forecast for Ahmedabad, Gujarat tomorrow morning, and are there any official warnings?",
+    "status": "partial",
+    "answer": "Task 1: Ahmedabad · 14 Sep, 06:30–14 Sep, 12:30 IST: Forecast precipitation: 4.6 mm. Source: GFS forecast; conditions can change.\n\nTask 2: Current official warning applicability and update/cancel handling are not verified yet. Missing evidence is not an all-clear.",
+    "sources": [
+      "S21",
+      "S61"
+    ],
+    "seconds": 6.87
+  },
+  {
+    "scenario": "taf",
+    "turn": 0,
+    "question": "Latest VAAH TAF please",
+    "status": "answered",
+    "answer": "VAAH TAF: TAF VAAH 121700Z 1218/1303 27005KT 2000 -RA BR SCT012 SCT018 OVC080 BECMG 1222/1224 35005KT BECMG 1301/1303 1500 -RA BR",
+    "sources": [
+      "S19",
+      "S20"
+    ],
+    "seconds": 3.6
+  },
+  {
+    "scenario": "taf",
+    "turn": 1,
+    "question": "What does that mean?",
+    "status": "answered",
+    "answer": "VAAH TAF: TAF VAAH 121700Z 1218/1303 27005KT 2000 -RA BR SCT012 SCT018 OVC080 BECMG 1222/1224 35005KT BECMG 1301/1303 1500 -RA BR\n\nA TAF is a forecast for the named airport over its stated validity period. The original report and change groups are preserved; they have not been turned into flight status or an operational clearance.",
+    "sources": [
+      "S19",
+      "S20"
+    ],
+    "seconds": 4.0
+  },
+  {
+    "scenario": "unsupported",
+    "turn": 0,
+    "question": "Will my VAAH flight be cancelled tomorrow?",
+    "status": "unavailable",
+    "answer": "I cannot retrieve flight status, cancellations or delays from the weather sources. Airport observations and TAF cannot establish whether your flight will operate; check the airline for that outcome.",
+    "sources": [],
+    "seconds": 4.93
+  },
+  {
+    "scenario": "daily",
+    "turn": 0,
+    "question": "How much rain fell in Ahmedabad, Gujarat from 1 through 3 July 2025?",
+    "status": "answered",
+    "answer": "Ahmedabad · 01 Jul, 00:00–04 Jul, 00:00 IST: Total precipitation over this period: 21.4 mm. Daily precipitation: 1.0–10.9 mm. ERA5 modeled history, not a rain-gauge observation.",
+    "sources": [
+      "S22",
+      "S61"
+    ],
+    "seconds": 4.56
+  }
+]

@@ -1,0 +1,110 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "e6b58168-71ad-4a14-9be0-16a9215a21f6",
+  "question": "Latest VAAH METAR please",
+  "status": "unavailable",
+  "answer": "The airport report adapter exists, but its conversational tool is not connected yet. No METAR, TAF or flight status has been retrieved.",
+  "facts": [],
+  "citations": [],
+  "notes": [],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T18:24:17.515675+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 1446,
+      "output_tokens": 184,
+      "duration_seconds": 2.897415833
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "aviation",
+        "task_id": "t1",
+        "status": "unavailable"
+      }
+    ],
+    "provider": "local_ollama",
+    "duration_seconds": 2.912
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "VAAH",
+        "state": "",
+        "district": "",
+        "kind": "settlement"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "Latest VAAH METAR",
+        "kind": "aviation",
+        "operation": "lookup",
+        "parameters": [
+          "metar"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "intent": "research",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "Latest VAAH METAR",
+        "kind": "aviation",
+        "operation": "lookup",
+        "parameters": [
+          "metar"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "unavailable",
+      "answer": "The airport report adapter exists, but its conversational tool is not connected yet. No METAR, TAF or flight status has been retrieved.",
+      "fact_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

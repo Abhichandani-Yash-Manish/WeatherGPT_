@@ -1,0 +1,153 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "252183d3-f007-47ec-bd30-86b75a7943ff",
+  "question": "What does that mean in simple words?",
+  "status": "answered",
+  "answer": "VAAH · Ahmadabad/Patel Intl, airport report at 13 Sep, 00:00 IST: Observed airport temperature: 26 °C. Observed airport wind: 2 kt. This report describes the airport, not conditions across the whole city.",
+  "facts": [
+    {
+      "id": "t1-f1",
+      "parameter": "temperature_c",
+      "label": "Airport temperature",
+      "value": "26",
+      "unit": "°C",
+      "place": "VAAH · Ahmadabad/Patel Intl",
+      "entity_id": "icao:VAAH",
+      "observed_at": "2026-09-12T18:30:00+00:00",
+      "start": "2026-09-12T18:30:00+00:00",
+      "end": "2026-09-12T18:30:00+00:00",
+      "sample_at": "2026-09-12T18:30:00+00:00",
+      "source_id": "S18",
+      "evidence_kind": "observation",
+      "evidence_version": "3706c5d848587746c55ea186ee66adfe53fdccf0f91acb06b86f36a00cdfd774",
+      "citation_ids": [
+        "t1-c-3706c5d848587746c55ea186ee66adfe53fdccf0f91acb06b86f36a00cdfd774",
+        "t1-c-6d2a746215bc3a44b93f6478c89d904580ccab1a138c34ed24a55aee080cc3be"
+      ],
+      "source_locators": [
+        "$[0].temp"
+      ],
+      "method": "reported_airport_observation",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f2",
+      "parameter": "wind_speed_kt",
+      "label": "Airport wind speed",
+      "value": "2",
+      "unit": "kt",
+      "place": "VAAH · Ahmadabad/Patel Intl",
+      "entity_id": "icao:VAAH",
+      "observed_at": "2026-09-12T18:30:00+00:00",
+      "start": "2026-09-12T18:30:00+00:00",
+      "end": "2026-09-12T18:30:00+00:00",
+      "sample_at": "2026-09-12T18:30:00+00:00",
+      "source_id": "S18",
+      "evidence_kind": "observation",
+      "evidence_version": "3706c5d848587746c55ea186ee66adfe53fdccf0f91acb06b86f36a00cdfd774",
+      "citation_ids": [
+        "t1-c-3706c5d848587746c55ea186ee66adfe53fdccf0f91acb06b86f36a00cdfd774",
+        "t1-c-6d2a746215bc3a44b93f6478c89d904580ccab1a138c34ed24a55aee080cc3be"
+      ],
+      "source_locators": [
+        "$[0].wspd"
+      ],
+      "method": "reported_airport_observation",
+      "task_id": "t1"
+    }
+  ],
+  "citations": [
+    {
+      "id": "t1-c-3706c5d848587746c55ea186ee66adfe53fdccf0f91acb06b86f36a00cdfd774",
+      "source_id": "S18",
+      "provider": "NOAA Aviation Weather Center",
+      "product": "VAAH METAR",
+      "url": "https://aviationweather.gov/api/data/metar?ids=VAAH&format=json&hours=3",
+      "response_sha256": "3706c5d848587746c55ea186ee66adfe53fdccf0f91acb06b86f36a00cdfd774",
+      "retrieved_at_utc": "2026-09-12T18:47:31.192933+00:00"
+    },
+    {
+      "id": "t1-c-6d2a746215bc3a44b93f6478c89d904580ccab1a138c34ed24a55aee080cc3be",
+      "source_id": "S20",
+      "provider": "NOAA Aviation Weather Center",
+      "product": "VAAH station identity",
+      "url": "https://aviationweather.gov/api/data/stationinfo?ids=VAAH&format=json",
+      "response_sha256": "6d2a746215bc3a44b93f6478c89d904580ccab1a138c34ed24a55aee080cc3be",
+      "retrieved_at_utc": "2026-09-12T18:47:30.482412+00:00"
+    }
+  ],
+  "notes": [
+    "Airport reports concern their stated station and validity. No flight status, operational clearance or city-wide weather is inferred.",
+    "Explaining the previous verified evidence; no new observation or forecast was fetched."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T18:47:26.609405+00:00",
+  "expires_at_utc": "2026-09-12T18:52:31.192933+00:00",
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 2848,
+      "output_tokens": 192,
+      "duration_seconds": 3.690028459
+    },
+    "generation": null,
+    "tools": [
+      {
+        "name": "previous_evidence",
+        "freshness": "within_original_lifetime"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "explain_previous",
+      "changed_fields": [],
+      "inherited_fields": [
+        "places"
+      ]
+    },
+    "duration_seconds": 3.704
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "VAAH",
+        "state": "",
+        "district": "",
+        "kind": "unknown"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "What does that mean in simple words?",
+        "kind": "explanation",
+        "operation": "lookup",
+        "parameters": [],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "context_action": "explain_previous",
+    "changed_fields": [],
+    "intent": "explanation",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "result": {
+    "count": 4,
+    "coverage": {
+      "requested_point": {
+        "latitude": 23.02579,
+        "longitude": 72.58727
+      },
+      "returned_grid": {
+        "latitude": 23.0,
+        "longitude": 72.5
+      },
+      "time_basis": "Asia/Kolkata"
+    },
+    "family": "reanalysis",
+    "limitations": [
+      "Model-derived daily data; not direct gauge measurements."
+    ],
+    "provenance": {
+      "blob": "blobs/fac9fc235ad49873ff4a8ecc1e8cf46b7611fb5e70dad463b90ce2b2453f7434.bin",
+      "bytes": 463,
+      "checked_at_utc": "2026-09-12T18:10:25.143061+00:00",
+      "content_type": "application/json; charset=utf-8",
+      "delivery": "network",
+      "http_status": 200,
+      "ingestion_attempt": {
+        "job_id": "a1e21b8b5b05dbdefc03f25b0cf1e06ece231fbbeb0c7a5978407d5934e522b7",
+        "relative_root": "a1e21b8b5b05dbdefc03f25b0cf1e06ece231fbbeb0c7a5978407d5934e522b7/3fb4a622fb9847ec8199f71fd101af50",
+        "token": "3fb4a622fb9847ec8199f71fd101af50"
+      },
+      "retrieved_at_utc": "2026-09-12T18:10:25.141179+00:00",
+      "sha256": "fac9fc235ad49873ff4a8ecc1e8cf46b7611fb5e70dad463b90ce2b2453f7434",
+      "source_id": "S22",
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=23.02579&longitude=72.58727&start_date=2025-07-01&end_date=2025-07-01&daily=precipitation_sum%2Ctemperature_2m_mean%2Ctemperature_2m_max%2Ctemperature_2m_min&models=era5&timezone=Asia%2FKolkata",
+      "validation_scope": "product"
+    },
+    "quality": {
+      "freshness": "retrieved_now",
+      "interval_coverage": "complete",
+      "missing_value_count": 0,
+      "schema": "validated",
+      "source_issue_freshness": "unknown",
+      "spatial_applicability": "not_independently_validated",
+      "spatial_identity": "present",
+      "temporal_applicability": "requested_window_present",
+      "value_coverage": "complete"
+    },
+    "records": [
+      {
+        "date": "2025-07-01",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "precipitation_sum",
+        "period_end_utc": "2025-07-01T18:30:00+00:00",
+        "period_start_utc": "2025-06-30T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.precipitation_sum[0]",
+        "unit": "mm",
+        "value": 1.0
+      },
+      {
+        "date": "2025-07-01",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "temperature_2m_mean",
+        "period_end_utc": "2025-07-01T18:30:00+00:00",
+        "period_start_utc": "2025-06-30T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.temperature_2m_mean[0]",
+        "unit": "\u00b0C",
+        "value": 29.8
+      },
+      {
+        "date": "2025-07-01",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "temperature_2m_max",
+        "period_end_utc": "2025-07-01T18:30:00+00:00",
+        "period_start_utc": "2025-06-30T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.temperature_2m_max[0]",
+        "unit": "\u00b0C",
+        "value": 33.0
+      },
+      {
+        "date": "2025-07-01",
+        "model": "ERA5 via Open-Meteo",
+        "parameter": "temperature_2m_min",
+        "period_end_utc": "2025-07-01T18:30:00+00:00",
+        "period_start_utc": "2025-06-30T18:30:00+00:00",
+        "quality_flags": [],
+        "source_locator": "$.daily.temperature_2m_min[0]",
+        "unit": "\u00b0C",
+        "value": 27.3
+      }
+    ],
+    "schema_version": "foundation-v1",
+    "source_id": "S22",
+    "status": "ok"
+  },
+  "sha256": "a393e8f0107b20e7be74dc34f82696453e089427341d56cecf103b79788899e8"
+}

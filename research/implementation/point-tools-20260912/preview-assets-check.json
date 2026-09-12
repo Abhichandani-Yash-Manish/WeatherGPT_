@@ -1,0 +1,41 @@
+{
+  "responses": [
+    {
+      "port": 8765,
+      "path": "/",
+      "status": 200,
+      "bytes": 5211
+    },
+    {
+      "port": 8765,
+      "path": "/app.js",
+      "status": 200,
+      "bytes": 13492
+    },
+    {
+      "port": 8765,
+      "path": "/charts.js",
+      "status": 200,
+      "bytes": 3176
+    },
+    {
+      "port": 8766,
+      "path": "/",
+      "status": 200,
+      "bytes": 5211
+    },
+    {
+      "port": 8766,
+      "path": "/app.js",
+      "status": 200,
+      "bytes": 13492
+    },
+    {
+      "port": 8766,
+      "path": "/charts.js",
+      "status": 200,
+      "bytes": 3176
+    }
+  ],
+  "browser_visual_qa": false
+}

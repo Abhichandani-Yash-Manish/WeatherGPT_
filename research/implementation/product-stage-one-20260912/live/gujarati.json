@@ -1,0 +1,124 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "7340f35c-c73d-4700-8ba6-73ac91d335be",
+  "question": "અમદાવાદ, ગુજરાતમાં કાલે સવારે વરસાદ પડશે?",
+  "status": "needs_clarification",
+  "answer": "I could not find a settlement named અમદાવાદ in ગુજરાત. Please give its district/state, an alternative spelling, or a pin. I will not replace it with a nearby city.",
+  "facts": [],
+  "citations": [],
+  "notes": [
+    "કાલે સવારે (Tomorrow morning) is defaulted to 06:30–12:30 IST."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T17:39:18.024718+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 1188,
+      "output_tokens": 399,
+      "duration_seconds": 6.345719042
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "gazetteer_search",
+        "query": {
+          "name": "અમદાવાદ",
+          "state": "ગુજરાત",
+          "district": "",
+          "kind": "settlement"
+        },
+        "matches": 0
+      },
+      {
+        "name": "forecast",
+        "task_id": "t1",
+        "status": "needs_clarification"
+      }
+    ],
+    "provider": "local_ollama",
+    "duration_seconds": 6.396
+  },
+  "plan": {
+    "intent": "forecast",
+    "language": "gu",
+    "places": [
+      {
+        "name": "અમદાવાદ",
+        "state": "ગુજરાત",
+        "district": "",
+        "kind": "settlement"
+      }
+    ],
+    "start_local": "2026-09-13T06:30:00+05:30",
+    "end_local": "2026-09-13T12:30:00+05:30",
+    "explicit_times": false,
+    "variables": [
+      "precipitation"
+    ],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "assumptions": [
+      "કાલે સવારે (Tomorrow morning) is defaulted to 06:30–12:30 IST."
+    ],
+    "clarification": "",
+    "requested_outcome": "Forecast of rainfall for tomorrow morning in Ahmedabad, Gujarat.",
+    "tasks": [
+      {
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-13T06:30:00+05:30",
+        "end_local": "2026-09-13T12:30:00+05:30",
+        "place_indices": [
+          0
+        ]
+      }
+    ]
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-13T06:30:00+05:30",
+        "end_local": "2026-09-13T12:30:00+05:30",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "needs_clarification",
+      "answer": "I could not find a settlement named અમદાવાદ in ગુજરાત. Please give its district/state, an alternative spelling, or a pin. I will not replace it with a nearby city.",
+      "fact_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

@@ -1,0 +1,201 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "46ab11c3-1131-41b8-9268-68d168127cbf",
+  "question": "Latest VAAH TAF please",
+  "status": "answered",
+  "answer": "VAAH TAF: TAF VAAH 121700Z 1218/1303 27005KT 2000 -RA BR SCT012 SCT018 OVC080 BECMG 1222/1224 35005KT BECMG 1301/1303 1500 -RA BR",
+  "facts": [],
+  "citations": [
+    {
+      "id": "t1-c-47d3adee96e8c8e608e54a05d5e377042a355ab2854cef17333db07322c1d5f7",
+      "source_id": "S19",
+      "provider": "NOAA Aviation Weather Center",
+      "product": "VAAH TAF",
+      "url": "https://aviationweather.gov/api/data/taf?ids=VAAH&format=json",
+      "response_sha256": "47d3adee96e8c8e608e54a05d5e377042a355ab2854cef17333db07322c1d5f7",
+      "retrieved_at_utc": "2026-09-12T18:54:52.206697+00:00"
+    },
+    {
+      "id": "t1-c-6d2a746215bc3a44b93f6478c89d904580ccab1a138c34ed24a55aee080cc3be",
+      "source_id": "S20",
+      "provider": "NOAA Aviation Weather Center",
+      "product": "VAAH station identity",
+      "url": "https://aviationweather.gov/api/data/stationinfo?ids=VAAH&format=json",
+      "response_sha256": "6d2a746215bc3a44b93f6478c89d904580ccab1a138c34ed24a55aee080cc3be",
+      "retrieved_at_utc": "2026-09-12T18:47:30.482412+00:00"
+    }
+  ],
+  "notes": [
+    "Airport reports concern their stated station and validity. No flight status, operational clearance or city-wide weather is inferred."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T18:54:47.832284+00:00",
+  "expires_at_utc": "2026-09-12T19:54:52.206697+00:00",
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 2477,
+      "output_tokens": 196,
+      "duration_seconds": 3.508725792
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "airport_taf",
+        "station": "VAAH",
+        "source_id": "S19",
+        "status": "retrieved",
+        "response_sha256": "47d3adee96e8c8e608e54a05d5e377042a355ab2854cef17333db07322c1d5f7"
+      },
+      {
+        "name": "aviation",
+        "task_id": "t1",
+        "status": "answered"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "new",
+      "changed_fields": [
+        "places"
+      ],
+      "inherited_fields": []
+    },
+    "duration_seconds": 4.376
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "VAAH",
+        "state": "",
+        "district": "",
+        "kind": "unknown"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "Latest VAAH TAF please",
+        "kind": "aviation",
+        "operation": "lookup",
+        "parameters": [
+          "taf"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "context_action": "new",
+    "changed_fields": [
+      "places"
+    ],
+    "intent": "research",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "Latest VAAH TAF please",
+        "kind": "aviation",
+        "operation": "lookup",
+        "parameters": [
+          "taf"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "answered",
+      "answer": "VAAH TAF: TAF VAAH 121700Z 1218/1303 27005KT 2000 -RA BR SCT012 SCT018 OVC080 BECMG 1222/1224 35005KT BECMG 1301/1303 1500 -RA BR",
+      "fact_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "aviation",
+      "parameters": [
+        "taf"
+      ],
+      "candidates": [
+        {
+          "tool": "airport_reports",
+          "selected": true,
+          "available": true,
+          "reason": "Indian ICAO airport observations/TAF with station identity; no flight status or city-wide observation",
+          "sources": [
+            {
+              "source_id": "S18",
+              "product": "NOAA AWC VAAH METAR dissemination",
+              "registry_status": "prototype_adapter_tested"
+            },
+            {
+              "source_id": "S19",
+              "product": "NOAA AWC VAAH TAF dissemination",
+              "registry_status": "prototype_adapter_tested"
+            },
+            {
+              "source_id": "S20",
+              "product": "NOAA AWC airport station metadata",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "answered",
+      "returned_source_ids": [
+        "S19",
+        "S20"
+      ]
+    }
+  ],
+  "airport_reports": [
+    {
+      "station": "VAAH",
+      "kind": "taf",
+      "raw_report": "TAF VAAH 121700Z 1218/1303 27005KT 2000 -RA BR SCT012 SCT018 OVC080 BECMG 1222/1224 35005KT BECMG 1301/1303 1500 -RA BR",
+      "source_locator": "$[0]",
+      "citation_ids": [
+        "t1-c-47d3adee96e8c8e608e54a05d5e377042a355ab2854cef17333db07322c1d5f7"
+      ],
+      "observed_at": null,
+      "valid_start": "2026-09-12T18:00:00+00:00",
+      "valid_end": "2026-09-13T03:00:00+00:00"
+    }
+  ],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 1,
+    "incomplete_ids": []
+  }
+}

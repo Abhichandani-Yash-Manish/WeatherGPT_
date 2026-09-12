@@ -188,6 +188,8 @@ Generated from `sources.json`; edit the JSON and regenerate. Original discovery:
 - [479f58bf07dd627a1c6cc68c422daaf0c682823aa3c6122627b577b375dc242d.bin](../../data/runtime/blobs/479f58bf07dd627a1c6cc68c422daaf0c682823aa3c6122627b577b375dc242d.bin)
 - [2ced79b3396100d4bdf55401fca92193c2a8a99913ad62a01b986c7c2dfb103b.bin](../../data/runtime/blobs/2ced79b3396100d4bdf55401fca92193c2a8a99913ad62a01b986c7c2dfb103b.bin)
 - [2ebb682f2306815b36d6a1276b20bee0e2367046f8042ea5b2a71a8ab30226fb.bin](../../data/runtime/blobs/2ebb682f2306815b36d6a1276b20bee0e2367046f8042ea5b2a71a8ab30226fb.bin)
+- [18-bulletin-retrieval-and-warning-lifecycle.md](../../docs/18-bulletin-retrieval-and-warning-lifecycle.md)
+- [acceptance.json](../../research/implementation/evidence-retrieval-20260913/acceptance.json)
 
 **Review:** pending · **Production:** not_validated
 
@@ -538,6 +540,7 @@ Generated from `sources.json`; edit the JSON and regenerate. Original discovery:
 - [payload-checks.json](../../research/discovery/evidence/recheck-20260911T185811Z/payload-checks.json)
 - [aviation-metar.json](../../data/processed/foundation/20260911T194849Z/aviation-metar.json)
 - [c22bc6b3d7afb2866bd7793684f7a5086ec4677b10c9285a263e64b687bc7a73.bin](../../data/runtime/blobs/c22bc6b3d7afb2866bd7793684f7a5086ec4677b10c9285a263e64b687bc7a73.bin)
+- [3706c5d848587746c55ea186ee66adfe53fdccf0f91acb06b86f36a00cdfd774.bin](../../research/implementation/conversation-engine-20260912/verified-evidence/3706c5d848587746c55ea186ee66adfe53fdccf0f91acb06b86f36a00cdfd774.bin)
 
 **Review:** pending · **Production:** not_validated
 
@@ -568,6 +571,7 @@ Generated from `sources.json`; edit the JSON and regenerate. Original discovery:
 - [manifest.json](../../research/discovery/evidence/broad-20260911T160113Z/manifest.json)
 - [aviation-taf.json](../../data/processed/foundation/20260911T194849Z/aviation-taf.json)
 - [84e7ee7f633c529f9a22857cc4e54a0772330f64c769f8aa3c690cec9b54c26e.bin](../../data/runtime/blobs/84e7ee7f633c529f9a22857cc4e54a0772330f64c769f8aa3c690cec9b54c26e.bin)
+- [47d3adee96e8c8e608e54a05d5e377042a355ab2854cef17333db07322c1d5f7.bin](../../research/implementation/conversation-engine-20260912/verified-evidence/47d3adee96e8c8e608e54a05d5e377042a355ab2854cef17333db07322c1d5f7.bin)
 
 **Review:** pending · **Production:** not_validated
 
@@ -601,6 +605,7 @@ Generated from `sources.json`; edit the JSON and regenerate. Original discovery:
 - [payload-checks.json](../../research/discovery/evidence/recheck-20260911T185811Z/payload-checks.json)
 - [aviation-stationinfo.json](../../data/processed/foundation/20260911T194849Z/aviation-stationinfo.json)
 - [ec46f4110f08e812da0d446a31d431906593b8e441489237b6ec10c94dcb755e.bin](../../data/runtime/blobs/ec46f4110f08e812da0d446a31d431906593b8e441489237b6ec10c94dcb755e.bin)
+- [6d2a746215bc3a44b93f6478c89d904580ccab1a138c34ed24a55aee080cc3be.bin](../../research/implementation/conversation-engine-20260912/verified-evidence/6d2a746215bc3a44b93f6478c89d904580ccab1a138c34ed24a55aee080cc3be.bin)
 
 **Review:** pending · **Production:** not_validated
 
@@ -674,6 +679,8 @@ Generated from `sources.json`; edit the JSON and regenerate. Original discovery:
 - [manifest.json](../../research/discovery/evidence/numeric-20260911T160221Z/manifest.json)
 - [history-ahmedabad.json](../../data/processed/foundation/20260911T194849Z/history-ahmedabad.json)
 - [4714bf17589474f1714777338677b9864c0f6dddc79f2e8d6fbb74650a2fff42.bin](../../data/runtime/blobs/4714bf17589474f1714777338677b9864c0f6dddc79f2e8d6fbb74650a2fff42.bin)
+- [history_local.json](../../research/implementation/point-tools-20260912/live-sources/history_local.json)
+- [d328dcf011dfcdf085d42e5a99dc8692bf9889710265fed8d47469c99f89027f.bin](../../research/implementation/point-tools-20260912/live-sources/raw/4827bc45b591615ba396fe5081c6d764382b8108d49bb622b72340d0fdadf26c/58de344670a74a52ae7f1dcf5f9624cb/blobs/d328dcf011dfcdf085d42e5a99dc8692bf9889710265fed8d47469c99f89027f.bin)
 
 **Review:** pending · **Production:** not_validated
 
@@ -1645,7 +1652,7 @@ Generated from `sources.json`; edit the JSON and regenerate. Original discovery:
 
 **Where:** https://mausam.imd.gov.in/responsive/agromet_adv_ser_district_current_en.php
 
-**Geography:** 36 source-listed regions, 698 district entries; four document samples.
+**Geography:** 36 source-listed regions and 698 district entries in the directory snapshot. Crop retrieval inspected in Ahmedabad, Coimbatore, Kamrup and Dibrugarh (56 passages); Surat and Madurai samples held. Not national document acceptance.
 
 **Time:** Current-page/forecast sample at recorded fetch timestamp; runtime freshness and PDF validity are distinct.
 
@@ -1653,7 +1660,7 @@ Generated from `sources.json`; edit the JSON and regenerate. Original discovery:
 
 **First task:** Use the implemented adapter; resolve the documented operational gates before decision support.
 
-**Unresolved:** Reference/information prototype; not operational clearance or independently validated warning dissemination. Operational validity, domain interpretation, geographic completeness and sustained service behavior require validation.
+**Unresolved:** Reference/information prototype; not operational clearance or independently validated warning dissemination. Crop indexing does not include every general or warning section of a bulletin; cross-section contradictions are not automatically resolved. Growth-stage filtering uses explicit row labels; conditions in source paragraph bodies are retained but not inferred as universal stage metadata. Operational validity, domain interpretation, geographic completeness and sustained service behavior require validation.
 
 **Terms:** Official public delivery; automated use and redistribution rights require product-specific review. No unrestricted licence inferred.
 
@@ -1711,6 +1718,13 @@ Generated from `sources.json`; edit the JSON and regenerate. Original discovery:
 - [advisory-coimbatore.json](../../data/processed/foundation/20260911T194849Z/advisory-coimbatore.json)
 - [99b77dc84e6bec60bfe3a5cd64b0d8247761b43abed6af3a63b056b0edfe7b9f.bin](../../data/runtime/blobs/99b77dc84e6bec60bfe3a5cd64b0d8247761b43abed6af3a63b056b0edfe7b9f.bin)
 - [3d004ae0499c6c6bce001b931e726e451df0155c923a83aab848f9a3b526e997.bin](../../data/runtime/blobs/3d004ae0499c6c6bce001b931e726e451df0155c923a83aab848f9a3b526e997.bin)
+- [18-bulletin-retrieval-and-warning-lifecycle.md](../../docs/18-bulletin-retrieval-and-warning-lifecycle.md)
+- [acceptance.json](../../research/implementation/evidence-retrieval-20260913/acceptance.json)
+- [2a5c1798e89380e862a2c429522f7a1c18b459f912bf600c1d449c787954b730.pdf](../../research/implementation/context-and-retrieval-20260913/source-pdfs/2a5c1798e89380e862a2c429522f7a1c18b459f912bf600c1d449c787954b730.pdf)
+- [57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee.pdf](../../research/implementation/context-and-retrieval-20260913/source-pdfs/57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee.pdf)
+- [5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb.pdf](../../research/implementation/context-and-retrieval-20260913/source-pdfs/5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb.pdf)
+- [source-review.json](../../research/implementation/context-and-retrieval-20260913/source-review.json)
+- [dibrugarh.json](../../research/implementation/context-and-retrieval-20260913/districts/dibrugarh.json)
 
 **Review:** pending · **Production:** not_validated
 
@@ -1838,5 +1852,33 @@ Generated from `sources.json`; edit the JSON and regenerate. Original discovery:
 - [manifest.json](../../data/processed/geography/geonames-india-20260912/manifest.json)
 - [build-manifest.json](../../data/processed/geography/geonames-india-20260912/build-manifest.json)
 - [state-aliases.json](../../data/processed/geography/geonames-india-20260912/state-aliases.json)
+
+**Review:** pending · **Production:** not_validated
+
+## S62 — Open-Meteo best-match extended hourly forecast
+
+**Evidence:** sample_inspected · **Processing:** sample_ready_for_processing · **Priority:** first
+
+**Where:** https://api.open-meteo.com/v1/forecast
+
+**Geography:** Selected India settlement points; requested and returned grids retained, not area averages.
+
+**Time:** Governed 1–7 UTC forecast days; conversation hourly detail limited to 48 hours per task.
+
+**Fields/units:** Temperature/apparent temperature °C; relative humidity/probability %; precipitation mm; wind/gusts km/h; visibility m
+
+**First task:** Implemented governed normalized publication, raw-evidence verification and typed hourly conversation facts. Broader model/area/scientific validation remains open.
+
+**Unresolved:** Default best-match selection can differ by variable; upstream models and runs unspecified. Not exclusively GFS. Hourly precipitation probabilities apply to >0.1 mm in the preceding hour, never an aggregate period probability. Point grid estimates are not official warnings, observations or district averages. Measure regional/model representativeness, calibration, updates and sustained availability.
+
+**Terms:** Open-Meteo hosted free tier for non-commercial prototyping subject to limits; attribution and upstream terms apply. No SLA.
+
+**Questions:** Q02, Q07, Q18
+
+**Evidence files:**
+
+- [extended_forecast.json](../../research/implementation/point-tools-20260912/live-sources/extended_forecast.json)
+- [569c5612afbdd2695f510b2b7e90ef964f2ed126c13c662c375a7b85e166c683.bin](../../research/implementation/point-tools-20260912/live-sources/raw/96c2c9d9df0847b7e859d366972284d7695a804df3f9a75f554167c0b9f4d651/e8b3f8cbd7424220a4e79af5eba30a97/blobs/569c5612afbdd2695f510b2b7e90ef964f2ed126c13c662c375a7b85e166c683.bin)
+- [da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca.bin](../../research/implementation/context-and-retrieval-20260913/verified-evidence/da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca.bin)
 
 **Review:** pending · **Production:** not_validated

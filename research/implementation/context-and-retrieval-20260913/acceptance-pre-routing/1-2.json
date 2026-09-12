@@ -1,0 +1,2406 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "53d10726-33c9-4e20-986b-1e42dddf9aeb",
+  "question": "Ahmedabad, Gujarat",
+  "status": "partial",
+  "answer": "Ahmedabad · 14 Sep, 00:30–14 Sep, 23:30 IST: Precipitation in individual hours: 0.1–5.7 mm. Temperature: 24.8–27.7 °C. Wind speed: 1.5–13.3 km/h. Source: Open-Meteo best-match forecast; conditions can change.\n\nPart of the request is still unresolved; the missing intervals or tasks are listed below.",
+  "facts": [
+    {
+      "id": "t1-f1",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "3.4",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T00:30:00+05:30",
+      "end": "2026-09-14T01:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[44]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f2",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "1.5",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T01:30:00+05:30",
+      "end": "2026-09-14T02:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[45]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f3",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "1.2",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T02:30:00+05:30",
+      "end": "2026-09-14T03:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[46]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f4",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "2.2",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T03:30:00+05:30",
+      "end": "2026-09-14T04:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[47]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f5",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "0.4",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T04:30:00+05:30",
+      "end": "2026-09-14T05:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[48]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f6",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "0.2",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T05:30:00+05:30",
+      "end": "2026-09-14T06:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[49]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f7",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "1.4",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T06:30:00+05:30",
+      "end": "2026-09-14T07:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[50]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f8",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "1.9",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T07:30:00+05:30",
+      "end": "2026-09-14T08:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[51]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f9",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "0.9",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T08:30:00+05:30",
+      "end": "2026-09-14T09:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[52]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f10",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "5.7",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T09:30:00+05:30",
+      "end": "2026-09-14T10:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[53]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f11",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "5.5",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T10:30:00+05:30",
+      "end": "2026-09-14T11:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[54]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f12",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "1.5",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T11:30:00+05:30",
+      "end": "2026-09-14T12:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[55]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f13",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "1.5",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T12:30:00+05:30",
+      "end": "2026-09-14T13:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[56]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f14",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "2.8",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T13:30:00+05:30",
+      "end": "2026-09-14T14:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[57]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f15",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "1.7",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T14:30:00+05:30",
+      "end": "2026-09-14T15:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[58]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f16",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "1.8",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T15:30:00+05:30",
+      "end": "2026-09-14T16:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[59]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f17",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "1.5",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T16:30:00+05:30",
+      "end": "2026-09-14T17:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[60]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f18",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "0.8",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T17:30:00+05:30",
+      "end": "2026-09-14T18:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[61]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f19",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "1.9",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T18:30:00+05:30",
+      "end": "2026-09-14T19:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[62]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f20",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "3.9",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T19:30:00+05:30",
+      "end": "2026-09-14T20:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[63]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f21",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "3.6",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T20:30:00+05:30",
+      "end": "2026-09-14T21:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[64]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f22",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "1.0",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T21:30:00+05:30",
+      "end": "2026-09-14T22:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[65]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f23",
+      "parameter": "precipitation",
+      "label": "Hourly precipitation amount",
+      "value": "0.1",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T22:30:00+05:30",
+      "end": "2026-09-14T23:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.precipitation[66]"
+      ],
+      "method": "preceding_hour_sum",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f24",
+      "parameter": "temperature_2m",
+      "label": "Temperature sample",
+      "value": "25.6",
+      "unit": "°C",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T00:30:00+05:30",
+      "end": "2026-09-14T00:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.temperature_2m[43]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T00:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f25",
+      "parameter": "temperature_2m",
+      "label": "Temperature sample",
+      "value": "25.3",
+      "unit": "°C",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T01:30:00+05:30",
+      "end": "2026-09-14T01:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.temperature_2m[44]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T01:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f26",
+      "parameter": "temperature_2m",
+      "label": "Temperature sample",
+      "value": "25.1",
+      "unit": "°C",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T02:30:00+05:30",
+      "end": "2026-09-14T02:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.temperature_2m[45]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T02:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f27",
+      "parameter": "temperature_2m",
+      "label": "Temperature sample",
+      "value": "25.2",
+      "unit": "°C",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T03:30:00+05:30",
+      "end": "2026-09-14T03:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.temperature_2m[46]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T03:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f28",
+      "parameter": "temperature_2m",
+      "label": "Temperature sample",
+      "value": "25.1",
+      "unit": "°C",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T04:30:00+05:30",
+      "end": "2026-09-14T04:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.temperature_2m[47]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T04:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f29",
+      "parameter": "temperature_2m",
+      "label": "Temperature sample",
+      "value": "25.7",
+      "unit": "°C",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T05:30:00+05:30",
+      "end": "2026-09-14T05:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.temperature_2m[48]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T05:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f30",
+      "parameter": "temperature_2m",
+      "label": "Temperature sample",
+      "value": "25.9",
+      "unit": "°C",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T06:30:00+05:30",
+      "end": "2026-09-14T06:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.temperature_2m[49]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T06:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f31",
+      "parameter": "temperature_2m",
+      "label": "Temperature sample",
+      "value": "26.0",
+      "unit": "°C",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T07:30:00+05:30",
+      "end": "2026-09-14T07:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.temperature_2m[50]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T07:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f32",
+      "parameter": "temperature_2m",
+      "label": "Temperature sample",
+      "value": "26.2",
+      "unit": "°C",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T08:30:00+05:30",
+      "end": "2026-09-14T08:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.temperature_2m[51]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T08:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f33",
+      "parameter": "temperature_2m",
+      "label": "Temperature sample",
+      "value": "26.5",
+      "unit": "°C",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T09:30:00+05:30",
+      "end": "2026-09-14T09:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.temperature_2m[52]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T09:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f34",
+      "parameter": "temperature_2m",
+      "label": "Temperature sample",
+      "value": "26.3",
+      "unit": "°C",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T10:30:00+05:30",
+      "end": "2026-09-14T10:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.temperature_2m[53]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T10:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f35",
+      "parameter": "temperature_2m",
+      "label": "Temperature sample",
+      "value": "26.8",
+      "unit": "°C",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T11:30:00+05:30",
+      "end": "2026-09-14T11:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.temperature_2m[54]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T11:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f36",
+      "parameter": "temperature_2m",
+      "label": "Temperature sample",
+      "value": "27.7",
+      "unit": "°C",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T12:30:00+05:30",
+      "end": "2026-09-14T12:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.temperature_2m[55]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T12:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f37",
+      "parameter": "temperature_2m",
+      "label": "Temperature sample",
+      "value": "27.4",
+      "unit": "°C",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T13:30:00+05:30",
+      "end": "2026-09-14T13:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.temperature_2m[56]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T13:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f38",
+      "parameter": "temperature_2m",
+      "label": "Temperature sample",
+      "value": "26.7",
+      "unit": "°C",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T14:30:00+05:30",
+      "end": "2026-09-14T14:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.temperature_2m[57]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T14:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f39",
+      "parameter": "temperature_2m",
+      "label": "Temperature sample",
+      "value": "26.6",
+      "unit": "°C",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T15:30:00+05:30",
+      "end": "2026-09-14T15:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.temperature_2m[58]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T15:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f40",
+      "parameter": "temperature_2m",
+      "label": "Temperature sample",
+      "value": "26.3",
+      "unit": "°C",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T16:30:00+05:30",
+      "end": "2026-09-14T16:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.temperature_2m[59]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T16:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f41",
+      "parameter": "temperature_2m",
+      "label": "Temperature sample",
+      "value": "26.1",
+      "unit": "°C",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T17:30:00+05:30",
+      "end": "2026-09-14T17:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.temperature_2m[60]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T17:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f42",
+      "parameter": "temperature_2m",
+      "label": "Temperature sample",
+      "value": "25.9",
+      "unit": "°C",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T18:30:00+05:30",
+      "end": "2026-09-14T18:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.temperature_2m[61]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T18:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f43",
+      "parameter": "temperature_2m",
+      "label": "Temperature sample",
+      "value": "25.5",
+      "unit": "°C",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T19:30:00+05:30",
+      "end": "2026-09-14T19:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.temperature_2m[62]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T19:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f44",
+      "parameter": "temperature_2m",
+      "label": "Temperature sample",
+      "value": "25.3",
+      "unit": "°C",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T20:30:00+05:30",
+      "end": "2026-09-14T20:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.temperature_2m[63]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T20:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f45",
+      "parameter": "temperature_2m",
+      "label": "Temperature sample",
+      "value": "25.4",
+      "unit": "°C",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T21:30:00+05:30",
+      "end": "2026-09-14T21:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.temperature_2m[64]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T21:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f46",
+      "parameter": "temperature_2m",
+      "label": "Temperature sample",
+      "value": "25.2",
+      "unit": "°C",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T22:30:00+05:30",
+      "end": "2026-09-14T22:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.temperature_2m[65]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T22:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f47",
+      "parameter": "temperature_2m",
+      "label": "Temperature sample",
+      "value": "24.8",
+      "unit": "°C",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T23:30:00+05:30",
+      "end": "2026-09-14T23:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.temperature_2m[66]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T23:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f48",
+      "parameter": "wind_speed_10m",
+      "label": "Wind speed sample",
+      "value": "4.5",
+      "unit": "km/h",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T00:30:00+05:30",
+      "end": "2026-09-14T00:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.wind_speed_10m[43]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T00:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f49",
+      "parameter": "wind_speed_10m",
+      "label": "Wind speed sample",
+      "value": "3.4",
+      "unit": "km/h",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T01:30:00+05:30",
+      "end": "2026-09-14T01:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.wind_speed_10m[44]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T01:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f50",
+      "parameter": "wind_speed_10m",
+      "label": "Wind speed sample",
+      "value": "2.1",
+      "unit": "km/h",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T02:30:00+05:30",
+      "end": "2026-09-14T02:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.wind_speed_10m[45]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T02:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f51",
+      "parameter": "wind_speed_10m",
+      "label": "Wind speed sample",
+      "value": "3.3",
+      "unit": "km/h",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T03:30:00+05:30",
+      "end": "2026-09-14T03:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.wind_speed_10m[46]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T03:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f52",
+      "parameter": "wind_speed_10m",
+      "label": "Wind speed sample",
+      "value": "4.0",
+      "unit": "km/h",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T04:30:00+05:30",
+      "end": "2026-09-14T04:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.wind_speed_10m[47]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T04:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f53",
+      "parameter": "wind_speed_10m",
+      "label": "Wind speed sample",
+      "value": "7.5",
+      "unit": "km/h",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T05:30:00+05:30",
+      "end": "2026-09-14T05:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.wind_speed_10m[48]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T05:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f54",
+      "parameter": "wind_speed_10m",
+      "label": "Wind speed sample",
+      "value": "5.1",
+      "unit": "km/h",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T06:30:00+05:30",
+      "end": "2026-09-14T06:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.wind_speed_10m[49]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T06:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f55",
+      "parameter": "wind_speed_10m",
+      "label": "Wind speed sample",
+      "value": "4.0",
+      "unit": "km/h",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T07:30:00+05:30",
+      "end": "2026-09-14T07:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.wind_speed_10m[50]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T07:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f56",
+      "parameter": "wind_speed_10m",
+      "label": "Wind speed sample",
+      "value": "3.2",
+      "unit": "km/h",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T08:30:00+05:30",
+      "end": "2026-09-14T08:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.wind_speed_10m[51]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T08:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f57",
+      "parameter": "wind_speed_10m",
+      "label": "Wind speed sample",
+      "value": "4.2",
+      "unit": "km/h",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T09:30:00+05:30",
+      "end": "2026-09-14T09:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.wind_speed_10m[52]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T09:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f58",
+      "parameter": "wind_speed_10m",
+      "label": "Wind speed sample",
+      "value": "3.6",
+      "unit": "km/h",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T10:30:00+05:30",
+      "end": "2026-09-14T10:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.wind_speed_10m[53]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T10:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f59",
+      "parameter": "wind_speed_10m",
+      "label": "Wind speed sample",
+      "value": "1.5",
+      "unit": "km/h",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T11:30:00+05:30",
+      "end": "2026-09-14T11:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.wind_speed_10m[54]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T11:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f60",
+      "parameter": "wind_speed_10m",
+      "label": "Wind speed sample",
+      "value": "1.8",
+      "unit": "km/h",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T12:30:00+05:30",
+      "end": "2026-09-14T12:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.wind_speed_10m[55]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T12:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f61",
+      "parameter": "wind_speed_10m",
+      "label": "Wind speed sample",
+      "value": "4.9",
+      "unit": "km/h",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T13:30:00+05:30",
+      "end": "2026-09-14T13:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.wind_speed_10m[56]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T13:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f62",
+      "parameter": "wind_speed_10m",
+      "label": "Wind speed sample",
+      "value": "1.5",
+      "unit": "km/h",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T14:30:00+05:30",
+      "end": "2026-09-14T14:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.wind_speed_10m[57]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T14:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f63",
+      "parameter": "wind_speed_10m",
+      "label": "Wind speed sample",
+      "value": "3.4",
+      "unit": "km/h",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T15:30:00+05:30",
+      "end": "2026-09-14T15:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.wind_speed_10m[58]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T15:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f64",
+      "parameter": "wind_speed_10m",
+      "label": "Wind speed sample",
+      "value": "3.1",
+      "unit": "km/h",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T16:30:00+05:30",
+      "end": "2026-09-14T16:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.wind_speed_10m[59]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T16:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f65",
+      "parameter": "wind_speed_10m",
+      "label": "Wind speed sample",
+      "value": "4.1",
+      "unit": "km/h",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T17:30:00+05:30",
+      "end": "2026-09-14T17:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.wind_speed_10m[60]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T17:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f66",
+      "parameter": "wind_speed_10m",
+      "label": "Wind speed sample",
+      "value": "6.7",
+      "unit": "km/h",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T18:30:00+05:30",
+      "end": "2026-09-14T18:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.wind_speed_10m[61]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T18:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f67",
+      "parameter": "wind_speed_10m",
+      "label": "Wind speed sample",
+      "value": "7.9",
+      "unit": "km/h",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T19:30:00+05:30",
+      "end": "2026-09-14T19:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.wind_speed_10m[62]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T19:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f68",
+      "parameter": "wind_speed_10m",
+      "label": "Wind speed sample",
+      "value": "8.0",
+      "unit": "km/h",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T20:30:00+05:30",
+      "end": "2026-09-14T20:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.wind_speed_10m[63]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T20:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f69",
+      "parameter": "wind_speed_10m",
+      "label": "Wind speed sample",
+      "value": "11.4",
+      "unit": "km/h",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T21:30:00+05:30",
+      "end": "2026-09-14T21:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.wind_speed_10m[64]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T21:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f70",
+      "parameter": "wind_speed_10m",
+      "label": "Wind speed sample",
+      "value": "12.6",
+      "unit": "km/h",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T22:30:00+05:30",
+      "end": "2026-09-14T22:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.wind_speed_10m[65]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T22:30:00+05:30",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f71",
+      "parameter": "wind_speed_10m",
+      "label": "Wind speed sample",
+      "value": "13.3",
+      "unit": "km/h",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "entity_id": "geonames:1279233",
+      "start": "2026-09-14T23:30:00+05:30",
+      "end": "2026-09-14T23:30:00+05:30",
+      "source_id": "S62",
+      "evidence_kind": "forecast",
+      "evidence_version": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "citation_ids": [
+        "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      ],
+      "source_locators": [
+        "$.hourly.wind_speed_10m[66]"
+      ],
+      "method": "instant",
+      "sample_at": "2026-09-14T23:30:00+05:30",
+      "task_id": "t1"
+    }
+  ],
+  "citations": [
+    {
+      "id": "t1-c-da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "source_id": "S62",
+      "provider": "Open-Meteo",
+      "product": "Best-match hourly model forecast",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=23.02579&longitude=72.58727&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m%2Cprecipitation_probability%2Capparent_temperature%2Cwind_gusts_10m%2Cvisibility&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+      "response_sha256": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca",
+      "retrieved_at_utc": "2026-09-12T20:40:23.947833+00:00",
+      "requested_point": {
+        "latitude": 23.02579,
+        "longitude": 72.58727
+      },
+      "returned_grid": {
+        "latitude": 23.022846,
+        "longitude": 72.60188
+      },
+      "grid_distance_km": 1.531,
+      "model_run_time": null
+    },
+    {
+      "source_id": "S61",
+      "url": "https://www.geonames.org/1279233",
+      "provider": "GeoNames",
+      "product": "India place catalogue",
+      "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+      "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+    }
+  ],
+  "notes": [
+    "The user has not specified a location; places is empty. A forecast cannot be generated without a place.",
+    "The user has not specified parameters (e.g., rain, wind) or a specific time window within 'tomorrow'. Defaulting to general weather conditions for the next 12 hours from the current time.",
+    "precipitation: the requested boundaries split source hours or exceed available support; only complete contained intervals are shown",
+    "Precipitation includes rain, showers and snow water equivalent; it is not a rain-only gauge measurement.",
+    "Source hours are on UTC boundaries (:30 in IST). Each probability is for >0.1 mm in its preceding hour. Hourly probabilities are never combined into a period probability.",
+    "Best-match model selection may differ by variable; upstream run and local representativeness are unverified. Hourly values cannot determine an exact rain start minute or issue an official warning."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T20:40:22.263693+00:00",
+  "expires_at_utc": "2026-09-12T21:40:23.947833+00:00",
+  "trace": {
+    "planning": {
+      "provider": "literal_pending_place",
+      "model_calls": 0,
+      "filled_fields": [
+        "places"
+      ]
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "gazetteer_search",
+        "query": {
+          "name": "Ahmedabad",
+          "state": "Gujarat",
+          "district": "",
+          "kind": "settlement"
+        },
+        "matches": 1
+      },
+      {
+        "name": "extended_forecast",
+        "job_id": "1f4d8af8899db0688f00794fdeee7e3fd1f7b62d2d0393bd793db315ae7382a3",
+        "worker": {
+          "state": "succeeded",
+          "promoted": true,
+          "job_id": "1f4d8af8899db0688f00794fdeee7e3fd1f7b62d2d0393bd793db315ae7382a3"
+        },
+        "source_sha256": "da565bb0deee599eca9ee740741897a2c85f579d149021cadb7bab634d1b99ca"
+      },
+      {
+        "name": "forecast",
+        "task_id": "t1",
+        "status": "partial"
+      }
+    ],
+    "provider": "local_ollama",
+    "duration_seconds": 1.708
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Ahmedabad",
+        "state": "Gujarat",
+        "district": "",
+        "kind": "settlement"
+      }
+    ],
+    "assumptions": [
+      "The user has not specified a location; places is empty. A forecast cannot be generated without a place.",
+      "The user has not specified parameters (e.g., rain, wind) or a specific time window within 'tomorrow'. Defaulting to general weather conditions for the next 12 hours from the current time."
+    ],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "Ahmedabad, Gujarat",
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation",
+          "temperature_2m",
+          "wind_speed_10m"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-14T00:00:00+05:30",
+        "end_local": "2026-09-15T00:00:00+05:30",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "context_action": "clarification_answer",
+    "changed_fields": [
+      "places"
+    ],
+    "intent": "forecast",
+    "start_local": "2026-09-14T00:00:00+05:30",
+    "end_local": "2026-09-15T00:00:00+05:30",
+    "variables": [
+      "precipitation",
+      "temperature_2m",
+      "wind_speed_10m"
+    ],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "Ahmedabad, Gujarat",
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation",
+          "temperature_2m",
+          "wind_speed_10m"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-14T00:00:00+05:30",
+        "end_local": "2026-09-15T00:00:00+05:30",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "partial",
+      "answer": "Ahmedabad · 14 Sep, 00:30–14 Sep, 23:30 IST: Precipitation in individual hours: 0.1–5.7 mm. Temperature: 24.8–27.7 °C. Wind speed: 1.5–13.3 km/h. Source: Open-Meteo best-match forecast; conditions can change.\n\nPart of the request is still unresolved; the missing intervals or tasks are listed below.",
+      "fact_ids": [
+        "t1-f1",
+        "t1-f2",
+        "t1-f3",
+        "t1-f4",
+        "t1-f5",
+        "t1-f6",
+        "t1-f7",
+        "t1-f8",
+        "t1-f9",
+        "t1-f10",
+        "t1-f11",
+        "t1-f12",
+        "t1-f13",
+        "t1-f14",
+        "t1-f15",
+        "t1-f16",
+        "t1-f17",
+        "t1-f18",
+        "t1-f19",
+        "t1-f20",
+        "t1-f21",
+        "t1-f22",
+        "t1-f23",
+        "t1-f24",
+        "t1-f25",
+        "t1-f26",
+        "t1-f27",
+        "t1-f28",
+        "t1-f29",
+        "t1-f30",
+        "t1-f31",
+        "t1-f32",
+        "t1-f33",
+        "t1-f34",
+        "t1-f35",
+        "t1-f36",
+        "t1-f37",
+        "t1-f38",
+        "t1-f39",
+        "t1-f40",
+        "t1-f41",
+        "t1-f42",
+        "t1-f43",
+        "t1-f44",
+        "t1-f45",
+        "t1-f46",
+        "t1-f47",
+        "t1-f48",
+        "t1-f49",
+        "t1-f50",
+        "t1-f51",
+        "t1-f52",
+        "t1-f53",
+        "t1-f54",
+        "t1-f55",
+        "t1-f56",
+        "t1-f57",
+        "t1-f58",
+        "t1-f59",
+        "t1-f60",
+        "t1-f61",
+        "t1-f62",
+        "t1-f63",
+        "t1-f64",
+        "t1-f65",
+        "t1-f66",
+        "t1-f67",
+        "t1-f68",
+        "t1-f69",
+        "t1-f70",
+        "t1-f71"
+      ],
+      "passage_ids": []
+    }
+  ],
+  "charts": [
+    {
+      "kind": "hourly_series",
+      "axis_label": "Time (IST)",
+      "title": "Ahmedabad, Ahmadābād, State of Gujarāt · Hourly precipitation amount",
+      "unit": "mm",
+      "points": [
+        {
+          "x": 1789326000.0,
+          "label": "14 Sep 00:30–01:30",
+          "value": "3.4",
+          "evidence_id": "t1-f1"
+        },
+        {
+          "x": 1789329600.0,
+          "label": "14 Sep 01:30–02:30",
+          "value": "1.5",
+          "evidence_id": "t1-f2"
+        },
+        {
+          "x": 1789333200.0,
+          "label": "14 Sep 02:30–03:30",
+          "value": "1.2",
+          "evidence_id": "t1-f3"
+        },
+        {
+          "x": 1789336800.0,
+          "label": "14 Sep 03:30–04:30",
+          "value": "2.2",
+          "evidence_id": "t1-f4"
+        },
+        {
+          "x": 1789340400.0,
+          "label": "14 Sep 04:30–05:30",
+          "value": "0.4",
+          "evidence_id": "t1-f5"
+        },
+        {
+          "x": 1789344000.0,
+          "label": "14 Sep 05:30–06:30",
+          "value": "0.2",
+          "evidence_id": "t1-f6"
+        },
+        {
+          "x": 1789347600.0,
+          "label": "14 Sep 06:30–07:30",
+          "value": "1.4",
+          "evidence_id": "t1-f7"
+        },
+        {
+          "x": 1789351200.0,
+          "label": "14 Sep 07:30–08:30",
+          "value": "1.9",
+          "evidence_id": "t1-f8"
+        },
+        {
+          "x": 1789354800.0,
+          "label": "14 Sep 08:30–09:30",
+          "value": "0.9",
+          "evidence_id": "t1-f9"
+        },
+        {
+          "x": 1789358400.0,
+          "label": "14 Sep 09:30–10:30",
+          "value": "5.7",
+          "evidence_id": "t1-f10"
+        },
+        {
+          "x": 1789362000.0,
+          "label": "14 Sep 10:30–11:30",
+          "value": "5.5",
+          "evidence_id": "t1-f11"
+        },
+        {
+          "x": 1789365600.0,
+          "label": "14 Sep 11:30–12:30",
+          "value": "1.5",
+          "evidence_id": "t1-f12"
+        },
+        {
+          "x": 1789369200.0,
+          "label": "14 Sep 12:30–13:30",
+          "value": "1.5",
+          "evidence_id": "t1-f13"
+        },
+        {
+          "x": 1789372800.0,
+          "label": "14 Sep 13:30–14:30",
+          "value": "2.8",
+          "evidence_id": "t1-f14"
+        },
+        {
+          "x": 1789376400.0,
+          "label": "14 Sep 14:30–15:30",
+          "value": "1.7",
+          "evidence_id": "t1-f15"
+        },
+        {
+          "x": 1789380000.0,
+          "label": "14 Sep 15:30–16:30",
+          "value": "1.8",
+          "evidence_id": "t1-f16"
+        },
+        {
+          "x": 1789383600.0,
+          "label": "14 Sep 16:30–17:30",
+          "value": "1.5",
+          "evidence_id": "t1-f17"
+        },
+        {
+          "x": 1789387200.0,
+          "label": "14 Sep 17:30–18:30",
+          "value": "0.8",
+          "evidence_id": "t1-f18"
+        },
+        {
+          "x": 1789390800.0,
+          "label": "14 Sep 18:30–19:30",
+          "value": "1.9",
+          "evidence_id": "t1-f19"
+        },
+        {
+          "x": 1789394400.0,
+          "label": "14 Sep 19:30–20:30",
+          "value": "3.9",
+          "evidence_id": "t1-f20"
+        },
+        {
+          "x": 1789398000.0,
+          "label": "14 Sep 20:30–21:30",
+          "value": "3.6",
+          "evidence_id": "t1-f21"
+        },
+        {
+          "x": 1789401600.0,
+          "label": "14 Sep 21:30–22:30",
+          "value": "1.0",
+          "evidence_id": "t1-f22"
+        },
+        {
+          "x": 1789405200.0,
+          "label": "14 Sep 22:30–23:30",
+          "value": "0.1",
+          "evidence_id": "t1-f23"
+        }
+      ],
+      "source_ids": [
+        "S62"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "kind": "hourly_series",
+      "axis_label": "Time (IST)",
+      "title": "Ahmedabad, Ahmadābād, State of Gujarāt · Temperature sample",
+      "unit": "°C",
+      "points": [
+        {
+          "x": 1789326000.0,
+          "label": "14 Sep 00:30",
+          "value": "25.6",
+          "evidence_id": "t1-f24"
+        },
+        {
+          "x": 1789329600.0,
+          "label": "14 Sep 01:30",
+          "value": "25.3",
+          "evidence_id": "t1-f25"
+        },
+        {
+          "x": 1789333200.0,
+          "label": "14 Sep 02:30",
+          "value": "25.1",
+          "evidence_id": "t1-f26"
+        },
+        {
+          "x": 1789336800.0,
+          "label": "14 Sep 03:30",
+          "value": "25.2",
+          "evidence_id": "t1-f27"
+        },
+        {
+          "x": 1789340400.0,
+          "label": "14 Sep 04:30",
+          "value": "25.1",
+          "evidence_id": "t1-f28"
+        },
+        {
+          "x": 1789344000.0,
+          "label": "14 Sep 05:30",
+          "value": "25.7",
+          "evidence_id": "t1-f29"
+        },
+        {
+          "x": 1789347600.0,
+          "label": "14 Sep 06:30",
+          "value": "25.9",
+          "evidence_id": "t1-f30"
+        },
+        {
+          "x": 1789351200.0,
+          "label": "14 Sep 07:30",
+          "value": "26.0",
+          "evidence_id": "t1-f31"
+        },
+        {
+          "x": 1789354800.0,
+          "label": "14 Sep 08:30",
+          "value": "26.2",
+          "evidence_id": "t1-f32"
+        },
+        {
+          "x": 1789358400.0,
+          "label": "14 Sep 09:30",
+          "value": "26.5",
+          "evidence_id": "t1-f33"
+        },
+        {
+          "x": 1789362000.0,
+          "label": "14 Sep 10:30",
+          "value": "26.3",
+          "evidence_id": "t1-f34"
+        },
+        {
+          "x": 1789365600.0,
+          "label": "14 Sep 11:30",
+          "value": "26.8",
+          "evidence_id": "t1-f35"
+        },
+        {
+          "x": 1789369200.0,
+          "label": "14 Sep 12:30",
+          "value": "27.7",
+          "evidence_id": "t1-f36"
+        },
+        {
+          "x": 1789372800.0,
+          "label": "14 Sep 13:30",
+          "value": "27.4",
+          "evidence_id": "t1-f37"
+        },
+        {
+          "x": 1789376400.0,
+          "label": "14 Sep 14:30",
+          "value": "26.7",
+          "evidence_id": "t1-f38"
+        },
+        {
+          "x": 1789380000.0,
+          "label": "14 Sep 15:30",
+          "value": "26.6",
+          "evidence_id": "t1-f39"
+        },
+        {
+          "x": 1789383600.0,
+          "label": "14 Sep 16:30",
+          "value": "26.3",
+          "evidence_id": "t1-f40"
+        },
+        {
+          "x": 1789387200.0,
+          "label": "14 Sep 17:30",
+          "value": "26.1",
+          "evidence_id": "t1-f41"
+        },
+        {
+          "x": 1789390800.0,
+          "label": "14 Sep 18:30",
+          "value": "25.9",
+          "evidence_id": "t1-f42"
+        },
+        {
+          "x": 1789394400.0,
+          "label": "14 Sep 19:30",
+          "value": "25.5",
+          "evidence_id": "t1-f43"
+        },
+        {
+          "x": 1789398000.0,
+          "label": "14 Sep 20:30",
+          "value": "25.3",
+          "evidence_id": "t1-f44"
+        },
+        {
+          "x": 1789401600.0,
+          "label": "14 Sep 21:30",
+          "value": "25.4",
+          "evidence_id": "t1-f45"
+        },
+        {
+          "x": 1789405200.0,
+          "label": "14 Sep 22:30",
+          "value": "25.2",
+          "evidence_id": "t1-f46"
+        },
+        {
+          "x": 1789408800.0,
+          "label": "14 Sep 23:30",
+          "value": "24.8",
+          "evidence_id": "t1-f47"
+        }
+      ],
+      "source_ids": [
+        "S62"
+      ],
+      "task_id": "t1"
+    },
+    {
+      "kind": "hourly_series",
+      "axis_label": "Time (IST)",
+      "title": "Ahmedabad, Ahmadābād, State of Gujarāt · Wind speed sample",
+      "unit": "km/h",
+      "points": [
+        {
+          "x": 1789326000.0,
+          "label": "14 Sep 00:30",
+          "value": "4.5",
+          "evidence_id": "t1-f48"
+        },
+        {
+          "x": 1789329600.0,
+          "label": "14 Sep 01:30",
+          "value": "3.4",
+          "evidence_id": "t1-f49"
+        },
+        {
+          "x": 1789333200.0,
+          "label": "14 Sep 02:30",
+          "value": "2.1",
+          "evidence_id": "t1-f50"
+        },
+        {
+          "x": 1789336800.0,
+          "label": "14 Sep 03:30",
+          "value": "3.3",
+          "evidence_id": "t1-f51"
+        },
+        {
+          "x": 1789340400.0,
+          "label": "14 Sep 04:30",
+          "value": "4.0",
+          "evidence_id": "t1-f52"
+        },
+        {
+          "x": 1789344000.0,
+          "label": "14 Sep 05:30",
+          "value": "7.5",
+          "evidence_id": "t1-f53"
+        },
+        {
+          "x": 1789347600.0,
+          "label": "14 Sep 06:30",
+          "value": "5.1",
+          "evidence_id": "t1-f54"
+        },
+        {
+          "x": 1789351200.0,
+          "label": "14 Sep 07:30",
+          "value": "4.0",
+          "evidence_id": "t1-f55"
+        },
+        {
+          "x": 1789354800.0,
+          "label": "14 Sep 08:30",
+          "value": "3.2",
+          "evidence_id": "t1-f56"
+        },
+        {
+          "x": 1789358400.0,
+          "label": "14 Sep 09:30",
+          "value": "4.2",
+          "evidence_id": "t1-f57"
+        },
+        {
+          "x": 1789362000.0,
+          "label": "14 Sep 10:30",
+          "value": "3.6",
+          "evidence_id": "t1-f58"
+        },
+        {
+          "x": 1789365600.0,
+          "label": "14 Sep 11:30",
+          "value": "1.5",
+          "evidence_id": "t1-f59"
+        },
+        {
+          "x": 1789369200.0,
+          "label": "14 Sep 12:30",
+          "value": "1.8",
+          "evidence_id": "t1-f60"
+        },
+        {
+          "x": 1789372800.0,
+          "label": "14 Sep 13:30",
+          "value": "4.9",
+          "evidence_id": "t1-f61"
+        },
+        {
+          "x": 1789376400.0,
+          "label": "14 Sep 14:30",
+          "value": "1.5",
+          "evidence_id": "t1-f62"
+        },
+        {
+          "x": 1789380000.0,
+          "label": "14 Sep 15:30",
+          "value": "3.4",
+          "evidence_id": "t1-f63"
+        },
+        {
+          "x": 1789383600.0,
+          "label": "14 Sep 16:30",
+          "value": "3.1",
+          "evidence_id": "t1-f64"
+        },
+        {
+          "x": 1789387200.0,
+          "label": "14 Sep 17:30",
+          "value": "4.1",
+          "evidence_id": "t1-f65"
+        },
+        {
+          "x": 1789390800.0,
+          "label": "14 Sep 18:30",
+          "value": "6.7",
+          "evidence_id": "t1-f66"
+        },
+        {
+          "x": 1789394400.0,
+          "label": "14 Sep 19:30",
+          "value": "7.9",
+          "evidence_id": "t1-f67"
+        },
+        {
+          "x": 1789398000.0,
+          "label": "14 Sep 20:30",
+          "value": "8.0",
+          "evidence_id": "t1-f68"
+        },
+        {
+          "x": 1789401600.0,
+          "label": "14 Sep 21:30",
+          "value": "11.4",
+          "evidence_id": "t1-f69"
+        },
+        {
+          "x": 1789405200.0,
+          "label": "14 Sep 22:30",
+          "value": "12.6",
+          "evidence_id": "t1-f70"
+        },
+        {
+          "x": 1789408800.0,
+          "label": "14 Sep 23:30",
+          "value": "13.3",
+          "evidence_id": "t1-f71"
+        }
+      ],
+      "source_ids": [
+        "S62"
+      ],
+      "task_id": "t1"
+    }
+  ],
+  "calculations": [],
+  "pending_slots": [],
+  "retrieval_coverage": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "forecast",
+      "parameters": [
+        "precipitation",
+        "temperature_2m",
+        "wind_speed_10m"
+      ],
+      "candidates": [
+        {
+          "tool": "hourly_forecast",
+          "selected": true,
+          "available": true,
+          "reason": "Hourly evidence; exact onset and whole-period probability unavailable",
+          "sources": [
+            {
+              "source_id": "S62",
+              "product": "Open-Meteo best-match extended hourly forecast",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        },
+        {
+          "tool": "forecast_summary",
+          "selected": false,
+          "available": true,
+          "reason": "Exact-window GFS model summary",
+          "sources": [
+            {
+              "source_id": "S21",
+              "product": "Open-Meteo GFS forecast delivery",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "partial",
+      "returned_source_ids": [
+        "S61",
+        "S62"
+      ]
+    }
+  ],
+  "document_evidence": [],
+  "resolved_points": {
+    "Ahmedabad": {
+      "id": "1279233",
+      "name": "Ahmedabad",
+      "latitude": 23.02579,
+      "longitude": 72.58727,
+      "feature": "PPL",
+      "admin1": "State of Gujarāt",
+      "admin2": "Ahmadābād",
+      "modified": "2024-01-06",
+      "name_match_basis": "canonical",
+      "other_alias_matches": 0,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:1279233",
+      "label": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "coordinates": {
+        "latitude": 23.02579,
+        "longitude": 72.58727
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/1279233",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Ahmedabad"
+    }
+  },
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

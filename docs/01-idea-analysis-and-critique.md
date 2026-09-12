@@ -1,5 +1,7 @@
 # 01 — Idea Analysis, Critique & Direction
 
+> Historical design hypotheses, not current compliance or implementation evidence. The early check marks, judging predictions and illustrative risk scores below are superseded by the [current product review](14-product-review-and-progress-plan.md). Do not use unvalidated derived indices as factual product claims.
+
 > Status: ideation / seed. PPT: `sih_2.pptx` (7 slides). Verdict: **direction is right, foundation is strong, but the architecture is under-framed and a few claims are judge-traps.** This doc is the reasoned critique + recommended target + open questions before we build the data layer (see `02`).
 
 ---

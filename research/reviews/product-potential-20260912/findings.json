@@ -1,0 +1,225 @@
+{
+  "schema_version": "product-potential-review-v1",
+  "as_of_utc": "2026-09-12T17:11:11.704566+00:00",
+  "implementation_changed": false,
+  "sharing_and_hosting": "on_hold_by_user",
+  "operational_ready": false,
+  "findings": [
+    {
+      "id": "P01",
+      "priority": "high",
+      "evidence_type": "reproduced_isolated",
+      "finding": "Values can be attributed to the wrong place while passing generation checks",
+      "code_reference": "weathergpt_data/conversation.py:195",
+      "evidence": "isolated-probes.json",
+      "proposed_repair": "Bind each displayed claim to one typed evidence tuple: entity, parameter, interval, value, unit and source. Render factual clauses deterministically; reject changed attribution.",
+      "prior_review_links": [
+        "R11",
+        "F01"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P02",
+      "priority": "high",
+      "evidence_type": "reproduced_isolated",
+      "finding": "Historical reads do not verify the serving database against its build manifest",
+      "code_reference": "weathergpt_data/climate.py:103",
+      "evidence": "isolated-probes.json",
+      "proposed_repair": "Verify publication manifests and serving artefacts for both national and district data; source-PDF hash alone does not authenticate transformed values.",
+      "prior_review_links": [
+        "R10",
+        "R11",
+        "F11"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P03",
+      "priority": "high",
+      "evidence_type": "reproduced_live_planner_and_lookup",
+      "finding": "Multi-year and multi-parameter requests lose required operations",
+      "code_reference": "weathergpt_data/language.py:16",
+      "evidence": "planner-probes.json",
+      "proposed_repair": "Introduce typed task lists, date ranges, requested measures and operation enums; track coverage of every requested task.",
+      "prior_review_links": [
+        "R11",
+        "F01",
+        "F08"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P04",
+      "priority": "high",
+      "evidence_type": "static_and_live_planner",
+      "finding": "Specialist and daily-history adapters are unreachable from chat",
+      "code_reference": "weathergpt_data/conversation.py:78",
+      "evidence": "source-utilization.json",
+      "proposed_repair": "Connect airport reports, marine, river and daily reanalysis through governed tools and explicit source entity types.",
+      "prior_review_links": [
+        "R08",
+        "R09",
+        "R11",
+        "F06",
+        "F08"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P05",
+      "priority": "high",
+      "evidence_type": "fresh_public_response",
+      "finding": "Four-variable forecast contract excludes available useful parameters",
+      "code_reference": "weathergpt_data/adapters.py:104",
+      "evidence": "live-source-checks/summary.json",
+      "proposed_repair": "Add a separately identified extended forecast contract with units, nulls, model lineage, probability interval semantics and hourly timeline operations.",
+      "prior_review_links": [
+        "R04",
+        "F05"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P06",
+      "priority": "high",
+      "evidence_type": "static_and_fresh_feed_metadata",
+      "finding": "Warning ingest lacks complete applicable current alert lifecycle",
+      "code_reference": "weathergpt_data/foundation.py:147",
+      "evidence": "live-source-checks/cap_rss.body",
+      "proposed_repair": "Resolve feed authority, coverage, update/cancel chains, validity and geometry; keep historical/replay labels; then subscription/outbox/delivery lifecycle.",
+      "prior_review_links": [
+        "R02",
+        "R08"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P07",
+      "priority": "high",
+      "evidence_type": "static",
+      "finding": "Documents are extracted pages without reviewed retrieval units",
+      "code_reference": "weathergpt_data/documents.py:6",
+      "evidence": "source-utilization.json",
+      "proposed_repair": "Build document-family structured extraction, issue/validity/place/crop/stage filters, parent context, hybrid retrieval and citation verification.",
+      "prior_review_links": [
+        "R09",
+        "F07"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P08",
+      "priority": "high",
+      "evidence_type": "static",
+      "finding": "Place points do not support district/village area or specialist identity claims",
+      "code_reference": "weathergpt_data/gazetteer.py:51",
+      "evidence": "source-utilization.json",
+      "proposed_repair": "Separate settlement/district/station/river/sea entities; dated administrative crosswalk, source footprints and resolvable choice/correction state.",
+      "prior_review_links": [
+        "R01",
+        "R04",
+        "F03",
+        "F04"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P09",
+      "priority": "medium",
+      "evidence_type": "static_and_live_planner",
+      "finding": "Historical lookup is not climate trend analysis",
+      "code_reference": "weathergpt_data/research_answers.py:10",
+      "evidence": "planner-probes.json",
+      "proposed_repair": "Add range retrieval, comparisons, baselines, anomaly and descriptive trend tools with missingness and comparability checks.",
+      "prior_review_links": [
+        "R10",
+        "F08"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P10",
+      "priority": "medium",
+      "evidence_type": "static",
+      "finding": "Freshness scheduling is manual/request-driven and budget is narrow",
+      "code_reference": "data/registry/ingestion-policy.json",
+      "evidence": "source-utilization.json",
+      "proposed_repair": "Prioritized prefetch for subscribed/active footprint plus demand retrieval; unified budgets for all tools; source-aware freshness, retention and restore rehearsal.",
+      "prior_review_links": [
+        "R06",
+        "R07"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P11",
+      "priority": "medium",
+      "evidence_type": "static",
+      "finding": "Local global locks reject concurrent questions; no cancellation or stage streaming",
+      "code_reference": "weathergpt_data/conversation.py:18",
+      "evidence": "review-baseline.json",
+      "proposed_repair": "Bounded queue, per-conversation ownership, provider timeouts, cancellation and progress; measure warm/cold p50/p95 before choosing hosted inference.",
+      "prior_review_links": [
+        "R06",
+        "R11"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P12",
+      "priority": "high",
+      "evidence_type": "static",
+      "finding": "No user-level acceptance benchmark for all promised operations and languages",
+      "code_reference": "scripts/evaluate_conversation.py",
+      "evidence": "tests.txt",
+      "proposed_repair": "Version a scenario set with requested tasks and expected evidence; score completion separately from correct refusal/clarification, and test semantic swaps and stale updates.",
+      "prior_review_links": [
+        "R11",
+        "F10"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P13",
+      "priority": "medium",
+      "evidence_type": "static",
+      "finding": "Voice and mobile requirements remain incomplete",
+      "code_reference": "web/index.html",
+      "evidence": "review-baseline.json",
+      "proposed_repair": "Desktop-first now per user; later speech transcript confirmation, TTS and mobile acceptance. Sarvam trial is optional and must preserve place/date/negation/units.",
+      "prior_review_links": [
+        "R11",
+        "F10"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P14",
+      "priority": "medium",
+      "evidence_type": "static",
+      "finding": "Private runtime data is tracked and reproduction/deployment packaging is incomplete",
+      "code_reference": "requirements-foundation.txt",
+      "evidence": "review-baseline.json",
+      "proposed_repair": "Separate curated fixtures from runtime conversations/logs; propose retention/deletion and repository hygiene, reproducible setup, CI and migrations before sharing. Do not erase evidence/history during this review.",
+      "prior_review_links": [
+        "R06",
+        "R12"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "P15",
+      "priority": "high",
+      "evidence_type": "documentation_conflict",
+      "finding": "Early design documents overstate compliance and suggest unjustified derived risk scores",
+      "code_reference": "docs/01-idea-analysis-and-critique.md",
+      "evidence": "review-baseline.json",
+      "proposed_repair": "Mark early hypotheses as superseded, keep PS wording authoritative, and require validated definitions before risk indices or operational claims.",
+      "prior_review_links": [
+        "R12"
+      ],
+      "status": "open"
+    }
+  ]
+}

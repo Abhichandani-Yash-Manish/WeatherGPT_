@@ -1,0 +1,625 @@
+{
+  "as_of_utc": "2026-09-12T17:11:11.703978+00:00",
+  "registry_entries": 61,
+  "counts": {
+    "catalogue_lead_gap_or_blocked": 36,
+    "reference_adapter_exists_not_connected_to_chat": 5,
+    "sample_or_reference_only": 6,
+    "adapter_exists_not_connected_to_chat": 7,
+    "connected_to_chat_scoped": 5,
+    "deliberately_deferred": 2
+  },
+  "classification_basis": "Static inspection of conversation.py, research_answers.py, gazetteer.py and foundation adapters. Runtime reachability is not national completeness or scientific validation. Some registry entries are references/gaps, not independent datasets.",
+  "sources": [
+    {
+      "source_id": "S01",
+      "product": "IMD Current Weather",
+      "record_kind": "data_product",
+      "category": "observation",
+      "evidence_level": "access_blocked",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S02",
+      "product": "IMD City Forecast",
+      "record_kind": "data_product",
+      "category": "forecast",
+      "evidence_level": "access_blocked",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S03",
+      "product": "IMD District Nowcast",
+      "record_kind": "data_product",
+      "category": "nowcast",
+      "evidence_level": "access_blocked",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S04",
+      "product": "IMD District Warning",
+      "record_kind": "data_product",
+      "category": "warning",
+      "evidence_level": "access_blocked",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S05",
+      "product": "IMD City Forecast Mapping",
+      "record_kind": "data_product",
+      "category": "mapping",
+      "evidence_level": "access_blocked",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S06",
+      "product": "IMD-linked CAP RSS",
+      "record_kind": "data_product",
+      "category": "alert_feed",
+      "evidence_level": "sample_inspected",
+      "processing_state": "sample_ready_for_processing",
+      "conversational_use": "reference_adapter_exists_not_connected_to_chat",
+      "next_step": "Review issue/expiry/geographic/content semantics before context retrieval or dissemination."
+    },
+    {
+      "source_id": "S07",
+      "product": "Gujarat composite agromet bulletin, issue 70/2026",
+      "record_kind": "data_product",
+      "category": "guidance",
+      "evidence_level": "sample_inspected",
+      "processing_state": "sample_ready_for_processing",
+      "conversational_use": "sample_or_reference_only",
+      "next_step": "Inspect actual product contract and value beyond existing upstreams before building."
+    },
+    {
+      "source_id": "S08",
+      "product": "Gujarat district forecast and warnings bulletin",
+      "record_kind": "data_product",
+      "category": "forecast_warning_bulletin",
+      "evidence_level": "sample_inspected",
+      "processing_state": "sample_ready_for_processing",
+      "conversational_use": "sample_or_reference_only",
+      "next_step": "Inspect actual product contract and value beyond existing upstreams before building."
+    },
+    {
+      "source_id": "S09",
+      "product": "IMD crop-specific advisory web interface",
+      "record_kind": "data_product",
+      "category": "guidance_catalog",
+      "evidence_level": "catalogue_or_page_inspected",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S10",
+      "product": "Ahmedabad city forecast link on IMD regional homepage",
+      "record_kind": "identity_evidence",
+      "category": "mapping_evidence",
+      "evidence_level": "catalogue_or_page_inspected",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S11",
+      "product": "IMD 0.25 degree daily gridded rainfall catalogue",
+      "record_kind": "data_product",
+      "category": "historical",
+      "evidence_level": "catalogue_or_page_inspected",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S12",
+      "product": "NOAA GFS numerical forecast output",
+      "record_kind": "data_product",
+      "category": "nwp",
+      "evidence_level": "lead",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S13",
+      "product": "ERA5 hourly single-level reanalysis",
+      "record_kind": "data_product",
+      "category": "reanalysis",
+      "evidence_level": "lead",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S14",
+      "product": "Ahmedabad district/village boundaries and gazetteer",
+      "record_kind": "capability_gap",
+      "category": "mapping",
+      "evidence_level": "lead",
+      "processing_state": "source_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S15",
+      "product": "IMD public warning-map WFS",
+      "record_kind": "data_product",
+      "category": "warning",
+      "evidence_level": "sample_inspected",
+      "processing_state": "sample_ready_for_processing",
+      "conversational_use": "reference_adapter_exists_not_connected_to_chat",
+      "next_step": "Review issue/expiry/geographic/content semantics before context retrieval or dissemination."
+    },
+    {
+      "source_id": "S16",
+      "product": "IMD Mausamgram public forecast data",
+      "record_kind": "data_product",
+      "category": "forecast",
+      "evidence_level": "sample_inspected",
+      "processing_state": "sample_ready_for_processing",
+      "conversational_use": "sample_or_reference_only",
+      "next_step": "Inspect actual product contract and value beyond existing upstreams before building."
+    },
+    {
+      "source_id": "S17",
+      "product": "IMD Mausamgram public temperature variants",
+      "record_kind": "data_product",
+      "category": "forecast",
+      "evidence_level": "sample_inspected",
+      "processing_state": "sample_ready_for_processing",
+      "conversational_use": "sample_or_reference_only",
+      "next_step": "Inspect actual product contract and value beyond existing upstreams before building."
+    },
+    {
+      "source_id": "S18",
+      "product": "NOAA AWC VAAH METAR dissemination",
+      "record_kind": "data_product",
+      "category": "observation",
+      "evidence_level": "sample_inspected",
+      "processing_state": "sample_ready_for_processing",
+      "conversational_use": "adapter_exists_not_connected_to_chat",
+      "next_step": "Add typed product tool, identity/time validation and end-to-end acceptance cases."
+    },
+    {
+      "source_id": "S19",
+      "product": "NOAA AWC VAAH TAF dissemination",
+      "record_kind": "data_product",
+      "category": "forecast",
+      "evidence_level": "sample_inspected",
+      "processing_state": "sample_ready_for_processing",
+      "conversational_use": "adapter_exists_not_connected_to_chat",
+      "next_step": "Add typed product tool, identity/time validation and end-to-end acceptance cases."
+    },
+    {
+      "source_id": "S20",
+      "product": "NOAA AWC airport station metadata",
+      "record_kind": "data_product",
+      "category": "mapping",
+      "evidence_level": "sample_inspected",
+      "processing_state": "sample_ready_for_processing",
+      "conversational_use": "adapter_exists_not_connected_to_chat",
+      "next_step": "Add typed product tool, identity/time validation and end-to-end acceptance cases."
+    },
+    {
+      "source_id": "S21",
+      "product": "Open-Meteo GFS forecast delivery",
+      "record_kind": "data_product",
+      "category": "nwp",
+      "evidence_level": "sample_inspected",
+      "processing_state": "sample_ready_for_processing",
+      "conversational_use": "connected_to_chat_scoped",
+      "next_step": "Repair fidelity and expand supported operations; preserve source scope."
+    },
+    {
+      "source_id": "S22",
+      "product": "Open-Meteo ERA5 historical delivery",
+      "record_kind": "data_product",
+      "category": "reanalysis",
+      "evidence_level": "sample_inspected",
+      "processing_state": "sample_ready_for_processing",
+      "conversational_use": "adapter_exists_not_connected_to_chat",
+      "next_step": "Add typed product tool, identity/time validation and end-to-end acceptance cases."
+    },
+    {
+      "source_id": "S23",
+      "product": "NASA POWER daily point delivery",
+      "record_kind": "data_product",
+      "category": "reanalysis",
+      "evidence_level": "sample_inspected",
+      "processing_state": "sample_ready_for_processing",
+      "conversational_use": "sample_or_reference_only",
+      "next_step": "Inspect actual product contract and value beyond existing upstreams before building."
+    },
+    {
+      "source_id": "S24",
+      "product": "Open-Meteo GeoNames place search",
+      "record_kind": "data_product",
+      "category": "mapping",
+      "evidence_level": "sample_inspected",
+      "processing_state": "sample_ready_for_processing",
+      "conversational_use": "adapter_exists_not_connected_to_chat",
+      "next_step": "Add typed product tool, identity/time validation and end-to-end acceptance cases."
+    },
+    {
+      "source_id": "S25",
+      "product": "IMD All India historical rainfall table (supplied CSV)",
+      "record_kind": "data_product",
+      "category": "historical",
+      "evidence_level": "sample_inspected",
+      "processing_state": "processed_snapshot",
+      "conversational_use": "connected_to_chat_scoped",
+      "next_step": "Repair fidelity and expand supported operations; preserve source scope."
+    },
+    {
+      "source_id": "S26",
+      "product": "IMD All India historical mean temperature table (supplied CSV)",
+      "record_kind": "data_product",
+      "category": "historical",
+      "evidence_level": "sample_inspected",
+      "processing_state": "processed_snapshot",
+      "conversational_use": "connected_to_chat_scoped",
+      "next_step": "Repair fidelity and expand supported operations; preserve source scope."
+    },
+    {
+      "source_id": "S27",
+      "product": "Supplied district historical rainfall collection (32 CSVs)",
+      "record_kind": "data_product",
+      "category": "historical",
+      "evidence_level": "sample_inspected",
+      "processing_state": "processed_snapshot",
+      "conversational_use": "connected_to_chat_scoped",
+      "next_step": "Repair fidelity and expand supported operations; preserve source scope."
+    },
+    {
+      "source_id": "S28",
+      "product": "Indian Astronomical Ephemeris 2026 (supplied PDF)",
+      "record_kind": "data_product",
+      "category": "astronomical_reference",
+      "evidence_level": "sample_inspected",
+      "processing_state": "deferred",
+      "conversational_use": "deliberately_deferred",
+      "next_step": "Retain rationale; reactivate only for a demonstrated PS need."
+    },
+    {
+      "source_id": "S29",
+      "product": "ECMWF open forecast subset",
+      "record_kind": "catalogue_lead",
+      "category": "nwp",
+      "evidence_level": "catalogue_or_page_inspected",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S30",
+      "product": "MOSDAC satellite catalogue and download service",
+      "record_kind": "catalogue_lead",
+      "category": "satellite",
+      "evidence_level": "catalogue_or_page_inspected",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S31",
+      "product": "NASA GPM IMERG precipitation products",
+      "record_kind": "catalogue_lead",
+      "category": "satellite_precipitation",
+      "evidence_level": "catalogue_or_page_inspected",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S32",
+      "product": "CWC flood forecasting portal \u2014 exact feed pending",
+      "record_kind": "catalogue_lead",
+      "category": "hydrology",
+      "evidence_level": "catalogue_or_page_inspected",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S33",
+      "product": "INCOIS marine services \u2014 exact product pending",
+      "record_kind": "catalogue_lead",
+      "category": "marine",
+      "evidence_level": "catalogue_or_page_inspected",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S34",
+      "product": "ICAR-CRIDA district crop contingency plans",
+      "record_kind": "catalogue_lead",
+      "category": "guidance_catalog",
+      "evidence_level": "catalogue_or_page_inspected",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S35",
+      "product": "Local Government Directory catalogue",
+      "record_kind": "catalogue_lead",
+      "category": "mapping",
+      "evidence_level": "catalogue_or_page_inspected",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S36",
+      "product": "Open-Meteo single forecast runs",
+      "record_kind": "catalogue_lead",
+      "category": "forecast_archive",
+      "evidence_level": "catalogue_or_page_inspected",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S37",
+      "product": "Open-Meteo GloFAS river discharge delivery",
+      "record_kind": "data_product",
+      "category": "hydrology",
+      "evidence_level": "sample_inspected",
+      "processing_state": "sample_ready_for_processing",
+      "conversational_use": "adapter_exists_not_connected_to_chat",
+      "next_step": "Add typed product tool, identity/time validation and end-to-end acceptance cases."
+    },
+    {
+      "source_id": "S38",
+      "product": "BHASHINI speech and translation service catalogue",
+      "record_kind": "enabling_service",
+      "category": "language_service",
+      "evidence_level": "catalogue_or_page_inspected",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S39",
+      "product": "IMD AWS/ARG station data",
+      "record_kind": "data_product",
+      "category": "observation",
+      "evidence_level": "access_blocked",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S40",
+      "product": "IMD AWS/ARG station mapping",
+      "record_kind": "data_product",
+      "category": "mapping",
+      "evidence_level": "catalogue_or_page_inspected",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S41",
+      "product": "IMD district rainfall monitoring",
+      "record_kind": "data_product",
+      "category": "rainfall_observation",
+      "evidence_level": "access_blocked",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S42",
+      "product": "IMD basin quantitative precipitation forecast",
+      "record_kind": "data_product",
+      "category": "hydrology_forecast",
+      "evidence_level": "access_blocked",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S43",
+      "product": "IMD cyclone observed and forecast track",
+      "record_kind": "data_product",
+      "category": "cyclone_forecast",
+      "evidence_level": "access_blocked",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S44",
+      "product": "IMD cyclone wind warning polygons",
+      "record_kind": "data_product",
+      "category": "cyclone_warning",
+      "evidence_level": "catalogue_or_page_inspected",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S45",
+      "product": "IMD cyclone cone of uncertainty",
+      "record_kind": "data_product",
+      "category": "cyclone_forecast",
+      "evidence_level": "catalogue_or_page_inspected",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S46",
+      "product": "IMD radar image product \u2014 index lead",
+      "record_kind": "catalogue_lead",
+      "category": "radar",
+      "evidence_level": "catalogue_or_page_inspected",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S47",
+      "product": "IMD lightning data \u2014 index lead",
+      "record_kind": "catalogue_lead",
+      "category": "lightning",
+      "evidence_level": "catalogue_or_page_inspected",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S48",
+      "product": "IMD product-specific codes and definitions",
+      "record_kind": "reference",
+      "category": "reference",
+      "evidence_level": "sample_inspected",
+      "processing_state": "sample_ready_for_processing",
+      "conversational_use": "sample_or_reference_only",
+      "next_step": "Inspect actual product contract and value beyond existing upstreams before building."
+    },
+    {
+      "source_id": "S49",
+      "product": "User-provided field and activity context",
+      "record_kind": "capability_gap",
+      "category": "context_gap",
+      "evidence_level": "lead",
+      "processing_state": "source_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S50",
+      "product": "Terrain, drainage, exposure and vulnerability inputs",
+      "record_kind": "capability_gap",
+      "category": "impact_gap",
+      "evidence_level": "lead",
+      "processing_state": "source_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S51",
+      "product": "Gujarati/Hindi language and voice evaluation set",
+      "record_kind": "capability_gap",
+      "category": "evaluation_gap",
+      "evidence_level": "lead",
+      "processing_state": "source_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S52",
+      "product": "IMD port warning",
+      "record_kind": "data_product",
+      "category": "marine_warning",
+      "evidence_level": "catalogue_or_page_inspected",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S53",
+      "product": "IMD sea-area bulletin",
+      "record_kind": "data_product",
+      "category": "marine_warning",
+      "evidence_level": "catalogue_or_page_inspected",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S54",
+      "product": "IMD coastal bulletin",
+      "record_kind": "data_product",
+      "category": "marine_warning",
+      "evidence_level": "catalogue_or_page_inspected",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S55",
+      "product": "IMD fishermen warning \u2014 index lead",
+      "record_kind": "catalogue_lead",
+      "category": "marine_warning",
+      "evidence_level": "catalogue_or_page_inspected",
+      "processing_state": "sample_missing",
+      "conversational_use": "catalogue_lead_gap_or_blocked",
+      "next_step": "Resolve access or specific missing contract; do not count as answer-ready data."
+    },
+    {
+      "source_id": "S56",
+      "product": "Open-Meteo marine wave delivery",
+      "record_kind": "data_product",
+      "category": "marine_forecast",
+      "evidence_level": "sample_inspected",
+      "processing_state": "sample_ready_for_processing",
+      "conversational_use": "adapter_exists_not_connected_to_chat",
+      "next_step": "Add typed product tool, identity/time validation and end-to-end acceptance cases."
+    },
+    {
+      "source_id": "S57",
+      "product": "IMD district farmer bulletin delivery (English and local language)",
+      "record_kind": "data_product",
+      "category": "advisory_document",
+      "evidence_level": "sample_inspected",
+      "processing_state": "sample_ready_for_processing",
+      "conversational_use": "reference_adapter_exists_not_connected_to_chat",
+      "next_step": "Review issue/expiry/geographic/content semantics before context retrieval or dissemination."
+    },
+    {
+      "source_id": "S58",
+      "product": "RSMC official sea-area bulletin delivery",
+      "record_kind": "data_product",
+      "category": "marine_bulletin",
+      "evidence_level": "sample_inspected",
+      "processing_state": "sample_ready_for_processing",
+      "conversational_use": "reference_adapter_exists_not_connected_to_chat",
+      "next_step": "Review issue/expiry/geographic/content semantics before context retrieval or dissemination."
+    },
+    {
+      "source_id": "S59",
+      "product": "RSMC official coastal bulletin delivery",
+      "record_kind": "data_product",
+      "category": "marine_bulletin",
+      "evidence_level": "sample_inspected",
+      "processing_state": "sample_ready_for_processing",
+      "conversational_use": "reference_adapter_exists_not_connected_to_chat",
+      "next_step": "Review issue/expiry/geographic/content semantics before context retrieval or dissemination."
+    },
+    {
+      "source_id": "S60",
+      "product": "IMD CityWx responsive portal and station-search/data routes",
+      "record_kind": "data_product",
+      "category": "city_weather",
+      "evidence_level": "sample_inspected",
+      "processing_state": "deferred",
+      "conversational_use": "deliberately_deferred",
+      "next_step": "Retain rationale; reactivate only for a demonstrated PS need."
+    },
+    {
+      "source_id": "S61",
+      "product": "GeoNames India downloadable gazetteer and local place index",
+      "record_kind": "data_product",
+      "category": "mapping",
+      "evidence_level": "sample_inspected",
+      "processing_state": "processed_snapshot",
+      "conversational_use": "connected_to_chat_scoped",
+      "next_step": "Repair fidelity and expand supported operations; preserve source scope."
+    }
+  ]
+}

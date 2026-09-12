@@ -1,0 +1,730 @@
+{
+  "advice_valid_until": null,
+  "chunks": [
+    {
+      "bbox": [
+        71.62110199999998,
+        310.229618,
+        523.378879,
+        409.428643
+      ],
+      "crop": "SUGARCANE",
+      "crop_key": "sugarcane",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "8acaf38db4cfdfa2182932b15720f1c88060968cfd8e9696103fb099c2c33a64",
+      "page": 2,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "Grand growth",
+      "table": 2,
+      "text": "Propping: Prevent lodging by tying tall canes together with dry leaves or using bamboo stakes."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        310.229618,
+        523.378879,
+        409.428643
+      ],
+      "crop": "SUGARCANE",
+      "crop_key": "sugarcane",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "a8b1b96d8a9fee74ea6794853448a5534bc1731362a2de7531b60a351103379f",
+      "page": 2,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "Grand growth",
+      "table": 2,
+      "text": "Detrashing: Strip lower dry leaves to improve aeration; reuse them as mulch or for tying canes."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        310.229618,
+        523.378879,
+        409.428643
+      ],
+      "crop": "SUGARCANE",
+      "crop_key": "sugarcane",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "64cdd83e04b9907602de56edc5e15458664fa7aa9f514b81bfa0dd606ab6d919",
+      "page": 2,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "Grand growth",
+      "table": 2,
+      "text": "Disease Management: Uproot and burn plants with smut, wilt, or Red Rot. Drench Red Rot-affected soil with Carbendazim 50% WP (2 g/L) during clear weather."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        310.229618,
+        523.378879,
+        409.428643
+      ],
+      "crop": "SUGARCANE",
+      "crop_key": "sugarcane",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "792fc1fa8169332ab0ded038a9f9b6cf91f01ec4f9f0fee9d085da715fb2c28f",
+      "page": 2,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "Grand growth",
+      "table": 2,
+      "text": "Pest Management: Stop granular shoot borer treatments and manually destroy dried shoots. Spray Azadirachtin 10000 ppm (20 ml/10 L) or 0.5% Neem oil for whitefly/Pyrilla during clear weather."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        409.428643,
+        523.378879,
+        520.6924379999999
+      ],
+      "crop": "COTTON",
+      "crop_key": "cotton",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "3a4a35bb019f2b591aebd4df37bdfcdac512f7c38290bcf63ac49d43b89d6427",
+      "page": 2,
+      "row": 3,
+      "source_id": "S57",
+      "stage": "Flowering",
+      "table": 2,
+      "text": "Fertilizers: Avoid fertilizer application during long dry spells, applying only under optimum moisture; spray 2% urea during dry spells."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        409.428643,
+        523.378879,
+        520.6924379999999
+      ],
+      "crop": "COTTON",
+      "crop_key": "cotton",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "598cc0ce5345b516f86bb4c56315e19e45a091ea5e43ec5ed246182381e10a59",
+      "page": 2,
+      "row": 3,
+      "source_id": "S57",
+      "stage": "Flowering",
+      "table": 2,
+      "text": "Pheromone Traps: Install traps in the field to monitor and control pests effectively."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        409.428643,
+        523.378879,
+        520.6924379999999
+      ],
+      "crop": "COTTON",
+      "crop_key": "cotton",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "e4c432efd2cd03267849dea8c18028f709f283c1e346e78d7beccf74410aeef7",
+      "page": 2,
+      "row": 3,
+      "source_id": "S57",
+      "stage": "Flowering",
+      "table": 2,
+      "text": "Sucking Pests: Spray 500 g neem seed extract or 50 ml neem oil per 10 L of water for initial infestations. For heavy infestations, spray 3 g Flonicamid 50 WG or 10 g Diafenthiuron 50 WP per 10 L of water strictly during clear weather."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        409.428643,
+        523.378879,
+        520.6924379999999
+      ],
+      "crop": "COTTON",
+      "crop_key": "cotton",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "a9ecc2725f9a6241c9c5b6bc56e90b51d85671033ba339f806e6730d2b1f4689",
+      "page": 2,
+      "row": 3,
+      "source_id": "S57",
+      "stage": "Flowering",
+      "table": 2,
+      "text": "Disease Control (Root Rot/Wilt): Drench infected plants with Mancozeb 75 WP (27 g), Copper Oxychloride (40 g), or Carbendazim (10 g) mixed in 10 L of water."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        520.6924379999999,
+        523.378879,
+        607.8267354999999
+      ],
+      "crop": "RICE",
+      "crop_key": "rice",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "c4c0a369dc38adeab2147c4325a93f10cd61d8dc0b94def32496010389c2c1ce",
+      "page": 2,
+      "row": 4,
+      "source_id": "S57",
+      "stage": "Tillering",
+      "table": 2,
+      "text": "Water Management: Maintain 2–3 cm of standing water and secure field bunds to prevent nutrient runoff during rains."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        520.6924379999999,
+        523.378879,
+        607.8267354999999
+      ],
+      "crop": "RICE",
+      "crop_key": "rice",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "34f55b47d7090ba28282f71146d03e978645238e3dc499b5ed468c679c897a94",
+      "page": 2,
+      "row": 4,
+      "source_id": "S57",
+      "stage": "Tillering",
+      "table": 2,
+      "text": "Weed Control: Weed manually or use a cono-weeder to aerate roots; spray Bispyribac-sodium strictly during clear weather."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        520.6924379999999,
+        523.378879,
+        607.8267354999999
+      ],
+      "crop": "RICE",
+      "crop_key": "rice",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "7c116a26075209ca96d183508469394c0b67eb5d89242dfb5425f51f8b671b16",
+      "page": 2,
+      "row": 4,
+      "source_id": "S57",
+      "stage": "Tillering",
+      "table": 2,
+      "text": "Blast Disease: Spray Tricyclazole 75 WP (6 g) or Iprobenfos 48 EC (10 ml) per 10 L of water every 15–20 days during clear weather."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        520.6924379999999,
+        523.378879,
+        607.8267354999999
+      ],
+      "crop": "RICE",
+      "crop_key": "rice",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "3074b8906a59c8cb4da17160d914d32af9a960318381f094c2ffc9e4f4c35a8b",
+      "page": 2,
+      "row": 4,
+      "source_id": "S57",
+      "stage": "Tillering",
+      "table": 2,
+      "text": "Bacterial Leaf Blight: Spray 1 g Streptocycline + 20 g Copper Oxychloride in 400–500 L of water per hectare during rain-free periods."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        607.8267354999999,
+        523.378879,
+        646.7020355
+      ],
+      "crop": "PIGEON PEA",
+      "crop_key": "pigeon pea",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "cdfaca2c191f9b78a77aa75730ab69ec64a176d54ba044711e23c47373b85dc4",
+      "page": 2,
+      "row": 5,
+      "source_id": "S57",
+      "stage": "RED GRAM/ARHAR) (Vegetative ",
+      "table": 2,
+      "text": "Undertake interculturing, and hand weeding operations at 20, 40 and 60 days after sowing under vapsa condition in sown crops."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        646.7020355,
+        523.378879,
+        685.577323
+      ],
+      "crop": "CASTOR",
+      "crop_key": "castor",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "c8f02764a12a068a7842a5cd2a77bcd604b2028cedc600c4d25c24839836a751",
+      "page": 2,
+      "row": 6,
+      "source_id": "S57",
+      "stage": "Vegetative ",
+      "table": 2,
+      "text": "Undertake the gap filling if required in sown maize crop."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        646.7020355,
+        523.378879,
+        685.577323
+      ],
+      "crop": "CASTOR",
+      "crop_key": "castor",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "ff635cbc154b3cd43082285f8486509f60e40a8d83ed4167a07f30726ee1a039",
+      "page": 2,
+      "row": 6,
+      "source_id": "S57",
+      "stage": "Vegetative ",
+      "table": 2,
+      "text": "Apply need based light irrigation by ensuring soil moisture in prevailing dry spell condition in sown castor crop."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        685.577323,
+        523.378879,
+        784.7763555000001
+      ],
+      "crop": "SOYABEAN",
+      "crop_key": "soyabean",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "34fc102771b19f26180bc78a70ed5c0f372ba2531bd61477cf15dad85f418f61",
+      "page": 2,
+      "row": 7,
+      "source_id": "S57",
+      "stage": "Vegetative ",
+      "table": 2,
+      "text": "Undertake the interculturing and weeding operations at vapsa condition at 20 and 40 days after sowing in sown crop."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        685.577323,
+        523.378879,
+        784.7763555000001
+      ],
+      "crop": "SOYABEAN",
+      "crop_key": "soyabean",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "e7b705bb677f8f10674f3f994f9d89a19fdde7df2f6e9b12990b133c6f396f7e",
+      "page": 2,
+      "row": 7,
+      "source_id": "S57",
+      "stage": "Vegetative ",
+      "table": 2,
+      "text": "Undertake the interculturing and weeding operations at 30 days after sowing at vapsa condition even if pre- emergence or post-emergence herbicides have been sprayed for effective and economical weed control in the soybean crop."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        685.577323,
+        523.378879,
+        784.7763555000001
+      ],
+      "crop": "SOYABEAN",
+      "crop_key": "soyabean",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "27884341ba190018f7297309587be4eced58e9e3843a37f2d986bfde1abce8f4",
+      "page": 2,
+      "row": 7,
+      "source_id": "S57",
+      "stage": "Vegetative ",
+      "table": 2,
+      "text": "Use one light trap per hectare to attract and destroy the moths of armyworm. If a severe infestation of armyworm is observed, spray a mixture of Emamectin Benzoate 1.9 EC (8.5 ml) or Indoxacarb 14.5 SC (7 ml) per 10 liters of water during clear weather."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        18.999979999999937,
+        523.3788790000001,
+        80.99936800000006
+      ],
+      "crop": "SORGHUM",
+      "crop_key": "sorghum",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "93fa1e2eaf57b531bda17589667abeb79791ac52fc20145c75ba4a979f794714",
+      "page": 3,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "JOWAR/GREAT MILLET) (Vegetative ",
+      "table": 2,
+      "text": "40 days old, ensuring the wind is calm."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        18.999979999999937,
+        523.3788790000001,
+        80.99936800000006
+      ],
+      "crop": "SORGHUM",
+      "crop_key": "sorghum",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "e53b9931dad6a84da0afd09ce8915097e18598ffb5d12194ad179910f019635e",
+      "page": 3,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "JOWAR/GREAT MILLET) (Vegetative ",
+      "table": 2,
+      "text": "Earthing-Up: Mound soil around the plant stems to provide root support and prevent lodging from strong winds."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        18.999979999999937,
+        523.3788790000001,
+        80.99936800000006
+      ],
+      "crop": "SORGHUM",
+      "crop_key": "sorghum",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "143c4076e33ae72e283bc8ba7d6b0bcd1117ddf30764d689d3df936f76f0a43e",
+      "page": 3,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "JOWAR/GREAT MILLET) (Vegetative ",
+      "table": 2,
+      "text": "Pest Control: Install fishmeal traps in the field to attract and control shoot flies. Spray recommended insecticides for stem borers only during clear weather."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        138.64204300000006,
+        523.3788790000001,
+        249.90585050000004
+      ],
+      "crop": "MANGO",
+      "crop_key": "mango",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "31cde8766f0c1c6d35f8ad9b92c2edd7800744f00ab7601b3b00ea0d2f054d0d",
+      "page": 3,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "",
+      "table": 3,
+      "text": "Young Plant Support: Stake young plants firmly to protect them from upcoming heavy rain and strong winds."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        138.64204300000006,
+        523.3788790000001,
+        249.90585050000004
+      ],
+      "crop": "MANGO",
+      "crop_key": "mango",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "163d5ef182472d740d8ac60a03468bdb4de1dfa13332eaf18657c3972d056d93",
+      "page": 3,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "",
+      "table": 3,
+      "text": "Stem Borer Control: Kill stem grubs and plug their holes with mud and Chlorpyriphos 20 EC (25 ml/10 L of water) before rains begin."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        138.64204300000006,
+        523.3788790000001,
+        249.90585050000004
+      ],
+      "crop": "MANGO",
+      "crop_key": "mango",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "58b3027b53f52512ab4bff8e4577566d44471e95c6f843b898a03743290722cf",
+      "page": 3,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "",
+      "table": 3,
+      "text": "Disease Prevention: Apply 10% Bordeaux paste to pruned or cut branches during clear weather to stop fungal infections."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        138.64204300000006,
+        523.3788790000001,
+        249.90585050000004
+      ],
+      "crop": "MANGO",
+      "crop_key": "mango",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "2b0d58897cd3753db43595bec2ada10b7fd012d3f9e42c7f2545270a89e3cb18",
+      "page": 3,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "",
+      "table": 3,
+      "text": "New Plantations: Prepare pits using healthy saplings, 10 kg FYM, 1 kg SSP, 1 kg MOP, and 50 ml Chlorpyriphos per tree for termite management."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        138.64204300000006,
+        523.3788790000001,
+        249.90585050000004
+      ],
+      "crop": "MANGO",
+      "crop_key": "mango",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "aa9cf00144ef13dfd3bee6774ed5e79414f0f91ff60ca353a111547e914d52a3",
+      "page": 3,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "",
+      "table": 3,
+      "text": "Fertilizers Postponed: Strictly suspend all chemical (Urea, SSP, MOP) and biofertilizers to prevent severe nutrient leaching during the rain spell."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        249.90585050000004,
+        523.3788790000001,
+        325.31056800000005
+      ],
+      "crop": "BANANA",
+      "crop_key": "banana",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "f1abb5303e3bc9c5ce4a0590a6325bf05476fe1929d09e349ae04521502d8232",
+      "page": 3,
+      "row": 3,
+      "source_id": "S57",
+      "stage": "",
+      "table": 3,
+      "text": "Weed Management & Interculturing: Perform interculturing and manual weeding in the planted field strictly when the soil reaches the 'Vapsa' (workable moisture) condition to keep the field weed-free and aerate the roots."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        249.90585050000004,
+        523.3788790000001,
+        325.31056800000005
+      ],
+      "crop": "BANANA",
+      "crop_key": "banana",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "7fbbcf063da4eae73b1e149c048f695bf605d3000859a9dc4df2dc6706885bbe",
+      "page": 3,
+      "row": 3,
+      "source_id": "S57",
+      "stage": "",
+      "table": 3,
+      "text": "Irrigation Management: Since mostly dry weather is forecasted, monitor the soil moisture closely and apply light irrigation to the newly planted crop as needed."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        382.6181180000001,
+        523.3788790000001,
+        494.21696799999995
+      ],
+      "crop": "COW",
+      "crop_key": "cow",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "fea7f8558ff45138d2cea220abc904bb1c380efe3ea758adb2472e43063bf7fe",
+      "page": 3,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "",
+      "table": 4,
+      "text": "Housing & Hygiene: Keep animals in clean, dry sheds. Regularly sprinkle dry slaked lime (Chuna) on the floor to maintain hygiene and prevent diseases like Foot Rot and Mastitis."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        382.6181180000001,
+        523.3788790000001,
+        494.21696799999995
+      ],
+      "crop": "COW",
+      "crop_key": "cow",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "14fe6305fc3444555e7719d2aacdf0015e06b31ca32837b6c4c82db687754a31",
+      "page": 3,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "",
+      "table": 4,
+      "text": "Fodder & Nutrition: Strictly avoid feeding old damp or fungus-infested fodder from past rains. Ensure a daily dose of mineral mixture and clean drinking water."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        382.6181180000001,
+        523.3788790000001,
+        494.21696799999995
+      ],
+      "crop": "COW",
+      "crop_key": "cow",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "0cef9149d9c96e6680c393a87b36641581ef0738a278361f116703b1a59802cc",
+      "page": 3,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "",
+      "table": 4,
+      "text": "Healthcare: Administer deworming medicines as advised by a veterinarian and complete any pending vaccinations (FMD, HS, and BQ)."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        382.6181180000001,
+        523.3788790000001,
+        494.21696799999995
+      ],
+      "crop": "COW",
+      "crop_key": "cow",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "9edd9bcf05a12320b2e6927c4de21b5c4a41fc57960ac1c0e78ebdfd7eaa636b",
+      "page": 3,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "",
+      "table": 4,
+      "text": "Pest Control: Clear any old stagnant water around the shed. Burn dry neem leaves in the evening to control mosquitoes, flies, and ticks."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        551.8597255,
+        523.3788790000001,
+        627.2643680000001
+      ],
+      "crop": "CHICKEN",
+      "crop_key": "chicken",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "d869bd0f41b011cae6cb040045bf1a39c6151c125fb40ffec9757b5eab8007d1",
+      "page": 3,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "",
+      "table": 5,
+      "text": "Shed Care: Ensure ventilation; hang curtains against high winds but keep them partially open during the day."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        551.8597255,
+        523.3788790000001,
+        627.2643680000001
+      ],
+      "crop": "CHICKEN",
+      "crop_key": "chicken",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "02efe80238f3f12754e6f8e887e293c73ab7999453b4017e323f8a0dc728afb5",
+      "page": 3,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "",
+      "table": 5,
+      "text": "Litter: Stir bedding regularly to prevent ammonia, adding slaked lime powder only on damp spots."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        551.8597255,
+        523.3788790000001,
+        627.2643680000001
+      ],
+      "crop": "CHICKEN",
+      "crop_key": "chicken",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "f70493e753bc4378b723fe4b5e4f9f3a921c90b81f9e8d235c57df34f6aa2b9b",
+      "page": 3,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "",
+      "table": 5,
+      "text": "Feed: Store feed bags on elevated wooden pallets to prevent toxic fungal growth."
+    },
+    {
+      "bbox": [
+        71.62110199999998,
+        551.8597255,
+        523.3788790000001,
+        627.2643680000001
+      ],
+      "crop": "CHICKEN",
+      "crop_key": "chicken",
+      "document_sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "87bda8442c1e7cf270d9885d820be58ddb0634ddbe0c7012f4f554cba5c98191",
+      "page": 3,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "",
+      "table": 5,
+      "text": "Health: Provide chlorinated or sanitized water, maintain vaccinations, and consult a vet if birds seem sick."
+    }
+  ],
+  "district": "Surat",
+  "extraction_status": "reviewed_family_rules",
+  "extraction_version": "bulletin-grid-v2",
+  "family": "gkms_grid",
+  "forecast_end": "2026-09-16",
+  "forecast_start": "2026-09-12",
+  "issue_date": "2026-09-11",
+  "issuer_context": "Gramin Krishi Mausam Sewa Agromet Advisory Bulletin for SURAT District Navsari Agricultural University Navsari, Gujarat Agromet Advisory Bulletin Date : 2026-09-11 Weather Forecast of District SURAT (Gujarat) Issued On : 2026-09-11 (Valid Till 08:30 IST of the next 5 days) 2026- 2026- Parameter 2026-09-14 2026-09-15 2026-09-16 09-12 09-13 Rainfall(mm) 15.0 68.0 125.0 66.0 30.0 Tmax(°C) 35.0 34.0 34.0 31.0 32.0 Tmin(°C) 26.0 26.0 24.0 24.0 25.0 RH-I(%) 75 75 80 85 85 RH-II(%) 70 70 75 75 85 Wind 6 11 12 15 12 Speed(kmph) Wind 243 233 254 230 221 Direction(Degree) Cloud 7 8 8 7 5 Cover(Octa) Heavy Rain; Heavy Rain; Heavy Rain; No No Warning Thu",
+  "language": "en",
+  "pages": 4,
+  "provenance": {
+    "blob": "blobs/5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb.bin",
+    "bytes": 235062,
+    "checked_at_utc": "2026-09-12T20:19:54.903922+00:00",
+    "content_type": "application/pdf",
+    "delivery": "network",
+    "http_status": 200,
+    "raw_file": "/Users/yashabhichandani/Desktop/WeatherGPT/data/runtime/ingestion/bulletins/bulletin-grid-v2/raw/blobs/5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb.bin",
+    "retrieved_at_utc": "2026-09-12T20:19:54.832796+00:00",
+    "selection_provenance": {
+      "blob": "blobs/d6c4476819ba50332bf34367dd66fce9c737f14164b2375e779a66351d61213f.bin",
+      "bytes": 541,
+      "checked_at_utc": "2026-09-12T20:19:54.114495+00:00",
+      "content_type": "text/html; charset=UTF-8",
+      "delivery": "network",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-09-12T20:19:54.113390+00:00",
+      "sha256": "d6c4476819ba50332bf34367dd66fce9c737f14164b2375e779a66351d61213f",
+      "source_id": "S57",
+      "url": "https://mausam.imd.gov.in/responsive/agrometinformation/district_current_en_get.php?s=Surat&step2=true",
+      "validation_scope": "product"
+    },
+    "sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+    "source_id": "S57",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Gujarat&district=Surat&language=English",
+    "validation_scope": "product"
+  },
+  "quarantined_passages": [],
+  "scope": "Published source passages; no personalized prescription or independent agronomic validation",
+  "sha256": "5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb",
+  "state": "Gujarat"
+}

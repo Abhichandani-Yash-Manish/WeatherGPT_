@@ -1,0 +1,124 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "306f37e2-5457-48ad-98e7-846fa5a22f25",
+  "question": "Show the annual rainfall trend for Ahmedabad district, Gujarat from 1981 to 2010.",
+  "status": "unavailable",
+  "answer": "Historical parameters not implemented: temperature_2m, precipitation.",
+  "facts": [],
+  "citations": [],
+  "notes": [
+    "The user requested a historical trend for annual rainfall and temperature from 1981 to 2010. The period is set to 'annual' with years=[1981, 2010] representing the inclusive range.",
+    "Source transcription is verified, but historical boundary comparability and homogeneity are unresolved. The descriptive slope is not proof of a statistically significant climate trend, causation or future conditions."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T17:38:55.668566+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 1182,
+      "output_tokens": 385,
+      "duration_seconds": 6.076352791
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "history",
+        "task_id": "t1",
+        "status": "unavailable"
+      }
+    ],
+    "provider": "local_ollama",
+    "duration_seconds": 6.088
+  },
+  "plan": {
+    "intent": "history",
+    "language": "en",
+    "places": [
+      {
+        "name": "Ahmedabad",
+        "state": "Gujarat",
+        "district": "Ahmedabad",
+        "kind": "district"
+      }
+    ],
+    "start_local": "",
+    "end_local": "",
+    "explicit_times": false,
+    "variables": [
+      "temperature_2m",
+      "precipitation"
+    ],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "assumptions": [
+      "The user requested a historical trend for annual rainfall and temperature from 1981 to 2010. The period is set to 'annual' with years=[1981, 2010] representing the inclusive range."
+    ],
+    "clarification": "",
+    "requested_outcome": "Retrieve annual historical data for rainfall and temperature in Ahmedabad district, Gujarat for the period 1981-2010 to show the trend.",
+    "tasks": [
+      {
+        "kind": "history",
+        "operation": "trend",
+        "parameters": [
+          "temperature_2m",
+          "precipitation"
+        ],
+        "years": [
+          1981,
+          2010
+        ],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      }
+    ]
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "kind": "history",
+        "operation": "trend",
+        "parameters": [
+          "temperature_2m",
+          "precipitation"
+        ],
+        "years": [
+          1981,
+          2010
+        ],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "unavailable",
+      "answer": "Historical parameters not implemented: temperature_2m, precipitation.",
+      "fact_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

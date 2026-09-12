@@ -1,0 +1,126 @@
+[
+  {
+    "product": "extended_forecast",
+    "state": "succeeded",
+    "promoted": true,
+    "job_id": "96c2c9d9df0847b7e859d366972284d7695a804df3f9a75f554167c0b9f4d651",
+    "count": 576,
+    "quality": {
+      "freshness": "retrieved_now",
+      "interval_coverage": "complete",
+      "missing_value_count": 0,
+      "schema": "validated",
+      "source_issue_freshness": "unknown",
+      "spatial_applicability": "not_independently_validated",
+      "spatial_identity": "present",
+      "temporal_applicability": "requested_window_present",
+      "value_coverage": "complete"
+    },
+    "coverage": {
+      "first_valid_time_utc": "2026-09-12T00:00:00+00:00",
+      "last_valid_time_utc": "2026-09-14T23:00:00+00:00",
+      "requested_point": {
+        "latitude": 23.02579,
+        "longitude": 72.58727
+      },
+      "returned_grid": {
+        "latitude": 23.022846,
+        "longitude": 72.60188
+      },
+      "time_basis": "UTC",
+      "variables": {
+        "apparent_temperature": {
+          "aggregation": "instant",
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-14T23:00:00+00:00",
+          "sample_count": 72
+        },
+        "precipitation": {
+          "aggregation": "preceding_hour_sum",
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+          "interval_end_utc": "2026-09-14T23:00:00+00:00",
+          "interval_start_utc": "2026-09-11T23:00:00+00:00",
+          "last_sample_at_utc": "2026-09-14T23:00:00+00:00",
+          "sample_count": 72
+        },
+        "precipitation_probability": {
+          "aggregation": "preceding_hour_probability",
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+          "interval_end_utc": "2026-09-14T23:00:00+00:00",
+          "interval_start_utc": "2026-09-11T23:00:00+00:00",
+          "last_sample_at_utc": "2026-09-14T23:00:00+00:00",
+          "sample_count": 72
+        },
+        "relative_humidity_2m": {
+          "aggregation": "instant",
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-14T23:00:00+00:00",
+          "sample_count": 72
+        },
+        "temperature_2m": {
+          "aggregation": "instant",
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-14T23:00:00+00:00",
+          "sample_count": 72
+        },
+        "visibility": {
+          "aggregation": "instant",
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-14T23:00:00+00:00",
+          "sample_count": 72
+        },
+        "wind_gusts_10m": {
+          "aggregation": "preceding_hour_max",
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+          "interval_end_utc": "2026-09-14T23:00:00+00:00",
+          "interval_start_utc": "2026-09-11T23:00:00+00:00",
+          "last_sample_at_utc": "2026-09-14T23:00:00+00:00",
+          "sample_count": 72
+        },
+        "wind_speed_10m": {
+          "aggregation": "instant",
+          "cadence_seconds": 3600,
+          "first_sample_at_utc": "2026-09-12T00:00:00+00:00",
+          "last_sample_at_utc": "2026-09-14T23:00:00+00:00",
+          "sample_count": 72
+        }
+      }
+    }
+  },
+  {
+    "product": "history_local",
+    "state": "succeeded",
+    "promoted": true,
+    "job_id": "4827bc45b591615ba396fe5081c6d764382b8108d49bb622b72340d0fdadf26c",
+    "count": 28,
+    "quality": {
+      "freshness": "retrieved_now",
+      "interval_coverage": "complete",
+      "missing_value_count": 0,
+      "schema": "validated",
+      "source_issue_freshness": "unknown",
+      "spatial_applicability": "not_independently_validated",
+      "spatial_identity": "present",
+      "temporal_applicability": "requested_window_present",
+      "value_coverage": "complete"
+    },
+    "coverage": {
+      "requested_point": {
+        "latitude": 23.02579,
+        "longitude": 72.58727
+      },
+      "returned_grid": {
+        "latitude": 23.0,
+        "longitude": 72.5
+      },
+      "time_basis": "Asia/Kolkata"
+    }
+  }
+]

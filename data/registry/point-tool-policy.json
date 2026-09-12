@@ -1,0 +1,16 @@
+{
+  "schema_version": "point-tool-policy-v1",
+  "operational_ready": false,
+  "products": {
+    "extended_forecast": {
+      "enabled": true,
+      "source_id": "S62",
+      "scope": "Best-match hourly point model forecasts; no official warning or exact onset eligibility"
+    },
+    "history_local": {
+      "enabled": true,
+      "source_id": "S22",
+      "scope": "One to seven daily ERA5 values in Asia/Kolkata, with conservative five-day availability delay"
+    }
+  }
+}

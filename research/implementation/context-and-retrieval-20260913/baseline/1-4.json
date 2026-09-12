@@ -1,0 +1,175 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "413cb7b8-ec77-48c0-be3f-ee64c59c0cc9",
+  "question": "flowering stage",
+  "status": "needs_clarification",
+  "answer": "Which crop and growth stage are involved? I can retrieve the district bulletin and relevant weather, but those details determine which passages apply.",
+  "facts": [],
+  "citations": [],
+  "notes": [
+    "The user has clarified the growth stage as 'flowering'. The crop remains unspecified in the current turn, but the previous context implies a spray decision. Without an explicit crop, the agricultural bulletin lookup will be generic or require the tool to handle missing crop data; however, per instructions, we retain the established place and time.",
+    "The time window remains tomorrow (2026-09-14 to 2026-09-15) as established in the conversation state."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T20:16:47.363956+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 3325,
+      "output_tokens": 381,
+      "duration_seconds": 6.578164708
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "agriculture",
+        "task_id": "t1",
+        "status": "needs_clarification"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "clarification_answer",
+      "changed_fields": [
+        "growth_stage"
+      ],
+      "inherited_fields": [
+        "places",
+        "parameters",
+        "time",
+        "operation"
+      ]
+    },
+    "duration_seconds": 6.593
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Ahmedabad",
+        "state": "Gujarat",
+        "district": "Ahmedabad",
+        "kind": "district"
+      }
+    ],
+    "assumptions": [
+      "The user has clarified the growth stage as 'flowering'. The crop remains unspecified in the current turn, but the previous context implies a spray decision. Without an explicit crop, the agricultural bulletin lookup will be generic or require the tool to handle missing crop data; however, per instructions, we retain the established place and time.",
+      "The time window remains tomorrow (2026-09-14 to 2026-09-15) as established in the conversation state."
+    ],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "flowering stage",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-14T00:00:00+05:30",
+        "end_local": "2026-09-15T00:00:00+05:30",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "Can I spray tomorrow?",
+          "crop": "",
+          "growth_stage": "flowering",
+          "topic": "pest",
+          "mode": "decision_support"
+        }
+      }
+    ],
+    "context_action": "clarification_answer",
+    "changed_fields": [
+      "growth_stage"
+    ],
+    "intent": "agriculture",
+    "start_local": "2026-09-14T00:00:00+05:30",
+    "end_local": "2026-09-15T00:00:00+05:30",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "flowering stage",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-14T00:00:00+05:30",
+        "end_local": "2026-09-15T00:00:00+05:30",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "Can I spray tomorrow?",
+          "crop": "",
+          "growth_stage": "flowering",
+          "topic": "pest",
+          "mode": "decision_support"
+        }
+      },
+      "status": "needs_clarification",
+      "answer": "Which crop and growth stage are involved? I can retrieve the district bulletin and relevant weather, but those details determine which passages apply.",
+      "fact_ids": [],
+      "passage_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "agriculture",
+      "parameters": [
+        "agricultural_advisory"
+      ],
+      "candidates": [
+        {
+          "tool": "crop_advisory",
+          "selected": true,
+          "available": true,
+          "reason": "Published district crop/stage passages; strict printed geography and dates, hybrid retrieval in reviewed PDF families; individual field decisions remain partial",
+          "sources": [
+            {
+              "source_id": "S57",
+              "product": "IMD district farmer bulletin delivery (English and local language)",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "needs_clarification",
+      "returned_source_ids": []
+    }
+  ],
+  "document_evidence": [],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

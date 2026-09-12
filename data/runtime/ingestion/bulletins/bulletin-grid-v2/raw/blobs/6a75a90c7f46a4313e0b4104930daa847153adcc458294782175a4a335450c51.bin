@@ -1,0 +1,6 @@
+<div class="img-block mt-3">
+	<strong class="text-muted">Nagpur Agromet Advisory Bulletine</strong>&nbsp; |
+	<a target="_blank" href="https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Maharashtra&district=Nagpur&language=English" download="Bulletine.pdf" ><i class="bi bi-file-pdf-fill"></i> Download PDF</a>
+	<!-- <img src="" alt="PDF_IMG" title="" width="100%" class="mt-2" /> -->
+	<input type="hidden" value="https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Maharashtra&district=Nagpur&language=English" id="pdfurl">
+</div>

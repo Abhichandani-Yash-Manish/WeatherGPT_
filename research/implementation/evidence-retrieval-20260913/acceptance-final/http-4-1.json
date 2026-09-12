@@ -1,0 +1,205 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "295c7f39-368d-4d2d-9296-faddc35f4104",
+  "question": "What does the current IMD bulletin say about wheat at flowering in Ahmedabad district, Gujarat?",
+  "status": "unavailable",
+  "answer": "The Ahmedabad bulletin dated 2026-09-11 has no indexed passage matching wheat at flowering. No passage for another crop, stage or topic has been substituted.",
+  "facts": [],
+  "citations": [
+    {
+      "id": "t1-doc-653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "source_id": "S57",
+      "provider": "IMD and named issuing agricultural institution",
+      "product": "Ahmedabad district agromet advisory",
+      "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Gujarat&district=Ahmedabad&language=English",
+      "response_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "retrieved_at_utc": "2026-09-12T19:42:08.731077+00:00",
+      "original_retrieved_at_utc": "2026-09-12T19:42:12.479759+00:00",
+      "issue_date": "2026-09-11"
+    }
+  ],
+  "notes": [],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-12T19:47:56.617033+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 2768,
+      "output_tokens": 314,
+      "duration_seconds": 5.255952875
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "district_bulletin_retrieval",
+        "source_id": "S57",
+        "mode": "metadata_filtered",
+        "candidates": 0,
+        "requested_crop": "wheat",
+        "requested_stage": "flowering",
+        "document_sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90"
+      },
+      {
+        "name": "agriculture",
+        "task_id": "t1",
+        "status": "unavailable"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "new",
+      "changed_fields": [
+        "crop",
+        "growth_stage",
+        "places",
+        "topic"
+      ],
+      "inherited_fields": []
+    },
+    "duration_seconds": 6.202
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Ahmedabad",
+        "state": "Gujarat",
+        "district": "Ahmedabad",
+        "kind": "district"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "What does the current IMD bulletin say about wheat at flowering in Ahmedabad district, Gujarat?",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "What does the current IMD bulletin say about wheat at flowering in Ahmedabad district, Gujarat?",
+          "crop": "wheat",
+          "growth_stage": "flowering",
+          "topic": "general",
+          "mode": "source_lookup"
+        }
+      }
+    ],
+    "context_action": "new",
+    "changed_fields": [
+      "crop",
+      "growth_stage",
+      "places",
+      "topic"
+    ],
+    "intent": "agriculture",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "What does the current IMD bulletin say about wheat at flowering in Ahmedabad district, Gujarat?",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "What does the current IMD bulletin say about wheat at flowering in Ahmedabad district, Gujarat?",
+          "crop": "wheat",
+          "growth_stage": "flowering",
+          "topic": "general",
+          "mode": "source_lookup"
+        }
+      },
+      "status": "unavailable",
+      "answer": "The Ahmedabad bulletin dated 2026-09-11 has no indexed passage matching wheat at flowering. No passage for another crop, stage or topic has been substituted.",
+      "fact_ids": [],
+      "passage_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "agriculture",
+      "parameters": [
+        "agricultural_advisory"
+      ],
+      "candidates": [
+        {
+          "tool": "crop_advisory",
+          "selected": true,
+          "available": true,
+          "reason": "Published district crop/stage passages; strict printed geography and dates, hybrid retrieval in reviewed PDF families; individual field decisions remain partial",
+          "sources": [
+            {
+              "source_id": "S57",
+              "product": "IMD district farmer bulletin delivery (English and local language)",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "unavailable",
+      "returned_source_ids": [
+        "S57"
+      ]
+    }
+  ],
+  "document_evidence": [
+    {
+      "district": "Ahmedabad",
+      "state": "Gujarat",
+      "issue_date": "2026-09-11",
+      "forecast_start": "2026-09-12",
+      "forecast_end": "2026-09-16",
+      "advice_valid_until": null,
+      "sha256": "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90",
+      "family": "arnej_grid",
+      "scope": "Published source passages; no personalized prescription or independent agronomic validation"
+    }
+  ],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}
