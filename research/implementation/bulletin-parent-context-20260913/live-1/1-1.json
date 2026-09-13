@@ -1,0 +1,574 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "59546cbd-cdf8-459f-9e01-ced220ead2c5",
+  "question": "Show the published IMD rice advice for Dibrugarh district, Assam.",
+  "status": "partial",
+  "answer": "From the Dibrugarh, Assam bulletin issued 2026-09-11, for rice:\n\nSource guidance needs reconciliation: different passages contain permission and restriction wording for sowing. Their conditions and time scopes may differ. Both are retained below; no personal go/no-go conclusion has been made.\n\nBulletin context is incomplete: Likely impacts of weather warnings (General) — Empty, unreadable or oversized section; source review required. The crop excerpts do not establish complete bulletin guidance.\n\nRICE · stage not stated · page 2:\n“Considering suitable weather condition in the coming 5 days, go for second top dressing with Urea @ 4.5 kg per bigha in the medium and long duration semi dwarf varieties and 1.5 kg per bigha in medium and long duration tall varieties of sali rice which are at panicle initiation stage. In case of short duration (about 100 days) semi dwarf varieties the dose of urea for top dressing should be 9 kg per bigha.”\n\nRICE · stage not stated · page 2:\n“Since the weather condition has become favourable for the attack of swarming caterpillar in rice crop, farmers can go for traditionally controlling the pest by sweeping coconut ropes, dipped in kerosene oil across the rice crop, causing the caterpillars to fall into water and die, or place bird perches in the field. Periodically release ducks into the fields, which will in turn consume the larvae and reduce the pest infestation. To stop the movement of swarming caterpillars from one field to another, spray the bunds with Fipronil 5% SC @ 1ml/lit of water. In infested crop, spray Lambda-cyhalothrin 5 EC @ 1.5 ml/lit of water or Chlorantraniliprole 18.50% SC @ 1ml per 3 liters of water at 7 days interval during evening hours. Three sprayings are necessary to control the pest.”\n\nRICE · stage not stated · page 2:\n“Since there is possibility of getting light rainfall in the coming 5 days, repair the bunds in the paddy fields to conserve rain water. Maintain standing water of 5±2 cm depth in the field.”\n\nContext from the same bulletin edition follows. These are separate source sections, not crop-specific matches or verified current official warnings. Printed warning dates and conditions are preserved; bulletin forecast dates do not extend their validity.\n\nForecast Summary: · page 1:\n“The weather will remain partly cloudy with the possibilities of getting light rainfall in the coming 5 days. Daily maximum and minimum temperature for the ensuing 5 days is predicted to be around 35.7°C and 24.2°C respectively. Morning and afternoon relative humidity will be around 84% and 79% respectively. Wind will blow mainly from northeasterly direction at an average speed of around 2.0 kmph. Extended Range Weather Forecast: During the period from 13th September, 2026 to 19th September, 2026, the rainfall amount, maximum and minimum temperature will remain normal over Assam-Meghalaya Meteorological Subdivision.”\n\nWeather Warnings (Valid Till 08:30 IST of the next day) · page 1:\n“There is a probability of occurrence of heavy rain, thunderstorm and lightning in some isolated areas from 12th to 14th September, 2026”\n\nLikely impacts of weather warnings on Agriculture and associated Agromet advisories · page 1:\n“Provide mechanical support to the crops like banana, citrus, papaya etc. and make arrangements to drain out excess water from the fields. Harvest the matured vegetable and fruits and transfer it to a safer location. Transfer the seedlings of fruit crops, flower crops, vegetable crops etc. to a safer location. In case if the seedling cannot be transferred, make provisions for firm temporary sheds (made of bamboo and net or plastic).”\n\nGeneral Advisory: · page 2:\n“Taking advantage of the suitable weather condition in the coming 5 days, farmers can continue their farm operations like, land preparation, sowing, transplanting, earthing up, application of fertilizers, spraying of pesticides, etc.”\n\nSMS Advisory: · page 2:\n“Burning of dried leaves mixed with dried chilli near the vegetable orchards will control the infestation of borers and suckers up to certain extent.”\n\nImpact based advisories (General) · page 3:\n“Follow any traffic advisories. • Avoid going to areas that face water logging problem often. • Avoid staying in landslide prone areas. • Take shelter during thunderstorm/lightning activities. • Provide mulch at the base of the crop to prevent soil and root damage. • Avoid working in the fields during thunderstorm/lightning period. • Postpone sowing of rice, jute, maize and vegetables; if already sown, avoid water stagnation in the field and cover the seeded area with natural mulching materials like straw, farm residues etc. • Be updated.”\n\nThese are original English source excerpts, including their conditions. The bulletin is district guidance; it has not been validated for your individual field.",
+  "facts": [],
+  "citations": [
+    {
+      "id": "t1-doc-57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+      "source_id": "S57",
+      "provider": "IMD and named issuing agricultural institution",
+      "product": "Dibrugarh district agromet advisory",
+      "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Assam&district=Dibrugarh&language=English",
+      "response_sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+      "retrieved_at_utc": "2026-09-13T16:57:13.802558+00:00",
+      "original_retrieved_at_utc": "2026-09-12T20:19:48.750678+00:00",
+      "issue_date": "2026-09-11",
+      "local_document_path": "/api/documents/57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee"
+    }
+  ],
+  "notes": [
+    "Printed district, state, issue date and five-day forecast context verified. Forecast dates are not an asserted expiry for every crop recommendation.",
+    "Source passages are retained in their original English. Chemical amounts and conditional instructions are not rewritten or personalized."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-13T16:57:01.408953+00:00",
+  "expires_at_utc": "2026-09-13T17:57:13.802558+00:00",
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 2879,
+      "output_tokens": 292,
+      "duration_seconds": 12.365096583
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "district_bulletin_retrieval",
+        "source_id": "S57",
+        "mode": "bm25_plus_multilingual_e5_rrf",
+        "candidates": 3,
+        "model": "intfloat/multilingual-e5-small",
+        "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+        "metadata_filters": {
+          "state": "Assam",
+          "district": "Dibrugarh",
+          "crop": "rice",
+          "stage": ""
+        },
+        "scores_are_confidence": false,
+        "document_sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee"
+      },
+      {
+        "name": "agriculture",
+        "task_id": "t1",
+        "status": "partial"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "new",
+      "changed_fields": [
+        "crop",
+        "places"
+      ],
+      "inherited_fields": []
+    },
+    "duration_seconds": 23.983
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Dibrugarh",
+        "state": "Assam",
+        "district": "Dibrugarh",
+        "kind": "district"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "published IMD rice advice for Dibrugarh district, Assam",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "published IMD rice advice for Dibrugarh district, Assam",
+          "crop": "rice",
+          "growth_stage": "",
+          "topic": "general",
+          "mode": "source_lookup"
+        }
+      }
+    ],
+    "context_action": "new",
+    "changed_fields": [
+      "crop",
+      "places"
+    ],
+    "intent": "agriculture",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "published IMD rice advice for Dibrugarh district, Assam",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "published IMD rice advice for Dibrugarh district, Assam",
+          "crop": "rice",
+          "growth_stage": "",
+          "topic": "general",
+          "mode": "source_lookup"
+        }
+      },
+      "status": "partial",
+      "answer": "From the Dibrugarh, Assam bulletin issued 2026-09-11, for rice:\n\nSource guidance needs reconciliation: different passages contain permission and restriction wording for sowing. Their conditions and time scopes may differ. Both are retained below; no personal go/no-go conclusion has been made.\n\nBulletin context is incomplete: Likely impacts of weather warnings (General) — Empty, unreadable or oversized section; source review required. The crop excerpts do not establish complete bulletin guidance.\n\nRICE · stage not stated · page 2:\n“Considering suitable weather condition in the coming 5 days, go for second top dressing with Urea @ 4.5 kg per bigha in the medium and long duration semi dwarf varieties and 1.5 kg per bigha in medium and long duration tall varieties of sali rice which are at panicle initiation stage. In case of short duration (about 100 days) semi dwarf varieties the dose of urea for top dressing should be 9 kg per bigha.”\n\nRICE · stage not stated · page 2:\n“Since the weather condition has become favourable for the attack of swarming caterpillar in rice crop, farmers can go for traditionally controlling the pest by sweeping coconut ropes, dipped in kerosene oil across the rice crop, causing the caterpillars to fall into water and die, or place bird perches in the field. Periodically release ducks into the fields, which will in turn consume the larvae and reduce the pest infestation. To stop the movement of swarming caterpillars from one field to another, spray the bunds with Fipronil 5% SC @ 1ml/lit of water. In infested crop, spray Lambda-cyhalothrin 5 EC @ 1.5 ml/lit of water or Chlorantraniliprole 18.50% SC @ 1ml per 3 liters of water at 7 days interval during evening hours. Three sprayings are necessary to control the pest.”\n\nRICE · stage not stated · page 2:\n“Since there is possibility of getting light rainfall in the coming 5 days, repair the bunds in the paddy fields to conserve rain water. Maintain standing water of 5±2 cm depth in the field.”\n\nContext from the same bulletin edition follows. These are separate source sections, not crop-specific matches or verified current official warnings. Printed warning dates and conditions are preserved; bulletin forecast dates do not extend their validity.\n\nForecast Summary: · page 1:\n“The weather will remain partly cloudy with the possibilities of getting light rainfall in the coming 5 days. Daily maximum and minimum temperature for the ensuing 5 days is predicted to be around 35.7°C and 24.2°C respectively. Morning and afternoon relative humidity will be around 84% and 79% respectively. Wind will blow mainly from northeasterly direction at an average speed of around 2.0 kmph. Extended Range Weather Forecast: During the period from 13th September, 2026 to 19th September, 2026, the rainfall amount, maximum and minimum temperature will remain normal over Assam-Meghalaya Meteorological Subdivision.”\n\nWeather Warnings (Valid Till 08:30 IST of the next day) · page 1:\n“There is a probability of occurrence of heavy rain, thunderstorm and lightning in some isolated areas from 12th to 14th September, 2026”\n\nLikely impacts of weather warnings on Agriculture and associated Agromet advisories · page 1:\n“Provide mechanical support to the crops like banana, citrus, papaya etc. and make arrangements to drain out excess water from the fields. Harvest the matured vegetable and fruits and transfer it to a safer location. Transfer the seedlings of fruit crops, flower crops, vegetable crops etc. to a safer location. In case if the seedling cannot be transferred, make provisions for firm temporary sheds (made of bamboo and net or plastic).”\n\nGeneral Advisory: · page 2:\n“Taking advantage of the suitable weather condition in the coming 5 days, farmers can continue their farm operations like, land preparation, sowing, transplanting, earthing up, application of fertilizers, spraying of pesticides, etc.”\n\nSMS Advisory: · page 2:\n“Burning of dried leaves mixed with dried chilli near the vegetable orchards will control the infestation of borers and suckers up to certain extent.”\n\nImpact based advisories (General) · page 3:\n“Follow any traffic advisories. • Avoid going to areas that face water logging problem often. • Avoid staying in landslide prone areas. • Take shelter during thunderstorm/lightning activities. • Provide mulch at the base of the crop to prevent soil and root damage. • Avoid working in the fields during thunderstorm/lightning period. • Postpone sowing of rice, jute, maize and vegetables; if already sown, avoid water stagnation in the field and cover the seeded area with natural mulching materials like straw, farm residues etc. • Be updated.”\n\nThese are original English source excerpts, including their conditions. The bulletin is district guidance; it has not been validated for your individual field.",
+      "fact_ids": [],
+      "passage_ids": [
+        "dbf11cc688b06b2e14b5889cd34fc551b2e3f4f8b566c1228cdcf6ba8c4b0b99",
+        "69b23e94611dd2854aed63052c32ff31a584ec124ce3a063243edf8c7a61f13f",
+        "62b8169ee791d533d50944d2ff700baad2cba9f0407df0a3f33532a848dcb581",
+        "75cfcc1f0f67ee83a781c79de487c5fa1e8bbb2b0dc226726112287139b66ce6",
+        "6bec29e2995df82d8c666b279b42579d10a4ed6c62da7bc68232c3df083a9936",
+        "30602df815ca53133672cda1b40869575a3cb2c9d3c6f0007ca6a1f4a5960d07",
+        "9268c1b8f9db147912689e993c86a02881739172035c4a9c66fcbbc0ba17ce1f",
+        "6e308eeed3c7e1856ca0303071fb81aef8b4275ba831dc3af76e6b453ffe243e",
+        "8f185f0bffaf50c0ba363960808ec758b9e790b849d2126de7563228b18f2b4f"
+      ]
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "pending_slots": [],
+  "retrieval_coverage": [
+    {
+      "selection": "top",
+      "matched": 3,
+      "returned": 3,
+      "omitted": 0,
+      "scope": "Indexed passages matching this district, crop, stage and topic; not a completeness claim for the original PDF",
+      "parent_context": {
+        "version": "bulletin-parent-context-v1",
+        "status": "partial",
+        "returned": 6,
+        "omitted_sections": [
+          {
+            "section": "Likely impacts of weather warnings (General)",
+            "page": 3,
+            "reason": "Empty, unreadable or oversized section; source review required"
+          }
+        ],
+        "scope": "Recognized narrative sections and general rows from this edition; forecast tables, arbitrary layouts and full-document recall are not validated",
+        "warning_applicability": "unverified",
+        "dissemination_eligible": false,
+        "attached": 6,
+        "qualification_flags": [
+          {
+            "kind": "potential_activity_conflict",
+            "activity": "sowing",
+            "passage_ids": [
+              "8f185f0bffaf50c0ba363960808ec758b9e790b849d2126de7563228b18f2b4f",
+              "9268c1b8f9db147912689e993c86a02881739172035c4a9c66fcbbc0ba17ce1f"
+            ],
+            "resolution": "unresolved; conditions, dates and scope need review"
+          }
+        ]
+      },
+      "task_id": "t1"
+    }
+  ],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "agriculture",
+      "parameters": [
+        "agricultural_advisory"
+      ],
+      "candidates": [
+        {
+          "tool": "crop_advisory",
+          "selected": true,
+          "available": true,
+          "reason": "Published district crop/stage passages; strict printed geography and dates, hybrid retrieval in reviewed PDF families; individual field decisions remain partial",
+          "sources": [
+            {
+              "source_id": "S57",
+              "product": "IMD district farmer bulletin delivery (English and local language)",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "partial",
+      "returned_source_ids": [
+        "S57"
+      ]
+    }
+  ],
+  "passages": [
+    {
+      "bbox": [
+        80.60984408225634,
+        202.23728386784617,
+        515.8422678015713,
+        425.9278762278615
+      ],
+      "crop": "RICE",
+      "crop_key": "rice",
+      "document_sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "dbf11cc688b06b2e14b5889cd34fc551b2e3f4f8b566c1228cdcf6ba8c4b0b99",
+      "page": 2,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "",
+      "table": 1,
+      "text": "Considering suitable weather condition in the coming 5 days, go for second top dressing with Urea @ 4.5 kg per bigha in the medium and long duration semi dwarf varieties and 1.5 kg per bigha in medium and long duration tall varieties of sali rice which are at panicle initiation stage. In case of short duration (about 100 days) semi dwarf varieties the dose of urea for top dressing should be 9 kg per bigha.",
+      "retrieval": {
+        "rrf_score": 0.03278688524590164,
+        "lexical_score": 0.8452601311450988,
+        "semantic_score": 0.816580312228094
+      },
+      "citation_ids": [
+        "t1-doc-57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee"
+      ],
+      "state": "Assam",
+      "district": "Dibrugarh",
+      "issue_date": "2026-09-11",
+      "forecast_start": "2026-09-12",
+      "forecast_end": "2026-09-16",
+      "evidence_kind": "published_advisory_passage",
+      "task_id": "t1"
+    },
+    {
+      "bbox": [
+        80.60984408225634,
+        202.23728386784617,
+        515.8422678015713,
+        425.9278762278615
+      ],
+      "crop": "RICE",
+      "crop_key": "rice",
+      "document_sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "69b23e94611dd2854aed63052c32ff31a584ec124ce3a063243edf8c7a61f13f",
+      "page": 2,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "",
+      "table": 1,
+      "text": "Since the weather condition has become favourable for the attack of swarming caterpillar in rice crop, farmers can go for traditionally controlling the pest by sweeping coconut ropes, dipped in kerosene oil across the rice crop, causing the caterpillars to fall into water and die, or place bird perches in the field. Periodically release ducks into the fields, which will in turn consume the larvae and reduce the pest infestation. To stop the movement of swarming caterpillars from one field to another, spray the bunds with Fipronil 5% SC @ 1ml/lit of water. In infested crop, spray Lambda-cyhalothrin 5 EC @ 1.5 ml/lit of water or Chlorantraniliprole 18.50% SC @ 1ml per 3 liters of water at 7 days interval during evening hours. Three sprayings are necessary to control the pest.",
+      "retrieval": {
+        "rrf_score": 0.03225806451612903,
+        "lexical_score": 0.7342692504397965,
+        "semantic_score": 0.7979014117314464
+      },
+      "citation_ids": [
+        "t1-doc-57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee"
+      ],
+      "state": "Assam",
+      "district": "Dibrugarh",
+      "issue_date": "2026-09-11",
+      "forecast_start": "2026-09-12",
+      "forecast_end": "2026-09-16",
+      "evidence_kind": "published_advisory_passage",
+      "task_id": "t1"
+    },
+    {
+      "bbox": [
+        80.60984408225634,
+        202.23728386784617,
+        515.8422678015713,
+        425.9278762278615
+      ],
+      "crop": "RICE",
+      "crop_key": "rice",
+      "document_sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+      "extraction_version": "bulletin-grid-v2",
+      "id": "62b8169ee791d533d50944d2ff700baad2cba9f0407df0a3f33532a848dcb581",
+      "page": 2,
+      "row": 2,
+      "source_id": "S57",
+      "stage": "",
+      "table": 1,
+      "text": "Since there is possibility of getting light rainfall in the coming 5 days, repair the bunds in the paddy fields to conserve rain water. Maintain standing water of 5±2 cm depth in the field.",
+      "retrieval": {
+        "rrf_score": 0.031746031746031744,
+        "lexical_score": 0.17346631305800997,
+        "semantic_score": 0.7830458514915355
+      },
+      "citation_ids": [
+        "t1-doc-57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee"
+      ],
+      "state": "Assam",
+      "district": "Dibrugarh",
+      "issue_date": "2026-09-11",
+      "forecast_start": "2026-09-12",
+      "forecast_end": "2026-09-16",
+      "evidence_kind": "published_advisory_passage",
+      "task_id": "t1"
+    },
+    {
+      "section": "Forecast Summary:",
+      "heading_page": 1,
+      "page": 1,
+      "locators": [
+        {
+          "page": 1,
+          "bbox": [
+            81.88328095269648,
+            467.34554694683357,
+            509.9753622845831,
+            547.5518565009038
+          ]
+        }
+      ],
+      "text": "The weather will remain partly cloudy with the possibilities of getting light rainfall in the coming 5 days. Daily maximum and minimum temperature for the ensuing 5 days is predicted to be around 35.7°C and 24.2°C respectively. Morning and afternoon relative humidity will be around 84% and 79% respectively. Wind will blow mainly from northeasterly direction at an average speed of around 2.0 kmph. Extended Range Weather Forecast: During the period from 13th September, 2026 to 19th September, 2026, the rainfall amount, maximum and minimum temperature will remain normal over Assam-Meghalaya Meteorological Subdivision.",
+      "crop": "",
+      "crop_key": "",
+      "stage": "",
+      "source_id": "S57",
+      "document_sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+      "extraction_version": "bulletin-parent-context-v1",
+      "evidence_kind": "published_bulletin_context",
+      "applicability": "reference_only; current warning applicability is unverified",
+      "id": "75cfcc1f0f67ee83a781c79de487c5fa1e8bbb2b0dc226726112287139b66ce6",
+      "citation_ids": [
+        "t1-doc-57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee"
+      ],
+      "state": "Assam",
+      "district": "Dibrugarh",
+      "issue_date": "2026-09-11",
+      "forecast_start": "2026-09-12",
+      "forecast_end": "2026-09-16",
+      "task_id": "t1"
+    },
+    {
+      "section": "Weather Warnings (Valid Till 08:30 IST of the next day)",
+      "heading_page": 1,
+      "page": 1,
+      "locators": [
+        {
+          "page": 1,
+          "bbox": [
+            81.88328095269648,
+            604.4724632812118,
+            498.59023063949724,
+            626.4645159008762
+          ]
+        }
+      ],
+      "text": "There is a probability of occurrence of heavy rain, thunderstorm and lightning in some isolated areas from 12th to 14th September, 2026",
+      "crop": "",
+      "crop_key": "",
+      "stage": "",
+      "source_id": "S57",
+      "document_sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+      "extraction_version": "bulletin-parent-context-v1",
+      "evidence_kind": "published_bulletin_context",
+      "applicability": "reference_only; current warning applicability is unverified",
+      "id": "6bec29e2995df82d8c666b279b42579d10a4ed6c62da7bc68232c3df083a9936",
+      "citation_ids": [
+        "t1-doc-57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee"
+      ],
+      "state": "Assam",
+      "district": "Dibrugarh",
+      "issue_date": "2026-09-11",
+      "forecast_start": "2026-09-12",
+      "forecast_end": "2026-09-16",
+      "task_id": "t1"
+    },
+    {
+      "section": "Likely impacts of weather warnings on Agriculture and associated Agromet advisories",
+      "heading_page": 1,
+      "page": 1,
+      "locators": [
+        {
+          "page": 1,
+          "bbox": [
+            81.88328095269648,
+            683.3851226811842,
+            513.5177409053707,
+            740.3057294614921
+          ]
+        }
+      ],
+      "text": "Provide mechanical support to the crops like banana, citrus, papaya etc. and make arrangements to drain out excess water from the fields. Harvest the matured vegetable and fruits and transfer it to a safer location. Transfer the seedlings of fruit crops, flower crops, vegetable crops etc. to a safer location. In case if the seedling cannot be transferred, make provisions for firm temporary sheds (made of bamboo and net or plastic).",
+      "crop": "",
+      "crop_key": "",
+      "stage": "",
+      "source_id": "S57",
+      "document_sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+      "extraction_version": "bulletin-parent-context-v1",
+      "evidence_kind": "published_bulletin_context",
+      "applicability": "reference_only; current warning applicability is unverified",
+      "id": "30602df815ca53133672cda1b40869575a3cb2c9d3c6f0007ca6a1f4a5960d07",
+      "citation_ids": [
+        "t1-doc-57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee"
+      ],
+      "state": "Assam",
+      "district": "Dibrugarh",
+      "issue_date": "2026-09-11",
+      "forecast_start": "2026-09-12",
+      "forecast_end": "2026-09-16",
+      "task_id": "t1"
+    },
+    {
+      "section": "General Advisory:",
+      "heading_page": 1,
+      "page": 2,
+      "locators": [
+        {
+          "page": 2,
+          "bbox": [
+            81.88328095269648,
+            31.38551437583567,
+            495.56329155404626,
+            65.0204183823812
+          ]
+        }
+      ],
+      "text": "Taking advantage of the suitable weather condition in the coming 5 days, farmers can continue their farm operations like, land preparation, sowing, transplanting, earthing up, application of fertilizers, spraying of pesticides, etc.",
+      "crop": "",
+      "crop_key": "",
+      "stage": "",
+      "source_id": "S57",
+      "document_sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+      "extraction_version": "bulletin-parent-context-v1",
+      "evidence_kind": "published_bulletin_context",
+      "applicability": "reference_only; current warning applicability is unverified",
+      "id": "9268c1b8f9db147912689e993c86a02881739172035c4a9c66fcbbc0ba17ce1f",
+      "citation_ids": [
+        "t1-doc-57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee"
+      ],
+      "state": "Assam",
+      "district": "Dibrugarh",
+      "issue_date": "2026-09-11",
+      "forecast_start": "2026-09-12",
+      "forecast_end": "2026-09-16",
+      "task_id": "t1"
+    },
+    {
+      "section": "SMS Advisory:",
+      "heading_page": 2,
+      "page": 2,
+      "locators": [
+        {
+          "page": 2,
+          "bbox": [
+            81.88328095269648,
+            121.94102516268924,
+            504.6340024014274,
+            143.93307778235362
+          ]
+        }
+      ],
+      "text": "Burning of dried leaves mixed with dried chilli near the vegetable orchards will control the infestation of borers and suckers up to certain extent.",
+      "crop": "",
+      "crop_key": "",
+      "stage": "",
+      "source_id": "S57",
+      "document_sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+      "extraction_version": "bulletin-parent-context-v1",
+      "evidence_kind": "published_bulletin_context",
+      "applicability": "reference_only; current warning applicability is unverified",
+      "id": "6e308eeed3c7e1856ca0303071fb81aef8b4275ba831dc3af76e6b453ffe243e",
+      "citation_ids": [
+        "t1-doc-57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee"
+      ],
+      "state": "Assam",
+      "district": "Dibrugarh",
+      "issue_date": "2026-09-11",
+      "forecast_start": "2026-09-12",
+      "forecast_end": "2026-09-16",
+      "task_id": "t1"
+    },
+    {
+      "section": "Impact based advisories (General)",
+      "heading_page": 3,
+      "page": 3,
+      "locators": [
+        {
+          "page": 3,
+          "bbox": [
+            81.88328095269648,
+            262.30216024230833,
+            513.3055008318848,
+            330.8656184094976
+          ]
+        }
+      ],
+      "text": "Follow any traffic advisories. • Avoid going to areas that face water logging problem often. • Avoid staying in landslide prone areas. • Take shelter during thunderstorm/lightning activities. • Provide mulch at the base of the crop to prevent soil and root damage. • Avoid working in the fields during thunderstorm/lightning period. • Postpone sowing of rice, jute, maize and vegetables; if already sown, avoid water stagnation in the field and cover the seeded area with natural mulching materials like straw, farm residues etc. • Be updated.",
+      "crop": "",
+      "crop_key": "",
+      "stage": "",
+      "source_id": "S57",
+      "document_sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+      "extraction_version": "bulletin-parent-context-v1",
+      "evidence_kind": "published_bulletin_context",
+      "applicability": "reference_only; current warning applicability is unverified",
+      "id": "8f185f0bffaf50c0ba363960808ec758b9e790b849d2126de7563228b18f2b4f",
+      "citation_ids": [
+        "t1-doc-57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee"
+      ],
+      "state": "Assam",
+      "district": "Dibrugarh",
+      "issue_date": "2026-09-11",
+      "forecast_start": "2026-09-12",
+      "forecast_end": "2026-09-16",
+      "task_id": "t1"
+    }
+  ],
+  "document_evidence": [
+    {
+      "district": "Dibrugarh",
+      "state": "Assam",
+      "issue_date": "2026-09-11",
+      "forecast_start": "2026-09-12",
+      "forecast_end": "2026-09-16",
+      "advice_valid_until": null,
+      "sha256": "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee",
+      "family": "gkms_grid",
+      "scope": "Published source passages; no personalized prescription or independent agronomic validation"
+    }
+  ],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

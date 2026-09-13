@@ -1,0 +1,71 @@
+{
+  "schema_version": "local-numeric-ingestion-policy-v1",
+  "as_of_utc": "2026-09-12T06:02:00.658852+00:00",
+  "scope": "All workers sharing one local ingestion SQLite database. Does not govern direct adapters or other machines.",
+  "provider": "open-meteo",
+  "budgets": [
+    {
+      "rolling_seconds": 60,
+      "attempt_units": 20
+    },
+    {
+      "rolling_seconds": 3600,
+      "attempt_units": 100
+    },
+    {
+      "rolling_seconds": 86400,
+      "attempt_units": 200
+    },
+    {
+      "rolling_seconds": 2678400,
+      "attempt_units": 1000
+    }
+  ],
+  "max_inflight_requests": 1,
+  "max_days": 7,
+  "max_jobs_per_invocation": 100,
+  "max_unfinished_jobs": 1000,
+  "max_attempts_default": 4,
+  "source_products": {
+    "forecast": {
+      "source_id": "S21",
+      "host": "api.open-meteo.com",
+      "path": "/v1/gfs",
+      "variables": 4
+    },
+    "marine": {
+      "source_id": "S56",
+      "host": "marine-api.open-meteo.com",
+      "path": "/v1/marine",
+      "variables": 3
+    },
+    "river": {
+      "source_id": "S37",
+      "host": "flood-api.open-meteo.com",
+      "path": "/v1/flood",
+      "variables": 1
+    },
+    "extended_forecast": {
+      "source_id": "S62",
+      "host": "api.open-meteo.com",
+      "path": "/v1/forecast",
+      "variables": 8
+    },
+    "history_local": {
+      "source_id": "S22",
+      "host": "archive-api.open-meteo.com",
+      "path": "/v1/archive",
+      "variables": 4,
+      "max_days": 7,
+      "timezone": "Asia/Kolkata",
+      "model": "era5"
+    }
+  },
+  "accounting": "One attempt unit per fixed, single-location numeric request. Review accounting before widening query contracts.",
+  "references": [
+    "https://open-meteo.com/en/pricing",
+    "https://www.rfc-editor.org/rfc/rfc9110.html#name-retry-after"
+  ],
+  "implementation": "weathergpt_data/ingestion.py",
+  "operational_ready": false
+}

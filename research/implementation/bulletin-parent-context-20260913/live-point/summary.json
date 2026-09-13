@@ -1,0 +1,10 @@
+[
+  {
+    "file": "1-1.json",
+    "question": "Retrieve rice passages from the IMD bulletin for Dibrugarh district, Assam. Separately, give hourly rain probability for Dibrugarh city, Assam tomorrow from 18:30 to 21:30 IST.",
+    "status": "partial",
+    "seconds": 10.82,
+    "crop_passages": 3,
+    "context_sections": 6
+  }
+]

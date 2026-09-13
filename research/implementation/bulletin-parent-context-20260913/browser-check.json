@@ -1,0 +1,15 @@
+{
+  "verified_at_utc": "2026-09-13T17:09:28.064160+00:00",
+  "surface": "Codex in-app browser, 1280 by 720 desktop screenshot",
+  "url": "http://127.0.0.1:8765/",
+  "question": "Show the published IMD rice advice for Dibrugarh district, Assam.",
+  "observations": [
+    "Question submission returned visible partial response with unresolved sowing qualification and omitted unreadable section.",
+    "Crop cards and parent-context cards were labelled separately.",
+    "Expanded page-three impact-advice card preserved restriction text and current-applicability limitation.",
+    "Saved original link opened the exact hash route with page=3; embedded PDF viewer failed to render.",
+    "Final Download saved PDF control emitted a browser download event and used the same-origin verified PDF endpoint.",
+    "Final screenshot showed the context body and both source links without clipping."
+  ],
+  "scope": "Two manual tool-driven desktop journeys; no full mobile/browser accessibility acceptance. PDF hash verification is recorded separately in acceptance.json."
+}

@@ -1,0 +1,168 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "53efaab7-9622-44e6-8169-d07a98ede8a8",
+  "question": "Show rice advice in Madurai district, Tamil Nadu.",
+  "status": "unavailable",
+  "answer": "The task could not retrieve verified evidence: Bulletin retrieval is unavailable: Printed district could not be verified with the supported layout rules; the layout may be unsupported or the selected district may differ",
+  "facts": [],
+  "citations": [],
+  "notes": [],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-13T17:04:20.077880+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 2874,
+      "output_tokens": 283,
+      "duration_seconds": 6.065041125
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "agriculture",
+        "task_id": "t1",
+        "status": "unavailable"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "new",
+      "changed_fields": [
+        "crop",
+        "places"
+      ],
+      "inherited_fields": []
+    },
+    "duration_seconds": 6.34
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Madurai",
+        "state": "Tamil Nadu",
+        "district": "Madurai",
+        "kind": "district"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "Show rice advice in Madurai district, Tamil Nadu.",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "Show rice advice in Madurai district, Tamil Nadu.",
+          "crop": "rice",
+          "growth_stage": "",
+          "topic": "general",
+          "mode": "source_lookup"
+        }
+      }
+    ],
+    "context_action": "new",
+    "changed_fields": [
+      "crop",
+      "places"
+    ],
+    "intent": "agriculture",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "Show rice advice in Madurai district, Tamil Nadu.",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "Show rice advice in Madurai district, Tamil Nadu.",
+          "crop": "rice",
+          "growth_stage": "",
+          "topic": "general",
+          "mode": "source_lookup"
+        }
+      },
+      "status": "unavailable",
+      "answer": "The task could not retrieve verified evidence: Bulletin retrieval is unavailable: Printed district could not be verified with the supported layout rules; the layout may be unsupported or the selected district may differ",
+      "fact_ids": [],
+      "passage_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "pending_slots": [],
+  "retrieval_coverage": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "agriculture",
+      "parameters": [
+        "agricultural_advisory"
+      ],
+      "candidates": [
+        {
+          "tool": "crop_advisory",
+          "selected": true,
+          "available": true,
+          "reason": "Published district crop/stage passages; strict printed geography and dates, hybrid retrieval in reviewed PDF families; individual field decisions remain partial",
+          "sources": [
+            {
+              "source_id": "S57",
+              "product": "IMD district farmer bulletin delivery (English and local language)",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "unavailable",
+      "returned_source_ids": []
+    }
+  ],
+  "document_evidence": [],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

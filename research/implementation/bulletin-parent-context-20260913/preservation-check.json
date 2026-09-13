@@ -1,0 +1,46 @@
+{
+  "registered_assets_verified": 238,
+  "frozen_checkpoints": [
+    {
+      "path": "data/processed/checkpoints/point-tools-20260912/checkpoint-manifest.json",
+      "files": 46
+    },
+    {
+      "path": "data/processed/checkpoints/conversational-recovery-20260912/checkpoint-manifest.json",
+      "files": 38
+    },
+    {
+      "path": "data/processed/checkpoints/hardening-batch-three-20260912/checkpoint-manifest.json",
+      "files": 20
+    },
+    {
+      "path": "data/processed/checkpoints/context-retrieval-20260913/checkpoint-manifest.json",
+      "files": 61
+    },
+    {
+      "path": "data/processed/checkpoints/conversation-engine-20260913/checkpoint-manifest.json",
+      "files": 52
+    },
+    {
+      "path": "data/processed/checkpoints/hardening-batch-one-20260912/checkpoint-manifest.json",
+      "files": 15
+    },
+    {
+      "path": "data/processed/checkpoints/product-batch-five-20260912/checkpoint-manifest.json",
+      "files": 31
+    },
+    {
+      "path": "data/processed/checkpoints/evidence-retrieval-20260913/checkpoint-manifest.json",
+      "files": 59
+    },
+    {
+      "path": "data/processed/checkpoints/hardening-batch-two-20260912/checkpoint-manifest.json",
+      "files": 18
+    },
+    {
+      "path": "data/processed/checkpoints/product-stage-one-20260912/checkpoint-manifest.json",
+      "files": 44
+    }
+  ],
+  "previous_report_unchanged": true
+}

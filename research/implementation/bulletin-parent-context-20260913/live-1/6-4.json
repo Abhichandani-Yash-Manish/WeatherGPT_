@@ -1,0 +1,171 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "7eae09d3-41e5-4a2c-a9c5-dcb3f0c1a4d7",
+  "question": "flowering stage",
+  "status": "unavailable",
+  "answer": "The task could not retrieve verified evidence: Bulletin retrieval is unavailable: Unbound advisory text crosses a page/table boundary; this document needs layout review before serving",
+  "facts": [],
+  "citations": [],
+  "notes": [],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-13T16:58:34.812004+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "local_ollama",
+      "model": "qwen3.6:latest",
+      "input_tokens": 3394,
+      "output_tokens": 273,
+      "duration_seconds": 6.381087625
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "agriculture",
+        "task_id": "t1",
+        "status": "unavailable"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "clarification_answer",
+      "changed_fields": [
+        "growth_stage"
+      ],
+      "inherited_fields": [
+        "places",
+        "parameters",
+        "time",
+        "operation"
+      ]
+    },
+    "duration_seconds": 6.808
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Nagpur",
+        "state": "Maharashtra",
+        "district": "",
+        "kind": "settlement"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "flowering stage",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-14T00:00:00+05:30",
+        "end_local": "2026-09-15T00:00:00+05:30",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "Can I spray tomorrow? cotton",
+          "crop": "cotton",
+          "growth_stage": "flowering",
+          "topic": "pest",
+          "mode": "decision_support"
+        }
+      }
+    ],
+    "context_action": "clarification_answer",
+    "changed_fields": [
+      "growth_stage"
+    ],
+    "intent": "agriculture",
+    "start_local": "2026-09-14T00:00:00+05:30",
+    "end_local": "2026-09-15T00:00:00+05:30",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "flowering stage",
+        "kind": "agriculture",
+        "operation": "lookup",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-14T00:00:00+05:30",
+        "end_local": "2026-09-15T00:00:00+05:30",
+        "place_indices": [
+          0
+        ],
+        "document_request": {
+          "query": "Can I spray tomorrow? cotton",
+          "crop": "cotton",
+          "growth_stage": "flowering",
+          "topic": "pest",
+          "mode": "decision_support"
+        }
+      },
+      "status": "unavailable",
+      "answer": "The task could not retrieve verified evidence: Bulletin retrieval is unavailable: Unbound advisory text crosses a page/table boundary; this document needs layout review before serving",
+      "fact_ids": [],
+      "passage_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "pending_slots": [],
+  "retrieval_coverage": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "agriculture",
+      "parameters": [
+        "agricultural_advisory"
+      ],
+      "candidates": [
+        {
+          "tool": "crop_advisory",
+          "selected": true,
+          "available": true,
+          "reason": "Published district crop/stage passages; strict printed geography and dates, hybrid retrieval in reviewed PDF families; individual field decisions remain partial",
+          "sources": [
+            {
+              "source_id": "S57",
+              "product": "IMD district farmer bulletin delivery (English and local language)",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "unavailable",
+      "returned_source_ids": []
+    }
+  ],
+  "document_evidence": [],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

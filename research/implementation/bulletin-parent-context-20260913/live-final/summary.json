@@ -1,0 +1,122 @@
+[
+  {
+    "file": "1-1.json",
+    "question": "Show the published IMD rice advice for Dibrugarh district, Assam.",
+    "status": "partial",
+    "seconds": 10.94,
+    "crop_passages": 3,
+    "context_sections": 6
+  },
+  {
+    "file": "1-2.json",
+    "question": "Show all matching passages, not just three.",
+    "status": "partial",
+    "seconds": 0.52,
+    "crop_passages": 3,
+    "context_sections": 6
+  },
+  {
+    "file": "1-3.json",
+    "question": "Explain that.",
+    "status": "partial",
+    "seconds": 6.18,
+    "crop_passages": 3,
+    "context_sections": 6
+  },
+  {
+    "file": "2-1.json",
+    "question": "What does the IMD bulletin say about banana in Coimbatore district, Tamil Nadu?",
+    "status": "answered",
+    "seconds": 6.7,
+    "crop_passages": 1,
+    "context_sections": 5
+  },
+  {
+    "file": "3-1.json",
+    "question": "What does the IMD bulletin say about rice in Kamrup district, Assam?",
+    "status": "answered",
+    "seconds": 6.52,
+    "crop_passages": 1,
+    "context_sections": 7
+  },
+  {
+    "file": "3-2.json",
+    "question": "Not rice, maize at sowing stage.",
+    "status": "answered",
+    "seconds": 7.55,
+    "crop_passages": 1,
+    "context_sections": 7
+  },
+  {
+    "file": "4-1.json",
+    "question": "What does the IMD bulletin say about cotton and groundnut pests in Ahmedabad district, Gujarat?",
+    "status": "answered",
+    "seconds": 20.28,
+    "crop_passages": 5,
+    "context_sections": 4
+  },
+  {
+    "file": "5-1.json",
+    "question": "Show rice bulletin advice for Dibrugarh district, Assam. Also show the rain probability there tomorrow evening.",
+    "status": "partial",
+    "seconds": 9.24,
+    "crop_passages": 3,
+    "context_sections": 6
+  },
+  {
+    "file": "6-1.json",
+    "question": "Can I spray tomorrow?",
+    "status": "needs_clarification",
+    "seconds": 6.6,
+    "crop_passages": 0,
+    "context_sections": 0
+  },
+  {
+    "file": "6-2.json",
+    "question": "Nagpur, Maharashtra",
+    "status": "needs_clarification",
+    "seconds": 0.08,
+    "crop_passages": 0,
+    "context_sections": 0
+  },
+  {
+    "file": "6-3.json",
+    "question": "cotton",
+    "status": "unavailable",
+    "seconds": 0.35,
+    "crop_passages": 0,
+    "context_sections": 0
+  },
+  {
+    "file": "6-4.json",
+    "question": "flowering stage",
+    "status": "unavailable",
+    "seconds": 6.13,
+    "crop_passages": 0,
+    "context_sections": 0
+  },
+  {
+    "file": "7-1.json",
+    "question": "Show banana advice in Surat district, Gujarat.",
+    "status": "unavailable",
+    "seconds": 6.34,
+    "crop_passages": 0,
+    "context_sections": 0
+  },
+  {
+    "file": "8-1.json",
+    "question": "Show rice advice in Madurai district, Tamil Nadu.",
+    "status": "unavailable",
+    "seconds": 6.34,
+    "crop_passages": 0,
+    "context_sections": 0
+  },
+  {
+    "file": "9-1.json",
+    "question": "What does the IMD bulletin say about wheat in Ahmedabad district, Gujarat?",
+    "status": "unavailable",
+    "seconds": 7.09,
+    "crop_passages": 0,
+    "context_sections": 0
+  }
+]

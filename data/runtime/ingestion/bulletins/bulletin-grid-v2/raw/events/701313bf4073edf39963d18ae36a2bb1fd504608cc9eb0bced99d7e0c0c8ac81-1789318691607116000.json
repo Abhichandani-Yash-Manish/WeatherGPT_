@@ -1,0 +1,12 @@
+{
+  "source_id": "S57",
+  "url": "https://mausam.imd.gov.in/responsive/agrometinformation/district_current_en_get.php?s=Ahmedabad&step2=true",
+  "checked_at_utc": "2026-09-13T16:58:11.607084+00:00",
+  "stage": "fetch_failed",
+  "error": "<urlopen error timed out>",
+  "error_type": "URLError",
+  "retryable": false,
+  "retry_at": null,
+  "http_status": null,
+  "deferred": false
+}

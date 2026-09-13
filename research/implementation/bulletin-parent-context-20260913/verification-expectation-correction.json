@@ -1,0 +1,6 @@
+{
+  "journey": "live-final/5-1.json",
+  "initial_expectation": "Forecast numeric facts in a district-wide request",
+  "observed": "Correctly asks for a village or town; the point forecast cannot represent a whole district.",
+  "decision": "Preserve needs_clarification as expected for this query; run a separate explicit-city mixed request for numeric isolation."
+}

@@ -1,0 +1,24 @@
+{
+  "http_turns": 16,
+  "statuses": {
+    "answered": 4,
+    "needs_clarification": 2,
+    "partial": 5,
+    "unavailable": 5
+  },
+  "crop_passage_instances": 23,
+  "parent_section_instances": 53,
+  "numeric_facts": 3,
+  "independent_parent_locator_checks": 50,
+  "pdf_http_hashes": {
+    "57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee": 200,
+    "99b77dc84e6bec60bfe3a5cd64b0d8247761b43abed6af3a63b056b0edfe7b9f": 200,
+    "f5e9fbe91b5fe14b3b9a3290517696b279cf93b327c4067b9c7ee0225df71e07": 200,
+    "653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90": 200
+  },
+  "latency_seconds": {
+    "median": 6.56,
+    "max": 20.28
+  },
+  "scope": "Local Ollama HTTP journeys, source-byte replay and parent rectangle checks. No operational, national, language or agronomic acceptance."
+}
