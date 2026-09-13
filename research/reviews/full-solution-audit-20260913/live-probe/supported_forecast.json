@@ -1,0 +1,276 @@
+{
+  "question": "How much rain is forecast in Kochi, Kerala tomorrow from 06:30 to 12:30 IST?",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "b50a797e-fd14-495e-9a03-13d7f5ab539a",
+    "question": "How much rain is forecast in Kochi, Kerala tomorrow from 06:30 to 12:30 IST?",
+    "status": "answered",
+    "answer": "Kochi · 14 Sep, 06:30–14 Sep, 12:30 IST: Forecast precipitation: 0.0 mm. Source: GFS forecast; conditions can change.",
+    "facts": [
+      {
+        "id": "t1-f1",
+        "label": "Forecast rainfall",
+        "value": "0.0",
+        "unit": "mm",
+        "place": "Kochi, Ernākulam, State of Kerala",
+        "start": "2026-09-14T06:30:00+05:30",
+        "end": "2026-09-14T12:30:00+05:30",
+        "source_id": "S21",
+        "method": "preceding_hour_sum",
+        "source_locators": [
+          "$.hourly.precipitation[26]",
+          "$.hourly.precipitation[27]",
+          "$.hourly.precipitation[28]",
+          "$.hourly.precipitation[29]",
+          "$.hourly.precipitation[30]",
+          "$.hourly.precipitation[31]"
+        ],
+        "parameter": "precipitation",
+        "entity_id": "geonames:1273874",
+        "evidence_version": "2379a60dd83a3604e80e66175f610d57a68220a1fafff941afa309e030084319",
+        "citation_ids": [
+          "t1-c-2379a60dd83a3604e80e66175f610d57a68220a1fafff941afa309e030084319"
+        ],
+        "task_id": "t1"
+      }
+    ],
+    "citations": [
+      {
+        "source_id": "S21",
+        "provider": "Open-Meteo",
+        "product": "GFS forecast delivery",
+        "evidence_kind": "model_forecast",
+        "url": "https://api.open-meteo.com/v1/gfs?latitude=9.93988&longitude=76.26022&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "response_sha256": "2379a60dd83a3604e80e66175f610d57a68220a1fafff941afa309e030084319",
+        "raw_relative_path": "590c0028a4660eb3fd00e497e992f68a8acbe59cec0bbd08a119ce31f0a44574/8ad0311fa90440c08e4c72b7bd22fb4b/blobs/2379a60dd83a3604e80e66175f610d57a68220a1fafff941afa309e030084319.bin",
+        "published_job_id": "590c0028a4660eb3fd00e497e992f68a8acbe59cec0bbd08a119ce31f0a44574",
+        "source_locators": [
+          "$.hourly.precipitation[26]",
+          "$.hourly.precipitation[27]",
+          "$.hourly.precipitation[28]",
+          "$.hourly.precipitation[29]",
+          "$.hourly.precipitation[30]",
+          "$.hourly.precipitation[31]"
+        ],
+        "retrieved_at_utc": "2026-09-13T17:21:17.927069+00:00",
+        "issue_time_utc": null,
+        "id": "t1-c-2379a60dd83a3604e80e66175f610d57a68220a1fafff941afa309e030084319"
+      },
+      {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/1273874",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      }
+    ],
+    "notes": [
+      "Model forecasts at the selected place point, not observations or district averages. Source model run time and local representativeness remain unverified."
+    ],
+    "choices": [],
+    "follow_up": null,
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-13T17:22:35.736664+00:00",
+    "expires_at_utc": "2026-09-13T18:21:17.927069+00:00",
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 2890,
+        "output_tokens": 241,
+        "duration_seconds": 5.406261292
+      },
+      "generation": {
+        "provider": "typed_task_renderers",
+        "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+      },
+      "tools": [
+        {
+          "name": "gazetteer_search",
+          "query": {
+            "name": "Kochi",
+            "state": "Kerala",
+            "district": "",
+            "kind": "settlement"
+          },
+          "matches": 1
+        },
+        {
+          "name": "point_forecast",
+          "location": "Kochi, Ernākulam, State of Kerala",
+          "status": "prototype_answer",
+          "refresh": null
+        },
+        {
+          "name": "forecast",
+          "task_id": "t1",
+          "status": "answered"
+        }
+      ],
+      "provider": "local_ollama",
+      "context_resolution": {
+        "action": "new",
+        "changed_fields": [],
+        "inherited_fields": []
+      },
+      "duration_seconds": 5.471
+    },
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "Kochi",
+          "state": "Kerala",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [],
+      "clarification": "",
+      "explicit_times": true,
+      "tasks": [
+        {
+          "request_quote": "How much rain is forecast in Kochi, Kerala tomorrow from 06:30 to 12:30 IST?",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T06:30:00+05:30",
+          "end_local": "2026-09-14T12:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "new",
+      "changed_fields": [],
+      "intent": "forecast",
+      "start_local": "2026-09-14T06:30:00+05:30",
+      "end_local": "2026-09-14T12:30:00+05:30",
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "task_results": [
+      {
+        "id": "t1",
+        "request": {
+          "request_quote": "How much rain is forecast in Kochi, Kerala tomorrow from 06:30 to 12:30 IST?",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T06:30:00+05:30",
+          "end_local": "2026-09-14T12:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        },
+        "status": "answered",
+        "answer": "Kochi · 14 Sep, 06:30–14 Sep, 12:30 IST: Forecast precipitation: 0.0 mm. Source: GFS forecast; conditions can change.",
+        "fact_ids": [
+          "t1-f1"
+        ],
+        "passage_ids": []
+      }
+    ],
+    "charts": [],
+    "calculations": [],
+    "pending_slots": [],
+    "retrieval_coverage": [],
+    "retrieval_plan": [
+      {
+        "task_id": "t1",
+        "operation": "lookup",
+        "kind": "forecast",
+        "parameters": [
+          "precipitation"
+        ],
+        "candidates": [
+          {
+            "tool": "forecast_summary",
+            "selected": true,
+            "available": true,
+            "reason": "Exact-window GFS model summary",
+            "sources": [
+              {
+                "source_id": "S21",
+                "product": "Open-Meteo GFS forecast delivery",
+                "registry_status": "prototype_adapter_tested"
+              }
+            ]
+          },
+          {
+            "tool": "hourly_forecast",
+            "selected": false,
+            "available": true,
+            "reason": "Hourly evidence; exact onset and whole-period probability unavailable",
+            "sources": [
+              {
+                "source_id": "S62",
+                "product": "Open-Meteo best-match extended hourly forecast",
+                "registry_status": "prototype_adapter_tested"
+              }
+            ]
+          }
+        ],
+        "status": "answered",
+        "returned_source_ids": [
+          "S21",
+          "S61"
+        ]
+      }
+    ],
+    "document_evidence": [],
+    "resolved_points": {
+      "Kochi": {
+        "id": "1273874",
+        "name": "Kochi",
+        "latitude": 9.93988,
+        "longitude": 76.26022,
+        "feature": "PPL",
+        "admin1": "State of Kerala",
+        "admin2": "Ernākulam",
+        "modified": "2025-06-06",
+        "name_match_basis": "canonical",
+        "other_alias_matches": 0,
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:1273874",
+        "label": "Kochi, Ernākulam, State of Kerala",
+        "coordinates": {
+          "latitude": 9.93988,
+          "longitude": 76.26022
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1273874",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Kochi"
+      }
+    },
+    "task_coverage": {
+      "requested": 1,
+      "completed": 1,
+      "incomplete_ids": []
+    }
+  },
+  "seconds": 5.47
+}

@@ -1,0 +1,146 @@
+[
+  {
+    "file": "forecast_continuity-1.json",
+    "question": "For Kochi, Kerala tomorrow from 9 AM to noon, give rain probability, gusts and feels-like temperature.",
+    "status": "partial",
+    "facts": 7,
+    "passages": 0,
+    "seconds": 7.46,
+    "error": null
+  },
+  {
+    "file": "forecast_continuity-2.json",
+    "question": "And from 3 PM to 6 PM?",
+    "status": "partial",
+    "facts": 7,
+    "passages": 0,
+    "seconds": 6.77,
+    "error": null
+  },
+  {
+    "file": "forecast_continuity-3.json",
+    "question": "Compare the rain amount for that same afternoon period with GFS too.",
+    "status": "partial",
+    "facts": 7,
+    "passages": 0,
+    "seconds": 7.16,
+    "error": null
+  },
+  {
+    "file": "official_warning-1.json",
+    "question": "Are there any current official cyclone warnings that apply to Chennai, Tamil Nadu?",
+    "status": "unavailable",
+    "facts": 0,
+    "passages": 0,
+    "seconds": 14.1,
+    "error": null
+  },
+  {
+    "file": "dissemination-1.json",
+    "question": "Notify me if an official flood warning is issued for Patna, Bihar tonight.",
+    "status": "unavailable",
+    "facts": 0,
+    "passages": 0,
+    "seconds": 6.56,
+    "error": null
+  },
+  {
+    "file": "observation-1.json",
+    "question": "What is the observed temperature right now in Mysuru, Karnataka? Name the observing station and measurement time.",
+    "status": "unavailable",
+    "facts": 0,
+    "passages": 0,
+    "seconds": 5.36,
+    "error": null
+  },
+  {
+    "file": "agriculture-1.json",
+    "question": "Can I irrigate my soybean at flowering tomorrow in Indore district, Madhya Pradesh? Check the district bulletin and tomorrow morning rain forecast.",
+    "status": "needs_clarification",
+    "facts": 0,
+    "passages": 0,
+    "seconds": 10.49,
+    "error": null
+  },
+  {
+    "file": "aviation-1.json",
+    "question": "Show the latest METAR and TAF for VOBL and explain what each says.",
+    "status": "partial",
+    "facts": 2,
+    "passages": 0,
+    "seconds": 14.46,
+    "error": null
+  },
+  {
+    "file": "marine-1.json",
+    "question": "What wave heights are forecast off Mangaluru, Karnataka tomorrow morning?",
+    "status": "unavailable",
+    "facts": 0,
+    "passages": 0,
+    "seconds": 6.29,
+    "error": null
+  },
+  {
+    "file": "river-1.json",
+    "question": "What is the latest observed Brahmaputra water level at Dibrugarh and how far is it below danger level?",
+    "status": "unavailable",
+    "facts": 0,
+    "passages": 0,
+    "seconds": 5.36,
+    "error": null
+  },
+  {
+    "file": "history-1.json",
+    "question": "Compare annual rainfall in Mysuru district, Karnataka in 2010 and 2020.",
+    "status": "unavailable",
+    "facts": 0,
+    "passages": 0,
+    "seconds": 4.74,
+    "error": null
+  },
+  {
+    "file": "climate-1.json",
+    "question": "Show the annual mean temperature trend for India from 1981 to 2020 and explain the limits of that trend.",
+    "status": "answered",
+    "facts": 40,
+    "passages": 0,
+    "seconds": 7.95,
+    "error": null
+  },
+  {
+    "file": "hindi-1.json",
+    "question": "भोपाल, मध्य प्रदेश में कल सुबह बारिश की संभावना कितनी है? हिंदी में बताओ।",
+    "status": "needs_selection",
+    "facts": 0,
+    "passages": 0,
+    "seconds": 6.77,
+    "error": null
+  },
+  {
+    "file": "gujarati-1.json",
+    "question": "રાજકોટ, ગુજરાતમાં કાલે સવારે વરસાદની સંભાવના કેટલી છે? ગુજરાતીમાં સમજાવો.",
+    "status": "answered",
+    "facts": 6,
+    "passages": 0,
+    "seconds": 8.28,
+    "error": null
+  },
+  {
+    "file": "district_scope-1.json",
+    "question": "What is the average rainfall forecast across all of Wayanad district, Kerala tomorrow?",
+    "status": "needs_clarification",
+    "facts": 0,
+    "passages": 0,
+    "seconds": 6.21,
+    "error": null
+  },
+  {
+    "file": "multi_task-1.json",
+    "question": "For Bhubaneswar, Odisha: tell me tomorrow morning rain probability, current official warnings, observed temperature now, and annual district rainfall in 2010. Answer each part separately.",
+    "status": "partial",
+    "facts": 6,
+    "passages": 0,
+    "seconds": 22.17,
+    "error": null
+  }
+]

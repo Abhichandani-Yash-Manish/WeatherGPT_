@@ -1,7 +1,7 @@
 {
   "source_id": "S06",
   "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-09-01-07-07-06.xml",
-  "retrieved_at_utc": "2026-09-12T20:59:46.820096+00:00",
+  "retrieved_at_utc": "2026-09-13T17:19:00.619684+00:00",
   "http_status": 200,
   "content_type": "application/xml",
   "bytes": 4337,

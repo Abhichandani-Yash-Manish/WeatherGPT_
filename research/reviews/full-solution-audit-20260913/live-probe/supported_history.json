@@ -1,0 +1,294 @@
+{
+  "question": "What was the published All India annual rainfall in 2024?",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "5ee4d040-5d78-4fcb-aa3d-93886db635fb",
+    "question": "What was the published All India annual rainfall in 2024?",
+    "status": "answered",
+    "answer": "All India · annual 2024\nrainfall: 1206.6 mm [t1-f1]\nRetrieved 1 published historical values for the requested places, parameters and years.",
+    "facts": [
+      {
+        "label": "rainfall",
+        "value": "1206.6",
+        "unit": "mm",
+        "year": 2024,
+        "period": "annual",
+        "source_id": "S25",
+        "place": "All India",
+        "id": "t1-f1",
+        "parameter": "rainfall",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c1"
+        ],
+        "task_id": "t1"
+      }
+    ],
+    "citations": [
+      {
+        "source_id": "S25",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+        "sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+        "row": 125,
+        "column": "Annual",
+        "id": "t1-c1"
+      }
+    ],
+    "notes": [
+      "This is the published All India aggregate; it does not describe an individual village or district.",
+      "The source aggregate differs from the sum of its published months; the original total and reconciliation are retained."
+    ],
+    "choices": [],
+    "follow_up": null,
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-13T17:22:41.210110+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 2878,
+        "output_tokens": 141,
+        "duration_seconds": 3.851897291
+      },
+      "generation": {
+        "provider": "typed_task_renderers",
+        "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+      },
+      "tools": [
+        {
+          "name": "history",
+          "task_id": "t1",
+          "status": "answered"
+        }
+      ],
+      "provider": "local_ollama",
+      "context_resolution": {
+        "action": "new",
+        "changed_fields": [],
+        "inherited_fields": []
+      },
+      "duration_seconds": 3.873
+    },
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "India",
+          "state": "",
+          "district": "",
+          "kind": "country"
+        }
+      ],
+      "assumptions": [],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "published All India annual rainfall in 2024",
+          "kind": "history",
+          "operation": "lookup",
+          "parameters": [
+            "rainfall"
+          ],
+          "years": [
+            2024
+          ],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "new",
+      "changed_fields": [],
+      "intent": "history",
+      "start_local": "",
+      "end_local": "",
+      "variables": [],
+      "year": 2024,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "task_results": [
+      {
+        "id": "t1",
+        "request": {
+          "request_quote": "published All India annual rainfall in 2024",
+          "kind": "history",
+          "operation": "lookup",
+          "parameters": [
+            "rainfall"
+          ],
+          "years": [
+            2024
+          ],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        },
+        "status": "answered",
+        "answer": "All India · annual 2024\nrainfall: 1206.6 mm [t1-f1]\nRetrieved 1 published historical values for the requested places, parameters and years.",
+        "fact_ids": [
+          "t1-f1"
+        ],
+        "passage_ids": [],
+        "historical_evidence": [
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "rainfall",
+            "year": 2024,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual rainfall for 2024 was 1206.6 mm.",
+              "facts": [
+                {
+                  "label": "rainfall",
+                  "value": "1206.6",
+                  "unit": "mm",
+                  "year": 2024,
+                  "period": "annual",
+                  "source_id": "S25",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S25",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+                  "sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+                  "row": 125,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district.",
+                "The source aggregate differs from the sum of its published months; the original total and reconciliation are retained."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "6625ac7d34e0bd5d15c07cb10d9cb3d4896831aaf8024598052fa0f2a38eca3e",
+                  "source_id": "S25",
+                  "source_series_id": "historical_rain_whi",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "precipitation_amount",
+                  "year": 2024,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "2024-01-01",
+                  "period_end_exclusive": "2025-01-01",
+                  "value_decimal": "1206.6",
+                  "native_value": "1206.6",
+                  "unit": "mm",
+                  "quality_flags": [
+                    "published_total_differs_from_month_sum"
+                  ],
+                  "asset_sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+                  "source_row": 125,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.620400+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": {
+                  "source_id": "S25",
+                  "year": 2024,
+                  "period_code": "ANNUAL",
+                  "published_value": "1206.6",
+                  "computed_month_sum": "1204.1",
+                  "difference_mm": "2.5",
+                  "rounding_bound_mm": "0.65",
+                  "status": "beyond_rounding_bound",
+                  "source_row": 125,
+                  "source_column": "Annual",
+                  "asset_sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90"
+                },
+                "citation": {
+                  "source_id": "S25",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+                  "sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+                  "row": 125,
+                  "column": "Annual"
+                }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "charts": [],
+    "calculations": [],
+    "pending_slots": [],
+    "retrieval_coverage": [],
+    "retrieval_plan": [
+      {
+        "task_id": "t1",
+        "operation": "lookup",
+        "kind": "history",
+        "parameters": [
+          "rainfall"
+        ],
+        "candidates": [
+          {
+            "tool": "published_history",
+            "selected": true,
+            "available": true,
+            "reason": "Published India aggregates and historical district rainfall; no district temperature",
+            "sources": [
+              {
+                "source_id": "S25",
+                "product": "IMD All India historical rainfall table (supplied CSV)",
+                "registry_status": "sample_inspected"
+              },
+              {
+                "source_id": "S26",
+                "product": "IMD All India historical mean temperature table (supplied CSV)",
+                "registry_status": "sample_inspected"
+              },
+              {
+                "source_id": "S27",
+                "product": "Supplied district historical rainfall collection (32 CSVs)",
+                "registry_status": "sample_inspected"
+              }
+            ]
+          }
+        ],
+        "status": "answered",
+        "returned_source_ids": [
+          "S25"
+        ]
+      }
+    ],
+    "document_evidence": [],
+    "resolved_points": {},
+    "task_coverage": {
+      "requested": 1,
+      "completed": 1,
+      "incomplete_ids": []
+    }
+  },
+  "seconds": 3.87
+}

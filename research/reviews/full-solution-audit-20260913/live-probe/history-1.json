@@ -1,0 +1,201 @@
+{
+  "question": "Compare annual rainfall in Mysuru district, Karnataka in 2010 and 2020.",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "2a890732-5ac9-4798-be79-fa0aaa262fcc",
+    "question": "Compare annual rainfall in Mysuru district, Karnataka in 2010 and 2020.",
+    "status": "unavailable",
+    "answer": "Mysuru, rainfall, 2010: I could not find a historical district series named Mysuru in Karnataka. Please give the source district name and state; I will not substitute national or nearby-district data.\nMysuru, rainfall, 2020: I could not find a historical district series named Mysuru in Karnataka. Please give the source district name and state; I will not substitute national or nearby-district data.",
+    "facts": [],
+    "citations": [],
+    "notes": [],
+    "choices": [],
+    "follow_up": null,
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-13T17:19:52.758215+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 2885,
+        "output_tokens": 200,
+        "duration_seconds": 4.686142584
+      },
+      "generation": {
+        "provider": "typed_task_renderers",
+        "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+      },
+      "tools": [
+        {
+          "name": "history",
+          "task_id": "t1",
+          "status": "unavailable"
+        }
+      ],
+      "provider": "local_ollama",
+      "context_resolution": {
+        "action": "new",
+        "changed_fields": [],
+        "inherited_fields": []
+      },
+      "duration_seconds": 4.735
+    },
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "Mysuru",
+          "state": "Karnataka",
+          "district": "Mysuru",
+          "kind": "district"
+        }
+      ],
+      "assumptions": [],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "Compare annual rainfall in Mysuru district, Karnataka in 2010 and 2020.",
+          "kind": "history",
+          "operation": "compare",
+          "parameters": [
+            "rainfall"
+          ],
+          "years": [
+            2010,
+            2020
+          ],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "new",
+      "changed_fields": [],
+      "intent": "history",
+      "start_local": "",
+      "end_local": "",
+      "variables": [],
+      "year": 2010,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "task_results": [
+      {
+        "id": "t1",
+        "request": {
+          "request_quote": "Compare annual rainfall in Mysuru district, Karnataka in 2010 and 2020.",
+          "kind": "history",
+          "operation": "compare",
+          "parameters": [
+            "rainfall"
+          ],
+          "years": [
+            2010,
+            2020
+          ],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        },
+        "status": "unavailable",
+        "answer": "Mysuru, rainfall, 2010: I could not find a historical district series named Mysuru in Karnataka. Please give the source district name and state; I will not substitute national or nearby-district data.\nMysuru, rainfall, 2020: I could not find a historical district series named Mysuru in Karnataka. Please give the source district name and state; I will not substitute national or nearby-district data.",
+        "fact_ids": [],
+        "passage_ids": [],
+        "historical_evidence": [
+          {
+            "place": {
+              "name": "Mysuru",
+              "state": "Karnataka",
+              "district": "Mysuru",
+              "kind": "district"
+            },
+            "parameter": "rainfall",
+            "year": 2010,
+            "evidence": {
+              "status": "unavailable",
+              "text": "I could not find a historical district series named Mysuru in Karnataka. Please give the source district name and state; I will not substitute national or nearby-district data.",
+              "facts": [],
+              "citations": []
+            }
+          },
+          {
+            "place": {
+              "name": "Mysuru",
+              "state": "Karnataka",
+              "district": "Mysuru",
+              "kind": "district"
+            },
+            "parameter": "rainfall",
+            "year": 2020,
+            "evidence": {
+              "status": "unavailable",
+              "text": "I could not find a historical district series named Mysuru in Karnataka. Please give the source district name and state; I will not substitute national or nearby-district data.",
+              "facts": [],
+              "citations": []
+            }
+          }
+        ]
+      }
+    ],
+    "charts": [],
+    "calculations": [],
+    "pending_slots": [],
+    "retrieval_coverage": [],
+    "retrieval_plan": [
+      {
+        "task_id": "t1",
+        "operation": "compare",
+        "kind": "history",
+        "parameters": [
+          "rainfall"
+        ],
+        "candidates": [
+          {
+            "tool": "published_history",
+            "selected": true,
+            "available": true,
+            "reason": "Published India aggregates and historical district rainfall; no district temperature",
+            "sources": [
+              {
+                "source_id": "S25",
+                "product": "IMD All India historical rainfall table (supplied CSV)",
+                "registry_status": "sample_inspected"
+              },
+              {
+                "source_id": "S26",
+                "product": "IMD All India historical mean temperature table (supplied CSV)",
+                "registry_status": "sample_inspected"
+              },
+              {
+                "source_id": "S27",
+                "product": "Supplied district historical rainfall collection (32 CSVs)",
+                "registry_status": "sample_inspected"
+              }
+            ]
+          }
+        ],
+        "status": "unavailable",
+        "returned_source_ids": []
+      }
+    ],
+    "document_evidence": [],
+    "resolved_points": {},
+    "task_coverage": {
+      "requested": 1,
+      "completed": 0,
+      "incomplete_ids": [
+        "t1"
+      ]
+    }
+  }
+}

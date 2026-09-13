@@ -1,0 +1,170 @@
+{
+  "question": "What is the average rainfall forecast across all of Wayanad district, Kerala tomorrow?",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "2a70f1e4-e2e3-4c37-b863-860fe95a3649",
+    "question": "What is the average rainfall forecast across all of Wayanad district, Kerala tomorrow?",
+    "status": "needs_clarification",
+    "answer": "Which village or town within Wayanad should I check? I can retrieve model data for a precise place; I cannot yet give a verified map of weather across that whole area.",
+    "facts": [],
+    "citations": [],
+    "notes": [
+      "Tomorrow is 2026-09-14. The forecast window for 'tomorrow' is the full day from 00:00 to 24:00 IST."
+    ],
+    "choices": [],
+    "follow_up": "Name a village/town and state, or supply a pin.",
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-13T17:20:20.500099+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 2880,
+        "output_tokens": 307,
+        "duration_seconds": 6.19381775
+      },
+      "generation": {
+        "provider": "typed_task_renderers",
+        "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+      },
+      "tools": [
+        {
+          "name": "forecast",
+          "task_id": "t1",
+          "status": "needs_clarification"
+        }
+      ],
+      "provider": "local_ollama",
+      "context_resolution": {
+        "action": "new",
+        "changed_fields": [],
+        "inherited_fields": []
+      },
+      "duration_seconds": 6.207
+    },
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "Wayanad",
+          "state": "Kerala",
+          "district": "Wayanad",
+          "kind": "district"
+        }
+      ],
+      "assumptions": [
+        "Tomorrow is 2026-09-14. The forecast window for 'tomorrow' is the full day from 00:00 to 24:00 IST."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "average rainfall forecast across all of Wayanad district, Kerala tomorrow",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T00:00+05:30",
+          "end_local": "2026-09-15T00:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "new",
+      "changed_fields": [],
+      "intent": "forecast",
+      "start_local": "2026-09-14T00:00+05:30",
+      "end_local": "2026-09-15T00:00+05:30",
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "task_results": [
+      {
+        "id": "t1",
+        "request": {
+          "request_quote": "average rainfall forecast across all of Wayanad district, Kerala tomorrow",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T00:00+05:30",
+          "end_local": "2026-09-15T00:00+05:30",
+          "place_indices": [
+            0
+          ]
+        },
+        "status": "needs_clarification",
+        "answer": "Which village or town within Wayanad should I check? I can retrieve model data for a precise place; I cannot yet give a verified map of weather across that whole area.",
+        "fact_ids": [],
+        "passage_ids": []
+      }
+    ],
+    "charts": [],
+    "calculations": [],
+    "pending_slots": [],
+    "retrieval_coverage": [],
+    "retrieval_plan": [
+      {
+        "task_id": "t1",
+        "operation": "lookup",
+        "kind": "forecast",
+        "parameters": [
+          "precipitation"
+        ],
+        "candidates": [
+          {
+            "tool": "hourly_forecast",
+            "selected": true,
+            "available": true,
+            "reason": "Hourly evidence; exact onset and whole-period probability unavailable",
+            "sources": [
+              {
+                "source_id": "S62",
+                "product": "Open-Meteo best-match extended hourly forecast",
+                "registry_status": "prototype_adapter_tested"
+              }
+            ]
+          },
+          {
+            "tool": "forecast_summary",
+            "selected": false,
+            "available": true,
+            "reason": "Exact-window GFS model summary",
+            "sources": [
+              {
+                "source_id": "S21",
+                "product": "Open-Meteo GFS forecast delivery",
+                "registry_status": "prototype_adapter_tested"
+              }
+            ]
+          }
+        ],
+        "status": "needs_clarification",
+        "returned_source_ids": []
+      }
+    ],
+    "document_evidence": [],
+    "resolved_points": {},
+    "task_coverage": {
+      "requested": 1,
+      "completed": 0,
+      "incomplete_ids": [
+        "t1"
+      ]
+    }
+  }
+}

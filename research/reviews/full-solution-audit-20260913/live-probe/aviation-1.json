@@ -1,0 +1,381 @@
+{
+  "question": "Show the latest METAR and TAF for VOBL and explain what each says.",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "9d113351-a9b8-45cf-b36f-aa97805e028e",
+    "question": "Show the latest METAR and TAF for VOBL and explain what each says.",
+    "status": "partial",
+    "answer": "Task 1: VOBL · Bangaluru Intl, airport report at 13 Sep, 22:30 IST: Observed airport temperature: 23 °C. Observed airport wind: 2 kt. This report describes the airport, not conditions across the whole city.\n\nTask 2: No current airport evidence was retrieved. VOBL: No complete, current airport taf evidence is available\n\nTask 3: I cannot provide the latest METAR and TAF for VOBL because no current weather data was supplied. The available information indicates that this is a general explanation rather than retrieved local weather. To get specific aviation weather reports, you would need to consult official sources like the FAA or airport authorities directly. If you have specific questions about what METAR and TAF generally represent, I can explain those concepts in general terms.",
+    "facts": [
+      {
+        "id": "t1-f1",
+        "parameter": "temperature_c",
+        "label": "Airport temperature",
+        "value": "23",
+        "unit": "°C",
+        "place": "VOBL · Bangaluru Intl",
+        "entity_id": "icao:VOBL",
+        "observed_at": "2026-09-13T17:00:00+00:00",
+        "start": "2026-09-13T17:00:00+00:00",
+        "end": "2026-09-13T17:00:00+00:00",
+        "sample_at": "2026-09-13T17:00:00+00:00",
+        "source_id": "S18",
+        "evidence_kind": "observation",
+        "evidence_version": "781b3d386ee9c8e8a13e9cf58dfff0b1cc297849aa1e29303b9a4b8a48c5478d",
+        "citation_ids": [
+          "t1-c-781b3d386ee9c8e8a13e9cf58dfff0b1cc297849aa1e29303b9a4b8a48c5478d",
+          "t1-c-fadf12724fcb787940934382f02adc33eb1d2e68cc8eb63dfd5397a498d5a860"
+        ],
+        "source_locators": [
+          "$[0].temp"
+        ],
+        "method": "reported_airport_observation",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f2",
+        "parameter": "wind_speed_kt",
+        "label": "Airport wind speed",
+        "value": "2",
+        "unit": "kt",
+        "place": "VOBL · Bangaluru Intl",
+        "entity_id": "icao:VOBL",
+        "observed_at": "2026-09-13T17:00:00+00:00",
+        "start": "2026-09-13T17:00:00+00:00",
+        "end": "2026-09-13T17:00:00+00:00",
+        "sample_at": "2026-09-13T17:00:00+00:00",
+        "source_id": "S18",
+        "evidence_kind": "observation",
+        "evidence_version": "781b3d386ee9c8e8a13e9cf58dfff0b1cc297849aa1e29303b9a4b8a48c5478d",
+        "citation_ids": [
+          "t1-c-781b3d386ee9c8e8a13e9cf58dfff0b1cc297849aa1e29303b9a4b8a48c5478d",
+          "t1-c-fadf12724fcb787940934382f02adc33eb1d2e68cc8eb63dfd5397a498d5a860"
+        ],
+        "source_locators": [
+          "$[0].wspd"
+        ],
+        "method": "reported_airport_observation",
+        "task_id": "t1"
+      }
+    ],
+    "citations": [
+      {
+        "id": "t1-c-781b3d386ee9c8e8a13e9cf58dfff0b1cc297849aa1e29303b9a4b8a48c5478d",
+        "source_id": "S18",
+        "provider": "NOAA Aviation Weather Center",
+        "product": "VOBL METAR",
+        "url": "https://aviationweather.gov/api/data/metar?ids=VOBL&format=json&hours=3",
+        "response_sha256": "781b3d386ee9c8e8a13e9cf58dfff0b1cc297849aa1e29303b9a4b8a48c5478d",
+        "retrieved_at_utc": "2026-09-13T17:19:38.088333+00:00"
+      },
+      {
+        "id": "t1-c-fadf12724fcb787940934382f02adc33eb1d2e68cc8eb63dfd5397a498d5a860",
+        "source_id": "S20",
+        "provider": "NOAA Aviation Weather Center",
+        "product": "VOBL station identity",
+        "url": "https://aviationweather.gov/api/data/stationinfo?ids=VOBL&format=json",
+        "response_sha256": "fadf12724fcb787940934382f02adc33eb1d2e68cc8eb63dfd5397a498d5a860",
+        "retrieved_at_utc": "2026-09-13T17:19:36.691996+00:00"
+      }
+    ],
+    "notes": [
+      "Airport reports concern their stated station and validity. No flight status, operational clearance or city-wide weather is inferred.",
+      "VOBL: No complete, current airport taf evidence is available"
+    ],
+    "choices": [],
+    "follow_up": null,
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-13T17:19:26.652679+00:00",
+    "expires_at_utc": "2026-09-13T17:24:38.088333+00:00",
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 2880,
+        "output_tokens": 365,
+        "duration_seconds": 7.328463458
+      },
+      "generation": {
+        "provider": "typed_task_renderers",
+        "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+      },
+      "tools": [
+        {
+          "name": "airport_metar",
+          "station": "VOBL",
+          "source_id": "S18",
+          "status": "retrieved",
+          "response_sha256": "781b3d386ee9c8e8a13e9cf58dfff0b1cc297849aa1e29303b9a4b8a48c5478d"
+        },
+        {
+          "name": "aviation",
+          "task_id": "t1",
+          "status": "answered"
+        },
+        {
+          "name": "aviation",
+          "task_id": "t2",
+          "status": "unavailable"
+        },
+        {
+          "name": "explanation",
+          "task_id": "t3",
+          "status": "explanation"
+        }
+      ],
+      "provider": "local_ollama",
+      "context_resolution": {
+        "action": "new",
+        "changed_fields": [],
+        "inherited_fields": []
+      },
+      "duration_seconds": 14.454
+    },
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "VOBL",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "Show the latest METAR",
+          "kind": "aviation",
+          "operation": "lookup",
+          "parameters": [
+            "metar"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        },
+        {
+          "request_quote": "and TAF",
+          "kind": "aviation",
+          "operation": "lookup",
+          "parameters": [
+            "taf"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        },
+        {
+          "request_quote": "explain what each says.",
+          "kind": "explanation",
+          "operation": "lookup",
+          "parameters": [],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": []
+        }
+      ],
+      "context_action": "new",
+      "changed_fields": [],
+      "intent": "research",
+      "start_local": "",
+      "end_local": "",
+      "variables": [],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "task_results": [
+      {
+        "id": "t1",
+        "request": {
+          "request_quote": "Show the latest METAR",
+          "kind": "aviation",
+          "operation": "lookup",
+          "parameters": [
+            "metar"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        },
+        "status": "answered",
+        "answer": "VOBL · Bangaluru Intl, airport report at 13 Sep, 22:30 IST: Observed airport temperature: 23 °C. Observed airport wind: 2 kt. This report describes the airport, not conditions across the whole city.",
+        "fact_ids": [
+          "t1-f1",
+          "t1-f2"
+        ],
+        "passage_ids": []
+      },
+      {
+        "id": "t2",
+        "request": {
+          "request_quote": "and TAF",
+          "kind": "aviation",
+          "operation": "lookup",
+          "parameters": [
+            "taf"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        },
+        "status": "unavailable",
+        "answer": "No current airport evidence was retrieved. VOBL: No complete, current airport taf evidence is available",
+        "fact_ids": [],
+        "passage_ids": []
+      },
+      {
+        "id": "t3",
+        "request": {
+          "request_quote": "explain what each says.",
+          "kind": "explanation",
+          "operation": "lookup",
+          "parameters": [],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": []
+        },
+        "status": "explanation",
+        "answer": "I cannot provide the latest METAR and TAF for VOBL because no current weather data was supplied. The available information indicates that this is a general explanation rather than retrieved local weather. To get specific aviation weather reports, you would need to consult official sources like the FAA or airport authorities directly. If you have specific questions about what METAR and TAF generally represent, I can explain those concepts in general terms.",
+        "fact_ids": [],
+        "passage_ids": []
+      }
+    ],
+    "charts": [],
+    "calculations": [],
+    "pending_slots": [],
+    "retrieval_coverage": [],
+    "retrieval_plan": [
+      {
+        "task_id": "t1",
+        "operation": "lookup",
+        "kind": "aviation",
+        "parameters": [
+          "metar"
+        ],
+        "candidates": [
+          {
+            "tool": "airport_reports",
+            "selected": true,
+            "available": true,
+            "reason": "Indian ICAO airport observations/TAF with station identity; no flight status or city-wide observation",
+            "sources": [
+              {
+                "source_id": "S18",
+                "product": "NOAA AWC VAAH METAR dissemination",
+                "registry_status": "prototype_adapter_tested"
+              },
+              {
+                "source_id": "S19",
+                "product": "NOAA AWC VAAH TAF dissemination",
+                "registry_status": "prototype_adapter_tested"
+              },
+              {
+                "source_id": "S20",
+                "product": "NOAA AWC airport station metadata",
+                "registry_status": "prototype_adapter_tested"
+              }
+            ]
+          }
+        ],
+        "status": "answered",
+        "returned_source_ids": [
+          "S18",
+          "S20"
+        ]
+      },
+      {
+        "task_id": "t2",
+        "operation": "lookup",
+        "kind": "aviation",
+        "parameters": [
+          "taf"
+        ],
+        "candidates": [
+          {
+            "tool": "airport_reports",
+            "selected": true,
+            "available": true,
+            "reason": "Indian ICAO airport observations/TAF with station identity; no flight status or city-wide observation",
+            "sources": [
+              {
+                "source_id": "S18",
+                "product": "NOAA AWC VAAH METAR dissemination",
+                "registry_status": "prototype_adapter_tested"
+              },
+              {
+                "source_id": "S19",
+                "product": "NOAA AWC VAAH TAF dissemination",
+                "registry_status": "prototype_adapter_tested"
+              },
+              {
+                "source_id": "S20",
+                "product": "NOAA AWC airport station metadata",
+                "registry_status": "prototype_adapter_tested"
+              }
+            ]
+          }
+        ],
+        "status": "unavailable",
+        "returned_source_ids": []
+      },
+      {
+        "task_id": "t3",
+        "operation": "lookup",
+        "kind": "explanation",
+        "parameters": [],
+        "candidates": [],
+        "status": "explanation",
+        "returned_source_ids": []
+      }
+    ],
+    "airport_reports": [
+      {
+        "station": "VOBL",
+        "kind": "metar",
+        "raw_report": "METAR VOBL 131700Z VRB02KT 6000 SCT012 23/18 Q1017 NOSIG",
+        "source_locator": "$[0]",
+        "citation_ids": [
+          "t1-c-781b3d386ee9c8e8a13e9cf58dfff0b1cc297849aa1e29303b9a4b8a48c5478d"
+        ],
+        "observed_at": "2026-09-13T17:00:00+00:00",
+        "valid_start": null,
+        "valid_end": null
+      }
+    ],
+    "document_evidence": [],
+    "resolved_points": {},
+    "task_coverage": {
+      "requested": 3,
+      "completed": 2,
+      "incomplete_ids": [
+        "t2"
+      ]
+    }
+  }
+}

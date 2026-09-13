@@ -1,0 +1,1265 @@
+{
+  "question": "For Bhubaneswar, Odisha: tell me tomorrow morning rain probability, current official warnings, observed temperature now, and annual district rainfall in 2010. Answer each part separately.",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "9741de25-203d-4ae9-a70a-7479bf2b818f",
+    "question": "For Bhubaneswar, Odisha: tell me tomorrow morning rain probability, current official warnings, observed temperature now, and annual district rainfall in 2010. Answer each part separately.",
+    "status": "partial",
+    "answer": "Task 1: Bhubaneswar · 14 Sep, 06:30–14 Sep, 12:30 IST: Hourly rain chances: 11–76 %. The highest hourly value is 76% for 14 Sep, 11:30–12:30 IST. These percentages are for individual hours, not the chance for the whole day. Source: Open-Meteo best-match forecast; conditions can change.\n\nTask 2: I cannot confirm current official warnings for Bhubaneswar. The retrieved CAP relay contains 9 messages; 0 pass the time/status/reference checks. Its newest message was sent 2026-09-09T12:54:34+05:30. Geographic applicability, origin authentication and feed completeness are still unverified. This does not mean there are no warnings.\n\nTask 3: Live observation retrieval is not connected to this conversation path yet; a forecast cannot answer whether rain is being observed now.\n\nTask 4: Bhubaneswar, rainfall, 2010: I could not find a historical district series named Bhubaneswar in Odisha. Please give the source district name and state; I will not substitute national or nearby-district data.",
+    "facts": [
+      {
+        "id": "t1-f1",
+        "parameter": "precipitation_probability",
+        "label": "Hourly precipitation probability (>0.1 mm)",
+        "value": "11",
+        "unit": "%",
+        "place": "Bhubaneswar, Khordha, State of Odisha",
+        "entity_id": "geonames:1275817",
+        "start": "2026-09-14T06:30:00+05:30",
+        "end": "2026-09-14T07:30:00+05:30",
+        "source_id": "S62",
+        "evidence_kind": "forecast",
+        "evidence_version": "dc3da6facc3b7b85f88b6401356428d610566b619dc24b061da0ed34f623f7ae",
+        "citation_ids": [
+          "t1-c-dc3da6facc3b7b85f88b6401356428d610566b619dc24b061da0ed34f623f7ae"
+        ],
+        "source_locators": [
+          "$.hourly.precipitation_probability[26]"
+        ],
+        "method": "preceding_hour_probability",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f2",
+        "parameter": "precipitation_probability",
+        "label": "Hourly precipitation probability (>0.1 mm)",
+        "value": "12",
+        "unit": "%",
+        "place": "Bhubaneswar, Khordha, State of Odisha",
+        "entity_id": "geonames:1275817",
+        "start": "2026-09-14T07:30:00+05:30",
+        "end": "2026-09-14T08:30:00+05:30",
+        "source_id": "S62",
+        "evidence_kind": "forecast",
+        "evidence_version": "dc3da6facc3b7b85f88b6401356428d610566b619dc24b061da0ed34f623f7ae",
+        "citation_ids": [
+          "t1-c-dc3da6facc3b7b85f88b6401356428d610566b619dc24b061da0ed34f623f7ae"
+        ],
+        "source_locators": [
+          "$.hourly.precipitation_probability[27]"
+        ],
+        "method": "preceding_hour_probability",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f3",
+        "parameter": "precipitation_probability",
+        "label": "Hourly precipitation probability (>0.1 mm)",
+        "value": "25",
+        "unit": "%",
+        "place": "Bhubaneswar, Khordha, State of Odisha",
+        "entity_id": "geonames:1275817",
+        "start": "2026-09-14T08:30:00+05:30",
+        "end": "2026-09-14T09:30:00+05:30",
+        "source_id": "S62",
+        "evidence_kind": "forecast",
+        "evidence_version": "dc3da6facc3b7b85f88b6401356428d610566b619dc24b061da0ed34f623f7ae",
+        "citation_ids": [
+          "t1-c-dc3da6facc3b7b85f88b6401356428d610566b619dc24b061da0ed34f623f7ae"
+        ],
+        "source_locators": [
+          "$.hourly.precipitation_probability[28]"
+        ],
+        "method": "preceding_hour_probability",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f4",
+        "parameter": "precipitation_probability",
+        "label": "Hourly precipitation probability (>0.1 mm)",
+        "value": "45",
+        "unit": "%",
+        "place": "Bhubaneswar, Khordha, State of Odisha",
+        "entity_id": "geonames:1275817",
+        "start": "2026-09-14T09:30:00+05:30",
+        "end": "2026-09-14T10:30:00+05:30",
+        "source_id": "S62",
+        "evidence_kind": "forecast",
+        "evidence_version": "dc3da6facc3b7b85f88b6401356428d610566b619dc24b061da0ed34f623f7ae",
+        "citation_ids": [
+          "t1-c-dc3da6facc3b7b85f88b6401356428d610566b619dc24b061da0ed34f623f7ae"
+        ],
+        "source_locators": [
+          "$.hourly.precipitation_probability[29]"
+        ],
+        "method": "preceding_hour_probability",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f5",
+        "parameter": "precipitation_probability",
+        "label": "Hourly precipitation probability (>0.1 mm)",
+        "value": "63",
+        "unit": "%",
+        "place": "Bhubaneswar, Khordha, State of Odisha",
+        "entity_id": "geonames:1275817",
+        "start": "2026-09-14T10:30:00+05:30",
+        "end": "2026-09-14T11:30:00+05:30",
+        "source_id": "S62",
+        "evidence_kind": "forecast",
+        "evidence_version": "dc3da6facc3b7b85f88b6401356428d610566b619dc24b061da0ed34f623f7ae",
+        "citation_ids": [
+          "t1-c-dc3da6facc3b7b85f88b6401356428d610566b619dc24b061da0ed34f623f7ae"
+        ],
+        "source_locators": [
+          "$.hourly.precipitation_probability[30]"
+        ],
+        "method": "preceding_hour_probability",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f6",
+        "parameter": "precipitation_probability",
+        "label": "Hourly precipitation probability (>0.1 mm)",
+        "value": "76",
+        "unit": "%",
+        "place": "Bhubaneswar, Khordha, State of Odisha",
+        "entity_id": "geonames:1275817",
+        "start": "2026-09-14T11:30:00+05:30",
+        "end": "2026-09-14T12:30:00+05:30",
+        "source_id": "S62",
+        "evidence_kind": "forecast",
+        "evidence_version": "dc3da6facc3b7b85f88b6401356428d610566b619dc24b061da0ed34f623f7ae",
+        "citation_ids": [
+          "t1-c-dc3da6facc3b7b85f88b6401356428d610566b619dc24b061da0ed34f623f7ae"
+        ],
+        "source_locators": [
+          "$.hourly.precipitation_probability[31]"
+        ],
+        "method": "preceding_hour_probability",
+        "task_id": "t1"
+      }
+    ],
+    "citations": [
+      {
+        "id": "t1-c-dc3da6facc3b7b85f88b6401356428d610566b619dc24b061da0ed34f623f7ae",
+        "source_id": "S62",
+        "provider": "Open-Meteo",
+        "product": "Best-match hourly model forecast",
+        "url": "https://api.open-meteo.com/v1/forecast?latitude=20.27241&longitude=85.83385&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m%2Cprecipitation_probability%2Capparent_temperature%2Cwind_gusts_10m%2Cvisibility&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "response_sha256": "dc3da6facc3b7b85f88b6401356428d610566b619dc24b061da0ed34f623f7ae",
+        "retrieved_at_utc": "2026-09-13T17:20:48.846348+00:00",
+        "requested_point": {
+          "latitude": 20.27241,
+          "longitude": 85.83385
+        },
+        "returned_grid": {
+          "latitude": 20.281195,
+          "longitude": 85.843376
+        },
+        "grid_distance_km": 1.393,
+        "model_run_time": null
+      },
+      {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/1275817",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      {
+        "id": "t2-cap-feed",
+        "source_id": "S06",
+        "provider": "IMD-labelled CAP relay; origin authentication unverified",
+        "product": "Retrieved CAP feed state",
+        "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/rss.xml",
+        "response_sha256": "2ebb682f2306815b36d6a1276b20bee0e2367046f8042ea5b2a71a8ab30226fb",
+        "retrieved_at_utc": "2026-09-13T17:18:56.120973+00:00"
+      }
+    ],
+    "notes": [
+      "Tomorrow is 2026-09-14. Morning defaults to 06:30–12:30 IST.",
+      "Precipitation includes rain, showers and snow water equivalent; it is not a rain-only gauge measurement.",
+      "Source hours are on UTC boundaries (:30 in IST). Each probability is for >0.1 mm in its preceding hour. Hourly probabilities are never combined into a period probability.",
+      "Best-match model selection may differ by variable; upstream run and local representativeness are unverified. Hourly values cannot determine an exact rain start minute or issue an official warning.",
+      "Warning source assessment only. Forecast rain, a bulletin warning table and CAP lifecycle eligibility do not establish a current applicable official warning."
+    ],
+    "choices": [],
+    "follow_up": null,
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-13T17:20:26.709577+00:00",
+    "expires_at_utc": "2026-09-13T17:25:48.869627+00:00",
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 3389,
+        "output_tokens": 582,
+        "duration_seconds": 10.947980792,
+        "repair_attempts": [
+          "Task interval must be ordered"
+        ]
+      },
+      "generation": {
+        "provider": "typed_task_renderers",
+        "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+      },
+      "tools": [
+        {
+          "name": "gazetteer_search",
+          "query": {
+            "name": "Bhubaneswar",
+            "state": "Odisha",
+            "district": "",
+            "kind": "settlement"
+          },
+          "matches": 1
+        },
+        {
+          "name": "extended_forecast",
+          "job_id": "c25bd310890de388d3215060cb102dde6a6509b1d061244ba57542c5034b8709",
+          "worker": {
+            "state": "succeeded",
+            "promoted": true,
+            "job_id": "c25bd310890de388d3215060cb102dde6a6509b1d061244ba57542c5034b8709"
+          },
+          "source_sha256": "dc3da6facc3b7b85f88b6401356428d610566b619dc24b061da0ed34f623f7ae"
+        },
+        {
+          "name": "forecast",
+          "task_id": "t1",
+          "status": "answered"
+        },
+        {
+          "name": "cap_lifecycle_assessment",
+          "retrieved_messages": 9,
+          "lifecycle_eligible": 0,
+          "delivery": "cache",
+          "official_applicability_verified": false
+        },
+        {
+          "name": "warning",
+          "task_id": "t2",
+          "status": "unavailable"
+        },
+        {
+          "name": "observation",
+          "task_id": "t3",
+          "status": "unavailable"
+        },
+        {
+          "name": "history",
+          "task_id": "t4",
+          "status": "unavailable"
+        }
+      ],
+      "provider": "local_ollama",
+      "context_resolution": {
+        "action": "new",
+        "changed_fields": [],
+        "inherited_fields": []
+      },
+      "duration_seconds": 22.167
+    },
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "Bhubaneswar",
+          "state": "Odisha",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [
+        "Tomorrow is 2026-09-14. Morning defaults to 06:30–12:30 IST."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "tomorrow morning rain probability",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation_probability"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T06:30:00+05:30",
+          "end_local": "2026-09-14T12:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        },
+        {
+          "request_quote": "current official warnings",
+          "kind": "warning",
+          "operation": "lookup",
+          "parameters": [
+            "official_warning"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        },
+        {
+          "request_quote": "observed temperature now",
+          "kind": "observation",
+          "operation": "lookup",
+          "parameters": [
+            "temperature_2m"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        },
+        {
+          "request_quote": "annual district rainfall in 2010",
+          "kind": "history",
+          "operation": "lookup",
+          "parameters": [
+            "rainfall"
+          ],
+          "years": [
+            2010
+          ],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "new",
+      "changed_fields": [],
+      "intent": "forecast",
+      "start_local": "2026-09-14T06:30:00+05:30",
+      "end_local": "2026-09-14T12:30:00+05:30",
+      "variables": [],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "task_results": [
+      {
+        "id": "t1",
+        "request": {
+          "request_quote": "tomorrow morning rain probability",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation_probability"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T06:30:00+05:30",
+          "end_local": "2026-09-14T12:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        },
+        "status": "answered",
+        "answer": "Bhubaneswar · 14 Sep, 06:30–14 Sep, 12:30 IST: Hourly rain chances: 11–76 %. The highest hourly value is 76% for 14 Sep, 11:30–12:30 IST. These percentages are for individual hours, not the chance for the whole day. Source: Open-Meteo best-match forecast; conditions can change.",
+        "fact_ids": [
+          "t1-f1",
+          "t1-f2",
+          "t1-f3",
+          "t1-f4",
+          "t1-f5",
+          "t1-f6"
+        ],
+        "passage_ids": []
+      },
+      {
+        "id": "t2",
+        "request": {
+          "request_quote": "current official warnings",
+          "kind": "warning",
+          "operation": "lookup",
+          "parameters": [
+            "official_warning"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        },
+        "status": "unavailable",
+        "answer": "I cannot confirm current official warnings for Bhubaneswar. The retrieved CAP relay contains 9 messages; 0 pass the time/status/reference checks. Its newest message was sent 2026-09-09T12:54:34+05:30. Geographic applicability, origin authentication and feed completeness are still unverified. This does not mean there are no warnings.",
+        "fact_ids": [],
+        "passage_ids": []
+      },
+      {
+        "id": "t3",
+        "request": {
+          "request_quote": "observed temperature now",
+          "kind": "observation",
+          "operation": "lookup",
+          "parameters": [
+            "temperature_2m"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        },
+        "status": "unavailable",
+        "answer": "Live observation retrieval is not connected to this conversation path yet; a forecast cannot answer whether rain is being observed now.",
+        "fact_ids": [],
+        "passage_ids": []
+      },
+      {
+        "id": "t4",
+        "request": {
+          "request_quote": "annual district rainfall in 2010",
+          "kind": "history",
+          "operation": "lookup",
+          "parameters": [
+            "rainfall"
+          ],
+          "years": [
+            2010
+          ],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        },
+        "status": "unavailable",
+        "answer": "Bhubaneswar, rainfall, 2010: I could not find a historical district series named Bhubaneswar in Odisha. Please give the source district name and state; I will not substitute national or nearby-district data.",
+        "fact_ids": [],
+        "passage_ids": [],
+        "historical_evidence": [
+          {
+            "place": {
+              "name": "Bhubaneswar",
+              "state": "Odisha",
+              "district": "",
+              "kind": "settlement"
+            },
+            "parameter": "rainfall",
+            "year": 2010,
+            "evidence": {
+              "status": "unavailable",
+              "text": "I could not find a historical district series named Bhubaneswar in Odisha. Please give the source district name and state; I will not substitute national or nearby-district data.",
+              "facts": [],
+              "citations": []
+            }
+          }
+        ]
+      }
+    ],
+    "charts": [
+      {
+        "kind": "hourly_series",
+        "axis_label": "Time (IST)",
+        "title": "Bhubaneswar, Khordha, State of Odisha · Hourly precipitation probability (>0.1 mm)",
+        "unit": "%",
+        "points": [
+          {
+            "x": 1789347600.0,
+            "label": "14 Sep 06:30–07:30",
+            "value": "11",
+            "evidence_id": "t1-f1"
+          },
+          {
+            "x": 1789351200.0,
+            "label": "14 Sep 07:30–08:30",
+            "value": "12",
+            "evidence_id": "t1-f2"
+          },
+          {
+            "x": 1789354800.0,
+            "label": "14 Sep 08:30–09:30",
+            "value": "25",
+            "evidence_id": "t1-f3"
+          },
+          {
+            "x": 1789358400.0,
+            "label": "14 Sep 09:30–10:30",
+            "value": "45",
+            "evidence_id": "t1-f4"
+          },
+          {
+            "x": 1789362000.0,
+            "label": "14 Sep 10:30–11:30",
+            "value": "63",
+            "evidence_id": "t1-f5"
+          },
+          {
+            "x": 1789365600.0,
+            "label": "14 Sep 11:30–12:30",
+            "value": "76",
+            "evidence_id": "t1-f6"
+          }
+        ],
+        "source_ids": [
+          "S62"
+        ],
+        "task_id": "t1"
+      }
+    ],
+    "calculations": [],
+    "pending_slots": [],
+    "retrieval_coverage": [],
+    "retrieval_plan": [
+      {
+        "task_id": "t1",
+        "operation": "lookup",
+        "kind": "forecast",
+        "parameters": [
+          "precipitation_probability"
+        ],
+        "candidates": [
+          {
+            "tool": "hourly_forecast",
+            "selected": true,
+            "available": true,
+            "reason": "Hourly evidence; exact onset and whole-period probability unavailable",
+            "sources": [
+              {
+                "source_id": "S62",
+                "product": "Open-Meteo best-match extended hourly forecast",
+                "registry_status": "prototype_adapter_tested"
+              }
+            ]
+          },
+          {
+            "tool": "forecast_summary",
+            "selected": false,
+            "available": true,
+            "reason": "Exact-window GFS model summary",
+            "sources": [
+              {
+                "source_id": "S21",
+                "product": "Open-Meteo GFS forecast delivery",
+                "registry_status": "prototype_adapter_tested"
+              }
+            ]
+          }
+        ],
+        "status": "answered",
+        "returned_source_ids": [
+          "S61",
+          "S62"
+        ]
+      },
+      {
+        "task_id": "t2",
+        "operation": "lookup",
+        "kind": "warning",
+        "parameters": [
+          "official_warning"
+        ],
+        "candidates": [
+          {
+            "tool": "official_warning",
+            "selected": true,
+            "available": true,
+            "reason": "CAP source assessment only: resolves retrieved reference chains but current official geographic applicability remains unverified",
+            "sources": [
+              {
+                "source_id": "S01",
+                "product": "IMD Current Weather",
+                "registry_status": "access_blocked"
+              },
+              {
+                "source_id": "S06",
+                "product": "IMD-linked CAP RSS",
+                "registry_status": "prototype_adapter_tested"
+              },
+              {
+                "source_id": "S15",
+                "product": "IMD public warning-map WFS",
+                "registry_status": "prototype_adapter_tested"
+              }
+            ]
+          }
+        ],
+        "status": "unavailable",
+        "returned_source_ids": [
+          "S06"
+        ]
+      },
+      {
+        "task_id": "t3",
+        "operation": "lookup",
+        "kind": "observation",
+        "parameters": [
+          "temperature_2m"
+        ],
+        "candidates": [],
+        "status": "unavailable",
+        "returned_source_ids": []
+      },
+      {
+        "task_id": "t4",
+        "operation": "lookup",
+        "kind": "history",
+        "parameters": [
+          "rainfall"
+        ],
+        "candidates": [
+          {
+            "tool": "published_history",
+            "selected": true,
+            "available": true,
+            "reason": "Published India aggregates and historical district rainfall; no district temperature",
+            "sources": [
+              {
+                "source_id": "S25",
+                "product": "IMD All India historical rainfall table (supplied CSV)",
+                "registry_status": "sample_inspected"
+              },
+              {
+                "source_id": "S26",
+                "product": "IMD All India historical mean temperature table (supplied CSV)",
+                "registry_status": "sample_inspected"
+              },
+              {
+                "source_id": "S27",
+                "product": "Supplied district historical rainfall collection (32 CSVs)",
+                "registry_status": "sample_inspected"
+              }
+            ]
+          }
+        ],
+        "status": "unavailable",
+        "returned_source_ids": []
+      }
+    ],
+    "document_evidence": [],
+    "warning_evidence": [
+      {
+        "assessment": {
+          "count": 9,
+          "eligible_by_lifecycle": 0,
+          "checked_at_utc": "2026-09-13T17:20:48.869315+00:00",
+          "feed_completeness_verified": false,
+          "all_clear": false
+        },
+        "coverage": {
+          "message_errors": [],
+          "feed_item_count": 9,
+          "attempted_item_count": 9,
+          "omitted_item_count": 0,
+          "feed_items_complete": true
+        },
+        "delivery": "cache",
+        "latest_sent": "2026-09-09T12:54:34+05:30",
+        "requested_places": [
+          {
+            "name": "Bhubaneswar",
+            "state": "Odisha",
+            "district": "",
+            "kind": "settlement"
+          }
+        ],
+        "records": [
+          {
+            "identifier": "urn:oid:2.49.0.1.356.0.2026.9.9.7.24.34",
+            "sender": "rainfallnwfc@gmail.com",
+            "sent": "2026-09-09T12:54:34+05:30",
+            "status": "Actual",
+            "msg_type": "Alert",
+            "scope": "Public",
+            "references": "",
+            "info": [
+              {
+                "language": "en",
+                "event": "Extremely heavy",
+                "headline": "Heavy to very heavy with extremely heavy rainfall",
+                "description": "Isolated extremely rainfall likely over Odisha on 10th September.",
+                "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+                "severity": "Severe",
+                "urgency": "Expected",
+                "certainty": "Likely",
+                "effective": "2026-09-09T12:54:34+05:30",
+                "expires": "2026-09-10T07:00:00+05:30",
+                "active_by_time_and_status": false,
+                "areas": [
+                  {
+                    "description": "ODISHA",
+                    "polygons": [
+                      "21.7228,83.2412 21.3303,82.5732 18.2210,82.1865 18.7545,84.1904 20.6410,87.0732 22.3094,86.6162 22.4720,84.6123 21.7228,83.2412"
+                    ],
+                    "circles": [],
+                    "geocodes": []
+                  }
+                ]
+              }
+            ],
+            "provenance": {
+              "source_id": "S06",
+              "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-09-09-07-24-34.xml",
+              "retrieved_at_utc": "2026-09-13T17:18:57.043016+00:00",
+              "http_status": 200,
+              "content_type": "application/xml",
+              "bytes": 4318,
+              "sha256": "acb3456e7acb7f0e21de80da03c6d6ee9b1d7dde0384206cccc89cd297eed391",
+              "blob": "blobs/acb3456e7acb7f0e21de80da03c6d6ee9b1d7dde0384206cccc89cd297eed391.bin",
+              "validation_scope": "product",
+              "delivery": "cache",
+              "checked_at_utc": "2026-09-13T17:20:48.864991+00:00"
+            },
+            "geographic_applicability": "Not established by time/status alone.",
+            "lifecycle": {
+              "reference_keys": [],
+              "replaced_by": [],
+              "active_info_indices": [],
+              "eligible_by_lifecycle": false,
+              "hold_reasons": [
+                "No information block is currently within its stated time interval"
+              ],
+              "geographic_applicability_verified": false,
+              "sender_authenticity_verified": false,
+              "dissemination_eligible": false
+            }
+          },
+          {
+            "identifier": "urn:oid:2.49.0.1.356.0.2026.9.3.7.21.21",
+            "sender": "rainfallnwfc@gmail.com",
+            "sent": "2026-09-03T12:51:21+05:30",
+            "status": "Actual",
+            "msg_type": "Alert",
+            "scope": "Public",
+            "references": "",
+            "info": [
+              {
+                "language": "en",
+                "event": "Extremely heavy",
+                "headline": "Heavy to very heavy with extremely heavy rainfall",
+                "description": "Heavy to Very heavy rainfall at few places and extremely Heavy Rainfall at isolated places very likely over East Madhya Pradesh.",
+                "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+                "severity": "Severe",
+                "urgency": "Expected",
+                "certainty": "Likely",
+                "effective": "2026-09-03T12:51:21+05:30",
+                "expires": "2026-09-04T07:00:00+05:30",
+                "active_by_time_and_status": false,
+                "areas": [
+                  {
+                    "description": "ODISHA",
+                    "polygons": [
+                      "25.1254,80.2881 24.5271,78.5303 23.7250,79.1455 22.5531,78.3545 21.4531,79.5850 21.4531,81.0791 22.7154,81.5625 23.6848,81.8262 24.8067,82.6172 25.1254,80.2881"
+                    ],
+                    "circles": [],
+                    "geocodes": []
+                  }
+                ]
+              }
+            ],
+            "provenance": {
+              "source_id": "S06",
+              "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-09-03-07-21-21.xml",
+              "retrieved_at_utc": "2026-09-13T17:18:57.763672+00:00",
+              "http_status": 200,
+              "content_type": "application/xml",
+              "bytes": 4413,
+              "sha256": "5c04db0de6de0b8f562b7ba37d2cc8ffe46d894858c1f1d2354709c8c862c7c8",
+              "blob": "blobs/5c04db0de6de0b8f562b7ba37d2cc8ffe46d894858c1f1d2354709c8c862c7c8.bin",
+              "validation_scope": "product",
+              "delivery": "cache",
+              "checked_at_utc": "2026-09-13T17:20:48.865508+00:00"
+            },
+            "geographic_applicability": "Not established by time/status alone.",
+            "lifecycle": {
+              "reference_keys": [],
+              "replaced_by": [],
+              "active_info_indices": [],
+              "eligible_by_lifecycle": false,
+              "hold_reasons": [
+                "No information block is currently within its stated time interval"
+              ],
+              "geographic_applicability_verified": false,
+              "sender_authenticity_verified": false,
+              "dissemination_eligible": false
+            }
+          },
+          {
+            "identifier": "urn:oid:2.49.0.1.356.0.2026.9.3.7.19.24",
+            "sender": "rainfallnwfc@gmail.com",
+            "sent": "2026-09-03T12:49:24+05:30",
+            "status": "Actual",
+            "msg_type": "Alert",
+            "scope": "Public",
+            "references": "",
+            "info": [
+              {
+                "language": "en",
+                "event": "Extremely heavy",
+                "headline": "Heavy to very heavy with extremely heavy rainfall",
+                "description": "Heavy to Very heavy rainfall at few places and extremely Heavy Rainfall at isolated places very likely over East Madhya Pradesh.",
+                "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+                "severity": "Severe",
+                "urgency": "Expected",
+                "certainty": "Likely",
+                "effective": "2026-09-03T12:49:24+05:30",
+                "expires": "2026-09-04T09:00:00+05:30",
+                "active_by_time_and_status": false,
+                "areas": [
+                  {
+                    "description": "ODISHA",
+                    "polygons": [
+                      "25.1254,80.2881 24.5271,78.5303 23.7250,79.1455 22.5531,78.3545 21.4531,79.5850 21.4531,81.0791 22.7154,81.5625 23.6848,81.8262 24.8067,82.6172 25.1254,80.2881"
+                    ],
+                    "circles": [],
+                    "geocodes": []
+                  }
+                ]
+              }
+            ],
+            "provenance": {
+              "source_id": "S06",
+              "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-09-03-07-19-24.xml",
+              "retrieved_at_utc": "2026-09-13T17:18:58.802590+00:00",
+              "http_status": 200,
+              "content_type": "application/xml",
+              "bytes": 4413,
+              "sha256": "ff28ff1011b0344488db70a193ff0ab6d86fe16c09c6c2f47dc793b1fc2d4958",
+              "blob": "blobs/ff28ff1011b0344488db70a193ff0ab6d86fe16c09c6c2f47dc793b1fc2d4958.bin",
+              "validation_scope": "product",
+              "delivery": "cache",
+              "checked_at_utc": "2026-09-13T17:20:48.866063+00:00"
+            },
+            "geographic_applicability": "Not established by time/status alone.",
+            "lifecycle": {
+              "reference_keys": [],
+              "replaced_by": [],
+              "active_info_indices": [],
+              "eligible_by_lifecycle": false,
+              "hold_reasons": [
+                "No information block is currently within its stated time interval"
+              ],
+              "geographic_applicability_verified": false,
+              "sender_authenticity_verified": false,
+              "dissemination_eligible": false
+            }
+          },
+          {
+            "identifier": "urn:oid:2.49.0.1.356.0.2026.9.2.8.41.21",
+            "sender": "rainfallnwfc@gmail.com",
+            "sent": "2026-09-02T14:11:21+05:30",
+            "status": "Actual",
+            "msg_type": "Alert",
+            "scope": "Public",
+            "references": "",
+            "info": [
+              {
+                "language": "en",
+                "event": "Extremely heavy",
+                "headline": "Heavy to very heavy with extremely heavy rainfall",
+                "description": "Heavy to Very heavy rainfall at few places and extremely Heavy Rainfall at isolated places very likely over East Madhya Pradesh.",
+                "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+                "severity": "Severe",
+                "urgency": "Expected",
+                "certainty": "Likely",
+                "effective": "2026-09-02T14:11:21+05:30",
+                "expires": "2026-09-03T09:00:00+05:30",
+                "active_by_time_and_status": false,
+                "areas": [
+                  {
+                    "description": "ODISHA",
+                    "polygons": [
+                      "25.6811,78.9697 24.6470,78.0029 23.2817,77.6514 22.7964,78.9697 21.5757,80.6396 22.9584,81.6064 24.0063,82.4854 24.8864,81.9580 25.2844,80.5518 25.6811,78.9697"
+                    ],
+                    "circles": [],
+                    "geocodes": []
+                  }
+                ]
+              }
+            ],
+            "provenance": {
+              "source_id": "S06",
+              "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-09-02-08-41-21.xml",
+              "retrieved_at_utc": "2026-09-13T17:18:59.801403+00:00",
+              "http_status": 200,
+              "content_type": "application/xml",
+              "bytes": 4413,
+              "sha256": "c5066d5c2fb6ee002c17212bd22ce02b43bd31baa9118d08365f5b48dd5396cd",
+              "blob": "blobs/c5066d5c2fb6ee002c17212bd22ce02b43bd31baa9118d08365f5b48dd5396cd.bin",
+              "validation_scope": "product",
+              "delivery": "cache",
+              "checked_at_utc": "2026-09-13T17:20:48.866648+00:00"
+            },
+            "geographic_applicability": "Not established by time/status alone.",
+            "lifecycle": {
+              "reference_keys": [],
+              "replaced_by": [],
+              "active_info_indices": [],
+              "eligible_by_lifecycle": false,
+              "hold_reasons": [
+                "No information block is currently within its stated time interval"
+              ],
+              "geographic_applicability_verified": false,
+              "sender_authenticity_verified": false,
+              "dissemination_eligible": false
+            }
+          },
+          {
+            "identifier": "urn:oid:2.49.0.1.356.0.2026.9.1.7.7.6",
+            "sender": "rainfallnwfc@gmail.com",
+            "sent": "2026-09-01T12:37:06+05:30",
+            "status": "Actual",
+            "msg_type": "Alert",
+            "scope": "Public",
+            "references": "",
+            "info": [
+              {
+                "language": "en",
+                "event": "Extremely heavy",
+                "headline": "Heavy to very heavy with extremely heavy rainfall",
+                "description": "Heavy to Very heavy rainfall at few places and extremely Heavy Rainfall at isolated places very likely over Jharkhand.",
+                "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+                "severity": "Severe",
+                "urgency": "Expected",
+                "certainty": "Likely",
+                "effective": "2026-09-01T12:37:06+05:30",
+                "expires": "2026-09-02T09:00:00+05:30",
+                "active_by_time_and_status": false,
+                "areas": [
+                  {
+                    "description": "ODISHA",
+                    "polygons": [
+                      "24.6310,83.4521 22.8288,83.8037 22.8612,85.9482 24.3431,87.6709 24.7588,86.7568 24.6310,83.4521"
+                    ],
+                    "circles": [],
+                    "geocodes": []
+                  }
+                ]
+              }
+            ],
+            "provenance": {
+              "source_id": "S06",
+              "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-09-01-07-07-06.xml",
+              "retrieved_at_utc": "2026-09-13T17:19:00.619684+00:00",
+              "http_status": 200,
+              "content_type": "application/xml",
+              "bytes": 4337,
+              "sha256": "24e302167e261f53854e7e31c8ff66bfa178507f4e8b055ff7067f9e740f24e3",
+              "blob": "blobs/24e302167e261f53854e7e31c8ff66bfa178507f4e8b055ff7067f9e740f24e3.bin",
+              "validation_scope": "product",
+              "delivery": "cache",
+              "checked_at_utc": "2026-09-13T17:20:48.867154+00:00"
+            },
+            "geographic_applicability": "Not established by time/status alone.",
+            "lifecycle": {
+              "reference_keys": [],
+              "replaced_by": [],
+              "active_info_indices": [],
+              "eligible_by_lifecycle": false,
+              "hold_reasons": [
+                "No information block is currently within its stated time interval"
+              ],
+              "geographic_applicability_verified": false,
+              "sender_authenticity_verified": false,
+              "dissemination_eligible": false
+            }
+          },
+          {
+            "identifier": "urn:oid:2.49.0.1.356.0.2026.9.1.7.0.31",
+            "sender": "rainfallnwfc@gmail.com",
+            "sent": "2026-09-01T12:30:31+05:30",
+            "status": "Actual",
+            "msg_type": "Alert",
+            "scope": "Public",
+            "references": "",
+            "info": [
+              {
+                "language": "en",
+                "event": "Extremely heavy",
+                "headline": "Heavy to very heavy with extremely heavy rainfall",
+                "description": "Heavy to Very heavy rainfall at few places and extremely Heavy Rainfall at isolated places very likely over Jharkhand.",
+                "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+                "severity": "Severe",
+                "urgency": "Expected",
+                "certainty": "Likely",
+                "effective": "2026-09-01T12:30:31+05:30",
+                "expires": "2026-09-02T09:00:00+05:30",
+                "active_by_time_and_status": false,
+                "areas": [
+                  {
+                    "description": "ODISHA",
+                    "polygons": [
+                      "24.7588,83.5576 23.0555,83.6279 22.7964,85.8428 23.5398,87.6357 24.7588,87.3545 24.7588,83.5576"
+                    ],
+                    "circles": [],
+                    "geocodes": []
+                  }
+                ]
+              }
+            ],
+            "provenance": {
+              "source_id": "S06",
+              "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-09-01-07-00-31.xml",
+              "retrieved_at_utc": "2026-09-13T17:19:01.553490+00:00",
+              "http_status": 200,
+              "content_type": "application/xml",
+              "bytes": 4338,
+              "sha256": "449ad0b821a6c2dcbaf256962ea775c553c1d0284f226efeb64b9d3de51dbb34",
+              "blob": "blobs/449ad0b821a6c2dcbaf256962ea775c553c1d0284f226efeb64b9d3de51dbb34.bin",
+              "validation_scope": "product",
+              "delivery": "cache",
+              "checked_at_utc": "2026-09-13T17:20:48.867600+00:00"
+            },
+            "geographic_applicability": "Not established by time/status alone.",
+            "lifecycle": {
+              "reference_keys": [],
+              "replaced_by": [],
+              "active_info_indices": [],
+              "eligible_by_lifecycle": false,
+              "hold_reasons": [
+                "No information block is currently within its stated time interval"
+              ],
+              "geographic_applicability_verified": false,
+              "sender_authenticity_verified": false,
+              "dissemination_eligible": false
+            }
+          },
+          {
+            "identifier": "urn:oid:2.49.0.1.356.0.2026.8.31.7.53.57",
+            "sender": "rainfallnwfc@gmail.com",
+            "sent": "2026-08-31T13:23:57+05:30",
+            "status": "Actual",
+            "msg_type": "Alert",
+            "scope": "Public",
+            "references": "",
+            "info": [
+              {
+                "language": "en",
+                "event": "Extremely heavy",
+                "headline": "Heavy to very heavy with extremely heavy rainfall",
+                "description": "Heavy to Very heavy rainfall at few places and extremely Heavy Rainfall at isolated places very likely over Odisha and Chattisgarh.",
+                "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+                "severity": "Severe",
+                "urgency": "Expected",
+                "certainty": "Likely",
+                "effective": "2026-08-31T13:23:57+05:30",
+                "expires": "2026-09-01T09:00:00+05:30",
+                "active_by_time_and_status": false,
+                "areas": [
+                  {
+                    "description": "ODISHA",
+                    "polygons": [
+                      "22.7640,80.0068 18.5546,80.4639 19.2199,84.7178 21.6574,86.7920 23.7652,83.5928 22.7640,80.0068"
+                    ],
+                    "circles": [],
+                    "geocodes": []
+                  }
+                ]
+              }
+            ],
+            "provenance": {
+              "source_id": "S06",
+              "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-08-31-07-53-57.xml",
+              "retrieved_at_utc": "2026-09-13T17:19:02.457098+00:00",
+              "http_status": 200,
+              "content_type": "application/xml",
+              "bytes": 4353,
+              "sha256": "8b165e577dc7f0f0f77906412e271c62a11910e8020f2b2f1782165b8ed933b9",
+              "blob": "blobs/8b165e577dc7f0f0f77906412e271c62a11910e8020f2b2f1782165b8ed933b9.bin",
+              "validation_scope": "product",
+              "delivery": "cache",
+              "checked_at_utc": "2026-09-13T17:20:48.868073+00:00"
+            },
+            "geographic_applicability": "Not established by time/status alone.",
+            "lifecycle": {
+              "reference_keys": [],
+              "replaced_by": [],
+              "active_info_indices": [],
+              "eligible_by_lifecycle": false,
+              "hold_reasons": [
+                "No information block is currently within its stated time interval"
+              ],
+              "geographic_applicability_verified": false,
+              "sender_authenticity_verified": false,
+              "dissemination_eligible": false
+            }
+          },
+          {
+            "identifier": "urn:oid:2.49.0.1.356.0.2026.8.30.9.34.22",
+            "sender": "rainfallnwfc@gmail.com",
+            "sent": "2026-08-30T15:04:22+05:30",
+            "status": "Actual",
+            "msg_type": "Alert",
+            "scope": "Public",
+            "references": "",
+            "info": [
+              {
+                "language": "en",
+                "event": "Extremely heavy",
+                "headline": "Heavy to very heavy with extremely heavy rainfall",
+                "description": "Heavy to Very heavy rainfall at few places and extremely Heavy Rainfall at isolated places very likely over Odisha.",
+                "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+                "severity": "Severe",
+                "urgency": "Expected",
+                "certainty": "Likely",
+                "effective": "2026-08-30T15:04:22+05:30",
+                "expires": "2026-08-31T09:00:00+05:30",
+                "active_by_time_and_status": false,
+                "areas": [
+                  {
+                    "description": "ODISHA",
+                    "polygons": [
+                      "21.5348,87.4072 22.3501,86.0010 22.3501,83.9355 20.7150,82.8809 19.6012,82.1777 18.8127,83.3203 19.0621,84.7705 20.5917,86.7920 21.5348,87.4072"
+                    ],
+                    "circles": [],
+                    "geocodes": []
+                  }
+                ]
+              }
+            ],
+            "provenance": {
+              "source_id": "S06",
+              "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-08-30-09-34-22.xml",
+              "retrieved_at_utc": "2026-09-13T17:19:03.498852+00:00",
+              "http_status": 200,
+              "content_type": "application/xml",
+              "bytes": 4385,
+              "sha256": "479f58bf07dd627a1c6cc68c422daaf0c682823aa3c6122627b577b375dc242d",
+              "blob": "blobs/479f58bf07dd627a1c6cc68c422daaf0c682823aa3c6122627b577b375dc242d.bin",
+              "validation_scope": "product",
+              "delivery": "cache",
+              "checked_at_utc": "2026-09-13T17:20:48.868524+00:00"
+            },
+            "geographic_applicability": "Not established by time/status alone.",
+            "lifecycle": {
+              "reference_keys": [],
+              "replaced_by": [],
+              "active_info_indices": [],
+              "eligible_by_lifecycle": false,
+              "hold_reasons": [
+                "No information block is currently within its stated time interval"
+              ],
+              "geographic_applicability_verified": false,
+              "sender_authenticity_verified": false,
+              "dissemination_eligible": false
+            }
+          },
+          {
+            "identifier": "urn:oid:2.49.0.1.356.0.2026.8.29.8.52.26",
+            "sender": "rainfallnwfc@gmail.com",
+            "sent": "2026-08-29T14:22:26+05:30",
+            "status": "Actual",
+            "msg_type": "Alert",
+            "scope": "Public",
+            "references": "",
+            "info": [
+              {
+                "language": "en",
+                "event": "Extremely heavy",
+                "headline": "Heavy to very heavy with extremely heavy rainfall",
+                "description": "Heavy to Very heavy rainfall at few places and extremely Heavy Rainfall at isolated places very likely over Odisha.",
+                "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+                "severity": "Severe",
+                "urgency": "Expected",
+                "certainty": "Likely",
+                "effective": "2026-08-29T14:22:26+05:30",
+                "expires": "2026-08-31T09:00:00+05:30",
+                "active_by_time_and_status": false,
+                "areas": [
+                  {
+                    "description": "ODISHA",
+                    "polygons": [
+                      "21.5348,87.4072 22.3501,86.0010 22.3501,83.9355 20.7150,82.8809 19.6012,82.1777 18.8127,83.3203 19.0621,84.7705 20.5917,86.7920 21.5348,87.4072"
+                    ],
+                    "circles": [],
+                    "geocodes": []
+                  }
+                ]
+              }
+            ],
+            "provenance": {
+              "source_id": "S06",
+              "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-08-29-08-52-26.xml",
+              "retrieved_at_utc": "2026-09-13T17:19:04.238508+00:00",
+              "http_status": 200,
+              "content_type": "application/xml",
+              "bytes": 4385,
+              "sha256": "2ced79b3396100d4bdf55401fca92193c2a8a99913ad62a01b986c7c2dfb103b",
+              "blob": "blobs/2ced79b3396100d4bdf55401fca92193c2a8a99913ad62a01b986c7c2dfb103b.bin",
+              "validation_scope": "product",
+              "delivery": "cache",
+              "checked_at_utc": "2026-09-13T17:20:48.868943+00:00"
+            },
+            "geographic_applicability": "Not established by time/status alone.",
+            "lifecycle": {
+              "reference_keys": [],
+              "replaced_by": [],
+              "active_info_indices": [],
+              "eligible_by_lifecycle": false,
+              "hold_reasons": [
+                "No information block is currently within its stated time interval"
+              ],
+              "geographic_applicability_verified": false,
+              "sender_authenticity_verified": false,
+              "dissemination_eligible": false
+            }
+          }
+        ]
+      }
+    ],
+    "resolved_points": {
+      "Bhubaneswar": {
+        "id": "1275817",
+        "name": "Bhubaneswar",
+        "latitude": 20.27241,
+        "longitude": 85.83385,
+        "feature": "PPLA",
+        "admin1": "State of Odisha",
+        "admin2": "Khordha",
+        "modified": "2026-03-27",
+        "name_match_basis": "canonical",
+        "other_alias_matches": 0,
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:1275817",
+        "label": "Bhubaneswar, Khordha, State of Odisha",
+        "coordinates": {
+          "latitude": 20.27241,
+          "longitude": 85.83385
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1275817",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Bhubaneswar"
+      }
+    },
+    "task_coverage": {
+      "requested": 4,
+      "completed": 1,
+      "incomplete_ids": [
+        "t2",
+        "t3",
+        "t4"
+      ]
+    }
+  }
+}

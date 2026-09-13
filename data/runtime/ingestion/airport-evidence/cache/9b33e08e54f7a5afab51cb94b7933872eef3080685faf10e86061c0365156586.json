@@ -1,0 +1,11 @@
+{
+  "source_id": "S20",
+  "url": "https://aviationweather.gov/api/data/stationinfo?ids=VOBL&format=json",
+  "retrieved_at_utc": "2026-09-13T17:19:36.691996+00:00",
+  "http_status": 200,
+  "content_type": "application/json; charset=utf-8",
+  "bytes": 201,
+  "sha256": "fadf12724fcb787940934382f02adc33eb1d2e68cc8eb63dfd5397a498d5a860",
+  "blob": "blobs/fadf12724fcb787940934382f02adc33eb1d2e68cc8eb63dfd5397a498d5a860.bin",
+  "validation_scope": "product"
+}

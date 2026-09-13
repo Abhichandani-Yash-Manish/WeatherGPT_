@@ -1,0 +1,139 @@
+{
+  "question": "What is the observed temperature right now in Mysuru, Karnataka? Name the observing station and measurement time.",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "23288b44-8eee-4f0f-81f4-c01056436c5d",
+    "question": "What is the observed temperature right now in Mysuru, Karnataka? Name the observing station and measurement time.",
+    "status": "unavailable",
+    "answer": "Live observation retrieval is not connected to this conversation path yet; a forecast cannot answer whether rain is being observed now.",
+    "facts": [],
+    "citations": [],
+    "notes": [],
+    "choices": [],
+    "follow_up": null,
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-13T17:19:10.810334+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 2884,
+        "output_tokens": 219,
+        "duration_seconds": 5.3390155
+      },
+      "generation": {
+        "provider": "typed_task_renderers",
+        "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+      },
+      "tools": [
+        {
+          "name": "observation",
+          "task_id": "t1",
+          "status": "unavailable"
+        }
+      ],
+      "provider": "local_ollama",
+      "context_resolution": {
+        "action": "new",
+        "changed_fields": [],
+        "inherited_fields": []
+      },
+      "duration_seconds": 5.354
+    },
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "Mysuru",
+          "state": "Karnataka",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "What is the observed temperature right now in Mysuru, Karnataka? Name the observing station and measurement time.",
+          "kind": "observation",
+          "operation": "lookup",
+          "parameters": [
+            "temperature_2m"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "new",
+      "changed_fields": [],
+      "intent": "observation",
+      "start_local": "",
+      "end_local": "",
+      "variables": [
+        "temperature_2m"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "task_results": [
+      {
+        "id": "t1",
+        "request": {
+          "request_quote": "What is the observed temperature right now in Mysuru, Karnataka? Name the observing station and measurement time.",
+          "kind": "observation",
+          "operation": "lookup",
+          "parameters": [
+            "temperature_2m"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        },
+        "status": "unavailable",
+        "answer": "Live observation retrieval is not connected to this conversation path yet; a forecast cannot answer whether rain is being observed now.",
+        "fact_ids": [],
+        "passage_ids": []
+      }
+    ],
+    "charts": [],
+    "calculations": [],
+    "pending_slots": [],
+    "retrieval_coverage": [],
+    "retrieval_plan": [
+      {
+        "task_id": "t1",
+        "operation": "lookup",
+        "kind": "observation",
+        "parameters": [
+          "temperature_2m"
+        ],
+        "candidates": [],
+        "status": "unavailable",
+        "returned_source_ids": []
+      }
+    ],
+    "document_evidence": [],
+    "resolved_points": {},
+    "task_coverage": {
+      "requested": 1,
+      "completed": 0,
+      "incomplete_ids": [
+        "t1"
+      ]
+    }
+  }
+}

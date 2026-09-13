@@ -1,0 +1,151 @@
+{
+  "question": "What is the latest observed Brahmaputra water level at Dibrugarh and how far is it below danger level?",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "10b61fdc-caf6-4aa0-a0a8-34fc5cd7e7c6",
+    "question": "What is the latest observed Brahmaputra water level at Dibrugarh and how far is it below danger level?",
+    "status": "unavailable",
+    "answer": "The discharge adapter exists, but river-cell identity and its conversational tool are not connected yet. Discharge alone is not an inundation forecast.",
+    "facts": [],
+    "citations": [],
+    "notes": [],
+    "choices": [],
+    "follow_up": null,
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-13T17:19:47.396523+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 2887,
+        "output_tokens": 244,
+        "duration_seconds": 5.344693042
+      },
+      "generation": {
+        "provider": "typed_task_renderers",
+        "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+      },
+      "tools": [
+        {
+          "name": "river",
+          "task_id": "t1",
+          "status": "unavailable"
+        }
+      ],
+      "provider": "local_ollama",
+      "context_resolution": {
+        "action": "new",
+        "changed_fields": [],
+        "inherited_fields": []
+      },
+      "duration_seconds": 5.359
+    },
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "Dibrugarh",
+          "state": "",
+          "district": "Dibrugarh",
+          "kind": "district"
+        }
+      ],
+      "assumptions": [],
+      "clarification": "The specific river gauge or station ID for Dibrugarh is not provided; the tool will attempt to resolve the nearest available river discharge data point.",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "latest observed Brahmaputra water level at Dibrugarh",
+          "kind": "river",
+          "operation": "lookup",
+          "parameters": [
+            "river_discharge"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "new",
+      "changed_fields": [],
+      "intent": "research",
+      "start_local": "",
+      "end_local": "",
+      "variables": [],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "task_results": [
+      {
+        "id": "t1",
+        "request": {
+          "request_quote": "latest observed Brahmaputra water level at Dibrugarh",
+          "kind": "river",
+          "operation": "lookup",
+          "parameters": [
+            "river_discharge"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        },
+        "status": "unavailable",
+        "answer": "The discharge adapter exists, but river-cell identity and its conversational tool are not connected yet. Discharge alone is not an inundation forecast.",
+        "fact_ids": [],
+        "passage_ids": []
+      }
+    ],
+    "charts": [],
+    "calculations": [],
+    "pending_slots": [],
+    "retrieval_coverage": [],
+    "retrieval_plan": [
+      {
+        "task_id": "t1",
+        "operation": "lookup",
+        "kind": "river",
+        "parameters": [
+          "river_discharge"
+        ],
+        "candidates": [
+          {
+            "tool": "river",
+            "selected": false,
+            "available": false,
+            "reason": "River-cell/gauge identity remains unresolved",
+            "sources": [
+              {
+                "source_id": "S37",
+                "product": "Open-Meteo GloFAS river discharge delivery",
+                "registry_status": "prototype_adapter_tested"
+              }
+            ]
+          }
+        ],
+        "status": "unavailable",
+        "returned_source_ids": []
+      }
+    ],
+    "document_evidence": [],
+    "resolved_points": {},
+    "task_coverage": {
+      "requested": 1,
+      "completed": 0,
+      "incomplete_ids": [
+        "t1"
+      ]
+    }
+  }
+}

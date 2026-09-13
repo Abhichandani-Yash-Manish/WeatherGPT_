@@ -1,0 +1,165 @@
+{
+  "question": "What wave heights are forecast off Mangaluru, Karnataka tomorrow morning?",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "d1e22336-4617-40a4-8376-3655ecf20927",
+    "question": "What wave heights are forecast off Mangaluru, Karnataka tomorrow morning?",
+    "status": "unavailable",
+    "answer": "The marine adapter exists, but its conversational tool and sea-location selection are not connected yet. Land weather cannot answer wave height.",
+    "facts": [],
+    "citations": [],
+    "notes": [
+      "Tomorrow is 2026-09-14. Morning defaults to 06:30–12:30 IST."
+    ],
+    "choices": [],
+    "follow_up": null,
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-13T17:19:41.109593+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 2877,
+        "output_tokens": 300,
+        "duration_seconds": 6.268605875
+      },
+      "generation": {
+        "provider": "typed_task_renderers",
+        "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+      },
+      "tools": [
+        {
+          "name": "marine",
+          "task_id": "t1",
+          "status": "unavailable"
+        }
+      ],
+      "provider": "local_ollama",
+      "context_resolution": {
+        "action": "new",
+        "changed_fields": [],
+        "inherited_fields": []
+      },
+      "duration_seconds": 6.285
+    },
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "Mangaluru",
+          "state": "Karnataka",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [
+        "Tomorrow is 2026-09-14. Morning defaults to 06:30–12:30 IST."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "What wave heights are forecast off Mangaluru, Karnataka tomorrow morning?",
+          "kind": "marine",
+          "operation": "lookup",
+          "parameters": [
+            "wave_height"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T06:30:00+05:30",
+          "end_local": "2026-09-14T12:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "new",
+      "changed_fields": [],
+      "intent": "research",
+      "start_local": "2026-09-14T06:30:00+05:30",
+      "end_local": "2026-09-14T12:30:00+05:30",
+      "variables": [],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "task_results": [
+      {
+        "id": "t1",
+        "request": {
+          "request_quote": "What wave heights are forecast off Mangaluru, Karnataka tomorrow morning?",
+          "kind": "marine",
+          "operation": "lookup",
+          "parameters": [
+            "wave_height"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T06:30:00+05:30",
+          "end_local": "2026-09-14T12:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        },
+        "status": "unavailable",
+        "answer": "The marine adapter exists, but its conversational tool and sea-location selection are not connected yet. Land weather cannot answer wave height.",
+        "fact_ids": [],
+        "passage_ids": []
+      }
+    ],
+    "charts": [],
+    "calculations": [],
+    "pending_slots": [],
+    "retrieval_coverage": [],
+    "retrieval_plan": [
+      {
+        "task_id": "t1",
+        "operation": "lookup",
+        "kind": "marine",
+        "parameters": [
+          "wave_height"
+        ],
+        "candidates": [
+          {
+            "tool": "marine",
+            "selected": false,
+            "available": false,
+            "reason": "Adapters exist; conversational sea-area applicability remains open",
+            "sources": [
+              {
+                "source_id": "S56",
+                "product": "Open-Meteo marine wave delivery",
+                "registry_status": "prototype_adapter_tested"
+              },
+              {
+                "source_id": "S58",
+                "product": "RSMC official sea-area bulletin delivery",
+                "registry_status": "prototype_adapter_tested"
+              },
+              {
+                "source_id": "S59",
+                "product": "RSMC official coastal bulletin delivery",
+                "registry_status": "prototype_adapter_tested"
+              }
+            ]
+          }
+        ],
+        "status": "unavailable",
+        "returned_source_ids": []
+      }
+    ],
+    "document_evidence": [],
+    "resolved_points": {},
+    "task_coverage": {
+      "requested": 1,
+      "completed": 0,
+      "incomplete_ids": [
+        "t1"
+      ]
+    }
+  }
+}

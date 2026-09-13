@@ -1,0 +1,239 @@
+{
+  "question": "भोपाल, मध्य प्रदेश में कल सुबह बारिश की संभावना कितनी है? हिंदी में बताओ।",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "14f4c3b7-3fe8-4ea5-b791-3066a4f563d3",
+    "question": "भोपाल, मध्य प्रदेश में कल सुबह बारिश की संभावना कितनी है? हिंदी में बताओ।",
+    "status": "needs_selection",
+    "answer": "आप किस जगह की बात कर रहे हैं? Bhopāl, Ashoknagar, Madhya Pradesh / Bhopal, Bhopāl, Madhya Pradesh। एक चुनें, या उसका राज्य/जिला लिखें।",
+    "facts": [],
+    "citations": [],
+    "notes": [
+      "Current date is 2026-09-13. 'Kal' (tomorrow) refers to 2026-09-14. 'Subah' (morning) defaults to 06:30–12:30 IST."
+    ],
+    "choices": [
+      {
+        "id": "10525802",
+        "name": "Bhopāl",
+        "latitude": 24.40875,
+        "longitude": 78.14331,
+        "feature": "PPL",
+        "admin1": "Madhya Pradesh",
+        "admin2": "Ashoknagar",
+        "modified": "2024-01-06",
+        "name_match_basis": "canonical",
+        "other_alias_matches": 0,
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:10525802",
+        "label": "Bhopāl, Ashoknagar, Madhya Pradesh",
+        "coordinates": {
+          "latitude": 24.40875,
+          "longitude": 78.14331
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/10525802",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Bhopal"
+      },
+      {
+        "id": "1275841",
+        "name": "Bhopal",
+        "latitude": 23.25469,
+        "longitude": 77.40289,
+        "feature": "PPLA",
+        "admin1": "Madhya Pradesh",
+        "admin2": "Bhopāl",
+        "modified": "2025-10-12",
+        "name_match_basis": "canonical",
+        "other_alias_matches": 0,
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:1275841",
+        "label": "Bhopal, Bhopāl, Madhya Pradesh",
+        "coordinates": {
+          "latitude": 23.25469,
+          "longitude": 77.40289
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1275841",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Bhopal"
+      }
+    ],
+    "follow_up": "Choose a place, or add its district and state.",
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-13T17:20:05.445800+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 2894,
+        "output_tokens": 332,
+        "duration_seconds": 6.670036625
+      },
+      "generation": {
+        "provider": "typed_task_renderers",
+        "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+      },
+      "tools": [
+        {
+          "name": "gazetteer_search",
+          "query": {
+            "name": "Bhopal",
+            "state": "Madhya Pradesh",
+            "district": "",
+            "kind": "settlement"
+          },
+          "matches": 2
+        },
+        {
+          "name": "forecast",
+          "task_id": "t1",
+          "status": "needs_selection"
+        }
+      ],
+      "provider": "local_ollama",
+      "context_resolution": {
+        "action": "new",
+        "changed_fields": [],
+        "inherited_fields": []
+      },
+      "duration_seconds": 6.77
+    },
+    "plan": {
+      "language": "hi",
+      "places": [
+        {
+          "name": "Bhopal",
+          "state": "Madhya Pradesh",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [
+        "Current date is 2026-09-13. 'Kal' (tomorrow) refers to 2026-09-14. 'Subah' (morning) defaults to 06:30–12:30 IST."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "कल सुबह बारिश की संभावना कितनी है",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation_probability"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T06:30:00+05:30",
+          "end_local": "2026-09-14T12:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "new",
+      "changed_fields": [],
+      "intent": "forecast",
+      "start_local": "2026-09-14T06:30:00+05:30",
+      "end_local": "2026-09-14T12:30:00+05:30",
+      "variables": [],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "task_results": [
+      {
+        "id": "t1",
+        "request": {
+          "request_quote": "कल सुबह बारिश की संभावना कितनी है",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation_probability"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T06:30:00+05:30",
+          "end_local": "2026-09-14T12:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        },
+        "status": "needs_selection",
+        "answer": "I found 2 possible places for Bhopal. Please confirm the intended location and spelling.",
+        "fact_ids": [],
+        "passage_ids": []
+      }
+    ],
+    "charts": [],
+    "calculations": [],
+    "pending_slots": [],
+    "retrieval_coverage": [],
+    "retrieval_plan": [
+      {
+        "task_id": "t1",
+        "operation": "lookup",
+        "kind": "forecast",
+        "parameters": [
+          "precipitation_probability"
+        ],
+        "candidates": [
+          {
+            "tool": "hourly_forecast",
+            "selected": true,
+            "available": true,
+            "reason": "Hourly evidence; exact onset and whole-period probability unavailable",
+            "sources": [
+              {
+                "source_id": "S62",
+                "product": "Open-Meteo best-match extended hourly forecast",
+                "registry_status": "prototype_adapter_tested"
+              }
+            ]
+          },
+          {
+            "tool": "forecast_summary",
+            "selected": false,
+            "available": true,
+            "reason": "Exact-window GFS model summary",
+            "sources": [
+              {
+                "source_id": "S21",
+                "product": "Open-Meteo GFS forecast delivery",
+                "registry_status": "prototype_adapter_tested"
+              }
+            ]
+          }
+        ],
+        "status": "needs_selection",
+        "returned_source_ids": []
+      }
+    ],
+    "document_evidence": [],
+    "resolved_points": {},
+    "task_coverage": {
+      "requested": 1,
+      "completed": 0,
+      "incomplete_ids": [
+        "t1"
+      ]
+    }
+  }
+}

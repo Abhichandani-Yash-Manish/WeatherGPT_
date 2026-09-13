@@ -1,0 +1,4684 @@
+{
+  "question": "Show the annual mean temperature trend for India from 1981 to 2020 and explain the limits of that trend.",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "b6e55993-05bf-4866-846e-8dd4ad6a5bbb",
+    "question": "Show the annual mean temperature trend for India from 1981 to 2020 and explain the limits of that trend.",
+    "status": "answered",
+    "answer": "Task 1: All India: descriptive temperature trend 0.154 degC/decade over 1981–2020 (40 values).\n\nTask 2: General explanation, not retrieved local weather.",
+    "facts": [
+      {
+        "label": "temperature",
+        "value": "24.7419",
+        "unit": "degC",
+        "year": 1981,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f1",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c1"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "24.715",
+        "unit": "degC",
+        "year": 1982,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f2",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c2"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "24.4147",
+        "unit": "degC",
+        "year": 1983,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f3",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c3"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "24.6573",
+        "unit": "degC",
+        "year": 1984,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f4",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c4"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "24.9134",
+        "unit": "degC",
+        "year": 1985,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f5",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c5"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "24.7093",
+        "unit": "degC",
+        "year": 1986,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f6",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c6"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "25.2733",
+        "unit": "degC",
+        "year": 1987,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f7",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c7"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "25.2229",
+        "unit": "degC",
+        "year": 1988,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f8",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c8"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "24.753",
+        "unit": "degC",
+        "year": 1989,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f9",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c9"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "24.7393",
+        "unit": "degC",
+        "year": 1990,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f10",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c10"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "24.8511",
+        "unit": "degC",
+        "year": 1991,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f11",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c11"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "24.7564",
+        "unit": "degC",
+        "year": 1992,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f12",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c12"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "24.9248",
+        "unit": "degC",
+        "year": 1993,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f13",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c13"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "24.8302",
+        "unit": "degC",
+        "year": 1994,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f14",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c14"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "24.9307",
+        "unit": "degC",
+        "year": 1995,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f15",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c15"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "24.9209",
+        "unit": "degC",
+        "year": 1996,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f16",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c16"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "24.7725",
+        "unit": "degC",
+        "year": 1997,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f17",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c17"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "25.168",
+        "unit": "degC",
+        "year": 1998,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f18",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c18"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "25.0698",
+        "unit": "degC",
+        "year": 1999,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f19",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c19"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "24.9794",
+        "unit": "degC",
+        "year": 2000,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f20",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c20"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "25.0501",
+        "unit": "degC",
+        "year": 2001,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f21",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c21"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "25.1876",
+        "unit": "degC",
+        "year": 2002,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f22",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c22"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "25.0169",
+        "unit": "degC",
+        "year": 2003,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f23",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c23"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "25.0766",
+        "unit": "degC",
+        "year": 2004,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f24",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c24"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "24.9799",
+        "unit": "degC",
+        "year": 2005,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f25",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c25"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "25.1537",
+        "unit": "degC",
+        "year": 2006,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f26",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c26"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "25.1029",
+        "unit": "degC",
+        "year": 2007,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f27",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c27"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "24.9727",
+        "unit": "degC",
+        "year": 2008,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f28",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c28"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "25.4891",
+        "unit": "degC",
+        "year": 2009,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f29",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c29"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "25.4804",
+        "unit": "degC",
+        "year": 2010,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f30",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c30"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "24.9695",
+        "unit": "degC",
+        "year": 2011,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f31",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c31"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "24.9473",
+        "unit": "degC",
+        "year": 2012,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f32",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c32"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "24.993",
+        "unit": "degC",
+        "year": 2013,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f33",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c33"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "25.0679",
+        "unit": "degC",
+        "year": 2014,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f34",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c34"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "25.281",
+        "unit": "degC",
+        "year": 2015,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f35",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c35"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "25.6305",
+        "unit": "degC",
+        "year": 2016,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f36",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c36"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "25.4721",
+        "unit": "degC",
+        "year": 2017,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f37",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c37"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "25.3285",
+        "unit": "degC",
+        "year": 2018,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f38",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c38"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "25.2692",
+        "unit": "degC",
+        "year": 2019,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f39",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c39"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "label": "temperature",
+        "value": "25.1274",
+        "unit": "degC",
+        "year": 2020,
+        "period": "annual",
+        "source_id": "S26",
+        "place": "All India",
+        "id": "t1-f40",
+        "parameter": "temperature",
+        "entity_id": "all-india",
+        "citation_ids": [
+          "t1-c40"
+        ],
+        "task_id": "t1"
+      }
+    ],
+    "citations": [
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 82,
+        "column": "Annual",
+        "id": "t1-c1"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 83,
+        "column": "Annual",
+        "id": "t1-c2"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 84,
+        "column": "Annual",
+        "id": "t1-c3"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 85,
+        "column": "Annual",
+        "id": "t1-c4"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 86,
+        "column": "Annual",
+        "id": "t1-c5"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 87,
+        "column": "Annual",
+        "id": "t1-c6"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 88,
+        "column": "Annual",
+        "id": "t1-c7"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 89,
+        "column": "Annual",
+        "id": "t1-c8"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 90,
+        "column": "Annual",
+        "id": "t1-c9"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 91,
+        "column": "Annual",
+        "id": "t1-c10"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 92,
+        "column": "Annual",
+        "id": "t1-c11"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 93,
+        "column": "Annual",
+        "id": "t1-c12"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 94,
+        "column": "Annual",
+        "id": "t1-c13"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 95,
+        "column": "Annual",
+        "id": "t1-c14"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 96,
+        "column": "Annual",
+        "id": "t1-c15"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 97,
+        "column": "Annual",
+        "id": "t1-c16"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 98,
+        "column": "Annual",
+        "id": "t1-c17"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 99,
+        "column": "Annual",
+        "id": "t1-c18"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 100,
+        "column": "Annual",
+        "id": "t1-c19"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 101,
+        "column": "Annual",
+        "id": "t1-c20"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 102,
+        "column": "Annual",
+        "id": "t1-c21"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 103,
+        "column": "Annual",
+        "id": "t1-c22"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 104,
+        "column": "Annual",
+        "id": "t1-c23"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 105,
+        "column": "Annual",
+        "id": "t1-c24"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 106,
+        "column": "Annual",
+        "id": "t1-c25"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 107,
+        "column": "Annual",
+        "id": "t1-c26"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 108,
+        "column": "Annual",
+        "id": "t1-c27"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 109,
+        "column": "Annual",
+        "id": "t1-c28"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 110,
+        "column": "Annual",
+        "id": "t1-c29"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 111,
+        "column": "Annual",
+        "id": "t1-c30"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 112,
+        "column": "Annual",
+        "id": "t1-c31"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 113,
+        "column": "Annual",
+        "id": "t1-c32"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 114,
+        "column": "Annual",
+        "id": "t1-c33"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 115,
+        "column": "Annual",
+        "id": "t1-c34"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 116,
+        "column": "Annual",
+        "id": "t1-c35"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 117,
+        "column": "Annual",
+        "id": "t1-c36"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 118,
+        "column": "Annual",
+        "id": "t1-c37"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 119,
+        "column": "Annual",
+        "id": "t1-c38"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 120,
+        "column": "Annual",
+        "id": "t1-c39"
+      },
+      {
+        "source_id": "S26",
+        "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+        "provider": "IMD",
+        "product": "Published All India historical table",
+        "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+        "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+        "row": 121,
+        "column": "Annual",
+        "id": "t1-c40"
+      }
+    ],
+    "notes": [
+      "This is the published All India aggregate; it does not describe an individual village or district.",
+      "Source transcription is verified, but historical boundary comparability and homogeneity are unresolved. The descriptive slope is not proof of a statistically significant climate trend, causation or future conditions."
+    ],
+    "choices": [],
+    "follow_up": null,
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-13T17:19:57.495099+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 2891,
+        "output_tokens": 255,
+        "duration_seconds": 5.500202458
+      },
+      "generation": {
+        "provider": "typed_task_renderers",
+        "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+      },
+      "tools": [
+        {
+          "name": "history",
+          "task_id": "t1",
+          "status": "answered"
+        },
+        {
+          "name": "explanation",
+          "task_id": "t2",
+          "status": "explanation"
+        }
+      ],
+      "provider": "local_ollama",
+      "context_resolution": {
+        "action": "new",
+        "changed_fields": [],
+        "inherited_fields": []
+      },
+      "duration_seconds": 7.942
+    },
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "India",
+          "state": "",
+          "district": "",
+          "kind": "country"
+        }
+      ],
+      "assumptions": [],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "Show the annual mean temperature trend for India from 1981 to 2020",
+          "kind": "history",
+          "operation": "trend",
+          "parameters": [
+            "temperature"
+          ],
+          "years": [
+            1981,
+            2020
+          ],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        },
+        {
+          "request_quote": "explain the limits of that trend.",
+          "kind": "explanation",
+          "operation": "lookup",
+          "parameters": [],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": []
+        }
+      ],
+      "context_action": "new",
+      "changed_fields": [],
+      "intent": "history",
+      "start_local": "",
+      "end_local": "",
+      "variables": [],
+      "year": 1981,
+      "period": "annual",
+      "history_parameter": "temperature",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "task_results": [
+      {
+        "id": "t1",
+        "request": {
+          "request_quote": "Show the annual mean temperature trend for India from 1981 to 2020",
+          "kind": "history",
+          "operation": "trend",
+          "parameters": [
+            "temperature"
+          ],
+          "years": [
+            1981,
+            2020
+          ],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        },
+        "status": "answered",
+        "answer": "All India: descriptive temperature trend 0.154 degC/decade over 1981–2020 (40 values).",
+        "fact_ids": [
+          "t1-f1",
+          "t1-f2",
+          "t1-f3",
+          "t1-f4",
+          "t1-f5",
+          "t1-f6",
+          "t1-f7",
+          "t1-f8",
+          "t1-f9",
+          "t1-f10",
+          "t1-f11",
+          "t1-f12",
+          "t1-f13",
+          "t1-f14",
+          "t1-f15",
+          "t1-f16",
+          "t1-f17",
+          "t1-f18",
+          "t1-f19",
+          "t1-f20",
+          "t1-f21",
+          "t1-f22",
+          "t1-f23",
+          "t1-f24",
+          "t1-f25",
+          "t1-f26",
+          "t1-f27",
+          "t1-f28",
+          "t1-f29",
+          "t1-f30",
+          "t1-f31",
+          "t1-f32",
+          "t1-f33",
+          "t1-f34",
+          "t1-f35",
+          "t1-f36",
+          "t1-f37",
+          "t1-f38",
+          "t1-f39",
+          "t1-f40"
+        ],
+        "passage_ids": [],
+        "historical_evidence": [
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 1981,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 1981 was 24.7419 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "24.7419",
+                  "unit": "degC",
+                  "year": 1981,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 82,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "3d347d6f7bb2b39e520dafbbe51a9859b6211439d91b5cb8eb9932975754013e",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 1981,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "1981-01-01",
+                  "period_end_exclusive": "1982-01-01",
+                  "value_decimal": "24.7419",
+                  "native_value": "24.7419",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 82,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 82,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 1982,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 1982 was 24.715 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "24.715",
+                  "unit": "degC",
+                  "year": 1982,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 83,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "a026db5c110a902db87965f2e97484d5f408c8f75bd6526a0e41ef52b293d31b",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 1982,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "1982-01-01",
+                  "period_end_exclusive": "1983-01-01",
+                  "value_decimal": "24.715",
+                  "native_value": "24.715",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 83,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 83,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 1983,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 1983 was 24.4147 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "24.4147",
+                  "unit": "degC",
+                  "year": 1983,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 84,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "5742d28b42d990f80602ecef476539751af5fa2746169fa86f05e587dc890b32",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 1983,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "1983-01-01",
+                  "period_end_exclusive": "1984-01-01",
+                  "value_decimal": "24.4147",
+                  "native_value": "24.4147",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 84,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 84,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 1984,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 1984 was 24.6573 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "24.6573",
+                  "unit": "degC",
+                  "year": 1984,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 85,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "f6e70caa4ea8e90505318ea1104aebfc7856617bc37d8991802f09b8f27e443d",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 1984,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "1984-01-01",
+                  "period_end_exclusive": "1985-01-01",
+                  "value_decimal": "24.6573",
+                  "native_value": "24.6573",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 85,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 85,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 1985,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 1985 was 24.9134 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "24.9134",
+                  "unit": "degC",
+                  "year": 1985,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 86,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "d40d588b649f04fc87aab5fa967bbfb174977b4a6427a18dd17ce0e14c2ba770",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 1985,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "1985-01-01",
+                  "period_end_exclusive": "1986-01-01",
+                  "value_decimal": "24.9134",
+                  "native_value": "24.9134",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 86,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 86,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 1986,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 1986 was 24.7093 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "24.7093",
+                  "unit": "degC",
+                  "year": 1986,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 87,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "6e4c729f87ed6e661b51aec15b9a6fda4f5cb1e688b6c51d6db6f9dc417fc1da",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 1986,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "1986-01-01",
+                  "period_end_exclusive": "1987-01-01",
+                  "value_decimal": "24.7093",
+                  "native_value": "24.7093",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 87,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 87,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 1987,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 1987 was 25.2733 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "25.2733",
+                  "unit": "degC",
+                  "year": 1987,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 88,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "f16a5e5754be2fbaa21c3d48b619a01b5cc24d9b953c0dedddf19043b8eee363",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 1987,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "1987-01-01",
+                  "period_end_exclusive": "1988-01-01",
+                  "value_decimal": "25.2733",
+                  "native_value": "25.2733",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 88,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 88,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 1988,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 1988 was 25.2229 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "25.2229",
+                  "unit": "degC",
+                  "year": 1988,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 89,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "4352f9cf318b525c8c11e450915b35d24e12e38e18d0188f5e26ce55b757340a",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 1988,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "1988-01-01",
+                  "period_end_exclusive": "1989-01-01",
+                  "value_decimal": "25.2229",
+                  "native_value": "25.2229",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 89,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 89,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 1989,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 1989 was 24.753 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "24.753",
+                  "unit": "degC",
+                  "year": 1989,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 90,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "c39fd0fcc1d9929d4094ab8bfef43ea6af495011c8c091035f681e6b4c7e3973",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 1989,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "1989-01-01",
+                  "period_end_exclusive": "1990-01-01",
+                  "value_decimal": "24.753",
+                  "native_value": "24.753",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 90,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 90,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 1990,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 1990 was 24.7393 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "24.7393",
+                  "unit": "degC",
+                  "year": 1990,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 91,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "fba5257dc8b72d0d1822705483e3418adefc3a939e050a8be89e0ec7a2576efc",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 1990,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "1990-01-01",
+                  "period_end_exclusive": "1991-01-01",
+                  "value_decimal": "24.7393",
+                  "native_value": "24.7393",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 91,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 91,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 1991,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 1991 was 24.8511 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "24.8511",
+                  "unit": "degC",
+                  "year": 1991,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 92,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "cb66f53ae0c2657ca2995b529b11f7065cb02b31ae632bb94dd9e77acbc52790",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 1991,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "1991-01-01",
+                  "period_end_exclusive": "1992-01-01",
+                  "value_decimal": "24.8511",
+                  "native_value": "24.8511",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 92,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 92,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 1992,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 1992 was 24.7564 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "24.7564",
+                  "unit": "degC",
+                  "year": 1992,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 93,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "44c67c4a3c58b77505b291c8ffe8789f5ec1ae87e0c050da67687d896b3066de",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 1992,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "1992-01-01",
+                  "period_end_exclusive": "1993-01-01",
+                  "value_decimal": "24.7564",
+                  "native_value": "24.7564",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 93,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 93,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 1993,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 1993 was 24.9248 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "24.9248",
+                  "unit": "degC",
+                  "year": 1993,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 94,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "7fd6e330fdfa1f0405beed6e99da93c26e813a008a24745581663c31e2f78b68",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 1993,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "1993-01-01",
+                  "period_end_exclusive": "1994-01-01",
+                  "value_decimal": "24.9248",
+                  "native_value": "24.9248",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 94,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 94,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 1994,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 1994 was 24.8302 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "24.8302",
+                  "unit": "degC",
+                  "year": 1994,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 95,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "c20812f9e600df8d6ee3c583bdeb2ad55148882fb6752bcc1caecfd6da655216",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 1994,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "1994-01-01",
+                  "period_end_exclusive": "1995-01-01",
+                  "value_decimal": "24.8302",
+                  "native_value": "24.8302",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 95,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 95,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 1995,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 1995 was 24.9307 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "24.9307",
+                  "unit": "degC",
+                  "year": 1995,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 96,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "5d274abb598e8737e5815fbf7419860b865452b908c5831d7442660e892f2047",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 1995,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "1995-01-01",
+                  "period_end_exclusive": "1996-01-01",
+                  "value_decimal": "24.9307",
+                  "native_value": "24.9307",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 96,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 96,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 1996,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 1996 was 24.9209 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "24.9209",
+                  "unit": "degC",
+                  "year": 1996,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 97,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "ca5a0571532dbd7cd1541670020c4656ff770e6322758d062526a23c9b3a84a6",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 1996,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "1996-01-01",
+                  "period_end_exclusive": "1997-01-01",
+                  "value_decimal": "24.9209",
+                  "native_value": "24.9209",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 97,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 97,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 1997,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 1997 was 24.7725 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "24.7725",
+                  "unit": "degC",
+                  "year": 1997,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 98,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "aebba3949ee7b92190e29c72558c19b9bbaa199027d8b2b774019369d3843e56",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 1997,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "1997-01-01",
+                  "period_end_exclusive": "1998-01-01",
+                  "value_decimal": "24.7725",
+                  "native_value": "24.7725",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 98,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 98,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 1998,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 1998 was 25.168 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "25.168",
+                  "unit": "degC",
+                  "year": 1998,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 99,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "029e7b5f145f7d731aec52b90e512c58f0c7d6396f1333313ac3e933e53a2968",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 1998,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "1998-01-01",
+                  "period_end_exclusive": "1999-01-01",
+                  "value_decimal": "25.168",
+                  "native_value": "25.168",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 99,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 99,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 1999,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 1999 was 25.0698 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "25.0698",
+                  "unit": "degC",
+                  "year": 1999,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 100,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "eabb9fccb98d85e716b1b5a0a1fdd208d68827125f0113231c5e4ce13ac39cce",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 1999,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "1999-01-01",
+                  "period_end_exclusive": "2000-01-01",
+                  "value_decimal": "25.0698",
+                  "native_value": "25.0698",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 100,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 100,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 2000,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 2000 was 24.9794 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "24.9794",
+                  "unit": "degC",
+                  "year": 2000,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 101,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "b90ef1828077914572919a19d63da46ab79d52c75015a9749f2c5eaa09d0d3d0",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 2000,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "2000-01-01",
+                  "period_end_exclusive": "2001-01-01",
+                  "value_decimal": "24.9794",
+                  "native_value": "24.9794",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 101,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 101,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 2001,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 2001 was 25.0501 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "25.0501",
+                  "unit": "degC",
+                  "year": 2001,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 102,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "46c5337da107cc70acb8b48573fd573e31555f7428af23662472f3aaff5dfe2e",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 2001,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "2001-01-01",
+                  "period_end_exclusive": "2002-01-01",
+                  "value_decimal": "25.0501",
+                  "native_value": "25.0501",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 102,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 102,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 2002,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 2002 was 25.1876 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "25.1876",
+                  "unit": "degC",
+                  "year": 2002,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 103,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "bf5602295b32ad6247116ed0fac7071b29c7488738405880bad22dbaaa1d139e",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 2002,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "2002-01-01",
+                  "period_end_exclusive": "2003-01-01",
+                  "value_decimal": "25.1876",
+                  "native_value": "25.1876",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 103,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 103,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 2003,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 2003 was 25.0169 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "25.0169",
+                  "unit": "degC",
+                  "year": 2003,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 104,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "52a5acb066d29b3f13a9aee503780129c0070d3e1860a76b1cf162d2513b7b12",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 2003,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "2003-01-01",
+                  "period_end_exclusive": "2004-01-01",
+                  "value_decimal": "25.0169",
+                  "native_value": "25.0169",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 104,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 104,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 2004,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 2004 was 25.0766 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "25.0766",
+                  "unit": "degC",
+                  "year": 2004,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 105,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "2b434df444fca9ba1bdbabbcdb1b33ed249778c608f7fbfa88d77767cc0f25ea",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 2004,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "2004-01-01",
+                  "period_end_exclusive": "2005-01-01",
+                  "value_decimal": "25.0766",
+                  "native_value": "25.0766",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 105,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 105,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 2005,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 2005 was 24.9799 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "24.9799",
+                  "unit": "degC",
+                  "year": 2005,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 106,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "985917c026d7d7653a374b64063a307380f45cf30fea136990eeca9d43ae5834",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 2005,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "2005-01-01",
+                  "period_end_exclusive": "2006-01-01",
+                  "value_decimal": "24.9799",
+                  "native_value": "24.9799",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 106,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 106,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 2006,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 2006 was 25.1537 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "25.1537",
+                  "unit": "degC",
+                  "year": 2006,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 107,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "aebc28c8a5d9dda572599d689a6a1e0bf4e95eb3a4465902bfbbd0febbda8cad",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 2006,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "2006-01-01",
+                  "period_end_exclusive": "2007-01-01",
+                  "value_decimal": "25.1537",
+                  "native_value": "25.1537",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 107,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 107,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 2007,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 2007 was 25.1029 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "25.1029",
+                  "unit": "degC",
+                  "year": 2007,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 108,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "6b1b408af129d34e0bcdd7c74d403b47b4d0bc84d0193d372a4d844ae87f3a7c",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 2007,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "2007-01-01",
+                  "period_end_exclusive": "2008-01-01",
+                  "value_decimal": "25.1029",
+                  "native_value": "25.1029",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 108,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 108,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 2008,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 2008 was 24.9727 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "24.9727",
+                  "unit": "degC",
+                  "year": 2008,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 109,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "51b3bdfffcaf374cb7e6270623b4a47636fd1b31393ed80ce684b6006f1604fb",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 2008,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "2008-01-01",
+                  "period_end_exclusive": "2009-01-01",
+                  "value_decimal": "24.9727",
+                  "native_value": "24.9727",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 109,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 109,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 2009,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 2009 was 25.4891 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "25.4891",
+                  "unit": "degC",
+                  "year": 2009,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 110,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "357ebcdb18a93cf3b084ece2b9e4127ba6aba33eec3b7d3a16b559c93c8d9c20",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 2009,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "2009-01-01",
+                  "period_end_exclusive": "2010-01-01",
+                  "value_decimal": "25.4891",
+                  "native_value": "25.4891",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 110,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 110,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 2010,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 2010 was 25.4804 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "25.4804",
+                  "unit": "degC",
+                  "year": 2010,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 111,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "049417b300632993291dad0fae5f434b1ce2e06376c37579ed4b2628d513baed",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 2010,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "2010-01-01",
+                  "period_end_exclusive": "2011-01-01",
+                  "value_decimal": "25.4804",
+                  "native_value": "25.4804",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 111,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 111,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 2011,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 2011 was 24.9695 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "24.9695",
+                  "unit": "degC",
+                  "year": 2011,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 112,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "9cbf02573cb2fc013f2600c0dba4e912550a00600819cc8584789a5310baa84e",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 2011,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "2011-01-01",
+                  "period_end_exclusive": "2012-01-01",
+                  "value_decimal": "24.9695",
+                  "native_value": "24.9695",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 112,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 112,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 2012,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 2012 was 24.9473 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "24.9473",
+                  "unit": "degC",
+                  "year": 2012,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 113,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "1354f922c5417d70df2c580646edaa3726b2133f65de999e4254b0d0c970261a",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 2012,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "2012-01-01",
+                  "period_end_exclusive": "2013-01-01",
+                  "value_decimal": "24.9473",
+                  "native_value": "24.9473",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 113,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 113,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 2013,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 2013 was 24.993 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "24.993",
+                  "unit": "degC",
+                  "year": 2013,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 114,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "771704cdcad84e724c54e87358c46ff3aaf6873c1ea9594312df71bbbe3740e9",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 2013,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "2013-01-01",
+                  "period_end_exclusive": "2014-01-01",
+                  "value_decimal": "24.993",
+                  "native_value": "24.993",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 114,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 114,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 2014,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 2014 was 25.0679 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "25.0679",
+                  "unit": "degC",
+                  "year": 2014,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 115,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "cfa49f308f0500a497eb5c1a45e7bedbcb738691dcb472ba431cd2b4131c9312",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 2014,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "2014-01-01",
+                  "period_end_exclusive": "2015-01-01",
+                  "value_decimal": "25.0679",
+                  "native_value": "25.0679",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 115,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 115,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 2015,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 2015 was 25.281 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "25.281",
+                  "unit": "degC",
+                  "year": 2015,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 116,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "6b2f193124f6ba46c027d39b865ac1a17cf08f0b97eedb48c081c152abc4e866",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 2015,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "2015-01-01",
+                  "period_end_exclusive": "2016-01-01",
+                  "value_decimal": "25.281",
+                  "native_value": "25.281",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 116,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 116,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 2016,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 2016 was 25.6305 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "25.6305",
+                  "unit": "degC",
+                  "year": 2016,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 117,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "714f3b4f8d5350b8f94b3f7cee5e000d390c0dfaaea7a3e2ac8397996164a747",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 2016,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "2016-01-01",
+                  "period_end_exclusive": "2017-01-01",
+                  "value_decimal": "25.6305",
+                  "native_value": "25.6305",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 117,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 117,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 2017,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 2017 was 25.4721 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "25.4721",
+                  "unit": "degC",
+                  "year": 2017,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 118,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "11a195c70066dffd4bb421bd771542135015c42bbc1501fc6b20c36dca9709d0",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 2017,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "2017-01-01",
+                  "period_end_exclusive": "2018-01-01",
+                  "value_decimal": "25.4721",
+                  "native_value": "25.4721",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 118,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 118,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 2018,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 2018 was 25.3285 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "25.3285",
+                  "unit": "degC",
+                  "year": 2018,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 119,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "6ac415b5834fa36fa0caa84c52275875634999977e4d9e44506594ac380c15da",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 2018,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "2018-01-01",
+                  "period_end_exclusive": "2019-01-01",
+                  "value_decimal": "25.3285",
+                  "native_value": "25.3285",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 119,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 119,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 2019,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 2019 was 25.2692 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "25.2692",
+                  "unit": "degC",
+                  "year": 2019,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 120,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "ee85a1f715157f462d63c87ceba25122dc0eac8993f23c6a3bde76207243bfd9",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 2019,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "2019-01-01",
+                  "period_end_exclusive": "2020-01-01",
+                  "value_decimal": "25.2692",
+                  "native_value": "25.2692",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 120,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 120,
+                  "column": "Annual"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "India",
+              "state": "",
+              "district": "",
+              "kind": "country"
+            },
+            "parameter": "temperature",
+            "year": 2020,
+            "evidence": {
+              "status": "answered",
+              "text": "India's published annual temperature for 2020 was 25.1274 degC.",
+              "facts": [
+                {
+                  "label": "temperature",
+                  "value": "25.1274",
+                  "unit": "degC",
+                  "year": 2020,
+                  "period": "annual",
+                  "source_id": "S26",
+                  "place": "All India"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "provider": "IMD",
+                  "product": "Published All India historical table",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 121,
+                  "column": "Annual"
+                }
+              ],
+              "notes": [
+                "This is the published All India aggregate; it does not describe an individual village or district."
+              ],
+              "raw": {
+                "status": "ok",
+                "scope": "Published historical All India aggregate; not current or district weather.",
+                "record": {
+                  "record_id": "fce8f8bc9bb8f8e584f6e7578c264213267a0f31a51b00edc002b0fbaff9e1c0",
+                  "source_id": "S26",
+                  "source_series_id": "historical_temp",
+                  "geography_id": "all-india-aggregate",
+                  "geography_label": "All India aggregate",
+                  "parameter": "mean_temperature",
+                  "year": 2020,
+                  "period_type": "year",
+                  "period_code": "ANNUAL",
+                  "period_start": "2020-01-01",
+                  "period_end_exclusive": "2021-01-01",
+                  "value_decimal": "25.1274",
+                  "native_value": "25.1274",
+                  "unit": "degC",
+                  "quality_flags": [],
+                  "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "source_row": 121,
+                  "source_column": "Annual",
+                  "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                  "transformation_version": "national-climate-v1"
+                },
+                "reconciliation": null,
+                "citation": {
+                  "source_id": "S26",
+                  "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                  "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                  "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                  "row": 121,
+                  "column": "Annual"
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "t2",
+        "request": {
+          "request_quote": "explain the limits of that trend.",
+          "kind": "explanation",
+          "operation": "lookup",
+          "parameters": [],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": []
+        },
+        "status": "explanation",
+        "answer": "General explanation, not retrieved local weather.",
+        "fact_ids": [],
+        "passage_ids": []
+      }
+    ],
+    "charts": [
+      {
+        "kind": "historical_series",
+        "title": "All India · temperature · annual",
+        "unit": "degC",
+        "points": [
+          {
+            "year": 1981,
+            "value": "24.7419",
+            "evidence_id": "t1-f1"
+          },
+          {
+            "year": 1982,
+            "value": "24.715",
+            "evidence_id": "t1-f2"
+          },
+          {
+            "year": 1983,
+            "value": "24.4147",
+            "evidence_id": "t1-f3"
+          },
+          {
+            "year": 1984,
+            "value": "24.6573",
+            "evidence_id": "t1-f4"
+          },
+          {
+            "year": 1985,
+            "value": "24.9134",
+            "evidence_id": "t1-f5"
+          },
+          {
+            "year": 1986,
+            "value": "24.7093",
+            "evidence_id": "t1-f6"
+          },
+          {
+            "year": 1987,
+            "value": "25.2733",
+            "evidence_id": "t1-f7"
+          },
+          {
+            "year": 1988,
+            "value": "25.2229",
+            "evidence_id": "t1-f8"
+          },
+          {
+            "year": 1989,
+            "value": "24.753",
+            "evidence_id": "t1-f9"
+          },
+          {
+            "year": 1990,
+            "value": "24.7393",
+            "evidence_id": "t1-f10"
+          },
+          {
+            "year": 1991,
+            "value": "24.8511",
+            "evidence_id": "t1-f11"
+          },
+          {
+            "year": 1992,
+            "value": "24.7564",
+            "evidence_id": "t1-f12"
+          },
+          {
+            "year": 1993,
+            "value": "24.9248",
+            "evidence_id": "t1-f13"
+          },
+          {
+            "year": 1994,
+            "value": "24.8302",
+            "evidence_id": "t1-f14"
+          },
+          {
+            "year": 1995,
+            "value": "24.9307",
+            "evidence_id": "t1-f15"
+          },
+          {
+            "year": 1996,
+            "value": "24.9209",
+            "evidence_id": "t1-f16"
+          },
+          {
+            "year": 1997,
+            "value": "24.7725",
+            "evidence_id": "t1-f17"
+          },
+          {
+            "year": 1998,
+            "value": "25.168",
+            "evidence_id": "t1-f18"
+          },
+          {
+            "year": 1999,
+            "value": "25.0698",
+            "evidence_id": "t1-f19"
+          },
+          {
+            "year": 2000,
+            "value": "24.9794",
+            "evidence_id": "t1-f20"
+          },
+          {
+            "year": 2001,
+            "value": "25.0501",
+            "evidence_id": "t1-f21"
+          },
+          {
+            "year": 2002,
+            "value": "25.1876",
+            "evidence_id": "t1-f22"
+          },
+          {
+            "year": 2003,
+            "value": "25.0169",
+            "evidence_id": "t1-f23"
+          },
+          {
+            "year": 2004,
+            "value": "25.0766",
+            "evidence_id": "t1-f24"
+          },
+          {
+            "year": 2005,
+            "value": "24.9799",
+            "evidence_id": "t1-f25"
+          },
+          {
+            "year": 2006,
+            "value": "25.1537",
+            "evidence_id": "t1-f26"
+          },
+          {
+            "year": 2007,
+            "value": "25.1029",
+            "evidence_id": "t1-f27"
+          },
+          {
+            "year": 2008,
+            "value": "24.9727",
+            "evidence_id": "t1-f28"
+          },
+          {
+            "year": 2009,
+            "value": "25.4891",
+            "evidence_id": "t1-f29"
+          },
+          {
+            "year": 2010,
+            "value": "25.4804",
+            "evidence_id": "t1-f30"
+          },
+          {
+            "year": 2011,
+            "value": "24.9695",
+            "evidence_id": "t1-f31"
+          },
+          {
+            "year": 2012,
+            "value": "24.9473",
+            "evidence_id": "t1-f32"
+          },
+          {
+            "year": 2013,
+            "value": "24.993",
+            "evidence_id": "t1-f33"
+          },
+          {
+            "year": 2014,
+            "value": "25.0679",
+            "evidence_id": "t1-f34"
+          },
+          {
+            "year": 2015,
+            "value": "25.281",
+            "evidence_id": "t1-f35"
+          },
+          {
+            "year": 2016,
+            "value": "25.6305",
+            "evidence_id": "t1-f36"
+          },
+          {
+            "year": 2017,
+            "value": "25.4721",
+            "evidence_id": "t1-f37"
+          },
+          {
+            "year": 2018,
+            "value": "25.3285",
+            "evidence_id": "t1-f38"
+          },
+          {
+            "year": 2019,
+            "value": "25.2692",
+            "evidence_id": "t1-f39"
+          },
+          {
+            "year": 2020,
+            "value": "25.1274",
+            "evidence_id": "t1-f40"
+          }
+        ],
+        "source_ids": [
+          "S26"
+        ],
+        "missing_values": "Explicit gaps, never interpolated",
+        "task_id": "t1"
+      }
+    ],
+    "calculations": [
+      {
+        "operation": "linear_trend",
+        "label": "All India · temperature",
+        "value": "0.154",
+        "unit": "degC/decade",
+        "input_ids": [
+          "t1-f1",
+          "t1-f2",
+          "t1-f3",
+          "t1-f4",
+          "t1-f5",
+          "t1-f6",
+          "t1-f7",
+          "t1-f8",
+          "t1-f9",
+          "t1-f10",
+          "t1-f11",
+          "t1-f12",
+          "t1-f13",
+          "t1-f14",
+          "t1-f15",
+          "t1-f16",
+          "t1-f17",
+          "t1-f18",
+          "t1-f19",
+          "t1-f20",
+          "t1-f21",
+          "t1-f22",
+          "t1-f23",
+          "t1-f24",
+          "t1-f25",
+          "t1-f26",
+          "t1-f27",
+          "t1-f28",
+          "t1-f29",
+          "t1-f30",
+          "t1-f31",
+          "t1-f32",
+          "t1-f33",
+          "t1-f34",
+          "t1-f35",
+          "t1-f36",
+          "t1-f37",
+          "t1-f38",
+          "t1-f39",
+          "t1-f40"
+        ],
+        "sample_count": 40,
+        "method": "OLS against actual calendar year; slope multiplied by 10; rounded to 0.001",
+        "interpretation": "Descriptive source-series slope, not homogenized climate change attribution or a future projection",
+        "task_id": "t1"
+      }
+    ],
+    "pending_slots": [],
+    "retrieval_coverage": [],
+    "retrieval_plan": [
+      {
+        "task_id": "t1",
+        "operation": "trend",
+        "kind": "history",
+        "parameters": [
+          "temperature"
+        ],
+        "candidates": [
+          {
+            "tool": "published_history",
+            "selected": true,
+            "available": true,
+            "reason": "Published India aggregates and historical district rainfall; no district temperature",
+            "sources": [
+              {
+                "source_id": "S25",
+                "product": "IMD All India historical rainfall table (supplied CSV)",
+                "registry_status": "sample_inspected"
+              },
+              {
+                "source_id": "S26",
+                "product": "IMD All India historical mean temperature table (supplied CSV)",
+                "registry_status": "sample_inspected"
+              },
+              {
+                "source_id": "S27",
+                "product": "Supplied district historical rainfall collection (32 CSVs)",
+                "registry_status": "sample_inspected"
+              }
+            ]
+          }
+        ],
+        "status": "answered",
+        "returned_source_ids": [
+          "S26"
+        ]
+      },
+      {
+        "task_id": "t2",
+        "operation": "lookup",
+        "kind": "explanation",
+        "parameters": [],
+        "candidates": [],
+        "status": "explanation",
+        "returned_source_ids": []
+      }
+    ],
+    "document_evidence": [],
+    "resolved_points": {},
+    "task_coverage": {
+      "requested": 2,
+      "completed": 2,
+      "incomplete_ids": []
+    }
+  }
+}

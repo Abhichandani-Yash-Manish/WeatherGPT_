@@ -1,0 +1,325 @@
+{
+  "question": "Compare annual rainfall in Mysore district, Karnataka in 2010 and 2020.",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "1e406280-a8fd-4b19-bbe4-5e5470dea843",
+    "question": "Compare annual rainfall in Mysore district, Karnataka in 2010 and 2020.",
+    "status": "partial",
+    "answer": "Mysore, Karnataka · annual 2010\nrainfall: 883.4 mm [t1-f1]\nSome requested information is missing; see the task results and limitations below.\nMysore, rainfall, 2020: The stored Mysore, Karnataka series covers 1901–2010, with 110 published years. It cannot supply 2020.",
+    "facts": [
+      {
+        "label": "rainfall",
+        "value": "883.4",
+        "unit": "mm",
+        "year": 2010,
+        "period": "annual",
+        "source_id": "S27",
+        "place": "Mysore, Karnataka",
+        "id": "t1-f1",
+        "parameter": "rainfall",
+        "entity_id": "IMD110-P934",
+        "citation_ids": [
+          "t1-c1"
+        ],
+        "task_id": "t1"
+      }
+    ],
+    "citations": [
+      {
+        "source_id": "S27",
+        "provider": "IMD",
+        "product": "Historical district rainfall publication",
+        "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+        "page": "937",
+        "source_file": "data/raw/imports/2026-09-11/states/karnataka.csv",
+        "sha256": "894b0696ce2f8d608fa4f00adda579d08befaa3c2a52ff5ef116850eb709d81c",
+        "row": 2579,
+        "column": "annual_mm",
+        "id": "t1-c1"
+      }
+    ],
+    "notes": [
+      "Historical source geography; modern district compatibility and homogeneity unresolved.",
+      "Local research use; original publication restricts redistribution."
+    ],
+    "choices": [],
+    "follow_up": null,
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-13T17:21:31.638924+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 2885,
+        "output_tokens": 200,
+        "duration_seconds": 4.839823083
+      },
+      "generation": {
+        "provider": "typed_task_renderers",
+        "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+      },
+      "tools": [
+        {
+          "name": "history",
+          "task_id": "t1",
+          "status": "partial"
+        }
+      ],
+      "provider": "local_ollama",
+      "context_resolution": {
+        "action": "new",
+        "changed_fields": [],
+        "inherited_fields": []
+      },
+      "duration_seconds": 4.918
+    },
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "Mysore",
+          "state": "Karnataka",
+          "district": "Mysore",
+          "kind": "district"
+        }
+      ],
+      "assumptions": [],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "Compare annual rainfall in Mysore district, Karnataka in 2010 and 2020.",
+          "kind": "history",
+          "operation": "compare",
+          "parameters": [
+            "rainfall"
+          ],
+          "years": [
+            2010,
+            2020
+          ],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "new",
+      "changed_fields": [],
+      "intent": "history",
+      "start_local": "",
+      "end_local": "",
+      "variables": [],
+      "year": 2010,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "task_results": [
+      {
+        "id": "t1",
+        "request": {
+          "request_quote": "Compare annual rainfall in Mysore district, Karnataka in 2010 and 2020.",
+          "kind": "history",
+          "operation": "compare",
+          "parameters": [
+            "rainfall"
+          ],
+          "years": [
+            2010,
+            2020
+          ],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ]
+        },
+        "status": "partial",
+        "answer": "Mysore, Karnataka · annual 2010\nrainfall: 883.4 mm [t1-f1]\nSome requested information is missing; see the task results and limitations below.\nMysore, rainfall, 2020: The stored Mysore, Karnataka series covers 1901–2010, with 110 published years. It cannot supply 2020.",
+        "fact_ids": [
+          "t1-f1"
+        ],
+        "passage_ids": [],
+        "historical_evidence": [
+          {
+            "place": {
+              "name": "Mysore",
+              "state": "Karnataka",
+              "district": "Mysore",
+              "kind": "district"
+            },
+            "parameter": "rainfall",
+            "year": 2010,
+            "evidence": {
+              "status": "answered",
+              "text": "The historical Mysore district series reports 883.4 mm of rainfall for annual 2010.",
+              "facts": [
+                {
+                  "label": "rainfall",
+                  "value": "883.4",
+                  "unit": "mm",
+                  "year": 2010,
+                  "period": "annual",
+                  "source_id": "S27",
+                  "place": "Mysore, Karnataka"
+                }
+              ],
+              "citations": [
+                {
+                  "source_id": "S27",
+                  "provider": "IMD",
+                  "product": "Historical district rainfall publication",
+                  "url": "https://imdpune.gov.in/library/public/e-book110.pdf",
+                  "page": "937",
+                  "source_file": "data/raw/imports/2026-09-11/states/karnataka.csv",
+                  "sha256": "894b0696ce2f8d608fa4f00adda579d08befaa3c2a52ff5ef116850eb709d81c",
+                  "row": 2579,
+                  "column": "annual_mm"
+                }
+              ],
+              "notes": [
+                "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                "Local research use; original publication restricts redistribution."
+              ],
+              "verification": {
+                "scope": "Previous full source-transcription audit; not a new scientific validation",
+                "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json",
+                "input_hash_matches_audited_source": true,
+                "all_series_matched": true,
+                "legacy_index_status": "not_yet_reconciled_against_original"
+              },
+              "raw": {
+                "status": "ok",
+                "source_id": "S27",
+                "state": "Karnataka",
+                "district": "Mysore",
+                "year": 2010,
+                "period": "annual",
+                "value_decimal": "883.4",
+                "native_value": "883.4",
+                "unit": "mm",
+                "quality_flags": [],
+                "provenance": {
+                  "series_id": "IMD110-P934",
+                  "year": 2010,
+                  "state": "Karnataka",
+                  "district": "Mysore",
+                  "source_row": 2579,
+                  "source_file": "data/raw/imports/2026-09-11/states/karnataka.csv",
+                  "asset_sha256": "894b0696ce2f8d608fa4f00adda579d08befaa3c2a52ff5ef116850eb709d81c",
+                  "column": "annual_mm",
+                  "original_publication_page": "937"
+                },
+                "limitations": [
+                  "Historical source geography; modern district compatibility and homogeneity unresolved.",
+                  "Local research use; original publication restricts redistribution."
+                ],
+                "source_transcription": {
+                  "status": "covered_by_previous_full_source_audit",
+                  "evidence": "data/processed/hardening/extensive-20260912/district-source-final/summary.json"
+                }
+              }
+            }
+          },
+          {
+            "place": {
+              "name": "Mysore",
+              "state": "Karnataka",
+              "district": "Mysore",
+              "kind": "district"
+            },
+            "parameter": "rainfall",
+            "year": 2020,
+            "evidence": {
+              "status": "unavailable",
+              "text": "The stored Mysore, Karnataka series covers 1901–2010, with 110 published years. It cannot supply 2020.",
+              "facts": [],
+              "citations": []
+            }
+          }
+        ]
+      }
+    ],
+    "charts": [
+      {
+        "kind": "historical_series",
+        "title": "Mysore, Karnataka · rainfall · annual",
+        "unit": "mm",
+        "points": [
+          {
+            "year": 2010,
+            "value": "883.4",
+            "evidence_id": "t1-f1"
+          },
+          {
+            "year": 2020,
+            "value": null
+          }
+        ],
+        "source_ids": [
+          "S27"
+        ],
+        "missing_values": "Explicit gaps, never interpolated",
+        "task_id": "t1"
+      }
+    ],
+    "calculations": [],
+    "pending_slots": [],
+    "retrieval_coverage": [],
+    "retrieval_plan": [
+      {
+        "task_id": "t1",
+        "operation": "compare",
+        "kind": "history",
+        "parameters": [
+          "rainfall"
+        ],
+        "candidates": [
+          {
+            "tool": "published_history",
+            "selected": true,
+            "available": true,
+            "reason": "Published India aggregates and historical district rainfall; no district temperature",
+            "sources": [
+              {
+                "source_id": "S25",
+                "product": "IMD All India historical rainfall table (supplied CSV)",
+                "registry_status": "sample_inspected"
+              },
+              {
+                "source_id": "S26",
+                "product": "IMD All India historical mean temperature table (supplied CSV)",
+                "registry_status": "sample_inspected"
+              },
+              {
+                "source_id": "S27",
+                "product": "Supplied district historical rainfall collection (32 CSVs)",
+                "registry_status": "sample_inspected"
+              }
+            ]
+          }
+        ],
+        "status": "partial",
+        "returned_source_ids": [
+          "S27"
+        ]
+      }
+    ],
+    "document_evidence": [],
+    "resolved_points": {},
+    "task_coverage": {
+      "requested": 1,
+      "completed": 0,
+      "incomplete_ids": [
+        "t1"
+      ]
+    }
+  },
+  "seconds": 4.92
+}

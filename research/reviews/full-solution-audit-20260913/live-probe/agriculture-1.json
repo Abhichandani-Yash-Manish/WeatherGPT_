@@ -1,0 +1,250 @@
+{
+  "question": "Can I irrigate my soybean at flowering tomorrow in Indore district, Madhya Pradesh? Check the district bulletin and tomorrow morning rain forecast.",
+  "result": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "81c6409f-ad63-4816-91ec-931e22dab950",
+    "question": "Can I irrigate my soybean at flowering tomorrow in Indore district, Madhya Pradesh? Check the district bulletin and tomorrow morning rain forecast.",
+    "status": "needs_clarification",
+    "answer": "Task 1: The task could not retrieve verified evidence: Bulletin retrieval is unavailable: Printed issue date could not be resolved\n\nTask 2: Which village or town within Indore should I check? I can retrieve model data for a precise place; I cannot yet give a verified map of weather across that whole area.",
+    "facts": [],
+    "citations": [],
+    "notes": [
+      "Tomorrow is 2026-09-14. Morning defaults to 06:30–12:30 IST."
+    ],
+    "choices": [],
+    "follow_up": "Name a village/town and state, or supply a pin.",
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-13T17:19:16.166530+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 2892,
+        "output_tokens": 461,
+        "duration_seconds": 8.730855875
+      },
+      "generation": {
+        "provider": "typed_task_renderers",
+        "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+      },
+      "tools": [
+        {
+          "name": "agriculture",
+          "task_id": "t1",
+          "status": "unavailable"
+        },
+        {
+          "name": "forecast",
+          "task_id": "t2",
+          "status": "needs_clarification"
+        }
+      ],
+      "provider": "local_ollama",
+      "context_resolution": {
+        "action": "new",
+        "changed_fields": [],
+        "inherited_fields": []
+      },
+      "duration_seconds": 10.484
+    },
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "Indore",
+          "state": "Madhya Pradesh",
+          "district": "Indore",
+          "kind": "district"
+        }
+      ],
+      "assumptions": [
+        "Tomorrow is 2026-09-14. Morning defaults to 06:30–12:30 IST."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "Check the district bulletin",
+          "kind": "agriculture",
+          "operation": "lookup",
+          "parameters": [
+            "agricultural_advisory"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ],
+          "document_request": {
+            "query": "Can I irrigate my soybean at flowering tomorrow in Indore district, Madhya Pradesh?",
+            "crop": "soybean",
+            "growth_stage": "flowering",
+            "topic": "irrigation",
+            "mode": "decision_support"
+          }
+        },
+        {
+          "request_quote": "tomorrow morning rain forecast",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T06:30:00+05:30",
+          "end_local": "2026-09-14T12:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "new",
+      "changed_fields": [],
+      "intent": "agriculture",
+      "start_local": "",
+      "end_local": "",
+      "variables": [],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "task_results": [
+      {
+        "id": "t1",
+        "request": {
+          "request_quote": "Check the district bulletin",
+          "kind": "agriculture",
+          "operation": "lookup",
+          "parameters": [
+            "agricultural_advisory"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "",
+          "end_local": "",
+          "place_indices": [
+            0
+          ],
+          "document_request": {
+            "query": "Can I irrigate my soybean at flowering tomorrow in Indore district, Madhya Pradesh?",
+            "crop": "soybean",
+            "growth_stage": "flowering",
+            "topic": "irrigation",
+            "mode": "decision_support"
+          }
+        },
+        "status": "unavailable",
+        "answer": "The task could not retrieve verified evidence: Bulletin retrieval is unavailable: Printed issue date could not be resolved",
+        "fact_ids": [],
+        "passage_ids": []
+      },
+      {
+        "id": "t2",
+        "request": {
+          "request_quote": "tomorrow morning rain forecast",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T06:30:00+05:30",
+          "end_local": "2026-09-14T12:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        },
+        "status": "needs_clarification",
+        "answer": "Which village or town within Indore should I check? I can retrieve model data for a precise place; I cannot yet give a verified map of weather across that whole area.",
+        "fact_ids": [],
+        "passage_ids": []
+      }
+    ],
+    "charts": [],
+    "calculations": [],
+    "pending_slots": [],
+    "retrieval_coverage": [],
+    "retrieval_plan": [
+      {
+        "task_id": "t1",
+        "operation": "lookup",
+        "kind": "agriculture",
+        "parameters": [
+          "agricultural_advisory"
+        ],
+        "candidates": [
+          {
+            "tool": "crop_advisory",
+            "selected": true,
+            "available": true,
+            "reason": "Published district crop/stage passages; strict printed geography and dates, hybrid retrieval in reviewed PDF families; individual field decisions remain partial",
+            "sources": [
+              {
+                "source_id": "S57",
+                "product": "IMD district farmer bulletin delivery (English and local language)",
+                "registry_status": "prototype_adapter_tested"
+              }
+            ]
+          }
+        ],
+        "status": "unavailable",
+        "returned_source_ids": []
+      },
+      {
+        "task_id": "t2",
+        "operation": "lookup",
+        "kind": "forecast",
+        "parameters": [
+          "precipitation"
+        ],
+        "candidates": [
+          {
+            "tool": "forecast_summary",
+            "selected": true,
+            "available": true,
+            "reason": "Exact-window GFS model summary",
+            "sources": [
+              {
+                "source_id": "S21",
+                "product": "Open-Meteo GFS forecast delivery",
+                "registry_status": "prototype_adapter_tested"
+              }
+            ]
+          },
+          {
+            "tool": "hourly_forecast",
+            "selected": false,
+            "available": true,
+            "reason": "Hourly evidence; exact onset and whole-period probability unavailable",
+            "sources": [
+              {
+                "source_id": "S62",
+                "product": "Open-Meteo best-match extended hourly forecast",
+                "registry_status": "prototype_adapter_tested"
+              }
+            ]
+          }
+        ],
+        "status": "needs_clarification",
+        "returned_source_ids": []
+      }
+    ],
+    "document_evidence": [],
+    "resolved_points": {},
+    "task_coverage": {
+      "requested": 2,
+      "completed": 0,
+      "incomplete_ids": [
+        "t1",
+        "t2"
+      ]
+    }
+  }
+}

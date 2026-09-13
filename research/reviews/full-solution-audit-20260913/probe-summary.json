@@ -1,0 +1,299 @@
+{
+  "reviewed_commit": "d6556d916e934e8d8d72151086b46552f15dada9",
+  "http_turns": 22,
+  "application_statuses": {
+    "needs_clarification": 2,
+    "partial": 7,
+    "answered": 5,
+    "unavailable": 6,
+    "needs_selection": 2
+  },
+  "transport_or_uncaught_errors": [],
+  "initial_16_turn_latency_seconds": {
+    "median": 6.965,
+    "max": 22.17
+  },
+  "scope": "Fresh authored local HTTP challenge sample, four diagnostic follow-ups and two supported controls. Not representative or scientific validation, and no overall success rate is inferred. These prompts are now development evidence, not future holdouts. Application statuses do not equal reviewer acceptance. Existing unit suite was inspected, not rerun.",
+  "tracked_runtime_paths_at_review_start": 618,
+  "rows": [
+    {
+      "file": "agriculture-1.json",
+      "status": "needs_clarification",
+      "question": "Can I irrigate my soybean at flowering tomorrow in Indore district, Madhya Pradesh? Check the district bulletin and tomorrow morning rain forecast.",
+      "task_coverage": {
+        "requested": 2,
+        "completed": 0,
+        "incomplete_ids": [
+          "t1",
+          "t2"
+        ]
+      },
+      "error": null
+    },
+    {
+      "file": "aviation-1.json",
+      "status": "partial",
+      "question": "Show the latest METAR and TAF for VOBL and explain what each says.",
+      "task_coverage": {
+        "requested": 3,
+        "completed": 2,
+        "incomplete_ids": [
+          "t2"
+        ]
+      },
+      "error": null
+    },
+    {
+      "file": "climate-1.json",
+      "status": "answered",
+      "question": "Show the annual mean temperature trend for India from 1981 to 2020 and explain the limits of that trend.",
+      "task_coverage": {
+        "requested": 2,
+        "completed": 2,
+        "incomplete_ids": []
+      },
+      "error": null
+    },
+    {
+      "file": "dissemination-1.json",
+      "status": "unavailable",
+      "question": "Notify me if an official flood warning is issued for Patna, Bihar tonight.",
+      "task_coverage": {
+        "requested": 1,
+        "completed": 0,
+        "incomplete_ids": [
+          "t1"
+        ]
+      },
+      "error": null
+    },
+    {
+      "file": "district_scope-1.json",
+      "status": "needs_clarification",
+      "question": "What is the average rainfall forecast across all of Wayanad district, Kerala tomorrow?",
+      "task_coverage": {
+        "requested": 1,
+        "completed": 0,
+        "incomplete_ids": [
+          "t1"
+        ]
+      },
+      "error": null
+    },
+    {
+      "file": "forecast_continuity-1.json",
+      "status": "partial",
+      "question": "For Kochi, Kerala tomorrow from 9 AM to noon, give rain probability, gusts and feels-like temperature.",
+      "task_coverage": {
+        "requested": 1,
+        "completed": 0,
+        "incomplete_ids": [
+          "t1"
+        ]
+      },
+      "error": null
+    },
+    {
+      "file": "forecast_continuity-2.json",
+      "status": "partial",
+      "question": "And from 3 PM to 6 PM?",
+      "task_coverage": {
+        "requested": 1,
+        "completed": 0,
+        "incomplete_ids": [
+          "t1"
+        ]
+      },
+      "error": null
+    },
+    {
+      "file": "forecast_continuity-3.json",
+      "status": "partial",
+      "question": "Compare the rain amount for that same afternoon period with GFS too.",
+      "task_coverage": {
+        "requested": 1,
+        "completed": 0,
+        "incomplete_ids": [
+          "t1"
+        ]
+      },
+      "error": null
+    },
+    {
+      "file": "gujarati-1.json",
+      "status": "answered",
+      "question": "રાજકોટ, ગુજરાતમાં કાલે સવારે વરસાદની સંભાવના કેટલી છે? ગુજરાતીમાં સમજાવો.",
+      "task_coverage": {
+        "requested": 1,
+        "completed": 1,
+        "incomplete_ids": []
+      },
+      "error": null
+    },
+    {
+      "file": "hindi-1.json",
+      "status": "needs_selection",
+      "question": "भोपाल, मध्य प्रदेश में कल सुबह बारिश की संभावना कितनी है? हिंदी में बताओ।",
+      "task_coverage": {
+        "requested": 1,
+        "completed": 0,
+        "incomplete_ids": [
+          "t1"
+        ]
+      },
+      "error": null
+    },
+    {
+      "file": "hindi_selection.json",
+      "status": "needs_selection",
+      "question": "भोपाल जिले वाला भोपाल शहर।",
+      "task_coverage": {
+        "requested": 1,
+        "completed": 0,
+        "incomplete_ids": [
+          "t1"
+        ]
+      },
+      "error": null
+    },
+    {
+      "file": "historical_alias.json",
+      "status": "partial",
+      "question": "Compare annual rainfall in Mysore district, Karnataka in 2010 and 2020.",
+      "task_coverage": {
+        "requested": 1,
+        "completed": 0,
+        "incomplete_ids": [
+          "t1"
+        ]
+      },
+      "error": null
+    },
+    {
+      "file": "history-1.json",
+      "status": "unavailable",
+      "question": "Compare annual rainfall in Mysuru district, Karnataka in 2010 and 2020.",
+      "task_coverage": {
+        "requested": 1,
+        "completed": 0,
+        "incomplete_ids": [
+          "t1"
+        ]
+      },
+      "error": null
+    },
+    {
+      "file": "language_correction.json",
+      "status": "answered",
+      "question": "કૃપા કરીને આ જવાબ ગુજરાતીમાં આપો, અંગ્રેજીમાં નહીં.",
+      "task_coverage": {
+        "requested": 1,
+        "completed": 1,
+        "incomplete_ids": []
+      },
+      "error": null
+    },
+    {
+      "file": "marine-1.json",
+      "status": "unavailable",
+      "question": "What wave heights are forecast off Mangaluru, Karnataka tomorrow morning?",
+      "task_coverage": {
+        "requested": 1,
+        "completed": 0,
+        "incomplete_ids": [
+          "t1"
+        ]
+      },
+      "error": null
+    },
+    {
+      "file": "multi_task-1.json",
+      "status": "partial",
+      "question": "For Bhubaneswar, Odisha: tell me tomorrow morning rain probability, current official warnings, observed temperature now, and annual district rainfall in 2010. Answer each part separately.",
+      "task_coverage": {
+        "requested": 4,
+        "completed": 1,
+        "incomplete_ids": [
+          "t2",
+          "t3",
+          "t4"
+        ]
+      },
+      "error": null
+    },
+    {
+      "file": "observation-1.json",
+      "status": "unavailable",
+      "question": "What is the observed temperature right now in Mysuru, Karnataka? Name the observing station and measurement time.",
+      "task_coverage": {
+        "requested": 1,
+        "completed": 0,
+        "incomplete_ids": [
+          "t1"
+        ]
+      },
+      "error": null
+    },
+    {
+      "file": "official_warning-1.json",
+      "status": "unavailable",
+      "question": "Are there any current official cyclone warnings that apply to Chennai, Tamil Nadu?",
+      "task_coverage": {
+        "requested": 1,
+        "completed": 0,
+        "incomplete_ids": [
+          "t1"
+        ]
+      },
+      "error": null
+    },
+    {
+      "file": "rain_correction.json",
+      "status": "partial",
+      "question": "No, replace those parameters with rainfall amount in millimetres. Compare GFS and best-match for that same afternoon window.",
+      "task_coverage": {
+        "requested": 1,
+        "completed": 0,
+        "incomplete_ids": [
+          "t1"
+        ]
+      },
+      "error": null
+    },
+    {
+      "file": "river-1.json",
+      "status": "unavailable",
+      "question": "What is the latest observed Brahmaputra water level at Dibrugarh and how far is it below danger level?",
+      "task_coverage": {
+        "requested": 1,
+        "completed": 0,
+        "incomplete_ids": [
+          "t1"
+        ]
+      },
+      "error": null
+    },
+    {
+      "file": "supported_forecast.json",
+      "status": "answered",
+      "question": "How much rain is forecast in Kochi, Kerala tomorrow from 06:30 to 12:30 IST?",
+      "task_coverage": {
+        "requested": 1,
+        "completed": 1,
+        "incomplete_ids": []
+      },
+      "error": null
+    },
+    {
+      "file": "supported_history.json",
+      "status": "answered",
+      "question": "What was the published All India annual rainfall in 2024?",
+      "task_coverage": {
+        "requested": 1,
+        "completed": 1,
+        "incomplete_ids": []
+      },
+      "error": null
+    }
+  ]
+}

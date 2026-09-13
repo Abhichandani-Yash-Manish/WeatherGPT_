@@ -1,0 +1,11 @@
+{
+  "source_id": "S18",
+  "url": "https://aviationweather.gov/api/data/metar?ids=VOBL&format=json&hours=3",
+  "retrieved_at_utc": "2026-09-13T17:19:38.088333+00:00",
+  "http_status": 200,
+  "content_type": "application/json; charset=utf-8",
+  "bytes": 2687,
+  "sha256": "781b3d386ee9c8e8a13e9cf58dfff0b1cc297849aa1e29303b9a4b8a48c5478d",
+  "blob": "blobs/781b3d386ee9c8e8a13e9cf58dfff0b1cc297849aa1e29303b9a4b8a48c5478d.bin",
+  "validation_scope": "product"
+}
