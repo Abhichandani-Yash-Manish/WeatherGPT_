@@ -1,0 +1,73 @@
+{
+ "schema_version": "sarvam-capability-probe-v1",
+ "measured_at_utc": "2026-09-15T01:35:00+00:00",
+ "purpose": "Confirm the three Sarvam endpoints this project needs, and measure how they treat numbers, units and negations.",
+ "credential": "Read from a local file outside the repository. The key is never recorded here or anywhere in the repo.",
+ "probes": [
+  {
+   "capability": "text_to_speech",
+   "endpoint": "https://api.sarvam.ai/text-to-speech",
+   "http_status": 200,
+   "elapsed_s": 1.71,
+   "model": "bulbul:v3",
+   "target_language_code": "hi-IN",
+   "input": "कल अहमदाबाद में 35 मिलीमीटर वर्षा का पूर्वानुमान है।",
+   "response_keys": [
+    "request_id",
+    "audios"
+   ],
+   "audio_bytes": 150572,
+   "note": "The documented parameter name is language_code; target_language_code was accepted. Confirm which is canonical before relying on either."
+  },
+  {
+   "capability": "speech_to_text",
+   "endpoint": "https://api.sarvam.ai/speech-to-text",
+   "http_status": 200,
+   "elapsed_s": 2.56,
+   "model": "saaras:v3",
+   "language_code_supplied": null,
+   "input": "the audio produced by the text_to_speech probe above",
+   "transcript": "कल अहमदाबाद में पैंतीस मिलीमीटर वर्षा का पूर्वानुमान है।",
+   "detected_language_code": "hi-IN",
+   "language_probability": 0.974
+  },
+  {
+   "capability": "translate",
+   "endpoint": "https://api.sarvam.ai/translate",
+   "http_status": 200,
+   "elapsed_s": 1.01,
+   "model": "default (not supplied)",
+   "input": "Rainfall of 35 mm is forecast for Ahmedabad tomorrow. No warning is in force.",
+   "source_language_code": "en-IN",
+   "target_language_code": "hi-IN",
+   "translated_text": "अहमदाबाद में कल 35 मि.मी. वर्षा होने का पूर्वानुमान है। कोई चेतावनी लागू नहीं है।",
+   "response_keys": [
+    "request_id",
+    "translated_text",
+    "source_language_code"
+   ]
+  }
+ ],
+ "findings": [
+  {
+   "id": "SV01",
+   "observation": "Speech round-trip turned the digits 35 into the Hindi word पैंतीस.",
+   "consequence": "A transcript is not a literal rendering of what a number looked like. Any comparison between spoken input and written evidence must normalise numerals across digit and word forms, and a transcript must never be treated as a verbatim quotation of a source value."
+  },
+  {
+   "id": "SV02",
+   "observation": "Translation preserved the digits 35 but rewrote the unit mm as मि.मी.",
+   "consequence": "A translation invariant check cannot be literal string matching. Units need a per-language lexicon of accepted renderings, and that lexicon has to be measured and recorded rather than assumed, because an unrecognised rendering would otherwise reject a correct translation."
+  },
+  {
+   "id": "SV03",
+   "observation": "The negation in \"No warning is in force\" survived as \"कोई चेतावनी लागू नहीं है\".",
+   "consequence": "One correct sample is not evidence that negations are safe. It does not change the decision to template safety-critical clauses rather than translate them; it only means this particular sample did not fail."
+  }
+ ],
+ "limitations": [
+  "One language, one sample per endpoint. Nothing here measures accuracy, and nothing here is a quality evaluation.",
+  "No rate limit or credit consumption was measured.",
+  "Model versions and parameter names can change; these are observations from one instant, not a contract."
+ ]
+}

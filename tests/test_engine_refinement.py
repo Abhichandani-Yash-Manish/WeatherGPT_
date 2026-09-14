@@ -222,11 +222,14 @@ class EngineJourneys(unittest.TestCase):
         r=self.chat();self.assertFalse(r['facts']);self.assertEqual(self.calls,0);self.assertEqual(r['status'],'unavailable')
 
     def test_requested_gujarati_output_is_never_answered_in_english(self):
+        # With no reachable translation service the floor still holds: the answer stays in
+        # its source language, the response is downgraded, and the reason is stated.
         self.setup_product();self.model.value.update(language='gu',context_action='new',changed_fields=['places','time','parameters'])
         r=self.chat(question='રાજકોટમાં કાલે સવારે વરસાદની સંભાવના કેટલી છે?')
         self.assertTrue(r['facts']);self.assertEqual(r['status'],'partial')
-        self.assertTrue(any('requested output language' in n for n in r['notes']),r['notes'])
-        self.assertEqual(r['trace']['generation']['language_adherence'],'failed')
+        self.assertTrue(any('requested language' in n for n in r['notes']),r['notes'])
+        self.assertEqual(r['trace']['generation']['language_adherence'],'no_language_service')
+        self.assertEqual(r['trace']['generation']['requested_language'],'gu')
 
     def test_taf_current_validity_and_requested_window(self):
         self.airport('taf');r=self.chat();self.assertEqual(r['status'],'answered',r['answer']);self.assertFalse(r['facts']);self.assertEqual(r['airport_reports'][0]['kind'],'taf')

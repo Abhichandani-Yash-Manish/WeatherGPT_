@@ -45,7 +45,7 @@ class ConversationEngine:
                        (cid,json.dumps(state,ensure_ascii=False),self.workspace.clock().isoformat()))
 
     def ask(self,body):
-        if not isinstance(body,dict) or set(body)-{'question','conversation_id','selection_id','coordinates'}:raise SourceError('Send a question and optional conversation/place selection')
+        if not isinstance(body,dict) or set(body)-{'question','conversation_id','selection_id','coordinates','output_language'}:raise SourceError('Send a question and optional conversation/place/language selection')
         q=body.get('question')
         if not isinstance(q,str) or not 1<=len(q)<=1500:raise SourceError('Enter a question of 1–1500 characters')
         if not CHAT_LOCK.acquire(blocking=False):raise SourceError('Another conversation is using the local model. Please retry shortly.')
@@ -151,11 +151,18 @@ class ConversationEngine:
         from .briefing import render_brief
         if not result['facts']:result['answer']=render_brief(result)
         # Understanding the question's language never establishes output support.
-        from .dialogue import language_gap
-        if language_gap(result['answer'],plan.get('language')) and result['status'] in {'answered','explanation'}:
-            result['status']='partial'
-            result['notes'].append('The requested output language could not be rendered for this answer; the evidence above remains in its source language. Answering in that language is not supported yet for this kind of request.')
-            result['trace']['generation']=dict(result['trace'].get('generation') or {},language_adherence='failed',requested_language=plan.get('language'))
+        # An explicit selection is data the caller sends, not an instruction appended to
+        # the question for the planner to read back, so it cannot be lost to inference.
+        from .answer_language import deliver,target_language
+        target,why=target_language(body,state,plan)
+        if target and result['status'] in {'answered','explanation','partial'}:
+            deliver(result,target,reason=why)
+        else:
+            from .dialogue import language_gap
+            if language_gap(result['answer'],plan.get('language')) and result['status'] in {'answered','explanation'}:
+                result['status']='partial'
+                result['notes'].append('The requested output language could not be rendered for this answer; the evidence above remains in its source language. Answering in that language is not supported yet for this kind of request.')
+                result['trace']['generation']=dict(result['trace'].get('generation') or {},language_adherence='failed',requested_language=plan.get('language'))
         from .dialogue import save_focus
         save_focus(state,result)
         state['last_question']=q;state['last_plan']=state.get('last_plan',plan) if plan.get('context_action')=='explain_previous' else plan;state['choices']=result['choices'];state['resolved_points']=result.get('resolved_points',{})
