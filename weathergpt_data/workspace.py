@@ -15,6 +15,7 @@ from .answers import AnswerService, ROOT
 from .ingestion import IngestionDB, run_one
 from .rag import context_from_answer
 from .documents import DocumentPruned
+from .speech import LanguageServiceUnavailable
 from .transport import SourceError, parsed, utcnow
 
 DEFAULT_DATABASE=ROOT/'data/runtime/ingestion/ingestion.sqlite'
@@ -85,6 +86,79 @@ class Workspace:
                 'issue_date':published.get('issue_date'),'pages':published.get('pages'),
                 'retained_passages':passages,'retained_physical_pages':pages,
                 'extraction_version':published.get('extraction_version')}
+
+    # --- Spoken access (PS feature 8) -------------------------------------------
+    # Audio is a rendering of an answer, or a claim about what a person said. Neither
+    # is evidence, so nothing here is stored as a source or given a source identifier.
+    MAX_AUDIO_UPLOAD=8_000_000
+    # Above the service's own 2500-character limit on purpose, so a long answer is
+    # spoken as several segments instead of being refused. A cap below that limit would
+    # have made the segmenting unreachable and silently dropped nothing but useful text.
+    MAX_SPEAK_CHARACTERS=6000
+
+    def languages(self):
+        """What the interface may offer, with measured support per direction."""
+        from .languages import catalogue
+        from . import speech
+        return {'schema_version':'language-support-view-v1',
+                'service_configured':speech.configured(),
+                'note':('Only a measured capability is offered. A language the provider documents but '
+                        'this project has not verified is shown as unmeasured, not as available.'),
+                'languages':catalogue()}
+
+    def transcribe(self, body):
+        """Turn recorded speech into a transcript the user can correct before asking."""
+        import base64
+        from . import speech
+        from .languages import normalise
+        if not isinstance(body,dict) or set(body)-{'audio_base64','language','content_type'}:
+            raise ValueError('Send audio_base64 and optional language or content_type')
+        encoded=body.get('audio_base64')
+        if not isinstance(encoded,str) or not encoded:raise ValueError('Recorded audio is required')
+        if len(encoded)>self.MAX_AUDIO_UPLOAD:raise ValueError('The recording is longer than this workspace accepts')
+        try:audio=base64.b64decode(encoded,validate=True)
+        except (ValueError,TypeError):raise ValueError('The recording could not be decoded')
+        language=normalise(body.get('language')) if body.get('language') else None
+        if body.get('language') and not language:raise ValueError('Unsupported language: '+str(body.get('language')))
+        content_type=body.get('content_type') or 'audio/wav'
+        if not isinstance(content_type,str) or not content_type.startswith('audio/'):
+            raise ValueError('content_type must name an audio format')
+        heard=speech.transcribe(audio,language=language,content_type=content_type,
+                                filename='question.'+content_type.split('/')[-1].split(';')[0])
+        return {**heard,
+                'is_evidence':False,
+                'confirm_before_asking':True,
+                'why_confirm':('A transcript is what the recogniser heard, not what was said. Place names '
+                               'and numbers are the words it is most likely to get wrong, so read it back '
+                               'before it becomes a question.')}
+
+    def speak(self, body):
+        """Speak text that has already been produced and gated. Never generates wording."""
+        import base64
+        from . import speech
+        from .languages import normalise, supports
+        if not isinstance(body,dict) or set(body)-{'text','language'}:
+            raise ValueError('Send text and language')
+        text=body.get('text')
+        if not isinstance(text,str) or not text.strip():raise ValueError('There is no text to speak')
+        if len(text)>self.MAX_SPEAK_CHARACTERS:
+            raise ValueError('Text is longer than the %d characters this workspace speaks at once'%self.MAX_SPEAK_CHARACTERS)
+        language=normalise(body.get('language'))
+        if not language:raise ValueError('Unsupported language: '+str(body.get('language')))
+        if supports(language,'speak')!='verified':
+            # Refusing is the honest answer: the provider accepts every code, but this
+            # project has only verified some, and unintelligible audio is worse than none.
+            raise ValueError('Speech in this language has not been verified by this project, so it is not '
+                             'offered. Run scripts/measure_language_support.py to test it.')
+        pieces=speech.chunks(text)
+        audio=[];total=0;meta=None
+        for piece in pieces:
+            body_bytes,meta=speech.speak(piece,language)
+            audio.append(base64.b64encode(body_bytes).decode());total+=len(body_bytes)
+        return {'language':language,'segments':audio,'segment_count':len(audio),'bytes':total,
+                'codec':(meta or {}).get('codec','wav'),'model':(meta or {}).get('model'),
+                'is_evidence':False,
+                'note':'Spoken rendering of text already produced and checked. It adds no new claim.'}
 
     def arguments(self, body):
         if not isinstance(body,dict) or set(body)-{'question','entity_id','coordinates'}:
@@ -287,7 +361,7 @@ def make_server(workspace, port=8765):
             self.send_header('Cache-Control','no-store')
             self.send_header('X-Content-Type-Options','nosniff')
             self.send_header('Referrer-Policy','no-referrer')
-            self.send_header('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; frame-ancestors 'none'; base-uri 'none'; form-action 'self'")
+            self.send_header('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; media-src 'self' blob: data:; frame-ancestors 'none'; base-uri 'none'; form-action 'self'")
             self.end_headers();self.wfile.write(data)
 
         def allowed_host(self):
@@ -318,12 +392,14 @@ def make_server(workspace, port=8765):
             # API path keeps the existing 404 behaviour.
             if path.startswith('/api/'):
                 known=(workspace.is_product(path) or path=='/api/conversations' or path=='/api/health'
+                       or path=='/api/languages'
                        or path.startswith('/api/conversations/') or path.startswith('/api/map/static/'))
                 if not known:return self.respond(404,{'error':'Not found'})
                 if not self.authorized():return self.respond(403,{'error':'Reload this local workspace before reading stored data'})
                 try:
                     if path=='/api/conversations':return self.respond(200,workspace.conversations())
                     if path=='/api/health':return self.respond(200,workspace.health())
+                    if path=='/api/languages':return self.respond(200,workspace.languages())
                     if path.startswith('/api/conversations/'):return self.respond(200,workspace.conversation_transcript(path.removeprefix('/api/conversations/')))
                     if path.startswith('/api/map/static/'):
                         return self.respond(200,workspace.map_layer(path.removeprefix('/api/map/static/')),'application/geo+json')
@@ -355,14 +431,19 @@ def make_server(workspace, port=8765):
             if (not self.allowed_host() or self.headers.get('Origin',origin)!=origin
                     or not hmac.compare_digest(supplied,token)):
                 return self.respond(403,{'error':'Reload this local workspace before sending a request'})
-            if self.path not in {'/api/answer','/api/refresh','/api/chat'}:return self.respond(404,{'error':'Not found'})
+            routes={'/api/answer':workspace.answer,'/api/refresh':workspace.refresh,'/api/chat':workspace.chat,
+                    '/api/speech/transcribe':workspace.transcribe,'/api/speech/speak':workspace.speak}
+            if self.path not in routes:return self.respond(404,{'error':'Not found'})
+            # A recording is far larger than a question, so it gets its own limit rather
+            # than raising the limit for every request.
+            cap=11_000_000 if self.path=='/api/speech/transcribe' else 8192
             try:
                 if self.headers.get('Content-Type','').split(';')[0]!='application/json':raise ValueError('Send JSON')
                 length=int(self.headers.get('Content-Length','0'))
-                if not 0<length<=8192:raise ValueError('Request must be 1–8192 bytes')
+                if not 0<length<=cap:raise ValueError('Request must be 1–%d bytes'%cap)
                 body=json.loads(self.rfile.read(length),parse_constant=lambda value:(_ for _ in ()).throw(ValueError('Non-finite JSON')))
-                result=workspace.chat(body) if self.path=='/api/chat' else workspace.refresh(body) if self.path=='/api/refresh' else workspace.answer(body)
-                self.respond(200,result)
+                self.respond(200,routes[self.path](body))
+            except LanguageServiceUnavailable as exc:self.respond(503,{'error':str(exc)})
             except (ValueError,TypeError,KeyError) as exc:self.respond(400,{'error':str(exc)})
             except (OSError,sqlite3.Error):self.respond(503,{'error':'The local evidence store is unavailable. Check its files and retry.'})
 
