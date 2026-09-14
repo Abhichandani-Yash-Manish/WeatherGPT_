@@ -1,7 +1,7 @@
 {
   "schema_version": "hardening-progress-v1",
   "review": "research/reviews/national-readiness-20260912/review.md",
-  "updated_at_utc": "2026-09-14T16:05:00+00:00",
+  "updated_at_utc": "2026-09-14T18:40:00+00:00",
   "operational_ready": false,
   "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
   "findings": [
@@ -443,5 +443,53 @@
       "trajectory": "docs/21 step 2 (official warning and observation feasibility)"
     },
     "remaining_open": "Origin authentication, CAP applicability to a place, live update/cancel editions, delivery and dissemination, and observation retrieval."
+  },
+  "suite_overhaul_batch": {
+    "report": "docs/28-weather-suite-overhaul.md",
+    "evidence_directory": "research/reviews/suite-overhaul-20260914",
+    "acceptance_note": "research/reviews/suite-overhaul-20260914/acceptance-note.md",
+    "journey_record": "research/reviews/suite-overhaul-20260914/desktop-journey.json",
+    "basemap_build": "data/processed/map-basemap/basemap-v1-2ce665f7a488",
+    "build_script": "scripts/build_map_basemap.py",
+    "operational_ready": false,
+    "scope": "Eleven product surfaces over the existing governed evidence: overview, warnings, map, observations, forecast, climate, advisories, aviation, marine, assistant and settings, plus a self-hosted vector map and a read-model API. Watch and notification delivery, voice and mobile acceptance remain unbuilt, and every source remains user_review pending.",
+    "automated_tests": 432,
+    "javascript_component_checks": 47,
+    "new_modules": [
+      "weathergpt_data/product_api.py",
+      "weathergpt_data/observations.py",
+      "weathergpt_data/national.py",
+      "web/shell.js",
+      "web/panels.js",
+      "web/map.js",
+      "scripts/build_map_basemap.py"
+    ],
+    "new_routes": 20,
+    "new_source": "S63",
+    "surfaces_verified_in_browser": 11,
+    "source_problems_found": [
+      "imd:aws_data_layer carries a 1970 placeholder time field, which must not be shown as the observation instant",
+      "the source supplies LAKSHMADWEEP as a bounding box rather than a coastline, now detected, flagged and described",
+      "four district polygons needed a fifth decimal place to remain topologically valid after rounding"
+    ],
+    "review_mapping": {
+      "P": [
+        "P05",
+        "P08",
+        "P09",
+        "P10",
+        "P12",
+        "P13"
+      ],
+      "R": [
+        "R01",
+        "R04",
+        "R06",
+        "R09",
+        "R10"
+      ],
+      "trajectory": "docs/21 step 4 (accessible product behavior and dependable operation)"
+    },
+    "remaining_open": "Watch and notification delivery, voice, mobile acceptance, source terms, and whole-document advisory recall."
   }
 }

@@ -38,6 +38,8 @@ class ClassList {
 class Node {
   constructor(tag) {
     this.tag = tag;
+    // Faithful enough that element cells are recognised by nodeType, as a browser does.
+    this.nodeType = tag === '#text' ? 3 : 1;
     this.id = '';
     this._classes = new Set();
     this._text = '';
@@ -99,6 +101,11 @@ class Node {
     this.attrs[key] = String(value);
     if (key === 'class') this.className = value;
     if (key === 'id') this.id = String(value);
+    // A browser reflects common attributes onto the element as properties, and the
+    // workspace reads meta.content and link.href directly, so the shim does too.
+    if (['content', 'href', 'src', 'rel', 'target', 'download', 'title', 'type', 'value'].indexOf(key) >= 0) {
+      this[key] = String(value);
+    }
   }
   getAttribute(key) { return key in this.attrs ? this.attrs[key] : null; }
   hasAttribute(key) { return key in this.attrs; }

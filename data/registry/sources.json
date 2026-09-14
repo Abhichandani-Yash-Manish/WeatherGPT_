@@ -3948,6 +3948,38 @@
         "scalar_records": 576,
         "scope": "One live three-day contract check, eight variables; not a reliability or skill measurement."
       }
+    },
+    {
+      "id": "S63",
+      "product": "IMD GeoServer basemap, station and basin layers",
+      "category": "basemap_geometry",
+      "access_url": "https://reactjs.imd.gov.in/geoserver/wfs?service=WFS&version=2.0.0&request=GetCapabilities",
+      "documentation_url": "https://reactjs.imd.gov.in/geoserver/web/",
+      "evidence_stage": "sample_inspected",
+      "supports_questions": [
+        "Q03",
+        "Q05",
+        "Q08",
+        "Q09",
+        "Q10",
+        "Q12"
+      ],
+      "observed": {
+        "http_status": 200,
+        "checked_at_utc": "2026-09-14T16:40:00+00:00",
+        "note": "Same service host as S15. Layers imd:india_high_2024 (762 district outlines with state names), imd:India_State (37 states), imd:indian_river_basin (220 sub-basins with day1-day3 fields), imd:coastal_sf (17 coastal zones), imd:aws_data_layer (2071 stations), imd:metar_data_layer (145 stations), imd:radar_station_status (39), imd:NowcastWarningStation (1219), imd:Cyclone_Track_V (currently 0 features). imd:india_state rejects GetFeature; imd:India_State serves it."
+      },
+      "evidence_files": [
+        "research/reviews/official-warning-20260914/journey.json"
+      ],
+      "usage_terms": "Access, supported integration and redistribution terms unresolved; inherited from the S15 service host.",
+      "selection": "proposed; no production source selected",
+      "user_review": "pending",
+      "record_kind": "data_product",
+      "upstream_source_ids": [
+        "S15"
+      ],
+      "last_evidence_date": "2026-09-14"
     }
   ],
   "last_review_date": "2026-09-13",
@@ -3977,6 +4009,6 @@
       "report": "docs/19-context-and-retrieval-coverage.md"
     }
   ],
-  "updated_at_utc": "2026-09-12T20:47:38.081226+00:00",
-  "revision_note": "Append verified conversation and bulletin evidence, including rejected editions; no new sources or operational promotion."
+  "updated_at_utc": "2026-09-14T17:05:00+00:00",
+  "revision_note": "Registered S63 for the IMD GeoServer basemap, station and basin layers discovered while building the suite basemap."
 }

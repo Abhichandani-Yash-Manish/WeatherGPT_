@@ -1,6 +1,6 @@
 {
   "schema_version": "product-progress-plan-v1",
-  "as_of_utc": "2026-09-14T16:05:00+00:00",
+  "as_of_utc": "2026-09-14T18:40:00+00:00",
   "status": "implementation_in_progress",
   "user_direction": "Desktop web now. Hosting/sharing on hold. Preserve final nationwide and specialist scope.",
   "next_batch": [
@@ -149,15 +149,16 @@
         "No lost correction context",
         "Fluent review and desktop journey checks pass"
       ],
-      "status": "desktop_answer_presentation_source_inspection_and_retention_implemented_scoped_language_queue_and_mobile_open",
+      "status": "desktop_suite_map_observations_and_source_inspection_implemented_scoped_language_queue_mobile_and_watch_open",
       "distribution_hold": false,
-      "latest_evidence": "docs/25-frontend-overhaul-batch.md",
+      "latest_evidence": "docs/28-weather-suite-overhaul.md",
       "evidence": "docs/25-frontend-overhaul-batch.md",
       "deliverable_state": {
-        "Desktop answer charts and source inspection": "implemented and recorded: answer-first headline, validity ruler, structured evidence receipt, series receipt, per-answer actions and a print path",
+        "Desktop answer charts and source inspection": "implemented and recorded: eleven surfaces over a read-model API, with charts, per-surface provenance, limits and a vendored map",
         "Source health/retention/restore rehearsal": "implemented and recorded: conversation ledger with search, restore and local delete, plus a read-only collection-health panel",
-        "Queue, cancel, progress and recovery": "cancel and progress only: a stop control and an elapsed-time indicator exist, and the page states that stopping does not cancel server work and nothing is queued; there is still no bounded model queue and no stage streaming",
-        "Complete Hindi/Gujarati dialogue paths": "not achieved: a requested output language is expressible and its failure is disclosed, but fluent output has not been produced or reviewed"
+        "Queue, cancel, progress and recovery": "cancel and progress only: still no bounded model queue and no stage streaming, and the assistant remains one question at a time",
+        "Complete Hindi/Gujarati dialogue paths": "not achieved: a requested output language is expressible and its failure is disclosed, and the surfaces themselves are English only",
+        "Watch and early-warning delivery": "not built: the Watch control states that no delivery mechanism is connected"
       }
     },
     {
@@ -269,21 +270,31 @@
     }
   ],
   "latest_batch": {
-    "report": "docs/27-official-warning-applicability.md",
-    "evidence_directory": "research/reviews/official-warning-20260914",
+    "report": "docs/28-weather-suite-overhaul.md",
+    "evidence_directory": "research/reviews/suite-overhaul-20260914",
     "operational_ready": false,
-    "scope": "Official IMD district warning guidance resolved to a place, with derived IST day windows and official hazard wording, reported beside the CAP relay and never merged with it. No origin authentication, no CAP applicability to a place, no delivery or dissemination and no observation retrieval.",
-    "automated_tests": 397,
+    "scope": "A complete product surface over the existing evidence: eleven surfaces, a self-hosted official vector map, new official observation and network adapters, and a read-model API. No watch delivery, no voice, no mobile acceptance, no source terms.",
+    "automated_tests": 432,
+    "javascript_component_checks": 47,
+    "surfaces_verified_in_browser": 11,
     "review_mapping": {
       "P": [
-        "P06"
+        "P05",
+        "P08",
+        "P09",
+        "P10",
+        "P12",
+        "P13"
       ],
       "R": [
-        "R02",
-        "R08"
+        "R01",
+        "R04",
+        "R06",
+        "R09",
+        "R10"
       ],
-      "trajectory": "docs/21 step 2 (official warning and observation feasibility)"
+      "trajectory": "docs/21 step 4 (accessible product behavior and dependable operation)"
     }
   },
-  "next_batch_note": "Official district warning applicability is live and place-specific, which closes the largest recorded gap in the disaster-management core. The remaining half of that dependency is live observation retrieval from the official AWS and METAR layers, which are reachable and registered. Delivery and dissemination, origin authentication and source terms still need decisions rather than code."
+  "next_batch_note": "The product now presents the evidence as a suite rather than a chat window, and the warning, observation, radar and basin sources are reachable from it. The largest remaining PS requirement is early-warning dissemination: a local watch with an explicit outbox and duplicate, update, cancel and expiry handling. Voice needs a hosted key from the user, and source terms remain unresolved for every source."
 }

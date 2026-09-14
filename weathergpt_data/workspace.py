@@ -9,7 +9,7 @@ import time
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import urlsplit
+from urllib.parse import parse_qs, urlsplit
 
 from .answers import AnswerService, ROOT
 from .ingestion import IngestionDB, run_one
@@ -21,11 +21,13 @@ DEFAULT_RAW=ROOT/'data/runtime/ingestion/raw'
 DEFAULT_GEOGRAPHY=ROOT/'data/processed/geography/source-inventory-20260912-v1/geography.sqlite'
 
 
+
 class Workspace:
     def __init__(self, database=DEFAULT_DATABASE, raw_root=DEFAULT_RAW, geography=DEFAULT_GEOGRAPHY, clock=utcnow, opener=None):
         self.service=AnswerService(database,raw_root,geography,clock=clock)
         self.clock=clock;self.opener=opener
         self.conversation=None
+        self._foundation=None
 
     def chat(self,body):
         from .conversation import ConversationEngine
@@ -107,6 +109,29 @@ class Workspace:
     # states here are not forecast skill, coverage or operational readiness.
     def conversation_store(self):
         return self.service.ingestion_database.parent/'conversations.sqlite'
+
+    # Product read-model surface. The Foundation shares the runtime store the rest of
+    # the workspace already uses, so a cached official response is reused rather than
+    # fetched again for a second view.
+    def foundation(self):
+        if self._foundation is None:
+            from .foundation import Foundation
+            from .transport import Store
+            self._foundation=Foundation(Store(self.service.raw_root.parent.parent))
+        return self._foundation
+
+    def is_product(self,path):
+        from . import product_api
+        return path in product_api.PRODUCT_PATHS
+
+    def product(self,path,params):
+        from . import product_api
+        if path not in product_api.PRODUCT_PATHS:return None
+        return product_api.dispatch(self.foundation(),path,params)
+
+    def map_layer(self,name):
+        from . import product_api
+        return product_api.map_layer_path(name).read_bytes()
 
     def conversations(self,limit=40):
         path=self.conversation_store()
@@ -238,17 +263,22 @@ def make_server(workspace, port=8765):
             # require the session token as well as the loopback Host check. Any other
             # API path keeps the existing 404 behaviour.
             if path.startswith('/api/'):
-                if not (path=='/api/conversations' or path=='/api/health' or path.startswith('/api/conversations/')):
-                    return self.respond(404,{'error':'Not found'})
-                if not self.authorized():return self.respond(403,{'error':'Reload this local workspace before reading stored conversations'})
+                known=(workspace.is_product(path) or path=='/api/conversations' or path=='/api/health'
+                       or path.startswith('/api/conversations/') or path.startswith('/api/map/static/'))
+                if not known:return self.respond(404,{'error':'Not found'})
+                if not self.authorized():return self.respond(403,{'error':'Reload this local workspace before reading stored data'})
                 try:
                     if path=='/api/conversations':return self.respond(200,workspace.conversations())
                     if path=='/api/health':return self.respond(200,workspace.health())
                     if path.startswith('/api/conversations/'):return self.respond(200,workspace.conversation_transcript(path.removeprefix('/api/conversations/')))
-                    return self.respond(404,{'error':'Not found'})
+                    if path.startswith('/api/map/static/'):
+                        return self.respond(200,workspace.map_layer(path.removeprefix('/api/map/static/')),'application/geo+json')
+                    view=workspace.product(path,parse_qs(urlsplit(self.path).query))
+                    if view is None:return self.respond(404,{'error':'Not found'})
+                    return self.respond(200,view)
                 except ValueError as exc:return self.respond(400,{'error':str(exc)})
                 except (OSError,sqlite3.Error):return self.respond(503,{'error':'The local evidence store is unavailable. Check its files and retry.'})
-            assets={'/':('index.html','text/html'),'/app.js':('app.js','text/javascript'),'/views.js':('views.js','text/javascript'),'/charts.js':('charts.js','text/javascript'),'/style.css':('style.css','text/css')}
+            assets={'/':('index.html','text/html'),'/app.js':('app.js','text/javascript'),'/views.js':('views.js','text/javascript'),'/charts.js':('charts.js','text/javascript'),'/shell.js':('shell.js','text/javascript'),'/panels.js':('panels.js','text/javascript'),'/map.js':('map.js','text/javascript'),'/style.css':('style.css','text/css')}
             if path not in assets:return self.respond(404,{'error':'Not found'})
             filename,kind=assets[path]
             try:text=(ROOT/'web'/filename).read_text()

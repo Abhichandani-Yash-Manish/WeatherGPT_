@@ -1,0 +1,79 @@
+{
+  "schema_version": "map-basemap-v1",
+  "build_id": "basemap-v1-2ce665f7a488",
+  "created_at_utc": "2026-09-14T16:23:38.833302+00:00",
+  "source_id": "S63",
+  "service": "https://reactjs.imd.gov.in/geoserver/wfs",
+  "layers": [
+    {
+      "file": "basins.geojson",
+      "bytes": 179512,
+      "budget_bytes": 2500000
+    },
+    {
+      "file": "coast-zones.geojson",
+      "bytes": 13617,
+      "budget_bytes": 200000
+    },
+    {
+      "file": "districts.geojson",
+      "bytes": 1529712,
+      "budget_bytes": 3500000
+    },
+    {
+      "file": "land.geojson",
+      "bytes": 167784,
+      "budget_bytes": 800000
+    },
+    {
+      "file": "places.geojson",
+      "bytes": 26744,
+      "budget_bytes": 600000
+    },
+    {
+      "file": "states.geojson",
+      "bytes": 302750,
+      "budget_bytes": 1500000
+    }
+  ],
+  "join_file": "district-join.json",
+  "join_bytes": 71567,
+  "total_bytes": 2291686,
+  "sources": [
+    {
+      "layer": "imd:indian_river_basin",
+      "sha256": "7231c2c213a13a827b528e0d6529f137a527ad8e5d25ce8b50f7b41297479ce6",
+      "retrieved_at_utc": "2026-09-14T15:53:27.514548+00:00",
+      "source_id": "S63"
+    },
+    {
+      "layer": "imd:coastal_sf",
+      "sha256": "1c6f6ca1b6471fdb3b029492617036d83df780883ee78b65327fc7e46258b15c",
+      "retrieved_at_utc": "2026-09-14T15:53:29.906706+00:00",
+      "source_id": "S63"
+    },
+    {
+      "layer": "imd:district_warnings_india",
+      "sha256": "c8cdc1e82baf0f4d4019c13753332d28c1e6b377471ae82c105f40f25901e356",
+      "retrieved_at_utc": "2026-09-14T15:51:30.918120+00:00",
+      "source_id": "S63"
+    },
+    {
+      "layer": "imd:india_high_2024",
+      "sha256": "80900231f14a9b70e612f72b404caff8720ef014f2adf127521336b9a952ba5d",
+      "retrieved_at_utc": "2026-09-14T15:51:54.192193+00:00",
+      "source_id": "S63"
+    },
+    {
+      "layer": "imd:India_State",
+      "sha256": "764f1fa5b292171c504edea32a914ffaac78c9a6cd586806fffd9559de129e7e",
+      "retrieved_at_utc": "2026-09-14T15:52:17.627103+00:00",
+      "source_id": "S63"
+    }
+  ],
+  "attribution": "Geometry: India Meteorological Department GeoServer, terms unresolved, local prototype use. Places: GeoNames, CC BY 4.0.",
+  "limitations": [
+    "Simplified for display; not a survey boundary and not an LGD crosswalk.",
+    "Place labels are GeoNames administrative seats, not an official settlement register."
+  ]
+}

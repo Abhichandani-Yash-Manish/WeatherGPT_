@@ -259,6 +259,78 @@
       "sha256": "3ff3a34227593ad1dfb1fd7a51929fb7081d2f9d8c9f0bdb6839bb523859de3a"
     },
     {
+      "path": "data/processed/map-basemap/basemap-v1-2ce665f7a488/audit.json",
+      "source_ids": [
+        "S63"
+      ],
+      "bytes": 4345,
+      "sha256": "e5c84a154e2260a14918d532b10243df9295208bf6e63f9247f055eed822a997"
+    },
+    {
+      "path": "data/processed/map-basemap/basemap-v1-2ce665f7a488/basins.geojson",
+      "source_ids": [
+        "S63"
+      ],
+      "bytes": 179512,
+      "sha256": "3f3e631c5c31ef7f0feaeda8353a01e4a07da02b5ab2faa0a9dbec35b92892b2"
+    },
+    {
+      "path": "data/processed/map-basemap/basemap-v1-2ce665f7a488/coast-zones.geojson",
+      "source_ids": [
+        "S63"
+      ],
+      "bytes": 13617,
+      "sha256": "032f098c334e0ea0acfb47baf549316b3fa4a45320d6149cc9e06b7b276c4fec"
+    },
+    {
+      "path": "data/processed/map-basemap/basemap-v1-2ce665f7a488/district-join.json",
+      "source_ids": [
+        "S63"
+      ],
+      "bytes": 71567,
+      "sha256": "becae94b00fef30a3d653c3618e89a90ed6b8cf6a1ae285ea4783e994c97f965"
+    },
+    {
+      "path": "data/processed/map-basemap/basemap-v1-2ce665f7a488/districts.geojson",
+      "source_ids": [
+        "S63"
+      ],
+      "bytes": 1529712,
+      "sha256": "0134f6d05847b626c7bb428e056cf868160008e378a83853629c1fc5c9df8241"
+    },
+    {
+      "path": "data/processed/map-basemap/basemap-v1-2ce665f7a488/land.geojson",
+      "source_ids": [
+        "S63"
+      ],
+      "bytes": 167784,
+      "sha256": "43a1110ad188ff2e48e0df67779967aaeb743be88cc3f17e3a0eb9625ee40529"
+    },
+    {
+      "path": "data/processed/map-basemap/basemap-v1-2ce665f7a488/manifest.json",
+      "source_ids": [
+        "S63"
+      ],
+      "bytes": 2377,
+      "sha256": "7fa7c39f1654fea45e88e416e4b3f79164f413bd4eb6834d3d9cf0fdd7d3fb9e"
+    },
+    {
+      "path": "data/processed/map-basemap/basemap-v1-2ce665f7a488/places.geojson",
+      "source_ids": [
+        "S63"
+      ],
+      "bytes": 26744,
+      "sha256": "abf315bfc70a8e31fd8d290c1fada2ec1ea3520ab6986740d05e15b450558174"
+    },
+    {
+      "path": "data/processed/map-basemap/basemap-v1-2ce665f7a488/states.geojson",
+      "source_ids": [
+        "S63"
+      ],
+      "bytes": 302750,
+      "sha256": "73ee42948d4f370345d8ba82c10046f70632dbeda5be322e44cb768cabd157c1"
+    },
+    {
       "path": "data/raw/geonames/IN-20260912.zip",
       "source_ids": [
         "S61"

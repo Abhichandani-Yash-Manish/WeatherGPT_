@@ -1,0 +1,208 @@
+{
+  "schema_version": "map-basemap-audit-v1",
+  "build_id": "basemap-v1-2ce665f7a488",
+  "created_at_utc": "2026-09-14T16:23:38.833302+00:00",
+  "feature_counts": {
+    "districts": 764,
+    "high": 762,
+    "states": 37,
+    "basins": 220,
+    "coast": 17,
+    "places": 184
+  },
+  "district_polygons_written": 756,
+  "expected_counts": {
+    "districts": 764,
+    "high": 762,
+    "states": 37,
+    "basins": 220,
+    "coast": 17
+  },
+  "unusable_source_geometry": {
+    "districts": 0,
+    "high": 0,
+    "states": 0,
+    "basins": 0,
+    "coast": 0
+  },
+  "skipped_without_a_district_name": [
+    {
+      "obj_id": 0,
+      "source_locator": "Obj_id 0",
+      "centroid": [
+        75.7597,
+        24.127
+      ]
+    },
+    {
+      "obj_id": 0,
+      "source_locator": "Obj_id 0",
+      "centroid": [
+        75.1729,
+        25.0445
+      ]
+    },
+    {
+      "obj_id": 0,
+      "source_locator": "Obj_id 0",
+      "centroid": [
+        72.9737,
+        24.4198
+      ]
+    },
+    {
+      "obj_id": 0,
+      "source_locator": "Obj_id 0",
+      "centroid": [
+        75.3325,
+        23.8134
+      ]
+    },
+    {
+      "obj_id": 0,
+      "source_locator": "Obj_id 0",
+      "centroid": [
+        74.1181,
+        22.5294
+      ]
+    },
+    {
+      "obj_id": 0,
+      "source_locator": "Obj_id 0",
+      "centroid": [
+        87.8162,
+        25.2272
+      ]
+    },
+    {
+      "obj_id": 0,
+      "source_locator": "Obj_id 0",
+      "centroid": [
+        76.7458,
+        25.3352
+      ]
+    },
+    {
+      "obj_id": 0,
+      "source_locator": "Obj_id 0",
+      "centroid": [
+        73.1079,
+        24.4736
+      ]
+    }
+  ],
+  "duplicate_keys_resolved": [
+    {
+      "source_name": "LAWNGTLAI2",
+      "key": "LAWNGTLAI-804",
+      "obj_id": 804
+    }
+  ],
+  "placeholder_geometry": [
+    {
+      "district": "LAKSHADWEEP",
+      "bbox": [
+        71.38,
+        7.23,
+        74.47,
+        12.37
+      ],
+      "bbox_area_degrees": 15.9,
+      "ratio": 1.0
+    }
+  ],
+  "drawing": {
+    "districts": {
+      "dropped": [],
+      "extra_precision": [
+        "TAMULPUR",
+        "SOUTHPARGANAS",
+        "KAMRUPRURAL",
+        "UDALGURI"
+      ]
+    },
+    "states": {
+      "dropped": [],
+      "extra_precision": []
+    },
+    "basins": {
+      "dropped": [],
+      "extra_precision": []
+    },
+    "coast-zones": {
+      "dropped": [],
+      "extra_precision": []
+    },
+    "land": {
+      "dropped": [],
+      "extra_precision": [
+        "india"
+      ]
+    }
+  },
+  "state_attribution": {
+    "districts": 756,
+    "attributed": 755,
+    "unattributed": [
+      "LAKSHADWEEP"
+    ],
+    "overlap_below_half": 1,
+    "exact_name_matches": 619,
+    "overlap_is_approximate": "computed on geometry simplified by the join tolerance"
+  },
+  "join_tolerance_degrees": 0.01,
+  "budgets": {
+    "places": {
+      "bytes": 26744,
+      "limit_bytes": 600000,
+      "within_budget": true
+    },
+    "states": {
+      "bytes": 302750,
+      "limit_bytes": 1500000,
+      "within_budget": true
+    },
+    "basins": {
+      "bytes": 179512,
+      "limit_bytes": 2500000,
+      "within_budget": true
+    },
+    "coast-zones": {
+      "bytes": 13617,
+      "limit_bytes": 200000,
+      "within_budget": true
+    },
+    "land": {
+      "bytes": 167784,
+      "limit_bytes": 800000,
+      "within_budget": true
+    },
+    "districts": {
+      "bytes": 1529712,
+      "limit_bytes": 3500000,
+      "within_budget": true
+    }
+  },
+  "budget_breaches": [],
+  "place_features": {
+    "PPLC": 1,
+    "PPLA": 35,
+    "PPLA2": 148
+  },
+  "tolerances": {
+    "states": 0.01,
+    "districts": 0.008,
+    "basins": 0.03,
+    "coast": 0.01,
+    "land": 0.02
+  },
+  "coordinate_digits": 4,
+  "notes": [
+    "District geometry comes from the warning layer so the map and the warning table share one key space.",
+    "State names are attributed geometrically with a recorded overlap ratio; a null state means no confident match.",
+    "A district missing from this build is caused by a source feature without a district name, and is listed above.",
+    "A placeholder polygon is a source bounding box rather than a coastline; it is labelled p=1 and listed in placeholder_geometry.",
+    "No basemap imagery, third-party cartography or external tile origin is used.",
+    "Warning colour is applied at render time and is never baked into this geometry."
+  ]
+}

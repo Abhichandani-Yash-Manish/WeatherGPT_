@@ -5,145 +5,252 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="workspace-token" content="__WORKSPACE_TOKEN__">
 <meta name="color-scheme" content="light">
-<title>WeatherGPT · Forecast and evidence desk</title>
+<title>WeatherGPT · Weather intelligence suite</title>
 <link rel="stylesheet" href="/style.css">
 <script src="/charts.js" defer></script>
 <script src="/views.js" defer></script>
+<script src="/shell.js" defer></script>
+<script src="/map.js" defer></script>
+<script src="/panels.js" defer></script>
 <script src="/app.js" defer></script>
 </head>
 <body>
-<a class="skip" href="#question">Skip to the question box</a>
-
+<a class="skip" href="#main">Skip to the content</a>
 <p class="banner" id="banner" role="status" hidden></p>
 
 <header class="masthead">
-  <a class="brand" href="/" aria-label="WeatherGPT home"><span class="mark" aria-hidden="true">◒</span><span class="brand-name">WeatherGPT</span></a>
-  <p class="masthead-note">Ask about a place and a time. Every answer keeps its source, its window and its retrieval time.</p>
+  <a class="brand" href="#/overview" aria-label="WeatherGPT home"><span class="mark" aria-hidden="true">◒</span><span class="brand-name">WeatherGPT</span></a>
+  <div class="place-context">
+    <label class="sr" for="place-input">Place</label>
+    <input id="place-input" type="search" placeholder="Search a place" autocomplete="off" spellcheck="false">
+    <ul class="suggest" id="place-suggest" hidden aria-label="Place matches"></ul>
+  </div>
   <div class="masthead-controls">
-    <span id="service-state" class="chip" role="status">Starting</span>
-    <button type="button" id="rail-toggle" class="ghost" aria-expanded="false" aria-controls="rail">Your ledger</button>
+    <button type="button" class="chip-button" id="active-place" title="Change the working place">No place selected</button>
+    <span class="chip" id="freshness" title="When the active surface last read its sources">Not read yet</span>
+    <button type="button" class="ghost" id="notify-toggle" aria-expanded="false" aria-controls="notify-panel">Watch</button>
+    <span class="chip" id="service-state" role="status">Starting</span>
   </div>
 </header>
 
-<div class="shell">
-  <button type="button" class="rail-backdrop" id="rail-backdrop" aria-label="Close the ledger"></button>
-  <aside id="rail" class="rail" aria-label="Evidence ledger">
-    <section class="block">
-      <h2 class="block-title">Your conversations</h2>
-      <div class="block-tools">
-        <label class="sr" for="ledger-search">Search stored conversations</label>
-        <input id="ledger-search" type="search" placeholder="Search stored questions" autocomplete="off">
-      </div>
-      <p class="block-note" id="ledger-note">Reading the local store…</p>
-      <ul class="ledger" id="ledger"></ul>
-      <div class="block-tools">
-        <button type="button" class="ghost" id="export-transcript">Save this conversation</button>
+<div class="suite">
+  <nav class="nav" id="nav" aria-label="Surfaces">
+    <a class="nav-item" href="#/overview" data-view="overview"><span aria-hidden="true">◎</span> Overview</a>
+    <a class="nav-item" href="#/warnings" data-view="warnings"><span aria-hidden="true">▲</span> Warnings</a>
+    <a class="nav-item" href="#/map" data-view="map"><span aria-hidden="true">◈</span> Map</a>
+    <a class="nav-item" href="#/observations" data-view="observations"><span aria-hidden="true">⌖</span> Observations</a>
+    <a class="nav-item" href="#/forecast" data-view="forecast"><span aria-hidden="true">〜</span> Forecast</a>
+    <a class="nav-item" href="#/climate" data-view="climate"><span aria-hidden="true">◔</span> Climate</a>
+    <a class="nav-item" href="#/advisories" data-view="advisories"><span aria-hidden="true">☘</span> Advisories</a>
+    <a class="nav-item" href="#/aviation" data-view="aviation"><span aria-hidden="true">✈</span> Aviation</a>
+    <a class="nav-item" href="#/marine" data-view="marine"><span aria-hidden="true">≈</span> Marine</a>
+    <a class="nav-item" href="#/assistant" data-view="assistant"><span aria-hidden="true">✦</span> Assistant</a>
+    <a class="nav-item" href="#/settings" data-view="settings"><span aria-hidden="true">⚙</span> Settings</a>
+    <p class="nav-note" id="nav-note">Local prototype. Hosting and sharing are on hold.</p>
+  </nav>
+
+  <main class="surface-host" id="main" tabindex="-1">
+    <section class="surface" data-surface="overview" hidden>
+      <header class="surface-head">
+        <div><h1>Overview</h1><p class="surface-note" id="overview-note">The national warning picture and the places you are working with.</p></div>
+        <div class="surface-actions"><button type="button" class="ghost" data-ask-about="overview">Ask about this</button></div>
+      </header>
+      <div class="surface-body" id="overview-body"></div>
+    </section>
+
+    <section class="surface" data-surface="warnings" hidden>
+      <header class="surface-head">
+        <div><h1>Warnings</h1><p class="surface-note">Official IMD district warning guidance, and the CAP relay reported separately.</p></div>
+        <div class="surface-actions"><button type="button" class="ghost" data-ask-about="warnings">Ask about this</button></div>
+      </header>
+      <div class="surface-body" id="warnings-body"></div>
+    </section>
+
+    <section class="surface" data-surface="map" hidden>
+      <header class="surface-head">
+        <div><h1>Map</h1><p class="surface-note">Official district geometry drawn from the vendored basemap. Click a district to inspect it.</p></div>
+        <div class="surface-actions"><button type="button" class="ghost" data-ask-about="map">Ask about this</button></div>
+      </header>
+      <div class="surface-body" id="map-body"></div>
+    </section>
+
+    <section class="surface" data-surface="observations" hidden>
+      <header class="surface-head">
+        <div><h1>Observations</h1><p class="surface-note">Official station reports nearest the working place. An observation is not a forecast.</p></div>
+        <div class="surface-actions"><button type="button" class="ghost" data-ask-about="observations">Ask about this</button></div>
+      </header>
+      <div class="surface-body" id="observations-body"></div>
+    </section>
+
+    <section class="surface" data-surface="forecast" hidden>
+      <header class="surface-head">
+        <div><h1>Forecast</h1><p class="surface-note">Model forecast series for the working place, with the answering grid and its distance.</p></div>
+        <div class="surface-actions"><button type="button" class="ghost" data-ask-about="forecast">Ask about this</button></div>
+      </header>
+      <div class="surface-body" id="forecast-body"></div>
+    </section>
+
+    <section class="surface" data-surface="climate" hidden>
+      <header class="surface-head">
+        <div><h1>Climate</h1><p class="surface-note">Published district rainfall records, 1901 to 2010, with per-year provenance.</p></div>
+        <div class="surface-actions"><button type="button" class="ghost" data-ask-about="climate">Ask about this</button></div>
+      </header>
+      <div class="surface-body" id="climate-body"></div>
+    </section>
+
+    <section class="surface" data-surface="advisories" hidden>
+      <header class="surface-head">
+        <div><h1>Advisories</h1><p class="surface-note">Published district farmer bulletins: pick a state and district, then read a passage with its saved page.</p></div>
+        <div class="surface-actions"><button type="button" class="ghost" data-ask-about="advisories">Ask about this</button></div>
+      </header>
+      <div class="surface-body" id="advisories-body"></div>
+    </section>
+
+    <section class="surface" data-surface="aviation" hidden>
+      <header class="surface-head">
+        <div><h1>Aviation</h1><p class="surface-note">Airport observations and terminal forecasts by ICAO code. Not a flight status or a clearance.</p></div>
+        <div class="surface-actions"><button type="button" class="ghost" data-ask-about="aviation">Ask about this</button></div>
+      </header>
+      <div class="surface-body" id="aviation-body"></div>
+    </section>
+
+    <section class="surface" data-surface="marine" hidden>
+      <header class="surface-head">
+        <div><h1>Marine</h1><p class="surface-note">Modeled waves near a coastal place and modeled river discharge near a resolved place.</p></div>
+        <div class="surface-actions"><button type="button" class="ghost" data-ask-about="marine">Ask about this</button></div>
+      </header>
+      <div class="surface-body" id="marine-body"></div>
+    </section>
+
+    <section class="surface" data-surface="assistant" hidden>
+      <header class="surface-head">
+        <div><h1>Assistant</h1><p class="surface-note" id="assistant-context">Ask in your own words. Every answer keeps its source, its window and its retrieval time.</p></div>
+      </header>
+      <div class="assistant-layout">
+        <aside class="assistant-rail">
+          <section class="block">
+            <h2 class="block-title">Your conversations</h2>
+            <div class="block-tools">
+              <label class="sr" for="ledger-search">Search stored conversations</label>
+              <input id="ledger-search" type="search" placeholder="Search stored questions" autocomplete="off">
+            </div>
+            <p class="block-note" id="ledger-note">Reading the local store…</p>
+            <ul class="ledger" id="ledger"></ul>
+            <div class="block-tools">
+              <button type="button" class="ghost" id="export-transcript">Save this conversation</button>
+            </div>
+          </section>
+        </aside>
+        <div class="assistant-desk">
+          <section class="thread" id="thread" role="log" aria-live="polite" aria-relevant="additions" aria-label="Conversation"></section>
+          <button type="button" class="jump" id="jump-latest" hidden>Jump to the newest answer</button>
+          <form class="composer" id="ask-form">
+            <label class="field-label" for="question">Your question</label>
+            <textarea id="question" name="question" rows="3" maxlength="1500" required autocomplete="off" spellcheck="false" placeholder="Will it rain in Ahmedabad, Gujarat tomorrow morning?"></textarea>
+            <fieldset class="fields" id="composer-fields" hidden>
+              <legend>Ask with fields</legend>
+              <div class="field-row">
+                <div>
+                  <label class="field-label" for="measure">Measure</label>
+                  <select id="measure">
+                    <option value="rain">How much rain is forecast</option>
+                    <option value="weather">What is the rain, temperature, humidity and wind forecast</option>
+                    <option value="temperature">What is the temperature forecast</option>
+                    <option value="wind speed">What is the wind speed forecast</option>
+                    <option value="humidity">What is the humidity forecast</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="field-label" for="place">Place name</label>
+                  <input id="place" maxlength="120" autocomplete="off" placeholder="Ahmedabad, Gujarat">
+                </div>
+              </div>
+              <div class="field-row">
+                <div>
+                  <label class="field-label" for="latitude">Latitude</label>
+                  <input id="latitude" type="number" min="-90" max="90" step="any" inputmode="decimal" placeholder="23.02579">
+                </div>
+                <div>
+                  <label class="field-label" for="longitude">Longitude</label>
+                  <input id="longitude" type="number" min="-180" max="180" step="any" inputmode="decimal" placeholder="72.58727">
+                </div>
+              </div>
+              <p class="field-note">A pinned coordinate is treated as that point only, never as a district average. A shared place name will ask you to choose.</p>
+              <div class="field-row">
+                <div>
+                  <label class="field-label" for="day">Day</label>
+                  <select id="day"><option value="tomorrow">Tomorrow</option><option value="today">Today</option></select>
+                </div>
+                <div>
+                  <label class="field-label" for="start">From (IST)</label>
+                  <input id="start" type="time" value="09:30">
+                </div>
+                <div>
+                  <label class="field-label" for="end">Until (IST)</label>
+                  <input id="end" type="time" value="12:30">
+                </div>
+              </div>
+              <p class="field-note">Rainfall totals need whole source hours, which start at :30 IST.</p>
+              <button type="button" class="secondary" id="use-fields">Write this into the question box</button>
+              <p class="field-note">Understanding a language does not mean the answer can be written in it. When it cannot be, the answer states that instead of passing as complete.</p>
+            </fieldset>
+            <div class="composer-bottom">
+              <div class="composer-meta">
+                <div class="lang">
+                  <label class="field-label" for="language">Answer in</label>
+                  <select id="language">
+                    <option value="">Match my question</option>
+                    <option value="en">English</option>
+                    <option value="hi">हिन्दी</option>
+                    <option value="gu">ગુજરાતી</option>
+                  </select>
+                </div>
+                <p class="status" id="busy" role="status">Ready</p>
+              </div>
+              <div class="composer-actions">
+                <button type="button" class="ghost" id="new-conversation">New conversation</button>
+                <button type="button" class="ghost" id="toggle-fields" aria-expanded="false" aria-controls="composer-fields">Ask with fields</button>
+                <button type="button" class="ghost danger" id="cancel" hidden>Stop waiting</button>
+                <button type="submit" class="primary" id="ask">Ask</button>
+              </div>
+            </div>
+          </form>
+          <p class="error" id="error" role="alert" hidden></p>
+        </div>
       </div>
     </section>
 
-    <section class="block">
-      <h2 class="block-title">Collection health</h2>
-      <div class="health" id="health"><p class="block-note">Reading the ingestion store…</p></div>
-    </section>
-
-    <section class="block">
-      <h2 class="block-title">What this answers</h2>
-      <div class="scope">
-        <p>Point forecasts for a named place or a pinned coordinate, with hourly rain probability, feels-like temperature, gusts and visibility.</p>
-        <p>Published historical rainfall and national climate records, comparison and descriptive trend charts, and up to seven days of modeled daily reanalysis.</p>
-        <p>Airport reports for supported ICAO codes, both METAR observations and TAF forecasts, with each report's own station and validity. Modeled wave height, direction and period near a coastal place, and modeled river discharge near a resolved place.</p>
-        <p>Published district bulletins, including saved source pages you can open and download.</p>
-        <p class="scope-limit">Not connected: an observed water level or gauge reading, a tide or current, a live station observation for an arbitrary place, flood extent, official warning applicability, and road or travel clearance. Warning material is shown as reference unless a source states otherwise.</p>
+    <section class="surface" data-surface="settings" hidden>
+      <header class="surface-head">
+        <div><h1>Settings</h1><p class="surface-note">What this suite can answer, which sources it reads, and their terms.</p></div>
+      </header>
+      <div class="surface-body" id="settings-body">
+        <section class="block"><h2 class="block-title">Collection health</h2>
+          <div class="health" id="health"></div></section>
       </div>
     </section>
-  </aside>
-
-  <main class="desk">
-    <section class="thread" id="thread" role="log" aria-live="polite" aria-relevant="additions" aria-label="Conversation"></section>
-    <button type="button" class="jump" id="jump-latest" hidden>Jump to the newest answer</button>
-
-    <form class="composer" id="ask-form">
-      <label class="field-label" for="question">Your question</label>
-      <textarea id="question" name="question" rows="3" maxlength="1500" required autocomplete="off" spellcheck="false" placeholder="Will it rain in Ahmedabad, Gujarat tomorrow morning?"></textarea>
-
-      <fieldset class="fields" id="composer-fields" hidden>
-        <legend>Ask with fields</legend>
-        <div class="field-row">
-          <div>
-            <label class="field-label" for="measure">Measure</label>
-            <select id="measure">
-              <option value="rain">How much rain is forecast</option>
-              <option value="weather">What is the rain, temperature, humidity and wind forecast</option>
-              <option value="temperature">What is the temperature forecast</option>
-              <option value="wind speed">What is the wind speed forecast</option>
-              <option value="humidity">What is the humidity forecast</option>
-            </select>
-          </div>
-          <div>
-            <label class="field-label" for="place">Place name</label>
-            <input id="place" maxlength="120" autocomplete="off" placeholder="Ahmedabad, Gujarat">
-          </div>
-        </div>
-        <div class="field-row">
-          <div>
-            <label class="field-label" for="latitude">Latitude</label>
-            <input id="latitude" type="number" min="-90" max="90" step="any" inputmode="decimal" placeholder="23.02579">
-          </div>
-          <div>
-            <label class="field-label" for="longitude">Longitude</label>
-            <input id="longitude" type="number" min="-180" max="180" step="any" inputmode="decimal" placeholder="72.58727">
-          </div>
-        </div>
-        <p class="field-note">A pinned coordinate is treated as that point only, never as a district average. A shared place name will ask you to choose.</p>
-        <div class="field-row">
-          <div>
-            <label class="field-label" for="day">Day</label>
-            <select id="day"><option value="tomorrow">Tomorrow</option><option value="today">Today</option></select>
-          </div>
-          <div>
-            <label class="field-label" for="start">From (IST)</label>
-            <input id="start" type="time" value="09:30">
-          </div>
-          <div>
-            <label class="field-label" for="end">Until (IST)</label>
-            <input id="end" type="time" value="12:30">
-          </div>
-        </div>
-        <p class="field-note">Rainfall totals need whole source hours, which start at :30 IST.</p>
-        <button type="button" class="secondary" id="use-fields">Write this into the question box</button>
-        <p class="field-note">Understanding a language does not mean the answer can be written in it. When it cannot be, the answer states that instead of passing as complete.</p>
-      </fieldset>
-
-      <div class="composer-bottom">
-        <div class="composer-meta">
-          <div class="lang">
-            <label class="field-label" for="language">Answer in</label>
-            <select id="language">
-              <option value="">Match my question</option>
-              <option value="en">English</option>
-              <option value="hi">हिन्दी</option>
-              <option value="gu">ગુજરાતી</option>
-            </select>
-          </div>
-          <p class="status" id="busy" role="status">Ready</p>
-        </div>
-        <div class="composer-actions">
-          <button type="button" class="ghost" id="new-conversation">New conversation</button>
-          <button type="button" class="ghost" id="toggle-fields" aria-expanded="false" aria-controls="composer-fields">Ask with fields</button>
-          <button type="button" class="ghost danger" id="cancel" hidden>Stop waiting</button>
-          <button type="submit" class="primary" id="ask">Ask</button>
-        </div>
-      </div>
-      <p class="field-note">Asking in a language is not the same as reading an answer in it. When it cannot be written, the answer says so.</p>
-    </form>
-
-    <p class="error" id="error" role="alert" hidden></p>
   </main>
 </div>
 
+<aside class="drawer" id="evidence-drawer" hidden aria-label="Evidence">
+  <header class="drawer-head">
+    <h2 id="drawer-title">Evidence</h2>
+    <button type="button" class="ghost" id="drawer-close">Close</button>
+  </header>
+  <div class="drawer-body" id="drawer-body"></div>
+</aside>
+
+<section class="notify" id="notify-panel" hidden aria-label="Watch and notifications">
+  <header class="drawer-head">
+    <h2>Watch and notifications</h2>
+    <button type="button" class="ghost" id="notify-close">Close</button>
+  </header>
+  <div class="drawer-body" id="notify-body"></div>
+</section>
+
 <footer class="foot">
-  <p>Model forecasts and published records, each with source and retrieval time. A local prototype for exploration; operational decisions need validated official products. This workspace does not issue warnings, and it does not grant field, marine or travel clearance.</p>
-  <p>Place data from GeoNames, used under CC BY 4.0.</p>
+  <p>Official warning guidance, model forecasts, station observations and published records are separate products and are labelled as such. This workspace does not issue warnings and does not grant field, marine or travel clearance.</p>
+  <p>Geometry from the India Meteorological Department. Place data from GeoNames, used under CC BY 4.0.</p>
 </footer>
 </body>
 </html>
