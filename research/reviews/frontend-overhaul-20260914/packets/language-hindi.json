@@ -1,0 +1,290 @@
+{
+  "case": "language-hindi",
+  "request": {
+    "question": "कल अहमदाबाद में बारिश होगी क्या?"
+  },
+  "base": "http://127.0.0.1:8765",
+  "http_status": 200,
+  "duration_s": 9.4,
+  "packet": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "8cea7d8a-14a1-4933-a387-d2c043beaaf3",
+    "question": "कल अहमदाबाद में बारिश होगी क्या?",
+    "status": "needs_selection",
+    "answer": "आप किस जगह की बात कर रहे हैं? Ahmedābād, District Rampur, Uttar Pradesh / Ahmedabad, Ahmadābād, State of Gujarāt। एक चुनें, या उसका राज्य/जिला लिखें।",
+    "facts": [],
+    "citations": [],
+    "notes": [
+      "Tomorrow is 2026-09-15. The user asks about rain generally for the day, so the forecast window covers the full day (00:00 to next 00:00 IST)."
+    ],
+    "choices": [
+      {
+        "id": "10752522",
+        "name": "Ahmedābād",
+        "latitude": 28.88983,
+        "longitude": 78.99889,
+        "feature": "PPL",
+        "admin1": "Uttar Pradesh",
+        "admin2": "District Rampur",
+        "modified": "2024-01-06",
+        "name_match_basis": "canonical",
+        "other_alias_matches": 0,
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:10752522",
+        "label": "Ahmedābād, District Rampur, Uttar Pradesh",
+        "coordinates": {
+          "latitude": 28.88983,
+          "longitude": 78.99889
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/10752522",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Ahmedabad"
+      },
+      {
+        "id": "1279233",
+        "name": "Ahmedabad",
+        "latitude": 23.02579,
+        "longitude": 72.58727,
+        "feature": "PPL",
+        "admin1": "State of Gujarāt",
+        "admin2": "Ahmadābād",
+        "modified": "2024-01-06",
+        "name_match_basis": "canonical",
+        "other_alias_matches": 0,
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:1279233",
+        "label": "Ahmedabad, Ahmadābād, State of Gujarāt",
+        "coordinates": {
+          "latitude": 23.02579,
+          "longitude": 72.58727
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1279233",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Ahmedabad"
+      }
+    ],
+    "follow_up": "Choose a place, or add its district and state.",
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-14T11:10:17.889431+00:00",
+    "expires_at_utc": null,
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 3016,
+        "output_tokens": 314,
+        "duration_seconds": 9.315145208
+      },
+      "generation": {
+        "provider": "typed_task_renderers",
+        "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+      },
+      "tools": [
+        {
+          "name": "gazetteer_search",
+          "query": {
+            "name": "Ahmedabad",
+            "state": "",
+            "district": "",
+            "kind": "settlement"
+          },
+          "matches": 2
+        },
+        {
+          "name": "forecast",
+          "task_id": "t1",
+          "status": "needs_selection"
+        }
+      ],
+      "provider": "local_ollama",
+      "context_resolution": {
+        "action": "new",
+        "changed_fields": [],
+        "inherited_fields": []
+      },
+      "duration_seconds": 9.394
+    },
+    "plan": {
+      "language": "hi",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [
+        "Tomorrow is 2026-09-15. The user asks about rain generally for the day, so the forecast window covers the full day (00:00 to next 00:00 IST)."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "कल अहमदाबाद में बारिश होगी क्या?",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-15T00:00+05:30",
+          "end_local": "2026-09-16T00:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "new",
+      "changed_fields": [],
+      "intent": "forecast",
+      "start_local": "2026-09-15T00:00+05:30",
+      "end_local": "2026-09-16T00:00+05:30",
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "task_results": [
+      {
+        "id": "t1",
+        "request": {
+          "request_quote": "कल अहमदाबाद में बारिश होगी क्या?",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-15T00:00+05:30",
+          "end_local": "2026-09-16T00:00+05:30",
+          "place_indices": [
+            0
+          ]
+        },
+        "status": "needs_selection",
+        "answer": "I found 2 possible places for Ahmedabad. Please confirm the intended location and spelling.",
+        "fact_ids": [],
+        "passage_ids": []
+      }
+    ],
+    "charts": [],
+    "calculations": [],
+    "pending_slots": [],
+    "retrieval_coverage": [],
+    "retrieval_plan": [
+      {
+        "task_id": "t1",
+        "operation": "lookup",
+        "kind": "forecast",
+        "parameters": [
+          "precipitation"
+        ],
+        "candidates": [
+          {
+            "tool": "hourly_forecast",
+            "selected": true,
+            "available": true,
+            "reason": "Hourly evidence; exact onset and whole-period probability unavailable",
+            "sources": [
+              {
+                "source_id": "S62",
+                "product": "Open-Meteo best-match extended hourly forecast",
+                "registry_status": "prototype_adapter_tested"
+              }
+            ]
+          },
+          {
+            "tool": "forecast_summary",
+            "selected": false,
+            "available": true,
+            "reason": "Exact-window GFS model summary",
+            "sources": [
+              {
+                "source_id": "S21",
+                "product": "Open-Meteo GFS forecast delivery",
+                "registry_status": "prototype_adapter_tested"
+              }
+            ]
+          }
+        ],
+        "status": "needs_selection",
+        "returned_source_ids": []
+      }
+    ],
+    "document_evidence": [],
+    "resolved_points": {},
+    "task_coverage": {
+      "requested": 1,
+      "completed": 0,
+      "incomplete_ids": [
+        "t1"
+      ]
+    }
+  },
+  "observed_keys": [
+    "answer",
+    "answered_at_utc",
+    "calculations",
+    "charts",
+    "choices",
+    "citations",
+    "conversation_id",
+    "document_evidence",
+    "expires_at_utc",
+    "facts",
+    "follow_up",
+    "notes",
+    "operational_eligible",
+    "pending_slots",
+    "plan",
+    "question",
+    "resolved_points",
+    "retrieval_coverage",
+    "retrieval_plan",
+    "schema_version",
+    "status",
+    "task_coverage",
+    "task_results",
+    "trace"
+  ],
+  "non_empty": [
+    "answer",
+    "answered_at_utc",
+    "choices",
+    "conversation_id",
+    "follow_up",
+    "notes",
+    "operational_eligible",
+    "plan",
+    "question",
+    "retrieval_plan",
+    "schema_version",
+    "status",
+    "task_coverage",
+    "task_results",
+    "trace"
+  ]
+}

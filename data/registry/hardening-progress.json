@@ -1,7 +1,7 @@
 {
   "schema_version": "hardening-progress-v1",
   "review": "research/reviews/national-readiness-20260912/review.md",
-  "updated_at_utc": "2026-09-13T17:09:28.064160+00:00",
+  "updated_at_utc": "2026-09-14T14:20:00+00:00",
   "operational_ready": false,
   "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
   "findings": [
@@ -183,7 +183,7 @@
     {
       "id": "R12",
       "status": "verified_scoped",
-      "current_evidence": "All original R01\u2013R12 and subsequent P01\u2013P15/F01\u2013F11 findings remain tracked. Registry revision 11 appends this batch without overwriting the 230 prior asset fingerprints. Failed and accepted real-model journeys remain separate; source inventory and test counts do not establish operational readiness.",
+      "current_evidence": "All original R01–R12 and subsequent P01–P15/F01–F11 findings remain tracked. Registry revision 11 appends this batch without overwriting the 230 prior asset fingerprints. Failed and accepted real-model journeys remain separate; source inventory and test counts do not establish operational readiness.",
       "next_action": "Maintain scoped readiness and append new evidence; do not equate source inventory, clarification or test counts with successful user tasks.",
       "acceptance": "All review IDs tracked; meaningful PS question mappings; old evidence cannot be overwritten.",
       "evidence": [
@@ -343,5 +343,63 @@
         "F10"
       ]
     }
+  },
+  "frontend_overhaul_batch": {
+    "report": "docs/25-frontend-overhaul-batch.md",
+    "plan": "docs/24-frontend-overhaul-plan.md",
+    "evidence_directory": "research/reviews/frontend-overhaul-20260914",
+    "baseline_record": "research/reviews/frontend-overhaul-20260914/baseline/baseline.json",
+    "live_checks": "research/reviews/frontend-overhaul-20260914/after/live-checks.json",
+    "audit_command": "python3 scripts/audit_workspace_frontend.py --baseline",
+    "operational_ready": false,
+    "scope": "Desktop answer presentation, evidence inspection, honest state reporting, bounded collection control, cancellation and local retention/health surfaces. No bounded model queue, no stage streaming, no sustained-load measurement, no fluent review of Hindi or Gujarati output, and no accessibility audit. A responsive layout is not mobile platform compliance.",
+    "automated_tests": 374,
+    "javascript_component_checks": 34,
+    "javascript_suites": {
+      "test_charts.js": 2,
+      "test_views.js": 14,
+      "test_bulletin_ui.js": 5,
+      "test_conversation_ui.js": 13
+    },
+    "live_journeys": [
+      "point forecast",
+      "conversation follow-up",
+      "historical trend",
+      "ambiguous place at mobile width",
+      "retention list/search/delete"
+    ],
+    "frontend_findings": {
+      "FE01": "verified_live: the composer is inside the first viewport at 390x844, 768x1024 and 1440x1100",
+      "FE02": "resolved: a resolved point offers a bounded collection that posts to /api/refresh",
+      "FE03": "resolved: one render path, and no request key the engine rejects",
+      "FE04": "resolved: asked, answered and incomplete are reported separately",
+      "FE05": "resolved: the scope names the connected tools and a language control exists",
+      "FE06": "resolved: one question input, and the field builder never submits by itself"
+    },
+    "server_changes": [
+      "/views.js added to the asset allowlist",
+      "GET /api/conversations and GET /api/conversations/<id>",
+      "DELETE /api/conversations/<id>",
+      "GET /api/health",
+      "a missing served file answers 404 instead of dropping the connection"
+    ],
+    "review_mapping": {
+      "P": [
+        "P10",
+        "P11",
+        "P12",
+        "P13"
+      ],
+      "trajectory": "docs/21 step 4 (accessible product behavior and dependable operation)",
+      "finding_ids": [
+        "FE01",
+        "FE02",
+        "FE03",
+        "FE04",
+        "FE05",
+        "FE06"
+      ]
+    },
+    "remaining_open": "P10, P11, P13, P14 and P12 are unchanged by this batch; the lock, the queue and language output are untouched."
   }
 }

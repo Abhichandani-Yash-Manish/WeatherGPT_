@@ -1,0 +1,119 @@
+{
+  "schema_version": "frontend-baseline-v1",
+  "recorded_at_utc": "2026-09-14T10:05:00+00:00",
+  "surface": "desktop web workspace served by weathergpt_data.workspace on loopback 127.0.0.1:8765",
+  "reviewed_commit": "e2042c9",
+  "purpose": "Frozen pre-overhaul baseline. These are measurements of the current workspace as rendered and served, not acceptance results for the full SIH26068 solution.",
+  "environment": {
+    "browser": "Google Chrome 152.0.7977.83 (headless, CDP)",
+    "driver": "agent-browser 0.37.1 connected over CDP 9222",
+    "launch_recipe": "Chrome --headless=new --no-sandbox --disable-gpu --user-data-dir=<tmp> --remote-debugging-port=9222, then 'agent-browser connect 9222'",
+    "prior_blocker": "hardening-progress.json product_workspace.browser_visual_qa = unverified_prior_admin_policy_verification_failure",
+    "blocker_status_now": "tooling_available_not_yet_acceptance: the browser could not previously be launched under an admin-enforced policy. A working local recipe now exists and produced the captures below. This does not constitute browser or mobile acceptance.",
+    "server": "python3 -m weathergpt_data.workspace --port 8765",
+    "model": "qwen3.6:latest via local Ollama"
+  },
+  "assets": {
+    "web/index.html": {"lines": 33},
+    "web/style.css": {"lines": 5, "note": "minified single-line original plus appended chart rules"},
+    "web/app.js": {"lines": 145},
+    "web/charts.js": {"lines": 31},
+    "total_line_count": 214,
+    "build_step": "none",
+    "served_paths": ["/", "/app.js", "/charts.js", "/style.css"],
+    "asset_map_location": "weathergpt_data/workspace.py make_server.Handler.do_GET assets dict",
+    "csp": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; frame-ancestors 'none'; base-uri 'none'; form-action 'self'",
+    "csp_consequences": [
+      "no inline script or style",
+      "no CDN or external origin for script, style, font or image",
+      "no font-src directive: webfonts are limited to same-origin files",
+      "any new frontend file requires an explicit entry in the server asset map"
+    ]
+  },
+  "captures": [
+    {"file": "desktop-1440.png", "viewport": [1440, 1200], "bytes": 179450, "sha256_prefix": "6e241fb9d847acdd", "state": "welcome, no answer"},
+    {"file": "mobile-390.png", "viewport": [390, 844], "bytes": 158827, "sha256_prefix": "79934475ab350a13", "state": "welcome, no answer"},
+    {"file": "desktop-1440-answer.png", "viewport": [1440, 1200], "bytes": 251739, "sha256_prefix": "fd15aed9cd3a21bc", "state": "one real model turn: 'Will it rain in Ahmedabad, Gujarat tomorrow morning?'"}
+  ],
+  "measured_defects": [
+    {
+      "id": "FE01",
+      "severity": "high",
+      "title": "A mobile user cannot reach the question box without scrolling past a whole form",
+      "evidence": {"viewport": [390, 844], "document_scroll_height_px": 2334, "viewport_height_px": 844, "builder_bottom_px": 945, "composer_top_px": 1963, "question_input_top_px": 2009, "hero_height_px": 165},
+      "reading": "The question input begins at 2009px, about 2.4 viewport heights down. The structured 'Set your forecast window' panel occupies the entire first screen and ends at 945px, already past the fold.",
+      "requirement": "P13 mobile requirement; docs/14 stage 5 desktop usability gate"
+    },
+    {
+      "id": "FE02",
+      "severity": "high",
+      "title": "The forecast refresh control is not reachable in the live product path",
+      "evidence": {"app_js_send_signature": "async function send(body, refresh=false, showQuestion=true)", "refresh_parameter_used_in_body": false, "api_refresh_references_in_web": 0, "refresh_button_location": "inside the unreachable legacy render()"},
+      "reading": "send() accepts a refresh flag and never reads it. The only refresh button lives in render(), which cannot execute. POST /api/refresh is implemented and served but has no caller in the UI, so a user can never request a bounded collection from the workspace.",
+      "requirement": "P10 freshness; docs/14 stage 5 recovery gate"
+    },
+    {
+      "id": "FE03",
+      "severity": "medium",
+      "title": "A whole unreachable legacy renderer is retained and its fallback request shape is rejected by the engine",
+      "evidence": {"dispatch": "packet.schema_version==='weather-conversation-v1'?renderConversation(packet,body):render(packet,body)", "engine_always_emits": "weather-conversation-v1 (weathergpt_data/conversation.py _ask result literal)", "dead_region": "web/app.js lines 51-115", "fallback_sends": "entity_id", "engine_accepted_keys": ["question", "conversation_id", "selection_id", "coordinates"]},
+      "reading": "The ternary can never select render(). The dead branch also posts entity_id, which ConversationEngine.ask rejects as an unknown key, so it would fail rather than degrade if it ever ran."
+    },
+    {
+      "id": "FE04",
+      "severity": "medium",
+      "title": "The UI presents a task-completion count that the governing review says cannot be trusted",
+      "evidence": {"rendered_string": "{completed} of {requested} requested tasks completed", "shown_for": "packet.task_coverage", "counter_origin": "weathergpt_data/conversation.py task_coverage"},
+      "reading": "docs/21 A07 and P12 record that an empty or contradictory explanation task is still counted as completed. The workspace surfaces that count unqualified and in the affirmative.",
+      "requirement": "docs/21 repair item 1: requested, planned, executed and answered must be reviewed separately"
+    },
+    {
+      "id": "FE05",
+      "severity": "medium",
+      "title": "Capability scope text is stale against the connected tools and the UI offers no language control",
+      "evidence": {"scope_block_lists": ["point forecasts with hourly probability, feels-like, gusts, visibility", "daily ERA5 up to seven days", "published historical rainfall and national climate", "local-language text via Ollama", "voice not connected"], "scope_block_omits": ["marine wave lookup", "GloFAS river discharge", "airport METAR/TAF", "CAP warning lifecycle diagnostics", "saved bulletin PDF download"], "language_control_present": false},
+      "reading": "docs/23 connects marine and river tools; docs/13 and 22 expose airport and warning diagnostics. None appear in 'What this version can answer'. Output language can only be requested in free text, which docs/21 A02 shows is not honoured, and the UI cannot express or disclose the requested output language.",
+      "requirement": "P12, P13; docs/21 A02"
+    },
+    {
+      "id": "FE06",
+      "severity": "medium",
+      "title": "Two competing question inputs, one of which silently rewrites the other",
+      "evidence": {"inputs": ["#builder structured form", "#ask-form free-text composer"], "builder_behaviour": "synthesises an English sentence into #question then submits that same question", "example_chips_position": "between the answer card and the composer"},
+      "reading": "The form is a query builder for a grammar the conversation engine no longer requires, and it overwrites whatever the user typed. Example chips sit below answers they no longer relate to. The marketing hero and its duplicate input path keep the actual product below the fold on every turn."
+    }
+  ],
+  "verified_live_turn": {
+    "question": "Will it rain in Ahmedabad, Gujarat tomorrow morning?",
+    "packet_status": "answered",
+    "schema_version": "weather-conversation-v1",
+    "answer_text": "Ahmedabad \u00b7 15 Sep, 06:30\u201315 Sep, 12:30 IST: Forecast precipitation: 0.3 mm. Source: GFS forecast; conditions can change.",
+    "rendered_status_label": "EVIDENCE RETRIEVED",
+    "rendered_coverage_line": "1 of 1 requested tasks completed",
+    "metrics_shown": 1,
+    "metrics_grid_columns": 2,
+    "evidence_expiry_utc": "2026-09-14T11:02:00+00:00",
+    "notes_section_default_state": "open",
+    "raw_json_inspector": "details > pre with the whole packet",
+    "reading": "The turn is correct and inspectable. The presentation is dense: one run-on paragraph holds place, window, value, source and caveat, while the surrounding shell keeps a marketing hero and an unrelated example-chip row."
+  },
+  "established_not_measured_here": [
+    "fluent Hindi/Gujarati output review (P12, docs/21 A02)",
+    "sustained load, cold start and concurrency behaviour (P11)",
+    "mobile PS compliance: desktop web remains the surface and no mobile acceptance has been run (P13)",
+    "voice journeys (S6 proposed)",
+    "official warning applicability and dissemination (docs/21 A05)"
+  ],
+  "test_state_at_baseline": {
+    "python": "374 passed (python3 -m pytest tests/ -q)",
+    "javascript_component_checks": 8,
+    "javascript_harness": "node tests/test_charts.js, tests/test_conversation_ui.js, tests/test_bulletin_ui.js, run manually; node/vm with a hand-written DOM shim",
+    "harness_brittleness": "test_conversation_ui.js slices web/app.js by source text markers \"$('history-example')\" and \"function renderConversation(\", so that region cannot be reordered or renamed without updating the test"
+  },
+  "conversation_storage": {
+    "table": "data/runtime/ingestion/conversations.sqlite conversations(id, payload, updated)",
+    "rows": 272,
+    "http_surface": "none",
+    "reading": "Conversations persist server-side but cannot be listed, restored or deleted through the workspace, so there is no retention or restore journey. data/runtime/ is git-ignored, so this store is deliberately outside curated evidence."
+  }
+}

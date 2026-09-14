@@ -1,145 +1,466 @@
 'use strict';
-const $ = id => document.getElementById(id);
-const token = document.querySelector('meta[name="workspace-token"]').content;
-let busy = false;
-let conversationId = null;
-const labels = {precipitation:'Rainfall total',temperature_2m:'Temperature',wind_speed_10m:'Wind speed',relative_humidity_2m:'Relative humidity'};
-const states = {prototype_answer:'Forecast available',needs_selection:'Choose your place',needs_clarification:'A little more detail',unavailable:'Evidence unavailable',stale:'Refresh needed',partial:'Incomplete coverage',degraded:'Refresh incomplete',outside_validity:'Choose a future window'};
-function el(tag, text, cls) { const node=document.createElement(tag); if(text!==undefined)node.textContent=text; if(cls)node.className=cls;return node; }
-function humanTime(value) { return new Date(value).toLocaleString('en-IN',{timeZone:'Asia/Kolkata',dateStyle:'medium',timeStyle:'short'})+' IST'; }
-function selectionFromForm() {
-  if ($('location-mode').value!=='point') return {};
-  if (!$('latitude').value.trim() || !$('longitude').value.trim()) throw Error('Enter both latitude and longitude.');
-  return {coordinates:{latitude:Number($('latitude').value),longitude:Number($('longitude').value)}};
-}
-function toggleLocation() {
- const point=$('location-mode').value==='point';
- $('point-fields').hidden=!point;$('name-fields').hidden=point;$('place').required=!point;
- $('latitude').required=point;$('longitude').required=point;
-}
-$('location-mode').addEventListener('change',toggleLocation);
-function fail(message) { $('error').textContent=message;$('error').hidden=false; }
-function setBusy(value) {
- busy=value;
- document.querySelectorAll('button').forEach(button=>button.disabled=value);
- $('busy').textContent=value?'Understanding your question and retrieving evidence…':'Powered by local Ollama · Source-backed answers';
-}
-async function send(body, refresh=false, showQuestion=true) {
- if(busy)return;
- $('error').hidden=true;
- if(showQuestion)$('thread').append(el('div',body.question,'question-bubble'));
- setBusy(true);
- try {
-  const payload={...body}; if(conversationId)payload.conversation_id=conversationId;
-  const response=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json','X-WeatherGPT-Token':token},body:JSON.stringify(payload)});
-  const packet=await response.json();
-  if(!response.ok)throw Error(packet.error || 'The request could not be completed.');
-  if(packet.conversation_id)conversationId=packet.conversation_id;
-  const card=packet.schema_version==='weather-conversation-v1'?renderConversation(packet,body):render(packet,body);$('thread').append(card);
-  card.scrollIntoView({behavior:'auto',block:'nearest'});
- } catch(error) {fail(error.message || 'The local workspace is unreachable. Restart it and reload this page.');}
- finally {setBusy(false);}
-}
-$('builder').addEventListener('submit',event=>{
- event.preventDefault();
- try {
-  const point=$('location-mode').value==='point';
-  const place=point?'selected point':$('place').value.trim();
-  const intent=$('measure').value==='rain'?'How much rain is forecast':`What is the ${$('measure').value} forecast`;
-  const question=`${intent} for ${place} ${$('day').value} from ${$('start').value} to ${$('end').value}?`;
-  $('question').value=question;send({question,...selectionFromForm()});
- } catch(error){fail(error.message);}
-});
-$('ask-form').addEventListener('submit',event=>{
- event.preventDefault();
- try {send({question:$('question').value.trim(),...selectionFromForm()});}catch(error){fail(error.message);}
-});
-function render(packet, body) {
- const a=packet.answer,card=el('article',undefined,'answer-card');
- const top=el('div',undefined,'answer-top');
- top.append(el('strong','WeatherGPT'),el('span',states[a.status]||a.status,'status'+(a.status==='prototype_answer'?'':' held')));card.append(top);
- card.append(el('p',a.answer,'answer-copy'));
- if(a.status==='degraded')card.append(el('p','These values come from the last published forecast. A due collection is incomplete. Request a successful refresh before relying on a current answer.','notice'));
- const clarification=packet.context.clarification;
- if(clarification && clarification.candidates.length) {
-  const choices=el('div',undefined,'choices');
-  clarification.candidates.forEach(c=>{
-   const choice=el('button',`${c.label} · ${c.kind}`,'choice');choice.type='button';
-   choice.append(el('small',`${c.namespace} · ${c.version}`));
-   choice.addEventListener('click',()=>send({question:body.question,entity_id:c.entity_id},false,false));
-   choices.append(choice);
-  });card.append(choices);
- }
- if(a.values.length) {
-  const metrics=el('div',undefined,'metrics');
-  a.values.forEach(v=>{
-   const m=el('div',undefined,'metric');m.append(el('small',labels[v.parameter]||v.parameter));
-   const value=v.coverage!=='complete'?'Unavailable':v.value_decimal!==undefined?`${v.value_decimal} ${v.unit}`:`${v.min_decimal}–${v.max_decimal} ${v.unit}`;
-   m.append(el('strong',value));m.append(el('small',v.parameter==='precipitation'?'Sum over the exact requested interval':'Range of hourly samples; not continuous extremes'));metrics.append(m);
-  });card.append(metrics);
- }
- if(a.location?.requested_point) {
-  const receipt=el('section',undefined,'receipt');const dl=el('dl');
-  const add=(label,value)=>{dl.append(el('dt',label),el('dd',value));};
-  add('Selected point',`${a.location.label} · ${a.location.requested_point.latitude}, ${a.location.requested_point.longitude}`);
-  if(a.request)add('Window',humanTime(a.request.start_utc)+' → '+humanTime(a.request.end_utc));
-  if(a.freshness){add('Retrieved',humanTime(a.freshness.retrieved_at_utc));add('Refresh health',a.freshness.refresh_health);add('Model issued','Unknown');}
-  if(a.location.returned_grid)add('Model grid',`${a.location.returned_grid.latitude}, ${a.location.returned_grid.longitude} · ${a.location.grid_distance_km} km from selected point`);
-  receipt.append(dl);
-  a.citations.forEach(c=>{ const p=el('p'); const link=el('a',`${c.provider} · ${c.product}`);const url=new URL(c.url);if(url.protocol==='https:'){link.href=url.href;link.target='_blank';link.rel='noopener noreferrer';p.append(link);receipt.append(p);} });
-  if(a.values.length)receipt.append(el('p','Model output is not an observation or a district average. Local representativeness has not been independently validated.'));
-  card.append(receipt);
- }
- const actions=el('div',undefined,'actions');
- if(a.location?.status==='selected_point' && a.request && ['prototype_answer','stale','degraded','partial','unavailable'].includes(a.status)){
-  const refresh=el('button','Refresh this forecast');refresh.type='button';
-  refresh.addEventListener('click',()=>send(body,true,false));actions.append(refresh);
- }
- const download=el('button','Download evidence');download.type='button';
- download.addEventListener('click',()=>{const url=URL.createObjectURL(new Blob([JSON.stringify(packet,null,2)],{type:'application/json'}));const link=el('a');link.href=url;link.download='weathergpt-evidence.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
- actions.append(download);card.append(actions);
- if(packet.refresh)card.append(el('p',packet.refresh.message,'refresh-note'));
- const detail=el('details',undefined,'receipt');detail.append(el('summary','Inspect answer and source evidence'),el('pre',JSON.stringify(packet,null,2)));card.append(detail);
- // A stored answer card is a timestamped receipt, not a perpetually current answer.
- if(packet.context.expires_at_utc){
-  const expiry=Date.parse(packet.context.expires_at_utc);
-  const notice=el('p',`Evidence serving lifetime ends ${humanTime(packet.context.expires_at_utc)}. Ask again before using it.`,'hint');card.append(notice);
-  const expire=()=>{top.querySelector('.status').textContent='Expired · ask again';top.querySelector('.status').classList.add('held');notice.textContent='This earlier response has expired. Ask again or refresh to check current evidence.';};
-  setTimeout(expire,Math.max(0,expiry-Date.now()));
- }
- return card;
-}
+/* Workspace client. One question at a time against the loopback API, with the
+   engine's own state machine surfaced rather than smoothed over: a refusal, an
+   abstention, a lock collision and a cancelled turn are each shown as what they
+   are. Nothing here upgrades a status into a success. */
 
-$('history-example').addEventListener('click',()=>{const question='What was the annual rainfall in Ahmedabad district, Gujarat in 2010?';$('question').value=question;send({question});});
-// Clearing the thread must not submit the now-empty question box.
-$('new-conversation').addEventListener('click',()=>{conversationId=null;$('thread').replaceChildren(el('article','New conversation. Ask about a forecast, a historical rainfall value, or explain what you are planning.','welcome'));$('question').value='';$('question').focus();});
-function renderConversation(packet,body) {
- const card=el('article',undefined,'answer-card');
- const top=el('div',undefined,'answer-top');
- const stateLabels={answered:'Evidence retrieved',partial:'Weather evidence · additional information needed',needs_selection:'Choose a place',needs_clarification:'One detail needed',unavailable:'Evidence gap',explanation:'General explanation',outside_validity:'Choose an upcoming window'};
- top.append(el('strong','WeatherGPT'),el('span',stateLabels[packet.status]||packet.status,'status'+(packet.status==='answered'?'':' held')));card.append(top);
- const copy=el('p',packet.answer,'answer-copy');card.append(copy);
- if(packet.choices.length){
-  const choices=el('div',undefined,'choices');
-  packet.choices.forEach(c=>{const button=el('button',c.label,'choice');button.type='button';button.append(el('small',`${c.source_id} · ${c.coordinates.latitude}, ${c.coordinates.longitude}${c.match_type?' · '+c.match_type:''}`));button.addEventListener('click',()=>send({question:body.question,selection_id:c.selection_id},false,false));choices.append(button);});card.append(choices);
- }
- if(packet.task_coverage){card.append(el('p',`${packet.task_coverage.completed} of ${packet.task_coverage.requested} requested tasks completed`,'hint'));}
- (packet.charts||[]).forEach(chart=>card.append(historicalChart(chart)));
- (packet.calculations||[]).forEach(c=>{const p=el('p',`${c.label}: ${c.value} ${c.unit} · ${c.expression||c.method}`,'notice');card.append(p);});
- if(packet.task_results && packet.task_results.length>1){const detail=el('details',undefined,'receipt');detail.open=true;detail.append(el('summary','Requested tasks'));packet.task_results.forEach(t=>detail.append(el('p',`${t.id} · ${t.request.kind} / ${t.request.operation} · ${t.status}`)));card.append(detail);}
- if(packet.facts.length && packet.facts.length<=12){const metrics=el('div',undefined,'metrics');packet.facts.forEach(f=>{const m=el('div',undefined,'metric');m.append(el('small',f.label),el('strong',`${f.value} ${f.unit}`));if(f.place)m.append(el('small',f.place));if(f.start)m.append(el('small',humanTime(f.start)+' → '+humanTime(f.end)));if(f.year)m.append(el('small',`${f.year} · ${f.period}`));metrics.append(m);});card.append(metrics);}
- if(packet.notes.length){const detail=el('details',undefined,'receipt');detail.open=true;detail.append(el('summary','Scope and assumptions'));packet.notes.forEach(n=>detail.append(el('p',n)));card.append(detail);}
- (packet.passages||[]).forEach(passage=>{const detail=el('details',undefined,'receipt');const context=passage.evidence_kind==='published_bulletin_context';const label=context?`Bulletin context: ${passage.section}`:`${passage.crop} · ${passage.stage||'Stage not stated'}`;detail.append(el('summary',`${label} · ${passage.district} · Page ${passage.page}`),el('p',`Published ${passage.issue_date}. Forecast context ${passage.forecast_start}–${passage.forecast_end}.`,'hint'),el('p',passage.text));if(context)detail.append(el('p','Source context only; current warning and individual field applicability remain unverified.','hint'));const source=packet.citations.find(c=>(passage.citation_ids||[]).includes(c.id));if(source){try{const url=new URL(source.url);const local=source.local_document_path;const archived=typeof local==='string' && /^\/api\/documents\/[a-f0-9]{64}$/.test(local);if(archived || url.protocol==='https:'){url.hash='page='+passage.page;const link=el('a',archived?'Open the saved source PDF':'Open the original bulletin page');link.href=archived?local+'#page='+passage.page:url.href;link.target='_blank';link.rel='noopener noreferrer';detail.append(link);if(archived){const download=el('a','Download saved PDF');download.href=local;download.download='bulletin-'+local.split('/').pop()+'.pdf';detail.append(el('span',' · '),download);}}}catch{}}card.append(detail);});
- if(packet.follow_up)card.append(el('p',packet.follow_up,'notice'));
- const sources=el('section',undefined,'receipt');const seen=new Set();packet.citations.forEach(c=>{const key=c.source_id+'|'+c.url;if(seen.has(key))return;seen.add(key);const p=el('p');if(c.url){try{const url=new URL(c.url);if(url.protocol==='https:'){const a=el('a',`${c.provider||c.source_id} · ${c.product||'Source evidence'}`);a.href=url.href;a.target='_blank';a.rel='noopener noreferrer';p.append(a);}}catch{}}if(c.retrieved_at_utc)p.append(el('small',' · Retrieved '+humanTime(c.retrieved_at_utc)));if(c.page)p.append(el('small',' · Page '+c.page));sources.append(p);});card.append(sources);
- const actions=el('div',undefined,'actions');const download=el('button','Download answer evidence');download.addEventListener('click',()=>{const url=URL.createObjectURL(new Blob([JSON.stringify(packet,null,2)],{type:'application/json'}));const a=el('a');a.href=url;a.download='weathergpt-conversation-evidence.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});actions.append(download);card.append(actions);
- if(packet.expires_at_utc){const note=el('p','Evidence expires '+humanTime(packet.expires_at_utc)+'. Ask again before using an old answer.','hint');card.append(note);setTimeout(()=>{top.querySelector('.status').textContent='Expired · ask again';note.textContent='This earlier answer has expired. Ask again to retrieve current evidence.';},Math.max(0,Date.parse(packet.expires_at_utc)-Date.now()));}
- const trace=el('details',undefined,'receipt');trace.append(el('summary','Inspect interpretation and retrieval'),el('pre',JSON.stringify(packet,null,2)));card.append(trace);
- return card;
-}
+(function () {
+  const TOKEN = (document.querySelector('meta[name="workspace-token"]') || {}).content || '';
+  const byId = id => document.getElementById(id);
+  const LANGUAGE_INSTRUCTION = { en:'English', hi:'Hindi', gu:'Gujarati' };
+  const state = { conversationId:null, busy:false, controller:null, language:'', startedAt:0, ticker:null, ledger:null, lastSeen:null };
 
-$('compare-example').addEventListener('click',()=>{const question='Compare annual rainfall in Ahmedabad district, Gujarat in 2009 and 2010.';$('question').value=question;send({question});});
-$('trend-example').addEventListener('click',()=>{const question='Show the annual rainfall trend for Ahmedabad district, Gujarat from 1981 to 2010.';$('question').value=question;send({question});});
+  /* ---------- surface state ---------- */
+  function setService(text, cls) {
+    const chip = byId('service-state');
+    if (!chip) return;
+    chip.textContent = text;
+    chip.className = 'chip' + (cls ? ' ' + cls : '');
+  }
+  function setBusy(on, message) {
+    state.busy = on;
+    const status = byId('busy');
+    if (status) status.textContent = message || (on ? 'Working…' : 'Ready');
+    const cancel = byId('cancel');
+    if (cancel) cancel.hidden = !on;
+    ['ask','rail-toggle'].forEach(id => { const button = byId(id); if (button) button.disabled = on; });
+    const fields = byId('use-fields');
+    if (fields) fields.disabled = on;
+    if (on) { state.startedAt = Date.now(); startTicker(); } else { stopTicker(); }
+  }
+  function startTicker() {
+    stopTicker();
+    state.ticker = setInterval(() => {
+      const clock = document.querySelector('.working-clock');
+      if (!clock) return;
+      const since = Number(clock.dataset.since || state.startedAt);
+      clock.textContent = Math.round((Date.now() - since) / 1000) + ' s elapsed';
+    }, 1000);
+  }
+  function stopTicker() { if (state.ticker) { clearInterval(state.ticker); state.ticker = null; } }
+  function showError(message, calm) {
+    const box = byId('error');
+    if (!box) return;
+    box.textContent = message;
+    box.className = 'error' + (calm ? ' is-calm' : '');
+    box.hidden = false;
+  }
+  function clearError() { const box = byId('error'); if (box) { box.hidden = true; box.textContent = ''; } }
 
-$('probability-example').addEventListener('click',()=>{$('question').value='What is the chance of rain in Ahmedabad, Gujarat tomorrow morning?';send({question:$('question').value});});
-$('daily-example').addEventListener('click',()=>{$('question').value='Show daily rainfall in Ahmedabad city, Gujarat from 1 July through 7 July 2025, including the total.';send({question:$('question').value});});
+  /* ---------- transport ---------- */
+  function RequestError(message, status, kind) {
+    const error = new Error(message);
+    error.name = 'RequestError'; error.status = status; error.kind = kind;
+    return error;
+  }
+  function classify(status, payload) {
+    const message = (payload && payload.error) || '';
+    if (status === 403) return RequestError('This page no longer holds the workspace token. Reload the local page to continue.', 403, 'auth');
+    if (status === 503) return RequestError(message || 'The local evidence store is unavailable. Check its files, then retry.', 503, 'down');
+    if (/Another conversation is using the local model/i.test(message)) {
+      return RequestError('Another question is using the local model. This workspace handles one conversation at a time and does not queue a second one; retry in a moment.', 400, 'locked');
+    }
+    return RequestError(message || 'The request could not be completed.', status, 'invalid');
+  }
+  async function call(path, options) {
+    const response = await fetch(path, options || {});
+    let payload = null;
+    try { payload = await response.json(); } catch (error) { payload = null; }
+    if (!response.ok) throw classify(response.status, payload);
+    if (payload === null) throw RequestError('The workspace returned a response this page could not read.', response.status, 'malformed');
+    return payload;
+  }
+  function jsonRequest(method, body, signal) {
+    return { method:method, headers:{ 'Content-Type':'application/json', 'X-WeatherGPT-Token':TOKEN },
+             body:JSON.stringify(body), signal:signal };
+  }
+  function tokenHeader() { return { 'X-WeatherGPT-Token':TOKEN }; }
+
+  /* ---------- transcript ---------- */
+  function thread() { return byId('thread'); }
+  function scrollToEnd() {
+    const box = thread();
+    if (!box) return;
+    requestAnimationFrame(() => { box.scrollTop = box.scrollHeight; });
+  }
+  function append(node) { const box = thread(); if (box && node) { box.append(node); scrollToEnd(); } }
+  /* Show the reader the top of the newest card: its headline, and for a clarification
+     the choices, rather than the end of its evidence disclosures. */
+  function revealCard(card) {
+    if (!card) return;
+    // Two frames: the first lets the browser lay the new card out and finish any
+    // pending scroll, the second measures settled geometry and corrects the offset.
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      const box = thread();
+      if (!box || typeof card.getBoundingClientRect !== 'function') return;
+      const delta = card.getBoundingClientRect().top - box.getBoundingClientRect().top;
+      box.scrollTop = Math.max(0, box.scrollTop + delta - 2);
+    }));
+  }
+  /* The opening card is a starting point, not part of the conversation, so the
+     first question retires it. A restored transcript keeps its own header until
+     the next question replaces it the same way. */
+  function retireWelcome() {
+    const box = thread();
+    const card = box && box.querySelector('.welcome');
+    if (card) card.remove();
+  }
+  function withLanguage(question, code) {
+    if (!code || !LANGUAGE_INSTRUCTION[code]) return question;
+    return question + '\n\nPlease write your answer in ' + LANGUAGE_INSTRUCTION[code] + '.';
+  }
+  function firstPoint(packet) {
+    const resolved = packet.resolved_points || {};
+    const names = Object.keys(resolved);
+    for (let index = 0; index < names.length; index += 1) {
+      const place = resolved[names[index]];
+      if (place && place.coordinates && Number.isFinite(place.coordinates.latitude)) {
+        return { latitude:place.coordinates.latitude, longitude:place.coordinates.longitude, label:place.label || names[index] };
+      }
+    }
+    return null;
+  }
+  function currentQuestion() {
+    const input = byId('question');
+    return input && input.value.trim() ? input.value.trim() : '';
+  }
+  function downloadFile(filename, text, kind) {
+    const blob = new Blob([text], { type: kind || 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url; link.download = filename;
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+  function stampName() { return new Date().toISOString().replace(/[:.]/g, '-'); }
+  function downloadPacket(packet) {
+    downloadFile('weathergpt-answer-' + stampName() + '.json', JSON.stringify(packet, null, 2), 'application/json');
+  }
+  function copyTurn(packet, button) {
+    const text = answerMarkdown(packet);
+    const flash = label => {
+      if (!button || !button.textContent) return;
+      const original = button.textContent;
+      button.textContent = label;
+      setTimeout(() => { button.textContent = original; }, 2200);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => flash('Copied'), () => showError('The browser did not allow copying. Use Print this answer, or download the JSON, to take this answer elsewhere.', true));
+    } else {
+      showError('This browser does not allow copying from the page. Use Print this answer, or download the JSON, to take this answer elsewhere.', true);
+    }
+  }
+  function printTurn() {
+    // Printing is the portable route for a field or agricultural reader: the
+    // stylesheet strips the workspace chrome and keeps the answer, its receipt
+    // and its sources on paper.
+    if (typeof window.print !== 'function') { showError('This browser does not support printing from the page.', true); return; }
+    window.print();
+  }
+  function exportTurn(packet) {
+    downloadFile('weathergpt-answer-' + stampName() + '.md', answerMarkdown(packet), 'text/markdown');
+  }
+  async function exportTranscript() {
+    if (!state.conversationId) { showError('Ask a question first; there is no stored conversation to save yet.', true); return; }
+    try {
+      const transcript = await call('/api/conversations/' + encodeURIComponent(state.conversationId), { method:'GET', headers:tokenHeader() });
+      const item = ((state.ledger || {}).conversations || []).filter(entry => entry.id === transcript.id)[0] || null;
+      downloadFile('weathergpt-conversation-' + stampName() + '.md', transcriptMarkdown(transcript, item), 'text/markdown');
+    } catch (error) {
+      showError(error && error.message ? error.message : 'The stored conversation could not be read.');
+    }
+  }
+  function newConversation() {
+    if (state.busy) { showError('Wait for the current turn before starting a new conversation.', true); return; }
+    state.conversationId = null;
+    closeRail();
+    clearError();
+    if (window.location.hash && window.history && window.history.replaceState) window.history.replaceState(null, '', window.location.pathname);
+    const box = thread();
+    if (box) box.replaceChildren(renderWelcome(handlers()));
+    const input = byId('question');
+    if (input) { input.value = ''; input.focus(); }
+    loadLedger();
+  }
+  function rememberAnswer() {
+    state.lastSeen = new Date().toISOString();
+    try { window.localStorage.setItem('weathergpt.lastAnswer', state.lastSeen); } catch (error) { /* private mode: no persistence */ }
+  }
+  function updateConnectionBanner(announceReconnect) {
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+      renderBanner('This machine reports no network connection. The workspace and its stored evidence still work, but a collection that needs an upstream source cannot complete until the connection returns.');
+      return;
+    }
+    if (announceReconnect && state.lastSeen) {
+      renderBanner('Connection restored. The last answer was received ' + istStamp(state.lastSeen) + '. Ask again if you need current evidence.', true);
+      setTimeout(() => renderBanner(null), 7000);
+      return;
+    }
+    renderBanner(null);
+  }
+  function restoreFromHash() {
+    const match = /^#\/c\/([0-9a-fA-F-]{36})$/.exec(window.location.hash || '');
+    if (!match) return;
+    restore({ id: match[1] });
+  }
+  function wireJump() {
+    const box = thread(), jump = byId('jump-latest');
+    if (!box || !jump) return;
+    const sync = () => { jump.hidden = box.scrollHeight - box.scrollTop - box.clientHeight <= 240; };
+    box.addEventListener('scroll', sync);
+    jump.addEventListener('click', scrollToEnd);
+    sync();
+  }
+  function handlers() {
+    return {
+      onChoose: choice => ask({ question:currentQuestion() || 'Which place did you mean?', selection:{ selection_id:choice.selection_id }, showQuestion:false }),
+      onRetype: () => { const input = byId('question'); if (input) input.focus(); },
+      onExample: text => { const input = byId('question'); if (input) input.value = text; ask({ question:text }); },
+      onRefresh: refreshFor,
+      onDownload: downloadPacket,
+      onCopy: copyTurn,
+      onPrint: printTurn,
+      onExport: exportTurn
+    };
+  }
+
+  /* ---------- the ask ---------- */
+  async function ask(request) {
+    if (state.busy) { showError('This workspace answers one question at a time. Wait for the current turn, or stop waiting first.', true); return; }
+    const question = String(request.question || '').trim();
+    if (!question) { showError('Type a question first.'); return; }
+    clearError();
+    if (request.showQuestion !== false) { retireWelcome(); append(renderUserTurn(question)); }
+    const working = renderWorking(question);
+    append(working);
+    setBusy(true, 'Interpreting the question, then retrieving evidence…');
+    setService('Working', 'is-busy');
+    state.controller = new AbortController();
+    try {
+      const body = { question:withLanguage(question, state.language) };
+      if (state.conversationId) body.conversation_id = state.conversationId;
+      if (request.selection && request.selection.selection_id) body.selection_id = request.selection.selection_id;
+      if (request.selection && request.selection.coordinates) body.coordinates = request.selection.coordinates;
+      const packet = await call('/api/chat', jsonRequest('POST', body, state.controller.signal));
+      if (packet.conversation_id) state.conversationId = packet.conversation_id;
+      if (packet.status === 'answered' || packet.status === 'partial') rememberAnswer();
+      working.remove();
+      const card = renderTurn(packet, handlers());
+      append(card);
+      revealCard(card);
+      setService('Ready', 'is-ready');
+      loadLedger({ quiet:true });
+    } catch (error) {
+      working.remove();
+      if (error && error.name === 'AbortError') {
+        append(el('div', 'You stopped waiting for this turn. The local model may still be finishing it, because stopping the page request does not cancel the server work, and nothing is queued behind it. Ask again to see the result.', 'notice is-calm'));
+        setService('Ready', 'is-ready');
+      } else {
+        const kind = error && error.kind;
+        showError(error && error.message ? error.message : 'The local workspace is unreachable. Restart it and reload this page.');
+        setService(kind === 'locked' ? 'One at a time' : kind === 'auth' ? 'Reload needed' : kind === 'down' ? 'Store unavailable' : 'Ready',
+                   kind === 'invalid' ? '' : 'is-down');
+      }
+    } finally {
+      state.controller = null;
+      setBusy(false);
+      const input = byId('question');
+      if (input) input.focus();
+    }
+  }
+
+  /* ---------- bounded collection ---------- */
+  async function refreshFor(packet) {
+    if (state.busy) { showError('This workspace answers one question at a time. Wait for the current turn first.', true); return; }
+    const point = firstPoint(packet);
+    if (!point) {
+      showError('This answer did not resolve a single place point, so a collection cannot be requested for it. Ask again naming a town, a city or a coordinate.', true);
+      return;
+    }
+    clearError();
+    setBusy(true, 'Requesting a bounded collection…');
+    setService('Collecting', 'is-busy');
+    const controller = new AbortController();
+    state.controller = controller;
+    try {
+      const result = await call('/api/refresh', jsonRequest('POST', { question:packet.question, coordinates:{ latitude:point.latitude, longitude:point.longitude } }, controller.signal));
+      const refresh = result.refresh || {};
+      const notice = el('div', undefined, 'notice' + (refresh.state === 'succeeded' ? ' is-good' : ' is-calm'));
+      notice.append(el('p', refresh.message || 'A collection was requested.'));
+      const detail = [refresh.state,
+        refresh.claims_this_action !== undefined ? refresh.claims_this_action + ' provider claim(s) this action' : null,
+        refresh.job_provider_attempts !== undefined ? refresh.job_provider_attempts + ' claim(s) for the job' : null,
+        refresh.retry_due_utc_epoch ? 'next retry ' + istStamp(new Date(refresh.retry_due_utc_epoch * 1000).toISOString()) : null]
+        .filter(Boolean).join(' \u00b7 ');
+      if (detail) notice.append(el('p', detail, 'field-note'));
+      notice.append(el('p', 'Collection for ' + point.label + '. Retry timing, provider budgets and cooldowns stay in force, and no background worker keeps collecting.', 'field-note'));
+      append(notice);
+      state.controller = null;
+      setBusy(false);
+      setService('Ready', 'is-ready');
+      await ask({ question:packet.question, showQuestion:false });
+      loadHealth();
+    } catch (error) {
+      if (!(error && error.name === 'AbortError')) showError(error && error.message ? error.message : 'The collection could not be requested.');
+      else append(el('div', 'You stopped waiting for the collection. The server may still be finishing it; retry timing and budgets still apply.', 'notice is-calm'));
+      setService('Ready', 'is-ready');
+    } finally {
+      state.controller = null;
+      if (state.busy) setBusy(false);
+    }
+  }
+
+  /* ---------- ledger and health ---------- */
+  async function loadLedger(options) {
+    options = options || {};
+    try {
+      const ledger = await call('/api/conversations', { method:'GET', headers:tokenHeader() });
+      state.ledger = ledger;
+      renderLedger(ledger, ledgerHandlers());
+    } catch (error) {
+      const note = byId('ledger-note');
+      if (note && !options.quiet) {
+        note.textContent = error && error.kind === 'auth' ? 'Reload the page to read stored conversations.' : 'Stored conversations could not be read, so restore and delete are unavailable.';
+      }
+    }
+  }
+  async function restore(item) {
+    if (state.busy) { showError('Wait for the current turn before opening another conversation.', true); return; }
+    clearError();
+    try {
+      const transcript = await call('/api/conversations/' + encodeURIComponent(item.id), { method:'GET', headers:tokenHeader() });
+      state.conversationId = transcript.id;
+      renderRestored(transcript, { onRetype:() => { const input = byId('question'); if (input) input.focus(); } });
+      if (window.history && window.history.replaceState) window.history.replaceState(null, '', '#/c/' + transcript.id);
+      closeRail();
+      loadLedger();
+    } catch (error) {
+      showError(error && error.message ? error.message : 'That conversation could not be restored.');
+    }
+  }
+  async function remove(item) {
+    if (!window.confirm('Delete this stored conversation? Its questions and answers are removed from the local store.')) return;
+    try {
+      await call('/api/conversations/' + encodeURIComponent(item.id), { method:'DELETE', headers:tokenHeader() });
+      if (state.conversationId === item.id) {
+        state.conversationId = null;
+        const box = thread();
+        if (box) box.replaceChildren(renderWelcome(handlers()));
+        append(el('div', 'That conversation was deleted from the local store, so the transcript is gone. The sources its answers cited are unaffected, and they were receipts for their own retrieval time.', 'notice is-calm'));
+      }
+      loadLedger();
+    } catch (error) {
+      showError(error && error.message ? error.message : 'That conversation could not be deleted.');
+    }
+  }
+  async function loadHealth() {
+    try { renderHealth(await call('/api/health', { method:'GET', headers:tokenHeader() })); }
+    catch (error) { const box = byId('health'); if (box) box.replaceChildren(el('p', 'Collection health could not be read.', 'block-note')); }
+  }
+
+  /* ---------- rail ---------- */
+  function setRail(open) {
+    const rail = byId('rail'), backdrop = byId('rail-backdrop'), toggle = byId('rail-toggle');
+    if (rail) rail.classList.toggle('is-open', open);
+    if (backdrop) backdrop.classList.toggle('is-open', open);
+    if (toggle) toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  function closeRail() { setRail(false); }
+  function toggleRail() { const rail = byId('rail'); setRail(!(rail && rail.classList.contains('is-open'))); }
+
+  /* ---------- fields ---------- */
+  function selectionFromFields() {
+    const latitude = byId('latitude'), longitude = byId('longitude');
+    if (!latitude || !longitude) return null;
+    if (!latitude.value.trim() || !longitude.value.trim()) return null;
+    const lat = Number(latitude.value), lon = Number(longitude.value);
+    if (!Number.isFinite(lat) || !Number.isFinite(lon)) { showError('Latitude and longitude must be numbers.'); return null; }
+    return { coordinates:{ latitude:lat, longitude:lon } };
+  }
+  function buildFieldSentence() {
+    const measure = byId('measure'), place = byId('place'), day = byId('day');
+    const start = byId('start'), end = byId('end'), latitude = byId('latitude'), longitude = byId('longitude');
+    const intent = measure ? measure.value : 'How much rain is forecast';
+    const pinned = latitude && longitude && latitude.value.trim() && longitude.value.trim();
+    const where = pinned ? (latitude.value.trim() + ', ' + longitude.value.trim())
+                         : (place && place.value.trim() ? place.value.trim() : '');
+    if (!where) { showError('Enter a place name, or both coordinates.'); return null; }
+    const when = start && end && start.value && end.value ? ' from ' + start.value + ' to ' + end.value + ' IST' : '';
+    return intent + ' for ' + where + ' ' + (day ? day.value : 'tomorrow') + when + '?';
+  }
+
+  /* ---------- wiring ---------- */
+  function bind() {
+    const form = byId('ask-form');
+    if (form) form.addEventListener('submit', event => {
+      event.preventDefault();
+      ask({ question:currentQuestion(), selection:selectionFromFields() });
+    });
+    const question = byId('question');
+    if (question) question.addEventListener('keydown', event => {
+      if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') {
+        event.preventDefault();
+        ask({ question:currentQuestion(), selection:selectionFromFields() });
+      }
+    });
+    const toggle = byId('toggle-fields');
+    if (toggle) toggle.addEventListener('click', () => {
+      const fields = byId('composer-fields');
+      if (!fields) return;
+      const open = fields.hidden;
+      fields.hidden = !open;
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      toggle.textContent = open ? 'Hide fields' : 'Ask with fields';
+    });
+    const useFields = byId('use-fields');
+    if (useFields) useFields.addEventListener('click', () => {
+      const sentence = buildFieldSentence();
+      if (!sentence) return;
+      const input = byId('question');
+      if (input) { input.value = sentence; input.focus(); }
+      clearError();
+    });
+    const cancel = byId('cancel');
+    if (cancel) cancel.addEventListener('click', () => { if (state.controller) state.controller.abort(); });
+    const language = byId('language');
+    if (language) language.addEventListener('change', () => { state.language = language.value; });
+    const railToggle = byId('rail-toggle');
+    if (railToggle) railToggle.addEventListener('click', toggleRail);
+    const backdrop = byId('rail-backdrop');
+    if (backdrop) backdrop.addEventListener('click', closeRail);
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeRail();
+      if ((event.metaKey || event.ctrlKey) && event.key === 'k') { event.preventDefault(); const input = byId('question'); if (input) input.focus(); }
+    });
+    const newConversationButton = byId('new-conversation');
+    if (newConversationButton) newConversationButton.addEventListener('click', newConversation);
+    const exportButton = byId('export-transcript');
+    if (exportButton) exportButton.addEventListener('click', exportTranscript);
+    const search = byId('ledger-search');
+    if (search) search.addEventListener('input', () => { if (state.ledger) renderLedger(state.ledger, ledgerHandlers()); });
+    if (typeof window.addEventListener === 'function') {
+      window.addEventListener('offline', () => updateConnectionBanner(false));
+      window.addEventListener('online', () => updateConnectionBanner(true));
+    }
+  }
+  function ledgerHandlers() { return { currentId:() => state.conversationId, onOpen:restore, onDelete:remove }; }
+
+  function start() {
+    bind();
+    const box = thread();
+    if (box) box.replaceChildren(renderWelcome(handlers()));
+    try { state.lastSeen = window.localStorage.getItem('weathergpt.lastAnswer'); } catch (error) { state.lastSeen = null; }
+    updateConnectionBanner(false);
+    wireJump();
+    setService('Ready', 'is-ready');
+    setBusy(false);
+    loadLedger();
+    loadHealth();
+    restoreFromHash();
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
+
+  window.WeatherGPT = { ask:ask, state:state, loadLedger:loadLedger, loadHealth:loadHealth, buildFieldSentence:buildFieldSentence, firstPoint:firstPoint };
+})();

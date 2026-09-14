@@ -1,0 +1,3127 @@
+{
+  "case": "marine",
+  "request": {
+    "question": "What are the wave conditions near Kochi, Kerala tomorrow?"
+  },
+  "base": "http://127.0.0.1:8765",
+  "http_status": 200,
+  "duration_s": 10.0,
+  "packet": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "d8a00864-31ea-4995-b3df-d9638a64091d",
+    "question": "What are the wave conditions near Kochi, Kerala tomorrow?",
+    "status": "answered",
+    "answer": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836 · 2026-09-14 17:30 to 2026-09-15 23:30 IST\nSignificant wave height: 1.02–1.1 m across 31 hourly samples.\nKochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836 · 2026-09-14 17:30 to 2026-09-15 23:30 IST\nWave direction: 206–213 ° across 31 hourly samples.\nKochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836 · 2026-09-14 17:30 to 2026-09-15 23:30 IST\nWave period: 10.45–11.3 s across 31 hourly samples.\nWave values are model output for the returned sea grid cell, not an official marine bulletin, a named sea-area forecast, or a measured buoy observation.",
+    "facts": [
+      {
+        "id": "t1-f1",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.1",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-14T17:30:00+05:30",
+        "end": "2026-09-14T17:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[12]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-14T17:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f2",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.1",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-14T18:30:00+05:30",
+        "end": "2026-09-14T18:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[13]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-14T18:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f3",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.08",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-14T19:30:00+05:30",
+        "end": "2026-09-14T19:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[14]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-14T19:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f4",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.08",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-14T20:30:00+05:30",
+        "end": "2026-09-14T20:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[15]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-14T20:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f5",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.08",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-14T21:30:00+05:30",
+        "end": "2026-09-14T21:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[16]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-14T21:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f6",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.06",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-14T22:30:00+05:30",
+        "end": "2026-09-14T22:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[17]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-14T22:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f7",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.06",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-14T23:30:00+05:30",
+        "end": "2026-09-14T23:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[18]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-14T23:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f8",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.06",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T00:30:00+05:30",
+        "end": "2026-09-15T00:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[19]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T00:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f9",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.06",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T01:30:00+05:30",
+        "end": "2026-09-15T01:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[20]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T01:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f10",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.06",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T02:30:00+05:30",
+        "end": "2026-09-15T02:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[21]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T02:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f11",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.06",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T03:30:00+05:30",
+        "end": "2026-09-15T03:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[22]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T03:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f12",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.04",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T04:30:00+05:30",
+        "end": "2026-09-15T04:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[23]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T04:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f13",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.04",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T05:30:00+05:30",
+        "end": "2026-09-15T05:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[24]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T05:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f14",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.04",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T06:30:00+05:30",
+        "end": "2026-09-15T06:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[25]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T06:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f15",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.04",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T07:30:00+05:30",
+        "end": "2026-09-15T07:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[26]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T07:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f16",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.04",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T08:30:00+05:30",
+        "end": "2026-09-15T08:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[27]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T08:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f17",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.04",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T09:30:00+05:30",
+        "end": "2026-09-15T09:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[28]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T09:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f18",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.02",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T10:30:00+05:30",
+        "end": "2026-09-15T10:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[29]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T10:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f19",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.02",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T11:30:00+05:30",
+        "end": "2026-09-15T11:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[30]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T11:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f20",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.02",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T12:30:00+05:30",
+        "end": "2026-09-15T12:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[31]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T12:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f21",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.04",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T13:30:00+05:30",
+        "end": "2026-09-15T13:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[32]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T13:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f22",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.04",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T14:30:00+05:30",
+        "end": "2026-09-15T14:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[33]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T14:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f23",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.04",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T15:30:00+05:30",
+        "end": "2026-09-15T15:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[34]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T15:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f24",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.04",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T16:30:00+05:30",
+        "end": "2026-09-15T16:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[35]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T16:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f25",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.04",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T17:30:00+05:30",
+        "end": "2026-09-15T17:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[36]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T17:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f26",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.04",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T18:30:00+05:30",
+        "end": "2026-09-15T18:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[37]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T18:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f27",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.04",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T19:30:00+05:30",
+        "end": "2026-09-15T19:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[38]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T19:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f28",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.04",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T20:30:00+05:30",
+        "end": "2026-09-15T20:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[39]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T20:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f29",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.04",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T21:30:00+05:30",
+        "end": "2026-09-15T21:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[40]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T21:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f30",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.04",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T22:30:00+05:30",
+        "end": "2026-09-15T22:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[41]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T22:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f31",
+        "parameter": "wave_height",
+        "label": "Significant wave height",
+        "value": "1.04",
+        "unit": "m",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T23:30:00+05:30",
+        "end": "2026-09-15T23:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_height[42]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T23:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f32",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "210",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-14T17:30:00+05:30",
+        "end": "2026-09-14T17:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[12]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-14T17:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f33",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "210",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-14T18:30:00+05:30",
+        "end": "2026-09-14T18:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[13]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-14T18:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f34",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "210",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-14T19:30:00+05:30",
+        "end": "2026-09-14T19:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[14]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-14T19:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f35",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "210",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-14T20:30:00+05:30",
+        "end": "2026-09-14T20:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[15]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-14T20:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f36",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "210",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-14T21:30:00+05:30",
+        "end": "2026-09-14T21:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[16]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-14T21:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f37",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "209",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-14T22:30:00+05:30",
+        "end": "2026-09-14T22:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[17]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-14T22:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f38",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "209",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-14T23:30:00+05:30",
+        "end": "2026-09-14T23:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[18]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-14T23:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f39",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "209",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T00:30:00+05:30",
+        "end": "2026-09-15T00:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[19]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T00:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f40",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "208",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T01:30:00+05:30",
+        "end": "2026-09-15T01:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[20]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T01:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f41",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "208",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T02:30:00+05:30",
+        "end": "2026-09-15T02:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[21]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T02:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f42",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "208",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T03:30:00+05:30",
+        "end": "2026-09-15T03:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[22]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T03:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f43",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "207",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T04:30:00+05:30",
+        "end": "2026-09-15T04:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[23]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T04:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f44",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "207",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T05:30:00+05:30",
+        "end": "2026-09-15T05:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[24]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T05:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f45",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "207",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T06:30:00+05:30",
+        "end": "2026-09-15T06:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[25]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T06:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f46",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "206",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T07:30:00+05:30",
+        "end": "2026-09-15T07:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[26]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T07:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f47",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "206",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T08:30:00+05:30",
+        "end": "2026-09-15T08:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[27]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T08:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f48",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "206",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T09:30:00+05:30",
+        "end": "2026-09-15T09:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[28]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T09:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f49",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "206",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T10:30:00+05:30",
+        "end": "2026-09-15T10:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[29]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T10:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f50",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "206",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T11:30:00+05:30",
+        "end": "2026-09-15T11:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[30]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T11:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f51",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "206",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T12:30:00+05:30",
+        "end": "2026-09-15T12:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[31]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T12:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f52",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "206",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T13:30:00+05:30",
+        "end": "2026-09-15T13:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[32]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T13:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f53",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "206",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T14:30:00+05:30",
+        "end": "2026-09-15T14:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[33]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T14:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f54",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "208",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T15:30:00+05:30",
+        "end": "2026-09-15T15:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[34]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T15:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f55",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "210",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T16:30:00+05:30",
+        "end": "2026-09-15T16:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[35]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T16:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f56",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "212",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T17:30:00+05:30",
+        "end": "2026-09-15T17:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[36]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T17:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f57",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "212",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T18:30:00+05:30",
+        "end": "2026-09-15T18:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[37]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T18:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f58",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "213",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T19:30:00+05:30",
+        "end": "2026-09-15T19:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[38]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T19:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f59",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "213",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T20:30:00+05:30",
+        "end": "2026-09-15T20:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[39]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T20:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f60",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "213",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T21:30:00+05:30",
+        "end": "2026-09-15T21:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[40]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T21:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f61",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "212",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T22:30:00+05:30",
+        "end": "2026-09-15T22:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[41]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T22:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f62",
+        "parameter": "wave_direction",
+        "label": "Wave direction",
+        "value": "212",
+        "unit": "°",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T23:30:00+05:30",
+        "end": "2026-09-15T23:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_direction[42]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T23:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f63",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "11.1",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-14T17:30:00+05:30",
+        "end": "2026-09-14T17:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[12]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-14T17:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f64",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "11.1",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-14T18:30:00+05:30",
+        "end": "2026-09-14T18:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[13]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-14T18:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f65",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "11.1",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-14T19:30:00+05:30",
+        "end": "2026-09-14T19:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[14]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-14T19:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f66",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "11.1",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-14T20:30:00+05:30",
+        "end": "2026-09-14T20:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[15]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-14T20:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f67",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "11.1",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-14T21:30:00+05:30",
+        "end": "2026-09-14T21:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[16]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-14T21:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f68",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "11.1",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-14T22:30:00+05:30",
+        "end": "2026-09-14T22:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[17]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-14T22:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f69",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "11.1",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-14T23:30:00+05:30",
+        "end": "2026-09-14T23:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[18]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-14T23:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f70",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "11.1",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T00:30:00+05:30",
+        "end": "2026-09-15T00:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[19]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T00:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f71",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "11.15",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T01:30:00+05:30",
+        "end": "2026-09-15T01:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[20]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T01:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f72",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "11.15",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T02:30:00+05:30",
+        "end": "2026-09-15T02:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[21]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T02:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f73",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "11.15",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T03:30:00+05:30",
+        "end": "2026-09-15T03:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[22]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T03:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f74",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "11.2",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T04:30:00+05:30",
+        "end": "2026-09-15T04:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[23]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T04:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f75",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "11.2",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T05:30:00+05:30",
+        "end": "2026-09-15T05:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[24]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T05:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f76",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "11.25",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T06:30:00+05:30",
+        "end": "2026-09-15T06:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[25]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T06:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f77",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "11.25",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T07:30:00+05:30",
+        "end": "2026-09-15T07:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[26]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T07:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f78",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "11.3",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T08:30:00+05:30",
+        "end": "2026-09-15T08:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[27]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T08:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f79",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "11.3",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T09:30:00+05:30",
+        "end": "2026-09-15T09:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[28]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T09:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f80",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "11.3",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T10:30:00+05:30",
+        "end": "2026-09-15T10:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[29]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T10:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f81",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "11.3",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T11:30:00+05:30",
+        "end": "2026-09-15T11:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[30]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T11:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f82",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "11.25",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T12:30:00+05:30",
+        "end": "2026-09-15T12:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[31]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T12:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f83",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "11.15",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T13:30:00+05:30",
+        "end": "2026-09-15T13:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[32]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T13:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f84",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "11.05",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T14:30:00+05:30",
+        "end": "2026-09-15T14:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[33]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T14:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f85",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "10.85",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T15:30:00+05:30",
+        "end": "2026-09-15T15:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[34]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T15:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f86",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "10.65",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T16:30:00+05:30",
+        "end": "2026-09-15T16:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[35]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T16:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f87",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "10.5",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T17:30:00+05:30",
+        "end": "2026-09-15T17:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[36]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T17:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f88",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "10.45",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T18:30:00+05:30",
+        "end": "2026-09-15T18:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[37]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T18:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f89",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "10.45",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T19:30:00+05:30",
+        "end": "2026-09-15T19:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[38]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T19:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f90",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "10.45",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T20:30:00+05:30",
+        "end": "2026-09-15T20:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[39]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T20:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f91",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "10.5",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T21:30:00+05:30",
+        "end": "2026-09-15T21:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[40]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T21:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f92",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "10.55",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T22:30:00+05:30",
+        "end": "2026-09-15T22:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[41]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T22:30:00+05:30",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-f93",
+        "parameter": "wave_period",
+        "label": "Wave period",
+        "value": "10.6",
+        "unit": "s",
+        "place": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T23:30:00+05:30",
+        "end": "2026-09-15T23:30:00+05:30",
+        "source_id": "S56",
+        "evidence_kind": "forecast",
+        "evidence_version": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "citation_ids": [
+          "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b"
+        ],
+        "source_locators": [
+          "$.hourly.wave_period[42]"
+        ],
+        "method": "instant",
+        "sample_at": "2026-09-15T23:30:00+05:30",
+        "task_id": "t1"
+      }
+    ],
+    "citations": [
+      {
+        "id": "t1-c-55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "source_id": "S56",
+        "provider": "Open-Meteo",
+        "product": "Marine wave model forecast at a sea grid cell",
+        "url": "https://marine-api.open-meteo.com/v1/marine?latitude=9.93988&longitude=76.26022&hourly=wave_height%2Cwave_direction%2Cwave_period&forecast_days=3&timezone=UTC&timeformat=unixtime&cell_selection=sea",
+        "response_sha256": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+        "retrieved_at_utc": "2026-09-14T11:10:06.976825+00:00",
+        "requested_point": {
+          "latitude": 9.93988,
+          "longitude": 76.26022
+        },
+        "returned_grid": {
+          "latitude": 9.958336,
+          "longitude": 76.20836
+        },
+        "grid_distance_km": 6.039,
+        "model_run_time": null
+      },
+      {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/1273874",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      }
+    ],
+    "notes": [
+      "Tomorrow is 2026-09-15. Wave conditions are modeled for the upcoming window starting from the current time.",
+      "Only the remaining forecast period is included, starting 2026-09-14T16:40:06.098138+05:30.",
+      "Wave values are model output for the returned sea grid cell, not an official marine bulletin, a named sea-area forecast, or a measured buoy observation.",
+      "This does not establish navigation, fishing or small-craft safety. The official sea-area and coastal bulletins remain unconnected to this conversation.",
+      "The answering grid cell and its distance from the requested place are recorded with the citation. A nearby cell is not a measurement at your exact location."
+    ],
+    "choices": [],
+    "follow_up": null,
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-14T11:09:57.050788+00:00",
+    "expires_at_utc": "2026-09-14T12:10:06.976825+00:00",
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 3013,
+        "output_tokens": 305,
+        "duration_seconds": 9.018271709
+      },
+      "generation": {
+        "provider": "typed_task_renderers",
+        "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+      },
+      "tools": [
+        {
+          "name": "gazetteer_search",
+          "query": {
+            "name": "Kochi",
+            "state": "Kerala",
+            "district": "",
+            "kind": "settlement"
+          },
+          "matches": 1
+        },
+        {
+          "name": "marine",
+          "job_id": "2607582f373c95849e128e34b4f7bd094b6426f3fd58041f2289fee8d7055fa5",
+          "worker": {
+            "state": "succeeded",
+            "promoted": true,
+            "job_id": "2607582f373c95849e128e34b4f7bd094b6426f3fd58041f2289fee8d7055fa5"
+          },
+          "source_sha256": "55d3e9efc1245fdebb30304d2506c3558e51b2ab272ff348db1c31c50532913b",
+          "grid_distance_km": 6.039
+        },
+        {
+          "name": "marine",
+          "task_id": "t1",
+          "status": "answered"
+        }
+      ],
+      "provider": "local_ollama",
+      "context_resolution": {
+        "action": "new",
+        "changed_fields": [],
+        "inherited_fields": []
+      },
+      "duration_seconds": 9.943
+    },
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "Kochi",
+          "state": "Kerala",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [
+        "Tomorrow is 2026-09-15. Wave conditions are modeled for the upcoming window starting from the current time."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "What are the wave conditions near Kochi, Kerala tomorrow?",
+          "kind": "marine",
+          "operation": "lookup",
+          "parameters": [
+            "wave_height",
+            "wave_direction",
+            "wave_period"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T16:39:57+05:30",
+          "end_local": "2026-09-16T00:00:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "new",
+      "changed_fields": [],
+      "intent": "research",
+      "start_local": "2026-09-14T16:39:57+05:30",
+      "end_local": "2026-09-16T00:00:00+05:30",
+      "variables": [],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "task_results": [
+      {
+        "id": "t1",
+        "request": {
+          "request_quote": "What are the wave conditions near Kochi, Kerala tomorrow?",
+          "kind": "marine",
+          "operation": "lookup",
+          "parameters": [
+            "wave_height",
+            "wave_direction",
+            "wave_period"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-14T16:39:57+05:30",
+          "end_local": "2026-09-16T00:00:00+05:30",
+          "place_indices": [
+            0
+          ]
+        },
+        "status": "answered",
+        "answer": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836 · 2026-09-14 17:30 to 2026-09-15 23:30 IST\nSignificant wave height: 1.02–1.1 m across 31 hourly samples.\nKochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836 · 2026-09-14 17:30 to 2026-09-15 23:30 IST\nWave direction: 206–213 ° across 31 hourly samples.\nKochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836 · 2026-09-14 17:30 to 2026-09-15 23:30 IST\nWave period: 10.45–11.3 s across 31 hourly samples.\nWave values are model output for the returned sea grid cell, not an official marine bulletin, a named sea-area forecast, or a measured buoy observation.",
+        "fact_ids": [
+          "t1-f1",
+          "t1-f2",
+          "t1-f3",
+          "t1-f4",
+          "t1-f5",
+          "t1-f6",
+          "t1-f7",
+          "t1-f8",
+          "t1-f9",
+          "t1-f10",
+          "t1-f11",
+          "t1-f12",
+          "t1-f13",
+          "t1-f14",
+          "t1-f15",
+          "t1-f16",
+          "t1-f17",
+          "t1-f18",
+          "t1-f19",
+          "t1-f20",
+          "t1-f21",
+          "t1-f22",
+          "t1-f23",
+          "t1-f24",
+          "t1-f25",
+          "t1-f26",
+          "t1-f27",
+          "t1-f28",
+          "t1-f29",
+          "t1-f30",
+          "t1-f31",
+          "t1-f32",
+          "t1-f33",
+          "t1-f34",
+          "t1-f35",
+          "t1-f36",
+          "t1-f37",
+          "t1-f38",
+          "t1-f39",
+          "t1-f40",
+          "t1-f41",
+          "t1-f42",
+          "t1-f43",
+          "t1-f44",
+          "t1-f45",
+          "t1-f46",
+          "t1-f47",
+          "t1-f48",
+          "t1-f49",
+          "t1-f50",
+          "t1-f51",
+          "t1-f52",
+          "t1-f53",
+          "t1-f54",
+          "t1-f55",
+          "t1-f56",
+          "t1-f57",
+          "t1-f58",
+          "t1-f59",
+          "t1-f60",
+          "t1-f61",
+          "t1-f62",
+          "t1-f63",
+          "t1-f64",
+          "t1-f65",
+          "t1-f66",
+          "t1-f67",
+          "t1-f68",
+          "t1-f69",
+          "t1-f70",
+          "t1-f71",
+          "t1-f72",
+          "t1-f73",
+          "t1-f74",
+          "t1-f75",
+          "t1-f76",
+          "t1-f77",
+          "t1-f78",
+          "t1-f79",
+          "t1-f80",
+          "t1-f81",
+          "t1-f82",
+          "t1-f83",
+          "t1-f84",
+          "t1-f85",
+          "t1-f86",
+          "t1-f87",
+          "t1-f88",
+          "t1-f89",
+          "t1-f90",
+          "t1-f91",
+          "t1-f92",
+          "t1-f93"
+        ],
+        "passage_ids": []
+      }
+    ],
+    "charts": [
+      {
+        "kind": "hourly_series",
+        "axis_label": "Time (IST)",
+        "title": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836 · Significant wave height",
+        "unit": "m",
+        "points": [
+          {
+            "x": 1789387200.0,
+            "label": "14 Sep 17:30",
+            "value": "1.1",
+            "evidence_id": "t1-f1"
+          },
+          {
+            "x": 1789390800.0,
+            "label": "14 Sep 18:30",
+            "value": "1.1",
+            "evidence_id": "t1-f2"
+          },
+          {
+            "x": 1789394400.0,
+            "label": "14 Sep 19:30",
+            "value": "1.08",
+            "evidence_id": "t1-f3"
+          },
+          {
+            "x": 1789398000.0,
+            "label": "14 Sep 20:30",
+            "value": "1.08",
+            "evidence_id": "t1-f4"
+          },
+          {
+            "x": 1789401600.0,
+            "label": "14 Sep 21:30",
+            "value": "1.08",
+            "evidence_id": "t1-f5"
+          },
+          {
+            "x": 1789405200.0,
+            "label": "14 Sep 22:30",
+            "value": "1.06",
+            "evidence_id": "t1-f6"
+          },
+          {
+            "x": 1789408800.0,
+            "label": "14 Sep 23:30",
+            "value": "1.06",
+            "evidence_id": "t1-f7"
+          },
+          {
+            "x": 1789412400.0,
+            "label": "15 Sep 00:30",
+            "value": "1.06",
+            "evidence_id": "t1-f8"
+          },
+          {
+            "x": 1789416000.0,
+            "label": "15 Sep 01:30",
+            "value": "1.06",
+            "evidence_id": "t1-f9"
+          },
+          {
+            "x": 1789419600.0,
+            "label": "15 Sep 02:30",
+            "value": "1.06",
+            "evidence_id": "t1-f10"
+          },
+          {
+            "x": 1789423200.0,
+            "label": "15 Sep 03:30",
+            "value": "1.06",
+            "evidence_id": "t1-f11"
+          },
+          {
+            "x": 1789426800.0,
+            "label": "15 Sep 04:30",
+            "value": "1.04",
+            "evidence_id": "t1-f12"
+          },
+          {
+            "x": 1789430400.0,
+            "label": "15 Sep 05:30",
+            "value": "1.04",
+            "evidence_id": "t1-f13"
+          },
+          {
+            "x": 1789434000.0,
+            "label": "15 Sep 06:30",
+            "value": "1.04",
+            "evidence_id": "t1-f14"
+          },
+          {
+            "x": 1789437600.0,
+            "label": "15 Sep 07:30",
+            "value": "1.04",
+            "evidence_id": "t1-f15"
+          },
+          {
+            "x": 1789441200.0,
+            "label": "15 Sep 08:30",
+            "value": "1.04",
+            "evidence_id": "t1-f16"
+          },
+          {
+            "x": 1789444800.0,
+            "label": "15 Sep 09:30",
+            "value": "1.04",
+            "evidence_id": "t1-f17"
+          },
+          {
+            "x": 1789448400.0,
+            "label": "15 Sep 10:30",
+            "value": "1.02",
+            "evidence_id": "t1-f18"
+          },
+          {
+            "x": 1789452000.0,
+            "label": "15 Sep 11:30",
+            "value": "1.02",
+            "evidence_id": "t1-f19"
+          },
+          {
+            "x": 1789455600.0,
+            "label": "15 Sep 12:30",
+            "value": "1.02",
+            "evidence_id": "t1-f20"
+          },
+          {
+            "x": 1789459200.0,
+            "label": "15 Sep 13:30",
+            "value": "1.04",
+            "evidence_id": "t1-f21"
+          },
+          {
+            "x": 1789462800.0,
+            "label": "15 Sep 14:30",
+            "value": "1.04",
+            "evidence_id": "t1-f22"
+          },
+          {
+            "x": 1789466400.0,
+            "label": "15 Sep 15:30",
+            "value": "1.04",
+            "evidence_id": "t1-f23"
+          },
+          {
+            "x": 1789470000.0,
+            "label": "15 Sep 16:30",
+            "value": "1.04",
+            "evidence_id": "t1-f24"
+          },
+          {
+            "x": 1789473600.0,
+            "label": "15 Sep 17:30",
+            "value": "1.04",
+            "evidence_id": "t1-f25"
+          },
+          {
+            "x": 1789477200.0,
+            "label": "15 Sep 18:30",
+            "value": "1.04",
+            "evidence_id": "t1-f26"
+          },
+          {
+            "x": 1789480800.0,
+            "label": "15 Sep 19:30",
+            "value": "1.04",
+            "evidence_id": "t1-f27"
+          },
+          {
+            "x": 1789484400.0,
+            "label": "15 Sep 20:30",
+            "value": "1.04",
+            "evidence_id": "t1-f28"
+          },
+          {
+            "x": 1789488000.0,
+            "label": "15 Sep 21:30",
+            "value": "1.04",
+            "evidence_id": "t1-f29"
+          },
+          {
+            "x": 1789491600.0,
+            "label": "15 Sep 22:30",
+            "value": "1.04",
+            "evidence_id": "t1-f30"
+          },
+          {
+            "x": 1789495200.0,
+            "label": "15 Sep 23:30",
+            "value": "1.04",
+            "evidence_id": "t1-f31"
+          }
+        ],
+        "source_ids": [
+          "S56"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "kind": "hourly_series",
+        "axis_label": "Time (IST)",
+        "title": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836 · Wave direction",
+        "unit": "°",
+        "points": [
+          {
+            "x": 1789387200.0,
+            "label": "14 Sep 17:30",
+            "value": "210",
+            "evidence_id": "t1-f32"
+          },
+          {
+            "x": 1789390800.0,
+            "label": "14 Sep 18:30",
+            "value": "210",
+            "evidence_id": "t1-f33"
+          },
+          {
+            "x": 1789394400.0,
+            "label": "14 Sep 19:30",
+            "value": "210",
+            "evidence_id": "t1-f34"
+          },
+          {
+            "x": 1789398000.0,
+            "label": "14 Sep 20:30",
+            "value": "210",
+            "evidence_id": "t1-f35"
+          },
+          {
+            "x": 1789401600.0,
+            "label": "14 Sep 21:30",
+            "value": "210",
+            "evidence_id": "t1-f36"
+          },
+          {
+            "x": 1789405200.0,
+            "label": "14 Sep 22:30",
+            "value": "209",
+            "evidence_id": "t1-f37"
+          },
+          {
+            "x": 1789408800.0,
+            "label": "14 Sep 23:30",
+            "value": "209",
+            "evidence_id": "t1-f38"
+          },
+          {
+            "x": 1789412400.0,
+            "label": "15 Sep 00:30",
+            "value": "209",
+            "evidence_id": "t1-f39"
+          },
+          {
+            "x": 1789416000.0,
+            "label": "15 Sep 01:30",
+            "value": "208",
+            "evidence_id": "t1-f40"
+          },
+          {
+            "x": 1789419600.0,
+            "label": "15 Sep 02:30",
+            "value": "208",
+            "evidence_id": "t1-f41"
+          },
+          {
+            "x": 1789423200.0,
+            "label": "15 Sep 03:30",
+            "value": "208",
+            "evidence_id": "t1-f42"
+          },
+          {
+            "x": 1789426800.0,
+            "label": "15 Sep 04:30",
+            "value": "207",
+            "evidence_id": "t1-f43"
+          },
+          {
+            "x": 1789430400.0,
+            "label": "15 Sep 05:30",
+            "value": "207",
+            "evidence_id": "t1-f44"
+          },
+          {
+            "x": 1789434000.0,
+            "label": "15 Sep 06:30",
+            "value": "207",
+            "evidence_id": "t1-f45"
+          },
+          {
+            "x": 1789437600.0,
+            "label": "15 Sep 07:30",
+            "value": "206",
+            "evidence_id": "t1-f46"
+          },
+          {
+            "x": 1789441200.0,
+            "label": "15 Sep 08:30",
+            "value": "206",
+            "evidence_id": "t1-f47"
+          },
+          {
+            "x": 1789444800.0,
+            "label": "15 Sep 09:30",
+            "value": "206",
+            "evidence_id": "t1-f48"
+          },
+          {
+            "x": 1789448400.0,
+            "label": "15 Sep 10:30",
+            "value": "206",
+            "evidence_id": "t1-f49"
+          },
+          {
+            "x": 1789452000.0,
+            "label": "15 Sep 11:30",
+            "value": "206",
+            "evidence_id": "t1-f50"
+          },
+          {
+            "x": 1789455600.0,
+            "label": "15 Sep 12:30",
+            "value": "206",
+            "evidence_id": "t1-f51"
+          },
+          {
+            "x": 1789459200.0,
+            "label": "15 Sep 13:30",
+            "value": "206",
+            "evidence_id": "t1-f52"
+          },
+          {
+            "x": 1789462800.0,
+            "label": "15 Sep 14:30",
+            "value": "206",
+            "evidence_id": "t1-f53"
+          },
+          {
+            "x": 1789466400.0,
+            "label": "15 Sep 15:30",
+            "value": "208",
+            "evidence_id": "t1-f54"
+          },
+          {
+            "x": 1789470000.0,
+            "label": "15 Sep 16:30",
+            "value": "210",
+            "evidence_id": "t1-f55"
+          },
+          {
+            "x": 1789473600.0,
+            "label": "15 Sep 17:30",
+            "value": "212",
+            "evidence_id": "t1-f56"
+          },
+          {
+            "x": 1789477200.0,
+            "label": "15 Sep 18:30",
+            "value": "212",
+            "evidence_id": "t1-f57"
+          },
+          {
+            "x": 1789480800.0,
+            "label": "15 Sep 19:30",
+            "value": "213",
+            "evidence_id": "t1-f58"
+          },
+          {
+            "x": 1789484400.0,
+            "label": "15 Sep 20:30",
+            "value": "213",
+            "evidence_id": "t1-f59"
+          },
+          {
+            "x": 1789488000.0,
+            "label": "15 Sep 21:30",
+            "value": "213",
+            "evidence_id": "t1-f60"
+          },
+          {
+            "x": 1789491600.0,
+            "label": "15 Sep 22:30",
+            "value": "212",
+            "evidence_id": "t1-f61"
+          },
+          {
+            "x": 1789495200.0,
+            "label": "15 Sep 23:30",
+            "value": "212",
+            "evidence_id": "t1-f62"
+          }
+        ],
+        "source_ids": [
+          "S56"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "kind": "hourly_series",
+        "axis_label": "Time (IST)",
+        "title": "Kochi, Ernākulam, State of Kerala · model cell 9.958336, 76.20836 · Wave period",
+        "unit": "s",
+        "points": [
+          {
+            "x": 1789387200.0,
+            "label": "14 Sep 17:30",
+            "value": "11.1",
+            "evidence_id": "t1-f63"
+          },
+          {
+            "x": 1789390800.0,
+            "label": "14 Sep 18:30",
+            "value": "11.1",
+            "evidence_id": "t1-f64"
+          },
+          {
+            "x": 1789394400.0,
+            "label": "14 Sep 19:30",
+            "value": "11.1",
+            "evidence_id": "t1-f65"
+          },
+          {
+            "x": 1789398000.0,
+            "label": "14 Sep 20:30",
+            "value": "11.1",
+            "evidence_id": "t1-f66"
+          },
+          {
+            "x": 1789401600.0,
+            "label": "14 Sep 21:30",
+            "value": "11.1",
+            "evidence_id": "t1-f67"
+          },
+          {
+            "x": 1789405200.0,
+            "label": "14 Sep 22:30",
+            "value": "11.1",
+            "evidence_id": "t1-f68"
+          },
+          {
+            "x": 1789408800.0,
+            "label": "14 Sep 23:30",
+            "value": "11.1",
+            "evidence_id": "t1-f69"
+          },
+          {
+            "x": 1789412400.0,
+            "label": "15 Sep 00:30",
+            "value": "11.1",
+            "evidence_id": "t1-f70"
+          },
+          {
+            "x": 1789416000.0,
+            "label": "15 Sep 01:30",
+            "value": "11.15",
+            "evidence_id": "t1-f71"
+          },
+          {
+            "x": 1789419600.0,
+            "label": "15 Sep 02:30",
+            "value": "11.15",
+            "evidence_id": "t1-f72"
+          },
+          {
+            "x": 1789423200.0,
+            "label": "15 Sep 03:30",
+            "value": "11.15",
+            "evidence_id": "t1-f73"
+          },
+          {
+            "x": 1789426800.0,
+            "label": "15 Sep 04:30",
+            "value": "11.2",
+            "evidence_id": "t1-f74"
+          },
+          {
+            "x": 1789430400.0,
+            "label": "15 Sep 05:30",
+            "value": "11.2",
+            "evidence_id": "t1-f75"
+          },
+          {
+            "x": 1789434000.0,
+            "label": "15 Sep 06:30",
+            "value": "11.25",
+            "evidence_id": "t1-f76"
+          },
+          {
+            "x": 1789437600.0,
+            "label": "15 Sep 07:30",
+            "value": "11.25",
+            "evidence_id": "t1-f77"
+          },
+          {
+            "x": 1789441200.0,
+            "label": "15 Sep 08:30",
+            "value": "11.3",
+            "evidence_id": "t1-f78"
+          },
+          {
+            "x": 1789444800.0,
+            "label": "15 Sep 09:30",
+            "value": "11.3",
+            "evidence_id": "t1-f79"
+          },
+          {
+            "x": 1789448400.0,
+            "label": "15 Sep 10:30",
+            "value": "11.3",
+            "evidence_id": "t1-f80"
+          },
+          {
+            "x": 1789452000.0,
+            "label": "15 Sep 11:30",
+            "value": "11.3",
+            "evidence_id": "t1-f81"
+          },
+          {
+            "x": 1789455600.0,
+            "label": "15 Sep 12:30",
+            "value": "11.25",
+            "evidence_id": "t1-f82"
+          },
+          {
+            "x": 1789459200.0,
+            "label": "15 Sep 13:30",
+            "value": "11.15",
+            "evidence_id": "t1-f83"
+          },
+          {
+            "x": 1789462800.0,
+            "label": "15 Sep 14:30",
+            "value": "11.05",
+            "evidence_id": "t1-f84"
+          },
+          {
+            "x": 1789466400.0,
+            "label": "15 Sep 15:30",
+            "value": "10.85",
+            "evidence_id": "t1-f85"
+          },
+          {
+            "x": 1789470000.0,
+            "label": "15 Sep 16:30",
+            "value": "10.65",
+            "evidence_id": "t1-f86"
+          },
+          {
+            "x": 1789473600.0,
+            "label": "15 Sep 17:30",
+            "value": "10.5",
+            "evidence_id": "t1-f87"
+          },
+          {
+            "x": 1789477200.0,
+            "label": "15 Sep 18:30",
+            "value": "10.45",
+            "evidence_id": "t1-f88"
+          },
+          {
+            "x": 1789480800.0,
+            "label": "15 Sep 19:30",
+            "value": "10.45",
+            "evidence_id": "t1-f89"
+          },
+          {
+            "x": 1789484400.0,
+            "label": "15 Sep 20:30",
+            "value": "10.45",
+            "evidence_id": "t1-f90"
+          },
+          {
+            "x": 1789488000.0,
+            "label": "15 Sep 21:30",
+            "value": "10.5",
+            "evidence_id": "t1-f91"
+          },
+          {
+            "x": 1789491600.0,
+            "label": "15 Sep 22:30",
+            "value": "10.55",
+            "evidence_id": "t1-f92"
+          },
+          {
+            "x": 1789495200.0,
+            "label": "15 Sep 23:30",
+            "value": "10.6",
+            "evidence_id": "t1-f93"
+          }
+        ],
+        "source_ids": [
+          "S56"
+        ],
+        "task_id": "t1"
+      }
+    ],
+    "calculations": [],
+    "pending_slots": [],
+    "retrieval_coverage": [],
+    "retrieval_plan": [
+      {
+        "task_id": "t1",
+        "operation": "lookup",
+        "kind": "marine",
+        "parameters": [
+          "wave_height",
+          "wave_direction",
+          "wave_period"
+        ],
+        "candidates": [
+          {
+            "tool": "marine",
+            "selected": true,
+            "available": true,
+            "reason": "Modeled waves at a sea grid cell within 50 km of a named coastal place; no named sea-area identity, official bulletin (S58/S59 remain unconnected) or navigation/fishing clearance",
+            "sources": [
+              {
+                "source_id": "S56",
+                "product": "Open-Meteo marine wave delivery",
+                "registry_status": "prototype_adapter_tested"
+              }
+            ]
+          }
+        ],
+        "status": "answered",
+        "returned_source_ids": [
+          "S56",
+          "S61"
+        ]
+      }
+    ],
+    "document_evidence": [],
+    "resolved_points": {
+      "Kochi": {
+        "id": "1273874",
+        "name": "Kochi",
+        "latitude": 9.93988,
+        "longitude": 76.26022,
+        "feature": "PPL",
+        "admin1": "State of Kerala",
+        "admin2": "Ernākulam",
+        "modified": "2025-06-06",
+        "name_match_basis": "canonical",
+        "other_alias_matches": 0,
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:1273874",
+        "label": "Kochi, Ernākulam, State of Kerala",
+        "coordinates": {
+          "latitude": 9.93988,
+          "longitude": 76.26022
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1273874",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Kochi"
+      }
+    },
+    "task_coverage": {
+      "requested": 1,
+      "completed": 1,
+      "incomplete_ids": []
+    }
+  },
+  "observed_keys": [
+    "answer",
+    "answered_at_utc",
+    "calculations",
+    "charts",
+    "choices",
+    "citations",
+    "conversation_id",
+    "document_evidence",
+    "expires_at_utc",
+    "facts",
+    "follow_up",
+    "notes",
+    "operational_eligible",
+    "pending_slots",
+    "plan",
+    "question",
+    "resolved_points",
+    "retrieval_coverage",
+    "retrieval_plan",
+    "schema_version",
+    "status",
+    "task_coverage",
+    "task_results",
+    "trace"
+  ],
+  "non_empty": [
+    "answer",
+    "answered_at_utc",
+    "charts",
+    "citations",
+    "conversation_id",
+    "expires_at_utc",
+    "facts",
+    "notes",
+    "operational_eligible",
+    "plan",
+    "question",
+    "resolved_points",
+    "retrieval_plan",
+    "schema_version",
+    "status",
+    "task_coverage",
+    "task_results",
+    "trace"
+  ]
+}

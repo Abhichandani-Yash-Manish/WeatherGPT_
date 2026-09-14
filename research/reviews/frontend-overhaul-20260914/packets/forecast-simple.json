@@ -1,0 +1,337 @@
+{
+  "case": "forecast-simple",
+  "request": {
+    "question": "Will it rain in Ahmedabad, Gujarat tomorrow morning?"
+  },
+  "base": "http://127.0.0.1:8765",
+  "http_status": 200,
+  "duration_s": 36.8,
+  "packet": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "a558ccf5-2313-45b1-a9e7-8b571369f90d",
+    "question": "Will it rain in Ahmedabad, Gujarat tomorrow morning?",
+    "status": "answered",
+    "answer": "Ahmedabad · 15 Sep, 06:30–15 Sep, 12:30 IST: Forecast precipitation: 0.3 mm. Source: GFS forecast; conditions can change.",
+    "facts": [
+      {
+        "id": "t1-f1",
+        "label": "Forecast rainfall",
+        "value": "0.3",
+        "unit": "mm",
+        "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+        "start": "2026-09-15T06:30:00+05:30",
+        "end": "2026-09-15T12:30:00+05:30",
+        "source_id": "S21",
+        "method": "preceding_hour_sum",
+        "source_locators": [
+          "$.hourly.precipitation[26]",
+          "$.hourly.precipitation[27]",
+          "$.hourly.precipitation[28]",
+          "$.hourly.precipitation[29]",
+          "$.hourly.precipitation[30]",
+          "$.hourly.precipitation[31]"
+        ],
+        "parameter": "precipitation",
+        "entity_id": "geonames:1279233",
+        "evidence_version": "441543f4a00cee5a203aabd9cc28dabc517378e3cae00023db2b2998e4baf1b9",
+        "citation_ids": [
+          "t1-c-441543f4a00cee5a203aabd9cc28dabc517378e3cae00023db2b2998e4baf1b9"
+        ],
+        "task_id": "t1"
+      }
+    ],
+    "citations": [
+      {
+        "source_id": "S21",
+        "provider": "Open-Meteo",
+        "product": "GFS forecast delivery",
+        "evidence_kind": "model_forecast",
+        "url": "https://api.open-meteo.com/v1/gfs?latitude=23.02579&longitude=72.58727&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "response_sha256": "441543f4a00cee5a203aabd9cc28dabc517378e3cae00023db2b2998e4baf1b9",
+        "raw_relative_path": "429a661016f3c833fdc0b2b35466864fa6d174641168bb3916754792cc3890da/fb2d67abe48f410d8a775a85595f60ee/blobs/441543f4a00cee5a203aabd9cc28dabc517378e3cae00023db2b2998e4baf1b9.bin",
+        "published_job_id": "429a661016f3c833fdc0b2b35466864fa6d174641168bb3916754792cc3890da",
+        "source_locators": [
+          "$.hourly.precipitation[26]",
+          "$.hourly.precipitation[27]",
+          "$.hourly.precipitation[28]",
+          "$.hourly.precipitation[29]",
+          "$.hourly.precipitation[30]",
+          "$.hourly.precipitation[31]"
+        ],
+        "retrieved_at_utc": "2026-09-14T11:09:16.254474+00:00",
+        "issue_time_utc": null,
+        "id": "t1-c-441543f4a00cee5a203aabd9cc28dabc517378e3cae00023db2b2998e4baf1b9"
+      },
+      {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/1279233",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      }
+    ],
+    "notes": [
+      "Tomorrow is 2026-09-15. Morning defaults to 06:30–12:30 IST.",
+      "Model forecasts at the selected place point, not observations or district averages. Source model run time and local representativeness remain unverified."
+    ],
+    "choices": [],
+    "follow_up": null,
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-14T11:08:39.494605+00:00",
+    "expires_at_utc": "2026-09-14T12:09:16.254474+00:00",
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 3012,
+        "output_tokens": 297,
+        "duration_seconds": 35.834820875
+      },
+      "generation": {
+        "provider": "typed_task_renderers",
+        "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+      },
+      "tools": [
+        {
+          "name": "gazetteer_search",
+          "query": {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "",
+            "kind": "settlement"
+          },
+          "matches": 1
+        },
+        {
+          "name": "point_forecast",
+          "location": "Ahmedabad, Ahmadābād, State of Gujarāt",
+          "status": "prototype_answer",
+          "refresh": {
+            "state": "succeeded",
+            "job_id": "429a661016f3c833fdc0b2b35466864fa6d174641168bb3916754792cc3890da",
+            "worker_state": "succeeded",
+            "claims_this_action": 1,
+            "job_provider_attempts": 1,
+            "retry_due_utc_epoch": 1789383600.0,
+            "message": "Collection completed; answer checked against the stored evidence."
+          }
+        },
+        {
+          "name": "forecast",
+          "task_id": "t1",
+          "status": "answered"
+        }
+      ],
+      "provider": "local_ollama",
+      "context_resolution": {
+        "action": "new",
+        "changed_fields": [],
+        "inherited_fields": []
+      },
+      "duration_seconds": 36.794
+    },
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "Ahmedabad",
+          "state": "Gujarat",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [
+        "Tomorrow is 2026-09-15. Morning defaults to 06:30–12:30 IST."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "Will it rain in Ahmedabad, Gujarat tomorrow morning?",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-15T06:30:00+05:30",
+          "end_local": "2026-09-15T12:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "new",
+      "changed_fields": [],
+      "intent": "forecast",
+      "start_local": "2026-09-15T06:30:00+05:30",
+      "end_local": "2026-09-15T12:30:00+05:30",
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "task_results": [
+      {
+        "id": "t1",
+        "request": {
+          "request_quote": "Will it rain in Ahmedabad, Gujarat tomorrow morning?",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-15T06:30:00+05:30",
+          "end_local": "2026-09-15T12:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        },
+        "status": "answered",
+        "answer": "Ahmedabad · 15 Sep, 06:30–15 Sep, 12:30 IST: Forecast precipitation: 0.3 mm. Source: GFS forecast; conditions can change.",
+        "fact_ids": [
+          "t1-f1"
+        ],
+        "passage_ids": []
+      }
+    ],
+    "charts": [],
+    "calculations": [],
+    "pending_slots": [],
+    "retrieval_coverage": [],
+    "retrieval_plan": [
+      {
+        "task_id": "t1",
+        "operation": "lookup",
+        "kind": "forecast",
+        "parameters": [
+          "precipitation"
+        ],
+        "candidates": [
+          {
+            "tool": "forecast_summary",
+            "selected": true,
+            "available": true,
+            "reason": "Exact-window GFS model summary",
+            "sources": [
+              {
+                "source_id": "S21",
+                "product": "Open-Meteo GFS forecast delivery",
+                "registry_status": "prototype_adapter_tested"
+              }
+            ]
+          },
+          {
+            "tool": "hourly_forecast",
+            "selected": false,
+            "available": true,
+            "reason": "Hourly evidence; exact onset and whole-period probability unavailable",
+            "sources": [
+              {
+                "source_id": "S62",
+                "product": "Open-Meteo best-match extended hourly forecast",
+                "registry_status": "prototype_adapter_tested"
+              }
+            ]
+          }
+        ],
+        "status": "answered",
+        "returned_source_ids": [
+          "S21",
+          "S61"
+        ]
+      }
+    ],
+    "document_evidence": [],
+    "resolved_points": {
+      "Ahmedabad": {
+        "id": "1279233",
+        "name": "Ahmedabad",
+        "latitude": 23.02579,
+        "longitude": 72.58727,
+        "feature": "PPL",
+        "admin1": "State of Gujarāt",
+        "admin2": "Ahmadābād",
+        "modified": "2024-01-06",
+        "name_match_basis": "canonical",
+        "other_alias_matches": 0,
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:1279233",
+        "label": "Ahmedabad, Ahmadābād, State of Gujarāt",
+        "coordinates": {
+          "latitude": 23.02579,
+          "longitude": 72.58727
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1279233",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Ahmedabad"
+      }
+    },
+    "task_coverage": {
+      "requested": 1,
+      "completed": 1,
+      "incomplete_ids": []
+    }
+  },
+  "observed_keys": [
+    "answer",
+    "answered_at_utc",
+    "calculations",
+    "charts",
+    "choices",
+    "citations",
+    "conversation_id",
+    "document_evidence",
+    "expires_at_utc",
+    "facts",
+    "follow_up",
+    "notes",
+    "operational_eligible",
+    "pending_slots",
+    "plan",
+    "question",
+    "resolved_points",
+    "retrieval_coverage",
+    "retrieval_plan",
+    "schema_version",
+    "status",
+    "task_coverage",
+    "task_results",
+    "trace"
+  ],
+  "non_empty": [
+    "answer",
+    "answered_at_utc",
+    "citations",
+    "conversation_id",
+    "expires_at_utc",
+    "facts",
+    "notes",
+    "operational_eligible",
+    "plan",
+    "question",
+    "resolved_points",
+    "retrieval_plan",
+    "schema_version",
+    "status",
+    "task_coverage",
+    "task_results",
+    "trace"
+  ]
+}

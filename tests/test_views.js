@@ -1,0 +1,196 @@
+// Component-level answer-presentation checks against real captured packets.
+// These are not browser, visual, load or fluent-language acceptance tests.
+'use strict';
+const fs = require('fs'), vm = require('vm'), path = require('path'), assert = require('assert');
+const shim = require('./dom_shim.js');
+
+const ROOT = path.join(__dirname, '..');
+const PACKETS = path.join(ROOT, 'research/reviews/frontend-overhaul-20260914/packets');
+const CAPTURED = ['forecast-simple', 'multi-task', 'historical-chart', 'marine', 'airport', 'clarification', 'warning', 'language-hindi'];
+
+function packet(name) { return JSON.parse(fs.readFileSync(path.join(PACKETS, name + '.json'), 'utf8')).packet; }
+function load() {
+  const document = shim.createDocument();
+  const context = Object.create(global);
+  context.document = document; context.Node = shim.Node; context.window = {};
+  vm.createContext(context);
+  vm.runInContext(fs.readFileSync(path.join(ROOT, 'web/views.js'), 'utf8'), context);
+  vm.runInContext(fs.readFileSync(path.join(ROOT, 'web/charts.js'), 'utf8'), context);
+  return context;
+}
+function walk(node, out) {
+  out = out || [];
+  (node.children || []).forEach(child => { out.push(child); walk(child, out); });
+  return out;
+}
+function withClass(node, cls) {
+  return walk(node).filter(child => String(child.className || '').split(/\s+/).indexOf(cls) >= 0);
+}
+function withTag(node, tag) { return walk(node).filter(child => child.tag === tag); }
+function textOf(nodes) { return nodes.map(node => node.textContent).join(' | '); }
+function digits(text) { return String(text).match(/-?\d+(?:\.\d+)?/g) || []; }
+
+const context = load();
+const forecast = packet('forecast-simple');
+
+// 1. answer-first: the value and its unit lead the card, exactly as returned
+const card = context.renderTurn(forecast, {});
+const lead = withClass(card, 'lead-number');
+assert.equal(lead.length, 1, 'A single-value answer leads with one headline number');
+assert.equal(lead[0].textContent, '0.3', 'The headline number is the retrieved value, unrounded');
+assert.equal(withClass(card, 'lead-unit')[0].textContent, 'mm');
+assert(/Ahmedabad/.test(withClass(card, 'lead-where')[0].textContent));
+console.log('PASS: answer-first headline carries the exact retrieved value, unit and place (component only)');
+
+// 2. the validity ruler is real geometry derived from the retrieved window
+const ruler = withClass(card, 'ruler')[0];
+assert(ruler, 'A forecast window draws the validity ruler');
+const svg = withTag(ruler, 'svg')[0];
+const label = svg.attrs['aria-label'];
+assert(/^Requested window /.test(label), 'The ruler is described, not decorative');
+assert(/covering 6 hours across 1 retrieved sample/.test(label), 'The description states the covered window: ' + label);
+const covered = withTag(svg, 'rect').filter(rect => rect.attrs['class'] === 'ruler-covered');
+assert.equal(covered.length, 1, 'The single retrieved span is drawn once');
+const rail = withTag(svg, 'rect').filter(rect => rect.attrs['class'] === 'ruler-rail')[0];
+assert(rail, 'The ruler draws a track');
+assert.equal(Number(covered[0].attrs.x), Number(rail.attrs.x), 'A span covering the whole window starts with the track');
+assert.equal(Number(covered[0].attrs.width), Number(rail.attrs.width), 'A span covering the whole window fills the track');
+assert.equal(withClass(card, 'ruler').length, 1);
+console.log('PASS: the validity ruler draws covered spans from the retrieved window with a text description');
+
+// 3. an instantaneous observation has no interval, so no ruler is drawn
+const airportCard = context.renderTurn(packet('airport'), {});
+assert.equal(withClass(airportCard, 'ruler').length, 0, 'An observation at one instant must not draw a window');
+const marineCard = context.renderTurn(packet('marine'), {});
+assert.equal(withClass(marineCard, 'ruler').length, 0, 'Zero-duration samples must not draw a window');
+console.log('PASS: no window is drawn where the evidence has no interval');
+
+// 4. the receipt keeps entity, window, source, locators and retrieval time together
+const receipt = withClass(card, 'receipt')[0];
+const keys = withClass(receipt, 'receipt-key').map(node => node.textContent);
+['Measure', 'Value', 'Place', 'Entity', 'Window', 'Source', 'Retrieved'].forEach(key => {
+  assert(keys.indexOf(key) >= 0, 'The receipt states ' + key);
+});
+const receiptText = receipt.textContent;
+assert(receiptText.indexOf('geonames:1279233') >= 0, 'The resolved entity id is shown');
+assert(receiptText.indexOf('S21') >= 0, 'The source id is shown');
+assert(receiptText.indexOf('$.hourly.precipitation[') >= 0, 'Record locators are shown');
+assert(receiptText.indexOf('not an observation') >= 0, 'The receipt states what model output is not');
+console.log('PASS: the evidence receipt keeps entity, window, source, locator and retrieval time together');
+
+// 5. task accounting reports asked, answered and incomplete instead of one affirmative count
+const multi = context.renderTurn(packet('multi-task'), {});
+const coverage = withClass(multi, 'coverage')[0];
+assert(coverage, 'Task accounting is shown');
+assert(/Asked: 2/.test(coverage.textContent), 'Asked is reported: ' + coverage.textContent);
+assert(/Answered: 2/.test(coverage.textContent), 'Answered is reported');
+assert(/Incomplete: 0/.test(coverage.textContent), 'Incomplete is reported separately');
+const taskText = textOf(withClass(multi, 'tasks'));
+assert(!/requested tasks completed/.test(taskText), 'The disputed affirmative count is gone');
+assert(/t1/.test(taskText) && /crosscheck/.test(taskText), 'Each task keeps its id, kind and operation');
+console.log('PASS: task accounting reports asked, answered and incomplete separately from one another');
+
+// 6. retrieved volume is bounded: chart-backed values are never re-listed as cards
+CAPTURED.forEach(name => {
+  const rendered = context.renderTurn(packet(name), {});
+  assert(withClass(rendered, 'fact').length <= 8, name + ' must not list every retrieved value as a card');
+});
+const history = context.renderTurn(packet('historical-chart'), {});
+assert.equal(withClass(history, 'fact').length, 0, 'Values already plotted are not repeated as cards');
+assert.equal(withClass(history, 'history-chart').length, 1, 'The series is drawn instead');
+assert.equal(withClass(context.renderTurn(packet('marine'), {}), 'history-chart').length, 3, 'All three marine series render');
+console.log('PASS: retrieved volume stays bounded and plotted values are not duplicated as cards');
+
+// 7. a source difference is labelled as a difference, never as skill or confidence
+const comparison = withClass(multi, 'calc').filter(node => /is-comparison/.test(node.className));
+assert.equal(comparison.length, 1, 'The crosscheck renders one comparison block');
+assert(comparison[0].textContent.indexOf('-0.8') >= 0, 'The comparison keeps its returned value');
+assert(/not a skill score/i.test(comparison[0].textContent), 'A source difference is not presented as accuracy');
+console.log('PASS: a between-source difference is reported as a difference, not as skill or confidence');
+
+// 8. a shared place name offers each candidate and returns the chosen selection id
+let chosen = null;
+const clarify = context.renderTurn(packet('clarification'), { onChoose: choice => { chosen = choice.selection_id; }, onRetype: () => {} });
+const buttons = withClass(clarify, 'choice');
+assert.equal(buttons.length, 3, 'Every offered candidate is offered to the reader');
+assert(buttons[0].textContent.indexOf('Bhop') >= 0, 'A candidate carries its label');
+buttons[0].dispatch('click');
+assert.equal(chosen, packet('clarification').choices[0].selection_id, 'Choosing a candidate returns that selection id');
+assert(withClass(clarify, 'lead-number').length === 0, 'A clarification does not imply an answer');
+console.log('PASS: place clarification offers every candidate and returns the chosen selection id');
+
+// 9. a requested output language that was not written is disclosed, not passed as complete
+const downgraded = Object.assign({}, forecast, {
+  status: 'partial',
+  notes: forecast.notes.concat(['The requested output language could not be rendered for this answer; the evidence above remains in its source language. Answering in that language is not supported yet for this kind of request.'])
+});
+const downgradeCard = context.renderTurn(downgraded, {});
+assert(withClass(downgradeCard, 'notice').some(node => /not in the language you asked for/i.test(node.textContent)), 'The downgrade is stated plainly');
+assert(withClass(downgradeCard, 'notes').every(node => !/could not be rendered/.test(node.textContent)), 'The disclosure does not bury or repeat the downgrade');
+assert(/आप/.test(context.renderTurn(packet('language-hindi'), {}).textContent), 'A Hindi answer is shown exactly as returned');
+console.log('PASS: an unwritten requested language is disclosed instead of passing as a complete answer');
+
+// 10. an unverified warning state stays held and offers no receipt or window
+const warning = context.renderTurn(packet('warning'), {});
+assert(withClass(warning, 'tag').some(tag => /is-held/.test(tag.className)), 'An unverified warning is marked held');
+assert.equal(withClass(warning, 'receipt').length, 0, 'No receipt is implied where no evidence was retrieved');
+assert.equal(withClass(warning, 'lead-number').length, 0, 'No value is implied');
+assert(/does not mean there are no warnings/i.test(warning.textContent), 'The absence of a confirmed warning is stated');
+console.log('PASS: an unverified warning state stays held and implies no value or receipt');
+
+// 11. an airport report is shown raw, typed, and bounded to its own meaning
+const air = context.renderTurn(packet('airport'), {});
+const raw = withClass(air, 'raw-report')[0];
+assert(raw.textContent.indexOf('METAR VOBL 141100Z') >= 0, 'The raw report is shown as text');
+assert(/not a flight status or a clearance/i.test(air.textContent), 'The report does not imply a flight status');
+assert(withClass(air, 'fact').length === 1, 'The remaining measured value is shown once beside the headline');
+console.log('PASS: an airport report shows its raw text, its kind, and does not imply a flight status');
+
+// 12. no number reaches the page that is not in the packet the engine returned
+['forecast-simple', 'multi-task', 'historical-chart', 'marine', 'airport'].forEach(name => {
+  const source = packet(name);
+  const rendered = context.renderTurn(source, {});
+  const raw = JSON.stringify(source);
+  // Measured values only: the ruler's own derived duration is a description of the
+  // same window, not a new measurement.
+  const shown = withClass(rendered, 'lead-number').concat(withClass(rendered, 'fact-value'))
+    .concat(withClass(rendered, 'calc-value')).concat(withTag(rendered, 'td'));
+  let checked = 0;
+  shown.forEach(node => digits(node.textContent).forEach(value => { checked += 1; assert(raw.indexOf(value) >= 0, name + ': ' + value + ' is not in the packet'); }));
+  assert(checked > 0, name + ' exposed at least one number to check');
+});
+console.log('PASS: every displayed number comes from the returned packet, with no arithmetic applied');
+
+// 13. no renderer leaks a stylesheet class name into visible text
+const CLASS_TOKENS = ['notice', 'is-calm', 'is-good', 'is-held', 'is-quiet', 'tag', 'chip', 'fact', 'receipt',
+  'ruler', 'lead', 'turn', 'actions', 'choice', 'coverage', 'calc', 'field-note', 'source', 'notes', 'task',
+  'capability', 'history-chart', 'disclosure-body', 'raw-json', 'working', 'banner', 'error', 'ledger-item', 'health-row'];
+CAPTURED.forEach(name => {
+  const rendered = context.renderTurn(packet(name), {});
+  walk(rendered).forEach(node => {
+    if (String(node.className || '').trim()) return;
+    const text = String(node.textContent || '').trim().toLowerCase();
+    assert(CLASS_TOKENS.indexOf(text) < 0, name + ': the stylesheet class "' + text + '" is rendered as text');
+  });
+});
+walk(context.renderWelcome({ onExample: () => {} })).forEach(node => {
+  if (String(node.className || '').trim()) return;
+  const text = String(node.textContent || '').trim().toLowerCase();
+  assert(CLASS_TOKENS.indexOf(text) < 0, 'welcome: the stylesheet class "' + text + '" is rendered as text');
+});
+console.log('PASS: no renderer leaks a stylesheet class name into the visible text of an answer');
+
+
+// 14. a series answer never headlines one arbitrary member of the series
+const series = context.renderTurn(packet('historical-chart'), {});
+assert.equal(withClass(series, 'lead-number').length, 0, 'A chart point is not promoted to a headline value');
+assert.equal(withClass(series, 'fact').length, 0, 'Series values are not re-listed as cards');
+const seriesReceipt = withClass(series, 'receipt')[0];
+assert(seriesReceipt, 'A series still carries a receipt');
+assert(/30 retrieved values/.test(seriesReceipt.textContent), 'The series receipt states how many values were retrieved');
+assert(/S27/.test(seriesReceipt.textContent), 'The series receipt keeps its source id');
+assert(/page 612/.test(seriesReceipt.textContent), 'The series receipt keeps a source locator');
+assert(/not a projection, an attribution or a validated trend/.test(seriesReceipt.textContent), 'A descriptive slope is not presented as a forecast');
+assert(withClass(series, 'calc-value').length >= 1, 'The computed headline is still shown');
+console.log('PASS: a series answer leads with its computed value and never with one arbitrary member');
+

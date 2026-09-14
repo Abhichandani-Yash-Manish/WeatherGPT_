@@ -5,6 +5,8 @@ import json
 import re
 import secrets
 import sqlite3
+import time
+from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlsplit
@@ -12,7 +14,7 @@ from urllib.parse import urlsplit
 from .answers import AnswerService, ROOT
 from .ingestion import IngestionDB, run_one
 from .rag import context_from_answer
-from .transport import parsed, utcnow
+from .transport import SourceError, parsed, utcnow
 
 DEFAULT_DATABASE=ROOT/'data/runtime/ingestion/ingestion.sqlite'
 DEFAULT_RAW=ROOT/'data/runtime/ingestion/raw'
@@ -100,6 +102,108 @@ class Workspace:
                                       'Collection is '+job['state']+'. Retry timing and request limits remain in force; no background worker is running.')}
         return packet
 
+    # Local retention and health read models. They expose the store to its owner
+    # on loopback only; question text is never written to a log. Counts and job
+    # states here are not forecast skill, coverage or operational readiness.
+    def conversation_store(self):
+        return self.service.ingestion_database.parent/'conversations.sqlite'
+
+    def conversations(self,limit=40):
+        path=self.conversation_store()
+        limit=max(1,min(int(limit),200))
+        if not path.exists():
+            return {'schema_version':'conversation-ledger-v1','total':0,'limit':limit,'conversations':[],
+                    'note':'No local conversation store exists yet; the first question creates it.'}
+        db=sqlite3.connect(path)
+        try:
+            rows=db.execute('SELECT id,payload,updated FROM conversations ORDER BY updated DESC LIMIT ?',(limit,)).fetchall()
+            total=db.execute('SELECT count(*) FROM conversations').fetchone()[0]
+        finally:db.close()
+        items=[]
+        for cid,payload,updated in rows:
+            try:state=json.loads(payload) if payload else {}
+            except ValueError:state={}
+            history=state.get('history') or []
+            opening=next((turn.get('content') for turn in history if turn.get('role')=='user'),'')
+            items.append({'id':cid,'updated':updated,'turns':len(history),
+                          'asked':sum(1 for turn in history if turn.get('role')=='user'),
+                          'opening_question':excerpt(opening)})
+        return {'schema_version':'conversation-ledger-v1','total':total,'limit':limit,'conversations':items,
+                'note':'Stored on this machine for the person who asked. Excerpts are served over loopback only and never written to logs.'}
+
+    def conversation_transcript(self,cid):
+        _conversation_id(cid)
+        path=self.conversation_store()
+        if not path.exists():raise SourceError('This conversation is not in the local store. Start a new conversation.')
+        db=sqlite3.connect(path)
+        try:row=db.execute('SELECT payload,updated FROM conversations WHERE id=?',(cid,)).fetchone()
+        finally:db.close()
+        if row is None:raise SourceError('This conversation is not in the local store. Start a new conversation.')
+        try:state=json.loads(row[0]) if row[0] else {}
+        except ValueError:state={}
+        turns=[{'role':turn.get('role'),'content':turn.get('content')} for turn in (state.get('history') or []) if turn.get('content')]
+        return {'schema_version':'conversation-transcript-v1','id':cid,'updated':row[1],'turns':turns,
+                'note':'Restored transcript. Earlier answers are timestamped receipts from the moment they were retrieved; ask again before relying on one.'}
+
+    def delete_conversation(self,cid):
+        _conversation_id(cid)
+        path=self.conversation_store()
+        if not path.exists():raise SourceError('This conversation is not in the local store.')
+        with sqlite3.connect(path) as db:removed=db.execute('DELETE FROM conversations WHERE id=?',(cid,)).rowcount
+        return {'schema_version':'conversation-delete-v1','id':cid,'deleted':max(0,removed),
+                'note':'Removed from the local conversation store. Saved source documents and published evidence are unaffected.'}
+
+    def health(self):
+        # Streams are pseudonymous point identities, so this reports what was
+        # collected and when, never which coordinates made up a stream.
+        database=self.service.ingestion_database
+        if not database.exists():
+            return {'schema_version':'source-health-v1','available':False,'products':[],'job_states':{},'active_leases':0,'cooldowns':[],'total_jobs':0,'streams':0,
+                    'note':'No ingestion store exists yet, so there is no collection history to report.'}
+        now=time.time()
+        db=sqlite3.connect(database)
+        try:
+            specs=db.execute('SELECT id,spec,state FROM jobs').fetchall()
+            commits=dict((job_id,committed) for job_id,committed in db.execute('SELECT job_id,committed FROM versions'))
+            job_states=dict(db.execute('SELECT state,count(*) FROM jobs GROUP BY state').fetchall())
+            streams=db.execute('SELECT count(DISTINCT stream) FROM jobs').fetchone()[0]
+            leases=db.execute('SELECT count(*) FROM requests WHERE finished=0 AND lease_until>?',(now,)).fetchone()[0]
+            cooldowns=db.execute('SELECT provider,until FROM cooldowns WHERE until>? ORDER BY until',(now,)).fetchall()
+        finally:db.close()
+        products={}
+        for job_id,spec,state in specs:
+            try:product=(json.loads(spec) or {}).get('product') or 'unlabelled'
+            except (TypeError,ValueError):product='unlabelled'
+            entry=products.setdefault(product,{'product':product,'jobs':0,'states':{},'newest_commit_utc':None})
+            entry['jobs']+=1;entry['states'][state]=entry['states'].get(state,0)+1
+            committed=commits.get(job_id)
+            if committed is not None:
+                stamp_value=stamp(committed)
+                if entry['newest_commit_utc'] is None or committed>entry['newest_commit_utc_value']:
+                    entry['newest_commit_utc']=stamp_value;entry['newest_commit_utc_value']=committed
+        for entry in products.values():entry.pop('newest_commit_utc_value',None)
+        return {'schema_version':'source-health-v1','available':True,
+                'products':sorted(products.values(),key=lambda entry:entry['product']),
+                'job_states':job_states,'total_jobs':len(specs),'streams':streams,'active_leases':leases,
+                'cooldowns':[{'provider':provider,'until_utc':stamp(until)} for provider,until in cooldowns],
+                'note':'Read-only projection of the local ingestion store: which products were collected, what happened to those jobs, and when the newest evidence was committed. A stream is a pseudonymous point identity, so no requested location is shown here. These counts are not coverage, forecast skill or operational readiness.'}
+
+
+def excerpt(text,limit=96):
+    text=' '.join(str(text or '').split())
+    return text if len(text)<=limit else text[:limit-1].rstrip()+'\u2026'
+
+
+def stamp(value):
+    if value is None:return None
+    return datetime.fromtimestamp(float(value),timezone.utc).isoformat()
+
+
+def _conversation_id(cid):
+    import uuid
+    try:uuid.UUID(cid)
+    except (ValueError,TypeError,AttributeError):raise SourceError('Invalid conversation identifier')
+
 
 def make_server(workspace, port=8765):
     token=secrets.token_urlsafe(32)
@@ -121,18 +225,45 @@ def make_server(workspace, port=8765):
         def allowed_host(self):
             return self.headers.get('Host')=='127.0.0.1:'+str(self.server.server_port)
 
+        def authorized(self):
+            return hmac.compare_digest(self.headers.get('X-WeatherGPT-Token',''),token)
+
         def do_GET(self):
             if not self.allowed_host():return self.respond(403,{'error':'Use the loopback URL printed by the server'})
             path=urlsplit(self.path).path
             if path.startswith('/api/documents/'):
                 try:return self.respond(200,workspace.bulletin_pdf(path.removeprefix('/api/documents/')),'application/pdf')
                 except (ValueError,OSError,KeyError,sqlite3.Error):return self.respond(404,{'error':'Verified source document is unavailable'})
-            assets={'/':('index.html','text/html'),'/app.js':('app.js','text/javascript'),'/charts.js':('charts.js','text/javascript'),'/style.css':('style.css','text/css')}
+            # Stored conversations and collection health are the owner's data, so they
+            # require the session token as well as the loopback Host check. Any other
+            # API path keeps the existing 404 behaviour.
+            if path.startswith('/api/'):
+                if not (path=='/api/conversations' or path=='/api/health' or path.startswith('/api/conversations/')):
+                    return self.respond(404,{'error':'Not found'})
+                if not self.authorized():return self.respond(403,{'error':'Reload this local workspace before reading stored conversations'})
+                try:
+                    if path=='/api/conversations':return self.respond(200,workspace.conversations())
+                    if path=='/api/health':return self.respond(200,workspace.health())
+                    if path.startswith('/api/conversations/'):return self.respond(200,workspace.conversation_transcript(path.removeprefix('/api/conversations/')))
+                    return self.respond(404,{'error':'Not found'})
+                except ValueError as exc:return self.respond(400,{'error':str(exc)})
+                except (OSError,sqlite3.Error):return self.respond(503,{'error':'The local evidence store is unavailable. Check its files and retry.'})
+            assets={'/':('index.html','text/html'),'/app.js':('app.js','text/javascript'),'/views.js':('views.js','text/javascript'),'/charts.js':('charts.js','text/javascript'),'/style.css':('style.css','text/css')}
             if path not in assets:return self.respond(404,{'error':'Not found'})
             filename,kind=assets[path]
-            text=(ROOT/'web'/filename).read_text()
+            try:text=(ROOT/'web'/filename).read_text()
+            except OSError:return self.respond(404,{'error':'This workspace file is missing; restart the workspace from a complete checkout.'})
             if filename=='index.html':text=text.replace('__WORKSPACE_TOKEN__',token)
             self.respond(200,text,kind)
+
+        def do_DELETE(self):
+            if not self.allowed_host() or not self.authorized():
+                return self.respond(403,{'error':'Reload this local workspace before deleting a stored conversation'})
+            path=urlsplit(self.path).path
+            if not path.startswith('/api/conversations/'):return self.respond(404,{'error':'Not found'})
+            try:return self.respond(200,workspace.delete_conversation(path.removeprefix('/api/conversations/')))
+            except ValueError as exc:return self.respond(400,{'error':str(exc)})
+            except (OSError,sqlite3.Error):return self.respond(503,{'error':'The local evidence store is unavailable. Check its files and retry.'})
 
         def do_POST(self):
             origin='http://127.0.0.1:'+str(self.server.server_port)

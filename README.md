@@ -1,45 +1,87 @@
 # WeatherGPT — SIH26068
 
-**Current implementation:** [Marine wave and river discharge tools](docs/23-marine-and-river-tools.md) answer waves near a coastal place and modeled GloFAS discharge near a resolved place, naming the answering model cell and its distance, and refusing to substitute either for an observed water level, danger level, tide or official bulletin. [Engine context, language disclosure and task dependency](docs/22-engine-context-repairs.md) keeps a measure you name in a follow-up, refuses to call an answer complete when the requested output language was not written, and lets an explanation read the evidence of the task it explains. [Bulletin context and qualified guidance](docs/20-bulletin-parent-context.md) connects general and warning sections to crop passages, preserves source qualifications across explanations, and provides saved-PDF downloads. Earlier source cross-checks, Hinglish forecasts and airport tools remain connected. Follow the [standing product plan](data/registry/product-progress.json) and the [critical full-solution review](docs/21-full-solution-critical-review.md), which records what is still missing and the earlier [progress plan](docs/14-product-review-and-progress-plan.md). Desktop work continues; hosting/sharing stays on hold.
+A local conversational weather prototype for India. Ask about a place and a time in your own words and get an answer that keeps its **source, its window and its retrieval time attached to every value** — backed by governed numerical adapters, published records and a local model.
 
-A local conversational weather prototype using **Ollama, source-backed forecasts and historical climate tables**. Ask ordinary questions, confirm ambiguous places and follow up in the same conversation. Nationwide and specialist operational acceptance remains incomplete.
+Nationwide and specialist **operational acceptance is not achieved**. This is an evidence-conscious prototype whose limits are part of the interface, not a finished service.
+
+![The workspace answering a point forecast](research/reviews/frontend-overhaul-20260914/after/desktop-forecast.png)
+
+## Run it
 
 ```sh
 python3 scripts/start_weather.py
 ```
 
-Open [WeatherGPT](http://127.0.0.1:8765) and reload any older tab. The launcher uses the installed `qwen3.6:latest` model; no paid model gateway is required. Forecast questions check stored evidence and can trigger a bounded refresh automatically.
+Open <http://127.0.0.1:8765>. The launcher starts installed Ollama if needed and uses `qwen3.6:latest`; set `WEATHERGPT_MODEL` to another installed model. No paid gateway is required, and the server answers only on loopback with a per-process session token.
 
-Try “kal ahmedabad me barish padne ki sambhavna kitni hai”, choose “Gujarat wala”, then ask “aur shaam ko?” and “kitni mm barish hogi us time?”. Or ask “What was Ahmedabad district rainfall in 2010?”—the historical source lookup returns **1096.8 mm** with provenance.
+Try “Will it rain in Ahmedabad, Gujarat tomorrow morning?”, then “And what about the afternoon?”. Or ask “Show the annual rainfall trend for Ahmedabad district, Gujarat from 1981 to 2010.”, or “कल अहमदाबाद में बारिश होगी क्या?” and choose the intended place.
 
-Read the [current specialist-tool results](docs/23-marine-and-river-tools.md): **374 passing automated tests** and nine recorded local-model turns, including a refused water-level request and two answers naming their model cell. The [previous engine-repair checkpoint](docs/22-engine-context-repairs.md) records **362 passing automated tests**, eight JavaScript component checks and seven recorded local-model turns, with the reproduced explanation and language failures addressed and the remaining gaps listed. The [previous context checkpoint](docs/20-bulletin-parent-context.md) records **356 passing automated tests**, 16 final real-model HTTP turns, 23 crop passages and 53 context-section instances replayed against sources. Four saved PDFs matched their hashes; a scoped desktop submission/context/download journey passed. The [previous 340-test checkpoint](docs/19-context-and-retrieval-coverage.md) and earlier reports retain their separate evidence. Partial answers and clarifications are counted separately from completed requests. Broad browser/mobile, language and scientific acceptance remain incomplete.
+## What works today
 
-This is structured retrieval-augmented answering: tools retrieve and calculate values, and the model interprets/explains. Hourly rain probability and up to seven daily ERA5 values per question are now supported. Actionable official warnings, exact rain onset, validated crop advice and route clearance remain unsupported. Published agricultural passages now use a versioned, crop/stage-filtered lexical and semantic retrieval path; unrestricted document grounding remains disabled. See the [current RAG readiness decision](data/registry/rag-readiness.json) and [living review checklist](docs/08-hardening-progress.md).
+Each answer is presented answer-first — an exact value with its unit and window — followed by a **validity ruler** of the covered source hours, a structured **evidence receipt** (entity, window, method, source, retrieval time, page/row locator, record paths, evidence id) and expandable disclosures for requested tasks, scope, sources and provenance.
 
-Try “What does the bulletin say about groundnut in Ahmedabad district, Gujarat?”, then “Show all the matching passages, not just three.” Or ask for cotton and groundnut in the same question. The original dated passages and saved PDF pages are available; individual field decisions remain unresolved. For another machine, install `requirements-bulletins.txt` and run `python3 scripts/setup_bulletin_retrieval.py` to fetch the pinned local embedding model.
+- **Point forecasts** at a named place or pinned coordinate: rainfall totals on whole source hours, hourly rain probability, temperature, feels-like temperature, wind and gusts, humidity and visibility, with a bounded refresh when stored evidence is stale.
+- **Historical and climate records**: published district rainfall and national climate lookups, comparisons, period totals, charts with exact-value and evidence-id inspection, and a short daily reanalysis window labelled as modeled.
+- **Specialist tools**: airport reports for supported ICAO codes (METAR observations and TAF forecasts, each with its own station and validity), modeled wave height, direction and period near a coastal place, and modeled river discharge near a resolved place — each naming the answering model cell and its distance.
+- **Published bulletins**: crop/stage passages with page locators and saved source PDFs you can open and download, kept separate from general and warning context.
+- **Conversation control**: follow-ups and corrections in one thread, clarify-on-ambiguity with every candidate offered, a stop control, elapsed time, a conversation ledger with search, restore and local delete, and a read-only collection-health panel.
+- **Portable output**: copy, print a stylesheet-stripped answer, save a turn as Markdown, download the JSON receipt, or save a whole stored conversation.
 
-Try “What is the chance of rain in Ahmedabad, Gujarat tomorrow morning?” or “Show daily rainfall in Ahmedabad city, Gujarat from 1 July through 7 July 2025, including the total.” ERA5 recent-date availability and all source/model distinctions remain explicit.
+## What is not connected
 
-Earlier milestones below are historical evidence, not current completion claims. The [extensive validation checkpoint](docs/11-extensive-validation-and-rag-gate.md) verified historical source transcription and numerical contracts before this conversation layer existed.
+The interface states these limits rather than filling the gaps:
 
-The [fourth repair batch and first grounded answer workflow](docs/10-grounded-answer-workflow.md) are implemented: place/time resolution, stored forecast selection, deterministic totals and cited answers. Verified with 130 tests, 16 saved-data answer scenarios and one governed live forecast request. Start there for the `answer` command and its explicit prototype limits.
+- **No official warning applicability.** CAP lifecycle diagnostics exist, but chat cannot confirm a current applicable official warning. Warning material is shown as reference. Rain, model output and a resolved document hash are never presented as an alert, and there is no subscription, delivery or update/cancel service.
+- **No live station observation for an arbitrary place**, no observed water level, gauge reading, danger level, flood extent, tide or current, and no road, route or travel clearance.
+- **No field or marine clearance**, no crop diagnosis, no pesticide dosage, and no flood-impact prediction.
+- **No invented scores.** No confidence, risk, suitability or probability value is computed for display.
+- **Language output is limited.** Hindi and Hinglish questions are understood in scoped paths, and a requested output language is expressible, but fluent Hindi or Gujarati output is **not achieved**; when the answer cannot be written in the requested language, it says so instead of passing as complete.
+- **Desktop web only.** Small screens are usable, but this is not mobile platform compliance, and voice is not implemented.
+- **Hosting and sharing remain on hold** at the user's request.
 
-Read the [national ingestion readiness review](research/reviews/national-readiness-20260912/review.md) for newly reproduced gaps and the next implementation gates.
+## How it is checked
 
-The [first hardening batch is verified](docs/06-hardening-batch-one.md): numeric interval/grid checks and validated cache publication, plus checkpoint protection. Broader coverage and ingestion gates remain open.
+```sh
+python3 -m pytest tests/ -q                          # 374 Python tests
+node tests/test_charts.js                            #  2 of 34 component checks
+node tests/test_views.js                             # 14
+node tests/test_bulletin_ui.js                       #  5
+node tests/test_conversation_ui.js                   # 13
+python3 scripts/audit_workspace_frontend.py --baseline
+```
 
-Next work follows the [PS-aligned hardening plan](docs/05-foundation-hardening-plan.md), with deliverables and acceptance gates.
+The component checks run against a small DOM shim, so they are **not** browser, visual, load or fluent-language acceptance. What they do hold is specific: every displayed number must come from the returned packet with no arithmetic applied, no renderer may leak a stylesheet class name into visible text, a clarification must offer every candidate, an unverified warning must stay held, and stopping a turn must not claim the server stopped working.
 
-The [second hardening batch](docs/07-geography-and-coverage.md) adds a versioned source geography catalogue and coverage ledger. Track all twelve review findings in the [living checklist](docs/08-hardening-progress.md); authoritative administrative mappings and operational coverage remain open.
+Real journeys are recorded with screenshots in [the frontend batch evidence](research/reviews/frontend-overhaul-20260914/after/live-checks.json). The suite counts are not a completion measure.
 
-The [third hardening batch](docs/09-bounded-ingestion.md) adds bounded numeric ingestion with shared local budgets, retry queues, recovery, transactional publication and database-first reads. Verified with 100 tests, ten saved-response replays and three live requests. It runs only when explicitly invoked.
+## Status and open work
 
-Start with the [data foundation guide](docs/04-data-foundation.md): installation, working commands, data contracts, verification results and remaining gates.
+- [Critical full-solution review](docs/21-full-solution-critical-review.md) — the current verdict, findings A01–A08 and the recommended trajectory.
+- [Frontend overhaul batch](docs/25-frontend-overhaul-batch.md) — this surface, its findings FE01–FE06 and what it does not establish.
+- [Frontend overhaul plan](docs/24-frontend-overhaul-plan.md) — scope, design direction and batch gates.
+- [Machine-readable product plan](data/registry/product-progress.json) and [living hardening checklist](data/registry/hardening-progress.json) — stage and finding status.
+- [RAG readiness decision](data/registry/rag-readiness.json) and [source registry](data/registry/README.md).
 
-- [Machine-readable readiness](data/registry/readiness.json)
-- [Source registry and evidence](data/registry/README.md)
-- [National climate pipeline](docs/03-climate-pipeline.md)
-- [Earlier coverage audit](data/registry/coverage-audit.md)
-- [Problem statement](docs/00-problem-statement.md)
+Known-open highlights: **P11** (the server holds one non-blocking conversation lock; there is no bounded queue, no stage streaming, and stopping a turn does not cancel server work), **P10** (collection is request-driven and narrow), **P12** (no user-level acceptance benchmark), **P13** (mobile and voice), **P14** (packaging), plus engine findings A01–A04 on context retention, language output, explanation dependencies and place aliases. No accessibility audit, sustained-load measurement or scientific forecast-skill evaluation has been performed.
 
-Ahmedabad remains the shared example; the requested acceptance scope is nationwide and includes specialist coverage. Source availability, adapter correctness and operational suitability are tracked separately. Do not publicly package raw or processed source material until its reuse rights are resolved.
+## Milestones, newest first
+
+Each links to the batch that recorded it. Older entries are **historical evidence, not current completion claims**.
+
+- [Frontend overhaul batch](docs/25-frontend-overhaul-batch.md) — 374 Python tests, 34 component checks, five recorded journeys.
+- [Marine wave and river discharge tools](docs/23-marine-and-river-tools.md) — 374 tests, nine local-model turns.
+- [Engine context, language disclosure and task dependency](docs/22-engine-context-repairs.md) — 362 tests, eight component checks.
+- [Bulletin parent context and qualified guidance](docs/20-bulletin-parent-context.md) — 356 tests, 16 HTTP turns, four saved PDFs matched by hash.
+- [Context and retrieval coverage](docs/19-context-and-retrieval-coverage.md) — 340-test checkpoint.
+- [Bulletin retrieval and warning lifecycle](docs/18-bulletin-retrieval-and-warning-lifecycle.md) — 319 tests, 15 HTTP turns.
+- [Conversation engine refinement](docs/17-conversation-engine-refinement.md) — 280 tests.
+- [Hourly and daily point tools](docs/16-hourly-and-daily-point-tools.md).
+- [Answer fidelity and historical analysis](docs/15-answer-fidelity-and-historical-analysis.md).
+- [Product review and progress plan](docs/14-product-review-and-progress-plan.md) — the standing stage plan.
+- [Conversational recovery](docs/13-conversational-recovery.md), [product workspace and repairs](docs/12-product-workspace-and-repairs.md), [extensive validation and RAG gate](docs/11-extensive-validation-and-rag-gate.md), [grounded answer workflow](docs/10-grounded-answer-workflow.md).
+- [Bounded ingestion](docs/09-bounded-ingestion.md), [geography and coverage](docs/07-geography-and-coverage.md), [hardening batch one](docs/06-hardening-batch-one.md), [foundation hardening plan](docs/05-foundation-hardening-plan.md), [data foundation](docs/04-data-foundation.md), [climate pipeline](docs/03-climate-pipeline.md), [data layer design](docs/02-data-layer-design.md), [idea analysis](docs/01-idea-analysis-and-critique.md).
+- [The recorded problem statement](docs/00-problem-statement.md) distinguishes the authoritative SIH26068 summary from team interpretation.
+
+## Ground rules
+
+The user-supplied SIH26068 statement is authoritative, and final scope includes nationwide and specialist coverage. Reuse the existing adapters, source registries, numerical contracts and provenance rather than replacing them. Keep entity, time, parameter, unit and source attached to every factual claim, and preserve unknown, missing, stale, cancelled and reference-only states. Credentials belong in local backend configuration and must not reach browser code or chat. Do not publish runtime conversations, logs or restricted source material. GeoNames place data is used under CC BY 4.0.

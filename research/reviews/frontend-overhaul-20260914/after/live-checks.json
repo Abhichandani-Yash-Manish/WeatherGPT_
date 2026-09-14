@@ -1,0 +1,146 @@
+{
+  "schema_version": "frontend-live-checks-v1",
+  "recorded_at_utc": "2026-09-14T14:05:00+00:00",
+  "reviewed_commit": "working tree after docs/24 batch F1-F5 (uncommitted at capture time)",
+  "surface": "loopback desktop workspace, http://127.0.0.1:8765",
+  "purpose": "Recorded live measurements of the overhauled workspace surface. These are layout and labelling measurements of one browser build, not load, concurrency, fluent-language or scientific acceptance tests.",
+  "environment": {
+    "browser": "Google Chrome 152.0.7977.83 (headless, CDP)",
+    "driver": "agent-browser 0.37.1 connected over CDP",
+    "launch_recipe": "Chrome --headless=new --no-sandbox --disable-gpu --user-data-dir=<tmp> --remote-debugging-port=9223, then agent-browser connect 9223",
+    "server": "python3 -m weathergpt_data.workspace --port 8765",
+    "model": "qwen3.6:latest via local Ollama"
+  },
+  "measurements": [
+    {
+      "viewport": "390x844",
+      "viewport_px": [
+        390,
+        844
+      ],
+      "document_scroll_height": 844,
+      "body_scrolls": false,
+      "thread_scrolls": true,
+      "thread_height": 255,
+      "question_top": 408,
+      "question_bottom": 498,
+      "composer_top": 375,
+      "composer_bottom": 708,
+      "ask_bottom": 660,
+      "composer_in_first_viewport": true,
+      "note": "The question box and the Ask button are both inside the first viewport without scrolling."
+    },
+    {
+      "viewport": "768x1024",
+      "viewport_px": [
+        768,
+        1024
+      ],
+      "document_scroll_height": 1024,
+      "body_scrolls": false,
+      "thread_scrolls": false,
+      "question_top": 738,
+      "question_bottom": 827,
+      "composer_top": 700,
+      "composer_bottom": 938,
+      "ask_bottom": 898,
+      "composer_in_first_viewport": true,
+      "note": "Rail collapses to a sheet below 980px; the desk stays conversation-first."
+    },
+    {
+      "viewport": "1440x1100",
+      "viewport_px": [
+        1440,
+        1100
+      ],
+      "document_scroll_height": 1100,
+      "body_scrolls": false,
+      "thread_scrolls": false,
+      "question_top": 816,
+      "question_bottom": 905,
+      "composer_top": 777,
+      "composer_bottom": 1016,
+      "ask_bottom": 975,
+      "composer_in_first_viewport": true,
+      "note": "Two-column shell: evidence ledger rail beside the conversation."
+    },
+    {
+      "viewport": "1440x1100-answered",
+      "viewport_px": [
+        1440,
+        1100
+      ],
+      "document_scroll_height": 1100,
+      "body_scrolls": false,
+      "thread_scrolls": true,
+      "question_top": 816,
+      "question_bottom": 905,
+      "composer_top": 777,
+      "composer_bottom": 1016,
+      "ask_bottom": 975,
+      "composer_in_first_viewport": true,
+      "note": "Measured with a real retrieved answer present: the thread scrolls internally and the composer stays pinned."
+    }
+  ],
+  "accessibility_and_policy": {
+    "unlabelled_fields": [],
+    "buttons_without_name": 0,
+    "html_lang": "en",
+    "skip_link_present": true,
+    "live_regions": 5,
+    "inline_style_attributes": 0,
+    "note": "Every form control has a label, every button has an accessible name, a skip link and five live regions exist, and no inline style attribute is used, which keeps the page inside the served Content-Security-Policy. Contrast, focus order, screen-reader behaviour and keyboard-only journeys have NOT been independently audited."
+  },
+  "journeys": [
+    {
+      "journey": "point forecast",
+      "question": "Will it rain in Ahmedabad, Gujarat tomorrow morning?",
+      "outcome": "answered",
+      "evidence": "desktop-forecast.png, desktop-answer-top.png",
+      "observed": "Headline value and unit, full-width validity ruler with IST ticks and a coverage bar, dark evidence receipt with entity, window, source, record paths and retrieval time, requested-task disclosure, sources, provenance trace, per-answer actions and the serving-lifetime notice."
+    },
+    {
+      "journey": "follow-up in the same conversation",
+      "question": "And what about the afternoon?",
+      "outcome": "answered",
+      "evidence": "desktop-answer-top.png",
+      "observed": "A second turn was added without losing the first, and the conversation identifier was kept."
+    },
+    {
+      "journey": "historical trend",
+      "question": "Show the annual rainfall trend for Ahmedabad district, Gujarat from 1981 to 2010.",
+      "outcome": "answered",
+      "evidence": "desktop-trend.png, desktop-trend-top.png",
+      "observed": "The card is titled a retrieved series, leads with the computed 54.654 mm/decade and its stated method, draws the 30-point series, and gives a series receipt. No single year is presented as the answer."
+    },
+    {
+      "journey": "specialist marine",
+      "question": "What are the wave conditions near Kochi, Kerala tomorrow?",
+      "outcome": "answered",
+      "evidence": "desktop-marine.png",
+      "observed": "Three plotted series with the answering model cell named in the values, and the source limits carried in the notes."
+    },
+    {
+      "journey": "ambiguous place at mobile width",
+      "question": "Tell me about rainfall in Bhopal.",
+      "outcome": "needs_selection",
+      "evidence": "mobile-clarification.png",
+      "observed": "Every candidate is offered with its district, state, source and coordinates, plus a way to type a different place. The newest card is revealed from its top so the choices are reachable without hunting."
+    },
+    {
+      "journey": "retention",
+      "question": "open, search and delete a stored conversation",
+      "outcome": "verified in browser and in component checks",
+      "evidence": "this file and tests/test_conversation_ui.js",
+      "observed": "283 stored conversations were listed with bounded excerpts, searched by question text, and the delete control removed one through the local route."
+    }
+  ],
+  "not_measured": [
+    "sustained load, cold-start latency and concurrent-question behaviour",
+    "screen-reader and keyboard-only journeys, and colour contrast",
+    "fluent Hindi or Gujarati output review",
+    "mobile platform compliance: this remains a desktop web surface",
+    "forecast skill, probability calibration or scientific validation",
+    "official warning applicability and any delivery or subscription behaviour"
+  ]
+}

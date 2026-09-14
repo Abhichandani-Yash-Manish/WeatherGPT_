@@ -1,0 +1,948 @@
+'use strict';
+/* Rendering for the conversation packet. Every value shown here comes from the
+   packet the engine returned; nothing is inferred, scored or rounded. Source and
+   runtime text is inserted as text, never as markup. */
+
+const IST_ZONE = 'Asia/Kolkata';
+const STATUS_LABELS = {
+  answered:'Evidence retrieved', partial:'Partly answered', needs_selection:'Choose a place',
+  needs_clarification:'One more detail', unavailable:'Evidence gap', explanation:'General explanation',
+  outside_validity:'Choose an upcoming window', stale:'Evidence expired',
+  degraded:'Refresh incomplete', prototype_answer:'Forecast available'
+};
+const HELD_STATUS = ['needs_selection','needs_clarification','unavailable','outside_validity','stale','partial','degraded'];
+const EVIDENCE_KINDS = {
+  forecast:'Model forecast', observation:'Observation', reanalysis:'Modeled reanalysis',
+  advisory:'Source advisory', reference:'Reference only', context:'Source context'
+};
+const PARAMETER_NAMES = {
+  precipitation:'precipitation', precipitation_probability:'rain probability', temperature_2m:'temperature',
+  temperature_c:'temperature', relative_humidity_2m:'humidity', wind_speed_10m:'wind speed',
+  wind_speed_kt:'wind speed', rainfall:'rainfall', wave_height:'significant wave height',
+  wave_direction:'wave direction', wave_period:'wave period', discharge:'river discharge'
+};
+const LANGUAGE_NAMES = { en:'English', hi:'Hindi', gu:'Gujarati' };
+
+function el(tag, text, cls) {
+  const node = document.createElement(tag);
+  if (text !== undefined && text !== null) node.textContent = String(text);
+  if (cls) node.className = cls;
+  return node;
+}
+function dataEl(text) { return el('span', text, 'data'); }
+function firstOf(list) { return Array.isArray(list) && list.length ? list[0] : null; }
+
+/* ---------- time, always IST, always explicit ---------- */
+function istParts(value) {
+  const at = new Date(value);
+  if (!value || Number.isNaN(at.getTime())) return null;
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: IST_ZONE, day:'numeric', month:'short', year:'numeric',
+    hour:'2-digit', minute:'2-digit', hour12:false
+  }).formatToParts(at).reduce((all, part) => (all[part.type] = part.value, all), {});
+  return { day: parts.day, month: parts.month, year: parts.year, hour: parts.hour, minute: parts.minute };
+}
+function istStamp(value) {
+  const p = istParts(value);
+  if (!p) return 'Time not supplied';
+  return p.day + ' ' + p.month + ' ' + p.year + ', ' + p.hour + ':' + p.minute + ' IST';
+}
+function istClock(value) {
+  const p = istParts(value);
+  return p ? p.hour + ':' + p.minute : '';
+}
+function istDay(value) {
+  const p = istParts(value);
+  return p ? p.day + ' ' + p.month : '';
+}
+function istWindowText(start, end) {
+  if (!start && !end) return null;
+  if (!end || start === end) return istDay(start) + ', ' + istClock(start) + ' IST';
+  if (istDay(start) === istDay(end)) return istDay(start) + ', ' + istClock(start) + '\u2013' + istClock(end) + ' IST';
+  return istDay(start) + ' ' + istClock(start) + ' \u2192 ' + istDay(end) + ' ' + istClock(end) + ' IST';
+}
+function hourLabel(fact) { return istWindowText(fact.start, fact.end); }
+
+/* ---------- small readers over the packet ---------- */
+function citationIndex(packet) {
+  const index = new Map();
+  (packet.citations || []).forEach(citation => { if (citation.id) index.set(citation.id, citation); });
+  return index;
+}
+function sourceOf(packet, fact) {
+  const index = citationIndex(packet);
+  return (fact.citation_ids || []).map(id => index.get(id)).find(Boolean) || null;
+}
+function kindOf(fact) {
+  if (fact.evidence_kind && EVIDENCE_KINDS[fact.evidence_kind]) return EVIDENCE_KINDS[fact.evidence_kind];
+  if (fact.evidence_kind) return fact.evidence_kind;
+  if (fact.observed_at || fact.sample_at) return EVIDENCE_KINDS.observation;
+  return null;
+}
+function findDeep(node, key, found) {
+  found = found || [];
+  if (Array.isArray(node)) node.forEach(item => findDeep(item, key, found));
+  else if (node && typeof node === 'object') {
+    Object.keys(node).forEach(name => {
+      if (name === key && node[name] !== null && node[name] !== undefined) found.push(node[name]);
+      else findDeep(node[name], key, found);
+    });
+  }
+  return found;
+}
+function coverageFacts(packet) {
+  return (packet.facts || []).filter(fact => fact.value !== undefined && fact.value !== null && fact.value !== '');
+}
+function chartEvidence(charts) {
+  const ids = new Set();
+  (charts || []).forEach(chart => (chart.points || []).forEach(point => { if (point.evidence_id) ids.add(point.evidence_id); }));
+  return ids;
+}
+function sequenceFacts(packet) {
+  const plotted = chartEvidence(packet.charts);
+  return coverageFacts(packet).filter(fact => !plotted.has(fact.id));
+}
+function languageRequested(plan, chosen) {
+  const declared = plan && plan.language;
+  if (chosen) return chosen;
+  return declared && declared !== 'en' ? declared : null;
+}
+function languageDowngradeNote(packet) {
+  return (packet.notes || []).find(note => /output language could not be rendered/i.test(note)) || null;
+}
+function refreshRecords(packet) {
+  return (packet.trace && packet.trace.tools ? packet.trace.tools : []).filter(tool => tool && tool.refresh).map(tool => ({ tool: tool.name, refresh: tool.refresh }));
+}
+function windowFacts(packet) {
+  return coverageFacts(packet).filter(fact => fact.start && fact.end && Date.parse(fact.start) < Date.parse(fact.end));
+}
+function placeOf(packet, fact) {
+  if (fact && fact.place) return fact.place;
+  const resolved = packet.resolved_points || {};
+  const first = Object.keys(resolved)[0];
+  return first ? (resolved[first].label || first) : null;
+}
+
+/* ---------- the validity ruler ---------- */
+function renderRuler(packet) {
+  const spans = windowFacts(packet);
+  if (!spans.length) return null;
+  const starts = spans.map(fact => Date.parse(fact.start));
+  const ends = spans.map(fact => Date.parse(fact.end));
+  const from = Math.min.apply(null, starts), to = Math.max.apply(null, ends);
+  if (!(to > from)) return null;
+
+  const covered = spans.map(fact => [Date.parse(fact.start), Date.parse(fact.end)])
+    .sort((a, b) => a[0] - b[0])
+    .reduce((merged, span) => {
+      const last = merged[merged.length - 1];
+      if (last && span[0] <= last[1]) last[1] = Math.max(last[1], span[1]);
+      else merged.push(span.slice());
+      return merged;
+    }, []);
+
+  // The ruler has no value axis, so the track runs almost to the panel edge.
+  const width = 640, track = 8, y = 34, height = 15;
+  const scale = at => track + (at - from) / (to - from) * (width - track - 12);
+  const box = el('div', undefined, 'ruler');
+  box.append(el('p', 'Window covered by the evidence', 'ruler-title'));
+
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', '0 0 ' + width + ' ' + (y + height + 34));
+  svg.setAttribute('role', 'img');
+  const seconds = Math.round((to - from) / 1000);
+  const hours = Math.round(seconds / 3600 * 10) / 10;
+  svg.setAttribute('aria-label', 'Requested window ' + istWindowText(spans[0].start, spans[0].end) +
+    ', covering ' + hours + ' hours across ' + spans.length + ' retrieved samples');
+  const node = (name, attrs, text) => {
+    const created = document.createElementNS('http://www.w3.org/2000/svg', name);
+    Object.entries(attrs).forEach(([key, value]) => created.setAttribute(key, String(value)));
+    if (text !== undefined) created.textContent = text;
+    svg.append(created);
+    return created;
+  };
+  node('rect', { x: track, y: y, width: width - track - 12, height: height, rx: 3, 'class': 'ruler-rail' });
+  covered.forEach(span => {
+    const left = scale(span[0]), right = scale(span[1]);
+    node('rect', { x: left.toFixed(1), y: y, width: Math.max(2, right - left).toFixed(1), height: height, rx: 3, 'class': 'ruler-covered' });
+  });
+  [0, 0.5, 1].forEach(fraction => {
+    const at = from + (to - from) * fraction;
+    node('line', { x1: scale(at).toFixed(1), x2: scale(at).toFixed(1), y1: y + height + 3, y2: y + height + 8, 'class': 'ruler-edge' });
+    node('text', { x: scale(at).toFixed(1), y: y + height + 22, 'text-anchor': fraction === 0 ? 'middle' : fraction === 1 ? 'end' : 'middle', 'class': 'ruler-tick-label' }, istClock(new Date(at).toISOString()));
+  });
+  node('text', { x: track, y: 22, 'class': 'ruler-caption' }, istDay(spans[0].start) + ' \u00b7 ' + Math.round(hours * 10) / 10 + ' h');
+  box.append(svg);
+
+  const distances = findDeep(packet, 'grid_distance_km');
+  const foot = el('p', undefined, 'ruler-foot');
+  foot.append(el('span', spans.length + ' retrieved sample' + (spans.length === 1 ? '' : 's') + ' over ' + hours + ' hours. Source hours start on UTC boundaries, which are :30 in IST. Values are samples, not a continuous trace.'));
+  if (distances.length) foot.append(el('span', ' Answering model cell is ' + distances[0] + ' km from the requested point.'));
+  box.append(foot);
+  return box;
+}
+
+/* ---------- the evidence receipt ---------- */
+function receiptRow(list, key, value) {
+  if (value === null || value === undefined || value === '') return;
+  const row = el('div', undefined, 'receipt-row');
+  row.append(el('span', key, 'receipt-key'), value instanceof Node ? value : el('span', value, 'receipt-val'));
+  list.append(row);
+}
+function renderReceipt(packet, fact) {
+  if (!fact) return null;
+  const source = sourceOf(packet, fact);
+  const box = el('section', undefined, 'receipt');
+  box.append(el('p', 'Evidence receipt', 'receipt-title'));
+  const rows = el('div', undefined, 'receipt-rows');
+  receiptRow(rows, 'Measure', (fact.label || PARAMETER_NAMES[fact.parameter] || 'Value') + (fact.parameter ? ' (' + fact.parameter + ')' : ''));
+  receiptRow(rows, 'Value', fact.value + (fact.unit ? ' ' + fact.unit : '') + (fact.method ? ' \u00b7 method ' + fact.method : ''));
+  receiptRow(rows, 'Place', placeOf(packet, fact));
+  receiptRow(rows, 'Entity', fact.entity_id);
+  receiptRow(rows, 'Window', hourLabel(fact));
+  if (fact.observed_at) receiptRow(rows, 'Observed', istStamp(fact.observed_at));
+  receiptRow(rows, 'Evidence', kindOf(fact));
+  if (source) {
+    const line = el('span', undefined, 'receipt-val');
+    const label = [source.source_id, source.provider, source.product].filter(Boolean).join(' \u00b7 ');
+    try {
+      const url = new URL(source.url);
+      if (url.protocol === 'https:') {
+        const link = el('a', label);
+        link.href = url.href; link.target = '_blank'; link.rel = 'noopener noreferrer';
+        line.append(link);
+      } else line.append(document.createTextNode(label));
+    } catch (error) { line.append(document.createTextNode(label)); }
+    receiptRow(rows, 'Source', line);
+  } else {
+    receiptRow(rows, 'Source', fact.source_id);
+  }
+  if (source && source.retrieved_at_utc) receiptRow(rows, 'Retrieved', istStamp(source.retrieved_at_utc));
+  if (source && (source.page || source.row || source.column)) {
+    receiptRow(rows, 'Locator', [source.page ? 'page ' + source.page : null, source.row ? 'row ' + source.row : null, source.column || null].filter(Boolean).join(' \u00b7 '));
+  }
+  if (fact.evidence_version) receiptRow(rows, 'Evidence id', String(fact.evidence_version).slice(0, 16) + '\u2026');
+  if (fact.task_id) receiptRow(rows, 'Task', fact.task_id);
+  box.append(rows);
+  if (fact.source_locators && fact.source_locators.length) {
+    const locators = el('p', undefined, 'receipt-locators');
+    locators.append(el('span', 'Record path' + (fact.source_locators.length === 1 ? ': ' : 's: ') + fact.source_locators.join('  ')));
+    box.append(locators);
+  }
+  const distances = findDeep(packet, 'grid_distance_km');
+  const note = el('p', undefined, 'receipt-note');
+  note.append(el('span', 'A receipt for the moment it was retrieved, not a standing fact. ' + (distances.length ? 'The answering cell is ' + distances[0] + ' km from the requested point. ' : '') + 'Model output is not an observation and not a district average.'));
+  box.append(note);
+  return box;
+}
+
+/* ---------- the series receipt ---------- */
+function renderSeriesReceipt(packet) {
+  const charts = packet.charts || [];
+  if (!charts.length) return null;
+  const plotted = chartEvidence(charts);
+  const series = coverageFacts(packet).filter(fact => plotted.has(fact.id));
+  if (!series.length) return null;
+  const box = el('section', undefined, 'receipt');
+  box.append(el('p', 'Evidence receipt', 'receipt-title'));
+  const rows = el('div', undefined, 'receipt-rows');
+  const measures = [];
+  series.forEach(fact => {
+    const name = fact.label || PARAMETER_NAMES[fact.parameter] || 'value';
+    if (measures.indexOf(name) < 0) measures.push(name);
+  });
+  receiptRow(rows, 'Measure', measures.join(', '));
+  receiptRow(rows, 'Values', series.length + ' retrieved values, each plotted and inspectable with its own evidence id');
+  receiptRow(rows, 'Place', placeOf(packet, series[0]));
+  const sources = [];
+  series.forEach(fact => { if (fact.source_id && sources.indexOf(fact.source_id) < 0) sources.push(fact.source_id); });
+  const citation = sourceOf(packet, series[0]);
+  if (citation) {
+    const line = el('span', undefined, 'receipt-val');
+    const label = [sources.join(', '), citation.provider, citation.product].filter(Boolean).join(' · ');
+    try {
+      const url = new URL(citation.url);
+      if (url.protocol === 'https:') {
+        const link = el('a', label);
+        link.href = url.href; link.target = '_blank'; link.rel = 'noopener noreferrer';
+        line.append(link);
+      } else line.append(document.createTextNode(label));
+    } catch (error) { line.append(document.createTextNode(label)); }
+    receiptRow(rows, 'Source', line);
+  } else {
+    receiptRow(rows, 'Source', sources.join(', '));
+  }
+  if (citation && citation.retrieved_at_utc) receiptRow(rows, 'Retrieved', istStamp(citation.retrieved_at_utc));
+  if (citation && (citation.page || citation.row || citation.column)) {
+    receiptRow(rows, 'First locator', [citation.page ? 'page ' + citation.page : null, citation.row ? 'row ' + citation.row : null, citation.column || null].filter(Boolean).join(' · '));
+  }
+  const version = series[0].evidence_version;
+  if (version) receiptRow(rows, 'Evidence id', String(version).slice(0, 16) + '…');
+  box.append(rows);
+  const note = el('p', undefined, 'receipt-note');
+  note.append(el('span', 'A receipt for the moment the series was retrieved, not a standing fact. The chart is drawn from these values; a descriptive slope is not a projection, an attribution or a validated trend.'));
+  box.append(note);
+  return box;
+}
+
+/* ---------- parts ---------- */
+function renderLead(packet, fact) {
+  const lead = el('div', undefined, 'lead');
+  const kind = fact ? kindOf(fact) : null;
+  lead.append(el('p', (fact && (fact.label || PARAMETER_NAMES[fact.parameter])) || 'Answer', 'lead-parameter'));
+  const line = el('p', undefined, 'lead-value');
+  if (kind) line.append(el('span', kind, 'tag' + (kind === EVIDENCE_KINDS.observation ? ' is-quiet' : '')));
+  if (fact) {
+    line.append(el('span', fact.value, 'lead-number'));
+    if (fact.unit) line.append(el('span', fact.unit, 'lead-unit'));
+  }
+  lead.append(line);
+  const where = el('p', undefined, 'lead-where');
+  const place = placeOf(packet, fact);
+  if (place) where.append(document.createTextNode(place));
+  const when = fact ? hourLabel(fact) : null;
+  if (when) where.append(document.createTextNode((place ? ' \u00b7 ' : '') + when));
+  if (where.childNodes.length) lead.append(where);
+  return lead;
+}
+function renderFacts(packet, facts) {
+  const grid = el('div', undefined, 'facts');
+  facts.forEach(fact => {
+    const card = el('div', undefined, 'fact');
+    const kind = kindOf(fact);
+    if (kind) card.append(el('p', kind + (fact.parameter ? ' \u00b7 ' + (PARAMETER_NAMES[fact.parameter] || fact.parameter) : ''), 'fact-kind'));
+    const value = el('p', undefined, 'fact-value');
+    value.append(el('span', fact.value));
+    if (fact.unit) value.append(el('span', ' ' + fact.unit, 'fact-unit'));
+    card.append(value, el('p', fact.label || 'Value', 'fact-label'));
+    const when = fact.observed_at ? 'Observed ' + istStamp(fact.observed_at) : hourLabel(fact);
+    if (when) card.append(el('p', when, 'fact-when'));
+    grid.append(card);
+  });
+  return grid;
+}
+function disclosure(summary, build, open) {
+  const box = el('details', undefined, 'disclosure');
+  if (open) box.open = true;
+  box.append(el('summary', summary));
+  const body = el('div', undefined, 'disclosure-body');
+  build(body);
+  box.append(body);
+  return box;
+}
+function renderTasks(packet) {
+  const results = packet.task_results || [];
+  if (!results.length) return null;
+  const answered = results.filter(task => task.status === 'answered').length;
+  const incomplete = (packet.task_coverage && packet.task_coverage.incomplete_ids) || [];
+  const counts = el('p', undefined, 'coverage');
+  counts.append(el('span', 'Asked: ' + results.length));
+  counts.append(el('span', 'Answered: ' + answered));
+  counts.append(el('span', 'Incomplete: ' + incomplete.length + (incomplete.length ? ' (' + incomplete.join(', ') + ')' : '')));
+  counts.append(el('span', 'The engine counts a task answered only when it returned evidence; a clarification or abstention is not counted as answered.'));
+  const wrap = el('div');
+  wrap.append(counts);
+  const list = el('div', undefined, 'tasks');
+  results.forEach(task => {
+    const row = el('div', 'task', 'task' + ' ' + (task.status === 'answered' ? 'is-answered' : 'is-incomplete'));
+    const request = task.request || {};
+    row.append(el('p', request.request_quote || task.id, 'task-quote'));
+    const meta = el('p', undefined, 'task-meta');
+    [task.id, request.kind, request.operation, (request.parameters || []).join('/'), task.status].filter(Boolean).forEach(part => meta.append(el('span', part)));
+    row.append(meta);
+    list.append(row);
+  });
+  wrap.append(list);
+  return wrap;
+}
+function renderChoices(packet, handlers) {
+  if (!packet.choices || !packet.choices.length) return null;
+  const wrap = el('div');
+  const list = el('div', undefined, 'choices');
+  packet.choices.forEach(choice => {
+    const button = el('button', undefined, 'choice');
+    button.type = 'button';
+    button.append(el('span', choice.label, 'choice-label'));
+    const meta = [choice.source_id, choice.match_type,
+      choice.coordinates ? choice.coordinates.latitude + ', ' + choice.coordinates.longitude : null,
+      choice.admin1, choice.admin2].filter(Boolean).join(' \u00b7 ');
+    button.append(el('span', meta, 'choice-meta'));
+    button.addEventListener('click', () => handlers.onChoose(choice));
+    list.append(button);
+  });
+  wrap.append(list);
+  const tools = el('div', undefined, 'choice-tools');
+  const retype = el('button', 'Type a different place', 'ghost');
+  retype.type = 'button';
+  retype.addEventListener('click', () => handlers.onRetype());
+  tools.append(retype);
+  wrap.append(tools);
+  return wrap;
+}
+function renderAirportReports(packet) {
+  const reports = packet.airport_reports || [];
+  if (!reports.length) return null;
+  const wrap = el('div');
+  reports.forEach(report => {
+    const box = el('section', undefined, 'capability');
+    const head = el('div', undefined, 'capability-head');
+    head.append(el('h3', report.station + ' \u00b7 ' + (report.kind === 'taf' ? 'Forecast (TAF)' : 'Observed report (METAR)'), 'capability-name'));
+    head.append(el('span', report.observed_at ? istStamp(report.observed_at) : (report.valid_start ? istStamp(report.valid_start) : 'Time not supplied'), 'tag is-quiet'));
+    box.append(head);
+    if (report.raw_report) box.append(el('pre', report.raw_report, 'raw-report'));
+    const validity = report.valid_start || report.valid_end
+      ? 'Valid ' + (report.valid_start ? istStamp(report.valid_start) : 'not stated') + ' to ' + (report.valid_end ? istStamp(report.valid_end) : 'not stated')
+      : 'No validity interval was stated in this report.';
+    box.append(el('p', validity + ' A report describes its station and its stated validity, not conditions across a whole city, and not a flight status or a clearance.', 'field-note'));
+    wrap.append(box);
+  });
+  return wrap;
+}
+function renderPassages(packet) {
+  const passages = packet.passages || [];
+  if (!passages.length) return null;
+  const index = citationIndex(packet);
+  const wrap = el('div');
+  passages.forEach(passage => {
+    const context = passage.evidence_kind === 'published_bulletin_context';
+    const label = context ? 'Bulletin context: ' + passage.section : (passage.crop || 'Passage') + ' \u00b7 ' + (passage.stage || 'Stage not stated');
+    const head = [label, passage.district, passage.page ? 'Page ' + passage.page : null].filter(Boolean).join(' \u00b7 ');
+    const box = disclosure(head, body => {
+      const meta = [];
+      if (passage.issue_date) meta.push('Published ' + passage.issue_date);
+      if (passage.forecast_start || passage.forecast_end) meta.push('Context window ' + (passage.forecast_start || 'not stated') + ' to ' + (passage.forecast_end || 'not stated'));
+      if (meta.length) body.append(el('p', meta.join(' \u00b7 '), 'field-note'));
+      body.append(el('p', passage.text, 'passage-text'));
+      if (context) body.append(el('p', 'Source context only; current warning and individual field applicability remain unverified.', 'field-note'));
+      const source = (passage.citation_ids || []).map(id => index.get(id)).find(Boolean);
+      if (source) {
+        const local = source.local_document_path;
+        const archived = typeof local === 'string' && /^\/api\/documents\/[a-f0-9]{64}$/.test(local);
+        let url = null;
+        try { const candidate = new URL(source.url); if (candidate.protocol === 'https:') url = candidate; } catch (error) { url = null; }
+        if (archived || url) {
+          const links = el('p');
+          if (archived) {
+            const open = el('a', 'Open the saved source PDF');
+            open.href = local + '#page=' + passage.page; open.target = '_blank'; open.rel = 'noopener noreferrer';
+            links.append(open);
+            const download = el('a', 'Download saved PDF');
+            download.href = local; download.download = 'bulletin-' + local.split('/').pop() + '.pdf';
+            links.append(el('span', ' \u00b7 '), download);
+          } else {
+            url.hash = 'page=' + passage.page;
+            const open = el('a', 'Open the original bulletin page');
+            open.href = url.href; open.target = '_blank'; open.rel = 'noopener noreferrer';
+            links.append(open);
+          }
+          body.append(links);
+        }
+      }
+    });
+    wrap.append(box);
+  });
+  return wrap;
+}
+function calculationKind(calculation) {
+  if (calculation.kind === 'source_comparison') return 'Difference between sources';
+  if (calculation.operation === 'linear_trend') return 'Descriptive trend';
+  if (calculation.method && /sum/i.test(calculation.method)) return 'Deterministic total';
+  return calculation.operation || calculation.kind || 'Computed value';
+}
+function renderCalculations(packet) {
+  const calculations = packet.calculations || [];
+  if (!calculations.length) return null;
+  const wrap = el('div', undefined, 'facts');
+  calculations.forEach(calculation => {
+    const box = el('div', undefined, 'calc' + (calculation.kind === 'source_comparison' ? ' is-comparison' : ''));
+    box.append(el('span', calculation.value + (calculation.unit ? ' ' + calculation.unit : ''), 'calc-value'));
+    const detail = el('span', undefined, 'calc-label');
+    detail.append(el('span', calculationKind(calculation) + ' \u00b7 ' + calculation.label));
+    detail.append(el('span', ' ' + (calculation.input_ids || []).length + ' input value(s)' +
+      ((calculation.source_ids || []).length ? ' \u00b7 from ' + calculation.source_ids.join(', ') : '') +
+      (calculation.method ? ' \u00b7 ' + calculation.method : '') + '.'));
+    if (calculation.kind === 'source_comparison') {
+      detail.append(el('span', ' A difference between two sources is not a skill score, an accuracy measure or a confidence value, and agreement between them does not establish correctness.'));
+    }
+    box.append(detail);
+    wrap.append(box);
+  });
+  return wrap;
+}
+function renderNotes(packet) {
+  const notes = (packet.notes || []).filter(note => !/output language could not be rendered/i.test(note));
+  if (!notes.length) return null;
+  return disclosure('Scope, assumptions and limits (' + notes.length + ')', body => {
+    const list = el('ul', undefined, 'notes');
+    notes.forEach(note => list.append(el('li', note)));
+    body.append(list);
+  });
+}
+function renderSources(packet) {
+  const citations = packet.citations || [];
+  if (!citations.length) return null;
+  const seen = new Set();
+  return disclosure('Sources (' + citations.length + ')', body => {
+    const list = el('div', undefined, 'sources');
+    citations.forEach(citation => {
+      const key = (citation.source_id || '') + '|' + (citation.url || '');
+      if (seen.has(key)) return;
+      seen.add(key);
+      const row = el('div', undefined, 'source');
+      const name = [citation.provider || citation.source_id, citation.product].filter(Boolean).join(' \u00b7 ');
+      let linked = false;
+      try {
+        const url = new URL(citation.url);
+        if (url.protocol === 'https:') {
+          const link = el('a', name); link.href = url.href; link.target = '_blank'; link.rel = 'noopener noreferrer';
+          row.append(link); linked = true;
+        }
+      } catch (error) { linked = false; }
+      if (!linked) row.append(el('span', name));
+      const meta = [citation.source_id, citation.retrieved_at_utc ? 'retrieved ' + istStamp(citation.retrieved_at_utc) : null,
+        citation.page ? 'page ' + citation.page : null, citation.row ? 'row ' + citation.row : null,
+        citation.column || null].filter(Boolean).join(' \u00b7 ');
+      if (meta) row.append(el('span', meta, 'source-meta'));
+      list.append(row);
+    });
+    body.append(list);
+  });
+}
+function renderTrace(packet) {
+  const trace = packet.trace || {};
+  return disclosure('How this answer was produced', body => {
+    const planning = trace.planning || {};
+    const facts = [
+      ['Interpreter', planning.model ? planning.model + ' (local)' : null],
+      ['Planner duration', planning.duration_seconds ? Math.round(planning.duration_seconds * 10) / 10 + ' s' : null],
+      ['Structured output', planning.input_tokens ? planning.input_tokens + ' in / ' + planning.output_tokens + ' out tokens' : null],
+      ['Answer renderer', trace.generation ? (trace.generation.provider || 'deterministic') : null],
+      ['Validation', trace.generation && trace.generation.validation],
+      ['Retrieval', trace.duration_seconds ? Math.round(trace.duration_seconds * 10) / 10 + ' s total' : null],
+      ['Language recorded by the planner', packet.plan && packet.plan.language ? (LANGUAGE_NAMES[packet.plan.language] || packet.plan.language) : null]
+    ].filter(pair => pair[1]);
+    const rows = el('div', undefined, 'receipt-rows');
+    facts.forEach(pair => receiptRow(rows, pair[0], pair[1]));
+    body.append(rows);
+    const tools = (trace.tools || []).map(tool => tool.name + (tool.status ? ' (' + tool.status + ')' : '') + (tool.location ? ' \u00b7 ' + tool.location : '')).filter(Boolean);
+    if (tools.length) {
+      const list = el('ul', undefined, 'notes');
+      tools.forEach(name => list.append(el('li', name)));
+      body.append(el('p', 'Tools used', 'field-label'), list);
+    }
+    if (packet.retrieval_plan && packet.retrieval_plan.length) {
+      const list = el('ul', undefined, 'notes');
+      packet.retrieval_plan.forEach(plan => {
+        (plan.candidates || []).forEach(candidate => {
+          list.append(el('li', [plan.task_id, candidate.tool, candidate.selected ? 'selected' : 'not selected', candidate.available ? 'available' : 'unavailable', candidate.reason].filter(Boolean).join(' \u00b7 ')));
+        });
+      });
+      if (list.childNodes.length) body.append(el('p', 'Candidates considered', 'field-label'), list);
+    }
+  });
+}
+function renderRefreshNote(packet, handlers) {
+  const records = refreshRecords(packet);
+  const box = el('div');
+  records.forEach(record => {
+    const refresh = record.refresh;
+    const notice = el('div', undefined, 'notice' + ' ' + (refresh.state === 'succeeded' ? 'is-good' : 'is-calm'));
+    notice.append(el('p', refresh.message || ('Collection state: ' + refresh.state)));
+    const detail = [refresh.state, refresh.claims_this_action !== undefined ? refresh.claims_this_action + ' provider claim(s) this action' : null,
+      refresh.job_provider_attempts !== undefined ? refresh.job_provider_attempts + ' claim(s) for the job' : null,
+      refresh.retry_due_utc_epoch ? 'next retry ' + istStamp(new Date(refresh.retry_due_utc_epoch * 1000).toISOString()) : null]
+      .filter(Boolean).join(' \u00b7 ');
+    if (detail) notice.append(el('p', detail, 'field-note'));
+    box.append(notice);
+  });
+  if (records.length) {
+    const note = el('p', 'A collection is bounded by the source policy: retry timing, provider budgets and cooldowns all stay in force, and no background worker keeps running after this turn.', 'field-note');
+    box.append(note);
+  }
+  return box;
+}
+function actionButton(label, handler) {
+  const button = el('button', label, 'ghost');
+  button.type = 'button';
+  button.addEventListener('click', () => handler(button));
+  return button;
+}
+function renderActions(packet, handlers) {
+  const actions = el('div', undefined, 'actions');
+  const refreshable = windowFacts(packet).length && (packet.resolved_points && Object.keys(packet.resolved_points).length);
+  if (refreshable && handlers.onRefresh) actions.append(actionButton('Collect fresh evidence', () => handlers.onRefresh(packet)));
+  if (handlers.onCopy) actions.append(actionButton('Copy the answer', button => handlers.onCopy(packet, button)));
+  if (handlers.onPrint) actions.append(actionButton('Print this answer', () => handlers.onPrint(packet)));
+  if (handlers.onExport) actions.append(actionButton('Save this turn as Markdown', () => handlers.onExport(packet)));
+  if (handlers.onDownload) actions.append(actionButton('Download this answer as JSON', () => handlers.onDownload(packet)));
+  return actions;
+}
+function renderExpiry(packet) {
+  if (!packet.expires_at_utc) return null;
+  const expiry = Date.parse(packet.expires_at_utc);
+  const note = el('p', 'Evidence serving lifetime ends ' + istStamp(packet.expires_at_utc) + '. Ask again before relying on this answer.', 'field-note');
+  note.dataset.expiresAt = packet.expires_at_utc;
+  if (!Number.isNaN(expiry) && expiry - Date.now() < 2147483647) {
+    setTimeout(() => {
+      const tag = note.closest('.turn');
+      const status = tag && tag.querySelector('.status-line');
+      if (status) status.insertBefore(el('span', 'Receipt expired', 'tag is-held'), status.firstChild);
+      note.textContent = 'This receipt has expired. Ask again to retrieve current evidence; the values above are what was retrieved at the time stamped on this card.';
+    }, Math.max(0, expiry - Date.now()));
+  }
+  return note;
+}
+
+/* ---------- the turn ---------- */
+function turnTitle(packet) {
+  if (packet.status === 'needs_selection') return 'Which place do you mean?';
+  if (packet.status === 'needs_clarification') return 'One more detail needed';
+  if (packet.status === 'unavailable') return 'No verified evidence for this';
+  if (packet.status === 'outside_validity') return 'That window is not available';
+  if (packet.status === 'explanation') return 'General explanation';
+  if ((packet.airport_reports || []).length) return 'Airport report';
+  if ((packet.charts || []).length) return 'Retrieved series';
+  return 'Answer';
+}
+function renderTurn(packet, handlers) {
+  handlers = handlers || {};
+  const card = el('article', undefined, 'turn');
+  const head = el('div', undefined, 'turn-head');
+  head.append(el('h2', turnTitle(packet)));
+  const status = el('div', undefined, 'status-line');
+  const label = STATUS_LABELS[packet.status] || packet.status;
+  status.append(el('span', label, 'tag' + (HELD_STATUS.indexOf(packet.status) >= 0 ? ' is-held' : '')));
+  if (packet.plan && packet.plan.language && packet.plan.language !== 'en') {
+    status.append(el('span', 'Requested output: ' + (LANGUAGE_NAMES[packet.plan.language] || packet.plan.language), 'tag is-quiet'));
+  }
+  status.append(el('span', packet.answered_at_utc ? istStamp(packet.answered_at_utc) : 'Time not recorded', 'tag is-quiet'));
+  head.append(status);
+  card.append(head);
+
+  const body = el('div', undefined, 'turn-body');
+  const facts = sequenceFacts(packet);
+  // Only a value that is not already drawn may headline the card, so a series answer
+  // cannot present one arbitrary member of the series as its answer.
+  const primary = firstOf(facts);
+  const downgrade = languageDowngradeNote(packet);
+  if (downgrade) {
+    const notice = el('div', undefined, 'notice');
+    notice.append(el('p', 'The answer below is not in the language you asked for.'));
+    notice.append(el('p', downgrade, 'field-note'));
+    body.append(notice);
+  }
+  const calculations = renderCalculations(packet);
+  if (packet.status === 'needs_selection' || packet.status === 'needs_clarification') {
+    body.append(el('p', packet.answer, 'answer-copy'));
+  } else {
+    if (primary) {
+      body.append(renderLead(packet, primary));
+      const ruler = renderRuler(packet);
+      if (ruler) body.append(ruler);
+    }
+    if (calculations) body.append(calculations);
+    body.append(el('p', packet.answer, 'answer-copy'));
+  }
+  const choices = renderChoices(packet, {
+    onChoose: handlers.onChoose || function () {},
+    onRetype: handlers.onRetype || function () {}
+  });
+  if (choices) body.append(choices);
+  (packet.charts || []).forEach(chart => body.append(historicalChart(chart)));
+  const airport = renderAirportReports(packet);
+  if (airport) body.append(airport);
+  const passages = renderPassages(packet);
+  if (passages) body.append(passages);
+  const rest = facts.filter(fact => fact !== primary);
+  if (rest.length) body.append(renderFacts(packet, rest));
+  if (packet.follow_up) body.append(el('p', packet.follow_up, 'notice is-calm'));
+  const receipt = renderReceipt(packet, primary) || renderSeriesReceipt(packet);
+  if (receipt) body.append(receipt);
+  const tasks = renderTasks(packet);
+  if (tasks) body.append(disclosure('Requested tasks (' + (packet.task_results || []).length + ')', into => into.append(tasks)));
+  const refreshNote = renderRefreshNote(packet, handlers);
+  if (refreshNote.childNodes.length) body.append(refreshNote);
+  const notes = renderNotes(packet);
+  if (notes) body.append(notes);
+  const sources = renderSources(packet);
+  if (sources) body.append(sources);
+  body.append(renderTrace(packet));
+  const actions = renderActions(packet, handlers);
+  if (actions.childNodes.length) body.append(actions);
+  const expiry = renderExpiry(packet);
+  if (expiry) body.append(expiry);
+  if (rest.length || packet.charts) {
+    body.append(disclosure('Machine record (raw response)', into => {
+      into.append(el('p', 'The complete response this card was rendered from, for audit.', 'field-note'));
+      into.append(el('pre', JSON.stringify(packet, null, 2), 'raw-json'));
+    }));
+  }
+  card.append(body);
+  return card;
+}
+
+/* ---------- welcome and in-flight ---------- */
+function renderWelcome(handlers) {
+  const box = el('article', undefined, 'welcome');
+  box.append(el('span', 'Weather desk', 'eyebrow'));
+  box.append(el('h1', 'Ask about a place and a time.'));
+  box.append(el('p', 'Ask in your own words, in English or Hindi, and follow up in the same conversation. WeatherGPT resolves the place, retrieves the evidence and keeps the source and retrieval time attached to every value. When a name is shared between places it will ask you which one.'));
+  const starters = el('div', undefined, 'starters');
+  [
+    ['Will it rain in Ahmedabad, Gujarat tomorrow morning?', 'Ask about rain'],
+    ['What is the chance of rain in Kochi, Kerala tomorrow afternoon?', 'Ask for a probability'],
+    ['Show the annual rainfall trend for Ahmedabad district, Gujarat from 1981 to 2010.', 'Look at a trend'],
+    ['What is the current weather at VOBL?', 'Ask for an airport report']
+  ].forEach(pair => {
+    const button = el('button', pair[1], 'ghost');
+    button.type = 'button';
+    button.addEventListener('click', () => handlers.onExample(pair[0]));
+    starters.append(button);
+  });
+  box.append(starters);
+  box.append(el('p', 'It will not invent a warning, an observation, a water level or a forecast, and it will say when evidence is missing rather than fill the gap. Official warning applicability, live station observations and field, marine or travel clearance are not connected.', 'welcome-limit'));
+  return box;
+}
+function renderWorking(question) {
+  const box = el('div', undefined, 'working');
+  box.append(el('span', undefined, 'working-dot'));
+  const body = el('div', undefined, 'working-body');
+  body.append(el('p', 'Working on it', 'working-title'));
+  body.append(el('p', 'Resolving the place and window, then retrieving evidence. A local model is interpreting your question, so this can take up to about a minute.', 'working-note'));
+  const clock = el('p', undefined, 'working-clock');
+  clock.dataset.since = String(Date.now());
+  body.append(clock);
+  box.append(body);
+  return box;
+}
+function renderUserTurn(text) { return el('div', text, 'turn-user'); }
+
+/* ---------- rail ---------- */
+let ledgerExpanded = false;
+function ledgerItem(item, current, handlers) {
+  const row = el('li', undefined, 'ledger-item' + (item.id === current ? ' is-current' : ''));
+  const open = el('button', undefined, 'ledger-open');
+  open.type = 'button';
+  open.append(el('span', item.opening_question || 'Conversation', 'ledger-text'));
+  const meta = el('span', undefined, 'ledger-meta');
+  meta.append(el('span', item.asked + ' asked'));
+  meta.append(el('span', item.updated ? istStamp(item.updated) : 'time not recorded'));
+  open.append(meta);
+  open.addEventListener('click', () => handlers.onOpen(item));
+  row.append(open);
+  const tools = el('div', undefined, 'ledger-tools');
+  const remove = el('button', 'Delete', 'ghost danger');
+  remove.type = 'button';
+  remove.addEventListener('click', () => handlers.onDelete(item));
+  tools.append(remove);
+  row.append(tools);
+  return row;
+}
+function renderLedger(ledger, handlers) {
+  const list = document.getElementById('ledger');
+  const note = document.getElementById('ledger-note');
+  if (!list) return;
+  list.replaceChildren();
+  const all = (ledger && ledger.conversations) || [];
+  const search = document.getElementById('ledger-search');
+  const query = search && search.value ? search.value.trim().toLowerCase() : '';
+  const items = query ? all.filter(item => (item.opening_question || '').toLowerCase().indexOf(query) >= 0) : all;
+  if (!all.length) {
+    if (note) note.textContent = 'No stored conversations yet. The first question creates one.';
+    return;
+  }
+  if (!items.length) {
+    if (note) note.textContent = 'No stored conversation matches this search. It covers the questions held on this machine.';
+    return;
+  }
+  // The ledger is a bounded read of the store, and the note says so rather than
+  // implying that every stored conversation is searchable here.
+  if (note) note.textContent = query
+    ? items.length + ' of the ' + all.length + ' most recent conversations match. Older stored conversations are not loaded into this view.'
+    : ledger.total + ' stored on this machine; the ' + all.length + ' most recent are listed. Open one to restore its transcript, or delete it.';
+  const limit = 6;
+  const shown = ledgerExpanded ? items : items.slice(0, limit);
+  shown.forEach(item => list.append(ledgerItem(item, handlers.currentId(), handlers)));
+  const hidden = items.length - shown.length;
+  if (hidden > 0) {
+    const more = el('button', 'Show ' + hidden + ' older conversation' + (hidden === 1 ? '' : 's'), 'ghost');
+    more.type = 'button';
+    more.addEventListener('click', () => { ledgerExpanded = true; renderLedger(ledger, handlers); });
+    const row = el('li');
+    row.append(more);
+    list.append(row);
+  } else if (ledgerExpanded && items.length > limit) {
+    const fewer = el('button', 'Show fewer', 'ghost');
+    fewer.type = 'button';
+    fewer.addEventListener('click', () => { ledgerExpanded = false; renderLedger(ledger, handlers); });
+    const row = el('li');
+    row.append(fewer);
+    list.append(row);
+  }
+}
+function renderHealth(health) {
+  const box = document.getElementById('health');
+  if (!box) return;
+  box.replaceChildren();
+  if (!health) { box.append(el('p', 'Collection health is unavailable.', 'block-note')); return; }
+  if (!health.available) { box.append(el('p', health.note || 'No collection history.', 'block-note')); return; }
+  (health.products || []).forEach(product => {
+    const row = el('div', undefined, 'health-stream');
+    row.append(el('span', product.product, 'health-key'));
+    row.append(el('span', product.jobs + ' job' + (product.jobs === 1 ? '' : 's') + ' \u00b7 ' + productStates(product.states), 'health-val'));
+    row.append(el('span', product.newest_commit_utc ? 'newest evidence ' + istStamp(product.newest_commit_utc) : 'no committed evidence yet', 'health-val'));
+    box.append(row);
+  });
+  const leases = el('div', undefined, 'health-row');
+  leases.append(el('span', 'Requests in flight', 'health-key'));
+  leases.append(el('span', String(health.active_leases), 'health-val'));
+  box.append(leases);
+  if ((health.cooldowns || []).length) {
+    const cooldown = el('div', undefined, 'health-row');
+    cooldown.append(el('span', 'Provider cooldowns', 'health-key'));
+    cooldown.append(el('span', health.cooldowns.map(item => item.provider + ' until ' + istClock(item.until_utc)).join(' \u00b7 '), 'health-val'));
+    box.append(cooldown);
+  }
+  box.append(el('p', health.note, 'block-note'));
+}
+function productStates(states) {
+  const keys = Object.keys(states || {});
+  return keys.length ? keys.sort().map(key => key + ' ' + states[key]).join(' \u00b7 ') : 'no jobs';
+}
+function renderRestored(transcript, handlers) {
+  const thread = document.getElementById('thread');
+  if (!thread) return;
+  thread.replaceChildren();
+  const box = el('article', undefined, 'welcome');
+  box.append(el('span', 'Restored conversation', 'eyebrow'));
+  box.append(el('h2', 'Continuing from your stored transcript'));
+  box.append(el('p', transcript.note || 'Earlier answers are timestamped receipts; ask again before relying on one.'));
+  thread.append(box);
+  (transcript.turns || []).forEach(turn => {
+    thread.append(turn.role === 'user' ? renderUserTurn(turn.content) : el('div', turn.content, 'answer-copy notice is-calm'));
+  });
+  if (handlers && handlers.onRetype) {
+    const actions = el('div', undefined, 'actions');
+    const ask = el('button', 'Ask a follow-up', 'primary');
+    ask.type = 'button';
+    ask.addEventListener('click', handlers.onRetype);
+    actions.append(ask);
+    thread.append(actions);
+  }
+  thread.scrollTop = thread.scrollHeight;
+}
+
+/* ---------- service banner ---------- */
+function renderBanner(text, calm) {
+  const box = document.getElementById('banner');
+  if (!box) return;
+  if (!text) { box.hidden = true; box.textContent = ''; return; }
+  box.textContent = text;
+  box.className = 'banner' + (calm ? ' is-calm' : '');
+  box.hidden = false;
+}
+
+/* ---------- portable exports ---------- */
+function markdownTable(rows) {
+  if (!rows.length) return '';
+  const head = '| ' + rows[0].join(' | ') + ' |';
+  const rule = '| ' + rows[0].map(() => '---').join(' | ') + ' |';
+  const body = rows.slice(1).map(row => '| ' + row.join(' | ') + ' |');
+  return [head, rule].concat(body).join(String.fromCharCode(10));
+}
+function answerMarkdown(packet) {
+  const newline = String.fromCharCode(10);
+  const lines = [];
+  const cell = value => String(value === undefined || value === null ? '' : value).split('|').join('/');
+  lines.push('# WeatherGPT answer');
+  lines.push('');
+  lines.push('- Question: ' + (packet.question || 'not recorded'));
+  lines.push('- Status: ' + (STATUS_LABELS[packet.status] || packet.status));
+  lines.push('- Answered: ' + (packet.answered_at_utc ? istStamp(packet.answered_at_utc) : 'time not recorded'));
+  if (packet.expires_at_utc) lines.push('- Serving lifetime ends: ' + istStamp(packet.expires_at_utc));
+  lines.push('');
+  lines.push('## Answer');
+  lines.push('');
+  lines.push(String(packet.answer || '').trim());
+  const facts = coverageFacts(packet);
+  if (facts.length) {
+    lines.push('');
+    lines.push('## Retrieved values (' + facts.length + ')');
+    lines.push('');
+    const rows = [['Measure', 'Value', 'Unit', 'Place', 'Time', 'Source', 'Evidence id']];
+    facts.slice(0, 60).forEach(fact => rows.push([
+      cell(fact.label || fact.parameter),
+      cell(fact.value),
+      cell(fact.unit),
+      cell(fact.place),
+      cell(fact.observed_at ? 'observed ' + istStamp(fact.observed_at) : hourLabel(fact)),
+      cell(fact.source_id),
+      cell(String(fact.evidence_version || '').slice(0, 12))
+    ]));
+    lines.push(markdownTable(rows));
+    if (facts.length > 60) {
+      lines.push('');
+      lines.push('_' + (facts.length - 60) + ' further retrieved values are in the JSON export._');
+    }
+  }
+  const calculations = packet.calculations || [];
+  if (calculations.length) {
+    lines.push('');
+    lines.push('## Computed values');
+    lines.push('');
+    calculations.forEach(calculation => lines.push('- ' + calculation.label + ': ' + calculation.value + ' ' +
+      (calculation.unit || '') + ' (' + calculationKind(calculation) + (calculation.method ? '; ' + calculation.method : '') + ')'));
+  }
+  const citations = packet.citations || [];
+  if (citations.length) {
+    lines.push('');
+    lines.push('## Sources');
+    lines.push('');
+    const seen = {};
+    citations.forEach(citation => {
+      const key = (citation.source_id || '') + (citation.url || '');
+      if (seen[key]) return;
+      seen[key] = true;
+      const label = [citation.source_id, citation.provider, citation.product].filter(Boolean).join(' - ');
+      lines.push('- ' + label + (citation.url ? ' <' + citation.url + '>' : '') +
+        (citation.page ? ' (page ' + citation.page + ')' : '') +
+        (citation.retrieved_at_utc ? ' retrieved ' + istStamp(citation.retrieved_at_utc) : ''));
+    });
+  }
+  const notes = (packet.notes || []).filter(note => !/output language could not be rendered/i.test(note));
+  if (notes.length) {
+    lines.push('');
+    lines.push('## Limits and assumptions');
+    lines.push('');
+    notes.forEach(note => lines.push('- ' + note));
+  }
+  const tasks = packet.task_results || [];
+  if (tasks.length) {
+    lines.push('');
+    lines.push('## Requested tasks');
+    lines.push('');
+    tasks.forEach(task => lines.push('- ' + task.id + ' ' + ((task.request || {}).kind || '') + '/' +
+      ((task.request || {}).operation || '') + ' - ' + task.status));
+  }
+  lines.push('');
+  lines.push('_Model forecasts and published records, each with source and retrieval time. Not an official warning and not field, marine or travel clearance. Produced by a local prototype._');
+  return lines.join(newline);
+}
+function transcriptMarkdown(transcript, ledgerItem) {
+  const newline = String.fromCharCode(10);
+  const lines = ['# WeatherGPT conversation', ''];
+  lines.push('- Started by: ' + ((ledgerItem && ledgerItem.opening_question) || ((transcript.turns || [])[0] || {}).content || 'not recorded'));
+  lines.push('- Last stored: ' + istStamp(transcript.updated));
+  lines.push('- Turns: ' + (transcript.turns || []).length);
+  lines.push('');
+  lines.push(transcript.note || '');
+  lines.push('');
+  (transcript.turns || []).forEach(turn => {
+    lines.push(turn.role === 'user' ? '## You' : '## WeatherGPT');
+    lines.push('');
+    lines.push(String(turn.content || '').trim());
+    lines.push('');
+  });
+  lines.push('_Earlier answers are receipts for the moment they were retrieved; ask again before relying on one._');
+  return lines.join(newline);
+}

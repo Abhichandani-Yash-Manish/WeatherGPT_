@@ -1,0 +1,906 @@
+{
+  "case": "multi-task",
+  "request": {
+    "question": "Compare the rain amount for tomorrow afternoon in Kochi, Kerala with GFS too, including the chance of rain."
+  },
+  "base": "http://127.0.0.1:8765",
+  "http_status": 200,
+  "duration_s": 14.0,
+  "packet": {
+    "schema_version": "weather-conversation-v1",
+    "conversation_id": "3470f06c-d6f5-4507-ad39-4e061a6aa23d",
+    "question": "Compare the rain amount for tomorrow afternoon in Kochi, Kerala with GFS too, including the chance of rain.",
+    "status": "answered",
+    "answer": "Task 1: Kochi · 15 Sep, 12:30–15 Sep, 18:30 IST: Forecast precipitation: 0.8 mm. Source: GFS forecast; conditions can change.\n\nKochi · 15 Sep, 12:30–15 Sep, 18:30 IST: Total precipitation over this period: 0.0 mm. Precipitation in individual hours: 0.0 mm. Source: Open-Meteo best-match forecast; conditions can change.\n\nFor the same point and interval, GFS: 0.8 mm; best-match: 0.0 mm. Best-match minus GFS: -0.8 mm. Best-match may include GFS upstream. These are not independent confirmations, and agreement does not establish accuracy; neither an average nor a confidence score is produced.\n\nTask 2: Kochi · 15 Sep, 12:30–15 Sep, 18:30 IST: Hourly rain chances: 2–17 %. The highest hourly value is 17% for 15 Sep, 17:30–18:30 IST. These percentages are for individual hours, not the chance for the whole day. Source: Open-Meteo best-match forecast; conditions can change.",
+    "facts": [
+      {
+        "id": "t1-m1-f1",
+        "label": "Forecast rainfall",
+        "value": "0.8",
+        "unit": "mm",
+        "place": "Kochi, Ernākulam, State of Kerala",
+        "start": "2026-09-15T12:30:00+05:30",
+        "end": "2026-09-15T18:30:00+05:30",
+        "source_id": "S21",
+        "method": "preceding_hour_sum",
+        "source_locators": [
+          "$.hourly.precipitation[32]",
+          "$.hourly.precipitation[33]",
+          "$.hourly.precipitation[34]",
+          "$.hourly.precipitation[35]",
+          "$.hourly.precipitation[36]",
+          "$.hourly.precipitation[37]"
+        ],
+        "parameter": "precipitation",
+        "entity_id": "geonames:1273874",
+        "evidence_version": "ba29b0db68134f7840140da3cf8d27ffc8373b6cd55d78a621faa98e74b963d2",
+        "citation_ids": [
+          "t1-c-ba29b0db68134f7840140da3cf8d27ffc8373b6cd55d78a621faa98e74b963d2"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-m2-f1",
+        "parameter": "precipitation",
+        "label": "Hourly precipitation amount",
+        "value": "0.0",
+        "unit": "mm",
+        "place": "Kochi, Ernākulam, State of Kerala",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T12:30:00+05:30",
+        "end": "2026-09-15T13:30:00+05:30",
+        "source_id": "S62",
+        "evidence_kind": "forecast",
+        "evidence_version": "bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e",
+        "citation_ids": [
+          "t1-c-bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e"
+        ],
+        "source_locators": [
+          "$.hourly.precipitation[32]"
+        ],
+        "method": "preceding_hour_sum",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-m2-f2",
+        "parameter": "precipitation",
+        "label": "Hourly precipitation amount",
+        "value": "0.0",
+        "unit": "mm",
+        "place": "Kochi, Ernākulam, State of Kerala",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T13:30:00+05:30",
+        "end": "2026-09-15T14:30:00+05:30",
+        "source_id": "S62",
+        "evidence_kind": "forecast",
+        "evidence_version": "bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e",
+        "citation_ids": [
+          "t1-c-bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e"
+        ],
+        "source_locators": [
+          "$.hourly.precipitation[33]"
+        ],
+        "method": "preceding_hour_sum",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-m2-f3",
+        "parameter": "precipitation",
+        "label": "Hourly precipitation amount",
+        "value": "0.0",
+        "unit": "mm",
+        "place": "Kochi, Ernākulam, State of Kerala",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T14:30:00+05:30",
+        "end": "2026-09-15T15:30:00+05:30",
+        "source_id": "S62",
+        "evidence_kind": "forecast",
+        "evidence_version": "bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e",
+        "citation_ids": [
+          "t1-c-bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e"
+        ],
+        "source_locators": [
+          "$.hourly.precipitation[34]"
+        ],
+        "method": "preceding_hour_sum",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-m2-f4",
+        "parameter": "precipitation",
+        "label": "Hourly precipitation amount",
+        "value": "0.0",
+        "unit": "mm",
+        "place": "Kochi, Ernākulam, State of Kerala",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T15:30:00+05:30",
+        "end": "2026-09-15T16:30:00+05:30",
+        "source_id": "S62",
+        "evidence_kind": "forecast",
+        "evidence_version": "bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e",
+        "citation_ids": [
+          "t1-c-bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e"
+        ],
+        "source_locators": [
+          "$.hourly.precipitation[35]"
+        ],
+        "method": "preceding_hour_sum",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-m2-f5",
+        "parameter": "precipitation",
+        "label": "Hourly precipitation amount",
+        "value": "0.0",
+        "unit": "mm",
+        "place": "Kochi, Ernākulam, State of Kerala",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T16:30:00+05:30",
+        "end": "2026-09-15T17:30:00+05:30",
+        "source_id": "S62",
+        "evidence_kind": "forecast",
+        "evidence_version": "bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e",
+        "citation_ids": [
+          "t1-c-bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e"
+        ],
+        "source_locators": [
+          "$.hourly.precipitation[36]"
+        ],
+        "method": "preceding_hour_sum",
+        "task_id": "t1"
+      },
+      {
+        "id": "t1-m2-f6",
+        "parameter": "precipitation",
+        "label": "Hourly precipitation amount",
+        "value": "0.0",
+        "unit": "mm",
+        "place": "Kochi, Ernākulam, State of Kerala",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T17:30:00+05:30",
+        "end": "2026-09-15T18:30:00+05:30",
+        "source_id": "S62",
+        "evidence_kind": "forecast",
+        "evidence_version": "bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e",
+        "citation_ids": [
+          "t1-c-bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e"
+        ],
+        "source_locators": [
+          "$.hourly.precipitation[37]"
+        ],
+        "method": "preceding_hour_sum",
+        "task_id": "t1"
+      },
+      {
+        "id": "t2-f1",
+        "parameter": "precipitation_probability",
+        "label": "Hourly precipitation probability (>0.1 mm)",
+        "value": "2",
+        "unit": "%",
+        "place": "Kochi, Ernākulam, State of Kerala",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T12:30:00+05:30",
+        "end": "2026-09-15T13:30:00+05:30",
+        "source_id": "S62",
+        "evidence_kind": "forecast",
+        "evidence_version": "bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e",
+        "citation_ids": [
+          "t2-c-bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e"
+        ],
+        "source_locators": [
+          "$.hourly.precipitation_probability[32]"
+        ],
+        "method": "preceding_hour_probability",
+        "task_id": "t2"
+      },
+      {
+        "id": "t2-f2",
+        "parameter": "precipitation_probability",
+        "label": "Hourly precipitation probability (>0.1 mm)",
+        "value": "4",
+        "unit": "%",
+        "place": "Kochi, Ernākulam, State of Kerala",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T13:30:00+05:30",
+        "end": "2026-09-15T14:30:00+05:30",
+        "source_id": "S62",
+        "evidence_kind": "forecast",
+        "evidence_version": "bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e",
+        "citation_ids": [
+          "t2-c-bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e"
+        ],
+        "source_locators": [
+          "$.hourly.precipitation_probability[33]"
+        ],
+        "method": "preceding_hour_probability",
+        "task_id": "t2"
+      },
+      {
+        "id": "t2-f3",
+        "parameter": "precipitation_probability",
+        "label": "Hourly precipitation probability (>0.1 mm)",
+        "value": "7",
+        "unit": "%",
+        "place": "Kochi, Ernākulam, State of Kerala",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T14:30:00+05:30",
+        "end": "2026-09-15T15:30:00+05:30",
+        "source_id": "S62",
+        "evidence_kind": "forecast",
+        "evidence_version": "bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e",
+        "citation_ids": [
+          "t2-c-bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e"
+        ],
+        "source_locators": [
+          "$.hourly.precipitation_probability[34]"
+        ],
+        "method": "preceding_hour_probability",
+        "task_id": "t2"
+      },
+      {
+        "id": "t2-f4",
+        "parameter": "precipitation_probability",
+        "label": "Hourly precipitation probability (>0.1 mm)",
+        "value": "11",
+        "unit": "%",
+        "place": "Kochi, Ernākulam, State of Kerala",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T15:30:00+05:30",
+        "end": "2026-09-15T16:30:00+05:30",
+        "source_id": "S62",
+        "evidence_kind": "forecast",
+        "evidence_version": "bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e",
+        "citation_ids": [
+          "t2-c-bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e"
+        ],
+        "source_locators": [
+          "$.hourly.precipitation_probability[35]"
+        ],
+        "method": "preceding_hour_probability",
+        "task_id": "t2"
+      },
+      {
+        "id": "t2-f5",
+        "parameter": "precipitation_probability",
+        "label": "Hourly precipitation probability (>0.1 mm)",
+        "value": "14",
+        "unit": "%",
+        "place": "Kochi, Ernākulam, State of Kerala",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T16:30:00+05:30",
+        "end": "2026-09-15T17:30:00+05:30",
+        "source_id": "S62",
+        "evidence_kind": "forecast",
+        "evidence_version": "bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e",
+        "citation_ids": [
+          "t2-c-bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e"
+        ],
+        "source_locators": [
+          "$.hourly.precipitation_probability[36]"
+        ],
+        "method": "preceding_hour_probability",
+        "task_id": "t2"
+      },
+      {
+        "id": "t2-f6",
+        "parameter": "precipitation_probability",
+        "label": "Hourly precipitation probability (>0.1 mm)",
+        "value": "17",
+        "unit": "%",
+        "place": "Kochi, Ernākulam, State of Kerala",
+        "entity_id": "geonames:1273874",
+        "start": "2026-09-15T17:30:00+05:30",
+        "end": "2026-09-15T18:30:00+05:30",
+        "source_id": "S62",
+        "evidence_kind": "forecast",
+        "evidence_version": "bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e",
+        "citation_ids": [
+          "t2-c-bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e"
+        ],
+        "source_locators": [
+          "$.hourly.precipitation_probability[37]"
+        ],
+        "method": "preceding_hour_probability",
+        "task_id": "t2"
+      }
+    ],
+    "citations": [
+      {
+        "source_id": "S21",
+        "provider": "Open-Meteo",
+        "product": "GFS forecast delivery",
+        "evidence_kind": "model_forecast",
+        "url": "https://api.open-meteo.com/v1/gfs?latitude=9.93988&longitude=76.26022&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "response_sha256": "ba29b0db68134f7840140da3cf8d27ffc8373b6cd55d78a621faa98e74b963d2",
+        "raw_relative_path": "56696cb0a953749be68d36105f2cfd0e007fc104c2fa61f4979248a233d543b4/2037c87fb905480d93179a070feff5dc/blobs/ba29b0db68134f7840140da3cf8d27ffc8373b6cd55d78a621faa98e74b963d2.bin",
+        "published_job_id": "56696cb0a953749be68d36105f2cfd0e007fc104c2fa61f4979248a233d543b4",
+        "source_locators": [
+          "$.hourly.precipitation[32]",
+          "$.hourly.precipitation[33]",
+          "$.hourly.precipitation[34]",
+          "$.hourly.precipitation[35]",
+          "$.hourly.precipitation[36]",
+          "$.hourly.precipitation[37]"
+        ],
+        "retrieved_at_utc": "2026-09-14T11:09:29.513290+00:00",
+        "issue_time_utc": null,
+        "id": "t1-c-ba29b0db68134f7840140da3cf8d27ffc8373b6cd55d78a621faa98e74b963d2"
+      },
+      {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/1273874",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      {
+        "id": "t1-c-bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e",
+        "source_id": "S62",
+        "provider": "Open-Meteo",
+        "product": "Best-match hourly model forecast",
+        "url": "https://api.open-meteo.com/v1/forecast?latitude=9.93988&longitude=76.26022&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m%2Cprecipitation_probability%2Capparent_temperature%2Cwind_gusts_10m%2Cvisibility&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "response_sha256": "bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e",
+        "retrieved_at_utc": "2026-09-14T11:09:30.278292+00:00",
+        "requested_point": {
+          "latitude": 9.93988,
+          "longitude": 76.26022
+        },
+        "returned_grid": {
+          "latitude": 9.947276,
+          "longitude": 76.29921
+        },
+        "grid_distance_km": 4.349,
+        "model_run_time": null
+      },
+      {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/1273874",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      {
+        "id": "t2-c-bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e",
+        "source_id": "S62",
+        "provider": "Open-Meteo",
+        "product": "Best-match hourly model forecast",
+        "url": "https://api.open-meteo.com/v1/forecast?latitude=9.93988&longitude=76.26022&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m%2Cprecipitation_probability%2Capparent_temperature%2Cwind_gusts_10m%2Cvisibility&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "response_sha256": "bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e",
+        "retrieved_at_utc": "2026-09-14T11:09:30.278292+00:00",
+        "requested_point": {
+          "latitude": 9.93988,
+          "longitude": 76.26022
+        },
+        "returned_grid": {
+          "latitude": 9.947276,
+          "longitude": 76.29921
+        },
+        "grid_distance_km": 4.349,
+        "model_run_time": null
+      },
+      {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/1273874",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      }
+    ],
+    "notes": [
+      "Tomorrow is 2026-09-15. Afternoon defaults to 12:30–18:30 IST.",
+      "Model forecasts at the selected place point, not observations or district averages. Source model run time and local representativeness remain unverified.",
+      "Precipitation includes rain, showers and snow water equivalent; it is not a rain-only gauge measurement.",
+      "Source hours are on UTC boundaries (:30 in IST). Each probability is for >0.1 mm in its preceding hour. Hourly probabilities are never combined into a period probability.",
+      "Best-match model selection may differ by variable; upstream run and local representativeness are unverified. Hourly values cannot determine an exact rain start minute or issue an official warning.",
+      "Best-match may include GFS upstream. These are not independent confirmations, and agreement does not establish accuracy; neither an average nor a confidence score is produced."
+    ],
+    "choices": [],
+    "follow_up": null,
+    "operational_eligible": false,
+    "answered_at_utc": "2026-09-14T11:09:16.294792+00:00",
+    "expires_at_utc": "2026-09-14T12:09:29.513290+00:00",
+    "trace": {
+      "planning": {
+        "provider": "local_ollama",
+        "model": "qwen3.6:latest",
+        "input_tokens": 3024,
+        "output_tokens": 450,
+        "duration_seconds": 12.394267583
+      },
+      "generation": {
+        "provider": "typed_task_renderers",
+        "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+      },
+      "tools": [
+        {
+          "name": "gazetteer_search",
+          "query": {
+            "name": "Kochi",
+            "state": "Kerala",
+            "district": "",
+            "kind": "settlement"
+          },
+          "matches": 1
+        },
+        {
+          "name": "point_forecast",
+          "location": "Kochi, Ernākulam, State of Kerala",
+          "status": "prototype_answer",
+          "refresh": {
+            "state": "succeeded",
+            "job_id": "56696cb0a953749be68d36105f2cfd0e007fc104c2fa61f4979248a233d543b4",
+            "worker_state": "succeeded",
+            "claims_this_action": 1,
+            "job_provider_attempts": 1,
+            "retry_due_utc_epoch": 1789383600.0,
+            "message": "Collection completed; answer checked against the stored evidence."
+          }
+        },
+        {
+          "name": "extended_forecast",
+          "job_id": "51d2dc2fdf0a8000cf1f1798685b21477c6e522efa59dd7325d67e7c95596bc1",
+          "worker": {
+            "state": "succeeded",
+            "promoted": true,
+            "job_id": "51d2dc2fdf0a8000cf1f1798685b21477c6e522efa59dd7325d67e7c95596bc1"
+          },
+          "source_sha256": "bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e"
+        },
+        {
+          "name": "forecast",
+          "task_id": "t1",
+          "status": "answered"
+        },
+        {
+          "name": "extended_forecast",
+          "job_id": "51d2dc2fdf0a8000cf1f1798685b21477c6e522efa59dd7325d67e7c95596bc1",
+          "worker": {
+            "state": "already_collected"
+          },
+          "source_sha256": "bb526f9589f8127f990d470edb7e87c23ea9b278b8c9ff86609e2c17d9d3e10e"
+        },
+        {
+          "name": "forecast",
+          "task_id": "t2",
+          "status": "answered"
+        }
+      ],
+      "provider": "local_ollama",
+      "context_resolution": {
+        "action": "new",
+        "changed_fields": [],
+        "inherited_fields": []
+      },
+      "duration_seconds": 14.025
+    },
+    "plan": {
+      "language": "en",
+      "places": [
+        {
+          "name": "Kochi",
+          "state": "Kerala",
+          "district": "",
+          "kind": "settlement"
+        }
+      ],
+      "assumptions": [
+        "Tomorrow is 2026-09-15. Afternoon defaults to 12:30–18:30 IST."
+      ],
+      "clarification": "",
+      "explicit_times": false,
+      "tasks": [
+        {
+          "request_quote": "Compare the rain amount for tomorrow afternoon in Kochi, Kerala with GFS too",
+          "kind": "forecast",
+          "operation": "crosscheck",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-15T12:30:00+05:30",
+          "end_local": "2026-09-15T18:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        },
+        {
+          "request_quote": "including the chance of rain",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation_probability"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-15T12:30:00+05:30",
+          "end_local": "2026-09-15T18:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        }
+      ],
+      "context_action": "new",
+      "changed_fields": [],
+      "intent": "forecast",
+      "start_local": "2026-09-15T12:30:00+05:30",
+      "end_local": "2026-09-15T18:30:00+05:30",
+      "variables": [
+        "precipitation"
+      ],
+      "year": 0,
+      "period": "annual",
+      "history_parameter": "rainfall",
+      "unsupported_parameters": [],
+      "requested_outcome": "Complete all explicitly requested tasks"
+    },
+    "task_results": [
+      {
+        "id": "t1",
+        "request": {
+          "request_quote": "Compare the rain amount for tomorrow afternoon in Kochi, Kerala with GFS too",
+          "kind": "forecast",
+          "operation": "crosscheck",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-15T12:30:00+05:30",
+          "end_local": "2026-09-15T18:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        },
+        "status": "answered",
+        "answer": "Kochi · 15 Sep, 12:30–15 Sep, 18:30 IST: Forecast precipitation: 0.8 mm. Source: GFS forecast; conditions can change.\n\nKochi · 15 Sep, 12:30–15 Sep, 18:30 IST: Total precipitation over this period: 0.0 mm. Precipitation in individual hours: 0.0 mm. Source: Open-Meteo best-match forecast; conditions can change.\n\nFor the same point and interval, GFS: 0.8 mm; best-match: 0.0 mm. Best-match minus GFS: -0.8 mm. Best-match may include GFS upstream. These are not independent confirmations, and agreement does not establish accuracy; neither an average nor a confidence score is produced.",
+        "fact_ids": [
+          "t1-m1-f1",
+          "t1-m2-f1",
+          "t1-m2-f2",
+          "t1-m2-f3",
+          "t1-m2-f4",
+          "t1-m2-f5",
+          "t1-m2-f6"
+        ],
+        "passage_ids": [],
+        "comparison_text": "For the same point and interval, GFS: 0.8 mm; best-match: 0.0 mm. Best-match minus GFS: -0.8 mm. Best-match may include GFS upstream. These are not independent confirmations, and agreement does not establish accuracy; neither an average nor a confidence score is produced."
+      },
+      {
+        "id": "t2",
+        "request": {
+          "request_quote": "including the chance of rain",
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation_probability"
+          ],
+          "years": [],
+          "period": "annual",
+          "start_local": "2026-09-15T12:30:00+05:30",
+          "end_local": "2026-09-15T18:30:00+05:30",
+          "place_indices": [
+            0
+          ]
+        },
+        "status": "answered",
+        "answer": "Kochi · 15 Sep, 12:30–15 Sep, 18:30 IST: Hourly rain chances: 2–17 %. The highest hourly value is 17% for 15 Sep, 17:30–18:30 IST. These percentages are for individual hours, not the chance for the whole day. Source: Open-Meteo best-match forecast; conditions can change.",
+        "fact_ids": [
+          "t2-f1",
+          "t2-f2",
+          "t2-f3",
+          "t2-f4",
+          "t2-f5",
+          "t2-f6"
+        ],
+        "passage_ids": []
+      }
+    ],
+    "charts": [
+      {
+        "kind": "hourly_series",
+        "axis_label": "Time (IST)",
+        "title": "Kochi, Ernākulam, State of Kerala · Hourly precipitation amount",
+        "unit": "mm",
+        "points": [
+          {
+            "x": 1789455600.0,
+            "label": "15 Sep 12:30–13:30",
+            "value": "0.0",
+            "evidence_id": "t1-m2-f1"
+          },
+          {
+            "x": 1789459200.0,
+            "label": "15 Sep 13:30–14:30",
+            "value": "0.0",
+            "evidence_id": "t1-m2-f2"
+          },
+          {
+            "x": 1789462800.0,
+            "label": "15 Sep 14:30–15:30",
+            "value": "0.0",
+            "evidence_id": "t1-m2-f3"
+          },
+          {
+            "x": 1789466400.0,
+            "label": "15 Sep 15:30–16:30",
+            "value": "0.0",
+            "evidence_id": "t1-m2-f4"
+          },
+          {
+            "x": 1789470000.0,
+            "label": "15 Sep 16:30–17:30",
+            "value": "0.0",
+            "evidence_id": "t1-m2-f5"
+          },
+          {
+            "x": 1789473600.0,
+            "label": "15 Sep 17:30–18:30",
+            "value": "0.0",
+            "evidence_id": "t1-m2-f6"
+          }
+        ],
+        "source_ids": [
+          "S62"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "kind": "hourly_series",
+        "axis_label": "Time (IST)",
+        "title": "Kochi, Ernākulam, State of Kerala · Hourly precipitation probability (>0.1 mm)",
+        "unit": "%",
+        "points": [
+          {
+            "x": 1789455600.0,
+            "label": "15 Sep 12:30–13:30",
+            "value": "2",
+            "evidence_id": "t2-f1"
+          },
+          {
+            "x": 1789459200.0,
+            "label": "15 Sep 13:30–14:30",
+            "value": "4",
+            "evidence_id": "t2-f2"
+          },
+          {
+            "x": 1789462800.0,
+            "label": "15 Sep 14:30–15:30",
+            "value": "7",
+            "evidence_id": "t2-f3"
+          },
+          {
+            "x": 1789466400.0,
+            "label": "15 Sep 15:30–16:30",
+            "value": "11",
+            "evidence_id": "t2-f4"
+          },
+          {
+            "x": 1789470000.0,
+            "label": "15 Sep 16:30–17:30",
+            "value": "14",
+            "evidence_id": "t2-f5"
+          },
+          {
+            "x": 1789473600.0,
+            "label": "15 Sep 17:30–18:30",
+            "value": "17",
+            "evidence_id": "t2-f6"
+          }
+        ],
+        "source_ids": [
+          "S62"
+        ],
+        "task_id": "t2"
+      }
+    ],
+    "calculations": [
+      {
+        "label": "Kochi, Ernākulam, State of Kerala · Precipitation total across requested hours",
+        "value": "0.0",
+        "unit": "mm",
+        "method": "sum of complete forecast hourly precipitation values",
+        "input_ids": [
+          "t1-m2-f1",
+          "t1-m2-f2",
+          "t1-m2-f3",
+          "t1-m2-f4",
+          "t1-m2-f5",
+          "t1-m2-f6"
+        ],
+        "source_ids": [
+          "S62"
+        ],
+        "task_id": "t1"
+      },
+      {
+        "kind": "source_comparison",
+        "label": "Best-match minus GFS precipitation",
+        "value": "-0.8",
+        "unit": "mm",
+        "method": "difference of complete matching point/window totals; not skill or confidence",
+        "input_ids": [
+          "t1-m1-f1",
+          "t1-m2-f1",
+          "t1-m2-f2",
+          "t1-m2-f3",
+          "t1-m2-f4",
+          "t1-m2-f5",
+          "t1-m2-f6"
+        ],
+        "source_ids": [
+          "S21",
+          "S62"
+        ],
+        "task_id": "t1"
+      }
+    ],
+    "pending_slots": [],
+    "retrieval_coverage": [],
+    "retrieval_plan": [
+      {
+        "task_id": "t1",
+        "operation": "crosscheck",
+        "kind": "forecast",
+        "parameters": [
+          "precipitation"
+        ],
+        "candidates": [
+          {
+            "tool": "forecast_crosscheck",
+            "selected": true,
+            "available": true,
+            "reason": "Compare matching source windows; best-match can share GFS lineage, so not independent validation",
+            "sources": [
+              {
+                "source_id": "S21",
+                "product": "Open-Meteo GFS forecast delivery",
+                "registry_status": "prototype_adapter_tested"
+              },
+              {
+                "source_id": "S62",
+                "product": "Open-Meteo best-match extended hourly forecast",
+                "registry_status": "prototype_adapter_tested"
+              }
+            ]
+          }
+        ],
+        "status": "answered",
+        "returned_source_ids": [
+          "S21",
+          "S61",
+          "S62"
+        ]
+      },
+      {
+        "task_id": "t2",
+        "operation": "lookup",
+        "kind": "forecast",
+        "parameters": [
+          "precipitation_probability"
+        ],
+        "candidates": [
+          {
+            "tool": "hourly_forecast",
+            "selected": true,
+            "available": true,
+            "reason": "Hourly evidence; exact onset and whole-period probability unavailable",
+            "sources": [
+              {
+                "source_id": "S62",
+                "product": "Open-Meteo best-match extended hourly forecast",
+                "registry_status": "prototype_adapter_tested"
+              }
+            ]
+          },
+          {
+            "tool": "forecast_summary",
+            "selected": false,
+            "available": true,
+            "reason": "Exact-window GFS model summary",
+            "sources": [
+              {
+                "source_id": "S21",
+                "product": "Open-Meteo GFS forecast delivery",
+                "registry_status": "prototype_adapter_tested"
+              }
+            ]
+          }
+        ],
+        "status": "answered",
+        "returned_source_ids": [
+          "S61",
+          "S62"
+        ]
+      }
+    ],
+    "document_evidence": [],
+    "resolved_points": {
+      "Kochi": {
+        "id": "1273874",
+        "name": "Kochi",
+        "latitude": 9.93988,
+        "longitude": 76.26022,
+        "feature": "PPL",
+        "admin1": "State of Kerala",
+        "admin2": "Ernākulam",
+        "modified": "2025-06-06",
+        "name_match_basis": "canonical",
+        "other_alias_matches": 0,
+        "match_type": "source_name_or_alias",
+        "selection_id": "geonames:1273874",
+        "label": "Kochi, Ernākulam, State of Kerala",
+        "coordinates": {
+          "latitude": 9.93988,
+          "longitude": 76.26022
+        },
+        "source_id": "S61",
+        "citation": {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1273874",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+        "for_place_name": "Kochi"
+      }
+    },
+    "task_coverage": {
+      "requested": 2,
+      "completed": 2,
+      "incomplete_ids": []
+    }
+  },
+  "observed_keys": [
+    "answer",
+    "answered_at_utc",
+    "calculations",
+    "charts",
+    "choices",
+    "citations",
+    "conversation_id",
+    "document_evidence",
+    "expires_at_utc",
+    "facts",
+    "follow_up",
+    "notes",
+    "operational_eligible",
+    "pending_slots",
+    "plan",
+    "question",
+    "resolved_points",
+    "retrieval_coverage",
+    "retrieval_plan",
+    "schema_version",
+    "status",
+    "task_coverage",
+    "task_results",
+    "trace"
+  ],
+  "non_empty": [
+    "answer",
+    "answered_at_utc",
+    "calculations",
+    "charts",
+    "citations",
+    "conversation_id",
+    "expires_at_utc",
+    "facts",
+    "notes",
+    "operational_eligible",
+    "plan",
+    "question",
+    "resolved_points",
+    "retrieval_plan",
+    "schema_version",
+    "status",
+    "task_coverage",
+    "task_results",
+    "trace"
+  ]
+}
