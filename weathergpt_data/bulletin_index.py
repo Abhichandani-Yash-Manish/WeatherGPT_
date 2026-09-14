@@ -6,6 +6,7 @@ from zoneinfo import ZoneInfo
 from .transport import SourceError,digest,parsed,stamp
 from .gazetteer import norm
 from .foundation import ROOT
+from .documents import strip_controls
 
 MODEL='intfloat/multilingual-e5-small'
 REVISION='614241f622f53c4eeff9890bdc4f31cfecc418b3'
@@ -14,7 +15,7 @@ LOCK=threading.RLock();_MODEL=None
 ALIASES={'paddy':'rice','dhan':'rice','धान':'rice','kapas':'cotton','कपास':'cotton','કપાસ':'cotton','makka':'maize','मक्का':'maize','haldi':'turmeric','हल्दी':'turmeric','mungfali':'groundnut','peanut':'groundnut','moong':'green gram','urad':'black gram','arhar':'pigeon pea','bajra':'pearl millet','baingan':'brinjal'}
 def crop_name(value):
     value=norm(value);return ALIASES.get(value,value)
-def clean(value):return ' '.join((value or '').replace('\uf0b7','•').split())
+def clean(value):return ' '.join(strip_controls((value or '').replace('\uf0b7','•'))[0].split())
 
 
 def embed(texts,query=False):
@@ -115,7 +116,7 @@ def extract(body,state,district,now):
 class BulletinIndex:
     def __init__(self,path):
         self.path=Path(path);self.path.parent.mkdir(parents=True,exist_ok=True)
-        with self.connection() as db:db.executescript('CREATE TABLE IF NOT EXISTS documents (sha TEXT PRIMARY KEY,payload TEXT,payload_hash TEXT);CREATE TABLE IF NOT EXISTS chunks (id TEXT PRIMARY KEY,document_sha TEXT,payload TEXT,payload_hash TEXT,embedding TEXT,embedding_hash TEXT,model_revision TEXT);CREATE TABLE IF NOT EXISTS heads (region TEXT PRIMARY KEY,sha TEXT,checked_at TEXT,status TEXT,error TEXT);')
+        with self.connection() as db:db.executescript('CREATE TABLE IF NOT EXISTS documents (sha TEXT PRIMARY KEY,payload TEXT,payload_hash TEXT);CREATE TABLE IF NOT EXISTS chunks (id TEXT PRIMARY KEY,document_sha TEXT,payload TEXT,payload_hash TEXT,embedding TEXT,embedding_hash TEXT,model_revision TEXT);CREATE TABLE IF NOT EXISTS passages (id TEXT PRIMARY KEY,document_sha TEXT,family TEXT,scope TEXT,region TEXT,payload TEXT,payload_hash TEXT,embedding TEXT,embedding_hash TEXT,model_revision TEXT);CREATE INDEX IF NOT EXISTS passages_family ON passages(family,scope,region);CREATE TABLE IF NOT EXISTS heads (region TEXT PRIMARY KEY,sha TEXT,checked_at TEXT,status TEXT,error TEXT);')
     def connection(self):return sqlite3.connect(self.path,timeout=10)
     def publish(self,document,provenance,checked_at,encoder=embed):
         chunks=document['chunks'];vectors=encoder([c['crop']+' '+c['stage']+' '+c['text'] for c in chunks]);assert len(vectors)==len(chunks)
@@ -152,6 +153,11 @@ class BulletinIndex:
         derived=extract(body,document['state'],document['district'],parsed(document['provenance']['retrieved_at_utc']))
         if any(document.get(k)!=v for k,v in derived.items()):raise SourceError('Bulletin content differs from raw PDF extraction')
         return document
+    def document_body_of_chunk_publication(self,sha):
+        """The raw body behind a chunk publication, or None when it has been pruned away."""
+        document=self.document(sha)
+        raw=Path(document['provenance']['raw_file'])
+        return raw.read_bytes() if raw.exists() else None
     def search(self,state,district,query,crop='',stage='',topic='general',limit=3,encoder=embed):
         head=self.head(state,district)
         if not head or head['status']!='ok':raise SourceError('No healthy reviewed bulletin version for this district')
@@ -192,3 +198,94 @@ class BulletinIndex:
         best=sorted(ranks,key=lambda i:(-ranks[i],candidates[i][0]['id']))[:limit]
         result=[{**candidates[i][0],'retrieval':{'rrf_score':ranks[i],'lexical_score':dict(lex)[i],'semantic_score':dict(dense)[i]}} for i in best]
         return doc,result,{'mode':'bm25_plus_multilingual_e5_rrf','candidates':len(candidates),'model':MODEL,'revision':REVISION,'metadata_filters':{'state':state,'district':district,'crop':crop,'stage':stage},'scores_are_confidence':False}
+
+    def publish_document(self,document,provenance,checked_at,encoder=embed):
+        """Index one whole document. Integrity is payload and embedding binding, not raw re-derivation."""
+        passages=document['passages']
+        if not passages:raise SourceError('A document without passages cannot be published')
+        texts=[(p.get('family') or '')+' '+(p.get('text') or '') for p in passages]
+        bad=[i for i,t in enumerate(texts) if not isinstance(t,str) or not t.strip() or any(ord(c)<9 for c in t)]
+        if bad:raise SourceError('Passage text is not embeddable at indexes '+str(bad[:5])+' first value '+repr(texts[bad[0]])[:160])
+        vectors=encoder(texts);assert len(vectors)==len(passages)
+        if any(not v or any(not math.isfinite(n) for n in v) for v in vectors):raise SourceError('Invalid document embedding')
+        payload=json.dumps({**document,'provenance':provenance},sort_keys=True,ensure_ascii=False)
+        from .transport import write_json
+        manifest={'document':digest(payload.encode()),'passages':{p['id']:{'payload':digest(json.dumps(p,sort_keys=True,ensure_ascii=False).encode()),'embedding':digest(json.dumps(v).encode())} for p,v in zip(passages,vectors)}}
+        # Document publications keep their own namespace. The chunk-based bulletin path
+        # publishes under publications/<sha>.json, and a district present in both corpora
+        # would otherwise collide with its own other-shaped manifest.
+        target=self.document_publication(document['sha256'])
+        if target.exists():
+            if json.loads(target.read_text())!=manifest:raise SourceError('Immutable document publication already differs')
+        else:write_json(target,manifest)
+        with self.connection() as db:
+            existing=db.execute('SELECT payload_hash FROM documents WHERE sha=?',(document['sha256'],)).fetchone()
+            db.execute('INSERT OR IGNORE INTO documents VALUES (?,?,?)',(document['sha256'],payload,digest(payload.encode())))
+            for passage,vector in zip(passages,vectors):
+                text=json.dumps(passage,sort_keys=True,ensure_ascii=False);embedding=json.dumps(vector)
+                db.execute('INSERT OR IGNORE INTO passages VALUES (?,?,?,?,?,?,?,?,?,?)',(passage['id'],document['sha256'],passage['family'],passage['scope'],passage.get('region'),text,digest(text.encode()),embedding,digest(embedding.encode()),REVISION))
+            db.execute('INSERT OR REPLACE INTO heads VALUES (?,?,?,?,?)',(self.document_key(document['family'],document.get('region')),document['sha256'],checked_at,'ok',''))
+        return {'sha256':document['sha256'],'passages':len(passages),'duplicate':existing is not None}
+    def document_publication(self,sha):return self.path.parent/'publications'/'documents'/(sha+'.json')
+    @staticmethod
+    def document_key(family,region):return 'document|'+str(family)+'|'+str(region or '-')
+    def document_head(self,family,region=None):
+        with self.connection() as db:
+            db.row_factory=sqlite3.Row;r=db.execute('SELECT * FROM heads WHERE region=?',(self.document_key(family,region),)).fetchone()
+        return dict(r) if r else None
+    def mark_document_failed(self,family,region,checked_at,error):
+        prior=self.document_head(family,region)
+        with self.connection() as db:db.execute('INSERT OR REPLACE INTO heads VALUES (?,?,?,?,?)',(self.document_key(family,region),(prior or {}).get('sha'),checked_at,'failed',error))
+    def passage_document(self,sha):
+        with self.connection() as db:r=db.execute('SELECT payload,payload_hash FROM documents WHERE sha=?',(sha,)).fetchone()
+        if not r or digest(r[0].encode())!=r[1]:raise SourceError('Published document integrity failed')
+        manifest_path=self.document_publication(sha)
+        if not manifest_path.exists():raise SourceError('Published document manifest is missing')
+        manifest=json.loads(manifest_path.read_text())
+        if manifest['document']!=r[1]:raise SourceError('Document publication manifest mismatch')
+        return json.loads(r[0])
+    def stored_passages(self,family=None,scope=None,region=None):
+        clause=[];args=[]
+        for column,value in (('family',family),('scope',scope),('region',region)):
+            if value is not None:clause.append(column+'=?');args.append(value)
+        sql='SELECT payload,payload_hash,embedding,embedding_hash,model_revision,document_sha FROM passages'
+        if clause:sql+=' WHERE '+' AND '.join(clause)
+        sql+=' ORDER BY document_sha,id'
+        with self.connection() as db:rows=db.execute(sql,args).fetchall()
+        out=[]
+        for payload,phash,encoded,ehash,revision,sha in rows:
+            if digest(payload.encode())!=phash or digest(encoded.encode())!=ehash or revision!=REVISION:raise SourceError('Stored passage integrity failed')
+            vector=json.loads(encoded)
+            if not vector or any(not isinstance(v,(int,float)) or not math.isfinite(v) for v in vector):raise SourceError('Invalid stored passage embedding')
+            out.append((json.loads(payload),vector,sha))
+        return out
+    def document_families(self):
+        with self.connection() as db:rows=db.execute('SELECT family,scope,region,count(*) FROM passages GROUP BY family,scope,region ORDER BY family').fetchall()
+        families={}
+        for family,scope,region,count in rows:
+            families[family]={'scope':scope,'region':region,'passages':count,'head':self.document_head(family,region)}
+        return families
+    def search_passages(self,query,family=None,scope=None,region=None,limit=8,encoder=embed):
+        """Whole-document retrieval over indexed passages; scores are ranks, never confidence."""
+        if not isinstance(query,str) or not query.strip():raise SourceError('A retrieval query is required')
+        stored=self.stored_passages(family=family,scope=scope,region=region)
+        if not stored:return [],{'mode':'whole_document','candidates':0,'scores_are_confidence':False}
+        terms=set(re.findall(r'[a-z0-9]+',norm(query)));qvector=encoder([query],query=True)[0]
+        tokens=[re.findall(r'[a-z0-9]+',norm(p['text']+' '+(p.get('section') or ''))) for p,_,_ in stored]
+        avg=sum(map(len,tokens))/len(tokens)
+        lex=[];dense=[]
+        for i,((passage,vector,sha),words) in enumerate(zip(stored,tokens)):
+            if len(vector)!=len(qvector):raise SourceError('Embedding dimension mismatch')
+            score=0.
+            for term in terms:
+                tf=words.count(term);df=sum(term in w for w in tokens);idf=math.log(1+(len(tokens)-df+.5)/(df+.5))
+                score+=idf*tf*2.2/(tf+1.2*(.25+.75*len(words)/avg))
+            lex.append((i,score));dense.append((i,sum(a*b for a,b in zip(qvector,vector))))
+        lex.sort(key=lambda p:(-p[1],stored[p[0]][0]['id']));dense.sort(key=lambda p:(-p[1],stored[p[0]][0]['id']))
+        ranks={i:0. for i in range(len(stored))}
+        for ranked in [lex,dense]:
+            for rank,(i,score) in enumerate(ranked,1):ranks[i]+=1/(60+rank)
+        best=sorted(ranks,key=lambda i:(-ranks[i],stored[i][0]['id']))[:limit]
+        results=[{**stored[i][0],'document_sha256':stored[i][2],'retrieval':{'rrf_score':ranks[i],'lexical_score':dict(lex)[i],'semantic_score':dict(dense)[i]}} for i in best]
+        return results,{'mode':'whole_document_bm25_plus_dense_rrf','candidates':len(stored),'model':MODEL,'revision':REVISION,'filters':{'family':family,'scope':scope,'region':region},'scores_are_confidence':False}
+
