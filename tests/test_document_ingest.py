@@ -381,10 +381,25 @@ class IndexingTests(unittest.TestCase):
 
     def test_a_document_publication_does_not_collide_with_a_chunk_publication(self):
         record = self.ingest()
-        published = self.index.document_publication(record['sha256'])
-        self.assertTrue(published.exists())
-        self.assertEqual(published.parent.name, 'documents')
-        self.assertFalse((published.parent.parent / (record['sha256'] + '.json')).exists())
+        published = self.index.document_publications(record['sha256'])
+        self.assertEqual(len(published), 1)
+        self.assertEqual(published[0].parent.name, 'documents')
+        self.assertFalse((published[0].parent.parent / (record['sha256'] + '.json')).exists())
+
+    def test_one_edition_serving_several_districts_publishes_once_per_district(self):
+        # A Haryana bulletin is the published edition for eight districts. The bytes are
+        # the same and the attributed extraction is not, so each district gets its own
+        # publication and the record says the edition is shared.
+        first = self.ingest()
+        second = di.ingest_district(self.store, self.index, 'Teststate', 'Otherpur',
+                                    now=NOW, fetch_ttl=3600, encoder=vectors)
+        self.assertEqual(second['outcome'], 'fetched_new')
+        self.assertEqual(second['sha256'], first['sha256'])
+        self.assertEqual(len(self.index.document_publications(first['sha256'])), 2)
+        self.assertEqual(self.index.document_regions(first['sha256']), ['Otherpur', 'Testpur'])
+        published = self.index.passage_document(first['sha256'])
+        self.assertTrue(published['is_shared_edition'])
+        self.assertEqual(published['selected_for_regions'], ['Otherpur', 'Testpur'])
 
 
 class RetentionTests(unittest.TestCase):

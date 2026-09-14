@@ -214,19 +214,29 @@ class BulletinIndex:
         # Document publications keep their own namespace. The chunk-based bulletin path
         # publishes under publications/<sha>.json, and a district present in both corpora
         # would otherwise collide with its own other-shaped manifest.
-        target=self.document_publication(document['sha256'])
+        #
+        # The identity is content *and* region, because one composite bulletin is served
+        # for several districts: a Haryana edition answered for eight. The bytes are the
+        # same, the attributed extraction is not, and keying on content alone made the
+        # second district collide with the first's manifest.
+        target=self.document_publication(document['sha256'],document.get('region'))
         if target.exists():
             if json.loads(target.read_text())!=manifest:raise SourceError('Immutable document publication already differs')
         else:write_json(target,manifest)
         with self.connection() as db:
             existing=db.execute('SELECT payload_hash FROM documents WHERE sha=?',(document['sha256'],)).fetchone()
+            shared=bool(existing)
             db.execute('INSERT OR IGNORE INTO documents VALUES (?,?,?)',(document['sha256'],payload,digest(payload.encode())))
             for passage,vector in zip(passages,vectors):
                 text=json.dumps(passage,sort_keys=True,ensure_ascii=False);embedding=json.dumps(vector)
                 db.execute('INSERT OR IGNORE INTO passages VALUES (?,?,?,?,?,?,?,?,?,?)',(passage['id'],document['sha256'],passage['family'],passage['scope'],passage.get('region'),text,digest(text.encode()),embedding,digest(embedding.encode()),REVISION))
             db.execute('INSERT OR REPLACE INTO heads VALUES (?,?,?,?,?)',(self.document_key(document['family'],document.get('region')),document['sha256'],checked_at,'ok',''))
-        return {'sha256':document['sha256'],'passages':len(passages),'duplicate':existing is not None}
-    def document_publication(self,sha):return self.path.parent/'publications'/'documents'/(sha+'.json')
+        return {'sha256':document['sha256'],'passages':len(passages),'duplicate':existing is not None,
+                'shared_edition':shared,'regions':self.document_regions(document['sha256'])}
+    def document_publication(self,sha,region=None):
+        return self.path.parent/'publications'/'documents'/(sha+'-'+digest(str(region or '-').encode())[:12]+'.json')
+    def document_publications(self,sha):
+        return sorted((self.path.parent/'publications'/'documents').glob(sha+'-*.json'))
     @staticmethod
     def document_key(family,region):return 'document|'+str(family)+'|'+str(region or '-')
     def document_head(self,family,region=None):
@@ -239,11 +249,24 @@ class BulletinIndex:
     def passage_document(self,sha):
         with self.connection() as db:r=db.execute('SELECT payload,payload_hash FROM documents WHERE sha=?',(sha,)).fetchone()
         if not r or digest(r[0].encode())!=r[1]:raise SourceError('Published document integrity failed')
-        manifest_path=self.document_publication(sha)
-        if not manifest_path.exists():raise SourceError('Published document manifest is missing')
-        manifest=json.loads(manifest_path.read_text())
-        if manifest['document']!=r[1]:raise SourceError('Document publication manifest mismatch')
-        return json.loads(r[0])
+        published=self.document_publications(sha)
+        if not published:raise SourceError('Published document manifest is missing')
+        # A shared edition has one publication per district and the documents table keeps
+        # the payload of whichever district published first. Verify against the manifest
+        # that actually describes that payload, not merely the first file on disk.
+        if not any(json.loads(path.read_text()).get('document')==r[1] for path in published):
+            raise SourceError('Document publication manifest mismatch')
+        document=json.loads(r[0])
+        regions=self.document_regions(sha)
+        # One bulletin can be the published edition for several districts. Saying so is
+        # provenance a reader needs: their district's advisory also covers others.
+        document['selected_for_regions']=regions
+        document['is_shared_edition']=len(regions)>1
+        return document
+    def document_regions(self,sha):
+        with self.connection() as db:
+            rows=db.execute('SELECT DISTINCT region FROM passages WHERE document_sha=? ORDER BY region',(sha,)).fetchall()
+        return [r[0] for r in rows if r[0]]
     def stored_passages(self,family=None,scope=None,region=None):
         clause=[];args=[]
         for column,value in (('family',family),('scope',scope),('region',region)):

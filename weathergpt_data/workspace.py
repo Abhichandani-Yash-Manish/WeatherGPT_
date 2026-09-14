@@ -61,7 +61,7 @@ class Workspace:
             document=index.document_body_of_chunk_publication(sha)
             if document is None:raise pruned
             body=document
-        elif index.document_publication(sha).exists():
+        elif index.document_publications(sha):
             published=index.passage_document(sha)
             blob=(published.get('provenance') or {}).get('blob') or published.get('blob')
             if not blob:raise SourceError('Published document records no body location')
