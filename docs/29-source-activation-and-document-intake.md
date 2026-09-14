@@ -83,7 +83,39 @@ Document bodies are pruned after seven days by `scripts/prune_bulletins.py`; pas
 
 ## National sweep
 
-*(Results recorded on completion — the sweep was still running when this section was written. Counts, bytes, duration, the second-pass change-detection proof and the failure breakdown belong here, from `data/processed/bulletins/2026-09-15/manifest.json`.)*
+Recorded in `data/processed/bulletins/2026-09-15/manifest.json`. All 698 listed districts were attempted, across seven passes: four bounded trial passes, one full national pass, and two `--retry-failed` passes.
+
+| Outcome | Districts |
+|---|---|
+| fetched_new | 566 |
+| unchanged | 5 |
+| layout_unrecognised | 45 |
+| failed | 82 |
+| **listed** | **698** |
+
+336 MB downloaded, 6,187 passages indexed, 64 minutes of sweep time in total. The full national pass alone was 682 targets in 49.7 minutes for 283 MB.
+
+**Change detection and idempotency were demonstrated, not asserted.** A pass over already-recorded districts queued nothing. A `--recheck` pass re-downloaded five Gujarat districts, hashed them, matched the recorded head and indexed zero passages — the measured behaviour, since the publisher offers no conditional request and an unchanged body can only skip extraction.
+
+**Every remaining failure has one cause.** After the retry passes, all 82 are `District address did not deliver a PDF` — the publisher returns something that is not a PDF for those districts. No transient timeout and no defect of ours remains in the failure set; the earlier timeout and publication-collision failures were recovered by retrying and by the shared-edition fix.
+
+### Not one bulletin was issued on the day it was fetched
+
+Of the 566 documents with a printed issue date:
+
+| Currency | Districts |
+|---|---|
+| printed_issue_differs_from_retrieval_date | 530 |
+| printed_issue_not_stated | 36 |
+| printed_issue_matches_retrieval_date | **0** |
+
+Age of the printed issue against the retrieval date: minimum 2 days, median 4 days, maximum **376 days**.
+
+This is the batch's most important measurement. A national sweep that succeeds on 566 districts does not deliver 566 current advisories. The median district's bulletin was four days old and at least one was more than a year old, so a system that treated fetch success as currency would have presented year-old agricultural advice as today's. Currency is read from the printed date, it is recorded per document, and it stays `not_stated` for the 36 layouts that print no date at all.
+
+### One edition can serve many districts
+
+The publisher's selector returned a single Haryana bulletin for eight districts — Bhiwani, Hisar, Jhajjar, Mahendragarh, Palwal, Rewari, Rohtak and Sirsa. Publication identity is therefore content *and* region, and a published document reports `selected_for_regions` and `is_shared_edition`. A reader asking about Rohtak is reading an advisory that also covers seven other districts, which is provenance rather than trivia.
 
 ## Defects found while building this
 
@@ -98,7 +130,7 @@ Separately, `test_an_unknown_colour_is_not_converted_into_a_level` read the real
 
 ## Tests
 
-**493 automated tests pass**, up from 432. 61 are new: 13 reconciling the ledger against the registry and the code, and 48 over document intake, extraction and retention.
+**543 automated tests pass**, up from 432. 61 are new: 13 reconciling the ledger against the registry and the code, and 48 over document intake, extraction and retention.
 
 The reconciliation tests fail on drift in either direction — a family the ledger does not know about, a connector the ledger claims that the code does not have, reachability inferred from intake, a status outside the vocabulary, a probe recorded against an address other than the registered one, counts disagreeing with the rows, or an approval note that has grown into a readiness claim.
 
@@ -106,8 +138,9 @@ The intake tests take no measurement of their own. Their marker fixtures are the
 
 ## What remains open
 
-- **The corpus is indexed but unreachable.** Nothing in conversation can query it. The chat path is still the narrow crop/stage chunk reader for a single district, which is exactly finding **A06**. This is the most valuable next piece of work and it is not done.
-- Held layouts are held, not solved. Every `layout_unrecognised` and `no_text_layer` edition is outside the corpus until its family is widened or OCR is reviewed.
+- **571 districts are indexed and none of them is reachable.** Nothing in conversation can query the corpus. The chat path is still the narrow crop/stage chunk reader for a single district, which is exactly finding **A06**. This is the most valuable next piece of work and it is not done.
+- Held layouts are held, not solved: 45 districts are outside the corpus until their families are widened or OCR is reviewed, and 82 more return something that is not a PDF at all.
+- Nothing in this batch establishes that any indexed advisory is current. 530 of 566 were already out of date on arrival, and the corpus is a record of what was published, not of what applies today.
 - Eight ingesting sources have no conversational path, and the new adapters in the plan — NASA POWER, ephemeris, marine bulletins, MC bulletins, crop advisory, Mausamgram — are not built.
 - No contradiction handling across editions, and no general/warning/crop separation in the new passage index.
 - `api.imd.gov.in` remains blocked without a key.
