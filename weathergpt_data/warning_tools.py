@@ -1,26 +1,224 @@
-"""Report the warning source's evidence state without inventing an all-clear."""
+"""Official warning evidence for a place, without inventing an all-clear.
+
+Two official products are reported side by side and never merged into a verdict:
+
+* IMD district-level warning guidance (source S15). Its Day_1..Day_5 fields are
+  read as hazard codes, not as severity levels, and its windows are derived from
+  the bulletin date.
+* The IMD-labelled CAP relay (source S06), reported as a source assessment.
+
+Neither establishes an all-clear. A CAP lifecycle result never authorises
+dissemination, and a green district day is not a statement that nothing will
+happen. A bulletin whose published days have all passed is reported as stale and
+contributes no current facts.
+
+A warning question is about a district, and the planner says so. Unlike a point
+forecast, a district name is answerable here, because the official product is
+itself district-level. A name that matches more than one place is asked about
+rather than guessed: attaching an official warning to the wrong district is the
+one failure this product must never make.
+"""
+import re
 from datetime import timedelta
-from .foundation import Foundation
+
+from . import district_warnings as dw
 from .evidence_transport import evidence_store
-from .transport import parsed,stamp,SourceError
+from .foundation import Foundation
+from .transport import SourceError, parsed, stamp
+
+CAP_LIMITS = ('Geographic applicability of the CAP relay to this place is not established here, its origin is not '
+              'authenticated, and its completeness is unverified. A reachable feed and an empty eligible set are '
+              'both not an all-clear.')
 
 
-def execute_warning(engine,result,plan,task):
+def normalise(value):
+    """Letters only, upper case: the source writes AHMADABAD where GeoNames writes Ahmadabad."""
+    return re.sub(r'[^A-Z]', '', str(value or '').upper())
+
+
+def _point_for(place, resolved, coordinates):
+    """The resolution already recorded for this place, else an explicit pin."""
+    entry = (resolved or {}).get(place.get('name'))
+    if isinstance(entry, dict) and isinstance(entry.get('coordinates'), dict):
+        return entry['coordinates'], (entry.get('label') or place.get('name'))
+    if isinstance(coordinates, dict) and coordinates.get('latitude') is not None:
+        return coordinates, place.get('name')
+    return None, place.get('name')
+
+
+def _gazetteer_ladder(engine, place):
+    """Loosen the filters rather than the place: an unused hint must not hide a match.
+
+    Returns (match, matches_seen, ambiguous_candidates).
+    """
+    name = place.get('name') or ''
+    attempts = [(place.get('state') or '', place.get('district') or ''),
+                (place.get('state') or '', ''),
+                ('', '')]
+    seen_filters = set()
+    for state, district in attempts:
+        if (state, district) in seen_filters:
+            continue
+        seen_filters.add((state, district))
+        matches = engine.gazetteer.search(name, state, district)
+        confident = [match for match in matches if match.get('coordinates')]
+        if len(confident) == 1 and confident[0].get('match_type') != 'approximate_name_requires_confirmation':
+            return confident[0], len(matches), None
+        if len(confident) > 1:
+            return None, len(matches), confident[:20]
+    return None, 0, None
+
+
+def _cap_assessment(foundation):
+    packet = foundation.cap()
+    records = packet['records']
+    meta = packet['provenance']
+    latest = max(records, key=lambda message: parsed(message['sent'])) if records else None
+    return {'assessment': packet['lifecycle_assessment'], 'coverage': packet['coverage'],
+            'delivery': meta['delivery'], 'latest_sent': latest['sent'] if latest else None,
+            'records': records, 'meta': meta}
+
+
+def execute_warning(engine, result, plan, task, resolved=None, coordinates=None):
+    chosen, ambiguous, unresolved, outside, stale = [], None, [], [], []
+    records, snapshot_meta = [], None
     try:
-        with evidence_store(engine.workspace,'imd_cap',engine.workspace.service.raw_root.parent/'warning-evidence') as store:
-            foundation=Foundation.__new__(Foundation);foundation.store=store;packet=foundation.cap()
-    except (ValueError,OSError) as exc:
-        result.update(status='unavailable',answer='Current official warning evidence could not be verified: '+str(exc)+'. This is an evidence gap, not an all-clear.');return result
-    records=packet['records'];assessment=packet['lifecycle_assessment'];meta=packet['provenance']
-    latest=max(records,key=lambda m:parsed(m['sent'])) if records else None
-    result['warning_evidence']={'assessment':assessment,'coverage':packet['coverage'],'delivery':meta['delivery'],'latest_sent':latest['sent'] if latest else None,'requested_places':plan['places'],'records':records}
-    result['citations']=[{'id':'cap-feed','source_id':'S06','provider':'IMD-labelled CAP relay; origin authentication unverified','product':'Retrieved CAP feed state','url':meta['url'],'response_sha256':meta['sha256'],'retrieved_at_utc':meta['retrieved_at_utc']}]
-    result['trace']['tools'].append({'name':'cap_lifecycle_assessment','retrieved_messages':len(records),'lifecycle_eligible':assessment['eligible_by_lifecycle'],'delivery':meta['delivery'],'official_applicability_verified':False})
-    places=', '.join(p['name'] for p in plan['places']) or 'your location'
-    summary=f"I cannot confirm current official warnings for {places}. The retrieved CAP relay contains {len(records)} messages; {assessment['eligible_by_lifecycle']} pass the time/status/reference checks."
-    if latest:summary+=' Its newest message was sent '+latest['sent']+'.'
-    summary+=' Geographic applicability, origin authentication and feed completeness are still unverified. This does not mean there are no warnings.'
-    if meta['delivery']=='stale_cache':summary+=' The source refresh also failed; this is a cached feed assessment.'
-    result.update(status='unavailable',answer=summary,expires_at_utc=stamp(engine.workspace.clock()+timedelta(minutes=5)))
-    result['notes']+=['Warning source assessment only. Forecast rain, a bulletin warning table and CAP lifecycle eligibility do not establish a current applicable official warning.']
+        with evidence_store(engine.workspace, 'imd_cap',
+                            engine.workspace.service.raw_root.parent / 'warning-evidence') as store:
+            foundation = Foundation.__new__(Foundation)
+            foundation.store = store
+            cap = _cap_assessment(foundation)
+            if plan['places']:
+                snapshot = foundation.warning_snapshot()
+                snapshot_meta = snapshot.get('provenance') or {}
+                records = snapshot['records']
+            for place in plan['places']:
+                point, label = _point_for(place, resolved, coordinates)
+                if point:
+                    chosen.append({'place': label, 'point': point})
+                    continue
+                match, seen, candidates = _gazetteer_ladder(engine, place)
+                result['trace']['tools'].append({'name': 'gazetteer_search', 'query': place, 'matches': seen})
+                if candidates:
+                    ambiguous = candidates
+                    break
+                if match is not None:
+                    chosen.append({'place': match.get('label') or label, 'point': match['coordinates']})
+                    continue
+                # No settlement answer: the official district label may still carry the name.
+                target = normalise(place.get('name'))
+                exact = [record for record in records if normalise(record.get('district_label')) == target]
+                if len(exact) == 1:
+                    chosen.append({'place': exact[0].get('district_label'), 'record': exact[0]})
+                    continue
+                unresolved.append(place.get('name') or 'your location')
+    except (ValueError, OSError) as exc:
+        result.update(status='unavailable',
+                      answer='Current official warning evidence could not be verified: ' + str(exc) +
+                             '. This is an evidence gap, not an all-clear.')
+        return result
+
+    if ambiguous:
+        result.update(status='needs_selection', choices=ambiguous,
+                      answer='More than one place matches this warning question. Confirm the intended place first, so '
+                             'an official warning is never attached to the wrong district.',
+                      follow_up='Choose a place, or add its district and state.')
+        return result
+
+    districts = []
+    for item in chosen:
+        record = item.get('record')
+        if record is None:
+            hits = dw.select(records, item['point']['latitude'], item['point']['longitude'])
+            if not hits:
+                outside.append(item['place'])
+                continue
+            record = hits[0]
+        try:
+            rows, issued = dw.day_rows(record, engine.workspace.clock())
+        except SourceError:
+            continue
+        current = [row for row in rows if not row['is_past']]
+        if not current:
+            stale.append((item['place'], record, issued))
+        else:
+            districts.append({'place': item['place'], 'record': record, 'rows': current, 'issued': issued})
+
+    meta = cap['meta']
+    assessment = cap['assessment']
+    citations = [{'id': 'cap-feed', 'source_id': 'S06',
+                  'provider': 'IMD-labelled CAP relay; origin authentication unverified',
+                  'product': 'Retrieved CAP feed state', 'url': meta['url'],
+                  'response_sha256': meta['sha256'], 'retrieved_at_utc': meta['retrieved_at_utc']}]
+    if districts and snapshot_meta:
+        citations.append({'id': 'district-warning', 'source_id': 'S15', 'provider': 'India Meteorological Department',
+                          'product': 'District-wise warning product (GeoServer district_warnings_india)',
+                          'url': snapshot_meta.get('url'), 'response_sha256': snapshot_meta.get('sha256'),
+                          'retrieved_at_utc': snapshot_meta.get('retrieved_at_utc')})
+    facts = []
+    for entry in districts:
+        facts += dw.facts(entry['record'], entry['rows'], entry['issued'], 'district-warning', entry['place'])
+    result['facts'] = list(result.get('facts') or []) + facts
+
+    message_count = len(cap['records'])
+    result['warning_evidence'] = {
+        'assessment': assessment, 'coverage': cap['coverage'], 'delivery': meta['delivery'],
+        'latest_sent': cap['latest_sent'], 'requested_places': plan['places'], 'records': cap['records'],
+        'district_warnings': [{'place': entry['place'], 'district': entry['record'].get('district_label'),
+                               'issued_at_utc': entry['issued'].isoformat(), 'days': entry['rows']}
+                              for entry in districts],
+        'stale_districts': [{'place': label, 'district': record.get('district_label'),
+                             'issued_at_utc': issued.isoformat()} for label, record, issued in stale],
+        'points_outside_districts': outside, 'places_without_a_point': unresolved}
+    result['citations'] = citations
+    result['trace']['tools'].append({'name': 'official_district_warning', 'districts': len(districts),
+                                     'stale_districts': len(stale), 'outside_districts': len(outside),
+                                     'places_without_a_point': len(unresolved),
+                                     'cap_messages': message_count,
+                                     'cap_lifecycle_eligible': assessment['eligible_by_lifecycle'],
+                                     'origin_authentication': 'unverified',
+                                     'official_applicability_verified': bool(districts),
+                                     'dissemination_eligible': False})
+
+    cap_line = ('CAP relay assessment: ' + str(message_count) + ' retrieved messages, ' +
+                str(assessment['eligible_by_lifecycle']) + ' pass the time/status/reference checks' +
+                ('; the newest was sent ' + cap['latest_sent'] + '.' if cap['latest_sent'] else '.') + ' ' + CAP_LIMITS)
+    chunks = [dw.summary(entry['record'], entry['rows'], entry['issued']) for entry in districts]
+    for label, record, issued in stale:
+        chunks.append('The stored IMD district warning for ' + label + ' is dated ' + issued.strftime('%d %b %Y') +
+                      ' and every day it publishes has already passed, so it carries no current facts. Ask again for a '
+                      'current bulletin; a lapsed bulletin is neither a current warning nor an all-clear.')
+    for label in outside:
+        chunks.append('The resolved point for ' + label + ' does not fall inside any district polygon of the IMD '
+                      'district warning product, so no district warning applies there. That product covers land '
+                      'districts only; ask for a nearby town for district guidance.')
+    if chunks:
+        chunks.append(cap_line)
+    else:
+        chunks.append('I cannot confirm a current official warning for ' +
+                      (', '.join(unresolved) if unresolved else 'this place') + '. The retrieved CAP relay contains ' +
+                      str(message_count) + ' messages; ' + str(assessment['eligible_by_lifecycle']) +
+                      ' pass the time/status/reference checks' +
+                      ('; its newest message was sent ' + cap['latest_sent'] + '.' if cap['latest_sent'] else '.') +
+                      ' ' + CAP_LIMITS)
+    if meta['delivery'] == 'stale_cache':
+        chunks.append('The CAP source refresh also failed, so that part of this answer is a cached feed assessment.')
+
+    if districts:
+        result['status'] = 'answered' if not (unresolved or outside or stale) else 'partial'
+    elif stale:
+        result['status'] = 'stale'
+    else:
+        result['status'] = 'unavailable'
+    result['answer'] = ' '.join(chunks)
+    result['expires_at_utc'] = stamp(engine.workspace.clock() + timedelta(minutes=15))
+    result['notes'] += ['IMD district warning guidance concerns land districts and is not a flood warning, a cyclone '
+                        'warning, an all-clear or a CAP alert.',
+                        'CAP lifecycle eligibility never authorises dissemination; warning material is reported as '
+                        'official product state, not as an instruction.',
+                        'Day windows are derived from the bulletin date and the IMD day selector, not from a validity '
+                        'field published per day.']
+    if snapshot_meta is not None and records:
+        result['notes'] += ['The district warning layer was read as a complete collection with no truncation; its '
+                            'geometry is not an LGD village crosswalk.']
     return result

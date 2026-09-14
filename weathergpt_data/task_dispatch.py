@@ -57,7 +57,7 @@ def execute_plan(engine,result,plan,resolved,coordinates):
                 from .warning_tools import execute_warning
                 packet=copy.deepcopy({k:v for k,v in result.items() if k not in {'task_results','charts','calculations','passages','document_evidence','airport_reports','warning_evidence','pending_slots','retrieval_coverage'}})
                 packet.update(facts=[],citations=[],choices=[],notes=[],answer='',plan=sub,status='unavailable',follow_up=None,expires_at_utc=None,trace={'tools':[],'generation':None})
-                packet=execute_warning(engine,packet,sub,task)
+                packet=execute_warning(engine,packet,sub,task,resolved,coordinates)
             elif task['kind'] in GAPS:
                 packet={'status':'unavailable','answer':GAPS[task['kind']]}
             elif task['kind'] in {'forecast','travel','agriculture'}:

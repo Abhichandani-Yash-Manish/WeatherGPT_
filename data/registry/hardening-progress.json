@@ -1,7 +1,7 @@
 {
   "schema_version": "hardening-progress-v1",
   "review": "research/reviews/national-readiness-20260912/review.md",
-  "updated_at_utc": "2026-09-14T14:20:00+00:00",
+  "updated_at_utc": "2026-09-14T16:05:00+00:00",
   "operational_ready": false,
   "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
   "findings": [
@@ -26,8 +26,8 @@
     {
       "id": "R02",
       "status": "partial",
-      "current_evidence": "CAP reference-chain resolution now handles updates/cancels, missing parents, conflicts, forks and expiration; source assessment connected to chat. Latest inspected nine messages expired. WFS remains 742 accepted plus 22 quarantined features, with day timing and current applicability unresolved.",
-      "next_action": "Verify origin, geographic applicability, feed completeness, real update/cancel editions and WFS day semantics.",
+      "current_evidence": ": ('The district warning layer now resolves a place to a district by point-in-polygon on its own geometry, day windows are derived and validated against the source day selector, expired days are excluded from current facts, an unmapped point is reported as outside every district, and the source reports no truncation. See docs/27-official-warning-applicability.md. CAP geographic applicability, origin authentication, live update/cancel editions and feed completeness for CAP remain open.'",
+      "next_action": "('Obtain a live update, cancel or supersede edition and verify CAP geographic applicability to a resolved place; keep origin authentication unverified until a supported authentication path exists.')",
       "acceptance": "No silent truncation; expired/cancelled/unmapped warnings cannot be current evidence.",
       "evidence": [
         "weathergpt_data/foundation.py",
@@ -111,7 +111,7 @@
     {
       "id": "R08",
       "status": "open",
-      "current_evidence": "Official observations/nowcasts blocked in saved checks; CityWx remains on hold.",
+      "current_evidence": ": ('Supported official payload access is now measured for the IMD district warning layer and the IMD CAP relay: both are reachable from this machine and their products are kept distinct in the answer. Access is technically established but not authorised, because S06 carries usage_terms not established for production redistribution and every source remains user_review pending.')",
       "next_action": "Establish supported official payload access and source/upstream dependency lineage.",
       "acceptance": "Distinct observations, models and official products with measured supported access.",
       "evidence": [
@@ -401,5 +401,47 @@
       ]
     },
     "remaining_open": "P10, P11, P13, P14 and P12 are unchanged by this batch; the lock, the queue and language output are untouched."
+  },
+  "official_warning_batch": {
+    "report": "docs/27-official-warning-applicability.md",
+    "assessment": "docs/26-ps-gap-analysis-and-official-source-assessment.md",
+    "evidence_directory": "research/reviews/official-warning-20260914",
+    "operational_ready": false,
+    "scope": "IMD district-level warning guidance resolved to a place by point-in-polygon on the source own geometry, with IST day windows derived from the bulletin date and the official hazard codes read as hazard codes. The CAP relay is reported beside it and never merged into one verdict. Origin authentication, CAP geographic applicability, live update/cancel editions, delivery and dissemination all remain open, and a quiet day is never an all-clear.",
+    "automated_tests": 397,
+    "new_components": [
+      "weathergpt_data/district_warnings.py",
+      "tests/test_district_warnings.py",
+      "scripts/capture_official_warning.py"
+    ],
+    "day_semantics": {
+      "before": "valid_start_utc null with temporal_applicability unresolved_day_boundaries",
+      "after": "IST windows derived with temporal_applicability day_anchored_on_bulletin_date",
+      "basis": "the IMD day selector on the district warning page; no per-day validity field is published"
+    },
+    "colour_mapping_validated": {
+      "red": "3 observations, all extremely heavy rain",
+      "orange": "21 observations, all very heavy rain",
+      "yellow": "1701 observations, thunderstorms and strong surface winds",
+      "green": "2050 observations, all no warning",
+      "unset_0": "45 observations with no hazard code, quarantined"
+    },
+    "corrupt_feed_quarantined": "in-ndma-en serves 2013 and 2015 Rwanda flood warnings authored by Meteo Rwanda",
+    "journeys": [
+      "Patna answered with five official day facts",
+      "Ahmedabad asked which place instead of guessing",
+      "a sea point reported as outside every district"
+    ],
+    "review_mapping": {
+      "P": [
+        "P06"
+      ],
+      "R": [
+        "R02",
+        "R08"
+      ],
+      "trajectory": "docs/21 step 2 (official warning and observation feasibility)"
+    },
+    "remaining_open": "Origin authentication, CAP applicability to a place, live update/cancel editions, delivery and dissemination, and observation retrieval."
   }
 }

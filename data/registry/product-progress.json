@@ -1,6 +1,6 @@
 {
   "schema_version": "product-progress-plan-v1",
-  "as_of_utc": "2026-09-14T14:20:00+00:00",
+  "as_of_utc": "2026-09-14T16:05:00+00:00",
   "status": "implementation_in_progress",
   "user_direction": "Desktop web now. Hosting/sharing on hold. Preserve final nationwide and specialist scope.",
   "next_batch": [
@@ -114,9 +114,14 @@
         "Updated bulletins supersede current retrieval versions",
         "Wrong-place/time/crop retrieval and citation-support tests pass"
       ],
-      "status": "published_bulletin_parent_context_and_cap_diagnostics_implemented_scoped_operational_applicability_open",
+      "status": "district_warning_applicability_implemented_scoped_cap_applicability_origin_delivery_and_dissemination_open",
       "distribution_hold": false,
-      "latest_evidence": "docs/20-bulletin-parent-context.md"
+      "latest_evidence": "docs/27-official-warning-applicability.md",
+      "deliverable_state": {
+        "Official warning applicability for a place": "implemented in scope: point-in-polygon on the official district geometry, IST day windows derived from the bulletin date, official hazard codes and colours stated, stale bulletins excluded, unmapped points reported as outside every district",
+        "Warning lifecycle and delivery": "open: no live update, cancel or supersede edition has been observed, no delivery or subscription exists, and a CAP lifecycle result still never authorises dissemination",
+        "Origin authentication": "open and stated as unverified on every answer and in the tool trace"
+      }
     },
     {
       "id": "S5",
@@ -207,7 +212,7 @@
     },
     "P06": {
       "status": "partial",
-      "evidence": "docs/18-bulletin-retrieval-and-warning-lifecycle.md"
+      "evidence": "docs/27-official-warning-applicability.md"
     },
     "P07": {
       "status": "partial",
@@ -264,23 +269,21 @@
     }
   ],
   "latest_batch": {
-    "report": "docs/25-frontend-overhaul-batch.md",
-    "plan": "docs/24-frontend-overhaul-plan.md",
-    "evidence_directory": "research/reviews/frontend-overhaul-20260914",
+    "report": "docs/27-official-warning-applicability.md",
+    "evidence_directory": "research/reviews/official-warning-20260914",
     "operational_ready": false,
-    "scope": "Accessible product behavior on the desktop surface: answer-first presentation, source inspection, honest state and language reporting, bounded collection control, cancellation, and local retention and health surfaces. No bounded queue, no stage streaming, no fluent language review, no accessibility audit and no mobile acceptance.",
-    "automated_tests": 374,
-    "javascript_component_checks": 34,
-    "live_journeys": 5,
+    "scope": "Official IMD district warning guidance resolved to a place, with derived IST day windows and official hazard wording, reported beside the CAP relay and never merged with it. No origin authentication, no CAP applicability to a place, no delivery or dissemination and no observation retrieval.",
+    "automated_tests": 397,
     "review_mapping": {
       "P": [
-        "P10",
-        "P11",
-        "P12",
-        "P13"
+        "P06"
       ],
-      "trajectory": "docs/21 step 4 (accessible product behavior and dependable operation)"
+      "R": [
+        "R02",
+        "R08"
+      ],
+      "trajectory": "docs/21 step 2 (official warning and observation feasibility)"
     }
   },
-  "next_batch_note": "The desktop surface now presents answers, receipts and limits in a usable form, and the stored conversations can be listed, restored and deleted locally. The engine-side gaps in docs/21 A01-A04 remain the highest-value work: the interface is clearer, but it cannot make A01 context retention, A02 language output or A05 official warning applicability correct. Official warning and observation feasibility still needs a user decision on supported official data access before implementation."
+  "next_batch_note": "Official district warning applicability is live and place-specific, which closes the largest recorded gap in the disaster-management core. The remaining half of that dependency is live observation retrieval from the official AWS and METAR layers, which are reachable and registered. Delivery and dissemination, origin authentication and source terms still need decisions rather than code."
 }

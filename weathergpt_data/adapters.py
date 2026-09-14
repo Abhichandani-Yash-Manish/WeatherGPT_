@@ -2,6 +2,10 @@
 import json,math
 from datetime import datetime,timedelta,timezone
 from .transport import SourceError,parsed,stamp,digest
+from zoneinfo import ZoneInfo
+from .district_warnings import DAY_BOUNDARY_BASIS, DAY_BOUNDARY_DAY_KIND
+
+IST=ZoneInfo('Asia/Kolkata')
 
 HAZARDS={1:'No warning in this product',2:'Heavy rain',3:'Heavy snow',4:'Thunderstorm/lightning/squall',5:'Hailstorm',6:'Dust storm',7:'Dust-raising winds',8:'Strong surface winds',9:'Heat wave',10:'Hot day',11:'Warm night',12:'Cold wave',13:'Cold day',14:'Ground frost',15:'Fog',16:'Very heavy rain',17:'Extremely heavy rain'}
 COLOURS={1:'red',2:'orange',3:'yellow',4:'green'}
@@ -172,9 +176,11 @@ def warnings(data,meta,now,point=None):
                 if type(native_colour) not in {int,str} or not str(native_colour).isdigit():raise SourceError('Invalid warning colour representation')
                 colour=int(native_colour)
                 if colour not in COLOURS:raise SourceError('Unknown colour code')
-                days.append({'source_day':d,'hazard_codes':codes,'hazards':[HAZARDS[c] for c in codes],'colour_code':colour,'colour':COLOURS[colour],'source_text':p.get(f'Day{d}_text',''),'valid_start_utc':None,'valid_end_utc':None})
-            records.append({'source_district_id':sid,'district_label':p['District'],'issued_at_utc':stamp(issue),'updated_at_raw':p.get('updated_at'),'source_age_seconds':(now-issue).total_seconds(),'geometry':feature['geometry'],'days':days,'temporal_applicability':'unresolved_day_boundaries','source_locator':f'$.features[{i}]','boundary_version':'source snapshot; independent administrative version unknown'})
+                opens=datetime.combine(issue_date.date(),datetime.min.time(),tzinfo=IST)+timedelta(days=d-1)
+                closes=opens+timedelta(days=1)
+                days.append({'source_day':d,'hazard_codes':codes,'hazards':[HAZARDS[c] for c in codes],'colour_code':colour,'colour':COLOURS[colour],'source_text':p.get(f'Day{d}_text',''),'valid_start_utc':stamp(opens.astimezone(timezone.utc)),'valid_end_utc':stamp(closes.astimezone(timezone.utc)),'day_date_local':opens.date().isoformat()})
+            records.append({'source_district_id':sid,'district_label':p['District'],'issued_at_utc':stamp(issue),'updated_at_raw':p.get('updated_at'),'source_age_seconds':(now-issue).total_seconds(),'geometry':feature['geometry'],'days':days,'temporal_applicability':DAY_BOUNDARY_DAY_KIND,'day_boundary_basis':DAY_BOUNDARY_BASIS,'source_locator':f'$.features[{i}]','boundary_version':'source snapshot; independent administrative version unknown'})
         except (KeyError,ValueError,TypeError,OverflowError) as exc:quarantine.append({'feature_index':i,'district':p.get('District'),'reason':str(exc)})
-    result=envelope('official_warning_snapshot',meta['source_id'],records,meta,['Day labels are preserved; exact operational validity intervals are not established, so current applicable/all-clear answers are disabled.','Source geometry is not an LGD village crosswalk.','Absence or quarantine is not an all-clear.'],{'source_features':len(features),'total_features_reported':total,'quarantined':quarantine,'requested_point':point,'independent_national_completeness':'unverified'})
+    result=envelope('official_warning_snapshot',meta['source_id'],records,meta,['Day windows are derived from the bulletin date and the IMD day selector, not from a validity field published per day.','Source geometry is not an LGD village crosswalk.','Absence or quarantine is not an all-clear.'],{'source_features':len(features),'total_features_reported':total,'quarantined':quarantine,'requested_point':point,'independent_national_completeness':'unverified'})
     result['status']='reference_only' if records else 'unknown_coverage';result['actionable_current_alerts']=False
     return result

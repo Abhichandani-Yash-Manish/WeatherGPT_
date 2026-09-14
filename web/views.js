@@ -98,9 +98,13 @@ function chartEvidence(charts) {
   (charts || []).forEach(chart => (chart.points || []).forEach(point => { if (point.evidence_id) ids.add(point.evidence_id); }));
   return ids;
 }
+const WARNING_PARAMETERS = new Set(['official_district_warning']);
+function warningFacts(packet) {
+  return coverageFacts(packet).filter(fact => WARNING_PARAMETERS.has(fact.parameter));
+}
 function sequenceFacts(packet) {
   const plotted = chartEvidence(packet.charts);
-  return coverageFacts(packet).filter(fact => !plotted.has(fact.id));
+  return coverageFacts(packet).filter(fact => !plotted.has(fact.id) && !WARNING_PARAMETERS.has(fact.parameter));
 }
 function languageRequested(plan, chosen) {
   const declared = plan && plan.language;
@@ -283,6 +287,65 @@ function renderSeriesReceipt(packet) {
   note.append(el('span', 'A receipt for the moment the series was retrieved, not a standing fact. The chart is drawn from these values; a descriptive slope is not a projection, an attribution or a validated trend.'));
   box.append(note);
   return box;
+}
+
+
+/* ---------- official district warning panel ---------- */
+const WARNING_CHIP = { red:'is-red', orange:'is-orange', yellow:'is-yellow', green:'is-green' };
+function warningDaysTable(district) {
+  const table = el('table', undefined, 'warning-days');
+  const head = el('tr');
+  ['Day','IMD colour','Official hazard','Window (IST)'].forEach(name => { const th = el('th', name); th.scope = 'col'; head.append(th); });
+  table.append(head);
+  (district.days || []).forEach(day => {
+    const row = el('tr');
+    row.append(el('td', 'Day ' + day.day + ' · ' + day.label));
+    const colour = el('td');
+    const chip = el('span', day.colour || 'colour not supplied', 'wchip ' + (WARNING_CHIP[day.colour] || 'is-unknown'));
+    colour.append(chip);
+    row.append(colour);
+    row.append(el('td', day.quiet ? 'No warning in this product' : (day.source_text || (day.hazards || []).join(', ') || 'No hazard code supplied')));
+    row.append(el('td', istWindowText(day.starts_utc, day.ends_utc) || 'Window not derived'));
+    table.append(row);
+  });
+  return table;
+}
+function renderWarningPanel(packet) {
+  const evidence = packet.warning_evidence || [];
+  if (!evidence.length) return null;
+  const wrap = el('div', undefined, 'warnings');
+  evidence.forEach(entry => {
+    (entry.district_warnings || []).forEach(district => {
+      const box = el('section', undefined, 'warning-panel');
+      const head = el('div', undefined, 'warning-head');
+      head.append(el('h3', 'IMD district warning · ' + (district.district || 'district not named'), 'capability-name'));
+      head.append(el('span', 'Bulletin ' + istStamp(district.issued_at_utc), 'tag is-quiet'));
+      box.append(head);
+      box.append(warningDaysTable(district));
+      box.append(el('p', 'Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD\u2019s own day selector. The colour is IMD\u2019s product colour for that district-day, and the hazard text is IMD\u2019s own wording.', 'field-note'));
+      if ((district.days || []).some(day => day.quiet)) {
+        box.append(el('p', 'A day marked "No warning in this product" means IMD published no warning hazard for that district-day in this product. It is not an all-clear, and not a statement that nothing will happen.', 'field-note'));
+      }
+      wrap.append(box);
+    });
+    (entry.stale_districts || []).forEach(stale => {
+      const box = el('div', undefined, 'notice is-calm');
+      box.append(el('p', 'The stored IMD district warning for ' + stale.place + ' is dated ' + istStamp(stale.issued_at_utc) + ' and every day it publishes has already passed, so it carries no current facts.'));
+      wrap.append(box);
+    });
+    (entry.points_outside_districts || []).forEach(label => {
+      const box = el('div', undefined, 'notice is-calm');
+      box.append(el('p', 'The resolved point for ' + label + ' is not inside any district polygon of the IMD district warning product, so no district guidance applies there.'));
+      wrap.append(box);
+    });
+    const cap = el('div', undefined, 'notice is-calm');
+    cap.append(el('p', 'CAP relay: ' + (entry.records || []).length + ' retrieved message(s)' +
+      (entry.assessment ? ', ' + entry.assessment.eligible_by_lifecycle + ' passing the time/status/reference checks' : '') +
+      (entry.latest_sent ? '. Newest sent ' + istStamp(entry.latest_sent) + '.' : '.')));
+    cap.append(el('p', 'CAP geographic applicability to this place, origin authentication and feed completeness are unverified, so this is a source assessment and not an alert. Warning material is reported as official product state, not as an instruction.', 'field-note'));
+    wrap.append(cap);
+  });
+  return wrap;
 }
 
 /* ---------- parts ---------- */
@@ -656,7 +719,10 @@ function renderTurn(packet, handlers) {
   const rest = facts.filter(fact => fact !== primary);
   if (rest.length) body.append(renderFacts(packet, rest));
   if (packet.follow_up) body.append(el('p', packet.follow_up, 'notice is-calm'));
-  const receipt = renderReceipt(packet, primary) || renderSeriesReceipt(packet);
+  const warnings = renderWarningPanel(packet);
+  if (warnings) body.append(warnings);
+  const warning = warningFacts(packet);
+  const receipt = renderReceipt(packet, primary) || (warning.length ? renderReceipt(packet, warning[0]) : null) || renderSeriesReceipt(packet);
   if (receipt) body.append(receipt);
   const tasks = renderTasks(packet);
   if (tasks) body.append(disclosure('Requested tasks (' + (packet.task_results || []).length + ')', into => into.append(tasks)));

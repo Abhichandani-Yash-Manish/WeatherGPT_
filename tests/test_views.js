@@ -194,3 +194,26 @@ assert(/not a projection, an attribution or a validated trend/.test(seriesReceip
 assert(withClass(series, 'calc-value').length >= 1, 'The computed headline is still shown');
 console.log('PASS: a series answer leads with its computed value and never with one arbitrary member');
 
+
+// 15. an official warning day is presented as a named period, never as a measured sample
+const warningPacket = {
+  schema_version:'weather-conversation-v1', conversation_id:'w', question:'Is there an official warning?', status:'answered',
+  answer:'IMD district warning for PATNA.', citations:[{id:'district-warning', source_id:'S15', provider:'India Meteorological Department', product:'District-wise warning product', url:'https://reactjs.imd.gov.in/geoserver/wfs'}],
+  notes:[], choices:[], charts:[], calculations:[], task_results:[],
+  facts:[{ id:'t1-f1', label:'Day 1 \u00b7 14 Sep 2026', value:'No warning in this product', unit:'IMD district warning colour',
+    place:'PATNA', start:'2026-09-13T18:30:00+00:00', end:'2026-09-14T18:30:00+00:00', source_id:'S15',
+    parameter:'official_district_warning', entity_id:'imd-district:364', citation_ids:['district-warning'] }],
+  warning_evidence:[{ records:[], latest_sent:null, assessment:{eligible_by_lifecycle:0},
+    district_warnings:[{ place:'Patna', district:'PATNA', issued_at_utc:'2026-09-14T06:00:00+00:00',
+      days:[{ day:1, label:'14 Sep 2026', colour:'green', colour_code:4, quiet:true, hazards:['No warning in this product'], source_text:'', starts_utc:'2026-09-13T18:30:00+00:00', ends_utc:'2026-09-14T18:30:00+00:00' }] }],
+    stale_districts:[], points_outside_districts:[] }]
+};
+const warnCard = context.renderTurn(warningPacket, {});
+assert(withClass(warnCard, 'lead-number').length === 0, 'A warning day must not become a headline number');
+assert(withClass(warnCard, 'ruler').length === 0, 'Warning days must not be drawn as a sampled series');
+assert(withClass(warnCard, 'fact').length === 0, 'Warning days are shown in the panel, not repeated as cards');
+assert(withClass(warnCard, 'warning-panel').length === 1, 'The warning panel carries the day');
+assert(withTag(warnCard, 'td').some(cell => cell.textContent.indexOf('No warning in this product') >= 0), 'The official wording is shown verbatim');
+assert(withClass(warnCard, 'receipt').length === 1, 'A warning day still carries a provenance receipt');
+assert(/not an all-clear/.test(warnCard.textContent), 'The panel states that a quiet day is not an all-clear');
+console.log('PASS: an official warning day is presented as a named period with its colour, hazard and window');

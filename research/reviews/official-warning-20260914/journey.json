@@ -1,0 +1,194 @@
+{
+  "schema_version": "official-warning-evidence-v1",
+  "recorded_at_utc": "2026-09-14T15:21:44.638386+00:00",
+  "sources": {
+    "district_warnings": "imd:district_warnings_india via reactjs.imd.gov.in/geoserver/wfs (registry S15)",
+    "cap_relay": "cap-sources.s3.amazonaws.com/in-imd-en (registry S06)"
+  },
+  "level_semantics": {
+    "finding": "Day_1..Day_5 are comma-separated hazard code lists, not severity levels. Day*_Color is an internal WMS style parameter, not the public colour code.",
+    "source_of_truth": "The IMD district warning page own script reads warnings_arr = nc[\"Day_\" + day].split(\",\") and maps codes through its category table.",
+    "official_names": {
+      "1": "No warning in this product",
+      "2": "Heavy rain",
+      "3": "Heavy snow",
+      "4": "Thunderstorm/lightning/squall",
+      "5": "Hailstorm",
+      "6": "Dust storm",
+      "7": "Dust-raising winds",
+      "8": "Strong surface winds",
+      "9": "Heat wave",
+      "10": "Hot day",
+      "11": "Warm night",
+      "12": "Cold wave",
+      "13": "Cold day",
+      "14": "Ground frost",
+      "15": "Fog",
+      "16": "Very heavy rain",
+      "17": "Extremely heavy rain"
+    },
+    "validated_colour_mapping": [
+      {
+        "colour_code": "0",
+        "observations": 45,
+        "hazard_codes_present": {
+          "None": 45
+        }
+      },
+      {
+        "colour_code": "1",
+        "observations": 3,
+        "hazard_codes_present": {
+          "17": 3
+        }
+      },
+      {
+        "colour_code": "2",
+        "observations": 21,
+        "hazard_codes_present": {
+          "16": 21
+        }
+      },
+      {
+        "colour_code": "3",
+        "observations": 1701,
+        "hazard_codes_present": {
+          "1": 8,
+          "2": 24,
+          "4": 892,
+          "8": 777
+        }
+      },
+      {
+        "colour_code": "4",
+        "observations": 2050,
+        "hazard_codes_present": {
+          "1": 2050
+        }
+      }
+    ],
+    "public_legend_terms_on_the_imd_page": [
+      "No Warning",
+      "Watch",
+      "Alert",
+      "Warning"
+    ],
+    "conclusion": "A colour may be stated because it is monotone with the hazard tier in the data itself; the four public legend terms are rendered server-side by WMS and are not carried in the WFS attributes, so they are not claimed."
+  },
+  "day_boundaries": {
+    "derivation": "Day n is the nth IST calendar day counted from the bulletin Date field, matching the day selector on the IMD page. IMD publishes no per-day validity field in this product.",
+    "previous_state": "adapters.warnings emitted valid_start_utc = None and temporal_applicability = \"unresolved_day_boundaries\"",
+    "current_state": "windows derived in IST, temporal_applicability = \"day_anchored_on_bulletin_date\""
+  },
+  "corrupt_feed_finding": {
+    "feed": "in-ndma-en (https://cap-sources.s3.amazonaws.com/in-ndma-en/rss.xml)",
+    "observed": "Six items titled \"Flood warning for Musanze Northern Province, Rwanda\", authored by Meteo Rwanda, dated 2013 and 2015, with a channel pubDate of 2018-12-06.",
+    "action": "Quarantined. It must never be ingested as an Indian official alert source."
+  },
+  "journeys": [
+    {
+      "question": "Is there any official flood warning for Patna right now?",
+      "status": "answered",
+      "elapsed_s": 5.2,
+      "answer": "IMD district warning for PATNA, bulletin of 14 Sep 2026 11:30 IST. Day 1 covers today, 14 Sep 2026: green - no warning in this product. Other published days: day 2 15 Sep 2026 yellow Thunderstorm/lightning/squall; day 4 17 Sep 2026 yellow Thunderstorm/lightning/squall. This is IMD district-level warning guidance. It is not a flood warning, not an all-clear, and not a CAP alert; a CAP alert covering the same area is reported separately. CAP relay assessment: 9 retrieved messages, 0 pass the time/status/reference checks; the newest was sent 2026-09-09T12:54:34+05:30. Geographic applicability of the CAP relay to this place is not established here, its origin is not authenticated, and its completeness is unverified. A reachable feed and an empty eligible set are both not an all-clear.",
+      "fact_count": 5,
+      "districts": [
+        {
+          "district": "PATNA",
+          "place": "Patna, Patna, State of Bihar",
+          "issued_at_utc": "2026-09-14T11:30:00+05:30",
+          "days": [
+            {
+              "day": 1,
+              "date": "2026-09-14",
+              "colour": "green",
+              "quiet": true,
+              "hazards": [
+                "No warning in this product"
+              ],
+              "starts_utc": "2026-09-13T18:30:00+00:00",
+              "ends_utc": "2026-09-14T18:30:00+00:00"
+            },
+            {
+              "day": 2,
+              "date": "2026-09-15",
+              "colour": "yellow",
+              "quiet": false,
+              "hazards": [
+                "Thunderstorm/lightning/squall"
+              ],
+              "starts_utc": "2026-09-14T18:30:00+00:00",
+              "ends_utc": "2026-09-15T18:30:00+00:00"
+            },
+            {
+              "day": 3,
+              "date": "2026-09-16",
+              "colour": "green",
+              "quiet": true,
+              "hazards": [
+                "No warning in this product"
+              ],
+              "starts_utc": "2026-09-15T18:30:00+00:00",
+              "ends_utc": "2026-09-16T18:30:00+00:00"
+            },
+            {
+              "day": 4,
+              "date": "2026-09-17",
+              "colour": "yellow",
+              "quiet": false,
+              "hazards": [
+                "Thunderstorm/lightning/squall"
+              ],
+              "starts_utc": "2026-09-16T18:30:00+00:00",
+              "ends_utc": "2026-09-17T18:30:00+00:00"
+            },
+            {
+              "day": 5,
+              "date": "2026-09-18",
+              "colour": "green",
+              "quiet": true,
+              "hazards": [
+                "No warning in this product"
+              ],
+              "starts_utc": "2026-09-17T18:30:00+00:00",
+              "ends_utc": "2026-09-18T18:30:00+00:00"
+            }
+          ]
+        }
+      ],
+      "stale_districts": [],
+      "points_outside_districts": [],
+      "places_without_a_point": [],
+      "choices": [],
+      "cap_messages": 9
+    },
+    {
+      "question": "Is there an official weather warning for Ahmedabad today?",
+      "status": "needs_selection",
+      "elapsed_s": 5.6,
+      "answer": "Which place do you mean? Ahmedābād, District Rampur, Uttar Pradesh / Ahmedabad, Ahmadābād, State of Gujarāt. Choose one, or type its state/district.",
+      "fact_count": 0,
+      "districts": [],
+      "stale_districts": null,
+      "points_outside_districts": null,
+      "places_without_a_point": null,
+      "choices": [
+        "Ahmedābād, District Rampur, Uttar Pradesh",
+        "Ahmedabad, Ahmadābād, State of Gujarāt"
+      ],
+      "cap_messages": 0
+    },
+    {
+      "question": "Is there an official warning for the Arabian Sea?",
+      "error": "HTTPError: HTTP Error 400: Bad Request"
+    }
+  ],
+  "limitations": [
+    "One machine, one local model, one clock. These are recorded journeys, not a benchmark and not unseen holdouts.",
+    "Origin authentication of either source is not established; transport provenance is not sender authenticity.",
+    "CAP geographic applicability to a resolved place is still not computed; CAP is reported as a source assessment.",
+    "No live update, cancel or supersede example has been observed for the district warning layer.",
+    "Terms are unresolved: S06 carries usage_terms \"Not established for production redistribution\" and every source is user_review pending.",
+    "A quiet day is not an all-clear, and this work does not establish that."
+  ]
+}
