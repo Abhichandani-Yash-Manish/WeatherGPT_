@@ -42,6 +42,28 @@ class ProtectionTests(unittest.TestCase):
         self.assertIn('34.0 °C', self.captured('Maximum 34.0 °C tomorrow'))
         self.assertIn('10.56–11.19 m³/s', self.captured('Discharge of 10.56–11.19 m³/s'))
 
+    def test_a_day_and_month_without_a_year_is_protected(self):
+        # Found live: the project writes forecast windows as "16 Sep". Unprotected, the
+        # day survived as a bare number and the month was translated away, so a reader
+        # saw "16" with no month at all.
+        captured = self.captured('Ahmedabad · 16 Sep, 06:30–16 Sep, 12:30 IST')
+        self.assertEqual(captured.count('16 Sep'), 2)
+        self.assertNotIn('16', captured)
+
+    def test_model_and_authority_names_keep_their_identity(self):
+        # Found live: GFS was transliterated to जी.एफ.एस., which no longer names the model
+        # a value came from.
+        for name in ('GFS', 'ECMWF', 'ERA5', 'METAR', 'IMD', 'GloFAS'):
+            self.assertIn(name, self.captured('Source: ' + name + ' forecast'), name)
+
+    def test_a_whole_forecast_line_restores_exactly(self):
+        line = ('Ahmedabad · 16 Sep, 06:30–16 Sep, 12:30 IST: Forecast precipitation: 0.1 mm. '
+                'Source: GFS forecast; conditions can change.')
+        masked, tokens = rendering.protect(line, ('Ahmedabad',))
+        self.assertEqual(rendering.restore(masked, tokens), line)
+        self.assertNotIn('Ahmedabad', masked)
+        self.assertNotIn('GFS', masked)
+
     def test_a_date_is_never_split_into_bare_numbers(self):
         captured = self.captured('Issued on 2026-09-16 at 11:30 IST')
         self.assertIn('2026-09-16', captured)

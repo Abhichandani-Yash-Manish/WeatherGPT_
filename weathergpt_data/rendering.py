@@ -48,10 +48,21 @@ PATTERNS = [
     ('iso_date', r'\d{4}-\d{2}-\d{2}'),
     ('printed_date', r'\d{1,2}[-./]\d{1,2}[-./]\d{2,4}'),
     ('named_date', r'\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+\d{4}'),
+    # A day and month without a year is how this project writes a forecast window. Left
+    # unprotected, the day survived as a bare number and the month was translated away,
+    # so "16 Sep" reached a reader as "16".
+    ('day_month', r'\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?'),
+    ('month_day', r'(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+\d{1,2}'),
     ('clock', r'\d{1,2}:\d{2}(?::\d{2})?(?:\s*(?:IST|UTC|GMT|am|pm|AM|PM))?'),
     ('range_with_unit', NUMBER + r'\s*' + DASH + r'\s*' + NUMBER + r'\s*' + UNIT_PATTERN),
     ('number_with_unit', NUMBER + r'\s*' + UNIT_PATTERN),
     ('source_id', r'\bS\d{1,3}\b'),
+    # Model, product and authority names identify where a number came from. Transliterating
+    # GFS into another script breaks the link between a value and its lineage: a measured
+    # journey rendered it as जी.एफ.एस., which no longer names the model.
+    ('named_product', r'\b(?:GFS|ECMWF|ERA5|IFS|MERRA-?2|GloFAS|METAR|TAF|SIGMET|NOTAM|CAP|'
+                      r'IMD|RSMC|AMFU|DAMU|GKMS|WMO|ICAO|NWP|QPF|MME|AWS|ARG|'
+                      r'NASA\s+POWER|Open-Meteo|IST|UTC|GMT)\b'),
     ('icao', r'\b[A-Z]{4}\b(?=\s|,|\.|$)'),
     ('coordinate', r'-?\d{1,3}\.\d{4,}'),
     ('bare_number', NUMBER),

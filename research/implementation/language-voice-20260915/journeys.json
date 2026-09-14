@@ -1,0 +1,90 @@
+{
+ "schema_version": "language-voice-journeys-v1",
+ "recorded_at_utc": "2026-09-15T02:20:00+00:00",
+ "workspace": "local loopback, port 8791, local Ollama qwen3.6 planner",
+ "scope": "Recorded journeys for PS features 6 and 8. These are prototype journeys on one machine. They establish that the path works end to end, not that any translation or transcription is accurate, and no native speaker has reviewed any output here.",
+ "journeys": [
+  {
+   "id": "J1",
+   "name": "Forecast answered in Hindi through the gate",
+   "request": {
+    "question": "Will it rain in Ahmedabad, Gujarat tomorrow morning?",
+    "output_language": "hi"
+   },
+   "status": "answered",
+   "answered_language": "hi",
+   "language_adherence": "rendered_with_protected_values",
+   "language_selection": "user_selected",
+   "render_report": {
+    "sentences": 2,
+    "translated": 2,
+    "held_safety_critical": 0,
+    "failed": 0,
+    "ok": true
+   },
+   "english_source": "Ahmedabad · 16 Sep, 06:30–16 Sep, 12:30 IST: Forecast precipitation: 0.1 mm. Source: GFS forecast; conditions can change.",
+   "hindi_answer": "Ahmedabad · 16 Sep · 06:30-16 Sep · 12:30 IST: वर्षा पूर्वानुमान: 0.1 mm। स्रोत: GFS पूर्वानुमान; स्थितियाँ बदल सकती हैं।",
+   "values_preserved": [
+    "16 Sep",
+    "0.1 mm",
+    "GFS",
+    "12:30 IST",
+    "Ahmedabad"
+   ],
+   "facts": 1,
+   "citations": 2
+  },
+  {
+   "id": "J2",
+   "name": "The same answer spoken",
+   "route": "POST /api/speech/speak",
+   "http_status": 200,
+   "language": "hi",
+   "segments": 1,
+   "audio_bytes": 493024,
+   "codec": "wav",
+   "is_evidence": false
+  },
+  {
+   "id": "J3",
+   "name": "An unverified language is refused rather than spoken badly",
+   "route": "POST /api/speech/speak",
+   "language": "ta",
+   "http_status": 400,
+   "error": "Speech in this language has not been verified by this project, so it is not offered.",
+   "why": "The endpoint accepts all 23 codes; Tamil failed the measured write check, so speech is not offered."
+  },
+  {
+   "id": "J4",
+   "name": "That audio heard back",
+   "route": "POST /api/speech/transcribe",
+   "http_status": 200,
+   "transcript": "अहमदाबाद सोलह सप्टेंबर छह बजकर तीस मिनट, सोलह सप्टेंबर बारह बजकर तीस मिनट आईएसटी वर्षा पूर्वानुमान शून्य दशमलव एक मिलीमी...",
+   "detected_language_code": "hi-IN",
+   "recognition_probability": 0.832,
+   "confirm_before_asking": true,
+   "is_evidence": false,
+   "finding": "The spoken round trip rendered \"16 Sep\" as सोलह सप्टेंबर and \"0.1\" as शून्य दशमलव एक — every number became words. A transcript is therefore never comparable with a written value, which is why it is returned for confirmation and never treated as evidence."
+  }
+ ],
+ "defects_found_and_fixed_during_these_journeys": [
+  {
+   "id": "LV01",
+   "observation": "The forecast window \"16 Sep\" reached a Hindi reader as \"16\".",
+   "cause": "The date pattern required a year, so a day-and-month was unprotected: the day survived as a bare number and the month was translated away.",
+   "fix": "A day_month pattern protects a day and month written without a year."
+  },
+  {
+   "id": "LV02",
+   "observation": "GFS was transliterated to जी.एफ.एस.",
+   "cause": "Model, product and authority names were not protected.",
+   "fix": "A named_product pattern protects model, product and authority identifiers so a value keeps its lineage."
+  }
+ ],
+ "limitations": [
+  "One machine, one planner model, a handful of turns. Not an acceptance benchmark.",
+  "No native speaker has reviewed any Hindi output; fluency and register are unassessed.",
+  "Recognition and synthesis quality are not measured anywhere, only reach.",
+  "Nothing here establishes forecast skill, operational readiness or PS compliance."
+ ]
+}
