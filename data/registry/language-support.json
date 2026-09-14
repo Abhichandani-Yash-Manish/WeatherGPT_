@@ -101,6 +101,28 @@
     "written_in_script": false
    }
   },
+  "en": {
+   "checked_at_utc": "2026-09-14T21:11:32.572476+00:00",
+   "hear": {
+    "detected_language_code": "en-IN",
+    "elapsed_s": 6.253,
+    "reason": null,
+    "recognition_probability": null,
+    "state": "verified",
+    "transcript_in_script": true,
+    "transcript_length": 177
+   },
+   "speak": {
+    "audio_bytes": 493024,
+    "elapsed_s": 3.561,
+    "model": "bulbul:v3",
+    "state": "verified"
+   },
+   "write": {
+    "basis": "source_language_needs_no_rendering",
+    "state": "verified"
+   }
+  },
   "gu": {
    "checked_at_utc": "2026-09-14T20:36:51.998768+00:00",
    "hear": {
@@ -562,7 +584,7 @@
   "One probe sentence per language, at one instant, against model versions that can change.",
   "A verified language is one the pipeline can deliver, not one a native reader has reviewed. No native-speaker review has taken place."
  ],
- "measured_at_utc": "2026-09-14T20:38:46.337560+00:00",
+ "measured_at_utc": "2026-09-14T21:11:42.389322+00:00",
  "method": {
   "hear": "That audio transcribed; verified when a transcript returns in this language's script.",
   "speak": "The rendered text synthesised; verified when audio is returned.",

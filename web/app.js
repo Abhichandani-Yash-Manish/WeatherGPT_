@@ -7,7 +7,10 @@
 (function () {
   const TOKEN = (document.querySelector('meta[name="workspace-token"]') || {}).content || '';
   const byId = id => document.getElementById(id);
-  const LANGUAGE_INSTRUCTION = { en:'English', hi:'Hindi', gu:'Gujarati' };
+  /* The language to answer in is a field on the request. It used to be appended to
+     the question as an English instruction for the planner to read back out, which is
+     how an explicit choice could be lost to inference. */
+  const LANGUAGES = { loaded:false, rows:[], speakable:new Set() };
   const state = { conversationId:null, busy:false, controller:null, language:'', startedAt:0, ticker:null, ledger:null, lastSeen:null };
 
   /* ---------- surface state ---------- */
@@ -104,10 +107,6 @@
     const box = thread();
     const card = box && box.querySelector('.welcome');
     if (card) card.remove();
-  }
-  function withLanguage(question, code) {
-    if (!code || !LANGUAGE_INSTRUCTION[code]) return question;
-    return question + '\n\nPlease write your answer in ' + LANGUAGE_INSTRUCTION[code] + '.';
   }
   function firstPoint(packet) {
     const resolved = packet.resolved_points || {};
@@ -237,7 +236,7 @@
     setService('Working', 'is-busy');
     state.controller = new AbortController();
     try {
-      const body = { question:withLanguage(question, state.language) };
+      const body = { question:question, output_language:state.language || '' };
       if (state.conversationId) body.conversation_id = state.conversationId;
       if (request.selection && request.selection.selection_id) body.selection_id = request.selection.selection_id;
       if (request.selection && request.selection.coordinates) body.coordinates = request.selection.coordinates;
@@ -403,7 +402,7 @@
         ask({ question:currentQuestion(), selection:selectionFromFields() });
       }
     });
-    const toggle = byId('toggle-fields');
+    const toggle = null;
     if (toggle) toggle.addEventListener('click', () => {
       const fields = byId('composer-fields');
       if (!fields) return;

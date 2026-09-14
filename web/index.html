@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="workspace-token" content="__WORKSPACE_TOKEN__">
-<meta name="color-scheme" content="light">
-<title>WeatherGPT · Weather intelligence suite</title>
+<meta name="color-scheme" content="light dark">
+<title>WeatherGPT · Ask about the weather</title>
 <link rel="stylesheet" href="/style.css">
 <script src="/charts.js" defer></script>
 <script src="/views.js" defer></script>
@@ -13,20 +13,23 @@
 <script src="/map.js" defer></script>
 <script src="/panels.js" defer></script>
 <script src="/app.js" defer></script>
+<script src="/voice.js" defer></script>
+<script src="/home.js" defer></script>
 </head>
 <body>
-<a class="skip" href="#main">Skip to the content</a>
+<a class="skip" href="#main">Skip to the conversation</a>
 <p class="banner" id="banner" role="status" hidden></p>
 
 <header class="masthead">
-  <a class="brand" href="#/overview" aria-label="WeatherGPT home"><span class="mark" aria-hidden="true">◒</span><span class="brand-name">WeatherGPT</span></a>
+  <button type="button" class="ghost" id="rail-toggle" aria-expanded="false" aria-controls="rail" aria-label="Show menu">☰</button>
+  <a class="brand" href="#/assistant" aria-label="WeatherGPT home"><span class="mark" aria-hidden="true">◒</span><span class="brand-name">WeatherGPT</span></a>
   <div class="place-context">
     <label class="sr" for="place-input">Place</label>
     <input id="place-input" type="search" placeholder="Search a place" autocomplete="off" spellcheck="false">
     <ul class="suggest" id="place-suggest" hidden aria-label="Place matches"></ul>
   </div>
   <div class="masthead-controls">
-    <button type="button" class="chip-button" id="active-place" title="Change the working place">No place selected</button>
+    <button type="button" class="chip-button" id="active-place" title="The place this workspace is working with">No place selected</button>
     <span class="chip" id="freshness" title="When the active surface last read its sources">Not read yet</span>
     <button type="button" class="ghost" id="notify-toggle" aria-expanded="false" aria-controls="notify-panel">Watch</button>
     <span class="chip" id="service-state" role="status">Starting</span>
@@ -34,25 +37,138 @@
 </header>
 
 <div class="suite">
-  <nav class="nav" id="nav" aria-label="Surfaces">
-    <a class="nav-item" href="#/overview" data-view="overview"><span aria-hidden="true">◎</span> Overview</a>
-    <a class="nav-item" href="#/warnings" data-view="warnings"><span aria-hidden="true">▲</span> Warnings</a>
-    <a class="nav-item" href="#/map" data-view="map"><span aria-hidden="true">◈</span> Map</a>
-    <a class="nav-item" href="#/observations" data-view="observations"><span aria-hidden="true">⌖</span> Observations</a>
-    <a class="nav-item" href="#/forecast" data-view="forecast"><span aria-hidden="true">〜</span> Forecast</a>
-    <a class="nav-item" href="#/climate" data-view="climate"><span aria-hidden="true">◔</span> Climate</a>
-    <a class="nav-item" href="#/advisories" data-view="advisories"><span aria-hidden="true">☘</span> Advisories</a>
-    <a class="nav-item" href="#/aviation" data-view="aviation"><span aria-hidden="true">✈</span> Aviation</a>
-    <a class="nav-item" href="#/marine" data-view="marine"><span aria-hidden="true">≈</span> Marine</a>
-    <a class="nav-item" href="#/assistant" data-view="assistant"><span aria-hidden="true">✦</span> Assistant</a>
-    <a class="nav-item" href="#/settings" data-view="settings"><span aria-hidden="true">⚙</span> Settings</a>
-    <p class="nav-note" id="nav-note">Local prototype. Hosting and sharing are on hold.</p>
+  <button type="button" class="rail-backdrop" id="rail-backdrop" hidden aria-label="Close menu"></button>
+  <nav class="rail" id="rail" aria-label="Surfaces">
+    <div class="rail-group">
+      <a class="nav-item" href="#/assistant" data-view="assistant"><span class="glyph" aria-hidden="true">✦</span> Ask</a>
+      <a class="nav-item" href="#/overview" data-view="overview"><span class="glyph" aria-hidden="true">◎</span> Today</a>
+    </div>
+
+    <div class="rail-group">
+      <h2 class="rail-title">Your conversations</h2>
+      <div class="block-tools">
+        <label class="sr" for="ledger-search">Search stored conversations</label>
+        <input id="ledger-search" type="search" placeholder="Search questions" autocomplete="off">
+      </div>
+      <p class="nav-note" id="ledger-note">Reading the local store…</p>
+      <ul class="ledger" id="ledger"></ul>
+    </div>
+
+    <div class="rail-group">
+      <h2 class="rail-title">Explore the evidence</h2>
+      <a class="nav-item" href="#/warnings" data-view="warnings"><span class="glyph" aria-hidden="true">▲</span> Warnings</a>
+      <a class="nav-item" href="#/map" data-view="map"><span class="glyph" aria-hidden="true">◈</span> Map</a>
+      <a class="nav-item" href="#/forecast" data-view="forecast"><span class="glyph" aria-hidden="true">〜</span> Forecast</a>
+      <a class="nav-item" href="#/observations" data-view="observations"><span class="glyph" aria-hidden="true">⌖</span> Observations</a>
+      <a class="nav-item" href="#/advisories" data-view="advisories"><span class="glyph" aria-hidden="true">☘</span> Farm advisories</a>
+      <a class="nav-item" href="#/climate" data-view="climate"><span class="glyph" aria-hidden="true">◔</span> Climate records</a>
+      <a class="nav-item" href="#/marine" data-view="marine"><span class="glyph" aria-hidden="true">≈</span> Sea and rivers</a>
+      <a class="nav-item" href="#/aviation" data-view="aviation"><span class="glyph" aria-hidden="true">✈</span> Aviation</a>
+      <a class="nav-item" href="#/settings" data-view="settings"><span class="glyph" aria-hidden="true">⚙</span> Sources and settings</a>
+    </div>
+
+    <p class="nav-note" id="nav-note">Local prototype. It does not issue warnings.</p>
   </nav>
 
   <main class="surface-host" id="main" tabindex="-1">
+    <section class="surface" data-surface="assistant" hidden>
+      <header class="surface-head">
+        <div><h1>Ask</h1><p class="surface-note" id="assistant-context">Ask in your own words. Every answer keeps its source, its window and its retrieval time.</p></div>
+      </header>
+      <div class="assistant-layout">
+        <div class="assistant-desk">
+          <section class="thread" id="thread" role="log" aria-live="polite" aria-relevant="additions" aria-label="Conversation"></section>
+          <button type="button" class="jump" id="jump-latest" hidden>Jump to the newest answer</button>
+          <p class="error" id="error" role="alert" hidden></p>
+
+          <div class="transcript" id="transcript" hidden>
+            <p class="transcript-meta">Read this back before it becomes a question. Place names and numbers are what the recogniser most often gets wrong.</p>
+            <p class="transcript-heard" id="transcript-heard"></p>
+            <p class="transcript-meta" id="transcript-detail"></p>
+            <div class="transcript-tools">
+              <button type="button" class="primary" id="transcript-use">Use this question</button>
+              <button type="button" class="ghost" id="transcript-edit">Edit first</button>
+              <button type="button" class="ghost" id="transcript-discard">Discard</button>
+            </div>
+          </div>
+
+          <form class="composer" id="ask-form">
+            <div class="composer-shell">
+              <label class="sr" for="question">Your question</label>
+              <textarea id="question" name="question" rows="1" maxlength="1500" required autocomplete="off"
+                        placeholder="Will it rain in Ahmedabad tomorrow morning?"></textarea>
+
+              <details class="disclosure" id="composer-fields-wrap" hidden>
+                <summary id="toggle-fields">Set the place and window by hand</summary>
+                <fieldset class="fields" id="composer-fields">
+                  <legend>Ask with fields</legend>
+                  <div class="field-row">
+                    <div>
+                      <label class="field-label" for="measure">Measure</label>
+                      <select id="measure">
+                        <option value="rain">How much rain is forecast</option>
+                        <option value="weather">Rain, temperature, humidity and wind</option>
+                        <option value="temperature">Temperature</option>
+                        <option value="wind speed">Wind speed</option>
+                        <option value="humidity">Humidity</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="field-label" for="place">Place name</label>
+                      <input id="place" maxlength="120" autocomplete="off" placeholder="Ahmedabad, Gujarat">
+                    </div>
+                  </div>
+                  <div class="field-row">
+                    <div><label class="field-label" for="latitude">Latitude</label>
+                      <input id="latitude" type="number" min="-90" max="90" step="any" inputmode="decimal" placeholder="23.02579"></div>
+                    <div><label class="field-label" for="longitude">Longitude</label>
+                      <input id="longitude" type="number" min="-180" max="180" step="any" inputmode="decimal" placeholder="72.58727"></div>
+                  </div>
+                  <p class="field-note">A pinned coordinate is treated as that point only, never as a district average. A shared place name will ask you to choose.</p>
+                  <div class="field-row">
+                    <div><label class="field-label" for="day">Day</label>
+                      <select id="day"><option value="tomorrow">Tomorrow</option><option value="today">Today</option></select></div>
+                    <div><label class="field-label" for="start">From (IST)</label><input id="start" type="time" value="09:30"></div>
+                    <div><label class="field-label" for="end">Until (IST)</label><input id="end" type="time" value="12:30"></div>
+                  </div>
+                  <p class="field-note">Rainfall totals need whole source hours, which start at :30 IST.</p>
+                  <button type="button" class="secondary" id="use-fields">Write this into the question</button>
+                </fieldset>
+              </details>
+
+              <div class="composer-bottom">
+                <div class="composer-meta">
+                  <span class="mic-wrap">
+                    <button type="button" class="mic" id="mic" aria-pressed="false" aria-label="Ask by speaking" title="Ask by speaking">
+                      <svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                        <rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0"></path><path d="M12 18v3"></path>
+                      </svg>
+                    </button>
+                  </span>
+                  <div class="lang">
+                    <label class="sr" for="language">Answer in</label>
+                    <select id="language" title="The language to answer in">
+                      <option value="">Match my question</option>
+                    </select>
+                  </div>
+                  <p class="status" id="busy" role="status">Ready</p>
+                </div>
+                <div class="composer-actions">
+                  <button type="button" class="ghost" id="new-conversation">New</button>
+                  <button type="button" class="ghost" id="export-transcript">Save</button>
+                  <button type="button" class="ghost danger" id="cancel" hidden>Stop</button>
+                  <button type="submit" class="primary" id="ask">Ask</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
     <section class="surface" data-surface="overview" hidden>
       <header class="surface-head">
-        <div><h1>Overview</h1><p class="surface-note" id="overview-note">The national warning picture and the places you are working with.</p></div>
+        <div><h1>Today</h1><p class="surface-note" id="overview-note">What is published for the place you are working with, without being asked.</p></div>
         <div class="surface-actions"><button type="button" class="ghost" data-ask-about="overview">Ask about this</button></div>
       </header>
       <div class="surface-body" id="overview-body"></div>
@@ -60,7 +176,7 @@
 
     <section class="surface" data-surface="warnings" hidden>
       <header class="surface-head">
-        <div><h1>Warnings</h1><p class="surface-note">Official IMD district warning guidance, and the CAP relay reported separately.</p></div>
+        <div><h1>Warnings</h1><p class="surface-note">Official IMD district warning guidance. The CAP relay is reported separately, and this workspace never issues a warning of its own.</p></div>
         <div class="surface-actions"><button type="button" class="ghost" data-ask-about="warnings">Ask about this</button></div>
       </header>
       <div class="surface-body" id="warnings-body"></div>
@@ -68,7 +184,7 @@
 
     <section class="surface" data-surface="map" hidden>
       <header class="surface-head">
-        <div><h1>Map</h1><p class="surface-note">Official district geometry drawn from the vendored basemap. Click a district to inspect it.</p></div>
+        <div><h1>Map</h1><p class="surface-note">Official district geometry from the vendored basemap. Select a district to inspect it.</p></div>
         <div class="surface-actions"><button type="button" class="ghost" data-ask-about="map">Ask about this</button></div>
       </header>
       <div class="surface-body" id="map-body"></div>
@@ -76,7 +192,7 @@
 
     <section class="surface" data-surface="observations" hidden>
       <header class="surface-head">
-        <div><h1>Observations</h1><p class="surface-note">Official station reports nearest the working place. An observation is not a forecast.</p></div>
+        <div><h1>Observations</h1><p class="surface-note">Station reports nearest the working place. An observation is a measurement already taken, not a forecast.</p></div>
         <div class="surface-actions"><button type="button" class="ghost" data-ask-about="observations">Ask about this</button></div>
       </header>
       <div class="surface-body" id="observations-body"></div>
@@ -84,7 +200,7 @@
 
     <section class="surface" data-surface="forecast" hidden>
       <header class="surface-head">
-        <div><h1>Forecast</h1><p class="surface-note">Model forecast series for the working place, with the answering grid and its distance.</p></div>
+        <div><h1>Forecast</h1><p class="surface-note">Model forecast series for the working place, naming the grid cell that answered and how far away it is.</p></div>
         <div class="surface-actions"><button type="button" class="ghost" data-ask-about="forecast">Ask about this</button></div>
       </header>
       <div class="surface-body" id="forecast-body"></div>
@@ -92,7 +208,7 @@
 
     <section class="surface" data-surface="climate" hidden>
       <header class="surface-head">
-        <div><h1>Climate</h1><p class="surface-note">Published district rainfall records, 1901 to 2010, with per-year provenance.</p></div>
+        <div><h1>Climate records</h1><p class="surface-note">Published district rainfall records, 1901 to 2010, with per-year provenance.</p></div>
         <div class="surface-actions"><button type="button" class="ghost" data-ask-about="climate">Ask about this</button></div>
       </header>
       <div class="surface-body" id="climate-body"></div>
@@ -100,7 +216,7 @@
 
     <section class="surface" data-surface="advisories" hidden>
       <header class="surface-head">
-        <div><h1>Advisories</h1><p class="surface-note">Published district farmer bulletins: pick a state and district, then read a passage with its saved page.</p></div>
+        <div><h1>Farm advisories</h1><p class="surface-note">Published district farmer bulletins. Pick a state and district, then read a passage beside the page it came from.</p></div>
         <div class="surface-actions"><button type="button" class="ghost" data-ask-about="advisories">Ask about this</button></div>
       </header>
       <div class="surface-body" id="advisories-body"></div>
@@ -108,7 +224,7 @@
 
     <section class="surface" data-surface="aviation" hidden>
       <header class="surface-head">
-        <div><h1>Aviation</h1><p class="surface-note">Airport observations and terminal forecasts by ICAO code. Not a flight status or a clearance.</p></div>
+        <div><h1>Aviation</h1><p class="surface-note">Airport observations and terminal forecasts by ICAO code. Not a flight status and not a clearance.</p></div>
         <div class="surface-actions"><button type="button" class="ghost" data-ask-about="aviation">Ask about this</button></div>
       </header>
       <div class="surface-body" id="aviation-body"></div>
@@ -116,116 +232,18 @@
 
     <section class="surface" data-surface="marine" hidden>
       <header class="surface-head">
-        <div><h1>Marine</h1><p class="surface-note">Modeled waves near a coastal place and modeled river discharge near a resolved place.</p></div>
+        <div><h1>Sea and rivers</h1><p class="surface-note">Modelled waves near a coastal place and modelled river discharge near a resolved place. Neither is an observed water level.</p></div>
         <div class="surface-actions"><button type="button" class="ghost" data-ask-about="marine">Ask about this</button></div>
       </header>
       <div class="surface-body" id="marine-body"></div>
     </section>
 
-    <section class="surface" data-surface="assistant" hidden>
-      <header class="surface-head">
-        <div><h1>Assistant</h1><p class="surface-note" id="assistant-context">Ask in your own words. Every answer keeps its source, its window and its retrieval time.</p></div>
-      </header>
-      <div class="assistant-layout">
-        <aside class="assistant-rail">
-          <section class="block">
-            <h2 class="block-title">Your conversations</h2>
-            <div class="block-tools">
-              <label class="sr" for="ledger-search">Search stored conversations</label>
-              <input id="ledger-search" type="search" placeholder="Search stored questions" autocomplete="off">
-            </div>
-            <p class="block-note" id="ledger-note">Reading the local store…</p>
-            <ul class="ledger" id="ledger"></ul>
-            <div class="block-tools">
-              <button type="button" class="ghost" id="export-transcript">Save this conversation</button>
-            </div>
-          </section>
-        </aside>
-        <div class="assistant-desk">
-          <section class="thread" id="thread" role="log" aria-live="polite" aria-relevant="additions" aria-label="Conversation"></section>
-          <button type="button" class="jump" id="jump-latest" hidden>Jump to the newest answer</button>
-          <form class="composer" id="ask-form">
-            <label class="field-label" for="question">Your question</label>
-            <textarea id="question" name="question" rows="3" maxlength="1500" required autocomplete="off" spellcheck="false" placeholder="Will it rain in Ahmedabad, Gujarat tomorrow morning?"></textarea>
-            <fieldset class="fields" id="composer-fields" hidden>
-              <legend>Ask with fields</legend>
-              <div class="field-row">
-                <div>
-                  <label class="field-label" for="measure">Measure</label>
-                  <select id="measure">
-                    <option value="rain">How much rain is forecast</option>
-                    <option value="weather">What is the rain, temperature, humidity and wind forecast</option>
-                    <option value="temperature">What is the temperature forecast</option>
-                    <option value="wind speed">What is the wind speed forecast</option>
-                    <option value="humidity">What is the humidity forecast</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="field-label" for="place">Place name</label>
-                  <input id="place" maxlength="120" autocomplete="off" placeholder="Ahmedabad, Gujarat">
-                </div>
-              </div>
-              <div class="field-row">
-                <div>
-                  <label class="field-label" for="latitude">Latitude</label>
-                  <input id="latitude" type="number" min="-90" max="90" step="any" inputmode="decimal" placeholder="23.02579">
-                </div>
-                <div>
-                  <label class="field-label" for="longitude">Longitude</label>
-                  <input id="longitude" type="number" min="-180" max="180" step="any" inputmode="decimal" placeholder="72.58727">
-                </div>
-              </div>
-              <p class="field-note">A pinned coordinate is treated as that point only, never as a district average. A shared place name will ask you to choose.</p>
-              <div class="field-row">
-                <div>
-                  <label class="field-label" for="day">Day</label>
-                  <select id="day"><option value="tomorrow">Tomorrow</option><option value="today">Today</option></select>
-                </div>
-                <div>
-                  <label class="field-label" for="start">From (IST)</label>
-                  <input id="start" type="time" value="09:30">
-                </div>
-                <div>
-                  <label class="field-label" for="end">Until (IST)</label>
-                  <input id="end" type="time" value="12:30">
-                </div>
-              </div>
-              <p class="field-note">Rainfall totals need whole source hours, which start at :30 IST.</p>
-              <button type="button" class="secondary" id="use-fields">Write this into the question box</button>
-              <p class="field-note">Understanding a language does not mean the answer can be written in it. When it cannot be, the answer states that instead of passing as complete.</p>
-            </fieldset>
-            <div class="composer-bottom">
-              <div class="composer-meta">
-                <div class="lang">
-                  <label class="field-label" for="language">Answer in</label>
-                  <select id="language">
-                    <option value="">Match my question</option>
-                    <option value="en">English</option>
-                    <option value="hi">हिन्दी</option>
-                    <option value="gu">ગુજરાતી</option>
-                  </select>
-                </div>
-                <p class="status" id="busy" role="status">Ready</p>
-              </div>
-              <div class="composer-actions">
-                <button type="button" class="ghost" id="new-conversation">New conversation</button>
-                <button type="button" class="ghost" id="toggle-fields" aria-expanded="false" aria-controls="composer-fields">Ask with fields</button>
-                <button type="button" class="ghost danger" id="cancel" hidden>Stop waiting</button>
-                <button type="submit" class="primary" id="ask">Ask</button>
-              </div>
-            </div>
-          </form>
-          <p class="error" id="error" role="alert" hidden></p>
-        </div>
-      </div>
-    </section>
-
     <section class="surface" data-surface="settings" hidden>
       <header class="surface-head">
-        <div><h1>Settings</h1><p class="surface-note">What this suite can answer, which sources it reads, and their terms.</p></div>
+        <div><h1>Sources and settings</h1><p class="surface-note">What this workspace can answer, which sources it reads, and the terms they carry.</p></div>
       </header>
       <div class="surface-body" id="settings-body">
-        <section class="block"><h2 class="block-title">Collection health</h2>
+        <section class="block wide"><h2 class="block-title">Collection health</h2>
           <div class="health" id="health"></div></section>
       </div>
     </section>

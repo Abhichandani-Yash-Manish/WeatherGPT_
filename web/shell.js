@@ -220,8 +220,9 @@ const WG = window.WG;
   /* ---------- routing ---------- */
   function currentView() {
     const match = /^#\/([a-z]+)/.exec(window.location.hash || '');
-    const name = match ? match[1] : 'overview';
-    return VIEWS.indexOf(name) >= 0 ? name : 'overview';
+    /* The conversation is the product, so it is where the workspace opens. */
+    const name = match ? match[1] : 'assistant';
+    return VIEWS.indexOf(name) >= 0 ? name : 'assistant';
   }
   function showView(name) {
     document.querySelectorAll('.surface').forEach(section => {

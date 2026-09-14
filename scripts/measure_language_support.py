@@ -51,6 +51,12 @@ def measure(code, speak=True, hear=True):
     """One language, three directions, each recorded separately."""
     row = {'checked_at_utc': stamp(utcnow())}
     started = time.time()
+    if code == 'en':
+        # The probe is already English. Translating it to itself would measure nothing,
+        # so writing is recorded as trivially true and only speech and hearing are tested.
+        row['write'] = {'state': 'verified', 'basis': 'source_language_needs_no_rendering'}
+        text = PROBE
+        return _speech_directions(row, code, text, speak, hear)
     try:
         text, report = rendering.render(PROBE, code, translator, IDENTITIES)
     except SourceError as error:
@@ -87,6 +93,10 @@ def measure(code, speak=True, hear=True):
                                    else 'one or more sentences could not be rendered')}
         return row
 
+    return _speech_directions(row, code, text, speak, hear)
+
+
+def _speech_directions(row, code, text, speak, hear):
     if not speak:
         return row
     try:
@@ -127,7 +137,7 @@ def main():
     args = parser.parse_args()
     if not args.all and not args.only:
         parser.error('choose --only <codes> or --all')
-    codes = [c.strip() for c in args.only.split(',')] if args.only else [c for c in LANGUAGES if c != 'en']
+    codes = [c.strip() for c in args.only.split(',')] if args.only else list(LANGUAGES)
     unknown = [c for c in codes if c not in LANGUAGES]
     if unknown:
         parser.error('unknown language codes: ' + ', '.join(unknown))

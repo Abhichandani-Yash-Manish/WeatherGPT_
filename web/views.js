@@ -750,9 +750,11 @@ function renderTurn(packet, handlers) {
 /* ---------- welcome and in-flight ---------- */
 function renderWelcome(handlers) {
   const box = el('article', undefined, 'welcome');
-  box.append(el('span', 'Weather desk', 'eyebrow'));
+  /* The hazard state for the working place is prepended here by home.js once it has
+     been read, so the first thing on screen is what you would have asked anyway. */
+  box.append(el('div', undefined, 'welcome-hero'));
   box.append(el('h1', 'Ask about a place and a time.'));
-  box.append(el('p', 'Ask in your own words, in English or Hindi, and follow up in the same conversation. WeatherGPT resolves the place, retrieves the evidence and keeps the source and retrieval time attached to every value. When a name is shared between places it will ask you which one.'));
+  box.append(el('p', 'Ask in your own words and follow up in the same conversation. WeatherGPT resolves the place, retrieves the evidence, and keeps the source, the window and the retrieval time attached to every value. When a name is shared between places it asks you which one you mean.'));
   const starters = el('div', undefined, 'starters');
   [
     ['Will it rain in Ahmedabad, Gujarat tomorrow morning?', 'Ask about rain'],
@@ -766,7 +768,7 @@ function renderWelcome(handlers) {
     starters.append(button);
   });
   box.append(starters);
-  box.append(el('p', 'It will not invent a warning, an observation, a water level or a forecast, and it will say when evidence is missing rather than fill the gap. Official warning applicability, live station observations and field, marine or travel clearance are not connected.', 'welcome-limit'));
+  box.append(el('p', 'It will not invent a warning, an observation, a water level or a forecast, and it says when evidence is missing rather than filling the gap. Official warning applicability, live station observations and field, marine or travel clearance are not connected.', 'welcome-limit'));
   return box;
 }
 function renderWorking(question) {
