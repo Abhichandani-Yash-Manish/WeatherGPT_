@@ -1,1 +1,0 @@
-<br/><select class='form-select mySelection' onchange='selectDistrict(this.value);'><option>Select district name here ...</option><option value="Lakshadweep"> Lakshadweep </option></select><div id="txtHintd"></div>

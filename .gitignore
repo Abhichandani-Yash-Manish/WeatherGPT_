@@ -1,0 +1,12 @@
+# Live runtime state: conversation/cache databases, request blobs, model logs.
+# This is personal session state and retrieval cache, not curated evidence.
+# Curated fixtures, review batches and saved source pages stay tracked under
+# data/processed, data/registry, research/ and tmp/pdfs.
+data/runtime/
+
+__pycache__/
+*.pyc
+.DS_Store
+
+# Local editor/assistant caches.
+.serena/
