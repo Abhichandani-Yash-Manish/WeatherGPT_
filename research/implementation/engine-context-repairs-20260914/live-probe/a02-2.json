@@ -1,0 +1,422 @@
+{
+ "schema_version": "weather-conversation-v1",
+ "conversation_id": "ba6e01e6-0e81-4d01-84db-2f22ed211f96",
+ "question": "રાજકોટમાં કાલે સવારે વરસાદની સંભાવના કેટલી છે?",
+ "status": "partial",
+ "answer": "Rājkot, Rājkot, State of Gujarāt · 2026-09-15 06:30 to 2026-09-15 12:30 IST\nHourly precipitation probability (>0.1 mm): 73–79 % across 6 hourly values.\nExact dates, times, values and evidence IDs are in the charts and tables below.\nModel forecast for the selected point; source model run and local representativeness are unverified. Each probability concerns its own hour (>0.1 mm), not the chance for the whole requested period.",
+ "facts": [
+  {
+   "id": "t1-f1",
+   "parameter": "precipitation_probability",
+   "label": "Hourly precipitation probability (>0.1 mm)",
+   "value": "79",
+   "unit": "%",
+   "place": "Rājkot, Rājkot, State of Gujarāt",
+   "entity_id": "geonames:1258847",
+   "start": "2026-09-15T06:30:00+05:30",
+   "end": "2026-09-15T07:30:00+05:30",
+   "source_id": "S62",
+   "evidence_kind": "forecast",
+   "evidence_version": "5a7f49760bdd7a6583d093a621ca613788849dcb6210d48d75faac9f0b44c5a1",
+   "citation_ids": [
+    "t1-c-5a7f49760bdd7a6583d093a621ca613788849dcb6210d48d75faac9f0b44c5a1"
+   ],
+   "source_locators": [
+    "$.hourly.precipitation_probability[26]"
+   ],
+   "method": "preceding_hour_probability",
+   "task_id": "t1"
+  },
+  {
+   "id": "t1-f2",
+   "parameter": "precipitation_probability",
+   "label": "Hourly precipitation probability (>0.1 mm)",
+   "value": "78",
+   "unit": "%",
+   "place": "Rājkot, Rājkot, State of Gujarāt",
+   "entity_id": "geonames:1258847",
+   "start": "2026-09-15T07:30:00+05:30",
+   "end": "2026-09-15T08:30:00+05:30",
+   "source_id": "S62",
+   "evidence_kind": "forecast",
+   "evidence_version": "5a7f49760bdd7a6583d093a621ca613788849dcb6210d48d75faac9f0b44c5a1",
+   "citation_ids": [
+    "t1-c-5a7f49760bdd7a6583d093a621ca613788849dcb6210d48d75faac9f0b44c5a1"
+   ],
+   "source_locators": [
+    "$.hourly.precipitation_probability[27]"
+   ],
+   "method": "preceding_hour_probability",
+   "task_id": "t1"
+  },
+  {
+   "id": "t1-f3",
+   "parameter": "precipitation_probability",
+   "label": "Hourly precipitation probability (>0.1 mm)",
+   "value": "76",
+   "unit": "%",
+   "place": "Rājkot, Rājkot, State of Gujarāt",
+   "entity_id": "geonames:1258847",
+   "start": "2026-09-15T08:30:00+05:30",
+   "end": "2026-09-15T09:30:00+05:30",
+   "source_id": "S62",
+   "evidence_kind": "forecast",
+   "evidence_version": "5a7f49760bdd7a6583d093a621ca613788849dcb6210d48d75faac9f0b44c5a1",
+   "citation_ids": [
+    "t1-c-5a7f49760bdd7a6583d093a621ca613788849dcb6210d48d75faac9f0b44c5a1"
+   ],
+   "source_locators": [
+    "$.hourly.precipitation_probability[28]"
+   ],
+   "method": "preceding_hour_probability",
+   "task_id": "t1"
+  },
+  {
+   "id": "t1-f4",
+   "parameter": "precipitation_probability",
+   "label": "Hourly precipitation probability (>0.1 mm)",
+   "value": "74",
+   "unit": "%",
+   "place": "Rājkot, Rājkot, State of Gujarāt",
+   "entity_id": "geonames:1258847",
+   "start": "2026-09-15T09:30:00+05:30",
+   "end": "2026-09-15T10:30:00+05:30",
+   "source_id": "S62",
+   "evidence_kind": "forecast",
+   "evidence_version": "5a7f49760bdd7a6583d093a621ca613788849dcb6210d48d75faac9f0b44c5a1",
+   "citation_ids": [
+    "t1-c-5a7f49760bdd7a6583d093a621ca613788849dcb6210d48d75faac9f0b44c5a1"
+   ],
+   "source_locators": [
+    "$.hourly.precipitation_probability[29]"
+   ],
+   "method": "preceding_hour_probability",
+   "task_id": "t1"
+  },
+  {
+   "id": "t1-f5",
+   "parameter": "precipitation_probability",
+   "label": "Hourly precipitation probability (>0.1 mm)",
+   "value": "73",
+   "unit": "%",
+   "place": "Rājkot, Rājkot, State of Gujarāt",
+   "entity_id": "geonames:1258847",
+   "start": "2026-09-15T10:30:00+05:30",
+   "end": "2026-09-15T11:30:00+05:30",
+   "source_id": "S62",
+   "evidence_kind": "forecast",
+   "evidence_version": "5a7f49760bdd7a6583d093a621ca613788849dcb6210d48d75faac9f0b44c5a1",
+   "citation_ids": [
+    "t1-c-5a7f49760bdd7a6583d093a621ca613788849dcb6210d48d75faac9f0b44c5a1"
+   ],
+   "source_locators": [
+    "$.hourly.precipitation_probability[30]"
+   ],
+   "method": "preceding_hour_probability",
+   "task_id": "t1"
+  },
+  {
+   "id": "t1-f6",
+   "parameter": "precipitation_probability",
+   "label": "Hourly precipitation probability (>0.1 mm)",
+   "value": "73",
+   "unit": "%",
+   "place": "Rājkot, Rājkot, State of Gujarāt",
+   "entity_id": "geonames:1258847",
+   "start": "2026-09-15T11:30:00+05:30",
+   "end": "2026-09-15T12:30:00+05:30",
+   "source_id": "S62",
+   "evidence_kind": "forecast",
+   "evidence_version": "5a7f49760bdd7a6583d093a621ca613788849dcb6210d48d75faac9f0b44c5a1",
+   "citation_ids": [
+    "t1-c-5a7f49760bdd7a6583d093a621ca613788849dcb6210d48d75faac9f0b44c5a1"
+   ],
+   "source_locators": [
+    "$.hourly.precipitation_probability[31]"
+   ],
+   "method": "preceding_hour_probability",
+   "task_id": "t1"
+  }
+ ],
+ "citations": [
+  {
+   "id": "t1-c-5a7f49760bdd7a6583d093a621ca613788849dcb6210d48d75faac9f0b44c5a1",
+   "source_id": "S62",
+   "provider": "Open-Meteo",
+   "product": "Best-match hourly model forecast",
+   "url": "https://api.open-meteo.com/v1/forecast?latitude=22.29161&longitude=70.79322&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m%2Cprecipitation_probability%2Capparent_temperature%2Cwind_gusts_10m%2Cvisibility&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+   "response_sha256": "5a7f49760bdd7a6583d093a621ca613788849dcb6210d48d75faac9f0b44c5a1",
+   "retrieved_at_utc": "2026-09-14T08:48:48.651157+00:00",
+   "requested_point": {
+    "latitude": 22.29161,
+    "longitude": 70.79322
+   },
+   "returned_grid": {
+    "latitude": 22.319859,
+    "longitude": 70.8273
+   },
+   "grid_distance_km": 4.707,
+   "model_run_time": null
+  },
+  {
+   "source_id": "S61",
+   "url": "https://www.geonames.org/1258847",
+   "provider": "GeoNames",
+   "product": "India place catalogue",
+   "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+   "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+  }
+ ],
+ "notes": [
+  "Current date is 2026-09-14. 'Kal' (tomorrow) refers to 2026-09-15. 'Savar' (morning) defaults to 06:30–12:30 IST.",
+  "Precipitation includes rain, showers and snow water equivalent; it is not a rain-only gauge measurement.",
+  "Source hours are on UTC boundaries (:30 in IST). Each probability is for >0.1 mm in its preceding hour. Hourly probabilities are never combined into a period probability.",
+  "Best-match model selection may differ by variable; upstream run and local representativeness are unverified. Hourly values cannot determine an exact rain start minute or issue an official warning.",
+  "The requested output language could not be rendered for this answer; the evidence above remains in its source language. Answering in that language is not supported yet for this kind of request."
+ ],
+ "choices": [],
+ "follow_up": null,
+ "operational_eligible": false,
+ "answered_at_utc": "2026-09-14T08:48:47.812239+00:00",
+ "expires_at_utc": "2026-09-14T09:48:48.651157+00:00",
+ "trace": {
+  "planning": {
+   "reused_clarification_plan": true
+  },
+  "generation": {
+   "provider": "typed_task_renderers",
+   "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit.",
+   "language_adherence": "failed",
+   "requested_language": "gu"
+  },
+  "tools": [
+   {
+    "name": "extended_forecast",
+    "job_id": "5b900c6c4bf3a3371ac1c95c250fd3df79ab3c2ccff19a9925c7de2426e1e88f",
+    "worker": {
+     "state": "succeeded",
+     "promoted": true,
+     "job_id": "5b900c6c4bf3a3371ac1c95c250fd3df79ab3c2ccff19a9925c7de2426e1e88f"
+    },
+    "source_sha256": "5a7f49760bdd7a6583d093a621ca613788849dcb6210d48d75faac9f0b44c5a1"
+   },
+   {
+    "name": "forecast",
+    "task_id": "t1",
+    "status": "answered"
+   }
+  ],
+  "provider": "local_ollama",
+  "duration_seconds": 0.858
+ },
+ "plan": {
+  "language": "gu",
+  "places": [
+   {
+    "name": "Rajkot",
+    "state": "",
+    "district": "",
+    "kind": "settlement"
+   }
+  ],
+  "assumptions": [
+   "Current date is 2026-09-14. 'Kal' (tomorrow) refers to 2026-09-15. 'Savar' (morning) defaults to 06:30–12:30 IST."
+  ],
+  "clarification": "",
+  "explicit_times": false,
+  "tasks": [
+   {
+    "request_quote": "કાલે સવારે વરસાદની સંભાવના",
+    "kind": "forecast",
+    "operation": "lookup",
+    "parameters": [
+     "precipitation_probability"
+    ],
+    "years": [],
+    "period": "annual",
+    "start_local": "2026-09-15T06:30:00+05:30",
+    "end_local": "2026-09-15T12:30:00+05:30",
+    "place_indices": [
+     0
+    ]
+   }
+  ],
+  "context_action": "new",
+  "changed_fields": [],
+  "intent": "forecast",
+  "start_local": "2026-09-15T06:30:00+05:30",
+  "end_local": "2026-09-15T12:30:00+05:30",
+  "variables": [],
+  "year": 0,
+  "period": "annual",
+  "history_parameter": "rainfall",
+  "unsupported_parameters": [],
+  "requested_outcome": "Complete all explicitly requested tasks"
+ },
+ "task_results": [
+  {
+   "id": "t1",
+   "request": {
+    "request_quote": "કાલે સવારે વરસાદની સંભાવના",
+    "kind": "forecast",
+    "operation": "lookup",
+    "parameters": [
+     "precipitation_probability"
+    ],
+    "years": [],
+    "period": "annual",
+    "start_local": "2026-09-15T06:30:00+05:30",
+    "end_local": "2026-09-15T12:30:00+05:30",
+    "place_indices": [
+     0
+    ]
+   },
+   "status": "answered",
+   "answer": "Rājkot, Rājkot, State of Gujarāt · 2026-09-15 06:30 to 2026-09-15 12:30 IST\nHourly precipitation probability (>0.1 mm): 73–79 % across 6 hourly values.\nExact dates, times, values and evidence IDs are in the charts and tables below.\nModel forecast for the selected point; source model run and local representativeness are unverified. Each probability concerns its own hour (>0.1 mm), not the chance for the whole requested period.",
+   "fact_ids": [
+    "t1-f1",
+    "t1-f2",
+    "t1-f3",
+    "t1-f4",
+    "t1-f5",
+    "t1-f6"
+   ],
+   "passage_ids": []
+  }
+ ],
+ "charts": [
+  {
+   "kind": "hourly_series",
+   "axis_label": "Time (IST)",
+   "title": "Rājkot, Rājkot, State of Gujarāt · Hourly precipitation probability (>0.1 mm)",
+   "unit": "%",
+   "points": [
+    {
+     "x": 1789434000.0,
+     "label": "15 Sep 06:30–07:30",
+     "value": "79",
+     "evidence_id": "t1-f1"
+    },
+    {
+     "x": 1789437600.0,
+     "label": "15 Sep 07:30–08:30",
+     "value": "78",
+     "evidence_id": "t1-f2"
+    },
+    {
+     "x": 1789441200.0,
+     "label": "15 Sep 08:30–09:30",
+     "value": "76",
+     "evidence_id": "t1-f3"
+    },
+    {
+     "x": 1789444800.0,
+     "label": "15 Sep 09:30–10:30",
+     "value": "74",
+     "evidence_id": "t1-f4"
+    },
+    {
+     "x": 1789448400.0,
+     "label": "15 Sep 10:30–11:30",
+     "value": "73",
+     "evidence_id": "t1-f5"
+    },
+    {
+     "x": 1789452000.0,
+     "label": "15 Sep 11:30–12:30",
+     "value": "73",
+     "evidence_id": "t1-f6"
+    }
+   ],
+   "source_ids": [
+    "S62"
+   ],
+   "task_id": "t1"
+  }
+ ],
+ "calculations": [],
+ "pending_slots": [],
+ "retrieval_coverage": [],
+ "retrieval_plan": [
+  {
+   "task_id": "t1",
+   "operation": "lookup",
+   "kind": "forecast",
+   "parameters": [
+    "precipitation_probability"
+   ],
+   "candidates": [
+    {
+     "tool": "hourly_forecast",
+     "selected": true,
+     "available": true,
+     "reason": "Hourly evidence; exact onset and whole-period probability unavailable",
+     "sources": [
+      {
+       "source_id": "S62",
+       "product": "Open-Meteo best-match extended hourly forecast",
+       "registry_status": "prototype_adapter_tested"
+      }
+     ]
+    },
+    {
+     "tool": "forecast_summary",
+     "selected": false,
+     "available": true,
+     "reason": "Exact-window GFS model summary",
+     "sources": [
+      {
+       "source_id": "S21",
+       "product": "Open-Meteo GFS forecast delivery",
+       "registry_status": "prototype_adapter_tested"
+      }
+     ]
+    }
+   ],
+   "status": "answered",
+   "returned_source_ids": [
+    "S61",
+    "S62"
+   ]
+  }
+ ],
+ "document_evidence": [],
+ "resolved_points": {
+  "Rajkot": {
+   "id": "1258847",
+   "name": "Rājkot",
+   "latitude": 22.29161,
+   "longitude": 70.79322,
+   "feature": "PPL",
+   "admin1": "State of Gujarāt",
+   "admin2": "Rājkot",
+   "modified": "2025-02-26",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:1258847",
+   "label": "Rājkot, Rājkot, State of Gujarāt",
+   "coordinates": {
+    "latitude": 22.29161,
+    "longitude": 70.79322
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/1258847",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Rajkot"
+  }
+ },
+ "task_coverage": {
+  "requested": 1,
+  "completed": 1,
+  "incomplete_ids": []
+ },
+ "_seconds": 0.86
+}

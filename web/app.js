@@ -111,7 +111,8 @@ function render(packet, body) {
 }
 
 $('history-example').addEventListener('click',()=>{const question='What was the annual rainfall in Ahmedabad district, Gujarat in 2010?';$('question').value=question;send({question});});
-$('new-conversation').addEventListener('click',()=>{conversationId=null;$('thread').replaceChildren(el('article','New conversation. Ask about a forecast, a historical rainfall value, or explain what you are planning.','welcome'));$('question').value='';send({question:$('question').value});});
+// Clearing the thread must not submit the now-empty question box.
+$('new-conversation').addEventListener('click',()=>{conversationId=null;$('thread').replaceChildren(el('article','New conversation. Ask about a forecast, a historical rainfall value, or explain what you are planning.','welcome'));$('question').value='';$('question').focus();});
 function renderConversation(packet,body) {
  const card=el('article',undefined,'answer-card');
  const top=el('div',undefined,'answer-top');

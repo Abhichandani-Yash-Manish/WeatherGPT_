@@ -21,7 +21,7 @@ GAPS={
 def execute_plan(engine,result,plan,resolved,coordinates):
     validate_tasks(plan['tasks'],plan['places'])
     result.update(task_results=[],charts=[],calculations=[],pending_slots=[],retrieval_coverage=[],retrieval_plan=retrieval_plan(plan,result.get('retrieval_preferences')))
-    chunks=[];statuses=[]
+    chunks=[];statuses=[];executed=[]
     for index,task in enumerate(plan['tasks']):
         tid='t'+str(index+1)
         sub={**plan,'intent':task['kind'],'places':[plan['places'][i] for i in task['place_indices']],
@@ -74,7 +74,17 @@ def execute_plan(engine,result,plan,resolved,coordinates):
                         if packet['facts']:packet=engine.explain(packet)
             elif task['kind']=='explanation':
                 packet=copy.deepcopy({k:v for k,v in result.items() if k not in {'task_results','charts','calculations','passages','document_evidence','airport_reports','warning_evidence','pending_slots','retrieval_coverage'}});packet.update(facts=[],citations=[],notes=[],answer='General explanation, not retrieved local weather.',plan=sub,status='explanation',trace={'tools':[],'generation':None})
-                packet=engine.explain(packet,general=True)
+                # An explanation of a sibling request reads that one task's own
+                # evidence by declared reference. It never claims the evidence as
+                # its own, borrows unrelated tasks' facts, or retrieves anything.
+                referenced=next(((rid,p) for rid,p in reversed(executed) if p.get('facts') or p.get('passages') or p.get('airport_reports')),None)
+                if referenced:
+                    from .briefing import explain_evidence
+                    packet['explains']=referenced[0];packet['answer']=explain_evidence({**referenced[1],'plan':sub})
+                    packet['trace']={'tools':[{'name':'referenced_task_evidence','task_id':referenced[0]}],
+                                     'generation':{'provider':'deterministic_evidence_explanation','validation':'Explains the referenced task’s retrieved evidence; ownership of those facts stays with that task.'}}
+                else:packet=engine.explain(packet,general=True)
+                if not packet['answer'].strip():packet.update(status='unavailable',answer='The requested explanation could not be produced.')
             else:packet={'status':'unavailable','answer':'This task is not implemented.'}
         except (ValueError,OSError) as exc:
             packet={'status':'unavailable','answer':'The task could not retrieve verified evidence: '+str(exc)}
@@ -125,7 +135,8 @@ def execute_plan(engine,result,plan,resolved,coordinates):
         result['trace']['tools']+=packet.get('trace',{}).get('tools',[])
         result['trace']['tools'].append({'name':task['kind'],'task_id':tid,'status':packet['status']})
         record={'id':tid,'request':task,'status':packet['status'],'answer':answer,'fact_ids':[f['id'] for f in facts],'passage_ids':[p['id'] for p in packet.get('passages',[])]}
-        result['task_results'].append(record);statuses.append(packet['status']);chunks.append(answer)
+        if packet.get('explains'):record['explains']=packet['explains']
+        result['task_results'].append(record);statuses.append(packet['status']);chunks.append(answer);executed.append((tid,packet))
         if packet.get('comparison_text'):record['comparison_text']=packet['comparison_text']
         if packet.get('lookups'):record['historical_evidence']=packet['lookups']
         if packet.get('expires_at_utc') and (not result['expires_at_utc'] or parsed(packet['expires_at_utc'])<parsed(result['expires_at_utc'])):result['expires_at_utc']=packet['expires_at_utc']

@@ -1,0 +1,41 @@
+{
+ "batch": "engine-context-repairs-20260914",
+ "reviewed_findings": ["A01","A02","A03","A07 (explanation counting only)","A08 (packaging and one UI control only)"],
+ "review_source": "docs/21-full-solution-critical-review.md",
+ "automated_tests": {"python": 362, "python_previous_batch": 356, "javascript_component_checks": 8, "javascript_new": 2},
+ "http_turns": 7,
+ "statuses": {"answered": 5, "partial": 1, "needs_selection": 1},
+ "latency_seconds": {"min": 0.86, "max": 25.89, "note": "Seven turns on one warm local machine. This is not a load or latency measurement."},
+ "scenarios": [
+  {
+   "id": "A03",
+   "claim": "An explanation task in the same request now reads the referenced task's own retrieved evidence.",
+   "evidence": "live-probe/a03-1.json",
+   "observed": "Task t2 carries explains=t1 and explains the retrieved VOBL METAR; it holds no facts of its own, so ownership stays with t1.",
+   "previous_behaviour": "docs/21 A03: the explanation claimed no current weather data had been supplied while a sibling task held it.",
+   "outcome": "repaired_in_this_scenario"
+  },
+  {
+   "id": "A02",
+   "claim": "A requested output language that is not rendered can no longer be reported as answered.",
+   "evidence": "live-probe/a02-1.json, live-probe/a02-2.json",
+   "observed": "The Gujarati Rajkot probability request returned status partial with trace.generation.language_adherence=failed and an explicit note. The forecast values themselves remain correct and English.",
+   "previous_behaviour": "docs/21 A02: plan recorded language=gu, the answer was English, and the response was marked answered.",
+   "outcome": "disclosed_not_yet_supported"
+  },
+  {
+   "id": "A01",
+   "claim": "A measure named in a continuation survives an omitted or wrong model changed_fields tag.",
+   "evidence": "live-probe/a01-1.json, live-probe/a01-2.json, live-probe/a01-single-1.json, live-probe/a01-single-2.json, tests/test_engine_refinement.py::test_named_measure_survives_an_omitted_model_change_tag",
+   "observed": "Both live continuations answered the newly named measure. In both runs the planner declared the parameter change itself, and the first pair used two prior tasks, so neither live turn exercised the single-task inheritance path that produced the original failure. The deterministic test pins that path directly.",
+   "outcome": "mechanism_repaired_and_unit_pinned_live_runs_not_isolating"
+  }
+ ],
+ "remaining_gaps_observed_in_this_batch": [
+  "A clarification/place-selection message for a Gujarati request is still written in English. The language gate does not downgrade it because such a response does not claim to have answered.",
+  "Hindi and Gujarati output remain unsupported for point-tool, briefing and historical renderers; the gate discloses this rather than fixing it.",
+  "A01's live turns did not reproduce the original single-task inheritance path; further paraphrase and repeat runs are still needed.",
+  "A04 aliases, A05 official warnings and observations, A06 agricultural depth, A08 concurrency and the whole of voice/mobile are untouched by this batch."
+ ],
+ "scope": "Local deterministic tests plus seven local-model HTTP turns on one machine. No national, operational, agronomic, browser, mobile or language acceptance is claimed."
+}

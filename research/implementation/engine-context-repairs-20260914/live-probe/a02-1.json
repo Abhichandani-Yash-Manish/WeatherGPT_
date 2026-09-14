@@ -1,0 +1,297 @@
+{
+ "schema_version": "weather-conversation-v1",
+ "conversation_id": "ba6e01e6-0e81-4d01-84db-2f22ed211f96",
+ "question": "રાજકોટમાં કાલે સવારે વરસાદની સંભાવના કેટલી છે?",
+ "status": "needs_selection",
+ "answer": "Which place do you mean? Rājkot, Etah District, Uttar Pradesh / Rājkot, Rājkot, State of Gujarāt / Rajkot, Tonk, State of Rājasthān / Rājkot, Tonk, State of Rājasthān. Choose one, or type its state/district.",
+ "facts": [],
+ "citations": [],
+ "notes": [
+  "Current date is 2026-09-14. 'Kal' (tomorrow) refers to 2026-09-15. 'Savar' (morning) defaults to 06:30–12:30 IST."
+ ],
+ "choices": [
+  {
+   "id": "10488402",
+   "name": "Rājkot",
+   "latitude": 27.42203,
+   "longitude": 78.6755,
+   "feature": "PPL",
+   "admin1": "Uttar Pradesh",
+   "admin2": "Etah District",
+   "modified": "2024-01-07",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10488402",
+   "label": "Rājkot, Etah District, Uttar Pradesh",
+   "coordinates": {
+    "latitude": 27.42203,
+    "longitude": 78.6755
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10488402",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Rajkot"
+  },
+  {
+   "id": "1258847",
+   "name": "Rājkot",
+   "latitude": 22.29161,
+   "longitude": 70.79322,
+   "feature": "PPL",
+   "admin1": "State of Gujarāt",
+   "admin2": "Rājkot",
+   "modified": "2025-02-26",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:1258847",
+   "label": "Rājkot, Rājkot, State of Gujarāt",
+   "coordinates": {
+    "latitude": 22.29161,
+    "longitude": 70.79322
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/1258847",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Rajkot"
+  },
+  {
+   "id": "1442078",
+   "name": "Rajkot",
+   "latitude": 25.73681,
+   "longitude": 75.58779,
+   "feature": "PPL",
+   "admin1": "State of Rājasthān",
+   "admin2": "Tonk",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:1442078",
+   "label": "Rajkot, Tonk, State of Rājasthān",
+   "coordinates": {
+    "latitude": 25.73681,
+    "longitude": 75.58779
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/1442078",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Rajkot"
+  },
+  {
+   "id": "1442079",
+   "name": "Rājkot",
+   "latitude": 25.73146,
+   "longitude": 75.59246,
+   "feature": "PPL",
+   "admin1": "State of Rājasthān",
+   "admin2": "Tonk",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:1442079",
+   "label": "Rājkot, Tonk, State of Rājasthān",
+   "coordinates": {
+    "latitude": 25.73146,
+    "longitude": 75.59246
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/1442079",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Rajkot"
+  }
+ ],
+ "follow_up": "Choose a place, or add its district and state.",
+ "operational_eligible": false,
+ "answered_at_utc": "2026-09-14T08:47:36.684586+00:00",
+ "expires_at_utc": null,
+ "trace": {
+  "planning": {
+   "provider": "local_ollama",
+   "model": "qwen3.6:latest",
+   "input_tokens": 2894,
+   "output_tokens": 337,
+   "duration_seconds": 12.783075084
+  },
+  "generation": {
+   "provider": "typed_task_renderers",
+   "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+  },
+  "tools": [
+   {
+    "name": "gazetteer_search",
+    "query": {
+     "name": "Rajkot",
+     "state": "",
+     "district": "",
+     "kind": "settlement"
+    },
+    "matches": 4
+   },
+   {
+    "name": "forecast",
+    "task_id": "t1",
+    "status": "needs_selection"
+   }
+  ],
+  "provider": "local_ollama",
+  "context_resolution": {
+   "action": "new",
+   "changed_fields": [],
+   "inherited_fields": []
+  },
+  "duration_seconds": 12.911
+ },
+ "plan": {
+  "language": "gu",
+  "places": [
+   {
+    "name": "Rajkot",
+    "state": "",
+    "district": "",
+    "kind": "settlement"
+   }
+  ],
+  "assumptions": [
+   "Current date is 2026-09-14. 'Kal' (tomorrow) refers to 2026-09-15. 'Savar' (morning) defaults to 06:30–12:30 IST."
+  ],
+  "clarification": "",
+  "explicit_times": false,
+  "tasks": [
+   {
+    "request_quote": "કાલે સવારે વરસાદની સંભાવના",
+    "kind": "forecast",
+    "operation": "lookup",
+    "parameters": [
+     "precipitation_probability"
+    ],
+    "years": [],
+    "period": "annual",
+    "start_local": "2026-09-15T06:30:00+05:30",
+    "end_local": "2026-09-15T12:30:00+05:30",
+    "place_indices": [
+     0
+    ]
+   }
+  ],
+  "context_action": "new",
+  "changed_fields": [],
+  "intent": "forecast",
+  "start_local": "2026-09-15T06:30:00+05:30",
+  "end_local": "2026-09-15T12:30:00+05:30",
+  "variables": [],
+  "year": 0,
+  "period": "annual",
+  "history_parameter": "rainfall",
+  "unsupported_parameters": [],
+  "requested_outcome": "Complete all explicitly requested tasks"
+ },
+ "task_results": [
+  {
+   "id": "t1",
+   "request": {
+    "request_quote": "કાલે સવારે વરસાદની સંભાવના",
+    "kind": "forecast",
+    "operation": "lookup",
+    "parameters": [
+     "precipitation_probability"
+    ],
+    "years": [],
+    "period": "annual",
+    "start_local": "2026-09-15T06:30:00+05:30",
+    "end_local": "2026-09-15T12:30:00+05:30",
+    "place_indices": [
+     0
+    ]
+   },
+   "status": "needs_selection",
+   "answer": "I found 4 possible places for Rajkot. Please confirm the intended location and spelling.",
+   "fact_ids": [],
+   "passage_ids": []
+  }
+ ],
+ "charts": [],
+ "calculations": [],
+ "pending_slots": [],
+ "retrieval_coverage": [],
+ "retrieval_plan": [
+  {
+   "task_id": "t1",
+   "operation": "lookup",
+   "kind": "forecast",
+   "parameters": [
+    "precipitation_probability"
+   ],
+   "candidates": [
+    {
+     "tool": "hourly_forecast",
+     "selected": true,
+     "available": true,
+     "reason": "Hourly evidence; exact onset and whole-period probability unavailable",
+     "sources": [
+      {
+       "source_id": "S62",
+       "product": "Open-Meteo best-match extended hourly forecast",
+       "registry_status": "prototype_adapter_tested"
+      }
+     ]
+    },
+    {
+     "tool": "forecast_summary",
+     "selected": false,
+     "available": true,
+     "reason": "Exact-window GFS model summary",
+     "sources": [
+      {
+       "source_id": "S21",
+       "product": "Open-Meteo GFS forecast delivery",
+       "registry_status": "prototype_adapter_tested"
+      }
+     ]
+    }
+   ],
+   "status": "needs_selection",
+   "returned_source_ids": []
+  }
+ ],
+ "document_evidence": [],
+ "resolved_points": {},
+ "task_coverage": {
+  "requested": 1,
+  "completed": 0,
+  "incomplete_ids": [
+   "t1"
+  ]
+ },
+ "_seconds": 12.92
+}

@@ -1,0 +1,8 @@
+PASS: missing-year plot gaps, exact source precision, keyboard point inspection (component only)
+PASS: hourly axes, exact IST interval labels and evidence inspection (component only)
+PASS: passage uses its bound citation, page locator, literal source text and HTTPS-only link (component only)
+PASS: immutable stored PDF page is preferred to a changing publisher URL
+PASS: parent context is labelled separately from crop evidence and current alerts
+PASS: saved PDF has a same-origin download fallback
+PASS: new conversation resets the thread without sending an empty question (component only)
+PASS: example controls still submit a real question (component only)

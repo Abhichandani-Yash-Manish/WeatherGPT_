@@ -150,6 +150,12 @@ class ConversationEngine:
         result['trace']['duration_seconds']=round(time.monotonic()-began,3)
         from .briefing import render_brief
         if not result['facts']:result['answer']=render_brief(result)
+        # Understanding the question's language never establishes output support.
+        from .dialogue import language_gap
+        if language_gap(result['answer'],plan.get('language')) and result['status'] in {'answered','explanation'}:
+            result['status']='partial'
+            result['notes'].append('The requested output language could not be rendered for this answer; the evidence above remains in its source language. Answering in that language is not supported yet for this kind of request.')
+            result['trace']['generation']=dict(result['trace'].get('generation') or {},language_adherence='failed',requested_language=plan.get('language'))
         from .dialogue import save_focus
         save_focus(state,result)
         state['last_question']=q;state['last_plan']=state.get('last_plan',plan) if plan.get('context_action')=='explain_previous' else plan;state['choices']=result['choices'];state['resolved_points']=result.get('resolved_points',{})
@@ -293,6 +299,8 @@ class ConversationEngine:
                     if value is not None and (Decimal(value),match[3]) not in unit_values:raise ValueError('Generated measurement does not match its source unit')
             if result['facts'] and not ids:raise ValueError('Generated answer omitted all evidence references')
             if re.search(r'https?://|\b(?:is|are|will be) guaranteed\b|\bdefinitely safe\b',text,re.I):raise ValueError('Unsupported link or certainty')
+            from .dialogue import language_gap
+            if language_gap(text,result['plan']['language']):raise ValueError('Generated answer did not honour the requested output language')
             result['answer']=text;result['trace']['generation']={**meta,'validation':'tool-number, measurement-unit and evidence-ID checks passed; semantic evaluation remains necessary','evidence_ids':ids}
         except (ValueError,KeyError,TypeError,OSError) as exc:
             result['trace']['generation']={'status':'deterministic_fallback','reason':str(exc)}

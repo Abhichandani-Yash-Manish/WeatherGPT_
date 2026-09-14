@@ -1,13 +1,13 @@
 {
   "schema_version": "product-progress-plan-v1",
-  "as_of_utc": "2026-09-13T17:09:28.064160+00:00",
+  "as_of_utc": "2026-09-14T08:51:52.362955+00:00",
   "status": "implementation_in_progress",
   "user_direction": "Desktop web now. Hosting/sharing on hold. Preserve final nationwide and specialist scope.",
   "next_batch": [
+    "P06",
+    "P10",
     "P07",
     "P03",
-    "P08",
-    "P06",
     "P12"
   ],
   "parallel_discovery_note": "Begin official access/validity/geography work early; no requirement to wait for every other stage.",
@@ -37,7 +37,7 @@
       "status": "implemented_scoped_broader_semantic_acceptance_open",
       "distribution_hold": false,
       "evidence": "docs/15-answer-fidelity-and-historical-analysis.md",
-      "latest_evidence": "docs/20-bulletin-parent-context.md"
+      "latest_evidence": "docs/22-engine-context-repairs.md"
     },
     {
       "id": "S2",
@@ -146,7 +146,7 @@
       ],
       "status": "hinglish_context_and_hindi_lookup_repairs_verified_scoped_broader_languages_resilience_and_ui_open",
       "distribution_hold": false,
-      "latest_evidence": "docs/17-conversation-engine-refinement.md"
+      "latest_evidence": "docs/22-engine-context-repairs.md"
     },
     {
       "id": "S6",
@@ -188,7 +188,7 @@
     },
     "P03": {
       "status": "partial",
-      "evidence": "docs/20-bulletin-parent-context.md"
+      "evidence": "docs/22-engine-context-repairs.md"
     },
     "P04": {
       "status": "partial",
@@ -224,7 +224,7 @@
     },
     "P12": {
       "status": "partial",
-      "evidence": "docs/20-bulletin-parent-context.md"
+      "evidence": "docs/22-engine-context-repairs.md"
     },
     "P13": {
       "status": "partial",
@@ -257,31 +257,32 @@
     }
   ],
   "latest_batch": {
-    "report": "docs/20-bulletin-parent-context.md",
-    "evidence_directory": "research/implementation/bulletin-parent-context-20260913",
-    "source_ids": [
-      "S57"
-    ],
+    "report": "docs/22-engine-context-repairs.md",
+    "evidence_directory": "research/implementation/engine-context-repairs-20260914",
     "operational_ready": false,
-    "scope": "Same-edition parent context and bounded activity qualification flags in four inspected editions. Nagpur, Surat and Madurai remain held; warning applicability and national corpus acceptance remain open.",
+    "scope": "Named-measure retention in continuations, output-language adherence disclosure, explanation-to-task evidence dependency, runtime packaging and the new-conversation control. No language support, warning applicability, alias, coverage, browser, mobile or voice acceptance is added.",
+    "automated_tests": 362,
+    "http_turns": 7,
     "review_mapping": {
+      "A": [
+        "A01",
+        "A02",
+        "A03"
+      ],
+      "A_partial": [
+        "A07",
+        "A08"
+      ],
       "P": [
         "P03",
-        "P07",
-        "P08",
         "P12"
-      ],
-      "R": [
-        "R09",
-        "R11",
-        "R12"
       ],
       "F": [
         "F01",
         "F02",
-        "F07",
         "F10"
       ]
     }
-  }
+  },
+  "next_batch_note": "Engine context, language disclosure and explanation dependency are repaired in scope (docs/22). The review trajectory places official warning and observation feasibility next; that workstream needs a user decision on supported official data access before implementation, so agricultural and task-fidelity work continues alongside it."
 }

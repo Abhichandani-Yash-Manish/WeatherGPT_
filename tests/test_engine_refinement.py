@@ -8,7 +8,7 @@ import test_conversation as fixtures
 import test_point_tasks as point_fixtures
 from test_product_stage_one import task
 from test_ingestion import Response,NOW
-from weathergpt_data.dialogue import reconcile,ground_explicit_slots,select_reply,validate_relative_dates,language_style
+from weathergpt_data.dialogue import reconcile,ground_explicit_slots,select_reply,validate_relative_dates,language_style,named_parameters
 from weathergpt_data.language import expand_request,REQUEST_SCHEMA
 from weathergpt_data.capabilities import retrieval_plan
 from weathergpt_data.transport import SourceError
@@ -25,6 +25,28 @@ class DialogueContracts(unittest.TestCase):
         result=reconcile(current,{'last_plan':previous},'nahi Surat ke liye batao')
         self.assertEqual(result['places'][0]['name'],'Surat');self.assertEqual(result['tasks'][0]['parameters'],['precipitation_probability']);self.assertEqual(result['tasks'][0]['start_local'],previous['tasks'][0]['start_local'])
         self.assertEqual(result['start_local'],result['tasks'][0]['start_local'])
+
+    def test_named_measure_survives_an_omitted_model_change_tag(self):
+        previous=focused();previous['tasks'][0]['parameters']=['precipitation_probability','wind_gusts_10m','apparent_temperature']
+        question='Compare the rain amount for that same afternoon period with GFS too'
+        current=focused();current['tasks'][0].update(parameters=copy.deepcopy(previous['tasks'][0]['parameters']),operation='crosscheck',request_quote=question)
+        current.update(context_action='follow_up',changed_fields=['operation'])
+        result=reconcile(current,{'last_plan':previous},question)
+        self.assertIn('precipitation',result['tasks'][0]['parameters'])
+        self.assertIn('parameters',result['_context_resolution']['changed_fields'])
+        for retained in previous['tasks'][0]['parameters']:self.assertIn(retained,result['tasks'][0]['parameters'])
+
+    def test_unnamed_measure_still_inherits_the_established_one(self):
+        previous=focused();current=focused();current['tasks'][0].update(parameters=[],request_quote='aur shaam ko?')
+        current.update(context_action='follow_up',changed_fields=['time'])
+        result=reconcile(current,{'last_plan':previous},'aur shaam ko?')
+        self.assertEqual(result['tasks'][0]['parameters'],['precipitation_probability'])
+
+    def test_named_measures_separate_gusts_wind_and_feels_like(self):
+        self.assertEqual(named_parameters('wind gusts tomorrow'),['wind_gusts_10m'])
+        self.assertEqual(named_parameters('feels like temperature'),['apparent_temperature'])
+        self.assertEqual(named_parameters('chance of rain'),['precipitation_probability'])
+        self.assertEqual(named_parameters('how much rain and the wind speed'),['precipitation','wind_speed_10m'])
 
     def test_missing_place_clarification_keeps_resolved_time_and_new_indices(self):
         old=focused();old['places']=[];old['tasks'][0].update(place_indices=[],start_local='',end_local='')
@@ -160,6 +182,23 @@ class EngineJourneys(unittest.TestCase):
         self.model.value['tasks']=[task(kind='aviation',parameters=[kind],years=[])]
         return self.model.value['tasks'][0]
 
+    def test_explanation_task_reads_its_sibling_task_evidence(self):
+        self.airport()
+        self.model.value['tasks']=[task(kind='aviation',parameters=['metar'],years=[],request_quote='Latest VAAH METAR'),
+                                   task(kind='explanation',parameters=[],years=[],request_quote='what does it mean')]
+        r=self.chat(question='Latest VAAH METAR and what does it mean?')
+        explanation=r['task_results'][1]
+        self.assertEqual(explanation['explains'],'t1')
+        self.assertIn('METAR',explanation['answer']);self.assertNotIn('not retrieved local weather',explanation['answer'])
+        # The referenced task keeps ownership of its own retrieved evidence.
+        self.assertEqual(explanation['fact_ids'],[]);self.assertTrue(r['task_results'][0]['fact_ids'])
+
+    def test_explanation_without_a_referenced_task_stays_general(self):
+        self.model.value['tasks']=[task(kind='explanation',parameters=[],years=[],request_quote='what is a monsoon')]
+        r=self.chat(question='What is a monsoon?')
+        self.assertNotIn('explains',r['task_results'][0])
+        self.assertEqual(r['task_results'][0]['status'],'explanation')
+
     def test_airport_reports_bind_station_observation_and_raw_field(self):
         self.airport();r=self.chat(question='Latest VAAH METAR')
         self.assertEqual(r['status'],'answered',r['answer']);self.assertEqual({c['source_id'] for c in r['citations']},{'S18','S20'});self.assertEqual([f['value'] for f in r['facts']],['26','2'])
@@ -181,6 +220,13 @@ class EngineJourneys(unittest.TestCase):
     def test_future_metar_request_does_not_return_latest_snapshot(self):
         t=self.airport();t.update(start_local='2026-09-13T06:30:00+05:30',end_local='2026-09-13T12:30:00+05:30')
         r=self.chat();self.assertFalse(r['facts']);self.assertEqual(self.calls,0);self.assertEqual(r['status'],'unavailable')
+
+    def test_requested_gujarati_output_is_never_answered_in_english(self):
+        self.setup_product();self.model.value.update(language='gu',context_action='new',changed_fields=['places','time','parameters'])
+        r=self.chat(question='રાજકોટમાં કાલે સવારે વરસાદની સંભાવના કેટલી છે?')
+        self.assertTrue(r['facts']);self.assertEqual(r['status'],'partial')
+        self.assertTrue(any('requested output language' in n for n in r['notes']),r['notes'])
+        self.assertEqual(r['trace']['generation']['language_adherence'],'failed')
 
     def test_taf_current_validity_and_requested_window(self):
         self.airport('taf');r=self.chat();self.assertEqual(r['status'],'answered',r['answer']);self.assertFalse(r['facts']);self.assertEqual(r['airport_reports'][0]['kind'],'taf')

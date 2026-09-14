@@ -15,6 +15,40 @@ def language_style(question,planned):
     return planned
 
 
+# Longer phrases are consumed first so "feels like temperature" and "wind gusts"
+# resolve to one measure instead of also matching their shorter component words.
+PARAMETER_WORDS=[('apparent_temperature',r'feels?[ -]like(?:\s+temperature)?|apparent temperature|real ?feel'),
+                 ('wind_gusts_10m',r'(?:wind\s+)?gusts?'),
+                 ('precipitation_probability',r'probabilit\w+|chance of rain|rain chance|sambhavna|sambhawna|संभावना|સંભાવના'),
+                 ('precipitation',r'rain(?:fall)?\s+amount|amount of rain|how much rain|kitni mm|rainfall|\bmm\b'),
+                 ('relative_humidity_2m',r'humidity|नमी|ભેજ'),
+                 ('visibility',r'visibilit\w+'),
+                 ('wind_speed_10m',r'wind(?:\s+speed)?'),
+                 ('temperature_2m',r'temperature|तापमान|તાપમાન')]
+
+
+def named_parameters(text):
+    """Forecast measures the user named outright in this clause."""
+    found=[]
+    for name,pattern in PARAMETER_WORDS:
+        if re.search(pattern,text,re.I):
+            found.append(name);text=re.sub(pattern,' ',text,flags=re.I)
+    return found
+
+
+# Romanized Hinglish (hi-Latn) is correctly written in Latin script and is not
+# checked here; only a promised Indian script can be measured this way.
+SCRIPTS={'hi':'ऀ-ॿ','gu':'઀-૿'}
+
+
+def language_gap(text,language):
+    """True when an answer promised in an Indian script was not written in it."""
+    script=SCRIPTS.get((language or '').lower())
+    if not script or not text:return False
+    written=len(re.findall('['+script+']',text));latin=len(re.findall('[A-Za-z]',text))
+    return written<20 or written<=latin
+
+
 def context_message(state):
     prior=state.get('dialogue_state')
     if not prior and state.get('last_plan'):
@@ -45,6 +79,13 @@ def reconcile(plan,state,question):
         found=[key for key,pattern in topics.items() if re.search(pattern,text)]
         if len(found)==1:d['topic']=found[0];changed.add('topic')
         if d.get('growth_stage') and norm(d['growth_stage']) in text:changed.add('growth_stage')
+    # A measure the user names in a continuation must survive an omitted or wrong
+    # model changed_fields tag; inherited context may not silently replace it.
+    if action in {'follow_up','correction','clarification_answer'} and previous.get('tasks'):
+        for task in plan.get('tasks',[]):
+            if task['kind']!='forecast':continue
+            missing=[p for p in named_parameters(task.get('request_quote',question)) if p not in task['parameters']]
+            if missing:task['parameters']=task['parameters']+missing;changed.add('parameters')
     if 'changed_fields' in plan:plan['changed_fields']=sorted(changed)
     inherited=[]
     if action in {'follow_up','correction','clarification_answer','explain_previous'} and previous:
