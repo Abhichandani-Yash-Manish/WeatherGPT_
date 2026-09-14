@@ -1,0 +1,153 @@
+{
+ "schema_version": "weather-conversation-v1",
+ "conversation_id": "46957eee-12d2-431d-9ac6-cca1bb35b2d0",
+ "question": "What is the modelled river discharge near Patna tomorrow?",
+ "status": "needs_clarification",
+ "answer": "Which village or town within Patna should I check? I can retrieve model data for a precise place; I cannot yet give a verified map of weather across that whole area.",
+ "facts": [],
+ "citations": [],
+ "notes": [
+  "Tomorrow is 2026-09-15. The time window for 'tomorrow' in a river discharge context is the full day (00:00 to next 00:00 IST)."
+ ],
+ "choices": [],
+ "follow_up": "Name a village/town and state, or supply a pin.",
+ "operational_eligible": false,
+ "answered_at_utc": "2026-09-14T09:02:47.755111+00:00",
+ "expires_at_utc": null,
+ "trace": {
+  "planning": {
+   "provider": "local_ollama",
+   "model": "qwen3.6:latest",
+   "input_tokens": 3013,
+   "output_tokens": 305,
+   "duration_seconds": 12.226266084
+  },
+  "generation": {
+   "provider": "typed_task_renderers",
+   "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+  },
+  "tools": [
+   {
+    "name": "river",
+    "task_id": "t1",
+    "status": "needs_clarification"
+   }
+  ],
+  "provider": "local_ollama",
+  "context_resolution": {
+   "action": "new",
+   "changed_fields": [],
+   "inherited_fields": []
+  },
+  "duration_seconds": 12.267
+ },
+ "plan": {
+  "language": "en",
+  "places": [
+   {
+    "name": "Patna",
+    "state": "",
+    "district": "Patna",
+    "kind": "district"
+   }
+  ],
+  "assumptions": [
+   "Tomorrow is 2026-09-15. The time window for 'tomorrow' in a river discharge context is the full day (00:00 to next 00:00 IST)."
+  ],
+  "clarification": "",
+  "explicit_times": false,
+  "tasks": [
+   {
+    "request_quote": "modelled river discharge near Patna tomorrow",
+    "kind": "river",
+    "operation": "lookup",
+    "parameters": [
+     "river_discharge"
+    ],
+    "years": [],
+    "period": "annual",
+    "start_local": "2026-09-15T00:00+05:30",
+    "end_local": "2026-09-16T00:00+05:30",
+    "place_indices": [
+     0
+    ]
+   }
+  ],
+  "context_action": "new",
+  "changed_fields": [],
+  "intent": "research",
+  "start_local": "2026-09-15T00:00+05:30",
+  "end_local": "2026-09-16T00:00+05:30",
+  "variables": [],
+  "year": 0,
+  "period": "annual",
+  "history_parameter": "rainfall",
+  "unsupported_parameters": [],
+  "requested_outcome": "Complete all explicitly requested tasks"
+ },
+ "task_results": [
+  {
+   "id": "t1",
+   "request": {
+    "request_quote": "modelled river discharge near Patna tomorrow",
+    "kind": "river",
+    "operation": "lookup",
+    "parameters": [
+     "river_discharge"
+    ],
+    "years": [],
+    "period": "annual",
+    "start_local": "2026-09-15T00:00+05:30",
+    "end_local": "2026-09-16T00:00+05:30",
+    "place_indices": [
+     0
+    ]
+   },
+   "status": "needs_clarification",
+   "answer": "Which village or town within Patna should I check? I can retrieve model data for a precise place; I cannot yet give a verified map of weather across that whole area.",
+   "fact_ids": [],
+   "passage_ids": []
+  }
+ ],
+ "charts": [],
+ "calculations": [],
+ "pending_slots": [],
+ "retrieval_coverage": [],
+ "retrieval_plan": [
+  {
+   "task_id": "t1",
+   "operation": "lookup",
+   "kind": "river",
+   "parameters": [
+    "river_discharge"
+   ],
+   "candidates": [
+    {
+     "tool": "river",
+     "selected": true,
+     "available": true,
+     "reason": "Modeled GloFAS daily discharge at a river cell; not an observed gauge level, danger threshold, inundation extent or official flood warning",
+     "sources": [
+      {
+       "source_id": "S37",
+       "product": "Open-Meteo GloFAS river discharge delivery",
+       "registry_status": "prototype_adapter_tested"
+      }
+     ]
+    }
+   ],
+   "status": "needs_clarification",
+   "returned_source_ids": []
+  }
+ ],
+ "document_evidence": [],
+ "resolved_points": {},
+ "task_coverage": {
+  "requested": 1,
+  "completed": 0,
+  "incomplete_ids": [
+   "t1"
+  ]
+ },
+ "_seconds": 12.27
+}

@@ -1,0 +1,292 @@
+{
+ "schema_version": "weather-conversation-v1",
+ "conversation_id": "b8fc824d-18f1-4c18-b62f-b2d51354afcb",
+ "question": "What is the modelled river discharge near Patna, Bihar tomorrow?",
+ "status": "answered",
+ "answer": "Patna, Kaimur District, State of Bihar · model cell 25.075005, 83.375 · 2026-09-14 00:00 to 2026-09-16 00:00 UTC\nModeled river discharge: 10.56–11.19 m³/s across 2 daily values.\nDischarge is modeled volume flow for the returned GloFAS cell. It is not an observed gauge water level, a danger or warning level, an inundation extent, or an official flood warning.",
+ "facts": [
+  {
+   "id": "t1-f1",
+   "parameter": "river_discharge",
+   "label": "Modeled river discharge",
+   "value": "11.19",
+   "unit": "m³/s",
+   "place": "Patna, Kaimur District, State of Bihar · model cell 25.075005, 83.375",
+   "entity_id": "geonames:10505514",
+   "start": "2026-09-14T00:00:00+00:00",
+   "end": "2026-09-15T00:00:00+00:00",
+   "source_id": "S37",
+   "evidence_kind": "forecast",
+   "evidence_version": "4ed2c0d3551b7c2f03f5294bbd88f7afc6587fc620e8103a263eb0c7e1bb9ca0",
+   "citation_ids": [
+    "t1-c-4ed2c0d3551b7c2f03f5294bbd88f7afc6587fc620e8103a263eb0c7e1bb9ca0"
+   ],
+   "source_locators": [
+    "$.daily.river_discharge[0]"
+   ],
+   "method": "modeled_daily_utc_value",
+   "task_id": "t1"
+  },
+  {
+   "id": "t1-f2",
+   "parameter": "river_discharge",
+   "label": "Modeled river discharge",
+   "value": "10.56",
+   "unit": "m³/s",
+   "place": "Patna, Kaimur District, State of Bihar · model cell 25.075005, 83.375",
+   "entity_id": "geonames:10505514",
+   "start": "2026-09-15T00:00:00+00:00",
+   "end": "2026-09-16T00:00:00+00:00",
+   "source_id": "S37",
+   "evidence_kind": "forecast",
+   "evidence_version": "4ed2c0d3551b7c2f03f5294bbd88f7afc6587fc620e8103a263eb0c7e1bb9ca0",
+   "citation_ids": [
+    "t1-c-4ed2c0d3551b7c2f03f5294bbd88f7afc6587fc620e8103a263eb0c7e1bb9ca0"
+   ],
+   "source_locators": [
+    "$.daily.river_discharge[1]"
+   ],
+   "method": "modeled_daily_utc_value",
+   "task_id": "t1"
+  }
+ ],
+ "citations": [
+  {
+   "id": "t1-c-4ed2c0d3551b7c2f03f5294bbd88f7afc6587fc620e8103a263eb0c7e1bb9ca0",
+   "source_id": "S37",
+   "provider": "Open-Meteo / GloFAS",
+   "product": "GloFAS modeled daily river discharge at a river cell",
+   "url": "https://flood-api.open-meteo.com/v1/flood?latitude=25.06258&longitude=83.37035&daily=river_discharge&forecast_days=3",
+   "response_sha256": "4ed2c0d3551b7c2f03f5294bbd88f7afc6587fc620e8103a263eb0c7e1bb9ca0",
+   "retrieved_at_utc": "2026-09-14T09:07:23.789126+00:00",
+   "requested_point": {
+    "latitude": 25.06258,
+    "longitude": 83.37035
+   },
+   "returned_grid": {
+    "latitude": 25.075005,
+    "longitude": 83.375
+   },
+   "grid_distance_km": 1.459,
+   "model_run_time": null
+  },
+  {
+   "source_id": "S61",
+   "url": "https://www.geonames.org/10505514",
+   "provider": "GeoNames",
+   "product": "India place catalogue",
+   "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+   "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+  }
+ ],
+ "notes": [
+  "Tomorrow is 2026-09-15. The time window for 'tomorrow' in a river discharge context is the full day (00:00 to next 00:00 IST).",
+  "Discharge is modeled volume flow for the returned GloFAS cell. It is not an observed gauge water level, a danger or warning level, an inundation extent, or an official flood warning.",
+  "The cell has not been matched to a named river, reach or local gauge, so it cannot be compared with a gauge reading or a published threshold.",
+  "Each value covers a whole UTC calendar day, which does not align with an Indian calendar day.",
+  "The answering grid cell and its distance from the requested place are recorded with the citation. A nearby cell is not a measurement at your exact location."
+ ],
+ "choices": [],
+ "follow_up": null,
+ "operational_eligible": false,
+ "answered_at_utc": "2026-09-14T09:07:22.502849+00:00",
+ "expires_at_utc": "2026-09-14T10:07:23.789126+00:00",
+ "trace": {
+  "planning": {
+   "reused_clarification_plan": true
+  },
+  "generation": {
+   "provider": "typed_task_renderers",
+   "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+  },
+  "tools": [
+   {
+    "name": "river",
+    "job_id": "123b7202216ea9b24da02e18cc3e76738852546f1552b10bdff3ecdb55c0576a",
+    "worker": {
+     "state": "succeeded",
+     "promoted": true,
+     "job_id": "123b7202216ea9b24da02e18cc3e76738852546f1552b10bdff3ecdb55c0576a"
+    },
+    "source_sha256": "4ed2c0d3551b7c2f03f5294bbd88f7afc6587fc620e8103a263eb0c7e1bb9ca0",
+    "grid_distance_km": 1.459
+   },
+   {
+    "name": "river",
+    "task_id": "t1",
+    "status": "answered"
+   }
+  ],
+  "provider": "local_ollama",
+  "duration_seconds": 1.29
+ },
+ "plan": {
+  "language": "en",
+  "places": [
+   {
+    "name": "Patna",
+    "state": "Bihar",
+    "district": "",
+    "kind": "settlement"
+   }
+  ],
+  "assumptions": [
+   "Tomorrow is 2026-09-15. The time window for 'tomorrow' in a river discharge context is the full day (00:00 to next 00:00 IST)."
+  ],
+  "clarification": "",
+  "explicit_times": false,
+  "tasks": [
+   {
+    "request_quote": "What is the modelled river discharge near Patna, Bihar tomorrow?",
+    "kind": "river",
+    "operation": "lookup",
+    "parameters": [
+     "river_discharge"
+    ],
+    "years": [],
+    "period": "annual",
+    "start_local": "2026-09-15T00:00:00+05:30",
+    "end_local": "2026-09-16T00:00:00+05:30",
+    "place_indices": [
+     0
+    ]
+   }
+  ],
+  "context_action": "new",
+  "changed_fields": [],
+  "intent": "research",
+  "start_local": "2026-09-15T00:00:00+05:30",
+  "end_local": "2026-09-16T00:00:00+05:30",
+  "variables": [],
+  "year": 0,
+  "period": "annual",
+  "history_parameter": "rainfall",
+  "unsupported_parameters": [],
+  "requested_outcome": "Complete all explicitly requested tasks"
+ },
+ "task_results": [
+  {
+   "id": "t1",
+   "request": {
+    "request_quote": "What is the modelled river discharge near Patna, Bihar tomorrow?",
+    "kind": "river",
+    "operation": "lookup",
+    "parameters": [
+     "river_discharge"
+    ],
+    "years": [],
+    "period": "annual",
+    "start_local": "2026-09-15T00:00:00+05:30",
+    "end_local": "2026-09-16T00:00:00+05:30",
+    "place_indices": [
+     0
+    ]
+   },
+   "status": "answered",
+   "answer": "Patna, Kaimur District, State of Bihar · model cell 25.075005, 83.375 · 2026-09-14 00:00 to 2026-09-16 00:00 UTC\nModeled river discharge: 10.56–11.19 m³/s across 2 daily values.\nDischarge is modeled volume flow for the returned GloFAS cell. It is not an observed gauge water level, a danger or warning level, an inundation extent, or an official flood warning.",
+   "fact_ids": [
+    "t1-f1",
+    "t1-f2"
+   ],
+   "passage_ids": []
+  }
+ ],
+ "charts": [
+  {
+   "kind": "daily_series",
+   "axis_label": "Date (UTC day)",
+   "title": "Patna, Kaimur District, State of Bihar · model cell 25.075005, 83.375 · Modeled river discharge",
+   "unit": "m³/s",
+   "points": [
+    {
+     "x": 1789344000.0,
+     "label": "2026-09-14",
+     "value": "11.19",
+     "evidence_id": "t1-f1"
+    },
+    {
+     "x": 1789430400.0,
+     "label": "2026-09-15",
+     "value": "10.56",
+     "evidence_id": "t1-f2"
+    }
+   ],
+   "source_ids": [
+    "S37"
+   ],
+   "task_id": "t1"
+  }
+ ],
+ "calculations": [],
+ "pending_slots": [],
+ "retrieval_coverage": [],
+ "retrieval_plan": [
+  {
+   "task_id": "t1",
+   "operation": "lookup",
+   "kind": "river",
+   "parameters": [
+    "river_discharge"
+   ],
+   "candidates": [
+    {
+     "tool": "river",
+     "selected": true,
+     "available": true,
+     "reason": "Modeled GloFAS daily discharge at a river cell; not an observed gauge level, danger threshold, inundation extent or official flood warning",
+     "sources": [
+      {
+       "source_id": "S37",
+       "product": "Open-Meteo GloFAS river discharge delivery",
+       "registry_status": "prototype_adapter_tested"
+      }
+     ]
+    }
+   ],
+   "status": "answered",
+   "returned_source_ids": [
+    "S37",
+    "S61"
+   ]
+  }
+ ],
+ "document_evidence": [],
+ "resolved_points": {
+  "Patna": {
+   "id": "10505514",
+   "name": "Patna",
+   "latitude": 25.06258,
+   "longitude": 83.37035,
+   "feature": "PPL",
+   "admin1": "State of Bihar",
+   "admin2": "Kaimur District",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10505514",
+   "label": "Patna, Kaimur District, State of Bihar",
+   "coordinates": {
+    "latitude": 25.06258,
+    "longitude": 83.37035
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10505514",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  }
+ },
+ "task_coverage": {
+  "requested": 1,
+  "completed": 1,
+  "incomplete_ids": []
+ },
+ "_seconds": 1.29
+}

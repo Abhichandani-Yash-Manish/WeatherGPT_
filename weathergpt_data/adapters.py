@@ -98,6 +98,7 @@ def hourly(data,meta,variables,family,model,request_point,expected_dates=None):
 
 FORECAST={'temperature_2m':('°C','instant',None,None),'relative_humidity_2m':('%','instant',0,100),'precipitation':('mm','preceding_hour_sum',0,None),'wind_speed_10m':('km/h','instant',0,None)}
 MARINE={'wave_height':('m','instant',0,None),'wave_direction':('°','instant',0,360),'wave_period':('s','instant',0,None)}
+RIVER={'river_discharge':('m³/s',0)}
 EXTENDED={**FORECAST,'precipitation_probability':('%','preceding_hour_probability',0,100),
           'apparent_temperature':('°C','instant',None,None),'wind_gusts_10m':('km/h','preceding_hour_max',0,None),
           'visibility':('m','instant',0,None)}

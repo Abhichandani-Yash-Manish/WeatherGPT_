@@ -1,0 +1,432 @@
+{
+ "schema_version": "weather-conversation-v1",
+ "conversation_id": "72792052-de25-459f-8971-aa3be8dab5a8",
+ "question": "How high will the waves be off Chennai tomorrow afternoon?",
+ "status": "answered",
+ "answer": "Chennai, Chennai, State of Tamil Nādu · model cell 13.125, 80.375015 · 2026-09-15 12:30 to 2026-09-15 17:30 IST\nSignificant wave height: 0.52–0.52 m across 6 hourly samples.\nWave values are model output for the returned sea grid cell, not an official marine bulletin, a named sea-area forecast, or a measured buoy observation.",
+ "facts": [
+  {
+   "id": "t1-f1",
+   "parameter": "wave_height",
+   "label": "Significant wave height",
+   "value": "0.52",
+   "unit": "m",
+   "place": "Chennai, Chennai, State of Tamil Nādu · model cell 13.125, 80.375015",
+   "entity_id": "geonames:1264527",
+   "start": "2026-09-15T12:30:00+05:30",
+   "end": "2026-09-15T12:30:00+05:30",
+   "source_id": "S56",
+   "evidence_kind": "forecast",
+   "evidence_version": "cbb54bfaf02a4d2a95bd9e03dafbd192de9f76f3b23225ecfdd116344e3624fd",
+   "citation_ids": [
+    "t1-c-cbb54bfaf02a4d2a95bd9e03dafbd192de9f76f3b23225ecfdd116344e3624fd"
+   ],
+   "source_locators": [
+    "$.hourly.wave_height[31]"
+   ],
+   "method": "instant",
+   "sample_at": "2026-09-15T12:30:00+05:30",
+   "task_id": "t1"
+  },
+  {
+   "id": "t1-f2",
+   "parameter": "wave_height",
+   "label": "Significant wave height",
+   "value": "0.52",
+   "unit": "m",
+   "place": "Chennai, Chennai, State of Tamil Nādu · model cell 13.125, 80.375015",
+   "entity_id": "geonames:1264527",
+   "start": "2026-09-15T13:30:00+05:30",
+   "end": "2026-09-15T13:30:00+05:30",
+   "source_id": "S56",
+   "evidence_kind": "forecast",
+   "evidence_version": "cbb54bfaf02a4d2a95bd9e03dafbd192de9f76f3b23225ecfdd116344e3624fd",
+   "citation_ids": [
+    "t1-c-cbb54bfaf02a4d2a95bd9e03dafbd192de9f76f3b23225ecfdd116344e3624fd"
+   ],
+   "source_locators": [
+    "$.hourly.wave_height[32]"
+   ],
+   "method": "instant",
+   "sample_at": "2026-09-15T13:30:00+05:30",
+   "task_id": "t1"
+  },
+  {
+   "id": "t1-f3",
+   "parameter": "wave_height",
+   "label": "Significant wave height",
+   "value": "0.52",
+   "unit": "m",
+   "place": "Chennai, Chennai, State of Tamil Nādu · model cell 13.125, 80.375015",
+   "entity_id": "geonames:1264527",
+   "start": "2026-09-15T14:30:00+05:30",
+   "end": "2026-09-15T14:30:00+05:30",
+   "source_id": "S56",
+   "evidence_kind": "forecast",
+   "evidence_version": "cbb54bfaf02a4d2a95bd9e03dafbd192de9f76f3b23225ecfdd116344e3624fd",
+   "citation_ids": [
+    "t1-c-cbb54bfaf02a4d2a95bd9e03dafbd192de9f76f3b23225ecfdd116344e3624fd"
+   ],
+   "source_locators": [
+    "$.hourly.wave_height[33]"
+   ],
+   "method": "instant",
+   "sample_at": "2026-09-15T14:30:00+05:30",
+   "task_id": "t1"
+  },
+  {
+   "id": "t1-f4",
+   "parameter": "wave_height",
+   "label": "Significant wave height",
+   "value": "0.52",
+   "unit": "m",
+   "place": "Chennai, Chennai, State of Tamil Nādu · model cell 13.125, 80.375015",
+   "entity_id": "geonames:1264527",
+   "start": "2026-09-15T15:30:00+05:30",
+   "end": "2026-09-15T15:30:00+05:30",
+   "source_id": "S56",
+   "evidence_kind": "forecast",
+   "evidence_version": "cbb54bfaf02a4d2a95bd9e03dafbd192de9f76f3b23225ecfdd116344e3624fd",
+   "citation_ids": [
+    "t1-c-cbb54bfaf02a4d2a95bd9e03dafbd192de9f76f3b23225ecfdd116344e3624fd"
+   ],
+   "source_locators": [
+    "$.hourly.wave_height[34]"
+   ],
+   "method": "instant",
+   "sample_at": "2026-09-15T15:30:00+05:30",
+   "task_id": "t1"
+  },
+  {
+   "id": "t1-f5",
+   "parameter": "wave_height",
+   "label": "Significant wave height",
+   "value": "0.52",
+   "unit": "m",
+   "place": "Chennai, Chennai, State of Tamil Nādu · model cell 13.125, 80.375015",
+   "entity_id": "geonames:1264527",
+   "start": "2026-09-15T16:30:00+05:30",
+   "end": "2026-09-15T16:30:00+05:30",
+   "source_id": "S56",
+   "evidence_kind": "forecast",
+   "evidence_version": "cbb54bfaf02a4d2a95bd9e03dafbd192de9f76f3b23225ecfdd116344e3624fd",
+   "citation_ids": [
+    "t1-c-cbb54bfaf02a4d2a95bd9e03dafbd192de9f76f3b23225ecfdd116344e3624fd"
+   ],
+   "source_locators": [
+    "$.hourly.wave_height[35]"
+   ],
+   "method": "instant",
+   "sample_at": "2026-09-15T16:30:00+05:30",
+   "task_id": "t1"
+  },
+  {
+   "id": "t1-f6",
+   "parameter": "wave_height",
+   "label": "Significant wave height",
+   "value": "0.52",
+   "unit": "m",
+   "place": "Chennai, Chennai, State of Tamil Nādu · model cell 13.125, 80.375015",
+   "entity_id": "geonames:1264527",
+   "start": "2026-09-15T17:30:00+05:30",
+   "end": "2026-09-15T17:30:00+05:30",
+   "source_id": "S56",
+   "evidence_kind": "forecast",
+   "evidence_version": "cbb54bfaf02a4d2a95bd9e03dafbd192de9f76f3b23225ecfdd116344e3624fd",
+   "citation_ids": [
+    "t1-c-cbb54bfaf02a4d2a95bd9e03dafbd192de9f76f3b23225ecfdd116344e3624fd"
+   ],
+   "source_locators": [
+    "$.hourly.wave_height[36]"
+   ],
+   "method": "instant",
+   "sample_at": "2026-09-15T17:30:00+05:30",
+   "task_id": "t1"
+  }
+ ],
+ "citations": [
+  {
+   "id": "t1-c-cbb54bfaf02a4d2a95bd9e03dafbd192de9f76f3b23225ecfdd116344e3624fd",
+   "source_id": "S56",
+   "provider": "Open-Meteo",
+   "product": "Marine wave model forecast at a sea grid cell",
+   "url": "https://marine-api.open-meteo.com/v1/marine?latitude=13.08784&longitude=80.27847&hourly=wave_height%2Cwave_direction%2Cwave_period&forecast_days=3&timezone=UTC&timeformat=unixtime&cell_selection=sea",
+   "response_sha256": "cbb54bfaf02a4d2a95bd9e03dafbd192de9f76f3b23225ecfdd116344e3624fd",
+   "retrieved_at_utc": "2026-09-14T09:02:47.744145+00:00",
+   "requested_point": {
+    "latitude": 13.08784,
+    "longitude": 80.27847
+   },
+   "returned_grid": {
+    "latitude": 13.125,
+    "longitude": 80.375015
+   },
+   "grid_distance_km": 11.243,
+   "model_run_time": null
+  },
+  {
+   "source_id": "S61",
+   "url": "https://www.geonames.org/1264527",
+   "provider": "GeoNames",
+   "product": "India place catalogue",
+   "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+   "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+  }
+ ],
+ "notes": [
+  "Tomorrow is 2026-09-15. Afternoon defaults to 12:30–18:30 IST.",
+  "Wave values are model output for the returned sea grid cell, not an official marine bulletin, a named sea-area forecast, or a measured buoy observation.",
+  "This does not establish navigation, fishing or small-craft safety. The official sea-area and coastal bulletins remain unconnected to this conversation.",
+  "The answering grid cell and its distance from the requested place are recorded with the citation. A nearby cell is not a measurement at your exact location."
+ ],
+ "choices": [],
+ "follow_up": null,
+ "operational_eligible": false,
+ "answered_at_utc": "2026-09-14T09:02:33.332149+00:00",
+ "expires_at_utc": "2026-09-14T10:02:47.744145+00:00",
+ "trace": {
+  "planning": {
+   "provider": "local_ollama",
+   "model": "qwen3.6:latest",
+   "input_tokens": 3012,
+   "output_tokens": 296,
+   "duration_seconds": 13.114124333
+  },
+  "generation": {
+   "provider": "typed_task_renderers",
+   "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+  },
+  "tools": [
+   {
+    "name": "gazetteer_search",
+    "query": {
+     "name": "Chennai",
+     "state": "",
+     "district": "",
+     "kind": "settlement"
+    },
+    "matches": 1
+   },
+   {
+    "name": "marine",
+    "job_id": "79499ae0274dd5bac3ce26590262de1fa5bad63fe8e55f9d4440f607ce35f5d8",
+    "worker": {
+     "state": "succeeded",
+     "promoted": true,
+     "job_id": "79499ae0274dd5bac3ce26590262de1fa5bad63fe8e55f9d4440f607ce35f5d8"
+    },
+    "source_sha256": "cbb54bfaf02a4d2a95bd9e03dafbd192de9f76f3b23225ecfdd116344e3624fd",
+    "grid_distance_km": 11.243
+   },
+   {
+    "name": "marine",
+    "task_id": "t1",
+    "status": "answered"
+   }
+  ],
+  "provider": "local_ollama",
+  "context_resolution": {
+   "action": "new",
+   "changed_fields": [],
+   "inherited_fields": []
+  },
+  "duration_seconds": 14.42
+ },
+ "plan": {
+  "language": "en",
+  "places": [
+   {
+    "name": "Chennai",
+    "state": "",
+    "district": "",
+    "kind": "settlement"
+   }
+  ],
+  "assumptions": [
+   "Tomorrow is 2026-09-15. Afternoon defaults to 12:30–18:30 IST."
+  ],
+  "clarification": "",
+  "explicit_times": false,
+  "tasks": [
+   {
+    "request_quote": "How high will the waves be off Chennai tomorrow afternoon?",
+    "kind": "marine",
+    "operation": "lookup",
+    "parameters": [
+     "wave_height"
+    ],
+    "years": [],
+    "period": "annual",
+    "start_local": "2026-09-15T12:30:00+05:30",
+    "end_local": "2026-09-15T18:30:00+05:30",
+    "place_indices": [
+     0
+    ]
+   }
+  ],
+  "context_action": "new",
+  "changed_fields": [],
+  "intent": "research",
+  "start_local": "2026-09-15T12:30:00+05:30",
+  "end_local": "2026-09-15T18:30:00+05:30",
+  "variables": [],
+  "year": 0,
+  "period": "annual",
+  "history_parameter": "rainfall",
+  "unsupported_parameters": [],
+  "requested_outcome": "Complete all explicitly requested tasks"
+ },
+ "task_results": [
+  {
+   "id": "t1",
+   "request": {
+    "request_quote": "How high will the waves be off Chennai tomorrow afternoon?",
+    "kind": "marine",
+    "operation": "lookup",
+    "parameters": [
+     "wave_height"
+    ],
+    "years": [],
+    "period": "annual",
+    "start_local": "2026-09-15T12:30:00+05:30",
+    "end_local": "2026-09-15T18:30:00+05:30",
+    "place_indices": [
+     0
+    ]
+   },
+   "status": "answered",
+   "answer": "Chennai, Chennai, State of Tamil Nādu · model cell 13.125, 80.375015 · 2026-09-15 12:30 to 2026-09-15 17:30 IST\nSignificant wave height: 0.52–0.52 m across 6 hourly samples.\nWave values are model output for the returned sea grid cell, not an official marine bulletin, a named sea-area forecast, or a measured buoy observation.",
+   "fact_ids": [
+    "t1-f1",
+    "t1-f2",
+    "t1-f3",
+    "t1-f4",
+    "t1-f5",
+    "t1-f6"
+   ],
+   "passage_ids": []
+  }
+ ],
+ "charts": [
+  {
+   "kind": "hourly_series",
+   "axis_label": "Time (IST)",
+   "title": "Chennai, Chennai, State of Tamil Nādu · model cell 13.125, 80.375015 · Significant wave height",
+   "unit": "m",
+   "points": [
+    {
+     "x": 1789455600.0,
+     "label": "15 Sep 12:30",
+     "value": "0.52",
+     "evidence_id": "t1-f1"
+    },
+    {
+     "x": 1789459200.0,
+     "label": "15 Sep 13:30",
+     "value": "0.52",
+     "evidence_id": "t1-f2"
+    },
+    {
+     "x": 1789462800.0,
+     "label": "15 Sep 14:30",
+     "value": "0.52",
+     "evidence_id": "t1-f3"
+    },
+    {
+     "x": 1789466400.0,
+     "label": "15 Sep 15:30",
+     "value": "0.52",
+     "evidence_id": "t1-f4"
+    },
+    {
+     "x": 1789470000.0,
+     "label": "15 Sep 16:30",
+     "value": "0.52",
+     "evidence_id": "t1-f5"
+    },
+    {
+     "x": 1789473600.0,
+     "label": "15 Sep 17:30",
+     "value": "0.52",
+     "evidence_id": "t1-f6"
+    }
+   ],
+   "source_ids": [
+    "S56"
+   ],
+   "task_id": "t1"
+  }
+ ],
+ "calculations": [],
+ "pending_slots": [],
+ "retrieval_coverage": [],
+ "retrieval_plan": [
+  {
+   "task_id": "t1",
+   "operation": "lookup",
+   "kind": "marine",
+   "parameters": [
+    "wave_height"
+   ],
+   "candidates": [
+    {
+     "tool": "marine",
+     "selected": true,
+     "available": true,
+     "reason": "Modeled waves at a sea grid cell within 50 km of a named coastal place; no named sea-area identity, official bulletin (S58/S59 remain unconnected) or navigation/fishing clearance",
+     "sources": [
+      {
+       "source_id": "S56",
+       "product": "Open-Meteo marine wave delivery",
+       "registry_status": "prototype_adapter_tested"
+      }
+     ]
+    }
+   ],
+   "status": "answered",
+   "returned_source_ids": [
+    "S56",
+    "S61"
+   ]
+  }
+ ],
+ "document_evidence": [],
+ "resolved_points": {
+  "Chennai": {
+   "id": "1264527",
+   "name": "Chennai",
+   "latitude": 13.08784,
+   "longitude": 80.27847,
+   "feature": "PPLA",
+   "admin1": "State of Tamil Nādu",
+   "admin2": "Chennai",
+   "modified": "2024-09-05",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:1264527",
+   "label": "Chennai, Chennai, State of Tamil Nādu",
+   "coordinates": {
+    "latitude": 13.08784,
+    "longitude": 80.27847
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/1264527",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Chennai"
+  }
+ },
+ "task_coverage": {
+  "requested": 1,
+  "completed": 1,
+  "incomplete_ids": []
+ },
+ "_seconds": 14.49
+}

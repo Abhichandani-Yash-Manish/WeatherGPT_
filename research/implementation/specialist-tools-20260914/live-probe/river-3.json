@@ -1,0 +1,374 @@
+{
+ "schema_version": "weather-conversation-v1",
+ "conversation_id": "b8fc824d-18f1-4c18-b62f-b2d51354afcb",
+ "question": "What is the modelled river discharge near Patna, Bihar tomorrow?",
+ "status": "needs_selection",
+ "answer": "Which place do you mean? Patna, Kaimur District, State of Bihar / Patna, Rohtās, State of Bihar / Patnā, Pūrba Champāran, State of Bihar / Patnā, Aurangābād, State of Bihar. Choose one, or type its state/district.",
+ "facts": [],
+ "citations": [],
+ "notes": [
+  "Tomorrow is 2026-09-15. The time window for 'tomorrow' in a river discharge context is the full day (00:00 to next 00:00 IST)."
+ ],
+ "choices": [
+  {
+   "id": "10505514",
+   "name": "Patna",
+   "latitude": 25.06258,
+   "longitude": 83.37035,
+   "feature": "PPL",
+   "admin1": "State of Bihar",
+   "admin2": "Kaimur District",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10505514",
+   "label": "Patna, Kaimur District, State of Bihar",
+   "coordinates": {
+    "latitude": 25.06258,
+    "longitude": 83.37035
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10505514",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  },
+  {
+   "id": "10510980",
+   "name": "Patna",
+   "latitude": 25.19387,
+   "longitude": 83.84928,
+   "feature": "PPL",
+   "admin1": "State of Bihar",
+   "admin2": "Rohtās",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10510980",
+   "label": "Patna, Rohtās, State of Bihar",
+   "coordinates": {
+    "latitude": 25.19387,
+    "longitude": 83.84928
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10510980",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  },
+  {
+   "id": "10517073",
+   "name": "Patna",
+   "latitude": 24.97792,
+   "longitude": 83.72095,
+   "feature": "PPL",
+   "admin1": "State of Bihar",
+   "admin2": "Kaimur District",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10517073",
+   "label": "Patna, Kaimur District, State of Bihar",
+   "coordinates": {
+    "latitude": 24.97792,
+    "longitude": 83.72095
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10517073",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  },
+  {
+   "id": "10828330",
+   "name": "Patnā",
+   "latitude": 26.40136,
+   "longitude": 84.85673,
+   "feature": "PPL",
+   "admin1": "State of Bihar",
+   "admin2": "Pūrba Champāran",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10828330",
+   "label": "Patnā, Pūrba Champāran, State of Bihar",
+   "coordinates": {
+    "latitude": 26.40136,
+    "longitude": 84.85673
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10828330",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  },
+  {
+   "id": "10835034",
+   "name": "Patnā",
+   "latitude": 24.58996,
+   "longitude": 84.101,
+   "feature": "PPL",
+   "admin1": "State of Bihar",
+   "admin2": "Aurangābād",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10835034",
+   "label": "Patnā, Aurangābād, State of Bihar",
+   "coordinates": {
+    "latitude": 24.58996,
+    "longitude": 84.101
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10835034",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  },
+  {
+   "id": "10840586",
+   "name": "Patna",
+   "latitude": 24.71373,
+   "longitude": 84.54783,
+   "feature": "PPL",
+   "admin1": "State of Bihar",
+   "admin2": "Aurangābād",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10840586",
+   "label": "Patna, Aurangābād, State of Bihar",
+   "coordinates": {
+    "latitude": 24.71373,
+    "longitude": 84.54783
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10840586",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  },
+  {
+   "id": "1260086",
+   "name": "Patna",
+   "latitude": 25.59408,
+   "longitude": 85.13563,
+   "feature": "PPLA",
+   "admin1": "State of Bihar",
+   "admin2": "Patna",
+   "modified": "2025-10-18",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:1260086",
+   "label": "Patna, Patna, State of Bihar",
+   "coordinates": {
+    "latitude": 25.59408,
+    "longitude": 85.13563
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/1260086",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  }
+ ],
+ "follow_up": "Choose a place, or add its district and state.",
+ "operational_eligible": false,
+ "answered_at_utc": "2026-09-14T09:07:08.788965+00:00",
+ "expires_at_utc": null,
+ "trace": {
+  "planning": {
+   "provider": "local_ollama",
+   "model": "qwen3.6:latest",
+   "input_tokens": 3015,
+   "output_tokens": 314,
+   "duration_seconds": 13.590276083
+  },
+  "generation": {
+   "provider": "typed_task_renderers",
+   "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+  },
+  "tools": [
+   {
+    "name": "gazetteer_search",
+    "query": {
+     "name": "Patna",
+     "state": "Bihar",
+     "district": "",
+     "kind": "settlement"
+    },
+    "matches": 7
+   },
+   {
+    "name": "river",
+    "task_id": "t1",
+    "status": "needs_selection"
+   }
+  ],
+  "provider": "local_ollama",
+  "context_resolution": {
+   "action": "new",
+   "changed_fields": [],
+   "inherited_fields": []
+  },
+  "duration_seconds": 13.709
+ },
+ "plan": {
+  "language": "en",
+  "places": [
+   {
+    "name": "Patna",
+    "state": "Bihar",
+    "district": "",
+    "kind": "settlement"
+   }
+  ],
+  "assumptions": [
+   "Tomorrow is 2026-09-15. The time window for 'tomorrow' in a river discharge context is the full day (00:00 to next 00:00 IST)."
+  ],
+  "clarification": "",
+  "explicit_times": false,
+  "tasks": [
+   {
+    "request_quote": "What is the modelled river discharge near Patna, Bihar tomorrow?",
+    "kind": "river",
+    "operation": "lookup",
+    "parameters": [
+     "river_discharge"
+    ],
+    "years": [],
+    "period": "annual",
+    "start_local": "2026-09-15T00:00:00+05:30",
+    "end_local": "2026-09-16T00:00:00+05:30",
+    "place_indices": [
+     0
+    ]
+   }
+  ],
+  "context_action": "new",
+  "changed_fields": [],
+  "intent": "research",
+  "start_local": "2026-09-15T00:00:00+05:30",
+  "end_local": "2026-09-16T00:00:00+05:30",
+  "variables": [],
+  "year": 0,
+  "period": "annual",
+  "history_parameter": "rainfall",
+  "unsupported_parameters": [],
+  "requested_outcome": "Complete all explicitly requested tasks"
+ },
+ "task_results": [
+  {
+   "id": "t1",
+   "request": {
+    "request_quote": "What is the modelled river discharge near Patna, Bihar tomorrow?",
+    "kind": "river",
+    "operation": "lookup",
+    "parameters": [
+     "river_discharge"
+    ],
+    "years": [],
+    "period": "annual",
+    "start_local": "2026-09-15T00:00:00+05:30",
+    "end_local": "2026-09-16T00:00:00+05:30",
+    "place_indices": [
+     0
+    ]
+   },
+   "status": "needs_selection",
+   "answer": "I found 7 possible places for Patna. Please confirm the intended location and spelling.",
+   "fact_ids": [],
+   "passage_ids": []
+  }
+ ],
+ "charts": [],
+ "calculations": [],
+ "pending_slots": [],
+ "retrieval_coverage": [],
+ "retrieval_plan": [
+  {
+   "task_id": "t1",
+   "operation": "lookup",
+   "kind": "river",
+   "parameters": [
+    "river_discharge"
+   ],
+   "candidates": [
+    {
+     "tool": "river",
+     "selected": true,
+     "available": true,
+     "reason": "Modeled GloFAS daily discharge at a river cell; not an observed gauge level, danger threshold, inundation extent or official flood warning",
+     "sources": [
+      {
+       "source_id": "S37",
+       "product": "Open-Meteo GloFAS river discharge delivery",
+       "registry_status": "prototype_adapter_tested"
+      }
+     ]
+    }
+   ],
+   "status": "needs_selection",
+   "returned_source_ids": []
+  }
+ ],
+ "document_evidence": [],
+ "resolved_points": {},
+ "task_coverage": {
+  "requested": 1,
+  "completed": 0,
+  "incomplete_ids": [
+   "t1"
+  ]
+ },
+ "_seconds": 13.71
+}

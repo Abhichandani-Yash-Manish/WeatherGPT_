@@ -10,7 +10,7 @@ from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 from zoneinfo import ZoneInfo
 
-from .adapters import EXTENDED, HISTORY_LOCAL, hourly, json_payload
+from .adapters import EXTENDED, HISTORY_LOCAL, MARINE, RIVER, hourly, json_payload
 from .answers import distance_km, MAX_GRID_DISTANCE_KM
 from .foundation import Foundation, ROOT
 from .geography import identity
@@ -53,8 +53,13 @@ def _verified_snapshot(db, raw_root, stream):
         rebuilt=Foundation.daily(json_payload(body),meta,point,HISTORY_LOCAL,'reanalysis','ERA5 via Open-Meteo',
                                  (date.fromisoformat(spec['start_date']),date.fromisoformat(spec['end_date'])),timezone_name='Asia/Kolkata')
     else:
-        a=date.fromisoformat(spec['request_date'])
-        rebuilt=hourly(json_payload(body),meta,EXTENDED,family,'Open-Meteo best match; variable-specific upstream model/run unspecified',point,(a,a+timedelta(days=spec['days']-1)))
+        a=date.fromisoformat(spec['request_date']);dates=(a,a+timedelta(days=spec['days']-1))
+        if spec['product']=='river':
+            rebuilt=Foundation.daily(json_payload(body),meta,point,RIVER,'river_discharge','GloFAS default selection via Open-Meteo',dates)
+        elif spec['product']=='marine':
+            rebuilt=hourly(json_payload(body),meta,MARINE,family,'Open-Meteo default marine model selection; run unspecified',point,dates)
+        else:
+            rebuilt=hourly(json_payload(body),meta,EXTENDED,family,'Open-Meteo best match; variable-specific upstream model/run unspecified',point,dates)
     if any(rebuilt[k]!=result[k] for k in ['records','coverage','quality','source_id','family','count']):raise SourceError('Published values differ from raw source evidence')
     distance=distance_km(point,result['coverage']['returned_grid'])
     if distance>MAX_GRID_DISTANCE_KM:raise SourceError('Returned model grid is too distant from the selected point')

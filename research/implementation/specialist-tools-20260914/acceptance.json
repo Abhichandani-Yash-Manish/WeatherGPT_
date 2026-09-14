@@ -1,0 +1,48 @@
+{
+ "batch": "specialist-tools-20260914",
+ "reviewed_findings": ["A06 specialist coverage (marine/river only)", "P04", "P10 (partial)", "R05"],
+ "review_source": "docs/21-full-solution-critical-review.md, recommended trajectory step 3",
+ "automated_tests": {"python": 374, "previous_batch": 362, "new": 12},
+ "http_turns": 9,
+ "statuses": {"answered": 2, "unavailable": 1, "needs_selection": 4, "needs_clarification": 2},
+ "latency_seconds": {"min": 1.29, "max": 14.49},
+ "scenarios": [
+  {
+   "id": "marine-served",
+   "claim": "Wave values are served for a coastal place from a verified nearby sea cell.",
+   "evidence": "live-probe/marine-1.json",
+   "observed": "Chennai returned significant wave height 0.52 m across six hourly samples from sea cell 13.125, 80.375015, recorded 11.243 km from the requested point, with the citation carrying requested point, returned grid and distance.",
+   "outcome": "implemented_scoped"
+  },
+  {
+   "id": "river-served",
+   "claim": "Modeled discharge is served for a resolved place from a GloFAS cell, on disclosed UTC days.",
+   "evidence": "live-probe/river-3.json, live-probe/river-3b.json",
+   "observed": "After an explicit place selection among several places named Patna, cell 25.075005, 83.375 returned 10.56-11.19 m³/s across two UTC daily values. The answer names the cell and the UTC day basis.",
+   "outcome": "implemented_scoped"
+  },
+  {
+   "id": "water-level-substitution",
+   "claim": "A requested water level is never answered with modeled discharge.",
+   "evidence": "live-probe/river-waterlevel.json, live-probe/river-waterlevel-2.json",
+   "observed": "The planner renamed the requested water level to river_discharge in its plan. The deterministic clause check refused the request, named the distinct quantity and made no source call. The earlier probe, before the check existed, had accepted the renamed parameter and asked only for a time window.",
+   "outcome": "repaired_by_deterministic_check_not_by_prompt"
+  },
+  {
+   "id": "district-place-resolution",
+   "claim": "A district named for a point product resolves to a settlement point rather than refusing.",
+   "evidence": "live-probe/river-1.json, live-probe/river-2.json",
+   "observed": "Before the change, 'near Patna' was treated as a district and asked for a village within it. After it, the same request proceeds to place resolution, which correctly offers the several places named Patna for selection.",
+   "outcome": "repaired"
+  }
+ ],
+ "remaining_gaps": [
+  "No named sea-area or basin identity. S58 and S59 official sea-area and coastal bulletins remain unconnected, so no official marine warning is available.",
+  "The GloFAS cell is not matched to a named river, reach or local gauge, so a discharge value cannot be compared with a gauge reading or a published danger level.",
+  "Observed water level, danger thresholds, inundation extent, tides, currents and sea-surface temperature are refused, not supplied.",
+  "Only lookup is supported for both products; no trend, comparison or timeline operation.",
+  "No marine or hydrological domain expert has reviewed these answers, and no forecast skill is measured.",
+  "Place ambiguity for coastal and riverside names is unchanged; several probes correctly ended in place selection rather than an answer."
+ ],
+ "scope": "Local deterministic tests plus nine local-model HTTP turns against the live Open-Meteo marine and flood endpoints through the existing governed ingestion pipeline. No operational, navigational, fishing, flood-safety or nationwide acceptance is claimed."
+}

@@ -4,7 +4,7 @@ from datetime import datetime,timedelta,timezone,date
 from pathlib import Path
 from urllib.parse import urlparse
 from .transport import Store,SourceError,utcnow,stamp,parsed
-from .adapters import json_payload,hourly,FORECAST,MARINE,aviation,warnings,envelope,numeric,grid_identity,numeric_quality
+from .adapters import json_payload,hourly,FORECAST,MARINE,RIVER,aviation,warnings,envelope,numeric,grid_identity,numeric_quality
 from .adapters import EXTENDED,HISTORY_LOCAL
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -77,7 +77,7 @@ class Foundation:
     def river(self,lat,lon,days=7,refresh=False):
         point=self.point(lat,lon)
         self.forecast_dates(days,30)
-        parse=lambda d,m:self.daily(d,m,point,{'river_discharge':('m³/s',0)},'river_discharge','GloFAS default selection via Open-Meteo',self.forecast_dates(days,30))
+        parse=lambda d,m:self.daily(d,m,point,RIVER,'river_discharge','GloFAS default selection via Open-Meteo',self.forecast_dates(days,30))
         data,meta=self.get('S37','https://flood-api.open-meteo.com/v1/flood',{**point,'daily':'river_discharge','forecast_days':days},ttl=3600,refresh=refresh,product_parser=parse)
         result=parse(data,meta)
         result['limitations']+=['River-cell identity has not been matched to a local gauge.','Discharge does not describe inundation, damage or an official flood warning.']

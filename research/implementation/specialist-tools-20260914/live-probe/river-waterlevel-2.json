@@ -1,0 +1,153 @@
+{
+ "schema_version": "weather-conversation-v1",
+ "conversation_id": "96a5b4d0-cb56-4d69-bf6e-720d377f4829",
+ "question": "What is the water level of the Ganga at Patna tomorrow?",
+ "status": "unavailable",
+ "answer": "This question asks for an observed water level, which this product does not supply. Modeled discharge is the only hydrological measure connected. An observed water level, a gauge reading, a danger or warning level, flood extent and evacuation advice are different quantities and are never substituted by a discharge value.",
+ "facts": [],
+ "citations": [],
+ "notes": [
+  "The user is asking for 'water level', which is not a supported parameter in the available tools (river_discharge, wave_height, etc.). The tool will disclose that it does not supply water_level."
+ ],
+ "choices": [],
+ "follow_up": null,
+ "operational_eligible": false,
+ "answered_at_utc": "2026-09-14T09:06:55.375364+00:00",
+ "expires_at_utc": null,
+ "trace": {
+  "planning": {
+   "provider": "local_ollama",
+   "model": "qwen3.6:latest",
+   "input_tokens": 3015,
+   "output_tokens": 308,
+   "duration_seconds": 13.361454542
+  },
+  "generation": {
+   "provider": "typed_task_renderers",
+   "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+  },
+  "tools": [
+   {
+    "name": "river",
+    "task_id": "t1",
+    "status": "unavailable"
+   }
+  ],
+  "provider": "local_ollama",
+  "context_resolution": {
+   "action": "new",
+   "changed_fields": [],
+   "inherited_fields": []
+  },
+  "duration_seconds": 13.41
+ },
+ "plan": {
+  "language": "en",
+  "places": [
+   {
+    "name": "Patna",
+    "state": "",
+    "district": "",
+    "kind": "settlement"
+   }
+  ],
+  "assumptions": [
+   "The user is asking for 'water level', which is not a supported parameter in the available tools (river_discharge, wave_height, etc.). The tool will disclose that it does not supply water_level."
+  ],
+  "clarification": "",
+  "explicit_times": false,
+  "tasks": [
+   {
+    "request_quote": "What is the water level of the Ganga at Patna tomorrow?",
+    "kind": "river",
+    "operation": "lookup",
+    "parameters": [
+     "river_discharge"
+    ],
+    "years": [],
+    "period": "annual",
+    "start_local": "2026-09-15T00:00:00+05:30",
+    "end_local": "2026-09-16T00:00:00+05:30",
+    "place_indices": [
+     0
+    ]
+   }
+  ],
+  "context_action": "new",
+  "changed_fields": [],
+  "intent": "research",
+  "start_local": "2026-09-15T00:00:00+05:30",
+  "end_local": "2026-09-16T00:00:00+05:30",
+  "variables": [],
+  "year": 0,
+  "period": "annual",
+  "history_parameter": "rainfall",
+  "unsupported_parameters": [],
+  "requested_outcome": "Complete all explicitly requested tasks"
+ },
+ "task_results": [
+  {
+   "id": "t1",
+   "request": {
+    "request_quote": "What is the water level of the Ganga at Patna tomorrow?",
+    "kind": "river",
+    "operation": "lookup",
+    "parameters": [
+     "river_discharge"
+    ],
+    "years": [],
+    "period": "annual",
+    "start_local": "2026-09-15T00:00:00+05:30",
+    "end_local": "2026-09-16T00:00:00+05:30",
+    "place_indices": [
+     0
+    ]
+   },
+   "status": "unavailable",
+   "answer": "This question asks for an observed water level, which this product does not supply. Modeled discharge is the only hydrological measure connected. An observed water level, a gauge reading, a danger or warning level, flood extent and evacuation advice are different quantities and are never substituted by a discharge value.",
+   "fact_ids": [],
+   "passage_ids": []
+  }
+ ],
+ "charts": [],
+ "calculations": [],
+ "pending_slots": [],
+ "retrieval_coverage": [],
+ "retrieval_plan": [
+  {
+   "task_id": "t1",
+   "operation": "lookup",
+   "kind": "river",
+   "parameters": [
+    "river_discharge"
+   ],
+   "candidates": [
+    {
+     "tool": "river",
+     "selected": true,
+     "available": true,
+     "reason": "Modeled GloFAS daily discharge at a river cell; not an observed gauge level, danger threshold, inundation extent or official flood warning",
+     "sources": [
+      {
+       "source_id": "S37",
+       "product": "Open-Meteo GloFAS river discharge delivery",
+       "registry_status": "prototype_adapter_tested"
+      }
+     ]
+    }
+   ],
+   "status": "unavailable",
+   "returned_source_ids": []
+  }
+ ],
+ "document_evidence": [],
+ "resolved_points": {},
+ "task_coverage": {
+  "requested": 1,
+  "completed": 0,
+  "incomplete_ids": [
+   "t1"
+  ]
+ },
+ "_seconds": 13.48
+}

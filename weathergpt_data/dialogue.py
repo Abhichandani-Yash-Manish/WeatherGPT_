@@ -189,7 +189,7 @@ def ground_explicit_slots(plan,question,context):
     area_words=r'\b(district|zila|zilla|jilla)\b|जिल[ाे]|જિલ્લ'
     for p in plan['places']:
         was_area=any(norm(old['name'])==norm(p['name']) and old['kind']=='district' for old in prior.get('places',[]))
-        if p['kind']=='district' and any(t['kind']=='forecast' for t in plan['tasks']) and not re.search(area_words,question,re.I) and not was_area:
+        if p['kind']=='district' and any(t['kind'] in {'forecast','marine','river'} for t in plan['tasks']) and not re.search(area_words,question,re.I) and not was_area:
             p['kind']='settlement'
             if norm(p['district'])==norm(p['name']):p['district']=''
     country_pattern=r'\b(?:india|all[ -]india|bharat)\b|भारत|ઇન્ડિયા|ભારત|इंडिया'

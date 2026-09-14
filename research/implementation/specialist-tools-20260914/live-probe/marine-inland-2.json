@@ -1,0 +1,286 @@
+{
+ "schema_version": "weather-conversation-v1",
+ "conversation_id": "70ad1662-4774-489a-9590-d5b24c54d1d6",
+ "question": "How high are the waves at Nagpur, Maharashtra tomorrow afternoon?",
+ "status": "needs_selection",
+ "answer": "Which place do you mean? Nāgpur, Chandrapur, State of Mahārāshtra / Nāgpur, Dhule, State of Mahārāshtra / Nāgpur, Gadchiroli, State of Mahārāshtra / Nagpur, Nagpur Division, State of Mahārāshtra. Choose one, or type its state/district.",
+ "facts": [],
+ "citations": [],
+ "notes": [
+  "Tomorrow is 2026-09-15. Afternoon defaults to 12:30–18:30 IST.",
+  "Wave data is modeled for a sea grid cell within 50 km of Nagpur; actual distance to the nearest coast may exceed this, potentially limiting availability."
+ ],
+ "choices": [
+  {
+   "id": "10574551",
+   "name": "Nāgpur",
+   "latitude": 20.02813,
+   "longitude": 79.24879,
+   "feature": "PPL",
+   "admin1": "State of Mahārāshtra",
+   "admin2": "Chandrapur",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10574551",
+   "label": "Nāgpur, Chandrapur, State of Mahārāshtra",
+   "coordinates": {
+    "latitude": 20.02813,
+    "longitude": 79.24879
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10574551",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Nagpur"
+  },
+  {
+   "id": "10578901",
+   "name": "Nāgpur",
+   "latitude": 21.04323,
+   "longitude": 74.43529,
+   "feature": "PPL",
+   "admin1": "State of Mahārāshtra",
+   "admin2": "Dhule",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10578901",
+   "label": "Nāgpur, Dhule, State of Mahārāshtra",
+   "coordinates": {
+    "latitude": 21.04323,
+    "longitude": 74.43529
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10578901",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Nagpur"
+  },
+  {
+   "id": "10719146",
+   "name": "Nāgpur",
+   "latitude": 20.56524,
+   "longitude": 80.59258,
+   "feature": "PPL",
+   "admin1": "State of Mahārāshtra",
+   "admin2": "Gadchiroli",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10719146",
+   "label": "Nāgpur, Gadchiroli, State of Mahārāshtra",
+   "coordinates": {
+    "latitude": 20.56524,
+    "longitude": 80.59258
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10719146",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Nagpur"
+  },
+  {
+   "id": "1262180",
+   "name": "Nagpur",
+   "latitude": 21.14631,
+   "longitude": 79.08491,
+   "feature": "PPLA2",
+   "admin1": "State of Mahārāshtra",
+   "admin2": "Nagpur Division",
+   "modified": "2025-05-25",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:1262180",
+   "label": "Nagpur, Nagpur Division, State of Mahārāshtra",
+   "coordinates": {
+    "latitude": 21.14631,
+    "longitude": 79.08491
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/1262180",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Nagpur"
+  }
+ ],
+ "follow_up": "Choose a place, or add its district and state.",
+ "operational_eligible": false,
+ "answered_at_utc": "2026-09-14T09:04:47.569395+00:00",
+ "expires_at_utc": null,
+ "trace": {
+  "planning": {
+   "provider": "local_ollama",
+   "model": "qwen3.6:latest",
+   "input_tokens": 3014,
+   "output_tokens": 334,
+   "duration_seconds": 13.665045083
+  },
+  "generation": {
+   "provider": "typed_task_renderers",
+   "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+  },
+  "tools": [
+   {
+    "name": "gazetteer_search",
+    "query": {
+     "name": "Nagpur",
+     "state": "Maharashtra",
+     "district": "",
+     "kind": "settlement"
+    },
+    "matches": 4
+   },
+   {
+    "name": "marine",
+    "task_id": "t1",
+    "status": "needs_selection"
+   }
+  ],
+  "provider": "local_ollama",
+  "context_resolution": {
+   "action": "new",
+   "changed_fields": [],
+   "inherited_fields": []
+  },
+  "duration_seconds": 13.789
+ },
+ "plan": {
+  "language": "en",
+  "places": [
+   {
+    "name": "Nagpur",
+    "state": "Maharashtra",
+    "district": "",
+    "kind": "settlement"
+   }
+  ],
+  "assumptions": [
+   "Tomorrow is 2026-09-15. Afternoon defaults to 12:30–18:30 IST.",
+   "Wave data is modeled for a sea grid cell within 50 km of Nagpur; actual distance to the nearest coast may exceed this, potentially limiting availability."
+  ],
+  "clarification": "",
+  "explicit_times": false,
+  "tasks": [
+   {
+    "request_quote": "How high are the waves at Nagpur, Maharashtra tomorrow afternoon?",
+    "kind": "marine",
+    "operation": "lookup",
+    "parameters": [
+     "wave_height"
+    ],
+    "years": [],
+    "period": "annual",
+    "start_local": "2026-09-15T12:30:00+05:30",
+    "end_local": "2026-09-15T18:30:00+05:30",
+    "place_indices": [
+     0
+    ]
+   }
+  ],
+  "context_action": "new",
+  "changed_fields": [],
+  "intent": "research",
+  "start_local": "2026-09-15T12:30:00+05:30",
+  "end_local": "2026-09-15T18:30:00+05:30",
+  "variables": [],
+  "year": 0,
+  "period": "annual",
+  "history_parameter": "rainfall",
+  "unsupported_parameters": [],
+  "requested_outcome": "Complete all explicitly requested tasks"
+ },
+ "task_results": [
+  {
+   "id": "t1",
+   "request": {
+    "request_quote": "How high are the waves at Nagpur, Maharashtra tomorrow afternoon?",
+    "kind": "marine",
+    "operation": "lookup",
+    "parameters": [
+     "wave_height"
+    ],
+    "years": [],
+    "period": "annual",
+    "start_local": "2026-09-15T12:30:00+05:30",
+    "end_local": "2026-09-15T18:30:00+05:30",
+    "place_indices": [
+     0
+    ]
+   },
+   "status": "needs_selection",
+   "answer": "I found 4 possible places for Nagpur. Please confirm the intended location and spelling.",
+   "fact_ids": [],
+   "passage_ids": []
+  }
+ ],
+ "charts": [],
+ "calculations": [],
+ "pending_slots": [],
+ "retrieval_coverage": [],
+ "retrieval_plan": [
+  {
+   "task_id": "t1",
+   "operation": "lookup",
+   "kind": "marine",
+   "parameters": [
+    "wave_height"
+   ],
+   "candidates": [
+    {
+     "tool": "marine",
+     "selected": true,
+     "available": true,
+     "reason": "Modeled waves at a sea grid cell within 50 km of a named coastal place; no named sea-area identity, official bulletin (S58/S59 remain unconnected) or navigation/fishing clearance",
+     "sources": [
+      {
+       "source_id": "S56",
+       "product": "Open-Meteo marine wave delivery",
+       "registry_status": "prototype_adapter_tested"
+      }
+     ]
+    }
+   ],
+   "status": "needs_selection",
+   "returned_source_ids": []
+  }
+ ],
+ "document_evidence": [],
+ "resolved_points": {},
+ "task_coverage": {
+  "requested": 1,
+  "completed": 0,
+  "incomplete_ids": [
+   "t1"
+  ]
+ },
+ "_seconds": 13.79
+}

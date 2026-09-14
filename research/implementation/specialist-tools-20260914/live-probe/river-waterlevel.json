@@ -1,0 +1,149 @@
+{
+ "schema_version": "weather-conversation-v1",
+ "conversation_id": "90763fac-fbd0-418b-8b5f-e87699689b09",
+ "question": "What is the water level of the Ganga at Patna right now?",
+ "status": "needs_clarification",
+ "answer": "Which day or time window should I check?",
+ "facts": [],
+ "citations": [],
+ "notes": [],
+ "choices": [],
+ "follow_up": "A date, or an ordered range of dates",
+ "operational_eligible": false,
+ "answered_at_utc": "2026-09-14T09:05:01.363459+00:00",
+ "expires_at_utc": null,
+ "trace": {
+  "planning": {
+   "provider": "local_ollama",
+   "model": "qwen3.6:latest",
+   "input_tokens": 3016,
+   "output_tokens": 234,
+   "duration_seconds": 10.462630792
+  },
+  "generation": {
+   "provider": "typed_task_renderers",
+   "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+  },
+  "tools": [
+   {
+    "name": "river",
+    "task_id": "t1",
+    "status": "needs_clarification"
+   }
+  ],
+  "provider": "local_ollama",
+  "context_resolution": {
+   "action": "new",
+   "changed_fields": [],
+   "inherited_fields": []
+  },
+  "duration_seconds": 10.508
+ },
+ "plan": {
+  "language": "en",
+  "places": [
+   {
+    "name": "Patna",
+    "state": "",
+    "district": "",
+    "kind": "settlement"
+   }
+  ],
+  "assumptions": [],
+  "clarification": "The requested parameter 'water_level' is not supported by the available river discharge tool; the system will disclose this gap.",
+  "explicit_times": false,
+  "tasks": [
+   {
+    "request_quote": "What is the water level of the Ganga at Patna right now?",
+    "kind": "river",
+    "operation": "lookup",
+    "parameters": [
+     "river_discharge"
+    ],
+    "years": [],
+    "period": "annual",
+    "start_local": "",
+    "end_local": "",
+    "place_indices": [
+     0
+    ]
+   }
+  ],
+  "context_action": "new",
+  "changed_fields": [],
+  "intent": "research",
+  "start_local": "",
+  "end_local": "",
+  "variables": [],
+  "year": 0,
+  "period": "annual",
+  "history_parameter": "rainfall",
+  "unsupported_parameters": [],
+  "requested_outcome": "Complete all explicitly requested tasks"
+ },
+ "task_results": [
+  {
+   "id": "t1",
+   "request": {
+    "request_quote": "What is the water level of the Ganga at Patna right now?",
+    "kind": "river",
+    "operation": "lookup",
+    "parameters": [
+     "river_discharge"
+    ],
+    "years": [],
+    "period": "annual",
+    "start_local": "",
+    "end_local": "",
+    "place_indices": [
+     0
+    ]
+   },
+   "status": "needs_clarification",
+   "answer": "Which day or time window should I check?",
+   "fact_ids": [],
+   "passage_ids": []
+  }
+ ],
+ "charts": [],
+ "calculations": [],
+ "pending_slots": [],
+ "retrieval_coverage": [],
+ "retrieval_plan": [
+  {
+   "task_id": "t1",
+   "operation": "lookup",
+   "kind": "river",
+   "parameters": [
+    "river_discharge"
+   ],
+   "candidates": [
+    {
+     "tool": "river",
+     "selected": true,
+     "available": true,
+     "reason": "Modeled GloFAS daily discharge at a river cell; not an observed gauge level, danger threshold, inundation extent or official flood warning",
+     "sources": [
+      {
+       "source_id": "S37",
+       "product": "Open-Meteo GloFAS river discharge delivery",
+       "registry_status": "prototype_adapter_tested"
+      }
+     ]
+    }
+   ],
+   "status": "needs_clarification",
+   "returned_source_ids": []
+  }
+ ],
+ "document_evidence": [],
+ "resolved_points": {},
+ "task_coverage": {
+  "requested": 1,
+  "completed": 0,
+  "incomplete_ids": [
+   "t1"
+  ]
+ },
+ "_seconds": 10.51
+}

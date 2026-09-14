@@ -11,8 +11,8 @@ CAPABILITIES=[
  {'tool':'airport_reports','kind':'aviation','operations':['lookup'],'sources':['S18','S19','S20'],'parameters':['metar','taf'],'purpose':'Indian ICAO airport observations/TAF with station identity; no flight status or city-wide observation'},
  {'tool':'official_warning','kind':'warning','operations':['lookup'],'sources':['S01','S06','S15'],'parameters':['official_warning'],'purpose':'CAP source assessment only: resolves retrieved reference chains but current official geographic applicability remains unverified'},
  {'tool':'crop_advisory','kind':'agriculture','operations':['lookup'],'sources':['S57'],'parameters':['agricultural_advisory'],'purpose':'Published district crop/stage passages; strict printed geography and dates, hybrid retrieval in reviewed PDF families; individual field decisions remain partial'},
- {'tool':'marine','kind':'marine','operations':['lookup'],'sources':['S56','S58','S59'],'parameters':['wave_height'],'purpose':'Adapters exist; conversational sea-area applicability remains open','available':False},
- {'tool':'river','kind':'river','operations':['lookup'],'sources':['S37'],'parameters':['river_discharge'],'purpose':'River-cell/gauge identity remains unresolved','available':False}]
+ {'tool':'marine','kind':'marine','operations':['lookup'],'sources':['S56'],'parameters':['wave_height','wave_direction','wave_period'],'purpose':'Modeled waves at a sea grid cell within 50 km of a named coastal place; no named sea-area identity, official bulletin (S58/S59 remain unconnected) or navigation/fishing clearance'},
+ {'tool':'river','kind':'river','operations':['lookup'],'sources':['S37'],'parameters':['river_discharge'],'purpose':'Modeled GloFAS daily discharge at a river cell; not an observed gauge level, danger threshold, inundation extent or official flood warning'}]
 
 
 def planner_catalogue():

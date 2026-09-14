@@ -1,6 +1,6 @@
 {
   "schema_version": "product-progress-plan-v1",
-  "as_of_utc": "2026-09-14T08:51:52.362955+00:00",
+  "as_of_utc": "2026-09-14T09:08:34.731492+00:00",
   "status": "implementation_in_progress",
   "user_direction": "Desktop web now. Hosting/sharing on hold. Preserve final nationwide and specialist scope.",
   "next_batch": [
@@ -88,9 +88,9 @@
         "Data type distinctions visible",
         "No closure, flight disruption or flood impact claims without evidence"
       ],
-      "status": "airport_conversation_tools_implemented_scoped_marine_and_river_open",
+      "status": "airport_marine_and_river_conversation_tools_implemented_scoped_official_sea_area_gauge_identity_and_domain_review_open",
       "distribution_hold": false,
-      "latest_evidence": "docs/17-conversation-engine-refinement.md"
+      "latest_evidence": "docs/23-marine-and-river-tools.md"
     },
     {
       "id": "S4",
@@ -192,7 +192,7 @@
     },
     "P04": {
       "status": "partial",
-      "evidence": "docs/17-conversation-engine-refinement.md"
+      "evidence": "docs/23-marine-and-river-tools.md"
     },
     "P05": {
       "status": "partial",
@@ -257,31 +257,25 @@
     }
   ],
   "latest_batch": {
-    "report": "docs/22-engine-context-repairs.md",
-    "evidence_directory": "research/implementation/engine-context-repairs-20260914",
+    "report": "docs/23-marine-and-river-tools.md",
+    "evidence_directory": "research/implementation/specialist-tools-20260914",
+    "source_ids": [
+      "S56",
+      "S37"
+    ],
     "operational_ready": false,
-    "scope": "Named-measure retention in continuations, output-language adherence disclosure, explanation-to-task evidence dependency, runtime packaging and the new-conversation control. No language support, warning applicability, alias, coverage, browser, mobile or voice acceptance is added.",
-    "automated_tests": 362,
-    "http_turns": 7,
+    "scope": "Marine wave and GloFAS discharge lookups at a verified nearby model cell, with deterministic refusal of water level, danger level, flood extent, tide, current and sea-surface temperature. No official sea-area bulletin, gauge identity, domain review or forecast skill.",
+    "automated_tests": 374,
+    "http_turns": 9,
     "review_mapping": {
-      "A": [
-        "A01",
-        "A02",
-        "A03"
-      ],
-      "A_partial": [
-        "A07",
-        "A08"
-      ],
       "P": [
-        "P03",
-        "P12"
+        "P04",
+        "P10"
       ],
-      "F": [
-        "F01",
-        "F02",
-        "F10"
-      ]
+      "R": [
+        "R05"
+      ],
+      "trajectory": "docs/21 step 3 (coverage by complete journeys and source families)"
     }
   },
   "next_batch_note": "Engine context, language disclosure and explanation dependency are repaired in scope (docs/22). The review trajectory places official warning and observation feasibility next; that workstream needs a user decision on supported official data access before implementation, so agricultural and task-fidelity work continues alongside it."

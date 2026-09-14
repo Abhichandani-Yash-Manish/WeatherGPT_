@@ -1,0 +1,764 @@
+{
+ "schema_version": "weather-conversation-v1",
+ "conversation_id": "b27cd8c0-5260-43a7-bc73-54f22fa9bd42",
+ "question": "What is the modelled river discharge near Patna tomorrow?",
+ "status": "needs_selection",
+ "answer": "Which place do you mean? Patna, District Saharanpur, Uttar Pradesh / Patna, Sirmaur, State of Himāchal Pradesh / Patna, Raisen, Madhya Pradesh / Patna, Sāgar, Madhya Pradesh. Choose one, or type its state/district.",
+ "facts": [],
+ "citations": [],
+ "notes": [
+  "Tomorrow is 2026-09-15. The time window for 'tomorrow' in a river discharge context is the full day (00:00 to next 00:00 IST)."
+ ],
+ "choices": [
+  {
+   "id": "10166646",
+   "name": "Patna",
+   "latitude": 30.06462,
+   "longitude": 77.46733,
+   "feature": "PPL",
+   "admin1": "Uttar Pradesh",
+   "admin2": "District Saharanpur",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10166646",
+   "label": "Patna, District Saharanpur, Uttar Pradesh",
+   "coordinates": {
+    "latitude": 30.06462,
+    "longitude": 77.46733
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10166646",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  },
+  {
+   "id": "10167237",
+   "name": "Patna",
+   "latitude": 30.64843,
+   "longitude": 77.64347,
+   "feature": "PPL",
+   "admin1": "State of Himāchal Pradesh",
+   "admin2": "Sirmaur",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10167237",
+   "label": "Patna, Sirmaur, State of Himāchal Pradesh",
+   "coordinates": {
+    "latitude": 30.64843,
+    "longitude": 77.64347
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10167237",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  },
+  {
+   "id": "10167326",
+   "name": "Patna",
+   "latitude": 30.6977,
+   "longitude": 77.63763,
+   "feature": "PPL",
+   "admin1": "State of Himāchal Pradesh",
+   "admin2": "Sirmaur",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10167326",
+   "label": "Patna, Sirmaur, State of Himāchal Pradesh",
+   "coordinates": {
+    "latitude": 30.6977,
+    "longitude": 77.63763
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10167326",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  },
+  {
+   "id": "10191232",
+   "name": "Patna",
+   "latitude": 23.30235,
+   "longitude": 78.33908,
+   "feature": "PPL",
+   "admin1": "Madhya Pradesh",
+   "admin2": "Raisen",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10191232",
+   "label": "Patna, Raisen, Madhya Pradesh",
+   "coordinates": {
+    "latitude": 23.30235,
+    "longitude": 78.33908
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10191232",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  },
+  {
+   "id": "10191917",
+   "name": "Patna",
+   "latitude": 23.57985,
+   "longitude": 78.93591,
+   "feature": "PPL",
+   "admin1": "Madhya Pradesh",
+   "admin2": "Sāgar",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10191917",
+   "label": "Patna, Sāgar, Madhya Pradesh",
+   "coordinates": {
+    "latitude": 23.57985,
+    "longitude": 78.93591
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10191917",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  },
+  {
+   "id": "10192586",
+   "name": "Patna",
+   "latitude": 23.26956,
+   "longitude": 78.51307,
+   "feature": "PPL",
+   "admin1": "Madhya Pradesh",
+   "admin2": "Raisen",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10192586",
+   "label": "Patna, Raisen, Madhya Pradesh",
+   "coordinates": {
+    "latitude": 23.26956,
+    "longitude": 78.51307
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10192586",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  },
+  {
+   "id": "10192693",
+   "name": "Patna",
+   "latitude": 23.49897,
+   "longitude": 78.80846,
+   "feature": "PPL",
+   "admin1": "Madhya Pradesh",
+   "admin2": "Sāgar",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10192693",
+   "label": "Patna, Sāgar, Madhya Pradesh",
+   "coordinates": {
+    "latitude": 23.49897,
+    "longitude": 78.80846
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10192693",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  },
+  {
+   "id": "10192740",
+   "name": "Patna",
+   "latitude": 23.35286,
+   "longitude": 78.78642,
+   "feature": "PPL",
+   "admin1": "Madhya Pradesh",
+   "admin2": "Sāgar",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10192740",
+   "label": "Patna, Sāgar, Madhya Pradesh",
+   "coordinates": {
+    "latitude": 23.35286,
+    "longitude": 78.78642
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10192740",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  },
+  {
+   "id": "10193360",
+   "name": "Patna",
+   "latitude": 23.03434,
+   "longitude": 78.90187,
+   "feature": "PPL",
+   "admin1": "Madhya Pradesh",
+   "admin2": "Narsimhapur",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10193360",
+   "label": "Patna, Narsimhapur, Madhya Pradesh",
+   "coordinates": {
+    "latitude": 23.03434,
+    "longitude": 78.90187
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10193360",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  },
+  {
+   "id": "10333199",
+   "name": "Patna",
+   "latitude": 24.80661,
+   "longitude": 76.65169,
+   "feature": "PPL",
+   "admin1": "State of Rājasthān",
+   "admin2": "Baran",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10333199",
+   "label": "Patna, Baran, State of Rājasthān",
+   "coordinates": {
+    "latitude": 24.80661,
+    "longitude": 76.65169
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10333199",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  },
+  {
+   "id": "10336374",
+   "name": "Patna",
+   "latitude": 24.5682,
+   "longitude": 76.80082,
+   "feature": "PPL",
+   "admin1": "State of Rājasthān",
+   "admin2": "Baran",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10336374",
+   "label": "Patna, Baran, State of Rājasthān",
+   "coordinates": {
+    "latitude": 24.5682,
+    "longitude": 76.80082
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10336374",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  },
+  {
+   "id": "10456739",
+   "name": "Patna",
+   "latitude": 23.95172,
+   "longitude": 79.57647,
+   "feature": "PPL",
+   "admin1": "Madhya Pradesh",
+   "admin2": "Damoh",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10456739",
+   "label": "Patna, Damoh, Madhya Pradesh",
+   "coordinates": {
+    "latitude": 23.95172,
+    "longitude": 79.57647
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10456739",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  },
+  {
+   "id": "10457447",
+   "name": "Patna",
+   "latitude": 23.56601,
+   "longitude": 79.85514,
+   "feature": "PPL",
+   "admin1": "Madhya Pradesh",
+   "admin2": "Damoh",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10457447",
+   "label": "Patna, Damoh, Madhya Pradesh",
+   "coordinates": {
+    "latitude": 23.56601,
+    "longitude": 79.85514
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10457447",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  },
+  {
+   "id": "10457581",
+   "name": "Patna",
+   "latitude": 23.41911,
+   "longitude": 79.80523,
+   "feature": "PPL",
+   "admin1": "Madhya Pradesh",
+   "admin2": "Jabalpur",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10457581",
+   "label": "Patna, Jabalpur, Madhya Pradesh",
+   "coordinates": {
+    "latitude": 23.41911,
+    "longitude": 79.80523
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10457581",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  },
+  {
+   "id": "10459314",
+   "name": "Patna",
+   "latitude": 27.83374,
+   "longitude": 78.75371,
+   "feature": "PPL",
+   "admin1": "Uttar Pradesh",
+   "admin2": "Kasganj",
+   "modified": "2024-01-07",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10459314",
+   "label": "Patna, Kasganj, Uttar Pradesh",
+   "coordinates": {
+    "latitude": 27.83374,
+    "longitude": 78.75371
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10459314",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  },
+  {
+   "id": "10478246",
+   "name": "Patna",
+   "latitude": 24.88785,
+   "longitude": 77.2426,
+   "feature": "PPL",
+   "admin1": "Madhya Pradesh",
+   "admin2": "Guna",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10478246",
+   "label": "Patna, Guna, Madhya Pradesh",
+   "coordinates": {
+    "latitude": 24.88785,
+    "longitude": 77.2426
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10478246",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  },
+  {
+   "id": "10482722",
+   "name": "Patna",
+   "latitude": 27.53135,
+   "longitude": 78.32294,
+   "feature": "PPL",
+   "admin1": "Uttar Pradesh",
+   "admin2": "Etah District",
+   "modified": "2024-01-07",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10482722",
+   "label": "Patna, Etah District, Uttar Pradesh",
+   "coordinates": {
+    "latitude": 27.53135,
+    "longitude": 78.32294
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10482722",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  },
+  {
+   "id": "10497659",
+   "name": "Patna",
+   "latitude": 25.5296,
+   "longitude": 83.17694,
+   "feature": "PPL",
+   "admin1": "Uttar Pradesh",
+   "admin2": "Ghazipur",
+   "modified": "2024-01-07",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10497659",
+   "label": "Patna, Ghazipur, Uttar Pradesh",
+   "coordinates": {
+    "latitude": 25.5296,
+    "longitude": 83.17694
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10497659",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  },
+  {
+   "id": "10500412",
+   "name": "Patna",
+   "latitude": 25.16006,
+   "longitude": 83.19368,
+   "feature": "PPL",
+   "admin1": "Uttar Pradesh",
+   "admin2": "Chandauli District",
+   "modified": "2024-01-07",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10500412",
+   "label": "Patna, Chandauli District, Uttar Pradesh",
+   "coordinates": {
+    "latitude": 25.16006,
+    "longitude": 83.19368
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10500412",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  },
+  {
+   "id": "10504076",
+   "name": "Patna",
+   "latitude": 24.11191,
+   "longitude": 79.5273,
+   "feature": "PPL",
+   "admin1": "Madhya Pradesh",
+   "admin2": "Damoh",
+   "modified": "2024-01-06",
+   "name_match_basis": "canonical",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:10504076",
+   "label": "Patna, Damoh, Madhya Pradesh",
+   "coordinates": {
+    "latitude": 24.11191,
+    "longitude": 79.5273
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/10504076",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Patna"
+  }
+ ],
+ "follow_up": "Choose a place, or add its district and state.",
+ "operational_eligible": false,
+ "answered_at_utc": "2026-09-14T09:04:34.226446+00:00",
+ "expires_at_utc": null,
+ "trace": {
+  "planning": {
+   "provider": "local_ollama",
+   "model": "qwen3.6:latest",
+   "input_tokens": 3013,
+   "output_tokens": 305,
+   "duration_seconds": 13.228431417
+  },
+  "generation": {
+   "provider": "typed_task_renderers",
+   "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+  },
+  "tools": [
+   {
+    "name": "gazetteer_search",
+    "query": {
+     "name": "Patna",
+     "state": "",
+     "district": "",
+     "kind": "settlement"
+    },
+    "matches": 104
+   },
+   {
+    "name": "river",
+    "task_id": "t1",
+    "status": "needs_selection"
+   }
+  ],
+  "provider": "local_ollama",
+  "context_resolution": {
+   "action": "new",
+   "changed_fields": [],
+   "inherited_fields": []
+  },
+  "duration_seconds": 13.34
+ },
+ "plan": {
+  "language": "en",
+  "places": [
+   {
+    "name": "Patna",
+    "state": "",
+    "district": "",
+    "kind": "settlement"
+   }
+  ],
+  "assumptions": [
+   "Tomorrow is 2026-09-15. The time window for 'tomorrow' in a river discharge context is the full day (00:00 to next 00:00 IST)."
+  ],
+  "clarification": "",
+  "explicit_times": false,
+  "tasks": [
+   {
+    "request_quote": "modelled river discharge near Patna tomorrow",
+    "kind": "river",
+    "operation": "lookup",
+    "parameters": [
+     "river_discharge"
+    ],
+    "years": [],
+    "period": "annual",
+    "start_local": "2026-09-15T00:00+05:30",
+    "end_local": "2026-09-16T00:00+05:30",
+    "place_indices": [
+     0
+    ]
+   }
+  ],
+  "context_action": "new",
+  "changed_fields": [],
+  "intent": "research",
+  "start_local": "2026-09-15T00:00+05:30",
+  "end_local": "2026-09-16T00:00+05:30",
+  "variables": [],
+  "year": 0,
+  "period": "annual",
+  "history_parameter": "rainfall",
+  "unsupported_parameters": [],
+  "requested_outcome": "Complete all explicitly requested tasks"
+ },
+ "task_results": [
+  {
+   "id": "t1",
+   "request": {
+    "request_quote": "modelled river discharge near Patna tomorrow",
+    "kind": "river",
+    "operation": "lookup",
+    "parameters": [
+     "river_discharge"
+    ],
+    "years": [],
+    "period": "annual",
+    "start_local": "2026-09-15T00:00+05:30",
+    "end_local": "2026-09-16T00:00+05:30",
+    "place_indices": [
+     0
+    ]
+   },
+   "status": "needs_selection",
+   "answer": "I found 104 possible places for Patna. Please confirm the intended location and spelling.",
+   "fact_ids": [],
+   "passage_ids": []
+  }
+ ],
+ "charts": [],
+ "calculations": [],
+ "pending_slots": [],
+ "retrieval_coverage": [],
+ "retrieval_plan": [
+  {
+   "task_id": "t1",
+   "operation": "lookup",
+   "kind": "river",
+   "parameters": [
+    "river_discharge"
+   ],
+   "candidates": [
+    {
+     "tool": "river",
+     "selected": true,
+     "available": true,
+     "reason": "Modeled GloFAS daily discharge at a river cell; not an observed gauge level, danger threshold, inundation extent or official flood warning",
+     "sources": [
+      {
+       "source_id": "S37",
+       "product": "Open-Meteo GloFAS river discharge delivery",
+       "registry_status": "prototype_adapter_tested"
+      }
+     ]
+    }
+   ],
+   "status": "needs_selection",
+   "returned_source_ids": []
+  }
+ ],
+ "document_evidence": [],
+ "resolved_points": {},
+ "task_coverage": {
+  "requested": 1,
+  "completed": 0,
+  "incomplete_ids": [
+   "t1"
+  ]
+ },
+ "_seconds": 13.41
+}

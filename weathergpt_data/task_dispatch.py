@@ -14,8 +14,6 @@ GAPS={
  'warning':'Current official warning applicability and update/cancel handling are not verified yet. Missing evidence is not an all-clear.',
  'observation':'Live observation retrieval is not connected to this conversation path yet; a forecast cannot answer whether rain is being observed now.',
  'aviation':'The airport report adapter exists, but its conversational tool is not connected yet. No METAR, TAF or flight status has been retrieved.',
- 'marine':'The marine adapter exists, but its conversational tool and sea-location selection are not connected yet. Land weather cannot answer wave height.',
- 'river':'The discharge adapter exists, but river-cell identity and its conversational tool are not connected yet. Discharge alone is not an inundation forecast.',
  'research':'The requested research dataset or operation is not connected. Historical rainfall and national temperature analysis are available.'}
 
 def execute_plan(engine,result,plan,resolved,coordinates):
@@ -39,6 +37,11 @@ def execute_plan(engine,result,plan,resolved,coordinates):
                 packet=copy.deepcopy({k:v for k,v in result.items() if k not in {'task_results','charts','calculations','passages','document_evidence','airport_reports','warning_evidence','pending_slots','retrieval_coverage'}})
                 packet.update(facts=[],citations=[],choices=[],notes=[],answer='',plan=sub,status='needs_clarification',follow_up=None,expires_at_utc=None,trace={'tools':[],'generation':None})
                 packet=execute_airport(engine,packet,sub,task)
+            elif task['kind'] in {'marine','river'}:
+                from .specialist_tasks import execute_specialist
+                packet=copy.deepcopy({k:v for k,v in result.items() if k not in {'task_results','charts','calculations','passages','document_evidence','airport_reports','warning_evidence','pending_slots','retrieval_coverage'}})
+                packet.update(facts=[],citations=[],choices=[],notes=[],answer='',plan=sub,status='needs_clarification',follow_up=None,expires_at_utc=None,trace={'tools':[],'generation':None})
+                packet=execute_specialist(engine,packet,sub,task,resolved,coordinates)
             elif task['kind']=='agriculture':
                 from .document_tools import execute_document
                 packet=copy.deepcopy({k:v for k,v in result.items() if k not in {'task_results','charts','calculations','passages','document_evidence','airport_reports','warning_evidence','pending_slots','retrieval_coverage'}})
@@ -150,6 +153,8 @@ def execute_plan(engine,result,plan,resolved,coordinates):
         complete=all(s in {'answered','explanation'} for s in statuses)
         result['status']='answered' if complete else 'partial' if result['facts'] or result.get('passages') or any(s in {'answered','explanation'} for s in statuses) else 'needs_clarification' if 'needs_clarification' in statuses else 'unavailable'
         if statuses==['explanation']:result['status']='explanation'
+        # A window the user can correct must not be reported as a missing source.
+        elif set(statuses)=={'outside_validity'}:result['status']='outside_validity'
     result['notes']=list(dict.fromkeys(result['notes']));result['resolved_points']=resolved
     result['answer']='\n\n'.join((f"Task {i+1}: " if len(plan['tasks'])>1 else '')+text for i,text in enumerate(chunks))
     if len(result['task_results'])>len(chunks):result['answer']+='\nOther requested tasks are waiting for this place selection.'

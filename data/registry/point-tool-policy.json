@@ -11,6 +11,16 @@
       "enabled": true,
       "source_id": "S22",
       "scope": "One to seven daily ERA5 values in Asia/Kolkata, with conservative five-day availability delay"
+    },
+    "marine": {
+      "enabled": true,
+      "source_id": "S56",
+      "scope": "Modeled wave values at a provider-selected sea grid cell within 50 km of a named coastal place; not an official sea-area bulletin, named sea-area forecast, or navigation/fishing clearance"
+    },
+    "river": {
+      "enabled": true,
+      "source_id": "S37",
+      "scope": "Modeled GloFAS daily discharge at a provider-selected river cell; not an observed gauge level, danger threshold, inundation forecast or official flood warning"
     }
   }
 }
