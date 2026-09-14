@@ -13,6 +13,9 @@ from weathergpt_data import warning_tools as wt
 from weathergpt_data.adapters import COLOURS, HAZARDS
 
 IST = ZoneInfo('Asia/Kolkata')
+# The fixture bulletin is dated 14 Sep 2026; the clock is pinned so day-one-is-today
+# assertions test the anchoring rule rather than the day the suite happens to run.
+CLOCK = datetime(2026, 9, 14, 6, tzinfo=timezone.utc)
 
 
 def record(days=None, issued='2026-09-14T06:00:00+00:00', label='PATNA', district_id='364'):
@@ -31,12 +34,12 @@ def record(days=None, issued='2026-09-14T06:00:00+00:00', label='PATNA', distric
 
 class DayAnchoringTests(unittest.TestCase):
     def test_day_one_is_the_bulletin_date_in_ist(self):
-        rows, issued = dw.day_rows(record())
+        rows, issued = dw.day_rows(record(), now=CLOCK)
         self.assertEqual(rows[0]['date_local'], '2026-09-14')
         self.assertEqual(issued.astimezone(IST).strftime('%Y-%m-%d %H:%M'), '2026-09-14 11:30')
 
     def test_each_day_window_is_one_ist_calendar_day(self):
-        rows, _ = dw.day_rows(record())
+        rows, _ = dw.day_rows(record(), now=CLOCK)
         for row in rows:
             opens = datetime.fromisoformat(row['starts_utc']).astimezone(IST)
             closes = datetime.fromisoformat(row['ends_utc']).astimezone(IST)
@@ -47,7 +50,7 @@ class DayAnchoringTests(unittest.TestCase):
     def test_five_days_are_numbered_from_the_bulletin_date(self):
         days = [{'source_day': n, 'hazard_codes': [1], 'hazards': ['No warning in this product'],
                  'colour': 'green', 'colour_code': 4, 'source_text': ''} for n in range(1, 6)]
-        rows, _ = dw.day_rows(record(days=days))
+        rows, _ = dw.day_rows(record(days=days), now=CLOCK)
         self.assertEqual([row['date_local'] for row in rows],
                          ['2026-09-14', '2026-09-15', '2026-09-16', '2026-09-17', '2026-09-18'])
 
@@ -104,36 +107,36 @@ class MapFidelityTests(unittest.TestCase):
 
 class HonestyTests(unittest.TestCase):
     def test_a_quiet_day_is_not_an_all_clear(self):
-        rows, issued = dw.day_rows(record())
+        rows, issued = dw.day_rows(record(), now=CLOCK)
         text = dw.summary(record(), rows, issued)
         self.assertIn('no warning in this product', text)
         self.assertIn('not an all-clear', text)
         self.assertNotIn('there are no warnings', text)
 
     def test_a_hazard_day_names_the_official_hazard(self):
-        rows, _ = dw.day_rows(record())
+        rows, _ = dw.day_rows(record(), now=CLOCK)
         self.assertIn('Thunderstorm/lightning/squall', dw.summary(record(), rows, dw.anchor(record())[1]))
 
     def test_source_text_is_used_verbatim_when_present(self):
         days = [{'source_day': 1, 'hazard_codes': [2], 'hazards': ['Heavy rain'], 'colour': 'yellow',
                  'colour_code': 3, 'source_text': 'Heavy rain likely over the district'}]
-        rows, _ = dw.day_rows(record(days=days))
+        rows, _ = dw.day_rows(record(days=days), now=CLOCK)
         self.assertFalse(rows[0]['quiet'])
         self.assertEqual(dw.hazard_text(rows[0]), 'Heavy rain likely over the district')
 
     def test_severity_takes_the_most_severe_colour(self):
-        rows, _ = dw.day_rows(record())
+        rows, _ = dw.day_rows(record(), now=CLOCK)
         self.assertEqual(dw.severity(rows)[0], 'yellow')
 
     def test_an_unknown_colour_is_not_converted_into_a_level(self):
         days = [{'source_day': 1, 'hazard_codes': [1], 'hazards': ['No warning in this product'],
                  'colour': None, 'colour_code': 0, 'source_text': ''}]
-        rows, issued = dw.day_rows(record(days=days))
+        rows, issued = dw.day_rows(record(days=days), now=CLOCK)
         self.assertIsNone(dw.severity(rows)[0])
         self.assertIn('colour not supplied', dw.summary(record(), rows, issued))
 
     def test_facts_carry_the_entity_window_and_source(self):
-        rows, issued = dw.day_rows(record())
+        rows, issued = dw.day_rows(record(), now=CLOCK)
         facts = dw.facts(record(), rows, issued, 't1-c1', 'Patna')
         self.assertEqual(len(facts), 2)
         first = facts[0]
