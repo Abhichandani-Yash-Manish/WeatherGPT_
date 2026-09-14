@@ -1,0 +1,93 @@
+{
+ "schema_version": "change-detection-measurement-v1",
+ "measured_at_utc": "2026-09-14T19:14:04+00:00",
+ "question": "Can the S57 district bulletin route be swept cheaply with conditional requests, or must every body be downloaded and hashed?",
+ "route": {
+  "step2_selection": "https://mausam.imd.gov.in/responsive/agrometinformation/district_current_en_get.php?s=<district>&step2=true",
+  "step2_bytes_observed": [
+   553,
+   537
+  ],
+  "step2_elapsed_s_observed": [
+   0.53,
+   0.96
+  ],
+  "pdf_address_shape": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=<state>&district=<district>&language=English",
+  "pdf_address_is_dated": false
+ },
+ "probes": [
+  {
+   "method": "HEAD",
+   "url_kind": "district_pdf",
+   "http_status": 403,
+   "elapsed_s": 2.22,
+   "finding": "The publisher refuses HEAD on the district bulletin address."
+  },
+  {
+   "method": "GET",
+   "url_kind": "district_pdf",
+   "http_status": 200,
+   "elapsed_s": 0.56,
+   "response_headers_present": [
+    "Content-Type",
+    "Cache-Control",
+    "Date"
+   ],
+   "response_headers_absent": [
+    "Last-Modified",
+    "ETag",
+    "Content-Length",
+    "Accept-Ranges"
+   ],
+   "cache_control": "no-store, no-cache, must-revalidate",
+   "finding": "No validator header is returned, so there is nothing to make a request conditional on."
+  },
+  {
+   "method": "GET",
+   "url_kind": "district_pdf",
+   "request_header": "If-Modified-Since: Sun, 14 Sep 2026 00:00:00 GMT",
+   "http_status": 200,
+   "bytes": 986646,
+   "finding": "A conditional request is ignored; the full body is returned rather than 304."
+  },
+  {
+   "method": "GET",
+   "url_kind": "district_pdf",
+   "request_header": "Range: bytes=0-2047",
+   "http_status": 200,
+   "bytes": 986646,
+   "content_range": null,
+   "finding": "A range request is ignored; a cheap prefix cannot be fetched."
+  },
+  {
+   "method": "GET x2",
+   "url_kind": "district_pdf",
+   "bytes": [
+    986646,
+    986646
+   ],
+   "sha256_prefix": [
+    "653f005c5eb6069e",
+    "653f005c5eb6069e"
+   ],
+   "identical": true,
+   "finding": "The body is byte-stable across repeated requests, so its sha256 is a sound change signal."
+  }
+ ],
+ "conclusion": {
+  "conditional_change_detection": "not_available",
+  "required_sweep_shape": "download_and_hash_every_target",
+  "reason": "HEAD is refused, no validator header is returned, and both If-Modified-Since and Range are ignored.",
+  "change_signal": "sha256 of the downloaded body, compared against the recorded head for that district",
+  "projected_cost_note": "The one measured district body is 986,646 bytes at roughly 2.0 s per sequential request. That single observation is not a national average and the projection is stated as such, not as a measured national total."
+ },
+ "incidental_finding": {
+  "observation": "The Ahmedabad body sha256 653f005c5eb6069e... equals the blob already recorded against S57 from the 11 September inspection.",
+  "meaning": "The same PDF was still being served three days later. Retrieval success does not establish a daily issue, so currency must be read from the printed issue date rather than the fetch date."
+ },
+ "limitations": [
+  "One district and one host were measured; other families were not probed here.",
+  "Header behaviour can change without notice; this is a measurement, not a guarantee.",
+  "No national sweep has been run. Nothing here reports national coverage."
+ ]
+}

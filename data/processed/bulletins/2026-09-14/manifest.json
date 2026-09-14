@@ -1,0 +1,2249 @@
+{
+ "day": "2026-09-14",
+ "documents": [
+  {
+   "blob": "blobs/7c81546384883e693ac61e731a84441234cb07c2c956f5747ca1ff99b306b643.bin",
+   "bytes": 773423,
+   "currency": "printed_issue_matches_retrieval_date",
+   "family": "flash_flood_national",
+   "first_seen_at_utc": "2026-09-14T18:01:38.311883+00:00",
+   "issue_date": "2026-09-14",
+   "issue_date_basis": "family_rule:printed",
+   "pages": 3,
+   "passages": 7,
+   "quarantined_pages": 1,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "7c81546384883e693ac61e731a84441234cb07c2c956f5747ca1ff99b306b643",
+   "url": "https://mausam.imd.gov.in/Rainfall/national.pdf"
+  },
+  {
+   "blob": "blobs/04ffe1e84bdfba3a8238e3890e7a5ef5c81655e94d6cff439e7f29006fa21058.bin",
+   "bytes": 469232,
+   "currency": "printed_issue_matches_retrieval_date",
+   "family": "flash_flood_sasia",
+   "first_seen_at_utc": "2026-09-14T18:02:03.610357+00:00",
+   "issue_date": "2026-09-14",
+   "issue_date_basis": "family_rule:printed",
+   "pages": 3,
+   "passages": 6,
+   "quarantined_pages": 1,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "04ffe1e84bdfba3a8238e3890e7a5ef5c81655e94d6cff439e7f29006fa21058",
+   "url": "https://mausam.imd.gov.in/Rainfall/sasia.pdf"
+  },
+  {
+   "blob": "blobs/6593a51b65554dfd8f89d37f208f621c625101a612a5b67a5f099e9442479667.bin",
+   "bytes": 426667,
+   "currency": "printed_issue_differs_from_retrieval_date",
+   "family": "special_advisory",
+   "first_seen_at_utc": "2026-09-14T18:02:05.728178+00:00",
+   "issue_date": "2025-11-29",
+   "issue_date_basis": "generic_scan",
+   "pages": 5,
+   "passages": 18,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "6593a51b65554dfd8f89d37f208f621c625101a612a5b67a5f099e9442479667",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/special_advisory.pdf"
+  },
+  {
+   "blob": "blobs/bf0e08e3ccb49d6bd006c0db2b06a0cb1a8225fca9e7ef2752d47f1c4d7ee07f.bin",
+   "bytes": 674995,
+   "currency": "printed_issue_differs_from_retrieval_date",
+   "family": "extended_range",
+   "first_seen_at_utc": "2026-09-14T18:02:30.414459+00:00",
+   "issue_date": "2026-09-03",
+   "issue_date_basis": "family_rule:printed",
+   "pages": 11,
+   "passages": 38,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "bf0e08e3ccb49d6bd006c0db2b06a0cb1a8225fca9e7ef2752d47f1c4d7ee07f",
+   "url": "https://mausam.imd.gov.in/Forecast/marquee_data/extended_1788445377.pdf"
+  },
+  {
+   "blob": "blobs/d05cec7638e7ef4086dd0dc610c74745f453b32a09e7d94716423e9abd513a67.bin",
+   "bytes": 489648,
+   "currency": "printed_issue_differs_from_retrieval_date",
+   "family": "erf_marquee",
+   "first_seen_at_utc": "2026-09-14T18:02:36.734539+00:00",
+   "issue_date": "2026-09-03",
+   "issue_date_basis": "generic_scan",
+   "pages": 10,
+   "passages": 32,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "d05cec7638e7ef4086dd0dc610c74745f453b32a09e7d94716423e9abd513a67",
+   "url": "https://mausam.imd.gov.in/Forecast/marquee_data/ERF%2010.09.26.pdf"
+  },
+  {
+   "blob": "blobs/6d4856c368c5dd4bd824a7d0ad2e410c0babc84af7e3e4861ec7ec762fb5a948.bin",
+   "bytes": 697005,
+   "currency": "printed_issue_not_stated",
+   "family": "press_release",
+   "first_seen_at_utc": "2026-09-14T18:02:40.211578+00:00",
+   "issue_date": null,
+   "issue_date_basis": "not_stated",
+   "pages": 12,
+   "passages": 35,
+   "quarantined_pages": 2,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "6d4856c368c5dd4bd824a7d0ad2e410c0babc84af7e3e4861ec7ec762fb5a948",
+   "url": "https://mausam.imd.gov.in/Forecast/marquee_data/Press%20Release%2014-09-2026.pdf"
+  },
+  {
+   "blob": "blobs/732cdfa9c255f90f14a9821d1607cf3b4d00efff898ce07a5acfc8ca6b24ed99.bin",
+   "bytes": 3473386,
+   "currency": "printed_issue_matches_retrieval_date",
+   "family": "sea_area_bulletin",
+   "first_seen_at_utc": "2026-09-14T18:02:53.384713+00:00",
+   "issue_date": "2026-09-14",
+   "issue_date_basis": "generic_scan",
+   "pages": 3,
+   "passages": 6,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "732cdfa9c255f90f14a9821d1607cf3b4d00efff898ce07a5acfc8ca6b24ed99",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/59/59_a53652_sab_rsmc.pdf"
+  },
+  {
+   "blob": "blobs/6249c6e1b2b74dfd9e448885a9f68c2e681b084e4270ae49c0bdffcf2a33e8f9.bin",
+   "bytes": 3517790,
+   "currency": "printed_issue_matches_retrieval_date",
+   "family": "sea_area_bulletin",
+   "first_seen_at_utc": "2026-09-14T18:02:53.384713+00:00",
+   "issue_date": "2026-09-14",
+   "issue_date_basis": "generic_scan",
+   "pages": 3,
+   "passages": 5,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "6249c6e1b2b74dfd9e448885a9f68c2e681b084e4270ae49c0bdffcf2a33e8f9",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/60/60_47595c_sab.pdf"
+  },
+  {
+   "blob": "blobs/9d7654dc9b6343d7c59743bec9096a53662df36a961156efd8f3acf5f6d5427e.bin",
+   "bytes": 206487,
+   "currency": "printed_issue_matches_retrieval_date",
+   "family": "coastal_bulletin",
+   "first_seen_at_utc": "2026-09-14T18:09:22.069233+00:00",
+   "issue_date": "2026-09-14",
+   "issue_date_basis": "generic_scan",
+   "pages": 1,
+   "passages": 2,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "9d7654dc9b6343d7c59743bec9096a53662df36a961156efd8f3acf5f6d5427e",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_a4b314_coastal.pdf"
+  },
+  {
+   "blob": "blobs/37b13acea4ebeac65aab30c9ffa2412c772f7bde4db3d2bbf0e7446e65187d36.bin",
+   "bytes": 206360,
+   "currency": "printed_issue_matches_retrieval_date",
+   "family": "coastal_bulletin",
+   "first_seen_at_utc": "2026-09-14T18:09:22.069233+00:00",
+   "issue_date": "2026-09-14",
+   "issue_date_basis": "generic_scan",
+   "pages": 2,
+   "passages": 4,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "37b13acea4ebeac65aab30c9ffa2412c772f7bde4db3d2bbf0e7446e65187d36",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_c6d2fa_coastal_bulletin.pdf"
+  },
+  {
+   "blob": "blobs/0d157f7f354616680261c0133d45e746738aa8526c001f7a3f297f6eb40a3f27.bin",
+   "bytes": 169989,
+   "currency": "printed_issue_matches_retrieval_date",
+   "family": "coastal_bulletin",
+   "first_seen_at_utc": "2026-09-14T18:09:22.069233+00:00",
+   "issue_date": "2026-09-14",
+   "issue_date_basis": "generic_scan",
+   "pages": 1,
+   "passages": 2,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "0d157f7f354616680261c0133d45e746738aa8526c001f7a3f297f6eb40a3f27",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_207aa4_coastal_rsmc.pdf"
+  },
+  {
+   "blob": "blobs/870106ea1345f9badf9809dfbfd8affbbaa5079bf8ec3697a81602798d80e811.bin",
+   "bytes": 199769,
+   "currency": "printed_issue_matches_retrieval_date",
+   "family": "coastal_bulletin",
+   "first_seen_at_utc": "2026-09-14T18:09:22.069233+00:00",
+   "issue_date": "2026-09-14",
+   "issue_date_basis": "generic_scan",
+   "pages": 2,
+   "passages": 5,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "870106ea1345f9badf9809dfbfd8affbbaa5079bf8ec3697a81602798d80e811",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_0a7223_coastal_bln.pdf"
+  },
+  {
+   "blob": "blobs/6315b80dbeed2944b6007ced1d782d134a6fa10705981c1aa1024a217ef919c6.bin",
+   "bytes": 171999,
+   "currency": "printed_issue_matches_retrieval_date",
+   "family": "coastal_bulletin",
+   "first_seen_at_utc": "2026-09-14T18:09:22.069233+00:00",
+   "issue_date": "2026-09-14",
+   "issue_date_basis": "generic_scan",
+   "pages": 2,
+   "passages": 8,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "6315b80dbeed2944b6007ced1d782d134a6fa10705981c1aa1024a217ef919c6",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_04c0c9_coastal.pdf"
+  },
+  {
+   "blob": "blobs/887aacf00f65c5f111efe0a3ce5679c20faf954c2b073396e07b97d361b12b27.bin",
+   "bytes": 170142,
+   "currency": "printed_issue_matches_retrieval_date",
+   "family": "coastal_bulletin",
+   "first_seen_at_utc": "2026-09-14T18:14:08.030439+00:00",
+   "issue_date": "2026-09-14",
+   "issue_date_basis": "generic_scan",
+   "pages": 1,
+   "passages": 5,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "887aacf00f65c5f111efe0a3ce5679c20faf954c2b073396e07b97d361b12b27",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_05bf23_TWO_BULLETIN_STN.pdf"
+  },
+  {
+   "blob": "blobs/bc80dbb52277ae1ae0cec6032a191e166fda6ea3a5392fa90e60d2face32277c.bin",
+   "bytes": 163325,
+   "currency": "printed_issue_matches_retrieval_date",
+   "family": "coastal_bulletin",
+   "first_seen_at_utc": "2026-09-14T18:14:08.030439+00:00",
+   "issue_date": "2026-09-14",
+   "issue_date_basis": "generic_scan",
+   "pages": 1,
+   "passages": 3,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "bc80dbb52277ae1ae0cec6032a191e166fda6ea3a5392fa90e60d2face32277c",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_034933_TWO_BULLETIN_NTN.pdf"
+  },
+  {
+   "blob": "blobs/d3e80f651f7251f5a5bf359c07a05592ce85bd5d72d1436a5ca634ab4f00024c.bin",
+   "bytes": 6119191,
+   "currency": "printed_issue_matches_retrieval_date",
+   "family": "national_bulletin",
+   "first_seen_at_utc": "2026-09-14T18:14:36.792371+00:00",
+   "issue_date": "2026-09-14",
+   "issue_date_basis": "family_rule:printed",
+   "pages": 22,
+   "passages": 48,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "d3e80f651f7251f5a5bf359c07a05592ce85bd5d72d1436a5ca634ab4f00024c",
+   "url": "https://mausam.imd.gov.in/backend/assets/aiwfb_pdf/32e8ca772c05a9dcfa2ab837192f5631.pdf"
+  },
+  {
+   "blob": "blobs/22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3.bin",
+   "bytes": 3929832,
+   "currency": "printed_issue_differs_from_retrieval_date",
+   "family": "state_agromet",
+   "first_seen_at_utc": "2026-09-14T18:28:49.905251+00:00",
+   "issue_date": "2026-09-12",
+   "issue_date_basis": "family_rule:printed",
+   "pages": 76,
+   "passages": 257,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3",
+   "url": "https://mausam.imd.gov.in/ahmedabad/mcdata/agromet.pdf"
+  },
+  {
+   "blob": "blobs/071e51844b0d88910ed3046f98383c7ad138c7156f95bfc0d496e5edb16b421e.bin",
+   "bytes": 1177902,
+   "currency": "printed_issue_differs_from_retrieval_date",
+   "family": "state_district_bulletin",
+   "first_seen_at_utc": "2026-09-14T18:29:01.015092+00:00",
+   "issue_date": "2026-09-13",
+   "issue_date_basis": "family_rule:printed",
+   "pages": 7,
+   "passages": 32,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "071e51844b0d88910ed3046f98383c7ad138c7156f95bfc0d496e5edb16b421e",
+   "url": "https://mausam.imd.gov.in/ahmedabad/mcdata/district.pdf"
+  }
+ ],
+ "rejected": [
+  {
+   "at_utc": "2026-09-14T18:09:22.069233+00:00",
+   "error": "Front page does not name the reviewed issuing authority",
+   "family": "coastal_bulletin",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_dbef53_coastal_bulletin.pdf"
+  },
+  {
+   "at_utc": "2026-09-14T18:09:22.069233+00:00",
+   "error": "Front page does not name the reviewed issuing authority",
+   "family": "coastal_bulletin",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_425544_coastal_bulletin.pdf"
+  },
+  {
+   "at_utc": "2026-09-14T18:09:22.069233+00:00",
+   "error": "Front page does not name the reviewed issuing authority",
+   "family": "coastal_bulletin",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_05bf23_TWO_BULLETIN_STN.pdf"
+  },
+  {
+   "at_utc": "2026-09-14T18:09:22.069233+00:00",
+   "error": "Front page does not name the reviewed issuing authority",
+   "family": "coastal_bulletin",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_034933_TWO_BULLETIN_NTN.pdf"
+  },
+  {
+   "at_utc": "2026-09-14T18:14:08.030439+00:00",
+   "error": "No indexed passage remains after extraction; the document needs layout review",
+   "family": "coastal_bulletin",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_dbef53_coastal_bulletin.pdf"
+  },
+  {
+   "at_utc": "2026-09-14T18:14:08.030439+00:00",
+   "error": "No indexed passage remains after extraction; the document needs layout review",
+   "family": "coastal_bulletin",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_425544_coastal_bulletin.pdf"
+  },
+  {
+   "at_utc": "2026-09-14T18:22:25.357336+00:00",
+   "error": "No indexed passage remains after extraction; the document needs layout review",
+   "family": "coastal_bulletin",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_dbef53_coastal_bulletin.pdf"
+  },
+  {
+   "at_utc": "2026-09-14T18:22:25.357336+00:00",
+   "error": "No indexed passage remains after extraction; the document needs layout review",
+   "family": "coastal_bulletin",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_425544_coastal_bulletin.pdf"
+  },
+  {
+   "at_utc": "2026-09-14T18:27:50.872642+00:00",
+   "error": "No indexed passage remains after extraction; the document needs layout review",
+   "family": "coastal_bulletin",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_dbef53_coastal_bulletin.pdf"
+  },
+  {
+   "at_utc": "2026-09-14T18:27:50.872642+00:00",
+   "error": "No indexed passage remains after extraction; the document needs layout review",
+   "family": "coastal_bulletin",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_425544_coastal_bulletin.pdf"
+  }
+ ],
+ "runs": [
+  {
+   "accepted": [
+    {
+     "blob": "blobs/7c81546384883e693ac61e731a84441234cb07c2c956f5747ca1ff99b306b643.bin",
+     "bytes": 773423,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "flash_flood_national",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "family_rule:printed",
+     "pages": 3,
+     "passages": 7,
+     "quarantined_pages": 1,
+     "sha256": "7c81546384883e693ac61e731a84441234cb07c2c956f5747ca1ff99b306b643",
+     "url": "https://mausam.imd.gov.in/Rainfall/national.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Rainfall/national.pdf"
+   ],
+   "family": "flash_flood_national",
+   "generated_at_utc": "2026-09-14T18:01:38.311883+00:00",
+   "rejected": [],
+   "source_id": "S65",
+   "started_at_utc": "2026-09-14T18:01:38.311883+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "blob": "blobs/04ffe1e84bdfba3a8238e3890e7a5ef5c81655e94d6cff439e7f29006fa21058.bin",
+     "bytes": 469232,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "flash_flood_sasia",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "family_rule:printed",
+     "pages": 3,
+     "passages": 6,
+     "quarantined_pages": 1,
+     "sha256": "04ffe1e84bdfba3a8238e3890e7a5ef5c81655e94d6cff439e7f29006fa21058",
+     "url": "https://mausam.imd.gov.in/Rainfall/sasia.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Rainfall/sasia.pdf"
+   ],
+   "family": "flash_flood_sasia",
+   "generated_at_utc": "2026-09-14T18:02:03.610357+00:00",
+   "rejected": [],
+   "source_id": "S65",
+   "started_at_utc": "2026-09-14T18:02:03.610357+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "blob": "blobs/6593a51b65554dfd8f89d37f208f621c625101a612a5b67a5f099e9442479667.bin",
+     "bytes": 426667,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "special_advisory",
+     "issue_date": "2025-11-29",
+     "issue_date_basis": "generic_scan",
+     "pages": 5,
+     "passages": 18,
+     "quarantined_pages": 0,
+     "sha256": "6593a51b65554dfd8f89d37f208f621c625101a612a5b67a5f099e9442479667",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/special_advisory.pdf"
+    }
+   ],
+   "candidates": [
+    "https://rsmcnewdelhi.imd.gov.in/uploads/special_advisory.pdf"
+   ],
+   "family": "special_advisory",
+   "generated_at_utc": "2026-09-14T18:02:05.728178+00:00",
+   "rejected": [],
+   "source_id": "S67",
+   "started_at_utc": "2026-09-14T18:02:05.728178+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "blob": "blobs/bf0e08e3ccb49d6bd006c0db2b06a0cb1a8225fca9e7ef2752d47f1c4d7ee07f.bin",
+     "bytes": 674995,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "extended_range",
+     "issue_date": "2026-09-03",
+     "issue_date_basis": "family_rule:printed",
+     "pages": 11,
+     "passages": 38,
+     "quarantined_pages": 0,
+     "sha256": "bf0e08e3ccb49d6bd006c0db2b06a0cb1a8225fca9e7ef2752d47f1c4d7ee07f",
+     "url": "https://mausam.imd.gov.in/Forecast/marquee_data/extended_1788445377.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Forecast/marquee_data/extended_1788445377.pdf"
+   ],
+   "family": "extended_range",
+   "generated_at_utc": "2026-09-14T18:02:30.414459+00:00",
+   "rejected": [],
+   "source_id": "S66",
+   "started_at_utc": "2026-09-14T18:02:30.414459+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "blob": "blobs/d05cec7638e7ef4086dd0dc610c74745f453b32a09e7d94716423e9abd513a67.bin",
+     "bytes": 489648,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "erf_marquee",
+     "issue_date": "2026-09-03",
+     "issue_date_basis": "generic_scan",
+     "pages": 10,
+     "passages": 32,
+     "quarantined_pages": 0,
+     "sha256": "d05cec7638e7ef4086dd0dc610c74745f453b32a09e7d94716423e9abd513a67",
+     "url": "https://mausam.imd.gov.in/Forecast/marquee_data/ERF%2010.09.26.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Forecast/marquee_data/ERF%2010.09.26.pdf"
+   ],
+   "family": "erf_marquee",
+   "generated_at_utc": "2026-09-14T18:02:36.734539+00:00",
+   "rejected": [],
+   "source_id": "S66",
+   "started_at_utc": "2026-09-14T18:02:36.734539+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "blob": "blobs/6d4856c368c5dd4bd824a7d0ad2e410c0babc84af7e3e4861ec7ec762fb5a948.bin",
+     "bytes": 697005,
+     "currency": "printed_issue_not_stated",
+     "duplicate": false,
+     "family": "press_release",
+     "issue_date": null,
+     "issue_date_basis": "not_stated",
+     "pages": 12,
+     "passages": 35,
+     "quarantined_pages": 2,
+     "sha256": "6d4856c368c5dd4bd824a7d0ad2e410c0babc84af7e3e4861ec7ec762fb5a948",
+     "url": "https://mausam.imd.gov.in/Forecast/marquee_data/Press%20Release%2014-09-2026.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Forecast/marquee_data/Press%20Release%2014-09-2026.pdf"
+   ],
+   "family": "press_release",
+   "generated_at_utc": "2026-09-14T18:02:40.211578+00:00",
+   "rejected": [],
+   "source_id": "S66",
+   "started_at_utc": "2026-09-14T18:02:40.211578+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "blob": "blobs/732cdfa9c255f90f14a9821d1607cf3b4d00efff898ce07a5acfc8ca6b24ed99.bin",
+     "bytes": 3473386,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "sea_area_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "pages": 3,
+     "passages": 6,
+     "quarantined_pages": 0,
+     "sha256": "732cdfa9c255f90f14a9821d1607cf3b4d00efff898ce07a5acfc8ca6b24ed99",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/59/59_a53652_sab_rsmc.pdf"
+    },
+    {
+     "blob": "blobs/6249c6e1b2b74dfd9e448885a9f68c2e681b084e4270ae49c0bdffcf2a33e8f9.bin",
+     "bytes": 3517790,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "sea_area_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "pages": 3,
+     "passages": 5,
+     "quarantined_pages": 0,
+     "sha256": "6249c6e1b2b74dfd9e448885a9f68c2e681b084e4270ae49c0bdffcf2a33e8f9",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/60/60_47595c_sab.pdf"
+    }
+   ],
+   "candidates": [
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/59/59_a53652_sab_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/60/60_47595c_sab.pdf"
+   ],
+   "family": "sea_area_bulletin",
+   "generated_at_utc": "2026-09-14T18:02:53.384713+00:00",
+   "rejected": [],
+   "source_id": "S58",
+   "started_at_utc": "2026-09-14T18:02:53.384713+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "blob": "blobs/9d7654dc9b6343d7c59743bec9096a53662df36a961156efd8f3acf5f6d5427e.bin",
+     "bytes": 206487,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "pages": 1,
+     "passages": 2,
+     "quarantined_pages": 0,
+     "sha256": "9d7654dc9b6343d7c59743bec9096a53662df36a961156efd8f3acf5f6d5427e",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_a4b314_coastal.pdf"
+    },
+    {
+     "blob": "blobs/9d7654dc9b6343d7c59743bec9096a53662df36a961156efd8f3acf5f6d5427e.bin",
+     "bytes": 206487,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": true,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "pages": 1,
+     "passages": 2,
+     "quarantined_pages": 0,
+     "sha256": "9d7654dc9b6343d7c59743bec9096a53662df36a961156efd8f3acf5f6d5427e",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_5bc2be_coastal.pdf"
+    },
+    {
+     "blob": "blobs/37b13acea4ebeac65aab30c9ffa2412c772f7bde4db3d2bbf0e7446e65187d36.bin",
+     "bytes": 206360,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "pages": 2,
+     "passages": 4,
+     "quarantined_pages": 0,
+     "sha256": "37b13acea4ebeac65aab30c9ffa2412c772f7bde4db3d2bbf0e7446e65187d36",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_c6d2fa_coastal_bulletin.pdf"
+    },
+    {
+     "blob": "blobs/37b13acea4ebeac65aab30c9ffa2412c772f7bde4db3d2bbf0e7446e65187d36.bin",
+     "bytes": 206360,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": true,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "pages": 2,
+     "passages": 4,
+     "quarantined_pages": 0,
+     "sha256": "37b13acea4ebeac65aab30c9ffa2412c772f7bde4db3d2bbf0e7446e65187d36",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_b99714_coastal_bulletin.pdf"
+    },
+    {
+     "blob": "blobs/37b13acea4ebeac65aab30c9ffa2412c772f7bde4db3d2bbf0e7446e65187d36.bin",
+     "bytes": 206360,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": true,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "pages": 2,
+     "passages": 4,
+     "quarantined_pages": 0,
+     "sha256": "37b13acea4ebeac65aab30c9ffa2412c772f7bde4db3d2bbf0e7446e65187d36",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_972f8e_coastal_bulletin.pdf"
+    },
+    {
+     "blob": "blobs/0d157f7f354616680261c0133d45e746738aa8526c001f7a3f297f6eb40a3f27.bin",
+     "bytes": 169989,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "pages": 1,
+     "passages": 2,
+     "quarantined_pages": 0,
+     "sha256": "0d157f7f354616680261c0133d45e746738aa8526c001f7a3f297f6eb40a3f27",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_207aa4_coastal_rsmc.pdf"
+    },
+    {
+     "blob": "blobs/0d157f7f354616680261c0133d45e746738aa8526c001f7a3f297f6eb40a3f27.bin",
+     "bytes": 169989,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": true,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "pages": 1,
+     "passages": 2,
+     "quarantined_pages": 0,
+     "sha256": "0d157f7f354616680261c0133d45e746738aa8526c001f7a3f297f6eb40a3f27",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_d2647c_coastal_rsmc.pdf"
+    },
+    {
+     "blob": "blobs/870106ea1345f9badf9809dfbfd8affbbaa5079bf8ec3697a81602798d80e811.bin",
+     "bytes": 199769,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "pages": 2,
+     "passages": 5,
+     "quarantined_pages": 0,
+     "sha256": "870106ea1345f9badf9809dfbfd8affbbaa5079bf8ec3697a81602798d80e811",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_0a7223_coastal_bln.pdf"
+    },
+    {
+     "blob": "blobs/870106ea1345f9badf9809dfbfd8affbbaa5079bf8ec3697a81602798d80e811.bin",
+     "bytes": 199769,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": true,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "pages": 2,
+     "passages": 5,
+     "quarantined_pages": 0,
+     "sha256": "870106ea1345f9badf9809dfbfd8affbbaa5079bf8ec3697a81602798d80e811",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_062e31_coastal_bln.pdf"
+    },
+    {
+     "blob": "blobs/0d157f7f354616680261c0133d45e746738aa8526c001f7a3f297f6eb40a3f27.bin",
+     "bytes": 169989,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": true,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "pages": 1,
+     "passages": 2,
+     "quarantined_pages": 0,
+     "sha256": "0d157f7f354616680261c0133d45e746738aa8526c001f7a3f297f6eb40a3f27",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_a3a0b2_coastal_rsmc.pdf"
+    },
+    {
+     "blob": "blobs/6315b80dbeed2944b6007ced1d782d134a6fa10705981c1aa1024a217ef919c6.bin",
+     "bytes": 171999,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "pages": 2,
+     "passages": 8,
+     "quarantined_pages": 0,
+     "sha256": "6315b80dbeed2944b6007ced1d782d134a6fa10705981c1aa1024a217ef919c6",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_04c0c9_coastal.pdf"
+    }
+   ],
+   "candidates": [
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_a4b314_coastal.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_5bc2be_coastal.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_dbef53_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_425544_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_05bf23_TWO_BULLETIN_STN.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_034933_TWO_BULLETIN_NTN.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_c6d2fa_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_b99714_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_972f8e_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_207aa4_coastal_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_d2647c_coastal_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_0a7223_coastal_bln.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_062e31_coastal_bln.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_a3a0b2_coastal_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_04c0c9_coastal.pdf"
+   ],
+   "family": "coastal_bulletin",
+   "generated_at_utc": "2026-09-14T18:09:22.069233+00:00",
+   "rejected": [
+    {
+     "error": "Front page does not name the reviewed issuing authority",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_dbef53_coastal_bulletin.pdf"
+    },
+    {
+     "error": "Front page does not name the reviewed issuing authority",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_425544_coastal_bulletin.pdf"
+    },
+    {
+     "error": "Front page does not name the reviewed issuing authority",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_05bf23_TWO_BULLETIN_STN.pdf"
+    },
+    {
+     "error": "Front page does not name the reviewed issuing authority",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_034933_TWO_BULLETIN_NTN.pdf"
+    }
+   ],
+   "source_id": "S59",
+   "started_at_utc": "2026-09-14T18:09:22.069233+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "blob": "blobs/d05cec7638e7ef4086dd0dc610c74745f453b32a09e7d94716423e9abd513a67.bin",
+     "bytes": 489648,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "erf_marquee",
+     "issue_date": "2026-09-03",
+     "issue_date_basis": "generic_scan",
+     "pages": 10,
+     "passages": 32,
+     "quarantined_pages": 0,
+     "sha256": "d05cec7638e7ef4086dd0dc610c74745f453b32a09e7d94716423e9abd513a67",
+     "url": "https://mausam.imd.gov.in/Forecast/marquee_data/ERF%2010.09.26.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Forecast/marquee_data/ERF%2010.09.26.pdf"
+   ],
+   "family": "erf_marquee",
+   "generated_at_utc": "2026-09-14T18:09:44.361485+00:00",
+   "rejected": [],
+   "source_id": "S66",
+   "started_at_utc": "2026-09-14T18:09:44.361485+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "blob": "blobs/bf0e08e3ccb49d6bd006c0db2b06a0cb1a8225fca9e7ef2752d47f1c4d7ee07f.bin",
+     "bytes": 674995,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "extended_range",
+     "issue_date": "2026-09-03",
+     "issue_date_basis": "family_rule:printed",
+     "pages": 11,
+     "passages": 38,
+     "quarantined_pages": 0,
+     "sha256": "bf0e08e3ccb49d6bd006c0db2b06a0cb1a8225fca9e7ef2752d47f1c4d7ee07f",
+     "url": "https://mausam.imd.gov.in/Forecast/marquee_data/extended_1788445377.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Forecast/marquee_data/extended_1788445377.pdf"
+   ],
+   "family": "extended_range",
+   "generated_at_utc": "2026-09-14T18:09:50.110914+00:00",
+   "rejected": [],
+   "source_id": "S66",
+   "started_at_utc": "2026-09-14T18:09:50.110914+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "blob": "blobs/7c81546384883e693ac61e731a84441234cb07c2c956f5747ca1ff99b306b643.bin",
+     "bytes": 773423,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "flash_flood_national",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "family_rule:printed",
+     "pages": 3,
+     "passages": 7,
+     "quarantined_pages": 1,
+     "sha256": "7c81546384883e693ac61e731a84441234cb07c2c956f5747ca1ff99b306b643",
+     "url": "https://mausam.imd.gov.in/Rainfall/national.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Rainfall/national.pdf"
+   ],
+   "family": "flash_flood_national",
+   "generated_at_utc": "2026-09-14T18:10:00.457575+00:00",
+   "rejected": [],
+   "source_id": "S65",
+   "started_at_utc": "2026-09-14T18:10:00.457575+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "blob": "blobs/04ffe1e84bdfba3a8238e3890e7a5ef5c81655e94d6cff439e7f29006fa21058.bin",
+     "bytes": 469232,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "flash_flood_sasia",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "family_rule:printed",
+     "pages": 3,
+     "passages": 6,
+     "quarantined_pages": 1,
+     "sha256": "04ffe1e84bdfba3a8238e3890e7a5ef5c81655e94d6cff439e7f29006fa21058",
+     "url": "https://mausam.imd.gov.in/Rainfall/sasia.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Rainfall/sasia.pdf"
+   ],
+   "family": "flash_flood_sasia",
+   "generated_at_utc": "2026-09-14T18:10:16.912749+00:00",
+   "rejected": [],
+   "source_id": "S65",
+   "started_at_utc": "2026-09-14T18:10:16.912749+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "blob": "blobs/6d4856c368c5dd4bd824a7d0ad2e410c0babc84af7e3e4861ec7ec762fb5a948.bin",
+     "bytes": 697005,
+     "currency": "printed_issue_not_stated",
+     "duplicate": false,
+     "family": "press_release",
+     "issue_date": null,
+     "issue_date_basis": "not_stated",
+     "pages": 12,
+     "passages": 35,
+     "quarantined_pages": 2,
+     "sha256": "6d4856c368c5dd4bd824a7d0ad2e410c0babc84af7e3e4861ec7ec762fb5a948",
+     "url": "https://mausam.imd.gov.in/Forecast/marquee_data/Press%20Release%2014-09-2026.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Forecast/marquee_data/Press%20Release%2014-09-2026.pdf"
+   ],
+   "family": "press_release",
+   "generated_at_utc": "2026-09-14T18:10:30.940619+00:00",
+   "rejected": [],
+   "source_id": "S66",
+   "started_at_utc": "2026-09-14T18:10:30.940619+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "blob": "blobs/732cdfa9c255f90f14a9821d1607cf3b4d00efff898ce07a5acfc8ca6b24ed99.bin",
+     "bytes": 3473386,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "sea_area_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "pages": 3,
+     "passages": 6,
+     "quarantined_pages": 0,
+     "sha256": "732cdfa9c255f90f14a9821d1607cf3b4d00efff898ce07a5acfc8ca6b24ed99",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/59/59_a53652_sab_rsmc.pdf"
+    },
+    {
+     "blob": "blobs/6249c6e1b2b74dfd9e448885a9f68c2e681b084e4270ae49c0bdffcf2a33e8f9.bin",
+     "bytes": 3517790,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "sea_area_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "pages": 3,
+     "passages": 5,
+     "quarantined_pages": 0,
+     "sha256": "6249c6e1b2b74dfd9e448885a9f68c2e681b084e4270ae49c0bdffcf2a33e8f9",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/60/60_47595c_sab.pdf"
+    }
+   ],
+   "candidates": [
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/59/59_a53652_sab_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/60/60_47595c_sab.pdf"
+   ],
+   "family": "sea_area_bulletin",
+   "generated_at_utc": "2026-09-14T18:10:35.889888+00:00",
+   "rejected": [],
+   "source_id": "S58",
+   "started_at_utc": "2026-09-14T18:10:35.889888+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "blob": "blobs/6593a51b65554dfd8f89d37f208f621c625101a612a5b67a5f099e9442479667.bin",
+     "bytes": 426667,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "special_advisory",
+     "issue_date": "2025-11-29",
+     "issue_date_basis": "generic_scan",
+     "pages": 5,
+     "passages": 18,
+     "quarantined_pages": 0,
+     "sha256": "6593a51b65554dfd8f89d37f208f621c625101a612a5b67a5f099e9442479667",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/special_advisory.pdf"
+    }
+   ],
+   "candidates": [
+    "https://rsmcnewdelhi.imd.gov.in/uploads/special_advisory.pdf"
+   ],
+   "family": "special_advisory",
+   "generated_at_utc": "2026-09-14T18:10:43.296447+00:00",
+   "rejected": [],
+   "source_id": "S67",
+   "started_at_utc": "2026-09-14T18:10:43.296447+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/9d7654dc9b6343d7c59743bec9096a53662df36a961156efd8f3acf5f6d5427e.bin",
+     "bytes": 206487,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 1,
+     "passages": 2,
+     "quarantined_pages": 0,
+     "sha256": "9d7654dc9b6343d7c59743bec9096a53662df36a961156efd8f3acf5f6d5427e",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_a4b314_coastal.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/887aacf00f65c5f111efe0a3ce5679c20faf954c2b073396e07b97d361b12b27.bin",
+     "bytes": 170142,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "marker_only",
+     "pages": 1,
+     "passages": 5,
+     "quarantined_pages": 0,
+     "sha256": "887aacf00f65c5f111efe0a3ce5679c20faf954c2b073396e07b97d361b12b27",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_05bf23_TWO_BULLETIN_STN.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/bc80dbb52277ae1ae0cec6032a191e166fda6ea3a5392fa90e60d2face32277c.bin",
+     "bytes": 163325,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "marker_only",
+     "pages": 1,
+     "passages": 3,
+     "quarantined_pages": 0,
+     "sha256": "bc80dbb52277ae1ae0cec6032a191e166fda6ea3a5392fa90e60d2face32277c",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_034933_TWO_BULLETIN_NTN.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/37b13acea4ebeac65aab30c9ffa2412c772f7bde4db3d2bbf0e7446e65187d36.bin",
+     "bytes": 206360,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 2,
+     "passages": 4,
+     "quarantined_pages": 0,
+     "sha256": "37b13acea4ebeac65aab30c9ffa2412c772f7bde4db3d2bbf0e7446e65187d36",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_c6d2fa_coastal_bulletin.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/0d157f7f354616680261c0133d45e746738aa8526c001f7a3f297f6eb40a3f27.bin",
+     "bytes": 169989,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 1,
+     "passages": 2,
+     "quarantined_pages": 0,
+     "sha256": "0d157f7f354616680261c0133d45e746738aa8526c001f7a3f297f6eb40a3f27",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_207aa4_coastal_rsmc.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/870106ea1345f9badf9809dfbfd8affbbaa5079bf8ec3697a81602798d80e811.bin",
+     "bytes": 199769,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 2,
+     "passages": 5,
+     "quarantined_pages": 0,
+     "sha256": "870106ea1345f9badf9809dfbfd8affbbaa5079bf8ec3697a81602798d80e811",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_0a7223_coastal_bln.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/6315b80dbeed2944b6007ced1d782d134a6fa10705981c1aa1024a217ef919c6.bin",
+     "bytes": 171999,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 2,
+     "passages": 8,
+     "quarantined_pages": 0,
+     "sha256": "6315b80dbeed2944b6007ced1d782d134a6fa10705981c1aa1024a217ef919c6",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_04c0c9_coastal.pdf"
+    }
+   ],
+   "candidates": [
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_a4b314_coastal.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_5bc2be_coastal.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_dbef53_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_425544_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_05bf23_TWO_BULLETIN_STN.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_034933_TWO_BULLETIN_NTN.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_c6d2fa_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_b99714_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_972f8e_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_207aa4_coastal_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_d2647c_coastal_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_0a7223_coastal_bln.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_062e31_coastal_bln.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_a3a0b2_coastal_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_04c0c9_coastal.pdf"
+   ],
+   "family": "coastal_bulletin",
+   "generated_at_utc": "2026-09-14T18:14:08.030439+00:00",
+   "rejected": [
+    {
+     "error": "No indexed passage remains after extraction; the document needs layout review",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_dbef53_coastal_bulletin.pdf"
+    },
+    {
+     "error": "No indexed passage remains after extraction; the document needs layout review",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_425544_coastal_bulletin.pdf"
+    }
+   ],
+   "source_id": "S59",
+   "started_at_utc": "2026-09-14T18:14:08.030439+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/d05cec7638e7ef4086dd0dc610c74745f453b32a09e7d94716423e9abd513a67.bin",
+     "bytes": 489648,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "erf_marquee",
+     "issue_date": "2026-09-03",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 10,
+     "passages": 32,
+     "quarantined_pages": 0,
+     "sha256": "d05cec7638e7ef4086dd0dc610c74745f453b32a09e7d94716423e9abd513a67",
+     "url": "https://mausam.imd.gov.in/Forecast/marquee_data/ERF%2010.09.26.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Forecast/marquee_data/ERF%2010.09.26.pdf"
+   ],
+   "family": "erf_marquee",
+   "generated_at_utc": "2026-09-14T18:14:26.223711+00:00",
+   "rejected": [],
+   "source_id": "S66",
+   "started_at_utc": "2026-09-14T18:14:26.223711+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/bf0e08e3ccb49d6bd006c0db2b06a0cb1a8225fca9e7ef2752d47f1c4d7ee07f.bin",
+     "bytes": 674995,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "extended_range",
+     "issue_date": "2026-09-03",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 11,
+     "passages": 38,
+     "quarantined_pages": 0,
+     "sha256": "bf0e08e3ccb49d6bd006c0db2b06a0cb1a8225fca9e7ef2752d47f1c4d7ee07f",
+     "url": "https://mausam.imd.gov.in/Forecast/marquee_data/extended_1788445377.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Forecast/marquee_data/extended_1788445377.pdf"
+   ],
+   "family": "extended_range",
+   "generated_at_utc": "2026-09-14T18:14:28.287606+00:00",
+   "rejected": [],
+   "source_id": "S66",
+   "started_at_utc": "2026-09-14T18:14:28.287606+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/7c81546384883e693ac61e731a84441234cb07c2c956f5747ca1ff99b306b643.bin",
+     "bytes": 773423,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "flash_flood_national",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 3,
+     "passages": 7,
+     "quarantined_pages": 1,
+     "sha256": "7c81546384883e693ac61e731a84441234cb07c2c956f5747ca1ff99b306b643",
+     "url": "https://mausam.imd.gov.in/Rainfall/national.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Rainfall/national.pdf"
+   ],
+   "family": "flash_flood_national",
+   "generated_at_utc": "2026-09-14T18:14:30.665037+00:00",
+   "rejected": [],
+   "source_id": "S65",
+   "started_at_utc": "2026-09-14T18:14:30.665037+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/04ffe1e84bdfba3a8238e3890e7a5ef5c81655e94d6cff439e7f29006fa21058.bin",
+     "bytes": 469232,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "flash_flood_sasia",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 3,
+     "passages": 6,
+     "quarantined_pages": 1,
+     "sha256": "04ffe1e84bdfba3a8238e3890e7a5ef5c81655e94d6cff439e7f29006fa21058",
+     "url": "https://mausam.imd.gov.in/Rainfall/sasia.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Rainfall/sasia.pdf"
+   ],
+   "family": "flash_flood_sasia",
+   "generated_at_utc": "2026-09-14T18:14:34.113600+00:00",
+   "rejected": [],
+   "source_id": "S65",
+   "started_at_utc": "2026-09-14T18:14:34.113600+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/d3e80f651f7251f5a5bf359c07a05592ce85bd5d72d1436a5ca634ab4f00024c.bin",
+     "bytes": 6119191,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "national_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "marker_only",
+     "pages": 22,
+     "passages": 48,
+     "quarantined_pages": 0,
+     "sha256": "d3e80f651f7251f5a5bf359c07a05592ce85bd5d72d1436a5ca634ab4f00024c",
+     "url": "https://mausam.imd.gov.in/backend/assets/aiwfb_pdf/32e8ca772c05a9dcfa2ab837192f5631.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/backend/assets/aiwfb_pdf/32e8ca772c05a9dcfa2ab837192f5631.pdf"
+   ],
+   "family": "national_bulletin",
+   "generated_at_utc": "2026-09-14T18:14:36.792371+00:00",
+   "rejected": [],
+   "source_id": "S64",
+   "started_at_utc": "2026-09-14T18:14:36.792371+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/6d4856c368c5dd4bd824a7d0ad2e410c0babc84af7e3e4861ec7ec762fb5a948.bin",
+     "bytes": 697005,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "press_release",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "filename",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 12,
+     "passages": 35,
+     "quarantined_pages": 2,
+     "sha256": "6d4856c368c5dd4bd824a7d0ad2e410c0babc84af7e3e4861ec7ec762fb5a948",
+     "url": "https://mausam.imd.gov.in/Forecast/marquee_data/Press%20Release%2014-09-2026.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Forecast/marquee_data/Press%20Release%2014-09-2026.pdf"
+   ],
+   "family": "press_release",
+   "generated_at_utc": "2026-09-14T18:15:26.208783+00:00",
+   "rejected": [],
+   "source_id": "S66",
+   "started_at_utc": "2026-09-14T18:15:26.208783+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/732cdfa9c255f90f14a9821d1607cf3b4d00efff898ce07a5acfc8ca6b24ed99.bin",
+     "bytes": 3473386,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "sea_area_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 3,
+     "passages": 6,
+     "quarantined_pages": 0,
+     "sha256": "732cdfa9c255f90f14a9821d1607cf3b4d00efff898ce07a5acfc8ca6b24ed99",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/59/59_a53652_sab_rsmc.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/6249c6e1b2b74dfd9e448885a9f68c2e681b084e4270ae49c0bdffcf2a33e8f9.bin",
+     "bytes": 3517790,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "sea_area_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 3,
+     "passages": 5,
+     "quarantined_pages": 0,
+     "sha256": "6249c6e1b2b74dfd9e448885a9f68c2e681b084e4270ae49c0bdffcf2a33e8f9",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/60/60_47595c_sab.pdf"
+    }
+   ],
+   "candidates": [
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/59/59_a53652_sab_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/60/60_47595c_sab.pdf"
+   ],
+   "family": "sea_area_bulletin",
+   "generated_at_utc": "2026-09-14T18:15:30.357172+00:00",
+   "rejected": [],
+   "source_id": "S58",
+   "started_at_utc": "2026-09-14T18:15:30.357172+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/6593a51b65554dfd8f89d37f208f621c625101a612a5b67a5f099e9442479667.bin",
+     "bytes": 426667,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "special_advisory",
+     "issue_date": "2025-11-29",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 5,
+     "passages": 18,
+     "quarantined_pages": 0,
+     "sha256": "6593a51b65554dfd8f89d37f208f621c625101a612a5b67a5f099e9442479667",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/special_advisory.pdf"
+    }
+   ],
+   "candidates": [
+    "https://rsmcnewdelhi.imd.gov.in/uploads/special_advisory.pdf"
+   ],
+   "family": "special_advisory",
+   "generated_at_utc": "2026-09-14T18:15:59.899797+00:00",
+   "rejected": [],
+   "source_id": "S67",
+   "started_at_utc": "2026-09-14T18:15:59.899797+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/9d7654dc9b6343d7c59743bec9096a53662df36a961156efd8f3acf5f6d5427e.bin",
+     "bytes": 206487,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 1,
+     "passages": 2,
+     "quarantined_pages": 0,
+     "sha256": "9d7654dc9b6343d7c59743bec9096a53662df36a961156efd8f3acf5f6d5427e",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_a4b314_coastal.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/887aacf00f65c5f111efe0a3ce5679c20faf954c2b073396e07b97d361b12b27.bin",
+     "bytes": 170142,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "marker_only",
+     "pages": 1,
+     "passages": 5,
+     "quarantined_pages": 0,
+     "sha256": "887aacf00f65c5f111efe0a3ce5679c20faf954c2b073396e07b97d361b12b27",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_05bf23_TWO_BULLETIN_STN.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/bc80dbb52277ae1ae0cec6032a191e166fda6ea3a5392fa90e60d2face32277c.bin",
+     "bytes": 163325,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "marker_only",
+     "pages": 1,
+     "passages": 3,
+     "quarantined_pages": 0,
+     "sha256": "bc80dbb52277ae1ae0cec6032a191e166fda6ea3a5392fa90e60d2face32277c",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_034933_TWO_BULLETIN_NTN.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/37b13acea4ebeac65aab30c9ffa2412c772f7bde4db3d2bbf0e7446e65187d36.bin",
+     "bytes": 206360,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 2,
+     "passages": 4,
+     "quarantined_pages": 0,
+     "sha256": "37b13acea4ebeac65aab30c9ffa2412c772f7bde4db3d2bbf0e7446e65187d36",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_c6d2fa_coastal_bulletin.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/0d157f7f354616680261c0133d45e746738aa8526c001f7a3f297f6eb40a3f27.bin",
+     "bytes": 169989,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 1,
+     "passages": 2,
+     "quarantined_pages": 0,
+     "sha256": "0d157f7f354616680261c0133d45e746738aa8526c001f7a3f297f6eb40a3f27",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_207aa4_coastal_rsmc.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/870106ea1345f9badf9809dfbfd8affbbaa5079bf8ec3697a81602798d80e811.bin",
+     "bytes": 199769,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 2,
+     "passages": 5,
+     "quarantined_pages": 0,
+     "sha256": "870106ea1345f9badf9809dfbfd8affbbaa5079bf8ec3697a81602798d80e811",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_0a7223_coastal_bln.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/6315b80dbeed2944b6007ced1d782d134a6fa10705981c1aa1024a217ef919c6.bin",
+     "bytes": 171999,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 2,
+     "passages": 8,
+     "quarantined_pages": 0,
+     "sha256": "6315b80dbeed2944b6007ced1d782d134a6fa10705981c1aa1024a217ef919c6",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_04c0c9_coastal.pdf"
+    }
+   ],
+   "candidates": [
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_a4b314_coastal.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_5bc2be_coastal.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_dbef53_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_425544_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_05bf23_TWO_BULLETIN_STN.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_034933_TWO_BULLETIN_NTN.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_c6d2fa_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_b99714_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_972f8e_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_207aa4_coastal_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_d2647c_coastal_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_0a7223_coastal_bln.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_062e31_coastal_bln.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_a3a0b2_coastal_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_04c0c9_coastal.pdf"
+   ],
+   "family": "coastal_bulletin",
+   "generated_at_utc": "2026-09-14T18:22:25.357336+00:00",
+   "rejected": [
+    {
+     "error": "No indexed passage remains after extraction; the document needs layout review",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_dbef53_coastal_bulletin.pdf"
+    },
+    {
+     "error": "No indexed passage remains after extraction; the document needs layout review",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_425544_coastal_bulletin.pdf"
+    }
+   ],
+   "source_id": "S59",
+   "started_at_utc": "2026-09-14T18:22:25.357336+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/d05cec7638e7ef4086dd0dc610c74745f453b32a09e7d94716423e9abd513a67.bin",
+     "bytes": 489648,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "erf_marquee",
+     "issue_date": "2026-09-03",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 10,
+     "passages": 32,
+     "quarantined_pages": 0,
+     "sha256": "d05cec7638e7ef4086dd0dc610c74745f453b32a09e7d94716423e9abd513a67",
+     "url": "https://mausam.imd.gov.in/Forecast/marquee_data/ERF%2010.09.26.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Forecast/marquee_data/ERF%2010.09.26.pdf"
+   ],
+   "family": "erf_marquee",
+   "generated_at_utc": "2026-09-14T18:22:48.278469+00:00",
+   "rejected": [],
+   "source_id": "S66",
+   "started_at_utc": "2026-09-14T18:22:48.278469+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/bf0e08e3ccb49d6bd006c0db2b06a0cb1a8225fca9e7ef2752d47f1c4d7ee07f.bin",
+     "bytes": 674995,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "extended_range",
+     "issue_date": "2026-09-03",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 11,
+     "passages": 38,
+     "quarantined_pages": 0,
+     "sha256": "bf0e08e3ccb49d6bd006c0db2b06a0cb1a8225fca9e7ef2752d47f1c4d7ee07f",
+     "url": "https://mausam.imd.gov.in/Forecast/marquee_data/extended_1788445377.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Forecast/marquee_data/extended_1788445377.pdf"
+   ],
+   "family": "extended_range",
+   "generated_at_utc": "2026-09-14T18:22:54.878339+00:00",
+   "rejected": [],
+   "source_id": "S66",
+   "started_at_utc": "2026-09-14T18:22:54.878339+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/7c81546384883e693ac61e731a84441234cb07c2c956f5747ca1ff99b306b643.bin",
+     "bytes": 773423,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "flash_flood_national",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 3,
+     "passages": 7,
+     "quarantined_pages": 1,
+     "sha256": "7c81546384883e693ac61e731a84441234cb07c2c956f5747ca1ff99b306b643",
+     "url": "https://mausam.imd.gov.in/Rainfall/national.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Rainfall/national.pdf"
+   ],
+   "family": "flash_flood_national",
+   "generated_at_utc": "2026-09-14T18:23:02.215668+00:00",
+   "rejected": [],
+   "source_id": "S65",
+   "started_at_utc": "2026-09-14T18:23:02.215668+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/04ffe1e84bdfba3a8238e3890e7a5ef5c81655e94d6cff439e7f29006fa21058.bin",
+     "bytes": 469232,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "flash_flood_sasia",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 3,
+     "passages": 6,
+     "quarantined_pages": 1,
+     "sha256": "04ffe1e84bdfba3a8238e3890e7a5ef5c81655e94d6cff439e7f29006fa21058",
+     "url": "https://mausam.imd.gov.in/Rainfall/sasia.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Rainfall/sasia.pdf"
+   ],
+   "family": "flash_flood_sasia",
+   "generated_at_utc": "2026-09-14T18:23:05.167230+00:00",
+   "rejected": [],
+   "source_id": "S65",
+   "started_at_utc": "2026-09-14T18:23:05.167230+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/d3e80f651f7251f5a5bf359c07a05592ce85bd5d72d1436a5ca634ab4f00024c.bin",
+     "bytes": 6119191,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "national_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "marker_only",
+     "pages": 22,
+     "passages": 48,
+     "quarantined_pages": 0,
+     "sha256": "d3e80f651f7251f5a5bf359c07a05592ce85bd5d72d1436a5ca634ab4f00024c",
+     "url": "https://mausam.imd.gov.in/backend/assets/aiwfb_pdf/32e8ca772c05a9dcfa2ab837192f5631.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/backend/assets/aiwfb_pdf/32e8ca772c05a9dcfa2ab837192f5631.pdf"
+   ],
+   "family": "national_bulletin",
+   "generated_at_utc": "2026-09-14T18:23:07.248689+00:00",
+   "rejected": [],
+   "source_id": "S64",
+   "started_at_utc": "2026-09-14T18:23:07.248689+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/6d4856c368c5dd4bd824a7d0ad2e410c0babc84af7e3e4861ec7ec762fb5a948.bin",
+     "bytes": 697005,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "press_release",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "filename",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 12,
+     "passages": 35,
+     "quarantined_pages": 2,
+     "sha256": "6d4856c368c5dd4bd824a7d0ad2e410c0babc84af7e3e4861ec7ec762fb5a948",
+     "url": "https://mausam.imd.gov.in/Forecast/marquee_data/Press%20Release%2014-09-2026.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Forecast/marquee_data/Press%20Release%2014-09-2026.pdf"
+   ],
+   "family": "press_release",
+   "generated_at_utc": "2026-09-14T18:23:31.383846+00:00",
+   "rejected": [],
+   "source_id": "S66",
+   "started_at_utc": "2026-09-14T18:23:31.383846+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/732cdfa9c255f90f14a9821d1607cf3b4d00efff898ce07a5acfc8ca6b24ed99.bin",
+     "bytes": 3473386,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "sea_area_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 3,
+     "passages": 6,
+     "quarantined_pages": 0,
+     "sha256": "732cdfa9c255f90f14a9821d1607cf3b4d00efff898ce07a5acfc8ca6b24ed99",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/59/59_a53652_sab_rsmc.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/6249c6e1b2b74dfd9e448885a9f68c2e681b084e4270ae49c0bdffcf2a33e8f9.bin",
+     "bytes": 3517790,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "sea_area_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 3,
+     "passages": 5,
+     "quarantined_pages": 0,
+     "sha256": "6249c6e1b2b74dfd9e448885a9f68c2e681b084e4270ae49c0bdffcf2a33e8f9",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/60/60_47595c_sab.pdf"
+    }
+   ],
+   "candidates": [
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/59/59_a53652_sab_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/60/60_47595c_sab.pdf"
+   ],
+   "family": "sea_area_bulletin",
+   "generated_at_utc": "2026-09-14T18:23:34.922536+00:00",
+   "rejected": [],
+   "source_id": "S58",
+   "started_at_utc": "2026-09-14T18:23:34.922536+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/6593a51b65554dfd8f89d37f208f621c625101a612a5b67a5f099e9442479667.bin",
+     "bytes": 426667,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "special_advisory",
+     "issue_date": "2025-11-29",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 5,
+     "passages": 18,
+     "quarantined_pages": 0,
+     "sha256": "6593a51b65554dfd8f89d37f208f621c625101a612a5b67a5f099e9442479667",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/special_advisory.pdf"
+    }
+   ],
+   "candidates": [
+    "https://rsmcnewdelhi.imd.gov.in/uploads/special_advisory.pdf"
+   ],
+   "family": "special_advisory",
+   "generated_at_utc": "2026-09-14T18:24:05.539392+00:00",
+   "rejected": [],
+   "source_id": "S67",
+   "started_at_utc": "2026-09-14T18:24:05.539392+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/9d7654dc9b6343d7c59743bec9096a53662df36a961156efd8f3acf5f6d5427e.bin",
+     "bytes": 206487,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 1,
+     "passages": 2,
+     "quarantined_pages": 0,
+     "sha256": "9d7654dc9b6343d7c59743bec9096a53662df36a961156efd8f3acf5f6d5427e",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_a4b314_coastal.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/887aacf00f65c5f111efe0a3ce5679c20faf954c2b073396e07b97d361b12b27.bin",
+     "bytes": 170142,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "marker_only",
+     "pages": 1,
+     "passages": 5,
+     "quarantined_pages": 0,
+     "sha256": "887aacf00f65c5f111efe0a3ce5679c20faf954c2b073396e07b97d361b12b27",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_05bf23_TWO_BULLETIN_STN.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/bc80dbb52277ae1ae0cec6032a191e166fda6ea3a5392fa90e60d2face32277c.bin",
+     "bytes": 163325,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "marker_only",
+     "pages": 1,
+     "passages": 3,
+     "quarantined_pages": 0,
+     "sha256": "bc80dbb52277ae1ae0cec6032a191e166fda6ea3a5392fa90e60d2face32277c",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_034933_TWO_BULLETIN_NTN.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/37b13acea4ebeac65aab30c9ffa2412c772f7bde4db3d2bbf0e7446e65187d36.bin",
+     "bytes": 206360,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 2,
+     "passages": 4,
+     "quarantined_pages": 0,
+     "sha256": "37b13acea4ebeac65aab30c9ffa2412c772f7bde4db3d2bbf0e7446e65187d36",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_c6d2fa_coastal_bulletin.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/0d157f7f354616680261c0133d45e746738aa8526c001f7a3f297f6eb40a3f27.bin",
+     "bytes": 169989,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 1,
+     "passages": 2,
+     "quarantined_pages": 0,
+     "sha256": "0d157f7f354616680261c0133d45e746738aa8526c001f7a3f297f6eb40a3f27",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_207aa4_coastal_rsmc.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/870106ea1345f9badf9809dfbfd8affbbaa5079bf8ec3697a81602798d80e811.bin",
+     "bytes": 199769,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 2,
+     "passages": 5,
+     "quarantined_pages": 0,
+     "sha256": "870106ea1345f9badf9809dfbfd8affbbaa5079bf8ec3697a81602798d80e811",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_0a7223_coastal_bln.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/6315b80dbeed2944b6007ced1d782d134a6fa10705981c1aa1024a217ef919c6.bin",
+     "bytes": 171999,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 2,
+     "passages": 8,
+     "quarantined_pages": 0,
+     "sha256": "6315b80dbeed2944b6007ced1d782d134a6fa10705981c1aa1024a217ef919c6",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_04c0c9_coastal.pdf"
+    }
+   ],
+   "candidates": [
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_a4b314_coastal.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_5bc2be_coastal.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_dbef53_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_425544_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_05bf23_TWO_BULLETIN_STN.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_034933_TWO_BULLETIN_NTN.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_c6d2fa_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_b99714_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_972f8e_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_207aa4_coastal_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_d2647c_coastal_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_0a7223_coastal_bln.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_062e31_coastal_bln.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_a3a0b2_coastal_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_04c0c9_coastal.pdf"
+   ],
+   "family": "coastal_bulletin",
+   "generated_at_utc": "2026-09-14T18:27:50.872642+00:00",
+   "rejected": [
+    {
+     "error": "No indexed passage remains after extraction; the document needs layout review",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_dbef53_coastal_bulletin.pdf"
+    },
+    {
+     "error": "No indexed passage remains after extraction; the document needs layout review",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_425544_coastal_bulletin.pdf"
+    }
+   ],
+   "source_id": "S59",
+   "started_at_utc": "2026-09-14T18:27:50.872642+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/d05cec7638e7ef4086dd0dc610c74745f453b32a09e7d94716423e9abd513a67.bin",
+     "bytes": 489648,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "erf_marquee",
+     "issue_date": "2026-09-03",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 10,
+     "passages": 32,
+     "quarantined_pages": 0,
+     "sha256": "d05cec7638e7ef4086dd0dc610c74745f453b32a09e7d94716423e9abd513a67",
+     "url": "https://mausam.imd.gov.in/Forecast/marquee_data/ERF%2010.09.26.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Forecast/marquee_data/ERF%2010.09.26.pdf"
+   ],
+   "family": "erf_marquee",
+   "generated_at_utc": "2026-09-14T18:28:07.388211+00:00",
+   "rejected": [],
+   "source_id": "S66",
+   "started_at_utc": "2026-09-14T18:28:07.388211+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/bf0e08e3ccb49d6bd006c0db2b06a0cb1a8225fca9e7ef2752d47f1c4d7ee07f.bin",
+     "bytes": 674995,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "extended_range",
+     "issue_date": "2026-09-03",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 11,
+     "passages": 38,
+     "quarantined_pages": 0,
+     "sha256": "bf0e08e3ccb49d6bd006c0db2b06a0cb1a8225fca9e7ef2752d47f1c4d7ee07f",
+     "url": "https://mausam.imd.gov.in/Forecast/marquee_data/extended_1788445377.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Forecast/marquee_data/extended_1788445377.pdf"
+   ],
+   "family": "extended_range",
+   "generated_at_utc": "2026-09-14T18:28:09.980172+00:00",
+   "rejected": [],
+   "source_id": "S66",
+   "started_at_utc": "2026-09-14T18:28:09.980172+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/7c81546384883e693ac61e731a84441234cb07c2c956f5747ca1ff99b306b643.bin",
+     "bytes": 773423,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "flash_flood_national",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 3,
+     "passages": 7,
+     "quarantined_pages": 1,
+     "sha256": "7c81546384883e693ac61e731a84441234cb07c2c956f5747ca1ff99b306b643",
+     "url": "https://mausam.imd.gov.in/Rainfall/national.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Rainfall/national.pdf"
+   ],
+   "family": "flash_flood_national",
+   "generated_at_utc": "2026-09-14T18:28:13.386367+00:00",
+   "rejected": [],
+   "source_id": "S65",
+   "started_at_utc": "2026-09-14T18:28:13.386367+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/04ffe1e84bdfba3a8238e3890e7a5ef5c81655e94d6cff439e7f29006fa21058.bin",
+     "bytes": 469232,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "flash_flood_sasia",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 3,
+     "passages": 6,
+     "quarantined_pages": 1,
+     "sha256": "04ffe1e84bdfba3a8238e3890e7a5ef5c81655e94d6cff439e7f29006fa21058",
+     "url": "https://mausam.imd.gov.in/Rainfall/sasia.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Rainfall/sasia.pdf"
+   ],
+   "family": "flash_flood_sasia",
+   "generated_at_utc": "2026-09-14T18:28:15.700533+00:00",
+   "rejected": [],
+   "source_id": "S65",
+   "started_at_utc": "2026-09-14T18:28:15.700533+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/d3e80f651f7251f5a5bf359c07a05592ce85bd5d72d1436a5ca634ab4f00024c.bin",
+     "bytes": 6119191,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "national_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "marker_only",
+     "pages": 22,
+     "passages": 48,
+     "quarantined_pages": 0,
+     "sha256": "d3e80f651f7251f5a5bf359c07a05592ce85bd5d72d1436a5ca634ab4f00024c",
+     "url": "https://mausam.imd.gov.in/backend/assets/aiwfb_pdf/32e8ca772c05a9dcfa2ab837192f5631.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/backend/assets/aiwfb_pdf/32e8ca772c05a9dcfa2ab837192f5631.pdf"
+   ],
+   "family": "national_bulletin",
+   "generated_at_utc": "2026-09-14T18:28:17.453227+00:00",
+   "rejected": [],
+   "source_id": "S64",
+   "started_at_utc": "2026-09-14T18:28:17.453227+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/6d4856c368c5dd4bd824a7d0ad2e410c0babc84af7e3e4861ec7ec762fb5a948.bin",
+     "bytes": 697005,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "press_release",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "filename",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 12,
+     "passages": 35,
+     "quarantined_pages": 2,
+     "sha256": "6d4856c368c5dd4bd824a7d0ad2e410c0babc84af7e3e4861ec7ec762fb5a948",
+     "url": "https://mausam.imd.gov.in/Forecast/marquee_data/Press%20Release%2014-09-2026.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Forecast/marquee_data/Press%20Release%2014-09-2026.pdf"
+   ],
+   "family": "press_release",
+   "generated_at_utc": "2026-09-14T18:28:33.957870+00:00",
+   "rejected": [],
+   "source_id": "S66",
+   "started_at_utc": "2026-09-14T18:28:33.957870+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/732cdfa9c255f90f14a9821d1607cf3b4d00efff898ce07a5acfc8ca6b24ed99.bin",
+     "bytes": 3473386,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "sea_area_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 3,
+     "passages": 6,
+     "quarantined_pages": 0,
+     "sha256": "732cdfa9c255f90f14a9821d1607cf3b4d00efff898ce07a5acfc8ca6b24ed99",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/59/59_a53652_sab_rsmc.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/6249c6e1b2b74dfd9e448885a9f68c2e681b084e4270ae49c0bdffcf2a33e8f9.bin",
+     "bytes": 3517790,
+     "currency": "printed_issue_matches_retrieval_date",
+     "duplicate": false,
+     "family": "sea_area_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 3,
+     "passages": 5,
+     "quarantined_pages": 0,
+     "sha256": "6249c6e1b2b74dfd9e448885a9f68c2e681b084e4270ae49c0bdffcf2a33e8f9",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/60/60_47595c_sab.pdf"
+    }
+   ],
+   "candidates": [
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/59/59_a53652_sab_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/60/60_47595c_sab.pdf"
+   ],
+   "family": "sea_area_bulletin",
+   "generated_at_utc": "2026-09-14T18:28:37.331029+00:00",
+   "rejected": [],
+   "source_id": "S58",
+   "started_at_utc": "2026-09-14T18:28:37.331029+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/6593a51b65554dfd8f89d37f208f621c625101a612a5b67a5f099e9442479667.bin",
+     "bytes": 426667,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "special_advisory",
+     "issue_date": "2025-11-29",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 5,
+     "passages": 18,
+     "quarantined_pages": 0,
+     "sha256": "6593a51b65554dfd8f89d37f208f621c625101a612a5b67a5f099e9442479667",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/special_advisory.pdf"
+    }
+   ],
+   "candidates": [
+    "https://rsmcnewdelhi.imd.gov.in/uploads/special_advisory.pdf"
+   ],
+   "family": "special_advisory",
+   "generated_at_utc": "2026-09-14T18:28:48.367994+00:00",
+   "rejected": [],
+   "source_id": "S67",
+   "started_at_utc": "2026-09-14T18:28:48.367994+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3.bin",
+     "bytes": 3929832,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "state_agromet",
+     "issue_date": "2026-09-12",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "named:amfu",
+     "pages": 76,
+     "passages": 257,
+     "quarantined_pages": 0,
+     "sha256": "22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3",
+     "url": "https://mausam.imd.gov.in/ahmedabad/mcdata/agromet.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/ahmedabad/mcdata/agromet.pdf"
+   ],
+   "family": "state_agromet",
+   "generated_at_utc": "2026-09-14T18:28:49.905251+00:00",
+   "rejected": [],
+   "source_id": "S07",
+   "started_at_utc": "2026-09-14T18:28:49.905251+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/071e51844b0d88910ed3046f98383c7ad138c7156f95bfc0d496e5edb16b421e.bin",
+     "bytes": 1177902,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "state_district_bulletin",
+     "issue_date": "2026-09-13",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "marker_only",
+     "pages": 7,
+     "passages": 32,
+     "quarantined_pages": 0,
+     "sha256": "071e51844b0d88910ed3046f98383c7ad138c7156f95bfc0d496e5edb16b421e",
+     "url": "https://mausam.imd.gov.in/ahmedabad/mcdata/district.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/ahmedabad/mcdata/district.pdf"
+   ],
+   "family": "state_district_bulletin",
+   "generated_at_utc": "2026-09-14T18:29:01.015092+00:00",
+   "rejected": [],
+   "source_id": "S08",
+   "started_at_utc": "2026-09-14T18:29:01.015092+00:00",
+   "status": "accepted"
+  }
+ ],
+ "schema_version": "document-intake-day-v1"
+}

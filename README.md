@@ -57,17 +57,20 @@ Real journeys are recorded with screenshots in [the frontend batch evidence](res
 ## Status and open work
 
 - [Critical full-solution review](docs/21-full-solution-critical-review.md) — the current verdict, findings A01–A08 and the recommended trajectory.
+- [Source activation and national document intake](docs/29-source-activation-and-document-intake.md) — every registered source measured, the national bulletin corpus, and what it still cannot answer.
+- [Multilingual output and voice access](docs/30-multilingual-and-voice-path.md) — the plan for PS features 6 and 8. A plan, not a batch: nothing built and nothing measured yet.
 - [Frontend overhaul batch](docs/25-frontend-overhaul-batch.md) — this surface, its findings FE01–FE06 and what it does not establish.
 - [Frontend overhaul plan](docs/24-frontend-overhaul-plan.md) — scope, design direction and batch gates.
 - [Machine-readable product plan](data/registry/product-progress.json) and [living hardening checklist](data/registry/hardening-progress.json) — stage and finding status.
 - [RAG readiness decision](data/registry/rag-readiness.json) and [source registry](data/registry/README.md).
 
-Known-open highlights: **P11** (the server holds one non-blocking conversation lock; there is no bounded queue, no stage streaming, and stopping a turn does not cancel server work), **P10** (collection is request-driven and narrow), **P12** (no user-level acceptance benchmark), **P13** (mobile and voice), **P14** (packaging), plus engine findings A01–A04 on context retention, language output, explanation dependencies and place aliases. No accessibility audit, sustained-load measurement or scientific forecast-skill evaluation has been performed.
+Known-open highlights: **P11** (the server holds one non-blocking conversation lock; there is no bounded queue, no stage streaming, and stopping a turn does not cancel server work), **P10** (collection is request-driven and narrow), **P12** (no user-level acceptance benchmark), **P13** (mobile and voice), **P14** (packaging), plus engine findings A01–A04 on context retention, language output, explanation dependencies and place aliases, and **A06** — the national document corpus is now indexed but no conversation can query it. No accessibility audit, sustained-load measurement or scientific forecast-skill evaluation has been performed.
 
 ## Milestones, newest first
 
 Each links to the batch that recorded it. Older entries are **historical evidence, not current completion claims**.
 
+- [Source activation and national document intake](docs/29-source-activation-and-document-intake.md) — 493 tests, 67 sources measured, national district sweep recorded.
 - [Frontend overhaul batch](docs/25-frontend-overhaul-batch.md) — 374 Python tests, 34 component checks, five recorded journeys.
 - [Marine wave and river discharge tools](docs/23-marine-and-river-tools.md) — 374 tests, nine local-model turns.
 - [Engine context, language disclosure and task dependency](docs/22-engine-context-repairs.md) — 362 tests, eight component checks.
