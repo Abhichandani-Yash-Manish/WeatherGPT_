@@ -14,11 +14,14 @@ from urllib.parse import parse_qs, urlsplit
 from .answers import AnswerService, ROOT
 from .ingestion import IngestionDB, run_one
 from .rag import context_from_answer
+from .documents import DocumentPruned
 from .transport import SourceError, parsed, utcnow
 
 DEFAULT_DATABASE=ROOT/'data/runtime/ingestion/ingestion.sqlite'
 DEFAULT_RAW=ROOT/'data/runtime/ingestion/raw'
 DEFAULT_GEOGRAPHY=ROOT/'data/processed/geography/source-inventory-20260912-v1/geography.sqlite'
+# Document bodies are pruned after this many days; extracted passages and hashes are kept.
+RETENTION_DAYS=7
 
 
 
@@ -34,14 +37,54 @@ class Workspace:
         if self.conversation is None:self.conversation=ConversationEngine(self)
         return self.conversation.ask(body)
 
-    def bulletin_pdf(self,sha):
+    DOCUMENT_STORE=ROOT/'data/runtime/documents'
+
+    def document_index(self):
         from .bulletin_index import BulletinIndex,EXTRACTION_VERSION
+        return BulletinIndex(self.service.raw_root.parent/'bulletins'/EXTRACTION_VERSION/'index.sqlite')
+
+    def bulletin_pdf(self,sha):
+        """Serve a verified source document body from whichever corpus published it.
+
+        Bodies are pruned after the retention window while hashes and extracted text are
+        kept, so a document that is published but whose body has gone raises DocumentPruned
+        and is answered with 410. An identity that was never published is a plain not-found:
+        the two must not be confused, because one says 'ask again differently' and the other
+        says 'this never existed here'.
+        """
+        from .documents import DocumentPruned
         from .transport import digest,SourceError
         if not re.fullmatch(r'[a-f0-9]{64}',sha):raise SourceError('Invalid document identity')
-        index=BulletinIndex(self.service.raw_root.parent/'bulletins'/EXTRACTION_VERSION/'index.sqlite')
-        document=index.document(sha);body=Path(document['provenance']['raw_file']).read_bytes()
+        index=self.document_index()
+        pruned=DocumentPruned(sha,'The source document body is outside the local retention window.')
+        if (index.path.parent/'publications'/(sha+'.json')).exists():
+            document=index.document_body_of_chunk_publication(sha)
+            if document is None:raise pruned
+            body=document
+        elif index.document_publication(sha).exists():
+            published=index.passage_document(sha)
+            blob=(published.get('provenance') or {}).get('blob') or published.get('blob')
+            if not blob:raise SourceError('Published document records no body location')
+            path=(self.DOCUMENT_STORE/blob).resolve()
+            if self.DOCUMENT_STORE.resolve() not in path.parents:raise SourceError('Document body path leaves its store')
+            if not path.exists():raise pruned
+            body=path.read_bytes()
+        else:
+            raise SourceError('No published document carries this identity')
         if digest(body)!=sha:raise SourceError('Document changed during read')
         return body
+
+    def document_retention(self,sha):
+        """What is still held for a document whose body has been pruned."""
+        index=self.document_index()
+        published=index.passage_document(sha)
+        with index.connection() as db:
+            pages=[r[0] for r in db.execute('SELECT DISTINCT physical_page FROM (SELECT json_extract(payload,\'$.physical_page\') AS physical_page FROM passages WHERE document_sha=?) ORDER BY physical_page',(sha,))]
+            passages=db.execute('SELECT count(*) FROM passages WHERE document_sha=?',(sha,)).fetchone()[0]
+        return {'sha256':sha,'family':published.get('family'),'region':published.get('region'),
+                'issue_date':published.get('issue_date'),'pages':published.get('pages'),
+                'retained_passages':passages,'retained_physical_pages':pages,
+                'extraction_version':published.get('extraction_version')}
 
     def arguments(self, body):
         if not isinstance(body,dict) or set(body)-{'question','entity_id','coordinates'}:
@@ -257,7 +300,18 @@ def make_server(workspace, port=8765):
             if not self.allowed_host():return self.respond(403,{'error':'Use the loopback URL printed by the server'})
             path=urlsplit(self.path).path
             if path.startswith('/api/documents/'):
-                try:return self.respond(200,workspace.bulletin_pdf(path.removeprefix('/api/documents/')),'application/pdf')
+                sha=path.removeprefix('/api/documents/')
+                try:return self.respond(200,workspace.bulletin_pdf(sha),'application/pdf')
+                except DocumentPruned as pruned:
+                    # The document is known and its passages are still indexed; only the
+                    # body is outside the retention window. Say that rather than 404.
+                    payload={'error':pruned.detail,
+                             'retention_days':RETENTION_DAYS,
+                             'retained':'the document hash and its extracted pages remain indexed and citable',
+                             'sha256':pruned.sha}
+                    try:payload['document']=workspace.document_retention(pruned.sha)
+                    except (ValueError,OSError,KeyError,sqlite3.Error,SourceError):pass
+                    return self.respond(410,payload)
                 except (ValueError,OSError,KeyError,sqlite3.Error):return self.respond(404,{'error':'Verified source document is unavailable'})
             # Stored conversations and collection health are the owner's data, so they
             # require the session token as well as the loopback Host check. Any other
