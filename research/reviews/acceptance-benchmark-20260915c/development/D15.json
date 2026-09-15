@@ -1,0 +1,37 @@
+{
+  "id": "D15",
+  "domain": "language",
+  "turns": [
+    {
+      "question": "Kal Ahmedabad me barish hogi kya?",
+      "status": "needs_selection",
+      "status_allowed": true,
+      "task_shape_matches": true,
+      "tasks": [
+        {
+          "declared": {
+            "kind": "forecast",
+            "operation": "lookup",
+            "parameters": [
+              "precipitation"
+            ]
+          },
+          "outcome": "incomplete",
+          "executed_status": "needs_selection"
+        }
+      ],
+      "answered_language": null,
+      "language_trace": {
+        "requested": "hi-latn",
+        "selection": "inferred_from_question",
+        "adherence": "not_applicable",
+        "rendered": false
+      },
+      "prohibited_hits": [],
+      "abstained": true,
+      "duration_s": 5.337,
+      "turn": 1,
+      "wall_s": 5.34
+    }
+  ]
+}

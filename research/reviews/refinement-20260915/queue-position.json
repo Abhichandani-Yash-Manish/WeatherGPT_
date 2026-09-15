@@ -1,0 +1,23 @@
+{
+  "schema_version": "queue-position-v1",
+  "samples": 63,
+  "max_waiting_observed": 1,
+  "stages_seen": [
+    "resolving",
+    "retrieving",
+    "started"
+  ],
+  "active_observed": 1,
+  "capacity": 3,
+  "responses": {
+    "first": {
+      "http": 200,
+      "status": "answered"
+    },
+    "second": {
+      "http": 200,
+      "status": "answered"
+    }
+  },
+  "note": "The UI refuses a second question while a turn is running; this reading comes from the API, which is what the queue bound protects."
+}

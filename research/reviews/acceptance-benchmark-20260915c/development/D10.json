@@ -1,0 +1,58 @@
+{
+  "id": "D10",
+  "domain": "multi-turn",
+  "turns": [
+    {
+      "question": "Will it rain in Kochi, Kerala tomorrow morning?",
+      "status": "answered",
+      "status_allowed": true,
+      "task_shape_matches": true,
+      "tasks": [
+        {
+          "declared": {
+            "kind": "forecast",
+            "operation": "lookup",
+            "parameters": [
+              "precipitation"
+            ]
+          },
+          "outcome": "completed",
+          "executed_status": "answered"
+        }
+      ],
+      "answered_language": null,
+      "language_trace": null,
+      "prohibited_hits": [],
+      "abstained": false,
+      "duration_s": 6.137,
+      "turn": 1,
+      "wall_s": 6.14
+    },
+    {
+      "question": "Compare the rain amount for that same morning period with GFS too.",
+      "status": "answered",
+      "status_allowed": true,
+      "task_shape_matches": true,
+      "tasks": [
+        {
+          "declared": {
+            "kind": "forecast",
+            "operation": "crosscheck",
+            "parameters": [
+              "precipitation"
+            ]
+          },
+          "outcome": "completed",
+          "executed_status": "answered"
+        }
+      ],
+      "answered_language": null,
+      "language_trace": null,
+      "prohibited_hits": [],
+      "abstained": false,
+      "duration_s": 6.584,
+      "turn": 2,
+      "wall_s": 6.59
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "id": "D17",
+  "domain": "multi-turn",
+  "turns": [
+    {
+      "question": "Will it rain in Surat, Gujarat tomorrow morning?",
+      "status": "answered",
+      "status_allowed": true,
+      "task_shape_matches": true,
+      "tasks": [
+        {
+          "declared": {
+            "kind": "forecast",
+            "operation": "lookup",
+            "parameters": [
+              "precipitation"
+            ]
+          },
+          "outcome": "completed",
+          "executed_status": "answered"
+        }
+      ],
+      "answered_language": null,
+      "language_trace": null,
+      "prohibited_hits": [],
+      "abstained": false,
+      "duration_s": 4.945,
+      "turn": 1,
+      "wall_s": 4.95
+    },
+    {
+      "question": "Actually make it tomorrow evening.",
+      "status": "answered",
+      "status_allowed": true,
+      "task_shape_matches": true,
+      "tasks": [
+        {
+          "declared": {
+            "kind": "forecast",
+            "operation": "lookup",
+            "parameters": [
+              "precipitation"
+            ]
+          },
+          "outcome": "completed",
+          "executed_status": "answered"
+        }
+      ],
+      "answered_language": null,
+      "language_trace": null,
+      "prohibited_hits": [],
+      "abstained": false,
+      "duration_s": 5.308,
+      "turn": 2,
+      "wall_s": 5.31
+    }
+  ]
+}

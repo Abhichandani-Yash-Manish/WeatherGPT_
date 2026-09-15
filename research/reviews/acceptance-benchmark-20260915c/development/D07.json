@@ -1,0 +1,32 @@
+{
+  "id": "D07",
+  "domain": "agriculture",
+  "turns": [
+    {
+      "question": "What does the Ahmedabad district agromet bulletin say about cotton?",
+      "status": "answered",
+      "status_allowed": true,
+      "task_shape_matches": true,
+      "tasks": [
+        {
+          "declared": {
+            "kind": "agriculture",
+            "operation": "lookup",
+            "parameters": [
+              "agricultural_advisory"
+            ]
+          },
+          "outcome": "completed",
+          "executed_status": "answered"
+        }
+      ],
+      "answered_language": null,
+      "language_trace": null,
+      "prohibited_hits": [],
+      "abstained": false,
+      "duration_s": 13.145,
+      "turn": 1,
+      "wall_s": 13.15
+    }
+  ]
+}
