@@ -247,6 +247,8 @@ async function run() {
   assert.equal(withClass(overview, 'viz-now-mark').length, 3, 'one lane exists per product the reading returned');
   withClass(overview, 'viz-now-mark')[0].events.focus[0]();
   assert(/AHMEDABAD/.test(textOf(withClass(overview, 'viz-readout')[0])), 'a lane reads out its own values');
+  assert.equal(withClass(overview, 'viz-daycol').length, 2, 'the published days are laid out beside the band');
+  assert(/model hour\(s\) returned here/.test(textOf(overview)), 'each day states how many model hours fall in it');
   console.log('PASS: the overview surface paints the national tally and keeps its caveats');
 
   const warnings = await render('warnings', place);

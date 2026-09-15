@@ -1,7 +1,7 @@
 {
  "schema_version": "hardening-progress-v1",
  "review": "research/reviews/national-readiness-20260912/review.md",
- "updated_at_utc": "2026-09-15T18:01:38+00:00",
+ "updated_at_utc": "2026-09-15T18:18:58+00:00",
  "operational_ready": false,
  "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
  "findings": [
@@ -2390,5 +2390,36 @@
   "browser_rendering_blocker": "the agent-browser CLI could not launch Chrome inside this session sandbox",
   "hosting_performed": false,
   "same_host_only": true
+ },
+ "frontend_overhaul_batch_seven": {
+  "report": "docs/78-frontend-overhaul-plan.md",
+  "design_system": "DESIGN.md",
+  "evidence_directory": "research/reviews/frontend-overhaul-20260915",
+  "phase": "P3 unified day timeline; P3 closed",
+  "delivered": [
+   "viz.dayTimeline lays out one column per published day with the colour and hazard wording the source printed",
+   "model hours are counted into the IST day their timestamp falls in, pinned by a component check on the 20:00 UTC boundary",
+   "the station is placed on the day it was reported; unknown hazard codes are flagged; a quiet day says the product publishes no warning; no daily total is computed"
+  ],
+  "live_loopback_check": "research/reviews/frontend-overhaul-20260915/live-http-checks-p7.json",
+  "live_evidence": "5 published days (yellow then four green), 6 model hours, AHMEDABAD station, read at 2026-09-15T18:16Z",
+  "python_tests_passed": 1139,
+  "javascript_suites": 10,
+  "verification_steps": 27,
+  "verification_failed": 0,
+  "browser_rendering_verified": false,
+  "browser_rendering_blocker": "the agent-browser CLI could not launch Chrome inside this session sandbox; this is the one open phase and it needs a browser-capable environment rather than more code",
+  "hosting_performed": false,
+  "same_host_only": true,
+  "phases_closed": [
+   "P0",
+   "P1",
+   "P2",
+   "P3",
+   "P4"
+  ],
+  "phases_open": [
+   "P5 browser acceptance"
+  ]
  }
 }

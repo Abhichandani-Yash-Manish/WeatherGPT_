@@ -172,4 +172,37 @@ const emptyBand = viz.nowBand({ title: 'Now', lanes: [{ label: 'Observed' }] });
 assert.equal(emptyBand.withClass('viz-now-mark').length, 0, 'a lane without a timestamp is not placed on the band');
 assert(emptyBand.withClass('viz-empty').length >= 1, 'the band says why it is empty');
 console.log('PASS: the now band places each product lane from returned timestamps and never draws a window for an instant');
+
+/* ---- the unified day timeline --------------------------------------------- */
+const timeline = viz.dayTimeline({
+  title: 'The five published days',
+  read_at: '2026-09-15T17:31:14+00:00',
+  days: [
+    { day: 1, date_utc: '2026-09-15', colour: 'yellow', hazards: ['Thunderstorm/lightning/squall'], unknown_hazard_codes: [] },
+    { day: 2, date_utc: '2026-09-16', colour: 'green', hazards: ['No warning in this product'], quiet: true, unknown_hazard_codes: [] },
+    { day: 3, date_utc: '2026-09-17', colour: null, hazards: [], unknown_hazard_codes: [99] }
+  ],
+  hours: [{ at: '2026-09-15T17:00:00+00:00' }, { at: '2026-09-15T20:00:00+00:00' },
+          { at: '2026-09-16T01:00:00+00:00' }, { at: '2026-09-17T02:00:00+00:00' }],
+  observed: { label: 'AHMEDABAD, 6.9 km away', at: '2026-09-15T17:00:00+00:00' }
+});
+assert.equal(timeline.withClass('viz-daycol').length, 3, 'one column exists per published day');
+assert.equal(timeline.withClass('viz-daycol')[0].className.indexOf('is-yellow') >= 0, 1, 'the day carries the colour the source printed');
+assert.equal(timeline.withClass('is-unknown').length, 1, 'a day the product left uncoloured is not given a colour');
+assert.equal(timeline.withClass('is-unverified').length, 1, 'an unknown hazard code is flagged on its day');
+timeline.withClass('viz-daycol')[0].focus();
+const dayReadout = timeline.withClass('viz-readout')[0].textContent;
+assert(/Day 1/.test(dayReadout) && /colour yellow/.test(dayReadout) && /Thunderstorm\/lightning\/squall/.test(dayReadout),
+  'a day reads out its colour and its hazard wording: ' + dayReadout);
+const timelineRows = timeline.all('tr').map(row => (row.children || []).map(cell => cell.textContent));
+const rowForDate = date => timelineRows.find(cells => cells[1] === date) || [];
+assert.equal(rowForDate('2026-09-16')[4], '2',
+  'the hour at 20:00 UTC belongs to the next IST day, and the one at 01:00 UTC belongs to it too');
+assert.equal(rowForDate('2026-09-15')[4], '1', 'the 17:00 UTC hour stays in its own IST day');
+assert.equal(rowForDate('2026-09-17')[4], '1', 'the hour at 02:00 UTC on the third day is counted there');
+assert(timeline.allNodes().some(node => /AHMEDABAD, 6\.9 km away reported here/.test(node.textContent)),
+  'the station is placed on the day it was reported');
+assert(timeline.allNodes().some(node => node.textContent === 'NOT STATED'),
+  'a day with no colour says not stated rather than borrowing one');
+console.log('PASS: the day timeline lays out published days, counts model hours into IST days and places the station, inventing nothing');
 process.exit(0);

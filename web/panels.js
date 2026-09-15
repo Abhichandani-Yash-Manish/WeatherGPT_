@@ -147,6 +147,26 @@
         lanes: lanes
       }));
     }
+    // The five published days, the model hours counted into the IST day they fall in, and the
+    // station that reported on one of them: one row, no invented boundaries and no daily total.
+    const placeStrip = (data.places || [])[0] || null;
+    if (placeStrip && (placeStrip.days || []).length && typeof viz !== 'undefined' && viz.dayTimeline) {
+      const reading = (nowReading || {}).data || {};
+      const stations = (((reading.observed || {}).stations) || []);
+      const station = stations[0] || null;
+      const hours = ((reading.next_hours || {}).rows) || [];
+      host.append(viz.dayTimeline({
+        title: 'The five published days at this place',
+        days: placeStrip.days,
+        hours: hours,
+        observed: station && station.observed_at_utc ? {
+          label: (station.name || station.station_code || 'a station') +
+            (station.distance_km === null || station.distance_km === undefined ? '' : ', ' + Math.round(station.distance_km * 10) / 10 + ' km away'),
+          at: station.observed_at_utc
+        } : null,
+        read_at: reading.generated_at_utc || null
+      }));
+    }
     const tally = el('div', undefined, 'metric-row');
     Object.keys(data.national.tally || {}).sort().forEach(colour => {
       const card = el('div', undefined, 'metric');

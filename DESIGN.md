@@ -80,6 +80,7 @@ a printed issue date — never from decoration.
 | `city-pin` | Selecting a city sets the working place at the coordinates the vendored geometry carries — never at a projected or rounded guess. |
 | `view-transition` | Offered when the browser has the API and reduced motion is not requested. The paint runs inside the callback either way, so a missing API is not a missing surface. |
 | `@media print` | A printed answer keeps the source colours it was given (`print-color-adjust`), drops hover-only controls, and never turns a coloured cell into an unmarked one. |
+| `day-timeline` | One column per published day. Model hours are counted into the IST day their timestamp falls in, the station is placed on the day it reported, and no value is combined across days. |
 
 ## Chart language (`viz.js`)
 

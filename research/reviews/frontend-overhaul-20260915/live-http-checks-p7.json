@@ -1,0 +1,57 @@
+{
+  "schema_version": "frontend-overhaul-live-http-v1",
+  "batch": "P3 unified day timeline",
+  "checked_at_utc": "2026-09-15T18:16:04+00:00",
+  "base": "http://127.0.0.1:8795",
+  "method": "Loopback HTTP against a fresh workspace process: the served engine and the two payloads the timeline lays out. No DOM rendering: the session sandbox cannot launch Chrome.",
+  "checks": [
+    {
+      "check": "page token",
+      "status": 200,
+      "ms": 5,
+      "token_present": true
+    },
+    {
+      "check": "the engine carries the day timeline",
+      "path": "/viz.js",
+      "status": 200,
+      "ms": 1,
+      "bytes": 38759,
+      "day_timeline": true,
+      "ist_grouping": true,
+      "no_daily_total": true
+    },
+    {
+      "check": "the timeline styles are served",
+      "path": "/style.css",
+      "status": 200,
+      "ms": 0,
+      "daygrid": true,
+      "colour_edges": true
+    },
+    {
+      "check": "the district product returns the days the timeline lays out",
+      "path": "/api/overview",
+      "status": 200,
+      "ms": 4484,
+      "days": 5,
+      "colours": [
+        "yellow",
+        "green",
+        "green",
+        "green",
+        "green"
+      ]
+    },
+    {
+      "check": "the reading returns the hours and the station the timeline counts",
+      "path": "/api/now",
+      "status": 200,
+      "ms": 30959,
+      "model_hours": 6,
+      "station": "AHMEDABAD",
+      "first_hour": "2026-09-15T18:00:00+00:00",
+      "read_at": "2026-09-15T18:16:08.568769+00:00"
+    }
+  ]
+}

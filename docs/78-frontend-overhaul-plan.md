@@ -227,5 +227,24 @@ and the served module carries the readout, the pin handler and the counts.
   a printed surface that lost a distinction fails verification rather than shipping quietly.
 
 Live record: `research/reviews/frontend-overhaul-20260915/live-http-checks-p6.json`.
-**Next (not started).** The unified timeline across published days, observations and model hours; the remaining
-the remaining craft polish (view transitions on every surface, print parity for the new visuals); and browser-level acceptance, which this sandbox still cannot run.
+**P3 — the unified day timeline, and the phase closes.** The Today surface now lays out, for the working place:
+
+- one column per published day, carrying the colour the source printed and the hazard wording verbatim;
+- the model hours **counted into the IST calendar day their timestamp falls in** — an hour at 20:00 UTC belongs
+  to the next IST day, which the component check pins explicitly;
+- the station observation placed on the day it was reported, marked and named;
+- an unknown hazard code flagged on its day, an uncoloured day reading as *not stated*, and a quiet day stating
+  that the product publishes no warning for it;
+- and a stated limit on the surface itself: hours are counted, never combined into a daily value.
+
+With this, the named P3 items are delivered: the Now band, place memory, the compare tray, map exploration and
+the unified timeline. **P5 — browser acceptance — remains blocked**: this sandbox cannot launch Chrome, so every
+visual claim in this document rests on the component suites and the live loopback records, and each record says
+so. That is the one open phase, and it needs a browser-capable environment rather than more code.
+
+Live record: `research/reviews/frontend-overhaul-20260915/live-http-checks-p7.json` — the engine carries the
+timeline and the IST grouping, the styles are served, and the two payloads behind it return 5 published days
+(yellow then four green) and 6 model hours with the AHMEDABAD station.
+
+**Next (not started).** Nothing in the plan is unbuilt; what remains is **P5 browser acceptance** in a
+browser-capable environment; the craft items in P4 are delivered and verified by the component suites and the static audit.

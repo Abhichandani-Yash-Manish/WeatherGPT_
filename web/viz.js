@@ -567,7 +567,80 @@
     if (!Number.isFinite(at)) return 'not stated';
     return new Date(at).toISOString().replace('T', ' ').slice(0, 16) + 'Z';
   }
-  global.viz = { ensembleFan: ensembleFan, meteogram: meteogram, warningMatrix: warningMatrix, libraryCards: libraryCards, nowBand: nowBand };
+
+  /* ---- the unified day timeline -------------------------------------------- */
+  /* One column per published day, overlaid with the model hours counted into the IST day their
+     timestamp falls in and the station observation on the day it was reported. Day windows are the
+     product's own IST calendar days, so this never invents a boundary; model hours are counted, and
+     no value is combined across days. */
+  function istDayKey(iso) {
+    const at = Date.parse(iso);
+    if (!Number.isFinite(at)) return null;
+    return new Date(at + 5.5 * 3600 * 1000).toISOString().slice(0, 10);
+  }
+
+  function dayTimeline(chart) {
+    const days = (chart.days || []).filter(day => day && day.date_utc);
+    const hours = chart.hours || [];
+    const observed = chart.observed || null;
+    const box = make('section', undefined, 'viz viz-dayline');
+    box.setAttribute('data-days', String(days.length));
+    box.append(make('h3', chart.title || 'The published days', 'viz-title'));
+    box.append(make('p', chart.note ||
+      'One column per published day, with the model hours counted into the IST day their timestamp falls in. Day windows are the product own calendar days; no value is combined across days.', 'viz-note'));
+    if (!days.length) {
+      box.append(make('p', 'The district product returned no day for this place, so there is nothing to lay out.', 'viz-empty'));
+      return box;
+    }
+    const hourCounts = {};
+    hours.forEach(row => { const key = istDayKey(row.at || row.t); if (key) hourCounts[key] = (hourCounts[key] || 0) + 1; });
+    const observedKey = observed && observed.at ? istDayKey(observed.at) : null;
+    const readoutLine = make('p', 'Focus a day to read the colour, the hazard wording and the hours counted into it.', 'viz-readout');
+    readoutLine.setAttribute('aria-live', 'polite');
+    box.append(readoutLine);
+    const grid = make('div', undefined, 'viz-daygrid');
+    days.forEach(day => {
+      const known = ['red', 'orange', 'yellow', 'green'].indexOf(day.colour) >= 0;
+      const hazard = day.source_text || (day.hazards && day.hazards.length ? day.hazards.join(', ') : '');
+      const count = hourCounts[day.date_utc] || 0;
+      const unknown = (day.unknown_hazard_codes || []).length > 0;
+      const column = make('button', undefined, 'viz-daycol ' + (known ? 'is-' + day.colour : 'is-unknown') + (unknown ? ' is-unverified' : ''));
+      column.type = 'button';
+      column.append(make('span', 'Day ' + day.day + ' \u00b7 ' + day.date_utc, 'viz-daycol-head'));
+      column.append(make('span', known ? String(day.colour).toUpperCase() : 'NOT STATED', 'viz-daycol-colour'));
+      column.append(make('span', hazard || 'no hazard wording printed', 'viz-daycol-hazard'));
+      const meta = make('span', count + ' model hour(s) returned here', 'viz-daycol-meta');
+      column.append(meta);
+      if (day.quiet) column.append(make('span', 'the product states no warning for this day', 'viz-daycol-quiet'));
+      if (observedKey === day.date_utc && observed) column.append(make('span', (observed.label || 'station') + ' reported here', 'viz-daycol-observed'));
+      if (unknown) column.append(make('span', 'contains an unknown hazard code', 'viz-daycol-flag'));
+      const label = 'Day ' + day.day + ' (' + day.date_utc + ') \u00b7 ' + (known ? 'colour ' + day.colour : 'no colour stated by the product') +
+        ' \u00b7 ' + (hazard || 'no hazard wording printed') + ' \u00b7 ' + count + ' model hour(s) returned in this IST day' +
+        (observedKey === day.date_utc && observed ? ' \u00b7 ' + (observed.label || 'a station') + ' reported on this day' : '') +
+        (unknown ? ' \u00b7 contains an unknown hazard code' : '');
+      column.setAttribute('aria-label', label);
+      const show = () => { readoutLine.textContent = label; };
+      column.addEventListener('focus', show);
+      column.addEventListener('mouseenter', show);
+      column.addEventListener('click', show);
+      grid.append(column);
+    });
+    box.append(grid);
+    exactTable(box, ['Day', 'Date', 'Colour', 'Hazard wording', 'Model hours returned', 'Markers'],
+      days.map(day => {
+        const markers = [];
+        if (day.quiet) markers.push('product states no warning');
+        if (observedKey === day.date_utc && observed) markers.push((observed.label || 'station') + ' reported');
+        if ((day.unknown_hazard_codes || []).length) markers.push('unknown hazard code');
+        return [String(day.day), day.date_utc, day.colour || 'not stated',
+                day.source_text || (day.hazards || []).join(', ') || 'no hazard wording printed',
+                String(hourCounts[day.date_utc] || 0), markers.join(' \u00b7 ') || '\u2014'];
+      }),
+      'Every day as text (' + days.length + ')');
+    if (chart.read_at) box.append(make('p', 'Read at ' + chart.read_at + '. Model hours are counted, never combined into a daily value here.', 'viz-method'));
+    return box;
+  }
+  global.viz = { ensembleFan: ensembleFan, meteogram: meteogram, warningMatrix: warningMatrix, libraryCards: libraryCards, nowBand: nowBand, dayTimeline: dayTimeline };
   /* In a browser `window` is the global object; in a component harness it is a stand-in, so the
      API is attached to both and `viz` resolves the same way in either. */
   if (typeof globalThis !== 'undefined' && globalThis.viz !== global.viz) globalThis.viz = global.viz;
