@@ -14,13 +14,20 @@ const WG = window.WG;
 
 (function () {
   const TOKEN = (document.querySelector('meta[name="workspace-token"]') || {}).content || '';
-  const VIEWS = ['workspace', 'overview', 'warnings', 'map', 'observations', 'forecast', 'changes', 'climate', 'advisories', 'aviation', 'marine', 'assistant', 'briefcase', 'settings'];
+  const VIEWS = ['workspace', 'overview', 'warnings', 'map', 'observations', 'forecast', 'changes', 'climate', 'advisories', 'air-quality', 'aviation', 'ensemble', 'marine', 'assistant', 'documents', 'briefcase', 'settings'];
+  /* The keyboard hints the rail prints are the contract: Alt+1…9 must open the surface the
+     hint is written on, not whatever happens to sit at that index in VIEWS. Measured
+     15 September 2026: the two disagreed from Alt+5 onward, so the hints lied. */
+  const VIEW_SHORTCUTS = { 1: 'assistant', 2: 'overview', 3: 'warnings', 4: 'map', 5: 'forecast',
+                           6: 'changes', 7: 'observations', 8: 'advisories', 9: 'climate' };
   const VIEW_LABELS = { workspace: 'Workspace', assistant: 'Ask', overview: 'Today', warnings: 'Warnings', map: 'Map', forecast: 'Forecast',
                         changes: 'What changed', observations: 'Observations', advisories: 'Farm advisories',
                         climate: 'Climate records', marine: 'Sea and rivers', aviation: 'Aviation', briefcase: 'Briefcase',
+                        documents: 'Published documents', 'air-quality': 'Air quality', ensemble: 'Ensemble spread',
                         settings: 'Sources and settings' };
   const VIEW_GLYPHS = { workspace: '◒', assistant: '✦', overview: '◎', warnings: '▲', map: '◈', forecast: '〜', changes: '∆',
                         observations: '⌖', advisories: '☘', climate: '◔', marine: '≈', aviation: '✈', briefcase: '❑',
+                        documents: '❒', 'air-quality': '❋', ensemble: '⁂',
                         settings: '⚙' };
   const DEFAULT_PLACE = { label: 'Ahmedabad, Gujarat', latitude: 23.02579, longitude: 72.58727 };
 
@@ -1122,9 +1129,9 @@ const WG = window.WG;
         if (WG.palette) WG.palette.open();
         return;
       }
-      // Alt+1…9 jumps to the first nine surfaces without leaving the keyboard.
+      // Alt+1…9 jumps to the surface its rail hint names, without leaving the keyboard.
       if (event.altKey && /^[1-9]$/.test(String(event.key))) {
-        const target = VIEWS[Number(event.key) - 1];
+        const target = VIEW_SHORTCUTS[Number(event.key)];
         if (target) { event.preventDefault(); window.location.hash = '#/' + target; }
       }
     });
@@ -1158,6 +1165,7 @@ const WG = window.WG;
   WG.render = render;
   WG.freshness = freshness;
   WG.VIEWS = VIEWS;
+  WG.VIEW_SHORTCUTS = VIEW_SHORTCUTS;
   WG.wireNotify = wireNotify;  /* exposed for the component checks, which never fire load */
   WG.wireTheme = wireTheme;
   WG.wirePalette = wirePalette;

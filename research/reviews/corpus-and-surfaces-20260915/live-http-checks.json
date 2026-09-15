@@ -1,0 +1,89 @@
+{
+  "schema_version": "corpus-and-surfaces-live-http-v1",
+  "checked_at_utc": "2026-09-15T16:51:35+00:00",
+  "base": "http://127.0.0.1:8795",
+  "method": "Loopback HTTP against a fresh workspace process: the served page, the three new surfaces and the routes they call. No DOM rendering (the session sandbox cannot launch Chrome); the component suites cover rendering.",
+  "checks": [
+    {
+      "check": "index.html serves the page token and the new rail entries",
+      "status": 200,
+      "ms": 6,
+      "token_present": true,
+      "rail_entries": {
+        "documents": true,
+        "air-quality": true,
+        "ensemble": true
+      }
+    },
+    {
+      "check": "asset panels.js",
+      "status": 200,
+      "ms": 1,
+      "bytes": 97544,
+      "panels": [
+        "air quality",
+        "ensemble spread",
+        "published documents"
+      ]
+    },
+    {
+      "check": "asset shell.js",
+      "status": 200,
+      "ms": 1,
+      "bytes": 62830,
+      "view_shortcuts": true
+    },
+    {
+      "check": "corpus index (first page)",
+      "path": "/api/corpus",
+      "status": 200,
+      "ms": 95,
+      "view": "corpus.documents",
+      "documents": 588,
+      "passages": 7372,
+      "bodies_available": 584,
+      "bodies_pruned": 4,
+      "listed": 5,
+      "first_body_state": "available"
+    },
+    {
+      "check": "corpus index (family filter)",
+      "path": "/api/corpus",
+      "status": 200,
+      "ms": 80,
+      "view": "corpus.documents",
+      "documents": 588,
+      "passages": 7372,
+      "bodies_available": 584,
+      "bodies_pruned": 4,
+      "listed": 3,
+      "first_body_state": "available"
+    },
+    {
+      "check": "air quality",
+      "path": "/api/air-quality",
+      "status": 200,
+      "ms": 2,
+      "view": "air_quality.point",
+      "parameters": 8,
+      "has_current": true,
+      "current_hour_kept_apart": true
+    },
+    {
+      "check": "ensemble spread",
+      "path": "/api/ensemble",
+      "status": 200,
+      "ms": 4,
+      "view": "ensemble.spread",
+      "member_total": {
+        "temperature_2m": 30
+      },
+      "model": "gfs025",
+      "statistics": [
+        "mean",
+        "percentile",
+        "spread"
+      ]
+    }
+  ]
+}

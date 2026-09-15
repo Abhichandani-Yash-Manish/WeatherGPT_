@@ -92,6 +92,25 @@ def providers(probe_ollama=True):
     return report
 
 
+def push_support():
+    """Whether this interpreter can serve consented web push, measured rather than assumed.
+
+    The push package is an optional runtime dependency: the workspace answers everything else
+    without it, so a missing package is reported as limited rather than blocked, and the check
+    names the imports that failed instead of implying the feature is unimplemented.
+    """
+    missing = []
+    for name in ('pywebpush', 'cryptography'):
+        try:
+            __import__(name)
+        except Exception as failure:  # noqa: BLE001 - any import failure is the measured state
+            missing.append(name + ' (' + type(failure).__name__ + ')')
+    if missing:
+        return {'available': False,
+                'detail': ('web push is unavailable in this interpreter: ' + ', '.join(missing) +
+                           '; install requirements.txt in the project environment')}
+    return {'available': True, 'detail': 'pywebpush and cryptography import in this interpreter'}
+
 def report(port=8765, probe_ollama=True):
     """One dict a launcher can print and a test can assert on. It holds no secret."""
     from .transport import utcnow as clock
@@ -115,6 +134,9 @@ def report(port=8765, probe_ollama=True):
         checks.append({'check': 'gazetteer', 'state': 'ok', 'detail': 'a known place resolves; the index is readable'})
     except (OSError, ValueError, KeyError) as failure:
         checks.append({'check': 'gazetteer', 'state': 'limited', 'detail': str(failure)[:200]})
+    push = push_support()
+    checks.append({'check': 'web push package', 'state': 'ok' if push['available'] else 'limited',
+                   'detail': push['detail']})
     available = port_free(port)
     checks.append({'check': 'port ' + str(port), 'state': 'ok' if available else 'blocked',
                    'detail': 'free' if available else 'something is already listening on the loopback port'})
@@ -155,7 +177,7 @@ def report(port=8765, probe_ollama=True):
     blocked = [item['check'] for item in checks if item['state'] == 'blocked']
     return {'schema_version': SCHEMA, 'generated_at_utc': clock().replace(microsecond=0).isoformat(),
             'root': str(ROOT), 'checks': checks, 'blocked': blocked,
-            'providers': provider_state, 'registries': registry, 'evidence': evidence,
+            'providers': provider_state, 'push': push, 'registries': registry, 'evidence': evidence,
             'not_connected': list(NOT_CONNECTED),
             'note': ('A preflight reports states, not permissions: a limited state means part of the workspace is thinner, '
                      'not that the workspace may not be used.')}

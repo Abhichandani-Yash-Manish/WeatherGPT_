@@ -849,6 +849,296 @@
     }));
   };
 
+  WG.panels['air-quality'] = async function (host, WGref) {
+    const card = WG.block('Modelled air quality',
+      'CAMS modelled concentrations and the source\u2019s own indices at a grid cell. Not a monitor measurement, not a health assessment and not an official warning.');
+    const controls = el('div', undefined, 'controls');
+    const daysSelect = el('select');
+    daysSelect.setAttribute('aria-label', 'Air-quality days to retrieve');
+    [1, 2, 3].forEach(value => {
+      const option = el('option', value + ' day' + (value > 1 ? 's' : '')); option.value = String(value);
+      if (value === 1) option.selected = true; daysSelect.append(option);
+    });
+    const parameterSelect = el('select');
+    parameterSelect.setAttribute('aria-label', 'Air-quality parameter to plot');
+    const refresh = el('button', 'Refresh from the source', 'ghost');
+    refresh.type = 'button';
+    controls.append(daysSelect, parameterSelect, refresh);
+    card.append(controls);
+    const host2 = el('div');
+    card.append(host2);
+    host.append(card);
+    let view = null;
+
+    function paint() {
+      WG.clear(host2);
+      const parameters = (view.data && view.data.parameters) || {};
+      const names = Object.keys(parameters);
+      if (!names.length) {
+        host2.append(WG.stateBlock('plain', 'No air-quality parameter was returned for this cell.', 'That is a missing reading, not clean air.'));
+        return;
+      }
+      const chosen = parameters[parameterSelect.value] ? parameterSelect.value : names[0];
+      const chart = seriesChart(parameters, chosen, chosen + ' \u00b7 ' + (parameters[chosen].unit || 'unit not stated'));
+      if (chart) host2.append(chart);
+      const current = (view.data && view.data.current) || {};
+      const rows = names.filter(name => current[name] !== undefined && current[name] !== null)
+        .map(name => [name, String(current[name]), parameters[name].unit || 'not stated by the source']);
+      if (rows.length) {
+        host2.append(el('p', 'The source\u2019s own current instant, kept apart from this window:', 'field-note'));
+        host2.append(WG.table(['Parameter', 'Value at the source current hour', 'Unit'], rows));
+      }
+      const grid = view.data.grid;
+      host2.append(el('p', 'Answering cell ' + (grid ? grid.latitude + ', ' + grid.longitude : 'not stated') +
+        ' \u00b7 domain ' + (view.data.domain || 'not stated') + '.', 'block-note'));
+      host2.append(WG.disclosure('Which values are concentrations and which are the source\u2019s own indices', body => {
+        const list = el('ul', undefined, 'notes');
+        const concentrations = names.filter(name => !/_aqi$/.test(name));
+        const indices = names.filter(name => /_aqi$/.test(name));
+        ['Concentrations are modelled mass per volume in the source\u2019s own units: ' + (concentrations.join(', ') || 'none returned') + '.',
+         'Indices are the source\u2019s own scale: ' + (indices.join(', ') || 'none returned') + '. An index is not a concentration, and neither is a health assessment.',
+         'No ground monitor, no health advice, no protective action, no risk score and no official air-quality warning is produced here.'].forEach(note => list.append(el('li', note)));
+        body.append(list);
+      }));
+      host2.append(WG.limitationList(view));
+      host2.append(WG.sourceDisclosure(view));
+    }
+
+    async function load(force) {
+      WG.clear(host2);
+      host2.append(WG.loading('Reading the air-quality model\u2026'));
+      try {
+        view = await WGref.api('/api/air-quality', placeQuery(WGref, { days: daysSelect.value, refresh: force ? '1' : '' }));
+        WGref.state.freshness = WG.freshness(view);
+        const names = Object.keys((view.data && view.data.parameters) || {});
+        const previous = parameterSelect.value;
+        WG.clear(parameterSelect);
+        names.forEach(name => { const option = el('option', name); option.value = name; parameterSelect.append(option); });
+        if (names.indexOf(previous) >= 0) parameterSelect.value = previous;
+        paint();
+      } catch (error) {
+        WG.clear(host2);
+        host2.append(WG.stateBlock('error', error.message));
+      }
+    }
+
+    daysSelect.addEventListener('change', () => load(false));
+    parameterSelect.addEventListener('change', paint);
+    refresh.addEventListener('click', () => load(true));
+    await load(false);
+  };
+  WG.panels.ensemble = async function (host, WGref) {
+    const card = WG.block('Ensemble spread',
+      'One model\u2019s returned members at a grid cell: mean, population spread, range and nearest-rank p10/p50/p90. Spread is not a probability, confidence, risk or skill measure.');
+    const controls = el('div', undefined, 'controls');
+    const variableSelect = el('select');
+    variableSelect.setAttribute('aria-label', 'Ensemble variable');
+    [['temperature_2m', 'Temperature'], ['precipitation', 'Precipitation'], ['wind_speed_10m', 'Wind speed']].forEach(pair => {
+      const option = el(pair[1]); option.value = pair[0]; variableSelect.append(option);
+    });
+    const modelSelect = el('select');
+    modelSelect.setAttribute('aria-label', 'Ensemble model');
+    ['gfs025', 'ecmwf_ifs025', 'icon_seamless'].forEach(name => { const option = el(name); option.value = name; modelSelect.append(option); });
+    const daysSelect = el('select');
+    daysSelect.setAttribute('aria-label', 'Ensemble days to retrieve');
+    [1, 2, 3].forEach(value => {
+      const option = el('option', value + ' day' + (value > 1 ? 's' : '')); option.value = String(value);
+      if (value === 1) option.selected = true; daysSelect.append(option);
+    });
+    const refresh = el('button', 'Refresh from the source', 'ghost');
+    refresh.type = 'button';
+    controls.append(variableSelect, modelSelect, daysSelect, refresh);
+    card.append(controls);
+    const host2 = el('div');
+    card.append(host2);
+    host.append(card);
+    let view = null;
+    const KINDS = ['mean', 'spread', 'min', 'max', 'p10', 'p50', 'p90', 'control'];
+
+    function paint() {
+      WG.clear(host2);
+      const data = view.data || {};
+      const parameters = data.parameters || {};
+      const names = Object.keys(parameters);
+      if (!names.length) {
+        host2.append(WG.stateBlock('plain', 'No ensemble member series was returned for this cell.', 'That is a missing reading, not a calm forecast.'));
+        return;
+      }
+      const families = Array.from(new Set(names.map(name => name.replace(new RegExp('_(' + KINDS.join('|') + ')$'), ''))));
+      const chosen = families.indexOf(variableSelect.value) >= 0 ? variableSelect.value : (families[0] || '');
+      const members = (data.member_total || {})[chosen];
+      host2.append(el('p', 'Model ' + (data.model || 'not stated') + ' \u00b7 ' +
+        (members === undefined ? 'member count not stated for this variable' : members + ' member(s) returned') +
+        ' \u00b7 nearest-rank percentiles on the sorted members.', 'block-note'));
+      let drawn = 0;
+      KINDS.forEach(kind => {
+        const key = chosen + '_' + kind;
+        if (!parameters[key]) return;
+        const chart = seriesChart(parameters, key, chosen + ' ' + kind + ' \u00b7 ' + (parameters[key].unit || 'unit not stated'));
+        if (chart) { host2.append(chart); drawn += 1; }
+      });
+      if (!drawn) {
+        host2.append(el('p', 'The source returned member statistics for another variable; choose one of: ' +
+          families.join(', ') + '.', 'field-note'));
+      }
+      const statistics = data.statistics || {};
+      const definitions = Object.keys(statistics);
+      if (definitions.length) {
+        host2.append(WG.disclosure('How each statistic is computed', body => {
+          body.append(WG.table(['Statistic', 'Method as computed'], definitions.map(key => [key, statistics[key]])));
+        }));
+      }
+      const grid = data.grid;
+      host2.append(el('p', 'Answering cell ' + (grid ? grid.latitude + ', ' + grid.longitude : 'not stated') +
+        (data.grid_distance_km !== undefined ? ' \u00b7 ' + data.grid_distance_km + ' km from the requested point' : '') + '.', 'block-note'));
+      host2.append(WG.limitationList(view));
+      host2.append(WG.sourceDisclosure(view));
+    }
+
+    async function load(force) {
+      WG.clear(host2);
+      host2.append(WG.loading('Reading the ensemble members\u2026'));
+      try {
+        view = await WGref.api('/api/ensemble', placeQuery(WGref, { variable: variableSelect.value, model: modelSelect.value, days: daysSelect.value, refresh: force ? '1' : '' }));
+        WGref.state.freshness = WG.freshness(view);
+        paint();
+      } catch (error) {
+        WG.clear(host2);
+        host2.append(WG.stateBlock('error', error.message));
+      }
+    }
+
+    [variableSelect, modelSelect, daysSelect].forEach(node => node.addEventListener('change', () => load(false)));
+    refresh.addEventListener('click', () => load(true));
+    await load(false);
+  };
+  // The published corpus gets a front door of its own. Every column is a state the intake already
+  // measured: a printed issue date, the retrieval instant, the passage count and whether the saved
+  // body is still held. A stored document is the record of one edition, never a current warning and
+  // never a claim that it applies to a place or a decision.
+  WG.panels.documents = async function (host, WGref) {
+    const card = WG.block('Published documents',
+      'What this machine has indexed, one row per edition. The printed issue date is not a current warning and a stored passage is not applicability.');
+    const summary = el('p', undefined, 'block-note');
+    summary.textContent = 'Reading the local corpus index\u2026';
+    const controls = el('div', undefined, 'controls');
+    const familySelect = el('select');
+    familySelect.setAttribute('aria-label', 'Document family');
+    const filter = el('input', undefined, 'palette-input');
+    filter.setAttribute('aria-label', 'Filter published documents');
+    filter.placeholder = 'Filter by region, state or district';
+    const limitSelect = el('select');
+    limitSelect.setAttribute('aria-label', 'Documents to list');
+    [25, 50, 100].forEach(value => {
+      const option = el('option', 'up to ' + value + ' documents'); option.value = String(value);
+      if (value === 50) option.selected = true;
+      limitSelect.append(option);
+    });
+    const refresh = el('button', 'Refresh from the source', 'ghost');
+    refresh.type = 'button';
+    controls.append(familySelect, filter, limitSelect, refresh);
+    card.append(summary, controls);
+    const resultHost = el('div');
+    card.append(resultHost);
+    host.append(card);
+    const BODY_LABELS = { available: 'body held', pruned: 'body pruned', unknown: 'body location unrecorded' };
+    const BODY_CLASSES = { available: 'is-current', pruned: 'is-stale', unknown: 'is-unknown' };
+    let view = null;
+    let familiesBuilt = false;
+
+    function buildFamilies(families) {
+      if (familiesBuilt) return;
+      const all = el('option', 'Every family'); all.value = ''; familySelect.append(all);
+      (families || []).forEach(entry => {
+        const option = el('option', entry.label + ' (' + entry.documents + ')');
+        option.value = entry.family; familySelect.append(option);
+      });
+      familiesBuilt = true;
+    }
+
+    function savedFile(document) {
+      const open = el('a', 'Open the saved PDF');
+      open.href = '/api/documents/' + document.sha256;
+      open.target = '_blank'; open.rel = 'noopener noreferrer';
+      const download = el('a', 'Download');
+      download.href = '/api/documents/' + document.sha256;
+      download.download = 'source-' + document.sha_prefix + '.pdf';
+      const wrap = el('span');
+      wrap.append(open, el('span', ' \u00b7 ', 'field-note'), download);
+      return wrap;
+    }
+
+    function paint() {
+      WG.clear(resultHost);
+      const data = view.data || {};
+      const counts = data.counts || {};
+      const documents = data.documents || [];
+      buildFamilies(data.families);
+      summary.textContent = (counts.documents || 0) + ' document(s) \u00b7 ' + (counts.passages || 0) + ' passage(s) \u00b7 ' +
+        (data.families || []).length + ' family(ies) \u00b7 ' + (counts.regions || 0) + ' region(s) \u00b7 ' +
+        (counts.bodies_available || 0) + ' with a saved body, ' + (counts.pruned || 0) + ' pruned \u00b7 ' +
+        (counts.documents_without_a_printed_issue_date || 0) + ' without a printed issue date.';
+      if (view.status !== 'ok' || !documents.length) {
+        resultHost.append(WG.stateBlock('plain', data.reason || 'No published document is indexed here.',
+          'The local corpus is built by scripts/ingest_documents.py; this page reads the index and downloads nothing.'));
+        if (view.limitations) resultHost.append(WG.limitationList(view));
+        return;
+      }
+      resultHost.append(WG.table(['Family', 'Region', 'Printed issue', 'Retrieved', 'Pages', 'Passages', 'Currency', 'Saved body', 'Source file'],
+        documents.map(document => {
+          const region = document.region || [document.district, document.state].filter(Boolean).join(', ') || 'not stated';
+          const currency = (document.age_days === null || document.age_days === undefined)
+            ? (document.currency_recorded_at_intake || 'unknown')
+            : document.age_days + ' day(s) after the printed issue date';
+          const body = WG.chip(BODY_LABELS[document.body] || 'body state unrecorded', BODY_CLASSES[document.body] || 'is-unknown');
+          return [document.family_label || document.family, region,
+                  document.issue_date || 'not stated',
+                  document.retrieved_at_utc ? istStamp(document.retrieved_at_utc) : 'not recorded',
+                  (document.pages === null || document.pages === undefined) ? '\u2014' : String(document.pages),
+                  String(document.passages || 0), currency, body,
+                  document.body === 'available' ? savedFile(document) : el('span', 'not held', 'field-note')];
+        })));
+      documents.slice(0, 20).forEach(document => {
+        resultHost.append(WG.disclosure('Provenance \u00b7 ' + (document.family_label || document.family) + ' \u00b7 ' + (document.sha_prefix || ''), body => {
+          body.append(WG.table(['Field', 'Value'], [
+            ['Document sha256', document.sha256],
+            ['Source', document.source_id || 'not stated'],
+            ['Address', document.address || 'not stated'],
+            ['Retrieved', document.retrieved_at_utc || 'not recorded'],
+            ['Checked', document.checked_at_utc || 'not recorded'],
+            ['Language', document.language || 'not stated'],
+            ['Scope', document.scope || 'not stated'],
+            ['Physical pages', (document.first_page === null || document.first_page === undefined) ? 'not stated' : document.first_page + ' to ' + document.last_page],
+            ['Extraction status', document.extraction_status || 'not stated'],
+            ['Quarantined passages', String(document.quarantined_passages || 0)],
+          ]));
+          if (document.quarantined_passages) body.append(el('p', 'A quarantined passage is counted here and is never served as evidence.', 'field-note'));
+        }));
+      });
+      resultHost.append(WG.limitationList(view));
+      resultHost.append(WG.sourceDisclosure(view));
+    }
+
+    async function load(force) {
+      WG.clear(resultHost);
+      resultHost.append(WG.loading('Reading the published corpus\u2026'));
+      try {
+        view = await WGref.api('/api/corpus', { family: familySelect.value, q: filter.value, limit: limitSelect.value, refresh: force ? '1' : '' });
+        WGref.state.freshness = WG.freshness(view);
+        paint();
+      } catch (error) {
+        WG.clear(resultHost);
+        summary.textContent = 'The corpus index could not be read.';
+        resultHost.append(WG.stateBlock('error', error.message));
+      }
+    }
+
+    refresh.addEventListener('click', () => load(true));
+    familySelect.addEventListener('change', () => load(false));
+    limitSelect.addEventListener('change', () => load(false));
+    filter.addEventListener('change', () => load(false));
+    await load(false);
+  };
   WG.panels.settings = async function (host, WGref) {
     const view = await WGref.api('/api/settings/capabilities');
     WGref.state.freshness = WG.freshness(view);

@@ -83,7 +83,10 @@ time, page/row locator, evidence id) and disclosures for requested tasks, scope 
   temperature, feels-like temperature, wind and gusts, humidity and visibility, with a bounded refresh
   when stored evidence is stale. Two sources can be compared with their difference and the
   shared-lineage caveat, never a score; ensemble member statistics (mean, spread, range, nearest-rank
-  p10/p50/p90) are shown as a distribution and never as probability or skill.
+  p10/p50/p90) have their own surface and are shown as a distribution, never as probability or skill.
+- **Air quality.** CAMS modelled concentrations and the source’s own indices at a grid cell, with
+  the provider’s current hour kept apart from the window; no health advice, no risk score, no
+  protective action and no ground monitor connected.
 - **Published records.** District rainfall and national climate series with charts, exact-value
   inspection and page/row locators; a bounded daily reanalysis window labelled as modelled; airport
   METAR and TAF reports each with their own station and validity.
@@ -94,7 +97,9 @@ time, page/row locator, evidence id) and disclosures for requested tasks, scope 
 - **The published corpus.** A named national, state, district or marine product answers from the
   indexed documents with its family, region, physical page, printed issue date, measured currency and
   retrieval instant attached; warning-classified text stays reference-only, earlier editions are
-  retired from current retrieval, and a saved PDF opens from this origin on request.
+  retired from current retrieval, and a saved PDF opens from this origin on request. A **Published
+  documents** surface lists every edition this machine holds with its printed issue date, measured
+  currency and the state of its saved body, so the corpus can be browsed rather than only asked about.
 - **Specialist products.** Modelled wave height, direction and period near a coastal place, and
   modelled river discharge near a point — each naming the answering cell and its distance, never
   standing in for an observed water level, gauge, danger level, flood extent, tide or current. The
@@ -138,7 +143,7 @@ The interface states these limits instead of filling them:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 1129 Python tests
+python3 -m pytest tests/ -q                          # 1139 Python tests
 node tests/test_charts.js                            #  2 of 70 component checks
 node tests/test_views.js                             # 18
 node tests/test_bulletin_ui.js                       #  6
@@ -199,7 +204,8 @@ recorded journeys, fast and slow.
 
 - [The recorded problem statement](docs/00-problem-statement.md) — the authoritative SIH26068 summary and what this team's interpretations are.
 - [The integrated PS assessment](docs/72-integrated-status-and-ps-review.md) — the current requirement-by-requirement verdict and remaining gates.
-- [OpenRouter routing and frontend delivery](docs/76-openrouter-routing-and-frontend-delivery.md) — the newest batch.
+- [The corpus front door and surface completion](docs/77-corpus-front-door-and-surface-completion.md) — the newest batch.
+- [OpenRouter routing and frontend delivery](docs/76-openrouter-routing-and-frontend-delivery.md) — the free-model ranking, failover and the radar coordinate repair.
 - [The dissemination integration review](docs/73-dissemination-integration-review.md) — alert delivery machinery and its limits.
 - [The chronological gap register](docs/31-full-solution-gap-register.md) — what is open, in order of value.
 - [The critical full-solution review](docs/21-full-solution-critical-review.md) — findings A01–A08 and the staged trajectory.
@@ -211,6 +217,7 @@ recorded journeys, fast and slow.
 Each links to the batch that recorded it. Older entries are **historical evidence, not completion
 claims**, and the test counts in them are the counts of their own checkpoint.
 
+- [The corpus front door and surface completion](docs/77-corpus-front-door-and-surface-completion.md) — the README overhaul, the published-documents browser, air quality and ensemble surfaces, and two repairs found while building.
 - [Provider routing and the surfaces that reached the frontend](docs/76-openrouter-routing-and-frontend-delivery.md) — the free-model ranking re-measured, body-level failover repaired, radar coordinate order fixed, five capability paths surfaced.
 - [Concurrent alert delivery and its critical limits](docs/73-dissemination-integration-review.md) — outbox, consented push, acknowledgements; no live device-delivery claim.
 - [The dissemination build reports](docs/74-dissemination-build.md) — the branch's historical record, preserved at renumbered paths.

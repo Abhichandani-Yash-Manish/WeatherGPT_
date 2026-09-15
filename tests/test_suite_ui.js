@@ -114,6 +114,41 @@ const PAYLOADS = {
   '/api/plans/check': { schema_version: 'plan-check-v1', result: { checked: 1, notified: 0, read: true } },
   '/api/places/search': envelope('places.search', 'ok', { matches: [{ label: 'Surat, Sūrat, State of Gujarāt', name: 'Surat', source_id: 'geonames', kind: 'city', coordinates: { latitude: 21.1959, longitude: 72.8302 } }] }),
   '/api/conversations': { schema_version: 'conversation-ledger-v1', total: 1, limit: 6, conversations: [{ id: 'c1', opening_question: 'Will it rain in Surat tomorrow?', asked: 2, turns: 4, updated: '2026-09-14T18:00:00+00:00' }] },
+  '/api/air-quality': envelope('air_quality.point', 'ok',
+    { parameters: { pm2_5: { unit: '\u03bcg/m\u00b3', points: [{ t: '2026-09-14T00:00:00+00:00', v: 7.3, source_locator: '$.hourly.pm2_5[0]' }] },
+                    us_aqi: { unit: 'US AQI', points: [{ t: '2026-09-14T00:00:00+00:00', v: 53, source_locator: '$.hourly.us_aqi[0]' }] } },
+      current: { pm2_5: 12.6, us_aqi: 53 }, grid: { latitude: 23.0, longitude: 72.6 },
+      domain: 'CAMS global (Open-Meteo automatic domain)', requested: { latitude: 23.03, longitude: 72.59 } },
+    { not_established: ['An air-quality index is the source\u2019s own index, and no health advice, risk score or official warning is produced from it.'] }),
+  '/api/ensemble': envelope('ensemble.spread', 'ok',
+    { parameters: { temperature_2m_mean: { unit: '\u00b0C', points: [{ t: '2026-09-14T00:00:00+00:00', v: '24.860', source_locator: '$.hourly.temperature_2m*[0]' }] },
+                    temperature_2m_spread: { unit: '\u00b0C', points: [{ t: '2026-09-14T00:00:00+00:00', v: '1.204', source_locator: '$.hourly.temperature_2m*[0]' }] } },
+      statistics: { mean: 'arithmetic mean of the returned perturbed members', spread: 'population standard deviation across the returned members' },
+      member_total: { temperature_2m: 30 }, model: 'gfs025', days: 1, grid: { latitude: 23.0, longitude: 72.6 },
+      requested: { latitude: 23.03, longitude: 72.59 } },
+    { not_established: ['Spread is not a probability, a confidence, a risk or a skill measure.'] }),
+  '/api/corpus': envelope('corpus.documents', 'ok',
+    { documents: [
+        { sha256: 'a'.repeat(64), sha_prefix: 'a'.repeat(12), family: 'national_bulletin',
+          family_label: 'All India Weather Summary and Forecast Bulletin', scope: 'national', region: null, state: null,
+          district: null, issue_date: '2026-09-14', language: 'en', pages: 12, passages: 48, first_page: 1, last_page: 12,
+          source_id: 'S07', address: 'https://example.test/national.pdf', retrieved_at_utc: '2026-09-14T06:10:00+00:00',
+          checked_at_utc: '2026-09-14T06:10:00+00:00', age_days: 0, currency_recorded_at_intake: 'current_on_the_retrieval_date',
+          body: 'available', quarantined_passages: 0, extraction_status: 'family_extraction_reviewed_in_intake' },
+        { sha256: 'b'.repeat(64), sha_prefix: 'b'.repeat(12), family: 'district_agromet',
+          family_label: 'District agromet advisory bulletin', scope: 'district', region: 'Ahmedabad', state: 'Gujarat',
+          district: 'Ahmedabad', issue_date: '2026-08-01', language: 'en', pages: 7, passages: 31, first_page: 1,
+          last_page: 7, source_id: 'S57', address: 'https://example.test/district.pdf',
+          retrieved_at_utc: '2026-08-02T05:00:00+00:00', checked_at_utc: '2026-08-02T05:00:00+00:00', age_days: 1,
+          currency_recorded_at_intake: 'measured_at_intake', body: 'pruned', quarantined_passages: 2, extraction_status: null }],
+      families: [{ family: 'district_agromet', label: 'District agromet advisory bulletin', documents: 1, passages: 31, newest_issue_date: '2026-08-01' },
+                 { family: 'national_bulletin', label: 'All India Weather Summary and Forecast Bulletin', documents: 1, passages: 48, newest_issue_date: '2026-09-14' }],
+      counts: { documents: 2, documents_listed: 2, documents_matching: 2, passages: 79, regions: 1, pruned: 1,
+                bodies_available: 1, documents_without_a_printed_issue_date: 0 },
+      index: '/tmp/index.sqlite', filters: { family: '', q: '', documents_listed: 2 }, reason: '' },
+    { coverage: { documents: 2, documents_listed: 2, passages: 79, regions: 1, families: 2, bodies_available: 1, bodies_pruned: 1 },
+      limitations: ['A body is pruned after the retention window while its hash, extracted pages and passages stay indexed; a pruned document is a different state from a document that was never published.'],
+      not_established: ['Nothing here establishes that a document applies to a place, a crop or a decision.'] }),
   '/api/health': { available: true, products: [{ product: 'forecast', jobs: 12, newest_commit_utc: '2026-09-14T18:00:00+00:00' }], job_states: { ok: 12 }, active_leases: 0 }
 };
 const GEOMETRY = {
@@ -168,7 +203,7 @@ function settle(ms) { return new Promise(resolve => setTimeout(resolve, ms === u
 async function run() {
   const h = harness();
   const WG = h.api();
-  const expected = ['overview', 'warnings', 'map', 'observations', 'forecast', 'changes', 'climate', 'advisories', 'aviation', 'marine', 'settings', 'assistant'];
+  const expected = ['overview', 'warnings', 'map', 'observations', 'forecast', 'changes', 'climate', 'advisories', 'air-quality', 'aviation', 'ensemble', 'marine', 'documents', 'settings', 'assistant'];
   expected.forEach(name => assert.equal(typeof WG.panels[name], 'function', name + ' panel is registered'));
   assert.equal(typeof WG.map.render, 'function', 'the map renderer is registered');
   console.log('PASS: every surface has a renderer, including the map (component only)');
@@ -249,6 +284,46 @@ async function run() {
   assert(walk(marine).some(node => /meaning of a day field is not documented by the layer/i.test(textOf(node))),
     'the layer limitation travels with the sub-basin table');
   console.log('PASS: the marine surface names the answering cell or its limit and lists the national sub-basins verbatim');
+
+  const airQuality = await render('air-quality', place);
+  assert(walk(airQuality).some(node => /CAMS modelled concentrations/.test(textOf(node))), 'air quality states what it is');
+  assert(walk(airQuality).some(node => textOf(node) === '12.6'), 'the source current instant is shown as a value');
+  assert(walk(airQuality).some(node => /Answering cell 23, 72.6/.test(textOf(node))), 'the answering cell is named');
+  assert(/no health advice/i.test(textOf(airQuality)) || /no health assessment/i.test(textOf(airQuality)), 'air quality keeps its limit');
+  console.log('PASS: the air-quality surface plots the model and keeps the source current hour apart from the window');
+
+  const ensemble = await render('ensemble', place);
+  assert(walk(ensemble).some(node => /30 member\(s\) returned/.test(textOf(node))), 'the member count is named');
+  assert(walk(ensemble).some(node => /nearest-rank percentiles/.test(textOf(node))), 'the percentile method is stated');
+  assert(withTag(ensemble, 'svg').length >= 1, 'the ensemble surface draws the member statistics');
+  assert(/not a probability/i.test(textOf(ensemble)), 'the ensemble surface refuses the probability reading');
+  console.log('PASS: the ensemble surface draws member statistics without scoring them');
+
+  const documents = await render('documents');
+  assert(/2 document\(s\) \u00b7 79 passage\(s\)/.test(textOf(documents)), 'the corpus summary counts documents and passages');
+  assert(walk(documents).some(node => textOf(node) === 'Ahmedabad'), 'a district edition names its region');
+  assert(walk(documents).some(node => /body held/.test(textOf(node))), 'a held body is stated');
+  assert(walk(documents).some(node => /body pruned/.test(textOf(node))), 'a pruned body is stated rather than hidden');
+  const savedLinks = withTag(documents, 'a').filter(node => String(node.href || '').indexOf('/api/documents/') === 0);
+  assert.equal(savedLinks.length, 2, 'a held body offers the saved file to open and download');
+  assert(savedLinks.every(node => String(node.href).indexOf('a'.repeat(64)) > 0),
+    'the saved-file links point at the held document and never at the pruned one');
+  assert(/2 day\(s\) after the printed issue date|1 day\(s\) after the printed issue date/.test(textOf(documents)),
+    'currency is measured from the printed issue date against the retrieval date');
+  assert(/not a current warning/i.test(textOf(documents)), 'the panel keeps the record-is-not-a-warning limit');
+  console.log('PASS: the published-documents surface lists the corpus with its printed dates, body states and limits');
+
+  const hints = {};
+  fs.readFileSync(path.join(ROOT, 'web/index.html'), 'utf8').split('\n').forEach(line => {
+    const view = (line.match(/data-view="([a-z]+)"/) || [])[1];
+    const hint = (line.match(/\u2325(\d)/) || [])[1];
+    if (view && hint) hints[hint] = view;
+  });
+  const promised = Object.keys(hints).map(key => [String(Number(key)), hints[key]]).sort();
+  const actual = Object.keys(WG.VIEW_SHORTCUTS).map(key => [String(Number(key)), WG.VIEW_SHORTCUTS[key]]).sort();
+  assert(promised.length >= 9, 'the rail prints nine keyboard hints');
+  assert.deepEqual(actual, promised, 'Alt+1\u20269 must open the surface its rail hint names');
+  console.log('PASS: the printed keyboard hints and the Alt+1-9 mapping agree');
 
   const settings = await render('settings', place);
   assert(walk(settings).some(node => textOf(node) === 'S15'), 'settings lists the source');

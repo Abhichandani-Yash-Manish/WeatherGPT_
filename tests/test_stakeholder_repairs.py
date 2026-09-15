@@ -161,6 +161,30 @@ class ProviderReadinessTests(unittest.TestCase):
         self.assertNotIn('no local Ollama was reachable', line['detail'])
         self.assertIn('not probed', line['detail'])
 
+    def test_a_missing_push_package_is_reported_as_limited_with_the_install_named(self):
+        import builtins
+        from weathergpt_data import preflight
+        real = builtins.__import__
+
+        def refuse(name, *args, **kwargs):
+            if name in ('pywebpush', 'cryptography'):
+                raise ModuleNotFoundError('no module named ' + name)
+            return real(name, *args, **kwargs)
+
+        with patch('builtins.__import__', side_effect=refuse):
+            state = preflight.push_support()
+        self.assertFalse(state['available'])
+        self.assertIn('pywebpush', state['detail'])
+        self.assertIn('requirements.txt', state['detail'])
+
+    def test_the_report_carries_the_push_capability_state(self):
+        from weathergpt_data import preflight
+        report = preflight.report(probe_ollama=False)
+        line = [check for check in report['checks'] if check['check'] == 'web push package'][0]
+        self.assertIn(line['state'], ('ok', 'limited'))
+        self.assertIn('push', line['detail'].lower())
+        self.assertEqual(report['push']['available'], line['state'] == 'ok')
+
     def test_preflight_separates_reachable_from_installed(self):
         from weathergpt_data import preflight
         from weathergpt_data.providers import ProviderUnavailable

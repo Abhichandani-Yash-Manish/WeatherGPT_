@@ -1,7 +1,7 @@
 {
  "schema_version": "hardening-progress-v1",
  "review": "research/reviews/national-readiness-20260912/review.md",
- "updated_at_utc": "2026-09-15T16:06:42+00:00",
+ "updated_at_utc": "2026-09-15T16:53:58+00:00",
  "operational_ready": false,
  "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
  "findings": [
@@ -2207,5 +2207,39 @@
   "hosting_performed": false,
   "same_host_only": true,
   "live_chat_turn": "research/reviews/frontend-delivery-20260915/live-chat-turn.json"
+ },
+ "corpus_front_door_and_surface_completion_batch": {
+  "report": "docs/77-corpus-front-door-and-surface-completion.md",
+  "evidence_directory": "research/reviews/corpus-and-surfaces-20260915",
+  "readme_overhauled": true,
+  "new_product_view": "/api/corpus",
+  "new_surfaces": [
+   "Published documents",
+   "Air quality",
+   "Ensemble spread"
+  ],
+  "corpus_index_measured": {
+   "documents": 588,
+   "passages": 7372,
+   "families": 12,
+   "regions": 570,
+   "bodies_available": 584,
+   "bodies_pruned": 4,
+   "documents_without_a_printed_issue_date": 38
+  },
+  "repaired_at_cause": [
+   "the rail keyboard hints and the Alt+1-9 mapping disagreed from Alt+5; the mapping is now an explicit table that a component check asserts against the printed hints",
+   "the preflight could not see that the push package is missing from an interpreter; it now measures it and names the fix"
+  ],
+  "python_tests_passed": 1139,
+  "javascript_suites": 9,
+  "verification_steps": 26,
+  "verification_failed": 0,
+  "live_loopback_check": "research/reviews/corpus-and-surfaces-20260915/live-http-checks.json",
+  "browser_rendering_verified": false,
+  "browser_rendering_blocker": "the agent-browser CLI could not launch Chrome inside this session sandbox",
+  "live_device_delivery_verified": false,
+  "hosting_performed": false,
+  "same_host_only": true
  }
 }

@@ -42,7 +42,7 @@ PRODUCT_PATHS = ('/api/overview', '/api/warnings/national', '/api/warnings/place
                  '/api/forecast', '/api/forecast/changes', '/api/marine', '/api/river', '/api/aviation', '/api/places/search',
                  '/api/map/layers', '/api/warnings/cap', '/api/warnings/alert-brief', '/api/settings/capabilities',
                  '/api/climate/index', '/api/climate/series', '/api/advisories/states',
-                 '/api/advisories/districts', '/api/personas', '/api/now', '/api/ensemble', '/api/air-quality')
+                 '/api/advisories/districts', '/api/personas', '/api/now', '/api/ensemble', '/api/air-quality', '/api/corpus')
 _REGISTRY = {'path': None, 'mtime': None, 'products': {}}
 
 
@@ -51,6 +51,42 @@ def envelope(view, status, data, sources=None, coverage=None, limitations=None, 
             'data': data, 'sources': sources or [], 'coverage': coverage or {},
             'limitations': limitations or [], 'not_established': not_established or []}
 
+
+def corpus_documents(foundation, family=None, query=None, limit=50):
+    """What this machine holds of the published corpus, with each document's measured state.
+
+    An index of ingested editions, not a coverage claim and not a current-warning service. The
+    printed issue date is attached, currency is measured from that date against the retrieval date,
+    and a body outside the retention window is reported as pruned rather than as missing, because
+    the hash, the extracted pages and the passages stay citable.
+    """
+    from .corpus_overview import documents as corpus_rows
+    rows = corpus_rows(foundation.store.root, family=family, query=query, limit=limit)
+    counts = rows['counts']
+    families = rows['families']
+    source_ids = sorted({str(row['source_id']) for row in rows['documents'] if row.get('source_id')
+                         } | {str(entry['source_id']) for entry in rows.get('sources') or []})
+    sources = [source_entry(source_id, {}) for source_id in source_ids]
+    data = {'documents': rows['documents'], 'families': families, 'counts': counts, 'index': rows['index'],
+            'filters': {'family': family or '', 'q': query or '', 'documents_listed': counts['documents_listed']},
+            'reason': rows['reason']}
+    coverage = {'documents': counts['documents'], 'documents_listed': counts['documents_listed'],
+                'documents_matching': counts.get('documents_matching'), 'passages': counts['passages'],
+                'regions': counts['regions'], 'families': len(families),
+                'bodies_available': counts.get('bodies_available'), 'bodies_pruned': counts.get('pruned'),
+                'documents_without_a_printed_issue_date': counts.get('documents_without_a_printed_issue_date')}
+    limitations = [
+        'The list is what this machine has ingested. It is not nationwide coverage, not an acceptance claim and not evidence that an edition was published.',
+        'A stored document is the record of one printed edition: never a current warning, an all-clear or advice.',
+        'A body is pruned after the retention window while its hash, extracted pages and passages stay indexed; a pruned document is a different state from a document that was never published.',
+        'Currency is measured from the printed issue date against the retrieval date and stays unknown when the document states no printed date.',
+    ]
+    not_established = [
+        'Nothing here establishes that a document applies to a place, a crop or a decision.',
+        'Quarantined passages are counted, not served: an association the intake could not verify is not offered as evidence.',
+    ]
+    return envelope('corpus.documents', rows['status'], data, sources=sources, coverage=coverage,
+                    limitations=limitations, not_established=not_established)
 
 def personas_view():
     """Who is reading: three registered positions, each framing and never finding."""
@@ -817,6 +853,9 @@ def dispatch(foundation, path, params):
         return air_quality(foundation, latitude, longitude,
                            days=_int(params, 'days', 3, low=1, high=7),
                            variables=variables, refresh=_flag(params, 'refresh'))
+    if path == '/api/corpus':
+        return corpus_documents(foundation, family=_first(params, 'family'), query=_first(params, 'q'),
+                                limit=_int(params, 'limit', 50, low=1, high=200))
     if path == '/api/personas':
         return personas_view()
     if path == '/api/places/search':
