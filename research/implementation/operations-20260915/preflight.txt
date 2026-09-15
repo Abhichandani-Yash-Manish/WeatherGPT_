@@ -1,0 +1,10 @@
+WeatherGPT preflight - 2026-09-15T05:37:58+00:00
+  python             ok       3.9.6
+  registries         ok       6 checked, 0 missing, 0 unparsed
+  document corpus    ok       6739 passages in 584 documents
+  gazetteer          ok       a known place resolves; the index is readable
+  port 8798          ok       free
+  runtime store      ok       /Users/yashabhichandani/Desktop/WeatherGPT/data/runtime
+  model providers    limited  no local Ollama was reachable; no OpenRouter key configured: the rules floor and any local model still answer
+  not connected: radar and satellite imagery; sea-area and coastal bulletins as live products; flood-extent mapping; official warning dissemination of any kind; delivery, push or scheduled notification outside a foreground command
+  A preflight reports states, not permissions: a limited state means part of the workspace is thinner, not that the workspace may not be used.

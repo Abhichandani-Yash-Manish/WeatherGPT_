@@ -1,0 +1,150 @@
+{
+  "schema_version": "engine-latency-v1",
+  "measured_at_utc": "2026-09-15T05:37:12+00:00",
+  "turns": 8,
+  "questions": [
+    "Will it rain in Ahmedabad, Gujarat tomorrow morning?",
+    "Any warning for Patna, Bihar today?",
+    "Show the annual rainfall trend for Ahmedabad district, Gujarat from 1981 to 2010.",
+    "What does the latest IMD national weather bulletin say about heavy rainfall?",
+    "What are the wave conditions off Kochi?",
+    "Ahmedabad district agromet advisory kya kehta hai cotton ke liye?",
+    "What does the district agromet advisory say about cotton irrigation in Ahmedabad?",
+    "And what about the afternoon?"
+  ],
+  "repeats": 1,
+  "latency_seconds": {
+    "min": 0.015,
+    "p50": 4.844,
+    "p90": 6.327,
+    "max": 36.127,
+    "mean": 7.118,
+    "samples": 8
+  },
+  "evidence_turns": 6,
+  "failed_turns": 0,
+  "providers": {
+    "deterministic_rules/rule-planner-v1": 7,
+    "ollama/qwen3.6:latest": 1
+  },
+  "turns_detail": [
+    {
+      "repeat": 1,
+      "question": "Will it rain in Ahmedabad, Gujarat tomorrow morning?",
+      "status": "answered",
+      "engine_seconds": 2.27,
+      "wall_seconds": 2.275,
+      "provider": "deterministic_rules",
+      "model": "rule-planner-v1",
+      "model_calls": 0,
+      "failover": [],
+      "facts": 1,
+      "passages": 0,
+      "error": null
+    },
+    {
+      "repeat": 1,
+      "question": "Any warning for Patna, Bihar today?",
+      "status": "answered",
+      "engine_seconds": 36.126,
+      "wall_seconds": 36.127,
+      "provider": "deterministic_rules",
+      "model": "rule-planner-v1",
+      "model_calls": 0,
+      "failover": [],
+      "facts": 5,
+      "passages": 0,
+      "error": null
+    },
+    {
+      "repeat": 1,
+      "question": "Show the annual rainfall trend for Ahmedabad district, Gujarat from 1981 to 2010.",
+      "status": "answered",
+      "engine_seconds": 0.504,
+      "wall_seconds": 0.509,
+      "provider": "deterministic_rules",
+      "model": "rule-planner-v1",
+      "model_calls": 0,
+      "failover": [],
+      "facts": 30,
+      "passages": 0,
+      "error": null
+    },
+    {
+      "repeat": 1,
+      "question": "What does the latest IMD national weather bulletin say about heavy rainfall?",
+      "status": "answered",
+      "engine_seconds": 4.843,
+      "wall_seconds": 4.844,
+      "provider": "deterministic_rules",
+      "model": "rule-planner-v1",
+      "model_calls": 0,
+      "failover": [],
+      "facts": 0,
+      "passages": 10,
+      "error": null
+    },
+    {
+      "repeat": 1,
+      "question": "What are the wave conditions off Kochi?",
+      "status": "needs_clarification",
+      "engine_seconds": 0.014,
+      "wall_seconds": 0.015,
+      "provider": "deterministic_rules",
+      "model": "rule-planner-v1",
+      "model_calls": 0,
+      "failover": [],
+      "facts": 0,
+      "passages": 0,
+      "error": null
+    },
+    {
+      "repeat": 1,
+      "question": "Ahmedabad district agromet advisory kya kehta hai cotton ke liye?",
+      "status": "answered",
+      "engine_seconds": 6.323,
+      "wall_seconds": 6.327,
+      "provider": "deterministic_rules",
+      "model": "rule-planner-v1",
+      "model_calls": 0,
+      "failover": [],
+      "facts": 0,
+      "passages": 5,
+      "error": null
+    },
+    {
+      "repeat": 1,
+      "question": "What does the district agromet advisory say about cotton irrigation in Ahmedabad?",
+      "status": "answered",
+      "engine_seconds": 1.339,
+      "wall_seconds": 1.342,
+      "provider": "deterministic_rules",
+      "model": "rule-planner-v1",
+      "model_calls": 0,
+      "failover": [],
+      "facts": 0,
+      "passages": 4,
+      "error": null
+    },
+    {
+      "repeat": 1,
+      "question": "And what about the afternoon?",
+      "status": "needs_clarification",
+      "engine_seconds": 5.504,
+      "wall_seconds": 5.507,
+      "provider": "ollama",
+      "model": "qwen3.6:latest",
+      "model_calls": null,
+      "failover": [],
+      "facts": 0,
+      "passages": 0,
+      "error": null
+    }
+  ],
+  "limitations": [
+    "One process, one machine and one network at one instant: this is not load, concurrency or sustained-rate measurement.",
+    "Cold and warm turns are mixed and not separated; a percentile over a handful of turns is a handful of turns.",
+    "It measures the engine in process, not browser time-to-paint or user-perceived latency.",
+    "A slow turn is recorded, not explained: no per-source timing attribution is claimed here."
+  ]
+}
