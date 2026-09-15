@@ -1,6 +1,6 @@
 {
   "schema_version": "reanalysis-depth-rehearsal-v1",
-  "generated_at_utc": "2026-09-15T07:18:07.526638+00:00",
+  "generated_at_utc": "2026-09-15T07:35:35.942433+00:00",
   "point": {
     "latitude": 23.02579,
     "longitude": 72.58727
@@ -150,43 +150,31 @@
       }
     },
     "url": "https://archive-api.open-meteo.com/v1/archive?latitude=23.02579&longitude=72.58727&start_date=2024-07-01&end_date=2024-07-02&daily=precipitation_sum%2Crain_sum%2Cprecipitation_hours%2Ctemperature_2m_mean%2Ctemperature_2m_max%2Ctemperature_2m_min%2Capparent_temperature_mean%2Crelative_humidity_2m_mean%2Crelative_humidity_2m_max%2Crelative_humidity_2m_min%2Cdewpoint_2m_mean%2Csurface_pressure_mean%2Ccloud_cover_mean%2Cwind_speed_10m_max%2Cwind_gusts_10m_max%2Cwind_direction_10m_dominant%2Cshortwave_radiation_sum%2Cet0_fao_evapotranspiration%2Csoil_moisture_0_to_7cm_mean%2Csoil_temperature_0_to_7cm_mean&models=era5&timezone=Asia%2FKolkata",
-    "response_sha256": "882d0006a14f0a8785b95e50f21765706d3b877614da10e16f0b393719d4c51a",
-    "retrieved_at_utc": "2026-09-15T07:18:06.418565+00:00",
+    "response_sha256": "96553373e7ef40e8e2dea962c0ffd296614f21b4e614de45111b9b4e032c1e83",
+    "retrieved_at_utc": "2026-09-15T07:35:35.027281+00:00",
     "limitations": [
       "Model-derived daily data; not direct gauge measurements."
     ]
   },
   "era5_land": {
-    "status": "partial",
+    "status": "ok",
     "quality": {
       "schema": "validated",
       "interval_coverage": "complete",
-      "value_coverage": "partial",
-      "missing_value_count": 20,
+      "value_coverage": "complete",
+      "missing_value_count": 0,
       "spatial_identity": "present",
       "spatial_applicability": "not_independently_validated",
       "freshness": "retrieved_now",
       "source_issue_freshness": "unknown",
       "temporal_applicability": "requested_window_present"
     },
-    "count": 40,
+    "count": 20,
     "returned_grid": {
       "latitude": 23.0,
       "longitude": 72.600006
     },
     "parameters": {
-      "precipitation_sum": {
-        "unit": "mm",
-        "count": 2,
-        "non_null": 0,
-        "first": null
-      },
-      "rain_sum": {
-        "unit": "mm",
-        "count": 2,
-        "non_null": 0,
-        "first": null
-      },
       "precipitation_hours": {
         "unit": "h",
         "count": 2,
@@ -210,12 +198,6 @@
         "count": 2,
         "non_null": 2,
         "first": 26.4
-      },
-      "apparent_temperature_mean": {
-        "unit": "°C",
-        "count": 2,
-        "non_null": 0,
-        "first": null
       },
       "relative_humidity_2m_mean": {
         "unit": "%",
@@ -241,48 +223,6 @@
         "non_null": 2,
         "first": 25.7
       },
-      "surface_pressure_mean": {
-        "unit": "hPa",
-        "count": 2,
-        "non_null": 0,
-        "first": null
-      },
-      "cloud_cover_mean": {
-        "unit": "%",
-        "count": 2,
-        "non_null": 0,
-        "first": null
-      },
-      "wind_speed_10m_max": {
-        "unit": "km/h",
-        "count": 2,
-        "non_null": 0,
-        "first": null
-      },
-      "wind_gusts_10m_max": {
-        "unit": "km/h",
-        "count": 2,
-        "non_null": 0,
-        "first": null
-      },
-      "wind_direction_10m_dominant": {
-        "unit": "°",
-        "count": 2,
-        "non_null": 0,
-        "first": null
-      },
-      "shortwave_radiation_sum": {
-        "unit": "MJ/m²",
-        "count": 2,
-        "non_null": 0,
-        "first": null
-      },
-      "et0_fao_evapotranspiration": {
-        "unit": "mm",
-        "count": 2,
-        "non_null": 0,
-        "first": null
-      },
       "soil_moisture_0_to_7cm_mean": {
         "unit": "m³/m³",
         "count": 2,
@@ -296,9 +236,9 @@
         "first": 29.3
       }
     },
-    "url": "https://archive-api.open-meteo.com/v1/archive?latitude=23.02579&longitude=72.58727&start_date=2024-07-01&end_date=2024-07-02&daily=precipitation_sum%2Crain_sum%2Cprecipitation_hours%2Ctemperature_2m_mean%2Ctemperature_2m_max%2Ctemperature_2m_min%2Capparent_temperature_mean%2Crelative_humidity_2m_mean%2Crelative_humidity_2m_max%2Crelative_humidity_2m_min%2Cdewpoint_2m_mean%2Csurface_pressure_mean%2Ccloud_cover_mean%2Cwind_speed_10m_max%2Cwind_gusts_10m_max%2Cwind_direction_10m_dominant%2Cshortwave_radiation_sum%2Cet0_fao_evapotranspiration%2Csoil_moisture_0_to_7cm_mean%2Csoil_temperature_0_to_7cm_mean&models=era5_land&timezone=Asia%2FKolkata",
-    "response_sha256": "fbda15c699d8b6b578ac413e7a81626c197a52b3b380c8c029ad59ea148bac40",
-    "retrieved_at_utc": "2026-09-15T07:18:07.525241+00:00",
+    "url": "https://archive-api.open-meteo.com/v1/archive?latitude=23.02579&longitude=72.58727&start_date=2024-07-01&end_date=2024-07-02&daily=precipitation_hours%2Ctemperature_2m_mean%2Ctemperature_2m_max%2Ctemperature_2m_min%2Crelative_humidity_2m_mean%2Crelative_humidity_2m_max%2Crelative_humidity_2m_min%2Cdewpoint_2m_mean%2Csoil_moisture_0_to_7cm_mean%2Csoil_temperature_0_to_7cm_mean&models=era5_land&timezone=Asia%2FKolkata",
+    "response_sha256": "6e94d5ea368f9246c1a06bcd5d2e8fef74caadb9156e8afd61b75f2fb0e3ca8e",
+    "retrieved_at_utc": "2026-09-15T07:35:35.941168+00:00",
     "limitations": [
       "Model-derived daily data; not direct gauge measurements."
     ]
