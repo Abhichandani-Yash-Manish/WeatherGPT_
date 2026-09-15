@@ -239,3 +239,56 @@ with no missing task, no shape mismatch, no prohibited claim and no abstained tu
 compound-planning and comparison changes therefore did not regress the cases that round 2
 closed. The holdout caveat from round 2 stands: it has been read before, so this is another
 pass, not unseen-case proof.
+
+## Round 4 — WS5: the alert journey, and the artefact it produces
+
+The official warning evidence existed and the product could answer one district-day question,
+but there was no journey from "where I am, tomorrow" to a record a district officer could save,
+quote or hand over. This round adds that record: the alert brief.
+
+| Landed | Where | Evidence |
+|---|---|---|
+| An alert brief for one point and one published day: the day's status in the product's own terms, the bulletin identity (issued, retrieved, source locator, layer, day-boundary basis), the published colour, hazard codes and printed wording when the product states it, the CAP relay reported separately with its own limits, what would change the brief, what is not established, how to check again, and a content hash that identifies the artefact | weathergpt_data/alert_brief.py | tests/test_alert_brief.py — eight checks: a warning day, a quiet day that never becomes an all-clear, a point outside every district, an unpublished day, the wording note, brief stability and change, the absence of advice or clearance language, and the status line reading the hazards it is given |
+| /api/warnings/alert-brief as a product view with coverage and limits, routed like every other view | weathergpt_data/product_api.py | live call recorded: status ok, district PATNA, day 1 |
+| scripts/alert_brief.py: the same route from the command line, resolving a place name through the gazetteer (with the seat-preference disclosure) or taking a point, writing the Markdown artefact | scripts/alert_brief.py | three artefacts in research/implementation/alert-brief-20260915/: a warning day, a quiet day, and a point in the Arabian Sea |
+| The warnings surface writes the brief for the working place and shows it in the evidence drawer, with every field's provenance | web/panels.js | component check and the live drawer below |
+
+### Evidence
+
+- brief-patna-day2.md — day 2, "Official district warning: yellow - Thunderstorm/lightning/squall",
+  bulletin issued 2026-09-15T00:00:00+00:00, retrieved 2026-09-15T04:11:36+00:00, source locator
+  $.features[605], brief identity sha256 34b32c8d335658f0.
+- brief-patna-day5.md — "No warning in this product for this district-day (green)", with the
+  not-an-all-clear limits and no claim about safety.
+- brief-arabian-sea-day1.md — the point falls inside no district of the product, so the brief says
+  so and substitutes nothing.
+- alerts-brief-drawer.png — the live drawer for Ahmedabad: status line, district, day and IST
+  window, hazards with the no-free-text note, issuer and retrieval instants, the relay reported
+  separately with its message count, the brief identity, what would change it, and what is not
+  established.
+
+### A measured latency, recorded rather than hidden
+
+The first brief in a cold workspace process took about fifty seconds, because composing it
+requires the district warning layer, which the process had not yet fetched. Later asks are fast
+by comparison but were not measured here. The brief is therefore a foreground action, not an
+instant one, and the honest statement is: the retrieval instant in the brief is the instant the
+evidence was fetched, and on a cold process that fetch is the wait.
+
+### What this does and does not establish
+
+- It establishes that the warning journey ends in an artefact: a place and a day become a record
+  with the product's own words, its identity and its limits attached, identifiable by hash and
+  reproducible from the same evidence.
+- It does not establish delivery, subscription or dissemination: nothing is pushed, emailed or
+  published anywhere, the CAP relay is still reported separately and unauthenticated, and the
+  brief is not advice.
+- It does not cover flood or cyclone warnings (no connected product), coastal or sea-area
+  bulletins (deliberately unconnected), or any personal field decision.
+
+### The declared benchmark after the change
+
+The development and holdout sets were re-run after the brief landed
+(research/reviews/acceptance-benchmark-20260915k): **development 18/18 and holdout 4/4** again,
+with no missing task, no shape mismatch, no prohibited claim and no abstained turn. The brief is
+additive; it did not disturb the cases earlier rounds closed.

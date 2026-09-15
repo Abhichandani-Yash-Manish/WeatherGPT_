@@ -38,6 +38,7 @@ The interface states these limits rather than filling the gaps:
 - **No invented scores.** No confidence, risk, suitability or probability value is computed for display.
 - **Language output is measured per direction, not fluent.** Twenty languages (including Hindi and Gujarati) pass a measured `write` gate; ten of those also pass measured speech and hearing, the other ten are readable but speech for them is beta-gated by the provider. Three languages fail the write gate and are refused rather than offered with a warning. Rendering puts a deterministic gate between the evidence and the reader: values are withheld and substituted, safety-critical clauses are held, and a failed gate keeps the source-language answer and says so. No native speaker has reviewed any output, and fluent-language acceptance is not established.
 - **Voice exists but is not accepted.** Speech input with a confirmable transcript, spoken answers over gated text, and spoken/recognition states are implemented. A presence-only round-trip measurement now records place, unit and negation presence for Hindi and Gujarati, with numerals again observed as word forms; speech accuracy, noisy input and browser/audio acceptance remain unmeasured, and no native speaker has reviewed any output.
+- **An alert brief you can keep.** One place and one published warning day become an artefact: the day status in the product own terms, the bulletin identity and retrieval instant, the CAP relay reported separately, what would change it, what is not established, and a content hash. Written with scripts/alert_brief.py. Nothing is delivered anywhere.
 - **Two products, one answer.** When a turn retrieves an official district warning and a model forecast for the same window, the answer compares them in words - consistent, differing or not comparable - names both, and never ranks them.
 - **Desktop web only.** The desktop surface carries a day/night/system appearance, a command palette (⌘K) over surfaces, actions, places and stored conversations, a twelfth surface comparing stored forecast retrievals, and a raw-packet inspector on every answer. Small screens are usable, but this is not mobile platform compliance or mobile acceptance.
 - **Hosting and sharing remain on hold** at the user's request.
@@ -45,7 +46,7 @@ The interface states these limits rather than filling the gaps:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 705 Python tests
+python3 -m pytest tests/ -q                          # 713 Python tests
 node tests/test_charts.js                            #  2 of 60 component checks
 node tests/test_views.js                             # 18
 node tests/test_bulletin_ui.js                       #  6

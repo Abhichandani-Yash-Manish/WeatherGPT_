@@ -1,7 +1,7 @@
 {
   "schema_version": "hardening-progress-v1",
   "review": "research/reviews/national-readiness-20260912/review.md",
-  "updated_at_utc": "2026-09-15T04:03:26+00:00",
+  "updated_at_utc": "2026-09-15T04:20:11+00:00",
   "operational_ready": false,
   "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
   "findings": [
@@ -1089,6 +1089,36 @@
       "The comparison states agreement or disagreement; it never decides which product is right.",
       "It runs only when one turn retrieves two comparable products; a single-product answer carries none.",
       "No live bulletin-versus-forecast comparison has been recorded yet; that path is pinned by component checks only."
+    ]
+  },
+  "alert_brief_batch": {
+    "report": "docs/49-engine-architecture-and-gap-analysis.md",
+    "evidence_directory": "research/implementation/alert-brief-20260915",
+    "operational_ready": false,
+    "scope": "The alert journey: one point and one published warning day become an artefact - the day status in the product own terms, the bulletin identity and retrieval instant, the CAP relay reported separately, what would change it, what is not established, how to check again, and a content hash. Exposed as a product view, a CLI that writes Markdown, and an action on the warnings surface.",
+    "automated_tests": 713,
+    "javascript_component_checks": 61,
+    "measured": {
+      "live_brief": {
+        "place": "Ahmedabad, Gujarat",
+        "day": 1,
+        "status_line": "Official district warning: yellow - Thunderstorm/lightning/squall",
+        "brief_identity_prefix": "c68f1b47a7e4ec57",
+        "drawer_characters": 1910
+      },
+      "artefacts": [
+        "brief-patna-day2.md (warning day)",
+        "brief-patna-day5.md (quiet day)",
+        "brief-arabian-sea-day1.md (outside every district)"
+      ],
+      "cold_process_latency_seconds": 50,
+      "delivery": "none; nothing is pushed, emailed or published"
+    },
+    "limitations": [
+      "No delivery, subscription or dissemination: the brief is a local artefact.",
+      "The first brief in a cold process waits on the district warning layer fetch (about fifty seconds here).",
+      "Flood and cyclone warnings, sea-area bulletins and personal field decisions are outside its evidence.",
+      "The CAP relay remains separately reported and its origin unauthenticated."
     ]
   }
 }
