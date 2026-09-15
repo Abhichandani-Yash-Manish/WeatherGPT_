@@ -267,15 +267,29 @@ def warnings_place(foundation, latitude, longitude, refresh=False):
     record = records[0]
     rows, issued = dw.day_rows(record)
     state, attribution = state_for(record.get('district_label'))
+    # The headline is derived from the same day rows the strip shows, never from a field the
+    # endpoint does not supply. An absent summary is unknown, not "no warning": the opening
+    # Ahmedabad card read a missing data.severity and showed a quiet headline above a hazard
+    # day (measured 15 September 2026).
+    level, has_hazard = dw.severity(rows)
+    if has_hazard and level:
+        headline = 'A ' + level + ' warning is published for this district'
+    elif has_hazard:
+        headline = 'A warning is published for this district'
+    else:
+        headline = 'No warning in this product'
     return envelope('warnings.place', 'ok',
                     {'district': record.get('district_label'), 'state': state,
                      'issued_at_utc': stamp(issued), 'temporal_applicability': record.get('temporal_applicability'),
                      'day_boundary_basis': record.get('day_boundary_basis'),
                      'overlap': attribution.get('overlap'), 'days': rows,
+                     'severity': level if has_hazard else None, 'has_hazard': has_hazard,
+                     'headline': headline, 'summary': dw.summary(record, rows, issued),
                      'source_locator': record.get('source_locator')},
                     sources=[source_entry('S63', meta, layer='imd:district_warnings_india')],
                     coverage=snapshot.get('coverage'),
-                    limitations=list(snapshot.get('limitations') or []),
+                    limitations=list(snapshot.get('limitations') or []) +
+                                ['The headline severity is derived from the published day colours and hazards, not a new IMD field.'],
                     not_established=['This is district-level warning guidance, not a flood warning, not a CAP alert and not an all-clear.',
                                      'Origin authentication of the service is not established.'])
 

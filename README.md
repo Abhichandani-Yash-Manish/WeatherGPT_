@@ -58,6 +58,26 @@ The interface states these limits rather than filling the gaps:
 - **Desktop web only.** The desktop surface carries a day/night/system appearance, a command palette (⌘K) over surfaces, actions, places and stored conversations, a twelfth surface comparing stored forecast retrievals, and a raw-packet inspector on every answer. Small screens are usable, but this is not mobile platform compliance or mobile acceptance.
 - **Hosting and sharing remain on hold** at the user's request.
 
+## Reproducible setup
+
+The runtime libraries are pinned in `requirements.txt` (which includes the optional PDF
+stack). The test runner and the remaining development dependencies are declared separately
+so a fresh checkout can run the suite:
+
+```sh
+python3 -m pip install -r requirements-dev.txt        # pytest + runtime requirements
+python3 -m pytest tests/ -q
+```
+
+The saved bulletin layout fixtures are resolved from the tracked curated evidence under
+`research/implementation/*` (see `tests/source_fixtures.py`), not from the Git-ignored
+`data/runtime` cache, so the layout tests run on a clean checkout. A changed current
+bulletin is never substituted for a missing historical fixture. The optional multilingual
+embedding stack (`requirements-bulletins.txt`) is only needed to build the real indexed
+corpus; the intake tests inject a deterministic encoder, so they do not require the model.
+The live document corpus under `data/runtime` is a runtime store: `scripts/doctor.py`
+reports whether it is present, and `scripts/ingest_documents.py` rebuilds it.
+
 ## How it is checked
 
 ```sh

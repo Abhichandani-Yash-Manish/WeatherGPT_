@@ -14,7 +14,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from test_document_ingest import Store, minimal_pdf
+from test_document_ingest import Store, minimal_pdf, vectors
 from weathergpt_data import document_ingest as di
 from weathergpt_data.bulletin_index import BulletinIndex
 from weathergpt_data.transport import SourceError, digest, stamp
@@ -88,7 +88,9 @@ class StateIngestTests(unittest.TestCase):
         self.url = 'https://mausam.imd.gov.in/jaipur/mcdata/agromet.pdf'
 
     def run_one(self, body, state='Rajasthan'):
-        return di.ingest_state(Store({self.url: body}), self.index, state, self.url, now=NOW)
+        # A deterministic encoder keeps these intake checks independent of the optional
+        # multilingual embedding stack; passage ranking quality is not what is under test.
+        return di.ingest_state(Store({self.url: body}), self.index, state, self.url, now=NOW, encoder=vectors)
 
     def test_a_sampled_english_edition_is_accepted_with_its_issue_date(self):
         record = self.run_one(minimal_pdf(ENGLISH_FRONT.encode('utf-8')), state='Gujarat')

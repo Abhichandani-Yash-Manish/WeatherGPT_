@@ -1,0 +1,12 @@
+{
+  "checked_at_utc": "2026-09-15T09:39:20.825669+00:00",
+  "git_head": "392f8d42ca7fb0bf983e4ee618f57bc8ee62cc4b",
+  "application_changed": false,
+  "files_sha256": {
+    "weathergpt_data/rule_planner.py": "6f661671999bee33b68d194e9319d0b7a62f1db5a6c2fb34b6f18453db1e8730",
+    "weathergpt_data/preflight.py": "324fe8ec1ece9ba3d9d1be51f18791621af7e512b066dce4d20b0e630740b2c8",
+    "weathergpt_data/providers.py": "de617f844d6f8114ae341b6dfc7a03282b7eb0f1fab74d4877a41c42d71dd5c4",
+    "web/home.js": "5caed3a2597e5a4c94982f60c7a2ed6d8b2d0bb5a68acdaeb8a0ad216e1ddd21",
+    "weathergpt_data/product_api.py": "abdfe9421fe063385013ac225718fabdc46bd8a3a5992dd36209a1363b2b1293"
+  }
+}

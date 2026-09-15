@@ -199,6 +199,42 @@ class OllamaClient:
         if parts.scheme != 'http' or parts.hostname not in {'127.0.0.1', 'localhost', '::1'}:
             raise ValueError('This adapter only uses a local Ollama endpoint')
 
+    def catalogue(self):
+        """The installed model names, read from the local /api/tags endpoint.
+
+        Service reachability and model availability are different facts: a reachable
+        service that does not carry the configured model is reported unavailable by
+        ``available`` with the model named, rather than being treated as a usable
+        provider. No secret is read or returned.
+        """
+        request = urllib.request.Request(self.base + '/api/tags', headers={'Accept': 'application/json'})
+        try:
+            with urllib.request.urlopen(request, timeout=min(2, self.timeout)) as response:
+                data = json.loads(response.read(200000))
+        except (urllib.error.URLError, OSError, ValueError) as error:
+            raise ProviderUnavailable('The local model service did not answer: ' + type(error).__name__) from error
+        rows = data.get('models') if isinstance(data, dict) else data
+        return [str(row.get('name')) for row in (rows or []) if isinstance(row, dict) and row.get('name')]
+
+    def available(self):
+        """True only when the service answers and the configured model is installed.
+
+        Returns ``(available, reason)`` like the OpenRouter client, so the router can
+        report a missing model by name instead of attempting an inference that cannot
+        succeed. Previously the startup check called this method and it did not exist
+        (measured 15 September 2026).
+        """
+        try:
+            names = self.catalogue()
+        except ProviderUnavailable as error:
+            return False, str(error)
+        if self.model not in names:
+            installed = ', '.join(names[:5]) if names else 'none reported'
+            return False, ('the local service is reachable but the configured model ' + str(self.model) +
+                           ' is not installed (installed: ' + installed + '); set WEATHERGPT_MODEL or run '
+                           '"ollama pull ' + str(self.model) + '"')
+        return True, ''
+
     def complete(self, system, user, schema, max_tokens=1100):
         payload = {'model': self.model, 'messages': [{'role': 'system', 'content': system},
                                                      {'role': 'user', 'content': user}],

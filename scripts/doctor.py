@@ -28,7 +28,8 @@ CORE_PACKAGES = (('numpy', 'numerical checks and point-in-polygon geography'),
                  ('sentence_transformers', 'whole-document passage retrieval over the indexed corpus'),
                  ('torch', 'the embedding model the passage index runs on'))
 OPTIONAL_PACKAGES = (('pdfplumber', 'published PDF extraction during document intake'),
-                     ('pypdf', 'reading the print layout of an exported answer'))
+                     ('pypdf', 'reading the print layout of an exported answer'),
+                     ('pytest', 'running the Python test suite locally'))
 RUNTIME = ROOT / 'data/runtime'
 
 
@@ -55,9 +56,10 @@ def check_packages():
             results.append({'id': 'package:' + name, 'state': 'ok', 'detail': name + ' ' + str(version) + ' for ' + purpose,
                             'next_action': ''})
         except Exception as error:  # noqa: BLE001 - any import failure is the same finding
+            requirements = 'requirements-dev.txt' if name == 'pytest' else 'requirements.txt'
             results.append({'id': 'package:' + name, 'state': 'fail' if required else 'warn',
                             'detail': name + ' could not be imported (' + type(error).__name__ + ') but is used for ' + purpose,
-                            'next_action': 'pip install -r requirements.txt (or the package named above) in the interpreter that runs the workspace.'})
+                            'next_action': 'pip install -r ' + requirements + ' (or the package named above) in the interpreter that runs the workspace.'})
     return results
 
 

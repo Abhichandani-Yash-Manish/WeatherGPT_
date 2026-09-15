@@ -412,8 +412,13 @@ def family(name):
     return dict(FAMILIES[name])
 
 
-def ingest(store, runtime_root, name, now=None, families=None):
-    """Discover, verify, extract and index one family. Returns a per-candidate report."""
+def ingest(store, runtime_root, name, now=None, families=None, encoder=None):
+    """Discover, verify, extract and index one family. Returns a per-candidate report.
+
+    ``encoder`` is an optional passage-embedding callable. It is normally omitted so the
+    versioned multilingual model is used; a caller may supply a deterministic encoder to
+    exercise intake/publication logic without the optional embedding stack installed.
+    """
     now = now or utcnow()
     spec = family(name)
     from .bulletin_index import BulletinIndex, EXTRACTION_VERSION
@@ -446,8 +451,9 @@ def ingest(store, runtime_root, name, now=None, families=None):
             # as a rejected target with its reason: one held document must not stop the sweep
             # for the other families, and it must not be rewritten either.
             try:
-                publish = index.publish_document(document, {'sha256': meta['sha256'], 'blob': meta.get('blob'),
-                                                            'source_id': spec['source_id']}, now)
+                provenance = {'sha256': meta['sha256'], 'blob': meta.get('blob'), 'source_id': spec['source_id']}
+                publish = (index.publish_document(document, provenance, now, encoder) if encoder
+                           else index.publish_document(document, provenance, now))
             except SourceError as error:
                 report['rejected'].append({'url': url, 'stage': 'publish', 'sha256': meta['sha256'],
                                            'issue_date': document.get('issue_date'), 'held': True,

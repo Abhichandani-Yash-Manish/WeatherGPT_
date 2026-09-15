@@ -9,6 +9,7 @@ from weathergpt_data.tasks import validate_tasks
 from weathergpt_data.dialogue import reconcile
 import test_conversation as fixtures
 from test_product_stage_one import task
+import source_fixtures
 ROOT=Path(__file__).resolve().parents[1]
 NOW=datetime(2026,9,13,tzinfo=timezone.utc)
 SOURCES=[('Ahmedabad','Gujarat','653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90'),('Coimbatore','Tamil Nadu','99b77dc84e6bec60bfe3a5cd64b0d8247761b43abed6af3a63b056b0edfe7b9f'),('Kamrup','Assam','f5e9fbe91b5fe14b3b9a3290517696b279cf93b327c4067b9c7ee0225df71e07')]
@@ -20,7 +21,7 @@ class LayoutTests(unittest.TestCase):
  @classmethod
  def setUpClass(cls):
   cls.docs={}
-  for district,state,sha in SOURCES:cls.docs[district]=extract((ROOT/'data/runtime/blobs'/(sha+'.bin')).read_bytes(),state,district,NOW)
+  for district,state,sha in SOURCES:cls.docs[district]=extract(source_fixtures.bulletin_blob(sha),state,district,NOW)
  def test_three_layouts_have_verified_periods_and_row_counts(self):
   for name,count in [('Ahmedabad',33),('Coimbatore',9),('Kamrup',6)]:
    d=self.docs[name];self.assertEqual(len(d['chunks']),count);self.assertEqual((d['issue_date'],d['forecast_start'],d['forecast_end']),('2026-09-11','2026-09-12','2026-09-16'));self.assertIsNone(d['advice_valid_until'])
@@ -32,14 +33,14 @@ class LayoutTests(unittest.TestCase):
   d=self.docs['Ahmedabad'];self.assertEqual(len(d['quarantined_passages']),1);self.assertEqual(d['quarantined_passages'][0]['crop'],'Black gram');self.assertIn('green gram',d['quarantined_passages'][0]['text'])
  def test_wrong_printed_district_or_state_rejected(self):
   import pdfplumber,io
-  body=(ROOT/'data/runtime/blobs'/(SOURCES[2][2]+'.bin')).read_bytes()
+  body=source_fixtures.bulletin_blob(SOURCES[2][2])
   with pdfplumber.open(io.BytesIO(body)) as pdf:pages=[p.extract_text() for p in pdf.pages]
   for state,district in [('Assam','Ahmedabad'),('Gujarat','Kamrup')]:
    with self.assertRaises(SourceError):metadata(pages,state,district,NOW)
 
 class IndexTests(LayoutTests):
  def setUp(self):
-  self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup);self.root=Path(self.temp.name);self.index=BulletinIndex(self.root/'index.sqlite');self.doc=copy.deepcopy(self.docs['Ahmedabad']);raw=self.root/'raw'/'original.pdf';raw.parent.mkdir();shutil.copyfile(ROOT/'data/runtime/blobs'/(self.doc['sha256']+'.bin'),raw)
+  self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup);self.root=Path(self.temp.name);self.index=BulletinIndex(self.root/'index.sqlite');self.doc=copy.deepcopy(self.docs['Ahmedabad']);raw=self.root/'raw'/'original.pdf';raw.parent.mkdir();raw.write_bytes(source_fixtures.bulletin_blob(self.doc['sha256']))
   self.index.publish(self.doc,{'raw_file':str(raw),'retrieved_at_utc':stamp(NOW),'url':'https://imdagrimet.gov.in/Services/DistrictBulletin.php'},stamp(NOW),encoder)
  def search(self,**kw):return self.index.search('Gujarat','Ahmedabad','cotton pest',encoder=encoder,**kw)
  def test_crop_stage_topic_filters_precede_ranking(self):
@@ -117,7 +118,7 @@ class SourcePdfTests(unittest.TestCase):
   from weathergpt_data.bulletin_index import EXTRACTION_VERSION
   import threading,urllib.request,urllib.error
   with tempfile.TemporaryDirectory() as tmp:
-   root=Path(tmp);app=Workspace(root/'jobs.sqlite',root/'raw',root/'geo.sqlite',clock=lambda:NOW);index=BulletinIndex(root/'bulletins'/EXTRACTION_VERSION/'index.sqlite');body=(ROOT/'data/runtime/blobs'/(SOURCES[2][2]+'.bin')).read_bytes();raw=index.path.parent/'raw'/'source.pdf';raw.parent.mkdir();raw.write_bytes(body);doc=extract(body,'Assam','Kamrup',NOW);index.publish(doc,{'raw_file':str(raw),'retrieved_at_utc':stamp(NOW)},stamp(NOW),encoder)
+   root=Path(tmp);app=Workspace(root/'jobs.sqlite',root/'raw',root/'geo.sqlite',clock=lambda:NOW);index=BulletinIndex(root/'bulletins'/EXTRACTION_VERSION/'index.sqlite');body=source_fixtures.bulletin_blob(SOURCES[2][2]);raw=index.path.parent/'raw'/'source.pdf';raw.parent.mkdir();raw.write_bytes(body);doc=extract(body,'Assam','Kamrup',NOW);index.publish(doc,{'raw_file':str(raw),'retrieved_at_utc':stamp(NOW)},stamp(NOW),encoder)
    server=make_server(app,0);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start();base='http://127.0.0.1:'+str(server.server_port)+'/api/documents/'
    try:
     with urllib.request.urlopen(base+doc['sha256']) as r:self.assertEqual(r.read(),body);self.assertIn('application/pdf',r.headers['Content-Type'])

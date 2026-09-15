@@ -1,0 +1,899 @@
+........................................................................................EEEEEEEEEEE.....EEEEEEEEEEEEEEEEEEEE.........F... [ 15%]
+................................................................ [ 23%]
+........................................................................ [ 31%]
+.....................................................F.................. [ 40%]
+...................................... [ 44%]
+.................. [ 46%]
+..................................................... [ 52%]
+..................................................................... [ 60%]
+........................................................................ [ 69%]
+................................................................... [ 76%]
+................................................ [ 82%]
+........................................................................ [ 90%]
+.................FFF.................................................... [ 99%]
+......                                                           [100%]
+==================================== ERRORS ====================================
+_ ERROR at setup of ParentSourceTests.test_cross_page_heading_keeps_body_page_and_excludes_print_furniture _
+tests/test_bulletin_parent_context.py:21: in setUpClass
+    raw = next((ROOT / 'data/runtime').rglob(sha + '.bin'))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   StopIteration
+
+The above exception was the direct cause of the following exception:
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:361: in from_call
+    result: TResult | None = func()
+                             ^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:250: in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/pluggy/_hooks.py:512: in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/pluggy/_manager.py:120: in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/logging.py:858: in pytest_runtest_setup
+    yield
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/capture.py:895: in pytest_runtest_setup
+    return (yield)
+            ^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:170: in pytest_runtest_setup
+    item.session._setupstate.setup(item)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:536: in setup
+    col.setup()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/unittest.py:248: in setup
+    super().setup()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/python.py:1710: in setup
+    self._request._fillfixtures()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:806: in _fillfixtures
+    item.funcargs[argname] = self.getfixturevalue(argname)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:630: in getfixturevalue
+    fixturedef = self._get_active_fixturedef(argname)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:726: in _get_active_fixturedef
+    fixturedef.execute(request=subrequest)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:1232: in execute
+    result: FixtureValue = ihook.pytest_fixture_setup(
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/pluggy/_hooks.py:512: in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/pluggy/_manager.py:120: in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/setuponly.py:36: in pytest_fixture_setup
+    return (yield)
+            ^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:1328: in pytest_fixture_setup
+    result = call_fixture_func(fixturefunc, request, kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:998: in call_fixture_func
+    fixture_result = next(generator)
+                     ^^^^^^^^^^^^^^^
+E   RuntimeError: generator raised StopIteration
+_ ERROR at setup of ParentSourceTests.test_far_page_restriction_is_not_lost_behind_crop_filter _
+tests/test_bulletin_parent_context.py:21: in setUpClass
+    raw = next((ROOT / 'data/runtime').rglob(sha + '.bin'))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   StopIteration
+
+The above exception was the direct cause of the following exception:
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:361: in from_call
+    result: TResult | None = func()
+                             ^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:250: in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/pluggy/_hooks.py:512: in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/pluggy/_manager.py:120: in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/logging.py:858: in pytest_runtest_setup
+    yield
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/capture.py:895: in pytest_runtest_setup
+    return (yield)
+            ^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:170: in pytest_runtest_setup
+    item.session._setupstate.setup(item)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:536: in setup
+    col.setup()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/unittest.py:248: in setup
+    super().setup()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/python.py:1710: in setup
+    self._request._fillfixtures()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:806: in _fillfixtures
+    item.funcargs[argname] = self.getfixturevalue(argname)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:630: in getfixturevalue
+    fixturedef = self._get_active_fixturedef(argname)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:726: in _get_active_fixturedef
+    fixturedef.execute(request=subrequest)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:1204: in execute
+    raise exc.with_traceback(exc_tb)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:1328: in pytest_fixture_setup
+    result = call_fixture_func(fixturefunc, request, kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:998: in call_fixture_func
+    fixture_result = next(generator)
+                     ^^^^^^^^^^^^^^^
+E   RuntimeError: generator raised StopIteration
+_ ERROR at setup of ParentSourceTests.test_general_row_reuses_source_identity_without_becoming_crop_match _
+tests/test_bulletin_parent_context.py:21: in setUpClass
+    raw = next((ROOT / 'data/runtime').rglob(sha + '.bin'))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   StopIteration
+
+The above exception was the direct cause of the following exception:
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:361: in from_call
+    result: TResult | None = func()
+                             ^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:250: in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/pluggy/_hooks.py:512: in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/pluggy/_manager.py:120: in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/logging.py:858: in pytest_runtest_setup
+    yield
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/capture.py:895: in pytest_runtest_setup
+    return (yield)
+            ^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:170: in pytest_runtest_setup
+    item.session._setupstate.setup(item)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:536: in setup
+    col.setup()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/unittest.py:248: in setup
+    super().setup()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/python.py:1710: in setup
+    self._request._fillfixtures()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:806: in _fillfixtures
+    item.funcargs[argname] = self.getfixturevalue(argname)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:630: in getfixturevalue
+    fixturedef = self._get_active_fixturedef(argname)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:726: in _get_active_fixturedef
+    fixturedef.execute(request=subrequest)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:1204: in execute
+    raise exc.with_traceback(exc_tb)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:1328: in pytest_fixture_setup
+    result = call_fixture_func(fixturefunc, request, kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:998: in call_fixture_func
+    fixture_result = next(generator)
+                     ^^^^^^^^^^^^^^^
+E   RuntimeError: generator raised StopIteration
+_ ERROR at setup of ParentSourceTests.test_hash_change_cannot_attach_context_to_another_document _
+tests/test_bulletin_parent_context.py:21: in setUpClass
+    raw = next((ROOT / 'data/runtime').rglob(sha + '.bin'))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   StopIteration
+
+The above exception was the direct cause of the following exception:
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:361: in from_call
+    result: TResult | None = func()
+                             ^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:250: in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/pluggy/_hooks.py:512: in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/pluggy/_manager.py:120: in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/logging.py:858: in pytest_runtest_setup
+    yield
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/capture.py:895: in pytest_runtest_setup
+    return (yield)
+            ^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:170: in pytest_runtest_setup
+    item.session._setupstate.setup(item)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:536: in setup
+    col.setup()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/unittest.py:248: in setup
+    super().setup()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/python.py:1710: in setup
+    self._request._fillfixtures()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:806: in _fillfixtures
+    item.funcargs[argname] = self.getfixturevalue(argname)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:630: in getfixturevalue
+    fixturedef = self._get_active_fixturedef(argname)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:726: in _get_active_fixturedef
+    fixturedef.execute(request=subrequest)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:1204: in execute
+    raise exc.with_traceback(exc_tb)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:1328: in pytest_fixture_setup
+    result = call_fixture_func(fixturefunc, request, kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:998: in call_fixture_func
+    fixture_result = next(generator)
+                     ^^^^^^^^^^^^^^^
+E   RuntimeError: generator raised StopIteration
+_ ERROR at setup of ParentSourceTests.test_held_surat_and_madurai_editions_are_still_rejected _
+tests/test_bulletin_parent_context.py:21: in setUpClass
+    raw = next((ROOT / 'data/runtime').rglob(sha + '.bin'))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   StopIteration
+
+The above exception was the direct cause of the following exception:
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:361: in from_call
+    result: TResult | None = func()
+                             ^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:250: in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/pluggy/_hooks.py:512: in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/pluggy/_manager.py:120: in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/logging.py:858: in pytest_runtest_setup
+    yield
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/capture.py:895: in pytest_runtest_setup
+    return (yield)
+            ^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:170: in pytest_runtest_setup
+    item.session._setupstate.setup(item)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:536: in setup
+    col.setup()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/unittest.py:248: in setup
+    super().setup()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/python.py:1710: in setup
+    self._request._fillfixtures()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:806: in _fillfixtures
+    item.funcargs[argname] = self.getfixturevalue(argname)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:630: in getfixturevalue
+    fixturedef = self._get_active_fixturedef(argname)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:726: in _get_active_fixturedef
+    fixturedef.execute(request=subrequest)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:1204: in execute
+    raise exc.with_traceback(exc_tb)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:1328: in pytest_fixture_setup
+    result = call_fixture_func(fixturefunc, request, kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:998: in call_fixture_func
+    fixture_result = next(generator)
+                     ^^^^^^^^^^^^^^^
+E   RuntimeError: generator raised StopIteration
+_ ERROR at setup of ParentSourceTests.test_na_is_preserved_as_source_text_not_an_all_clear _
+tests/test_bulletin_parent_context.py:21: in setUpClass
+    raw = next((ROOT / 'data/runtime').rglob(sha + '.bin'))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   StopIteration
+
+The above exception was the direct cause of the following exception:
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:361: in from_call
+    result: TResult | None = func()
+                             ^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:250: in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/pluggy/_hooks.py:512: in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/pluggy/_manager.py:120: in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/logging.py:858: in pytest_runtest_setup
+    yield
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/capture.py:895: in pytest_runtest_setup
+    return (yield)
+            ^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:170: in pytest_runtest_setup
+    item.session._setupstate.setup(item)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:536: in setup
+    col.setup()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/unittest.py:248: in setup
+    super().setup()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/python.py:1710: in setup
+    self._request._fillfixtures()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:806: in _fillfixtures
+    item.funcargs[argname] = self.getfixturevalue(argname)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:630: in getfixturevalue
+    fixturedef = self._get_active_fixturedef(argname)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:726: in _get_active_fixturedef
+    fixturedef.execute(request=subrequest)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:1204: in execute
+    raise exc.with_traceback(exc_tb)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:1328: in pytest_fixture_setup
+    result = call_fixture_func(fixturefunc, request, kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:998: in call_fixture_func
+    fixture_result = next(generator)
+                     ^^^^^^^^^^^^^^^
+E   RuntimeError: generator raised StopIteration
+_ ERROR at setup of ParentSourceTests.test_no_warning_phrase_preserves_its_source_date _
+tests/test_bulletin_parent_context.py:21: in setUpClass
+    raw = next((ROOT / 'data/runtime').rglob(sha + '.bin'))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   StopIteration
+
+The above exception was the direct cause of the following exception:
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:361: in from_call
+    result: TResult | None = func()
+                             ^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:250: in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/pluggy/_hooks.py:512: in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/pluggy/_manager.py:120: in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/logging.py:858: in pytest_runtest_setup
+    yield
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/capture.py:895: in pytest_runtest_setup
+    return (yield)
+            ^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:170: in pytest_runtest_setup
+    item.session._setupstate.setup(item)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:536: in setup
+    col.setup()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/unittest.py:248: in setup
+    super().setup()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/python.py:1710: in setup
+    self._request._fillfixtures()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:806: in _fillfixtures
+    item.funcargs[argname] = self.getfixturevalue(argname)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:630: in getfixturevalue
+    fixturedef = self._get_active_fixturedef(argname)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:726: in _get_active_fixturedef
+    fixturedef.execute(request=subrequest)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:1204: in execute
+    raise exc.with_traceback(exc_tb)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:1328: in pytest_fixture_setup
+    result = call_fixture_func(fixturefunc, request, kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:998: in call_fixture_func
+    fixture_result = next(generator)
+                     ^^^^^^^^^^^^^^^
+E   RuntimeError: generator raised StopIteration
+_ ERROR at setup of ParentSourceTests.test_parent_context_does_not_inherit_another_crop_stage _
+tests/test_bulletin_parent_context.py:21: in setUpClass
+    raw = next((ROOT / 'data/runtime').rglob(sha + '.bin'))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   StopIteration
+
+The above exception was the direct cause of the following exception:
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:361: in from_call
+    result: TResult | None = func()
+                             ^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:250: in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/pluggy/_hooks.py:512: in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/pluggy/_manager.py:120: in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/logging.py:858: in pytest_runtest_setup
+    yield
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/capture.py:895: in pytest_runtest_setup
+    return (yield)
+            ^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:170: in pytest_runtest_setup
+    item.session._setupstate.setup(item)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:536: in setup
+    col.setup()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/unittest.py:248: in setup
+    super().setup()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/python.py:1710: in setup
+    self._request._fillfixtures()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:806: in _fillfixtures
+    item.funcargs[argname] = self.getfixturevalue(argname)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:630: in getfixturevalue
+    fixturedef = self._get_active_fixturedef(argname)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:726: in _get_active_fixturedef
+    fixturedef.execute(request=subrequest)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:1204: in execute
+    raise exc.with_traceback(exc_tb)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:1328: in pytest_fixture_setup
+    result = call_fixture_func(fixturefunc, request, kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:998: in call_fixture_func
+    fixture_result = next(generator)
+                     ^^^^^^^^^^^^^^^
+E   RuntimeError: generator raised StopIteration
+_ ERROR at setup of ParentSourceTests.test_stop_pest_movement_is_not_a_spraying_prohibition _
+tests/test_bulletin_parent_context.py:21: in setUpClass
+    raw = next((ROOT / 'data/runtime').rglob(sha + '.bin'))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   StopIteration
+
+The above exception was the direct cause of the following exception:
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:361: in from_call
+    result: TResult | None = func()
+                             ^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:250: in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/pluggy/_hooks.py:512: in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/pluggy/_manager.py:120: in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/logging.py:858: in pytest_runtest_setup
+    yield
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/capture.py:895: in pytest_runtest_setup
+    return (yield)
+            ^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:170: in pytest_runtest_setup
+    item.session._setupstate.setup(item)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:536: in setup
+    col.setup()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/unittest.py:248: in setup
+    super().setup()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/python.py:1710: in setup
+    self._request._fillfixtures()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:806: in _fillfixtures
+    item.funcargs[argname] = self.getfixturevalue(argname)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:630: in getfixturevalue
+    fixturedef = self._get_active_fixturedef(argname)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:726: in _get_active_fixturedef
+    fixturedef.execute(request=subrequest)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:1204: in execute
+    raise exc.with_traceback(exc_tb)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:1328: in pytest_fixture_setup
+    result = call_fixture_func(fixturefunc, request, kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:998: in call_fixture_func
+    fixture_result = next(generator)
+                     ^^^^^^^^^^^^^^^
+E   RuntimeError: generator raised StopIteration
+_ ERROR at setup of ParentSourceTests.test_unreadable_section_is_disclosed_not_silently_cleaned _
+tests/test_bulletin_parent_context.py:21: in setUpClass
+    raw = next((ROOT / 'data/runtime').rglob(sha + '.bin'))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   StopIteration
+
+The above exception was the direct cause of the following exception:
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:361: in from_call
+    result: TResult | None = func()
+                             ^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:250: in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/pluggy/_hooks.py:512: in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/pluggy/_manager.py:120: in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/logging.py:858: in pytest_runtest_setup
+    yield
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/capture.py:895: in pytest_runtest_setup
+    return (yield)
+            ^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:170: in pytest_runtest_setup
+    item.session._setupstate.setup(item)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:536: in setup
+    col.setup()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/unittest.py:248: in setup
+    super().setup()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/python.py:1710: in setup
+    self._request._fillfixtures()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:806: in _fillfixtures
+    item.funcargs[argname] = self.getfixturevalue(argname)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:630: in getfixturevalue
+    fixturedef = self._get_active_fixturedef(argname)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:726: in _get_active_fixturedef
+    fixturedef.execute(request=subrequest)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:1204: in execute
+    raise exc.with_traceback(exc_tb)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:1328: in pytest_fixture_setup
+    result = call_fixture_func(fixturefunc, request, kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:998: in call_fixture_func
+    fixture_result = next(generator)
+                     ^^^^^^^^^^^^^^^
+E   RuntimeError: generator raised StopIteration
+_ ERROR at setup of ParentSourceTests.test_warning_heading_and_body_dates_do_not_become_current_alert _
+tests/test_bulletin_parent_context.py:21: in setUpClass
+    raw = next((ROOT / 'data/runtime').rglob(sha + '.bin'))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   StopIteration
+
+The above exception was the direct cause of the following exception:
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:361: in from_call
+    result: TResult | None = func()
+                             ^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:250: in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/pluggy/_hooks.py:512: in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/pluggy/_manager.py:120: in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/logging.py:858: in pytest_runtest_setup
+    yield
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/capture.py:895: in pytest_runtest_setup
+    return (yield)
+            ^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:170: in pytest_runtest_setup
+    item.session._setupstate.setup(item)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/runner.py:536: in setup
+    col.setup()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/unittest.py:248: in setup
+    super().setup()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/python.py:1710: in setup
+    self._request._fillfixtures()
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:806: in _fillfixtures
+    item.funcargs[argname] = self.getfixturevalue(argname)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:630: in getfixturevalue
+    fixturedef = self._get_active_fixturedef(argname)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:726: in _get_active_fixturedef
+    fixturedef.execute(request=subrequest)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:1204: in execute
+    raise exc.with_traceback(exc_tb)
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:1328: in pytest_fixture_setup
+    result = call_fixture_func(fixturefunc, request, kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/weathergpt-audit-venv/lib/python3.12/site-packages/_pytest/fixtures.py:998: in call_fixture_func
+    fixture_result = next(generator)
+                     ^^^^^^^^^^^^^^^
+E   RuntimeError: generator raised StopIteration
+_ ERROR at setup of LayoutTests.test_ahmedabad_continued_rows_do_not_become_another_crop _
+tests/test_bulletin_retrieval.py:23: in setUpClass
+    for district,state,sha in SOURCES:cls.docs[district]=extract((ROOT/'data/runtime/blobs'/(sha+'.bin')).read_bytes(),state,district,NOW)
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/heer/Documents/WeatherGPT_/data/runtime/blobs/653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90.bin'
+_ ERROR at setup of LayoutTests.test_kamrup_crop_stage_and_condition_remain_together _
+tests/test_bulletin_retrieval.py:23: in setUpClass
+    for district,state,sha in SOURCES:cls.docs[district]=extract((ROOT/'data/runtime/blobs'/(sha+'.bin')).read_bytes(),state,district,NOW)
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/heer/Documents/WeatherGPT_/data/runtime/blobs/653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90.bin'
+_ ERROR at setup of LayoutTests.test_source_crop_heading_body_disagreement_is_quarantined _
+tests/test_bulletin_retrieval.py:23: in setUpClass
+    for district,state,sha in SOURCES:cls.docs[district]=extract((ROOT/'data/runtime/blobs'/(sha+'.bin')).read_bytes(),state,district,NOW)
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/heer/Documents/WeatherGPT_/data/runtime/blobs/653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90.bin'
+_ ERROR at setup of LayoutTests.test_three_layouts_have_verified_periods_and_row_counts _
+tests/test_bulletin_retrieval.py:23: in setUpClass
+    for district,state,sha in SOURCES:cls.docs[district]=extract((ROOT/'data/runtime/blobs'/(sha+'.bin')).read_bytes(),state,district,NOW)
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/heer/Documents/WeatherGPT_/data/runtime/blobs/653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90.bin'
+_ ERROR at setup of LayoutTests.test_wrong_printed_district_or_state_rejected __
+tests/test_bulletin_retrieval.py:23: in setUpClass
+    for district,state,sha in SOURCES:cls.docs[district]=extract((ROOT/'data/runtime/blobs'/(sha+'.bin')).read_bytes(),state,district,NOW)
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/heer/Documents/WeatherGPT_/data/runtime/blobs/653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90.bin'
+_ ERROR at setup of IndexTests.test_ahmedabad_continued_rows_do_not_become_another_crop _
+tests/test_bulletin_retrieval.py:23: in setUpClass
+    for district,state,sha in SOURCES:cls.docs[district]=extract((ROOT/'data/runtime/blobs'/(sha+'.bin')).read_bytes(),state,district,NOW)
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/heer/Documents/WeatherGPT_/data/runtime/blobs/653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90.bin'
+__ ERROR at setup of IndexTests.test_crop_stage_topic_filters_precede_ranking __
+tests/test_bulletin_retrieval.py:23: in setUpClass
+    for district,state,sha in SOURCES:cls.docs[district]=extract((ROOT/'data/runtime/blobs'/(sha+'.bin')).read_bytes(),state,district,NOW)
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/heer/Documents/WeatherGPT_/data/runtime/blobs/653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90.bin'
+_____ ERROR at setup of IndexTests.test_failed_refresh_blocks_old_version ______
+tests/test_bulletin_retrieval.py:23: in setUpClass
+    for district,state,sha in SOURCES:cls.docs[district]=extract((ROOT/'data/runtime/blobs'/(sha+'.bin')).read_bytes(),state,district,NOW)
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/heer/Documents/WeatherGPT_/data/runtime/blobs/653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90.bin'
+_ ERROR at setup of IndexTests.test_forged_document_even_with_hash_and_manifest_changes_rejected _
+tests/test_bulletin_retrieval.py:23: in setUpClass
+    for district,state,sha in SOURCES:cls.docs[district]=extract((ROOT/'data/runtime/blobs'/(sha+'.bin')).read_bytes(),state,district,NOW)
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/heer/Documents/WeatherGPT_/data/runtime/blobs/653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90.bin'
+_________ ERROR at setup of IndexTests.test_incomplete_index_rejected __________
+tests/test_bulletin_retrieval.py:23: in setUpClass
+    for district,state,sha in SOURCES:cls.docs[district]=extract((ROOT/'data/runtime/blobs'/(sha+'.bin')).read_bytes(),state,district,NOW)
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/heer/Documents/WeatherGPT_/data/runtime/blobs/653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90.bin'
+_ ERROR at setup of IndexTests.test_irrigation_does_not_return_pesticide_delivery_instructions _
+tests/test_bulletin_retrieval.py:23: in setUpClass
+    for district,state,sha in SOURCES:cls.docs[district]=extract((ROOT/'data/runtime/blobs'/(sha+'.bin')).read_bytes(),state,district,NOW)
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/heer/Documents/WeatherGPT_/data/runtime/blobs/653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90.bin'
+_ ERROR at setup of IndexTests.test_kamrup_crop_stage_and_condition_remain_together _
+tests/test_bulletin_retrieval.py:23: in setUpClass
+    for district,state,sha in SOURCES:cls.docs[district]=extract((ROOT/'data/runtime/blobs'/(sha+'.bin')).read_bytes(),state,district,NOW)
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/heer/Documents/WeatherGPT_/data/runtime/blobs/653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90.bin'
+__________ ERROR at setup of IndexTests.test_raw_corruption_rejected ___________
+tests/test_bulletin_retrieval.py:23: in setUpClass
+    for district,state,sha in SOURCES:cls.docs[district]=extract((ROOT/'data/runtime/blobs'/(sha+'.bin')).read_bytes(),state,district,NOW)
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/heer/Documents/WeatherGPT_/data/runtime/blobs/653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90.bin'
+_ ERROR at setup of IndexTests.test_region_head_cannot_point_to_another_district _
+tests/test_bulletin_retrieval.py:23: in setUpClass
+    for district,state,sha in SOURCES:cls.docs[district]=extract((ROOT/'data/runtime/blobs'/(sha+'.bin')).read_bytes(),state,district,NOW)
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/heer/Documents/WeatherGPT_/data/runtime/blobs/653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90.bin'
+_ ERROR at setup of IndexTests.test_source_crop_heading_body_disagreement_is_quarantined _
+tests/test_bulletin_retrieval.py:23: in setUpClass
+    for district,state,sha in SOURCES:cls.docs[district]=extract((ROOT/'data/runtime/blobs'/(sha+'.bin')).read_bytes(),state,district,NOW)
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/heer/Documents/WeatherGPT_/data/runtime/blobs/653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90.bin'
+_ ERROR at setup of IndexTests.test_tampered_chunk_even_with_recomputed_hash_rejected _
+tests/test_bulletin_retrieval.py:23: in setUpClass
+    for district,state,sha in SOURCES:cls.docs[district]=extract((ROOT/'data/runtime/blobs'/(sha+'.bin')).read_bytes(),state,district,NOW)
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/heer/Documents/WeatherGPT_/data/runtime/blobs/653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90.bin'
+_ ERROR at setup of IndexTests.test_tampered_embedding_even_with_recomputed_hash_rejected _
+tests/test_bulletin_retrieval.py:23: in setUpClass
+    for district,state,sha in SOURCES:cls.docs[district]=extract((ROOT/'data/runtime/blobs'/(sha+'.bin')).read_bytes(),state,district,NOW)
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/heer/Documents/WeatherGPT_/data/runtime/blobs/653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90.bin'
+_ ERROR at setup of IndexTests.test_three_layouts_have_verified_periods_and_row_counts _
+tests/test_bulletin_retrieval.py:23: in setUpClass
+    for district,state,sha in SOURCES:cls.docs[district]=extract((ROOT/'data/runtime/blobs'/(sha+'.bin')).read_bytes(),state,district,NOW)
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/heer/Documents/WeatherGPT_/data/runtime/blobs/653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90.bin'
+_____ ERROR at setup of IndexTests.test_wrong_crop_stage_or_topic_abstains _____
+tests/test_bulletin_retrieval.py:23: in setUpClass
+    for district,state,sha in SOURCES:cls.docs[district]=extract((ROOT/'data/runtime/blobs'/(sha+'.bin')).read_bytes(),state,district,NOW)
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/heer/Documents/WeatherGPT_/data/runtime/blobs/653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90.bin'
+__ ERROR at setup of IndexTests.test_wrong_printed_district_or_state_rejected __
+tests/test_bulletin_retrieval.py:23: in setUpClass
+    for district,state,sha in SOURCES:cls.docs[district]=extract((ROOT/'data/runtime/blobs'/(sha+'.bin')).read_bytes(),state,district,NOW)
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/heer/Documents/WeatherGPT_/data/runtime/blobs/653f005c5eb6069e2d4b21afb2700b993f7d1d0699781876d698ef553811cd90.bin'
+=================================== FAILURES ===================================
+_ SourcePdfTests.test_verified_pdf_http_route_returns_exact_bytes_and_rejects_bad_identity _
+tests/test_bulletin_retrieval.py:120: in test_verified_pdf_http_route_returns_exact_bytes_and_rejects_bad_identity
+    root=Path(tmp);app=Workspace(root/'jobs.sqlite',root/'raw',root/'geo.sqlite',clock=lambda:NOW);index=BulletinIndex(root/'bulletins'/EXTRACTION_VERSION/'index.sqlite');body=(ROOT/'data/runtime/blobs'/(SOURCES[2][2]+'.bin')).read_bytes();raw=index.path.parent/'raw'/'source.pdf';raw.parent.mkdir();raw.write_bytes(body);doc=extract(body,'Assam','Kamrup',NOW);index.publish(doc,{'raw_file':str(raw),'retrieved_at_utc':stamp(NOW)},stamp(NOW),encoder)
+                                                                                                                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+../../.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/heer/Documents/WeatherGPT_/data/runtime/blobs/f5e9fbe91b5fe14b3b9a3290517696b279cf93b327c4067b9c7ee0225df71e07.bin'
+_ PublicationIdentityTests.test_the_intake_holds_a_target_it_cannot_verify_and_keeps_going _
+tests/test_document_ingest.py:489: in test_the_intake_holds_a_target_it_cannot_verify_and_keeps_going
+    report = di.ingest(self.store, self.root, 'national_bulletin', now=NOW)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+weathergpt_data/document_ingest.py:449: in ingest
+    publish = index.publish_document(document, {'sha256': meta['sha256'], 'blob': meta.get('blob'),
+weathergpt_data/bulletin_index.py:255: in publish_document
+    vectors=encoder(texts);assert len(vectors)==len(passages)
+            ^^^^^^^^^^^^^^
+weathergpt_data/bulletin_index.py:25: in embed
+    from sentence_transformers import SentenceTransformer
+E   ModuleNotFoundError: No module named 'sentence_transformers'
+_ StateIngestTests.test_a_sampled_english_edition_is_accepted_with_its_issue_date _
+tests/test_state_agromet_sweep.py:94: in test_a_sampled_english_edition_is_accepted_with_its_issue_date
+    record = self.run_one(minimal_pdf(ENGLISH_FRONT.encode('utf-8')), state='Gujarat')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_state_agromet_sweep.py:91: in run_one
+    return di.ingest_state(Store({self.url: body}), self.index, state, self.url, now=NOW)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+weathergpt_data/document_ingest.py:696: in ingest_state
+    else index.publish_document(document, provenance, stamp(now)))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+weathergpt_data/bulletin_index.py:255: in publish_document
+    vectors=encoder(texts);assert len(vectors)==len(passages)
+            ^^^^^^^^^^^^^^
+weathergpt_data/bulletin_index.py:25: in embed
+    from sentence_transformers import SentenceTransformer
+E   ModuleNotFoundError: No module named 'sentence_transformers'
+_ StateIngestTests.test_a_state_the_document_does_not_name_is_recorded_as_unverified _
+tests/test_state_agromet_sweep.py:120: in test_a_state_the_document_does_not_name_is_recorded_as_unverified
+    record = self.run_one(minimal_pdf(ENGLISH_FRONT.encode('utf-8')), state='Karnataka')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_state_agromet_sweep.py:91: in run_one
+    return di.ingest_state(Store({self.url: body}), self.index, state, self.url, now=NOW)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+weathergpt_data/document_ingest.py:696: in ingest_state
+    else index.publish_document(document, provenance, stamp(now)))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+weathergpt_data/bulletin_index.py:255: in publish_document
+    vectors=encoder(texts);assert len(vectors)==len(passages)
+            ^^^^^^^^^^^^^^
+weathergpt_data/bulletin_index.py:25: in embed
+    from sentence_transformers import SentenceTransformer
+E   ModuleNotFoundError: No module named 'sentence_transformers'
+_ StateIngestTests.test_the_same_body_again_is_unchanged_rather_than_re_extracted _
+tests/test_state_agromet_sweep.py:114: in test_the_same_body_again_is_unchanged_rather_than_re_extracted
+    first = self.run_one(body)
+            ^^^^^^^^^^^^^^^^^^
+tests/test_state_agromet_sweep.py:91: in run_one
+    return di.ingest_state(Store({self.url: body}), self.index, state, self.url, now=NOW)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+weathergpt_data/document_ingest.py:696: in ingest_state
+    else index.publish_document(document, provenance, stamp(now)))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+weathergpt_data/bulletin_index.py:255: in publish_document
+    vectors=encoder(texts);assert len(vectors)==len(passages)
+            ^^^^^^^^^^^^^^
+weathergpt_data/bulletin_index.py:25: in embed
+    from sentence_transformers import SentenceTransformer
+E   ModuleNotFoundError: No module named 'sentence_transformers'
+=============================== warnings summary ===============================
+tests/test_document_ingest.py::PublicationIdentityTests::test_rerecording_the_same_document_on_a_later_clock_is_idempotent
+  /Users/heer/Documents/WeatherGPT_/weathergpt_data/bulletin_index.py:290: DeprecationWarning: The default datetime adapter is deprecated as of Python 3.12; see the sqlite3 documentation for suggested replacement recipes
+    db.execute('INSERT OR REPLACE INTO heads VALUES (?,?,?,?,?)',(self.document_key(document['family'],document.get('region')),document['sha256'],checked_at,'ok',''))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_bulletin_retrieval.py::SourcePdfTests::test_verified_pdf_http_route_returns_exact_bytes_and_rejects_bad_identity
+FAILED tests/test_document_ingest.py::PublicationIdentityTests::test_the_intake_holds_a_target_it_cannot_verify_and_keeps_going
+FAILED tests/test_state_agromet_sweep.py::StateIngestTests::test_a_sampled_english_edition_is_accepted_with_its_issue_date
+FAILED tests/test_state_agromet_sweep.py::StateIngestTests::test_a_state_the_document_does_not_name_is_recorded_as_unverified
+FAILED tests/test_state_agromet_sweep.py::StateIngestTests::test_the_same_body_again_is_unchanged_rather_than_re_extracted
+ERROR tests/test_bulletin_parent_context.py::ParentSourceTests::test_cross_page_heading_keeps_body_page_and_excludes_print_furniture
+ERROR tests/test_bulletin_parent_context.py::ParentSourceTests::test_far_page_restriction_is_not_lost_behind_crop_filter
+ERROR tests/test_bulletin_parent_context.py::ParentSourceTests::test_general_row_reuses_source_identity_without_becoming_crop_match
+ERROR tests/test_bulletin_parent_context.py::ParentSourceTests::test_hash_change_cannot_attach_context_to_another_document
+ERROR tests/test_bulletin_parent_context.py::ParentSourceTests::test_held_surat_and_madurai_editions_are_still_rejected
+ERROR tests/test_bulletin_parent_context.py::ParentSourceTests::test_na_is_preserved_as_source_text_not_an_all_clear
+ERROR tests/test_bulletin_parent_context.py::ParentSourceTests::test_no_warning_phrase_preserves_its_source_date
+ERROR tests/test_bulletin_parent_context.py::ParentSourceTests::test_parent_context_does_not_inherit_another_crop_stage
+ERROR tests/test_bulletin_parent_context.py::ParentSourceTests::test_stop_pest_movement_is_not_a_spraying_prohibition
+ERROR tests/test_bulletin_parent_context.py::ParentSourceTests::test_unreadable_section_is_disclosed_not_silently_cleaned
+ERROR tests/test_bulletin_parent_context.py::ParentSourceTests::test_warning_heading_and_body_dates_do_not_become_current_alert
+ERROR tests/test_bulletin_retrieval.py::LayoutTests::test_ahmedabad_continued_rows_do_not_become_another_crop
+ERROR tests/test_bulletin_retrieval.py::LayoutTests::test_kamrup_crop_stage_and_condition_remain_together
+ERROR tests/test_bulletin_retrieval.py::LayoutTests::test_source_crop_heading_body_disagreement_is_quarantined
+ERROR tests/test_bulletin_retrieval.py::LayoutTests::test_three_layouts_have_verified_periods_and_row_counts
+ERROR tests/test_bulletin_retrieval.py::LayoutTests::test_wrong_printed_district_or_state_rejected
+ERROR tests/test_bulletin_retrieval.py::IndexTests::test_ahmedabad_continued_rows_do_not_become_another_crop
+ERROR tests/test_bulletin_retrieval.py::IndexTests::test_crop_stage_topic_filters_precede_ranking
+ERROR tests/test_bulletin_retrieval.py::IndexTests::test_failed_refresh_blocks_old_version
+ERROR tests/test_bulletin_retrieval.py::IndexTests::test_forged_document_even_with_hash_and_manifest_changes_rejected
+ERROR tests/test_bulletin_retrieval.py::IndexTests::test_incomplete_index_rejected
+ERROR tests/test_bulletin_retrieval.py::IndexTests::test_irrigation_does_not_return_pesticide_delivery_instructions
+ERROR tests/test_bulletin_retrieval.py::IndexTests::test_kamrup_crop_stage_and_condition_remain_together
+ERROR tests/test_bulletin_retrieval.py::IndexTests::test_raw_corruption_rejected
+ERROR tests/test_bulletin_retrieval.py::IndexTests::test_region_head_cannot_point_to_another_district
+ERROR tests/test_bulletin_retrieval.py::IndexTests::test_source_crop_heading_body_disagreement_is_quarantined
+ERROR tests/test_bulletin_retrieval.py::IndexTests::test_tampered_chunk_even_with_recomputed_hash_rejected
+ERROR tests/test_bulletin_retrieval.py::IndexTests::test_tampered_embedding_even_with_recomputed_hash_rejected
+ERROR tests/test_bulletin_retrieval.py::IndexTests::test_three_layouts_have_verified_periods_and_row_counts
+ERROR tests/test_bulletin_retrieval.py::IndexTests::test_wrong_crop_stage_or_topic_abstains
+ERROR tests/test_bulletin_retrieval.py::IndexTests::test_wrong_printed_district_or_state_rejected
+5 failed, 824 passed, 1 warning, 31 errors, 162 subtests passed in 18.48s

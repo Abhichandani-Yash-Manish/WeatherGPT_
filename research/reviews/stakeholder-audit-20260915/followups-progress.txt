@@ -1,0 +1,28 @@
+context_measure_correct_thread 400 None The question could not be interpreted: No model provider could answer. ollama: The local model did not answer: HTTPError
+history_rain_alone 200 answered All India · annual 2024
+rainfall: 1206.6 mm [t1-f1]
+Retrieved 1 published historical values for the requested places, parameters and years.
+history_two_reversed 200 answered All India · annual 2024
+temperature: 25.7431 degC [t1-f1]
+Retrieved 1 published historical values for the requested places, parameters and years.
+warning_forecast 200 answered Task 1: Patna · 16 Sep, 00:30–17 Sep, 00:30 IST: Forecast precipitation: 0.0–0.1 mm. Source: GFS forecast; conditions can change.
+
+Task 2: IMD district warning for PATNA, bulletin 
+water_level_control 400 None The question could not be interpreted: No model provider could answer. ollama: The local model did not answer: HTTPError
+current_water_level_repeat 200 answered Freshest station report here: PATNA, 4.6 km away, reported 2026-09-15T09:00:00+00:00, 32.5 minutes before retrieval. Official district product for PATNA: Official district warning:
+hourly 200 answered Ahmedabad · 16 Sep, 09:30–16 Sep, 12:30 IST: Total precipitation over this period: 0.0 mm. Hourly rain chances: 4–22 %. The highest hourly value is 22% for 16 Sep, 11:30–12:30 IST.
+strict_window 200 partial Ahmedabad · 16 Sep, 09:30–16 Sep, 11:30 IST: Precipitation in individual hours: 0.0 mm. Source: Open-Meteo best-match forecast; conditions can change.
+
+Part of the request is still
+long_horizon 200 needs_clarification When should I check the weather for this plan? A day and approximate time are enough.
+daily_temperature 200 answered Ahmedabad · 05 Aug, 00:00–08 Aug, 00:00 IST: Daily mean temperature: 27.3–27.9 °C. ERA5 modeled history, not a rain-gauge observation.
+notify_known_place 200 needs_selection Which place do you mean? Noti, Shimla, State of Himāchal Pradesh / Noti, Sirmaur, State of Himāchal Pradesh. Choose one, or type its state/district.
+nonenglish_clarify 200 needs_selection आप किस जगह की बात कर रहे हैं? Sultanpur, Buldhana, State of Mahārāshtra। एक चुनें, या उसका राज्य/जिला लिखें।
+languages 200 None 
+speech_missing_key 503 None No language service key is configured locally, so translation and speech are unavailable. Set WEATHERGPT_SARVAM_API_KEY or write the key to /Users/heer/.weathergpt/sarvam.key.
+recognition_missing_key 503 None No language service key is configured locally, so translation and speech are unavailable. Set WEATHERGPT_SARVAM_API_KEY or write the key to /Users/heer/.weathergpt/sarvam.key.
+speech_unverified_language 400 None Speech in this language has not been verified by this project, so it is not offered. Run scripts/measure_language_support.py to test it.
+api_requires_token 403 None Reload this local workspace before reading stored data
+bad_request_rejected 400 None Send a question and optional conversation/place/language selection
+stored_conversations 200 None 
+actual_ollama_models 200 None 

@@ -288,6 +288,12 @@ PLACE_WORD_NOISE_STRIPPED = tuple(word for word in PLACE_WORD_NOISE)
 
 
 PLACE_NOISE = {'the', 'a', 'an', 'this', 'that', 'my', 'our', 'whole', 'latest', 'said'}
+# A watch request is an instruction, not a place. "Notify me if ..." reaches place
+# extraction through the Hinglish locative "me", so "Notify" was read as a village and the
+# turn asked the reader to choose between villages named Noti (measured 15 September 2026).
+# The watch verb is removed before the name is considered, and the real place after "for/in"
+# resolves normally.
+WATCH_VERBS = {'notify', 'alert', 'inform', 'tell', 'warn', 'warned', 'remind'}
 # A capitalised day or part-of-day word at the start of a sentence is not part of a place name:
 # "Kal Ahmedabad me" is Ahmedabad, and "Aaj Delhi me" is Delhi.
 PLACE_LEAD_NOISE = {'kal', 'aaj', 'parso', 'tomorrow', 'today', 'tonight', 'subah', 'shaam', 'raat',
@@ -302,6 +308,25 @@ CROP_TOPIC = ((re.compile(r'\b(irrigation|water|irrigate|sinchai|सिंचा
 ADVISORY = re.compile(r'\b(advisory|advice|guidance|recommend|should i|can i|is it safe|when to|bulletin)\b', re.I)
 MARINE = re.compile(r'\b(wave|waves|swell|sea state|significant wave|sea condition|samudra|lehar)\b', re.I)
 RIVER = re.compile(r'\b(river discharge|discharge|streamflow|stream flow)\b', re.I)
+# A requested quantity the connected specialist product does not carry. These are read
+# before the broad observed/now and forecast routes, so an observed water level is never
+# silently answered with ordinary weather: the river tool states the unsupported quantity
+# instead. "groundwater level" is not a river water level and stays out of scope. The same
+# distinctions are enforced again in specialist_tasks.DISTINCT.
+RIVER_DISTINCT = (
+    (re.compile(r'(?<!ground)(?<!ground )water level|gauge (?:level|reading|height)|'
+                r'jal ?star|जल ?स्तर|પાણીની સપાટી', re.I), 'water_level'),
+    (re.compile(r'danger (?:level|mark)|khatre ka nishan', re.I), 'danger_level'),
+    (re.compile(r'flood (?:extent|impact|risk)|inundation|बाढ़|પૂર', re.I), 'flood_extent'),
+)
+
+
+def distinct_quantity(question):
+    """The specialist kind and the unsupported parameter a question actually asks for."""
+    for pattern, name in RIVER_DISTINCT:
+        if pattern.search(question):
+            return 'river', name
+    return None, None
 WARNING = re.compile(r'\b(warning|warnings|alert|alerts|red alert|orange alert|yellow alert|advisory)\b', re.I)
 # A warning word that is about a warning, as opposed to the generic word "advisory", which
 # the farm vocabulary also uses. Measured need: "What does the Ahmedabad district agromet
@@ -694,9 +719,7 @@ def places_of(question):
         while tokens and (tokens[0].lower() in PLACE_NOISE or tokens[0].lower() in PLACE_LEAD_NOISE):
             tokens = tokens[1:]
         name = ' '.join(tokens)
-        if not name or len(name) < 3 or name.lower() in PLACE_NOISE or norm(name) in PLACE_WORD_NOISE:
-            # A postposition or a product word is not a place. Without this the reader is asked
-            # which settlement "बारे" is.
+        if not name or len(name) < 3 or name.lower() in PLACE_NOISE:
             return
         if not name or name in [item['name'] for item in found]:
             return
@@ -877,14 +900,30 @@ def single_request(question, now, history=None):
         return None
 
     years = history_years(question)
-    if OUT_OF_SCOPE.search(question) and not (WARNING.search(question) or DOCUMENT.search(question)):
+    distinct_kind, distinct_parameter = distinct_quantity(question)
+    if distinct_kind:
+        # The request names a specialist quantity. Route it to the product that owns that
+        # domain so the tool can state what it does not supply, instead of the broad
+        # observation/forecast route answering a different question.
+        tasks.append(task(distinct_kind, 'lookup', [distinct_parameter]))
+    elif OUT_OF_SCOPE.search(question) and not (WARNING.search(question) or DOCUMENT.search(question)):
         tasks.append(task('research', 'lookup', []))
     elif (WARNING.search(question) and not DOCUMENT.search(question)
           and (WARNING_STRONG.search(question) or not (AGROMET_DOCUMENT.search(question)
                                                        or (CROP.search(question) and ADVISORY.search(question))))):
         tasks.append(task('warning', 'lookup', ['official_warning']))
     elif HISTORY_WORDS.search(question) and years and not DOCUMENT.search(question):
-        parameter = 'temperature' if re.search(r'\btemperature\b', question, re.I) else 'rainfall'
+        # Every measure the question names is preserved, in the order it was asked. A single
+        # parameter used to be chosen, so "rainfall and mean temperature" returned temperature
+        # alone and was still marked complete (measured 15 September 2026).
+        parameters = []
+        for match in re.finditer(r'\b(temperature|temp|warming|tapman|garmi|rainfall|rain|monsoon|'
+                                 r'barish|varsha)\b', question, re.I):
+            token = match.group(1).lower()
+            name = 'temperature' if token in {'temperature', 'temp', 'warming', 'tapman', 'garmi'} else 'rainfall'
+            if name not in parameters:
+                parameters.append(name)
+        parameters = parameters or ['rainfall']
         operation = 'lookup'
         if re.search(r'\b(trend|warming|changing)\b', question, re.I):
             operation = 'trend'
@@ -892,7 +931,7 @@ def single_request(question, now, history=None):
             operation = 'compare'
         elif len(years) > 1:
             operation = 'series'
-        entry = task('history', operation, [parameter], years=years[:2] if operation == 'compare' else years)
+        entry = task('history', operation, parameters, years=years[:2] if operation == 'compare' else years)
         entry['start_local'] = ''
         entry['end_local'] = ''
         for name in MONTHS:

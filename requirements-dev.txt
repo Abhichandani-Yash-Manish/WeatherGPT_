@@ -1,0 +1,15 @@
+# Development and test dependencies, on top of the runtime requirements.
+# A fresh checkout needs these to run the Python suite:
+#
+#     python3 -m pip install -r requirements-dev.txt
+#     python3 -m pytest tests/ -q
+#
+# The default environment shipped without a test runner, so `python3 -m pytest`
+# failed before any test could report (measured 15 September 2026). The test suite
+# now injects a deterministic passage encoder where it exercises document intake,
+# so the heavy sentence-transformers stack is not required to run the tests; it is
+# still required to build the real indexed corpus, and is declared in
+# requirements-bulletins.txt.
+-r requirements.txt
+
+pytest>=8

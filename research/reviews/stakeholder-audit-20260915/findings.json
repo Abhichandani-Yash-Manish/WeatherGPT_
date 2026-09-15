@@ -1,0 +1,121 @@
+{
+  "reviewed_at_utc": "2026-09-15T09:39:20.825669+00:00",
+  "application_changed": false,
+  "operational_ready": false,
+  "findings": [
+    {
+      "id": "SA01",
+      "priority": "critical",
+      "status": "reproduced_unrepaired",
+      "title": "Opening warning card falsely states no warning while Today lists a hazard",
+      "code": [
+        "web/home.js:68",
+        "weathergpt_data/product_api.py:270"
+      ],
+      "evidence": "browser-observations.md",
+      "related": [
+        "A05",
+        "A08",
+        "P06",
+        "P13",
+        "R02",
+        "R08"
+      ]
+    },
+    {
+      "id": "SA02",
+      "priority": "high",
+      "status": "reproduced_unrepaired",
+      "title": "Two historical measures collapse to temperature alone and status answered",
+      "code": [
+        "weathergpt_data/rule_planner.py:509"
+      ],
+      "evidence": [
+        "journeys.json#history_multi",
+        "followups.json#history_two_reversed",
+        "followups.json#history_rain_alone"
+      ],
+      "related": [
+        "A01",
+        "A07",
+        "P03",
+        "P12",
+        "F01",
+        "F02",
+        "F08"
+      ]
+    },
+    {
+      "id": "SA03",
+      "priority": "high",
+      "status": "reproduced_unrepaired",
+      "title": "Observed water-level question routes to ordinary current weather and status answered",
+      "code": [
+        "weathergpt_data/rule_planner.py",
+        "weathergpt_data/observation_tasks.py"
+      ],
+      "evidence": [
+        "journeys.json#water_level",
+        "followups.json#current_water_level_repeat"
+      ],
+      "related": [
+        "P03",
+        "P04",
+        "P12",
+        "F01",
+        "F02"
+      ]
+    },
+    {
+      "id": "SA04",
+      "priority": "high",
+      "status": "reproduced_unrepaired",
+      "title": "Model readiness check calls an absent method; configured default model is unavailable",
+      "code": [
+        "weathergpt_data/preflight.py:81",
+        "weathergpt_data/providers.py:188"
+      ],
+      "evidence": [
+        "preflight.json",
+        "followups.json#actual_ollama_models",
+        "followups.json#context_measure_correct_thread"
+      ],
+      "related": [
+        "A08",
+        "P14"
+      ]
+    },
+    {
+      "id": "SA05",
+      "priority": "high",
+      "status": "reproduced_environment_and_packaging_gap",
+      "title": "Full test and corpus setup depends on absent ignored runtime fixtures and dependencies",
+      "evidence": [
+        "pytest-network.txt",
+        "verification.txt",
+        "journeys.json#crop_bulletin"
+      ],
+      "related": [
+        "A06",
+        "A08",
+        "P07",
+        "P14"
+      ]
+    },
+    {
+      "id": "SA06",
+      "priority": "medium",
+      "status": "reproduced_unrepaired",
+      "title": "Notify is parsed as a place and offers Noti villages",
+      "evidence": [
+        "followups.json#notify_known_place"
+      ],
+      "related": [
+        "A01",
+        "A05",
+        "P03",
+        "P08"
+      ]
+    }
+  ]
+}

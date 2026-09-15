@@ -486,7 +486,7 @@ class PublicationIdentityTests(unittest.TestCase):
              patch.object(di, 'extract', return_value=(conflicting, {'sha256': record['sha256'],
                                                                     'blob': record['blob'], 'source_id': 'S57'})), \
              patch.object(bulletin_index, 'BulletinIndex', return_value=self.index):
-            report = di.ingest(self.store, self.root, 'national_bulletin', now=NOW)
+            report = di.ingest(self.store, self.root, 'national_bulletin', now=NOW, encoder=vectors)
         self.assertEqual(report['status'], 'no_new_document')
         self.assertFalse(report['accepted'])
         held = report['rejected'][0]
