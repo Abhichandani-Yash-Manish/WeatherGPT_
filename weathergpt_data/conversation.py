@@ -215,6 +215,12 @@ class ConversationEngine:
         result={'schema_version':'weather-conversation-v1','conversation_id':cid,'question':q,'status':'needs_clarification','answer':'',
                 'facts':[],'citations':[],'notes':[],'choices':[],'follow_up':None,'operational_eligible':False,'answered_at_utc':self.workspace.clock().isoformat(),'expires_at_utc':None,
                 'trace':{'planning':None,'generation':None,'tools':[],'provider':'local_ollama'}}
+        # Plan Watch owns plan statements, the one question a plan may need, and phrases that act
+        # on a saved plan. It runs before any model call and returns None for every other turn.
+        from .plan_intake import take_turn
+        planned=take_turn(self,state,body,q,result)
+        if planned is not None:return self._plan_turn(cid,state,body,q,planned)
+        state.pop('plan_focus',None)
         selected=None
         from .document_context import direct_reply
         document_reply=direct_reply(state,q) if not body.get('selection_id') else None
@@ -337,6 +343,7 @@ class ConversationEngine:
             sentence=summarise(comparison)
             if sentence and sentence not in (result.get('answer') or ''):
                 result['answer']=(result.get('answer') or '').rstrip()+chr(10)+chr(10)+sentence
+        self._offer_plan(state,result,q)
         self._checkpoint(request_id,'assembling')
         from .answer_language import deliver,target_language
         target,why=target_language(body,state,plan)
@@ -377,6 +384,67 @@ class ConversationEngine:
         block=persona_block(body.get('persona'))
         if block:result['persona']=block
         return result
+
+    def plan_store(self):
+        from .plans import PlanStore
+        return PlanStore(self.workspace.service.ingestion_database.parent/'plans.sqlite')
+
+    def resolve_plan_place(self,request):
+        """A plan place resolved the way a warning question is: gazetteer ladder, then IMD's own district geometry."""
+        from .product_api import districts_for_point
+        from .warning_tools import _gazetteer_ladder
+        if 'choice' in request:
+            match=request['choice']
+        else:
+            match,seen,candidates=_gazetteer_ladder(self,{'name':request.get('name') or '','state':request.get('state') or '',
+                                                           'district':request.get('district') or ''})
+            if candidates:return {'status':'ambiguous','choices':candidates}
+            if match is None:return {'status':'not_found'}
+        coordinates=match.get('coordinates') or {}
+        if coordinates.get('latitude') is None:return {'status':'not_found'}
+        hits=districts_for_point(coordinates['latitude'],coordinates['longitude'])
+        if not hits:return {'status':'outside'}
+        from .plans import plain_place_label
+        source_label=match.get('label') or request.get('name') or ''
+        return {'status':'resolved','place':{'name':match.get('name') or request.get('name'),'label':plain_place_label(source_label),
+                                            'source_label':source_label,
+                                            'coordinates':{'latitude':coordinates['latitude'],'longitude':coordinates['longitude']},
+                                            'selection_id':match.get('selection_id'),'district_key':hits[0]['key'],
+                                            'district':hits[0].get('name'),'state':hits[0].get('state'),
+                                            'accepted_because':match.get('accepted_because')}}
+
+    def plan_baseline(self,plan):
+        """The first reading of a new or changed plan; None when the official product cannot be read now."""
+        from .plan_watcher import LiveEditions,baseline
+        try:return baseline(self.plan_store(),plan,LiveEditions(self.workspace.foundation()),self.workspace.clock())
+        except (OSError,ValueError):return None
+
+    def _plan_turn(self,cid,state,body,q,packet):
+        packet['conversation_id']=cid
+        if not body.get('selection_id'):state['history'].append({'role':'user','content':q})
+        state['history'].append({'role':'assistant','content':packet['answer'][:2000]})
+        state['history']=state['history'][-12:]
+        # Place candidates for a plan live in the plan draft, so an ordinary selection on a later
+        # question can never pick up a plan's candidate list.
+        state['last_question']=q;state['choices']=[]
+        self.save(cid,state)
+        return packet
+
+    def _offer_plan(self,state,result,q):
+        """Offer to watch a dated activity plan, and mention a saved plan the answer touches."""
+        from .plan_intake import plan_candidate,related_plans
+        if result.get('status') in {'answered','partial'} and plan_candidate(q):
+            state['plan_candidate']=q
+            result['quick_replies']=list(result.get('quick_replies') or [])+[{'label':'Watch this plan','reply':'Watch this plan'}]
+        else:
+            state.pop('plan_candidate',None)
+        path=self.workspace.service.ingestion_database.parent/'plans.sqlite'
+        if not path.exists():return
+        try:sentences=related_plans(self.plan_store(),result)
+        except (OSError,ValueError,sqlite3.Error):return
+        if sentences:
+            result['notes']+=sentences
+            result['answer']=((result.get('answer') or '').rstrip()+chr(10)+chr(10)+' '.join(sentences)).strip()
 
     def _watch_plan(self,question):
         """A bounded plan for a notification request: one warning task, one place.

@@ -81,6 +81,18 @@ const PAYLOADS = {
                 state: 'registered_check_on_request', last_checked_at: null, result: null }] },
   '/api/watches/check': { schema_version: 'watch-check-v1', delivery: 'local_inbox_only_no_push',
     results: [{ id: 'w1', state: 'checked_no_match', matched: false, detail: 'No current day matches; this is not an all-clear.' }] },
+  '/api/plans': { schema_version: 'plan-inbox-v1', mode: 'live', delivery: 'local_inbox_and_browser_notifications_while_the_workspace_runs',
+    plans: [{ id: 'p1', title: 'Cotton spraying · Rajkot, Gujarat · Monday 21 Sep morning', state: 'waiting_for_coverage',
+              state_words: 'waiting for IMD coverage', hazards: 'heavy rain, thunderstorm & lightning and strong surface winds',
+              last_checked_at: '2026-09-15T05:00:00+00:00', not_connected: null }],
+    notifications: [{ id: 3, plan_id: 'p1', kind: 'change', created_at: '2026-09-15T07:00:00+00:00', visible_at: '2026-09-15T07:00:00+00:00', visible: true,
+                      title: 'Monday 21 Sep · Rajkot, Gujarat · official warning issued',
+                      text: 'Monday 21 Sep for your cotton spraying in Rajkot, Gujarat changed: no warning for your watched hazards → Thunderstorm/lightning/squall (yellow).',
+                      receipt: { place: 'Rajkot, Gujarat', date: '2026-09-21', district: 'RAJKOT', hazards: ['Thunderstorm/lightning/squall'], colour: 'yellow',
+                                 source_id: 'S63', origin_authentication: 'unverified' } }],
+    watcher: { running: true, interval_seconds: 1800, last_cycle_at: '2026-09-15T07:00:00+00:00', last_error: null },
+    recorded_editions: 0, limits: ['No warning for your watched hazards is not an all-clear.'] },
+  '/api/plans/check': { schema_version: 'plan-check-v1', result: { checked: 1, notified: 0, read: true } },
   '/api/places/search': envelope('places.search', 'ok', { matches: [{ label: 'Surat, Sūrat, State of Gujarāt', name: 'Surat', source_id: 'geonames', kind: 'city', coordinates: { latitude: 21.1959, longitude: 72.8302 } }] }),
   '/api/conversations': { schema_version: 'conversation-ledger-v1', total: 1, limit: 6, conversations: [{ id: 'c1', opening_question: 'Will it rain in Surat tomorrow?', asked: 2, turns: 4, updated: '2026-09-14T18:00:00+00:00' }] },
   '/api/health': { available: true, products: [{ product: 'forecast', jobs: 12, newest_commit_utc: '2026-09-14T18:00:00+00:00' }], job_states: { ok: 12 }, active_leases: 0 }
@@ -258,6 +270,18 @@ async function run() {
   assert(h.document.getElementById('notify-panel').hidden === false, 'the watch panel opens without a placeholder refusal');
   assert(/1 local watch\(es\) registered/.test(textOf(notify)), 'the panel reads the local watch inbox');
   assert(/Thiruvananthapuram/.test(textOf(notify)), 'a registered watch names its place');
+  assert(/Cotton spraying · Rajkot, Gujarat · Monday 21 Sep morning/.test(textOf(notify)), 'the panel lists a saved plan');
+  assert(/waiting for IMD coverage/.test(textOf(notify)), 'a plan states its state in words');
+  assert(/no warning for your watched hazards → Thunderstorm/.test(textOf(notify)), 'the panel shows a plan notification with what changed');
+  assert(/not an all-clear/.test(textOf(notify)), 'the plan limits are offered');
+  assert(byTag(notify, 'button').some(node => textOf(node) === 'Ask about this change'), 'a change can be handed to the assistant');
+  assert(!byTag(notify, 'button').some(node => textOf(node) === 'Replay recorded editions'), 'replay is not offered without two recorded editions');
+  const checkPlans = byTag(notify, 'button').find(node => textOf(node) === 'Check plans now');
+  assert(checkPlans, 'the panel offers a plan check');
+  checkPlans.dispatch('click');
+  await settle(30);
+  assert(h.calls.some(call => call.path === '/api/plans/check'), 'Check plans now calls the plan check route');
+  console.log('PASS: the watch panel lists saved plans and their notifications, and checks plans on request');
   const checkButton = byTag(notify, 'button').find(node => textOf(node) === 'Check now');
   assert(checkButton, 'the panel offers a foreground check');
   checkButton.dispatch('click');

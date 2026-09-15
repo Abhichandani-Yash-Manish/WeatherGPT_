@@ -250,6 +250,9 @@
       onChoose: choice => ask({ question:currentQuestion() || 'Which place did you mean?', selection:{ selection_id:choice.selection_id }, showQuestion:false }),
       onRetype: () => { const input = byId('question'); if (input) input.focus(); },
       onExample: text => { const input = byId('question'); if (input) input.value = text; ask({ question:text }); },
+      onQuickReply: reply => ask({ question:reply }),
+      onPlanChange: () => { const input = byId('question'); if (input) { input.value = 'Make it '; input.focus(); } },
+      onPlanUndo: undoPlan,
       onRefresh: refreshFor,
       onDownload: downloadPacket,
       onCopy: copyTurn,
@@ -285,6 +288,9 @@
       const card = renderTurn(packet, handlers());
       append(card);
       revealCard(card);
+      const planAction = packet.plan_watch && packet.plan_watch.action;
+      if ((planAction === 'saved' || planAction === 'changed' || planAction === 'resumed' || planAction === 'deleted') &&
+          typeof WG !== 'undefined' && typeof WG.onPlanChanged === 'function') WG.onPlanChanged(packet.plan_watch);
       setService('Ready', 'is-ready');
       loadLedger({ quiet:true });
     } catch (error) {
@@ -305,6 +311,19 @@
       setBusy(false);
       const input = byId('question');
       if (input) input.focus();
+    }
+  }
+
+  /* ---------- plan watch ---------- */
+  async function undoPlan(plan, box) {
+    try {
+      await call('/api/plans/update', jsonRequest('POST', { id:plan.id, action:'delete' }));
+      const tools = box && box.querySelector ? box.querySelector('.plan-tools') : null;
+      if (tools) tools.remove();
+      if (box) box.append(el('p', 'Plan removed. Nothing will be checked or sent for it.', 'notice is-calm'));
+      if (typeof WG !== 'undefined' && typeof WG.onPlanChanged === 'function') WG.onPlanChanged({ action:'deleted', plan:plan });
+    } catch (error) {
+      showError(error && error.message ? error.message : 'The plan could not be removed.', true);
     }
   }
 
