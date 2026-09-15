@@ -1,7 +1,7 @@
 {
   "schema_version": "hardening-progress-v1",
   "review": "research/reviews/national-readiness-20260912/review.md",
-  "updated_at_utc": "2026-09-15T04:54:21+00:00",
+  "updated_at_utc": "2026-09-15T05:03:54+00:00",
   "operational_ready": false,
   "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
   "findings": [
@@ -1211,6 +1211,45 @@
       "Nothing is delivered, pushed, scheduled or shared; the export is a file on the reader machine.",
       "One desktop viewport, one browser, one session: no screen-reader, mobile, keyboard-only or cross-browser acceptance.",
       "WS7 is not finished: the scheduled briefing artefact and its recorded run remain open."
+    ]
+  },
+  "scheduled_briefing_batch": {
+    "report": "docs/51-scheduled-briefing.md",
+    "evidence_directory": "research/implementation/briefing-20260915",
+    "operational_ready": false,
+    "scope": "WS7 part 2 and its exit check: a dated briefing over named places composed from the connected products (official district warning day per place, CAP relay reported separately, forecast window as retrieved, what could not be read), written as Markdown with a full record and a series index by scripts/briefing.py, with a foreground interval (--every/--runs) and a change reading computed against the previous run record; the page reads the newest run in the workspace series directory through /api/briefing/latest.",
+    "automated_tests": 754,
+    "javascript_component_checks": 70,
+    "measured": {
+      "scheduled_series": {
+        "runs": 2,
+        "interval_seconds": 20,
+        "places": [
+          "Ahmedabad, Gujarat",
+          "Kochi, Kerala"
+        ],
+        "latencies_seconds": [
+          3.393,
+          29.886
+        ],
+        "change_readings": [
+          "no_previous_run",
+          "same"
+        ],
+        "directory": "research/implementation/briefing-20260915/series"
+      },
+      "workspace_series": {
+        "directory": "data/runtime/briefings",
+        "runs": 1,
+        "latency_seconds": 1.301
+      },
+      "page": "the Briefcase surface rendered the run instant, identity, places, day, interval, latency, paths, text and limits"
+    },
+    "limitations": [
+      "A foreground interval, not a service: no daemon, no push, no delivery, no notification channel.",
+      "Two runs on one afternoon on one machine is not a reliability measurement, and the cold 29.886 s read is one observation, not a percentile.",
+      "No forecast skill, accuracy, impact or operational clearance is claimed for anything in a briefing.",
+      "CAP relay geographic applicability to a place is still not computed."
     ]
   }
 }
