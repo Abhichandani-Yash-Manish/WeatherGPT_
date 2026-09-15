@@ -127,6 +127,10 @@ Places can be pinned from the command palette (⌘K) and switched from the topba
   substituted, safety-critical clauses are held, and a rendering in the wrong script is refused in
   favour of the source language. Press-to-talk shows a transcript for correction before it becomes a
   question; Listen speaks answers already produced. No native speaker has reviewed any output.
+Places can be read side by side in a local compare tray (⌘K → *Add this place to compare*, then the Compare
+  surface): each column keeps its own timestamps and sources and the page computes no difference between them.
+  Loading states reserve the shape of the answer without showing a number, and the evidence receipt can be
+  copied or printed.
 - **Reading positions.** Farmer, district officer and traveller change which surfaces and questions
   open first; every answer names the position it was read under and states that it changes no value,
   unit, window, warning level or source.

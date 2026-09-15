@@ -43,6 +43,34 @@
   function sourceLine(view, host) {
     host.append(WG.sourceDisclosure(view));
   }
+  /* One reading, three lanes: what a station observed, what the district product published and what
+     the model holds next. Shared by the Today surface and the compare tray so the two can never
+     disagree about what a lane means. */
+  function nowLanes(reading) {
+    const lanes = [];
+    const station = (((reading.observed || {}).stations) || [])[0] || null;
+    const day = reading.in_force || {};
+    const hours = ((reading.next_hours || {}).rows) || [];
+    if (station && station.observed_at_utc) {
+      lanes.push({ key: 'observed', label: 'Observed', kind: 'observed', from: station.observed_at_utc,
+        detail: [station.name || station.station_code,
+          station.distance_km === null || station.distance_km === undefined ? null : Math.round(station.distance_km * 10) / 10 + ' km away',
+          (station.parameters || []).slice(0, 2).map(parameter => parameter.field + ' ' + parameter.value).join(', ')].filter(Boolean).join(' \u00b7 '),
+        source: station.source_id || 'S63' });
+    }
+    if (day.status === 'ok' && day.starts_utc && day.ends_utc) {
+      lanes.push({ key: 'published', label: 'Published', kind: 'published', from: day.starts_utc, to: day.ends_utc,
+        colour: day.colour, detail: day.status_line || 'the product stated a colour without wording', source: day.source_id || 'S63' });
+    }
+    if (hours.length) {
+      const firstHour = hours[0], lastHour = hours[hours.length - 1];
+      lanes.push({ key: 'model', label: 'Model next', kind: 'model', from: firstHour.at, to: lastHour.at,
+        detail: hours.length + ' hour(s) returned, ' + (firstHour.temperature_2m === undefined ? 'temperature not returned' : firstHour.temperature_2m + ' \u00b0C at the first hour') +
+          ' and ' + (lastHour.temperature_2m === undefined ? 'temperature not returned' : lastHour.temperature_2m + ' \u00b0C at the last'),
+        source: (reading.next_hours || {}).source_id || 'source not stated' });
+    }
+    return lanes;
+  }
   /* The meteogram needs three independent series on one axis, so it is built only from what the
      source returned. A missing series is simply absent from the drawing and the exact-value table
      — never estimated from another parameter or from the previous hour. */
@@ -110,28 +138,7 @@
     catch (error) { nowReading = null; }
     if (nowReading && typeof viz !== 'undefined' && viz.nowBand) {
       const reading = nowReading.data || {};
-      const station = (((reading.observed || {}).stations) || [])[0] || null;
-      const day = reading.in_force || {};
-      const hours = ((reading.next_hours || {}).rows) || [];
-      const lanes = [];
-      if (station && station.observed_at_utc) {
-        lanes.push({ key: 'observed', label: 'Observed', kind: 'observed', from: station.observed_at_utc,
-          detail: [station.name || station.station_code, station.distance_km === null || station.distance_km === undefined ? null : Math.round(station.distance_km * 10) / 10 + ' km away',
-            (station.parameters || []).slice(0, 2).map(parameter => parameter.field + ' ' + parameter.value).join(', ')].filter(Boolean).join(' \u00b7 '),
-          source: station.source_id || 'S63' });
-      }
-      if (day.status === 'ok' && day.starts_utc && day.ends_utc) {
-        lanes.push({ key: 'published', label: 'Published', kind: 'published', from: day.starts_utc, to: day.ends_utc,
-          colour: day.colour, detail: day.status_line || 'the product stated a colour without wording', source: day.source_id || 'S63' });
-      }
-      if (hours.length) {
-        const firstHour = hours[0].at, lastHour = hours[hours.length - 1].at;
-        const firstTemp = hours[0].temperature_2m, lastTemp = hours[hours.length - 1].temperature_2m;
-        lanes.push({ key: 'model', label: 'Model next', kind: 'model', from: firstHour, to: lastHour,
-          detail: hours.length + ' hour(s) returned, ' + (firstTemp === undefined ? 'temperature not returned' : firstTemp + ' \u00b0C at the first hour') +
-            ' and ' + (lastTemp === undefined ? 'temperature not returned' : lastTemp + ' \u00b0C at the last'),
-          source: (reading.next_hours || {}).source_id || 'source not stated' });
-      }
+      const lanes = nowLanes(reading);
       host.append(viz.nowBand({
         title: 'Now',
         place: WGref.state.place ? WGref.state.place.label : null,
@@ -1302,6 +1309,75 @@
     limitSelect.addEventListener('change', () => load(false));
     filter.addEventListener('change', () => load(false));
     await load(false);
+  };
+  /* Two or three places read side by side. Each column is the reading that place returned, with its
+     own retrieval instant and sources; this surface computes no difference, ranking or average. */
+  WG.panels.compare = async function (host, WGref) {
+    const places = (typeof WGref.comparePlaces === 'function' ? WGref.comparePlaces() : []) || [];
+    const card = WG.block('Compare places',
+      'Two or three places side by side. Each column is the reading that place returned, with its own timestamps and sources; nothing is ranked, averaged or differenced here.');
+    const grid = el('div', undefined, 'compare-grid');
+    card.append(grid);
+    host.append(card);
+    if (!places.length) {
+      grid.append(WG.stateBlock('plain', 'The compare tray is empty.',
+        'Add a place from the command palette: \u2318K, then \u201cAdd this place to compare\u201d. Up to three places can be held at once.'));
+      card.append(el('p', 'The tray is local to this machine and holds up to three places.', 'field-note'));
+      return;
+    }
+    async function paint() {
+      WG.clear(grid);
+      for (let index = 0; index < places.length; index += 1) {
+        const place = places[index];
+        const column = el('section', undefined, 'compare-column');
+        const head = el('div', undefined, 'compare-head');
+        head.append(el('h3', place.label || 'place not stated', 'compare-place'));
+        head.append(el('p', 'lat ' + place.latitude + ' \u00b7 lon ' + place.longitude, 'compare-coords'));
+        const drop = el('button', 'Stop comparing', 'ghost');
+        drop.type = 'button';
+        drop.setAttribute('aria-label', 'Remove ' + (place.label || 'this place') + ' from the compare tray');
+        drop.addEventListener('click', () => {
+          if (typeof WGref.removeFromCompare === 'function') WGref.removeFromCompare(place);
+          if (WGref.panels.compare) WGref.panels.compare(host, WGref);
+        });
+        head.append(drop);
+        column.append(head);
+        grid.append(column);
+        column.append(WG.loading('Reading ' + (place.label || 'this place') + '\u2026'));
+        try {
+          const view = await WGref.api('/api/now', { lat: place.latitude, lon: place.longitude });
+          const reading = view.data || {};
+          WG.clear(column);
+          column.append(head);
+          const lanes = nowLanes(reading);
+          if (typeof viz !== 'undefined' && viz.nowBand && lanes.length) {
+            column.append(viz.nowBand({
+              title: place.label || 'this place',
+              read_at: reading.generated_at_utc || view.generated_at_utc,
+              note: 'The same three lanes as Today, for this place alone.',
+              lanes: lanes
+            }));
+          } else {
+            column.append(WG.stateBlock('plain', 'This place returned no lane with a timestamp.',
+              'That is an absence of a readable reading here, not a statement about the weather.'));
+          }
+          const hours = ((reading.next_hours || {}).rows) || [];
+          if (hours.length) {
+            column.append(el('p', 'Model hours next (' + String((reading.next_hours || {}).source_id || 'source not stated') + ')', 'field-label'));
+            column.append(WG.table(['Hour', 'Temperature', 'Rain chance'], hours.map(row => [row.at,
+              row.temperature_2m === undefined ? 'not returned' : row.temperature_2m + ' \u00b0C',
+              row.precipitation_probability === undefined ? 'not returned' : row.precipitation_probability + ' %']), { cls: 'compact' }));
+          }
+          column.append(WG.sourceDisclosure(view));
+        } catch (error) {
+          WG.clear(column);
+          column.append(head);
+          column.append(WG.stateBlock('error', 'This place could not be read.', error.message));
+        }
+      }
+    }
+    await paint();
+    card.append(el('p', 'Every column keeps its own retrieval instant. A reading for one place says nothing about another, and this page never subtracts them.', 'field-note'));
   };
   WG.panels.settings = async function (host, WGref) {
     const view = await WGref.api('/api/settings/capabilities');

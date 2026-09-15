@@ -73,6 +73,9 @@ a printed issue date — never from decoration.
 | `ruler-readout` | The validity ruler is inspectable: every covered span and every gap is focusable and says what it is, including that a gap is never interpolated. |
 | `now-band` | Three products on one axis. An instant is a tick, a window is a span, a published colour is the colour the source printed, and the read-at marker is the payload own instant. |
 | `pinned-place` | A local shortlist of places. A pin is refused unless it carries a label and two real coordinates; the topbar chip switches the working place without re-resolving it. |
+| `skeleton` | A loading state reserves the shape of the answer — bars and a chart frame — and carries no number, because it has no source. |
+| `receipt-actions` | The receipt copies itself as text and prints; a refused clipboard says so rather than claiming success. |
+| `compare-column` | One place per column, each with its own timestamps and sources. No difference, ranking or average is computed between columns. |
 
 ## Chart language (`viz.js`)
 

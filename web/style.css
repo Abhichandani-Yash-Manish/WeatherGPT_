@@ -892,3 +892,33 @@ body { display: flex; flex-direction: column; min-height: 100vh; min-height: 100
 .pinned-place { font: 500 var(--step--1)/1 var(--sans); padding: 4px 8px; border-radius: var(--r-pill); border: 1px dashed var(--line-strong); background: transparent; color: var(--mute); cursor: pointer; }
 .pinned-place:hover, .pinned-place.is-active { border-style: solid; border-color: var(--data); color: var(--data); }
 .pinned-place:focus-visible { outline: 2px solid var(--data); outline-offset: 2px; }
+
+/* 16 — skeletons: the shape of the answer, never a value ------------------- */
+.skeleton { display: flex; flex-direction: column; gap: 6px; margin-top: var(--space-2); }
+.skeleton-bar { height: 9px; border-radius: 4px; background: var(--sunk); }
+.skeleton-bar.is-wide { width: 82%; }
+.skeleton-bar.is-narrow { width: 46%; }
+.skeleton-frame { height: 92px; border-radius: var(--r-card); background: var(--sunk); border: 1px dashed var(--line); }
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes skeleton-breathe { from { opacity: .55; } to { opacity: 1; } }
+  .state-loading .skeleton-bar, .state-loading .skeleton-frame { animation: skeleton-breathe var(--motion-slower) var(--ease-in-out) infinite alternate; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .state-loading { animation: none; }
+}
+
+/* 17 — the compare tray ----------------------------------------------------- */
+.compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-4); margin-top: var(--space-3); }
+.compare-column { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-3); background: var(--raiser); border: var(--hairline); border-radius: var(--r-card); box-shadow: var(--lift-1); }
+.compare-head { display: grid; grid-template-columns: 1fr auto; gap: 2px var(--space-2); align-items: baseline; }
+.compare-place { margin: 0; font: 600 var(--step-1)/1.25 var(--sans); letter-spacing: var(--track-tight); }
+.compare-coords { margin: 0; grid-column: 1; font: 500 10px/1.4 var(--mono); color: var(--mute); font-variant-numeric: tabular-nums; }
+.compare-head .ghost { grid-row: 1 / span 2; grid-column: 2; align-self: center; }
+.compare-column .viz { margin: var(--space-1) 0; padding: var(--space-2); }
+.compare-column .data-table.compact th, .compare-column .data-table.compact td { padding: 3px 6px 3px 0; font-size: var(--step--1); }
+
+/* 18 — the receipt artifact ------------------------------------------------ */
+.receipt-actions { display: flex; gap: var(--space-2); margin-top: var(--space-3); }
+.receipt-actions .ghost { color: var(--housing-ink); border-color: var(--housing-line); background: transparent; }
+.receipt-actions .ghost:hover { border-color: var(--sand); color: var(--sand); }
+.copy-helper { position: fixed; top: -1000px; left: 0; opacity: 0; }

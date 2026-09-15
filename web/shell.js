@@ -14,7 +14,7 @@ const WG = window.WG;
 
 (function () {
   const TOKEN = (document.querySelector('meta[name="workspace-token"]') || {}).content || '';
-  const VIEWS = ['workspace', 'overview', 'warnings', 'map', 'observations', 'forecast', 'changes', 'climate', 'advisories', 'air-quality', 'aviation', 'ensemble', 'marine', 'assistant', 'documents', 'briefcase', 'settings'];
+  const VIEWS = ['workspace', 'overview', 'warnings', 'map', 'observations', 'forecast', 'changes', 'climate', 'advisories', 'air-quality', 'aviation', 'ensemble', 'compare', 'marine', 'assistant', 'documents', 'briefcase', 'settings'];
   /* The keyboard hints the rail prints are the contract: Alt+1…9 must open the surface the
      hint is written on, not whatever happens to sit at that index in VIEWS. Measured
      15 September 2026: the two disagreed from Alt+5 onward, so the hints lied. */
@@ -24,10 +24,11 @@ const WG = window.WG;
                         changes: 'What changed', observations: 'Observations', advisories: 'Farm advisories',
                         climate: 'Climate records', marine: 'Sea and rivers', aviation: 'Aviation', briefcase: 'Briefcase',
                         documents: 'Published documents', 'air-quality': 'Air quality', ensemble: 'Ensemble spread',
+                        compare: 'Compare places',
                         settings: 'Sources and settings' };
   const VIEW_GLYPHS = { workspace: '◒', assistant: '✦', overview: '◎', warnings: '▲', map: '◈', forecast: '〜', changes: '∆',
                         observations: '⌖', advisories: '☘', climate: '◔', marine: '≈', aviation: '✈', briefcase: '❑',
-                        documents: '❒', 'air-quality': '❋', ensemble: '⁂',
+                        documents: '❒', 'air-quality': '❋', ensemble: '⁂', compare: '⇄',
                         settings: '⚙' };
   const DEFAULT_PLACE = { label: 'Ahmedabad, Gujarat', latitude: 23.02579, longitude: 72.58727 };
 
@@ -119,6 +120,18 @@ const WG = window.WG;
     const box = el('div', undefined, 'state state-' + kind);
     box.append(el('p', message, 'state-message'));
     if (detail) box.append(el('p', detail, 'state-detail'));
+    if (kind === 'loading') {
+      // A skeleton shows the shape of what is coming without inventing a value: bars stand for
+      // lines and a frame stands for a chart. It carries no numbers and is hidden from assistive
+      // technology, because the message is the thing worth announcing.
+      const skeleton = el('div', undefined, 'skeleton');
+      skeleton.setAttribute('aria-hidden', 'true');
+      box.append(skeleton);
+      skeleton.append(el('span', undefined, 'skeleton-bar is-wide'));
+      skeleton.append(el('span', undefined, 'skeleton-bar'));
+      skeleton.append(el('span', undefined, 'skeleton-bar is-narrow'));
+      skeleton.append(el('span', undefined, 'skeleton-frame'));
+    }
     return box;
   }
   function loading(message) { return stateBlock('loading', message || 'Reading the sources…'); }
@@ -359,6 +372,48 @@ const WG = window.WG;
       chip.addEventListener('click', () => setPlace(place));
       host.append(chip);
     });
+  }
+  /* ---------- compare tray -------------------------------------------------- */
+  /* A short local list of places to read side by side. Nothing here ranks, averages or differences
+     places: each column is the reading that place returned, with its own timestamps and sources. */
+  const COMPARE_KEY = 'weathergpt.compare';
+  const COMPARE_LIMIT = 3;
+  function comparePlaces() {
+    try {
+      const raw = window.localStorage.getItem(COMPARE_KEY);
+      const list = raw ? JSON.parse(raw) : [];
+      return Array.isArray(list) ? list.filter(routable).slice(0, COMPARE_LIMIT) : [];
+    } catch (error) {
+      return [];
+    }
+  }
+  function saveCompare(list) {
+    try { window.localStorage.setItem(COMPARE_KEY, JSON.stringify(list.slice(0, COMPARE_LIMIT))); } catch (error) { /* private mode: the tray lasts the session */ }
+    paintCompare();
+  }
+  function addToCompare(place) {
+    const target = place || WG.state.place;
+    if (!routable(target)) return comparePlaces();
+    const list = comparePlaces().filter(item => item.label !== target.label);
+    list.push({ label: target.label, latitude: target.latitude, longitude: target.longitude });
+    saveCompare(list);
+    return comparePlaces();
+  }
+  function removeFromCompare(place) {
+    const target = place || WG.state.place;
+    if (!target || !target.label) return comparePlaces();
+    saveCompare(comparePlaces().filter(item => item.label !== target.label));
+    return comparePlaces();
+  }
+  function clearCompare() { saveCompare([]); return comparePlaces(); }
+  function paintCompare() {
+    const chip = document.getElementById('compare-count');
+    if (!chip) return;
+    const count = comparePlaces().length;
+    chip.textContent = count ? 'Compare (' + count + ')' : 'Compare';
+    chip.setAttribute('aria-label', count
+      ? 'Compare ' + count + ' place' + (count === 1 ? '' : 's') + ' side by side'
+      : 'Compare tray is empty: add a place from the command palette');
   }
   /* ---------- place search ---------- */
   function wirePlaceSearch() {
@@ -1055,6 +1110,14 @@ const WG = window.WG;
                   run: () => { if (isPinned()) unpinPlace(); else pinPlace(); } });
       pinnedPlaces().forEach(place => list.push({ group: 'Pinned places', glyph: '★', label: place.label,
                                                   note: 'switch the working place', run: () => setPlace(place) }));
+      const compared = comparePlaces();
+      const inTray = compared.some(item => WG.state.place && item.label === WG.state.place.label);
+      list.push({ group: 'Actions', glyph: '⇄', label: inTray ? 'Remove this place from compare' : 'Add this place to compare',
+                  note: compared.length + ' of 3 in the tray', run: () => { if (inTray) removeFromCompare(); else addToCompare(); } });
+      if (compared.length) {
+        list.push({ group: 'Actions', glyph: '⇄', label: 'Open the compare tray', note: 'side by side, never ranked', run: () => { window.location.hash = '#/compare'; } });
+        list.push({ group: 'Actions', glyph: '⇄', label: 'Clear the compare tray', note: compared.length + ' place(s)', run: () => { clearCompare(); } });
+      }
       return list;
     }
     function filtered(query) {
@@ -1166,6 +1229,9 @@ const WG = window.WG;
       });
     }
     paintPinned();
+    paintCompare();
+    const compareChip = document.getElementById('compare-count');
+    if (compareChip) compareChip.addEventListener('click', () => { window.location.hash = '#/compare'; });
     const close = document.getElementById('drawer-close');
     if (close) close.addEventListener('click', closeDrawer);
     document.addEventListener('keydown', event => { if (event.key === 'Escape') { closeDrawer(); } });
@@ -1223,6 +1289,10 @@ const WG = window.WG;
   WG.colourChip = colourChip;
   WG.openDrawer = openDrawer;
   WG.pinnedPlaces = pinnedPlaces;
+  WG.comparePlaces = comparePlaces;
+  WG.addToCompare = addToCompare;
+  WG.removeFromCompare = removeFromCompare;
+  WG.clearCompare = clearCompare;
   WG.pinPlace = pinPlace;
   WG.unpinPlace = unpinPlace;
   WG.isPinned = isPinned;

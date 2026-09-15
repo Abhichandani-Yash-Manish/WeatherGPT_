@@ -1,7 +1,7 @@
 {
  "schema_version": "hardening-progress-v1",
  "review": "research/reviews/national-readiness-20260912/review.md",
- "updated_at_utc": "2026-09-15T17:31:55+00:00",
+ "updated_at_utc": "2026-09-15T17:39:11+00:00",
  "operational_ready": false,
  "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
  "findings": [
@@ -2321,6 +2321,27 @@
   "verification_steps": 27,
   "verification_failed": 0,
   "live_loopback_check": "research/reviews/frontend-overhaul-20260915/live-http-checks-p3.json",
+  "browser_rendering_verified": false,
+  "browser_rendering_blocker": "the agent-browser CLI could not launch Chrome inside this session sandbox",
+  "hosting_performed": false,
+  "same_host_only": true
+ },
+ "frontend_overhaul_batch_four": {
+  "report": "docs/78-frontend-overhaul-plan.md",
+  "design_system": "DESIGN.md",
+  "evidence_directory": "research/reviews/frontend-overhaul-20260915",
+  "phase": "P4 craft, first slice, and the compare tray",
+  "delivered": [
+   "loading states render skeletons that reserve the shape of the answer and carry no digits (pinned by a component check)",
+   "the evidence receipt offers Copy this receipt and Print, and reports a refused clipboard honestly",
+   "the compare tray reads two or three places side by side through /api/now, states that it computes no difference, and refuses a place without coordinates"
+  ],
+  "live_loopback_check": "research/reviews/frontend-overhaul-20260915/live-http-checks-p4.json",
+  "live_compare_evidence": "Ahmedabad returned a yellow published day and Patna an orange one, six model hours each, read at different instants",
+  "python_tests_passed": 1139,
+  "javascript_suites": 10,
+  "verification_steps": 27,
+  "verification_failed": 0,
   "browser_rendering_verified": false,
   "browser_rendering_blocker": "the agent-browser CLI could not launch Chrome inside this session sandbox",
   "hosting_performed": false,

@@ -1,0 +1,72 @@
+{
+  "schema_version": "frontend-overhaul-live-http-v1",
+  "batch": "P4 craft: loading skeletons, the receipt artifact, and the compare tray",
+  "checked_at_utc": "2026-09-15T17:38:54+00:00",
+  "base": "http://127.0.0.1:8795",
+  "method": "Loopback HTTP against a fresh workspace process: the served shell, renderer and engine, plus the reading the compare tray fetches for two places. No DOM rendering: the session sandbox cannot launch Chrome.",
+  "checks": [
+    {
+      "check": "page carries the compare chip and the compare surface",
+      "status": 200,
+      "ms": 4,
+      "compare_chip": true,
+      "compare_nav": true
+    },
+    {
+      "check": "shell carries the tray and the skeleton",
+      "path": "/shell.js",
+      "status": 200,
+      "ms": 0,
+      "bytes": 69862,
+      "missing": []
+    },
+    {
+      "check": "the compare surface is served",
+      "path": "/panels.js",
+      "status": 200,
+      "ms": 0,
+      "bytes": 112986,
+      "missing": []
+    },
+    {
+      "check": "the receipt artifact is served",
+      "path": "/views.js",
+      "status": 200,
+      "ms": 0,
+      "bytes": 80353,
+      "missing": []
+    },
+    {
+      "check": "the craft styles are served",
+      "path": "/style.css",
+      "status": 200,
+      "ms": 0,
+      "bytes": 70706,
+      "missing": []
+    },
+    {
+      "check": "compare column reading for Ahmedabad, Gujarat",
+      "path": "/api/now",
+      "status": 200,
+      "ms": 1193,
+      "observed": true,
+      "published": true,
+      "colour": "yellow",
+      "model_hours": 6,
+      "district": "AHMADABAD",
+      "read_at": "2026-09-15T17:38:54.173918+00:00"
+    },
+    {
+      "check": "compare column reading for Patna, Bihar",
+      "path": "/api/now",
+      "status": 200,
+      "ms": 2179,
+      "observed": true,
+      "published": true,
+      "colour": "orange",
+      "model_hours": 6,
+      "district": "PATNA",
+      "read_at": "2026-09-15T17:38:55.366938+00:00"
+    }
+  ]
+}

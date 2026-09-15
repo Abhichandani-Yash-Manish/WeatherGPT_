@@ -1,6 +1,6 @@
 {
   "schema_version": "product-progress-plan-v1",
-  "as_of_utc": "2026-09-15T17:31:55+00:00",
+  "as_of_utc": "2026-09-15T17:39:11+00:00",
   "status": "implementation_in_progress",
   "user_direction": "Desktop web now. Hosting/sharing on hold. Preserve final nationwide and specialist scope.",
   "next_batch": [
@@ -261,7 +261,7 @@
       "status": "partial",
       "evidence": "docs/18-bulletin-retrieval-and-warning-lifecycle.md",
       "latest_evidence": "docs/72-integrated-status-and-ps-review.md",
-      "current_evidence": "The desktop workspace exposes fifteen guided tools and every declared read-model path has a direct surface. The Today surface opens with a Now band that places the observed instant, the published district window and the model hours on one axis, and the shell keeps a local shortlist of pinned places reachable from the command palette and the topbar. The frontend overhaul is under way: a token layer (tokens.css), a chart engine v2 (viz.js) and its first two signature visuals — the ensemble member plume and the multi-parameter meteogram — are wired into the Ensemble and Forecast surfaces, with motion primitives and a focus ring. The language ledger has 19 verified write gates and 10 speak/hear gates; voice controls and audio probes exist. Native-speaker, noisy-input, screen-reader and real mobile acceptance remain open."
+      "current_evidence": "The desktop workspace exposes fifteen guided tools and every declared read-model path has a direct surface. The Today surface opens with a Now band that places the observed instant, the published district window and the model hours on one axis, and the shell keeps a local shortlist of pinned places reachable from the command palette and the topbar. The frontend overhaul is under way: a token layer (tokens.css), a chart engine v2 (viz.js) and its first two signature visuals — the ensemble member plume and the multi-parameter meteogram — are wired into the Ensemble and Forecast surfaces, with motion primitives and a focus ring. The language ledger has 19 verified write gates and 10 speak/hear gates; voice controls and audio probes exist. Native-speaker, noisy-input, screen-reader and real mobile acceptance remain open. Loading states now reserve the shape of the answer without carrying a number, the evidence receipt can be copied or printed, and a local compare tray reads up to three places side by side without differencing them."
     },
     "P14": {
       "status": "partial",

@@ -75,6 +75,14 @@ console.log('PASS: no window is drawn where the evidence has no interval');
 
 // 4. the receipt keeps entity, window, source, locators and retrieval time together
 const receipt = withClass(card, 'receipt')[0];
+const receiptActions = withClass(receipt, 'receipt-actions')[0];
+assert(receiptActions, 'the receipt carries its own actions');
+const copyButton = receiptActions.children.filter(node => node.textContent === 'Copy this receipt')[0];
+assert(copyButton, 'the receipt offers copying it as text');
+assert(receiptActions.children.some(node => node.textContent === 'Print'), 'the receipt offers printing the answer');
+copyButton.events.click[0]();
+assert(/Copied|Copy unavailable here/.test(copyButton.textContent),
+  'a clipboard the browser refuses says so instead of claiming a success: ' + copyButton.textContent);
 const keys = withClass(receipt, 'receipt-key').map(node => node.textContent);
 ['Measure', 'Value', 'Place', 'Entity', 'Window', 'Source', 'Retrieved'].forEach(key => {
   assert(keys.indexOf(key) >= 0, 'The receipt states ' + key);

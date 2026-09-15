@@ -225,7 +225,7 @@ function settle(ms) { return new Promise(resolve => setTimeout(resolve, ms === u
 async function run() {
   const h = harness();
   const WG = h.api();
-  const expected = ['overview', 'warnings', 'map', 'observations', 'forecast', 'changes', 'climate', 'advisories', 'air-quality', 'aviation', 'ensemble', 'marine', 'documents', 'settings', 'assistant'];
+  const expected = ['overview', 'warnings', 'map', 'observations', 'forecast', 'changes', 'climate', 'advisories', 'air-quality', 'aviation', 'ensemble', 'compare', 'marine', 'documents', 'settings', 'assistant'];
   expected.forEach(name => assert.equal(typeof WG.panels[name], 'function', name + ' panel is registered'));
   assert.equal(typeof WG.map.render, 'function', 'the map renderer is registered');
   console.log('PASS: every surface has a renderer, including the map (component only)');
@@ -487,6 +487,31 @@ async function run() {
   assert(!memory.pinnedPlaces().some(item => item.label === 'Nowhere'),
     'a place without coordinates is refused, so a pin can never invent a location');
   console.log('PASS: pinned places are remembered locally and a pin without coordinates is refused');
+
+  const loadingNode = h.api().loading('Reading the sources…');
+  assert.equal(withClass(loadingNode, 'skeleton-bar').length, 3, 'a loading state shows the shape of the answer that is coming');
+  assert(withClass(loadingNode, 'skeleton-frame').length === 1, 'a loading state reserves the chart frame before it arrives');
+  assert(!/[0-9]/.test(textOf(loadingNode)), 'a skeleton carries no number, because it has no source');
+  console.log('PASS: loading states reserve the shape of the answer without inventing a value');
+
+  const tray = h.api();
+  tray.addToCompare({ label: 'Ahmedabad, Gujarat', latitude: 23.02579, longitude: 72.58727 });
+  tray.addToCompare({ label: 'Patna, Bihar', latitude: 25.5941, longitude: 85.1376 });
+  assert.equal(tray.comparePlaces().length, 2, 'the compare tray holds the places added to it');
+  tray.addToCompare({ label: 'Nowhere', latitude: null, longitude: null });
+  assert(!tray.comparePlaces().some(item => item.label === 'Nowhere'), 'a place without coordinates cannot enter the tray');
+
+  const compare = await render('compare');
+  assert.equal(withClass(compare, 'compare-column').length, 2, 'one column is drawn per place in the tray');
+  assert(walk(compare).some(node => textOf(node) === 'Ahmedabad, Gujarat'), 'a column names its own place');
+  assert.equal(withClass(compare, 'viz-now').length, 2, 'each column draws the reading that place returned');
+  assert(/never subtracts them/.test(textOf(compare)), 'the surface states that it computes no difference between places');
+  console.log('PASS: the compare tray reads two places side by side and refuses to difference them');
+
+  tray.clearCompare();
+  const emptyCompare = await render('compare');
+  assert(/compare tray is empty/i.test(textOf(emptyCompare)), 'an empty tray says so instead of drawing nothing');
+  console.log('PASS: an empty compare tray states its own emptiness');
 
   const untokened = h.calls.filter(call => call.headers['X-WeatherGPT-Token'] !== TOKEN);
   assert.equal(untokened.length, 0, 'every request carries the workspace token, missing on: ' + JSON.stringify(untokened.map(call => call.path)));

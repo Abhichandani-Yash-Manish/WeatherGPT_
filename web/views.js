@@ -233,6 +233,35 @@ function renderRuler(packet) {
 }
 
 /* ---------- the evidence receipt ---------- */
+/* Copying a receipt is copying what it shows, in the order it shows it. If the browser refuses the
+   clipboard, the button says so rather than reporting a success that did not happen. */
+function copyText(text, button) {
+  const done = label => {
+    if (!button) return;
+    const original = button.textContent;
+    button.textContent = label;
+    if (window.setTimeout) window.setTimeout(() => { button.textContent = original; }, 1800);
+  };
+  const fallback = () => {
+    try {
+      const helperNode = document.createElement('textarea');
+      helperNode.className = 'copy-helper';
+      helperNode.value = text;
+      document.body.append(helperNode);
+      helperNode.select();
+      const copied = document.execCommand && document.execCommand('copy');
+      helperNode.remove();
+      done(copied ? 'Copied' : 'Copy unavailable here');
+    } catch (error) {
+      done('Copy unavailable here');
+    }
+  };
+  if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => done('Copied'), fallback);
+    return;
+  }
+  fallback();
+}
 function receiptRow(list, key, value) {
   if (value === null || value === undefined || value === '') return;
   const row = el('div', undefined, 'receipt-row');
@@ -290,6 +319,24 @@ function renderReceipt(packet, fact) {
   chain.append(el('span', ' → ', 'receipt-key'));
   chain.append(el('span', 'claim ' + (fact.id || 'unidentified'), 'data'));
   box.append(chain);
+  const actions = el('div', undefined, 'receipt-actions');
+  const copy = el('button', 'Copy this receipt', 'ghost');
+  copy.type = 'button';
+  copy.setAttribute('aria-label', 'Copy the evidence receipt as text');
+  copy.addEventListener('click', () => {
+    const lines = (rows.children || []).map(row => {
+      const key = row.children && row.children[0] ? row.children[0].textContent : '';
+      const value = row.children && row.children[1] ? row.children[1].textContent : '';
+      return key + ': ' + value;
+    });
+    copyText('WeatherGPT evidence receipt' + String.fromCharCode(10) + lines.join(String.fromCharCode(10)), copy);
+  });
+  const print = el('button', 'Print', 'ghost');
+  print.type = 'button';
+  print.setAttribute('aria-label', 'Print this answer');
+  print.addEventListener('click', () => { if (window.print) window.print(); });
+  actions.append(copy, print);
+  box.append(actions);
   const distances = findDeep(packet, 'grid_distance_km');
   const note = el('p', undefined, 'receipt-note');
   note.append(el('span', 'A receipt for the moment it was retrieved, not a standing fact. ' + (distances.length ? 'The answering cell is ' + distances[0] + ' km from the requested point. ' : '') + 'Model output is not an observation and not a district average.'));

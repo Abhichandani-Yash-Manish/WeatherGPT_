@@ -188,5 +188,20 @@ Live record: `research/reviews/frontend-overhaul-20260915/live-http-checks-p3.js
  pinned strip, the shell carries place memory with its routable guard, the engine carries the band, and
  `/api/now` returns all three lanes (observed station, published yellow day, six model hours).
 
-**Next (not started).** A compare tray and map exploration; the rest of the command-centre shell
-craft polish (loading skeletons, the receipt artifact); and browser-level acceptance, which this sandbox still cannot run.
+**P4 — craft, first slice.** Skeletons, the receipt artifact and the compare tray:
+
+- **Loading states reserve the shape of the answer.** Every `WG.loading()` now renders skeleton bars and a chart
+  frame beside its message. The skeleton carries no digits at all — a component check fails if one appears —
+  because a number without a source is exactly what this product refuses to show.
+- **The evidence receipt is an artifact you can take with you.** Each receipt now offers *Copy this receipt*
+  (the rows in the order they are shown) and *Print*, and the copy action reports *Copy unavailable here* when the
+  browser refuses the clipboard instead of claiming a success that did not happen.
+- **The compare tray** reads two or three places side by side. Each column is the reading that place returned —
+  its own Now band, its own model hours, its own retrieval instant and sources — and the surface states that it
+  computes no difference, ranking or average. A place without coordinates cannot enter the tray. Live: Ahmedabad
+  and Patna returned a yellow and an orange published day respectively, six model hours each, and the page keeps
+  them apart rather than subtracting one from the other.
+
+Live record: `research/reviews/frontend-overhaul-20260915/live-http-checks-p4.json`.
+**Next (not started).** Map exploration (hover readouts, click-to-pin, layer legend) and the unified timeline;
+the remaining craft polish (view transitions on every surface, print parity for the new visuals); and browser-level acceptance, which this sandbox still cannot run.
