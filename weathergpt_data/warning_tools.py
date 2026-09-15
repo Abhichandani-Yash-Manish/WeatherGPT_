@@ -91,7 +91,7 @@ def _cap_assessment(foundation):
 
 
 def execute_warning(engine, result, plan, task, resolved=None, coordinates=None):
-    chosen, ambiguous, unresolved, outside, stale = [], None, [], [], []
+    chosen, ambiguous, unresolved, outside, stale, sea_areas = [], None, [], [], [], []
     records, snapshot_meta = [], None
     try:
         with evidence_store(engine.workspace, 'imd_cap',
@@ -107,6 +107,12 @@ def execute_warning(engine, result, plan, task, resolved=None, coordinates=None)
                 point, label = _point_for(place, resolved, coordinates)
                 if point:
                     chosen.append({'place': label, 'point': point})
+                    continue
+                if place.get('kind') == 'sea_area':
+                    # A coast is not a settlement: it has no district guidance and no single
+                    # point. Measured on 15 September 2026, 'the Kerala coast' searched for a village
+                    # and offered places called Kerla in Rajasthan.
+                    sea_areas.append(place.get('name') or 'that coast')
                     continue
                 match, seen, candidates = _gazetteer_ladder(engine, place)
                 result['trace']['tools'].append({'name': 'gazetteer_search', 'query': place, 'matches': seen})
@@ -134,6 +140,18 @@ def execute_warning(engine, result, plan, task, resolved=None, coordinates=None)
                              '. This is an evidence gap, not an all-clear.')
         return result
 
+    if sea_areas and not chosen:
+        result.update(status='needs_clarification',
+                      answer=('A coast or a sea area is not a district, so the official district warning '
+                              'product has nothing to match for '+', '.join(sea_areas)+'. Name a district or a port '
+                              'on that coast (for example Kochi) and I will read the published guidance for it. '
+                              'The sea-area and coastal bulletins are registered but not connected to this '
+                              'conversation.'),
+                      follow_up='A district or a port on that coast')
+        return result
+    if sea_areas:
+        result['notes'].append('A sea area was named ('+', '.join(sea_areas)+') and is not a district: no '
+                               'district guidance was read for it.')
     if ambiguous:
         result.update(status='needs_selection', choices=ambiguous,
                       answer='More than one place matches this warning question. Confirm the intended place first, so '

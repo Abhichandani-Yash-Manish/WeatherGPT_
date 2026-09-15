@@ -128,18 +128,35 @@ class Gazetteer:
                     if score>=0.78:ranked.append((score,r))
                 ranked.sort(key=lambda item:-item[0]);rows=[r for _,r in ranked];approximate=True
             meta=json.loads(con.execute('SELECT payload FROM metadata').fetchone()[0])
+            state_names=sorted({row[0] for row in con.execute('SELECT DISTINCT admin1 FROM places') if row[0]})
         finally:con.close()
         def same(a,b):
             a=norm(a).replace(' district','').removeprefix('district ');b=norm(b).replace(' district','').removeprefix('district ')
             return a==b or a=='state of '+b or b=='state of '+a
-        if state:rows=[r for r in rows if same(r['admin1'],state)]
+        state_basis=''
+        if state:
+            wanted_state=state
+            if rows and not any(same(r['admin1'],state) for r in rows):
+                # A misspelt state name emptied a candidate list the place itself matched:
+                # measured on 15 September 2026, "Ahmedbad, Gujrat" was refused although the
+                # city matched. The state is resolved against the indexed names, bounded and
+                # disclosed, and it is never guessed into a different state.
+                import difflib
+                def bare(value):return norm(value).removeprefix('state of ').strip()
+                scored=sorted(((difflib.SequenceMatcher(None,bare(candidate),bare(state)).ratio(),candidate)
+                               for candidate in state_names),reverse=True)
+                if scored and scored[0][0]>=0.85 and (len(scored)==1 or scored[1][0]<scored[0][0]-0.05):
+                    wanted_state=scored[0][1]
+                    state_basis=('the state was read as '+str(scored[0][1])+' in the indexed catalogue, the closest name to '+str(state))
+            rows=[r for r in rows if same(r['admin1'],wanted_state)]
         if district:rows=[r for r in rows if same(r['admin2'],district)]
         rows=list({r['id']:r for r in rows}.values())
         canonical=[r for r in rows if norm(r['name'])==norm(name)]
         alias_alternatives=len(rows)-len(canonical) if canonical else 0
         if canonical and not approximate:rows=canonical
         if approximate:rows=rows[:20]
-        return [{**r,'name_match_basis':'canonical' if norm(r['name'])==norm(name) else 'alias_or_approximate','other_alias_matches':alias_alternatives,'match_type':'approximate_name_requires_confirmation' if approximate else 'source_name_or_alias','selection_id':'geonames:'+r['id'],'label':r['name']+', '+r['admin2']+', '+r['admin1'],
+        return [{**r,'name_match_basis':'canonical' if norm(r['name'])==norm(name) else 'alias_or_approximate',
+                 'state_match_basis':state_basis,'other_alias_matches':alias_alternatives,'match_type':'approximate_name_requires_confirmation' if approximate else 'source_name_or_alias','selection_id':'geonames:'+r['id'],'label':r['name']+', '+r['admin2']+', '+r['admin1'],
                  'coordinates':{'latitude':r['latitude'],'longitude':r['longitude']},'source_id':'S61',
                  'citation':{'source_id':'S61','url':'https://www.geonames.org/'+r['id'],'provider':'GeoNames','product':'India place catalogue','sha256':meta['archive_sha256'],'retrieved_at_utc':meta['retrieved_at_utc']},
                  'administrative_mapping':meta['administrative_mapping']} for r in rows]

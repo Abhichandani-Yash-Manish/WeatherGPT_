@@ -458,9 +458,17 @@ class ConversationEngine:
             if not places:result.update(answer='Which village, town or city should I check? Add its state if the name is shared.',follow_up='Place name and state, or an explicit pin');return None
             points=[]
             result['resolved_points']=resolved
+            sea_areas=[]
             for p in places:
                 if p['kind'] in {'district','state','country','relative'}:
                     result.update(answer='Which village or town '+('near '+p['name'] if p['kind']=='relative' else 'within '+p['name'])+' should I check? I can retrieve model data for a precise place; I cannot yet give a verified map of weather across that whole area.',follow_up='Name a village/town and state, or supply a pin.');return None
+                if p['kind']=='sea_area':
+                    # A coast is not a settlement: measured on 15 September 2026, "the Kerala
+                    # coast" offered twenty villages called Kerla in Rajasthan instead of asking for
+                    # a point on the coast. A sea area is skipped rather than searched, so another
+                    # place in the same question (the port in "waves off Kochi") can still resolve.
+                    sea_areas.append(p)
+                    continue
                 if p['name'] in resolved:
                     points.append(resolved[p['name']]);continue
                 matches=self.gazetteer.search(p['name'],p['state'],p['district'])
@@ -468,6 +476,9 @@ class ConversationEngine:
                 if not matches:
                     result.update(status='needs_clarification',answer=f"I could not find a settlement named {p['name']}"+(f" in {p['state']}" if p['state'] else '')+'. Please give its district/state, an alternative spelling, or a pin. I will not replace it with a nearby city.',follow_up='District/state, alternative spelling, or coordinates');return None
                 for match in matches:match['for_place_name']=p['name']
+                if matches[0].get('state_match_basis'):
+                    result['notes'].append('State read as '+str(matches[0]['admin1'])+' — '+
+                                           str(matches[0]['state_match_basis'])+'.')
                 if len(matches)>1 or matches[0]['match_type']=='approximate_name_requires_confirmation':
                     chosen,why=(None,'the spelling is approximate and must be confirmed')
                     if len(matches)>1 and matches[0]['match_type']!='approximate_name_requires_confirmation':
@@ -490,6 +501,19 @@ class ConversationEngine:
                     from .gazetteer import rank_matches as rank_places_for_choices
                     result.update(status='needs_selection',answer=f"I found {len(matches)} possible places for {p['name']}. Please confirm the intended location and spelling.",choices=rank_places_for_choices(matches)[:20],follow_up='Choose a place, or add its district and state.');return None
                 points.append(matches[0]);resolved[p['name']]=matches[0]
+            if not points and sea_areas:
+                result.update(status='needs_clarification',
+                              answer=('A coast or a sea area is a long stretch, so there is no single point to '
+                                      'read a wave product for. Name a port or town on it (for example Kochi), or '
+                                      'give a pin. The official sea-area and coastal bulletins are registered but '
+                                      'not connected to this conversation, so nothing here reads them.'),
+                              follow_up='A port or town on that coast, or coordinates')
+                return None
+            if sea_areas:
+                result['notes'].append('A sea area was named ('+', '.join(area['name'] for area in sea_areas)+') '
+                                       'and is not a district: no district guidance or point forecast was read for it. The '
+                                       'official sea-area and coastal bulletins are registered but not connected to this '
+                                       'conversation.')
         return points
 
     def forecasts(self,result,plan,resolved,coordinates):

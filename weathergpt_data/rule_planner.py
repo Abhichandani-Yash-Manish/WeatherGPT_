@@ -39,7 +39,7 @@ VARIABLE_WORDS = (
     (re.compile(r'\b(humidity|humid|moisture)\b', re.I), 'relative_humidity_2m'),
     (re.compile(r'\b(wind|windy|breeze|havaman)\b', re.I), 'wind_speed_10m'),
 )
-PLACE = re.compile(r"\b(?:in|for|at|near|around|of)\s+((?:[A-Z][\w'\u2019.\-]+)(?:\s+(?:[A-Z][\w'\u2019.\-]+)){0,3})"
+PLACE = re.compile(r"\b(?:in|for|at|near|around|of|off)\s+(?:the |a |an )?((?:[A-Z][\w'\u2019.\-]+)(?:\s+(?:[A-Z][\w'\u2019.\-]+)){0,3})"
                    r"(?:\s*,\s*([A-Z][\w'\u2019.\-]+(?:\s+[A-Z][\w'\u2019.\-]+){0,2}))?")
 # A named administrative unit: "Ahmedabad district", "Gujarat state", "Kochi city".
 PLACE_UNIT = re.compile(r"\b((?:[A-Z][\w'\u2019.\-]+)(?:\s+(?:[A-Z][\w'\u2019.\-]+)){0,2})\s+"
@@ -47,6 +47,8 @@ PLACE_UNIT = re.compile(r"\b((?:[A-Z][\w'\u2019.\-]+)(?:\s+(?:[A-Z][\w'\u2019.\-
 # Hinglish marks the place after the name: "Ahmedabad me", "Surat ke liye".
 PLACE_HINGLISH = re.compile(r"\b((?:[A-Z][\w'\u2019.\-]+)(?:\s*,?\s+(?:[A-Z][\w'\u2019.\-]+)){0,2})\s+"
                             r"(?:me|mein|men|par|ka|ki|ke)\b")
+# A coast, a sea or coastal waters: a region, never a settlement to search for.
+SEA_WORDS = re.compile(r'\b(?:coast|coastal|sea|waters?|shore|offshore)\b', re.I)
 PLACE_NOISE = {'the', 'a', 'an', 'this', 'that', 'my', 'our', 'whole', 'latest', 'said'}
 # A capitalised day or part-of-day word at the start of a sentence is not part of a place name:
 # "Kal Ahmedabad me" is Ahmedabad, and "Aaj Delhi me" is Delhi.
@@ -150,6 +152,8 @@ def places_of(question):
     found = []
 
     def add(name, state='', kind='unknown'):
+        sea = SEA_WORDS.search(name or '') if name else None
+
         name = (name or '').strip(' .,')
         # "Ahmedabad, Gujarat mein" is one place with its state, not the state alone: the
         # qualifier is what disambiguates the name, so it is kept as the state rather than
@@ -159,6 +163,13 @@ def places_of(question):
             head, tail = head.strip(' .,'), tail.strip(' .,')
             if head and tail:
                 name, state = head, tail
+        if sea:
+            # A coast or a sea area is a region, not a settlement. The region word is kept
+            # as context and the place is marked so the resolver asks for a point on it.
+            stripped=' '.join(SEA_WORDS.sub(' ',name).split()).strip(' .,')
+            if stripped:
+                name=stripped
+                if kind=='unknown':kind='sea_area'
         tokens = name.split()
         while tokens and (tokens[0].lower() in PLACE_NOISE or tokens[0].lower() in PLACE_LEAD_NOISE):
             tokens = tokens[1:]
@@ -170,7 +181,11 @@ def places_of(question):
         found.append({'name': name, 'state': state, 'district': '', 'kind': kind})
 
     for match in PLACE.finditer(question):
-        add(match.group(1), (match.group(2) or '').strip(' .,'))
+        # The captured name stops at the last capitalised word, so a following region
+        # word ('the Kerala coast', 'the Arabian Sea') is read from what comes next.
+        tail=question[match.end():].lstrip(' .,')
+        add(match.group(1), (match.group(2) or '').strip(' .,'),
+            kind='sea_area' if SEA_WORDS.match(tail) else 'unknown')
         if len(found) == 2:
             return found
     for match in PLACE_UNIT.finditer(question):

@@ -90,6 +90,14 @@ def context_message(state):
 def reconcile(plan,state,question):
     """Apply only model-declared context edits, checked against retained typed tasks."""
     plan=copy.deepcopy(plan);plan['language']=language_style(question,plan['language'])
+    # A place named with a coast or sea word is a region, not a settlement. Measured on
+    # 15 September 2026: "warnings for the Kerala coast" searched for a village and offered
+    # twenty places called Kerla in Rajasthan. The place is marked so the resolver asks for a
+    # port on that coast instead of searching for a settlement with the region's name.
+    for place in plan.get('places',[]):
+        if re.search(r'\b'+re.escape(str(place.get('name') or ''))+r'\b\s+(?:coast|coastal|sea|waters?|shore|offshore)\b',question,re.I):
+            place['kind']='sea_area'
+
     action=plan.get('context_action','new');changed=set(plan.get('changed_fields',[]))
     previous=state.get('last_plan',{})
     # Literal crop/topic corrections outrank an omitted model changed_fields tag.
