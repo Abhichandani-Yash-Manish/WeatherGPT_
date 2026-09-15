@@ -1,0 +1,333 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "e2bed2ff-62ae-4be9-ac4b-5a9d183f6278",
+  "question": "What are the waves off Kochi for tomorrow?",
+  "status": "needs_selection",
+  "answer": "Which place do you mean? Kochi, Yavatmal, State of Mahārāshtra / Kochi, Bhandara, State of Mahārāshtra / Kochi, Chandrapur, State of Mahārāshtra / Kochi, Ernākulam, State of Kerala. Choose one, or type its state/district.",
+  "facts": [],
+  "citations": [],
+  "notes": [
+    "Time window read from the question: tomorrow whole day."
+  ],
+  "choices": [
+    {
+      "id": "10453626",
+      "name": "Kochi",
+      "latitude": 20.18693,
+      "longitude": 78.45592,
+      "feature": "PPL",
+      "admin1": "State of Mahārāshtra",
+      "admin2": "Yavatmal",
+      "modified": "2024-01-06",
+      "name_match_basis": "canonical",
+      "state_match_basis": "",
+      "other_alias_matches": 0,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:10453626",
+      "label": "Kochi, Yavatmal, State of Mahārāshtra",
+      "coordinates": {
+        "latitude": 20.18693,
+        "longitude": 78.45592
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/10453626",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Kochi"
+    },
+    {
+      "id": "10454487",
+      "name": "Kochi",
+      "latitude": 20.29374,
+      "longitude": 78.77265,
+      "feature": "PPL",
+      "admin1": "State of Mahārāshtra",
+      "admin2": "Yavatmal",
+      "modified": "2024-01-06",
+      "name_match_basis": "canonical",
+      "state_match_basis": "",
+      "other_alias_matches": 0,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:10454487",
+      "label": "Kochi, Yavatmal, State of Mahārāshtra",
+      "coordinates": {
+        "latitude": 20.29374,
+        "longitude": 78.77265
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/10454487",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Kochi"
+    },
+    {
+      "id": "10518944",
+      "name": "Kochi",
+      "latitude": 20.82324,
+      "longitude": 79.84512,
+      "feature": "PPL",
+      "admin1": "State of Mahārāshtra",
+      "admin2": "Bhandara",
+      "modified": "2024-01-06",
+      "name_match_basis": "canonical",
+      "state_match_basis": "",
+      "other_alias_matches": 0,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:10518944",
+      "label": "Kochi, Bhandara, State of Mahārāshtra",
+      "coordinates": {
+        "latitude": 20.82324,
+        "longitude": 79.84512
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/10518944",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Kochi"
+    },
+    {
+      "id": "10574547",
+      "name": "Kochi",
+      "latitude": 20.02872,
+      "longitude": 79.12357,
+      "feature": "PPL",
+      "admin1": "State of Mahārāshtra",
+      "admin2": "Chandrapur",
+      "modified": "2024-01-06",
+      "name_match_basis": "canonical",
+      "state_match_basis": "",
+      "other_alias_matches": 0,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:10574547",
+      "label": "Kochi, Chandrapur, State of Mahārāshtra",
+      "coordinates": {
+        "latitude": 20.02872,
+        "longitude": 79.12357
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/10574547",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Kochi"
+    },
+    {
+      "id": "1273874",
+      "name": "Kochi",
+      "latitude": 9.93988,
+      "longitude": 76.26022,
+      "feature": "PPL",
+      "admin1": "State of Kerala",
+      "admin2": "Ernākulam",
+      "modified": "2025-06-06",
+      "name_match_basis": "canonical",
+      "state_match_basis": "",
+      "other_alias_matches": 0,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:1273874",
+      "label": "Kochi, Ernākulam, State of Kerala",
+      "coordinates": {
+        "latitude": 9.93988,
+        "longitude": 76.26022
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/1273874",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Kochi"
+    }
+  ],
+  "follow_up": "Choose a place, or add its district and state.",
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-15T05:56:04.912799+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "deterministic_rules",
+      "model": "rule-planner-v1",
+      "model_calls": 0,
+      "attempts": 0,
+      "latency_ms": 0,
+      "failover": []
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "gazetteer_search",
+        "query": {
+          "name": "Kochi",
+          "state": "",
+          "district": "",
+          "kind": "unknown"
+        },
+        "matches": 5
+      },
+      {
+        "name": "marine",
+        "task_id": "t1",
+        "status": "needs_selection"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "new",
+      "changed_fields": [
+        "parameters",
+        "places",
+        "time"
+      ],
+      "inherited_fields": []
+    },
+    "duration_seconds": 0.088,
+    "language": {
+      "requested": "en",
+      "selection": "inferred_from_question",
+      "adherence": "not_applicable",
+      "rendered": false
+    }
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Kochi",
+        "state": "",
+        "district": "",
+        "kind": "unknown"
+      }
+    ],
+    "assumptions": [
+      "Time window read from the question: tomorrow whole day."
+    ],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "What are the waves off Kochi for tomorrow",
+        "kind": "marine",
+        "operation": "lookup",
+        "parameters": [
+          "wave_height"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-16T00:30:00+05:30",
+        "end_local": "2026-09-17T00:30:00+05:30",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "context_action": "new",
+    "changed_fields": [
+      "parameters",
+      "places",
+      "time"
+    ],
+    "intent": "research",
+    "start_local": "2026-09-16T00:30:00+05:30",
+    "end_local": "2026-09-17T00:30:00+05:30",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "What are the waves off Kochi for tomorrow",
+        "kind": "marine",
+        "operation": "lookup",
+        "parameters": [
+          "wave_height"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-16T00:30:00+05:30",
+        "end_local": "2026-09-17T00:30:00+05:30",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "needs_selection",
+      "answer": "I found 5 possible places for Kochi. Please confirm the intended location and spelling.",
+      "fact_ids": [],
+      "passage_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "pending_slots": [],
+  "retrieval_coverage": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "marine",
+      "parameters": [
+        "wave_height"
+      ],
+      "candidates": [
+        {
+          "tool": "marine",
+          "selected": true,
+          "available": true,
+          "reason": "Modeled waves at a sea grid cell within 50 km of a named coastal place; the official S58/S59 text is reachable only as published documents, and no named sea-area identity, printed validity window or navigation/fishing clearance is claimed",
+          "sources": [
+            {
+              "source_id": "S56",
+              "product": "Open-Meteo marine wave delivery",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "needs_selection",
+      "returned_source_ids": []
+    }
+  ],
+  "document_evidence": [],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

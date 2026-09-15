@@ -1,0 +1,225 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "ea8818ed-e056-4cc2-85ba-91ec5f3f52d3",
+  "question": "Will it rain in Ahmedbad, Gujrat tomorrow?",
+  "status": "needs_selection",
+  "answer": "Which place do you mean? Ahmedabad, Ahmadābād, State of Gujarāt. Choose one, or type its state/district.",
+  "facts": [],
+  "citations": [],
+  "notes": [
+    "Time window read from the question: tomorrow whole day.",
+    "State read as State of Gujarāt — the state was read as State of Gujarāt in the indexed catalogue, the closest name to Gujrat."
+  ],
+  "choices": [
+    {
+      "id": "1279233",
+      "name": "Ahmedabad",
+      "latitude": 23.02579,
+      "longitude": 72.58727,
+      "feature": "PPL",
+      "admin1": "State of Gujarāt",
+      "admin2": "Ahmadābād",
+      "modified": "2024-01-06",
+      "name_match_basis": "alias_or_approximate",
+      "state_match_basis": "the state was read as State of Gujarāt in the indexed catalogue, the closest name to Gujrat",
+      "other_alias_matches": 0,
+      "match_type": "approximate_name_requires_confirmation",
+      "selection_id": "geonames:1279233",
+      "label": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "coordinates": {
+        "latitude": 23.02579,
+        "longitude": 72.58727
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/1279233",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Ahmedbad"
+    }
+  ],
+  "follow_up": "Choose a place, or add its district and state.",
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-15T05:55:52.404945+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "deterministic_rules",
+      "model": "rule-planner-v1",
+      "model_calls": 0,
+      "attempts": 0,
+      "latency_ms": 0,
+      "failover": []
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "gazetteer_search",
+        "query": {
+          "name": "Ahmedbad",
+          "state": "Gujrat",
+          "district": "",
+          "kind": "unknown"
+        },
+        "matches": 1
+      },
+      {
+        "name": "forecast",
+        "task_id": "t1",
+        "status": "needs_selection"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "new",
+      "changed_fields": [
+        "parameters",
+        "places",
+        "time"
+      ],
+      "inherited_fields": []
+    },
+    "duration_seconds": 0.126,
+    "language": {
+      "requested": "en",
+      "selection": "inferred_from_question",
+      "adherence": "not_applicable",
+      "rendered": false
+    }
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Ahmedbad",
+        "state": "Gujrat",
+        "district": "",
+        "kind": "unknown"
+      }
+    ],
+    "assumptions": [
+      "Time window read from the question: tomorrow whole day."
+    ],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "Will it rain in Ahmedbad, Gujrat tomorrow",
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-16T00:30:00+05:30",
+        "end_local": "2026-09-17T00:30:00+05:30",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "context_action": "new",
+    "changed_fields": [
+      "parameters",
+      "places",
+      "time"
+    ],
+    "intent": "forecast",
+    "start_local": "2026-09-16T00:30:00+05:30",
+    "end_local": "2026-09-17T00:30:00+05:30",
+    "variables": [
+      "precipitation"
+    ],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "Will it rain in Ahmedbad, Gujrat tomorrow",
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-16T00:30:00+05:30",
+        "end_local": "2026-09-17T00:30:00+05:30",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "needs_selection",
+      "answer": "I found 1 possible places for Ahmedbad. Please confirm the intended location and spelling.",
+      "fact_ids": [],
+      "passage_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "pending_slots": [],
+  "retrieval_coverage": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "forecast",
+      "parameters": [
+        "precipitation"
+      ],
+      "candidates": [
+        {
+          "tool": "forecast_summary",
+          "selected": true,
+          "available": true,
+          "reason": "Exact-window GFS model summary",
+          "sources": [
+            {
+              "source_id": "S21",
+              "product": "Open-Meteo GFS forecast delivery",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        },
+        {
+          "tool": "hourly_forecast",
+          "selected": false,
+          "available": true,
+          "reason": "Hourly evidence; exact onset and whole-period probability unavailable",
+          "sources": [
+            {
+              "source_id": "S62",
+              "product": "Open-Meteo best-match extended hourly forecast",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "needs_selection",
+      "returned_source_ids": []
+    }
+  ],
+  "document_evidence": [],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

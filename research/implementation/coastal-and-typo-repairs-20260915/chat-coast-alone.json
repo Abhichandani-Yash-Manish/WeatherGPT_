@@ -1,0 +1,165 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "e5eaca41-7b3f-45c6-9632-f1e3f1ba235e",
+  "question": "Are there warnings for the Kerala coast?",
+  "status": "needs_clarification",
+  "answer": "A coast or a sea area is not a district, so the official district warning product has nothing to match for Kerala. Name a district or a port on that coast (for example Kochi) and I will read the published guidance for it. The sea-area and coastal bulletins are registered but not connected to this conversation.",
+  "facts": [],
+  "citations": [],
+  "notes": [],
+  "choices": [],
+  "follow_up": "A district or a port on that coast",
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-15T05:55:52.538641+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "ollama",
+      "model": "qwen3.6:latest",
+      "latency_ms": 3563,
+      "input_tokens": 3380,
+      "output_tokens": 198,
+      "failover": []
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "warning",
+        "task_id": "t1",
+        "status": "needs_clarification"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "new",
+      "changed_fields": [],
+      "inherited_fields": []
+    },
+    "duration_seconds": 4.912,
+    "language": {
+      "requested": "en",
+      "selection": "inferred_from_question",
+      "adherence": "not_applicable",
+      "rendered": false
+    }
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Kerala",
+        "state": "",
+        "district": "",
+        "kind": "sea_area"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "Are there warnings for the Kerala coast?",
+        "kind": "warning",
+        "operation": "lookup",
+        "parameters": [
+          "official_warning"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "context_action": "new",
+    "changed_fields": [],
+    "intent": "warning",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "Are there warnings for the Kerala coast?",
+        "kind": "warning",
+        "operation": "lookup",
+        "parameters": [
+          "official_warning"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "needs_clarification",
+      "answer": "A coast or a sea area is not a district, so the official district warning product has nothing to match for Kerala. Name a district or a port on that coast (for example Kochi) and I will read the published guidance for it. The sea-area and coastal bulletins are registered but not connected to this conversation.",
+      "fact_ids": [],
+      "passage_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "pending_slots": [],
+  "retrieval_coverage": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "warning",
+      "parameters": [
+        "official_warning"
+      ],
+      "candidates": [
+        {
+          "tool": "official_warning",
+          "selected": true,
+          "available": true,
+          "reason": "IMD district warning guidance resolved to the place by point-in-polygon on IMD geometry, with day windows derived from the bulletin date, plus a separate CAP relay source assessment; no all-clear and no dissemination",
+          "sources": [
+            {
+              "source_id": "S01",
+              "product": "IMD Current Weather",
+              "registry_status": "access_blocked"
+            },
+            {
+              "source_id": "S06",
+              "product": "IMD-linked CAP RSS",
+              "registry_status": "prototype_adapter_tested"
+            },
+            {
+              "source_id": "S15",
+              "product": "IMD public warning-map WFS",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "needs_clarification",
+      "returned_source_ids": []
+    }
+  ],
+  "document_evidence": [],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}
