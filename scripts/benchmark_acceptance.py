@@ -30,26 +30,58 @@ from weathergpt_data.workspace import Workspace  # noqa: E402
 REGISTRY = ROOT / 'data' / 'registry' / 'acceptance-benchmark.json'
 
 
+def consume_claim(entries, entry, expected, wrapped=False):
+    """A combined task may satisfy disjoint declared measures, each only once."""
+    request = entry.get('request', {}) if wrapped else entry
+    available = set(request.get('parameters') or [])
+    if not expected <= available:
+        return
+    remaining = available - expected if expected else set()
+    position = entries.index(entry)
+    if remaining:
+        updated = dict(request, parameters=sorted(remaining))
+        entries[position] = dict(entry, request=updated) if wrapped else updated
+    else:
+        entries.pop(position)
+
+
 def score_turn(turn, result):
     declared = turn.get('declared_tasks', [])
-    planned = [(task['kind'], task['operation']) for task in result.get('plan', {}).get('tasks', [])]
-    executed = [(record['request']['kind'], record['request']['operation'], record['status'])
-                for record in result.get('task_results', [])]
+    planned = list(result.get('plan', {}).get('tasks', []))
+    executed = list(result.get('task_results', []))
     tasks = []
     for task in declared:
         shape = (task['kind'], task['operation'])
-        matched = shape in planned
-        record = next((entry for entry in executed if (entry[0], entry[1]) == shape), None)
-        if not matched:
+        expected = set(task.get('parameters') or [])
+        def matches(request):
+            return (request.get('kind'), request.get('operation')) == shape
+        # Match each declaration once, preferring the request with its actual parameters.
+        # Two history lookups must not both borrow one successful rainfall execution.
+        candidates = [entry for entry in planned if matches(entry)]
+        plan_entry = next((entry for entry in candidates if expected <= set(entry.get('parameters') or [])),
+                          candidates[0] if candidates else None)
+        if plan_entry is not None:
+            consume_claim(planned, plan_entry, expected)
+        records = [entry for entry in executed if matches(entry.get('request') or {})]
+        record = next((entry for entry in records if expected <= set(entry.get('request', {}).get('parameters') or [])),
+                      records[0] if records else None)
+        if record is not None:
+            consume_claim(executed, record, expected, wrapped=True)
+        missing_parameters = sorted(expected - set((record or {}).get('request', {}).get('parameters') or []))
+        if plan_entry is None:
             outcome = 'missing'
         elif record is None:
             outcome = 'planned_not_executed'
-        elif record[2] in {'answered', 'explanation'}:
+        elif missing_parameters:
+            outcome = 'incomplete'
+        elif record.get('status') in {'answered', 'explanation'}:
             outcome = 'completed'
         else:
             outcome = 'incomplete'
-        tasks.append({'declared': {'kind': task['kind'], 'operation': task['operation'], 'parameters': task.get('parameters', [])},
-                      'outcome': outcome, 'executed_status': record[2] if record else None})
+        tasks.append({'declared': {'kind': task['kind'], 'operation': task['operation'],
+                                   'parameters': task.get('parameters', [])},
+                      'outcome': outcome, 'executed_status': record.get('status') if record else None,
+                      'missing_execution_parameters': missing_parameters})
     text = ' '.join([result.get('answer') or ''] + list(result.get('notes') or []))
     prohibited = [pattern for pattern in turn.get('prohibited', []) if re.search(pattern, text, re.I)]
     status = result.get('status')
@@ -84,10 +116,8 @@ def run_set(name, cases, output):
                 scored = score_turn(turn, result)
                 scored['turn'] = number
             except Exception as error:
-                scored = {'turn': number, 'question': turn['question'], 'status': 'error',
-                          'status_allowed': False, 'task_shape_matches': False, 'tasks': [],
-                          'prohibited_hits': [], 'abstained': False,
-                          'error': type(error).__name__ + ': ' + str(error)}
+                scored = score_turn(turn, {'status': 'error'})
+                scored.update(turn=number, error=type(error).__name__ + ': ' + str(error))
             scored['wall_s'] = round(time.time() - began, 2)
             turns.append(scored)
         row = {'id': case['id'], 'domain': case['domain'], 'turns': turns}
@@ -102,7 +132,7 @@ def run_set(name, cases, output):
     prohibited = [{'case': row['id'], 'turn': turn['turn'], 'patterns': turn['prohibited_hits']}
                   for row in rows for turn in row['turns'] if turn['prohibited_hits']]
     summary = {
-        'schema_version': 'acceptance-benchmark-run-v1',
+        'schema_version': 'acceptance-benchmark-run-v2',
         'set': name, 'ran_at_utc': utcnow().isoformat(),
         'cases': len(rows), 'turns': sum(len(row['turns']) for row in rows),
         'declared_tasks': len(declared),
@@ -120,7 +150,8 @@ def run_set(name, cases, output):
                          'turns': sum(len(row['turns']) for row in rows),
                          'cases': len(rows)},
         'limitations': ['Live current-clock run against local model, sources and network; not a replay.',
-                        'Ten development and four holdout cases are a starting set, not the docs/14 target of about 150.',
+                        'This selected set is small and not representative of users or the docs/14 target of about 150.',
+                        'Completion allocates declared measures once across matching task shapes and checks retained execution parameters and task status; it is not an independent evidence-correctness score.',
                         'No forecast-skill, calibration, fluency, usability or load measurement.',
                         'A prohibited-claim hit is a regex match, not a semantic review.'],
     }

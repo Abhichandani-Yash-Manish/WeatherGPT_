@@ -1,7 +1,7 @@
 {
  "schema_version": "hardening-progress-v1",
  "review": "research/reviews/national-readiness-20260912/review.md",
- "updated_at_utc": "2026-09-15T09:09:11+00:00",
+ "updated_at_utc": "2026-09-15T13:52:36.402526+00:00",
  "operational_ready": false,
  "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
  "findings": [
@@ -1975,6 +1975,144 @@
      "plain forecast"
     ],
     "evidence": "research/implementation/air-quality-20260915/live-chat.json"
+   }
+  }
+ },
+ "unified_workspace_batch": {
+  "report": "docs/71-unified-user-workspace.md",
+  "evidence_directory": "research/implementation/unified-workspace-20260915",
+  "operational_ready": false,
+  "scope": "A place-centred user workspace, 14 discoverable tools and guided question drafts, separate loading and evidence states, retained screen context, corrected named-model comparison, bounded page read waits, and saved-output continuity. No historical finding status changed.",
+  "finding_links": [
+   "P03",
+   "P08",
+   "P12",
+   "P13",
+   "P15",
+   "R02",
+   "R04",
+   "R06",
+   "R11",
+   "R12",
+   "F01",
+   "F02",
+   "F03",
+   "F05",
+   "F07",
+   "F10",
+   "A01",
+   "A03",
+   "A06",
+   "A07",
+   "A08"
+  ],
+  "measured": {
+   "python": "991 passed, 3 warnings in 31.28s",
+   "javascript_suites": 8,
+   "workspace_regression_groups": 6,
+   "axe_workspace": {
+    "inapplicable": 59,
+    "incomplete": 1,
+    "passes": 29,
+    "violations": 0
+   },
+   "axe_drawer": {
+    "inapplicable": 71,
+    "incomplete": 0,
+    "passes": 17,
+    "violations": 0
+   }
+  },
+  "limitations": [
+   "One local Chromium session; no screen-reader or native-device acceptance.",
+   "All 14 tools are discoverable; not all have new end-to-end acceptance in this batch.",
+   "Source download latency and server lock waits remain unresolved.",
+   "No scientific forecast skill, nationwide operational, fluent-language or full PS acceptance claimed.",
+   "Shared checkout changed concurrently; preserved those changes.",
+   "Axe contrast checks for clipped source-panel content remain inconclusive."
+  ]
+ },
+ "integrated_ps_review_batch": {
+  "report": "docs/72-integrated-status-and-ps-review.md",
+  "evidence_directory": "research/reviews/integration-ps-audit-20260915",
+  "operational_ready": false,
+  "scope": "Integrate upstream air quality, local workspace and corpus work; repair task accounting and combined history; compare all PS requirements with current delivered behavior.",
+  "finding_links": [
+   "P03",
+   "P06",
+   "P07",
+   "P10",
+   "P11",
+   "P12",
+   "P13",
+   "P14",
+   "P15",
+   "R02",
+   "R04",
+   "R06",
+   "R08",
+   "R11",
+   "R12",
+   "F01",
+   "F02",
+   "F03",
+   "F05",
+   "F07",
+   "F10",
+   "A01",
+   "A02",
+   "A03",
+   "A04",
+   "A05",
+   "A06",
+   "A07",
+   "A08"
+  ],
+  "upstream_integrated": "63fed4f",
+  "current_review": "docs/72-integrated-status-and-ps-review.md",
+  "historical_statuses_preserved": true,
+  "measured": {
+   "baseline_upstream": "63fed4f",
+   "python": "1017 passed, 3 warnings in 46.21s",
+   "javascript_suites": 8,
+   "verification_steps": 24,
+   "verification_failed": 0,
+   "development": {
+    "scorer": "v2",
+    "cases": 17,
+    "turns": 19,
+    "declared_tasks": 18,
+    "outcomes": {
+     "completed": 18
+    },
+    "critical_failures": [],
+    "median_wall_seconds": 0.16,
+    "maximum_wall_seconds": 11.15,
+    "not_a_representative_benchmark": true
+   },
+   "source_ledger": {
+    "registered": 69,
+    "connected_and_wired_to_chat": 28,
+    "access_blocked": 15
+   },
+   "language_ledger": {
+    "write_verified": 19,
+    "speak_verified": 10,
+    "hear_verified": 10,
+    "declared": 23,
+    "native_speaker_review": false
+   },
+   "operational_ready": false,
+   "hosting_performed": false,
+   "clean_checkout": {
+    "code_revision": "d4eb3c3",
+    "python": "1017 passed, 3 warnings in 40.41s",
+    "javascript_suites": 8,
+    "javascript_failures": 0,
+    "static_steps": 15,
+    "static_failures": 0,
+    "scope": "Detached Git worktree on the same macOS host and installed dependencies; no private runtime copied. Not a fresh-machine or cross-platform installation.",
+    "initial_failure": "985 passed, 31 setup errors and one failure; bulletin tests incorrectly read ignored runtime cache instead of already-tracked matching source fixtures. Fixed with hash-verified tracked fixture lookup."
    }
   }
  }

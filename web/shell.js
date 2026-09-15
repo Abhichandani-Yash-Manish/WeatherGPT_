@@ -33,11 +33,21 @@ const WG = window.WG;
     return new Error(message || 'The request could not be completed.');
   }
   async function request(path) {
-    const response = await fetch(path, { headers: { 'X-WeatherGPT-Token': TOKEN } });
-    let payload = null;
-    try { payload = await response.json(); } catch (error) { payload = null; }
-    if (!response.ok) throw classify(response.status, payload);
-    return payload;
+    const controller = new AbortController();
+    const deadline = setTimeout(() => controller.abort(), 45000);
+    try {
+      const response = await fetch(path, { headers: { 'X-WeatherGPT-Token': TOKEN }, signal: controller.signal });
+      let payload = null;
+      try { payload = await response.json(); } catch (error) {
+        if (controller.signal.aborted) throw error;
+      }
+      if (!response.ok) throw classify(response.status, payload);
+      if (!payload) throw new Error('This source returned an unreadable response. Try again.');
+      return payload;
+    } catch (error) {
+      if (controller.signal.aborted) throw new Error('This read exceeded 45 seconds. The server may still be fetching the source. Other tools remain usable; try again later.');
+      throw error;
+    } finally { clearTimeout(deadline); }
   }
   function query(params) {
     const parts = [];
@@ -218,7 +228,7 @@ const WG = window.WG;
   function applyPersonaFocus(entry) {
     const focus = entry ? (entry.surfaces || []) : [];
     document.querySelectorAll('.rail .rail-group').forEach(group => {
-      const items = Array.from(group.querySelectorAll('[data-view]'));
+      const items = Array.from(group.querySelectorAll('[data-view]')).filter(item => !item.closest('details'));
       if (items.length < 2) return;
       items.forEach((item, index) => { if (!item.dataset.order) item.dataset.order = String(index); });
       items.slice().sort((left, right) => {
@@ -227,7 +237,7 @@ const WG = window.WG;
           return at < 0 ? focus.length + Number(item.dataset.order) : at;
         };
         return rank(left) - rank(right);
-      }).forEach(item => group.append(item));
+      }).forEach(item => group.insertBefore(item, group.querySelector('.nav-more') || null));
     });
   }
   function paintPersonaNote(entry) {
@@ -350,6 +360,7 @@ const WG = window.WG;
   }
   function render() {
     const name = currentView();
+    if (WG.state.view !== name && typeof window.scrollTo === 'function') window.scrollTo(0, 0);
     WG.state.freshness = null;
     const stamp = document.getElementById('freshness');
     if (stamp) stamp.textContent = name === 'workspace' ? 'Sources dated separately' : 'Not read yet';
@@ -1029,7 +1040,7 @@ const WG = window.WG;
     startPlanPolling();
     wireTheme();
     wirePalette();
-    paintHealthMini();
+    /* Collection diagnostics belong in Sources and settings. */
     /* Ask the server to read the slow layers for the place this page is working with, so the
        first question is not the first read. It is a background read of the same governed adapters;
        the page does not wait for it and nothing is inferred from it. */

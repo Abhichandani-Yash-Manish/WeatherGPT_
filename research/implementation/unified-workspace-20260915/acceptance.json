@@ -1,0 +1,66 @@
+{
+  "checked_at_utc": "2026-09-15T13:30:54.305572+00:00",
+  "surface": "local desktop Chromium",
+  "preview": "http://127.0.0.1:8766/",
+  "operational_ready": false,
+  "live_journeys": {
+    "vadodara_forecast": "answered with four requested measures",
+    "same_chat_afternoon": "answered; same conversation, changed window",
+    "comparison_before": "failed user outcome despite answered status: only GFS returned",
+    "comparison_after": "answered; seven facts, two calculations, both products and shared-lineage limit",
+    "national_bulletin": "answered; ten passages",
+    "nashik_grapes": "indexed-edition fallback with live reader refusal preserved",
+    "airport_handoff": "VABB and METAR retained in question draft",
+    "warning_brief_first_read": "exceeded repeated 25-second browser waits; not counted as successful",
+    "warning_brief_retry": "composed, saved, reopened and exported",
+    "saved_brief_id": "431bf10c-a7ad-446c-ac57-721eb14cbbd0"
+  },
+  "ui_checks": {
+    "viewports_no_horizontal_overflow": [
+      [
+        1440,
+        1000
+      ],
+      [
+        768,
+        1024
+      ],
+      [
+        390,
+        844
+      ]
+    ],
+    "escape_closes_drawer": true,
+    "source_timeout_ms": 45000,
+    "timeout_cancels_server_work": false,
+    "browser_errors_observed": [],
+    "axe_incomplete": "Contrast check remains inconclusive for clipped content inside scrollable source panels."
+  },
+  "automated_checks": {
+    "python": "991 passed, 3 warnings in 31.28s",
+    "javascript_suites": 8,
+    "workspace_regression_groups": 6,
+    "axe_workspace": {
+      "inapplicable": 59,
+      "incomplete": 1,
+      "passes": 29,
+      "violations": 0
+    },
+    "axe_drawer": {
+      "inapplicable": 71,
+      "incomplete": 0,
+      "passes": 17,
+      "violations": 0
+    },
+    "status_drift": "0 problems; collected tests 991, README 991",
+    "frontend_and_registry_checks": "15 steps, 0 failed"
+  },
+  "limits": [
+    "One local Chromium session; no screen-reader or native-device acceptance.",
+    "All 14 tools are discoverable; not all have new end-to-end acceptance in this batch.",
+    "Source download latency and server lock waits remain unresolved.",
+    "No scientific forecast skill, nationwide operational, fluent-language or full PS acceptance claimed.",
+    "Shared checkout changed concurrently; preserved those changes."
+  ],
+  "preview_configuration": "QA process with background plan watcher disabled to avoid duplicate background work; use normal startup for plan monitoring."
+}

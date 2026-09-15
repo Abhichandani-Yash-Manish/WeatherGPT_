@@ -359,7 +359,28 @@ def edition_passages(index, sha):
     return sorted(index.document_passages(sha), key=printed_order)
 
 
-def whole_document_hits(index, sha, limit=8):
+WHOLE_DOCUMENT_SECTION_LIMIT = 12
+
+
+def edition_sections(index, sha):
+    """Every printed section of one edition, in printed order, with its page and passage count.
+
+    A whole-edition reading quotes one passage per section, bounded. This is the index of what the
+    edition actually prints, so a reader sees every section even when fewer are quoted: measured
+    15 September 2026, the national bulletin printed 11 sections and the answer quoted 8, and the
+    three it did not quote were not named anywhere.
+    """
+    rows = edition_passages(index, sha)
+    seen = {}
+    for row in rows:
+        key = norm(row.get('section') or '(no printed section heading)')
+        entry = seen.setdefault(key, {'section': row.get('section') or '(no printed section heading)',
+                                      'page': row.get('physical_page'), 'passages': 0})
+        entry['passages'] += 1
+    return list(seen.values())
+
+
+def whole_document_hits(index, sha, limit=WHOLE_DOCUMENT_SECTION_LIMIT):
     """One passage per printed section of one edition, in printed order.
 
     The point of this mode is the edition's own structure: what it contains, in the order
@@ -604,9 +625,10 @@ def execute_corpus(engine, result, plan, task, resolved=None):
                 hits = section_hits
                 method = {'mode': 'whole_document_sections', 'candidates': totals['passages_indexed'],
                           'edited': head['sha'], 'scores_are_confidence': False}
+                sections = edition_sections(index, head['sha'])
                 whole = {'edition_sha256': head['sha'], 'passages_indexed': totals['passages_indexed'],
                          'sections_indexed': totals['sections_indexed'], 'passages_served': totals['passages_served'],
-                         'sections_served': totals['sections_served'],
+                         'sections_served': totals['sections_served'], 'sections': sections,
                          'scope': ('One passage per printed section, in printed order. That is a bounded reading of the edition, '
                                    'not the whole text; every passage is retained and the saved document opens from each passage.')}
     if not whole:
@@ -841,6 +863,16 @@ def execute_corpus(engine, result, plan, task, resolved=None):
         parts.append(str(whole['passages_served']) + ' of ' + str(whole['passages_indexed']) +
                      ' indexed passages of this edition are quoted below, one per printed section in printed order (' +
                      str(whole['sections_indexed']) + ' section(s) indexed). That is a bounded reading of the edition, not its full text.')
+        sections = whole.get('sections') or []
+        if len(sections) > int(whole.get('sections_served') or 0):
+            # Every section is named, including the ones not quoted, so a reader can see the whole
+            # edition's structure and ask for a heading that interests them.
+            parts.append('The edition index contains ' + str(len(sections)) + ' section(s) in printed order; ' +
+                         str(whole.get('sections_served')) + ' have an excerpt quoted below; every indexed section is named here by ' +
+                         'their printed heading and page: ' +
+                         '; '.join((str(item.get('section')) + ' (page ' + str(item.get('page')) + ')')
+                                  for item in sections) +
+                         '. Ask about a heading to read that section.')
     if differences:
         parts.append('Editions compared for ' + str(views[kept[0]].get('family_label')) + ' ' +
                      str(views[kept[0]].get('region') or 'national') + ':')
@@ -932,6 +964,7 @@ def execute_corpus(engine, result, plan, task, resolved=None):
                                     'currency_unknown': len(currency_unknown),
                                     'expired_printed_validity': len(expired),
                                     'unverified_excluded': len(unverified),
+                                    'sections_listed': (len(whole.get('sections') or []) if whole else 0),
                                     'scope': 'Whole-document passage index over indexed published documents; not a completeness '
                                              'claim for any publisher and not an archive.',
                                     'scores_are_confidence': False}

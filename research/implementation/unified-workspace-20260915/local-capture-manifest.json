@@ -1,0 +1,70 @@
+{
+  "purpose": "Preserve supplemental session captures locally; no new runtime conversations or source-text exports published. Historical committed captures are unchanged.",
+  "files": [
+    {
+      "file": "desktop-final.png",
+      "sha256": "9953d795e27df8aaed64b9503d3f05219dd84e4b65438e7c60e6c8c1ced0d267",
+      "retained": "local review archive; not part of Git publication"
+    },
+    {
+      "file": "desktop-initial.png",
+      "sha256": "f8f7cf182e9df7a998cd88e1d126c353a4712f7ca95a6f96ed6c75271b9b9429",
+      "retained": "local review archive; not part of Git publication"
+    },
+    {
+      "file": "export.json",
+      "sha256": "15ea8b2b57b03517a4ca2817a11722e23657dcc0e674b6370270c6f5066a8e73",
+      "retained": "local review archive; not part of Git publication"
+    },
+    {
+      "file": "narrow-final.png",
+      "sha256": "eb86fa1b07c3137cb53716464c254127ce72f441f964502eb7287dd71d7c8d79",
+      "retained": "local review archive; not part of Git publication"
+    },
+    {
+      "file": "saved-brief-open.png",
+      "sha256": "800427605f163808d0fe40cbbb0893db9663292fb156bd75e2dbddbbf2c6c068",
+      "retained": "local review archive; not part of Git publication"
+    },
+    {
+      "file": "tool-drawer.png",
+      "sha256": "6ea87563a28a36964d0a37291a710ed254d6629c2dd304e42f9914ac131b359f",
+      "retained": "local review archive; not part of Git publication"
+    },
+    {
+      "file": "tools-desktop.png",
+      "sha256": "d03a45bbf912e6d2214e57a42985e28ac9c8fe5d43494b4856145f588a853b32",
+      "retained": "local review archive; not part of Git publication"
+    },
+    {
+      "file": "vadodara-alert-brief.md",
+      "sha256": "eefd8ead3f5123aa9153f391c6eacb550b713f276351d2b69a233c4c8e699b89",
+      "retained": "local review archive; not part of Git publication"
+    },
+    {
+      "file": "vadodara-brief-reopened.png",
+      "sha256": "bd47373e482e1e2ad4af5dece3f5c8e47f6b0ed9e05cd008200fbcbcd4537027",
+      "retained": "local review archive; not part of Git publication"
+    },
+    {
+      "file": "warning-brief-saved.png",
+      "sha256": "7870fa668e344fda6f3ca116fe78bf881dbe58ac955e965c4b90eb21a7b37146",
+      "retained": "local review archive; not part of Git publication"
+    },
+    {
+      "file": "workspace-desktop.png",
+      "sha256": "efafb3d0a0bdca7af193963dcd7c50c8aff9fc4db7cb96927f6d48f01b665954",
+      "retained": "local review archive; not part of Git publication"
+    },
+    {
+      "file": "workspace-narrow.png",
+      "sha256": "31954c7791e61e1c21ebac75f390b97fef93c285920f5a50e6448e9f943ae208",
+      "retained": "local review archive; not part of Git publication"
+    },
+    {
+      "file": "workspace-tablet.png",
+      "sha256": "54cfac7eaf94dd2260708a0746b71f86014cb6d73776631ef10d75144e0ea4a9",
+      "retained": "local review archive; not part of Git publication"
+    }
+  ]
+}

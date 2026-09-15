@@ -231,6 +231,47 @@ class RetrievalTests(CorpusCase):
         self.assertIn('nothing was substituted', result['answer'])
 
 
+class WholeEditionRecallTests(CorpusCase):
+    """A whole-edition reading names every printed section, not only the ones it quotes."""
+
+    def edition(self, count):
+        sections = [('SECTION %02d' % number, 'Printed text of section %d with enough words to quote.' % number)
+                    for number in range(1, count + 1)]
+        self.publish(self.multi('national_bulletin', 'national', None, '2026-09-14', sections))
+
+    def test_every_section_is_served_when_the_edition_is_within_the_limit(self):
+        self.edition(11)
+        result = self.run_corpus({'places': []}, {'query': 'Give me the main points of this bulletin',
+                                                  'family': 'national_bulletin', 'scope': 'national'},
+                                 question='Give me the main points of the bulletin')
+        self.assertEqual(result['whole_document']['sections_indexed'], 11)
+        self.assertEqual(result['whole_document']['sections_served'], 11)
+        self.assertEqual(len(result['passages']), 11)
+
+    def test_a_longer_edition_names_the_sections_it_did_not_quote(self):
+        self.edition(18)
+        result = self.run_corpus({'places': []}, {'query': 'Give me the main points of this bulletin',
+                                                  'family': 'national_bulletin', 'scope': 'national'},
+                                 question='Give me the main points of the bulletin')
+        served = result['whole_document']['sections_served']
+        self.assertEqual(result['whole_document']['sections_indexed'], 18)
+        self.assertLess(served, 18)
+        self.assertEqual(result['retrieval_coverage']['sections_listed'], 18)
+        self.assertIn('The edition index contains 18 section(s)', result['answer'])
+        # The heading and page of every section are named, including the unquoted ones.
+        self.assertIn('SECTION 18', result['answer'])
+        self.assertIn('Ask about a heading to read that section', result['answer'])
+        self.assertEqual(len(result['whole_document']['sections']), 18)
+
+    def test_the_reading_still_says_it_is_bounded(self):
+        self.edition(11)
+        result = self.run_corpus({'places': []}, {'query': 'Give me the main points of this bulletin',
+                                                  'family': 'national_bulletin', 'scope': 'national'},
+                                 question='Give me the main points of the bulletin')
+        self.assertIn('not its full text', result['answer'])
+        self.assertIn('not a completeness claim', result['retrieval_coverage']['scope'])
+
+
 class RoutingTests(unittest.TestCase):
     def plan(self, quote, kind='agriculture', parameters=None, document_request=None):
         task = {'request_quote': quote, 'kind': kind, 'operation': 'lookup',

@@ -849,3 +849,9 @@ body { display: flex; flex-direction: column; min-height: 100vh; min-height: 100
 @media (min-width:1180px) { .masthead-controls button, .masthead-controls .chip-button { white-space:nowrap; } .masthead-controls { flex:0 0 auto; } .place-context { flex:1; } }
 .nav-more > summary { padding:12px 8px; font-size:11px; color:var(--housing-mute); cursor:pointer; }
 .nav-more[open] { border-bottom:1px solid var(--housing-line); margin-bottom:8px; }
+.desk-tool button, .nav-item, .desk-filters button { scroll-margin-top:90px; }
+@media (min-width:1180px) { .desk-live-grid .desk-card-body { max-height:480px; overflow-y:auto; scrollbar-width:thin; } }
+@media (min-width:1180px) {
+  .desk-live-grid .desk-live-card { height:430px; display:flex; flex-direction:column; }
+  .desk-live-grid .desk-card-body { flex:1; min-height:0; }
+}

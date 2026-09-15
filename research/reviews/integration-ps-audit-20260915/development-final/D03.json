@@ -1,0 +1,33 @@
+{
+  "id": "D03",
+  "domain": "history",
+  "turns": [
+    {
+      "question": "Compare the annual rainfall for Ahmedabad district, Gujarat in 2009 and 2010.",
+      "status": "answered",
+      "status_allowed": true,
+      "task_shape_matches": true,
+      "tasks": [
+        {
+          "declared": {
+            "kind": "history",
+            "operation": "compare",
+            "parameters": [
+              "rainfall"
+            ]
+          },
+          "outcome": "completed",
+          "executed_status": "answered",
+          "missing_execution_parameters": []
+        }
+      ],
+      "answered_language": null,
+      "language_trace": null,
+      "prohibited_hits": [],
+      "abstained": false,
+      "duration_s": 0.063,
+      "turn": 1,
+      "wall_s": 0.06
+    }
+  ]
+}

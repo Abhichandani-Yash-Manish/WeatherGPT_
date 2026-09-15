@@ -1,0 +1,63 @@
+{
+  "checked_at_utc": "2026-09-15T13:54:11.481Z",
+  "journey": "Workspace guided air-quality draft -> edit place to Indore -> Ask -> hourly charts and exact evidence",
+  "question": "Show PM2.5 and US AQI for Indore, Madhya Pradesh tomorrow.",
+  "status": "answered",
+  "answered_at_utc": "2026-09-15T13:53:08.483304+00:00",
+  "parameters": [
+    "pm2_5",
+    "us_aqi",
+    "pm2_5_current",
+    "us_aqi_current"
+  ],
+  "fact_count": 50,
+  "chart_count": 2,
+  "chart_roles": [
+    "group",
+    "group"
+  ],
+  "chart_point_count": 48,
+  "current_labels": [
+    {
+      "label": "PM2.5 concentration · provider current hour",
+      "start": "2026-09-15T18:30:00+05:30",
+      "source_id": "S69",
+      "unit": "μg/m³"
+    },
+    {
+      "label": "US AQI (source index) · provider current hour",
+      "start": "2026-09-15T18:30:00+05:30",
+      "source_id": "S69",
+      "unit": "USAQI"
+    }
+  ],
+  "sources": [
+    {
+      "source_id": "S69",
+      "product": "CAMS via Open-Meteo air quality",
+      "response_sha256": "d4ade61f29758fab474e297a156b6f8ad0fd8ff74243e95d0b176a7d5b11968f",
+      "retrieved_at_utc": "2026-09-15T13:41:49.955601+00:00",
+      "returned_grid": {
+        "latitude": 22.700005,
+        "longitude": 75.8
+      },
+      "grid_distance_km": 3.954
+    },
+    {
+      "source_id": "S61",
+      "product": "India place catalogue",
+      "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+    }
+  ],
+  "limits": [
+    "Curated synthetic QA question, one point and one window; no monitor agreement, health assessment or operational acceptance.",
+    "Initial stale-page token after server restart required reload; a failed 25-second wait was not counted as success."
+  ],
+  "raw_conversation_published": false,
+  "accessibility": {
+    "inapplicable": 69,
+    "incomplete": 1,
+    "passes": 19,
+    "violations": 0
+  }
+}

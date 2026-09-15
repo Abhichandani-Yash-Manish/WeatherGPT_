@@ -1,5 +1,7 @@
 # WeatherGPT: product review and proposed progress plan
 
+**Current status overlay:** [the integrated PS review](72-integrated-status-and-ps-review.md) records the 15 September integration. The findings and evidence below retain their historical meaning.
+
 Current implementation follow-up: [the Instrument Desk frontend overhaul](46-frontend-instrument-desk.md) is the latest recorded batch; [the critical full-solution review](21-full-solution-critical-review.md) is the current status document and [the full-solution gap register](31-full-solution-gap-register.md) is the living gap list. Earlier checkpoints in the chain: [bulletin parent context](20-bulletin-parent-context.md), [context and retrieval coverage](19-context-and-retrieval-coverage.md), [conversation engine](17-conversation-engine-refinement.md) and [bulletin retrieval](18-bulletin-retrieval-and-warning-lifecycle.md). The findings below describe the original review snapshot; current scoped status is tracked in `data/registry/product-progress.json`.
 
 12 September 2026. Scope: the supplied SIH26068 statement, current implementation, original R01–R12 review, supplied F01–F11 report and conversational recovery. **Desktop web stays the working surface; sharing and hosting are on hold at the user's request.** Nationwide and specialist final acceptance remains in scope. This review does not narrow that commitment to Ahmedabad.

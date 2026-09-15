@@ -7,7 +7,7 @@ Fourteen questions run through the real conversation engine in this process: the
 governed retrievers and the renderer, against the live local workspace. The record keeps each question's status, its retrieved passages, the words that named the topic and the answer head, so a later run can
 be compared with it. It measures no publisher and claims no accuracy: a published document is a record of
 what a publisher issued, not a forecast, an observation or a current warning."""
-import json, sys, time
+import argparse, json, sys, time
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -31,28 +31,48 @@ QUESTIONS = [
  'What does the district agromet advisory for Madurai say about banana?',
  'What does the district agromet bulletin for Nowhereville say?',
 ]
-engine = ConversationEngine(Workspace())
-rows = []
-for q in QUESTIONS:
-    started = utcnow().isoformat(); t0 = time.time()
-    try:
-        r = engine.ask({'question': q})
-    except Exception as exc:
-        rows.append({'question': q, 'checked_at_utc': started, 'error': type(exc).__name__ + ': ' + str(exc),
-                     'seconds': round(time.time() - t0, 2)}); print('ERR', q, exc, flush=True); continue
-    coverage = r.get('retrieval_coverage')
-    coverage = coverage[0] if isinstance(coverage, list) and coverage else (coverage if isinstance(coverage, dict) else {})
-    rows.append({'question': q, 'checked_at_utc': started, 'seconds': round(time.time() - t0, 2),
-                 'status': r.get('status'), 'passages': len(r.get('passages') or []),
-                 'documents_read': len(r.get('document_evidence') or []),
-                 'pending_slots': [slot.get('field') for slot in (r.get('pending_slots') or [])],
-                 'match_basis': coverage.get('match_basis'), 'topic_tokens': coverage.get('topic_tokens'),
-                 'topic_matched': coverage.get('topic_matched'),
-                 'answer': (r.get('answer') or '')[:900]})
-    print(json.dumps({k: rows[-1][k] for k in ('question', 'status', 'seconds', 'passages')}, ensure_ascii=False), flush=True)
-out = Path('research/implementation/corpus-reachability-20260915')
-out.mkdir(parents=True, exist_ok=True)
-summary = {'checked_at_utc': utcnow().isoformat(), 'engine': 'local conversation engine, rules-first planner',
+def main():
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('--output', type=Path)
+    parser.add_argument('--question', action='append', default=[], help='ask these instead of the default set')
+    arguments = parser.parse_args()
+    questions = arguments.question or list(QUESTIONS)
+    engine = ConversationEngine(Workspace())
+    rows = []
+    run(engine, rows, questions)
+    out = arguments.output or Path('research/implementation/corpus-reachability-20260915/journeys.json')
+    out.parent.mkdir(parents=True, exist_ok=True)
+    summary = summarise(rows)
+    out.write_text(json.dumps({'summary': summary, 'rows': rows}, indent=1, ensure_ascii=False) + '\n')
+    print(json.dumps(summary, indent=1, ensure_ascii=False))
+
+
+def run(engine, rows, questions):
+    for q in questions:
+        started = utcnow().isoformat(); t0 = time.time()
+        try:
+            r = engine.ask({'question': q})
+        except Exception as exc:
+            rows.append({'question': q, 'checked_at_utc': started, 'error': type(exc).__name__ + ': ' + str(exc),
+                         'seconds': round(time.time() - t0, 2)}); print('ERR', q, exc, flush=True); continue
+        coverage = r.get('retrieval_coverage')
+        coverage = coverage[0] if isinstance(coverage, list) and coverage else (coverage if isinstance(coverage, dict) else {})
+        whole = r.get('whole_document') or {}
+        rows.append({'question': q, 'checked_at_utc': started, 'seconds': round(time.time() - t0, 2),
+                     'status': r.get('status'), 'passages': len(r.get('passages') or []),
+                     'sections_indexed': whole.get('sections_indexed'),
+                     'sections_served': whole.get('sections_served'),
+                     'sections_listed': coverage.get('sections_listed'),
+                     'documents_read': len(r.get('document_evidence') or []),
+                     'pending_slots': [slot.get('field') for slot in (r.get('pending_slots') or [])],
+                     'match_basis': coverage.get('match_basis'), 'topic_tokens': coverage.get('topic_tokens'),
+                     'topic_matched': coverage.get('topic_matched'),
+                     'answer': (r.get('answer') or '')[:900]})
+        print(json.dumps({k: rows[-1][k] for k in ('question', 'status', 'seconds', 'passages')}, ensure_ascii=False), flush=True)
+
+
+def summarise(rows):
+    summary = {'checked_at_utc': utcnow().isoformat(), 'engine': 'local conversation engine, rules-first planner',
            'journeys': len(rows),
            'answered': sum(1 for row in rows if row.get('status') == 'answered'),
            'partial': sum(1 for row in rows if row.get('status') == 'partial'),
@@ -62,6 +82,8 @@ summary = {'checked_at_utc': utcnow().isoformat(), 'engine': 'local conversation
            'limits': ['One process, one machine, one instant against live sources.',
                       'A published document is a record of what a publisher issued: these readings are not forecasts, observations or current warnings.',
                       'The district crop questions that reach the indexed-edition fallback say so in the answer.']}
-(out / 'journeys.json').write_text(json.dumps({'summary': summary, 'rows': rows}, indent=1, ensure_ascii=False) + '\n')
-print(json.dumps(summary, indent=1))
+    return summary
 
+
+if __name__ == '__main__':
+    main()
