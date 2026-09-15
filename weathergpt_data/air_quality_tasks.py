@@ -109,7 +109,7 @@ def execute_air_quality(engine, result, plan, task, resolved, coordinates):
         result['notes'].append(AIR_QUALITY_MODEL + ' modelled air quality at the returned grid cell' +
                                (' and the provider current hour.' if emitted else '.'))
     result['notes'] += missing
-    result['notes'].append('An air-quality index is the source\'s own index; the spread of a value is not a health '
+    result['notes'].append('An air-quality index is the source\'s own index; a value is not a health '
                            'assessment, a risk score or an official air-quality warning, and no health advice is produced.')
     result['notes'].append('No ground monitor is connected, so a modelled cell is not a reading from a nearby station.')
     result['status'] = 'answered' if result['facts'] and not missing else 'partial' if result['facts'] else 'unavailable'

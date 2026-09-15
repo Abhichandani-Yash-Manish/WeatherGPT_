@@ -1,0 +1,323 @@
+{
+  "schema_version": "air-quality-chat-v1",
+  "generated_at_utc": "2026-09-15T12:15:13.740195+00:00",
+  "note": "Deterministic-rules turns; the air-quality fetch is live through the governed store.",
+  "turns": [
+    {
+      "question": "What is the air quality in Ahmedabad tomorrow?",
+      "status": "answered",
+      "provider": "deterministic_rules",
+      "tasks": [
+        {
+          "kind": "air_quality",
+          "operation": "lookup",
+          "parameters": [
+            "pm2_5",
+            "pm10",
+            "us_aqi",
+            "european_aqi"
+          ],
+          "start_local": "2026-09-16T00:30:00+05:30",
+          "end_local": "2026-09-17T00:30:00+05:30"
+        }
+      ],
+      "products": [
+        "CAMS via Open-Meteo air quality",
+        "India place catalogue"
+      ],
+      "values": [
+        {
+          "parameter": "pm2_5",
+          "value": "9.3",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "pm2_5",
+          "value": "9.0",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "pm2_5",
+          "value": "8.9",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "pm2_5",
+          "value": "8.9",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "pm2_5",
+          "value": "9.1",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "pm2_5",
+          "value": "9.5",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "pm2_5",
+          "value": "10.1",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "pm2_5",
+          "value": "11.6",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "pm2_5",
+          "value": "13.2",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "pm2_5",
+          "value": "14.6",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "pm2_5",
+          "value": "15.4",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "pm2_5",
+          "value": "15.8",
+          "unit": "μg/m³"
+        }
+      ],
+      "fact_count": 100,
+      "notes": [
+        "Time window read from the question: tomorrow whole day.",
+        "Place read as Ahmedabad, Ahmadābād, State of Gujarāt — its district carries the same name, and no other place that shares this name does. Other places share this name: Ahmedābād, District Rampur, Uttar Pradesh. Say which one you meant to switch.",
+        "CAMS via Open-Meteo modelled air quality at the returned grid cell and the provider current hour.",
+        "An air-quality index is the source's own index; a value is not a health assessment, a risk score or an official air-quality warning, and no health advice is produced.",
+        "No ground monitor is connected, so a modelled cell is not a reading from a nearby station."
+      ],
+      "answer": "Ahmedabad, Ahmadābād, State of Gujarāt · provider current hour 2026-09-15 17:30 IST\nPM2.5 concentration 14.3 μg/m³; PM10 concentration 15.1 μg/m³; US AQI (source index) 56 USAQI; European AQI (source index) 45 EAQI.\nAhmedabad, Ahmadābād, State of Gujarāt · PM2.5 concentration: 8.9–18.2 μg/m³ across 24 hourly values.\nAhmedabad, Ahmadābād, State of Gujarāt · PM10 concentration: 9.7–25.6 μg/m³ across 24 hourly values.\nAhmedabad, Ahmadābād, State of Gujarāt · US AQI (source index): 50–57 USAQI across 24 hourly values.\nAhmedabad, Ahmadābād, State of Gujarāt · European AQI (source index): 28–44 EAQI across 24 hourly values.\nExact hours, values and evidence IDs are in the tables below."
+    },
+    {
+      "question": "What is the PM2.5 in New Delhi tomorrow?",
+      "status": "answered",
+      "provider": "deterministic_rules",
+      "tasks": [
+        {
+          "kind": "air_quality",
+          "operation": "lookup",
+          "parameters": [
+            "pm2_5"
+          ],
+          "start_local": "2026-09-16T00:30:00+05:30",
+          "end_local": "2026-09-17T00:30:00+05:30"
+        }
+      ],
+      "products": [
+        "CAMS via Open-Meteo air quality",
+        "India place catalogue"
+      ],
+      "values": [
+        {
+          "parameter": "pm2_5",
+          "value": "55.4",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "pm2_5",
+          "value": "53.6",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "pm2_5",
+          "value": "52.0",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "pm2_5",
+          "value": "50.8",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "pm2_5",
+          "value": "48.7",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "pm2_5",
+          "value": "50.8",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "pm2_5",
+          "value": "55.5",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "pm2_5",
+          "value": "57.2",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "pm2_5",
+          "value": "51.3",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "pm2_5",
+          "value": "43.2",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "pm2_5",
+          "value": "42.1",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "pm2_5",
+          "value": "43.7",
+          "unit": "μg/m³"
+        }
+      ],
+      "fact_count": 25,
+      "notes": [
+        "Time window read from the question: tomorrow whole day.",
+        "CAMS via Open-Meteo modelled air quality at the returned grid cell and the provider current hour.",
+        "An air-quality index is the source's own index; a value is not a health assessment, a risk score or an official air-quality warning, and no health advice is produced.",
+        "No ground monitor is connected, so a modelled cell is not a reading from a nearby station."
+      ],
+      "answer": "New Delhi, New Delhi, National Capital Territory of Delhi · provider current hour 2026-09-15 17:30 IST\nPM2.5 concentration 40.2 μg/m³.\nNew Delhi, New Delhi, National Capital Territory of Delhi · PM2.5 concentration: 42.1–101.3 μg/m³ across 24 hourly values.\nExact hours, values and evidence IDs are in the tables below."
+    },
+    {
+      "question": "Ozone in Ahmedabad tomorrow?",
+      "status": "answered",
+      "provider": "deterministic_rules",
+      "tasks": [
+        {
+          "kind": "air_quality",
+          "operation": "lookup",
+          "parameters": [
+            "ozone"
+          ],
+          "start_local": "2026-09-16T00:30:00+05:30",
+          "end_local": "2026-09-17T00:30:00+05:30"
+        }
+      ],
+      "products": [
+        "CAMS via Open-Meteo air quality",
+        "India place catalogue"
+      ],
+      "values": [
+        {
+          "parameter": "ozone",
+          "value": "42.0",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "ozone",
+          "value": "47.0",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "ozone",
+          "value": "50.0",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "ozone",
+          "value": "49.0",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "ozone",
+          "value": "47.0",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "ozone",
+          "value": "46.0",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "ozone",
+          "value": "47.0",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "ozone",
+          "value": "50.0",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "ozone",
+          "value": "54.0",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "ozone",
+          "value": "62.0",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "ozone",
+          "value": "71.0",
+          "unit": "μg/m³"
+        },
+        {
+          "parameter": "ozone",
+          "value": "80.0",
+          "unit": "μg/m³"
+        }
+      ],
+      "fact_count": 25,
+      "notes": [
+        "Time window read from the question: tomorrow whole day.",
+        "Place read as Ahmedabad, Ahmadābād, State of Gujarāt — its district carries the same name, and no other place that shares this name does. Other places share this name: Ahmedābād, District Rampur, Uttar Pradesh. Say which one you meant to switch.",
+        "CAMS via Open-Meteo modelled air quality at the returned grid cell and the provider current hour.",
+        "An air-quality index is the source's own index; a value is not a health assessment, a risk score or an official air-quality warning, and no health advice is produced.",
+        "No ground monitor is connected, so a modelled cell is not a reading from a nearby station."
+      ],
+      "answer": "Ahmedabad, Ahmadābād, State of Gujarāt · provider current hour 2026-09-15 17:30 IST\nOzone concentration 105.0 μg/m³.\nAhmedabad, Ahmadābād, State of Gujarāt · Ozone concentration: 29.0–100.0 μg/m³ across 24 hourly values.\nExact hours, values and evidence IDs are in the tables below."
+    },
+    {
+      "question": "Will it rain in Ahmedabad tomorrow?",
+      "status": "answered",
+      "provider": "deterministic_rules",
+      "tasks": [
+        {
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "start_local": "2026-09-16T00:30:00+05:30",
+          "end_local": "2026-09-17T00:30:00+05:30"
+        }
+      ],
+      "products": [
+        "GFS forecast delivery",
+        "India place catalogue",
+        "GFS forecast delivery",
+        "India place catalogue"
+      ],
+      "values": [
+        {
+          "parameter": "precipitation",
+          "value": "0.1",
+          "unit": "mm"
+        },
+        {
+          "parameter": "precipitation",
+          "value": "0.0",
+          "unit": "mm"
+        }
+      ],
+      "fact_count": 2,
+      "notes": [
+        "Time window read from the question: tomorrow whole day.",
+        "Place read as Ahmedabad, Ahmadābād, State of Gujarāt — its district carries the same name, and no other place that shares this name does. Other places share this name: Ahmedābād, District Rampur, Uttar Pradesh. Say which one you meant to switch.",
+        "Model forecasts at the selected place point, not observations or district averages. Source model run time and local representativeness remain unverified."
+      ],
+      "answer": "Ahmedabad · 16 Sep, 00:30–17 Sep, 00:30 IST: Forecast precipitation: 0.0–0.1 mm. Source: GFS forecast; conditions can change."
+    }
+  ]
+}
