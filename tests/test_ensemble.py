@@ -124,5 +124,41 @@ class EnsembleAdapterTests(unittest.TestCase):
                                      datetime(2026, 9, 16, tzinfo=UTC).date()))
 
 
+class FoundationEnsembleTests(unittest.TestCase):
+    class Response:
+        status = 200
+        headers = {'Content-Type': 'application/json'}
+
+        def __init__(self, body):
+            self.body = body
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+        def read(self, size):
+            return self.body[:size]
+
+    def test_foundation_fetches_normalises_and_caches_the_ensemble(self):
+        import json
+        import tempfile
+        from datetime import datetime as dt
+        from weathergpt_data.foundation import Foundation
+        from weathergpt_data.transport import Store
+        clock = lambda: dt(2026, 9, 15, tzinfo=UTC)
+        times = hours(24, start=dt(2026, 9, 15, tzinfo=UTC))
+        body = payload([[value] * 24 for value in range(1, 11)], control=[7] * 24, times=times)
+        with tempfile.TemporaryDirectory() as directory:
+            store = Store(directory, opener=lambda *a, **k: self.Response(json.dumps(body).encode()), clock=clock)
+            result = Foundation(store).ensemble(23.0, 72.5, days=1, model='gfs025', variables=['temperature_2m'])
+        self.assertEqual(result['source_id'], 'S68')
+        self.assertEqual(result['coverage']['member_total'], {'temperature_2m': 10})
+        row = records(result)
+        self.assertEqual(row['temperature_2m_mean']['value'], '5.500')
+        self.assertEqual(row['temperature_2m_spread']['value'], '2.872')
+
+
 if __name__ == '__main__':
     unittest.main()
