@@ -7,6 +7,7 @@
   const TOOLS = [
     { id: 'now', group: 'Daily weather', title: 'Understand right now', detail: 'Nearby station reports, the published warning day and the next model hours.', output: 'Current-condition reading', question: p => 'What is it like right now in ' + p + '?' },
     { id: 'forecast', group: 'Daily weather', title: 'Plan a weather window', detail: 'Rain, temperature, humidity and wind for a place and part of the day.', output: 'Forecast with exact hours', question: (p, f) => 'What is the weather forecast for ' + p + ' ' + f.day + ' ' + f.period + '?' },
+    { id: 'air-quality', group: 'Daily weather', title: 'Read modelled air quality', detail: 'CAMS pollutant concentrations and the source’s own indices. Model output, not a ground monitor or health assessment.', output: 'Hourly air-quality evidence', question: (p, f) => 'Show PM2.5 and US AQI for ' + p + ' ' + f.day + '.' },
     { id: 'compare', group: 'Models & history', title: 'Compare forecast models', detail: 'Put GFS and the best-match product side by side. Their model lineage can overlap.', output: 'Source comparison', question: (p, f) => 'Compare the GFS and best-match forecast for rain in ' + p + ' ' + f.day + ' ' + f.period + '.' },
     { id: 'ensemble', group: 'Models & history', title: 'Explore ensemble spread', detail: 'Read the range and spread of model members. Spread is not confidence or forecast skill.', output: 'Member statistics', question: (p, f) => 'Show the ensemble spread for temperature in ' + p + ' ' + f.day + '.' },
     { id: 'warning', group: 'Warnings & plans', title: 'Read the warning brief', detail: 'The district day, published hazards, issue time and what the product does not establish.', output: 'Brief to save or export', action: p => W.alertBriefDrawer(W, p, 1) },
@@ -40,7 +41,7 @@
       const form = el('form', undefined, 'journey-form');
       const fields = {};
       if (!['aviation', 'bulletin'].includes(tool.id)) fields.place = field(form, 'Place or district', 'place', p.queryLabel || [...new Set((p.label || '').split(', ').map(part => part.replace(/^State of /, '')))].join(', '));
-      if (['forecast', 'compare', 'ensemble', 'watch', 'marine', 'river'].includes(tool.id)) {
+      if (['forecast', 'compare', 'ensemble', 'watch', 'marine', 'river', 'air-quality'].includes(tool.id)) {
         fields.day = field(form, 'Day', 'day', 'tomorrow', [['today', 'Today'], ['tomorrow', 'Tomorrow']]);
       }
       if (['forecast', 'compare', 'watch'].includes(tool.id)) fields.period = field(form, 'Time (IST)', 'period', 'morning', [['morning', 'Morning · 09:30–12:30'], ['afternoon', 'Afternoon · 12:30–18:30'], ['evening', 'Evening · 18:30–22:30']]);
@@ -122,7 +123,10 @@
     host.append(el('p', (station.name || station.station_code || station.station_id || 'Station name not stated') + (station.kind ? ' · ' + station.kind.toUpperCase() : ''), 'desk-entity'));
     host.append(el('p', 'Reported ' + (station.observed_at_utc ? istStamp(station.observed_at_utc) : 'time not stated') + ' · ' + (station.distance_km == null ? 'distance not stated' : station.distance_km + ' km away'), 'desk-source'));
     host.append(el('p', (station.stale === true ? 'Stale report' : station.stale === false ? 'Within the prototype age limit' : 'Freshness not stated') + (station.age_minutes == null ? '' : ' · ' + station.age_minutes + ' min old'), 'field-note'));
-    const rows = (station.parameters || []).slice(0, 4).map(p => [p.field, p.value == null ? 'Not stated' : String(p.value), p.unit || 'Unit not stated by source']);
+    const weather = (station.parameters || []).find(p => p.field === 'weather' && typeof p.value === 'string');
+    if (weather) host.append(el('p', weather.value, 'desk-reading'));
+    const labels = { temp: 'Temperature', dewtemp: 'Dew point', mslp: 'Pressure', winddir: 'Wind direction', windsp: 'Wind speed', rainfall: 'Rainfall' };
+    const rows = (station.parameters || []).slice(0, 3).map(p => [labels[p.field] || p.field, p.value == null ? 'Not stated' : String(p.value), p.unit || 'Unit not stated by source']);
     if (rows.length) host.append(W.table(['Reported field', 'Value', 'Unit'], rows));
     (station.time_notes || []).forEach(note => host.append(el('p', note, 'field-note')));
     host.append(el('p', 'This is a station report, not a measurement at your selected point.', 'field-note'));
@@ -141,8 +145,8 @@
     host.append(el('p', 'Model: ' + Array.from(new Set(Object.values(buckets).map(b => b.model || 'not stated'))).join(', '), 'desk-source'));
     host.append(el('p', 'Model output. Each value uses its own valid hour; it is not an observation.', 'field-note'));
   }
-  async function readSection(card, path, params, paint) {
-    const body = el('div', undefined, 'desk-card-body'); card.append(body);
+  async function readSection(card, path, params, paint, title) {
+    const body = el('div', undefined, 'desk-card-body'); card.append(body); body.tabIndex = 0; body.setAttribute('aria-label', title + ' — reading and evidence'); body.setAttribute('role', 'region');
     async function read() {
       body.replaceChildren(W.loading('Reading this source…'));
       const slow = setTimeout(() => {
@@ -165,15 +169,16 @@
   }
   W.panels.workspace = async function (host) {
     const place = Object.assign({}, W.state.place || {});
+    const displayPlace = place.queryLabel || Array.from(new Set((place.label || '').split(', ').map(part => part.replace(/^State of /, '')))).join(', ');
     const head = el('header', undefined, 'desk-head');
-    const intro = el('div'); intro.append(el('p', 'YOUR WEATHER WORKSPACE', 'desk-eyebrow'), el('h1', place.label || 'Choose your place'));
+    const intro = el('div'); intro.append(el('p', 'YOUR WEATHER WORKSPACE', 'desk-eyebrow'), el('h1', displayPlace || 'Choose your place'));
     intro.append(el('p', 'Understand the weather. Make a plan. Keep the evidence.', 'desk-subtitle'));
     head.append(intro, button('Change place', () => document.getElementById('place-input').focus(), 'secondary'));
     host.append(head);
     const command = el('form', undefined, 'desk-command');
     const label = el('label', 'What would you like to find out?', 'sr'); label.htmlFor = 'workspace-question';
     const input = el('input'); input.id = 'workspace-question'; input.required = true; input.maxLength = 1500;
-    input.placeholder = 'Ask about ' + (place.label || 'a place') + '…';
+    input.placeholder = 'Ask about ' + (displayPlace || 'a place') + '…';
     const ask = el('button', 'Open in Ask →', 'primary'); ask.type = 'submit'; command.append(label, input, ask);
     command.addEventListener('submit', event => { event.preventDefault(); W.prepareQuestion(input.value.trim(), 'New question from your workspace. Name the place in your question.'); });
     host.append(command);
@@ -188,13 +193,13 @@
     specs.forEach(([title, route, path, extra, paint]) => {
       const card = el('section', undefined, 'desk-live-card'); const top = el('div', undefined, 'desk-card-head');
       top.append(el('h3', title), link('Explore →', route)); card.append(top); grid.append(card);
-      if (Number.isFinite(place.latitude) && Number.isFinite(place.longitude)) reads.push(readSection(card, path, Object.assign({ lat: place.latitude, lon: place.longitude }, extra), paint));
+      if (Number.isFinite(place.latitude) && Number.isFinite(place.longitude)) reads.push(readSection(card, path, Object.assign({ lat: place.latitude, lon: place.longitude }, extra), paint, title));
       else card.append(el('p', 'Choose a place to read this source.', 'field-note'));
     });
     const toolHead = el('div', undefined, 'desk-section-head'); toolHead.append(el('h2', 'What do you want to do?'));
     const searchLabel = el('label', 'Find a tool', 'sr'); searchLabel.htmlFor = 'tool-search';
     const search = el('input'); search.type = 'search'; search.id = 'tool-search'; search.placeholder = 'Find a tool, topic or output'; toolHead.append(searchLabel, search); host.append(toolHead);
-    const filters = el('div', undefined, 'desk-filters'); filters.setAttribute('aria-label', 'Filter tools');
+    const filters = el('div', undefined, 'desk-filters'); filters.setAttribute('role', 'group'); filters.setAttribute('aria-label', 'Filter tools');
     const toolGrid = el('div', undefined, 'desk-tools'); let group = 'All tools';
     const count = el('p', undefined, 'field-note'); count.setAttribute('aria-live', 'polite');
     function paintTools() {
@@ -219,13 +224,13 @@
       const entries = view.briefs || [];
       if (!entries.length) body.append(el('p', 'Your first brief starts with a warning or place briefing above. Save it, then reopen or export it here.', 'block-note'));
       entries.slice(0, 3).forEach(e => body.append(el('p', e.title || 'Saved brief', 'desk-entity'), el('p', 'Saved ' + (e.saved_at ? istStamp(e.saved_at) : 'time not stated'), 'field-note')));
-    }));
+    }, 'Saved briefs'));
     reads.push(readSection(plans, '/api/plans', {}, (body, view) => {
       const items = view.plans || [];
       if (!items.length) body.append(el('p', 'No plans saved. Start with “Watch a plan” above.', 'block-note'));
       items.slice(0, 3).forEach(p => body.append(el('p', p.title, 'desk-entity'), el('p', (p.state_words || p.state || 'State not stated') + ' · checked ' + (p.last_checked_at ? istStamp(p.last_checked_at) : 'not yet'), 'field-note')));
       body.append(el('p', 'Checks and browser notifications require the local workspace to be running. Open the inbox for delivery status.', 'field-note'));
-    }));
+    }, 'Plans and inbox'));
     host.append(el('p', 'Local prototype · Radar imagery, tide, observed river levels and operational clearance are not available. Source, language and coverage limits remain visible with each result.', 'desk-boundary'));
     await Promise.allSettled(reads);
   };

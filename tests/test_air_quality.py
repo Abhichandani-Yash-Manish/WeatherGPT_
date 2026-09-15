@@ -213,6 +213,26 @@ class AirQualityChatTests(unittest.TestCase):
         self.assertIn('us_aqi_current', parameters)
         self.assertTrue(any('source\'s own index' in note for note in r['notes']))
         self.assertFalse(r['operational_eligible'])
+        self.assertEqual(len(r['charts']), 2)
+        plotted = {p['evidence_id'] for c in r['charts'] for p in c['points']}
+        hourly = {f['id'] for f in r['facts'] if not f['parameter'].endswith('_current')}
+        self.assertEqual(plotted, hourly)
+        self.assertTrue(all('provider current hour' in f['label'] for f in r['facts'] if f['parameter'].endswith('_current')))
+
+    def test_current_reading_does_not_complete_an_absent_forecast_window(self):
+        from unittest.mock import patch
+        from test_product_stage_one import task
+        question = 'What is the air quality in Ahmedabad tomorrow?'
+        self.model.value['tasks'] = [task(kind='air_quality', operation='lookup', parameters=['pm2_5'],
+                                          years=[], start_local='2026-09-15T00:00:00+05:30',
+                                          end_local='2026-09-16T00:00:00+05:30', request_quote=question)]
+        data = self.packet()
+        data['records'] = [r for r in data['records'] if r['aggregation'] == 'current_instant']
+        with patch('weathergpt_data.foundation.Foundation.air_quality', return_value=data):
+            answer = self.chat(question=question)
+        self.assertEqual(answer['status'], 'partial')
+        self.assertTrue(any('no hourly sample' in note for note in answer['notes']))
+        self.assertFalse(answer['charts'])
 
     def test_an_air_quality_fetch_failure_is_recorded_not_invented(self):
         from unittest.mock import patch

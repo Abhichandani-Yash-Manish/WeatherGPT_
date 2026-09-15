@@ -1,0 +1,27 @@
+........................................................................ [  7%]
+........................................................................ [ 14%]
+........................................................................ [ 21%]
+........................................................................ [ 29%]
+........................................................................ [ 36%]
+........................................................................ [ 43%]
+........................................................................ [ 51%]
+........................................................................ [ 58%]
+........................................................................ [ 65%]
+........................................................................ [ 72%]
+........................................................................ [ 80%]
+........................................................................ [ 87%]
+........................................................................ [ 94%]
+....................................................                     [100%]
+=============================== warnings summary ===============================
+tests/test_document_ingest.py::PublicationIdentityTests::test_the_intake_holds_a_target_it_cannot_verify_and_keeps_going
+  /Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+    warnings.warn(
+
+tests/test_document_ingest.py::PublicationIdentityTests::test_the_intake_holds_a_target_it_cannot_verify_and_keeps_going
+  <frozen importlib._bootstrap>:228: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+tests/test_document_ingest.py::PublicationIdentityTests::test_the_intake_holds_a_target_it_cannot_verify_and_keeps_going
+  <frozen importlib._bootstrap>:228: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+988 passed, 3 warnings in 33.78s

@@ -84,6 +84,7 @@ def execute_air_quality(engine, result, plan, task, resolved, coordinates):
         result['trace']['tools'].append({'name': 'air_quality', 'variables': variables,
                                          'source_sha256': meta['sha256']})
         emitted = 0
+        charts = {}
         for record in data['records']:
             if record['parameter'] not in variables:
                 continue
@@ -94,11 +95,21 @@ def execute_air_quality(engine, result, plan, task, resolved, coordinates):
                 if not (start <= instant < end):
                     continue
                 parameter, opened, closed = record['parameter'], instant, instant
+            if record['aggregation'] != 'current_instant':
+                chart = charts.setdefault(parameter, {'kind': 'hourly_series', 'axis_label': 'Time (IST)',
+                    'title': place['label'] + ' · ' + LABELS.get(parameter, parameter),
+                    'unit': record['unit'], 'points': [], 'source_ids': [data['source_id']]})
+                chart['points'].append({'x': instant.timestamp(),
+                    'label': instant.astimezone(IST).strftime('%d %b %H:%M'),
+                    'value': None if record['value'] is None else str(record['value']),
+                    'evidence_id': None if record['value'] is None else 'f' + str(len(result['facts']) + 1)})
             if record['value'] is None:
                 missing.append(parameter + ' missing at ' + record['valid_time_utc']); continue
             result['facts'].append({
                 'id': 'f' + str(len(result['facts']) + 1), 'parameter': parameter,
-                'label': LABELS.get(record['parameter'], record['parameter']), 'value': str(record['value']),
+                'label': LABELS.get(record['parameter'], record['parameter']) +
+                         (' · provider current hour' if record['aggregation'] == 'current_instant' else ''),
+                'value': str(record['value']),
                 'unit': record['unit'], 'place': place['label'],
                 'entity_id': place.get('selection_id') or identity(place['coordinates']),
                 'start': opened.astimezone(IST).isoformat(), 'end': closed.astimezone(IST).isoformat(),
@@ -106,6 +117,10 @@ def execute_air_quality(engine, result, plan, task, resolved, coordinates):
                 'evidence_version': meta['sha256'], 'citation_ids': [citation],
                 'source_locators': [record['source_locator']], 'method': record['aggregation']})
             emitted += 1
+        for parameter in variables:
+            if parameter not in charts:
+                missing.append(parameter + ': no hourly sample lies inside the requested interval')
+        result['charts'].extend(charts.values())
         result['notes'].append(AIR_QUALITY_MODEL + ' modelled air quality at the returned grid cell' +
                                (' and the provider current hour.' if emitted else '.'))
     result['notes'] += missing
