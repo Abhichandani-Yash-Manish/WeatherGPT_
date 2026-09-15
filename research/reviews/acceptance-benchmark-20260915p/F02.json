@@ -1,0 +1,32 @@
+{
+  "id": "F02",
+  "domain": "warning",
+  "turns": [
+    {
+      "question": "क्या पटना, बिहार के लिए कोई चेतावनी है?",
+      "status": "answered",
+      "status_allowed": true,
+      "task_shape_matches": true,
+      "tasks": [
+        {
+          "declared": {
+            "kind": "warning",
+            "operation": "lookup",
+            "parameters": [
+              "official_warning"
+            ]
+          },
+          "outcome": "completed",
+          "executed_status": "answered"
+        }
+      ],
+      "answered_language": "hi",
+      "language_trace": null,
+      "prohibited_hits": [],
+      "abstained": false,
+      "duration_s": 34.165,
+      "turn": 1,
+      "wall_s": 39.57
+    }
+  ]
+}

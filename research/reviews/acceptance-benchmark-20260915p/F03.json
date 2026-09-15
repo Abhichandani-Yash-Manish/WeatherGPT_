@@ -1,0 +1,48 @@
+{
+  "id": "F03",
+  "domain": "multi-product",
+  "turns": [
+    {
+      "question": "Are there warnings for the Kerala coast and what are the waves off Kochi?",
+      "status": "needs_selection",
+      "status_allowed": false,
+      "task_shape_matches": false,
+      "tasks": [
+        {
+          "declared": {
+            "kind": "warning",
+            "operation": "lookup",
+            "parameters": [
+              "official_warning"
+            ]
+          },
+          "outcome": "incomplete",
+          "executed_status": "needs_selection"
+        },
+        {
+          "declared": {
+            "kind": "marine",
+            "operation": "lookup",
+            "parameters": [
+              "wave_height"
+            ]
+          },
+          "outcome": "missing",
+          "executed_status": null
+        }
+      ],
+      "answered_language": null,
+      "language_trace": {
+        "requested": "en",
+        "selection": "inferred_from_question",
+        "adherence": "not_applicable",
+        "rendered": false
+      },
+      "prohibited_hits": [],
+      "abstained": true,
+      "duration_s": 1.338,
+      "turn": 1,
+      "wall_s": 1.34
+    }
+  ]
+}

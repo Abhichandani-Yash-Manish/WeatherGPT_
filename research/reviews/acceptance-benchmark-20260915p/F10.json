@@ -1,0 +1,58 @@
+{
+  "id": "F10",
+  "domain": "multi-turn",
+  "turns": [
+    {
+      "question": "What is the temperature in Jaipur tomorrow afternoon?",
+      "status": "answered",
+      "status_allowed": true,
+      "task_shape_matches": true,
+      "tasks": [
+        {
+          "declared": {
+            "kind": "forecast",
+            "operation": "lookup",
+            "parameters": [
+              "temperature_2m"
+            ]
+          },
+          "outcome": "completed",
+          "executed_status": "answered"
+        }
+      ],
+      "answered_language": null,
+      "language_trace": null,
+      "prohibited_hits": [],
+      "abstained": false,
+      "duration_s": 1.215,
+      "turn": 1,
+      "wall_s": 1.22
+    },
+    {
+      "question": "Make it the day after instead.",
+      "status": "answered",
+      "status_allowed": true,
+      "task_shape_matches": true,
+      "tasks": [
+        {
+          "declared": {
+            "kind": "forecast",
+            "operation": "lookup",
+            "parameters": [
+              "temperature_2m"
+            ]
+          },
+          "outcome": "completed",
+          "executed_status": "answered"
+        }
+      ],
+      "answered_language": null,
+      "language_trace": null,
+      "prohibited_hits": [],
+      "abstained": false,
+      "duration_s": 5.965,
+      "turn": 2,
+      "wall_s": 5.97
+    }
+  ]
+}

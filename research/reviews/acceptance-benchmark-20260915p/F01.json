@@ -1,0 +1,37 @@
+{
+  "id": "F01",
+  "domain": "forecast",
+  "turns": [
+    {
+      "question": "Will it rain in Ahmedbad, Gujrat tomorrow?",
+      "status": "needs_clarification",
+      "status_allowed": true,
+      "task_shape_matches": true,
+      "tasks": [
+        {
+          "declared": {
+            "kind": "forecast",
+            "operation": "lookup",
+            "parameters": [
+              "precipitation"
+            ]
+          },
+          "outcome": "incomplete",
+          "executed_status": "needs_clarification"
+        }
+      ],
+      "answered_language": null,
+      "language_trace": {
+        "requested": "en",
+        "selection": "inferred_from_question",
+        "adherence": "not_applicable",
+        "rendered": false
+      },
+      "prohibited_hits": [],
+      "abstained": true,
+      "duration_s": 0.089,
+      "turn": 1,
+      "wall_s": 0.1
+    }
+  ]
+}
