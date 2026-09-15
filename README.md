@@ -83,7 +83,9 @@ time, page/row locator, evidence id) and disclosures for requested tasks, scope 
   temperature, feels-like temperature, wind and gusts, humidity and visibility, with a bounded refresh
   when stored evidence is stale. Two sources can be compared with their difference and the
   shared-lineage caveat, never a score; ensemble member statistics (mean, spread, range, nearest-rank
-  p10/p50/p90) have their own surface and are shown as a distribution, never as probability or skill.
+  p10/p50/p90) are drawn as an ensemble plume (p10-p90 band, median, mean, min-max whiskers) with an
+  exact-value table, never as probability or skill; the hourly forecast is drawn as a meteogram, and every
+  answer window carries a validity ruler whose covered spans and gaps can each be inspected.
 - **Air quality.** CAMS modelled concentrations and the source’s own indices at a grid cell, with
   the provider’s current hour kept apart from the window; no health advice, no risk score, no
   protective action and no ground monitor connected.
@@ -93,13 +95,16 @@ time, page/row locator, evidence id) and disclosures for requested tasks, scope 
 - **Warnings and plans.** The official district warning day resolved to your place against IMD's own
   geometry, with the CAP relay reported separately and never merged into one verdict; an alert brief
   you can keep, a plan-monitoring inbox, and legacy watches that record a changed official state.
-  A no-match is never an all-clear and origin authentication remains unverified.
+  A no-match is never an all-clear and origin authentication remains unverified. The national product is
+  also drawn as a district x day matrix whose cells carry only the colour the source printed, with an unknown
+  hazard code flagged on the cell rather than dropped.
 - **The published corpus.** A named national, state, district or marine product answers from the
   indexed documents with its family, region, physical page, printed issue date, measured currency and
   retrieval instant attached; warning-classified text stays reference-only, earlier editions are
   retired from current retrieval, and a saved PDF opens from this origin on request. A **Published
   documents** surface lists every edition this machine holds with its printed issue date, measured
-  currency and the state of its saved body, so the corpus can be browsed rather than only asked about.
+  currency and the state of its saved body — as cards and as a table — so the corpus can be browsed rather
+  than only asked about.
 - **Specialist products.** Modelled wave height, direction and period near a coastal place, and
   modelled river discharge near a point — each naming the answering cell and its distance, never
   standing in for an observed water level, gauge, danger level, flood extent, tide or current. The
