@@ -1,7 +1,7 @@
 {
  "schema_version": "hardening-progress-v1",
  "review": "research/reviews/national-readiness-20260912/review.md",
- "updated_at_utc": "2026-09-15T16:53:58+00:00",
+ "updated_at_utc": "2026-09-15T17:15:18+00:00",
  "operational_ready": false,
  "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
  "findings": [
@@ -2239,6 +2239,32 @@
   "browser_rendering_verified": false,
   "browser_rendering_blocker": "the agent-browser CLI could not launch Chrome inside this session sandbox",
   "live_device_delivery_verified": false,
+  "hosting_performed": false,
+  "same_host_only": true
+ },
+ "frontend_overhaul_batch_one": {
+  "report": "docs/78-frontend-overhaul-plan.md",
+  "design_system": "DESIGN.md",
+  "evidence_directory": "research/reviews/frontend-overhaul-20260915",
+  "stack_decision": "no-build modern platform; a framework migration is recorded as a separate, optional batch",
+  "delivered": [
+   "web/tokens.css token layer with both themes and reduced-motion collapse",
+   "style.css consumes tokens and declares no colour or type value",
+   "web/viz.js chart engine v2 with the ensemble plume and the meteogram",
+   "plume wired into the Ensemble surface, meteogram wired into the Forecast surface",
+   "motion primitives: surface rise, chart draw-in, view transitions, focus ring"
+  ],
+  "new_assets": {
+   "tokens.css": 5826,
+   "viz.js": 19805
+  },
+  "python_tests_passed": 1139,
+  "javascript_suites": 10,
+  "verification_steps": 27,
+  "verification_failed": 0,
+  "live_loopback_check": "research/reviews/frontend-overhaul-20260915/live-http-checks.json",
+  "browser_rendering_verified": false,
+  "browser_rendering_blocker": "the agent-browser CLI could not launch Chrome inside this session sandbox",
   "hosting_performed": false,
   "same_host_only": true
  }

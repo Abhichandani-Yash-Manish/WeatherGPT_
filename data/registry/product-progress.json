@@ -1,6 +1,6 @@
 {
   "schema_version": "product-progress-plan-v1",
-  "as_of_utc": "2026-09-15T16:53:58+00:00",
+  "as_of_utc": "2026-09-15T17:15:18+00:00",
   "status": "implementation_in_progress",
   "user_direction": "Desktop web now. Hosting/sharing on hold. Preserve final nationwide and specialist scope.",
   "next_batch": [
@@ -261,13 +261,13 @@
       "status": "partial",
       "evidence": "docs/18-bulletin-retrieval-and-warning-lifecycle.md",
       "latest_evidence": "docs/72-integrated-status-and-ps-review.md",
-      "current_evidence": "The desktop workspace exposes fifteen guided tools and, with this batch, every declared read-model path has a direct surface: the station-network inventory, the radar status board, the national sub-basin list and now the published-documents index, air quality and ensemble spread all render their own panels. The rail prints keyboard hints that the Alt+1-9 handler now matches, asserted by a component check. The language ledger has 19 verified write gates and 10 speak/hear gates; voice controls and audio probes exist. Native-speaker, noisy-input, screen-reader and real mobile acceptance remain open."
+      "current_evidence": "The desktop workspace exposes fifteen guided tools and every declared read-model path has a direct surface. The frontend overhaul is under way: a token layer (tokens.css), a chart engine v2 (viz.js) and its first two signature visuals — the ensemble member plume and the multi-parameter meteogram — are wired into the Ensemble and Forecast surfaces, with motion primitives and a focus ring. The language ledger has 19 verified write gates and 10 speak/hear gates; voice controls and audio probes exist. Native-speaker, noisy-input, screen-reader and real mobile acceptance remain open."
     },
     "P14": {
       "status": "partial",
       "evidence": "research/reviews/product-potential-20260912/findings.json",
       "latest_evidence": "docs/72-integrated-status-and-ps-review.md",
-      "current_evidence": "The working tree passes 1,139 Python tests, nine Node component suites, the frontend workspace audit and all 26 verification steps on this macOS Python 3.9 host, with the status drift guard green. Live loopback records for the newest surfaces are in research/reviews/corpus-and-surfaces-20260915 and research/reviews/frontend-delivery-20260915; no DOM or browser rendering was available in the session sandbox. Fresh-machine/Windows installation, real-device notification delivery, CI, sustained load and deployment remain unaccepted; hosting held."
+      "current_evidence": "The working tree passes 1,139 Python tests, ten Node component suites, the frontend workspace audit and all 27 verification steps on this macOS Python 3.9 host, with the status drift guard green. The frontend overhaul batch adds a token layer and a chart engine pinned by tests/test_viz.js (gaps stay gaps, locators travel with every drawn point). Live loopback records are in research/reviews/frontend-overhaul-20260915, corpus-and-surfaces-20260915 and frontend-delivery-20260915; no DOM or browser rendering was available in the session sandbox. Fresh-machine/Windows installation, real-device notification delivery, CI, sustained load and deployment remain unaccepted; hosting held."
     },
     "P15": {
       "status": "partial",
@@ -293,7 +293,7 @@
       "prerequisite": "Reviewed domain tools; no unsupported risk scores"
     }
   ],
-  "latest_batch": "docs/77-corpus-front-door-and-surface-completion.md",
+  "latest_batch": "docs/78-frontend-overhaul-plan.md",
   "next_batch_note": "Prioritize live warning-change delivery acceptance, independent task/evidence adjudication, bounded source latency, native-speaker and real-audio review, and mobile/domain acceptance. The unified workspace exposes 15 tools. No operational or full PS claim.",
   "open_paths": [
     {

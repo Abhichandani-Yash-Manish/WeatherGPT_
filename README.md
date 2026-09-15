@@ -145,6 +145,7 @@ The interface states these limits instead of filling them:
 ```sh
 python3 -m pytest tests/ -q                          # 1139 Python tests
 node tests/test_charts.js                            #  2 of 70 component checks
+node tests/test_viz.js                               #  the chart engine: plume, meteogram, gaps and locators
 node tests/test_views.js                             # 18
 node tests/test_bulletin_ui.js                       #  6
 node tests/test_conversation_ui.js                   # 13
@@ -204,6 +205,7 @@ recorded journeys, fast and slow.
 
 - [The recorded problem statement](docs/00-problem-statement.md) — the authoritative SIH26068 summary and what this team's interpretations are.
 - [The integrated PS assessment](docs/72-integrated-status-and-ps-review.md) — the current requirement-by-requirement verdict and remaining gates.
+- [The frontend overhaul plan](docs/78-frontend-overhaul-plan.md) and [DESIGN.md](DESIGN.md) — the phased overhaul, the stack decision and the design system it commits to.
 - [The corpus front door and surface completion](docs/77-corpus-front-door-and-surface-completion.md) — the newest batch.
 - [OpenRouter routing and frontend delivery](docs/76-openrouter-routing-and-frontend-delivery.md) — the free-model ranking, failover and the radar coordinate repair.
 - [The dissemination integration review](docs/73-dissemination-integration-review.md) — alert delivery machinery and its limits.
@@ -217,6 +219,7 @@ recorded journeys, fast and slow.
 Each links to the batch that recorded it. Older entries are **historical evidence, not completion
 claims**, and the test counts in them are the counts of their own checkpoint.
 
+- [The frontend overhaul: plan and design system](docs/78-frontend-overhaul-plan.md) — the stack decision, the token layer, the chart engine and the signature visuals, phase by phase.
 - [The corpus front door and surface completion](docs/77-corpus-front-door-and-surface-completion.md) — the README overhaul, the published-documents browser, air quality and ensemble surfaces, and two repairs found while building.
 - [Provider routing and the surfaces that reached the frontend](docs/76-openrouter-routing-and-frontend-delivery.md) — the free-model ranking re-measured, body-level failover repaired, radar coordinate order fixed, five capability paths surfaced.
 - [Concurrent alert delivery and its critical limits](docs/73-dissemination-integration-review.md) — outbox, consented push, acknowledgements; no live device-delivery claim.

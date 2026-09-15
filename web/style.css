@@ -20,94 +20,10 @@
 
 /* 01 — tokens & base ------------------------------------------------------- */
 
-:root {
-  color-scheme: light;
+/* Tokens live in tokens.css, which this sheet consumes and declares no colour or type
+   value of its own. See DESIGN.md for the system and docs/78 for the overhaul plan. */
 
-  --serif: ui-serif, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
-  --sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans', sans-serif;
-  --mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Roboto Mono', monospace;
 
-  /* housing: the instrument chassis */
-  --housing:    #101a20;
-  --housing-2:  #16242c;
-  --housing-ink:#dbe6e2;
-  --housing-mute:#8ba0a2;
-  --housing-line:#263740;
-  --housing-grid:rgba(126,160,166,.09);
-
-  /* paper: the working surface */
-  --ground:  #ecf0ec;
-  --paper:   #fbfcfa;
-  --sunk:    #e2e9e4;
-  --ink:     #16242b;
-  --ink-soft:#3d525b;
-  --mute:    #59696e;
-  --line:    #d6dfd9;
-  --line-strong:#b7c5bd;
-
-  /* accents: data-teal for measured paths, slate for structure, sand for rules */
-  --data:      #0d6d77;
-  --data-ink:  #ffffff;
-  --data-wash: #dcebeb;
-  --slate:     #33506a;
-  --sand:      #b9a26a;
-  --sand-wash: #f0ead9;
-
-  /* hazard only */
-  --red:    #b22b2b;  --red-wash:    #f8e3e1;
-  --orange: #a35611;  --orange-wash: #f9ebdb;
-  --yellow: #856800;  --yellow-wash: #f7f0d5;
-  --green:  #2c6e45;  --green-wash:  #e1efe6;
-
-  --r: 3px;
-  --r-card: 8px;
-  --lift-1: 0 1px 0 rgba(21,36,43,.05);
-  --lift-2: 0 16px 38px -28px rgba(21,36,43,.6), 0 2px 6px -4px rgba(21,36,43,.28);
-  --pad: clamp(14px, 2.2vw, 28px);
-  --rail: 252px;
-  --top: 56px;
-  --measure: 74ch;
-
-  --step--1: clamp(11px, .72rem + .1vw, 12px);
-  --step-0:  clamp(13.5px, .84rem + .1vw, 15px);
-  --step-1:  clamp(15px, .95rem + .2vw, 17px);
-  --step-2:  clamp(18px, 1.1rem + .4vw, 22px);
-  --step-3:  clamp(22px, 1.25rem + .8vw, 30px);
-  --step-4:  clamp(28px, 1.5rem + 1.6vw, 42px);
-}
-
-:root[data-theme='dark'] {
-  color-scheme: dark;
-  --ground:  #0b1216;
-  --paper:   #121c21;
-  --sunk:    #0e171c;
-  --ink:     #e3ece9;
-  --ink-soft:#b2c3c1;
-  --mute:    #889da2;
-  --line:    #25353c;
-  --line-strong:#3a4d55;
-
-  --data:      #4fb3be;
-  --data-ink:  #05201f;
-  --data-wash: #123236;
-  --slate:     #9db6cd;
-  --sand:      #cdb478;
-  --sand-wash: #2f2a17;
-
-  --red:    #ff7a72;  --red-wash:    #3a1b1b;
-  --orange: #f0a35a;  --orange-wash: #38260f;
-  --yellow: #e6c85e;  --yellow-wash: #373012;
-  --green:  #6fc592;  --green-wash:  #12301f;
-
-  --housing:    #070d10;
-  --housing-2:  #0f191e;
-  --housing-ink:#d8e4e1;
-  --housing-mute:#7e959a;
-  --housing-line:#1d2b32;
-  --housing-grid:rgba(126,160,166,.07);
-  --lift-1: 0 1px 0 rgba(0,0,0,.45);
-  --lift-2: 0 18px 44px -30px rgba(0,0,0,.95), 0 2px 8px -4px rgba(0,0,0,.65);
-}
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
@@ -854,4 +770,53 @@ body { display: flex; flex-direction: column; min-height: 100vh; min-height: 100
 @media (min-width:1180px) {
   .desk-live-grid .desk-live-card { height:430px; display:flex; flex-direction:column; }
   .desk-live-grid .desk-card-body { flex:1; min-height:0; }
+}
+
+/* 10 — chart language (viz.js) -------------------------------------------- */
+.viz { margin: var(--space-4) 0 var(--space-5); }
+.viz-title { margin: 0 0 var(--space-1); font: 600 var(--step-0)/1.3 var(--sans); letter-spacing: var(--track-tight); color: var(--ink); }
+.viz-note { margin: 0 0 var(--space-3); max-width: var(--measure); color: var(--mute); font-size: var(--step--1); }
+.viz-legend { display: flex; flex-wrap: wrap; gap: var(--space-3); margin: 0 0 var(--space-2); font-size: var(--step--1); color: var(--mute); }
+.viz-legend-item { display: inline-flex; align-items: center; gap: 6px; }
+.viz-swatch { display: inline-block; width: 14px; height: 8px; border-radius: 2px; background: var(--viz-band); border: 1px solid var(--viz-band-line); }
+.viz-swatch.is-median { height: 2px; background: var(--viz-line); border-color: var(--viz-line); }
+.viz-swatch.is-mean { height: 0; border: 0; border-top: 2px dashed var(--viz-model); background: none; }
+.viz-swatch.is-whisker { width: 2px; height: 11px; border: 0; border-left: 2px solid var(--viz-missing); background: none; }
+.viz-frame { display: block; width: 100%; height: auto; background: var(--viz-surface); border: var(--hairline); border-radius: var(--r-card); }
+.viz-grid { stroke: var(--viz-grid); stroke-width: 1; }
+.viz-axis { fill: var(--viz-axis); font: 500 10px/1 var(--mono); font-variant-numeric: tabular-nums; }
+.viz-unit { fill: var(--mute); font: 600 9.5px/1 var(--sans); letter-spacing: var(--track-wide); text-transform: uppercase; }
+.viz-band { fill: var(--viz-band); }
+.viz-band-line { fill: none; stroke: var(--viz-band-line); stroke-width: 1; }
+.viz-median { fill: none; stroke: var(--viz-line); stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; }
+.viz-mean { fill: none; stroke: var(--viz-model); stroke-width: 1.4; stroke-dasharray: 5 4; }
+.viz-whisker { stroke: var(--viz-missing); stroke-width: 1; opacity: .7; }
+.viz-line { fill: none; stroke: var(--viz-observed); stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; }
+.viz-bar { fill: var(--viz-rain); opacity: .85; }
+.viz-arrow { fill: var(--viz-wind); font-size: 11px; }
+.viz-night { fill: var(--viz-night); }
+.viz-hit { fill: transparent; cursor: crosshair; }
+.viz-hit:focus-visible { outline: 2px solid var(--data); outline-offset: -1px; }
+.viz-readout { margin: var(--space-2) 0 0; font: 500 var(--step--1)/1.45 var(--mono); color: var(--ink-soft); min-height: 1.45em; }
+.viz-method { margin: var(--space-2) 0 0; color: var(--mute); font-size: var(--step--1); }
+.viz-empty { margin: 0; color: var(--mute); font-size: var(--step--1); }
+.viz-values { margin-top: var(--space-2); }
+.viz-values summary { cursor: pointer; color: var(--data); font-size: var(--step--1); }
+.viz-values table { width: 100%; border-collapse: collapse; margin-top: var(--space-2); font-variant-numeric: tabular-nums; }
+.viz-values th, .viz-values td { text-align: left; padding: 4px 8px 4px 0; border-bottom: var(--hairline); font-size: var(--step--1); }
+
+/* 11 — motion: it explains where a surface came from, or that evidence arrived */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes viz-rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @keyframes viz-draw { to { stroke-dashoffset: 0; } }
+  @keyframes viz-fade-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes viz-fade-out { from { opacity: 1; } to { opacity: 0; } }
+  .block, .viz, .plan-row { animation: viz-rise var(--motion-slow) var(--ease-out) both; }
+  .viz-median, .viz-line { stroke-dasharray: 1400; stroke-dashoffset: 1400; animation: viz-draw var(--motion-slower) var(--ease-out) forwards; }
+  ::view-transition-old(root) { animation: viz-fade-out var(--motion-fast) var(--ease-out) both; }
+  ::view-transition-new(root) { animation: viz-fade-in var(--motion-base) var(--ease-out) both; }
+}
+:focus-visible { outline: 2px solid var(--data); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
 }

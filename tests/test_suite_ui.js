@@ -122,7 +122,12 @@ const PAYLOADS = {
     { not_established: ['An air-quality index is the source\u2019s own index, and no health advice, risk score or official warning is produced from it.'] }),
   '/api/ensemble': envelope('ensemble.spread', 'ok',
     { parameters: { temperature_2m_mean: { unit: '\u00b0C', points: [{ t: '2026-09-14T00:00:00+00:00', v: '24.860', source_locator: '$.hourly.temperature_2m*[0]' }] },
-                    temperature_2m_spread: { unit: '\u00b0C', points: [{ t: '2026-09-14T00:00:00+00:00', v: '1.204', source_locator: '$.hourly.temperature_2m*[0]' }] } },
+                    temperature_2m_spread: { unit: '\u00b0C', points: [{ t: '2026-09-14T00:00:00+00:00', v: '1.204', source_locator: '$.hourly.temperature_2m*[0]' }, { t: '2026-09-14T01:00:00+00:00', v: '1.318', source_locator: '$.hourly.temperature_2m*[1]' }] },
+                    temperature_2m_p10: { unit: '\u00b0C', points: [{ t: '2026-09-14T00:00:00+00:00', v: '23.100', source_locator: '$.hourly.temperature_2m*[0]' }, { t: '2026-09-14T01:00:00+00:00', v: '23.400', source_locator: '$.hourly.temperature_2m*[1]' }] },
+                    temperature_2m_p50: { unit: '\u00b0C', points: [{ t: '2026-09-14T00:00:00+00:00', v: '24.050', source_locator: '$.hourly.temperature_2m*[0]' }, { t: '2026-09-14T01:00:00+00:00', v: '24.220', source_locator: '$.hourly.temperature_2m*[1]' }] },
+                    temperature_2m_p90: { unit: '\u00b0C', points: [{ t: '2026-09-14T00:00:00+00:00', v: '25.200', source_locator: '$.hourly.temperature_2m*[0]' }, { t: '2026-09-14T01:00:00+00:00', v: '25.600', source_locator: '$.hourly.temperature_2m*[1]' }] },
+                    temperature_2m_min: { unit: '\u00b0C', points: [{ t: '2026-09-14T00:00:00+00:00', v: '22.000', source_locator: '$.hourly.temperature_2m*[0]' }, { t: '2026-09-14T01:00:00+00:00', v: '22.300', source_locator: '$.hourly.temperature_2m*[1]' }] },
+                    temperature_2m_max: { unit: '\u00b0C', points: [{ t: '2026-09-14T00:00:00+00:00', v: '26.000', source_locator: '$.hourly.temperature_2m*[0]' }, { t: '2026-09-14T01:00:00+00:00', v: '26.200', source_locator: '$.hourly.temperature_2m*[1]' }] } },
       statistics: { mean: 'arithmetic mean of the returned perturbed members', spread: 'population standard deviation across the returned members' },
       member_total: { temperature_2m: 30 }, model: 'gfs025', days: 1, grid: { latitude: 23.0, longitude: 72.6 },
       requested: { latitude: 23.03, longitude: 72.59 } },
@@ -192,6 +197,7 @@ function harness() {
   document.readyState = 'loading';
   vm.runInContext(fs.readFileSync(path.join(ROOT, 'web/views.js'), 'utf8'), context);
   vm.runInContext(fs.readFileSync(path.join(ROOT, 'web/charts.js'), 'utf8'), context);
+  vm.runInContext(fs.readFileSync(path.join(ROOT, 'web/viz.js'), 'utf8'), context);
   vm.runInContext(fs.readFileSync(path.join(ROOT, 'web/shell.js'), 'utf8'), context);
   vm.runInContext(fs.readFileSync(path.join(ROOT, 'web/map.js'), 'utf8'), context);
   vm.runInContext(fs.readFileSync(path.join(ROOT, 'web/panels.js'), 'utf8'), context);
@@ -265,6 +271,7 @@ async function run() {
 
   const forecast = await render('forecast', place);
   assert(withTag(forecast, 'svg').length >= 1, 'the forecast surface draws a chart');
+  assert(withClass(forecast, 'viz').length >= 1, 'the hourly reading is drawn as one composite timeline');
   console.log('PASS: the forecast surface renders a series chart');
 
   const climate = await render('climate', place);
@@ -297,6 +304,9 @@ async function run() {
   assert(walk(ensemble).some(node => /nearest-rank percentiles/.test(textOf(node))), 'the percentile method is stated');
   assert(withTag(ensemble, 'svg').length >= 1, 'the ensemble surface draws the member statistics');
   assert(/not a probability/i.test(textOf(ensemble)), 'the ensemble surface refuses the probability reading');
+  assert(withClass(ensemble, 'viz-band').length >= 1, 'the member plume draws the p10-p90 band from returned statistics');
+  assert(withClass(ensemble, 'viz-median').length >= 1, 'the plume draws the median as its own line');
+  assert(withClass(ensemble, 'viz-hit').length >= 2, 'every drawn hour is focusable for its exact values');
   console.log('PASS: the ensemble surface draws member statistics without scoring them');
 
   const documents = await render('documents');

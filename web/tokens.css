@@ -1,0 +1,160 @@
+/* WeatherGPT — design tokens (the overhaul's token layer)
+   ============================================================================
+   Everything a surface may name. Loaded before style.css, which now consumes these
+   tokens and declares no colour or type values of its own. Three rules hold:
+   1. Hazard colours (red, orange, yellow, green) are IMD hazard colours and appear only
+      on hazard chips, hazard days and hazard text read from the source.
+   2. Interface state is carried by wording, weight, position and monochrome glyphs.
+   3. A chart may only draw a value the engine returned; missing is drawn as a gap or a
+      dashed hairline, never as a point, a bar or an interpolated segment.
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* type ------------------------------------------------------------------ */
+  --serif: ui-serif, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+  --sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans', sans-serif;
+  --mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Roboto Mono', monospace;
+  --step--1: clamp(11px, .72rem + .1vw, 12px);
+  --step-0:  clamp(13.5px, .84rem + .1vw, 15px);
+  --step-1:  clamp(15px, .95rem + .2vw, 17px);
+  --step-2:  clamp(18px, 1.1rem + .4vw, 22px);
+  --step-3:  clamp(22px, 1.25rem + .8vw, 30px);
+  --step-4:  clamp(28px, 1.5rem + 1.6vw, 42px);
+  --step-5:  clamp(34px, 1.9rem + 2.6vw, 58px);   /* hero numerals */
+  --track-wide: .14em;      /* eyebrow capitals */
+  --track-tight: -.015em;   /* display lines */
+
+  /* housing: the instrument chassis ---------------------------------------- */
+  --housing:    #101a20;
+  --housing-2:  #16242c;
+  --housing-ink:#dbe6e2;
+  --housing-mute:#8ba0a2;
+  --housing-line:#263740;
+  --housing-grid:rgba(126,160,166,.09);
+
+  /* paper: the working surface --------------------------------------------- */
+  --ground:  #ecf0ec;
+  --paper:   #fbfcfa;
+  --sunk:    #e2e9e4;
+  --raiser:  #ffffff;             /* the lifted card level */
+  --ink:     #16242b;
+  --ink-soft:#3d525b;
+  --mute:    #59696e;
+  --line:    #d6dfd9;
+  --line-strong:#b7c5bd;
+  --scrim:   rgba(16,26,32,.42);
+
+  /* accents: data-teal for measured paths, slate for structure, sand for rules */
+  --data:      #0d6d77;
+  --data-ink:  #ffffff;
+  --data-wash: #dcebeb;
+  --slate:     #33506a;
+  --sand:      #b9a26a;
+  --sand-wash: #f0ead9;
+
+  /* hazard only ------------------------------------------------------------ */
+  --red:    #b22b2b;  --red-wash:    #f8e3e1;
+  --orange: #a35611;  --orange-wash: #f9ebdb;
+  --yellow: #856800;  --yellow-wash: #f7f0d5;
+  --green:  #2c6e45;  --green-wash:  #e1efe6;
+
+  /* geometry --------------------------------------------------------------- */
+  --r: 3px;
+  --r-card: 8px;
+  --r-pill: 999px;
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px;
+  --pad: clamp(14px, 2.2vw, 28px);
+  --rail: 252px;
+  --top: 56px;
+  --measure: 74ch;
+  --hairline: 1px solid var(--line);
+
+  /* elevation -------------------------------------------------------------- */
+  --lift-1: 0 1px 0 rgba(21,36,43,.05);
+  --lift-2: 0 16px 38px -28px rgba(21,36,43,.6), 0 2px 6px -4px rgba(21,36,43,.28);
+  --lift-3: 0 28px 64px -34px rgba(21,36,43,.55), 0 3px 10px -6px rgba(21,36,43,.3);
+
+  /* motion: explains, never decorates -------------------------------------- */
+  --motion-fast: 120ms;
+  --motion-base: 200ms;
+  --motion-slow: 320ms;
+  --motion-slower: 520ms;
+  --ease-out: cubic-bezier(.22, .61, .36, 1);
+  --ease-in-out: cubic-bezier(.4, 0, .2, 1);
+  --ease-spring: cubic-bezier(.34, 1.26, .64, 1);
+
+  /* chart language --------------------------------------------------------- */
+  --viz-surface: #ffffff;
+  --viz-grid: #e6ebe6;
+  --viz-axis: #6c7d80;
+  --viz-line: #0d6d77;
+  --viz-model: #33506a;
+  --viz-observed: #2c6e45;
+  --viz-band: rgba(13, 109, 119, .16);
+  --viz-band-line: rgba(13, 109, 119, .38);
+  --viz-rain: #1d7fa5;
+  --viz-wind: #4a5f66;
+  --viz-missing: #b7c5bd;
+  --viz-crosshair: rgba(51, 80, 106, .5);
+  --viz-day: rgba(185, 162, 106, .10);
+  --viz-night: rgba(51, 80, 106, .07);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --ground:  #0b1216;
+  --paper:   #121c21;
+  --sunk:    #0e171c;
+  --raiser:  #16232a;
+  --ink:     #e3ece9;
+  --ink-soft:#b2c3c1;
+  --mute:    #889da2;
+  --line:    #25353c;
+  --line-strong:#3a4d55;
+  --scrim:   rgba(4,9,12,.6);
+
+  --data:      #4fb3be;
+  --data-ink:  #05201f;
+  --data-wash: #123236;
+  --slate:     #9db6cd;
+  --sand:      #cdb478;
+  --sand-wash: #2f2a17;
+
+  --red:    #ff7a72;  --red-wash:    #3a1b1b;
+  --orange: #f0a35a;  --orange-wash: #38260f;
+  --yellow: #e6c85e;  --yellow-wash: #373012;
+  --green:  #6fc592;  --green-wash:  #12301f;
+
+  --housing:    #070d10;
+  --housing-2:  #0f191e;
+  --housing-ink:#d8e4e1;
+  --housing-mute:#7e959a;
+  --housing-line:#1d2b32;
+  --housing-grid:rgba(126,160,166,.07);
+  --lift-1: 0 1px 0 rgba(0,0,0,.45);
+  --lift-2: 0 18px 44px -30px rgba(0,0,0,.95), 0 2px 8px -4px rgba(0,0,0,.65);
+  --lift-3: 0 30px 70px -36px rgba(0,0,0,1), 0 4px 12px -6px rgba(0,0,0,.7);
+
+  --viz-surface: #101a20;
+  --viz-grid: #23343b;
+  --viz-axis: #8ba0a2;
+  --viz-line: #4fb3be;
+  --viz-model: #9db6cd;
+  --viz-observed: #6fc592;
+  --viz-band: rgba(79, 179, 190, .18);
+  --viz-band-line: rgba(79, 179, 190, .42);
+  --viz-rain: #58b6d8;
+  --viz-wind: #9fb4b8;
+  --viz-missing: #3a4d55;
+  --viz-crosshair: rgba(157, 182, 205, .55);
+  --viz-day: rgba(205, 180, 120, .08);
+  --viz-night: rgba(79, 179, 190, .05);
+}
+
+/* Motion is an offer, not a requirement. */
+@media (prefers-reduced-motion: reduce) {
+  :root { --motion-fast: 1ms; --motion-base: 1ms; --motion-slow: 1ms; --motion-slower: 1ms; }
+}

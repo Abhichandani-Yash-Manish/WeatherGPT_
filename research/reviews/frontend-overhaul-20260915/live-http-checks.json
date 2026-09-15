@@ -1,0 +1,61 @@
+{
+  "schema_version": "frontend-overhaul-live-http-v1",
+  "checked_at_utc": "2026-09-15T17:13:49+00:00",
+  "base": "http://127.0.0.1:8795",
+  "batch": "P0 direction + P1 foundation + P2 first signature visuals",
+  "method": "Loopback HTTP against a fresh workspace process: the served token layer, the served chart engine, and the page references that load them. No DOM rendering: the session sandbox cannot launch Chrome.",
+  "checks": [
+    {
+      "check": "page loads the token layer and the chart engine",
+      "status": 200,
+      "ms": 4,
+      "references_tokens_css": true,
+      "references_viz_js": true,
+      "css_order_ok": true
+    },
+    {
+      "check": "served design tokens",
+      "path": "/tokens.css",
+      "status": 200,
+      "ms": 0,
+      "bytes": 5826,
+      "missing_expected_tokens": []
+    },
+    {
+      "check": "served chart engine",
+      "path": "/viz.js",
+      "status": 200,
+      "ms": 0,
+      "bytes": 19805,
+      "missing_expected_tokens": []
+    },
+    {
+      "check": "served stylesheet consumes the tokens",
+      "path": "/style.css",
+      "status": 200,
+      "ms": 0,
+      "bytes": 60903,
+      "missing_expected_tokens": [],
+      "composer_pinning": "asserted by scripts/audit_workspace_frontend.py FE01, which passes"
+    },
+    {
+      "check": "the plume has real member series to draw",
+      "status": 200,
+      "ms": 2776,
+      "series": [
+        "temperature_2m_control",
+        "temperature_2m_max",
+        "temperature_2m_mean",
+        "temperature_2m_min",
+        "temperature_2m_p10",
+        "temperature_2m_p50",
+        "temperature_2m_p90",
+        "temperature_2m_spread"
+      ],
+      "member_total": {
+        "temperature_2m": 30
+      }
+    }
+  ],
+  "note": "The stylesheet needles check the new chart classes and the motion layer; composer pinning is asserted by the static frontend audit (FE01), not by this needle."
+}

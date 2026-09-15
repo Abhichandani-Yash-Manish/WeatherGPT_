@@ -40,6 +40,49 @@
   function sourceLine(view, host) {
     host.append(WG.sourceDisclosure(view));
   }
+  /* The meteogram needs three independent series on one axis, so it is built only from what the
+     source returned. A missing series is simply absent from the drawing and the exact-value table
+     — never estimated from another parameter or from the previous hour. */
+  function meteogramFor(parameters) {
+    if (typeof viz === 'undefined' || !viz.meteogram) return null;
+    const temperature = parameters.temperature_2m || parameters.apparent_temperature || null;
+    const rain = parameters.precipitation || parameters.rain || null;
+    const wind = parameters.wind_speed_10m || parameters.wind_speed || null;
+    const humidity = parameters.relative_humidity_2m || parameters.relative_humidity || null;
+    if (!temperature && !rain && !wind) return null;
+    const hours = [];
+    const index = new Map();
+    const collect = (bucket, field, evidenceKey) => {
+      ((bucket || {}).points || []).forEach(point => {
+        if (!point.t) return;
+        let entry = index.get(point.t);
+        if (!entry) { entry = { t: point.t, label: istStamp(point.t), evidence: {} }; index.set(point.t, entry); hours.push(entry); }
+        entry[field] = point.v;
+        if (point.source_locator) entry.evidence[evidenceKey] = point.source_locator;
+      });
+    };
+    collect(temperature, 'temperature', 'temperature');
+    collect(rain, 'rain', 'rain');
+    collect(wind, 'wind_speed', 'wind');
+    collect(humidity, 'humidity', 'humidity');
+    const wind_direction = parameters.wind_direction_10m || parameters.wind_direction || null;
+    ((wind_direction || {}).points || []).forEach(point => {
+      const entry = index.get(point.t);
+      if (entry) entry.wind_direction = point.v;
+    });
+    if (!hours.length) return null;
+    hours.sort((left, right) => Date.parse(left.t) - Date.parse(right.t));
+    hours.forEach(hour => {
+      const ist = new Date(Date.parse(hour.t) + 5.5 * 3600 * 1000);
+      const localHour = ist.getUTCHours();
+      hour.night = localHour < 6 || localHour >= 19;
+    });
+    return viz.meteogram({
+      title: 'Meteogram \u00b7 ' + hours.length + ' hour(s)',
+      temperature_unit: (temperature || {}).unit, rain_unit: (rain || {}).unit, wind_unit: (wind || {}).unit,
+      hours: hours
+    });
+  }
   function seriesChart(parameters, key, title, unitLabel) {
     const bucket = parameters[key];
     if (!bucket) return null;
@@ -520,6 +563,8 @@
       if (!view || view.status !== 'ok') { host2.append(WG.stateBlock('plain', 'No forecast series was returned for this point.')); return; }
       const bucket = (view.data.parameters || {})[parameterSelect.value];
       if (!bucket) { host2.append(WG.stateBlock('plain', 'Select a parameter.')); return; }
+      const meteogram = meteogramFor(view.data.parameters);
+      if (meteogram) host2.append(meteogram);
       const chart = seriesChart(view.data.parameters, parameterSelect.value, parameterSelect.value);
       if (chart) host2.append(chart);
       const facts = WG.block('Answering grid');
@@ -970,6 +1015,20 @@
       host2.append(el('p', 'Model ' + (data.model || 'not stated') + ' \u00b7 ' +
         (members === undefined ? 'member count not stated for this variable' : members + ' member(s) returned') +
         ' \u00b7 nearest-rank percentiles on the sorted members.', 'block-note'));
+      const pointsOf = key => ((parameters[key] || {}).points || []).map(point => ({
+        t: point.t, label: istStamp(point.t), value: point.v, source_locator: point.source_locator }));
+      const fanSeries = ['p10', 'p50', 'p90', 'mean', 'min', 'max'].some(kind => parameters[chosen + '_' + kind]);
+      if (fanSeries && typeof viz !== 'undefined' && viz.ensembleFan) {
+        const unit = ((parameters[chosen + '_p50'] || parameters[chosen + '_mean'] || {}).unit) || '';
+        host2.append(viz.ensembleFan({
+          title: chosen.replace(/_/g, ' ') + ' member distribution \u00b7 ' + (data.model || 'model not stated'),
+          note: 'The returned members as a distribution: the shaded band is p10 to p90, the heavy line the median, the thin whiskers min to max. Spread is not a probability or a skill score.',
+          unit: unit,
+          p10: pointsOf(chosen + '_p10'), p50: pointsOf(chosen + '_p50'), p90: pointsOf(chosen + '_p90'),
+          mean: pointsOf(chosen + '_mean'), min: pointsOf(chosen + '_min'), max: pointsOf(chosen + '_max'),
+          member_total: members, statistics: data.statistics
+        }));
+      }
       let drawn = 0;
       KINDS.forEach(kind => {
         const key = chosen + '_' + kind;

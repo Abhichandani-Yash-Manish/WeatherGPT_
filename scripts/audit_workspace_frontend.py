@@ -222,8 +222,9 @@ def audit():
     for name in ('index.html',):
         if re.search(r'<style|\sstyle="|<script(?![^>]*\ssrc=)', files[name]):
             unsafe.append(name)
-    for name in ('app.js', 'views.js', 'charts.js'):
-        if re.search(r"setAttribute\(\s*'style'|setAttribute\(\s*\"style\"", files[name]):
+    for name in ('app.js', 'views.js', 'charts.js', 'viz.js'):
+        source = files.get(name) or (read(WEB / name) if (WEB / name).exists() else '')
+        if re.search(r"setAttribute\(\s*'style'|setAttribute\(\s*\"style\"", source):
             unsafe.append(name)
     findings['csp_compliance'] = {
         'state': 'ok' if not unsafe else 'broken',
@@ -258,7 +259,7 @@ def syntax_check():
     except (OSError, subprocess.SubprocessError):
         return {'state': 'skipped', 'detail': 'Node is not available, so served scripts were not parsed.'}
     broken = []
-    for name in ('app.js', 'views.js', 'charts.js'):
+    for name in ('app.js', 'views.js', 'charts.js', 'viz.js'):
         result = subprocess.run(['node', '--check', str(WEB / name)], capture_output=True, text=True, timeout=30)
         if result.returncode != 0:
             broken.append(name)

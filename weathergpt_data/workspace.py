@@ -1029,7 +1029,7 @@ def make_server(workspace, port=8765):
                     return self.respond(200,view)
                 except ValueError as exc:return self.respond(400,{'error':str(exc)})
                 except (OSError,sqlite3.Error):return self.respond(503,{'error':'The local evidence store is unavailable. Check its files and retry.'})
-            assets={'/':('index.html','text/html'),'/app.js':('app.js','text/javascript'),'/views.js':('views.js','text/javascript'),'/charts.js':('charts.js','text/javascript'),'/shell.js':('shell.js','text/javascript'),'/panels.js':('panels.js','text/javascript'),'/map.js':('map.js','text/javascript'),'/voice.js':('voice.js','text/javascript'),'/home.js':('home.js','text/javascript'),'/sw.js':('sw.js','application/javascript'),'/style.css':('style.css','text/css')}
+            assets={'/':('index.html','text/html'),'/app.js':('app.js','text/javascript'),'/views.js':('views.js','text/javascript'),'/charts.js':('charts.js','text/javascript'),'/shell.js':('shell.js','text/javascript'),'/panels.js':('panels.js','text/javascript'),'/map.js':('map.js','text/javascript'),'/voice.js':('voice.js','text/javascript'),'/home.js':('home.js','text/javascript'),'/sw.js':('sw.js','application/javascript'),'/tokens.css':('tokens.css','text/css'),'/viz.js':('viz.js','text/javascript'),'/style.css':('style.css','text/css')}
             if path not in assets:return self.respond(404,{'error':'Not found'})
             filename,kind=assets[path]
             try:text=(ROOT/'web'/filename).read_text()

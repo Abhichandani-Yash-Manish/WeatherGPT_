@@ -15,7 +15,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-NODE_SUITES = ['tests/test_charts.js', 'tests/test_views.js', 'tests/test_bulletin_ui.js',
+NODE_SUITES = ['tests/test_charts.js', 'tests/test_viz.js', 'tests/test_views.js', 'tests/test_bulletin_ui.js',
                'tests/test_conversation_ui.js', 'tests/test_suite_ui.js', 'tests/test_voice_ui.js',
                'tests/test_briefcase_ui.js', 'tests/test_workspace_ui.js', 'tests/test_notify_ui.js']
 REGISTRIES = ['data/registry/sources.json', 'data/registry/source-review.json', 'data/registry/product-progress.json',
