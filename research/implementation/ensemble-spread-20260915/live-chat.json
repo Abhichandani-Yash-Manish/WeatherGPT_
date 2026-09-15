@@ -1,0 +1,355 @@
+{
+  "schema_version": "ensemble-chat-v1",
+  "generated_at_utc": "2026-09-15T09:13:39.927306+00:00",
+  "note": "Deterministic-rules turns; the ensemble fetch is live through the governed store.",
+  "turns": [
+    {
+      "question": "What is the ensemble spread for Ahmedabad tomorrow morning?",
+      "status": "answered",
+      "provider": "deterministic_rules",
+      "tasks": [
+        {
+          "kind": "ensemble",
+          "operation": "lookup",
+          "parameters": [
+            "temperature_2m",
+            "precipitation",
+            "wind_speed_10m"
+          ],
+          "start_local": "2026-09-16T09:30:00+05:30",
+          "end_local": "2026-09-16T12:30:00+05:30"
+        }
+      ],
+      "products": [
+        "gfs025 ensemble member forecast",
+        "India place catalogue"
+      ],
+      "values": [
+        {
+          "parameter": "temperature_2m_mean",
+          "value": "28.163",
+          "unit": "°C",
+          "member_count": 30
+        },
+        {
+          "parameter": "temperature_2m_mean",
+          "value": "29.657",
+          "unit": "°C",
+          "member_count": 30
+        },
+        {
+          "parameter": "temperature_2m_mean",
+          "value": "30.837",
+          "unit": "°C",
+          "member_count": 30
+        },
+        {
+          "parameter": "temperature_2m_spread",
+          "value": "0.336",
+          "unit": "°C",
+          "member_count": 30
+        },
+        {
+          "parameter": "temperature_2m_spread",
+          "value": "0.410",
+          "unit": "°C",
+          "member_count": 30
+        },
+        {
+          "parameter": "temperature_2m_spread",
+          "value": "0.489",
+          "unit": "°C",
+          "member_count": 30
+        },
+        {
+          "parameter": "temperature_2m_p10",
+          "value": "27.7",
+          "unit": "°C",
+          "member_count": 30
+        },
+        {
+          "parameter": "temperature_2m_p10",
+          "value": "29.1",
+          "unit": "°C",
+          "member_count": 30
+        },
+        {
+          "parameter": "temperature_2m_p10",
+          "value": "30.2",
+          "unit": "°C",
+          "member_count": 30
+        },
+        {
+          "parameter": "temperature_2m_p90",
+          "value": "28.5",
+          "unit": "°C",
+          "member_count": 30
+        },
+        {
+          "parameter": "temperature_2m_p90",
+          "value": "30.2",
+          "unit": "°C",
+          "member_count": 30
+        },
+        {
+          "parameter": "temperature_2m_p90",
+          "value": "31.5",
+          "unit": "°C",
+          "member_count": 30
+        }
+      ],
+      "fact_count": 36,
+      "notes": [
+        "Time window read from the question: tomorrow morning.",
+        "Place read as Ahmedabad, Ahmadābād, State of Gujarāt — its district carries the same name, and no other place that shares this name does. Other places share this name: Ahmedābād, District Rampur, Uttar Pradesh. Say which one you meant to switch.",
+        "gfs025 returned 30 temperature_2m members, 30 precipitation members, 30 wind_speed_10m members; the control run is excluded from the spread.",
+        "Ensemble spread and percentiles describe the returned members; they are not a probability, confidence, risk or skill measure, and a member count is not the chance of an event.",
+        "Modelled grid values are not local measurements; the model run identity is not exposed."
+      ],
+      "answer": "Ahmedabad, Ahmadābād, State of Gujarāt · 2026-09-16 09:30 to 2026-09-16 11:30 IST\nEnsemble mean temperature: 28.163–30.837 °C across 3 hourly values.\nAhmedabad, Ahmadābād, State of Gujarāt · 2026-09-16 09:30 to 2026-09-16 11:30 IST\nTemperature member spread (population SD): 0.336–0.489 °C across 3 hourly values.\nAhmedabad, Ahmadābād, State of Gujarāt · 2026-09-16 09:30 to 2026-09-16 11:30 IST\nTemperature member p10: 27.7–30.2 °C across 3 hourly values.\nAhmedabad, Ahmadābād, State of Gujarāt · 2026-09-16 09:30 to 2026-09-16 11:30 IST\nTemperature member p90: 28.5–31.5 °C across 3 hourly values.\nAhmedabad, Ahmadābād, State of Gujarāt · 2026-09-16 08:30 to 2026-09-16 11:30 IST\nEnsemble mean hourly precipitation: 0.033–0.033 mm across 3 hourly values.\nAhmedabad, Ahmadābād, State of Gujarāt · 2026-09-16 08:30 to 2026-09-16 11:30 IST\nPrecipitation member spread (population SD): 0.127–0.127 mm across 3 hourly values.\nAhmedabad, Ahmadābād, State of Gujarāt · 2026-09-16 08:30 to 2026-09-16 11:30 IST\nPrecipitation member p10: 0.0–0.0 mm across 3 hourly values.\nAhmedabad, Ahmadābād, State of Gujarāt · 2026-09-16 08:30 to 2026-09-16 11:30 IST\nPrecipitation member p90: 0.1–0.1 mm across 3 hourly values.\nAhmedabad, Ahmadābād, State of Gujarāt · 2026-09-16 09:30 to 2026-09-16 11:30 IST\nEnsemble mean wind speed: 15.870–17.387 km/h across 3 hourly values.\nAhmedabad, Ahmadābād, State of Gujarāt · 2026-09-16 09:30 to 2026-09-16 11:30 IST\nWind member spread (population SD): 2.537–2.842 km/h across 3 hourly values.\nAhmedabad, Ahmadābād, State of Gujarāt · 2026-09-16 09:30 to 2026-09-16 11:30 IST\nWind member p10: 12.3–13.8 km/h across 3 hourly values.\nAhmedabad, Ahmadābād, State of Gujarāt · 2026-09-16 09:30 to 2026-09-16 11:30 IST\nWind member p90: 19.7–20.3 km/h across 3 hourly values.\nExact dates, times, values and evidence IDs are in the charts and tables below.\nModel forecast for the selected point; source model run and local representativeness are unverified."
+    },
+    {
+      "question": "What is the ECMWF ensemble spread for Surat tomorrow?",
+      "status": "answered",
+      "provider": "deterministic_rules",
+      "tasks": [
+        {
+          "kind": "ensemble",
+          "operation": "lookup",
+          "parameters": [
+            "temperature_2m",
+            "precipitation",
+            "wind_speed_10m"
+          ],
+          "start_local": "2026-09-16T00:30:00+05:30",
+          "end_local": "2026-09-17T00:30:00+05:30"
+        }
+      ],
+      "products": [
+        "ecmwf_ifs025 ensemble member forecast",
+        "India place catalogue"
+      ],
+      "values": [
+        {
+          "parameter": "temperature_2m_mean",
+          "value": "25.650",
+          "unit": "°C",
+          "member_count": 50
+        },
+        {
+          "parameter": "temperature_2m_mean",
+          "value": "25.476",
+          "unit": "°C",
+          "member_count": 50
+        },
+        {
+          "parameter": "temperature_2m_mean",
+          "value": "25.312",
+          "unit": "°C",
+          "member_count": 50
+        },
+        {
+          "parameter": "temperature_2m_mean",
+          "value": "25.096",
+          "unit": "°C",
+          "member_count": 50
+        },
+        {
+          "parameter": "temperature_2m_mean",
+          "value": "24.876",
+          "unit": "°C",
+          "member_count": 50
+        },
+        {
+          "parameter": "temperature_2m_mean",
+          "value": "24.908",
+          "unit": "°C",
+          "member_count": 50
+        },
+        {
+          "parameter": "temperature_2m_mean",
+          "value": "25.294",
+          "unit": "°C",
+          "member_count": 50
+        },
+        {
+          "parameter": "temperature_2m_mean",
+          "value": "25.914",
+          "unit": "°C",
+          "member_count": 50
+        },
+        {
+          "parameter": "temperature_2m_mean",
+          "value": "26.598",
+          "unit": "°C",
+          "member_count": 50
+        },
+        {
+          "parameter": "temperature_2m_mean",
+          "value": "27.368",
+          "unit": "°C",
+          "member_count": 50
+        },
+        {
+          "parameter": "temperature_2m_mean",
+          "value": "28.202",
+          "unit": "°C",
+          "member_count": 50
+        },
+        {
+          "parameter": "temperature_2m_mean",
+          "value": "28.828",
+          "unit": "°C",
+          "member_count": 50
+        }
+      ],
+      "fact_count": 288,
+      "notes": [
+        "Time window read from the question: tomorrow whole day.",
+        "Place read as Surat, Sūrat, State of Gujarāt — the only administrative seat among the places that share this name. Other places share this name: Sūrat, Mandi, State of Himāchal Pradesh. Say which one you meant to switch.",
+        "ecmwf_ifs025 returned 50 temperature_2m members, 50 precipitation members, 50 wind_speed_10m members; the control run is excluded from the spread.",
+        "Ensemble spread and percentiles describe the returned members; they are not a probability, confidence, risk or skill measure, and a member count is not the chance of an event.",
+        "Modelled grid values are not local measurements; the model run identity is not exposed."
+      ],
+      "answer": "Surat, Sūrat, State of Gujarāt · 2026-09-16 00:30 to 2026-09-16 23:30 IST\nEnsemble mean temperature: 24.876–29.288 °C across 24 hourly values.\nSurat, Sūrat, State of Gujarāt · 2026-09-16 00:30 to 2026-09-16 23:30 IST\nTemperature member spread (population SD): 0.250–0.807 °C across 24 hourly values.\nSurat, Sūrat, State of Gujarāt · 2026-09-16 00:30 to 2026-09-16 23:30 IST\nTemperature member p10: 24.5–28.6 °C across 24 hourly values.\nSurat, Sūrat, State of Gujarāt · 2026-09-16 00:30 to 2026-09-16 23:30 IST\nTemperature member p90: 25.2–29.9 °C across 24 hourly values.\nSurat, Sūrat, State of Gujarāt · 2026-09-15 23:30 to 2026-09-16 23:30 IST\nEnsemble mean hourly precipitation: 0.000–0.376 mm across 24 hourly values.\nSurat, Sūrat, State of Gujarāt · 2026-09-15 23:30 to 2026-09-16 23:30 IST\nPrecipitation member spread (population SD): 0.000–0.539 mm across 24 hourly values.\nSurat, Sūrat, State of Gujarāt · 2026-09-15 23:30 to 2026-09-16 23:30 IST\nPrecipitation member p10: 0.0–0.1 mm across 24 hourly values.\nSurat, Sūrat, State of Gujarāt · 2026-09-15 23:30 to 2026-09-16 23:30 IST\nPrecipitation member p90: 0.0–0.8 mm across 24 hourly values.\nSurat, Sūrat, State of Gujarāt · 2026-09-16 00:30 to 2026-09-16 23:30 IST\nEnsemble mean wind speed: 8.142–15.566 km/h across 24 hourly values.\nSurat, Sūrat, State of Gujarāt · 2026-09-16 00:30 to 2026-09-16 23:30 IST\nWind member spread (population SD): 2.190–2.863 km/h across 24 hourly values.\nSurat, Sūrat, State of Gujarāt · 2026-09-16 00:30 to 2026-09-16 23:30 IST\nWind member p10: 4.7–12.7 km/h across 24 hourly values.\nSurat, Sūrat, State of Gujarāt · 2026-09-16 00:30 to 2026-09-16 23:30 IST\nWind member p90: 11.2–19.1 km/h across 24 hourly values.\nExact dates, times, values and evidence IDs are in the charts and tables below.\nModel forecast for the selected point; source model run and local representativeness are unverified."
+    },
+    {
+      "question": "What is the spread of rainfall in Ahmedabad tomorrow?",
+      "status": "answered",
+      "provider": "deterministic_rules",
+      "tasks": [
+        {
+          "kind": "ensemble",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "start_local": "2026-09-16T00:30:00+05:30",
+          "end_local": "2026-09-17T00:30:00+05:30"
+        }
+      ],
+      "products": [
+        "gfs025 ensemble member forecast",
+        "India place catalogue"
+      ],
+      "values": [
+        {
+          "parameter": "precipitation_mean",
+          "value": "0.027",
+          "unit": "mm",
+          "member_count": 30
+        },
+        {
+          "parameter": "precipitation_mean",
+          "value": "0.027",
+          "unit": "mm",
+          "member_count": 30
+        },
+        {
+          "parameter": "precipitation_mean",
+          "value": "0.027",
+          "unit": "mm",
+          "member_count": 30
+        },
+        {
+          "parameter": "precipitation_mean",
+          "value": "0.027",
+          "unit": "mm",
+          "member_count": 30
+        },
+        {
+          "parameter": "precipitation_mean",
+          "value": "0.027",
+          "unit": "mm",
+          "member_count": 30
+        },
+        {
+          "parameter": "precipitation_mean",
+          "value": "0.027",
+          "unit": "mm",
+          "member_count": 30
+        },
+        {
+          "parameter": "precipitation_mean",
+          "value": "0.000",
+          "unit": "mm",
+          "member_count": 30
+        },
+        {
+          "parameter": "precipitation_mean",
+          "value": "0.000",
+          "unit": "mm",
+          "member_count": 30
+        },
+        {
+          "parameter": "precipitation_mean",
+          "value": "0.000",
+          "unit": "mm",
+          "member_count": 30
+        },
+        {
+          "parameter": "precipitation_mean",
+          "value": "0.033",
+          "unit": "mm",
+          "member_count": 30
+        },
+        {
+          "parameter": "precipitation_mean",
+          "value": "0.033",
+          "unit": "mm",
+          "member_count": 30
+        },
+        {
+          "parameter": "precipitation_mean",
+          "value": "0.033",
+          "unit": "mm",
+          "member_count": 30
+        }
+      ],
+      "fact_count": 96,
+      "notes": [
+        "Time window read from the question: tomorrow whole day.",
+        "Place read as Ahmedabad, Ahmadābād, State of Gujarāt — its district carries the same name, and no other place that shares this name does. Other places share this name: Ahmedābād, District Rampur, Uttar Pradesh. Say which one you meant to switch.",
+        "gfs025 returned 30 precipitation members; the control run is excluded from the spread.",
+        "Ensemble spread and percentiles describe the returned members; they are not a probability, confidence, risk or skill measure, and a member count is not the chance of an event.",
+        "Modelled grid values are not local measurements; the model run identity is not exposed."
+      ],
+      "answer": "Ahmedabad, Ahmadābād, State of Gujarāt · 2026-09-15 23:30 to 2026-09-16 23:30 IST\nEnsemble mean hourly precipitation: 0.000–0.443 mm across 24 hourly values.\nAhmedabad, Ahmadābād, State of Gujarāt · 2026-09-15 23:30 to 2026-09-16 23:30 IST\nPrecipitation member spread (population SD): 0.000–0.786 mm across 24 hourly values.\nAhmedabad, Ahmadābād, State of Gujarāt · 2026-09-15 23:30 to 2026-09-16 23:30 IST\nPrecipitation member p10: 0.0–0.0 mm across 24 hourly values.\nAhmedabad, Ahmadābād, State of Gujarāt · 2026-09-15 23:30 to 2026-09-16 23:30 IST\nPrecipitation member p90: 0.0–1.0 mm across 24 hourly values.\nExact dates, times, values and evidence IDs are in the charts and tables below.\nModel forecast for the selected point; source model run and local representativeness are unverified."
+    },
+    {
+      "question": "Will it rain in Ahmedabad tomorrow morning?",
+      "status": "answered",
+      "provider": "deterministic_rules",
+      "tasks": [
+        {
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "start_local": "2026-09-16T09:30:00+05:30",
+          "end_local": "2026-09-16T12:30:00+05:30"
+        }
+      ],
+      "products": [
+        "GFS forecast delivery",
+        "India place catalogue"
+      ],
+      "values": [
+        {
+          "parameter": "precipitation",
+          "value": "0.0",
+          "unit": "mm",
+          "member_count": null
+        }
+      ],
+      "fact_count": 1,
+      "notes": [
+        "Time window read from the question: tomorrow morning.",
+        "Place read as Ahmedabad, Ahmadābād, State of Gujarāt — its district carries the same name, and no other place that shares this name does. Other places share this name: Ahmedābād, District Rampur, Uttar Pradesh. Say which one you meant to switch.",
+        "Model forecasts at the selected place point, not observations or district averages. Source model run time and local representativeness remain unverified."
+      ],
+      "answer": "Ahmedabad · 16 Sep, 09:30–16 Sep, 12:30 IST: Forecast precipitation: 0.0 mm. Source: GFS forecast; conditions can change."
+    }
+  ]
+}
