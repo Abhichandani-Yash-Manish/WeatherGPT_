@@ -160,7 +160,47 @@
     const search = el('input');
     search.type = 'search';
     search.placeholder = 'Filter districts';
-    controls.append(stateSelect, search);
+    const briefButton = el('button', 'Write the alert brief', 'ghost');
+    briefButton.type = 'button';
+    briefButton.setAttribute('aria-label', 'Write the alert brief for the working place');
+    const place = WGref.state.place || {};
+    briefButton.addEventListener('click', async () => {
+      if (place.latitude === undefined || place.longitude === undefined) {
+        WG.openDrawer('Alert brief', body => body.append(el('p', 'Choose a working place first: a brief is composed for one point, and the workspace will not guess which.', 'field-note')));
+        return;
+      }
+      WG.openDrawer('Alert brief · ' + (place.label || 'selected point'), body => {
+        const note = el('p', 'Composing from the official district warning product and the CAP relay, reported separately…', 'field-note');
+        body.append(note);
+        WGref.api('/api/warnings/alert-brief', { lat: place.latitude, lon: place.longitude, day: 1 }).then(view => {
+          const brief = view.data || {};
+          WG.clear(body);
+          body.append(el('p', brief.status_line || brief.why || 'No brief was composed.', 'block-note'));
+          const rows = [
+            ['District', (brief.place || {}).district || 'not stated', (brief.place || {}).state || ''],
+            ['Day', (brief.day || {}).label || 'not stated', (brief.day || {}).starts_utc ? (brief.day.starts_utc + ' to ' + brief.day.ends_utc) : ''],
+            ['Hazards as published', ((brief.day_status || {}).hazards || []).join(', ') || 'none listed', (brief.day_status || {}).official_wording || (brief.day_status || {}).wording_note || ''],
+            ['Issuer', (brief.issuer || {}).source_id + ' · ' + (brief.issuer || {}).product, 'issued ' + ((brief.issuer || {}).issued_at_utc || 'not stated') + ' · retrieved ' + ((brief.issuer || {}).retrieved_at_utc || 'not stated')],
+            ['CAP relay (separate)', ((brief.relay || {}).source_id || 'S06') + ' · ' + ((brief.relay || {}).messages === undefined ? 'not read' : brief.relay.messages + ' message(s), ' + brief.relay.eligible_by_lifecycle + ' eligible'), (brief.relay || {}).note || ''],
+            ['Brief identity', 'sha256 ' + String(brief.brief_id || '').slice(0, 16), 'the content hash of this brief']
+          ];
+          body.append(WG.table(['Field', 'Value', 'Provenance'], rows));
+          body.append(el('p', 'What would change this', 'field-label'));
+          const changes = el('ul', undefined, 'notes');
+          (brief.what_would_change_this || []).forEach(item => changes.append(el('li', item)));
+          body.append(changes);
+          body.append(el('p', 'What is not established here', 'field-label'));
+          const limits = el('ul', undefined, 'notes');
+          (brief.not_established || []).forEach(item => limits.append(el('li', item)));
+          body.append(limits);
+          body.append(el('p', 'A brief records what a product published. It is not a warning issued here, not a forecast and not an all-clear.', 'field-note'));
+        }).catch(error => {
+          WG.clear(body);
+          body.append(el('p', 'The brief could not be composed: ' + String(error.message || error), 'block-note'));
+        });
+      });
+    });
+    controls.append(stateSelect, search, briefButton);
     card.append(controls);
     const tableHost = el('div');
     card.append(tableHost);

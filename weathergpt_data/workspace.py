@@ -305,7 +305,15 @@ class Workspace:
     def product(self,path,params):
         from . import product_api
         if path not in product_api.PRODUCT_PATHS:return None
-        return product_api.dispatch(self.foundation(),path,params)
+        # The HTTP handler hands over query-parameter lists (parse_qs). Internal callers - the
+        # CLI scripts, tests and the engine - hand over scalars, and a scalar sliced as a list
+        # silently became its first character, so every value is normalised here.
+        normalised={}
+        for key,value in (params or {}).items():
+            if isinstance(value,(list,tuple)):normalised[key]=list(value)
+            elif value is None:normalised[key]=[]
+            else:normalised[key]=[str(value)]
+        return product_api.dispatch(self.foundation(),path,normalised)
 
     def map_layer(self,name):
         from . import product_api

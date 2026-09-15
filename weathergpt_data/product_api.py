@@ -40,7 +40,7 @@ WFS = 'https://reactjs.imd.gov.in/geoserver/wfs'
 PRODUCT_PATHS = ('/api/overview', '/api/warnings/national', '/api/warnings/place',
                  '/api/observations/near', '/api/observations/network', '/api/radar', '/api/basins',
                  '/api/forecast', '/api/forecast/changes', '/api/marine', '/api/river', '/api/aviation', '/api/places/search',
-                 '/api/map/layers', '/api/warnings/cap', '/api/settings/capabilities',
+                 '/api/map/layers', '/api/warnings/cap', '/api/warnings/alert-brief', '/api/settings/capabilities',
                  '/api/climate/index', '/api/climate/series', '/api/advisories/states',
                  '/api/advisories/districts')
 _REGISTRY = {'path': None, 'mtime': None, 'products': {}}
@@ -737,6 +737,28 @@ def _pass(record, keys):
     return {key: record[key] for key in keys if key in record}
 
 
+def alert_brief_view(foundation, latitude, longitude, day=None, refresh=False):
+    """One place, one day, and what the official product says - as a shareable brief."""
+    from .alert_brief import compose
+    view = warnings_place(foundation, latitude, longitude, refresh=refresh)
+    try:
+        relay = cap_state(foundation, refresh=False)
+    except (SourceError, ValueError, OSError):
+        relay = None
+    brief = compose(view, relay, day_number=day)
+    status = 'ok' if brief.get('status') == 'ok' else 'unavailable'
+    limitations = list(brief.get('limitations') or [])
+    if status != 'ok':
+        limitations = limitations + [str(brief.get('why') or 'no brief was composed')]
+    return envelope('warnings.alert_brief', status, brief,
+                    sources=brief.get('sources') or [],
+                    coverage={'district': (brief.get('place') or {}).get('district'),
+                              'day': (brief.get('day') or {}).get('day'),
+                              'relay_messages': (brief.get('relay') or {}).get('messages')},
+                    limitations=limitations,
+                    not_established=[item for item in brief.get('not_established') or []][:8])
+
+
 def cap_state(foundation, refresh=False):
     """The IMD-labelled CAP relay state, reported on its own and never merged with district guidance."""
     packet = foundation.cap(refresh=refresh)
@@ -897,7 +919,7 @@ def advisory_districts(foundation, state, language='en'):
                     not_established=['A listed district is a directory entry, not proof of a current bulletin.'])
 
 
-ADVISORY_EXTRA_PATHS = ('/api/warnings/cap', '/api/settings/capabilities', '/api/climate/index', '/api/climate/series',
+ADVISORY_EXTRA_PATHS = ('/api/warnings/cap', '/api/warnings/alert-brief', '/api/settings/capabilities', '/api/climate/index', '/api/climate/series',
                         '/api/advisories/states', '/api/advisories/districts')
 
 
@@ -905,6 +927,12 @@ def dispatch_extra(foundation, path, params):
     """Product views added after the first router. Kept beside it so both stay readable."""
     if path == '/api/warnings/cap':
         return cap_state(foundation, refresh=_flag(params, 'refresh'))
+    if path == '/api/warnings/alert-brief':
+        latitude, longitude = _point_params(params)
+        day = _int(params, 'day')
+        if day is not None and not 1 <= day <= 5:
+            raise SourceError('Ask for a published day between 1 and 5')
+        return alert_brief_view(foundation, latitude, longitude, day=day, refresh=_flag(params, 'refresh'))
     if path == '/api/settings/capabilities':
         return settings_view()
     if path == '/api/climate/index':

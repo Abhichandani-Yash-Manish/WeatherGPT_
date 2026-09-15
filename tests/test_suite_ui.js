@@ -61,6 +61,19 @@ const PAYLOADS = {
                  first_retrieved_utc: '2026-09-12T07:38:40+00:00', last_retrieved_utc: '2026-09-12T20:40:23+00:00' } } },
     interpretation: 'vintage_variance_not_skill'
   }, { limitations: ['Not forecast skill.'], not_established: ['Forecast skill is not measured here.'] }),
+  '/api/warnings/alert-brief': envelope('warnings.alert_brief', 'ok', {
+    status: 'ok', place: { district: 'PATNA', state: 'BIHAR' },
+    day: { day: 1, label: '15 Sep 2026', starts_utc: '2026-09-14T18:30:00+00:00', ends_utc: '2026-09-15T18:30:00+00:00' },
+    status_line: 'Official district warning: yellow - Thunderstorm/lightning/squall',
+    day_status: { colour: 'yellow', colour_code: 3, hazards: ['Thunderstorm/lightning/squall'], quiet: false, official_wording: null,
+                  wording_note: 'the product states a colour and hazard codes for this district-day and no free-text wording is recorded' },
+    issuer: { source_id: 'S63', product: 'IMD district warning product', issued_at_utc: '2026-09-15T00:00:00+00:00',
+              retrieved_at_utc: '2026-09-15T04:11:36+00:00', source_locator: '$.features[605]' },
+    relay: { source_id: 'S06', messages: 9, eligible_by_lifecycle: 0, note: 'reported separately and never merged with the district guidance' },
+    what_would_change_this: ['A newer bulletin of the same product replaces these day rows.'],
+    not_established: ['This is district-level guidance from one published product. It is not point-level, not a flood or cyclone warning, and not an all-clear.'],
+    brief_id: '34b32c8d335658f0a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718'
+  }, { limitations: ['Day windows are derived from the bulletin date.'] }),
   '/api/watches': { schema_version: 'watch-inbox-v1', delivery: 'local_inbox_only_no_push',
     note: 'Watches are evaluated only when asked.', checked_products: ['S15 IMD district warning product', 'S06 CAP relay assessment'],
     watches: [{ id: 'w1', created_at: '2026-09-15T08:00:00+00:00', question: 'Notify me if a heavy rain warning is issued for Thiruvananthapuram, Kerala tomorrow',
@@ -155,7 +168,20 @@ async function run() {
   assert(/not the atoll|not a coastline|bulletin date/.test(textOf(drawer)) || /IST calendar day/.test(textOf(drawer)), 'the day boundary basis is stated with the detail');
   assert(walk(warnings).some(node => /no district name/i.test(textOf(node)) || /cannot be keyed/i.test(textOf(node))), 'districts without a source name are explained');
   assert(walk(warnings).some(node => /never merged with district guidance/i.test(textOf(node))), 'the CAP relay is presented as separate');
-  console.log('PASS: the warnings surface shows district-days, the official wording and the source gaps');
+  const briefButton = byTag(warnings, 'button').find(node => /Write the alert brief/.test(textOf(node)));
+  assert(briefButton, 'the warnings surface offers the alert brief');
+  briefButton.dispatch('click');
+  await settle(160);
+  const briefDrawer = h.document.getElementById('evidence-drawer');
+  const briefText = textOf(h.document.getElementById('drawer-body'));
+  assert(briefDrawer.hidden === false, 'the brief opens in the drawer');
+  assert(h.calls.some(call => /^\/api\/warnings\/alert-brief\?lat=/.test(call.path)), 'the brief is composed for the working point, not for a guessed one');
+  assert(/Official district warning: yellow/.test(briefText), 'the brief states the day status in the product’s terms');
+  assert(/S63/.test(briefText) && /S06/.test(briefText), 'the brief names both the warning product and the relay');
+  assert(/not an all-clear/.test(briefText), 'the brief keeps its not-an-all-clear limit');
+  assert(/revoked|is safe|all clear for/i.test(briefText) === false, 'the brief never claims safety or withdrawal');
+  h.document.getElementById('drawer-close').dispatch('click');
+  console.log('PASS: the warnings surface writes an alert brief that names its sources and its limits');
 
   const observations = await render('observations', place);
   assert(walk(observations).some(node => textOf(node) === 'AHMEDABAD'), 'a named station is listed');
