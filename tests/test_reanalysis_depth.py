@@ -101,6 +101,17 @@ class CatalogueContract(unittest.TestCase):
         self.assertRaises(SourceError, reanalysis_supported, 'era5_unknown')
         self.assertRaises(SourceError, reanalysis_label, 'era5_unknown')
 
+    def test_the_task_schema_accepts_every_catalogue_parameter(self):
+        from weathergpt_data.tasks import validate_tasks
+        names = sorted(REANALYSIS_DAILY)
+        places = [{'name': 'Ahmedabad', 'state': 'Gujarat', 'district': '', 'kind': 'settlement'}]
+        for start in range(0, len(names), 8):
+            chunk = names[start:start + 8]
+            validate_tasks([{'kind': 'history', 'operation': 'daily', 'parameters': chunk, 'years': [],
+                             'period': 'annual', 'start_local': '2024-07-01T00:00:00+05:30',
+                             'end_local': '2024-07-04T00:00:00+05:30', 'place_indices': [0],
+                             'request_quote': 'x'}], places)
+
     def test_daily_validator_applies_the_upper_bound(self):
         body = {'latitude': 23.0, 'longitude': 72.5, 'utc_offset_seconds': 19800, 'timezone': 'Asia/Kolkata',
                 'daily_units': {'relative_humidity_2m_mean': '%'},
