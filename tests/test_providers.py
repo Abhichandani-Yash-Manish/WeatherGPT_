@@ -313,6 +313,20 @@ class RulePlannerTests(unittest.TestCase):
             with self.subTest(question=question):
                 self.assertIsNone(rule_request(question, NOW), 'rules must not guess: ' + question)
 
+    def test_a_day_level_date_is_left_to_the_daily_history_path(self):
+        for question in ('Daily mean temperature in Ahmedabad from 1 through 3 July 2025.',
+                         'Relative humidity in Ahmedabad on 2024-07-01.',
+                         'Soil moisture in Ahmedabad from 1 to 3 July 2025.',
+                         'Rainfall in Ahmedabad on 1 July 2024.'):
+            with self.subTest(question=question):
+                self.assertIsNone(rule_request(question, NOW),
+                                  'a day-level date must not be read as an annual table')
+
+    def test_a_month_with_only_a_year_stays_a_table_lookup(self):
+        request = self.request_for('What was the rainfall in Ahmedabad in July 1990?')
+        self.assertEqual(request['tasks'][0]['kind'], 'history')
+        self.assertEqual(request['tasks'][0]['parameters'], ['rainfall'])
+
     def test_out_of_scope_questions_route_to_the_gap_answer_not_to_a_number(self):
         request = self.request_for('What is the groundwater level in Ahmedabad?')
         self.assertEqual(request['tasks'][0]['kind'], 'research')
