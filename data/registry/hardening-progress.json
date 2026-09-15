@@ -1942,7 +1942,7 @@
   ]
  },
  "air_quality_batch": {
-  "report": "docs/69-air-quality.md",
+  "report": "docs/70-air-quality.md",
   "evidence_directory": "research/implementation/air-quality-20260915",
   "operational_ready": false,
   "scope": "An additional real-time product, not a named problem-statement gap: CAMS modelled concentrations of six pollutants and the source's own US and European air-quality indices at a point, with the provider current hour kept apart from the window, exposed as a CLI artefact, a product view and a chat shape planned by the deterministic rules. No health advice, risk score or official warning is produced, and no ground monitor is connected.",
