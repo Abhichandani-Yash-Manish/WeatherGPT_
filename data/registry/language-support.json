@@ -1,13 +1,13 @@
 {
  "languages": {
   "as": {
-   "checked_at_utc": "2026-09-14T22:09:38.085764+00:00",
+   "checked_at_utc": "2026-09-15T05:16:41.059485+00:00",
    "speak": {
-    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to as-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_c1a4d27e-ca02-4da3-93ed-0ef3e481ada3\"}}",
+    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to as-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260915_89b1e3df-68e8-458b-80f0-43d4c9caab37\"}}",
     "state": "failed"
    },
    "write": {
-    "elapsed_s": 3.54,
+    "elapsed_s": 3.39,
     "held_safety_critical": 1,
     "sentences": 3,
     "state": "verified",
@@ -16,24 +16,24 @@
    }
   },
   "bn": {
-   "checked_at_utc": "2026-09-14T20:36:40.485817+00:00",
+   "checked_at_utc": "2026-09-15T05:15:08.236857+00:00",
    "hear": {
     "detected_language_code": "bn-IN",
-    "elapsed_s": 5.147,
+    "elapsed_s": 16.945,
     "reason": null,
     "recognition_probability": null,
     "state": "verified",
     "transcript_in_script": true,
-    "transcript_length": 216
+    "transcript_length": 222
    },
    "speak": {
-    "audio_bytes": 553234,
-    "elapsed_s": 4.423,
+    "audio_bytes": 560760,
+    "elapsed_s": 3.858,
     "model": "bulbul:v3",
     "state": "verified"
    },
    "write": {
-    "elapsed_s": 1.94,
+    "elapsed_s": 1.91,
     "held_safety_critical": 1,
     "sentences": 3,
     "state": "verified",
@@ -42,13 +42,13 @@
    }
   },
   "brx": {
-   "checked_at_utc": "2026-09-14T22:09:41.928662+00:00",
+   "checked_at_utc": "2026-09-15T05:17:08.108157+00:00",
    "speak": {
-    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to brx-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_c6c1992e-d6ce-40f2-8cc2-01e977478bd6\"}}",
+    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to brx-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260915_ce34af3b-1de3-44ad-95c8-990650cae03c\"}}",
     "state": "failed"
    },
    "write": {
-    "elapsed_s": 2.53,
+    "elapsed_s": 2.34,
     "held_safety_critical": 1,
     "sentences": 3,
     "state": "verified",
@@ -57,13 +57,13 @@
    }
   },
   "doi": {
-   "checked_at_utc": "2026-09-14T22:09:45.077242+00:00",
+   "checked_at_utc": "2026-09-15T05:17:13.040386+00:00",
    "speak": {
-    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to doi-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_f94097f6-89a2-4101-97a9-cc68404603f5\"}}",
+    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to doi-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260915_bd933746-2814-44c4-aa24-5208ee722b91\"}}",
     "state": "failed"
    },
    "write": {
-    "elapsed_s": 2.83,
+    "elapsed_s": 2.67,
     "held_safety_critical": 1,
     "sentences": 3,
     "state": "verified",
@@ -72,19 +72,19 @@
    }
   },
   "en": {
-   "checked_at_utc": "2026-09-14T21:11:32.572476+00:00",
+   "checked_at_utc": "2026-09-15T05:14:45.655540+00:00",
    "hear": {
     "detected_language_code": "en-IN",
-    "elapsed_s": 6.253,
+    "elapsed_s": 7.928,
     "reason": null,
     "recognition_probability": null,
     "state": "verified",
     "transcript_in_script": true,
-    "transcript_length": 177
+    "transcript_length": 181
    },
    "speak": {
-    "audio_bytes": 493024,
-    "elapsed_s": 3.561,
+    "audio_bytes": 496786,
+    "elapsed_s": 3.915,
     "model": "bulbul:v3",
     "state": "verified"
    },
@@ -94,10 +94,10 @@
    }
   },
   "gu": {
-   "checked_at_utc": "2026-09-14T20:36:51.998768+00:00",
+   "checked_at_utc": "2026-09-15T05:15:30.948728+00:00",
    "hear": {
     "detected_language_code": "gu-IN",
-    "elapsed_s": 4.171,
+    "elapsed_s": 2.261,
     "reason": null,
     "recognition_probability": null,
     "state": "verified",
@@ -105,13 +105,13 @@
     "transcript_length": 215
    },
    "speak": {
-    "audio_bytes": 534418,
-    "elapsed_s": 4.88,
+    "audio_bytes": 632262,
+    "elapsed_s": 4.07,
     "model": "bulbul:v3",
     "state": "verified"
    },
    "write": {
-    "elapsed_s": 2.03,
+    "elapsed_s": 1.73,
     "held_safety_critical": 1,
     "sentences": 3,
     "state": "verified",
@@ -120,24 +120,24 @@
    }
   },
   "hi": {
-   "checked_at_utc": "2026-09-14T20:36:28.149484+00:00",
+   "checked_at_utc": "2026-09-15T05:14:57.499138+00:00",
    "hear": {
     "detected_language_code": "hi-IN",
-    "elapsed_s": 5.156,
+    "elapsed_s": 5.455,
     "reason": null,
     "recognition_probability": null,
     "state": "verified",
     "transcript_in_script": true,
-    "transcript_length": 177
+    "transcript_length": 195
    },
    "speak": {
-    "audio_bytes": 489260,
-    "elapsed_s": 4.883,
+    "audio_bytes": 538182,
+    "elapsed_s": 3.392,
     "model": "bulbul:v3",
     "state": "verified"
    },
    "write": {
-    "elapsed_s": 2.3,
+    "elapsed_s": 1.89,
     "held_safety_critical": 1,
     "sentences": 3,
     "state": "verified",
@@ -146,24 +146,24 @@
    }
   },
   "kn": {
-   "checked_at_utc": "2026-09-14T20:37:03.079851+00:00",
+   "checked_at_utc": "2026-09-15T05:15:39.012814+00:00",
    "hear": {
     "detected_language_code": "kn-IN",
-    "elapsed_s": 6.227,
+    "elapsed_s": 2.661,
     "reason": null,
     "recognition_probability": null,
     "state": "verified",
     "transcript_in_script": true,
-    "transcript_length": 244
+    "transcript_length": 243
    },
    "speak": {
-    "audio_bytes": 636024,
-    "elapsed_s": 10.851,
+    "audio_bytes": 568288,
+    "elapsed_s": 3.79,
     "model": "bulbul:v3",
     "state": "verified"
    },
    "write": {
-    "elapsed_s": 1.67,
+    "elapsed_s": 2.16,
     "held_safety_critical": 1,
     "sentences": 3,
     "state": "verified",
@@ -172,13 +172,13 @@
    }
   },
   "kok": {
-   "checked_at_utc": "2026-09-14T22:09:48.247543+00:00",
+   "checked_at_utc": "2026-09-15T05:16:50.819427+00:00",
    "speak": {
-    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to kok-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_95f15e07-7944-4f08-b9d9-9b971d30403f\"}}",
+    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to kok-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260915_c8447772-ad06-44af-b7e2-38b9c311e5b0\"}}",
     "state": "failed"
    },
    "write": {
-    "elapsed_s": 2.25,
+    "elapsed_s": 2.69,
     "held_safety_critical": 1,
     "sentences": 3,
     "state": "verified",
@@ -187,13 +187,13 @@
    }
   },
   "ks": {
-   "checked_at_utc": "2026-09-14T22:09:50.813836+00:00",
+   "checked_at_utc": "2026-09-15T05:16:53.832657+00:00",
    "speak": {
-    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to ks-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_8136cb61-c2de-49d8-acbf-9a84b2b7ba43\"}}",
+    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to ks-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260915_6c3045c1-5200-40b4-829a-adc41f6af61a\"}}",
     "state": "failed"
    },
    "write": {
-    "elapsed_s": 2.29,
+    "elapsed_s": 2.66,
     "held_safety_critical": 1,
     "sentences": 3,
     "state": "verified",
@@ -202,9 +202,9 @@
    }
   },
   "mai": {
-   "checked_at_utc": "2026-09-14T22:09:53.362247+00:00",
+   "checked_at_utc": "2026-09-15T05:17:10.754198+00:00",
    "speak": {
-    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to mai-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_60c62729-6592-41d3-aa8a-ee12c43dcbc0\"}}",
+    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to mai-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260915_42eee1f3-3ce9-437a-813c-ae2af76bfb5b\"}}",
     "state": "failed"
    },
    "write": {
@@ -217,24 +217,24 @@
    }
   },
   "ml": {
-   "checked_at_utc": "2026-09-14T20:37:21.828492+00:00",
+   "checked_at_utc": "2026-09-15T05:15:47.620065+00:00",
    "hear": {
     "detected_language_code": "ml-IN",
-    "elapsed_s": 5.745,
+    "elapsed_s": 2.344,
     "reason": null,
     "recognition_probability": null,
     "state": "verified",
     "transcript_in_script": true,
-    "transcript_length": 255
+    "transcript_length": 207
    },
    "speak": {
-    "audio_bytes": 538182,
-    "elapsed_s": 6.11,
+    "audio_bytes": 598392,
+    "elapsed_s": 3.834,
     "model": "bulbul:v3",
     "state": "verified"
    },
    "write": {
-    "elapsed_s": 2.03,
+    "elapsed_s": 1.92,
     "held_safety_critical": 1,
     "sentences": 3,
     "state": "verified",
@@ -243,34 +243,42 @@
    }
   },
   "mni": {
-   "checked_at_utc": "2026-09-14T22:09:55.782604+00:00",
+   "checked_at_utc": "2026-09-15T05:17:05.673750+00:00",
    "speak": {
-    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to mni-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_121f24bd-22c4-4a07-9de8-d38cfa8f2b9f\"}}",
+    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to mni-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260915_34336254-2309-4fb4-97a8-38e9988f7313\"}}",
     "state": "failed"
    },
    "write": {
-    "elapsed_s": 2.48,
-    "held_safety_critical": 1,
+    "failed_sentences": 1,
+    "gate_findings": [
+     {
+      "duplicated": [],
+      "missing": [],
+      "reason": "the rendering mixed scripts outside the requested language",
+      "sentence": "Rainfall of 35 mm is forecast for Ahmedabad, Gujarat on 2026-09-16."
+     }
+    ],
+    "reason": "the rendering was not written in this script",
     "sentences": 3,
-    "state": "verified",
-    "translated": 2,
-    "written_in_script": true
+    "state": "failed",
+    "values_survived": true,
+    "written_in_script": false
    }
   },
   "mr": {
-   "checked_at_utc": "2026-09-14T20:37:35.718731+00:00",
+   "checked_at_utc": "2026-09-15T05:15:55.718553+00:00",
    "hear": {
     "detected_language_code": "mr-IN",
-    "elapsed_s": 5.555,
+    "elapsed_s": 3.494,
     "reason": null,
     "recognition_probability": null,
     "state": "verified",
     "transcript_in_script": true,
-    "transcript_length": 191
+    "transcript_length": 177
    },
    "speak": {
-    "audio_bytes": 508076,
-    "elapsed_s": 4.273,
+    "audio_bytes": 504312,
+    "elapsed_s": 3.305,
     "model": "bulbul:v3",
     "state": "verified"
    },
@@ -284,9 +292,76 @@
    }
   },
   "ne": {
-   "checked_at_utc": "2026-09-14T22:09:58.573862+00:00",
+   "checked_at_utc": "2026-09-15T05:16:47.803397+00:00",
    "speak": {
-    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to ne-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_07318656-0793-4a90-b859-d998edde5bef\"}}",
+    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to ne-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260915_2cf2ede1-2c24-4f00-880d-c5de48b6102e\"}}",
+    "state": "failed"
+   },
+   "write": {
+    "elapsed_s": 2.68,
+    "held_safety_critical": 1,
+    "sentences": 3,
+    "state": "verified",
+    "translated": 2,
+    "written_in_script": true
+   }
+  },
+  "od": {
+   "checked_at_utc": "2026-09-15T05:16:04.516509+00:00",
+   "hear": {
+    "detected_language_code": "od-IN",
+    "elapsed_s": 6.625,
+    "reason": null,
+    "recognition_probability": null,
+    "state": "verified",
+    "transcript_in_script": true,
+    "transcript_length": 220
+   },
+   "speak": {
+    "audio_bytes": 553234,
+    "elapsed_s": 3.579,
+    "model": "bulbul:v3",
+    "state": "verified"
+   },
+   "write": {
+    "elapsed_s": 2.0,
+    "held_safety_critical": 1,
+    "sentences": 3,
+    "state": "verified",
+    "translated": 2,
+    "written_in_script": true
+   }
+  },
+  "pa": {
+   "checked_at_utc": "2026-09-15T05:16:16.718546+00:00",
+   "hear": {
+    "detected_language_code": "pa-IN",
+    "elapsed_s": 3.295,
+    "reason": null,
+    "recognition_probability": null,
+    "state": "verified",
+    "transcript_in_script": true,
+    "transcript_length": 195
+   },
+   "speak": {
+    "audio_bytes": 534418,
+    "elapsed_s": 3.593,
+    "model": "bulbul:v3",
+    "state": "verified"
+   },
+   "write": {
+    "elapsed_s": 1.93,
+    "held_safety_critical": 1,
+    "sentences": 3,
+    "state": "verified",
+    "translated": 2,
+    "written_in_script": true
+   }
+  },
+  "sa": {
+   "checked_at_utc": "2026-09-15T05:17:00.038057+00:00",
+   "speak": {
+    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to sa-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260915_ebe2b90a-eda1-4070-98be-ef12f1093cf9\"}}",
     "state": "failed"
    },
    "write": {
@@ -298,75 +373,12 @@
     "written_in_script": true
    }
   },
-  "od": {
-   "checked_at_utc": "2026-09-14T20:37:47.553524+00:00",
-   "hear": {
-    "detected_language_code": "od-IN",
-    "elapsed_s": 5.089,
-    "reason": null,
-    "recognition_probability": null,
-    "state": "verified",
-    "transcript_in_script": true,
-    "transcript_length": 225
-   },
+  "sat": {
+   "checked_at_utc": "2026-09-15T05:17:02.929093+00:00",
    "speak": {
-    "audio_bytes": 560760,
-    "elapsed_s": 4.096,
-    "model": "bulbul:v3",
-    "state": "verified"
-   },
-   "write": {
-    "elapsed_s": 2.05,
-    "held_safety_critical": 1,
-    "sentences": 3,
-    "state": "verified",
-    "translated": 2,
-    "written_in_script": true
-   }
-  },
-  "pa": {
-   "checked_at_utc": "2026-09-14T20:37:58.794245+00:00",
-   "hear": {
-    "detected_language_code": "pa-IN",
-    "elapsed_s": 5.074,
-    "reason": null,
-    "recognition_probability": null,
-    "state": "verified",
-    "transcript_in_script": true,
-    "transcript_length": 197
-   },
-   "speak": {
-    "audio_bytes": 572050,
-    "elapsed_s": 3.693,
-    "model": "bulbul:v3",
-    "state": "verified"
-   },
-   "write": {
-    "elapsed_s": 2.11,
-    "held_safety_critical": 1,
-    "sentences": 3,
-    "state": "verified",
-    "translated": 2,
-    "written_in_script": true
-   }
-  },
-  "sa": {
-   "checked_at_utc": "2026-09-14T22:10:01.377719+00:00",
-   "speak": {
-    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to sa-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_686f45e9-8589-4879-a4d2-89043aa2dcdd\"}}",
+    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to sat-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260915_e62970fe-3870-4332-9c32-258479eb163a\"}}",
     "state": "failed"
    },
-   "write": {
-    "elapsed_s": 2.19,
-    "held_safety_critical": 1,
-    "sentences": 3,
-    "state": "verified",
-    "translated": 2,
-    "written_in_script": true
-   }
-  },
-  "sat": {
-   "checked_at_utc": "2026-09-14T22:10:03.883202+00:00",
    "write": {
     "failed_sentences": 1,
     "gate_findings": [
@@ -387,7 +399,7 @@
    }
   },
   "sd": {
-   "checked_at_utc": "2026-09-14T22:10:06.948069+00:00",
+   "checked_at_utc": "2026-09-15T05:16:57.070419+00:00",
    "write": {
     "failed_sentences": 2,
     "gate_findings": [
@@ -418,7 +430,7 @@
    }
   },
   "ta": {
-   "checked_at_utc": "2026-09-14T22:10:09.217495+00:00",
+   "checked_at_utc": "2026-09-15T05:16:25.536024+00:00",
    "write": {
     "failed_sentences": 1,
     "gate_findings": [
@@ -439,24 +451,24 @@
    }
   },
   "te": {
-   "checked_at_utc": "2026-09-14T20:38:11.821930+00:00",
+   "checked_at_utc": "2026-09-15T05:16:27.517453+00:00",
    "hear": {
     "detected_language_code": "te-IN",
-    "elapsed_s": 7.429,
+    "elapsed_s": 6.869,
     "reason": null,
     "recognition_probability": null,
     "state": "verified",
     "transcript_in_script": true,
-    "transcript_length": 238
+    "transcript_length": 237
    },
    "speak": {
-    "audio_bytes": 598392,
-    "elapsed_s": 8.545,
+    "audio_bytes": 673656,
+    "elapsed_s": 4.731,
     "model": "bulbul:v3",
     "state": "verified"
    },
    "write": {
-    "elapsed_s": 6.14,
+    "elapsed_s": 1.94,
     "held_safety_critical": 1,
     "sentences": 3,
     "state": "verified",
@@ -465,13 +477,13 @@
    }
   },
   "ur": {
-   "checked_at_utc": "2026-09-14T22:10:11.247186+00:00",
+   "checked_at_utc": "2026-09-15T05:16:44.814572+00:00",
    "speak": {
-    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to ur-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_850b7e06-e420-4dd7-9b87-af993d77e0c8\"}}",
+    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to ur-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260915_0771d0ca-5b12-4bb3-b600-ad2d516e50ea\"}}",
     "state": "failed"
    },
    "write": {
-    "elapsed_s": 2.44,
+    "elapsed_s": 2.71,
     "held_safety_critical": 1,
     "sentences": 3,
     "state": "verified",
@@ -486,7 +498,7 @@
   "One probe sentence per language, at one instant, against model versions that can change.",
   "A verified language is one the pipeline can deliver, not one a native reader has reviewed. No native-speaker review has taken place."
  ],
- "measured_at_utc": "2026-09-14T22:10:14.217701+00:00",
+ "measured_at_utc": "2026-09-15T05:17:16.009116+00:00",
  "method": {
   "hear": "That audio transcribed; verified when a transcript returns in this language's script.",
   "speak": "The rendered text synthesised; verified when audio is returned.",

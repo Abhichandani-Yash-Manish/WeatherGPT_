@@ -1,0 +1,46 @@
+{
+ "schema_version": "speech-roundtrip-v1",
+ "measured_at_utc": "2026-09-15T05:05:26.193917+00:00",
+ "languages": [
+  {
+   "language": "hi",
+   "probe_text": "अहमदाबाद में कल 35 मिलीमीटर वर्षा का पूर्वानुमान है। कोई चेतावनी लागू नहीं है।",
+   "checked_at_utc": "2026-09-15T05:05:19.612626+00:00",
+   "state": "measured",
+   "audio_bytes": 188204,
+   "model": "bulbul:v3",
+   "transcript": "अहमदाबाद में कल पैंतीस मिलीमीटर वर्षा का पूर्वानुमान है, कोई चेतावनी लागू नहीं है।",
+   "detected_language_code": "hi-IN",
+   "recognition_probability": null,
+   "probability_meaning": "The recognition model's own confidence that it identified the spoken language. It says nothing about whether the answer is correct.",
+   "place_present": true,
+   "number_as_digits": false,
+   "unit_present": true,
+   "negation_marker_present": true,
+   "transcript_length": 82
+  },
+  {
+   "language": "gu",
+   "probe_text": "અમદાવાદમાં આવતીકાલે 35 મિલિમીટર વરસાદની આગાહી છે. કોઈ ચેતવણી લાગુ નથી.",
+   "checked_at_utc": "2026-09-15T05:05:22.900499+00:00",
+   "state": "measured",
+   "audio_bytes": 225836,
+   "model": "bulbul:v3",
+   "transcript": "અમદાવાદમાં આવતીકાલે 35 મિલીમીટર વરસાદની આગાહી છે, કોઈ ચેતરણી લાગુ નથી.",
+   "detected_language_code": "gu-IN",
+   "recognition_probability": null,
+   "probability_meaning": "The recognition model's own confidence that it identified the spoken language. It says nothing about whether the answer is correct.",
+   "place_present": true,
+   "number_as_digits": true,
+   "unit_present": false,
+   "negation_marker_present": true,
+   "transcript_length": 70
+  }
+ ],
+ "limitations": [
+  "One probe sentence per language at one instant; no accuracy or intelligibility claim.",
+  "A transcript is what the recogniser heard. Numerals may appear as words, so presence is measured, not equality.",
+  "Recognition probability is the recogniser's own number and is never answer or forecast confidence.",
+  "No native-speaker review of speech or transcripts has taken place."
+ ]
+}

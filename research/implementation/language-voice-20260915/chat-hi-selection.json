@@ -1,0 +1,793 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "241d7a83-4606-427f-a9ff-b57fec93173d",
+  "question": "Sultanpur mein kal barish hogi?",
+  "status": "needs_selection",
+  "answer": "आप किस स्थान की बात कर रहे हैं? Sultānpur, Patna, State of Bihar / Sultānpur, Fazilka, State of Punjab / Sultānpur, Solan, State of Himāchal Pradesh / Sultānpur, Panchkula, State of Haryāna. एक चुनिये, या उसका राज्य/ज़िला लिखिये।",
+  "facts": [],
+  "citations": [],
+  "notes": [
+    "Time window read from the question: kal whole day."
+  ],
+  "choices": [
+    {
+      "id": "11011369",
+      "name": "Sultānpur",
+      "latitude": 25.63021,
+      "longitude": 85.05012,
+      "feature": "PPLX",
+      "admin1": "State of Bihar",
+      "admin2": "Patna",
+      "modified": "2024-01-06",
+      "name_match_basis": "canonical",
+      "other_alias_matches": 6,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:11011369",
+      "label": "Sultānpur, Patna, State of Bihar",
+      "coordinates": {
+        "latitude": 25.63021,
+        "longitude": 85.05012
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/11011369",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Sultanpur"
+    },
+    {
+      "id": "10014868",
+      "name": "Sultānpur",
+      "latitude": 30.4111,
+      "longitude": 74.01246,
+      "feature": "PPL",
+      "admin1": "State of Punjab",
+      "admin2": "Fazilka",
+      "modified": "2024-01-06",
+      "name_match_basis": "canonical",
+      "other_alias_matches": 6,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:10014868",
+      "label": "Sultānpur, Fazilka, State of Punjab",
+      "coordinates": {
+        "latitude": 30.4111,
+        "longitude": 74.01246
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/10014868",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Sultanpur"
+    },
+    {
+      "id": "10145889",
+      "name": "Sultānpur",
+      "latitude": 30.86182,
+      "longitude": 77.09718,
+      "feature": "PPL",
+      "admin1": "State of Himāchal Pradesh",
+      "admin2": "Solan",
+      "modified": "2024-01-06",
+      "name_match_basis": "canonical",
+      "other_alias_matches": 6,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:10145889",
+      "label": "Sultānpur, Solan, State of Himāchal Pradesh",
+      "coordinates": {
+        "latitude": 30.86182,
+        "longitude": 77.09718
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/10145889",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Sultanpur"
+    },
+    {
+      "id": "10146877",
+      "name": "Sultānpur",
+      "latitude": 30.57672,
+      "longitude": 77.05275,
+      "feature": "PPL",
+      "admin1": "State of Haryāna",
+      "admin2": "Panchkula",
+      "modified": "2024-01-06",
+      "name_match_basis": "canonical",
+      "other_alias_matches": 6,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:10146877",
+      "label": "Sultānpur, Panchkula, State of Haryāna",
+      "coordinates": {
+        "latitude": 30.57672,
+        "longitude": 77.05275
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/10146877",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Sultanpur"
+    },
+    {
+      "id": "10152703",
+      "name": "Sultānpur",
+      "latitude": 30.4027,
+      "longitude": 77.23372,
+      "feature": "PPL",
+      "admin1": "State of Haryāna",
+      "admin2": "Yamunanagar",
+      "modified": "2024-01-06",
+      "name_match_basis": "canonical",
+      "other_alias_matches": 6,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:10152703",
+      "label": "Sultānpur, Yamunanagar, State of Haryāna",
+      "coordinates": {
+        "latitude": 30.4027,
+        "longitude": 77.23372
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/10152703",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Sultanpur"
+    },
+    {
+      "id": "10152811",
+      "name": "Sultānpur",
+      "latitude": 30.04966,
+      "longitude": 77.03674,
+      "feature": "PPL",
+      "admin1": "State of Haryāna",
+      "admin2": "Kurukshetra",
+      "modified": "2024-01-06",
+      "name_match_basis": "canonical",
+      "other_alias_matches": 6,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:10152811",
+      "label": "Sultānpur, Kurukshetra, State of Haryāna",
+      "coordinates": {
+        "latitude": 30.04966,
+        "longitude": 77.03674
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/10152811",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Sultanpur"
+    },
+    {
+      "id": "10152913",
+      "name": "Sultānpur",
+      "latitude": 30.22173,
+      "longitude": 77.13514,
+      "feature": "PPL",
+      "admin1": "State of Haryāna",
+      "admin2": "Yamunanagar",
+      "modified": "2024-01-06",
+      "name_match_basis": "canonical",
+      "other_alias_matches": 6,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:10152913",
+      "label": "Sultānpur, Yamunanagar, State of Haryāna",
+      "coordinates": {
+        "latitude": 30.22173,
+        "longitude": 77.13514
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/10152913",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Sultanpur"
+    },
+    {
+      "id": "10166242",
+      "name": "Sultānpur",
+      "latitude": 30.42002,
+      "longitude": 77.34458,
+      "feature": "PPL",
+      "admin1": "State of Haryāna",
+      "admin2": "Yamunanagar",
+      "modified": "2024-01-06",
+      "name_match_basis": "canonical",
+      "other_alias_matches": 6,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:10166242",
+      "label": "Sultānpur, Yamunanagar, State of Haryāna",
+      "coordinates": {
+        "latitude": 30.42002,
+        "longitude": 77.34458
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/10166242",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Sultanpur"
+    },
+    {
+      "id": "10166636",
+      "name": "Sultānpur",
+      "latitude": 30.08367,
+      "longitude": 77.47489,
+      "feature": "PPL",
+      "admin1": "Uttar Pradesh",
+      "admin2": "District Saharanpur",
+      "modified": "2024-01-06",
+      "name_match_basis": "canonical",
+      "other_alias_matches": 6,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:10166636",
+      "label": "Sultānpur, District Saharanpur, Uttar Pradesh",
+      "coordinates": {
+        "latitude": 30.08367,
+        "longitude": 77.47489
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/10166636",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Sultanpur"
+    },
+    {
+      "id": "10181101",
+      "name": "Sultānpur",
+      "latitude": 29.93313,
+      "longitude": 78.03641,
+      "feature": "PPL",
+      "admin1": "State of Uttarākhand",
+      "admin2": "Haridwar",
+      "modified": "2024-01-07",
+      "name_match_basis": "canonical",
+      "other_alias_matches": 6,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:10181101",
+      "label": "Sultānpur, Haridwar, State of Uttarākhand",
+      "coordinates": {
+        "latitude": 29.93313,
+        "longitude": 78.03641
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/10181101",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Sultanpur"
+    },
+    {
+      "id": "10191168",
+      "name": "Sultānpur",
+      "latitude": 23.36317,
+      "longitude": 78.48222,
+      "feature": "PPL",
+      "admin1": "Madhya Pradesh",
+      "admin2": "Raisen",
+      "modified": "2024-01-06",
+      "name_match_basis": "canonical",
+      "other_alias_matches": 6,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:10191168",
+      "label": "Sultānpur, Raisen, Madhya Pradesh",
+      "coordinates": {
+        "latitude": 23.36317,
+        "longitude": 78.48222
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/10191168",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Sultanpur"
+    },
+    {
+      "id": "10193667",
+      "name": "Sultānpur",
+      "latitude": 26.89498,
+      "longitude": 76.99056,
+      "feature": "PPL",
+      "admin1": "State of Rājasthān",
+      "admin2": "Dausa",
+      "modified": "2024-01-06",
+      "name_match_basis": "canonical",
+      "other_alias_matches": 6,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:10193667",
+      "label": "Sultānpur, Dausa, State of Rājasthān",
+      "coordinates": {
+        "latitude": 26.89498,
+        "longitude": 76.99056
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/10193667",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Sultanpur"
+    },
+    {
+      "id": "10194384",
+      "name": "Sultānpur",
+      "latitude": 29.93141,
+      "longitude": 77.26659,
+      "feature": "PPL",
+      "admin1": "Uttar Pradesh",
+      "admin2": "District Saharanpur",
+      "modified": "2024-01-06",
+      "name_match_basis": "canonical",
+      "other_alias_matches": 6,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:10194384",
+      "label": "Sultānpur, District Saharanpur, Uttar Pradesh",
+      "coordinates": {
+        "latitude": 29.93141,
+        "longitude": 77.26659
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/10194384",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Sultanpur"
+    },
+    {
+      "id": "10204935",
+      "name": "Sultānpur",
+      "latitude": 29.74338,
+      "longitude": 77.68886,
+      "feature": "PPL",
+      "admin1": "Uttar Pradesh",
+      "admin2": "District Saharanpur",
+      "modified": "2024-01-06",
+      "name_match_basis": "canonical",
+      "other_alias_matches": 6,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:10204935",
+      "label": "Sultānpur, District Saharanpur, Uttar Pradesh",
+      "coordinates": {
+        "latitude": 29.74338,
+        "longitude": 77.68886
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/10204935",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Sultanpur"
+    },
+    {
+      "id": "10212921",
+      "name": "Sultānpur",
+      "latitude": 21.11884,
+      "longitude": 78.10006,
+      "feature": "PPL",
+      "admin1": "State of Mahārāshtra",
+      "admin2": "Amravati Division",
+      "modified": "2024-01-06",
+      "name_match_basis": "canonical",
+      "other_alias_matches": 6,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:10212921",
+      "label": "Sultānpur, Amravati Division, State of Mahārāshtra",
+      "coordinates": {
+        "latitude": 21.11884,
+        "longitude": 78.10006
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/10212921",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Sultanpur"
+    },
+    {
+      "id": "10257635",
+      "name": "Sultānpur",
+      "latitude": 30.36524,
+      "longitude": 75.71346,
+      "feature": "PPL",
+      "admin1": "State of Punjab",
+      "admin2": "Sangrur",
+      "modified": "2024-01-06",
+      "name_match_basis": "canonical",
+      "other_alias_matches": 6,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:10257635",
+      "label": "Sultānpur, Sangrur, State of Punjab",
+      "coordinates": {
+        "latitude": 30.36524,
+        "longitude": 75.71346
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/10257635",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Sultanpur"
+    },
+    {
+      "id": "10260556",
+      "name": "Sultānpur",
+      "latitude": 29.83088,
+      "longitude": 77.78446,
+      "feature": "PPL",
+      "admin1": "State of Uttarākhand",
+      "admin2": "Haridwar",
+      "modified": "2024-01-07",
+      "name_match_basis": "canonical",
+      "other_alias_matches": 6,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:10260556",
+      "label": "Sultānpur, Haridwar, State of Uttarākhand",
+      "coordinates": {
+        "latitude": 29.83088,
+        "longitude": 77.78446
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/10260556",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Sultanpur"
+    },
+    {
+      "id": "10265196",
+      "name": "Sultānpur",
+      "latitude": 28.52163,
+      "longitude": 77.36915,
+      "feature": "PPL",
+      "admin1": "Uttar Pradesh",
+      "admin2": "Gautam Buddha Nagar",
+      "modified": "2024-01-06",
+      "name_match_basis": "canonical",
+      "other_alias_matches": 6,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:10265196",
+      "label": "Sultānpur, Gautam Buddha Nagar, Uttar Pradesh",
+      "coordinates": {
+        "latitude": 28.52163,
+        "longitude": 77.36915
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/10265196",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Sultanpur"
+    },
+    {
+      "id": "10265558",
+      "name": "Sultānpur",
+      "latitude": 28.9367,
+      "longitude": 77.40655,
+      "feature": "PPL",
+      "admin1": "Uttar Pradesh",
+      "admin2": "Baghpat",
+      "modified": "2024-01-06",
+      "name_match_basis": "canonical",
+      "other_alias_matches": 6,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:10265558",
+      "label": "Sultānpur, Baghpat, Uttar Pradesh",
+      "coordinates": {
+        "latitude": 28.9367,
+        "longitude": 77.40655
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/10265558",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Sultanpur"
+    },
+    {
+      "id": "10265605",
+      "name": "Sultānpur",
+      "latitude": 28.78401,
+      "longitude": 77.46507,
+      "feature": "PPL",
+      "admin1": "Uttar Pradesh",
+      "admin2": "Ghāziābād",
+      "modified": "2024-01-06",
+      "name_match_basis": "canonical",
+      "other_alias_matches": 6,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:10265605",
+      "label": "Sultānpur, Ghāziābād, Uttar Pradesh",
+      "coordinates": {
+        "latitude": 28.78401,
+        "longitude": 77.46507
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/10265605",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "Sultanpur"
+    }
+  ],
+  "follow_up": "Choose a place, or add its district and state.",
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-15T05:23:25.771673+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "deterministic_rules",
+      "model": "rule-planner-v1",
+      "model_calls": 0,
+      "attempts": 0,
+      "latency_ms": 0,
+      "failover": []
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "gazetteer_search",
+        "query": {
+          "name": "Sultanpur",
+          "state": "",
+          "district": "",
+          "kind": "unknown"
+        },
+        "matches": 272
+      },
+      {
+        "name": "forecast",
+        "task_id": "t1",
+        "status": "needs_selection"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "new",
+      "changed_fields": [
+        "parameters",
+        "places",
+        "time"
+      ],
+      "inherited_fields": []
+    },
+    "duration_seconds": 0.055,
+    "language": {
+      "requested": "hi",
+      "selection": "user_selected",
+      "adherence": "rendered_with_protected_values",
+      "rendered": true
+    }
+  },
+  "plan": {
+    "language": "hi-Latn",
+    "places": [
+      {
+        "name": "Sultanpur",
+        "state": "",
+        "district": "",
+        "kind": "unknown"
+      }
+    ],
+    "assumptions": [
+      "Time window read from the question: kal whole day."
+    ],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "Sultanpur mein kal barish hogi",
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-16T00:30:00+05:30",
+        "end_local": "2026-09-17T00:30:00+05:30",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "context_action": "new",
+    "changed_fields": [
+      "parameters",
+      "places",
+      "time"
+    ],
+    "intent": "forecast",
+    "start_local": "2026-09-16T00:30:00+05:30",
+    "end_local": "2026-09-17T00:30:00+05:30",
+    "variables": [
+      "precipitation"
+    ],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "Sultanpur mein kal barish hogi",
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-16T00:30:00+05:30",
+        "end_local": "2026-09-17T00:30:00+05:30",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "needs_selection",
+      "answer": "I found 272 possible places for Sultanpur. Please confirm the intended location and spelling.",
+      "fact_ids": [],
+      "passage_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "pending_slots": [],
+  "retrieval_coverage": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "forecast",
+      "parameters": [
+        "precipitation"
+      ],
+      "candidates": [
+        {
+          "tool": "forecast_summary",
+          "selected": true,
+          "available": true,
+          "reason": "Exact-window GFS model summary",
+          "sources": [
+            {
+              "source_id": "S21",
+              "product": "Open-Meteo GFS forecast delivery",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        },
+        {
+          "tool": "hourly_forecast",
+          "selected": false,
+          "available": true,
+          "reason": "Hourly evidence; exact onset and whole-period probability unavailable",
+          "sources": [
+            {
+              "source_id": "S62",
+              "product": "Open-Meteo best-match extended hourly forecast",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "needs_selection",
+      "returned_source_ids": []
+    }
+  ],
+  "document_evidence": [],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}
