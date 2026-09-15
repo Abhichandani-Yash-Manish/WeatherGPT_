@@ -387,6 +387,7 @@
       warnings: warningsView.data.districts,
       place: WGref.state.place,
       load: name => WGref.apiJsonFile('/api/map/static/' + name),
+      onPinPlace: place => { if (typeof WGref.setPlace === 'function') WGref.setPlace(place); },
       onSelect: row => WG.openDrawer(row.district + (row.state ? ', ' + row.state : ''), body => {
         body.append(el('p', 'Bulletin ' + (row.bulletin_date || 'date not stated'), 'block-note'));
         const list = el('div', undefined, 'day-list');

@@ -110,6 +110,9 @@ time, page/row locator, evidence id) and disclosures for requested tasks, scope 
   modelled river discharge near a point — each naming the answering cell and its distance, never
   standing in for an observed water level, gauge, danger level, flood extent, tide or current. The
   national sub-basin list is shown with its day fields verbatim and no derived flood class.
+- **The map is an instrument.** Districts read out their published day and hazard wording on hover or focus; a
+  vendored city can be selected to make it the working place at the geometry's own coordinates; and the legend
+  states what is drawn and how many of each.
 - **Station networks.** A search-radius reading of the METAR and AWS networks, a single-network
   inventory, and the radar **status** layer reporting on itself with status codes and remarks shown as
   published. Radar imagery is not retrieved.

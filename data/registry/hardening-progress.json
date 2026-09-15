@@ -1,7 +1,7 @@
 {
  "schema_version": "hardening-progress-v1",
  "review": "research/reviews/national-readiness-20260912/review.md",
- "updated_at_utc": "2026-09-15T17:39:11+00:00",
+ "updated_at_utc": "2026-09-15T17:44:21+00:00",
  "operational_ready": false,
  "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
  "findings": [
@@ -2338,6 +2338,27 @@
   ],
   "live_loopback_check": "research/reviews/frontend-overhaul-20260915/live-http-checks-p4.json",
   "live_compare_evidence": "Ahmedabad returned a yellow published day and Patna an orange one, six model hours each, read at different instants",
+  "python_tests_passed": 1139,
+  "javascript_suites": 10,
+  "verification_steps": 27,
+  "verification_failed": 0,
+  "browser_rendering_verified": false,
+  "browser_rendering_blocker": "the agent-browser CLI could not launch Chrome inside this session sandbox",
+  "hosting_performed": false,
+  "same_host_only": true
+ },
+ "frontend_overhaul_batch_five": {
+  "report": "docs/78-frontend-overhaul-plan.md",
+  "design_system": "DESIGN.md",
+  "evidence_directory": "research/reviews/frontend-overhaul-20260915",
+  "phase": "P3 map exploration",
+  "delivered": [
+   "map districts read out name, state, published colour and hazard wording on hover and focus",
+   "the vendored places layer is loaded (it was skipped before) and a city selection sets the working place at the geometry coordinates",
+   "the legend states counts: district polygons, those with a warning row, unmapped polygons and cities"
+  ],
+  "live_loopback_check": "research/reviews/frontend-overhaul-20260915/live-http-checks-p5.json",
+  "live_evidence": "districts 756 features (1.5 MiB), places 184 features (26 KiB), six layers against basemap-v1-2ce665f7a488",
   "python_tests_passed": 1139,
   "javascript_suites": 10,
   "verification_steps": 27,

@@ -386,7 +386,25 @@ async function run() {
   assert(paths.some(node => /w-green/.test(node.className)), 'a quiet district-day is painted with its colour');
   assert(!paths.every(node => /w-green/.test(node.className)), 'a district without a warning row is not painted as quiet');
   assert(walk(mapHost).some(node => /source bounding box/i.test(textOf(node))), 'the placeholder is described in words');
+  const mapReadout = withClass(mapHost, 'map-readout')[0];
+  assert(mapReadout, 'the map carries a live readout');
+  paths[0].dispatch('mouseenter', {});
+  assert(/PATNA/.test(textOf(mapReadout)) && /yellow|green|orange|red|colour not supplied/.test(textOf(mapReadout)),
+    'hovering a district reads out its name, state, colour and hazard wording: ' + textOf(mapReadout));
+  assert(/district polygon\(s\)/.test(textOf(mapHost)) && /cities/.test(textOf(mapHost)),
+    'the legend states what is drawn and how many of each');
+  const cityDots = withClass(mapHost, 'place');
+  assert(cityDots.length >= 1, 'the vendored city layer is drawn');
+  assert(/is-pinnable/.test(cityDots[0].className), 'a city is offered as a working place when the map can set one');
+  cityDots[0].dispatch('mouseenter', {});
+  assert(/Patna/.test(textOf(mapReadout)) && /25\.6, 85\.1/.test(textOf(mapReadout)),
+    'hovering a city reads out its coordinates from the geometry: ' + textOf(mapReadout));
+  cityDots[0].dispatch('click', {});
+  const pinned = h.api().state.place;
+  assert(pinned && String(pinned.label).indexOf('Patna') === 0 && pinned.latitude === 25.6 && pinned.longitude === 85.1,
+    'selecting a city makes it the working place at the geometry coordinates: ' + JSON.stringify(pinned));
   console.log('PASS: the map draws one path per district, flags placeholder geometry and never colours an unmapped district green');
+  console.log('PASS: the map reads out what is under the pointer and a city selection sets the working place at source coordinates');
 
   const districtPaths = withClass(mapHost, 'district');
   assert.equal(districtPaths.filter(node => node.getAttribute('tabindex') === '0').length, 1,

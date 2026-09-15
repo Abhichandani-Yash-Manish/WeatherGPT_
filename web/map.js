@@ -115,8 +115,10 @@
     frame.append(svg);
     wrapper.append(frame);
 
+    const readout = el('p', 'Hover or focus a district or a city to read what is drawn there.', 'map-readout');
+    readout.setAttribute('aria-live', 'polite');
     const status = el('p', undefined, 'map-status');
-    wrapper.append(status);
+    wrapper.append(readout, status);
     wrapper.append(el('p', 'Keyboard: Tab reaches the map, arrow keys move between districts, Home and End jump to the first and last, and Enter opens the district the cursor is on. The find box selects a district by name.', 'field-note'));
 
     const project = (longitude, latitude) => {
@@ -207,6 +209,8 @@
                                     role: 'button', 'aria-label': label });
         const choose = () => { if (row && options.onSelect) options.onSelect(row); };
         path.addEventListener('click', choose);
+        path.addEventListener('mouseenter', () => { readout.textContent = label; });
+        path.addEventListener('focus', () => { readout.textContent = label; });
         path.addEventListener('keydown', event => {
           if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); choose(); return; }
           if (event.key === 'ArrowRight' || event.key === 'ArrowDown') { event.preventDefault(); moveCursor(districts, position, 1); return; }
@@ -284,7 +288,8 @@
       const paths = {};
       let unmapped = 0;
       for (const layer of LAYERS) {
-        if (layer.kind === 'places') continue;
+        // The places layer is small (184 vendored settlements) and is the one a reader can pin to,
+        // so it is loaded with the others rather than left as a toggle that does nothing.
         let data;
         try {
           data = await options.load(layer.name);
@@ -308,8 +313,26 @@
         (data.features || []).forEach(feature => {
           if (feature.geometry.type === 'Point') {
             const point = project(feature.geometry.coordinates[0], feature.geometry.coordinates[1]);
-            const circle = node('circle', { cx: point[0], cy: point[1], r: feature.properties.t === 'PPLC' ? 4 : 3, 'class': 'place', role: 'img', 'aria-label': feature.properties.n });
-            circle.append(node('title', undefined, feature.properties.n));
+            const place = {
+              label: feature.properties.n + (feature.properties.a ? ', ' + feature.properties.a : ''),
+              latitude: feature.geometry.coordinates[1],
+              longitude: feature.geometry.coordinates[0]
+            };
+            const circle = node('circle', { cx: point[0], cy: point[1], r: feature.properties.t === 'PPLC' ? 4 : 3,
+                                            'class': 'place' + (options.onPinPlace ? ' is-pinnable' : ''), role: 'img',
+                                            'aria-label': place.label + (options.onPinPlace ? ' — select to make this the working place' : '') });
+            circle.append(node('title', undefined, place.label + (options.onPinPlace ? ' · select to work from here' : '')));
+            circle.addEventListener('mouseenter', () => {
+              readout.textContent = 'City ' + place.label + ' · ' + place.latitude + ', ' + place.longitude +
+                (options.onPinPlace ? ' · select it to make this the working place' : '');
+            });
+            if (options.onPinPlace) {
+              circle.addEventListener('click', event => {
+                if (event && event.stopPropagation) event.stopPropagation();
+                options.onPinPlace(place);
+                readout.textContent = 'Working place set to ' + place.label + ' at the coordinates the vendored geometry carries.';
+              });
+            }
             holder.append(circle);
             return;
           }
@@ -319,6 +342,8 @@
       }
       state.unmapped = unmapped;
       state.placeholders = (loaded.districts || []).filter(item => item.placeholder).length;
+      legend.append(el('span', (loaded.districts || []).length + ' district polygon(s) · ' + rows.length +
+        ' with a warning row · ' + unmapped + ' unmapped · ' + (loaded.places || []).length + ' cities', 'map-counts'));
       paintLayers();
       applyTransform();
     }

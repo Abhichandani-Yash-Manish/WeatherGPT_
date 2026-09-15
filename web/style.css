@@ -922,3 +922,9 @@ body { display: flex; flex-direction: column; min-height: 100vh; min-height: 100
 .receipt-actions .ghost { color: var(--housing-ink); border-color: var(--housing-line); background: transparent; }
 .receipt-actions .ghost:hover { border-color: var(--sand); color: var(--sand); }
 .copy-helper { position: fixed; top: -1000px; left: 0; opacity: 0; }
+
+/* 19 — map exploration ------------------------------------------------------ */
+.map-readout { margin: var(--space-2) 0 0; font: 500 var(--step--1)/1.45 var(--mono); color: var(--ink-soft); min-height: 1.45em; }
+.map-counts { font-size: var(--step--1); color: var(--mute); width: 100%; }
+.map-frame .place.is-pinnable { cursor: pointer; }
+.map-frame .place.is-pinnable:hover { stroke: var(--data); stroke-width: 2; }

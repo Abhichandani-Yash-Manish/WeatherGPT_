@@ -203,5 +203,18 @@ Live record: `research/reviews/frontend-overhaul-20260915/live-http-checks-p3.js
   them apart rather than subtracting one from the other.
 
 Live record: `research/reviews/frontend-overhaul-20260915/live-http-checks-p4.json`.
-**Next (not started).** Map exploration (hover readouts, click-to-pin, layer legend) and the unified timeline;
+**P3 — map exploration.** The Map surface is now an instrument rather than a picture:
+
+- **Every district reads out.** Hovering or focusing a district polygon prints its district, state, the colour
+  published for the selected day and the hazard wording verbatim in a live readout line.
+- **Cities are selectable.** The vendored places layer (184 settlements) is now actually loaded — it was skipped
+  before, which the new component check caught — each city reads out its coordinates on hover, and selecting one
+  sets the working place at exactly the coordinates the geometry carries.
+- **The legend states counts**: district polygons drawn, how many carry a warning row for the bulletin, how many
+  are unmapped from the warning table, and how many cities are drawn.
+
+Live record: `research/reviews/frontend-overhaul-20260915/live-http-checks-p5.json` — the manifest lists all six
+layers against basemap `basemap-v1-2ce665f7a488`, districts serve 756 features (1.5 MiB) and places 184 (26 KiB),
+and the served module carries the readout, the pin handler and the counts.
+**Next (not started).** The unified timeline across published days, observations and model hours;
 the remaining craft polish (view transitions on every surface, print parity for the new visuals); and browser-level acceptance, which this sandbox still cannot run.

@@ -1,0 +1,58 @@
+{
+  "schema_version": "frontend-overhaul-live-http-v1",
+  "batch": "P3 map exploration: readouts, click-to-pin cities and legend counts",
+  "checked_at_utc": "2026-09-15T17:44:04+00:00",
+  "base": "http://127.0.0.1:8795",
+  "method": "Loopback HTTP against a fresh workspace process: the served map module, the manifest and the layers it draws. No DOM rendering: the session sandbox cannot launch Chrome.",
+  "checks": [
+    {
+      "check": "page token",
+      "status": 200,
+      "ms": 5,
+      "token_present": true
+    },
+    {
+      "check": "the map module carries exploration",
+      "path": "/map.js",
+      "status": 200,
+      "ms": 0,
+      "bytes": 18222,
+      "readout": true,
+      "city_pin": true,
+      "legend_counts": true,
+      "places_layer_loaded": true
+    },
+    {
+      "check": "the manifest lists the layers the map draws",
+      "path": "/api/map/layers",
+      "status": 200,
+      "ms": 1,
+      "layers": [
+        "basins",
+        "coast-zones",
+        "districts",
+        "land",
+        "places",
+        "states"
+      ],
+      "districts": 756,
+      "build": "basemap-v1-2ce665f7a488"
+    },
+    {
+      "check": "layer places is served",
+      "path": "/api/map/static/places",
+      "status": 200,
+      "ms": 0,
+      "bytes": 26744,
+      "features": 184
+    },
+    {
+      "check": "layer districts is served",
+      "path": "/api/map/static/districts",
+      "status": 200,
+      "ms": 1,
+      "bytes": 1529712,
+      "features": 756
+    }
+  ]
+}

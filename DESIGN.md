@@ -76,6 +76,8 @@ a printed issue date — never from decoration.
 | `skeleton` | A loading state reserves the shape of the answer — bars and a chart frame — and carries no number, because it has no source. |
 | `receipt-actions` | The receipt copies itself as text and prints; a refused clipboard says so rather than claiming success. |
 | `compare-column` | One place per column, each with its own timestamps and sources. No difference, ranking or average is computed between columns. |
+| `map-readout` | A live line under the map. Districts read out their published day and hazard wording; cities read out their coordinates and say that selecting one sets the working place. |
+| `city-pin` | Selecting a city sets the working place at the coordinates the vendored geometry carries — never at a projected or rounded guess. |
 
 ## Chart language (`viz.js`)
 
