@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="workspace-token" content="__WORKSPACE_TOKEN__">
 <meta name="color-scheme" content="light dark">
-<title>WeatherGPT · Ask about the weather</title>
+<title>WeatherGPT · Your weather workspace</title>
 <link rel="stylesheet" href="/style.css">
 <script src="/charts.js" defer></script>
 <script src="/views.js" defer></script>
@@ -17,12 +17,12 @@
 <script src="/home.js" defer></script>
 </head>
 <body>
-<a class="skip" href="#main">Skip to the conversation</a>
+<a class="skip" href="#main">Skip to workspace</a>
 <p class="banner" id="banner" role="status" hidden></p>
 
 <header class="masthead">
   <button type="button" class="ghost" id="rail-toggle" aria-expanded="false" aria-controls="rail" aria-label="Show menu">☰</button>
-  <a class="brand" href="#/assistant" aria-label="WeatherGPT home"><span class="mark" aria-hidden="true">◒</span><span class="brand-name">WeatherGPT</span></a>
+  <a class="brand" href="#/workspace" aria-label="WeatherGPT home"><span class="mark" aria-hidden="true">◒</span><span class="brand-name">WeatherGPT</span></a>
   <div class="place-context">
     <label class="sr" for="place-input">Place</label>
     <input id="place-input" type="search" placeholder="Search a place" autocomplete="off" spellcheck="false">
@@ -33,25 +33,26 @@
     <span class="chip" id="freshness" title="When the active surface last read its sources">Not read yet</span>
     <label class="sr" for="persona">Reading as</label>
     <select id="persona" class="persona-select" title="Who is reading: this changes the emphasis and the surfaces offered, never a value, a source or a warning level">
-      <option value="">Reading as: no persona</option>
+      <option value="">All uses</option>
     </select>
     <button type="button" class="ghost" id="palette-open" aria-haspopup="dialog" aria-label="Command palette" title="Open the command palette">⌘K</button>
     <button type="button" class="ghost" id="theme-toggle" title="Switch between day, night and system appearance">Day desk</button>
-    <button type="button" class="ghost" id="notify-toggle" aria-expanded="false" aria-controls="notify-panel">Watch</button>
+    <button type="button" class="ghost" id="notify-toggle" aria-expanded="false" aria-controls="notify-panel">Plans & inbox</button>
     <span class="chip readout" id="service-state" role="status">Starting</span>
   </div>
 </header>
 
 <div class="suite">
   <button type="button" class="rail-backdrop" id="rail-backdrop" hidden aria-label="Close menu"></button>
-  <nav class="rail" id="rail" aria-label="Surfaces">
+  <nav class="rail" id="rail" aria-label="Workspace navigation">
     <div class="rail-group">
+      <a class="nav-item" href="#/workspace" data-view="workspace"><span class="glyph" aria-hidden="true">◒</span> Workspace</a>
       <a class="nav-item" href="#/assistant" data-view="assistant"><span class="glyph" aria-hidden="true">✦</span> Ask<span class="kbd-hint">⌥1</span></a>
       <a class="nav-item" href="#/overview" data-view="overview"><span class="glyph" aria-hidden="true">◎</span> Today<span class="kbd-hint">⌥2</span></a>
     </div>
 
     <div class="rail-group">
-      <h2 class="rail-title">Surfaces</h2>
+      <h2 class="rail-title">Explore the evidence</h2>
       <a class="nav-item" href="#/warnings" data-view="warnings"><span class="glyph" aria-hidden="true">▲</span> Warnings<span class="kbd-hint">⌥3</span></a>
       <a class="nav-item" href="#/map" data-view="map"><span class="glyph" aria-hidden="true">◈</span> Map<span class="kbd-hint">⌥4</span></a>
       <a class="nav-item" href="#/forecast" data-view="forecast"><span class="glyph" aria-hidden="true">〜</span> Forecast<span class="kbd-hint">⌥5</span></a>
@@ -79,6 +80,9 @@
   </nav>
 
   <main class="surface-host" id="main" tabindex="-1">
+    <section class="surface workspace-surface" data-surface="workspace" hidden>
+      <div class="surface-body" id="workspace-body"></div>
+    </section>
     <section class="surface" data-surface="assistant" hidden>
       <header class="surface-head">
         <div><h1>Ask</h1><p class="surface-note" id="assistant-context">Ask in your own words. Every answer keeps its source, its window and its retrieval time.</p></div>

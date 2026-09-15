@@ -445,7 +445,9 @@ class RulePlannerTests(unittest.TestCase):
         for question in ('Compare the models for rainfall in Ahmedabad tomorrow.',
                          'Do the models agree on rain in Kochi tomorrow?',
                          'Rain in Patna tomorrow morning: check another model.',
-                         'GFS vs best-match rainfall for Ahmedabad tomorrow.'):
+                         'GFS vs best-match rainfall for Ahmedabad tomorrow.',
+                         'Compare the GFS and best-match forecast for rain in Vadodara, Gujarat tomorrow afternoon.',
+                         'Compare best match and GFS rain for Cuttack tomorrow morning.'):
             request = self.request_for(question)
             self.assertIsNotNone(request, question)
             self.assertEqual([(task['kind'], task['operation']) for task in request['tasks']],

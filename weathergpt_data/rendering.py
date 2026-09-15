@@ -152,63 +152,158 @@ def split_sentences(text):
     return [piece for piece in re.split(r'(?<=[.!?।])\s+', text or '') if piece.strip()]
 
 
-def render(text, target, translator, identities=(), source='en-IN'):
-    """Render an answer in `target`, protecting values and holding safety clauses.
+# A source quotation is the document's own words. Translating one would put a model's paraphrase
+# where the reader expects the source, and quotations are the bulk of a corpus answer: measured
+# 15 September 2026, a Gujarati district question took 27.4 s, of which about 22 s was
+# sentence-by-sentence translation of an answer that was mostly quoted passages. Quotations are kept
+# verbatim and reported; the prose around them is translated as before.
+QUOTED_SPAN = re.compile(r'\u201c[^\u201d]{0,4000}\u201d|"[^"]{0,4000}"')
 
-    `translator` is called with (text, target, source) and returns the rendered text.
-    Returns the rendering and a report. When the report says `ok` is False the caller
-    must not present the rendering: it keeps the source-language answer and the
-    existing honest downgrade instead.
+
+def quoted_segments(text):
+    """(kind, text) segments of an answer, with quotations separated from the prose."""
+    segments, position = [], 0
+    for match in QUOTED_SPAN.finditer(text or ''):
+        if match.start() > position:
+            segments.append(('prose', text[position:match.start()]))
+        segments.append(('quote', match.group(0)))
+        position = match.end()
+    if position < len(text or ''):
+        segments.append(('prose', text[position:]))
+    return segments
+
+
+# Sentence-by-sentence rendering is a service call per sentence, and a corpus answer has about ten
+# of them: measured 15 September 2026, eleven calls and eleven seconds of wall clock. The gate
+# itself is unchanged; what changed is that independent sentences run concurrently, so the wall
+# clock is the slowest call rather than the sum. The gate never depends on another sentence.
+RENDER_WORKERS = 4
+
+
+def translate_one(sentence, target, translator, identities, source='en-IN'):
+    """The gate for one sentence: (rendered text, translated prose or None, failure or None)."""
+    masked, tokens = protect(sentence, identities)
+    # The sentinel itself contains a letter, so prose has to be looked for in what remains once
+    # the sentinels are removed.
+    without_values = SENTINEL_PATTERN.sub(' ', masked)
+    if not masked.strip() or not re.search(r'[A-Za-z]', without_values):
+        # Nothing but protected values; translating it could only damage it.
+        return sentence, None, None
+    try:
+        translated = translator(masked, target, source)
+    except SourceError as error:
+        return sentence, None, {'sentence': sentence, 'reason': str(error)}
+    report = verify(translated, tokens)
+    if not report['ok']:
+        return sentence, None, {'sentence': sentence, 'reason': 'protected values did not survive', **report}
+    # A rendering that mixes Indian scripts is not a rendering in the requested language. This is
+    # checked on the translated prose with the value sentinels removed, because the restored answer
+    # carries Latin values by design.
+    foreign = foreign_script_letters(SENTINEL_PATTERN.sub(' ', translated), target)
+    if foreign:
+        return sentence, None, {'sentence': sentence,
+                                'reason': 'the rendering mixed scripts outside the requested language',
+                                'foreign_characters': ''.join(foreign)[:40]}
+    # Keep the translated prose before values are substituted back. Script adherence has to be
+    # judged on what the model actually wrote: the restored answer carries Latin values and held
+    # clauses by design, so checking it would always fail.
+    return restore(translated, tokens), SENTINEL_PATTERN.sub(' ', translated), None
+
+
+def _transient(failure):
+    """True when a failure is the service rather than the rendering's own content.
+
+    A sentence whose protected values did not survive, or whose rendering came back in another
+    script, is a content failure and is never retried: the same call would produce the same
+    answer. A service that could not be reached is worth one more try, because otherwise a single
+    flaky call discards every sentence that did render.
+    """
+    reason = str((failure or {}).get('reason') or '')
+    return bool(reason) and 'did not survive' not in reason and 'mixed scripts' not in reason
+
+
+def render_many(sentences, target, translator, identities, source='en-IN'):
+    """Render independent sentences with a bounded pool, in order, each through the same gate."""
+    if len(sentences) <= 1 or RENDER_WORKERS <= 1:
+        outcomes = [translate_one(sentence, target, translator, identities, source) for sentence in sentences]
+    else:
+        from concurrent.futures import ThreadPoolExecutor
+        with ThreadPoolExecutor(max_workers=min(RENDER_WORKERS, len(sentences))) as pool:
+            outcomes = list(pool.map(lambda sentence: translate_one(sentence, target, translator, identities, source),
+                                     sentences))
+    retried = []
+    for sentence, outcome in zip(sentences, outcomes):
+        if outcome[2] and _transient(outcome[2]):
+            again = translate_one(sentence, target, translator, identities, source)
+            if not again[2]:
+                outcome = again
+        retried.append(outcome)
+    return retried
+
+
+def render(text, target, translator, identities=(), source='en-IN'):
+    """Render an answer in target, protecting values and holding safety clauses.
+
+    The translator is called with (text, target, source) and returns the rendered text.
+    Returns the rendering and a report. When the report says ok is False the caller must
+    not present the rendering: it keeps the source-language answer and the existing honest
+    downgrade instead.
+
+    A source quotation is never translated: it is the document's own words, and a rendering
+    would put a paraphrase where the reader expects the source. The prose around it is
+    translated one call per sentence, concurrently, because the sentences are independent.
     """
     resolved = normalise(target)
     if not resolved:
         raise SourceError('Unsupported output language: ' + str(target))
-    sentences = split_sentences(text)
-    if not sentences:
+    segments = quoted_segments(text)
+    prose_sentences = [sentence for kind, part in segments if kind == 'prose'
+                       for sentence in split_sentences(part)]
+    # A page label such as "· page 1 ·" is not prose: holding quotations for it would leave an
+    # answer with nothing rendered at all.
+    has_words = any(len(re.findall(r'[A-Za-z]{2,}', sentence)) >= 3 for sentence in prose_sentences)
+    # A quotation is held only when there is prose beside it with words in it to render: an answer
+    # that is nothing but a quotation and a page label has no explanation to translate, and the
+    # previous behaviour is kept for it.
+    hold_quotes = has_words and any(kind == 'quote' for kind, _part in segments)
+    if not hold_quotes:
+        if not (text or '').strip():
+            raise SourceError('There is no answer text to render')
+        segments = [('prose', text)]
+    held_quotes, held, failures, prose = [], [], [], []
+    plan = []
+    for kind, part in segments:
+        if hold_quotes and kind == 'quote':
+            held_quotes.append(part)
+            plan.append(('hold', part))
+            continue
+        for sentence in split_sentences(part):
+            if safety_critical(sentence):
+                # Left in the source language on purpose, and reported, rather than risking an
+                # inverted negation. A reviewed template may replace this later.
+                held.append(sentence)
+                plan.append(('hold', sentence))
+            else:
+                plan.append(('prose', sentence))
+    sentences = [part for kind, part in plan if kind == 'prose']
+    if not sentences and not held_quotes:
         raise SourceError('There is no answer text to render')
-    rendered, held, failures, prose = [], [], [], []
-    for sentence in sentences:
-        if safety_critical(sentence):
-            # Left in the source language on purpose, and reported, rather than risking
-            # an inverted negation. A reviewed template may replace this later.
-            rendered.append(sentence)
-            held.append(sentence)
+    outcomes = render_many(sentences, resolved, translator, identities, source)
+    rendered, position = [], 0
+    for kind, part in plan:
+        if kind == 'hold':
+            rendered.append(part)
             continue
-        masked, tokens = protect(sentence, identities)
-        # The sentinel itself contains a letter, so prose has to be looked for in what
-        # remains once the sentinels are removed.
-        without_values = SENTINEL_PATTERN.sub(' ', masked)
-        if not masked.strip() or not re.search(r'[A-Za-z]', without_values):
-            # Nothing but protected values; translating it could only damage it.
-            rendered.append(sentence)
-            continue
-        try:
-            translated = translator(masked, resolved, source)
-        except SourceError as error:
-            failures.append({'sentence': sentence, 'reason': str(error)})
-            rendered.append(sentence)
-            continue
-        report = verify(translated, tokens)
-        if not report['ok']:
-            failures.append({'sentence': sentence, 'reason': 'protected values did not survive', **report})
-            rendered.append(sentence)
-            continue
-        # A rendering that mixes Indian scripts is not a rendering in the requested
-        # language. This is checked on the translated prose with the value sentinels
-        # removed, because the restored answer carries Latin values by design.
-        foreign = foreign_script_letters(SENTINEL_PATTERN.sub(' ', translated), resolved)
-        if foreign:
-            failures.append({'sentence': sentence, 'reason': 'the rendering mixed scripts outside the requested language',
-                             'foreign_characters': ''.join(foreign)[:40]})
-            rendered.append(sentence)
-            continue
-        # Keep the translated prose before values are substituted back. Script adherence
-        # has to be judged on what the model actually wrote: the restored answer carries
-        # Latin values and held clauses by design, so checking it would always fail.
-        prose.append(SENTINEL_PATTERN.sub(' ', translated))
-        rendered.append(restore(translated, tokens))
+        text_rendered, translated_prose, failure = outcomes[position]
+        position += 1
+        if failure:
+            failures.append(failure)
+        if translated_prose:
+            prose.append(translated_prose)
+        rendered.append(text_rendered)
     text_out = ' '.join(rendered)
-    translated_count = len(sentences) - len(held) - len(failures)
+    # The prose sentences are the ones the gate actually saw; the quotations are held whole.
+    translated_count = len(prose)
     translated_prose = ' '.join(prose)
     script_ok = (None if script_pattern(resolved) is None
                  else bool(translated_prose.strip()) and written_in(translated_prose, resolved))
@@ -218,6 +313,8 @@ def render(text, target, translator, identities=(), source='en-IN'):
         'sentences': len(sentences),
         'translated': translated_count,
         'held_safety_critical': len(held),
+        'held_quotations': len(held_quotes),
+        'held_quotation_characters': sum(len(quote) for quote in held_quotes),
         'failed': len(failures),
         'failures': failures,
         'held_sentences': held,

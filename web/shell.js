@@ -14,12 +14,12 @@ const WG = window.WG;
 
 (function () {
   const TOKEN = (document.querySelector('meta[name="workspace-token"]') || {}).content || '';
-  const VIEWS = ['overview', 'warnings', 'map', 'observations', 'forecast', 'changes', 'climate', 'advisories', 'aviation', 'marine', 'assistant', 'briefcase', 'settings'];
-  const VIEW_LABELS = { assistant: 'Ask', overview: 'Today', warnings: 'Warnings', map: 'Map', forecast: 'Forecast',
+  const VIEWS = ['workspace', 'overview', 'warnings', 'map', 'observations', 'forecast', 'changes', 'climate', 'advisories', 'aviation', 'marine', 'assistant', 'briefcase', 'settings'];
+  const VIEW_LABELS = { workspace: 'Workspace', assistant: 'Ask', overview: 'Today', warnings: 'Warnings', map: 'Map', forecast: 'Forecast',
                         changes: 'What changed', observations: 'Observations', advisories: 'Farm advisories',
                         climate: 'Climate records', marine: 'Sea and rivers', aviation: 'Aviation', briefcase: 'Briefcase',
                         settings: 'Sources and settings' };
-  const VIEW_GLYPHS = { assistant: '✦', overview: '◎', warnings: '▲', map: '◈', forecast: '〜', changes: '∆',
+  const VIEW_GLYPHS = { workspace: '◒', assistant: '✦', overview: '◎', warnings: '▲', map: '◈', forecast: '〜', changes: '∆',
                         observations: '⌖', advisories: '☘', climate: '◔', marine: '≈', aviation: '✈', briefcase: '❑',
                         settings: '⚙' };
   const DEFAULT_PLACE = { label: 'Ahmedabad, Gujarat', latitude: 23.02579, longitude: 72.58727 };
@@ -279,6 +279,7 @@ const WG = window.WG;
     try { window.localStorage.setItem('weathergpt.place', JSON.stringify(place)); } catch (error) { /* ignore */ }
     const button = document.getElementById('active-place');
     if (button) button.textContent = place.label;
+    if (window.WeatherGPT) window.WeatherGPT.refreshWelcome();
     render();
   }
 
@@ -299,7 +300,7 @@ const WG = window.WG;
         button.append(el('span', [match.source_id, match.kind, match.match_type].filter(Boolean).join(' · '), 'suggest-meta'));
         button.addEventListener('click', () => {
           const coordinates = match.coordinates || {};
-          setPlace({ label: match.label || match.name, latitude: coordinates.latitude, longitude: coordinates.longitude });
+          setPlace({ label: match.label || match.name, queryLabel: [match.name, (match.admin1 || '').replace(/^State of /, '')].filter(Boolean).join(', '), latitude: coordinates.latitude, longitude: coordinates.longitude });
           input.value = '';
           hide();
         });
@@ -325,8 +326,8 @@ const WG = window.WG;
   /* ---------- routing ---------- */
   function currentView() {
     const match = /^#\/([a-z]+)/.exec(window.location.hash || '');
-    /* The conversation is the product, so it is where the workspace opens. */
-    const name = match ? match[1] : 'assistant';
+    /* A fresh visit opens the workspace; conversation deep links still open Ask. */
+    const name = match ? match[1] : 'workspace';
     return VIEWS.indexOf(name) >= 0 ? name : 'assistant';
   }
   function showView(name) {
@@ -342,6 +343,9 @@ const WG = window.WG;
   }
   function render() {
     const name = currentView();
+    WG.state.freshness = null;
+    const stamp = document.getElementById('freshness');
+    if (stamp) stamp.textContent = name === 'workspace' ? 'Sources dated separately' : 'Not read yet';
     showView(name);
     const host = document.getElementById(name + '-body');
     if (!host) return;
@@ -350,9 +354,11 @@ const WG = window.WG;
     if (!renderer) { host.append(stateBlock('plain', 'This surface is not connected yet.')); return; }
     const spinner = loading();
     const panel = el('div', undefined, 'surface-panel');
-    host.append(spinner, panel);
+    if (name !== 'workspace') host.append(spinner);
+    host.append(panel);
     Promise.resolve(renderer(panel, WG)).then(() => {
       spinner.remove();
+      if (WG.state.view !== name || !panel.isConnected) return;
       const chipNode = document.getElementById('freshness');
       if (chipNode && WG.state.freshness) chipNode.textContent = WG.state.freshness;
       const note = document.getElementById(name + '-note');
@@ -361,7 +367,11 @@ const WG = window.WG;
       spinner.remove();
       clear(panel);
       panel.append(stateBlock('error', error && error.message ? error.message : 'This surface could not read its sources.',
-                              'Nothing is shown rather than a partial picture. Try again, or check the collection health in Settings.'));
+                              'Retry this view, or check Sources and settings.'));
+      const retry = el('button', 'Retry this view', 'secondary');
+      retry.type = 'button';
+      retry.addEventListener('click', render);
+      panel.append(retry);
     });
   }
   function wireRouter() {
@@ -372,16 +382,30 @@ const WG = window.WG;
   }
   function askAbout(view) {
     const context = describeContext(view);
+    WG.prepareQuestion(context.question, 'From ' + VIEW_LABELS[view] + ' · ' + context.summary);
+  }
+  // Opening a tool is an explicit new task. Draft it for review without inheriting
+  // an unrelated crop, station, source or pending slot from an older conversation.
+  function prepareQuestion(question, summary) {
+    const app = window.WeatherGPT;
+    if (app && app.state.busy) {
+      window.location.hash = '#/assistant';
+      return false;
+    }
+    if (app && app.newConversation) app.newConversation();
     const input = document.getElementById('question');
-    if (input) input.value = context.question;
+    if (input) { input.value = question; input.dispatchEvent(new Event('input')); }
     const note = document.getElementById('assistant-context');
-    if (note) note.textContent = 'Asked from ' + view + ': ' + context.summary;
+    if (note) note.textContent = summary || 'Review the question, then ask. Follow-ups stay in this conversation.';
     window.location.hash = '#/assistant';
-    const box = document.getElementById('question');
-    if (box) box.focus();
+    render();
+    if (input) input.focus();
+    return true;
   }
   function describeContext(view) {
     const place = WG.state.place || DEFAULT_PLACE;
+    const selected = (WG.state.surfaceContexts || {})[view];
+    if (selected) return selected;
     const templates = {
       overview: 'What should I watch today for ' + place.label + '?',
       warnings: 'Is there any official warning for ' + place.label + ' right now?',
@@ -606,7 +630,7 @@ const WG = window.WG;
     if (!packet || packet.mode !== 'live') return;
     storeNumber(PLAN_SEEN_KEY, newestId(packet));
     const toggle = document.getElementById('notify-toggle');
-    if (toggle) toggle.textContent = 'Watch';
+    if (toggle) toggle.textContent = 'Plans & inbox';
   }
   function requestPlanNotifications() {
     if (typeof window.Notification !== 'function' || window.Notification.permission !== 'default') return;
@@ -619,7 +643,7 @@ const WG = window.WG;
     const seen = storedNumber(PLAN_SEEN_KEY) || 0;
     const unread = visible.filter(item => Number(item.id) > seen).length;
     const toggle = document.getElementById('notify-toggle');
-    if (toggle) toggle.textContent = unread ? 'Watch · ' + unread : 'Watch';
+    if (toggle) toggle.textContent = unread ? 'Plans & inbox · ' + unread : 'Plans & inbox';
     const notified = storedNumber(PLAN_NOTIFIED_KEY);
     const newest = Math.max(0, ...visible.map(item => Number(item.id) || 0));
     // The first poll on a fresh page records what already exists instead of replaying it.
@@ -849,6 +873,7 @@ const WG = window.WG;
     render();
   }
 
+  WG.prepareQuestion = prepareQuestion;
   WG.api = api;
   WG.apiJsonFile = apiJsonFile;
   WG.post = post;

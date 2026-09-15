@@ -209,7 +209,7 @@
     state.conversationId = null;
     closeRail();
     clearError();
-    if (window.location.hash && window.history && window.history.replaceState) window.history.replaceState(null, '', window.location.pathname);
+    if (window.location.hash && window.history && window.history.replaceState) window.history.replaceState(null, '', window.location.pathname + '#/assistant');
     const box = thread();
     if (box) box.replaceChildren(renderWelcome(handlers()));
     const input = byId('question');
@@ -556,5 +556,5 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
 
-  window.WeatherGPT = { ask:ask, state:state, refreshWelcome:refreshWelcome, loadLedger:loadLedger, loadHealth:loadHealth, restore:restore, buildFieldSentence:buildFieldSentence, firstPoint:firstPoint };
+  window.WeatherGPT = { newConversation:newConversation, ask:ask, state:state, refreshWelcome:refreshWelcome, loadLedger:loadLedger, loadHealth:loadHealth, restore:restore, buildFieldSentence:buildFieldSentence, firstPoint:firstPoint };
 })();

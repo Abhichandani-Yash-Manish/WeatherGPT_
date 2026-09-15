@@ -22,7 +22,11 @@ import uuid
 from pathlib import Path
 
 from .languages import sarvam_code
-from .transport import SourceError
+from datetime import timedelta
+import hashlib
+import json
+
+from .transport import SourceError, parsed, stamp, utcnow
 
 BASE = 'https://api.sarvam.ai'
 KEY_FILE = Path(os.path.expanduser('~/.weathergpt/sarvam.key'))
@@ -113,17 +117,77 @@ def _multipart(path, fields, files, deadline=TIMEOUT):
                     {'Content-Type': 'multipart/form-data; boundary=' + boundary}, deadline)
 
 
-def translate(text, target, source='en-IN'):
+# Repeated sentences are the common case in this product: the same disclosure lines appear in
+# almost every answer, and a corpus answer is rendered sentence by sentence. Measured 15 September
+# 2026: an eleven-sentence answer made eleven calls. A bounded local cache keeps the rendered text
+# for the masked sentence it was produced from, so a repeat is instant and costs nothing.
+CACHE_ROOT = Path('data/runtime/render-cache')
+CACHE_LIMIT = 2500
+CACHE_TTL = timedelta(days=30)
+_CACHE_HITS = {'count': 0}
+
+
+def cache_hits():
+    """How many translations were served from the local cache in this process."""
+    return _CACHE_HITS['count']
+
+
+def _cache_path(text, target, source):
+    key = hashlib.sha256((str(target) + '|' + str(source) + '|' + text).encode()).hexdigest()
+    return CACHE_ROOT / (key + '.json')
+
+
+def _cache_read(path):
+    try:
+        stored = json.loads(path.read_text())
+    except (OSError, ValueError):
+        return None
+    created = stored.get('created_at_utc')
+    try:
+        if created and utcnow() - parsed(created) > CACHE_TTL:
+            return None
+    except (TypeError, ValueError):
+        return None
+    rendered = stored.get('rendered')
+    return rendered if isinstance(rendered, str) and rendered.strip() else None
+
+
+def _cache_write(path, rendered, target, source, model):
+    try:
+        CACHE_ROOT.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps({'rendered': rendered, 'target': target, 'source': source,
+                                    'model': model, 'created_at_utc': stamp(utcnow())},
+                                   ensure_ascii=False))
+        if len(list(CACHE_ROOT.glob('*.json'))) > CACHE_LIMIT:
+            for stale in sorted(CACHE_ROOT.glob('*.json'), key=lambda item: item.stat().st_mtime)[:200]:
+                stale.unlink()
+    except OSError:
+        # A cache that cannot be written is not a failure of the translation.
+        return
+
+
+def translate(text, target, source='en-IN', cache=False):
     """Render text in another language. The result is a rendering, never evidence.
 
     The default model refuses some of the 23 languages the speech endpoints accept and
     names the wider translation model in its own error. That refusal is retried once on
     the named model, and which model answered is recorded rather than assumed.
+
+    With cache=True the rendering of a repeated sentence is served from local storage: the
+    cache holds the rendered text for the masked sentence it came from, so it can never
+    return a rendering for a different question, and a hit is recorded on the result.
     """
     if not isinstance(text, str) or not text.strip():
         raise SourceError('Nothing to translate')
     if len(text) > TRANSLATE_CHARACTER_LIMIT:
         raise SourceError('Text exceeds the reviewed translation length of %d characters' % TRANSLATE_CHARACTER_LIMIT)
+    path = _cache_path(text, target, source) if cache else None
+    if path is not None:
+        stored = _cache_read(path)
+        if stored:
+            _CACHE_HITS['count'] += 1
+            return stored, {'service': 'sarvam', 'operation': 'translate', 'target': sarvam_code(target),
+                            'model': 'local_render_cache', 'cache': 'hit', 'elapsed_ms': 0}
     payload = {'input': text, 'source_language_code': source, 'target_language_code': sarvam_code(target)}
     model = None
     try:
@@ -137,6 +201,8 @@ def translate(text, target, source='en-IN'):
     rendered = response.get('translated_text')
     if not isinstance(rendered, str) or not rendered.strip():
         raise LanguageServiceUnavailable('The language service returned no translated text')
+    if path is not None:
+        _cache_write(path, rendered, target, source, model or 'provider_default')
     return rendered, {'service': 'sarvam', 'operation': 'translate', 'target': sarvam_code(target),
                       'source_language_code': response.get('source_language_code'),
                       'model': model or 'provider_default',

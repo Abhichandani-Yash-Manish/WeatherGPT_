@@ -453,6 +453,8 @@
       if (items.length) districtSelect.value = districtSelect.value || items[0].district;
     }
     async function read() {
+      WGref.state.surfaceContexts = WGref.state.surfaceContexts || {};
+      WGref.state.surfaceContexts.climate = { question: 'Show the annual rainfall trend for ' + districtSelect.value + ' district, ' + stateSelect.value + ' from ' + fromInput.value + ' to ' + toInput.value + '.', summary: districtSelect.value + ', ' + stateSelect.value };
       WG.clear(resultHost);
       resultHost.append(WG.loading('Reading the published record…'));
       try {
@@ -509,11 +511,7 @@
           const button = el('button', district.label || district.id, 'chip-button');
           button.type = 'button';
           button.addEventListener('click', () => {
-            const input = document.getElementById('question');
-            if (input) input.value = 'What does the district bulletin say for ' + (district.label || district.id) + '?';
-            const note = document.getElementById('assistant-context');
-            if (note) note.textContent = 'Asked from advisories: ' + (district.label || district.id) + ' bulletin';
-            window.location.hash = '#/assistant';
+            WGref.prepareQuestion('What does the district agromet bulletin say for ' + (district.label || district.id) + ', ' + stateSelect.value + '?', 'Farm advisories · ' + (district.label || district.id) + ', ' + stateSelect.value);
           });
           grid.append(button);
         });
@@ -544,6 +542,7 @@
     input.type = 'text';
     input.value = 'VAAH';
     input.placeholder = 'VAAH';
+    input.setAttribute('aria-label', 'Airport ICAO code');
     const kindSelect = el('select');
     kindSelect.setAttribute('aria-label', 'Station report kind');
     [['metar', 'Observation (METAR)'], ['taf', 'Terminal forecast (TAF)']].forEach(pair => {
@@ -565,6 +564,8 @@
     card.append(resultHost);
     host.append(card);
     async function read() {
+      WGref.state.surfaceContexts = WGref.state.surfaceContexts || {};
+      WGref.state.surfaceContexts.aviation = { question: 'Show the latest ' + kindSelect.value.toUpperCase() + ' for ' + input.value.trim().toUpperCase() + ' and explain it.', summary: input.value.trim().toUpperCase() };
       WG.clear(resultHost);
       resultHost.append(WG.loading('Reading the airport report…'));
       try {

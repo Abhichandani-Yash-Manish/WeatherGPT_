@@ -471,7 +471,9 @@ def translated_query(query):
         return None
     try:
         code = sarvam_code(language_of(query))
-        rendered, meta = speech.translate(query, 'en', code)
+        # The same question asked again is the common case; the rendering of the masked question
+        # is cached locally, and a hit is recorded on the coverage record.
+        rendered, meta = speech.translate(query, 'en', code, cache=True)
     except (SourceError, ValueError, OSError):
         # A refusal, a timeout or an unconfigured service is a state of the retrieval, not an
         # error the reader should see: the disclosed semantic-only basis still applies.

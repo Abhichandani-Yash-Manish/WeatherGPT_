@@ -313,6 +313,7 @@ WARNING_STRONG = re.compile(r'\b(warnings?|alerts?|red alert|orange alert|yellow
 # lineage, so agreement is not independent confirmation. Measured on 15 September 2026, only
 # the model planner recognised this shape.
 CROSSCHECK = re.compile(r'\b(?:another model|other models?|compare (?:the )?(?:models?|sources?|forecasts?)|'
+                        r'compare (?:the )?(?:gfs and best[- ]match|best[- ]match and gfs)|'
                         r'models?\b[^?]{0,24}\b(?:compare|comparison|agree|tulna|tulana|kijiye)|'
                         r'(?:compare|tulna|tulana)\b[^?]{0,24}\bmodels?|'
                         r'model (?:comparison|agreement)|gfs (?:vs|versus)|(?:vs|versus) (?:gfs|ecmwf|icon|best[- ]match)|'

@@ -1,0 +1,141 @@
+{
+ "summary": {
+  "checked_at_utc": "2026-09-15T11:38:09.315533+00:00",
+  "questions": 3,
+  "cold_seconds": [
+   8.72,
+   11.63,
+   4.4
+  ],
+  "repeat_seconds": [
+   1.15,
+   7.67,
+   1.44
+  ],
+  "cold_max_seconds": 11.63,
+  "repeat_max_seconds": 7.67,
+  "downgraded": [],
+  "limits": [
+   "One process, one machine, one instant against live sources.",
+   "The first answer of a question is rendered by the language service; the repeat is served from the local render cache.",
+   "Adherence means the rendering kept its script and its protected values, not that it reads well.",
+   "No translation-quality or native-speaker review took place."
+  ]
+ },
+ "rows": [
+  {
+   "language": "gu",
+   "attempt": "cold",
+   "seconds": 8.72,
+   "engine_duration_seconds": null,
+   "cache_hits_in_this_turn": 0,
+   "status": "partial",
+   "answered_language": "gu",
+   "adherence": "rendered_with_protected_values",
+   "render_report": {
+    "sentences": 11,
+    "translated": 10,
+    "held_safety_critical": 4,
+    "failed": 0,
+    "ok": true
+   },
+   "passages": 3,
+   "checked_at_utc": "2026-09-15T11:37:43.021320+00:00"
+  },
+  {
+   "language": "gu",
+   "attempt": "repeat",
+   "seconds": 1.15,
+   "engine_duration_seconds": null,
+   "cache_hits_in_this_turn": 10,
+   "status": "partial",
+   "answered_language": "gu",
+   "adherence": "rendered_with_protected_values",
+   "render_report": {
+    "sentences": 11,
+    "translated": 10,
+    "held_safety_critical": 4,
+    "failed": 0,
+    "ok": true
+   },
+   "passages": 3,
+   "checked_at_utc": "2026-09-15T11:37:44.172083+00:00"
+  },
+  {
+   "language": "mr",
+   "attempt": "cold",
+   "seconds": 11.63,
+   "engine_duration_seconds": null,
+   "cache_hits_in_this_turn": 0,
+   "status": "partial",
+   "answered_language": "mr",
+   "adherence": "rendered_with_protected_values",
+   "render_report": {
+    "sentences": 11,
+    "translated": 10,
+    "held_safety_critical": 6,
+    "failed": 0,
+    "ok": true
+   },
+   "passages": 3,
+   "checked_at_utc": "2026-09-15T11:37:55.806093+00:00"
+  },
+  {
+   "language": "mr",
+   "attempt": "repeat",
+   "seconds": 7.67,
+   "engine_duration_seconds": null,
+   "cache_hits_in_this_turn": 10,
+   "status": "partial",
+   "answered_language": "mr",
+   "adherence": "rendered_with_protected_values",
+   "render_report": {
+    "sentences": 11,
+    "translated": 10,
+    "held_safety_critical": 6,
+    "failed": 0,
+    "ok": true
+   },
+   "passages": 3,
+   "checked_at_utc": "2026-09-15T11:38:03.475921+00:00"
+  },
+  {
+   "language": "hi",
+   "attempt": "cold",
+   "seconds": 4.4,
+   "engine_duration_seconds": null,
+   "cache_hits_in_this_turn": 3,
+   "status": "partial",
+   "answered_language": "hi",
+   "adherence": "rendered_with_protected_values",
+   "render_report": {
+    "sentences": 16,
+    "translated": 15,
+    "held_safety_critical": 3,
+    "failed": 0,
+    "ok": true
+   },
+   "passages": 9,
+   "checked_at_utc": "2026-09-15T11:38:07.876909+00:00"
+  },
+  {
+   "language": "hi",
+   "attempt": "repeat",
+   "seconds": 1.44,
+   "engine_duration_seconds": null,
+   "cache_hits_in_this_turn": 15,
+   "status": "partial",
+   "answered_language": "hi",
+   "adherence": "rendered_with_protected_values",
+   "render_report": {
+    "sentences": 16,
+    "translated": 15,
+    "held_safety_critical": 3,
+    "failed": 0,
+    "ok": true
+   },
+   "passages": 9,
+   "checked_at_utc": "2026-09-15T11:38:09.315517+00:00"
+  }
+ ]
+}

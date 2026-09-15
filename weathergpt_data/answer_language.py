@@ -193,6 +193,9 @@ def _service_translator():
         return None
 
     def translate(text, target, source):
-        rendered, _ = speech.translate(text, target, source)
+        # Cache the rendering of a repeated sentence: the disclosure lines are the same in most
+        # answers. A hit is recorded on the generation record, so a served rendering is never
+        # confused with a fresh call.
+        rendered, _ = speech.translate(text, target, source, cache=True)
         return rendered
     return translate

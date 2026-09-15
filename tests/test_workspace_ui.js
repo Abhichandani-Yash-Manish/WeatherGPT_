@@ -1,0 +1,64 @@
+'use strict';
+// UI contract checks, deliberately separate from live browser acceptance.
+const fs = require('fs'), vm = require('vm'), assert = require('assert');
+const { createDocument } = require('./dom_shim');
+const document = createDocument(); document.readyState = 'loading';
+const window = { addEventListener: () => {}, WG: { state: {}, panels: {} }, location: { hash: '' }, localStorage: { getItem: () => null } };
+const ctx = vm.createContext({ document, window, console, setTimeout, clearTimeout, Date, URL, Event: function () {} });
+vm.runInContext(fs.readFileSync('web/charts.js', 'utf8'), ctx);
+vm.runInContext(fs.readFileSync('web/views.js', 'utf8'), ctx);
+vm.runInContext(fs.readFileSync('web/shell.js', 'utf8'), ctx);
+vm.runInContext(fs.readFileSync('web/home.js', 'utf8'), ctx);
+const W = window.WG;
+function warning(days) {
+ const host = document.createElement('div');
+ W.workspaceWarningSummary(host, {data: { district: 'TEST DISTRICT', issued_at_utc:'2026-09-15T06:00:00Z', days }});
+ return host.textContent;
+}
+assert(warning([{is_today:true, is_past:false, quiet:false, colour:'yellow', hazards:['Thunderstorm']}]).includes('Thunderstorm'));
+assert(!warning([{is_today:true, is_past:false, quiet:false, colour:'yellow', hazards:['Thunderstorm']}]).includes('No warning in this product'));
+assert(warning([]).includes('Today is not covered'));
+assert(warning([{is_today:true,is_past:true,quiet:true}]).includes('Today is not covered'));
+assert(!warning([{is_today:true,is_past:false}]).includes('No warning in this product'));
+assert(warning([{is_today:true,is_past:false,quiet:true}]).includes('No warning in this product'));
+console.log('PASS: published hazards, missing dates, expired days and explicit quiet remain distinct');
+const observation = document.createElement('div');
+W.workspaceObservationSummary(observation, {data:{networks:{aws:[{name:'Older AWS',stale:false,observed_at_utc:'2026-09-15T00:00:00Z'}],metar:[{name:'Fresh METAR',kind:'metar',stale:false,observed_at_utc:'2026-09-15T10:00:00Z',distance_km:7.45,parameters:[{field:'temp',value:0,unit:null}]}]}}});
+assert(observation.textContent.includes('Fresh METAR'));
+assert(!observation.textContent.includes('Older AWS'));
+assert(observation.textContent.includes('Unit not stated by source'));
+assert(observation.textContent.includes('7.45 km away'));
+console.log('PASS: network-shaped observations keep station identity, freshness, zero and unknown units');
+async function run() {
+ W.state.place = {label:'Vadodara, Gujarat',latitude:22.3,longitude:73.2};
+ W.api = async path => {
+   if (path === '/api/warnings/place') throw new Error('Source temporarily offline');
+   if (path === '/api/observations/near') return {status:'unavailable',data:{},sources:[],limitations:['No station returned']};
+   if (path === '/api/forecast') return {status:'ok',data:{parameters:{},grid:{}},sources:[]};
+   return {briefs:[],plans:[]};
+ };
+ const host = document.createElement('div'); await W.panels.workspace(host);
+ assert(host.textContent.includes('Source temporarily offline'));
+ assert(host.textContent.includes('No upcoming source hours'));
+ assert(host.textContent.includes('Retry this source'));
+ assert.equal(host.querySelectorAll('.desk-tool').length,14);
+ assert(!host.textContent.includes('undefined'));
+ const search = host.querySelector('#tool-search'); search.value='airport'; search.dispatch('input');
+ assert.equal(host.querySelectorAll('.desk-tool').length,1);
+ search.value='does-not-exist'; search.dispatch('input');
+ assert.equal(host.querySelectorAll('.desk-tool').length,0);
+ assert(host.textContent.includes('No tools match'));
+ console.log('PASS: one source failure leaves the other sections and searchable tools usable');
+ W.state.place={label:'Wrong old place'};
+ let opened; W.openDrawer = (title, build) => {opened=document.createElement('div');build(opened);};
+ search.value='rain'; search.dispatch('input');
+ const tool=host.querySelectorAll('.desk-tool').find(c=>c.textContent.includes('Plan a weather window'));
+ tool.querySelector('button').click();
+ assert.equal(opened.querySelector('#journey-place').value,'Vadodara, Gujarat');
+ let prepared; W.prepareQuestion=(q)=>{prepared=q;return true;}; W.closeDrawer=()=>{};
+ opened.querySelector('form').dispatch('submit');
+ assert(prepared.includes('Vadodara, Gujarat tomorrow morning'));
+ assert(!prepared.includes('Wrong old place'));
+ console.log('PASS: guided task snapshots the selected place and prepares a reviewable question');
+}
+run().catch(error=>{console.error(error);process.exitCode=1;});

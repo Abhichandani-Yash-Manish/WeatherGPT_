@@ -1903,5 +1903,42 @@
    "Measured questions took 21-52 seconds each: a translation call, a fused retrieval and often a second retrieval.",
    "A benchmark run and a serving process contend for the local stores: the first post-change run stalled after four cases while the server was up, and completed in under a minute once it was stopped."
   ]
+ },
+ "render_latency_batch": {
+  "report": "docs/69-render-latency-and-quotations.md",
+  "evidence_directory": "research/implementation/render-latency-20260915",
+  "operational_ready": false,
+  "scope": "The cost of answering in the reader's language, measured and reduced without moving any value. A source quotation is never translated: it is the document's own words and a rendering would put a paraphrase where the reader expects the source, and in a corpus answer the quotations are most of the characters. The prose is rendered sentence by sentence concurrently through the same gate (protected values withheld and verified, safety-critical sentences held), a transient service failure is retried once while a damaged value never is, the rendering of a repeated sentence or question is served from a bounded local cache with hits recorded, and the query translation is cached the same way. Measured on a Gujarati district question: 27.4 s before, 8.7 s cold and 1.2 s repeated; three questions cold 4.0-14.4 s and repeated 1.0-7.7 s.",
+  "automated_tests": 988,
+  "javascript_component_checks": 70,
+  "measured": {
+   "gujarati_district_question_seconds": {
+    "before": 27.4,
+    "cold_after": 8.72,
+    "repeat_after": 1.15
+   },
+   "three_questions_cold_seconds": [
+    8.72,
+    11.63,
+    4.4
+   ],
+   "three_questions_repeat_seconds": [
+    1.15,
+    7.67,
+    1.44
+   ],
+   "downgraded_renderings": 0,
+   "render_cache_entries_limit": 2500,
+   "render_cache_ttl_days": 30,
+   "scores_are_confidence": false
+  },
+  "limits": [
+   "Adherence means the rendering kept its script and its protected values, not that a reader would find it idiomatic.",
+   "No translation-quality or native-speaker review took place.",
+   "The render cache is local runtime data; it holds rendered text for masked sentences and is never published.",
+   "A quotation is served in the document's printed language; the reader sees the source, not a translation of it.",
+   "One process, one machine, one instant against live sources; no load or browser measurement follows.",
+   "The Marathi repeat at 7.7 s shows the cache only helps when the composed answer repeats; a changing answer is rendered again."
+  ]
  }
 }

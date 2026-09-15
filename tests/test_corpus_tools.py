@@ -204,7 +204,7 @@ class RetrievalTests(CorpusCase):
                               'Wind speeds are likely to increase along the coast.'))
         original = (speech.translate, speech.configured)
 
-        def stub(text, target, source='en-IN'):
+        def stub(text, target, source='en-IN', **kwargs):
             return 'irrigation advice across the state', {'service': 'stub', 'operation': 'translate', 'model': 'stub'}
 
         speech.translate = stub
