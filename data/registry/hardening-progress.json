@@ -1866,11 +1866,11 @@
   ]
  },
  "crosslingual_retrieval_batch": {
-  "report": "docs/67-crosslingual-retrieval.md",
+  "report": "docs/68-crosslingual-retrieval.md",
   "evidence_directory": "research/implementation/crosslingual-retrieval-20260915",
   "operational_ready": false,
   "scope": "The published corpus is printed in English and the reader may ask in any script the product writes. A question in an Indic script is now translated for retrieval only, through the already configured language service, when no passage shares an exact word with it; the passages served remain the source's own text, the translated wording is recorded on the retrieval coverage, the basis is translated_query_lexical_overlap (or translated_query_without_the_topic_word), the turn is partial, and the answer states the language translated, the service and model, and that the translation is not evidence. The rules planner now holds the product words per language (PRODUCT_WORDS, DOCUMENT_SIGNALS), the non-English forms proposed by the language service and verified to fall inside each language's script and stored as escapes; words are compared on the folded form, because Bengali writes য় as one code point or as য + ় and only one form matched; a postposition or product word is refused as a place name; a name followed by its unit word yields the district or state kind; the publisher's English name is tried before the reader's spelling through the gazetteer; and a plan whose every task is a document no longer ends the turn on a name the gazetteer does not hold.",
-  "automated_tests": 929,
+  "automated_tests": 979,
   "javascript_component_checks": 70,
   "measured": {
    "crosslingual_questions": 6,
