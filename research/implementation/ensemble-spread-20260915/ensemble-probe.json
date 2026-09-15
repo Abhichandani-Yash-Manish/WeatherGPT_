@@ -1,0 +1,170 @@
+{
+  "schema_version": "ensemble-catalogue-probe-v1",
+  "generated_at_utc": "2026-09-15T08:40:30.428288+00:00",
+  "endpoint": "https://ensemble-api.open-meteo.com/v1/ensemble",
+  "point": {
+    "latitude": 23.02579,
+    "longitude": 72.58727
+  },
+  "variables": [
+    "temperature_2m",
+    "precipitation",
+    "wind_speed_10m"
+  ],
+  "models": [
+    {
+      "model": "gfs025",
+      "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=23.02579&longitude=72.58727&timezone=UTC&timeformat=unixtime&models=gfs025&hourly=temperature_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=1",
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "grid": {
+        "latitude": 23.0,
+        "longitude": 72.5
+      },
+      "first_time": [
+        1789430400
+      ],
+      "last_time": [
+        1789513200
+      ],
+      "fields": {
+        "temperature_2m": {
+          "state": "returned",
+          "unit": "°C",
+          "member_count": 30,
+          "time_steps": 24,
+          "member_null_values": 0
+        },
+        "precipitation": {
+          "state": "returned",
+          "unit": "mm",
+          "member_count": 30,
+          "time_steps": 24,
+          "member_null_values": 0
+        },
+        "wind_speed_10m": {
+          "state": "returned",
+          "unit": "km/h",
+          "member_count": 30,
+          "time_steps": 24,
+          "member_null_values": 0
+        }
+      }
+    },
+    {
+      "model": "ecmwf_ifs025",
+      "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=23.02579&longitude=72.58727&timezone=UTC&timeformat=unixtime&models=ecmwf_ifs025&hourly=temperature_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=1",
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "grid": {
+        "latitude": 23.0,
+        "longitude": 72.5
+      },
+      "first_time": [
+        1789430400
+      ],
+      "last_time": [
+        1789513200
+      ],
+      "fields": {
+        "temperature_2m": {
+          "state": "returned",
+          "unit": "°C",
+          "member_count": 50,
+          "time_steps": 24,
+          "member_null_values": 0
+        },
+        "precipitation": {
+          "state": "returned",
+          "unit": "mm",
+          "member_count": 50,
+          "time_steps": 24,
+          "member_null_values": 0
+        },
+        "wind_speed_10m": {
+          "state": "returned",
+          "unit": "km/h",
+          "member_count": 50,
+          "time_steps": 24,
+          "member_null_values": 0
+        }
+      }
+    },
+    {
+      "model": "icon_seamless",
+      "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=23.02579&longitude=72.58727&timezone=UTC&timeformat=unixtime&models=icon_seamless&hourly=temperature_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=1",
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "grid": {
+        "latitude": 23.0,
+        "longitude": 72.5
+      },
+      "first_time": [
+        1789430400
+      ],
+      "last_time": [
+        1789513200
+      ],
+      "fields": {
+        "temperature_2m": {
+          "state": "returned",
+          "unit": "°C",
+          "member_count": 39,
+          "time_steps": 24,
+          "member_null_values": 0
+        },
+        "precipitation": {
+          "state": "returned",
+          "unit": "mm",
+          "member_count": 39,
+          "time_steps": 24,
+          "member_null_values": 0
+        },
+        "wind_speed_10m": {
+          "state": "returned",
+          "unit": "km/h",
+          "member_count": 39,
+          "time_steps": 24,
+          "member_null_values": 0
+        }
+      }
+    }
+  ],
+  "mean_route": [
+    {
+      "model": "dwd_icon_eps_ensemble_mean_seamless",
+      "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=23.02579&longitude=72.58727&timezone=UTC&timeformat=unixtime&models=dwd_icon_eps_ensemble_mean_seamless&hourly=temperature_2m%2Ctemperature_2m_spread&forecast_days=1",
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "grid": {
+        "latitude": 23.0,
+        "longitude": 72.5
+      },
+      "first_time": [
+        1789430400
+      ],
+      "last_time": [
+        1789513200
+      ],
+      "fields": {
+        "temperature_2m": {
+          "state": "returned",
+          "unit": "°C",
+          "member_count": 0,
+          "time_steps": 24,
+          "member_null_values": 0
+        },
+        "precipitation": {
+          "state": "absent"
+        },
+        "wind_speed_10m": {
+          "state": "absent"
+        }
+      }
+    }
+  ],
+  "invalid_model_control": {
+    "model": "definitely_not_a_model",
+    "error": "HTTPError: HTTP Error 400: Bad Request"
+  }
+}
