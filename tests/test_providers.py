@@ -345,6 +345,21 @@ class RulePlannerTests(unittest.TestCase):
         second = self.request_for('Aaj Delhi me garmi kitni hogi?')
         self.assertEqual([place['name'] for place in second['places']], ['Delhi'])
 
+    def test_a_crop_agromet_advisory_is_agriculture_not_a_warning(self):
+        # Measured need, 15 September 2026: "What does the Ahmedabad district agromet advisory
+        # say for cotton?" read the district warning product, because "advisory" is also a
+        # warning word. A crop with published farm advice is the agriculture shape.
+        for question in ('What does the Ahmedabad district agromet advisory say for cotton?',
+                         'Ahmedabad district agromet advisory kya kehta hai cotton ke liye?'):
+            request = self.request_for(question)
+            self.assertIsNotNone(request, question)
+            self.assertEqual([task['kind'] for task in request['tasks']], ['agriculture'], question)
+
+    def test_a_warning_for_farmers_keeps_the_warning_route(self):
+        request = self.request_for('Is there any warning for cotton farmers in Ahmedabad?')
+        self.assertEqual([task['kind'] for task in request['tasks']], ['warning'])
+        plain = self.request_for('Any advisory for Ahmedabad?')
+        self.assertEqual([task['kind'] for task in plain['tasks']], ['warning'])
     def test_a_compound_question_is_planned_clause_by_clause(self):
         request = self.request_for('Will it rain in Patna, Bihar tomorrow, and is there any warning?')
         self.assertIsNotNone(request)

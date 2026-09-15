@@ -85,6 +85,10 @@ def identities(result):
     return sorted(found, key=len, reverse=True)
 
 
+PROTECTED_VALUE_FAILURE = ('protected values did not survive',)
+SCRIPT_FAILURES = ('the rendering mixed scripts outside the requested language',)
+
+
 def deliver(result, target, translator=None, reason='none'):
     """Put the answer into `target`, or say plainly that it could not be.
 
@@ -139,14 +143,22 @@ def deliver(result, target, translator=None, reason='none'):
                                    ('sentences', 'translated', 'held_safety_critical', 'failed', 'ok')}
     if not report['ok']:
         generation['render_failures'] = report['failures'][:5]
-        # A service that could not be reached and a rendering that damaged a value are
-        # different failures, and the reader is told which one happened.
-        unreachable = report['failures'] and all(
-            failure['reason'] != 'protected values did not survive' for failure in report['failures'])
+        # A service that could not be reached, a rendering that damaged a value and a rendering
+        # that came back in the wrong script are three different failures, and the reader is told
+        # which one happened. Measured need: a Tamil rendering that contained Telugu characters
+        # was reported to the reader as an unreachable translation service.
+        reasons = [failure.get('reason') or '' for failure in report['failures']]
+        unreachable = report['failures'] and all(reason not in PROTECTED_VALUE_FAILURE + SCRIPT_FAILURES
+                                                  for reason in reasons)
         if unreachable:
             return _downgrade(result, generation, 'language_service_unavailable',
                               'The requested output language could not be rendered because the translation '
                               'service was unavailable. The evidence above remains in its source language.')
+        if reasons and all(reason in SCRIPT_FAILURES for reason in reasons):
+            return _downgrade(result, generation, 'rendered_in_another_script',
+                              'This answer was not rewritten in the requested language because the rendering '
+                              'came back with characters from another script. A partly rewritten answer could '
+                              'read as the requested language, so the source-language answer is kept instead.')
         return _downgrade(result, generation, 'values_did_not_survive',
                           'This answer was not rewritten in the requested language because some of its '
                           'values did not survive the rendering intact. Showing a partly rewritten answer '

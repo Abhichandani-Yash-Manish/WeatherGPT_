@@ -30,8 +30,10 @@ def align_source_day(start,end):
     local_start,local_end=start.astimezone(ist),end.astimezone(ist)
     if (local_start.strftime('%H:%M'),local_end.strftime('%H:%M'))==('00:00','00:00') and \
        local_end-local_start==timedelta(days=1):
-        return (local_start+timedelta(minutes=30),local_end+timedelta(minutes=30),
-                'The day was asked for as 00:00 to 00:00 IST; source hours start at :30 IST, so it is read as 00:30 to 00:30 IST.')
+        shifted_start,shifted_end=local_start+timedelta(minutes=30),local_end+timedelta(minutes=30)
+        return (shifted_start,shifted_end,
+                'The day was asked for as midnight to midnight IST; source hours start at :30 IST, so it is read as '
+                +shifted_start.strftime('%d %b %Y %H:%M')+' to '+shifted_end.strftime('%d %b %Y %H:%M')+' IST.')
     return start,end,None
 
 

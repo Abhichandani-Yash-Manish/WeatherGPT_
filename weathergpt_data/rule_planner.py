@@ -45,7 +45,7 @@ PLACE = re.compile(r"\b(?:in|for|at|near|around|of)\s+((?:[A-Z][\w'\u2019.\-]+)(
 PLACE_UNIT = re.compile(r"\b((?:[A-Z][\w'\u2019.\-]+)(?:\s+(?:[A-Z][\w'\u2019.\-]+)){0,2})\s+"
                         r"(district|state|city|town|village|tehsil|taluk)\b")
 # Hinglish marks the place after the name: "Ahmedabad me", "Surat ke liye".
-PLACE_HINGLISH = re.compile(r"\b((?:[A-Z][\w'\u2019.\-]+)(?:\s+(?:[A-Z][\w'\u2019.\-]+)){0,2})\s+"
+PLACE_HINGLISH = re.compile(r"\b((?:[A-Z][\w'\u2019.\-]+)(?:\s*,?\s+(?:[A-Z][\w'\u2019.\-]+)){0,2})\s+"
                             r"(?:me|mein|men|par|ka|ki|ke)\b")
 PLACE_NOISE = {'the', 'a', 'an', 'this', 'that', 'my', 'our', 'whole', 'latest', 'said'}
 # A capitalised day or part-of-day word at the start of a sentence is not part of a place name:
@@ -63,6 +63,12 @@ ADVISORY = re.compile(r'\b(advisory|advice|guidance|recommend|should i|can i|is 
 MARINE = re.compile(r'\b(wave|waves|swell|sea state|significant wave|sea condition|samudra|lehar)\b', re.I)
 RIVER = re.compile(r'\b(river discharge|discharge|streamflow|stream flow)\b', re.I)
 WARNING = re.compile(r'\b(warning|warnings|alert|alerts|red alert|orange alert|yellow alert|advisory)\b', re.I)
+# A warning word that is about a warning, as opposed to the generic word "advisory", which
+# the farm vocabulary also uses. Measured need: "What does the Ahmedabad district agromet
+# advisory say for cotton?" was planned as a district warning lookup. The strong warning
+# words still win, so "any warning for cotton farmers?" keeps the warning route.
+WARNING_STRONG = re.compile(r'\b(warnings?|alerts?|red alert|orange alert|yellow alert)\b', re.I)
+AGROMET_DOCUMENT = re.compile(r'\b(agromet|agro-met|agricultural advisory|crop advisory|kisan|fasal|krishi|kheti)\b', re.I)
 AVIATION = re.compile(r'\b(metar|taf|airport|aerodrome|terminal forecast)\b', re.I)
 DOCUMENT = re.compile(r"\b(bulletin|advisory document|press release|special advisory|flash flood guidance|"
                       r"all india weather summary)\b", re.I)
@@ -145,6 +151,14 @@ def places_of(question):
 
     def add(name, state='', kind='unknown'):
         name = (name or '').strip(' .,')
+        # "Ahmedabad, Gujarat mein" is one place with its state, not the state alone: the
+        # qualifier is what disambiguates the name, so it is kept as the state rather than
+        # thrown away and resolved as a separate place.
+        if ',' in name and not state:
+            head, _, tail = name.partition(',')
+            head, tail = head.strip(' .,'), tail.strip(' .,')
+            if head and tail:
+                name, state = head, tail
         tokens = name.split()
         while tokens and (tokens[0].lower() in PLACE_NOISE or tokens[0].lower() in PLACE_LEAD_NOISE):
             tokens = tokens[1:]
@@ -303,7 +317,9 @@ def single_request(question, now, history=None):
     years = history_years(question)
     if OUT_OF_SCOPE.search(question) and not (WARNING.search(question) or DOCUMENT.search(question)):
         tasks.append(task('research', 'lookup', []))
-    elif WARNING.search(question) and not DOCUMENT.search(question):
+    elif (WARNING.search(question) and not DOCUMENT.search(question)
+          and (WARNING_STRONG.search(question) or not (AGROMET_DOCUMENT.search(question)
+                                                       or (CROP.search(question) and ADVISORY.search(question))))):
         tasks.append(task('warning', 'lookup', ['official_warning']))
     elif HISTORY_WORDS.search(question) and years and not DOCUMENT.search(question):
         parameter = 'temperature' if re.search(r'\btemperature\b', question, re.I) else 'rainfall'

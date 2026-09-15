@@ -13,6 +13,7 @@ a user as working. A declared capability is a lead, not a promise.
 """
 import json
 import re
+import unicodedata
 from pathlib import Path
 
 from .foundation import ROOT
@@ -156,6 +157,29 @@ def script_pattern(code):
         return None
     script = SCRIPTS[LANGUAGES[resolved]['script']]
     return None if script == SCRIPTS['latin'] else script
+
+
+def foreign_script_letters(text, code):
+    """Letters written in a script other than this language's own, in order and unique.
+
+    Latin is not foreign: identifiers, units, dates and place names are preserved as the
+    characters the source published, and a romanised answer is handled separately. What
+    this catches is a rendering that mixes Indian scripts, which `written_in` cannot see
+    because it only counts the target script. Measured need: a Tamil answer contained
+    Telugu characters from the translator and passed the script check.
+    """
+    pattern = script_pattern(code)
+    if not pattern or not text:
+        return []
+    native = re.compile('[' + pattern + ']')
+    seen = []
+    for character in text:
+        if character.isascii() or not unicodedata.category(character).startswith('L'):
+            continue
+        if native.match(character) or character in seen:
+            continue
+        seen.append(character)
+    return seen
 
 
 def written_in(text, code):

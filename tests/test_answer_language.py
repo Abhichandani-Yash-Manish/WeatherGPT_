@@ -27,7 +27,7 @@ def devanagari(text, target, source):
     """A stub that returns Devanagari prose and keeps every placeholder."""
     from weathergpt_data.rendering import SENTINEL_PATTERN
     kept = SENTINEL_PATTERN.findall(text)
-    body = 'अनुवादित वाक्य यहाँ है'
+    body = 'अनुवादित वाक्य यहाँ है और सभी मान अपने मूल अक्षरों में हैं'
     return body + ' ' + ' '.join('#V%d#' % int(number) for number in kept)
 
 
@@ -105,6 +105,20 @@ class DeliveryTests(unittest.TestCase):
         self.assertIn('35 mm', packet['answer'])
         self.assertEqual(packet['trace']['generation']['language_adherence'], 'values_did_not_survive')
 
+    def test_a_rendering_in_another_script_is_named_as_that_not_as_a_service_problem(self):
+        # Measured need, 15 September 2026: a Tamil rendering that carried Telugu characters
+        # was refused by the gate and then reported to the reader as an unreachable service.
+        def telugu(text, target, source):
+            from weathergpt_data.rendering import SENTINEL_PATTERN
+            kept = SENTINEL_PATTERN.findall(text)
+            body = 'అనువాదిత వాక్యం ఇక్కడ ఉంది మరియు విలువలు సురక్షితంగా ఉన్నాయి'
+            return body + ' ' + ' '.join('#V%d#' % int(number) for number in kept)
+
+        packet = answer_language.deliver(result(), 'hi', translator=telugu)
+        self.assertEqual(packet['status'], 'partial')
+        self.assertIn('35 mm', packet['answer'])
+        self.assertEqual(packet['trace']['generation']['language_adherence'], 'rendered_in_another_script')
+        self.assertTrue(any('characters from another script' in note for note in packet['notes']))
     def test_a_service_that_cannot_be_reached_is_named_as_that(self):
         def unreachable(text, target, source):
             raise SourceError('The language service could not be reached')

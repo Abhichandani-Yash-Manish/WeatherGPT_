@@ -28,7 +28,9 @@ def echo(text, target, source):
 def reordering(text, target, source):
     """Sentinels are reordered by real translation; that must remain acceptable."""
     parts = rendering.SENTINEL_PATTERN.findall(text)
-    return ' '.join(['अनुवाद'] + [rendering.SENTINEL % int(p) for p in reversed(parts)])
+    # The prose is long enough to be a rendering in the target script: a stub emitting a
+    # few characters is not a rendering, and the gate is entitled to say so.
+    return ' '.join(['अनुवादित वाक्य यहाँ है और मान सुरक्षित हैं'] + [rendering.SENTINEL % int(p) for p in reversed(parts)])
 
 
 class ProtectionTests(unittest.TestCase):
@@ -169,6 +171,41 @@ class RenderTests(unittest.TestCase):
         for value in ('35 mm', '11.243 km', 'S21', '2026-09-16', 'Ahmedabad'):
             self.assertIn(value, text, value + ' did not survive the rendering')
 
+    def test_a_rendering_that_mixes_another_indian_script_is_refused(self):
+        # Measured need, 15 September 2026: a Tamil answer rendered through the gate
+        # contained Telugu characters and passed, because the script check only counted
+        # the target script. Mixed scripts are not a rendering in the requested language.
+        def mixed(text, target, source):
+            kept = rendering.SENTINEL_PATTERN.findall(text)
+            body = 'అనువాదిత వాక్యం ఇక్కడ ఉంది మరియు విలువలు సురక్షితంగా ఉన్నాయి'
+            return body + ' ' + ' '.join(rendering.SENTINEL % int(item) for item in kept)
+
+        text, report = rendering.render(ANSWER, 'hi', mixed, identities=('Ahmedabad', 'Gujarat'))
+        self.assertFalse(report['ok'])
+        self.assertFalse(report['translated_prose_in_script'])
+        reasons = [failure['reason'] for failure in report['failures']]
+        self.assertIn('the rendering mixed scripts outside the requested language', reasons)
+        self.assertIn('అ', report['failures'][0]['foreign_characters'])
+        self.assertIn('35 mm', text, 'The source sentence is kept when its rendering is refused.')
+
+    def test_prose_that_is_not_written_in_the_target_script_is_not_a_rendering(self):
+        def latinised(text, target, source):
+            kept = rendering.SENTINEL_PATTERN.findall(text)
+            return 'Anuvadit vakya yahan hai aur maan surakshit hain ' + ' '.join(rendering.SENTINEL % int(item) for item in kept)
+
+        _, report = rendering.render(ANSWER, 'hi', latinised, identities=('Ahmedabad', 'Gujarat'))
+        self.assertFalse(report['ok'])
+        self.assertIs(report['translated_prose_in_script'], False)
+        self.assertEqual(report['failed'], 0, 'No protected value was damaged; the script is what failed.')
+
+    def test_foreign_script_letters_ignore_latin_and_the_language_own_script(self):
+        mixed = 'अहमदाबाद में 35 mm बारिश, காற்று மற்றும் వర్షం'
+        foreign = languages.foreign_script_letters(mixed, 'hi')
+        self.assertIn('க', foreign)
+        self.assertIn('వ', foreign)
+        self.assertNotIn('अ', foreign)
+        self.assertEqual(languages.foreign_script_letters('Ahmedabad 35 mm rain', 'hi'), [])
+        self.assertEqual(languages.foreign_script_letters('anything', 'en'), [])
     def test_a_translation_that_loses_a_value_is_refused_and_the_source_kept(self):
         def lossy(text, target, source):
             return rendering.SENTINEL_PATTERN.sub('', text)

@@ -23,7 +23,7 @@ reviewed per-language templates or left in the source language and marked.
 """
 import re
 
-from .languages import latin_digits, normalise
+from .languages import foreign_script_letters, latin_digits, normalise, script_pattern, written_in
 from .transport import SourceError
 
 SENTINEL = '#V%d#'
@@ -193,6 +193,15 @@ def render(text, target, translator, identities=(), source='en-IN'):
             failures.append({'sentence': sentence, 'reason': 'protected values did not survive', **report})
             rendered.append(sentence)
             continue
+        # A rendering that mixes Indian scripts is not a rendering in the requested
+        # language. This is checked on the translated prose with the value sentinels
+        # removed, because the restored answer carries Latin values by design.
+        foreign = foreign_script_letters(SENTINEL_PATTERN.sub(' ', translated), resolved)
+        if foreign:
+            failures.append({'sentence': sentence, 'reason': 'the rendering mixed scripts outside the requested language',
+                             'foreign_characters': ''.join(foreign)[:40]})
+            rendered.append(sentence)
+            continue
         # Keep the translated prose before values are substituted back. Script adherence
         # has to be judged on what the model actually wrote: the restored answer carries
         # Latin values and held clauses by design, so checking it would always fail.
@@ -200,7 +209,6 @@ def render(text, target, translator, identities=(), source='en-IN'):
         rendered.append(restore(translated, tokens))
     text_out = ' '.join(rendered)
     translated_count = len(sentences) - len(held) - len(failures)
-    from .languages import script_pattern, written_in
     translated_prose = ' '.join(prose)
     script_ok = (None if script_pattern(resolved) is None
                  else bool(translated_prose.strip()) and written_in(translated_prose, resolved))
@@ -213,7 +221,9 @@ def render(text, target, translator, identities=(), source='en-IN'):
         'failed': len(failures),
         'failures': failures,
         'held_sentences': held,
-        'ok': not failures and translated_count > 0,
+        # A rendering whose prose is not written in the target script is not a rendering
+        # in that language, even when no protected value was damaged.
+        'ok': not failures and translated_count > 0 and script_ok is not False,
         'values_are_original_characters': True,
         'note': ('Numbers, units, dates, places, identifiers and links are the original characters; '
                  'they were withheld from translation rather than translated and checked. Sentences '
