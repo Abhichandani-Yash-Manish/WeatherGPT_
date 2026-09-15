@@ -310,6 +310,10 @@ C = {
                 limits=['The sampled issue was dated long before the retrieval date, so the address is stable but the content is event driven.',
                         'A special advisory is never current merely because the file answers.'],
                 action='Ingest on the daily queue and refuse to present the advisory as current when the printed date is not the retrieval date.'),
+    'S69': dict(status='active', kind='point', connected=True,
+                limits=['CAMS modelled air quality at a coarse grid cell; not a monitor measurement.',
+                        'An air-quality index is the source\'s own index, not a health assessment or a warning.'],
+                action='Keep as the air-quality supply; connect a ground monitor and add budgets before counting it as a governed observation.'),
     'S68': dict(status='active', kind='point', connected=True,
                 limits=['One ensemble model at a grid cell; the spread and percentiles are properties of the '
                         'returned members, not a probability, confidence or skill score.',

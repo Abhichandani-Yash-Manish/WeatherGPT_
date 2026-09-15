@@ -1940,5 +1940,35 @@
    "One process, one machine, one instant against live sources; no load or browser measurement follows.",
    "The Marathi repeat at 7.7 s shows the cache only helps when the composed answer repeats; a changing answer is rendered again."
   ]
+ },
+ "air_quality_batch": {
+  "report": "docs/69-air-quality.md",
+  "evidence_directory": "research/implementation/air-quality-20260915",
+  "operational_ready": false,
+  "scope": "An additional real-time product, not a named problem-statement gap: CAMS modelled concentrations of six pollutants and the source's own US and European air-quality indices at a point, with the provider current hour kept apart from the window, exposed as a CLI artefact, a product view and a chat shape planned by the deterministic rules. No health advice, risk score or official warning is produced, and no ground monitor is connected.",
+  "automated_tests": 995,
+  "javascript_component_checks": 70,
+  "measured": {
+   "live_probe": {
+    "status": "ok",
+    "variables": 8,
+    "negative_controls": [
+     "daily",
+     "forecast_days_10",
+     "unknown_variable"
+    ]
+   },
+   "chat": {
+    "status": "answered",
+    "provider": "deterministic_rules",
+    "turns": [
+     "air quality",
+     "PM2.5 New Delhi",
+     "ozone",
+     "plain forecast"
+    ],
+    "evidence": "research/implementation/air-quality-20260915/live-chat.json"
+   }
+  }
  }
 }

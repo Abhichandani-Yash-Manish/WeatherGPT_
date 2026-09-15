@@ -97,6 +97,7 @@ recorded journeys, with what is fast and what is still slow.
 
 ## Status and open work
 
+- [Air quality](docs/69-air-quality.md) - CAMS modelled concentrations of six pollutants and the source's own US and European indices at a point, reachable from chat with the provider current hour kept apart from the window; no health advice, no risk score and no ground monitor connected.
 - [Plan Watch](docs/67-plan-watch.md) - saved plans checked against the IMD district-warning product while the local workspace runs, with in-app and browser notifications only.
 - [Ensemble spread](docs/65-ensemble-spread.md) - the member distribution of one governed model (mean, population spread, range and nearest-rank p10/p50/p90) reachable from chat and never scored; the endpoint requires a model id, the per-model support set is measured, and a day-level spread question is planned by the deterministic rules.
 - [Reading the question in every language we can write](docs/66-language-reading-coverage.md)
