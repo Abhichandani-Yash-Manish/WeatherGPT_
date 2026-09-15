@@ -64,6 +64,13 @@ they were tuned on, and this is the honest estimate of the shape coverage that e
 - It does **not** measure forecast skill, fluency, usability or load, and a prohibited-claim hit is a regex
   match rather than a semantic review.
 
+
+## What followed, and what it costs this set
+
+Docs/55 repairs the two root causes this record named. Reading the misses to write this record, and then
+changing the engine because of them, means `fresh_holdout` is **development data from here on**: its 0.615 is
+the generalisation number of the engine *before* those repairs, and it must not be quoted as the number for
+the current engine. The next generalisation number needs a holdout authored after the repairs.
 ## The rule that follows
 
 The three misses were read to write this record, and any later round that fixes typo tolerance or coastal
