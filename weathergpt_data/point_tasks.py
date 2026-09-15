@@ -10,7 +10,9 @@ from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 from zoneinfo import ZoneInfo
 
-from .adapters import EXTENDED, HISTORY_LOCAL, MARINE, RIVER, hourly, json_payload
+from .adapters import (EXTENDED, HISTORY_LOCAL, MARINE, RIVER, hourly, json_payload,
+                       REANALYSIS_MIN_YEAR, REANALYSIS_MODELS, reanalysis_label,
+                       reanalysis_model_for, reanalysis_supported)
 from .answers import distance_km, MAX_GRID_DISTANCE_KM
 from .foundation import Foundation, ROOT
 from .geography import identity
@@ -24,7 +26,20 @@ LABELS={'precipitation':'Hourly precipitation amount',
         'wind_speed_10m':'Wind speed sample','apparent_temperature':'Feels-like temperature sample',
         'wind_gusts_10m':'Maximum gust in the hour','visibility':'Visibility sample',
         'precipitation_sum':'Daily precipitation total','temperature_2m_mean':'Daily mean temperature',
-        'temperature_2m_max':'Daily maximum temperature','temperature_2m_min':'Daily minimum temperature'}
+        'temperature_2m_max':'Daily maximum temperature','temperature_2m_min':'Daily minimum temperature',
+        'rain_sum':'Daily rain total','precipitation_hours':'Daily hours with precipitation',
+        'apparent_temperature_mean':'Daily mean feels-like temperature',
+        'relative_humidity_2m_mean':'Daily mean relative humidity',
+        'relative_humidity_2m_max':'Daily maximum relative humidity',
+        'relative_humidity_2m_min':'Daily minimum relative humidity',
+        'dewpoint_2m_mean':'Daily mean dew point','surface_pressure_mean':'Daily mean surface pressure',
+        'cloud_cover_mean':'Daily mean cloud cover','wind_speed_10m_max':'Daily maximum wind speed',
+        'wind_gusts_10m_max':'Daily maximum wind gusts',
+        'wind_direction_10m_dominant':'Daily dominant wind direction',
+        'shortwave_radiation_sum':'Daily shortwave radiation sum',
+        'et0_fao_evapotranspiration':'Daily reference evapotranspiration',
+        'soil_moisture_0_to_7cm_mean':'Daily mean soil moisture (0–7 cm)',
+        'soil_temperature_0_to_7cm_mean':'Daily mean soil temperature (0–7 cm)'}
 
 
 def verified_snapshot(db, raw_root, stream):
@@ -50,7 +65,7 @@ def _verified_snapshot(db, raw_root, stream):
     if digest(body)!=meta['sha256']:raise SourceError('Published raw response hash mismatch')
     point={'latitude':spec['latitude'],'longitude':spec['longitude']}
     if spec['product']=='history_local':
-        rebuilt=Foundation.daily(json_payload(body),meta,point,HISTORY_LOCAL,'reanalysis','ERA5 via Open-Meteo',
+        rebuilt=Foundation.daily(json_payload(body),meta,point,HISTORY_LOCAL,'reanalysis',reanalysis_label(spec.get('models','era5')),
                                  (date.fromisoformat(spec['start_date']),date.fromisoformat(spec['end_date'])),timezone_name='Asia/Kolkata')
     else:
         a=date.fromisoformat(spec['request_date']);dates=(a,a+timedelta(days=spec['days']-1))
@@ -67,7 +82,7 @@ def _verified_snapshot(db, raw_root, stream):
     return snapshot
 
 
-def acquire(workspace, product, point, start, end):
+def acquire(workspace, product, point, start, end, models=None):
     now=workspace.clock().astimezone(timezone.utc)
     sid=PRODUCTS[product][0]
     policy=json.loads((ROOT/'data/registry/point-tool-policy.json').read_text())
@@ -76,7 +91,9 @@ def acquire(workspace, product, point, start, end):
         raise SourceError('Point product is disabled by its serving policy')
     dates={}
     if product=='history_local':
-        days=(end-start).days;dates={'start_date':start.date().isoformat(),'end_date':(end-timedelta(days=1)).date().isoformat()}
+        days=(end-start).days
+        dates={'start_date':start.date().isoformat(),'end_date':(end-timedelta(days=1)).date().isoformat(),
+               'models':models or 'era5'}
         cycle=now.replace(hour=0,minute=0,second=0,microsecond=0)
     else:
         # End timestamp is included for preceding-hour accumulations/probabilities.
@@ -113,17 +130,40 @@ def execute_point_task(engine, result, plan, task, resolved, coordinates):
             result.setdefault('notes',[]).append(aligned_note)
     if any(t.utcoffset()!=timedelta(hours=5,minutes=30) for t in [start,end]) or end<=start:
         raise SourceError('Use an ordered interval with Indian Standard Time endpoints')
+    model='era5';model_missing=[]
     if daily:
+        # The reanalysis model is read from the user's own words. It is never guessed and
+        # never inferred from a provider, and it is part of the collection identity.
+        model=reanalysis_model_for(task.get('request_quote',''))
         if any((t.hour,t.minute,t.second,t.microsecond)!=(0,0,0,0) for t in [start,end]) or end-start>timedelta(days=7):
             raise SourceError('Daily history needs one to seven whole IST calendar days, ending at the following midnight')
-        if start.year<1940 or end>now:raise SourceError('ERA5 daily history needs completed dates from 1940 onward')
+        if start.year<REANALYSIS_MIN_YEAR[model] or end>now:
+            raise SourceError(reanalysis_label(model)+' daily history needs completed dates from '+str(REANALYSIS_MIN_YEAR[model])+' onward')
         if any((start+timedelta(days=i)).replace(tzinfo=IST).utcoffset()!=timedelta(hours=5,minutes=30) for i in range((end-start).days+1)):
             raise SourceError('Historical timezone changes cannot be represented by this fixed IST daily contract')
         if (end-timedelta(days=1)).date()>now.astimezone(IST).date()-timedelta(days=5):
-            result.update(status='unavailable',answer='ERA5 daily reanalysis is published with about a five-day delay. This recent date is not eligible for this history tool yet; yesterday is not being replaced with an annual value or a forecast.');return result
-        aliases={'rainfall':['precipitation_sum'],'precipitation':['precipitation_sum'],
-                 'temperature':['temperature_2m_mean'],'temperature_2m':['temperature_2m_mean']}
-        requested=list(dict.fromkeys(v for p in task['parameters'] for v in aliases.get(p,[p])))
+            result.update(status='unavailable',answer=reanalysis_label(model)+' daily reanalysis is published with about a five-day delay. This recent date is not eligible for this history tool yet; yesterday is not being replaced with an annual value or a forecast.');return result
+        aliases={'rainfall':['precipitation_sum'],'rain':['precipitation_sum'],'precipitation':['precipitation_sum'],
+                 'temperature':['temperature_2m_mean'],'temperature_2m':['temperature_2m_mean'],
+                 'humidity':['relative_humidity_2m_mean'],'relative_humidity_2m':['relative_humidity_2m_mean'],
+                 'wind':['wind_speed_10m_max'],'wind_speed':['wind_speed_10m_max'],'wind_speed_10m':['wind_speed_10m_max'],
+                 'gusts':['wind_gusts_10m_max'],'wind_gusts_10m':['wind_gusts_10m_max'],
+                 'feels_like':['apparent_temperature_mean'],'apparent_temperature':['apparent_temperature_mean'],
+                 'pressure':['surface_pressure_mean'],'surface_pressure':['surface_pressure_mean'],
+                 'cloud':['cloud_cover_mean'],'clouds':['cloud_cover_mean'],'cloud_cover':['cloud_cover_mean'],
+                 'dewpoint':['dewpoint_2m_mean'],'dew_point':['dewpoint_2m_mean'],
+                 'soil_moisture':['soil_moisture_0_to_7cm_mean'],
+                 'soil_temperature':['soil_temperature_0_to_7cm_mean'],
+                 'evapotranspiration':['et0_fao_evapotranspiration'],'et0':['et0_fao_evapotranspiration'],
+                 'radiation':['shortwave_radiation_sum'],'solar_radiation':['shortwave_radiation_sum']}
+        asked=list(dict.fromkeys(v for p in task['parameters'] for v in aliases.get(p,[p])))
+        supported=reanalysis_supported(model)
+        requested=[p for p in asked if p in supported]
+        model_missing=[p+': '+reanalysis_label(model)+' does not carry this variable' for p in asked if p not in supported]
+        if not requested:
+            alternatives=[m for m in REANALYSIS_MODELS if all(p in reanalysis_supported(m) for p in asked)]
+            raise SourceError(reanalysis_label(model)+' does not carry '+', '.join(asked)+'. '
+                              +(('Name a model that does: '+', '.join(alternatives)+'.') if alternatives else 'This workspace has no reanalysis model that carries it.'))
         allowed=HISTORY_LOCAL
     else:
         if start<=now:
@@ -141,15 +181,15 @@ def execute_point_task(engine, result, plan, task, resolved, coordinates):
     points=engine.resolve_points(result,plan,resolved,coordinates)
     if points is None:return result
     result.update(charts=[],calculations=[],point_tool=True)
-    missing=list(unsupported)
+    missing=list(unsupported)+model_missing
     if task['operation']=='onset':missing.append('Exact rain onset is not established by hourly model amounts. Hourly evidence is supplied; the onset subtask remains incomplete.')
     for place in points:
-        try:snapshot=acquire(engine.workspace,product,place['coordinates'],start,end)
+        try:snapshot=acquire(engine.workspace,product,place['coordinates'],start,end,models=model if daily else None)
         except (ValueError,OSError) as exc:
             missing.append(place['label']+': '+str(exc));continue
         data=snapshot['result'];meta=data['provenance'];cid='c-'+meta['sha256']
-        result['citations'].append({'id':cid,'source_id':data['source_id'],'provider':'Open-Meteo / ERA5' if daily else 'Open-Meteo',
-            'product':'ERA5 daily reanalysis, Asia/Kolkata' if daily else 'Best-match hourly model forecast',
+        result['citations'].append({'id':cid,'source_id':data['source_id'],'provider':'Open-Meteo',
+            'product':reanalysis_label(model)+' daily reanalysis, Asia/Kolkata' if daily else 'Best-match hourly model forecast',
             'url':meta['url'],'response_sha256':meta['sha256'],'retrieved_at_utc':meta['retrieved_at_utc'],
             'requested_point':place['coordinates'],'returned_grid':data['coverage']['returned_grid'],
             'grid_distance_km':snapshot['grid_distance_km'],'model_run_time':None})
@@ -194,7 +234,7 @@ def execute_point_task(engine, result, plan, task, resolved, coordinates):
                     'unit':'mm','method':'sum of complete '+('ERA5 daily' if daily else 'forecast hourly')+' precipitation values','input_ids':[f['id'] for f in facts],'source_ids':[data['source_id']]})
     result['notes']+=missing
     if set(parameters)&{'precipitation','precipitation_sum','precipitation_probability'}:result['notes'].append('Precipitation includes rain, showers and snow water equivalent; it is not a rain-only gauge measurement.')
-    if daily:result['notes'].append('ERA5 reanalysis for the selected grid point, with provider daily aggregation in Asia/Kolkata; not observed station data or district averages.')
+    if daily:result['notes'].append(reanalysis_label(model)+' reanalysis for the selected grid point, with provider daily aggregation in Asia/Kolkata; not observed station data or district averages.')
     else:
         result['notes'].append('Source hours are on UTC boundaries (:30 in IST). Each probability is for >0.1 mm in its preceding hour. Hourly probabilities are never combined into a period probability.')
         result['notes'].append('Best-match model selection may differ by variable; upstream run and local representativeness are unverified. Hourly values cannot determine an exact rain start minute or issue an official warning.')

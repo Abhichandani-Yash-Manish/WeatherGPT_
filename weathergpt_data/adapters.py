@@ -1,5 +1,5 @@
 """Product-scoped semantic validation. Unknown data never becomes zero or all-clear."""
-import json,math
+import json,math,re
 from datetime import datetime,timedelta,timezone
 from .transport import SourceError,parsed,stamp,digest
 from zoneinfo import ZoneInfo
@@ -106,8 +106,64 @@ RIVER={'river_discharge':('m³/s',0)}
 EXTENDED={**FORECAST,'precipitation_probability':('%','preceding_hour_probability',0,100),
           'apparent_temperature':('°C','instant',None,None),'wind_gusts_10m':('km/h','preceding_hour_max',0,None),
           'visibility':('m','instant',0,None)}
-HISTORY_LOCAL={'precipitation_sum':('mm',0),'temperature_2m_mean':('°C',None),
-               'temperature_2m_max':('°C',None),'temperature_2m_min':('°C',None)}
+# Daily reanalysis variables measured against the live Open-Meteo archive API. The
+# per-model support set comes from scripts/probe_reanalysis_catalogue.py rather than
+# from the provider documentation: the API answers a variable a model does not carry
+# with null instead of an error, so "the field came back" is not "the model supports it".
+# Evidence: research/implementation/reanalysis-depth-<date>/catalogue-probe.json.
+REANALYSIS_MODELS=('era5','era5_land','era5_seamless')
+REANALYSIS_MIN_YEAR={'era5':1940,'era5_land':1950,'era5_seamless':1950}
+ERA5_AND_SEAMLESS=('era5','era5_seamless')
+ALL_REANALYSIS=('era5','era5_land','era5_seamless')
+REANALYSIS_DAILY={
+    'precipitation_sum':{'unit':'mm','min':0,'max':None,'models':ERA5_AND_SEAMLESS},
+    'rain_sum':{'unit':'mm','min':0,'max':None,'models':ERA5_AND_SEAMLESS},
+    'precipitation_hours':{'unit':'h','min':0,'max':None,'models':ALL_REANALYSIS},
+    'temperature_2m_mean':{'unit':'°C','min':None,'max':None,'models':ALL_REANALYSIS},
+    'temperature_2m_max':{'unit':'°C','min':None,'max':None,'models':ALL_REANALYSIS},
+    'temperature_2m_min':{'unit':'°C','min':None,'max':None,'models':ALL_REANALYSIS},
+    'apparent_temperature_mean':{'unit':'°C','min':None,'max':None,'models':ERA5_AND_SEAMLESS},
+    'relative_humidity_2m_mean':{'unit':'%','min':0,'max':100,'models':ALL_REANALYSIS},
+    'relative_humidity_2m_max':{'unit':'%','min':0,'max':100,'models':ALL_REANALYSIS},
+    'relative_humidity_2m_min':{'unit':'%','min':0,'max':100,'models':ALL_REANALYSIS},
+    'dewpoint_2m_mean':{'unit':'°C','min':None,'max':None,'models':ALL_REANALYSIS},
+    'surface_pressure_mean':{'unit':'hPa','min':None,'max':None,'models':ERA5_AND_SEAMLESS},
+    'cloud_cover_mean':{'unit':'%','min':0,'max':100,'models':ERA5_AND_SEAMLESS},
+    'wind_speed_10m_max':{'unit':'km/h','min':0,'max':None,'models':ERA5_AND_SEAMLESS},
+    'wind_gusts_10m_max':{'unit':'km/h','min':0,'max':None,'models':ERA5_AND_SEAMLESS},
+    'wind_direction_10m_dominant':{'unit':'°','min':0,'max':360,'models':ERA5_AND_SEAMLESS},
+    'shortwave_radiation_sum':{'unit':'MJ/m²','min':0,'max':None,'models':ERA5_AND_SEAMLESS},
+    'et0_fao_evapotranspiration':{'unit':'mm','min':0,'max':None,'models':ERA5_AND_SEAMLESS},
+    'soil_moisture_0_to_7cm_mean':{'unit':'m³/m³','min':0,'max':1,'models':ALL_REANALYSIS},
+    'soil_temperature_0_to_7cm_mean':{'unit':'°C','min':None,'max':None,'models':ALL_REANALYSIS},
+}
+# Backwards-compatible (unit, minimum, maximum) view for the daily validator.
+HISTORY_LOCAL={name:(spec['unit'],spec['min'],spec['max']) for name,spec in REANALYSIS_DAILY.items()}
+
+
+def reanalysis_label(model):
+    """The provenance label for a governed reanalysis model id."""
+    if model not in REANALYSIS_MODELS:raise SourceError('Unsupported reanalysis model: '+str(model))
+    return {'era5':'ERA5 via Open-Meteo','era5_land':'ERA5-Land via Open-Meteo',
+            'era5_seamless':'ERA5-Seamless via Open-Meteo'}[model]
+
+
+def reanalysis_supported(model):
+    """The daily variables the selected reanalysis model actually returns."""
+    if model not in REANALYSIS_MODELS:raise SourceError('Unsupported reanalysis model: '+str(model))
+    return {name for name,spec in REANALYSIS_DAILY.items() if model in spec['models']}
+
+
+def reanalysis_model_for(text):
+    """A reanalysis model named outright in the question, else the ERA5 default.
+
+    Deterministic on purpose: the model is chosen from the user's own words, never
+    inferred and never taken from a model provider.
+    """
+    lowered=(text or '').lower()
+    if re.search(r'era5[-\s]?land',lowered):return 'era5_land'
+    if re.search(r'era5[-\s]?seamless',lowered):return 'era5_seamless'
+    return 'era5'
 
 def aviation(data,meta,kind,requested_ids,now):
     if not isinstance(data,list):raise SourceError('Expected aviation report array')

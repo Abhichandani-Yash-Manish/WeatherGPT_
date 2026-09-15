@@ -5,7 +5,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 from .transport import Store,SourceError,utcnow,stamp,parsed
 from .adapters import json_payload,hourly,FORECAST,MARINE,RIVER,aviation,warnings,envelope,numeric,grid_identity,numeric_quality
-from .adapters import EXTENDED,HISTORY_LOCAL
+from .adapters import EXTENDED,HISTORY_LOCAL,REANALYSIS_MODELS,reanalysis_label
 ROOT=Path(__file__).resolve().parents[1]
 
 class Foundation:
@@ -44,11 +44,12 @@ class Foundation:
         parse=lambda d,m:hourly(d,m,EXTENDED,'extended_weather_forecast','Open-Meteo best match; variable-specific upstream model/run unspecified',point,self.forecast_dates(days,7))
         data,meta=self.get('S62','https://api.open-meteo.com/v1/forecast',{**point,'hourly':','.join(EXTENDED),'forecast_days':days,'timezone':'UTC','timeformat':'unixtime','temperature_unit':'celsius','wind_speed_unit':'kmh','precipitation_unit':'mm'},refresh=refresh,product_parser=parse)
         return parse(data,meta)
-    def history_local(self,lat,lon,start,end,refresh=False):
+    def history_local(self,lat,lon,start,end,refresh=False,models='era5'):
         point=self.point(lat,lon);a=date.fromisoformat(start);b=date.fromisoformat(end)
         if a>b or (b-a).days>6:raise SourceError('Local daily retrieval supports one to seven days per task')
-        parse=lambda d,m:self.daily(d,m,point,HISTORY_LOCAL,'reanalysis','ERA5 via Open-Meteo',(a,b),timezone_name='Asia/Kolkata')
-        data,meta=self.get('S22','https://archive-api.open-meteo.com/v1/archive',{**point,'start_date':start,'end_date':end,'daily':','.join(HISTORY_LOCAL),'models':'era5','timezone':'Asia/Kolkata'},ttl=86400,refresh=refresh,product_parser=parse)
+        if models not in REANALYSIS_MODELS:raise SourceError('Unsupported reanalysis model: '+str(models))
+        parse=lambda d,m:self.daily(d,m,point,HISTORY_LOCAL,'reanalysis',reanalysis_label(models),(a,b),timezone_name='Asia/Kolkata')
+        data,meta=self.get('S22','https://archive-api.open-meteo.com/v1/archive',{**point,'start_date':start,'end_date':end,'daily':','.join(HISTORY_LOCAL),'models':models,'timezone':'Asia/Kolkata'},ttl=86400,refresh=refresh,product_parser=parse)
         return parse(data,meta)
     def aviation(self,ids,kind='metar',refresh=False):
         if kind not in ['metar','taf','stationinfo']:raise SourceError('Supported airport products: metar, taf, stationinfo')
@@ -98,11 +99,13 @@ class Foundation:
         if not dates or any(b-a!=timedelta(days=1) for a,b in zip(dates,dates[1:])):raise SourceError('Missing, duplicated or nonconsecutive daily dates')
         if expected_dates and (dates[0],dates[-1])!=expected_dates:raise SourceError('Incomplete requested history coverage')
         records=[]
-        for field,(unit,minimum) in fields.items():
+        for field,spec in fields.items():
+            unit,minimum=spec[0],spec[1]
+            maximum=spec[2] if len(spec)>2 else None
             values=block.get(field)
             if units.get(field)!=unit or not isinstance(values,list) or len(values)!=len(times):raise SourceError('Daily units/schema mismatch')
             for i,(d,value) in enumerate(zip(dates,values)):
-                v=numeric(value,minimum)
+                v=numeric(value,minimum,maximum)
                 start=datetime.combine(d,datetime.min.time(),ZoneInfo(timezone_name))
                 if any(t.utcoffset().total_seconds()!=offset for t in [start,start+timedelta(days=1)]):raise SourceError('Historical timezone offset differs from the returned daily offset; this local-day contract cannot resolve it')
                 records.append({'date':d.isoformat(),'period_start_utc':stamp(start),'period_end_utc':stamp(start+timedelta(days=1)),'parameter':field,'value':v,'unit':unit,'model':model,'quality_flags':['source_value_missing'] if v is None else [],'source_locator':f'$.daily.{field}[{i}]'})
