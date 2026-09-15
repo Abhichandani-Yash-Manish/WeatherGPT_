@@ -83,5 +83,50 @@ class AirQualityAdapterTests(unittest.TestCase):
                         expected_dates=(date(2026, 9, 15), date(2026, 9, 15)))
 
 
+class FoundationAirQualityTests(unittest.TestCase):
+    class Response:
+        status = 200
+        headers = {'Content-Type': 'application/json'}
+
+        def __init__(self, body):
+            self.body = body
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+        def read(self, size):
+            return self.body[:size]
+
+    def foundation_with(self, body):
+        import json
+        import tempfile
+        from datetime import datetime as dt
+        from weathergpt_data.foundation import Foundation
+        from weathergpt_data.transport import Store
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        store = Store(directory.name, opener=lambda *a, **k: self.Response(json.dumps(body).encode()),
+                      clock=lambda: dt(2026, 9, 15, tzinfo=UTC))
+        return Foundation(store)
+
+    def test_foundation_fetches_and_normalises_the_reading(self):
+        from datetime import datetime as dt
+        times = hours(24, start=dt(2026, 9, 15, tzinfo=UTC))
+        body = payload({'pm2_5': [10.0] * 24, 'us_aqi': [50] * 24}, times=times,
+                       current={'time': times[0], 'interval': 3600, 'pm2_5': 10.0, 'us_aqi': 50})
+        result = self.foundation_with(body).air_quality(23.0, 72.6, days=1, variables=['pm2_5', 'us_aqi'])
+        self.assertEqual(result['source_id'], 'S69')
+        self.assertEqual(result['coverage']['current'], {'pm2_5': 10.0, 'us_aqi': 50})
+        self.assertEqual({record['unit'] for record in result['records']}, {'μg/m³', 'USAQI'})
+
+    def test_foundation_refuses_an_unknown_variable(self):
+        from weathergpt_data.foundation import Foundation
+        with self.assertRaises(SourceError):
+            Foundation().air_quality(23.0, 72.6, days=1, variables=['pm1'])
+
+
 if __name__ == '__main__':
     unittest.main()
