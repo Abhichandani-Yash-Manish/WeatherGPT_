@@ -343,6 +343,23 @@ class RulePlannerTests(unittest.TestCase):
                 self.assertIsNone(rule_request(question, NOW),
                                   'a future or unshortened range is not a daily history task')
 
+    def test_an_ensemble_spread_question_is_an_ensemble_task(self):
+        for question in ('What is the ensemble spread for Ahmedabad tomorrow morning?',
+                         'What is the spread of rainfall in Ahmedabad tomorrow?'):
+            with self.subTest(question=question):
+                task = self.request_for(question)['tasks'][0]
+                self.assertEqual(task['kind'], 'ensemble')
+                self.assertEqual(task['operation'], 'lookup')
+                self.assertTrue(task['start_local'])
+        self.assertIn('precipitation',
+                      self.request_for('What is the spread of rainfall in Ahmedabad tomorrow?')['tasks'][0]['parameters'])
+
+    def test_a_plain_forecast_is_not_an_ensemble_task(self):
+        self.assertEqual(self.request_for('Will it rain in Ahmedabad tomorrow morning?')['tasks'][0]['kind'], 'forecast')
+
+    def test_a_spread_word_without_a_measure_is_left_to_a_model(self):
+        self.assertIsNone(rule_request('What is the spread here?', NOW))
+
     def test_a_month_with_only_a_year_stays_a_table_lookup(self):
         request = self.request_for('What was the rainfall in Ahmedabad in July 1990?')
         self.assertEqual(request['tasks'][0]['kind'], 'history')
