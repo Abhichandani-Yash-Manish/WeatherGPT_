@@ -1,10 +1,12 @@
 # Full-solution gap register — 15 September 2026
 
+**Current requirement-by-requirement status:** [docs/72](72-integrated-status-and-ps-review.md). This register preserves the initial gap snapshot and the chronological repair record; its opening counts and absence claims are not current.
+
 This register was compiled by re-reading the standing checkpoints ([docs 14](14-product-review-and-progress-plan.md), [21](21-full-solution-critical-review.md), [22](22-engine-context-repairs.md), [27](27-official-warning-applicability.md), [28](28-weather-suite-overhaul.md), [29](29-source-activation-and-document-intake.md), [30](30-multilingual-and-voice-path.md)), inspecting the current code and runtime stores, and running fresh local probes on this machine.
 
 It does not replace those documents. It states, in one place, what is currently built, what is measured, what has drifted, and which gap the next batch attacks. Historical evidence in earlier documents stays frozen; where this register disagrees with an earlier status line, the code and the latest recorded run are the witnesses, and the disagreement itself is recorded below.
 
-## Current measured state
+## Initial measured snapshot (superseded by later batches)
 
 | Fact | Measurement | Evidence |
 |---|---|---|
@@ -180,3 +182,6 @@ G10, G11 (delivery half), G12 (domain half), G13, G14, G15 (deployment half) and
 - **R41 is recorded in [docs/70](70-air-quality.md).** A governed air-quality product returns CAMS modelled concentrations of six pollutants and the source’s own US and European indices for a point, with the provider current hour kept apart from the window, exposed as a CLI artefact, a product view and a chat shape planned by the deterministic rules; the probe pins the daily, beyond-seven-day and unknown-variable rejections. **R41 closes no gap-register item and promotes no finding**; it is an additional real-time layer rather than a named problem-statement gap, and it produces no health advice, risk score or official warning, with no ground monitor connected. 995 tests passed at that checkpoint.
 - **Still open, externally blocked or held:** G05 (fluent review and noisy-input acceptance), G11 (delivery half and origin authentication), G12, G14 (held by direction), G16, the crosswalk half of G10, the 45 held layouts and 82 non-PDF addresses, and hosting/sharing. None is marked complete by approximation.
 
+
+- **R42 — Unified workspace:** [docs/71](71-unified-user-workspace.md) records the place-centred home, guided tool drafts, independent source states, preserved context, model-comparison repair and saved-output journey. No broad finding is closed.
+- **R43 — Integrated PS review:** [docs/72](72-integrated-status-and-ps-review.md) integrates upstream air quality and local corpus recall, exposes fifteen tools, fixes benchmark accounting and a lost historical measure, and records current PS acceptance gaps. Historical failures and registry state are preserved.

@@ -4,7 +4,7 @@ const fs = require('fs'), vm = require('vm'), assert = require('assert');
 const { createDocument } = require('./dom_shim');
 const document = createDocument(); document.readyState = 'loading';
 const window = { addEventListener: () => {}, WG: { state: {}, panels: {} }, location: { hash: '' }, localStorage: { getItem: () => null } };
-const ctx = vm.createContext({ document, window, console, setTimeout, clearTimeout, Date, URL, Event: function () {} });
+const ctx = vm.createContext({ document, window, console, setTimeout, clearTimeout, AbortController, Date, URL, Event: function () {} });
 vm.runInContext(fs.readFileSync('web/charts.js', 'utf8'), ctx);
 vm.runInContext(fs.readFileSync('web/views.js', 'utf8'), ctx);
 vm.runInContext(fs.readFileSync('web/shell.js', 'utf8'), ctx);
@@ -30,6 +30,18 @@ assert(observation.textContent.includes('Unit not stated by source'));
 assert(observation.textContent.includes('7.45 km away'));
 console.log('PASS: network-shaped observations keep station identity, freshness, zero and unknown units');
 async function run() {
+ let earlier;
+ W.openDrawer('Earlier source', body => { earlier = body; });
+ W.openDrawer('New task', body => { body.textContent = 'New task content'; });
+ earlier.textContent = 'Late source response';
+ assert(document.getElementById('drawer-body').textContent.includes('New task content'));
+ assert(!document.getElementById('drawer-body').textContent.includes('Late source response'));
+ console.log('PASS: a late response from an earlier drawer cannot overwrite a new task');
+ ctx.setTimeout = (fn, ms) => setTimeout(fn, ms === 45000 ? 0 : ms);
+ ctx.fetch = (path, options) => new Promise((resolve, reject) => options.signal.addEventListener('abort', () => reject(new Error('aborted'))));
+ await assert.rejects(W.api('/api/slow-test'), /server may still be fetching/);
+ ctx.setTimeout = setTimeout;
+ console.log('PASS: a timed-out source read explains that server work may continue');
  W.state.place = {label:'Vadodara, Gujarat',latitude:22.3,longitude:73.2};
  W.api = async path => {
    if (path === '/api/warnings/place') throw new Error('Source temporarily offline');
@@ -41,7 +53,7 @@ async function run() {
  assert(host.textContent.includes('Source temporarily offline'));
  assert(host.textContent.includes('No upcoming source hours'));
  assert(host.textContent.includes('Retry this source'));
- assert.equal(host.querySelectorAll('.desk-tool').length,14);
+ assert.equal(host.querySelectorAll('.desk-tool').length,15);
  assert(!host.textContent.includes('undefined'));
  const search = host.querySelector('#tool-search'); search.value='airport'; search.dispatch('input');
  assert.equal(host.querySelectorAll('.desk-tool').length,1);
@@ -59,6 +71,11 @@ async function run() {
  opened.querySelector('form').dispatch('submit');
  assert(prepared.includes('Vadodara, Gujarat tomorrow morning'));
  assert(!prepared.includes('Wrong old place'));
+ search.value='air quality'; search.dispatch('input');
+ assert.equal(host.querySelectorAll('.desk-tool').length,1);
+ host.querySelector('.desk-tool').querySelector('button').click();
+ opened.querySelector('form').dispatch('submit');
+ assert.equal(prepared,'Show PM2.5 and US AQI for Vadodara, Gujarat tomorrow.');
  console.log('PASS: guided task snapshots the selected place and prepares a reviewable question');
 }
 run().catch(error=>{console.error(error);process.exitCode=1;});

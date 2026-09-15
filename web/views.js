@@ -13,6 +13,7 @@ const STATUS_LABELS = {
 const HELD_STATUS = ['needs_selection','needs_clarification','unavailable','outside_validity','stale','partial','degraded'];
 const EVIDENCE_KINDS = {
   forecast:'Model forecast', observation:'Observation', reanalysis:'Modeled reanalysis',
+  air_quality_model:'Modelled air quality',
   advisory:'Source advisory', reference:'Reference only', context:'Source context'
 };
 const PARAMETER_NAMES = {

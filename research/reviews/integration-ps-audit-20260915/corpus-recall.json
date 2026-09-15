@@ -1,0 +1,34 @@
+{
+  "summary": {
+    "checked_at_utc": "2026-09-15T13:45:11.944608+00:00",
+    "engine": "local conversation engine, rules-first planner",
+    "journeys": 1,
+    "answered": 1,
+    "partial": 0,
+    "needs_clarification": 0,
+    "unavailable": 0,
+    "errors": 0,
+    "limits": [
+      "One process, one machine, one instant against live sources.",
+      "A published document is a record of what a publisher issued: these readings are not forecasts, observations or current warnings.",
+      "The district crop questions that reach the indexed-edition fallback say so in the answer."
+    ]
+  },
+  "rows": [
+    {
+      "question": "Summarise the latest national bulletin.",
+      "checked_at_utc": "2026-09-15T13:45:11.357885+00:00",
+      "seconds": 0.59,
+      "status": "answered",
+      "passages": 11,
+      "sections_indexed": 11,
+      "sections_served": 11,
+      "sections_listed": 11,
+      "documents_read": 1,
+      "pending_slots": [],
+      "match_basis": "whole_document_sections",
+      "topic_tokens": [],
+      "topic_matched": true
+    }
+  ]
+}

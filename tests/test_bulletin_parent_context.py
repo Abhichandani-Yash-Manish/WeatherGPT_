@@ -8,7 +8,7 @@ from weathergpt_data.bulletin_context import parent_context, qualification_flags
 from weathergpt_data.transport import SourceError
 from test_bulletin_retrieval import ROOT, NOW, SOURCES
 import test_bulletin_retrieval as bulletin_fixtures
-import source_fixtures
+from source_fixtures import source_fixture
 from test_product_stage_one import task
 
 DIBRUGARH = ('Dibrugarh', 'Assam', '57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee')
@@ -19,9 +19,9 @@ class ParentSourceTests(unittest.TestCase):
     def setUpClass(cls):
         cls.docs, cls.contexts = {}, {}
         for district, state, sha in SOURCES + [DIBRUGARH]:
-            path = source_fixtures.bulletin_path(sha)
-            doc = extract(path.read_bytes(), state, district, NOW)
-            doc['provenance'] = {'raw_file': str(path)}
+            raw = source_fixture(sha)
+            doc = extract(raw.read_bytes(), state, district, NOW)
+            doc['provenance'] = {'raw_file': str(raw)}
             cls.docs[district] = doc
             cls.contexts[district] = parent_context(doc)
 
@@ -93,7 +93,7 @@ class ParentSourceTests(unittest.TestCase):
     def test_held_surat_and_madurai_editions_are_still_rejected(self):
         for name, state, sha in [('Surat', 'Gujarat', '5e8120cf3b228944634faa709f524f3a76c0c4e043635e4a3fce7b4739bcf9bb'), ('Madurai', 'Tamil Nadu', '2a5c1798e89380e862a2c429522f7a1c18b459f912bf600c1d449c787954b730')]:
             with self.assertRaises(SourceError):
-                extract(source_fixtures.bulletin_blob(sha), state, name, NOW)
+                extract(source_fixture(sha).read_bytes(), state, name, NOW)
 
     def test_stop_pest_movement_is_not_a_spraying_prohibition(self):
         snippets = [{'id': 'a', 'text': 'To stop the movement of pests, spray the bunds.'},

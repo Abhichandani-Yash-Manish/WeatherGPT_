@@ -1,5 +1,7 @@
 # WeatherGPT: critical full-solution review
 
+**Current status overlay:** [the integrated PS review](72-integrated-status-and-ps-review.md) records the 15 September integration. The findings and evidence below retain their historical meaning.
+
 Review date: 13 September 2026. Reviewed code: `d6556d916e934e8d8d72151086b46552f15dada9`. This is a decision document, not an approved implementation plan or a promotion of existing readiness statuses. Hosting/sharing remains on hold.
 
 ## Verdict

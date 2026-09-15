@@ -1,0 +1,25 @@
+serve_contract                     ok
+    Every served path exists and every asset the page asks for has a route.
+FE01_mobile_reachability           verified_live
+    The composer is pinned inside the first viewport at every measured size.
+FE02_refresh_unreachable           resolved
+    The page offers a bounded collection, posts to /api/refresh and sends the resolved point.
+FE03_dead_renderer                 resolved
+    One renderer path remains and no rejected key is sent.
+FE04_unqualified_task_count        resolved
+    Asked, answered and incomplete are reported separately, and no bare completion count is shown.
+FE05_stale_scope_and_language      resolved
+    The scope names the connected tools and a language control offers the supported outputs.
+FE06_competing_inputs              resolved
+    One question input; the field builder writes into it and never submits.
+FE07_instrument_desk_surfaces      resolved
+    The palette, appearance control, raw-packet inspector and vintage-variance surface are served, and the live record carries viewport measurements, capability readings, accessibility scans and stated limits.
+FE08_transparency_and_edition_coverage resolved
+    The stage route, the stage line, the whole-edition reading and the edition comparison are served, and the batch records its viewport, stage, queue, keyboard and benchmark readings.
+csp_compliance                     ok
+    No inline style or script is used, so the page stays within the served policy.
+class_as_text                      ok
+    No element passes a stylesheet class name as its text.
+javascript_syntax                  ok
+    Every served script parses.
+baseline                           FE01,FE02,FE03,FE04,FE05,FE06

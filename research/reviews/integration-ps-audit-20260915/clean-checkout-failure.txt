@@ -1,0 +1,107 @@
+........................................................................ [  7%]
+.....................................E
+==================================== ERRORS ====================================
+_ ERROR at setup of ParentSourceTests.test_cross_page_heading_keeps_body_page_and_excludes_print_furniture _
+
+cls = <class 'test_bulletin_parent_context.ParentSourceTests'>
+
+    @classmethod
+    def setUpClass(cls):
+        cls.docs, cls.contexts = {}, {}
+        for district, state, sha in SOURCES + [DIBRUGARH]:
+>           raw = next((ROOT / 'data/runtime').rglob(sha + '.bin'))
+E           StopIteration
+
+tests/test_bulletin_parent_context.py:21: StopIteration
+
+The above exception was the direct cause of the following exception:
+
+cls = <class '_pytest.runner.CallInfo'>
+func = <function call_and_report.<locals>.<lambda> at 0x10798ce50>
+when = 'setup'
+reraise = (<class '_pytest.outcomes.Exit'>, <class 'KeyboardInterrupt'>)
+
+    @classmethod
+    def from_call(
+        cls,
+        func: Callable[[], TResult],
+        when: Literal["collect", "setup", "call", "teardown"],
+        reraise: type[BaseException] | tuple[type[BaseException], ...] | None = None,
+    ) -> CallInfo[TResult]:
+        """Call func, wrapping the result in a CallInfo.
+    
+        :param func:
+            The function to call. Called without arguments.
+        :type func: Callable[[], _pytest.runner.TResult]
+        :param when:
+            The phase in which the function is called.
+        :param reraise:
+            Exception or exceptions that shall propagate if raised by the
+            function, instead of being wrapped in the CallInfo.
+        """
+        excinfo = None
+        instant = timing.Instant()
+        try:
+>           result: TResult | None = func()
+
+/Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages/_pytest/runner.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages/_pytest/runner.py:246: in <lambda>
+    lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+/Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages/pluggy/_hooks.py:512: in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+/Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages/pluggy/_manager.py:120: in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+/Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages/_pytest/logging.py:843: in pytest_runtest_setup
+    yield
+/Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages/_pytest/capture.py:895: in pytest_runtest_setup
+    return (yield)
+/Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages/_pytest/runner.py:164: in pytest_runtest_setup
+    item.session._setupstate.setup(item)
+/Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages/_pytest/runner.py:514: in setup
+    col.setup()
+/Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages/_pytest/unittest.py:220: in setup
+    super().setup()
+/Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages/_pytest/python.py:1674: in setup
+    self._request._fillfixtures()
+/Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages/_pytest/fixtures.py:720: in _fillfixtures
+    item.funcargs[argname] = self.getfixturevalue(argname)
+/Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages/_pytest/fixtures.py:549: in getfixturevalue
+    fixturedef = self._get_active_fixturedef(argname)
+/Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages/_pytest/fixtures.py:640: in _get_active_fixturedef
+    fixturedef.execute(request=subrequest)
+/Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages/_pytest/fixtures.py:1128: in execute
+    result = ihook.pytest_fixture_setup(fixturedef=self, request=request)
+/Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages/pluggy/_hooks.py:512: in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+/Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages/pluggy/_manager.py:120: in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+/Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages/pluggy/_callers.py:53: in run_old_style_hookwrapper
+    return result.get_result()
+/Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages/pluggy/_callers.py:38: in run_old_style_hookwrapper
+    res = yield
+/Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages/_pytest/setuponly.py:36: in pytest_fixture_setup
+    return (yield)
+/Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages/_pytest/fixtures.py:1196: in pytest_fixture_setup
+    result = call_fixture_func(fixturefunc, request, kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+fixturefunc = <function UnitTestCase._register_unittest_setup_class_fixture.<locals>.unittest_setup_class_fixture at 0x1065d0b80>
+request = <SubRequest '_unittest_setUpClass_fixture_ParentSourceTests' for <TestCaseFunction test_cross_page_heading_keeps_body_page_and_excludes_print_furniture>>
+kwargs = {'request': <SubRequest '_unittest_setUpClass_fixture_ParentSourceTests' for <TestCaseFunction test_cross_page_heading_keeps_body_page_and_excludes_print_furniture>>}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if inspect.isgeneratorfunction(fixturefunc):
+            fixturefunc = cast(Callable[..., Generator[FixtureValue]], fixturefunc)
+            generator = fixturefunc(**kwargs)
+            try:
+>               fixture_result = next(generator)
+E               RuntimeError: generator raised StopIteration
+
+/Users/yashabhichandani/Library/Python/3.9/lib/python/site-packages/_pytest/fixtures.py:923: RuntimeError
+=========================== short test summary info ============================
+ERROR tests/test_bulletin_parent_context.py::ParentSourceTests::test_cross_page_heading_keeps_body_page_and_excludes_print_furniture
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+109 passed, 1 error in 1.58s

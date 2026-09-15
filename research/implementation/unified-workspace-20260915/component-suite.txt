@@ -1,0 +1,19 @@
+PASS: every surface has a renderer, including the map (component only)
+PASS: the overview surface paints the national tally and keeps its caveats
+PASS: the warnings surface writes an alert brief that names its sources and its limits
+PASS: the observations surface lists stations, freshness and unstated units
+PASS: the forecast surface renders a series chart
+PASS: the climate surface renders the published record
+PASS: the aviation surface shows the raw report and its limit
+PASS: the marine surface names the answering cell or its limit
+PASS: the settings surface lists capabilities, sources and their terms
+PASS: the advisories surface offers the district directory
+PASS: the changes surface reports vintage variance and its skill limit
+PASS: the map draws one path per district, flags placeholder geometry and never colours an unmapped district green
+PASS: the districts behave as one tab stop with arrow keys, Home and End, and Enter opens the district
+PASS: the watch panel lists saved plans and their notifications, and checks plans on request
+PASS: the watch panel reads the local inbox and checks watches only on request
+PASS: appearance cycles system, day and night and records the choice
+PASS: the rail readout shows collection health rows
+PASS: the command palette lists surfaces, places and recents and runs the chosen item
+PASS: every surface request carries the workspace token

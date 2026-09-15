@@ -6,6 +6,24 @@ six findings the audit asked to address first. It is a repair record, not a prom
 readiness or acceptance status. All historical evidence in docs 14, 17–23 and 26–63 remains
 unchanged.
 
+## Integration note (15 September 2026)
+
+The record below describes the earlier audit workspace, not the final merged branch.
+The latest integrated product status remains [docs/72](72-integrated-status-and-ps-review.md).
+During integration with `main`, historical registry batches and the unified warning and
+station rendering were preserved. The warning card uses today’s published day row; missing
+coverage stays explicit. The API also exposes the derived headline and summary.
+The source-fixture helper uses the upstream tracked-only, SHA-256-verified lookup, with
+compatibility names for the audit tests. Historical measure order follows the question;
+the existing coverage test checks both measures without imposing a different order.
+The notification-verb filter and the existing Indic product-word filter both remain active.
+The failed audit runs below remain historical evidence.
+
+Final integrated verification: 25 steps, 0 failed, including 1035 Python tests,
+eight JavaScript component suites, the status-drift guard and the frontend audit.
+See [integration verification](../research/reviews/stakeholder-audit-20260915/integration-verification.txt).
+This does not establish live model, language, domain or operational acceptance.
+
 ## Verdict
 
 All six findings have a scoped, verified repair. The engine and warning-display defects are

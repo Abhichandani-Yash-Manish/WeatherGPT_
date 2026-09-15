@@ -1,0 +1,29 @@
+{
+  "schema_version": "acceptance-benchmark-run-v2",
+  "set": "development",
+  "ran_at_utc": "2026-09-15T13:48:45.999428+00:00",
+  "cases": 17,
+  "turns": 19,
+  "declared_tasks": 18,
+  "outcomes": {
+    "completed": 18
+  },
+  "completion_rate": 1.0,
+  "abstained_turns": 0,
+  "status_not_allowed": [],
+  "task_shape_mismatches": [],
+  "prohibited_claim_hits": [],
+  "critical_failures": [],
+  "denominators": {
+    "declared_tasks": 18,
+    "turns": 19,
+    "cases": 17
+  },
+  "limitations": [
+    "Live current-clock run against local model, sources and network; not a replay.",
+    "This selected set is small and not representative of users or the docs/14 target of about 150.",
+    "Completion allocates declared measures once across matching task shapes and checks retained execution parameters and task status; it is not an independent evidence-correctness score.",
+    "No forecast-skill, calibration, fluency, usability or load measurement.",
+    "A prohibited-claim hit is a regex match, not a semantic review."
+  ]
+}

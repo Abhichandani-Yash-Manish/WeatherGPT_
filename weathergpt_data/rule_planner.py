@@ -719,7 +719,7 @@ def places_of(question):
         while tokens and (tokens[0].lower() in PLACE_NOISE or tokens[0].lower() in PLACE_LEAD_NOISE):
             tokens = tokens[1:]
         name = ' '.join(tokens)
-        if not name or len(name) < 3 or name.lower() in PLACE_NOISE:
+        if not name or len(name) < 3 or name.lower() in PLACE_NOISE or name.lower() in WATCH_VERBS or norm(name) in PLACE_WORD_NOISE:
             return
         if not name or name in [item['name'] for item in found]:
             return
@@ -917,7 +917,7 @@ def single_request(question, now, history=None):
         # parameter used to be chosen, so "rainfall and mean temperature" returned temperature
         # alone and was still marked complete (measured 15 September 2026).
         parameters = []
-        for match in re.finditer(r'\b(temperature|temp|warming|tapman|garmi|rainfall|rain|monsoon|'
+        for match in re.finditer(r'\b(temperature|temp|warming|tapman|garmi|rainfall|rain|precipitation|monsoon|'
                                  r'barish|varsha)\b', question, re.I):
             token = match.group(1).lower()
             name = 'temperature' if token in {'temperature', 'temp', 'warming', 'tapman', 'garmi'} else 'rainfall'
@@ -942,6 +942,7 @@ def single_request(question, now, history=None):
             if name in question.lower():
                 entry['period'] = code
                 break
+        # The historical tool keeps each requested measure and its source evidence.
         tasks.append(entry)
     elif MARINE.search(question):
         parameters = ['wave_height']

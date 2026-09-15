@@ -8,7 +8,7 @@ function historicalChart(chart) {
  const good=chart.points.filter(p=>p.value!==null && Number.isFinite(Number(p.value)));
  const receipt=make('p','Select a point to inspect its exact source value. Missing intervals remain gaps.');receipt.setAttribute('aria-live','polite');
  if(good.length){
-  const ns='http://www.w3.org/2000/svg';const svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox','0 0 640 270');svg.setAttribute('role','img');svg.setAttribute('aria-label',chart.title+' in '+chart.unit);
+  const ns='http://www.w3.org/2000/svg';const svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox','0 0 640 270');svg.setAttribute('role','group');svg.setAttribute('aria-label',chart.title+' in '+chart.unit);
   const node=(name,attrs,text)=>{const n=document.createElementNS(ns,name);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,String(v)));if(text!==undefined)n.textContent=text;svg.append(n);return n;};
   const first=Math.min(...chart.points.map(axis)),last=Math.max(...chart.points.map(axis));
   let low=Math.min(...good.map(p=>Number(p.value))),high=Math.max(...good.map(p=>Number(p.value)));

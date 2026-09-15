@@ -1,0 +1,26 @@
+python >= 3.9                                     PASS 3.9.6
+node available                                    PASS /opt/homebrew/bin/node
+requirements-foundation.txt present               PASS 
+requirements-bulletins.txt present                PASS 
+requirements.txt present                          PASS 
+parse data/registry/sources.json                  PASS 
+parse data/registry/source-review.json            PASS 
+parse data/registry/product-progress.json         PASS 
+parse data/registry/hardening-progress.json       PASS 
+parse data/registry/language-support.json         PASS 
+parse data/registry/acceptance-benchmark.json     PASS 
+parse data/registry/answer-policy.json            PASS 
+parse data/registry/openrouter-free-models.json   PASS 
+status drift guard                                PASS status drift: 0 problem(s); collected tests 1017, README 1017
+python tests                                      PASS 1017 passed, 3 warnings in 46.21s
+node test_charts.js                               PASS PASS: hourly axes, exact IST interval labels and evidence inspection (component only)
+node test_views.js                                PASS PASS: a plan question offers quick replies, and a saved plan card offers Change and Undo
+node test_bulletin_ui.js                          PASS PASS: the saved PDF opens in place from this origin only, on request
+node test_conversation_ui.js                      PASS PASS: the resolved collection point comes from the packet, or is reported absent
+node test_suite_ui.js                             PASS PASS: every surface request carries the workspace token
+node test_voice_ui.js                             PASS PASS: speech is refused, not guessed, where the project has not measured it
+node test_briefcase_ui.js                         PASS PASS: the briefcase keeps, reopens, exports and deletes composed briefs, reads the briefing series it holds, and discloses the reading position rather than treating it as evidence
+node test_workspace_ui.js                         PASS PASS: guided task snapshots the selected place and prepares a reviewable question
+frontend workspace audit                          PASS baseline                           FE01,FE02,FE03,FE04,FE05,FE06
+
+24 step(s), 0 failed
