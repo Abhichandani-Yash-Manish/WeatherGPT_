@@ -1,0 +1,32 @@
+{
+  "id": "D08",
+  "domain": "language",
+  "turns": [
+    {
+      "question": "કલ અમદાવાદ, ગુજરાતમાં વરસાદ પડશે?",
+      "status": "answered",
+      "status_allowed": true,
+      "task_shape_matches": true,
+      "tasks": [
+        {
+          "declared": {
+            "kind": "forecast",
+            "operation": "lookup",
+            "parameters": [
+              "precipitation"
+            ]
+          },
+          "outcome": "completed",
+          "executed_status": "answered"
+        }
+      ],
+      "answered_language": "gu",
+      "language_trace": null,
+      "prohibited_hits": [],
+      "abstained": false,
+      "duration_s": 5.572,
+      "turn": 1,
+      "wall_s": 9.56
+    }
+  ]
+}
