@@ -117,6 +117,12 @@ CROSSCHECK = re.compile(r'\b(?:another model|other models?|compare (?:the )?(?:m
                         r'check another (?:model|source)|do the models agree)\b', re.I)
 
 AGROMET_DOCUMENT = re.compile(r'\b(agromet|agro-met|agricultural advisory|crop advisory|kisan|fasal|krishi|kheti)\b', re.I)
+# The ensemble shape asks for the spread of a model's members, which is a property of the
+# returned members, not a second forecast. "spread" alone is only read this way when a
+# weather variable is also named, so an unrelated use does not become an ensemble request.
+ENSEMBLE = re.compile(r'\b(ensemble|member spread|model spread|members)\b', re.I)
+SPREAD = re.compile(r'\bspread\b', re.I)
+ENSEMBLE_VARIABLES = ('temperature_2m', 'precipitation', 'wind_speed_10m')
 AVIATION = re.compile(r'\b(metar|taf|airport|aerodrome|terminal forecast)\b', re.I)
 ACRONYMS = {'IMD','GFS','WRF','AWS','CAP','CWC','WMO','TAF','METAR','PDF','JSON','HTML','API','SIH','UTC','IST','LGD','RMC'}
 
@@ -604,6 +610,11 @@ def single_request(question, now, history=None):
         if whole_document_question(question):
             request['whole_document'] = True
         tasks.append(task('document', 'lookup', ['published_document'], corpus_request=request))
+    elif ENSEMBLE.search(question) or (SPREAD.search(question) and variables_of(question)):
+        named = [name for name in variables_of(question) if name in ENSEMBLE_VARIABLES]
+        if not named and variables_of(question):
+            return None
+        tasks.append(task('ensemble', 'lookup', named or list(ENSEMBLE_VARIABLES)))
     elif OBSERVATION.search(question) and re.search(r'\b[A-Z]{4}\b', question):
         # A four-letter station code in a right-now question is an airport report request: the
         # station's own product answers it, with the airport tool's provenance. Measured on
