@@ -308,6 +308,10 @@
     watchThread();
   }
 
+  /* Exposed for the component checks, which run against a DOM shim with no audio. */
+  window.WeatherGPTVoice = { loadLanguages: loadLanguages, showTranscript: showTranscript, hideTranscript: hideTranscript,
+                             putInComposer: putInComposer, speak: speak, currentLanguage: currentLanguage, state: state };
+
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
 }());

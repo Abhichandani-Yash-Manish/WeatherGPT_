@@ -217,3 +217,23 @@ assert(withTag(warnCard, 'td').some(cell => cell.textContent.indexOf('No warning
 assert(withClass(warnCard, 'receipt').length === 1, 'A warning day still carries a provenance receipt');
 assert(/not an all-clear/.test(warnCard.textContent), 'The panel states that a quiet day is not an all-clear');
 console.log('PASS: an official warning day is presented as a named period with its colour, hazard and window');
+
+
+// 16. the raw-packet action hands the exact rendered packet to the drawer
+const drawn = [];
+context.window.WG = { openDrawer: (title, build) => {
+  const body = shim.createDocument().createElement('div');
+  build(body);
+  drawn.push({ title: title, body: body });
+} };
+const actionCard = context.renderTurn(forecast, {});
+const inspect = withTag(actionCard, 'button').find(node => /Inspect the raw packet/.test(node.textContent));
+assert(inspect, 'An answer offers an inspector for the packet');
+inspect.dispatch('click');
+assert.equal(drawn.length, 1, 'The inspector opens exactly one drawer');
+assert.equal(drawn[0].title, 'Raw packet', 'The drawer is titled as the raw packet');
+const pre = withTag(drawn[0].body, 'pre')[0];
+assert(pre, 'The drawer holds the packet as preformatted text');
+assert(pre.textContent.indexOf('"conversation_id"') >= 0, 'The exact packet is shown, not a summary');
+assert(/not a summary|the exact packet/i.test(drawn[0].body.textContent), 'The drawer states that the packet is the rendered one, not a summary');
+console.log('PASS: the raw-packet inspector shows the exact rendered packet in the drawer');

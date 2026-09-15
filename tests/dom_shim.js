@@ -165,6 +165,7 @@ function createDocument() {
     },
     querySelectorAll: () => [],
     addEventListener: () => {},
+    removeEventListener: () => {},
     _registry: registry
   };
   return document;

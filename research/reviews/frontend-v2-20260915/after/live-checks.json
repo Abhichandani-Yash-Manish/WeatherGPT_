@@ -1,0 +1,264 @@
+{
+  "schema_version": "frontend-live-checks-v1",
+  "recorded_at_utc": "2026-09-15T00:33:18+00:00",
+  "surface": "desktop web at http://127.0.0.1:8790, Chrome 152.0.7977.83 over CDP (one browser, one machine)",
+  "method": "One reading per viewport: window.scrollTo(0, 0) or window.scrollTo(0, scrollHeight), then document.querySelector('.composer').getBoundingClientRect() and getComputedStyle().position, read through the browser CLI. One reading is one measurement, not a cross-browser, screen-reader, device or load acceptance run.",
+  "measurements": [
+    {
+      "viewport": "1440x1200",
+      "inner_width": 1440,
+      "inner_height": 1200,
+      "position": "sticky",
+      "top_px": 1062,
+      "bottom_px": 1200,
+      "height_px": 138,
+      "composer_in_first_viewport": true,
+      "settled_on_viewport_bottom": true,
+      "scroll_y": 0,
+      "document_scroll_height": 1363,
+      "appearance": "light"
+    },
+    {
+      "viewport": "768x1024",
+      "inner_width": 768,
+      "inner_height": 1024,
+      "position": "sticky",
+      "top_px": 887,
+      "bottom_px": 1024,
+      "height_px": 137,
+      "composer_in_first_viewport": true,
+      "settled_on_viewport_bottom": true,
+      "scroll_y": 0,
+      "document_scroll_height": 1334,
+      "appearance": "light"
+    },
+    {
+      "viewport": "390x844",
+      "inner_width": 390,
+      "inner_height": 844,
+      "position": "sticky",
+      "top_px": 674,
+      "bottom_px": 844,
+      "height_px": 170,
+      "composer_in_first_viewport": true,
+      "settled_on_viewport_bottom": true,
+      "scroll_y": 0,
+      "document_scroll_height": 1780,
+      "appearance": "light"
+    }
+  ],
+  "document_end_measurements": [
+    {
+      "viewport": "1440x1200",
+      "top_px": 947,
+      "bottom_px": 1085,
+      "scroll_y": 163,
+      "settled_on_viewport_bottom": false,
+      "document_scroll_height": 1363,
+      "note": "At the end of the document the composer rests at the end of the ask desk and the colophon strip follows it."
+    },
+    {
+      "viewport": "768x1024",
+      "top_px": 775,
+      "bottom_px": 912,
+      "scroll_y": 310,
+      "settled_on_viewport_bottom": false,
+      "document_scroll_height": 1334,
+      "note": "At the end of the document the composer rests at the end of the ask desk and the colophon strip follows it."
+    },
+    {
+      "viewport": "390x844",
+      "top_px": 480,
+      "bottom_px": 650,
+      "scroll_y": 936,
+      "settled_on_viewport_bottom": false,
+      "document_scroll_height": 1780,
+      "note": "At the end of the document the composer rests at the end of the ask desk and the colophon strip follows it."
+    }
+  ],
+  "surface_sweep": {
+    "reading": "each of the twelve surfaces opened by hash at 1440x1200; one visible surface each, no error wording",
+    "views": [
+      "overview",
+      "warnings",
+      "map",
+      "observations",
+      "forecast",
+      "changes",
+      "climate",
+      "advisories",
+      "aviation",
+      "marine",
+      "assistant",
+      "settings"
+    ],
+    "visible_surface_each_time": true,
+    "held_or_failed_text_seen": false,
+    "page_errors": 0,
+    "console_messages": 0
+  },
+  "capability_checks": {
+    "command_palette": {
+      "opened_from_rail_control": true,
+      "items": 17,
+      "groups": [
+        "Surfaces",
+        "Actions"
+      ],
+      "query": "surat",
+      "query_groups": [
+        "Places",
+        "Recent conversations"
+      ],
+      "query_items": 2,
+      "place_match": "Surat, Sūrat, State of Gujarāt · S61",
+      "recent_match": "Will it rain in Surat, Gujarat tomorrow morning? · 2 asked",
+      "escape_closes": true
+    },
+    "appearance_control": {
+      "modes": [
+        "auto",
+        "light",
+        "dark"
+      ],
+      "applied_to_document": true,
+      "cycle_reading": "light -> dark -> System · day",
+      "stored_choice": "weathergpt.theme"
+    },
+    "raw_packet_inspector": {
+      "drawer_opened": true,
+      "characters": 6284,
+      "exact_packet_text": true,
+      "states_it_is_not_a_summary": true
+    },
+    "map_selection": {
+      "paths": 756,
+      "role": "button",
+      "tabindex": "0",
+      "click_opens_drawer": "SAITUAL, MIZORAM",
+      "enter_key_opens_drawer": "SAITUAL, MIZORAM",
+      "find_patna_highlights": 1,
+      "day_switch_repaints": "day 3: 273 yellow district polygons, 1 unmapped"
+    },
+    "ask_flow": {
+      "question": "Will it rain in Ahmedabad tomorrow morning?",
+      "first_turn": "clarification naming two Ahmedabad candidates",
+      "second_turn": "answered card, 0.0 mm, window 16 Sept 06:30-12:30 IST, one receipt, one ruler",
+      "source_named": "S21 · Open-Meteo · GFS forecast delivery"
+    }
+  },
+  "accessibility": {
+    "tool": "axe-core through the browser CLI (automated scan only)",
+    "scans": [
+      {
+        "file": "a11y-dark-assistant.json",
+        "surface": "assistant",
+        "appearance": "dark",
+        "violations": 0,
+        "passes": 44,
+        "incomplete": 1,
+        "inapplicable": 45,
+        "rule_ids": []
+      },
+      {
+        "file": "a11y-dark-changes.json",
+        "surface": "changes",
+        "appearance": "dark",
+        "violations": 0,
+        "passes": 49,
+        "incomplete": 1,
+        "inapplicable": 40,
+        "rule_ids": []
+      },
+      {
+        "file": "a11y-dark-map.json",
+        "surface": "map",
+        "appearance": "dark",
+        "violations": 0,
+        "passes": 46,
+        "incomplete": 1,
+        "inapplicable": 43,
+        "rule_ids": []
+      },
+      {
+        "file": "a11y-dark-settings.json",
+        "surface": "settings",
+        "appearance": "dark",
+        "violations": 0,
+        "passes": 49,
+        "incomplete": 1,
+        "inapplicable": 40,
+        "rule_ids": []
+      },
+      {
+        "file": "a11y-dark-warnings.json",
+        "surface": "warnings",
+        "appearance": "dark",
+        "violations": 0,
+        "passes": 50,
+        "incomplete": 1,
+        "inapplicable": 39,
+        "rule_ids": []
+      },
+      {
+        "file": "a11y-light-assistant.json",
+        "surface": "assistant",
+        "appearance": "light",
+        "violations": 0,
+        "passes": 44,
+        "incomplete": 1,
+        "inapplicable": 45,
+        "rule_ids": []
+      },
+      {
+        "file": "a11y-light-changes.json",
+        "surface": "changes",
+        "appearance": "light",
+        "violations": 0,
+        "passes": 49,
+        "incomplete": 1,
+        "inapplicable": 40,
+        "rule_ids": []
+      },
+      {
+        "file": "a11y-light-map.json",
+        "surface": "map",
+        "appearance": "light",
+        "violations": 0,
+        "passes": 46,
+        "incomplete": 1,
+        "inapplicable": 43,
+        "rule_ids": []
+      },
+      {
+        "file": "a11y-light-settings.json",
+        "surface": "settings",
+        "appearance": "light",
+        "violations": 0,
+        "passes": 49,
+        "incomplete": 1,
+        "inapplicable": 40,
+        "rule_ids": []
+      },
+      {
+        "file": "a11y-light-warnings.json",
+        "surface": "warnings",
+        "appearance": "light",
+        "violations": 0,
+        "passes": 50,
+        "incomplete": 1,
+        "inapplicable": 39,
+        "rule_ids": []
+      }
+    ],
+    "violations_total": 0,
+    "note": "incomplete entries are axe \"could not determine\" cases: text over a CSS gradient in the housing, and glyph-only controls. An automated scan is not screen-reader or keyboard acceptance."
+  },
+  "limits": [
+    "One browser (Chrome 152) on one machine; no cross-browser, device, screen-reader, load or latency acceptance has been run.",
+    "The composer is anchored to the bottom edge of the frame at the top of the document; at the very end of a document the ask desk ends and the colophon strip follows it.",
+    "No forecast skill, calibration, accuracy or warning validity is measured here; the vintage-variance surface compares stored retrievals only.",
+    "No native-speaker review exists for any output language; the appearance control and the palette are keyboard tested by component checks and this browser run only.",
+    "Screenshots and measurements were taken against the local prototype server; hosting and sharing remain on hold."
+  ]
+}

@@ -112,7 +112,8 @@ async function run() {
   await h.api().ask({ question: 'Will it rain in Ahmedabad?' });
   const posts = chatCalls(h.calls);
   assert.equal(posts.length, 1, 'One question sends one request');
-  assert.deepEqual(Object.keys(posts[0].body).sort(), ['question']);
+  assert.deepEqual(Object.keys(posts[0].body).sort(), ['output_language', 'question', 'request_id']);
+  assert(/^[0-9a-f-]{36}$/.test(posts[0].body.request_id), 'Every turn carries a request id the stop control can name');
   assert.equal(posts[0].path, '/api/chat');
   assert.equal(withClass(thread, 'turn').length, 1, 'The answer is appended to the thread');
   assert.equal(withClass(thread, 'welcome').length, 0, 'The opening card is retired once the conversation starts');
@@ -142,17 +143,17 @@ async function run() {
   assert.equal(chosenCall.body.selection_id, 'geonames:1279233');
   console.log('PASS: choosing an offered place sends that selection id back to the engine');
 
-  // 5. a lock collision is explained as one-at-a-time, not as a generic failure
+  // 5. a full queue is explained as a bounded queue, not as a generic failure
   h = harness({ respond: plain(call => {
-    if (call.path === '/api/chat') return Promise.resolve({ ok: false, status: 400, json: async () => ({ error: 'Another conversation is using the local model. Please retry shortly.' }) });
+    if (call.path === '/api/chat') return Promise.resolve({ ok: false, status: 429, json: async () => ({ error: 'The assistant is already answering its maximum number of waiting questions. Try again shortly.' }) });
     return Promise.resolve({ ok: true, status: 200, json: async () => ({}) });
   }) });
   await settle(5);
   await h.api().ask({ question: 'Will it rain in Surat?' });
   const locked = h.document.getElementById('error').textContent;
-  assert(/one conversation at a time/.test(locked), 'A lock collision says what happened: ' + locked);
-  assert(/does not queue a second one/.test(locked), 'A lock collision does not promise a queue');
-  console.log('PASS: a lock collision is explained as one-at-a-time and promises no queue');
+  assert(/maximum number of waiting questions/.test(locked), 'A full queue says what happened: ' + locked);
+  assert.equal(h.document.getElementById('service-state').textContent, 'Queue full');
+  console.log('PASS: a full queue is reported as a bounded queue');
 
   // 6. an expired token and an unavailable store are told apart
   const failing = status => plain(call => {
@@ -171,25 +172,28 @@ async function run() {
   assert.equal(h.document.getElementById('service-state').textContent, 'Store unavailable');
   console.log('PASS: an expired token and an unavailable store produce different, accurate states');
 
-  // 7. stopping a turn does not claim the server stopped working
+  // 7. stopping a turn asks the server to cancel and reports exactly what it said
   h = harness({ respond: plain(call => {
     if (call.path === '/api/chat') return new Promise((resolve, reject) => {
       if (call.signal && call.signal.addEventListener) call.signal.addEventListener('abort', () => { const error = new Error('aborted'); error.name = 'AbortError'; reject(error); });
     });
+    if (call.path === '/api/chat/cancel') return Promise.resolve({ ok: true, status: 200, json: async () => ({ request_id: call.body.request_id, state: 'cancel_requested', stage: 'planned', detail: 'The server was asked to stop this turn at the next stage boundary; anything already retrieved for it is discarded.' }) });
     return Promise.resolve({ ok: true, status: 200, json: async () => ({}) });
   }) });
   await settle(5);
   const pending = h.api().ask({ question: 'Will it rain in Porbandar?' });
   await settle(10);
   assert(h.api().state.controller, 'A turn in flight exposes a cancellation handle');
-  h.api().state.controller.abort();
+  h.document.getElementById('cancel').dispatch('click');
   await pending;
-  const stopped = withClass(h.document.getElementById('thread'), 'notice')[0];
-  assert(stopped, 'Stopping a turn is reported in the thread');
-  assert(/may still be finishing/.test(stopped.textContent), 'Stopping says the server may still be working');
-  assert(/nothing is queued behind it/.test(stopped.textContent), 'Stopping does not imply a queue');
+  await settle(30);
+  const stopNotes = withClass(h.document.getElementById('thread'), 'notice').map(node => node.textContent).join(' ');
+  assert(/Stop requested/.test(stopNotes), 'Stopping reports the server response: ' + stopNotes);
+  assert(/discarded/.test(stopNotes), 'Stopping states that partial work is discarded');
+  const cancelCall = h.calls.filter(call => call.path === '/api/chat/cancel')[0];
+  assert(cancelCall && cancelCall.body.request_id, 'The stop names the request id the turn carried');
   assert.equal(h.document.getElementById('busy').textContent, 'Ready', 'The page returns to a ready state');
-  console.log('PASS: stopping a turn states that server work may continue and nothing is queued');
+  console.log('PASS: stopping a turn requests cancellation and reports the server response');
 
   // 8. collecting fresh evidence posts the resolved point and reports claims honestly
   h = harness();

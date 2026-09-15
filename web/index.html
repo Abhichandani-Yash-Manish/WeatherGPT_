@@ -31,8 +31,10 @@
   <div class="masthead-controls">
     <button type="button" class="chip-button" id="active-place" title="The place this workspace is working with">No place selected</button>
     <span class="chip" id="freshness" title="When the active surface last read its sources">Not read yet</span>
+    <button type="button" class="ghost" id="palette-open" aria-haspopup="dialog" title="Open the command palette">⌘K</button>
+    <button type="button" class="ghost" id="theme-toggle" title="Switch between day, night and system appearance">Day desk</button>
     <button type="button" class="ghost" id="notify-toggle" aria-expanded="false" aria-controls="notify-panel">Watch</button>
-    <span class="chip" id="service-state" role="status">Starting</span>
+    <span class="chip readout" id="service-state" role="status">Starting</span>
   </div>
 </header>
 
@@ -40,8 +42,22 @@
   <button type="button" class="rail-backdrop" id="rail-backdrop" hidden aria-label="Close menu"></button>
   <nav class="rail" id="rail" aria-label="Surfaces">
     <div class="rail-group">
-      <a class="nav-item" href="#/assistant" data-view="assistant"><span class="glyph" aria-hidden="true">✦</span> Ask</a>
-      <a class="nav-item" href="#/overview" data-view="overview"><span class="glyph" aria-hidden="true">◎</span> Today</a>
+      <a class="nav-item" href="#/assistant" data-view="assistant"><span class="glyph" aria-hidden="true">✦</span> Ask<span class="kbd-hint">⌥1</span></a>
+      <a class="nav-item" href="#/overview" data-view="overview"><span class="glyph" aria-hidden="true">◎</span> Today<span class="kbd-hint">⌥2</span></a>
+    </div>
+
+    <div class="rail-group">
+      <h2 class="rail-title">Surfaces</h2>
+      <a class="nav-item" href="#/warnings" data-view="warnings"><span class="glyph" aria-hidden="true">▲</span> Warnings<span class="kbd-hint">⌥3</span></a>
+      <a class="nav-item" href="#/map" data-view="map"><span class="glyph" aria-hidden="true">◈</span> Map<span class="kbd-hint">⌥4</span></a>
+      <a class="nav-item" href="#/forecast" data-view="forecast"><span class="glyph" aria-hidden="true">〜</span> Forecast<span class="kbd-hint">⌥5</span></a>
+      <a class="nav-item" href="#/changes" data-view="changes"><span class="glyph" aria-hidden="true">∆</span> What changed<span class="kbd-hint">⌥6</span></a>
+      <a class="nav-item" href="#/observations" data-view="observations"><span class="glyph" aria-hidden="true">⌖</span> Observations<span class="kbd-hint">⌥7</span></a>
+      <a class="nav-item" href="#/advisories" data-view="advisories"><span class="glyph" aria-hidden="true">☘</span> Farm advisories<span class="kbd-hint">⌥8</span></a>
+      <a class="nav-item" href="#/climate" data-view="climate"><span class="glyph" aria-hidden="true">◔</span> Climate records<span class="kbd-hint">⌥9</span></a>
+      <a class="nav-item" href="#/marine" data-view="marine"><span class="glyph" aria-hidden="true">≈</span> Sea and rivers</a>
+      <a class="nav-item" href="#/aviation" data-view="aviation"><span class="glyph" aria-hidden="true">✈</span> Aviation</a>
+      <a class="nav-item" href="#/settings" data-view="settings"><span class="glyph" aria-hidden="true">⚙</span> Sources and settings</a>
     </div>
 
     <div class="rail-group">
@@ -52,19 +68,6 @@
       </div>
       <p class="nav-note" id="ledger-note">Reading the local store…</p>
       <ul class="ledger" id="ledger"></ul>
-    </div>
-
-    <div class="rail-group">
-      <h2 class="rail-title">Explore the evidence</h2>
-      <a class="nav-item" href="#/warnings" data-view="warnings"><span class="glyph" aria-hidden="true">▲</span> Warnings</a>
-      <a class="nav-item" href="#/map" data-view="map"><span class="glyph" aria-hidden="true">◈</span> Map</a>
-      <a class="nav-item" href="#/forecast" data-view="forecast"><span class="glyph" aria-hidden="true">〜</span> Forecast</a>
-      <a class="nav-item" href="#/observations" data-view="observations"><span class="glyph" aria-hidden="true">⌖</span> Observations</a>
-      <a class="nav-item" href="#/advisories" data-view="advisories"><span class="glyph" aria-hidden="true">☘</span> Farm advisories</a>
-      <a class="nav-item" href="#/climate" data-view="climate"><span class="glyph" aria-hidden="true">◔</span> Climate records</a>
-      <a class="nav-item" href="#/marine" data-view="marine"><span class="glyph" aria-hidden="true">≈</span> Sea and rivers</a>
-      <a class="nav-item" href="#/aviation" data-view="aviation"><span class="glyph" aria-hidden="true">✈</span> Aviation</a>
-      <a class="nav-item" href="#/settings" data-view="settings"><span class="glyph" aria-hidden="true">⚙</span> Sources and settings</a>
     </div>
 
     <p class="nav-note" id="nav-note">Local prototype. It does not issue warnings.</p>
@@ -206,6 +209,14 @@
       <div class="surface-body" id="forecast-body"></div>
     </section>
 
+    <section class="surface" data-surface="changes" hidden>
+      <header class="surface-head">
+        <div><h1>What changed</h1><p class="surface-note" id="changes-note">How stored retrievals of the same valid hour differ for the working place. This is vintage variance, not forecast skill, calibration or confidence.</p></div>
+        <div class="surface-actions"><button type="button" class="ghost" data-ask-about="changes">Ask about this</button></div>
+      </header>
+      <div class="surface-body" id="changes-body"></div>
+    </section>
+
     <section class="surface" data-surface="climate" hidden>
       <header class="surface-head">
         <div><h1>Climate records</h1><p class="surface-note">Published district rainfall records, 1901 to 2010, with per-year provenance.</p></div>
@@ -265,6 +276,15 @@
   </header>
   <div class="drawer-body" id="notify-body"></div>
 </section>
+
+<div class="palette" id="palette" role="dialog" aria-modal="true" aria-label="Command palette" hidden>
+  <div class="palette-card">
+    <label class="sr" for="palette-input">Search surfaces, places and actions</label>
+    <input id="palette-input" class="palette-input" type="search" placeholder="Go to a surface, search a place, run an action…" autocomplete="off" spellcheck="false">
+    <div class="palette-body" id="palette-body"></div>
+    <p class="palette-foot"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>↵</kbd> open</span><span><kbd>esc</kbd> close</span><span>Everything here stays on this machine.</span></p>
+  </div>
+</div>
 
 <footer class="foot">
   <p>Official warning guidance, model forecasts, station observations and published records are separate products and are labelled as such. This workspace does not issue warnings and does not grant field, marine or travel clearance.</p>

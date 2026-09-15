@@ -152,6 +152,7 @@
       view.data.districts.length + ' districts · ' + (view.data.skipped || []).length + ' source features without a district name');
     const controls = el('div', undefined, 'controls');
     const stateSelect = el('select');
+    stateSelect.setAttribute('aria-label', 'Filter districts by state');
     stateSelect.append(el('option', 'All states'));
     stateSelect.firstChild.value = '';
     const states = Array.from(new Set(view.data.districts.map(row => row.state).filter(Boolean))).sort();
@@ -242,6 +243,7 @@
     const controls = WG.block('Search radius', 'Stations are found by great-circle distance from your working place.');
     const row = el('div', undefined, 'controls');
     const select = el('select');
+    select.setAttribute('aria-label', 'Station search radius in kilometres');
     [50, 150, 300, 600].forEach(value => { const option = el('option', value + ' km'); option.value = String(value); if (value === 150) option.selected = true; select.append(option); });
     const button = el('button', 'Refresh from the source', 'ghost');
     button.type = 'button';
@@ -312,8 +314,10 @@
     const card = WG.block('Point forecast', 'Model output, not an observation.');
     const controls = el('div', undefined, 'controls');
     const daysSelect = el('select');
+    daysSelect.setAttribute('aria-label', 'Forecast days to retrieve');
     [1, 2, 3, 5, 7].forEach(value => { const option = el('option', value + ' day' + (value > 1 ? 's' : '')); option.value = String(value); if (value === 3) option.selected = true; daysSelect.append(option); });
     const parameterSelect = el('select');
+    parameterSelect.setAttribute('aria-label', 'Forecast parameter');
     const refresh = el('button', 'Refresh from the source', 'ghost');
     refresh.type = 'button';
     controls.append(daysSelect, parameterSelect, refresh);
@@ -367,8 +371,10 @@
     const card = WG.block('Published district rainfall', 'Transcribed from the supplied IMD district tables, 1901 to 2010.');
     const controls = el('div', undefined, 'controls');
     const stateSelect = el('select');
+    stateSelect.setAttribute('aria-label', 'State for the published record');
     index.data.states.forEach(entry => { const option = el('option', entry.state); option.value = entry.state; stateSelect.append(option); });
     const districtSelect = el('select');
+    districtSelect.setAttribute('aria-label', 'District for the published record');
     const fromInput = el('input'); fromInput.type = 'number'; fromInput.value = '1981'; fromInput.min = '1901'; fromInput.max = '2010';
     const toInput = el('input'); toInput.type = 'number'; toInput.value = '2010'; toInput.min = '1901'; toInput.max = '2010';
     const go = el('button', 'Read the record', 'secondary');
@@ -426,6 +432,7 @@
     const card = WG.block('District farmer bulletins', 'Directory entries published by the source. A listing is not proof of a current bulletin.');
     const controls = el('div', undefined, 'controls');
     const stateSelect = el('select');
+    stateSelect.setAttribute('aria-label', 'State for farmer bulletins');
     states.data.states.forEach(entry => { const option = el('option', entry.label || entry.id); option.value = entry.id; stateSelect.append(option); });
     controls.append(stateSelect);
     card.append(controls);
@@ -482,6 +489,7 @@
     input.value = 'VAAH';
     input.placeholder = 'VAAH';
     const kindSelect = el('select');
+    kindSelect.setAttribute('aria-label', 'Station report kind');
     [['metar', 'Observation (METAR)'], ['taf', 'Terminal forecast (TAF)']].forEach(pair => {
       const option = el('option', pair[1]); option.value = pair[0]; kindSelect.append(option);
     });
@@ -630,6 +638,69 @@
     } catch (error) {
       mapCard.append(WG.stateBlock('plain', error.message));
     }
+  };
+
+  /* What changed: stored retrieval vintages compared for the same valid hour.
+     This surface reports vintage variance and never presents it as skill,
+     calibration or confidence, because no observation is matched here. */
+  WG.panels.changes = async function (host, WGref) {
+    const place = WGref.state.place || { latitude: 23.02579, longitude: 72.58727 };
+    const view = await WGref.api('/api/forecast/changes', placeQuery(WGref, { limit: 40 }));
+    WGref.state.freshness = WG.freshness(view);
+
+    const head = el('section', undefined, 'block');
+    head.append(el('p', 'Vintage variance · not a forecast score', 'eyebrow'));
+    const title = el('h2', 'How the stored retrievals differ for the same valid hour', 'block-title');
+    head.append(title);
+    const status = view.status;
+    const data = view.data || {};
+    const summary = el('div', undefined, 'metric-row');
+    [['Stored retrievals', String(data.retrieval_count || 0)],
+     ['Valid hours compared', String(data.overlapping_valid_hours || 0)],
+     ['Parameters', String(Object.keys(data.parameters || {}).length)],
+     ['View status', status]].forEach(pair => {
+      const metric = el('div', undefined, 'metric');
+      metric.append(el('span', pair[0], 'metric-note'));
+      metric.append(el('span', pair[1], 'metric-value'));
+      summary.append(metric);
+    });
+    head.append(summary);
+    head.append(el('p', 'A change between retrievals is not an error and neither retrieval is validated here. Upstream model run identity is not exposed, so a change cannot be attributed to a rerun; retrieval time is not issue time.', 'block-note'));
+    if (data.point) head.append(el('p', 'Stored point ' + Number(data.point.latitude).toFixed(4) + ', ' + Number(data.point.longitude).toFixed(4) + (data.requested_point && (data.point.latitude !== data.requested_point.latitude || data.point.longitude !== data.requested_point.longitude) ? ' — nearest stored retrieval to ' + Number(data.requested_point.latitude).toFixed(4) + ', ' + Number(data.requested_point.longitude).toFixed(4) : ''), 'field-note'));
+    host.append(head);
+
+    const parameters = data.parameters || {};
+    if (Object.keys(parameters).length) {
+      const table = WG.table(['Parameter', 'Unit', 'Hours compared', 'Mean change', 'Largest change', 'Example'], Object.keys(parameters).map(name => {
+        const entry = parameters[name] || {};
+        const example = entry.example
+          ? entry.example.first_value + ' → ' + entry.example.last_value + ' at ' + istStamp(entry.example.valid_time_utc) + ' IST, retrieved ' + istStamp(entry.example.first_retrieved_utc) + ' → ' + istStamp(entry.example.last_retrieved_utc)
+          : 'no overlapping pair';
+        return [name, entry.unit || '—', String(entry.valid_hours || 0), entry.mean_abs_change === undefined ? '—' : String(entry.mean_abs_change),
+                entry.max_abs_change === undefined ? '—' : String(entry.max_abs_change), example];
+      }));
+      const block = el('section', undefined, 'block');
+      block.append(el('h2', 'By parameter', 'block-title'));
+      block.append(el('p', 'Mean and largest absolute change between the earliest and latest stored retrieval that covers a valid hour. Units are the source units.', 'block-note'));
+      block.append(table);
+      host.append(block);
+    } else if (status !== 'unavailable') {
+      const block = el('section', undefined, 'block');
+      block.append(el('h2', 'No overlapping valid hours', 'block-title'));
+      block.append(el('p', 'Stored retrievals exist for this place, but no valid hour was retrieved more than once, so nothing can be compared. This is an absence of comparison, not a statement that the forecast did not change.', 'block-note'));
+      host.append(block);
+    }
+
+    if ((data.retrievals || []).length) {
+      const block = el('section', undefined, 'block');
+      block.append(el('h2', 'Retrievals compared', 'block-title'));
+      const list = el('ul', undefined, 'notes');
+      data.retrievals.slice(-8).reverse().forEach(row => list.append(el('li', istStamp(row.retrieved_at_utc) + ' · ' + (row.product || 'forecast') + (row.request_date ? ' · requested ' + row.request_date : '') + ' · response ' + (row.response_sha256_prefix || 'not recorded'))));
+      block.append(list);
+      host.append(block);
+    }
+
+    sourceLine(view, host);
   };
 
   WG.panels.assistant = async function () { /* the conversation is owned by app.js */ };

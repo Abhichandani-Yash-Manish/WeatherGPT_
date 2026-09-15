@@ -47,6 +47,18 @@
     return '';
   }
 
+  function geometryBounds(geometry, project) {
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    const rings = geometry.type === 'Polygon' ? geometry.coordinates
+      : geometry.type === 'MultiPolygon' ? geometry.coordinates.flat() : [];
+    rings.forEach(ring => ring.forEach(point => {
+      const projected = project(point[0], point[1]);
+      minX = Math.min(minX, projected[0]); minY = Math.min(minY, projected[1]);
+      maxX = Math.max(maxX, projected[0]); maxY = Math.max(maxY, projected[1]);
+    }));
+    return Number.isFinite(minX) ? [minX, minY, maxX, maxY] : null;
+  }
+
   function render(options) {
     const state = { day: 1, layers: {}, transform: { k: 1, x: 0, y: 0 }, width: 900, height: 820 };
     LAYERS.forEach(layer => { state.layers[layer.name] = layer.kind !== 'basins'; });
@@ -57,6 +69,7 @@
     const wrapper = el('div', undefined, 'map-wrap');
     const toolbar = el('div', undefined, 'map-toolbar');
     const daySelect = el('select');
+    daySelect.setAttribute('aria-label', 'Warning day shown on the map');
     for (let index = 1; index <= 5; index += 1) {
       const option = el('option', 'Day ' + index);
       option.value = String(index);
@@ -65,8 +78,12 @@
     const zoomIn = el('button', '+', 'chip-button');
     const zoomOut = el('button', '−', 'chip-button');
     const resetView = el('button', 'Reset view', 'chip-button');
+    zoomIn.setAttribute('aria-label', 'Zoom in'); zoomOut.setAttribute('aria-label', 'Zoom out');
     [zoomIn, zoomOut, resetView].forEach(button => { button.type = 'button'; });
-    toolbar.append(el('span', 'Warning day', 'field-label'), daySelect, zoomOut, zoomIn, resetView);
+    const find = el('input');
+    find.type = 'search'; find.id = 'map-find'; find.placeholder = 'Find a district'; find.setAttribute('aria-label', 'Find a district on the map');
+    find.className = 'map-find';
+    toolbar.append(el('span', 'Warning day', 'field-label'), daySelect, zoomOut, zoomIn, resetView, find);
     const legend = el('div', undefined, 'map-legend');
     [['red', 'red'], ['orange', 'orange'], ['yellow', 'yellow'], ['green', 'green'], ['unset', 'colour not supplied']].forEach(pair => {
       const item = el('span', undefined, 'legend-item');
@@ -87,8 +104,9 @@
     wrapper.append(toolbar, legend);
 
     const frame = el('div', undefined, 'map-frame');
-    const svg = node('svg', { viewBox: '0 0 ' + state.width + ' ' + state.height, role: 'img',
-                              'aria-label': 'India district warning map' });
+    const svg = node('svg', { viewBox: '0 0 ' + state.width + ' ' + state.height, role: 'group',
+                              preserveAspectRatio: 'xMidYMid meet', 'aria-label': 'India district warning map' });
+    svg.append(node('rect', { x: 0, y: 0, width: state.width, height: state.height, 'class': 'map-sea' }));
     const group = node('g');
     svg.append(group);
     frame.append(svg);
@@ -137,12 +155,11 @@
       const mapped = rows.length;
       const unmapped = state.unmapped || 0;
       let text = mapped + ' districts carry a warning row for this bulletin';
-      if (unmapped) text += ', ' + unmapped + ' polygons are not in the warning table and are drawn as unmapped';
-      if (state.placeholders) text += ', ' + state.placeholders + ' is drawn as a source bounding box';
-      if (state.placeholders > 1) text += ' and one further placeholder';
-      text = text.replace(' is drawn as a source bounding box', ' are drawn as source bounding boxes');
+      if (unmapped) text += '; ' + unmapped + ' polygons are not in the warning table and are drawn as unmapped';
+      if (state.placeholders) text += '; ' + state.placeholders + (state.placeholders === 1 ? ' polygon is' : ' polygons are') + ' drawn as a source bounding box';
       const day = rows.length ? (rows[0].days[state.day - 1] || {}) : {};
       text += '. Showing day ' + state.day + (day.date_utc ? ' (' + day.date_utc + ')' : '') + '.';
+      if (state.found) text += ' Selected ' + state.found + '; its polygon outline is emphasised, and its published day is unchanged.';
       status.textContent = text;
     }
 
@@ -151,11 +168,13 @@
       holder.replaceChildren();
       (loaded.districts || []).forEach(item => {
         const row = warningsByKey[item.key];
-        const classes = 'district ' + warningClass(row) + (item.placeholder ? ' is-placeholder' : '');
+        const classes = 'district ' + warningClass(row) + (item.placeholder ? ' is-placeholder' : '') + (state.found === item.key ? ' is-found' : '');
         const label = (row ? districtLabel(row) : item.name + ': not in the warning table') +
                       (item.placeholder ? ' (the source supplies a bounding box for this district, not a coastline)' : '');
-        const path = node('path', { d: item.d, 'class': classes, tabindex: '0', 'aria-label': label });
-        path.addEventListener('click', () => { if (row && options.onSelect) options.onSelect(row); });
+        const path = node('path', { d: item.d, 'class': classes, tabindex: '0', role: 'button', 'aria-label': label });
+        const choose = () => { if (row && options.onSelect) options.onSelect(row); };
+        path.addEventListener('click', choose);
+        path.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); choose(); } });
         const title = node('title', undefined, (row ? districtLabel(row) : (item.name || item.key) + ': no warning row for this bulletin') +
                                    (item.placeholder ? ' · source placeholder geometry (bounding box)' : ''));
         path.append(title);
@@ -175,7 +194,27 @@
     }
     zoomIn.addEventListener('click', () => zoom(1.3));
     zoomOut.addEventListener('click', () => zoom(1 / 1.3));
-    resetView.addEventListener('click', () => { state.transform = { k: 1, x: 0, y: 0 }; applyTransform(); });
+    resetView.addEventListener('click', () => { state.transform = { k: 1, x: 0, y: 0 }; state.found = null; applyTransform(); paintDistricts(); paintStatus(); });
+    find.addEventListener('input', () => {
+      const needle = find.value.trim().toLowerCase();
+      state.found = null;
+      if (needle.length >= 2) {
+        const match = (loaded.districts || []).find(item => String(item.name || '').toLowerCase().indexOf(needle) >= 0);
+        if (match) {
+          state.found = match.key;
+          if (match.bounds) {
+            const [minX, minY, maxX, maxY] = match.bounds;
+            const centreX = (minX + maxX) / 2, centreY = (minY + maxY) / 2;
+            const extent = Math.max(30, maxX - minX, maxY - minY);
+            state.transform.k = Math.max(1, Math.min(9, state.width / extent / 1.6));
+            state.transform.x = state.width / 2 - centreX * state.transform.k;
+            state.transform.y = state.height / 2 - centreY * state.transform.k;
+            applyTransform();
+          }
+        }
+      }
+      paintDistricts(); paintStatus();
+    });
 
     let dragging = null;
     svg.addEventListener('pointerdown', event => {
@@ -222,7 +261,7 @@
             const key = feature.properties.k;
             if (!warningsByKey[key]) unmapped += 1;
             return { key, name: feature.properties.n, placeholder: feature.properties.p === 1,
-                     d: geometryPath(feature.geometry, project) };
+                     d: geometryPath(feature.geometry, project), bounds: geometryBounds(feature.geometry, project) };
           });
           paintDistricts();
           continue;
@@ -230,7 +269,7 @@
         (data.features || []).forEach(feature => {
           if (feature.geometry.type === 'Point') {
             const point = project(feature.geometry.coordinates[0], feature.geometry.coordinates[1]);
-            const circle = node('circle', { cx: point[0], cy: point[1], r: feature.properties.t === 'PPLC' ? 4 : 3, 'class': 'place', 'aria-label': feature.properties.n });
+            const circle = node('circle', { cx: point[0], cy: point[1], r: feature.properties.t === 'PPLC' ? 4 : 3, 'class': 'place', role: 'img', 'aria-label': feature.properties.n });
             circle.append(node('title', undefined, feature.properties.n));
             holder.append(circle);
             return;

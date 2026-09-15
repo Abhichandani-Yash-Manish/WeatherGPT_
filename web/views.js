@@ -166,15 +166,37 @@ function renderRuler(packet) {
     return created;
   };
   node('rect', { x: track, y: y, width: width - track - 12, height: height, rx: 3, 'class': 'ruler-rail' });
+  // Uncovered intervals are drawn as hatched gaps rather than left ambiguous:
+  // a rail that simply ends would read as coverage it does not have.
+  let cursor = from;
+  covered.forEach(span => {
+    if (span[0] - cursor > 15 * 60 * 1000) {
+      const left = scale(cursor), right = scale(span[0]);
+      node('rect', { x: left.toFixed(1), y: y, width: Math.max(2, right - left).toFixed(1), height: height, rx: 3, 'class': 'ruler-gap' });
+    }
+    cursor = Math.max(cursor, span[1]);
+  });
+  if (to - cursor > 15 * 60 * 1000) {
+    const left = scale(cursor);
+    node('rect', { x: left.toFixed(1), y: y, width: Math.max(2, (width - track - 12) - (left - track)).toFixed(1), height: height, rx: 3, 'class': 'ruler-gap' });
+  }
   covered.forEach(span => {
     const left = scale(span[0]), right = scale(span[1]);
     node('rect', { x: left.toFixed(1), y: y, width: Math.max(2, right - left).toFixed(1), height: height, rx: 3, 'class': 'ruler-covered' });
+    node('line', { x1: left.toFixed(1), x2: left.toFixed(1), y1: y - 4, y2: y, 'class': 'ruler-edge' });
   });
   [0, 0.5, 1].forEach(fraction => {
     const at = from + (to - from) * fraction;
     node('line', { x1: scale(at).toFixed(1), x2: scale(at).toFixed(1), y1: y + height + 3, y2: y + height + 8, 'class': 'ruler-edge' });
     node('text', { x: scale(at).toFixed(1), y: y + height + 22, 'text-anchor': fraction === 0 ? 'middle' : fraction === 1 ? 'end' : 'middle', 'class': 'ruler-tick-label' }, istClock(new Date(at).toISOString()));
   });
+  // Source-hour ticks while the window is short enough for them to mean something.
+  if (hours <= 36) {
+    const step = hours <= 12 ? 3600 * 1000 : 6 * 3600 * 1000;
+    for (let at = Math.ceil(from / step) * step; at < to; at += step) {
+      node('line', { x1: scale(at).toFixed(1), x2: scale(at).toFixed(1), y1: y + height, y2: y + height + 5, 'class': 'ruler-hour' });
+    }
+  }
   node('text', { x: track, y: 22, 'class': 'ruler-caption' }, istDay(spans[0].start) + ' \u00b7 ' + Math.round(hours * 10) / 10 + ' h');
   box.append(svg);
 
@@ -233,6 +255,17 @@ function renderReceipt(packet, fact) {
     locators.append(el('span', 'Record path' + (fact.source_locators.length === 1 ? ': ' : 's: ') + fact.source_locators.join('  ')));
     box.append(locators);
   }
+  // The chain is the receipt's spine in one line: which source, retrieved when,
+  // through which contract, supporting which claim. It adds no new fact.
+  const chain = el('p', undefined, 'receipt-chain');
+  chain.append(el('span', (source && source.source_id) || fact.source_id || 'source', 'data'));
+  chain.append(el('span', ' → ', 'receipt-key'));
+  chain.append(el('span', 'retrieved ' + (source && source.retrieved_at_utc ? istStamp(source.retrieved_at_utc) : 'time not recorded'), 'receipt-val'));
+  chain.append(el('span', ' → ', 'receipt-key'));
+  chain.append(el('span', fact.method || kindOf(fact) || 'typed contract', 'receipt-val'));
+  chain.append(el('span', ' → ', 'receipt-key'));
+  chain.append(el('span', 'claim ' + (fact.id || 'unidentified'), 'data'));
+  box.append(chain);
   const distances = findDeep(packet, 'grid_distance_km');
   const note = el('p', undefined, 'receipt-note');
   note.append(el('span', 'A receipt for the moment it was retrieved, not a standing fact. ' + (distances.length ? 'The answering cell is ' + distances[0] + ' km from the requested point. ' : '') + 'Model output is not an observation and not a district average.'));
@@ -492,6 +525,33 @@ function renderPassages(packet) {
             const download = el('a', 'Download saved PDF');
             download.href = local; download.download = 'bulletin-' + local.split('/').pop() + '.pdf';
             links.append(el('span', ' \u00b7 '), download);
+            // The viewer is collapsed by default and loads only when asked, so opening
+            // the evidence drawer does not fetch a large PDF nobody requested. The
+            // frame stays same-origin; the download link is the fallback when the
+            // browser has no built-in PDF viewer.
+            const viewer = el('div');
+            const toggle = el('button', 'View saved PDF here', 'ghost');
+            toggle.type = 'button'; toggle.setAttribute('aria-expanded', 'false');
+            const frameHost = el('div'); frameHost.hidden = true;
+            toggle.addEventListener('click', () => {
+              if (!frameHost.hidden) {
+                frameHost.hidden = true; toggle.setAttribute('aria-expanded', 'false'); toggle.textContent = 'View saved PDF here';
+                return;
+              }
+              if (!frameHost.children.length) {
+                const frame = el('iframe');
+                frame.src = local + '#page=' + passage.page;
+                frame.title = 'Saved source PDF, page ' + passage.page;
+                frame.className = 'pdf-frame';
+                frame.setAttribute('loading', 'lazy');
+                frameHost.append(frame);
+                frameHost.append(el('p', 'Rendered by the browser PDF viewer from this workspace only. If it stays blank, use the download link.', 'field-note'));
+              }
+              frameHost.hidden = false; toggle.setAttribute('aria-expanded', 'true'); toggle.textContent = 'Hide saved PDF';
+            });
+            links.append(el('span', ' \u00b7 '), toggle);
+            viewer.append(frameHost);
+            body.append(viewer);
           } else {
             url.hash = 'page=' + passage.page;
             const open = el('a', 'Open the original bulletin page');
@@ -638,6 +698,17 @@ function renderActions(packet, handlers) {
   if (handlers.onPrint) actions.append(actionButton('Print this answer', () => handlers.onPrint(packet)));
   if (handlers.onExport) actions.append(actionButton('Save this turn as Markdown', () => handlers.onExport(packet)));
   if (handlers.onDownload) actions.append(actionButton('Download this answer as JSON', () => handlers.onDownload(packet)));
+  actions.append(actionButton('Inspect the raw packet', () => {
+    const pretty = JSON.stringify(packet, null, 1);
+    const bounded = pretty.length > 60000 ? pretty.slice(0, 60000) + '\n… truncated for display; the download action holds the full packet.' : pretty;
+    const WG = window.WG;
+    if (!WG || !WG.openDrawer) return;
+    WG.openDrawer('Raw packet', body => {
+      const pre = el('pre', bounded);
+      body.append(pre);
+      body.append(el('p', 'This is the exact packet the page rendered, not a summary. Question text and evidence stay on this machine.', 'field-note'));
+    });
+  }));
   return actions;
 }
 function renderExpiry(packet) {

@@ -79,3 +79,18 @@ assert.equal(download.href, saved.local_document_path);
 assert.equal(download.download, 'bulletin-' + 'a'.repeat(64) + '.pdf');
 assert(links(card).filter(link => String(link.href).indexOf('//') === -1).length >= 2, 'Saved-document links stay on this origin');
 console.log('PASS: saved PDF has a same-origin download fallback');
+
+// 6. the saved PDF can be viewed in place, from this origin only, only when asked
+const viewToggle = byText(card, 'button', 'View saved PDF here');
+assert(viewToggle, 'the saved PDF offers an in-place viewer');
+assert.equal(viewToggle.getAttribute('aria-expanded'), 'false', 'the viewer starts collapsed');
+assert.equal(walk(card).filter(node => node.tag === 'iframe').length, 0, 'no PDF is fetched until the viewer is opened');
+viewToggle.dispatch('click');
+const frame = walk(card).filter(node => node.tag === 'iframe')[0];
+assert(frame, 'opening the viewer creates the frame');
+assert(/^\/api\/documents\/[a-f0-9]{64}#page=/.test(frame.src), 'the frame is same-origin and page-anchored: ' + frame.src);
+assert(/^Saved source PDF, page \d+$/.test(frame.title), 'the frame is titled for assistive technology');
+assert.equal(viewToggle.getAttribute('aria-expanded'), 'true', 'the toggle reports its state');
+viewToggle.dispatch('click');
+assert.equal(walk(card).filter(node => node.tag === 'iframe').length, 1, 'closing hides the existing frame rather than fetching another');
+console.log('PASS: the saved PDF opens in place from this origin only, on request');

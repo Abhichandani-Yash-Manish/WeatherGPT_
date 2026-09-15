@@ -14,7 +14,12 @@ const WG = window.WG;
 
 (function () {
   const TOKEN = (document.querySelector('meta[name="workspace-token"]') || {}).content || '';
-  const VIEWS = ['overview', 'warnings', 'map', 'observations', 'forecast', 'climate', 'advisories', 'aviation', 'marine', 'assistant', 'settings'];
+  const VIEWS = ['overview', 'warnings', 'map', 'observations', 'forecast', 'changes', 'climate', 'advisories', 'aviation', 'marine', 'assistant', 'settings'];
+  const VIEW_LABELS = { assistant: 'Ask', overview: 'Today', warnings: 'Warnings', map: 'Map', forecast: 'Forecast',
+                        changes: 'What changed', observations: 'Observations', advisories: 'Farm advisories',
+                        climate: 'Climate records', marine: 'Sea and rivers', aviation: 'Aviation', settings: 'Sources and settings' };
+  const VIEW_GLYPHS = { assistant: '✦', overview: '◎', warnings: '▲', map: '◈', forecast: '〜', changes: '∆',
+                        observations: '⌖', advisories: '☘', climate: '◔', marine: '≈', aviation: '✈', settings: '⚙' };
   const DEFAULT_PLACE = { label: 'Ahmedabad, Gujarat', latitude: 23.02579, longitude: 72.58727 };
 
   /* ---------- transport ---------- */
@@ -283,6 +288,7 @@ const WG = window.WG;
       map: 'Which districts near ' + place.label + ' carry an official warning today?',
       observations: 'What is the current observed weather near ' + place.label + '?',
       forecast: 'What is the forecast for ' + place.label + ' tomorrow?',
+      changes: 'What changed between the stored forecast retrievals for ' + place.label + '?',
       climate: 'What does the published rainfall record show for ' + place.label + '?',
       advisories: 'What does the district bulletin advise for ' + place.label + '?',
       aviation: 'What is the airport report for VAAH?',
@@ -291,24 +297,68 @@ const WG = window.WG;
     return { question: templates[view] || templates.overview, summary: place.label };
   }
 
-  /* ---------- notifications placeholder ---------- */
+  /* ---------- the local watch inbox ---------- */
   function wireNotify() {
     const toggle = document.getElementById('notify-toggle');
     const panel = document.getElementById('notify-panel');
     const close = document.getElementById('notify-close');
     const body = document.getElementById('notify-body');
     if (!toggle || !panel || !body) return;
-    function paint() {
-      clear(body);
-      body.append(stateBlock('plain', 'No watch or delivery mechanism is connected yet.',
-        'Watching a place and receiving an update when an official product changes is required by the problem statement and is not built. Until it exists, nothing here claims to notify you. Ask the assistant for the current official state instead.'));
-      body.append(disclosure('What the warning journey does today', into => {
+    async function postJson(path, payload) {
+      const response = await fetch(path, { method:'POST', headers:{ 'Content-Type':'application/json', 'X-WeatherGPT-Token':TOKEN },
+                                           body:JSON.stringify(payload || {}) });
+      let parsed = null;
+      try { parsed = await response.json(); } catch (error) { parsed = null; }
+      if (!response.ok) throw classify(response.status, parsed);
+      return parsed;
+    }
+    function limits() {
+      return disclosure('What a watch can and cannot do', into => {
         const list = el('ul', undefined, 'notes');
-        ['The district warning product is resolved to your place by point-in-polygon on official geometry.',
-         'The CAP relay is reported beside it and never merged into one verdict.',
-         'A quiet district day is not an all-clear, and no delivery is implied.'].forEach(note => list.append(el('li', note)));
+        ['Ask the assistant “Notify me if ... ” to register one; a watch records the place, hazard and window it resolved.',
+         'Watches are evaluated only when you press Check now or call the local check route. There is no push and no background daemon.',
+         'A flood or cyclone watch is recorded but the connected official products do not carry it; it is never mapped onto a similar-sounding product.',
+         'A no-match result is not an all-clear, and origin authentication of the official products remains unverified.'].forEach(note => list.append(el('li', note)));
         into.append(list);
-      }, true));
+      }, true);
+    }
+    async function paint() {
+      clear(body);
+      body.append(loading('Reading the local watch inbox…'));
+      let packet = null;
+      try { packet = await api('/api/watches'); }
+      catch (error) { clear(body); body.append(stateBlock('down', 'The local watch inbox could not be read.', error.message)); return; }
+      clear(body);
+      const watches = packet.watches || [];
+      body.append(stateBlock('plain', watches.length ? watches.length + ' local watch(es) registered.' : 'No watches registered yet.',
+        'Register one by asking the assistant to notify you. Watches are checked only when asked; a no-match result is not an all-clear.'));
+      if (watches.length) {
+        body.append(table(['Hazard', 'Place', 'State', 'Window ends', 'Last checked'], watches.map(watch => [
+          watch.hazard,
+          (watch.place && (watch.place.name || watch.place.label)) || '—',
+          watch.state,
+          watch.window_end || '—',
+          watch.last_checked_at || 'not yet checked'
+        ])));
+      }
+      const check = el('button', 'Check now', 'ghost');
+      check.addEventListener('click', async () => {
+        check.disabled = true; check.textContent = 'Checking…';
+        try {
+          const result = await postJson('/api/watches/check', {});
+          clear(body);
+          body.append(stateBlock('plain', 'Checked ' + ((result.results || []).length) + ' watch(es) in the foreground.',
+            'No daemon or push is installed. A no-match result is not an all-clear.'));
+          (result.results || []).forEach(row => body.append(stateBlock(row.matched ? 'plain' : 'plain',
+            (row.matched ? 'Matched: ' : 'No match: ') + row.state, row.detail || '')));
+          body.append(check); check.disabled = false; check.textContent = 'Check now';
+        } catch (error) {
+          check.disabled = false; check.textContent = 'Check now';
+          body.append(stateBlock('down', 'The check could not run.', error.message));
+        }
+      });
+      body.append(check);
+      body.append(limits());
     }
     toggle.addEventListener('click', () => {
       panel.hidden = !panel.hidden;
@@ -316,6 +366,169 @@ const WG = window.WG;
       if (!panel.hidden) paint();
     });
     if (close) close.addEventListener('click', () => { panel.hidden = true; toggle.setAttribute('aria-expanded', 'false'); });
+  }
+
+  /* ---------- appearance: day desk, night desk, or the system ---------- */
+  const THEME_KEY = 'weathergpt.theme';
+  function preferredTheme() {
+    try {
+      const stored = window.localStorage.getItem(THEME_KEY);
+      if (stored === 'light' || stored === 'dark' || stored === 'auto') return stored;
+    } catch (error) { /* private mode: follow the system */ }
+    return 'auto';
+  }
+  function systemTheme() {
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  function applyTheme(mode) {
+    const effective = mode === 'auto' ? systemTheme() : mode;
+    document.documentElement.setAttribute('data-theme', effective);
+    const button = document.getElementById('theme-toggle');
+    if (button) {
+      button.textContent = mode === 'auto' ? 'System · ' + (effective === 'dark' ? 'night' : 'day')
+                                           : (mode === 'dark' ? 'Night desk' : 'Day desk');
+      button.title = 'Appearance: ' + mode + '. Click to cycle day, night and system.';
+    }
+  }
+  function cycleTheme() {
+    const order = ['auto', 'light', 'dark'];
+    const next = order[(order.indexOf(preferredTheme()) + 1) % order.length];
+    try { window.localStorage.setItem(THEME_KEY, next); } catch (error) { /* appearance still applies */ }
+    applyTheme(next);
+    return next;
+  }
+  function wireTheme() {
+    applyTheme(preferredTheme());
+    const button = document.getElementById('theme-toggle');
+    if (button) button.addEventListener('click', cycleTheme);
+    if (window.matchMedia) {
+      const media = window.matchMedia('(prefers-color-scheme: dark)');
+      const listener = () => { if (preferredTheme() === 'auto') applyTheme('auto'); };
+      if (media.addEventListener) media.addEventListener('change', listener);
+    }
+  }
+
+  /* ---------- command palette ---------- */
+  function wirePalette() {
+    const root = document.getElementById('palette');
+    const input = document.getElementById('palette-input');
+    const body = document.getElementById('palette-body');
+    const opener = document.getElementById('palette-open');
+    if (!root || !input || !body) return;
+    let items = [], active = 0, placeMatches = [], timer = null;
+
+    function closePalette() { root.hidden = true; document.removeEventListener('keydown', onKey); }
+    function openPalette() {
+      root.hidden = false; input.value = ''; placeMatches = []; renderItems('');
+      loadRecent();
+      input.focus();
+      document.addEventListener('keydown', onKey);
+    }
+    function actions() {
+      const list = Object.keys(VIEW_LABELS).map(view => ({ group: 'Surfaces', glyph: VIEW_GLYPHS[view] || '·',
+        label: VIEW_LABELS[view], note: '#' + view, run: () => { window.location.hash = '#/' + view; } }));
+      list.push({ group: 'Actions', glyph: '✚', label: 'New conversation', note: 'start over', run: () => { const b = document.getElementById('new-conversation'); if (b) b.click(); } });
+      list.push({ group: 'Actions', glyph: '◐', label: 'Switch appearance', note: 'day, night or system', run: () => { cycleTheme(); } });
+      list.push({ group: 'Actions', glyph: '◷', label: 'Check watches now', note: 'foreground only', run: () => { const b = document.getElementById('notify-toggle'); if (b) b.click(); } });
+      list.push({ group: 'Actions', glyph: '⤓', label: 'Save this conversation', note: 'markdown', run: () => { const b = document.getElementById('export-transcript'); if (b) b.click(); } });
+      list.push({ group: 'Actions', glyph: '⎙', label: 'Print the open answer', note: 'print', run: () => { if (window.print) window.print(); } });
+      return list;
+    }
+    function filtered(query) {
+      const base = actions().concat(placeMatches).concat(WG.state.recent || []);
+      const needle = query.trim().toLowerCase();
+      if (!needle) return base;
+      return base.filter(item => ((item.label || '') + ' ' + (item.note || '')).toLowerCase().indexOf(needle) >= 0);
+    }
+    function select(index) {
+      active = Math.max(0, Math.min(index, Math.max(0, items.length - 1)));
+      const buttons = body.querySelectorAll ? body.querySelectorAll('.palette-item') : [];
+      for (let i = 0; i < buttons.length; i += 1) buttons[i].classList.toggle('is-active', i === active);
+    }
+    function renderItems(query) {
+      items = filtered(query); active = 0;
+      clear(body);
+      let group = null;
+      items.forEach((item, index) => {
+        if (item.group !== group) { group = item.group; body.append(el('p', group, 'palette-group')); }
+        const button = el('button', undefined, 'palette-item' + (index === 0 ? ' is-active' : ''));
+        button.type = 'button';
+        button.append(el('span', item.glyph || '·', 'glyph'), el('span', item.label || '', 'palette-label'));
+        if (item.note) button.append(el('span', item.note, 'palette-note'));
+        button.addEventListener('click', () => runItem(item));
+        body.append(button);
+      });
+      if (!items.length) body.append(stateBlock('plain', 'Nothing matches that yet.', 'Try a surface name, a place, an action, or a recent question.'));
+    }
+    function runItem(item) { closePalette(); if (item && item.run) item.run(); }
+    function onKey(event) {
+      if (event.key === 'Escape') { event.preventDefault(); closePalette(); return; }
+      if (event.key === 'ArrowDown') { event.preventDefault(); select(active + 1); return; }
+      if (event.key === 'ArrowUp') { event.preventDefault(); select(active - 1); return; }
+      if (event.key === 'Enter' && items[active]) { event.preventDefault(); runItem(items[active]); }
+    }
+    async function searchPlaces(value) {
+      if (value.trim().length < 2) { placeMatches = []; return; }
+      try {
+        const view = await api('/api/places/search', { q: value, limit: 6 });
+        placeMatches = (view.data.matches || []).map(match => ({ group: 'Places', glyph: '⌖', label: match.label || match.name,
+          note: [match.source_id, match.kind].filter(Boolean).join(' · '),
+          run: () => { const c = match.coordinates || {}; setPlace({ label: match.label || match.name, latitude: c.latitude, longitude: c.longitude }); window.location.hash = '#/assistant'; } }));
+      } catch (error) { placeMatches = []; }
+    }
+    async function loadRecent() {
+      try {
+        const packet = await api('/api/conversations', { limit: 6 });
+        WG.state.recent = (packet.conversations || []).slice(0, 6).map(row => ({ group: 'Recent conversations', glyph: '▤',
+          label: row.opening_question || 'Stored conversation',
+          note: row.asked !== undefined ? row.asked + ' asked' : (row.turns !== undefined ? row.turns + ' turns' : 'stored turn'),
+          run: () => { const app = window.WeatherGPT; if (app && app.restore) app.restore({ id: row.id }); else window.location.hash = '#/assistant'; } }));
+      } catch (error) { WG.state.recent = []; }
+      renderItems(input.value);
+    }
+    input.addEventListener('input', () => {
+      renderItems(input.value);
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(async () => { await searchPlaces(input.value); renderItems(input.value); }, 200);
+    });
+    if (opener) opener.addEventListener('click', openPalette);
+    root.addEventListener('click', event => { if (event.target === root) closePalette(); });
+    WG.palette = { open: openPalette, close: closePalette };
+  }
+
+  /* ---------- rail health readout ---------- */
+  async function paintHealthMini() {
+    const rail = document.getElementById('rail');
+    if (!rail) return;
+    let host = document.getElementById('health-mini');
+    if (!host) {
+      const group = el('div', undefined, 'rail-group');
+      group.append(el('h2', 'Collection health', 'rail-title'));
+      host = el('div', undefined, 'health-mini');
+      host.id = 'health-mini';
+      group.append(host);
+      const note = document.getElementById('nav-note');
+      rail.insertBefore(group, note || null);
+    }
+    try {
+      const health = await api('/api/health');
+      clear(host);
+      if (!health.available) {
+        host.append(el('p', health.note || 'No collection history exists yet.', 'nav-note'));
+        return;
+      }
+      (health.products || []).slice(0, 3).forEach(product => {
+        const row = el('div', undefined, 'health-row');
+        row.append(el('span', product.product, 'health-key'));
+        row.append(el('span', String(product.jobs) + ' jobs', 'health-stream'));
+        row.append(el('span', product.newest_commit_utc ? istStamp(product.newest_commit_utc) : 'no commit', 'health-val'));
+        host.append(row);
+      });
+      host.append(el('p', (health.job_states && Object.keys(health.job_states).length ? Object.keys(health.job_states).map(k => k + ' ' + health.job_states[k]).join(' · ') : 'no jobs') + ' · ' + (health.active_leases || 0) + ' in flight', 'readout-line'));
+    } catch (error) {
+      clear(host);
+      host.append(el('p', 'Collection health is unavailable.', 'nav-note'));
+    }
   }
 
   /* ---------- startup ---------- */
@@ -335,6 +548,21 @@ const WG = window.WG;
     wirePlaceSearch();
     wireRouter();
     wireNotify();
+    wireTheme();
+    wirePalette();
+    paintHealthMini();
+    document.addEventListener('keydown', event => {
+      if ((event.metaKey || event.ctrlKey) && String(event.key).toLowerCase() === 'k') {
+        event.preventDefault();
+        if (WG.palette) WG.palette.open();
+        return;
+      }
+      // Alt+1…9 jumps to the first nine surfaces without leaving the keyboard.
+      if (event.altKey && /^[1-9]$/.test(String(event.key))) {
+        const target = VIEWS[Number(event.key) - 1];
+        if (target) { event.preventDefault(); window.location.hash = '#/' + target; }
+      }
+    });
     render();
   }
 
@@ -358,6 +586,12 @@ const WG = window.WG;
   WG.render = render;
   WG.freshness = freshness;
   WG.VIEWS = VIEWS;
+  WG.wireNotify = wireNotify;  /* exposed for the component checks, which never fire load */
+  WG.wireTheme = wireTheme;
+  WG.wirePalette = wirePalette;
+  WG.paintHealthMini = paintHealthMini;
+  WG.cycleTheme = cycleTheme;
+  WG.applyTheme = applyTheme;
 
   /* Every surface script is deferred and runs before load, so the first render waits
      for load to be sure map.js and panels.js have attached. */

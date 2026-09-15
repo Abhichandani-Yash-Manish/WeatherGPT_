@@ -11,7 +11,8 @@
      the question as an English instruction for the planner to read back out, which is
      how an explicit choice could be lost to inference. */
   const LANGUAGES = { loaded:false, rows:[], speakable:new Set() };
-  const state = { conversationId:null, busy:false, controller:null, language:'', startedAt:0, ticker:null, ledger:null, lastSeen:null };
+  const state = { conversationId:null, busy:false, controller:null, language:'', startedAt:0, ticker:null, ledger:null, lastSeen:null,
+                  requestId:null, cancelRequested:false };
 
   /* ---------- surface state ---------- */
   function setService(text, cls) {
@@ -60,8 +61,11 @@
     const message = (payload && payload.error) || '';
     if (status === 403) return RequestError('This page no longer holds the workspace token. Reload the local page to continue.', 403, 'auth');
     if (status === 503) return RequestError(message || 'The local evidence store is unavailable. Check its files, then retry.', 503, 'down');
-    if (/Another conversation is using the local model/i.test(message)) {
-      return RequestError('Another question is using the local model. This workspace handles one conversation at a time and does not queue a second one; retry in a moment.', 400, 'locked');
+    if (/maximum number of waiting questions|busy longer than the queue allows/i.test(message)) {
+      return RequestError(message, 429, 'busy');
+    }
+    if (/Another conversation is using the local model|one conversation at a time/i.test(message)) {
+      return RequestError('Another question is using the local model. This workspace answers one at a time and holds only a few waiting questions; a full queue is refused rather than growing.', 400, 'locked');
     }
     return RequestError(message || 'The request could not be completed.', status, 'invalid');
   }
@@ -72,6 +76,13 @@
     if (!response.ok) throw classify(response.status, payload);
     if (payload === null) throw RequestError('The workspace returned a response this page could not read.', response.status, 'malformed');
     return payload;
+  }
+  function newRequestId() {
+    if (window.crypto && typeof window.crypto.randomUUID === 'function') return window.crypto.randomUUID();
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, character => {
+      const value = Math.floor(Math.random() * 16);
+      return (character === 'x' ? value : (value & 0x3) | 0x8).toString(16);
+    });
   }
   function jsonRequest(method, body, signal) {
     return { method:method, headers:{ 'Content-Type':'application/json', 'X-WeatherGPT-Token':TOKEN },
@@ -235,8 +246,10 @@
     setBusy(true, 'Interpreting the question, then retrieving evidence…');
     setService('Working', 'is-busy');
     state.controller = new AbortController();
+    state.cancelRequested = false;
+    state.requestId = newRequestId();
     try {
-      const body = { question:question, output_language:state.language || '' };
+      const body = { question:question, output_language:state.language || '', request_id:state.requestId };
       if (state.conversationId) body.conversation_id = state.conversationId;
       if (request.selection && request.selection.selection_id) body.selection_id = request.selection.selection_id;
       if (request.selection && request.selection.coordinates) body.coordinates = request.selection.coordinates;
@@ -252,13 +265,15 @@
     } catch (error) {
       working.remove();
       if (error && error.name === 'AbortError') {
-        append(el('div', 'You stopped waiting for this turn. The local model may still be finishing it, because stopping the page request does not cancel the server work, and nothing is queued behind it. Ask again to see the result.', 'notice is-calm'));
-        setService('Ready', 'is-ready');
+        if (!state.cancelRequested) {
+          append(el('div', 'You stopped waiting for this turn. The page request was aborted and no cancel request was sent, so the server may still be finishing it; a later question waits in a bounded queue rather than being rejected instantly.', 'notice is-calm'));
+        }
+        setService(state.cancelRequested ? 'Stopped' : 'Ready', state.cancelRequested ? '' : 'is-ready');
       } else {
         const kind = error && error.kind;
         showError(error && error.message ? error.message : 'The local workspace is unreachable. Restart it and reload this page.');
-        setService(kind === 'locked' ? 'One at a time' : kind === 'auth' ? 'Reload needed' : kind === 'down' ? 'Store unavailable' : 'Ready',
-                   kind === 'invalid' ? '' : 'is-down');
+        setService(kind === 'busy' ? 'Queue full' : kind === 'locked' ? 'One at a time' : kind === 'auth' ? 'Reload needed' : kind === 'down' ? 'Store unavailable' : 'Ready',
+                   (kind === 'invalid' || kind === 'busy' || kind === 'locked') ? '' : 'is-down');
       }
     } finally {
       state.controller = null;
@@ -420,7 +435,25 @@
       clearError();
     });
     const cancel = byId('cancel');
-    if (cancel) cancel.addEventListener('click', () => { if (state.controller) state.controller.abort(); });
+    if (cancel) cancel.addEventListener('click', async () => {
+      state.cancelRequested = true;
+      const requestId = state.requestId;
+      if (state.controller) state.controller.abort();
+      if (!requestId) return;
+      try {
+        const packet = await call('/api/chat/cancel', jsonRequest('POST', { request_id:requestId }));
+        const detail = (packet && packet.detail) || '';
+        if (packet && packet.state === 'cancel_requested') {
+          append(el('div', 'Stop requested. ' + detail, 'notice is-calm'));
+        } else if (packet && packet.state === 'not_running') {
+          append(el('div', 'That turn had already finished before the stop arrived. ' + detail, 'notice is-calm'));
+        } else {
+          append(el('div', 'The workspace answered the stop request with state "' + ((packet && packet.state) || 'unknown') + '".', 'notice is-calm'));
+        }
+      } catch (error) {
+        append(el('div', 'The stop request could not reach the workspace; a later question still waits in its bounded queue.', 'notice is-calm'));
+      }
+    });
     const language = byId('language');
     if (language) language.addEventListener('change', () => { state.language = language.value; });
     const railToggle = byId('rail-toggle');
@@ -461,5 +494,5 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
 
-  window.WeatherGPT = { ask:ask, state:state, loadLedger:loadLedger, loadHealth:loadHealth, buildFieldSentence:buildFieldSentence, firstPoint:firstPoint };
+  window.WeatherGPT = { ask:ask, state:state, loadLedger:loadLedger, loadHealth:loadHealth, restore:restore, buildFieldSentence:buildFieldSentence, firstPoint:firstPoint };
 })();

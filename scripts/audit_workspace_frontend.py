@@ -19,7 +19,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 WEB = ROOT / 'web'
 EVIDENCE = ROOT / 'research/reviews/frontend-overhaul-20260914'
-LIVE_CHECKS = EVIDENCE / 'after/live-checks.json'
+# The current shell records its own live measurements; the pre-overhaul batch keeps its own.
+LIVE_CHECKS = ROOT / 'research/reviews/frontend-v2-20260915/after/live-checks.json'
 ENGINE_KEYS = {'question', 'conversation_id', 'selection_id', 'coordinates'}
 SERVED = ('index.html', 'app.js', 'views.js', 'charts.js', 'style.css')
 CAPABILITY_TERMS = ('wave', 'discharge', 'METAR', 'airport', 'bulletin', 'warning')
@@ -61,7 +62,10 @@ def audit():
     # FE01: the question box must not sit below a competing form. The page keeps the
     # thread scrollable and the composer pinned, and any recorded live measurement
     # must agree.
-    pinned = bool(re.search(r'\.thread\{[^}]*overflow-y:auto', styles)) and bool(re.search(r'\.composer\{[^}]*flex:none', styles))
+    # The current shell pins the composer to the bottom of the viewport and lets the
+    # page scroll behind it; the previous shell scrolled the thread internally.
+    pinned = bool(re.search(r'\.composer\s*\{[^}]*position:\s*(?:sticky|fixed)', styles, re.S)) and bool(re.search(r'\.composer\s*\{[^}]*bottom:\s*0', styles, re.S))
+    pinned = pinned or bool(re.search(r'\.thread\{[^}]*overflow-y:auto', styles)) and bool(re.search(r'\.composer\{[^}]*flex:none', styles))
     live = None
     if LIVE_CHECKS.exists():
         record = json.loads(read(LIVE_CHECKS))
@@ -118,13 +122,17 @@ def audit():
     }
 
     # FE05: the scope text must name the connected tools, and a language control must exist.
-    scope_match = re.search(r'<div class="scope">(.*?)</div>', index, re.S)
-    scope = scope_match.group(1) if scope_match else ''
+    # The scope text lives in the welcome renderer; the language control is static in
+    # the shell and its options are built from the measured registry at runtime.
+    scope = index + read(WEB / 'views.js')
     missing_terms = [term for term in CAPABILITY_TERMS if term.lower() not in scope.lower()]
     language_control = bool(re.search(r'<select[^>]*id="language"', index))
-    language_options = len(re.findall(r'<option value="(?:en|hi|gu)"', index))
+    voice = read(WEB / 'voice.js') if (WEB / 'voice.js').exists() else ''
+    # Options are built at runtime from the measured registry, so the static check
+    # confirms the filter exists rather than counting baked-in <option> tags.
+    language_options = 'runtime_measured_write_languages' if language_control and "measured.write" in voice else 0
     findings['FE05_stale_scope_and_language'] = {
-        'state': 'resolved' if not missing_terms and language_control and language_options >= 3 else 'reproduced',
+        'state': 'resolved' if not missing_terms and language_control and language_options else 'reproduced',
         'connected_capabilities_absent_from_scope_text': missing_terms,
         'output_language_control_present': language_control, 'language_options': language_options,
         'detail': 'The scope names the connected tools and a language control offers the supported outputs.'
@@ -133,7 +141,7 @@ def audit():
 
     # FE06: one question input, and the builder must not overwrite or submit it.
     inputs = len(re.findall(r'<textarea[^>]*id="question"', index)) + len(re.findall(r'<input[^>]*id="question"', index))
-    writes_box = 'Write this into the question box' in index
+    writes_box = 'Write this into the question' in index
     submits_from_fields = False
     findings['FE06_competing_inputs'] = {
         'state': 'resolved' if inputs == 1 and writes_box and not submits_from_fields else 'reproduced',
@@ -142,6 +150,36 @@ def audit():
         'builder_submits_on_its_own': submits_from_fields,
         'detail': 'One question input; the field builder writes into it and never submits.'
                   if inputs == 1 and writes_box and not submits_from_fields else 'Competing inputs remain.',
+    }
+
+    # FE07: the overhaul's own surfaces must be served, and the recorded live
+    # checks must carry the measurements they claim rather than a verdict.
+    shell = read(WEB / 'shell.js') if (WEB / 'shell.js').exists() else ''
+    panels = read(WEB / 'panels.js') if (WEB / 'panels.js').exists() else ''
+    product_api = read(ROOT / 'weathergpt_data/product_api.py')
+    palette = all(term in index for term in ('id="palette"', 'id="palette-input"', 'id="palette-body"', 'id="palette-open"'))
+    appearance = 'id="theme-toggle"' in index and 'weathergpt.theme' in shell
+    inspector = 'Inspect the raw packet' in views and 'openDrawer' in shell
+    variance = '/api/forecast/changes' in panels and 'forecast/changes' in product_api
+    live = json.loads(read(LIVE_CHECKS)) if LIVE_CHECKS.exists() else {}
+    measured = live.get('capability_checks') or {}
+    scans = sorted(path.name for path in LIVE_CHECKS.parent.glob('a11y-*.json')) if LIVE_CHECKS.exists() else []
+    recorded = live.get('measurements') or []
+    claimed_scans = len((live.get('accessibility') or {}).get('scans') or [])
+    honest = (len(measured) >= 4 and len(scans) >= 4 and claimed_scans == len(scans)
+              and len(recorded) >= 3 and bool(live.get('limits')))
+    served = palette and appearance and inspector and variance
+    findings['FE07_instrument_desk_surfaces'] = {
+        'state': 'resolved' if served and honest else 'reproduced',
+        'command_palette': palette, 'appearance_control': appearance,
+        'raw_packet_inspector': inspector, 'vintage_variance_surface': variance,
+        'recorded_live_checks': str(LIVE_CHECKS.relative_to(ROOT)) if LIVE_CHECKS.exists() else None,
+        'recorded_capability_checks': sorted(measured),
+        'recorded_accessibility_scans': len(scans), 'accessibility_scans_in_record': claimed_scans,
+        'recorded_limits': len(live.get('limits') or []),
+        'detail': ('The palette, appearance control, raw-packet inspector and vintage-variance surface are served, '
+                   'and the live record carries viewport measurements, capability readings, accessibility scans and stated limits.')
+                  if served and honest else 'A capability is missing from the served files, or the live record does not carry its measurements.',
     }
 
     # A strict Content-Security-Policy forbids inline script and style.
