@@ -6,6 +6,7 @@ from urllib.parse import urlparse
 from .transport import Store,SourceError,utcnow,stamp,parsed
 from .adapters import json_payload,hourly,FORECAST,MARINE,RIVER,aviation,warnings,envelope,numeric,grid_identity,numeric_quality
 from .adapters import EXTENDED,HISTORY_LOCAL,REANALYSIS_MODELS,reanalysis_fields,reanalysis_label
+from .adapters import ENSEMBLE,ENSEMBLE_MODELS,ensemble
 ROOT=Path(__file__).resolve().parents[1]
 
 class Foundation:
@@ -43,6 +44,20 @@ class Foundation:
         self.forecast_dates(days,7)
         parse=lambda d,m:hourly(d,m,EXTENDED,'extended_weather_forecast','Open-Meteo best match; variable-specific upstream model/run unspecified',point,self.forecast_dates(days,7))
         data,meta=self.get('S62','https://api.open-meteo.com/v1/forecast',{**point,'hourly':','.join(EXTENDED),'forecast_days':days,'timezone':'UTC','timeformat':'unixtime','temperature_unit':'celsius','wind_speed_unit':'kmh','precipitation_unit':'mm'},refresh=refresh,product_parser=parse)
+        return parse(data,meta)
+    def ensemble(self,lat,lon,days=3,model='gfs025',variables=None,threshold=None,refresh=False):
+        """The member spread of one ensemble model for a point. Not a probability or a score."""
+        point=self.point(lat,lon)
+        self.forecast_dates(days,7)
+        if model not in ENSEMBLE_MODELS:raise SourceError('Unsupported ensemble model: '+str(model))
+        selected=tuple(variables) if variables else tuple(ENSEMBLE)
+        if not selected or any(name not in ENSEMBLE for name in selected):raise SourceError('Unsupported ensemble variable')
+        fields={name:ENSEMBLE[name] for name in selected}
+        parse=lambda d,m:ensemble(d,m,fields,model,point,self.forecast_dates(days,7),threshold=threshold)
+        data,meta=self.get('S68','https://ensemble-api.open-meteo.com/v1/ensemble',
+                            {**point,'hourly':','.join(selected),'models':model,'forecast_days':days,
+                             'timezone':'UTC','timeformat':'unixtime','temperature_unit':'celsius',
+                             'wind_speed_unit':'kmh','precipitation_unit':'mm'},refresh=refresh,product_parser=parse)
         return parse(data,meta)
     def history_local(self,lat,lon,start,end,refresh=False,models='era5'):
         point=self.point(lat,lon);a=date.fromisoformat(start);b=date.fromisoformat(end)
