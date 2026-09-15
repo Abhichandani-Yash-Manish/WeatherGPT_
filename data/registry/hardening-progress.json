@@ -1,7 +1,7 @@
 {
   "schema_version": "hardening-progress-v1",
   "review": "research/reviews/national-readiness-20260912/review.md",
-  "updated_at_utc": "2026-09-15T05:59:54+00:00",
+  "updated_at_utc": "2026-09-15T06:04:24+00:00",
   "operational_ready": false,
   "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
   "findings": [
@@ -1454,6 +1454,37 @@
       "Completion is not correctness: no answer was checked against its source by a human this round.",
       "A prohibited-claim hit is a regex match, not a semantic review.",
       "Twice a case vocabulary was narrower than the product honest outcome space; that is recorded as an authoring lesson."
+    ]
+  },
+  "model_comparison_batch": {
+    "report": "docs/57-model-comparison.md",
+    "evidence_directory": "research/implementation/model-comparison-20260915",
+    "operational_ready": false,
+    "scope": "PS feature 3's missing piece, taken as far as the connected sources allow: the rules planner now recognises a request to compare forecast sources or check another model, so the crosscheck operation runs on the rules-first floor instead of only through a model. A crosscheck with no measure named is still refused by the rules. Three checks added.",
+    "automated_tests": 785,
+    "javascript_component_checks": 70,
+    "measured": {
+      "crosscheck_turn": {
+        "question": "Compare the models for rainfall in Ahmedabad tomorrow morning.",
+        "status": "answered",
+        "provider": "deterministic_rules/rule-planner-v1",
+        "facts": 4,
+        "calculations": 2,
+        "comparison_present": true
+      },
+      "plain_turn": {
+        "question": "Will it rain in Ahmedabad tomorrow morning?",
+        "status": "answered",
+        "facts": 1,
+        "calculations": 0
+      },
+      "caveat": "the best-match product may include GFS upstream, so agreement is not independent confirmation"
+    },
+    "limitations": [
+      "No skill, calibration or accuracy claim, and no statement that either source is better.",
+      "No ensemble spread: the connected products are deterministic runs.",
+      "WRF remains without an accessible source.",
+      "One place and one window measured on one morning."
     ]
   }
 }

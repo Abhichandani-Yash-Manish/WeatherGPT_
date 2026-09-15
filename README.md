@@ -51,7 +51,7 @@ The interface states these limits rather than filling the gaps:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 782 Python tests
+python3 -m pytest tests/ -q                          # 785 Python tests
 node tests/test_charts.js                            #  2 of 70 component checks
 node tests/test_views.js                             # 18
 node tests/test_bulletin_ui.js                       #  6
@@ -72,6 +72,7 @@ Real journeys are recorded with screenshots in [the frontend batch evidence](res
 
 ## Status and open work
 
+- [Comparing two forecast sources](docs/57-model-comparison.md) - the crosscheck operation now runs on the rules-first floor, with both sources, their difference, the shared-lineage caveat, and no skill, average or confidence score.
 - [A second sealed holdout](docs/56-second-holdout.md) - 6 of 11 declared tasks after the repairs, but every miss now an absence the product states rather than a wrong product or a mis-read place, plus the case-authoring lesson recorded from two vocabulary mistakes.
 - [Two gaps the sealed holdout exposed](docs/55-place-typos-and-coasts.md) - a misspelt state that emptied a candidate list, and a coast searched for as a settlement: both repaired, pinned by tests over the real index, and recorded as having turned the sealed set into development data.
 - [A sealed holdout, run once](docs/54-holdout-generalisation.md) - ten unseen cases, 8 of 13 declared tasks, 0 prohibited claims, the five misses with their causes, and why the tuned sets overstate coverage.
