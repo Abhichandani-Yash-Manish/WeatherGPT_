@@ -58,4 +58,6 @@ already committed. Runtime stores, the browser profile and scratch probes are no
 the measurement scripts that produced the frontend evidence are.
 
 The [answer transparency and edition coverage](47-answer-transparency-and-edition-coverage.md) batch followed the same pattern: one commit for the code and tests, one for the recorded evidence and the measurement scripts, one for the documents and registers, and one for the per-document passage lookup.
+The [intake publication identity](48-intake-publication-identity.md) cycle followed the same pattern: one commit for the repairs and their tests, one for the recorded evidence and the scripts that produced it, and one for the documents and registers.
+
 
