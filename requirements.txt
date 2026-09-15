@@ -3,3 +3,5 @@
 # Ollama and the local model weights are not pip dependencies; see README "Run it".
 -r requirements-foundation.txt
 -r requirements-bulletins.txt
+# Web push delivery for watch notifications (Feature 4, D5). Verified 16 Sep 2026.
+pywebpush==2.5.0

@@ -7,6 +7,7 @@ watch only when it is asked to. A no-match result is not an all-clear, and a haz
 connected official products do not carry (a flood warning, for example) is recorded as
 not connected rather than mapped onto a similar-sounding product.
 """
+import hashlib
 import json
 import re
 import sqlite3
@@ -14,6 +15,56 @@ import uuid
 from datetime import datetime, timezone
 
 from .transport import SourceError, parsed, stamp, utcnow
+
+# Columns added after the original 10-column schema. _migrate() applies them to
+# existing databases; new code always reads/writes them.
+WATCH_SCHEMA_EXTRA = (('fingerprint_sha256', 'TEXT'), ('channels', 'TEXT'), ('consent_record', 'TEXT'))
+
+DEFAULT_CHANNELS = ['local_inbox']
+
+
+def _decode_json_list(raw, fallback):
+    try:
+        value = json.loads(raw) if raw else fallback
+    except ValueError:
+        return list(fallback)
+    return value if isinstance(value, list) else list(fallback)
+
+
+def _decode_json_dict(raw):
+    try:
+        value = json.loads(raw) if raw else {}
+    except ValueError:
+        return {}
+    return value if isinstance(value, dict) else {}
+
+
+def default_consent(now=None):
+    """Consent record for the local inbox: the watch itself was an explicit request."""
+    return {'local_inbox': {'granted_at': stamp(now or utcnow()), 'source': 'explicit_chat_request'}}
+
+
+def compute_fingerprint(watch_id, hazard, place_name, facts, reason, packet_status):
+    """Deterministic SHA-256 of the official state that matters to one watch.
+
+    Inputs are the structured warning facts (never the rendered answer text, which
+    can carry retrieval timestamps). A colour-code change, a new hazard code, or a
+    different evaluation reason all change the fingerprint; an identical official
+    state reproduces it, which is what makes duplicate suppression exact.
+    """
+    items = []
+    for fact in facts or []:
+        if not isinstance(fact, dict) or fact.get('parameter') != 'official_district_warning':
+            continue
+        items.append({'id': fact.get('id'), 'label': fact.get('label'), 'value': fact.get('value'),
+                      'start': fact.get('start'), 'end': fact.get('end'),
+                      'hazard_codes': sorted(fact.get('hazard_codes') or []),
+                      'quiet': bool(fact.get('quiet')), 'source_id': fact.get('source_id')})
+    items.sort(key=lambda item: json.dumps(item, sort_keys=True, ensure_ascii=False))
+    canonical = json.dumps({'watch_id': watch_id, 'hazard': hazard, 'place': place_name or '',
+                            'facts': items, 'reason': reason,
+                            'packet_status': packet_status}, sort_keys=True, ensure_ascii=False)
+    return hashlib.sha256(canonical.encode('utf-8')).hexdigest()
 
 # The district warning layer's own hazard codes, as read in docs/27. Only the codes
 # observed in the feed are mapped; an unlisted code stays unmapped and is never called
@@ -93,54 +144,127 @@ class WatchStore:
     def __init__(self, path):
         self.path = path
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        with sqlite3.connect(self.path) as db:
+        db = sqlite3.connect(self.path)
+        try:
             db.execute('CREATE TABLE IF NOT EXISTS watches (id TEXT PRIMARY KEY,created_at TEXT,question TEXT,place TEXT,hazard TEXT,'
                        'window_start TEXT,window_end TEXT,state TEXT,last_checked_at TEXT,result TEXT)')
+            self._migrate(db)
+            db.commit()
+        finally:
+            db.close()
 
-    def create(self, question, place, hazard, window_start=None, window_end=None, now=None):
+    def _migrate(self, db):
+        """Add change-detection, channel and consent columns to pre-existing stores."""
+        cols = {row[1] for row in db.execute('PRAGMA table_info(watches)').fetchall()}
+        for name, decl in WATCH_SCHEMA_EXTRA:
+            if name not in cols:
+                db.execute('ALTER TABLE watches ADD COLUMN %s %s' % (name, decl))
+
+    def create(self, question, place, hazard, window_start=None, window_end=None, now=None,
+               channels=None, consent_record=None):
         now = now or utcnow()
+        channels = list(channels) if channels else list(DEFAULT_CHANNELS)
+        consent_record = consent_record if isinstance(consent_record, dict) else default_consent(now)
         watch = {'id': str(uuid.uuid4()), 'created_at': stamp(now), 'question': question, 'place': place, 'hazard': hazard,
                  'window_start': window_start, 'window_end': window_end,
                  'state': 'registered_check_on_request', 'delivery': 'local_inbox_only_no_push',
                  'checked_products': ['S15 IMD district warning product', 'S06 CAP relay assessment'],
-                 'not_connected': [h for h in UNCONNECTED if h == hazard]}
-        with sqlite3.connect(self.path) as db:
-            db.execute('INSERT INTO watches VALUES (?,?,?,?,?,?,?,?,?,?)',
+                 'not_connected': [h for h in UNCONNECTED if h == hazard],
+                 'fingerprint_sha256': None, 'channels': channels, 'consent_record': consent_record}
+        db = sqlite3.connect(self.path)
+        try:
+            db.execute('INSERT INTO watches (id,created_at,question,place,hazard,window_start,window_end,state,'
+                       'last_checked_at,result,fingerprint_sha256,channels,consent_record)'
+                       ' VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
                        (watch['id'], watch['created_at'], question, json.dumps(place, ensure_ascii=False), hazard,
-                        window_start, window_end, watch['state'], None, None))
+                        window_start, window_end, watch['state'], None, None, None,
+                        json.dumps(channels, ensure_ascii=False), json.dumps(consent_record, ensure_ascii=False)))
+            db.commit()
+        finally:
+            db.close()
         return watch
+
+    @staticmethod
+    def _decode(item):
+        item['place'] = json.loads(item['place'] or '{}')
+        item['result'] = json.loads(item['result']) if item.get('result') else None
+        item['channels'] = _decode_json_list(item.get('channels'), DEFAULT_CHANNELS)
+        item['consent_record'] = _decode_json_dict(item.get('consent_record'))
+        return item
 
     def list(self, now=None):
         now = now or utcnow()
         rows = []
-        with sqlite3.connect(self.path) as db:
+        db = sqlite3.connect(self.path)
+        try:
             db.row_factory = sqlite3.Row
             for row in db.execute('SELECT * FROM watches ORDER BY created_at DESC'):
-                item = dict(row)
-                item['place'] = json.loads(item['place'] or '{}')
-                item['result'] = json.loads(item['result']) if item.get('result') else None
+                item = self._decode(dict(row))
                 item['expired'] = bool(item.get('window_end') and parsed(item['window_end']) < now)
                 rows.append(item)
+        finally:
+            db.close()
         return rows
 
     def mark(self, watch_id, state, last_checked_at, result):
-        with sqlite3.connect(self.path) as db:
+        db = sqlite3.connect(self.path)
+        try:
             db.execute('UPDATE watches SET state=?,last_checked_at=?,result=? WHERE id=?',
                        (state, last_checked_at, json.dumps(result, ensure_ascii=False), watch_id))
+            db.commit()
+        finally:
+            db.close()
 
     def get(self, watch_id):
-        with sqlite3.connect(self.path) as db:
+        db = sqlite3.connect(self.path)
+        try:
             db.row_factory = sqlite3.Row
             row = db.execute('SELECT * FROM watches WHERE id=?', (watch_id,)).fetchone()
+        finally:
+            db.close()
         if row is None:
             raise SourceError('No local watch with this identifier')
-        item = dict(row); item['place'] = json.loads(item['place'] or '{}')
-        item['result'] = json.loads(item['result']) if item.get('result') else None
-        return item
+        return self._decode(dict(row))
+
+    def set_fingerprint(self, watch_id, fingerprint):
+        db = sqlite3.connect(self.path)
+        try:
+            db.execute('UPDATE watches SET fingerprint_sha256=? WHERE id=?', (fingerprint, watch_id))
+            db.commit()
+        finally:
+            db.close()
+
+    def archive(self, watch_id, now=None):
+        """Retire a watch and cancel its pending notifications. Returns cancelled count."""
+        from .outbox import OutboxStore
+        now = now or utcnow()
+        self.get(watch_id)
+        box = OutboxStore(self.path)
+        cancelled = 0
+        for entry in box.list(watch_id=watch_id):
+            if entry['state'] in ('created', 'queued'):
+                box.set_state(entry['id'], 'dead', 'Watch archived by the owner', now=now)
+                cancelled += 1
+        db = sqlite3.connect(self.path)
+        try:
+            db.execute('UPDATE watches SET state=?,last_checked_at=? WHERE id=?',
+                       ('expired', stamp(now), watch_id))
+            db.commit()
+        finally:
+            db.close()
+        return {'id': watch_id, 'state': 'expired', 'cancelled_notifications': cancelled}
 
 
-def check_watch(store, engine, watch, now=None):
-    """Run the official warning tool for one watch and record the outcome."""
+def check_watch(store, engine, watch, now=None, correlation_id=None):
+    """Run the official warning tool for one watch and record the outcome.
+
+    Change detection: the observed official state is fingerprinted and compared
+    with the stored fingerprint. The first check establishes the baseline and
+    enqueues nothing; a later check whose fingerprint differs enqueues exactly
+    one outbox notification and stores the new fingerprint; an identical state
+    enqueues nothing. Dispatch (sending) happens separately in dispatch_outbox.
+    """
+    from .outbox import OutboxStore, build_notification_payload
     from .warning_tools import execute_warning
     now = now or utcnow()
     if watch.get('window_end') and parsed(watch['window_end']) < now:
@@ -156,15 +280,35 @@ def check_watch(store, engine, watch, now=None):
     outcome = evaluate(packet, watch['hazard'])
     state = 'matched' if outcome['matched'] else ('hazard_not_connected' if outcome['reason'] == 'hazard_not_connected' else 'checked_no_match')
     store.mark(watch['id'], state, stamp(now), {**outcome, 'packet_status': packet.get('status'), 'packet_answer': packet.get('answer')})
-    return {'id': watch['id'], 'state': state, 'matched': outcome['matched'], 'detail': outcome['detail'],
-            'packet_status': packet.get('status'), 'packet_answer': packet.get('answer')}
+    result = {'id': watch['id'], 'state': state, 'matched': outcome['matched'], 'detail': outcome['detail'],
+              'packet_status': packet.get('status'), 'packet_answer': packet.get('answer')}
+    place = watch.get('place') or {}
+    fingerprint = compute_fingerprint(watch['id'], watch.get('hazard'), place.get('name'),
+                                      packet.get('facts'), outcome.get('reason'), packet.get('status'))
+    result['fingerprint_sha256'] = fingerprint
+    result['notification'] = None
+    stored = watch.get('fingerprint_sha256')
+    if not stored:
+        store.set_fingerprint(watch['id'], fingerprint)
+        result['fingerprint_basis'] = 'baseline'
+    elif stored != fingerprint:
+        correlation_id = correlation_id or str(uuid.uuid4())
+        payload = build_notification_payload(watch, outcome, packet.get('facts'), packet.get('status'), now=now)
+        entry = OutboxStore(store.path).enqueue(watch['id'], correlation_id, fingerprint, 'local_inbox', payload, now=now)
+        store.set_fingerprint(watch['id'], fingerprint)
+        result['notification'] = entry['id']
+        result['fingerprint_basis'] = 'changed'
+    else:
+        result['fingerprint_basis'] = 'unchanged'
+    return result
 
 
 def check_due(store, engine, now=None):
     now = now or utcnow()
+    correlation_id = str(uuid.uuid4())
     results = []
     for watch in store.list(now=now):
         if watch.get('state') in {'expired'}:
             continue
-        results.append(check_watch(store, engine, watch, now=now))
+        results.append(check_watch(store, engine, watch, now=now, correlation_id=correlation_id))
     return results

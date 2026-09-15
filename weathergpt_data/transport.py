@@ -59,16 +59,16 @@ class Store:
         return data
     def fetch(self,source_id,url,params=None,ttl=900,max_bytes=12_000_000,refresh=False,validator=None,product_validator=None):
         """Validate every delivery; publish only accepted responses. Lock each request across processes."""
-        import fcntl
+        from .filelock import try_lock_exclusive,unlock
         if params:url+='?'+urlencode(params)
         u=urlparse(url)
         if u.scheme!='https' or u.username or u.password:raise SourceError('Only credential-free HTTPS sources supported')
         key=digest((source_id+'|'+url).encode())
         locks=self.root/'locks';locks.mkdir(parents=True,exist_ok=True)
         with (locks/(key+'.lock')).open('a') as lock:
-            fcntl.flock(lock,fcntl.LOCK_EX)
+            try_lock_exclusive(lock)
             try:return self._fetch_locked(source_id,url,key,ttl,max_bytes,refresh,validator,product_validator)
-            finally:fcntl.flock(lock,fcntl.LOCK_UN)
+            finally:unlock(lock)
 
     def _fetch_locked(self,source_id,url,key,ttl,max_bytes,refresh,validator,product_validator):
         index=self.root/'cache'/(key+'.json');now=self.clock()

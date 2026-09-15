@@ -10,7 +10,6 @@ import sqlite3
 import urllib.error
 import urllib.request
 import uuid
-import fcntl
 from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
@@ -339,7 +338,8 @@ class GovernedOpener:
         self.database.owned(self.job)
         lock=self.database.path.with_suffix('.open-meteo-network.lock').open('a')
         try:
-            fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+            from .filelock import try_lock_exclusive
+            try_lock_exclusive(lock)
         except BlockingIOError:
             lock.close()
             raise SourceError('Provider request already in progress',retryable=True,deferred=True,retry_at=epoch(self.database.clock())+5)

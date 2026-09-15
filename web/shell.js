@@ -447,11 +447,58 @@ const WG = window.WG;
       return disclosure('What a watch can and cannot do', into => {
         const list = el('ul', undefined, 'notes');
         ['Ask the assistant “Notify me if ... ” to register one; a watch records the place, hazard and window it resolved.',
-         'Watches are evaluated only when you press Check now or call the local check route. There is no push and no background daemon.',
+         'Watches are evaluated only when you press Check now or call the local check route. There is no background daemon.',
+         'A notification is enqueued only when a check observes a changed official state; an identical state notifies nothing.',
+         'Enable browser notifications below to receive pushed notifications on this machine. Nothing is pushed anywhere else.',
          'A flood or cyclone watch is recorded but the connected official products do not carry it; it is never mapped onto a similar-sounding product.',
          'A no-match result is not an all-clear, and origin authentication of the official products remains unverified.'].forEach(note => list.append(el('li', note)));
         into.append(list);
       }, true);
+    }
+    function urlBase64ToUint8Array(base64) {
+      const padding = '='.repeat((4 - (base64.length % 4)) % 4);
+      const raw = window.atob(base64.replace(/-/g, '+').replace(/_/g, '/') + padding);
+      const bytes = new Uint8Array(raw.length);
+      for (let i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+      return bytes;
+    }
+    async function pushPanel(into) {
+      const supported = ('serviceWorker' in navigator) && ('PushManager' in window) && ('Notification' in window);
+      if (!supported) {
+        into.append(stateBlock('plain', 'Push notifications are not supported in this browser.',
+          'The local inbox above still lists every notification. Nothing is pushed.'));
+        return;
+      }
+      let state = null;
+      try { state = await api('/api/push/state'); }
+      catch (error) { into.append(stateBlock('down', 'Push status could not be read.', error.message)); return; }
+      const counts = (state && state.subscriptions) || {};
+      into.append(stateBlock('plain', 'Push subscriptions: ' + (counts.active || 0) + ' active.',
+        'Permission is ' + Notification.permission + '. Purged expired: ' + (state.purged_expired || 0) + '.'));
+      const enable = el('button', Notification.permission === 'granted' ? 'Subscribe this browser' : 'Enable notifications', 'ghost');
+      enable.type = 'button';
+      enable.addEventListener('click', async () => {
+        enable.disabled = true;
+        try {
+          const permission = await Notification.requestPermission();
+          if (permission !== 'granted') throw new Error('Notification permission was not granted.');
+          const vapid = await api('/api/push/vapid-key');
+          const registration = await navigator.serviceWorker.register('/sw.js');
+          const subscription = await registration.pushManager.subscribe({
+            userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array(vapid.public_key)
+          });
+          const raw = subscription.toJSON();
+          await postJson('/api/push/subscribe', {
+            endpoint: raw.endpoint, keys: raw.keys || {},
+            expirationTime: raw.expirationTime || null
+          });
+          paint();
+        } catch (error) {
+          enable.disabled = false;
+          into.append(stateBlock('down', 'Notifications could not be enabled.', error.message));
+        }
+      });
+      into.append(enable);
     }
     async function paint() {
       clear(body);
@@ -474,13 +521,59 @@ const WG = window.WG;
       body.append(stateBlock('plain', watches.length ? watches.length + ' local watch(es) registered.' : 'No watches registered yet.',
         'Register one by asking the assistant to notify you. Watches are checked only when asked; a no-match result is not an all-clear.'));
       if (watches.length) {
-        body.append(table(['Hazard', 'Place', 'State', 'Window ends', 'Last checked'], watches.map(watch => [
+        body.append(table(['Hazard', 'Place', 'State', 'Pending', 'Last checked'], watches.map(watch => [
           watch.hazard,
           (watch.place && (watch.place.name || watch.place.label)) || '—',
           watch.state,
-          watch.window_end || '—',
+          String(watch.outbox_pending || 0),
           watch.last_checked_at || 'not yet checked'
         ])));
+        const retireList = el('ul', undefined, 'notes');
+        watches.forEach(watch => {
+          const item = el('li', (watch.place && (watch.place.name || watch.place.label)) || 'watch' + ' · ' + watch.state + ' · ');
+          const retire = el('button', 'Retire', 'ghost');
+          retire.type = 'button';
+          retire.setAttribute('aria-label', 'Retire the watch for ' + ((watch.place && (watch.place.name || watch.place.label)) || 'this place'));
+          retire.addEventListener('click', async () => {
+            retire.disabled = true;
+            try { await postJson('/api/watches/delete', { id: watch.id }); paint(); }
+            catch (error) { retire.disabled = false; body.append(stateBlock('down', 'The watch could not be retired.', error.message)); }
+          });
+          item.append(retire);
+          retireList.append(item);
+        });
+        body.append(retireList);
+        try {
+          const outbox = await api('/api/outbox');
+          const rows = outbox.notifications || [];
+          const queued = rows.filter(row => row.state === 'queued' || row.state === 'created');
+          body.append(stateBlock('plain', queued.length ? queued.length + ' notification(s) waiting in the local outbox.' : 'The local outbox is empty.',
+            'A notification is enqueued only when a check observes a changed official state. Nothing is pushed.'));
+          if (rows.length) {
+            body.append(table(['Watch', 'Channel', 'State', 'Retries', 'Updated'], rows.slice(0, 10).map(row => [
+              String(row.watch_id || '').slice(0, 8),
+              row.channel || '—',
+              row.state || '—',
+              String(row.retry_count || 0) + '/' + String(row.max_retries || 0),
+              row.updated_at || '—'
+            ])));
+            rows.slice(0, 10).filter(row => row.state === 'sent').forEach(row => {
+              const answers = el('div', undefined, 'brief-tools');
+              answers.append(el('span', 'Notification ' + String(row.id).slice(0, 8) + ': are you ', 'field-note'));
+              [['safe', 'Safe'], ['need_help', 'Need help'], ['evacuating', 'Evacuating'], ['seen', 'Seen']].forEach(pair => {
+                const button = el('button', pair[1], 'ghost');
+                button.type = 'button';
+                button.addEventListener('click', async () => {
+                  button.disabled = true;
+                  try { await postJson('/api/outbox/' + row.id + '/ack', { response: pair[0] }); paint(); }
+                  catch (error) { button.disabled = false; body.append(stateBlock('down', 'The response could not be recorded.', error.message)); }
+                });
+                answers.append(button);
+              });
+              body.append(answers);
+            });
+          }
+        } catch (error) { body.append(stateBlock('down', 'The local outbox could not be read.', error.message)); }
       }
       const check = el('button', 'Check now', 'ghost');
       check.addEventListener('click', async () => {
@@ -499,6 +592,9 @@ const WG = window.WG;
         }
       });
       body.append(check);
+      const pushHost = el('div', undefined, 'push-panel');
+      body.append(pushHost);
+      pushPanel(pushHost);
       body.append(limits());
     }
     const KIND_LABELS = { change: 'Change', check_in: 'Evening check-in', degraded: 'Watch degraded' };

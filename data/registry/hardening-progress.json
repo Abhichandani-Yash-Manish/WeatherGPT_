@@ -682,23 +682,30 @@
    "No nationwide alias coverage measurement."
   ]
  },
- "watch_requests_batch": {
-  "report": "docs/38-watch-requests.md",
-  "evidence_directory": "research/implementation/watches-20260915",
-  "operational_ready": false,
-  "automated_tests": 627,
-  "scope": "Local watch requests: deterministic intent and hazard reading, a runtime watch store with explicit states, pure bounded evaluation against the district warning hazard codes, a planner fallback that keeps the place the user wrote, API routes and CLI for foreground checks, and a Watch panel that reads the inbox and offers Check now. No push, no daemon, no flood or cyclone product, and origin authentication remains unverified.",
-  "live_journeys": [
-   "flood watch registered and checked as hazard_not_connected",
-   "heavy rain watch registered and checked as checked_no_match"
-  ],
-  "limitations": [
-   "No delivery or background evaluation.",
-   "No flood or cyclone product connected; those watches stay not connected.",
-   "Hazard codes mapped only where observed in the layer.",
-   "Origin authentication unverified; a no-match is not an all-clear."
-  ]
- },
+  "watch_requests_batch": {
+   "report": "docs/38-watch-requests.md",
+   "evidence_directory": "research/implementation/watches-20260915",
+   "operational_ready": false,
+   "automated_tests": 627,
+   "scope": "Local watch requests: deterministic intent and hazard reading, a runtime watch store with explicit states, pure bounded evaluation against the district warning hazard codes, a planner fallback that keeps the place the user wrote, API routes and CLI for foreground checks, and a Watch panel that reads the inbox and offers Check now. No push, no daemon, no flood or cyclone product, and origin authentication remains unverified.",
+   "live_journeys": [
+    "flood watch registered and checked as hazard_not_connected",
+    "heavy rain watch registered and checked as checked_no_match"
+   ],
+   "limitations": [
+    "No delivery or background evaluation.",
+    "No flood or cyclone product connected; those watches stay not connected.",
+    "Hazard codes mapped only where observed in the layer.",
+    "Origin authentication unverified; a no-match is not an all-clear."
+   ],
+   "dissemination_build_20260916_unmerged": {
+    "plan": "research-feature4/feature4-implementation-plan.md",
+    "phase_status": "research-feature4/phase-status.md",
+    "e2e_log": "research-feature4/e2e-manual-test-log.md",
+    "scope": "Fingerprint change detection with a transactional outbox and bounded-retry delivery state machine, foreground dispatch plus a foreground watch loop, web push (VAPID key store, subscriptions, service worker, 410 purge), sent-to-acked two-way responses with a depth-bounded local escalation ladder, and a per-place delivery aggregate. 119 F4 checks pass, including a full new/duplicate/updated/withdrawn/expired/failure lifecycle.",
+    "open": "Live-server route and browser-push checks deferred: the workspace does not serve on this machine (Ollama configuration). SMS/IVR escalation stays deferred. Same sqlite-handle teardown pattern fixed in WatchStore still affects untouched stores (e.g. conversation.sqlite)."
+   }
+  },
  "verification_backup_batch": {
   "report": "docs/39-verification-backup-and-drift-guard.md",
   "evidence_directory": "research/implementation/packaging-rehearsal-20260915",

@@ -159,7 +159,7 @@
         "Source health/retention/restore rehearsal": "implemented and recorded: conversation ledger with search, restore and local delete, plus a read-only collection-health panel",
         "Queue, cancel, progress and recovery": "cancel and progress only: still no bounded model queue and no stage streaming, and the assistant remains one question at a time",
         "Complete Hindi/Gujarati dialogue paths": "not achieved: a requested output language is expressible and its failure is disclosed, and the surfaces themselves are English only",
-        "Watch and early-warning delivery": "not built: the Watch control states that no delivery mechanism is connected"
+        "Watch and early-warning delivery": "dissemination build 2026-09-16 (unmerged): fingerprint change detection with a transactional outbox and bounded-retry delivery state machine, foreground dispatch, web push (VAPID/service worker/subscriptions/410 purge), acknowledgements with a depth-bounded local escalation ladder and a per-place delivery aggregate; 119 F4 checks pass; live-server route checks deferred (workspace does not serve on this machine); SMS/IVR still deferred"
       }
     },
     {
