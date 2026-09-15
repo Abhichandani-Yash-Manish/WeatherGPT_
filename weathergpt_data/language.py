@@ -118,45 +118,65 @@ class LocalModel:
         finally:LOCK.release()
 
     def plan(self,question,now,history):
-        from .capabilities import planner_catalogue
-        context={}
-        recent=[]
-        for message in history:
-            if message.get('context_state') is not None:context=message['context_state']
-            else:recent.append(message)
-        user=json.dumps({'current_time_IST':now.astimezone(ZoneInfo('Asia/Kolkata')).isoformat(),'recent_conversation':recent[-4:],'conversation_state':context,'available_tools':planner_catalogue(),'question':question},ensure_ascii=False)
-        attempts=[]
-        for attempt in range(2):
-            request,meta=self.complete(PLAN_PROMPT,user,DIALOGUE_REQUEST_SCHEMA,max_tokens=2600)
-            request=bound_disclosures(request)
-            try:
-                plan=expand_request(request)
-                from .dialogue import ground_explicit_slots,ground_relative_slots
-                plan=ground_relative_slots(ground_explicit_slots(plan,question,context),question,now)
-                validate_plan(plan)
-                validate_request_coverage(plan,question)
-                from .dialogue import validate_relative_dates
-                validate_relative_dates(plan,question,now)
-                break
-            except (SourceError,TypeError,KeyError) as exc:
-                attempts.append(str(exc))
-                if attempt:raise SourceError('Question interpretation did not preserve the requested tasks: '+str(exc)) from exc
-                user=json.dumps({'original_request':json.loads(user),'invalid_plan':request,'repair_required':str(exc),'instruction':'Return the corrected complete task plan. Preserve every requested operation; remove accidental duplicate tasks.'},ensure_ascii=False)
-        if attempts:meta['repair_attempts']=attempts
-        # A model's knowledge of a city's state is not user-supplied context.
-        # Unanchored qualifiers must not filter out a same-name place elsewhere.
-        from .gazetteer import norm
-        supplied=norm(question+' '+json.dumps([m.get('content','') for m in recent if m.get('role')=='user'],ensure_ascii=False)+' '+json.dumps(context.get('accepted_places',{}),ensure_ascii=False))
-        from .gazetteer import DEFAULT
-        aliases_path=DEFAULT.parent/'state-aliases.json'
-        state_aliases=json.loads(aliases_path.read_text()) if aliases_path.exists() else {}
-        for place in plan['places']:
-            if place['state']:
-                aliases=state_aliases.get(norm(place['state']).removeprefix('state of '),[place['state']])
-                if not any(len(norm(alias))>=4 and norm(alias) in supplied for alias in aliases):place['state']=''
-            if place['district'] and (norm(place['district']) not in supplied or place['district']==place['name'] and place['kind']=='settlement'):place['district']=''
-        plan['variables']=list(dict.fromkeys(plan['variables']))
-        return plan,meta
+        return interpret_plan(self.complete,question,now,history)
+
+
+def interpret_plan(complete,question,now,history,seed=None):
+    """Turn a question into a validated plan, optionally seeded by the rule planner.
+
+    complete is a callable (system, user, schema, max_tokens) -> (data, meta) and is only
+    called when the seed is absent or the first validation fails. Values in the answer never
+    come from here: this produces candidate tasks, and the governed tools do the rest.
+    """
+    from .capabilities import planner_catalogue
+    context={}
+    recent=[]
+    for message in history:
+        if message.get('context_state') is not None:context=message['context_state']
+        else:recent.append(message)
+    user=json.dumps({'current_time_IST':now.astimezone(ZoneInfo('Asia/Kolkata')).isoformat(),'recent_conversation':recent[-4:],'conversation_state':context,'available_tools':planner_catalogue(),'question':question},ensure_ascii=False)
+    attempts=[]
+    if seed is not None:
+        plan=_settle_plan(seed,question,now,context,recent)
+        return plan,{'provider':'deterministic_rules','model':'rule-planner-v1','model_calls':0}
+    for attempt in range(2):
+        request,meta=complete(PLAN_PROMPT,user,DIALOGUE_REQUEST_SCHEMA,max_tokens=2600)
+        request=bound_disclosures(request)
+        try:
+            plan=_settle_plan(request,question,now,context,recent)
+            break
+        except (SourceError,TypeError,KeyError) as exc:
+            attempts.append(str(exc))
+            if attempt:raise SourceError('Question interpretation did not preserve the requested tasks: '+str(exc)) from exc
+            user=json.dumps({'original_request':json.loads(user),'invalid_plan':request,'repair_required':str(exc),'instruction':'Return the corrected complete task plan. Preserve every requested operation; remove accidental duplicate tasks.'},ensure_ascii=False)
+    if attempts:
+        meta=dict(meta or {});meta['repair_attempts']=attempts
+    return plan,meta
+
+
+def _settle_plan(request,question,now,context,recent):
+    """Expand, ground and validate one candidate request, then settle unanchored qualifiers."""
+    plan=expand_request(request)
+    from .dialogue import ground_explicit_slots,ground_relative_slots
+    plan=ground_relative_slots(ground_explicit_slots(plan,question,context),question,now)
+    validate_plan(plan)
+    validate_request_coverage(plan,question)
+    from .dialogue import validate_relative_dates
+    validate_relative_dates(plan,question,now)
+    # A model's knowledge of a city's state is not user-supplied context.
+    # Unanchored qualifiers must not filter out a same-name place elsewhere.
+    from .gazetteer import norm
+    supplied=norm(question+' '+json.dumps([m.get('content','') for m in recent if m.get('role')=='user'],ensure_ascii=False)+' '+json.dumps(context.get('accepted_places',{}),ensure_ascii=False))
+    from .gazetteer import DEFAULT
+    aliases_path=DEFAULT.parent/'state-aliases.json'
+    state_aliases=json.loads(aliases_path.read_text()) if aliases_path.exists() else {}
+    for place in plan['places']:
+        if place['state']:
+            aliases=state_aliases.get(norm(place['state']).removeprefix('state of '),[place['state']])
+            if not any(len(norm(alias))>=4 and norm(alias) in supplied for alias in aliases):place['state']=''
+        if place['district'] and (norm(place['district']) not in supplied or place['district']==place['name'] and place['kind']=='settlement'):place['district']=''
+    plan['variables']=list(dict.fromkeys(plan['variables']))
+    return plan
 
 
 def validate_plan(plan):

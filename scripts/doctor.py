@@ -19,6 +19,8 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 REGISTRIES = ('sources.json', 'source-review.json', 'product-progress.json', 'hardening-progress.json',
               'language-support.json', 'acceptance-benchmark.json', 'answer-policy.json')
 CORE_PACKAGES = (('numpy', 'numerical checks and point-in-polygon geography'),
@@ -113,6 +115,30 @@ def check_model():
     return {'id': 'model', 'state': 'ok', 'detail': model + ' answered at ' + base, 'next_action': ''}
 
 
+def check_providers():
+    """The model floor and the optional providers, reported without spending a request."""
+    checks = [{'id': 'provider:rules', 'state': 'ok',
+               'detail': 'the rules-first planner answers the core problem-statement shapes with no model',
+               'next_action': ''}]
+    try:
+        from weathergpt_data import providers
+        source = providers.key_source()
+        models = list(providers.free_models())
+    except Exception as error:  # noqa: BLE001 - an import failure is a finding, not a crash
+        return checks + [{'id': 'provider:config', 'state': 'fail',
+                          'detail': 'the provider layer could not be imported: ' + type(error).__name__,
+                          'next_action': 'Restore weathergpt_data/providers.py and re-run the doctor.'}]
+    if source == 'not configured':
+        checks.append({'id': 'provider:openrouter', 'state': 'warn',
+                       'detail': 'no OpenRouter key is configured; ' + str(len(models)) + ' free models are ready to route when one exists',
+                       'next_action': 'Add {"openrouter_api_key": "..."} to data/runtime/model-config.json (local only), then run python3 scripts/models.py --check.'})
+    else:
+        checks.append({'id': 'provider:openrouter', 'state': 'ok',
+                       'detail': 'OpenRouter key found in ' + source + '; the router will fall back to it after Ollama',
+                       'next_action': ''})
+    return checks
+
+
 def check_runtime():
     results = []
     database = RUNTIME / 'ingestion/conversations.sqlite'
@@ -141,6 +167,7 @@ def collect():
     checks.append(check_registries())
     checks.append(check_corpus())
     checks.append(check_model())
+    checks += check_providers()
     checks += check_runtime()
     return checks
 

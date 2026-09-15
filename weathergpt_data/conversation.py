@@ -10,6 +10,7 @@ from zoneinfo import ZoneInfo
 from pathlib import Path
 from .answers import ROOT
 from .language import LocalModel,VARIABLES,obj,string
+from .providers import default_model
 from .gazetteer import Gazetteer
 from .research_answers import lookup_plan
 from .watches import watch_intent
@@ -70,7 +71,7 @@ GAPS={
 
 class ConversationEngine:
     def __init__(self,workspace,model=None,gazetteer=None,database=None,gate=None):
-        self.workspace=workspace;self.model=model or LocalModel();self.gazetteer=gazetteer or Gazetteer()
+        self.workspace=workspace;self.model=model or default_model();self.gazetteer=gazetteer or Gazetteer()
         self.database=Path(database or workspace.service.ingestion_database.parent/'conversations.sqlite')
         self.database.parent.mkdir(parents=True,exist_ok=True)
         self.gate=gate or BoundedGate()
