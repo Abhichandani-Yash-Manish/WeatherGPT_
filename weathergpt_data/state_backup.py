@@ -1,4 +1,4 @@
-"""Consistent local-state backups: conversations, watches and the ingestion store.
+"""Consistent local-state backups: conversations, watches, plans and the ingestion store.
 
 SQLite databases are copied through the backup API rather than by reading files, so a
 concurrent write cannot produce a torn copy. A manifest records every file's size and
@@ -28,7 +28,7 @@ def default_sources(root=None):
     root = Path(root or ROOT)
     from .bulletin_index import EXTRACTION_VERSION
     runtime = root / 'data' / 'runtime' / 'ingestion'
-    return [runtime / 'conversations.sqlite', runtime / 'watches.sqlite', runtime / 'ingestion.sqlite',
+    return [runtime / 'conversations.sqlite', runtime / 'watches.sqlite', runtime / 'plans.sqlite', runtime / 'ingestion.sqlite',
             runtime / 'bulletins' / EXTRACTION_VERSION / 'index.sqlite']
 
 
