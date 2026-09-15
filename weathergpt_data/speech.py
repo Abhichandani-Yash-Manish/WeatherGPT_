@@ -34,6 +34,11 @@ TTS_CHARACTER_LIMIT = 2500          # bulbul:v3; v2 is 1500
 TRANSLATE_CHARACTER_LIMIT = 2000
 TTS_MODEL = 'bulbul:v3'
 STT_MODEL = 'saaras:v3'
+# The provider's `/translate` default (mayura:v1) covers a subset of the 23 languages
+# it accepts elsewhere. When it refuses a language, its own error names
+# sarvam-translate:v1 as the wider model. The retry is bounded to one call and the
+# model that actually produced the text is recorded on the result.
+WIDER_TRANSLATE_MODEL = 'sarvam-translate:v1'
 
 
 class LanguageServiceUnavailable(SourceError):
@@ -109,19 +114,34 @@ def _multipart(path, fields, files, deadline=TIMEOUT):
 
 
 def translate(text, target, source='en-IN'):
-    """Render text in another language. The result is a rendering, never evidence."""
+    """Render text in another language. The result is a rendering, never evidence.
+
+    The default model refuses some of the 23 languages the speech endpoints accept and
+    names the wider translation model in its own error. That refusal is retried once on
+    the named model, and which model answered is recorded rather than assumed.
+    """
     if not isinstance(text, str) or not text.strip():
         raise SourceError('Nothing to translate')
     if len(text) > TRANSLATE_CHARACTER_LIMIT:
         raise SourceError('Text exceeds the reviewed translation length of %d characters' % TRANSLATE_CHARACTER_LIMIT)
-    payload, elapsed = _json_call('/translate', {
-        'input': text, 'source_language_code': source, 'target_language_code': sarvam_code(target)})
-    rendered = payload.get('translated_text')
+    payload = {'input': text, 'source_language_code': source, 'target_language_code': sarvam_code(target)}
+    model = None
+    try:
+        response, elapsed = _json_call('/translate', payload)
+    except LanguageServiceUnavailable as error:
+        if 'mayura' not in str(error).lower():
+            raise
+        payload = {**payload, 'model': WIDER_TRANSLATE_MODEL}
+        response, elapsed = _json_call('/translate', payload)
+        model = WIDER_TRANSLATE_MODEL
+    rendered = response.get('translated_text')
     if not isinstance(rendered, str) or not rendered.strip():
         raise LanguageServiceUnavailable('The language service returned no translated text')
     return rendered, {'service': 'sarvam', 'operation': 'translate', 'target': sarvam_code(target),
-                      'source_language_code': payload.get('source_language_code'),
-                      'request_id': payload.get('request_id'), 'elapsed_s': elapsed,
+                      'source_language_code': response.get('source_language_code'),
+                      'model': model or 'provider_default',
+                      'model_selection': 'wider_model_named_by_service_refusal' if model else 'provider_default',
+                      'request_id': response.get('request_id'), 'elapsed_s': elapsed,
                       'is_evidence': False}
 
 

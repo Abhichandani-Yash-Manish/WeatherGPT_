@@ -5,6 +5,7 @@ import json
 import re
 import secrets
 import sqlite3
+import threading
 import time
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -31,12 +32,58 @@ class Workspace:
         self.service=AnswerService(database,raw_root,geography,clock=clock)
         self.clock=clock;self.opener=opener
         self.conversation=None
+        self._conversation_lock=threading.Lock()
         self._foundation=None
 
     def chat(self,body):
         from .conversation import ConversationEngine
-        if self.conversation is None:self.conversation=ConversationEngine(self)
+        if self.conversation is None:
+            with self._conversation_lock:
+                if self.conversation is None:self.conversation=ConversationEngine(self)
         return self.conversation.ask(body)
+
+    def watch_store(self):
+        from .watches import WatchStore
+        return WatchStore(self.service.ingestion_database.parent/'watches.sqlite')
+
+    def watches(self):
+        """The local watch inbox: registered requests, their states and their limits."""
+        return {'schema_version':'watch-inbox-v1','delivery':'local_inbox_only_no_push',
+                'note':('Watches are evaluated only when asked. There is no push or background daemon, a no-match result is not an '
+                        'all-clear, and a hazard the connected official products do not carry stays recorded as not connected.'),
+                'checked_products':['S15 IMD district warning product','S06 CAP relay assessment'],
+                'watches':self.watch_store().list(now=self.clock())}
+
+    def check_watches(self,body):
+        """Check one watch or every open watch, in the foreground, and record the outcome."""
+        from .conversation import ConversationEngine
+        from .watches import check_due,check_watch
+        if not isinstance(body,dict) or set(body)-{'id'}:raise ValueError('Send an optional watch id')
+        if self.conversation is None:
+            with self._conversation_lock:
+                if self.conversation is None:self.conversation=ConversationEngine(self)
+        store=self.watch_store()
+        if body.get('id'):
+            return {'schema_version':'watch-check-v1','delivery':'local_inbox_only_no_push',
+                    'result':check_watch(store,self.conversation,store.get(str(body['id'])),now=self.clock())}
+        return {'schema_version':'watch-check-v1','delivery':'local_inbox_only_no_push',
+                'note':'Foreground check only; no daemon or push is installed.',
+                'results':check_due(store,self.conversation,now=self.clock())}
+
+    def cancel_chat(self,body):
+        """Ask a running turn to stop at its next stage boundary.
+
+        The reply says exactly what happened: a stop was requested, or no such turn is
+        running here. It never claims the server stopped if it had already finished.
+        """
+        import uuid
+        if not isinstance(body,dict) or set(body)-{'request_id'}:raise ValueError('Send request_id')
+        request_id=body.get('request_id')
+        try:uuid.UUID(str(request_id))
+        except (ValueError,TypeError,AttributeError):raise ValueError('Invalid request identifier')
+        if self.conversation is None:
+            return {'request_id':str(request_id),'state':'not_running','detail':'No turn is running on this workspace.'}
+        return self.conversation.cancel(str(request_id))
 
     DOCUMENT_STORE=ROOT/'data/runtime/documents'
 
@@ -361,7 +408,7 @@ def make_server(workspace, port=8765):
             self.send_header('Cache-Control','no-store')
             self.send_header('X-Content-Type-Options','nosniff')
             self.send_header('Referrer-Policy','no-referrer')
-            self.send_header('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; media-src 'self' blob: data:; frame-ancestors 'none'; base-uri 'none'; form-action 'self'")
+            self.send_header('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; media-src 'self' blob: data:; frame-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'")
             self.end_headers();self.wfile.write(data)
 
         def allowed_host(self):
@@ -392,7 +439,7 @@ def make_server(workspace, port=8765):
             # API path keeps the existing 404 behaviour.
             if path.startswith('/api/'):
                 known=(workspace.is_product(path) or path=='/api/conversations' or path=='/api/health'
-                       or path=='/api/languages'
+                       or path=='/api/languages' or path=='/api/watches'
                        or path.startswith('/api/conversations/') or path.startswith('/api/map/static/'))
                 if not known:return self.respond(404,{'error':'Not found'})
                 if not self.authorized():return self.respond(403,{'error':'Reload this local workspace before reading stored data'})
@@ -400,6 +447,7 @@ def make_server(workspace, port=8765):
                     if path=='/api/conversations':return self.respond(200,workspace.conversations())
                     if path=='/api/health':return self.respond(200,workspace.health())
                     if path=='/api/languages':return self.respond(200,workspace.languages())
+                    if path=='/api/watches':return self.respond(200,workspace.watches())
                     if path.startswith('/api/conversations/'):return self.respond(200,workspace.conversation_transcript(path.removeprefix('/api/conversations/')))
                     if path.startswith('/api/map/static/'):
                         return self.respond(200,workspace.map_layer(path.removeprefix('/api/map/static/')),'application/geo+json')
@@ -432,6 +480,7 @@ def make_server(workspace, port=8765):
                     or not hmac.compare_digest(supplied,token)):
                 return self.respond(403,{'error':'Reload this local workspace before sending a request'})
             routes={'/api/answer':workspace.answer,'/api/refresh':workspace.refresh,'/api/chat':workspace.chat,
+                    '/api/chat/cancel':workspace.cancel_chat,'/api/watches/check':workspace.check_watches,
                     '/api/speech/transcribe':workspace.transcribe,'/api/speech/speak':workspace.speak}
             if self.path not in routes:return self.respond(404,{'error':'Not found'})
             # A recording is far larger than a question, so it gets its own limit rather

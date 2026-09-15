@@ -16624,8 +16624,57 @@
    }
   }
  },
- "documents": [],
+ "documents": [
+  {
+   "blob": "blobs/d3e80f651f7251f5a5bf359c07a05592ce85bd5d72d1436a5ca634ab4f00024c.bin",
+   "bytes": 6119191,
+   "currency": "printed_issue_differs_from_retrieval_date",
+   "family": "national_bulletin",
+   "first_seen_at_utc": "2026-09-14T23:07:50.753521+00:00",
+   "issue_date": "2026-09-14",
+   "issue_date_basis": "family_rule:printed",
+   "pages": 22,
+   "passages": 48,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "d3e80f651f7251f5a5bf359c07a05592ce85bd5d72d1436a5ca634ab4f00024c",
+   "url": "https://mausam.imd.gov.in/backend/assets/aiwfb_pdf/32e8ca772c05a9dcfa2ab837192f5631.pdf"
+  }
+ ],
  "rejected": [],
- "runs": [],
+ "runs": [
+  {
+   "accepted": [
+    {
+     "already_indexed": true,
+     "blob": "blobs/d3e80f651f7251f5a5bf359c07a05592ce85bd5d72d1436a5ca634ab4f00024c.bin",
+     "bytes": 6119191,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "national_bulletin",
+     "issue_date": "2026-09-14",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "marker_only",
+     "pages": 22,
+     "passages": 48,
+     "quarantined_pages": 0,
+     "sha256": "d3e80f651f7251f5a5bf359c07a05592ce85bd5d72d1436a5ca634ab4f00024c",
+     "url": "https://mausam.imd.gov.in/backend/assets/aiwfb_pdf/32e8ca772c05a9dcfa2ab837192f5631.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/backend/assets/aiwfb_pdf/32e8ca772c05a9dcfa2ab837192f5631.pdf"
+   ],
+   "family": "national_bulletin",
+   "generated_at_utc": "2026-09-14T23:07:50.753521+00:00",
+   "rejected": [],
+   "source_id": "S64",
+   "started_at_utc": "2026-09-14T23:07:50.753521+00:00",
+   "status": "accepted"
+  }
+ ],
  "schema_version": "document-intake-day-v1"
 }

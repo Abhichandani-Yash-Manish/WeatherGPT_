@@ -1,0 +1,42 @@
+{
+ "schema_version": "daily-cycle-v1",
+ "foreground_only": true,
+ "daemon_installed": false,
+ "scheduler_decision": "manual_trigger_now_scheduler_later",
+ "document_families": [
+  "national_bulletin"
+ ],
+ "district_sweep_limit": 0,
+ "prune_applied": false,
+ "steps": [
+  {
+   "step": "documents",
+   "ok": true,
+   "seconds": 9.1,
+   "tail": "]",
+   "error": ""
+  },
+  {
+   "step": "watch check",
+   "ok": true,
+   "seconds": 29.42,
+   "tail": "}",
+   "error": ""
+  },
+  {
+   "step": "retention report",
+   "ok": true,
+   "seconds": 2.01,
+   "tail": "}",
+   "error": ""
+  },
+  {
+   "step": "health",
+   "ok": true,
+   "seconds": 0.05,
+   "tail": "{\"schema_version\": \"source-health-v1\", \"available\": true, \"products\": [{\"product\": \"extended_forecast\", \"jobs\": 19, \"states\": {\"succeeded\": 19}, \"newest_commit_utc\": \"2026-09-14T22:34:54.061310+00:00\"",
+   "error": ""
+  }
+ ],
+ "ok": true
+}

@@ -39,7 +39,7 @@ WFS = 'https://reactjs.imd.gov.in/geoserver/wfs'
 # workspace to keep an unknown path a 404 rather than an authorisation failure.
 PRODUCT_PATHS = ('/api/overview', '/api/warnings/national', '/api/warnings/place',
                  '/api/observations/near', '/api/observations/network', '/api/radar', '/api/basins',
-                 '/api/forecast', '/api/marine', '/api/river', '/api/aviation', '/api/places/search',
+                 '/api/forecast', '/api/forecast/changes', '/api/marine', '/api/river', '/api/aviation', '/api/places/search',
                  '/api/map/layers', '/api/warnings/cap', '/api/settings/capabilities',
                  '/api/climate/index', '/api/climate/series', '/api/advisories/states',
                  '/api/advisories/districts')
@@ -341,6 +341,120 @@ def forecast(foundation, latitude, longitude, days=3, source='hourly_forecast', 
                          'No forecast skill or probability calibration is validated here.'])
 
 
+def forecast_changes(latitude, longitude, database=None, limit=40):
+    """How stored forecast retrievals for this point differ for the same valid hour.
+
+    This is vintage variance, not forecast skill or calibration. Upstream model run
+    identity is not exposed by the store, so a change cannot be attributed to a rerun,
+    and retrieval time is not issue time. Only windows retrieved more than once can be
+    compared at all.
+    """
+    import sqlite3
+    from .answers import ROOT as ANSWER_ROOT
+    database = Path(database or (ANSWER_ROOT / 'data/runtime/ingestion/ingestion.sqlite'))
+    if not database.exists():
+        return envelope('forecast.changes', 'unavailable', {'point': {'latitude': latitude, 'longitude': longitude},
+                        'retrievals': [], 'parameters': {}, 'overlapping_valid_hours': 0,
+                        'interpretation': 'vintage_variance_not_skill'},
+                        coverage={'requested_point': {'latitude': latitude, 'longitude': longitude}},
+                        limitations=['No ingestion store exists yet, so no stored retrieval can be compared.'],
+                        not_established=['Forecast skill, calibration and accuracy are not measured here.'])
+    connection = sqlite3.connect(database.as_uri() + '?mode=ro', uri=True)
+    try:
+        rows = connection.execute(
+            'SELECT v.committed,v.sha256,v.result,j.spec FROM versions v JOIN jobs j ON j.id=v.job_id '
+            "WHERE json_extract(j.spec,'$.product') IN ('forecast','extended_forecast') ORDER BY v.committed").fetchall()
+    finally:
+        connection.close()
+    groups = {}
+    for committed, sha, result, spec in rows:
+        try:
+            spec_data = json.loads(spec); payload = json.loads(result)
+        except (TypeError, ValueError):
+            continue
+        if spec_data.get('latitude') is None or spec_data.get('longitude') is None:
+            continue
+        key = (round(float(spec_data['latitude']), 4), round(float(spec_data['longitude']), 4))
+        groups.setdefault(key, []).append({'committed': float(committed), 'sha256': sha, 'product': spec_data.get('product'),
+                                           'request_date': spec_data.get('request_date'), 'payload': payload})
+    if not groups:
+        return envelope('forecast.changes', 'unavailable', {'point': {'latitude': latitude, 'longitude': longitude},
+                        'retrievals': [], 'parameters': {}, 'overlapping_valid_hours': 0,
+                        'interpretation': 'vintage_variance_not_skill'},
+                        coverage={'requested_point': {'latitude': latitude, 'longitude': longitude}},
+                        limitations=['No stored forecast retrieval exists for any point yet.'],
+                        not_established=['Forecast skill, calibration and accuracy are not measured here.'])
+    nearest = min(groups, key=lambda point: abs(point[0] - latitude) + abs(point[1] - longitude))
+    distance = abs(nearest[0] - latitude) + abs(nearest[1] - longitude)
+    if distance > 0.1:
+        return envelope('forecast.changes', 'unavailable', {'point': {'latitude': latitude, 'longitude': longitude},
+                        'retrievals': [], 'parameters': {}, 'overlapping_valid_hours': 0,
+                        'interpretation': 'vintage_variance_not_skill'},
+                        coverage={'requested_point': {'latitude': latitude, 'longitude': longitude},
+                                  'nearest_stored_point': {'latitude': nearest[0], 'longitude': nearest[1]}},
+                        limitations=['No stored forecast retrieval is close enough to this point to compare.'],
+                        not_established=['Forecast skill, calibration and accuracy are not measured here.'])
+    retrievals = sorted(groups[nearest], key=lambda row: row['committed'])
+    series = {}
+    units = {}
+    for retrieval in retrievals:
+        for record in (retrieval['payload'].get('records') or []):
+            if record.get('value') is None or not record.get('valid_time_utc'):
+                continue
+            parameter = record.get('parameter')
+            units.setdefault(parameter, record.get('unit'))
+            series.setdefault((parameter, record['valid_time_utc']), {})[retrieval['committed']] = record['value']
+    parameters = {}
+    overlapping = 0
+    for (parameter, valid_time), values in series.items():
+        if len(values) < 2:
+            continue
+        ordered = sorted(values.items())
+        try:
+            change = abs(float(ordered[-1][1]) - float(ordered[0][1]))
+        except (TypeError, ValueError):
+            continue
+        entry = parameters.setdefault(parameter, {'unit': units.get(parameter), 'valid_hours': 0,
+                                                  'total_abs_change': 0.0, 'max_abs_change': 0.0, 'example': None})
+        entry['valid_hours'] += 1
+        entry['total_abs_change'] += change
+        if change > entry['max_abs_change']:
+            entry['max_abs_change'] = round(change, 4)
+            entry['example'] = {'valid_time_utc': valid_time, 'first_value': ordered[0][1], 'last_value': ordered[-1][1],
+                                'first_retrieved_utc': stamp(datetime.fromtimestamp(ordered[0][0], timezone.utc)),
+                                'last_retrieved_utc': stamp(datetime.fromtimestamp(ordered[-1][0], timezone.utc))}
+        overlapping += 1
+    for entry in parameters.values():
+        entry['mean_abs_change'] = round(entry['total_abs_change'] / entry['valid_hours'], 4)
+        entry.pop('total_abs_change')
+    parameters = dict(sorted(parameters.items(), key=lambda item: -item[1]['valid_hours']))
+    product_ids = sorted({retrieval['product'] for retrieval in retrievals})
+    source_ids = [{'forecast': 'S21', 'extended_forecast': 'S62'}.get(product, 'S21') for product in product_ids]
+    sources = [source_entry(source_id, {'retrieved_at_utc': stamp(datetime.fromtimestamp(retrievals[-1]['committed'], timezone.utc)),
+                                        'sha256': retrievals[-1]['sha256']}) for source_id in source_ids]
+    status = 'ok' if overlapping else 'partial'
+    if len(retrievals) == 1:
+        status = 'partial'
+    return envelope('forecast.changes', status,
+                    {'point': {'latitude': nearest[0], 'longitude': nearest[1]},
+                     'requested_point': {'latitude': latitude, 'longitude': longitude},
+                     'retrievals': [{'retrieved_at_utc': stamp(datetime.fromtimestamp(row['committed'], timezone.utc)),
+                                     'product': row['product'], 'request_date': row['request_date'],
+                                     'response_sha256_prefix': str(row['sha256'] or '')[:12]} for row in retrievals[-limit:]],
+                     'retrieval_count': len(retrievals), 'parameters': parameters,
+                     'overlapping_valid_hours': overlapping, 'interpretation': 'vintage_variance_not_skill'},
+                    sources=sources,
+                    coverage={'requested_point': {'latitude': latitude, 'longitude': longitude},
+                              'stored_point': {'latitude': nearest[0], 'longitude': nearest[1]},
+                              'retrievals': len(retrievals), 'overlapping_valid_hours': overlapping},
+                    limitations=['This compares stored retrievals of the same valid hour; it conflates model updates with shorter horizons because run identity is not exposed.',
+                                 'Retrieval time is not the upstream model issue time, and only windows retrieved more than once can be compared.',
+                                 'A change is not an error: neither retrieval is validated by this view.'],
+                    not_established=['Forecast skill, calibration and accuracy: no observation or verified analysis is matched here.',
+                                     'Attribution of a change to a model run: upstream run identity is not exposed.',
+                                     'Spatial representativeness: modelled grid values are not local measurements.'])
+
+
 def marine(foundation, latitude, longitude, days=3, refresh=False):
     packet = foundation.marine(latitude, longitude, days, refresh=refresh)
     coverage = packet.get('coverage') or {}
@@ -592,6 +706,9 @@ def dispatch(foundation, path, params):
                         days=_int(params, 'days', 3, low=1, high=7),
                         source=_first(params, 'source', 'hourly_forecast'),
                         refresh=_flag(params, 'refresh'))
+    if path == '/api/forecast/changes':
+        latitude, longitude = _point_params(params)
+        return forecast_changes(latitude, longitude, limit=_int(params, 'limit', 40, low=1, high=200))
     if path == '/api/marine':
         latitude, longitude = _point_params(params)
         return marine(foundation, latitude, longitude, days=_int(params, 'days', 3, low=1, high=7),

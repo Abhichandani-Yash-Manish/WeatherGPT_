@@ -505,6 +505,32 @@ def district_targets(root):
                      'snapshot': DISTRICT_DIRECTORY}
 
 
+_DIRECTORY_STATES = {}
+
+
+def district_states(district, root=None):
+    """States whose publisher directory lists this district name.
+
+    The publisher's second selector step is keyed on the district alone and the
+    directory refuses a repeated name, so this is the publisher's own mapping rather
+    than an inferred crosswalk. It is a dated snapshot, not a validated LGD inventory,
+    and an empty result means the name is not in that directory at all.
+    """
+    from .foundation import ROOT
+    root = root or ROOT
+    key = str(root)
+    if key not in _DIRECTORY_STATES:
+        try:
+            targets, _ = district_targets(root)
+        except SourceError:
+            targets = []
+        mapping = {}
+        for target in targets:
+            mapping.setdefault(target['district'], set()).add(target['state'])
+        _DIRECTORY_STATES[key] = {name: sorted(states) for name, states in mapping.items()}
+    return _DIRECTORY_STATES[key].get(district, [])
+
+
 def district_address(store, district, now, ttl=0):
     """Resolve the second selector step. 'Not issued' is a publisher statement, not a failure."""
     from urllib.parse import urljoin, urlparse, urlsplit, urlunsplit, quote, parse_qsl, urlencode

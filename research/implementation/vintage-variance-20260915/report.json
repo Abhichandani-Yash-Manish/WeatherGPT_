@@ -1,0 +1,234 @@
+{
+ "schema_version": "vintage-variance-v1",
+ "measured_at_utc": "2026-09-14T23:11:26.131893+00:00",
+ "database": "/Users/yashabhichandani/Desktop/WeatherGPT/data/runtime/ingestion/ingestion.sqlite",
+ "points": [
+  {
+   "latitude": 23.02579,
+   "longitude": 72.58727,
+   "vintages": 21,
+   "first_retrieved": "2026-09-12T07:38:40.739248+00:00",
+   "last_retrieved": "2026-09-14T22:34:10.473468+00:00"
+  },
+  {
+   "latitude": 25.65423,
+   "longitude": 94.02179,
+   "vintages": 1,
+   "first_retrieved": "2026-09-12T16:10:13.965088+00:00",
+   "last_retrieved": "2026-09-12T16:10:13.965088+00:00"
+  },
+  {
+   "latitude": 15.3352,
+   "longitude": 76.4603,
+   "vintages": 1,
+   "first_retrieved": "2026-09-12T16:15:48.333170+00:00",
+   "last_retrieved": "2026-09-12T16:15:48.333170+00:00"
+  },
+  {
+   "latitude": 24.80805,
+   "longitude": 93.9442,
+   "vintages": 1,
+   "first_retrieved": "2026-09-12T16:16:29.838985+00:00",
+   "last_retrieved": "2026-09-12T16:16:29.838985+00:00"
+  },
+  {
+   "latitude": 23.72894,
+   "longitude": 92.71791,
+   "vintages": 5,
+   "first_retrieved": "2026-09-12T16:16:38.941343+00:00",
+   "last_retrieved": "2026-09-12T16:16:43.221332+00:00"
+  },
+  {
+   "latitude": 19.07283,
+   "longitude": 72.88261,
+   "vintages": 2,
+   "first_retrieved": "2026-09-12T16:17:19.914313+00:00",
+   "last_retrieved": "2026-09-12T18:10:20.182617+00:00"
+  },
+  {
+   "latitude": 18.51957,
+   "longitude": 73.85535,
+   "vintages": 1,
+   "first_retrieved": "2026-09-12T16:17:20.860743+00:00",
+   "last_retrieved": "2026-09-12T16:17:20.860743+00:00"
+  },
+  {
+   "latitude": 22.29941,
+   "longitude": 73.20812,
+   "vintages": 1,
+   "first_retrieved": "2026-09-12T16:17:54.095367+00:00",
+   "last_retrieved": "2026-09-12T16:17:54.095367+00:00"
+  },
+  {
+   "latitude": 22.69385,
+   "longitude": 72.86157,
+   "vintages": 2,
+   "first_retrieved": "2026-09-12T17:00:50.329015+00:00",
+   "last_retrieved": "2026-09-12T19:09:21.502127+00:00"
+  },
+  {
+   "latitude": 13.08784,
+   "longitude": 80.27847,
+   "vintages": 1,
+   "first_retrieved": "2026-09-12T17:01:28.914148+00:00",
+   "last_retrieved": "2026-09-12T17:01:28.914148+00:00"
+  },
+  {
+   "latitude": 21.19594,
+   "longitude": 72.83023,
+   "vintages": 4,
+   "first_retrieved": "2026-09-12T18:53:25.953952+00:00",
+   "last_retrieved": "2026-09-14T22:29:45.868251+00:00"
+  },
+  {
+   "latitude": 20.02813,
+   "longitude": 79.24879,
+   "vintages": 2,
+   "first_retrieved": "2026-09-12T20:59:38.120112+00:00",
+   "last_retrieved": "2026-09-12T20:59:39.104970+00:00"
+  },
+  {
+   "latitude": 27.47989,
+   "longitude": 94.90837,
+   "vintages": 1,
+   "first_retrieved": "2026-09-13T17:05:40.794236+00:00",
+   "last_retrieved": "2026-09-13T17:05:40.794236+00:00"
+  },
+  {
+   "latitude": 9.93988,
+   "longitude": 76.26022,
+   "vintages": 9,
+   "first_retrieved": "2026-09-13T17:18:36.210105+00:00",
+   "last_retrieved": "2026-09-14T22:34:32.664328+00:00"
+  },
+  {
+   "latitude": 22.29161,
+   "longitude": 70.79322,
+   "vintages": 2,
+   "first_retrieved": "2026-09-13T17:20:20.492015+00:00",
+   "last_retrieved": "2026-09-14T08:48:48.659676+00:00"
+  },
+  {
+   "latitude": 20.27241,
+   "longitude": 85.83385,
+   "vintages": 1,
+   "first_retrieved": "2026-09-13T17:20:48.854788+00:00",
+   "last_retrieved": "2026-09-13T17:20:48.854788+00:00"
+  },
+  {
+   "latitude": 12.29791,
+   "longitude": 76.63925,
+   "vintages": 1,
+   "first_retrieved": "2026-09-14T22:34:54.061310+00:00",
+   "last_retrieved": "2026-09-14T22:34:54.061310+00:00"
+  }
+ ],
+ "overlapping_valid_hours": 4032,
+ "by_parameter": {
+  "temperature_2m": {
+   "valid_hours": 744,
+   "max_abs_change": 4.8,
+   "example": {
+    "valid_time_utc": "2026-09-13T10:00:00+00:00",
+    "first_value": 29.1,
+    "last_value": 24.3,
+    "first_committed_utc": "2026-09-12T20:59:38.120112+00:00",
+    "last_committed_utc": "2026-09-12T20:59:39.104970+00:00"
+   },
+   "mean_abs_change": 0.704
+  },
+  "relative_humidity_2m": {
+   "valid_hours": 744,
+   "max_abs_change": 36.0,
+   "example": {
+    "valid_time_utc": "2026-09-12T14:00:00+00:00",
+    "first_value": 55,
+    "last_value": 91,
+    "first_committed_utc": "2026-09-12T07:38:40.739248+00:00",
+    "last_committed_utc": "2026-09-12T20:40:23.959997+00:00"
+   },
+   "mean_abs_change": 3.9772
+  },
+  "precipitation": {
+   "valid_hours": 744,
+   "max_abs_change": 30.3,
+   "example": {
+    "valid_time_utc": "2026-09-13T22:00:00+00:00",
+    "first_value": 34.3,
+    "last_value": 4.0,
+    "first_committed_utc": "2026-09-12T18:53:25.953952+00:00",
+    "last_committed_utc": "2026-09-12T20:53:20.234342+00:00"
+   },
+   "mean_abs_change": 0.937
+  },
+  "wind_speed_10m": {
+   "valid_hours": 744,
+   "max_abs_change": 14.4,
+   "example": {
+    "valid_time_utc": "2026-09-14T12:00:00+00:00",
+    "first_value": 16.4,
+    "last_value": 2.0,
+    "first_committed_utc": "2026-09-12T07:38:40.739248+00:00",
+    "last_committed_utc": "2026-09-14T22:34:10.473468+00:00"
+   },
+   "mean_abs_change": 2.6358
+  },
+  "precipitation_probability": {
+   "valid_hours": 264,
+   "max_abs_change": 29.0,
+   "example": {
+    "valid_time_utc": "2026-09-14T03:00:00+00:00",
+    "first_value": 71,
+    "last_value": 100,
+    "first_committed_utc": "2026-09-12T18:10:09.538417+00:00",
+    "last_committed_utc": "2026-09-14T22:34:10.473468+00:00"
+   },
+   "mean_abs_change": 4.3409
+  },
+  "apparent_temperature": {
+   "valid_hours": 264,
+   "max_abs_change": 5.5,
+   "example": {
+    "valid_time_utc": "2026-09-13T11:00:00+00:00",
+    "first_value": 32.8,
+    "last_value": 38.3,
+    "first_committed_utc": "2026-09-12T18:10:09.538417+00:00",
+    "last_committed_utc": "2026-09-12T20:40:23.959997+00:00"
+   },
+   "mean_abs_change": 0.7155
+  },
+  "wind_gusts_10m": {
+   "valid_hours": 264,
+   "max_abs_change": 28.4,
+   "example": {
+    "valid_time_utc": "2026-09-14T13:00:00+00:00",
+    "first_value": 39.6,
+    "last_value": 11.2,
+    "first_committed_utc": "2026-09-12T18:10:09.538417+00:00",
+    "last_committed_utc": "2026-09-14T22:34:10.473468+00:00"
+   },
+   "mean_abs_change": 4.6985
+  },
+  "visibility": {
+   "valid_hours": 264,
+   "max_abs_change": 23680.0,
+   "example": {
+    "valid_time_utc": "2026-09-14T12:00:00+00:00",
+    "first_value": 8880.0,
+    "last_value": 32560.0,
+    "first_committed_utc": "2026-09-13T17:18:36.210105+00:00",
+    "last_committed_utc": "2026-09-14T22:34:32.664328+00:00"
+   },
+   "mean_abs_change": 4164.0152
+  }
+ },
+ "not_established": [
+  "forecast skill, calibration or accuracy: no observations or analysis are matched here",
+  "attribution of a change to a model run: upstream run identity is not exposed by the store",
+  "spatial representativeness: modelled grid values are not local measurements"
+ ],
+ "limitations": [
+  "Vintage changes conflate model updates with shorter horizons because run identity is unknown.",
+  "Only points and windows that were retrieved more than once can be compared."
+ ]
+}

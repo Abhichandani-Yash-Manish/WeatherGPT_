@@ -1,22 +1,30 @@
 """Bounded, explicit requested operations; no executable SQL, URLs or inferred data."""
 from datetime import datetime,timedelta
 from .transport import SourceError
-KINDS=['forecast','history','travel','agriculture','warning','observation','research','explanation','aviation','marine','river']
+KINDS=['forecast','history','travel','agriculture','warning','observation','research','explanation','aviation','marine','river','document']
 OPERATIONS=['lookup','compare','series','trend','daily','timeline','onset','crosscheck']
 PERIODS=['annual','jf','mam','jjas','ond','jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec']
 FIELDS={'kind','operation','parameters','years','period','start_local','end_local','place_indices'}
+DOCUMENT_SCOPES=['','national','state','district','regional','marine']
 
 def validate_tasks(tasks,places):
     if not isinstance(tasks,list) or not 1<=len(tasks)<=6:raise SourceError('Use one to six explicit weather tasks')
     cells=0
     for t in tasks:
-        if not isinstance(t,dict) or not FIELDS<=set(t) or set(t)-FIELDS-{'request_quote','document_request'}:raise SourceError('Invalid task schema')
+        if not isinstance(t,dict) or not FIELDS<=set(t) or set(t)-FIELDS-{'request_quote','document_request','corpus_request'}:raise SourceError('Invalid task schema')
         if 'document_request' in t:
             d=t['document_request']
             if t['kind']!='agriculture' or not isinstance(d,dict) or not {'query','crop','growth_stage','topic','mode'}<=set(d) or set(d)-{'query','crop','growth_stage','topic','mode','selection'}:raise SourceError('Invalid bulletin request schema')
             if d.get('selection','top') not in {'top','all'}:raise SourceError('Invalid passage selection')
             if any(not isinstance(v,str) for v in d.values()) or len(d['query'])>1500 or len(d['crop'])>100 or len(d['growth_stage'])>100:raise SourceError('Invalid bulletin query fields')
             if d['topic'] not in {'general','irrigation','sowing','pest','nutrition','harvest'} or d['mode'] not in {'source_lookup','decision_support'}:raise SourceError('Unsupported bulletin request')
+        if 'corpus_request' in t:
+            d=t['corpus_request']
+            if t['kind']!='document' or not isinstance(d,dict) or set(d)!={'query','family','scope'}:raise SourceError('Invalid document request schema')
+            if any(not isinstance(v,str) for v in d.values()) or len(d['query'])>1500:raise SourceError('Invalid document query fields')
+            from .document_ingest import FAMILIES
+            if d['family'] and d['family'] not in FAMILIES:raise SourceError('Unknown published document family')
+            if d['scope'] not in DOCUMENT_SCOPES:raise SourceError('Unsupported document scope')
         if 'request_quote' in t and (not isinstance(t['request_quote'],str) or len(t['request_quote'])>1500):raise SourceError('Invalid task source quote')
         if t['kind'] not in KINDS or t['operation'] not in OPERATIONS or t['period'] not in PERIODS:raise SourceError('Unsupported task kind or operation')
         if not isinstance(t['parameters'],list) or len(t['parameters'])>8 or any(not isinstance(v,str) or not v or len(v)>80 for v in t['parameters']):raise SourceError('Invalid task parameters')
