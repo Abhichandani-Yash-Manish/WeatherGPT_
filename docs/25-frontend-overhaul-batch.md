@@ -1,6 +1,6 @@
 # WeatherGPT: frontend overhaul batch
 
-Recorded 14 September 2026. Baseline commit `e2042c9`, working tree after the batch described here. Plan: [docs/24](24-frontend-overhaul-plan.md). Frozen pre-batch measurements: [baseline](../research/reviews/frontend-overhaul-20260914/baseline/baseline.json).
+Recorded 14 September 2026; a historical record. The current surface and its evidence are [docs/46](46-frontend-instrument-desk.md). Baseline commit `e2042c9`, working tree after the batch described here. Plan: [docs/24](24-frontend-overhaul-plan.md). Frozen pre-batch measurements: [baseline](../research/reviews/frontend-overhaul-20260914/baseline/baseline.json).
 
 ## Scope of this batch
 

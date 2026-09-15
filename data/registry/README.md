@@ -1,18 +1,20 @@
 # WeatherGPT data registry
 
-Current registry: **60 entries, 219 integrity-tracked evidence assets**, and implemented prototype adapters spanning national and specialist products. Start with the [working foundation guide](../../docs/04-data-foundation.md) and [readiness gates](readiness.json). The full operational acceptance scope remains incomplete.
+Current registry: **67 entries (S01–S67), 247 integrity-tracked evidence assets**, and implemented prototype adapters spanning national and specialist products. Start with the [working foundation guide](../../docs/04-data-foundation.md) and [readiness gates](readiness.json). The full operational acceptance scope remains incomplete.
+
+The current activation ledger is [source-review.json](source-review.json), rebuilt by `scripts/audit_sources.py`: of the 67 entries, 20 are reachable through a registered connector (`active` or `active_via`), 15 are credential- or licence-gated (`blocked_access`), 10 return a payload no connector uses yet, and 3 are not data products. Registration is not selection, and a reachable address is not a validated product. See [docs/29](../../docs/29-source-activation-and-document-intake.md).
 
 Initial discovery: **11 September 2026**. Coverage reviewed on **12 September IST**, with 14 selected public GET checks; other access statuses remain historical. See the [coverage audit](coverage-audit.md). A successful response describes that retrieval, not ongoing access or freshness. Ahmedabad district, Gujarat remains our shared example; discovery covers national and global candidates.
 
 ## Latest addition
 
-**S60 — IMD CityWx responsive portal:** registered after user-requested assessment. Station search returned 11 Ahmedabad-related candidates; the city weather requests returned 403. An unexplained Android external-window script was present in the page HTML. The source is **on hold for integration**, with evidence and next validation steps linked in its source card. It is related to the older S10 city-link evidence and does not close the official-observation access gate. See the [assessment](../../research/discovery/citywx-assessment.md).
+**S63–S67 — the basemap layers and four measured official document families:** the IMD GeoServer basemap, station and basin layers (S63); the All India Weather Summary and Forecast Bulletin (S64); the national and South Asia flash flood guidance bulletins (S65); the extended-range and press-release set (S66); and the RSMC New Delhi special advisory PDF (S67). The four document families are selected for local prototype retrieval only; no production source is selected and redistribution is not approved. Their addresses, probes and printed-issue-date handling are recorded in [source-review.json](source-review.json) and [docs/29](../../docs/29-source-activation-and-document-intake.md). The spreadsheet and cards below carry full records for S01–S62; **S63–S67 are recorded in [sources.json](sources.json) and the activation ledger and their cards are not yet written.**
 
 ## Start here
 
 | File | Purpose |
 |---|---|
-| [sources.csv](sources.csv) | Review all 60 entries in a spreadsheet: source, evidence, geography, time, limitations and next task. |
+| [sources.csv](sources.csv) | Review the 62 fully carded entries (S01–S62) in a spreadsheet: source, evidence, geography, time, limitations and next task. |
 | [source-cards.md](source-cards.md) | Read individual source cards with links to their evidence. |
 | [sources.json](sources.json) | Canonical editable registry for future scripts and connectors. |
 | [processing-plan.md](processing-plan.md) | Proposed build sequence, record contracts and acceptance checks. |

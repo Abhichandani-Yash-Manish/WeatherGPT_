@@ -4,7 +4,7 @@ A local conversational weather prototype for India. Ask about a place and a time
 
 Nationwide and specialist **operational acceptance is not achieved**. This is an evidence-conscious prototype whose limits are part of the interface, not a finished service.
 
-![The workspace answering a point forecast](research/reviews/frontend-overhaul-20260914/after/desktop-forecast.png)
+![The workspace answering a point forecast](research/reviews/frontend-v2-20260915/after/surface-assistant.png)
 
 ## Run it
 
@@ -23,54 +23,77 @@ Each answer is presented answer-first — an exact value with its unit and windo
 - **Point forecasts** at a named place or pinned coordinate: rainfall totals on whole source hours, hourly rain probability, temperature, feels-like temperature, wind and gusts, humidity and visibility, with a bounded refresh when stored evidence is stale.
 - **Historical and climate records**: published district rainfall and national climate lookups, comparisons, period totals, charts with exact-value and evidence-id inspection, and a short daily reanalysis window labelled as modeled.
 - **Specialist tools**: airport reports for supported ICAO codes (METAR observations and TAF forecasts, each with its own station and validity), modeled wave height, direction and period near a coastal place, and modeled river discharge near a resolved place — each naming the answering model cell and its distance.
-- **Published bulletins**: crop/stage passages with page locators and saved source PDFs you can open and download, kept separate from general and warning context.
+- **Published bulletins**: crop/stage passages with page locators and saved source PDFs you can open and download, kept separate from general and warning context. The wider indexed corpus is also conversational: a named national, state or marine product answers with its family, region, physical page, printed issue date, measured currency and retrieval instant attached, warning-classified text kept reference-only, and earlier editions retired from current retrieval.
 - **Conversation control**: follow-ups and corrections in one thread, clarify-on-ambiguity with every candidate offered, a stop control, elapsed time, a conversation ledger with search, restore and local delete, and a read-only collection-health panel.
-- **Portable output**: copy, print a stylesheet-stripped answer, save a turn as Markdown, download the JSON receipt, or save a whole stored conversation.
+- **Portable output and spoken access**: copy, print a stylesheet-stripped answer, save a turn as Markdown, download the JSON receipt, or save a whole stored conversation; press-to-talk with a transcript shown for correction before it becomes a question, Listen over answers already produced, and a language selector that offers only measured languages.
+- **The wider published corpus**: a named national, state or marine product answers from the indexed documents with its printed issue date, measured currency, retrieval instant, physical page and document identity attached; warning-classified text stays reference-only and earlier editions are retired from current retrieval.
 
 ## What is not connected
 
 The interface states these limits rather than filling the gaps:
 
-- **No official warning applicability.** CAP lifecycle diagnostics exist, but chat cannot confirm a current applicable official warning. Warning material is shown as reference. Rain, model output and a resolved document hash are never presented as an alert, and there is no subscription, delivery or update/cancel service.
+- **Official warning delivery is absent.** District warning applicability *is* resolved to a place against IMD's own geometry, but origin authentication is unverified and CAP lifecycle diagnostics never authorise dissemination. There is no subscription, outbox, delivery or update/cancel service, and no all-clear. Rain, model output, published bulletin wording and a resolved document hash are never presented as an alert.
 - **No live station observation for an arbitrary place**, no observed water level, gauge reading, danger level, flood extent, tide or current, and no road, route or travel clearance.
 - **No field or marine clearance**, no crop diagnosis, no pesticide dosage, and no flood-impact prediction.
 - **No invented scores.** No confidence, risk, suitability or probability value is computed for display.
-- **Language output is limited.** Hindi and Hinglish questions are understood in scoped paths, and a requested output language is expressible, but fluent Hindi or Gujarati output is **not achieved**; when the answer cannot be written in the requested language, it says so instead of passing as complete.
-- **Desktop web only.** Small screens are usable, but this is not mobile platform compliance, and voice is not implemented.
+- **Language output is measured per direction, not fluent.** Twenty languages (including Hindi and Gujarati) pass a measured `write` gate; ten of those also pass measured speech and hearing, the other ten are readable but speech for them is beta-gated by the provider. Three languages fail the write gate and are refused rather than offered with a warning. Rendering puts a deterministic gate between the evidence and the reader: values are withheld and substituted, safety-critical clauses are held, and a failed gate keeps the source-language answer and says so. No native speaker has reviewed any output, and fluent-language acceptance is not established.
+- **Voice exists but is not accepted.** Speech input with a confirmable transcript, spoken answers over gated text, and spoken/recognition states are implemented. A presence-only round-trip measurement now records place, unit and negation presence for Hindi and Gujarati, with numerals again observed as word forms; speech accuracy, noisy input and browser/audio acceptance remain unmeasured, and no native speaker has reviewed any output.
+- **Desktop web only.** The desktop surface carries a day/night/system appearance, a command palette (⌘K) over surfaces, actions, places and stored conversations, a twelfth surface comparing stored forecast retrievals, and a raw-packet inspector on every answer. Small screens are usable, but this is not mobile platform compliance or mobile acceptance.
 - **Hosting and sharing remain on hold** at the user's request.
 
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 374 Python tests
-node tests/test_charts.js                            #  2 of 34 component checks
-node tests/test_views.js                             # 14
-node tests/test_bulletin_ui.js                       #  5
+python3 -m pytest tests/ -q                          # 635 Python tests
+node tests/test_charts.js                            #  2 of 57 component checks
+node tests/test_views.js                             # 16
+node tests/test_bulletin_ui.js                       #  6
 node tests/test_conversation_ui.js                   # 13
+node tests/test_suite_ui.js                          # 17
+node tests/test_voice_ui.js                          #  3
+python3 scripts/verify_all.py                       # environment, registries, drift guard, tests
+python3 scripts/run_daily_cycle.py --families national_bulletin  # one bounded foreground cycle
 python3 scripts/audit_workspace_frontend.py --baseline
 ```
 
 The component checks run against a small DOM shim, so they are **not** browser, visual, load or fluent-language acceptance. What they do hold is specific: every displayed number must come from the returned packet with no arithmetic applied, no renderer may leak a stylesheet class name into visible text, a clarification must offer every candidate, an unverified warning must stay held, and stopping a turn must not claim the server stopped working.
 
-Real journeys are recorded with screenshots in [the frontend batch evidence](research/reviews/frontend-overhaul-20260914/after/live-checks.json). The suite counts are not a completion measure.
+Real journeys are recorded with screenshots in [the frontend batch evidence](research/reviews/frontend-v2-20260915/after/live-checks.json), which also carries ten automated accessibility scans and the viewport measurements quoted in [docs/46](docs/46-frontend-instrument-desk.md). The suite counts are not a completion measure.
 
 ## Status and open work
 
 - [Critical full-solution review](docs/21-full-solution-critical-review.md) — the current verdict, findings A01–A08 and the recommended trajectory.
 - [Source activation and national document intake](docs/29-source-activation-and-document-intake.md) — every registered source measured, the national bulletin corpus, and what it still cannot answer.
 - [Multilingual output and voice access](docs/30-multilingual-and-voice-path.md) — the plan for PS features 6 and 8. A plan, not a batch: nothing built and nothing measured yet.
-- [Frontend overhaul batch](docs/25-frontend-overhaul-batch.md) — this surface, its findings FE01–FE06 and what it does not establish.
+- [The Instrument Desk](docs/46-frontend-instrument-desk.md) — the current desktop surface: design direction, the capabilities added, the live measurements, the accessibility repairs and what none of it establishes.
+- [Frontend overhaul batch](docs/25-frontend-overhaul-batch.md) — the earlier surface, its findings FE01–FE06 and what it does not establish.
 - [Frontend overhaul plan](docs/24-frontend-overhaul-plan.md) — scope, design direction and batch gates.
 - [Machine-readable product plan](data/registry/product-progress.json) and [living hardening checklist](data/registry/hardening-progress.json) — stage and finding status.
 - [RAG readiness decision](data/registry/rag-readiness.json) and [source registry](data/registry/README.md).
 
-Known-open highlights: **P11** (the server holds one non-blocking conversation lock; there is no bounded queue, no stage streaming, and stopping a turn does not cancel server work), **P10** (collection is request-driven and narrow), **P12** (no user-level acceptance benchmark), **P13** (mobile and voice), **P14** (packaging), plus engine findings A01–A04 on context retention, language output, explanation dependencies and place aliases, and **A06** — the national document corpus is now indexed but no conversation can query it. No accessibility audit, sustained-load measurement or scientific forecast-skill evaluation has been performed.
+Known-open highlights: **P11** (a bounded queue and stage-boundary cancellation now exist; there is still no stage streaming or queue position, and cancellation cannot interrupt a model call already in flight), **P10** (collection is request-driven and narrow), **P12** (a declared benchmark now runs: 17 development cases at 66.7% declared-task completion, 4 sealed holdout cases at 2/4; the proposed 90% gate is not met and the set is below the docs/14 scale), **P13** (mobile acceptance), **P14** (packaging), plus engine findings A01 for paraphrase/repeat coverage, A04 for dated place/district aliases, and A07 for progress accounting. The indexed national corpus is now reachable from chat (A06, scoped); full-document recall, held layouts, cross-edition contradiction handling and forecast-skill evaluation remain open. The living gap list is [docs/31](docs/31-full-solution-gap-register.md).
 
 ## Milestones, newest first
 
 Each links to the batch that recorded it. Older entries are **historical evidence, not current completion claims**.
 
-- [Source activation and national document intake](docs/29-source-activation-and-document-intake.md) — 493 tests, 67 sources measured, national district sweep recorded.
+- [The Instrument Desk frontend overhaul](docs/46-frontend-instrument-desk.md) — 57 component checks, ten accessibility scans at zero violations, the composer measured on the viewport bottom at three widths, and the repairs recorded as FE07.
+- [The acceptance benchmark grows to seventeen development cases](docs/45-benchmark-expansion.md) — 66.7% declared-task completion on the expanded set, every incomplete published.
+- [Remaining blocked and held items](docs/44-remaining-blocked-and-held-items.md) — the closing register state and the exact input each item waits on.
+- [Forecast vintages: what can be measured, and what still cannot](docs/43-forecast-vintage-variance.md) — 635 tests, vintage variance measured, skill recorded as blocked.
+- [Specialist sea-area identity: the recorded decision](docs/42-specialist-sea-area-decision.md) — what is reachable and what is deliberately not invented.
+- [Spoken round trips, voice checks and the opt-in daily cycle](docs/41-speech-roundtrip-voice-checks-and-daily-cycle.md) — 633 tests, presence-only speech measurement, foreground cycle.
+- [Embedded PDF viewing and its accessible controls](docs/40-embedded-pdf-and-aria.md) — 631 tests, 19 verify steps, same-origin viewer.
+- [Verification, backup and the drift guard](docs/39-verification-backup-and-drift-guard.md) — 631 tests, one verify command, rehearsed restore.
+- [Watch requests](docs/38-watch-requests.md) — 627 tests, local watches registered, checked on request and never delivered silently.
+- [Historical alias candidates](docs/37-historical-alias-candidates.md) — 627 tests, candidate-based history resolution with live journeys.
+- [Context edit matrix](docs/36-context-edit-matrix.md) — 611 tests, three recorded live multi-turn sequences.
+- [Declared acceptance benchmark](docs/35-acceptance-benchmark.md) — 604 tests, first live run over development and holdout sets, failures published.
+- [Bounded queue and stage-boundary cancellation](docs/34-bounded-queue-and-cancellation.md) — 598 tests, three recorded queue/cancel checks.
+- [Language write reach](docs/33-language-write-reach.md) — 591 tests, write coverage measured at 20 of 23 languages, speech beta-gated by the provider.
+- [The indexed document corpus becomes conversational](docs/32-corpus-chat-and-planner-robustness.md) — 588 tests, five recorded corpus journeys, 26 sources reachable.
+- [Full-solution gap register](docs/31-full-solution-gap-register.md) — the current gap list, G01–G18, kept separate from batch records.
+- [Source activation and national document intake](docs/29-source-activation-and-document-intake.md) — 543 tests, 67 sources measured, national district sweep recorded.
 - [Frontend overhaul batch](docs/25-frontend-overhaul-batch.md) — 374 Python tests, 34 component checks, five recorded journeys.
 - [Marine wave and river discharge tools](docs/23-marine-and-river-tools.md) — 374 tests, nine local-model turns.
 - [Engine context, language disclosure and task dependency](docs/22-engine-context-repairs.md) — 362 tests, eight component checks.

@@ -1,6 +1,6 @@
 # WeatherGPT: the weather suite overhaul
 
-Recorded 14 September 2026. Plan: the approved suite-overhaul plan. Assessment that led here: [docs/26](26-ps-gap-analysis-and-official-source-assessment.md). Evidence: [research/reviews/suite-overhaul-20260914](../research/reviews/suite-overhaul-20260914).
+Recorded 14 September 2026; a historical record of the eleven-surface state. The current surface is [docs/46](46-frontend-instrument-desk.md), which adds the twelfth surface and the Instrument Desk design. Plan: the approved suite-overhaul plan. Assessment that led here: [docs/26](26-ps-gap-analysis-and-official-source-assessment.md). Evidence: [research/reviews/suite-overhaul-20260914](../research/reviews/suite-overhaul-20260914).
 
 ## What changed, and why
 

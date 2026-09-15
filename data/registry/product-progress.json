@@ -1,307 +1,331 @@
 {
- "schema_version": "product-progress-plan-v1",
- "as_of_utc": "2026-09-15T01:20:00+00:00",
- "status": "implementation_in_progress",
- "user_direction": "Desktop web now. Hosting/sharing on hold. Preserve final nationwide and specialist scope.",
- "next_batch": [
-  "P07",
-  "P03",
-  "P12",
-  "P06",
-  "P10"
- ],
- "parallel_discovery_note": "Begin official access/validity/geography work early; no requirement to wait for every other stage.",
- "stages": [
-  {
-   "id": "S1",
-   "title": "Answer fidelity and task coverage",
-   "depends_on": [],
-   "finding_ids": [
-    "P01",
-    "P02",
-    "P03",
-    "P08",
-    "P12"
-   ],
-   "deliverables": [
-    "Claim attribution tuples and deterministic factual rendering",
-    "Verified national/district serving manifests",
-    "Typed task list, operations and date ranges",
-    "Task-level coverage status and accepted entity state"
-   ],
-   "exit_checks": [
-    "Wrong entity/time/unit swaps rejected",
-    "Altered copied historical artifacts rejected",
-    "Every requested subtask completed or explicitly missing"
-   ],
-   "status": "implemented_scoped_broader_semantic_acceptance_open",
-   "distribution_hold": false,
-   "evidence": "docs/15-answer-fidelity-and-historical-analysis.md",
-   "latest_evidence": "docs/22-engine-context-repairs.md"
-  },
-  {
-   "id": "S2",
-   "title": "Everyday forecast and research answers",
-   "depends_on": [
-    "S1"
-   ],
-   "finding_ids": [
-    "P03",
-    "P05",
-    "P09"
-   ],
-   "deliverables": [
-    "Extended forecast contract",
-    "Hourly timeline and exact supported interval operations",
-    "Daily reanalysis and range lookup",
-    "Descriptive comparisons, baselines, trends and charts"
-   ],
-   "exit_checks": [
-    "Probability semantics and variable lineage validated",
-    "Daily questions never become annual lookups",
-    "Independent calculation oracles and missingness gates pass"
-   ],
-   "status": "hourly_forecast_and_daily_reanalysis_implemented_scoped_broader_analysis_and_validation_open",
-   "distribution_hold": false,
-   "evidence": "docs/16-hourly-and-daily-point-tools.md",
-   "latest_evidence": "docs/17-conversation-engine-refinement.md"
-  },
-  {
-   "id": "S3",
-   "title": "Specialist adapter activation",
-   "depends_on": [
-    "S1"
-   ],
-   "finding_ids": [
-    "P04",
-    "P08",
-    "P10"
-   ],
-   "deliverables": [
-    "METAR/TAF/station tools",
-    "Marine wave tool",
-    "River discharge tool",
-    "Typed specialist entities and unified source budgets"
-   ],
-   "exit_checks": [
-    "Airport/sea/river identity and time verified",
-    "Data type distinctions visible",
-    "No closure, flight disruption or flood impact claims without evidence"
-   ],
-   "status": "airport_marine_and_river_conversation_tools_implemented_scoped_official_sea_area_gauge_identity_and_domain_review_open",
-   "distribution_hold": false,
-   "latest_evidence": "docs/23-marine-and-river-tools.md"
-  },
-  {
-   "id": "S4",
-   "title": "Official warnings and document retrieval",
-   "depends_on": [
-    "S1"
-   ],
-   "finding_ids": [
-    "P06",
+  "schema_version": "product-progress-plan-v1",
+  "as_of_utc": "2026-09-15T00:31:43+00:00",
+  "status": "implementation_in_progress",
+  "user_direction": "Desktop web now. Hosting/sharing on hold. Preserve final nationwide and specialist scope.",
+  "next_batch": [
     "P07",
-    "P08"
-   ],
-   "deliverables": [
-    "Warning lifecycle and applicability",
-    "Reviewed document-family extraction",
-    "Versioned chunks and metadata filters",
-    "Lexical plus dense retrieval with citations"
-   ],
-   "exit_checks": [
-    "Wrong-area/expired/cancelled/test events excluded",
-    "Updated bulletins supersede current retrieval versions",
-    "Wrong-place/time/crop retrieval and citation-support tests pass"
-   ],
-   "status": "district_warning_applicability_implemented_scoped_cap_applicability_origin_delivery_and_dissemination_open",
-   "distribution_hold": false,
-   "latest_evidence": "docs/27-official-warning-applicability.md",
-   "deliverable_state": {
-    "Official warning applicability for a place": "implemented in scope: point-in-polygon on the official district geometry, IST day windows derived from the bulletin date, official hazard codes and colours stated, stale bulletins excluded, unmapped points reported as outside every district",
-    "Warning lifecycle and delivery": "open: no live update, cancel or supersede edition has been observed, no delivery or subscription exists, and a CAP lifecycle result still never authorises dissemination",
-    "Origin authentication": "open and stated as unverified on every answer and in the tool trace"
-   }
-  },
-  {
-   "id": "S5",
-   "title": "Language, resilience and desktop usability",
-   "depends_on": [
-    "S2",
-    "S3",
-    "S4"
-   ],
-   "finding_ids": [
-    "P10",
-    "P11",
+    "P03",
     "P12",
-    "P13",
-    "P14"
-   ],
-   "deliverables": [
-    "Complete Hindi/Gujarati dialogue paths",
-    "Queue, cancel, progress and recovery",
-    "Source health/retention/restore rehearsal",
-    "Desktop answer charts and source inspection"
-   ],
-   "exit_checks": [
-    "Representative sustained run measured",
-    "No lost correction context",
-    "Fluent review and desktop journey checks pass"
-   ],
-   "status": "desktop_suite_map_observations_and_source_inspection_implemented_scoped_language_queue_mobile_and_watch_open",
-   "distribution_hold": false,
-   "latest_evidence": "docs/28-weather-suite-overhaul.md",
-   "evidence": "docs/25-frontend-overhaul-batch.md",
-   "deliverable_state": {
-    "Desktop answer charts and source inspection": "implemented and recorded: eleven surfaces over a read-model API, with charts, per-surface provenance, limits and a vendored map",
-    "Source health/retention/restore rehearsal": "implemented and recorded: conversation ledger with search, restore and local delete, plus a read-only collection-health panel",
-    "Queue, cancel, progress and recovery": "cancel and progress only: still no bounded model queue and no stage streaming, and the assistant remains one question at a time",
-    "Complete Hindi/Gujarati dialogue paths": "not achieved: a requested output language is expressible and its failure is disclosed, and the surfaces themselves are English only",
-    "Watch and early-warning delivery": "not built: the Watch control states that no delivery mechanism is connected"
-   }
-  },
-  {
-   "id": "S6",
-   "title": "Later voice, mobile and distribution",
-   "depends_on": [
-    "S5"
-   ],
-   "finding_ids": [
     "P06",
-    "P13",
-    "P14"
-   ],
-   "deliverables": [
-    "STT/transcript/TTS",
-    "Mobile acceptance",
-    "Subscriptions/outbox/delivery lifecycle",
-    "Private hosting and release packaging"
-   ],
-   "exit_checks": [
-    "Voice preserves entities/time/units/negation",
-    "Notifications update/expire/revoke correctly",
-    "User-approved sharing readiness and verified deployed journeys"
-   ],
-   "status": "proposed",
-   "distribution_hold": true,
-   "latest_evidence": "docs/18-bulletin-retrieval-and-warning-lifecycle.md"
-  }
- ],
- "critical_review": "docs/14-product-review-and-progress-plan.md",
- "standing_instructions": "AGENTS.md",
- "findings": {
-  "P01": {
-   "status": "verified_scoped",
-   "evidence": "docs/15-answer-fidelity-and-historical-analysis.md"
+    "P10"
+  ],
+  "parallel_discovery_note": "Begin official access/validity/geography work early; no requirement to wait for every other stage.",
+  "stages": [
+    {
+      "id": "S1",
+      "title": "Answer fidelity and task coverage",
+      "depends_on": [],
+      "finding_ids": [
+        "P01",
+        "P02",
+        "P03",
+        "P08",
+        "P12"
+      ],
+      "deliverables": [
+        "Claim attribution tuples and deterministic factual rendering",
+        "Verified national/district serving manifests",
+        "Typed task list, operations and date ranges",
+        "Task-level coverage status and accepted entity state"
+      ],
+      "exit_checks": [
+        "Wrong entity/time/unit swaps rejected",
+        "Altered copied historical artifacts rejected",
+        "Every requested subtask completed or explicitly missing"
+      ],
+      "status": "implemented_scoped_broader_semantic_acceptance_open",
+      "distribution_hold": false,
+      "evidence": "docs/15-answer-fidelity-and-historical-analysis.md",
+      "latest_evidence": "docs/22-engine-context-repairs.md"
+    },
+    {
+      "id": "S2",
+      "title": "Everyday forecast and research answers",
+      "depends_on": [
+        "S1"
+      ],
+      "finding_ids": [
+        "P03",
+        "P05",
+        "P09"
+      ],
+      "deliverables": [
+        "Extended forecast contract",
+        "Hourly timeline and exact supported interval operations",
+        "Daily reanalysis and range lookup",
+        "Descriptive comparisons, baselines, trends and charts"
+      ],
+      "exit_checks": [
+        "Probability semantics and variable lineage validated",
+        "Daily questions never become annual lookups",
+        "Independent calculation oracles and missingness gates pass"
+      ],
+      "status": "hourly_forecast_and_daily_reanalysis_implemented_scoped_broader_analysis_and_validation_open",
+      "distribution_hold": false,
+      "evidence": "docs/16-hourly-and-daily-point-tools.md",
+      "latest_evidence": "docs/17-conversation-engine-refinement.md"
+    },
+    {
+      "id": "S3",
+      "title": "Specialist adapter activation",
+      "depends_on": [
+        "S1"
+      ],
+      "finding_ids": [
+        "P04",
+        "P08",
+        "P10"
+      ],
+      "deliverables": [
+        "METAR/TAF/station tools",
+        "Marine wave tool",
+        "River discharge tool",
+        "Typed specialist entities and unified source budgets"
+      ],
+      "exit_checks": [
+        "Airport/sea/river identity and time verified",
+        "Data type distinctions visible",
+        "No closure, flight disruption or flood impact claims without evidence"
+      ],
+      "status": "airport_marine_and_river_conversation_tools_implemented_scoped_official_sea_area_gauge_identity_and_domain_review_open",
+      "distribution_hold": false,
+      "latest_evidence": "docs/23-marine-and-river-tools.md"
+    },
+    {
+      "id": "S4",
+      "title": "Official warnings and document retrieval",
+      "depends_on": [
+        "S1"
+      ],
+      "finding_ids": [
+        "P06",
+        "P07",
+        "P08"
+      ],
+      "deliverables": [
+        "Warning lifecycle and applicability",
+        "Reviewed document-family extraction",
+        "Versioned chunks and metadata filters",
+        "Lexical plus dense retrieval with citations"
+      ],
+      "exit_checks": [
+        "Wrong-area/expired/cancelled/test events excluded",
+        "Updated bulletins supersede current retrieval versions",
+        "Wrong-place/time/crop retrieval and citation-support tests pass"
+      ],
+      "status": "district_warning_applicability_and_corpus_chat_implemented_scoped_cap_applicability_origin_delivery_and_dissemination_open",
+      "distribution_hold": false,
+      "latest_evidence": "docs/32-corpus-chat-and-planner-robustness.md",
+      "deliverable_state": {
+        "Official warning applicability for a place": "implemented in scope: point-in-polygon on the official district geometry, IST day windows derived from the bulletin date, official hazard codes and colours stated, stale bulletins excluded, unmapped points reported as outside every district",
+        "Warning lifecycle and delivery": "open: no live update, cancel or supersede edition has been observed, no delivery or subscription exists, and a CAP lifecycle result still never authorises dissemination",
+        "Origin authentication": "open and stated as unverified on every answer and in the tool trace",
+        "Reviewed document-family extraction and conversational corpus retrieval": "implemented in scope: 582 indexed documents across 12 families are retrievable from conversation with family, scope, region, physical page, printed issue date, currency and retrieval instant attached; warning-classified text is reference only; earlier editions are retired from current retrieval. Full-document recall, held-layout widening and cross-edition contradiction resolution remain open."
+      }
+    },
+    {
+      "id": "S5",
+      "title": "Language, resilience and desktop usability",
+      "depends_on": [
+        "S2",
+        "S3",
+        "S4"
+      ],
+      "finding_ids": [
+        "P10",
+        "P11",
+        "P12",
+        "P13",
+        "P14"
+      ],
+      "deliverables": [
+        "Complete Hindi/Gujarati dialogue paths",
+        "Queue, cancel, progress and recovery",
+        "Source health/retention/restore rehearsal",
+        "Desktop answer charts and source inspection"
+      ],
+      "exit_checks": [
+        "Representative sustained run measured",
+        "No lost correction context",
+        "Fluent review and desktop journey checks pass"
+      ],
+      "status": "desktop_suite_map_observations_and_source_inspection_implemented_scoped_language_queue_mobile_and_watch_open",
+      "distribution_hold": false,
+      "latest_evidence": "docs/28-weather-suite-overhaul.md",
+      "evidence": "docs/25-frontend-overhaul-batch.md",
+      "deliverable_state": {
+        "Desktop answer charts and source inspection": "implemented and recorded: twelve surfaces over a read-model API, with charts, per-surface provenance, limits, a vendored map and a raw-packet inspector",
+        "Source health/retention/restore rehearsal": "implemented and recorded: conversation ledger with search, restore and local delete, plus a read-only collection-health panel",
+        "Queue, cancel, progress and recovery": "cancel and progress only: still no bounded model queue and no stage streaming, and the assistant remains one question at a time",
+        "Complete Hindi/Gujarati dialogue paths": "not achieved: a requested output language is expressible and its failure is disclosed, and the surfaces themselves are English only",
+        "Watch and early-warning delivery": "not built: the Watch control states that no delivery mechanism is connected"
+      }
+    },
+    {
+      "id": "S6",
+      "title": "Later voice, mobile and distribution",
+      "depends_on": [
+        "S5"
+      ],
+      "finding_ids": [
+        "P06",
+        "P13",
+        "P14"
+      ],
+      "deliverables": [
+        "STT/transcript/TTS",
+        "Mobile acceptance",
+        "Subscriptions/outbox/delivery lifecycle",
+        "Private hosting and release packaging"
+      ],
+      "exit_checks": [
+        "Voice preserves entities/time/units/negation",
+        "Notifications update/expire/revoke correctly",
+        "User-approved sharing readiness and verified deployed journeys"
+      ],
+      "status": "proposed",
+      "distribution_hold": true,
+      "latest_evidence": "docs/18-bulletin-retrieval-and-warning-lifecycle.md"
+    }
+  ],
+  "critical_review": "docs/14-product-review-and-progress-plan.md",
+  "standing_instructions": "AGENTS.md",
+  "findings": {
+    "P01": {
+      "status": "verified_scoped",
+      "evidence": "docs/15-answer-fidelity-and-historical-analysis.md"
+    },
+    "P02": {
+      "status": "verified_scoped",
+      "evidence": "docs/15-answer-fidelity-and-historical-analysis.md"
+    },
+    "P03": {
+      "status": "partial",
+      "evidence": "docs/22-engine-context-repairs.md",
+      "latest_evidence": "docs/36-context-edit-matrix.md",
+      "current_evidence": "Deterministic edit detection now covers named time bands, named years, named new measures and corrections that rule a measure out; bare rain words were added to the vocabulary. Three recorded live multi-turn sequences answered with the right windows, years and measures; the detectors are pinned by 7 offline matrix checks. Reference resolution and paraphrase/holdout coverage remain open."
+    },
+    "P04": {
+      "status": "partial",
+      "evidence": "docs/23-marine-and-river-tools.md",
+      "latest_evidence": "docs/42-specialist-sea-area-decision.md",
+      "current_evidence": "Official sea-area and coastal text is reachable as published documents with page, issue and currency attached, while the marine tool returns modeled wave cells at the answering grid. Named sea-area identity, printed validity windows and a domain-reviewed specialist composition remain open; the recorded decision is not to invent a mapping."
+    },
+    "P05": {
+      "status": "partial",
+      "evidence": "docs/17-conversation-engine-refinement.md"
+    },
+    "P06": {
+      "status": "partial",
+      "evidence": "docs/27-official-warning-applicability.md",
+      "latest_evidence": "docs/38-watch-requests.md",
+      "current_evidence": "Watch requests are now handled explicitly: a local watch records place, hazard and window; it is checked only on request; a flood or cyclone watch is recorded as hazard_not_connected rather than mapped onto the district warning product; two live journeys show registration and a checked_no_match. Delivery, subscriptions, push and origin authentication remain open, and the CAP lifecycle never authorises dissemination."
+    },
+    "P07": {
+      "status": "partial",
+      "evidence": "docs/20-bulletin-parent-context.md",
+      "latest_evidence": "docs/32-corpus-chat-and-planner-robustness.md"
+    },
+    "P08": {
+      "status": "partial",
+      "evidence": "docs/20-bulletin-parent-context.md",
+      "latest_evidence": "docs/37-historical-alias-candidates.md",
+      "current_evidence": "Historical district misses now offer source-lined place-index candidates (alternate spellings such as Mysore, and the district a settlement falls in such as Khurda) that require confirmation; two live journeys answered after selection and an unknown name kept the refusal. No reviewed dated crosswalk exists, so no automatic alias resolution is claimed."
+    },
+    "P09": {
+      "status": "partial",
+      "evidence": "docs/16-hourly-and-daily-point-tools.md",
+      "latest_evidence": "docs/43-forecast-vintage-variance.md",
+      "current_evidence": "Stored forecast vintages were compared for 4,032 overlapping valid hours: mean absolute change 0.70 C for temperature, 3.98 percent for humidity, 0.94 mm for precipitation, with the largest change coming from two retrievals one second apart. This is vintage variance, not skill: upstream run identity is not exposed and no matched observations exist, so no accuracy, calibration or confidence number is produced."
+    },
+    "P10": {
+      "status": "partial",
+      "evidence": "docs/18-bulletin-retrieval-and-warning-lifecycle.md",
+      "latest_evidence": "docs/41-speech-roundtrip-voice-checks-and-daily-cycle.md",
+      "current_evidence": "A bounded foreground daily cycle now chains document intake, an optional district sweep, watch checks, the retention report and health; a live national_bulletin cycle completed four steps in about 41 seconds. No daemon or schedule is installed; the recorded decision remains manual trigger now, scheduler later, and sustained cadence/throughput is unmeasured."
+    },
+    "P11": {
+      "status": "partial",
+      "evidence": "research/reviews/product-potential-20260912/findings.json",
+      "latest_evidence": "docs/34-bounded-queue-and-cancellation.md",
+      "current_evidence": "A bounded queue (one active, three waiting, 45 s) with explicit refusal replaced instant rejection, and a cancellation endpoint with stage checkpoints discards a stopped turn's partial evidence; the page stop reports the server's own response. Stage streaming, queue position and pre-emptive cancellation of an in-flight model call remain open."
+    },
+    "P12": {
+      "status": "partial",
+      "evidence": "docs/22-engine-context-repairs.md",
+      "latest_evidence": "docs/45-benchmark-expansion.md",
+      "current_evidence": "The declared benchmark grew to 17 development cases (forecast, history, warning, document, agriculture, language, marine, river, aviation, adversarial, multi-turn) with the 4-case holdout untouched. The expanded live run: 18 declared tasks, 12 completed (66.7%), 6 incomplete, 0 missing, 0 prohibited claims, 0 critical failures; every incomplete is an honest partial or place selection. Still far below the docs/14 scale and one live pass."
+    },
+    "P13": {
+      "status": "partial",
+      "evidence": "docs/18-bulletin-retrieval-and-warning-lifecycle.md",
+      "latest_evidence": "docs/41-speech-roundtrip-voice-checks-and-daily-cycle.md",
+      "current_evidence": "Voice component checks now pin measured-language filtering, the confirmable transcript with recognition-only confidence, and the refusal to speak an unmeasured language. A live round-trip measurement records place/unit/negation presence for Hindi and Gujarati, with numerals again observed as word forms and recognition probability null on this run. No speech accuracy, noisy-input or browser audio acceptance exists."
+    },
+    "P14": {
+      "status": "partial",
+      "evidence": "research/reviews/product-potential-20260912/findings.json",
+      "latest_evidence": "docs/39-verification-backup-and-drift-guard.md",
+      "current_evidence": "A one-command verification (18 steps: environment, registries, drift guard, Python suite and five component suites), pinned dependency files, and a verified backup/restore path for conversations, watches, ingestion and the bulletin index. No CI service, container, off-machine copy or scheduled run exists; hosting and packaging for sharing remain on hold."
+    },
+    "P15": {
+      "status": "partial",
+      "evidence": "docs/15-answer-fidelity-and-historical-analysis.md",
+      "latest_evidence": "docs/39-verification-backup-and-drift-guard.md",
+      "current_evidence": "A status drift guard now fails when READMEs recorded test count differs from pytest collection, when registry-named documents or evidence paths are missing, when a finding status is outside the vocabulary, or when ledger counts disagree with their rows. It found real drift on its first run and is part of scripts/verify_all.py."
+    }
   },
-  "P02": {
-   "status": "verified_scoped",
-   "evidence": "docs/15-answer-fidelity-and-historical-analysis.md"
-  },
-  "P03": {
-   "status": "partial",
-   "evidence": "docs/22-engine-context-repairs.md"
-  },
-  "P04": {
-   "status": "partial",
-   "evidence": "docs/23-marine-and-river-tools.md"
-  },
-  "P05": {
-   "status": "partial",
-   "evidence": "docs/17-conversation-engine-refinement.md"
-  },
-  "P06": {
-   "status": "partial",
-   "evidence": "docs/27-official-warning-applicability.md"
-  },
-  "P07": {
-   "status": "partial",
-   "evidence": "docs/20-bulletin-parent-context.md"
-  },
-  "P08": {
-   "status": "partial",
-   "evidence": "docs/20-bulletin-parent-context.md"
-  },
-  "P09": {
-   "status": "partial",
-   "evidence": "docs/16-hourly-and-daily-point-tools.md"
-  },
-  "P10": {
-   "status": "partial",
-   "evidence": "docs/18-bulletin-retrieval-and-warning-lifecycle.md"
-  },
-  "P11": {
-   "status": "open",
-   "evidence": "research/reviews/product-potential-20260912/findings.json"
-  },
-  "P12": {
-   "status": "partial",
-   "evidence": "docs/22-engine-context-repairs.md"
-  },
-  "P13": {
-   "status": "partial",
-   "evidence": "docs/18-bulletin-retrieval-and-warning-lifecycle.md"
-  },
-  "P14": {
-   "status": "open",
-   "evidence": "research/reviews/product-potential-20260912/findings.json"
-  },
-  "P15": {
-   "status": "partial",
-   "evidence": "docs/15-answer-fidelity-and-historical-analysis.md"
-  }
- },
- "proposed_distinctive_features": [
-  {
-   "feature": "Explain why the answer changed since the last briefing",
-   "ps_alignment": "Forecast context, source freshness and decision support",
-   "prerequisite": "Versioned comparable forecast intervals and an explicit source/run identity"
-  },
-  {
-   "feature": "One evidence receipt connecting place, time, source and calculation",
-   "ps_alignment": "Accuracy, relevance and accessible contextual answers",
-   "status": "implemented_scoped"
-  },
-  {
-   "feature": "Different detail levels over the same verified evidence for citizens, farmers and researchers",
-   "ps_alignment": "Accessibility and multiple named use cases",
-   "prerequisite": "Reviewed domain tools; no unsupported risk scores"
-  }
- ],
- "latest_batch": "docs/29-source-activation-and-document-intake.md",
- "next_batch_note": "Two paths run in parallel. Source path: make the indexed document corpus reachable from chat (A06), which is the open half of docs/29 — the corpus exists, nothing can ask it anything yet. Language path: docs/30-multilingual-and-voice-path.md covers PS features 6 and 8 with the user's Sarvam key; it shares no code with the source path and can proceed independently.",
- "open_paths": [
-  {
-   "path": "source_and_document",
-   "plan": "docs/29-source-activation-and-document-intake.md",
-   "state": "intake landed; retrieval not wired to chat",
-   "next": [
-    "Wire whole-document retrieval into task dispatch (A06)",
-    "New adapters S23, S28, S58, S59, S07, S08, S09, S16/S17",
-    "Widen extraction families for held layouts",
-    "Engine repairs A01, A02, A04, A07"
-   ]
-  },
-  {
-   "path": "multilingual_and_voice",
-   "plan": "docs/30-multilingual-and-voice-path.md",
-   "state": "planned; nothing built",
-   "ps_features": [
-    6,
-    8
-   ],
-   "next": [
-    "Bounded Sarvam client and measured per-language capability registry",
-    "Translation behind a deterministic invariant gate; templates for safety-critical clauses",
-    "Extend dialogue.SCRIPTS per language made writable",
-    "Voice output over gated text, then confirmable voice input"
-   ],
-   "constraints": [
-    "Key in local backend configuration only, never committed",
-    "Recognition confidence is never answer confidence",
-    "Hosted API means user questions and voice leave the machine; state it"
-   ]
-  }
- ]
+  "proposed_distinctive_features": [
+    {
+      "feature": "Explain why the answer changed since the last briefing",
+      "ps_alignment": "Forecast context, source freshness and decision support",
+      "prerequisite": "Versioned comparable forecast intervals and an explicit source/run identity"
+    },
+    {
+      "feature": "One evidence receipt connecting place, time, source and calculation",
+      "ps_alignment": "Accuracy, relevance and accessible contextual answers",
+      "status": "implemented_scoped"
+    },
+    {
+      "feature": "Different detail levels over the same verified evidence for citizens, farmers and researchers",
+      "ps_alignment": "Accessibility and multiple named use cases",
+      "prerequisite": "Reviewed domain tools; no unsupported risk scores"
+    }
+  ],
+  "latest_batch": "docs/46-frontend-instrument-desk.md",
+  "next_batch_note": "The indexed corpus is now reachable from chat (A06): 582 documents across 12 families answer through a bounded document task with page, printed issue date, currency and reference-only warning separation. The open source-path work is now held-layout widening, A01/A04/A07 engine repairs, and the declared acceptance benchmark (G08). The multilingual path has measured reach; its remaining gap is the 13 failed write languages (G04) and clarification rendering.",
+  "open_paths": [
+    {
+      "path": "source_and_document",
+      "plan": "docs/29-source-activation-and-document-intake.md",
+      "state": "corpus chat wired: 9 document sources reachable; 8 formerly ingested-not-conversational sources now conversational",
+      "next": [
+        "Widen extraction families for 45 held layouts and review OCR",
+        "Engine repairs A01, A04, A07 and the declared acceptance benchmark (G08)",
+        "Cross-edition contradiction handling and full-document recall measurement",
+        "Forecast skill needs archived run identities plus matched observations (docs/43)"
+      ]
+    },
+    {
+      "path": "multilingual_and_voice",
+      "plan": "docs/30-multilingual-and-voice-path.md",
+      "state": "write reach repaired and measured on 15 September 2026: the provider default is retried on the wider sarvam-translate:v1 when it refuses a language and names that model; measured write rose from 10 to 20 of 23 languages, speech and hearing stay at 10 verified, and the ten new written languages are beta-gated for speech by the provider. Three languages still fail the write gate and are refused.",
+      "ps_features": [
+        6,
+        8
+      ],
+      "next": [
+        "Record entity/unit preservation after a spoken round trip; browser/audio acceptance; fluent review",
+        "Clarification and caveat rendering through the same gate when the service is configured (partly done)",
+        "Do not claim fluency: no native speaker has reviewed any output",
+        "Keep the key in local configuration and never log or publish it"
+      ],
+      "constraints": [
+        "Key in local backend configuration only, never committed",
+        "Recognition confidence is never answer confidence",
+        "Hosted API means user questions and voice leave the machine; state it"
+      ]
+    }
+  ]
 }

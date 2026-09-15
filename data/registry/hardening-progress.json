@@ -1,7 +1,7 @@
 {
   "schema_version": "hardening-progress-v1",
   "review": "research/reviews/national-readiness-20260912/review.md",
-  "updated_at_utc": "2026-09-14T18:40:00+00:00",
+  "updated_at_utc": "2026-09-15T00:31:43+00:00",
   "operational_ready": false,
   "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
   "findings": [
@@ -26,8 +26,8 @@
     {
       "id": "R02",
       "status": "partial",
-      "current_evidence": ": ('The district warning layer now resolves a place to a district by point-in-polygon on its own geometry, day windows are derived and validated against the source day selector, expired days are excluded from current facts, an unmapped point is reported as outside every district, and the source reports no truncation. See docs/27-official-warning-applicability.md. CAP geographic applicability, origin authentication, live update/cancel editions and feed completeness for CAP remain open.'",
-      "next_action": "('Obtain a live update, cancel or supersede edition and verify CAP geographic applicability to a resolved place; keep origin authentication unverified until a supported authentication path exists.')",
+      "current_evidence": "The district warning layer now resolves a place to a district by point-in-polygon on its own geometry, day windows are derived and validated against the source day selector, expired days are excluded from current facts, an unmapped point is reported as outside every district, and the source reports no truncation. See docs/27-official-warning-applicability.md. CAP geographic applicability, origin authentication, live update/cancel editions and feed completeness for CAP remain open.",
+      "next_action": "Obtain a live update, cancel or supersede edition and verify CAP geographic applicability to a resolved place; keep origin authentication unverified until a supported authentication path exists.",
       "acceptance": "No silent truncation; expired/cancelled/unmapped warnings cannot be current evidence.",
       "evidence": [
         "weathergpt_data/foundation.py",
@@ -111,7 +111,7 @@
     {
       "id": "R08",
       "status": "open",
-      "current_evidence": ": ('Supported official payload access is now measured for the IMD district warning layer and the IMD CAP relay: both are reachable from this machine and their products are kept distinct in the answer. Access is technically established but not authorised, because S06 carries usage_terms not established for production redistribution and every source remains user_review pending.')",
+      "current_evidence": "'Supported official payload access is now measured for the IMD district warning layer and the IMD CAP relay: both are reachable from this machine and their products are kept distinct in the answer. Access is technically established but not authorised, because S06 carries usage_terms not established for production redistribution and every source remains user_review pending.'",
       "next_action": "Establish supported official payload access and source/upstream dependency lineage.",
       "acceptance": "Distinct observations, models and official products with measured supported access.",
       "evidence": [
@@ -122,7 +122,7 @@
     {
       "id": "R09",
       "status": "partial",
-      "current_evidence": "Four inspected district editions across three PDF families provide 56 indexed source passages; one prior crop mismatch quarantined. Surat and Madurai remain held. Literal pending slots, separate multi-crop tasks and explicit all-matches retrieval passed recorded source-replayed HTTP journeys. Twenty distinct parent sections/rows from the same four editions now accompany crop retrieval; unreadable context and bounded opposing activity wording remain explicit. See docs/20-bulletin-parent-context.md.",
+      "current_evidence": "Four inspected district editions across three PDF families provide 56 indexed source passages; one prior crop mismatch quarantined. Surat and Madurai remain held. Literal pending slots, separate multi-crop tasks and explicit all-matches retrieval passed recorded source-replayed HTTP journeys. Twenty distinct parent sections/rows from the same four editions now accompany crop retrieval; unreadable context and bounded opposing activity wording remain explicit. See docs/20-bulletin-parent-context.md. The whole-document corpus is now conversational: 582 indexed documents and 6,700 passages across 12 families are retrievable with family, scope, region, physical page, printed issue date and currency attached, published warning text is separated as reference only, and earlier editions are retired from current retrieval. See docs/32-corpus-chat-and-planner-robustness.md.",
       "next_action": "Review held Nagpur/Surat/Madurai layouts, benchmark full-document recall and conditional reasoning, preserve source warning dates, and validate stage/language applicability before personalized advice.",
       "acceptance": "Wrong place/time/crop and unreviewed extraction cannot qualify for current answers.",
       "evidence": [
@@ -151,7 +151,7 @@
     {
       "id": "R11",
       "status": "partial",
-      "current_evidence": "213 automated tests pass. Initial real-model evaluation used 26 supplied questions plus 10 authored cases; 10 responses had numeric evidence, with clarification/partial answers not counted as completion. Targeted HTTP journeys verify location selection, follow-ups, history and repaired week coverage. Hindi/Gujarati forecast wording is controlled after a real translation error. Scientific, sustained and browser/mobile acceptance remain incomplete. A new independent review reran all 213 tests but reproduced P01/P02 attribution/integrity gaps and P03 task loss; passing tests therefore do not close these answer-correctness gaps. Product stage one passes 229 tests and adds live multi-measure, comparison, descriptive-trend, missing-year and mixed-task checks. P01 source attribution and P02 serving-integrity reproductions are repaired; broader semantic/model and scientific validation remain open. The next batch passes 252 tests and adds real-model hourly/daily HTTP journeys, including a reproduced and repaired daily planner-boundary error. The bulletin/lifecycle batch passes 319 Python tests and 15 real-model HTTP turns, with source-byte replay and explicit held outcomes; see the new report for scoped counts and remaining limits. Parent-context batch: 356 tests and 16 final HTTP turns with source replay, plus a scoped desktop interaction/download check. Full language, browser/mobile and scientific acceptance remain open.",
+      "current_evidence": "213 automated tests pass. Initial real-model evaluation used 26 supplied questions plus 10 authored cases; 10 responses had numeric evidence, with clarification/partial answers not counted as completion. Targeted HTTP journeys verify location selection, follow-ups, history and repaired week coverage. Hindi/Gujarati forecast wording is controlled after a real translation error. Scientific, sustained and browser/mobile acceptance remain incomplete. A new independent review reran all 213 tests but reproduced P01/P02 attribution/integrity gaps and P03 task loss; passing tests therefore do not close these answer-correctness gaps. Product stage one passes 229 tests and adds live multi-measure, comparison, descriptive-trend, missing-year and mixed-task checks. P01 source attribution and P02 serving-integrity reproductions are repaired; broader semantic/model and scientific validation remain open. The next batch passes 252 tests and adds real-model hourly/daily HTTP journeys, including a reproduced and repaired daily planner-boundary error. The bulletin/lifecycle batch passes 319 Python tests and 15 real-model HTTP turns, with source-byte replay and explicit held outcomes; see the new report for scoped counts and remaining limits. Parent-context batch: 356 tests and 16 final HTTP turns with source replay, plus a scoped desktop interaction/download check. Full language, browser/mobile and scientific acceptance remain open. Latest checkpoint 15 September 2026: 588 automated tests pass; test counts remain a measure of the suite, not of user-task completion.",
       "next_action": "Extend the forecast/daily/specialist task tools, with held-out semantic and scientific evaluation; preserve the repaired claim/publication gates.",
       "acceptance": "Published coverage, reliability and scientific/answer evaluation for declared scope.",
       "evidence": [
@@ -279,7 +279,9 @@
       "P09",
       "P10",
       "P12"
-    ]
+    ],
+    "scope": null,
+    "acceptance_note": null
   },
   "conversation_engine_batch": {
     "report": "docs/17-conversation-engine-refinement.md",
@@ -295,7 +297,9 @@
       "P12",
       "P13"
     ],
-    "operational_ready": false
+    "operational_ready": false,
+    "scope": null,
+    "acceptance_note": null
   },
   "bulletin_retrieval_batch": {
     "report": "docs/18-bulletin-retrieval-and-warning-lifecycle.md",
@@ -305,7 +309,8 @@
       "S06"
     ],
     "operational_ready": false,
-    "scope": "Published crop/stage passages in three inspected families and CAP feed lifecycle/source assessment; current official applicability and nationwide document acceptance remain open."
+    "scope": "Published crop/stage passages in three inspected families and CAP feed lifecycle/source assessment; current official applicability and nationwide document acceptance remain open.",
+    "acceptance_note": null
   },
   "context_retrieval_batch": {
     "report": "docs/19-context-and-retrieval-coverage.md",
@@ -314,7 +319,8 @@
       "S57"
     ],
     "operational_ready": false,
-    "scope": "Pending document slots, multi-crop coverage and explicit all-matches retrieval; four inspected districts in three PDF families, with Surat and Madurai held. National corpus completeness, personalized advice and general-section retrieval remain open."
+    "scope": "Pending document slots, multi-crop coverage and explicit all-matches retrieval; four inspected districts in three PDF families, with Surat and Madurai held. National corpus completeness, personalized advice and general-section retrieval remain open.",
+    "acceptance_note": null
   },
   "bulletin_parent_context_batch": {
     "report": "docs/20-bulletin-parent-context.md",
@@ -342,7 +348,8 @@
         "F07",
         "F10"
       ]
-    }
+    },
+    "acceptance_note": null
   },
   "frontend_overhaul_batch": {
     "report": "docs/25-frontend-overhaul-batch.md",
@@ -400,7 +407,8 @@
         "FE06"
       ]
     },
-    "remaining_open": "P10, P11, P13, P14 and P12 are unchanged by this batch; the lock, the queue and language output are untouched."
+    "remaining_open": "P10, P11, P13, P14 and P12 are unchanged by this batch; the lock, the queue and language output are untouched.",
+    "acceptance_note": null
   },
   "official_warning_batch": {
     "report": "docs/27-official-warning-applicability.md",
@@ -442,7 +450,8 @@
       ],
       "trajectory": "docs/21 step 2 (official warning and observation feasibility)"
     },
-    "remaining_open": "Origin authentication, CAP applicability to a place, live update/cancel editions, delivery and dissemination, and observation retrieval."
+    "remaining_open": "Origin authentication, CAP applicability to a place, live update/cancel editions, delivery and dissemination, and observation retrieval.",
+    "acceptance_note": null
   },
   "suite_overhaul_batch": {
     "report": "docs/28-weather-suite-overhaul.md",
@@ -491,5 +500,349 @@
       "trajectory": "docs/21 step 4 (accessible product behavior and dependable operation)"
     },
     "remaining_open": "Watch and notification delivery, voice, mobile acceptance, source terms, and whole-document advisory recall."
+  },
+  "corpus_chat_batch": {
+    "report": "docs/32-corpus-chat-and-planner-robustness.md",
+    "gap_register": "docs/31-full-solution-gap-register.md",
+    "evidence_directory": "research/implementation/corpus-chat-20260915",
+    "operational_ready": false,
+    "scope": "Whole-document retrieval over the indexed published corpus through a new document task kind, with printed issue date, currency, retrieval instant, physical page and document identity attached; warning-classified passages kept separate as reference only; superseded editions retired; a lexical-support floor with a disclosed Indic-script semantic fallback; and a disclosure-bounding repair for the planner. Warning delivery, dated aliases, sustained collection, voice/mobile acceptance and forecast skill remain untouched.",
+    "automated_tests": 588,
+    "journeys": [
+      {
+        "id": "C1",
+        "outcome": "partial",
+        "subject": "national weather bulletin, heavy rainfall"
+      },
+      {
+        "id": "C2",
+        "outcome": "partial",
+        "subject": "Gujarat state agromet bulletin, irrigation"
+      },
+      {
+        "id": "C3",
+        "outcome": "answered",
+        "subject": "Ahmedabad district agromet bulletin, cotton (crop path)"
+      },
+      {
+        "id": "C4",
+        "outcome": "partial",
+        "subject": "coastal weather bulletin, Gujarat coast"
+      },
+      {
+        "id": "C5",
+        "outcome": "partial",
+        "subject": "Gujarati question; semantic-only retrieval; gated rendering refused a duplicated value"
+      }
+    ],
+    "source_ledger": {
+      "file": "data/registry/source-review.json",
+      "wired_to_chat": 26,
+      "previous": 18,
+      "newly_wired": [
+        "S07",
+        "S08",
+        "S58",
+        "S59",
+        "S64",
+        "S65",
+        "S66",
+        "S67"
+      ],
+      "derivation": "capabilities.corpus_sources(), rebuilt by scripts/audit_sources.py"
+    },
+    "defects_fixed": [
+      "capabilities.retrieval_plan eager evidence_level lookup",
+      "passage_document shared-corpus manifest verification",
+      "district state missing from the publisher directory when the planner omitted it",
+      "retrieval served an unasked-for top-ranked passage without lexical support"
+    ],
+    "limitations": [
+      "No full-document recall; the answer is a selected extract.",
+      "No archive: the corpus is what publishers served on the sweep days.",
+      "Currency is stated per document, not fixed; 36 district documents state no printed date.",
+      "No agronomic, warning, marine or hydrological validation.",
+      "No OCR and no held-layout widening.",
+      "No cross-edition contradiction resolution.",
+      "Five journeys are not an acceptance benchmark."
+    ],
+    "acceptance_note": null
+  },
+  "language_write_reach_batch": {
+    "report": "docs/33-language-write-reach.md",
+    "evidence_directory": "research/discovery/evidence/language-remasure-20260915",
+    "operational_ready": false,
+    "scope": "The translation client now retries once on the wider model the provider itself names when its default refuses a language. Measured write support rose from 10 to 20 of 23 registered languages; speak and hear remain 10 verified; three languages fail the write gate and are recorded refused. Speech for the ten new written languages returns a beta-access refusal from the provider.",
+    "automated_tests": 591,
+    "write_verified": 20,
+    "speak_verified": 10,
+    "hear_verified": 10,
+    "still_failed_write": [
+      "sat",
+      "sd",
+      "ta"
+    ],
+    "speak_blocked_by_provider_beta_access": 10,
+    "limitations": [
+      "One probe per language at one instant; model versions change.",
+      "No native-speaker review; written is not fluent.",
+      "A failed language is refused, never offered with a warning.",
+      "Every call is hosted: the text leaves the machine."
+    ]
+  },
+  "queue_cancel_batch": {
+    "report": "docs/34-bounded-queue-and-cancellation.md",
+    "evidence_directory": "research/implementation/queue-cancel-20260915",
+    "operational_ready": false,
+    "scope": "A bounded conversation queue (one active, three waiting, 45 s wait) with explicit refusal; a cancel endpoint with stage checkpoints that discards a stopped turn's partial evidence; a stop control that reports the server response. Cancellation is not pre-emptive, there is no stage streaming or queue position, and no load or capacity measurement was taken.",
+    "automated_tests": 598,
+    "live_checks": [
+      "cancel while planning returned cancel_requested then status cancelled at the planned checkpoint",
+      "cancel after completion returned not_running",
+      "two concurrent questions: one active, one queued and answered"
+    ],
+    "limitations": [
+      "An in-flight Ollama call completes before cancellation takes effect.",
+      "Two journeys are not a load or capacity test.",
+      "Queue capacity refusal was exercised in component tests, not live."
+    ]
+  },
+  "acceptance_benchmark_batch": {
+    "report": "docs/35-acceptance-benchmark.md",
+    "evidence_directory": "research/reviews/acceptance-benchmark-20260915",
+    "registry": "data/registry/acceptance-benchmark.json",
+    "runner": "scripts/benchmark_acceptance.py",
+    "operational_ready": false,
+    "scope": "Ten development and four holdout cases declaring requested tasks before execution, run live against the real engine. Requested, planned, executed and answered are counted separately; abstention is not completion; a prohibited-claim hit is a critical failure. Not a forecast-skill, fluency or usability measurement, and far below the docs/14 scale target.",
+    "automated_tests": 604,
+    "development": {
+      "cases": 10,
+      "turns": 11,
+      "declared_tasks": 11,
+      "completed": 8,
+      "incomplete": 3,
+      "missing": 0,
+      "abstained_turns": 1,
+      "critical_failures": 0
+    },
+    "holdout": {
+      "cases": 4,
+      "turns": 4,
+      "declared_tasks": 4,
+      "completed": 2,
+      "incomplete": 2,
+      "missing": 0,
+      "abstained_turns": 0,
+      "critical_failures": 0
+    },
+    "limitations": [
+      "Small authored sets; the proposed 90% gate is not met.",
+      "One current-clock live pass on one machine; sources change.",
+      "Parameter-level task matching is not scored yet.",
+      "No forecast skill, fluency, usability or load measurement.",
+      "The holdout must not be edited or reused as unseen after this reviewed run."
+    ],
+    "expansion": {
+      "report": "docs/45-benchmark-expansion.md",
+      "evidence_directory": "research/reviews/acceptance-benchmark-20260915b/development",
+      "development_cases": 17,
+      "turns": 19,
+      "declared_tasks": 18,
+      "completed": 12,
+      "incomplete": 6,
+      "missing": 0,
+      "abstained_turns": 3,
+      "critical_failures": 0,
+      "completion_rate": 0.667,
+      "note": "Two development cases under-declared needs_selection and were corrected for future runs; no engine change followed."
+    }
+  },
+  "context_edit_matrix_batch": {
+    "report": "docs/36-context-edit-matrix.md",
+    "evidence_directory": "research/implementation/context-matrix-20260915",
+    "operational_ready": false,
+    "automated_tests": 611,
+    "scope": "Deterministic edit detection for named time bands, named years, named new measures and negation corrections, plus a stale-quote guard and bare rain words in the measure vocabulary. Three live multi-turn sequences answered; the deterministic detectors are isolated by offline fixtures, not by the live runs.",
+    "limitations": [
+      "Reference resolution by description needs the planner.",
+      "Place corrections in prose are not covered by a lexical rule.",
+      "Multi-task and partial corrections are not in the benchmark.",
+      "No fluent review of continuations."
+    ]
+  },
+  "historical_alias_batch": {
+    "report": "docs/37-historical-alias-candidates.md",
+    "evidence_directory": "research/implementation/historical-alias-20260915",
+    "operational_ready": false,
+    "automated_tests": 627,
+    "scope": "Place-index candidates for historical series names: alternate place names, the district a settlement falls in, the district place older spellings and historical state labels. Candidates require confirmation, are labelled as place-index labels rather than a crosswalk, and a name with no candidate keeps the original refusal.",
+    "limitations": [
+      "No reviewed dated administrative crosswalk or LGD codes.",
+      "No automatic alias resolution.",
+      "No nationwide alias coverage measurement."
+    ]
+  },
+  "watch_requests_batch": {
+    "report": "docs/38-watch-requests.md",
+    "evidence_directory": "research/implementation/watches-20260915",
+    "operational_ready": false,
+    "automated_tests": 627,
+    "scope": "Local watch requests: deterministic intent and hazard reading, a runtime watch store with explicit states, pure bounded evaluation against the district warning hazard codes, a planner fallback that keeps the place the user wrote, API routes and CLI for foreground checks, and a Watch panel that reads the inbox and offers Check now. No push, no daemon, no flood or cyclone product, and origin authentication remains unverified.",
+    "live_journeys": [
+      "flood watch registered and checked as hazard_not_connected",
+      "heavy rain watch registered and checked as checked_no_match"
+    ],
+    "limitations": [
+      "No delivery or background evaluation.",
+      "No flood or cyclone product connected; those watches stay not connected.",
+      "Hazard codes mapped only where observed in the layer.",
+      "Origin authentication unverified; a no-match is not an all-clear."
+    ]
+  },
+  "verification_backup_batch": {
+    "report": "docs/39-verification-backup-and-drift-guard.md",
+    "evidence_directory": "research/implementation/packaging-rehearsal-20260915",
+    "operational_ready": false,
+    "automated_tests": 631,
+    "verify_all_steps": 18,
+    "rehearsal": {
+      "conversations_before": 369,
+      "conversations_after_restore": 369,
+      "stores": [
+        "conversations.sqlite",
+        "watches.sqlite",
+        "ingestion.sqlite",
+        "index.sqlite"
+      ]
+    },
+    "limitations": [
+      "No CI service, container or installer.",
+      "No off-machine copy and no scheduled run.",
+      "Source PDFs, model weights and the operating environment are outside the backup."
+    ]
+  },
+  "embedded_pdf_batch": {
+    "report": "docs/40-embedded-pdf-and-aria.md",
+    "operational_ready": false,
+    "automated_tests": 631,
+    "verify_all_steps": 19,
+    "scope": "A collapsed, same-origin, page-anchored PDF viewer for archived passages with aria-expanded and a titled frame; Content-Security-Policy frame-src self; component checks for collapsed state, same-origin src, title, toggle state and no refetch on reopen.",
+    "limitations": [
+      "No browser, screen-reader, keyboard-only or mobile acceptance.",
+      "No visual review across browsers.",
+      "No broader accessibility audit beyond these controls."
+    ]
+  },
+  "speech_and_cycle_batch": {
+    "report": "docs/41-speech-roundtrip-voice-checks-and-daily-cycle.md",
+    "evidence_directories": [
+      "research/implementation/speech-roundtrip-20260915",
+      "research/implementation/daily-cycle-20260915"
+    ],
+    "operational_ready": false,
+    "automated_tests": 633,
+    "scope": "A speech round-trip measurement that records place, numeral (digits or word form), unit and negation presence, plus voice component checks for measured-language filtering, confirmable transcripts and refusal to speak unmeasured languages; and a bounded foreground daily cycle (documents, optional district sweep, watches, retention report, health) with no daemon installed.",
+    "limitations": [
+      "No speech accuracy, intelligibility, noisy-input or browser audio acceptance.",
+      "No native-speaker review.",
+      "The daily cycle is manual; nothing runs on a schedule and no source cadence is validated.",
+      "Recognition probability was not returned on this run and is recorded as null."
+    ]
+  },
+  "specialist_sea_area_decision": {
+    "report": "docs/42-specialist-sea-area-decision.md",
+    "operational_ready": false,
+    "decision": "Sea-area and coastal bulletin text is reachable as published documents; named sea-area identity, printed validity windows and a domain-reviewed composition stay open rather than being invented.",
+    "needed_inputs": [
+      "a reviewed extraction version carrying printed validity and a publisher-stated sea-area label",
+      "a marine domain review"
+    ]
+  },
+  "vintage_variance_batch": {
+    "report": "docs/43-forecast-vintage-variance.md",
+    "evidence_directory": "research/implementation/vintage-variance-20260915",
+    "operational_ready": false,
+    "automated_tests": 635,
+    "scope": "Stored forecast vintages compared for overlapping valid hours per point/parameter, with retrieval instants named. Explicitly not skill, calibration or confidence: run identity is not exposed and no observations are matched.",
+    "measured": {
+      "overlapping_valid_hours": 4032,
+      "temperature_mean_abs_change_c": 0.704,
+      "humidity_mean_abs_change_percent": 3.9772,
+      "precipitation_mean_abs_change_mm": 0.937,
+      "example_two_retrievals_one_second_apart_change_c": 4.8
+    },
+    "limitations": [
+      "Not forecast skill, calibration, accuracy or spatial representativeness.",
+      "Change cannot be attributed to a model run; run identity is not exposed.",
+      "Only points and windows retrieved more than once are comparable."
+    ]
+  },
+  "remaining_blocked_items": {
+    "report": "docs/44-remaining-blocked-and-held-items.md",
+    "operational_ready": false,
+    "items": [
+      "G11 warning delivery and dissemination",
+      "G11 origin authentication",
+      "G12 sea-area identity and printed validity",
+      "G14 mobile platform acceptance (held)",
+      "G16 forecast skill and calibration",
+      "G05 fluent language review and noisy-input acceptance",
+      "G10 automatic alias resolution",
+      "45 held district layouts and 82 non-PDF district addresses",
+      "hosting, sharing and redistribution (held, terms not approved)"
+    ],
+    "note": "Every locally resolvable register item has a recorded batch; these wait on a source, credential, domain review or user decision and are not marked complete by approximation."
+  },
+  "frontend_instrument_desk_batch": {
+    "report": "docs/46-frontend-instrument-desk.md",
+    "evidence_directory": "research/reviews/frontend-v2-20260915",
+    "baseline_record": "research/reviews/frontend-v2-20260915/baseline/baseline.json",
+    "live_checks": "research/reviews/frontend-v2-20260915/after/live-checks.json",
+    "audit_command": "python3 scripts/audit_workspace_frontend.py --baseline",
+    "operational_ready": false,
+    "scope": "Desktop presentation overhaul: design tokens and both appearances, the command palette, the twelfth surface comparing stored forecast retrievals, the raw-packet inspector, the receipt chain, the map find/keyboard path, the viewport frame that anchors the composer, and automated accessibility repairs. No engine, retrieval or claim rule changed. No cross-browser, device, screen-reader, load or fluent-language acceptance was run, and no skill or accuracy claim is made.",
+    "automated_tests": 635,
+    "javascript_component_checks": 57,
+    "javascript_suites": {
+      "test_charts.js": 2,
+      "test_views.js": 16,
+      "test_bulletin_ui.js": 6,
+      "test_conversation_ui.js": 13,
+      "test_suite_ui.js": 17,
+      "test_voice_ui.js": 3
+    },
+    "measured": {
+      "surfaces": 12,
+      "composer_in_first_viewport_at_viewports": [
+        "1440x1200",
+        "768x1024",
+        "390x844"
+      ],
+      "composer_bottom_px_at_top_of_document": {
+        "1440x1200": 1200,
+        "768x1024": 1024,
+        "390x844": 844
+      },
+      "palette_items": 17,
+      "accessibility_scans": 10,
+      "accessibility_violations": 0,
+      "accessibility_incomplete_groups": 10,
+      "page_errors_and_console_messages": 0
+    },
+    "repairs_recorded": [
+      "The composer floated where the content ended on a short document; the shell now fills the first viewport and the ask desk settles on its bottom edge.",
+      "Day-desk and night-desk muted text failed contrast (3.54:1 and 4.30:1); both tokens were corrected (4.63:1 and 4.64:1).",
+      "Orange and yellow hazard chips failed contrast on their washes (3.98:1 and 4.35:1); both light-desk tokens were darkened (4.60:1 and 4.62:1).",
+      "Nine selects had no accessible name; each now names what it selects.",
+      "The map svg was role=\"img\" while holding focusable district buttons; it is role=\"group\" now.",
+      "A stored conversation in the palette read \"undefined asked\" because the ledger field is \"asked\", not \"asks\"."
+    ],
+    "limitations": [
+      "One browser on one machine: no cross-browser, device, orientation, zoom or load acceptance.",
+      "Automated axe-core scans only; gradient and glyph-only cases stay \"could not determine\", and forced-colors is styled but unmeasured.",
+      "The vintage-variance surface compares stored retrievals; it is not skill, calibration, accuracy or confidence.",
+      "No native-speaker or speech acceptance was run in this batch.",
+      "Hosting and sharing remain on hold; screenshots are local prototype states."
+    ]
   }
 }
