@@ -651,6 +651,14 @@ const WG = window.WG;
     wireTheme();
     wirePalette();
     paintHealthMini();
+    /* Ask the server to read the slow layers for the place this page is working with, so the
+       first question is not the first read. It is a background read of the same governed adapters;
+       the page does not wait for it and nothing is inferred from it. */
+    (function warmWorkingPlace() {
+      const place = WG.state.place || {};
+      if (place.latitude === undefined || place.longitude === undefined) return;
+      post('/api/warm', { lat: place.latitude, lon: place.longitude, label: place.label }).catch(function () { return null; });
+    })();
     loadPersonas();
     document.addEventListener('keydown', event => {
       if ((event.metaKey || event.ctrlKey) && String(event.key).toLowerCase() === 'k') {

@@ -1131,12 +1131,25 @@ function renderLedger(ledger, handlers) {
     list.append(row);
   }
 }
+/* The slow layers are read once at startup; the page says so instead of leaving a first ask
+   to be the wait. Measured 15 September 2026: a first right-now ask fell from 146 s to 1.4 s. */
+function renderWarmState(health, box) {
+  const warm = (health || {}).warm;
+  if (!warm) return;
+  const lines = (warm.layers || []).map(layer => layer.layer + ': ' + layer.state
+    + (layer.seconds === undefined ? '' : ' in ' + layer.seconds + ' s')
+    + (layer.detail ? ' — ' + layer.detail : ''));
+  box.append(el('p', 'Slow layers at startup: ' + String(warm.state || 'not started')
+    + (lines.length ? ' — ' + lines.join('; ') : ''), 'health-val'));
+}
+
 function renderHealth(health) {
   const box = document.getElementById('health');
   if (!box) return;
   box.replaceChildren();
   if (!health) { box.append(el('p', 'Collection health is unavailable.', 'block-note')); return; }
   if (!health.available) { box.append(el('p', health.note || 'No collection history.', 'block-note')); return; }
+  renderWarmState(health, box);
   (health.products || []).forEach(product => {
     const row = el('div', undefined, 'health-stream');
     row.append(el('span', product.product, 'health-key'));

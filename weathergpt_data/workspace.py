@@ -112,6 +112,18 @@ class Workspace:
         return view
 
 
+    def warm(self, body):
+        """Read the slow layers for one point now, so the first ask is not the wait."""
+        if not isinstance(body, dict):
+            raise SourceError('Send the warm request as JSON')
+        latitude, longitude = body.get('lat'), body.get('lon')
+        if latitude is None or longitude is None:
+            raise SourceError('Warming reads the layers for one point: give lat and lon')
+        state = self.start_warming([{'latitude': float(latitude), 'longitude': float(longitude),
+                                      'label': str(body.get('label') or 'the working place')}])
+        return {'schema_version': 'warm-v1', 'state': state.get('state'),
+                'note': ('The slow connected layers are being read for this place in the background. Nothing is inferred '
+                         'from a warm-up; a failure is recorded and the ask retrieves as it always did.')}
     def run_briefing(self, body):
         """Compose a briefing for the working place and write it into this workspace's series.
 
@@ -562,13 +574,66 @@ class Workspace:
         return {'schema_version':'conversation-delete-v1','id':cid,'deleted':max(0,removed),
                 'note':'Removed from the local conversation store. Saved source documents and published evidence are unaffected.'}
 
+
+    def warm_layers(self, places=None):
+        """Fetch the slow connected layers once, in the background, so a first ask is not the wait.
+
+        Measured on 15 September 2026: the first right-now ask took 146 s and the first district-warning
+        ask 67 s, because those layers were being read for the first time. Warming does exactly what an
+        ask would do - the same governed adapters, the same cache and provenance - so the user's first
+        question reads warm cache rather than an empty one. Nothing is inferred from it: a failure here
+        is printed and recorded, and the ask that follows retrieves as it always did.
+        """
+        from . import product_api
+        # A direct call (a test, a script) must work without start_warming having run first.
+        if not isinstance(getattr(self, 'warm_state', None), dict):
+            self.warm_state = {'state': 'warming', 'layers': [], 'finished_at_utc': None}
+        self.warm_state['layers'] = list(self.warm_state.get('layers') or [])
+        targets = list(places or []) or [{'latitude': 23.02579, 'longitude': 72.58727, 'label': 'the default working place'}]
+        results = []
+        foundation = self.foundation()
+        for target in targets:
+            latitude, longitude = float(target['latitude']), float(target['longitude'])
+            for name, call in (
+                    ('station layers', lambda: product_api.observations_bundle(foundation, latitude, longitude, limit=2)),
+                    ('district warning layer', lambda: product_api.warnings_place(foundation, latitude, longitude)),
+                    ('forecast product', lambda: product_api.forecast(foundation, latitude, longitude, days=1))):
+                began = time.monotonic()
+                try:
+                    call()
+                    state, detail = 'warmed', ''
+                except Exception as failure:  # a warm-up is best effort and says so
+                    state, detail = 'failed', str(failure)[:160]
+                results.append({'layer': name, 'place': target.get('label'), 'state': state,
+                                'seconds': round(time.monotonic() - began, 1), 'detail': detail})
+                self.warm_state['layers'] = list(results)  # progress a reader can watch, not a spinner
+        self.warm_state = {'state': 'done' if all(item['state'] == 'warmed' for item in results) else 'partial',
+                           'layers': results, 'finished_at_utc': self.clock().isoformat()}
+        return self.warm_state
+
+    def start_warming(self, places=None):
+        """Warm the layers in a daemon thread; the server serves while they are being read."""
+        self.warm_state = {'state': 'warming', 'layers': [], 'finished_at_utc': None}
+
+        def run():
+            try:
+                self.warm_layers(places)
+            except Exception as failure:
+                self.warm_state = {'state': 'failed', 'layers': [], 'finished_at_utc': stamp(self.clock()),
+                                   'detail': str(failure)[:200]}
+                self.warm_state['finished_at_utc'] = self.clock().isoformat()
+
+        thread = threading.Thread(target=run, name='layer-warmup', daemon=True)
+        thread.start()
+        return self.warm_state
     def health(self):
         # Streams are pseudonymous point identities, so this reports what was
         # collected and when, never which coordinates made up a stream.
         database=self.service.ingestion_database
         if not database.exists():
             return {'schema_version':'source-health-v1','available':False,'products':[],'job_states':{},'active_leases':0,'cooldowns':[],'total_jobs':0,'streams':0,
-                    'note':'No ingestion store exists yet, so there is no collection history to report.'}
+                    'note':'No ingestion store exists yet, so there is no collection history to report.',
+                    'warm':getattr(self,'warm_state',None)}
         now=time.time()
         db=sqlite3.connect(database)
         try:
@@ -592,6 +657,7 @@ class Workspace:
                     entry['newest_commit_utc']=stamp_value;entry['newest_commit_utc_value']=committed
         for entry in products.values():entry.pop('newest_commit_utc_value',None)
         return {'schema_version':'source-health-v1','available':True,
+                'warm':getattr(self,'warm_state',None),
                 'products':sorted(products.values(),key=lambda entry:entry['product']),
                 'job_states':job_states,'total_jobs':len(specs),'streams':streams,'active_leases':leases,
                 'cooldowns':[{'provider':provider,'until_utc':stamp(until)} for provider,until in cooldowns],
@@ -713,7 +779,8 @@ def make_server(workspace, port=8765):
                     or not hmac.compare_digest(supplied,token)):
                 return self.respond(403,{'error':'Reload this local workspace before sending a request'})
             routes={'/api/answer':workspace.answer,'/api/refresh':workspace.refresh,'/api/chat':workspace.chat,
-                    '/api/chat/cancel':workspace.cancel_chat,'/api/watches/check':workspace.check_watches,'/api/briefing/run':workspace.run_briefing,
+                    '/api/chat/cancel':workspace.cancel_chat,'/api/watches/check':workspace.check_watches,'/api/warm':workspace.warm,
+                    '/api/briefing/run':workspace.run_briefing,
                     '/api/briefs/save':workspace.save_brief,
                     '/api/briefs/delete':workspace.delete_brief,
                     '/api/speech/transcribe':workspace.transcribe,'/api/speech/speak':workspace.speak}
@@ -740,8 +807,11 @@ def main():
     p.add_argument('--database',type=Path,default=DEFAULT_DATABASE)
     p.add_argument('--raw-root',type=Path,default=DEFAULT_RAW)
     p.add_argument('--geography-database',type=Path,default=DEFAULT_GEOGRAPHY)
+    p.add_argument('--no-warm',action='store_true',help='do not read the slow layers once at startup')
     a=p.parse_args()
-    server=make_server(Workspace(a.database,a.raw_root,a.geography_database),a.port)
+    workspace=Workspace(a.database,a.raw_root,a.geography_database)
+    if not a.no_warm:workspace.start_warming()
+    server=make_server(workspace,a.port)
     print('WeatherGPT: http://127.0.0.1:'+str(server.server_port)+' — local prototype; Ctrl-C to stop.',flush=True)
     try:server.serve_forever()
     except KeyboardInterrupt:pass

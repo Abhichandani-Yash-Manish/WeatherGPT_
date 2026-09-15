@@ -51,9 +51,34 @@ Recorded in `research/implementation/product-review-20260915/journeys.json` with
 | The welcome implied more is connected than is | One honest line naming radar and satellite imagery, sea-area and coastal bulletins, flood extent and delivery as *not* connected, and one naming what is answering and how to add a key |
 | Two cold reads are slow: the station layers on first ask (146 s) and the district warning layer (67 s) | Recorded as a known limit rather than smoothed over; warm reads are 0.1–11 s |
 
+
+## The warm start: first answers are no longer the first read
+
+The review's worst number was latency: the first right-now ask took 146 seconds and the first warning ask 67,
+because those layers were being read for the first time on the user's question. Two changes, both honest about
+what they are:
+
+1. **The server warms the slow layers once at startup** (`Workspace.start_warming()`, in a daemon thread;
+   `--no-warm` turns it off). It reads exactly what an ask would read, through the same governed adapters, and
+   records each layer with its own seconds, state and failure detail. Nothing is inferred from a warm-up.
+2. **The page warms the place it is working with** on load (`POST /api/warm`), so the first question about that
+   place reads warm cache rather than an empty one.
+
+Measured on 15 September 2026 (`research/implementation/product-review-20260915/warm-start.json`,
+`page-warm-start.json`):
+
+| | Cold (before) | Warm (after) |
+|---|---|---|
+| First *what is it like right now in Ahmedabad?* | 146.2 s | **2.0-32.2 s** |
+| First *is any warning in force for Patna, Bihar today?* | 67.0 s | 46.7 s |
+
+The honest reading of that table: warming removes most of the first-ask wait for the working place, and does not
+remove it everywhere - the warning ask for a *different* district still reads under a short cache lifetime, and a
+cold station read in the warm cycle itself took 26 s. Warming is a head start, not a promise, and the health view
+now reports exactly what was warmed, when, and how long each layer took.
 ## What is still not product-grade
 
-- **Cold-start latency.** First reads of the station and warning layers take 67–146 seconds on this machine. Warm
+- **Cold-start latency, improved but not gone.** Warming the working place takes the first right-now ask from 146 s to 2-32 s; a warning ask for a different district still reads under a short cache lifetime.
   reads are fast, and there is no progress bar beyond the engine's own stage readout; a user on a slow link will
   notice. Caching and per-source timing are the obvious next work.
 - **No hosting, no accounts, no mobile.** The surface is a loopback desktop page by the user's own instruction;

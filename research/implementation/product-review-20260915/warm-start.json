@@ -1,0 +1,44 @@
+{
+  "warm_state": {
+    "state": "warming",
+    "layers": [
+      {
+        "layer": "station layers",
+        "place": "the default working place",
+        "state": "warmed",
+        "seconds": 0.0,
+        "detail": ""
+      },
+      {
+        "layer": "district warning layer",
+        "place": "the default working place",
+        "state": "warmed",
+        "seconds": 98.1,
+        "detail": ""
+      },
+      {
+        "layer": "forecast product",
+        "place": "the default working place",
+        "state": "warmed",
+        "seconds": 1.0,
+        "detail": ""
+      }
+    ],
+    "finished_at_utc": null
+  },
+  "warm_seconds": 400.6,
+  "first_asks": [
+    {
+      "journey": "right-now",
+      "status": "answered",
+      "seconds": 32.2,
+      "facts": 6
+    },
+    {
+      "journey": "warning",
+      "status": "answered",
+      "seconds": 46.7,
+      "facts": 5
+    }
+  ]
+}

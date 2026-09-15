@@ -1,0 +1,34 @@
+{
+  "warm_state": {
+    "state": "warming",
+    "layers": [
+      {
+        "layer": "station layers",
+        "place": "the default working place",
+        "state": "warmed",
+        "seconds": 26.2,
+        "detail": ""
+      },
+      {
+        "layer": "district warning layer",
+        "place": "the default working place",
+        "state": "warmed",
+        "seconds": 1.7,
+        "detail": ""
+      },
+      {
+        "layer": "forecast product",
+        "place": "the default working place",
+        "state": "warmed",
+        "seconds": 0.0,
+        "detail": ""
+      }
+    ],
+    "finished_at_utc": null
+  },
+  "first_ask": {
+    "status": "answered",
+    "facts": 6,
+    "seconds": 2.0
+  }
+}

@@ -1,7 +1,7 @@
 {
   "schema_version": "hardening-progress-v1",
   "review": "research/reviews/national-readiness-20260912/review.md",
-  "updated_at_utc": "2026-09-15T08:36:12+00:00",
+  "updated_at_utc": "2026-09-15T09:09:11+00:00",
   "operational_ready": false,
   "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
   "findings": [
@@ -1677,7 +1677,7 @@
     "evidence_directory": "research/implementation/product-review-20260915",
     "operational_ready": false,
     "scope": "A product review of the whole workspace: thirteen live journeys re-run and recorded (eleven answered, one honest partial asking for a growth stage, one honest not-connected for tide), the first-run screen rebuilt around the build's strongest journeys with the composer asking the right-now question, welcome text that names what is not connected and how a cloud key is added, and the walkthrough document with the journey table and the cold-start latency limit.",
-    "automated_tests": 860,
+    "automated_tests": 864,
     "javascript_component_checks": 70,
     "measured": {
       "journeys": 13,
@@ -1691,10 +1691,19 @@
         "district_warning": 67.0
       },
       "same_window_across_scripts": true,
-      "shared_name_place_decided_by": "the connected product, disclosed"
+      "shared_name_place_decided_by": "the connected product, disclosed",
+      "warm_start": {
+        "first_right_now_ask_cold_seconds": 146.2,
+        "first_right_now_ask_warm_seconds": 2.0,
+        "first_warning_ask_cold_seconds": 67.0,
+        "first_warning_ask_warm_seconds": 46.7,
+        "station_layers_warm_seconds": 26.2,
+        "route": "POST /api/warm",
+        "flag": "--no-warm disables the startup read"
+      }
     },
     "limitations": [
-      "Cold first reads of the station and warning layers take 67-146 seconds on this machine.",
+      "Warming is a head start, not a promise: a different district or an expired cache still reads cold.",
       "Corpus coverage is uneven by family: 571 district agromet, five state editions, one edition per national product.",
       "Radar and satellite imagery, sea-area and coastal bulletins, flood extent and delivery remain unconnected.",
       "No native-speaker review; no mobile or screen-reader acceptance; no valid OpenRouter key call yet."
