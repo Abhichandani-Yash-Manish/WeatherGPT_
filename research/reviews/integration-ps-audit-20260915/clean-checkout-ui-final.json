@@ -1,0 +1,42 @@
+[
+  {
+    "suite": "tests/test_charts.js",
+    "exit_code": 0,
+    "output": "PASS: missing-year plot gaps, exact source precision, keyboard point inspection (component only)\nPASS: hourly axes, exact IST interval labels and evidence inspection (component only)\n"
+  },
+  {
+    "suite": "tests/test_views.js",
+    "exit_code": 0,
+    "output": "PASS: answer-first headline carries the exact retrieved value, unit and place (component only)\nPASS: the validity ruler draws covered spans from the retrieved window with a text description\nPASS: no window is drawn where the evidence has no interval\nPASS: the evidence receipt keeps entity, window, source, locator and retrieval time together\nPASS: task accounting reports asked, answered and incomplete separately from one another\nPASS: retrieved volume stays bounded and plotted values are not duplicated as cards\nPASS: a between-source difference is reported as a difference, not as skill or confidence\nPASS: place clarification offers every candidate and returns the chosen selection id\nPASS: an unwritten requested language is disclosed instead of passing as a complete answer\nPASS: an unverified warning state stays held and implies no value or receipt\nPASS: an airport report shows its raw text, its kind, and does not imply a flight status\nPASS: every displayed number comes from the returned packet, with no arithmetic applied\nPASS: no renderer leaks a stylesheet class name into the visible text of an answer\nPASS: a series answer leads with its computed value and never with one arbitrary member\nPASS: an official warning day is presented as a named period with its colour, hazard and window\nPASS: the raw-packet inspector shows the exact rendered packet in the drawer\nPASS: the stage readout reports checkpoints and queue position, never a percentage\nPASS: a whole-edition reading and a cross-edition difference are labelled, counted and never ranked\nPASS: two products in one turn are compared in plain terms and never ranked\nPASS: a plan question offers quick replies, and a saved plan card offers Change and Undo\n"
+  },
+  {
+    "suite": "tests/test_bulletin_ui.js",
+    "exit_code": 0,
+    "output": "PASS: passage uses its bound citation, page locator, literal source text and HTTPS-only link (component only)\nPASS: a non-HTTPS source URL is never offered as a link\nPASS: immutable stored PDF page is preferred to a changing publisher URL\nPASS: parent context is labelled separately from crop evidence and current alerts\nPASS: saved PDF has a same-origin download fallback\nPASS: the saved PDF opens in place from this origin only, on request\n"
+  },
+  {
+    "suite": "tests/test_conversation_ui.js",
+    "exit_code": 0,
+    "output": "PASS: an empty question is refused in the page without a request (component only)\nPASS: a question sends only accepted keys and retires the opening card\nPASS: a follow-up keeps the conversation id and never sends the rejected legacy key\nPASS: choosing an offered place sends that selection id back to the engine\nPASS: a full queue is reported as a bounded queue\nPASS: an expired token and an unavailable store produce different, accurate states\nPASS: stopping a turn requests cancellation and reports the server response\nPASS: collecting fresh evidence posts the resolved point and reports claims honestly\nPASS: a new conversation clears the thread and identifier without sending a question\nPASS: the ledger lists and searches the stored conversations\nPASS: a stored conversation is deleted through the local route only\nPASS: the field builder writes the editable question box and never submits on its own\nPASS: the resolved collection point comes from the packet, or is reported absent\n"
+  },
+  {
+    "suite": "tests/test_suite_ui.js",
+    "exit_code": 0,
+    "output": "PASS: every surface has a renderer, including the map (component only)\nPASS: the overview surface paints the national tally and keeps its caveats\nPASS: the warnings surface writes an alert brief that names its sources and its limits\nPASS: the observations surface lists stations, freshness and unstated units\nPASS: the forecast surface renders a series chart\nPASS: the climate surface renders the published record\nPASS: the aviation surface shows the raw report and its limit\nPASS: the marine surface names the answering cell or its limit\nPASS: the settings surface lists capabilities, sources and their terms\nPASS: the advisories surface offers the district directory\nPASS: the changes surface reports vintage variance and its skill limit\nPASS: the map draws one path per district, flags placeholder geometry and never colours an unmapped district green\nPASS: the districts behave as one tab stop with arrow keys, Home and End, and Enter opens the district\nPASS: the watch panel lists saved plans and their notifications, and checks plans on request\nPASS: the watch panel reads the local inbox and checks watches only on request\nPASS: appearance cycles system, day and night and records the choice\nPASS: the rail readout shows collection health rows\nPASS: the command palette lists surfaces, places and recents and runs the chosen item\nPASS: every surface request carries the workspace token\n"
+  },
+  {
+    "suite": "tests/test_voice_ui.js",
+    "exit_code": 0,
+    "output": "PASS: the language selector offers measured write languages and tracks measured speech\nPASS: a transcript is shown, labelled with recognition-only confidence, and confirmable\nPASS: speech is refused, not guessed, where the project has not measured it\n"
+  },
+  {
+    "suite": "tests/test_briefcase_ui.js",
+    "exit_code": 0,
+    "output": "PASS: the briefcase keeps, reopens, exports and deletes composed briefs, reads the briefing series it holds, and discloses the reading position rather than treating it as evidence\n"
+  },
+  {
+    "suite": "tests/test_workspace_ui.js",
+    "exit_code": 0,
+    "output": "PASS: published hazards, missing dates, expired days and explicit quiet remain distinct\nPASS: network-shaped observations keep station identity, freshness, zero and unknown units\nPASS: a late response from an earlier drawer cannot overwrite a new task\nPASS: a timed-out source read explains that server work may continue\nPASS: one source failure leaves the other sections and searchable tools usable\nPASS: guided task snapshots the selected place and prepares a reviewable question\n"
+  }
+]

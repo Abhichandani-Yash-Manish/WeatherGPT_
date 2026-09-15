@@ -2096,7 +2096,17 @@
     "native_speaker_review": false
    },
    "operational_ready": false,
-   "hosting_performed": false
+   "hosting_performed": false,
+   "clean_checkout": {
+    "code_revision": "d4eb3c3",
+    "python": "1017 passed, 3 warnings in 40.41s",
+    "javascript_suites": 8,
+    "javascript_failures": 0,
+    "static_steps": 15,
+    "static_failures": 0,
+    "scope": "Detached Git worktree on the same macOS host and installed dependencies; no private runtime copied. Not a fresh-machine or cross-platform installation.",
+    "initial_failure": "985 passed, 31 setup errors and one failure; bulletin tests incorrectly read ignored runtime cache instead of already-tracked matching source fixtures. Fixed with hash-verified tracked fixture lookup."
+   }
   }
  }
 }

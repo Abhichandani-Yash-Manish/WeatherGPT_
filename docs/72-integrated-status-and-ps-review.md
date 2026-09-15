@@ -53,6 +53,9 @@ scores, script adherence, synthetic lifecycle tests and screenshots establish di
   in the denominator. Scorer-v2 results are not directly comparable with historical v1 headline scores.
 - The stricter run exposed the rules dropping rainfall from a combined national rainfall/temperature
   history request. Both measures are now retained in the historical task and its source evidence.
+- A clean detached checkout initially failed 32 source-fixture cases: the tests read ignored runtime blobs
+  even though matching immutable fixtures already existed under tracked research evidence. Their lookup
+  now reads those files and verifies SHA-256. No additional source document was published.
 - Corrected current-status pointers and statements that still described the corpus, voice, stage progress
   or local plan monitoring as absent. The pre-update product registry is retained in the audit evidence.
 
@@ -104,6 +107,10 @@ inspected accessibility subtree has zero violations and one inconclusive contras
 
 - `verification-release.txt` is the integrated automated result. The earlier verification files remain
   checkpoints, not replacements for it. The eight JS suites are DOM/component checks.
+- After the fixture repair, a detached clean checkout at `d4eb3c3` passed all **1,017 Python tests**, all
+  eight JS suites and all fifteen static/environment checks. The failed initial checkout and final logs
+  are retained as `clean-checkout-*`. This used the same host and installed dependencies; it does not
+  establish a fresh-machine installation, Windows compatibility or CI service.
 - `development-v2/` preserves the first stricter run that exposed the historical omission.
   `development-final/` preserves an intermediate scorer limitation: a combined task could not yet satisfy
   two disjoint declarations. `development-release/` is the corrected scorer and repaired engine run.

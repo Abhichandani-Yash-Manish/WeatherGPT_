@@ -266,7 +266,7 @@
       "status": "partial",
       "evidence": "research/reviews/product-potential-20260912/findings.json",
       "latest_evidence": "docs/72-integrated-status-and-ps-review.md",
-      "current_evidence": "Local one-command verification and retained release evidence exist; the combined source is prepared for GitHub publication. CI service, fresh-machine/cross-platform operation, sustained load and deployment remain unaccepted; hosting is held."
+      "current_evidence": "Local verification and a detached clean checkout pass 1,017 Python tests, eight JS suites and static checks on the same macOS environment. A runtime-fixture dependency was repaired using existing tracked hash-verified source files; the initial failure is preserved. Fresh-machine/cross-platform installation, CI service, sustained load and deployment remain unaccepted; hosting is held."
     },
     "P15": {
       "status": "partial",
