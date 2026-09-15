@@ -435,6 +435,17 @@ def single_request(question, now, history=None):
         if whole_document_question(question):
             request['whole_document'] = True
         tasks.append(task('document', 'lookup', ['published_document'], corpus_request=request))
+    elif OBSERVATION.search(question) and re.search(r'\b[A-Z]{4}\b', question):
+        # A four-letter station code in a right-now question is an airport report request: the
+        # station's own product answers it, with the airport tool's provenance. Measured on
+        # 15 September 2026, "what is being observed at VOBL right now" was planned as a
+        # settlement observation and asked for a place.
+        code = re.search(r'\b([A-Z]{4})\b', question)
+        entry = task('aviation', 'lookup', ['metar'])
+        if code.group(1) not in [item['name'].upper() for item in places]:
+            places = places + [{'name': code.group(1), 'state': '', 'district': '', 'kind': 'unknown'}]
+            entry['place_indices'] = [len(places) - 1]
+        tasks.append(entry)
     elif OBSERVATION.search(question):
         tasks.append(task('observation', 'lookup', []))
     else:

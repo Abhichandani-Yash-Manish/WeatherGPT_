@@ -75,6 +75,54 @@
     const radarCard = WG.block('Radar network', 'How many stations report a state to the source.');
     radarCard.append(el('p', data.radar.reported + ' of ' + data.radar.stations + ' stations report a state.', 'block-note'));
     grid.append(radarCard);
+    /* The right-now reading: what a station reported, what the published district product says
+       for today, and what the model holds for the next hours - three products kept apart. Radar
+       and satellite imagery, sub-hourly refresh and push are not connected and say so here. */
+    const nowCard = WG.block('Right now at this place', 'Station observations, the published day and the next model hours, kept apart.');
+    try {
+      const nowView = await WGref.api('/api/now', { lat: placeQuery(WGref).lat, lon: placeQuery(WGref).lon });
+      const now = nowView.data;
+      const stations = ((now.observed || {}).stations) || [];
+      if (stations.length) {
+        nowCard.append(WG.table(['Station', 'Network', 'Distance', 'Reported', 'Age'],
+          stations.map(station => [station.name || station.station_code || 'station', String(station.network || '').toUpperCase(),
+            station.distance_km === null || station.distance_km === undefined ? 'not stated' : String(Math.round(station.distance_km * 100) / 100) + ' km',
+            station.observed_at_utc || 'not stated',
+            station.age_minutes === null || station.age_minutes === undefined ? 'not stated' : String(Math.round(station.age_minutes)) + ' min'])));
+        const reported = el('ul', undefined, 'notes');
+        (stations[0].parameters || []).forEach(parameter => reported.append(el('li', parameter.field + ': ' + parameter.value +
+          (parameter.unit ? ' ' + parameter.unit : (parameter.unit_stated_by_source === false ? ' (no unit stated by the source)' : '')))));
+        nowCard.append(el('p', 'As reported by the nearest station', 'field-label'));
+        nowCard.append(reported);
+      } else {
+        nowCard.append(el('p', 'No station in the connected METAR or AWS layers reported within 150 km of this point. That is an absence of station evidence here, not a statement that nothing is happening.', 'block-note'));
+      }
+      const day = now.in_force || {};
+      if (day.status === 'ok') {
+        const line = el('p', undefined, 'block-note');
+        line.append(WG.colourChip(day.colour || 'unknown', day.colour || 'colour not supplied'));
+        line.append(el('span', ' ' + String(day.status_line || '')));
+        nowCard.append(line);
+        nowCard.append(el('p', 'Published for ' + String(day.district || 'this point') + ' by ' + String(day.source_id || 'the district product') +
+          ', issued ' + String(day.issued_at_utc || 'instant not stated') + '. A quiet day in this product is not an all-clear.', 'field-note'));
+      } else {
+        nowCard.append(el('p', 'The official district product could not be read for this point: ' + String(day.why || 'no published day matched') + '.', 'block-note'));
+      }
+      const rows = ((now.next_hours || {}).rows) || [];
+      if (rows.length) {
+        nowCard.append(el('p', 'Model hours next (' + String((now.next_hours || {}).source_id || 'source not stated') + ')', 'field-label'));
+        nowCard.append(WG.table(['Hour', 'Temperature', 'Rain chance'], rows.map(row => [row.at,
+          row.temperature_2m === undefined ? 'not returned' : row.temperature_2m + ' °C',
+          row.precipitation_probability === undefined ? 'not returned' : row.precipitation_probability + ' %'])));
+      } else {
+        nowCard.append(el('p', 'No model hours were returned for this point.', 'block-note'));
+      }
+      nowCard.append(el('p', 'Not connected here: ' + ((now.not_connected || []).join('; ') || 'nothing listed') + '.', 'field-note'));
+      nowCard.append(el('p', now.summary || '', 'block-note'));
+    } catch (error) {
+      nowCard.append(el('p', 'The right-now reading could not be read: ' + String(error.message || error), 'block-note'));
+    }
+    grid.append(nowCard);
     host.append(grid);
 
     (data.places || []).forEach(strip => {

@@ -12,7 +12,6 @@ from .briefing import render_brief
 
 GAPS={
  'warning':'Current official warning applicability and update/cancel handling are not verified yet. Missing evidence is not an all-clear.',
- 'observation':'Live observation retrieval is not connected to this conversation path yet; a forecast cannot answer whether rain is being observed now.',
  'aviation':'The airport report adapter exists, but its conversational tool is not connected yet. No METAR, TAF or flight status has been retrieved.',
  'research':'The requested research dataset or operation is not connected. Historical rainfall and national temperature analysis are available.'}
 
@@ -44,6 +43,11 @@ def execute_plan(engine,result,plan,resolved,coordinates):
                 packet=copy.deepcopy({k:v for k,v in result.items() if k not in {'task_results','charts','calculations','passages','document_evidence','airport_reports','warning_evidence','pending_slots','retrieval_coverage'}})
                 packet.update(facts=[],citations=[],choices=[],notes=[],answer='',plan=sub,status='needs_clarification',follow_up=None,expires_at_utc=None,trace={'tools':[],'generation':None})
                 packet=execute_specialist(engine,packet,sub,task,resolved,coordinates)
+            elif task['kind']=='observation':
+                from .observation_tasks import execute_observation
+                packet=copy.deepcopy({k:v for k,v in result.items() if k not in {'task_results','charts','calculations','passages','document_evidence','airport_reports','warning_evidence','pending_slots','retrieval_coverage'}})
+                packet.update(facts=[],citations=[],choices=[],notes=[],answer='',plan=sub,status='needs_clarification',follow_up=None,expires_at_utc=None,trace={'tools':[],'generation':None})
+                packet=execute_observation(engine,packet,sub,task,resolved,coordinates)
             elif task['kind']=='agriculture':
                 from .document_tools import execute_document
                 packet=copy.deepcopy({k:v for k,v in result.items() if k not in {'task_results','charts','calculations','passages','document_evidence','airport_reports','warning_evidence','pending_slots','retrieval_coverage'}})

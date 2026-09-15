@@ -42,7 +42,7 @@ PRODUCT_PATHS = ('/api/overview', '/api/warnings/national', '/api/warnings/place
                  '/api/forecast', '/api/forecast/changes', '/api/marine', '/api/river', '/api/aviation', '/api/places/search',
                  '/api/map/layers', '/api/warnings/cap', '/api/warnings/alert-brief', '/api/settings/capabilities',
                  '/api/climate/index', '/api/climate/series', '/api/advisories/states',
-                 '/api/advisories/districts', '/api/personas')
+                 '/api/advisories/districts', '/api/personas', '/api/now')
 _REGISTRY = {'path': None, 'mtime': None, 'products': {}}
 
 
@@ -59,6 +59,21 @@ def personas_view():
                     limitations=[PERSONA_NOTE,
                                  'The same question under two personas retrieves the same evidence; only the emphasis, the '
                                  'starting surfaces and the listed limits differ.'])
+
+
+def now_view(foundation, latitude, longitude, refresh=False, now=None):
+    """The right-now reading: observed, in force, and the next hours, kept apart."""
+    from .now_view import NOT_CONNECTED, NOT_ESTABLISHED, compose
+    reading = compose(foundation, latitude, longitude, now=now, refresh=refresh)
+    limitations = list(reading.get('limitations') or [])
+    limitations += [note for note in reading.get('not_connected') or [] if note not in limitations]
+    return envelope('now.composed', 'ok' if reading.get('status') == 'ok' else 'unavailable', reading,
+                    sources=[source_entry(item.get('source_id'), item) for item in reading.get('source_entries') or []]
+                            or [source_entry(source_id, None) for source_id in reading.get('sources') or []],
+                    coverage={'stations': len((reading.get('observed') or {}).get('stations') or []),
+                              'day': (reading.get('in_force') or {}).get('day'),
+                              'hours': len((reading.get('next_hours') or {}).get('rows') or [])},
+                    limitations=limitations, not_established=list(NOT_ESTABLISHED))
 
 
 def registry_products():
@@ -735,6 +750,9 @@ def dispatch(foundation, path, params):
             raise SourceError('Use metar or taf')
         stations = [code.strip().upper() for code in str(raw).split(',') if code.strip()]
         return aviation(foundation, stations, kind=kind, refresh=_flag(params, 'refresh'))
+    if path == '/api/now':
+        latitude, longitude = _point_params(params)
+        return now_view(foundation, latitude, longitude, refresh=_flag(params, 'refresh'))
     if path == '/api/personas':
         return personas_view()
     if path == '/api/places/search':
