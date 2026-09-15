@@ -48,7 +48,8 @@ function load(payloads) {
     colourChip: (colour, label) => { const node = new shim.Node('span'); node.textContent = label; return node; },
     block: (title, note) => { const node = new shim.Node('section'); node.append(context.el('h2', title)); if (note) node.append(context.el('p', note)); return node; },
     stateBlock: (kind, message, detail) => { const node = new shim.Node('div'); node.append(context.el('p', message)); if (detail) node.append(context.el('p', detail)); return node; },
-    table: (head, rows) => { const node = new shim.Node('table'); node.textContent = head.join(' | ') + ' -- ' + rows.map(row => row.join(' : ')).join(' ;; '); return node; }
+    table: (head, rows) => { const node = new shim.Node('table'); node.textContent = head.join(' | ') + ' -- ' + rows.map(row => row.join(' : ')).join(' ;; '); return node; },
+    disclosure: (title, build) => { const node = new shim.Node('details'); node.append(context.el('summary', title)); const body = new shim.Node('div'); build(body); node.append(body); return node; }
   };
   vm.runInContext(PANELS, context);
   return { context: context, calls: calls, downloads: downloads, drawers: drawers, renders: () => renders };
@@ -130,7 +131,38 @@ async function main() {
   assert.ok(textOf(welcomeNode).indexOf('Ask as farmer or field adviser') >= 0, 'the persona questions are offered with the position named');
   assert.ok(textOf(welcomeNode).indexOf('not connected') >= 0, 'the welcome keeps naming what is not connected');
 
-  console.log('PASS: the briefcase keeps, reopens, exports and deletes composed briefs, and the reading position is disclosed rather than treated as evidence');
+  // 9. A briefing series is read from disk and rendered as what it is, with its limits.
+  const briefingRecord = { schema_version: 'briefing-latest-v1', present: true, directory: '/tmp/briefings',
+    note: 'This is a foreground run of a local prototype.',
+    run: { generated_at_utc: '2026-09-15T05:00:28+00:00', briefing_id: 'f'.repeat(64), place_count: 2, day_number: 1, forecast_days: 3,
+           sources: ['S06', 'S62', 'S63'], change: 'same', latency_seconds: 1.301, interval_seconds: 20,
+           record_path: '/tmp/briefings/record-20260915T050028Z.json', markdown_path: '/tmp/briefings/briefing-20260915T050028Z.md' },
+    briefing: { not_established: ['A quiet day in the district warning product is not an all-clear.'] },
+    markdown: '# Briefing — Ahmedabad' + String.fromCharCode(10),
+    series: [{ run: 1, generated_at_utc: '2026-09-15T05:00:08+00:00', place_count: 2, latency_seconds: 1.4, change: 'no_previous_run' },
+             { run: 2, generated_at_utc: '2026-09-15T05:00:28+00:00', place_count: 2, latency_seconds: 1.301, change: 'same' }] };
+  const series = load({ '/api/briefs': { schema_version: 'briefcase-v1', delivery: 'local_only_no_delivery', note: 'Kept in the local store.', briefs: [] },
+                        '/api/briefing/latest': briefingRecord });
+  const seriesHost = new shim.Node('div');
+  await series.context.WG.panels.briefcase(seriesHost, series.context.WG);
+  assert.ok(textOf(seriesHost).indexOf('Latest briefing on this machine') >= 0, 'the surface names the briefing series');
+  assert.ok(textOf(seriesHost).indexOf('2 place(s)') >= 0, 'it reports how many places the run read');
+  assert.ok(textOf(seriesHost).indexOf('1.301 s') >= 0, 'it reports the measured latency of that run');
+  assert.ok(textOf(seriesHost).indexOf('sha256 ffffffffffffffff') >= 0, 'it carries the briefing identity');
+  assert.ok(textOf(seriesHost).indexOf('run 1') >= 0 && textOf(seriesHost).indexOf('run 2') >= 0, 'it lists the runs in the series');
+  assert.ok(textOf(seriesHost).indexOf('# Briefing — Ahmedabad') >= 0, 'the briefing text is readable in place');
+  assert.ok(textOf(seriesHost).indexOf('not an all-clear') >= 0, 'the limits travel with the briefing');
+
+  // 10. With no briefing written, the page says nothing was scheduled and how to write one.
+  const none = load({ '/api/briefs': { schema_version: 'briefcase-v1', delivery: 'local_only_no_delivery', note: 'Kept in the local store.', briefs: [] },
+                      '/api/briefing/latest': { schema_version: 'briefing-latest-v1', present: false, directory: '/tmp/briefings',
+                                                detail: 'No briefing has been written to this series directory yet: write one with python3 scripts/briefing.py.' } });
+  const noneHost = new shim.Node('div');
+  await none.context.WG.panels.briefcase(noneHost, none.context.WG);
+  assert.ok(textOf(noneHost).indexOf('Nothing has been scheduled or delivered.') >= 0, 'an empty series says nothing was scheduled');
+  assert.ok(textOf(noneHost).indexOf('scripts/briefing.py') >= 0, 'it names how a briefing is written rather than offering a button it cannot honour');
+
+  console.log('PASS: the briefcase keeps, reopens, exports and deletes composed briefs, reads the briefing series it holds, and discloses the reading position rather than treating it as evidence');
 }
 
 main().catch(error => { console.error(error); process.exit(1); });

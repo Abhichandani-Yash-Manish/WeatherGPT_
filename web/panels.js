@@ -787,62 +787,104 @@
     if (!entries.length) {
       block.append(WGref.stateBlock('plain', 'Nothing is kept yet.',
         'Open Warnings and write the alert brief for the working place, then keep it here. A brief is composed from its sources by the server: this page cannot save a brief the workspace did not compose.'));
-      host.append(block);
-      return;
     }
-    const list = el('ul', undefined, 'brief-list');
-    entries.forEach(entry => {
-      const item = el('li', undefined, 'brief-item');
-      item.append(el('p', briefTitle(entry), 'brief-title'));
-      item.append(el('p', 'Kept ' + entry.saved_at + ' · ' + ((entry.place || {}).label || (entry.place || {}).district || 'place not stated') + ' · sources ' + ((entry.sources || []).join(', ') || 'none named'), 'brief-meta'));
-      const tools = el('div', undefined, 'brief-tools');
-      const open = el('button', 'Open', 'ghost');
-      open.type = 'button';
-      open.setAttribute('data-brief-open', entry.id);
-      open.addEventListener('click', () => {
-        WGref.openDrawer(briefTitle(entry), body => {
-          const note = el('p', 'Reading the kept entry from the local store…', 'field-note');
-          body.append(note);
-          WGref.api('/api/briefs/get', { id: entry.id }).then(saved => {
-            WGref.clear(body);
-            body.append(WGref.table(['Field', 'Value', 'Provenance'], briefRows(saved.entry || entry)));
-            body.append(el('p', 'Export as written', 'field-label'));
-            body.append(el('pre', saved.markdown || '', 'brief-markdown'));
-            const limits = el('ul', undefined, 'notes');
-            (((saved.entry || entry).evidence || {}).not_established || []).forEach(limit => limits.append(el('li', limit)));
-            if (limits.childNodes.length) { body.append(el('p', 'What this brief says is not established', 'field-label')); body.append(limits); }
-          }).catch(error => { WGref.clear(body); body.append(el('p', 'This entry could not be read: ' + String(error.message || error), 'block-note')); });
+    if (entries.length) {
+      const list = el('ul', undefined, 'brief-list');
+      entries.forEach(entry => {
+        const item = el('li', undefined, 'brief-item');
+        item.append(el('p', briefTitle(entry), 'brief-title'));
+        item.append(el('p', 'Kept ' + entry.saved_at + ' · ' + ((entry.place || {}).label || (entry.place || {}).district || 'place not stated') + ' · sources ' + ((entry.sources || []).join(', ') || 'none named'), 'brief-meta'));
+        const tools = el('div', undefined, 'brief-tools');
+        const open = el('button', 'Open', 'ghost');
+        open.type = 'button';
+        open.setAttribute('data-brief-open', entry.id);
+        open.addEventListener('click', () => {
+          WGref.openDrawer(briefTitle(entry), body => {
+            const note = el('p', 'Reading the kept entry from the local store…', 'field-note');
+            body.append(note);
+            WGref.api('/api/briefs/get', { id: entry.id }).then(saved => {
+              WGref.clear(body);
+              body.append(WGref.table(['Field', 'Value', 'Provenance'], briefRows(saved.entry || entry)));
+              body.append(el('p', 'Export as written', 'field-label'));
+              body.append(el('pre', saved.markdown || '', 'brief-markdown'));
+              const limits = el('ul', undefined, 'notes');
+              (((saved.entry || entry).evidence || {}).not_established || []).forEach(limit => limits.append(el('li', limit)));
+              if (limits.childNodes.length) { body.append(el('p', 'What this brief says is not established', 'field-label')); body.append(limits); }
+            }).catch(error => { WGref.clear(body); body.append(el('p', 'This entry could not be read: ' + String(error.message || error), 'block-note')); });
+          });
         });
+        const exportButton = el('button', 'Export Markdown', 'ghost');
+        exportButton.type = 'button';
+        exportButton.setAttribute('data-brief-export', entry.id);
+        exportButton.addEventListener('click', async () => {
+          try {
+            const text = await WGref.apiText('/api/briefs/export?id=' + encodeURIComponent(entry.id));
+            WGref.download(String(entry.title || 'brief').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60) + '-' + String(entry.id).slice(0, 8) + '.md', text, 'text/markdown');
+          } catch (error) {
+            WGref.openDrawer('Export failed', body => body.append(el('p', 'The export could not be read from the local store: ' + String(error.message || error), 'block-note')));
+          }
+        });
+        const remove = el('button', 'Delete', 'ghost danger');
+        remove.type = 'button';
+        remove.setAttribute('data-brief-delete', entry.id);
+        remove.addEventListener('click', async () => {
+          try {
+            await WGref.post('/api/briefs/delete', { id: entry.id });
+            WGref.render();
+          } catch (error) {
+            WGref.openDrawer('Delete failed', body => body.append(el('p', 'This entry was not removed: ' + String(error.message || error), 'block-note')));
+          }
+        });
+        tools.append(open, exportButton, remove);
+        item.append(tools);
+        list.append(item);
       });
-      const exportButton = el('button', 'Export Markdown', 'ghost');
-      exportButton.type = 'button';
-      exportButton.setAttribute('data-brief-export', entry.id);
-      exportButton.addEventListener('click', async () => {
-        try {
-          const text = await WGref.apiText('/api/briefs/export?id=' + encodeURIComponent(entry.id));
-          WGref.download(String(entry.title || 'brief').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60) + '-' + String(entry.id).slice(0, 8) + '.md', text, 'text/markdown');
-        } catch (error) {
-          WGref.openDrawer('Export failed', body => body.append(el('p', 'The export could not be read from the local store: ' + String(error.message || error), 'block-note')));
-        }
-      });
-      const remove = el('button', 'Delete', 'ghost danger');
-      remove.type = 'button';
-      remove.setAttribute('data-brief-delete', entry.id);
-      remove.addEventListener('click', async () => {
-        try {
-          await WGref.post('/api/briefs/delete', { id: entry.id });
-          WGref.render();
-        } catch (error) {
-          WGref.openDrawer('Delete failed', body => body.append(el('p', 'This entry was not removed: ' + String(error.message || error), 'block-note')));
-        }
-      });
-      tools.append(open, exportButton, remove);
-      item.append(tools);
-      list.append(item);
-    });
-    block.append(list);
-    block.append(el('p', 'Deleting removes the entry from this machine\'s local store. An exported file stays where you saved it.', 'block-note'));
+      block.append(list);
+      block.append(el('p', 'Deleting removes the entry from this machine\'s local store. An exported file stays where you saved it.', 'block-note'));
+    }
     host.append(block);
+    /* The briefing series is a local file series, not a service. The page reads the newest run
+       and says plainly when nothing has run yet, rather than showing an empty panel. */
+    try {
+      const briefing = await WGref.api('/api/briefing/latest');
+      const block = WGref.block('Latest briefing on this machine',
+        briefing.present ? ('Run ' + String((briefing.run || {}).generated_at_utc || 'instant not recorded') +
+                            ' · ' + String((briefing.run || {}).place_count || 0) + ' place(s) · change since the previous run: ' +
+                            String((briefing.run || {}).change || 'not recorded'))
+                          : 'No briefing has been written to this workspace yet');
+      block.append(el('p', 'A briefing reads the connected products for named places at the instant it ran: the official district warning day, the CAP relay kept separate, and the forecast window as retrieved. It is not a warning, not an all-clear and not advice.', 'block-note'));
+      if (briefing.present) {
+        const run = briefing.run || {};
+        block.append(WGref.table(['Field', 'Value', 'Provenance'], [
+          ['Run instant', run.generated_at_utc, run.runner_note || 'written by scripts/briefing.py'],
+          ['Briefing identity', 'sha256 ' + String(run.briefing_id || '').slice(0, 16), 'the content hash of this briefing'],
+          ['Places read', String(run.place_count), (run.sources || []).join(', ') || 'no source identifiers recorded'],
+          ['Official day', 'day ' + String(run.day_number) + ' of the published product', 'forecast days retrieved: ' + String(run.forecast_days)],
+          ['Interval', run.interval_seconds ? String(run.interval_seconds) + ' s between runs in that invocation' : 'a single run', 'a foreground interval, not a service'],
+          ['Latency', run.latency_seconds === null || run.latency_seconds === undefined ? 'not recorded' : String(run.latency_seconds) + ' s', 'measured for this run only'],
+          ['Written to', run.record_path || 'path not recorded', run.markdown_path || '']
+        ]));
+        if ((briefing.series || []).length > 1) {
+          const list = el('ul', undefined, 'notes');
+          briefing.series.slice().reverse().forEach(item => list.append(el('li', 'run ' + String(item.run) + ' · ' + String(item.generated_at_utc) +
+            ' · ' + String(item.place_count) + ' place(s) · ' + String(item.latency_seconds) + ' s · change: ' + String(item.change))));
+          block.append(el('p', 'Runs in this series', 'field-label'));
+          block.append(list);
+        }
+        if (briefing.markdown) {
+          block.append(WGref.disclosure('Read the briefing as written', body => body.append(el('pre', briefing.markdown, 'brief-markdown'))));
+        }
+        const limits = el('ul', undefined, 'notes');
+        (((briefing.briefing || {}).not_established) || []).forEach(limit => limits.append(el('li', limit)));
+        if (limits.childNodes.length) { block.append(el('p', 'What this briefing says is not established', 'field-label')); block.append(limits); }
+      } else {
+        block.append(WGref.stateBlock('plain', 'Nothing has been scheduled or delivered.', briefing.detail || 'No briefing record was found in this workspace series directory.'));
+      }
+      host.append(block);
+    } catch (error) {
+      host.append(WGref.block('Latest briefing on this machine', 'This view could not be read from the workspace: ' + String(error.message || error)));
+    }
   };
+
   WG.panels.assistant = async function () { /* the conversation is owned by app.js */ };
 })();
