@@ -77,8 +77,41 @@ Detached clean checkout `ba3cdbd` passed all 1,105 Python tests, nine JavaScript
 5. **No rural delivery acceptance.** English notices, opt-in/permission behavior, native languages, phones,
    poor connectivity and real field users remain unvalidated. SMS/IVR/WhatsApp are not connected channels.
 
-The incoming reports `68-dissemination-build.md` and `71-dissemination-build.md` retain branch-authored dates,
+The incoming reports [`74-dissemination-build.md`](74-dissemination-build.md) and
+[`75-dissemination-build.md`](75-dissemination-build.md) (renumbered from 68 and 71 on
+15 September 2026 to clear duplicate document numbers; content unchanged) retain branch-authored dates,
 phase evidence, historical “unmerged” text and self-assigned percentages. **Their approximately 89% overall
 and 94% trajectory scores are not adopted by this review.** Neither represents measured full-PS completion.
 P06/P10/P13/P14 and A05 remain partial/open; this batch implements useful machinery and repairs integration
 regressions, without closing the disaster-warning journey.
+
+## PR #4 review and merge resolution (15 September 2026)
+
+Reviewed the open PR #4 head `beaddad` against `main` at `b007548`. Its implementation is already
+inside main: the authorized integration landed the branch at `70a55d1` and this review's repairs
+have since been applied on top, so main's copies are equal or newer on every file the branch
+touches. Measured examples of main being ahead: `filelock.py` raises `OSError` where the branch
+degraded to a no-lock path, `web/sw.js` says notification content is unavailable instead of
+implying a watched state changed, and `push.py`, `workspace.py`, `web/shell.js` carry the
+integration repairs above. A three-way merge therefore changes nothing but the branch's leftover
+bookkeeping.
+
+Resolution recorded in the merge commit:
+
+- `data/registry/product-progress.json`: kept main's consolidated `deliverable_state`. The branch's
+  older wording (its P03/P06/P14 evidence and its "dissemination build unmerged" entry) is
+  superseded by this review's evidence and the stakeholder-repair records.
+- The branch renamed its build report to `docs/73-dissemination-build.md`; 73 is this review's own
+  number. The two historical build reports keep their content and are renumbered to clear duplicate
+  document numbers: `docs/68-dissemination-build.md` → `docs/74-dissemination-build.md` and
+  `docs/71-dissemination-build.md` → `docs/75-dissemination-build.md`. The branch's duplicate
+  `docs/73-dissemination-build.md` was dropped; nothing was lost.
+
+Verification on the resolved tree: `.venv/bin/python scripts/verify_all.py` reports 26 step(s),
+0 failed, including 1123 Python tests and the nine Node component suites on this macOS Python 3.9
+host. One environment fact is worth recording: the system `python3` lacks `pywebpush`/`py_vapid`,
+so eight push and push-through-the-outbox checks fail there, while the project `.venv` runs the
+whole suite green. The push suites therefore require the project environment, not the system one.
+
+Still open after this merge, unchanged: no live edition-to-device acceptance, no origin
+authentication, no supervised unified scheduler and no rural delivery evidence.
