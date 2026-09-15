@@ -160,5 +160,55 @@ class FoundationEnsembleTests(unittest.TestCase):
         self.assertEqual(row['temperature_2m_spread']['value'], '2.872')
 
 
+class ProductViewTests(unittest.TestCase):
+    class Response:
+        status = 200
+        headers = {'Content-Type': 'application/json'}
+
+        def __init__(self, body):
+            self.body = body
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+        def read(self, size):
+            return self.body[:size]
+
+    def foundation_with(self, body):
+        import json
+        import tempfile
+        from datetime import datetime as dt
+        from weathergpt_data.foundation import Foundation
+        from weathergpt_data.transport import Store
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        store = Store(directory.name, opener=lambda *a, **k: self.Response(json.dumps(body).encode()),
+                      clock=lambda: dt(2026, 9, 15, tzinfo=UTC))
+        return Foundation(store)
+
+    def test_route_returns_the_member_statistics(self):
+        from datetime import datetime as dt
+        from weathergpt_data import product_api
+        times = hours(24, start=dt(2026, 9, 15, tzinfo=UTC))
+        body = payload([[value] * 24 for value in range(1, 11)], control=[7] * 24, times=times)
+        view = product_api.dispatch(self.foundation_with(body), '/api/ensemble',
+                                    {'lat': ['23.0'], 'lon': ['72.5'], 'days': ['1'], 'model': ['gfs025'],
+                                     'variable': ['temperature_2m']})
+        self.assertEqual(view['view'], 'ensemble.spread')
+        self.assertEqual(view['status'], 'ok')
+        self.assertIn('temperature_2m_mean', view['data']['parameters'])
+        self.assertEqual(view['data']['member_total'], {'temperature_2m': 10})
+
+    def test_route_refuses_an_unknown_model(self):
+        from weathergpt_data import product_api
+        body = payload([[1], [2]])
+        with self.assertRaises(SourceError):
+            product_api.dispatch(self.foundation_with(body), '/api/ensemble',
+                                 {'lat': ['23.0'], 'lon': ['72.5'], 'model': ['not_a_model']})
+
+
 if __name__ == '__main__':
     unittest.main()
