@@ -1,0 +1,49 @@
+{
+  "deleted": "236e9faa-06ee-4bba-b12b-8069996d9003",
+  "detail": "The kept brief was removed from the local store. Nothing was delivered from it.",
+  "briefs": [
+    {
+      "id": "af94cba1-4bae-4301-b6c6-ecde8fed8e4d",
+      "saved_at": "2026-09-15T04:47:02+00:00",
+      "kind": "alert_brief",
+      "title": "Alert brief — AHMADABAD, GUJARAT",
+      "place": {
+        "district": "AHMADABAD",
+        "state": "GUJARAT",
+        "label": "AHMADABAD",
+        "latitude": null,
+        "longitude": null
+      },
+      "window": {
+        "starts_utc": "2026-09-13T18:30:00+00:00",
+        "ends_utc": "2026-09-14T18:30:00+00:00",
+        "label": "14 Sep 2026",
+        "day": 1
+      },
+      "content_sha256": "62592a78cc653f56042c703c379346b1d87ae4af08e9f8ff455bdfff199a18fe",
+      "sources": [
+        "S63",
+        "S06"
+      ],
+      "status": "ok",
+      "evidence": {
+        "sources": [
+          "S63",
+          "S06"
+        ],
+        "not_established": [
+          "This is district-level guidance from one published product. It is not point-level, not a flood or cyclone warning, and not an all-clear.",
+          "A quiet day in this product is not a forecast of no rain and not evidence that nothing is in force anywhere.",
+          "The origin of the district warning service is not authenticated, and its completeness is not verified here.",
+          "No validity window beyond the printed day boundary is published for this district, so the brief states none.",
+          "The CAP relay is reported separately; geographic applicability of a relay message to this place is not computed, and an empty eligible set is not an all-clear.",
+          "This is district-level warning guidance, not a flood warning, not a CAP alert and not an all-clear.",
+          "Origin authentication of the service is not established."
+        ],
+        "why": null,
+        "notes": []
+      },
+      "delivery": "local_only_no_delivery"
+    }
+  ]
+}

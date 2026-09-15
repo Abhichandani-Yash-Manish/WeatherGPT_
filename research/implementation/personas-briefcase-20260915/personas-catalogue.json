@@ -1,0 +1,95 @@
+{
+  "schema_version": "product-view-v1",
+  "generated_at_utc": "2026-09-15T04:47:01.496344+00:00",
+  "view": "personas.catalogue",
+  "status": "ok",
+  "data": {
+    "schema_version": "persona-catalogue-v1",
+    "note": "A persona chooses the emphasis and the surfaces a reader starts from. It changes no value, unit, window, warning level, source identifier or evidence class, and it adds no advice the sources do not carry.",
+    "default": null,
+    "personas": [
+      {
+        "id": "farmer",
+        "label": "Farmer or field adviser",
+        "who": "Works a field: a crop, a stage, and the rain window over that field.",
+        "surfaces": [
+          "advisories",
+          "forecast",
+          "climate"
+        ],
+        "evidence_first": [
+          "published_advice",
+          "forecast",
+          "observation"
+        ],
+        "starters": [
+          "Will it rain over this field in the next two days?",
+          "What does the district agromet advisory carry for this crop this week?",
+          "How does this week compare with the same week in earlier years here?"
+        ],
+        "keeps_aside": [
+          "A published advisory is written for a district and a season, not for this field.",
+          "A forecast value is a grid-cell model value, not a reading taken in the field."
+        ]
+      },
+      {
+        "id": "district_officer",
+        "label": "District officer",
+        "who": "Answers for an administrative unit: which warnings are current, which products are connected, what is not known.",
+        "surfaces": [
+          "warnings",
+          "map",
+          "observations",
+          "changes"
+        ],
+        "evidence_first": [
+          "official_warning",
+          "cap_lifecycle",
+          "observation",
+          "published_advice"
+        ],
+        "starters": [
+          "Which official warnings are current for this district today?",
+          "What is the escalation path and which products are not connected?",
+          "What changed since the previous edition of the district warning product?"
+        ],
+        "keeps_aside": [
+          "A CAP message that names a district is not by itself an instruction to disseminate.",
+          "A day of the official district warning product is a published product, not a decision."
+        ]
+      },
+      {
+        "id": "traveller",
+        "label": "Traveller",
+        "who": "Moves between places: what the next hours hold, what an airport reports, what the sea and rivers are doing.",
+        "surfaces": [
+          "forecast",
+          "aviation",
+          "marine",
+          "observations"
+        ],
+        "evidence_first": [
+          "forecast",
+          "observation",
+          "official_warning"
+        ],
+        "starters": [
+          "What are the next few hours like where I am going?",
+          "What does the nearest airport report right now?",
+          "Are there warnings for the route or the coast along the way?"
+        ],
+        "keeps_aside": [
+          "An airport report describes that station, not the whole route to it.",
+          "A wave or discharge value is a model or lookup value, never an observed water level."
+        ]
+      }
+    ]
+  },
+  "sources": [],
+  "coverage": {},
+  "limitations": [
+    "A persona chooses the emphasis and the surfaces a reader starts from. It changes no value, unit, window, warning level, source identifier or evidence class, and it adds no advice the sources do not carry.",
+    "The same question under two personas retrieves the same evidence; only the emphasis, the starting surfaces and the listed limits differ."
+  ],
+  "not_established": []
+}

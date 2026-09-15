@@ -1,0 +1,140 @@
+{
+  "schema_version": "briefcase-entry-v1",
+  "delivery": "local_only_no_delivery",
+  "entry": {
+    "id": "af94cba1-4bae-4301-b6c6-ecde8fed8e4d",
+    "saved_at": "2026-09-15T04:47:02+00:00",
+    "kind": "alert_brief",
+    "title": "Alert brief — AHMADABAD, GUJARAT",
+    "place": {
+      "district": "AHMADABAD",
+      "state": "GUJARAT",
+      "label": "AHMADABAD",
+      "latitude": null,
+      "longitude": null
+    },
+    "window": {
+      "starts_utc": "2026-09-13T18:30:00+00:00",
+      "ends_utc": "2026-09-14T18:30:00+00:00",
+      "label": "14 Sep 2026",
+      "day": 1
+    },
+    "content_sha256": "62592a78cc653f56042c703c379346b1d87ae4af08e9f8ff455bdfff199a18fe",
+    "sources": [
+      "S63",
+      "S06"
+    ],
+    "status": "ok",
+    "evidence": {
+      "sources": [
+        "S63",
+        "S06"
+      ],
+      "not_established": [
+        "This is district-level guidance from one published product. It is not point-level, not a flood or cyclone warning, and not an all-clear.",
+        "A quiet day in this product is not a forecast of no rain and not evidence that nothing is in force anywhere.",
+        "The origin of the district warning service is not authenticated, and its completeness is not verified here.",
+        "No validity window beyond the printed day boundary is published for this district, so the brief states none.",
+        "The CAP relay is reported separately; geographic applicability of a relay message to this place is not computed, and an empty eligible set is not an all-clear.",
+        "This is district-level warning guidance, not a flood warning, not a CAP alert and not an all-clear.",
+        "Origin authentication of the service is not established."
+      ],
+      "why": null,
+      "notes": []
+    },
+    "payload": {
+      "status": "ok",
+      "place": {
+        "district": "AHMADABAD",
+        "state": "GUJARAT"
+      },
+      "day": {
+        "day": 1,
+        "label": "14 Sep 2026",
+        "date_local": "2026-09-14",
+        "starts_utc": "2026-09-13T18:30:00+00:00",
+        "ends_utc": "2026-09-14T18:30:00+00:00"
+      },
+      "status_line": "Official district warning: yellow - Thunderstorm/lightning/squall",
+      "day_status": {
+        "colour": "yellow",
+        "colour_code": 3,
+        "hazards": [
+          "Thunderstorm/lightning/squall"
+        ],
+        "quiet": false,
+        "official_wording": null,
+        "wording_note": "the product states a colour and hazard codes for this district-day and no free-text wording is recorded"
+      },
+      "issuer": {
+        "source_id": "S63",
+        "product": "IMD district warning product",
+        "layer": "imd:district_warnings_india",
+        "issued_at_utc": "2026-09-14T06:00:00+00:00",
+        "source_locator": "$.features[112]",
+        "retrieved_at_utc": "2026-09-15T04:47:02.971494+00:00",
+        "day_boundary_basis": "Day n is the nth IST calendar day counted from the bulletin date, matching the day selector on the IMD district warning page. Derived from the bulletin date; IMD does not publish a per-day validity field in this product.",
+        "temporal_applicability": "day_anchored_on_bulletin_date"
+      },
+      "relay": {
+        "source_id": "S06",
+        "messages": 9,
+        "eligible_by_lifecycle": 0,
+        "latest_sent": "2026-09-09T12:54:34+05:30",
+        "note": "reported separately and never merged with the district guidance; a reachable relay is not evidence that nothing is in force"
+      },
+      "what_would_change_this": [
+        "A newer bulletin of the same product replaces these day rows; this brief records the bulletin it was built from.",
+        "A CAP relay message is a separate record: it is not the same product and it is not merged here.",
+        "A change in the point of interest changes the district, and therefore the day rows."
+      ],
+      "not_established": [
+        "This is district-level guidance from one published product. It is not point-level, not a flood or cyclone warning, and not an all-clear.",
+        "A quiet day in this product is not a forecast of no rain and not evidence that nothing is in force anywhere.",
+        "The origin of the district warning service is not authenticated, and its completeness is not verified here.",
+        "No validity window beyond the printed day boundary is published for this district, so the brief states none.",
+        "The CAP relay is reported separately; geographic applicability of a relay message to this place is not computed, and an empty eligible set is not an all-clear.",
+        "This is district-level warning guidance, not a flood warning, not a CAP alert and not an all-clear.",
+        "Origin authentication of the service is not established."
+      ],
+      "how_to_check_again": [
+        "Ask the workspace again for this place and day: a new retrieval reports the bulletin then in force.",
+        "Register a local watch for this place and hazard: watches are checked on request and never delivered silently.",
+        "Read the published product at its registered address; the saved document, when one is held, opens from its passage."
+      ],
+      "sources": [
+        {
+          "source_id": "S63",
+          "product": "IMD GeoServer basemap, station and basin layers",
+          "layer": "imd:district_warnings_india",
+          "url": "https://reactjs.imd.gov.in/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=imd%3Adistrict_warnings_india&srsname=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=2000",
+          "retrieved_at_utc": "2026-09-15T04:46:35.678601+00:00",
+          "sha256_prefix": "91143acf6225",
+          "integration_status": "sample_inspected",
+          "usage_terms": "Access, supported integration and redistribution terms unresolved; inherited from the S15 service host.",
+          "user_review": "approved_local_prototype"
+        },
+        {
+          "source_id": "S06",
+          "product": "IMD-linked CAP RSS",
+          "layer": null,
+          "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/rss.xml",
+          "retrieved_at_utc": "2026-09-15T04:46:38.404853+00:00",
+          "sha256_prefix": "2ebb682f2306",
+          "integration_status": "prototype_adapter_tested",
+          "usage_terms": "Not established for production redistribution",
+          "user_review": "approved_local_prototype"
+        }
+      ],
+      "limitations": [
+        "Day windows are derived from the bulletin date and the IMD day selector, not from a validity field published per day.",
+        "Source geometry is not an LGD village crosswalk.",
+        "Absence or quarantine is not an all-clear."
+      ],
+      "brief_id": "62592a78cc653f56042c703c379346b1d87ae4af08e9f8ff455bdfff199a18fe"
+    },
+    "delivery": "local_only_no_delivery"
+  },
+  "saved": true,
+  "detail": "The brief was composed from its sources and kept in the local store; nothing was delivered."
+}
