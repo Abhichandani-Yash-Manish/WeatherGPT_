@@ -1,6 +1,7 @@
 """Product-scoped semantic validation. Unknown data never becomes zero or all-clear."""
 import json,math,re
 from datetime import datetime,timedelta,timezone
+from decimal import Decimal,localcontext
 from .transport import SourceError,parsed,stamp,digest
 from zoneinfo import ZoneInfo
 from .district_warnings import DAY_BOUNDARY_BASIS, DAY_BOUNDARY_DAY_KIND
@@ -174,6 +175,115 @@ def reanalysis_model_for(text):
     if re.search(r'era5[-\s]?land',lowered):return 'era5_land'
     if re.search(r'era5[-\s]?seamless',lowered):return 'era5_seamless'
     return 'era5'
+
+# Ensemble member forecasts. The endpoint rejects an unknown model id, so the ids here
+# are what the service returned (scripts/probe_ensemble_catalogue.py). Members are the
+# perturbed `_memberNN` columns; the base column is the control run, reported separately.
+ENSEMBLE_MODELS=('gfs025','ecmwf_ifs025','icon_seamless')
+ENSEMBLE={'temperature_2m':('°C','instant',None,None),
+          'precipitation':('mm','preceding_hour_sum',0,None),
+          'wind_speed_10m':('km/h','instant',0,None)}
+ENSEMBLE_PERCENTILES=(10,50,90)
+
+
+def nearest_rank(ordered,percentile):
+    """The smallest member value whose rank covers the percentile. No interpolation."""
+    n=len(ordered)
+    rank=max(1,min(n,-(-n*percentile//100)))
+    return ordered[rank-1]
+
+
+def ensemble_statistics(values):
+    """Deterministic statistics over the non-null members. Every method is disclosed.
+
+    These are properties of the returned member set. They are not a confidence, risk or
+    skill score, and a member count is not a probability of the event.
+    """
+    with localcontext() as context:
+        context.prec=32
+        ordered=sorted(value for value in values if value is not None)
+        n=len(ordered)
+        if not n:return {'member_count':0}
+        total=sum(ordered,Decimal(0));mean=total/n
+        statistics={'member_count':n,'mean':mean.quantize(Decimal('0.001')),
+                    'min':ordered[0],'max':ordered[-1],'spread':None}
+        for percentile in ENSEMBLE_PERCENTILES:statistics['p'+str(percentile)]=None
+        if n>=2:
+            statistics['spread']=(sum((value-mean)**2 for value in ordered)/n).sqrt().quantize(Decimal('0.001'))
+            for percentile in ENSEMBLE_PERCENTILES:
+                statistics['p'+str(percentile)]=nearest_rank(ordered,percentile)
+        return statistics
+
+
+def ensemble(data,meta,variables,model,request_point,expected_dates=None,threshold=None):
+    """Normalise one ensemble response into control and member-statistic records."""
+    if model not in ENSEMBLE_MODELS:raise SourceError('Unsupported ensemble model: '+str(model))
+    if not isinstance(data,dict):raise SourceError('Expected one-location ensemble object')
+    if type(data.get('utc_offset_seconds')) not in {int,float} or data['utc_offset_seconds']!=0:raise SourceError('Ensemble adapter requires numeric UTC offset zero')
+    grid=grid_identity(data)
+    block=data.get('hourly');units=data.get('hourly_units')
+    if not isinstance(block,dict) or not isinstance(units,dict):raise SourceError('Missing hourly schema')
+    times=block.get('time')
+    if not isinstance(times,list) or not times:raise SourceError('Missing time axis')
+    if any(not isinstance(t,int) or isinstance(t,bool) for t in times):raise SourceError('Expected Unix-second time axis')
+    if any(b-a!=3600 for a,b in zip(times,times[1:])):raise SourceError('Non-hourly, duplicated or unordered time axis')
+    if expected_dates:
+        a,b=expected_dates
+        start=int(datetime.combine(a,datetime.min.time(),timezone.utc).timestamp())
+        end=int(datetime.combine(b+timedelta(days=1),datetime.min.time(),timezone.utc).timestamp())
+        if len(times)!=(end-start)//3600 or times[0]!=start or times[-1]!=end-3600:raise SourceError('Incomplete or mismatched requested ensemble interval')
+    records=[];member_total={}
+    for variable,(unit,aggregation,minimum,maximum) in variables.items():
+        member_names=sorted(name for name in block if name.startswith(variable+'_member'))
+        if not member_names:raise SourceError('No ensemble members returned for '+variable)
+        member_total[variable]=len(member_names)
+        control=block.get(variable)
+        if control is not None and units.get(variable)!=unit:raise SourceError('Unexpected unit for '+variable+': '+str(units.get(variable)))
+        if any(units.get(name)!=unit for name in member_names):raise SourceError('Unexpected ensemble member unit for '+variable)
+        columns=[[numeric(value,minimum,maximum) for value in (block.get(name) or [])] for name in member_names]
+        if any(len(column)!=len(times) for column in columns):raise SourceError('Misaligned ensemble member for '+variable)
+        if control is not None and (not isinstance(control,list) or len(control)!=len(times)):raise SourceError('Misaligned control series for '+variable)
+        for index,instant in enumerate(times):
+            valid=datetime.fromtimestamp(instant,timezone.utc)
+            members=[column[index] for column in columns]
+            statistics=ensemble_statistics([Decimal(str(value)) for value in members if value is not None])
+
+            def add(statistic,value,aggregation_value=aggregation,locator=None):
+                records.append({'record_id':digest(('%s|%s|%s|%s'%(meta['sha256'],variable,statistic,instant)).encode()),
+                                'parameter':variable+'_'+statistic,'value':None if value is None else str(value),'unit':unit,
+                                'valid_time_utc':stamp(valid),
+                                'interval_start_utc':stamp(valid-timedelta(hours=1)) if aggregation_value.startswith('preceding_hour_') else None,
+                                'interval_end_utc':stamp(valid) if aggregation_value.startswith('preceding_hour_') else None,
+                                'aggregation':aggregation_value,'model':model,'member_count':statistics.get('member_count',0),
+                                'quality_flags':['source_value_missing'] if value is None else [],
+                                'source_locator':locator or ('$.hourly.'+variable+'*['+str(index)+']')})
+
+            for statistic in ('mean','spread','min','max'):
+                add(statistic,statistics.get(statistic))
+            for percentile in ENSEMBLE_PERCENTILES:
+                add('p'+str(percentile),statistics.get('p'+str(percentile)))
+            if control is not None:
+                control_value=numeric(control[index],minimum,maximum)
+                add('control',None if control_value is None else Decimal(str(control_value)))
+            if threshold is not None and aggregation.startswith('preceding_hour_'):
+                count=sum(1 for value in members if value is not None and Decimal(str(value))>=Decimal(str(threshold)))
+                fraction=Decimal(count)/Decimal(statistics['member_count']) if statistics.get('member_count') else None
+                add('exceedance',fraction,locator='$.hourly.'+variable+'*['+str(index)+']')
+                records[-1].update(exceedance_count=count,threshold=str(threshold))
+    result=envelope('ensemble_forecast',meta['source_id'],records,meta,
+                    ['Ensemble spread and percentiles describe the returned members; they are not a probability, confidence, risk or skill measure.',
+                     'Modelled grid values are not local measurements.',
+                     'Run identity is not exposed; retrieval time is not model issue time.',
+                     'A member exceedance count is a frequency over members, which are not independent draws.'],
+                    {'requested_point':request_point,'returned_grid':grid,'time_basis':'UTC','model':model,
+                     'member_total':member_total,
+                     'statistics':{'mean':'arithmetic mean of the returned perturbed members',
+                                   'spread':'population standard deviation across the returned members',
+                                   'percentile':'nearest-rank on the sorted member values'}})
+    numeric_quality(result,expected_dates is not None)
+    if expected_dates is None and meta.get('checked_at_utc') and datetime.fromtimestamp(times[-1],timezone.utc)<=parsed(meta['checked_at_utc']):result['status']='stale'
+    return result
+
 
 def aviation(data,meta,kind,requested_ids,now):
     if not isinstance(data,list):raise SourceError('Expected aviation report array')
