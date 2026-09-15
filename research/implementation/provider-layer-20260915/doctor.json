@@ -1,0 +1,102 @@
+{
+  "schema_version": "doctor-report-v1",
+  "checks": [
+    {
+      "id": "python",
+      "state": "ok",
+      "detail": "Python 3.9.6",
+      "next_action": ""
+    },
+    {
+      "id": "node",
+      "state": "ok",
+      "detail": "/opt/homebrew/bin/node",
+      "next_action": ""
+    },
+    {
+      "id": "package:numpy",
+      "state": "ok",
+      "detail": "numpy 2.0.2 for numerical checks and point-in-polygon geography",
+      "next_action": ""
+    },
+    {
+      "id": "package:shapely",
+      "state": "ok",
+      "detail": "shapely 2.0.7 for district warning point-in-polygon checks",
+      "next_action": ""
+    },
+    {
+      "id": "package:sentence_transformers",
+      "state": "ok",
+      "detail": "sentence_transformers 5.1.2 for whole-document passage retrieval over the indexed corpus",
+      "next_action": ""
+    },
+    {
+      "id": "package:torch",
+      "state": "ok",
+      "detail": "torch 2.8.0 for the embedding model the passage index runs on",
+      "next_action": ""
+    },
+    {
+      "id": "package:pdfplumber",
+      "state": "ok",
+      "detail": "pdfplumber 0.11.8 for published PDF extraction during document intake",
+      "next_action": ""
+    },
+    {
+      "id": "package:pypdf",
+      "state": "ok",
+      "detail": "pypdf 6.10.2 for reading the print layout of an exported answer",
+      "next_action": ""
+    },
+    {
+      "id": "registries",
+      "state": "ok",
+      "detail": "7 registries present",
+      "next_action": ""
+    },
+    {
+      "id": "corpus",
+      "state": "ok",
+      "detail": "584 documents, 6739 passages, 12 families indexed",
+      "next_action": ""
+    },
+    {
+      "id": "model",
+      "state": "ok",
+      "detail": "qwen3.6:latest answered at http://127.0.0.1:11434",
+      "next_action": ""
+    },
+    {
+      "id": "provider:rules",
+      "state": "ok",
+      "detail": "the rules-first planner answers the core problem-statement shapes with no model",
+      "next_action": ""
+    },
+    {
+      "id": "provider:openrouter",
+      "state": "warn",
+      "detail": "no OpenRouter key is configured; 6 free models are ready to route when one exists",
+      "next_action": "Add {\"openrouter_api_key\": \"...\"} to data/runtime/model-config.json (local only), then run python3 scripts/models.py --check."
+    },
+    {
+      "id": "runtime:conversations",
+      "state": "ok",
+      "detail": "422 stored conversation(s); nothing is published automatically",
+      "next_action": ""
+    },
+    {
+      "id": "runtime:documents",
+      "state": "ok",
+      "detail": "1337 saved document blob(s) under data/runtime/documents",
+      "next_action": ""
+    }
+  ],
+  "counts": {
+    "ok": 14,
+    "warn": 1,
+    "fail": 0
+  },
+  "operational_ready": false,
+  "note": "Presence of these pieces is not operational acceptance and not a skill measurement."
+}

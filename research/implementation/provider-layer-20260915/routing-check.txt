@@ -1,0 +1,6 @@
+      then: python3 scripts/models.py --check
+
+rules path
+  Will it rain in Ahmedabad, G -> forecast ['forecast/lookup'] | provider deterministic_rules
+provider path (a follow-up cannot be planned by rules)
+  And what about the evening?  -> forecast | provider ollama | model qwen3.6:latest | 9176 ms

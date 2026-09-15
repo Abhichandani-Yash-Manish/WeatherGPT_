@@ -1,0 +1,68 @@
+{
+  "schema_version": "rules-only-engine-v1",
+  "providers": [],
+  "turns": [
+    {
+      "question": "Will it rain in Ahmedabad, Gujarat tomorrow morning?",
+      "status": "answered",
+      "plan_intent": "forecast",
+      "tasks": [
+        "forecast/lookup"
+      ],
+      "facts": 1,
+      "citations": [
+        "S21",
+        "S61"
+      ],
+      "answer_head": "Ahmedabad · 16 Sep, 09:30–16 Sep, 12:30 IST: Forecast precipitation: 0.0 mm. Source: GFS forecast; conditions can change.",
+      "planning_meta": {
+        "provider": "deterministic_rules",
+        "model": "rule-planner-v1",
+        "model_calls": 0,
+        "attempts": 0,
+        "latency_ms": 0,
+        "failover": []
+      }
+    },
+    {
+      "question": "Is there an official warning for Patna, Bihar tomorrow?",
+      "status": "needs_selection",
+      "plan_intent": "warning",
+      "tasks": [
+        "warning/lookup"
+      ],
+      "facts": 0,
+      "citations": [],
+      "answer_head": "Which place do you mean? Patna, Kaimur District, State of Bihar / Patna, Rohtās, State of Bihar / Patnā, Pūrba Champāran, State of Bihar / Patnā, Aurangābād, State of Bihar. Choose one, or type its state/district.",
+      "planning_meta": {
+        "provider": "deterministic_rules",
+        "model": "rule-planner-v1",
+        "model_calls": 0,
+        "attempts": 0,
+        "latency_ms": 0,
+        "failover": []
+      }
+    },
+    {
+      "question": "What was the annual rainfall in Ahmedabad district, Gujarat in 1990?",
+      "status": "answered",
+      "plan_intent": "history",
+      "tasks": [
+        "history/lookup"
+      ],
+      "facts": 1,
+      "citations": [
+        "S27"
+      ],
+      "answer_head": "Ahmedabad, Gujarat · annual 1990\nrainfall: 983.6 mm [t1-f1]\nRetrieved 1 published historical values for the requested places, parameters and years.",
+      "planning_meta": {
+        "provider": "deterministic_rules",
+        "model": "rule-planner-v1",
+        "model_calls": 0,
+        "attempts": 0,
+        "latency_ms": 0,
+        "failover": []
+      }
+    }
+  ]
+}
