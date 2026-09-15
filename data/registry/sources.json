@@ -4466,7 +4466,7 @@
       ],
       "integration": {
         "status": "prototype_adapter_tested",
-        "guide": "docs/69-air-quality.md",
+        "guide": "docs/70-air-quality.md",
         "operational_readiness": "not_validated"
       },
       "evidence_level": "sample_inspected",
