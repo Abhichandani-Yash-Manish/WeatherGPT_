@@ -199,6 +199,47 @@ class BulletinIndex:
         result=[{**candidates[i][0],'retrieval':{'rrf_score':ranks[i],'lexical_score':dict(lex)[i],'semantic_score':dict(dense)[i]}} for i in best]
         return doc,result,{'mode':'bm25_plus_multilingual_e5_rrf','candidates':len(candidates),'model':MODEL,'revision':REVISION,'metadata_filters':{'state':state,'district':district,'crop':crop,'stage':stage},'scores_are_confidence':False}
 
+    # What identifies a publication as evidence: the document's own content and address, and
+    # what every passage says and where it is printed. Everything else in the payload is an
+    # annotation about the ingestion - age_days and currency are measured against the clock,
+    # marker_basis and provenance paths were added later - and none of it is identity.
+    PUBLICATION_IDENTITY_FIELDS=('sha256','family','region','scope','source_id','issue_date','pages','bytes',
+                                 'language','extraction_version','printed_times','issue_date_basis','issuer_basis')
+
+    def same_publication(self,document,stored_manifest):
+        """'' when the stored publication is this document, or the reason it is not.
+
+        A document payload records the age and currency measured when it was ingested, so the
+        same PDF fetched on a later day derives a different payload. Identity is content and
+        address: every passage's printed position and text must match, and the document's
+        identity fields must match. A changed passage or a changed identity field still fails
+        here, which is what makes the publication immutable evidence.
+        """
+        passages=document['passages']
+
+        def content(passage):
+            """What a passage contributes as evidence: where it is printed and what it says."""
+            return digest(json.dumps([passage.get('physical_page'),passage.get('passage_index'),
+                                      passage.get('section'),passage.get('text')],ensure_ascii=False).encode())
+
+        with self.connection() as db:
+            rows=db.execute('SELECT id,payload FROM passages WHERE document_sha=?',(document['sha256'],)).fetchall()
+        stored={row[0]:content(json.loads(row[1])) for row in rows}
+        expected={passage['id']:content(passage) for passage in passages}
+        if len(stored)!=len(expected):
+            return ('passage count differs: '+str(len(stored))+' stored, '+str(len(expected))+' extracted')
+        if sorted(stored.values())!=sorted(expected.values()):
+            return 'stored passage text differs from the fresh extraction'
+        with self.connection() as db:
+            row=db.execute('SELECT payload FROM documents WHERE sha=?',(document['sha256'],)).fetchone()
+        if not row:
+            return 'the stored document payload is not in this index'
+        stored_document=json.loads(row[0])
+        differing=[key for key in self.PUBLICATION_IDENTITY_FIELDS if stored_document.get(key)!=document.get(key)]
+        if differing:
+            return 'the identity fields differ: '+', '.join(differing)
+        return ''
+
     def publish_document(self,document,provenance,checked_at,encoder=embed):
         """Index one whole document. Integrity is payload and embedding binding, not raw re-derivation."""
         passages=document['passages']
@@ -220,8 +261,19 @@ class BulletinIndex:
         # same, the attributed extraction is not, and keying on content alone made the
         # second district collide with the first's manifest.
         target=self.document_publication(document['sha256'],document.get('region'))
+        idempotent=False
         if target.exists():
-            if json.loads(target.read_text())!=manifest:raise SourceError('Immutable document publication already differs')
+            stored_manifest=json.loads(target.read_text())
+            if stored_manifest!=manifest:
+                reason=self.same_publication(document,stored_manifest)
+                if not reason:
+                    # The same document, re-fetched on a later clock: keep the recorded
+                    # publication and say so instead of failing the run or rewriting evidence.
+                    idempotent=True
+                else:
+                    raise SourceError('Immutable document publication already differs for document '+
+                                      str(document.get('sha256'))[:16]+' (region '+str(document.get('region'))+
+                                      '): '+reason+'; it is not rewritten because a published document is evidence')
         else:write_json(target,manifest)
         with self.connection() as db:
             existing=db.execute('SELECT payload_hash FROM documents WHERE sha=?',(document['sha256'],)).fetchone()
@@ -232,7 +284,8 @@ class BulletinIndex:
                 db.execute('INSERT OR IGNORE INTO passages VALUES (?,?,?,?,?,?,?,?,?,?)',(passage['id'],document['sha256'],passage['family'],passage['scope'],passage.get('region'),text,digest(text.encode()),embedding,digest(embedding.encode()),REVISION))
             db.execute('INSERT OR REPLACE INTO heads VALUES (?,?,?,?,?)',(self.document_key(document['family'],document.get('region')),document['sha256'],checked_at,'ok',''))
         return {'sha256':document['sha256'],'passages':len(passages),'duplicate':existing is not None,
-                'shared_edition':shared,'regions':self.document_regions(document['sha256'])}
+                'idempotent_publication':idempotent,'shared_edition':shared,
+                'regions':self.document_regions(document['sha256'])}
     def document_publication(self,sha,region=None):
         return self.path.parent/'publications'/'documents'/(sha+'-'+digest(str(region or '-').encode())[:12]+'.json')
     def document_publications(self,sha):

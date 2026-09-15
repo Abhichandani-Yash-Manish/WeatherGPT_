@@ -402,6 +402,99 @@ class IndexingTests(unittest.TestCase):
         self.assertEqual(published['selected_for_regions'], ['Otherpur', 'Testpur'])
 
 
+class PublicationIdentityTests(unittest.TestCase):
+    """What makes a stored publication the same evidence, and what must never be rewritten."""
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.index = BulletinIndex(self.root / 'index.sqlite')
+        self.body = minimal_pdf(BULLETIN)
+        self.store = Store({'district_current_en_get.php': selector(
+            'https://imdagrimet.gov.in/Services/DistrictBulletin.php?district=Testpur'),
+            'DistrictBulletin.php': self.body})
+
+    def ingest(self):
+        return di.ingest_district(self.store, self.index, 'Teststate', 'Testpur',
+                                  now=NOW, fetch_ttl=3600, encoder=vectors)
+
+    def published_document(self):
+        record = self.ingest()
+        view = self.index.passage_document(record['sha256'])
+        document = {key: value for key, value in view.items()
+                    if key not in {'provenance', 'is_shared_edition', 'selected_for_regions'}}
+        return record, document
+
+    def publication_path(self, sha):
+        return self.index.document_publications(sha)[0]
+
+    def test_rerecording_the_same_document_on_a_later_clock_is_idempotent(self):
+        record, document = self.published_document()
+        path = self.publication_path(record['sha256'])
+        before = path.read_bytes()
+        later = {**document, 'age_days': 4, 'currency': 'printed_issue_differs_from_retrieval_date',
+                 'printed_issue_is_retrieval_date': False, 'marker_basis': 'annotation added later'}
+        result = self.index.publish_document(later, {'sha256': record['sha256'], 'blob': record['blob'],
+                                                     'source_id': 'S57'}, NOW, encoder=vectors)
+        self.assertTrue(result['idempotent_publication'], 'a clock-only difference is not a new publication')
+        self.assertEqual(path.read_bytes(), before, 'the recorded publication is evidence and is not rewritten')
+
+    def test_a_changed_passage_is_refused_rather_than_republished(self):
+        record, document = self.published_document()
+        changed = json.loads(json.dumps(document))
+        changed['passages'][0]['text'] = 'A different sentence entirely.'
+        with self.assertRaises(SourceError) as raised:
+            self.index.publish_document(changed, {'sha256': record['sha256'], 'blob': record['blob'],
+                                                  'source_id': 'S57'}, NOW, encoder=vectors)
+        self.assertIn('passage text differs', str(raised.exception))
+
+    def test_a_changed_identity_field_is_refused_and_named(self):
+        record, document = self.published_document()
+        changed = json.loads(json.dumps(document))
+        changed['issue_date'] = '2026-09-15'
+        with self.assertRaises(SourceError) as raised:
+            self.index.publish_document(changed, {'sha256': record['sha256'], 'blob': record['blob'],
+                                                  'source_id': 'S57'}, NOW, encoder=vectors)
+        self.assertIn('identity fields differ', str(raised.exception))
+        self.assertIn('issue_date', str(raised.exception))
+
+    def test_the_character_annotation_is_not_part_of_a_passage_identity(self):
+        # The same bytes must extract to the same passage id. text_quality says something
+        # about the characters and is not identity, so a run that replaces a control
+        # character and a run that does not still agree on which passage this is.
+        page = {'physical_page': 1, 'source_locator': 'physical PDF page 1'}
+        meta = {'sha256': 'a' * 64, 'source_id': 'S57', 'scope': 'district', 'region': 'Testpur',
+                'language': 'en', 'issue_date': '2026-09-14'}
+        lines = ['Light irrigation is advised where soil moisture is low.',
+                 'Wind speeds are likely to increase along the coast.']
+        sentence = 'Light irrigation is advised where soil moisture is low.'
+        with patch.object(di, 'clean_text', return_value=(sentence, True)):
+            damaged = di._build(lines, page, 'GENERAL ADVICE', meta, 'district_agromet', 0)
+        with patch.object(di, 'clean_text', return_value=(sentence, False)):
+            clean = di._build(lines, page, 'GENERAL ADVICE', meta, 'district_agromet', 0)
+        self.assertTrue(damaged and clean, 'the fixture must produce passages')
+        self.assertNotEqual(damaged[0]['text_quality'], clean[0]['text_quality'])
+        self.assertEqual(damaged[0]['id'], clean[0]['id'])
+
+    def test_the_intake_holds_a_target_it_cannot_verify_and_keeps_going(self):
+        record, document = self.published_document()
+        conflicting = json.loads(json.dumps(document))
+        conflicting['passages'][0]['text'] = 'A different sentence entirely.'
+        from weathergpt_data import bulletin_index
+        with patch.object(di, 'candidates', return_value=(['https://example.test/bulletin.pdf'], {})), \
+             patch.object(di, 'extract', return_value=(conflicting, {'sha256': record['sha256'],
+                                                                    'blob': record['blob'], 'source_id': 'S57'})), \
+             patch.object(bulletin_index, 'BulletinIndex', return_value=self.index):
+            report = di.ingest(self.store, self.root, 'national_bulletin', now=NOW)
+        self.assertEqual(report['status'], 'no_new_document')
+        self.assertFalse(report['accepted'])
+        held = report['rejected'][0]
+        self.assertEqual(held['stage'], 'publish')
+        self.assertTrue(held['held'])
+        self.assertIn('passage text differs', held['error'])
+
+
 class RetentionTests(unittest.TestCase):
     """Bodies age out; the hash, the passages and the day manifest do not."""
 

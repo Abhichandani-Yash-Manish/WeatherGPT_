@@ -143,7 +143,10 @@ def _build(lines, page, section, meta, family, offset):
                 'physical_page': page['physical_page'], 'passage_index': offset + index + 1,
                 'section': section, 'text': clean, 'source_locator': page['source_locator'],
                 'issue_date': meta['issue_date'], 'extraction_version': DOCUMENT_EXTRACTION_VERSION}
-        item['id'] = digest(repr(sorted(item.items())).encode())
+        # text_quality is an annotation about the characters, not part of the passage's identity:
+        # including it made the same bytes extract to a different id when the annotation changed.
+        identity = {key: value for key, value in item.items() if key != 'text_quality'}
+        item['id'] = digest(repr(sorted(identity.items())).encode())
         out.append(item)
     return out
 
@@ -415,7 +418,7 @@ def ingest(store, runtime_root, name, now=None, families=None):
         try:
             document, meta = extract(store, spec, url, now)
         except SourceError as error:
-            report['rejected'].append({'url': url, 'error': str(error)})
+            report['rejected'].append({'url': url, 'stage': 'extract', 'error': str(error)})
             continue
         if meta['sha256'] in seen:
             continue
@@ -425,8 +428,17 @@ def ingest(store, runtime_root, name, now=None, families=None):
         publish = {'passages': len(document['passages']), 'duplicate': already}
         if not already:
             # Immutable publication identity: content and address only. Retrieval instants live in the run manifest.
-            publish = index.publish_document(document, {'sha256': meta['sha256'], 'blob': meta.get('blob'),
-                                                        'source_id': spec['source_id']}, now)
+            # A publication already on disk that this extraction cannot be shown to be is held
+            # as a rejected target with its reason: one held document must not stop the sweep
+            # for the other families, and it must not be rewritten either.
+            try:
+                publish = index.publish_document(document, {'sha256': meta['sha256'], 'blob': meta.get('blob'),
+                                                            'source_id': spec['source_id']}, now)
+            except SourceError as error:
+                report['rejected'].append({'url': url, 'stage': 'publish', 'sha256': meta['sha256'],
+                                           'issue_date': document.get('issue_date'), 'held': True,
+                                           'error': str(error)})
+                continue
         report['accepted'].append({'url': url, 'sha256': meta['sha256'], 'pages': document['pages'],
                                    'passages': len(document['passages']), 'issue_date': document['issue_date'],
                                    'issue_date_basis': document['issue_date_basis'],
