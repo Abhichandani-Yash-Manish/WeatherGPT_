@@ -113,7 +113,10 @@ class DialogueContracts(unittest.TestCase):
         request={k:focused()[k] for k in REQUEST_SCHEMA['properties']};request['places']=[];request['tasks'][0].update(place_indices=[],start_local='',end_local='',request_quote='Will it rain tomorrow?')
         with patch.object(LocalModel,'complete',return_value=(request,{})) as complete:
             plan,_=LocalModel().plan('Will it rain tomorrow?',NOW,[])
-        self.assertEqual(complete.call_count,1);self.assertEqual(plan['tasks'][0]['start_local'],'2026-09-13T00:00:00+05:30');self.assertEqual(plan['places'],[])
+        # The whole day of a forecast is the source's own day, 00:30 to the next 00:30 IST, and a
+        # named day in the question settles it: the same window the rules floor reads. The date is
+        # what this check is about - it survives a missing place and never costs a second call.
+        self.assertEqual(complete.call_count,1);self.assertEqual(plan['tasks'][0]['start_local'],'2026-09-13T00:30:00+05:30');self.assertEqual(plan['tasks'][0]['end_local'],'2026-09-14T00:30:00+05:30');self.assertEqual(plan['places'],[])
 
     def test_literal_country_and_repeated_city_bind_to_history_tasks(self):
         p=focused();p['places']=[];p['tasks']=[task(kind='history',parameters=['rainfall','temperature'],years=[2024],request_quote='भारत की 2024 में कुल वर्षा और औसत तापमान',place_indices=[])]
