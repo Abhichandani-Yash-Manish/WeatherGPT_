@@ -34,6 +34,18 @@ class ConversationCancelled(Exception):
         self.stage=stage
 
 
+def document_only_plan(plan):
+    """True when every task asks for a published document, so no point is needed.
+
+    A corpus answer is a document reading, not a point forecast: a name the gazetteer does not
+    hold must not end the turn, because the corpus asks for the district or state in the
+    publisher's own words. Measured 15 September 2026: "জাতীয় আবহাওয়া বুলেটিনে ভারী বৃষ্টি
+    সম্পর্কে কী লেখা আছে?" was answered by asking which settlement "জাতী" was.
+    """
+    tasks = plan.get('tasks') or []
+    return bool(tasks) and all(task.get('kind') == 'document' for task in tasks)
+
+
 class BoundedGate:
     """One active turn plus a bounded number of waiting turns.
 
@@ -542,6 +554,14 @@ class ConversationEngine:
                 matches=self.gazetteer.search(p['name'],p['state'],p['district'])
                 result['trace']['tools'].append({'name':'gazetteer_search','query':p,'matches':len(matches)})
                 if not matches:
+                    if document_only_plan(plan):
+                        # A published-document question does not need a point: the corpus asks for
+                        # the district or state in the publisher's own words, so a name the gazetteer
+                        # does not hold must not end the turn. Measured 15 September 2026:
+                        # "জাতীয় আবহাওয়া বুলেটিনে ভারী বৃষ্টি সম্পর্কে কী লেখা আছে?" was answered by
+                        # asking which settlement "জাতী" was, and the weather bulletin was never read.
+                        result['notes'].append('Read "'+str(p['name'])+'" as part of the question rather than as a place: this request is for a published document and that name is not a settlement.')
+                        continue
                     result.update(status='needs_clarification',answer=f"I could not find a settlement named {p['name']}"+(f" in {p['state']}" if p['state'] else '')+'. Please give its district/state, an alternative spelling, or a pin. I will not replace it with a nearby city.',follow_up='District/state, alternative spelling, or coordinates');return None
                 for match in matches:match['for_place_name']=p['name']
                 if matches[0].get('state_match_basis'):

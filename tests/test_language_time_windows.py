@@ -158,5 +158,74 @@ class MeasureCoverageTests(unittest.TestCase):
                                  sorted(['precipitation', 'temperature_2m', 'wind_speed_10m', 'relative_humidity_2m']))
 
 
+class DocumentWordsTests(unittest.TestCase):
+    """A published product named in the reader's own script is still a document question."""
+
+    def setUp(self):
+        self.noon = datetime(2026, 9, 15, 4, 0, tzinfo=timezone.utc)
+
+    def test_a_national_bulletin_question_in_hindi_plans_the_document(self):
+        # Measured 15 September 2026: this question matched no document word at all, planned as a
+        # rainfall forecast, and was answered by asking which settlement "बारे" was.
+        plan = rule_request('भारी बारिश के बारे में राष्ट्रीय मौसम बुलेटिन क्या कहता है?', self.noon, None)
+        self.assertIsNotNone(plan)
+        self.assertEqual(plan['tasks'][0]['kind'], 'document')
+        self.assertEqual(plan['tasks'][0]['corpus_request']['family'], 'national_bulletin')
+        self.assertEqual(plan['places'], [])
+
+    def test_a_district_agromet_question_in_gujarati_plans_the_district_family(self):
+        plan = rule_request('નાસિક જિલ્લાની કૃષિ સલાહમાં દ્રાક્ષ વિશે શું લખ્યું છે?', self.noon, None)
+        self.assertIsNotNone(plan)
+        self.assertEqual(plan['tasks'][0]['kind'], 'document')
+        self.assertEqual(plan['tasks'][0]['corpus_request']['family'], 'district_agromet')
+        self.assertEqual(plan['tasks'][0]['corpus_request']['scope'], 'district')
+        self.assertEqual([(place['name'], place['kind']) for place in plan['places']], [('નાસિક', 'district')])
+
+    def test_english_document_questions_keep_their_families(self):
+        cases = (
+            ('What does the latest national weather bulletin say about heavy rainfall?', 'national_bulletin'),
+            ("What does today's district agromet bulletin for Nashik say?", 'district_agromet'),
+            ('What does the latest flash flood guidance say?', 'flash_flood_national'),
+            ('Show me the latest press release.', 'press_release'),
+            ('Is there any warning in the latest sea area bulletin?', 'sea_area_bulletin'),
+        )
+        for question, family in cases:
+            with self.subTest(question=question):
+                plan = rule_request(question, self.noon, None)
+                self.assertEqual(plan['tasks'][0]['kind'], 'document')
+                self.assertEqual(plan['tasks'][0]['corpus_request']['family'], family)
+
+
+class DocumentPlaceRuleTests(unittest.TestCase):
+    """A document question does not die on a name the gazetteer does not hold."""
+
+    def test_only_document_plans_make_a_place_optional(self):
+        from weathergpt_data.conversation import document_only_plan
+
+        self.assertTrue(document_only_plan({'tasks': [{'kind': 'document'}]}))
+        self.assertTrue(document_only_plan({'tasks': [{'kind': 'document'}, {'kind': 'document'}]}))
+        self.assertFalse(document_only_plan({'tasks': [{'kind': 'document'}, {'kind': 'forecast'}]}))
+        self.assertFalse(document_only_plan({'tasks': [{'kind': 'forecast'}]}))
+        self.assertFalse(document_only_plan({'tasks': []}))
+
+
+class BengaliDocumentRoutingTests(unittest.TestCase):
+    def test_a_bengali_bulletin_question_plans_the_national_document(self):
+        # The service writes য় as one code point and the reader as য + ়: measured 15 September
+        # 2026, the two spellings of the same word did not match, so this question was planned as a
+        # rainfall forecast and answered by asking which settlement "জাতী" was.
+        question = 'জাতীয় আবহাওয়া বুলেটিনে ভারী বৃষ্টি সম্পর্কে কী লেখা আছে?'
+        plan = rule_request(question, datetime(2026, 9, 15, 4, 0, tzinfo=timezone.utc), None)
+        self.assertIsNotNone(plan)
+        self.assertEqual(plan['tasks'][0]['kind'], 'document')
+        self.assertEqual(plan['tasks'][0]['corpus_request']['family'], 'national_bulletin')
+
+    def test_the_two_spellings_of_the_same_bengali_word_agree(self):
+        from weathergpt_data.rule_planner import mentions
+
+        precomposed = ''.join(chr(code) for code in (0x0986, 0x09AC, 0x09B9, 0x09BE, 0x0993, 0x09DF, 0x09BE))
+        decomposed = ''.join(chr(code) for code in (0x0986, 0x09AC, 0x09B9, 0x09BE, 0x0993, 0x09AF, 0x09BC, 0x09BE))
+        self.assertTrue(mentions(decomposed, (precomposed,)))
+
 if __name__ == '__main__':
     unittest.main()

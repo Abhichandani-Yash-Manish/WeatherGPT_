@@ -212,6 +212,28 @@ SEPARATED_MARKERS = (
 )
 
 
+# The same unit named in the reader's own script: "नासिक जिला", "નાસિક જિલ્લા", "ಮೈಸೂರು ಜಿಲ್ಲೆ". A unit
+# word after the name is a stronger signal than a locative marker and it carries the kind, which the
+# corpus route needs. Measured 15 September 2026: "નાસિક જિલ્લાની કૃષિ સલાહમાં …" read no place at
+# all, because the possessive "ની" is not one of the locative markers.
+DISTRICT_UNITS = ('जिला', 'जिले', 'जिल्हा', 'જિલ્લા', 'જિલ્લો', 'ಜಿಲ್ಲೆ', 'ಜಿಲ್ಲೆಯ', 'மாவட்டம்', 'జిల్లా',
+                  'ജില്ല', 'জেলা', 'জিলা', 'ଜିଲ୍ଲା', 'ਜ਼ਿਲ੍ਹਾ', 'ਜਿਲਾ', 'ضلع')
+STATE_UNITS = ('राज्य', 'राज्यात', 'राज्यासाठी', 'રાજ્ય', 'રાજ્યમાં', 'ರಾಜ್ಯ', 'ಮாநிலம்', 'மாநிலம்',
+               'రాష్ట్రం', 'സംസ്ഥാനം', 'রাজ্য', 'প্ৰদেশ', 'ରାଜ୍ୟ', 'ਰਾਜ', 'صوبہ', 'ریاست')
+
+
+def places_indic_unit(question):
+    """(position, name, kind) for a name followed by its unit word, in the reader's script."""
+    found = []
+    for kind, units in (('district', DISTRICT_UNITS), ('state', STATE_UNITS)):
+        for unit in units:
+            # The unit word takes a suffix in every one of these languages (જિલ્લા + ની,
+            # जिला + का), so the unit is matched with what follows it rather than as a whole word.
+            pattern = re.compile('([' + INDIC_RANGES + ']{2,})\\s*' + re.escape(unit))
+            found.extend((match.start(), match.group(1), kind) for match in pattern.finditer(question))
+    return sorted(found)
+
+
 def places_indic(question):
     """Native-script place names with their locative marker removed, longest marker first.
 
@@ -245,6 +267,24 @@ WEATHER_WORDS = ('weather', 'mausam', 'havaman', 'मौसम', 'हवाम�
 def weather_question(question):
     """True when the question asks about the weather itself rather than one named measure."""
     return any(boundary_pattern(word).search(question or '') for word in WEATHER_WORDS)
+
+
+# Words that take the same locative marker as a place but name something else. Measured
+# 15 September 2026: "भारी बारिश के बारे में राष्ट्रीय मौसम बुलेटिन क्या कहता है?" was read as a
+# request about a settlement called "बारे", and the document question was lost to a place
+# clarification. The postposition that means "about" and the nouns a reader uses for a product,
+# a report or the weather itself are not place names in any of these languages.
+PLACE_WORD_NOISE = {
+    # Hindi
+    'बारे', 'बारेमें', 'बुलेटिन', 'मौसम', 'समाचार', 'जानकारी', 'सलाह', 'रिपोर्ट', 'खबर', 'अंदर',
+    'ऊपर', 'नीचे', 'पास', 'मामले', 'मामलेमें', 'विषय', 'संबंध', 'तरफ', 'ओर', 'अनुसार', 'मुताबिक',
+    # Gujarati
+    'બુલેટિન', 'હવામાન', 'માહિતી', 'સલાહ', 'અહેવાલ', 'સમાચાર', 'અંદર', 'ઉપર', 'નીચે', 'પાસે',
+    'વિશે', 'બાબતે', 'અનુસાર', 'મુજબ',
+}
+# The same words in the scripts the reader writes them in: a marker attached to one of these is
+# still not a place.
+PLACE_WORD_NOISE_STRIPPED = tuple(word for word in PLACE_WORD_NOISE)
 
 
 PLACE_NOISE = {'the', 'a', 'an', 'this', 'that', 'my', 'our', 'whole', 'latest', 'said'}
@@ -295,6 +335,145 @@ def station_code(question):
 
 DOCUMENT = re.compile(r"\b(bulletin|advisory document|agromet|agro-met|agricultural advisory|agricultural bulletin|press release|special advisory|flash flood guidance|"
                       r"all india weather summary)\b", re.I)
+# The published products named in the reader's own language, most specific first. The corpus is
+# printed in English and the reader may name it in any of these scripts. Words proposed by the
+# language service are stored as escapes after a Gurmukhi lookalike was entered where the Odia
+# locative belongs and Odia read no place at all (measured 15 September 2026).
+PRODUCT_WORDS = (
+    ('flash_flood_national', (
+         'flash flood', '\u0905\u091a\u093e\u0928\u0915\u0020\u092c\u093e\u0922\u093c',
+    )),
+    ('national_bulletin', (
+         'all india weather summary', 'national weather bulletin', 'national bulletin', 'all india bulletin',
+         '\u0930\u093e\u0937\u094d\u091f\u094d\u0930\u0940\u092f\u0020\u092c\u0941\u0932\u0947\u091f\u093f\u0928',
+         '\u0930\u093e\u0937\u094d\u091f\u094d\u0930\u0940\u092f\u0020\u092e\u094c\u0938\u092e\u0020\u092c\u0941\u0932\u0947\u091f\u093f\u0928',
+         '\u0938\u092e\u0917\u094d\u0930\u0020\u092d\u093e\u0930\u0924\u0020\u092e\u094c\u0938\u092e',
+         '\u0ab0\u0abe\u0ab7\u0acd\u0a9f\u0acd\u0ab0\u0ac0\u0aaf\u0020\u0aac\u0ac1\u0ab2\u0ac7\u0a9f\u0abf\u0aa8',
+         '\u0ab0\u0abe\u0ab7\u0acd\u0a9f\u0acd\u0ab0\u0ac0\u0aaf\u0020\u0ab9\u0ab5\u0abe\u0aae\u0abe\u0aa8\u0020\u0aac\u0ac1\u0ab2\u0ac7\u0a9f\u0abf\u0aa8',
+         '\u099c\u09be\u09a4\u09c0\u09af\u09bc\u0020\u0986\u09ac\u09b9\u09be\u0993\u09af\u09bc\u09be\u0020\u09ac\u09c1\u09b2\u09c7\u099f\u09bf\u09a8',
+         '\u09f0\u09be\u09b7\u09cd\u099f\u09cd\u09f0\u09c0\u09af\u09bc\u0020\u09ac\u09a4\u09f0\u0020\u09ac\u09c1\u09b2\u09c7\u099f\u09bf\u09a8',
+         '\u0b1c\u0b3e\u0b24\u0b40\u0b5f\u0020\u0b2a\u0b3e\u0b23\u0b3f\u0b2a\u0b3e\u0b17\u0020\u0b38\u0b42\u0b1a\u0b28\u0b3e',
+         '\u0ba4\u0bc7\u0b9a\u0bbf\u0baf\u0020\u0bb5\u0bbe\u0ba9\u0bbf\u0bb2\u0bc8\u0020\u0b85\u0bb1\u0bbf\u0b95\u0bcd\u0b95\u0bc8',
+         '\u0c1c\u0c3e\u0c24\u0c40\u0c2f\u0020\u0c35\u0c3e\u0c24\u0c3e\u0c35\u0c30\u0c23\u0020\u0c2a\u0c4d\u0c30\u0c15\u0c1f\u0c28',
+         '\u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0cc0\u0caf\u0020\u0cb9\u0cb5\u0cbe\u0cae\u0cbe\u0ca8\u0020\u0cb5\u0cb0\u0ca6\u0cbf',
+         '\u0d26\u0d47\u0d36\u0d40\u0d2f\u0020\u0d15\u0d3e\u0d32\u0d3e\u0d35\u0d38\u0d4d\u0d25\u0d3e\u0020\u0d35\u0d3e\u0d7c\u0d24\u0d4d\u0d24',
+         '\u0a30\u0a3e\u0a38\u0a3c\u0a1f\u0a30\u0a40\u0020\u0a2e\u0a4c\u0a38\u0a2e\u0020\u0a38\u0a70\u0a2c\u0a70\u0a27\u0a40\u0020\u0a38\u0a42\u0a1a\u0a28\u0a3e',
+         '\u0930\u093e\u0937\u094d\u091f\u094d\u0930\u0940\u092f\u0020\u0939\u0935\u093e\u092e\u093e\u0928\u0020\u092a\u0942\u0930\u094d\u0935\u093e\u0928\u0941\u092e\u093e\u0928',
+         '\u0642\u0648\u0645\u06cc\u0020\u0645\u0648\u0633\u0645\u06cc\u0020\u0628\u0644\u06cc\u0679\u0646',
+    )),
+    ('extended_range', (
+         'extended range',
+         '\u0935\u093f\u0938\u094d\u0924\u093e\u0930\u093f\u0924\u0020\u0905\u0935\u0927\u093f',
+    )),
+    ('press_release', (
+         'press release',
+         '\u092a\u094d\u0930\u0947\u0938\u0020\u0935\u093f\u091c\u094d\u091e\u092a\u094d\u0924\u093f',
+         '\u092a\u094d\u0930\u0947\u0938\u0020\u0930\u093f\u0932\u0940\u091c\u093c',
+         '\u0aaa\u0acd\u0ab0\u0ac7\u0ab8\u0020\u0ab0\u0abf\u0ab2\u0ac0\u0a9d',
+    )),
+    ('special_advisory', (
+         'special advisory', '\u0935\u093f\u0936\u0947\u0937\u0020\u0938\u0932\u093e\u0939',
+    )),
+    ('sea_area_bulletin', (
+         'sea area',
+         '\u0938\u092e\u0941\u0926\u094d\u0930\u0940\u0020\u0915\u094d\u0937\u0947\u0924\u094d\u0930',
+         '\u0ab8\u0aae\u0ac1\u0aa6\u0acd\u0ab0\u0ac0\u0020\u0ab5\u0abf\u0ab8\u0acd\u0aa4\u0abe\u0ab0',
+    )),
+    ('coastal_bulletin', (
+         'coastal', '\u0924\u091f\u0940\u092f',
+         '\u0aa6\u0ab0\u0abf\u0aaf\u0abe\u0a95\u0abf\u0aa8\u0abe\u0ab0\u0abe\u0aa8\u0ac1\u0a82',
+    )),
+    ('district_agromet', (
+         'district agromet', 'district advisory',
+         '\u091c\u093f\u0932\u093e\u0020\u0915\u0943\u0937\u093f\u0020\u092e\u094c\u0938\u092e',
+         '\u091c\u093f\u0932\u093e\u0020\u0915\u0943\u0937\u093f\u0020\u0938\u0932\u093e\u0939',
+         '\u0a9c\u0abf\u0ab2\u0acd\u0ab2\u0abe\u0020\u0a95\u0ac3\u0ab7\u0abf\u0020\u0ab9\u0ab5\u0abe\u0aae\u0abe\u0aa8',
+         '\u0a9c\u0abf\u0ab2\u0acd\u0ab2\u0abe\u0020\u0a95\u0ac3\u0ab7\u0abf\u0020\u0ab8\u0ab2\u0abe\u0ab9',
+    )),
+    ('state_district_bulletin', (
+         'district bulletin', '\u091c\u093f\u0932\u093e\u0020\u092c\u0941\u0932\u0947\u091f\u093f\u0928',
+    )),
+    ('state_agromet', (
+         'state agromet', 'state advisory', 'state composite',
+         '\u0930\u093e\u091c\u094d\u092f\u0020\u0915\u0943\u0937\u093f\u0020\u092e\u094c\u0938\u092e',
+         '\u0930\u093e\u091c\u094d\u092f\u0020\u0915\u0943\u0937\u093f\u0020\u0938\u0932\u093e\u0939',
+         '\u0930\u093e\u091c\u094d\u092f\u0020\u092c\u0941\u0932\u0947\u091f\u093f\u0928',
+         '\u0ab0\u0abe\u0a9c\u0acd\u0aaf\u0020\u0a95\u0ac3\u0ab7\u0abf\u0020\u0ab9\u0ab5\u0abe\u0aae\u0abe\u0aa8',
+    )),
+    ('national_bulletin', (
+        
+         '\u099c\u09be\u09a4\u09c0\u09af\u09bc\u0020\u0986\u09ac\u09b9\u09be\u0993\u09af\u09bc\u09be\u0020\u09ac\u09c1\u09b2\u09c7\u099f\u09bf\u09a8',
+         '\u09f0\u09be\u09b7\u09cd\u099f\u09cd\u09f0\u09c0\u09af\u09bc\u0020\u09ac\u09a4\u09f0\u0020\u09ac\u09c1\u09b2\u09c7\u099f\u09bf\u09a8',
+         '\u0b1c\u0b3e\u0b24\u0b40\u0b5f\u0020\u0b2a\u0b3e\u0b23\u0b3f\u0b2a\u0b3e\u0b17\u0020\u0b38\u0b42\u0b1a\u0b28\u0b3e',
+         '\u0ba4\u0bc7\u0b9a\u0bbf\u0baf\u0020\u0bb5\u0bbe\u0ba9\u0bbf\u0bb2\u0bc8\u0020\u0b85\u0bb1\u0bbf\u0b95\u0bcd\u0b95\u0bc8',
+         '\u0c1c\u0c3e\u0c24\u0c40\u0c2f\u0020\u0c35\u0c3e\u0c24\u0c3e\u0c35\u0c30\u0c23\u0020\u0c2a\u0c4d\u0c30\u0c15\u0c1f\u0c28',
+         '\u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0cc0\u0caf\u0020\u0cb9\u0cb5\u0cbe\u0cae\u0cbe\u0ca8\u0020\u0cb5\u0cb0\u0ca6\u0cbf',
+         '\u0d26\u0d47\u0d36\u0d40\u0d2f\u0020\u0d15\u0d3e\u0d32\u0d3e\u0d35\u0d38\u0d4d\u0d25\u0d3e\u0020\u0d35\u0d3e\u0d7c\u0d24\u0d4d\u0d24',
+         '\u0a30\u0a3e\u0a38\u0a3c\u0a1f\u0a30\u0a40\u0020\u0a2e\u0a4c\u0a38\u0a2e\u0020\u0a38\u0a70\u0a2c\u0a70\u0a27\u0a40\u0020\u0a38\u0a42\u0a1a\u0a28\u0a3e',
+         '\u0930\u093e\u0937\u094d\u091f\u094d\u0930\u0940\u092f\u0020\u0939\u0935\u093e\u092e\u093e\u0928\u0020\u092a\u0942\u0930\u094d\u0935\u093e\u0928\u0941\u092e\u093e\u0928',
+         '\u0642\u0648\u0645\u06cc\u0020\u0645\u0648\u0633\u0645\u06cc\u0020\u0628\u0644\u06cc\u0679\u0646',
+         '\u099c\u09be\u09a4\u09c0\u09af\u09bc\u0020\u0986\u09ac\u09b9\u09be\u0993\u09af\u09bc\u09be\u0020\u09ac\u09c1\u09b2\u09c7\u099f\u09bf\u09a8',
+         '\u09f0\u09be\u09b7\u09cd\u099f\u09cd\u09f0\u09c0\u09af\u09bc\u0020\u09ac\u09a4\u09f0\u0020\u09ac\u09c1\u09b2\u09c7\u099f\u09bf\u09a8',
+         '\u0b1c\u0b3e\u0b24\u0b40\u0b5f\u0020\u0b2a\u0b3e\u0b23\u0b3f\u0b2a\u0b3e\u0b17\u0020\u0b38\u0b42\u0b1a\u0b28\u0b3e',
+         '\u0ba4\u0bc7\u0b9a\u0bbf\u0baf\u0020\u0bb5\u0bbe\u0ba9\u0bbf\u0bb2\u0bc8\u0020\u0b85\u0bb1\u0bbf\u0b95\u0bcd\u0b95\u0bc8',
+         '\u0c1c\u0c3e\u0c24\u0c40\u0c2f\u0020\u0c35\u0c3e\u0c24\u0c3e\u0c35\u0c30\u0c23\u0020\u0c2a\u0c4d\u0c30\u0c15\u0c1f\u0c28',
+         '\u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0cc0\u0caf\u0020\u0cb9\u0cb5\u0cbe\u0cae\u0cbe\u0ca8\u0020\u0cb5\u0cb0\u0ca6\u0cbf',
+         '\u0d26\u0d47\u0d36\u0d40\u0d2f\u0020\u0d15\u0d3e\u0d32\u0d3e\u0d35\u0d38\u0d4d\u0d25\u0d3e\u0020\u0d35\u0d3e\u0d7c\u0d24\u0d4d\u0d24',
+         '\u0a30\u0a3e\u0a38\u0a3c\u0a1f\u0a30\u0a40\u0020\u0a2e\u0a4c\u0a38\u0a2e\u0020\u0a38\u0a70\u0a2c\u0a70\u0a27\u0a40\u0020\u0a38\u0a42\u0a1a\u0a28\u0a3e',
+         '\u0930\u093e\u0937\u094d\u091f\u094d\u0930\u0940\u092f\u0020\u0939\u0935\u093e\u092e\u093e\u0928\u0020\u092a\u0942\u0930\u094d\u0935\u093e\u0928\u0941\u092e\u093e\u0928',
+         '\u0642\u0648\u0645\u06cc\u0020\u0645\u0648\u0633\u0645\u06cc\u0020\u0628\u0644\u06cc\u0679\u0646',
+    )),
+)
+
+# Words that say "a published document is meant" without naming which one.
+DOCUMENT_SIGNALS = (
+    'bulletin', 'advisory document', 'agromet', 'agro-met', 'agricultural advisory', 'agricultural bulletin',
+    'press release', 'special advisory', 'flash flood guidance', 'all india weather summary',
+    '\u0915\u0943\u0937\u093f\u0020\u092e\u094c\u0938\u092e',
+    '\u0915\u0943\u0937\u093f\u0020\u0938\u0932\u093e\u0939', '\u092c\u0941\u0932\u0947\u091f\u093f\u0928',
+    '\u0938\u0932\u093e\u0939', '\u0a95\u0ac3\u0ab7\u0abf\u0020\u0ab9\u0ab5\u0abe\u0aae\u0abe\u0aa8',
+    '\u0a95\u0ac3\u0ab7\u0abf\u0020\u0ab8\u0ab2\u0abe\u0ab9', '\u0aac\u0ac1\u0ab2\u0ac7\u0a9f\u0abf\u0aa8',
+    '\u0986\u09ac\u09b9\u09be\u0993\u09df\u09be\u0020\u09ac\u09c1\u09b2\u09c7\u099f\u09bf\u09a8',
+    '\u0995\u09c3\u09b7\u09bf\u0020\u0989\u09aa\u09a6\u09c7\u09b7\u09cd\u099f\u09be',
+    '\u09ac\u09a4\u09f0\u09f0\u0020\u09ac\u09c1\u09b2\u09c7\u099f\u09bf\u09a8',
+    '\u0995\u09c3\u09b7\u09bf\u0020\u09aa\u09f0\u09be\u09ae\u09f0\u09cd\u09b6\u09a6\u09be\u09a4\u09be',
+    '\u0b2a\u0b3e\u0b23\u0b3f\u0b2a\u0b3e\u0b17\u0020\u0b38\u0b42\u0b1a\u0b28\u0b3e',
+    '\u0b15\u0b43\u0b37\u0b3f\u0020\u0b2a\u0b30\u0b3e\u0b2e\u0b30\u0b4d\u0b36\u0b26\u0b3e\u0b24\u0b3e',
+    '\u0bb5\u0bbe\u0ba9\u0bbf\u0bb2\u0bc8\u0b9a\u0bcd\u0020\u0b9a\u0bc6\u0baf\u0bcd\u0ba4\u0bbf',
+    '\u0bb5\u0bc7\u0bb3\u0bbe\u0ba3\u0bcd\u0020\u0b86\u0bb2\u0bcb\u0b9a\u0b95\u0bb0\u0bcd',
+    '\u0c35\u0c3e\u0c24\u0c3e\u0c35\u0c30\u0c23\u0020\u0c2a\u0c4d\u0c30\u0c15\u0c1f\u0c28',
+    '\u0c35\u0c4d\u0c2f\u0c35\u0c38\u0c3e\u0c2f\u0020\u0c38\u0c32\u0c39\u0c3e',
+    '\u0cb9\u0cb5\u0cbe\u0cae\u0cbe\u0ca8\u0020\u0cb5\u0cb0\u0ca6\u0cbf',
+    '\u0c95\u0cc3\u0cb7\u0cbf\u0020\u0cb8\u0cb2\u0cb9\u0cc6',
+    '\u0d15\u0d3e\u0d7c\u0d37\u0d3f\u0d15\u0020\u0d09\u0d2a\u0d26\u0d47\u0d36\u0d02',
+    '\u0a2e\u0a4c\u0a38\u0a2e\u0020\u0a26\u0a40\u0020\u0a30\u0a3f\u0a2a\u0a4b\u0a30\u0a1f',
+    '\u0a16\u0a47\u0a24\u0a40\u0a2c\u0a3e\u0a5c\u0a40\u0020\u0a38\u0a32\u0a3e\u0a39\u0a15\u0a3e\u0a30',
+    '\u0939\u0935\u093e\u092e\u093e\u0928\u0020\u092a\u0942\u0930\u094d\u0935\u0928\u093f\u0926\u0947\u0936',
+    '\u0915\u0943\u0937\u0940\u0020\u0938\u0932\u094d\u0932\u093e\u0917\u093e\u0930',
+    '\u0645\u0648\u0633\u0645\u06cc\u0627\u062a\u06cc\u0020\u0628\u0644\u06cc\u0679\u0646',
+    '\u0632\u0631\u0639\u06cc\u0020\u0645\u0634\u0648\u0631\u06c1',
+)
+
+def mentions(text, words):
+    """True when one of these words appears in the text, compared on the folded form.
+
+    Bengali writes য় as one code point or as য + ়, and Kannada writes ನ್ನ as one cluster or as its
+    parts: measured 15 September 2026, the service's "আবহাওয়া বুলেটিন" and the reader's
+    "আবহাওয়া বুলেটিনে" are the same two words and only one form matched, so a Bengali document
+    question was planned as a rainfall forecast and asked which settlement "জাতী" was. The folding
+    the rest of the engine already uses settles the two spellings.
+    """
+    folded = norm(text)
+    return any(norm(word) in folded for word in words)
+
+
+def document_question(question):
+    """True when the question asks for a published document, in English or in the reader's script."""
+    if DOCUMENT.search(question):
+        return True
+    return mentions(question, DOCUMENT_SIGNALS)
+
+
 HISTORY = re.compile(r'\b(\d{4})\b')
 HISTORY_WORDS = re.compile(r'\b(rainfall|rain|temperature|climat|historical|annual|monsoon|decade|trend|hui thi|hua tha|hue the|kitni barish|'
                            r'record|normal|average)\b', re.I)
@@ -495,7 +674,9 @@ def places_of(question):
         while tokens and (tokens[0].lower() in PLACE_NOISE or tokens[0].lower() in PLACE_LEAD_NOISE):
             tokens = tokens[1:]
         name = ' '.join(tokens)
-        if not name or len(name) < 3 or name.lower() in PLACE_NOISE:
+        if not name or len(name) < 3 or name.lower() in PLACE_NOISE or norm(name) in PLACE_WORD_NOISE:
+            # A postposition or a product word is not a place. Without this the reader is asked
+            # which settlement "बारे" is.
             return
         if not name or name in [item['name'] for item in found]:
             return
@@ -515,6 +696,8 @@ def places_of(question):
         add(match.group(1), kind=kind)
         if len(found) == 2:
             return found
+    for _position, name, kind in places_indic_unit(question):
+        add(name, kind=kind)
     for name in places_indic(question):
         add(name)
         if len(found) == 2:
@@ -740,30 +923,30 @@ def single_request(question, now, history=None):
         request = {'query': quote[:1500], 'crop': found.group(1).lower() if found else '',
                    'growth_stage': '', 'topic': topic, 'mode': mode}
         tasks.append(task('agriculture', 'lookup', ['agricultural_advisory'], document_request=request))
-    elif DOCUMENT.search(question):
+    elif document_question(question):
         lowered = question.lower()
         family = ''
-        if 'agromet' in lowered or 'agri' in lowered or 'krishi' in lowered:
+        # "Summarise the latest national bulletin." named a product and was still answered by asking
+        # which product was meant (measured 15 September 2026), because only the publisher's full
+        # title was mapped. The words a reader actually uses are mapped here, in the scripts the
+        # reader may write them in.
+        for name, words in PRODUCT_WORDS:
+            if mentions(question, words):
+                family = name
+                break
+        if not family and any(word in question for word in ('कृषि', 'જિલ્લા', 'રાજ્ય')):
+            if 'जिला' in question or 'જિલ્લા' in question:
+                family = 'district_agromet'
+            else:
+                family = 'state_agromet'
+        if not family and ('agromet' in lowered or 'agri' in lowered or 'krishi' in lowered
+                           or 'kheti' in lowered or 'fasal' in lowered):
             if 'district' in lowered:
                 family = 'district_agromet'
             elif 'state district' in lowered:
                 family = 'state_district_bulletin'
             else:
                 family = 'state_agromet'
-        else:
-            # "Summarise the latest national bulletin." named a product and was still answered by
-            # asking which product was meant (measured 15 September 2026), because only the
-            # publisher's full title was mapped. The words a reader actually uses are mapped here.
-            for word, name in (('all india weather summary', 'national_bulletin'), ('flash flood', 'flash_flood_national'),
-                               ('national weather bulletin', 'national_bulletin'), ('national bulletin', 'national_bulletin'),
-                               ('all india bulletin', 'national_bulletin'),
-                               ('extended range', 'extended_range'), ('press release', 'press_release'),
-                               ('special advisory', 'special_advisory'),
-                               ('district bulletin', 'state_district_bulletin'), ('sea area', 'sea_area_bulletin'),
-                               ('coastal', 'coastal_bulletin')):
-                if word in lowered:
-                    family = name
-                    break
         scope = ''
         if family == 'district_agromet':
             scope = 'district'

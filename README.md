@@ -61,7 +61,7 @@ The interface states these limits rather than filling the gaps:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 917 Python tests
+python3 -m pytest tests/ -q                          # 929 Python tests
 node tests/test_charts.js                            #  2 of 70 component checks
 node tests/test_views.js                             # 18
 node tests/test_bulletin_ui.js                       #  6
@@ -99,7 +99,8 @@ recorded journeys, with what is fast and what is still slow.
 
 - [Plan Watch](docs/67-plan-watch.md) - saved plans checked against the IMD district-warning product while the local workspace runs, with in-app and browser notifications only.
 - [Ensemble spread](docs/65-ensemble-spread.md) - the member distribution of one governed model (mean, population spread, range and nearest-rank p10/p50/p90) reachable from chat and never scored; the endpoint requires a model id, the per-model support set is measured, and a day-level spread question is planned by the deterministic rules.
-- [Reading the question in every language we can write](docs/66-language-reading-coverage.md) - day, part-of-day, measure and place words per language, one definition per part of day, and the five languages declared unread rather than guessed.
+- [Reading the question in every language we can write](docs/66-language-reading-coverage.md)
+- [A question in one language, documents in another](docs/67-crosslingual-retrieval.md) - six questions in five scripts that now reach the English sources through a translation used for retrieval only, with the product words, the folded comparison, the unit-word places and the named limits. - day, part-of-day, measure and place words per language, one definition per part of day, and the five languages declared unread rather than guessed.
 - [The district corpus becomes reachable, and the topic word decides](docs/64-district-corpus-reachability.md) - four defects and two answer-quality problems on the published-corpus route: the district family was unrequestable, a printed valid-till time crashed the turn, an absent state and an absent district now name what is held, the reader’s own name is tried against the publisher’s directory, the indexed edition answers when the live reader cannot verify one, and the words that name the topic decide which passage is served.
 - [The product, walked through](docs/63-product-walkthrough.md) - thirteen recorded journeys with what a user gets in five minutes, the rebuilt first-run screen, and the honest list of what is still slow or unconnected.
 - [The chat surface and the key you paste](docs/62-chat-surface-and-provider-ux.md) - the audit that found a whole-turn renderer crash, the artefact actions now wired into the conversation, three place and freshness defects fixed, and the one-command OpenRouter key flow with a ranked free-model list.

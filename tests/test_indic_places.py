@@ -61,5 +61,26 @@ class NativeScriptPlaceTests(unittest.TestCase):
         self.assertEqual(extracted('Will it rain tomorrow morning?'), [])
 
 
+class PlaceWordTests(unittest.TestCase):
+    """A postposition or a product word is not a place, and a unit word carries the kind."""
+
+    def test_a_postposition_is_not_a_settlement(self):
+        # Measured 15 September 2026: "भारी बारिश के बारे में राष्ट्रीय मौसम बुलेटिन क्या कहता है?"
+        # was read as a request about a settlement called "बारे" and the document question was lost.
+        self.assertEqual(extracted('भारी बारिश के बारे में राष्ट्रीय मौसम बुलेटिन क्या कहता है?'), [])
+        self.assertEqual(extracted('બુલેટિનમાં શું લખ્યું છે?'), [])
+
+    def test_a_unit_word_after_a_name_gives_the_kind(self):
+        places = places_of('નાસિક જિલ્લાની કૃષિ સલાહમાં દ્રાક્ષ વિશે શું લખ્યું છે?')
+        self.assertEqual([(place['name'], place['kind']) for place in places], [('નાસિક', 'district')])
+        places = places_of('महाराष्ट्र राज्य की कृषि सलाह क्या कहती है?')
+        self.assertEqual([(place['name'], place['kind']) for place in places], [('महाराष्ट्र', 'state')])
+        places = places_of('नासिक जिले का कृषि मौसम बुलेटिन क्या कहता है?')
+        self.assertEqual([(place['name'], place['kind']) for place in places], [('नासिक', 'district')])
+
+    def test_a_locative_marker_still_works_without_a_unit_word(self):
+        places = places_of('कल सुबह वडोदरा में मौसम कैसा रहेगा?')
+        self.assertEqual([place['name'] for place in places], ['वडोदरा'])
+
 if __name__ == '__main__':
     unittest.main()

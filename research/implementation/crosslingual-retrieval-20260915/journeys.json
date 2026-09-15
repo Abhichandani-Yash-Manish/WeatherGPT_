@@ -1,0 +1,108 @@
+{
+ "summary": {
+  "checked_at_utc": "2026-09-15T10:58:21.963998+00:00",
+  "questions": 6,
+  "answered_or_partial": 6,
+  "retrieved_through_a_translation": 6,
+  "errors": 0,
+  "slowest_seconds": 51.9,
+  "limits": [
+   "One process, one machine, one instant against live sources.",
+   "A translated question is used to find passages only; every passage served is the source's own text.",
+   "The source language is read from the script, which is coarser than the language.",
+   "No translation-quality, fluency or native-speaker review has taken place."
+  ]
+ },
+ "rows": [
+  {
+   "question": "भारी बारिश के बारे में राष्ट्रीय मौसम बुलेटिन क्या कहता है?",
+   "checked_at_utc": "2026-09-15T10:54:54.269274+00:00",
+   "seconds": 51.9,
+   "status": "partial",
+   "match_basis": "translated_query_lexical_overlap",
+   "translated_query": "What does the national weather bulletin say about heavy rain",
+   "translation_service": "sarvam",
+   "translation_used_for_retrieval": true,
+   "passages": 9,
+   "documents_read": [
+    "national_bulletin"
+   ],
+   "answer": "Indexed published document:\n\nAll India Weather Summary and Forecast Bulletin · national · document d3e80f651f72 · printed issue 2026-09-14 · on the printed issue date · retrieved 2026-09-14 18:28:17.453227+00:00.\n\n· page 18 · 36 LAKSHDWEEP FWS FWS FWS FWS FWS WS WS: “Road and rail traffic may be affected due to heavy rain and squally winds. There could be localised landslides, mudslides, landslips"
+  },
+  {
+   "question": "राष्ट्रीय मौसम बुलेटिन में क्या लिखा है?",
+   "checked_at_utc": "2026-09-15T10:55:46.125343+00:00",
+   "seconds": 28.0,
+   "status": "partial",
+   "match_basis": "translated_query_without_the_topic_word",
+   "translated_query": "What is written in the national weather bulletin",
+   "translation_service": "sarvam",
+   "translation_used_for_retrieval": true,
+   "passages": 5,
+   "documents_read": [
+    "national_bulletin"
+   ],
+   "answer": "Indexed published document:\n\nAll India Weather Summary and Forecast Bulletin · national · document d3e80f651f72 · printed issue 2026-09-14 · on the printed issue date · retrieved 2026-09-14 18:28:17.453227+00:00.\n\n· page 4 · ALL INDIA WEATHER SUMMARY AND FORECAST BULLETIN: “East Madhya Pradesh and Rayalaseema; at isolated places over Assam & Meghalaya, Nagaland, Manipur, Mizoram & Tripura, Sub Him"
+  },
+  {
+   "question": "નાસિક જિલ્લાની કૃષિ સલાહમાં દ્રાક્ષ વિશે શું લખ્યું છે?",
+   "checked_at_utc": "2026-09-15T10:56:14.171063+00:00",
+   "seconds": 29.5,
+   "status": "partial",
+   "match_basis": "translated_query_lexical_overlap",
+   "translated_query": "What is written about grapes in the agricultural advice of Nasik district",
+   "translation_service": "sarvam",
+   "translation_used_for_retrieval": true,
+   "passages": 3,
+   "documents_read": [
+    "district_agromet"
+   ],
+   "answer": "Indexed published document:\n\nDistrict agromet advisory bulletin · Maharashtra / Nashik · document 828392217023 · printed issue 2026-09-11 · 4 day(s) after the printed issue · retrieved 2026-09-14T19:46:00.616105+00:00.\n\n· page 1 · 46) Weather based Agromet Advisory committee meeting dated 11.09.2026 District: Nashik: “Pearl millet Vegetative stage Hoeing should be done twice and weeding should be "
+  },
+  {
+   "question": "नाशिक जिल्ह्याच्या कृषी सल्ल्यात द्राक्षांबद्दल काय लिहिले आहे?",
+   "checked_at_utc": "2026-09-15T10:56:43.656873+00:00",
+   "seconds": 30.7,
+   "status": "partial",
+   "match_basis": "translated_query_lexical_overlap",
+   "translated_query": "What is written about grapes in the agricultural advice of Nashik district?",
+   "translation_service": "sarvam",
+   "translation_used_for_retrieval": true,
+   "passages": 3,
+   "documents_read": [
+    "district_agromet"
+   ],
+   "answer": "The live district bulletin could not be verified (Bulletin retrieval is unavailable: Printed district could not be verified with the supported layout rules; the layout may be unsupported or the selected district may differ), so this reading is the Nashik edition already indexed here, served with its printed issue date, physical page and saved document. Crop and growth-stage annotation belongs to t"
+  },
+  {
+   "question": "জাতীয় আবহাওয়া বুলেটিনে ভারী বৃষ্টি সম্পর্কে কী লেখা আছে?",
+   "checked_at_utc": "2026-09-15T10:57:14.377552+00:00",
+   "seconds": 36.6,
+   "status": "partial",
+   "match_basis": "translated_query_lexical_overlap",
+   "translated_query": "What is written about heavy rain in the national weather bulletin",
+   "translation_service": "sarvam",
+   "translation_used_for_retrieval": true,
+   "passages": 8,
+   "documents_read": [
+    "national_bulletin"
+   ],
+   "answer": "Indexed published document:\n\nAll India Weather Summary and Forecast Bulletin · national · document d3e80f651f72 · printed issue 2026-09-14 · on the printed issue date · retrieved 2026-09-14 18:28:17.453227+00:00.\n\n· page 19 · 36 LAKSHDWEEP FWS FWS FWS FWS FWS WS WS: “incidence and undertake plant-protection measures only during a sufficiently rain-free period. In Arunachal Pradesh, harvest mature "
+  },
+  {
+   "question": "நாசிக் மாவட்ட வேளாண் அறிவுரையில் திராட்சை பற்றி என்ன எழுதியுள்ளது?",
+   "checked_at_utc": "2026-09-15T10:57:50.934108+00:00",
+   "seconds": 31.0,
+   "status": "partial",
+   "match_basis": "translated_query_lexical_overlap",
+   "translated_query": "What is written about grapes in the Nasik district agricultural advisory?",
+   "translation_service": "sarvam",
+   "translation_used_for_retrieval": true,
+   "passages": 3,
+   "documents_read": [
+    "district_agromet"
+   ],
+   "answer": "The live district bulletin could not be verified (Bulletin retrieval is unavailable: Printed district could not be verified with the supported layout rules; the layout may be unsupported or the selected district may differ), so this reading is the Nashik edition already indexed here, served with its printed issue date, physical page and saved document. Crop and growth-stage annotation belongs to t"
+  }
+ ]
+}

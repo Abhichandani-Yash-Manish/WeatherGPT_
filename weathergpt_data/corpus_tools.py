@@ -214,7 +214,27 @@ def _same_state(left, right):
     return clean(left) == clean(right)
 
 
-def resolve_region(index, plan, family, scope):
+def resolved_names(place, resolved):
+    """The English names the gazetteer resolved for this place, most useful first.
+
+    A reader writes the name in their own script and the index stores the publisher's English
+    one: measured 15 September 2026, "નાસિક જિલ્લાની કૃષિ સલાહમાં …" extracted નાસિક and the
+    corpus answered that no edition was indexed under that name, although the Nashik edition is
+    held. The resolved record carries the English name and its administrative parent.
+    """
+    match = (resolved or {}).get(place.get('name')) or {}
+    names = []
+    for value in (match.get('name'), match.get('admin2'), match.get('admin1'),
+                  (place.get('district') or '').strip(), place.get('name')):
+        if not value:
+            continue
+        clean = str(value).replace('State of ', '').replace('state of ', '').strip()
+        if clean and clean not in names:
+            names.append(clean)
+    return names
+
+
+def resolve_region(index, plan, family, scope, resolved=None):
     """(stored region, expected state, problem) for the requested filters.
 
     `problem` is None, 'place', 'district_absent', 'state' or 'state_absent'. It is
@@ -232,8 +252,13 @@ def resolve_region(index, plan, family, scope):
         place = places[0]
         if place['kind'] in {'country', 'state', 'relative'}:
             return None, None, 'place'
-        candidate = (place.get('district') or '').strip() or place['name']
-        stored = region_exists(index, 'district_agromet', candidate)
+        # The publisher's English name is tried before the reader's own spelling, and the name the
+        # reader wrote is tried last rather than first.
+        stored = None
+        for candidate in resolved_names(place, resolved):
+            stored = region_exists(index, 'district_agromet', candidate)
+            if stored:
+                break
         if not stored:
             return None, None, 'district_absent'
         states = district_states(index, stored)
@@ -254,6 +279,16 @@ def resolve_region(index, plan, family, scope):
             if place['kind'] == 'state' and place['name']:
                 supplied = place['name']
                 break
+        if not supplied:
+            # A state named in another script: the resolved record carries the English name.
+            for place in places:
+                for candidate in resolved_names(place, resolved):
+                    if any(region_exists(index, family_name, candidate)
+                           for family_name in ('state_agromet', 'state_district_bulletin')):
+                        supplied = candidate
+                        break
+                if supplied:
+                    break
         if not supplied:
             # A state named without the word 'state' is still a state when the indexed
             # editions carry that region. Measured on 15 September 2026: "Rajasthan ki
@@ -415,6 +450,40 @@ def edition_comparison(index, family, region, limit=EDITION_DIFFERENCE_SECTION_L
     return comparison
 
 
+def translated_query(query):
+    """The question in English, for retrieval only, or None when no key is configured.
+
+    A publisher prints in one language and the reader may ask in another: measured 15 September
+    2026, "भारी बारिश के बारे में राष्ट्रीय मौसम बुलेटिन क्या कहता है?" shared no exact word with
+    the English bulletin, so only semantic matches could be served. The translation is used to
+    *find* passages. It never becomes an answer: the passages served are the source's own words,
+    the basis is disclosed, and the turn is partial because a generative step now sits between the
+    question and the index.
+
+    The source language is read from the script, which is coarser than the language: Assamese is
+    written in the Bengali script and is read as Bengali here. That is recorded on the result
+    rather than presented as a measured language identification.
+    """
+    from . import speech
+    from .languages import sarvam_code
+    from .rule_planner import language_of
+    if not speech.configured():
+        return None
+    try:
+        code = sarvam_code(language_of(query))
+        rendered, meta = speech.translate(query, 'en', code)
+    except (SourceError, ValueError, OSError):
+        # A refusal, a timeout or an unconfigured service is a state of the retrieval, not an
+        # error the reader should see: the disclosed semantic-only basis still applies.
+        return None
+    if not rendered or not rendered.strip():
+        return None
+    return {'text': rendered.strip(), 'source_language': code,
+            'service': (meta or {}).get('service', 'language service'),
+            'model': (meta or {}).get('model', 'not stated'),
+            'script_read_as': language_of(query)}
+
+
 def execute_corpus(engine, result, plan, task, resolved=None):
     result.update(passages=[], document_evidence=[], pending_slots=[])
     request = task.get('corpus_request') or {}
@@ -425,7 +494,28 @@ def execute_corpus(engine, result, plan, task, resolved=None):
         result.update(status='needs_clarification', answer='Which published document or topic should I look up?')
         return result
     index = engine.workspace.document_index()
-    region, expected_state, problem = resolve_region(index, plan, family, scope)
+    if not resolved and getattr(engine, 'gazetteer', None) is not None:
+        # No place was resolved for this task, so the tool resolves the names it was given: a
+        # document question does not need coordinates, which is why nothing had grounded them.
+        # Measured 15 September 2026: "નાસિક જિલ્લાની કૃષિ સલાહમાં …" answered that no edition was
+        # indexed under નાસિક, although the gazetteer resolves that name to the Nashik edition held
+        # here. The choice is disclosed on the answer like any other reading of a place.
+        from .gazetteer import preferred_match
+        resolved = {}
+        for place in plan.get('places') or []:
+            name = (place.get('name') or '').strip()
+            if not name or name in resolved:
+                continue
+            chosen, why = preferred_match(engine.gazetteer.search(name, place.get('state') or '',
+                                                                  place.get('district') or ''))
+            if not chosen:
+                continue
+            resolved[name] = chosen
+            note = ('Place read as ' + str(chosen.get('label') or chosen.get('name')) +
+                    ' for the published document' + ((' — ' + str(why)) if why else '') + '.')
+            if note not in result.setdefault('notes', []):
+                result['notes'].append(note)
+    region, expected_state, problem = resolve_region(index, plan, family, scope, resolved)
     if problem == 'place':
         if family == 'district_agromet' or scope == 'district':
             reason = 'A source district is needed for this document family'
@@ -523,23 +613,39 @@ def execute_corpus(engine, result, plan, task, resolved=None):
         except (SourceError, ValueError) as error:
             result.update(status='unavailable', answer='Published document retrieval is unavailable: ' + str(error))
             return result
-    tokens = query_tokens(query)
+    # A question asked in one language is answered from documents printed in another. The
+    # translation is used to find passages, never to state anything: what is served is still the
+    # source's own words, with the basis and the translated query recorded.
+    translation = translated_query(query) if (not whole and INDIC_SCRIPT.search(query)) else None
+    lexical_query = translation['text'] if translation else query
+    tokens = query_tokens(lexical_query)
     supported = [hit for hit in hits if lexically_supported(hit, tokens)]
+    if translation and not supported:
+        # The fused top-k was ranked on the original wording. Search again on the translation.
+        try:
+            again, more_method = index.search_passages(lexical_query, family=family or None, scope=scope or None,
+                                                       region=region, limit=10)
+        except (SourceError, ValueError):
+            again = []
+        supported = [hit for hit in again if lexically_supported(hit, tokens)]
+        if supported:
+            hits, method = again, more_method
     lexical_support = len(supported)
-    match_basis = 'lexical_overlap'
+    match_basis = 'translated_query_lexical_overlap' if (translation and supported) else 'lexical_overlap'
     topics = []
     topic_matched = True
     if supported and not whole:
-        topics = topic_tokens(query, plan, region)
+        topics = topic_tokens(lexical_query, plan, region)
         on_topic = [hit for hit in supported if lexically_supported(hit, topics)] if topics else []
         if on_topic:
             supported = on_topic
-            match_basis = 'lexical_overlap_topic'
+            match_basis = 'translated_query_lexical_overlap' if translation else 'lexical_overlap_topic'
         elif topics:
             # Shared wording is all that matched. Served as the top fused matches with the
             # missing topic word stated, rather than as an answer to the question.
             topic_matched = False
-            match_basis = 'lexical_overlap_without_the_topic_word'
+            match_basis = ('translated_query_without_the_topic_word' if translation
+                           else 'lexical_overlap_without_the_topic_word')
     if whole:
         # The question is about the edition, so shared wording is not the retrieval rule.
         supported = hits
@@ -792,7 +898,12 @@ def execute_corpus(engine, result, plan, task, resolved=None):
     if match_basis == 'semantic_only_indic_script_disclosed':
         parts.append('The question is written in a script these English source documents do not share, so no exact word from '
                      'it appears in the retrieved passages. These are the top semantic matches, not a verified wording match.')
-    if match_basis == 'lexical_overlap_without_the_topic_word':
+    if translation and str(match_basis).startswith('translated_query'):
+        parts.append('The question was written in ' + str(translation['source_language']) + ' and was translated to English '
+                     'for retrieval only (' + str(translation['service']) + ', ' + str(translation['model']) + '): the wording searched for was “' +
+                     excerpt(translation['text'], 200) + '”. Every passage below is the source\'s own text, matched on that translation and not on '
+                     'the original wording, so the reading is partial and the translation is not evidence.')
+    if match_basis in {'lexical_overlap_without_the_topic_word', 'translated_query_without_the_topic_word'}:
         parts.append('No indexed passage of this product and region contains ' + ', '.join(topics) +
                      '. What is shown shares the other words of the request only, so it does not answer it and no passage was '
                      'substituted from another product or region.')
@@ -811,6 +922,8 @@ def execute_corpus(engine, result, plan, task, resolved=None):
                                     'whole_document': bool(whole),
                                     'lexically_supported': lexical_support, 'lexical_overlap_required': True,
                                     'match_basis': match_basis, 'topic_tokens': topics, 'topic_matched': topic_matched,
+                                    'query_translation': ({**translation, 'used_for_retrieval': bool(translation and supported)}
+                                                          if translation else None),
                                     'filters': {'family': family or None, 'scope': scope or None, 'region': region},
                                     'evidence_classes': classes,
                                     'superseded_retired': len(retired),
@@ -828,7 +941,8 @@ def execute_corpus(engine, result, plan, task, resolved=None):
     # served with its reference-only label and the answer says so. Partial means the request
     # itself was reduced: an unstated issue date, expired printed validity, a retired edition,
     # a filtered document, a disclosed weaker match, or opposing wording that was found.
-    weaker_match = match_basis in {'semantic_only_indic_script_disclosed', 'lexical_overlap_without_the_topic_word'}
+    weaker_match = match_basis in {'semantic_only_indic_script_disclosed', 'lexical_overlap_without_the_topic_word',
+                                   'translated_query_lexical_overlap', 'translated_query_without_the_topic_word'}
     partial = bool(currency_unknown or expired or retired or conflicts or filtered_out or weaker_match)
     result['status'] = 'partial' if partial else 'answered'
     return result

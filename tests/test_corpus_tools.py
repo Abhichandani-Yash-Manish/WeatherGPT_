@@ -12,6 +12,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from types import SimpleNamespace
 
+from weathergpt_data import speech
 from weathergpt_data.bulletin_index import BulletinIndex
 from weathergpt_data.corpus_tools import execute_corpus,directory_states
 from weathergpt_data.dialogue import document_hint,ground_document_request
@@ -19,6 +20,7 @@ from weathergpt_data.tasks import validate_tasks
 from weathergpt_data.transport import SourceError,digest
 
 NOW = datetime(2026, 9, 15, 12, tzinfo=timezone.utc)
+_configured = speech.configured
 
 
 def encoder(texts, query=False):
@@ -173,17 +175,54 @@ class RetrievalTests(CorpusCase):
         history = self.run_corpus(plan, {'query': 'historical cotton sowing', 'family': 'state_agromet', 'scope': 'state'})
         self.assertEqual(history['document_evidence'][0]['sha256'], old)
 
-    def test_an_indic_script_question_is_served_as_a_disclosed_semantic_match(self):
+    def test_an_indic_script_question_without_a_translation_is_a_disclosed_semantic_match(self):
+        # No language service key is configured here, so the top semantic matches are served with
+        # the lack of wording support stated.
         self.publish(document('state_agromet', 'state', 'Gujarat', '2026-09-14',
                               'Irrigation should be light and need based across the state.'))
         self.publish(document('state_agromet', 'state', 'Maharashtra', '2026-09-14',
                               'Wind speeds are likely to increase along the coast.'))
         plan = {'places': [{'name': 'Gujarat', 'state': '', 'district': '', 'kind': 'state'}]}
-        result = self.run_corpus(plan, {'query': 'સિંચાઈ વિશે શું કહ્યું છે', 'family': 'state_agromet', 'scope': 'state'})
+        speech.configured = lambda: False
+        try:
+            result = self.run_corpus(plan, {'query': 'સિંચાઈ વિશે શું કહ્યું છે', 'family': 'state_agromet',
+                                            'scope': 'state'})
+        finally:
+            speech.configured = _configured
         self.assertEqual(result['status'], 'partial')
         self.assertEqual(result['retrieval_coverage']['match_basis'], 'semantic_only_indic_script_disclosed')
         self.assertIn('semantic matches', result['answer'])
         self.assertEqual(result['document_evidence'][0]['region'], 'Gujarat')
+
+    def test_an_indic_script_question_is_retrieved_through_a_disclosed_translation(self):
+        # A key is configured on this machine, so the question is translated for retrieval only.
+        # Measured 15 September 2026: the Hindi question shared no word with the English bulletin
+        # and could only be served as a semantic guess.
+        self.publish(document('state_agromet', 'state', 'Gujarat', '2026-09-14',
+                              'Irrigation should be light and need based across the state.'))
+        self.publish(document('state_agromet', 'state', 'Maharashtra', '2026-09-14',
+                              'Wind speeds are likely to increase along the coast.'))
+        original = (speech.translate, speech.configured)
+
+        def stub(text, target, source='en-IN'):
+            return 'irrigation advice across the state', {'service': 'stub', 'operation': 'translate', 'model': 'stub'}
+
+        speech.translate = stub
+        speech.configured = lambda: True
+        try:
+            plan = {'places': [{'name': 'Gujarat', 'state': '', 'district': '', 'kind': 'state'}]}
+            result = self.run_corpus(plan, {'query': 'સિંચાઈ વિશે શું કહ્યું છે', 'family': 'state_agromet',
+                                            'scope': 'state'})
+        finally:
+            speech.translate, speech.configured = original
+        coverage = result['retrieval_coverage']
+        self.assertEqual(coverage['match_basis'], 'translated_query_lexical_overlap')
+        self.assertEqual(coverage['query_translation']['text'], 'irrigation advice across the state')
+        self.assertTrue(coverage['query_translation']['used_for_retrieval'])
+        self.assertIn('translated to English for retrieval only', result['answer'])
+        self.assertIn('not on the original wording', result['answer'])
+        self.assertEqual(result['status'], 'partial')
+        self.assertTrue(all('irrigation' in (passage['text'] or '').lower() for passage in result['passages']))
 
     def test_no_match_names_the_filters_and_substitutes_nothing(self):
         self.publish(document('national_bulletin', 'national', None, '2026-09-14', 'Rainfall summary for the country.'))

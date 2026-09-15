@@ -288,6 +288,36 @@ class DistrictChatRouteTests(CorpusReachability):
         self.assertTrue(any('Grapes' in passage['text'] for passage in result['passages']))
         self.assertTrue(any('Crop and growth-stage annotation' in note for note in result['notes']))
 
+    def test_a_place_written_in_another_script_resolves_to_the_stored_region(self):
+        # Measured 15 September 2026: "નાસિક જિલ્લાની કૃષિ સલાહમાં …" extracted નાસિક and the corpus
+        # answered that no edition was indexed under that name, although the Nashik edition is held.
+        # The resolved record carries the publisher's English name and is tried first.
+        self.publish(document('district_agromet', 'district', 'Nashik', '2026-09-11',
+                              'Grapes limestone content in the Nashik district vineyards.', state='Maharashtra'))
+        plan = {'places': [{'name': 'નાસિક', 'state': '', 'district': '', 'kind': 'district'}]}
+        resolved = {'નાસિક': {'name': 'Nashik', 'admin2': 'Nashik Division', 'admin1': 'State of Mahārāshtra'}}
+        task = {'kind': 'document', 'operation': 'lookup', 'parameters': ['published_document'],
+                'request_quote': 'દ્રાક્ષ વિશે શું લખ્યું છે?',
+                'corpus_request': {'query': 'grapes', 'family': 'district_agromet', 'scope': 'district'}}
+        result = {'question': 'દ્રાક્ષ વિશે શું લખ્યું છે?', 'plan': plan, 'trace': {'tools': [], 'generation': None},
+                  'facts': [], 'citations': [], 'notes': []}
+        result = execute_corpus(self.engine, result, plan, task, resolved)
+        self.assertEqual(result['status'], 'answered')
+        self.assertEqual(result['document_evidence'][0]['region'], 'Nashik')
+        self.assertEqual(result['document_evidence'][0]['state'], 'Maharashtra')
+
+    def test_a_name_the_reader_wrote_is_still_tried_last(self):
+        self.publish(document('district_agromet', 'district', 'Nashik', '2026-09-11',
+                              'Grapes limestone content in the Nashik district vineyards.', state='Maharashtra'))
+        plan = {'places': [{'name': 'Nashik', 'state': '', 'district': '', 'kind': 'district'}]}
+        task = {'kind': 'document', 'operation': 'lookup', 'parameters': ['published_document'],
+                'request_quote': 'grapes', 'corpus_request': {'query': 'grapes', 'family': 'district_agromet',
+                                                              'scope': 'district'}}
+        result = {'question': 'grapes', 'plan': plan, 'trace': {'tools': [], 'generation': None}, 'facts': [],
+                  'citations': [], 'notes': []}
+        result = execute_corpus(self.engine, result, plan, task)
+        self.assertEqual(result['document_evidence'][0]['region'], 'Nashik')
+
 
 if __name__ == '__main__':
     unittest.main()
