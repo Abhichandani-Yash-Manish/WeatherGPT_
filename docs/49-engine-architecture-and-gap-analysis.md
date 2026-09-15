@@ -292,3 +292,61 @@ The development and holdout sets were re-run after the brief landed
 (research/reviews/acceptance-benchmark-20260915k): **development 18/18 and holdout 4/4** again,
 with no missing task, no shape mismatch, no prohibited claim and no abstained turn. The brief is
 additive; it did not disturb the cases earlier rounds closed.
+
+## Round 5 — WS6: the advisory brief, published advice with the forecast kept apart
+
+Agriculture was a source reader: an agriculture task returned passages from a published agromet
+bulletin and no composition. A farmer question has two halves that must never be mixed up - what
+the published bulletin advises for a crop and a stage, and what the model forecast says for the
+field window - and the product had no artefact that carried both while keeping them apart.
+
+| Landed | Where | Evidence |
+|---|---|---|
+| weathergpt_data/advisory.py: compose a brief from the indexed published advice and the forecast facts. It resolves the requested district against the names the indexed editions actually use (Ahmedabad and Ahmadabad are the same place, and the resolution is disclosed), quotes each passage with its source, page, printed issue date and locator, quotes the source's own conditional clauses as conditions, lists what is not established, and hashes the content | weathergpt_data/advisory.py | tests/test_advisory.py - thirteen checks over a synthetic index |
+| The forecast half is context, never instruction: first and last values of the retrieved series, the number of samples, the series bounds and the source id, with an explicit note that no summary is computed here | weathergpt_data/advisory.py, weathergpt_data/workspace.py | the artefact below shows "first 25.2 °C, last 24.9 °C across 24 sample(s)" with source S62 |
+| /api/advisories/brief: a token-gated route that asks for the district explicitly and refuses to infer which district bulletin to read from a coordinate | weathergpt_data/workspace.py | route check in the live run |
+| scripts/advisory_brief.py writes the Markdown artefact from the same composition, resolving a place name through the gazetteer | scripts/advisory_brief.py | three artefacts in research/implementation/advisory-brief-20260915/ |
+
+### The composition rules the tests pin
+
+- **A crop brief serves only that crop.** Passages naming another crop are left out and the brief
+  says which crops it left out.
+- **A crop the edition does not name is disclosed, not substituted.** The district edition's own
+  general advice is still served, with a note that the edition does not name the requested crop.
+- **Nothing matching is reported, not approximated:** a request for a crop and topic the edition
+  does not carry returns not available with the reason and the editions searched.
+- **A district without an edition falls back to the state edition**, named as such, with a note
+  that no district edition matched and that nothing from another district was substituted.
+- **Decision support names what it does not know**: soil moisture at the field, the actual growth
+  stage in the field, the local advisory and any product-label or dose decision, and states that
+  the workspace will not turn published advice into a go/no-go decision.
+- **No prescription, diagnosis or dose decision** appears anywhere in the artefact; the printed
+  dose text stays quoted source text with its own warning that it belongs to the label and the
+  local advisory.
+
+### Evidence
+
+- brief-ahmedabad-cotton-day1.md - cotton, irrigation, printed issue 2026-09-11, source S57 page 3,
+  with the source's own condition ("If irrigation facilities are available…") quoted as a
+  condition, and forecast context from S62 for the point.
+- brief-ahmedabad-cotton-decision-support.md - the same evidence with the decision-support block
+  listing what a decision still needs.
+- brief-kohima-rice-not-held.md - Kohima, Nagaland: no indexed edition, so the brief reports that
+  nothing matched and substitutes nothing.
+
+### What this does and does not establish
+
+- It establishes that published crop advice and model forecast can stand in one artefact without
+  being blended into advice, that another crop is never served for the one asked about, and that
+  a missing edition is reported rather than filled.
+- It does not establish agronomic validity: no agronomist has reviewed the composition, the
+  source's conditions are quoted rather than checked against the field, and the forecast remains
+  a grid-cell model value.
+- It does not deliver anything and does not schedule anything: the artefact is written locally on
+  request, like the alert brief.
+- The declared acceptance benchmark was re-run after this batch with the fresh output directory
+  research/reviews/acceptance-benchmark-20260915n: 17 development cases (18 declared tasks) and 4
+  holdout cases answered, zero missing tasks, zero task-shape mismatches, zero prohibited claims,
+  zero disallowed statuses, zero critical failures and no abstention. The holdout set has already
+  been read in docs/45, so it no longer measures generalisation; the numbers above are a
+  no-regression check on a set that is now development data.

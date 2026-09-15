@@ -1,7 +1,7 @@
 {
   "schema_version": "hardening-progress-v1",
   "review": "research/reviews/national-readiness-20260912/review.md",
-  "updated_at_utc": "2026-09-15T04:20:11+00:00",
+  "updated_at_utc": "2026-09-15T04:35:42+00:00",
   "operational_ready": false,
   "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
   "findings": [
@@ -1119,6 +1119,47 @@
       "The first brief in a cold process waits on the district warning layer fetch (about fifty seconds here).",
       "Flood and cyclone warnings, sea-area bulletins and personal field decisions are outside its evidence.",
       "The CAP relay remains separately reported and its origin unauthenticated."
+    ]
+  },
+  "advisory_brief_batch": {
+    "report": "docs/49-engine-architecture-and-gap-analysis.md",
+    "evidence_directory": "research/implementation/advisory-brief-20260915",
+    "operational_ready": false,
+    "scope": "Agriculture depth: a composed advisory brief for one district, crop and stage - published passages quoted with source, page, printed issue date and locator, the source conditions quoted as conditions, the forecast kept apart as context with its samples and source, decision support naming what it does not know, and no prescription, diagnosis or dose decision.",
+    "automated_tests": 726,
+    "javascript_component_checks": 61,
+    "measured": {
+      "district_edition_used": {
+        "family": "district_agromet",
+        "region": "Ahmedabad",
+        "printed_issue": "2026-09-11",
+        "passages_quoted": 1,
+        "source_id": "S57"
+      },
+      "crops_left_out_of_a_cotton_brief": [
+        "chilli",
+        "gram",
+        "groundnut",
+        "rice"
+      ],
+      "forecast_context": {
+        "source_id": "S62",
+        "parameters": 8,
+        "samples_per_parameter": 24,
+        "note": "first and last values of the retrieved series; no summary computed"
+      },
+      "artefacts": [
+        "brief-ahmedabad-cotton-day1.md",
+        "brief-ahmedabad-cotton-decision-support.md",
+        "brief-kohima-rice-not-held.md"
+      ],
+      "name_resolution_disclosed": "Ahmadabad was read as Ahmedabad, the spelling the edition uses"
+    },
+    "limitations": [
+      "No agronomist has reviewed the composition; the source conditions are quoted, not checked against a field.",
+      "The forecast remains a grid-cell model value, not an observation of the field.",
+      "Nothing is delivered or scheduled: the artefact is written locally on request.",
+      "A district without an indexed edition falls back to the state edition, named as such; a missing state edition is reported."
     ]
   }
 }
