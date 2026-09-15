@@ -7,6 +7,7 @@ from .transport import Store,SourceError,utcnow,stamp,parsed
 from .adapters import json_payload,hourly,FORECAST,MARINE,RIVER,aviation,warnings,envelope,numeric,grid_identity,numeric_quality
 from .adapters import EXTENDED,HISTORY_LOCAL,REANALYSIS_MODELS,reanalysis_fields,reanalysis_label
 from .adapters import ENSEMBLE,ENSEMBLE_MODELS,ensemble
+from .adapters import AIR_QUALITY,air_quality
 ROOT=Path(__file__).resolve().parents[1]
 
 class Foundation:
@@ -58,6 +59,18 @@ class Foundation:
                             {**point,'hourly':','.join(selected),'models':model,'forecast_days':days,
                              'timezone':'UTC','timeformat':'unixtime','temperature_unit':'celsius',
                              'wind_speed_unit':'kmh','precipitation_unit':'mm'},refresh=refresh,product_parser=parse)
+        return parse(data,meta)
+    def air_quality(self,lat,lon,days=3,variables=None,refresh=False):
+        """Modelled pollutant concentrations and the source's own air-quality indices."""
+        point=self.point(lat,lon)
+        self.forecast_dates(days,7)
+        selected=tuple(variables) if variables else tuple(AIR_QUALITY)
+        if not selected or any(name not in AIR_QUALITY for name in selected):raise SourceError('Unsupported air-quality variable')
+        fields={name:AIR_QUALITY[name] for name in selected}
+        parse=lambda d,m:air_quality(d,m,fields,point,self.forecast_dates(days,7))
+        data,meta=self.get('S69','https://air-quality-api.open-meteo.com/v1/air-quality',
+                            {**point,'hourly':','.join(selected),'current':','.join(selected),
+                             'forecast_days':days,'timezone':'UTC','timeformat':'unixtime'},refresh=refresh,product_parser=parse)
         return parse(data,meta)
     def history_local(self,lat,lon,start,end,refresh=False,models='era5'):
         point=self.point(lat,lon);a=date.fromisoformat(start);b=date.fromisoformat(end)
