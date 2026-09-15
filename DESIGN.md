@@ -68,6 +68,9 @@ a printed issue date — never from decoration.
 | `rail` | Sectioned navigation; every item keyboard reachable; hints must match the handler. |
 | `palette` | Every surface and action is reachable from ⌘K; the palette is the power-user's rail. |
 | `drawer` | Evidence in context, dismissible with Escape, focus returned to the opener. |
+| `viz-matrix` | District x day grid. A cell carries the colour the source printed; an unknown code is flagged, never dropped; rows are ordered by the product own colour rank and the ordering is stated. |
+| `viz-card` | A corpus edition as a card: family rail, printed issue date, currency, pages and passages, and the state of its saved body. Only a held body offers a file. |
+| `ruler-readout` | The validity ruler is inspectable: every covered span and every gap is focusable and says what it is, including that a gap is never interpolated. |
 
 ## Chart language (`viz.js`)
 

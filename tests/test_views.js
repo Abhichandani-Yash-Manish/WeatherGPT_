@@ -56,7 +56,15 @@ assert(rail, 'The ruler draws a track');
 assert.equal(Number(covered[0].attrs.x), Number(rail.attrs.x), 'A span covering the whole window starts with the track');
 assert.equal(Number(covered[0].attrs.width), Number(rail.attrs.width), 'A span covering the whole window fills the track');
 assert.equal(withClass(card, 'ruler').length, 1);
-console.log('PASS: the validity ruler draws covered spans from the retrieved window with a text description');
+const rulerHits = withTag(svg, 'rect').filter(rect => rect.attrs['class'] === 'ruler-hit');
+assert.equal(rulerHits.length, 1, 'every drawn segment is reachable, so the window can be read part by part');
+assert(/Covered by retrieved evidence/.test(rulerHits[0].attrs['aria-label']),
+  'a covered segment says what it covers and how many samples back it: ' + rulerHits[0].attrs['aria-label']);
+const rulerReadout = withClass(ruler, 'ruler-readout')[0];
+assert(rulerReadout, 'the ruler carries a live readout');
+rulerHits[0].events.focus[0]();
+assert(/Covered by retrieved evidence/.test(rulerReadout.textContent), 'focusing a segment reads it out');
+console.log('PASS: the validity ruler draws covered spans from the retrieved window with a text description, and every segment is inspectable');
 
 // 3. an instantaneous observation has no interval, so no ruler is drawn
 const airportCard = context.renderTurn(packet('airport'), {});

@@ -1,0 +1,63 @@
+{
+  "schema_version": "frontend-overhaul-live-http-v1",
+  "batch": "P2 signature visuals: warning matrix, corpus library cards, interactive validity ruler",
+  "checked_at_utc": "2026-09-15T17:21:35+00:00",
+  "base": "http://127.0.0.1:8795",
+  "method": "Loopback HTTP against a fresh workspace process: the served engine, the served answer renderer and the two routes the new visuals read. No DOM rendering: the session sandbox cannot launch Chrome.",
+  "checks": [
+    {
+      "check": "page token",
+      "status": 200,
+      "ms": 5,
+      "token_present": true
+    },
+    {
+      "check": "engine carries the matrix and the library cards",
+      "path": "/viz.js",
+      "status": 200,
+      "ms": 0,
+      "bytes": 28573,
+      "missing": []
+    },
+    {
+      "check": "the answer renderer makes the ruler inspectable",
+      "path": "/views.js",
+      "status": 200,
+      "ms": 0,
+      "bytes": 78322,
+      "missing": []
+    },
+    {
+      "check": "the stylesheet carries the new surfaces",
+      "path": "/style.css",
+      "status": 200,
+      "ms": 0,
+      "bytes": 66721,
+      "missing": []
+    },
+    {
+      "check": "the matrix has the national product to draw",
+      "path": "/api/warnings/national",
+      "status": 200,
+      "ms": 1364,
+      "districts": 756,
+      "days_per_district": 5,
+      "colours": [
+        "green",
+        "orange",
+        "red",
+        "yellow"
+      ]
+    },
+    {
+      "check": "the library has editions to draw",
+      "path": "/api/corpus",
+      "status": 200,
+      "ms": 72,
+      "documents": 588,
+      "bodies_held": 584,
+      "bodies_pruned": 4,
+      "listed": 6
+    }
+  ]
+}

@@ -169,22 +169,26 @@ function renderRuler(packet) {
   node('rect', { x: track, y: y, width: width - track - 12, height: height, rx: 3, 'class': 'ruler-rail' });
   // Uncovered intervals are drawn as hatched gaps rather than left ambiguous:
   // a rail that simply ends would read as coverage it does not have.
+  const segments = [];
   let cursor = from;
   covered.forEach(span => {
     if (span[0] - cursor > 15 * 60 * 1000) {
       const left = scale(cursor), right = scale(span[0]);
       node('rect', { x: left.toFixed(1), y: y, width: Math.max(2, right - left).toFixed(1), height: height, rx: 3, 'class': 'ruler-gap' });
+      segments.push({ start: cursor, end: span[0], covered: false });
     }
     cursor = Math.max(cursor, span[1]);
   });
   if (to - cursor > 15 * 60 * 1000) {
     const left = scale(cursor);
     node('rect', { x: left.toFixed(1), y: y, width: Math.max(2, (width - track - 12) - (left - track)).toFixed(1), height: height, rx: 3, 'class': 'ruler-gap' });
+    segments.push({ start: cursor, end: to, covered: false });
   }
   covered.forEach(span => {
     const left = scale(span[0]), right = scale(span[1]);
     node('rect', { x: left.toFixed(1), y: y, width: Math.max(2, right - left).toFixed(1), height: height, rx: 3, 'class': 'ruler-covered' });
     node('line', { x1: left.toFixed(1), x2: left.toFixed(1), y1: y - 4, y2: y, 'class': 'ruler-edge' });
+    segments.push({ start: span[0], end: span[1], covered: true });
   });
   [0, 0.5, 1].forEach(fraction => {
     const at = from + (to - from) * fraction;
@@ -198,8 +202,27 @@ function renderRuler(packet) {
       node('line', { x1: scale(at).toFixed(1), x2: scale(at).toFixed(1), y1: y + height, y2: y + height + 5, 'class': 'ruler-hour' });
     }
   }
+  // The ruler is the answer's window made legible: every part of it is reachable, and a part with
+  // no retrieved evidence says so rather than being left as blank space that could read as coverage.
+  const readoutLine = el('p', 'Focus a part of the window to read what the evidence covers there.', 'ruler-readout');
+  readoutLine.setAttribute('aria-live', 'polite');
+  segments.slice().sort((left, right) => left.start - right.start).forEach(segment => {
+    const samples = spans.filter(fact => Date.parse(fact.start) < segment.end && Date.parse(fact.end) > segment.start).length;
+    const range = istWindowText(new Date(segment.start).toISOString(), new Date(segment.end).toISOString());
+    const label = segment.covered
+      ? 'Covered by retrieved evidence ' + range + ' \u00b7 ' + samples + ' sample' + (samples === 1 ? '' : 's')
+      : 'No retrieved evidence ' + range + ' \u00b7 drawn as a gap and never interpolated';
+    const hit = node('rect', { x: scale(segment.start).toFixed(1), y: y - 4, width: Math.max(3, (scale(segment.end) - scale(segment.start))).toFixed(1),
+                               height: height + 8, 'class': 'ruler-hit', tabindex: 0, role: 'button', 'aria-label': label });
+    const show = () => { readoutLine.textContent = label; };
+    hit.addEventListener('focus', show);
+    hit.addEventListener('mouseenter', show);
+    hit.addEventListener('click', show);
+    hit.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); show(); } });
+  });
   node('text', { x: track, y: 22, 'class': 'ruler-caption' }, istDay(spans[0].start) + ' \u00b7 ' + Math.round(hours * 10) / 10 + ' h');
   box.append(svg);
+  box.append(readoutLine);
 
   const distances = findDeep(packet, 'grid_distance_km');
   const foot = el('p', undefined, 'ruler-foot');

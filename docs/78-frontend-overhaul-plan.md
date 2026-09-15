@@ -147,6 +147,26 @@ and every readout carries its locator. Live record:
 layer before the sheet and loads the engine; `/tokens.css` (5,826 bytes) and `/viz.js` (19,805 bytes)
 are served; the ensemble route returns the eight member series the plume draws (30 members).
 
-**Next (not started).** Extending the engine to the district warning matrix, the corpus library cards,
-the interactive validity ruler and place memory; the command-centre shell phase; craft polish; and
-browser-level acceptance, which this sandbox still cannot run.
+**P2 — signature visuals, delivered.** Three more primitives are in the engine and wired into the product:
+
+- **District x day warning matrix** (Warnings surface): the published national product as a colour grid.
+  Every cell carries the colour the source printed, an unknown hazard code is flagged rather than dropped, and
+  a day the product left uncoloured reads as not stated. Rows are ordered by the product own colour rank, which
+  the panel states; the engine itself never ranks a district. Live product drawn: 756 districts x 5 days, with
+  green, yellow, orange and red observed in the payload.
+- **Corpus library cards** (Published-documents surface): each indexed edition as a card with its family rail,
+  printed issue date, retrieval date, measured currency, page and passage counts and body state. Only a held
+  body offers the saved file; a pruned edition says what survives instead.
+- **Inspectable validity ruler** (every answer with a window): each covered span and each gap is focusable and
+  reads out exactly what it covers, including that a gap is drawn as a gap and never interpolated. The ruler
+  stops being a picture of coverage and becomes a statement of it.
+
+`tests/test_viz.js` and `tests/test_views.js` pin all three: a cell cannot exist without a returned day, an
+uncoloured day cannot borrow a colour, a pruned card cannot offer a file, and every ruler segment must read out.
+Live record: `research/reviews/frontend-overhaul-20260915/live-http-checks-p2.json` — the engine is served with
+both new primitives, the renderer with the ruler hits, and the national route answers with 756 districts x 5 days
+while the corpus route answers with 588 editions of which 584 still hold their body.
+
+
+**Next (not started).** Place memory, a compare tray and the unified timeline; the command-centre shell
+phase; craft polish; and browser-level acceptance, which this sandbox still cannot run.

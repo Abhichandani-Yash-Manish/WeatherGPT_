@@ -342,7 +342,149 @@
     return box.box;
   }
 
-  global.viz = { ensembleFan: ensembleFan, meteogram: meteogram };
+
+  /* ---- district × day warning matrix -------------------------------------- */
+  /* The national product as a colour grid. Every cell is one district-day exactly as the source
+     published it: the colour word the product printed, the hazard wording read verbatim in the
+     readout, and an explicit state for a day that carried no colour or an unknown hazard code.
+     The engine does not rank or score a district; the caller decides the row order and says how. */
+  function warningMatrix(chart) {
+    const days = chart.days || [];
+    const rows = chart.rows || [];
+    const box = make('section', undefined, 'viz viz-matrix-block');
+    box.setAttribute('data-days', String(days.length));
+    box.append(make('h3', chart.title || 'District warning matrix', 'viz-title'));
+    box.append(make('p', chart.note ||
+      'One row per district, one column per day of the published product. The cell shows the colour the source printed; the hazard wording is read verbatim when a cell is focused.', 'viz-note'));
+    const readoutLine = make('p', 'Focus a cell to read its district, day, colour and hazard wording.', 'viz-readout');
+    readoutLine.setAttribute('aria-live', 'polite');
+    box.append(readoutLine);
+    const grid = make('div', undefined, 'viz-matrix');
+    grid.setAttribute('role', 'table');
+    grid.setAttribute('aria-label', chart.title || 'District warning matrix');
+    const head = make('div', undefined, 'viz-matrix-row is-head');
+    head.setAttribute('role', 'row');
+    const corner = make('span', chart.corner || 'District', 'viz-matrix-corner');
+    corner.setAttribute('role', 'columnheader');
+    head.append(corner);
+    days.forEach(day => {
+      const cell = make('span', day.label || String(day.key || ''), 'viz-matrix-head');
+      cell.setAttribute('role', 'columnheader');
+      cell.setAttribute('title', day.date || day.label || '');
+      head.append(cell);
+    });
+    grid.append(head);
+    rows.forEach(row => {
+      const line = make('div', undefined, 'viz-matrix-row');
+      line.setAttribute('role', 'row');
+      const name = make('span', (row.district || 'district not stated') + (row.state ? ' · ' + row.state : ' · state not stated'), 'viz-matrix-name');
+      name.setAttribute('role', 'rowheader');
+      line.append(name);
+      days.forEach((day, index) => {
+        const entry = (row.days || [])[index] || {};
+        const known = ['red', 'orange', 'yellow', 'green'].indexOf(entry.colour) >= 0;
+        const unknown = (entry.unknown_hazard_codes || []).length > 0;
+        const cell = make('button', known ? String(entry.colour).toUpperCase() : 'NOT STATED',
+          'viz-cell ' + (known ? 'is-' + entry.colour : 'is-unknown') + (unknown ? ' is-unverified' : ''));
+        cell.type = 'button';
+        cell.setAttribute('role', 'cell');
+        const hazard = entry.source_text || (entry.hazards && entry.hazards.length ? entry.hazards.join(', ') : '');
+        const label = (row.district || 'district not stated') + (row.state ? ', ' + row.state : '') +
+          ' · ' + (day.label || ('Day ' + (index + 1))) + (day.date ? ' (' + day.date + ')' : '') +
+          ' · ' + (known ? 'colour ' + entry.colour : 'no colour stated by the product') +
+          (hazard ? ' · ' + hazard : ' · no hazard wording printed') +
+          (unknown ? ' · contains an unknown hazard code' : '');
+        cell.setAttribute('aria-label', label);
+        cell.append(make('span', known ? String(entry.colour).toUpperCase() : 'NOT STATED', 'viz-cell-word'));
+        const show = () => { readoutLine.textContent = label; };
+        cell.addEventListener('focus', show);
+        cell.addEventListener('mouseenter', show);
+        if (typeof chart.onOpen === 'function') {
+          cell.addEventListener('click', () => chart.onOpen(row, index));
+        }
+        line.append(cell);
+      });
+      grid.append(line);
+    });
+    box.append(grid);
+    if (chart.footnote) box.append(make('p', chart.footnote, 'viz-method'));
+    exactTable(box,
+      ['District', 'State'].concat(days.map(day => day.label || String(day.key || ''))),
+      rows.map(row => [row.district || 'district not stated', row.state || 'state not stated']
+        .concat(days.map((day, index) => {
+          const entry = (row.days || [])[index] || {};
+          const hazard = entry.source_text || (entry.hazards && entry.hazards.length ? entry.hazards.join(', ') : 'no hazard wording printed');
+          return (entry.colour || 'not stated') + ' — ' + hazard;
+        }))),
+      'Every shown district-day as text (' + (rows.length * days.length) + ' cell(s))');
+    return box;
+  }
+
+  /* ---- corpus library cards ------------------------------------------------ */
+  /* Each indexed edition as a card: what it is, when it was printed, how much text it carries and
+     whether the saved body is still held. The card never implies the edition still applies to
+     anything — that is the corpus's own stated limit, printed on every card's rail. */
+  function libraryCards(chart) {
+    const documents = chart.documents || [];
+    const box = make('section', undefined, 'viz viz-library');
+    box.append(make('h3', chart.title || 'The library', 'viz-title'));
+    box.append(make('p', chart.note ||
+      'Every edition this machine has indexed. A stored document is the record of one printed edition, never a current warning.', 'viz-note'));
+    const grid = make('div', undefined, 'viz-cards');
+    documents.forEach(document => {
+      const card = make('article', undefined, 'viz-card');
+      const rail = make('div', undefined, 'viz-card-rail');
+      rail.append(make('span', document.family_label || document.family || 'family not stated', 'viz-card-family'));
+      rail.append(make('span', document.scope || 'scope not stated', 'viz-card-scope'));
+      card.append(rail);
+      const bodyState = document.body || 'unknown';
+      const chip = make('span', bodyState === 'available' ? 'body held' : (bodyState === 'pruned' ? 'body pruned' : 'body location unrecorded'),
+        'viz-card-chip is-' + bodyState);
+      card.append(chip);
+      const title = make('h4', document.region || document.district || document.state || 'region not stated', 'viz-card-title');
+      const opener = make('button', document.region || document.district || document.state || 'region not stated', 'viz-card-open');
+      opener.type = 'button';
+      opener.setAttribute('aria-label', 'Open ' + (document.family_label || document.family) + ' for ' + (document.region || 'a region not stated'));
+      if (typeof chart.onOpen === 'function') opener.addEventListener('click', () => chart.onOpen(document));
+      else opener.disabled = true;
+      title.textContent = '';
+      title.append(opener);
+      card.append(title);
+      const facts = make('dl', undefined, 'viz-card-facts');
+      [['Printed issue', document.issue_date || 'not stated'],
+       ['Retrieved', document.retrieved_at_utc ? document.retrieved_at_utc.slice(0, 10) : 'not recorded'],
+       ['Currency', (document.age_days === null || document.age_days === undefined)
+          ? (document.currency_recorded_at_intake || 'unknown')
+          : document.age_days + ' day(s) after the printed issue date'],
+       ['Pages / passages', String(document.pages === null || document.pages === undefined ? 'not stated' : document.pages) + ' / ' + String(document.passages || 0)],
+       ['Source', document.source_id || 'not stated']].forEach(pair => {
+        facts.append(make('dt', pair[0], 'viz-card-key'));
+        facts.append(make('dd', pair[1], 'viz-card-value'));
+      });
+      card.append(facts);
+      if (bodyState === 'available') {
+        const open = make('a', 'Open the saved PDF');
+        open.href = '/api/documents/' + document.sha256;
+        open.target = '_blank';
+        open.rel = 'noopener noreferrer';
+        const download = make('a', 'Download');
+        download.href = '/api/documents/' + document.sha256;
+        download.download = 'source-' + (document.sha_prefix || '') + '.pdf';
+        const links = make('p', undefined, 'viz-card-links');
+        links.append(open, make('span', ' \u00b7 ', 'field-note'), download);
+        card.append(links);
+      } else {
+        card.append(make('p', bodyState === 'pruned'
+          ? 'The saved body is outside the retention window; the hash, pages and passages above remain indexed and citable.'
+          : 'No saved-body location is recorded for this edition, so no file is offered.', 'viz-card-note'));
+      }
+      grid.append(card);
+    });
+    box.append(grid);
+    if (!documents.length) box.append(make('p', 'No edition is listed for this filter, so there is nothing to show.', 'viz-empty'));
+    return box;
+  }
+  global.viz = { ensembleFan: ensembleFan, meteogram: meteogram, warningMatrix: warningMatrix, libraryCards: libraryCards };
   /* In a browser `window` is the global object; in a component harness it is a stand-in, so the
      API is attached to both and `viz` resolves the same way in either. */
   if (typeof globalThis !== 'undefined' && globalThis.viz !== global.viz) globalThis.viz = global.viz;

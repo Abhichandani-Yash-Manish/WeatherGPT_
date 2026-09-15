@@ -820,3 +820,56 @@ body { display: flex; flex-direction: column; min-height: 100vh; min-height: 100
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
 }
+
+/* 12 — district warning matrix -------------------------------------------- */
+.viz-matrix-block { margin-top: var(--space-5); }
+.viz-matrix { display: grid; gap: 3px; overflow-x: auto; padding-bottom: var(--space-1); }
+.viz-matrix-row { display: grid; gap: 3px; grid-template-columns: minmax(148px, 1.6fr) repeat(5, minmax(50px, 1fr)); align-items: stretch; }
+.viz-matrix-block[data-days="1"] .viz-matrix-row { grid-template-columns: minmax(148px, 1.6fr) 1fr; }
+.viz-matrix-block[data-days="2"] .viz-matrix-row { grid-template-columns: minmax(148px, 1.6fr) repeat(2, 1fr); }
+.viz-matrix-block[data-days="3"] .viz-matrix-row { grid-template-columns: minmax(148px, 1.6fr) repeat(3, 1fr); }
+.viz-matrix-block[data-days="4"] .viz-matrix-row { grid-template-columns: minmax(148px, 1.6fr) repeat(4, 1fr); }
+.viz-matrix-block[data-days="6"] .viz-matrix-row { grid-template-columns: minmax(148px, 1.6fr) repeat(6, 1fr); }
+.viz-matrix-row.is-head { position: sticky; top: 0; background: var(--paper); z-index: 1; }
+.viz-matrix-head, .viz-matrix-corner { font: 600 9.5px/1.3 var(--sans); letter-spacing: var(--track-wide); text-transform: uppercase; color: var(--mute); padding: 2px 0; }
+.viz-matrix-name { align-self: center; font-size: var(--step--1); color: var(--ink-soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: var(--space-2); }
+.viz-cell { display: flex; align-items: center; justify-content: center; min-height: 26px; padding: 2px 4px; border: 1px solid var(--line); border-radius: var(--r); background: var(--paper); color: var(--ink-soft); cursor: pointer; font: 600 9.5px/1 var(--mono); letter-spacing: .04em; transition: transform var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out); }
+.viz-cell:hover { transform: translateY(-1px); box-shadow: var(--lift-1); }
+.viz-cell.is-red { background: var(--red-wash); border-color: var(--red); color: var(--red); }
+.viz-cell.is-orange { background: var(--orange-wash); border-color: var(--orange); color: var(--orange); }
+.viz-cell.is-yellow { background: var(--yellow-wash); border-color: var(--yellow); color: var(--yellow); }
+.viz-cell.is-green { background: var(--green-wash); border-color: var(--green); color: var(--green); }
+.viz-cell.is-unknown { background: var(--sunk); border-style: dashed; color: var(--mute); }
+.viz-cell.is-unverified { position: relative; }
+.viz-cell.is-unverified::after { content: '?'; position: absolute; top: -4px; right: -4px; width: 12px; height: 12px; border-radius: 50%; background: var(--slate); color: var(--paper); font-size: 9px; line-height: 12px; text-align: center; }
+
+/* 13 — corpus library cards ------------------------------------------------ */
+.viz-library { margin-top: var(--space-4); }
+.viz-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: var(--space-3); margin-top: var(--space-3); }
+.viz-card { position: relative; display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4); background: var(--raiser); border: var(--hairline); border-radius: var(--r-card); box-shadow: var(--lift-1); transition: transform var(--motion-base) var(--ease-out), box-shadow var(--motion-base) var(--ease-out); }
+.viz-card:hover { transform: translateY(-2px); box-shadow: var(--lift-2); }
+.viz-card-rail { display: flex; flex-direction: column; gap: 2px; padding-left: var(--space-2); border-left: 3px solid var(--data); }
+.viz-card-family { font: 600 9.5px/1.3 var(--sans); letter-spacing: var(--track-wide); text-transform: uppercase; color: var(--data); }
+.viz-card-scope { font-size: 10px; letter-spacing: var(--track-wide); text-transform: uppercase; color: var(--mute); }
+.viz-card-chip { position: absolute; top: var(--space-3); right: var(--space-3); font: 600 9.5px/1 var(--mono); padding: 3px 7px; border-radius: var(--r-pill); border: 1px solid var(--line); color: var(--mute); background: var(--sunk); }
+.viz-card-chip.is-available { color: var(--data); border-color: var(--data); background: var(--data-wash); }
+.viz-card-chip.is-pruned { border-style: dashed; }
+.viz-card-title { margin: var(--space-1) 0 0; font: 600 var(--step-1)/1.25 var(--sans); letter-spacing: var(--track-tight); }
+.viz-card-open { font: inherit; color: var(--ink); background: none; border: 0; padding: 0; text-align: left; cursor: pointer; border-bottom: 1px dashed var(--line-strong); }
+.viz-card-open:hover { color: var(--data); border-bottom-color: var(--data); }
+.viz-card-open:disabled { cursor: default; color: var(--ink); border-bottom: 0; }
+.viz-card-facts { display: grid; grid-template-columns: auto 1fr; gap: 2px var(--space-2); margin: 0; }
+.viz-card-key { font: 600 9.5px/1.5 var(--sans); letter-spacing: var(--track-wide); text-transform: uppercase; color: var(--mute); }
+.viz-card-value { margin: 0; font-size: var(--step--1); color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.viz-card-links { margin: auto 0 0; font-size: var(--step--1); }
+.viz-card-note { margin: auto 0 0; font-size: var(--step--1); color: var(--mute); }
+
+/* 14 — the validity ruler becomes inspectable ------------------------------ */
+.ruler-hit { fill: transparent; cursor: crosshair; }
+.ruler-hit:focus-visible { outline: 2px solid var(--data); outline-offset: -1px; }
+.ruler-readout { margin: var(--space-2) 0 0; font: 500 var(--step--1)/1.45 var(--mono); color: var(--ink-soft); min-height: 1.45em; }
+
+/* 14 — the validity ruler becomes inspectable ------------------------------ */
+.ruler-hit { fill: transparent; cursor: crosshair; }
+.ruler-hit:focus-visible { outline: 2px solid var(--data); outline-offset: -1px; }
+.ruler-readout { margin: var(--space-2) 0 0; font: 500 var(--step--1)/1.45 var(--mono); color: var(--ink-soft); min-height: 1.45em; }

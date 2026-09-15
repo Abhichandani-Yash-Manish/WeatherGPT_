@@ -253,6 +253,9 @@ async function run() {
   assert(/not an all-clear/.test(briefText), 'the brief keeps its not-an-all-clear limit');
   assert(/revoked|is safe|all clear for/i.test(briefText) === false, 'the brief never claims safety or withdrawal');
   h.document.getElementById('drawer-close').dispatch('click');
+  assert(withClass(warnings, 'viz-cell').length >= 2, 'the national product is drawn as a district-day matrix');
+  assert(/Colour printed per district-day/.test(textOf(warnings)), 'the matrix names what a cell carries');
+  assert(/never turns it into an all-clear/.test(textOf(warnings)), 'the matrix keeps the all-clear refusal');
   console.log('PASS: the warnings surface writes an alert brief that names its sources and its limits');
 
   const observations = await render('observations', place);
@@ -315,9 +318,11 @@ async function run() {
   assert(walk(documents).some(node => /body held/.test(textOf(node))), 'a held body is stated');
   assert(walk(documents).some(node => /body pruned/.test(textOf(node))), 'a pruned body is stated rather than hidden');
   const savedLinks = withTag(documents, 'a').filter(node => String(node.href || '').indexOf('/api/documents/') === 0);
-  assert.equal(savedLinks.length, 2, 'a held body offers the saved file to open and download');
+  assert(savedLinks.length >= 2, 'a held body offers the saved file to open and download');
   assert(savedLinks.every(node => String(node.href).indexOf('a'.repeat(64)) > 0),
     'the saved-file links point at the held document and never at the pruned one');
+  assert.equal(withClass(documents, 'viz-card').length, 2, 'each listed edition is drawn as a library card');
+  assert(withClass(documents, 'is-pruned').length >= 1, 'a pruned body is stated on its card');
   assert(/2 day\(s\) after the printed issue date|1 day\(s\) after the printed issue date/.test(textOf(documents)),
     'currency is measured from the printed issue date against the retrieval date');
   assert(/not a current warning/i.test(textOf(documents)), 'the panel keeps the record-is-not-a-warning limit');

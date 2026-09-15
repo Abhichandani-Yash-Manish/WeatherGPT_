@@ -83,4 +83,65 @@ assert(/temperature missing|no value returned/.test(meteogram.withClass('viz-rea
   'the readout lists only the values that hour returned');
 console.log('PASS: the meteogram draws only returned hours, splits gaps, and reads exact values with locators');
 
+
+/* ---- district warning matrix ---------------------------------------------- */
+let opened = null;
+const matrix = viz.warningMatrix({
+  title: 'National district warning matrix',
+  days: [{ key: 1, label: 'Day 1', date: '2026-09-14' }, { key: 2, label: 'Day 2', date: '2026-09-15' }],
+  rows: [
+    { district: 'PATNA', state: 'BIHAR', days: [
+        { colour: 'yellow', hazards: ['Thunderstorm/lightning/squall'], unknown_hazard_codes: [] },
+        { colour: null, hazards: [], unknown_hazard_codes: [99] }] },
+    { district: 'LAKSHADWEEP', state: null, days: [
+        { colour: 'green', hazards: ['No warning in this product'], unknown_hazard_codes: [] },
+        { colour: 'red', hazards: ['Heavy rainfall'], unknown_hazard_codes: [] }] }
+  ],
+  onOpen: (row, index) => { opened = [row.district, index]; }
+});
+assert.equal(matrix.withClass('viz-cell').length, 4, 'one cell exists per returned district-day, and none for a day the product did not publish');
+assert.equal(matrix.withClass('is-yellow').length, 1, 'the source colour is carried into the cell');
+assert.equal(matrix.withClass('is-unknown').length, 1, 'a day the product left uncoloured is not given a colour');
+assert.equal(matrix.withClass('is-unverified').length, 1, 'an unknown hazard code is flagged on the cell instead of being dropped');
+const firstCell = matrix.withClass('viz-cell')[0];
+firstCell.focus();
+const matrixReadout = matrix.withClass('viz-readout')[0].textContent;
+assert(/PATNA, BIHAR/.test(matrixReadout) && /Thunderstorm\/lightning\/squall/.test(matrixReadout),
+  'the readout carries the district and the hazard wording verbatim');
+assert(/contains an unknown hazard code/.test(matrix.withClass('viz-cell')[1].attrs['aria-label']),
+  'the flagged cell says why it is flagged');
+assert(matrix.allNodes().some(node => node.textContent === 'LAKSHADWEEP · state not stated'),
+  'a row with no state says so rather than inventing one');
+firstCell.events.click[0]();
+assert.deepEqual(opened, ['PATNA', 0], 'a cell opens its district and names which day was clicked');
+assert(matrix.all('td').some(cell => cell.textContent === 'not stated — no hazard wording printed'),
+  'the exact table prints an uncoloured day as not stated, never as quiet');
+console.log('PASS: the warning matrix carries source colours, flags unknown codes and prints nothing it was not given');
+
+/* ---- corpus library cards -------------------------------------------------- */
+let openedCard = null;
+const held = 'a'.repeat(64), prunedSha = 'b'.repeat(64);
+const cards = viz.libraryCards({
+  documents: [
+    { sha256: held, sha_prefix: 'a'.repeat(12), family: 'national_bulletin', family_label: 'All India Weather Summary and Forecast Bulletin',
+      scope: 'national', region: null, state: null, district: null, issue_date: '2026-09-14', pages: 12, passages: 48,
+      body: 'available', age_days: 0, currency_recorded_at_intake: 'current_on_the_retrieval_date',
+      retrieved_at_utc: '2026-09-14T06:10:00+00:00', source_id: 'S07' },
+    { sha256: prunedSha, sha_prefix: 'b'.repeat(12), family: 'district_agromet', family_label: 'District agromet advisory bulletin',
+      scope: 'district', region: 'Ahmedabad', state: 'Gujarat', district: 'Ahmedabad', issue_date: null, pages: 7, passages: 31,
+      body: 'pruned', age_days: null, currency_recorded_at_intake: 'printed_issue_not_stated', retrieved_at_utc: null, source_id: 'S57' }
+  ],
+  onOpen: document => { openedCard = document.family; }
+});
+assert.equal(cards.withClass('viz-card').length, 2, 'one card per listed edition');
+const cardLinks = cards.all('a').filter(link => String(link.href).indexOf('/api/documents/') === 0);
+assert.equal(cardLinks.length, 2, 'a held body offers open and download, and nothing else does');
+assert(cardLinks.every(link => String(link.href).indexOf(held) > 0), 'the links point only at the held edition');
+assert.equal(cards.withClass('is-pruned').length, 1, 'a pruned body is stated on its own card');
+assert(cards.allNodes().some(node => node.textContent === 'body held'), 'a held body says so');
+assert(cards.allNodes().some(node => node.textContent === 'not stated'), 'a card with no printed date says not stated rather than guessing one');
+assert(/retention window/.test(cards.allNodes().map(node => node.textContent).join(' ')), 'a pruned card explains what survives');
+cards.withClass('viz-card-open')[0].events.click[0]();
+assert.equal(openedCard, 'national_bulletin', 'opening a card names the edition it passed on');
+console.log('PASS: library cards state printed dates, body state and links without implying applicability');
 process.exit(0);

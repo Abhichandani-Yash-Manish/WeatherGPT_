@@ -14,6 +14,9 @@
     Object.keys(extra || {}).forEach(key => { params[key] = extra[key]; });
     return params;
   }
+  /* The product's own colour words, in the order the product itself escalates them. This is a
+     reading order for a grid, not a score and not a severity claim of ours. */
+  const COLOUR_RANK = { green: 1, yellow: 2, orange: 3, red: 4 };
   function dayChip(day) {
     const label = day.colour || 'colour not supplied';
     return WG.colourChip(day.colour, label);
@@ -239,6 +242,25 @@
 
     const view = await WGref.api('/api/warnings/national');
     WGref.state.freshness = WG.freshness(view);
+    // The matrix is the scan view of the same product. Rows are ordered by the product's own
+    // colour rank — never a score — and every cell carries the colour the source printed.
+    if (typeof viz !== 'undefined' && viz.warningMatrix && (view.data.districts || []).length) {
+      const worstOf = row => (row.days || []).reduce((best, day) => Math.max(best, COLOUR_RANK[day.colour] || 0), 0);
+      const ranked = view.data.districts.slice().sort((left, right) =>
+        (worstOf(right) - worstOf(left)) || String(left.district).localeCompare(String(right.district)));
+      const header = (view.data.districts[0].days || []).map(day => ({ key: day.day, label: 'Day ' + day.day, date: day.date_utc }));
+      const matrixCard = WG.block('District \u00d7 day matrix',
+        'The published product as a grid. A cell shows the colour the source printed for that district-day; focus one to read its hazard wording verbatim.');
+      matrixCard.append(viz.warningMatrix({
+        title: 'Colour printed per district-day',
+        days: header,
+        rows: ranked.slice(0, 60),
+        onOpen: row => openDistrict(row),
+        footnote: 'Showing the ' + Math.min(60, ranked.length) + ' district(s) with the strongest published colour first, then by name. The table below lists every district. A cell is a colour, not a verdict: the product publishes district-day guidance and this page never turns it into an all-clear.'
+      }));
+      matrixCard.append(WG.limitationList(view));
+      host.append(matrixCard);
+    }
     const card = WG.block('National district warning table',
       view.data.districts.length + ' districts · ' + (view.data.skipped || []).length + ' source features without a district name');
     const controls = el('div', undefined, 'controls');
@@ -1105,6 +1127,43 @@
     let view = null;
     let familiesBuilt = false;
 
+    /* One edition in detail: the drawer is a record of what this machine holds, with the saved file
+       offered only when the body is still inside the retention window. */
+    function openDocument(document) {
+      WG.openDrawer(document.family_label || document.family || 'Published document', body => {
+        body.append(el('p', (document.region || document.district || document.state || 'region not stated') +
+          ' \u00b7 printed issue ' + (document.issue_date || 'not stated') +
+          ' \u00b7 retrieved ' + (document.retrieved_at_utc ? istStamp(document.retrieved_at_utc) : 'not recorded'), 'block-note'));
+        body.append(WG.table(['Field', 'Value'], [
+          ['Document sha256', document.sha256],
+          ['Family', document.family_label || document.family || 'not stated'],
+          ['Scope', document.scope || 'not stated'],
+          ['Source', document.source_id || 'not stated'],
+          ['Address', document.address || 'not stated'],
+          ['Pages', document.pages === null || document.pages === undefined ? 'not stated' : String(document.pages)],
+          ['Passages', String(document.passages || 0)],
+          ['Currency', (document.age_days === null || document.age_days === undefined)
+            ? (document.currency_recorded_at_intake || 'unknown')
+            : document.age_days + ' day(s) after the printed issue date'],
+          ['Saved body', document.body === 'available' ? 'held' : (document.body === 'pruned' ? 'pruned: only the hash, pages and passages remain' : 'location unrecorded')],
+          ['Quarantined passages', String(document.quarantined_passages || 0)]
+        ]));
+        if (document.body === 'available') {
+          const links = el('p');
+          const open = el('a', 'Open the saved PDF');
+          open.href = '/api/documents/' + document.sha256; open.target = '_blank'; open.rel = 'noopener noreferrer';
+          const download = el('a', 'Download');
+          download.href = '/api/documents/' + document.sha256; download.download = 'source-' + document.sha_prefix + '.pdf';
+          links.append(open, el('span', ' \u00b7 ', 'field-note'), download);
+          body.append(links);
+        } else {
+          body.append(el('p', document.body === 'pruned'
+            ? 'The saved body is outside the local retention window. The hash, the extracted pages and the passages remain indexed and citable, which is why this edition is still listed.'
+            : 'No saved-body location is recorded for this edition, so no file can be offered.', 'field-note'));
+        }
+        body.append(el('p', 'A stored document is the record of one printed edition: not a current warning, not an all-clear and not a statement that it applies to a place or a decision.', 'field-note'));
+      });
+    }
     function buildFamilies(families) {
       if (familiesBuilt) return;
       const all = el('option', 'Every family'); all.value = ''; familySelect.append(all);
@@ -1142,6 +1201,14 @@
           'The local corpus is built by scripts/ingest_documents.py; this page reads the index and downloads nothing.'));
         if (view.limitations) resultHost.append(WG.limitationList(view));
         return;
+      }
+      if (typeof viz !== 'undefined' && viz.libraryCards) {
+        resultHost.append(viz.libraryCards({
+          title: 'The library',
+          note: 'The editions on this page as cards: what it is, when it was printed, how much text it carries and whether the saved body is still held.',
+          documents: documents.slice(0, 24),
+          onOpen: document => openDocument(document)
+        }));
       }
       resultHost.append(WG.table(['Family', 'Region', 'Printed issue', 'Retrieved', 'Pages', 'Passages', 'Currency', 'Saved body', 'Source file'],
         documents.map(document => {

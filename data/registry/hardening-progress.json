@@ -1,7 +1,7 @@
 {
  "schema_version": "hardening-progress-v1",
  "review": "research/reviews/national-readiness-20260912/review.md",
- "updated_at_utc": "2026-09-15T17:15:18+00:00",
+ "updated_at_utc": "2026-09-15T17:22:13+00:00",
  "operational_ready": false,
  "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
  "findings": [
@@ -2263,6 +2263,31 @@
   "verification_steps": 27,
   "verification_failed": 0,
   "live_loopback_check": "research/reviews/frontend-overhaul-20260915/live-http-checks.json",
+  "browser_rendering_verified": false,
+  "browser_rendering_blocker": "the agent-browser CLI could not launch Chrome inside this session sandbox",
+  "hosting_performed": false,
+  "same_host_only": true
+ },
+ "frontend_overhaul_batch_two": {
+  "report": "docs/78-frontend-overhaul-plan.md",
+  "design_system": "DESIGN.md",
+  "evidence_directory": "research/reviews/frontend-overhaul-20260915",
+  "phase": "P2 signature visuals, completed",
+  "delivered": [
+   "viz.warningMatrix drawn on the Warnings surface (756 districts x 5 days on the live product, unknown codes flagged, colour rank stated)",
+   "viz.libraryCards drawn on the Published-documents surface (family rail, printed issue, currency, body state, saved file only when held)",
+   "the validity ruler is inspectable: every covered span and every gap is focusable and reads out, gaps never interpolated"
+  ],
+  "new_assets": {
+   "viz.js": 28573,
+   "views.js": 78322,
+   "style.css": 66721
+  },
+  "python_tests_passed": 1139,
+  "javascript_suites": 10,
+  "verification_steps": 27,
+  "verification_failed": 0,
+  "live_loopback_check": "research/reviews/frontend-overhaul-20260915/live-http-checks-p2.json",
   "browser_rendering_verified": false,
   "browser_rendering_blocker": "the agent-browser CLI could not launch Chrome inside this session sandbox",
   "hosting_performed": false,
