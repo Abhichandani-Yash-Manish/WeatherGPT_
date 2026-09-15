@@ -43,13 +43,14 @@ The interface states these limits rather than filling the gaps:
 - **Two products, one answer.** When a turn retrieves an official district warning and a model forecast for the same window, the answer compares them in words - consistent, differing or not comparable - names both, and never ranks them.
 - **A reading position, and a briefcase for what you keep.** Farmer, district officer and traveller each open the page on their own surfaces and questions, and every answer names the position it was read under and states that it changes no value, unit, window, warning level or source. Briefs the workspace composed can be kept, reopened, exported as Markdown and deleted on this machine; nothing is delivered, pushed or scheduled. See [docs/50](docs/50-personas-and-the-briefcase.md).
 - **A briefing you can have waiting.** A runner reads the connected products for named places and writes a dated briefing: the official district warning day per place, the CAP relay reported separately, the forecast window as retrieved, what could not be read, and what changed since the previous run — measured against that run record. The interval is a foreground loop inside the command, not a service: nothing is delivered or pushed. See [docs/51](docs/51-scheduled-briefing.md).
+- **One command, and a preflight that tells the truth.** `python3 scripts/start_weather.py` reports the Python version, the registries, the indexed corpus, the gazetteer, the port, the runtime store and the model providers before it serves - and it starts without a model at all, because the rules floor answers. A blocked check (a registry that does not parse, an unusable store, a taken port) refuses to start and names what to fix. No key material is printed. Measured latency over eight representative turns: p50 4.844 s, p90 6.327 s, with the rules floor planning seven of eight. See [docs/53](docs/53-operations.md).
 - **Desktop web only.** The desktop surface carries a day/night/system appearance, a command palette (⌘K) over surfaces, actions, places and stored conversations, a twelfth surface comparing stored forecast retrievals, and a raw-packet inspector on every answer. Small screens are usable, but this is not mobile platform compliance or mobile acceptance.
 - **Hosting and sharing remain on hold** at the user's request.
 
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 766 Python tests
+python3 -m pytest tests/ -q                          # 774 Python tests
 node tests/test_charts.js                            #  2 of 70 component checks
 node tests/test_views.js                             # 18
 node tests/test_bulletin_ui.js                       #  6
@@ -70,6 +71,7 @@ Real journeys are recorded with screenshots in [the frontend batch evidence](res
 
 ## Status and open work
 
+- [Operations: one command, a preflight and measured latency](docs/53-operations.md) - a preflight that reports each state rather than refusing to start, a clean-runtime start recorded against an empty store, eight measured turns with p50 4.844 s and p90 6.327 s, the three defects that measurement found, and a release checklist with what it does not establish.
 - [Language and voice, re-measured](docs/52-language-and-voice-measurement.md) - a stricter gate that refuses mixed scripts, the ledger re-measured at 19 of 23 write and 10 of 23 speak and hear, six journeys including a Hindi clarification rendered through the gate, real audio for Hindi and Gujarati, and the measured document-language gap.
 - [A briefing you write on a schedule](docs/51-scheduled-briefing.md) - a dated briefing over named places with the change since the previous run measured against that run own record, a foreground interval that says what it is not, and the WS7 exit check now met with its limits recorded.
 - [Personas and the briefcase](docs/50-personas-and-the-briefcase.md) - three registered reading positions that change emphasis and never evidence, disclosed in every answer, and a local briefcase that keeps, reopens, exports and deletes composed briefs. WS7's scheduled-briefing half is explicitly still open.

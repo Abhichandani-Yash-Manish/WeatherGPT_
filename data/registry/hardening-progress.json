@@ -1,7 +1,7 @@
 {
   "schema_version": "hardening-progress-v1",
   "review": "research/reviews/national-readiness-20260912/review.md",
-  "updated_at_utc": "2026-09-15T05:24:39+00:00",
+  "updated_at_utc": "2026-09-15T05:38:50+00:00",
   "operational_ready": false,
   "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
   "findings": [
@@ -1307,6 +1307,46 @@
       "Recognition probability is the recogniser own number, was absent for one probe, and is never answer or forecast confidence.",
       "No mobile, noisy-input, barge-in, screen-reader or cross-browser voice acceptance.",
       "Document coverage in the language sense is not established: the corpus is English and quoted passages are never rewritten."
+    ]
+  },
+  "operations_batch": {
+    "report": "docs/53-operations.md",
+    "evidence_directory": "research/implementation/operations-20260915",
+    "operational_ready": false,
+    "scope": "WS9 (operations): one-command start with a preflight that reports each state on its own and never prints key material, a recorded clean-runtime start against an empty store, measured latency percentiles and provider use over eight representative turns, three repairs the measurement found (a bare-null provider response crashing planning, an advisory path asking for a district it had already been given, and a publisher-spelling mismatch refusing a district that exists), and a release checklist.",
+    "automated_tests": 774,
+    "javascript_component_checks": 70,
+    "measured": {
+      "preflight": {
+        "checks": 7,
+        "blocked": 0,
+        "model_providers": "limited (no local Ollama reachable, no OpenRouter key configured)"
+      },
+      "clean_runtime_start": {
+        "store": "empty ingestion store",
+        "health_available": false,
+        "question_status": "answered",
+        "facts": 1
+      },
+      "latency_seconds": {
+        "turns": 8,
+        "min": 0.015,
+        "p50": 4.844,
+        "p90": 6.327,
+        "max": 36.127,
+        "mean": 7.118
+      },
+      "providers": {
+        "deterministic_rules/rule-planner-v1": 7,
+        "ollama/qwen3.6:latest": 1
+      },
+      "failures": 0
+    },
+    "limitations": [
+      "No load, concurrency, sustained-rate or multi-user measurement: one process, eight turns, one afternoon.",
+      "No operational clearance, uptime or service level, and hosting remains on hold.",
+      "No percentile beyond these eight observations, and no monitoring or alerting exists.",
+      "No clean-machine acceptance from a fresh clone: the corpus was not rebuilt from nothing."
     ]
   }
 }
