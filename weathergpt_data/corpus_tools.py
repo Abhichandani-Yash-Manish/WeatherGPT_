@@ -217,6 +217,17 @@ def resolve_region(index, plan, family, scope):
                 supplied = place['name']
                 break
         if not supplied:
+            # A state named without the word 'state' is still a state when the indexed
+            # editions carry that region. Measured on 15 September 2026: "Rajasthan ki
+            # agromet advisory me sinchai ke baare me kya likha hai?" asked which state
+            # was meant, although Rajasthan is one of the five editions now held.
+            for place in places:
+                name = place.get('name') or ''
+                if name and any(region_exists(index, family_name, name)
+                                for family_name in ('state_agromet', 'state_district_bulletin')):
+                    supplied = name
+                    break
+        if not supplied:
             for place in places:
                 if place.get('state'):
                     supplied = place['state']

@@ -176,7 +176,12 @@ class BulletinIndex:
             if not vector or any(not isinstance(v,(int,float)) or not math.isfinite(v) for v in vector):raise SourceError('Invalid stored embedding')
             if requested and c['crop_key']!=requested:continue
             if stage and norm(stage) not in norm(c['stage']):continue
-            topic_words={'irrigation':r'irrigat|water log|waterlog|drain|moisture','sowing':r'sow|seed|nursery|land prepar','pest':r'pest|disease|insect|borer|rot|mite|whitefly|thrip|wilt|caterpillar|jassid|larva|fung','nutrition':r'fertiliz|fertilis|urea|nutrient|nitrogen|phosph|potash|manure','harvest':r'harvest|pick|matur|stor'}
+            # Each topic carries the words the editions actually print, in their own scripts: a Devanagari state bulletin says सिंचाई, and an English topic word found nothing in it. Measured on 15 September 2026 against the Rajasthan edition.
+            topic_words={'irrigation':r'irrigat|water log|waterlog|drain|moisture|सिंचाई|सिंचन|ભેજ|સિંચાઈ|নীৰ|ನೀರಾವರಿ|సేద్యం',
+                         'sowing':r'sow|seed|nursery|land prepar|बुवाई|बीज|વાવેતર|વાવણી|ಬಿತ್ತನೆ|విత్తనం|விதைப்பு',
+                         'pest':r'pest|disease|insect|borer|rot|mite|whitefly|thrip|wilt|caterpillar|jassid|larva|fung|कीट|रोग|પીડ|રોગ|ಕೀಟ|ರೋಗ|పురుగు|பூச்சி',
+                         'nutrition':r'fertiliz|fertilis|urea|nutrient|nitrogen|phosph|potash|manure|खाद|उर्वरक|ખાતર|ಗೊಬ್ಬರ|ఎరువు|உரம்',
+                         'harvest':r'harvest|pick|matur|stor|कटाई|ધાન|લણણી|ಕೊಯ್ಲು|కోత|அறுவடை'}
             if topic!='general' and not re.search(topic_words[topic],c['text'],re.I):continue
             if topic=='irrigation' and re.search(topic_words['pest'],c['text'],re.I) and not re.search(r'(?:need based|provide|apply|withhold|avoid|give|maintain|schedule|postpone).{0,35}(?:irrigat|water)|drain(?:age| out| the)',c['text'],re.I):continue
             candidates.append((c,json.loads(encoded)))

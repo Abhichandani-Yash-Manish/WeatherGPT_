@@ -1618,14 +1618,19 @@
         "squash_empty_pattern": "fixed; a Devanagari title squashed to the empty string and would have matched every document",
         "language_from_character_count": "fixed; the edition language follows the script of the title that matched",
         "markers_all_required": "fixed; the family now accepts any of its sampled titles"
-      }
+      },
+      "follow_on_repairs": [
+        "a bare state name resolves against the indexed regions",
+        "topic words are held in the editions own scripts"
+      ]
     },
     "limitations": [
       "Nationwide state coverage is not established: the centres that publish elsewhere are unknown.",
       "A 404 at a guessed address is not evidence that a state has no bulletin.",
       "A listed target is not a promise of an issue, and a reachable address is not a validated product.",
       "No agronomist or native speaker has reviewed the Devanagari editions.",
-      "Karnataka states no printed issue date, so its currency is recorded as not stated."
+      "Karnataka states no printed issue date, so its currency is recorded as not stated.",
+      "Retrieval is lexical: an English question cannot match passages written in Devanagari, so a newly indexed Hindi edition reports no matching passage until cross-lingual retrieval exists."
     ]
   }
 }

@@ -45,6 +45,23 @@ Two consequences were corrected with their evidence recorded:
   under. The marker list is two sampled Hindi front pages and one sampled English one, each naming its state;
   it is not a pattern fitted to a failure.
 
+## Two follow-on repairs, and the limit they leave
+
+Adding the editions made two more defects visible, and one limit clearer:
+
+1. **A state named without the word \"state\" now resolves.** *\"Rajasthan ki agromet advisory me sinchai ke
+   baare me kya likha hai?\"* asked *which state should I check?* because the corpus path looked for a place
+   whose kind was `state`. It now also accepts a place name that the indexed editions carry as a region, which
+   is the corpus's own evidence rather than a hard-coded list. The answer changed from a question back to the
+   reader to a named edition search.
+2. **Topic words are now held in the editions' own scripts** (सिंचाई, बुवाई, कीट, खाद, कटाई and their siblings),
+   so a topic filter can match a Devanagari bulletin at all.
+3. **The limit that remains:** retrieval is lexical. An English question cannot match passages written in
+   Devanagari, so *\"What does the Rajasthan state agromet advisory say about irrigation?\"* finds the edition
+   and then reports that no indexed passage matches - which is true, and is the honest description of a
+   monolingual index. Cross-lingual retrieval (a translation or an embedding bridge, with the invariant gate in
+   front of it) is an open item, recorded here rather than papered over by a wider search.
+
 ## What this does and does not establish
 
 - It establishes that six centres (Gujarat and the five new targets, one of which is the pre-existing edition)

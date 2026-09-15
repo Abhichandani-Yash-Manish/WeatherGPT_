@@ -62,7 +62,7 @@ PLACE_LEAD_NOISE = {'kal', 'aaj', 'parso', 'tomorrow', 'today', 'tonight', 'suba
                     'dopahar', 'morning', 'evening', 'afternoon', 'night'}
 CROP = re.compile(r'\b(cotton|wheat|rice|paddy|maize|groundnut|sugarcane|soybean|bajra|jowar|mustard|onion|'
                   r'potato|tomato|mango|banana|pulses|gram|turmeric|chilli|grapes)\b', re.I)
-CROP_TOPIC = ((re.compile(r'\b(irrigation|water|irrigate|sinchai)\b', re.I), 'irrigation'),
+CROP_TOPIC = ((re.compile(r'\b(irrigation|water|irrigate|sinchai|सिंचाई|સિંચાઈ)\b', re.I), 'irrigation'),
               (re.compile(r'\b(sow|sowing|plant|planting|transplant|buvai)\b', re.I), 'sowing'),
               (re.compile(r'\b(pest|insect|disease|borer|rust|blight|fungus|weed)\b', re.I), 'pest'),
               (re.compile(r'\b(fertilis|fertiliz|nutrient|urea|manure|khaad)\b', re.I), 'nutrition'),
