@@ -1,0 +1,271 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "49222441-3057-4b39-91fd-08f4171f73fe",
+  "question": "What's it like right now in Ahmedabad?",
+  "status": "answered",
+  "answer": "Live station reports near Ahmedabad, Ahmadābād, State of Gujarāt:",
+  "facts": [
+    {
+      "id": "t1-f1",
+      "parameter": "wind_direction",
+      "label": "Observed station wind direction",
+      "value": "149",
+      "unit": null,
+      "place": "AHMEDABAD · 5.76 km from the requested point",
+      "entity_id": "station:99935",
+      "observed_at": "2026-09-15T00:00:00+00:00",
+      "start": "2026-09-15T00:00:00+00:00",
+      "end": "2026-09-15T00:00:00+00:00",
+      "sample_at": "2026-09-15T00:00:00+00:00",
+      "source_id": "S63",
+      "evidence_kind": "observation",
+      "evidence_version": "2026-09-15T06:10:07.876632+00:00",
+      "citation_ids": [],
+      "source_locators": [],
+      "method": "reported_station_observation",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f2",
+      "parameter": "mslp",
+      "label": "Observed station pressure",
+      "value": "1009.4",
+      "unit": null,
+      "place": "AHMEDABAD · 5.76 km from the requested point",
+      "entity_id": "station:99935",
+      "observed_at": "2026-09-15T00:00:00+00:00",
+      "start": "2026-09-15T00:00:00+00:00",
+      "end": "2026-09-15T00:00:00+00:00",
+      "sample_at": "2026-09-15T00:00:00+00:00",
+      "source_id": "S63",
+      "evidence_kind": "observation",
+      "evidence_version": "2026-09-15T06:10:07.876632+00:00",
+      "citation_ids": [],
+      "source_locators": [],
+      "method": "reported_station_observation",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f3",
+      "parameter": "wind_speed_kt",
+      "label": "Observed station wind speed",
+      "value": "6.0",
+      "unit": null,
+      "place": "AHMEDABAD · 7.45 km from the requested point",
+      "entity_id": "station:VAAH",
+      "observed_at": "2026-09-15T05:30:00+00:00",
+      "start": "2026-09-15T05:30:00+00:00",
+      "end": "2026-09-15T05:30:00+00:00",
+      "sample_at": "2026-09-15T05:30:00+00:00",
+      "source_id": "S63",
+      "evidence_kind": "observation",
+      "evidence_version": "2026-09-15T06:10:07.876632+00:00",
+      "citation_ids": [],
+      "source_locators": [],
+      "method": "reported_station_observation",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f4",
+      "parameter": "wind_direction",
+      "label": "Observed station wind direction",
+      "value": "120.0",
+      "unit": null,
+      "place": "AHMEDABAD · 7.45 km from the requested point",
+      "entity_id": "station:VAAH",
+      "observed_at": "2026-09-15T05:30:00+00:00",
+      "start": "2026-09-15T05:30:00+00:00",
+      "end": "2026-09-15T05:30:00+00:00",
+      "sample_at": "2026-09-15T05:30:00+00:00",
+      "source_id": "S63",
+      "evidence_kind": "observation",
+      "evidence_version": "2026-09-15T06:10:07.876632+00:00",
+      "citation_ids": [],
+      "source_locators": [],
+      "method": "reported_station_observation",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f5",
+      "parameter": "mslp",
+      "label": "Observed station pressure",
+      "value": "1010.0",
+      "unit": null,
+      "place": "AHMEDABAD · 7.45 km from the requested point",
+      "entity_id": "station:VAAH",
+      "observed_at": "2026-09-15T05:30:00+00:00",
+      "start": "2026-09-15T05:30:00+00:00",
+      "end": "2026-09-15T05:30:00+00:00",
+      "sample_at": "2026-09-15T05:30:00+00:00",
+      "source_id": "S63",
+      "evidence_kind": "observation",
+      "evidence_version": "2026-09-15T06:10:07.876632+00:00",
+      "citation_ids": [],
+      "source_locators": [],
+      "method": "reported_station_observation",
+      "task_id": "t1"
+    }
+  ],
+  "citations": [],
+  "notes": [
+    "Place read as Ahmedabad, Ahmadābād, State of Gujarāt — its district carries the same name, and no other place that shares this name does.",
+    "AWS AHMEDABAD observed 2026-09-15T00:00:00+00:00, 379.4 minutes old at retrieval.",
+    "METAR AHMEDABAD observed 2026-09-15T05:30:00+00:00, 49.4 minutes old at retrieval.",
+    "A station report describes that station at its own instant. It is not a district average, not a forecast, and not a statement about whether a warning applies.",
+    "Official district product for AHMADABAD: Official district warning: yellow - Thunderstorm/lightning/squall (source S63, issued 2026-09-15T06:00:00+00:00). A quiet day in one product is not an all-clear.",
+    "Model hours next (2026-09-15T06:00:00+00:00 to 2026-09-15T11:00:00+00:00, source S62): 2026-09-15T06:00:00+00:00 29.3 °C, rain chance 82%; 2026-09-15T07:00:00+00:00 29.0 °C, rain chance 86%; 2026-09-15T08:00:00+00:00 28.2 °C, rain chance 84%; 2026-09-15T09:00:00+00:00 29.3 °C, rain chance 82%; 2026-09-15T10:00:00+00:00 29.2 °C, rain chance 83%; 2026-09-15T11:00:00+00:00 29.3 °C, rain chance 84%",
+    "Not connected here: radar and satellite imagery; sub-hourly refresh between source hours; any push or notification: this workspace answers when it is asked."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-15T06:19:26.068029+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "deterministic_rules",
+      "model": "rule-planner-v1",
+      "model_calls": 0,
+      "attempts": 0,
+      "latency_ms": 0,
+      "failover": []
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit.",
+      "requested_language": "en",
+      "language_selection": "inferred_from_question",
+      "language_adherence": "not_applicable"
+    },
+    "tools": [
+      {
+        "name": "observations_bundle",
+        "station_rows": 6,
+        "shown": 2,
+        "source_id": "S63"
+      },
+      {
+        "name": "warnings_place",
+        "district": "AHMADABAD",
+        "source_id": "S63",
+        "status": "retrieved"
+      },
+      {
+        "name": "forecast_hours",
+        "rows": 6,
+        "source_id": "S62",
+        "status": "retrieved"
+      },
+      {
+        "name": "observation",
+        "task_id": "t1",
+        "status": "answered"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "new",
+      "changed_fields": [
+        "parameters",
+        "places",
+        "time"
+      ],
+      "inherited_fields": []
+    },
+    "duration_seconds": 1.424
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "Ahmedabad",
+        "state": "",
+        "district": "",
+        "kind": "unknown"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "What's it like right now in Ahmedabad",
+        "kind": "observation",
+        "operation": "lookup",
+        "parameters": [],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "context_action": "new",
+    "changed_fields": [
+      "parameters",
+      "places",
+      "time"
+    ],
+    "intent": "observation",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "What's it like right now in Ahmedabad",
+        "kind": "observation",
+        "operation": "lookup",
+        "parameters": [],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "answered",
+      "answer": "Live station reports near Ahmedabad, Ahmadābād, State of Gujarāt:",
+      "fact_ids": [
+        "t1-f1",
+        "t1-f2",
+        "t1-f3",
+        "t1-f4",
+        "t1-f5"
+      ],
+      "passage_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "pending_slots": [],
+  "retrieval_coverage": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "observation",
+      "parameters": [],
+      "candidates": [],
+      "status": "answered",
+      "returned_source_ids": []
+    }
+  ],
+  "document_evidence": [],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 1,
+    "incomplete_ids": []
+  }
+}

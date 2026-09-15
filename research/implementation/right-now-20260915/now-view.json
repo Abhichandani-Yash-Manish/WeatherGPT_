@@ -1,0 +1,396 @@
+{
+  "schema_version": "product-view-v1",
+  "generated_at_utc": "2026-09-15T06:19:26.009598+00:00",
+  "view": "now.composed",
+  "status": "ok",
+  "data": {
+    "schema_version": "now-v1",
+    "generated_at_utc": "2026-09-15T06:19:24.707163+00:00",
+    "point": {
+      "latitude": 23.02579,
+      "longitude": 72.58727,
+      "label": null
+    },
+    "observed": {
+      "status": "ok",
+      "stations": [
+        {
+          "kind": "aws",
+          "name": "AHMEDABAD",
+          "station_code": "99935",
+          "latitude": 23.07,
+          "longitude": 72.6167,
+          "observed_at_utc": "2026-09-15T00:00:00+00:00",
+          "observed_date_utc": "2026-09-15",
+          "reported_local_update": "2026-09-15 05:59:04",
+          "unusable_time_field": "1970-01-01T05:45:00Z",
+          "time_notes": [
+            "the layer carries a 1970 placeholder time field, which is not the observation instant"
+          ],
+          "parameters": [
+            {
+              "field": "rainfall",
+              "value": "0.5",
+              "unit": null,
+              "unit_stated_by_source": false
+            },
+            {
+              "field": "temp",
+              "value": "28.0",
+              "unit": null,
+              "unit_stated_by_source": false
+            },
+            {
+              "field": "temp_min",
+              "value": "26.0",
+              "unit": null,
+              "unit_stated_by_source": false
+            },
+            {
+              "field": "temp_max",
+              "value": "27.3",
+              "unit": null,
+              "unit_stated_by_source": false
+            },
+            {
+              "field": "rh",
+              "value": "95",
+              "unit": null,
+              "unit_stated_by_source": false
+            },
+            {
+              "field": "windspeed",
+              "value": "2",
+              "unit": null,
+              "unit_stated_by_source": false
+            },
+            {
+              "field": "winddir",
+              "value": "149",
+              "unit": null,
+              "unit_stated_by_source": false
+            },
+            {
+              "field": "mslp",
+              "value": "1009.4",
+              "unit": null,
+              "unit_stated_by_source": false
+            },
+            {
+              "field": "nebulosity",
+              "value": 7,
+              "unit": null,
+              "unit_stated_by_source": false
+            },
+            {
+              "field": "weather",
+              "value": 10,
+              "unit": null,
+              "unit_stated_by_source": false
+            }
+          ],
+          "source_id": "S63",
+          "source_layer": "imd:aws_data_layer",
+          "locator_prefix": "$.features",
+          "source_locator": "$.features[29]",
+          "distance_km": 5.76,
+          "age_minutes": 379.4,
+          "stale": false,
+          "network": "aws"
+        },
+        {
+          "kind": "metar",
+          "name": "AHMEDABAD",
+          "station_code": "VAAH",
+          "latitude": 23.08,
+          "longitude": 72.63,
+          "observed_at_utc": "2026-09-15T05:30:00+00:00",
+          "observed_date_utc": "2026-09-15",
+          "reported_local_update": null,
+          "unusable_time_field": null,
+          "time_notes": [],
+          "parameters": [
+            {
+              "field": "temp",
+              "value": 25,
+              "unit": null,
+              "unit_stated_by_source": false
+            },
+            {
+              "field": "dewtemp",
+              "value": 23,
+              "unit": null,
+              "unit_stated_by_source": false
+            },
+            {
+              "field": "mslp",
+              "value": "1010.0",
+              "unit": null,
+              "unit_stated_by_source": false
+            },
+            {
+              "field": "winddir",
+              "value": "120.0",
+              "unit": null,
+              "unit_stated_by_source": false
+            },
+            {
+              "field": "windsp",
+              "value": "6.0",
+              "unit": null,
+              "unit_stated_by_source": false
+            },
+            {
+              "field": "rh",
+              "value": "89.0",
+              "unit": null,
+              "unit_stated_by_source": false
+            },
+            {
+              "field": "visibility",
+              "value": "2500.0",
+              "unit": null,
+              "unit_stated_by_source": false
+            },
+            {
+              "field": "nebulosity",
+              "value": "scattered clouds at 1200 feet; scattered clouds at 1800 feet; overcast at 8000 feet",
+              "unit": null,
+              "unit_stated_by_source": false
+            },
+            {
+              "field": "weather",
+              "value": "light drizzle; mist",
+              "unit": null,
+              "unit_stated_by_source": false
+            },
+            {
+              "field": "3hrlyrain",
+              "value": 0,
+              "unit": null,
+              "unit_stated_by_source": false
+            },
+            {
+              "field": "6hrlyrain",
+              "value": 0,
+              "unit": null,
+              "unit_stated_by_source": false
+            },
+            {
+              "field": "12hrlyrain",
+              "value": 0,
+              "unit": null,
+              "unit_stated_by_source": false
+            },
+            {
+              "field": "24hrlyrain",
+              "value": 0,
+              "unit": null,
+              "unit_stated_by_source": false
+            }
+          ],
+          "source_id": "S63",
+          "source_layer": "imd:metar_data_layer",
+          "locator_prefix": "$.features",
+          "source_locator": "$.features[17]",
+          "distance_km": 7.45,
+          "age_minutes": 49.4,
+          "stale": false,
+          "network": "metar"
+        }
+      ],
+      "rows_in_radius": 6,
+      "sources": [
+        "S63",
+        "S63"
+      ],
+      "coverage": {
+        "metar": 3,
+        "aws": 3
+      },
+      "limitations": [
+        "A station observation describes its station, not the surrounding district or city.",
+        "No unit is asserted for any value: this layer does not state units, so values are reported verbatim.",
+        "A missing station near a point means no connected station reported there, not that no weather occurred.",
+        "Observations and forecasts are separate products; a forecast value is never shown as an observation.",
+        "Station identity here comes from the source layer and has not been matched to an official station register."
+      ]
+    },
+    "in_force": {
+      "district": "AHMADABAD",
+      "state": "GUJARAT",
+      "day": 1,
+      "day_label": "15 Sep 2026",
+      "starts_utc": "2026-09-14T18:30:00+00:00",
+      "ends_utc": "2026-09-15T18:30:00+00:00",
+      "colour": "yellow",
+      "colour_code": 3,
+      "hazards": [
+        "Thunderstorm/lightning/squall"
+      ],
+      "quiet": false,
+      "status_line": "Official district warning: yellow - Thunderstorm/lightning/squall",
+      "wording": "",
+      "issued_at_utc": "2026-09-15T06:00:00+00:00",
+      "source_id": "S63",
+      "source_locator": "$.features[112]",
+      "status": "ok"
+    },
+    "next_hours": {
+      "status": "ok",
+      "rows": [
+        {
+          "at": "2026-09-15T06:00:00+00:00",
+          "temperature_2m": 29.3,
+          "precipitation_probability": 82,
+          "precipitation": 0.1,
+          "wind_speed_10m": 13.6
+        },
+        {
+          "at": "2026-09-15T07:00:00+00:00",
+          "temperature_2m": 29.0,
+          "precipitation_probability": 86,
+          "precipitation": 0.1,
+          "wind_speed_10m": 12.3
+        },
+        {
+          "at": "2026-09-15T08:00:00+00:00",
+          "temperature_2m": 28.2,
+          "precipitation_probability": 84,
+          "precipitation": 2.1,
+          "wind_speed_10m": 13.8
+        },
+        {
+          "at": "2026-09-15T09:00:00+00:00",
+          "temperature_2m": 29.3,
+          "precipitation_probability": 82,
+          "precipitation": 1.1,
+          "wind_speed_10m": 13.6
+        },
+        {
+          "at": "2026-09-15T10:00:00+00:00",
+          "temperature_2m": 29.2,
+          "precipitation_probability": 83,
+          "precipitation": 0.3,
+          "wind_speed_10m": 12.3
+        },
+        {
+          "at": "2026-09-15T11:00:00+00:00",
+          "temperature_2m": 29.3,
+          "precipitation_probability": 84,
+          "precipitation": 0.2,
+          "wind_speed_10m": 11.5
+        }
+      ],
+      "starts": "2026-09-15T06:00:00+00:00",
+      "ends": "2026-09-15T11:00:00+00:00",
+      "source_id": "S62",
+      "model": "Open-Meteo best match; variable-specific upstream model/run unspecified",
+      "unit": {
+        "temperature_2m": "°C",
+        "precipitation_probability": "%",
+        "precipitation": "mm",
+        "wind_speed_10m": "km/h"
+      }
+    },
+    "sources": [
+      "S63",
+      "S62"
+    ],
+    "source_entries": [
+      {
+        "source_id": "S63",
+        "product": "IMD GeoServer basemap, station and basin layers",
+        "layer": "imd:metar_data_layer",
+        "url": "https://reactjs.imd.gov.in/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&typeName=imd%3Ametar_data_layer&outputFormat=application%2Fjson&srsName=EPSG%3A4326",
+        "retrieved_at_utc": "2026-09-15T06:07:55.328124+00:00",
+        "sha256_prefix": "700dca8ecd34",
+        "integration_status": "sample_inspected",
+        "usage_terms": "Access, supported integration and redistribution terms unresolved; inherited from the S15 service host.",
+        "user_review": "approved_local_prototype"
+      },
+      {
+        "source_id": "S62",
+        "product": "extended_weather_forecast",
+        "layer": null,
+        "url": "https://api.open-meteo.com/v1/forecast?latitude=23.02579&longitude=72.58727&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m%2Cprecipitation_probability%2Capparent_temperature%2Cwind_gusts_10m%2Cvisibility&forecast_days=1&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+        "retrieved_at_utc": "2026-09-15T06:14:57.468341+00:00",
+        "sha256_prefix": "db4d27f03f0a",
+        "integration_status": "prototype_adapter_tested",
+        "usage_terms": "Open-Meteo hosted free tier for non-commercial prototyping subject to limits; attribution and upstream terms apply. No SLA.",
+        "user_review": "approved_local_prototype"
+      }
+    ],
+    "not_connected": [
+      "radar and satellite imagery",
+      "sub-hourly refresh between source hours",
+      "any push or notification: this workspace answers when it is asked"
+    ],
+    "not_established": [
+      "A station report is one station at one instant: it is not a district average, not a field reading and not a forecast.",
+      "A quiet day in the official district product is not an all-clear, and it says nothing about hazards that product does not carry.",
+      "Model hours are grid-cell output, not observations, and no skill or impact is claimed for them.",
+      "The CAP relay and the sea-area, coastal, radar and satellite products are not part of this reading."
+    ],
+    "limitations": [
+      "A station observation describes its station, not the surrounding district or city.",
+      "No unit is asserted for any value: this layer does not state units, so values are reported verbatim.",
+      "A missing station near a point means no connected station reported there, not that no weather occurred.",
+      "Observations and forecasts are separate products; a forecast value is never shown as an observation.",
+      "Station identity here comes from the source layer and has not been matched to an official station register.",
+      "Day windows are derived from the bulletin date and the IMD day selector, not from a validity field published per day.",
+      "Source geometry is not an LGD village crosswalk.",
+      "Absence or quarantine is not an all-clear."
+    ],
+    "status": "ok",
+    "summary": "Nearest station AHMEDABAD (5.76 km) reported at 2026-09-15T00:00:00+00:00, 379.4 minutes before retrieval. Freshest report in range: AHMEDABAD at 2026-09-15T05:30:00+00:00, 49.4 minutes before retrieval. The nearest station is not always the freshest one. Official district product for AHMADABAD: Official district warning: yellow - Thunderstorm/lightning/squall (issued 2026-09-15T06:00:00+00:00). Model hours next, 2026-09-15T06:00:00+00:00 to 2026-09-15T11:00:00+00:00: 2026-09-15T06:00:00+00:00 29.3 °C, rain chance 82%; 2026-09-15T07:00:00+00:00 29.0 °C, rain chance 86%; 2026-09-15T08:00:00+00:00 28.2 °C, rain chance 84%; 2026-09-15T09:00:00+00:00 29.3 °C, rain chance 82%; 2026-09-15T10:00:00+00:00 29.2 °C, rain chance 83%; 2026-09-15T11:00:00+00:00 29.3 °C, rain chance 84%. Not connected here: radar and satellite imagery; sub-hourly refresh between source hours; any push or notification: this workspace answers when it is asked."
+  },
+  "sources": [
+    {
+      "source_id": "S63",
+      "product": "IMD GeoServer basemap, station and basin layers",
+      "layer": null,
+      "url": "https://reactjs.imd.gov.in/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&typeName=imd%3Ametar_data_layer&outputFormat=application%2Fjson&srsName=EPSG%3A4326",
+      "retrieved_at_utc": "2026-09-15T06:07:55.328124+00:00",
+      "sha256_prefix": "",
+      "integration_status": "sample_inspected",
+      "usage_terms": "Access, supported integration and redistribution terms unresolved; inherited from the S15 service host.",
+      "user_review": "approved_local_prototype"
+    },
+    {
+      "source_id": "S62",
+      "product": "Open-Meteo best-match extended hourly forecast",
+      "layer": null,
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=23.02579&longitude=72.58727&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m%2Cprecipitation_probability%2Capparent_temperature%2Cwind_gusts_10m%2Cvisibility&forecast_days=1&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+      "retrieved_at_utc": "2026-09-15T06:14:57.468341+00:00",
+      "sha256_prefix": "",
+      "integration_status": "prototype_adapter_tested",
+      "usage_terms": "Open-Meteo hosted free tier for non-commercial prototyping subject to limits; attribution and upstream terms apply. No SLA.",
+      "user_review": "approved_local_prototype"
+    }
+  ],
+  "coverage": {
+    "stations": 2,
+    "day": 1,
+    "hours": 6
+  },
+  "limitations": [
+    "A station observation describes its station, not the surrounding district or city.",
+    "No unit is asserted for any value: this layer does not state units, so values are reported verbatim.",
+    "A missing station near a point means no connected station reported there, not that no weather occurred.",
+    "Observations and forecasts are separate products; a forecast value is never shown as an observation.",
+    "Station identity here comes from the source layer and has not been matched to an official station register.",
+    "Day windows are derived from the bulletin date and the IMD day selector, not from a validity field published per day.",
+    "Source geometry is not an LGD village crosswalk.",
+    "Absence or quarantine is not an all-clear.",
+    "radar and satellite imagery",
+    "sub-hourly refresh between source hours",
+    "any push or notification: this workspace answers when it is asked"
+  ],
+  "not_established": [
+    "A station report is one station at one instant: it is not a district average, not a field reading and not a forecast.",
+    "A quiet day in the official district product is not an all-clear, and it says nothing about hazards that product does not carry.",
+    "Model hours are grid-cell output, not observations, and no skill or impact is claimed for them.",
+    "The CAP relay and the sea-area, coastal, radar and satellite products are not part of this reading."
+  ]
+}

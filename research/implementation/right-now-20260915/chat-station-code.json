@@ -1,0 +1,267 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "e4de2183-77c8-4362-8063-02f4257c1225",
+  "question": "What is being observed at VOBL right now?",
+  "status": "answered",
+  "answer": "VOBL · Bangaluru Intl, airport report at 15 Sep, 11:30 IST: Observed airport temperature: 29 °C. Observed airport wind: 4 kt. This report describes the airport, not conditions across the whole city.",
+  "facts": [
+    {
+      "id": "t1-f1",
+      "parameter": "temperature_c",
+      "label": "Airport temperature",
+      "value": "29",
+      "unit": "°C",
+      "place": "VOBL · Bangaluru Intl",
+      "entity_id": "icao:VOBL",
+      "observed_at": "2026-09-15T06:00:00+00:00",
+      "start": "2026-09-15T06:00:00+00:00",
+      "end": "2026-09-15T06:00:00+00:00",
+      "sample_at": "2026-09-15T06:00:00+00:00",
+      "source_id": "S18",
+      "evidence_kind": "observation",
+      "evidence_version": "1cdfff035aef380f2c8d7881c44dee9778a375e206b14703603472f046fce9b5",
+      "citation_ids": [
+        "t1-c-1cdfff035aef380f2c8d7881c44dee9778a375e206b14703603472f046fce9b5",
+        "t1-c-fadf12724fcb787940934382f02adc33eb1d2e68cc8eb63dfd5397a498d5a860"
+      ],
+      "source_locators": [
+        "$[0].temp"
+      ],
+      "method": "reported_airport_observation",
+      "task_id": "t1"
+    },
+    {
+      "id": "t1-f2",
+      "parameter": "wind_speed_kt",
+      "label": "Airport wind speed",
+      "value": "4",
+      "unit": "kt",
+      "place": "VOBL · Bangaluru Intl",
+      "entity_id": "icao:VOBL",
+      "observed_at": "2026-09-15T06:00:00+00:00",
+      "start": "2026-09-15T06:00:00+00:00",
+      "end": "2026-09-15T06:00:00+00:00",
+      "sample_at": "2026-09-15T06:00:00+00:00",
+      "source_id": "S18",
+      "evidence_kind": "observation",
+      "evidence_version": "1cdfff035aef380f2c8d7881c44dee9778a375e206b14703603472f046fce9b5",
+      "citation_ids": [
+        "t1-c-1cdfff035aef380f2c8d7881c44dee9778a375e206b14703603472f046fce9b5",
+        "t1-c-fadf12724fcb787940934382f02adc33eb1d2e68cc8eb63dfd5397a498d5a860"
+      ],
+      "source_locators": [
+        "$[0].wspd"
+      ],
+      "method": "reported_airport_observation",
+      "task_id": "t1"
+    }
+  ],
+  "citations": [
+    {
+      "id": "t1-c-1cdfff035aef380f2c8d7881c44dee9778a375e206b14703603472f046fce9b5",
+      "source_id": "S18",
+      "provider": "NOAA Aviation Weather Center",
+      "product": "VOBL METAR",
+      "url": "https://aviationweather.gov/api/data/metar?ids=VOBL&format=json&hours=3",
+      "response_sha256": "1cdfff035aef380f2c8d7881c44dee9778a375e206b14703603472f046fce9b5",
+      "retrieved_at_utc": "2026-09-15T06:14:58.309480+00:00"
+    },
+    {
+      "id": "t1-c-fadf12724fcb787940934382f02adc33eb1d2e68cc8eb63dfd5397a498d5a860",
+      "source_id": "S20",
+      "provider": "NOAA Aviation Weather Center",
+      "product": "VOBL station identity",
+      "url": "https://aviationweather.gov/api/data/stationinfo?ids=VOBL&format=json",
+      "response_sha256": "fadf12724fcb787940934382f02adc33eb1d2e68cc8eb63dfd5397a498d5a860",
+      "retrieved_at_utc": "2026-09-15T05:42:04.499251+00:00"
+    }
+  ],
+  "notes": [
+    "Airport reports concern their stated station and validity. No flight status, operational clearance or city-wide weather is inferred."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-15T06:19:27.499277+00:00",
+  "expires_at_utc": "2026-09-15T06:19:58.309480+00:00",
+  "trace": {
+    "planning": {
+      "provider": "deterministic_rules",
+      "model": "rule-planner-v1",
+      "model_calls": 0,
+      "attempts": 0,
+      "latency_ms": 0,
+      "failover": []
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit.",
+      "requested_language": "en",
+      "language_selection": "inferred_from_question",
+      "language_adherence": "not_applicable"
+    },
+    "tools": [
+      {
+        "name": "airport_metar",
+        "station": "VOBL",
+        "source_id": "S18",
+        "status": "retrieved",
+        "response_sha256": "1cdfff035aef380f2c8d7881c44dee9778a375e206b14703603472f046fce9b5"
+      },
+      {
+        "name": "aviation",
+        "task_id": "t1",
+        "status": "answered"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "new",
+      "changed_fields": [
+        "parameters",
+        "places",
+        "time"
+      ],
+      "inherited_fields": []
+    },
+    "duration_seconds": 0.019
+  },
+  "plan": {
+    "language": "en",
+    "places": [
+      {
+        "name": "VOBL",
+        "state": "",
+        "district": "",
+        "kind": "unknown"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "What is being observed at VOBL right now",
+        "kind": "aviation",
+        "operation": "lookup",
+        "parameters": [
+          "metar"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "context_action": "new",
+    "changed_fields": [
+      "parameters",
+      "places",
+      "time"
+    ],
+    "intent": "research",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "What is being observed at VOBL right now",
+        "kind": "aviation",
+        "operation": "lookup",
+        "parameters": [
+          "metar"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "answered",
+      "answer": "VOBL · Bangaluru Intl, airport report at 15 Sep, 11:30 IST: Observed airport temperature: 29 °C. Observed airport wind: 4 kt. This report describes the airport, not conditions across the whole city.",
+      "fact_ids": [
+        "t1-f1",
+        "t1-f2"
+      ],
+      "passage_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "pending_slots": [],
+  "retrieval_coverage": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "aviation",
+      "parameters": [
+        "metar"
+      ],
+      "candidates": [
+        {
+          "tool": "airport_reports",
+          "selected": true,
+          "available": true,
+          "reason": "Indian ICAO airport observations/TAF with station identity; no flight status or city-wide observation",
+          "sources": [
+            {
+              "source_id": "S18",
+              "product": "NOAA AWC VAAH METAR dissemination",
+              "registry_status": "prototype_adapter_tested"
+            },
+            {
+              "source_id": "S19",
+              "product": "NOAA AWC VAAH TAF dissemination",
+              "registry_status": "prototype_adapter_tested"
+            },
+            {
+              "source_id": "S20",
+              "product": "NOAA AWC airport station metadata",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "answered",
+      "returned_source_ids": [
+        "S18",
+        "S20"
+      ]
+    }
+  ],
+  "airport_reports": [
+    {
+      "station": "VOBL",
+      "kind": "metar",
+      "raw_report": "METAR VOBL 150600Z 06004KT 270V060 9999 SCT012 29/18 Q1017 NOSIG",
+      "source_locator": "$[0]",
+      "citation_ids": [
+        "t1-c-1cdfff035aef380f2c8d7881c44dee9778a375e206b14703603472f046fce9b5"
+      ],
+      "observed_at": "2026-09-15T06:00:00+00:00",
+      "valid_start": null,
+      "valid_end": null
+    }
+  ],
+  "document_evidence": [],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 1,
+    "incomplete_ids": []
+  }
+}
