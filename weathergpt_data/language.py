@@ -110,6 +110,8 @@ class LocalModel:
             with urllib.request.urlopen(request,timeout=90) as response:
                 data=json.loads(response.read(200000))
             if data.get('done_reason')=='length':raise SourceError('The model response was incomplete. Please shorten the question.')
+            if not isinstance(data, dict):
+                raise SourceError('The local model returned no structured response. Please retry.')
             content=data.get('message',{}).get('content','')
             answer=json.loads(content)
             return answer,{'provider':'local_ollama','model':self.model,'input_tokens':data.get('prompt_eval_count'),'output_tokens':data.get('eval_count'),'duration_seconds':data.get('total_duration',0)/1e9}
@@ -143,6 +145,14 @@ def interpret_plan(complete,question,now,history,seed=None):
         request,meta=complete(PLAN_PROMPT,user,DIALOGUE_REQUEST_SCHEMA,max_tokens=2600)
         request=bound_disclosures(request)
         try:
+            if not isinstance(request,dict):
+                # Measured on 15 September 2026: a provider that answered with a bare null
+                # crashed the turn with AttributeError instead of being refused.
+                raise SourceError('the model returned no plan object')
+            if not isinstance(request,dict):
+                # Measured on 15 September 2026: a provider that answered with a bare null
+                # crashed the turn with AttributeError instead of being refused.
+                raise SourceError('the model returned no plan object')
             plan=_settle_plan(request,question,now,context,recent)
             break
         except (SourceError,TypeError,KeyError) as exc:

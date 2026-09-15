@@ -9,6 +9,46 @@ from .gazetteer import norm
 from .bulletin_context import parent_context,qualification_flags
 
 
+def _closest(names, wanted):
+    """A bounded match against a list of names: exact, or close and clearly ahead."""
+    import difflib
+    exact = [name for name in names if norm(name) == wanted]
+    if len(exact) == 1:
+        return exact[0], None
+    scored = sorted(((difflib.SequenceMatcher(None, norm(name), wanted).ratio(), name) for name in names), reverse=True)
+    if not scored:
+        return None, 'there is nothing in the publisher directory to match against'
+    best_score, best = scored[0]
+    if best_score >= 0.90:
+        return best, 'the publisher directory spells it ' + str(best)
+    if best_score >= 0.80 and (len(scored) == 1 or scored[1][0] < best_score - 0.05):
+        return best, ('the publisher directory spells it ' + str(best) +
+                      ', the closest name and clearly ahead of the next')
+    return None, 'no name in the publisher directory is close enough to the request'
+
+
+def match_publisher(state, district, root=None):
+    """The publisher's own spelling of a requested state and district, or (None, None, why).
+
+    The catalogue and the publisher do not always spell a name the same way: Ahmadabad and
+    Ahmedabad are the same district, and the selector is keyed on the publisher's spelling.
+    Resolution is bounded to the directory snapshot, requires a close name that is clearly
+    ahead of the next, and is disclosed wherever it is used rather than applied silently.
+    """
+    from .document_ingest import district_targets
+    from .foundation import ROOT as foundation_root
+    targets, _meta = district_targets(root or foundation_root)
+    wanted_state, wanted_district = norm(state), norm(district)
+    state_name, why_state = _closest(sorted({target['state'] for target in targets}), wanted_state)
+    if not state_name:
+        return None, None, 'the state: ' + str(why_state)
+    names = [target['district'] for target in targets if norm(target['state']) == norm(state_name)]
+    district_name, why_district = _closest(names, wanted_district)
+    if not district_name:
+        return None, None, 'the district in ' + state_name + ': ' + str(why_district)
+    return state_name, district_name, ', '.join(item for item in (why_state, why_district) if item) or 'the directory spells both names as asked'
+
+
 def sync(workspace,state,district,index):
     now=workspace.clock();head=index.head(state,district)
     if head and head['status']=='ok' and parsed(head['checked_at'])+timedelta(hours=1)>now:return index.document(head['sha'])
@@ -33,15 +73,29 @@ def sync(workspace,state,district,index):
         index.mark_failed(state,district,stamp(now),str(e));raise SourceError('Bulletin retrieval is unavailable: '+str(e)) from e
 
 
-def execute_document(engine,result,plan,task):
+def execute_document(engine,result,plan,task,resolved=None):
     request=task.get('document_request',{})
     places=plan['places'];result.update(passages=[],document_evidence=[],pending_slots=[])
     state='';district=''
     if len(places)==1:
         place=places[0]
         if place['kind'] not in {'country','state','relative'}:
-            state=(place.get('state') or '').removeprefix('State of ')
-            district=place.get('district') or place['name']
+            # A named place that the resolver has already grounded carries its district and
+            # state. Asking the reader to repeat them was a measured defect: "...in
+            # Ahmedabad" was answered by asking which district and state was meant.
+            match=(resolved or {}).get(place['name']) or {}
+            if not match and getattr(engine,'gazetteer',None) is not None:
+                # No point was resolved for this task, so the tool resolves the place it was
+                # given. Measured defect: "...in Ahmedabad" asked which district and state
+                # was meant, because nothing had grounded the name for this path.
+                from .gazetteer import preferred_match
+                chosen,why=preferred_match(engine.gazetteer.search(place['name'],place.get('state') or '',place.get('district') or ''))
+                if chosen:
+                    match=chosen
+                    result['notes'].append('Place read as '+str(chosen.get('label') or chosen.get('name'))+
+                                           ' for the published district bulletin'+((' — '+str(why)) if why else '')+'.')
+            state=(place.get('state') or match.get('admin1') or '').removeprefix('State of ').strip()
+            district=place.get('district') or match.get('admin2') or place['name']
             if not state and place['kind']=='district' and district:
                 # The publisher's district directory is keyed on a nationally unique
                 # district name, so a named source district carries its state without
@@ -50,6 +104,14 @@ def execute_document(engine,result,plan,task):
                 from .document_ingest import district_states
                 states=district_states(district)
                 if len(states)==1:state=states[0]
+    if state and district:
+        # The publisher's own spelling, resolved against the directory snapshot and disclosed.
+        publisher_state,publisher_district,why=match_publisher(state,district)
+        if publisher_state and publisher_district:
+            if norm(publisher_state)!=norm(state) or norm(publisher_district)!=norm(district):
+                result['notes'].append('Read as '+str(publisher_district)+', '+str(publisher_state)+
+                                       ' in the publisher directory: '+str(why)+'.')
+            state,district=publisher_state,publisher_district
     if not state:
         result['pending_slots']=[{'field':'place','reason':'District and state are needed'}]
         result.update(status='needs_clarification',answer='Which district and state should I look up in the IMD agricultural bulletin?',follow_up='District and state');return result

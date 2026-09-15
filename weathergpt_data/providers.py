@@ -153,6 +153,9 @@ class OllamaClient:
             raise ProviderUnavailable('The local model did not answer: ' + type(error).__name__) from error
         finally:
             self.lock.release()
+        if not isinstance(data, dict):
+            # Measured on 15 September 2026: a bare null answer crashed the planning turn.
+            raise ProviderUnavailable('The local model returned no structured response. Please retry.')
         if data.get('done_reason') == 'length':
             raise ProviderUnavailable('The model response was incomplete. Please shorten the question.')
         content = (data.get('message') or {}).get('content', '')
@@ -219,6 +222,8 @@ class OpenRouterClient:
                 try:
                     with self.http(self.base + '/chat/completions', json.dumps(payload).encode(), headers) as response:
                         data = json.loads(response.read(400000))
+                        if not isinstance(data, dict) or not data.get('choices'):
+                            raise ProviderUnavailable('The model provider returned no completion. Try again or switch model.')
                 except urllib.error.HTTPError as error:
                     detail = ''
                     try:
