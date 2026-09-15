@@ -409,22 +409,32 @@ def ground_relative_slots(plan,question,now):
     request, or a partially supplied interval. Existing dates remain validated.
     """
     from datetime import datetime,time
+    from .rule_planner import DAY_WORDS,WINDOWS,boundary_pattern
     ist=ZoneInfo('Asia/Kolkata');today=now.astimezone(ist).date()
     for t in plan['tasks']:
         if t['kind'] not in {'forecast','history','agriculture'} or t['start_local'] or t['end_local'] or plan['explicit_times']:continue
         if t['kind']=='history' and t['operation']!='daily':continue
-        clause=t.get('request_quote',question).lower()
-        days=[]
-        if re.search(r'\b(tomorrow|kal)\b|कल|કાલે',clause):days.append(-1 if t['kind']=='history' else 1)
-        if re.search(r'\b(today|aaj)\b|आज|આજે',clause):days.append(0)
-        if re.search(r'\byesterday\b',clause):days.append(-1)
-        if len(days)!=1 or re.search(r'\b(not|nahi|instead|until|through)\b',clause):continue
-        day=today+timedelta(days=days[0]);a=datetime.combine(day,time(),ist);b=a+timedelta(days=1)
+        clause=t.get('request_quote',question)
+        # The day and the part of day are read from the same tables the rules floor reads, in
+        # every script those tables cover. Measured on 15 September 2026: this compiler held its
+        # own bands - morning 06:00-12:00, written into a model-planned Hindi turn as 06:30-12:30
+        # while the identical English question planned 09:30-12:30. One definition per part of
+        # day, or the same words answer about different hours depending on who planned the turn.
+        offsets={offset for word,offset in DAY_WORDS.items() if boundary_pattern(word).search(clause)}
+        if re.search(r'\byesterday\b',clause,re.I):offsets.add(-1)
+        if len(offsets)!=1 or re.search(r'\b(not|nahi|instead|until|through)\b',clause,re.I):continue
+        delta=offsets.pop()
+        # In a question about the past, the day word that means tomorrow means yesterday:
+        # "kal kitni barish hui" is a question about yesterday, not about tomorrow.
+        if t['kind']=='history' and delta>=0:delta=-delta
+        day=today+timedelta(days=delta);a=datetime.combine(day,time(),ist);b=a+timedelta(days=1)
         if t['kind']=='forecast':
-            bands=[(r'\b(morning|subah)\b|सुबह|સવારે',6,12),(r'\b(afternoon|dopahar)\b|दोपहर|બપોરે',12,18),(r'\b(evening|shaam|sham)\b|शाम|સાંજે',18,22)]
-            found=[(start,end) for regex,start,end in bands if re.search(regex,clause)]
-            if len(found)>1:continue
-            if found:a=a.replace(hour=found[0][0],minute=30);b=a.replace(hour=found[0][1])
+            parts={WINDOWS[word] for word in WINDOWS if boundary_pattern(word).search(clause)}
+            if len(parts)>1:continue
+            if parts:
+                start,end=parts.pop()
+                a=a.replace(hour=int(start[:2]),minute=int(start[3:5]))
+                b=a.replace(hour=int(end[:2]),minute=int(end[3:5]))
         t['start_local']=a.isoformat();t['end_local']=b.isoformat()
         plan['assumptions'].append('Resolved the stated relative day to '+a.isoformat()+' through '+b.isoformat()+'; this remains known even when the place is missing.')
     plan['start_local']=plan['tasks'][0]['start_local'];plan['end_local']=plan['tasks'][0]['end_local']

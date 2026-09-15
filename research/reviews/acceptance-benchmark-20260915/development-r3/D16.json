@@ -1,0 +1,25 @@
+{
+  "id": "D16",
+  "domain": "out-of-scope",
+  "turns": [
+    {
+      "question": "What is the groundwater level in Ahmedabad right now?",
+      "status": "unavailable",
+      "status_allowed": true,
+      "task_shape_matches": true,
+      "tasks": [],
+      "answered_language": null,
+      "language_trace": {
+        "requested": "en",
+        "selection": "inferred_from_question",
+        "adherence": "not_applicable",
+        "rendered": false
+      },
+      "prohibited_hits": [],
+      "abstained": false,
+      "duration_s": 0.015,
+      "turn": 1,
+      "wall_s": 0.02
+    }
+  ]
+}

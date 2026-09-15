@@ -61,7 +61,7 @@ The interface states these limits rather than filling the gaps:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 896 Python tests
+python3 -m pytest tests/ -q                          # 917 Python tests
 node tests/test_charts.js                            #  2 of 70 component checks
 node tests/test_views.js                             # 18
 node tests/test_bulletin_ui.js                       #  6
@@ -99,6 +99,7 @@ recorded journeys, with what is fast and what is still slow.
 
 - [Plan Watch](docs/67-plan-watch.md) - saved plans checked against the IMD district-warning product while the local workspace runs, with in-app and browser notifications only.
 - [Ensemble spread](docs/65-ensemble-spread.md) - the member distribution of one governed model (mean, population spread, range and nearest-rank p10/p50/p90) reachable from chat and never scored; the endpoint requires a model id, the per-model support set is measured, and a day-level spread question is planned by the deterministic rules.
+- [Reading the question in every language we can write](docs/66-language-reading-coverage.md) - day, part-of-day, measure and place words per language, one definition per part of day, and the five languages declared unread rather than guessed.
 - [The district corpus becomes reachable, and the topic word decides](docs/64-district-corpus-reachability.md) - four defects and two answer-quality problems on the published-corpus route: the district family was unrequestable, a printed valid-till time crashed the turn, an absent state and an absent district now name what is held, the reader’s own name is tried against the publisher’s directory, the indexed edition answers when the live reader cannot verify one, and the words that name the topic decide which passage is served.
 - [The product, walked through](docs/63-product-walkthrough.md) - thirteen recorded journeys with what a user gets in five minutes, the rebuilt first-run screen, and the honest list of what is still slow or unconnected.
 - [The chat surface and the key you paste](docs/62-chat-surface-and-provider-ux.md) - the audit that found a whole-turn renderer crash, the artefact actions now wired into the conversation, three place and freshness defects fixed, and the one-command OpenRouter key flow with a ranked free-model list.
@@ -125,7 +126,7 @@ recorded journeys, with what is fast and what is still slow.
 - [Machine-readable product plan](data/registry/product-progress.json) and [living hardening checklist](data/registry/hardening-progress.json) — stage and finding status.
 - [RAG readiness decision](data/registry/rag-readiness.json) and [source registry](data/registry/README.md).
 
-Known-open highlights: **P11** (a bounded queue and stage-boundary cancellation now exist; there is still no stage streaming or queue position, and cancellation cannot interrupt a model call already in flight), **P10** (collection is request-driven and narrow), **P12** (a declared benchmark now runs: 17 development cases at 100% declared-task completion and 4 holdout cases at 4/4 in one current-clock pass after the plan-quality repairs; the holdout has been read twice, so it is no longer sealed and the set is still far below the docs/14 scale), **P13** (mobile acceptance), **P14** (packaging), plus engine findings A01 for paraphrase/repeat coverage, A04 for dated place/district aliases, and A07 for progress accounting. The indexed national corpus is now reachable from chat (A06, scoped); full-document recall, held layouts, cross-edition contradiction handling and forecast-skill evaluation remain open. The living gap list is [docs/31](docs/31-full-solution-gap-register.md).
+Known-open highlights: **P11** (a bounded queue and stage-boundary cancellation now exist; there is still no stage streaming or queue position, and cancellation cannot interrupt a model call already in flight), **P10** (collection is request-driven and narrow), **P12** (a declared benchmark now runs: 17 development cases at 100% declared-task completion and 4 holdout cases at 4/4 in one current-clock pass after the plan-quality repairs; the holdout has been read twice, so it is no longer sealed and the set is still far below the docs/14 scale), **P13** (mobile acceptance), **P14** (packaging), plus engine findings A01 for paraphrase/repeat coverage, A04 for dated place/district aliases, and A07 for progress accounting. The indexed national corpus is now reachable from chat (A06, scoped) and the district family with it; reading coverage now spans 18 of 23 languages for day, part-of-day and measure words, with Bodo, Kashmiri, Maithili, Manipuri and Santali recorded as unread and Marathi/Tamil inflected place names confirmed by asking; full-document recall, held layouts, cross-edition contradiction handling and forecast-skill evaluation remain open. The living gap list is [docs/31](docs/31-full-solution-gap-register.md).
 
 ## Milestones, newest first
 

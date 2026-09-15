@@ -1,0 +1,373 @@
+{
+ "summary": {
+  "checked_at_utc": "2026-09-15T09:35:03.363159+00:00",
+  "languages_in_registry": 23,
+  "languages_with_time_words": 19,
+  "languages_read": 18,
+  "languages_without_time_words": 5,
+  "wrong_window": [],
+  "romanised_variants_covered": [
+   "hi-Latn"
+  ],
+  "parts_of_day_defined": [
+   "afternoon",
+   "evening",
+   "morning",
+   "night"
+  ],
+  "limits": [
+   "A language that can be read here may still have nothing able to render an answer in it; the language registry records speak, write and hear separately and this measurement does not move them.",
+   "This is the workspace's own tables and planner, not a translation or fluency review.",
+   "A part of day is read as the coming occurrence, and a day word as the whole source day.",
+   "Hinglish (hi-Latn) is a romanised variant with its own words; it is counted separately and is not a registry language."
+  ]
+ },
+ "languages": [
+  {
+   "language": "as",
+   "name": "Assamese",
+   "script": "bengali",
+   "question_words": {
+    "tomorrow": "কাইলৈ",
+    "morning": "ৰাতিপুৱা"
+   },
+   "state": "read",
+   "window_read": {
+    "start_local": "2026-09-16T09:30:00+05:30",
+    "end_local": "2026-09-16T12:30:00+05:30",
+    "basis": "কাইলৈ ৰাতিপুৱা",
+    "matches_the_product_morning": true
+   },
+   "expected_start_local": "2026-09-16T09:30:00+05:30"
+  },
+  {
+   "language": "bn",
+   "name": "Bengali",
+   "script": "bengali",
+   "question_words": {
+    "tomorrow": "কাল",
+    "morning": "সকাল"
+   },
+   "state": "read",
+   "window_read": {
+    "start_local": "2026-09-16T09:30:00+05:30",
+    "end_local": "2026-09-16T12:30:00+05:30",
+    "basis": "কাল সকাল",
+    "matches_the_product_morning": true
+   },
+   "expected_start_local": "2026-09-16T09:30:00+05:30"
+  },
+  {
+   "language": "brx",
+   "name": "Bodo",
+   "script": "devanagari",
+   "state": "no_time_words_held",
+   "reason": "declared unread: Bodo",
+   "window_read": null
+  },
+  {
+   "language": "doi",
+   "name": "Dogri",
+   "script": "devanagari",
+   "question_words": {
+    "tomorrow": "कल्ल",
+    "morning": "सवेर"
+   },
+   "state": "read",
+   "window_read": {
+    "start_local": "2026-09-16T09:30:00+05:30",
+    "end_local": "2026-09-16T12:30:00+05:30",
+    "basis": "कल्ल सवेर",
+    "matches_the_product_morning": true
+   },
+   "expected_start_local": "2026-09-16T09:30:00+05:30"
+  },
+  {
+   "language": "en",
+   "name": "English",
+   "script": "latin",
+   "question_words": {
+    "tomorrow": "tomorrow",
+    "morning": "morning"
+   },
+   "state": "read",
+   "window_read": {
+    "start_local": "2026-09-16T09:30:00+05:30",
+    "end_local": "2026-09-16T12:30:00+05:30",
+    "basis": "tomorrow morning",
+    "matches_the_product_morning": true
+   },
+   "expected_start_local": "2026-09-16T09:30:00+05:30"
+  },
+  {
+   "language": "gu",
+   "name": "Gujarati",
+   "script": "gujarati",
+   "question_words": {
+    "tomorrow": "કાલે",
+    "morning": "સવારે"
+   },
+   "state": "read",
+   "window_read": {
+    "start_local": "2026-09-16T09:30:00+05:30",
+    "end_local": "2026-09-16T12:30:00+05:30",
+    "basis": "કાલે સવારે",
+    "matches_the_product_morning": true
+   },
+   "expected_start_local": "2026-09-16T09:30:00+05:30"
+  },
+  {
+   "language": "hi",
+   "name": "Hindi",
+   "script": "devanagari",
+   "question_words": {
+    "tomorrow": "कल",
+    "morning": "सुबह"
+   },
+   "state": "read",
+   "window_read": {
+    "start_local": "2026-09-16T09:30:00+05:30",
+    "end_local": "2026-09-16T12:30:00+05:30",
+    "basis": "कल सुबह",
+    "matches_the_product_morning": true
+   },
+   "expected_start_local": "2026-09-16T09:30:00+05:30"
+  },
+  {
+   "language": "kn",
+   "name": "Kannada",
+   "script": "kannada",
+   "question_words": {
+    "tomorrow": "ನಾಳೆ",
+    "morning": "ಬೆಳಿಗ್ಗೆ"
+   },
+   "state": "read",
+   "window_read": {
+    "start_local": "2026-09-16T09:30:00+05:30",
+    "end_local": "2026-09-16T12:30:00+05:30",
+    "basis": "ನಾಳೆ ಬೆಳಿಗ್ಗೆ",
+    "matches_the_product_morning": true
+   },
+   "expected_start_local": "2026-09-16T09:30:00+05:30"
+  },
+  {
+   "language": "kok",
+   "name": "Konkani",
+   "script": "devanagari",
+   "question_words": {
+    "tomorrow": "फाल्यां",
+    "morning": "सकाळ"
+   },
+   "state": "read",
+   "window_read": {
+    "start_local": "2026-09-16T09:30:00+05:30",
+    "end_local": "2026-09-16T12:30:00+05:30",
+    "basis": "फाल्यां सकाळ",
+    "matches_the_product_morning": true
+   },
+   "expected_start_local": "2026-09-16T09:30:00+05:30"
+  },
+  {
+   "language": "ks",
+   "name": "Kashmiri",
+   "script": "arabic",
+   "state": "no_time_words_held",
+   "reason": "declared unread: Kashmiri",
+   "window_read": null
+  },
+  {
+   "language": "mai",
+   "name": "Maithili",
+   "script": "devanagari",
+   "state": "no_time_words_held",
+   "reason": "declared unread: Maithili",
+   "window_read": null
+  },
+  {
+   "language": "ml",
+   "name": "Malayalam",
+   "script": "malayalam",
+   "question_words": {
+    "tomorrow": "നാളെ",
+    "morning": "രാവിലെ"
+   },
+   "state": "read",
+   "window_read": {
+    "start_local": "2026-09-16T09:30:00+05:30",
+    "end_local": "2026-09-16T12:30:00+05:30",
+    "basis": "നാളെ രാവിലെ",
+    "matches_the_product_morning": true
+   },
+   "expected_start_local": "2026-09-16T09:30:00+05:30"
+  },
+  {
+   "language": "mni",
+   "name": "Manipuri",
+   "script": "meetei_mayek",
+   "state": "no_time_words_held",
+   "reason": "declared unread: Manipuri",
+   "window_read": null
+  },
+  {
+   "language": "mr",
+   "name": "Marathi",
+   "script": "devanagari",
+   "question_words": {
+    "tomorrow": "उद्या",
+    "morning": "सकाळ"
+   },
+   "state": "read",
+   "window_read": {
+    "start_local": "2026-09-16T09:30:00+05:30",
+    "end_local": "2026-09-16T12:30:00+05:30",
+    "basis": "उद्या सकाळ",
+    "matches_the_product_morning": true
+   },
+   "expected_start_local": "2026-09-16T09:30:00+05:30"
+  },
+  {
+   "language": "ne",
+   "name": "Nepali",
+   "script": "devanagari",
+   "question_words": {
+    "tomorrow": "भोलि",
+    "morning": "बिहान"
+   },
+   "state": "read",
+   "window_read": {
+    "start_local": "2026-09-16T09:30:00+05:30",
+    "end_local": "2026-09-16T12:30:00+05:30",
+    "basis": "भोलि बिहान",
+    "matches_the_product_morning": true
+   },
+   "expected_start_local": "2026-09-16T09:30:00+05:30"
+  },
+  {
+   "language": "od",
+   "name": "Odia",
+   "script": "odia",
+   "question_words": {
+    "tomorrow": "କାଲି",
+    "morning": "ସକାଳ"
+   },
+   "state": "read",
+   "window_read": {
+    "start_local": "2026-09-16T09:30:00+05:30",
+    "end_local": "2026-09-16T12:30:00+05:30",
+    "basis": "କାଲି ସକାଳ",
+    "matches_the_product_morning": true
+   },
+   "expected_start_local": "2026-09-16T09:30:00+05:30"
+  },
+  {
+   "language": "pa",
+   "name": "Punjabi",
+   "script": "gurmukhi",
+   "question_words": {
+    "tomorrow": "ਕੱਲ੍ਹ",
+    "morning": "ਸਵੇਰੇ"
+   },
+   "state": "read",
+   "window_read": {
+    "start_local": "2026-09-16T09:30:00+05:30",
+    "end_local": "2026-09-16T12:30:00+05:30",
+    "basis": "ਕੱਲ੍ਹ ਸਵੇਰੇ",
+    "matches_the_product_morning": true
+   },
+   "expected_start_local": "2026-09-16T09:30:00+05:30"
+  },
+  {
+   "language": "sa",
+   "name": "Sanskrit",
+   "script": "devanagari",
+   "question_words": {
+    "tomorrow": "श्वः",
+    "morning": "प्रातः"
+   },
+   "state": "read",
+   "window_read": {
+    "start_local": "2026-09-16T09:30:00+05:30",
+    "end_local": "2026-09-16T12:30:00+05:30",
+    "basis": "श्वः प्रातः",
+    "matches_the_product_morning": true
+   },
+   "expected_start_local": "2026-09-16T09:30:00+05:30"
+  },
+  {
+   "language": "sat",
+   "name": "Santali",
+   "script": "ol_chiki",
+   "state": "no_time_words_held",
+   "reason": "declared unread: Santali",
+   "window_read": null
+  },
+  {
+   "language": "sd",
+   "name": "Sindhi",
+   "script": "arabic",
+   "question_words": {
+    "tomorrow": "سڀاڻي",
+    "morning": "صبح"
+   },
+   "state": "read",
+   "window_read": {
+    "start_local": "2026-09-16T09:30:00+05:30",
+    "end_local": "2026-09-16T12:30:00+05:30",
+    "basis": "سڀاڻي صبح",
+    "matches_the_product_morning": true
+   },
+   "expected_start_local": "2026-09-16T09:30:00+05:30"
+  },
+  {
+   "language": "ta",
+   "name": "Tamil",
+   "script": "tamil",
+   "question_words": {
+    "tomorrow": "நாளை",
+    "morning": "காலை"
+   },
+   "state": "read",
+   "window_read": {
+    "start_local": "2026-09-16T09:30:00+05:30",
+    "end_local": "2026-09-16T12:30:00+05:30",
+    "basis": "நாளை காலை",
+    "matches_the_product_morning": true
+   },
+   "expected_start_local": "2026-09-16T09:30:00+05:30"
+  },
+  {
+   "language": "te",
+   "name": "Telugu",
+   "script": "telugu",
+   "question_words": {
+    "tomorrow": "రేపు",
+    "morning": "ఉదయం"
+   },
+   "state": "read",
+   "window_read": {
+    "start_local": "2026-09-16T09:30:00+05:30",
+    "end_local": "2026-09-16T12:30:00+05:30",
+    "basis": "రేపు ఉదయం",
+    "matches_the_product_morning": true
+   },
+   "expected_start_local": "2026-09-16T09:30:00+05:30"
+  },
+  {
+   "language": "ur",
+   "name": "Urdu",
+   "script": "arabic",
+   "question_words": {
+    "tomorrow": "کل",
+    "morning": "صبح"
+   },
+   "state": "read",
+   "window_read": {
+    "start_local": "2026-09-16T09:30:00+05:30",
+    "end_local": "2026-09-16T12:30:00+05:30",
+    "basis": "کل صبح",
+    "matches_the_product_morning": true
+   },
+   "expected_start_local": "2026-09-16T09:30:00+05:30"
+  }
+ ]
+}

@@ -165,11 +165,37 @@ def interpret_plan(complete,question,now,history,seed=None):
     return plan,meta
 
 
+def settle_time_window(plan,question,now):
+    """The question's own day and part of day settle a forecast window.
+
+    A provider planned "कल सुबह वडोदरा, गुजरात में मौसम कैसा रहेगा?" into 06:30-12:30 while the same
+    words read by the rules floor give 09:30-12:30 (measured 15 September 2026): one definition per
+    part of day cannot depend on who planned the turn. A question that names its own day or clock
+    times settles the window; a question that names neither is left exactly as planned, so a
+    continuation keeps the day the conversation already established.
+    """
+    from .rule_planner import DAY_WORDS,boundary_pattern,window_for
+    start,end,explicit,basis=window_for(question,now)
+    if not start:
+        return plan
+    if not explicit and not any(boundary_pattern(word).search(question) for word in DAY_WORDS):
+        return plan
+    note='Time window read from the question: '+str(basis)+'.'
+    for task in plan['tasks']:
+        if task['kind']!='forecast':continue
+        if task['start_local']==start and task['end_local']==end:continue
+        task['start_local'],task['end_local']=start,end
+        if note not in plan['assumptions']:plan['assumptions'].append(note)
+    plan['start_local'],plan['end_local']=plan['tasks'][0]['start_local'],plan['tasks'][0]['end_local']
+    return plan
+
+
 def _settle_plan(request,question,now,context,recent):
     """Expand, ground and validate one candidate request, then settle unanchored qualifiers."""
     plan=expand_request(request)
     from .dialogue import ground_explicit_slots,ground_relative_slots
     plan=ground_relative_slots(ground_explicit_slots(plan,question,context),question,now)
+    plan=settle_time_window(plan,question,now)
     validate_plan(plan)
     validate_request_coverage(plan,question)
     from .dialogue import validate_relative_dates

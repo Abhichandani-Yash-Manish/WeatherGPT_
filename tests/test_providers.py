@@ -313,9 +313,19 @@ class RulePlannerTests(unittest.TestCase):
         self.assertEqual(request['tasks'][0]['parameters'], ['precipitation'])
 
     def test_a_question_rules_still_cannot_read_is_left_to_a_model(self):
-        for question in ('And what about the evening?', 'What is the weather like?', ''):
+        for question in ('And what about the evening?', 'Why are the leaves yellow?', ''):
             with self.subTest(question=question):
                 self.assertIsNone(rule_request(question, NOW), 'rules must not guess: ' + question)
+
+    def test_a_general_weather_question_plans_the_four_parameters_and_asks_for_a_place(self):
+        # Measured 15 September 2026: "कल सुबह वडोदरा, गुजरात में मौसम कैसा रहेगा?" took 12.6 s
+        # through a model and came back with a different morning window than the same question in
+        # Gujarati. A general weather question is read here as the planner prompt already reads it
+        # - four parameters - and the missing place is asked for rather than invented.
+        request = rule_request('What is the weather like?', NOW)
+        self.assertEqual(request['tasks'][0]['parameters'],
+                         ['precipitation', 'temperature_2m', 'wind_speed_10m', 'relative_humidity_2m'])
+        self.assertEqual(request['places'], [])
 
     def test_a_past_day_level_date_becomes_a_daily_history_task(self):
         expected = {

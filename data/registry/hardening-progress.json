@@ -1792,5 +1792,77 @@
     "evidence": "research/implementation/ensemble-spread-20260915/live-chat.json"
    }
   }
+ },
+ "language_reading_batch": {
+  "report": "docs/66-language-reading-coverage.md",
+  "evidence_directory": "research/implementation/language-time-reads-20260915",
+  "operational_ready": false,
+  "scope": "The reading side of the language work, made to match the writing side. Day and part-of-day words are held per language in rule_planner.TIME_WORDS with one definition per part of day in PART_WINDOWS; dialogue.ground_relative_slots no longer carries its own morning band (06:00-12:00 there against 09:30-12:30 in the rules floor), which had written 06:30-12:30 into model-planned Hindi turns for the same words; language.settle_time_window settles a model-written window from the question's own day or clock times and leaves a continuation alone; a part of day with no day word reads the coming occurrence; measure words are held per language with the four core measures required for every covered language; a general weather question reads as the four parameters the planner prompt names and now plans without a model; the place character class covers Bengali, Gurmukhi, Odia and the Arabic script, locative markers are per language in attached and separated forms and are tried longest first (Malayalam കൊച്ചിയിൽ read as കൊച്ചിയ with the short ൽ and Tamil அகமதாபாத்தில் as அகமதாபாத்தி with ல்), a zero-width joiner is tolerated, and the marker table is stored as escapes after the Odia locative was written with the Gurmukhi lookalikes and read no place at all. Five writable languages are declared unread by name for day words and measures rather than guessed, and Marathi and Tamil inflected stems are recorded as a limit that asks for confirmation.",
+  "automated_tests": 917,
+  "javascript_component_checks": 70,
+  "measured": {
+   "journeys_per_language": 8,
+   "run_1_before": {
+    "answered": 7,
+    "window_from_the_model": 4,
+    "planned_by_a_model": 5,
+    "raised_an_exception": 1,
+    "slowest_seconds": 18.7
+   },
+   "run_2_day_words_only": {
+    "answered": 3,
+    "window_from_the_question": 8,
+    "slowest_seconds": 1.2
+   },
+   "run_3_after": {
+    "answered": 6,
+    "asking_for_a_place": 2,
+    "window_from_the_question": 8,
+    "raised_an_exception": 0,
+    "planned_by_a_model": 2,
+    "slowest_seconds": 4.3
+   },
+   "languages_with_time_words": {
+    "before": 10,
+    "after": 18,
+    "declared_unread": [
+     "brx",
+     "ks",
+     "mai",
+     "mni",
+     "sat"
+    ],
+    "registry_languages": 23,
+    "romanised_variants": [
+     "hi-Latn"
+    ]
+   },
+   "languages_with_all_four_core_measures": {
+    "before": 8,
+    "after": 18
+   },
+   "place_scripts_covered": {
+    "before": 6,
+    "after": 10
+   },
+   "locative_marker_forms": {
+    "before": 11,
+    "after": 40
+   },
+   "development_benchmark": {
+    "declared_tasks": 18,
+    "completed": 18,
+    "completion_rate": 1.0,
+    "run": "research/reviews/acceptance-benchmark-20260915/development-r4"
+   },
+   "scores_are_confidence": false
+  },
+  "limits": [
+   "Reading a language is not writing one: the language registry's measured speak, write and hear directions are unchanged.",
+   "No native speaker reviewed the vocabulary and no fluent review of any Indian-language answer has taken place.",
+   "Bodo, Kashmiri, Maithili, Manipuri and Santali keep the model-reading path and are recorded as unread.",
+   "Marathi and Tamil locative forms change the stem, so the extracted name is a stem and the engine asks for confirmation.",
+   "One process, one machine, one instant against live sources; no load, device or browser measurement follows."
+  ]
  }
 }

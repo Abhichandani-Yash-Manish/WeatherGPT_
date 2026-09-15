@@ -38,37 +38,137 @@ def boundary_pattern(word):
     """A compiled whole-word pattern for a word in any script the editions use."""
     return re.compile('(?<!' + WORD_EDGE + ')' + re.escape(word) + '(?!' + WORD_EDGE + ')', re.I)
 
-DAY_WORDS = {'today': 0, 'aaj': 0, 'tomorrow': 1, 'kal': 1, 'tonight': 0, 'parso': 2,
-             'आज': 0, 'कल': 1, 'परसों': 2, 'આજે': 0, 'આવતીકાલે': 1,
-             'ಇಂದು': 0, 'ನಾಳೆ': 1, 'இன்று': 0, 'நாளை': 1, 'ఈరోజు': 0, 'రేపు': 1,
-             'ഇന്ന്': 0, 'നാളെ': 1, 'আজ': 0, 'আগামীকাল': 1, 'ଆଜି': 0, 'ଆସନ୍ତାକାଲି': 1,
-             'ਅੱਜ': 0, 'ਕੱਲ੍ਹ': 1}
-WINDOWS = {'morning': ('09:30', '12:30'), 'subah': ('09:30', '12:30'),
-           'सुबह': ('09:30', '12:30'), 'સવારે': ('09:30', '12:30'), 'ಬೆಳಿಗ್ಗೆ': ('09:30', '12:30'),
-           'காலை': ('09:30', '12:30'), 'ఉదయం': ('09:30', '12:30'), 'രാവിലെ': ('09:30', '12:30'),
-           'সকাল': ('09:30', '12:30'), 'ସକାଳ': ('09:30', '12:30'), 'ਸਵੇਰੇ': ('09:30', '12:30'),
-           'afternoon': ('12:30', '18:30'), 'dopahar': ('12:30', '18:30'),
-           'दोपहर': ('12:30', '18:30'), 'બપોરે': ('12:30', '18:30'), 'ಮಧ್ಯಾಹ್ನ': ('12:30', '18:30'),
-           'மதியம்': ('12:30', '18:30'), 'మధ్యాహ్నం': ('12:30', '18:30'), 'ദുപഹర': ('12:30', '18:30'),
-           'दुपहर': ('12:30', '18:30'), 'ਦੁਪਹਿਰ': ('12:30', '18:30'),
-           'evening': ('18:30', '22:30'), 'shaam': ('18:30', '22:30'),
-           'शाम': ('18:30', '22:30'), 'સાંજે': ('18:30', '22:30'), 'ಸಂಜೆ': ('18:30', '22:30'),
-           'மாலை': ('18:30', '22:30'), 'సాయంత్రం': ('18:30', '22:30'), 'വൈകുന്നേരം': ('18:30', '22:30'),
-           'ਸ਼ਾਮ': ('18:30', '22:30'),
-           'night': ('21:30', '23:30'), 'raat': ('21:30', '23:30'), 'tonight': ('21:30', '23:30'),
-           'रात': ('21:30', '23:30'), 'રાત્રે': ('21:30', '23:30'), 'ರಾತ್ರಿ': ('21:30', '23:30'),
-           'இரவு': ('21:30', '23:30'), 'రాత్రి': ('21:30', '23:30'), 'രാത്രി': ('21:30', '23:30'),
-           'রাত': ('21:30', '23:30'), 'ਰਾਤ': ('21:30', '23:30')}
-VARIABLE_WORDS = (
-    (re.compile(r'\b(chance|probability|chances|possibilit|sambhavna)\b', re.I), 'precipitation_probability'),
-    (re.compile(r'\b(feels like|apparent)\b', re.I), 'apparent_temperature'),
-    (re.compile(r'\b(gust|gusts|gusty)\b', re.I), 'wind_gusts_10m'),
-    (re.compile(r'\b(visibility|fog|mist)\b', re.I), 'visibility'),
-    (re.compile(r'\b(rain|rainfall|precipitation|shower|barish|baarish|varsha|varsad|barsat|paani|बारिश|वर्षा|વરસાદ|மழை|వర్షం|ಮಳೆ|മഴ|বৃষ্টি|ବର୍ଷା|ਮੀਂਹ)\b', re.I), 'precipitation'),
-    (re.compile(r'\b(temperature|temp|hot|cold|warm|cool|tapman|garmi|thand|तापमान|તાપમાન|வெப்பநிலை|ఉష్ణోగ్రత|ತಾಪಮಾನ|താപനില|তাপমাত্রা|ତାପମାତ୍ରା|ਤਾਪਮਾਨ)\b', re.I), 'temperature_2m'),
-    (re.compile(r'\b(humidity|humid|moisture|नमी|ભેજ|ஈரப்பதம்|తేమ|ಆರ್ದ್ರತೆ|আর্দ্রতা|ଆର୍ଦ୍ରତା)\b', re.I), 'relative_humidity_2m'),
-    (re.compile(r'\b(wind|windy|breeze|havaman|हवा|પવન|காற்று|గాలి|ಗಾಳಿ|കാറ്റ്|বাতাস|ପବନ|ਹਵਾ)\b', re.I), 'wind_speed_10m'),
-)
+# The four parts of a day this product serves, as IST clock windows. One definition per part,
+# shared by every language, so "morning" cannot mean 06:30 in Hindi and 09:30 in English.
+PART_WINDOWS = {'morning': ('09:30', '12:30'), 'afternoon': ('12:30', '18:30'),
+                'evening': ('18:30', '22:30'), 'night': ('21:30', '23:30')}
+
+# Day and part-of-day words, kept per language so coverage can be audited instead of trusted.
+# Measured on 15 September 2026: "કલ અમદાવાદ, ગુજરાતમાં વરસાદ પડશે?" read no day word at all,
+# because the Gujarati table held only the formal આવતીકાલે, and the turn asked for a date
+# instead of answering about tomorrow. Eleven of the writable languages had no day word and
+# no part-of-day word at all.
+TIME_WORDS = {
+    'en': {'today': ['today', 'tonight'], 'tomorrow': ['tomorrow'],
+           'day_after': ['day after tomorrow'], 'parts': {'morning': ['morning'], 'afternoon': ['afternoon'],
+                                                          'evening': ['evening'], 'night': ['night', 'tonight']}},
+    'hi-Latn': {'today': ['aaj'], 'tomorrow': ['kal'], 'day_after': ['parso'],
+                'parts': {'morning': ['subah'], 'afternoon': ['dopahar'], 'evening': ['shaam'], 'night': ['raat']}},
+    'hi': {'today': ['आज'], 'tomorrow': ['कल'], 'day_after': ['परसों'],
+           'parts': {'morning': ['सुबह'], 'afternoon': ['दोपहर'], 'evening': ['शाम'], 'night': ['रात']}},
+    'mr': {'today': ['आज'], 'tomorrow': ['उद्या'], 'day_after': ['परवा'],
+           'parts': {'morning': ['सकाळ', 'सकाळी'], 'afternoon': ['दुपार', 'दुपारी'],
+                     'evening': ['संध्याकाळ', 'संध्याकाळी'], 'night': ['रात्र', 'रात्री']}},
+    'ne': {'today': ['आज'], 'tomorrow': ['भोलि'], 'day_after': ['पर्सि'],
+           'parts': {'morning': ['बिहान'], 'afternoon': ['दिउँसो'], 'evening': ['बेलुका'], 'night': ['रात']}},
+    'sa': {'today': ['अद्य'], 'tomorrow': ['श्वः'], 'day_after': ['परश्वः'],
+           'parts': {'morning': ['प्रातः'], 'afternoon': ['मध्याह्न'], 'evening': ['सायं'], 'night': ['रात्रि', 'रात्रौ']}},
+    'kok': {'today': ['आयज'], 'tomorrow': ['फाल्यां'],
+            'parts': {'morning': ['सकाळ'], 'afternoon': ['दनपार'], 'evening': ['सांज'], 'night': ['रात']}},
+    'doi': {'today': ['अज्ज'], 'tomorrow': ['कल्ल'],
+            'parts': {'morning': ['सवेर'], 'afternoon': ['दुपहर'], 'evening': ['शाम'], 'night': ['रात']}},
+    'gu': {'today': ['આજે'], 'tomorrow': ['કાલે', 'કલ', 'આવતીકાલે'],
+           'parts': {'morning': ['સવારે'], 'afternoon': ['બપોરે'], 'evening': ['સાંજે'], 'night': ['રાત્રે']}},
+    'bn': {'today': ['আজ'], 'tomorrow': ['কাল', 'আগামীকাল'], 'day_after': ['পরশু'],
+           'parts': {'morning': ['সকাল'], 'afternoon': ['দুপুর', 'বিকাল'], 'evening': ['সন্ধ্যা'], 'night': ['রাত']}},
+    'as': {'today': ['আজি'], 'tomorrow': ['কাইলৈ'], 'day_after': ['পৰহি'],
+           'parts': {'morning': ['ৰাতিপুৱা'], 'afternoon': ['আবেলি'], 'evening': ['সন্ধিয়া'], 'night': ['ৰাতি']}},
+    'od': {'today': ['ଆଜି'], 'tomorrow': ['କାଲି', 'ଆସନ୍ତାକାଲି'],
+           'parts': {'morning': ['ସକାଳ'], 'afternoon': ['ଅପରାହ୍ଣ'], 'evening': ['ସନ୍ଧ୍ୟା'], 'night': ['ରାତି']}},
+    'pa': {'today': ['ਅੱਜ'], 'tomorrow': ['ਕੱਲ੍ਹ'], 'day_after': ['ਪਰਸੋਂ'],
+           'parts': {'morning': ['ਸਵੇਰੇ'], 'afternoon': ['ਦੁਪਹਿਰ'], 'evening': ['ਸ਼ਾਮ'], 'night': ['ਰਾਤ']}},
+    'ta': {'today': ['இன்று'], 'tomorrow': ['நாளை'],
+           'parts': {'morning': ['காலை'], 'afternoon': ['மதியம்'], 'evening': ['மாலை'], 'night': ['இரவு']}},
+    'te': {'today': ['ఈరోజు'], 'tomorrow': ['రేపు'],
+           'parts': {'morning': ['ఉదయం'], 'afternoon': ['మధ్యాహ్నం'], 'evening': ['సాయంత్రం'], 'night': ['రాత్రి']}},
+    'kn': {'today': ['ಇಂದು'], 'tomorrow': ['ನಾಳೆ'],
+           'parts': {'morning': ['ಬೆಳಿಗ್ಗೆ'], 'afternoon': ['ಮಧ್ಯಾಹ್ನ'], 'evening': ['ಸಂಜೆ'], 'night': ['ರಾತ್ರಿ']}},
+    'ml': {'today': ['ഇന്ന്'], 'tomorrow': ['നാളെ'],
+           'parts': {'morning': ['രാവിലെ'], 'afternoon': ['ഉച്ചയ്ക്ക്'], 'evening': ['വൈകുന്നേരം'], 'night': ['രാത്രി']}},
+    'ur': {'today': ['آج'], 'tomorrow': ['کل'], 'day_after': ['پرسوں'],
+           'parts': {'morning': ['صبح'], 'afternoon': ['دوپہر'], 'evening': ['شام'], 'night': ['رات']}},
+    'sd': {'today': ['اڄ'], 'tomorrow': ['سڀاڻي'],
+           'parts': {'morning': ['صبح'], 'afternoon': ['منجهند'], 'evening': ['شام'], 'night': ['رات']}},
+}
+
+# Writable languages this workspace has no day or part-of-day word for. The planner reads no
+# window from them, so the turn asks for the date rather than guessing one: a wrong day word
+# would answer for the wrong day, which is worse than asking. Recorded here so the gap stays
+# visible and a new language cannot be silently absent from TIME_WORDS.
+UNREAD_TIME_WORDS = {
+    'brx': 'Bodo', 'ks': 'Kashmiri', 'mni': 'Manipuri', 'sat': 'Santali', 'mai': 'Maithili',
+}
+
+DAY_WORDS = {}
+WINDOWS = {}
+for _language, _words in TIME_WORDS.items():
+    for _offset, _key in ((0, 'today'), (1, 'tomorrow'), (2, 'day_after')):
+        for _word in _words.get(_key, []):
+            DAY_WORDS[_word] = _offset
+    for _part, _variants in _words.get('parts', {}).items():
+        for _word in _variants:
+            WINDOWS[_word] = PART_WINDOWS[_part]
+
+# Measure words, kept per language for the same reason the day words are: coverage can be audited,
+# and a word in a script the editions and the readers use is not left to a model to recognise.
+# Measured on 15 September 2026: "آج شام دلی میں بارش ہوگی؟" had no rules plan at all, because the
+# rain words held no Urdu, and the turn fell to a model that then failed validation. The same was
+# true of Marathi पाऊस, Assamese বৰষুণ, Sindhi مينهن, Odia ବର୍ଷା and Nepali वर्षा.
+#
+# The four core measures - rain, temperature, humidity, wind - are required for every language
+# that is not declared unread below. The extra fields are held in the languages they were
+# measured in, and a language without one keeps the model-reading path for that field only.
+MEASURE_WORDS = {
+    'precipitation_probability': {  # an extra field: only the words actually held here
+        'en': ('chance', 'chances', 'probability', 'probabilities', 'possibility', 'possibilities'),
+        'hi-Latn': ('sambhavna',), 'hi': ('संभावना', 'मौका'), 'gu': ('સંભાવના',), 'ta': ('வாய்ப்பு',),
+        'te': ('అవకాశం',), 'kn': ('ಸಂಭವನೀಯತೆ',), 'ml': ('സാധ്യത',), 'bn': ('সম্ভাবনা',),
+        'od': ('ସମ୍ଭାବନା',), 'pa': ('ਸੰਭਾਵਨਾ',), 'ur': ('امکان',)},
+    'apparent_temperature': {'en': ('feels like', 'apparent')},
+    'wind_gusts_10m': {'en': ('gust', 'gusts', 'gusty'), 'hi': ('झोंका', 'झोंके')},
+    'visibility': {'en': ('visibility', 'fog', 'mist'), 'hi': ('धुंध', 'कोहरा'), 'gu': ('ધુમ્મસ',),
+                   'kn': ('ಮಂಜು',), 'ta': ('மூடுபனி',), 'bn': ('কুয়াশা',)},
+    'precipitation': {
+        'en': ('rain', 'rainfall', 'precipitation', 'shower', 'showers'),
+        'hi-Latn': ('barish', 'baarish', 'varsha', 'varsad', 'barsat', 'paani'),
+        'hi': ('बारिश', 'बरसात', 'वर्षा', 'पानी'), 'mr': ('पाऊस', 'वर्षा', 'बरसात'),
+        'ne': ('वर्षा', 'पानी'), 'sa': ('वृष्टि', 'वर्षा', 'पर्जन्य'), 'kok': ('पावस', 'वर्स'),
+        'doi': ('बरसात', 'वर्षा'), 'bn': ('বৃষ্টি', 'বর্ষণ'), 'as': ('বৰষুণ',),
+        'od': ('ବର୍ଷା',), 'pa': ('ਮੀਂਹ', 'ਵਰਖਾ'), 'ta': ('மழை',), 'te': ('వర్షం', 'వాన'),
+        'kn': ('ಮಳೆ',), 'ml': ('മഴ',), 'gu': ('વરસાદ',), 'ur': ('بارش', 'برسات'), 'sd': ('بارش', 'مينهن')},
+    'temperature_2m': {
+        'en': ('temperature', 'temp', 'hot', 'cold', 'warm', 'cool'),
+        'hi-Latn': ('tapman', 'garmi', 'thand'), 'hi': ('तापमान', 'गर्मी', 'ठंड'),
+        'mr': ('तापमान', 'गर्मी'), 'ne': ('तापक्रम', 'तापमान'), 'sa': ('तापमान',), 'kok': ('तापमान',),
+        'doi': ('तापमान',), 'bn': ('তাপমাত্রা',), 'as': ('উষ্ণতা', 'তাপমাত্রা'), 'od': ('ତାପମାତ୍ରା',),
+        'pa': ('ਤਾਪਮਾਨ',), 'ta': ('வெப்பநிலை',), 'te': ('ఉష్ణోగ్రత',), 'kn': ('ತಾಪಮಾನ',),
+        'ml': ('താപനില',), 'gu': ('તાપમાન',), 'ur': ('درجہ حرارت', 'گرمی'), 'sd': ('گرمي',)},
+    'relative_humidity_2m': {
+        'en': ('humidity', 'humid', 'moisture'), 'hi-Latn': ('nami',), 'hi': ('नमी', 'आर्द्रता'),
+        'mr': ('आर्द्रता', 'दमटपणा'), 'ne': ('आर्द्रता',), 'sa': ('आर्द्रता',), 'kok': ('आर्द्रता',),
+        'doi': ('नमी',), 'bn': ('আর্দ্রতা',), 'as': ('আৰ্দ্ৰতা',), 'od': ('ଆର୍ଦ୍ରତା',), 'pa': ('ਨਮੀ',),
+        'ta': ('ஈரப்பதம்',), 'te': ('తేమ',), 'kn': ('ಆರ್ದ್ರತೆ',), 'ml': ('ആർദ്രത',),
+        'gu': ('ભેજ',), 'ur': ('نمی',), 'sd': ('نمی',)},
+    'wind_speed_10m': {
+        'en': ('wind', 'windy', 'breeze', 'breezy'), 'hi-Latn': ('hawa',), 'hi': ('हवा', 'पवन'),
+        'mr': ('वारा', 'हवा'), 'ne': ('हावा',), 'sa': ('वायु',), 'kok': ('वारें',), 'doi': ('हवा',),
+        'bn': ('বাতাস', 'হাওয়া'), 'as': ('বতাহ',), 'od': ('ପବନ',), 'pa': ('ਹਵਾ',), 'ta': ('காற்று',),
+        'te': ('గాలి',), 'kn': ('ಗಾಳಿ',), 'ml': ('കാറ്റ്',), 'gu': ('પવન',), 'ur': ('ہوا',), 'sd': ('هوا',)},
+}
+
+# The four measures every covered language must have a word for. The extras above are held in
+# the languages they were measured in and are not required.
+CORE_MEASURES = ('precipitation', 'temperature_2m', 'relative_humidity_2m', 'wind_speed_10m')
+
+# A word can be matched whole even when its script's vowel signs are combining marks.
+VARIABLE_WORDS = tuple((boundary_pattern(word), name)
+                       for name, by_language in MEASURE_WORDS.items()
+                       for words in by_language.values() for word in words)
+
+# Writable languages with no measure word held here. A question in one of them keeps the
+# model-reading path rather than a guessed word; recorded so the gap stays visible.
+UNREAD_MEASURE_WORDS = {'brx': 'Bodo', 'ks': 'Kashmiri', 'mai': 'Maithili', 'mni': 'Manipuri', 'sat': 'Santali'}
+
 PLACE = re.compile(r"\b(?:in|for|at|near|around|of|off)\s+(?:the |a |an )?((?:[A-Z][\w'\u2019.\-]+)(?:\s+(?:[A-Z][\w'\u2019.\-]+)){0,3})"
                    r"(?:\s*,\s*([A-Z][\w'\u2019.\-]+(?:\s+[A-Z][\w'\u2019.\-]+){0,2}))?")
 # A named administrative unit: "Ahmedabad district", "Gujarat state", "Kochi city".
@@ -81,9 +181,71 @@ PLACE_HINGLISH = re.compile(r"\b((?:[A-Z][\w'\u2019.\-]+)(?:\s*,?\s+(?:[A-Z][\w'
 SEA_WORDS = re.compile(r'\b(?:coast|coastal|sea|waters?|shore|offshore)\b', re.I)
 # A place written in its own script, followed by that script's locative marker: the place
 # catalogue carries native-script aliases, so the name resolves without transliteration.
-PLACE_INDIC = re.compile('([\u0900-\u097f\u0a80-\u0aff\u0b80-\u0bff\u0c00-\u0c7f\u0c80-\u0cff\u0d00-\u0d7f]{2,}'
-                         '(?:\\s*,\\s*[\u0900-\u097f\u0a80-\u0aff\u0b80-\u0bff\u0c00-\u0c7f\u0c80-\u0cff\u0d00-\u0d7f]{2,})?)'
-                         '(?=\\s*(?:में|मे|मध्ये|मा|માં|లో|ల్లో|ഇൽ|இல்|ನಲ್ಲಿ|ರಲ್ಲಿ|ರೇ))')
+#
+# Measured on 15 September 2026: "কাল সকালে কলকাতায় বৃষ্টি হবে?", "اڄ شام دلی میں بارش", "ନାଳି
+# ଭୁବନେଶ୍ୱରରେ", "ਅੰਮ੍ਰਿਤਸਰ ਵਿੱਚ", "நாளை காலை அகமதாபாத்தில்" and "ನಾಳೆ ಅಹಮದಾಬಾದ್‌ನಲ್ಲಿ" each read no
+# place at all, so a question that named its own city was answered by asking which city was
+# meant. Bengali, Gurmukhi, Odia and the Arabic script were not in the character class at all,
+# and the marker list held only the forms the first four languages happen to use.
+INDIC_RANGES = ('\u0900-\u097f\u0980-\u09ff\u0a00-\u0a7f\u0a80-\u0aff\u0b00-\u0b7f'
+                '\u0b80-\u0bff\u0c00-\u0c7f\u0c80-\u0cff\u0d00-\u0d7f\u0600-\u06ff')
+# A zero-width joiner or non-joiner is typing, not spelling: "ಅಹಮದಾಬಾದ್‌ನಲ್ಲಿ" carries one.
+JOIN = '[\u200c\u200d]*'
+# Markers that attach to the name without a space in ordinary writing. A marker that is a
+# prefix of another must not be listed: the capture is greedy, so Tamil "அகமதாபாத்தில்" captured
+# "அகமதாபாத்தி" with the short 'ல்', Malayalam "കൊച്ചിയിൽ" captured "കൊച്ചിയി" with 'ൽ', and
+# Punjabi "ਅੰਮ੍ਰਿਤਸਰ ਵਿੱਚ" captured "ਵਿੱ" with 'ਚ' (measured 15 September 2026).
+ATTACHED_MARKERS = (
+    '\u092e\u0947\u0902', '\u092e\u0947', '\u092e\u0927\u094d\u092f\u0947', '\u092e\u093e',
+    '\u0aae\u0abe\u0a82', '\u0c32\u0c4b', '\u0c32\u0c4d\u0c32\u0c4b', '\u0d07\u0d7d',
+    '\u0d3f\u0d7d', '\u0d2f\u0d3f\u0d7d', '\u0b87\u0bb2\u0bcd', '\u0bbf\u0bb2\u0bcd',
+    '\u0baf\u0bbf\u0bb2\u0bcd', '\u0ca8\u0cb2\u0ccd\u0cb2\u0cbf', '\u0cb2\u0ccd\u0cb2\u0cbf',
+    '\u0cb0\u0cb2\u0ccd\u0cb2\u0cbf', '\u0cb0\u0cc7', '\u0924\u0947', '\u09af\u09bc', '\u09a4',
+    '\u09b2\u09c8', '\u0a32\u0a48', '\u06fe', '\u0645\u06cc\u06ba', '\u0924', '\u0b30\u0b47',
+)
+
+SEPARATED_MARKERS = (
+    '\u092e\u0947\u0902', '\u092e\u0947', '\u092e\u0927\u094d\u092f\u0947', '\u0aae\u0abe\u0a82',
+    '\u0c2e\u0c3e', '\u0c32\u0c4b', '\u0d07\u0d7d', '\u0b87\u0bb2\u0bcd',
+    '\u0ca8\u0cb2\u0ccd\u0cb2\u0cbf', '\u0645\u06cc\u06ba', '\u06fe', '\u0a35\u0a3f\u0a71\u0a1a',
+    '\u0c2f\u0c02\u0c26\u0c41', '\u092f\u0947\u0925\u0947',
+)
+
+
+def places_indic(question):
+    """Native-script place names with their locative marker removed, longest marker first.
+
+    The marker travels with the name in these languages, so it has to come off before the
+    catalogue can be asked. The longest marker is tried first for a reason: with a single greedy
+    pattern Malayalam "കൊച്ചിയിൽ" was captured as "കൊച്ചിയ" with the short 'ിൽ' instead of
+    "കൊച്ചി" with 'യിൽ', and Tamil "அகமதாபாத்தில்" as "அகமதாபாத்தி" with 'ல்' (measured
+    15 September 2026). A zero-width joiner or non-joiner is typing, not spelling, and is allowed
+    between the name and its marker.
+    """
+    text = '[' + INDIC_RANGES + ']{2,}(?:\\s*,\\s*[' + INDIC_RANGES + ']{2,})?'
+    found = {}
+    for marker in sorted(set(ATTACHED_MARKERS), key=len, reverse=True):
+        pattern = re.compile('(' + text + ')' + JOIN + re.escape(marker) + '(?![' + INDIC_RANGES + '])')
+        for match in pattern.finditer(question):
+            found.setdefault(match.start(), match.group(1))
+    for marker in sorted(set(SEPARATED_MARKERS), key=len, reverse=True):
+        pattern = re.compile('(' + text + ')\\s+' + re.escape(marker) + '(?![' + INDIC_RANGES + '])')
+        for match in pattern.finditer(question):
+            found.setdefault(match.start(), match.group(1))
+    return [name for _position, name in sorted(found.items())]
+
+
+# "How will the weather be ...?" in the scripts the editions and the readers use. A general
+# weather question asks for the whole picture, not one measure, and the rules floor answers it
+# from the four parameters the planner prompt already names for general weather.
+WEATHER_WORDS = ('weather', 'mausam', 'havaman', 'मौसम', 'हवामान', 'હવામાન', 'வானிலை', 'ಹವಾಮಾನ',
+                 'వాతావరణం', 'കാലാവസ്ഥ', 'আবহাওয়া', 'ପାଣିପାଗ', 'ਮੌਸਮ', 'موسم')
+
+
+def weather_question(question):
+    """True when the question asks about the weather itself rather than one named measure."""
+    return any(boundary_pattern(word).search(question or '') for word in WEATHER_WORDS)
+
 
 PLACE_NOISE = {'the', 'a', 'an', 'this', 'that', 'my', 'our', 'whole', 'latest', 'said'}
 # A capitalised day or part-of-day word at the start of a sentence is not part of a place name:
@@ -263,6 +425,13 @@ def window_for(question, now):
             break
     clock = re.findall(r'\b([01]?\d|2[0-3])[:.]([0-5]\d)\b', question)
     span = re.search(r'\bnext\s+(?:(\d{1,2}|one|two|three|four|five|six|seven|a|an)\s*)?(day|days|week|weeks)\b', lower)
+    if offset is None and part and not clock and not span:
+        # A part of day with no day word means the coming one. Measured 15 September 2026:
+        # "Will it rain in the morning?" set no window at all, so the turn asked for a date and
+        # an hour instead of reading the morning. Today's window is taken, and tomorrow's once
+        # that window has already begun - the same reading the English word carries.
+        offset = 1 if now.astimezone(IST).strftime('%H:%M') >= WINDOWS[part][0] else 0
+        basis = 'the coming ' + str(part)
     if offset is None and not clock and not span:
         return '', '', False, None
     if span:
@@ -295,7 +464,7 @@ def window_for(question, now):
         # next day's 00:30 exclusive. That is 24 complete contained hours, not 23.
         return (stamp('00:30'), stamp('00:30', next_day=True), False, str(basis) + ' whole day')
     start, end = WINDOWS[part]
-    label = (str(basis) + ' ' + str(part)) if part else (str(basis) + ' whole day')
+    label = (str(basis) + ' ' + str(part)) if part and str(part) not in str(basis) else (str(basis) if part else str(basis) + ' whole day')
     return stamp(start), stamp(end), False, label
 
 
@@ -346,8 +515,8 @@ def places_of(question):
         add(match.group(1), kind=kind)
         if len(found) == 2:
             return found
-    for match in PLACE_INDIC.finditer(question):
-        add(match.group(1))
+    for name in places_indic(question):
+        add(name)
         if len(found) == 2:
             return found
     for match in PLACE_HINGLISH.finditer(question):
@@ -630,6 +799,13 @@ def single_request(question, now, history=None):
         tasks.append(task('observation', 'lookup', []))
     else:
         variables = variables_of(question)
+        if not variables and weather_question(question):
+            # "How will the weather be tomorrow morning?" names no single measure. The planner
+            # prompt already reads a general-weather question as four parameters; the rules floor
+            # had no plan for it at all, so the question waited on a model (measured 15 September
+            # 2026: 12.6 s in Hindi against 0.2 s for the same question in Gujarati, and the model
+            # wrote a different morning window).
+            variables = ['precipitation', 'temperature_2m', 'wind_speed_10m', 'relative_humidity_2m']
         if not variables:
             return None
         operation = 'crosscheck' if CROSSCHECK.search(question) else 'lookup'

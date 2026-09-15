@@ -1,0 +1,144 @@
+{
+ "summary": {
+  "checked_at_utc": "2026-09-15T10:08:22.729271+00:00",
+  "journeys": 8,
+  "answered": 6,
+  "with_a_window": 8,
+  "errors": 0,
+  "limits": [
+   "One process, one machine, one instant against live sources.",
+   "A model forecast for a named point, not an observation, district average or official warning.",
+   "No fluent review: these record which window was planned and whether a task answered, not whether the translation reads well."
+  ]
+ },
+ "rows": [
+  {
+   "language": "gu",
+   "question": "કલ અમદાવાદ, ગુજરાતમાં વરસાદ પડશે?",
+   "checked_at_utc": "2026-09-15T10:08:09.542030+00:00",
+   "seconds": 0.18,
+   "status": "answered",
+   "window": {
+    "start_local": "2026-09-16T00:30:00+05:30",
+    "end_local": "2026-09-17T00:30:00+05:30"
+   },
+   "assumptions": [
+    "Time window read from the question: કલ whole day."
+   ],
+   "facts": 2,
+   "answer": "પસંદ કરેલા સ્થળ માટે મોડેલની આગાહી:\nAhmedabad, Ahmadābād, State of Gujarāt · 2026-09-16 00:30 → 2026-09-16 23:30 IST\nવરસાદની અંદાજિત માત્રા: 0.4 mm [t1-f1]\nAhmedabad, Ahmadābād, State of Gujarāt · 2026-09-16 23:30 → 2026-09-17 00:30 IST\nવરસાદની અંદાજિત માત્રા: 0.0 mm [t1-f2]\nઆ પસંદ કરેલા સ્થળ-બિંદુ "
+  },
+  {
+   "language": "hi",
+   "question": "कल सुबह वडोदरा, गुजरात में मौसम कैसा रहेगा?",
+   "checked_at_utc": "2026-09-15T10:08:09.719216+00:00",
+   "seconds": 0.09,
+   "status": "answered",
+   "window": {
+    "start_local": "2026-09-16T09:30:00+05:30",
+    "end_local": "2026-09-16T12:30:00+05:30"
+   },
+   "assumptions": [
+    "Time window read from the question: कल सुबह."
+   ],
+   "facts": 4,
+   "answer": "Vadodara · 16 Sep, 09:30–16 Sep, 12:30 IST: तापमान: 27.9–30.0 °C. आर्द्रता: 68–78 %. अनुमानित वर्षा की मात्रा: 4.2 mm. हवा की गति: 15.4–18.4 km/h. स्रोत: GFS पूर्वानुमान; मौसम बदल सकता है।"
+  },
+  {
+   "language": "kn",
+   "question": "ನಾಳೆ ಬೆಳಿಗ್ಗೆ ಅಹಮದಾಬಾದ್‌ನಲ್ಲಿ ಮಳೆ ಬರುತ್ತದೆಯೇ?",
+   "checked_at_utc": "2026-09-15T10:08:09.807118+00:00",
+   "seconds": 2.91,
+   "status": "answered",
+   "window": {
+    "start_local": "2026-09-16T09:30:00+05:30",
+    "end_local": "2026-09-16T12:30:00+05:30"
+   },
+   "assumptions": [
+    "Time window read from the question: ನಾಳೆ ಬೆಳಿಗ್ಗೆ."
+   ],
+   "facts": 1,
+   "answer": "ಅಹಮದಾಬಾದ್ · 16 Sep, 09:30-16 Sep, 12:30 IST: ಮುನ್ಸೂಚನೆ ಮಳೆ: 0.0 mm. ಮೂಲ: GFS ಮುನ್ಸೂಚನೆ; ಪರಿಸ್ಥಿತಿಗಳು ಬದಲಾಗಬಹುದು."
+  },
+  {
+   "language": "ta",
+   "question": "நாளை காலை அகமதாபாத்தில் மழை பெய்யுமா?",
+   "checked_at_utc": "2026-09-15T10:08:12.718630+00:00",
+   "seconds": 2.03,
+   "status": "needs_selection",
+   "window": {
+    "start_local": "2026-09-16T09:30:00+05:30",
+    "end_local": "2026-09-16T12:30:00+05:30"
+   },
+   "assumptions": [
+    "Time window read from the question: நாளை காலை."
+   ],
+   "facts": 0,
+   "answer": "எந்த இடத்தைக் குறிப்பிடுகிறீர்கள்? Ahmedabad, Ahmadābād, State of Gujarāt. ஒன்றைத் தேர்ந்தெடுக்கவும் அல்லது அதன் மாநிலம்/மாவட்டத்தை தட்டச்சு செய்யவும்."
+  },
+  {
+   "language": "bn",
+   "question": "কাল সকালে কলকাতায় বৃষ্টি হবে?",
+   "checked_at_utc": "2026-09-15T10:08:14.746813+00:00",
+   "seconds": 2.68,
+   "status": "answered",
+   "window": {
+    "start_local": "2026-09-16T00:30:00+05:30",
+    "end_local": "2026-09-17T00:30:00+05:30"
+   },
+   "assumptions": [
+    "Time window read from the question: কাল whole day."
+   ],
+   "facts": 2,
+   "answer": "কলকাতা · 16 Sep, 00:30-17 Sep, 00:30 IST: পূর্বাভাস বৃষ্টিপাত: 0.0–0.1 mm. উৎস: GFS পূর্বাভাস; পরিস্থিতি পরিবর্তিত হতে পারে।"
+  },
+  {
+   "language": "ur",
+   "question": "آج شام دلی میں بارش ہوگی؟",
+   "checked_at_utc": "2026-09-15T10:08:17.423539+00:00",
+   "seconds": 2.37,
+   "status": "answered",
+   "window": {
+    "start_local": "2026-09-15T18:30:00+05:30",
+    "end_local": "2026-09-15T22:30:00+05:30"
+   },
+   "assumptions": [
+    "Time window read from the question: آج شام."
+   ],
+   "facts": 1,
+   "answer": "دہلی · 15 Sep, 18:30–15 Sep, 22:30 IST: بارش کی پیش گوئی: 0.0 mm. ماخذ: GFS پیش گوئی؛ حالات بدل سکتے ہیں۔"
+  },
+  {
+   "language": "mr",
+   "question": "उद्या सकाळी पुण्यात पाऊस पडेल का?",
+   "checked_at_utc": "2026-09-15T10:08:19.794653+00:00",
+   "seconds": 2.83,
+   "status": "needs_clarification",
+   "window": {
+    "start_local": "2026-09-16T09:30:00+05:30",
+    "end_local": "2026-09-16T12:30:00+05:30"
+   },
+   "assumptions": [
+    "Time window read from the question: उद्या सकाळी."
+   ],
+   "facts": 0,
+   "answer": "मला पुण्या नावाचे कोणतेही वसाहत आढळले नाही. त्याचा जिल्हा/राज्य, पर्यायी स्पेलिंग किंवा पिन द्या. मी जवळच्या शहरामध्ये बदल करणार नाही."
+  },
+  {
+   "language": "en",
+   "question": "Will it rain in the morning in Ahmedabad?",
+   "checked_at_utc": "2026-09-15T10:08:22.620569+00:00",
+   "seconds": 0.11,
+   "status": "answered",
+   "window": {
+    "start_local": "2026-09-16T09:30:00+05:30",
+    "end_local": "2026-09-16T12:30:00+05:30"
+   },
+   "assumptions": [
+    "Time window read from the question: the coming morning."
+   ],
+   "facts": 1,
+   "answer": "Ahmedabad · 16 Sep, 09:30–16 Sep, 12:30 IST: Forecast precipitation: 0.0 mm. Source: GFS forecast; conditions can change."
+  }
+ ]
+}
