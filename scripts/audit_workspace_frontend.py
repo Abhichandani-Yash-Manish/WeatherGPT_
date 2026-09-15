@@ -197,7 +197,8 @@ def audit():
     # account that shows them is checked here rather than trusted to stay in step by hand.
     topic_disclosure = ('topic_tokens' in corpus_source and 'Words that name the topic' in views
                         and 'not an answer to the question' in views
-                        and 'lexical_overlap_without_the_topic_word' in corpus_source)
+                        and 'lexical_overlap_without_the_topic_word' in corpus_source
+                        and 'query_translation' in corpus_source and 'Question translated for retrieval' in views)
     refinement = ROOT / 'research/reviews/refinement-20260915'
     recorded = sorted(path.name for path in refinement.glob('*.json')) if refinement.exists() else []
     doctor = ROOT / 'scripts/doctor.py'

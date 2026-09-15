@@ -326,7 +326,9 @@ assert(!/confidence|skill score/i.test(comparedText), 'No confidence or score la
     retrieval_coverage: [{ mode: 'whole_document_bm25_plus_dense_rrf', candidates: 48, returned: 10,
                            whole_document: false, editions_indexed_for_this_product: 1,
                            lexical_overlap_required: true, topic_tokens: ['grapes'], topic_matched: false,
-                           match_basis: 'lexical_overlap_without_the_topic_word',
+                           match_basis: 'translated_query_without_the_topic_word',
+                           query_translation: { text: 'what does the bulletin say about grapes', source_language: 'gu-IN',
+                                                service: 'sarvam', model: 'provider_default', used_for_retrieval: true },
                            filters: { family: 'national_bulletin', scope: 'national', region: null } }],
     edition_comparison: { editions_indexed: 1, newest_issue: '2026-09-14', previous_issue: null, state: 'single_edition_indexed' },
     document_evidence: [{ family_label: 'All India Weather Summary and Forecast Bulletin', source_id: 'S64',
@@ -344,7 +346,13 @@ assert(!/confidence|skill score/i.test(comparedText), 'No confidence or score la
   // passage served without the topic word says so in the account rather than only in the prose.
   assert.ok(text.indexOf('Words that name the topic') >= 0 && text.indexOf('grapes') >= 0, 'the topic words are named');
   assert.ok(text.indexOf('no returned passage contains them') >= 0, 'a missing topic word is stated, not hidden');
-  assert.ok(text.indexOf('not an answer to the question') >= 0, 'a disclosed weaker match is explained in the account');
+  assert.ok(text.indexOf('the translation found no passage containing the topic word') >= 0,
+    'a translated retrieval that missed the topic word is explained in the account');
+  // A question translated for retrieval is a generative step between the reader and the index, so the
+  // account names the wording, the service and what the translation was allowed to do.
+  assert.ok(text.indexOf('Question translated for retrieval') >= 0, 'the translated query is shown');
+  assert.ok(text.indexOf('what does the bulletin say about grapes') >= 0, 'the wording searched for is shown');
+  assert.ok(text.indexOf('used to find passages only, never to state anything') >= 0, 'the translation is not presented as evidence');
 }());
 
 console.log('PASS: two products in one turn are compared in plain terms and never ranked');

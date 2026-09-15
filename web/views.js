@@ -895,6 +895,13 @@ function renderRetrievalAccount(packet) {
         ['Editions indexed for this product', String(entry.editions_indexed_for_this_product === undefined ? 'not stated' : entry.editions_indexed_for_this_product),
           'a single indexed edition cannot be compared with another']
       ];
+      if (entry.query_translation) {
+        const translation = entry.query_translation;
+        rows.push(['Question translated for retrieval', String(translation.text || 'not stated'),
+          'read as ' + String(translation.source_language || 'an Indian script') + ' from its script, through ' +
+          String(translation.service || 'the language service') + ' (' + String(translation.model || 'model not stated') + ')' +
+          (translation.used_for_retrieval ? '; used to find passages only, never to state anything' : '; not used for this retrieval')]);
+      }
       if (entry.topic_tokens) {
         rows.push(['Words that name the topic', entry.topic_tokens.length ? entry.topic_tokens.join(', ') : 'none beyond the product and the place',
           entry.topic_matched === false
@@ -903,7 +910,9 @@ function renderRetrievalAccount(packet) {
       }
       const BASES = {
         semantic_only_indic_script_disclosed: 'no exact word from the question appears in these passages: top semantic matches, wording support unverified',
-        lexical_overlap_without_the_topic_word: 'the topic word is absent from this product and region: not an answer to the question'
+        lexical_overlap_without_the_topic_word: 'the topic word is absent from this product and region: not an answer to the question',
+        translated_query_lexical_overlap: 'the question was translated to English to find these passages: they are the source\u2019s own words, matched on that translation',
+        translated_query_without_the_topic_word: 'the translation found no passage containing the topic word: these passages share the question\u2019s other words only, and the reading is not an answer to it'
       };
       if (BASES[entry.match_basis]) rows.push(['Wording support', String(entry.match_basis), BASES[entry.match_basis]]);
       box.append(accountTable(['Field', 'Value', 'Provenance'], rows));
