@@ -5,7 +5,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 from .transport import Store,SourceError,utcnow,stamp,parsed
 from .adapters import json_payload,hourly,FORECAST,MARINE,RIVER,aviation,warnings,envelope,numeric,grid_identity,numeric_quality
-from .adapters import EXTENDED,HISTORY_LOCAL,REANALYSIS_MODELS,reanalysis_label
+from .adapters import EXTENDED,HISTORY_LOCAL,REANALYSIS_MODELS,reanalysis_fields,reanalysis_label
 ROOT=Path(__file__).resolve().parents[1]
 
 class Foundation:
@@ -48,8 +48,11 @@ class Foundation:
         point=self.point(lat,lon);a=date.fromisoformat(start);b=date.fromisoformat(end)
         if a>b or (b-a).days>6:raise SourceError('Local daily retrieval supports one to seven days per task')
         if models not in REANALYSIS_MODELS:raise SourceError('Unsupported reanalysis model: '+str(models))
-        parse=lambda d,m:self.daily(d,m,point,HISTORY_LOCAL,'reanalysis',reanalysis_label(models),(a,b),timezone_name='Asia/Kolkata')
-        data,meta=self.get('S22','https://archive-api.open-meteo.com/v1/archive',{**point,'start_date':start,'end_date':end,'daily':','.join(HISTORY_LOCAL),'models':models,'timezone':'Asia/Kolkata'},ttl=86400,refresh=refresh,product_parser=parse)
+        # Only the variables the selected model returns are requested. Asking for a variable a
+        # model does not carry returns nulls, and a payload with null columns is not publishable.
+        fields=reanalysis_fields(models)
+        parse=lambda d,m:self.daily(d,m,point,fields,'reanalysis',reanalysis_label(models),(a,b),timezone_name='Asia/Kolkata')
+        data,meta=self.get('S22','https://archive-api.open-meteo.com/v1/archive',{**point,'start_date':start,'end_date':end,'daily':','.join(fields),'models':models,'timezone':'Asia/Kolkata'},ttl=86400,refresh=refresh,product_parser=parse)
         return parse(data,meta)
     def aviation(self,ids,kind='metar',refresh=False):
         if kind not in ['metar','taf','stationinfo']:raise SourceError('Supported airport products: metar, taf, stationinfo')

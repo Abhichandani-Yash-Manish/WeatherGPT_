@@ -11,7 +11,7 @@ from urllib.parse import urlparse, parse_qs
 from zoneinfo import ZoneInfo
 
 from .adapters import (EXTENDED, HISTORY_LOCAL, MARINE, RIVER, hourly, json_payload,
-                       REANALYSIS_MIN_YEAR, REANALYSIS_MODELS, reanalysis_label,
+                       REANALYSIS_MIN_YEAR, REANALYSIS_MODELS, reanalysis_fields, reanalysis_label,
                        reanalysis_model_for, reanalysis_supported)
 from .answers import distance_km, MAX_GRID_DISTANCE_KM
 from .foundation import Foundation, ROOT
@@ -65,7 +65,7 @@ def _verified_snapshot(db, raw_root, stream):
     if digest(body)!=meta['sha256']:raise SourceError('Published raw response hash mismatch')
     point={'latitude':spec['latitude'],'longitude':spec['longitude']}
     if spec['product']=='history_local':
-        rebuilt=Foundation.daily(json_payload(body),meta,point,HISTORY_LOCAL,'reanalysis',reanalysis_label(spec.get('models','era5')),
+        rebuilt=Foundation.daily(json_payload(body),meta,point,reanalysis_fields(spec.get('models','era5')),'reanalysis',reanalysis_label(spec.get('models','era5')),
                                  (date.fromisoformat(spec['start_date']),date.fromisoformat(spec['end_date'])),timezone_name='Asia/Kolkata')
     else:
         a=date.fromisoformat(spec['request_date']);dates=(a,a+timedelta(days=spec['days']-1))

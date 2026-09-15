@@ -154,6 +154,16 @@ def reanalysis_supported(model):
     return {name for name,spec in REANALYSIS_DAILY.items() if model in spec['models']}
 
 
+def reanalysis_variables(model):
+    """The supported variables in catalogue order, so a request is stable and reproducible."""
+    return tuple(name for name in REANALYSIS_DAILY if model in REANALYSIS_DAILY[name]['models'])
+
+
+def reanalysis_fields(model):
+    """The (unit, minimum, maximum) fields a model's request returns, in catalogue order."""
+    return {name: HISTORY_LOCAL[name] for name in reanalysis_variables(model)}
+
+
 def reanalysis_model_for(text):
     """A reanalysis model named outright in the question, else the ERA5 default.
 

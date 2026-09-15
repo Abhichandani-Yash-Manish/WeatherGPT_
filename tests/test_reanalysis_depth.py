@@ -63,6 +63,20 @@ class ReanalysisModelJourneys(unittest.TestCase):
         self.assertIn('era5_seamless', r['answer'])
         self.assertEqual(self.calls, 0)
 
+    def test_era5_land_publishes_when_the_columns_it_does_not_carry_are_null(self):
+        # The archive API answers an unsupported variable with null rather than an error, so a
+        # request for the whole catalogue would make the payload partial and unpublishable. The
+        # request must carry only the model's variables.
+        self.setup_history(['temperature_2m_mean'],
+                           'ERA5-Land daily mean temperature in Ahmedabad from 1 through 3 July 2025.')
+        absent = reanalysis_supported('era5') - reanalysis_supported('era5_land')
+        for name in absent:
+            self.response['daily'][name] = [None, None, None]
+        r = self.chat()
+        self.assertEqual(r['status'], 'answered', r['answer'])
+        self.assertTrue(r['facts'])
+        self.assertEqual(self.stored_spec()['models'], 'era5_land')
+
     def test_default_model_is_era5_and_is_recorded(self):
         self.setup_history(['rainfall', 'temperature'],
                            'Daily rainfall and mean temperature in Ahmedabad from 1 through 3 July 2025.')
