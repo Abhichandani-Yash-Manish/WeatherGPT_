@@ -36,10 +36,24 @@ def sync(workspace,state,district,index):
 def execute_document(engine,result,plan,task):
     request=task.get('document_request',{})
     places=plan['places'];result.update(passages=[],document_evidence=[],pending_slots=[])
-    if len(places)!=1 or not places[0].get('state'):
+    state='';district=''
+    if len(places)==1:
+        place=places[0]
+        if place['kind'] not in {'country','state','relative'}:
+            state=(place.get('state') or '').removeprefix('State of ')
+            district=place.get('district') or place['name']
+            if not state and place['kind']=='district' and district:
+                # The publisher's district directory is keyed on a nationally unique
+                # district name, so a named source district carries its state without
+                # asking the user to repeat it. A settlement name is never promoted to
+                # a district this way.
+                from .document_ingest import district_states
+                states=district_states(district)
+                if len(states)==1:state=states[0]
+    if not state:
         result['pending_slots']=[{'field':'place','reason':'District and state are needed'}]
         result.update(status='needs_clarification',answer='Which district and state should I look up in the IMD agricultural bulletin?',follow_up='District and state');return result
-    p=places[0];state=p['state'].removeprefix('State of ');district=p.get('district') or p['name']
+    p=places[0]
     if p['kind'] in {'country','state','relative'}:
         result.update(status='needs_clarification',answer='Which source district and state should I check? A district bulletin cannot represent an entire state.');return result
     crop=request.get('crop','');stage=request.get('growth_stage','');mode=request.get('mode','source_lookup');query=request.get('query') or task.get('request_quote',result['question'])

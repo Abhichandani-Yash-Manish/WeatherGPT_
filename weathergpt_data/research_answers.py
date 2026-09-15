@@ -17,6 +17,69 @@ def publication_database(sid, products):
 
 
 
+SERIES_STATE_EQUIVALENTS={'odisha':'orissa'}
+
+
+def _same_series_state(left,right):
+    clean=lambda value:(value or '').strip().casefold().replace(' state','').removeprefix('state of ').removeprefix('state of')
+    a,b=clean(left),clean(right)
+    return a==b or SERIES_STATE_EQUIVALENTS.get(a)==b or a==SERIES_STATE_EQUIVALENTS.get(b)
+
+
+def alias_candidates(place,database,gazetteer=None):
+    """Source-lined candidate series for a name the publisher's table does not use.
+
+    Candidates come from the place index's own records (canonical name, district and
+    alternate names) and are offered for confirmation. Nothing is substituted: a
+    candidate is used only after the user chooses it, and a candidate is not a
+    reviewed LGD crosswalk.
+    """
+    from .gazetteer import Gazetteer,norm
+    name=(place.get('name') or '').strip()
+    if not name:return []
+    try:gazetteer=gazetteer or Gazetteer()
+    except (ValueError,OSError,SourceError):return []
+    try:matches=gazetteer.search(name,place.get('state',''))
+    except (ValueError,OSError,SourceError):return []
+    with verified_connection(database) as con:
+        series=[(row[0],row[1]) for row in con.execute('SELECT DISTINCT state,district FROM rainfall')]
+    found={};order=[]
+    def offer(candidate,state,basis):
+        if not candidate or len(order)>=3:return
+        for source_state,district in series:
+            if norm(district)!=norm(candidate):continue
+            if state and not _same_series_state(source_state,state):continue
+            key=(district,source_state)
+            if key in found:return
+            found[key]={'selection_id':'history-district:'+source_state+'|'+district,
+                        'historical_district':{'name':district,'state':source_state},
+                        'label':district+' district series, '+source_state+' (S27) — '+basis,
+                        'basis':basis,'source_id':'S61','for_place_name':place.get('name')}
+            order.append(key);return
+    for match in matches[:4]:
+        admin2=match.get('admin2') or ''
+        if admin2:offer(admin2,match.get('admin1'),'the place index places '+str(match.get('name'))+' in '+admin2+' district')
+        offer(match.get('name'),match.get('admin1'),'the place index canonical name for '+name)
+        for alternate in gazetteer.alternates(match['id'])[:200]:
+            if norm(alternate)==norm(name):continue
+            offer(alternate,match.get('admin1'),"the place index records '"+alternate+"' as another name for "+str(match.get('name')))
+            if len(order)>=3:break
+        # The publisher series can also use an older spelling of the district itself
+        # (Khurda for Khordha), so the district place's own alternates are candidates.
+        if admin2 and len(order)<3:
+            try:district_matches=gazetteer.search(admin2)
+            except (ValueError,OSError,SourceError):district_matches=[]
+            for district_match in district_matches[:2]:
+                offer(district_match.get('name'),match.get('admin1'),'the place index canonical name for '+admin2)
+                for alternate in gazetteer.alternates(district_match['id'])[:200]:
+                    if norm(alternate)==norm(admin2):continue
+                    offer(alternate,match.get('admin1'),"the place index records '"+alternate+"' as another name for "+admin2)
+                    if len(order)>=3:break
+                if len(order)>=3:break
+        if len(order)>=3:break
+    return [found[key] for key in order][:3]
+
+
 def lookup_plan(plan):
     year=plan['year'];period=plan['period'];places=plan['places']
     if not year:return {'status':'needs_clarification','text':'Which year and month or season should I look up?','facts':[],'citations':[]}
@@ -43,7 +106,14 @@ def lookup_plan(plan):
     with verified_connection(database) as con:
         options=con.execute('SELECT state,district,min(year),max(year),count(*) FROM rainfall WHERE lower(district)=lower(?) GROUP BY state,district',(district,)).fetchall()
     if source_state:options=[r for r in options if r[0].casefold()==source_state.casefold()]
-    if not options:return {'status':'unavailable','text':f'I could not find a historical district series named {name}'+(f' in {state}' if state else '')+'. Please give the source district name and state; I will not substitute national or nearby-district data.','facts':[],'citations':[]}
+    if not options:
+        candidates=alias_candidates(place,database)
+        if candidates:
+            return {'status':'needs_selection',
+                    'text':f'I could not find a historical district series named {name}'+(f' in {state}' if state else '')+'. The place index offers source-series candidates; none is used until you choose one.',
+                    'facts':[],'citations':[],'choices':candidates,
+                    'notes':['A candidate is a place-index label, not a reviewed LGD crosswalk, and the publisher series keeps its own historical spelling.']}
+        return {'status':'unavailable','text':f'I could not find a historical district series named {name}'+(f' in {state}' if state else '')+'. Please give the source district name and state; I will not substitute national or nearby-district data.','facts':[],'citations':[]}
     if len(options)>1:return {'status':'needs_clarification','text':'Which state do you mean? Matching source districts: '+', '.join(r[1]+', '+r[0] for r in options)+'.','facts':[],'citations':[]}
     st,dist,first,last,count=options[0]
     if not first<=year<=last:return {'status':'unavailable','text':f'The stored {dist}, {st} series covers {first}–{last}, with {count} published years. It cannot supply {year}.','facts':[],'citations':[]}

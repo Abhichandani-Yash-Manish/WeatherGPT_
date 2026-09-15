@@ -1,0 +1,12 @@
+{
+  "schema_version": "corpus-chat-journeys-v1",
+  "recorded_at_utc": "2026-09-14T21:59:53.501500+00:00",
+  "scope": "local loopback, local Ollama qwen3.6 planner, indexed corpus as of 15 Sep 2026",
+  "cases": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5"
+  ]
+}

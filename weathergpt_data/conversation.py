@@ -12,10 +12,43 @@ from .answers import ROOT
 from .language import LocalModel,VARIABLES,obj,string
 from .gazetteer import Gazetteer
 from .research_answers import lookup_plan
+from .watches import watch_intent
 from .transport import SourceError,parsed
 
-CHAT_LOCK=threading.Lock()
+CHAT_QUEUE_CAPACITY=3
+CHAT_QUEUE_TIMEOUT=45.0
 LABELS={'precipitation':'Forecast rainfall','temperature_2m':'Temperature samples','relative_humidity_2m':'Humidity samples','wind_speed_10m':'Wind samples'}
+
+
+class ConversationCancelled(Exception):
+    """Raised at a stage boundary after the caller asked to stop this turn."""
+    def __init__(self,stage):
+        super().__init__('The turn was cancelled at '+stage)
+        self.stage=stage
+
+
+class BoundedGate:
+    """One active turn plus a bounded number of waiting turns.
+
+    The local model still answers one question at a time. What changed here is that a
+    second question waits instead of being rejected instantly, and that the wait is
+    bounded: beyond the capacity, or past the timeout, the caller is told plainly
+    rather than joining an unbounded queue.
+    """
+    def __init__(self,capacity=CHAT_QUEUE_CAPACITY,timeout=CHAT_QUEUE_TIMEOUT):
+        self.capacity=capacity;self.timeout=timeout;self.lock=threading.Lock()
+        self.condition=threading.Condition();self.waiting=0
+    def acquire(self):
+        with self.condition:
+            if self.waiting>=self.capacity:
+                raise SourceError('The assistant is already answering its maximum number of waiting questions. Try again shortly.')
+            self.waiting+=1
+        try:acquired=self.lock.acquire(timeout=self.timeout)
+        finally:
+            with self.condition:self.waiting-=1
+        if not acquired:raise SourceError('The assistant has been busy longer than the queue allows. Try again shortly.')
+    def release(self):
+        self.lock.release()
 GAPS={
  'warning':'I cannot yet verify a current official warning for this location. Warning validity, updates/cancellations and applicable areas must be checked; missing data does not mean there is no warning.',
  'observation':'I do not have a verified live station observation for this place. A forecast cannot establish whether it is raining there right now.',
@@ -24,10 +57,12 @@ GAPS={
  'research':'This workspace currently retrieves published national climate and historical district rainfall. It does not contain a validated local population, soil, groundwater or water-quality dataset.'}
 
 class ConversationEngine:
-    def __init__(self,workspace,model=None,gazetteer=None,database=None):
+    def __init__(self,workspace,model=None,gazetteer=None,database=None,gate=None):
         self.workspace=workspace;self.model=model or LocalModel();self.gazetteer=gazetteer or Gazetteer()
         self.database=Path(database or workspace.service.ingestion_database.parent/'conversations.sqlite')
         self.database.parent.mkdir(parents=True,exist_ok=True)
+        self.gate=gate or BoundedGate()
+        self.cancel_lock=threading.Lock();self.active={};self.cancelled=set();self._local=threading.local()
         with sqlite3.connect(self.database) as db:db.execute('CREATE TABLE IF NOT EXISTS conversations (id TEXT PRIMARY KEY,payload TEXT,updated TEXT)')
 
     def state(self,cid):
@@ -45,15 +80,71 @@ class ConversationEngine:
                        (cid,json.dumps(state,ensure_ascii=False),self.workspace.clock().isoformat()))
 
     def ask(self,body):
-        if not isinstance(body,dict) or set(body)-{'question','conversation_id','selection_id','coordinates','output_language'}:raise SourceError('Send a question and optional conversation/place/language selection')
+        if not isinstance(body,dict) or set(body)-{'question','conversation_id','selection_id','coordinates','output_language','request_id'}:raise SourceError('Send a question and optional conversation/place/language selection')
         q=body.get('question')
         if not isinstance(q,str) or not 1<=len(q)<=1500:raise SourceError('Enter a question of 1–1500 characters')
-        if not CHAT_LOCK.acquire(blocking=False):raise SourceError('Another conversation is using the local model. Please retry shortly.')
-        try:return self._ask(body,q)
-        finally:CHAT_LOCK.release()
+        supplied=body.get('request_id')
+        if supplied is not None:
+            try:uuid.UUID(str(supplied))
+            except (ValueError,TypeError,AttributeError):raise SourceError('Invalid request identifier; start a new turn')
+        request_id=str(supplied) if supplied else str(uuid.uuid4())
+        self.gate.acquire()
+        try:
+            try:return self._ask(body,q,request_id)
+            except ConversationCancelled as stopped:return self._cancelled(body,q,request_id,stopped.stage)
+        finally:
+            self._forget(request_id)
+            self.gate.release()
 
-    def _ask(self,body,q):
+    def cancel(self,request_id):
+        """Ask a running turn to stop at its next stage boundary. Never claims it stopped."""
+        try:uuid.UUID(str(request_id))
+        except (ValueError,TypeError,AttributeError):raise SourceError('Invalid request identifier')
+        request_id=str(request_id)
+        with self.cancel_lock:
+            stage=self.active.get(request_id)
+            if stage is None:
+                return {'request_id':request_id,'state':'not_running',
+                        'detail':'No turn with this identifier is running here. It may have finished before the stop arrived; nothing of it was kept back.'}
+            self.cancelled.add(request_id)
+            return {'request_id':request_id,'state':'cancel_requested','stage':stage,
+                    'detail':'The server was asked to stop this turn at the next stage boundary; anything already retrieved for it is discarded.'}
+
+    def check_cancelled(self):
+        """Called by the task dispatcher between tasks and before the answer is assembled."""
+        request_id=getattr(self._local,'request_id',None)
+        if request_id and request_id in self.cancelled:raise ConversationCancelled('task boundary')
+
+    def _checkpoint(self,request_id,stage):
+        self._local.request_id=request_id
+        with self.cancel_lock:
+            self.active[request_id]=stage
+            stopped=request_id in self.cancelled
+        if stopped:raise ConversationCancelled(stage)
+
+    def _forget(self,request_id):
+        with self.cancel_lock:
+            self.active.pop(request_id,None)
+            self.cancelled.discard(request_id)
+
+    def _cancelled(self,body,q,request_id,stage):
+        cid,state=self.state(body.get('conversation_id'))
+        readable={'started':'the first stage','planned':'planning','task boundary':'the next task boundary','finalising':'the final check'}.get(stage,stage)
+        result={'schema_version':'weather-conversation-v1','conversation_id':cid,'question':q,'status':'cancelled',
+                'answer':'You stopped waiting for this turn. The server stopped at '+readable+' and discarded anything it had retrieved for this turn. Ask again for a fresh answer.',
+                'facts':[],'citations':[],'notes':[],'choices':[],'follow_up':None,'operational_eligible':False,
+                'answered_at_utc':self.workspace.clock().isoformat(),'expires_at_utc':None,
+                'trace':{'planning':None,'generation':None,'tools':[],'provider':'local_ollama',
+                         'cancelled':{'request_id':request_id,'stage':stage}}}
+        state['history'].append({'role':'user','content':q})
+        state['history'].append({'role':'assistant','content':result['answer']})
+        state['history']=state['history'][-12:]
+        self.save(cid,state)
+        return result
+
+    def _ask(self,body,q,request_id):
         began=time.monotonic();cid,state=self.state(body.get('conversation_id'))
+        self._checkpoint(request_id,'started')
         result={'schema_version':'weather-conversation-v1','conversation_id':cid,'question':q,'status':'needs_clarification','answer':'',
                 'facts':[],'citations':[],'notes':[],'choices':[],'follow_up':None,'operational_eligible':False,'answered_at_utc':self.workspace.clock().isoformat(),'expires_at_utc':None,
                 'trace':{'planning':None,'generation':None,'tools':[],'provider':'local_ollama'}}
@@ -67,10 +158,12 @@ class ConversationEngine:
             if q!=state['last_question']:raise SourceError('This place choice belongs to another question. Ask again to select a place.')
             choices=[c for c in state['choices'] if c['selection_id']==body['selection_id']]
             if len(choices)!=1:raise SourceError('Choose a place from the candidates offered for this question')
-            selected=choices[0];plan=state['last_plan'];resolved=state.get('resolved_points',{});resolved[selected['for_place_name']]=selected;result['trace']['planning']={'reused_clarification_plan':True}
+            selected=choices[0];plan=state['last_plan'];resolved=state.get('resolved_points',{})
+            if selected.get('coordinates'):resolved[selected['for_place_name']]=selected
+            result['trace']['planning']={'reused_clarification_plan':True}
         elif text_selection:
             selected=text_selection;plan=copy.deepcopy(state['last_plan']);resolved=state.get('resolved_points',{})
-            resolved[selected['for_place_name']]=selected
+            if selected.get('coordinates'):resolved[selected['for_place_name']]=selected
             plan['context_action']='clarification_answer';plan['changed_fields']=['places']
             for p in plan['places']:
                 if p['name']==selected['for_place_name']:
@@ -85,7 +178,13 @@ class ConversationEngine:
             history=list(state['history'])
             context=context_message(state)
             if context:history.append({'role':'assistant','content':'Structured conversation focus','context_state':context})
-            plan,meta=self.model.plan(q,self.workspace.clock(),history)
+            try:
+                plan,meta=self.model.plan(q,self.workspace.clock(),history)
+            except SourceError:
+                # A request to be notified must not be lost to planner variance. The
+                # bounded fallback keeps the same warning tool and place resolution.
+                if not watch_intent(q):raise
+                plan=self._watch_plan(q);meta={'provider':'deterministic_watch_plan','model_calls':0}
             plan=reconcile(plan,state,q)
             result['trace']['planning']=meta
             result['trace']['context_resolution']=plan.pop('_context_resolution')
@@ -97,11 +196,14 @@ class ConversationEngine:
                 if previous and p['kind'] in {'settlement','unknown'} and not plan.get('clarification'):
                     label=norm(previous['label'])
                     if all(not p[k] or norm(p[k]) in label for k in ['state','district']):resolved[p['name']]=previous
+        from .dialogue import apply_historical_choice
+        plan=apply_historical_choice(plan,selected) if selected else plan
         if plan.get('context_action') in {'follow_up','correction','clarification_answer'}:
             prior_sources={f['source_id'] for f in state.get('last_evidence',{}).get('facts',[]) if f['source_id'] in {'S21','S62'}}
             if prior_sources=={'S62'}:result['retrieval_preferences']={'forecast_source':'S62','reason':'Continue the established forecast product for follow-up measures.'}
         result['plan']=plan
         result['notes']+=plan['assumptions']
+        self._checkpoint(request_id,'planned')
         if plan.get('context_action')=='explain_previous':
             prior=state.get('last_evidence')
             if prior and (not prior['expires_at_utc'] or parsed(prior['expires_at_utc'])>self.workspace.clock()):
@@ -142,6 +244,11 @@ class ConversationEngine:
         else:
             result=self.forecasts(result,plan,resolved,body.get('coordinates'))
             if result['facts']:result=self.explain(result)
+        # A request to be notified is handled explicitly: a local watch is registered,
+        # named with its place and hazard, and checked only when it is asked to be. No
+        # push, no background daemon and no all-clear are implied.
+        if plan.get('tasks') and watch_intent(q):
+            result=self._register_watch(result,plan,q)
         if result['expires_at_utc'] and parsed(result['expires_at_utc'])<=self.workspace.clock():
             result.update(status='stale',facts=[],citations=[],charts=[],calculations=[],airport_reports=[],passages=[],document_evidence=[],retrieval_coverage=[],answer='The retrieved evidence expired while the response was being prepared. Please ask again for a fresh answer.')
             for task in result.get('task_results',[]):
@@ -157,18 +264,101 @@ class ConversationEngine:
         target,why=target_language(body,state,plan)
         if target and result['status'] in {'answered','explanation','partial'}:
             deliver(result,target,reason=why)
+        elif target and result['status'] in {'needs_clarification','needs_selection','outside_validity','stale','unavailable'}:
+            # A clarification does not claim to have answered, but the user still asked
+            # in a language. It is rendered through the same value-protecting gate when
+            # the service is configured. The probe keeps generation out of the record: a
+            # failed refresh or a held warning must not acquire a generation trace, so
+            # only the rendered text is copied back and the fact is recorded separately.
+            from . import speech
+            if speech.configured():
+                probe=copy.deepcopy(result)
+                deliver(probe,target,reason=why)
+                adherence=(probe['trace'].get('generation') or {}).get('language_adherence')
+                rendered=bool(probe.get('answer')) and probe['answer']!=result.get('answer')
+                result['trace']['language']={'requested':target,'selection':why,'adherence':adherence,'rendered':rendered}
+                if rendered:result['answer']=probe['answer']
+            else:
+                result['trace']['language']={'requested':target,'selection':why,'adherence':'not_rendered_no_service','rendered':False}
         else:
             from .dialogue import language_gap
             if language_gap(result['answer'],plan.get('language')) and result['status'] in {'answered','explanation'}:
                 result['status']='partial'
                 result['notes'].append('The requested output language could not be rendered for this answer; the evidence above remains in its source language. Answering in that language is not supported yet for this kind of request.')
                 result['trace']['generation']=dict(result['trace'].get('generation') or {},language_adherence='failed',requested_language=plan.get('language'))
+        self._checkpoint(request_id,'finalising')
         from .dialogue import save_focus
         save_focus(state,result)
         state['last_question']=q;state['last_plan']=state.get('last_plan',plan) if plan.get('context_action')=='explain_previous' else plan;state['choices']=result['choices'];state['resolved_points']=result.get('resolved_points',{})
         if not body.get('selection_id'):state['history'].append({'role':'user','content':q})
         state['history'].append({'role':'assistant','content':result['answer'][:2000]})
         state['history']=state['history'][-12:];self.save(cid,state)
+        return result
+
+    def _watch_plan(self,question):
+        """A bounded plan for a notification request: one warning task, one place.
+
+        The warning tool already resolves the place through the gazetteer ladder and
+        asks when a name is ambiguous, so this compiler only extracts what the user
+        wrote and never invents a place. It is used when the planner cannot preserve
+        the request, so a watch is not lost to model variance.
+        """
+        import re as _re
+        from .language import expand_request
+        match=_re.search(r'\b(?:for|in)\s+([^,.!?]{2,60}?)(?:,\s*([A-Za-z .-]{2,40}?))?(?=\s+(?:tonight|today|tomorrow|now|this (?:evening|afternoon|morning|week))\b|[.!?]|$)',question,re.I)
+        place=None
+        if match:
+            name=_re.sub(r'\s+district\b','',match[1].strip(),flags=re.I).strip(' ,')
+            state=(match[2] or '').strip(' ,')
+            if name:place={'name':name.title() if name.islower() else name,'state':state,'district':'','kind':'unknown'}
+        task={'request_quote':question,'kind':'warning','operation':'lookup','parameters':['official_warning'],
+              'years':[],'period':'annual','start_local':'','end_local':'','place_indices':[0] if place else []}
+        request={'language':'en','places':[place] if place else [],'assumptions':[],'clarification':'',
+                 'explicit_times':False,'tasks':[task],'context_action':'new','changed_fields':[]}
+        plan=expand_request(request)
+        plan['clarification']='' if place else 'Which place should I watch? Give a town or district and its state, for example "for Patna, Bihar".'
+        plan['_watch_fallback']=True
+        return plan
+
+    def _register_watch(self,result,plan,question):
+        from .watches import WatchStore,connected,hazard_of
+        if result['status'] in {'needs_selection','needs_clarification'}:
+            result['notes'].append('A watch request was recognized, but the place still needs confirmation, so no watch was registered.')
+            return result
+        places=plan.get('places') or [];resolved_points=result.get('resolved_points') or {}
+        place=None
+        for candidate in places:
+            match=resolved_points.get(candidate['name'])
+            if match:
+                place={'name':match.get('label') or candidate['name'],'selection_id':match.get('selection_id'),
+                       'coordinates':match.get('coordinates')}
+                break
+        if place is None and places:
+            candidate=places[0];place={'name':candidate.get('name'),'state':candidate.get('state'),'district':candidate.get('district')}
+        if place is None:
+            result['notes'].append('A watch request was recognized but no place could be resolved, so no watch was registered.')
+            return result
+        window=None
+        for task in plan.get('tasks',[]):
+            if task['kind']=='warning' and task.get('start_local') and task.get('end_local'):
+                window=(task['start_local'],task['end_local']);break
+        store=WatchStore(self.workspace.service.ingestion_database.parent/'watches.sqlite')
+        watch=store.create(question,place,hazard_of(question),window_start=window[0] if window else None,
+                           window_end=window[1] if window else None,now=self.workspace.clock())
+        hazard=watch['hazard']
+        result['watch']={'id':watch['id'],'state':watch['state'],'hazard':hazard,'place':place,'window':window,
+                         'delivery':watch['delivery'],'checked_products':watch['checked_products']}
+        if not connected(hazard):
+            note=('Watch registered locally for '+str(place.get('name'))+' ('+hazard+'). The connected official products are the IMD district '
+                  'warning product and the CAP relay assessment; neither carries a '+hazard+' warning product, so this watch is recorded but '
+                  'cannot be satisfied by mapping your words onto a similar-sounding product. There is no push or background delivery: it is '
+                  'checked only when you ask me to check watches.')
+        else:
+            note=('Watch registered locally for '+str(place.get('name'))+' ('+hazard.replace('_',' ')+'). There is no push or background '
+                  'delivery: it is checked only when you ask me to check watches or call the local check route. A no-match result is not an '
+                  'all-clear, and origin authentication of the official products remains unverified.')
+        result['answer']=(result['answer']+'\n\n'+note).strip() if result.get('answer') else note
+        result['notes'].append('Local watch '+watch['id']+' registered with state '+watch['state']+'.')
         return result
 
     def resolve_points(self,result,plan,resolved,coordinates):

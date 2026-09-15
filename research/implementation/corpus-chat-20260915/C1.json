@@ -1,0 +1,148 @@
+{
+  "id": "C1",
+  "question": "What does the latest IMD national weather bulletin say about heavy rainfall?",
+  "status": "partial",
+  "answered_language": null,
+  "duration_s": 8.53,
+  "plan_tasks": [
+    {
+      "kind": "document",
+      "operation": "lookup",
+      "corpus_request": {
+        "query": "What does the latest IMD national weather bulletin say about heavy rainfall?",
+        "family": "national_bulletin",
+        "scope": "national"
+      },
+      "document_request": null
+    }
+  ],
+  "places": [],
+  "answer": "Indexed published document:\n\nAll India Weather Summary and Forecast Bulletin · national · document d3e80f651f72 · printed issue 2026-09-14 · on the printed issue date · retrieved 2026-09-14 18:28:17.453227+00:00.\n\n· page 1 · ALL INDIA WEATHER SUMMARY AND FORECAST BULLETIN: “14th-18th September; Vidarbha on 14th September. Isolated heavy rainfall likely over West Madhya Pradesh on 14th September. East India: Fairly Widespread to Widespread rainfall likely over Andaman & Nicobar Islands and Sub-Himalayan West Bengal & Sikkim during 14th-20th September; Gangetic West Bengal during 17th-19th September; Bihar during 16th-17th September; Odisha during 19th-20th September. Page 1”\n\n· page 18 · 36 LAKSHDWEEP FWS FWS FWS FWS FWS WS WS: “Road and rail traffic may be affected due to heavy rain and squally winds. There could be localised landslides, mudslides, landslips, water logging, inundation and flooding over low lying areas. Occasional reduction in visibility due to heavy rainfall. Helicopter services may get affected. Action suggested: People are advised to keep a watch on the weather for worsening conditions and be ready to move to safer places accordingly. Take safe shelters; do not take shelter under trees, as there could be lightning. … [excerpt; full passage retained in evidence]”\n\n· page 2 · ALL INDIA WEATHER SUMMARY AND FORECAST BULLETIN: “14th-16th September; Assam & Meghalaya during 14th-18th September. Isolated heavy rainfall likely over Arunachal Pradesh and Assam & Meghalaya during 15th-18th September. West India: Fairly Widespread to Widespread rainfall likely over Konkan & Goa during 14th-16th September; Gujarat Region and Saurashtra & Kutch during 14th-15th September. … [excerpt; full passage retained in evidence]”\n\n· page 2 · ALL INDIA WEATHER SUMMARY AND FORECAST BULLETIN: “Bengal & Sikkim during 14th-15th September and on 17th September; Bihar during 16th-17th September; Odisha on 14th September and during 18th-20th September with isolated very heavy rainfall also likely over Sub-Himalayan West Bengal & Sikkim on 16th September. Northeast India: Isolated to Scattered rainfall likely over Arunachal Pradesh and Assam & Meghalaya on 14th September and during 18th-20th September; Nagaland, Manipur, Mizoram & Tripura during 14th-20th September. … [excerpt; full passage retained in evidence]”\n\n· page 2 · ALL INDIA WEATHER SUMMARY AND FORECAST BULLETIN: “September with isolated very heavy rainfall also likely over Gujarat Region on 14th September. Isolated extremely heavy rainfall likely over Saurashtra & Kutch on 14th September. South Peninsular India: Isolated to Scattered rainfall likely over Coastal Andhra Pradesh & Yanam, Rayalaseema, South Interior Karnataka and Tamil Nadu, Puducherry & Karaikal during 14th-20th September; Coastal Karnataka and North Interior Karnataka on 14th September and during 17th-20th September; Telangana during 15th-19th September. … [excerpt; full passage retained in evidence]”\n\n· page 4 · ALL INDIA WEATHER SUMMARY AND FORECAST BULLETIN: “Main Weather Observations: ❖ Rainfall distribution (from 0830 hours IST to 1730 hours IST of today): at most places over Saurashtra & Kutch, Gujarat Region and West Madhya Pradesh; at many places over Madhya Maharashtra , Konkan & Goa , Sub- himalayan West Bengal & Sikkim, East Rajasthan, Odisha, Jharkhand, East Uttar Pradesh, Uttarakhand, West Uttar Pradesh, Assam & Meghalaya, Haryana Chandigarh & Delhi, Himachal Pradesh, Jammu & Kashmir and Ladakh, West Rajasthan, Nagaland, Manipur, Mizoram & Tripura, Bihar, … [excerpt; full passage retained in evidence]”\n\n· page 4 · ALL INDIA WEATHER SUMMARY AND FORECAST BULLETIN: “❖ Significant rainfall recorded(in cm) (from 0830 hours IST to 1730 hours IST of today): Saurashtra & Kutch : Mahuva (dist Bhavnagar) 8, Diu (dist Diu) 6; Gujarat Region: Gandhinagar (dist Gandhinagar) 6. ❖ Heavy Rainfall observed (from 0830 hours IST to 1730 hours IST of today): Heavy rain at isolated places over Saurashtra & Kutch ❖ Minimum Temperature Departures (as on 14-09-2026): markedly above normal(> 5.1°C) at isolated places over Andaman & Nicobar Islands, Assam & Meghalaya, … [excerpt; full passage retained in evidence]”\n\n· page 1 · ALL INDIA WEATHER SUMMARY AND FORECAST BULLETIN: “and Punjab during 14th-17th September; East Uttar Pradesh and West Uttar Pradesh during 14th-15th September. Isolated heavy rainfall likely over East Rajasthan and Uttarakhand on 14th September; Haryana Chandigarh & Delhi and Punjab during 15th-17th September. Central India: Fairly Widespread to Widespread rainfall likely over Chhattisgarh and West Madhya Pradesh on 14th September; Vidarbha during 14th-15th September. … [excerpt; full passage retained in evidence]”\n\n· page 7 · 14 September (Day 1): “❖ Heavy to Very Heavy Rainfall with isolated Extremely Heavy Rainfall very likely at isolated places over Saurashtra & Kutch. ❖ Heavy to Very Heavy Rainfall very likely at isolated places over Gujarat Region. ❖ Heavy Rainfall very likely at isolated places over East Rajasthan, Kerala & Mahe, Konkan & Goa, Madhya Maharashtra, Odisha, Sub Himalayan West Bengal & Sikkim, Tamil Nadu Puducherry & Karaikal, Telangana, Uttarakhand and West Madhya Pradesh. … [excerpt; full passage retained in evidence]”\n\nWarning-related text published in these documents (reference only):\n\n· national, page 3 · ALL INDIA WEATHER SUMMARY AND FORECAST BULLETIN: “Isolated heavy rainfall likely over Tamil Nadu, Puducherry & Karaikal during 14th-20th September; Kerala & Mahe during 14th-16th September and during 19th-20th September; South Interior Karnataka on 15th September; Coastal Andhra Pradesh & Yanam and Rayalaseema during 19th-20th September; Telangana on 14th September and during 18th-19th September. … [excerpt; full passage retained in evidence]”\n\nThat text records what a document published. It is not a current applicable official warning, not an all-clear, and it grants no clearance. Current applicability is answered only by the official warning check, which is a separate evidence source.\n\nExtraction reading order is unverified for these documents; tables and headings can be split.\n\nThese are original source excerpts. They are not a forecast, an observation, an official warning or personalized advice.",
+  "notes": [
+    "The user is asking for the content of a specific published document (IMD national weather bulletin) rather than a current forecast or warning.",
+    "No specific date was provided, so the search will target the most recent relevant national bulletin available in the corpus."
+  ],
+  "passages": [
+    {
+      "id": "ca9b47144952e3af1fc3aeadf983c2ca764016eda36194baf123a745e575624a",
+      "family": "national_bulletin",
+      "region": null,
+      "physical_page": 1,
+      "evidence_kind": "forecast_text",
+      "issue_date": "2026-09-14"
+    },
+    {
+      "id": "27356fc2e558d119ff54f549c53f81b0dc5d2892d15e157e7fefd05faf5c9a60",
+      "family": "national_bulletin",
+      "region": null,
+      "physical_page": 18,
+      "evidence_kind": "forecast_text",
+      "issue_date": "2026-09-14"
+    },
+    {
+      "id": "8690d0f617a6e7004bbdec02daddee87e4bc2c5c1af6e6afd36fc3a7e8b173cf",
+      "family": "national_bulletin",
+      "region": null,
+      "physical_page": 2,
+      "evidence_kind": "forecast_text",
+      "issue_date": "2026-09-14"
+    },
+    {
+      "id": "73315864270a3a162629f75a6e40b75a6f4a2b4a4f821978f94cf1de139d112b",
+      "family": "national_bulletin",
+      "region": null,
+      "physical_page": 2,
+      "evidence_kind": "forecast_text",
+      "issue_date": "2026-09-14"
+    },
+    {
+      "id": "16a26fa1c44cf86f54d04b37d56bcc2c014b7ddfbaa57fda5130ffadc3b6e206",
+      "family": "national_bulletin",
+      "region": null,
+      "physical_page": 2,
+      "evidence_kind": "forecast_text",
+      "issue_date": "2026-09-14"
+    },
+    {
+      "id": "93746927f7235b73e94aa107469f139f5fc90ed839a48c62a6f6d30ff79bfaaf",
+      "family": "national_bulletin",
+      "region": null,
+      "physical_page": 4,
+      "evidence_kind": "forecast_text",
+      "issue_date": "2026-09-14"
+    },
+    {
+      "id": "0999c27efb9809cb264792734f841830eeda2281397fcc5d281849d21b983dd7",
+      "family": "national_bulletin",
+      "region": null,
+      "physical_page": 4,
+      "evidence_kind": "forecast_text",
+      "issue_date": "2026-09-14"
+    },
+    {
+      "id": "06360ad1f284e0346b49c6fc8593f74134205265e9e368b75046a06b70fff36e",
+      "family": "national_bulletin",
+      "region": null,
+      "physical_page": 1,
+      "evidence_kind": "forecast_text",
+      "issue_date": "2026-09-14"
+    },
+    {
+      "id": "38acfdeab4367a01c3c83780d423916b1683c836f6f5b790bda6551eecf34663",
+      "family": "national_bulletin",
+      "region": null,
+      "physical_page": 3,
+      "evidence_kind": "warning_reference",
+      "issue_date": "2026-09-14"
+    },
+    {
+      "id": "df49733164365552f7b3c1840e532e502663aa4a5df653b24a8b2c3d02e9bb2c",
+      "family": "national_bulletin",
+      "region": null,
+      "physical_page": 7,
+      "evidence_kind": "forecast_text",
+      "issue_date": "2026-09-14"
+    }
+  ],
+  "citations": [
+    {
+      "id": "t1-doc-d3e80f651f7251f5a5bf359c07a05592ce85bd5d72d1436a5ca634ab4f00024c",
+      "source_id": "S64",
+      "product": "All India Weather Summary and Forecast Bulletin",
+      "issue_date": "2026-09-14",
+      "local_document_path": "/api/documents/d3e80f651f7251f5a5bf359c07a05592ce85bd5d72d1436a5ca634ab4f00024c"
+    }
+  ],
+  "retrieval_coverage": [
+    {
+      "candidates": 48,
+      "returned": 10,
+      "lexically_supported": 10,
+      "lexical_overlap_required": true,
+      "filters": {
+        "family": "national_bulletin",
+        "scope": "national",
+        "region": null
+      },
+      "evidence_classes": {
+        "forecast_text": 9,
+        "warning_reference": 1
+      },
+      "superseded_retired": 0,
+      "currency_unknown": 0,
+      "expired_printed_validity": 0,
+      "unverified_excluded": 0,
+      "scope": "Whole-document passage index over indexed published documents; not a completeness claim for any publisher and not an archive.",
+      "scores_are_confidence": false,
+      "task_id": "t1"
+    }
+  ],
+  "generation": {
+    "provider": "typed_task_renderers",
+    "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit.",
+    "requested_language": "en",
+    "language_selection": "inferred_from_question",
+    "language_adherence": "not_applicable"
+  },
+  "language_trace": null
+}

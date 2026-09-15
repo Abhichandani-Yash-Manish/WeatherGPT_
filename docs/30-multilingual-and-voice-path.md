@@ -1,5 +1,7 @@
 # Multilingual output and voice access — path plan, 15 September 2026
 
+**Status note, added 15 September 2026 after the build batch.** The text below was written as a plan on the morning of 15 September. By that evening the first four staging steps had been built and recorded: a bounded Sarvam client, the value-protecting render gate with held safety clauses, a measured 23-language registry (`data/registry/language-support.json`), speech output over gated text and confirmable speech input with a measured-language filter. Four journeys are recorded in [research/implementation/language-voice-20260915/journeys.json](../research/implementation/language-voice-20260915/journeys.json), and [docs/32](32-corpus-chat-and-planner-robustness.md) adds a corpus answer to the language path. This document remains the plan, and its "nothing here is built yet" line describes the morning it was written; the design rules below were followed rather than replaced.
+
 Problem statement features **6 (multilingual support for Indian languages)** and **8 (voice-enabled interaction for rural accessibility)** are the two named PS features with no implementation at all. This is the plan for both, using the Sarvam AI key the user holds. It is a plan, not a batch: nothing here is built yet and nothing here is measured yet.
 
 This path runs parallel to the source and document work in [docs/29](29-source-activation-and-document-intake.md). They share no code and can proceed independently.

@@ -1,0 +1,74 @@
+{
+ "schema_version": "language-remasure-summary-v1",
+ "measured_at_utc": "2026-09-14T22:10:14.217701+00:00",
+ "change": "speech.translate now retries once on sarvam-translate:v1 when the provider default refuses a language and names that model in its own error",
+ "write_verified_before": 10,
+ "write_verified_after": 20,
+ "speak_verified_after": 10,
+ "hear_verified_after": 10,
+ "changed_rows": {
+  "as": {
+   "write_before": "failed",
+   "write_after": "verified"
+  },
+  "brx": {
+   "write_before": "failed",
+   "write_after": "verified"
+  },
+  "doi": {
+   "write_before": "failed",
+   "write_after": "verified"
+  },
+  "kok": {
+   "write_before": "failed",
+   "write_after": "verified"
+  },
+  "ks": {
+   "write_before": "failed",
+   "write_after": "verified"
+  },
+  "mai": {
+   "write_before": "failed",
+   "write_after": "verified"
+  },
+  "mni": {
+   "write_before": "failed",
+   "write_after": "verified"
+  },
+  "ne": {
+   "write_before": "failed",
+   "write_after": "verified"
+  },
+  "sa": {
+   "write_before": "failed",
+   "write_after": "verified"
+  },
+  "ur": {
+   "write_before": "failed",
+   "write_after": "verified"
+  }
+ },
+ "still_failed_write": {
+  "sat": "a protected value did not survive the rendering",
+  "sd": "the rendering was not written in this script",
+  "ta": "a protected value was duplicated by the rendering"
+ },
+ "speak_blocked": {
+  "as": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to as-IN by contact",
+  "brx": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to brx-IN by contac",
+  "doi": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to doi-IN by contac",
+  "kok": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to kok-IN by contac",
+  "ks": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to ks-IN by contact",
+  "mai": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to mai-IN by contac",
+  "mni": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to mni-IN by contac",
+  "ne": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to ne-IN by contact",
+  "sa": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to sa-IN by contact",
+  "ur": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to ur-IN by contact"
+ },
+ "limitations": [
+  "One probe per language at one instant against model versions that can change.",
+  "No native-speaker review of any output; written is not fluent.",
+  "Speech is refused for beta access, not because the text cannot be written.",
+  "A failed language is refused rather than offered."
+ ]
+}

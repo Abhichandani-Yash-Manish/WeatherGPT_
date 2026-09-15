@@ -1,0 +1,125 @@
+{
+  "id": "C5",
+  "question": "શું ગુજરાત રાજ્યના એગ્રોમેટ બુલેટિનમાં સિંચાઈ વિશે કંઈ કહ્યું છે?",
+  "status": "partial",
+  "answered_language": null,
+  "duration_s": 23.47,
+  "plan_tasks": [
+    {
+      "kind": "document",
+      "operation": "lookup",
+      "corpus_request": {
+        "query": "સિંચાઈ વિશે કંઈ કહ્યું છે?",
+        "family": "state_agromet",
+        "scope": "state"
+      }
+    }
+  ],
+  "places": [
+    {
+      "name": "Gujarat",
+      "state": "",
+      "district": "",
+      "kind": "state"
+    }
+  ],
+  "answer": "Indexed published document:\n\nState composite agromet advisory bulletin · Gujarat · document 22678bac94bc · printed issue 2026-09-12 · 2 day(s) after the printed issue · retrieved 2026-09-14 18:28:49.905251+00:00.\n\n· page 45 · AMRELI, JAMNAGAR DISTRICTS.: “water.  Udder of milking animals must be properly clean with zinc oxide or boric powder. AMFU Arnej: AHMEDABAD Advisory General advice Undertake interculturing and weeding operations to conserve moisture in standing monsoon crops and apply need based light irrigation by considering weather and soil moisture condition in standing crops. Application of fertilizer or top dressing should undertake only under optimum soil moisture condition in standing crops. … [excerpt; full passage retained in evidence]”\n\n· page 63 · RAINFALL DISTRIBUTION: “KHEDA Inten sity Light thunderst orm with lightning and surface wind 40- 50 kmph accompa nied with light to moderate rain at isolated places Light thund erstor m with lightni ng and surfac e wind 30-40 kmph acco mpani ed with light to moder ate rain at isolate d places Light thunde rstorm with lightnin g and surface wind 30-40 kmph accom panied with light to moder ate rain at isolate d places Light thund erstor m with lightni ng and surfac e wind 30-40 kmph acco mpani ed with light to moder ate rain at isolate d pl … [excerpt; full passage retained in evidence]”\n\n· page 3 · FWS/ISOL WS/FWS WS/FWS FWS/SCT SCT/SCT: “ISOl: Isolated i.e 1 or 2 places SCT:Scattered i.e Rain at a few places FWS: Fairly wide spread i.e Rain at many places Dry:No rain WS: Widespread,i.e Rain at most places. Agromet Advisories issued by different Agromet Field Units (AMFUs) of Gujarat Gujarat region: Met Subdivision AMFU Navsari (Dangs,Navsari,Valsad districts): Navsari: Crop Weather based Agro-Advisory Sugarcane Vegetative Stage/Grand Growth stage:  After 6, 7 & 8 month of planting remove dry leaves and use it as mulch. … [excerpt; full passage retained in evidence]”\n\nCrop guidance is district-level published advice. It has not been validated against an individual field, current crop stage or the weather at that field, and it is not a personal go/no-go decision.\n\nExtraction reading order is unverified for these documents; tables and headings can be split.\n\nThe question is written in a script these English source documents do not share, so no exact word from it appears in the retrieved passages. These are the top semantic matches, not a verified wording match.\n\nThese are original source excerpts. They are not a forecast, an observation, an official warning or personalized advice.",
+  "notes": [
+    "The user is asking for information from a published state-level agromet bulletin.",
+    "No specific date or district is provided, so the search will target the most recent available state bulletin.",
+    "Read the named state from the question: Gujarat.",
+    "This answer was not rewritten in the requested language because some of its values did not survive the rendering intact. Showing a partly rewritten answer could change what a number or a warning means, so the source-language answer is kept instead."
+  ],
+  "passages": [
+    {
+      "id": "85288363afec452459176bea831b9d1fd93f1280cd7deb6e5a12d664d4abbbf4",
+      "family": "state_agromet",
+      "region": "Gujarat",
+      "physical_page": 45,
+      "evidence_kind": "crop_advisory",
+      "issue_date": "2026-09-12"
+    },
+    {
+      "id": "55da62dd2b20dd06cc77f6c4d10edb602a725b3710b94c51b6843360f22e6f89",
+      "family": "state_agromet",
+      "region": "Gujarat",
+      "physical_page": 63,
+      "evidence_kind": "crop_advisory",
+      "issue_date": "2026-09-12"
+    },
+    {
+      "id": "5c5a3e1e8e281fa75e74efcedcc950ee5c41904ae2a8aa58eb40487bdddf4bef",
+      "family": "state_agromet",
+      "region": "Gujarat",
+      "physical_page": 3,
+      "evidence_kind": "crop_advisory",
+      "issue_date": "2026-09-12"
+    }
+  ],
+  "citations": [
+    {
+      "id": "t1-doc-22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3",
+      "source_id": "S07",
+      "product": "State composite agromet advisory bulletin",
+      "issue_date": "2026-09-12",
+      "local_document_path": "/api/documents/22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3"
+    }
+  ],
+  "retrieval_coverage": [
+    {
+      "candidates": 257,
+      "returned": 3,
+      "lexically_supported": 3,
+      "lexical_overlap_required": true,
+      "match_basis": "semantic_only_indic_script_disclosed",
+      "filters": {
+        "family": "state_agromet",
+        "scope": "state",
+        "region": "Gujarat"
+      },
+      "evidence_classes": {
+        "crop_advisory": 3
+      },
+      "superseded_retired": 0,
+      "currency_unknown": 0,
+      "expired_printed_validity": 0,
+      "unverified_excluded": 0,
+      "scope": "Whole-document passage index over indexed published documents; not a completeness claim for any publisher and not an archive.",
+      "scores_are_confidence": false,
+      "task_id": "t1"
+    }
+  ],
+  "generation": {
+    "provider": "typed_task_renderers",
+    "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit.",
+    "requested_language": "gu",
+    "language_selection": "user_selected",
+    "render_report": {
+      "sentences": 14,
+      "translated": 11,
+      "held_safety_critical": 2,
+      "failed": 1,
+      "ok": false
+    },
+    "render_failures": [
+      {
+        "sentence": "… [excerpt; full passage retained in evidence]”\n\n· page 63 · RAINFALL DISTRIBUTION: “KHEDA Inten sity Light thunderst orm with lightning and surface wind 40- 50 kmph accompa nied with light to moderate rain at isolated places Light thund erstor m with lightni ng and surfac e wind 30-40 kmph acco mpani ed with light to moder ate rain at isolate d places Light thunde rstorm with lightnin g and surface wind 30-40 kmph accom panied with light to moder ate rain at isolate d places Light thund erstor m with lightni ng and surfac e wind 30-40 kmph acco mpani ed with light to moder ate rain at isolate d pl … [excerpt; full passage retained in evidence]”\n\n· page 3 · FWS/ISOL WS/FWS WS/FWS FWS/SCT SCT/SCT: “ISOl: Isolated i.e 1 or 2 places SCT:Scattered i.e Rain at a few places FWS: Fairly wide spread i.e Rain at many places Dry:No rain WS: Widespread,i.e Rain at most places.",
+        "reason": "protected values did not survive",
+        "ok": false,
+        "protected": 9,
+        "missing": [],
+        "duplicated": [
+          {
+            "placeholder": "#V5#",
+            "times": 16,
+            "original": "30-40 kmph",
+            "kind": "range_with_unit"
+          }
+        ],
+        "unknown_placeholders": []
+      }
+    ],
+    "language_adherence": "values_did_not_survive"
+  },
+  "language_trace": null
+}

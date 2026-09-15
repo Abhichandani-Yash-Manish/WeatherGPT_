@@ -1,6 +1,6 @@
 {
  "schema_version": "source-review-v1",
- "compiled_at_utc": "2026-09-14T19:27:24+00:00",
+ "compiled_at_utc": "2026-09-14T22:31:37+00:00",
  "title": "Source activation review",
  "scope": "Every source registered in data/registry/sources.json, measured at its registered address.",
  "policy": {
@@ -51,6 +51,7 @@
   "S11"
  ],
  "evidence_directory": "research/discovery/evidence/source-audit-20260914T175609Z",
+ "rebuild_evidence": "research/discovery/evidence/source-audit-20260914T223137Z",
  "sources": [
   {
    "id": "S01",
@@ -328,8 +329,8 @@
     "ingested_by_families": [
      "state_agromet"
     ],
-    "wired_to_chat": false,
-    "reachability_note": "A registered document family ingests this source into the local corpus. It is not yet reachable from a conversation."
+    "wired_to_chat": true,
+    "reachability_note": null
    },
    "probe": {
     "request_id": "93fc7ef5c3cf",
@@ -373,8 +374,8 @@
     "ingested_by_families": [
      "state_district_bulletin"
     ],
-    "wired_to_chat": false,
-    "reachability_note": "A registered document family ingests this source into the local corpus. It is not yet reachable from a conversation."
+    "wired_to_chat": true,
+    "reachability_note": null
    },
    "probe": {
     "request_id": "ce419818051d",
@@ -2427,8 +2428,8 @@
     "ingested_by_families": [
      "sea_area_bulletin"
     ],
-    "wired_to_chat": false,
-    "reachability_note": "A registered document family ingests this source into the local corpus. It is not yet reachable from a conversation."
+    "wired_to_chat": true,
+    "reachability_note": null
    },
    "probe": {
     "request_id": "b4e4558db9c5",
@@ -2473,8 +2474,8 @@
     "ingested_by_families": [
      "coastal_bulletin"
     ],
-    "wired_to_chat": false,
-    "reachability_note": "A registered document family ingests this source into the local corpus. It is not yet reachable from a conversation."
+    "wired_to_chat": true,
+    "reachability_note": null
    },
    "probe": {
     "request_id": "1fe1cb33c34e",
@@ -2692,8 +2693,8 @@
     "ingested_by_families": [
      "national_bulletin"
     ],
-    "wired_to_chat": false,
-    "reachability_note": "A registered document family ingests this source into the local corpus. It is not yet reachable from a conversation."
+    "wired_to_chat": true,
+    "reachability_note": null
    },
    "probe": {
     "request_id": "4e2db0984e1f",
@@ -2739,8 +2740,8 @@
      "flash_flood_national",
      "flash_flood_sasia"
     ],
-    "wired_to_chat": false,
-    "reachability_note": "A registered document family ingests this source into the local corpus. It is not yet reachable from a conversation."
+    "wired_to_chat": true,
+    "reachability_note": null
    },
    "probe": {
     "request_id": "754cbc2bfda3",
@@ -2787,8 +2788,8 @@
      "extended_range",
      "press_release"
     ],
-    "wired_to_chat": false,
-    "reachability_note": "A registered document family ingests this source into the local corpus. It is not yet reachable from a conversation."
+    "wired_to_chat": true,
+    "reachability_note": null
    },
    "probe": {
     "request_id": "037171f3fea7",
@@ -2833,8 +2834,8 @@
     "ingested_by_families": [
      "special_advisory"
     ],
-    "wired_to_chat": false,
-    "reachability_note": "A registered document family ingests this source into the local corpus. It is not yet reachable from a conversation."
+    "wired_to_chat": true,
+    "reachability_note": null
    },
    "probe": {
     "request_id": "0e1de659c9d4",

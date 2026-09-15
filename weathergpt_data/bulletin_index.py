@@ -250,12 +250,18 @@ class BulletinIndex:
         with self.connection() as db:r=db.execute('SELECT payload,payload_hash FROM documents WHERE sha=?',(sha,)).fetchone()
         if not r or digest(r[0].encode())!=r[1]:raise SourceError('Published document integrity failed')
         published=self.document_publications(sha)
-        if not published:raise SourceError('Published document manifest is missing')
-        # A shared edition has one publication per district and the documents table keeps
-        # the payload of whichever district published first. Verify against the manifest
-        # that actually describes that payload, not merely the first file on disk.
-        if not any(json.loads(path.read_text()).get('document')==r[1] for path in published):
-            raise SourceError('Document publication manifest mismatch')
+        # A body can be published in both corpora under one sha: the chunk corpus writes
+        # publications/<sha>.json and the passage corpus writes
+        # publications/documents/<sha>-<region>.json. The documents table keeps whichever
+        # payload published first, so the manifest that describes that payload can be in
+        # either namespace. Verify against the manifest that actually describes it rather
+        # than denying a shared edition as though nothing published it.
+        chunk_publication=self.path.parent/'publications'/(sha+'.json')
+        described=any(json.loads(path.read_text()).get('document')==r[1] for path in published)
+        if not described and chunk_publication.exists():
+            described=json.loads(chunk_publication.read_text()).get('document')==r[1]
+        if not described:
+            raise SourceError('Published document manifest is missing' if not published else 'Document publication manifest mismatch')
         document=json.loads(r[0])
         regions=self.document_regions(sha)
         # One bulletin can be the published edition for several districts. Saying so is

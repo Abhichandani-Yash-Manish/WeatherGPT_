@@ -1,5 +1,5 @@
 """Explicit conversational focus and bounded context; old answer prose is not evidence."""
-import copy,re
+import copy,json,re
 from datetime import timedelta
 from zoneinfo import ZoneInfo
 from .transport import SourceError,parsed
@@ -19,8 +19,8 @@ def language_style(question,planned):
 # resolve to one measure instead of also matching their shorter component words.
 PARAMETER_WORDS=[('apparent_temperature',r'feels?[ -]like(?:\s+temperature)?|apparent temperature|real ?feel'),
                  ('wind_gusts_10m',r'(?:wind\s+)?gusts?'),
-                 ('precipitation_probability',r'probabilit\w+|chance of rain|rain chance|sambhavna|sambhawna|संभावना|સંભાવના'),
-                 ('precipitation',r'rain(?:fall)?\s+amount|amount of rain|how much rain|kitni mm|rainfall|\bmm\b'),
+                 ('precipitation_probability',r'probabilit\w+|probability of rain|rain probability|chance of rain|rain chance|sambhavna|sambhawna|संभावना|સંભાવના'),
+                 ('precipitation',r'rain(?:fall)?\s+amount|amount of rain|how much rain|kitni mm|rainfall|\brain\b|बारिश|વરસાદ|barish|baarish|\bmm\b'),
                  ('relative_humidity_2m',r'humidity|नमी|ભેજ'),
                  ('visibility',r'visibilit\w+'),
                  ('wind_speed_10m',r'wind(?:\s+speed)?'),
@@ -33,6 +33,33 @@ def named_parameters(text):
     for name,pattern in PARAMETER_WORDS:
         if re.search(pattern,text,re.I):
             found.append(name);text=re.sub(pattern,' ',text,flags=re.I)
+    return found
+
+
+# Bounded deterministic edit detection: a clause that supplies a new time, year or
+# measure outright must not be overwritten by inherited context when the model omits
+# the changed_fields tag. These only fire on explicit wording; they never guess.
+TIME_CLAUSE=re.compile(r'\b(?:morning|afternoon|evening|night|tonight|tomorrow|today|kal|aaj|shaam|sham|subah|dopahar|raat)\b|\d{1,2}[:.]\d{2}',re.I)
+YEAR_CLAUSE=re.compile(r'\b(?:19|20)\d{2}\b')
+NEGATION=r'(?:\bnot\b|\bno\b|\bnahi\b|\bnahin\b|\bwithout\b|\binstead of\b)'
+
+
+def current_clause(task,question):
+    """The clause of the current question this task supports.
+
+    A model quote that is not actually part of the current question is a stale copy
+    from the previous turn; the fresh question is then the only safe clause to read.
+    """
+    quote=(task.get('request_quote') or '').strip()
+    return quote if quote and quote in question else question
+
+
+def negated_measures(text):
+    """Forecast measures the clause explicitly rules out, e.g. 'temperature, not rain'."""
+    from .gazetteer import norm
+    value=norm(text or '');found=set()
+    for name,pattern in PARAMETER_WORDS:
+        if re.search(NEGATION+r'\s+(?:\w+\s+){0,3}(?:'+pattern+r')',value):found.add(name)
     return found
 
 
@@ -84,8 +111,30 @@ def reconcile(plan,state,question):
     if action in {'follow_up','correction','clarification_answer'} and previous.get('tasks'):
         for task in plan.get('tasks',[]):
             if task['kind']!='forecast':continue
-            missing=[p for p in named_parameters(task.get('request_quote',question)) if p not in task['parameters']]
+            clause=current_clause(task,question)
+            missing=[p for p in named_parameters(clause) if p not in task['parameters']]
             if missing:task['parameters']=task['parameters']+missing;changed.add('parameters')
+    # Bounded deterministic edits that must not depend on the model's changed_fields
+    # tag: a correction that rules a measure out, a clause that supplies a different
+    # time band or year, and a clause that names a measure the prior task did not have.
+    if action in {'follow_up','correction','clarification_answer'} and previous.get('tasks'):
+        old_tasks=previous['tasks']
+        for task in plan.get('tasks',[]):
+            clause=current_clause(task,question)
+            if task['kind']=='forecast':
+                blocked=negated_measures(clause);named=set(named_parameters(clause))
+                if action=='correction' and blocked and named-blocked:
+                    kept=[p for p in task['parameters'] if p not in blocked]
+                    if kept!=task['parameters']:task['parameters']=kept;changed.add('parameters')
+            if len(old_tasks)==1 and len(plan.get('tasks',[]))==1:
+                prior=old_tasks[0]
+                if task['kind']=='forecast' and set(named_parameters(clause)) and set(task['parameters'])!=set(prior['parameters']):
+                    changed.add('parameters')
+                if (task['start_local'],task['end_local'])!=(prior['start_local'],prior['end_local']) \
+                        and (task['start_local'] or task['end_local']) and TIME_CLAUSE.search(clause):
+                    changed.add('time')
+                if task['years'] and task['years']!=prior['years'] and YEAR_CLAUSE.search(clause):
+                    changed.add('time')
     if 'changed_fields' in plan:plan['changed_fields']=sorted(changed)
     inherited=[]
     if action in {'follow_up','correction','clarification_answer','explain_previous'} and previous:
@@ -109,6 +158,10 @@ def reconcile(plan,state,question):
                 for key,field in [('crop','crop'),('growth_stage','growth_stage'),('topic','topic'),('mode','operation'),('selection','detail')]:
                     if field not in changed:d[key]=prior['document_request'].get(key,'top' if key=='selection' else '')
                 d['query']=question+' '+d['crop']+' '+d['growth_stage']+' '+d['topic']
+            if task['kind']=='document' and prior.get('corpus_request'):
+                d=copy.deepcopy(prior['corpus_request']);quote=(task.get('request_quote') or question).strip()
+                if quote:d['query']=quote
+                task['corpus_request']=d;inherited.append('corpus_request')
         # A clarification answering just the missing place must retain the weather question.
         if action=='clarification_answer' and old and 'operation' not in changed and len(plan['tasks'])==1:
             quote=plan['tasks'][0].get('request_quote',question)
@@ -154,6 +207,24 @@ def save_focus(state,result):
     if result['facts'] or result.get('airport_reports') or result.get('passages'):state['last_evidence']={k:copy.deepcopy(result[k]) for k in ['facts','citations','expires_at_utc','answered_at_utc','notes','plan','status','answer','airport_reports','passages','document_evidence','charts','calculations','task_results','task_coverage','retrieval_plan','retrieval_coverage'] if k in result}
 
     if not result['facts'] and not result.get('airport_reports') and not result.get('passages'):state.pop('last_evidence',None)
+
+
+def apply_historical_choice(plan,selected):
+    """Rewrite the place to a confirmed source-series candidate; nothing else changes.
+
+    The candidate came from the place index and was offered for confirmation. This
+    rewrites only the place the choice names, keeps every other field, and records the
+    change as a place edit so the history task is re-run against the publisher series.
+    """
+    target=(selected or {}).get('historical_district')
+    if not target or not plan.get('tasks'):return plan
+    from .gazetteer import norm
+    asked=norm((selected or {}).get('for_place_name') or '')
+    for place in plan.get('places',[]):
+        if not asked or norm(place['name'])==asked:
+            place.update(name=target['name'],state=target.get('state',''),district=target['name'],kind='district')
+    plan['context_action']='clarification_answer';plan['changed_fields']=['places']
+    return plan
 
 
 def select_reply(question,choices):
@@ -223,6 +294,103 @@ def ground_explicit_slots(plan,question,context):
             indices.append(matches[0])
         t['place_indices']=indices
         plan['clarification']=''
+    plan=ground_document_request(plan,question)
+    return ground_named_place(plan,question)
+
+
+# Named publisher products, not the bare word "bulletin": a district agromet question
+# keeps its existing crop path, while a question that names a national, state or
+# marine product reaches the whole-document corpus even when the planner read it as a
+# weather or agriculture request. Patterns match the product name, not the user's topic.
+DOCUMENT_PRODUCTS=[
+    (r'all[ -]?india weather (?:summary|bulletin)|national weather (?:summary|bulletin)', 'national_bulletin', 'national'),
+    (r'south asia flash flood', 'flash_flood_sasia', 'regional'),
+    (r'flash flood (?:guidance|bulletin)', 'flash_flood_national', 'national'),
+    (r'extended range (?:forecast|outlook)', 'extended_range', 'national'),
+    (r'\berf\b', 'erf_marquee', 'national'),
+    (r'press release', 'press_release', 'national'),
+    (r'sea area bulletin', 'sea_area_bulletin', 'marine'),
+    (r'coastal (?:weather )?bulletin', 'coastal_bulletin', 'marine'),
+    (r'special advisory', 'special_advisory', 'marine'),
+    (r'state (?:composite )?agromet|composite agromet', 'state_agromet', 'state'),
+    (r'district forecast (?:and|&) warnings', 'state_district_bulletin', 'state')]
+
+
+def document_hint(question):
+    """The published product a question names outright, if any."""
+    text=(question or '').lower()
+    for pattern, family, scope in DOCUMENT_PRODUCTS:
+        if re.search(pattern, text):
+            return family, scope, pattern
+    return None
+
+
+def ground_document_request(plan, question):
+    """Retarget exactly one task to the corpus when the user named a document product.
+
+    The task keeps its request_quote, so the existing coverage check still proves the
+    clause came from the question. No other task is added or removed, and a question
+    that only names a district agromet bulletin is left to the crop path.
+    """
+    hint=document_hint(question)
+    if not hint or not plan.get('tasks'):
+        return plan
+    family, scope, pattern = hint
+    candidates=[t for t in plan['tasks']
+                if re.search(pattern, t.get('request_quote') or question, re.I)
+                and t['kind'] in {'document', 'agriculture', 'research', 'explanation', 'forecast'}]
+    if len(candidates)!=1:
+        return plan
+    task=candidates[0]
+    task['kind']='document'; task['operation']='lookup'; task['parameters']=['published_document']
+    task['corpus_request']={'query':task.get('request_quote') or question, 'family':family, 'scope':scope}
+    task.pop('document_request', None)
+    plan['intent']='document' if plan['tasks'][0] is task else plan.get('intent')
+    return plan
+
+
+def ground_named_place(plan,question):
+    """Bind a single state the question names outright when the planner left places empty.
+
+    This is a bounded compiler over the publisher's own directory, not a gazetteer
+    guess: only a whole-word state label is accepted, only when exactly one state is
+    named and when no place, no clarification and no explicit pin already exists. Two
+    named states are left for the planner rather than resolved by choosing one.
+    """
+    if plan.get('places') or plan.get('clarification') or not plan.get('tasks'):
+        return plan
+    if plan.get('context_action') in {'follow_up','correction','clarification_answer','explain_previous'}:
+        return plan
+    kinds={task['kind'] for task in plan['tasks']}
+    if not kinds <= {'document','agriculture','history','warning'}:
+        return plan
+    from .document_ingest import district_targets
+    from .foundation import ROOT
+    from .gazetteer import DEFAULT,norm
+    try:
+        targets,_=district_targets(ROOT)
+    except Exception:
+        return plan
+    try:
+        state_aliases=json.loads((DEFAULT.parent/'state-aliases.json').read_text())
+    except (OSError,ValueError):
+        state_aliases={}
+    text=norm(question)
+    matches=[]
+    for state in {target['state'] for target in targets}:
+        for name in {state}|set(state_aliases.get(norm(state),[])):
+            label=norm(name)
+            if len(label)>=4 and re.search(r'(?<!\w)'+re.escape(label)+r'(?!\w)',text):
+                matches.append(state);break
+    winners=set(matches)
+    if len(winners)!=1:
+        return plan
+    state=winners.pop()
+    plan['places']=[{'name':state,'state':'','district':'','kind':'state'}]
+    for task in plan['tasks']:
+        if task['kind'] in {'document','agriculture','history','warning'} and not task['place_indices']:
+            task['place_indices']=[0]
+    plan['assumptions']=list(plan.get('assumptions') or [])+['Read the named state from the question: '+state+'.']
     return plan
 
 

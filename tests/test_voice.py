@@ -150,6 +150,52 @@ class ChunkingTests(unittest.TestCase):
         self.assertEqual(speech.chunks('', 100), [])
 
 
+class TranslationModelTests(unittest.TestCase):
+    """The default translation model refuses a language; the service names the wider one."""
+
+    def test_a_refused_language_is_retried_on_the_model_the_service_names(self):
+        import json
+        calls = []
+
+        def request(path, data, headers, deadline=speech.TIMEOUT):
+            body = json.loads(data)
+            calls.append(body)
+            if 'model' not in body:
+                raise speech.LanguageServiceUnavailable(
+                    "The language service refused the request (HTTP 400): {\"error\":{\"message\":"
+                    "\"Language 'ta-IN' is not supported in mayura:v1. Please switch to sarvam-translate:v1\"}}")
+            return {'translated_text': 'சோதனை', 'source_language_code': 'en-IN', 'request_id': 'r1'}, 0.2
+
+        with patch.object(speech, '_request', request):
+            text, meta = speech.translate('Rainfall of 35 mm is forecast.', 'ta')
+        self.assertEqual(text, 'சோதனை')
+        self.assertIsNone(calls[0].get('model'))
+        self.assertEqual(calls[1]['model'], speech.WIDER_TRANSLATE_MODEL)
+        self.assertEqual(meta['model'], speech.WIDER_TRANSLATE_MODEL)
+        self.assertEqual(meta['model_selection'], 'wider_model_named_by_service_refusal')
+        self.assertFalse(meta['is_evidence'])
+
+    def test_a_refusal_that_does_not_name_the_model_is_not_retried(self):
+        import json
+        calls = []
+
+        def request(path, data, headers, deadline=speech.TIMEOUT):
+            calls.append(json.loads(data))
+            raise speech.LanguageServiceUnavailable('The language service refused the request (HTTP 401): bad key')
+
+        with patch.object(speech, '_request', request):
+            with self.assertRaises(speech.LanguageServiceUnavailable):
+                speech.translate('Rainfall of 35 mm is forecast.', 'ta')
+        self.assertEqual(len(calls), 1)
+
+    def test_the_default_model_is_recorded_as_the_provider_default(self):
+        with patch.object(speech, '_request',
+                          lambda *a, **k: ({'translated_text': 'अनुवाद', 'request_id': 'r2'}, 0.1)):
+            _, meta = speech.translate('Rainfall of 35 mm is forecast.', 'hi')
+        self.assertEqual(meta['model'], 'provider_default')
+        self.assertEqual(meta['model_selection'], 'provider_default')
+
+
 class LanguageViewTests(unittest.TestCase):
     def test_the_interface_is_told_measured_support_not_the_documented_claim(self):
         view = workspace().languages()

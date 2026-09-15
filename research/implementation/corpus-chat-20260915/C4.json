@@ -1,0 +1,177 @@
+{
+  "id": "C4",
+  "question": "What does the coastal weather bulletin say about the Gujarat coast?",
+  "status": "partial",
+  "answered_language": null,
+  "duration_s": 4.37,
+  "plan_tasks": [
+    {
+      "kind": "document",
+      "operation": "lookup",
+      "corpus_request": {
+        "query": "What does the coastal weather bulletin say about the Gujarat coast?",
+        "family": "coastal_bulletin",
+        "scope": "marine"
+      },
+      "document_request": null
+    }
+  ],
+  "places": [
+    {
+      "name": "Gujarat",
+      "state": "",
+      "district": "",
+      "kind": "state"
+    }
+  ],
+  "answer": "Indexed published documents, not forecasts or current warnings:\n\nRSMC coastal weather bulletin · marine · document 37b13acea4eb · printed issue 2026-09-14 · on the printed issue date · retrieved 2026-09-14 18:27:50.872642+00:00.\n\nRSMC coastal weather bulletin · marine · document 870106ea1345 · printed issue 2026-09-14 · on the printed issue date · retrieved 2026-09-14 18:27:50.872642+00:00.\n\n· page 1: “India Meteorological Department/ भारत मौसम िव ान िवभाग CWC AHMEDABAD / सी . डब ू . सी अहमदाबाद Coastal Weather Bulletin DAILY ONE Bulletin Valid for 12 hrs from 10 UTC of 2026-09-14 to 22 UTC of 2026-09-14 Synoptic Situation”\n\nRSMC coastal weather bulletin · marine · document bc80dbb52277 · printed issue 2026-09-14 · on the printed issue date · retrieved 2026-09-14 18:27:50.872642+00:00.\n\n· page 1 · COASTAL WEATHER BULLETIN: “DATE : 14-09-2026 TIME OF ISSUE: 1500 UTC”\n\nRSMC coastal weather bulletin · marine · document 887aacf00f65 · printed issue 2026-09-14 · on the printed issue date · retrieved 2026-09-14 18:27:50.872642+00:00.\n\n· page 1 · COASTAL WEATHER BULLETIN: “DATE : 14-09-2026 TIME OF ISSUE: 1500 UTC”\n\nRSMC coastal weather bulletin · marine · document 6315b80dbeed · printed issue 2026-09-14 · on the printed issue date · retrieved 2026-09-14 18:27:50.872642+00:00.\n\n· page 1: “India Meteorological Department/ भारत मौसम िव ान िवभाग ACWC KOLKATA / ए . सी . डब ू . सी कोलकाता Coastal Weather Bulletin DAILY ONE Bulletin Valid for 12 hrs from 09 UTC of 2026-09-14 to 21 UTC of 2026-09-14 Synoptic Situation”\n\nWarning-related text published in these documents (reference only):\n\n· national, page 1: “India Meteorological Department/ भारत मौसम िव ान िवभाग CWC THIRUVANANTHAPURAM / सी . डब ू . सी ितरुवनंतपुरम Coastal Weather Bulletin DAILY TWO Bulletin Valid for 12 hrs from 22 UTC of 2026-09-14 to 10 UTC of 2026-09-15 Synoptic Situation NIL Karnataka coast Wind NORTH WESTERLY/ NORTH, 15 - 20 KNOTS Weather ISOLATED RAIN/ THUNDERSTORM Visibility GOOD BECOMING POOR IN RAIN/THUNDERSHOWERS Sea Condition MODERATE Port Signal NIL AT ALL PORTS Storm Surge/Tidal Warning NIL North Kerala coast Wind NORTH WESTERLY/ NORTH, … [excerpt; full passage retained in evidence]”\n\n· national, page 2: “Port Signal NIL AT ALL PORTS Storm Surge/Tidal Warning SWELL SURGE ALERT FOR THE COAST OF AGATTI, AMINI, ANDROTH, KAVARATTI,MINICOY. SWELL WAVES IN THE RANGE OF 14.0 - 17.0 SEC PERIOD WITH 1.2 1.6M HEIGHT ARE FORECASTED TILL 23:30 HOURS ON 15-09-2026. Time of Issue 21:22 IST of 2026-09-14 9/14/26, 9:27 PM mausam.imd.gov.in/Forecast/coastal_bulletin_new.php?id=2 https://mausam.imd.gov.in/Forecast/coastal_bulletin_new.php?id=2 2/2”\n\n· national, page 1: “Storm Surge/Tidal Warning SWELL SURGE ALERT FOR THE COAST OF KASARAGOD, KANNUR. SWELL WAVESIN THE RANGE OF 15.0 - 18.0 SEC PERIOD WITH 0.9 - 1.1 M HEIGHT AREFORECASTED TILL 23:30 HOURS ON 15-09-2026 South Kerala coast Wind NORTH WESTERLY/ NORTH, 15 - 20 KNOTS GUSTING TO 30 KNOTS Weather FAIRLY WIDESPREAD RAIN/ THUNDERSTORM Visibility MODERATE BECOMING POOR IN RAIN/THUNDERSHOWERS, … [excerpt; full passage retained in evidence]”\n\n· national, page 1 · KANDLA, NAVLAKHI, SALAYA, OKHA, BEDI, SIKKA (JAMNAGAR),: “PORBANDAR) Storm Surge/Tidal Warning NIL South Gujrath coast Wind SOUTH WESTERLY/ WEST, 20 - 25 KNOTS GUSTING TO 30 KNOTS 9/14/26, 12:18 PM mausam.imd.gov.in/Forecast/coastal_bulletin_new.php?id=3 https://mausam.imd.gov.in/Forecast/coastal_bulletin_new.php?id=3 1/2”\n\n· national, page 1 · PORT SIGNAL       : NIL.: “of waves, boats to ply with utmost vigilance, recreation with due care. Swell Surge Alert for the coast of THOOTHUKKUDI,TAMIL NADU from Periyathalai To Vembar. Swell waves in the range of 17.0 - 19.0 sec period with 1.3 - 1.5 m height are forecasted during 17:30 hours on 13-09- 2026 to 23:30 hours on 15-09-2026. It advised that there is a possibility of surging of waves, boats to ply with utmost vigilance, recreation with due care. … [excerpt; full passage retained in evidence]”\n\nThat text records what a document published. It is not a current applicable official warning, not an all-clear, and it grants no clearance. Current applicability is answered only by the official warning check, which is a separate evidence source.\n\nExtraction reading order is unverified for these documents; tables and headings can be split.\n\nThese are original source excerpts. They are not a forecast, an observation, an official warning or personalized advice.",
+  "notes": [
+    "The user is asking for a published document rather than a current forecast or warning.",
+    "No specific date range was provided, so the most recent available bulletin will be retrieved.",
+    "Read the named state from the question: Gujarat."
+  ],
+  "passages": [
+    {
+      "id": "56c8e7ad903c5a8ac7e69adcbbdeae28c3deb89954cf757b9a86c53701fdc1c3",
+      "family": "coastal_bulletin",
+      "region": null,
+      "physical_page": 1,
+      "evidence_kind": "warning_reference",
+      "issue_date": "2026-09-14"
+    },
+    {
+      "id": "2f9972d2acbd3089d2529b413058e1bdac5cd50c7435673670802a8b9039f65b",
+      "family": "coastal_bulletin",
+      "region": null,
+      "physical_page": 2,
+      "evidence_kind": "warning_reference",
+      "issue_date": "2026-09-14"
+    },
+    {
+      "id": "d977ec24d36662208ee0bf797cfd409158b57e23939aaf72f1c48b7e831f7d56",
+      "family": "coastal_bulletin",
+      "region": null,
+      "physical_page": 1,
+      "evidence_kind": "warning_reference",
+      "issue_date": "2026-09-14"
+    },
+    {
+      "id": "f8f7e1eca55b83f4b75eb9bcc7f07d78100be432ea69df2852cb1811296db6f9",
+      "family": "coastal_bulletin",
+      "region": null,
+      "physical_page": 1,
+      "evidence_kind": "forecast_text",
+      "issue_date": "2026-09-14"
+    },
+    {
+      "id": "8fb4c1d4dcd7daae6e881f5b4e330231923653265cdada4971c0f7a9299162c6",
+      "family": "coastal_bulletin",
+      "region": null,
+      "physical_page": 1,
+      "evidence_kind": "warning_reference",
+      "issue_date": "2026-09-14"
+    },
+    {
+      "id": "14ae5cb25df5db098f965a6e2ad94501be515ba7563e7f9fe797d20fe53380a0",
+      "family": "coastal_bulletin",
+      "region": null,
+      "physical_page": 1,
+      "evidence_kind": "general_text",
+      "issue_date": "2026-09-14"
+    },
+    {
+      "id": "2a36538abb0b31e3e00ca059ea6db0daec0c86374f7d1e615c38e41a9ef97c8b",
+      "family": "coastal_bulletin",
+      "region": null,
+      "physical_page": 1,
+      "evidence_kind": "general_text",
+      "issue_date": "2026-09-14"
+    },
+    {
+      "id": "aa8ab5119c227944a228644d2e56d3a62225a702fb2dec258a41d73d31e8d51b",
+      "family": "coastal_bulletin",
+      "region": null,
+      "physical_page": 1,
+      "evidence_kind": "warning_reference",
+      "issue_date": "2026-09-14"
+    },
+    {
+      "id": "308f2fa59ed73b4498df99b69a0f068374a5b3f5952b82cd314392cb432d7c4a",
+      "family": "coastal_bulletin",
+      "region": null,
+      "physical_page": 1,
+      "evidence_kind": "forecast_text",
+      "issue_date": "2026-09-14"
+    }
+  ],
+  "citations": [
+    {
+      "id": "t1-doc-37b13acea4ebeac65aab30c9ffa2412c772f7bde4db3d2bbf0e7446e65187d36",
+      "source_id": "S59",
+      "product": "RSMC coastal weather bulletin",
+      "issue_date": "2026-09-14",
+      "local_document_path": "/api/documents/37b13acea4ebeac65aab30c9ffa2412c772f7bde4db3d2bbf0e7446e65187d36"
+    },
+    {
+      "id": "t1-doc-870106ea1345f9badf9809dfbfd8affbbaa5079bf8ec3697a81602798d80e811",
+      "source_id": "S59",
+      "product": "RSMC coastal weather bulletin",
+      "issue_date": "2026-09-14",
+      "local_document_path": "/api/documents/870106ea1345f9badf9809dfbfd8affbbaa5079bf8ec3697a81602798d80e811"
+    },
+    {
+      "id": "t1-doc-bc80dbb52277ae1ae0cec6032a191e166fda6ea3a5392fa90e60d2face32277c",
+      "source_id": "S59",
+      "product": "RSMC coastal weather bulletin",
+      "issue_date": "2026-09-14",
+      "local_document_path": "/api/documents/bc80dbb52277ae1ae0cec6032a191e166fda6ea3a5392fa90e60d2face32277c"
+    },
+    {
+      "id": "t1-doc-887aacf00f65c5f111efe0a3ce5679c20faf954c2b073396e07b97d361b12b27",
+      "source_id": "S59",
+      "product": "RSMC coastal weather bulletin",
+      "issue_date": "2026-09-14",
+      "local_document_path": "/api/documents/887aacf00f65c5f111efe0a3ce5679c20faf954c2b073396e07b97d361b12b27"
+    },
+    {
+      "id": "t1-doc-6315b80dbeed2944b6007ced1d782d134a6fa10705981c1aa1024a217ef919c6",
+      "source_id": "S59",
+      "product": "RSMC coastal weather bulletin",
+      "issue_date": "2026-09-14",
+      "local_document_path": "/api/documents/6315b80dbeed2944b6007ced1d782d134a6fa10705981c1aa1024a217ef919c6"
+    }
+  ],
+  "retrieval_coverage": [
+    {
+      "candidates": 29,
+      "returned": 9,
+      "lexically_supported": 9,
+      "lexical_overlap_required": true,
+      "filters": {
+        "family": "coastal_bulletin",
+        "scope": "marine",
+        "region": null
+      },
+      "evidence_classes": {
+        "warning_reference": 5,
+        "forecast_text": 2,
+        "general_text": 2
+      },
+      "superseded_retired": 0,
+      "currency_unknown": 0,
+      "expired_printed_validity": 0,
+      "unverified_excluded": 0,
+      "scope": "Whole-document passage index over indexed published documents; not a completeness claim for any publisher and not an archive.",
+      "scores_are_confidence": false,
+      "task_id": "t1"
+    }
+  ],
+  "generation": {
+    "provider": "typed_task_renderers",
+    "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit.",
+    "requested_language": "en",
+    "language_selection": "inferred_from_question",
+    "language_adherence": "not_applicable"
+  },
+  "language_trace": null
+}

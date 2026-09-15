@@ -21,6 +21,7 @@ def execute_plan(engine,result,plan,resolved,coordinates):
     result.update(task_results=[],charts=[],calculations=[],pending_slots=[],retrieval_coverage=[],retrieval_plan=retrieval_plan(plan,result.get('retrieval_preferences')))
     chunks=[];statuses=[];executed=[]
     for index,task in enumerate(plan['tasks']):
+        if hasattr(engine,'check_cancelled'):engine.check_cancelled()
         tid='t'+str(index+1)
         sub={**plan,'intent':task['kind'],'places':[plan['places'][i] for i in task['place_indices']],
              'start_local':task['start_local'],'end_local':task['end_local']}
@@ -58,6 +59,11 @@ def execute_plan(engine,result,plan,resolved,coordinates):
                 packet=copy.deepcopy({k:v for k,v in result.items() if k not in {'task_results','charts','calculations','passages','document_evidence','airport_reports','warning_evidence','pending_slots','retrieval_coverage'}})
                 packet.update(facts=[],citations=[],choices=[],notes=[],answer='',plan=sub,status='unavailable',follow_up=None,expires_at_utc=None,trace={'tools':[],'generation':None})
                 packet=execute_warning(engine,packet,sub,task,resolved,coordinates)
+            elif task['kind']=='document':
+                from .corpus_tools import execute_corpus
+                packet=copy.deepcopy({k:v for k,v in result.items() if k not in {'task_results','charts','calculations','passages','document_evidence','airport_reports','warning_evidence','pending_slots','retrieval_coverage'}})
+                packet.update(facts=[],citations=[],choices=[],notes=[],answer='',plan=sub,status='unavailable',follow_up=None,expires_at_utc=None,trace={'tools':[],'generation':None})
+                packet=execute_corpus(engine,packet,sub,task,resolved)
             elif task['kind'] in GAPS:
                 packet={'status':'unavailable','answer':GAPS[task['kind']]}
             elif task['kind'] in {'forecast','travel','agriculture'}:
@@ -155,6 +161,7 @@ def execute_plan(engine,result,plan,resolved,coordinates):
         if statuses==['explanation']:result['status']='explanation'
         # A window the user can correct must not be reported as a missing source.
         elif set(statuses)=={'outside_validity'}:result['status']='outside_validity'
+    if hasattr(engine,'check_cancelled'):engine.check_cancelled()
     result['notes']=list(dict.fromkeys(result['notes']));result['resolved_points']=resolved
     result['answer']='\n\n'.join((f"Task {i+1}: " if len(plan['tasks'])>1 else '')+text for i,text in enumerate(chunks))
     if len(result['task_results'])>len(chunks):result['answer']+='\nOther requested tasks are waiting for this place selection.'

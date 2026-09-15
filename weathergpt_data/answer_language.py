@@ -67,8 +67,18 @@ def identities(result):
             if isinstance(value, str) and len(value) > 1 and value not in found:
                 found.append(value)
     for passage in result.get('passages') or []:
-        for key in ('district', 'state'):
+        for key in ('district', 'state', 'region'):
             value = passage.get(key)
+            if isinstance(value, str) and len(value) > 1 and value not in found:
+                found.append(value)
+    for evidence in result.get('document_evidence') or []:
+        for key in ('region', 'state'):
+            value = evidence.get(key)
+            if isinstance(value, str) and len(value) > 1 and value not in found:
+                found.append(value)
+    for choice in result.get('choices') or []:
+        for key in ('label', 'admin1', 'district'):
+            value = choice.get(key)
             if isinstance(value, str) and len(value) > 1 and value not in found:
                 found.append(value)
     # Longest first, so "Ahmedabad, Gujarat" is protected before "Gujarat" alone.

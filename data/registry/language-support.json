@@ -1,28 +1,18 @@
 {
  "languages": {
   "as": {
-   "checked_at_utc": "2026-09-14T20:38:33.943060+00:00",
+   "checked_at_utc": "2026-09-14T22:09:38.085764+00:00",
+   "speak": {
+    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to as-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_c1a4d27e-ca02-4da3-93ed-0ef3e481ada3\"}}",
+    "state": "failed"
+   },
    "write": {
-    "failed_sentences": 2,
-    "gate_findings": [
-     {
-      "duplicated": [],
-      "missing": [],
-      "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Language 'as-IN' is not supported in mayura:v1. Please switch to sarvam-translate:v1 to use this language.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_c1bbcd25-6379-4ac9-8596-8e3e1c8bce67\"}}",
-      "sentence": "Rainfall of 35 mm is forecast for Ahmedabad, Gujarat on 2026-09-16."
-     },
-     {
-      "duplicated": [],
-      "missing": [],
-      "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Language 'as-IN' is not supported in mayura:v1. Please switch to sarvam-translate:v1 to use this language.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_3bc6fecd-a137-4c84-b0b1-5450d836849a\"}}",
-      "sentence": "Source S21 was read today."
-     }
-    ],
-    "reason": "the rendering was not written in this script",
+    "elapsed_s": 3.54,
+    "held_safety_critical": 1,
     "sentences": 3,
-    "state": "failed",
-    "values_survived": true,
-    "written_in_script": false
+    "state": "verified",
+    "translated": 2,
+    "written_in_script": true
    }
   },
   "bn": {
@@ -52,53 +42,33 @@
    }
   },
   "brx": {
-   "checked_at_utc": "2026-09-14T20:38:44.009254+00:00",
+   "checked_at_utc": "2026-09-14T22:09:41.928662+00:00",
+   "speak": {
+    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to brx-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_c6c1992e-d6ce-40f2-8cc2-01e977478bd6\"}}",
+    "state": "failed"
+   },
    "write": {
-    "failed_sentences": 2,
-    "gate_findings": [
-     {
-      "duplicated": [],
-      "missing": [],
-      "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Language 'brx-IN' is not supported in mayura:v1. Please switch to sarvam-translate:v1 to use this language.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_9c81a9cf-a12a-4b9f-ae5f-b3f127e56d65\"}}",
-      "sentence": "Rainfall of 35 mm is forecast for Ahmedabad, Gujarat on 2026-09-16."
-     },
-     {
-      "duplicated": [],
-      "missing": [],
-      "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Language 'brx-IN' is not supported in mayura:v1. Please switch to sarvam-translate:v1 to use this language.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_c7eb9542-f0ae-4cbe-9b00-6cc50a433a18\"}}",
-      "sentence": "Source S21 was read today."
-     }
-    ],
-    "reason": "the rendering was not written in this script",
+    "elapsed_s": 2.53,
+    "held_safety_critical": 1,
     "sentences": 3,
-    "state": "failed",
-    "values_survived": true,
-    "written_in_script": false
+    "state": "verified",
+    "translated": 2,
+    "written_in_script": true
    }
   },
   "doi": {
-   "checked_at_utc": "2026-09-14T20:38:45.327869+00:00",
+   "checked_at_utc": "2026-09-14T22:09:45.077242+00:00",
+   "speak": {
+    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to doi-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_f94097f6-89a2-4101-97a9-cc68404603f5\"}}",
+    "state": "failed"
+   },
    "write": {
-    "failed_sentences": 2,
-    "gate_findings": [
-     {
-      "duplicated": [],
-      "missing": [],
-      "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Language 'doi-IN' is not supported in mayura:v1. Please switch to sarvam-translate:v1 to use this language.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_baffeb81-57f7-4311-9db8-cf109a9f5147\"}}",
-      "sentence": "Rainfall of 35 mm is forecast for Ahmedabad, Gujarat on 2026-09-16."
-     },
-     {
-      "duplicated": [],
-      "missing": [],
-      "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Language 'doi-IN' is not supported in mayura:v1. Please switch to sarvam-translate:v1 to use this language.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_8db9b336-50c5-45ac-9001-095a748c2e4a\"}}",
-      "sentence": "Source S21 was read today."
-     }
-    ],
-    "reason": "the rendering was not written in this script",
+    "elapsed_s": 2.83,
+    "held_safety_critical": 1,
     "sentences": 3,
-    "state": "failed",
-    "values_survived": true,
-    "written_in_script": false
+    "state": "verified",
+    "translated": 2,
+    "written_in_script": true
    }
   },
   "en": {
@@ -202,78 +172,48 @@
    }
   },
   "kok": {
-   "checked_at_utc": "2026-09-14T20:38:40.126251+00:00",
+   "checked_at_utc": "2026-09-14T22:09:48.247543+00:00",
+   "speak": {
+    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to kok-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_95f15e07-7944-4f08-b9d9-9b971d30403f\"}}",
+    "state": "failed"
+   },
    "write": {
-    "failed_sentences": 2,
-    "gate_findings": [
-     {
-      "duplicated": [],
-      "missing": [],
-      "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Language 'kok-IN' is not supported in mayura:v1. Please switch to sarvam-translate:v1 to use this language.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_26a4ec7b-40b3-4f8c-be0f-1caccdfd31d7\"}}",
-      "sentence": "Rainfall of 35 mm is forecast for Ahmedabad, Gujarat on 2026-09-16."
-     },
-     {
-      "duplicated": [],
-      "missing": [],
-      "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Language 'kok-IN' is not supported in mayura:v1. Please switch to sarvam-translate:v1 to use this language.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_a014e39d-a0d1-45e8-a744-f32226c70bf0\"}}",
-      "sentence": "Source S21 was read today."
-     }
-    ],
-    "reason": "the rendering was not written in this script",
+    "elapsed_s": 2.25,
+    "held_safety_critical": 1,
     "sentences": 3,
-    "state": "failed",
-    "values_survived": true,
-    "written_in_script": false
+    "state": "verified",
+    "translated": 2,
+    "written_in_script": true
    }
   },
   "ks": {
-   "checked_at_utc": "2026-09-14T20:38:40.747416+00:00",
+   "checked_at_utc": "2026-09-14T22:09:50.813836+00:00",
+   "speak": {
+    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to ks-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_8136cb61-c2de-49d8-acbf-9a84b2b7ba43\"}}",
+    "state": "failed"
+   },
    "write": {
-    "failed_sentences": 2,
-    "gate_findings": [
-     {
-      "duplicated": [],
-      "missing": [],
-      "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Language 'ks-IN' is not supported in mayura:v1. Please switch to sarvam-translate:v1 to use this language.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_ff946067-935b-416b-8577-9ee63521e21f\"}}",
-      "sentence": "Rainfall of 35 mm is forecast for Ahmedabad, Gujarat on 2026-09-16."
-     },
-     {
-      "duplicated": [],
-      "missing": [],
-      "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Language 'ks-IN' is not supported in mayura:v1. Please switch to sarvam-translate:v1 to use this language.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_7cd323c1-ac95-471b-a6e5-4ae2f120d387\"}}",
-      "sentence": "Source S21 was read today."
-     }
-    ],
-    "reason": "the rendering was not written in this script",
+    "elapsed_s": 2.29,
+    "held_safety_critical": 1,
     "sentences": 3,
-    "state": "failed",
-    "values_survived": true,
-    "written_in_script": false
+    "state": "verified",
+    "translated": 2,
+    "written_in_script": true
    }
   },
   "mai": {
-   "checked_at_utc": "2026-09-14T20:38:44.528021+00:00",
+   "checked_at_utc": "2026-09-14T22:09:53.362247+00:00",
+   "speak": {
+    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to mai-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_60c62729-6592-41d3-aa8a-ee12c43dcbc0\"}}",
+    "state": "failed"
+   },
    "write": {
-    "failed_sentences": 2,
-    "gate_findings": [
-     {
-      "duplicated": [],
-      "missing": [],
-      "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Language 'mai-IN' is not supported in mayura:v1. Please switch to sarvam-translate:v1 to use this language.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_1b172211-228d-4ba2-8338-ae0eabf5633a\"}}",
-      "sentence": "Rainfall of 35 mm is forecast for Ahmedabad, Gujarat on 2026-09-16."
-     },
-     {
-      "duplicated": [],
-      "missing": [],
-      "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Language 'mai-IN' is not supported in mayura:v1. Please switch to sarvam-translate:v1 to use this language.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_aa808a9c-ffde-4aef-abf9-930815b5bc5e\"}}",
-      "sentence": "Source S21 was read today."
-     }
-    ],
-    "reason": "the rendering was not written in this script",
+    "elapsed_s": 2.04,
+    "held_safety_critical": 1,
     "sentences": 3,
-    "state": "failed",
-    "values_survived": true,
-    "written_in_script": false
+    "state": "verified",
+    "translated": 2,
+    "written_in_script": true
    }
   },
   "ml": {
@@ -303,28 +243,18 @@
    }
   },
   "mni": {
-   "checked_at_utc": "2026-09-14T20:38:43.305951+00:00",
+   "checked_at_utc": "2026-09-14T22:09:55.782604+00:00",
+   "speak": {
+    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to mni-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_121f24bd-22c4-4a07-9de8-d38cfa8f2b9f\"}}",
+    "state": "failed"
+   },
    "write": {
-    "failed_sentences": 2,
-    "gate_findings": [
-     {
-      "duplicated": [],
-      "missing": [],
-      "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Language 'mni-IN' is not supported in mayura:v1. Please switch to sarvam-translate:v1 to use this language.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_af096859-74dd-4488-afcd-ee69051aa488\"}}",
-      "sentence": "Rainfall of 35 mm is forecast for Ahmedabad, Gujarat on 2026-09-16."
-     },
-     {
-      "duplicated": [],
-      "missing": [],
-      "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Language 'mni-IN' is not supported in mayura:v1. Please switch to sarvam-translate:v1 to use this language.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_8a841d65-0fa7-4fb2-a0a7-3b06dd2dfca7\"}}",
-      "sentence": "Source S21 was read today."
-     }
-    ],
-    "reason": "the rendering was not written in this script",
+    "elapsed_s": 2.48,
+    "held_safety_critical": 1,
     "sentences": 3,
-    "state": "failed",
-    "values_survived": true,
-    "written_in_script": false
+    "state": "verified",
+    "translated": 2,
+    "written_in_script": true
    }
   },
   "mr": {
@@ -354,28 +284,18 @@
    }
   },
   "ne": {
-   "checked_at_utc": "2026-09-14T20:38:39.079343+00:00",
+   "checked_at_utc": "2026-09-14T22:09:58.573862+00:00",
+   "speak": {
+    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to ne-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_07318656-0793-4a90-b859-d998edde5bef\"}}",
+    "state": "failed"
+   },
    "write": {
-    "failed_sentences": 2,
-    "gate_findings": [
-     {
-      "duplicated": [],
-      "missing": [],
-      "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Language 'ne-IN' is not supported in mayura:v1. Please switch to sarvam-translate:v1 to use this language.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_019700be-1d20-43ff-a9cc-3650505c40b7\"}}",
-      "sentence": "Rainfall of 35 mm is forecast for Ahmedabad, Gujarat on 2026-09-16."
-     },
-     {
-      "duplicated": [],
-      "missing": [],
-      "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Language 'ne-IN' is not supported in mayura:v1. Please switch to sarvam-translate:v1 to use this language.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_1867d8a8-5174-4baf-99a6-faa852bc1d38\"}}",
-      "sentence": "Source S21 was read today."
-     }
-    ],
-    "reason": "the rendering was not written in this script",
+    "elapsed_s": 2.54,
+    "held_safety_critical": 1,
     "sentences": 3,
-    "state": "failed",
-    "values_survived": true,
-    "written_in_script": false
+    "state": "verified",
+    "translated": 2,
+    "written_in_script": true
    }
   },
   "od": {
@@ -431,70 +351,62 @@
    }
   },
   "sa": {
-   "checked_at_utc": "2026-09-14T20:38:42.039537+00:00",
+   "checked_at_utc": "2026-09-14T22:10:01.377719+00:00",
+   "speak": {
+    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to sa-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_686f45e9-8589-4879-a4d2-89043aa2dcdd\"}}",
+    "state": "failed"
+   },
    "write": {
-    "failed_sentences": 2,
-    "gate_findings": [
-     {
-      "duplicated": [],
-      "missing": [],
-      "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Language 'sa-IN' is not supported in mayura:v1. Please switch to sarvam-translate:v1 to use this language.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_f4615e97-6d0e-446d-8838-3b8dc7b21d22\"}}",
-      "sentence": "Rainfall of 35 mm is forecast for Ahmedabad, Gujarat on 2026-09-16."
-     },
-     {
-      "duplicated": [],
-      "missing": [],
-      "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Language 'sa-IN' is not supported in mayura:v1. Please switch to sarvam-translate:v1 to use this language.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_3143036e-f038-41e8-ad94-af2a979fe880\"}}",
-      "sentence": "Source S21 was read today."
-     }
-    ],
-    "reason": "the rendering was not written in this script",
+    "elapsed_s": 2.19,
+    "held_safety_critical": 1,
     "sentences": 3,
-    "state": "failed",
-    "values_survived": true,
-    "written_in_script": false
+    "state": "verified",
+    "translated": 2,
+    "written_in_script": true
    }
   },
   "sat": {
-   "checked_at_utc": "2026-09-14T20:38:42.669930+00:00",
+   "checked_at_utc": "2026-09-14T22:10:03.883202+00:00",
    "write": {
-    "failed_sentences": 2,
+    "failed_sentences": 1,
     "gate_findings": [
      {
       "duplicated": [],
-      "missing": [],
-      "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Language 'sat-IN' is not supported in mayura:v1. Please switch to sarvam-translate:v1 to use this language.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_a3e737a5-77bf-49ff-bc6b-f56b2849f770\"}}",
-      "sentence": "Rainfall of 35 mm is forecast for Ahmedabad, Gujarat on 2026-09-16."
-     },
-     {
-      "duplicated": [],
-      "missing": [],
-      "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Language 'sat-IN' is not supported in mayura:v1. Please switch to sarvam-translate:v1 to use this language.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_65f01e15-94d1-4ec5-9a29-8a568322c4fc\"}}",
+      "missing": [
+       "S21"
+      ],
+      "reason": "protected values did not survive",
       "sentence": "Source S21 was read today."
      }
     ],
-    "reason": "the rendering was not written in this script",
+    "reason": "a protected value did not survive the rendering",
     "sentences": 3,
     "state": "failed",
     "values_survived": true,
-    "written_in_script": false
+    "written_in_script": true
    }
   },
   "sd": {
-   "checked_at_utc": "2026-09-14T20:38:41.410773+00:00",
+   "checked_at_utc": "2026-09-14T22:10:06.948069+00:00",
    "write": {
     "failed_sentences": 2,
     "gate_findings": [
      {
       "duplicated": [],
-      "missing": [],
-      "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Language 'sd-IN' is not supported in mayura:v1. Please switch to sarvam-translate:v1 to use this language.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_2f5518d7-a156-4d5c-9ad2-2fb97db11c94\"}}",
+      "missing": [
+       "35 mm",
+       "Ahmedabad, Gujarat",
+       "2026-09-16"
+      ],
+      "reason": "protected values did not survive",
       "sentence": "Rainfall of 35 mm is forecast for Ahmedabad, Gujarat on 2026-09-16."
      },
      {
       "duplicated": [],
-      "missing": [],
-      "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Language 'sd-IN' is not supported in mayura:v1. Please switch to sarvam-translate:v1 to use this language.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_88e93cc6-3e14-49e0-8792-6f85777ddef4\"}}",
+      "missing": [
+       "S21"
+      ],
+      "reason": "protected values did not survive",
       "sentence": "Source S21 was read today."
      }
     ],
@@ -506,7 +418,7 @@
    }
   },
   "ta": {
-   "checked_at_utc": "2026-09-14T20:38:09.673453+00:00",
+   "checked_at_utc": "2026-09-14T22:10:09.217495+00:00",
    "write": {
     "failed_sentences": 1,
     "gate_findings": [
@@ -553,28 +465,18 @@
    }
   },
   "ur": {
-   "checked_at_utc": "2026-09-14T20:38:36.027475+00:00",
+   "checked_at_utc": "2026-09-14T22:10:11.247186+00:00",
+   "speak": {
+    "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Please request beta access to ur-IN by contacting our support team.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_850b7e06-e420-4dd7-9b87-af993d77e0c8\"}}",
+    "state": "failed"
+   },
    "write": {
-    "failed_sentences": 2,
-    "gate_findings": [
-     {
-      "duplicated": [],
-      "missing": [],
-      "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Language 'ur-IN' is not supported in mayura:v1. Please switch to sarvam-translate:v1 to use this language.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_c109776b-ab56-4d28-8ce1-6da684b9d80d\"}}",
-      "sentence": "Rainfall of 35 mm is forecast for Ahmedabad, Gujarat on 2026-09-16."
-     },
-     {
-      "duplicated": [],
-      "missing": [],
-      "reason": "The language service refused the request (HTTP 400): {\"error\":{\"message\":\"Language 'ur-IN' is not supported in mayura:v1. Please switch to sarvam-translate:v1 to use this language.\",\"code\":\"invalid_request_error\",\"request_id\":\"20260914_f8a7c119-412a-4771-a786-be81cc53fa18\"}}",
-      "sentence": "Source S21 was read today."
-     }
-    ],
-    "reason": "the rendering was not written in this script",
+    "elapsed_s": 2.44,
+    "held_safety_critical": 1,
     "sentences": 3,
-    "state": "failed",
-    "values_survived": true,
-    "written_in_script": false
+    "state": "verified",
+    "translated": 2,
+    "written_in_script": true
    }
   }
  },
@@ -584,7 +486,7 @@
   "One probe sentence per language, at one instant, against model versions that can change.",
   "A verified language is one the pipeline can deliver, not one a native reader has reviewed. No native-speaker review has taken place."
  ],
- "measured_at_utc": "2026-09-14T21:11:42.389322+00:00",
+ "measured_at_utc": "2026-09-14T22:10:14.217701+00:00",
  "method": {
   "hear": "That audio transcribed; verified when a transcript returns in this language's script.",
   "speak": "The rendered text synthesised; verified when audio is returned.",

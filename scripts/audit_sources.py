@@ -30,6 +30,7 @@ SCHEMA_VERSION = 'source-review-v1'
 
 sys.path.insert(0, ROOT)
 from weathergpt_data.document_ingest import DISTRICT_SPEC, FAMILIES  # noqa: E402
+from weathergpt_data.capabilities import corpus_sources  # noqa: E402
 
 # Which sources a registered document family actually ingests. Derived from the code
 # so the ledger cannot drift from it: adding a family updates the ledger on the next
@@ -37,6 +38,12 @@ from weathergpt_data.document_ingest import DISTRICT_SPEC, FAMILIES  # noqa: E40
 INGESTED_BY_FAMILY = {}
 for _name, _spec in list(FAMILIES.items()) + [(DISTRICT_SPEC['family'], DISTRICT_SPEC)]:
     INGESTED_BY_FAMILY.setdefault(_spec['source_id'], []).append(_name)
+
+# Which ingested sources an ordinary conversation can reach. Derived from the declared
+# capability, not curated by hand: the whole-document tool searches by family and
+# region, so a newly registered family becomes conversational on rebuild. This is the
+# same drift the ledger was rebuilt to remove, applied to reachability.
+CORPUS_SOURCES = set(corpus_sources())
 UA = 'WeatherGPT-local-prototype/1.0 (source activation audit; local prototype use)'
 TIMEOUT = 20.0
 SAMPLE_CAP = 65536
@@ -442,12 +449,13 @@ def connector_of(source_id, classification):
     """
     families = sorted(INGESTED_BY_FAMILY.get(source_id, []))
     ingested = bool(families) or classification['connected']
+    wired = ingested and (classification['connected'] or source_id in CORPUS_SOURCES)
     return {'kind': classification['kind'],
             'kind_meaning': KIND_MEANINGS[classification['kind']],
             'connected': ingested,
             'ingested_by_families': families,
-            'wired_to_chat': classification['connected'],
-            'reachability_note': (None if classification['connected'] or not families else
+            'wired_to_chat': wired,
+            'reachability_note': (None if wired or not families else
                                   'A registered document family ingests this source into the local corpus. '
                                   'It is not yet reachable from a conversation.')}
 
@@ -468,20 +476,22 @@ def main():
         return 2
 
     previous = {}
-    evidence_dir = None
+    reused = None
     if os.path.exists(LEDGER):
         with open(LEDGER, 'r', encoding='utf-8') as handle:
             old = json.load(handle)
         previous = {row['id']: row.get('probe') for row in old.get('sources', [])}
         if args.offline and old.get('evidence_directory'):
-            evidence_dir = os.path.join(ROOT, old['evidence_directory'])
+            reused = old['evidence_directory']
 
-    if evidence_dir is None:
-        stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
-        evidence_dir = os.path.join(EVIDENCE_ROOT, 'source-audit-' + stamp)
+    # An offline rebuild reuses the recorded probes, so it must not overwrite the frozen
+    # evidence directory those probes were measured into. It writes its own manifest and
+    # the ledger keeps pointing at the measurement run.
+    stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
+    evidence_dir = os.path.join(EVIDENCE_ROOT, 'source-audit-' + stamp)
     os.makedirs(evidence_dir, exist_ok=True)
     manifest = {'generated_at_utc': utcnow(), 'user_agent': UA, 'sample_cap_bytes': SAMPLE_CAP,
-                'probes': [], 'offline': args.offline}
+                'probes': [], 'offline': args.offline, 'reused_measurements_from': reused}
 
     rows = []
     counts = {}
@@ -557,7 +567,8 @@ def main():
         'connector_kinds': KIND_MEANINGS,
         'counts': counts,
         'probe_failures': sorted(row['id'] for row in rows if (row['probe'] or {}).get('error')),
-        'evidence_directory': os.path.relpath(evidence_dir, ROOT),
+        'evidence_directory': reused or os.path.relpath(evidence_dir, ROOT),
+        'rebuild_evidence': os.path.relpath(evidence_dir, ROOT) if reused else None,
         'sources': rows,
     }
     with open(LEDGER, 'w', encoding='utf-8') as handle:

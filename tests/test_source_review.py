@@ -91,6 +91,19 @@ class ConnectorReconciliationTests(unittest.TestCase):
                 self.assertIsNotNone(connector['reachability_note'],
                                      source_id + ' is ingested but not conversational, which must be stated')
 
+    def test_the_corpus_capability_is_derived_into_reachability(self):
+        """The ledger must not deny a source the whole-document tool actually serves.
+
+        `scripts/audit_sources.py` derives `wired_to_chat` from `corpus_sources()`, so
+        adding a family updates reachability on rebuild. This check reads the recorded
+        ledger and fails on the stale denial docs/29 recorded.
+        """
+        from weathergpt_data.capabilities import corpus_sources
+        for source_id in corpus_sources():
+            self.assertIn(source_id, ROWS, source_id + ' is served by the corpus tool but has no ledger row')
+            self.assertTrue(ROWS[source_id]['connector']['wired_to_chat'],
+                            source_id + ' is served by the corpus tool but the ledger denies reachability')
+
 
 class ApprovalTests(unittest.TestCase):
     def test_the_recorded_approval_covers_local_prototype_use_only(self):

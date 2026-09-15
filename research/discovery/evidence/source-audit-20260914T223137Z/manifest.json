@@ -1,0 +1,8 @@
+{
+ "generated_at_utc": "2026-09-14T22:31:37+00:00",
+ "offline": true,
+ "probes": [],
+ "reused_measurements_from": "research/discovery/evidence/source-audit-20260914T175609Z",
+ "sample_cap_bytes": 65536,
+ "user_agent": "WeatherGPT-local-prototype/1.0 (source activation audit; local prototype use)"
+}
