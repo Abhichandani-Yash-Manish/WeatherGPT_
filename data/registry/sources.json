@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "registry_version": 14,
+  "registry_version": 15,
   "title": "WeatherGPT consolidated source registry",
   "compiled_at_utc": "2026-09-11T18:23:03.435964+00:00",
   "evidence_cutoff_date": "2026-09-12",
@@ -4369,6 +4369,66 @@
       "review_ledger": "data/registry/source-review.json",
       "ledger_status": "reachable_not_connected",
       "ledger_checked_at_utc": "2026-09-14T17:56:10+00:00"
+    },
+    {
+      "id": "S68",
+      "product": "Open-Meteo ensemble member forecast delivery",
+      "category": "nwp_ensemble",
+      "access_url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=23.02579&longitude=72.58727&hourly=temperature_2m&models=gfs025&forecast_days=1",
+      "documentation_url": "https://open-meteo.com/en/docs/ensemble-api",
+      "evidence_stage": "sample_inspected",
+      "supports_questions": [
+        "Q02",
+        "Q18"
+      ],
+      "evidence_files": [
+        "research/implementation/ensemble-spread-20260915/ensemble-probe.json",
+        "research/implementation/ensemble-spread-20260915/gfs025-2026-09-15T084349Z.json",
+        "research/implementation/ensemble-spread-20260915/live-chat.json"
+      ],
+      "record_kind": "data_product",
+      "upstream_source_ids": [],
+      "last_evidence_date": "2026-09-15",
+      "production_readiness": "not_validated",
+      "owner": null,
+      "processing_state": "sample_ready_for_processing",
+      "priority": "first",
+      "access_class": "public_sample_obtained",
+      "selection": "local prototype, no operational approval",
+      "user_review": "approved_local_prototype",
+      "usage_terms": "Open-Meteo hosted free tier for non-commercial prototyping subject to limits; attribution and upstream terms apply. No SLA.",
+      "refresh_policy": "On demand through the governed store; no background polling and no member-level budget on this path yet.",
+      "target_record_family": "ensemble_forecast",
+      "known_limitations": [
+        "Ensemble spread and percentiles describe the returned members; they are not a probability, confidence, risk or skill measure.",
+        "The control run is excluded from the spread, and members are not independent draws.",
+        "Modelled grid values at one cell; the model run identity is not exposed."
+      ],
+      "open_questions": [
+        "Measure member-count stability, regional representativeness and the difference from the stored mean/spread route."
+      ],
+      "integration": {
+        "status": "prototype_adapter_tested",
+        "guide": "docs/65-ensemble-spread.md",
+        "operational_readiness": "not_validated"
+      },
+      "evidence_level": "sample_inspected",
+      "spatial_scope": "Selected India settlement points; requested and returned grids retained, not area averages.",
+      "temporal_scope": "Governed 1-7 forecast days, hourly; conversation detail limited to 48 hours per task.",
+      "fields_and_units": "Temperature degC; precipitation mm; wind speed km/h; member spread in the variable's unit; exceedance as a member fraction.",
+      "first_processing_task": "Implemented the governed ensemble adapter, statistics, CLI, product view and chat shape. Member-level budgets and daily aggregation remain open.",
+      "observed": {
+        "http_status": 200,
+        "member_counts": {
+          "gfs025": 30,
+          "ecmwf_ifs025": 50,
+          "icon_seamless": 39
+        },
+        "scope": "One live probe of three models and a live chat rehearsal; not a reliability or skill measurement."
+      },
+      "review_ledger": "data/registry/source-review.json",
+      "ledger_status": "active",
+      "ledger_checked_at_utc": "2026-09-15T09:35:54+00:00"
     }
   ],
   "last_review_date": "2026-09-13",
@@ -4419,8 +4479,16 @@
       "evidence_date": "2026-09-14",
       "report": "docs/29-source-activation-ledger.md",
       "ledger": "data/registry/source-review.json"
+    },
+    {
+      "registry_version": 15,
+      "recorded_at_utc": "2026-09-15T09:35:55+00:00",
+      "change": "Record the source activation review: every registered address measured, statuses and connectors recorded, and local prototype use approved. No source becomes production-ready and no redistribution right is granted.",
+      "evidence_date": "2026-09-15",
+      "report": "docs/29-source-activation-ledger.md",
+      "ledger": "data/registry/source-review.json"
     }
   ],
-  "updated_at_utc": "2026-09-14T17:56:24+00:00",
-  "revision_note": "Registered S63 for the IMD GeoServer basemap, station and basin layers discovered while building the suite basemap."
+  "updated_at_utc": "2026-09-15T09:35:55+00:00",
+  "revision_note": "Registered S68 for the Open-Meteo ensemble member forecast delivery."
 }
