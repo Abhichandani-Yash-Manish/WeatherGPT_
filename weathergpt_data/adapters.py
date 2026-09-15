@@ -301,6 +301,70 @@ def ensemble(data,meta,variables,model,request_point,expected_dates=None,thresho
     return result
 
 
+# CAMS air-quality delivery through Open-Meteo. Pollutant concentrations and the source's
+# own air-quality indices are kept apart: an index is not a concentration, and neither is a
+# health assessment. Antarctic/European-only fields (pollen, ammonia, CO2) are not offered.
+AIR_QUALITY_MODEL='CAMS via Open-Meteo'
+AIR_QUALITY={'pm2_5':('μg/m³','instant',0,None),'pm10':('μg/m³','instant',0,None),
+             'nitrogen_dioxide':('μg/m³','instant',0,None),'ozone':('μg/m³','instant',0,None),
+             'carbon_monoxide':('μg/m³','instant',0,None),'sulphur_dioxide':('μg/m³','instant',0,None),
+             'us_aqi':('USAQI','instant',0,None),'european_aqi':('EAQI','instant',0,None)}
+
+
+def air_quality(data,meta,variables,request_point,expected_dates=None):
+    """Normalise one air-quality response into hourly and current-instant records."""
+    if not isinstance(data,dict):raise SourceError('Expected one-location air-quality object')
+    if type(data.get('utc_offset_seconds')) not in {int,float} or data['utc_offset_seconds']!=0:raise SourceError('Air-quality adapter requires numeric UTC offset zero')
+    grid=grid_identity(data)
+    block=data.get('hourly');units=data.get('hourly_units')
+    if not isinstance(block,dict) or not isinstance(units,dict):raise SourceError('Missing hourly schema')
+    times=block.get('time')
+    if not isinstance(times,list) or not times:raise SourceError('Missing time axis')
+    if any(not isinstance(t,int) or isinstance(t,bool) for t in times):raise SourceError('Expected Unix-second time axis')
+    if any(b-a!=3600 for a,b in zip(times,times[1:])):raise SourceError('Non-hourly, duplicated or unordered time axis')
+    if expected_dates:
+        a,b=expected_dates
+        start=int(datetime.combine(a,datetime.min.time(),timezone.utc).timestamp())
+        end=int(datetime.combine(b+timedelta(days=1),datetime.min.time(),timezone.utc).timestamp())
+        if len(times)!=(end-start)//3600 or times[0]!=start or times[-1]!=end-3600:raise SourceError('Incomplete or mismatched requested air-quality interval')
+    records=[]
+    for variable,(unit,aggregation,minimum,maximum) in variables.items():
+        if variable not in block:raise SourceError('Missing requested variable '+variable)
+        if units.get(variable)!=unit:raise SourceError('Unexpected unit for '+variable+': '+str(units.get(variable)))
+        values=block.get(variable)
+        if not isinstance(values,list) or len(values)!=len(times):raise SourceError('Misaligned field '+variable)
+        for i,(t,value) in enumerate(zip(times,values)):
+            v=numeric(value,minimum,maximum);valid=datetime.fromtimestamp(t,timezone.utc)
+            records.append({'record_id':digest(('%s|%s|%s'%(meta['sha256'],variable,t)).encode()),
+                            'parameter':variable,'value':v,'unit':unit,'valid_time_utc':stamp(valid),
+                            'aggregation':aggregation,'model':AIR_QUALITY_MODEL,
+                            'quality_flags':['source_value_missing'] if v is None else [],
+                            'source_locator':'$.hourly.%s[%d]'%(variable,i)})
+    current=data.get('current');current_values={}
+    if isinstance(current,dict):
+        instant=numeric(current.get('time'),0)
+        if instant is not None:
+            valid=stamp(datetime.fromtimestamp(int(instant),timezone.utc))
+            for variable in variables:
+                unit,aggregation,minimum,maximum=variables[variable]
+                value=numeric(current.get(variable),minimum,maximum);current_values[variable]=value
+                records.append({'record_id':digest(('%s|current|%s|%s'%(meta['sha256'],variable,instant)).encode()),
+                                'parameter':variable,'value':value,'unit':unit,'valid_time_utc':valid,
+                                'aggregation':'current_instant','model':AIR_QUALITY_MODEL,
+                                'quality_flags':['source_value_missing'] if value is None else [],
+                                'source_locator':'$.current.'+variable})
+    result=envelope('air_quality',meta['source_id'],records,meta,
+                    ['CAMS modelled air quality at a coarse grid cell; it is not a monitor measurement and no ground monitor is connected.',
+                     'An air-quality index is the source\'s own index, not a health assessment, a risk score or an official air-quality warning.',
+                     'No health advice, protective action or all-clear is produced.',
+                     'The model run identity is not exposed; retrieval time is not model issue time.'],
+                    {'requested_point':request_point,'returned_grid':grid,'time_basis':'UTC',
+                     'domain':'CAMS global (Open-Meteo automatic domain)','current':current_values})
+    numeric_quality(result,expected_dates is not None)
+    if expected_dates is None and meta.get('checked_at_utc') and datetime.fromtimestamp(times[-1],timezone.utc)<=parsed(meta['checked_at_utc']):result['status']='stale'
+    return result
+
+
 def aviation(data,meta,kind,requested_ids,now):
     if not isinstance(data,list):raise SourceError('Expected aviation report array')
     records=[]
