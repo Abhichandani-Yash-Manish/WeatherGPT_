@@ -517,6 +517,16 @@ async function run() {
     'a place without coordinates is refused, so a pin can never invent a location');
   console.log('PASS: pinned places are remembered locally and a pin without coordinates is refused');
 
+  h.window.location.hash = '#/air-quality';
+  h.api().render();
+  assert.equal(h.api().state.view, 'air-quality', 'a routed view whose name carries a hyphen still routes to itself');
+  h.window.location.hash = '#/ensemble';
+  h.api().render();
+  assert.equal(h.api().state.view, 'ensemble', 'and a hyphen-free view routes to itself too');
+  h.window.location.hash = '#/overview';
+  h.api().render();
+  console.log('PASS: every routed view name resolves to itself, including one that carries a hyphen');
+
   const loadingNode = h.api().loading('Reading the sources…');
   assert.equal(withClass(loadingNode, 'skeleton-bar').length, 3, 'a loading state shows the shape of the answer that is coming');
   assert(withClass(loadingNode, 'skeleton-frame').length === 1, 'a loading state reserves the chart frame before it arrives');

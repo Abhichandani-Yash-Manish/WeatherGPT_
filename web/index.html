@@ -277,6 +277,36 @@
       <div class="surface-body" id="briefcase-body"></div>
     </section>
 
+    <section class="surface" data-surface="air-quality" hidden>
+      <header class="surface-head">
+        <div><h1>Air quality</h1><p class="surface-note">CAMS modelled concentrations and the source’s own indices at a grid cell. Not a monitor measurement, not a health assessment and not an official warning.</p></div>
+        <div class="surface-actions"><button type="button" class="ghost" data-ask-about="air-quality">Ask about this</button></div>
+      </header>
+      <div class="surface-body" id="air-quality-body"></div>
+    </section>
+
+    <section class="surface" data-surface="ensemble" hidden>
+      <header class="surface-head">
+        <div><h1>Ensemble spread</h1><p class="surface-note">One model’s returned members at a grid cell: mean, population spread, range and nearest-rank percentiles. Spread is not a probability, confidence, risk or skill measure.</p></div>
+        <div class="surface-actions"><button type="button" class="ghost" data-ask-about="ensemble">Ask about this</button></div>
+      </header>
+      <div class="surface-body" id="ensemble-body"></div>
+    </section>
+
+    <section class="surface" data-surface="compare" hidden>
+      <header class="surface-head">
+        <div><h1>Compare places</h1><p class="surface-note">Two or three places read side by side from the tray. Each column keeps its own timestamps and sources; nothing is ranked, averaged or differenced.</p></div>
+      </header>
+      <div class="surface-body" id="compare-body"></div>
+    </section>
+
+    <section class="surface" data-surface="documents" hidden>
+      <header class="surface-head">
+        <div><h1>Published documents</h1><p class="surface-note">Every edition this machine has indexed, with its printed issue date, measured currency and the state of its saved body. A stored document is the record of one printed edition, never a current warning.</p></div>
+      </header>
+      <div class="surface-body" id="documents-body"></div>
+    </section>
+
     <section class="surface" data-surface="settings" hidden>
       <header class="surface-head">
         <div><h1>Sources and settings</h1><p class="surface-note">What this workspace can answer, which sources it reads, and the terms they carry.</p></div>

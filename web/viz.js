@@ -522,9 +522,9 @@
       const start = Date.parse(lane.from);
       const end = Date.parse(lane.to || lane.from);
       const span = end - start > 60 * 1000;
-      const label = make('text', '', { x: pad.left - 10, y: y + 4, 'text-anchor': 'end', 'class': 'viz-axis' });
-      label.textContent = lane.label || lane.key || 'lane';
-      svg.append(label);
+      // An SVG <text> must be created in the SVG namespace: an HTML element inside <svg> is
+      // created but never painted, which the first live browser render showed plainly.
+      svgChild(svg, 'text', { x: pad.left - 10, y: y + 4, 'text-anchor': 'end', 'class': 'viz-axis' }, lane.label || lane.key || 'lane');
       svgChild(svg, 'line', { x1: pad.left, x2: width - pad.right, y1: y + 14, y2: y + 14, 'class': 'viz-grid' });
       const colour = lane.colour && ['red', 'orange', 'yellow', 'green'].indexOf(lane.colour) >= 0 ? lane.colour : null;
       const mark = svgChild(svg, colour ? 'rect' : (span ? 'rect' : 'line'), colour || span ? {
@@ -551,6 +551,13 @@
       svgChild(svg, 'line', { x1: scale(readAt).toFixed(1), x2: scale(readAt).toFixed(1), y1: 12, y2: height - 20, 'class': 'viz-now-readat' });
       svgChild(svg, 'text', { x: scale(readAt).toFixed(1), y: height - 8, 'text-anchor': 'middle', 'class': 'viz-axis' }, 'read at');
     }
+    // The lanes are placed by timestamp, so the band has to say which timestamp each end is: without
+    // it a reader cannot tell how far ahead the model hours reach.
+    [first, (first + last) / 2, last].forEach((at, index) => {
+      svgChild(svg, 'text', { x: scale(at).toFixed(1), y: height - 6, 'class': 'viz-axis',
+                              'text-anchor': index === 0 ? 'start' : (index === 2 ? 'end' : 'middle') },
+        fmt(fromIso(at)).slice(5, 16));
+    });
     box.append(svg, readoutLine);
     exactTable(box, ['Lane', 'From', 'To', 'Detail', 'Source'],
       lanes.map(lane => [lane.label || lane.key || 'lane', fmt(fromIso(Date.parse(lane.from))),
@@ -595,28 +602,44 @@
     const hourCounts = {};
     hours.forEach(row => { const key = istDayKey(row.at || row.t); if (key) hourCounts[key] = (hourCounts[key] || 0) + 1; });
     const observedKey = observed && observed.at ? istDayKey(observed.at) : null;
+    // Measured 15 September 2026: the district product's five rows all carry the bulletin date, and
+    // the place read path returns no date at all. A repeated date is printed once, on the first day
+    // that carries it; the following days say the source states no separate date rather than
+    // repeating one date five times as though five days had been dated.
+    const dateOccurrences = {};
+    const firstIndexOfDate = {};
+    days.forEach((day, index) => {
+      dateOccurrences[day.date_utc] = (dateOccurrences[day.date_utc] || 0) + 1;
+      if (firstIndexOfDate[day.date_utc] === undefined) firstIndexOfDate[day.date_utc] = index;
+    });
+    const datesRepeated = Object.keys(dateOccurrences).some(date => dateOccurrences[date] > 1);
+    let observedPlaced = false;
     const readoutLine = make('p', 'Focus a day to read the colour, the hazard wording and the hours counted into it.', 'viz-readout');
     readoutLine.setAttribute('aria-live', 'polite');
     box.append(readoutLine);
     const grid = make('div', undefined, 'viz-daygrid');
-    days.forEach(day => {
+    days.forEach((day, position) => {
       const known = ['red', 'orange', 'yellow', 'green'].indexOf(day.colour) >= 0;
       const hazard = day.source_text || (day.hazards && day.hazards.length ? day.hazards.join(', ') : '');
       const count = hourCounts[day.date_utc] || 0;
       const unknown = (day.unknown_hazard_codes || []).length > 0;
+      const repeats = datesRepeated && dateOccurrences[day.date_utc] > 1;
+      const showDate = !repeats || firstIndexOfDate[day.date_utc] === position;
+      const headline = 'Day ' + day.day + ' \u00b7 ' + (showDate ? day.date_utc : 'date not stated by the source');
       const column = make('button', undefined, 'viz-daycol ' + (known ? 'is-' + day.colour : 'is-unknown') + (unknown ? ' is-unverified' : ''));
       column.type = 'button';
-      column.append(make('span', 'Day ' + day.day + ' \u00b7 ' + day.date_utc, 'viz-daycol-head'));
+      column.append(make('span', headline, 'viz-daycol-head'));
       column.append(make('span', known ? String(day.colour).toUpperCase() : 'NOT STATED', 'viz-daycol-colour'));
       column.append(make('span', hazard || 'no hazard wording printed', 'viz-daycol-hazard'));
       const meta = make('span', count + ' model hour(s) returned here', 'viz-daycol-meta');
       column.append(meta);
       if (day.quiet) column.append(make('span', 'the product states no warning for this day', 'viz-daycol-quiet'));
-      if (observedKey === day.date_utc && observed) column.append(make('span', (observed.label || 'station') + ' reported here', 'viz-daycol-observed'));
+      const observedDay = observedKey === day.date_utc && observed && !observedPlaced;
+      if (observedDay) { column.append(make('span', (observed.label || 'station') + ' reported here', 'viz-daycol-observed')); observedPlaced = true; }
       if (unknown) column.append(make('span', 'contains an unknown hazard code', 'viz-daycol-flag'));
       const label = 'Day ' + day.day + ' (' + day.date_utc + ') \u00b7 ' + (known ? 'colour ' + day.colour : 'no colour stated by the product') +
         ' \u00b7 ' + (hazard || 'no hazard wording printed') + ' \u00b7 ' + count + ' model hour(s) returned in this IST day' +
-        (observedKey === day.date_utc && observed ? ' \u00b7 ' + (observed.label || 'a station') + ' reported on this day' : '') +
+        (observedDay ? ' \u00b7 ' + (observed.label || 'a station') + ' reported on this day' : '') +
         (unknown ? ' \u00b7 contains an unknown hazard code' : '');
       column.setAttribute('aria-label', label);
       const show = () => { readoutLine.textContent = label; };

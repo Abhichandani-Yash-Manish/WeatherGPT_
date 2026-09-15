@@ -4,7 +4,7 @@ A local, evidence-first conversational weather workspace for India. Ask about a 
 your own words and the answer keeps its **entity, window, unit and source attached to every value**,
 backed by governed adapters, published records and — when you configure one — a model.
 
-![The workspace answering a point forecast](research/reviews/frontend-v2-20260915/after/surface-assistant.png)
+![The Today surface: the Now band and the five published days](research/reviews/frontend-overhaul-20260915/screens/overview-1440-light.png)
 
 **Operational acceptance is not achieved.** This is a working prototype whose limits are part of the
 interface: it says what it did not read, which state is unknown, and when a value is model output,

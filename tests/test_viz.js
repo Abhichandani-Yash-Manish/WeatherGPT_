@@ -15,7 +15,9 @@ class Node {
   focus() { (this.events.focus || []).forEach(fn => fn({})); }
   keydown(key) { (this.events.keydown || []).forEach(fn => fn({ key: key, preventDefault() {} })); }
 }
-const context = { document: { createElement: tag => new Node(tag), createElementNS: (ns, tag) => new Node(tag) } };
+const SVG_NS = 'http://www.w3.org/2000/svg';
+const context = { document: { createElement: tag => new Node(tag),
+                              createElementNS: (ns, tag) => { const node = new Node(tag); node.namespace = ns; return node; } } };
 vm.createContext(context);
 vm.runInContext(fs.readFileSync('web/viz.js', 'utf8'), context);
 const viz = context.viz;
@@ -204,5 +206,24 @@ assert(timeline.allNodes().some(node => /AHMEDABAD, 6\.9 km away reported here/.
   'the station is placed on the day it was reported');
 assert(timeline.allNodes().some(node => node.textContent === 'NOT STATED'),
   'a day with no colour says not stated rather than borrowing one');
+const bandLabels = band.all('text').map(node => node.textContent);
+assert(bandLabels.indexOf('Observed') >= 0 && bandLabels.indexOf('Published') >= 0 && bandLabels.indexOf('Model next') >= 0,
+  'every lane is labelled on the band: ' + bandLabels.join(', '));
+assert(band.all('text').every(node => node.namespace === SVG_NS),
+  'a text node inside the SVG is created in the SVG namespace, or a browser renders nothing where it should be');
 console.log('PASS: the day timeline lays out published days, counts model hours into IST days and places the station, inventing nothing');
+
+/* A repeated date is the product repeating its bulletin date; the surface must not present five
+   days as five dated days, and the station is placed once. Measured live on 15 September 2026. */
+const repeated = viz.dayTimeline({
+  days: [1, 2, 3, 4, 5].map(day => ({ day: day, date_utc: '2026-09-15', colour: day === 1 ? 'yellow' : 'green', hazards: [], unknown_hazard_codes: [] })),
+  hours: [{ at: '2026-09-15T18:00:00+00:00' }],
+  observed: { label: 'AHMEDABAD, 7.5 km away', at: '2026-09-15T17:00:00+00:00' }
+});
+const heads = repeated.allNodes().filter(node => String(node.className) === 'viz-daycol-head').map(node => node.textContent);
+assert.equal(heads.filter(head => head.indexOf('2026-09-15') >= 0).length, 1, 'a repeated date is printed once, on the first day that carries it');
+assert.equal(heads.filter(head => head.indexOf('date not stated by the source') >= 0).length, 4,
+  'the following days say the source states no separate date instead of repeating one date five times');
+assert.equal(repeated.withClass('viz-daycol-observed').length, 1, 'the station is placed on one day, not on every day that shares a date');
+console.log('PASS: a repeated bulletin date is disclosed rather than presented as five dated days');
 process.exit(0);

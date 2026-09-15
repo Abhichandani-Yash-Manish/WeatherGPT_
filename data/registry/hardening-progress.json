@@ -1,7 +1,7 @@
 {
  "schema_version": "hardening-progress-v1",
  "review": "research/reviews/national-readiness-20260912/review.md",
- "updated_at_utc": "2026-09-15T18:18:58+00:00",
+ "updated_at_utc": "2026-09-15T19:16:28+00:00",
  "operational_ready": false,
  "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
  "findings": [
@@ -2421,5 +2421,39 @@
   "phases_open": [
    "P5 browser acceptance"
   ]
+ },
+ "frontend_overhaul_batch_eight": {
+  "report": "docs/78-frontend-overhaul-plan.md",
+  "design_system": "DESIGN.md",
+  "evidence_directory": "research/reviews/frontend-overhaul-20260915",
+  "phase": "P5 browser acceptance; the overhaul phases are complete",
+  "browser": "Chrome 152 headless over CDP, launched directly with a remote debugging port (the CLI launcher cannot start a browser in this sandbox)",
+  "surfaces_verified": 8,
+  "screenshots": 12,
+  "viewports": [
+   "1440x1200 light",
+   "1440x1200 dark",
+   "768x1024 light",
+   "390x844 light"
+  ],
+  "defects_found_and_fixed": [
+   "four views had a rail entry and a renderer but no surface host, so they rendered nothing while the suites stayed green",
+   "the route pattern stopped at a hyphen, so #/air-quality opened Ask",
+   "a select option was built with an element whose tag name was \"Wind speed\"; the DOM shim now refuses invalid tag names like a browser",
+   "SVG text was created in the HTML namespace so no lane label or time axis was painted; a repeated bulletin date was printed five times with the station on every day"
+  ],
+  "open": [
+   "no accessibility scan in this session",
+   "the engine-side repetition of the bulletin date across the five district day rows",
+   "live device delivery",
+   "nationwide corpus acceptance"
+  ],
+  "python_tests_passed": 1139,
+  "javascript_suites": 10,
+  "verification_steps": 27,
+  "verification_failed": 0,
+  "acceptance_record": "research/reviews/frontend-overhaul-20260915/acceptance.json",
+  "hosting_performed": false,
+  "same_host_only": true
  }
 }

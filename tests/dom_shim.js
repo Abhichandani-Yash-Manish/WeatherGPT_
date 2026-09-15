@@ -49,6 +49,12 @@ class Node {
     this.dataset = {};
     this.hidden = false;
     this.open = false;
+    // A browser refuses to create an element whose tag name is not a valid name, which is how a
+    // display string passed where a tag belongs was caught live ('Wind speed' as a tag name). The
+    // shim refuses it too, so the component suites catch that class of defect without a browser.
+    if (String(tag) !== '#text' && !/^[a-zA-Z][a-zA-Z0-9-]*$/.test(String(tag))) {
+      throw new Error("Invalid tag name: '" + String(tag) + "'");
+    }
     this.value = '';
     this.focused = false;
     this.parent = null;

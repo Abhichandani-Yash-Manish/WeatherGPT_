@@ -1,0 +1,92 @@
+{
+ "schema_version": "frontend-overhaul-acceptance-v1",
+ "checked_at_utc": "2026-09-15T18:35:00+00:00",
+ "method": "Chrome 152 headless over CDP (launched directly with --remote-debugging-port, because the CLI launcher could not start a browser in this sandbox), driving http://127.0.0.1:8795 served by the workspace itself. Counts are queried from the live DOM of the visible surface host; screenshots are the rendered page.",
+ "viewports": [
+  "1440x1200 light",
+  "1440x1200 dark",
+  "768x1024 light",
+  "390x844 light"
+ ],
+ "surfaces": [
+  {
+   "view": "overview",
+   "host": "overview-body",
+   "evidence": "3 Now-band lanes, 5 published-day columns, time axis labels, live readout",
+   "screenshot": "overview-1440-light.png"
+  },
+  {
+   "view": "warnings",
+   "host": "warnings-body",
+   "evidence": "300 district-day matrix cells drawn from the national product",
+   "screenshot": "warnings-1440-light.png"
+  },
+  {
+   "view": "documents",
+   "host": "documents-body",
+   "evidence": "24 corpus library cards with body states and saved-file links",
+   "screenshot": "documents-1440-light.png"
+  },
+  {
+   "view": "air-quality",
+   "host": "air-quality-body",
+   "evidence": "parameter chart and current-hour table (14.8 KB of rendered content)",
+   "screenshot": "air-quality-1440-light.png"
+  },
+  {
+   "view": "forecast",
+   "host": "forecast-body",
+   "evidence": "meteogram (26 precipitation bars) above the single-series chart",
+   "screenshot": "forecast-1440-light.png"
+  },
+  {
+   "view": "ensemble",
+   "host": "ensemble-body",
+   "evidence": "member plume: 1 p10-p90 band, 24 min-max whiskers, 9 SVGs, readout",
+   "screenshot": "ensemble-1440-light.png"
+  },
+  {
+   "view": "compare",
+   "host": "compare-body",
+   "evidence": "2 place columns, 6 band lanes, no difference computed",
+   "screenshot": "compare-1440-light.png"
+  },
+  {
+   "view": "map",
+   "host": "map-body",
+   "evidence": "756 district polygons, 184 pinnable cities, live readout",
+   "screenshot": "map-1440-light.png"
+  }
+ ],
+ "defects_found_and_fixed_by_this_run": [
+  {
+   "what": "Four views added during the overhaul (air-quality, ensemble, compare, documents) had a rail entry and a panel renderer but no surface host in index.html, so clicking them rendered nothing.",
+   "found_by": "The first browser sweep: every one of the four reported 0 elements while the component suites stayed green, because they render panels directly rather than through the shell.",
+   "fixed": "Added the four surface sections and body hosts, and added static audit finding FE11 (every routed view has a rail entry, a surface section, a body host and a renderer, with two declared exceptions: the guided workspace and the Ask thread layout).",
+   "evidence": "FE11_view_contract resolved; documents 24 cards, air-quality 1 chart, ensemble 9 SVGs, compare 2 columns."
+  },
+  {
+   "what": "#/air-quality routed to the Ask surface: the route pattern /^#\\/([a-z]+)/ stopped at the hyphen.",
+   "found_by": "The same sweep, where the air-quality surface reported view: assistant.",
+   "fixed": "The pattern now allows a hyphen, and a component check asserts that both a hyphenated and a hyphen-free view name resolve to themselves.",
+   "evidence": "Browser: view=air-quality with a rendered chart."
+  },
+  {
+   "what": "The ensemble surface threw in the browser: el(pair[1]) built an element whose tag was \"Wind speed\". The DOM shim accepted any tag name, so the suites never noticed.",
+   "found_by": "The ensemble sweep, which reported the browser error message in the host.",
+   "fixed": "The select options are built as option elements, and tests/dom_shim.js now refuses an invalid tag name the way a browser does (allowing #text).",
+   "evidence": "Browser: 1 plume band, 24 whiskers; all ten suites green under the hardened shim."
+  },
+  {
+   "what": "The Now band drew no lane labels and no time axis, and the day timeline repeated one date five times with the station on every day.",
+   "found_by": "The first screenshot: SVG text created through createElement was never painted, and the payload repeats the bulletin date for all five days (the place read path returns no date at all).",
+   "fixed": "SVG text is created in the SVG namespace; the band draws three time labels; a repeated date is printed once and the following days say the source states no separate date, with the station placed once.",
+   "evidence": "Tests pin the namespace, the repeat disclosure and the single station marker; the browser shows labels, dates and one station marker."
+  }
+ ],
+ "open": [
+  "The national district product repeats its bulletin date on all five day rows, and /api/warnings/place returns no date at all: the surface now discloses this instead of repeating a date, but the engine-side day derivation is an open finding.",
+  "No accessibility scan (axe) was run in this session; the earlier frontend batch recorded ten scans, and this batch records screenshots and DOM counts only.",
+  "Hosting remains held; the browser ran locally against loopback."
+ ]
+}

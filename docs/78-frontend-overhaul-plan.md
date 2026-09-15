@@ -246,5 +246,42 @@ Live record: `research/reviews/frontend-overhaul-20260915/live-http-checks-p7.js
 timeline and the IST grouping, the styles are served, and the two payloads behind it return 5 published days
 (yellow then four green) and 6 model hours with the AHMEDABAD station.
 
-**Next (not started).** Nothing in the plan is unbuilt; what remains is **P5 browser acceptance** in a
-browser-capable environment; the craft items in P4 are delivered and verified by the component suites and the static audit.
+**P5 — browser acceptance, done.** The block was environmental, not conceptual: the CLI launcher cannot
+start a browser in this sandbox, but Chrome 152 runs when launched directly with a remote debugging port.
+The workspace was then driven as a reader would: eight surfaces at 1440x1200, dark and light, plus 768x1024
+and 390x844, against the live loopback server.
+
+| Surface | What the live DOM showed |
+|---|---|
+| Today | 3 Now-band lanes, 5 published-day columns, time-axis labels, live readout |
+| Warnings | 300 district-day matrix cells from the national product |
+| Published documents | 24 corpus library cards with body states and saved-file links |
+| Air quality | parameter chart and current-hour table |
+| Forecast | meteogram (26 precipitation bars) above the single-series chart |
+| Ensemble spread | member plume: p10–p90 band, median, mean, 24 min–max whiskers, readout |
+| Compare places | 2 columns, 6 band lanes, no difference computed |
+| Map | 756 district polygons, 184 pinnable cities, live readout |
+
+**Four defects the browser found that no component suite could.** Each is fixed and now guarded:
+
+1. Four views added during the overhaul had a rail entry and a renderer but **no surface host**, so clicking
+   them rendered nothing while every suite stayed green (the suites render panels directly). Fixed, and the
+   static audit now carries **FE11**: every routed view must have a rail entry, a surface section, a body host
+   and a renderer, with two declared exceptions (the guided workspace and the Ask thread layout).
+2. **`#/air-quality` routed to Ask**: the route pattern stopped at the hyphen. Fixed, with a component check.
+3. **The ensemble surface threw in the browser**: a select option was built as an element whose tag name was
+   `Wind speed`. The DOM shim accepted any tag name. Fixed, and `tests/dom_shim.js` now refuses an invalid tag
+   name the way a browser does — which immediately proved no other surface had the same defect.
+4. **The Now band drew no lane labels or time axis, and the day timeline repeated one date five times** with
+   the station on every day. SVG text was being created in the HTML namespace, and the payload repeats the
+   bulletin date on all five day rows (the place read path returns no date at all). Fixed: SVG text is created
+   in the SVG namespace, the band carries three time labels, a repeated date is printed once and the following
+   days say the source states no separate date, with the station placed once. **The engine-side day derivation
+   remains an open finding** and is recorded as such.
+
+Acceptance record and twelve screenshots: `research/reviews/frontend-overhaul-20260915/acceptance.json` and
+`screens/`. No accessibility scan was run in this session; that is stated in the record rather than implied.
+**All phases delivered.** P0–P5 are complete: direction and design system, foundation, signature visuals,
+command-centre shell, craft, and browser acceptance with twelve screenshots and an acceptance record. What is
+open is stated in that record and in the gap register: no accessibility scan in this session, the engine-side day
+derivation, live device delivery, and nationwide corpus acceptance.

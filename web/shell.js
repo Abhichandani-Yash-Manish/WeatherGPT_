@@ -457,7 +457,9 @@ const WG = window.WG;
 
   /* ---------- routing ---------- */
   function currentView() {
-    const match = /^#\/([a-z]+)/.exec(window.location.hash || '');
+    // A view name may carry a hyphen (air-quality), so the route pattern must allow one: the
+    // first live browser sweep found #/air-quality matching only 'air' and falling back to Ask.
+    const match = /^#\/([a-z-]+)/.exec(window.location.hash || '');
     /* A fresh visit opens the workspace; conversation deep links still open Ask. */
     const name = match ? match[1] : 'workspace';
     return VIEWS.indexOf(name) >= 0 ? name : 'assistant';
@@ -565,7 +567,9 @@ const WG = window.WG;
       climate: 'What does the published rainfall record show for ' + place.label + '?',
       advisories: 'What does the district bulletin advise for ' + place.label + '?',
       aviation: 'What is the airport report for VAAH?',
-      marine: 'What are the wave conditions near ' + place.label + '?'
+      marine: 'What are the wave conditions near ' + place.label + '?',
+      'air-quality': 'What is the modelled air quality for ' + place.label + '?',
+      ensemble: 'Show the ensemble spread for temperature in ' + place.label + '.'
     };
     return { question: templates[view] || templates.overview, summary: place.label };
   }

@@ -81,6 +81,7 @@ a printed issue date — never from decoration.
 | `view-transition` | Offered when the browser has the API and reduced motion is not requested. The paint runs inside the callback either way, so a missing API is not a missing surface. |
 | `@media print` | A printed answer keeps the source colours it was given (`print-color-adjust`), drops hover-only controls, and never turns a coloured cell into an unmarked one. |
 | `day-timeline` | One column per published day. Model hours are counted into the IST day their timestamp falls in, the station is placed on the day it reported, and no value is combined across days. |
+| `view host` | A routed view needs a rail entry, a surface section, a body host and a renderer; the static audit asserts all four (FE11) with two declared exceptions. |
 
 ## Chart language (`viz.js`)
 

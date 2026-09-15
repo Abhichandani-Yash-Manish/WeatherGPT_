@@ -1067,11 +1067,11 @@
     const variableSelect = el('select');
     variableSelect.setAttribute('aria-label', 'Ensemble variable');
     [['temperature_2m', 'Temperature'], ['precipitation', 'Precipitation'], ['wind_speed_10m', 'Wind speed']].forEach(pair => {
-      const option = el(pair[1]); option.value = pair[0]; variableSelect.append(option);
+      const option = el('option', pair[1]); option.value = pair[0]; variableSelect.append(option);
     });
     const modelSelect = el('select');
     modelSelect.setAttribute('aria-label', 'Ensemble model');
-    ['gfs025', 'ecmwf_ifs025', 'icon_seamless'].forEach(name => { const option = el(name); option.value = name; modelSelect.append(option); });
+    ['gfs025', 'ecmwf_ifs025', 'icon_seamless'].forEach(name => { const option = el('option', name); option.value = name; modelSelect.append(option); });
     const daysSelect = el('select');
     daysSelect.setAttribute('aria-label', 'Ensemble days to retrieve');
     [1, 2, 3].forEach(value => {

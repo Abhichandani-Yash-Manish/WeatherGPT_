@@ -261,6 +261,36 @@ def audit():
         'detail': ('The overhaul surfaces keep their distinctions in print and a surface change is offered as a view transition.'
                    if transitions and not parity else 'A printed surface would lose a distinction, or the shell never asks for a view transition.'),
     }
+    # FE11: every view the shell routes to must exist end to end - a rail entry, a surface section,
+    # a body host and a panel renderer. Measured 15 September 2026 in a real browser: four views added
+    # during the overhaul had a rail entry and a renderer but no body host, so they rendered nothing
+    # and every component suite stayed green because they render panels directly.
+    panels_source = read(WEB / 'panels.js') if (WEB / 'panels.js').exists() else ''
+    views_match = re.search(r"const VIEWS = \[(.*?)\]", shell_source)
+    views = re.findall(r"'([a-z-]+)'", views_match.group(1)) if views_match else []
+    # Two surfaces are declared exceptions, with their reason, rather than being forced into the
+    # shape the others use: the guided workspace is rendered by home.js, and the conversation
+    # surface owns the thread layout instead of a body host.
+    declared = {'workspace': 'rendered by home.js as the guided workspace, not by a panel renderer',
+                'assistant': 'the conversation surface owns the thread layout rather than a body host'}
+    missing = []
+    for view in views:
+        if view in declared:
+            continue
+        if ('data-surface="' + view + '"') not in index:
+            missing.append(view + ':no-section')
+        elif ('id="' + view + '-body"') not in index:
+            missing.append(view + ':no-body')
+        if ("WG.panels." + view) not in panels_source and ("WG.panels['" + view + "']") not in panels_source:
+            missing.append(view + ':no-renderer')
+    findings['FE11_view_contract'] = {
+        'state': 'resolved' if views and not missing else 'reproduced',
+        'views': views,
+        'declared_exceptions': declared,
+        'missing': missing,
+        'detail': ('Every routed view has a rail entry, a surface section, a body host and a renderer.'
+                   if views and not missing else 'A view the shell routes to cannot be reached or drawn.'),
+    }
     findings['javascript_syntax'] = syntax_check()
     return {'schema_version':'frontend-audit-v1',
             'files': {name: len(files[name].splitlines()) for name in SERVED},
