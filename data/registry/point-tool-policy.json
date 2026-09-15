@@ -10,7 +10,7 @@
     "history_local": {
       "enabled": true,
       "source_id": "S22",
-      "scope": "One to seven daily ERA5 values in Asia/Kolkata, with conservative five-day availability delay"
+      "scope": "One to seven daily reanalysis values (ERA5, ERA5-Land or ERA5-seamless) in Asia/Kolkata, with conservative five-day availability delay; a model returns only the variables it carries and an unsupported variable is refused by name"
     },
     "marine": {
       "enabled": true,
