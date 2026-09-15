@@ -97,7 +97,7 @@ recorded journeys, with what is fast and what is still slow.
 
 ## Status and open work
 
-- [Plan Watch](docs/66-plan-watch.md) - saved plans checked against the IMD district-warning product while the local workspace runs, with in-app and browser notifications only.
+- [Plan Watch](docs/67-plan-watch.md) - saved plans checked against the IMD district-warning product while the local workspace runs, with in-app and browser notifications only.
 - [Ensemble spread](docs/65-ensemble-spread.md) - the member distribution of one governed model (mean, population spread, range and nearest-rank p10/p50/p90) reachable from chat and never scored; the endpoint requires a model id, the per-model support set is measured, and a day-level spread question is planned by the deterministic rules.
 - [The district corpus becomes reachable, and the topic word decides](docs/64-district-corpus-reachability.md) - four defects and two answer-quality problems on the published-corpus route: the district family was unrequestable, a printed valid-till time crashed the turn, an absent state and an absent district now name what is held, the reader’s own name is tried against the publisher’s directory, the indexed edition answers when the live reader cannot verify one, and the words that name the topic decide which passage is served.
 - [The product, walked through](docs/63-product-walkthrough.md) - thirteen recorded journeys with what a user gets in five minutes, the rebuilt first-run screen, and the honest list of what is still slow or unconnected.

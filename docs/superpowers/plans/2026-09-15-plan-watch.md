@@ -22,7 +22,7 @@ the existing DOM helpers, `unittest`/pytest, Node component checks over `tests/d
 
 ## Global Constraints
 
-- Design source: `docs/66-plan-watch.md`. Prohibitions in its section 13 are requirements.
+- Design source: `docs/67-plan-watch.md`. Prohibitions in its section 13 are requirements.
 - No advice, no go/no-go, no "safe to" wording; no all-clear; a quiet day is "no warning in this product".
 - Colour is stated only for colour codes 1–3 (red, orange, yellow); code 4 is green/no warning; 0 or missing is
   "colour not supplied" and never a level.
@@ -63,7 +63,7 @@ the existing DOM helpers, `unittest`/pytest, Node component checks over `tests/d
 | Modify `web/shell.js`, `web/style.css` | Watch panel plans + inbox, plan check, replay, polling, browser notifications |
 | Create `tests/test_plans.py`, `tests/test_plan_watcher.py`, `tests/test_plan_intake.py` | Python checks |
 | Modify `tests/test_suite_ui.js`, `tests/test_views.js` | Component checks |
-| Modify `docs/66-plan-watch.md` | Record the deviations above |
+| Modify `docs/67-plan-watch.md` | Record the deviations above |
 
 ---
 
@@ -170,5 +170,5 @@ conversation packet with `status`, `answer`, `quick_replies: [{'label','reply'}]
 - [ ] Run the full Python suite on this machine and compare failing IDs with the recorded baseline
   (`scratchpad/baseline-failing.txt`); every failure must be pre-existing.
 - [ ] Run every JS suite.
-- [x] Update `docs/66-plan-watch.md` with the deviations table and implementation status.
+- [x] Update `docs/67-plan-watch.md` with the deviations table and implementation status.
 - [ ] Report to the user; do not commit.
