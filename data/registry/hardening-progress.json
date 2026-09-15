@@ -2144,7 +2144,16 @@
    "verification_steps": 26,
    "verification_failed": 0,
    "live_tezpur_water_level": "unavailable, zero facts, explicit no-substitution explanation",
-   "domain_acceptance": false
+   "domain_acceptance": false,
+   "clean_checkout": {
+    "code_revision": "dd7fde7",
+    "python": "1123 passed, 1 warning in 36.11s",
+    "javascript_suites": 9,
+    "verification_steps": 26,
+    "failed": 0,
+    "same_host_and_dependencies": true,
+    "fresh_machine_installation": false
+   }
   }
  }
 }

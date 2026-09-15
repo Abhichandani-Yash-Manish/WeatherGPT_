@@ -267,7 +267,7 @@
       "status": "partial",
       "evidence": "research/reviews/product-potential-20260912/findings.json",
       "latest_evidence": "docs/72-integrated-status-and-ps-review.md",
-      "current_evidence": "Latest combined run passes 1123 Python tests, nine JS suites and all 26 steps on this macOS Python 3.9 environment. Earlier clean checkout ba3cdbd passes 1105 tests; final combined checkout verification follows. Fresh-machine/Windows installation, CI, sustained load and deployment remain unaccepted."
+      "current_evidence": "Working-tree and clean detached checkout dd7fde7 pass 1123 Python tests, nine JS suites and all 26 verification steps on the same macOS Python 3.9 host. Runtime fixture dependencies, cache coalescing and delivery retry regressions were repaired; failed evidence retained. Fresh-machine/Windows installation, real-device notification delivery, CI, sustained load and deployment remain unaccepted; hosting held."
     },
     "P15": {
       "status": "partial",

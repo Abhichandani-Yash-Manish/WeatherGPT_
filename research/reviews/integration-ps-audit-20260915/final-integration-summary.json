@@ -1,0 +1,25 @@
+{
+  "date": "2026-09-15",
+  "code_revision": "dd7fde7",
+  "integrated_branch_heads": {
+    "main_base": "63fed4f",
+    "feature/feature4-alert-dissemination": "70a55d1",
+    "issue-solved": "9c8f539"
+  },
+  "clean_checkout": {
+    "python_passed": 1123,
+    "python_warnings": 1,
+    "javascript_suites": 9,
+    "verification_steps": 26,
+    "failed_steps": 0,
+    "same_host": true
+  },
+  "user_surface": "Unified desktop workspace with 15 guided tools",
+  "ps_fully_accepted": false,
+  "live_push_delivery_verified": false,
+  "fresh_mobile_acceptance": false,
+  "overall_completion_percentage": null,
+  "current_review": "docs/72-integrated-status-and-ps-review.md",
+  "delivery_review": "docs/73-dissemination-integration-review.md",
+  "deployment": "not performed; hosting held"
+}

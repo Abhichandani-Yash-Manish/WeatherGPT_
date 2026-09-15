@@ -116,7 +116,7 @@ the missing observed-water-level capability. Representative hydrological accepta
 
 Directory: `research/reviews/integration-ps-audit-20260915/`.
 
-**Latest combined working-tree verification:** 1,123 Python tests pass (one dependency warning), nine JavaScript suites pass, and all 26 steps pass. The extra static step checks the declared development requirements. The final same-host clean-checkout result follows below. Evidence: `stakeholder/verification-release.txt`, `stakeholder/provider-preflight.json`, `stakeholder/tezpur-browser.json`.
+**Latest combined working-tree verification:** 1,123 Python tests pass (one dependency warning), nine JavaScript suites pass, and all 26 steps pass. The extra static step checks the declared development requirements. Detached clean checkout `dd7fde7` also passes all 1,123 tests, nine JavaScript suites and 26 steps (36.11 seconds for Python). Its log is `stakeholder/clean-checkout-verification.txt`. It shares this host and installed dependencies; fresh-machine installation, real-device delivery and sustained load are not accepted. Evidence: `stakeholder/verification-release.txt`, `stakeholder/provider-preflight.json`, `stakeholder/tezpur-browser.json`.
 
 **Dissemination checkpoint:** 1,105 Python tests and nine JavaScript suites pass; all 25 verification steps pass. New real-HTTP lifecycle checks use synthetic warning input. The browser panel passes its inspected accessibility subtree with one inconclusive contrast rule. See [docs/73](73-dissemination-integration-review.md) for failures, repairs, separate watch-system limits and clean-checkout follow-up. These counts establish regression coverage, not PS completion.
 
@@ -181,3 +181,15 @@ not deploy or host the product. Local credentials, runtime databases, conversati
 supplemental source-text exports remain excluded. Historical committed evidence is preserved. The local
 preview at port 8766 runs without a second background watcher beside the existing workspace process;
 normal startup enables activity-plan monitoring, which only operates while that local process runs. Legacy-watch Web Push requires its separate on-demand or foreground check/dispatch loop; no supervised scheduler is installed.
+
+## Final integration checkpoint
+
+The release includes concurrent `feature/feature4-alert-dissemination` at `70a55d1` and
+`issue-solved` at `9c8f539`, plus the original air-quality/reanalysis/ensemble work through `63fed4f`.
+The remaining ensemble branch's substantive code patches were already present; only old documentation
+renumbering/count patches remained unmatched and were not used to overwrite the current assessment.
+Final application code was verified at `dd7fde7`; the following record commit changes documentation and
+curated verification evidence only. No force push, hosting, deployment or actual notification send is part
+of this release. Authored stakeholder audit packets already committed on the concurrent branch remain
+curated historical evidence; local user conversations, credentials, databases and supplemental captures
+remain excluded.
