@@ -326,6 +326,25 @@ AGROMET_DOCUMENT = re.compile(r'\b(agromet|agro-met|agricultural advisory|crop a
 ENSEMBLE = re.compile(r'\b(ensemble|member spread|model spread|members)\b', re.I)
 SPREAD = re.compile(r'\bspread\b', re.I)
 ENSEMBLE_VARIABLES = ('temperature_2m', 'precipitation', 'wind_speed_10m')
+# Air quality: modelled pollutants and the source's own indices. The index word alone brings
+# both indices; a named pollutant brings that pollutant.
+AIR_QUALITY = re.compile(r'\b(air quality|aqi|air pollution|pollution|smog|particulate matter|'
+                         r'pm\s*2\.?5|pm10|nitrogen dioxide|sulphur dioxide|sulfur dioxide|ozone|'
+                         r'carbon monoxide)\b', re.I)
+AIR_QUALITY_WORDS = (
+    (re.compile(r'\bus\s*aqi\b', re.I), 'us_aqi'),
+    (re.compile(r'\b(?:european|eu)\s*aqi\b|\beaqi\b', re.I), 'european_aqi'),
+    (re.compile(r'\bpm\s*2\.?5\b', re.I), 'pm2_5'),
+    (re.compile(r'\bpm\s*10\b', re.I), 'pm10'),
+    (re.compile(r'\b(?:no2|nitrogen dioxide)\b', re.I), 'nitrogen_dioxide'),
+    (re.compile(r'\b(?:o3|ozone)\b', re.I), 'ozone'),
+    (re.compile(r'\b(?:co|carbon monoxide)\b', re.I), 'carbon_monoxide'),
+    (re.compile(r'\b(?:so2|sulphur dioxide|sulfur dioxide)\b', re.I), 'sulphur_dioxide'))
+AIR_QUALITY_DEFAULT = ('pm2_5', 'pm10', 'us_aqi', 'european_aqi')
+
+
+def air_quality_variables(question):
+    return list(dict.fromkeys(name for pattern, name in AIR_QUALITY_WORDS if pattern.search(question)))
 AVIATION = re.compile(r'\b(metar|taf|airport|aerodrome|terminal forecast)\b', re.I)
 ACRONYMS = {'IMD','GFS','WRF','AWS','CAP','CWC','WMO','TAF','METAR','PDF','JSON','HTML','API','SIH','UTC','IST','LGD','RMC'}
 
@@ -968,6 +987,8 @@ def single_request(question, now, history=None):
         if not named and variables_of(question):
             return None
         tasks.append(task('ensemble', 'lookup', named or list(ENSEMBLE_VARIABLES)))
+    elif AIR_QUALITY.search(question):
+        tasks.append(task('air_quality', 'lookup', air_quality_variables(question) or list(AIR_QUALITY_DEFAULT)))
     elif OBSERVATION.search(question) and re.search(r'\b[A-Z]{4}\b', question):
         # A four-letter station code in a right-now question is an airport report request: the
         # station's own product answers it, with the airport tool's provenance. Measured on

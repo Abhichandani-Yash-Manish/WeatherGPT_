@@ -367,6 +367,22 @@ class RulePlannerTests(unittest.TestCase):
     def test_a_plain_forecast_is_not_an_ensemble_task(self):
         self.assertEqual(self.request_for('Will it rain in Ahmedabad tomorrow morning?')['tasks'][0]['kind'], 'forecast')
 
+    def test_an_air_quality_question_is_an_air_quality_task(self):
+        task = self.request_for('What is the air quality in Ahmedabad tomorrow?')['tasks'][0]
+        self.assertEqual(task['kind'], 'air_quality')
+        self.assertEqual(task['operation'], 'lookup')
+        self.assertTrue(task['start_local'])
+        for question, parameter in (('What is the PM2.5 in Delhi tomorrow?', 'pm2_5'),
+                                    ('Show the US AQI for Mumbai tomorrow.', 'us_aqi'),
+                                    ('Ozone in Ahmedabad tomorrow?', 'ozone')):
+            with self.subTest(question=question):
+                task = self.request_for(question)['tasks'][0]
+                self.assertEqual(task['kind'], 'air_quality')
+                self.assertIn(parameter, task['parameters'])
+
+    def test_a_plain_forecast_is_not_air_quality(self):
+        self.assertEqual(self.request_for('Will it rain in Ahmedabad tomorrow morning?')['tasks'][0]['kind'], 'forecast')
+
     def test_a_spread_word_without_a_measure_is_left_to_a_model(self):
         self.assertIsNone(rule_request('What is the spread here?', NOW))
 
