@@ -26,11 +26,12 @@ def extended():
 
 
 def daily():
+    fields={name:[1.0]*3 for name in HISTORY_LOCAL}
+    fields.update(precipitation_sum=[0.1,0.2,4.3],temperature_2m_mean=[28.4,29.3,30.2],
+                  temperature_2m_max=[32.4,33.3,34.2],temperature_2m_min=[24.4,25.3,26.2])
     return {'latitude':23.,'longitude':72.5,'utc_offset_seconds':19800,'timezone':'Asia/Kolkata',
-            'daily_units':{k:v[0] for k,v in HISTORY_LOCAL.items()},'daily':{
-            'time':['2025-07-01','2025-07-02','2025-07-03'],
-            'precipitation_sum':[0.1,0.2,4.3],'temperature_2m_mean':[28.4,29.3,30.2],
-            'temperature_2m_max':[32.4,33.3,34.2],'temperature_2m_min':[24.4,25.3,26.2]}}
+            'daily_units':{k:v[0] for k,v in HISTORY_LOCAL.items()},
+            'daily':{'time':['2025-07-01','2025-07-02','2025-07-03'],**fields}}
 
 
 class PointJourneys(unittest.TestCase):

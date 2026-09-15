@@ -20,7 +20,7 @@ from urllib.parse import urlparse,parse_qs
 from .geography import canonical, identity, point
 from .transport import Store, SourceError, parsed, stamp, utcnow
 from .foundation import Foundation
-from .adapters import FORECAST,MARINE,EXTENDED,HISTORY_LOCAL,temporal_support
+from .adapters import FORECAST,MARINE,EXTENDED,HISTORY_LOCAL,REANALYSIS_MODELS,temporal_support
 
 PRODUCTS = {'forecast': ('S21', 'weather_forecast', 'api.open-meteo.com', '/v1/gfs', 4),
             'marine': ('S56', 'marine_forecast', 'marine-api.open-meteo.com', '/v1/marine', 3),
@@ -35,7 +35,7 @@ def request_parameters(spec):
     if spec['product']=='history_local':
         return {'latitude':str(spec['latitude']),'longitude':str(spec['longitude']),
                 'start_date':spec['start_date'],'end_date':spec['end_date'],
-                'daily':','.join(HISTORY_LOCAL),'models':'era5','timezone':'Asia/Kolkata'}
+                'daily':','.join(HISTORY_LOCAL),'models':spec.get('models','era5'),'timezone':'Asia/Kolkata'}
     params={'latitude':str(spec['latitude']),'longitude':str(spec['longitude']),'forecast_days':str(spec['days'])}
     if spec['product']=='river':params['daily']='river_discharge'
     else:
@@ -129,7 +129,7 @@ class IngestionDB:
         self.db.execute('INSERT INTO events(at,job_id,kind,detail) VALUES (?,?,?,?)',
                         (epoch(self.clock()),job,kind,canonical(detail)))
 
-    def enqueue(self, product, latitude, longitude, days, cycle_at, max_attempts=4, *, start_date=None, end_date=None):
+    def enqueue(self, product, latitude, longitude, days, cycle_at, max_attempts=4, *, start_date=None, end_date=None, models=None):
         if product not in PRODUCTS: raise ValueError('Unsupported governed numeric product')
         point(latitude,longitude)
         if type(days) is not int or not 1 <= days <= 7: raise ValueError('Worker supports 1–7 whole days')
@@ -140,9 +140,13 @@ class IngestionDB:
                 'longitude':float(longitude),'days':days,'request_date':dt.date().isoformat()}
         if product=='history_local':
             from datetime import date
+            model=models or 'era5'
             a,b=date.fromisoformat(start_date),date.fromisoformat(end_date)
+            if model not in REANALYSIS_MODELS:raise ValueError('Unsupported reanalysis model: '+str(model))
             if (b-a).days+1!=days or a.year<1940 or b>=dt.date():raise ValueError('Invalid historical dates or daily horizon')
-            spec.update(start_date=start_date,end_date=end_date)
+            # The model is part of the request identity: a different reanalysis model is a
+            # different collection, never a cache hit on another model's payload.
+            spec.update(start_date=start_date,end_date=end_date,models=model)
         elif start_date is not None or end_date is not None:raise ValueError('Explicit dates only belong to daily history')
         stream = identity({k:v for k,v in spec.items() if k!='request_date'})
         jid = identity([stream,stamp(dt),spec])
@@ -372,7 +376,7 @@ def run_one(database, raw_root, opener=None, job_id=None):
         if spec['product']!='history_local' and database.clock().astimezone(timezone.utc).date().isoformat()!=spec['request_date']:
             raise SourceError('Fixed request date no longer matches the provider relative-date API')
         if spec['product']=='history_local':
-            result=Foundation(store).history_local(spec['latitude'],spec['longitude'],spec['start_date'],spec['end_date'],refresh=True)
+            result=Foundation(store).history_local(spec['latitude'],spec['longitude'],spec['start_date'],spec['end_date'],refresh=True,models=spec.get('models','era5'))
         else:result=getattr(Foundation(store),spec['product'])(spec['latitude'],spec['longitude'],spec['days'],refresh=True)
         result['provenance']['ingestion_attempt']={'job_id':job['id'],'token':job['token'],
                                                   'relative_root':job['id']+'/'+job['token']}
