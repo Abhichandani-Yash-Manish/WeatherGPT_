@@ -222,7 +222,10 @@ def printed_times(pages, family_rules):
 
 def _squash(text):
     """Collapse to alphanumerics only. Publisher PDFs lose or invent spaces inside their own titles."""
-    return re.sub(r'[^a-z0-9]+', '', (text or '').lower())
+    # Letters and digits in ANY script. The earlier [a-z0-9] version squashed a Devanagari
+    # title to the empty string, and the empty string is a substring of every document, so an
+    # Indian-language marker matched everything instead of matching its own title.
+    return re.sub(r'[^\w]+', '', (text or '').casefold(), flags=re.UNICODE)
 
 
 def marker_match(pages, spec):
@@ -366,11 +369,22 @@ FAMILIES = {
     'state_agromet': dict(
         family='state_agromet', source_id='S07', label='State composite agromet advisory bulletin',
         scope='state', region='Gujarat', language='en', issuer_optional=True,
-        issuer=['india meteorological department', 'amfu', 'damu', 'agricultural university'],
-        markers=['agromet advisory service bulletin'],
+        issuer=['india meteorological department', 'amfu', 'damu', 'agricultural university',
+                'भारत मौसम विज्ञान विभाग', 'मौसम विज्ञान विभाग', 'मौसम विज्ञान केन्द्र', 'कृषि'],
+        # Sampled real front pages, 15 September 2026: the Ahmedabad (Gujarat) edition is English and
+        # says 'agromet advisory service bulletin'; the Jaipur (Rajasthan) and Lucknow (Uttar Pradesh)
+        # editions are Hindi and say 'संयुक्त कृषि-मौसम सलाहकार सेवा बुलेटिन', which extraction renders
+        # with spacing artefacts around the conjuncts. A marker list fitted to one failure is not
+        # evidence: these two markers come from the two sampled Hindi editions, and other centres'
+        # layouts stay unreviewed until a real front page is sampled for them.
+        markers=[],
+        markers_any=['agromet advisory service bulletin', 'मौसम सलाहकार', 'संयुक्त क'],
         address='https://mausam.imd.gov.in/ahmedabad/mcdata/agromet.pdf', limit=1,
-        issue_date=[('printed', r'Issued on\s*:?\s*(\d{2}-\d{2}-\d{4})')],
-        times=[('bulletin_number', r'Bulletin No\.\s*([\d/]+)')]),
+        issue_date=[('printed', r'Issued on\s*:?\s*(\d{2}-\d{2}-\d{4})'),
+                    ('printed_dotted_local', r'जारी\s*तिथि\s*:?\s*(\d{2}\.\d{2}\.\d{4})'),
+                    ('printed_dmy_local', r'जारी\s*तिथि\s*:?\s*(\d{2}-\d{2}-\d{4})')],
+        times=[('bulletin_number', r'Bulletin No\.\s*([\d/]+)'),
+               ('bulletin_number_local', r'बुलेटिन संख्या\s*:?\s*([\d/]+)')]),
     'state_district_bulletin': dict(
         family='state_district_bulletin', source_id='S08', label='State district forecast and warnings bulletin',
         scope='state', region='Gujarat', language='en', issuer_optional=True,
@@ -572,6 +586,117 @@ DISTRICT_OUTCOMES = {
     'no_text_layer': 'Every page needs OCR, which is not part of the reviewed path; the edition is held.',
     'failed': 'Selection, transport or extraction raised an error. The error text is preserved.',
 }
+
+
+
+def state_spec(state, address):
+    """One state's agromet family specification, aimed at that centre's own address.
+
+    The family carries a single address for Gujarat. A state target names its state and the
+    centre address the publisher serves it from, so the state stays attached to the document.
+    """
+    if not isinstance(state, str) or not state.strip():
+        raise SourceError('A state target needs its source state')
+    if not isinstance(address, str) or not address.startswith('https://'):
+        raise SourceError('A state target needs an https address')
+    spec = dict(FAMILIES['state_agromet'])
+    spec['region'] = state
+    spec['address'] = address
+    return spec
+
+
+# The state name as the sampled editions print it, so a Devanagari document can confirm that
+# it is about the state this registry claims. A state with no entry here records its name check
+# as unmeasured rather than as a pass.
+STATE_NAMES_IN_DOCUMENT = {
+    'Gujarat': 'ગુજરાત', 'Rajasthan': 'राजस्थान', 'Uttar Pradesh': 'उत्तर प्रदेश',
+    'Karnataka': 'ಕರ್ನಾಟಕ', 'Chhattisgarh': 'छत्तीसगढ़',
+}
+
+def ingest_state(store, index, state, address, now=None, fetch_ttl=0, encoder=None):
+    """One state agromet target, with the same outcome vocabulary as a district target.
+
+    A listing or an address is not a promise of an issue: 'not issued', a held layout and a
+    transport failure are three different outcomes and each is recorded as itself.
+    """
+    import time
+    now = now or utcnow()
+    started = time.time()
+    spec = state_spec(state, address)
+    record = {'state': state, 'family': spec['family'], 'source_id': spec['source_id'],
+              'address': address, 'started_at_utc': stamp(now)}
+
+    def done(outcome, **extra):
+        record.update(outcome=outcome, outcome_meaning=DISTRICT_OUTCOMES[outcome],
+                      elapsed_s=round(time.time() - started, 3), **extra)
+        return record
+
+    try:
+        body, meta = store.fetch(spec['source_id'], address, ttl=fetch_ttl, refresh=not fetch_ttl,
+                                 max_bytes=MAX_DOCUMENT_BYTES, product_validator=lambda data, info: None)
+    except SourceError as error:
+        return done('failed', stage='fetch', error=str(error))
+    if not body.startswith(b'%PDF'):
+        return done('failed', stage='fetch', error='The state address did not deliver a PDF', bytes=len(body))
+    sha = meta['sha256']
+    record.update(sha256=sha, bytes=len(body), blob=meta.get('blob'))
+    head = index.document_head(spec['family'], state)
+    if head and head.get('sha') == sha and head.get('status') == 'ok':
+        return done('unchanged', head_checked_at=head.get('checked_at'))
+    try:
+        pages = pdf_pages(body)
+    except SourceError as error:
+        return done('failed', stage='pdf_parse', error=str(error))
+    record['pages'] = len(pages)
+    try:
+        info = metadata(pages, spec, sha, now, address)
+    except SourceError as error:
+        text = str(error)
+        outcome = 'layout_unrecognised' if 'marker' in text or 'issuing authority' in text else 'failed'
+        index.mark_document_failed(spec['family'], state, stamp(now), text)
+        return done(outcome, stage='metadata', error=text)
+    # A state edition can be published in the state's language: the sampled Rajasthan and Uttar
+    # Pradesh editions are Devanagari bulletins with Latin agency names on the same page, so a
+    # front-page character count called Rajasthan English. The script of the title that matched
+    # is the evidence: a Devanagari title is a Hindi edition whatever else the page carries.
+    front = ((pages[0].get('text') if isinstance(pages[0], dict) else str(pages[0])) or '')
+    title_is_devanagari = bool(re.search('[\u0900-\u097f]', str(info.get('marker_basis') or '')))
+    devanagari = len(re.findall('[\u0900-\u097f]', front))
+    if title_is_devanagari:
+        info['language'] = 'hi'
+        info['language_basis'] = 'the matched family title is Devanagari'
+    elif devanagari > 40 and devanagari > len(re.findall('[A-Za-z]', front)):
+        info['language'] = 'hi'
+        info['language_basis'] = 'detected from the front page script'
+    else:
+        info['language_basis'] = 'the family default'
+    record.update(issue_date=info['issue_date'], issue_date_basis=info['issue_date_basis'],
+                  issuer_basis=info['issuer_basis'], marker_basis=info['marker_basis'],
+                  currency=info['currency'], age_days=info['age_days'], printed_times=info['printed_times'])
+    try:
+        passages, quarantined = passages_of(pages, info, spec['family'])
+    except SourceError as error:
+        index.mark_document_failed(spec['family'], state, stamp(now), str(error))
+        return done('failed', stage='extraction', error=str(error))
+    record['quarantined_pages'] = len(quarantined)
+    if not passages:
+        reason = 'no_text_layer' if len(quarantined) == len(pages) else 'failed'
+        index.mark_document_failed(spec['family'], state, stamp(now), 'No indexed passage remains after extraction')
+        return done(reason, stage='extraction', error='No indexed passage remains after extraction')
+    # The state on a state target is this registry's claim until the document itself names it.
+    flat = ' '.join((page.get('text') if isinstance(page, dict) else str(page)) or '' for page in pages).lower()
+    local = STATE_NAMES_IN_DOCUMENT.get(state, '')
+    record['state_named_in_document'] = state.lower() in flat or (local and local in flat)
+    document = {**info, 'source_state': state, 'bytes': len(body), 'passages': passages,
+                'quarantined_pages': quarantined, 'blob': meta.get('blob')}
+    try:
+        provenance = {'sha256': sha, 'blob': meta.get('blob'), 'source_id': spec['source_id'],
+                      'source_state': state, 'address': address}
+        published = (index.publish_document(document, provenance, stamp(now), encoder) if encoder
+                     else index.publish_document(document, provenance, stamp(now)))
+    except SourceError as error:
+        return done('failed', stage='publish', error=str(error))
+    return done('fetched_new', document_sha=published.get('sha256') or sha, passages=len(passages))
 
 
 def ingest_district(store, index, state, district, now=None, fetch_ttl=0, encoder=None):

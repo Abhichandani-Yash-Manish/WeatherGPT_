@@ -1,0 +1,662 @@
+{
+  "schema_version": "state-agromet-targets-v1",
+  "built_at_utc": "2026-09-15T06:40:00+00:00",
+  "source_id": "S07",
+  "pattern": "https://mausam.imd.gov.in/<centre>/mcdata/agromet.pdf",
+  "note": "Candidate state agromet centres built from the publisher's own centre path pattern. A listed target and a reachable address are not a promise that a bulletin is issued, and the state a centre serves is this registry's claim until the document itself names it: each sweep record carries state_named_in_document. Outcomes use the district vocabulary: fetched_new, unchanged, not_issued, layout_unrecognised, no_text_layer, failed.",
+  "candidates": [
+    {
+      "state": "Gujarat",
+      "centre": "ahmedabad",
+      "address": "https://mausam.imd.gov.in/ahmedabad/mcdata/agromet.pdf"
+    },
+    {
+      "state": "Rajasthan",
+      "centre": "jaipur",
+      "address": "https://mausam.imd.gov.in/jaipur/mcdata/agromet.pdf"
+    },
+    {
+      "state": "Uttar Pradesh",
+      "centre": "lucknow",
+      "address": "https://mausam.imd.gov.in/lucknow/mcdata/agromet.pdf"
+    },
+    {
+      "state": "Karnataka",
+      "centre": "bengaluru",
+      "address": "https://mausam.imd.gov.in/bengaluru/mcdata/agromet.pdf"
+    },
+    {
+      "state": "Chhattisgarh",
+      "centre": "raipur",
+      "address": "https://mausam.imd.gov.in/raipur/mcdata/agromet.pdf"
+    },
+    {
+      "state": "Maharashtra",
+      "centre": "mumbai",
+      "address": "https://mausam.imd.gov.in/mumbai/mcdata/agromet.pdf"
+    },
+    {
+      "state": "Maharashtra",
+      "centre": "pune",
+      "address": "https://mausam.imd.gov.in/pune/mcdata/agromet.pdf"
+    },
+    {
+      "state": "Maharashtra",
+      "centre": "nagpur",
+      "address": "https://mausam.imd.gov.in/nagpur/mcdata/agromet.pdf"
+    },
+    {
+      "state": "Madhya Pradesh",
+      "centre": "bhopal",
+      "address": "https://mausam.imd.gov.in/bhopal/mcdata/agromet.pdf"
+    },
+    {
+      "state": "Tamil Nadu",
+      "centre": "chennai",
+      "address": "https://mausam.imd.gov.in/chennai/mcdata/agromet.pdf"
+    },
+    {
+      "state": "Telangana",
+      "centre": "hyderabad",
+      "address": "https://mausam.imd.gov.in/hyderabad/mcdata/agromet.pdf"
+    },
+    {
+      "state": "West Bengal",
+      "centre": "kolkata",
+      "address": "https://mausam.imd.gov.in/kolkata/mcdata/agromet.pdf"
+    },
+    {
+      "state": "Odisha",
+      "centre": "bhubaneswar",
+      "address": "https://mausam.imd.gov.in/bhubaneswar/mcdata/agromet.pdf"
+    },
+    {
+      "state": "Bihar",
+      "centre": "patna",
+      "address": "https://mausam.imd.gov.in/patna/mcdata/agromet.pdf"
+    },
+    {
+      "state": "Jharkhand",
+      "centre": "ranchi",
+      "address": "https://mausam.imd.gov.in/ranchi/mcdata/agromet.pdf"
+    },
+    {
+      "state": "Punjab",
+      "centre": "chandigarh",
+      "address": "https://mausam.imd.gov.in/chandigarh/mcdata/agromet.pdf"
+    },
+    {
+      "state": "Uttarakhand",
+      "centre": "dehradun",
+      "address": "https://mausam.imd.gov.in/dehradun/mcdata/agromet.pdf"
+    },
+    {
+      "state": "Himachal Pradesh",
+      "centre": "shimla",
+      "address": "https://mausam.imd.gov.in/shimla/mcdata/agromet.pdf"
+    },
+    {
+      "state": "Assam",
+      "centre": "guwahati",
+      "address": "https://mausam.imd.gov.in/guwahati/mcdata/agromet.pdf"
+    },
+    {
+      "state": "Andhra Pradesh",
+      "centre": "vijayawada",
+      "address": "https://mausam.imd.gov.in/vijayawada/mcdata/agromet.pdf"
+    },
+    {
+      "state": "Kerala",
+      "centre": "thiruvananthapuram",
+      "address": "https://mausam.imd.gov.in/thiruvananthapuram/mcdata/agromet.pdf"
+    },
+    {
+      "state": "Goa",
+      "centre": "panaji",
+      "address": "https://mausam.imd.gov.in/panaji/mcdata/agromet.pdf"
+    }
+  ],
+  "sweep": {
+    "generated_at_utc": "2026-09-15T07:03:13.041562+00:00",
+    "targets": [
+      {
+        "state": "Gujarat",
+        "family": "state_agromet",
+        "source_id": "S07",
+        "address": "https://mausam.imd.gov.in/ahmedabad/mcdata/agromet.pdf",
+        "started_at_utc": "2026-09-15T07:03:13.041562+00:00",
+        "sha256": "22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3",
+        "bytes": 3929832,
+        "blob": "blobs/22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3.bin",
+        "outcome": "unchanged",
+        "outcome_meaning": "The downloaded body hashes to the recorded head, so nothing was re-extracted.",
+        "elapsed_s": 4.122,
+        "head_checked_at": "2026-09-14 18:28:49.905251+00:00",
+        "centre": "ahmedabad"
+      }
+    ],
+    "counts": {
+      "unchanged": 1
+    }
+  },
+  "outcomes": {
+    "Gujarat/ahmedabad": {
+      "state": "Gujarat",
+      "family": "state_agromet",
+      "source_id": "S07",
+      "address": "https://mausam.imd.gov.in/ahmedabad/mcdata/agromet.pdf",
+      "started_at_utc": "2026-09-15T07:03:13.041562+00:00",
+      "sha256": "22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3",
+      "bytes": 3929832,
+      "blob": "blobs/22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3.bin",
+      "outcome": "unchanged",
+      "outcome_meaning": "The downloaded body hashes to the recorded head, so nothing was re-extracted.",
+      "elapsed_s": 4.122,
+      "head_checked_at": "2026-09-14 18:28:49.905251+00:00",
+      "centre": "ahmedabad",
+      "history": [
+        {
+          "at_utc": "2026-09-15T06:57:18.129589+00:00",
+          "outcome": "unchanged",
+          "error": null
+        },
+        {
+          "at_utc": "2026-09-15T07:03:13.041562+00:00",
+          "outcome": "unchanged",
+          "error": null
+        }
+      ],
+      "issue_date": "2026-09-12",
+      "issue_date_basis": "family_rule:printed",
+      "language": "en",
+      "issuer_basis": "named:amfu",
+      "currency": "printed_issue_differs_from_retrieval_date",
+      "age_days": 2,
+      "passages": 257,
+      "state_named_in_document": true,
+      "evidence_source": "index"
+    },
+    "Rajasthan/jaipur": {
+      "state": "Rajasthan",
+      "family": "state_agromet",
+      "source_id": "S07",
+      "address": "https://mausam.imd.gov.in/jaipur/mcdata/agromet.pdf",
+      "started_at_utc": "2026-09-15T06:57:39.992086+00:00",
+      "sha256": "8eebc964e72805b2c58c03902ab5db61d4252742670d0bc66d4c522ff027df80",
+      "bytes": 4268447,
+      "blob": "blobs/8eebc964e72805b2c58c03902ab5db61d4252742670d0bc66d4c522ff027df80.bin",
+      "outcome": "unchanged",
+      "outcome_meaning": "The downloaded body hashes to the recorded head, so nothing was re-extracted.",
+      "elapsed_s": 19.799,
+      "head_checked_at": "2026-09-15T06:51:05.338347+00:00",
+      "centre": "jaipur",
+      "history": [
+        {
+          "at_utc": "2026-09-15T06:57:39.992086+00:00",
+          "outcome": "unchanged",
+          "error": null
+        }
+      ],
+      "issue_date": "2026-08-07",
+      "issue_date_basis": "generic_scan",
+      "language": "en",
+      "marker_basis": "matched:मौसम सलाहकार",
+      "issuer_basis": "named:amfu",
+      "currency": "printed_issue_differs_from_retrieval_date",
+      "age_days": 39,
+      "passages": 42,
+      "state_named_in_document": true,
+      "evidence_source": "index"
+    },
+    "Uttar Pradesh/lucknow": {
+      "state": "Uttar Pradesh",
+      "family": "state_agromet",
+      "source_id": "S07",
+      "address": "https://mausam.imd.gov.in/lucknow/mcdata/agromet.pdf",
+      "started_at_utc": "2026-09-15T06:57:59.866255+00:00",
+      "sha256": "a3093d489cffb63784605472b955b63a5d0ac1dfc87c97af0ca973d0c9f5ab2b",
+      "bytes": 5751819,
+      "blob": "blobs/a3093d489cffb63784605472b955b63a5d0ac1dfc87c97af0ca973d0c9f5ab2b.bin",
+      "outcome": "unchanged",
+      "outcome_meaning": "The downloaded body hashes to the recorded head, so nothing was re-extracted.",
+      "elapsed_s": 37.563,
+      "head_checked_at": "2026-09-15T06:51:05.338347+00:00",
+      "centre": "lucknow",
+      "history": [
+        {
+          "at_utc": "2026-09-15T06:57:59.866255+00:00",
+          "outcome": "unchanged",
+          "error": null
+        }
+      ],
+      "issue_date": "2026-09-11",
+      "issue_date_basis": "generic_scan",
+      "language": "hi",
+      "marker_basis": "matched:मौसम सलाहकार",
+      "issuer_basis": "named:india meteorological department",
+      "currency": "printed_issue_differs_from_retrieval_date",
+      "age_days": 4,
+      "passages": 173,
+      "state_named_in_document": true,
+      "evidence_source": "index"
+    },
+    "Karnataka/bengaluru": {
+      "state": "Karnataka",
+      "family": "state_agromet",
+      "source_id": "S07",
+      "address": "https://mausam.imd.gov.in/bengaluru/mcdata/agromet.pdf",
+      "started_at_utc": "2026-09-15T06:58:37.504066+00:00",
+      "sha256": "2da18a21ee99c6afa64923e1fc681c507adb9b357c736d1a066cc21882486cb2",
+      "bytes": 3289729,
+      "blob": "blobs/2da18a21ee99c6afa64923e1fc681c507adb9b357c736d1a066cc21882486cb2.bin",
+      "outcome": "unchanged",
+      "outcome_meaning": "The downloaded body hashes to the recorded head, so nothing was re-extracted.",
+      "elapsed_s": 19.678,
+      "head_checked_at": "2026-09-15T06:52:23.233620+00:00",
+      "centre": "bengaluru",
+      "history": [
+        {
+          "at_utc": "2026-09-15T06:58:37.504066+00:00",
+          "outcome": "unchanged",
+          "error": null
+        }
+      ],
+      "issue_date_basis": "not_stated",
+      "language": "en",
+      "marker_basis": "matched:मौसम सलाहकार",
+      "issuer_basis": "named:india meteorological department",
+      "currency": "printed_issue_not_stated",
+      "passages": 355,
+      "state_named_in_document": true,
+      "evidence_source": "index"
+    },
+    "Chhattisgarh/raipur": {
+      "state": "Chhattisgarh",
+      "family": "state_agromet",
+      "source_id": "S07",
+      "address": "https://mausam.imd.gov.in/raipur/mcdata/agromet.pdf",
+      "started_at_utc": "2026-09-15T06:58:57.257594+00:00",
+      "sha256": "78c158dddf0e3a0ac35b44c53fda54163b73c7eaf3153489b4537d4a31601687",
+      "bytes": 1370426,
+      "blob": "blobs/78c158dddf0e3a0ac35b44c53fda54163b73c7eaf3153489b4537d4a31601687.bin",
+      "outcome": "unchanged",
+      "outcome_meaning": "The downloaded body hashes to the recorded head, so nothing was re-extracted.",
+      "elapsed_s": 3.564,
+      "head_checked_at": "2026-09-15T06:53:19.668834+00:00",
+      "centre": "raipur",
+      "history": [
+        {
+          "at_utc": "2026-09-15T06:58:57.257594+00:00",
+          "outcome": "unchanged",
+          "error": null
+        }
+      ],
+      "issue_date": "2026-08-07",
+      "issue_date_basis": "generic_scan",
+      "language": "hi",
+      "marker_basis": "matched:मौसम सलाहकार",
+      "issuer_basis": "named:कृषि",
+      "currency": "printed_issue_differs_from_retrieval_date",
+      "age_days": 39,
+      "passages": 63,
+      "state_named_in_document": true,
+      "evidence_source": "index"
+    },
+    "Maharashtra/mumbai": {
+      "state": "Maharashtra",
+      "family": "state_agromet",
+      "source_id": "S07",
+      "address": "https://mausam.imd.gov.in/mumbai/mcdata/agromet.pdf",
+      "started_at_utc": "2026-09-15T06:59:00.925109+00:00",
+      "outcome": "failed",
+      "outcome_meaning": "Selection, transport or extraction raised an error. The error text is preserved.",
+      "elapsed_s": 0.427,
+      "stage": "fetch",
+      "error": "Evidence source HTTP 404",
+      "centre": "mumbai",
+      "history": [
+        {
+          "at_utc": "2026-09-15T06:59:00.925109+00:00",
+          "outcome": "failed",
+          "error": "Evidence source HTTP 404"
+        }
+      ]
+    },
+    "Maharashtra/pune": {
+      "state": "Maharashtra",
+      "family": "state_agromet",
+      "source_id": "S07",
+      "address": "https://mausam.imd.gov.in/pune/mcdata/agromet.pdf",
+      "started_at_utc": "2026-09-15T06:59:00.925109+00:00",
+      "outcome": "failed",
+      "outcome_meaning": "Selection, transport or extraction raised an error. The error text is preserved.",
+      "elapsed_s": 0.421,
+      "stage": "fetch",
+      "error": "Evidence source HTTP 404",
+      "centre": "pune",
+      "history": [
+        {
+          "at_utc": "2026-09-15T06:59:00.925109+00:00",
+          "outcome": "failed",
+          "error": "Evidence source HTTP 404"
+        }
+      ]
+    },
+    "Maharashtra/nagpur": {
+      "state": "Maharashtra",
+      "family": "state_agromet",
+      "source_id": "S07",
+      "address": "https://mausam.imd.gov.in/nagpur/mcdata/agromet.pdf",
+      "started_at_utc": "2026-09-15T06:59:00.925109+00:00",
+      "outcome": "failed",
+      "outcome_meaning": "Selection, transport or extraction raised an error. The error text is preserved.",
+      "elapsed_s": 5.009,
+      "stage": "fetch",
+      "error": "<urlopen error timed out>",
+      "centre": "nagpur",
+      "history": [
+        {
+          "at_utc": "2026-09-15T06:59:00.925109+00:00",
+          "outcome": "failed",
+          "error": "<urlopen error timed out>"
+        }
+      ]
+    },
+    "Madhya Pradesh/bhopal": {
+      "state": "Madhya Pradesh",
+      "family": "state_agromet",
+      "source_id": "S07",
+      "address": "https://mausam.imd.gov.in/bhopal/mcdata/agromet.pdf",
+      "started_at_utc": "2026-09-15T06:59:06.889093+00:00",
+      "outcome": "failed",
+      "outcome_meaning": "Selection, transport or extraction raised an error. The error text is preserved.",
+      "elapsed_s": 1.17,
+      "stage": "fetch",
+      "error": "Evidence source HTTP 404",
+      "centre": "bhopal",
+      "history": [
+        {
+          "at_utc": "2026-09-15T06:59:06.889093+00:00",
+          "outcome": "failed",
+          "error": "Evidence source HTTP 404"
+        }
+      ]
+    },
+    "Tamil Nadu/chennai": {
+      "state": "Tamil Nadu",
+      "family": "state_agromet",
+      "source_id": "S07",
+      "address": "https://mausam.imd.gov.in/chennai/mcdata/agromet.pdf",
+      "started_at_utc": "2026-09-15T06:59:08.162082+00:00",
+      "outcome": "failed",
+      "outcome_meaning": "Selection, transport or extraction raised an error. The error text is preserved.",
+      "elapsed_s": 1.039,
+      "stage": "fetch",
+      "error": "Evidence source HTTP 404",
+      "centre": "chennai",
+      "history": [
+        {
+          "at_utc": "2026-09-15T06:59:08.162082+00:00",
+          "outcome": "failed",
+          "error": "Evidence source HTTP 404"
+        }
+      ]
+    },
+    "Telangana/hyderabad": {
+      "state": "Telangana",
+      "family": "state_agromet",
+      "source_id": "S07",
+      "address": "https://mausam.imd.gov.in/hyderabad/mcdata/agromet.pdf",
+      "started_at_utc": "2026-09-15T06:59:09.307276+00:00",
+      "outcome": "failed",
+      "outcome_meaning": "Selection, transport or extraction raised an error. The error text is preserved.",
+      "elapsed_s": 0.547,
+      "stage": "fetch",
+      "error": "Evidence source HTTP 404",
+      "centre": "hyderabad",
+      "history": [
+        {
+          "at_utc": "2026-09-15T06:59:09.307276+00:00",
+          "outcome": "failed",
+          "error": "Evidence source HTTP 404"
+        }
+      ]
+    },
+    "West Bengal/kolkata": {
+      "state": "West Bengal",
+      "family": "state_agromet",
+      "source_id": "S07",
+      "address": "https://mausam.imd.gov.in/kolkata/mcdata/agromet.pdf",
+      "started_at_utc": "2026-09-15T06:59:09.956943+00:00",
+      "outcome": "failed",
+      "outcome_meaning": "Selection, transport or extraction raised an error. The error text is preserved.",
+      "elapsed_s": 0.545,
+      "stage": "fetch",
+      "error": "Evidence source HTTP 404",
+      "centre": "kolkata",
+      "history": [
+        {
+          "at_utc": "2026-09-15T06:59:09.956943+00:00",
+          "outcome": "failed",
+          "error": "Evidence source HTTP 404"
+        }
+      ]
+    },
+    "Odisha/bhubaneswar": {
+      "state": "Odisha",
+      "family": "state_agromet",
+      "source_id": "S07",
+      "address": "https://mausam.imd.gov.in/bhubaneswar/mcdata/agromet.pdf",
+      "started_at_utc": "2026-09-15T06:59:10.604040+00:00",
+      "outcome": "failed",
+      "outcome_meaning": "Selection, transport or extraction raised an error. The error text is preserved.",
+      "elapsed_s": 0.416,
+      "stage": "fetch",
+      "error": "Evidence source HTTP 404",
+      "centre": "bhubaneswar",
+      "history": [
+        {
+          "at_utc": "2026-09-15T06:59:10.604040+00:00",
+          "outcome": "failed",
+          "error": "Evidence source HTTP 404"
+        }
+      ]
+    },
+    "Bihar/patna": {
+      "state": "Bihar",
+      "family": "state_agromet",
+      "source_id": "S07",
+      "address": "https://mausam.imd.gov.in/patna/mcdata/agromet.pdf",
+      "started_at_utc": "2026-09-15T06:59:11.126124+00:00",
+      "outcome": "failed",
+      "outcome_meaning": "Selection, transport or extraction raised an error. The error text is preserved.",
+      "elapsed_s": 0.389,
+      "stage": "fetch",
+      "error": "Evidence source HTTP 404",
+      "centre": "patna",
+      "history": [
+        {
+          "at_utc": "2026-09-15T06:59:11.126124+00:00",
+          "outcome": "failed",
+          "error": "Evidence source HTTP 404"
+        }
+      ]
+    },
+    "Jharkhand/ranchi": {
+      "state": "Jharkhand",
+      "family": "state_agromet",
+      "source_id": "S07",
+      "address": "https://mausam.imd.gov.in/ranchi/mcdata/agromet.pdf",
+      "started_at_utc": "2026-09-15T06:59:11.619404+00:00",
+      "outcome": "failed",
+      "outcome_meaning": "Selection, transport or extraction raised an error. The error text is preserved.",
+      "elapsed_s": 0.858,
+      "stage": "fetch",
+      "error": "Evidence source HTTP 404",
+      "centre": "ranchi",
+      "history": [
+        {
+          "at_utc": "2026-09-15T06:59:11.619404+00:00",
+          "outcome": "failed",
+          "error": "Evidence source HTTP 404"
+        }
+      ]
+    },
+    "Punjab/chandigarh": {
+      "state": "Punjab",
+      "family": "state_agromet",
+      "source_id": "S07",
+      "address": "https://mausam.imd.gov.in/chandigarh/mcdata/agromet.pdf",
+      "started_at_utc": "2026-09-15T06:59:12.579825+00:00",
+      "outcome": "failed",
+      "outcome_meaning": "Selection, transport or extraction raised an error. The error text is preserved.",
+      "elapsed_s": 0.727,
+      "stage": "fetch",
+      "error": "Evidence source HTTP 404",
+      "centre": "chandigarh",
+      "history": [
+        {
+          "at_utc": "2026-09-15T06:59:12.579825+00:00",
+          "outcome": "failed",
+          "error": "Evidence source HTTP 404"
+        }
+      ]
+    },
+    "Uttarakhand/dehradun": {
+      "state": "Uttarakhand",
+      "family": "state_agromet",
+      "source_id": "S07",
+      "address": "https://mausam.imd.gov.in/dehradun/mcdata/agromet.pdf",
+      "started_at_utc": "2026-09-15T06:59:13.411682+00:00",
+      "outcome": "failed",
+      "outcome_meaning": "Selection, transport or extraction raised an error. The error text is preserved.",
+      "elapsed_s": 1.809,
+      "stage": "fetch",
+      "error": "Evidence source HTTP 404",
+      "centre": "dehradun",
+      "history": [
+        {
+          "at_utc": "2026-09-15T06:59:13.411682+00:00",
+          "outcome": "failed",
+          "error": "Evidence source HTTP 404"
+        }
+      ]
+    },
+    "Himachal Pradesh/shimla": {
+      "state": "Himachal Pradesh",
+      "family": "state_agromet",
+      "source_id": "S07",
+      "address": "https://mausam.imd.gov.in/shimla/mcdata/agromet.pdf",
+      "started_at_utc": "2026-09-15T06:59:15.326671+00:00",
+      "outcome": "failed",
+      "outcome_meaning": "Selection, transport or extraction raised an error. The error text is preserved.",
+      "elapsed_s": 0.876,
+      "stage": "fetch",
+      "error": "Evidence source HTTP 404",
+      "centre": "shimla",
+      "history": [
+        {
+          "at_utc": "2026-09-15T06:59:15.326671+00:00",
+          "outcome": "failed",
+          "error": "Evidence source HTTP 404"
+        }
+      ]
+    },
+    "Assam/guwahati": {
+      "state": "Assam",
+      "family": "state_agromet",
+      "source_id": "S07",
+      "address": "https://mausam.imd.gov.in/guwahati/mcdata/agromet.pdf",
+      "started_at_utc": "2026-09-15T06:59:16.306574+00:00",
+      "outcome": "failed",
+      "outcome_meaning": "Selection, transport or extraction raised an error. The error text is preserved.",
+      "elapsed_s": 0.831,
+      "stage": "fetch",
+      "error": "Evidence source HTTP 404",
+      "centre": "guwahati",
+      "history": [
+        {
+          "at_utc": "2026-09-15T06:59:16.306574+00:00",
+          "outcome": "failed",
+          "error": "Evidence source HTTP 404"
+        }
+      ]
+    },
+    "Andhra Pradesh/vijayawada": {
+      "state": "Andhra Pradesh",
+      "family": "state_agromet",
+      "source_id": "S07",
+      "address": "https://mausam.imd.gov.in/vijayawada/mcdata/agromet.pdf",
+      "started_at_utc": "2026-09-15T06:59:17.241896+00:00",
+      "outcome": "failed",
+      "outcome_meaning": "Selection, transport or extraction raised an error. The error text is preserved.",
+      "elapsed_s": 0.938,
+      "stage": "fetch",
+      "error": "Evidence source HTTP 404",
+      "centre": "vijayawada",
+      "history": [
+        {
+          "at_utc": "2026-09-15T06:59:17.241896+00:00",
+          "outcome": "failed",
+          "error": "Evidence source HTTP 404"
+        }
+      ]
+    },
+    "Kerala/thiruvananthapuram": {
+      "state": "Kerala",
+      "family": "state_agromet",
+      "source_id": "S07",
+      "address": "https://mausam.imd.gov.in/thiruvananthapuram/mcdata/agromet.pdf",
+      "started_at_utc": "2026-09-15T06:59:18.283059+00:00",
+      "outcome": "failed",
+      "outcome_meaning": "Selection, transport or extraction raised an error. The error text is preserved.",
+      "elapsed_s": 0.869,
+      "stage": "fetch",
+      "error": "Evidence source HTTP 404",
+      "centre": "thiruvananthapuram",
+      "history": [
+        {
+          "at_utc": "2026-09-15T06:59:18.283059+00:00",
+          "outcome": "failed",
+          "error": "Evidence source HTTP 404"
+        }
+      ]
+    },
+    "Goa/panaji": {
+      "state": "Goa",
+      "family": "state_agromet",
+      "source_id": "S07",
+      "address": "https://mausam.imd.gov.in/panaji/mcdata/agromet.pdf",
+      "started_at_utc": "2026-09-15T06:59:19.256772+00:00",
+      "outcome": "failed",
+      "outcome_meaning": "Selection, transport or extraction raised an error. The error text is preserved.",
+      "elapsed_s": 0.735,
+      "stage": "fetch",
+      "error": "Evidence source HTTP 404",
+      "centre": "panaji",
+      "history": [
+        {
+          "at_utc": "2026-09-15T06:59:19.256772+00:00",
+          "outcome": "failed",
+          "error": "Evidence source HTTP 404"
+        }
+      ]
+    }
+  },
+  "language_corrections": [
+    {
+      "region": "Rajasthan",
+      "sha256": "8eebc964e72805b2c58c03902ab5db61d4252742670d0bc66d4c522ff027df80",
+      "from": "en",
+      "to": "hi",
+      "evidence": "the matched family title is Devanagari: matched:मौसम सलाहकार"
+    },
+    {
+      "region": "Karnataka",
+      "sha256": "2da18a21ee99c6afa64923e1fc681c507adb9b357c736d1a066cc21882486cb2",
+      "from": "en",
+      "to": "hi",
+      "evidence": "the matched family title is Devanagari: matched:मौसम सलाहकार"
+    }
+  ]
+}
