@@ -847,3 +847,5 @@ body { display: flex; flex-direction: column; min-height: 100vh; min-height: 100
 @media (max-width:700px) { .desk-live-grid, .desk-tools, .desk-kept { grid-template-columns:1fr; } .desk-head { align-items:flex-start; } .desk-head h1 { font-size:28px; } .desk-section-head { align-items:flex-start; flex-direction:column; gap:10px; } .desk-section-head input { max-width:none; width:100%; } .desk-command { flex-wrap:wrap; } .desk-command input { flex-basis:100%; } .desk-live-card { padding:16px; } .desk-tool { padding:18px; } .desk-head .secondary { font-size:11px; } }
 @media (prefers-reduced-motion:reduce) { .desk-tool { transition:none; } }
 @media (min-width:1180px) { .masthead-controls button, .masthead-controls .chip-button { white-space:nowrap; } .masthead-controls { flex:0 0 auto; } .place-context { flex:1; } }
+.nav-more > summary { padding:12px 8px; font-size:11px; color:var(--housing-mute); cursor:pointer; }
+.nav-more[open] { border-bottom:1px solid var(--housing-line); margin-bottom:8px; }

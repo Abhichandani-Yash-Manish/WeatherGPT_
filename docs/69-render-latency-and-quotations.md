@@ -48,6 +48,11 @@ No rendering was downgraded in any of the six turns: every answer came back in i
 its values intact. The Marathi repeat at 7.7 s is the honest exception: the cache only helps the sentences
 that repeat, and a composed answer whose retrieval line or disclosure set changes is rendered again.
 
+The same question through the running product surface (the desktop page's own
+/api/chat endpoint, on this machine) answered in **4.3 s cold and 0.1 s repeated**, with
+four quotations held back from the translator (1,577 characters) and the note that says a quoted
+passage stays in the language it was printed in.
+
 988 Python tests pass, including seven new checks in
 `tests/test_rendering_cache_and_quotations.py`: a quotation never reaches the translator, a
 quotation-only answer is rendered as before, sentences keep the answer's order, a transient failure is

@@ -134,10 +134,11 @@
     const rows = [];
     Object.entries(buckets).slice(0, 4).forEach(([name, b]) => {
       const point = (b.points || []).find(p => Date.parse(p.t) >= Date.now());
-      if (point) rows.push([name.replace(/_/g, ' '), point.v == null ? 'Missing' : String(point.v), b.unit || 'Not stated', istStamp(point.t)]);
+      if (point) rows.push([name.replace(/_/g, ' '), point.v == null ? 'Missing' : String(point.v), b.unit || 'Not stated', point.start && point.end ? istStamp(point.start) + ' – ' + istStamp(point.end) : istStamp(point.t)]);
     });
-    if (rows.length) host.append(W.table(['Next value', 'Value', 'Unit', 'Valid (IST)'], rows));
+    if (rows.length) host.append(W.table(['Next value', 'Value', 'Unit', 'Window (IST)'], rows));
     else host.append(el('p', 'No upcoming source hours were returned.', 'desk-reading'));
+    host.append(el('p', 'Model: ' + Array.from(new Set(Object.values(buckets).map(b => b.model || 'not stated'))).join(', '), 'desk-source'));
     host.append(el('p', 'Model output. Each value uses its own valid hour; it is not an observation.', 'field-note'));
   }
   async function readSection(card, path, params, paint) {

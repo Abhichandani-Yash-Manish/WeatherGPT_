@@ -52,16 +52,19 @@
     </div>
 
     <div class="rail-group">
-      <h2 class="rail-title">Explore the evidence</h2>
+      <h2 class="rail-title">Weather & advice</h2>
       <a class="nav-item" href="#/warnings" data-view="warnings"><span class="glyph" aria-hidden="true">▲</span> Warnings<span class="kbd-hint">⌥3</span></a>
       <a class="nav-item" href="#/map" data-view="map"><span class="glyph" aria-hidden="true">◈</span> Map<span class="kbd-hint">⌥4</span></a>
       <a class="nav-item" href="#/forecast" data-view="forecast"><span class="glyph" aria-hidden="true">〜</span> Forecast<span class="kbd-hint">⌥5</span></a>
-      <a class="nav-item" href="#/changes" data-view="changes"><span class="glyph" aria-hidden="true">∆</span> What changed<span class="kbd-hint">⌥6</span></a>
       <a class="nav-item" href="#/observations" data-view="observations"><span class="glyph" aria-hidden="true">⌖</span> Observations<span class="kbd-hint">⌥7</span></a>
       <a class="nav-item" href="#/advisories" data-view="advisories"><span class="glyph" aria-hidden="true">☘</span> Farm advisories<span class="kbd-hint">⌥8</span></a>
+      <details class="nav-more">
+        <summary>Models, history & specialists</summary>
+      <a class="nav-item" href="#/changes" data-view="changes"><span class="glyph" aria-hidden="true">∆</span> What changed<span class="kbd-hint">⌥6</span></a>
       <a class="nav-item" href="#/climate" data-view="climate"><span class="glyph" aria-hidden="true">◔</span> Climate records<span class="kbd-hint">⌥9</span></a>
       <a class="nav-item" href="#/marine" data-view="marine"><span class="glyph" aria-hidden="true">≈</span> Sea and rivers</a>
       <a class="nav-item" href="#/aviation" data-view="aviation"><span class="glyph" aria-hidden="true">✈</span> Aviation</a>
+      </details>
       <a class="nav-item" href="#/briefcase" data-view="briefcase"><span class="glyph" aria-hidden="true">❑</span> Briefcase</a>
       <a class="nav-item" href="#/settings" data-view="settings"><span class="glyph" aria-hidden="true">⚙</span> Sources and settings</a>
     </div>
@@ -278,7 +281,7 @@
   </main>
 </div>
 
-<aside class="drawer" id="evidence-drawer" hidden aria-label="Evidence">
+<aside class="drawer" id="evidence-drawer" hidden aria-labelledby="drawer-title">
   <header class="drawer-head">
     <h2 id="drawer-title">Evidence</h2>
     <button type="button" class="ghost" id="drawer-close">Close</button>

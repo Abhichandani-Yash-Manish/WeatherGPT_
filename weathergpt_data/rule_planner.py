@@ -766,7 +766,7 @@ def dropped_conjunction_place(question, places):
     planned = {norm(place['name']) for place in (places or [])}
     for match in re.finditer(r'\band\s+((?:[A-Z][\w\u2019.\-]+)(?:\s+[A-Z][\w\u2019.\-]+){0,2})', question):
         candidate = match.group(1).split(',')[0].strip()
-        if len(candidate) < 3 or candidate.lower() in PLACE_NOISE:
+        if len(candidate) < 3 or candidate.lower() in PLACE_NOISE or candidate in ACRONYMS:
             continue
         if norm(candidate) not in planned:
             return True

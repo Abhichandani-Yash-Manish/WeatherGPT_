@@ -25,6 +25,9 @@ HELD_NOTE = ('Sentences stating a limit, a negation or the absence of a warning 
              'warning is a safety defect rather than a wording problem.')
 VALUES_NOTE = ('Numbers, units, dates, places, identifiers and links are the original characters. They '
                'were withheld from translation rather than translated and checked.')
+QUOTATION_NOTE = ('A quoted passage is the published document\'s own words and is kept in the language it was '
+                  'printed in; only the explanation around it is written in the requested language. A rendering '
+                  'of a quotation would be a paraphrase in the place a reader expects the source.')
 
 
 def target_language(body, state, plan):
@@ -140,7 +143,8 @@ def deliver(result, target, translator=None, reason='none'):
                           + str(error) + ' The evidence above remains in its source language.')
 
     generation['render_report'] = {k: report[k] for k in
-                                   ('sentences', 'translated', 'held_safety_critical', 'failed', 'ok')}
+                                   ('sentences', 'translated', 'held_safety_critical', 'held_quotations',
+                                    'held_quotation_characters', 'failed', 'ok')}
     if not report['ok']:
         generation['render_failures'] = report['failures'][:5]
         # A service that could not be reached, a rendering that damaged a value and a rendering
@@ -173,6 +177,8 @@ def deliver(result, target, translator=None, reason='none'):
     result['notes'].append(VALUES_NOTE)
     if report['held_safety_critical']:
         result['notes'].append(HELD_NOTE)
+    if report.get('held_quotations'):
+        result['notes'].append(QUOTATION_NOTE)
     return result
 
 

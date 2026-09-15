@@ -188,8 +188,11 @@ const WG = window.WG;
     const bodyNode = document.getElementById('drawer-body');
     if (!drawer || !bodyNode) return;
     document.getElementById('drawer-title').textContent = title;
-    clear(bodyNode);
-    build(bodyNode);
+    // Each opening owns its content. A late source response from a closed
+    // drawer can only update that detached content, never a newer task.
+    const content = el('div', undefined, 'drawer-content');
+    bodyNode.replaceChildren(content);
+    build(content);
     drawer.hidden = false;
     const close = document.getElementById('drawer-close');
     if (close) close.focus();
@@ -337,7 +340,11 @@ const WG = window.WG;
     document.querySelectorAll('.nav-item').forEach(item => {
       const active = item.getAttribute('data-view') === name;
       item.classList.toggle('is-active', active);
-      if (active) item.setAttribute('aria-current', 'page'); else item.removeAttribute('aria-current');
+      if (active) {
+        item.setAttribute('aria-current', 'page');
+        const group = item.closest('details');
+        if (group) group.open = true;
+      } else item.removeAttribute('aria-current');
     });
     WG.state.view = name;
   }
