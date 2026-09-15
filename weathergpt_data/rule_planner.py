@@ -884,7 +884,12 @@ def single_request(question, now, history=None):
                                                        or (CROP.search(question) and ADVISORY.search(question))))):
         tasks.append(task('warning', 'lookup', ['official_warning']))
     elif HISTORY_WORDS.search(question) and years and not DOCUMENT.search(question):
-        parameter = 'temperature' if re.search(r'\btemperature\b', question, re.I) else 'rainfall'
+        parameters = []
+        if re.search(r'\b(rainfall|rain|precipitation)\b', question, re.I):
+            parameters.append('rainfall')
+        if re.search(r'\btemperature\b', question, re.I):
+            parameters.append('temperature')
+        parameters = parameters or ['rainfall']
         operation = 'lookup'
         if re.search(r'\b(trend|warming|changing)\b', question, re.I):
             operation = 'trend'
@@ -892,7 +897,7 @@ def single_request(question, now, history=None):
             operation = 'compare'
         elif len(years) > 1:
             operation = 'series'
-        entry = task('history', operation, [parameter], years=years[:2] if operation == 'compare' else years)
+        entry = task('history', operation, parameters, years=years[:2] if operation == 'compare' else years)
         entry['start_local'] = ''
         entry['end_local'] = ''
         for name in MONTHS:
@@ -903,6 +908,7 @@ def single_request(question, now, history=None):
             if name in question.lower():
                 entry['period'] = code
                 break
+        # The historical tool keeps each requested measure and its source evidence.
         tasks.append(entry)
     elif MARINE.search(question):
         parameters = ['wave_height']
