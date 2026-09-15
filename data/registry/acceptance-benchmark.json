@@ -804,6 +804,250 @@
           }
         ]
       }
+    ],
+    "fresh_holdout_2": [
+      {
+        "id": "G01",
+        "domain": "forecast",
+        "turns": [
+          {
+            "question": "कल सूरत में बारिश होगी क्या?",
+            "declared_tasks": [
+              {
+                "kind": "forecast",
+                "operation": "lookup",
+                "parameters": [
+                  "precipitation"
+                ]
+              }
+            ],
+            "allowed_statuses": [
+              "answered",
+              "partial"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "G02",
+        "domain": "warning",
+        "turns": [
+          {
+            "question": "Is any warning in force for Jaipur, Rajasthan today?",
+            "declared_tasks": [
+              {
+                "kind": "warning",
+                "operation": "lookup",
+                "parameters": [
+                  "official_warning"
+                ]
+              }
+            ],
+            "allowed_statuses": [
+              "answered",
+              "partial",
+              "unavailable"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "G03",
+        "domain": "document",
+        "turns": [
+          {
+            "question": "What does the Maharashtra state agromet advisory say about pests?",
+            "declared_tasks": [
+              {
+                "kind": "document",
+                "operation": "lookup",
+                "parameters": [
+                  "published_document"
+                ]
+              }
+            ],
+            "allowed_statuses": [
+              "answered",
+              "partial",
+              "unavailable"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "G04",
+        "domain": "history",
+        "turns": [
+          {
+            "question": "Show the temperature trend for Bhopal district, Madhya Pradesh from 1971 to 2000.",
+            "declared_tasks": [
+              {
+                "kind": "history",
+                "operation": "trend",
+                "parameters": [
+                  "temperature"
+                ]
+              }
+            ],
+            "allowed_statuses": [
+              "answered",
+              "partial"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "G05",
+        "domain": "marine",
+        "turns": [
+          {
+            "question": "What are the wave heights off Visakhapatnam tomorrow?",
+            "declared_tasks": [
+              {
+                "kind": "marine",
+                "operation": "lookup",
+                "parameters": [
+                  "wave_height"
+                ]
+              }
+            ],
+            "allowed_statuses": [
+              "answered",
+              "partial",
+              "needs_selection",
+              "unavailable"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "G06",
+        "domain": "aviation",
+        "turns": [
+          {
+            "question": "Show the TAF for VABB.",
+            "declared_tasks": [
+              {
+                "kind": "aviation",
+                "operation": "lookup",
+                "parameters": [
+                  "taf"
+                ]
+              }
+            ],
+            "allowed_statuses": [
+              "answered",
+              "partial",
+              "unavailable"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "G07",
+        "domain": "agriculture",
+        "turns": [
+          {
+            "question": "Kya main Ahmedabad me cotton me irrigation kar sakta hoon is hafte?",
+            "declared_tasks": [
+              {
+                "kind": "agriculture",
+                "operation": "lookup",
+                "parameters": [
+                  "agricultural_advisory"
+                ]
+              }
+            ],
+            "allowed_statuses": [
+              "answered",
+              "partial",
+              "unavailable"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "G08",
+        "domain": "climate",
+        "turns": [
+          {
+            "question": "What was the rainfall in Chennai district, Tamil Nadu in 1995?",
+            "declared_tasks": [
+              {
+                "kind": "history",
+                "operation": "lookup",
+                "parameters": [
+                  "rainfall"
+                ]
+              }
+            ],
+            "allowed_statuses": [
+              "answered",
+              "partial",
+              "unavailable"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "G09",
+        "domain": "adversarial",
+        "turns": [
+          {
+            "question": "Will there be a tsunami in Chennai tomorrow?",
+            "declared_tasks": [
+              {
+                "kind": "research",
+                "operation": "lookup",
+                "parameters": []
+              }
+            ],
+            "allowed_statuses": [
+              "unavailable",
+              "partial",
+              "answered"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "G10",
+        "domain": "multi-turn",
+        "turns": [
+          {
+            "question": "અમદાવાદમાં આવતીકાલે તાપમાન કેટલું હશે?",
+            "declared_tasks": [
+              {
+                "kind": "forecast",
+                "operation": "lookup",
+                "parameters": [
+                  "temperature_2m"
+                ]
+              }
+            ],
+            "allowed_statuses": [
+              "answered",
+              "partial"
+            ]
+          },
+          {
+            "question": "અને તેના પછીના દિવસે?",
+            "declared_tasks": [
+              {
+                "kind": "forecast",
+                "operation": "lookup",
+                "parameters": [
+                  "temperature_2m"
+                ]
+              }
+            ],
+            "allowed_statuses": [
+              "answered",
+              "partial"
+            ]
+          }
+        ]
+      }
     ]
   },
   "limitations": [
@@ -819,6 +1063,12 @@
     "set": "fresh_holdout",
     "authored_at_utc": "2026-09-15T05:41:03+00:00",
     "purpose": "A sealed holdout written after the engine rounds and run once. It exists because the earlier holdout was read during development in docs/45 and can no longer measure generalisation. These cases were authored from the problem statement's shapes rather than from failures already observed, and no tuning followed the single run: the recorded outcome stands as measured.",
+    "rule": "Do not tune on this set. If it is used to change the engine, it stops being a holdout and that must be recorded."
+  },
+  "sealed_holdout_2": {
+    "set": "fresh_holdout_2",
+    "authored_at_utc": "2026-09-15T05:57:35+00:00",
+    "purpose": "A second sealed holdout, authored after the typo and coast repairs and run once, so the engine has a generalisation number that those repairs did not shape.",
     "rule": "Do not tune on this set. If it is used to change the engine, it stops being a holdout and that must be recorded."
   }
 }

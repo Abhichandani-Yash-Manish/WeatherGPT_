@@ -1,0 +1,58 @@
+{
+  "id": "G10",
+  "domain": "multi-turn",
+  "turns": [
+    {
+      "question": "અમદાવાદમાં આવતીકાલે તાપમાન કેટલું હશે?",
+      "status": "answered",
+      "status_allowed": true,
+      "task_shape_matches": true,
+      "tasks": [
+        {
+          "declared": {
+            "kind": "forecast",
+            "operation": "lookup",
+            "parameters": [
+              "temperature_2m"
+            ]
+          },
+          "outcome": "completed",
+          "executed_status": "answered"
+        }
+      ],
+      "answered_language": "gu",
+      "language_trace": null,
+      "prohibited_hits": [],
+      "abstained": false,
+      "duration_s": 5.889,
+      "turn": 1,
+      "wall_s": 9.11
+    },
+    {
+      "question": "અને તેના પછીના દિવસે?",
+      "status": "answered",
+      "status_allowed": true,
+      "task_shape_matches": true,
+      "tasks": [
+        {
+          "declared": {
+            "kind": "forecast",
+            "operation": "lookup",
+            "parameters": [
+              "temperature_2m"
+            ]
+          },
+          "outcome": "completed",
+          "executed_status": "answered"
+        }
+      ],
+      "answered_language": "gu",
+      "language_trace": null,
+      "prohibited_hits": [],
+      "abstained": false,
+      "duration_s": 7.38,
+      "turn": 2,
+      "wall_s": 10.98
+    }
+  ]
+}

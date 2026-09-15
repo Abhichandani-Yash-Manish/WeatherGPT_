@@ -1,0 +1,32 @@
+{
+  "id": "G05",
+  "domain": "marine",
+  "turns": [
+    {
+      "question": "What are the wave heights off Visakhapatnam tomorrow?",
+      "status": "answered",
+      "status_allowed": true,
+      "task_shape_matches": true,
+      "tasks": [
+        {
+          "declared": {
+            "kind": "marine",
+            "operation": "lookup",
+            "parameters": [
+              "wave_height"
+            ]
+          },
+          "outcome": "completed",
+          "executed_status": "answered"
+        }
+      ],
+      "answered_language": null,
+      "language_trace": null,
+      "prohibited_hits": [],
+      "abstained": false,
+      "duration_s": 2.129,
+      "turn": 1,
+      "wall_s": 2.13
+    }
+  ]
+}
