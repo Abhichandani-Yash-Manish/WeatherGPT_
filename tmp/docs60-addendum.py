@@ -1,0 +1,8 @@
+import pathlib
+p = pathlib.Path('docs/60-state-agromet-coverage.md')
+t = p.read_text()
+anchor = '## What this does and does not establish'
+assert t.count(anchor) == 1
+t = t.replace(anchor, "\n## Two follow-on repairs, and the limit they leave\n\nAdding the editions made two more defects visible, and one limit clearer:\n\n1. **A state named without the word \\\"state\\\" now resolves.** *\\\"Rajasthan ki agromet advisory me sinchai ke\n   baare me kya likha hai?\\\"* asked *which state should I check?* because the corpus path looked for a place\n   whose kind was `state`. It now also accepts a place name that the indexed editions carry as a region, which\n   is the corpus's own evidence rather than a hard-coded list. The answer changed from a question back to the\n   reader to a named edition search.\n2. **Topic words are now held in the editions' own scripts** (सिंचाई, बुवाई, कीट, खाद, कटाई and their siblings),\n   so a topic filter can match a Devanagari bulletin at all.\n3. **The limit that remains:** retrieval is lexical. An English question cannot match passages written in\n   Devanagari, so *\\\"What does the Rajasthan state agromet advisory say about irrigation?\\\"* finds the edition\n   and then reports that no indexed passage matches - which is true, and is the honest description of a\n   monolingual index. Cross-lingual retrieval (a translation or an embedding bridge, with the invariant gate in\n   front of it) is an open item, recorded here rather than papered over by a wider search.\n".lstrip(chr(10)) + chr(10) + anchor, 1)
+p.write_text(t)
+print('added addendum')
