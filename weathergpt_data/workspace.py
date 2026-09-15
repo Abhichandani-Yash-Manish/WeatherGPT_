@@ -84,6 +84,63 @@ class Workspace:
                     'checked_at_utc':self.clock().isoformat() if hasattr(self,'clock') else None}
         return self.conversation.progress()
 
+    def advisory_brief(self,params):
+        """Compose the advisory brief: published crop advice for a district, with forecast context.
+
+        The route asks for the district or region explicitly. It never infers which district
+        bulletin to read from a coordinate, because reading the wrong district's advice is worse
+        than asking one question.
+        """
+        from . import product_api
+        from .advisory import compose
+
+        def first(name, default=None):
+            value = (params or {}).get(name)
+            if isinstance(value, (list, tuple)):
+                value = value[0] if value else None
+            return default if value in (None, '') else value
+
+        region = first('region')
+        if not region:
+            raise SourceError('Name the district or region whose published advice should be read; '
+                              'the workspace will not guess one from a coordinate.')
+        state = first('state')
+        crop = first('crop', '')
+        stage = first('stage', '')
+        topic = first('topic', 'general')
+        mode = first('mode', 'source_lookup')
+        day = int(first('day', '1'))
+        if mode not in ('source_lookup', 'decision_support'):
+            raise SourceError('Use source_lookup or decision_support')
+        if day not in (1, 2, 3, 5, 7):
+            raise SourceError('Ask for 1, 2, 3, 5 or 7 forecast days')
+        facts, window, forecast_note = [], None, 'no point was given, so no forecast context was retrieved'
+        latitude, longitude = first('lat'), first('lon')
+        if latitude is not None and longitude is not None:
+            view = product_api.forecast(self.foundation(), float(latitude), float(longitude), days=day)
+            data = view.get('data') or {}
+            for name, entry in (data.get('parameters') or {}).items():
+                points = (entry or {}).get('points') or []
+                if not points:
+                    continue
+                facts.append({'parameter': name, 'value': points[0].get('v'), 'last_value': points[-1].get('v'),
+                              'samples': len(points), 'unit': (entry or {}).get('unit'),
+                              'place': (data.get('requested') or {}).get('label') or None,
+                              'start': points[0].get('t'), 'end': points[-1].get('t'),
+                              'source_id': ((view.get('sources') or [{}])[0] or {}).get('source_id'),
+                              'label': name})
+            window = {'days': day, 'first_valid': (facts[0]['start'] if facts else None),
+                      'last_valid': (facts[0]['end'] if facts else None)}
+            forecast_note = view.get('status')
+        brief = compose(self.document_index(),
+                        {'region': region, 'state': state, 'crop': crop, 'stage': stage, 'topic': topic,
+                         'mode': mode, 'window': window, 'point': {'latitude': latitude, 'longitude': longitude}},
+                        forecast=facts)
+        brief['forecast_status'] = forecast_note
+        brief['schema_version'] = 'advisory-brief-v1'
+        brief['generated_at_utc'] = self.clock().isoformat()
+        return brief
+
     def cancel_chat(self,body):
         """Ask a running turn to stop at its next stage boundary.
 
@@ -462,6 +519,7 @@ def make_server(workspace, port=8765):
             if path.startswith('/api/'):
                 known=(workspace.is_product(path) or path=='/api/conversations' or path=='/api/health'
                        or path=='/api/languages' or path=='/api/watches' or path=='/api/chat/progress'
+                       or path=='/api/advisories/brief'
                        or path.startswith('/api/conversations/') or path.startswith('/api/map/static/'))
                 if not known:return self.respond(404,{'error':'Not found'})
                 if not self.authorized():return self.respond(403,{'error':'Reload this local workspace before reading stored data'})
@@ -471,6 +529,7 @@ def make_server(workspace, port=8765):
                     if path=='/api/languages':return self.respond(200,workspace.languages())
                     if path=='/api/watches':return self.respond(200,workspace.watches())
                     if path=='/api/chat/progress':return self.respond(200,workspace.chat_progress())
+                    if path=='/api/advisories/brief':return self.respond(200,workspace.advisory_brief(parse_qs(urlsplit(self.path).query)))
                     if path.startswith('/api/conversations/'):return self.respond(200,workspace.conversation_transcript(path.removeprefix('/api/conversations/')))
                     if path.startswith('/api/map/static/'):
                         return self.respond(200,workspace.map_layer(path.removeprefix('/api/map/static/')),'application/geo+json')
