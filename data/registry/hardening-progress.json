@@ -1,7 +1,7 @@
 {
   "schema_version": "hardening-progress-v1",
   "review": "research/reviews/national-readiness-20260912/review.md",
-  "updated_at_utc": "2026-09-15T05:38:50+00:00",
+  "updated_at_utc": "2026-09-15T05:43:55+00:00",
   "operational_ready": false,
   "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
   "findings": [
@@ -1347,6 +1347,36 @@
       "No operational clearance, uptime or service level, and hosting remains on hold.",
       "No percentile beyond these eight observations, and no monitoring or alerting exists.",
       "No clean-machine acceptance from a fresh clone: the corpus was not rebuilt from nothing."
+    ]
+  },
+  "sealed_holdout_batch": {
+    "report": "docs/54-holdout-generalisation.md",
+    "evidence_directory": "research/reviews/acceptance-benchmark-20260915p",
+    "operational_ready": false,
+    "scope": "A sealed holdout of ten unseen cases authored after the engine rounds and run once, with no engine change afterwards.",
+    "automated_tests": 774,
+    "javascript_component_checks": 70,
+    "measured": {
+      "cases": 10,
+      "turns": 12,
+      "declared_tasks": 13,
+      "completed": 8,
+      "incomplete": 3,
+      "missing": 2,
+      "completion_rate": 0.615,
+      "prohibited_claim_hits": 0,
+      "critical_failures": 0,
+      "statuses_outside_the_declared_vocabulary": 2,
+      "tuned_comparison": {
+        "development": "17/17",
+        "holdout": "4/4"
+      }
+    },
+    "limitations": [
+      "Ten cases written in one sitting are a probe of shapes, not a sample of users.",
+      "Two root causes account for three of the five misses; the cases are not independent samples.",
+      "A prohibited-claim hit is a regex match, not a semantic review.",
+      "The misses were read to write the record: any round that fixes them makes this set development data."
     ]
   }
 }
