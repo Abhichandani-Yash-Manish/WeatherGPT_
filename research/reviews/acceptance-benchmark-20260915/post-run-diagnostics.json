@@ -1,0 +1,154 @@
+{
+  "schema_version": "benchmark-post-run-diagnostics-v1",
+  "note": "Independent diagnostic re-runs after the first scored run; they explain outcomes but do not alter the recorded scores.",
+  "cases": [
+    {
+      "id": "D05",
+      "status": "needs_selection",
+      "notes": [],
+      "choices": [
+        "Patna, Kaimur District, State of Bihar",
+        "Patna, Rohtās, State of Bihar",
+        "Patna, Kaimur District, State of Bihar",
+        "Patnā, Pūrba Champāran, State of Bihar",
+        "Patnā, Aurangābād, State of Bihar",
+        "Patna, Aurangābād, State of Bihar",
+        "Patna, Patna, State of Bihar"
+      ],
+      "generation": {
+        "provider": "typed_task_renderers",
+        "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+      },
+      "language_trace": {
+        "requested": "en",
+        "selection": "inferred_from_question",
+        "adherence": "not_applicable",
+        "rendered": false
+      },
+      "tasks": [
+        [
+          "warning",
+          "needs_selection"
+        ]
+      ],
+      "answer_head": "Which place do you mean? Patna, Kaimur District, State of Bihar / Patna, Rohtās, State of Bihar / Patnā, Pūrba Champāran, State of Bihar / Patnā, Aurangābād, State of Bihar. Choose one, or type its state/district."
+    },
+    {
+      "id": "D06",
+      "status": "partial",
+      "notes": [
+        "The user is asking for the text of a published national bulletin regarding heavy rainfall.",
+        "No specific date or district is provided, so the search scope is national."
+      ],
+      "choices": [],
+      "generation": {
+        "provider": "typed_task_renderers",
+        "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit.",
+        "requested_language": "en",
+        "language_selection": "inferred_from_question",
+        "language_adherence": "not_applicable"
+      },
+      "language_trace": null,
+      "tasks": [
+        [
+          "document",
+          "partial"
+        ]
+      ],
+      "answer_head": "Indexed published document:\n\nAll India Weather Summary and Forecast Bulletin · national · document d3e80f651f72 · printed issue 2026-09-14 · on the printed issue date · retrieved 2026-09-14 18:28:17.453227+00:00.\n\n· page"
+    },
+    {
+      "id": "D08",
+      "status": "partial",
+      "notes": [
+        "Current time is 2026-09-15T04:07 IST, so 'kal' refers to 2026-09-16.",
+        "The user asks about rain ('barish'), so the forecast window covers the full day of 2026-09-16 (00:00 to next 00:00 IST).",
+        "No specific time of day was requested, so the entire day is considered.",
+        "precipitation: the requested boundaries split source hours or exceed available support; only complete contained intervals are shown",
+        "Precipitation includes rain, showers and snow water equivalent; it is not a rain-only gauge measurement.",
+        "Source hours are on UTC boundaries (:30 in IST). Each probability is for >0.1 mm in its preceding hour. Hourly probabilities are never combined into a period probability.",
+        "Best-match model selection may differ by variable; upstream run and local representativeness are unverified. Hourly values cannot determine an exact rain start minute or issue an official warning.",
+        "Numbers, units, dates, places, identifiers and links are the original characters. They were withheld from translation rather than translated and checked."
+      ],
+      "choices": [],
+      "generation": {
+        "provider": "gated_translation",
+        "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit.",
+        "requested_language": "gu",
+        "language_selection": "user_selected",
+        "render_report": {
+          "sentences": 4,
+          "translated": 4,
+          "held_safety_critical": 0,
+          "failed": 0,
+          "ok": true
+        },
+        "language_adherence": "rendered_with_protected_values"
+      },
+      "language_trace": null,
+      "tasks": [
+        [
+          "forecast",
+          "partial"
+        ]
+      ],
+      "answer_head": "Ahmedabad, Ahmadābād, State of Gujarāt · 2026-09-16 · 00:30 · 2026-09-16 · 23:30 IST કલાક દીઠ વરસાદની માત્રાઃ 0.0–0.8 mm કલાક દીઠ 23 મૂલ્યોમાં. ચોક્કસ તારીખો, સમય, મૂલ્યો અને પુરાવા આઈ.ડી. નીચેનાં કોષ્ટકો અને કોષ્ટકોમાં "
+    },
+    {
+      "id": "H01",
+      "status": "partial",
+      "notes": [
+        "The user is asking for a published document rather than a current forecast or warning.",
+        "The scope is the state of Gujarat as implied by 'Gujarat state agromet advisory bulletin'.",
+        "No specific date is requested, so the most recent available bulletin will be retrieved.",
+        "Read the named state from the question: Gujarat."
+      ],
+      "choices": [],
+      "generation": {
+        "provider": "typed_task_renderers",
+        "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit.",
+        "requested_language": "en",
+        "language_selection": "inferred_from_question",
+        "language_adherence": "not_applicable"
+      },
+      "language_trace": null,
+      "tasks": [
+        [
+          "document",
+          "partial"
+        ]
+      ],
+      "answer_head": "Indexed published document:\n\nState composite agromet advisory bulletin · Gujarat · document 22678bac94bc · printed issue 2026-09-12 · 2 day(s) after the printed issue · retrieved 2026-09-14 18:28:49.905251+00:00.\n\n· page"
+    },
+    {
+      "id": "H04",
+      "status": "partial",
+      "notes": [
+        "Tomorrow is 2026-09-16.",
+        "The forecast window covers the full day (00:00 to next 00:00 IST).",
+        "The user asks about rain, so precipitation probability and amount are requested.",
+        "precipitation: the requested boundaries split source hours or exceed available support; only complete contained intervals are shown",
+        "precipitation_probability: the requested boundaries split source hours or exceed available support; only complete contained intervals are shown",
+        "Precipitation includes rain, showers and snow water equivalent; it is not a rain-only gauge measurement.",
+        "Source hours are on UTC boundaries (:30 in IST). Each probability is for >0.1 mm in its preceding hour. Hourly probabilities are never combined into a period probability.",
+        "Best-match model selection may differ by variable; upstream run and local representativeness are unverified. Hourly values cannot determine an exact rain start minute or issue an official warning."
+      ],
+      "choices": [],
+      "generation": {
+        "provider": "typed_task_renderers",
+        "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit.",
+        "requested_language": "en",
+        "language_selection": "inferred_from_question",
+        "language_adherence": "not_applicable"
+      },
+      "language_trace": null,
+      "tasks": [
+        [
+          "forecast",
+          "partial"
+        ]
+      ],
+      "answer_head": "Mysuru · 16 Sep, 00:30–16 Sep, 23:30 IST: Precipitation in individual hours: 0.0–0.9 mm. Hourly rain chances: 7–65 %. The highest hourly value is 65% for 16 Sep, 00:30–01:30 IST. These percentages are for individual hour"
+    }
+  ]
+}

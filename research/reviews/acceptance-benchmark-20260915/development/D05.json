@@ -1,0 +1,37 @@
+{
+  "id": "D05",
+  "domain": "warning",
+  "turns": [
+    {
+      "question": "Is there an official flood warning for Patna, Bihar right now?",
+      "status": "needs_selection",
+      "status_allowed": true,
+      "task_shape_matches": true,
+      "tasks": [
+        {
+          "declared": {
+            "kind": "warning",
+            "operation": "lookup",
+            "parameters": [
+              "official_warning"
+            ]
+          },
+          "outcome": "incomplete",
+          "executed_status": "needs_selection"
+        }
+      ],
+      "answered_language": null,
+      "language_trace": {
+        "requested": "en",
+        "selection": "inferred_from_question",
+        "adherence": "not_applicable",
+        "rendered": false
+      },
+      "prohibited_hits": [],
+      "abstained": true,
+      "duration_s": 17.575,
+      "turn": 1,
+      "wall_s": 17.58
+    }
+  ]
+}

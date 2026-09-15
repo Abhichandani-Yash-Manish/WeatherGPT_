@@ -1,0 +1,32 @@
+{
+  "id": "D06",
+  "domain": "document",
+  "turns": [
+    {
+      "question": "What does the latest national weather bulletin say about heavy rainfall?",
+      "status": "partial",
+      "status_allowed": true,
+      "task_shape_matches": true,
+      "tasks": [
+        {
+          "declared": {
+            "kind": "document",
+            "operation": "lookup",
+            "parameters": [
+              "published_document"
+            ]
+          },
+          "outcome": "incomplete",
+          "executed_status": "partial"
+        }
+      ],
+      "answered_language": null,
+      "language_trace": null,
+      "prohibited_hits": [],
+      "abstained": false,
+      "duration_s": 8.475,
+      "turn": 1,
+      "wall_s": 8.48
+    }
+  ]
+}

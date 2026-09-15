@@ -1,0 +1,32 @@
+{
+  "id": "H04",
+  "domain": "forecast",
+  "turns": [
+    {
+      "question": "Will it rain in Mysuru, Karnataka tomorrow?",
+      "status": "partial",
+      "status_allowed": true,
+      "task_shape_matches": true,
+      "tasks": [
+        {
+          "declared": {
+            "kind": "forecast",
+            "operation": "lookup",
+            "parameters": [
+              "precipitation"
+            ]
+          },
+          "outcome": "incomplete",
+          "executed_status": "partial"
+        }
+      ],
+      "answered_language": null,
+      "language_trace": null,
+      "prohibited_hits": [],
+      "abstained": false,
+      "duration_s": 6.821,
+      "turn": 1,
+      "wall_s": 6.82
+    }
+  ]
+}
