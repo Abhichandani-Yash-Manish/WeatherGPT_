@@ -1,7 +1,7 @@
 {
   "schema_version": "hardening-progress-v1",
   "review": "research/reviews/national-readiness-20260912/review.md",
-  "updated_at_utc": "2026-09-15T05:03:54+00:00",
+  "updated_at_utc": "2026-09-15T05:24:39+00:00",
   "operational_ready": false,
   "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
   "findings": [
@@ -1250,6 +1250,63 @@
       "Two runs on one afternoon on one machine is not a reliability measurement, and the cold 29.886 s read is one observation, not a percentile.",
       "No forecast skill, accuracy, impact or operational clearance is claimed for anything in a briefing.",
       "CAP relay geographic applicability to a place is still not computed."
+    ]
+  },
+  "language_voice_batch": {
+    "report": "docs/52-language-and-voice-measurement.md",
+    "evidence_directory": "research/implementation/language-voice-20260915",
+    "operational_ready": false,
+    "scope": "WS8: the language and voice path re-measured after the engine work, two gate defects repaired (a rendering that mixes Indian scripts, and a script verdict that was computed and never used), a refused script rendering reported as such rather than as an unreachable service, an agromet advisory with a crop routed to agriculture rather than to the warning product, the language ledger re-measured, six journeys recorded, real audio measured for Hindi and Gujarati, and the document-language gap measured.",
+    "automated_tests": 766,
+    "javascript_component_checks": 70,
+    "measured": {
+      "ledger": {
+        "file": "data/registry/language-support.json",
+        "registered": 23,
+        "write_verified": 19,
+        "write_failed": 4,
+        "speak_verified": 10,
+        "hear_verified": 10,
+        "write_failures": {
+          "ta": "a protected value was duplicated by the rendering",
+          "sd": "the rendering was not written in this script",
+          "sat": "a protected value did not survive the rendering",
+          "mni": "the rendering was not written in this script"
+        }
+      },
+      "journeys": {
+        "turns": 6,
+        "adherence": {
+          "values_did_not_survive": 3,
+          "written_by_template": 1,
+          "rendered_with_protected_values": 2,
+          "rendered_in_another_script": 1
+        }
+      },
+      "speech": {
+        "hi": {
+          "audio_bytes": 188204,
+          "detected": "hi-IN",
+          "number_as_digits": false
+        },
+        "gu": {
+          "audio_bytes": 225836,
+          "detected": "gu-IN",
+          "unit_present": false
+        }
+      },
+      "documents": {
+        "passages": 6739,
+        "devanagari": 107,
+        "other_indic": 5,
+        "note": "the non-Latin passages are bilingual letterheads, some with degraded extraction; no substantive non-English prose is indexed"
+      }
+    },
+    "limitations": [
+      "No fluency, accuracy or native acceptability: no native speaker has reviewed any rendering, transcript or audio.",
+      "Recognition probability is the recogniser own number, was absent for one probe, and is never answer or forecast confidence.",
+      "No mobile, noisy-input, barge-in, screen-reader or cross-browser voice acceptance.",
+      "Document coverage in the language sense is not established: the corpus is English and quoted passages are never rewritten."
     ]
   }
 }

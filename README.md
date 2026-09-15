@@ -36,7 +36,7 @@ The interface states these limits rather than filling the gaps:
 - **No live station observation for an arbitrary place**, no observed water level, gauge reading, danger level, flood extent, tide or current, and no road, route or travel clearance.
 - **No field or marine clearance**, no crop diagnosis, no pesticide dosage, and no flood-impact prediction.
 - **No invented scores.** No confidence, risk, suitability or probability value is computed for display.
-- **Language output is measured per direction, not fluent.** Twenty languages (including Hindi and Gujarati) pass a measured `write` gate; ten of those also pass measured speech and hearing, the other ten are readable but speech for them is beta-gated by the provider. Three languages fail the write gate and are refused rather than offered with a warning. Rendering puts a deterministic gate between the evidence and the reader: values are withheld and substituted, safety-critical clauses are held, and a failed gate keeps the source-language answer and says so. No native speaker has reviewed any output, and fluent-language acceptance is not established.
+- **Language output is measured per direction, not fluent.** Nineteen of twenty-three registered languages pass a measured `write` gate (including Hindi and Gujarati); ten of those also pass measured speech and hearing, the rest are readable but speech for them is beta-gated by the provider. Four fail the write gate and are refused rather than offered with a warning, each with its recorded reason. Rendering puts a deterministic gate between the evidence and the reader: values are withheld and substituted, safety-critical clauses are held, and the gate now also refuses a rendering that mixes Indian scripts or that is not written in the requested script at all - a Tamil rendering carrying Telugu characters was shipped before that check existed. A failed gate keeps the source-language answer and says which failure it was. Quoted published passages are evidence and are never rewritten: of 6,739 indexed passages only 107 contain Devanagari, all of them bilingual letterheads, so document coverage in the language sense is not established. No native speaker has reviewed any output.
 - **Voice exists but is not accepted.** Speech input with a confirmable transcript, spoken answers over gated text, and spoken/recognition states are implemented. A presence-only round-trip measurement now records place, unit and negation presence for Hindi and Gujarati, with numerals again observed as word forms; speech accuracy, noisy input and browser/audio acceptance remain unmeasured, and no native speaker has reviewed any output.
 - **An advisory brief for a crop.** One district, one crop and one stage become an artefact: published advice quoted with its page and printed issue date, the source conditions quoted as conditions, the forecast kept apart as context, what a decision still needs when asked, and no prescription, diagnosis or dose decision. Another crop is never served for the one asked about. Written with scripts/advisory_brief.py.
 - **An alert brief you can keep.** One place and one published warning day become an artefact: the day status in the product own terms, the bulletin identity and retrieval instant, the CAP relay reported separately, what would change it, what is not established, and a content hash. Written with scripts/alert_brief.py. Nothing is delivered anywhere.
@@ -49,7 +49,7 @@ The interface states these limits rather than filling the gaps:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 754 Python tests
+python3 -m pytest tests/ -q                          # 766 Python tests
 node tests/test_charts.js                            #  2 of 70 component checks
 node tests/test_views.js                             # 18
 node tests/test_bulletin_ui.js                       #  6
@@ -70,6 +70,7 @@ Real journeys are recorded with screenshots in [the frontend batch evidence](res
 
 ## Status and open work
 
+- [Language and voice, re-measured](docs/52-language-and-voice-measurement.md) - a stricter gate that refuses mixed scripts, the ledger re-measured at 19 of 23 write and 10 of 23 speak and hear, six journeys including a Hindi clarification rendered through the gate, real audio for Hindi and Gujarati, and the measured document-language gap.
 - [A briefing you write on a schedule](docs/51-scheduled-briefing.md) - a dated briefing over named places with the change since the previous run measured against that run own record, a foreground interval that says what it is not, and the WS7 exit check now met with its limits recorded.
 - [Personas and the briefcase](docs/50-personas-and-the-briefcase.md) - three registered reading positions that change emphasis and never evidence, disclosed in every answer, and a local briefcase that keeps, reopens, exports and deletes composed briefs. WS7's scheduled-briefing half is explicitly still open.
 - [Critical full-solution review](docs/21-full-solution-critical-review.md) — the current verdict, findings A01–A08 and the recommended trajectory.
