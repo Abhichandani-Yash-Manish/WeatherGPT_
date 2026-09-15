@@ -42,7 +42,7 @@ PRODUCT_PATHS = ('/api/overview', '/api/warnings/national', '/api/warnings/place
                  '/api/forecast', '/api/forecast/changes', '/api/marine', '/api/river', '/api/aviation', '/api/places/search',
                  '/api/map/layers', '/api/warnings/cap', '/api/warnings/alert-brief', '/api/settings/capabilities',
                  '/api/climate/index', '/api/climate/series', '/api/advisories/states',
-                 '/api/advisories/districts', '/api/personas', '/api/now')
+                 '/api/advisories/districts', '/api/personas', '/api/now', '/api/ensemble')
 _REGISTRY = {'path': None, 'mtime': None, 'products': {}}
 
 
@@ -363,6 +363,20 @@ def forecast(foundation, latitude, longitude, days=3, source='hourly_forecast', 
                         None, [],
                         ['Model run lineage is unspecified for this delivery, so run-to-run comparison is not established.',
                          'No forecast skill or probability calibration is validated here.'])
+
+
+def ensemble(foundation, latitude, longitude, days=3, model='gfs025', variables=None, threshold=None, refresh=False):
+    packet = foundation.ensemble(latitude, longitude, days=days, model=model, variables=variables,
+                                 threshold=threshold, refresh=refresh)
+    coverage = packet.get('coverage') or {}
+    return _series_view('ensemble.spread', packet,
+                        {'days': days, 'model': coverage.get('model'),
+                         'member_total': coverage.get('member_total'), 'statistics': coverage.get('statistics'),
+                         'grid': coverage.get('returned_grid'), 'requested': coverage.get('requested_point'),
+                         'time_basis': coverage.get('time_basis')},
+                        None, [],
+                        ['The spread is a property of the returned ensemble members, not a forecast probability, '
+                         'a confidence or a skill measure.'])
 
 
 def forecast_changes(latitude, longitude, database=None, limit=40):
@@ -753,6 +767,16 @@ def dispatch(foundation, path, params):
     if path == '/api/now':
         latitude, longitude = _point_params(params)
         return now_view(foundation, latitude, longitude, refresh=_flag(params, 'refresh'))
+    if path == '/api/ensemble':
+        latitude, longitude = _point_params(params)
+        raw = _first(params, 'variable') or ''
+        variables = [name.strip() for name in str(raw).split(',') if name.strip()] or None
+        threshold = (_float(params, 'threshold', None, low=0.0)
+                     if _first(params, 'threshold') not in (None, '') else None)
+        return ensemble(foundation, latitude, longitude,
+                        days=_int(params, 'days', 3, low=1, high=7),
+                        model=_first(params, 'model', 'gfs025'), variables=variables,
+                        threshold=threshold, refresh=_flag(params, 'refresh'))
     if path == '/api/personas':
         return personas_view()
     if path == '/api/places/search':
