@@ -1,0 +1,33 @@
+{
+  "id": "H02",
+  "domain": "forecast",
+  "turns": [
+    {
+      "question": "What are the humidity and wind speed in Kochi, Kerala tomorrow afternoon?",
+      "status": "answered",
+      "status_allowed": true,
+      "task_shape_matches": true,
+      "tasks": [
+        {
+          "declared": {
+            "kind": "forecast",
+            "operation": "lookup",
+            "parameters": [
+              "relative_humidity_2m",
+              "wind_speed_10m"
+            ]
+          },
+          "outcome": "completed",
+          "executed_status": "answered"
+        }
+      ],
+      "answered_language": null,
+      "language_trace": null,
+      "prohibited_hits": [],
+      "abstained": false,
+      "duration_s": 0.058,
+      "turn": 1,
+      "wall_s": 0.06
+    }
+  ]
+}
