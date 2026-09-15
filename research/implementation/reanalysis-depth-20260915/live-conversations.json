@@ -1,0 +1,162 @@
+{
+  "schema_version": "reanalysis-conversations-v1",
+  "generated_at_utc": "2026-09-15T07:35:55.133101+00:00",
+  "note": "Deterministic-rules turns; no model provider was called to plan them.",
+  "turns": [
+    {
+      "question": "What was the daily mean relative humidity in Ahmedabad from 1 through 3 July 2024?",
+      "status": "answered",
+      "provider": "deterministic_rules",
+      "tasks": [
+        {
+          "kind": "history",
+          "operation": "daily",
+          "parameters": [
+            "relative_humidity_2m_mean"
+          ],
+          "start_local": "2024-07-01T00:00:00+05:30",
+          "end_local": "2024-07-04T00:00:00+05:30"
+        }
+      ],
+      "products": [
+        "ERA5 via Open-Meteo daily reanalysis, Asia/Kolkata",
+        "India place catalogue"
+      ],
+      "returned_grid": [
+        {
+          "latitude": 23.0,
+          "longitude": 72.5
+        },
+        null
+      ],
+      "values": [
+        {
+          "parameter": "relative_humidity_2m_mean",
+          "value": "87",
+          "unit": "%"
+        },
+        {
+          "parameter": "relative_humidity_2m_mean",
+          "value": "86",
+          "unit": "%"
+        },
+        {
+          "parameter": "relative_humidity_2m_mean",
+          "value": "78",
+          "unit": "%"
+        }
+      ],
+      "answer": "Ahmedabad · 01 Jul, 00:00–04 Jul, 00:00 IST: Daily mean relative humidity: 78–87 %. ERA5 modeled history, not a rain-gauge observation."
+    },
+    {
+      "question": "What was the ERA5-Land daily mean temperature in Ahmedabad from 5 through 7 August 2024?",
+      "status": "answered",
+      "provider": "deterministic_rules",
+      "tasks": [
+        {
+          "kind": "history",
+          "operation": "daily",
+          "parameters": [
+            "temperature_2m_mean"
+          ],
+          "start_local": "2024-08-05T00:00:00+05:30",
+          "end_local": "2024-08-08T00:00:00+05:30"
+        }
+      ],
+      "products": [
+        "ERA5-Land via Open-Meteo daily reanalysis, Asia/Kolkata",
+        "India place catalogue"
+      ],
+      "returned_grid": [
+        {
+          "latitude": 23.0,
+          "longitude": 72.600006
+        },
+        null
+      ],
+      "values": [
+        {
+          "parameter": "temperature_2m_mean",
+          "value": "27.4",
+          "unit": "°C"
+        },
+        {
+          "parameter": "temperature_2m_mean",
+          "value": "27.3",
+          "unit": "°C"
+        },
+        {
+          "parameter": "temperature_2m_mean",
+          "value": "27.9",
+          "unit": "°C"
+        }
+      ],
+      "answer": "Ahmedabad · 05 Aug, 00:00–08 Aug, 00:00 IST: Daily mean temperature: 27.3–27.9 °C. ERA5 modeled history, not a rain-gauge observation."
+    },
+    {
+      "question": "ERA5-Land daily rainfall in Ahmedabad from 5 through 7 August 2024.",
+      "status": "unavailable",
+      "provider": "deterministic_rules",
+      "tasks": [
+        {
+          "kind": "history",
+          "operation": "daily",
+          "parameters": [
+            "precipitation_sum"
+          ],
+          "start_local": "2024-08-05T00:00:00+05:30",
+          "end_local": "2024-08-08T00:00:00+05:30"
+        }
+      ],
+      "products": [],
+      "returned_grid": [],
+      "values": [],
+      "answer": "The task could not retrieve verified evidence: ERA5-Land via Open-Meteo does not carry precipitation_sum. Name a model that does: era5, era5_seamless."
+    },
+    {
+      "question": "Daily soil moisture in Ahmedabad from 1 through 3 July 2024 using ERA5-seamless.",
+      "status": "answered",
+      "provider": "deterministic_rules",
+      "tasks": [
+        {
+          "kind": "history",
+          "operation": "daily",
+          "parameters": [
+            "soil_moisture_0_to_7cm_mean"
+          ],
+          "start_local": "2024-07-01T00:00:00+05:30",
+          "end_local": "2024-07-04T00:00:00+05:30"
+        }
+      ],
+      "products": [
+        "ERA5-Seamless via Open-Meteo daily reanalysis, Asia/Kolkata",
+        "India place catalogue"
+      ],
+      "returned_grid": [
+        {
+          "latitude": 23.0,
+          "longitude": 72.600006
+        },
+        null
+      ],
+      "values": [
+        {
+          "parameter": "soil_moisture_0_to_7cm_mean",
+          "value": "0.364",
+          "unit": "m³/m³"
+        },
+        {
+          "parameter": "soil_moisture_0_to_7cm_mean",
+          "value": "0.361",
+          "unit": "m³/m³"
+        },
+        {
+          "parameter": "soil_moisture_0_to_7cm_mean",
+          "value": "0.377",
+          "unit": "m³/m³"
+        }
+      ],
+      "answer": "Ahmedabad · 01 Jul, 00:00–04 Jul, 00:00 IST: Daily mean soil moisture (0–7 cm): 0.361–0.377 m³/m³. ERA5 modeled history, not a rain-gauge observation."
+    }
+  ]
+}

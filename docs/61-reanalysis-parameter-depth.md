@@ -17,6 +17,8 @@ blocked.
 | A variable a model does not carry is refused by name, with the models that do carry it, instead of being requested and shown empty | `weathergpt_data/point_tasks.py` | `test_era5_land_refuses_a_variable_it_does_not_carry` |
 | The daily validator now applies each variable's upper bound, so humidity or cloud outside 0–100 is rejected before publication | `weathergpt_data/foundation.py` | `test_daily_validator_applies_the_upper_bound` |
 | Provenance, citation and the answer note name the model that answered, not a fixed ERA5 string | `weathergpt_data/foundation.py`, `weathergpt_data/point_tasks.py` | the citation product reads `ERA5-Land via Open-Meteo` |
+| A past day-level date becomes a daily-history task in the rules, so the deterministic path answers it with no model | `weathergpt_data/rule_planner.py` | `test_a_past_day_level_date_becomes_a_daily_history_task`; the live turns below ran with `provider: deterministic_rules` |
+| Only the selected model's variables are requested, because a request for a variable a model does not carry returns nulls that make the payload unpublishable | `weathergpt_data/foundation.py`, `weathergpt_data/ingestion.py` | `test_era5_land_publishes_when_the_columns_it_does_not_carry_are_null` |
 
 ## The catalogue is measured, not read from a table
 
@@ -34,25 +36,31 @@ absent, entirely null or real. First run
 The per-model support set is built from that result, so the refusal clause has a measured
 basis and not the provider's documentation.
 
-## The rules path no longer misreads a day-level date
+## The rules path now answers a past day-level date
 
 A question with a real day — “relative humidity in Ahmedabad on 2024-07-01”, “daily mean
 temperature from 1 through 3 July 2025” — was planned by the rules as an annual/monthly table
 lookup or a forecast, neither of which can answer it, and the new parameters were unreachable
-through the default rules-first path for the same reason. A day-level date is now left to the
-model path, whose daily prompt reads the date and the measure; a month with only a year
-(“July 1990”) stays an annual table lookup. The prompt also lists the supported daily
-parameters and asks that a model the user names be kept in the quoted clause, because the tool
-reads the model from the user's own words.
+through the default rules-first path for the same reason. A past day-level date is now planned
+as a daily-history task directly, with the measure read from the same wording the forecast
+uses, so the deterministic engine answers it and no model is required. A month with only a
+year (“July 1990”) stays an annual table lookup; a future date, or a range it cannot resolve to
+two days, is left to a model rather than shortened. The model prompt also lists the supported
+daily parameters and asks that a model the user names be kept in the quoted clause, because the
+tool reads the model from the user's own words.
 
 ## Measured on this machine, 15 September 2026
 
 - `python3 scripts/probe_reanalysis_catalogue.py` recorded the capability table above.
 - `python3 scripts/rehearse_reanalysis_depth.py` ran the real adapter through the governed
-  store: ERA5 returned all twenty variables at a 0.25° cell; ERA5-Land returned ten at a
-  0.1° cell and left the other ten empty, which is the resolution difference the model choice
-  buys. Evidence: `research/implementation/reanalysis-depth-20260915/live-rehearsal.json`.
-- **837 Python tests** are collected; the eleven added here pass. The eight component suites
+  store: ERA5 returned all twenty variables at a 0.25° cell; ERA5-Land returned its ten at a
+  0.1° cell, which is the resolution difference the model choice buys. Evidence:
+  `research/implementation/reanalysis-depth-20260915/live-rehearsal.json`.
+- `python3 scripts/rehearse_reanalysis_conversations.py` ran four turns end to end on the
+  local server with no model call (`provider: deterministic_rules`): ERA5 humidity, ERA5-Land
+  temperature at the 0.1° cell, the ERA5-Land rainfall refusal, and ERA5-seamless soil
+  moisture. Evidence: `research/implementation/reanalysis-depth-20260915/live-conversations.json`.
+- **840 Python tests** are collected; the checks added here pass. The eight component suites
   are unchanged.
 
 ## What this does not establish
@@ -65,11 +73,14 @@ reads the model from the user's own words.
   change with their own workload ceilings.
 - No fluent-language coverage of the new parameters, and no agronomic or hydrological meaning
   is attached to soil moisture, evapotranspiration or radiation.
-- The live chat journey was not exercised here: the rules path falls through to a model, and
-  the rehearsal above exercises the governed adapter directly instead.
+- The live turns were planned by the rules on this machine; a model-planned daily turn on a
+  weaker local model was not reliable, which is why the deterministic rule was added. Model
+  plan quality on the daily shape remains unmeasured.
 
 ## Files
 
-- `scripts/probe_reanalysis_catalogue.py`, `scripts/rehearse_reanalysis_depth.py`
-- `research/implementation/reanalysis-depth-20260915/catalogue-probe.json`, `live-rehearsal.json`
+- `scripts/probe_reanalysis_catalogue.py`, `scripts/rehearse_reanalysis_depth.py`,
+  `scripts/rehearse_reanalysis_conversations.py`
+- `research/implementation/reanalysis-depth-20260915/catalogue-probe.json`, `live-rehearsal.json`,
+  `live-conversations.json`
 - `tests/test_reanalysis_depth.py`, and updated `tests/test_point_tasks.py`, `tests/test_providers.py`
