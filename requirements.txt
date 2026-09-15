@@ -1,0 +1,5 @@
+# WeatherGPT runtime dependencies, pinned to the versions this workspace was verified with.
+# Python 3.9+ and Node (for the component checks) are expected to be present already.
+# Ollama and the local model weights are not pip dependencies; see README "Run it".
+-r requirements-foundation.txt
+-r requirements-bulletins.txt

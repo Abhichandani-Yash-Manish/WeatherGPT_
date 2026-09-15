@@ -1,0 +1,45 @@
+{
+  "schema_version": "packaging-rehearsal-v1",
+  "recorded_at_utc": "2026-09-15T10:15:00+00:00",
+  "backup_files": [
+    {
+      "name": "conversations.sqlite",
+      "bytes": 4755456,
+      "sha256_prefix": "8da9dfc9356b359e"
+    },
+    {
+      "name": "watches.sqlite",
+      "bytes": 20480,
+      "sha256_prefix": "49572f86c148fa44"
+    },
+    {
+      "name": "ingestion.sqlite",
+      "bytes": 11079680,
+      "sha256_prefix": "c547bb3a75f06c18"
+    },
+    {
+      "name": "index.sqlite",
+      "bytes": 80142336,
+      "sha256_prefix": "d77ed373edc9b294"
+    }
+  ],
+  "excluded": [
+    "document bodies and raw evidence blobs",
+    "source response caches",
+    "model files"
+  ],
+  "conversation_rows_before": 369,
+  "conversation_rows_after_restore": 369,
+  "restore_report": {
+    "schema_version": "state-backup-v1",
+    "restored": [
+      "conversations.sqlite",
+      "watches.sqlite",
+      "ingestion.sqlite",
+      "index.sqlite"
+    ],
+    "target": "/tmp/wg_restored",
+    "manifest_created_at_utc": "2026-09-14T23:03:16.707997+00:00"
+  },
+  "note": "The backup itself is kept outside the repository: it contains runtime conversation payloads that must not be published. Only counts, sizes and hash prefixes are recorded here."
+}

@@ -3,6 +3,7 @@
 # Curated fixtures, review batches and saved source pages stay tracked under
 # data/processed, data/registry, research/ and tmp/pdfs.
 data/runtime/
+tmp/chrome-profile/
 
 __pycache__/
 *.pyc
