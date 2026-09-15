@@ -1,0 +1,99 @@
+{
+  "schema_version": "air-quality-catalogue-probe-v1",
+  "generated_at_utc": "2026-09-15T12:11:18.063838+00:00",
+  "endpoint": "https://air-quality-api.open-meteo.com/v1/air-quality",
+  "point": {
+    "latitude": 23.02579,
+    "longitude": 72.58727
+  },
+  "catalogue": [
+    "pm2_5",
+    "pm10",
+    "nitrogen_dioxide",
+    "ozone",
+    "carbon_monoxide",
+    "sulphur_dioxide",
+    "us_aqi",
+    "european_aqi"
+  ],
+  "excluded": [
+    "carbon_dioxide",
+    "ammonia",
+    "grass_pollen",
+    "uv_index"
+  ],
+  "hourly": {
+    "url": "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=23.02579&longitude=72.58727&timezone=UTC&timeformat=unixtime&hourly=pm2_5%2Cpm10%2Cnitrogen_dioxide%2Cozone%2Ccarbon_monoxide%2Csulphur_dioxide%2Cus_aqi%2Ceuropean_aqi%2Ccarbon_dioxide%2Cammonia%2Cgrass_pollen%2Cuv_index&current=pm2_5%2Cpm10%2Cus_aqi&forecast_days=1",
+    "error": null,
+    "utc_offset_seconds": 0,
+    "timezone": "GMT",
+    "grid": {
+      "latitude": 23.0,
+      "longitude": 72.600006
+    },
+    "time_steps": 24,
+    "first_time": 1789430400,
+    "units": {
+      "pm2_5": "μg/m³",
+      "pm10": "μg/m³",
+      "nitrogen_dioxide": "μg/m³",
+      "ozone": "μg/m³",
+      "carbon_monoxide": "μg/m³",
+      "sulphur_dioxide": "μg/m³",
+      "us_aqi": "USAQI",
+      "european_aqi": "EAQI",
+      "carbon_dioxide": "ppm",
+      "ammonia": "μg/m³",
+      "grass_pollen": "grains/m³",
+      "uv_index": ""
+    },
+    "returned": [
+      "pm2_5",
+      "pm10",
+      "nitrogen_dioxide",
+      "ozone",
+      "carbon_monoxide",
+      "sulphur_dioxide",
+      "us_aqi",
+      "european_aqi",
+      "carbon_dioxide",
+      "ammonia",
+      "grass_pollen",
+      "uv_index"
+    ],
+    "current": {
+      "time": 1789473600,
+      "interval": 3600,
+      "pm2_5": 14.3,
+      "pm10": 15.1,
+      "us_aqi": 56
+    },
+    "current_units": {
+      "time": "unixtime",
+      "interval": "seconds",
+      "pm2_5": "μg/m³",
+      "pm10": "μg/m³",
+      "us_aqi": "USAQI"
+    }
+  },
+  "daily_rejected": {
+    "url": "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=23.02579&longitude=72.58727&timezone=UTC&timeformat=unixtime&daily=pm2_5_max",
+    "error": "HTTPError: HTTP Error 400: Bad Request {\"reason\":\"Invalid value: Cannot initialize ForecastVariableDaily from invalid String value pm2_5_max\",\"error\":true}",
+    "time_steps": null
+  },
+  "forecast_days_7": {
+    "url": "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=23.02579&longitude=72.58727&timezone=UTC&timeformat=unixtime&hourly=pm2_5&forecast_days=7",
+    "error": null,
+    "time_steps": 168
+  },
+  "forecast_days_10_rejected": {
+    "url": "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=23.02579&longitude=72.58727&timezone=UTC&timeformat=unixtime&hourly=pm2_5&forecast_days=10",
+    "error": "HTTPError: HTTP Error 400: Bad Request {\"reason\":\"Forecast days is invalid. Allowed range 0 to 7. Given 7.\",\"error\":true}",
+    "time_steps": null
+  },
+  "unknown_variable_rejected": {
+    "url": "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=23.02579&longitude=72.58727&timezone=UTC&timeformat=unixtime&hourly=not_a_pollutant",
+    "error": "HTTPError: HTTP Error 400: Bad Request {\"reason\":\"Invalid value: Cannot initialize SurfacePressureAndHeightVariable<VariableAndPreviousDay, VariableOrSpread<ForecastPressureVariable>, ForecastHeightVariable> from invalid String value not_a",
+    "time_steps": null
+  }
+}
