@@ -360,6 +360,26 @@ class RulePlannerTests(unittest.TestCase):
         self.assertEqual([task['kind'] for task in request['tasks']], ['warning'])
         plain = self.request_for('Any advisory for Ahmedabad?')
         self.assertEqual([task['kind'] for task in plain['tasks']], ['warning'])
+    def test_a_request_to_compare_models_is_the_crosscheck_operation(self):
+        # Measured on 15 September 2026: only the model planner recognised this shape, so a
+        # rules-first turn that needed no model could not produce the comparison.
+        for question in ('Compare the models for rainfall in Ahmedabad tomorrow.',
+                         'Do the models agree on rain in Kochi tomorrow?',
+                         'Rain in Patna tomorrow morning: check another model.',
+                         'GFS vs best-match rainfall for Ahmedabad tomorrow.'):
+            request = self.request_for(question)
+            self.assertIsNotNone(request, question)
+            self.assertEqual([(task['kind'], task['operation']) for task in request['tasks']],
+                             [('forecast', 'crosscheck')], question)
+
+    def test_a_plain_rain_question_is_not_a_crosscheck(self):
+        request = self.request_for('Will it rain in Ahmedabad tomorrow morning?')
+        self.assertEqual([(task['kind'], task['operation']) for task in request['tasks']],
+                         [('forecast', 'lookup')])
+
+    def test_a_crosscheck_with_no_measure_named_is_left_to_a_model(self):
+        # "another model" of what? Refusing to guess is the honest floor.
+        self.assertIsNone(self.request_for('Check another model for Patna tomorrow morning.'))
     def test_a_compound_question_is_planned_clause_by_clause(self):
         request = self.request_for('Will it rain in Patna, Bihar tomorrow, and is there any warning?')
         self.assertIsNotNone(request)

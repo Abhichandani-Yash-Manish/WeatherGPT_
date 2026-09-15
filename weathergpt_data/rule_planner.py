@@ -70,6 +70,14 @@ WARNING = re.compile(r'\b(warning|warnings|alert|alerts|red alert|orange alert|y
 # advisory say for cotton?" was planned as a district warning lookup. The strong warning
 # words still win, so "any warning for cotton farmers?" keeps the warning route.
 WARNING_STRONG = re.compile(r'\b(warnings?|alerts?|red alert|orange alert|yellow alert)\b', re.I)
+# A question that asks to compare forecast sources or check another model is the crosscheck
+# operation, which exists and carries its own caveat: a best-match source may share GFS
+# lineage, so agreement is not independent confirmation. Measured on 15 September 2026, only
+# the model planner recognised this shape.
+CROSSCHECK = re.compile(r'\b(?:another model|other models?|compare (?:the )?(?:models?|sources?|forecasts?)|'
+                        r'model (?:comparison|agreement)|gfs (?:vs|versus)|(?:vs|versus) (?:gfs|ecmwf|icon|best[- ]match)|'
+                        r'check another (?:model|source)|do the models agree)\b', re.I)
+
 AGROMET_DOCUMENT = re.compile(r'\b(agromet|agro-met|agricultural advisory|crop advisory|kisan|fasal|krishi|kheti)\b', re.I)
 AVIATION = re.compile(r'\b(metar|taf|airport|aerodrome|terminal forecast)\b', re.I)
 DOCUMENT = re.compile(r"\b(bulletin|advisory document|press release|special advisory|flash flood guidance|"
@@ -433,7 +441,9 @@ def single_request(question, now, history=None):
         variables = variables_of(question)
         if not variables:
             return None
-        tasks.append(task('forecast', 'lookup', variables))
+        operation = 'crosscheck' if CROSSCHECK.search(question) else 'lookup'
+        tasks.append(task('forecast', operation, variables))
+
     assumptions = []
     if basis:
         assumptions.append('Time window read from the question: ' + str(basis) + '.')
