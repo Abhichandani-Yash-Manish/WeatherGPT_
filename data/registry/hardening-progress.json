@@ -1,7 +1,7 @@
 {
   "schema_version": "hardening-progress-v1",
   "review": "research/reviews/national-readiness-20260912/review.md",
-  "updated_at_utc": "2026-09-15T06:04:24+00:00",
+  "updated_at_utc": "2026-09-15T06:21:35+00:00",
   "operational_ready": false,
   "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
   "findings": [
@@ -1485,6 +1485,53 @@
       "No ensemble spread: the connected products are deterministic runs.",
       "WRF remains without an accessible source.",
       "One place and one window measured on one morning."
+    ]
+  },
+  "right_now_batch": {
+    "report": "docs/58-right-now-reading.md",
+    "evidence_directory": "research/implementation/right-now-20260915",
+    "operational_ready": false,
+    "scope": "PS feature 1's right-now gap: live station observations (METAR and AWS) are connected to the conversation through the same governed adapter as the page, and a right-now reading composes three products - what a station observed with its own instant, age and distance, what the official district product publishes for today with its bulletin identity, and the model hours next quoted as returned - with radar and satellite imagery, sub-hourly refresh and push stated as not connected. A /api/now read model and a Right now panel on the Today surface use the same composer.",
+    "automated_tests": 798,
+    "javascript_component_checks": 70,
+    "measured": {
+      "now_view": {
+        "status": "ok",
+        "stations": 2,
+        "model_hours": 6,
+        "published_day": 1,
+        "sources": [
+          "S63",
+          "S62"
+        ]
+      },
+      "chat_right_now": {
+        "question": "What's it like right now in Ahmedabad?",
+        "status": "answered",
+        "facts": 5,
+        "provider": "deterministic_rules/rule-planner-v1"
+      },
+      "chat_station_code": {
+        "question": "What is being observed at VOBL right now?",
+        "status": "answered",
+        "facts": 2,
+        "planned_as": "aviation metar"
+      },
+      "station_ages_minutes": {
+        "aws": 380,
+        "metar": 50
+      },
+      "not_connected": [
+        "radar and satellite imagery",
+        "sub-hourly refresh between source hours",
+        "any push or notification"
+      ]
+    },
+    "limitations": [
+      "No radar or satellite imagery, no sub-hourly refresh and no push.",
+      "No accuracy claim: the reading reports what the connected products returned at that instant.",
+      "One point and one instant were measured; a station layer can be stale between source hours.",
+      "No mobile, screen-reader or cross-browser acceptance of the panel."
     ]
   }
 }
