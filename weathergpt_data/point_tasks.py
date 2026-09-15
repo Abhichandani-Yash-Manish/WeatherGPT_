@@ -39,7 +39,16 @@ LABELS={'precipitation':'Hourly precipitation amount',
         'shortwave_radiation_sum':'Daily shortwave radiation sum',
         'et0_fao_evapotranspiration':'Daily reference evapotranspiration',
         'soil_moisture_0_to_7cm_mean':'Daily mean soil moisture (0–7 cm)',
-        'soil_temperature_0_to_7cm_mean':'Daily mean soil temperature (0–7 cm)'}
+        'soil_temperature_0_to_7cm_mean':'Daily mean soil temperature (0–7 cm)',
+        'temperature_2m_mean':'Ensemble mean temperature',
+        'temperature_2m_spread':'Temperature member spread (population SD)',
+        'temperature_2m_p10':'Temperature member p10','temperature_2m_p90':'Temperature member p90',
+        'precipitation_mean':'Ensemble mean hourly precipitation',
+        'precipitation_spread':'Precipitation member spread (population SD)',
+        'precipitation_p10':'Precipitation member p10','precipitation_p90':'Precipitation member p90',
+        'wind_speed_10m_mean':'Ensemble mean wind speed',
+        'wind_speed_10m_spread':'Wind member spread (population SD)',
+        'wind_speed_10m_p10':'Wind member p10','wind_speed_10m_p90':'Wind member p90'}
 
 
 def verified_snapshot(db, raw_root, stream):

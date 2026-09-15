@@ -3,7 +3,10 @@ import unittest
 from datetime import datetime, timezone
 from decimal import Decimal
 
-from weathergpt_data.adapters import ENSEMBLE, ENSEMBLE_MODELS, ensemble, ensemble_statistics, nearest_rank
+import test_conversation as fixtures
+
+from weathergpt_data.adapters import (ENSEMBLE, ENSEMBLE_MODELS, ensemble, ensemble_model_for,
+                                      ensemble_statistics, nearest_rank)
 from weathergpt_data.transport import SourceError
 
 UTC = timezone.utc
@@ -51,6 +54,11 @@ class StatisticsTests(unittest.TestCase):
         self.assertEqual(nearest_rank(ordered, 10), Decimal(1))
         self.assertEqual(nearest_rank(ordered, 50), Decimal(2))
         self.assertEqual(nearest_rank(ordered, 90), Decimal(4))
+
+    def test_the_model_word_is_read_deterministically(self):
+        self.assertEqual(ensemble_model_for('ECMWF ensemble spread'), 'ecmwf_ifs025')
+        self.assertEqual(ensemble_model_for('the ICON ensemble members'), 'icon_seamless')
+        self.assertEqual(ensemble_model_for('ensemble spread for Ahmedabad'), 'gfs025')
 
     def test_fewer_than_two_members_has_no_spread(self):
         stats = ensemble_statistics([Decimal(7)])
@@ -216,6 +224,53 @@ class ProductViewTests(unittest.TestCase):
         with self.assertRaises(SourceError):
             product_api.dispatch(self.foundation_with(body), '/api/ensemble',
                                  {'lat': ['23.0'], 'lon': ['72.5'], 'model': ['not_a_model']})
+
+
+class EnsembleChatTests(unittest.TestCase):
+    setUp = fixtures.ConversationTests.setUp
+    publish = fixtures.ConversationTests.publish
+    add_place = fixtures.ConversationTests.add_place
+    ask = fixtures.ConversationTests.ask
+    chat = fixtures.ConversationTests.chat
+
+    def packet(self):
+        from datetime import date, datetime as dt
+        meta = {'source_id': 'S68', 'sha256': 'b' * 64,
+                'url': 'https://ensemble-api.open-meteo.com/v1/ensemble?models=gfs025',
+                'retrieved_at_utc': '2026-09-15T00:00:00+00:00', 'delivery': 'network'}
+        times = hours(24, start=dt(2026, 9, 15, tzinfo=UTC))
+        body = payload([[value] * 24 for value in range(1, 11)], control=[7] * 24, times=times)
+        return ensemble(body, meta, {'temperature_2m': ENSEMBLE['temperature_2m']}, 'gfs025',
+                        {'latitude': 23.0, 'longitude': 72.5},
+                        expected_dates=(date(2026, 9, 15), date(2026, 9, 15)))
+
+    def test_an_ensemble_question_answers_with_member_spread(self):
+        from unittest.mock import patch
+        from test_product_stage_one import task
+        question = 'What is the ensemble spread for Ahmedabad tomorrow morning?'
+        self.model.value['tasks'] = [task(kind='ensemble', operation='lookup', parameters=['temperature_2m'],
+                                          years=[], start_local='2026-09-15T06:30:00+05:30',
+                                          end_local='2026-09-15T09:30:00+05:30', request_quote=question)]
+        with patch('weathergpt_data.foundation.Foundation.ensemble', return_value=self.packet()):
+            r = self.chat(question=question)
+        self.assertEqual(r['status'], 'answered', r['answer'])
+        parameters = {fact['parameter'] for fact in r['facts']}
+        self.assertIn('temperature_2m_mean', parameters)
+        self.assertIn('temperature_2m_spread', parameters)
+        self.assertTrue(any('not a probability' in note for note in r['notes']))
+        self.assertFalse(r['operational_eligible'])
+
+    def test_an_ensemble_fetch_failure_is_recorded_not_invented(self):
+        from unittest.mock import patch
+        from test_product_stage_one import task
+        question = 'What is the ensemble spread for Ahmedabad tomorrow morning?'
+        self.model.value['tasks'] = [task(kind='ensemble', operation='lookup', parameters=['temperature_2m'],
+                                          years=[], start_local='2026-09-15T06:30:00+05:30',
+                                          end_local='2026-09-15T09:30:00+05:30', request_quote=question)]
+        with patch('weathergpt_data.foundation.Foundation.ensemble', side_effect=SourceError('offline')):
+            r = self.chat(question=question)
+        self.assertEqual(r['status'], 'unavailable')
+        self.assertFalse(r['facts'])
 
 
 if __name__ == '__main__':

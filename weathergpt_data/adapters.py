@@ -165,6 +165,17 @@ def reanalysis_fields(model):
     return {name: HISTORY_LOCAL[name] for name in reanalysis_variables(model)}
 
 
+def ensemble_model_for(text):
+    """A governed ensemble model named in the question, else the GFS default.
+
+    Deterministic on purpose: the model is read from the user's own words, never inferred.
+    """
+    lowered=(text or '').lower()
+    if re.search(r'\becmwf\b|\bifs\b',lowered):return 'ecmwf_ifs025'
+    if re.search(r'\bicon\b',lowered):return 'icon_seamless'
+    return 'gfs025'
+
+
 def reanalysis_model_for(text):
     """A reanalysis model named outright in the question, else the ERA5 default.
 
