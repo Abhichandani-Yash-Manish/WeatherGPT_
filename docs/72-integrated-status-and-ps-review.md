@@ -1,7 +1,7 @@
 # Integrated project status and critical SIH26068 review
 
 15 September 2026. Current assessment after integrating GitHub `63fed4f` and the local workspace,
-corpus-recall and evaluation repairs. This document is the current status overlay; earlier review
+corpus-recall and evaluation repairs, followed by concurrent alert-delivery branch `70a55d1` (see [docs/73](73-dissemination-integration-review.md)). This document is the current status overlay; earlier review
 findings and failed runs remain historical evidence. The P01–P15, R01–R12, F01–F11 and A01–A08 findings
 remain binding. No broad finding is closed by this batch.
 
@@ -66,7 +66,7 @@ scores, script adherence, synthetic lifecycle tests and screenshots establish di
 | **1. Real-time weather retrieval** | Refreshable forecasts; nearby AWS/METAR observations; district published warning days; a composed right-now reading. Air quality adds source-labelled CAMS model output. | **Partial.** Station coverage and freshness vary; cold reads can be tens of seconds or longer. A model's current hour is not a ground observation. No continuous nationwide freshness, station-quality or arbitrary-place acceptance. |
 | **2. Natural-language forecasts** | Rules-first core paths with provider fallback, guided drafts, follow-ups, explicit windows, multiple measures and source receipts. New comparison and combined-history omissions repaired. | **Usable in a bounded scope; partial overall.** The two new omissions show that `answered` can hide a missed request. Development success is not generalisation. Independent parameter/place/time/evidence checks and unfamiliar mixed requests remain necessary. |
 | **3. NWP integration such as GFS/WRF** | Governed GFS and best-match products, a comparison showing both outputs, ensemble member statistics, hourly/daily contracts and answering-cell provenance. | **Integration delivered in scope; broader acceptance open.** Best-match may share GFS lineage; ensemble spread is not probability or skill. Run identity and matched-observation verification remain missing. WRF has no connected product; it is an example, not evidence that GFS integration is absent. |
-| **4. Extreme-weather alerts and dissemination** | District-day applicability and warning briefs; saved plans, local watcher, inbox, browser-notification code, lifecycle comparison and replay machinery. | **Critical partial.** No demonstrated live changed-edition → relevant notification → acknowledgement/update/cancel journey. Origin authentication, CAP applicability, flood/cyclone delivery and offline delivery remain open. A browser inbox and synthetic tests do not establish an early-warning service. |
+| **4. Extreme-weather alerts and dissemination** | District-day applicability and warning briefs; activity plans/local watcher; separate legacy watches now have a fingerprint outbox, consented Web Push machinery and local acknowledgements. | **Critical partial.** Synthetic real-HTTP inbox lifecycle passes; no demonstrated live changed-edition → real device notification → acknowledgement/update/cancel journey. The two watch stores and scheduling paths remain separate. Origin authentication, CAP applicability, flood/cyclone delivery and offline delivery remain open. A browser inbox and synthetic tests do not establish an early-warning service. |
 | **5. Location-based forecasts and advisories** | Place resolution, point/grid distinction, station distance, source-specific district identity, crop/stage intake, indexed bulletin retrieval and saved briefs. | **Partial.** National registry reach is not nationwide advisory acceptance. Conditional contradictions, field applicability, held layouts, source currency and dated boundary crosswalks remain gaps. Reading advice is not a validated personal spray/irrigation decision. |
 | **6. Indian-language support** | Registry records 19/23 passing the write gate; 10/23 passing each speech/hearing gate. Day/window/measure vocabulary, guarded rendering, clarification paths and cross-language document retrieval exist. | **Partial, quality unvalidated.** These gates measure reach and invariants, not fluency or semantic correctness. Five languages lack the recorded reading vocabulary; four fail write. Source quotations remain in their printed language. English plan notifications and quoted English advice obstruct an end-to-end rural-language journey. No native-speaker acceptance. |
 | **7. Climate trends and historical analysis** | Published national/district history, source-constrained descriptive trends/charts, short daily ERA5-family reanalysis, expanded variables; the combined national rainfall/temperature request is repaired. | **Useful subset; partial overall.** Source periods, parameter and district-boundary gaps constrain analysis. Seven-day reanalysis is not a general climate research workspace. No validated climate attribution, projections or scientific forecast verification. |
@@ -98,7 +98,9 @@ and reachable remain separate from approved redistribution and production use.
 
 Directory: `research/reviews/integration-ps-audit-20260915/`.
 
-**Integrated automated run:** 1,017 Python tests passed (three dependency warnings); eight JavaScript suites
+**Latest dissemination integration:** 1,105 Python tests and nine JavaScript suites pass; all 25 verification steps pass. New real-HTTP lifecycle checks use synthetic warning input. The browser panel passes its inspected accessibility subtree with one inconclusive contrast rule. See [docs/73](73-dissemination-integration-review.md) for failures, repairs, separate watch-system limits and clean-checkout follow-up. These counts establish regression coverage, not PS completion.
+
+**Pre-dissemination checkpoint:** 1,017 Python tests passed (three dependency warnings); eight JavaScript suites
 passed; all 24 verification steps passed. The release development run covers 17 cases, 19 turns and
 18 declared tasks: 18 completed under scorer v2, zero recorded critical failures. This is a repaired
 development set, not an estimate of performance on unfamiliar user requests. The Indore browser answer
@@ -158,4 +160,4 @@ This release publishes source, tests and curated audit evidence to GitHub as exp
 not deploy or host the product. Local credentials, runtime databases, conversations, logs, voice and
 supplemental source-text exports remain excluded. Historical committed evidence is preserved. The local
 preview at port 8766 runs without a second background watcher beside the existing workspace process;
-normal startup enables monitoring, which still only operates while that local process runs.
+normal startup enables activity-plan monitoring, which only operates while that local process runs. Legacy-watch Web Push requires its separate on-demand or foreground check/dispatch loop; no supervised scheduler is installed.

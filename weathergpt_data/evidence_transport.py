@@ -1,7 +1,8 @@
 """Shared provider reservations for fixed document and warning GET routes."""
-import fcntl,urllib.request,urllib.error,time
+import urllib.request,urllib.error,time
 from contextlib import contextmanager
 from urllib.parse import urlparse,parse_qs
+from .filelock import try_lock_exclusive
 from .ingestion import NoRedirect,retry_after,epoch,IngestionDB
 from .transport import Store,SourceError
 
@@ -21,7 +22,7 @@ class EvidenceOpener:
             allowed=(u.netloc=='cap-sources.s3.amazonaws.com' and u.path.startswith('/in-imd-en/') and u.path.endswith('.xml')) or (u.netloc=='reactjs.imd.gov.in' and u.path=='/geoserver/wfs')
         if not allowed:raise SourceError('URL is outside the source evidence contract')
         lock=self.db.path.with_suffix('.'+self.provider+'.lock').open('a')
-        try:fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+        try:try_lock_exclusive(lock)
         except BlockingIOError:lock.close();raise SourceError('Another retrieval from this provider is running')
         try:reservation=self.db.reserve(provider=self.provider,limits=((60,20),(3600,100),(86400,500)))
         except BaseException:lock.close();raise

@@ -1,0 +1,52 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+__________ HardeningTests.test_concurrent_same_request_downloads_once __________
+
+self = <test_hardening.HardeningTests testMethod=test_concurrent_same_request_downloads_once>
+
+    def test_concurrent_same_request_downloads_once(self):
+     from concurrent.futures import ThreadPoolExecutor
+     import threading
+     start=threading.Barrier(2)
+     def call():
+      start.wait(timeout=5)
+      return self.f.forecast(23,72.5)
+     with ThreadPoolExecutor(max_workers=2) as ex:
+>     futures=[ex.submit(call) for _ in range(2)];results=[f.result(timeout=5) for f in futures]
+
+tests/test_hardening.py:99: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_hardening.py:99: in <listcomp>
+    futures=[ex.submit(call) for _ in range(2)];results=[f.result(timeout=5) for f in futures]
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/concurrent/futures/_base.py:445: in result
+    return self.__get_result()
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/concurrent/futures/_base.py:390: in __get_result
+    raise self._exception
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/concurrent/futures/thread.py:52: in run
+    result = self.fn(*self.args, **self.kwargs)
+tests/test_hardening.py:97: in call
+    return self.f.forecast(23,72.5)
+weathergpt_data/foundation.py:33: in forecast
+    data,meta=self.get('S21','https://api.open-meteo.com/v1/gfs',{**point,'hourly':','.join(FORECAST),'forecast_days':days,'timezone':'UTC','timeformat':'unixtime','temperature_unit':'celsius','wind_speed_unit':'kmh','precipitation_unit':'mm'},refresh=refresh,product_parser=parse)
+weathergpt_data/foundation.py:19: in get
+    body,meta=self.store.fetch(sid,url,params,validator=json_payload,product_validator=validate if product_parser else None,**kwargs)
+weathergpt_data/transport.py:69: in fetch
+    try_lock_exclusive(lock)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+handle = <_io.TextIOWrapper name='/var/folders/p6/xvp9_bh16pn4rwlyj9hvwh680000gn/T/tmpw03jyxax/locks/afe0dcb0e32e29a243c27c66a30cee42fd63f87bd751b9fc12f94737e072780d.lock' mode='a' encoding='UTF-8'>
+
+    def try_lock_exclusive(handle):
+        """Take an exclusive non-blocking lock on an open file handle.
+    
+        Raises BlockingIOError when another holder owns the lock. On platforms
+        with no locking primitive available, raises OSError rather than allowing unprotected publication.
+        """
+        if _fcntl is not None:
+>           _fcntl.flock(handle, _fcntl.LOCK_EX | _fcntl.LOCK_NB)
+E           BlockingIOError: [Errno 35] Resource temporarily unavailable
+
+weathergpt_data/filelock.py:24: BlockingIOError
+=========================== short test summary info ============================
+FAILED tests/test_hardening.py::HardeningTests::test_concurrent_same_request_downloads_once
+1 failed, 1101 deselected in 0.35s

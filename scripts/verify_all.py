@@ -17,7 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 NODE_SUITES = ['tests/test_charts.js', 'tests/test_views.js', 'tests/test_bulletin_ui.js',
                'tests/test_conversation_ui.js', 'tests/test_suite_ui.js', 'tests/test_voice_ui.js',
-               'tests/test_briefcase_ui.js', 'tests/test_workspace_ui.js']
+               'tests/test_briefcase_ui.js', 'tests/test_workspace_ui.js', 'tests/test_notify_ui.js']
 REGISTRIES = ['data/registry/sources.json', 'data/registry/source-review.json', 'data/registry/product-progress.json',
               'data/registry/hardening-progress.json', 'data/registry/language-support.json',
               'data/registry/acceptance-benchmark.json', 'data/registry/answer-policy.json',
@@ -27,6 +27,9 @@ REGISTRIES = ['data/registry/sources.json', 'data/registry/source-review.json', 
 def run(command):
     result = subprocess.run(command, cwd=str(ROOT), capture_output=True, text=True)
     tail = (result.stdout.strip().splitlines() or [''])[-1]
+    if result.returncode:
+        print(result.stdout, end='')
+        print(result.stderr, end='')
     return result.returncode == 0, tail, result.stderr.strip()
 
 

@@ -1,5 +1,5 @@
 """Airport-specific NOAA/AWC evidence using the existing validated adapters."""
-import fcntl,json,re,urllib.request,urllib.error
+import json,re,urllib.request,urllib.error
 from contextlib import contextmanager
 from datetime import timedelta
 from urllib.parse import urlparse,parse_qs
@@ -17,7 +17,9 @@ class AirportOpener:
         if self.kind=='metar':params['hours']=['3']
         if url.scheme!='https' or url.netloc!='aviationweather.gov' or url.path!='/api/data/'+self.kind or parse_qs(url.query)!=params or request.get_method()!='GET':raise SourceError('Airport request exceeds its fixed source contract')
         lock=self.db.path.with_suffix('.aviation-network.lock').open('a')
-        try:fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+        try:
+            from .filelock import try_lock_exclusive
+            try_lock_exclusive(lock)
         except BlockingIOError:lock.close();raise SourceError('Another airport retrieval is in progress; retry shortly')
         try:rid=self.db.reserve(provider='aviationweather',limits=((60,12),(3600,100),(86400,300)))
         except BaseException:lock.close();raise

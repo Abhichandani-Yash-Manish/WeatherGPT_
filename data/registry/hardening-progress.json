@@ -697,7 +697,14 @@
    "No flood or cyclone product connected; those watches stay not connected.",
    "Hazard codes mapped only where observed in the layer.",
    "Origin authentication unverified; a no-match is not an all-clear."
-  ]
+  ],
+  "dissemination_build_20260916_unmerged": {
+   "plan": "research-feature4/feature4-implementation-plan.md",
+   "phase_status": "research-feature4/phase-status.md",
+   "e2e_log": "research-feature4/e2e-manual-test-log.md",
+   "scope": "Fingerprint change detection with a transactional outbox and bounded-retry delivery state machine, foreground dispatch plus a foreground watch loop, web push (VAPID key store, subscriptions, service worker, 410 purge), sent-to-acked two-way responses with a depth-bounded local escalation ladder, and a per-place delivery aggregate. 119 F4 checks pass, including a full new/duplicate/updated/withdrawn/expired/failure lifecycle.",
+   "open": "Live-server route and browser-push checks deferred: the workspace does not serve on this machine (Ollama configuration). SMS/IVR escalation stays deferred. Same sqlite-handle teardown pattern fixed in WatchStore still affects untouched stores (e.g. conversation.sqlite)."
+  }
  },
  "verification_backup_batch": {
   "report": "docs/39-verification-backup-and-drift-guard.md",
@@ -2107,6 +2114,18 @@
     "scope": "Detached Git worktree on the same macOS host and installed dependencies; no private runtime copied. Not a fresh-machine or cross-platform installation.",
     "initial_failure": "985 passed, 31 setup errors and one failure; bulletin tests incorrectly read ignored runtime cache instead of already-tracked matching source fixtures. Fixed with hash-verified tracked fixture lookup."
    }
+  },
+  "dissemination_followup": {
+   "branch_head": "70a55d1",
+   "report": "docs/73-dissemination-integration-review.md",
+   "python_tests_passed": 1105,
+   "javascript_suites": 9,
+   "verification_steps": 25,
+   "verification_failed": 0,
+   "live_push_delivery_verified": false,
+   "same_host_only": true,
+   "separate_plan_and_legacy_watch_stores": true,
+   "historical_self_scores_adopted": false
   }
  }
 }

@@ -1,0 +1,46 @@
+{
+  "schema_version": "dissemination-lifecycle-v1",
+  "note": "Recorded from tests/test_feature4_e2e.py on 16 September 2026. The warning tool is mocked at the boundary; every state below is produced by the real WatchStore, fingerprint, outbox, dispatch, acknowledgement and escalation code.",
+  "cases": [
+    {
+      "id": "L1",
+      "flow": "register (quiet) -> baseline check -> new warning -> dispatch",
+      "observed": "baseline enqueues nothing; changed state enqueues exactly one notification; dispatch marks it sent"
+    },
+    {
+      "id": "L2",
+      "flow": "repeat check with identical official state",
+      "observed": "no new notification; dispatch returns no rows"
+    },
+    {
+      "id": "L3",
+      "flow": "updated state (new hazard code)",
+      "observed": "exactly one more notification with a different id"
+    },
+    {
+      "id": "L4",
+      "flow": "withdrawn warning (quiet again)",
+      "observed": "notifies as a change with matched=false and all-clear wording in limitations; never an all-clear"
+    },
+    {
+      "id": "L5",
+      "flow": "acknowledge then expire",
+      "observed": "sent -> acked with response recorded; past window_end the watch ends as expired with no notification"
+    },
+    {
+      "id": "L6",
+      "flow": "one check_due run over two watches",
+      "observed": "both enqueued rows share one correlation_id"
+    },
+    {
+      "id": "L7",
+      "flow": "unconnected channel delivery",
+      "observed": "failed with backoff, then dead after MAX_RETRIES; never dispatched again"
+    },
+    {
+      "id": "L8",
+      "flow": "sent but unacknowledged past the timeout",
+      "observed": "one local-inbox follow-up (depth 1), then one more (depth 2), then the chain stops"
+    }
+  ]
+}

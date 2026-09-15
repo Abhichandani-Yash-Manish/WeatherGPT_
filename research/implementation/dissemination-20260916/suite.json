@@ -1,0 +1,19 @@
+{
+  "schema_version": "dissemination-suite-v1",
+  "recorded_at": "2026-09-16",
+  "f4_files": {
+    "tests/test_outbox.py": 33,
+    "tests/test_push.py": 16,
+    "tests/test_feature4_e2e.py": 4,
+    "tests/test_watches.py": 10,
+    "tests/test_cap_lifecycle.py": 9,
+    "tests/test_district_warnings.py": 23,
+    "tests/test_place_typos_and_coasts.py": 8,
+    "tests/test_advisory_place_resolution.py": 8,
+    "tests/test_alert_brief.py": 8
+  },
+  "f4_total_passed": 119,
+  "post_rebase_total_passed": 173,
+  "post_rebase_note": "119 F4 plus 54 teammate plan/warm suites (test_plans, test_plan_intake, test_plan_watcher, test_warm_start); node suites test_suite_ui and test_views show no FAIL",
+  "network_or_model": "no test reaches the network or the model"
+}

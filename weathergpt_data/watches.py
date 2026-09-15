@@ -7,13 +7,78 @@ watch only when it is asked to. A no-match result is not an all-clear, and a haz
 connected official products do not carry (a flood warning, for example) is recorded as
 not connected rather than mapped onto a similar-sounding product.
 """
+import hashlib
 import json
 import re
 import sqlite3
 import uuid
+from contextlib import contextmanager
 from datetime import datetime, timezone
 
 from .transport import SourceError, parsed, stamp, utcnow
+
+# Columns added after the original 10-column schema. _migrate() applies them to
+# existing databases; new code always reads/writes them.
+WATCH_SCHEMA_EXTRA = (('fingerprint_sha256', 'TEXT'), ('channels', 'TEXT'), ('consent_record', 'TEXT'))
+
+DEFAULT_CHANNELS = ['local_inbox']
+CONNECTED_CHANNELS = ('local_inbox', 'web_push')
+CONSENT_SOURCES = ('explicit_chat_request', 'browser_push_grant')
+
+
+def _decode_json_list(raw, fallback):
+    try:
+        value = json.loads(raw) if raw else fallback
+    except ValueError:
+        return list(fallback)
+    return value if isinstance(value, list) else list(fallback)
+
+
+def _decode_json_dict(raw):
+    try:
+        value = json.loads(raw) if raw else {}
+    except ValueError:
+        return {}
+    return value if isinstance(value, dict) else {}
+
+
+def default_consent(now=None):
+    """Consent record for the local inbox: the watch itself was an explicit request."""
+    return {'local_inbox': {'granted_at': stamp(now or utcnow()), 'source': 'explicit_chat_request'}}
+
+
+def compute_fingerprint(watch_id, hazard, place_name, facts, reason, packet_status,
+                        cap_eligible=None, cap_messages=None):
+    """Deterministic SHA-256 of the official state that matters to one watch.
+
+    Inputs are the structured warning facts (never the rendered answer text, which
+    can carry retrieval timestamps) plus the CAP relay counts the warning tool
+    records. A colour-code change, a new hazard code, a CAP lifecycle move, or a
+    different evaluation reason all change the fingerprint; an identical official
+    state reproduces it, which is what makes duplicate suppression exact.
+    """
+    items = []
+    for fact in facts or []:
+        if not isinstance(fact, dict) or fact.get('parameter') != 'official_district_warning':
+            continue
+        items.append({'id': fact.get('id'), 'label': fact.get('label'), 'value': fact.get('value'),
+                      'start': fact.get('start'), 'end': fact.get('end'),
+                      'hazard_codes': sorted(fact.get('hazard_codes') or []),
+                      'quiet': bool(fact.get('quiet')), 'source_id': fact.get('source_id')})
+    items.sort(key=lambda item: json.dumps(item, sort_keys=True, ensure_ascii=False))
+    canonical = json.dumps({'watch_id': watch_id, 'hazard': hazard, 'place': place_name or '',
+                            'facts': items, 'reason': reason,
+                            'packet_status': packet_status, 'cap_eligible': cap_eligible,
+                            'cap_messages': cap_messages}, sort_keys=True, ensure_ascii=False)
+    return hashlib.sha256(canonical.encode('utf-8')).hexdigest()
+
+
+def _cap_counts(packet):
+    """CAP relay counts the warning tool recorded in the packet trace, if any."""
+    for tool in (packet.get('trace') or {}).get('tools') or []:
+        if isinstance(tool, dict) and 'cap_lifecycle_eligible' in tool:
+            return tool.get('cap_lifecycle_eligible'), tool.get('cap_messages')
+    return None, None
 
 # The district warning layer's own hazard codes, as read in docs/27. Only the codes
 # observed in the feed are mapped; an unlisted code stays unmapped and is never called
@@ -93,54 +158,176 @@ class WatchStore:
     def __init__(self, path):
         self.path = path
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        with sqlite3.connect(self.path) as db:
+        db = sqlite3.connect(self.path)
+        try:
             db.execute('CREATE TABLE IF NOT EXISTS watches (id TEXT PRIMARY KEY,created_at TEXT,question TEXT,place TEXT,hazard TEXT,'
                        'window_start TEXT,window_end TEXT,state TEXT,last_checked_at TEXT,result TEXT)')
+            self._migrate(db)
+            db.commit()
+        finally:
+            db.close()
 
-    def create(self, question, place, hazard, window_start=None, window_end=None, now=None):
+    def _migrate(self, db):
+        """Add change-detection, channel and consent columns to pre-existing stores."""
+        cols = {row[1] for row in db.execute('PRAGMA table_info(watches)').fetchall()}
+        for name, decl in WATCH_SCHEMA_EXTRA:
+            if name not in cols:
+                db.execute('ALTER TABLE watches ADD COLUMN %s %s' % (name, decl))
+
+    def create(self, question, place, hazard, window_start=None, window_end=None, now=None,
+               channels=None, consent_record=None):
         now = now or utcnow()
+        channels = list(channels) if channels else list(DEFAULT_CHANNELS)
+        consent_record = consent_record if isinstance(consent_record, dict) else default_consent(now)
         watch = {'id': str(uuid.uuid4()), 'created_at': stamp(now), 'question': question, 'place': place, 'hazard': hazard,
                  'window_start': window_start, 'window_end': window_end,
                  'state': 'registered_check_on_request', 'delivery': 'local_inbox_only_no_push',
                  'checked_products': ['S15 IMD district warning product', 'S06 CAP relay assessment'],
-                 'not_connected': [h for h in UNCONNECTED if h == hazard]}
-        with sqlite3.connect(self.path) as db:
-            db.execute('INSERT INTO watches VALUES (?,?,?,?,?,?,?,?,?,?)',
+                 'not_connected': [h for h in UNCONNECTED if h == hazard],
+                 'fingerprint_sha256': None, 'channels': channels, 'consent_record': consent_record}
+        db = sqlite3.connect(self.path)
+        try:
+            db.execute('INSERT INTO watches (id,created_at,question,place,hazard,window_start,window_end,state,'
+                       'last_checked_at,result,fingerprint_sha256,channels,consent_record)'
+                       ' VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
                        (watch['id'], watch['created_at'], question, json.dumps(place, ensure_ascii=False), hazard,
-                        window_start, window_end, watch['state'], None, None))
+                        window_start, window_end, watch['state'], None, None, None,
+                        json.dumps(channels, ensure_ascii=False), json.dumps(consent_record, ensure_ascii=False)))
+            db.commit()
+        finally:
+            db.close()
         return watch
+
+    @staticmethod
+    def _decode(item):
+        try:
+            item['place'] = json.loads(item['place'] or '{}')
+        except ValueError:
+            item['place'] = {}
+        if not isinstance(item['place'], dict):
+            item['place'] = {}
+        try:
+            item['result'] = json.loads(item['result']) if item.get('result') else None
+        except ValueError:
+            item['result'] = None
+        if item['result'] is not None and not isinstance(item['result'], dict):
+            item['result'] = None
+        item['channels'] = _decode_json_list(item.get('channels'), DEFAULT_CHANNELS)
+        item['consent_record'] = _decode_json_dict(item.get('consent_record'))
+        return item
 
     def list(self, now=None):
         now = now or utcnow()
         rows = []
-        with sqlite3.connect(self.path) as db:
+        db = sqlite3.connect(self.path)
+        try:
             db.row_factory = sqlite3.Row
             for row in db.execute('SELECT * FROM watches ORDER BY created_at DESC'):
-                item = dict(row)
-                item['place'] = json.loads(item['place'] or '{}')
-                item['result'] = json.loads(item['result']) if item.get('result') else None
+                item = self._decode(dict(row))
                 item['expired'] = bool(item.get('window_end') and parsed(item['window_end']) < now)
                 rows.append(item)
+        finally:
+            db.close()
         return rows
 
     def mark(self, watch_id, state, last_checked_at, result):
-        with sqlite3.connect(self.path) as db:
+        db = sqlite3.connect(self.path)
+        try:
             db.execute('UPDATE watches SET state=?,last_checked_at=?,result=? WHERE id=?',
                        (state, last_checked_at, json.dumps(result, ensure_ascii=False), watch_id))
+            db.commit()
+        finally:
+            db.close()
 
     def get(self, watch_id):
-        with sqlite3.connect(self.path) as db:
+        db = sqlite3.connect(self.path)
+        try:
             db.row_factory = sqlite3.Row
             row = db.execute('SELECT * FROM watches WHERE id=?', (watch_id,)).fetchone()
+        finally:
+            db.close()
         if row is None:
             raise SourceError('No local watch with this identifier')
-        item = dict(row); item['place'] = json.loads(item['place'] or '{}')
-        item['result'] = json.loads(item['result']) if item.get('result') else None
-        return item
+        return self._decode(dict(row))
+
+    def set_fingerprint(self, watch_id, fingerprint):
+        db = sqlite3.connect(self.path)
+        try:
+            db.execute('UPDATE watches SET fingerprint_sha256=? WHERE id=?', (fingerprint, watch_id))
+            db.commit()
+        finally:
+            db.close()
+
+    def set_channels(self, watch_id, channels, consent_source=None, now=None):
+        """Replace the delivery channels of one watch, keeping consent honest.
+
+        local_inbox can never be removed: the inbox is the base truth every watch
+        keeps. Unknown channels raise. Added non-inbox channels gain a consent entry
+        stamped with the given source (which must name the real grant); removed
+        channels lose theirs. Returns the updated watch.
+        """
+        now = now or utcnow()
+        watch = self.get(watch_id)
+        channels = list(channels or [])
+        unknown = [channel for channel in channels if channel not in CONNECTED_CHANNELS]
+        if unknown:
+            raise SourceError('Unknown delivery channel: ' + ', '.join(sorted(set(unknown))))
+        if 'local_inbox' not in channels:
+            raise SourceError('local_inbox cannot be removed from a watch')
+        if consent_source is not None and consent_source not in CONSENT_SOURCES:
+            raise SourceError('Unknown consent source: ' + str(consent_source))
+        consent = dict(watch.get('consent_record') or {})
+        if consent_source is not None:
+            for channel in channels:
+                if channel != 'local_inbox' and channel not in consent:
+                    consent[channel] = {'granted_at': stamp(now), 'source': consent_source}
+        for channel in list(consent):
+            if channel != 'local_inbox' and channel not in channels:
+                del consent[channel]
+        db = sqlite3.connect(self.path)
+        try:
+            db.execute('UPDATE watches SET channels=?,consent_record=? WHERE id=?',
+                       (json.dumps(channels, ensure_ascii=False),
+                        json.dumps(consent, ensure_ascii=False), watch_id))
+            db.commit()
+        finally:
+            db.close()
+        return self.get(watch_id)
+
+    def archive(self, watch_id, now=None):
+        """Retire a watch and cancel every undelivered notification. Returns cancelled count."""
+        from .outbox import OutboxStore
+        now = now or utcnow()
+        self.get(watch_id)
+        box = OutboxStore(self.path)
+        cancelled = 0
+        for entry in box.list(watch_id=watch_id):
+            if entry['state'] in ('created', 'queued', 'failed', 'sent'):
+                box.set_state(entry['id'], 'dead', 'Watch archived by the owner', now=now)
+                cancelled += 1
+        db = sqlite3.connect(self.path)
+        try:
+            db.execute('UPDATE watches SET state=?,last_checked_at=? WHERE id=?',
+                       ('expired', stamp(now), watch_id))
+            db.commit()
+        finally:
+            db.close()
+        return {'id': watch_id, 'state': 'expired', 'cancelled_notifications': cancelled}
 
 
-def check_watch(store, engine, watch, now=None):
-    """Run the official warning tool for one watch and record the outcome."""
+def check_watch(store, engine, watch, now=None, correlation_id=None):
+    """Run the official warning tool for one watch and record the outcome.
+
+    Change detection: the observed official state is fingerprinted and compared
+    with the stored fingerprint. An unreachable source holds: nothing is enqueued
+    and the fingerprint does not move. The first readable check establishes the
+    baseline and enqueues nothing; a later check whose fingerprint differs enqueues
+    one outbox row per deliverable channel and stores the new fingerprint in the
+    same transaction; an identical state enqueues nothing. A hazard the connected
+    products do not carry never enqueues, though its fingerprint still advances.
+    Dispatch (sending) happens separately in dispatch_outbox.
+    """
+    from .outbox import OutboxStore, build_notification_payload
     from .warning_tools import execute_warning
     now = now or utcnow()
     if watch.get('window_end') and parsed(watch['window_end']) < now:
@@ -156,15 +343,77 @@ def check_watch(store, engine, watch, now=None):
     outcome = evaluate(packet, watch['hazard'])
     state = 'matched' if outcome['matched'] else ('hazard_not_connected' if outcome['reason'] == 'hazard_not_connected' else 'checked_no_match')
     store.mark(watch['id'], state, stamp(now), {**outcome, 'packet_status': packet.get('status'), 'packet_answer': packet.get('answer')})
-    return {'id': watch['id'], 'state': state, 'matched': outcome['matched'], 'detail': outcome['detail'],
-            'packet_status': packet.get('status'), 'packet_answer': packet.get('answer')}
+    result = {'id': watch['id'], 'state': state, 'matched': outcome['matched'], 'detail': outcome['detail'],
+              'packet_status': packet.get('status'), 'packet_answer': packet.get('answer')}
+    place = watch.get('place') or {}
+    cap_eligible, cap_messages = _cap_counts(packet)
+    fingerprint = compute_fingerprint(watch['id'], watch.get('hazard'), place.get('name'),
+                                      packet.get('facts'), outcome.get('reason'), packet.get('status'),
+                                      cap_eligible, cap_messages)
+    result['fingerprint_sha256'] = fingerprint
+    result['notification'] = None
+    result['notifications'] = []
+    result['channels_notified'] = []
+    result['channels_skipped'] = []
+    if packet.get('status') == 'unavailable':
+        result['fingerprint_basis'] = 'held_unavailable'
+        return result
+    stored = watch.get('fingerprint_sha256')
+    if not stored:
+        store.set_fingerprint(watch['id'], fingerprint)
+        result['fingerprint_basis'] = 'baseline'
+    elif stored != fingerprint:
+        from .outbox import OutboxStore
+        from .push import deliverable_channels
+        if outcome.get('reason') == 'hazard_not_connected':
+            store.set_fingerprint(watch['id'], fingerprint)
+            result['fingerprint_basis'] = 'not_connected_held'
+            return result
+        correlation_id = correlation_id or str(uuid.uuid4())
+        payload = build_notification_payload(watch, outcome, packet.get('facts'), packet.get('status'), now=now)
+        channels, skipped = deliverable_channels(store.path, watch, now=now)
+        notified = OutboxStore(store.path).enqueue_changed(
+            watch['id'], correlation_id, fingerprint, channels, payload, now=now)
+        result['notification'] = notified[0]['id'] if notified else None
+        result['notifications'] = [entry['id'] for entry in notified]
+        result['channels_notified'] = channels
+        result['channels_skipped'] = skipped
+        result['fingerprint_basis'] = 'changed'
+    else:
+        result['fingerprint_basis'] = 'unchanged'
+    return result
+
+
+@contextmanager
+def check_lock(store_path):
+    """One check run at a time per store: a second holder gets a clean refusal.
+
+    The fingerprint compare-and-set plus enqueue is only exact when a single run
+    owns it; concurrent runs would double-enqueue the same change. Source fetch
+    budgets remain unmetered — this lock orders runs, it does not pace sources.
+    """
+    from .filelock import try_lock_exclusive, unlock
+    handle = open(store_path.with_suffix('.watch-check.lock'), 'a')
+    try:
+        try:
+            try_lock_exclusive(handle)
+        except BlockingIOError:
+            raise SourceError('Another watch check is already running') from None
+        yield
+    finally:
+        try:
+            unlock(handle)
+        finally:
+            handle.close()
 
 
 def check_due(store, engine, now=None):
     now = now or utcnow()
+    correlation_id = str(uuid.uuid4())
     results = []
-    for watch in store.list(now=now):
-        if watch.get('state') in {'expired'}:
-            continue
-        results.append(check_watch(store, engine, watch, now=now))
+    with check_lock(store.path):
+        for watch in store.list(now=now):
+            if watch.get('state') in {'expired'}:
+                continue
+            results.append(check_watch(store, engine, watch, now=now, correlation_id=correlation_id))
     return results

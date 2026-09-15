@@ -458,11 +458,83 @@ const WG = window.WG;
       return disclosure('What a watch can and cannot do', into => {
         const list = el('ul', undefined, 'notes');
         ['Ask the assistant “Notify me if ... ” to register one; a watch records the place, hazard and window it resolved.',
-         'Watches are evaluated only when you press Check now or call the local check route. There is no push and no background daemon.',
+         'Watches are evaluated only when you press Check now or call the local check route. There is no background daemon.',
+         'A notification is enqueued only when a check observes a changed official state; an identical state notifies nothing.',
+         'Web Push sends encrypted messages through your browser vendor’s push service after you subscribe; a local check process must still be running.',
          'A flood or cyclone watch is recorded but the connected official products do not carry it; it is never mapped onto a similar-sounding product.',
          'A no-match result is not an all-clear, and origin authentication of the official products remains unverified.'].forEach(note => list.append(el('li', note)));
         into.append(list);
       }, true);
+    }
+    function urlBase64ToUint8Array(base64) {
+      const padding = '='.repeat((4 - (base64.length % 4)) % 4);
+      const raw = window.atob(base64.replace(/-/g, '+').replace(/_/g, '/') + padding);
+      const bytes = new Uint8Array(raw.length);
+      for (let i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+      return bytes;
+    }
+    async function subscribeBrowser(watchId) {
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') throw new Error('Notification permission was not granted.');
+      const vapid = await api('/api/push/vapid-key');
+      const registration = await navigator.serviceWorker.register('/sw.js');
+      const subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array(vapid.public_key)
+      });
+      const raw = subscription.toJSON();
+      return postJson('/api/push/subscribe', {
+        endpoint: raw.endpoint, keys: raw.keys || {},
+        expirationTime: raw.expirationTime || null,
+        watch_id: watchId || null
+      });
+    }
+    async function pushPanel(into, watches) {
+      const supported = ('serviceWorker' in navigator) && ('PushManager' in window) && ('Notification' in window);
+      if (!supported) {
+        into.append(stateBlock('plain', 'Push notifications are not supported in this browser.',
+          'The local inbox above still lists every notification. Nothing is pushed.'));
+        return;
+      }
+      let state = null;
+      try { state = await api('/api/push/state'); }
+      catch (error) { into.append(stateBlock('down', 'Push status could not be read.', error.message)); return; }
+      const counts = (state && state.subscriptions) || {};
+      into.append(stateBlock('plain', 'Push subscriptions: ' + (counts.active || 0) + ' active.',
+        'Permission is ' + Notification.permission + '. Purged expired: ' + (state.purged_expired || 0) + '.'));
+      try {
+        const registration = await navigator.serviceWorker.getRegistration('/sw.js');
+        const existing = registration && registration.pushManager ? await registration.pushManager.getSubscription() : null;
+        if (Notification.permission === 'granted' && !existing) {
+          into.append(stateBlock('plain', 'This browser has no push subscription (it may have been retired).',
+            'Press Subscribe below to restore it; bound watches regain push on resubscribe.'));
+        }
+      } catch (error) { /* status stays as reported; the button below still works */ }
+      const enable = el('button', Notification.permission === 'granted' ? 'Subscribe this browser' : 'Enable notifications', 'ghost');
+      enable.type = 'button';
+      enable.addEventListener('click', async () => {
+        enable.disabled = true;
+        try { await subscribeBrowser(null); paint(); }
+        catch (error) {
+          enable.disabled = false;
+          into.append(stateBlock('down', 'Notifications could not be enabled.', error.message));
+        }
+      });
+      into.append(enable);
+      (watches || []).filter(watch => (watch.channels || []).indexOf('web_push') < 0).forEach(watch => {
+        const label = (watch.place && (watch.place.name || watch.place.label)) || 'this place';
+        const bind = el('button', 'Push to ' + label, 'ghost');
+        bind.type = 'button';
+        bind.setAttribute('aria-label', 'Subscribe this browser to push for ' + label);
+        bind.addEventListener('click', async () => {
+          bind.disabled = true;
+          try { await subscribeBrowser(watch.id); paint(); }
+          catch (error) {
+            bind.disabled = false;
+            into.append(stateBlock('down', 'Push could not be bound to ' + label + '.', error.message));
+          }
+        });
+        into.append(bind);
+      });
     }
     async function paint() {
       clear(body);
@@ -485,13 +557,90 @@ const WG = window.WG;
       body.append(stateBlock('plain', watches.length ? watches.length + ' local watch(es) registered.' : 'No watches registered yet.',
         'Register one by asking the assistant to notify you. Watches are checked only when asked; a no-match result is not an all-clear.'));
       if (watches.length) {
-        body.append(table(['Hazard', 'Place', 'State', 'Window ends', 'Last checked'], watches.map(watch => [
+        body.append(table(['Hazard', 'Place', 'State', 'Pending', 'Last checked', 'Last notified'], watches.map(watch => [
           watch.hazard,
           (watch.place && (watch.place.name || watch.place.label)) || '—',
           watch.state,
-          watch.window_end || '—',
-          watch.last_checked_at || 'not yet checked'
+          String(watch.outbox_pending || 0),
+          watch.last_checked_at || 'not yet checked',
+          watch.last_notification_at || 'never notified'
         ])));
+        const retireList = el('ul', undefined, 'notes');
+        watches.forEach(watch => {
+          const item = el('li', (watch.place && (watch.place.name || watch.place.label)) || 'watch' + ' · ' + watch.state + ' · ');
+          const retire = el('button', 'Retire', 'ghost');
+          retire.type = 'button';
+          retire.setAttribute('aria-label', 'Retire the watch for ' + ((watch.place && (watch.place.name || watch.place.label)) || 'this place'));
+          retire.addEventListener('click', async () => {
+            retire.disabled = true;
+            try { await postJson('/api/watches/delete', { id: watch.id }); paint(); }
+            catch (error) { retire.disabled = false; body.append(stateBlock('down', 'The watch could not be retired.', error.message)); }
+          });
+          item.append(retire);
+          const channels = watch.channels || ['local_inbox'];
+          const consent = watch.consent_record || {};
+          const channelNote = el('span', ' Channels: ' + channels.join(', ') +
+            (consent.web_push ? ' (push granted ' + String((consent.web_push.granted_at || '')).slice(0, 10) + ')' : ''), 'field-note');
+          item.append(channelNote);
+          const hasPush = channels.indexOf('web_push') >= 0;
+          const toggle = el('button', hasPush ? 'Disable push' : 'Enable push', 'ghost');
+          toggle.type = 'button';
+          toggle.setAttribute('aria-label', (hasPush ? 'Disable push for ' : 'Enable push for ') + ((watch.place && (watch.place.name || watch.place.label)) || 'this place'));
+          toggle.addEventListener('click', async () => {
+            toggle.disabled = true;
+            const next = hasPush ? channels.filter(channel => channel !== 'web_push') : channels.concat(['web_push']);
+            try { await postJson('/api/watches/channels', { id: watch.id, channels: next }); paint(); }
+            catch (error) {
+              toggle.disabled = false;
+              body.append(stateBlock('down', 'Channels could not be changed.' +
+                (hasPush ? '' : ' Subscribe this browser first, then enable push.'), error.message));
+            }
+          });
+          item.append(toggle);
+          retireList.append(item);
+        });
+        body.append(retireList);
+        try {
+          const outbox = await api('/api/outbox');
+          const rows = outbox.notifications || [];
+          const queued = rows.filter(row => row.state === 'queued' || row.state === 'created');
+          body.append(stateBlock('plain', queued.length ? queued.length + ' notification(s) waiting in the local outbox.' : (rows.length ? 'No notifications are waiting in the local outbox.' : 'The local outbox is empty.'),
+            'Changed official state is queued for the local inbox and any consented push subscriptions.'));
+          if (rows.length) {
+            body.append(table(['Watch', 'Channel', 'State', 'Retries', 'Updated'], rows.slice(0, 10).map(row => [
+              String(row.watch_id || '').slice(0, 8),
+              row.channel || '—',
+              row.state || '—',
+              String(row.retry_count || 0) + '/' + String(row.max_retries || 0),
+              row.updated_at || '—'
+            ])));
+            rows.slice(0, 10).forEach(row => {
+              const payload = row.payload || {};
+              if (!payload.facts) return;
+              body.append(disclosure('Notification evidence · ' + String(row.id).slice(0, 8), into => {
+                into.append(el('p', ((payload.place || {}).name || 'Place not stated') + ' · ' + (payload.hazard || 'Hazard not stated'), 'field-note'));
+                (payload.facts || []).forEach(f => into.append(el('p', [f.label, f.value, f.unit, f.start, f.end, f.source_id].filter(v => v != null).join(' · '), 'field-note')));
+                (payload.limitations || []).forEach(note => into.append(el('p', note, 'field-note')));
+              }));
+            });
+            rows.slice(0, 10).filter(row => row.state === 'sent').forEach(row => {
+              const answers = el('div', undefined, 'brief-tools');
+              answers.append(el('p', 'Your response is stored locally. No emergency service is contacted.', 'field-note'));
+              answers.append(el('span', 'Notification ' + String(row.id).slice(0, 8) + ': are you ', 'field-note'));
+              [['safe', 'Safe'], ['need_help', 'Need help'], ['evacuating', 'Evacuating'], ['seen', 'Seen']].forEach(pair => {
+                const button = el('button', pair[1], 'ghost');
+                button.type = 'button';
+                button.addEventListener('click', async () => {
+                  button.disabled = true;
+                  try { await postJson('/api/outbox/' + row.id + '/ack', { response: pair[0] }); paint(); }
+                  catch (error) { button.disabled = false; body.append(stateBlock('down', 'The response could not be recorded.', error.message)); }
+                });
+                answers.append(button);
+              });
+              body.append(answers);
+            });
+          }
+        } catch (error) { body.append(stateBlock('down', 'The local outbox could not be read.', error.message)); }
       }
       const check = el('button', 'Check now', 'ghost');
       check.addEventListener('click', async () => {
@@ -500,7 +649,7 @@ const WG = window.WG;
           const result = await postJson('/api/watches/check', {});
           clear(body);
           body.append(stateBlock('plain', 'Checked ' + ((result.results || []).length) + ' watch(es) in the foreground.',
-            'No daemon or push is installed. A no-match result is not an all-clear.'));
+            'The check has finished. Delivery results are recorded in the inbox; consented Web Push may be attempted. A no-match result is not an all-clear.'));
           (result.results || []).forEach(row => body.append(stateBlock(row.matched ? 'plain' : 'plain',
             (row.matched ? 'Matched: ' : 'No match: ') + row.state, row.detail || '')));
           body.append(check); check.disabled = false; check.textContent = 'Check now';
@@ -510,6 +659,37 @@ const WG = window.WG;
         }
       });
       body.append(check);
+      const createHost = el('div', undefined, 'watch-create');
+      createHost.append(el('p', 'Register a watch for explicit coordinates (no place guessing; the warning tool still resolves the district at check time).', 'field-note'));
+      const nameInput = el('input', undefined, 'palette-input');
+      nameInput.setAttribute('aria-label', 'Watch place name');
+      nameInput.placeholder = 'Place name';
+      const latInput = el('input', undefined, 'palette-input');
+      latInput.setAttribute('aria-label', 'Latitude');
+      latInput.placeholder = 'Latitude';
+      const lonInput = el('input', undefined, 'palette-input');
+      lonInput.setAttribute('aria-label', 'Longitude');
+      lonInput.placeholder = 'Longitude';
+      const hazardInput = el('input', undefined, 'palette-input');
+      hazardInput.setAttribute('aria-label', 'Hazard to watch');
+      hazardInput.placeholder = 'Hazard (optional, e.g. heavy rain)';
+      const create = el('button', 'Register watch', 'ghost');
+      create.type = 'button';
+      create.addEventListener('click', async () => {
+        create.disabled = true;
+        try {
+          await postJson('/api/watches/create', { place: { name: nameInput.value, latitude: latInput.value, longitude: lonInput.value }, hazard: hazardInput.value || null });
+          paint();
+        } catch (error) {
+          create.disabled = false;
+          body.append(stateBlock('down', 'The watch could not be registered.', error.message));
+        }
+      });
+      [nameInput, latInput, lonInput, hazardInput, create].forEach(node => createHost.append(node));
+      body.append(createHost);
+      const pushHost = el('div', undefined, 'push-panel');
+      body.append(pushHost);
+      pushPanel(pushHost, watches);
       body.append(limits());
     }
     const KIND_LABELS = { change: 'Change', check_in: 'Evening check-in', degraded: 'Watch degraded' };
@@ -632,6 +812,14 @@ const WG = window.WG;
       if (!panel.hidden) paint();
     });
     if (close) close.addEventListener('click', () => { panel.hidden = true; toggle.setAttribute('aria-expanded', 'false'); });
+    try {
+      const deep = /[?&]watch=([^&]+)/.exec((window.location && window.location.search) || '');
+      if (deep && deep[1]) {
+        panel.hidden = false;
+        toggle.setAttribute('aria-expanded', 'true');
+        paint();
+      }
+    } catch (error) { /* the deep link is optional; the panel still opens by hand */ }
   }
 
   /* ---------- plan notifications: an unread count, and browser notifications if allowed ---------- */

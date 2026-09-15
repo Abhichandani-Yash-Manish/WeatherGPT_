@@ -20,8 +20,14 @@ Restart an older serving process to load current backend routes; changing files 
 
 ## Run it
 
+Install the declared dependencies in a project environment before starting (the push package has a
+Python-version-specific pin):
+
 ```sh
-python3 scripts/start_weather.py
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python scripts/start_weather.py
 ```
 
 Open <http://127.0.0.1:8765>. The launcher starts installed Ollama if needed and uses `qwen3.6:latest`; set `WEATHERGPT_MODEL` to another installed model. The engine plans the core question shapes with rules and no model at all, and the rest through whatever providers exist. No paid gateway is required, and the server answers only on loopback with a per-process session token.
@@ -73,7 +79,7 @@ The interface states these limits rather than filling the gaps:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 1017 Python tests
+python3 -m pytest tests/ -q                          # 1105 Python tests
 node tests/test_charts.js                            #  2 of 70 component checks
 node tests/test_views.js                             # 18
 node tests/test_bulletin_ui.js                       #  6
@@ -82,6 +88,7 @@ node tests/test_suite_ui.js                          # 18
 node tests/test_voice_ui.js                          #  3
 node tests/test_briefcase_ui.js                     # 10
 node tests/test_workspace_ui.js                     # workspace behaviour and recovery
+node tests/test_notify_ui.js                        # watch delivery controls
 python3 scripts/doctor.py                            # environment, providers and corpus presence
 python3 scripts/models.py --check                    # the rules-first floor and the configured providers
 python3 scripts/models.py --probe-free               # the curated free ranking measured against the live catalogue
@@ -184,3 +191,5 @@ Each links to the batch that recorded it. Older entries are **historical evidenc
 ## Ground rules
 
 The user-supplied SIH26068 statement is authoritative, and final scope includes nationwide and specialist coverage. Reuse the existing adapters, source registries, numerical contracts and provenance rather than replacing them. Keep entity, time, parameter, unit and source attached to every factual claim, and preserve unknown, missing, stale, cancelled and reference-only states. Credentials belong in local backend configuration and must not reach browser code or chat. Do not publish runtime conversations, logs or restricted source material. GeoNames place data is used under CC BY 4.0.
+
+- [Concurrent alert-delivery integration and critical limits](docs/73-dissemination-integration-review.md) — outbox, consented push machinery and acknowledgements; synthetic HTTP acceptance, separate watch systems and no live device-delivery claim.

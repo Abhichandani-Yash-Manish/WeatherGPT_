@@ -119,7 +119,7 @@
       "latest_evidence": "docs/72-integrated-status-and-ps-review.md",
       "deliverable_state": {
         "District warning applicability": "Implemented for the connected district product; original codes and dated windows retained.",
-        "Lifecycle and delivery": "Local plan watcher and inbox implemented; actual changed-edition delivery, origin, flood/cyclone applicability and unattended delivery unaccepted.",
+        "Lifecycle and delivery": "Activity plans have a local watcher/inbox; separate legacy watches now have fingerprint outbox, push machinery and acknowledgements. Synthetic HTTP acceptance passes; actual changed-edition device delivery, origin and flood/cyclone applicability remain open.",
         "Document retrieval": "Corpus conversation path, cross-language query retrieval and bounded section reading implemented. Nationwide edition/field applicability, contradictions and extraction completeness remain open."
       }
     },
@@ -157,7 +157,8 @@
         "Desktop": "Unified workspace, 15 guided tools, charts, independent source states, saved briefs and plans.",
         "Queue and recovery": "Bounded queue, stage progress and cooperative cancellation; provider/source waits and contention remain.",
         "Language and voice": "19 write and 10 speak/hear gates verified in registry; no fluency, noisy-input or rural accessibility acceptance.",
-        "Plan monitoring": "Local watcher, inbox and browser notification code; real delivery/lifecycle acceptance incomplete."
+        "Plan monitoring": "Local watcher, inbox and browser notification code; real delivery/lifecycle acceptance incomplete.",
+        "Legacy watch delivery": "Fingerprint outbox, opt-in Web Push and local acknowledgements integrated from branch 70a55d1. Real HTTP lifecycle verified with synthetic warning input; actual device delivery and unified Plan Watch scheduling unaccepted (docs/73)."
       }
     },
     {
@@ -218,7 +219,7 @@
       "status": "partial",
       "evidence": "docs/27-official-warning-applicability.md",
       "latest_evidence": "docs/72-integrated-status-and-ps-review.md",
-      "current_evidence": "A local plan watcher, activity templates, inbox, browser notification code and lifecycle tests exist (docs/67). Live changed-edition delivery, origin authentication, flood/cyclone applicability and offline delivery remain unaccepted."
+      "current_evidence": "Activity-plan monitoring and separate legacy-watch outbox, opt-in Web Push and acknowledgements are implemented. Synthetic real-HTTP inbox lifecycle passes. Actual changed-edition device delivery, origin, flood/cyclone applicability, unified scheduling and rural/mobile delivery remain unaccepted; see docs/73."
     },
     "P07": {
       "status": "partial",
@@ -266,7 +267,7 @@
       "status": "partial",
       "evidence": "research/reviews/product-potential-20260912/findings.json",
       "latest_evidence": "docs/72-integrated-status-and-ps-review.md",
-      "current_evidence": "Local verification and a detached clean checkout pass 1,017 Python tests, eight JS suites and static checks on the same macOS environment. A runtime-fixture dependency was repaired using existing tracked hash-verified source files; the initial failure is preserved. Fresh-machine/cross-platform installation, CI service, sustained load and deployment remain unaccepted; hosting is held."
+      "current_evidence": "The latest merged working-tree run passes 1105 Python tests, nine JS suites and all 25 verification steps on this macOS Python 3.9 environment. Same-host detached checkout verification follows the merge commit. New Python/Windows and fresh dependency installation, CI service, sustained load and deployment remain unaccepted; hosting is held."
     },
     "P15": {
       "status": "partial",

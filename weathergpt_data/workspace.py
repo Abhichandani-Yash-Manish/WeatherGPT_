@@ -201,27 +201,211 @@ class Workspace:
 
     def watches(self):
         """The local watch inbox: registered requests, their states and their limits."""
-        return {'schema_version':'watch-inbox-v1','delivery':'local_inbox_only_no_push',
-                'note':('Watches are evaluated only when asked. There is no push or background daemon, a no-match result is not an '
+        from .outbox import OutboxStore
+        store=self.watch_store()
+        box=OutboxStore(store.path)
+        watches=store.list(now=self.clock())
+        for watch in watches:
+            watch['outbox_pending']=box.count_pending(watch['id'])
+            delivered=[event['timestamp'] for row in box.list(watch_id=watch['id'])
+                       for event in box.ledger(row['id']) if event['event']=='sent']
+            watch['last_notification_at']=max(delivered) if delivered else None
+        return {'schema_version':'watch-inbox-v1','delivery':'local_inbox_and_opt_in_web_push',
+                'note':('Watches are evaluated only when asked. Opt-in Web Push requires a subscribed browser and a running check/dispatch process. A no-match result is not an '
                         'all-clear, and a hazard the connected official products do not carry stays recorded as not connected.'),
                 'checked_products':['S15 IMD district warning product','S06 CAP relay assessment'],
-                'watches':self.watch_store().list(now=self.clock())}
+                'watches':watches}
 
     def check_watches(self,body):
         """Check one watch or every open watch, in the foreground, and record the outcome."""
         from .conversation import ConversationEngine
-        from .watches import check_due,check_watch
+        from .outbox import dispatch_outbox,escalate_unacked
+        from .push import channel_sender
+        from .watches import check_due,check_lock,check_watch
         if not isinstance(body,dict) or set(body)-{'id'}:raise ValueError('Send an optional watch id')
         if self.conversation is None:
             with self._conversation_lock:
                 if self.conversation is None:self.conversation=ConversationEngine(self)
         store=self.watch_store()
+        send=channel_sender(self._push_key_path(),store.path)
         if body.get('id'):
-            return {'schema_version':'watch-check-v1','delivery':'local_inbox_only_no_push',
-                    'result':check_watch(store,self.conversation,store.get(str(body['id'])),now=self.clock())}
-        return {'schema_version':'watch-check-v1','delivery':'local_inbox_only_no_push',
-                'note':'Foreground check only; no daemon or push is installed.',
-                'results':check_due(store,self.conversation,now=self.clock())}
+            with check_lock(store.path):
+                result=check_watch(store,self.conversation,store.get(str(body['id'])),now=self.clock())
+            dispatched=dispatch_outbox(store.path,now=self.clock(),send=send)
+            escalated=escalate_unacked(store.path,now=self.clock())
+            return {'schema_version':'watch-check-v1','delivery':'local_inbox_and_opt_in_web_push',
+                    'result':result,'dispatched':dispatched,'escalated':escalated}
+        results=check_due(store,self.conversation,now=self.clock())
+        dispatched=dispatch_outbox(store.path,now=self.clock(),send=send)
+        escalated=escalate_unacked(store.path,now=self.clock())
+        return {'schema_version':'watch-check-v1','delivery':'local_inbox_and_opt_in_web_push',
+                'note':'Foreground check only; no daemon is installed. Web push delivers to subscribed browsers only.',
+                'results':results,'dispatched':dispatched,'escalated':escalated}
+
+    def outbox(self,params):
+        """The notification outbox: queued, sent, failed, dead and acked rows."""
+        from .outbox import OutboxStore
+        params=params or {}
+        def first(name):
+            value=params.get(name)
+            if isinstance(value,(list,tuple)):value=value[0] if value else None
+            return value
+        state=first('state');watch_id=first('watch_id')
+        if state is not None and state not in {'created','queued','sent','failed','dead','acked','gone'}:
+            raise SourceError('Unknown outbox state: '+str(state))
+        store=self.watch_store()
+        rows=OutboxStore(store.path).list(state=state,watch_id=watch_id)
+        summaries=[{key:row[key] for key in ('id','watch_id','correlation_id','fingerprint_sha256','state','channel','created_at','updated_at','retry_count','max_retries','next_retry_at','last_error')} for row in rows]
+        for summary,row in zip(summaries,rows):summary['payload']=row.get('payload') or {}
+        return {'schema_version':'outbox-v1','delivery':'local_inbox_and_opt_in_web_push',
+                'note':'A notification is enqueued only when a watch check observes a changed official state; delivery is recorded per channel.',
+                'notifications':summaries}
+
+    def delete_watch(self,body):
+        """Retire a watch and cancel its pending notifications."""
+        if not isinstance(body,dict) or not body.get('id'):raise SourceError('Give the identifier of the watch to retire')
+        removed=self.watch_store().archive(str(body['id']),now=self.clock())
+        removed['watches']=self.watches()['watches']
+        return removed
+
+    def set_watch_channels(self,body):
+        """Replace one watch's delivery channels, keeping consent honest.
+
+        Adding web_push requires an active push subscription for that watch (a
+        bare toggle cannot invent consent); removing it drops the consent entry.
+        local_inbox can never be removed.
+        """
+        from .push import PushStore
+        if not isinstance(body,dict) or not body.get('id') or not isinstance(body.get('channels'),list):
+            raise SourceError('Send the watch id and a channels list')
+        store=self.watch_store()
+        watch_id=str(body['id'])
+        channels=list(body['channels'])
+        if 'web_push' in channels and not PushStore(store.path).active_for_watch(watch_id):
+            raise SourceError('No active push subscription for this watch; subscribe this browser first')
+        watch=store.set_channels(watch_id,channels,
+                                 consent_source='browser_push_grant' if 'web_push' in channels else None,
+                                 now=self.clock())
+        return {'schema_version':'watch-channels-v1','id':watch['id'],'channels':watch['channels'],
+                'consent_record':watch['consent_record'],
+                'detail':'Delivery channels replaced; consent entries follow real grants only.'}
+
+    def ack_notification(self,outbox_id,body):
+        """Acknowledge a sent notification: safe, need help, evacuating or seen."""
+        from .outbox import acknowledge
+        if not isinstance(body,dict) or not body.get('response'):
+            raise SourceError('Send one of: safe, need_help, evacuating, seen')
+        result=acknowledge(self.watch_store().path,str(outbox_id),str(body['response']),now=self.clock())
+        result['schema_version']='outbox-ack-v1'
+        return result
+
+    def watch_dma(self,params):
+        """Per-place, per-source delivery aggregate: watches, notifications, acks, help signals."""
+        from .outbox import FeedbackStore,OutboxStore
+        store=self.watch_store()
+        box=OutboxStore(store.path)
+        feedback={row['outbox_id']:row for row in FeedbackStore(store.path).list()}
+        places={}
+        for watch in store.list(now=self.clock()):
+            name=(watch.get('place') or {}).get('name') or 'place not stated'
+            entry=places.setdefault(name,{'place':name,'watches':0,'notifications':0,
+                                          'acked':0,'safe':0,'need_help':0,'evacuating':0,'seen':0,
+                                          'unacked':0,'sources':{}})
+            entry['watches']+=1
+            for row in box.list(watch_id=watch['id']):
+                if row['state'] in ('created','queued','sent','failed','dead','acked','gone'):
+                    entry['notifications']+=1
+                    for fact in (row.get('payload') or {}).get('facts') or []:
+                        source=str((fact or {}).get('source_id') or 'unknown')
+                        cell=entry['sources'].setdefault(source,{'notifications':0,'acked':0})
+                        cell['notifications']+=1
+                        if row['state']=='acked':
+                            cell['acked']+=1
+                if row['state']=='acked':
+                    entry['acked']+=1
+                    response=(feedback.get(row['id']) or {}).get('response')
+                    if response in entry:entry[response]+=1
+                elif row['state']=='sent':
+                    entry['unacked']+=1
+        return {'schema_version':'watch-dma-v2',
+                'note':'Counts of local notifications and the responses owners sent back, broken down by official source. Nothing here leaves this machine.',
+                'places':sorted(places.values(),key=lambda item:item['place'])}
+
+    def create_watch(self,body):
+        """Register a watch for explicit coordinates, without chat and without guessing.
+
+        The place is stored exactly as given: no gazetteer lookup runs here, so an
+        official warning can never be attached to a wrongly resolved district. The
+        hazard is read from the request the same deterministic way chat does it.
+        """
+        from .watches import WatchStore,connected,hazard_of
+        if not isinstance(body,dict):raise SourceError('Send a place with coordinates')
+        place=body.get('place') or {}
+        if not isinstance(place,dict):raise SourceError('Send a place object with coordinates')
+        name=place.get('name')
+        try:
+            latitude=float(place.get('latitude'));longitude=float(place.get('longitude'))
+        except (TypeError,ValueError):raise SourceError('Give numeric latitude and longitude') from None
+        if not isinstance(name,str) or not 2<=len(name.strip())<=100:
+            raise SourceError('Give the place a name of 2–100 characters')
+        if not (-90<=latitude<=90 and -180<=longitude<=180):
+            raise SourceError('Coordinates are outside the valid ranges')
+        question='Notify me if an official warning is issued for '+name.strip()
+        if isinstance(body.get('hazard'),str) and body['hazard'].strip():
+            question='Notify me if an official '+body['hazard'].strip()+' warning is issued for '+name.strip()
+        hazard=hazard_of(question)
+        store=self.watch_store()
+        watch=store.create(question,{'name':name.strip(),'state':place.get('state') or '',
+                                     'district':place.get('district') or '','kind':'unknown',
+                                     'coordinates':{'latitude':latitude,'longitude':longitude}},
+                           hazard,window_start=body.get('window_start'),window_end=body.get('window_end'),
+                           now=self.clock())
+        return {'schema_version':'watch-create-v1','id':watch['id'],'state':watch['state'],
+                'hazard':hazard,'connected':connected(hazard),'place':watch['place'],
+                'delivery':watch['delivery'],
+                'detail':('Watch registered locally for explicit coordinates; it is checked only when asked.'
+                          if connected(hazard) else
+                          'Watch recorded, but the connected official products do not carry this hazard.')}
+
+    def _push_key_path(self):
+        return self.watch_store().path.parent/'push-vapid.json'
+
+    def vapid_public_key(self):
+        """The public VAPID key browsers subscribe with. Safe to expose."""
+        from .push import vapid_keypair
+        _,public=vapid_keypair(self._push_key_path())
+        return {'schema_version':'push-vapid-v1','public_key':public}
+
+    def push_state(self,params):
+        """Push subscription counts: active, expired and revoked."""
+        from .push import PushStore
+        store=self.watch_store()
+        subscriptions=PushStore(store.path)
+        rows=subscriptions.purge_expired(now=self.clock())
+        counts={state:len(subscriptions.list(state=state)) for state in ('active','expired','revoked')}
+        return {'schema_version':'push-state-v1','delivery':'local_inbox_and_opt_in_web_push',
+                'note':'Opt-in Web Push sends encrypted messages through the browser vendor push service to subscribed browsers; the local check process must be running.',
+                'purged_expired':rows['retired'],'subscriptions':counts}
+
+    def push_subscribe(self,body):
+        """Store a browser push subscription, optionally bound to one watch."""
+        from .push import PushStore
+        if not isinstance(body,dict):raise SourceError('Send a push subscription')
+        keys=body.get('keys') or {}
+        entry=PushStore(self.watch_store().path).subscribe(
+            body.get('endpoint'),keys.get('p256dh'),keys.get('auth'),
+            watch_id=body.get('watch_id'),expires_at=body.get('expirationTime'),now=self.clock())
+        return {'schema_version':'push-subscription-v1','subscribed':True,'id':entry['id'],
+                'watch_id':entry['watch_id'],'duplicate':bool(entry.get('duplicate')),
+                'detail':('This subscription already exists.' if entry.get('duplicate')
+                          else 'Stored. Bound watches gained the web_push channel with a recorded grant.' if entry.get('watch_id')
+                          else 'Stored without a watch binding; enable push per watch from the inbox.')}
+
+    def push_unsubscribe(self,body):
+        """Revoke the browser push subscription for one endpoint."""
+        from .push import PushStore
+        if not isinstance(body,dict) or not body.get('endpoint'):raise SourceError('Send the endpoint to revoke')
+        return PushStore(self.watch_store().path).unsubscribe(str(body['endpoint']))
 
     # Plan Watch: plans described in chat, checked against the official district warning
     # product by a watcher that runs only while this workspace runs.
@@ -756,6 +940,14 @@ def _conversation_id(cid):
     except (ValueError,TypeError,AttributeError):raise SourceError('Invalid conversation identifier')
 
 
+def parse_ack_path(path):
+    """The outbox id of POST /api/outbox/<id>/ack, else None. Query strings never match."""
+    parts=(path or '').split('/')
+    if len(parts)==5 and parts[1]=='api' and parts[2]=='outbox' and parts[3] and parts[4]=='ack':
+        return parts[3]
+    return None
+
+
 def make_server(workspace, port=8765):
     token=secrets.token_urlsafe(32)
     class Handler(BaseHTTPRequestHandler):
@@ -802,7 +994,8 @@ def make_server(workspace, port=8765):
             # API path keeps the existing 404 behaviour.
             if path.startswith('/api/'):
                 known=(workspace.is_product(path) or path=='/api/conversations' or path=='/api/health'
-                       or path=='/api/languages' or path=='/api/watches' or path=='/api/plans' or path=='/api/chat/progress'
+                       or path=='/api/languages' or path=='/api/watches' or path=='/api/watches/dma' or path=='/api/outbox' or path=='/api/plans' or path=='/api/chat/progress'
+                       or path=='/api/push/vapid-key' or path=='/api/push/state'
                        or path=='/api/advisories/brief' or path=='/api/briefs' or path=='/api/briefing/latest'
                        or path.startswith('/api/briefs/')
                        or path.startswith('/api/conversations/') or path.startswith('/api/map/static/'))
@@ -813,6 +1006,10 @@ def make_server(workspace, port=8765):
                     if path=='/api/health':return self.respond(200,workspace.health())
                     if path=='/api/languages':return self.respond(200,workspace.languages())
                     if path=='/api/watches':return self.respond(200,workspace.watches())
+                    if path=='/api/watches/dma':return self.respond(200,workspace.watch_dma(parse_qs(urlsplit(self.path).query)))
+                    if path=='/api/outbox':return self.respond(200,workspace.outbox(parse_qs(urlsplit(self.path).query)))
+                    if path=='/api/push/vapid-key':return self.respond(200,workspace.vapid_public_key())
+                    if path=='/api/push/state':return self.respond(200,workspace.push_state(parse_qs(urlsplit(self.path).query)))
                     if path=='/api/plans':return self.respond(200,workspace.plans(parse_qs(urlsplit(self.path).query)))
                     if path=='/api/chat/progress':return self.respond(200,workspace.chat_progress())
                     if path=='/api/advisories/brief':return self.respond(200,workspace.advisory_brief(parse_qs(urlsplit(self.path).query)))
@@ -832,7 +1029,7 @@ def make_server(workspace, port=8765):
                     return self.respond(200,view)
                 except ValueError as exc:return self.respond(400,{'error':str(exc)})
                 except (OSError,sqlite3.Error):return self.respond(503,{'error':'The local evidence store is unavailable. Check its files and retry.'})
-            assets={'/':('index.html','text/html'),'/app.js':('app.js','text/javascript'),'/views.js':('views.js','text/javascript'),'/charts.js':('charts.js','text/javascript'),'/shell.js':('shell.js','text/javascript'),'/panels.js':('panels.js','text/javascript'),'/map.js':('map.js','text/javascript'),'/voice.js':('voice.js','text/javascript'),'/home.js':('home.js','text/javascript'),'/style.css':('style.css','text/css')}
+            assets={'/':('index.html','text/html'),'/app.js':('app.js','text/javascript'),'/views.js':('views.js','text/javascript'),'/charts.js':('charts.js','text/javascript'),'/shell.js':('shell.js','text/javascript'),'/panels.js':('panels.js','text/javascript'),'/map.js':('map.js','text/javascript'),'/voice.js':('voice.js','text/javascript'),'/home.js':('home.js','text/javascript'),'/sw.js':('sw.js','application/javascript'),'/style.css':('style.css','text/css')}
             if path not in assets:return self.respond(404,{'error':'Not found'})
             filename,kind=assets[path]
             try:text=(ROOT/'web'/filename).read_text()
@@ -856,13 +1053,15 @@ def make_server(workspace, port=8765):
                     or not hmac.compare_digest(supplied,token)):
                 return self.respond(403,{'error':'Reload this local workspace before sending a request'})
             routes={'/api/answer':workspace.answer,'/api/refresh':workspace.refresh,'/api/chat':workspace.chat,
-                    '/api/chat/cancel':workspace.cancel_chat,'/api/watches/check':workspace.check_watches,'/api/warm':workspace.warm,
+                    '/api/chat/cancel':workspace.cancel_chat,'/api/watches/check':workspace.check_watches,'/api/watches/delete':workspace.delete_watch,'/api/watches/channels':workspace.set_watch_channels,'/api/watches/create':workspace.create_watch,'/api/warm':workspace.warm,
                     '/api/briefing/run':workspace.run_briefing,
                     '/api/plans/check':workspace.check_plans,'/api/plans/update':workspace.update_plan,'/api/plans/replay':workspace.replay_plans,
                     '/api/briefs/save':workspace.save_brief,
                     '/api/briefs/delete':workspace.delete_brief,
+                    '/api/push/subscribe':workspace.push_subscribe,'/api/push/unsubscribe':workspace.push_unsubscribe,
                     '/api/speech/transcribe':workspace.transcribe,'/api/speech/speak':workspace.speak}
-            if self.path not in routes:return self.respond(404,{'error':'Not found'})
+            outbox_id=parse_ack_path(self.path)
+            if self.path not in routes and outbox_id is None:return self.respond(404,{'error':'Not found'})
             # A recording is far larger than a question, so it gets its own limit rather
             # than raising the limit for every request.
             cap=11_000_000 if self.path=='/api/speech/transcribe' else 8192
@@ -871,7 +1070,8 @@ def make_server(workspace, port=8765):
                 length=int(self.headers.get('Content-Length','0'))
                 if not 0<length<=cap:raise ValueError('Request must be 1–%d bytes'%cap)
                 body=json.loads(self.rfile.read(length),parse_constant=lambda value:(_ for _ in ()).throw(ValueError('Non-finite JSON')))
-                self.respond(200,routes[self.path](body))
+                if outbox_id is not None:self.respond(200,workspace.ack_notification(outbox_id,body))
+                else:self.respond(200,routes[self.path](body))
             except LanguageServiceUnavailable as exc:self.respond(503,{'error':str(exc)})
             except (ValueError,TypeError,KeyError) as exc:self.respond(400,{'error':str(exc)})
             except (OSError,sqlite3.Error):self.respond(503,{'error':'The local evidence store is unavailable. Check its files and retry.'})

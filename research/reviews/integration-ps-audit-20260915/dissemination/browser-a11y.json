@@ -1,0 +1,14 @@
+{
+  "scope": "Local Chromium #notify-panel; existing watches read only, no push subscription or send attempted",
+  "counts": {
+    "inapplicable": 63,
+    "incomplete": 1,
+    "passes": 25,
+    "violations": 0
+  },
+  "axeVersion": "4.12.1",
+  "incomplete_rules": [
+    "color-contrast"
+  ],
+  "real_mobile_acceptance": false
+}

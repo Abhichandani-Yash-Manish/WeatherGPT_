@@ -3,3 +3,10 @@
 # Ollama and the local model weights are not pip dependencies; see README "Run it".
 -r requirements-foundation.txt
 -r requirements-bulletins.txt
+# Web push delivery for watch notifications (Feature 4, D5). Python 3.9 branch verified locally on 15 Sep 2026; newer Python branch not exercised here.
+pywebpush==2.5.0; python_version >= "3.10"
+# Latest compatible branch for the supported Python 3.9 runtime (PyPI requires >=3.10 for 2.5).
+pywebpush==2.1.2; python_version < "3.10"
+# Python 3.9 environment compatibility, including its installed PyOpenSSL constraint.
+cryptography==47.0.0; python_version < "3.10"
+cryptography==50.0.1; python_version >= "3.10"

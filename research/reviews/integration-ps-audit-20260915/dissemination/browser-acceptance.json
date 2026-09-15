@@ -1,0 +1,14 @@
+{
+  "date": "2026-09-15",
+  "surface": "Local Chromium at 127.0.0.1:8766",
+  "observed": {
+    "plans_panel_open": true,
+    "labelled_coordinate_form": true,
+    "legacy_watch_channels_visible": true,
+    "external_push_disclosure_visible": true,
+    "browser_errors": 0
+  },
+  "operations": "Read-only existing watch panel; no watch check, subscription or external send triggered",
+  "http_lifecycle": "tests/test_dissemination_integration.py exercises a temporary real server with synthetic warning boundary and local inbox",
+  "live_device_delivery_verified": false
+}
