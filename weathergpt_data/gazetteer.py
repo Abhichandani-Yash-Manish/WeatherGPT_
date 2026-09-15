@@ -11,6 +11,22 @@ def norm(value):
     return ' '.join(''.join(c for c in unicodedata.normalize('NFKD',value).casefold() if not unicodedata.combining(c)).split())
 
 
+def near_names(names, wanted, limit=3, floor=0.8):
+    """Names close to a request, offered as a spelling hint and never substituted.
+
+    Publishing directories spell places their own way, and a reader can be one letter out
+    ("Kendrapada" for Kendrapara). Naming the close entries lets the reader confirm or
+    correct the request; answering for one of them would attach an edition to a place
+    nobody named.
+    """
+    import difflib
+    if not wanted:
+        return []
+    scored = sorted(((difflib.SequenceMatcher(None, norm(name), norm(wanted)).ratio(), name) for name in names),
+                    reverse=True)
+    return [name for score, name in scored[:limit] if score >= floor]
+
+
 def choose_by_probe(candidates, probe, limit=8, score=None):
     """The candidate the connected product answers best for, and what was tried.
 

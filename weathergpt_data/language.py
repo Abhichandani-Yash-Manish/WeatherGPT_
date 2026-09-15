@@ -239,5 +239,14 @@ def validate_request_coverage(plan,question):
         if len(positive)>1 and not positive<=planned:raise SourceError('Preserve each explicitly requested crop as a separate agricultural task; do not merge crops into one crop field or omit one')
     if re.search(r'\b(?:warnings?|alerts?)\b|चेतावनी|ચેતવણી',question,re.I):
         kinds={t['kind'] for t in plan['tasks']}
-        if kinds-{'explanation','history','research'} and 'warning' not in kinds:
+        # A question about warnings printed in a named published document is a document question:
+        # the corpus tool serves warning-classified passages in their own section, each labelled
+        # reference-only and explicitly not a current applicable warning. Measured on 15 September
+        # 2026: "Is there any warning in the latest sea area bulletin?" was refused at
+        # interpretation because the plan named that document instead of a live-warning tool.
+        # Every task must be a document that names its family, so a question that names no
+        # product still has to route to the warning tool.
+        document_only=kinds=={'document'}
+        named_product=all((t.get('corpus_request') or {}).get('family') for t in plan['tasks'])
+        if kinds-{'explanation','history','research'} and 'warning' not in kinds and not (document_only and named_product):
             raise SourceError('The question explicitly mentions warnings/alerts but the plan contains no warning task; use kind warning, not another forecast')

@@ -193,16 +193,22 @@ def audit():
                       and 'stages_are_facts_not_progress' in server_source)
     whole_document = 'whole_document_sections' in corpus_source
     edition_comparison = 'edition_comparison' in corpus_source and 'edition_differences' in corpus_source
+    # The topic-word separation and the two disclosed weaker matches are engine facts, so the
+    # account that shows them is checked here rather than trusted to stay in step by hand.
+    topic_disclosure = ('topic_tokens' in corpus_source and 'Words that name the topic' in views
+                        and 'not an answer to the question' in views
+                        and 'lexical_overlap_without_the_topic_word' in corpus_source)
     refinement = ROOT / 'research/reviews/refinement-20260915'
     recorded = sorted(path.name for path in refinement.glob('*.json')) if refinement.exists() else []
     doctor = ROOT / 'scripts/doctor.py'
-    served = progress_route and stage_host and stage_renderer and whole_document and edition_comparison
+    served = progress_route and stage_host and stage_renderer and whole_document and edition_comparison and topic_disclosure
     honest = stage_is_facts and doctor.exists() and len(recorded) >= 4 and 'queue-position.json' in recorded
     findings['FE08_transparency_and_edition_coverage'] = {
         'state': 'resolved' if served and honest else 'reproduced',
         'progress_route_served': progress_route, 'stage_host_present': stage_host,
         'stage_renderer_present': stage_renderer, 'stage_states_are_facts_not_estimates': stage_is_facts,
         'whole_document_mode': whole_document, 'edition_comparison_present': edition_comparison,
+        'topic_word_disclosure_present': topic_disclosure,
         'doctor_command_present': doctor.exists(),
         'recorded_live_evidence': recorded,
         'detail': ('The stage route, the stage line, the whole-edition reading and the edition comparison are served, '

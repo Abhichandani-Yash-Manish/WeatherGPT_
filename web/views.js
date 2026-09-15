@@ -845,6 +845,17 @@ function renderRetrievalAccount(packet) {
         ['Editions indexed for this product', String(entry.editions_indexed_for_this_product === undefined ? 'not stated' : entry.editions_indexed_for_this_product),
           'a single indexed edition cannot be compared with another']
       ];
+      if (entry.topic_tokens) {
+        rows.push(['Words that name the topic', entry.topic_tokens.length ? entry.topic_tokens.join(', ') : 'none beyond the product and the place',
+          entry.topic_matched === false
+            ? 'no returned passage contains them: these passages share the question\u2019s other words only'
+            : 'at least one returned passage contains them']);
+      }
+      const BASES = {
+        semantic_only_indic_script_disclosed: 'no exact word from the question appears in these passages: top semantic matches, wording support unverified',
+        lexical_overlap_without_the_topic_word: 'the topic word is absent from this product and region: not an answer to the question'
+      };
+      if (BASES[entry.match_basis]) rows.push(['Wording support', String(entry.match_basis), BASES[entry.match_basis]]);
       box.append(accountTable(['Field', 'Value', 'Provenance'], rows));
     });
   }

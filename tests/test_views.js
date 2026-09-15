@@ -325,7 +325,9 @@ assert(!/confidence|skill score/i.test(comparedText), 'No confidence or score la
     pending_slots: [{ field: 'growth_stage', reason: 'Crop growth stage is not yet supplied', task_id: 't1' }],
     retrieval_coverage: [{ mode: 'whole_document_bm25_plus_dense_rrf', candidates: 48, returned: 10,
                            whole_document: false, editions_indexed_for_this_product: 1,
-                           lexical_overlap_required: true, filters: { family: 'national_bulletin', scope: 'national', region: null } }],
+                           lexical_overlap_required: true, topic_tokens: ['grapes'], topic_matched: false,
+                           match_basis: 'lexical_overlap_without_the_topic_word',
+                           filters: { family: 'national_bulletin', scope: 'national', region: null } }],
     edition_comparison: { editions_indexed: 1, newest_issue: '2026-09-14', previous_issue: null, state: 'single_edition_indexed' },
     document_evidence: [{ family_label: 'All India Weather Summary and Forecast Bulletin', source_id: 'S64',
                           scope: 'national', issue_date: '2026-09-14', issue_date_basis: 'printed',
@@ -338,6 +340,11 @@ assert(!/confidence|skill score/i.test(comparedText), 'No confidence or score la
   assert.ok(text.indexOf('48') >= 0 && text.indexOf('10') >= 0, 'candidates and returned passages are both shown');
   assert.ok(text.indexOf('single_edition_indexed') >= 0, 'the edition-comparison state is shown');
   assert.ok(text.indexOf('the printed issue date is the retrieval date') >= 0, 'currency is shown in words, not as a code');
+  // The corpus separates the words that name the topic from the words every passage shares, and a
+  // passage served without the topic word says so in the account rather than only in the prose.
+  assert.ok(text.indexOf('Words that name the topic') >= 0 && text.indexOf('grapes') >= 0, 'the topic words are named');
+  assert.ok(text.indexOf('no returned passage contains them') >= 0, 'a missing topic word is stated, not hidden');
+  assert.ok(text.indexOf('not an answer to the question') >= 0, 'a disclosed weaker match is explained in the account');
 }());
 
 console.log('PASS: two products in one turn are compared in plain terms and never ranked');

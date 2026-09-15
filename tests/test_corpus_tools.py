@@ -299,7 +299,11 @@ class WholeDocumentTests(CorpusCase):
                                               'family': 'state_agromet', 'scope': 'state'},
                                  question='What is the irrigation advice?')
         self.assertIsNone(result['whole_document'])
-        self.assertEqual(result['retrieval_coverage']['match_basis'], 'lexical_overlap')
+        # Keyword retrieval, and the words that name the topic rather than the product or the
+        # region decide which passages are served.
+        self.assertEqual(result['retrieval_coverage']['match_basis'], 'lexical_overlap_topic')
+        self.assertTrue(result['retrieval_coverage']['topic_matched'])
+        self.assertEqual(result['retrieval_coverage']['topic_tokens'], ['light', 'irrigation', 'soil', 'moisture'])
         self.assertFalse(result['retrieval_coverage']['whole_document'])
 
     def test_a_summary_without_a_named_product_lists_products_instead_of_guessing(self):

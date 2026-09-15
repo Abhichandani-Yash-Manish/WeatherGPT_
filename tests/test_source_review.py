@@ -12,7 +12,7 @@ import json
 import unittest
 from pathlib import Path
 
-from weathergpt_data.document_ingest import DISTRICT_SPEC, FAMILIES
+from weathergpt_data.document_ingest import ALL_FAMILIES
 
 ROOT = Path(__file__).resolve().parents[1]
 LEDGER = json.loads((ROOT / 'data' / 'registry' / 'source-review.json').read_text())
@@ -23,7 +23,7 @@ PRODUCTS = {product['id']: product for product in REGISTRY['products']}
 
 def ingesting_families():
     wired = {}
-    for name, spec in list(FAMILIES.items()) + [(DISTRICT_SPEC['family'], DISTRICT_SPEC)]:
+    for name, spec in ALL_FAMILIES.items():
         wired.setdefault(spec['source_id'], []).append(name)
     return {source: sorted(names) for source, names in wired.items()}
 

@@ -576,7 +576,12 @@ def single_request(question, now, history=None):
             else:
                 family = 'state_agromet'
         else:
+            # "Summarise the latest national bulletin." named a product and was still answered by
+            # asking which product was meant (measured 15 September 2026), because only the
+            # publisher's full title was mapped. The words a reader actually uses are mapped here.
             for word, name in (('all india weather summary', 'national_bulletin'), ('flash flood', 'flash_flood_national'),
+                               ('national weather bulletin', 'national_bulletin'), ('national bulletin', 'national_bulletin'),
+                               ('all india bulletin', 'national_bulletin'),
                                ('extended range', 'extended_range'), ('press release', 'press_release'),
                                ('special advisory', 'special_advisory'),
                                ('district bulletin', 'state_district_bulletin'), ('sea area', 'sea_area_bulletin'),

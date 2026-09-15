@@ -498,6 +498,17 @@ DISTRICT_SPEC = dict(
            ('validity', r'(Valid Till[^\n]{0,60})')])
 
 
+# Every registered publishing family, in one place. `FAMILIES` is the discovery-address
+# registry: one family, one address, one ingestion run. The district family is target-driven
+# from the publisher's own directory instead, so it lives in `DISTRICT_SPEC`. A consumer that
+# asks "is this a family this workspace knows?" wants both, and asking only the first made the
+# district family unrequestable: measured on 15 September 2026, "What does today's district
+# agromet bulletin for Nashik say?" was refused as an unknown family while 571 district
+# editions sat in the index.
+ALL_FAMILIES = dict(FAMILIES)
+ALL_FAMILIES[DISTRICT_SPEC['family']] = DISTRICT_SPEC
+
+
 def district_spec(state, district):
     """One district's family specification. State and district stay attached to the document."""
     if not isinstance(state, str) or not state.strip() or not isinstance(district, str) or not district.strip():
@@ -532,6 +543,7 @@ def district_targets(root):
 
 
 _DIRECTORY_STATES = {}
+_DIRECTORY_STATE_NAMES = {}
 
 
 def district_states(district, root=None):
@@ -555,6 +567,26 @@ def district_states(district, root=None):
             mapping.setdefault(target['district'], set()).add(target['state'])
         _DIRECTORY_STATES[key] = {name: sorted(states) for name, states in mapping.items()}
     return _DIRECTORY_STATES[key].get(district, [])
+
+
+def directory_state_names(root=None):
+    """The state names the publisher's dated district directory lists.
+
+    A question can name a state that directory covers while no edition for it is held
+    here. That is an absent edition and a present place, and the two are answered
+    differently, so the distinction is read from the publisher's own snapshot rather
+    than from a hand-kept list of Indian states.
+    """
+    from .foundation import ROOT
+    root = root or ROOT
+    key = str(root)
+    if key not in _DIRECTORY_STATE_NAMES:
+        try:
+            targets, _ = district_targets(root)
+        except SourceError:
+            targets = []
+        _DIRECTORY_STATE_NAMES[key] = sorted({target['state'] for target in targets})
+    return _DIRECTORY_STATE_NAMES[key]
 
 
 def district_address(store, district, now, ttl=0):

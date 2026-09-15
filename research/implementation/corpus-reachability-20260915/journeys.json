@@ -1,0 +1,218 @@
+{
+ "summary": {
+  "checked_at_utc": "2026-09-15T09:27:36.320892+00:00",
+  "engine": "local conversation engine, rules-first planner",
+  "journeys": 14,
+  "answered": 11,
+  "partial": 1,
+  "needs_clarification": 0,
+  "unavailable": 2,
+  "errors": 0,
+  "limits": [
+   "One process, one machine, one instant against live sources.",
+   "A published document is a record of what a publisher issued: these readings are not forecasts, observations or current warnings.",
+   "The district crop questions that reach the indexed-edition fallback say so in the answer."
+  ]
+ },
+ "rows": [
+  {
+   "question": "What does the latest IMD national weather bulletin say about heavy rainfall?",
+   "checked_at_utc": "2026-09-15T09:27:28.801059+00:00",
+   "seconds": 3.85,
+   "status": "answered",
+   "passages": 10,
+   "documents_read": 1,
+   "pending_slots": [],
+   "match_basis": "lexical_overlap_topic",
+   "topic_tokens": [
+    "imd",
+    "heavy",
+    "rainfall"
+   ],
+   "topic_matched": true,
+   "answer": "Indexed published document:\n\nAll India Weather Summary and Forecast Bulletin · national · document d3e80f651f72 · printed issue 2026-09-14 · on the printed issue date · retrieved 2026-09-14 18:28:17.453227+00:00.\n\n· page 18 · 36 LAKSHDWEEP FWS FWS FWS FWS FWS WS WS: “Road and rail traffic may be affected due to heavy rain and squally winds. There could be localised landslides, mudslides, landslips, water logging, inundation and flooding over low lying areas. Occasional reduction in visibility due to heavy rainfall. Helicopter services may get affected. Action suggested: People are advised to keep a watch on the weather for worsening conditions and be ready to move to safer places accordingly. Take safe shelters; do not take shelter under trees, as there could be lightning. … [excerpt; full passage retained in evidence]”\n\n· page 1 · ALL INDIA WEATHER SUMMARY AND FORECAST BULLETIN: “14th-1"
+  },
+  {
+   "question": "What does today's district agromet bulletin for Nashik say?",
+   "checked_at_utc": "2026-09-15T09:27:32.649639+00:00",
+   "seconds": 0.04,
+   "status": "answered",
+   "passages": 8,
+   "documents_read": 1,
+   "pending_slots": [],
+   "match_basis": "lexical_overlap",
+   "topic_tokens": [],
+   "topic_matched": true,
+   "answer": "Indexed published document:\n\nDistrict agromet advisory bulletin · Maharashtra / Nashik · document 828392217023 · printed issue 2026-09-11 · 4 day(s) after the printed issue · retrieved 2026-09-14T19:46:00.616105+00:00.\n\n· page 1 · 46) Weather based Agromet Advisory committee meeting dated 11.09.2026 District: Nashik: “made in a proper manner to drain the water. Due to waterlogging, the incidence of wilting disease will be observed. Fruits ready for harvesting, unrotten fruits should be harvested. They should be sent for immediate sale. Chopped, damaged, rotten fruits should be collected and put in the compost pit.”\n\n· page 2 · 2) Last week weather summary : GKMS Observatory, ZARS, Igatpuri, Dist. Nashik.: “Place : ZARS, Igatpuri Date : 11.09.2026 Sd/- Nodal Officer, GKMS, AMFU Igatpuri & Associate Director of Research ZARS, Igatpuri, Dist. Nashik”\n\n· page 1 · 46) Weather based Agromet Ad"
+  },
+  {
+   "question": "Summarise the latest national bulletin.",
+   "checked_at_utc": "2026-09-15T09:27:32.693837+00:00",
+   "seconds": 0.08,
+   "status": "answered",
+   "passages": 8,
+   "documents_read": 1,
+   "pending_slots": [],
+   "match_basis": "whole_document_sections",
+   "topic_tokens": [],
+   "topic_matched": true,
+   "answer": "Indexed published document:\n\n8 of 48 indexed passages of this edition are quoted below, one per printed section in printed order (11 section(s) indexed). That is a bounded reading of the edition, not its full text.\n\nAll India Weather Summary and Forecast Bulletin · national · document d3e80f651f72 · printed issue 2026-09-14 · on the printed issue date · retrieved 2026-09-14 18:28:17.453227+00:00.\n\n· page 1: “2026-09-14 Time of Issue: 20:50:00 hours IST (Night)”\n\n· page 7 · 14 September (Day 1): “❖ Heavy to Very Heavy Rainfall with isolated Extremely Heavy Rainfall very likely at isolated places over Saurashtra & Kutch. ❖ Heavy to Very Heavy Rainfall very likely at isolated places over Gujarat Region. ❖ Heavy Rainfall very likely at isolated places over East Rajasthan, Kerala & Mahe, Konkan & Goa, Madhya Maharashtra, Odisha, Sub Himalayan West Bengal & Sikkim, Tamil Nadu Puducherry & Kara"
+  },
+  {
+   "question": "What changed in the latest state agromet bulletin for Maharashtra?",
+   "checked_at_utc": "2026-09-15T09:27:32.774139+00:00",
+   "seconds": 0.03,
+   "status": "unavailable",
+   "passages": 0,
+   "documents_read": 0,
+   "pending_slots": [],
+   "match_basis": null,
+   "topic_tokens": null,
+   "topic_matched": null,
+   "answer": "No indexed document is published for Maharashtra in this family. The state editions held here are Chhattisgarh, Gujarat, Karnataka, Rajasthan, Uttar Pradesh. A same-named district or document from another state was not substituted."
+  },
+  {
+   "question": "What does the agromet bulletin for Nashik say about grapes?",
+   "checked_at_utc": "2026-09-15T09:27:32.801452+00:00",
+   "seconds": 0.82,
+   "status": "answered",
+   "passages": 1,
+   "documents_read": 1,
+   "pending_slots": [],
+   "match_basis": "lexical_overlap_topic",
+   "topic_tokens": [
+    "grapes"
+   ],
+   "topic_matched": true,
+   "answer": "The live district bulletin could not be verified (Bulletin retrieval is unavailable: Printed district could not be verified with the supported layout rules; the layout may be unsupported or the selected district may differ), so this reading is the Nashik edition already indexed here, served with its printed issue date, physical page and saved document. Crop and growth-stage annotation belongs to the live extractor and is not claimed for it.\n\nIndexed published document:\n\nDistrict agromet advisory bulletin · Maharashtra / Nashik · document 828392217023 · printed issue 2026-09-11 · 4 day(s) after the printed issue · retrieved 2026-09-14T19:46:00.616105+00:00.\n\n· page 1 · 46) Weather based Agromet Advisory committee meeting dated 11.09.2026 District: Nashik: “Pearl millet Vegetative stage Hoeing should be done twice and weeding should be done one to two times as per requirement. In integrate"
+  },
+  {
+   "question": "Is there any warning in the latest sea area bulletin?",
+   "checked_at_utc": "2026-09-15T09:27:33.616687+00:00",
+   "seconds": 0.09,
+   "status": "answered",
+   "passages": 4,
+   "documents_read": 3,
+   "pending_slots": [],
+   "match_basis": "lexical_overlap_topic",
+   "topic_tokens": [
+    "warning"
+   ],
+   "topic_matched": true,
+   "answer": "Indexed published documents, not forecasts or current warnings:\n\nRSMC sea area bulletin · marine · document deb2ddb75106 · printed issue 2026-09-14 · 1 day(s) after the printed issue · retrieved 2026-09-15 01:19:54.001119+00:00.\n\nRSMC sea area bulletin · marine · document 6249c6e1b2b7 · printed issue 2026-09-14 · on the printed issue date · retrieved 2026-09-15 01:19:54.001119+00:00.\n\nRSMC sea area bulletin · marine · document 732cdfa9c255 · printed issue 2026-09-14 · on the printed issue date · retrieved 2026-09-15 01:19:54.001119+00:00.\n\nWarning-related text published in these documents (reference only):\n\n· national, page 1: “India Meteorological Department/ भारत मौसम िव ान िवभाग ACWC KOLKATA / ए . सी . ड ू . सी कोलकाता Sea Area Bulletin Bulletin Valid for 12 hrs from 21 UTC of 2026-09-14 to 09 UTC of 2026-09-15 TTT Warning NIL Synoptic Situation”\n\n· national, page 1: “India Meteorolog"
+  },
+  {
+   "question": "Show me the latest press release.",
+   "checked_at_utc": "2026-09-15T09:27:33.707804+00:00",
+   "seconds": 0.05,
+   "status": "answered",
+   "passages": 1,
+   "documents_read": 1,
+   "pending_slots": [],
+   "match_basis": "lexical_overlap",
+   "topic_tokens": [],
+   "topic_matched": true,
+   "answer": "Indexed published document:\n\nIMD press release document · national · document 6d4856c368c5 · printed issue 2026-09-14 · on the printed issue date · retrieved 2026-09-14 18:28:33.957870+00:00.\n\n· page 1: “Government of India Ministry of Earth Sciences India Meteorological Department Press Release Date: 14th September 2026 Time of Issue:1330 hours IST Subject: (i) Under the influence of low-pressure area over Southeast Rajasthan & adjoining north Gujarat, isolated extremely heavy rainfall likely over Saurashtra & Kutch and isolated very heavy over Gujarat Region on today, the 14th September, 2026. … [excerpt; full passage retained in evidence]”\n\nExtraction reading order is unverified for these documents; tables and headings can be split.\n\nThese are original source excerpts. They are not a forecast, an observation, an official warning or personalized advice."
+  },
+  {
+   "question": "What does the latest flash flood guidance say for Assam?",
+   "checked_at_utc": "2026-09-15T09:27:33.754030+00:00",
+   "seconds": 0.02,
+   "status": "partial",
+   "passages": 5,
+   "documents_read": 1,
+   "pending_slots": [],
+   "match_basis": "lexical_overlap_topic",
+   "topic_tokens": [
+    "flash",
+    "flood"
+   ],
+   "topic_matched": true,
+   "answer": "Indexed published document:\n\nNational Flash Flood Guidance Bulletin · national · document 7c8154638488 · printed issue 2026-09-14 · on the printed issue date · retrieved 2026-09-14 18:28:13.386367+00:00.\n\n· page 1 · DATED: 14-09-2026 TIME OF ISSUE: 1850 IST VALID TILL: 2330 IST: “remaining parts of the country. Prognostic Guidance: Dynamic Global (GFS ) & Mesoscale Model (WRF & NCUM) forecasts very heavy rainfall up to 110 mm in next 24 hours. Observed Flash Flood Threat (IFFT) till”\n\n· page 2 · 2330 IST of 14-09-2026:: “Low to moderate flash flood threat likely over few watersheds & neighbourhoods of following Met Sub- divisions in next 06 hours. Saurashtra & Kutch: Kutch and Devbhoomi Dwarka, districts. Surface runoff/ Inundation may occur at some fully saturated soils & low-lying areas over Area of Concern (AoC) as shown in map due to expected rainfall occurrence in next 06 hours. … ["
+  },
+  {
+   "question": "What does the coastal bulletin say for the Konkan coast?",
+   "checked_at_utc": "2026-09-15T09:27:33.778533+00:00",
+   "seconds": 0.05,
+   "status": "answered",
+   "passages": 10,
+   "documents_read": 5,
+   "pending_slots": [],
+   "match_basis": "lexical_overlap_topic",
+   "topic_tokens": [
+    "coast"
+   ],
+   "topic_matched": true,
+   "answer": "Indexed published documents, not forecasts or current warnings:\n\nRSMC coastal weather bulletin · marine · document bc80dbb52277 · printed issue 2026-09-14 · on the printed issue date · retrieved 2026-09-15 01:21:07.700389+00:00.\n\n· page 1 · COASTAL WEATHER BULLETIN: “DATE : 14-09-2026 TIME OF ISSUE: 1500 UTC”\n\n· page 1 · COASTAL WEATHER BULLETIN: “DATE : 14-09-2026 TIME OF ISSUE: 1500 UTC”\n\nRSMC coastal weather bulletin · marine · document 887aacf00f65 · printed issue 2026-09-14 · on the printed issue date · retrieved 2026-09-15 01:21:07.700389+00:00.\n\n· page 1 · COASTAL WEATHER BULLETIN: “DATE : 14-09-2026 TIME OF ISSUE: 1500 UTC”\n\n· page 1 · COASTAL WEATHER BULLETIN: “DATE : 14-09-2026 TIME OF ISSUE: 1500 UTC”\n\nRSMC coastal weather bulletin · marine · document 6315b80dbeed · printed issue 2026-09-14 · on the printed issue date · retrieved 2026-09-15 01:21:07.700389+00:00.\n\n· page 1: “I"
+  },
+  {
+   "question": "What does the latest special advisory say?",
+   "checked_at_utc": "2026-09-15T09:27:33.833010+00:00",
+   "seconds": 0.08,
+   "status": "answered",
+   "passages": 1,
+   "documents_read": 1,
+   "pending_slots": [],
+   "match_basis": "lexical_overlap",
+   "topic_tokens": [],
+   "topic_matched": true,
+   "answer": "Indexed published document:\n\nRSMC New Delhi special advisory · marine · document 6593a51b6555 · printed issue 2025-11-29 · 289 day(s) after the printed issue · retrieved 2026-09-14 18:28:48.367994+00:00.\n\n· page 3: “(c) Those out at sea should avoid southwest Bay of Bengal, Gulf of Mannar, Comorin area and along & off Tamil Nadu, Puducherry, south Andhra Pr adesh & Sri Lanka coasts; adjoining westcentral Bay of Bengal till 01st December and Southeast Arabian Sea, Lakshadweep, Maldives and along & off Kerala coast till 30th November. … [excerpt; full passage retained in evidence]”\n\nExtraction reading order is unverified for these documents; tables and headings can be split.\n\nThese are original source excerpts. They are not a forecast, an observation, an official warning or personalized advice."
+  },
+  {
+   "question": "What does the district agromet advisory say about cotton irrigation in Ahmedabad?",
+   "checked_at_utc": "2026-09-15T09:27:33.914183+00:00",
+   "seconds": 1.35,
+   "status": "answered",
+   "passages": 4,
+   "documents_read": 1,
+   "pending_slots": [],
+   "match_basis": null,
+   "topic_tokens": null,
+   "topic_matched": null,
+   "answer": "From the Ahmedabad, Gujarat bulletin issued 2026-09-11, for cotton:\n\nCotton · Squaring/ Flowering/ Boll formation · page 3:\n“If irrigation facilities are available then apply need based irrigation through drip irrigation/alternate furrow irrigation method by considering soil moisture condition in standing crop.”\n\nCotton · Squaring/ Flowering/ Boll formation · page 3:\n“Avoid application of fertilizers during long dry spell condition or it should apply under optimum soil moisture condition. Spray 2 % urea during dry spell in standing cotton crop.”\n\nContext from the same bulletin edition follows. These are separate source sections, not crop-specific matches or verified current official warnings. Printed warning dates and conditions are preserved; bulletin forecast dates do not extend their validity.\n\nWeather summary · page 1:\n“As per weather forecast received from Meteorological Centre, Ahm"
+  },
+  {
+   "question": "What does the agromet bulletin for Pune say about onion?",
+   "checked_at_utc": "2026-09-15T09:27:35.260406+00:00",
+   "seconds": 0.69,
+   "status": "answered",
+   "passages": 1,
+   "documents_read": 1,
+   "pending_slots": [],
+   "match_basis": "lexical_overlap_topic",
+   "topic_tokens": [
+    "onion"
+   ],
+   "topic_matched": true,
+   "answer": "The live district bulletin could not be verified (Bulletin retrieval is unavailable: Printed district could not be verified with the supported layout rules; the layout may be unsupported or the selected district may differ), so this reading is the Pune edition already indexed here, served with its printed issue date, physical page and saved document. Crop and growth-stage annotation belongs to the live extractor and is not claimed for it.\n\nIndexed published document:\n\nDistrict agromet advisory bulletin · Maharashtra / Pune · document 720f05f17c58 · printed issue 2026-09-08 · 7 day(s) after the printed issue · retrieved 2026-09-14T19:46:27.933068+00:00.\n\n· page 2 · GRAMIN KRISHI MAUSAM SEWA, AMFU, PUNE: “water when there are no rains. Spraying should be carried out only after assessing the economic damage threshold of the pests. Brinjal Vegetative Growth Stage For control of sap-sucking p"
+  },
+  {
+   "question": "What does the district agromet advisory for Madurai say about banana?",
+   "checked_at_utc": "2026-09-15T09:27:35.954264+00:00",
+   "seconds": 0.35,
+   "status": "answered",
+   "passages": 2,
+   "documents_read": 1,
+   "pending_slots": [],
+   "match_basis": "lexical_overlap_topic",
+   "topic_tokens": [
+    "banana"
+   ],
+   "topic_matched": true,
+   "answer": "The live district bulletin could not be verified (Bulletin retrieval is unavailable: Printed district could not be verified with the supported layout rules; the layout may be unsupported or the selected district may differ), so this reading is the Madurai edition already indexed here, served with its printed issue date, physical page and saved document. Crop and growth-stage annotation belongs to the live extractor and is not claimed for it.\n\nIndexed published document:\n\nDistrict agromet advisory bulletin · Tamil Nadu / Madurai · document 2a5c1798e893 · printed issue 2026-09-12 · 3 day(s) after the printed issue · retrieved 2026-09-14T20:00:40.299591+00:00.\n\nWarning-related text published in these documents (reference only):\n\n· Madurai, page 1 · THUNDERSTORM WARNING: “Banana, Papaya, Moringa & Sugarcane Thunderstorms & lightning with light to Moderate rain are likely to occur at one or t"
+  },
+  {
+   "question": "What does the district agromet bulletin for Nowhereville say?",
+   "checked_at_utc": "2026-09-15T09:27:36.303658+00:00",
+   "seconds": 0.02,
+   "status": "unavailable",
+   "passages": 0,
+   "documents_read": 0,
+   "pending_slots": [],
+   "match_basis": null,
+   "topic_tokens": null,
+   "topic_matched": null,
+   "answer": "No district agromet edition is indexed under that name. The corpus is keyed by the publisher's own district names; no edition for another district was substituted. 571 district names are indexed and none is close to that request."
+  }
+ ]
+}

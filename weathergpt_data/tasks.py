@@ -23,8 +23,8 @@ def validate_tasks(tasks,places):
             if t['kind']!='document' or not isinstance(d,dict) or not {'query','family','scope'}<=set(d) or set(d)-{'query','family','scope','whole_document'}:raise SourceError('Invalid document request schema')
             if any(not isinstance(v,str) for k,v in d.items() if k!='whole_document') or len(d['query'])>1500:raise SourceError('Invalid document query fields')
             if 'whole_document' in d and not isinstance(d['whole_document'],bool):raise SourceError('Invalid document request flag')
-            from .document_ingest import FAMILIES
-            if d['family'] and d['family'] not in FAMILIES:raise SourceError('Unknown published document family')
+            from .document_ingest import ALL_FAMILIES
+            if d['family'] and d['family'] not in ALL_FAMILIES:raise SourceError('Unknown published document family')
             if d['scope'] not in DOCUMENT_SCOPES:raise SourceError('Unsupported document scope')
         if 'request_quote' in t and (not isinstance(t['request_quote'],str) or len(t['request_quote'])>1500):raise SourceError('Invalid task source quote')
         if t['kind'] not in KINDS or t['operation'] not in OPERATIONS or t['period'] not in PERIODS:raise SourceError('Unsupported task kind or operation')

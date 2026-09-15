@@ -73,10 +73,36 @@ def sync(workspace,state,district,index):
         index.mark_failed(state,district,stamp(now),str(e));raise SourceError('Bulletin retrieval is unavailable: '+str(e)) from e
 
 
+def indexed_reading(engine,result,plan,task,district,query,reason):
+    """Read the edition already indexed here when the live district bulletin cannot be verified.
+
+    The live reader fetches the publisher's current PDF and verifies the printed district before
+    serving it. Measured on 15 September 2026: that gate refused three of four district crop
+    questions ("Printed district could not be verified with the supported layout rules") while the
+    edition for those districts was already indexed in this workspace. The indexed edition is
+    served instead, with its own printed issue date, currency, physical page and saved document,
+    and the refusal is stated rather than hidden. Crop and growth-stage annotation belongs to the
+    live extractor and is not claimed for this reading.
+    """
+    from .corpus_tools import execute_corpus
+    fallback={'kind':'document','operation':'lookup','parameters':['published_document'],
+              'request_quote':task.get('request_quote') or query,
+              'corpus_request':{'query':query,'family':'district_agromet','scope':'district'}}
+    packet=execute_corpus(engine,result,plan,fallback)
+    if not packet.get('passages'):
+        return None
+    disclosure=('The live district bulletin could not be verified ('+str(reason)+'), so this reading is the '+str(district)+
+                ' edition already indexed here, served with its printed issue date, physical page and saved document. '
+                'Crop and growth-stage annotation belongs to the live extractor and is not claimed for it.')
+    packet.setdefault('notes',[]).append(disclosure)
+    packet['answer']=disclosure+'\n\n'+str(packet.get('answer') or '')
+    return packet
+
+
 def execute_document(engine,result,plan,task,resolved=None):
     request=task.get('document_request',{})
     places=plan['places'];result.update(passages=[],document_evidence=[],pending_slots=[])
-    state='';district=''
+    state='';district='';candidates=[]
     if len(places)==1:
         place=places[0]
         if place['kind'] not in {'country','state','relative'}:
@@ -95,7 +121,16 @@ def execute_document(engine,result,plan,task,resolved=None):
                     result['notes'].append('Place read as '+str(chosen.get('label') or chosen.get('name'))+
                                            ' for the published district bulletin'+((' — '+str(why)) if why else '')+'.')
             state=(place.get('state') or match.get('admin1') or '').removeprefix('State of ').strip()
-            district=place.get('district') or match.get('admin2') or place['name']
+            # Every name the record supplies is a candidate, because admin2 is not always the
+            # district: GeoNames files Nashik under the revenue division, so a district
+            # bulletin question was answered with "District did not uniquely match the
+            # publisher directory" (measured 15 September 2026). The name the reader used is
+            # tried too, and whichever name is taken is disclosed.
+            district=''
+            for candidate in (place.get('district'),match.get('admin2'),place['name']):
+                if candidate and candidate not in candidates:
+                    candidates.append(candidate)
+            district=candidates[0] if candidates else ''
             if not state and place['kind']=='district' and district:
                 # The publisher's district directory is keyed on a nationally unique
                 # district name, so a named source district carries its state without
@@ -104,14 +139,36 @@ def execute_document(engine,result,plan,task,resolved=None):
                 from .document_ingest import district_states
                 states=district_states(district)
                 if len(states)==1:state=states[0]
-    if state and district:
+    if state and candidates:
         # The publisher's own spelling, resolved against the directory snapshot and disclosed.
-        publisher_state,publisher_district,why=match_publisher(state,district)
-        if publisher_state and publisher_district:
-            if norm(publisher_state)!=norm(state) or norm(publisher_district)!=norm(district):
-                result['notes'].append('Read as '+str(publisher_district)+', '+str(publisher_state)+
-                                       ' in the publisher directory: '+str(why)+'.')
-            state,district=publisher_state,publisher_district
+        rejected=[]
+        for candidate in candidates:
+            publisher_state,publisher_district,why=match_publisher(state,candidate)
+            if publisher_state and publisher_district:
+                if norm(publisher_state)!=norm(state) or norm(publisher_district)!=norm(district):
+                    note=('Read as '+str(publisher_district)+', '+str(publisher_state)+
+                          ' in the publisher directory: '+str(why)+'.')
+                    if rejected:
+                        note+=' The label '+', '.join(rejected)+' is not a district in that state.'
+                    result['notes'].append(note)
+                state,district=publisher_state,publisher_district
+                break
+            rejected.append(candidate)
+        else:
+            # Nothing the record supplies is a district in the publisher's directory. Asking is
+            # the honest answer, and the close names in that state are the useful part of it.
+            from .document_ingest import district_targets
+            from .foundation import ROOT as foundation_root
+            from .gazetteer import near_names
+            targets,_meta=district_targets(foundation_root)
+            names=[target['district'] for target in targets if norm(target['state'])==norm(state)]
+            close=near_names(names,candidates[0]) if names else []
+            result['pending_slots']=[{'field':'place','reason':'No district of that name is in the publisher directory'}]
+            result.update(status='needs_clarification',
+                          answer=('The publisher\'s district directory does not list '+str(candidates[0])+' in '+str(state)+'. '+
+                                  (('The close names there are '+', '.join(close)+'. Name one and I will read its edition.') if close else
+                                   ('No name in that state is close to the request: '+str(why)+'.' if why else 'Name a district and I will read its edition.'))))
+            return result
     if not state:
         result['pending_slots']=[{'field':'place','reason':'District and state are needed'}]
         result.update(status='needs_clarification',answer='Which district and state should I look up in the IMD agricultural bulletin?',follow_up='District and state');return result
@@ -124,7 +181,12 @@ def execute_document(engine,result,plan,task,resolved=None):
         result.update(status='needs_clarification',answer='Which crop and growth stage are involved? I can retrieve the district bulletin and relevant weather, but those details determine which passages apply.',follow_up='Crop and growth stage');return result
     if mode=='decision_support' and not stage:result['pending_slots']=[{'field':'growth_stage','reason':'Crop growth stage is not yet supplied'}]
     index=BulletinIndex(engine.workspace.service.raw_root.parent/'bulletins'/EXTRACTION_VERSION/'index.sqlite')
-    doc=sync(engine.workspace,state,district,index)
+    try:
+        doc=sync(engine.workspace,state,district,index)
+    except SourceError as error:
+        fallback=indexed_reading(engine,result,plan,task,district,query,error)
+        if fallback is not None:return fallback
+        raise
     today=engine.workspace.clock().astimezone(__import__('zoneinfo').ZoneInfo('Asia/Kolkata')).date().isoformat()
     if today>doc['forecast_end'] or today<doc['issue_date']:
         result.update(status='unavailable',answer=f"The retrieved {district} bulletin is dated {doc['issue_date']}, with forecast context {doc['forecast_start']}–{doc['forecast_end']}. It cannot answer a request for current advisory context.");return result

@@ -11,11 +11,11 @@ Passage text is retained in full on the passage records; the answer quotes a bou
 excerpt so a reader gets the point before the evidence drawer.
 """
 import re
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
-from .document_ingest import DISTRICT_SPEC, FAMILIES
-from .gazetteer import norm
+from .document_ingest import ALL_FAMILIES
+from .gazetteer import near_names, norm
 from .transport import SourceError
 from .bulletin_context import qualification_flags
 
@@ -32,7 +32,10 @@ FORECAST_MARKERS = re.compile(r'\b(?:forecast|outlook|likely|expected|probabilit
 HISTORICAL_QUERY = re.compile(r'\b(?:archive|archived|previous|earlier|historical|history|superseded|last (?:week|month|year))\b', re.I)
 EXCERPT_LIMIT = 520
 STOPWORDS = set(('the a an of for in on at to and or is are was were be been with about what which who how when where '
-                 'why does do did say says said latest current today yesterday tomorrow this that these those from by').split())
+                 'why does do did say says said latest current today yesterday tomorrow this that these those from by '
+                 # Words that carry no topic: measured 15 September 2026, "Is there any warning in the latest
+                 # sea area bulletin?" left "there" and "any" as its topic words.
+                 'there any all some more most also please me my i you we it its if').split())
 INDIC_SCRIPT = re.compile(r'[\u0900-\u0d7f]')
 # A question about the document as a whole, not about a topic inside it. This is matched
 # deterministically so the behaviour does not depend on the planner's wording that day.
@@ -89,6 +92,32 @@ def query_tokens(query):
             if token not in STOPWORDS and (len(token) > 2 or token.isdigit())]
 
 
+DOCUMENT_WORDS = set((
+    'document documents bulletin bulletins advisory advisories agromet agro met district districts state states '
+    'regional national release releases press news summary summarise summarised highlights issue issued publish '
+    'published pdf page pages report reports change changed update updates edition editions say says said mention '
+    'mentions regarding crop crops forecast guidance special sea area coastal weather climate '
+    'show shows tell give gives list lists read print display open provide provides find').split())
+
+
+def topic_tokens(query, plan=None, region=None):
+    """The words that name a topic, with the place and the document words removed.
+
+    A district edition repeats its own district name in every passage, so a question about
+    grapes was answered with the edition's pearl-millet and paddy passages: all eight matches
+    shared the word "Nashik" and only one mentioned grapes (measured 15 September 2026). The
+    place names of the request and the words every published document shares are removed, and
+    what remains is what the question is about.
+    """
+    place_words = set()
+    for place in ((plan or {}).get('places') or []):
+        for key in ('name', 'state', 'district'):
+            place_words.update(re.findall(r'[a-z0-9\u0900-\u0aff]+', norm(place.get(key) or '')))
+    if region:
+        place_words.update(re.findall(r'[a-z0-9\u0900-\u0aff]+', norm(region)))
+    return [token for token in query_tokens(query) if token not in DOCUMENT_WORDS and token not in place_words]
+
+
 def lexically_supported(hit, tokens):
     if not tokens:
         return True
@@ -97,10 +126,8 @@ def lexically_supported(hit, tokens):
 
 
 def family_spec(family):
-    if family == DISTRICT_SPEC['family']:
-        return DISTRICT_SPEC
-    if family in FAMILIES:
-        return FAMILIES[family]
+    if family in ALL_FAMILIES:
+        return ALL_FAMILIES[family]
     raise SourceError('Unknown published document family: ' + str(family))
 
 
@@ -148,10 +175,21 @@ def printed_validity(document):
         return None
     try:
         day = datetime.fromisoformat(issue).date()
-        offset = timedelta(hours=5, minutes=30) if match[3] == 'IST' else timedelta(0)
-        return datetime(day.year, day.month, day.day, int(match[1]), int(match[2]), tzinfo=offset)
+        # `tzinfo` takes a tzinfo, not an offset. Passing the timedelta raised on every
+        # document that states a valid-till time: measured on 15 September 2026, the
+        # national flash flood guidance question failed the whole turn with a TypeError.
+        zone = timezone(timedelta(hours=5, minutes=30)) if match[3] == 'IST' else timezone.utc
+        return datetime(day.year, day.month, day.day, int(match[1]), int(match[2]), tzinfo=zone)
     except ValueError:
         return None
+
+
+def indexed_regions(index, family):
+    """Region names with at least one indexed passage for this family."""
+    with index.connection() as db:
+        rows = db.execute('SELECT DISTINCT region FROM passages WHERE family=? AND region IS NOT NULL',
+                          (family,)).fetchall()
+    return sorted({row[0] for row in rows if row[0]})
 
 
 def region_exists(index, family, region):
@@ -232,6 +270,18 @@ def resolve_region(index, plan, family, scope):
                 if place.get('state'):
                     supplied = place['state']
                     break
+        if not supplied:
+            # A state the publisher's own directory covers, with no edition held here, is
+            # an absent edition rather than a missing place. Measured on 15 September 2026:
+            # "What changed in the latest state agromet bulletin for Maharashtra?" was
+            # answered by asking which state was meant, although Maharashtra is one of the
+            # directory's states and simply has no indexed edition.
+            from .document_ingest import directory_state_names
+            known = {norm(name): name for name in directory_state_names()}
+            for place in places:
+                name = (place.get('name') or '').strip()
+                if name and norm(name) in known:
+                    return None, known[norm(name)], 'state_absent'
         if not supplied:
             return None, None, 'place'
         state = supplied.removeprefix('State of ').removeprefix('state of ')
@@ -387,9 +437,19 @@ def execute_corpus(engine, result, plan, task, resolved=None):
         result.update(status='needs_clarification', answer=answer)
         return result
     if problem == 'district_absent':
-        result.update(status='unavailable',
-                      answer=('No district agromet edition is indexed under that name. The corpus is keyed by the publisher\'s own '
-                              'district names; no edition for another district was substituted.'))
+        # The name is kept as the reader wrote it and the close spellings are offered as a
+        # hint. Nothing is substituted: 571 district editions are indexed, and a near name
+        # is a reason to ask rather than a reason to answer for a district nobody named.
+        held = indexed_regions(index, 'district_agromet')
+        places = plan.get('places') or []
+        asked = ((places[0].get('district') or places[0].get('name')) if places else '') or ''
+        close = near_names(held, asked)
+        answer = ('No district agromet edition is indexed under that name. The corpus is keyed by the publisher\'s own '
+                  'district names; no edition for another district was substituted. ' +
+                  (str(len(held)) + ' district names are indexed; the closest to that request ' +
+                   ('are ' if len(close) > 1 else 'is ') + ', '.join(close) + ' — name one and I will read its edition.'
+                   if close else str(len(held)) + ' district names are indexed and none is close to that request.'))
+        result.update(status='unavailable', answer=answer)
         return result
     if problem == 'state':
         result['pending_slots'] = [{'field': 'place', 'reason': 'More than one state publishes a district with this name'}]
@@ -397,9 +457,12 @@ def execute_corpus(engine, result, plan, task, resolved=None):
                       answer='That district name is published by more than one state. Which state should I check?')
         return result
     if problem == 'state_absent':
-        result.update(status='unavailable',
-                      answer=('No indexed document is published for ' + str(expected_state) +
-                              ' in this family. A same-named district or document from another state was not substituted.'))
+        held = indexed_regions(index, family) if family else sorted(set(indexed_regions(index, 'state_agromet')) |
+                                                                    set(indexed_regions(index, 'state_district_bulletin')))
+        answer = ('No indexed document is published for ' + str(expected_state) + ' in this family. ' +
+                  ('The state editions held here are ' + ', '.join(held) + '. ' if held else '') +
+                  'A same-named district or document from another state was not substituted.')
+        result.update(status='unavailable', answer=answer)
         return result
     # Judged from the document request's own query (the planner copies the user's words
     # into it) or an explicit planner flag, never from a topic query that merely happens
@@ -464,6 +527,19 @@ def execute_corpus(engine, result, plan, task, resolved=None):
     supported = [hit for hit in hits if lexically_supported(hit, tokens)]
     lexical_support = len(supported)
     match_basis = 'lexical_overlap'
+    topics = []
+    topic_matched = True
+    if supported and not whole:
+        topics = topic_tokens(query, plan, region)
+        on_topic = [hit for hit in supported if lexically_supported(hit, topics)] if topics else []
+        if on_topic:
+            supported = on_topic
+            match_basis = 'lexical_overlap_topic'
+        elif topics:
+            # Shared wording is all that matched. Served as the top fused matches with the
+            # missing topic word stated, rather than as an answer to the question.
+            topic_matched = False
+            match_basis = 'lexical_overlap_without_the_topic_word'
     if whole:
         # The question is about the edition, so shared wording is not the retrieval rule.
         supported = hits
@@ -713,9 +789,13 @@ def execute_corpus(engine, result, plan, task, resolved=None):
                      'printed edition of the same product and region is indexed. Ask for the historical edition explicitly to see them.')
     if reading_order:
         parts.append('Extraction reading order is unverified for these documents; tables and headings can be split.')
-    if match_basis != 'lexical_overlap':
+    if match_basis == 'semantic_only_indic_script_disclosed':
         parts.append('The question is written in a script these English source documents do not share, so no exact word from '
                      'it appears in the retrieved passages. These are the top semantic matches, not a verified wording match.')
+    if match_basis == 'lexical_overlap_without_the_topic_word':
+        parts.append('No indexed passage of this product and region contains ' + ', '.join(topics) +
+                     '. What is shown shares the other words of the request only, so it does not answer it and no passage was '
+                     'substituted from another product or region.')
     parts.append('These are original source excerpts. They are not a forecast, an observation, an official warning or personalized advice.')
     result['answer'] = '\n\n'.join(parts)
     result['citations'] = citations
@@ -730,7 +810,7 @@ def execute_corpus(engine, result, plan, task, resolved=None):
                                     'editions_indexed_for_this_product': comparison.get('editions_indexed'),
                                     'whole_document': bool(whole),
                                     'lexically_supported': lexical_support, 'lexical_overlap_required': True,
-                                    'match_basis': match_basis,
+                                    'match_basis': match_basis, 'topic_tokens': topics, 'topic_matched': topic_matched,
                                     'filters': {'family': family or None, 'scope': scope or None, 'region': region},
                                     'evidence_classes': classes,
                                     'superseded_retired': len(retired),
@@ -748,7 +828,7 @@ def execute_corpus(engine, result, plan, task, resolved=None):
     # served with its reference-only label and the answer says so. Partial means the request
     # itself was reduced: an unstated issue date, expired printed validity, a retired edition,
     # a filtered document, a disclosed weaker match, or opposing wording that was found.
-    partial = bool(currency_unknown or expired or retired or conflicts or filtered_out
-                   or match_basis != 'lexical_overlap')
+    weaker_match = match_basis in {'semantic_only_indic_script_disclosed', 'lexical_overlap_without_the_topic_word'}
+    partial = bool(currency_unknown or expired or retired or conflicts or filtered_out or weaker_match)
     result['status'] = 'partial' if partial else 'answered'
     return result

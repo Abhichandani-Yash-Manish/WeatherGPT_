@@ -28,8 +28,8 @@ def corpus_sources():
     `scripts/audit_sources.py` derives the ledger's `wired_to_chat` flag from this
     function, so the ledger flips on rebuild instead of going stale by hand.
     """
-    from .document_ingest import DISTRICT_SPEC,FAMILIES
-    return sorted({spec['source_id'] for spec in list(FAMILIES.values())+[DISTRICT_SPEC]})
+    from .document_ingest import ALL_FAMILIES
+    return sorted({spec['source_id'] for spec in ALL_FAMILIES.values()})
 
 
 def forecast_tool(task,preferences=None):

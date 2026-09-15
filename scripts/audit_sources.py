@@ -29,14 +29,14 @@ EVIDENCE_ROOT = os.path.join(ROOT, 'research', 'discovery', 'evidence')
 SCHEMA_VERSION = 'source-review-v1'
 
 sys.path.insert(0, ROOT)
-from weathergpt_data.document_ingest import DISTRICT_SPEC, FAMILIES  # noqa: E402
+from weathergpt_data.document_ingest import ALL_FAMILIES  # noqa: E402
 from weathergpt_data.capabilities import corpus_sources  # noqa: E402
 
 # Which sources a registered document family actually ingests. Derived from the code
 # so the ledger cannot drift from it: adding a family updates the ledger on the next
 # rebuild rather than leaving a stale "not connected" behind.
 INGESTED_BY_FAMILY = {}
-for _name, _spec in list(FAMILIES.items()) + [(DISTRICT_SPEC['family'], DISTRICT_SPEC)]:
+for _name, _spec in ALL_FAMILIES.items():
     INGESTED_BY_FAMILY.setdefault(_spec['source_id'], []).append(_name)
 
 # Which ingested sources an ordinary conversation can reach. Derived from the declared
