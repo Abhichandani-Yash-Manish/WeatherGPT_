@@ -143,3 +143,47 @@ not, and no claim in any document may exceed what a recorded run measured.
   deliberately fall through to a model rather than guess.
 - Plan quality with the new layer is not yet measured by the benchmark: that is WS3, the next
   round, and it is where the declared-task number is expected to move.
+
+
+## Round 2 — WS3: plan quality, and the declared benchmark at 18/18
+
+The rules-first layer that landed in round 1 improved resilience but **regressed the declared
+benchmark** from 12/18 to 11/18, with two declared tasks missing and two shape mismatches. The
+cause was measured, not guessed: the rules claimed questions they could not answer (a
+context-referencing follow-up, a district bulletin asked as a state one), and two resolution
+rules were wrong. Six repairs followed, each pinned by tests.
+
+| Repair | Before | After |
+|---|---|---|
+| Rules must not claim a context-referencing turn | "Compare the rain amount for that same morning period with GFS too" was planned fresh, with no place and no window, and asked for a place | A mid-conversation question that refers to context and carries no place of its own is left to a model; a self-contained question in a conversation is still planned by rules |
+| Agriculture before generic document | "What does the Ahmedabad district agromet bulletin say about cotton?" was planned as a whole-document reading of the state family and asked for a state | Planned as agriculture/lookup with a document request carrying crop and topic, district scope, and the district read from the name |
+| Administrative-unit and Hinglish place names | "Ahmedabad district" and "Kal Ahmedabad me" produced no place at all | Unit words (district, state, city) and Hinglish markers (me, mein, par, ke) are read, and a leading day word is stripped |
+| Seat preference, with disclosure | A named district seat was asked about again because villages share the name | A unique administrative seat, or the one town whose own district carries its name, is accepted and **disclosed** with the alternatives; same-order peers still ask |
+| Relative spans and whole days | "in the next three days" had no window; a day asked as 00:00-00:00 served 23 hours and reported partial | "next three days/next week" becomes a bounded upcoming window; a midnight-to-midnight IST day is read as the source's 00:30-to-00:30 day on both forecast paths, with the reading stated |
+| Partial means reduced, not labelled | Serving a warning-classified passage made the whole reading partial | A served passage keeps its reference-only label without reducing the reading; partial stays for an unstated issue date, expired validity, a retired edition, a filtered document or a weaker disclosed match. Whole-document mode also now requires a topic-free question |
+
+### Measured (one current-clock run each, 15 September 2026)
+
+| Run | Cases | Turns | Declared tasks | Completed | Missing | Shape mismatches | Prohibited claims | Abstained turns | Rate |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Development, model-only baseline (docs/45) | 17 | 19 | 18 | 12 | 0 | 0 | 0 | 3 | 66.7% |
+| Development, after round 1 rules (regression) | 17 | 19 | 18 | 11 | 2 | 2 | 0 | 5 | 61.1% |
+| Development, after the resolution repairs | 17 | 19 | 18 | 13 | 0 | 0 | 0 | 3 | 72.2% |
+| Development, after the window and partial repairs | 17 | 19 | 18 | 16 | 0 | 0 | 0 | 0 | 88.9% |
+| **Development, final** | **17** | **19** | **18** | **18** | **0** | **0** | **0** | **0** | **100%** |
+| **Holdout** | **4** | **4** | **4** | **4** | **0** | **0** | **0** | **0** | **100%** |
+
+Evidence: research/reviews/acceptance-benchmark-20260915i/development and .../holdout.
+694 Python tests pass, and the two negative controls (D09 adversarial, D16 out-of-scope) still
+return unavailable with no facts, which is the behaviour they exist to check.
+
+### What this does and does not establish
+
+- It establishes that the declared cases, at this clock, are all completed, with no missing
+  task, no shape mismatch and no prohibited claim; and that the holdout agrees rather than
+  contradicting, which is the check that matters after tuning against the development set.
+- **The holdout is no longer sealed.** It was run in docs/45 (2/4) and again here (4/4), so it
+  has been read twice. Future rounds must add fresh holdout cases before claiming generalisation
+  again; until then, treat 4/4 as one measured pass, not as proof of unseen-case performance.
+- Twenty-one cases are not 100% of the problem statement. Sections 1 and 4 of this document
+  remain the coverage matrix; WS4-WS9 are untouched by this round.

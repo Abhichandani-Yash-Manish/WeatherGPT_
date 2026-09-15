@@ -1,7 +1,7 @@
 {
   "schema_version": "hardening-progress-v1",
   "review": "research/reviews/national-readiness-20260912/review.md",
-  "updated_at_utc": "2026-09-15T03:21:34+00:00",
+  "updated_at_utc": "2026-09-15T03:50:19+00:00",
   "operational_ready": false,
   "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
   "findings": [
@@ -1010,6 +1010,50 @@
       "No live OpenRouter call yet: the key is not configured in this workspace.",
       "The rule planner covers English and Hinglish common shapes; Indic scripts and follow-ups use a model.",
       "Plan quality under the new layer is not yet measured by the declared benchmark."
+    ]
+  },
+  "plan_quality_batch": {
+    "report": "docs/49-engine-architecture-and-gap-analysis.md",
+    "evidence_directory": "research/reviews/acceptance-benchmark-20260915i",
+    "operational_ready": false,
+    "scope": "Rules-path plan quality and resolution: context-referencing turns left to a model, agriculture before generic documents, administrative-unit and Hinglish place reading, disclosed seat preference, relative spans and source-aligned days, and partial meaning a reduced reading rather than a labelled one.",
+    "automated_tests": 694,
+    "javascript_component_checks": 60,
+    "measured": {
+      "development": {
+        "cases": 17,
+        "declared_tasks": 18,
+        "completed": 18,
+        "missing": 0,
+        "shape_mismatches": 0,
+        "prohibited_claims": 0,
+        "abstained_turns": 0,
+        "completion_rate": 1.0
+      },
+      "holdout": {
+        "cases": 4,
+        "declared_tasks": 4,
+        "completed": 4,
+        "completion_rate": 1.0
+      },
+      "baseline_for_comparison": {
+        "docs_45_development_rate": 0.667,
+        "round_1_regression_rate": 0.611
+      },
+      "repaired_cases": [
+        "D07 agriculture",
+        "D10 multi-turn crosscheck",
+        "D05 warning",
+        "D13 river",
+        "D15 Hinglish forecast",
+        "D06 document topic",
+        "D08 Gujarati whole day"
+      ]
+    },
+    "limitations": [
+      "The holdout has now been read twice (docs/45 and here), so it is no longer sealed; fresh holdout cases are required before claiming generalisation.",
+      "One current-clock run each; no replay, load or cross-machine measurement.",
+      "Twenty-one declared cases are not the whole problem statement: WS4-WS9 remain open."
     ]
   }
 }
