@@ -107,7 +107,10 @@ class ConfigurationTests(unittest.TestCase):
             with patch.object(providers, 'local_config', return_value={}):
                 models = providers.free_models()
                 self.assertTrue(all(model.endswith(':free') for model in models))
-                self.assertIn('deepseek/deepseek-chat-v3.1:free', models)
+                # Changed on 15 September 2026: the previous assertion hard-coded one id, and the
+                # live catalogue then stopped publishing it. The intent is the registry order, so
+                # the assertion now reads the registry instead of naming today's model.
+                self.assertEqual(models, providers.free_model_ranking())
         with patch.dict('os.environ', {'WEATHERGPT_MODELS': 'a/b:free, c/d:free'}, clear=True):
             # Changed on 15 September 2026: the curated registry is the routing order, most
             # capable first, and a configured list is appended after it rather than replacing it.
@@ -175,6 +178,29 @@ class OpenRouterTests(unittest.TestCase):
         data, meta = self.client(stub).complete('s', 'u', SCHEMA)
         self.assertEqual(meta['model'], 'second/model:free')
         self.assertEqual(len(stub.requests), 2)
+
+    def test_a_200_body_carrying_an_upstream_error_moves_down_the_free_order(self):
+        overloaded = (200, {'error': {'message': 'Upstream error from Nvidia: Service temporarily overloaded',
+                                      'code': 502, 'metadata': {'error_type': 'provider_unavailable'}}})
+        stub = Stub([overloaded, overloaded, reply(model='second/model:free')])
+        self.addCleanup(stub.close)
+        data, meta = self.client(stub).complete('s', 'u', SCHEMA)
+        self.assertEqual(data, {'ok': True})
+        self.assertEqual(meta['model'], 'second/model:free')
+        self.assertEqual([request['body']['model'] for request in stub.requests],
+                         ['first/model:free', 'first/model:free', 'second/model:free'],
+                         'a body-level failure belongs to the model, so the next free id is tried')
+
+    def test_an_upstream_error_is_named_when_every_attempt_fails(self):
+        overloaded = (200, {'error': {'message': 'Upstream error from Nvidia: Service temporarily overloaded',
+                                      'code': 502, 'metadata': {'error_type': 'provider_unavailable'}}})
+        stub = Stub([overloaded, overloaded])
+        self.addCleanup(stub.close)
+        with self.assertRaises(ProviderUnavailable) as raised:
+            self.client(stub, models=('first/model:free',)).complete('s', 'u', SCHEMA)
+        message = str(raised.exception)
+        self.assertIn('upstream error 502', message)
+        self.assertIn('Service temporarily overloaded', message)
 
     def test_a_prose_reply_is_read_and_a_non_json_reply_fails_over(self):
         stub = Stub([reply('I think the plan is: {"ok": true}')])

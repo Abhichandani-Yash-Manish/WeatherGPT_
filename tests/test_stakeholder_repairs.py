@@ -148,6 +148,19 @@ class ProviderReadinessTests(unittest.TestCase):
         with patch.object(client, 'catalogue', return_value=['local:latest']):
             self.assertEqual(client.available(), (True, ''))
 
+    def test_a_skipped_ollama_probe_is_not_reported_as_unreachable(self):
+        from weathergpt_data import preflight
+
+        def refuse(*args, **kwargs):
+            raise AssertionError('a skipped probe must not call the local service')
+
+        with patch('weathergpt_data.providers.OllamaClient.catalogue', side_effect=refuse):
+            report = preflight.providers(probe_ollama=False)
+        self.assertIsNone(report['ollama']['reachable'], 'a skipped probe is an unmeasured state')
+        line = [check for check in preflight.report(probe_ollama=False)['checks'] if check['check'] == 'model providers'][0]
+        self.assertNotIn('no local Ollama was reachable', line['detail'])
+        self.assertIn('not probed', line['detail'])
+
     def test_preflight_separates_reachable_from_installed(self):
         from weathergpt_data import preflight
         from weathergpt_data.providers import ProviderUnavailable

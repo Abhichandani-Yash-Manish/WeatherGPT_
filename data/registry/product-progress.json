@@ -1,6 +1,6 @@
 {
   "schema_version": "product-progress-plan-v1",
-  "as_of_utc": "2026-09-15T13:52:36.402526+00:00",
+  "as_of_utc": "2026-09-15T16:06:42+00:00",
   "status": "implementation_in_progress",
   "user_direction": "Desktop web now. Hosting/sharing on hold. Preserve final nationwide and specialist scope.",
   "next_batch": [
@@ -219,7 +219,7 @@
       "status": "partial",
       "evidence": "docs/27-official-warning-applicability.md",
       "latest_evidence": "docs/72-integrated-status-and-ps-review.md",
-      "current_evidence": "Activity-plan monitoring and separate legacy-watch outbox, opt-in Web Push and acknowledgements are implemented. Synthetic real-HTTP inbox lifecycle passes. Actual changed-edition device delivery, origin, flood/cyclone applicability, unified scheduling and rural/mobile delivery remain unaccepted; see docs/73."
+      "current_evidence": "Activity-plan monitoring and separate legacy-watch outbox, opt-in Web Push and acknowledgements are implemented. The plans and inbox panel can now revoke the browser subscription it holds, and it shows the local delivery counts per place and per official source with the statement that a count is not a receipt. Synthetic real-HTTP inbox lifecycle passes. Actual changed-edition device delivery, origin, flood/cyclone applicability, unified scheduling and rural/mobile delivery remain unaccepted; see docs/73."
     },
     "P07": {
       "status": "partial",
@@ -261,13 +261,13 @@
       "status": "partial",
       "evidence": "docs/18-bulletin-retrieval-and-warning-lifecycle.md",
       "latest_evidence": "docs/72-integrated-status-and-ps-review.md",
-      "current_evidence": "The desktop workspace exposes 15 guided tools. The language ledger has 19 verified write gates and 10 speak/hear gates; voice controls and audio probes exist. Native-speaker, noisy-input, screen-reader and real mobile acceptance remain open."
+      "current_evidence": "The desktop workspace exposes 15 guided tools and now reaches every declared read-model path: the station-network inventory, the radar status board and the national sub-basin list were the three views with no surface anywhere and now render in Observations and Sea and rivers, alongside push revocation and the delivery aggregate in the plans and inbox panel. The language ledger has 19 verified write gates and 10 speak/hear gates; voice controls and audio probes exist. Native-speaker, noisy-input, screen-reader and real mobile acceptance remain open."
     },
     "P14": {
       "status": "partial",
       "evidence": "research/reviews/product-potential-20260912/findings.json",
       "latest_evidence": "docs/72-integrated-status-and-ps-review.md",
-      "current_evidence": "Working-tree and clean detached checkout dd7fde7 pass 1123 Python tests, nine JS suites and all 26 verification steps on the same macOS Python 3.9 host. Runtime fixture dependencies, cache coalescing and delivery retry regressions were repaired; failed evidence retained. Fresh-machine/Windows installation, real-device notification delivery, CI, sustained load and deployment remain unaccepted; hosting held."
+      "current_evidence": "The working tree passes 1129 Python tests, nine Node component suites, the frontend workspace audit and all 26 verification steps on this macOS Python 3.9 host, with the status drift guard green. A live loopback check of the newly surfaced routes is recorded in research/reviews/frontend-delivery-20260915; no DOM or browser rendering was available in the session sandbox. A live conversation turn was planned through OpenRouter free models with the local model configured as the fallback (docs/76). Fresh-machine/Windows installation, real-device notification delivery, CI, sustained load and deployment remain unaccepted; hosting held."
     },
     "P15": {
       "status": "partial",
@@ -293,7 +293,7 @@
       "prerequisite": "Reviewed domain tools; no unsupported risk scores"
     }
   ],
-  "latest_batch": "docs/72-integrated-status-and-ps-review.md",
+  "latest_batch": "docs/76-openrouter-routing-and-frontend-delivery.md",
   "next_batch_note": "Prioritize live warning-change delivery acceptance, independent task/evidence adjudication, bounded source latency, native-speaker and real-audio review, and mobile/domain acceptance. The unified workspace exposes 15 tools. No operational or full PS claim.",
   "open_paths": [
     {

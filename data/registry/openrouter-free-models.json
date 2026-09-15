@@ -1,91 +1,155 @@
 {
   "schema_version": "openrouter-free-models-v1",
   "note": "A curated, ordered judgement about which OpenRouter free-tier models suit this workspace's tool-calling and strict-JSON planning workload, with no benchmark number cited or invented. It is not a skill measurement and not a claim that any id is available: availability is measured only by \"python3 scripts/models.py --probe-free\", whose observation is recorded in the availability block below. A paid id is refused with a reason and never routed. The order is a starting point; the refusal rules and the probe are what the workspace acts on.",
-  "ranking_basis": "Free-tier ids only. Ordered by capability class for a tool-calling / JSON-planning workload: general model class and instruction-following reliability of the family, whether the family is published for tool use or structured output, and the risk of an experimental or older generation. Every placement is a judgement and says so in its own reason; no score, confidence or benchmark value is attached.",
-  "membership_evidence": "Six ids were observed by this workspace itself in an OpenRouter catalogue read recorded on 15 September 2026 (research/implementation/provider-layer-20260915). The other ids come from each family's public free-tier listing and stay unverified here until --probe-free measures the live catalogue.",
-  "checked_at_utc": "2026-09-15T07:24:23+00:00",
+  "ranking_basis": "Free-tier ids only. Ordered by capability class for a tool-calling / strict-JSON planning workload: general model class and instruction-following reliability of the family, whether the publisher declares response_format / structured_outputs support (this client sends a strict json_schema with provider.require_parameters, so an id without that declaration cannot serve the workload at all), context window, and the risk of an experimental or preview generation. Every placement is a judgement and says so in its own reason; no score, confidence or benchmark value is attached.",
+  "membership_evidence": "All seven ranked ids, and the thirteen published free ids that are deliberately not ranked, were observed by this workspace itself in an OpenRouter catalogue read through scripts/models.py --probe-free, whose result is recorded in the availability block of this file.",
+  "checked_at_utc": "2026-09-15T15:27:08+00:00",
   "models": [
     {
-      "model_id": "deepseek/deepseek-chat-v3.1:free",
+      "model_id": "nvidia/nemotron-3-super-120b-a12b:free",
       "tier": "frontier",
-      "why": "DeepSeek's general chat mixture-of-experts model and the strongest free-tier planner this workspace has observed in its own catalogue read; the family publishes tool calling and strict JSON output. Placed first on model class, which is a judgement, not a measured benchmark. Membership observed in this workspace's own 15 September 2026 catalogue read.",
-      "checked_at_utc": "2026-09-15T07:24:23+00:00"
+      "why": "120B-class sparse mixture-of-experts general model, published with tool calling and structured output, 262k context. Placed first on model class and published schema support, which is a judgement about fit for a strict-JSON planning turn rather than a benchmark. Membership and response_format support are both observed in the workspace's own catalogue read recorded in the availability block (scripts/models.py --probe-free).",
+      "checked_at_utc": "2026-09-15T15:27:08+00:00"
     },
     {
-      "model_id": "qwen/qwen3-235b-a22b:free",
+      "model_id": "nex-agi/nex-n2.5-pro:free",
       "tier": "frontier",
-      "why": "Qwen3 235B mixture-of-experts general model with strong instruction following and published structured-output support; placed second behind the DeepSeek chat model on class and schema adherence, which is a judgement rather than a benchmark. Membership observed in this workspace's own 15 September 2026 catalogue read.",
-      "checked_at_utc": "2026-09-15T07:24:23+00:00"
+      "why": "The pro tier of the nex-n2.5 family, 262k context, published with tool calling and structured output. Placed second behind the larger model on class alone, which is a judgement with no benchmark behind it. Membership and response_format support are both observed in the workspace's own catalogue read recorded in the availability block (scripts/models.py --probe-free).",
+      "checked_at_utc": "2026-09-15T15:27:08+00:00"
     },
     {
-      "model_id": "moonshotai/kimi-k2:free",
-      "tier": "frontier",
-      "why": "Moonshot's agentic mixture-of-experts model, published with tool-use emphasis rather than chat polish; it sits in the top class on that positioning, which is a judgement about fit for a planning workload. Membership not observed in this workspace, so scripts/models.py --probe-free is what measures it.",
-      "checked_at_utc": "2026-09-15T07:24:23+00:00"
-    },
-    {
-      "model_id": "openai/gpt-oss-120b:free",
-      "tier": "frontier",
-      "why": "OpenAI's open-weights large mixture-of-experts model, released with native tool calling and structured output; expected to be the most schema-strict of the free ids, and that expectation is a judgement, not a measurement. Membership not observed in this workspace, so scripts/models.py --probe-free is what measures it.",
-      "checked_at_utc": "2026-09-15T07:24:23+00:00"
-    },
-    {
-      "model_id": "z-ai/glm-4.5-air:free",
+      "model_id": "google/gemma-4-31b-it:free",
       "tier": "strong",
-      "why": "Z.ai's mid-size mixture-of-experts model: fast and reliable on single and short multi-task plans, and judged a little behind the top class on long compound plans, which is a judgement rather than a measurement. Membership observed in this workspace's own 15 September 2026 catalogue read.",
-      "checked_at_utc": "2026-09-15T07:24:23+00:00"
+      "why": "Dense 31B instruction model, 262k context, published with tool calling and structured output. Ranked below the two larger models as a judgement about compound-plan reliability, and above the smaller ids on the same judgement. Membership and response_format support are both observed in the workspace's own catalogue read recorded in the availability block (scripts/models.py --probe-free).",
+      "checked_at_utc": "2026-09-15T15:27:08+00:00"
     },
     {
-      "model_id": "meta-llama/llama-4-maverick:free",
+      "model_id": "dots-studio/dots-3-note-preview:free",
       "tier": "strong",
-      "why": "Large Meta mixture-of-experts model with broad general capability, but its tool and strict-JSON adherence is why it ranks below the purpose-built planning models, and that reading is a judgement. Membership not observed in this workspace, so scripts/models.py --probe-free is what measures it.",
-      "checked_at_utc": "2026-09-15T07:24:23+00:00"
+      "why": "Long-context 512k model published with structured output. It is a preview id the publisher can retire without notice, so durability is a judgement that places it after the stable ids even though its window is the largest ranked here. Membership and response_format support are both observed in the workspace's own catalogue read recorded in the availability block (scripts/models.py --probe-free).",
+      "checked_at_utc": "2026-09-15T15:27:08+00:00"
     },
     {
-      "model_id": "meta-llama/llama-3.3-70b-instruct:free",
+      "model_id": "nex-agi/nex-n2.5-mini:free",
       "tier": "strong",
-      "why": "Dense 70B instruction model: consistent at emitting plain JSON and weaker at multi-step task planning than the mixture-of-experts models above; a judgement on class, with no benchmark cited. Membership observed in this workspace's own 15 September 2026 catalogue read.",
-      "checked_at_utc": "2026-09-15T07:24:23+00:00"
+      "why": "The smaller sibling of the ranked nex-n2.5 pro id: same 262k context and schema support, expected to be faster and less reliable on decomposed plans, which is an expectation and not a measurement. Membership and response_format support are both observed in the workspace's own catalogue read recorded in the availability block (scripts/models.py --probe-free).",
+      "checked_at_utc": "2026-09-15T15:27:08+00:00"
     },
     {
-      "model_id": "mistralai/mistral-small-3.2-24b-instruct:free",
+      "model_id": "google/gemma-4-26b-a4b-it:free",
       "tier": "capable",
-      "why": "24B dense model with good instruction following for its size and documented function calling; adequate for a short plan and less dependable on a decomposed question, which is a judgement rather than a measurement. Membership observed in this workspace's own 15 September 2026 catalogue read.",
-      "checked_at_utc": "2026-09-15T07:24:23+00:00"
+      "why": "Sparse 26B variant of the gemma-4 line with the same published schema support and window, ranked below the dense 31B on a judgement about instruction adherence in multi-task plans. Membership and response_format support are both observed in the workspace's own catalogue read recorded in the availability block (scripts/models.py --probe-free).",
+      "checked_at_utc": "2026-09-15T15:27:08+00:00"
     },
     {
-      "model_id": "google/gemini-2.0-flash-exp:free",
-      "tier": "capable",
-      "why": "Flash-class experimental id with tool support and low latency, but still an experimental id the publisher can retire without notice, so it sits mid-order in a judgement about durability as well as class. Membership observed in this workspace's own 15 September 2026 catalogue read.",
-      "checked_at_utc": "2026-09-15T07:24:23+00:00"
-    },
-    {
-      "model_id": "qwen/qwen-2.5-72b-instruct:free",
-      "tier": "capable",
-      "why": "The previous Qwen generation: solid instruction following and JSON output, weaker at strict schema adherence than the Qwen3 line; the placement is a judgement about generation, not a benchmark. Membership not observed in this workspace, so scripts/models.py --probe-free is what measures it.",
-      "checked_at_utc": "2026-09-15T07:24:23+00:00"
-    },
-    {
-      "model_id": "google/gemma-3-27b-it:free",
+      "model_id": "liquid/lfm-2.5-2.6b:free",
       "tier": "modest",
-      "why": "27B open model with no tool-calling emphasis in its published positioning; usable as a last-resort fallback for a single simple task, which is a judgement about fit for this workload. Membership not observed in this workspace, so scripts/models.py --probe-free is what measures it.",
-      "checked_at_utc": "2026-09-15T07:24:23+00:00"
-    },
-    {
-      "model_id": "deepseek/deepseek-r1:free",
-      "tier": "reasoning_first",
-      "why": "Reasoning-first model that deliberates before answering: strong at analysis, but a planning turn needs a strict schema quickly, so it is placed last for this workload on that judgement alone. Membership not observed in this workspace, so scripts/models.py --probe-free is what measures it.",
-      "checked_at_utc": "2026-09-15T07:24:23+00:00"
+      "why": "2.6B model with a 65k window and published structured output: kept last as the single-simple-task fallback, which is a judgement about capacity rather than a measurement. Membership and response_format support are both observed in the workspace's own catalogue read recorded in the availability block (scripts/models.py --probe-free).",
+      "checked_at_utc": "2026-09-15T15:27:08+00:00"
     }
   ],
   "availability": {
-    "status": "not_configured",
-    "checked_at_utc": "2026-09-15T07:34:39+00:00",
-    "key_source": "not configured",
-    "ranked_ids_found": [],
+    "status": "measured",
+    "checked_at_utc": "2026-09-15T15:27:08+00:00",
+    "key_source": "data/runtime/model-config.json",
+    "ranked_ids_found": [
+      "nvidia/nemotron-3-super-120b-a12b:free",
+      "nex-agi/nex-n2.5-pro:free",
+      "google/gemma-4-31b-it:free",
+      "dots-studio/dots-3-note-preview:free",
+      "nex-agi/nex-n2.5-mini:free",
+      "google/gemma-4-26b-a4b-it:free",
+      "liquid/lfm-2.5-2.6b:free"
+    ],
     "ranked_ids_missing": [],
-    "unranked_free_ids_published": [],
+    "unranked_free_ids_published": [
+      "cohere/north-mini-code:free",
+      "inclusionai/ling-3.0-flash-fin:free",
+      "inclusionai/ling-3.0-flash-sante:free",
+      "inclusionai/ling-3.0-flash-vl:free",
+      "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+      "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "nvidia/nemotron-3.5-content-safety:free",
+      "nvidia/nemotron-3.5-lightning:free",
+      "poolside/laguna-s-2.1:free",
+      "poolside/laguna-xs-2.1:free",
+      "thinkingmachines/inkling-small:free",
+      "thinkingmachines/inkling:free",
+      "z-ai/glm-5.2:free"
+    ],
     "reason": "no OpenRouter key is configured, so availability was not measured and is not inferred from the ranking"
   },
-  "availability_history": []
+  "availability_history": [
+    {
+      "status": "measured",
+      "checked_at_utc": "2026-09-15T15:15:01+00:00",
+      "key_source": "data/runtime/model-config.json",
+      "ranked_ids_found": [],
+      "ranked_ids_missing": [
+        "deepseek/deepseek-chat-v3.1:free",
+        "qwen/qwen3-235b-a22b:free",
+        "moonshotai/kimi-k2:free",
+        "openai/gpt-oss-120b:free",
+        "z-ai/glm-4.5-air:free",
+        "meta-llama/llama-4-maverick:free",
+        "meta-llama/llama-3.3-70b-instruct:free",
+        "mistralai/mistral-small-3.2-24b-instruct:free",
+        "google/gemini-2.0-flash-exp:free",
+        "qwen/qwen-2.5-72b-instruct:free",
+        "google/gemma-3-27b-it:free",
+        "deepseek/deepseek-r1:free"
+      ],
+      "unranked_free_ids_published": [
+        "cohere/north-mini-code:free",
+        "dots-studio/dots-3-note-preview:free",
+        "google/gemma-4-26b-a4b-it:free",
+        "google/gemma-4-31b-it:free",
+        "inclusionai/ling-3.0-flash-fin:free",
+        "inclusionai/ling-3.0-flash-sante:free",
+        "inclusionai/ling-3.0-flash-vl:free",
+        "liquid/lfm-2.5-2.6b:free",
+        "nex-agi/nex-n2.5-mini:free",
+        "nex-agi/nex-n2.5-pro:free",
+        "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+        "nvidia/nemotron-3-super-120b-a12b:free",
+        "nvidia/nemotron-3-ultra-550b-a55b:free",
+        "nvidia/nemotron-3.5-content-safety:free",
+        "nvidia/nemotron-3.5-lightning:free",
+        "poolside/laguna-s-2.1:free",
+        "poolside/laguna-xs-2.1:free",
+        "thinkingmachines/inkling-small:free",
+        "thinkingmachines/inkling:free",
+        "z-ai/glm-5.2:free"
+      ],
+      "reason": "no OpenRouter key is configured, so availability was not measured and is not inferred from the ranking"
+    },
+    {
+      "status": "not_configured",
+      "checked_at_utc": "2026-09-15T07:34:39+00:00",
+      "key_source": "not configured",
+      "ranked_ids_found": [],
+      "ranked_ids_missing": [],
+      "unranked_free_ids_published": [],
+      "reason": "no OpenRouter key is configured, so availability was not measured and is not inferred from the ranking"
+    }
+  ],
+  "not_routable_by_this_client": {
+    "reason": "The client requests a strict json_schema response_format with provider.require_parameters, so an id whose catalogue entry does not declare response_format support is never placed in the routing order. That is a measured structural fact about this catalogue read, not a claim that the model is weak.",
+    "measured_at_utc": "2026-09-15T15:27:08+00:00",
+    "ids": [
+      "inclusionai/ling-3.0-flash-vl:free",
+      "inclusionai/ling-3.0-flash-sante:free",
+      "inclusionai/ling-3.0-flash-fin:free",
+      "nvidia/nemotron-3.5-lightning:free",
+      "thinkingmachines/inkling-small:free",
+      "poolside/laguna-s-2.1:free",
+      "thinkingmachines/inkling:free",
+      "poolside/laguna-xs-2.1:free",
+      "cohere/north-mini-code:free",
+      "z-ai/glm-5.2:free",
+      "nvidia/nemotron-3.5-content-safety:free",
+      "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free"
+    ]
+  }
 }

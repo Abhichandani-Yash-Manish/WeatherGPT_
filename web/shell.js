@@ -501,9 +501,10 @@ const WG = window.WG;
       const counts = (state && state.subscriptions) || {};
       into.append(stateBlock('plain', 'Push subscriptions: ' + (counts.active || 0) + ' active.',
         'Permission is ' + Notification.permission + '. Purged expired: ' + (state.purged_expired || 0) + '.'));
+      let existing = null;
       try {
         const registration = await navigator.serviceWorker.getRegistration('/sw.js');
-        const existing = registration && registration.pushManager ? await registration.pushManager.getSubscription() : null;
+        existing = registration && registration.pushManager ? await registration.pushManager.getSubscription() : null;
         if (Notification.permission === 'granted' && !existing) {
           into.append(stateBlock('plain', 'This browser has no push subscription (it may have been retired).',
             'Press Subscribe below to restore it; bound watches regain push on resubscribe.'));
@@ -520,6 +521,26 @@ const WG = window.WG;
         }
       });
       into.append(enable);
+      // Revoking is the other half of consent: the server entry is revoked by endpoint, and the
+      // local subscription is dropped only after the endpoint was read from it.
+      if (existing) {
+        const endpoint = (existing.toJSON ? (existing.toJSON() || {}).endpoint : null) || existing.endpoint || null;
+        const stop = el('button', 'Unsubscribe this browser', 'ghost');
+        stop.type = 'button';
+        stop.setAttribute('aria-label', 'Revoke this browser push subscription');
+        stop.addEventListener('click', async () => {
+          stop.disabled = true;
+          try {
+            if (typeof existing.unsubscribe === 'function') await existing.unsubscribe();
+            await postJson('/api/push/unsubscribe', { endpoint: endpoint });
+            paint();
+          } catch (error) {
+            stop.disabled = false;
+            into.append(stateBlock('down', 'The subscription could not be revoked.', error.message));
+          }
+        });
+        into.append(stop);
+      }
       (watches || []).filter(watch => (watch.channels || []).indexOf('web_push') < 0).forEach(watch => {
         const label = (watch.place && (watch.place.name || watch.place.label)) || 'this place';
         const bind = el('button', 'Push to ' + label, 'ghost');
@@ -690,7 +711,38 @@ const WG = window.WG;
       const pushHost = el('div', undefined, 'push-panel');
       body.append(pushHost);
       pushPanel(pushHost, watches);
+      const dmaHost = el('div', undefined, 'delivery-aggregate');
+      body.append(dmaHost);
+      paintDelivery(dmaHost);
       body.append(limits());
+    }
+    // Delivery by place and by official source: the counts the outbox and the acknowledgement
+    // store already hold. It is a local aggregate, not a per-device receipt and not a delivery
+    // guarantee, and the row says so.
+    async function paintDelivery(into) {
+      let packet = null;
+      try { packet = await api('/api/watches/dma'); }
+      catch (error) { into.append(stateBlock('down', 'Delivery counts could not be read.', error.message)); return; }
+      const places = ((packet && packet.places) || []).filter(place => place.notifications);
+      into.append(el('h3', 'Delivery by place and source', 'notify-heading'));
+      if (!places.length) {
+        into.append(stateBlock('plain', 'No notification has been enqueued yet, so there is nothing to aggregate.',
+          'A count appears only after a check observes a changed official state.'));
+        return;
+      }
+      into.append(table(['Place', 'Watches', 'Notifications', 'Acknowledged', 'Unacknowledged', 'Safe', 'Need help', 'Evacuating', 'Seen'],
+        places.map(place => [place.place, String(place.watches || 0), String(place.notifications || 0),
+                             String(place.acked || 0), String(place.unacked || 0), String(place.safe || 0),
+                             String(place.need_help || 0), String(place.evacuating || 0), String(place.seen || 0)])));
+      places.filter(place => place.sources && Object.keys(place.sources).length).forEach(place => {
+        into.append(disclosure('Per-source counts ' + place.place, body => {
+          body.append(table(['Source', 'Notifications', 'Acknowledged'],
+            Object.keys(place.sources).sort().map(source => [source, String(place.sources[source].notifications || 0),
+                                                             String(place.sources[source].acked || 0)])));
+        }));
+      });
+      into.append(el('p', 'A count is not a receipt: it does not prove a device showed the notice, and an unacknowledged row may still have been delivered.',
+        'field-note'));
     }
     const KIND_LABELS = { change: 'Change', check_in: 'Evening check-in', degraded: 'Watch degraded' };
     function paintPlans(packet) {

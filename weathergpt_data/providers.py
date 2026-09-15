@@ -30,16 +30,17 @@ FREE_MODEL_REGISTRY = ROOT / 'data' / 'registry' / 'openrouter-free-models.json'
 OPENROUTER_BASE = 'https://openrouter.ai/api/v1'
 OPENROUTER_MODELS_URL = OPENROUTER_BASE + '/models'
 OPENROUTER_CHAT_URL = OPENROUTER_BASE + '/chat/completions'
-# Free-tier ids this workspace has itself observed in the OpenRouter catalogue. The curated
-# ranking in FREE_MODEL_REGISTRY is the routing order and may name more; this tuple is the
-# floor used only when that registry is missing.
+# Free-tier ids this workspace has itself observed in the OpenRouter catalogue, most recent
+# observation first. The curated ranking in FREE_MODEL_REGISTRY is the routing order and names
+# more; this tuple is the floor used only when that registry is missing. Re-measured on
+# 15 September 2026: the earlier floor named ids the catalogue no longer publishes, so a
+# fallback built on them would have failed over to the local model every time.
 DEFAULT_FREE_MODELS = (
-    'deepseek/deepseek-chat-v3.1:free',
-    'qwen/qwen3-235b-a22b:free',
-    'z-ai/glm-4.5-air:free',
-    'meta-llama/llama-3.3-70b-instruct:free',
-    'mistralai/mistral-small-3.2-24b-instruct:free',
-    'google/gemini-2.0-flash-exp:free',
+    'nvidia/nemotron-3-super-120b-a12b:free',
+    'nex-agi/nex-n2.5-pro:free',
+    'google/gemma-4-31b-it:free',
+    'dots-studio/dots-3-note-preview:free',
+    'nex-agi/nex-n2.5-mini:free',
 )
 PAID_MODEL_REFUSAL = 'refused: this id does not end in :free, and a paid id could bill the account'
 MAX_ATTEMPTS_PER_MODEL = 2
@@ -183,6 +184,26 @@ def extract_json(text):
                         break
         start = body.find('{', start + 1)
     raise ProviderUnavailable('The provider reply was not JSON')
+
+
+def route_failure(data):
+    """A reply body that carries no usable choice, named rather than collapsed into one message.
+
+    OpenRouter can answer HTTP 200 and put an upstream failure in the body
+    (``{"error": {"message": ..., "code": ..., "metadata": {"error_type": ...}}}``). Measured
+    15 September 2026: the highest-ranked free model answered that way with "Upstream error from
+    Nvidia: Service temporarily overloaded", which this client used to report as a generic missing
+    completion and then abandon the provider instead of trying the next free model in the order.
+    """
+    error = data.get('error') if isinstance(data, dict) else None
+    if isinstance(error, dict) and error:
+        code = error.get('code')
+        metadata = error.get('metadata') if isinstance(error.get('metadata'), dict) else {}
+        detail = str(error.get('message') or metadata.get('error_type') or 'the provider reported an error').strip()
+        return 'upstream error' + ((' ' + str(code)) if code else '') + ': ' + (detail or 'unnamed')[:160]
+    if not isinstance(data, dict) or not data.get('choices'):
+        return 'the provider returned no completion'
+    return ''
 
 
 class OllamaClient:
@@ -332,8 +353,6 @@ class OpenRouterClient:
                 try:
                     with self.http(self.base + '/chat/completions', json.dumps(payload).encode(), headers) as response:
                         data = json.loads(response.read(400000))
-                        if not isinstance(data, dict) or not data.get('choices'):
-                            raise ProviderUnavailable('The model provider returned no completion. Try again or switch model.')
                 except urllib.error.HTTPError as error:
                     detail = ''
                     try:
@@ -353,6 +372,12 @@ class OpenRouterClient:
                     break
                 except (urllib.error.URLError, OSError, ValueError) as error:
                     last_error = type(error).__name__ + ' ' + str(error)[:80]
+                    continue
+                failure = route_failure(data)
+                if failure:
+                    # A body-level failure belongs to this model, not to the provider: retrying the
+                    # same id once and then moving down the free order is what makes failover real.
+                    last_error = model + ' ' + failure
                     continue
                 latency = round((time.monotonic() - began) * 1000)
                 content = ((data.get('choices') or [{}])[0].get('message') or {}).get('content', '')

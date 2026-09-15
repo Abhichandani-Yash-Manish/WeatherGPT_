@@ -99,7 +99,7 @@ reports whether it is present, and `scripts/ingest_documents.py` rebuilds it.
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 1123 Python tests
+python3 -m pytest tests/ -q                          # 1129 Python tests
 node tests/test_charts.js                            #  2 of 70 component checks
 node tests/test_views.js                             # 18
 node tests/test_bulletin_ui.js                       #  6
@@ -213,3 +213,4 @@ Each links to the batch that recorded it. Older entries are **historical evidenc
 The user-supplied SIH26068 statement is authoritative, and final scope includes nationwide and specialist coverage. Reuse the existing adapters, source registries, numerical contracts and provenance rather than replacing them. Keep entity, time, parameter, unit and source attached to every factual claim, and preserve unknown, missing, stale, cancelled and reference-only states. Credentials belong in local backend configuration and must not reach browser code or chat. Do not publish runtime conversations, logs or restricted source material. GeoNames place data is used under CC BY 4.0.
 
 - [Concurrent alert-delivery integration and critical limits](docs/73-dissemination-integration-review.md) — outbox, consented push machinery and acknowledgements; synthetic HTTP acceptance, separate watch systems and no live device-delivery claim.
+- [OpenRouter first, and the surfaces that reached the frontend](docs/76-openrouter-routing-and-frontend-delivery.md) — the free-model ranking re-measured from the live catalogue, a body-level upstream failure that now fails over, the radar coordinate order repaired, and the five capability paths that had no frontend control; no browser rendering in that batch.

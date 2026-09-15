@@ -1,7 +1,7 @@
 {
  "schema_version": "hardening-progress-v1",
  "review": "research/reviews/national-readiness-20260912/review.md",
- "updated_at_utc": "2026-09-15T13:52:36.402526+00:00",
+ "updated_at_utc": "2026-09-15T16:06:42+00:00",
  "operational_ready": false,
  "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
  "findings": [
@@ -2155,5 +2155,56 @@
     "fresh_machine_installation": false
    }
   }
+ },
+ "provider_routing_and_frontend_delivery_batch": {
+  "report": "docs/76-openrouter-routing-and-frontend-delivery.md",
+  "evidence_directory": "research/reviews/frontend-delivery-20260915",
+  "pull_request": {
+   "number": 4,
+   "state": "merged",
+   "merge_commit": "268aa20",
+   "resolution": "the branch content was already integrated in main; the merge recorded the review and dropped the duplicate build report"
+  },
+  "provider_order": [
+   "openrouter",
+   "ollama"
+  ],
+  "openrouter_key_source": "data/runtime/model-config.json (mode 0600, git-ignored, never printed)",
+  "ranked_free_models": 7,
+  "ranked_ids_found_in_live_catalogue": 7,
+  "previously_ranked_ids_still_published": 0,
+  "free_ids_published": 20,
+  "free_ids_without_response_format_support": 13,
+  "live_planned_turn": {
+   "question": "And what about the evening?",
+   "model": "nvidia/nemotron-3-super-120b-a12b:free",
+   "attempts": 2,
+   "seconds": 21.2,
+   "provider": "openrouter",
+   "note": "the first attempt met an upstream overload reported inside an HTTP 200 body"
+  },
+  "repaired_at_cause": [
+   "a body-level upstream failure now fails over to the next free model instead of abandoning the provider",
+   "the fallback floor named free ids the catalogue no longer publishes",
+   "the radar view read the GeoJSON pair as (latitude, longitude): 0 of 39 stations were inside the country as served, 39 of 39 after the fix",
+   "a skipped Ollama probe was reported as an unreachable service"
+  ],
+  "frontend_surfaces_delivered": [
+   "/api/observations/network",
+   "/api/radar",
+   "/api/basins",
+   "/api/push/unsubscribe",
+   "/api/watches/dma"
+  ],
+  "python_tests_passed": 1129,
+  "javascript_suites": 9,
+  "verification_steps": 26,
+  "verification_failed": 0,
+  "live_loopback_check": "research/reviews/frontend-delivery-20260915/live-http-checks.json",
+  "browser_rendering_verified": false,
+  "browser_rendering_blocker": "the agent-browser CLI could not launch Chrome inside this session sandbox",
+  "live_device_delivery_verified": false,
+  "hosting_performed": false,
+  "same_host_only": true
  }
 }

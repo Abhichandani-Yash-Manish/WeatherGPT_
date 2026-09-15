@@ -4,6 +4,7 @@
 corpus-recall and evaluation repairs, followed by concurrent alert-delivery branch `70a55d1` and stakeholder-repair branch `9c8f539` (see [docs/73](73-dissemination-integration-review.md)). This document is the current status overlay; earlier review
 findings and failed runs remain historical evidence. The P01–P15, R01–R12, F01–F11 and A01–A08 findings
 remain binding. No broad finding is closed by this batch.
+Later the same day, pull request #4 was reviewed and merged, the OpenRouter free-model ranking was re-measured and the routing order put first with the local model as the fallback, and the five capability paths that had no frontend control were surfaced; see [docs/76](76-openrouter-routing-and-frontend-delivery.md). The verdict above still holds: no broad finding is closed by that batch either, and no browser rendering was verified in it.
 
 ## Verdict
 

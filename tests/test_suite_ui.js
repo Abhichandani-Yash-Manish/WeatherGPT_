@@ -40,6 +40,25 @@ const PAYLOADS = {
     { coverage: { features_returned: 764, districts_listed: 1, skipped_without_a_name: 1, basemap_districts: 756 } }),
   '/api/warnings/place': envelope('warnings.place', 'ok', { district: 'PATNA', state: 'BIHAR', issued_at_utc: '2026-09-14T06:00:00+00:00', day_boundary_basis: 'Derived from the bulletin date.', days: DISTRICT.days }),
   '/api/observations/near': envelope('observations.both', 'ok', { networks: { metar: [{ name: 'AHMEDABAD', station_code: 'VAAH', distance_km: 7.45, observed_at_utc: '2026-09-14T15:30:00+00:00', age_minutes: 30, stale: false, parameters: [{ field: 'temp', value: '25', unit: null }], time_notes: [] }], aws: [] }, query: {} }),
+  '/api/observations/network': envelope('observations.near', 'ok',
+    { kind: 'metar', stations: [{ name: 'AHMEDABAD', station_code: 'VAAH', distance_km: 6.9, observed_at_utc: '2026-09-14T15:30:00+00:00', age_minutes: 30, stale: false, parameters: [], time_notes: [] }],
+      rejected: [{ index: 3, reason: 'no coordinates' }], query: {} },
+    { coverage: { stations_in_layer: 145, stations_within_radius: 1 } }),
+  '/api/radar': envelope('networks.radar', 'ok',
+    { stations: [{ name: 'Leh', code: 'leh', latitude: 34.28333333, longitude: 77.28333333, status: '0',
+                   remarks: 'The image has not been updated.', last_updated_date: '04 JUN 2026', last_updated_time: '05:10:01 UTC' },
+                 { name: 'Srinagar', code: 'srn', latitude: 34.05, longitude: 74.81, status: null, remarks: null,
+                   last_updated_date: null, last_updated_time: null }],
+      rejected: [], reported: 1, not_reported: 1 },
+    { coverage: { stations: 2 } }),
+  '/api/basins': envelope('networks.basins', 'ok',
+    { basins: [{ name: 'Jiabharali at NT road Xing', basin: 'Brahmaputra', subbasin: 'Jiabharali at NT road Xing',
+                 area_sqkm: '10472.6046637', fmo: 'GUWAHATI', fmo_code: '12', river_basi: '014',
+                 day_fields: { day1: '2', day2: '2', day3: '2' } },
+               { name: 'Sabarmati at Ahmedabad', basin: 'Sabarmati', subbasin: 'Sabarmati at Ahmedabad',
+                 area_sqkm: '2100', fmo: 'AHMEDABAD', fmo_code: '05', river_basi: '031',
+                 day_fields: { day1: '', day2: '', day3: '' } }],
+      with_day_fields: 1, rejected: [{ index: 7, reason: 'no sub-basin name' }] }),
   '/api/forecast': envelope('forecast.point', 'ok', { parameters: { temperature_2m: { unit: '°C', model: 'test model', quality_flags: [], points: [{ t: '2026-09-14T00:00:00+00:00', v: 26, source_locator: '$.hourly.temperature_2m[0]' }] } }, days: 1, source_family: 'hourly_forecast', grid: { latitude: 23.02, longitude: 72.6 }, requested: { latitude: 23.03, longitude: 72.59 }, time_basis: 'UTC' }),
   '/api/climate/index': envelope('climate.index', 'ok', { states: [{ state: 'Gujarat', districts: [{ district: 'Ahmedabad', years: 110, first_year: 1901, last_year: 2010 }] }], districts: 1 }),
   '/api/climate/series': envelope('climate.series', 'ok', { district: 'Ahmedabad', state: 'Gujarat', series_id: 'IMD110-P611', points: [{ year: 1981, value: '880.4', source_page: '612', source_row: 82, label: 'AHMEDABAD', asset_sha256_prefix: 'abc123' }], first_year: 1981, last_year: 1981 }),
@@ -199,7 +218,15 @@ async function run() {
   assert(walk(observations).some(node => textOf(node) === 'AHMEDABAD'), 'a named station is listed');
   assert(withClass(observations, 'is-current').length >= 1, 'a fresh station is marked current');
   assert(walk(observations).some(node => /not stated by the source/i.test(textOf(node))), 'an unstated unit is shown as unstated');
-  console.log('PASS: the observations surface lists stations, freshness and unstated units');
+  assert(walk(observations).some(node => /The layer carries 145 station\(s\)/.test(textOf(node))),
+    'the network inventory prints the layer station count beside the list');
+  assert(walk(observations).some(node => /no coordinates/.test(textOf(node))),
+    'a rejected network feature is named rather than dropped silently');
+  assert(walk(observations).some(node => /The image has not been updated\./.test(textOf(node))),
+    'the radar board shows the source remarks verbatim');
+  assert(walk(observations).some(node => /not reported/.test(textOf(node))),
+    'a radar station without a published status is shown as not reported');
+  console.log('PASS: the observations surface lists stations, freshness, unstated units, the layer inventory and the radar board');
 
   const forecast = await render('forecast', place);
   assert(withTag(forecast, 'svg').length >= 1, 'the forecast surface draws a chart');
@@ -216,7 +243,12 @@ async function run() {
 
   const marine = await render('marine', place);
   assert(walk(marine).some(node => /wave grid cell|sea grid cell|not an official|Answering cell/i.test(textOf(node))), 'marine names its answering cell or its limit');
-  console.log('PASS: the marine surface names the answering cell or its limit');
+  assert(walk(marine).some(node => textOf(node) === 'Jiabharali at NT road Xing'), 'the national sub-basin list is reachable from the same surface');
+  assert(walk(marine).some(node => textOf(node) === '2'), 'a published sub-basin day field is shown verbatim');
+  assert(walk(marine).some(node => /not stated/.test(textOf(node))), 'an absent day field is shown as not stated, never as zero');
+  assert(walk(marine).some(node => /meaning of a day field is not documented by the layer/i.test(textOf(node))),
+    'the layer limitation travels with the sub-basin table');
+  console.log('PASS: the marine surface names the answering cell or its limit and lists the national sub-basins verbatim');
 
   const settings = await render('settings', place);
   assert(walk(settings).some(node => textOf(node) === 'S15'), 'settings lists the source');

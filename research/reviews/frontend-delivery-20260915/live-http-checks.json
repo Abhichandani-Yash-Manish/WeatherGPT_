@@ -1,0 +1,87 @@
+{
+  "schema_version": "frontend-delivery-live-http-v1",
+  "checked_at_utc": "2026-09-15T16:05:47+00:00",
+  "base": "http://127.0.0.1:8795",
+  "process": "a fresh workspace started for this check from the current working tree",
+  "method": "Loopback HTTP against the served page: the page token from index.html, the served assets, and every route the newly surfaced controls call. No DOM rendering: the agent-browser CLI could not launch Chrome in this session sandbox, so this is a served-contract check and the component suites cover rendering.",
+  "checks": [
+    {
+      "check": "index.html serves a per-process page token",
+      "status": 200,
+      "ms": 6,
+      "token_present": true,
+      "token_length": 43
+    },
+    {
+      "check": "asset panels.js",
+      "status": 200,
+      "ms": 1,
+      "bytes": 81350,
+      "surfaces": [
+        "radar network status",
+        "river sub-basins",
+        "station network inventory"
+      ]
+    },
+    {
+      "check": "asset shell.js",
+      "status": 200,
+      "ms": 1,
+      "bytes": 62086,
+      "surfaces": [
+        "delivery aggregate",
+        "push unsubscribe"
+      ]
+    },
+    {
+      "check": "/api/observations/network",
+      "status": 200,
+      "ms": 5,
+      "stations_listed": 28,
+      "layer_stations": 145,
+      "nearest": [
+        "AHMEDABAD",
+        6.9
+      ]
+    },
+    {
+      "check": "/api/radar",
+      "status": 200,
+      "ms": 2,
+      "stations": 39,
+      "stations_inside_india": 39,
+      "first_station": [
+        "Leh",
+        34.28,
+        77.28
+      ]
+    },
+    {
+      "check": "/api/basins",
+      "status": 200,
+      "ms": 2431,
+      "sub_basins": 220,
+      "with_day_fields": 212
+    },
+    {
+      "check": "/api/watches/dma",
+      "status": 200,
+      "ms": 3,
+      "places": 2,
+      "schema_version": "watch-dma-v2"
+    },
+    {
+      "check": "/api/push/state",
+      "status": 200,
+      "ms": 1,
+      "active_subscriptions": 0
+    },
+    {
+      "check": "/api/push/vapid-key",
+      "status": 200,
+      "ms": 1,
+      "public_key_present": true,
+      "public_key_length": 87
+    }
+  ]
+}

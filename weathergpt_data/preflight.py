@@ -135,7 +135,13 @@ def report(port=8765, probe_ollama=True):
         routed = 'OpenRouter configured (' + provider_state['openrouter']['key_source'] + '), ' + str(len(provider_state['openrouter']['free_models'])) + ' free model id(s) registered'
     else:
         routed = 'no OpenRouter key configured: the rules floor and any local model still answer'
-    if provider_state['ollama']['reachable'] and provider_state['ollama']['wanted_installed']:
+    if provider_state['ollama']['reachable'] is None:
+        # A probe that was skipped is an unmeasured state, not an unreachable service. Measured
+        # 15 September 2026: --skip-ollama-probe printed "no local Ollama was reachable" on a host
+        # whose Ollama was answering, because the skipped probe and a failed probe shared a branch.
+        local = 'the local Ollama service was not probed on this run, so its state is unmeasured'
+        provider_ok = False
+    elif provider_state['ollama']['reachable'] and provider_state['ollama']['wanted_installed']:
         local = 'a local Ollama is reachable with model ' + str(provider_state['ollama']['wanted'])
         provider_ok = True
     elif provider_state['ollama']['reachable']:

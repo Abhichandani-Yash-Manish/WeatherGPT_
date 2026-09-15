@@ -36,6 +36,10 @@ const PAYLOADS = {
   '/api/watches/create': { schema_version: 'watch-create-v1', id: 'w2', state: 'registered_check_on_request', hazard: 'heavy_rain', connected: true, place: {}, delivery: '', detail: '' },
   '/api/outbox': { schema_version: 'outbox-v1', delivery: 'local_inbox_and_opt_in_web_push', note: '', notifications: ROWS },
   '/api/outbox/o1/ack': { schema_version: 'outbox-ack-v1', id: 'o1', state: 'acked', response: 'safe', feedback_id: 'f1' },
+  '/api/watches/dma': { schema_version: 'watch-dma-v2', note: 'Counts of local notifications and the responses owners sent back, broken down by official source.',
+    places: [{ place: 'Thiruvananthapuram, Kerala', watches: 1, notifications: 2, acked: 1, safe: 1, need_help: 0,
+               evacuating: 0, seen: 0, unacked: 1, sources: { S15: { notifications: 2, acked: 1 } } }] },
+  '/api/push/unsubscribe': { endpoint: 'https://push.example.org/e1', revoked: 1, channels_removed: [] },
   '/api/push/state': { schema_version: 'push-state-v1', delivery: 'local_inbox_and_opt_in_web_push', note: '', purged_expired: 0, subscriptions: { active: 0 } },
   '/api/push/vapid-key': { schema_version: 'push-vapid-v1', public_key: 'B'.repeat(86) + 'A' },
   '/api/push/subscribe': { schema_version: 'push-subscription-v1', subscribed: true, id: 's1', watch_id: 'w1', duplicate: false, detail: '' }
@@ -154,6 +158,30 @@ async function run() {
   assert.equal(posted(h, '/api/watches/create')[0].body.place.name, 'Kochi', 'the place travels as given');
   assert.equal(posted(h, '/api/watches/create')[0].body.place.latitude, '9.93', 'coordinates travel as given');
   console.log('PASS: the coordinates form registers a watch without guessing');
+
+  h = harness('');
+  body = await openPanel(h);
+  const subscribe = byTag(body, 'button').find(node => /Subscribe this browser|Enable notifications/.test(textOf(node)));
+  assert(subscribe, 'the push panel offers subscription');
+  subscribe.dispatch('click');
+  await settle(80);
+  body = h.document.getElementById('notify-body');
+  const revoke = byTag(body, 'button').find(node => textOf(node) === 'Unsubscribe this browser');
+  assert(revoke, 'a bound browser offers revocation, so consent is two-way');
+  revoke.dispatch('click');
+  await settle(80);
+  assert.equal(posted(h, '/api/push/unsubscribe').length, 1, 'revocation calls the unsubscribe route');
+  assert.equal(posted(h, '/api/push/unsubscribe')[0].body.endpoint, 'https://push.example.org/e1',
+    'revocation names the endpoint it was granted for');
+  console.log('PASS: a browser subscription can be revoked through the unsubscribe route');
+
+  h = harness('');
+  body = await openPanel(h);
+  assert(/Delivery by place and source/.test(textOf(body)), 'the inbox shows the delivery aggregate');
+  assert(/Thiruvananthapuram, Kerala/.test(textOf(body)), 'the aggregate names the place');
+  assert(/S15/.test(textOf(body)), 'the aggregate keeps the official source dimension');
+  assert(/not a receipt/i.test(textOf(body)), 'the aggregate states that a count is not a receipt');
+  console.log('PASS: delivery counts are shown per place and per source with their limit');
 
   h = harness('');
   body = await openPanel(h);

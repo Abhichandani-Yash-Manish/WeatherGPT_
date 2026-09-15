@@ -65,7 +65,12 @@ def radar_status(foundation, refresh=False, ttl=600):
         if len(coordinates) < 2:
             rejected.append({'index': index, 'reason': 'no coordinates'})
             continue
-        row = {'name': name or code, 'code': code, 'latitude': float(coordinates[0]), 'longitude': float(coordinates[1]),
+        # The feature geometry is a GeoJSON pair, so the first element is the longitude.
+        # Measured 15 September 2026: the layer serves (77.28, 34.28) for Leh, and all 39
+        # stations were outside India while the pair was read in the served order but inside
+        # it read as (longitude, latitude). The other station layers in this workspace are
+        # already read this way (observations.station_identity).
+        row = {'name': name or code, 'code': code, 'longitude': float(coordinates[0]), 'latitude': float(coordinates[1]),
                'source_id': 'S63', 'source_locator': '$.features[' + str(index) + ']'}
         for field in RADAR_FIELDS:
             row[field] = text(properties.get(field))

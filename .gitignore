@@ -4,6 +4,8 @@
 # data/processed, data/registry, research/ and tmp/pdfs.
 data/runtime/
 tmp/chrome-profile/
+# Throwaway directories the test suite creates under tmp/ (mkdtemp debris).
+tmp/tmp*/
 
 __pycache__/
 *.pyc

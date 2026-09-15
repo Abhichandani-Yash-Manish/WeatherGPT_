@@ -308,6 +308,16 @@
     host.append(controls);
     const resultHost = el('div');
     host.append(resultHost);
+    // One row renderer for both station reads: the nearby cards and the single-network inventory
+    // read the same governed rows and must not drift apart.
+    function stationRow(station) {
+      const name = el('span', station.name || station.station_code || 'unnamed station');
+      const stateChip = station.stale === true ? WG.chip('stale', 'is-stale')
+        : station.stale === false ? WG.chip('current', 'is-current') : WG.chip('no instant', 'is-unknown');
+      return [name, station.distance_km + ' km',
+              station.observed_at_utc ? istStamp(station.observed_at_utc) : (station.observed_date_utc || 'not supplied'),
+              station.age_minutes === null ? '\u2014' : station.age_minutes + ' min', stateChip];
+    }
 
     async function paint(force) {
       WG.clear(resultHost);
@@ -324,15 +334,7 @@
           if (!stations.length) {
             card.append(WG.stateBlock('plain', 'No ' + kind.toUpperCase() + ' station reported inside ' + select.value + ' km. That means none is connected here, not that no weather occurred.'));
           } else {
-            card.append(WG.table(['Station', 'Distance', 'Observed', 'Age', 'State'],
-              stations.map(station => {
-                const name = el('span', station.name || station.station_code || 'unnamed station');
-                const stateChip = station.stale === true ? WG.chip('stale', 'is-stale')
-                  : station.stale === false ? WG.chip('current', 'is-current') : WG.chip('no instant', 'is-unknown');
-                return [name, station.distance_km + ' km',
-                        station.observed_at_utc ? istStamp(station.observed_at_utc) : (station.observed_date_utc || 'not supplied'),
-                        station.age_minutes === null ? '—' : station.age_minutes + ' min', stateChip];
-              })));
+            card.append(WG.table(['Station', 'Distance', 'Observed', 'Age', 'State'], stations.map(stationRow)));
             stations.slice(0, 3).forEach(station => {
               if (!station.parameters || !station.parameters.length) return;
               card.append(WG.disclosure('Reported values · ' + (station.name || station.station_code), body => {
@@ -364,6 +366,121 @@
     select.addEventListener('change', () => paint(false));
     button.addEventListener('click', () => paint(true));
     await paint(false);
+
+    // The layer inventory: one network at a time, the same governed route, a wider radius and a
+    // longer list. The layer's own station count is printed beside the list so a longer list can
+    // never read as better coverage.
+    const networkCard = WG.block('Station network inventory',
+      'One network at a time, wider than the nearby cards above. The count is the layer\u2019s own station count, not a coverage claim.');
+    const networkControls = el('div', undefined, 'controls');
+    const kindSelect = el('select');
+    kindSelect.setAttribute('aria-label', 'Station network to list');
+    [['metar', 'Airport reports (METAR)'], ['aws', 'Automatic weather stations (AWS)']].forEach(pair => {
+      const option = el('option', pair[1]); option.value = pair[0]; kindSelect.append(option);
+    });
+    const networkRadius = el('select');
+    networkRadius.setAttribute('aria-label', 'Station network search radius in kilometres');
+    [50, 150, 300, 600].forEach(value => {
+      const option = el('option', value + ' km'); option.value = String(value); if (value === 600) option.selected = true;
+      networkRadius.append(option);
+    });
+    const networkLimit = el('select');
+    networkLimit.setAttribute('aria-label', 'Stations to list');
+    [10, 25, 50].forEach(value => {
+      const option = el('option', 'up to ' + value + ' stations'); option.value = String(value); if (value === 25) option.selected = true;
+      networkLimit.append(option);
+    });
+    const networkRefresh = el('button', 'Refresh from the source', 'ghost');
+    networkRefresh.type = 'button';
+    networkControls.append(kindSelect, networkRadius, networkLimit, networkRefresh);
+    networkCard.append(networkControls);
+    const networkHost = el('div');
+    networkCard.append(networkHost);
+    host.append(networkCard);
+
+    async function paintNetwork(force) {
+      WG.clear(networkHost);
+      networkHost.append(WG.loading('Reading the station network\u2026'));
+      try {
+        const view = await WGref.api('/api/observations/network', placeQuery(WGref, {
+          kind: kindSelect.value, radius_km: networkRadius.value, limit: networkLimit.value, refresh: force ? '1' : '' }));
+        WG.clear(networkHost);
+        const stations = view.data.stations || [];
+        const coverage = view.coverage || {};
+        networkHost.append(el('p', (coverage.stations_in_layer === undefined ? 'The layer did not state its station count'
+          : 'The layer carries ' + coverage.stations_in_layer + ' station(s)') + ' \u00b7 ' + stations.length +
+          ' listed inside ' + networkRadius.value + ' km for ' + kindSelect.value.toUpperCase() + '.', 'block-note'));
+        if (!stations.length) {
+          networkHost.append(WG.stateBlock('plain',
+            'No ' + kindSelect.value.toUpperCase() + ' station reported inside ' + networkRadius.value +
+            ' km of this place. That means none is connected at this radius, not that no weather occurred.'));
+        } else {
+          networkHost.append(WG.table(['Station', 'Distance', 'Observed', 'Age', 'State'], stations.map(stationRow)));
+        }
+        if (view.data.rejected && view.data.rejected.length) {
+          networkHost.append(el('p', view.data.rejected.length + ' feature(s) were rejected by the reader and are not listed: ' +
+            view.data.rejected.map(rejected => rejected.reason).join('; '), 'field-note'));
+        }
+        networkHost.append(WG.limitationList(view));
+        networkHost.append(WG.sourceDisclosure(view));
+      } catch (error) {
+        WG.clear(networkHost);
+        networkHost.append(WG.stateBlock('error', error.message));
+      }
+    }
+
+    // The radar board is the network reporting on itself. Status codes and remarks are shown as
+    // published and are never read as rainfall, a nowcast or a warning.
+    const radarCard = WG.block('Radar network status',
+      'The national radar layer reporting on itself. A status code is shown verbatim; it is not rainfall, a nowcast or a warning.');
+    const radarControls = el('div', undefined, 'controls');
+    const radarRefresh = el('button', 'Refresh from the source', 'ghost');
+    radarRefresh.type = 'button';
+    radarControls.append(radarRefresh);
+    radarCard.append(radarControls);
+    const radarHost = el('div');
+    radarCard.append(radarHost);
+    host.append(radarCard);
+
+    async function paintRadar(force) {
+      WG.clear(radarHost);
+      radarHost.append(WG.loading('Reading the radar layer\u2026'));
+      try {
+        const view = await WGref.api('/api/radar', { refresh: force ? '1' : '' });
+        WG.clear(radarHost);
+        const data = view.data || {};
+        const stations = data.stations || [];
+        if (!stations.length) {
+          radarHost.append(WG.stateBlock('plain',
+            'The radar layer returned no station. That is not a statement about radar coverage or about rainfall.'));
+        } else {
+          radarHost.append(el('p', stations.length + ' station(s) in the layer \u00b7 ' +
+            (data.reported === undefined ? 'a status count the layer did not state' : data.reported + ' report a status') + ' \u00b7 ' +
+            (data.not_reported === undefined ? 'the rest unknown' : data.not_reported + ' do not') + '.', 'block-note'));
+          radarHost.append(WG.table(['Station', 'Code', 'Status as published', 'Source remarks', 'Last updated'],
+            stations.map(station => [
+              station.name || station.code || 'unnamed station',
+              station.code || '\u2014',
+              station.status === null || station.status === undefined || station.status === '' ? 'not reported' : String(station.status),
+              station.remarks || '\u2014',
+              [station.last_updated_date, station.last_updated_time].filter(Boolean).join(' ') || 'not stated'])));
+        }
+        if (data.rejected && data.rejected.length) {
+          radarHost.append(el('p', data.rejected.length + ' feature(s) were rejected by the reader and are not listed: ' +
+            data.rejected.map(rejected => rejected.reason).join('; '), 'field-note'));
+        }
+        radarHost.append(WG.limitationList(view));
+        radarHost.append(WG.sourceDisclosure(view));
+      } catch (error) {
+        WG.clear(radarHost);
+        radarHost.append(WG.stateBlock('error', error.message));
+      }
+    }
+
+    [kindSelect, networkRadius, networkLimit].forEach(node => node.addEventListener('change', () => paintNetwork(false)));
+    networkRefresh.addEventListener('click', () => paintNetwork(true));
+    radarRefresh.addEventListener('click', () => paintRadar(true));
+    await Promise.all([paintNetwork(false), paintRadar(false)]);
   };
 
   WG.panels.forecast = async function (host, WGref) {
@@ -652,6 +769,77 @@
       WG.clear(riverHost);
       riverHost.append(WG.stateBlock('error', error.message));
     }
+    // The published sub-basin layer is national, so it is listed independently of the point above.
+    // The layer does not document what its day fields mean, so they are shown exactly as published
+    // and no flood class, severity or warning level is derived from them.
+    const basinsCard = WG.block('River sub-basins (national layer)',
+      'The source\u2019s own sub-basin list with its own day fields, kept verbatim. The meaning of a day field is not documented by the layer.');
+    const basinsControls = el('div', undefined, 'controls');
+    const basinsFilter = el('input', undefined, 'palette-input');
+    basinsFilter.setAttribute('aria-label', 'Filter sub-basins by name');
+    basinsFilter.placeholder = 'Filter by sub-basin or basin name';
+    const basinsRefresh = el('button', 'Refresh from the source', 'ghost');
+    basinsRefresh.type = 'button';
+    basinsControls.append(basinsFilter, basinsRefresh);
+    basinsCard.append(basinsControls);
+    const basinsHost = el('div');
+    basinsCard.append(basinsHost);
+    host.append(basinsCard);
+    let basinsView = null;
+    const SHOWN_BASINS = 25;
+
+    function paintBasins() {
+      WG.clear(basinsHost);
+      const view = basinsView;
+      const rows = (view && view.data && view.data.basins) || [];
+      if (!rows.length) {
+        basinsHost.append(WG.stateBlock('plain',
+          'The sub-basin layer returned no sub-basin. That is not a statement about river levels anywhere.'));
+      } else {
+        const needle = String(basinsFilter.value || '').trim().toLowerCase();
+        const matching = rows.filter(row => !needle ||
+          String(row.name || '').toLowerCase().indexOf(needle) >= 0 ||
+          String(row.basin || '').toLowerCase().indexOf(needle) >= 0);
+        const shown = matching.slice(0, SHOWN_BASINS);
+        basinsHost.append(el('p', matching.length + ' of ' + rows.length + ' sub-basin(s) match' +
+          (needle ? ' "' + basinsFilter.value + '"' : '') + '; showing ' + shown.length + '. ' +
+          'The layer states ' + ((view.data.with_day_fields === undefined) ? 'no count of' : view.data.with_day_fields) +
+          ' sub-basin(s) carrying day fields.', 'block-note'));
+        if (!shown.length) {
+          basinsHost.append(WG.stateBlock('plain', 'No sub-basin name matches that filter. The layer is unchanged; only this list is filtered.'));
+        } else {
+          const cell = (row, key) => {
+            const value = (row.day_fields || {})[key];
+            return (value === null || value === undefined || value === '') ? 'not stated' : String(value);
+          };
+          basinsHost.append(WG.table(['Sub-basin', 'Basin', 'Area (km\u00b2)', 'Field office', 'Day 1', 'Day 2', 'Day 3'],
+            shown.map(row => [row.name || 'unnamed sub-basin', row.basin || '\u2014', row.area_sqkm || 'not stated',
+                              row.fmo || '\u2014', cell(row, 'day1'), cell(row, 'day2'), cell(row, 'day3')])));
+        }
+        if (view.data.rejected && view.data.rejected.length) {
+          basinsHost.append(el('p', view.data.rejected.length + ' feature(s) were rejected by the reader and are not listed: ' +
+            view.data.rejected.map(rejected => rejected.reason).join('; '), 'field-note'));
+        }
+        basinsHost.append(WG.limitationList(view));
+        basinsHost.append(WG.sourceDisclosure(view));
+      }
+    }
+
+    async function loadBasins(force) {
+      WG.clear(basinsHost);
+      basinsHost.append(WG.loading('Reading the sub-basin layer\u2026'));
+      try {
+        basinsView = await WGref.api('/api/basins', { refresh: force ? '1' : '' });
+        paintBasins();
+      } catch (error) {
+        WG.clear(basinsHost);
+        basinsHost.append(WG.stateBlock('error', error.message));
+      }
+    }
+
+    basinsFilter.addEventListener('input', paintBasins);
+    basinsRefresh.addEventListener('click', () => loadBasins(true));
+    await loadBasins(false);
     host.append(WG.disclosure('Why neither of these is an official marine or flood product', body => {
       const list = el('ul', undefined, 'notes');
       ['A wave height is model output for a sea grid cell, not an official sea-area bulletin and not a measured buoy observation.',
