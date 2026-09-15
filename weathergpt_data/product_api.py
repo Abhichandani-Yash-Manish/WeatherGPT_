@@ -42,7 +42,7 @@ PRODUCT_PATHS = ('/api/overview', '/api/warnings/national', '/api/warnings/place
                  '/api/forecast', '/api/forecast/changes', '/api/marine', '/api/river', '/api/aviation', '/api/places/search',
                  '/api/map/layers', '/api/warnings/cap', '/api/warnings/alert-brief', '/api/settings/capabilities',
                  '/api/climate/index', '/api/climate/series', '/api/advisories/states',
-                 '/api/advisories/districts', '/api/personas', '/api/now', '/api/ensemble')
+                 '/api/advisories/districts', '/api/personas', '/api/now', '/api/ensemble', '/api/air-quality')
 _REGISTRY = {'path': None, 'mtime': None, 'products': {}}
 
 
@@ -377,6 +377,20 @@ def ensemble(foundation, latitude, longitude, days=3, model='gfs025', variables=
                         None, [],
                         ['The spread is a property of the returned ensemble members, not a forecast probability, '
                          'a confidence or a skill measure.'])
+
+
+def air_quality(foundation, latitude, longitude, days=3, variables=None, refresh=False):
+    packet = foundation.air_quality(latitude, longitude, days=days, variables=variables, refresh=refresh)
+    coverage = packet.get('coverage') or {}
+    parameters = series_from_packet(packet)
+    data = {'parameters': parameters, 'current': coverage.get('current'), 'domain': coverage.get('domain'),
+            'grid': coverage.get('returned_grid'), 'requested': coverage.get('requested_point'),
+            'time_basis': coverage.get('time_basis')}
+    return envelope('air_quality.point', 'ok' if parameters else 'unavailable', data,
+                    sources=[source_entry(packet.get('source_id'), packet.get('provenance'), product=packet.get('family'))],
+                    coverage=coverage, limitations=list(packet.get('limitations') or []),
+                    not_established=['An air-quality index is the source\'s own index, and no health advice, '
+                                     'risk score or official warning is produced from it.'])
 
 
 def forecast_changes(latitude, longitude, database=None, limit=40):
@@ -777,6 +791,13 @@ def dispatch(foundation, path, params):
                         days=_int(params, 'days', 3, low=1, high=7),
                         model=_first(params, 'model', 'gfs025'), variables=variables,
                         threshold=threshold, refresh=_flag(params, 'refresh'))
+    if path == '/api/air-quality':
+        latitude, longitude = _point_params(params)
+        raw = _first(params, 'variable') or ''
+        variables = [name.strip() for name in str(raw).split(',') if name.strip()] or None
+        return air_quality(foundation, latitude, longitude,
+                           days=_int(params, 'days', 3, low=1, high=7),
+                           variables=variables, refresh=_flag(params, 'refresh'))
     if path == '/api/personas':
         return personas_view()
     if path == '/api/places/search':

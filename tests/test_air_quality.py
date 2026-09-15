@@ -128,5 +128,55 @@ class FoundationAirQualityTests(unittest.TestCase):
             Foundation().air_quality(23.0, 72.6, days=1, variables=['pm1'])
 
 
+class ProductViewTests(unittest.TestCase):
+    class Response:
+        status = 200
+        headers = {'Content-Type': 'application/json'}
+
+        def __init__(self, body):
+            self.body = body
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+        def read(self, size):
+            return self.body[:size]
+
+    def foundation_with(self, body):
+        import json
+        import tempfile
+        from datetime import datetime as dt
+        from weathergpt_data.foundation import Foundation
+        from weathergpt_data.transport import Store
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        store = Store(directory.name, opener=lambda *a, **k: self.Response(json.dumps(body).encode()),
+                      clock=lambda: dt(2026, 9, 15, tzinfo=UTC))
+        return Foundation(store)
+
+    def test_route_returns_parameters_and_the_current_reading(self):
+        from datetime import datetime as dt
+        from weathergpt_data import product_api
+        times = hours(24, start=dt(2026, 9, 15, tzinfo=UTC))
+        body = payload({'pm2_5': [10.0] * 24, 'us_aqi': [50] * 24}, times=times,
+                       current={'time': times[0], 'interval': 3600, 'pm2_5': 10.0, 'us_aqi': 50})
+        view = product_api.dispatch(self.foundation_with(body), '/api/air-quality',
+                                    {'lat': ['23.0'], 'lon': ['72.6'], 'days': ['1'], 'variable': ['pm2_5,us_aqi']})
+        self.assertEqual(view['view'], 'air_quality.point')
+        self.assertEqual(view['status'], 'ok')
+        self.assertEqual(view['data']['current'], {'pm2_5': 10.0, 'us_aqi': 50})
+        self.assertIn('pm2_5', view['data']['parameters'])
+
+    def test_route_refuses_an_unknown_variable(self):
+        from weathergpt_data import product_api
+        body = payload({'pm2_5': [1.0]})
+        with self.assertRaises(SourceError):
+            product_api.dispatch(self.foundation_with(body), '/api/air-quality',
+                                 {'lat': ['23.0'], 'lon': ['72.6'], 'variable': ['pm1']})
+
+
 if __name__ == '__main__':
     unittest.main()
