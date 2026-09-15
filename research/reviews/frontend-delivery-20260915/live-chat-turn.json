@@ -1,0 +1,32 @@
+{
+  "schema_version": "provider-routing-live-chat-v1",
+  "method": "HTTP POST /api/chat against a fresh local workspace, two turns in one conversation",
+  "turn_1": {
+    "status": "answered",
+    "planning": {
+      "provider": "deterministic_rules",
+      "model": "rule-planner-v1",
+      "model_calls": 0,
+      "attempts": 0,
+      "latency_ms": 0,
+      "failover": []
+    },
+    "facts": 1
+  },
+  "turn_2": {
+    "status": "answered",
+    "seconds": 37.9,
+    "planning": {
+      "provider": "openrouter",
+      "model": "nvidia/nemotron-3-super-120b-a12b:free",
+      "attempts": 1,
+      "latency_ms": 37859,
+      "input_tokens": 4612,
+      "output_tokens": 2111,
+      "route": "Nvidia",
+      "failover": []
+    },
+    "facts": 1,
+    "answer": "Ahmedabad · 16 Sep, 18:30–16 Sep, 22:30 IST: Forecast precipitation: 0.1 mm. Source: GFS forecast; conditions can change."
+  }
+}

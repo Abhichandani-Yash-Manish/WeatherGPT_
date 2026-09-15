@@ -2205,6 +2205,7 @@
   "browser_rendering_blocker": "the agent-browser CLI could not launch Chrome inside this session sandbox",
   "live_device_delivery_verified": false,
   "hosting_performed": false,
-  "same_host_only": true
+  "same_host_only": true,
+  "live_chat_turn": "research/reviews/frontend-delivery-20260915/live-chat-turn.json"
  }
 }

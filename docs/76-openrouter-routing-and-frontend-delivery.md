@@ -51,6 +51,8 @@ evening window, with the source and window attached. `ModelRouter.describe()` re
 `["openrouter", "ollama"]`, and the local service answers with the configured model installed, so the
 fallback is real rather than nominal.
 
+Measured again over the served HTTP API with the page token, two turns in one conversation: the first turn was planned by the deterministic rules with no model call, and the follow-up was planned by the same free model in one attempt at 37.9 s, answering with one grounded GFS fact for the evening window (research/reviews/frontend-delivery-20260915/live-chat-turn.json). Free-tier latency varies between runs and both measurements are kept rather than averaged into a number the product does not hold.
+
 **What this does not establish.** Latency is free-tier latency, not a product promise. No end-to-end
 acceptance of open-ended conversation quality through a hosted model has been run, no benchmark of
 model skill has been taken, and translation and speech still run through the speech service, not through
@@ -89,6 +91,7 @@ and the failed probe shared a branch. A skipped probe is now reported as unmeasu
   the two new control paths plus the three new surfaces in the Node component suites.
 - `scripts/verify_all.py`: 26 step(s), 0 failed — Python tests, nine Node component suites, the
   frontend workspace audit and the status drift guard.
+- Live turn through the served conversation route: POST /api/chat answered both turns, the follow-up planned by nvidia/nemotron-3-super-120b-a12b:free with one fact attached (research/reviews/frontend-delivery-20260915/live-chat-turn.json).
 - Live loopback check, recorded in
   `research/reviews/frontend-delivery-20260915/live-http-checks.json`: a fresh workspace served the
   page token, both changed assets, and all six routes the new controls call — 28 stations listed of 145
