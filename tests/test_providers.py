@@ -290,9 +290,26 @@ class RulePlannerTests(unittest.TestCase):
         self.assertTrue(task['end_local'].startswith('2026-09-16T12:30:00+05:30'))
         self.assertFalse(request['explicit_times'])
 
-    def test_questions_rules_must_not_guess_are_left_to_a_model(self):
-        for question in ('And what about the evening?', 'कल अहमदाबाद में बारिश होगी क्या?',
-                         'What is the weather like?', ''):
+    def test_a_devanagari_question_is_planned_because_rules_can_read_it(self):
+        # Changed on 15 September 2026: the rules used to return None for any Indic-script
+        # question, which left a perfectly readable question to a model. Understanding the
+        # question's language is not a claim to be able to answer in it - the answer-language
+        # gate decides that from the user's own selection.
+        request = self.request_for('कल अहमदाबाद, गुजरात में सुबह बारिश होगी?')
+        self.assertIsNotNone(request)
+        self.assertEqual(request['language'], 'hi')
+        self.assertEqual([place['name'] for place in request['places']], ['अहमदाबाद'])
+        self.assertEqual(request['tasks'][0]['parameters'], ['precipitation'])
+
+    def test_a_gujarati_question_is_planned_and_keeps_its_own_script(self):
+        request = self.request_for('અમદાવાદમાં આવતીકાલે વરસાદ થશે?')
+        self.assertIsNotNone(request)
+        self.assertEqual(request['language'], 'gu')
+        self.assertEqual([place['name'] for place in request['places']], ['અમદાવાદ'])
+        self.assertEqual(request['tasks'][0]['parameters'], ['precipitation'])
+
+    def test_a_question_rules_still_cannot_read_is_left_to_a_model(self):
+        for question in ('And what about the evening?', 'What is the weather like?', ''):
             with self.subTest(question=question):
                 self.assertIsNone(rule_request(question, NOW), 'rules must not guess: ' + question)
 

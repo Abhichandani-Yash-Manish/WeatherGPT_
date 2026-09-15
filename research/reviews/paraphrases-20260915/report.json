@@ -1,0 +1,645 @@
+{
+  "schema_version": "paraphrase-robustness-v1",
+  "measured_at_utc": "2026-09-15T06:00:00+00:00",
+  "shapes": 11,
+  "variants": 38,
+  "held": 38,
+  "rate": 1.0,
+  "fragile_shapes": [],
+  "live": false,
+  "results": [
+    {
+      "shape": "rain-tomorrow-morning",
+      "canonical": "Will it rain in Ahmedabad, Gujarat tomorrow morning?",
+      "declared": [
+        [
+          "forecast",
+          "lookup"
+        ]
+      ],
+      "canonical_plan": [
+        [
+          "forecast",
+          "lookup"
+        ]
+      ],
+      "canonical_declared_match": true,
+      "variants": 9,
+      "held": 9,
+      "rows": [
+        {
+          "question": "Ahmedabad, Gujarat mein kal subah barish hogi?",
+          "plan": [
+            [
+              "forecast",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "Tomorrow morning, will there be rain in Ahmedabad, Gujarat?",
+          "plan": [
+            [
+              "forecast",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "Please tell me whether it will rain in Ahmedabad, Gujarat tomorrow morning.",
+          "plan": [
+            [
+              "forecast",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "Will it rain tomorrow morning in Ahmedabad, Gujarat?",
+          "plan": [
+            [
+              "forecast",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "Kya Ahmedabad, Gujarat me kal subah barish hogi?",
+          "plan": [
+            [
+              "forecast",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "Will rain happen in Ahmedabad, Gujarat tomorrow morning?",
+          "plan": [
+            [
+              "forecast",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "Is rain expected for Ahmedabad, Gujarat tomorrow morning?",
+          "plan": [
+            [
+              "forecast",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "Ahmedabad, Gujarat ma kale savere varsad thashe?",
+          "plan": [
+            [
+              "forecast",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "कल अहमदाबाद, गुजरात में सुबह बारिश होगी?",
+          "plan": [
+            [
+              "forecast",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        }
+      ]
+    },
+    {
+      "shape": "warning-today",
+      "canonical": "Is any warning in force for Patna, Bihar today?",
+      "declared": [
+        [
+          "warning",
+          "lookup"
+        ]
+      ],
+      "canonical_plan": [
+        [
+          "warning",
+          "lookup"
+        ]
+      ],
+      "canonical_declared_match": true,
+      "variants": 4,
+      "held": 4,
+      "rows": [
+        {
+          "question": "Patna, Bihar me aaj koi warning hai?",
+          "plan": [
+            [
+              "warning",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "Today in Patna, Bihar, is there any warning?",
+          "plan": [
+            [
+              "warning",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "Any warning for Patna district, Bihar today?",
+          "plan": [
+            [
+              "warning",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "Please check whether a warning applies to Patna, Bihar today.",
+          "plan": [
+            [
+              "warning",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        }
+      ]
+    },
+    {
+      "shape": "trend-decades",
+      "canonical": "Show the annual rainfall trend for Ahmedabad district, Gujarat from 1981 to 2010.",
+      "declared": [
+        [
+          "history",
+          "trend"
+        ]
+      ],
+      "canonical_plan": [
+        [
+          "history",
+          "trend"
+        ]
+      ],
+      "canonical_declared_match": true,
+      "variants": 3,
+      "held": 3,
+      "rows": [
+        {
+          "question": "Ahmedabad district, Gujarat ke liye 1981 se 2010 tak saalana barish ka trend dikhaiye.",
+          "plan": [
+            [
+              "history",
+              "trend"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "From 1981 to 2010, show the annual rainfall trend for Ahmedabad district, Gujarat.",
+          "plan": [
+            [
+              "history",
+              "trend"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "Rainfall trend for Ahmedabad district, Gujarat, 1981 to 2010.",
+          "plan": [
+            [
+              "history",
+              "trend"
+            ]
+          ],
+          "same_shape": true
+        }
+      ]
+    },
+    {
+      "shape": "document-whole",
+      "canonical": "What are the main points of the latest all India weather bulletin?",
+      "declared": [
+        [
+          "document",
+          "lookup"
+        ]
+      ],
+      "canonical_plan": [
+        [
+          "document",
+          "lookup"
+        ]
+      ],
+      "canonical_declared_match": true,
+      "variants": 3,
+      "held": 3,
+      "rows": [
+        {
+          "question": "What does the latest all India weather bulletin say in general?",
+          "plan": [
+            [
+              "document",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "Summarise the latest all India weather bulletin.",
+          "plan": [
+            [
+              "document",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "all India weather bulletin, latest, main points please.",
+          "plan": [
+            [
+              "document",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        }
+      ]
+    },
+    {
+      "shape": "advisory-crop",
+      "canonical": "What does the Gujarat state agromet advisory say about irrigation?",
+      "declared": [
+        [
+          "document",
+          "lookup"
+        ]
+      ],
+      "canonical_plan": [
+        [
+          "document",
+          "lookup"
+        ]
+      ],
+      "canonical_declared_match": true,
+      "variants": 3,
+      "held": 3,
+      "rows": [
+        {
+          "question": "Gujarat state agromet advisory me irrigation ke baare me kya likha hai?",
+          "plan": [
+            [
+              "document",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "For irrigation, what does the Gujarat state agromet advisory say?",
+          "plan": [
+            [
+              "document",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "Tell me what the Gujarat state agromet advisory says about irrigation.",
+          "plan": [
+            [
+              "document",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        }
+      ]
+    },
+    {
+      "shape": "marine-waves",
+      "canonical": "What are the wave conditions off Kochi tomorrow?",
+      "declared": [
+        [
+          "marine",
+          "lookup"
+        ]
+      ],
+      "canonical_plan": [
+        [
+          "marine",
+          "lookup"
+        ]
+      ],
+      "canonical_declared_match": true,
+      "variants": 3,
+      "held": 3,
+      "rows": [
+        {
+          "question": "Kochi ke paas kal samudra ki lehren kaisi hongi?",
+          "plan": [
+            [
+              "marine",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "Tomorrow off Kochi, what are the wave conditions?",
+          "plan": [
+            [
+              "marine",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "Wave conditions near Kochi tomorrow?",
+          "plan": [
+            [
+              "marine",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        }
+      ]
+    },
+    {
+      "shape": "airport-report",
+      "canonical": "What is the current weather at VOBL?",
+      "declared": [
+        [
+          "aviation",
+          "lookup"
+        ]
+      ],
+      "canonical_plan": [
+        [
+          "aviation",
+          "lookup"
+        ]
+      ],
+      "canonical_declared_match": true,
+      "variants": 3,
+      "held": 3,
+      "rows": [
+        {
+          "question": "VOBL ka current weather kya hai?",
+          "plan": [
+            [
+              "aviation",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "Current weather at VOBL, please.",
+          "plan": [
+            [
+              "aviation",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "What is the weather at VOBL right now?",
+          "plan": [
+            [
+              "aviation",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        }
+      ]
+    },
+    {
+      "shape": "history-value",
+      "canonical": "What was the rainfall in Chennai district, Tamil Nadu in 1995?",
+      "declared": [
+        [
+          "history",
+          "lookup"
+        ]
+      ],
+      "canonical_plan": [
+        [
+          "history",
+          "lookup"
+        ]
+      ],
+      "canonical_declared_match": true,
+      "variants": 3,
+      "held": 3,
+      "rows": [
+        {
+          "question": "Chennai district, Tamil Nadu me 1995 me kitni barish hui thi?",
+          "plan": [
+            [
+              "history",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "In 1995, what was the rainfall in Chennai district, Tamil Nadu?",
+          "plan": [
+            [
+              "history",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "Rainfall for Chennai district, Tamil Nadu in 1995?",
+          "plan": [
+            [
+              "history",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        }
+      ]
+    },
+    {
+      "shape": "out-of-scope-tide",
+      "canonical": "What is the tide at Kochi tomorrow?",
+      "declared": [
+        [
+          "research",
+          "lookup"
+        ]
+      ],
+      "canonical_plan": [
+        [
+          "research",
+          "lookup"
+        ]
+      ],
+      "canonical_declared_match": true,
+      "variants": 2,
+      "held": 2,
+      "rows": [
+        {
+          "question": "Kochi me kal tide kya hai?",
+          "plan": [
+            [
+              "research",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "Tide timings for Kochi tomorrow?",
+          "plan": [
+            [
+              "research",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        }
+      ]
+    },
+    {
+      "shape": "compound-rain-and-warning",
+      "canonical": "Will it rain in Surat, Gujarat tomorrow morning? Is there any warning for Surat today?",
+      "declared": [
+        [
+          "forecast",
+          "lookup"
+        ],
+        [
+          "warning",
+          "lookup"
+        ]
+      ],
+      "canonical_plan": [
+        [
+          "forecast",
+          "lookup"
+        ],
+        [
+          "warning",
+          "lookup"
+        ]
+      ],
+      "canonical_declared_match": true,
+      "variants": 2,
+      "held": 2,
+      "rows": [
+        {
+          "question": "Surat, Gujarat me kal subah barish hogi? Aaj koi warning hai?",
+          "plan": [
+            [
+              "forecast",
+              "lookup"
+            ],
+            [
+              "warning",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "Any warning for Surat today, and will it rain there tomorrow morning?",
+          "plan": [
+            [
+              "forecast",
+              "lookup"
+            ],
+            [
+              "warning",
+              "lookup"
+            ]
+          ],
+          "same_shape": true
+        }
+      ]
+    },
+    {
+      "shape": "crosscheck",
+      "canonical": "Compare the models for rainfall in Ahmedabad tomorrow.",
+      "declared": [
+        [
+          "forecast",
+          "crosscheck"
+        ]
+      ],
+      "canonical_plan": [
+        [
+          "forecast",
+          "crosscheck"
+        ]
+      ],
+      "canonical_declared_match": true,
+      "variants": 3,
+      "held": 3,
+      "rows": [
+        {
+          "question": "Ahmedabad me kal barish ke liye models compare kijiye.",
+          "plan": [
+            [
+              "forecast",
+              "crosscheck"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "Do the models agree on rainfall in Ahmedabad tomorrow?",
+          "plan": [
+            [
+              "forecast",
+              "crosscheck"
+            ]
+          ],
+          "same_shape": true
+        },
+        {
+          "question": "Compare forecast sources for Ahmedabad rainfall tomorrow.",
+          "plan": [
+            [
+              "forecast",
+              "crosscheck"
+            ]
+          ],
+          "same_shape": true
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "A plan is not an answer: this measures planner robustness only.",
+    "A development set, deliberately tuned on where a gap is found.",
+    "Variants are generated deterministically, not sampled from users.",
+    "The Hinglish variants test one marker pattern, not Hinglish in general."
+  ]
+}

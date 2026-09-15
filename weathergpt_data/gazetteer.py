@@ -148,7 +148,16 @@ class Gazetteer:
                 if scored and scored[0][0]>=0.85 and (len(scored)==1 or scored[1][0]<scored[0][0]-0.05):
                     wanted_state=scored[0][1]
                     state_basis=('the state was read as '+str(scored[0][1])+' in the indexed catalogue, the closest name to '+str(state))
-            rows=[r for r in rows if same(r['admin1'],wanted_state)]
+            against_state=[r for r in rows if same(r['admin1'],wanted_state)]
+            if not against_state and state and not str(state).isascii():
+                # A native-script state name cannot be compared with the catalogue's Latin
+                # admin1 field. Measured live on 15 September 2026: the Devanagari question
+                # found the place and the state filter then emptied the list. The name alone
+                # resolves and the state is disclosed as unused rather than silently dropped.
+                against_state = rows
+                state_basis = ('the state was given in another script and was not used to filter: '
+                               'the name alone resolved')
+            rows = against_state
         if district:rows=[r for r in rows if same(r['admin2'],district)]
         rows=list({r['id']:r for r in rows}.values())
         canonical=[r for r in rows if norm(r['name'])==norm(name)]

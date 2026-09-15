@@ -34,10 +34,10 @@ VARIABLE_WORDS = (
     (re.compile(r'\b(feels like|apparent)\b', re.I), 'apparent_temperature'),
     (re.compile(r'\b(gust|gusts|gusty)\b', re.I), 'wind_gusts_10m'),
     (re.compile(r'\b(visibility|fog|mist)\b', re.I), 'visibility'),
-    (re.compile(r'\b(rain|rainfall|precipitation|shower|barish|baarish|varsha|barsat|paani)\b', re.I), 'precipitation'),
-    (re.compile(r'\b(temperature|temp|hot|cold|warm|cool|tapman|garmi|thand)\b', re.I), 'temperature_2m'),
-    (re.compile(r'\b(humidity|humid|moisture)\b', re.I), 'relative_humidity_2m'),
-    (re.compile(r'\b(wind|windy|breeze|havaman)\b', re.I), 'wind_speed_10m'),
+    (re.compile(r'\b(rain|rainfall|precipitation|shower|barish|baarish|varsha|varsad|barsat|paani|बारिश|वर्षा|વરસાદ|மழை|వర్షం|ಮಳೆ|മഴ|বৃষ্টি|ବର୍ଷା|ਮੀਂਹ)\b', re.I), 'precipitation'),
+    (re.compile(r'\b(temperature|temp|hot|cold|warm|cool|tapman|garmi|thand|तापमान|તાપમાન|வெப்பநிலை|ఉష్ణోగ్రత|ತಾಪಮಾನ|താപനില|তাপমাত্রা|ତାପମାତ୍ରା|ਤਾਪਮਾਨ)\b', re.I), 'temperature_2m'),
+    (re.compile(r'\b(humidity|humid|moisture|नमी|ભેજ|ஈரப்பதம்|తేమ|ಆರ್ದ್ರತೆ|আর্দ্রতা|ଆର୍ଦ୍ରତା)\b', re.I), 'relative_humidity_2m'),
+    (re.compile(r'\b(wind|windy|breeze|havaman|हवा|પવન|காற்று|గాలి|ಗಾಳಿ|കാറ്റ്|বাতাস|ପବନ|ਹਵਾ)\b', re.I), 'wind_speed_10m'),
 )
 PLACE = re.compile(r"\b(?:in|for|at|near|around|of|off)\s+(?:the |a |an )?((?:[A-Z][\w'\u2019.\-]+)(?:\s+(?:[A-Z][\w'\u2019.\-]+)){0,3})"
                    r"(?:\s*,\s*([A-Z][\w'\u2019.\-]+(?:\s+[A-Z][\w'\u2019.\-]+){0,2}))?")
@@ -46,9 +46,15 @@ PLACE_UNIT = re.compile(r"\b((?:[A-Z][\w'\u2019.\-]+)(?:\s+(?:[A-Z][\w'\u2019.\-
                         r"(district|state|city|town|village|tehsil|taluk)\b")
 # Hinglish marks the place after the name: "Ahmedabad me", "Surat ke liye".
 PLACE_HINGLISH = re.compile(r"\b((?:[A-Z][\w'\u2019.\-]+)(?:\s*,?\s+(?:[A-Z][\w'\u2019.\-]+)){0,2})\s+"
-                            r"(?:me|mein|men|par|ka|ki|ke)\b")
+                            r"(?:me|mein|men|par|ka|ki|ke|ma|mane|na|ni|nu|ne|cha|chi|che)\b")
 # A coast, a sea or coastal waters: a region, never a settlement to search for.
 SEA_WORDS = re.compile(r'\b(?:coast|coastal|sea|waters?|shore|offshore)\b', re.I)
+# A place written in its own script, followed by that script's locative marker: the place
+# catalogue carries native-script aliases, so the name resolves without transliteration.
+PLACE_INDIC = re.compile('([\u0900-\u097f\u0a80-\u0aff\u0b80-\u0bff\u0c00-\u0c7f\u0c80-\u0cff\u0d00-\u0d7f]{2,}'
+                         '(?:\\s*,\\s*[\u0900-\u097f\u0a80-\u0aff\u0b80-\u0bff\u0c00-\u0c7f\u0c80-\u0cff\u0d00-\u0d7f]{2,})?)'
+                         '(?=\\s*(?:में|मे|मध्ये|मा|માં|లో|ల్లో|ഇൽ|இல்|ನಲ್ಲಿ|ರಲ್ಲಿ|ರೇ))')
+
 PLACE_NOISE = {'the', 'a', 'an', 'this', 'that', 'my', 'our', 'whole', 'latest', 'said'}
 # A capitalised day or part-of-day word at the start of a sentence is not part of a place name:
 # "Kal Ahmedabad me" is Ahmedabad, and "Aaj Delhi me" is Delhi.
@@ -75,18 +81,27 @@ WARNING_STRONG = re.compile(r'\b(warnings?|alerts?|red alert|orange alert|yellow
 # lineage, so agreement is not independent confirmation. Measured on 15 September 2026, only
 # the model planner recognised this shape.
 CROSSCHECK = re.compile(r'\b(?:another model|other models?|compare (?:the )?(?:models?|sources?|forecasts?)|'
+                        r'models?\b[^?]{0,24}\b(?:compare|comparison|agree|tulna|tulana|kijiye)|'
+                        r'(?:compare|tulna|tulana)\b[^?]{0,24}\bmodels?|'
                         r'model (?:comparison|agreement)|gfs (?:vs|versus)|(?:vs|versus) (?:gfs|ecmwf|icon|best[- ]match)|'
                         r'check another (?:model|source)|do the models agree)\b', re.I)
 
 AGROMET_DOCUMENT = re.compile(r'\b(agromet|agro-met|agricultural advisory|crop advisory|kisan|fasal|krishi|kheti)\b', re.I)
 AVIATION = re.compile(r'\b(metar|taf|airport|aerodrome|terminal forecast)\b', re.I)
-DOCUMENT = re.compile(r"\b(bulletin|advisory document|press release|special advisory|flash flood guidance|"
+ACRONYMS = {'IMD','GFS','WRF','AWS','CAP','CWC','WMO','TAF','METAR','PDF','JSON','HTML','API','SIH','UTC','IST','LGD','RMC'}
+
+def station_code(question):
+    """The four-letter station code this question names, if any. Never a known acronym."""
+    codes = [code for code in re.findall(r'\b([A-Z]{4})\b', question or '') if code not in ACRONYMS]
+    return codes[0] if codes else None
+
+DOCUMENT = re.compile(r"\b(bulletin|advisory document|agromet|agro-met|agricultural advisory|agricultural bulletin|press release|special advisory|flash flood guidance|"
                       r"all india weather summary)\b", re.I)
 HISTORY = re.compile(r'\b(\d{4})\b')
-HISTORY_WORDS = re.compile(r'\b(rainfall|rain|temperature|climat|historical|annual|monsoon|decade|trend|'
+HISTORY_WORDS = re.compile(r'\b(rainfall|rain|temperature|climat|historical|annual|monsoon|decade|trend|hui thi|hua tha|hue the|kitni barish|'
                            r'record|normal|average)\b', re.I)
 OBSERVATION = re.compile(r'\b(right now|currently|at the moment|live observation|observed|observation station)\b', re.I)
-OUT_OF_SCOPE = re.compile(r'\b(groundwater|water table|soil moisture|soil health|population|water quality|'
+OUT_OF_SCOPE = re.compile(r'\b(groundwater|water table|soil moisture|soil health|population|water quality|tide|tides|tidal|'
                           r'pesticide dose|dosage|yield forecast)\b', re.I)
 WHOLE_DOC = re.compile(r'\b(main points?|overall|summar|synoptic|whole (?:document|edition|bulletin)|'
                        r"what does .{0,60}(?:bulletin|advisory|release) say)\b", re.I)
@@ -95,10 +110,21 @@ SEASONS = {'winter': 'jf', 'pre-monsoon': 'mam', 'monsoon': 'jjas', 'post-monsoo
 
 
 def language_of(question):
-    """The question's language for the planner field, or None when rules must not guess."""
-    if INDIC.search(question):
-        return None
-    if HINGLISH.search(question):
+    """The question's language for the planner field, from the script it is written in.
+
+    Devanagari is Hindi, Gujarati is Gujarati, and any other Indic script is named from the
+    language registry's script table. Understanding a question in a language never authorises
+    claiming an answer in it: the answer-language gate decides that from the user's own
+    selection. Refusing to plan an Indic-script question at all was the earlier behaviour, and
+    it left the rules floor unable to answer questions it could read perfectly well.
+    """
+    from .languages import LANGUAGES, SCRIPTS
+    text = question or ''
+    for code, entry in LANGUAGES.items():
+        pattern = SCRIPTS.get(entry.get('script'))
+        if pattern and pattern != SCRIPTS['latin'] and re.search('[' + pattern + ']', text):
+            return code
+    if HINGLISH.search(text):
         return 'hi-Latn'
     return 'en'
 
@@ -200,6 +226,10 @@ def places_of(question):
         unit = match.group(2).lower()
         kind = 'district' if unit in {'district', 'tehsil', 'taluk'} else ('state' if unit == 'state' else 'unknown')
         add(match.group(1), kind=kind)
+        if len(found) == 2:
+            return found
+    for match in PLACE_INDIC.finditer(question):
+        add(match.group(1))
         if len(found) == 2:
             return found
     for match in PLACE_HINGLISH.finditer(question):
@@ -374,16 +404,19 @@ def single_request(question, now, history=None):
         tasks.append(task('marine', 'lookup', parameters))
     elif RIVER.search(question):
         tasks.append(task('river', 'lookup', ['river_discharge']))
-    elif AVIATION.search(question):
-        code = re.search(r'\b([A-Z]{4})\b', question)
+    elif AVIATION.search(question) or station_code(question):
+        code = station_code(question)
+        if code is None:
+            token = re.search(r'\b([A-Z]{4})\b', question)
+            code = token.group(1) if token else None
         parameters = ['taf'] if re.search(r'\btaf\b', question, re.I) else ['metar']
         entry = task('aviation', 'lookup', parameters)
-        if code and code.group(1) not in [item['name'].upper() for item in places]:
-            places = places + [{'name': code.group(1), 'state': '', 'district': '', 'kind': 'unknown'}]
+        if code and code not in [item['name'].upper() for item in places]:
+            places = places + [{'name': code, 'state': '', 'district': '', 'kind': 'unknown'}]
             entry['place_indices'] = [len(places) - 1]
         elif code:
             entry['place_indices'] = [index for index, item in enumerate(places)
-                                      if item['name'].upper() == code.group(1)]
+                                      if item['name'].upper() == code]
         tasks.append(entry)
     elif (CROP.search(question) or re.search(r'\b(crop|field|farm|kisan|fasal)\b', question, re.I)) and \
             (ADVISORY.search(question) or DOCUMENT.search(question)):

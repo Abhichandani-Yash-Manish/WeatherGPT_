@@ -12,7 +12,7 @@ def obj(properties):return {'type':'object','properties':properties,'required':l
 def string():return {'type':'string'}
 PLAN_SCHEMA=obj({
  'intent':{'type':'string','enum':INTENTS},'language':string(),
- 'places':{'type':'array','maxItems':2,'items':obj({'name':string(),'state':string(),'district':string(),'kind':{'type':'string','enum':['settlement','district','state','country','relative','unknown']}})},
+ 'places':{'type':'array','maxItems':2,'items':obj({'name':string(),'state':string(),'district':string(),'kind':{'type':'string','enum':['settlement','district','state','country','relative','unknown','sea_area']}})},
  'start_local':string(),'end_local':string(),'explicit_times':{'type':'boolean'},
  'variables':{'type':'array','items':{'type':'string','enum':VARIABLES}},
  'year':{'type':'integer'},'period':{'type':'string','enum':['annual','jf','mam','jjas','ond','jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec']},
@@ -197,7 +197,7 @@ def validate_plan(plan):
     if plan['history_parameter'] not in {'rainfall','temperature'} or type(plan['year']) is not int or not 0<=plan['year']<=2200:raise SourceError('Invalid historical period')
     if not isinstance(plan['places'],list) or len(plan['places'])>2:raise SourceError('Use at most two explicitly named locations')
     for p in plan['places']:
-        if set(p)!={'name','state','district','kind'} or p['kind'] not in ['settlement','district','state','country','relative','unknown']:raise SourceError('Invalid place interpretation')
+        if set(p)!={'name','state','district','kind'} or p['kind'] not in ['settlement','district','state','country','relative','unknown','sea_area']:raise SourceError('Invalid place interpretation')
         if any(not isinstance(p[k],str) or len(p[k])>100 for k in ('name','state','district')):raise SourceError('Place names must be short text')
     if 'tasks' in plan:validate_tasks(plan['tasks'],plan['places'])
     if not isinstance(plan['variables'],list) or not set(plan['variables'])<=set(VARIABLES):raise SourceError('Unsupported forecast variable')
