@@ -22,6 +22,7 @@ def execute_plan(engine,result,plan,resolved,coordinates):
     chunks=[];statuses=[];executed=[]
     for index,task in enumerate(plan['tasks']):
         if hasattr(engine,'check_cancelled'):engine.check_cancelled()
+        if hasattr(engine,'_stage'):engine._stage('retrieving')
         tid='t'+str(index+1)
         sub={**plan,'intent':task['kind'],'places':[plan['places'][i] for i in task['place_indices']],
              'start_local':task['start_local'],'end_local':task['end_local']}
@@ -139,6 +140,12 @@ def execute_plan(engine,result,plan,resolved,coordinates):
             passage['citation_ids']=[tid+'-'+c for c in passage['citation_ids']];passage['task_id']=tid
             result.setdefault('passages',[]).append(passage)
         result.setdefault('document_evidence',[]).extend(packet.get('document_evidence',[]))
+        # The corpus path describes how it read the edition; the page renders that reading,
+        # so the description travels with the passages rather than staying on the task packet.
+        if packet.get('whole_document'):result['whole_document']=packet['whole_document']
+        if packet.get('edition_comparison'):result['edition_comparison']=packet['edition_comparison']
+        if packet.get('edition_differences'):
+            result.setdefault('edition_differences',[]).extend(packet['edition_differences'])
         result['facts']+=facts;result['citations']+=citations;result['notes']+=packet.get('notes',[])
         result['charts']+=packet.get('charts',[]);result['calculations']+=packet.get('calculations',[])
         result['trace']['tools']+=packet.get('trace',{}).get('tools',[])

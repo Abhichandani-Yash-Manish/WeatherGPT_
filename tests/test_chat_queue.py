@@ -111,12 +111,109 @@ class CancellationTests(unittest.TestCase):
             self.engine.ask({'question': 'Will it rain?', 'request_id': 'not-a-uuid'})
 
 
+class ProgressTests(unittest.TestCase):
+    publish = fixture.AnswerTests.publish
+    add_place = fixture.AnswerTests.add_place
+
+    def setUp(self):
+        fixture.AnswerTests.setUp(self)
+        self.model = BlockingModel()
+
+        def open_(*args, **kwargs):
+            return Response(json.dumps(payload()).encode())
+
+        self.app = Workspace(self.root / 'jobs.sqlite', self.root / 'raw', self.root / 'geography.sqlite',
+                             clock=lambda: self.now, opener=open_)
+        self.engine = ConversationEngine(self.app, self.model, Places(), self.root / 'conversation.sqlite',
+                                         gate=BoundedGate(capacity=2, timeout=5))
+
+    def test_progress_is_idle_before_a_turn_and_names_the_stage_while_one_runs(self):
+        idle = self.engine.progress()
+        self.assertEqual(idle['state'], 'idle')
+        self.assertIsNone(idle['stage'])
+        self.assertEqual(idle['stages_seen'], [])
+        self.assertTrue(idle['stages_are_facts_not_progress'])
+
+        out = {}
+        worker = threading.Thread(target=lambda: out.setdefault('result', self.engine.ask(
+            {'question': 'Will it rain in Ahmedabad tomorrow morning?', 'request_id': str(uuid.uuid4())})))
+        worker.start()
+        self.assertTrue(self.model.started.wait(5))
+        running = self.engine.progress()
+        self.assertEqual(running['state'], 'running')
+        self.assertEqual(running['stage'], 'started')
+        self.assertEqual(running['stage_label'], 'Reading the question')
+        self.assertIn('Reading the question', running['stages_seen'])
+        self.assertEqual(running['queue']['capacity'], 2)
+        # Facts, not an estimate: no percentage, fraction or ETA anywhere in the packet.
+        self.assertNotIn('%', json.dumps(running))
+        self.assertNotIn('eta', json.dumps(running).lower())
+        self.model.release.set()
+        worker.join(10)
+        self.assertEqual(self.engine.progress()['state'], 'idle')
+
+    def test_the_queue_position_is_the_gates_own_counter(self):
+        held = threading.Event()
+        out = {}
+
+        def hold():
+            worker = threading.Thread(target=lambda: out.setdefault('result', self.engine.ask(
+                {'question': 'Will it rain in Ahmedabad tomorrow morning?', 'request_id': str(uuid.uuid4())})))
+            worker.start()
+            held.set()
+            worker.join(20)
+
+        first = threading.Thread(target=hold)
+        first.start()
+        self.assertTrue(self.model.started.wait(5))
+        second = threading.Thread(target=lambda: out.setdefault('second', self.engine.ask(
+            {'question': 'Will it rain in Ahmedabad tomorrow morning?'})))
+        second.start()
+        deadline = threading.Event()
+        deadline.wait(0.3)
+        waiting = self.engine.progress()
+        self.assertGreaterEqual(waiting['queue']['waiting'], 1)
+        self.assertEqual(waiting['queue']['active'], 1)
+        self.model.release.set()
+        first.join(25)
+        second.join(25)
+
+    def test_the_stage_sequence_is_pinned_in_order(self):
+        seen = []
+        original = self.engine._checkpoint
+
+        def record(request_id, stage):
+            seen.append(stage)
+            return original(request_id, stage)
+
+        self.engine._checkpoint = record
+        self.model.release.set()
+        result = self.engine.ask({'question': 'Will it rain in Ahmedabad tomorrow morning?'})
+        self.assertIn(result['status'], {'answered', 'partial', 'needs_clarification'})
+        self.assertEqual(seen[0], 'started')
+        self.assertEqual(seen[-1], 'finalising')
+        self.assertIn('planned', seen)
+        self.assertIn('retrieving', seen)
+        self.assertIn('assembling', seen)
+        from weathergpt_data.conversation import STAGE_LABELS
+        self.assertTrue(set(seen) <= set(STAGE_LABELS), seen)
+
+
 class WorkspaceCancelTests(unittest.TestCase):
     def test_no_running_turn_is_reported_truthfully(self):
         workspace = Workspace.__new__(Workspace)
         workspace.conversation = None
         packet = Workspace.cancel_chat(workspace, {'request_id': str(uuid.uuid4())})
         self.assertEqual(packet['state'], 'not_running')
+
+    def test_progress_without_a_turn_is_idle_and_reads_as_facts(self):
+        workspace = Workspace.__new__(Workspace)
+        workspace.conversation = None
+        packet = Workspace.chat_progress(workspace)
+        self.assertEqual(packet['state'], 'idle')
+        self.assertIsNone(packet['stage'])
+        self.assertEqual(packet['queue']['waiting'], 0)
+        self.assertTrue(packet['stages_are_facts_not_progress'])
 
     def test_an_invalid_identifier_or_extra_field_is_refused(self):
         workspace = Workspace.__new__(Workspace)

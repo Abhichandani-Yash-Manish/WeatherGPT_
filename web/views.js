@@ -494,11 +494,42 @@ function renderAirportReports(packet) {
   });
   return wrap;
 }
+function renderEditionDifferences(packet) {
+  const items = packet.edition_differences || [];
+  if (!items.length) return null;
+  const wrap = el('div');
+  const box = disclosure('Editions compared (' + items.length + ')', body => {
+    items.forEach(item => {
+      const row = el('div', undefined, 'edition-difference');
+      row.append(el('p', item.section + ' \u00b7 ' + (item.kind === 'section_absent_from_newer'
+        ? 'printed in the earlier edition, not in the newer one' : 'materially different text'), 'field-label'));
+      [['nearer', 'Newer edition'], ['earlier', 'Earlier edition']].forEach(pair => {
+        const side = item[pair[0]] || {};
+        const line = el('p', undefined, 'passage-text');
+        line.append(el('span', (side.issue_date || 'issue date not stated') +
+          (side.page ? ' \u00b7 page ' + side.page : '') + ' \u00b7 ', 'data'));
+        line.append(el('span', side.excerpt || 'This edition does not print that section.'));
+        row.append(line);
+      });
+      row.append(el('p', item.note || 'Both editions are named; neither is ranked.', 'field-note'));
+      body.append(row);
+    });
+  });
+  wrap.append(box);
+  return wrap;
+}
 function renderPassages(packet) {
   const passages = packet.passages || [];
   if (!passages.length) return null;
   const index = citationIndex(packet);
   const wrap = el('div');
+  const whole = packet.whole_document;
+  if (whole) {
+    wrap.append(el('p', 'Whole edition: ' + whole.passages_served + ' of ' + whole.passages_indexed +
+      ' indexed passages, one per printed section in printed order (' + whole.sections_indexed +
+      ' sections indexed). A bounded reading of the edition, not its full text; the saved document opens from each passage.',
+      'field-note'));
+  }
   passages.forEach(passage => {
     const context = passage.evidence_kind === 'published_bulletin_context';
     const label = context ? 'Bulletin context: ' + passage.section : (passage.crop || 'Passage') + ' \u00b7 ' + (passage.stage || 'Stage not stated');
@@ -564,6 +595,8 @@ function renderPassages(packet) {
     });
     wrap.append(box);
   });
+  const differences = renderEditionDifferences(packet);
+  if (differences) wrap.append(differences);
   return wrap;
 }
 function calculationKind(calculation) {
@@ -860,9 +893,11 @@ function renderUserTurn(text) { return el('div', text, 'turn-user'); }
 let ledgerExpanded = false;
 function ledgerItem(item, current, handlers) {
   const row = el('li', undefined, 'ledger-item' + (item.id === current ? ' is-current' : ''));
+  const question = item.opening_question || 'Conversation';
   const open = el('button', undefined, 'ledger-open');
   open.type = 'button';
-  open.append(el('span', item.opening_question || 'Conversation', 'ledger-text'));
+  open.setAttribute('aria-label', 'Open the stored conversation: ' + question);
+  open.append(el('span', question, 'ledger-text'));
   const meta = el('span', undefined, 'ledger-meta');
   meta.append(el('span', item.asked + ' asked'));
   meta.append(el('span', item.updated ? istStamp(item.updated) : 'time not recorded'));
@@ -872,6 +907,7 @@ function ledgerItem(item, current, handlers) {
   const tools = el('div', undefined, 'ledger-tools');
   const remove = el('button', 'Delete', 'ghost danger');
   remove.type = 'button';
+  remove.setAttribute('aria-label', 'Delete the stored conversation: ' + question);
   remove.addEventListener('click', () => handlers.onDelete(item));
   tools.append(remove);
   row.append(tools);
@@ -1084,4 +1120,27 @@ function transcriptMarkdown(transcript, ledgerItem) {
   });
   lines.push('_Earlier answers are receipts for the moment they were retrieved; ask again before relying on one._');
   return lines.join(newline);
+}
+function stageLine(progress) {
+  // The engine's own checkpoints and the queue's own counters. Facts only: no
+  // percentage, no ETA, no confidence. A waiting turn says so instead.
+  if (!progress || progress.state !== 'running') return null;
+  const queue = progress.queue || {};
+  const waiting = Number(queue.waiting || 0);
+  const wrap = el('span', undefined, 'stage-readout');
+  if (waiting > 0) {
+    wrap.append(el('span', '⧗', 'stage-glyph'));
+    wrap.append(el('span', 'Waiting for the engine · ' + waiting + (waiting === 1 ? ' question ahead' : ' questions ahead'), 'stage-text'));
+    const bound = (queue.capacity === null || queue.capacity === undefined) ? 'a fixed size' : queue.capacity;
+    wrap.append(el('span', 'The wait queue is bounded at ' + bound + '; the wait ends when the running turn finishes. Not a completion estimate.', 'stage-note'));
+    return wrap;
+  }
+  if (!progress.stage) return null;
+  wrap.append(el('span', '▸', 'stage-glyph'));
+  wrap.append(el('span', progress.stage_label || progress.stage, 'stage-text'));
+  const seconds = Number(progress.stage_seconds);
+  if (isFinite(seconds) && seconds >= 2) wrap.append(el('span', Math.round(seconds) + ' s in this stage', 'stage-note'));
+  if ((progress.stages_seen || []).length > 1) wrap.append(el('span', progress.stages_seen.join(' → '), 'stage-note'));
+  wrap.append(el('span', progress.stage_note || 'A stage names work in progress; it is not a completion estimate.', 'stage-note'));
+  return wrap;
 }

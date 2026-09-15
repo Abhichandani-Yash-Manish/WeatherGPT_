@@ -208,6 +208,22 @@ async function run() {
   assert(walk(mapHost).some(node => /source bounding box/i.test(textOf(node))), 'the placeholder is described in words');
   console.log('PASS: the map draws one path per district, flags placeholder geometry and never colours an unmapped district green');
 
+  const districtPaths = withClass(mapHost, 'district');
+  assert.equal(districtPaths.filter(node => node.getAttribute('tabindex') === '0').length, 1,
+    'the map keeps one tab stop for its districts rather than hundreds');
+  districtPaths[0].dispatch('keydown', { key: 'ArrowRight' });
+  assert.equal(districtPaths[1].getAttribute('tabindex'), '0', 'an arrow key moves the map tab stop to the next district');
+  assert.equal(districtPaths[0].getAttribute('tabindex'), '-1', 'the district the cursor left is no longer tabbable');
+  assert(districtPaths[1].focused === true, 'focus follows the map cursor');
+  assert.equal(withClass(mapHost, 'district').filter(node => node.getAttribute('tabindex') === '0').length, 1,
+    'exactly one district remains tabbable after moving');
+  districtPaths[0].dispatch('keydown', { key: 'End' });
+  assert.equal(districtPaths[districtPaths.length - 1].getAttribute('tabindex'), '0', 'End jumps to the last district');
+  districtPaths[districtPaths.length - 1].dispatch('keydown', { key: 'Enter' });
+  assert.equal(h.document.getElementById('evidence-drawer').hidden, false, 'Enter on the cursor opens the district detail');
+  h.document.getElementById('drawer-close').dispatch('click');
+  console.log('PASS: the districts behave as one tab stop with arrow keys, Home and End, and Enter opens the district');
+
   WG.wireNotify();
   h.document.getElementById('notify-panel').hidden = true;
   h.document.getElementById('notify-toggle').dispatch('click');

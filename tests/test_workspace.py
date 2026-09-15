@@ -95,4 +95,21 @@ class WorkspaceTests(unittest.TestCase):
         with self.assertRaises(urllib.error.HTTPError) as error:urllib.request.urlopen(base+'/api/refresh')
         self.assertEqual(error.exception.code,404)
 
+    def test_http_progress_route_is_token_gated_and_reports_facts(self):
+        server=make_server(self.app,0)
+        thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+        self.addCleanup(lambda:(server.shutdown(),server.server_close(),thread.join()))
+        base='http://127.0.0.1:'+str(server.server_port)
+        html=urllib.request.urlopen(base).read().decode()
+        token=re.search(r'name="workspace-token" content="([^"]+)"',html)[1]
+        with urllib.request.urlopen(urllib.request.Request(base+'/api/chat/progress',
+                headers={'X-WeatherGPT-Token':token})) as response:
+            self.assertEqual(response.headers['Cache-Control'],'no-store')
+            packet=json.load(response)
+        self.assertEqual(packet['state'],'idle')
+        self.assertTrue(packet['stages_are_facts_not_progress'])
+        self.assertNotIn('%',json.dumps(packet))
+        with self.assertRaises(urllib.error.HTTPError) as error:urllib.request.urlopen(base+'/api/chat/progress')
+        self.assertEqual(error.exception.code,403)
+
 if __name__=='__main__':unittest.main()

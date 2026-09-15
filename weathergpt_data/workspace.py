@@ -70,6 +70,20 @@ class Workspace:
                 'note':'Foreground check only; no daemon or push is installed.',
                 'results':check_due(store,self.conversation,now=self.clock())}
 
+    def chat_progress(self):
+        """What the engine is doing now, for a page that is waiting on a turn.
+
+        Read-only and cheap: the running turn's stage names and the gate's own queue
+        counters. No question text, no completion fraction, no confidence.
+        """
+        if self.conversation is None:
+            return {'schema_version':'chat-progress-v1','state':'idle','stage':None,'stage_label':None,
+                    'stages_seen':[],'stage_since_utc':None,'stage_seconds':None,'turn_seconds':None,
+                    'queue':{'waiting':0,'active':0,'capacity':None,'wait_seconds_before_refusal':None},
+                    'stage_note':'No turn has run on this workspace yet.','stages_are_facts_not_progress':True,
+                    'checked_at_utc':self.clock().isoformat() if hasattr(self,'clock') else None}
+        return self.conversation.progress()
+
     def cancel_chat(self,body):
         """Ask a running turn to stop at its next stage boundary.
 
@@ -439,7 +453,7 @@ def make_server(workspace, port=8765):
             # API path keeps the existing 404 behaviour.
             if path.startswith('/api/'):
                 known=(workspace.is_product(path) or path=='/api/conversations' or path=='/api/health'
-                       or path=='/api/languages' or path=='/api/watches'
+                       or path=='/api/languages' or path=='/api/watches' or path=='/api/chat/progress'
                        or path.startswith('/api/conversations/') or path.startswith('/api/map/static/'))
                 if not known:return self.respond(404,{'error':'Not found'})
                 if not self.authorized():return self.respond(403,{'error':'Reload this local workspace before reading stored data'})
@@ -448,6 +462,7 @@ def make_server(workspace, port=8765):
                     if path=='/api/health':return self.respond(200,workspace.health())
                     if path=='/api/languages':return self.respond(200,workspace.languages())
                     if path=='/api/watches':return self.respond(200,workspace.watches())
+                    if path=='/api/chat/progress':return self.respond(200,workspace.chat_progress())
                     if path.startswith('/api/conversations/'):return self.respond(200,workspace.conversation_transcript(path.removeprefix('/api/conversations/')))
                     if path.startswith('/api/map/static/'):
                         return self.respond(200,workspace.map_layer(path.removeprefix('/api/map/static/')),'application/geo+json')

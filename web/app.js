@@ -12,7 +12,7 @@
      how an explicit choice could be lost to inference. */
   const LANGUAGES = { loaded:false, rows:[], speakable:new Set() };
   const state = { conversationId:null, busy:false, controller:null, language:'', startedAt:0, ticker:null, ledger:null, lastSeen:null,
-                  requestId:null, cancelRequested:false };
+                  requestId:null, cancelRequested:false, stageTimer:null };
 
   /* ---------- surface state ---------- */
   function setService(text, cls) {
@@ -30,7 +30,31 @@
     ['ask','rail-toggle'].forEach(id => { const button = byId(id); if (button) button.disabled = on; });
     const fields = byId('use-fields');
     if (fields) fields.disabled = on;
-    if (on) { state.startedAt = Date.now(); startTicker(); } else { stopTicker(); }
+    if (on) { state.startedAt = Date.now(); startTicker(); startStage(); } else { stopTicker(); stopStage(); }
+  }
+  /* The engine's own checkpoints, read while a turn is in flight. This line never
+     invents a percentage or an ETA; it reports the stage and the queue as they are. */
+  function paintStage(progress) {
+    const host = byId('stage');
+    if (!host) return;
+    host.textContent = '';
+    const line = (typeof stageLine === 'function') ? stageLine(progress) : null;
+    if (!line) { host.hidden = true; return; }
+    host.hidden = false;
+    host.append(line);
+  }
+  function startStage() {
+    stopStage();
+    const read = async () => {
+      try { paintStage(await call('/api/chat/progress', { headers: tokenHeader() })); }
+      catch (error) { /* the stage line is an extra; a missing route must not fail the turn */ }
+    };
+    read();
+    state.stageTimer = setInterval(read, 900);
+  }
+  function stopStage() {
+    if (state.stageTimer) { clearInterval(state.stageTimer); state.stageTimer = null; }
+    paintStage(null);
   }
   function startTicker() {
     stopTicker();
@@ -443,8 +467,9 @@
       try {
         const packet = await call('/api/chat/cancel', jsonRequest('POST', { request_id:requestId }));
         const detail = (packet && packet.detail) || '';
+        const where = (packet && packet.stage_label) ? ' at ' + packet.stage_label.toLowerCase() : '';
         if (packet && packet.state === 'cancel_requested') {
-          append(el('div', 'Stop requested. ' + detail, 'notice is-calm'));
+          append(el('div', 'Stop requested' + where + '. ' + detail, 'notice is-calm'));
         } else if (packet && packet.state === 'not_running') {
           append(el('div', 'That turn had already finished before the stop arrived. ' + detail, 'notice is-calm'));
         } else {
@@ -462,7 +487,14 @@
     if (backdrop) backdrop.addEventListener('click', closeRail);
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape') closeRail();
-      if ((event.metaKey || event.ctrlKey) && event.key === 'k') { event.preventDefault(); const input = byId('question'); if (input) input.focus(); }
+      // Command-K belongs to the command palette (shell.js). This handler only adds a
+      // single-key shortcut that does not steal typing: "/" focuses the question box.
+      const typing = event.target && /^(INPUT|TEXTAREA|SELECT)$/.test(event.target.tagName || '');
+      if (event.key === '/' && !typing && !event.metaKey && !event.ctrlKey && !event.altKey) {
+        event.preventDefault();
+        const input = byId('question');
+        if (input) input.focus();
+      }
     });
     const newConversationButton = byId('new-conversation');
     if (newConversationButton) newConversationButton.addEventListener('click', newConversation);

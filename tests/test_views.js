@@ -237,3 +237,55 @@ assert(pre, 'The drawer holds the packet as preformatted text');
 assert(pre.textContent.indexOf('"conversation_id"') >= 0, 'The exact packet is shown, not a summary');
 assert(/not a summary|the exact packet/i.test(drawn[0].body.textContent), 'The drawer states that the packet is the rendered one, not a summary');
 console.log('PASS: the raw-packet inspector shows the exact rendered packet in the drawer');
+
+
+// 17. the stage readout reports the engine's own checkpoints and the queue as facts
+const running = context.stageLine({ state:'running', stage:'retrieving', stage_label:'Retrieving evidence',
+  stage_seconds:3.4, stages_seen:['Reading the question','Planning the tasks','Retrieving evidence'],
+  stage_note:'A stage names the work the server is in now. It is not a completion estimate.' });
+assert(running, 'A running turn produces a stage line');
+const runningText = String(running.textContent);
+assert(/Retrieving evidence/.test(runningText), 'The stage label is shown');
+assert(/3 s in this stage/.test(runningText), 'The seconds spent in the stage are shown');
+assert(/Reading the question/.test(runningText) && runningText.indexOf('\u2192') >= 0, 'The stages seen are shown in order');
+assert(!/%/.test(runningText) && !/ETA/.test(runningText), 'No percentage or ETA is invented');
+assert(context.stageLine({ state:'idle' }) === null, 'An idle engine produces no stage line');
+const waiting = context.stageLine({ state:'running', stage:'started', stage_label:'Reading the question',
+  queue:{ waiting:2, capacity:3 } });
+const waitingText = String(waiting.textContent);
+assert(/Waiting for the engine/.test(waitingText) && /2 questions ahead/.test(waitingText), 'A waiting turn reports its queue position');
+assert(/bounded at 3/.test(waitingText), 'The queue bound is stated as the gate bound');
+assert(!/%/.test(waitingText), 'A queue wait is not dressed up as progress');
+console.log('PASS: the stage readout reports checkpoints and queue position, never a percentage');
+
+
+// 18. a whole-edition reading and a cross-edition difference are both labelled as such
+const corpusPacket = {
+  schema_version:'weather-conversation-v1', conversation_id:'c', question:'What does the whole bulletin say?', status:'partial',
+  answer:'Indexed published document.', citations:[], notes:[], choices:[], charts:[], calculations:[], task_results:[],
+  facts:[],
+  whole_document:{ edition_sha256:'a'.repeat(64), passages_indexed:20, sections_indexed:6, passages_served:6, sections_served:6 },
+  edition_differences:[
+    { kind:'section_absent_from_newer', section:'FARMER ADVISORY',
+      nearer:{ issue_date:'2026-09-14', page:null, excerpt:null },
+      earlier:{ issue_date:'2026-09-10', page:2, excerpt:'Cotton sowing is advised after the dry spell ends.' },
+      note:'Both editions are retained and none is ranked: the workspace does not decide which edition is current or correct.' },
+    { kind:'section_text_differs', section:'SYNOPTIC SITUATION',
+      nearer:{ issue_date:'2026-09-14', page:1, excerpt:'A low pressure area over the Bay of Bengal is likely to bring rain.' },
+      earlier:{ issue_date:'2026-09-10', page:1, excerpt:'A western disturbance lies over the north-west.' },
+      similarity:0.21,
+      note:'Both editions are retained and none is ranked: the workspace does not decide which edition is current or correct.' }
+  ],
+  passages:[{ id:'p1', evidence_kind:'general_text', section:'FARMER ADVISORY', text:'Cotton sowing is advised.',
+              physical_page:2, issue_date:'2026-09-10', citation_ids:[] }]
+};
+const corpusCard = context.renderTurn(corpusPacket, {});
+const corpusText = String(corpusCard.textContent);
+assert(/Whole edition: 6 of 20 indexed passages/.test(corpusText), 'A whole-edition reading states how much of the edition it served');
+assert(/not its full text/.test(corpusText), 'A whole-edition reading is not presented as the full text');
+assert(/Editions compared \(2\)/.test(corpusText), 'The difference block counts the editions compared');
+assert(/FARMER ADVISORY/.test(corpusText) && /2026-09-10/.test(corpusText) && /2026-09-14/.test(corpusText), 'Both editions are named with their sections');
+assert(/not in the newer one|not print that section/.test(corpusText), 'A dropped section is described as absent, not as withdrawn');
+assert(/does not decide which edition is current/.test(corpusText), 'The workspace refuses to rank the editions');
+assert(!/corrected|superseded by|withdrawn/i.test(corpusText), 'No edition is called wrong, superseding or withdrawn');
+console.log('PASS: a whole-edition reading and a cross-edition difference are labelled, counted and never ranked');

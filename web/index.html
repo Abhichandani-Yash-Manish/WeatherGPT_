@@ -31,7 +31,7 @@
   <div class="masthead-controls">
     <button type="button" class="chip-button" id="active-place" title="The place this workspace is working with">No place selected</button>
     <span class="chip" id="freshness" title="When the active surface last read its sources">Not read yet</span>
-    <button type="button" class="ghost" id="palette-open" aria-haspopup="dialog" title="Open the command palette">⌘K</button>
+    <button type="button" class="ghost" id="palette-open" aria-haspopup="dialog" aria-label="Command palette" title="Open the command palette">⌘K</button>
     <button type="button" class="ghost" id="theme-toggle" title="Switch between day, night and system appearance">Day desk</button>
     <button type="button" class="ghost" id="notify-toggle" aria-expanded="false" aria-controls="notify-panel">Watch</button>
     <span class="chip readout" id="service-state" role="status">Starting</span>
@@ -98,6 +98,7 @@
           <form class="composer" id="ask-form">
             <div class="composer-shell">
               <label class="sr" for="question">Your question</label>
+              <p class="stage-line" id="stage" hidden></p>
               <textarea id="question" name="question" rows="1" maxlength="1500" required autocomplete="off"
                         placeholder="Will it rain in Ahmedabad tomorrow morning?"></textarea>
 

@@ -182,6 +182,34 @@ def audit():
                   if served and honest else 'A capability is missing from the served files, or the live record does not carry its measurements.',
     }
 
+    # FE08: the transparency and edition-coverage surfaces must be served and recorded.
+    conversation_source = read(ROOT / 'weathergpt_data/conversation.py')
+    corpus_source = read(ROOT / 'weathergpt_data/corpus_tools.py')
+    progress_route = "path=='/api/chat/progress'" in server_source
+    stage_host = 'id="stage"' in index
+    stage_renderer = 'function stageLine' in views and '/api/chat/progress' in app
+    stage_is_facts = ('not a completion estimate' in views
+                      and 'stages_are_facts_not_progress' in conversation_source
+                      and 'stages_are_facts_not_progress' in server_source)
+    whole_document = 'whole_document_sections' in corpus_source
+    edition_comparison = 'edition_comparison' in corpus_source and 'edition_differences' in corpus_source
+    refinement = ROOT / 'research/reviews/refinement-20260915'
+    recorded = sorted(path.name for path in refinement.glob('*.json')) if refinement.exists() else []
+    doctor = ROOT / 'scripts/doctor.py'
+    served = progress_route and stage_host and stage_renderer and whole_document and edition_comparison
+    honest = stage_is_facts and doctor.exists() and len(recorded) >= 4 and 'queue-position.json' in recorded
+    findings['FE08_transparency_and_edition_coverage'] = {
+        'state': 'resolved' if served and honest else 'reproduced',
+        'progress_route_served': progress_route, 'stage_host_present': stage_host,
+        'stage_renderer_present': stage_renderer, 'stage_states_are_facts_not_estimates': stage_is_facts,
+        'whole_document_mode': whole_document, 'edition_comparison_present': edition_comparison,
+        'doctor_command_present': doctor.exists(),
+        'recorded_live_evidence': recorded,
+        'detail': ('The stage route, the stage line, the whole-edition reading and the edition comparison are served, '
+                   'and the batch records its viewport, stage, queue, keyboard and benchmark readings.')
+                  if served and honest else 'A transparency or edition-coverage piece is missing from the served files or the record.',
+    }
+
     # A strict Content-Security-Policy forbids inline script and style.
     unsafe = []
     for name in ('index.html',):

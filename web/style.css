@@ -751,3 +751,12 @@ body { display: flex; flex-direction: column; min-height: 100vh; min-height: 100
   body { display: block; min-height: 0; }
   .suite, .surface-host, .surface, .assistant-layout, .assistant-desk, .thread { display: block; flex: none; }
 }
+
+/* 22 — the stage line: what the engine is doing, as a readout, never a progress bar.
+   Facts only: the checkpoint reached, the seconds in it, the stages seen, the queue. */
+.stage-line { margin: 0 0 7px; padding: 0 2px; font-family: var(--mono); font-size: var(--step--1); color: var(--mute); }
+.stage-line[hidden] { display: none; }
+.stage-readout { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 9px; }
+.stage-glyph { color: var(--data); }
+.stage-text { color: var(--ink-soft); font-weight: 600; letter-spacing: .01em; }
+.stage-note { color: var(--mute); }

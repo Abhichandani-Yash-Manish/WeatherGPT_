@@ -20,8 +20,9 @@ def validate_tasks(tasks,places):
             if d['topic'] not in {'general','irrigation','sowing','pest','nutrition','harvest'} or d['mode'] not in {'source_lookup','decision_support'}:raise SourceError('Unsupported bulletin request')
         if 'corpus_request' in t:
             d=t['corpus_request']
-            if t['kind']!='document' or not isinstance(d,dict) or set(d)!={'query','family','scope'}:raise SourceError('Invalid document request schema')
-            if any(not isinstance(v,str) for v in d.values()) or len(d['query'])>1500:raise SourceError('Invalid document query fields')
+            if t['kind']!='document' or not isinstance(d,dict) or not {'query','family','scope'}<=set(d) or set(d)-{'query','family','scope','whole_document'}:raise SourceError('Invalid document request schema')
+            if any(not isinstance(v,str) for k,v in d.items() if k!='whole_document') or len(d['query'])>1500:raise SourceError('Invalid document query fields')
+            if 'whole_document' in d and not isinstance(d['whole_document'],bool):raise SourceError('Invalid document request flag')
             from .document_ingest import FAMILIES
             if d['family'] and d['family'] not in FAMILIES:raise SourceError('Unknown published document family')
             if d['scope'] not in DOCUMENT_SCOPES:raise SourceError('Unsupported document scope')

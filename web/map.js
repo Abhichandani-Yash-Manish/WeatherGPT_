@@ -60,7 +60,10 @@
   }
 
   function render(options) {
-    const state = { day: 1, layers: {}, transform: { k: 1, x: 0, y: 0 }, width: 900, height: 820 };
+    // keyboardKey is the one district in the tab order: a map with 756 districts must not
+    // put 756 stops in the way, so the districts act like a grid with a roving tab stop.
+    const state = { day: 1, layers: {}, transform: { k: 1, x: 0, y: 0 }, width: 900, height: 820,
+                    keyboardKey: null, keyboardUsed: false };
     LAYERS.forEach(layer => { state.layers[layer.name] = layer.kind !== 'basins'; });
     const warningsByKey = {};
     (options.warnings || []).forEach(row => { warningsByKey[row.key] = row; });
@@ -114,6 +117,7 @@
 
     const status = el('p', undefined, 'map-status');
     wrapper.append(status);
+    wrapper.append(el('p', 'Keyboard: Tab reaches the map, arrow keys move between districts, Home and End jump to the first and last, and Enter opens the district the cursor is on. The find box selects a district by name.', 'field-note'));
 
     const project = (longitude, latitude) => {
       const x = (longitude - WINDOW.west) / (WINDOW.east - WINDOW.west) * state.width;
@@ -152,6 +156,7 @@
     }
 
     function paintStatus() {
+      state.keyboardTotal = (loaded.districts || []).length;
       const mapped = rows.length;
       const unmapped = state.unmapped || 0;
       let text = mapped + ' districts carry a warning row for this bulletin';
@@ -160,21 +165,55 @@
       const day = rows.length ? (rows[0].days[state.day - 1] || {}) : {};
       text += '. Showing day ' + state.day + (day.date_utc ? ' (' + day.date_utc + ')' : '') + '.';
       if (state.found) text += ' Selected ' + state.found + '; its polygon outline is emphasised, and its published day is unchanged.';
+      if (state.keyboardUsed && state.keyboardKey) {
+        text += ' Keyboard cursor on ' + state.keyboardKey + ' of ' + (state.keyboardTotal || 0) + ' districts; Enter opens its published day.';
+      }
       status.textContent = text;
+    }
+
+    function cursorPosition(districts) {
+      if (!districts.length) return 0;
+      let position = state.keyboardKey ? districts.findIndex(item => item.key === state.keyboardKey) : -1;
+      if (position < 0) position = districts.findIndex(item => item.key === state.found);
+      if (position < 0) position = 0;
+      state.keyboardKey = districts[position].key;
+      return position;
+    }
+
+    function moveCursor(districts, position, step) {
+      if (!districts.length) return;
+      const clamped = Math.max(0, Math.min(districts.length - 1, position + step));
+      state.keyboardKey = districts[clamped].key;
+      state.keyboardUsed = true;
+      const paths = groups.districts.querySelectorAll ? groups.districts.querySelectorAll('path.district') : [];
+      for (let index = 0; index < paths.length; index += 1) {
+        paths[index].setAttribute('tabindex', index === clamped ? '0' : '-1');
+      }
+      if (paths[clamped] && paths[clamped].focus) paths[clamped].focus();
+      paintStatus();
     }
 
     function paintDistricts() {
       const holder = groups.districts;
       holder.replaceChildren();
-      (loaded.districts || []).forEach(item => {
+      const districts = loaded.districts || [];
+      const cursor = cursorPosition(districts);
+      districts.forEach((item, position) => {
         const row = warningsByKey[item.key];
         const classes = 'district ' + warningClass(row) + (item.placeholder ? ' is-placeholder' : '') + (state.found === item.key ? ' is-found' : '');
         const label = (row ? districtLabel(row) : item.name + ': not in the warning table') +
                       (item.placeholder ? ' (the source supplies a bounding box for this district, not a coastline)' : '');
-        const path = node('path', { d: item.d, 'class': classes, tabindex: '0', role: 'button', 'aria-label': label });
+        const path = node('path', { d: item.d, 'class': classes, tabindex: position === cursor ? '0' : '-1',
+                                    role: 'button', 'aria-label': label });
         const choose = () => { if (row && options.onSelect) options.onSelect(row); };
         path.addEventListener('click', choose);
-        path.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); choose(); } });
+        path.addEventListener('keydown', event => {
+          if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); choose(); return; }
+          if (event.key === 'ArrowRight' || event.key === 'ArrowDown') { event.preventDefault(); moveCursor(districts, position, 1); return; }
+          if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') { event.preventDefault(); moveCursor(districts, position, -1); return; }
+          if (event.key === 'Home') { event.preventDefault(); moveCursor(districts, 0, 0); return; }
+          if (event.key === 'End') { event.preventDefault(); moveCursor(districts, districts.length - 1, 0); }
+        });
         const title = node('title', undefined, (row ? districtLabel(row) : (item.name || item.key) + ': no warning row for this bulletin') +
                                    (item.placeholder ? ' · source placeholder geometry (bounding box)' : ''));
         path.append(title);

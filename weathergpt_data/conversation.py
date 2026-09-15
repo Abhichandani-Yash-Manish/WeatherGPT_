@@ -17,6 +17,12 @@ from .transport import SourceError,parsed
 
 CHAT_QUEUE_CAPACITY=3
 CHAT_QUEUE_TIMEOUT=45.0
+# What the server is doing now. These are checkpoints in this engine, not a completion
+# estimate: nothing here can be turned into a percentage, an ETA or a confidence score.
+STAGE_LABELS={'started':'Reading the question','planned':'Planning the tasks','resolving':'Resolving the place',
+              'retrieving':'Retrieving evidence','assembling':'Assembling the answer','finalising':'Final check',
+              'task boundary':'Stopping at the task boundary'}
+STAGE_NOTE='A stage names the work the server is in now. It is not a completion estimate.'
 LABELS={'precipitation':'Forecast rainfall','temperature_2m':'Temperature samples','relative_humidity_2m':'Humidity samples','wind_speed_10m':'Wind samples'}
 
 
@@ -49,6 +55,12 @@ class BoundedGate:
         if not acquired:raise SourceError('The assistant has been busy longer than the queue allows. Try again shortly.')
     def release(self):
         self.lock.release()
+    def status(self):
+        """Queue facts: how many turns are waiting, whether one is running, the bound."""
+        with self.condition:
+            waiting=self.waiting
+        return {'waiting':waiting,'active':1 if self.lock.locked() else 0,
+                'capacity':self.capacity,'wait_seconds_before_refusal':self.timeout}
 GAPS={
  'warning':'I cannot yet verify a current official warning for this location. Warning validity, updates/cancellations and applicable areas must be checked; missing data does not mean there is no warning.',
  'observation':'I do not have a verified live station observation for this place. A forecast cannot establish whether it is raining there right now.',
@@ -102,12 +114,14 @@ class ConversationEngine:
         except (ValueError,TypeError,AttributeError):raise SourceError('Invalid request identifier')
         request_id=str(request_id)
         with self.cancel_lock:
-            stage=self.active.get(request_id)
-            if stage is None:
+            entry=self.active.get(request_id)
+            if entry is None:
                 return {'request_id':request_id,'state':'not_running',
                         'detail':'No turn with this identifier is running here. It may have finished before the stop arrived; nothing of it was kept back.'}
+            stage=entry.get('stage')
             self.cancelled.add(request_id)
             return {'request_id':request_id,'state':'cancel_requested','stage':stage,
+                    'stage_label':STAGE_LABELS.get(stage,stage),
                     'detail':'The server was asked to stop this turn at the next stage boundary; anything already retrieved for it is discarded.'}
 
     def check_cancelled(self):
@@ -117,10 +131,56 @@ class ConversationEngine:
 
     def _checkpoint(self,request_id,stage):
         self._local.request_id=request_id
+        now=datetime.now(timezone.utc)
         with self.cancel_lock:
-            self.active[request_id]=stage
+            entry=self.active.get(request_id) or {'request_id':request_id,'history':[],
+                                                  'started_utc':now.isoformat(),'started_monotonic':time.monotonic()}
+            entry['stage']=stage
+            if not entry['history'] or entry['history'][-1]!=stage:entry['history'].append(stage)
+            entry['since_utc']=now.isoformat()
+            entry['since_monotonic']=time.monotonic()
+            self.active[request_id]=entry
             stopped=request_id in self.cancelled
         if stopped:raise ConversationCancelled(stage)
+
+    def _stage(self,stage):
+        """Record a sub-stage on the running turn, and stop here if it was cancelled.
+
+        The task dispatcher and the forecast path call this between retrieval steps.
+        A caller with no tracked turn (an offline component check) is left alone, and
+        every recorded stage still flows through _checkpoint so one method owns the
+        vocabulary, the history and the cancellation boundary.
+        """
+        request_id=getattr(self._local,'request_id',None)
+        if not request_id:return
+        with self.cancel_lock:
+            known=request_id in self.active
+        if not known:return
+        self._checkpoint(request_id,stage)
+
+    def progress(self):
+        """What the server is doing now: the running turn's stage and the queue.
+
+        Deliberately no completion fraction, no ETA and no confidence: the stage list is
+        the engine's own checkpoints, and the queue numbers are the gate's own counters.
+        """
+        with self.cancel_lock:
+            entries=[dict(entry) for entry in self.active.values()]
+        entry=entries[-1] if entries else None
+        queue={'waiting':0,'active':0,'capacity':None,'wait_seconds_before_refusal':None}
+        if hasattr(self.gate,'status'):
+            try:queue=self.gate.status()
+            except Exception:pass
+        now=time.monotonic()
+        stage=entry.get('stage') if entry else None
+        return {'schema_version':'chat-progress-v1','state':'running' if entry else 'idle',
+                'stage':stage,'stage_label':STAGE_LABELS.get(stage,stage) if stage else None,
+                'stages_seen':[STAGE_LABELS.get(item,item) for item in (entry.get('history') if entry else [])],
+                'stage_since_utc':entry.get('since_utc') if entry else None,
+                'stage_seconds':round(now-entry['since_monotonic'],1) if entry and entry.get('since_monotonic') else None,
+                'turn_seconds':round(now-entry['started_monotonic'],1) if entry and entry.get('started_monotonic') else None,
+                'queue':queue,'stage_note':STAGE_NOTE,'stages_are_facts_not_progress':True,
+                'checked_at_utc':datetime.now(timezone.utc).isoformat()}
 
     def _forget(self,request_id):
         with self.cancel_lock:
@@ -129,7 +189,9 @@ class ConversationEngine:
 
     def _cancelled(self,body,q,request_id,stage):
         cid,state=self.state(body.get('conversation_id'))
-        readable={'started':'the first stage','planned':'planning','task boundary':'the next task boundary','finalising':'the final check'}.get(stage,stage)
+        readable={'started':'the first stage','planned':'planning','resolving':'resolving the place',
+                  'retrieving':'retrieving evidence','assembling':'assembling the answer',
+                  'task boundary':'the next task boundary','finalising':'the final check'}.get(stage,stage)
         result={'schema_version':'weather-conversation-v1','conversation_id':cid,'question':q,'status':'cancelled',
                 'answer':'You stopped waiting for this turn. The server stopped at '+readable+' and discarded anything it had retrieved for this turn. Ask again for a fresh answer.',
                 'facts':[],'citations':[],'notes':[],'choices':[],'follow_up':None,'operational_eligible':False,
@@ -219,6 +281,7 @@ class ConversationEngine:
                 result.update(status='needs_clarification',answer='The previous topic was: '+state.get('dialogue_state',{}).get('topic_summary','No weather evidence has been retrieved yet.')+' The earlier evidence is missing or expired; ask for a fresh retrieval to discuss current values.')
         elif plan.get('tasks'):
             from .task_dispatch import execute_plan
+            self._checkpoint(request_id,'resolving')
             result=execute_plan(self,result,plan,resolved,body.get('coordinates'))
         elif plan['intent']=='history':
             try:
@@ -260,6 +323,7 @@ class ConversationEngine:
         # Understanding the question's language never establishes output support.
         # An explicit selection is data the caller sends, not an instruction appended to
         # the question for the planner to read back, so it cannot be lost to inference.
+        self._checkpoint(request_id,'assembling')
         from .answer_language import deliver,target_language
         target,why=target_language(body,state,plan)
         if target and result['status'] in {'answered','explanation','partial'}:
@@ -362,6 +426,7 @@ class ConversationEngine:
         return result
 
     def resolve_points(self,result,plan,resolved,coordinates):
+        self._stage('resolving')
         places=plan['places']
         if coordinates is not None:
             from .geography import point
@@ -404,6 +469,7 @@ class ConversationEngine:
             if start<=now:start+=timedelta(hours=1)
             result['notes'].append('Only the remaining forecast period is included, starting '+start.isoformat()+'.')
         if end<=start:result.update(answer='No future hourly samples remain in that window. Should I check tomorrow?');return result
+        self._stage('retrieving')
         variables=plan['variables'] or VARIABLES
         forecast_answers=[]
         for place in points:

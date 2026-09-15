@@ -85,6 +85,19 @@ class CorpusCase(unittest.TestCase):
         self.workspace.index.publish_document(body, {'sha256': body['sha256'], 'blob': None}, checked_at, encoder=encoder)
         return body['sha256']
 
+    def multi(self, family, scope, region, issue, sections, state=None, source_id='S57'):
+        """One edition with several printed sections, published in printed order."""
+        sha = digest((family + '|' + str(region) + '|' + str(issue) + '|multi|' + '|'.join(t for _, t in sections)).encode())
+        rows = [passage(sha, family, scope, region, issue, text, section=section, source_id=source_id, page=position)
+                for position, (section, text) in enumerate(sections, start=1)]
+        body = {'sha256': sha, 'family': family, 'scope': scope, 'region': region, 'language': 'en', 'pages': len(sections),
+                'source_id': source_id, 'extraction_status': 'text_layer_extracted_reading_order_unverified',
+                'currency': 'printed_issue_differs_from_retrieval_date' if issue else 'printed_issue_not_stated',
+                'age_days': 1 if issue else None, 'quarantined_pages': [], 'passages': rows}
+        if state:
+            body['source_state'] = state
+        return body
+
     def run_corpus(self, plan, request, question='What does the document say?'):
         task = {'kind': 'document', 'operation': 'lookup', 'parameters': ['published_document'],
                 'request_quote': question, 'corpus_request': request}
@@ -239,6 +252,173 @@ class RoutingTests(unittest.TestCase):
         self.assertEqual(len(plan[0]['candidates'][0]['sources']), 9)
         for source in plan[0]['candidates'][0]['sources']:
             self.assertTrue(source['registry_status'])
+
+
+class WholeDocumentTests(CorpusCase):
+    """A question about the edition is answered from the edition's own structure."""
+
+    SECTIONS = [('SYNOPTIC SITUATION', 'A trough runs from a cyclonic circulation over the north-west.'),
+                ('RAINFALL', 'Rainfall was recorded over parts of the state.'),
+                ('GENERAL ADVICE', 'Light irrigation is advised where soil moisture is low.'),
+                ('GENERAL ADVICE', 'Young seedlings need protection from wind.'),
+                ('COASTAL WARNING', 'Storm surge warning: swell waves are likely off the coast.')]
+
+    def publish_edition(self, issue='2026-09-14'):
+        return self.publish(self.multi('state_agromet', 'state', 'Gujarat', issue, self.SECTIONS, state='Gujarat'))
+
+    def plan(self):
+        return {'places': [{'name': 'Gujarat', 'state': '', 'district': '', 'kind': 'state'}]}
+
+    def test_a_summary_question_serves_one_passage_per_printed_section_in_order(self):
+        self.publish_edition()
+        result = self.run_corpus(self.plan(), {'query': 'What does the whole Gujarat agromet bulletin say overall?',
+                                              'family': 'state_agromet', 'scope': 'state'},
+                                 question='What does the whole Gujarat agromet bulletin say overall?')
+        self.assertIsNotNone(result['whole_document'])
+        self.assertEqual(result['retrieval_coverage']['mode'], 'whole_document_sections')
+        self.assertTrue(result['retrieval_coverage']['whole_document'])
+        self.assertEqual(result['whole_document']['passages_indexed'], 5)
+        self.assertEqual(result['whole_document']['sections_indexed'], 4)
+        self.assertEqual(result['whole_document']['passages_served'], 4)
+        pages = [item['physical_page'] for item in result['passages']]
+        self.assertEqual(pages, sorted(pages), 'Sections are served in printed order')
+        self.assertEqual(len({item['section'] for item in result['passages']}), 4, 'One passage per printed section')
+        self.assertIn('one per printed section in printed order', result['answer'])
+        self.assertIn('not its full text', result['answer'])
+        self.assertIn('reference only', result['answer'])
+
+    def test_a_topic_question_is_still_keyword_retrieval(self):
+        self.publish_edition()
+        result = self.run_corpus(self.plan(), {'query': 'light irrigation soil moisture',
+                                              'family': 'state_agromet', 'scope': 'state'},
+                                 question='What is the irrigation advice?')
+        self.assertIsNone(result['whole_document'])
+        self.assertEqual(result['retrieval_coverage']['match_basis'], 'lexical_overlap')
+        self.assertFalse(result['retrieval_coverage']['whole_document'])
+
+    def test_a_summary_without_a_named_product_lists_products_instead_of_guessing(self):
+        self.publish_edition()
+        self.publish(self.multi('national_bulletin', 'national', None, '2026-09-14',
+                                [('SYNOPTIC SITUATION', 'A low pressure area lies over the Bay of Bengal.')]))
+        result = self.run_corpus({'places': []}, {'query': 'Give me the main points of the latest bulletin', 'family': '', 'scope': ''},
+                                 question='Give me the main points of the latest bulletin')
+        self.assertEqual(result['status'], 'needs_clarification')
+        self.assertIn('Name one', result['answer'])
+        self.assertIn('newest printed issue 2026-09-14', result['answer'])
+        self.assertEqual(result['retrieval_coverage']['match_basis'], 'whole_document_needs_product')
+
+
+class EditionDifferenceTests(CorpusCase):
+    """Two editions of one product are compared and named, never ranked."""
+
+    def plan(self):
+        return {'places': [{'name': 'Gujarat', 'state': '', 'district': '', 'kind': 'state'}]}
+
+    def test_a_section_the_newer_edition_dropped_is_named_not_hidden(self):
+        self.publish(self.multi('state_agromet', 'state', 'Gujarat', '2026-09-10',
+                                [('SYNOPTIC SITUATION', 'A trough runs from a cyclonic circulation over the north-west.'),
+                                 ('FARMER ADVISORY', 'Cotton sowing is advised after the dry spell ends.')], state='Gujarat'))
+        self.publish(self.multi('state_agromet', 'state', 'Gujarat', '2026-09-14',
+                                [('SYNOPTIC SITUATION', 'A trough runs from a cyclonic circulation over the north-west.'),
+                                 ('RAINFALL', 'Rainfall was recorded over parts of the state.')], state='Gujarat'))
+        result = self.run_corpus(self.plan(), {'query': 'cyclonic circulation trough', 'family': 'state_agromet', 'scope': 'state'},
+                                 question='What does the synoptic situation say?')
+        self.assertEqual(len(result['edition_differences']), 1)
+        item = result['edition_differences'][0]
+        self.assertEqual(item['kind'], 'section_absent_from_newer')
+        self.assertEqual(item['section'], 'FARMER ADVISORY')
+        self.assertEqual(item['earlier']['page'], 2)
+        self.assertIn('2026-09-10', result['answer'])
+        self.assertIn('2026-09-14', result['answer'])
+        self.assertIn('is not printed in the', result['answer'])
+        self.assertIn('not a withdrawal', result['answer'])
+        self.assertIn('does not decide which edition is current', result['answer'])
+        self.assertEqual(result['retrieval_coverage']['edition_differences'], 1)
+
+    def test_materially_different_section_text_is_shown_from_both_editions(self):
+        self.publish(self.multi('state_agromet', 'state', 'Gujarat', '2026-09-10',
+                                [('SYNOPTIC SITUATION', 'A western disturbance lies over the north-west; dry weather is expected.')],
+                                state='Gujarat'))
+        self.publish(self.multi('state_agromet', 'state', 'Gujarat', '2026-09-14',
+                                [('SYNOPTIC SITUATION', 'A low pressure area over the Bay of Bengal is likely to bring rain to the coast.')],
+                                state='Gujarat'))
+        result = self.run_corpus(self.plan(), {'query': 'low pressure area Bay of Bengal coast', 'family': 'state_agromet', 'scope': 'state'},
+                                 question='What does the synoptic situation say?')
+        self.assertEqual(len(result['edition_differences']), 1)
+        item = result['edition_differences'][0]
+        self.assertEqual(item['kind'], 'section_text_differs')
+        self.assertLess(item['similarity'], 0.62)
+        self.assertIn('differs materially between the', result['answer'])
+        self.assertIn('Both editions are retained and none is ranked', result['answer'])
+
+    def test_a_change_question_with_one_edition_says_exactly_that(self):
+        self.publish(self.multi('state_agromet', 'state', 'Gujarat', '2026-09-14',
+                                [('SYNOPTIC SITUATION', 'A trough runs from a cyclonic circulation over the north-west.')],
+                                state='Gujarat'))
+        result = self.run_corpus(self.plan(), {'query': 'What changed in the Gujarat agromet bulletin?',
+                                              'family': 'state_agromet', 'scope': 'state'},
+                                 question='What changed in the Gujarat agromet bulletin?')
+        self.assertEqual(result['edition_differences'], [])
+        self.assertEqual(result['edition_comparison']['state'], 'single_edition_indexed')
+        self.assertEqual(result['edition_comparison']['newest_issue'], '2026-09-14')
+        self.assertEqual(result['retrieval_coverage']['edition_comparison'], 'single_edition_indexed')
+        self.assertEqual(result['retrieval_coverage']['editions_indexed_for_this_product'], 1)
+        self.assertIn('no earlier edition can be compared', result['answer'])
+        self.assertIn('not a statement that nothing changed', result['answer'])
+
+    def test_two_editions_report_a_comparison_state_not_a_single_edition_state(self):
+        self.publish(self.multi('state_agromet', 'state', 'Gujarat', '2026-09-10',
+                                [('SYNOPTIC SITUATION', 'A western disturbance lies over the north-west.')], state='Gujarat'))
+        self.publish(self.multi('state_agromet', 'state', 'Gujarat', '2026-09-14',
+                                [('SYNOPTIC SITUATION', 'A low pressure area lies over the Bay of Bengal.')], state='Gujarat'))
+        result = self.run_corpus(self.plan(), {'query': 'What changed in the Gujarat agromet bulletin?',
+                                              'family': 'state_agromet', 'scope': 'state'},
+                                 question='What changed in the Gujarat agromet bulletin?')
+        self.assertEqual(result['edition_comparison']['state'], 'compared')
+        self.assertEqual(result['edition_comparison']['editions_indexed'], 2)
+        self.assertNotIn('no earlier edition can be compared', result['answer'])
+
+    def test_one_edition_reports_no_comparison(self):
+        self.publish(self.multi('state_agromet', 'state', 'Gujarat', '2026-09-14',
+                                [('SYNOPTIC SITUATION', 'A trough runs from a cyclonic circulation over the north-west.')],
+                                state='Gujarat'))
+        result = self.run_corpus(self.plan(), {'query': 'cyclonic circulation trough', 'family': 'state_agromet', 'scope': 'state'},
+                                 question='What does the synoptic situation say?')
+        self.assertEqual(result['edition_differences'], [])
+        self.assertNotIn('Editions compared', result['answer'])
+
+
+
+
+class TaskMergeTests(CorpusCase):
+    """The corpus reading travels with the passages into the turn result."""
+
+    def test_the_whole_document_reading_and_comparison_reach_the_turn(self):
+        from weathergpt_data.task_dispatch import execute_plan
+        self.publish(self.multi('state_agromet', 'state', 'Gujarat', '2026-09-10',
+                                [('SYNOPTIC SITUATION', 'A western disturbance lies over the north-west.')], state='Gujarat'))
+        self.publish(self.multi('state_agromet', 'state', 'Gujarat', '2026-09-14',
+                                [('SYNOPTIC SITUATION', 'A low pressure area lies over the Bay of Bengal.'),
+                                 ('RAINFALL', 'Rainfall was recorded over parts of the state.')], state='Gujarat'))
+        plan = {'places': [{'name': 'Gujarat', 'state': '', 'district': '', 'kind': 'state'}], 'tasks': [
+            {'kind': 'document', 'operation': 'lookup', 'parameters': ['published_document'],
+             'place_indices': [0], 'years': [], 'period': 'sep', 'start_local': '', 'end_local': '',
+             'request_quote': 'What changed overall?',
+             'corpus_request': {'query': 'What changed in the whole Gujarat agromet bulletin?',
+                                'family': 'state_agromet', 'scope': 'state'}}],
+            'variables': [], 'assumptions': [], 'clarification': None}
+        result = {'question': 'What changed in the whole Gujarat agromet bulletin?', 'plan': plan,
+                  'trace': {'tools': [], 'generation': None}, 'facts': [], 'citations': [],
+                  'task_results': [], 'charts': [], 'calculations': [], 'passages': [], 'document_evidence': [],
+                  'airport_reports': [], 'warning_evidence': [], 'pending_slots': [], 'retrieval_coverage': [],
+                  'notes': [], 'choices': [], 'status': 'needs_clarification', 'answer': ''}
+        outcome = execute_plan(self.engine, result, plan, {}, None)
+        self.assertTrue(outcome['whole_document'], 'the whole-document reading reaches the turn result')
+        self.assertEqual(outcome['whole_document']['passages_indexed'], 2)
+        self.assertEqual(outcome['edition_comparison']['state'], 'compared')
+        self.assertEqual(len(outcome['edition_differences']), 1)
+        self.assertEqual(outcome['edition_differences'][0]['kind'], 'section_text_differs')
+        self.assertTrue(any(entry.get('whole_document') for entry in outcome['retrieval_coverage']))
 
 
 if __name__ == '__main__':
