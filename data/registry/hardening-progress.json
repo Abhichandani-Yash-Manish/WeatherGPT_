@@ -1,7 +1,7 @@
 {
   "schema_version": "hardening-progress-v1",
   "review": "research/reviews/national-readiness-20260912/review.md",
-  "updated_at_utc": "2026-09-15T03:50:19+00:00",
+  "updated_at_utc": "2026-09-15T04:03:26+00:00",
   "operational_ready": false,
   "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
   "findings": [
@@ -1054,6 +1054,41 @@
       "The holdout has now been read twice (docs/45 and here), so it is no longer sealed; fresh holdout cases are required before claiming generalisation.",
       "One current-clock run each; no replay, load or cross-machine measurement.",
       "Twenty-one declared cases are not the whole problem statement: WS4-WS9 remain open."
+    ]
+  },
+  "product_comparison_batch": {
+    "report": "docs/49-engine-architecture-and-gap-analysis.md",
+    "evidence_directory": "research/implementation/product-comparison-20260915",
+    "operational_ready": false,
+    "scope": "Cross-product comparison in one answer (official district warning days against model forecast facts, and a published rain statement against the forecast), clause-by-clause planning of compound questions with place inheritance, and a rendered comparison block that names both products and refuses to rank them.",
+    "automated_tests": 705,
+    "javascript_component_checks": 61,
+    "measured": {
+      "live_journey": {
+        "question": "Will it rain in Patna, Bihar tomorrow, and is there any warning?",
+        "tasks": [
+          "forecast/lookup",
+          "warning/lookup"
+        ],
+        "comparison_items": 1,
+        "reading": "consistent",
+        "products": [
+          "S15 IMD district warning product",
+          "S21 Model forecast"
+        ]
+      },
+      "comparison_readings_supported": [
+        "consistent",
+        "differ",
+        "not_comparable"
+      ],
+      "quiet_day_compared": false,
+      "score_or_confidence_produced": false
+    },
+    "limitations": [
+      "The comparison states agreement or disagreement; it never decides which product is right.",
+      "It runs only when one turn retrieves two comparable products; a single-product answer carries none.",
+      "No live bulletin-versus-forecast comparison has been recorded yet; that path is pinned by component checks only."
     ]
   }
 }

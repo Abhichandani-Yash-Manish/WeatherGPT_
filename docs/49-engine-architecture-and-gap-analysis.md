@@ -187,3 +187,55 @@ return unavailable with no facts, which is the behaviour they exist to check.
   again; until then, treat 4/4 as one measured pass, not as proof of unseen-case performance.
 - Twenty-one cases are not 100% of the problem statement. Sections 1 and 4 of this document
   remain the coverage matrix; WS4-WS9 are untouched by this round.
+
+
+## Round 3 — WS4: two products in one answer, compared and never ranked
+
+The product answered one task at a time. A person asking "will it rain tomorrow, and is there a
+warning?" got two blocks stapled together and had to reconcile them; nothing said where the
+official product and the model forecast agreed or disagreed, and the planner could not even
+plan both questions from one sentence.
+
+| Landed | Where | Evidence |
+|---|---|---|
+| Compound questions are planned clause by clause: a question with two requests becomes two tasks, and a clause that names no place of its own is read as being about the place the question named | weathergpt_data/rule_planner.py | tests/test_providers.py - compound planning and the inherited place; a two-place question is left to a model rather than silently shortened |
+| A deterministic comparison of the products a turn actually retrieved: official district warning days against model forecast facts, and a published rain statement against the forecast | weathergpt_data/comparison.py | tests/test_comparison.py - nine checks: consistent, differ, a quiet day (never compared as no rain), a hazard the forecast does not measure, non-overlapping windows, a bulletin-versus-forecast pair, the four-item cap, and the absence of any score, confidence or all-clear language |
+| The comparison is part of the answer: a sentence in the answer text, a "Products compared" block rendered in the open, and the structured items in the packet for the receipt | weathergpt_data/conversation.py, web/views.js | tests/test_views.js - the block names both source ids, the reading and the refusal to rank; live journey below |
+
+### The live journey
+
+Question: "Will it rain in Patna, Bihar tomorrow, and is there any warning?"
+
+- Planned as two tasks by rules: forecast/lookup and warning/lookup, both on Patna.
+- Task 1 answered: Patna, 16 Sep, 00:30-17 Sep 00:30 IST, forecast precipitation 0.0-0.5 mm, source S21.
+- Task 2 answered: IMD district warning for PATNA, bulletin of 15 Sep 2026 05:30 IST, day 1
+  yellow - Thunderstorm/lightning/squall, with the CAP relay assessment and its limits.
+- **Products compared (1)**: Patna, 16 Sep 2026 - S15 IMD district warning product
+  (yellow - Thunderstorm/lightning/squall) and S21 Model forecast (rainfall 0.5 mm across 2
+  forecast values); reading **consistent** - both name rain in this window; and the standing
+  note that both products are named, neither is ranked, a comparison is not a score or a skill
+  measurement, and a quiet day is not a forecast of no rain.
+
+Evidence: research/implementation/product-comparison-20260915/ - the rendered block, the full
+answer, and the packet readings. A duplicate question in the same conversation produced a stored
+turn, which is what the rail shows.
+
+### What this does and does not establish
+
+- It establishes that two different products can speak about the same window in one answer, that
+  the agreement or disagreement is stated in words the reader can check, and that no score,
+  ranking, confidence or all-clear is produced from a comparison.
+- It does not establish which product is right, and it never will: the official product speaks
+  about warnings, the model forecast about modelled values, and the comparison says so.
+- The comparison only runs when a turn retrieved at least two of these products. A single-product
+  answer carries no comparison, which is correct and tested.
+- Nothing here closes the alert journey (WS5) or the PS coverage matrix: it is one workstream step.
+
+### The declared benchmark after the change
+
+The same development and holdout sets were re-run after this work landed
+(research/reviews/acceptance-benchmark-20260915j): **development 18/18 and holdout 4/4** again,
+with no missing task, no shape mismatch, no prohibited claim and no abstained turn. The
+compound-planning and comparison changes therefore did not regress the cases that round 2
+closed. The holdout caveat from round 2 stands: it has been read before, so this is another
+pass, not unseen-case proof.
