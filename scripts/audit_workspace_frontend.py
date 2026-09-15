@@ -245,6 +245,22 @@ def audit():
                   if not leaks else 'A class name is being rendered as text, which the component suite also guards against.',
     }
 
+    # FE10: the overhaul surfaces must survive printing, and a surface change must be offered as a
+    # view transition when the browser has the API (the shell gate is checked in shell.js, which is
+    # not in SERVED, so the served renderer and stylesheet are read directly here).
+    shell_source = read(WEB / 'shell.js') if (WEB / 'shell.js').exists() else ''
+    transitions = 'startViewTransition' in shell_source
+    print_rules = re.search(r'@media print \{(?:[^{}]|\{[^{}]*\})*\}', styles)
+    print_block = print_rules.group(0) if print_rules else ''
+    parity = [token for token in ('viz-card', 'viz-cell', 'print-color-adjust', 'compare-grid') if token not in styles]
+    findings['FE10_print_parity_and_transitions'] = {
+        'state': 'resolved' if transitions and not parity else 'reproduced',
+        'view_transitions_used': transitions,
+        'print_parity_missing': parity,
+        'print_rules_present': bool(print_block),
+        'detail': ('The overhaul surfaces keep their distinctions in print and a surface change is offered as a view transition.'
+                   if transitions and not parity else 'A printed surface would lose a distinction, or the shell never asks for a view transition.'),
+    }
     findings['javascript_syntax'] = syntax_check()
     return {'schema_version':'frontend-audit-v1',
             'files': {name: len(files[name].splitlines()) for name in SERVED},

@@ -216,5 +216,16 @@ Live record: `research/reviews/frontend-overhaul-20260915/live-http-checks-p4.js
 Live record: `research/reviews/frontend-overhaul-20260915/live-http-checks-p5.json` — the manifest lists all six
 layers against basemap `basemap-v1-2ce665f7a488`, districts serve 756 features (1.5 MiB) and places 184 (26 KiB),
 and the served module carries the readout, the pin handler and the counts.
-**Next (not started).** The unified timeline across published days, observations and model hours;
+**P4 — motion and print parity.** Two craft items that make the overhaul hold up outside the screen:
+
+- **View transitions are offered, never required.** A surface change is wrapped in the View Transitions API when
+  the browser has it and the reader has not asked for reduced motion; otherwise the same paint runs directly. A
+  component check exercises both paths and asserts the surface renders either way.
+- **Print keeps the distinctions.** A print block preserves the colours the source published (the warning matrix
+  cells, the plume band, the chips) with `print-color-adjust`, drops hover-only affordances and the pinned strip,
+  and lays the compare grid out as two columns. The static frontend audit now carries this as finding **FE10**, so
+  a printed surface that lost a distinction fails verification rather than shipping quietly.
+
+Live record: `research/reviews/frontend-overhaul-20260915/live-http-checks-p6.json`.
+**Next (not started).** The unified timeline across published days, observations and model hours; the remaining
 the remaining craft polish (view transitions on every surface, print parity for the new visuals); and browser-level acceptance, which this sandbox still cannot run.

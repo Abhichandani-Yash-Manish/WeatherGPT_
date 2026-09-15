@@ -928,3 +928,16 @@ body { display: flex; flex-direction: column; min-height: 100vh; min-height: 100
 .map-counts { font-size: var(--step--1); color: var(--mute); width: 100%; }
 .map-frame .place.is-pinnable { cursor: pointer; }
 .map-frame .place.is-pinnable:hover { stroke: var(--data); stroke-width: 2; }
+
+/* 20 — print parity for the overhaul surfaces ---------------------------------
+   What a reader prints must carry the same distinctions as what they see: the warning colours the
+   source printed, the plume band, the matrix cells and the library cards. Ink-friendly means no dark
+   panels and no hover-only affordances, not the loss of a colour that was published. */
+@media print {
+  .viz, .viz-now, .viz-card, .viz-matrix, .compare-column, .map-frame, .receipt { break-inside: avoid; box-shadow: none; }
+  .viz-hit, .map-readout, .pinned-place { display: none !important; }
+  .viz-frame, .viz-card, .viz-cell, .wchip { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .viz-cell { border: 1px solid #444 !important; }
+  .viz-card-chip, .viz-method, .viz-note, .viz-readout { color: #333 !important; }
+  .compare-grid { grid-template-columns: 1fr 1fr; }
+}

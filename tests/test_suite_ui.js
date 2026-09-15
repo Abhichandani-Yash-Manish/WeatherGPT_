@@ -494,6 +494,15 @@ async function run() {
   assert.equal(palette.hidden, true, 'running an item closes the palette');
   console.log('PASS: the command palette lists surfaces, places and recents and runs the chosen item');
 
+  let transitions = 0;
+  h.document.startViewTransition = fn => { transitions += 1; fn(); };
+  h.api().render();
+  assert.equal(transitions, 1, 'a surface change is offered as a view transition when the browser has the API');
+  delete h.document.startViewTransition;
+  h.api().render();
+  assert.equal(transitions, 1, 'without the API the surface still renders, with no transition attempted');
+  console.log('PASS: view transitions are offered when available and never required');
+
   const memory = h.api();
   memory.pinPlace({ label: 'Kochi, Kerala', latitude: 9.93, longitude: 76.27 });
   assert(memory.pinnedPlaces().some(item => item.label === 'Kochi, Kerala'), 'a pinned place is remembered locally');

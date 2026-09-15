@@ -1,0 +1,35 @@
+{
+  "schema_version": "frontend-overhaul-live-http-v1",
+  "batch": "P4 motion and print parity",
+  "checked_at_utc": "2026-09-15T18:02:21+00:00",
+  "base": "http://127.0.0.1:8795",
+  "method": "Loopback HTTP against a fresh workspace process, plus the static audit finding that guards the printed surface. No DOM rendering: the session sandbox cannot launch Chrome.",
+  "checks": [
+    {
+      "check": "page token",
+      "status": 200,
+      "ms": 5,
+      "token_present": true
+    },
+    {
+      "check": "the shell offers a view transition and never requires it",
+      "path": "/shell.js",
+      "status": 200,
+      "ms": 1,
+      "start_view_transition": true,
+      "reduced_motion_gate": true,
+      "paint_fallback": true
+    },
+    {
+      "check": "the stylesheet carries print parity for the overhaul surfaces",
+      "path": "/style.css",
+      "status": 200,
+      "ms": 0,
+      "print_blocks": 3,
+      "color_adjust": true,
+      "viz_cards": true,
+      "viz_cells": true,
+      "compare_grid": true
+    }
+  ]
+}

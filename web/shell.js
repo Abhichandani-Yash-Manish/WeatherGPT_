@@ -477,7 +477,7 @@ const WG = window.WG;
     });
     WG.state.view = name;
   }
-  function render() {
+  function paintView() {
     const name = currentView();
     if (WG.state.view !== name && typeof window.scrollTo === 'function') window.scrollTo(0, 0);
     WG.state.freshness = null;
@@ -510,6 +510,18 @@ const WG = window.WG;
       retry.addEventListener('click', render);
       panel.append(retry);
     });
+  }
+  /* A view transition is offered only when the browser has the API and the reader has not asked for
+     reduced motion. It shows that one surface replaced another; it never delays a read, and the
+     paint happens inside the callback either way. */
+  function render() {
+    const reduce = typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduce && typeof document.startViewTransition === 'function') {
+      document.startViewTransition(() => paintView());
+      return;
+    }
+    paintView();
   }
   function wireRouter() {
     window.addEventListener('hashchange', render);
@@ -1300,6 +1312,7 @@ const WG = window.WG;
   WG.closeDrawer = closeDrawer;
   WG.setPlace = setPlace;
   WG.render = render;
+  WG.paintView = paintView;
   WG.freshness = freshness;
   WG.VIEWS = VIEWS;
   WG.VIEW_SHORTCUTS = VIEW_SHORTCUTS;

@@ -78,6 +78,8 @@ a printed issue date — never from decoration.
 | `compare-column` | One place per column, each with its own timestamps and sources. No difference, ranking or average is computed between columns. |
 | `map-readout` | A live line under the map. Districts read out their published day and hazard wording; cities read out their coordinates and say that selecting one sets the working place. |
 | `city-pin` | Selecting a city sets the working place at the coordinates the vendored geometry carries — never at a projected or rounded guess. |
+| `view-transition` | Offered when the browser has the API and reduced motion is not requested. The paint runs inside the callback either way, so a missing API is not a missing surface. |
+| `@media print` | A printed answer keeps the source colours it was given (`print-color-adjust`), drops hover-only controls, and never turns a coloured cell into an unmarked one. |
 
 ## Chart language (`viz.js`)
 
