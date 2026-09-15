@@ -1,0 +1,34 @@
+{
+  "baseline_upstream": "63fed4f",
+  "python": "1017 passed, 3 warnings in 46.21s",
+  "javascript_suites": 8,
+  "verification_steps": 24,
+  "verification_failed": 0,
+  "development": {
+    "scorer": "v2",
+    "cases": 17,
+    "turns": 19,
+    "declared_tasks": 18,
+    "outcomes": {
+      "completed": 18
+    },
+    "critical_failures": [],
+    "median_wall_seconds": 0.16,
+    "maximum_wall_seconds": 11.15,
+    "not_a_representative_benchmark": true
+  },
+  "source_ledger": {
+    "registered": 69,
+    "connected_and_wired_to_chat": 28,
+    "access_blocked": 15
+  },
+  "language_ledger": {
+    "write_verified": 19,
+    "speak_verified": 10,
+    "hear_verified": 10,
+    "declared": 23,
+    "native_speaker_review": false
+  },
+  "operational_ready": false,
+  "hosting_performed": false
+}

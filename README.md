@@ -6,6 +6,18 @@ Nationwide and specialist **operational acceptance is not achieved**. This is an
 
 ![The workspace answering a point forecast](research/reviews/frontend-v2-20260915/after/surface-assistant.png)
 
+## Current project status
+
+See [the integrated PS assessment](docs/72-integrated-status-and-ps-review.md) for the current requirement-by-requirement verdict, release checks and remaining acceptance gates. Earlier batch numbers below describe their own checkpoints.
+
+## Unified workspace
+
+The app now opens on a place-centered workspace: separately dated warning, observation and forecast readings,
+fifteen searchable tools with guided question previews, and direct access to saved briefs and plans.
+Air quality now uses the same guided entry point and plots its hourly evidence. Model comparison, bulletin retrieval and a warning brief saved, reopened and exported were checked in the
+browser. Slow source reads remain a practical limit. See [the product audit and acceptance record](docs/71-unified-user-workspace.md).
+Restart an older serving process to load current backend routes; changing files alone does not update it.
+
 ## Run it
 
 ```sh
@@ -61,7 +73,7 @@ The interface states these limits rather than filling the gaps:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 1004 Python tests
+python3 -m pytest tests/ -q                          # 1017 Python tests
 node tests/test_charts.js                            #  2 of 70 component checks
 node tests/test_views.js                             # 18
 node tests/test_bulletin_ui.js                       #  6
@@ -69,6 +81,7 @@ node tests/test_conversation_ui.js                   # 13
 node tests/test_suite_ui.js                          # 18
 node tests/test_voice_ui.js                          #  3
 node tests/test_briefcase_ui.js                     # 10
+node tests/test_workspace_ui.js                     # workspace behaviour and recovery
 python3 scripts/doctor.py                            # environment, providers and corpus presence
 python3 scripts/models.py --check                    # the rules-first floor and the configured providers
 python3 scripts/models.py --probe-free               # the curated free ranking measured against the live catalogue
@@ -129,7 +142,7 @@ recorded journeys, with what is fast and what is still slow.
 - [Machine-readable product plan](data/registry/product-progress.json) and [living hardening checklist](data/registry/hardening-progress.json) — stage and finding status.
 - [RAG readiness decision](data/registry/rag-readiness.json) and [source registry](data/registry/README.md).
 
-Known-open highlights: **P11** (a bounded queue and stage-boundary cancellation now exist; there is still no stage streaming or queue position, and cancellation cannot interrupt a model call already in flight), **P10** (collection is request-driven and narrow), **P12** (a declared benchmark now runs: 17 development cases at 100% declared-task completion and 4 holdout cases at 4/4 in one current-clock pass after the plan-quality repairs; the holdout has been read twice, so it is no longer sealed and the set is still far below the docs/14 scale), **P13** (mobile acceptance), **P14** (packaging), plus engine findings A01 for paraphrase/repeat coverage, A04 for dated place/district aliases, and A07 for progress accounting. The indexed national corpus is now reachable from chat (A06, scoped) and the district family with it; reading coverage now spans 18 of 23 languages for day, part-of-day and measure words, with Bodo, Kashmiri, Maithili, Manipuri and Santali recorded as unread and Marathi/Tamil inflected place names confirmed by asking; full-document recall, held layouts, cross-edition contradiction handling and forecast-skill evaluation remain open. The living gap list is [docs/31](docs/31-full-solution-gap-register.md).
+Known-open priorities: reliable warning lifecycle and delivery, representative multi-turn and multi-parameter acceptance, native-speaker and noisy-audio review, mobile journeys, dated geographic crosswalks, document applicability and sustained service operation. The bounded queue, stage progress, local plan watcher and browser inbox are implemented in scope; they are not evidence of dependable unattended warning delivery. Earlier development and holdout scores are historical and use different scorer versions. See [the current PS review](docs/72-integrated-status-and-ps-review.md) and [the chronological gap record](docs/31-full-solution-gap-register.md).
 
 ## Milestones, newest first
 

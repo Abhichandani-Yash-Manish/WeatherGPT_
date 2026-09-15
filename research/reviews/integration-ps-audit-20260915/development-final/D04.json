@@ -1,0 +1,47 @@
+{
+  "id": "D04",
+  "domain": "history",
+  "turns": [
+    {
+      "question": "What was India's rainfall and mean temperature in 2024?",
+      "status": "answered",
+      "status_allowed": true,
+      "task_shape_matches": false,
+      "tasks": [
+        {
+          "declared": {
+            "kind": "history",
+            "operation": "lookup",
+            "parameters": [
+              "rainfall"
+            ]
+          },
+          "outcome": "completed",
+          "executed_status": "answered",
+          "missing_execution_parameters": []
+        },
+        {
+          "declared": {
+            "kind": "history",
+            "operation": "lookup",
+            "parameters": [
+              "temperature"
+            ]
+          },
+          "outcome": "missing",
+          "executed_status": null,
+          "missing_execution_parameters": [
+            "temperature"
+          ]
+        }
+      ],
+      "answered_language": null,
+      "language_trace": null,
+      "prohibited_hits": [],
+      "abstained": false,
+      "duration_s": 6.551,
+      "turn": 1,
+      "wall_s": 6.55
+    }
+  ]
+}
