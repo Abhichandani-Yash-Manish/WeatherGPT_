@@ -43,6 +43,11 @@ def execute_plan(engine,result,plan,resolved,coordinates):
                 packet=copy.deepcopy({k:v for k,v in result.items() if k not in {'task_results','charts','calculations','passages','document_evidence','airport_reports','warning_evidence','pending_slots','retrieval_coverage'}})
                 packet.update(facts=[],citations=[],choices=[],notes=[],answer='',plan=sub,status='needs_clarification',follow_up=None,expires_at_utc=None,trace={'tools':[],'generation':None})
                 packet=execute_ensemble(engine,packet,sub,task,resolved,coordinates)
+            elif task['kind']=='air_quality':
+                from .air_quality_tasks import execute_air_quality
+                packet=copy.deepcopy({k:v for k,v in result.items() if k not in {'task_results','charts','calculations','passages','document_evidence','airport_reports','warning_evidence','pending_slots','retrieval_coverage'}})
+                packet.update(facts=[],citations=[],choices=[],notes=[],answer='',plan=sub,status='needs_clarification',follow_up=None,expires_at_utc=None,trace={'tools':[],'generation':None})
+                packet=execute_air_quality(engine,packet,sub,task,resolved,coordinates)
             elif task['kind'] in {'marine','river'}:
                 from .specialist_tasks import execute_specialist
                 packet=copy.deepcopy({k:v for k,v in result.items() if k not in {'task_results','charts','calculations','passages','document_evidence','airport_reports','warning_evidence','pending_slots','retrieval_coverage'}})

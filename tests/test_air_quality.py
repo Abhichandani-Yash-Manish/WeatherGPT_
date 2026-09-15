@@ -2,6 +2,7 @@
 import unittest
 from datetime import datetime, timezone
 
+import test_conversation as fixtures
 from weathergpt_data.adapters import AIR_QUALITY, air_quality
 from weathergpt_data.transport import SourceError
 
@@ -176,6 +177,54 @@ class ProductViewTests(unittest.TestCase):
         with self.assertRaises(SourceError):
             product_api.dispatch(self.foundation_with(body), '/api/air-quality',
                                  {'lat': ['23.0'], 'lon': ['72.6'], 'variable': ['pm1']})
+
+
+class AirQualityChatTests(unittest.TestCase):
+    setUp = fixtures.ConversationTests.setUp
+    publish = fixtures.ConversationTests.publish
+    add_place = fixtures.ConversationTests.add_place
+    ask = fixtures.ConversationTests.ask
+    chat = fixtures.ConversationTests.chat
+
+    def packet(self):
+        from datetime import date, datetime as dt
+        meta = {'source_id': 'S69', 'sha256': 'd' * 64,
+                'url': 'https://air-quality-api.open-meteo.com/v1/air-quality?hourly=pm2_5',
+                'retrieved_at_utc': '2026-09-15T00:00:00+00:00', 'delivery': 'network'}
+        times = hours(24, start=dt(2026, 9, 15, tzinfo=UTC))
+        body = payload({'pm2_5': [10.0 + (index % 5) for index in range(24)],
+                        'us_aqi': [50 + index for index in range(24)]}, times=times,
+                       current={'time': times[0], 'interval': 3600, 'pm2_5': 12.0, 'us_aqi': 55})
+        return air_quality(body, meta, {'pm2_5': AIR_QUALITY['pm2_5'], 'us_aqi': AIR_QUALITY['us_aqi']},
+                           POINT, expected_dates=(date(2026, 9, 15), date(2026, 9, 15)))
+
+    def test_an_air_quality_question_answers_without_health_advice(self):
+        from unittest.mock import patch
+        from test_product_stage_one import task
+        question = 'What is the air quality in Ahmedabad tomorrow?'
+        self.model.value['tasks'] = [task(kind='air_quality', operation='lookup', parameters=['pm2_5', 'us_aqi'],
+                                          years=[], start_local='2026-09-15T00:00:00+05:30',
+                                          end_local='2026-09-16T00:00:00+05:30', request_quote=question)]
+        with patch('weathergpt_data.foundation.Foundation.air_quality', return_value=self.packet()):
+            r = self.chat(question=question)
+        self.assertEqual(r['status'], 'answered', r['answer'])
+        parameters = {fact['parameter'] for fact in r['facts']}
+        self.assertIn('pm2_5', parameters)
+        self.assertIn('us_aqi_current', parameters)
+        self.assertTrue(any('source\'s own index' in note for note in r['notes']))
+        self.assertFalse(r['operational_eligible'])
+
+    def test_an_air_quality_fetch_failure_is_recorded_not_invented(self):
+        from unittest.mock import patch
+        from test_product_stage_one import task
+        question = 'What is the air quality in Ahmedabad tomorrow?'
+        self.model.value['tasks'] = [task(kind='air_quality', operation='lookup', parameters=['pm2_5'],
+                                          years=[], start_local='2026-09-15T00:00:00+05:30',
+                                          end_local='2026-09-16T00:00:00+05:30', request_quote=question)]
+        with patch('weathergpt_data.foundation.Foundation.air_quality', side_effect=SourceError('offline')):
+            r = self.chat(question=question)
+        self.assertEqual(r['status'], 'unavailable')
+        self.assertFalse(r['facts'])
 
 
 if __name__ == '__main__':

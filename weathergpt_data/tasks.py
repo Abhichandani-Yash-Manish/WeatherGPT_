@@ -1,7 +1,7 @@
 """Bounded, explicit requested operations; no executable SQL, URLs or inferred data."""
 from datetime import datetime,timedelta
 from .transport import SourceError
-KINDS=['forecast','history','travel','agriculture','warning','observation','research','explanation','aviation','marine','river','document','ensemble']
+KINDS=['forecast','history','travel','agriculture','warning','observation','research','explanation','aviation','marine','river','document','ensemble','air_quality']
 OPERATIONS=['lookup','compare','series','trend','daily','timeline','onset','crosscheck']
 PERIODS=['annual','jf','mam','jjas','ond','jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec']
 FIELDS={'kind','operation','parameters','years','period','start_local','end_local','place_indices'}
