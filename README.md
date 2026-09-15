@@ -81,8 +81,23 @@ The component checks run against a small DOM shim, so they are **not** browser, 
 
 Real journeys are recorded with screenshots in [the frontend batch evidence](research/reviews/frontend-v2-20260915/after/live-checks.json), which also carries ten automated accessibility scans and the viewport measurements quoted in [docs/46](docs/46-frontend-instrument-desk.md). The suite counts are not a completion measure.
 
+## What it feels like to use
+
+Open the workspace, and it shows the working place, the published district warning days, and a composer asking
+*What is it like right now in Ahmedabad?*. Answering that leads with the freshest station report (name,
+distance, age), then the published district day with its issue instant and source, then the next six model
+hours, then one line naming what is not connected. Follow up in the same conversation with *and what about the
+afternoon?* and only the window changes. Ask *Is any warning in force for Patna, Bihar today?* and the answer's
+actions offer **Write the alert brief** and **Save to briefcase**; ask about a district agromet advisory and
+they offer **Write the advisory brief**; any answer with a point offers **Right now here** and **Write a
+briefing**, which writes a dated briefing into the local series. Every answer also shows *What was retrieved,
+and what is missing*: the pending questions, the search counts, the editions read with their printed issue dates
+and currency, and the source of every value. [docs/63](docs/63-product-walkthrough.md) walks the thirteen
+recorded journeys, with what is fast and what is still slow.
+
 ## Status and open work
 
+- [The product, walked through](docs/63-product-walkthrough.md) - thirteen recorded journeys with what a user gets in five minutes, the rebuilt first-run screen, and the honest list of what is still slow or unconnected.
 - [The chat surface and the key you paste](docs/62-chat-surface-and-provider-ux.md) - the audit that found a whole-turn renderer crash, the artefact actions now wired into the conversation, three place and freshness defects fixed, and the one-command OpenRouter key flow with a ranked free-model list.
 - [State agromet coverage](docs/60-state-agromet-coverage.md) - a 22-centre sweep that took state coverage from one edition to five, the sixteen centres that answer 404, and the marker defect that would have accepted any PDF as a bulletin.
 - [Paraphrase robustness](docs/59-paraphrase-robustness.md) - 38 deterministic variants over eleven declared shapes, the eight repairs that took the held rate from 25/34 to 38/38, and the honest note that this is a development set, not generalisation.

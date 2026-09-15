@@ -1024,9 +1024,12 @@ function renderWelcome(handlers) {
   box.append(el('h1', 'Ask about a place and a time.'));
   box.append(el('p', 'Ask in your own words and follow up in the same conversation. WeatherGPT resolves the place, retrieves the evidence, and keeps the source, the window and the retrieval time attached to every value. When a name is shared between places it asks you which one you mean.'));
   const starters = el('div', undefined, 'starters');
+  /* The openings lead with what this build does best: a right-now reading, today's published
+     warning, the district farm advisory, a trend from the record, and an airport report. */
   const examples = [
-    ['Will it rain in Ahmedabad, Gujarat tomorrow morning?', 'Ask about rain'],
-    ['What is the chance of rain in Kochi, Kerala tomorrow afternoon?', 'Ask for a probability'],
+    ['What is it like right now in Ahmedabad?', 'Ask what it is like right now'],
+    ['Is any warning in force for Patna, Bihar today?', 'Check today\u2019s published warnings'],
+    ['What does the Ahmedabad district agromet advisory say for cotton?', 'Read the farm advisory'],
     ['Show the annual rainfall trend for Ahmedabad district, Gujarat from 1981 to 2010.', 'Look at a trend'],
     ['What is the current weather at VOBL?', 'Ask for an airport report']
   ];
@@ -1044,7 +1047,8 @@ function renderWelcome(handlers) {
     starters.append(button);
   });
   box.append(starters);
-  box.append(el('p', 'It will not invent a warning, an observation, a water level or a forecast, and it says when evidence is missing rather than filling the gap. Official warning applicability, live station observations and field, marine or travel clearance are not connected.', 'welcome-limit'));
+  box.append(el('p', 'It will not invent a warning, an observation, a water level or a forecast, and it says when evidence is missing rather than filling the gap. Radar and satellite imagery, sea-area and coastal bulletins, flood extent and any delivery are not connected, and every answer says so where it matters.', 'welcome-limit'));
+  box.append(el('p', 'Answering with the rules floor and whatever models this machine has configured. A cloud key is optional: put one in with python3 scripts/models.py --set-key and the Settings surface shows the state and the ranked free models.', 'welcome-limit'));
   return box;
 }
 function renderWorking(question) {

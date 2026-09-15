@@ -1,7 +1,7 @@
 {
   "schema_version": "hardening-progress-v1",
   "review": "research/reviews/national-readiness-20260912/review.md",
-  "updated_at_utc": "2026-09-15T08:14:06+00:00",
+  "updated_at_utc": "2026-09-15T08:36:12+00:00",
   "operational_ready": false,
   "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
   "findings": [
@@ -1670,6 +1670,34 @@
       "One desktop viewport and one browser: no keyboard, screen-reader or mobile acceptance.",
       "The place probes are a disclosed heuristic; a candidate with no product cell and no fresh station still asks.",
       "No native-speaker review of the rendered languages."
+    ]
+  },
+  "product_review_batch": {
+    "report": "docs/63-product-walkthrough.md",
+    "evidence_directory": "research/implementation/product-review-20260915",
+    "operational_ready": false,
+    "scope": "A product review of the whole workspace: thirteen live journeys re-run and recorded (eleven answered, one honest partial asking for a growth stage, one honest not-connected for tide), the first-run screen rebuilt around the build's strongest journeys with the composer asking the right-now question, welcome text that names what is not connected and how a cloud key is added, and the walkthrough document with the journey table and the cold-start latency limit.",
+    "automated_tests": 860,
+    "javascript_component_checks": 70,
+    "measured": {
+      "journeys": 13,
+      "answered": 11,
+      "partial": 1,
+      "unavailable": 1,
+      "fastest_seconds": 0.0,
+      "slowest_seconds": 146.2,
+      "cold_paths": {
+        "right_now_stations": 146.2,
+        "district_warning": 67.0
+      },
+      "same_window_across_scripts": true,
+      "shared_name_place_decided_by": "the connected product, disclosed"
+    },
+    "limitations": [
+      "Cold first reads of the station and warning layers take 67-146 seconds on this machine.",
+      "Corpus coverage is uneven by family: 571 district agromet, five state editions, one edition per national product.",
+      "Radar and satellite imagery, sea-area and coastal bulletins, flood extent and delivery remain unconnected.",
+      "No native-speaker review; no mobile or screen-reader acceptance; no valid OpenRouter key call yet."
     ]
   }
 }
