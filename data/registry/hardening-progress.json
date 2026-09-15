@@ -1,7 +1,7 @@
 {
   "schema_version": "hardening-progress-v1",
   "review": "research/reviews/national-readiness-20260912/review.md",
-  "updated_at_utc": "2026-09-15T01:26:55+00:00",
+  "updated_at_utc": "2026-09-15T03:21:34+00:00",
   "operational_ready": false,
   "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
   "findings": [
@@ -965,6 +965,51 @@
       "No product and region holds two editions, so the cross-edition comparison is still exercised only by component checks.",
       "One intake run on one day against four families; the other families were not re-run.",
       "Stored ids and stored annotations are unchanged; only publications made after this batch derive ids without text_quality."
+    ]
+  },
+  "provider_layer_batch": {
+    "report": "docs/49-engine-architecture-and-gap-analysis.md",
+    "evidence_directory": "research/implementation/provider-layer-20260915",
+    "operational_ready": false,
+    "scope": "Model access and the rules-first floor: one provider interface over rules, Ollama and OpenRouter, free-model routing with retry/failover/budget and a recorded trace, and a rule planner for the problem-statement shapes so the product plans and answers with no model.",
+    "automated_tests": 680,
+    "javascript_component_checks": 60,
+    "measured": {
+      "providers": [
+        "rules",
+        "ollama",
+        "openrouter (not configured on this machine)"
+      ],
+      "rule_shapes_covered": [
+        "forecast",
+        "warning",
+        "history lookup/compare/series/trend",
+        "marine",
+        "river",
+        "aviation",
+        "document",
+        "agriculture",
+        "observation",
+        "research"
+      ],
+      "rules_only_engine": {
+        "turns": 3,
+        "answered": 2,
+        "needs_selection": 1,
+        "model_calls": 0
+      },
+      "ollama_follow_up_latency_ms": 35821,
+      "free_models_configured": 6,
+      "doctor": {
+        "ok": 14,
+        "warn": 1,
+        "fail": 0
+      }
+    },
+    "limitations": [
+      "No live OpenRouter call yet: the key is not configured in this workspace.",
+      "The rule planner covers English and Hinglish common shapes; Indic scripts and follow-ups use a model.",
+      "Plan quality under the new layer is not yet measured by the declared benchmark."
     ]
   }
 }

@@ -12,7 +12,7 @@ Nationwide and specialist **operational acceptance is not achieved**. This is an
 python3 scripts/start_weather.py
 ```
 
-Open <http://127.0.0.1:8765>. The launcher starts installed Ollama if needed and uses `qwen3.6:latest`; set `WEATHERGPT_MODEL` to another installed model. No paid gateway is required, and the server answers only on loopback with a per-process session token.
+Open <http://127.0.0.1:8765>. The launcher starts installed Ollama if needed and uses `qwen3.6:latest`; set `WEATHERGPT_MODEL` to another installed model. The engine plans the core question shapes with rules and no model at all, and the rest through whatever providers exist. Optional: add an OpenRouter key to data/runtime/model-config.json to route free models after Ollama; the key stays in local configuration. No paid gateway is required, and the server answers only on loopback with a per-process session token.
 
 Try “Will it rain in Ahmedabad, Gujarat tomorrow morning?”, then “And what about the afternoon?”. Or ask “Show the annual rainfall trend for Ahmedabad district, Gujarat from 1981 to 2010.”, or “कल अहमदाबाद में बारिश होगी क्या?” and choose the intended place.
 
@@ -44,14 +44,15 @@ The interface states these limits rather than filling the gaps:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 659 Python tests
+python3 -m pytest tests/ -q                          # 680 Python tests
 node tests/test_charts.js                            #  2 of 60 component checks
 node tests/test_views.js                             # 18
 node tests/test_bulletin_ui.js                       #  6
 node tests/test_conversation_ui.js                   # 13
 node tests/test_suite_ui.js                          # 18
 node tests/test_voice_ui.js                          #  3
-python3 scripts/doctor.py                            # environment, model and corpus presence
+python3 scripts/doctor.py                            # environment, providers and corpus presence
+python3 scripts/models.py --check                    # the rules-first floor and the configured providers
 python3 scripts/verify_all.py                       # environment, registries, drift guard, tests
 python3 scripts/run_daily_cycle.py --families national_bulletin  # one bounded foreground cycle
 python3 scripts/audit_workspace_frontend.py --baseline
@@ -66,6 +67,7 @@ Real journeys are recorded with screenshots in [the frontend batch evidence](res
 - [Critical full-solution review](docs/21-full-solution-critical-review.md) — the current verdict, findings A01–A08 and the recommended trajectory.
 - [Source activation and national document intake](docs/29-source-activation-and-document-intake.md) — every registered source measured, the national bulletin corpus, and what it still cannot answer.
 - [Multilingual output and voice access](docs/30-multilingual-and-voice-path.md) — the plan for PS features 6 and 8. A plan, not a batch: nothing built and nothing measured yet.
+- [Engine and architecture: gap analysis and round 1](docs/49-engine-architecture-and-gap-analysis.md) — the provider layer with OpenRouter-free routing and a rules-first floor that answers with no model at all, plus the WS1-WS9 plan to full problem-statement coverage.
 - [The intake holds what it cannot verify](docs/48-intake-publication-identity.md) — publication identity is content and address, a held target no longer aborts the sweep, and the live corpus still holds one edition per product.
 - [Answer transparency and cross-edition coverage](docs/47-answer-transparency-and-edition-coverage.md) — engine stages and queue position reported as facts, whole-edition readings, cross-edition differences named and never ranked, and a keyboard journey with its repairs.
 - [The Instrument Desk](docs/46-frontend-instrument-desk.md) — the current desktop surface: design direction, the capabilities added, the live measurements, the accessibility repairs and what none of it establishes.
