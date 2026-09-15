@@ -1,0 +1,17 @@
+{
+  "rules_floor_available": true,
+  "ollama": {
+    "configured": true,
+    "reachable": true,
+    "models": [
+      "gemma4:latest",
+      "qwen3.6:latest",
+      "qwen3.8:27b-mlx"
+    ],
+    "wanted": "qwen3.6:latest",
+    "wanted_installed": true,
+    "why": ""
+  },
+  "openrouter_configured": false,
+  "scope": "Service catalogue only; no inference acceptance"
+}

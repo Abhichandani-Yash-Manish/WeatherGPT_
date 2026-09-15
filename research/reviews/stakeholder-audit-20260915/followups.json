@@ -1,0 +1,5066 @@
+[
+  {
+    "id": "context_measure_correct_thread",
+    "path": "/api/chat",
+    "request": {
+      "question": "Instead, show temperature for that same place and time.",
+      "conversation_id": "a0e799e2-dcff-433a-83b2-61b0c83d6c3b"
+    },
+    "http_status": 400,
+    "seconds": 0.005,
+    "packet": {
+      "error": "The question could not be interpreted: No model provider could answer. ollama: The local model did not answer: HTTPError"
+    }
+  },
+  {
+    "id": "history_rain_alone",
+    "path": "/api/chat",
+    "request": {
+      "question": "Show India annual rainfall for 2024."
+    },
+    "http_status": 200,
+    "seconds": 0.038,
+    "packet": {
+      "schema_version": "weather-conversation-v1",
+      "conversation_id": "675ec507-fa1c-4111-996f-dcbe02a97501",
+      "question": "Show India annual rainfall for 2024.",
+      "status": "answered",
+      "answer": "All India · annual 2024\nrainfall: 1206.6 mm [t1-f1]\nRetrieved 1 published historical values for the requested places, parameters and years.",
+      "facts": [
+        {
+          "label": "rainfall",
+          "value": "1206.6",
+          "unit": "mm",
+          "year": 2024,
+          "period": "annual",
+          "source_id": "S25",
+          "place": "All India",
+          "id": "t1-f1",
+          "parameter": "rainfall",
+          "entity_id": "all-india",
+          "citation_ids": [
+            "t1-c1"
+          ],
+          "task_id": "t1"
+        }
+      ],
+      "citations": [
+        {
+          "source_id": "S25",
+          "url": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php",
+          "provider": "IMD",
+          "product": "Published All India historical table",
+          "raw_asset_path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+          "sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+          "row": 125,
+          "column": "Annual",
+          "id": "t1-c1"
+        }
+      ],
+      "notes": [
+        "This is the published All India aggregate; it does not describe an individual village or district.",
+        "The source aggregate differs from the sum of its published months; the original total and reconciliation are retained."
+      ],
+      "choices": [],
+      "follow_up": null,
+      "operational_eligible": false,
+      "answered_at_utc": "2026-09-15T09:32:30.272244+00:00",
+      "expires_at_utc": null,
+      "trace": {
+        "planning": {
+          "provider": "deterministic_rules",
+          "model": "rule-planner-v1",
+          "model_calls": 0,
+          "attempts": 0,
+          "latency_ms": 0,
+          "failover": []
+        },
+        "generation": {
+          "provider": "typed_task_renderers",
+          "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit.",
+          "requested_language": "en",
+          "language_selection": "inferred_from_question",
+          "language_adherence": "not_applicable"
+        },
+        "tools": [
+          {
+            "name": "history",
+            "task_id": "t1",
+            "status": "answered"
+          }
+        ],
+        "provider": "local_ollama",
+        "context_resolution": {
+          "action": "new",
+          "changed_fields": [
+            "parameters",
+            "places",
+            "time"
+          ],
+          "inherited_fields": []
+        },
+        "duration_seconds": 0.036
+      },
+      "plan": {
+        "language": "en",
+        "places": [
+          {
+            "name": "India",
+            "state": "",
+            "district": "",
+            "kind": "country"
+          }
+        ],
+        "assumptions": [],
+        "clarification": "",
+        "explicit_times": false,
+        "tasks": [
+          {
+            "request_quote": "Show India annual rainfall for 2024.",
+            "kind": "history",
+            "operation": "lookup",
+            "parameters": [
+              "rainfall"
+            ],
+            "years": [
+              2024
+            ],
+            "period": "annual",
+            "start_local": "",
+            "end_local": "",
+            "place_indices": [
+              0
+            ]
+          }
+        ],
+        "context_action": "new",
+        "changed_fields": [
+          "parameters",
+          "places",
+          "time"
+        ],
+        "intent": "history",
+        "start_local": "",
+        "end_local": "",
+        "variables": [],
+        "year": 2024,
+        "period": "annual",
+        "history_parameter": "rainfall",
+        "unsupported_parameters": [],
+        "requested_outcome": "Complete all explicitly requested tasks"
+      },
+      "task_results": [
+        {
+          "id": "t1",
+          "request": {
+            "request_quote": "Show India annual rainfall for 2024.",
+            "kind": "history",
+            "operation": "lookup",
+            "parameters": [
+              "rainfall"
+            ],
+            "years": [
+              2024
+            ],
+            "period": "annual",
+            "start_local": "",
+            "end_local": "",
+            "place_indices": [
+              0
+            ]
+          },
+          "status": "answered",
+          "answer": "All India · annual 2024\nrainfall: 1206.6 mm [t1-f1]\nRetrieved 1 published historical values for the requested places, parameters and years.",
+          "fact_ids": [
+            "t1-f1"
+          ],
+          "passage_ids": [],
+          "historical_evidence": [
+            {
+              "place": {
+                "name": "India",
+                "state": "",
+                "district": "",
+                "kind": "country"
+              },
+              "parameter": "rainfall",
+              "year": 2024,
+              "evidence": {
+                "status": "answered",
+                "text": "India's published annual rainfall for 2024 was 1206.6 mm.",
+                "facts": [
+                  {
+                    "label": "rainfall",
+                    "value": "1206.6",
+                    "unit": "mm",
+                    "year": 2024,
+                    "period": "annual",
+                    "source_id": "S25",
+                    "place": "All India"
+                  }
+                ],
+                "citations": [
+                  {
+                    "source_id": "S25",
+                    "url": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php",
+                    "provider": "IMD",
+                    "product": "Published All India historical table",
+                    "raw_asset_path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+                    "sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+                    "row": 125,
+                    "column": "Annual"
+                  }
+                ],
+                "notes": [
+                  "This is the published All India aggregate; it does not describe an individual village or district.",
+                  "The source aggregate differs from the sum of its published months; the original total and reconciliation are retained."
+                ],
+                "raw": {
+                  "status": "ok",
+                  "scope": "Published historical All India aggregate; not current or district weather.",
+                  "record": {
+                    "record_id": "6625ac7d34e0bd5d15c07cb10d9cb3d4896831aaf8024598052fa0f2a38eca3e",
+                    "source_id": "S25",
+                    "source_series_id": "historical_rain_whi",
+                    "geography_id": "all-india-aggregate",
+                    "geography_label": "All India aggregate",
+                    "parameter": "precipitation_amount",
+                    "year": 2024,
+                    "period_type": "year",
+                    "period_code": "ANNUAL",
+                    "period_start": "2024-01-01",
+                    "period_end_exclusive": "2025-01-01",
+                    "value_decimal": "1206.6",
+                    "native_value": "1206.6",
+                    "unit": "mm",
+                    "quality_flags": [
+                      "published_total_differs_from_month_sum"
+                    ],
+                    "asset_sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+                    "raw_asset_path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+                    "source_row": 125,
+                    "source_column": "Annual",
+                    "source_url": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php",
+                    "retrieved_at_utc": "2026-09-11T16:27:58.620400+00:00",
+                    "transformation_version": "national-climate-v1"
+                  },
+                  "reconciliation": {
+                    "source_id": "S25",
+                    "year": 2024,
+                    "period_code": "ANNUAL",
+                    "published_value": "1206.6",
+                    "computed_month_sum": "1204.1",
+                    "difference_mm": "2.5",
+                    "rounding_bound_mm": "0.65",
+                    "status": "beyond_rounding_bound",
+                    "source_row": 125,
+                    "source_column": "Annual",
+                    "asset_sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90"
+                  },
+                  "citation": {
+                    "source_id": "S25",
+                    "url": "https://dsp.imdpune.gov.in/home_ogd_rainfall.php",
+                    "raw_asset_path": "research/discovery/evidence/pasted-climate-check/rainfall.csv",
+                    "sha256": "8f62bdf252a03b4f398b43651637575bce9313236eb3fa499ff82db599b71d90",
+                    "row": 125,
+                    "column": "Annual"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "charts": [],
+      "calculations": [],
+      "pending_slots": [],
+      "retrieval_coverage": [],
+      "retrieval_plan": [
+        {
+          "task_id": "t1",
+          "operation": "lookup",
+          "kind": "history",
+          "parameters": [
+            "rainfall"
+          ],
+          "candidates": [
+            {
+              "tool": "published_history",
+              "selected": true,
+              "available": true,
+              "reason": "Published India aggregates and historical district rainfall; no district temperature",
+              "sources": [
+                {
+                  "source_id": "S25",
+                  "product": "IMD All India historical rainfall table (supplied CSV)",
+                  "registry_status": "sample_inspected"
+                },
+                {
+                  "source_id": "S26",
+                  "product": "IMD All India historical mean temperature table (supplied CSV)",
+                  "registry_status": "sample_inspected"
+                },
+                {
+                  "source_id": "S27",
+                  "product": "Supplied district historical rainfall collection (32 CSVs)",
+                  "registry_status": "sample_inspected"
+                }
+              ]
+            }
+          ],
+          "status": "answered",
+          "returned_source_ids": [
+            "S25"
+          ]
+        }
+      ],
+      "document_evidence": [],
+      "resolved_points": {},
+      "task_coverage": {
+        "requested": 1,
+        "completed": 1,
+        "incomplete_ids": []
+      }
+    }
+  },
+  {
+    "id": "history_two_reversed",
+    "path": "/api/chat",
+    "request": {
+      "question": "Show India annual mean temperature and rainfall for 2024."
+    },
+    "http_status": 200,
+    "seconds": 0.027,
+    "packet": {
+      "schema_version": "weather-conversation-v1",
+      "conversation_id": "2ed87529-fa85-4150-b3d2-cb23cab563c7",
+      "question": "Show India annual mean temperature and rainfall for 2024.",
+      "status": "answered",
+      "answer": "All India · annual 2024\ntemperature: 25.7431 degC [t1-f1]\nRetrieved 1 published historical values for the requested places, parameters and years.",
+      "facts": [
+        {
+          "label": "temperature",
+          "value": "25.7431",
+          "unit": "degC",
+          "year": 2024,
+          "period": "annual",
+          "source_id": "S26",
+          "place": "All India",
+          "id": "t1-f1",
+          "parameter": "temperature",
+          "entity_id": "all-india",
+          "citation_ids": [
+            "t1-c1"
+          ],
+          "task_id": "t1"
+        }
+      ],
+      "citations": [
+        {
+          "source_id": "S26",
+          "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+          "provider": "IMD",
+          "product": "Published All India historical table",
+          "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+          "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+          "row": 125,
+          "column": "Annual",
+          "id": "t1-c1"
+        }
+      ],
+      "notes": [
+        "This is the published All India aggregate; it does not describe an individual village or district."
+      ],
+      "choices": [],
+      "follow_up": null,
+      "operational_eligible": false,
+      "answered_at_utc": "2026-09-15T09:32:30.310635+00:00",
+      "expires_at_utc": null,
+      "trace": {
+        "planning": {
+          "provider": "deterministic_rules",
+          "model": "rule-planner-v1",
+          "model_calls": 0,
+          "attempts": 0,
+          "latency_ms": 0,
+          "failover": []
+        },
+        "generation": {
+          "provider": "typed_task_renderers",
+          "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit.",
+          "requested_language": "en",
+          "language_selection": "inferred_from_question",
+          "language_adherence": "not_applicable"
+        },
+        "tools": [
+          {
+            "name": "history",
+            "task_id": "t1",
+            "status": "answered"
+          }
+        ],
+        "provider": "local_ollama",
+        "context_resolution": {
+          "action": "new",
+          "changed_fields": [
+            "parameters",
+            "places",
+            "time"
+          ],
+          "inherited_fields": []
+        },
+        "duration_seconds": 0.025
+      },
+      "plan": {
+        "language": "en",
+        "places": [
+          {
+            "name": "India",
+            "state": "",
+            "district": "",
+            "kind": "country"
+          }
+        ],
+        "assumptions": [],
+        "clarification": "",
+        "explicit_times": false,
+        "tasks": [
+          {
+            "request_quote": "Show India annual mean temperature and rainfall for 2024.",
+            "kind": "history",
+            "operation": "lookup",
+            "parameters": [
+              "temperature"
+            ],
+            "years": [
+              2024
+            ],
+            "period": "annual",
+            "start_local": "",
+            "end_local": "",
+            "place_indices": [
+              0
+            ]
+          }
+        ],
+        "context_action": "new",
+        "changed_fields": [
+          "parameters",
+          "places",
+          "time"
+        ],
+        "intent": "history",
+        "start_local": "",
+        "end_local": "",
+        "variables": [],
+        "year": 2024,
+        "period": "annual",
+        "history_parameter": "temperature",
+        "unsupported_parameters": [],
+        "requested_outcome": "Complete all explicitly requested tasks"
+      },
+      "task_results": [
+        {
+          "id": "t1",
+          "request": {
+            "request_quote": "Show India annual mean temperature and rainfall for 2024.",
+            "kind": "history",
+            "operation": "lookup",
+            "parameters": [
+              "temperature"
+            ],
+            "years": [
+              2024
+            ],
+            "period": "annual",
+            "start_local": "",
+            "end_local": "",
+            "place_indices": [
+              0
+            ]
+          },
+          "status": "answered",
+          "answer": "All India · annual 2024\ntemperature: 25.7431 degC [t1-f1]\nRetrieved 1 published historical values for the requested places, parameters and years.",
+          "fact_ids": [
+            "t1-f1"
+          ],
+          "passage_ids": [],
+          "historical_evidence": [
+            {
+              "place": {
+                "name": "India",
+                "state": "",
+                "district": "",
+                "kind": "country"
+              },
+              "parameter": "temperature",
+              "year": 2024,
+              "evidence": {
+                "status": "answered",
+                "text": "India's published annual temperature for 2024 was 25.7431 degC.",
+                "facts": [
+                  {
+                    "label": "temperature",
+                    "value": "25.7431",
+                    "unit": "degC",
+                    "year": 2024,
+                    "period": "annual",
+                    "source_id": "S26",
+                    "place": "All India"
+                  }
+                ],
+                "citations": [
+                  {
+                    "source_id": "S26",
+                    "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                    "provider": "IMD",
+                    "product": "Published All India historical table",
+                    "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                    "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                    "row": 125,
+                    "column": "Annual"
+                  }
+                ],
+                "notes": [
+                  "This is the published All India aggregate; it does not describe an individual village or district."
+                ],
+                "raw": {
+                  "status": "ok",
+                  "scope": "Published historical All India aggregate; not current or district weather.",
+                  "record": {
+                    "record_id": "7667a0061c6d0acfa33fbfad9270e176ca2209f755d59637afb2c54c50705e85",
+                    "source_id": "S26",
+                    "source_series_id": "historical_temp",
+                    "geography_id": "all-india-aggregate",
+                    "geography_label": "All India aggregate",
+                    "parameter": "mean_temperature",
+                    "year": 2024,
+                    "period_type": "year",
+                    "period_code": "ANNUAL",
+                    "period_start": "2024-01-01",
+                    "period_end_exclusive": "2025-01-01",
+                    "value_decimal": "25.7431",
+                    "native_value": "25.7431",
+                    "unit": "degC",
+                    "quality_flags": [],
+                    "asset_sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                    "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                    "source_row": 125,
+                    "source_column": "Annual",
+                    "source_url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                    "retrieved_at_utc": "2026-09-11T16:27:58.456902+00:00",
+                    "transformation_version": "national-climate-v1"
+                  },
+                  "reconciliation": null,
+                  "citation": {
+                    "source_id": "S26",
+                    "url": "https://dsp.imdpune.gov.in/home_ogd_temp.php",
+                    "raw_asset_path": "research/discovery/evidence/pasted-climate-check/temperature.csv",
+                    "sha256": "4b946b0aca755571a599daac9e532b2113710e18061cf281f9525c12ea6be1d9",
+                    "row": 125,
+                    "column": "Annual"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "charts": [],
+      "calculations": [],
+      "pending_slots": [],
+      "retrieval_coverage": [],
+      "retrieval_plan": [
+        {
+          "task_id": "t1",
+          "operation": "lookup",
+          "kind": "history",
+          "parameters": [
+            "temperature"
+          ],
+          "candidates": [
+            {
+              "tool": "published_history",
+              "selected": true,
+              "available": true,
+              "reason": "Published India aggregates and historical district rainfall; no district temperature",
+              "sources": [
+                {
+                  "source_id": "S25",
+                  "product": "IMD All India historical rainfall table (supplied CSV)",
+                  "registry_status": "sample_inspected"
+                },
+                {
+                  "source_id": "S26",
+                  "product": "IMD All India historical mean temperature table (supplied CSV)",
+                  "registry_status": "sample_inspected"
+                },
+                {
+                  "source_id": "S27",
+                  "product": "Supplied district historical rainfall collection (32 CSVs)",
+                  "registry_status": "sample_inspected"
+                }
+              ]
+            }
+          ],
+          "status": "answered",
+          "returned_source_ids": [
+            "S26"
+          ]
+        }
+      ],
+      "document_evidence": [],
+      "resolved_points": {},
+      "task_coverage": {
+        "requested": 1,
+        "completed": 1,
+        "incomplete_ids": []
+      }
+    }
+  },
+  {
+    "id": "warning_forecast",
+    "path": "/api/chat",
+    "request": {
+      "question": "Will it rain in Patna tomorrow, and is there any warning?"
+    },
+    "http_status": 200,
+    "seconds": 2.157,
+    "packet": {
+      "schema_version": "weather-conversation-v1",
+      "conversation_id": "db9064a9-7a1d-4771-8347-52a3eddaea2f",
+      "question": "Will it rain in Patna tomorrow, and is there any warning?",
+      "status": "answered",
+      "answer": "Task 1: Patna · 16 Sep, 00:30–17 Sep, 00:30 IST: Forecast precipitation: 0.0–0.1 mm. Source: GFS forecast; conditions can change.\n\nTask 2: IMD district warning for PATNA, bulletin of 15 Sep 2026 11:30 IST. Day 1 covers today, 15 Sep 2026: yellow - Thunderstorm/lightning/squall, Strong surface winds. Other published days: day 3 17 Sep 2026 yellow Thunderstorm/lightning/squall, Strong surface winds. This is IMD district-level warning guidance. It is not a flood warning, not an all-clear, and not a CAP alert; a CAP alert covering the same area is reported separately. CAP relay assessment: 8 retrieved messages, 1 pass the time/status/reference checks; the newest was sent 2026-09-15T12:35:04+05:30. Geographic applicability of the CAP relay to this place is not established here, its origin is not authenticated, and its completeness is unverified. A reachable feed and an empty eligible set are both not an all-clear.\n\nProducts compared: Patna, Patna, State of Bihar (17 Sep 2026): IMD district warning product and Model forecast are not saying the same thing — the official product carries a rain or storm hazard for this window while the model forecast shows no rain in it; neither product is a measurement of the other. Both products are named and neither is ranked; this comparison is not a score and not an all-clear.",
+      "facts": [
+        {
+          "id": "t1-f1",
+          "label": "Forecast rainfall",
+          "value": "0.1",
+          "unit": "mm",
+          "place": "Patna, Patna, State of Bihar",
+          "start": "2026-09-16T00:30:00+05:30",
+          "end": "2026-09-16T23:30:00+05:30",
+          "source_id": "S21",
+          "method": "preceding_hour_sum",
+          "source_locators": [
+            "$.hourly.precipitation[20]",
+            "$.hourly.precipitation[21]",
+            "$.hourly.precipitation[22]",
+            "$.hourly.precipitation[23]",
+            "$.hourly.precipitation[24]",
+            "$.hourly.precipitation[25]",
+            "$.hourly.precipitation[26]",
+            "$.hourly.precipitation[27]",
+            "$.hourly.precipitation[28]",
+            "$.hourly.precipitation[29]",
+            "$.hourly.precipitation[30]",
+            "$.hourly.precipitation[31]",
+            "$.hourly.precipitation[32]",
+            "$.hourly.precipitation[33]",
+            "$.hourly.precipitation[34]",
+            "$.hourly.precipitation[35]",
+            "$.hourly.precipitation[36]",
+            "$.hourly.precipitation[37]",
+            "$.hourly.precipitation[38]",
+            "$.hourly.precipitation[39]",
+            "$.hourly.precipitation[40]",
+            "$.hourly.precipitation[41]",
+            "$.hourly.precipitation[42]"
+          ],
+          "parameter": "precipitation",
+          "entity_id": "geonames:1260086",
+          "evidence_version": "74cace37eaa5e3ccf6ee63af88bfffc391d989b7c7f31b2373e2476accd648de",
+          "citation_ids": [
+            "t1-c-74cace37eaa5e3ccf6ee63af88bfffc391d989b7c7f31b2373e2476accd648de"
+          ],
+          "task_id": "t1"
+        },
+        {
+          "id": "t1-f2",
+          "label": "Forecast rainfall",
+          "value": "0.0",
+          "unit": "mm",
+          "place": "Patna, Patna, State of Bihar",
+          "start": "2026-09-16T23:30:00+05:30",
+          "end": "2026-09-17T00:30:00+05:30",
+          "source_id": "S21",
+          "method": "preceding_hour_sum",
+          "source_locators": [
+            "$.hourly.precipitation[43]"
+          ],
+          "parameter": "precipitation",
+          "entity_id": "geonames:1260086",
+          "evidence_version": "74cace37eaa5e3ccf6ee63af88bfffc391d989b7c7f31b2373e2476accd648de",
+          "citation_ids": [
+            "t1-c-74cace37eaa5e3ccf6ee63af88bfffc391d989b7c7f31b2373e2476accd648de"
+          ],
+          "task_id": "t1"
+        },
+        {
+          "label": "Day 1 · 15 Sep 2026 · Thunderstorm/lightning/squall, Strong surface winds",
+          "value": "yellow",
+          "unit": "IMD district warning colour",
+          "place": "PATNA (Patna, Patna, State of Bihar)",
+          "start": "2026-09-14T18:30:00+00:00",
+          "end": "2026-09-15T18:30:00+00:00",
+          "source_id": "S15",
+          "parameter": "official_district_warning",
+          "method": "IMD district warning day fields, read as hazard codes",
+          "entity_id": "imd-district:364",
+          "citation_ids": [
+            "t2-district-warning"
+          ],
+          "evidence_kind": "forecast",
+          "day": 1,
+          "colour_code": 3,
+          "hazard_codes": [
+            4,
+            8
+          ],
+          "quiet": false,
+          "source_locator": "$.features[605]",
+          "id": "t2-f1",
+          "task_id": "t2"
+        },
+        {
+          "label": "Day 2 · 16 Sep 2026",
+          "value": "No warning in this product",
+          "unit": "IMD district warning colour",
+          "place": "PATNA (Patna, Patna, State of Bihar)",
+          "start": "2026-09-15T18:30:00+00:00",
+          "end": "2026-09-16T18:30:00+00:00",
+          "source_id": "S15",
+          "parameter": "official_district_warning",
+          "method": "IMD district warning day fields, read as hazard codes",
+          "entity_id": "imd-district:364",
+          "citation_ids": [
+            "t2-district-warning"
+          ],
+          "evidence_kind": "forecast",
+          "day": 2,
+          "colour_code": 4,
+          "hazard_codes": [
+            1
+          ],
+          "quiet": true,
+          "source_locator": "$.features[605]",
+          "id": "t2-f2",
+          "task_id": "t2"
+        },
+        {
+          "label": "Day 3 · 17 Sep 2026 · Thunderstorm/lightning/squall, Strong surface winds",
+          "value": "yellow",
+          "unit": "IMD district warning colour",
+          "place": "PATNA (Patna, Patna, State of Bihar)",
+          "start": "2026-09-16T18:30:00+00:00",
+          "end": "2026-09-17T18:30:00+00:00",
+          "source_id": "S15",
+          "parameter": "official_district_warning",
+          "method": "IMD district warning day fields, read as hazard codes",
+          "entity_id": "imd-district:364",
+          "citation_ids": [
+            "t2-district-warning"
+          ],
+          "evidence_kind": "forecast",
+          "day": 3,
+          "colour_code": 3,
+          "hazard_codes": [
+            4,
+            8
+          ],
+          "quiet": false,
+          "source_locator": "$.features[605]",
+          "id": "t2-f3",
+          "task_id": "t2"
+        },
+        {
+          "label": "Day 4 · 18 Sep 2026",
+          "value": "No warning in this product",
+          "unit": "IMD district warning colour",
+          "place": "PATNA (Patna, Patna, State of Bihar)",
+          "start": "2026-09-17T18:30:00+00:00",
+          "end": "2026-09-18T18:30:00+00:00",
+          "source_id": "S15",
+          "parameter": "official_district_warning",
+          "method": "IMD district warning day fields, read as hazard codes",
+          "entity_id": "imd-district:364",
+          "citation_ids": [
+            "t2-district-warning"
+          ],
+          "evidence_kind": "forecast",
+          "day": 4,
+          "colour_code": 4,
+          "hazard_codes": [
+            1
+          ],
+          "quiet": true,
+          "source_locator": "$.features[605]",
+          "id": "t2-f4",
+          "task_id": "t2"
+        },
+        {
+          "label": "Day 5 · 19 Sep 2026",
+          "value": "No warning in this product",
+          "unit": "IMD district warning colour",
+          "place": "PATNA (Patna, Patna, State of Bihar)",
+          "start": "2026-09-18T18:30:00+00:00",
+          "end": "2026-09-19T18:30:00+00:00",
+          "source_id": "S15",
+          "parameter": "official_district_warning",
+          "method": "IMD district warning day fields, read as hazard codes",
+          "entity_id": "imd-district:364",
+          "citation_ids": [
+            "t2-district-warning"
+          ],
+          "evidence_kind": "forecast",
+          "day": 5,
+          "colour_code": 4,
+          "hazard_codes": [
+            1
+          ],
+          "quiet": true,
+          "source_locator": "$.features[605]",
+          "id": "t2-f5",
+          "task_id": "t2"
+        }
+      ],
+      "citations": [
+        {
+          "source_id": "S21",
+          "provider": "Open-Meteo",
+          "product": "GFS forecast delivery",
+          "evidence_kind": "model_forecast",
+          "url": "https://api.open-meteo.com/v1/gfs?latitude=25.59408&longitude=85.13563&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+          "response_sha256": "74cace37eaa5e3ccf6ee63af88bfffc391d989b7c7f31b2373e2476accd648de",
+          "raw_relative_path": "e4566e24bd8bbffc3e1decd1368d30bee4fd971f82d7e4e5c0e8e806abc389dd/72dcfbff52a44ecf82a93599e3800215/blobs/74cace37eaa5e3ccf6ee63af88bfffc391d989b7c7f31b2373e2476accd648de.bin",
+          "published_job_id": "e4566e24bd8bbffc3e1decd1368d30bee4fd971f82d7e4e5c0e8e806abc389dd",
+          "source_locators": [
+            "$.hourly.precipitation[20]",
+            "$.hourly.precipitation[21]",
+            "$.hourly.precipitation[22]",
+            "$.hourly.precipitation[23]",
+            "$.hourly.precipitation[24]",
+            "$.hourly.precipitation[25]",
+            "$.hourly.precipitation[26]",
+            "$.hourly.precipitation[27]",
+            "$.hourly.precipitation[28]",
+            "$.hourly.precipitation[29]",
+            "$.hourly.precipitation[30]",
+            "$.hourly.precipitation[31]",
+            "$.hourly.precipitation[32]",
+            "$.hourly.precipitation[33]",
+            "$.hourly.precipitation[34]",
+            "$.hourly.precipitation[35]",
+            "$.hourly.precipitation[36]",
+            "$.hourly.precipitation[37]",
+            "$.hourly.precipitation[38]",
+            "$.hourly.precipitation[39]",
+            "$.hourly.precipitation[40]",
+            "$.hourly.precipitation[41]",
+            "$.hourly.precipitation[42]"
+          ],
+          "retrieved_at_utc": "2026-09-15T09:32:31.104405+00:00",
+          "issue_time_utc": null,
+          "id": "t1-c-74cace37eaa5e3ccf6ee63af88bfffc391d989b7c7f31b2373e2476accd648de"
+        },
+        {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1260086",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        {
+          "source_id": "S21",
+          "provider": "Open-Meteo",
+          "product": "GFS forecast delivery",
+          "evidence_kind": "model_forecast",
+          "url": "https://api.open-meteo.com/v1/gfs?latitude=25.59408&longitude=85.13563&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+          "response_sha256": "74cace37eaa5e3ccf6ee63af88bfffc391d989b7c7f31b2373e2476accd648de",
+          "raw_relative_path": "e4566e24bd8bbffc3e1decd1368d30bee4fd971f82d7e4e5c0e8e806abc389dd/72dcfbff52a44ecf82a93599e3800215/blobs/74cace37eaa5e3ccf6ee63af88bfffc391d989b7c7f31b2373e2476accd648de.bin",
+          "published_job_id": "e4566e24bd8bbffc3e1decd1368d30bee4fd971f82d7e4e5c0e8e806abc389dd",
+          "source_locators": [
+            "$.hourly.precipitation[43]"
+          ],
+          "retrieved_at_utc": "2026-09-15T09:32:31.104405+00:00",
+          "issue_time_utc": null,
+          "id": "t1-c-74cace37eaa5e3ccf6ee63af88bfffc391d989b7c7f31b2373e2476accd648de"
+        },
+        {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1260086",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        },
+        {
+          "id": "t2-cap-feed",
+          "source_id": "S06",
+          "provider": "IMD-labelled CAP relay; origin authentication unverified",
+          "product": "Retrieved CAP feed state",
+          "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/rss.xml",
+          "response_sha256": "47ccb6288d4711817f4ffb7a368f56bff94844279c3d2bea5f9b43d173e4cff2",
+          "retrieved_at_utc": "2026-09-15T09:30:00.036457+00:00"
+        },
+        {
+          "id": "t2-district-warning",
+          "source_id": "S15",
+          "provider": "India Meteorological Department",
+          "product": "District-wise warning product (GeoServer district_warnings_india)",
+          "url": "https://reactjs.imd.gov.in/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=imd%3Adistrict_warnings_india&srsname=EPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=2000",
+          "response_sha256": "4707792689cc1cac0f11e35da81abeb6a29742939c10ed1aa14e09b8ae28044b",
+          "retrieved_at_utc": "2026-09-15T09:30:09.054197+00:00"
+        }
+      ],
+      "notes": [
+        "Time window read from the question: tomorrow whole day.",
+        "Place read as Patna, Patna, State of Bihar — the only administrative seat among the places that share this name. Other places share this name: Patna, District Saharanpur, Uttar Pradesh; Patna, Sirmaur, State of Himāchal Pradesh; Patna, Sirmaur, State of Himāchal Pradesh; Patna, Raisen, Madhya Pradesh. Say which one you meant to switch.",
+        "Model forecasts at the selected place point, not observations or district averages. Source model run time and local representativeness remain unverified.",
+        "IMD district warning guidance concerns land districts and is not a flood warning, a cyclone warning, an all-clear or a CAP alert.",
+        "CAP lifecycle eligibility never authorises dissemination; warning material is reported as official product state, not as an instruction.",
+        "Day windows are derived from the bulletin date and the IMD day selector, not from a validity field published per day.",
+        "The district warning layer was read as a complete collection with no truncation; its geometry is not an LGD village crosswalk."
+      ],
+      "choices": [],
+      "follow_up": null,
+      "operational_eligible": false,
+      "answered_at_utc": "2026-09-15T09:32:30.338170+00:00",
+      "expires_at_utc": "2026-09-15T09:47:32.477872+00:00",
+      "trace": {
+        "planning": {
+          "provider": "deterministic_rules",
+          "model": "rule-planner-v1",
+          "model_calls": 0,
+          "attempts": 0,
+          "latency_ms": 0,
+          "failover": []
+        },
+        "generation": {
+          "provider": "typed_task_renderers",
+          "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit.",
+          "requested_language": "en",
+          "language_selection": "inferred_from_question",
+          "language_adherence": "not_applicable"
+        },
+        "tools": [
+          {
+            "name": "gazetteer_search",
+            "query": {
+              "name": "Patna",
+              "state": "",
+              "district": "",
+              "kind": "unknown"
+            },
+            "matches": 104
+          },
+          {
+            "name": "point_forecast",
+            "location": "Patna, Patna, State of Bihar",
+            "status": "prototype_answer",
+            "refresh": {
+              "state": "succeeded",
+              "job_id": "e4566e24bd8bbffc3e1decd1368d30bee4fd971f82d7e4e5c0e8e806abc389dd",
+              "worker_state": "succeeded",
+              "claims_this_action": 1,
+              "job_provider_attempts": 1,
+              "retry_due_utc_epoch": 1789462800.0,
+              "message": "Collection completed; answer checked against the stored evidence."
+            }
+          },
+          {
+            "name": "point_forecast",
+            "location": "Patna, Patna, State of Bihar",
+            "status": "prototype_answer",
+            "refresh": null
+          },
+          {
+            "name": "forecast",
+            "task_id": "t1",
+            "status": "answered"
+          },
+          {
+            "name": "official_district_warning",
+            "districts": 1,
+            "stale_districts": 0,
+            "outside_districts": 0,
+            "places_without_a_point": 0,
+            "cap_messages": 8,
+            "cap_lifecycle_eligible": 1,
+            "origin_authentication": "unverified",
+            "official_applicability_verified": true,
+            "dissemination_eligible": false
+          },
+          {
+            "name": "warning",
+            "task_id": "t2",
+            "status": "answered"
+          }
+        ],
+        "provider": "local_ollama",
+        "context_resolution": {
+          "action": "new",
+          "changed_fields": [
+            "parameters",
+            "places",
+            "time"
+          ],
+          "inherited_fields": []
+        },
+        "duration_seconds": 2.154
+      },
+      "plan": {
+        "language": "en",
+        "places": [
+          {
+            "name": "Patna",
+            "state": "",
+            "district": "",
+            "kind": "unknown"
+          }
+        ],
+        "assumptions": [
+          "Time window read from the question: tomorrow whole day."
+        ],
+        "clarification": "",
+        "explicit_times": false,
+        "tasks": [
+          {
+            "request_quote": "Will it rain in Patna tomorrow",
+            "kind": "forecast",
+            "operation": "lookup",
+            "parameters": [
+              "precipitation"
+            ],
+            "years": [],
+            "period": "annual",
+            "start_local": "2026-09-16T00:30:00+05:30",
+            "end_local": "2026-09-17T00:30:00+05:30",
+            "place_indices": [
+              0
+            ]
+          },
+          {
+            "request_quote": "is there any warning",
+            "kind": "warning",
+            "operation": "lookup",
+            "parameters": [
+              "official_warning"
+            ],
+            "years": [],
+            "period": "annual",
+            "start_local": "",
+            "end_local": "",
+            "place_indices": [
+              0
+            ]
+          }
+        ],
+        "context_action": "new",
+        "changed_fields": [
+          "parameters",
+          "places",
+          "time"
+        ],
+        "intent": "forecast",
+        "start_local": "2026-09-16T00:30:00+05:30",
+        "end_local": "2026-09-17T00:30:00+05:30",
+        "variables": [
+          "precipitation"
+        ],
+        "year": 0,
+        "period": "annual",
+        "history_parameter": "rainfall",
+        "unsupported_parameters": [],
+        "requested_outcome": "Complete all explicitly requested tasks"
+      },
+      "task_results": [
+        {
+          "id": "t1",
+          "request": {
+            "request_quote": "Will it rain in Patna tomorrow",
+            "kind": "forecast",
+            "operation": "lookup",
+            "parameters": [
+              "precipitation"
+            ],
+            "years": [],
+            "period": "annual",
+            "start_local": "2026-09-16T00:30:00+05:30",
+            "end_local": "2026-09-17T00:30:00+05:30",
+            "place_indices": [
+              0
+            ]
+          },
+          "status": "answered",
+          "answer": "Patna · 16 Sep, 00:30–17 Sep, 00:30 IST: Forecast precipitation: 0.0–0.1 mm. Source: GFS forecast; conditions can change.",
+          "fact_ids": [
+            "t1-f1",
+            "t1-f2"
+          ],
+          "passage_ids": []
+        },
+        {
+          "id": "t2",
+          "request": {
+            "request_quote": "is there any warning",
+            "kind": "warning",
+            "operation": "lookup",
+            "parameters": [
+              "official_warning"
+            ],
+            "years": [],
+            "period": "annual",
+            "start_local": "",
+            "end_local": "",
+            "place_indices": [
+              0
+            ]
+          },
+          "status": "answered",
+          "answer": "IMD district warning for PATNA, bulletin of 15 Sep 2026 11:30 IST. Day 1 covers today, 15 Sep 2026: yellow - Thunderstorm/lightning/squall, Strong surface winds. Other published days: day 3 17 Sep 2026 yellow Thunderstorm/lightning/squall, Strong surface winds. This is IMD district-level warning guidance. It is not a flood warning, not an all-clear, and not a CAP alert; a CAP alert covering the same area is reported separately. CAP relay assessment: 8 retrieved messages, 1 pass the time/status/reference checks; the newest was sent 2026-09-15T12:35:04+05:30. Geographic applicability of the CAP relay to this place is not established here, its origin is not authenticated, and its completeness is unverified. A reachable feed and an empty eligible set are both not an all-clear.",
+          "fact_ids": [
+            "t2-f1",
+            "t2-f2",
+            "t2-f3",
+            "t2-f4",
+            "t2-f5"
+          ],
+          "passage_ids": []
+        }
+      ],
+      "charts": [],
+      "calculations": [],
+      "pending_slots": [],
+      "retrieval_coverage": [],
+      "retrieval_plan": [
+        {
+          "task_id": "t1",
+          "operation": "lookup",
+          "kind": "forecast",
+          "parameters": [
+            "precipitation"
+          ],
+          "candidates": [
+            {
+              "tool": "forecast_summary",
+              "selected": true,
+              "available": true,
+              "reason": "Exact-window GFS model summary",
+              "sources": [
+                {
+                  "source_id": "S21",
+                  "product": "Open-Meteo GFS forecast delivery",
+                  "registry_status": "prototype_adapter_tested"
+                }
+              ]
+            },
+            {
+              "tool": "hourly_forecast",
+              "selected": false,
+              "available": true,
+              "reason": "Hourly evidence; exact onset and whole-period probability unavailable",
+              "sources": [
+                {
+                  "source_id": "S62",
+                  "product": "Open-Meteo best-match extended hourly forecast",
+                  "registry_status": "prototype_adapter_tested"
+                }
+              ]
+            }
+          ],
+          "status": "answered",
+          "returned_source_ids": [
+            "S21",
+            "S61"
+          ]
+        },
+        {
+          "task_id": "t2",
+          "operation": "lookup",
+          "kind": "warning",
+          "parameters": [
+            "official_warning"
+          ],
+          "candidates": [
+            {
+              "tool": "official_warning",
+              "selected": true,
+              "available": true,
+              "reason": "IMD district warning guidance resolved to the place by point-in-polygon on IMD geometry, with day windows derived from the bulletin date, plus a separate CAP relay source assessment; no all-clear and no dissemination",
+              "sources": [
+                {
+                  "source_id": "S01",
+                  "product": "IMD Current Weather",
+                  "registry_status": "access_blocked"
+                },
+                {
+                  "source_id": "S06",
+                  "product": "IMD-linked CAP RSS",
+                  "registry_status": "prototype_adapter_tested"
+                },
+                {
+                  "source_id": "S15",
+                  "product": "IMD public warning-map WFS",
+                  "registry_status": "prototype_adapter_tested"
+                }
+              ]
+            }
+          ],
+          "status": "answered",
+          "returned_source_ids": [
+            "S06",
+            "S15"
+          ]
+        }
+      ],
+      "document_evidence": [],
+      "warning_evidence": [
+        {
+          "assessment": {
+            "count": 8,
+            "eligible_by_lifecycle": 1,
+            "checked_at_utc": "2026-09-15T09:32:31.151570+00:00",
+            "feed_completeness_verified": false,
+            "all_clear": false
+          },
+          "coverage": {
+            "message_errors": [],
+            "feed_item_count": 8,
+            "attempted_item_count": 8,
+            "omitted_item_count": 0,
+            "feed_items_complete": true
+          },
+          "delivery": "cache",
+          "latest_sent": "2026-09-15T12:35:04+05:30",
+          "requested_places": [
+            {
+              "name": "Patna",
+              "state": "",
+              "district": "",
+              "kind": "unknown"
+            }
+          ],
+          "records": [
+            {
+              "identifier": "urn:oid:2.49.0.1.356.0.2026.9.15.7.5.4",
+              "sender": "rainfallnwfc@gmail.com",
+              "sent": "2026-09-15T12:35:04+05:30",
+              "status": "Actual",
+              "msg_type": "Alert",
+              "scope": "Public",
+              "references": "",
+              "info": [
+                {
+                  "language": "en",
+                  "event": "Extremely heavy",
+                  "headline": "Heavy to very heavy with extremely heavy rainfall",
+                  "description": "Isolated extremely rainfall likely over Saurashtra and Kutch on 15th September.",
+                  "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+                  "severity": "Severe",
+                  "urgency": "Expected",
+                  "certainty": "Likely",
+                  "effective": "2026-09-15T12:35:04+05:30",
+                  "expires": "2026-09-16T07:00:00+05:30",
+                  "active_by_time_and_status": true,
+                  "areas": [
+                    {
+                      "description": "ODISHA",
+                      "polygons": [
+                        "24.6870,71.1475 24.2069,69.8291 24.2470,68.9063 23.4431,68.4229 22.9584,69.1260 22.9989,69.9170 23.0393,70.5322 22.4720,69.4775 22.3501,68.9063 21.6983,69.4775 21.2075,70.1367 20.7561,70.7080 20.9204,71.4551 21.6574,72.2461 22.2281,72.5977 23.7250,71.8506 24.6870,71.1475"
+                      ],
+                      "circles": [],
+                      "geocodes": []
+                    }
+                  ]
+                }
+              ],
+              "provenance": {
+                "source_id": "S06",
+                "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-09-15-07-05-04.xml",
+                "retrieved_at_utc": "2026-09-15T09:30:00.525021+00:00",
+                "http_status": 200,
+                "content_type": "application/xml",
+                "bytes": 4475,
+                "sha256": "d044e0795015f91faf3047c891646fe0fbb7b80cad4f1006b4b4ce5304791122",
+                "blob": "blobs/d044e0795015f91faf3047c891646fe0fbb7b80cad4f1006b4b4ce5304791122.bin",
+                "validation_scope": "product",
+                "delivery": "cache",
+                "checked_at_utc": "2026-09-15T09:32:31.146280+00:00"
+              },
+              "geographic_applicability": "Not established by time/status alone.",
+              "lifecycle": {
+                "reference_keys": [],
+                "replaced_by": [],
+                "active_info_indices": [
+                  0
+                ],
+                "eligible_by_lifecycle": true,
+                "hold_reasons": [],
+                "geographic_applicability_verified": false,
+                "sender_authenticity_verified": false,
+                "dissemination_eligible": false
+              }
+            },
+            {
+              "identifier": "urn:oid:2.49.0.1.356.0.2026.9.9.7.24.34",
+              "sender": "rainfallnwfc@gmail.com",
+              "sent": "2026-09-09T12:54:34+05:30",
+              "status": "Actual",
+              "msg_type": "Alert",
+              "scope": "Public",
+              "references": "",
+              "info": [
+                {
+                  "language": "en",
+                  "event": "Extremely heavy",
+                  "headline": "Heavy to very heavy with extremely heavy rainfall",
+                  "description": "Isolated extremely rainfall likely over Odisha on 10th September.",
+                  "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+                  "severity": "Severe",
+                  "urgency": "Expected",
+                  "certainty": "Likely",
+                  "effective": "2026-09-09T12:54:34+05:30",
+                  "expires": "2026-09-10T07:00:00+05:30",
+                  "active_by_time_and_status": false,
+                  "areas": [
+                    {
+                      "description": "ODISHA",
+                      "polygons": [
+                        "21.7228,83.2412 21.3303,82.5732 18.2210,82.1865 18.7545,84.1904 20.6410,87.0732 22.3094,86.6162 22.4720,84.6123 21.7228,83.2412"
+                      ],
+                      "circles": [],
+                      "geocodes": []
+                    }
+                  ]
+                }
+              ],
+              "provenance": {
+                "source_id": "S06",
+                "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-09-09-07-24-34.xml",
+                "retrieved_at_utc": "2026-09-15T09:30:01.017927+00:00",
+                "http_status": 200,
+                "content_type": "application/xml",
+                "bytes": 4318,
+                "sha256": "acb3456e7acb7f0e21de80da03c6d6ee9b1d7dde0384206cccc89cd297eed391",
+                "blob": "blobs/acb3456e7acb7f0e21de80da03c6d6ee9b1d7dde0384206cccc89cd297eed391.bin",
+                "validation_scope": "product",
+                "delivery": "cache",
+                "checked_at_utc": "2026-09-15T09:32:31.147086+00:00"
+              },
+              "geographic_applicability": "Not established by time/status alone.",
+              "lifecycle": {
+                "reference_keys": [],
+                "replaced_by": [],
+                "active_info_indices": [],
+                "eligible_by_lifecycle": false,
+                "hold_reasons": [
+                  "No information block is currently within its stated time interval"
+                ],
+                "geographic_applicability_verified": false,
+                "sender_authenticity_verified": false,
+                "dissemination_eligible": false
+              }
+            },
+            {
+              "identifier": "urn:oid:2.49.0.1.356.0.2026.9.3.7.21.21",
+              "sender": "rainfallnwfc@gmail.com",
+              "sent": "2026-09-03T12:51:21+05:30",
+              "status": "Actual",
+              "msg_type": "Alert",
+              "scope": "Public",
+              "references": "",
+              "info": [
+                {
+                  "language": "en",
+                  "event": "Extremely heavy",
+                  "headline": "Heavy to very heavy with extremely heavy rainfall",
+                  "description": "Heavy to Very heavy rainfall at few places and extremely Heavy Rainfall at isolated places very likely over East Madhya Pradesh.",
+                  "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+                  "severity": "Severe",
+                  "urgency": "Expected",
+                  "certainty": "Likely",
+                  "effective": "2026-09-03T12:51:21+05:30",
+                  "expires": "2026-09-04T07:00:00+05:30",
+                  "active_by_time_and_status": false,
+                  "areas": [
+                    {
+                      "description": "ODISHA",
+                      "polygons": [
+                        "25.1254,80.2881 24.5271,78.5303 23.7250,79.1455 22.5531,78.3545 21.4531,79.5850 21.4531,81.0791 22.7154,81.5625 23.6848,81.8262 24.8067,82.6172 25.1254,80.2881"
+                      ],
+                      "circles": [],
+                      "geocodes": []
+                    }
+                  ]
+                }
+              ],
+              "provenance": {
+                "source_id": "S06",
+                "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-09-03-07-21-21.xml",
+                "retrieved_at_utc": "2026-09-15T09:30:01.497521+00:00",
+                "http_status": 200,
+                "content_type": "application/xml",
+                "bytes": 4413,
+                "sha256": "5c04db0de6de0b8f562b7ba37d2cc8ffe46d894858c1f1d2354709c8c862c7c8",
+                "blob": "blobs/5c04db0de6de0b8f562b7ba37d2cc8ffe46d894858c1f1d2354709c8c862c7c8.bin",
+                "validation_scope": "product",
+                "delivery": "cache",
+                "checked_at_utc": "2026-09-15T09:32:31.147952+00:00"
+              },
+              "geographic_applicability": "Not established by time/status alone.",
+              "lifecycle": {
+                "reference_keys": [],
+                "replaced_by": [],
+                "active_info_indices": [],
+                "eligible_by_lifecycle": false,
+                "hold_reasons": [
+                  "No information block is currently within its stated time interval"
+                ],
+                "geographic_applicability_verified": false,
+                "sender_authenticity_verified": false,
+                "dissemination_eligible": false
+              }
+            },
+            {
+              "identifier": "urn:oid:2.49.0.1.356.0.2026.9.3.7.19.24",
+              "sender": "rainfallnwfc@gmail.com",
+              "sent": "2026-09-03T12:49:24+05:30",
+              "status": "Actual",
+              "msg_type": "Alert",
+              "scope": "Public",
+              "references": "",
+              "info": [
+                {
+                  "language": "en",
+                  "event": "Extremely heavy",
+                  "headline": "Heavy to very heavy with extremely heavy rainfall",
+                  "description": "Heavy to Very heavy rainfall at few places and extremely Heavy Rainfall at isolated places very likely over East Madhya Pradesh.",
+                  "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+                  "severity": "Severe",
+                  "urgency": "Expected",
+                  "certainty": "Likely",
+                  "effective": "2026-09-03T12:49:24+05:30",
+                  "expires": "2026-09-04T09:00:00+05:30",
+                  "active_by_time_and_status": false,
+                  "areas": [
+                    {
+                      "description": "ODISHA",
+                      "polygons": [
+                        "25.1254,80.2881 24.5271,78.5303 23.7250,79.1455 22.5531,78.3545 21.4531,79.5850 21.4531,81.0791 22.7154,81.5625 23.6848,81.8262 24.8067,82.6172 25.1254,80.2881"
+                      ],
+                      "circles": [],
+                      "geocodes": []
+                    }
+                  ]
+                }
+              ],
+              "provenance": {
+                "source_id": "S06",
+                "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-09-03-07-19-24.xml",
+                "retrieved_at_utc": "2026-09-15T09:30:01.994525+00:00",
+                "http_status": 200,
+                "content_type": "application/xml",
+                "bytes": 4413,
+                "sha256": "ff28ff1011b0344488db70a193ff0ab6d86fe16c09c6c2f47dc793b1fc2d4958",
+                "blob": "blobs/ff28ff1011b0344488db70a193ff0ab6d86fe16c09c6c2f47dc793b1fc2d4958.bin",
+                "validation_scope": "product",
+                "delivery": "cache",
+                "checked_at_utc": "2026-09-15T09:32:31.148803+00:00"
+              },
+              "geographic_applicability": "Not established by time/status alone.",
+              "lifecycle": {
+                "reference_keys": [],
+                "replaced_by": [],
+                "active_info_indices": [],
+                "eligible_by_lifecycle": false,
+                "hold_reasons": [
+                  "No information block is currently within its stated time interval"
+                ],
+                "geographic_applicability_verified": false,
+                "sender_authenticity_verified": false,
+                "dissemination_eligible": false
+              }
+            },
+            {
+              "identifier": "urn:oid:2.49.0.1.356.0.2026.9.2.8.41.21",
+              "sender": "rainfallnwfc@gmail.com",
+              "sent": "2026-09-02T14:11:21+05:30",
+              "status": "Actual",
+              "msg_type": "Alert",
+              "scope": "Public",
+              "references": "",
+              "info": [
+                {
+                  "language": "en",
+                  "event": "Extremely heavy",
+                  "headline": "Heavy to very heavy with extremely heavy rainfall",
+                  "description": "Heavy to Very heavy rainfall at few places and extremely Heavy Rainfall at isolated places very likely over East Madhya Pradesh.",
+                  "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+                  "severity": "Severe",
+                  "urgency": "Expected",
+                  "certainty": "Likely",
+                  "effective": "2026-09-02T14:11:21+05:30",
+                  "expires": "2026-09-03T09:00:00+05:30",
+                  "active_by_time_and_status": false,
+                  "areas": [
+                    {
+                      "description": "ODISHA",
+                      "polygons": [
+                        "25.6811,78.9697 24.6470,78.0029 23.2817,77.6514 22.7964,78.9697 21.5757,80.6396 22.9584,81.6064 24.0063,82.4854 24.8864,81.9580 25.2844,80.5518 25.6811,78.9697"
+                      ],
+                      "circles": [],
+                      "geocodes": []
+                    }
+                  ]
+                }
+              ],
+              "provenance": {
+                "source_id": "S06",
+                "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-09-02-08-41-21.xml",
+                "retrieved_at_utc": "2026-09-15T09:30:02.480194+00:00",
+                "http_status": 200,
+                "content_type": "application/xml",
+                "bytes": 4413,
+                "sha256": "c5066d5c2fb6ee002c17212bd22ce02b43bd31baa9118d08365f5b48dd5396cd",
+                "blob": "blobs/c5066d5c2fb6ee002c17212bd22ce02b43bd31baa9118d08365f5b48dd5396cd.bin",
+                "validation_scope": "product",
+                "delivery": "cache",
+                "checked_at_utc": "2026-09-15T09:32:31.149419+00:00"
+              },
+              "geographic_applicability": "Not established by time/status alone.",
+              "lifecycle": {
+                "reference_keys": [],
+                "replaced_by": [],
+                "active_info_indices": [],
+                "eligible_by_lifecycle": false,
+                "hold_reasons": [
+                  "No information block is currently within its stated time interval"
+                ],
+                "geographic_applicability_verified": false,
+                "sender_authenticity_verified": false,
+                "dissemination_eligible": false
+              }
+            },
+            {
+              "identifier": "urn:oid:2.49.0.1.356.0.2026.9.1.7.7.6",
+              "sender": "rainfallnwfc@gmail.com",
+              "sent": "2026-09-01T12:37:06+05:30",
+              "status": "Actual",
+              "msg_type": "Alert",
+              "scope": "Public",
+              "references": "",
+              "info": [
+                {
+                  "language": "en",
+                  "event": "Extremely heavy",
+                  "headline": "Heavy to very heavy with extremely heavy rainfall",
+                  "description": "Heavy to Very heavy rainfall at few places and extremely Heavy Rainfall at isolated places very likely over Jharkhand.",
+                  "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+                  "severity": "Severe",
+                  "urgency": "Expected",
+                  "certainty": "Likely",
+                  "effective": "2026-09-01T12:37:06+05:30",
+                  "expires": "2026-09-02T09:00:00+05:30",
+                  "active_by_time_and_status": false,
+                  "areas": [
+                    {
+                      "description": "ODISHA",
+                      "polygons": [
+                        "24.6310,83.4521 22.8288,83.8037 22.8612,85.9482 24.3431,87.6709 24.7588,86.7568 24.6310,83.4521"
+                      ],
+                      "circles": [],
+                      "geocodes": []
+                    }
+                  ]
+                }
+              ],
+              "provenance": {
+                "source_id": "S06",
+                "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-09-01-07-07-06.xml",
+                "retrieved_at_utc": "2026-09-15T09:30:02.973487+00:00",
+                "http_status": 200,
+                "content_type": "application/xml",
+                "bytes": 4337,
+                "sha256": "24e302167e261f53854e7e31c8ff66bfa178507f4e8b055ff7067f9e740f24e3",
+                "blob": "blobs/24e302167e261f53854e7e31c8ff66bfa178507f4e8b055ff7067f9e740f24e3.bin",
+                "validation_scope": "product",
+                "delivery": "cache",
+                "checked_at_utc": "2026-09-15T09:32:31.149997+00:00"
+              },
+              "geographic_applicability": "Not established by time/status alone.",
+              "lifecycle": {
+                "reference_keys": [],
+                "replaced_by": [],
+                "active_info_indices": [],
+                "eligible_by_lifecycle": false,
+                "hold_reasons": [
+                  "No information block is currently within its stated time interval"
+                ],
+                "geographic_applicability_verified": false,
+                "sender_authenticity_verified": false,
+                "dissemination_eligible": false
+              }
+            },
+            {
+              "identifier": "urn:oid:2.49.0.1.356.0.2026.9.1.7.0.31",
+              "sender": "rainfallnwfc@gmail.com",
+              "sent": "2026-09-01T12:30:31+05:30",
+              "status": "Actual",
+              "msg_type": "Alert",
+              "scope": "Public",
+              "references": "",
+              "info": [
+                {
+                  "language": "en",
+                  "event": "Extremely heavy",
+                  "headline": "Heavy to very heavy with extremely heavy rainfall",
+                  "description": "Heavy to Very heavy rainfall at few places and extremely Heavy Rainfall at isolated places very likely over Jharkhand.",
+                  "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+                  "severity": "Severe",
+                  "urgency": "Expected",
+                  "certainty": "Likely",
+                  "effective": "2026-09-01T12:30:31+05:30",
+                  "expires": "2026-09-02T09:00:00+05:30",
+                  "active_by_time_and_status": false,
+                  "areas": [
+                    {
+                      "description": "ODISHA",
+                      "polygons": [
+                        "24.7588,83.5576 23.0555,83.6279 22.7964,85.8428 23.5398,87.6357 24.7588,87.3545 24.7588,83.5576"
+                      ],
+                      "circles": [],
+                      "geocodes": []
+                    }
+                  ]
+                }
+              ],
+              "provenance": {
+                "source_id": "S06",
+                "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-09-01-07-00-31.xml",
+                "retrieved_at_utc": "2026-09-15T09:30:03.472590+00:00",
+                "http_status": 200,
+                "content_type": "application/xml",
+                "bytes": 4338,
+                "sha256": "449ad0b821a6c2dcbaf256962ea775c553c1d0284f226efeb64b9d3de51dbb34",
+                "blob": "blobs/449ad0b821a6c2dcbaf256962ea775c553c1d0284f226efeb64b9d3de51dbb34.bin",
+                "validation_scope": "product",
+                "delivery": "cache",
+                "checked_at_utc": "2026-09-15T09:32:31.150582+00:00"
+              },
+              "geographic_applicability": "Not established by time/status alone.",
+              "lifecycle": {
+                "reference_keys": [],
+                "replaced_by": [],
+                "active_info_indices": [],
+                "eligible_by_lifecycle": false,
+                "hold_reasons": [
+                  "No information block is currently within its stated time interval"
+                ],
+                "geographic_applicability_verified": false,
+                "sender_authenticity_verified": false,
+                "dissemination_eligible": false
+              }
+            },
+            {
+              "identifier": "urn:oid:2.49.0.1.356.0.2026.8.31.7.53.57",
+              "sender": "rainfallnwfc@gmail.com",
+              "sent": "2026-08-31T13:23:57+05:30",
+              "status": "Actual",
+              "msg_type": "Alert",
+              "scope": "Public",
+              "references": "",
+              "info": [
+                {
+                  "language": "en",
+                  "event": "Extremely heavy",
+                  "headline": "Heavy to very heavy with extremely heavy rainfall",
+                  "description": "Heavy to Very heavy rainfall at few places and extremely Heavy Rainfall at isolated places very likely over Odisha and Chattisgarh.",
+                  "instruction": "Action suggested\n\n\tAvoid roadway underpasses, drainage ditches, low lying areas and areas where water collects – they can unexpectedly flood or overflow.\n\t      Stay away from power lines or electrical wires.\n\t      Don’t stay in kuchcha houses during heavy rainfall as it may collapse anytime soon.\n\t       Drive carefully.",
+                  "severity": "Severe",
+                  "urgency": "Expected",
+                  "certainty": "Likely",
+                  "effective": "2026-08-31T13:23:57+05:30",
+                  "expires": "2026-09-01T09:00:00+05:30",
+                  "active_by_time_and_status": false,
+                  "areas": [
+                    {
+                      "description": "ODISHA",
+                      "polygons": [
+                        "22.7640,80.0068 18.5546,80.4639 19.2199,84.7178 21.6574,86.7920 23.7652,83.5928 22.7640,80.0068"
+                      ],
+                      "circles": [],
+                      "geocodes": []
+                    }
+                  ]
+                }
+              ],
+              "provenance": {
+                "source_id": "S06",
+                "url": "https://cap-sources.s3.amazonaws.com/in-imd-en/2026-08-31-07-53-57.xml",
+                "retrieved_at_utc": "2026-09-15T09:30:03.982102+00:00",
+                "http_status": 200,
+                "content_type": "application/xml",
+                "bytes": 4353,
+                "sha256": "8b165e577dc7f0f0f77906412e271c62a11910e8020f2b2f1782165b8ed933b9",
+                "blob": "blobs/8b165e577dc7f0f0f77906412e271c62a11910e8020f2b2f1782165b8ed933b9.bin",
+                "validation_scope": "product",
+                "delivery": "cache",
+                "checked_at_utc": "2026-09-15T09:32:31.151064+00:00"
+              },
+              "geographic_applicability": "Not established by time/status alone.",
+              "lifecycle": {
+                "reference_keys": [],
+                "replaced_by": [],
+                "active_info_indices": [],
+                "eligible_by_lifecycle": false,
+                "hold_reasons": [
+                  "No information block is currently within its stated time interval"
+                ],
+                "geographic_applicability_verified": false,
+                "sender_authenticity_verified": false,
+                "dissemination_eligible": false
+              }
+            }
+          ],
+          "district_warnings": [
+            {
+              "place": "Patna, Patna, State of Bihar",
+              "district": "PATNA",
+              "issued_at_utc": "2026-09-15T11:30:00+05:30",
+              "days": [
+                {
+                  "day": 1,
+                  "date_local": "2026-09-15",
+                  "label": "15 Sep 2026",
+                  "colour": "yellow",
+                  "colour_code": 3,
+                  "hazard_codes": [
+                    4,
+                    8
+                  ],
+                  "hazards": [
+                    "Thunderstorm/lightning/squall",
+                    "Strong surface winds"
+                  ],
+                  "quiet": false,
+                  "starts_utc": "2026-09-14T18:30:00+00:00",
+                  "ends_utc": "2026-09-15T18:30:00+00:00",
+                  "is_today": true,
+                  "is_past": false,
+                  "source_text": ""
+                },
+                {
+                  "day": 2,
+                  "date_local": "2026-09-16",
+                  "label": "16 Sep 2026",
+                  "colour": "green",
+                  "colour_code": 4,
+                  "hazard_codes": [
+                    1
+                  ],
+                  "hazards": [
+                    "No warning in this product"
+                  ],
+                  "quiet": true,
+                  "starts_utc": "2026-09-15T18:30:00+00:00",
+                  "ends_utc": "2026-09-16T18:30:00+00:00",
+                  "is_today": false,
+                  "is_past": false,
+                  "source_text": ""
+                },
+                {
+                  "day": 3,
+                  "date_local": "2026-09-17",
+                  "label": "17 Sep 2026",
+                  "colour": "yellow",
+                  "colour_code": 3,
+                  "hazard_codes": [
+                    4,
+                    8
+                  ],
+                  "hazards": [
+                    "Thunderstorm/lightning/squall",
+                    "Strong surface winds"
+                  ],
+                  "quiet": false,
+                  "starts_utc": "2026-09-16T18:30:00+00:00",
+                  "ends_utc": "2026-09-17T18:30:00+00:00",
+                  "is_today": false,
+                  "is_past": false,
+                  "source_text": ""
+                },
+                {
+                  "day": 4,
+                  "date_local": "2026-09-18",
+                  "label": "18 Sep 2026",
+                  "colour": "green",
+                  "colour_code": 4,
+                  "hazard_codes": [
+                    1
+                  ],
+                  "hazards": [
+                    "No warning in this product"
+                  ],
+                  "quiet": true,
+                  "starts_utc": "2026-09-17T18:30:00+00:00",
+                  "ends_utc": "2026-09-18T18:30:00+00:00",
+                  "is_today": false,
+                  "is_past": false,
+                  "source_text": ""
+                },
+                {
+                  "day": 5,
+                  "date_local": "2026-09-19",
+                  "label": "19 Sep 2026",
+                  "colour": "green",
+                  "colour_code": 4,
+                  "hazard_codes": [
+                    1
+                  ],
+                  "hazards": [
+                    "No warning in this product"
+                  ],
+                  "quiet": true,
+                  "starts_utc": "2026-09-18T18:30:00+00:00",
+                  "ends_utc": "2026-09-19T18:30:00+00:00",
+                  "is_today": false,
+                  "is_past": false,
+                  "source_text": ""
+                }
+              ]
+            }
+          ],
+          "stale_districts": [],
+          "points_outside_districts": [],
+          "places_without_a_point": []
+        }
+      ],
+      "resolved_points": {
+        "Patna": {
+          "id": "1260086",
+          "name": "Patna",
+          "latitude": 25.59408,
+          "longitude": 85.13563,
+          "feature": "PPLA",
+          "admin1": "State of Bihar",
+          "admin2": "Patna",
+          "modified": "2025-10-18",
+          "name_match_basis": "canonical",
+          "state_match_basis": "",
+          "other_alias_matches": 0,
+          "match_type": "source_name_or_alias",
+          "selection_id": "geonames:1260086",
+          "label": "Patna, Patna, State of Bihar",
+          "coordinates": {
+            "latitude": 25.59408,
+            "longitude": 85.13563
+          },
+          "source_id": "S61",
+          "citation": {
+            "source_id": "S61",
+            "url": "https://www.geonames.org/1260086",
+            "provider": "GeoNames",
+            "product": "India place catalogue",
+            "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+            "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+          },
+          "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+          "for_place_name": "Patna",
+          "accepted_because": "the only administrative seat among the places that share this name",
+          "alternatives": [
+            "Patna, District Saharanpur, Uttar Pradesh",
+            "Patna, Sirmaur, State of Himāchal Pradesh",
+            "Patna, Sirmaur, State of Himāchal Pradesh",
+            "Patna, Raisen, Madhya Pradesh"
+          ]
+        }
+      },
+      "task_coverage": {
+        "requested": 2,
+        "completed": 2,
+        "incomplete_ids": []
+      },
+      "product_comparison": [
+        {
+          "kind": "official_warning_and_forecast",
+          "place": "Patna, Patna, State of Bihar",
+          "window": {
+            "label": "17 Sep 2026"
+          },
+          "products": [
+            {
+              "source_id": "S15",
+              "product": "IMD district warning product",
+              "statement": "yellow · Thunderstorm/lightning/squall, Strong surface winds"
+            },
+            {
+              "source_id": "S21",
+              "product": "Model forecast",
+              "statement": "rainfall 0.0 mm across 1 forecast value(s)"
+            }
+          ],
+          "reading": "differ",
+          "why": "the official product carries a rain or storm hazard for this window while the model forecast shows no rain in it; neither product is a measurement of the other",
+          "note": "Both products are named here and neither is ranked; a comparison is not a score, a skill measurement or a warning. Only the official product speaks about warnings, and a quiet day in it is not a forecast of no rain."
+        }
+      ]
+    }
+  },
+  {
+    "id": "water_level_control",
+    "path": "/api/chat",
+    "request": {
+      "question": "What is the river water level at Patna tomorrow?"
+    },
+    "http_status": 400,
+    "seconds": 0.003,
+    "packet": {
+      "error": "The question could not be interpreted: No model provider could answer. ollama: The local model did not answer: HTTPError"
+    }
+  },
+  {
+    "id": "current_water_level_repeat",
+    "path": "/api/chat",
+    "request": {
+      "question": "What is the observed water level near Patna, Bihar now?"
+    },
+    "http_status": 200,
+    "seconds": 1.177,
+    "packet": {
+      "schema_version": "weather-conversation-v1",
+      "conversation_id": "b1ce7618-46f4-484c-8c77-69f09770da2a",
+      "question": "What is the observed water level near Patna, Bihar now?",
+      "status": "answered",
+      "answer": "Freshest station report here: PATNA, 4.6 km away, reported 2026-09-15T09:00:00+00:00, 32.5 minutes before retrieval. Official district product for PATNA: Official district warning: yellow - Thunderstorm/lightning/squall, Strong surface winds (issued 2026-09-15T06:00:00+00:00). Model hours next, 2026-09-15T09:00:00+00:00 to 2026-09-15T14:00:00+00:00: 2026-09-15T09:00:00+00:00 29.3 °C, rain chance 92%; 2026-09-15T10:00:00+00:00 30.6 °C, rain chance 92%; 2026-09-15T11:00:00+00:00 30.6 °C, rain chance 88%; 2026-09-15T12:00:00+00:00 29.8 °C, rain chance 78%; 2026-09-15T13:00:00+00:00 28.8 °C, rain chance 57%; 2026-09-15T14:00:00+00:00 28.5 °C, rain chance 30%. Not connected here: radar and satellite imagery; sub-hourly refresh between source hours; any push or notification: this workspace answers when it is asked.",
+      "facts": [
+        {
+          "id": "t1-f1",
+          "parameter": "wind_speed_kt",
+          "label": "Observed station wind speed",
+          "value": "3.0",
+          "unit": null,
+          "place": "PATNA · 4.6 km from the requested point",
+          "entity_id": "station:VEPT",
+          "observed_at": "2026-09-15T09:00:00+00:00",
+          "start": "2026-09-15T09:00:00+00:00",
+          "end": "2026-09-15T09:00:00+00:00",
+          "sample_at": "2026-09-15T09:00:00+00:00",
+          "source_id": "S63",
+          "evidence_kind": "observation",
+          "evidence_version": "S63",
+          "citation_ids": [],
+          "source_locators": [],
+          "method": "reported_station_observation",
+          "task_id": "t1"
+        },
+        {
+          "id": "t1-f2",
+          "parameter": "wind_direction",
+          "label": "Observed station wind direction",
+          "value": "350.0",
+          "unit": null,
+          "place": "PATNA · 4.6 km from the requested point",
+          "entity_id": "station:VEPT",
+          "observed_at": "2026-09-15T09:00:00+00:00",
+          "start": "2026-09-15T09:00:00+00:00",
+          "end": "2026-09-15T09:00:00+00:00",
+          "sample_at": "2026-09-15T09:00:00+00:00",
+          "source_id": "S63",
+          "evidence_kind": "observation",
+          "evidence_version": "S63",
+          "citation_ids": [],
+          "source_locators": [],
+          "method": "reported_station_observation",
+          "task_id": "t1"
+        },
+        {
+          "id": "t1-f3",
+          "parameter": "mslp",
+          "label": "Observed station pressure",
+          "value": "1007.0",
+          "unit": null,
+          "place": "PATNA · 4.6 km from the requested point",
+          "entity_id": "station:VEPT",
+          "observed_at": "2026-09-15T09:00:00+00:00",
+          "start": "2026-09-15T09:00:00+00:00",
+          "end": "2026-09-15T09:00:00+00:00",
+          "sample_at": "2026-09-15T09:00:00+00:00",
+          "source_id": "S63",
+          "evidence_kind": "observation",
+          "evidence_version": "S63",
+          "citation_ids": [],
+          "source_locators": [],
+          "method": "reported_station_observation",
+          "task_id": "t1"
+        },
+        {
+          "id": "t1-f4",
+          "parameter": "wind_speed_kt",
+          "label": "Observed station wind speed",
+          "value": "6.0",
+          "unit": null,
+          "place": "BIHTA · 25.64 km from the requested point",
+          "entity_id": "station:VEBT",
+          "observed_at": "2026-09-15T07:30:00+00:00",
+          "start": "2026-09-15T07:30:00+00:00",
+          "end": "2026-09-15T07:30:00+00:00",
+          "sample_at": "2026-09-15T07:30:00+00:00",
+          "source_id": "S63",
+          "evidence_kind": "observation",
+          "evidence_version": "S63",
+          "citation_ids": [],
+          "source_locators": [],
+          "method": "reported_station_observation",
+          "task_id": "t1"
+        },
+        {
+          "id": "t1-f5",
+          "parameter": "wind_direction",
+          "label": "Observed station wind direction",
+          "value": "290.0",
+          "unit": null,
+          "place": "BIHTA · 25.64 km from the requested point",
+          "entity_id": "station:VEBT",
+          "observed_at": "2026-09-15T07:30:00+00:00",
+          "start": "2026-09-15T07:30:00+00:00",
+          "end": "2026-09-15T07:30:00+00:00",
+          "sample_at": "2026-09-15T07:30:00+00:00",
+          "source_id": "S63",
+          "evidence_kind": "observation",
+          "evidence_version": "S63",
+          "citation_ids": [],
+          "source_locators": [],
+          "method": "reported_station_observation",
+          "task_id": "t1"
+        },
+        {
+          "id": "t1-f6",
+          "parameter": "mslp",
+          "label": "Observed station pressure",
+          "value": "1009.0",
+          "unit": null,
+          "place": "BIHTA · 25.64 km from the requested point",
+          "entity_id": "station:VEBT",
+          "observed_at": "2026-09-15T07:30:00+00:00",
+          "start": "2026-09-15T07:30:00+00:00",
+          "end": "2026-09-15T07:30:00+00:00",
+          "sample_at": "2026-09-15T07:30:00+00:00",
+          "source_id": "S63",
+          "evidence_kind": "observation",
+          "evidence_version": "S63",
+          "citation_ids": [],
+          "source_locators": [],
+          "method": "reported_station_observation",
+          "task_id": "t1"
+        }
+      ],
+      "citations": [],
+      "notes": [
+        "Place read as Patna, Patna, State of Bihar — the only administrative seat among the places that share this name.",
+        "METAR PATNA observed 2026-09-15T09:00:00+00:00, 32.5 minutes old at retrieval.",
+        "METAR BIHTA observed 2026-09-15T07:30:00+00:00, 122.5 minutes old at retrieval.",
+        "A station report describes that station at its own instant. It is not a district average, not a forecast, and not a statement about whether a warning applies."
+      ],
+      "choices": [],
+      "follow_up": null,
+      "operational_eligible": false,
+      "answered_at_utc": "2026-09-15T09:32:32.506303+00:00",
+      "expires_at_utc": null,
+      "trace": {
+        "planning": {
+          "provider": "deterministic_rules",
+          "model": "rule-planner-v1",
+          "model_calls": 0,
+          "attempts": 0,
+          "latency_ms": 0,
+          "failover": []
+        },
+        "generation": {
+          "provider": "typed_task_renderers",
+          "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit.",
+          "requested_language": "en",
+          "language_selection": "inferred_from_question",
+          "language_adherence": "not_applicable"
+        },
+        "tools": [
+          {
+            "name": "right_now_reading",
+            "station_rows": 2,
+            "hours": 6,
+            "source_id": "S63"
+          },
+          {
+            "name": "observation",
+            "task_id": "t1",
+            "status": "answered"
+          }
+        ],
+        "provider": "local_ollama",
+        "context_resolution": {
+          "action": "new",
+          "changed_fields": [
+            "parameters",
+            "places",
+            "time"
+          ],
+          "inherited_fields": []
+        },
+        "duration_seconds": 1.175
+      },
+      "plan": {
+        "language": "en",
+        "places": [
+          {
+            "name": "Patna",
+            "state": "Bihar",
+            "district": "",
+            "kind": "unknown"
+          }
+        ],
+        "assumptions": [],
+        "clarification": "",
+        "explicit_times": false,
+        "tasks": [
+          {
+            "request_quote": "What is the observed water level near Patna, Bihar now",
+            "kind": "observation",
+            "operation": "lookup",
+            "parameters": [],
+            "years": [],
+            "period": "annual",
+            "start_local": "",
+            "end_local": "",
+            "place_indices": [
+              0
+            ]
+          }
+        ],
+        "context_action": "new",
+        "changed_fields": [
+          "parameters",
+          "places",
+          "time"
+        ],
+        "intent": "observation",
+        "start_local": "",
+        "end_local": "",
+        "variables": [],
+        "year": 0,
+        "period": "annual",
+        "history_parameter": "rainfall",
+        "unsupported_parameters": [],
+        "requested_outcome": "Complete all explicitly requested tasks"
+      },
+      "task_results": [
+        {
+          "id": "t1",
+          "request": {
+            "request_quote": "What is the observed water level near Patna, Bihar now",
+            "kind": "observation",
+            "operation": "lookup",
+            "parameters": [],
+            "years": [],
+            "period": "annual",
+            "start_local": "",
+            "end_local": "",
+            "place_indices": [
+              0
+            ]
+          },
+          "status": "answered",
+          "answer": "Freshest station report here: PATNA, 4.6 km away, reported 2026-09-15T09:00:00+00:00, 32.5 minutes before retrieval. Official district product for PATNA: Official district warning: yellow - Thunderstorm/lightning/squall, Strong surface winds (issued 2026-09-15T06:00:00+00:00). Model hours next, 2026-09-15T09:00:00+00:00 to 2026-09-15T14:00:00+00:00: 2026-09-15T09:00:00+00:00 29.3 °C, rain chance 92%; 2026-09-15T10:00:00+00:00 30.6 °C, rain chance 92%; 2026-09-15T11:00:00+00:00 30.6 °C, rain chance 88%; 2026-09-15T12:00:00+00:00 29.8 °C, rain chance 78%; 2026-09-15T13:00:00+00:00 28.8 °C, rain chance 57%; 2026-09-15T14:00:00+00:00 28.5 °C, rain chance 30%. Not connected here: radar and satellite imagery; sub-hourly refresh between source hours; any push or notification: this workspace answers when it is asked.",
+          "fact_ids": [
+            "t1-f1",
+            "t1-f2",
+            "t1-f3",
+            "t1-f4",
+            "t1-f5",
+            "t1-f6"
+          ],
+          "passage_ids": []
+        }
+      ],
+      "charts": [],
+      "calculations": [],
+      "pending_slots": [],
+      "retrieval_coverage": [],
+      "retrieval_plan": [
+        {
+          "task_id": "t1",
+          "operation": "lookup",
+          "kind": "observation",
+          "parameters": [],
+          "candidates": [],
+          "status": "answered",
+          "returned_source_ids": []
+        }
+      ],
+      "document_evidence": [],
+      "resolved_points": {},
+      "task_coverage": {
+        "requested": 1,
+        "completed": 1,
+        "incomplete_ids": []
+      }
+    }
+  },
+  {
+    "id": "hourly",
+    "path": "/api/chat",
+    "request": {
+      "question": "Show hourly rainfall probability and temperature in Ahmedabad tomorrow morning."
+    },
+    "http_status": 200,
+    "seconds": 0.1,
+    "packet": {
+      "schema_version": "weather-conversation-v1",
+      "conversation_id": "da9ab005-ee38-454a-b8b4-d78972d88886",
+      "question": "Show hourly rainfall probability and temperature in Ahmedabad tomorrow morning.",
+      "status": "answered",
+      "answer": "Ahmedabad · 16 Sep, 09:30–16 Sep, 12:30 IST: Total precipitation over this period: 0.0 mm. Hourly rain chances: 4–22 %. The highest hourly value is 22% for 16 Sep, 11:30–12:30 IST. These percentages are for individual hours, not the chance for the whole day. Precipitation in individual hours: 0.0 mm. Temperature: 27.6–29.8 °C. Source: Open-Meteo best-match forecast; conditions can change.",
+      "facts": [
+        {
+          "id": "t1-f1",
+          "parameter": "precipitation_probability",
+          "label": "Hourly precipitation probability (>0.1 mm)",
+          "value": "4",
+          "unit": "%",
+          "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+          "entity_id": "geonames:1279233",
+          "start": "2026-09-16T09:30:00+05:30",
+          "end": "2026-09-16T10:30:00+05:30",
+          "source_id": "S62",
+          "evidence_kind": "forecast",
+          "evidence_version": "1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984",
+          "citation_ids": [
+            "t1-c-1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984"
+          ],
+          "source_locators": [
+            "$.hourly.precipitation_probability[29]"
+          ],
+          "method": "preceding_hour_probability",
+          "task_id": "t1"
+        },
+        {
+          "id": "t1-f2",
+          "parameter": "precipitation_probability",
+          "label": "Hourly precipitation probability (>0.1 mm)",
+          "value": "10",
+          "unit": "%",
+          "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+          "entity_id": "geonames:1279233",
+          "start": "2026-09-16T10:30:00+05:30",
+          "end": "2026-09-16T11:30:00+05:30",
+          "source_id": "S62",
+          "evidence_kind": "forecast",
+          "evidence_version": "1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984",
+          "citation_ids": [
+            "t1-c-1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984"
+          ],
+          "source_locators": [
+            "$.hourly.precipitation_probability[30]"
+          ],
+          "method": "preceding_hour_probability",
+          "task_id": "t1"
+        },
+        {
+          "id": "t1-f3",
+          "parameter": "precipitation_probability",
+          "label": "Hourly precipitation probability (>0.1 mm)",
+          "value": "22",
+          "unit": "%",
+          "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+          "entity_id": "geonames:1279233",
+          "start": "2026-09-16T11:30:00+05:30",
+          "end": "2026-09-16T12:30:00+05:30",
+          "source_id": "S62",
+          "evidence_kind": "forecast",
+          "evidence_version": "1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984",
+          "citation_ids": [
+            "t1-c-1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984"
+          ],
+          "source_locators": [
+            "$.hourly.precipitation_probability[31]"
+          ],
+          "method": "preceding_hour_probability",
+          "task_id": "t1"
+        },
+        {
+          "id": "t1-f4",
+          "parameter": "precipitation",
+          "label": "Hourly precipitation amount",
+          "value": "0.0",
+          "unit": "mm",
+          "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+          "entity_id": "geonames:1279233",
+          "start": "2026-09-16T09:30:00+05:30",
+          "end": "2026-09-16T10:30:00+05:30",
+          "source_id": "S62",
+          "evidence_kind": "forecast",
+          "evidence_version": "1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984",
+          "citation_ids": [
+            "t1-c-1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984"
+          ],
+          "source_locators": [
+            "$.hourly.precipitation[29]"
+          ],
+          "method": "preceding_hour_sum",
+          "task_id": "t1"
+        },
+        {
+          "id": "t1-f5",
+          "parameter": "precipitation",
+          "label": "Hourly precipitation amount",
+          "value": "0.0",
+          "unit": "mm",
+          "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+          "entity_id": "geonames:1279233",
+          "start": "2026-09-16T10:30:00+05:30",
+          "end": "2026-09-16T11:30:00+05:30",
+          "source_id": "S62",
+          "evidence_kind": "forecast",
+          "evidence_version": "1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984",
+          "citation_ids": [
+            "t1-c-1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984"
+          ],
+          "source_locators": [
+            "$.hourly.precipitation[30]"
+          ],
+          "method": "preceding_hour_sum",
+          "task_id": "t1"
+        },
+        {
+          "id": "t1-f6",
+          "parameter": "precipitation",
+          "label": "Hourly precipitation amount",
+          "value": "0.0",
+          "unit": "mm",
+          "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+          "entity_id": "geonames:1279233",
+          "start": "2026-09-16T11:30:00+05:30",
+          "end": "2026-09-16T12:30:00+05:30",
+          "source_id": "S62",
+          "evidence_kind": "forecast",
+          "evidence_version": "1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984",
+          "citation_ids": [
+            "t1-c-1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984"
+          ],
+          "source_locators": [
+            "$.hourly.precipitation[31]"
+          ],
+          "method": "preceding_hour_sum",
+          "task_id": "t1"
+        },
+        {
+          "id": "t1-f7",
+          "parameter": "temperature_2m",
+          "label": "Temperature sample",
+          "value": "27.6",
+          "unit": "°C",
+          "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+          "entity_id": "geonames:1279233",
+          "start": "2026-09-16T09:30:00+05:30",
+          "end": "2026-09-16T09:30:00+05:30",
+          "source_id": "S62",
+          "evidence_kind": "forecast",
+          "evidence_version": "1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984",
+          "citation_ids": [
+            "t1-c-1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984"
+          ],
+          "source_locators": [
+            "$.hourly.temperature_2m[28]"
+          ],
+          "method": "instant",
+          "sample_at": "2026-09-16T09:30:00+05:30",
+          "task_id": "t1"
+        },
+        {
+          "id": "t1-f8",
+          "parameter": "temperature_2m",
+          "label": "Temperature sample",
+          "value": "28.7",
+          "unit": "°C",
+          "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+          "entity_id": "geonames:1279233",
+          "start": "2026-09-16T10:30:00+05:30",
+          "end": "2026-09-16T10:30:00+05:30",
+          "source_id": "S62",
+          "evidence_kind": "forecast",
+          "evidence_version": "1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984",
+          "citation_ids": [
+            "t1-c-1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984"
+          ],
+          "source_locators": [
+            "$.hourly.temperature_2m[29]"
+          ],
+          "method": "instant",
+          "sample_at": "2026-09-16T10:30:00+05:30",
+          "task_id": "t1"
+        },
+        {
+          "id": "t1-f9",
+          "parameter": "temperature_2m",
+          "label": "Temperature sample",
+          "value": "29.8",
+          "unit": "°C",
+          "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+          "entity_id": "geonames:1279233",
+          "start": "2026-09-16T11:30:00+05:30",
+          "end": "2026-09-16T11:30:00+05:30",
+          "source_id": "S62",
+          "evidence_kind": "forecast",
+          "evidence_version": "1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984",
+          "citation_ids": [
+            "t1-c-1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984"
+          ],
+          "source_locators": [
+            "$.hourly.temperature_2m[30]"
+          ],
+          "method": "instant",
+          "sample_at": "2026-09-16T11:30:00+05:30",
+          "task_id": "t1"
+        }
+      ],
+      "citations": [
+        {
+          "id": "t1-c-1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984",
+          "source_id": "S62",
+          "provider": "Open-Meteo",
+          "product": "Best-match hourly model forecast",
+          "url": "https://api.open-meteo.com/v1/forecast?latitude=23.02579&longitude=72.58727&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m%2Cprecipitation_probability%2Capparent_temperature%2Cwind_gusts_10m%2Cvisibility&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+          "response_sha256": "1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984",
+          "retrieved_at_utc": "2026-09-15T09:29:47.784178+00:00",
+          "requested_point": {
+            "latitude": 23.02579,
+            "longitude": 72.58727
+          },
+          "returned_grid": {
+            "latitude": 23.022846,
+            "longitude": 72.60188
+          },
+          "grid_distance_km": 1.531,
+          "model_run_time": null
+        },
+        {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1279233",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        }
+      ],
+      "notes": [
+        "Time window read from the question: tomorrow morning.",
+        "Place read as Ahmedabad, Ahmadābād, State of Gujarāt — its district carries the same name, and no other place that shares this name does. Other places share this name: Ahmedābād, District Rampur, Uttar Pradesh. Say which one you meant to switch.",
+        "Precipitation includes rain, showers and snow water equivalent; it is not a rain-only gauge measurement.",
+        "Source hours are on UTC boundaries (:30 in IST). Each probability is for >0.1 mm in its preceding hour. Hourly probabilities are never combined into a period probability.",
+        "Best-match model selection may differ by variable; upstream run and local representativeness are unverified. Hourly values cannot determine an exact rain start minute or issue an official warning."
+      ],
+      "choices": [],
+      "follow_up": null,
+      "operational_eligible": false,
+      "answered_at_utc": "2026-09-15T09:32:33.684690+00:00",
+      "expires_at_utc": "2026-09-15T10:29:47.784178+00:00",
+      "trace": {
+        "planning": {
+          "provider": "deterministic_rules",
+          "model": "rule-planner-v1",
+          "model_calls": 0,
+          "attempts": 0,
+          "latency_ms": 0,
+          "failover": []
+        },
+        "generation": {
+          "provider": "typed_task_renderers",
+          "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit.",
+          "requested_language": "en",
+          "language_selection": "inferred_from_question",
+          "language_adherence": "not_applicable"
+        },
+        "tools": [
+          {
+            "name": "gazetteer_search",
+            "query": {
+              "name": "Ahmedabad",
+              "state": "",
+              "district": "",
+              "kind": "unknown"
+            },
+            "matches": 2
+          },
+          {
+            "name": "extended_forecast",
+            "job_id": "63d73b716bcd99abc1a938c2e034561b1b8893c940100549387a142f3de179a7",
+            "worker": {
+              "state": "already_collected"
+            },
+            "source_sha256": "1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984"
+          },
+          {
+            "name": "forecast",
+            "task_id": "t1",
+            "status": "answered"
+          }
+        ],
+        "provider": "local_ollama",
+        "context_resolution": {
+          "action": "new",
+          "changed_fields": [
+            "parameters",
+            "places",
+            "time"
+          ],
+          "inherited_fields": []
+        },
+        "duration_seconds": 0.098
+      },
+      "plan": {
+        "language": "en",
+        "places": [
+          {
+            "name": "Ahmedabad",
+            "state": "",
+            "district": "",
+            "kind": "unknown"
+          }
+        ],
+        "assumptions": [
+          "Time window read from the question: tomorrow morning."
+        ],
+        "clarification": "",
+        "explicit_times": false,
+        "tasks": [
+          {
+            "request_quote": "Show hourly rainfall probability and temperature in Ahmedabad tomorrow morning.",
+            "kind": "forecast",
+            "operation": "lookup",
+            "parameters": [
+              "precipitation_probability",
+              "precipitation",
+              "temperature_2m"
+            ],
+            "years": [],
+            "period": "annual",
+            "start_local": "2026-09-16T09:30:00+05:30",
+            "end_local": "2026-09-16T12:30:00+05:30",
+            "place_indices": [
+              0
+            ]
+          }
+        ],
+        "context_action": "new",
+        "changed_fields": [
+          "parameters",
+          "places",
+          "time"
+        ],
+        "intent": "forecast",
+        "start_local": "2026-09-16T09:30:00+05:30",
+        "end_local": "2026-09-16T12:30:00+05:30",
+        "variables": [
+          "precipitation",
+          "temperature_2m"
+        ],
+        "year": 0,
+        "period": "annual",
+        "history_parameter": "rainfall",
+        "unsupported_parameters": [],
+        "requested_outcome": "Complete all explicitly requested tasks"
+      },
+      "task_results": [
+        {
+          "id": "t1",
+          "request": {
+            "request_quote": "Show hourly rainfall probability and temperature in Ahmedabad tomorrow morning.",
+            "kind": "forecast",
+            "operation": "lookup",
+            "parameters": [
+              "precipitation_probability",
+              "precipitation",
+              "temperature_2m"
+            ],
+            "years": [],
+            "period": "annual",
+            "start_local": "2026-09-16T09:30:00+05:30",
+            "end_local": "2026-09-16T12:30:00+05:30",
+            "place_indices": [
+              0
+            ]
+          },
+          "status": "answered",
+          "answer": "Ahmedabad · 16 Sep, 09:30–16 Sep, 12:30 IST: Total precipitation over this period: 0.0 mm. Hourly rain chances: 4–22 %. The highest hourly value is 22% for 16 Sep, 11:30–12:30 IST. These percentages are for individual hours, not the chance for the whole day. Precipitation in individual hours: 0.0 mm. Temperature: 27.6–29.8 °C. Source: Open-Meteo best-match forecast; conditions can change.",
+          "fact_ids": [
+            "t1-f1",
+            "t1-f2",
+            "t1-f3",
+            "t1-f4",
+            "t1-f5",
+            "t1-f6",
+            "t1-f7",
+            "t1-f8",
+            "t1-f9"
+          ],
+          "passage_ids": []
+        }
+      ],
+      "charts": [
+        {
+          "kind": "hourly_series",
+          "axis_label": "Time (IST)",
+          "title": "Ahmedabad, Ahmadābād, State of Gujarāt · Hourly precipitation probability (>0.1 mm)",
+          "unit": "%",
+          "points": [
+            {
+              "x": 1789531200.0,
+              "label": "16 Sep 09:30–10:30",
+              "value": "4",
+              "evidence_id": "t1-f1"
+            },
+            {
+              "x": 1789534800.0,
+              "label": "16 Sep 10:30–11:30",
+              "value": "10",
+              "evidence_id": "t1-f2"
+            },
+            {
+              "x": 1789538400.0,
+              "label": "16 Sep 11:30–12:30",
+              "value": "22",
+              "evidence_id": "t1-f3"
+            }
+          ],
+          "source_ids": [
+            "S62"
+          ],
+          "task_id": "t1"
+        },
+        {
+          "kind": "hourly_series",
+          "axis_label": "Time (IST)",
+          "title": "Ahmedabad, Ahmadābād, State of Gujarāt · Hourly precipitation amount",
+          "unit": "mm",
+          "points": [
+            {
+              "x": 1789531200.0,
+              "label": "16 Sep 09:30–10:30",
+              "value": "0.0",
+              "evidence_id": "t1-f4"
+            },
+            {
+              "x": 1789534800.0,
+              "label": "16 Sep 10:30–11:30",
+              "value": "0.0",
+              "evidence_id": "t1-f5"
+            },
+            {
+              "x": 1789538400.0,
+              "label": "16 Sep 11:30–12:30",
+              "value": "0.0",
+              "evidence_id": "t1-f6"
+            }
+          ],
+          "source_ids": [
+            "S62"
+          ],
+          "task_id": "t1"
+        },
+        {
+          "kind": "hourly_series",
+          "axis_label": "Time (IST)",
+          "title": "Ahmedabad, Ahmadābād, State of Gujarāt · Temperature sample",
+          "unit": "°C",
+          "points": [
+            {
+              "x": 1789531200.0,
+              "label": "16 Sep 09:30",
+              "value": "27.6",
+              "evidence_id": "t1-f7"
+            },
+            {
+              "x": 1789534800.0,
+              "label": "16 Sep 10:30",
+              "value": "28.7",
+              "evidence_id": "t1-f8"
+            },
+            {
+              "x": 1789538400.0,
+              "label": "16 Sep 11:30",
+              "value": "29.8",
+              "evidence_id": "t1-f9"
+            }
+          ],
+          "source_ids": [
+            "S62"
+          ],
+          "task_id": "t1"
+        }
+      ],
+      "calculations": [
+        {
+          "label": "Ahmedabad, Ahmadābād, State of Gujarāt · Precipitation total across requested hours",
+          "value": "0.0",
+          "unit": "mm",
+          "method": "sum of complete forecast hourly precipitation values",
+          "input_ids": [
+            "t1-f4",
+            "t1-f5",
+            "t1-f6"
+          ],
+          "source_ids": [
+            "S62"
+          ],
+          "task_id": "t1"
+        }
+      ],
+      "pending_slots": [],
+      "retrieval_coverage": [],
+      "retrieval_plan": [
+        {
+          "task_id": "t1",
+          "operation": "lookup",
+          "kind": "forecast",
+          "parameters": [
+            "precipitation_probability",
+            "precipitation",
+            "temperature_2m"
+          ],
+          "candidates": [
+            {
+              "tool": "hourly_forecast",
+              "selected": true,
+              "available": true,
+              "reason": "Hourly evidence; exact onset and whole-period probability unavailable",
+              "sources": [
+                {
+                  "source_id": "S62",
+                  "product": "Open-Meteo best-match extended hourly forecast",
+                  "registry_status": "prototype_adapter_tested"
+                }
+              ]
+            },
+            {
+              "tool": "forecast_summary",
+              "selected": false,
+              "available": true,
+              "reason": "Exact-window GFS model summary",
+              "sources": [
+                {
+                  "source_id": "S21",
+                  "product": "Open-Meteo GFS forecast delivery",
+                  "registry_status": "prototype_adapter_tested"
+                }
+              ]
+            }
+          ],
+          "status": "answered",
+          "returned_source_ids": [
+            "S61",
+            "S62"
+          ]
+        }
+      ],
+      "document_evidence": [],
+      "resolved_points": {
+        "Ahmedabad": {
+          "id": "1279233",
+          "name": "Ahmedabad",
+          "latitude": 23.02579,
+          "longitude": 72.58727,
+          "feature": "PPL",
+          "admin1": "State of Gujarāt",
+          "admin2": "Ahmadābād",
+          "modified": "2024-01-06",
+          "name_match_basis": "canonical",
+          "state_match_basis": "",
+          "other_alias_matches": 0,
+          "match_type": "source_name_or_alias",
+          "selection_id": "geonames:1279233",
+          "label": "Ahmedabad, Ahmadābād, State of Gujarāt",
+          "coordinates": {
+            "latitude": 23.02579,
+            "longitude": 72.58727
+          },
+          "source_id": "S61",
+          "citation": {
+            "source_id": "S61",
+            "url": "https://www.geonames.org/1279233",
+            "provider": "GeoNames",
+            "product": "India place catalogue",
+            "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+            "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+          },
+          "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+          "for_place_name": "Ahmedabad",
+          "accepted_because": "its district carries the same name, and no other place that shares this name does",
+          "alternatives": [
+            "Ahmedābād, District Rampur, Uttar Pradesh"
+          ]
+        }
+      },
+      "task_coverage": {
+        "requested": 1,
+        "completed": 1,
+        "incomplete_ids": []
+      }
+    }
+  },
+  {
+    "id": "strict_window",
+    "path": "/api/chat",
+    "request": {
+      "question": "How much rain is forecast for Ahmedabad tomorrow from 09:15 to 12:15?"
+    },
+    "http_status": 200,
+    "seconds": 0.096,
+    "packet": {
+      "schema_version": "weather-conversation-v1",
+      "conversation_id": "4056202c-75ce-4df5-a957-a205cca1ab57",
+      "question": "How much rain is forecast for Ahmedabad tomorrow from 09:15 to 12:15?",
+      "status": "partial",
+      "answer": "Ahmedabad · 16 Sep, 09:30–16 Sep, 11:30 IST: Precipitation in individual hours: 0.0 mm. Source: Open-Meteo best-match forecast; conditions can change.\n\nPart of the request is still unresolved; the missing intervals or tasks are listed below.",
+      "facts": [
+        {
+          "id": "t1-f1",
+          "parameter": "precipitation",
+          "label": "Hourly precipitation amount",
+          "value": "0.0",
+          "unit": "mm",
+          "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+          "entity_id": "geonames:1279233",
+          "start": "2026-09-16T09:30:00+05:30",
+          "end": "2026-09-16T10:30:00+05:30",
+          "source_id": "S62",
+          "evidence_kind": "forecast",
+          "evidence_version": "1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984",
+          "citation_ids": [
+            "t1-c-1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984"
+          ],
+          "source_locators": [
+            "$.hourly.precipitation[29]"
+          ],
+          "method": "preceding_hour_sum",
+          "task_id": "t1"
+        },
+        {
+          "id": "t1-f2",
+          "parameter": "precipitation",
+          "label": "Hourly precipitation amount",
+          "value": "0.0",
+          "unit": "mm",
+          "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+          "entity_id": "geonames:1279233",
+          "start": "2026-09-16T10:30:00+05:30",
+          "end": "2026-09-16T11:30:00+05:30",
+          "source_id": "S62",
+          "evidence_kind": "forecast",
+          "evidence_version": "1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984",
+          "citation_ids": [
+            "t1-c-1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984"
+          ],
+          "source_locators": [
+            "$.hourly.precipitation[30]"
+          ],
+          "method": "preceding_hour_sum",
+          "task_id": "t1"
+        }
+      ],
+      "citations": [
+        {
+          "id": "t1-c-1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984",
+          "source_id": "S62",
+          "provider": "Open-Meteo",
+          "product": "Best-match hourly model forecast",
+          "url": "https://api.open-meteo.com/v1/forecast?latitude=23.02579&longitude=72.58727&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m%2Cprecipitation_probability%2Capparent_temperature%2Cwind_gusts_10m%2Cvisibility&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+          "response_sha256": "1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984",
+          "retrieved_at_utc": "2026-09-15T09:29:47.784178+00:00",
+          "requested_point": {
+            "latitude": 23.02579,
+            "longitude": 72.58727
+          },
+          "returned_grid": {
+            "latitude": 23.022846,
+            "longitude": 72.60188
+          },
+          "grid_distance_km": 1.531,
+          "model_run_time": null
+        },
+        {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1279233",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        }
+      ],
+      "notes": [
+        "Time window read from the question: tomorrow.",
+        "Place read as Ahmedabad, Ahmadābād, State of Gujarāt — its district carries the same name, and no other place that shares this name does. Other places share this name: Ahmedābād, District Rampur, Uttar Pradesh. Say which one you meant to switch.",
+        "precipitation: the requested boundaries split source hours or exceed available support; only complete contained intervals are shown",
+        "Precipitation includes rain, showers and snow water equivalent; it is not a rain-only gauge measurement.",
+        "Source hours are on UTC boundaries (:30 in IST). Each probability is for >0.1 mm in its preceding hour. Hourly probabilities are never combined into a period probability.",
+        "Best-match model selection may differ by variable; upstream run and local representativeness are unverified. Hourly values cannot determine an exact rain start minute or issue an official warning."
+      ],
+      "choices": [],
+      "follow_up": null,
+      "operational_eligible": false,
+      "answered_at_utc": "2026-09-15T09:32:33.786843+00:00",
+      "expires_at_utc": "2026-09-15T10:29:47.784178+00:00",
+      "trace": {
+        "planning": {
+          "provider": "deterministic_rules",
+          "model": "rule-planner-v1",
+          "model_calls": 0,
+          "attempts": 0,
+          "latency_ms": 0,
+          "failover": []
+        },
+        "generation": {
+          "provider": "typed_task_renderers",
+          "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit.",
+          "requested_language": "en",
+          "language_selection": "inferred_from_question",
+          "language_adherence": "not_applicable"
+        },
+        "tools": [
+          {
+            "name": "gazetteer_search",
+            "query": {
+              "name": "Ahmedabad",
+              "state": "",
+              "district": "",
+              "kind": "unknown"
+            },
+            "matches": 2
+          },
+          {
+            "name": "extended_forecast",
+            "job_id": "63d73b716bcd99abc1a938c2e034561b1b8893c940100549387a142f3de179a7",
+            "worker": {
+              "state": "already_collected"
+            },
+            "source_sha256": "1808d28150b7d3d2938fe9f0ed3a2c414eb31ad2a9cdece6bc72ddbde9bfb984"
+          },
+          {
+            "name": "forecast",
+            "task_id": "t1",
+            "status": "partial"
+          }
+        ],
+        "provider": "local_ollama",
+        "context_resolution": {
+          "action": "new",
+          "changed_fields": [
+            "parameters",
+            "places",
+            "time"
+          ],
+          "inherited_fields": []
+        },
+        "duration_seconds": 0.095
+      },
+      "plan": {
+        "language": "en",
+        "places": [
+          {
+            "name": "Ahmedabad",
+            "state": "",
+            "district": "",
+            "kind": "unknown"
+          }
+        ],
+        "assumptions": [
+          "Time window read from the question: tomorrow."
+        ],
+        "clarification": "",
+        "explicit_times": true,
+        "tasks": [
+          {
+            "request_quote": "How much rain is forecast for Ahmedabad tomorrow from 09:15 to 12:15",
+            "kind": "forecast",
+            "operation": "lookup",
+            "parameters": [
+              "precipitation"
+            ],
+            "years": [],
+            "period": "annual",
+            "start_local": "2026-09-16T09:15:00+05:30",
+            "end_local": "2026-09-16T12:15:00+05:30",
+            "place_indices": [
+              0
+            ]
+          }
+        ],
+        "context_action": "new",
+        "changed_fields": [
+          "parameters",
+          "places",
+          "time"
+        ],
+        "intent": "forecast",
+        "start_local": "2026-09-16T09:15:00+05:30",
+        "end_local": "2026-09-16T12:15:00+05:30",
+        "variables": [
+          "precipitation"
+        ],
+        "year": 0,
+        "period": "annual",
+        "history_parameter": "rainfall",
+        "unsupported_parameters": [],
+        "requested_outcome": "Complete all explicitly requested tasks"
+      },
+      "task_results": [
+        {
+          "id": "t1",
+          "request": {
+            "request_quote": "How much rain is forecast for Ahmedabad tomorrow from 09:15 to 12:15",
+            "kind": "forecast",
+            "operation": "lookup",
+            "parameters": [
+              "precipitation"
+            ],
+            "years": [],
+            "period": "annual",
+            "start_local": "2026-09-16T09:15:00+05:30",
+            "end_local": "2026-09-16T12:15:00+05:30",
+            "place_indices": [
+              0
+            ]
+          },
+          "status": "partial",
+          "answer": "Ahmedabad · 16 Sep, 09:30–16 Sep, 11:30 IST: Precipitation in individual hours: 0.0 mm. Source: Open-Meteo best-match forecast; conditions can change.\n\nPart of the request is still unresolved; the missing intervals or tasks are listed below.",
+          "fact_ids": [
+            "t1-f1",
+            "t1-f2"
+          ],
+          "passage_ids": []
+        }
+      ],
+      "charts": [
+        {
+          "kind": "hourly_series",
+          "axis_label": "Time (IST)",
+          "title": "Ahmedabad, Ahmadābād, State of Gujarāt · Hourly precipitation amount",
+          "unit": "mm",
+          "points": [
+            {
+              "x": 1789531200.0,
+              "label": "16 Sep 09:30–10:30",
+              "value": "0.0",
+              "evidence_id": "t1-f1"
+            },
+            {
+              "x": 1789534800.0,
+              "label": "16 Sep 10:30–11:30",
+              "value": "0.0",
+              "evidence_id": "t1-f2"
+            }
+          ],
+          "source_ids": [
+            "S62"
+          ],
+          "task_id": "t1"
+        }
+      ],
+      "calculations": [],
+      "pending_slots": [],
+      "retrieval_coverage": [],
+      "retrieval_plan": [
+        {
+          "task_id": "t1",
+          "operation": "lookup",
+          "kind": "forecast",
+          "parameters": [
+            "precipitation"
+          ],
+          "candidates": [
+            {
+              "tool": "hourly_forecast",
+              "selected": true,
+              "available": true,
+              "reason": "Hourly evidence; exact onset and whole-period probability unavailable",
+              "sources": [
+                {
+                  "source_id": "S62",
+                  "product": "Open-Meteo best-match extended hourly forecast",
+                  "registry_status": "prototype_adapter_tested"
+                }
+              ]
+            },
+            {
+              "tool": "forecast_summary",
+              "selected": false,
+              "available": true,
+              "reason": "Exact-window GFS model summary",
+              "sources": [
+                {
+                  "source_id": "S21",
+                  "product": "Open-Meteo GFS forecast delivery",
+                  "registry_status": "prototype_adapter_tested"
+                }
+              ]
+            }
+          ],
+          "status": "partial",
+          "returned_source_ids": [
+            "S61",
+            "S62"
+          ]
+        }
+      ],
+      "document_evidence": [],
+      "resolved_points": {
+        "Ahmedabad": {
+          "id": "1279233",
+          "name": "Ahmedabad",
+          "latitude": 23.02579,
+          "longitude": 72.58727,
+          "feature": "PPL",
+          "admin1": "State of Gujarāt",
+          "admin2": "Ahmadābād",
+          "modified": "2024-01-06",
+          "name_match_basis": "canonical",
+          "state_match_basis": "",
+          "other_alias_matches": 0,
+          "match_type": "source_name_or_alias",
+          "selection_id": "geonames:1279233",
+          "label": "Ahmedabad, Ahmadābād, State of Gujarāt",
+          "coordinates": {
+            "latitude": 23.02579,
+            "longitude": 72.58727
+          },
+          "source_id": "S61",
+          "citation": {
+            "source_id": "S61",
+            "url": "https://www.geonames.org/1279233",
+            "provider": "GeoNames",
+            "product": "India place catalogue",
+            "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+            "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+          },
+          "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+          "for_place_name": "Ahmedabad",
+          "accepted_because": "its district carries the same name, and no other place that shares this name does",
+          "alternatives": [
+            "Ahmedābād, District Rampur, Uttar Pradesh"
+          ]
+        }
+      },
+      "task_coverage": {
+        "requested": 1,
+        "completed": 0,
+        "incomplete_ids": [
+          "t1"
+        ]
+      }
+    }
+  },
+  {
+    "id": "long_horizon",
+    "path": "/api/chat",
+    "request": {
+      "question": "Will it rain in Ahmedabad 30 days from now?"
+    },
+    "http_status": 200,
+    "seconds": 0.09,
+    "packet": {
+      "schema_version": "weather-conversation-v1",
+      "conversation_id": "ce005691-2c67-4ae4-b535-7d830c169031",
+      "question": "Will it rain in Ahmedabad 30 days from now?",
+      "status": "needs_clarification",
+      "answer": "When should I check the weather for this plan? A day and approximate time are enough.",
+      "facts": [],
+      "citations": [],
+      "notes": [
+        "Place read as Ahmedabad, Ahmadābād, State of Gujarāt — its district carries the same name, and no other place that shares this name does. Other places share this name: Ahmedābād, District Rampur, Uttar Pradesh. Say which one you meant to switch."
+      ],
+      "choices": [],
+      "follow_up": "Departure or activity date/time",
+      "operational_eligible": false,
+      "answered_at_utc": "2026-09-15T09:32:33.887609+00:00",
+      "expires_at_utc": null,
+      "trace": {
+        "planning": {
+          "provider": "deterministic_rules",
+          "model": "rule-planner-v1",
+          "model_calls": 0,
+          "attempts": 0,
+          "latency_ms": 0,
+          "failover": []
+        },
+        "generation": {
+          "provider": "typed_task_renderers",
+          "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+        },
+        "tools": [
+          {
+            "name": "gazetteer_search",
+            "query": {
+              "name": "Ahmedabad",
+              "state": "",
+              "district": "",
+              "kind": "unknown"
+            },
+            "matches": 2
+          },
+          {
+            "name": "forecast",
+            "task_id": "t1",
+            "status": "needs_clarification"
+          }
+        ],
+        "provider": "local_ollama",
+        "context_resolution": {
+          "action": "new",
+          "changed_fields": [
+            "parameters",
+            "places",
+            "time"
+          ],
+          "inherited_fields": []
+        },
+        "duration_seconds": 0.088,
+        "language": {
+          "requested": "en",
+          "selection": "inferred_from_question",
+          "adherence": "not_rendered_no_service",
+          "rendered": false
+        }
+      },
+      "plan": {
+        "language": "en",
+        "places": [
+          {
+            "name": "Ahmedabad",
+            "state": "",
+            "district": "",
+            "kind": "unknown"
+          }
+        ],
+        "assumptions": [],
+        "clarification": "",
+        "explicit_times": false,
+        "tasks": [
+          {
+            "request_quote": "Will it rain in Ahmedabad 30 days from now",
+            "kind": "forecast",
+            "operation": "lookup",
+            "parameters": [
+              "precipitation"
+            ],
+            "years": [],
+            "period": "annual",
+            "start_local": "",
+            "end_local": "",
+            "place_indices": [
+              0
+            ]
+          }
+        ],
+        "context_action": "new",
+        "changed_fields": [
+          "parameters",
+          "places",
+          "time"
+        ],
+        "intent": "forecast",
+        "start_local": "",
+        "end_local": "",
+        "variables": [
+          "precipitation"
+        ],
+        "year": 0,
+        "period": "annual",
+        "history_parameter": "rainfall",
+        "unsupported_parameters": [],
+        "requested_outcome": "Complete all explicitly requested tasks"
+      },
+      "task_results": [
+        {
+          "id": "t1",
+          "request": {
+            "request_quote": "Will it rain in Ahmedabad 30 days from now",
+            "kind": "forecast",
+            "operation": "lookup",
+            "parameters": [
+              "precipitation"
+            ],
+            "years": [],
+            "period": "annual",
+            "start_local": "",
+            "end_local": "",
+            "place_indices": [
+              0
+            ]
+          },
+          "status": "needs_clarification",
+          "answer": "When should I check the weather for this plan? A day and approximate time are enough.",
+          "fact_ids": [],
+          "passage_ids": []
+        }
+      ],
+      "charts": [],
+      "calculations": [],
+      "pending_slots": [],
+      "retrieval_coverage": [],
+      "retrieval_plan": [
+        {
+          "task_id": "t1",
+          "operation": "lookup",
+          "kind": "forecast",
+          "parameters": [
+            "precipitation"
+          ],
+          "candidates": [
+            {
+              "tool": "forecast_summary",
+              "selected": true,
+              "available": true,
+              "reason": "Exact-window GFS model summary",
+              "sources": [
+                {
+                  "source_id": "S21",
+                  "product": "Open-Meteo GFS forecast delivery",
+                  "registry_status": "prototype_adapter_tested"
+                }
+              ]
+            },
+            {
+              "tool": "hourly_forecast",
+              "selected": false,
+              "available": true,
+              "reason": "Hourly evidence; exact onset and whole-period probability unavailable",
+              "sources": [
+                {
+                  "source_id": "S62",
+                  "product": "Open-Meteo best-match extended hourly forecast",
+                  "registry_status": "prototype_adapter_tested"
+                }
+              ]
+            }
+          ],
+          "status": "needs_clarification",
+          "returned_source_ids": []
+        }
+      ],
+      "document_evidence": [],
+      "resolved_points": {
+        "Ahmedabad": {
+          "id": "1279233",
+          "name": "Ahmedabad",
+          "latitude": 23.02579,
+          "longitude": 72.58727,
+          "feature": "PPL",
+          "admin1": "State of Gujarāt",
+          "admin2": "Ahmadābād",
+          "modified": "2024-01-06",
+          "name_match_basis": "canonical",
+          "state_match_basis": "",
+          "other_alias_matches": 0,
+          "match_type": "source_name_or_alias",
+          "selection_id": "geonames:1279233",
+          "label": "Ahmedabad, Ahmadābād, State of Gujarāt",
+          "coordinates": {
+            "latitude": 23.02579,
+            "longitude": 72.58727
+          },
+          "source_id": "S61",
+          "citation": {
+            "source_id": "S61",
+            "url": "https://www.geonames.org/1279233",
+            "provider": "GeoNames",
+            "product": "India place catalogue",
+            "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+            "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+          },
+          "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+          "for_place_name": "Ahmedabad",
+          "accepted_because": "its district carries the same name, and no other place that shares this name does",
+          "alternatives": [
+            "Ahmedābād, District Rampur, Uttar Pradesh"
+          ]
+        }
+      },
+      "task_coverage": {
+        "requested": 1,
+        "completed": 0,
+        "incomplete_ids": [
+          "t1"
+        ]
+      }
+    }
+  },
+  {
+    "id": "daily_temperature",
+    "path": "/api/chat",
+    "request": {
+      "question": "What was the ERA5-Land daily mean temperature in Ahmedabad from 5 through 7 August 2024?"
+    },
+    "http_status": 200,
+    "seconds": 0.688,
+    "packet": {
+      "schema_version": "weather-conversation-v1",
+      "conversation_id": "e979e0c2-69f0-4fd1-991f-73fa77d039bf",
+      "question": "What was the ERA5-Land daily mean temperature in Ahmedabad from 5 through 7 August 2024?",
+      "status": "answered",
+      "answer": "Ahmedabad · 05 Aug, 00:00–08 Aug, 00:00 IST: Daily mean temperature: 27.3–27.9 °C. ERA5 modeled history, not a rain-gauge observation.",
+      "facts": [
+        {
+          "id": "t1-f1",
+          "parameter": "temperature_2m_mean",
+          "label": "Daily mean temperature",
+          "value": "27.4",
+          "unit": "°C",
+          "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+          "entity_id": "geonames:1279233",
+          "start": "2024-08-05T00:00:00+05:30",
+          "end": "2024-08-06T00:00:00+05:30",
+          "source_id": "S22",
+          "evidence_kind": "reanalysis",
+          "evidence_version": "ff342074c52c3f81be8d3580b4fcc98090361cac462f3724968506822e1fa2a7",
+          "citation_ids": [
+            "t1-c-ff342074c52c3f81be8d3580b4fcc98090361cac462f3724968506822e1fa2a7"
+          ],
+          "source_locators": [
+            "$.daily.temperature_2m_mean[0]"
+          ],
+          "method": "daily_calendar_value_Asia/Kolkata",
+          "task_id": "t1"
+        },
+        {
+          "id": "t1-f2",
+          "parameter": "temperature_2m_mean",
+          "label": "Daily mean temperature",
+          "value": "27.3",
+          "unit": "°C",
+          "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+          "entity_id": "geonames:1279233",
+          "start": "2024-08-06T00:00:00+05:30",
+          "end": "2024-08-07T00:00:00+05:30",
+          "source_id": "S22",
+          "evidence_kind": "reanalysis",
+          "evidence_version": "ff342074c52c3f81be8d3580b4fcc98090361cac462f3724968506822e1fa2a7",
+          "citation_ids": [
+            "t1-c-ff342074c52c3f81be8d3580b4fcc98090361cac462f3724968506822e1fa2a7"
+          ],
+          "source_locators": [
+            "$.daily.temperature_2m_mean[1]"
+          ],
+          "method": "daily_calendar_value_Asia/Kolkata",
+          "task_id": "t1"
+        },
+        {
+          "id": "t1-f3",
+          "parameter": "temperature_2m_mean",
+          "label": "Daily mean temperature",
+          "value": "27.9",
+          "unit": "°C",
+          "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+          "entity_id": "geonames:1279233",
+          "start": "2024-08-07T00:00:00+05:30",
+          "end": "2024-08-08T00:00:00+05:30",
+          "source_id": "S22",
+          "evidence_kind": "reanalysis",
+          "evidence_version": "ff342074c52c3f81be8d3580b4fcc98090361cac462f3724968506822e1fa2a7",
+          "citation_ids": [
+            "t1-c-ff342074c52c3f81be8d3580b4fcc98090361cac462f3724968506822e1fa2a7"
+          ],
+          "source_locators": [
+            "$.daily.temperature_2m_mean[2]"
+          ],
+          "method": "daily_calendar_value_Asia/Kolkata",
+          "task_id": "t1"
+        }
+      ],
+      "citations": [
+        {
+          "id": "t1-c-ff342074c52c3f81be8d3580b4fcc98090361cac462f3724968506822e1fa2a7",
+          "source_id": "S22",
+          "provider": "Open-Meteo",
+          "product": "ERA5-Land via Open-Meteo daily reanalysis, Asia/Kolkata",
+          "url": "https://archive-api.open-meteo.com/v1/archive?latitude=23.02579&longitude=72.58727&start_date=2024-08-05&end_date=2024-08-07&daily=precipitation_hours%2Ctemperature_2m_mean%2Ctemperature_2m_max%2Ctemperature_2m_min%2Crelative_humidity_2m_mean%2Crelative_humidity_2m_max%2Crelative_humidity_2m_min%2Cdewpoint_2m_mean%2Csoil_moisture_0_to_7cm_mean%2Csoil_temperature_0_to_7cm_mean&models=era5_land&timezone=Asia%2FKolkata",
+          "response_sha256": "ff342074c52c3f81be8d3580b4fcc98090361cac462f3724968506822e1fa2a7",
+          "retrieved_at_utc": "2026-09-15T09:32:34.657803+00:00",
+          "requested_point": {
+            "latitude": 23.02579,
+            "longitude": 72.58727
+          },
+          "returned_grid": {
+            "latitude": 23.0,
+            "longitude": 72.600006
+          },
+          "grid_distance_km": 3.15,
+          "model_run_time": null
+        },
+        {
+          "source_id": "S61",
+          "url": "https://www.geonames.org/1279233",
+          "provider": "GeoNames",
+          "product": "India place catalogue",
+          "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+          "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+        }
+      ],
+      "notes": [
+        "Place read as Ahmedabad, Ahmadābād, State of Gujarāt — its district carries the same name, and no other place that shares this name does. Other places share this name: Ahmedābād, District Rampur, Uttar Pradesh. Say which one you meant to switch.",
+        "ERA5-Land via Open-Meteo reanalysis for the selected grid point, with provider daily aggregation in Asia/Kolkata; not observed station data or district averages."
+      ],
+      "choices": [],
+      "follow_up": null,
+      "operational_eligible": false,
+      "answered_at_utc": "2026-09-15T09:32:33.983605+00:00",
+      "expires_at_utc": "2026-09-16T00:00:00+00:00",
+      "trace": {
+        "planning": {
+          "provider": "deterministic_rules",
+          "model": "rule-planner-v1",
+          "model_calls": 0,
+          "attempts": 0,
+          "latency_ms": 0,
+          "failover": []
+        },
+        "generation": {
+          "provider": "typed_task_renderers",
+          "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit.",
+          "requested_language": "en",
+          "language_selection": "inferred_from_question",
+          "language_adherence": "not_applicable"
+        },
+        "tools": [
+          {
+            "name": "gazetteer_search",
+            "query": {
+              "name": "Ahmedabad",
+              "state": "",
+              "district": "",
+              "kind": "unknown"
+            },
+            "matches": 2
+          },
+          {
+            "name": "history_local",
+            "job_id": "008fe97c617fd7b85db5acb57e1a074f6d1d210d24c1e25f364fad9c415ee573",
+            "worker": {
+              "state": "succeeded",
+              "promoted": true,
+              "job_id": "008fe97c617fd7b85db5acb57e1a074f6d1d210d24c1e25f364fad9c415ee573"
+            },
+            "source_sha256": "ff342074c52c3f81be8d3580b4fcc98090361cac462f3724968506822e1fa2a7"
+          },
+          {
+            "name": "history",
+            "task_id": "t1",
+            "status": "answered"
+          }
+        ],
+        "provider": "local_ollama",
+        "context_resolution": {
+          "action": "new",
+          "changed_fields": [
+            "parameters",
+            "places",
+            "time"
+          ],
+          "inherited_fields": []
+        },
+        "duration_seconds": 0.684
+      },
+      "plan": {
+        "language": "en",
+        "places": [
+          {
+            "name": "Ahmedabad",
+            "state": "",
+            "district": "",
+            "kind": "unknown"
+          }
+        ],
+        "assumptions": [],
+        "clarification": "",
+        "explicit_times": true,
+        "tasks": [
+          {
+            "request_quote": "What was the ERA5-Land daily mean temperature in Ahmedabad from 5 through 7 August 2024",
+            "kind": "history",
+            "operation": "daily",
+            "parameters": [
+              "temperature_2m_mean"
+            ],
+            "years": [],
+            "period": "annual",
+            "start_local": "2024-08-05T00:00:00+05:30",
+            "end_local": "2024-08-08T00:00:00+05:30",
+            "place_indices": [
+              0
+            ]
+          }
+        ],
+        "context_action": "new",
+        "changed_fields": [
+          "parameters",
+          "places",
+          "time"
+        ],
+        "intent": "history",
+        "start_local": "2024-08-05T00:00:00+05:30",
+        "end_local": "2024-08-08T00:00:00+05:30",
+        "variables": [],
+        "year": 0,
+        "period": "annual",
+        "history_parameter": "rainfall",
+        "unsupported_parameters": [],
+        "requested_outcome": "Complete all explicitly requested tasks"
+      },
+      "task_results": [
+        {
+          "id": "t1",
+          "request": {
+            "request_quote": "What was the ERA5-Land daily mean temperature in Ahmedabad from 5 through 7 August 2024",
+            "kind": "history",
+            "operation": "daily",
+            "parameters": [
+              "temperature_2m_mean"
+            ],
+            "years": [],
+            "period": "annual",
+            "start_local": "2024-08-05T00:00:00+05:30",
+            "end_local": "2024-08-08T00:00:00+05:30",
+            "place_indices": [
+              0
+            ]
+          },
+          "status": "answered",
+          "answer": "Ahmedabad · 05 Aug, 00:00–08 Aug, 00:00 IST: Daily mean temperature: 27.3–27.9 °C. ERA5 modeled history, not a rain-gauge observation.",
+          "fact_ids": [
+            "t1-f1",
+            "t1-f2",
+            "t1-f3"
+          ],
+          "passage_ids": []
+        }
+      ],
+      "charts": [
+        {
+          "kind": "daily_series",
+          "axis_label": "Date (IST)",
+          "title": "Ahmedabad, Ahmadābād, State of Gujarāt · Daily mean temperature",
+          "unit": "°C",
+          "points": [
+            {
+              "x": 1722796200.0,
+              "label": "2024-08-05",
+              "value": "27.4",
+              "evidence_id": "t1-f1"
+            },
+            {
+              "x": 1722882600.0,
+              "label": "2024-08-06",
+              "value": "27.3",
+              "evidence_id": "t1-f2"
+            },
+            {
+              "x": 1722969000.0,
+              "label": "2024-08-07",
+              "value": "27.9",
+              "evidence_id": "t1-f3"
+            }
+          ],
+          "source_ids": [
+            "S22"
+          ],
+          "task_id": "t1"
+        }
+      ],
+      "calculations": [],
+      "pending_slots": [],
+      "retrieval_coverage": [],
+      "retrieval_plan": [
+        {
+          "task_id": "t1",
+          "operation": "daily",
+          "kind": "history",
+          "parameters": [
+            "temperature_2m_mean"
+          ],
+          "candidates": [
+            {
+              "tool": "daily_history",
+              "selected": true,
+              "available": true,
+              "reason": "ERA5 reanalysis, 1–7 IST days; recent five-day availability gap",
+              "sources": [
+                {
+                  "source_id": "S22",
+                  "product": "Open-Meteo ERA5 historical delivery",
+                  "registry_status": "prototype_adapter_tested"
+                }
+              ]
+            }
+          ],
+          "status": "answered",
+          "returned_source_ids": [
+            "S22",
+            "S61"
+          ]
+        }
+      ],
+      "document_evidence": [],
+      "resolved_points": {
+        "Ahmedabad": {
+          "id": "1279233",
+          "name": "Ahmedabad",
+          "latitude": 23.02579,
+          "longitude": 72.58727,
+          "feature": "PPL",
+          "admin1": "State of Gujarāt",
+          "admin2": "Ahmadābād",
+          "modified": "2024-01-06",
+          "name_match_basis": "canonical",
+          "state_match_basis": "",
+          "other_alias_matches": 0,
+          "match_type": "source_name_or_alias",
+          "selection_id": "geonames:1279233",
+          "label": "Ahmedabad, Ahmadābād, State of Gujarāt",
+          "coordinates": {
+            "latitude": 23.02579,
+            "longitude": 72.58727
+          },
+          "source_id": "S61",
+          "citation": {
+            "source_id": "S61",
+            "url": "https://www.geonames.org/1279233",
+            "provider": "GeoNames",
+            "product": "India place catalogue",
+            "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+            "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+          },
+          "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+          "for_place_name": "Ahmedabad",
+          "accepted_because": "its district carries the same name, and no other place that shares this name does",
+          "alternatives": [
+            "Ahmedābād, District Rampur, Uttar Pradesh"
+          ]
+        }
+      },
+      "task_coverage": {
+        "requested": 1,
+        "completed": 1,
+        "incomplete_ids": []
+      }
+    }
+  },
+  {
+    "id": "notify_known_place",
+    "path": "/api/chat",
+    "request": {
+      "question": "Notify me if there is a weather warning for Ahmedabad, Gujarat."
+    },
+    "http_status": 200,
+    "seconds": 1.276,
+    "packet": {
+      "schema_version": "weather-conversation-v1",
+      "conversation_id": "d8ce3f9f-7a5b-41d6-9da5-399a34679f3a",
+      "question": "Notify me if there is a weather warning for Ahmedabad, Gujarat.",
+      "status": "needs_selection",
+      "answer": "Which place do you mean? Noti, Shimla, State of Himāchal Pradesh / Noti, Sirmaur, State of Himāchal Pradesh. Choose one, or type its state/district.",
+      "facts": [],
+      "citations": [],
+      "notes": [
+        "A watch request was recognized, but the place still needs confirmation, so no watch was registered."
+      ],
+      "choices": [
+        {
+          "id": "10135488",
+          "name": "Noti",
+          "latitude": 31.29411,
+          "longitude": 77.6045,
+          "feature": "PPL",
+          "admin1": "State of Himāchal Pradesh",
+          "admin2": "Shimla",
+          "modified": "2024-01-06",
+          "name_match_basis": "alias_or_approximate",
+          "state_match_basis": "",
+          "other_alias_matches": 0,
+          "match_type": "approximate_name_requires_confirmation",
+          "selection_id": "geonames:10135488",
+          "label": "Noti, Shimla, State of Himāchal Pradesh",
+          "coordinates": {
+            "latitude": 31.29411,
+            "longitude": 77.6045
+          },
+          "source_id": "S61",
+          "citation": {
+            "source_id": "S61",
+            "url": "https://www.geonames.org/10135488",
+            "provider": "GeoNames",
+            "product": "India place catalogue",
+            "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+            "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+          },
+          "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries"
+        },
+        {
+          "id": "10135500",
+          "name": "Noti",
+          "latitude": 31.27673,
+          "longitude": 77.62914,
+          "feature": "PPL",
+          "admin1": "State of Himāchal Pradesh",
+          "admin2": "Shimla",
+          "modified": "2024-01-06",
+          "name_match_basis": "alias_or_approximate",
+          "state_match_basis": "",
+          "other_alias_matches": 0,
+          "match_type": "approximate_name_requires_confirmation",
+          "selection_id": "geonames:10135500",
+          "label": "Noti, Shimla, State of Himāchal Pradesh",
+          "coordinates": {
+            "latitude": 31.27673,
+            "longitude": 77.62914
+          },
+          "source_id": "S61",
+          "citation": {
+            "source_id": "S61",
+            "url": "https://www.geonames.org/10135500",
+            "provider": "GeoNames",
+            "product": "India place catalogue",
+            "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+            "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+          },
+          "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries"
+        },
+        {
+          "id": "10164554",
+          "name": "Noti",
+          "latitude": 30.64449,
+          "longitude": 77.37189,
+          "feature": "PPL",
+          "admin1": "State of Himāchal Pradesh",
+          "admin2": "Sirmaur",
+          "modified": "2024-01-06",
+          "name_match_basis": "alias_or_approximate",
+          "state_match_basis": "",
+          "other_alias_matches": 0,
+          "match_type": "approximate_name_requires_confirmation",
+          "selection_id": "geonames:10164554",
+          "label": "Noti, Sirmaur, State of Himāchal Pradesh",
+          "coordinates": {
+            "latitude": 30.64449,
+            "longitude": 77.37189
+          },
+          "source_id": "S61",
+          "citation": {
+            "source_id": "S61",
+            "url": "https://www.geonames.org/10164554",
+            "provider": "GeoNames",
+            "product": "India place catalogue",
+            "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+            "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+          },
+          "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries"
+        }
+      ],
+      "follow_up": "Choose a place, or add its district and state.",
+      "operational_eligible": false,
+      "answered_at_utc": "2026-09-15T09:32:34.678280+00:00",
+      "expires_at_utc": null,
+      "trace": {
+        "planning": {
+          "provider": "deterministic_rules",
+          "model": "rule-planner-v1",
+          "model_calls": 0,
+          "attempts": 0,
+          "latency_ms": 0,
+          "failover": []
+        },
+        "generation": {
+          "provider": "typed_task_renderers",
+          "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+        },
+        "tools": [
+          {
+            "name": "gazetteer_search",
+            "query": {
+              "name": "Ahmedabad",
+              "state": "Gujarat",
+              "district": "",
+              "kind": "unknown"
+            },
+            "matches": 1
+          },
+          {
+            "name": "gazetteer_search",
+            "query": {
+              "name": "Notify",
+              "state": "",
+              "district": "",
+              "kind": "unknown"
+            },
+            "matches": 3
+          },
+          {
+            "name": "warning",
+            "task_id": "t1",
+            "status": "needs_selection"
+          }
+        ],
+        "provider": "local_ollama",
+        "context_resolution": {
+          "action": "new",
+          "changed_fields": [
+            "parameters",
+            "places",
+            "time"
+          ],
+          "inherited_fields": []
+        },
+        "duration_seconds": 1.274,
+        "language": {
+          "requested": "en",
+          "selection": "inferred_from_question",
+          "adherence": "not_rendered_no_service",
+          "rendered": false
+        }
+      },
+      "plan": {
+        "language": "en",
+        "places": [
+          {
+            "name": "Ahmedabad",
+            "state": "Gujarat",
+            "district": "",
+            "kind": "unknown"
+          },
+          {
+            "name": "Notify",
+            "state": "",
+            "district": "",
+            "kind": "unknown"
+          }
+        ],
+        "assumptions": [],
+        "clarification": "",
+        "explicit_times": false,
+        "tasks": [
+          {
+            "request_quote": "Notify me if there is a weather warning for Ahmedabad, Gujarat.",
+            "kind": "warning",
+            "operation": "lookup",
+            "parameters": [
+              "official_warning"
+            ],
+            "years": [],
+            "period": "annual",
+            "start_local": "",
+            "end_local": "",
+            "place_indices": [
+              0,
+              1
+            ]
+          }
+        ],
+        "context_action": "new",
+        "changed_fields": [
+          "parameters",
+          "places",
+          "time"
+        ],
+        "intent": "warning",
+        "start_local": "",
+        "end_local": "",
+        "variables": [],
+        "year": 0,
+        "period": "annual",
+        "history_parameter": "rainfall",
+        "unsupported_parameters": [],
+        "requested_outcome": "Complete all explicitly requested tasks"
+      },
+      "task_results": [
+        {
+          "id": "t1",
+          "request": {
+            "request_quote": "Notify me if there is a weather warning for Ahmedabad, Gujarat.",
+            "kind": "warning",
+            "operation": "lookup",
+            "parameters": [
+              "official_warning"
+            ],
+            "years": [],
+            "period": "annual",
+            "start_local": "",
+            "end_local": "",
+            "place_indices": [
+              0,
+              1
+            ]
+          },
+          "status": "needs_selection",
+          "answer": "More than one place matches this warning question. Confirm the intended place first, so an official warning is never attached to the wrong district.",
+          "fact_ids": [],
+          "passage_ids": []
+        }
+      ],
+      "charts": [],
+      "calculations": [],
+      "pending_slots": [],
+      "retrieval_coverage": [],
+      "retrieval_plan": [
+        {
+          "task_id": "t1",
+          "operation": "lookup",
+          "kind": "warning",
+          "parameters": [
+            "official_warning"
+          ],
+          "candidates": [
+            {
+              "tool": "official_warning",
+              "selected": true,
+              "available": true,
+              "reason": "IMD district warning guidance resolved to the place by point-in-polygon on IMD geometry, with day windows derived from the bulletin date, plus a separate CAP relay source assessment; no all-clear and no dissemination",
+              "sources": [
+                {
+                  "source_id": "S01",
+                  "product": "IMD Current Weather",
+                  "registry_status": "access_blocked"
+                },
+                {
+                  "source_id": "S06",
+                  "product": "IMD-linked CAP RSS",
+                  "registry_status": "prototype_adapter_tested"
+                },
+                {
+                  "source_id": "S15",
+                  "product": "IMD public warning-map WFS",
+                  "registry_status": "prototype_adapter_tested"
+                }
+              ]
+            }
+          ],
+          "status": "needs_selection",
+          "returned_source_ids": []
+        }
+      ],
+      "document_evidence": [],
+      "resolved_points": {},
+      "task_coverage": {
+        "requested": 1,
+        "completed": 0,
+        "incomplete_ids": [
+          "t1"
+        ]
+      }
+    }
+  },
+  {
+    "id": "nonenglish_clarify",
+    "path": "/api/chat",
+    "request": {
+      "question": "सुल्तानपुर में कल बारिश होगी?"
+    },
+    "http_status": 200,
+    "seconds": 0.114,
+    "packet": {
+      "schema_version": "weather-conversation-v1",
+      "conversation_id": "1e8f519d-dfb0-4a6a-b9b4-d81204cfd063",
+      "question": "सुल्तानपुर में कल बारिश होगी?",
+      "status": "needs_selection",
+      "answer": "आप किस जगह की बात कर रहे हैं? Sultanpur, Buldhana, State of Mahārāshtra। एक चुनें, या उसका राज्य/जिला लिखें।",
+      "facts": [],
+      "citations": [],
+      "notes": [
+        "Time window read from the question: कल whole day."
+      ],
+      "choices": [
+        {
+          "id": "1255496",
+          "name": "Sultanpur",
+          "latitude": 20.08695,
+          "longitude": 76.5187,
+          "feature": "PPL",
+          "admin1": "State of Mahārāshtra",
+          "admin2": "Buldhana",
+          "modified": "2024-01-06",
+          "name_match_basis": "alias_or_approximate",
+          "state_match_basis": "",
+          "other_alias_matches": 0,
+          "match_type": "approximate_name_requires_confirmation",
+          "selection_id": "geonames:1255496",
+          "label": "Sultanpur, Buldhana, State of Mahārāshtra",
+          "coordinates": {
+            "latitude": 20.08695,
+            "longitude": 76.5187
+          },
+          "source_id": "S61",
+          "citation": {
+            "source_id": "S61",
+            "url": "https://www.geonames.org/1255496",
+            "provider": "GeoNames",
+            "product": "India place catalogue",
+            "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+            "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+          },
+          "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+          "for_place_name": "सुल्तानपुर"
+        }
+      ],
+      "follow_up": "Choose a place, or add its district and state.",
+      "operational_eligible": false,
+      "answered_at_utc": "2026-09-15T09:32:35.956081+00:00",
+      "expires_at_utc": null,
+      "trace": {
+        "planning": {
+          "provider": "deterministic_rules",
+          "model": "rule-planner-v1",
+          "model_calls": 0,
+          "attempts": 0,
+          "latency_ms": 0,
+          "failover": []
+        },
+        "generation": {
+          "provider": "typed_task_renderers",
+          "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+        },
+        "tools": [
+          {
+            "name": "gazetteer_search",
+            "query": {
+              "name": "सुल्तानपुर",
+              "state": "",
+              "district": "",
+              "kind": "unknown"
+            },
+            "matches": 1
+          },
+          {
+            "name": "forecast",
+            "task_id": "t1",
+            "status": "needs_selection"
+          }
+        ],
+        "provider": "local_ollama",
+        "context_resolution": {
+          "action": "new",
+          "changed_fields": [
+            "parameters",
+            "places",
+            "time"
+          ],
+          "inherited_fields": []
+        },
+        "duration_seconds": 0.112,
+        "language": {
+          "requested": "hi",
+          "selection": "inferred_from_question",
+          "adherence": "not_rendered_no_service",
+          "rendered": false
+        }
+      },
+      "plan": {
+        "language": "hi",
+        "places": [
+          {
+            "name": "सुल्तानपुर",
+            "state": "",
+            "district": "",
+            "kind": "unknown"
+          }
+        ],
+        "assumptions": [
+          "Time window read from the question: कल whole day."
+        ],
+        "clarification": "",
+        "explicit_times": false,
+        "tasks": [
+          {
+            "request_quote": "सुल्तानपुर में कल बारिश होगी",
+            "kind": "forecast",
+            "operation": "lookup",
+            "parameters": [
+              "precipitation"
+            ],
+            "years": [],
+            "period": "annual",
+            "start_local": "2026-09-16T00:30:00+05:30",
+            "end_local": "2026-09-17T00:30:00+05:30",
+            "place_indices": [
+              0
+            ]
+          }
+        ],
+        "context_action": "new",
+        "changed_fields": [
+          "parameters",
+          "places",
+          "time"
+        ],
+        "intent": "forecast",
+        "start_local": "2026-09-16T00:30:00+05:30",
+        "end_local": "2026-09-17T00:30:00+05:30",
+        "variables": [
+          "precipitation"
+        ],
+        "year": 0,
+        "period": "annual",
+        "history_parameter": "rainfall",
+        "unsupported_parameters": [],
+        "requested_outcome": "Complete all explicitly requested tasks"
+      },
+      "task_results": [
+        {
+          "id": "t1",
+          "request": {
+            "request_quote": "सुल्तानपुर में कल बारिश होगी",
+            "kind": "forecast",
+            "operation": "lookup",
+            "parameters": [
+              "precipitation"
+            ],
+            "years": [],
+            "period": "annual",
+            "start_local": "2026-09-16T00:30:00+05:30",
+            "end_local": "2026-09-17T00:30:00+05:30",
+            "place_indices": [
+              0
+            ]
+          },
+          "status": "needs_selection",
+          "answer": "I found 1 possible places for सुल्तानपुर. Please confirm the intended location and spelling.",
+          "fact_ids": [],
+          "passage_ids": []
+        }
+      ],
+      "charts": [],
+      "calculations": [],
+      "pending_slots": [],
+      "retrieval_coverage": [],
+      "retrieval_plan": [
+        {
+          "task_id": "t1",
+          "operation": "lookup",
+          "kind": "forecast",
+          "parameters": [
+            "precipitation"
+          ],
+          "candidates": [
+            {
+              "tool": "forecast_summary",
+              "selected": true,
+              "available": true,
+              "reason": "Exact-window GFS model summary",
+              "sources": [
+                {
+                  "source_id": "S21",
+                  "product": "Open-Meteo GFS forecast delivery",
+                  "registry_status": "prototype_adapter_tested"
+                }
+              ]
+            },
+            {
+              "tool": "hourly_forecast",
+              "selected": false,
+              "available": true,
+              "reason": "Hourly evidence; exact onset and whole-period probability unavailable",
+              "sources": [
+                {
+                  "source_id": "S62",
+                  "product": "Open-Meteo best-match extended hourly forecast",
+                  "registry_status": "prototype_adapter_tested"
+                }
+              ]
+            }
+          ],
+          "status": "needs_selection",
+          "returned_source_ids": []
+        }
+      ],
+      "document_evidence": [],
+      "resolved_points": {},
+      "task_coverage": {
+        "requested": 1,
+        "completed": 0,
+        "incomplete_ids": [
+          "t1"
+        ]
+      }
+    }
+  },
+  {
+    "id": "languages",
+    "path": "/api/languages",
+    "request": null,
+    "http_status": 200,
+    "seconds": 0.001,
+    "packet": {
+      "schema_version": "language-support-view-v1",
+      "service_configured": false,
+      "note": "Only a measured capability is offered. A language the provider documents but this project has not verified is shown as unmeasured, not as available.",
+      "languages": [
+        {
+          "code": "en",
+          "sarvam_code": "en-IN",
+          "english_name": "English",
+          "native_name": "English",
+          "script": "latin",
+          "declared": {
+            "hear": true,
+            "write": true,
+            "speak": true
+          },
+          "measured": {
+            "hear": "verified",
+            "write": "verified",
+            "speak": "verified"
+          },
+          "script_check_available": false
+        },
+        {
+          "code": "hi",
+          "sarvam_code": "hi-IN",
+          "english_name": "Hindi",
+          "native_name": "हिन्दी",
+          "script": "devanagari",
+          "declared": {
+            "hear": true,
+            "write": true,
+            "speak": true
+          },
+          "measured": {
+            "hear": "verified",
+            "write": "verified",
+            "speak": "verified"
+          },
+          "script_check_available": true
+        },
+        {
+          "code": "bn",
+          "sarvam_code": "bn-IN",
+          "english_name": "Bengali",
+          "native_name": "বাংলা",
+          "script": "bengali",
+          "declared": {
+            "hear": true,
+            "write": true,
+            "speak": true
+          },
+          "measured": {
+            "hear": "verified",
+            "write": "verified",
+            "speak": "verified"
+          },
+          "script_check_available": true
+        },
+        {
+          "code": "gu",
+          "sarvam_code": "gu-IN",
+          "english_name": "Gujarati",
+          "native_name": "ગુજરાતી",
+          "script": "gujarati",
+          "declared": {
+            "hear": true,
+            "write": true,
+            "speak": true
+          },
+          "measured": {
+            "hear": "verified",
+            "write": "verified",
+            "speak": "verified"
+          },
+          "script_check_available": true
+        },
+        {
+          "code": "kn",
+          "sarvam_code": "kn-IN",
+          "english_name": "Kannada",
+          "native_name": "ಕನ್ನಡ",
+          "script": "kannada",
+          "declared": {
+            "hear": true,
+            "write": true,
+            "speak": true
+          },
+          "measured": {
+            "hear": "verified",
+            "write": "verified",
+            "speak": "verified"
+          },
+          "script_check_available": true
+        },
+        {
+          "code": "ml",
+          "sarvam_code": "ml-IN",
+          "english_name": "Malayalam",
+          "native_name": "മലയാളം",
+          "script": "malayalam",
+          "declared": {
+            "hear": true,
+            "write": true,
+            "speak": true
+          },
+          "measured": {
+            "hear": "verified",
+            "write": "verified",
+            "speak": "verified"
+          },
+          "script_check_available": true
+        },
+        {
+          "code": "mr",
+          "sarvam_code": "mr-IN",
+          "english_name": "Marathi",
+          "native_name": "मराठी",
+          "script": "devanagari",
+          "declared": {
+            "hear": true,
+            "write": true,
+            "speak": true
+          },
+          "measured": {
+            "hear": "verified",
+            "write": "verified",
+            "speak": "verified"
+          },
+          "script_check_available": true
+        },
+        {
+          "code": "od",
+          "sarvam_code": "od-IN",
+          "english_name": "Odia",
+          "native_name": "ଓଡିଆ",
+          "script": "odia",
+          "declared": {
+            "hear": true,
+            "write": true,
+            "speak": true
+          },
+          "measured": {
+            "hear": "verified",
+            "write": "verified",
+            "speak": "verified"
+          },
+          "script_check_available": true
+        },
+        {
+          "code": "pa",
+          "sarvam_code": "pa-IN",
+          "english_name": "Punjabi",
+          "native_name": "ਪੰਜਾਬੀ",
+          "script": "gurmukhi",
+          "declared": {
+            "hear": true,
+            "write": true,
+            "speak": true
+          },
+          "measured": {
+            "hear": "verified",
+            "write": "verified",
+            "speak": "verified"
+          },
+          "script_check_available": true
+        },
+        {
+          "code": "ta",
+          "sarvam_code": "ta-IN",
+          "english_name": "Tamil",
+          "native_name": "தமிழ்",
+          "script": "tamil",
+          "declared": {
+            "hear": true,
+            "write": true,
+            "speak": true
+          },
+          "measured": {
+            "hear": "unmeasured",
+            "write": "failed",
+            "speak": "unmeasured"
+          },
+          "script_check_available": true
+        },
+        {
+          "code": "te",
+          "sarvam_code": "te-IN",
+          "english_name": "Telugu",
+          "native_name": "తెలుగు",
+          "script": "telugu",
+          "declared": {
+            "hear": true,
+            "write": true,
+            "speak": true
+          },
+          "measured": {
+            "hear": "verified",
+            "write": "verified",
+            "speak": "verified"
+          },
+          "script_check_available": true
+        },
+        {
+          "code": "as",
+          "sarvam_code": "as-IN",
+          "english_name": "Assamese",
+          "native_name": "অসমীয়া",
+          "script": "bengali",
+          "declared": {
+            "hear": true,
+            "write": true,
+            "speak": true
+          },
+          "measured": {
+            "hear": "unmeasured",
+            "write": "verified",
+            "speak": "failed"
+          },
+          "script_check_available": true
+        },
+        {
+          "code": "ur",
+          "sarvam_code": "ur-IN",
+          "english_name": "Urdu",
+          "native_name": "اردو",
+          "script": "arabic",
+          "declared": {
+            "hear": true,
+            "write": true,
+            "speak": true
+          },
+          "measured": {
+            "hear": "unmeasured",
+            "write": "verified",
+            "speak": "failed"
+          },
+          "script_check_available": true
+        },
+        {
+          "code": "ne",
+          "sarvam_code": "ne-IN",
+          "english_name": "Nepali",
+          "native_name": "नेपाली",
+          "script": "devanagari",
+          "declared": {
+            "hear": true,
+            "write": true,
+            "speak": true
+          },
+          "measured": {
+            "hear": "unmeasured",
+            "write": "verified",
+            "speak": "failed"
+          },
+          "script_check_available": true
+        },
+        {
+          "code": "kok",
+          "sarvam_code": "kok-IN",
+          "english_name": "Konkani",
+          "native_name": "कोंकणी",
+          "script": "devanagari",
+          "declared": {
+            "hear": true,
+            "write": true,
+            "speak": true
+          },
+          "measured": {
+            "hear": "unmeasured",
+            "write": "verified",
+            "speak": "failed"
+          },
+          "script_check_available": true
+        },
+        {
+          "code": "ks",
+          "sarvam_code": "ks-IN",
+          "english_name": "Kashmiri",
+          "native_name": "كٲشُر",
+          "script": "arabic",
+          "declared": {
+            "hear": true,
+            "write": true,
+            "speak": true
+          },
+          "measured": {
+            "hear": "unmeasured",
+            "write": "verified",
+            "speak": "failed"
+          },
+          "script_check_available": true
+        },
+        {
+          "code": "sd",
+          "sarvam_code": "sd-IN",
+          "english_name": "Sindhi",
+          "native_name": "سنڌي",
+          "script": "arabic",
+          "declared": {
+            "hear": true,
+            "write": true,
+            "speak": true
+          },
+          "measured": {
+            "hear": "unmeasured",
+            "write": "failed",
+            "speak": "unmeasured"
+          },
+          "script_check_available": true
+        },
+        {
+          "code": "sa",
+          "sarvam_code": "sa-IN",
+          "english_name": "Sanskrit",
+          "native_name": "संस्कृतम्",
+          "script": "devanagari",
+          "declared": {
+            "hear": true,
+            "write": true,
+            "speak": true
+          },
+          "measured": {
+            "hear": "unmeasured",
+            "write": "verified",
+            "speak": "failed"
+          },
+          "script_check_available": true
+        },
+        {
+          "code": "sat",
+          "sarvam_code": "sat-IN",
+          "english_name": "Santali",
+          "native_name": "ᱥᱟᱱᱛᱟᱲ",
+          "script": "ol_chiki",
+          "declared": {
+            "hear": true,
+            "write": true,
+            "speak": true
+          },
+          "measured": {
+            "hear": "unmeasured",
+            "write": "failed",
+            "speak": "failed"
+          },
+          "script_check_available": true
+        },
+        {
+          "code": "mni",
+          "sarvam_code": "mni-IN",
+          "english_name": "Manipuri",
+          "native_name": "ꯃꯤꯇꯩꯂꯣꯟ",
+          "script": "meetei_mayek",
+          "declared": {
+            "hear": true,
+            "write": true,
+            "speak": true
+          },
+          "measured": {
+            "hear": "unmeasured",
+            "write": "failed",
+            "speak": "failed"
+          },
+          "script_check_available": true
+        },
+        {
+          "code": "brx",
+          "sarvam_code": "brx-IN",
+          "english_name": "Bodo",
+          "native_name": "बरड़",
+          "script": "devanagari",
+          "declared": {
+            "hear": true,
+            "write": true,
+            "speak": true
+          },
+          "measured": {
+            "hear": "unmeasured",
+            "write": "verified",
+            "speak": "failed"
+          },
+          "script_check_available": true
+        },
+        {
+          "code": "mai",
+          "sarvam_code": "mai-IN",
+          "english_name": "Maithili",
+          "native_name": "मैथिली",
+          "script": "devanagari",
+          "declared": {
+            "hear": true,
+            "write": true,
+            "speak": true
+          },
+          "measured": {
+            "hear": "unmeasured",
+            "write": "verified",
+            "speak": "failed"
+          },
+          "script_check_available": true
+        },
+        {
+          "code": "doi",
+          "sarvam_code": "doi-IN",
+          "english_name": "Dogri",
+          "native_name": "डोगरी",
+          "script": "devanagari",
+          "declared": {
+            "hear": true,
+            "write": true,
+            "speak": true
+          },
+          "measured": {
+            "hear": "unmeasured",
+            "write": "verified",
+            "speak": "failed"
+          },
+          "script_check_available": true
+        }
+      ]
+    }
+  },
+  {
+    "id": "speech_missing_key",
+    "path": "/api/speech/speak",
+    "request": {
+      "language": "en",
+      "synthetic_audio": true
+    },
+    "http_status": 503,
+    "seconds": 0.0,
+    "packet": {
+      "error": "No language service key is configured locally, so translation and speech are unavailable. Set WEATHERGPT_SARVAM_API_KEY or write the key to /Users/heer/.weathergpt/sarvam.key."
+    }
+  },
+  {
+    "id": "recognition_missing_key",
+    "path": "/api/speech/transcribe",
+    "request": {
+      "language": "en",
+      "synthetic_audio": true
+    },
+    "http_status": 503,
+    "seconds": 0.0,
+    "packet": {
+      "error": "No language service key is configured locally, so translation and speech are unavailable. Set WEATHERGPT_SARVAM_API_KEY or write the key to /Users/heer/.weathergpt/sarvam.key."
+    }
+  },
+  {
+    "id": "speech_unverified_language",
+    "path": "/api/speech/speak",
+    "request": {
+      "language": "ta",
+      "synthetic_audio": true
+    },
+    "http_status": 400,
+    "seconds": 0.0,
+    "packet": {
+      "error": "Speech in this language has not been verified by this project, so it is not offered. Run scripts/measure_language_support.py to test it."
+    }
+  },
+  {
+    "id": "api_requires_token",
+    "path": "/api/conversations",
+    "request": null,
+    "http_status": 403,
+    "seconds": 0.0,
+    "packet": {
+      "error": "Reload this local workspace before reading stored data"
+    }
+  },
+  {
+    "id": "bad_request_rejected",
+    "path": "/api/chat",
+    "request": {
+      "question": "Weather",
+      "arbitrary_extra": true
+    },
+    "http_status": 400,
+    "seconds": 0.0,
+    "packet": {
+      "error": "Send a question and optional conversation/place/language selection"
+    }
+  },
+  {
+    "id": "stored_conversations",
+    "path": "/api/conversations",
+    "request": null,
+    "http_status": 200,
+    "seconds": 0.003,
+    "packet": {
+      "schema_version": "conversation-ledger-v1",
+      "total": 33,
+      "limit": 40,
+      "conversations": [
+        {
+          "id": "1e8f519d-dfb0-4a6a-b9b4-d81204cfd063",
+          "updated": "2026-09-15T09:32:36.068467+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "सुल्तानपुर में कल बारिश होगी?"
+        },
+        {
+          "id": "d8ce3f9f-7a5b-41d6-9da5-399a34679f3a",
+          "updated": "2026-09-15T09:32:35.952240+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "Notify me if there is a weather warning for Ahmedabad, Gujarat."
+        },
+        {
+          "id": "e979e0c2-69f0-4fd1-991f-73fa77d039bf",
+          "updated": "2026-09-15T09:32:34.668503+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "What was the ERA5-Land daily mean temperature in Ahmedabad from 5 through 7 August 2024?"
+        },
+        {
+          "id": "ce005691-2c67-4ae4-b535-7d830c169031",
+          "updated": "2026-09-15T09:32:33.975881+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "Will it rain in Ahmedabad 30 days from now?"
+        },
+        {
+          "id": "4056202c-75ce-4df5-a957-a205cca1ab57",
+          "updated": "2026-09-15T09:32:33.881539+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "How much rain is forecast for Ahmedabad tomorrow from 09:15 to 12:15?"
+        },
+        {
+          "id": "da9ab005-ee38-454a-b8b4-d78972d88886",
+          "updated": "2026-09-15T09:32:33.783746+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "Show hourly rainfall probability and temperature in Ahmedabad tomorrow morning."
+        },
+        {
+          "id": "b1ce7618-46f4-484c-8c77-69f09770da2a",
+          "updated": "2026-09-15T09:32:33.681804+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "What is the observed water level near Patna, Bihar now?"
+        },
+        {
+          "id": "db9064a9-7a1d-4771-8347-52a3eddaea2f",
+          "updated": "2026-09-15T09:32:32.492767+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "Will it rain in Patna tomorrow, and is there any warning?"
+        },
+        {
+          "id": "2ed87529-fa85-4150-b3d2-cb23cab563c7",
+          "updated": "2026-09-15T09:32:30.335840+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "Show India annual mean temperature and rainfall for 2024."
+        },
+        {
+          "id": "675ec507-fa1c-4111-996f-dcbe02a97501",
+          "updated": "2026-09-15T09:32:30.308743+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "Show India annual rainfall for 2024."
+        },
+        {
+          "id": "0c86f2d3-d1ac-426a-99f3-4eb08330bb0f",
+          "updated": "2026-09-15T09:30:27.321718+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "Notify me if a cyclone warning is issued for Kochi."
+        },
+        {
+          "id": "2ac9e828-2b5c-454c-b2f3-51ad80ee9bb8",
+          "updated": "2026-09-15T09:30:26.152256+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "What is the tide at Kochi tomorrow?"
+        },
+        {
+          "id": "82496561-eeee-4369-957a-a2ee7cdd5cad",
+          "updated": "2026-09-15T09:30:26.094400+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "What is the observed water level near Patna, Bihar now?"
+        },
+        {
+          "id": "ffd95884-817f-4bd0-94cb-2051e6cd8754",
+          "updated": "2026-09-15T09:30:23.278159+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "What is the river discharge near Patna, Bihar tomorrow?"
+        },
+        {
+          "id": "8e743756-af2a-45b7-8a69-8fee10d7959f",
+          "updated": "2026-09-15T09:30:22.104439+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "What are the wave conditions off Kochi tomorrow?"
+        },
+        {
+          "id": "d18dc202-38ea-409e-a104-9946e04d9cc2",
+          "updated": "2026-09-15T09:30:17.891632+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "What is the current weather at VOBL?"
+        },
+        {
+          "id": "ed4e2528-adb7-4975-9fe7-6138d2b9cca5",
+          "updated": "2026-09-15T09:30:14.555561+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "What is it like right now in Ahmedabad?"
+        },
+        {
+          "id": "7b77b030-3deb-4819-817c-afc453e732d6",
+          "updated": "2026-09-15T09:30:10.583062+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "Is any warning in force for Patna, Bihar today?"
+        },
+        {
+          "id": "e1e91d5d-bfe9-4c3b-9633-6c47fc080e7a",
+          "updated": "2026-09-15T09:29:59.473202+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "Will it rain in Ahmedbad, Gujrat tomorrow?"
+        },
+        {
+          "id": "41072af5-0558-44f7-9aef-da4c68d017c9",
+          "updated": "2026-09-15T09:29:59.347203+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "Will it rain in Sultanpur tomorrow?"
+        },
+        {
+          "id": "b61647cd-4eb0-4fb5-b620-6132ce18d103",
+          "updated": "2026-09-15T09:29:59.241533+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "Will it rain in Ahmedabad tomorrow morning?"
+        },
+        {
+          "id": "d03df311-d4e8-4d49-98d4-b4956dccc772",
+          "updated": "2026-09-15T09:29:59.139683+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "અમદાવાદમાં આવતીકાલે સવારે વરસાદ થશે?"
+        },
+        {
+          "id": "9f86ca58-529c-4736-a41e-0de389ed93d9",
+          "updated": "2026-09-15T09:29:59.040717+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "कल अहमदाबाद, गुजरात में सुबह बारिश होगी?"
+        },
+        {
+          "id": "b40c9e72-0b7c-48ea-9395-2d40e568b3a4",
+          "updated": "2026-09-15T09:29:58.929779+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "Can I irrigate cotton in Ahmedabad, Gujarat this week?"
+        },
+        {
+          "id": "6f9565dc-47a4-47c1-bfa2-be73e0bf27ca",
+          "updated": "2026-09-15T09:29:58.353170+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "What does the Ahmedabad district agromet advisory say for cotton?"
+        },
+        {
+          "id": "02395a47-ec22-4b43-a8e1-d1d9aeb5e0d9",
+          "updated": "2026-09-15T09:29:55.111835+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "What does the latest all India weather bulletin say about heavy rainfall?"
+        },
+        {
+          "id": "0ac689dd-4753-4f2d-853a-3f1b6978189e",
+          "updated": "2026-09-15T09:29:55.022742+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "ERA5-Land daily rainfall in Ahmedabad from 5 through 7 August 2024."
+        },
+        {
+          "id": "eb0b8422-4c77-45a6-b232-d8e82cd5000c",
+          "updated": "2026-09-15T09:29:54.974277+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "What was the daily mean relative humidity in Ahmedabad from 1 through 3 July 2024?"
+        },
+        {
+          "id": "dfef7b8a-b9b7-4d43-a02d-5f32ac620e9a",
+          "updated": "2026-09-15T09:29:48.408993+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "Show India annual rainfall and mean temperature for 2024."
+        },
+        {
+          "id": "3afeccb9-b8a9-46d2-b289-77a7d72fb942",
+          "updated": "2026-09-15T09:29:48.380643+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "Show the annual rainfall trend for Ahmedabad district, Gujarat from 1981 to 2010."
+        },
+        {
+          "id": "4b384892-1cb1-4718-8f2b-b775f5ac224e",
+          "updated": "2026-09-15T09:29:47.816187+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "Compare the models for rainfall in Ahmedabad tomorrow morning."
+        },
+        {
+          "id": "eb55fdbb-2a83-487e-9f49-e13b796c8b7c",
+          "updated": "2026-09-15T09:29:47.102241+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "Instead, show temperature for that same place and time."
+        },
+        {
+          "id": "a0e799e2-dcff-433a-83b2-61b0c83d6c3b",
+          "updated": "2026-09-15T09:29:47.010808+00:00",
+          "turns": 2,
+          "asked": 1,
+          "opening_question": "Will it rain in Ahmedabad, Gujarat tomorrow morning?"
+        }
+      ],
+      "note": "Stored on this machine for the person who asked. Excerpts are served over loopback only and never written to logs."
+    }
+  },
+  {
+    "id": "actual_ollama_models",
+    "path": "/api/tags",
+    "request": null,
+    "http_status": 200,
+    "seconds": 0.004,
+    "packet": {
+      "models": [
+        {
+          "name": "kimi-k2.6:cloud",
+          "model": "kimi-k2.6:cloud",
+          "remote_model": "kimi-k2.6",
+          "remote_host": "https://ollama.com:443",
+          "modified_at": "2026-05-05T13:56:28.807704081+05:30",
+          "size": 384,
+          "digest": "a90cd0d1590c53b9f9f4e0f66218e4c514d190652b8bed2842528e2530e34dc6",
+          "details": {
+            "parent_model": "",
+            "format": "",
+            "family": "kimi-k2",
+            "families": [
+              "kimi-k2"
+            ],
+            "parameter_size": "1T",
+            "quantization_level": "int4",
+            "context_length": 262144,
+            "embedding_length": 2048
+          },
+          "capabilities": [
+            "completion",
+            "tools",
+            "thinking",
+            "vision"
+          ]
+        }
+      ]
+    }
+  }
+]

@@ -61,8 +61,7 @@ Evidence: `research/reviews/integration-ps-audit-20260915/dissemination/`.
 - The earlier development benchmark's 18/18 score belongs to the preceding release. It was not rerun as
   independent warning acceptance and still measures task status/parameters rather than factual truth.
 
-A clean-checkout result will be recorded after the integrated commit is checked independently of the
-working tree. Same-host checks cannot establish fresh-machine installation or sustained operation.
+Detached clean checkout `ba3cdbd` passed all 1,105 Python tests, nine JavaScript suites and all 25 steps, recorded in `clean-checkout-verification.txt`. It used this host and dependency environment. The subsequent stakeholder branch and final combined checks are recorded in docs/72; this is a dated checkpoint, not the final test count. Same-host checks cannot establish fresh-machine installation or sustained operation.
 
 ## Critical remaining gaps
 

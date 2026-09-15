@@ -43,7 +43,7 @@ def main():
     steps.append(('python >= 3.9', python_ok, sys.version.split()[0]))
     node = shutil.which('node')
     steps.append(('node available', bool(node), node or 'not found'))
-    for name in ('requirements-foundation.txt', 'requirements-bulletins.txt', 'requirements.txt'):
+    for name in ('requirements-foundation.txt', 'requirements-bulletins.txt', 'requirements.txt', 'requirements-dev.txt'):
         steps.append((name + ' present', (ROOT / name).exists(), ''))
     for registry in REGISTRIES:
         path = ROOT / registry

@@ -48,6 +48,11 @@ DISTINCT={'river':[('an observed water level',r'water level|gauge (?:level|readi
                     ('a sea surface temperature',r'(?:sea|water)[- ](?:surface[- ])?temperature')]}
 SUPPORTED_WORDS={'wave_height':r'wave|swell|sea state','wave_period':r'wave period|swell period',
                  'wave_direction':r'wave direction|swell direction','river_discharge':r'discharge|streamflow|flow rate|cumec'}
+# A requested-but-unsupported parameter is stated in the reader's terms rather than as a
+# planner token, and de-duplicated against the clause label above.
+UNSUPPORTED_LABELS={'water_level':'an observed water level','danger_level':'a danger or warning level',
+                    'flood_extent':'flood extent or impact','tide':'a tide','sea_current':'a sea current',
+                    'sea_surface_temperature':'a sea surface temperature'}
 
 
 def requested_parameters(task,profile):
@@ -64,6 +69,20 @@ def execute_specialist(engine,result,plan,task,resolved,coordinates):
     if task['operation']!='lookup':
         result.update(status='unavailable',answer='This tool retrieves values for a requested window. The requested operation is not supported for '+task['kind']+' evidence yet.')
         return result
+    parameters,unsupported=requested_parameters(task,profile)
+    unsupported=[UNSUPPORTED_LABELS.get(name,name) for name in unsupported]
+    quote=task.get('request_quote') or ''
+    distinct=[label for label,pattern in DISTINCT[task['kind']] if re.search(pattern,quote,re.I)]
+    if distinct:
+        # Keep only a measure the clause itself asks for; a planned parameter that
+        # merely replaced the distinct quantity is not a request for this product.
+        parameters=[p for p in parameters if re.search(SUPPORTED_WORDS[p],quote,re.I)]
+        unsupported=list(dict.fromkeys(distinct+unsupported))
+    if not parameters:
+        # A quantity this product does not carry is stated before a window is demanded:
+        # an unsupported measure is the answer, not a date request or ordinary weather.
+        result.update(status='unavailable',answer='This question asks for '+', '.join(unsupported)+', which this product does not supply. '+profile['no_substitute'])
+        return result
     if not plan['start_local'] or not plan['end_local']:
         result.update(answer='Which day or time window should I check?',follow_up='A date, or an ordered range of dates');return result
     start,end=parsed(plan['start_local']),parsed(plan['end_local']);now=engine.workspace.clock()
@@ -77,17 +96,6 @@ def execute_specialist(engine,result,plan,task,resolved,coordinates):
         result['notes'].append('Only the remaining forecast period is included, starting '+start.astimezone(IST).isoformat()+'.')
     if end-start>profile['max_window']:
         raise SourceError('This tool supports up to '+str(profile['max_window'])+' per request; please narrow the window')
-    parameters,unsupported=requested_parameters(task,profile)
-    quote=task.get('request_quote') or ''
-    distinct=[label for label,pattern in DISTINCT[task['kind']] if re.search(pattern,quote,re.I)]
-    if distinct:
-        # Keep only a measure the clause itself asks for; a planned parameter that
-        # merely replaced the distinct quantity is not a request for this product.
-        parameters=[p for p in parameters if re.search(SUPPORTED_WORDS[p],quote,re.I)]
-        unsupported=distinct+unsupported
-    if not parameters:
-        result.update(status='unavailable',answer='This question asks for '+', '.join(unsupported)+', which this product does not supply. '+profile['no_substitute'])
-        return result
     points=None
     place=(plan.get('places') or [None])[0]
     if place and len(plan.get('places') or [])==1 and not (resolved or {}).get(place.get('name')):

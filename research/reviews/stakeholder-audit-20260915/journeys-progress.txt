@@ -1,0 +1,27 @@
+forecast 200 answered 0.796 facts 1 passages 0 
+followup_time 400 None 0.03 facts 0 passages 0 The question could not be interpreted: No model provider could answer. ollama: The local model did not answer: HTTPError
+followup_measure 200 needs_clarification 0.057 facts 0 passages 0 
+gfs_comparison 200 answered 0.712 facts 4 passages 0 
+gfs_explicit 400 None 0.004 facts 0 passages 0 The question could not be interpreted: No model provider could answer. ollama: The local model did not answer: HTTPError
+wrf_explicit 400 None 0.003 facts 0 passages 0 The question could not be interpreted: No model provider could answer. ollama: The local model did not answer: HTTPError
+history_trend 200 answered 0.553 facts 30 passages 0 
+history_multi 200 answered 0.018 facts 1 passages 0 
+reanalysis 200 unavailable 6.558 facts 0 passages 0 
+reanalysis_unsupported 200 unavailable 0.041 facts 0 passages 0 
+national_bulletin 200 unavailable 0.08 facts 0 passages 0 
+crop_bulletin 200 unavailable 3.233 facts 0 passages 0 
+crop_decision 200 unavailable 0.567 facts 0 passages 0 
+hindi 200 answered 0.103 facts 1 passages 0 
+gujarati 200 answered 0.095 facts 1 passages 0 
+tamil_output 200 partial 0.094 facts 1 passages 0 
+ambiguity 200 needs_selection 0.093 facts 0 passages 0 
+typo 200 needs_selection 0.113 facts 0 passages 0 
+warning 200 answered 11.096 facts 5 passages 0 
+now 200 answered 3.969 facts 6 passages 0 
+airport 200 answered 3.326 facts 2 passages 0 
+marine 200 answered 4.207 facts 24 passages 0 
+river 200 answered 1.159 facts 2 passages 0 
+water_level 200 answered 2.811 facts 6 passages 0 
+tide 200 unavailable 0.041 facts 0 passages 0 
+notification 200 needs_selection 1.154 facts 0 passages 0 
+novel_llm 400 None 0.003 facts 0 passages 0 The question could not be interpreted: No model provider could answer. ollama: The local model did not answer: HTTPError

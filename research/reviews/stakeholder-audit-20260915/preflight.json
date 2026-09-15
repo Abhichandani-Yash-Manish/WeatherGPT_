@@ -1,0 +1,94 @@
+{
+  "schema_version": "startup-preflight-v1",
+  "generated_at_utc": "2026-09-15T09:26:24+00:00",
+  "root": "/Users/heer/Documents/WeatherGPT_",
+  "checks": [
+    {
+      "check": "python",
+      "state": "ok",
+      "detail": "3.14.6"
+    },
+    {
+      "check": "registries",
+      "state": "ok",
+      "detail": "6 checked, 0 missing, 0 unparsed"
+    },
+    {
+      "check": "document corpus",
+      "state": "limited",
+      "detail": "no indexed corpus on this machine yet"
+    },
+    {
+      "check": "gazetteer",
+      "state": "ok",
+      "detail": "a known place resolves; the index is readable"
+    },
+    {
+      "check": "port 8765",
+      "state": "ok",
+      "detail": "free"
+    },
+    {
+      "check": "runtime store",
+      "state": "ok",
+      "detail": "/Users/heer/Documents/WeatherGPT_/data/runtime"
+    },
+    {
+      "check": "model providers",
+      "state": "limited",
+      "detail": "no local Ollama was reachable; no OpenRouter key configured: the rules floor and any local model still answer"
+    }
+  ],
+  "blocked": [],
+  "providers": {
+    "rules_floor": {
+      "available": true,
+      "model": "rule-planner-v1",
+      "detail": "the core question shapes are planned deterministically with no model at all"
+    },
+    "ollama": {
+      "configured": true,
+      "reachable": false,
+      "models": [],
+      "wanted": "qwen3.6:latest",
+      "why": "'OllamaClient' object has no attribute 'available'"
+    },
+    "openrouter": {
+      "configured": false,
+      "key_source": "not configured",
+      "free_models": [
+        "deepseek/deepseek-chat-v3.1:free",
+        "qwen/qwen3-235b-a22b:free",
+        "moonshotai/kimi-k2:free",
+        "openai/gpt-oss-120b:free",
+        "z-ai/glm-4.5-air:free",
+        "meta-llama/llama-4-maverick:free",
+        "meta-llama/llama-3.3-70b-instruct:free",
+        "mistralai/mistral-small-3.2-24b-instruct:free",
+        "google/gemini-2.0-flash-exp:free",
+        "qwen/qwen-2.5-72b-instruct:free",
+        "google/gemma-3-27b-it:free",
+        "deepseek/deepseek-r1:free"
+      ]
+    }
+  },
+  "registries": {
+    "checked": 6,
+    "missing": [],
+    "unparsed": []
+  },
+  "evidence": {
+    "passages": 0,
+    "documents": 0,
+    "store": "/Users/heer/Documents/WeatherGPT_/data/runtime/ingestion/bulletins/bulletin-grid-v2/index.sqlite",
+    "present": false
+  },
+  "not_connected": [
+    "radar and satellite imagery",
+    "sea-area and coastal bulletins as live products",
+    "flood-extent mapping",
+    "official warning dissemination of any kind",
+    "delivery, push or scheduled notification outside a foreground command"
+  ],
+  "note": "A preflight reports states, not permissions: a limited state means part of the workspace is thinner, not that the workspace may not be used."
+}

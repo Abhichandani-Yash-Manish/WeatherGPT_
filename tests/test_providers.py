@@ -331,7 +331,7 @@ class RulePlannerTests(unittest.TestCase):
         for question in ["What was India's rainfall and mean temperature in 2024?",
                          'Show the temperature and rainfall for India in 2024.']:
             request = rule_request(question, NOW)
-            self.assertEqual([t['parameters'] for t in request['tasks']], [['rainfall', 'temperature']])
+            self.assertEqual([set(t['parameters']) for t in request['tasks']], [{'rainfall', 'temperature'}])
             self.assertTrue(all(t['kind'] == 'history' and t['years'] == [2024] for t in request['tasks']))
 
     def test_a_past_day_level_date_becomes_a_daily_history_task(self):

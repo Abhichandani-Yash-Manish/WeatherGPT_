@@ -1,7 +1,7 @@
 # Integrated project status and critical SIH26068 review
 
 15 September 2026. Current assessment after integrating GitHub `63fed4f` and the local workspace,
-corpus-recall and evaluation repairs, followed by concurrent alert-delivery branch `70a55d1` (see [docs/73](73-dissemination-integration-review.md)). This document is the current status overlay; earlier review
+corpus-recall and evaluation repairs, followed by concurrent alert-delivery branch `70a55d1` and stakeholder-repair branch `9c8f539` (see [docs/73](73-dissemination-integration-review.md)). This document is the current status overlay; earlier review
 findings and failed runs remain historical evidence. The P01–P15, R01–R12, F01–F11 and A01–A08 findings
 remain binding. No broad finding is closed by this batch.
 
@@ -94,11 +94,31 @@ and reachable remain separate from approved redistribution and production use.
 - **Agreed marine/hydrological scope:** wave/discharge tools and source bulletin text exist. Named sea-area
   identity, printed validity, observed levels/gauges, thresholds, flood extent and domain review remain open.
 
+## Concurrent stakeholder repairs
+
+Integrated `issue-solved` at `9c8f539`, including the six scoped SA01–SA06 repairs in
+[docs/64](64-stakeholder-repairs.md): warning summary, historical measure order, unsupported river quantities,
+model readiness, reproducible test dependencies and notification verbs in place extraction. The unified
+workspace's current-day warning rendering is retained. The API now also preserves unknown hazard state
+when neither hazard codes nor a meaningful summary exist; the previously vacuous absent-summary test
+now exercises that real backend case.
+
+The original stakeholder report describes another runtime and an earlier revision. Its missing model,
+empty corpus, absent speech key and delivery absence are not current universal project facts. This host's
+new preflight finds the configured local model installed; that catalogue check is not inference acceptance.
+Its authored probes and independent numerical checks remain curated historical evidence, unchanged.
+
+A new Tezpur browser request for observed water level returns **unavailable**, zero facts and the explicit
+no-substitution explanation. That fixes an unsafe mismatch between request and answer; it does not add
+the missing observed-water-level capability. Representative hydrological acceptance is still absent.
+
 ## Acceptance evidence and its limits
 
 Directory: `research/reviews/integration-ps-audit-20260915/`.
 
-**Latest dissemination integration:** 1,105 Python tests and nine JavaScript suites pass; all 25 verification steps pass. New real-HTTP lifecycle checks use synthetic warning input. The browser panel passes its inspected accessibility subtree with one inconclusive contrast rule. See [docs/73](73-dissemination-integration-review.md) for failures, repairs, separate watch-system limits and clean-checkout follow-up. These counts establish regression coverage, not PS completion.
+**Latest combined working-tree verification:** 1,123 Python tests pass (one dependency warning), nine JavaScript suites pass, and all 26 steps pass. The extra static step checks the declared development requirements. The final same-host clean-checkout result follows below. Evidence: `stakeholder/verification-release.txt`, `stakeholder/provider-preflight.json`, `stakeholder/tezpur-browser.json`.
+
+**Dissemination checkpoint:** 1,105 Python tests and nine JavaScript suites pass; all 25 verification steps pass. New real-HTTP lifecycle checks use synthetic warning input. The browser panel passes its inspected accessibility subtree with one inconclusive contrast rule. See [docs/73](73-dissemination-integration-review.md) for failures, repairs, separate watch-system limits and clean-checkout follow-up. These counts establish regression coverage, not PS completion.
 
 **Pre-dissemination checkpoint:** 1,017 Python tests passed (three dependency warnings); eight JavaScript suites
 passed; all 24 verification steps passed. The release development run covers 17 cases, 19 turns and

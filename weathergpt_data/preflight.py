@@ -64,19 +64,31 @@ def providers(probe_ollama=True):
     from . import providers as layer
     report = {'rules_floor': {'available': True, 'model': layer.RULE_MODEL,
                               'detail': 'the core question shapes are planned deterministically with no model at all'},
-              'ollama': {'configured': True, 'reachable': None, 'models': [], 'wanted': None},
+              'ollama': {'configured': True, 'reachable': None, 'models': [], 'wanted': None,
+                         'wanted_installed': None, 'why': ''},
               'openrouter': {'configured': bool(layer.openrouter_key()), 'key_source': layer.key_source(),
                              'free_models': layer.free_models()}}
     client = layer.OllamaClient()
     report['ollama']['wanted'] = getattr(client, 'model', None)
     if probe_ollama:
+        # Service reachability and model availability are reported separately. A reachable
+        # service that does not carry the configured model must not be called unreachable.
         try:
-            names = client.available() or []
-            report['ollama']['reachable'] = True
-            report['ollama']['models'] = sorted(str(name) for name in names)[:40]
+            names = client.catalogue()
         except Exception as failure:  # a missing local service is a state, not an error to raise
             report['ollama']['reachable'] = False
             report['ollama']['why'] = str(failure)[:200]
+        else:
+            report['ollama']['reachable'] = True
+            report['ollama']['models'] = sorted(str(name) for name in names)[:40]
+            wanted = report['ollama']['wanted']
+            installed = wanted in names
+            report['ollama']['wanted_installed'] = installed
+            if not installed:
+                report['ollama']['why'] = ('the service is reachable but the configured model ' + str(wanted) +
+                                           ' is not installed (installed: ' +
+                                           (', '.join(report['ollama']['models'][:5]) or 'none reported') +
+                                           '); set WEATHERGPT_MODEL or run "ollama pull ' + str(wanted) + '"')
     return report
 
 
@@ -123,8 +135,17 @@ def report(port=8765, probe_ollama=True):
         routed = 'OpenRouter configured (' + provider_state['openrouter']['key_source'] + '), ' + str(len(provider_state['openrouter']['free_models'])) + ' free model id(s) registered'
     else:
         routed = 'no OpenRouter key configured: the rules floor and any local model still answer'
-    checks.append({'check': 'model providers', 'state': 'ok' if (provider_state['ollama']['reachable'] or provider_state['openrouter']['configured']) else 'limited',
-                   'detail': ('a local Ollama is reachable' if provider_state['ollama']['reachable'] else 'no local Ollama was reachable') + '; ' + routed})
+    if provider_state['ollama']['reachable'] and provider_state['ollama']['wanted_installed']:
+        local = 'a local Ollama is reachable with model ' + str(provider_state['ollama']['wanted'])
+        provider_ok = True
+    elif provider_state['ollama']['reachable']:
+        local = provider_state['ollama']['why']
+        provider_ok = False
+    else:
+        local = 'no local Ollama was reachable'
+        provider_ok = False
+    checks.append({'check': 'model providers', 'state': 'ok' if (provider_ok or provider_state['openrouter']['configured']) else 'limited',
+                   'detail': local + '; ' + routed})
     blocked = [item['check'] for item in checks if item['state'] == 'blocked']
     return {'schema_version': SCHEMA, 'generated_at_utc': clock().replace(microsecond=0).isoformat(),
             'root': str(ROOT), 'checks': checks, 'blocked': blocked,

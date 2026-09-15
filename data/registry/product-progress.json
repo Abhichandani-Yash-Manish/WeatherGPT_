@@ -203,7 +203,7 @@
       "status": "partial",
       "evidence": "docs/22-engine-context-repairs.md",
       "latest_evidence": "docs/72-integrated-status-and-ps-review.md",
-      "current_evidence": "Guided tools retain selected context; explicit GFS/best-match comparison and both national historical measures now survive the rules path. Multi-turn and unfamiliar compound-request generalisation remain open."
+      "current_evidence": "Guided tools retain selected context; explicit GFS/best-match comparison and both national historical measures now survive the rules path. Multi-turn and unfamiliar compound-request generalisation remain open. Stakeholder repairs preserve historical measure order and prevent notification verbs becoming places. Tezpur observed-water-level browser request is explicitly unavailable, with no weather substitution."
     },
     "P04": {
       "status": "partial",
@@ -267,7 +267,7 @@
       "status": "partial",
       "evidence": "research/reviews/product-potential-20260912/findings.json",
       "latest_evidence": "docs/72-integrated-status-and-ps-review.md",
-      "current_evidence": "The latest merged working-tree run passes 1105 Python tests, nine JS suites and all 25 verification steps on this macOS Python 3.9 environment. Same-host detached checkout verification follows the merge commit. New Python/Windows and fresh dependency installation, CI service, sustained load and deployment remain unaccepted; hosting is held."
+      "current_evidence": "Latest combined run passes 1123 Python tests, nine JS suites and all 26 steps on this macOS Python 3.9 environment. Earlier clean checkout ba3cdbd passes 1105 tests; final combined checkout verification follows. Fresh-machine/Windows installation, CI, sustained load and deployment remain unaccepted."
     },
     "P15": {
       "status": "partial",

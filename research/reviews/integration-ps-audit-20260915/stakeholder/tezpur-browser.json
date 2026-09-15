@@ -1,0 +1,10 @@
+{
+  "question": "What is the observed water level near Tezpur, Assam now?",
+  "status": "unavailable",
+  "fact_count": 0,
+  "answer": "This question asks for an observed water level, which this product does not supply. Modeled discharge is the only hydrological measure connected. An observed water level, a gauge reading, a danger or warning level, flood extent and evacuation advice are different quantities and are never substituted by a discharge value.",
+  "tasks": [],
+  "no_substitution_visible": true,
+  "scope": "Authored live Chromium regression; no actual water-level data supplied",
+  "independent_domain_acceptance": false
+}

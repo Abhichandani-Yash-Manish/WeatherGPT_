@@ -2126,6 +2126,25 @@
    "same_host_only": true,
    "separate_plan_and_legacy_watch_stores": true,
    "historical_self_scores_adopted": false
+  },
+  "stakeholder_followup": {
+   "branch_head": "9c8f539",
+   "report": "docs/64-stakeholder-repairs.md",
+   "current_overlay": "docs/72-integrated-status-and-ps-review.md",
+   "findings": [
+    "SA01",
+    "SA02",
+    "SA03",
+    "SA04",
+    "SA05",
+    "SA06"
+   ],
+   "python_tests_passed": 1123,
+   "javascript_suites": 9,
+   "verification_steps": 26,
+   "verification_failed": 0,
+   "live_tezpur_water_level": "unavailable, zero facts, explicit no-substitution explanation",
+   "domain_acceptance": false
   }
  }
 }

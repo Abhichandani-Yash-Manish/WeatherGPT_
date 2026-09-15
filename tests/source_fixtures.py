@@ -18,3 +18,10 @@ def source_fixture(digest):
                     raise AssertionError('Source fixture hash mismatch: ' + str(path))
                 return path
     raise FileNotFoundError('Tracked source fixture missing: ' + digest)
+
+
+# Compatibility for the stakeholder regression checks.
+bulletin_path = source_fixture
+
+def bulletin_blob(digest):
+    return source_fixture(digest).read_bytes()

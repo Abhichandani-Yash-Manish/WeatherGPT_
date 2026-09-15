@@ -1,0 +1,59 @@
+[
+  {
+    "check": "GFS rainfall raw hash and 3-hour sum",
+    "source_id": "S21",
+    "entity": "geonames:1279233",
+    "window": [
+      "2026-09-16T09:30:00+05:30",
+      "2026-09-16T12:30:00+05:30"
+    ],
+    "raw_hash_matches": true,
+    "hour_values_mm": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "computed_mm": 0.0,
+    "returned_mm": "0.0",
+    "sum_matches": true,
+    "retrieved_at_utc": "2026-09-15T09:29:46.984611+00:00"
+  },
+  {
+    "check": "District rainfall 30 values and independently recomputed slope",
+    "source_id": "S27",
+    "entity": "IMD110-P611 Ahmedabad Gujarat",
+    "period": "annual 1981\u20132010",
+    "all_values_match_csv": true,
+    "source_rows": 30,
+    "calculated_mm_per_decade": 54.654,
+    "returned_mm_per_decade": "54.654",
+    "match": true,
+    "limit": "Checks the curated source CSV and arithmetic; not independent re-reading of the original 30 PDF rows or climate attribution."
+  },
+  {
+    "check": "ERA5-Land daily temperature source values",
+    "source_id": "S22",
+    "product": "ERA5-Land via Open-Meteo daily reanalysis, Asia/Kolkata",
+    "requested_point": {
+      "latitude": 23.02579,
+      "longitude": 72.58727
+    },
+    "returned_grid": {
+      "latitude": 23.0,
+      "longitude": 72.600006
+    },
+    "period": "5\u20137 August 2024 Asia/Kolkata",
+    "source_values_c": [
+      27.4,
+      27.3,
+      27.9
+    ],
+    "returned_values_c": [
+      27.4,
+      27.3,
+      27.9
+    ],
+    "match": true,
+    "retrieved_at_utc": "2026-09-15T09:32:34.657803+00:00"
+  }
+]

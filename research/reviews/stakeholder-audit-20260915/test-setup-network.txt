@@ -1,0 +1,21 @@
+Collecting pytest
+  Downloading pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)
+Collecting shapely==2.0.7
+  Downloading shapely-2.0.7-cp312-cp312-macosx_11_0_arm64.whl.metadata (6.8 kB)
+Requirement already satisfied: numpy<3,>=1.14 in /Users/heer/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages (from shapely==2.0.7) (2.3.5)
+Collecting iniconfig>=1.0.1 (from pytest)
+  Downloading iniconfig-2.3.0-py3-none-any.whl.metadata (2.5 kB)
+Requirement already satisfied: packaging>=22 in /Users/heer/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages (from pytest) (26.3)
+Collecting pluggy<2,>=1.5 (from pytest)
+  Downloading pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)
+Collecting pygments>=2.7.2 (from pytest)
+  Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+Downloading shapely-2.0.7-cp312-cp312-macosx_11_0_arm64.whl (1.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 11.8 MB/s eta 0:00:00
+Downloading pytest-9.1.1-py3-none-any.whl (386 kB)
+Downloading iniconfig-2.3.0-py3-none-any.whl (7.5 kB)
+Downloading pluggy-1.6.0-py3-none-any.whl (20 kB)
+Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 13.0 MB/s eta 0:00:00
+Installing collected packages: shapely, pygments, pluggy, iniconfig, pytest
+Successfully installed iniconfig-2.3.0 pluggy-1.6.0 pygments-2.21.0 pytest-9.1.1 shapely-2.0.7

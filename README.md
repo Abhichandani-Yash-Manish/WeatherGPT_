@@ -74,12 +74,32 @@ The interface states these limits rather than filling the gaps:
 - **A sealed holdout, run once.** The declared benchmark's numbers describe the cases they were tuned on: its earlier holdout had been read during development. A fresh set of ten unseen cases was authored, sealed in the registry with a rule against tuning on it, and run once — 8 of 13 declared tasks, 0 prohibited claims, 0 crashes. The difference between that and 17/17 is the honest estimate of shape coverage. See [docs/54](docs/54-holdout-generalisation.md).
 - **The conversation carries the artefacts.** Every answer offers what its own evidence supports: the right-now reading (stations with distance and age, the published day, the next model hours, and what is not connected), an alert brief or an advisory brief composed in place with save-to-briefcase, and a briefing written into the local series. Pending slots, retrieval coverage, the edition comparison and each edition printed issue date and currency render from the tools own records, and the trace names the provider, the model and any failover. The OpenRouter key goes in with one command: python3 scripts/models.py --set-key (hidden prompt, owner-only file, never printed), and only free model ids are ever routed, ranked most capable first, with the local model as the fallback. See [docs/61](docs/62-chat-surface-and-provider-ux.md).
 - **Desktop web only.** The desktop surface carries a day/night/system appearance, a command palette (⌘K) over surfaces, actions, places and stored conversations, a twelfth surface comparing stored forecast retrievals, and a raw-packet inspector on every answer. Small screens are usable, but this is not mobile platform compliance or mobile acceptance.
-- **Hosting and sharing remain on hold** at the user's request.
+- **Hosting remains on hold.** GitHub source publication for this integrated batch is authorized.
+
+## Reproducible setup
+
+The runtime libraries are pinned in `requirements.txt` (which includes the optional PDF
+stack). The test runner and the remaining development dependencies are declared separately
+so a fresh checkout can run the suite:
+
+```sh
+python3 -m pip install -r requirements-dev.txt        # pytest + runtime requirements
+python3 -m pytest tests/ -q
+```
+
+The saved bulletin layout fixtures are resolved from the tracked curated evidence under
+`research/implementation/*` (see `tests/source_fixtures.py`), not from the Git-ignored
+`data/runtime` cache, so the layout tests run on a clean checkout. A changed current
+bulletin is never substituted for a missing historical fixture. The optional multilingual
+embedding stack (`requirements-bulletins.txt`) is only needed to build the real indexed
+corpus; the intake tests inject a deterministic encoder, so they do not require the model.
+The live document corpus under `data/runtime` is a runtime store: `scripts/doctor.py`
+reports whether it is present, and `scripts/ingest_documents.py` rebuilds it.
 
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 1105 Python tests
+python3 -m pytest tests/ -q                          # 1123 Python tests
 node tests/test_charts.js                            #  2 of 70 component checks
 node tests/test_views.js                             # 18
 node tests/test_bulletin_ui.js                       #  6
