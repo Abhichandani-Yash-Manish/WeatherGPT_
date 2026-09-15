@@ -41,19 +41,21 @@ The interface states these limits rather than filling the gaps:
 - **An advisory brief for a crop.** One district, one crop and one stage become an artefact: published advice quoted with its page and printed issue date, the source conditions quoted as conditions, the forecast kept apart as context, what a decision still needs when asked, and no prescription, diagnosis or dose decision. Another crop is never served for the one asked about. Written with scripts/advisory_brief.py.
 - **An alert brief you can keep.** One place and one published warning day become an artefact: the day status in the product own terms, the bulletin identity and retrieval instant, the CAP relay reported separately, what would change it, what is not established, and a content hash. Written with scripts/alert_brief.py. Nothing is delivered anywhere.
 - **Two products, one answer.** When a turn retrieves an official district warning and a model forecast for the same window, the answer compares them in words - consistent, differing or not comparable - names both, and never ranks them.
+- **A reading position, and a briefcase for what you keep.** Farmer, district officer and traveller each open the page on their own surfaces and questions, and every answer names the position it was read under and states that it changes no value, unit, window, warning level or source. Briefs the workspace composed can be kept, reopened, exported as Markdown and deleted on this machine; nothing is delivered, pushed or scheduled. See [docs/50](docs/50-personas-and-the-briefcase.md).
 - **Desktop web only.** The desktop surface carries a day/night/system appearance, a command palette (⌘K) over surfaces, actions, places and stored conversations, a twelfth surface comparing stored forecast retrievals, and a raw-packet inspector on every answer. Small screens are usable, but this is not mobile platform compliance or mobile acceptance.
 - **Hosting and sharing remain on hold** at the user's request.
 
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 726 Python tests
-node tests/test_charts.js                            #  2 of 60 component checks
+python3 -m pytest tests/ -q                          # 742 Python tests
+node tests/test_charts.js                            #  2 of 68 component checks
 node tests/test_views.js                             # 18
 node tests/test_bulletin_ui.js                       #  6
 node tests/test_conversation_ui.js                   # 13
 node tests/test_suite_ui.js                          # 18
 node tests/test_voice_ui.js                          #  3
+node tests/test_briefcase_ui.js                     #  8
 python3 scripts/doctor.py                            # environment, providers and corpus presence
 python3 scripts/models.py --check                    # the rules-first floor and the configured providers
 python3 scripts/verify_all.py                       # environment, registries, drift guard, tests
@@ -67,6 +69,7 @@ Real journeys are recorded with screenshots in [the frontend batch evidence](res
 
 ## Status and open work
 
+- [Personas and the briefcase](docs/50-personas-and-the-briefcase.md) - three registered reading positions that change emphasis and never evidence, disclosed in every answer, and a local briefcase that keeps, reopens, exports and deletes composed briefs. WS7's scheduled-briefing half is explicitly still open.
 - [Critical full-solution review](docs/21-full-solution-critical-review.md) — the current verdict, findings A01–A08 and the recommended trajectory.
 - [Source activation and national document intake](docs/29-source-activation-and-document-intake.md) — every registered source measured, the national bulletin corpus, and what it still cannot answer.
 - [Multilingual output and voice access](docs/30-multilingual-and-voice-path.md) — the plan for PS features 6 and 8. A plan, not a batch: nothing built and nothing measured yet.

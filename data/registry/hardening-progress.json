@@ -1,7 +1,7 @@
 {
   "schema_version": "hardening-progress-v1",
   "review": "research/reviews/national-readiness-20260912/review.md",
-  "updated_at_utc": "2026-09-15T04:35:42+00:00",
+  "updated_at_utc": "2026-09-15T04:54:21+00:00",
   "operational_ready": false,
   "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
   "findings": [
@@ -1160,6 +1160,57 @@
       "The forecast remains a grid-cell model value, not an observation of the field.",
       "Nothing is delivered or scheduled: the artefact is written locally on request.",
       "A district without an indexed edition falls back to the state edition, named as such; a missing state edition is reported."
+    ]
+  },
+  "personas_briefcase_batch": {
+    "report": "docs/50-personas-and-the-briefcase.md",
+    "evidence_directory": "research/implementation/personas-briefcase-20260915",
+    "operational_ready": false,
+    "scope": "WS7 part 1: three registered reading positions (farmer, district officer, traveller) that select surfaces, offered questions and listed limits while changing no value, unit, window, warning level, source identifier or evidence class, disclosed in every answer; plus a local briefcase that keeps, lists, reopens, exports as Markdown and deletes briefs the server composed, each with its sources and content hash.",
+    "automated_tests": 742,
+    "javascript_component_checks": 68,
+    "measured": {
+      "personas": [
+        "farmer",
+        "district_officer",
+        "traveller"
+      ],
+      "same_question_same_facts_with_and_without_a_persona": true,
+      "unknown_persona": "refused before planning, never treated as the neutral reader",
+      "kept_briefs_in_one_run": 2,
+      "export": {
+        "header": "Content-Disposition: attachment; filename=\"advisory-brief-cotton-squaring-ahmedabad-236e9faa.md\"",
+        "characters": 3131
+      },
+      "browser_download": {
+        "file": "browser/exported-brief.md",
+        "bytes": 3164
+      },
+      "page_positions": {
+        "farmer": [
+          "advisories",
+          "forecast",
+          "climate"
+        ],
+        "district_officer": [
+          "warnings",
+          "map",
+          "observations",
+          "changes"
+        ],
+        "traveller": [
+          "forecast",
+          "aviation",
+          "marine",
+          "observations"
+        ]
+      }
+    },
+    "limitations": [
+      "No usability study and no effect of a position on answer quality: the check pins that it changes no evidence.",
+      "Nothing is delivered, pushed, scheduled or shared; the export is a file on the reader machine.",
+      "One desktop viewport, one browser, one session: no screen-reader, mobile, keyboard-only or cross-browser acceptance.",
+      "WS7 is not finished: the scheduled briefing artefact and its recorded run remain open."
     ]
   }
 }
