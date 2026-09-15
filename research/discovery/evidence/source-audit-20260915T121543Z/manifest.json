@@ -1,0 +1,26 @@
+{
+ "generated_at_utc": "2026-09-15T12:15:43+00:00",
+ "offline": false,
+ "probes": [
+  {
+   "attempts": 1,
+   "checked_at_utc": "2026-09-15T12:15:43+00:00",
+   "content_length": null,
+   "content_range": null,
+   "content_type": "application/json",
+   "elapsed_ms": 591,
+   "error": null,
+   "final_url": "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=23.02579&longitude=72.58727&hourly=pm2_5&forecast_days=1",
+   "http_status": 200,
+   "method": "GET",
+   "request_id": "62b7b399ef0d",
+   "sample_bytes": 808,
+   "sample_sha256": "996008811517861b5afa48c10dcd9e394733cb40539aa182366c525fda8f1abb",
+   "text": true,
+   "url": "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=23.02579&longitude=72.58727&hourly=pm2_5&forecast_days=1"
+  }
+ ],
+ "reused_measurements_from": null,
+ "sample_cap_bytes": 65536,
+ "user_agent": "WeatherGPT-local-prototype/1.0 (source activation audit; local prototype use)"
+}
