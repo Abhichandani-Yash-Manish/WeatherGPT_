@@ -827,15 +827,32 @@ def settings_view():
                         'integration_status': (entry.get('integration') or {}).get('status') or entry.get('evidence_stage'),
                         'user_review': entry.get('user_review'), 'usage_terms': entry.get('usage_terms'),
                         'selection': entry.get('selection')})
+    from .providers import RULE_MODEL, free_model_choices, key_source
+    choices = free_model_choices()
+    configured = key_source() != 'not configured'
+    provider = {'rules_floor': {'model': RULE_MODEL, 'available': True,
+                                'detail': 'the core question shapes are planned with no model at all'},
+                 'openrouter': {'configured': configured, 'key_source': key_source(),
+                                'routing_order': list(choices.get('routing_order') or []),
+                                'refused': list(choices.get('refused') or []),
+                                'note': ('Only ids ending in :free are routed. The order is a capability judgement for this workload, '
+                                         'most capable first, not a provider statement, and only a keyed probe measures what the '
+                                         'account can actually reach.')},
+                 'set_key_command': 'python3 scripts/models.py --set-key',
+                 'probe_command': 'python3 scripts/models.py --probe-free',
+                 'key_note': ('The key is written to local configuration on this machine with owner-only permissions, is never sent '
+                              'anywhere except the provider it belongs to, and is never printed by the workspace.')}
     return envelope('settings.capabilities', 'ok',
                     {'capabilities': [{key: value for key, value in capability.items() if key != 'sources'}
                                       for capability in CAPABILITIES],
                      'sources': sources,
                      'registered_sources': len(products),
-                     'connected_sources': len([s for s in sources if s['integration_status'] == 'prototype_adapter_tested'])},
+                     'connected_sources': len([s for s in sources if s['integration_status'] == 'prototype_adapter_tested']),
+                     'provider': provider},
                     sources=[],
                     coverage={'capabilities': len(CAPABILITIES), 'sources_in_use': len(sources)},
                     limitations=['A registered source is not a serving approval, and a connected adapter is not operational readiness.',
+                                 'The model routing order is a capability judgement for this workload, not a provider statement; only the keyed probe measures availability.',
                                  'Every source remains user_review pending with its usage terms unresolved.'],
                     not_established=['No user-level acceptance benchmark exists for every promised operation or language.',
                                      'Voice, mobile acceptance and hosted distribution remain incomplete.'])

@@ -12,7 +12,16 @@ Nationwide and specialist **operational acceptance is not achieved**. This is an
 python3 scripts/start_weather.py
 ```
 
-Open <http://127.0.0.1:8765>. The launcher starts installed Ollama if needed and uses `qwen3.6:latest`; set `WEATHERGPT_MODEL` to another installed model. The engine plans the core question shapes with rules and no model at all, and the rest through whatever providers exist. Optional: add an OpenRouter key to data/runtime/model-config.json to route free models after Ollama; the key stays in local configuration. No paid gateway is required, and the server answers only on loopback with a per-process session token.
+Open <http://127.0.0.1:8765>. The launcher starts installed Ollama if needed and uses `qwen3.6:latest`; set `WEATHERGPT_MODEL` to another installed model. The engine plans the core question shapes with rules and no model at all, and the rest through whatever providers exist. No paid gateway is required, and the server answers only on loopback with a per-process session token.
+
+OpenRouter free models are optional and take two steps. The key is entered with echo off, so it never reaches shell history, a printed line or a log, and no paid model is ever routed:
+
+```sh
+python3 scripts/models.py --set-key     # hidden prompt; writes data/runtime/model-config.json at mode 0600
+python3 scripts/start_weather.py        # restart the server so the key is read
+```
+
+`python3 scripts/models.py --probe-free` then measures which ranked ids OpenRouter actually publishes and records that observation in `data/registry/openrouter-free-models.json`; with no key it reports **not configured** instead of guessing, and exits 0. The routing order is the curated free ranking, most capable first, followed by any `WEATHERGPT_MODELS` or `model-config.json` ids — an id that does not end in `:free` is skipped with a recorded reason rather than routed.
 
 Try “Will it rain in Ahmedabad, Gujarat tomorrow morning?”, then “And what about the afternoon?”. Or ask “Show the annual rainfall trend for Ahmedabad district, Gujarat from 1981 to 2010.”, or “कल अहमदाबाद में बारिश होगी क्या?” and choose the intended place.
 
@@ -45,13 +54,14 @@ The interface states these limits rather than filling the gaps:
 - **A briefing you can have waiting.** A runner reads the connected products for named places and writes a dated briefing: the official district warning day per place, the CAP relay reported separately, the forecast window as retrieved, what could not be read, and what changed since the previous run — measured against that run record. The interval is a foreground loop inside the command, not a service: nothing is delivered or pushed. See [docs/51](docs/51-scheduled-briefing.md).
 - **One command, and a preflight that tells the truth.** `python3 scripts/start_weather.py` reports the Python version, the registries, the indexed corpus, the gazetteer, the port, the runtime store and the model providers before it serves - and it starts without a model at all, because the rules floor answers. A blocked check (a registry that does not parse, an unusable store, a taken port) refuses to start and names what to fix. No key material is printed. Measured latency over eight representative turns: p50 4.844 s, p90 6.327 s, with the rules floor planning seven of eight. See [docs/53](docs/53-operations.md).
 - **A sealed holdout, run once.** The declared benchmark's numbers describe the cases they were tuned on: its earlier holdout had been read during development. A fresh set of ten unseen cases was authored, sealed in the registry with a rule against tuning on it, and run once — 8 of 13 declared tasks, 0 prohibited claims, 0 crashes. The difference between that and 17/17 is the honest estimate of shape coverage. See [docs/54](docs/54-holdout-generalisation.md).
+- **The conversation carries the artefacts.** Every answer offers what its own evidence supports: the right-now reading (stations with distance and age, the published day, the next model hours, and what is not connected), an alert brief or an advisory brief composed in place with save-to-briefcase, and a briefing written into the local series. Pending slots, retrieval coverage, the edition comparison and each edition printed issue date and currency render from the tools own records, and the trace names the provider, the model and any failover. The OpenRouter key goes in with one command: python3 scripts/models.py --set-key (hidden prompt, owner-only file, never printed), and only free model ids are ever routed, ranked most capable first, with the local model as the fallback. See [docs/61](docs/62-chat-surface-and-provider-ux.md).
 - **Desktop web only.** The desktop surface carries a day/night/system appearance, a command palette (⌘K) over surfaces, actions, places and stored conversations, a twelfth surface comparing stored forecast retrievals, and a raw-packet inspector on every answer. Small screens are usable, but this is not mobile platform compliance or mobile acceptance.
 - **Hosting and sharing remain on hold** at the user's request.
 
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 840 Python tests
+python3 -m pytest tests/ -q                          # 860 Python tests
 node tests/test_charts.js                            #  2 of 70 component checks
 node tests/test_views.js                             # 18
 node tests/test_bulletin_ui.js                       #  6
@@ -61,6 +71,7 @@ node tests/test_voice_ui.js                          #  3
 node tests/test_briefcase_ui.js                     # 10
 python3 scripts/doctor.py                            # environment, providers and corpus presence
 python3 scripts/models.py --check                    # the rules-first floor and the configured providers
+python3 scripts/models.py --probe-free               # the curated free ranking measured against the live catalogue
 python3 scripts/verify_all.py                       # environment, registries, drift guard, tests
 python3 scripts/run_daily_cycle.py --families national_bulletin  # one bounded foreground cycle
 python3 scripts/audit_workspace_frontend.py --baseline
@@ -72,6 +83,7 @@ Real journeys are recorded with screenshots in [the frontend batch evidence](res
 
 ## Status and open work
 
+- [The chat surface and the key you paste](docs/62-chat-surface-and-provider-ux.md) - the audit that found a whole-turn renderer crash, the artefact actions now wired into the conversation, three place and freshness defects fixed, and the one-command OpenRouter key flow with a ranked free-model list.
 - [State agromet coverage](docs/60-state-agromet-coverage.md) - a 22-centre sweep that took state coverage from one edition to five, the sixteen centres that answer 404, and the marker defect that would have accepted any PDF as a bulletin.
 - [Paraphrase robustness](docs/59-paraphrase-robustness.md) - 38 deterministic variants over eleven declared shapes, the eight repairs that took the held rate from 25/34 to 38/38, and the honest note that this is a development set, not generalisation.
 - [The right-now reading](docs/58-right-now-reading.md) - live station observations in the conversation, and one reading composing the observed, the published day and the model hours next, with radar, sub-hourly refresh and push named as not connected.

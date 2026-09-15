@@ -88,8 +88,40 @@ def execute_specialist(engine,result,plan,task,resolved,coordinates):
     if not parameters:
         result.update(status='unavailable',answer='This question asks for '+', '.join(unsupported)+', which this product does not supply. '+profile['no_substitute'])
         return result
-    points=engine.resolve_points(result,plan,resolved,coordinates)
-    if points is None:return result
+    points=None
+    place=(plan.get('places') or [None])[0]
+    if place and len(plan.get('places') or [])==1 and not (resolved or {}).get(place.get('name')):
+        candidates=engine.gazetteer.search(place.get('name') or '',place.get('state') or '',place.get('district') or '')
+        from .gazetteer import preferred_match as _preferred
+        ranked,_why=_preferred(candidates)
+        if ranked is not None:
+            # A candidate outranks the others on its own merits; the product probe is not used to
+            # overturn a rank, only to settle a genuine tie.
+            candidates=[]
+        if len(candidates)>1 and all(candidate.get('match_type')!='approximate_name_requires_confirmation' for candidate in candidates):
+            # Several places share this name and none outranks the others (all five Kochis are PPL),
+            # so the connected product decides: a wave or discharge cell exists only where the
+            # product covers, and a candidate it cannot answer for is evidence, not a guess.
+            from .gazetteer import choose_by_probe
+            def probe(candidate,coordinates):
+                return acquire(engine.workspace,profile['product'],coordinates,start,end)
+            chosen,tried,_snapshot=choose_by_probe(candidates,probe,score=lambda snap:snap.get('grid_distance_km'))
+            result['trace']['tools'].append({'name':profile['product']+'_place_probe','candidates':len(candidates),
+                                             'probed':len(tried)+(1 if chosen else 0),'source_id':profile.get('source_id')})
+            if chosen is not None:
+                others=[candidate['label'] for candidate in candidates if candidate.get('id')!=chosen.get('id')]
+                result['notes'].append('Place read as '+str(chosen.get('label'))+' — the connected '+profile['product_label']+
+                                       ' returned a cell for it and nothing for the other place(s) with this name' +
+                                       (': '+'; '.join(others)+'. Say which one you meant to switch.' if others else '.'))
+                points=[chosen]
+                result['resolved_points']={**(result.get('resolved_points') or {}),place['name']:chosen}
+            else:
+                result['notes'].append('No connected '+profile['product_label']+' cell answered for any of the places called '+
+                                       str(place.get('name'))+' ('+'; '.join(str(item.get('label')) for item in tried[:4])+
+                                       '), so the question is asked rather than answered for one of them.')
+    if points is None:
+        points=engine.resolve_points(result,plan,resolved,coordinates)
+        if points is None:return result
     result.update(charts=[])
     missing=[p+' is not supplied by this product' for p in unsupported]
     for place in points:

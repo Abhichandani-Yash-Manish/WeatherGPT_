@@ -111,6 +111,56 @@ class Workspace:
                     briefing=briefing,markdown=record.get('markdown'),series=runs)
         return view
 
+
+    def run_briefing(self, body):
+        """Compose a briefing for the working place and write it into this workspace's series.
+
+        The page action and the command line produce the same artefact: the Markdown, the full
+        record and the series index row. Nothing is delivered, pushed or scheduled by this - a
+        run happens when someone asks for one, in the foreground.
+        """
+        from .briefing_run import compose, load_previous, resolve_place, series_entry, update_index, write_run
+        import time
+        if not isinstance(body, dict):
+            raise SourceError('Send the briefing request as JSON')
+        latitude, longitude = body.get('lat'), body.get('lon')
+        label = str(body.get('label') or '').strip()
+        place = None
+        if body.get('place'):
+            place = resolve_place(str(body['place']))
+            latitude, longitude = place['latitude'], place['longitude']
+            label = label or place.get('label')
+        if latitude is None or longitude is None:
+            raise SourceError('A briefing is composed for a point: give lat and lon, or a place name')
+        hours = int(body.get('hours') or 6)
+        if hours not in (6, 12, 24):
+            raise SourceError('Ask for 6, 12 or 24 model hours')
+        place = place or {'label': label or 'the requested point', 'latitude': float(latitude), 'longitude': float(longitude)}
+        directory = self.briefings_dir()
+        records = sorted(directory.glob('record-*.json')) if directory.exists() else []
+        previous = load_previous(records[-1]) if records else None
+        began = time.monotonic()
+        briefing = compose(self.foundation(), [place], day=int(body.get('day') or 1),
+                           forecast_days=int(body.get('forecast_days') or 3), now=self.clock(), previous=previous)
+        latency = round(time.monotonic() - began, 3)
+        runs = 0
+        index_path = directory / 'index.json'
+        if index_path.exists():
+            try:
+                runs = len(json.loads(index_path.read_text(encoding='utf-8')).get('runs') or [])
+            except (OSError, ValueError):
+                runs = 0
+        markdown_path, record_path, _stamp = write_run(directory, briefing, latency,
+                                                       runner='the workspace briefing action')
+        update_index(directory, series_entry(briefing, markdown_path, record_path, latency, run_number=runs + 1))
+        return {'schema_version': 'briefing-run-v1', 'delivery': 'local_only_no_delivery',
+                'note': ('A briefing records what the connected products published at the instant it ran. Nothing was delivered, '
+                         'pushed or scheduled; a run happens when someone asks for one.'),
+                'entry': {'run': runs + 1, 'generated_at_utc': briefing['generated_at_utc'],
+                          'briefing_id': briefing['briefing_id'], 'place_count': briefing['place_count'],
+                          'latency_seconds': latency, 'change': (briefing.get('change_since_previous') or {}).get('reading'),
+                          'markdown_path': str(markdown_path), 'record_path': str(record_path)},
+                'briefing': briefing, 'markdown': markdown_path.read_text(encoding='utf-8')}
     def save_brief(self,body):
         """Compose a brief from sources and keep it. The client asks for a brief; it cannot post one."""
         if not isinstance(body,dict):raise SourceError('Send the brief request as JSON')
@@ -663,7 +713,8 @@ def make_server(workspace, port=8765):
                     or not hmac.compare_digest(supplied,token)):
                 return self.respond(403,{'error':'Reload this local workspace before sending a request'})
             routes={'/api/answer':workspace.answer,'/api/refresh':workspace.refresh,'/api/chat':workspace.chat,
-                    '/api/chat/cancel':workspace.cancel_chat,'/api/watches/check':workspace.check_watches,'/api/briefs/save':workspace.save_brief,
+                    '/api/chat/cancel':workspace.cancel_chat,'/api/watches/check':workspace.check_watches,'/api/briefing/run':workspace.run_briefing,
+                    '/api/briefs/save':workspace.save_brief,
                     '/api/briefs/delete':workspace.delete_brief,
                     '/api/speech/transcribe':workspace.transcribe,'/api/speech/speak':workspace.speak}
             if self.path not in routes:return self.respond(404,{'error':'Not found'})

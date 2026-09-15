@@ -123,19 +123,25 @@ def check_providers():
     try:
         from weathergpt_data import providers
         source = providers.key_source()
-        models = list(providers.free_models())
+        choices = providers.free_model_choices()
+        models = list(choices['routing_order'])
     except Exception as error:  # noqa: BLE001 - an import failure is a finding, not a crash
         return checks + [{'id': 'provider:config', 'state': 'fail',
                           'detail': 'the provider layer could not be imported: ' + type(error).__name__,
                           'next_action': 'Restore weathergpt_data/providers.py and re-run the doctor.'}]
     if source == 'not configured':
         checks.append({'id': 'provider:openrouter', 'state': 'warn',
-                       'detail': 'no OpenRouter key is configured; ' + str(len(models)) + ' free models are ready to route when one exists',
-                       'next_action': 'Add {"openrouter_api_key": "..."} to data/runtime/model-config.json (local only), then run python3 scripts/models.py --check.'})
+                       'detail': 'no OpenRouter key is configured; ' + str(len(models)) + ' free model ids are listed for routing when one exists, which is an order and not an availability measurement',
+                       'next_action': 'Run python3 scripts/models.py --set-key (hidden prompt, mode 0600) or set OPENROUTER_API_KEY, restart the server, then run python3 scripts/models.py --probe-free.'})
     else:
         checks.append({'id': 'provider:openrouter', 'state': 'ok',
                        'detail': 'OpenRouter key found in ' + source + '; the router will fall back to it after Ollama',
                        'next_action': ''})
+    for row in choices['refused']:
+        checks.append({'id': 'provider:free-only', 'state': 'warn',
+                       'detail': row['model_id'] + ': ' + row['reason'],
+                       'next_action': 'Remove that id from WEATHERGPT_MODELS or the models list in '
+                                      'data/runtime/model-config.json; only :free ids are routed.'})
     return checks
 
 

@@ -24,11 +24,41 @@ FOLLOW_UP = re.compile(r'^\s*(and|what about|how about|aur|us|iska|iske|then|als
 # context rather than the rules inventing a fresh task from a sentence fragment.
 CONTEXT_REFERENCE = re.compile(r'\b(that|this|same|those|these|it|its|there|then|too|also|as well|again|'
                                r'previous|earlier|latter|former|above)\b', re.I)
-DAY_WORDS = {'today': 0, 'aaj': 0, 'tomorrow': 1, 'kal': 1, 'tonight': 0, 'parso': 2}
+# The same day and part-of-day words in the scripts the editions and the readers use: measured on
+# 15 September 2026, "कल ... सुबह ..." read no window at all, so the turn fell to a model and the
+# same question answered with a different morning (06:30-12:30) than its English form (09:30-12:30).
+# A whole-word match that also works where a script's vowel signs are combining marks: Python's
+# \w does not match them, so '\bસવારે\b' never matches "સવારે" - measured on 15 September 2026,
+# the Gujarati morning word read no window at all because of it.
+WORD_EDGE = ('[\\w' + '\\u0900-\\u097f\\u0980-\\u09ff\\u0a00-\\u0a7f\\u0a80-\\u0aff'
+             '\\u0b00-\\u0b7f\\u0b80-\\u0bff\\u0c00-\\u0c7f\\u0c80-\\u0cff\\u0d00-\\u0d7f]')
+
+
+def boundary_pattern(word):
+    """A compiled whole-word pattern for a word in any script the editions use."""
+    return re.compile('(?<!' + WORD_EDGE + ')' + re.escape(word) + '(?!' + WORD_EDGE + ')', re.I)
+
+DAY_WORDS = {'today': 0, 'aaj': 0, 'tomorrow': 1, 'kal': 1, 'tonight': 0, 'parso': 2,
+             'आज': 0, 'कल': 1, 'परसों': 2, 'આજે': 0, 'આવતીકાલે': 1,
+             'ಇಂದು': 0, 'ನಾಳೆ': 1, 'இன்று': 0, 'நாளை': 1, 'ఈరోజు': 0, 'రేపు': 1,
+             'ഇന്ന്': 0, 'നാളെ': 1, 'আজ': 0, 'আগামীকাল': 1, 'ଆଜି': 0, 'ଆସନ୍ତାକାଲି': 1,
+             'ਅੱਜ': 0, 'ਕੱਲ੍ਹ': 1}
 WINDOWS = {'morning': ('09:30', '12:30'), 'subah': ('09:30', '12:30'),
+           'सुबह': ('09:30', '12:30'), 'સવારે': ('09:30', '12:30'), 'ಬೆಳಿಗ್ಗೆ': ('09:30', '12:30'),
+           'காலை': ('09:30', '12:30'), 'ఉదయం': ('09:30', '12:30'), 'രാവിലെ': ('09:30', '12:30'),
+           'সকাল': ('09:30', '12:30'), 'ସକାଳ': ('09:30', '12:30'), 'ਸਵੇਰੇ': ('09:30', '12:30'),
            'afternoon': ('12:30', '18:30'), 'dopahar': ('12:30', '18:30'),
+           'दोपहर': ('12:30', '18:30'), 'બપોરે': ('12:30', '18:30'), 'ಮಧ್ಯಾಹ್ನ': ('12:30', '18:30'),
+           'மதியம்': ('12:30', '18:30'), 'మధ్యాహ్నం': ('12:30', '18:30'), 'ദുപഹర': ('12:30', '18:30'),
+           'दुपहर': ('12:30', '18:30'), 'ਦੁਪਹਿਰ': ('12:30', '18:30'),
            'evening': ('18:30', '22:30'), 'shaam': ('18:30', '22:30'),
-           'night': ('21:30', '23:30'), 'raat': ('21:30', '23:30'), 'tonight': ('21:30', '23:30')}
+           'शाम': ('18:30', '22:30'), 'સાંજે': ('18:30', '22:30'), 'ಸಂಜೆ': ('18:30', '22:30'),
+           'மாலை': ('18:30', '22:30'), 'సాయంత్రం': ('18:30', '22:30'), 'വൈകുന്നേരം': ('18:30', '22:30'),
+           'ਸ਼ਾਮ': ('18:30', '22:30'),
+           'night': ('21:30', '23:30'), 'raat': ('21:30', '23:30'), 'tonight': ('21:30', '23:30'),
+           'रात': ('21:30', '23:30'), 'રાત્રે': ('21:30', '23:30'), 'ರಾತ್ರಿ': ('21:30', '23:30'),
+           'இரவு': ('21:30', '23:30'), 'రాత్రి': ('21:30', '23:30'), 'രാത്രി': ('21:30', '23:30'),
+           'রাত': ('21:30', '23:30'), 'ਰਾਤ': ('21:30', '23:30')}
 VARIABLE_WORDS = (
     (re.compile(r'\b(chance|probability|chances|possibilit|sambhavna)\b', re.I), 'precipitation_probability'),
     (re.compile(r'\b(feels like|apparent)\b', re.I), 'apparent_temperature'),
@@ -217,12 +247,12 @@ def window_for(question, now):
     offset = None
     basis = None
     for word, days in DAY_WORDS.items():
-        if re.search(r'\b' + word + r'\b', lower):
+        if boundary_pattern(word).search(question):
             offset, basis = days, word
             break
     part = None
     for word in WINDOWS:
-        if re.search(r'\b' + word + r'\b', lower):
+        if boundary_pattern(word).search(question):
             part = word
             break
     clock = re.findall(r'\b([01]?\d|2[0-3])[:.]([0-5]\d)\b', question)

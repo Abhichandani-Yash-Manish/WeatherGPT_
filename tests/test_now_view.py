@@ -101,12 +101,14 @@ class ComposedReadingTests(unittest.TestCase):
         self.assertEqual(reading['next_hours']['source_id'], 'S62')
         self.assertEqual(reading['sources'], ['S63', 'S62'])
 
-    def test_the_summary_names_the_nearest_and_the_freshest_station(self):
+    def test_the_summary_leads_with_the_freshest_station_and_names_the_nearest(self):
+        # Measured live: a stale AWS row 29 km away led the answer while the fresh METAR
+        # 40 km away was mentioned second, so a reader saw a six-month-old temperature first.
         summary = self.compose()['summary']
-        self.assertIn('Nearest station AHMEDABAD', summary)
-        self.assertIn('(4.2 km)', summary)
-        self.assertIn('Freshest report in range', summary)
-        self.assertIn('The nearest station is not always the freshest one', summary)
+        self.assertIn('Freshest station report here: AHMEDABAD', summary)
+        self.assertIn('reported 2026-09-15T05:30:00+00:00, 60.0 minutes before retrieval', summary)
+        self.assertIn('The nearest station (AHMEDABAD at 4.2 km) reported 390.0 minutes before retrieval, so the fresher report leads', summary)
+        self.assertLess(summary.index('Freshest station report'), summary.index('The nearest station'), 'the fresh report leads the sentence')
 
     def test_the_summary_says_what_is_not_connected(self):
         summary = self.compose()['summary']

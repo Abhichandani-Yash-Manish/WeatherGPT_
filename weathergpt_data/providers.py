@@ -3,7 +3,9 @@
 The engine asks for a structured completion and gets back parsed data plus a trace of who
 produced it. Providers are an enhancement, never the floor: the rule planner answers the
 core problem-statement shapes with no model at all, Ollama answers locally, and OpenRouter
-answers from a free-model pool when a key is configured in local backend configuration.
+answers from a curated free-model pool when a key is configured in local backend
+configuration. A paid OpenRouter id is refused with a recorded reason, never routed: this
+workspace must not be able to bill an account by configuration accident.
 
 Invariants that no provider may bend: model output never executes code or SQL, never supplies
 a measurement, and never decides an entity, window, unit or source. This module returns
@@ -24,19 +26,22 @@ from .transport import SourceError
 
 ROOT = Path(__file__).resolve().parents[1]
 LOCAL_CONFIG = ROOT / 'data' / 'runtime' / 'model-config.json'
+FREE_MODEL_REGISTRY = ROOT / 'data' / 'registry' / 'openrouter-free-models.json'
 OPENROUTER_BASE = 'https://openrouter.ai/api/v1'
 OPENROUTER_MODELS_URL = OPENROUTER_BASE + '/models'
 OPENROUTER_CHAT_URL = OPENROUTER_BASE + '/chat/completions'
-# Free-tier ids seen in the OpenRouter catalogue. The router prefers these in order and
-# falls back to any other id the key can reach only if a caller asks for it explicitly.
+# Free-tier ids this workspace has itself observed in the OpenRouter catalogue. The curated
+# ranking in FREE_MODEL_REGISTRY is the routing order and may name more; this tuple is the
+# floor used only when that registry is missing.
 DEFAULT_FREE_MODELS = (
     'deepseek/deepseek-chat-v3.1:free',
-    'z-ai/glm-4.5-air:free',
     'qwen/qwen3-235b-a22b:free',
+    'z-ai/glm-4.5-air:free',
     'meta-llama/llama-3.3-70b-instruct:free',
     'mistralai/mistral-small-3.2-24b-instruct:free',
     'google/gemini-2.0-flash-exp:free',
 )
+PAID_MODEL_REFUSAL = 'refused: this id does not end in :free, and a paid id could bill the account'
 MAX_ATTEMPTS_PER_MODEL = 2
 DEFAULT_TIMEOUT = 90.0
 RETRY_BACKOFF_SECONDS = 1.5
@@ -73,14 +78,72 @@ def key_source():
     return 'not configured'
 
 
-def free_models():
-    """The model ids the router may use, free-tier first, from configuration or the default list."""
+def is_free_model(model_id):
+    """Only ids OpenRouter publishes on its free tier. Anything else is refused, never routed."""
+    return str(model_id or '').strip().endswith(':free')
+
+
+def free_model_ranking(path=None):
+    """The curated free-model ranking, most capable first, from the registry or the observed floor.
+
+    The registry is the editable order and the workspace's own catalogue observations are the
+    fallback; a registry that does not parse or names no free id is treated as missing rather
+    than silently replaced by a shorter list.
+    """
+    path = Path(path or FREE_MODEL_REGISTRY)
+    if path.exists():
+        try:
+            data = json.loads(path.read_text(encoding='utf-8')) or {}
+        except ValueError:
+            data = {}
+        data = data if isinstance(data, dict) else {}
+        ranked = []
+        for entry in data.get('models') or []:
+            model_id = str((entry or {}).get('model_id') or '').strip() if isinstance(entry, dict) else ''
+            if is_free_model(model_id) and model_id not in ranked:
+                ranked.append(model_id)
+        if ranked:
+            return tuple(ranked)
+    return DEFAULT_FREE_MODELS
+
+
+def configured_models():
+    """The ids this machine asks for explicitly, from the environment or local configuration."""
     configured = os.getenv('WEATHERGPT_MODELS') or local_config().get('models')
     if isinstance(configured, str):
         configured = [item.strip() for item in configured.split(',') if item.strip()]
-    if configured:
-        return tuple(str(item) for item in configured)
-    return DEFAULT_FREE_MODELS
+    return tuple(str(item).strip() for item in (configured or ()) if str(item).strip())
+
+
+def free_model_choices(ranking=None, configured=None):
+    """The routing order, the curated ranking and every id refused because it is not free.
+
+    A configured id that does not end in ':free' is skipped and recorded in 'refused' with a
+    reason. Skipping is deliberate: one bad configuration entry must not remove the provider,
+    and no caller can then reach a paid model through this function or through free_models().
+    """
+    ranked = free_model_ranking() if ranking is None else tuple(ranking)
+    extra = configured_models() if configured is None else tuple(configured)
+    accepted, refused = [], []
+    for model_id in [str(item or '').strip() for item in tuple(ranked) + tuple(extra)]:
+        if not model_id:
+            continue
+        if not is_free_model(model_id):
+            refused.append({'model_id': model_id, 'reason': PAID_MODEL_REFUSAL})
+        elif model_id not in accepted:
+            accepted.append(model_id)
+    return {'routing_order': tuple(accepted), 'ranking': tuple(str(item).strip() for item in ranked),
+            'configured': tuple(extra), 'refused': tuple(refused)}
+
+
+def free_models():
+    """The router's model order: the curated free ranking first, then any configured extra.
+
+    A configured id that does not end in ':free' is skipped with a reason recorded by
+    free_model_choices()['refused'] rather than raising, so configuration cannot take the
+    provider away and cannot put a billable id in front of a caller.
+    """
+    return free_model_choices()['routing_order']
 
 
 def extract_json(text):
@@ -166,22 +229,30 @@ class OllamaClient:
 
 
 class OpenRouterClient:
-    """OpenRouter over HTTPS, restricted to the models a caller allows.
+    """OpenRouter over HTTPS, restricted to :free models and to the ones a caller allows.
 
     Every failure mode is named rather than retried blindly: a refused key disables the
     provider for the process, a model-level refusal moves to the next model, and a rate limit
     or transport error is retried once with a short backoff before moving on.
+
+    A model id that does not end in ':free' is never placed in the request list, whatever the
+    caller asked for: it is recorded in refused_models, and a client left with no free model
+    reports itself unavailable instead of falling back to a billable id.
     """
 
     name = 'openrouter'
 
     def __init__(self, key=None, models=None, timeout=DEFAULT_TIMEOUT, opener=None, base=OPENROUTER_BASE):
         self.key = (key if key is not None else openrouter_key()).strip()
-        self.models = tuple(models or free_models())
+        choices = free_model_choices(ranking=tuple(models), configured=()) if models is not None else free_model_choices()
+        self.models = choices['routing_order']
+        self.refused_models = choices['refused']
         self.timeout = timeout
         self.base = base.rstrip('/')
         self.opener = opener or urllib.request.urlopen
         self.disabled_reason = None
+        if not self.models:
+            self.disabled_reason = ('no :free model is configured, and a paid model is never routed')
 
     def available(self):
         if not self.key:
@@ -194,9 +265,12 @@ class OpenRouterClient:
         request = urllib.request.Request(url, body, headers or {})
         return self.opener(request, timeout=self.timeout)
 
-    def catalogue(self):
-        """The public model list. No key is needed to read it."""
-        with self.http(self.base + '/models', headers={'Accept': 'application/json'}) as response:
+    def catalogue(self, with_key=False):
+        """The public model list. No key is needed to read it; with_key sends the configured one."""
+        headers = {'Accept': 'application/json'}
+        if with_key and self.key:
+            headers['Authorization'] = 'Bearer ' + self.key
+        with self.http(self.base + '/models', headers=headers) as response:
             data = json.loads(response.read(2000000))
         rows = data.get('data') if isinstance(data, dict) else data
         return [row for row in (rows or []) if isinstance(row, dict) and row.get('id')]
@@ -260,10 +334,21 @@ class OpenRouterClient:
 
 
 class ModelRouter:
-    """Try the rule planner, then each provider in order, recording every attempt."""
+    """Try the rule planner, then each provider in order, recording every attempt.
+
+    A client presenting itself as OpenRouter while holding a non-free model is refused at
+    construction: the router is the last place before the network, so the paid-id guard is
+    checked here as well as inside the client.
+    """
 
     def __init__(self, clients=None, rules=True):
-        self.clients = list(clients or default_clients())
+        self.clients = []
+        for client in clients or default_clients():
+            if getattr(client, 'name', '') == OpenRouterClient.name:
+                paid = [str(model) for model in (getattr(client, 'models', ()) or ()) if not is_free_model(model)]
+                if paid:
+                    raise ValueError('ModelRouter refuses a paid OpenRouter model: ' + ', '.join(paid))
+            self.clients.append(client)
         self.rules = rules
         self.trace = []
 
@@ -327,13 +412,20 @@ class DeterministicClient:
 
 
 def default_clients():
+    """The provider order: the routed free models first when a key is configured, then the local model.
+
+    The workspace is run by a reader who asked for the free cloud models to be used and the local
+    model to be the fallback, so a configured key puts OpenRouter first: the router takes the most
+    capable free id first and fails over on any refusal. With no key, the local model is the first
+    provider and nothing changes. Whatever the order, a planning failure never loses the turn: the
+    next client is tried and the failover is recorded in the trace."""
     clients = []
+    if openrouter_key():
+        clients.append(OpenRouterClient())
     try:
         clients.append(OllamaClient())
     except ValueError:
         pass
-    if openrouter_key():
-        clients.append(OpenRouterClient())
     return clients
 
 

@@ -1,7 +1,7 @@
 {
   "schema_version": "hardening-progress-v1",
   "review": "research/reviews/national-readiness-20260912/review.md",
-  "updated_at_utc": "2026-09-15T07:05:44+00:00",
+  "updated_at_utc": "2026-09-15T08:14:06+00:00",
   "operational_ready": false,
   "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
   "findings": [
@@ -1631,6 +1631,45 @@
       "No agronomist or native speaker has reviewed the Devanagari editions.",
       "Karnataka states no printed issue date, so its currency is recorded as not stated.",
       "Retrieval is lexical: an English question cannot match passages written in Devanagari, so a newly indexed Hindi edition reports no matching passage until cross-lingual retrieval exists."
+    ]
+  },
+  "chat_surface_batch": {
+    "report": "docs/62-chat-surface-and-provider-ux.md",
+    "evidence_directory": "research/implementation/chat-surface-20260915",
+    "operational_ready": false,
+    "scope": "The chat surface, made to match the engine: an audit of fourteen live journeys, the renderer crash it found (table is not defined) repaired with an offline check, artefact actions in the conversation (right-now reading, alert brief, advisory brief, briefing), a retrieval account renderer for pending slots, coverage, edition comparison and editions read, provider transparency in the answer trace, tied-place resolution decided by the connected product with disclosure, station freshness leading the right-now reading, Indic day and part-of-day words with one definition per part of day, and the OpenRouter key flow: --set-key at mode 0600 with no echo, free-only routing enforced, twelve ranked free models, OpenRouter first with local failover (measured with an invalid key), and a settings card that shows the state and the commands.",
+    "automated_tests": 860,
+    "javascript_component_checks": 70,
+    "measured": {
+      "audit_journeys": 14,
+      "journeys_answered": 11,
+      "renderer_crash_found": "table is not defined (a whole turn failed to render)",
+      "artefact_actions_verified_in_page": [
+        "Right now here",
+        "Write the alert brief",
+        "Write the advisory brief",
+        "Write a briefing"
+      ],
+      "key_flow": {
+        "command": "python3 scripts/models.py --set-key",
+        "file_mode": "0600",
+        "key_printed": false,
+        "paid_ids": "refused with a recorded reason",
+        "ranked_free_models": 12,
+        "provider_order": [
+          "rules",
+          "openrouter (when configured)",
+          "ollama"
+        ],
+        "failover_measured": "openrouter: the OpenRouter key was refused (HTTP 401), then the local model answered",
+        "valid_key_call": "not made on this machine"
+      }
+    },
+    "limitations": [
+      "No valid OpenRouter call: the ranking stays a stated judgement until a key is probed.",
+      "One desktop viewport and one browser: no keyboard, screen-reader or mobile acceptance.",
+      "The place probes are a disclosed heuristic; a candidate with no product cell and no fresh station still asks.",
+      "No native-speaker review of the rendered languages."
     ]
   }
 }

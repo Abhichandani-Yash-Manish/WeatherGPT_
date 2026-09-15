@@ -1,6 +1,6 @@
 {
   "schema_version": "product-progress-plan-v1",
-  "as_of_utc": "2026-09-15T07:05:44+00:00",
+  "as_of_utc": "2026-09-15T08:14:06+00:00",
   "status": "implementation_in_progress",
   "user_direction": "Desktop web now. Hosting/sharing on hold. Preserve final nationwide and specialist scope.",
   "next_batch": [
@@ -293,7 +293,7 @@
       "prerequisite": "Reviewed domain tools; no unsupported risk scores"
     }
   ],
-  "latest_batch": "docs/60-state-agromet-coverage.md",
+  "latest_batch": "docs/62-chat-surface-and-provider-ux.md",
   "next_batch_note": "The indexed corpus is now reachable from chat (A06): 582 documents across 12 families answer through a bounded document task with page, printed issue date, currency and reference-only warning separation. The open source-path work is now held-layout widening, A01/A04/A07 engine repairs, and the declared acceptance benchmark (G08). The multilingual path has measured reach; its remaining gap is the 13 failed write languages (G04) and clarification rendering.",
   "open_paths": [
     {

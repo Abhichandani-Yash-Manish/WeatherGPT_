@@ -108,11 +108,13 @@ async function main() {
   assert.equal(buttons(emptyHost).filter(node => String(node.textContent).indexOf('Export') >= 0).length, 0, 'an empty store offers no export');
 
   // 6. The save action sends a request to compose, never a payload to store (static check).
-  assert.ok(PANELS.indexOf("'/api/briefs/save', { kind: 'alert_brief', lat: place.latitude, lon: place.longitude, day: 1 }") >= 0,
-            'saving asks the server to compose the brief for a point and a day');
+  assert.ok(PANELS.indexOf("saveToBriefcase(WGref, 'alert_brief', { lat: where.latitude, lon: where.longitude, day: chosenDay }, body)") >= 0,
+            'saving asks the server to compose the alert brief for a point and a day');
+  assert.ok(PANELS.indexOf("saveToBriefcase(WGref, 'advisory_brief', request, body)") >= 0,
+            'saving an advisory brief sends the request that composed it');
   assert.equal(PANELS.split("'/api/briefs/save'").length - 1, 1, 'the page asks the server to compose a brief in exactly one place');
-  assert.ok(PANELS.indexOf("kind: 'alert_brief', lat: place.latitude, lon: place.longitude, day: 1") >= 0,
-            'the request carries a point and a day, not a brief body');
+  assert.ok(PANELS.indexOf('Object.assign({ kind: kind }, params || {})') >= 0,
+            'the request carries a kind and the composition parameters, never a brief body');
 
   // 7. The reading position is disclosed in the answer accounting and never as a finding.
   const persona = { id: 'farmer', label: 'Farmer or field adviser',

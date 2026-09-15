@@ -106,7 +106,13 @@ def observed_stations(bundle, limit=2):
     for kind, stations in ((bundle or {}).get('data') or {}).get('networks', {}).items():
         for station in stations or []:
             rows.append(dict(station, network=kind))
-    rows.sort(key=lambda row: row.get('distance_km') if row.get('distance_km') is not None else 1e9)
+    # A station's own age matters more than a kilometre: an AWS row from March sat 29 km away
+    # and led the answer, while the fresh METAR 40 km away was mentioned second. Fresh stations
+    # (three hours or less) lead; the distance order decides within each group.
+    def freshness(row):
+        age = row.get('age_minutes')
+        return 0 if (age is not None and age <= 180) else 1
+    rows.sort(key=lambda row: (freshness(row), row.get('distance_km') if row.get('distance_km') is not None else 1e9))
     return rows[:limit], len(rows)
 
 
@@ -172,20 +178,23 @@ def summary(reading):
     lines = []
     stations = (reading.get('observed') or {}).get('stations') or []
     if stations:
-        first = stations[0]
-        age = first.get('age_minutes')
-        lines.append('Nearest station ' + str(first.get('name') or first.get('station_code')) +
-                     (' (' + str(round(float(first['distance_km']), 2)) + ' km)' if first.get('distance_km') is not None else '') +
-                     ' reported at ' + str(first.get('observed_at_utc')) +
-                     (', ' + str(age) + ' minutes before retrieval' if age is not None else '') + '.')
+        lead = stations[0]
+        lead_age = lead.get('age_minutes')
+        lines.append('Freshest station report here: ' + str(lead.get('name') or lead.get('station_code')) +
+                     (', ' + str(round(float(lead['distance_km']), 2)) + ' km away' if lead.get('distance_km') is not None else '') +
+                     ', reported ' + str(lead.get('observed_at_utc')) +
+                     (', ' + str(lead_age) + ' minutes before retrieval' if lead_age is not None else '') + '.')
         def minutes(station):
             value = station.get('age_minutes')
             return value if value is not None else 10 ** 9
-        freshest = min(stations, key=minutes)
-        if minutes(freshest) < minutes(first) and minutes(freshest) < 10 ** 9:
-            lines.append('Freshest report in range: ' + str(freshest.get('name') or freshest.get('station_code')) +
-                         ' at ' + str(freshest.get('observed_at_utc')) + ', ' + str(minutes(freshest)) +
-                         ' minutes before retrieval. The nearest station is not always the freshest one.')
+        nearest = min(stations, key=lambda station: station.get('distance_km') if station.get('distance_km') is not None else 1e9)
+        if nearest is not lead:
+            lines.append('The nearest station (' + str(nearest.get('name') or nearest.get('station_code')) +
+                         (' at ' + str(round(float(nearest['distance_km']), 2)) + ' km' if nearest.get('distance_km') is not None else '') +
+                         ') reported ' + str(minutes(nearest)) + ' minutes before retrieval, so the fresher report leads.')
+        if minutes(lead) > 180:
+            lines.append('No station within range reported in the last three hours: the freshest report available is ' +
+                         str(minutes(lead)) + ' minutes old, and it is shown as that, not as now.')
     else:
         lines.append('No station in the connected layers reported within 150 km, which is an absence of station evidence here, not a statement that nothing is happening.')
     day = reading.get('in_force') or {}

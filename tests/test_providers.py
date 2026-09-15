@@ -109,7 +109,11 @@ class ConfigurationTests(unittest.TestCase):
                 self.assertTrue(all(model.endswith(':free') for model in models))
                 self.assertIn('deepseek/deepseek-chat-v3.1:free', models)
         with patch.dict('os.environ', {'WEATHERGPT_MODELS': 'a/b:free, c/d:free'}, clear=True):
-            self.assertEqual(providers.free_models(), ('a/b:free', 'c/d:free'))
+            # Changed on 15 September 2026: the curated registry is the routing order, most
+            # capable first, and a configured list is appended after it rather than replacing it.
+            ranking = providers.free_model_ranking()
+            self.assertEqual(providers.free_models(), ranking + ('a/b:free', 'c/d:free'))
+            self.assertTrue(all(model.endswith(':free') for model in providers.free_models()))
 
     def test_the_ollama_adapter_refuses_a_remote_endpoint(self):
         with self.assertRaises(ValueError):

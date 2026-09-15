@@ -273,6 +273,56 @@ def markdown(briefing):
     lines += ['- ' + item for item in briefing.get('not_established') or []]
     return chr(10).join(lines) + chr(10)
 
+
+def write_run(directory, briefing, latency, interval_seconds=0, run_number=1, runner='scripts/briefing.py'):
+    """Write one run of the series: the Markdown, the record and the index row's inputs.
+
+    The page action and the command line share this writer, so a briefing composed from the
+    interface is the same artefact with the same record shape as one written by the runner.
+    """
+    import pathlib
+    folder = pathlib.Path(directory)
+    folder.mkdir(parents=True, exist_ok=True)
+    stamp_name = briefing['generated_at_utc'].replace(':', '').replace('-', '').replace('+0000', 'Z')
+    markdown_path = folder / ('briefing-' + stamp_name + '.md')
+    record_path = folder / ('record-' + stamp_name + '.json')
+    markdown_path.write_text(markdown(briefing), encoding='utf-8')
+    record = {'runner': runner, 'runner_note': RUNNER_NOTE, 'interval_seconds': interval_seconds,
+              'run_number': run_number, 'latency_seconds': latency, 'markdown_path': str(markdown_path),
+              'briefing': briefing}
+    record_path.write_text(json.dumps(record, indent=2, ensure_ascii=False) + chr(10), encoding='utf-8')
+    return markdown_path, record_path, stamp_name
+
+
+def series_entry(briefing, markdown_path, record_path, latency, interval_seconds=0, run_number=1):
+    """The index row for one run. The change reading is the briefing's own, never recomputed."""
+    return {'run': run_number, 'generated_at_utc': briefing['generated_at_utc'], 'briefing_id': briefing['briefing_id'],
+            'place_count': briefing['place_count'], 'latency_seconds': latency, 'interval_seconds': interval_seconds,
+            'markdown_path': str(markdown_path), 'record_path': str(record_path),
+            'change': (briefing.get('change_since_previous') or {}).get('reading'),
+            'places': [{'label': record['label'], 'district': record.get('district'), 'state': record.get('state'),
+                        'official_day': ((record.get('official_day') or {}).get('status_line')),
+                        'unavailable': [item['part'] for item in record.get('unavailable') or []]}
+                       for record in briefing['places']]}
+
+
+def update_index(directory, entry):
+    """Append one run to the series index, keeping what earlier runs recorded."""
+    import pathlib
+    folder = pathlib.Path(directory)
+    folder.mkdir(parents=True, exist_ok=True)
+    index_path = folder / 'index.json'
+    rows = []
+    if index_path.exists():
+        try:
+            rows = json.loads(index_path.read_text(encoding='utf-8')).get('runs') or []
+        except ValueError:
+            rows = []
+    rows.append(entry)
+    index_path.write_text(json.dumps({'schema_version': 'briefing-index-v1', 'runner_note': RUNNER_NOTE, 'runs': rows},
+                                     indent=2, ensure_ascii=False) + chr(10), encoding='utf-8')
+    return index_path
+
 def resolve_place(place, gazetteer=None):
     """A place name to a point, through the indexed gazetteer and its stated preference."""
     from .gazetteer import Gazetteer, preferred_match

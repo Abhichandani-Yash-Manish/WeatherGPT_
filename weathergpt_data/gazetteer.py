@@ -10,6 +10,48 @@ DEFAULT=ROOT/'data/processed/geography/geonames-india-20260912/places.sqlite'
 def norm(value):
     return ' '.join(''.join(c for c in unicodedata.normalize('NFKD',value).casefold() if not unicodedata.combining(c)).split())
 
+
+def choose_by_probe(candidates, probe, limit=8, score=None):
+    """The candidate the connected product answers best for, and what was tried.
+
+    Several Indian place names are shared by a city and a handful of villages, and the gazetteer
+    has no population or seat rank that separates them (all five Kochis are PPL). Where a product
+    can decide - a wave cell exists only near the coast, a station layer only reports near a city
+    - asking the reader is worse than asking the product, as long as the choice, the measure and
+    the alternatives are disclosed. `score` turns a probe answer into a comparable value and the
+    smallest wins (a station 8 km away beats one 118 km away); without it the first answer wins.
+    A probe that raises or returns nothing is recorded with its reason, and nothing is substituted
+    silently.
+    """
+    tried = []
+    best = None
+    for candidate in list(candidates or [])[:limit]:
+        coordinates = candidate.get('coordinates') or {}
+        if coordinates.get('latitude') is None or coordinates.get('longitude') is None:
+            continue
+        try:
+            answer = probe(candidate, coordinates)
+        except Exception as failure:  # the product's own refusal is evidence, not an error to raise
+            tried.append({'label': candidate.get('label'), 'why': str(failure)[:160]})
+            continue
+        if not answer:
+            tried.append({'label': candidate.get('label'), 'why': 'the product returned nothing for this point'})
+            continue
+        if score is None:
+            return candidate, tried, answer
+        try:
+            value = score(answer)
+        except (TypeError, ValueError, KeyError):
+            value = None
+        if value is None:
+            tried.append({'label': candidate.get('label'), 'why': 'the product answered without a comparable measure'})
+            continue
+        tried.append({'label': candidate.get('label'), 'why': 'answered at ' + str(value)})
+        if best is None or value < best[0]:
+            best = (value, candidate, answer)
+    if best is not None:
+        return best[1], tried, best[2]
+    return None, tried, None
 SEAT_ORDER={'PPLC':0,'PPLA':1,'PPLA2':2,'PPLA3':3,'PPLA4':4,'PPLA5':5,'PPLX':6,'PPL':7}
 
 

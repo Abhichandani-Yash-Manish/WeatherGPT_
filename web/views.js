@@ -699,9 +699,15 @@ function renderTrace(packet) {
   const trace = packet.trace || {};
   return disclosure('How this answer was produced', body => {
     const planning = trace.planning || {};
+    /* The provider is named as the trace records it: deterministic rules, a local model, or a
+       routed free model. '(local)' was hard-coded here and would have been wrong for any routed
+       model once the provider layer was in. */
+    const providerName = planning.provider ? String(planning.provider) : null;
     const facts = [
-      ['Interpreter', planning.model ? planning.model + ' (local)' : null],
-      ['Planner duration', planning.duration_seconds ? Math.round(planning.duration_seconds * 10) / 10 + ' s' : null],
+      ['Interpreter', planning.model ? planning.model + (providerName ? ' (' + providerName + ')' : '') : providerName],
+      ['Planner duration', planning.latency_ms ? Math.round(planning.latency_ms / 100) / 10 + ' s' : (planning.duration_seconds ? Math.round(planning.duration_seconds * 10) / 10 + ' s' : null)],
+      ['Model calls', planning.model_calls === undefined ? null : String(planning.model_calls)],
+      ['Failover', (planning.failover || []).length ? (planning.failover || []).map(item => typeof item === 'string' ? item : JSON.stringify(item)).join('; ') : null],
       ['Structured output', planning.input_tokens ? planning.input_tokens + ' in / ' + planning.output_tokens + ' out tokens' : null],
       ['Answer renderer', trace.generation ? (trace.generation.provider || 'deterministic') : null],
       ['Validation', trace.generation && trace.generation.validation],
@@ -754,6 +760,115 @@ function actionButton(label, handler) {
   button.addEventListener('click', () => handler(button));
   return button;
 }
+
+/* The point an answer was resolved to, if it has one: the drawers need coordinates, never a guess. */
+function resolvedPlace(packet) {
+  const points = packet.resolved_points || {};
+  const names = Object.keys(points);
+  const entry = names.length ? (points[names[0]] || {}) : null;
+  const coordinates = (entry && entry.coordinates) || {};
+  if (coordinates.latitude !== undefined && coordinates.longitude !== undefined) {
+    return { label: entry.label || names[0], latitude: coordinates.latitude, longitude: coordinates.longitude };
+  }
+  /* A warning or corpus turn resolves its district inside the tool and carries no resolved
+     point, so the artefact actions fall back to the place this page is working with. The
+     drawer names the place it used, so the reader can see which one it was. */
+  const working = (window.WG && window.WG.state && window.WG.state.place) || {};
+  if (working.latitude === undefined || working.longitude === undefined) return null;
+  return { label: working.label || 'the working place', latitude: working.latitude, longitude: working.longitude };
+}
+/* The published advisory this turn read, as the route that composes a brief wants it. */
+function advisoryBriefParams(packet) {
+  const tasks = ((packet.plan || {}).tasks) || [];
+  const task = tasks.filter(item => item.kind === 'agriculture' && item.document_request)[0]
+    || ((packet.task_results || []).filter(item => (item.request || {}).document_request)[0] || {}).request;
+  if (!task || !task.document_request) return null;
+  const request = task.document_request;
+  const passage = (packet.passages || [])[0] || {};
+  const evidence = (packet.document_evidence || [])[0] || {};
+  const region = passage.district || evidence.district || '';
+  if (!region) return null;
+  return { region: region, state: passage.state || evidence.state || '', crop: request.crop || '',
+           stage: request.growth_stage || '', topic: request.topic || 'general',
+           mode: request.mode || 'source_lookup', day: 1 };
+}
+
+
+/* ---------- what was retrieved, and what is still needed ---------- */
+/* retrieval_coverage, pending_slots, edition_comparison and document_evidence are records the
+   tools produce; until this renderer existed they were only visible in the raw packet. Nothing
+   here computes anything: every number is the tool's own, and an absence is shown as an absence. */
+const CURRENCY_WORDS = {
+  printed_issue_matches_retrieval_date: 'the printed issue date is the retrieval date',
+  printed_issue_differs_from_retrieval_date: 'the printed issue is older than the retrieval date',
+  printed_issue_not_stated: 'the document states no printed issue date, so its currency is unknown',
+  printed_issue_in_the_future: 'the printed issue date is later than the retrieval date'
+};
+/* views.js builds its own small tables; the shared one lives on WG. The retrieval account
+   used a bare `table(...)` call and threw 'table is not defined' in the page, which stopped the
+   whole turn from rendering - found in the browser pass on 15 September 2026. */
+function accountTable(head, rows) {
+  const maker = (window.WG && window.WG.table) || null;
+  if (maker) return maker(head, rows);
+  const node = el('table', undefined, 'account-table');
+  const headRow = el('tr');
+  head.forEach(cell => headRow.append(el('th', cell)));
+  node.append(headRow);
+  (rows || []).forEach(row => { const tr = el('tr'); row.forEach(cell => tr.append(el('td', cell))); node.append(tr); });
+  return node;
+}
+
+function renderRetrievalAccount(packet) {
+  const slots = packet.pending_slots || [];
+  const coverage = packet.retrieval_coverage || [];
+  const comparison = packet.edition_comparison || null;
+  const editions = packet.document_evidence || [];
+  if (!slots.length && !coverage.length && !comparison && !editions.length) return null;
+  const box = el('section', undefined, 'receipt');
+  box.append(el('p', 'What was retrieved, and what is missing', 'receipt-title'));
+  if (slots.length) {
+    box.append(el('p', 'Still needed before this can be answered', 'field-label'));
+    const list = el('ul', undefined, 'notes');
+    slots.forEach(slot => list.append(el('li', String(slot.field || 'a field') + ': ' + String(slot.reason || 'not stated')
+      + (slot.task_id ? ' (task ' + String(slot.task_id) + ')' : ''))));
+    box.append(list);
+  }
+  if (coverage.length) {
+    coverage.forEach(entry => {
+      const filters = entry.filters || {};
+      const rows = [
+        ['Search mode', String(entry.mode || 'not stated'), 'the retriever this turn used'],
+        ['Candidates → returned', String(entry.candidates === undefined ? 'not stated' : entry.candidates) + ' → ' + String(entry.returned === undefined ? 'not stated' : entry.returned),
+          entry.lexical_overlap_required ? 'a passage must share words with the question to be returned' : 'no lexical overlap required'],
+        ['Product filters', [filters.family, filters.scope, filters.region].filter(Boolean).join(' · ') || 'none', 'family, scope and region as stored'],
+        ['Whole document asked for', entry.whole_document ? 'yes' : 'no', 'a whole-edition read returns the document as a record'],
+        ['Editions indexed for this product', String(entry.editions_indexed_for_this_product === undefined ? 'not stated' : entry.editions_indexed_for_this_product),
+          'a single indexed edition cannot be compared with another']
+      ];
+      box.append(accountTable(['Field', 'Value', 'Provenance'], rows));
+    });
+  }
+  if (comparison) {
+    box.append(el('p', 'Editions in the index', 'field-label'));
+    box.append(accountTable(['Field', 'Value', 'Provenance'], [
+      ['Editions indexed', String(comparison.editions_indexed === undefined ? 'not stated' : comparison.editions_indexed), String(comparison.state || 'state not stated')],
+      ['Newest printed issue', String(comparison.newest_issue || 'not stated'), 'read from the document, never from the retrieval instant'],
+      ['Previous printed issue', String(comparison.previous_issue || 'none indexed'), 'differences are labelled and never ranked']
+    ]));
+  }
+  if (editions.length) {
+    box.append(el('p', 'Editions read', 'field-label'));
+    box.append(accountTable(['Edition', 'Region', 'Printed issue', 'Currency and age'], editions.map(item => [
+      String(item.family_label || item.family || 'document') + ' (' + String(item.source_id || 'source not stated') + ')',
+      [item.region, item.state].filter(Boolean).join(', ') || String(item.scope || 'not stated'),
+      String(item.issue_date || 'not stated') + (item.issue_date && item.issue_date_basis ? ' (' + String(item.issue_date_basis) + ')' : ''),
+      (CURRENCY_WORDS[item.currency] || String(item.currency || 'currency not stated')) +
+        (item.age_days === undefined || item.age_days === null ? '' : ', ' + String(item.age_days) + ' day(s) old at retrieval')
+    ])));
+  }
+  return box;
+}
+
 function renderActions(packet, handlers) {
   const actions = el('div', undefined, 'actions');
   const refreshable = windowFacts(packet).length && (packet.resolved_points && Object.keys(packet.resolved_points).length);
@@ -762,6 +877,20 @@ function renderActions(packet, handlers) {
   if (handlers.onPrint) actions.append(actionButton('Print this answer', () => handlers.onPrint(packet)));
   if (handlers.onExport) actions.append(actionButton('Save this turn as Markdown', () => handlers.onExport(packet)));
   if (handlers.onDownload) actions.append(actionButton('Download this answer as JSON', () => handlers.onDownload(packet)));
+  /* The artefacts this reader can ask for next, where the answer makes them reachable. */
+  const WGx = window.WG || {};
+  const drawers = WGx.briefDrawers;
+  if (drawers) {
+    const place = resolvedPlace(packet);
+    if (place) {
+      actions.append(actionButton('Right now here', () => drawers.now(WGx, place)));
+      const warningTurn = ((packet.plan || {}).intent === 'warning') || warningFacts(packet).length > 0;
+      if (warningTurn) actions.append(actionButton('Write the alert brief', () => drawers.alert(WGx, place, 1)));
+      actions.append(actionButton('Write a briefing', () => drawers.briefing(WGx, place)));
+    }
+    const advisory = advisoryBriefParams(packet);
+    if (advisory) actions.append(actionButton('Write the advisory brief', () => drawers.advisory(WGx, advisory)));
+  }
   actions.append(actionButton('Inspect the raw packet', () => {
     const pretty = JSON.stringify(packet, null, 1);
     const bounded = pretty.length > 60000 ? pretty.slice(0, 60000) + '\n… truncated for display; the download action holds the full packet.' : pretty;
@@ -869,6 +998,8 @@ function renderTurn(packet, handlers) {
   if (notes) body.append(notes);
   const sources = renderSources(packet);
   if (sources) body.append(sources);
+  const retrievalAccount = renderRetrievalAccount(packet);
+  if (retrievalAccount) body.append(retrievalAccount);
   body.append(renderTrace(packet));
   const actions = renderActions(packet, handlers);
   if (actions.childNodes.length) body.append(actions);

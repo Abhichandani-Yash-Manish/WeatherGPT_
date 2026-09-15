@@ -271,5 +271,6 @@ async function run() {
   assert.deepEqual(h.api().firstPoint(FORECAST), { latitude: 23.02579, longitude: 72.58727, label: 'Ahmedabad, Gujarāt' });
   assert.equal(h.api().firstPoint({ resolved_points: {} }), null, 'No resolved point means no collection claim');
   console.log('PASS: the resolved collection point comes from the packet, or is reported absent');
+
 }
 run().then(() => process.exit(0), error => { console.error(error); process.exit(1); });

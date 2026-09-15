@@ -212,61 +212,9 @@
     briefButton.type = 'button';
     briefButton.setAttribute('aria-label', 'Write the alert brief for the working place');
     const place = WGref.state.place || {};
-    briefButton.addEventListener('click', async () => {
-      if (place.latitude === undefined || place.longitude === undefined) {
-        WG.openDrawer('Alert brief', body => body.append(el('p', 'Choose a working place first: a brief is composed for one point, and the workspace will not guess which.', 'field-note')));
-        return;
-      }
-      WG.openDrawer('Alert brief · ' + (place.label || 'selected point'), body => {
-        const note = el('p', 'Composing from the official district warning product and the CAP relay, reported separately…', 'field-note');
-        body.append(note);
-        WGref.api('/api/warnings/alert-brief', { lat: place.latitude, lon: place.longitude, day: 1 }).then(view => {
-          const brief = view.data || {};
-          WG.clear(body);
-          body.append(el('p', brief.status_line || brief.why || 'No brief was composed.', 'block-note'));
-          const rows = [
-            ['District', (brief.place || {}).district || 'not stated', (brief.place || {}).state || ''],
-            ['Day', (brief.day || {}).label || 'not stated', (brief.day || {}).starts_utc ? (brief.day.starts_utc + ' to ' + brief.day.ends_utc) : ''],
-            ['Hazards as published', ((brief.day_status || {}).hazards || []).join(', ') || 'none listed', (brief.day_status || {}).official_wording || (brief.day_status || {}).wording_note || ''],
-            ['Issuer', (brief.issuer || {}).source_id + ' · ' + (brief.issuer || {}).product, 'issued ' + ((brief.issuer || {}).issued_at_utc || 'not stated') + ' · retrieved ' + ((brief.issuer || {}).retrieved_at_utc || 'not stated')],
-            ['CAP relay (separate)', ((brief.relay || {}).source_id || 'S06') + ' · ' + ((brief.relay || {}).messages === undefined ? 'not read' : brief.relay.messages + ' message(s), ' + brief.relay.eligible_by_lifecycle + ' eligible'), (brief.relay || {}).note || ''],
-            ['Brief identity', 'sha256 ' + String(brief.brief_id || '').slice(0, 16), 'the content hash of this brief']
-          ];
-          body.append(WG.table(['Field', 'Value', 'Provenance'], rows));
-          body.append(el('p', 'What would change this', 'field-label'));
-          const changes = el('ul', undefined, 'notes');
-          (brief.what_would_change_this || []).forEach(item => changes.append(el('li', item)));
-          body.append(changes);
-          body.append(el('p', 'What is not established here', 'field-label'));
-          const limits = el('ul', undefined, 'notes');
-          (brief.not_established || []).forEach(item => limits.append(el('li', item)));
-          body.append(limits);
-          const keep = el('div', undefined, 'brief-tools');
-          const save = el('button', 'Save to briefcase', 'ghost');
-          save.type = 'button';
-          save.setAttribute('aria-label', 'Keep this brief in the local briefcase');
-          save.addEventListener('click', () => {
-            save.disabled = true;
-            save.textContent = 'Saving…';
-            WGref.post('/api/briefs/save', { kind: 'alert_brief', lat: place.latitude, lon: place.longitude, day: 1 })
-              .then(result => {
-                save.textContent = 'Kept';
-                body.append(el('p', 'Kept as “' + String((result.entry || {}).title || 'a brief') + '”. Nothing was delivered: open the Briefcase to reopen or export it.', 'block-note'));
-              })
-              .catch(error => {
-                save.disabled = false;
-                save.textContent = 'Save to briefcase';
-                body.append(el('p', 'This brief was not kept: ' + String(error.message || error), 'block-note'));
-              });
-          });
-          keep.append(save);
-          body.append(keep);
-          body.append(el('p', 'A brief records what a product published. It is not a warning issued here, not a forecast and not an all-clear.', 'field-note'));
-        }).catch(error => {
-          WG.clear(body);
-          body.append(el('p', 'The brief could not be composed: ' + String(error.message || error), 'block-note'));
-        });
-      });
+    briefButton.addEventListener('click', () => {
+      const W = window.WG;
+      if (W && W.briefDrawers) W.briefDrawers.alert(W, place, 1);
     });
     controls.append(stateSelect, search, briefButton);
     card.append(controls);
@@ -731,6 +679,41 @@
     });
     sourceCard.append(el('p', 'Usage terms', 'field-label'), terms);
     sourceCard.append(el('p', 'A registered source is not a serving approval, and a tested adapter is not operational readiness.', 'field-note'));
+
+    /* Which model answers, what it may spend, and where the key goes: the page states it rather
+       than leaving the reader to read a config file. Nothing here prints or stores the key. */
+    const provider = (view.data && view.data.provider) || null;
+    if (provider) {
+      const card = WG.block('Model providers',
+        provider.openrouter.configured
+          ? 'OpenRouter is configured; only free-tier model ids are routed, most capable first.'
+          : 'No OpenRouter key is configured yet. The rules floor and any local model still answer.');
+      card.append(WG.table(['Provider', 'State', 'Detail'], [
+        ['Rules floor', 'always available', String((provider.rules_floor || {}).model || 'rule-planner') + ' — ' + String((provider.rules_floor || {}).detail || '')],
+        ['OpenRouter', provider.openrouter.configured ? 'configured' : 'not configured',
+          'key source: ' + String(provider.openrouter.key_source || 'not configured') + ' · ' + String((provider.openrouter.routing_order || []).length) + ' free model id(s) ranked'],
+        ['Key handling', 'local only', String(provider.key_note || '')]
+      ]));
+      if ((provider.openrouter.routing_order || []).length) {
+        card.append(el('p', 'Free models, most capable first (a workload judgement, not a provider statement)', 'field-label'));
+        const order = el('ol', undefined, 'notes');
+        (provider.openrouter.routing_order || []).forEach(model => order.append(el('li', String(model))));
+        card.append(order);
+      }
+      if ((provider.openrouter.refused || []).length) {
+        const refused = el('ul', undefined, 'notes');
+        (provider.openrouter.refused || []).forEach(item => refused.append(el('li', String(item.model_id || 'an id') + ' — ' + String(item.reason || 'refused'))));
+        card.append(el('p', 'Refused, and why (a paid id is never routed)', 'field-label'));
+        card.append(refused);
+      }
+      card.append(el('p', 'To provide a key, run this on the machine that serves this workspace, then restart the server:', 'field-note'));
+      card.append(el('pre', String(provider.set_key_command || 'python3 scripts/models.py --set-key'), 'brief-markdown'));
+      card.append(el('p', 'To measure what the account can actually reach, with the key configured:', 'field-note'));
+      card.append(el('pre', String(provider.probe_command || 'python3 scripts/models.py --probe-free'), 'brief-markdown'));
+      card.append(el('p', String((provider.openrouter || {}).note || ''), 'field-note'));
+      host.append(card);
+    }
+
     host.append(sourceCard);
     host.append(WG.limitationList(view));
     const mapCard = WG.block('Vendored basemap', 'Display geometry built once from official layers.');
@@ -831,6 +814,14 @@
     WGref.state.freshness = WGref.freshness(view);
     const entries = view.briefs || [];
     const block = WGref.block('Kept briefs', entries.length + ' kept in the local store · ' + (view.delivery || 'local_only_no_delivery'));
+    const briefingTools = el('div', undefined, 'brief-tools');
+    const writeBriefing = el('button', 'Write a briefing for the working place', 'ghost');
+    writeBriefing.type = 'button';
+    writeBriefing.setAttribute('aria-label', 'Compose a briefing for the working place and write it into the local series');
+    writeBriefing.addEventListener('click', () => { const W = window.WG; if (W && W.briefDrawers) W.briefDrawers.briefing(W, null); });
+    briefingTools.append(writeBriefing);
+    block.append(briefingTools);
+
     block.append(el('p', view.note || 'Nothing kept here is delivered or pushed.', 'block-note'));
     if (!entries.length) {
       block.append(WGref.stateBlock('plain', 'Nothing is kept yet.',
@@ -934,5 +925,190 @@
     }
   };
 
+
+  /* ---------- briefs and the right-now reading, as drawers any surface can open ---------- */
+  /* The warnings panel composed the alert brief inside its own renderer, so the conversation
+     could not offer the same artefact. These live here and take the working place, so the chat
+     actions, the warnings surface and the briefcase all open the same composition. */
+  function workingPlace(WGref) {
+    const place = (WGref && WGref.state && WGref.state.place) || {};
+    return { label: place.label || 'the working place', latitude: place.latitude, longitude: place.longitude };
+  }
+  function saveToBriefcase(WGref, kind, params, body, note) {
+    const tools = el('div', undefined, 'brief-tools');
+    const save = el('button', 'Save to briefcase', 'ghost');
+    save.type = 'button';
+    save.setAttribute('aria-label', 'Keep this brief in the local briefcase');
+    save.addEventListener('click', () => {
+      save.disabled = true;
+      save.textContent = 'Saving…';
+      WGref.post('/api/briefs/save', Object.assign({ kind: kind }, params || {}))
+        .then(result => {
+          save.textContent = 'Kept';
+          body.append(el('p', 'Kept as “' + String((result.entry || {}).title || 'a brief') + '”. Nothing was delivered: open the Briefcase to reopen or export it.', 'block-note'));
+        })
+        .catch(error => {
+          save.disabled = false;
+          save.textContent = 'Save to briefcase';
+          body.append(el('p', 'This brief was not kept: ' + String(error.message || error), 'block-note'));
+        });
+    });
+    tools.append(save);
+    if (note) tools.append(el('span', note, 'field-note'));
+    return tools;
+  }
+  WG.alertBriefDrawer = function (WGref, place, day) {
+    const where = place || workingPlace(WGref);
+    if (where.latitude === undefined || where.longitude === undefined) {
+      WGref.openDrawer('Alert brief', body => body.append(el('p', 'Choose a working place first: a brief is composed for one point, and the workspace will not guess which.', 'field-note')));
+      return;
+    }
+    const chosenDay = day || 1;
+    WGref.openDrawer('Alert brief · ' + (where.label || 'selected point'), body => {
+      body.append(el('p', 'Composing from the official district warning product and the CAP relay, reported separately…', 'field-note'));
+      WGref.api('/api/warnings/alert-brief', { lat: where.latitude, lon: where.longitude, day: chosenDay }).then(view => {
+        const brief = view.data || {};
+        WGref.clear(body);
+        body.append(el('p', brief.status_line || brief.why || 'No brief was composed.', 'block-note'));
+        body.append(WGref.table(['Field', 'Value', 'Provenance'], [
+          ['District', (brief.place || {}).district || 'not stated', (brief.place || {}).state || ''],
+          ['Day', (brief.day || {}).label || 'not stated', (brief.day || {}).starts_utc ? (brief.day.starts_utc + ' to ' + brief.day.ends_utc) : ''],
+          ['Hazards as published', ((brief.day_status || {}).hazards || []).join(', ') || 'none listed', (brief.day_status || {}).official_wording || (brief.day_status || {}).wording_note || ''],
+          ['Issuer', (brief.issuer || {}).source_id + ' · ' + (brief.issuer || {}).product, 'issued ' + ((brief.issuer || {}).issued_at_utc || 'not stated') + ' · retrieved ' + ((brief.issuer || {}).retrieved_at_utc || 'not stated')],
+          ['CAP relay (separate)', ((brief.relay || {}).source_id || 'S06') + ' · ' + ((brief.relay || {}).messages === undefined ? 'not read' : brief.relay.messages + ' message(s)'), (brief.relay || {}).note || ''],
+          ['Brief identity', 'sha256 ' + String(brief.brief_id || '').slice(0, 16), 'the content hash of this brief']
+        ]));
+        const limits = el('ul', undefined, 'notes');
+        (brief.not_established || []).forEach(item => limits.append(el('li', item)));
+        body.append(el('p', 'What is not established here', 'field-label'));
+        body.append(limits);
+        body.append(saveToBriefcase(WGref, 'alert_brief', { lat: where.latitude, lon: where.longitude, day: chosenDay }, body));
+        body.append(el('p', 'A brief records what a product published. It is not a warning issued here, not a forecast and not an all-clear.', 'field-note'));
+      }).catch(error => {
+        WGref.clear(body);
+        body.append(el('p', 'The brief could not be composed: ' + String(error.message || error), 'block-note'));
+      });
+    });
+  };
+  WG.advisoryBriefDrawer = function (WGref, params) {
+    const request = params || {};
+    if (!request.region) {
+      WGref.openDrawer('Advisory brief', body => body.append(el('p', 'A published advisory is read for a named district or region. Ask about a district first, or name one.', 'field-note')));
+      return;
+    }
+    WGref.openDrawer('Advisory brief · ' + String(request.region) + (request.crop ? ' · ' + String(request.crop) : ''), body => {
+      body.append(el('p', 'Composing from the indexed published advice, with the model forecast kept apart as context…', 'field-note'));
+      WGref.api('/api/advisories/brief', request).then(brief => {
+        WGref.clear(body);
+        const region = String(((brief.published_advice || {}).region) || request.region);
+        body.append(el('p', brief.status === 'ok'
+          ? ('Published advice for ' + region + ' quoted below, with the model forecast kept apart as context.')
+          : String(brief.why || brief.status_line || 'No brief was composed.'), 'block-note'));
+        if (brief.forecast_status) body.append(el('p', 'Forecast context: ' + String(brief.forecast_status), 'field-note'));
+        if ((brief.conditions_named_by_the_source || []).length) {
+          const conditions = el('ul', undefined, 'notes');
+          (brief.conditions_named_by_the_source || []).forEach(item => conditions.append(el('li', String(item))));
+          body.append(el('p', 'Conditions the source itself names', 'field-label'));
+          body.append(conditions);
+        }
+        if (brief.published_advice) {
+          body.append(WGref.table(['Field', 'Value', 'Provenance'], [
+            ['Edition read', brief.published_advice.family + ' (' + brief.published_advice.scope + ')', String(brief.published_advice.region || '')],
+            ['Passages quoted', String((brief.published_advice.passages || []).length), 'each with its page and printed issue date'],
+            ['Forecast context', ((brief.forecast || {}).status || 'not retrieved'), (brief.forecast || {}).note || 'context, never instruction'],
+            ['Sources named', (brief.sources || []).join(', ') || 'none named', 'source identifiers as stored']
+          ]));
+        }
+        const notes = el('ul', undefined, 'notes');
+        (brief.notes || []).forEach(note => notes.append(el('li', note)));
+        if (notes.childNodes.length) { body.append(el('p', 'What this brief discloses', 'field-label')); body.append(notes); }
+        const limits = el('ul', undefined, 'notes');
+        (brief.not_established || []).forEach(item => limits.append(el('li', item)));
+        if (limits.childNodes.length) { body.append(el('p', 'What is not established here', 'field-label')); body.append(limits); }
+        if (brief.status === 'ok') body.append(saveToBriefcase(WGref, 'advisory_brief', request, body));
+        body.append(el('p', 'Published advice is written for a district and a season; it is not a prescription for one field, and no dose, diagnosis or go/no-go decision is made here.', 'field-note'));
+      }).catch(error => {
+        WGref.clear(body);
+        body.append(el('p', 'The advisory brief could not be composed: ' + String(error.message || error), 'block-note'));
+      });
+    });
+  };
+  WG.nowDrawer = function (WGref, place) {
+    const where = place || workingPlace(WGref);
+    if (where.latitude === undefined || where.longitude === undefined) {
+      WGref.openDrawer('Right now', body => body.append(el('p', 'Choose a working place first: observations are read for a point.', 'field-note')));
+      return;
+    }
+    WGref.openDrawer('Right now · ' + (where.label || 'selected point'), body => {
+      body.append(el('p', 'Reading the station layers, the published district day and the model hours…', 'field-note'));
+      WGref.api('/api/now', { lat: where.latitude, lon: where.longitude }).then(view => {
+        const now = view.data || {};
+        WGref.clear(body);
+        const stations = ((now.observed || {}).stations) || [];
+        if (stations.length) {
+          body.append(WGref.table(['Station', 'Network', 'Distance', 'Reported', 'Age'], stations.map(station => [station.name || station.station_code || 'station', String(station.network || '').toUpperCase(), station.distance_km === null || station.distance_km === undefined ? 'not stated' : String(Math.round(station.distance_km * 100) / 100) + ' km', station.observed_at_utc || 'not stated', station.age_minutes === null || station.age_minutes === undefined ? 'not stated' : String(Math.round(station.age_minutes)) + ' min'])));
+        } else {
+          body.append(el('p', 'No station in the connected METAR or AWS layers reported within 150 km. That is an absence of station evidence, not a statement that nothing is happening.', 'block-note'));
+        }
+        const day = now.in_force || {};
+        if (day.status === 'ok') {
+          const line = el('p', undefined, 'block-note');
+          line.append(WGref.colourChip(day.colour || 'unknown', day.colour || 'colour not supplied'));
+          line.append(el('span', ' ' + String(day.status_line || '')));
+          body.append(line);
+        }
+        const rows = ((now.next_hours || {}).rows) || [];
+        if (rows.length) {
+          body.append(el('p', 'Model hours next (' + String((now.next_hours || {}).source_id || 'source not stated') + ')', 'field-label'));
+          body.append(WGref.table(['Hour', 'Temperature', 'Rain chance'], rows.map(row => [row.at, row.temperature_2m === undefined ? 'not returned' : row.temperature_2m + ' °C', row.precipitation_probability === undefined ? 'not returned' : row.precipitation_probability + ' %'])));
+        }
+        body.append(el('p', 'Not connected here: ' + ((now.not_connected || []).join('; ') || 'nothing listed') + '.', 'field-note'));
+        body.append(el('p', now.summary || '', 'block-note'));
+      }).catch(error => {
+        WGref.clear(body);
+        body.append(el('p', 'The right-now reading could not be read: ' + String(error.message || error), 'block-note'));
+      });
+    });
+  };
+  WG.writeBriefing = function (WGref, place) {
+    const where = place || workingPlace(WGref);
+    if (where.latitude === undefined || where.longitude === undefined) {
+      WGref.openDrawer('Briefing', body => body.append(el('p', 'Choose a working place first: a briefing is composed for a point.', 'field-note')));
+      return;
+    }
+    WGref.openDrawer('Briefing · ' + (where.label || 'selected point'), body => {
+      body.append(el('p', 'Composing a briefing and writing it into this machine’s series…', 'field-note'));
+      WGref.post('/api/briefing/run', { lat: where.latitude, lon: where.longitude, label: where.label, hours: 6 })
+        .then(result => {
+          WGref.clear(body);
+          const entry = result.entry || {};
+          body.append(WGref.table(['Field', 'Value', 'Provenance'], [
+            ['Run', 'run ' + String(entry.run) + ' at ' + String(entry.generated_at_utc), 'a foreground run: nothing is scheduled'],
+            ['Briefing identity', 'sha256 ' + String(entry.briefing_id || '').slice(0, 16), 'the content hash of this briefing'],
+            ['Places', String(entry.place_count), 'named place(s)'],
+            ['Change since the previous run', String(entry.change), 'read against the previous run record'],
+            ['Latency', String(entry.latency_seconds) + ' s', 'measured for this run only'],
+            ['Written to', String(entry.record_path), String(entry.markdown_path)]
+          ]));
+          body.append(el('p', result.note || '', 'field-note'));
+          const uses = el('div', undefined, 'brief-tools');
+          const open = el('button', 'Read the briefing', 'ghost');
+          open.type = 'button';
+          open.addEventListener('click', () => { WGref.closeDrawer(); window.location.hash = '#/briefcase'; });
+          const download = el('button', 'Export Markdown', 'ghost');
+          download.type = 'button';
+          download.addEventListener('click', () => WGref.download('briefing-' + String(entry.generated_at_utc || '').replace(/[^0-9]/g, '').slice(0, 12) + '.md', result.markdown || '', 'text/markdown'));
+          uses.append(open, download);
+          body.append(uses);
+          if (typeof WGref.render === 'function') WGref.render();
+        })
+        .catch(error => {
+          WGref.clear(body);
+          body.append(el('p', 'The briefing could not be composed: ' + String(error.message || error), 'block-note'));
+        });
+    });
+  };
+  /* Exposed for the surfaces that offer them: the warnings panel, the chat actions and the briefcase. */
+  WG.briefDrawers = { alert: WG.alertBriefDrawer, advisory: WG.advisoryBriefDrawer, now: WG.nowDrawer, briefing: WG.writeBriefing, workingPlace: workingPlace };
   WG.panels.assistant = async function () { /* the conversation is owned by app.js */ };
 })();

@@ -1,0 +1,9 @@
+import pathlib
+p = pathlib.Path('weathergpt_data/observation_tasks.py')
+t = p.read_text()
+assert t.count("    def probe(_candidate, coordinates):\n        bundle = product_api.observations_bundle(foundation, coordinates['latitude'], coordinates['longitude'], limit=1)\n        return ((bundle.get('data') or {}).get('networks') or {})") == 1, t.count("    def probe(_candidate, coordinates):\n        bundle = product_api.observations_bundle(foundation, coordinates['latitude'], coordinates['longitude'], limit=1)\n        return ((bundle.get('data') or {}).get('networks') or {})")
+t = t.replace("    def probe(_candidate, coordinates):\n        bundle = product_api.observations_bundle(foundation, coordinates['latitude'], coordinates['longitude'], limit=1)\n        return ((bundle.get('data') or {}).get('networks') or {})", "    def probe(_candidate, coordinates):\n        \"\"\"A fresh station near this candidate: a village whose only station is stale does not answer.\"\"\"\n        bundle = product_api.observations_bundle(foundation, coordinates['latitude'], coordinates['longitude'], limit=3)\n        rows = []\n        for _kind, stations in ((bundle.get('data') or {}).get('networks') or {}).items():\n            rows.extend(stations or [])\n        return [row for row in rows if row.get('age_minutes') is not None and row['age_minutes'] <= 180] or None", 1)
+assert t.count("                                 'reported nothing within range for the other place(s) with this name' +") == 1
+t = t.replace("                                 'reported nothing within range for the other place(s) with this name' +", "                                 'has no station reporting within the last three hours, unlike the other place(s) with this name' +", 1)
+p.write_text(t)
+print('patched probe freshness')
