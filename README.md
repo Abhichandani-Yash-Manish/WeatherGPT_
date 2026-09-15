@@ -44,13 +44,14 @@ The interface states these limits rather than filling the gaps:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 635 Python tests
-node tests/test_charts.js                            #  2 of 57 component checks
-node tests/test_views.js                             # 16
+python3 -m pytest tests/ -q                          # 654 Python tests
+node tests/test_charts.js                            #  2 of 60 component checks
+node tests/test_views.js                             # 18
 node tests/test_bulletin_ui.js                       #  6
 node tests/test_conversation_ui.js                   # 13
-node tests/test_suite_ui.js                          # 17
+node tests/test_suite_ui.js                          # 18
 node tests/test_voice_ui.js                          #  3
+python3 scripts/doctor.py                            # environment, model and corpus presence
 python3 scripts/verify_all.py                       # environment, registries, drift guard, tests
 python3 scripts/run_daily_cycle.py --families national_bulletin  # one bounded foreground cycle
 python3 scripts/audit_workspace_frontend.py --baseline
@@ -65,6 +66,7 @@ Real journeys are recorded with screenshots in [the frontend batch evidence](res
 - [Critical full-solution review](docs/21-full-solution-critical-review.md) — the current verdict, findings A01–A08 and the recommended trajectory.
 - [Source activation and national document intake](docs/29-source-activation-and-document-intake.md) — every registered source measured, the national bulletin corpus, and what it still cannot answer.
 - [Multilingual output and voice access](docs/30-multilingual-and-voice-path.md) — the plan for PS features 6 and 8. A plan, not a batch: nothing built and nothing measured yet.
+- [Answer transparency and cross-edition coverage](docs/47-answer-transparency-and-edition-coverage.md) — engine stages and queue position reported as facts, whole-edition readings, cross-edition differences named and never ranked, and a keyboard journey with its repairs.
 - [The Instrument Desk](docs/46-frontend-instrument-desk.md) — the current desktop surface: design direction, the capabilities added, the live measurements, the accessibility repairs and what none of it establishes.
 - [Frontend overhaul batch](docs/25-frontend-overhaul-batch.md) — the earlier surface, its findings FE01–FE06 and what it does not establish.
 - [Frontend overhaul plan](docs/24-frontend-overhaul-plan.md) — scope, design direction and batch gates.
@@ -77,6 +79,7 @@ Known-open highlights: **P11** (a bounded queue and stage-boundary cancellation 
 
 Each links to the batch that recorded it. Older entries are **historical evidence, not current completion claims**.
 
+- [Answer transparency and cross-edition coverage](docs/47-answer-transparency-and-edition-coverage.md) — 654 tests, 60 component checks, live stage readings, and the honest note that no live two-edition comparison was possible.
 - [The Instrument Desk frontend overhaul](docs/46-frontend-instrument-desk.md) — 57 component checks, ten accessibility scans at zero violations, the composer measured on the viewport bottom at three widths, and the repairs recorded as FE07.
 - [The acceptance benchmark grows to seventeen development cases](docs/45-benchmark-expansion.md) — 66.7% declared-task completion on the expanded set, every incomplete published.
 - [Remaining blocked and held items](docs/44-remaining-blocked-and-held-items.md) — the closing register state and the exact input each item waits on.

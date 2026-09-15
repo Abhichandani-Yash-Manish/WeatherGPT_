@@ -1,7 +1,7 @@
 {
   "schema_version": "hardening-progress-v1",
   "review": "research/reviews/national-readiness-20260912/review.md",
-  "updated_at_utc": "2026-09-15T00:31:43+00:00",
+  "updated_at_utc": "2026-09-15T01:10:46+00:00",
   "operational_ready": false,
   "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
   "findings": [
@@ -843,6 +843,83 @@
       "The vintage-variance surface compares stored retrievals; it is not skill, calibration, accuracy or confidence.",
       "No native-speaker or speech acceptance was run in this batch.",
       "Hosting and sharing remain on hold; screenshots are local prototype states."
+    ]
+  },
+  "answer_transparency_batch": {
+    "report": "docs/47-answer-transparency-and-edition-coverage.md",
+    "evidence_directory": "research/reviews/refinement-20260915",
+    "doctor_command": "python3 scripts/doctor.py",
+    "operational_ready": false,
+    "scope": "Answer transparency (engine checkpoints, a token-gated progress route, a composer stage line and a stop control that names the stage), whole-document section readings, cross-edition difference disclosure, a keyboard-only journey with its repairs, and an environment doctor. No warning contract, numeric contract, source term or engine claim changed.",
+    "automated_tests": 654,
+    "javascript_component_checks": 60,
+    "javascript_suites": {
+      "test_charts.js": 2,
+      "test_views.js": 18,
+      "test_bulletin_ui.js": 6,
+      "test_conversation_ui.js": 13,
+      "test_suite_ui.js": 18,
+      "test_voice_ui.js": 3
+    },
+    "measured": {
+      "checkpoints_defined": 6,
+      "stages_observed_live": [
+        "started",
+        "resolving",
+        "retrieving"
+      ],
+      "queue": {
+        "capacity": 3,
+        "max_waiting_observed": 1,
+        "turns_overlapped": 2
+      },
+      "whole_document_live": {
+        "family": "state_agromet",
+        "region": "Gujarat",
+        "printed_issue": "2026-09-12",
+        "sections_indexed": 15,
+        "passages_indexed": 257,
+        "passages_served": 8
+      },
+      "editions_indexed_per_product_and_region_live": 1,
+      "live_two_edition_comparison_performed": false,
+      "keyboard": {
+        "district_paths": 756,
+        "tabbable_after_repair": 1,
+        "tab_stops_from_find_to_district": 7,
+        "palette_opened_by_keyboard": true,
+        "escape_closes_palette": true
+      },
+      "doctor": {
+        "ok": 13,
+        "warn": 0,
+        "fail": 0
+      },
+      "benchmark": {
+        "cases": 17,
+        "turns": 19,
+        "declared_tasks": 18,
+        "completed": 12,
+        "incomplete": 6,
+        "completion_rate": 0.667,
+        "abstained_turns": 3,
+        "critical_failures": 0,
+        "changed_from_previous_run": false
+      }
+    },
+    "repairs_recorded": [
+      "Command-K had two owners: the palette opened and the question box was focused at the same time. The palette owns it; the slash key focuses the question box.",
+      "All 756 district paths were tab stops, so the map could trap a keyboard user. One roving tab stop now moves with the arrow keys and Enter opens the district under the cursor.",
+      "The palette control was named by its glyph; it is named Command palette.",
+      "Ledger controls read only Delete and Open; each now names the stored conversation it acts on.",
+      "The stage poll did not send the workspace token, so the stage line stayed empty. Fixed, and the live run records the rendered line."
+    ],
+    "limitations": [
+      "No live two-edition comparison: the corpus holds one indexed edition per product and region (534 district regions, 12 families).",
+      "Live stage sampling observed three of six checkpoints; turns completed in five to twenty seconds.",
+      "The keyboard journey is one Chrome instance, not screen-reader, zoom, high-contrast or cross-browser acceptance.",
+      "The doctor reports presence of dependencies, not operational readiness, and measures no skill.",
+      "The declared benchmark did not move: 12 of 18 declared tasks completed, unchanged from docs/45."
     ]
   }
 }
