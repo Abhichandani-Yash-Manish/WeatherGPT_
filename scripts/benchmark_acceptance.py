@@ -132,7 +132,7 @@ def run_set(name, cases, output):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('--set', required=True, choices=['development', 'holdout', 'all'])
+    parser.add_argument('--set', required=True, help="a set name from the registry (development, holdout, fresh_holdout) or 'all'")
     parser.add_argument('--output', type=Path, required=True, help='a new directory; an existing one is refused')
     parser.add_argument('--registry', type=Path, default=REGISTRY)
     parser.add_argument('--case', action='append', default=None,
@@ -141,8 +141,10 @@ def main():
     document = json.loads(args.registry.read_text())
     if args.set == 'all':
         target = args.output
-        for name in ('development', 'holdout'):
+        for name in sorted(document['sets']):
             run_set(name, _selected(document['sets'][name], args.case), target / name)
+    elif args.set not in document['sets']:
+        raise SystemExit('No declared set named ' + args.set + '. The registry has: ' + ', '.join(sorted(document['sets'])))
     else:
         run_set(args.set, _selected(document['sets'][args.set], args.case), args.output)
 
