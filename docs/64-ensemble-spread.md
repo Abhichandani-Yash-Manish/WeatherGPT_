@@ -13,9 +13,12 @@ separately. It is the last open half of the NWP row, after model-vs-model compar
 | A catalogue of three governed ensemble models and three variables, each with its unit | `weathergpt_data/adapters.py` | `tests/test_ensemble.py` |
 | One response normalised into control and member-statistic records: mean, population spread, min, max, nearest-rank p10/p50/p90, with the member count on every record | `weathergpt_data/adapters.py` | `test_mean_spread_range_and_nearest_rank_percentiles` |
 | A member exceedance count for a precipitation threshold, reported as “k of n members” | `weathergpt_data/adapters.py` | `test_precipitation_exceedance_is_a_member_frequency` |
+| A member exceedance fraction quantised like every other statistic, and a threshold that is negative or not a number refused before the request is parsed | `weathergpt_data/adapters.py` | `test_a_negative_or_non_numeric_threshold_is_refused` |
 | A fetch path with model, variable and window selection through the governed store | `weathergpt_data/foundation.py` | `FoundationEnsembleTests` |
 | A command-line artefact writing the packet and a Markdown summary | `scripts/ensemble.py` | `research/implementation/ensemble-spread-20260915/gfs025-2026-09-15T084*.md` |
 | A product view `/api/ensemble` | `weathergpt_data/product_api.py` | `ProductViewTests` |
+| An ensemble question answered in chat: the new `ensemble` task kind fetches one model through the same governed store the right-now reading uses and answers with the member mean, spread and p10/p90 per hour | `weathergpt_data/ensemble_tasks.py`, `weathergpt_data/task_dispatch.py` | `EnsembleChatTests`; `research/implementation/ensemble-spread-20260915/live-chat.json` |
+| A deterministic rules shape and prompt entry for an ensemble or member-spread question | `weathergpt_data/rule_planner.py`, `weathergpt_data/language.py`, `weathergpt_data/capabilities.py` | `test_an_ensemble_spread_question_is_an_ensemble_task` |
 
 ## The source is measured, not read from a table
 
@@ -49,8 +52,13 @@ A live `gfs025` run for Ahmedabad over two days returned status `ok` with 30 mem
 variable. At 00:00 UTC the temperature mean was 24.860 °C with a 0.172 °C spread; the wind mean
 was 9.773 km/h with a 2.510 km/h spread; the largest precipitation spread over the window was
 0.786 mm. Artefact: `research/implementation/ensemble-spread-20260915/gfs025-2026-09-15T084*.{json,md}`.
+- `python3 scripts/rehearse_ensemble_chat.py` answered four turns end to end, every one planned by
+  the deterministic rules (`provider: deterministic_rules`): an ensemble spread question (36
+  facts), the ECMWF model named in the question (288 facts), a precipitation-only spread question
+  (96 facts) and a plain forecast that stayed a forecast. Evidence:
+  `research/implementation/ensemble-spread-20260915/live-chat.json`.
 
-**853 Python tests** are collected; the thirteen added here pass.
+**880 Python tests** are collected; the checks added here pass.
 
 ## What this does not establish
 
@@ -60,8 +68,10 @@ was 9.773 km/h with a 2.510 km/h spread; the largest precipitation spread over t
   independent samples.
 - No official warning, all-clear, field decision or operational clearance.
 - The model run lineage is unspecified, so spread cannot be attributed to a particular run.
-- No chat exposure yet, and no daily-aggregation or mean-route path. The stored mean/spread
-  route is recorded but unused.
+- No daily-aggregation or mean-route path, and no member exceedance threshold in chat. The stored
+  mean/spread route is recorded but unused. The chat path uses the Foundation store rather than
+  the ingestion job queue, matching the right-now reading; member-level budgets and leases for it
+  remain a follow-up.
 
 ## Registry
 
@@ -73,7 +83,8 @@ cite.
 
 ## Files
 
-- `weathergpt_data/adapters.py`, `weathergpt_data/foundation.py`, `weathergpt_data/product_api.py`
-- `scripts/ensemble.py`, `scripts/probe_ensemble_catalogue.py`
-- `tests/test_ensemble.py`
-- `research/implementation/ensemble-spread-20260915/ensemble-probe.json`, `gfs025-2026-09-15T084*.{json,md}`
+- `weathergpt_data/adapters.py`, `weathergpt_data/foundation.py`, `weathergpt_data/product_api.py`,
+  `weathergpt_data/ensemble_tasks.py`, `weathergpt_data/rule_planner.py`, `weathergpt_data/task_dispatch.py`
+- `scripts/ensemble.py`, `scripts/probe_ensemble_catalogue.py`, `scripts/rehearse_ensemble_chat.py`
+- `tests/test_ensemble.py`, `tests/test_providers.py`
+- `research/implementation/ensemble-spread-20260915/ensemble-probe.json`, `gfs025-2026-09-15T084*.{json,md}`, `live-chat.json`
