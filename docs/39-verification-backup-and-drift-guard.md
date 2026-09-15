@@ -36,3 +36,23 @@ It found real drift on its first run (README said 611 tests while pytest collect
 - **No full disaster recovery.** The backup covers the runtime stores, not source PDFs, model weights or the operating environment, and no off-machine copy is made.
 - **No continuous monitoring.** The drift guard runs when it is invoked, not on a schedule.
 - **No published runtime content.** Conversations, watches and logs stay local and out of Git.
+
+## The batches as commits, 15 September 2026
+
+Everything recorded in docs/31–docs/46 was committed in planned phases and pushed to
+`origin/main` on 15 September 2026, newest first:
+
+| Commit | Contents |
+|---|---|
+| `d6c5d6b` | Registers, README, the docs/14 pointer, docs/31 R14, the registry README counts |
+| `9e1e783` | The Instrument Desk frontend batch (docs/46), its evidence and the measurement scripts |
+| `95f3788` | Speech round trips, document retention and forecast vintages (docs/40–43) |
+| `1981c64` | Bounded queue and cancellation, context edits, alias candidates, watches (docs/34, 36, 37, 38) |
+| `55a2c57` | Conversational corpus, planner repair, source ledger and language write reach (docs/30, 32, 33) |
+| `34e0ca6` | The declared acceptance benchmark and its sealed holdout (docs/35, 45) |
+| `6421aa7` | The verification, backup/restore and drift-guard batch (docs/39) |
+
+Each phase staged its own files, and the tree was clean with `scripts/verify_all.py`
+reporting 21 steps, 0 failed on the committed state. The earlier batches (docs/01–30) were
+already committed. Runtime stores, the browser profile and scratch probes are not in Git;
+the measurement scripts that produced the frontend evidence are.
