@@ -1,0 +1,160 @@
+[
+  {
+    "slug": "mumbai",
+    "url": "https://mausam.imd.gov.in/mumbai/mcdata/agromet.pdf",
+    "status": "error",
+    "why": "HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+    "slug": "pune",
+    "url": "https://mausam.imd.gov.in/pune/mcdata/agromet.pdf",
+    "status": "error",
+    "why": "HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+    "slug": "jaipur",
+    "url": "https://mausam.imd.gov.in/jaipur/mcdata/agromet.pdf",
+    "status": 200,
+    "bytes": 4000000,
+    "content_type": "application/pdf",
+    "is_pdf": true,
+    "marker_agromet_bulletin": false,
+    "issued_on": false
+  },
+  {
+    "slug": "lucknow",
+    "url": "https://mausam.imd.gov.in/lucknow/mcdata/agromet.pdf",
+    "status": 200,
+    "bytes": 4000000,
+    "content_type": "application/pdf",
+    "is_pdf": true,
+    "marker_agromet_bulletin": false,
+    "issued_on": false
+  },
+  {
+    "slug": "bhopal",
+    "url": "https://mausam.imd.gov.in/bhopal/mcdata/agromet.pdf",
+    "status": "error",
+    "why": "HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+    "slug": "chennai",
+    "url": "https://mausam.imd.gov.in/chennai/mcdata/agromet.pdf",
+    "status": "error",
+    "why": "HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+    "slug": "bengaluru",
+    "url": "https://mausam.imd.gov.in/bengaluru/mcdata/agromet.pdf",
+    "status": 200,
+    "bytes": 3289729,
+    "content_type": "application/pdf",
+    "is_pdf": true,
+    "marker_agromet_bulletin": false,
+    "issued_on": false
+  },
+  {
+    "slug": "hyderabad",
+    "url": "https://mausam.imd.gov.in/hyderabad/mcdata/agromet.pdf",
+    "status": "error",
+    "why": "HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+    "slug": "kolkata",
+    "url": "https://mausam.imd.gov.in/kolkata/mcdata/agromet.pdf",
+    "status": "error",
+    "why": "HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+    "slug": "bhubaneswar",
+    "url": "https://mausam.imd.gov.in/bhubaneswar/mcdata/agromet.pdf",
+    "status": "error",
+    "why": "HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+    "slug": "patna",
+    "url": "https://mausam.imd.gov.in/patna/mcdata/agromet.pdf",
+    "status": "error",
+    "why": "HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+    "slug": "ranchi",
+    "url": "https://mausam.imd.gov.in/ranchi/mcdata/agromet.pdf",
+    "status": "error",
+    "why": "HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+    "slug": "raipur",
+    "url": "https://mausam.imd.gov.in/raipur/mcdata/agromet.pdf",
+    "status": 200,
+    "bytes": 1370426,
+    "content_type": "application/pdf",
+    "is_pdf": true,
+    "marker_agromet_bulletin": false,
+    "issued_on": false
+  },
+  {
+    "slug": "chandigarh",
+    "url": "https://mausam.imd.gov.in/chandigarh/mcdata/agromet.pdf",
+    "status": "error",
+    "why": "HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+    "slug": "dehradun",
+    "url": "https://mausam.imd.gov.in/dehradun/mcdata/agromet.pdf",
+    "status": "error",
+    "why": "HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+    "slug": "shimla",
+    "url": "https://mausam.imd.gov.in/shimla/mcdata/agromet.pdf",
+    "status": "error",
+    "why": "HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+    "slug": "guwahati",
+    "url": "https://mausam.imd.gov.in/guwahati/mcdata/agromet.pdf",
+    "status": "error",
+    "why": "HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+    "slug": "nagpur",
+    "url": "https://mausam.imd.gov.in/nagpur/mcdata/agromet.pdf",
+    "status": "error",
+    "why": "HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+    "slug": "aurangabad",
+    "url": "https://mausam.imd.gov.in/aurangabad/mcdata/agromet.pdf",
+    "status": "error",
+    "why": "HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+    "slug": "vijayawada",
+    "url": "https://mausam.imd.gov.in/vijayawada/mcdata/agromet.pdf",
+    "status": "error",
+    "why": "HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+    "slug": "thiruvananthapuram",
+    "url": "https://mausam.imd.gov.in/thiruvananthapuram/mcdata/agromet.pdf",
+    "status": "error",
+    "why": "HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+    "slug": "panaji",
+    "url": "https://mausam.imd.gov.in/panaji/mcdata/agromet.pdf",
+    "status": "error",
+    "why": "HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+    "slug": "ahmedabad",
+    "url": "https://mausam.imd.gov.in/ahmedabad/mcdata/agromet.pdf",
+    "status": 200,
+    "bytes": 3929832,
+    "content_type": "application/pdf",
+    "is_pdf": true,
+    "marker_agromet_bulletin": false,
+    "issued_on": false
+  }
+]

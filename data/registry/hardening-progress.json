@@ -1,7 +1,7 @@
 {
   "schema_version": "hardening-progress-v1",
   "review": "research/reviews/national-readiness-20260912/review.md",
-  "updated_at_utc": "2026-09-15T06:39:47+00:00",
+  "updated_at_utc": "2026-09-15T07:05:44+00:00",
   "operational_ready": false,
   "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
   "findings": [
@@ -1564,6 +1564,68 @@
       "A plan is not an answer, and no answer was checked against its source by a human.",
       "No native speaker has reviewed the Indic-script output.",
       "Variants are generated deterministically, not sampled from users."
+    ]
+  },
+  "state_agromet_coverage_batch": {
+    "report": "docs/60-state-agromet-coverage.md",
+    "registry": "data/registry/state-agromet-targets.json",
+    "operational_ready": false,
+    "scope": "State agromet corpus coverage: a 22-centre target registry built from the publisher's centre path pattern, a per-state ingest path with the district outcome vocabulary, a sweep that records every target's outcome per target, and the state name each document prints checked against the claimed state. Five states are now indexed (Gujarat, Rajasthan, Uttar Pradesh, Chhattisgarh, Karnataka) against one before; sixteen centres answer 404 at that path and one run hit the provider cooldown. The round also found and fixed a family-marker defect: _squash() collapsed Devanagari to the empty string, and on empty pattern matches every document, so an Indian-language marker would have accepted any PDF.",
+    "automated_tests": 826,
+    "javascript_component_checks": 70,
+    "measured": {
+      "targets_listed": 22,
+      "ingested": 5,
+      "not_served_404": 16,
+      "provider_cooldown": 1,
+      "states": {
+        "Gujarat": {
+          "issue_date": "2026-09-12",
+          "language": "en",
+          "passages": 257
+        },
+        "Rajasthan": {
+          "issue_date": "2026-08-07",
+          "language": "hi",
+          "passages": 42
+        },
+        "Uttar Pradesh": {
+          "issue_date": "2026-09-11",
+          "language": "hi",
+          "passages": 173
+        },
+        "Chhattisgarh": {
+          "issue_date": "2026-08-07",
+          "language": "hi",
+          "passages": 63
+        },
+        "Karnataka": {
+          "issue_date": null,
+          "issue_date_basis": "printed_issue_not_stated",
+          "language": "hi",
+          "passages": 355
+        }
+      },
+      "corpus_before": {
+        "state_editions": 1,
+        "passages": 257
+      },
+      "corpus_after": {
+        "state_editions": 5,
+        "passages": 890
+      },
+      "defects_found": {
+        "squash_empty_pattern": "fixed; a Devanagari title squashed to the empty string and would have matched every document",
+        "language_from_character_count": "fixed; the edition language follows the script of the title that matched",
+        "markers_all_required": "fixed; the family now accepts any of its sampled titles"
+      }
+    },
+    "limitations": [
+      "Nationwide state coverage is not established: the centres that publish elsewhere are unknown.",
+      "A 404 at a guessed address is not evidence that a state has no bulletin.",
+      "A listed target is not a promise of an issue, and a reachable address is not a validated product.",
+      "No agronomist or native speaker has reviewed the Devanagari editions.",
+      "Karnataka states no printed issue date, so its currency is recorded as not stated."
     ]
   }
 }

@@ -51,7 +51,7 @@ The interface states these limits rather than filling the gaps:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 813 Python tests
+python3 -m pytest tests/ -q                          # 826 Python tests
 node tests/test_charts.js                            #  2 of 70 component checks
 node tests/test_views.js                             # 18
 node tests/test_bulletin_ui.js                       #  6
@@ -72,6 +72,7 @@ Real journeys are recorded with screenshots in [the frontend batch evidence](res
 
 ## Status and open work
 
+- [State agromet coverage](docs/60-state-agromet-coverage.md) - a 22-centre sweep that took state coverage from one edition to five, the sixteen centres that answer 404, and the marker defect that would have accepted any PDF as a bulletin.
 - [Paraphrase robustness](docs/59-paraphrase-robustness.md) - 38 deterministic variants over eleven declared shapes, the eight repairs that took the held rate from 25/34 to 38/38, and the honest note that this is a development set, not generalisation.
 - [The right-now reading](docs/58-right-now-reading.md) - live station observations in the conversation, and one reading composing the observed, the published day and the model hours next, with radar, sub-hourly refresh and push named as not connected.
 - [Comparing two forecast sources](docs/57-model-comparison.md) - the crosscheck operation now runs on the rules-first floor, with both sources, their difference, the shared-lineage caveat, and no skill, average or confidence score.
