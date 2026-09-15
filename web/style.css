@@ -771,3 +771,23 @@ body { display: flex; flex-direction: column; min-height: 100vh; min-height: 100
 .brief-meta { margin: 0; font-family: var(--mono); font-size: var(--step--1); color: var(--mute); }
 .brief-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .brief-markdown { max-height: 22rem; overflow: auto; white-space: pre-wrap; font-family: var(--mono); font-size: var(--step--1); background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 10px; }
+
+/* 10 — Plan Watch: quick replies, the saved-plan card and the watch inbox ---
+   Interface state stays monochrome here too: a plan's state is a word, and the
+   only hazard colour on these surfaces is the one the IMD product carries. */
+.quick-replies { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.quick-reply { padding: 6px 14px; border: 1px solid var(--line-strong); border-radius: 999px; background: var(--paper); color: var(--ink); font-weight: 600; }
+.quick-reply:hover { background: var(--data-wash); border-color: var(--data); }
+.quick-reply:focus-visible { outline: 2px solid var(--data); outline-offset: 2px; }
+.plan-card { margin-top: 12px; padding: 12px 14px; border: 1px solid var(--line); border-left: 3px solid var(--slate); border-radius: 0 var(--r) var(--r) 0; background: var(--paper); }
+.plan-title { margin: 0 0 4px; font-size: 1rem; font-weight: 650; }
+.plan-meta { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 0 0 6px; font-size: var(--step--1); color: var(--mute); }
+.plan-tools { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.plan-inbox { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+.notify-heading { margin: 14px 0 2px; font-size: var(--step--1); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
+.plan-row { padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--r); background: var(--paper); }
+.plan-row.is-paused, .plan-row.is-ended, .plan-row.is-not_connected { border-style: dashed; }
+.plan-note { padding: 10px 12px; border: 1px solid var(--line); border-left: 3px solid var(--sand); border-radius: 0 var(--r) var(--r) 0; background: var(--paper); }
+.plan-note.is-degraded { border-left-style: dashed; }
+.plan-note-head { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 6px; }
+.plan-note-text { margin: 0 0 6px; }

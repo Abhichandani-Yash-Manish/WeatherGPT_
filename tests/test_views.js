@@ -348,3 +348,44 @@ assert(!/confidence|skill score/i.test(comparedText), 'No confidence or score la
 }());
 
 console.log('PASS: two products in one turn are compared in plain terms and never ranked');
+
+// Plan Watch: the one missing slot is answered with quick replies, and a saved plan shows
+// what was set automatically with Change and Undo. Nothing on the card is a warning value.
+(function () {
+  const asking = {
+    status: 'needs_clarification', answer: 'What time on Monday 21 Sep?', facts: [], citations: [], notes: [], choices: [],
+    quick_replies: [{ label: 'Morning', reply: 'Morning' }, { label: 'Afternoon', reply: 'Afternoon' },
+                    { label: 'Evening', reply: 'Evening' }, { label: 'All day', reply: 'All day' }],
+    plan_watch: { action: 'asking', awaiting: 'time' }, trace: { planning: { provider: 'deterministic_plan_intake', model_calls: 0 }, tools: [] }
+  };
+  let replied = null;
+  const card = context.renderTurn(asking, { onQuickReply: reply => { replied = reply; } });
+  const chips = withClass(card, 'quick-reply');
+  assert.equal(chips.length, 4, 'one button per quick reply');
+  assert.equal(chips.map(node => node.textContent).join('|'), 'Morning|Afternoon|Evening|All day');
+  chips[0].dispatch('click');
+  assert.equal(replied, 'Morning', 'a quick reply sends its reply text as the next message');
+  assert.equal(withClass(card, 'plan-card').length, 0, 'no plan card while a question is open');
+
+  const saved = {
+    status: 'answered', answer: "Saved. I'm watching Monday 21 Sep, morning (09:30–12:30 IST) in Rajkot, Gujarat for your cotton spraying.",
+    facts: [], citations: [], notes: [], choices: [], quick_replies: [],
+    plan_watch: { action: 'saved', plan: { id: 'p1', title: 'Cotton spraying · Rajkot, Gujarat · Monday 21 Sep morning',
+      hazards: 'heavy rain, thunderstorm & lightning and strong surface winds', district: 'RAJKOT', state_words: 'waiting for IMD coverage',
+      inferred: { activity: 'from your words: spraying', hazards: 'from the spraying template' } } },
+    trace: { planning: { provider: 'deterministic_plan_intake', model_calls: 0 }, tools: [] }
+  };
+  let undone = null, changed = null;
+  const savedCard = context.renderTurn(saved, { onPlanUndo: plan => { undone = plan.id; }, onPlanChange: plan => { changed = plan.id; } });
+  const planCard = withClass(savedCard, 'plan-card')[0];
+  assert(planCard, 'a saved plan renders its card');
+  assert(/Cotton spraying · Rajkot, Gujarat · Monday 21 Sep morning/.test(planCard.textContent), 'the card names the plan');
+  assert(/What I set automatically/.test(planCard.textContent), 'the card discloses what was inferred');
+  const buttons = withTag(planCard, 'button');
+  buttons.find(node => node.textContent === 'Undo').dispatch('click');
+  buttons.find(node => node.textContent === 'Change').dispatch('click');
+  assert.equal(undone, 'p1', 'Undo hands the plan to the page');
+  assert.equal(changed, 'p1', 'Change hands the plan to the page');
+  assert.equal(withClass(savedCard, 'lead-number').length, 0, 'a plan is never presented as a headline value');
+}());
+console.log('PASS: a plan question offers quick replies, and a saved plan card offers Change and Undo');

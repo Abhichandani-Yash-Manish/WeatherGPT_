@@ -483,6 +483,56 @@ function renderChoices(packet, handlers) {
   wrap.append(tools);
   return wrap;
 }
+/* Quick replies answer the one question a plan still needs. Each sends its reply as the
+   person's next message, so a typed answer and a tapped one take the same path. */
+function renderQuickReplies(packet, handlers) {
+  const replies = packet.quick_replies || [];
+  if (!replies.length) return null;
+  const wrap = el('div', undefined, 'quick-replies');
+  wrap.setAttribute('role', 'group');
+  wrap.setAttribute('aria-label', 'Quick replies');
+  replies.forEach(reply => {
+    const button = el('button', reply.label, 'quick-reply');
+    button.type = 'button';
+    button.addEventListener('click', () => (handlers.onQuickReply || function () {})(reply.reply));
+    wrap.append(button);
+  });
+  return wrap;
+}
+const PLAN_CARD_ACTIONS = ['saved', 'changed', 'resumed'];
+const INFERRED_LABELS = { activity: 'Activity', hazards: 'Warnings watched', place: 'Place', time: 'Time', when: 'Day' };
+function renderPlanCard(packet, handlers) {
+  const watch = packet.plan_watch;
+  if (!watch || !watch.plan || PLAN_CARD_ACTIONS.indexOf(watch.action) < 0) return null;
+  const plan = watch.plan;
+  const box = el('section', undefined, 'plan-card');
+  box.setAttribute('aria-label', 'Saved plan');
+  box.append(el('h3', plan.title, 'plan-title'));
+  const meta = el('p', undefined, 'plan-meta');
+  [plan.not_connected ? 'Cannot be checked: not connected' : 'Watching ' + plan.hazards,
+   plan.district ? 'IMD district ' + plan.district : null,
+   plan.state_words].filter(Boolean).forEach(part => meta.append(el('span', part)));
+  box.append(meta);
+  const inferred = plan.inferred || {};
+  if (Object.keys(inferred).length) {
+    box.append(disclosure('What I set automatically', into => {
+      const list = el('ul', undefined, 'notes');
+      Object.keys(inferred).forEach(key => list.append(el('li', (INFERRED_LABELS[key] || key) + ': ' + inferred[key])));
+      into.append(list);
+    }));
+  }
+  const tools = el('div', undefined, 'plan-tools');
+  const change = el('button', 'Change', 'ghost');
+  change.type = 'button';
+  change.addEventListener('click', () => (handlers.onPlanChange || function () {})(plan));
+  const undo = el('button', watch.action === 'saved' ? 'Undo' : 'Delete plan', 'ghost');
+  undo.type = 'button';
+  undo.addEventListener('click', () => (handlers.onPlanUndo || function () {})(plan, box));
+  tools.append(change);
+  tools.append(undo);
+  box.append(tools);
+  return box;
+}
 function renderAirportReports(packet) {
   const reports = packet.airport_reports || [];
   if (!reports.length) return null;
@@ -986,6 +1036,10 @@ function renderTurn(packet, handlers) {
     onRetype: handlers.onRetype || function () {}
   });
   if (choices) body.append(choices);
+  const quickReplies = renderQuickReplies(packet, handlers);
+  if (quickReplies) body.append(quickReplies);
+  const planCard = renderPlanCard(packet, handlers);
+  if (planCard) body.append(planCard);
   (packet.charts || []).forEach(chart => body.append(historicalChart(chart)));
   const airport = renderAirportReports(packet);
   if (airport) body.append(airport);

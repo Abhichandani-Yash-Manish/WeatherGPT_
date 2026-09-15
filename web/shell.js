@@ -424,11 +424,21 @@ const WG = window.WG;
     }
     async function paint() {
       clear(body);
-      body.append(loading('Reading the local watch inbox…'));
-      let packet = null;
+      body.append(loading('Reading your plans and the local watch inbox…'));
+      let plans = null, planError = null, packet = null;
+      try { plans = await api('/api/plans'); } catch (error) { planError = error; }
       try { packet = await api('/api/watches'); }
-      catch (error) { clear(body); body.append(stateBlock('down', 'The local watch inbox could not be read.', error.message)); return; }
+      catch (error) {
+        clear(body);
+        if (plans) paintPlans(plans);
+        body.append(stateBlock('down', 'The local watch inbox could not be read.', error.message));
+        return;
+      }
       clear(body);
+      if (plans) paintPlans(plans);
+      else body.append(stateBlock('down', 'Saved plans could not be read.', planError ? planError.message : ''));
+      markPlansSeen(plans);
+      body.append(el('h3', 'Earlier watch requests', 'notify-heading'));
       const watches = packet.watches || [];
       body.append(stateBlock('plain', watches.length ? watches.length + ' local watch(es) registered.' : 'No watches registered yet.',
         'Register one by asking the assistant to notify you. Watches are checked only when asked; a no-match result is not an all-clear.'));
@@ -460,6 +470,120 @@ const WG = window.WG;
       body.append(check);
       body.append(limits());
     }
+    const KIND_LABELS = { change: 'Change', check_in: 'Evening check-in', degraded: 'Watch degraded' };
+    function paintPlans(packet) {
+      const section = el('section', undefined, 'plan-inbox');
+      section.append(el('h3', packet.mode === 'replay_of_recorded_editions' ? 'Replay of recorded IMD editions' : 'Your plans', 'notify-heading'));
+      const plans = packet.plans || [];
+      if (!plans.length) {
+        section.append(stateBlock('plain', 'No saved plans yet.',
+          'Tell the assistant what you are planning and ask it to let you know if anything changes, for example “I am spraying my cotton in Rajkot on Monday, let me know if anything changes.”'));
+      }
+      plans.forEach(plan => {
+        const row = el('div', undefined, 'plan-row is-' + (plan.state || 'unknown'));
+        row.append(el('p', plan.title, 'plan-title'));
+        const meta = el('p', undefined, 'plan-meta');
+        [plan.state_words, plan.not_connected ? 'not connected' : 'watching ' + plan.hazards,
+         plan.last_checked_at ? 'checked ' + istStamp(plan.last_checked_at) : 'not checked yet'].filter(Boolean)
+          .forEach(part => meta.append(el('span', part)));
+        row.append(meta);
+        if (plan.last_error) row.append(el('p', plan.last_error, 'field-note'));
+        if (packet.mode !== 'replay_of_recorded_editions') {
+          const tools = el('div', undefined, 'plan-tools');
+          const actions = plan.state === 'paused' ? [['Resume', 'resume']] : (plan.state === 'ended' || plan.state === 'not_connected' ? [] : [['Pause', 'pause']]);
+          actions.concat([['Delete', 'delete']]).forEach(([label, action]) => {
+            const button = el('button', label, 'ghost');
+            button.type = 'button';
+            button.addEventListener('click', async () => {
+              button.disabled = true;
+              try { await postJson('/api/plans/update', { id: plan.id, action: action }); paint(); }
+              catch (error) { button.disabled = false; row.append(stateBlock('down', 'The plan could not be updated.', error.message)); }
+            });
+            tools.append(button);
+          });
+          row.append(tools);
+        }
+        section.append(row);
+      });
+      const notes = packet.notifications || [];
+      section.append(el('h3', 'Notifications', 'notify-heading'));
+      if (!notes.length) section.append(stateBlock('plain', 'No notifications yet.', 'A notification is written only when the official state for a plan changes, the evening before a dated plan, or when checking has failed for three hours.'));
+      notes.forEach(note => {
+        const item = el('article', undefined, 'plan-note is-' + note.kind);
+        const head = el('p', undefined, 'plan-note-head');
+        head.append(el('span', KIND_LABELS[note.kind] || note.kind, 'tag'));
+        head.append(el('span', istStamp(note.created_at), 'tag is-quiet'));
+        if (!note.visible) head.append(el('span', 'held for quiet hours until ' + istStamp(note.visible_at), 'tag is-quiet'));
+        item.append(head);
+        item.append(el('p', note.text, 'plan-note-text'));
+        const receipt = note.receipt || {};
+        const rows = ['district', 'date', 'hazards', 'colour', 'before', 'bulletin_issued_at_utc', 'retrieved_at_utc', 'edition_sha256',
+                      'source_id', 'layer', 'mode', 'origin_authentication', 'derived_window']
+          .filter(key => receipt[key] !== undefined && receipt[key] !== null && String(receipt[key]) !== '')
+          .map(key => [key.replace(/_/g, ' '), Array.isArray(receipt[key]) ? receipt[key].join(', ') : String(receipt[key])]);
+        if (rows.length) item.append(disclosure('Evidence receipt', into => into.append(table(['Field', 'Value'], rows))));
+        if (note.kind === 'change' && receipt.place && receipt.date) {
+          const ask = el('button', 'Ask about this change', 'ghost');
+          ask.type = 'button';
+          ask.addEventListener('click', () => {
+            const input = document.getElementById('question');
+            if (input) input.value = 'Is there an official warning for ' + receipt.place + ' on ' + receipt.date + '?';
+            panel.hidden = true; toggle.setAttribute('aria-expanded', 'false');
+            window.location.hash = '#/assistant';
+            if (input) input.focus();
+          });
+          item.append(ask);
+        }
+        section.append(item);
+      });
+      const watcher = packet.watcher || {};
+      section.append(el('p', 'Checked every ' + Math.round((watcher.interval_seconds || 1800) / 60) + ' minutes while WeatherGPT runs · ' +
+        (watcher.running ? 'watcher running' : 'watcher not running in this process') +
+        (watcher.last_cycle_at ? ' · last check ' + istStamp(watcher.last_cycle_at) : '') +
+        (watcher.last_error ? ' · last error: ' + watcher.last_error : ''), 'field-note'));
+      const tools = el('div', undefined, 'plan-tools');
+      if (packet.mode !== 'replay_of_recorded_editions') {
+        const check = el('button', 'Check plans now', 'ghost');
+        check.type = 'button';
+        check.addEventListener('click', async () => {
+          check.disabled = true; check.textContent = 'Checking plans…';
+          try { await postJson('/api/plans/check', {}); paint(); }
+          catch (error) { check.disabled = false; check.textContent = 'Check plans now'; section.append(stateBlock('down', 'The plan check could not run.', error.message)); }
+        });
+        tools.append(check);
+        if ((packet.recorded_editions || 0) >= 2) {
+          const replay = el('button', 'Replay recorded editions', 'ghost');
+          replay.type = 'button';
+          replay.addEventListener('click', async () => {
+            replay.disabled = true;
+            try {
+              const result = await postJson('/api/plans/replay', {});
+              clear(body);
+              body.append(stateBlock('plain', 'Replay of recorded IMD editions.', (result.result && result.result.note) || 'Nothing here is current.'));
+              paintPlans(result.inbox);
+              const back = el('button', 'Back to live plans', 'ghost');
+              back.type = 'button';
+              back.addEventListener('click', paint);
+              body.append(back);
+            } catch (error) { replay.disabled = false; section.append(stateBlock('down', 'The replay could not run.', error.message)); }
+          });
+          tools.append(replay);
+        }
+        if (typeof window.Notification === 'function' && window.Notification.permission === 'default') {
+          const allow = el('button', 'Allow browser notifications', 'ghost');
+          allow.type = 'button';
+          allow.addEventListener('click', () => { requestPlanNotifications(); allow.remove(); });
+          tools.append(allow);
+        }
+      }
+      section.append(tools);
+      section.append(disclosure('What Plan Watch can and cannot do', into => {
+        const list = el('ul', undefined, 'notes');
+        (packet.limits || []).forEach(note => list.append(el('li', note)));
+        into.append(list);
+      }));
+      body.append(section);
+    }
     toggle.addEventListener('click', () => {
       panel.hidden = !panel.hidden;
       toggle.setAttribute('aria-expanded', panel.hidden ? 'false' : 'true');
@@ -467,6 +591,55 @@ const WG = window.WG;
     });
     if (close) close.addEventListener('click', () => { panel.hidden = true; toggle.setAttribute('aria-expanded', 'false'); });
   }
+
+  /* ---------- plan notifications: an unread count, and browser notifications if allowed ---------- */
+  const PLAN_SEEN_KEY = 'weathergpt.plans.seen';
+  const PLAN_NOTIFIED_KEY = 'weathergpt.plans.notified';
+  const PLAN_POLL_MS = 30000;
+  function storedNumber(key) {
+    try { const value = window.localStorage.getItem(key); return value === null ? null : Number(value) || 0; }
+    catch (error) { return null; }
+  }
+  function storeNumber(key, value) { try { window.localStorage.setItem(key, String(value)); } catch (error) { /* private mode */ } }
+  function newestId(packet) { return Math.max(0, ...((packet && packet.notifications) || []).map(item => Number(item.id) || 0)); }
+  function markPlansSeen(packet) {
+    if (!packet || packet.mode !== 'live') return;
+    storeNumber(PLAN_SEEN_KEY, newestId(packet));
+    const toggle = document.getElementById('notify-toggle');
+    if (toggle) toggle.textContent = 'Watch';
+  }
+  function requestPlanNotifications() {
+    if (typeof window.Notification !== 'function' || window.Notification.permission !== 'default') return;
+    try { window.Notification.requestPermission(); } catch (error) { /* the inbox still works */ }
+  }
+  async function pollPlans() {
+    let packet = null;
+    try { packet = await api('/api/plans'); } catch (error) { return null; }
+    const visible = (packet.notifications || []).filter(item => item.visible);
+    const seen = storedNumber(PLAN_SEEN_KEY) || 0;
+    const unread = visible.filter(item => Number(item.id) > seen).length;
+    const toggle = document.getElementById('notify-toggle');
+    if (toggle) toggle.textContent = unread ? 'Watch · ' + unread : 'Watch';
+    const notified = storedNumber(PLAN_NOTIFIED_KEY);
+    const newest = Math.max(0, ...visible.map(item => Number(item.id) || 0));
+    // The first poll on a fresh page records what already exists instead of replaying it.
+    if (notified !== null && typeof window.Notification === 'function' && window.Notification.permission === 'granted') {
+      visible.filter(item => Number(item.id) > notified).slice(0, 3).forEach(item => {
+        try { new window.Notification(item.title, { body: item.text, tag: 'weathergpt-plan-' + item.id }); } catch (error) { /* inbox only */ }
+      });
+    }
+    if (notified === null || newest > notified) storeNumber(PLAN_NOTIFIED_KEY, newest);
+    return packet;
+  }
+  function startPlanPolling() {
+    pollPlans();
+    setInterval(pollPlans, PLAN_POLL_MS);
+  }
+  WG.onPlanChanged = watch => {
+    if (watch && watch.action === 'saved') requestPlanNotifications();
+    pollPlans();
+  };
+  WG.pollPlans = pollPlans;
 
   /* ---------- appearance: day desk, night desk, or the system ---------- */
   const THEME_KEY = 'weathergpt.theme';
@@ -648,6 +821,7 @@ const WG = window.WG;
     wirePlaceSearch();
     wireRouter();
     wireNotify();
+    startPlanPolling();
     wireTheme();
     wirePalette();
     paintHealthMini();
