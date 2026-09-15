@@ -1,0 +1,603 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "60d9096f-371a-40bc-80d7-2dedc78fcf76",
+  "question": "Gujarat state agromet advisory me irrigation ke baare me kya likha hai?",
+  "status": "answered",
+  "answer": "Indexed published document:\n\nState composite agromet advisory bulletin · Gujarat · document 22678bac94bc · printed issue 2026-09-12 · 2 day(s) after the printed issue · retrieved 2026-09-14 18:28:49.905251+00:00.\n\n· page 1: “Agromet Advisory Service Bulletin for the State of Gujarat (Advisories mentioned in the bulletin are prepared by different AMFUs and DAMUs in Gujarat) Bulletin No. 71/2026 Issued on 12-09-2026 DAY-1 Very Heavy rains at isolated places very likely inthedistrictsofSouthGujaratregionnamelyDang,Navsari,ValsadandinDaman,DadraandNa garHaveli Heavy rains at isolated places very likely inthe districtsofGujaratregionnamelyAnand, Vadodara,ChhotaUdepur,Narmada, Bharuch,Surat and Tapi. … [excerpt; full passage retained in evidence]”\n\n· page 45 · AMRELI, JAMNAGAR DISTRICTS.: “water.  Udder of milking animals must be properly clean with zinc oxide or boric powder. AMFU Arnej: AHMEDABAD Advisory General advice Undertake interculturing and weeding operations to conserve moisture in standing monsoon crops and apply need based light irrigation by considering weather and soil moisture condition in standing crops. Application of fertilizer or top dressing should undertake only under optimum soil moisture condition in standing crops. … [excerpt; full passage retained in evidence]”\n\n· page 3 · FWS/ISOL WS/FWS WS/FWS FWS/SCT SCT/SCT: “ISOl: Isolated i.e 1 or 2 places SCT:Scattered i.e Rain at a few places FWS: Fairly wide spread i.e Rain at many places Dry:No rain WS: Widespread,i.e Rain at most places. Agromet Advisories issued by different Agromet Field Units (AMFUs) of Gujarat Gujarat region: Met Subdivision AMFU Navsari (Dangs,Navsari,Valsad districts): Navsari: Crop Weather based Agro-Advisory Sugarcane Vegetative Stage/Grand Growth stage:  After 6, 7 & 8 month of planting remove dry leaves and use it as mulch. … [excerpt; full passage retained in evidence]”\n\n· page 53 · 18.5 SC 3 ml or Flubendiamide 480 SC 3 ml in 10 litres: “standing monsoon crops and apply need based light irrigation by considering weather and soi l moisture condition in standing crops. Application of fertilizer or top dressing should undertake only under optimum soil moisture condition in standing crops. Farmers are advised to download MEGHDOOT mobile application for acquiring information regarding Agromet Advisory in Gujaratilanguage. … [excerpt; full passage retained in evidence]”\n\n· page 50 · 18.5 SC 3 ml or Flubendiamide 480 SC 3 ml in 10 litres: “fertilizer or top dressing should undertake only under optimum soil moisture condition in standing crops. Farmers are advised to download MEGHDOOT mobile application for acquiring information regarding Agromet Advisory in Gujaratilanguage. Click on following link to download this applicationuser:https://play,google.com/store/apps/details?id=com.aas.me ghdoot Field Crops Stage Advisory Cotton Squaring/ Flowering/ Boll formation  If irrigation facilities are available then apply need based irrigation through drip ir … [excerpt; full passage retained in evidence]”\n\n· page 3: “Extended Range forecast at Met-Subdivision Level (12th Sept to 16th Sept 2026) Meteorological Sub-Division Rainfall Max Temp Gujarat region Normal/ Above Normal Above Normal/ below Normal Saurashtra-Kutch Above Normal/ Normal below Normal/ Above Normal Summary of four days rainfall over the State (08 - 11 Sept 2026) : Met Sub Division 08-09-2026 09-09-2026 10-09-2026 11-09-2026 Gujarat region ISOl ISOl ISOl ISOl Saurashtra-Kutch ISOl ISOl ISOl ISOl Rainfall forecast for next 5 days Met Sub Division 12-09-2026 13-09 … [excerpt; full passage retained in evidence]”\n\n· page 42 · AMRELI, JAMNAGAR DISTRICTS.: “water.  Udder of milking animals must be properly clean with zinc oxide or boric powder. JUNAGADH Crop Variety/ Pest/Insect Stage Agromet Advisories Kharif Groundnut White grub, Early leaf Spot, Aphid, Jassid, Thrips, leaf miner, Armyworm, Red Hairy Caterpillar Pegging / Pod- Development  Drain out excess rain water from standing crop field.  Postponed the different activities of farm operations. … [excerpt; full passage retained in evidence]”\n\n· page 44 · AMRELI, JAMNAGAR DISTRICTS.: “operations.  Keeping rainfall forecast in mind farmers are advised not to do any type of spray and do proper management in standing crops.  To carry out all farm activity of farm during vapsa condition. Soybean Aphid, Jassid, Thrips, leaf miner, Spodoptera litura, Helicoverpa armigera Flowering / Pod- Development  Drain out excess rain water from standing crop field.  Postponed the different ac tivities of farm operations. … [excerpt; full passage retained in evidence]”\n\n· page 41 · AMRELI, JAMNAGAR DISTRICTS.: “proper management in standing crops.  To carry out all farm activi ty of farm during vapsa condition. Soybean Aphid, Jassid, Thrips, leaf miner, Spodoptera litura, Helicoverpa armigera Flowering / Pod- Development  Drain out excess rain water from standing crop field.  Postponed the different activities of farm operations.  Keeping rainfall forecast in mind farmers are advised not to do any type of spray and do proper management in standing crops. … [excerpt; full passage retained in evidence]”\n\n· page 44 · AMRELI, JAMNAGAR DISTRICTS.: “clean with zinc oxide or boric powder. PORBANDAR Crop Variety/ Pest/Insect Stage Agromet Advisories Kharif Groundnut White grub, Early leaf Spot, Aphid, Jassid, Thrips, leaf miner, Armyworm, Red Hairy Caterpillar Pegging / Pod- Development  Drain out excess rain water from standing crop field.  Postponed the different activities of fa rm operations.  Keeping rainfall forecast in mind farmers are advised not to do any type of spray and do proper management in standing crops. … [excerpt; full passage retained in evidence]”\n\nCrop guidance is district-level published advice. It has not been validated against an individual field, current crop stage or the weather at that field, and it is not a personal go/no-go decision.\n\nExtraction reading order is unverified for these documents; tables and headings can be split.\n\nThese are original source excerpts. They are not a forecast, an observation, an official warning or personalized advice.",
+  "facts": [],
+  "citations": [
+    {
+      "id": "t1-doc-22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3",
+      "source_id": "S07",
+      "provider": "India Meteorological Department",
+      "product": "State composite agromet advisory bulletin",
+      "response_sha256": "22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3",
+      "retrieved_at_utc": "2026-09-14 18:28:49.905251+00:00",
+      "issue_date": "2026-09-12",
+      "family": "state_agromet",
+      "scope": "state",
+      "region": "Gujarat",
+      "source_locator": "document 22678bac94bc, index 22678bac94bc",
+      "physical_page": null,
+      "local_document_path": "/api/documents/22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3",
+      "is_evidence": true
+    }
+  ],
+  "notes": [],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-15T06:39:16.614965+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "deterministic_rules",
+      "model": "rule-planner-v1",
+      "model_calls": 0,
+      "attempts": 0,
+      "latency_ms": 0,
+      "failover": []
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit.",
+      "requested_language": "hi-latn",
+      "language_selection": "inferred_from_question",
+      "language_adherence": "not_applicable"
+    },
+    "tools": [
+      {
+        "name": "published_document_retrieval",
+        "method": "whole_document_bm25_plus_dense_rrf",
+        "families": [
+          "state_agromet"
+        ],
+        "documents": [
+          "22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3"
+        ],
+        "filters": {
+          "family": "state_agromet",
+          "scope": "state",
+          "region": "Gujarat"
+        },
+        "scores_are_confidence": false
+      },
+      {
+        "name": "document",
+        "task_id": "t1",
+        "status": "answered"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "new",
+      "changed_fields": [
+        "parameters",
+        "places",
+        "time"
+      ],
+      "inherited_fields": []
+    },
+    "duration_seconds": 4.375
+  },
+  "plan": {
+    "language": "hi-Latn",
+    "places": [
+      {
+        "name": "Gujarat",
+        "state": "",
+        "district": "",
+        "kind": "state"
+      }
+    ],
+    "assumptions": [],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "Gujarat state agromet advisory me irrigation ke baare me kya likha hai",
+        "kind": "document",
+        "operation": "lookup",
+        "parameters": [
+          "published_document"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ],
+        "corpus_request": {
+          "query": "Gujarat state agromet advisory me irrigation ke baare me kya likha hai",
+          "family": "state_agromet",
+          "scope": "state"
+        }
+      }
+    ],
+    "context_action": "new",
+    "changed_fields": [
+      "parameters",
+      "places",
+      "time"
+    ],
+    "intent": "document",
+    "start_local": "",
+    "end_local": "",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "Gujarat state agromet advisory me irrigation ke baare me kya likha hai",
+        "kind": "document",
+        "operation": "lookup",
+        "parameters": [
+          "published_document"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "",
+        "end_local": "",
+        "place_indices": [
+          0
+        ],
+        "corpus_request": {
+          "query": "Gujarat state agromet advisory me irrigation ke baare me kya likha hai",
+          "family": "state_agromet",
+          "scope": "state"
+        }
+      },
+      "status": "answered",
+      "answer": "Indexed published document:\n\nState composite agromet advisory bulletin · Gujarat · document 22678bac94bc · printed issue 2026-09-12 · 2 day(s) after the printed issue · retrieved 2026-09-14 18:28:49.905251+00:00.\n\n· page 1: “Agromet Advisory Service Bulletin for the State of Gujarat (Advisories mentioned in the bulletin are prepared by different AMFUs and DAMUs in Gujarat) Bulletin No. 71/2026 Issued on 12-09-2026 DAY-1 Very Heavy rains at isolated places very likely inthedistrictsofSouthGujaratregionnamelyDang,Navsari,ValsadandinDaman,DadraandNa garHaveli Heavy rains at isolated places very likely inthe districtsofGujaratregionnamelyAnand, Vadodara,ChhotaUdepur,Narmada, Bharuch,Surat and Tapi. … [excerpt; full passage retained in evidence]”\n\n· page 45 · AMRELI, JAMNAGAR DISTRICTS.: “water.  Udder of milking animals must be properly clean with zinc oxide or boric powder. AMFU Arnej: AHMEDABAD Advisory General advice Undertake interculturing and weeding operations to conserve moisture in standing monsoon crops and apply need based light irrigation by considering weather and soil moisture condition in standing crops. Application of fertilizer or top dressing should undertake only under optimum soil moisture condition in standing crops. … [excerpt; full passage retained in evidence]”\n\n· page 3 · FWS/ISOL WS/FWS WS/FWS FWS/SCT SCT/SCT: “ISOl: Isolated i.e 1 or 2 places SCT:Scattered i.e Rain at a few places FWS: Fairly wide spread i.e Rain at many places Dry:No rain WS: Widespread,i.e Rain at most places. Agromet Advisories issued by different Agromet Field Units (AMFUs) of Gujarat Gujarat region: Met Subdivision AMFU Navsari (Dangs,Navsari,Valsad districts): Navsari: Crop Weather based Agro-Advisory Sugarcane Vegetative Stage/Grand Growth stage:  After 6, 7 & 8 month of planting remove dry leaves and use it as mulch. … [excerpt; full passage retained in evidence]”\n\n· page 53 · 18.5 SC 3 ml or Flubendiamide 480 SC 3 ml in 10 litres: “standing monsoon crops and apply need based light irrigation by considering weather and soi l moisture condition in standing crops. Application of fertilizer or top dressing should undertake only under optimum soil moisture condition in standing crops. Farmers are advised to download MEGHDOOT mobile application for acquiring information regarding Agromet Advisory in Gujaratilanguage. … [excerpt; full passage retained in evidence]”\n\n· page 50 · 18.5 SC 3 ml or Flubendiamide 480 SC 3 ml in 10 litres: “fertilizer or top dressing should undertake only under optimum soil moisture condition in standing crops. Farmers are advised to download MEGHDOOT mobile application for acquiring information regarding Agromet Advisory in Gujaratilanguage. Click on following link to download this applicationuser:https://play,google.com/store/apps/details?id=com.aas.me ghdoot Field Crops Stage Advisory Cotton Squaring/ Flowering/ Boll formation  If irrigation facilities are available then apply need based irrigation through drip ir … [excerpt; full passage retained in evidence]”\n\n· page 3: “Extended Range forecast at Met-Subdivision Level (12th Sept to 16th Sept 2026) Meteorological Sub-Division Rainfall Max Temp Gujarat region Normal/ Above Normal Above Normal/ below Normal Saurashtra-Kutch Above Normal/ Normal below Normal/ Above Normal Summary of four days rainfall over the State (08 - 11 Sept 2026) : Met Sub Division 08-09-2026 09-09-2026 10-09-2026 11-09-2026 Gujarat region ISOl ISOl ISOl ISOl Saurashtra-Kutch ISOl ISOl ISOl ISOl Rainfall forecast for next 5 days Met Sub Division 12-09-2026 13-09 … [excerpt; full passage retained in evidence]”\n\n· page 42 · AMRELI, JAMNAGAR DISTRICTS.: “water.  Udder of milking animals must be properly clean with zinc oxide or boric powder. JUNAGADH Crop Variety/ Pest/Insect Stage Agromet Advisories Kharif Groundnut White grub, Early leaf Spot, Aphid, Jassid, Thrips, leaf miner, Armyworm, Red Hairy Caterpillar Pegging / Pod- Development  Drain out excess rain water from standing crop field.  Postponed the different activities of farm operations. … [excerpt; full passage retained in evidence]”\n\n· page 44 · AMRELI, JAMNAGAR DISTRICTS.: “operations.  Keeping rainfall forecast in mind farmers are advised not to do any type of spray and do proper management in standing crops.  To carry out all farm activity of farm during vapsa condition. Soybean Aphid, Jassid, Thrips, leaf miner, Spodoptera litura, Helicoverpa armigera Flowering / Pod- Development  Drain out excess rain water from standing crop field.  Postponed the different ac tivities of farm operations. … [excerpt; full passage retained in evidence]”\n\n· page 41 · AMRELI, JAMNAGAR DISTRICTS.: “proper management in standing crops.  To carry out all farm activi ty of farm during vapsa condition. Soybean Aphid, Jassid, Thrips, leaf miner, Spodoptera litura, Helicoverpa armigera Flowering / Pod- Development  Drain out excess rain water from standing crop field.  Postponed the different activities of farm operations.  Keeping rainfall forecast in mind farmers are advised not to do any type of spray and do proper management in standing crops. … [excerpt; full passage retained in evidence]”\n\n· page 44 · AMRELI, JAMNAGAR DISTRICTS.: “clean with zinc oxide or boric powder. PORBANDAR Crop Variety/ Pest/Insect Stage Agromet Advisories Kharif Groundnut White grub, Early leaf Spot, Aphid, Jassid, Thrips, leaf miner, Armyworm, Red Hairy Caterpillar Pegging / Pod- Development  Drain out excess rain water from standing crop field.  Postponed the different activities of fa rm operations.  Keeping rainfall forecast in mind farmers are advised not to do any type of spray and do proper management in standing crops. … [excerpt; full passage retained in evidence]”\n\nCrop guidance is district-level published advice. It has not been validated against an individual field, current crop stage or the weather at that field, and it is not a personal go/no-go decision.\n\nExtraction reading order is unverified for these documents; tables and headings can be split.\n\nThese are original source excerpts. They are not a forecast, an observation, an official warning or personalized advice.",
+      "fact_ids": [],
+      "passage_ids": [
+        "6e5b79818ad6f47ca635c439c032f437ecc1791e02d37cd52727afbd78de1562",
+        "85288363afec452459176bea831b9d1fd93f1280cd7deb6e5a12d664d4abbbf4",
+        "5c5a3e1e8e281fa75e74efcedcc950ee5c41904ae2a8aa58eb40487bdddf4bef",
+        "db416443b8866276b831e2bcf1a6fe714e42ce8dabf90f7fd2c72344b8476828",
+        "e722f689c6fb5db14a65725d9aafb8b4a8c3ebe2a5106603a839fd118ab50ace",
+        "32cff7b55cb875a6f6ab2f0c2556c77d5437e8ef1d1569b2f9cf85bb7c3c4d2a",
+        "0f6eb680d346f1c3d71becac6c039f5fd854db95a8a1b14bda138975ae7ef5ec",
+        "e85a98d9d69865e9e66353a2763add8ea58cbe59322d176689b177ab05715f1f",
+        "73825e46c37959c45f177e674c6c7086a901e138f0a6ba69d2497cb2a3dd0c58",
+        "fb62935d905aecb478b48d09859080cafebf1211ac23ed3f1cf1af67a32f672e"
+      ]
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "pending_slots": [],
+  "retrieval_coverage": [
+    {
+      "mode": "whole_document_bm25_plus_dense_rrf",
+      "candidates": 257,
+      "returned": 10,
+      "edition_differences": 0,
+      "edition_comparison": "single_edition_indexed",
+      "editions_indexed_for_this_product": 1,
+      "whole_document": false,
+      "lexically_supported": 10,
+      "lexical_overlap_required": true,
+      "match_basis": "lexical_overlap",
+      "filters": {
+        "family": "state_agromet",
+        "scope": "state",
+        "region": "Gujarat"
+      },
+      "evidence_classes": {
+        "crop_advisory": 10
+      },
+      "superseded_retired": 0,
+      "currency_unknown": 0,
+      "expired_printed_validity": 0,
+      "unverified_excluded": 0,
+      "scope": "Whole-document passage index over indexed published documents; not a completeness claim for any publisher and not an archive.",
+      "scores_are_confidence": false,
+      "task_id": "t1"
+    }
+  ],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "document",
+      "parameters": [
+        "published_document"
+      ],
+      "candidates": [
+        {
+          "tool": "published_documents",
+          "selected": true,
+          "available": true,
+          "reason": "Text search over the indexed published documents with family, scope, region, physical page, printed issue date and currency attached; published text is a record, never a current applicable warning, an all-clear or personalized advice",
+          "sources": [
+            {
+              "source_id": "S07",
+              "product": "Gujarat composite agromet bulletin, issue 70/2026",
+              "registry_status": "sample_inspected"
+            },
+            {
+              "source_id": "S08",
+              "product": "Gujarat district forecast and warnings bulletin",
+              "registry_status": "sample_inspected"
+            },
+            {
+              "source_id": "S57",
+              "product": "IMD district farmer bulletin delivery (English and local language)",
+              "registry_status": "prototype_adapter_tested"
+            },
+            {
+              "source_id": "S58",
+              "product": "RSMC official sea-area bulletin delivery",
+              "registry_status": "prototype_adapter_tested"
+            },
+            {
+              "source_id": "S59",
+              "product": "RSMC official coastal bulletin delivery",
+              "registry_status": "prototype_adapter_tested"
+            },
+            {
+              "source_id": "S64",
+              "product": "IMD All India Weather Summary and Forecast Bulletin (daily PDF)",
+              "registry_status": "not_registered"
+            },
+            {
+              "source_id": "S65",
+              "product": "IMD National and South Asia Flash Flood Guidance bulletins",
+              "registry_status": "not_registered"
+            },
+            {
+              "source_id": "S66",
+              "product": "IMD extended range and press release document set (marquee)",
+              "registry_status": "not_registered"
+            },
+            {
+              "source_id": "S67",
+              "product": "RSMC New Delhi special advisory PDF",
+              "registry_status": "not_registered"
+            }
+          ]
+        }
+      ],
+      "status": "answered",
+      "returned_source_ids": [
+        "S07"
+      ]
+    }
+  ],
+  "passages": [
+    {
+      "document_sha256": "22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3",
+      "extraction_version": "document-passages-v1",
+      "family": "state_agromet",
+      "id": "6e5b79818ad6f47ca635c439c032f437ecc1791e02d37cd52727afbd78de1562",
+      "issue_date": "2026-09-12",
+      "language": "en",
+      "passage_index": 1,
+      "physical_page": 1,
+      "region": "Gujarat",
+      "scope": "state",
+      "section": null,
+      "source_id": "S07",
+      "source_locator": "physical PDF page 1",
+      "text": "Agromet Advisory Service Bulletin for the State of Gujarat (Advisories mentioned in the bulletin are prepared by different AMFUs and DAMUs in Gujarat) Bulletin No. 71/2026 Issued on 12-09-2026 DAY-1 Very Heavy rains at isolated places very likely inthedistrictsofSouthGujaratregionnamelyDang,Navsari,ValsadandinDaman,DadraandNa garHaveli Heavy rains at isolated places very likely inthe districtsofGujaratregionnamelyAnand, Vadodara,ChhotaUdepur,Narmada, Bharuch,Surat and Tapi. Light thunderstormwithlightningandsurfacewind30-40kmphaccompaniedwith lighttomoderaterainverylikelyatisolatedplacesin all the districts of North Gujarat region namely Banaskantha, Vav-Tharad, Patan, Mehsana, Sabarkantha, Gandhinagar, Aravalli,",
+      "text_quality": "text_layer_clean",
+      "retrieval": {
+        "rrf_score": 0.03252247488101534,
+        "lexical_score": 16.450662197161908,
+        "semantic_score": 0.8578083271838819
+      },
+      "citation_ids": [
+        "t1-doc-22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3"
+      ],
+      "evidence_kind": "crop_advisory",
+      "applicability": "published_record; not a forecast, observation or personalized advice",
+      "currency": "printed_issue_differs_from_retrieval_date",
+      "task_id": "t1"
+    },
+    {
+      "document_sha256": "22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3",
+      "extraction_version": "document-passages-v1",
+      "family": "state_agromet",
+      "id": "85288363afec452459176bea831b9d1fd93f1280cd7deb6e5a12d664d4abbbf4",
+      "issue_date": "2026-09-12",
+      "language": "en",
+      "passage_index": 171,
+      "physical_page": 45,
+      "region": "Gujarat",
+      "scope": "state",
+      "section": "AMRELI, JAMNAGAR DISTRICTS.",
+      "source_id": "S07",
+      "source_locator": "physical PDF page 45",
+      "text": "water.  Udder of milking animals must be properly clean with zinc oxide or boric powder. AMFU Arnej: AHMEDABAD Advisory General advice Undertake interculturing and weeding operations to conserve moisture in standing monsoon crops and apply need based light irrigation by considering weather and soil moisture condition in standing crops. Application of fertilizer or top dressing should undertake only under optimum soil moisture condition in standing crops. Farmers are advised to download MEGHDOOT mobile application for acquiring information regarding Agromet Advisory in Gujaratilanguage. Click on following link to download this applicationuser:https://play,google.com/store/apps/details?id=com.aas.me",
+      "text_quality": "text_layer_clean",
+      "retrieval": {
+        "rrf_score": 0.032018442622950824,
+        "lexical_score": 12.426668554982031,
+        "semantic_score": 0.8687066109723361
+      },
+      "citation_ids": [
+        "t1-doc-22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3"
+      ],
+      "evidence_kind": "crop_advisory",
+      "applicability": "published_record; not a forecast, observation or personalized advice",
+      "currency": "printed_issue_differs_from_retrieval_date",
+      "task_id": "t1"
+    },
+    {
+      "document_sha256": "22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3",
+      "extraction_version": "document-passages-v1",
+      "family": "state_agromet",
+      "id": "5c5a3e1e8e281fa75e74efcedcc950ee5c41904ae2a8aa58eb40487bdddf4bef",
+      "issue_date": "2026-09-12",
+      "language": "en",
+      "passage_index": 9,
+      "physical_page": 3,
+      "region": "Gujarat",
+      "scope": "state",
+      "section": "FWS/ISOL WS/FWS WS/FWS FWS/SCT SCT/SCT",
+      "source_id": "S07",
+      "source_locator": "physical PDF page 3",
+      "text": "ISOl: Isolated i.e 1 or 2 places  SCT:Scattered i.e Rain at a few places FWS: Fairly wide spread i.e Rain at many places  Dry:No rain WS: Widespread,i.e Rain at most places. Agromet Advisories issued by different Agromet Field Units (AMFUs) of Gujarat Gujarat region: Met Subdivision AMFU Navsari (Dangs,Navsari,Valsad districts): Navsari: Crop Weather based Agro-Advisory Sugarcane Vegetative Stage/Grand Growth stage:  After 6, 7 & 8 month of planting remove dry leaves and use it as mulch.  Up root and burn whip smut and wilted plant from field.  Drenching of Carbendazim 50 wp 10gm/10 lit water from prevent spread of both disease (Sugarcane red rot & Wilt) nearby healthy plants during clear weather condition.",
+      "text_quality": "text_layer_clean",
+      "retrieval": {
+        "rrf_score": 0.03125763125763126,
+        "lexical_score": 10.403030765398242,
+        "semantic_score": 0.8575777438836294
+      },
+      "citation_ids": [
+        "t1-doc-22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3"
+      ],
+      "evidence_kind": "crop_advisory",
+      "applicability": "published_record; not a forecast, observation or personalized advice",
+      "currency": "printed_issue_differs_from_retrieval_date",
+      "task_id": "t1"
+    },
+    {
+      "document_sha256": "22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3",
+      "extraction_version": "document-passages-v1",
+      "family": "state_agromet",
+      "id": "db416443b8866276b831e2bcf1a6fe714e42ce8dabf90f7fd2c72344b8476828",
+      "issue_date": "2026-09-12",
+      "language": "en",
+      "passage_index": 202,
+      "physical_page": 53,
+      "region": "Gujarat",
+      "scope": "state",
+      "section": "18.5 SC 3 ml or Flubendiamide 480 SC 3 ml in 10 litres",
+      "source_id": "S07",
+      "source_locator": "physical PDF page 53",
+      "text": "standing monsoon crops and apply need based light irrigation by considering weather and soi l moisture condition in standing crops. Application of fertilizer or top dressing should undertake only under optimum soil moisture condition in standing crops. Farmers are advised to download MEGHDOOT mobile application for acquiring information regarding  Agromet Advisory in Gujaratilanguage. Click on following link to download this applicationuser:https://play,google.com/store/apps/details?id=com.aas.me ghdoot Field Crops Stage Advisory Cotton Squaring/ Flowering/ Boll formation  If irrigation facilities are available then apply need based irrigation through drip irrigation/alternate furrow irrigation method by considering soil moisture",
+      "text_quality": "text_layer_clean",
+      "retrieval": {
+        "rrf_score": 0.030834914611005692,
+        "lexical_score": 13.257590090763706,
+        "semantic_score": 0.8517590062288962
+      },
+      "citation_ids": [
+        "t1-doc-22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3"
+      ],
+      "evidence_kind": "crop_advisory",
+      "applicability": "published_record; not a forecast, observation or personalized advice",
+      "currency": "printed_issue_differs_from_retrieval_date",
+      "task_id": "t1"
+    },
+    {
+      "document_sha256": "22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3",
+      "extraction_version": "document-passages-v1",
+      "family": "state_agromet",
+      "id": "e722f689c6fb5db14a65725d9aafb8b4a8c3ebe2a5106603a839fd118ab50ace",
+      "issue_date": "2026-09-12",
+      "language": "en",
+      "passage_index": 188,
+      "physical_page": 50,
+      "region": "Gujarat",
+      "scope": "state",
+      "section": "18.5 SC 3 ml or Flubendiamide 480 SC 3 ml in 10 litres",
+      "source_id": "S07",
+      "source_locator": "physical PDF page 50",
+      "text": "fertilizer or top dressing should undertake only under optimum soil moisture condition in standing crops. Farmers are advised to download MEGHDOOT mobile application for acquiring information regarding Agromet Advisory in Gujaratilanguage. Click on following link to download this applicationuser:https://play,google.com/store/apps/details?id=com.aas.me ghdoot Field Crops Stage Advisory Cotton Squaring/ Flowering/ Boll formation  If irrigation facilities are available then apply need based irrigation through drip irrigation/alternate furrow irrigation method by considering soil moisture condition in standing crop.  Avoid application of fertilizers during long dry spell condition or it should apply under optimum soil",
+      "text_quality": "text_layer_clean",
+      "retrieval": {
+        "rrf_score": 0.030158730158730156,
+        "lexical_score": 13.18749083303372,
+        "semantic_score": 0.8513999917735967
+      },
+      "citation_ids": [
+        "t1-doc-22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3"
+      ],
+      "evidence_kind": "crop_advisory",
+      "applicability": "published_record; not a forecast, observation or personalized advice",
+      "currency": "printed_issue_differs_from_retrieval_date",
+      "task_id": "t1"
+    },
+    {
+      "document_sha256": "22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3",
+      "extraction_version": "document-passages-v1",
+      "family": "state_agromet",
+      "id": "32cff7b55cb875a6f6ab2f0c2556c77d5437e8ef1d1569b2f9cf85bb7c3c4d2a",
+      "issue_date": "2026-09-12",
+      "language": "en",
+      "passage_index": 8,
+      "physical_page": 3,
+      "region": "Gujarat",
+      "scope": "state",
+      "section": null,
+      "source_id": "S07",
+      "source_locator": "physical PDF page 3",
+      "text": "Extended Range forecast at Met-Subdivision Level  (12th Sept to 16th Sept 2026) Meteorological Sub-Division  Rainfall Max Temp Gujarat region Normal/ Above Normal Above Normal/ below Normal Saurashtra-Kutch Above Normal/ Normal below Normal/ Above Normal Summary of four days rainfall over the State (08 - 11 Sept 2026) : Met Sub Division 08-09-2026 09-09-2026 10-09-2026 11-09-2026 Gujarat region ISOl ISOl ISOl ISOl Saurashtra-Kutch ISOl ISOl ISOl ISOl Rainfall forecast for next 5 days Met Sub Division 12-09-2026 13-09-2026 14-09-2026 15-09-2026 16-09-2026 Gujarat region",
+      "text_quality": "text_layer_clean",
+      "retrieval": {
+        "rrf_score": 0.028665028665028666,
+        "lexical_score": 9.919303958840247,
+        "semantic_score": 0.8422020495636289
+      },
+      "citation_ids": [
+        "t1-doc-22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3"
+      ],
+      "evidence_kind": "crop_advisory",
+      "applicability": "published_record; not a forecast, observation or personalized advice",
+      "currency": "printed_issue_differs_from_retrieval_date",
+      "task_id": "t1"
+    },
+    {
+      "document_sha256": "22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3",
+      "extraction_version": "document-passages-v1",
+      "family": "state_agromet",
+      "id": "0f6eb680d346f1c3d71becac6c039f5fd854db95a8a1b14bda138975ae7ef5ec",
+      "issue_date": "2026-09-12",
+      "language": "en",
+      "passage_index": 162,
+      "physical_page": 42,
+      "region": "Gujarat",
+      "scope": "state",
+      "section": "AMRELI, JAMNAGAR DISTRICTS.",
+      "source_id": "S07",
+      "source_locator": "physical PDF page 42",
+      "text": "water.  Udder of milking animals must be properly clean with zinc oxide or boric powder. JUNAGADH Crop Variety/ Pest/Insect Stage Agromet Advisories Kharif Groundnut White grub, Early leaf Spot, Aphid, Jassid, Thrips, leaf miner, Armyworm, Red Hairy Caterpillar Pegging / Pod- Development  Drain out excess rain water from standing crop field.  Postponed the different activities of farm operations.  Keeping rainfall forecast in mind farmers are advised not to do any type of spray and do proper management in standing crops.  To carry out all farm activity of farm during vapsa condition. Cotton Stem borer, Aphid, Leafhopper and Mealy bug Branching / Flowering  Drain out excess rain water from standing crop",
+      "text_quality": "text_layer_clean",
+      "retrieval": {
+        "rrf_score": 0.028283227848101264,
+        "lexical_score": 3.40207588950558,
+        "semantic_score": 0.8555524890888322
+      },
+      "citation_ids": [
+        "t1-doc-22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3"
+      ],
+      "evidence_kind": "crop_advisory",
+      "applicability": "published_record; not a forecast, observation or personalized advice",
+      "currency": "printed_issue_differs_from_retrieval_date",
+      "task_id": "t1"
+    },
+    {
+      "document_sha256": "22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3",
+      "extraction_version": "document-passages-v1",
+      "family": "state_agromet",
+      "id": "e85a98d9d69865e9e66353a2763add8ea58cbe59322d176689b177ab05715f1f",
+      "issue_date": "2026-09-12",
+      "language": "en",
+      "passage_index": 168,
+      "physical_page": 44,
+      "region": "Gujarat",
+      "scope": "state",
+      "section": "AMRELI, JAMNAGAR DISTRICTS.",
+      "source_id": "S07",
+      "source_locator": "physical PDF page 44",
+      "text": "operations.  Keeping rainfall forecast in mind farmers are advised not to do any type of spray and do proper management in standing crops.  To carry out all farm activity of farm during vapsa condition. Soybean Aphid, Jassid, Thrips, leaf miner, Spodoptera litura, Helicoverpa armigera Flowering / Pod- Development  Drain out excess rain water from standing crop field.  Postponed the different ac tivities of farm operations.  Keeping rainfall forecast in mind farmers are advised not to do any type of spray and do proper management in standing crops.  To carry out all farm activity of farm during vapsa condition. Pigeon pea Gujarat Pigeon pea – 101 & 103, BDN – 2 & 711 Vegetative  Drain out excess rain water from standing crop",
+      "text_quality": "text_layer_clean",
+      "retrieval": {
+        "rrf_score": 0.0266900790166813,
+        "lexical_score": 3.111516510676489,
+        "semantic_score": 0.8526937769702464
+      },
+      "citation_ids": [
+        "t1-doc-22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3"
+      ],
+      "evidence_kind": "crop_advisory",
+      "applicability": "published_record; not a forecast, observation or personalized advice",
+      "currency": "printed_issue_differs_from_retrieval_date",
+      "task_id": "t1"
+    },
+    {
+      "document_sha256": "22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3",
+      "extraction_version": "document-passages-v1",
+      "family": "state_agromet",
+      "id": "73825e46c37959c45f177e674c6c7086a901e138f0a6ba69d2497cb2a3dd0c58",
+      "issue_date": "2026-09-12",
+      "language": "en",
+      "passage_index": 159,
+      "physical_page": 41,
+      "region": "Gujarat",
+      "scope": "state",
+      "section": "AMRELI, JAMNAGAR DISTRICTS.",
+      "source_id": "S07",
+      "source_locator": "physical PDF page 41",
+      "text": "proper management in standing crops.  To carry out all farm activi ty of farm during vapsa condition. Soybean Aphid, Jassid, Thrips, leaf miner, Spodoptera litura, Helicoverpa armigera Flowering / Pod- Development  Drain out excess rain water from standing crop field.  Postponed the different activities of farm operations.  Keeping rainfall forecast in mind farmers are advised not to do any type of spray and do proper management in standing crops.  To carry out all farm activity of farm during vapsa condition. Pigeon pea Gujarat Pigeon pea – 101 & 103, BDN – 2 & 711 Vegetative  Drain out excess rain water from standing crop field.  Postponed the different activities of farm operations.",
+      "text_quality": "text_layer_clean",
+      "retrieval": {
+        "rrf_score": 0.026540946394272742,
+        "lexical_score": 3.226958797682178,
+        "semantic_score": 0.8515947996585186
+      },
+      "citation_ids": [
+        "t1-doc-22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3"
+      ],
+      "evidence_kind": "crop_advisory",
+      "applicability": "published_record; not a forecast, observation or personalized advice",
+      "currency": "printed_issue_differs_from_retrieval_date",
+      "task_id": "t1"
+    },
+    {
+      "document_sha256": "22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3",
+      "extraction_version": "document-passages-v1",
+      "family": "state_agromet",
+      "id": "fb62935d905aecb478b48d09859080cafebf1211ac23ed3f1cf1af67a32f672e",
+      "issue_date": "2026-09-12",
+      "language": "en",
+      "passage_index": 167,
+      "physical_page": 44,
+      "region": "Gujarat",
+      "scope": "state",
+      "section": "AMRELI, JAMNAGAR DISTRICTS.",
+      "source_id": "S07",
+      "source_locator": "physical PDF page 44",
+      "text": "clean with zinc oxide or boric powder. PORBANDAR Crop Variety/ Pest/Insect Stage Agromet Advisories Kharif Groundnut White grub, Early leaf Spot, Aphid, Jassid, Thrips, leaf miner, Armyworm, Red Hairy Caterpillar Pegging / Pod- Development  Drain out excess rain water from standing crop field.  Postponed the different activities of fa rm operations.  Keeping rainfall forecast in mind farmers are advised not to do any type of spray and do proper management in standing crops.  To carry out all farm activity of farm during vapsa condition. Cotton Stem borer, Aphid, Leafhopper and Mealy bug Branching / Flowering  Drain out excess rain water from standing crop field.  Postponed the different activities of farm",
+      "text_quality": "text_layer_clean",
+      "retrieval": {
+        "rrf_score": 0.0261986301369863,
+        "lexical_score": 3.40207588950558,
+        "semantic_score": 0.8458103491060769
+      },
+      "citation_ids": [
+        "t1-doc-22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3"
+      ],
+      "evidence_kind": "crop_advisory",
+      "applicability": "published_record; not a forecast, observation or personalized advice",
+      "currency": "printed_issue_differs_from_retrieval_date",
+      "task_id": "t1"
+    }
+  ],
+  "document_evidence": [
+    {
+      "family": "state_agromet",
+      "family_label": "State composite agromet advisory bulletin",
+      "scope": "state",
+      "region": "Gujarat",
+      "state": null,
+      "issue_date": "2026-09-12",
+      "currency": "printed_issue_differs_from_retrieval_date",
+      "age_days": 2,
+      "sha256": "22678bac94bcf2713a8058662ecdb90f03d17ee658b8ef2228f80f07fd0385d3",
+      "pages": 76,
+      "source_id": "S07",
+      "extraction_status": "text_layer_extracted_reading_order_unverified",
+      "printed_times": {
+        "bulletin_number": "71/2026"
+      },
+      "is_shared_edition": false,
+      "selected_for_regions": [
+        "Gujarat"
+      ]
+    }
+  ],
+  "edition_comparison": {
+    "items": [],
+    "editions_indexed": 1,
+    "newest_issue": "2026-09-12",
+    "previous_issue": null,
+    "state": "single_edition_indexed"
+  },
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 1,
+    "incomplete_ids": []
+  }
+}

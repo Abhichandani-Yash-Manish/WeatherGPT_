@@ -1,0 +1,147 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "412a705d-c48a-41f4-be3d-677e535aee00",
+  "question": "Kochi me kal tide kya hai?",
+  "status": "unavailable",
+  "answer": "The requested research dataset or operation is not connected. Historical rainfall and national temperature analysis are available.",
+  "facts": [],
+  "citations": [],
+  "notes": [
+    "Time window read from the question: kal whole day."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-15T06:39:20.992587+00:00",
+  "expires_at_utc": null,
+  "trace": {
+    "planning": {
+      "provider": "deterministic_rules",
+      "model": "rule-planner-v1",
+      "model_calls": 0,
+      "attempts": 0,
+      "latency_ms": 0,
+      "failover": []
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit."
+    },
+    "tools": [
+      {
+        "name": "research",
+        "task_id": "t1",
+        "status": "unavailable"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "new",
+      "changed_fields": [
+        "parameters",
+        "places",
+        "time"
+      ],
+      "inherited_fields": []
+    },
+    "duration_seconds": 0.014,
+    "language": {
+      "requested": "hi-latn",
+      "selection": "inferred_from_question",
+      "adherence": "not_applicable",
+      "rendered": false
+    }
+  },
+  "plan": {
+    "language": "hi-Latn",
+    "places": [
+      {
+        "name": "Kochi",
+        "state": "",
+        "district": "",
+        "kind": "unknown"
+      }
+    ],
+    "assumptions": [
+      "Time window read from the question: kal whole day."
+    ],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "Kochi me kal tide kya hai",
+        "kind": "research",
+        "operation": "lookup",
+        "parameters": [],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-16T00:30:00+05:30",
+        "end_local": "2026-09-17T00:30:00+05:30",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "context_action": "new",
+    "changed_fields": [
+      "parameters",
+      "places",
+      "time"
+    ],
+    "intent": "research",
+    "start_local": "2026-09-16T00:30:00+05:30",
+    "end_local": "2026-09-17T00:30:00+05:30",
+    "variables": [],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "Kochi me kal tide kya hai",
+        "kind": "research",
+        "operation": "lookup",
+        "parameters": [],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-16T00:30:00+05:30",
+        "end_local": "2026-09-17T00:30:00+05:30",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "unavailable",
+      "answer": "The requested research dataset or operation is not connected. Historical rainfall and national temperature analysis are available.",
+      "fact_ids": [],
+      "passage_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "pending_slots": [],
+  "retrieval_coverage": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "research",
+      "parameters": [],
+      "candidates": [],
+      "status": "unavailable",
+      "returned_source_ids": []
+    }
+  ],
+  "document_evidence": [],
+  "resolved_points": {},
+  "task_coverage": {
+    "requested": 1,
+    "completed": 0,
+    "incomplete_ids": [
+      "t1"
+    ]
+  }
+}

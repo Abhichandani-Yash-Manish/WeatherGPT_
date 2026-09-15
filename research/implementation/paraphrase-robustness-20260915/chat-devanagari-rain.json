@@ -1,0 +1,289 @@
+{
+  "schema_version": "weather-conversation-v1",
+  "conversation_id": "d37d347d-86dd-420c-8152-7d1ca5cf6634",
+  "question": "कल अहमदाबाद, गुजरात में सुबह बारिश होगी?",
+  "status": "answered",
+  "answer": "Ahmedabad · 16 Sep, 06:30–16 Sep, 12:30 IST: अनुमानित वर्षा की मात्रा: 0.0 mm. स्रोत: GFS पूर्वानुमान; मौसम बदल सकता है।",
+  "facts": [
+    {
+      "id": "t1-f1",
+      "label": "Forecast rainfall",
+      "value": "0.0",
+      "unit": "mm",
+      "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "start": "2026-09-16T06:30:00+05:30",
+      "end": "2026-09-16T12:30:00+05:30",
+      "source_id": "S21",
+      "method": "preceding_hour_sum",
+      "source_locators": [
+        "$.hourly.precipitation[26]",
+        "$.hourly.precipitation[27]",
+        "$.hourly.precipitation[28]",
+        "$.hourly.precipitation[29]",
+        "$.hourly.precipitation[30]",
+        "$.hourly.precipitation[31]"
+      ],
+      "parameter": "precipitation",
+      "entity_id": "geonames:1279233",
+      "evidence_version": "095396af86efaf3a93c3ca0737b1a32de3f2a1c7fdf2c5a5d581d39a9c2909d0",
+      "citation_ids": [
+        "t1-c-095396af86efaf3a93c3ca0737b1a32de3f2a1c7fdf2c5a5d581d39a9c2909d0"
+      ],
+      "task_id": "t1"
+    }
+  ],
+  "citations": [
+    {
+      "source_id": "S21",
+      "provider": "Open-Meteo",
+      "product": "GFS forecast delivery",
+      "evidence_kind": "model_forecast",
+      "url": "https://api.open-meteo.com/v1/gfs?latitude=23.02579&longitude=72.58727&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+      "response_sha256": "095396af86efaf3a93c3ca0737b1a32de3f2a1c7fdf2c5a5d581d39a9c2909d0",
+      "raw_relative_path": "0967ed56a68ce0da36273ba45232de696bacf3448c0a8d99612ed2f76b094b68/0cbcbb7f54544276ad5ec977fdeba135/blobs/095396af86efaf3a93c3ca0737b1a32de3f2a1c7fdf2c5a5d581d39a9c2909d0.bin",
+      "published_job_id": "0967ed56a68ce0da36273ba45232de696bacf3448c0a8d99612ed2f76b094b68",
+      "source_locators": [
+        "$.hourly.precipitation[26]",
+        "$.hourly.precipitation[27]",
+        "$.hourly.precipitation[28]",
+        "$.hourly.precipitation[29]",
+        "$.hourly.precipitation[30]",
+        "$.hourly.precipitation[31]"
+      ],
+      "retrieved_at_utc": "2026-09-15T06:37:54.453345+00:00",
+      "issue_time_utc": null,
+      "id": "t1-c-095396af86efaf3a93c3ca0737b1a32de3f2a1c7fdf2c5a5d581d39a9c2909d0"
+    },
+    {
+      "source_id": "S61",
+      "url": "https://www.geonames.org/1279233",
+      "provider": "GeoNames",
+      "product": "India place catalogue",
+      "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+      "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+    }
+  ],
+  "notes": [
+    "Resolved the stated relative day to 2026-09-16T06:30:00+05:30 through 2026-09-16T12:30:00+05:30; this remains known even when the place is missing.",
+    "State read as State of Gujarāt — the state was given in another script and was not used to filter: the name alone resolved.",
+    "Model forecasts at the selected place point, not observations or district averages. Source model run time and local representativeness remain unverified."
+  ],
+  "choices": [],
+  "follow_up": null,
+  "operational_eligible": false,
+  "answered_at_utc": "2026-09-15T06:39:11.338185+00:00",
+  "expires_at_utc": "2026-09-15T07:37:54.453345+00:00",
+  "trace": {
+    "planning": {
+      "provider": "deterministic_rules",
+      "model": "rule-planner-v1",
+      "model_calls": 0,
+      "attempts": 0,
+      "latency_ms": 0,
+      "failover": []
+    },
+    "generation": {
+      "provider": "typed_task_renderers",
+      "validation": "Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit.",
+      "requested_language": "hi",
+      "language_selection": "inferred_from_question",
+      "language_adherence": "written_by_template"
+    },
+    "tools": [
+      {
+        "name": "gazetteer_search",
+        "query": {
+          "name": "अहमदाबाद",
+          "state": "गुजरात",
+          "district": "",
+          "kind": "unknown"
+        },
+        "matches": 1
+      },
+      {
+        "name": "point_forecast",
+        "location": "Ahmedabad, Ahmadābād, State of Gujarāt",
+        "status": "prototype_answer",
+        "refresh": null
+      },
+      {
+        "name": "forecast",
+        "task_id": "t1",
+        "status": "answered"
+      }
+    ],
+    "provider": "local_ollama",
+    "context_resolution": {
+      "action": "new",
+      "changed_fields": [
+        "parameters",
+        "places",
+        "time"
+      ],
+      "inherited_fields": []
+    },
+    "duration_seconds": 0.115
+  },
+  "plan": {
+    "language": "hi",
+    "places": [
+      {
+        "name": "अहमदाबाद",
+        "state": "गुजरात",
+        "district": "",
+        "kind": "unknown"
+      }
+    ],
+    "assumptions": [
+      "Resolved the stated relative day to 2026-09-16T06:30:00+05:30 through 2026-09-16T12:30:00+05:30; this remains known even when the place is missing."
+    ],
+    "clarification": "",
+    "explicit_times": false,
+    "tasks": [
+      {
+        "request_quote": "कल अहमदाबाद, गुजरात में सुबह बारिश होगी",
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-16T06:30:00+05:30",
+        "end_local": "2026-09-16T12:30:00+05:30",
+        "place_indices": [
+          0
+        ]
+      }
+    ],
+    "context_action": "new",
+    "changed_fields": [
+      "parameters",
+      "places",
+      "time"
+    ],
+    "intent": "forecast",
+    "start_local": "2026-09-16T06:30:00+05:30",
+    "end_local": "2026-09-16T12:30:00+05:30",
+    "variables": [
+      "precipitation"
+    ],
+    "year": 0,
+    "period": "annual",
+    "history_parameter": "rainfall",
+    "unsupported_parameters": [],
+    "requested_outcome": "Complete all explicitly requested tasks"
+  },
+  "task_results": [
+    {
+      "id": "t1",
+      "request": {
+        "request_quote": "कल अहमदाबाद, गुजरात में सुबह बारिश होगी",
+        "kind": "forecast",
+        "operation": "lookup",
+        "parameters": [
+          "precipitation"
+        ],
+        "years": [],
+        "period": "annual",
+        "start_local": "2026-09-16T06:30:00+05:30",
+        "end_local": "2026-09-16T12:30:00+05:30",
+        "place_indices": [
+          0
+        ]
+      },
+      "status": "answered",
+      "answer": "Ahmedabad · 16 Sep, 06:30–16 Sep, 12:30 IST: अनुमानित वर्षा की मात्रा: 0.0 mm. स्रोत: GFS पूर्वानुमान; मौसम बदल सकता है।",
+      "fact_ids": [
+        "t1-f1"
+      ],
+      "passage_ids": []
+    }
+  ],
+  "charts": [],
+  "calculations": [],
+  "pending_slots": [],
+  "retrieval_coverage": [],
+  "retrieval_plan": [
+    {
+      "task_id": "t1",
+      "operation": "lookup",
+      "kind": "forecast",
+      "parameters": [
+        "precipitation"
+      ],
+      "candidates": [
+        {
+          "tool": "forecast_summary",
+          "selected": true,
+          "available": true,
+          "reason": "Exact-window GFS model summary",
+          "sources": [
+            {
+              "source_id": "S21",
+              "product": "Open-Meteo GFS forecast delivery",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        },
+        {
+          "tool": "hourly_forecast",
+          "selected": false,
+          "available": true,
+          "reason": "Hourly evidence; exact onset and whole-period probability unavailable",
+          "sources": [
+            {
+              "source_id": "S62",
+              "product": "Open-Meteo best-match extended hourly forecast",
+              "registry_status": "prototype_adapter_tested"
+            }
+          ]
+        }
+      ],
+      "status": "answered",
+      "returned_source_ids": [
+        "S21",
+        "S61"
+      ]
+    }
+  ],
+  "document_evidence": [],
+  "resolved_points": {
+    "अहमदाबाद": {
+      "id": "1279233",
+      "name": "Ahmedabad",
+      "latitude": 23.02579,
+      "longitude": 72.58727,
+      "feature": "PPL",
+      "admin1": "State of Gujarāt",
+      "admin2": "Ahmadābād",
+      "modified": "2024-01-06",
+      "name_match_basis": "alias_or_approximate",
+      "state_match_basis": "the state was given in another script and was not used to filter: the name alone resolved",
+      "other_alias_matches": 0,
+      "match_type": "source_name_or_alias",
+      "selection_id": "geonames:1279233",
+      "label": "Ahmedabad, Ahmadābād, State of Gujarāt",
+      "coordinates": {
+        "latitude": 23.02579,
+        "longitude": 72.58727
+      },
+      "source_id": "S61",
+      "citation": {
+        "source_id": "S61",
+        "url": "https://www.geonames.org/1279233",
+        "provider": "GeoNames",
+        "product": "India place catalogue",
+        "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+        "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+      },
+      "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+      "for_place_name": "अहमदाबाद"
+    }
+  },
+  "task_coverage": {
+    "requested": 1,
+    "completed": 1,
+    "incomplete_ids": []
+  }
+}
