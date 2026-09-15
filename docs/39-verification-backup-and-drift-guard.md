@@ -56,3 +56,6 @@ Each phase staged its own files, and the tree was clean with `scripts/verify_all
 reporting 21 steps, 0 failed on the committed state. The earlier batches (docs/01–30) were
 already committed. Runtime stores, the browser profile and scratch probes are not in Git;
 the measurement scripts that produced the frontend evidence are.
+
+The [answer transparency and edition coverage](47-answer-transparency-and-edition-coverage.md) batch followed the same pattern: one commit for the code and tests, one for the recorded evidence and the measurement scripts, one for the documents and registers, and one for the per-document passage lookup.
+
