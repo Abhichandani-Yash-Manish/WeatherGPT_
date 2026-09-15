@@ -1,6 +1,6 @@
 {
   "schema_version": "product-progress-plan-v1",
-  "as_of_utc": "2026-09-15T08:36:12+00:00",
+  "as_of_utc": "2026-09-15T09:36:27+00:00",
   "status": "implementation_in_progress",
   "user_direction": "Desktop web now. Hosting/sharing on hold. Preserve final nationwide and specialist scope.",
   "next_batch": [
@@ -293,8 +293,8 @@
       "prerequisite": "Reviewed domain tools; no unsupported risk scores"
     }
   ],
-  "latest_batch": "docs/63-product-walkthrough.md",
-  "next_batch_note": "The indexed corpus is now reachable from chat (A06): 582 documents across 12 families answer through a bounded document task with page, printed issue date, currency and reference-only warning separation. The open source-path work is now held-layout widening, A01/A04/A07 engine repairs, and the declared acceptance benchmark (G08). The multilingual path has measured reach; its remaining gap is the 13 failed write languages (G04) and clarification rendering.",
+  "latest_batch": "docs/65-ensemble-spread.md",
+  "next_batch_note": "Ensemble spread is now reachable from chat (PS3): the member mean, spread, range and percentiles of one governed model, computed from the returned members and never scored. The open items remain the ones the gap register lists: held-layout widening, the A01/A04/A07 engine repairs, the declared acceptance benchmark (G08), and the multilingual write and fluency gaps.",
   "open_paths": [
     {
       "path": "source_and_document",

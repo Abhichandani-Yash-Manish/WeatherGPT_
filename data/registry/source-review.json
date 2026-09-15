@@ -1,6 +1,6 @@
 {
  "schema_version": "source-review-v1",
- "compiled_at_utc": "2026-09-14T22:31:37+00:00",
+ "compiled_at_utc": "2026-09-15T09:35:55+00:00",
  "title": "Source activation review",
  "scope": "Every source registered in data/registry/sources.json, measured at its registered address.",
  "policy": {
@@ -39,7 +39,7 @@
  },
  "counts": {
   "blocked_access": 15,
-  "active": 17,
+  "active": 18,
   "reachable_not_connected": 10,
   "product_address_pending": 5,
   "not_a_data_product": 10,
@@ -50,8 +50,8 @@
  "probe_failures": [
   "S11"
  ],
- "evidence_directory": "research/discovery/evidence/source-audit-20260914T175609Z",
- "rebuild_evidence": "research/discovery/evidence/source-audit-20260914T223137Z",
+ "evidence_directory": "research/discovery/evidence/source-audit-20260915T093554Z",
+ "rebuild_evidence": null,
  "sources": [
   {
    "id": "S01",
@@ -2860,6 +2860,51 @@
     "A special advisory is never current merely because the file answers."
    ],
    "next_action": "Ingest on the daily queue and refuse to present the advisory as current when the printed date is not the retrieval date."
+  },
+  {
+   "id": "S68",
+   "product": "Open-Meteo ensemble member forecast delivery",
+   "category": "nwp_ensemble",
+   "registry_evidence_stage": "sample_inspected",
+   "access_url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=23.02579&longitude=72.58727&hourly=temperature_2m&models=gfs025&forecast_days=1",
+   "status": "active",
+   "status_meaning": "A normal user journey fetches this through a governed connector and the probe answers.",
+   "status_basis": "curated",
+   "curated_status": "active",
+   "payload_family": "json",
+   "via": null,
+   "connector": {
+    "kind": "point",
+    "kind_meaning": "coordinate or station point product",
+    "connected": true,
+    "ingested_by_families": [],
+    "wired_to_chat": true,
+    "reachability_note": null
+   },
+   "probe": {
+    "request_id": "1a650a6ba3eb",
+    "method": "GET",
+    "url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=23.02579&longitude=72.58727&hourly=temperature_2m&models=gfs025&forecast_days=1",
+    "checked_at_utc": "2026-09-15T09:35:54+00:00",
+    "http_status": 200,
+    "content_type": "application/json",
+    "content_length": null,
+    "sample_bytes": 6232,
+    "sample_sha256": "db80f9079ba925541031d2049f12640ddfd7eef04bc95948e8b52af07beca412",
+    "final_url": "https://ensemble-api.open-meteo.com/v1/ensemble?latitude=23.02579&longitude=72.58727&hourly=temperature_2m&models=gfs025&forecast_days=1",
+    "elapsed_ms": 603,
+    "error": null,
+    "body": "{\"latitude\":23.0,\"longitude\":72.5,\"generationtime_ms\":0.2665519714355469,\"utc_offset_seconds\":0,\"timezone\":\"GMT\",\"timezone_abbreviation\":\"GMT\",\"elevation\":53.0,\"hourly_units\":{\"time\":\"iso8601\",\"temperature_2m\":\"\u00b0C\",\"temperature_2m_member01\":\"\u00b0C\",\"temperature_2m_member02\":\"\u00b0C\",\"temperature_2m_member03\":\"\u00b0C\",\"temperature_2m_member04\":\"\u00b0C\",\"temperature_2m_member05\":\"\u00b0C\",\"temperature_2m_member06\":\"\u00b0C\",\"temperature_2m_member07\":\"\u00b0C\",\"temperature_2m_member08\":\"\u00b0C\",\"temperature_2m_member09\":\"\u00b0C\",\"temperature_2m_member10\":\"\u00b0C\",\"temperature_2m_member11\":\"\u00b0C\",\"temperature_2m_member12\":\"\u00b0C\",\"temperature_2m_member13\":\"\u00b0C\",\"temperature_2m_member14\":\"\u00b0C\",\"temperature_2m_member15\":\"\u00b0C\",\"temperature_2m_member16\":\"\u00b0C\",\"temperature_2m_member17\":\"\u00b0C\",\"temperature_2m_member18\":\"\u00b0C\",\"temperature_2m_member19\":\"\u00b0C\",\"temperature_2m_member20\":\"\u00b0C\",\"temperature_2m_member21\":\"\u00b0C\",\"temperature_2m_member22\":\"\u00b0C\",\"temperature_2m_member23\":\"\u00b0C\",\"temperature_2m_member24\":\"\u00b0C\",\"temperature_2m_member25\":\"\u00b0C\",\"temperature_2m_member26\":\"\u00b0C\",\"temperature_2m_member27\":\"\u00b0C\",\"temperature_2m_member28\":\"\u00b0C\",\"temperature_2m_member29\":\"\u00b0C\",\"temperature_2m_member30\":\"\u00b0C\"},\"hourly\":{\"time\":[\"2026-09-15T00:00\",\"2026-09-15T01:00\",\"2026-09-15T02:00\",\"2026-09-15T03:00\",\"2026-09-15T04:00\",\"2026-09-15T05:00\",\"2026-09-15T06:00\",\"2026-09-15T07:00\",\"2026-09-15T08:00\",\"2026-09-15T09:00\",\"2026-09-15T10:00\",\"2026-09-15T11:00\",\"2026-09-15T12:00\",\"2026-09-15T13:00\",\"2026-09-15T14:00\",\"2026-09-15T15:00\",\"2026-09-15T16:00\",\"2026-09-15T17:00\",\"2026-09-15T18:00\",\"2026-09-15T19:00\",\"2026-09-15T20:00\",\"2026-09-15T21:00\",\"2026-09-15T22:00\",\"2026-09-15T23:00\"],\"temperature_2m\":[24.9,25.2,25.8,26.6,27.8,29.2,30.3,30.9,31.3,31.3,30.6,29.6,28.7,28.1,27.6,27.3,27.0,26.8,26.6,26.5,26.3,26.2,25.9,25.5],\"temperature_2m_member01\":[24.6,24.9,25.5,26.4,27.8,29.5,30.8,31.5,31.8,31.8,31.3,30.5,29.7,28.9,28.1,27.5,27.1,26.9,26.7,26.5,26.3,26.1,25.7,25.4],\"temperature_2m_member02\":[24.8,25.2,25.9,26.8,28.1,29.5,30.5,30.9,30.8,30.6,30.0,29.2,28.5,27.9,27.4,27.0,26.7,26.4,26.2,26.0,25.9,25.8,25.6,25.4],\"temperature_2m_member03\":[24.7,24.8,25.2,25.9,26.9,28.2,29.3,30.1,30.7,30.8,30.0,28.7,27.6,26.9,26.5,26.2,25.9,25.8,25.6,25.5,25.4,25.3,25.1,24.9],\"temperature_2m_member04\":[24.4,24.8,25.5,26.3,27.5,28.8,29.9,30.8,31.6,31.9,31.9,31.5,30.8,29.6,28.1,27.0,26.6,26.5,26.5,26.3,26.1,25.9,25.6,25.4],\"temperature_2m_member05\":[25.0,25.4,26.0,26.8,27.9,29.1,30.2,31.0,31.6,31.7,31.2,30.3,29.4,28.6,28.0,27.4,26.9,26.6,26.3,25.9,25.5,25.2,24.9,24.6],\"temperature_2m_member06\":[25.0,25.2,25.6,26.3,27.5,29.1,30.3,30.9,31.2,31.3,31.1,30.7,30.0,29.1,27.9,27.1,26.8,26.8,26.7,26.5,26.2,26.0,25.6,25.3],\"temperature_2m_member07\":[24.8,24.9,25.1,25.6,26.8,28.3,29.6,30.6,31.3,31.7,31.4,30.8,29.9,28.6,27.2,26.0,25.5,25.3,25.2,25.1,25.0,24.9,24.8,24.7],\"temperature_2m_member08\":[24.9,25.1,25.4,26.1,27.6,29.4,30.7,31.1,31.0,30.8,30.4,29.9,29.3,28.6,27.9,27.3,26.9,26.5,26.2,25.9,25.6,25.4,25.2,25.0],\"temperature_2m_member09\":[25.0,25.5,26.1,27.0,28.1,29.3,30.3,30.8,31.1,31.1,30.6,29.8,29.0,28.3,27.8,27.3,26.9,26.6,26.4,26.2,26.1,26.0,25.7,25.5],\"temperature_2m_member10\":[25.0,25.2,25.5,26.1,27.2,28.5,29.6,30.2,30.7,30.9,30.9,30.7,30.3,29.5,28.6,27.8,27.4,27.1,26.9,26.6,26.3,26.0,25.7,25.4],\"temperature_2m_member11\":[24.5,24.9,25.6,26.4,27.6,28.9,30.1,31.0,31.8,32.1,31.7,30.8,29.9,29.1,28.2,27.5,27.0,26.8,26.6,26.4,26.2,26.1,25.8,25.6],\"temperature_2m_member12\":[24.8,25.0,25.5,26.3,27.7,29.4,30.7,31.4,31.8,31.8,31.3,30.3,29.4,28.7,28.0,27.4,27.1,26.9,26.7,26.5,26.3,26.0,25.7,25.4],\"temperature_2m_member13\":[24.8,25.2,25.8,26.6,27.8,29.2,30.2,30.7,30.7,30.7,30.5,30.1,29.7,29.0,28.2,27.6,27.2,26.9,26.6,26.3,26.0,25.8,25.6,25.4],\"temperature_2m_member14\":[25.0,25.4,26.1,26.9,28.0,29.2,30.1,30.5,30.5,30.4,30.0,29.3,28.7,28.2,27.6,27.1,26.7,26.3,26.0,25.6,25.3,25.0,24.9,24.9],\"temperature_2m_member15\":[25.1,25.4,26.0,26.7,27.9,29.2,30.3,30.9,31.3,31.4,31.1,30.6,29.9,28.9,27.8,26.9,26.4,26.2,26.1,25.9,25.8,25.7,25.5,25.4],\"temperature_2m_member16\":[24.8,25.2,25.9,26.8,27.9,29.3,30.4,31.1,31.7,31.8,31.2,30.3,29.4,28.6,28.0,27.4,27.1,26.9,26.6,26.3,26.0,25.7,25.5,25.4],\"temperature_2m_member17\":[25.1,25.5,26.1,26.9,28.1,29.4,30.5,31.3,31.9,32.1,31.7,30.8,29.9,29.1,28.3,27.6,27.1,26.9,26.6,26.3,26.1,25.9,25.7,25.5],\"temperature_2m_member18\":[24.8,25.2,26.0,26.9,28.0,29.3,30.4,31.1,31.5,31.6,31.2,30.5,29.8,29.0,28.2,27.5,26.9,26.5,26.2,25.9,25.8,25.7,25.4,25.2],\"temperature_2m_member19\":[24.6,25.0,25.7,26.6,27.7,29.0,30.1,30.7,31.2,31.4,31.3,31.0,30.6,29.9,29.1,28.4,27.9,27.6,27.3,27.0,26.7,26.5,26.2,25.8],\"temperature_2m_member20\":[24.7,25.0,25.5,26.3,27.8,29.6,30.9,31.4,31.5,31.3,30.9,30.3,29.6,28.8,28.0,27.3,27.0,26.8,26.5,26.2,25.8,25.5,25.1,24.7],\"temperature_2m_member21\":[24.9,25.2,25.7,26.4,27.2,28.2,29.1,29.7,30.2,30.5,30.3,29.8,29.3,28.6,27.9,27.3,26.9,26.7,26.4,26.2,26.1,26.0,25.8,25.6],\"temperature_2m_member22\":[24.8,25.1,25.6,26.2,27.1,28.1,29.0,29.8,30.6,31.0,30.6,29.8,29.0,28.4,27.7,27.2,26.9,26.7,26.5,26.2,26.0,25.8,25.5,25.2],\"temperature_2m_member23\":[25.0,25.4,25.9,26.7,28.1,29.7,30.8,31.3,31.3,31.0,30.3,29.3,28.5,27.8,27.3,26.9,26.5,26.2,26.0,25.7,25.5,25.3,25.1,25.0],\"temperature_2m_member24\":[25.0,25.4,25.9,26.7,27.9,29.2,30.3,30.9,31.3,31.3,30.8,30.0,29.3,28.7,28.2,27.8,27.4,27.2,26.9,26.6,26.3,26.1,25.8,25.6],\"temperature_2m_member25\":[24.9,25.3,25.9,26.7,27.5,28.4,29.3,30.2,31.2,31.7,31.5,30.8,30.0,29.0,28.0,27.2,26.9,26.8,26.8,26.6,26.3,26.1,25.7,25.3],\"temperature_2m_member26\":[24.9,25.3,26.0,26.9,28.1,29.4,30.5,31.2,31.7,31.8,31.4,30.5,29.6,28.9,28.1,27.5,27.1,27.0,26.8,26.5,26.1,25.9,25.7,25.5],\"temperature_2m_member27\":[25.0,25.2,25.6,26.3,27.6,29.2,30.5,31.4,32.2,32.4,31.9,30.9,29.9,28.9,28.0,27.3,26.9,26.7,26.5,26.1,25.8,25.5,25.3,25.1],\"temperature_2m_member28\":[24.9,25.3,25.9,26.7,27.8,29.1,30.2,30.9,31.5,31.7,31.4,30.8,30.1,29.3,28.4,27.7,27.3,27.0,26.8,26.6,26.4,26.2,25.9,25.6],\"temperature_2m_member29\":[25.1,25.5,26.2,27.1,28.4,29.9,31.1,31.7,31.9,31.9,31.4,30.6,29.7,28.9,28.1,27.5,27.1,26.8,26.5,26.3,26.0,25.9,25.7,25.6],\"temperature_2m_member30\":[24.9,25.2,25.7,26.5,27.8,29.3,30.5,31.5,32.2,32.5,32.1,31.2,30.3,29.5,28.6,27.9,27.3,26.8,26.5,26.2,26.1,26.0,25.9,25.7]}}",
+    "text": true,
+    "content_range": null,
+    "attempts": 1
+   },
+   "carried_from_previous": false,
+   "limits": [
+    "One ensemble model at a grid cell; the spread and percentiles are properties of the returned members, not a probability, confidence or skill score.",
+    "The chat path reads this through the Foundation store, so no member-level provider budget or lease is claimed for it."
+   ],
+   "next_action": "Keep as the ensemble spread supply; add member-level budgets and daily aggregation."
   }
  ]
 }
