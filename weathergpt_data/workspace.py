@@ -223,6 +223,73 @@ class Workspace:
                 'note':'Foreground check only; no daemon or push is installed.',
                 'results':check_due(store,self.conversation,now=self.clock())}
 
+    # Plan Watch: plans described in chat, checked against the official district warning
+    # product by a watcher that runs only while this workspace runs.
+    def plan_store(self,replay=False):
+        from .plans import PlanStore
+        return PlanStore(self.service.ingestion_database.parent/('plans-replay.sqlite' if replay else 'plans.sqlite'))
+
+    def plan_watcher(self):
+        if getattr(self,'_plan_watcher',None) is None:
+            from .plan_watcher import PlanWatcher
+            self._plan_watcher=PlanWatcher(self)
+        return self._plan_watcher
+
+    def plans(self,params=None):
+        """Saved plans, their notifications and the watcher state. Nothing here leaves this machine."""
+        from .plan_intake import public
+        value=(params or {}).get('replay')
+        if isinstance(value,(list,tuple)):value=value[0] if value else ''
+        replay=value in (True,'1','true')
+        store=self.plan_store(replay=replay)
+        now=self.clock()
+        notifications=store.notifications(limit=50)
+        for item in notifications:item['visible']=parsed(item['visible_at'])<=now
+        return {'schema_version':'plan-inbox-v1','mode':'replay_of_recorded_editions' if replay else 'live',
+                'delivery':'local_inbox_and_browser_notifications_while_the_workspace_runs',
+                'plans':[public(plan) for plan in store.list()],'notifications':notifications,
+                'watcher':dict(self.plan_watcher().status(),last_cycle_at=store.meta_get('last_cycle_at'),
+                               last_ok_at=store.meta_get('last_ok_at'),last_error=store.meta_get('last_error') or None),
+                'recorded_editions':len(recorded_editions()),
+                'limits':['Plans are checked against the IMD district warning product only, every 30 minutes while WeatherGPT runs.',
+                          'No warning for your watched hazards is not an all-clear, and origin authentication of the IMD service is unverified.',
+                          'Flood, cyclone and sea-area plans are recorded as not connected and are never mapped onto another product.',
+                          'Nothing is sent off this machine: no SMS, e-mail, push service or subscription exists.']}
+
+    def check_plans(self,body):
+        """Run one watcher cycle now, in the foreground."""
+        if not isinstance(body,dict) or body:raise ValueError('Send an empty JSON object')
+        return {'schema_version':'plan-check-v1','result':self.plan_watcher().run_once()}
+
+    def update_plan(self,body):
+        """Pause, resume, end or delete one saved plan."""
+        from .plan_intake import public
+        from .plan_watcher import LiveEditions,baseline
+        if not isinstance(body,dict) or set(body)!={'id','action'}:raise ValueError('Send a plan id and an action')
+        action=body['action']
+        if action not in ('pause','resume','end','delete'):raise ValueError('Action must be pause, resume, end or delete')
+        store=self.plan_store()
+        plan=store.get(str(body['id']))
+        if action=='delete':
+            store.delete(plan['id'])
+            return {'schema_version':'plan-update-v1','action':'deleted','plan':public(plan)}
+        if action=='pause':plan=store.update(plan['id'],state='paused')
+        elif action=='end':plan=store.update(plan['id'],state='ended')
+        else:
+            if plan.get('state')=='not_connected':raise ValueError('A not-connected plan cannot be resumed; it has no product to check')
+            plan=store.update(plan['id'],state='watching',last_snapshot=None,last_ok_at=None)
+            try:baseline(store,plan,LiveEditions(self.foundation()),self.clock())
+            except (OSError,ValueError):pass
+            plan=store.get(plan['id'])
+        return {'schema_version':'plan-update-v1','action':action,'plan':public(plan)}
+
+    def replay_plans(self,body):
+        """Replay recorded IMD editions over copies of the saved plans, into the replay inbox only."""
+        from .plan_watcher import replay
+        if not isinstance(body,dict) or body:raise ValueError('Send an empty JSON object')
+        result=replay(self.plan_store(),self.plan_store(replay=True),recorded_editions())
+        return {'schema_version':'plan-replay-v1','result':result,'inbox':self.plans({'replay':True})}
+
     def chat_progress(self):
         """What the engine is doing now, for a page that is waiting on a turn.
 
@@ -664,6 +731,15 @@ class Workspace:
                 'note':'Read-only projection of the local ingestion store: which products were collected, what happened to those jobs, and when the newest evidence was committed. A stream is a pseudonymous point identity, so no requested location is shown here. These counts are not coverage, forecast skill or operational readiness.'}
 
 
+RECORDED_EDITIONS=ROOT/'research/implementation/plan-watch-editions'
+
+
+def recorded_editions(folder=None):
+    """Editions saved by scripts/capture_warning_edition.py, oldest first."""
+    folder=Path(folder or RECORDED_EDITIONS)
+    return sorted(folder.glob('edition-*.json')) if folder.exists() else []
+
+
 def excerpt(text,limit=96):
     text=' '.join(str(text or '').split())
     return text if len(text)<=limit else text[:limit-1].rstrip()+'\u2026'
@@ -726,7 +802,7 @@ def make_server(workspace, port=8765):
             # API path keeps the existing 404 behaviour.
             if path.startswith('/api/'):
                 known=(workspace.is_product(path) or path=='/api/conversations' or path=='/api/health'
-                       or path=='/api/languages' or path=='/api/watches' or path=='/api/chat/progress'
+                       or path=='/api/languages' or path=='/api/watches' or path=='/api/plans' or path=='/api/chat/progress'
                        or path=='/api/advisories/brief' or path=='/api/briefs' or path=='/api/briefing/latest'
                        or path.startswith('/api/briefs/')
                        or path.startswith('/api/conversations/') or path.startswith('/api/map/static/'))
@@ -737,6 +813,7 @@ def make_server(workspace, port=8765):
                     if path=='/api/health':return self.respond(200,workspace.health())
                     if path=='/api/languages':return self.respond(200,workspace.languages())
                     if path=='/api/watches':return self.respond(200,workspace.watches())
+                    if path=='/api/plans':return self.respond(200,workspace.plans(parse_qs(urlsplit(self.path).query)))
                     if path=='/api/chat/progress':return self.respond(200,workspace.chat_progress())
                     if path=='/api/advisories/brief':return self.respond(200,workspace.advisory_brief(parse_qs(urlsplit(self.path).query)))
                     if path=='/api/briefing/latest':return self.respond(200,workspace.latest_briefing())
@@ -781,6 +858,7 @@ def make_server(workspace, port=8765):
             routes={'/api/answer':workspace.answer,'/api/refresh':workspace.refresh,'/api/chat':workspace.chat,
                     '/api/chat/cancel':workspace.cancel_chat,'/api/watches/check':workspace.check_watches,'/api/warm':workspace.warm,
                     '/api/briefing/run':workspace.run_briefing,
+                    '/api/plans/check':workspace.check_plans,'/api/plans/update':workspace.update_plan,'/api/plans/replay':workspace.replay_plans,
                     '/api/briefs/save':workspace.save_brief,
                     '/api/briefs/delete':workspace.delete_brief,
                     '/api/speech/transcribe':workspace.transcribe,'/api/speech/speak':workspace.speak}
@@ -808,13 +886,19 @@ def main():
     p.add_argument('--raw-root',type=Path,default=DEFAULT_RAW)
     p.add_argument('--geography-database',type=Path,default=DEFAULT_GEOGRAPHY)
     p.add_argument('--no-warm',action='store_true',help='do not read the slow layers once at startup')
+    p.add_argument('--no-plan-watcher',action='store_true',help='Do not check saved plans in the background')
     a=p.parse_args()
     workspace=Workspace(a.database,a.raw_root,a.geography_database)
     if not a.no_warm:workspace.start_warming()
     server=make_server(workspace,a.port)
     print('WeatherGPT: http://127.0.0.1:'+str(server.server_port)+' — local prototype; Ctrl-C to stop.',flush=True)
+    if not a.no_plan_watcher:
+        workspace.plan_watcher().start()
+        print('Plan Watch: saved plans are checked every 30 minutes while this process runs.',flush=True)
     try:server.serve_forever()
     except KeyboardInterrupt:pass
-    finally:server.server_close()
+    finally:
+        workspace.plan_watcher().stop()
+        server.server_close()
 
 if __name__=='__main__':main()
