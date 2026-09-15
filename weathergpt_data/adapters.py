@@ -218,6 +218,10 @@ def ensemble_statistics(values):
 def ensemble(data,meta,variables,model,request_point,expected_dates=None,threshold=None):
     """Normalise one ensemble response into control and member-statistic records."""
     if model not in ENSEMBLE_MODELS:raise SourceError('Unsupported ensemble model: '+str(model))
+    if threshold is not None:
+        try:threshold=Decimal(str(threshold))
+        except (ArithmeticError,ValueError):raise SourceError('A member threshold must be a number')
+        if threshold<0:raise SourceError('A member threshold must be zero or greater')
     if not isinstance(data,dict):raise SourceError('Expected one-location ensemble object')
     if type(data.get('utc_offset_seconds')) not in {int,float} or data['utc_offset_seconds']!=0:raise SourceError('Ensemble adapter requires numeric UTC offset zero')
     grid=grid_identity(data)
@@ -266,8 +270,9 @@ def ensemble(data,meta,variables,model,request_point,expected_dates=None,thresho
                 control_value=numeric(control[index],minimum,maximum)
                 add('control',None if control_value is None else Decimal(str(control_value)))
             if threshold is not None and aggregation.startswith('preceding_hour_'):
-                count=sum(1 for value in members if value is not None and Decimal(str(value))>=Decimal(str(threshold)))
-                fraction=Decimal(count)/Decimal(statistics['member_count']) if statistics.get('member_count') else None
+                count=sum(1 for value in members if value is not None and Decimal(str(value))>=threshold)
+                fraction=((Decimal(count)/Decimal(statistics['member_count'])).quantize(Decimal('0.001'))
+                          if statistics.get('member_count') else None)
                 add('exceedance',fraction,locator='$.hourly.'+variable+'*['+str(index)+']')
                 records[-1].update(exceedance_count=count,threshold=str(threshold))
     result=envelope('ensemble_forecast',meta['source_id'],records,meta,

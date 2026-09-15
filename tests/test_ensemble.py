@@ -79,10 +79,18 @@ class EnsembleAdapterTests(unittest.TestCase):
         result = ensemble(body, META, {'precipitation': ENSEMBLE['precipitation']}, 'gfs025',
                           {'latitude': 23.0, 'longitude': 72.5}, threshold=6)
         record = records(result)['precipitation_exceedance']
-        self.assertEqual(record['value'], '0.5')
+        self.assertEqual(record['value'], '0.500')
         self.assertEqual(record['exceedance_count'], 5)
         self.assertEqual(record['threshold'], '6')
         self.assertEqual(record['interval_start_utc'] is not None, True)
+
+    def test_a_negative_or_non_numeric_threshold_is_refused(self):
+        body = payload([[1], [2]], variable='precipitation', unit=ENSEMBLE['precipitation'][0])
+        for threshold in (-1, 'wet'):
+            with self.subTest(threshold=threshold):
+                with self.assertRaises(SourceError):
+                    ensemble(body, META, {'precipitation': ENSEMBLE['precipitation']}, 'gfs025',
+                             {'latitude': 23.0, 'longitude': 72.5}, threshold=threshold)
 
     def test_null_member_makes_the_hour_partial_not_zero(self):
         body = payload([[1], [None]])
