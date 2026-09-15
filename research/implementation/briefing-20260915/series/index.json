@@ -1,0 +1,60 @@
+{
+  "schema_version": "briefing-index-v1",
+  "runner_note": "This is a foreground run of a local prototype. Nothing is delivered, pushed or scheduled outside this process; a briefing records what the connected products published at the instant it ran.",
+  "runs": [
+    {
+      "run": 1,
+      "generated_at_utc": "2026-09-15T05:01:19+00:00",
+      "briefing_id": "3e95141810d8b844a0dded5bbb51f014572838aa204bcd975664163c6ad2bbf1",
+      "place_count": 2,
+      "latency_seconds": 3.393,
+      "interval_seconds": 20,
+      "markdown_path": "/Users/yashabhichandani/Desktop/WeatherGPT/research/implementation/briefing-20260915/series/briefing-20260915T050119Z.md",
+      "record_path": "/Users/yashabhichandani/Desktop/WeatherGPT/research/implementation/briefing-20260915/series/record-20260915T050119Z.json",
+      "change": "no_previous_run",
+      "places": [
+        {
+          "label": "Ahmedabad, Ahmadābād, State of Gujarāt",
+          "district": "AHMADABAD",
+          "state": "GUJARAT",
+          "official_day": "Official district warning: yellow - Thunderstorm/lightning/squall",
+          "unavailable": []
+        },
+        {
+          "label": "Kochi, Ernākulam, State of Kerala",
+          "district": "ERNAKULAM",
+          "state": "KERALA",
+          "official_day": "Official district warning: yellow - Thunderstorm/lightning/squall, Strong surface winds",
+          "unavailable": []
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "generated_at_utc": "2026-09-15T05:01:42+00:00",
+      "briefing_id": "7f44b1eb69b1237e7d0e9894d8f084dad4d19efee4ad70fa3d38bc7fb78a7103",
+      "place_count": 2,
+      "latency_seconds": 29.886,
+      "interval_seconds": 20,
+      "markdown_path": "/Users/yashabhichandani/Desktop/WeatherGPT/research/implementation/briefing-20260915/series/briefing-20260915T050142Z.md",
+      "record_path": "/Users/yashabhichandani/Desktop/WeatherGPT/research/implementation/briefing-20260915/series/record-20260915T050142Z.json",
+      "change": "same",
+      "places": [
+        {
+          "label": "Ahmedabad, Ahmadābād, State of Gujarāt",
+          "district": "AHMADABAD",
+          "state": "GUJARAT",
+          "official_day": "Official district warning: yellow - Thunderstorm/lightning/squall",
+          "unavailable": []
+        },
+        {
+          "label": "Kochi, Ernākulam, State of Kerala",
+          "district": "ERNAKULAM",
+          "state": "KERALA",
+          "official_day": "Official district warning: yellow - Thunderstorm/lightning/squall, Strong surface winds",
+          "unavailable": []
+        }
+      ]
+    }
+  ]
+}

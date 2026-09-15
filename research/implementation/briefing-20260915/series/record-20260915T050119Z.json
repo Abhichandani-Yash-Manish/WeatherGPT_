@@ -1,0 +1,253 @@
+{
+  "runner": "scripts/briefing.py",
+  "runner_note": "This is a foreground run of a local prototype. Nothing is delivered, pushed or scheduled outside this process; a briefing records what the connected products published at the instant it ran.",
+  "interval_seconds": 20,
+  "run_number": 1,
+  "latency_seconds": 3.393,
+  "markdown_path": "/Users/yashabhichandani/Desktop/WeatherGPT/research/implementation/briefing-20260915/series/briefing-20260915T050119Z.md",
+  "briefing": {
+    "schema_version": "briefing-v1",
+    "generated_at_utc": "2026-09-15T05:01:19+00:00",
+    "day_number": 1,
+    "forecast_days": 3,
+    "place_count": 2,
+    "places": [
+      {
+        "label": "Ahmedabad, Ahmadābād, State of Gujarāt",
+        "latitude": 23.02579,
+        "longitude": 72.58727,
+        "requested_district": "Ahmadābād",
+        "sources": [
+          "S63",
+          "S06",
+          "S62"
+        ],
+        "unavailable": [],
+        "district": "AHMADABAD",
+        "state": "GUJARAT",
+        "official_day": {
+          "colour": "yellow",
+          "colour_code": 3,
+          "hazards": [
+            "Thunderstorm/lightning/squall"
+          ],
+          "quiet": false,
+          "status_line": "Official district warning: yellow - Thunderstorm/lightning/squall",
+          "official_wording": null,
+          "issued_at_utc": "2026-09-14T06:00:00+00:00",
+          "retrieved_at_utc": "2026-09-15T05:01:20.238445+00:00",
+          "source_id": "S63",
+          "day": 1,
+          "day_label": "14 Sep 2026",
+          "starts_utc": "2026-09-13T18:30:00+00:00",
+          "ends_utc": "2026-09-14T18:30:00+00:00"
+        },
+        "relay": {
+          "source_id": "S06",
+          "messages": 9,
+          "eligible_by_lifecycle": 0,
+          "latest_sent": "2026-09-09T12:54:34+05:30",
+          "note": "reported separately and never merged with the district guidance; a reachable relay is not evidence that nothing is in force"
+        },
+        "forecast": {
+          "source_ids": [
+            "S62"
+          ],
+          "days": 3,
+          "generated_at_utc": "2026-09-15T05:01:20.245399+00:00",
+          "window": {
+            "temperature_2m": {
+              "unit": "°C",
+              "model": "Open-Meteo best match; variable-specific upstream model/run unspecified",
+              "samples": 72,
+              "first": 25.2,
+              "last": 25.4,
+              "starts": "2026-09-15T00:00:00+00:00",
+              "ends": "2026-09-17T23:00:00+00:00",
+              "locator": "$.hourly.temperature_2m[0]"
+            },
+            "relative_humidity_2m": {
+              "unit": "%",
+              "model": "Open-Meteo best match; variable-specific upstream model/run unspecified",
+              "samples": 72,
+              "first": 95,
+              "last": 94,
+              "starts": "2026-09-15T00:00:00+00:00",
+              "ends": "2026-09-17T23:00:00+00:00",
+              "locator": "$.hourly.relative_humidity_2m[0]"
+            },
+            "precipitation": {
+              "unit": "mm",
+              "model": "Open-Meteo best match; variable-specific upstream model/run unspecified",
+              "samples": 72,
+              "first": 0.0,
+              "last": 0.0,
+              "starts": "2026-09-15T00:00:00+00:00",
+              "ends": "2026-09-17T23:00:00+00:00",
+              "locator": "$.hourly.precipitation[0]"
+            },
+            "wind_speed_10m": {
+              "unit": "km/h",
+              "model": "Open-Meteo best match; variable-specific upstream model/run unspecified",
+              "samples": 72,
+              "first": 7.3,
+              "last": 5.0,
+              "starts": "2026-09-15T00:00:00+00:00",
+              "ends": "2026-09-17T23:00:00+00:00",
+              "locator": "$.hourly.wind_speed_10m[0]"
+            },
+            "precipitation_probability": {
+              "unit": "%",
+              "model": "Open-Meteo best match; variable-specific upstream model/run unspecified",
+              "samples": 72,
+              "first": 51,
+              "last": 37,
+              "starts": "2026-09-15T00:00:00+00:00",
+              "ends": "2026-09-17T23:00:00+00:00",
+              "locator": "$.hourly.precipitation_probability[0]"
+            },
+            "apparent_temperature": {
+              "unit": "°C",
+              "model": "Open-Meteo best match; variable-specific upstream model/run unspecified",
+              "samples": 72,
+              "first": 30.4,
+              "last": 31.0,
+              "starts": "2026-09-15T00:00:00+00:00",
+              "ends": "2026-09-17T23:00:00+00:00",
+              "locator": "$.hourly.apparent_temperature[0]"
+            }
+          }
+        }
+      },
+      {
+        "label": "Kochi, Ernākulam, State of Kerala",
+        "latitude": 9.93988,
+        "longitude": 76.26022,
+        "requested_district": "Ernākulam",
+        "sources": [
+          "S63",
+          "S06",
+          "S62"
+        ],
+        "unavailable": [],
+        "district": "ERNAKULAM",
+        "state": "KERALA",
+        "official_day": {
+          "colour": "yellow",
+          "colour_code": 3,
+          "hazards": [
+            "Thunderstorm/lightning/squall",
+            "Strong surface winds"
+          ],
+          "quiet": false,
+          "status_line": "Official district warning: yellow - Thunderstorm/lightning/squall, Strong surface winds",
+          "official_wording": null,
+          "issued_at_utc": "2026-09-15T00:00:00+00:00",
+          "retrieved_at_utc": "2026-09-15T05:01:21.418013+00:00",
+          "source_id": "S63",
+          "day": 1,
+          "day_label": "15 Sep 2026",
+          "starts_utc": "2026-09-14T18:30:00+00:00",
+          "ends_utc": "2026-09-15T18:30:00+00:00"
+        },
+        "relay": {
+          "source_id": "S06",
+          "messages": 9,
+          "eligible_by_lifecycle": 0,
+          "latest_sent": "2026-09-09T12:54:34+05:30",
+          "note": "reported separately and never merged with the district guidance; a reachable relay is not evidence that nothing is in force"
+        },
+        "forecast": {
+          "source_ids": [
+            "S62"
+          ],
+          "days": 3,
+          "generated_at_utc": "2026-09-15T05:01:22.434669+00:00",
+          "window": {
+            "temperature_2m": {
+              "unit": "°C",
+              "model": "Open-Meteo best match; variable-specific upstream model/run unspecified",
+              "samples": 72,
+              "first": 26.3,
+              "last": 24.9,
+              "starts": "2026-09-15T00:00:00+00:00",
+              "ends": "2026-09-17T23:00:00+00:00",
+              "locator": "$.hourly.temperature_2m[0]"
+            },
+            "relative_humidity_2m": {
+              "unit": "%",
+              "model": "Open-Meteo best match; variable-specific upstream model/run unspecified",
+              "samples": 72,
+              "first": 78,
+              "last": 94,
+              "starts": "2026-09-15T00:00:00+00:00",
+              "ends": "2026-09-17T23:00:00+00:00",
+              "locator": "$.hourly.relative_humidity_2m[0]"
+            },
+            "precipitation": {
+              "unit": "mm",
+              "model": "Open-Meteo best match; variable-specific upstream model/run unspecified",
+              "samples": 72,
+              "first": 0.0,
+              "last": 0.0,
+              "starts": "2026-09-15T00:00:00+00:00",
+              "ends": "2026-09-17T23:00:00+00:00",
+              "locator": "$.hourly.precipitation[0]"
+            },
+            "wind_speed_10m": {
+              "unit": "km/h",
+              "model": "Open-Meteo best match; variable-specific upstream model/run unspecified",
+              "samples": 72,
+              "first": 3.3,
+              "last": 3.9,
+              "starts": "2026-09-15T00:00:00+00:00",
+              "ends": "2026-09-17T23:00:00+00:00",
+              "locator": "$.hourly.wind_speed_10m[0]"
+            },
+            "precipitation_probability": {
+              "unit": "%",
+              "model": "Open-Meteo best match; variable-specific upstream model/run unspecified",
+              "samples": 72,
+              "first": 22,
+              "last": 68,
+              "starts": "2026-09-15T00:00:00+00:00",
+              "ends": "2026-09-17T23:00:00+00:00",
+              "locator": "$.hourly.precipitation_probability[0]"
+            },
+            "apparent_temperature": {
+              "unit": "°C",
+              "model": "Open-Meteo best match; variable-specific upstream model/run unspecified",
+              "samples": 72,
+              "first": 30.9,
+              "last": 30.3,
+              "starts": "2026-09-15T00:00:00+00:00",
+              "ends": "2026-09-17T23:00:00+00:00",
+              "locator": "$.hourly.apparent_temperature[0]"
+            }
+          }
+        }
+      }
+    ],
+    "sources": [
+      "S06",
+      "S62",
+      "S63"
+    ],
+    "not_established": [
+      "A briefing reads the districts the connected products publish. A point outside every published district has no district guidance here, and none is substituted.",
+      "A quiet day in the district warning product is not an all-clear and says nothing about hazards that product does not carry.",
+      "Forecast values are model output for a grid cell, not observations, and no skill, accuracy or impact is claimed for them.",
+      "The CAP relay is reported as a separate product state; geographic applicability to a place is not computed, and an empty relay is not an all-clear.",
+      "Nothing here is delivered, pushed or scheduled by the workspace itself: a run happens when the runner runs."
+    ],
+    "change_since_previous": {
+      "reading": "no_previous_run",
+      "detail": "This is the first briefing in this series, so nothing is compared.",
+      "places_added": [],
+      "places_removed": [],
+      "day_changes": [],
+      "forecast_changes": []
+    },
+    "briefing_id": "3e95141810d8b844a0dded5bbb51f014572838aa204bcd975664163c6ad2bbf1"
+  }
+}

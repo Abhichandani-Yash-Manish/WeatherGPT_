@@ -1,0 +1,26 @@
+{
+  "schema_version": "briefing-index-v1",
+  "runner_note": "This is a foreground run of a local prototype. Nothing is delivered, pushed or scheduled outside this process; a briefing records what the connected products published at the instant it ran.",
+  "runs": [
+    {
+      "run": 1,
+      "generated_at_utc": "2026-09-15T04:58:27+00:00",
+      "briefing_id": "ed9525bca3f9b48c6df936cc0b51ec1356706a0ebb4165fa6f1bb1eea1bb4b7d",
+      "place_count": 1,
+      "latency_seconds": 2.365,
+      "interval_seconds": 0,
+      "markdown_path": "/Users/yashabhichandani/Desktop/WeatherGPT/research/implementation/briefing-20260915/briefing-20260915T045827Z.md",
+      "record_path": "/Users/yashabhichandani/Desktop/WeatherGPT/research/implementation/briefing-20260915/record-20260915T045827Z.json",
+      "change": "no_previous_run",
+      "places": [
+        {
+          "label": "Ahmedabad, Ahmadābād, State of Gujarāt",
+          "district": "AHMADABAD",
+          "state": "GUJARAT",
+          "official_day": "Official district warning: yellow - Thunderstorm/lightning/squall",
+          "unavailable": []
+        }
+      ]
+    }
+  ]
+}
