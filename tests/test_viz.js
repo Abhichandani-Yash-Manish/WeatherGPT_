@@ -144,4 +144,32 @@ assert(/retention window/.test(cards.allNodes().map(node => node.textContent).jo
 cards.withClass('viz-card-open')[0].events.click[0]();
 assert.equal(openedCard, 'national_bulletin', 'opening a card names the edition it passed on');
 console.log('PASS: library cards state printed dates, body state and links without implying applicability');
+
+/* ---- the now band ---------------------------------------------------------- */
+const band = viz.nowBand({
+  title: 'Now', place: 'Ahmedabad, Gujarat', read_at: '2026-09-15T17:24:58+00:00',
+  lanes: [
+    { key: 'observed', label: 'Observed', kind: 'observed', from: '2026-09-15T17:00:00+00:00',
+      detail: 'AHMEDABAD, 6.9 km away', source: 'S63' },
+    { key: 'published', label: 'Published', kind: 'published', from: '2026-09-14T18:30:00+00:00',
+      to: '2026-09-15T18:30:00+00:00', colour: 'yellow', detail: 'Official district warning: yellow', source: 'S63' },
+    { key: 'model', label: 'Model next', kind: 'model', from: '2026-09-15T17:00:00+00:00',
+      to: '2026-09-15T22:00:00+00:00', detail: '6 hour(s) returned', source: 'S62' }
+  ]
+});
+assert.equal(band.withClass('viz-now-mark').length, 3, 'one mark exists per lane the reading returned');
+assert.equal(band.withClass('viz-now-mark')[0].tag, 'line', 'an instant lane is a tick, never a window');
+assert.equal(band.withClass('viz-now-mark')[1].tag, 'rect', 'a lane with two timestamps is a span');
+assert.equal(band.withClass('is-yellow').length, 1, 'the published lane carries the source colour');
+assert.equal(band.withClass('viz-now-readat').length, 1, 'the read-at marker is drawn from the payload instant');
+band.withClass('viz-now-mark')[0].focus();
+const bandReadout = band.withClass('viz-readout')[0].textContent;
+assert(/Observed/.test(bandReadout) && /AHMEDABAD/.test(bandReadout) && /S63/.test(bandReadout),
+  'a lane reads out its own values and its source: ' + bandReadout);
+assert(band.all('td').some(cell => cell.textContent === 'an instant, not a window'),
+  'the exact table says an instant is not a window');
+const emptyBand = viz.nowBand({ title: 'Now', lanes: [{ label: 'Observed' }] });
+assert.equal(emptyBand.withClass('viz-now-mark').length, 0, 'a lane without a timestamp is not placed on the band');
+assert(emptyBand.withClass('viz-empty').length >= 1, 'the band says why it is empty');
+console.log('PASS: the now band places each product lane from returned timestamps and never draws a window for an instant');
 process.exit(0);

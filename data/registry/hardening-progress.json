@@ -1,7 +1,7 @@
 {
  "schema_version": "hardening-progress-v1",
  "review": "research/reviews/national-readiness-20260912/review.md",
- "updated_at_utc": "2026-09-15T17:22:13+00:00",
+ "updated_at_utc": "2026-09-15T17:31:55+00:00",
  "operational_ready": false,
  "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
  "findings": [
@@ -2288,6 +2288,39 @@
   "verification_steps": 27,
   "verification_failed": 0,
   "live_loopback_check": "research/reviews/frontend-overhaul-20260915/live-http-checks-p2.json",
+  "browser_rendering_verified": false,
+  "browser_rendering_blocker": "the agent-browser CLI could not launch Chrome inside this session sandbox",
+  "hosting_performed": false,
+  "same_host_only": true
+ },
+ "frontend_overhaul_batch_three": {
+  "report": "docs/78-frontend-overhaul-plan.md",
+  "design_system": "DESIGN.md",
+  "evidence_directory": "research/reviews/frontend-overhaul-20260915",
+  "phase": "P3 command-centre shell, first slice",
+  "delivered": [
+   "viz.nowBand drawn on the Today surface: observed instant, published district window in the source colour, model-hour span, and the read-at marker from the payload",
+   "place memory: pin and unpin from the command palette, topbar chips to switch the working place, and a pin refused without a label and two real coordinates",
+   "performance budget measured for served assets (434.6 KiB across 11 files); browser paint, layout shift and frame time recorded as not measured"
+  ],
+  "new_assets": {
+   "tokens.css": 5826,
+   "style.css": 68366,
+   "viz.js": 33798,
+   "views.js": 78322,
+   "panels.js": 108712,
+   "shell.js": 66004,
+   "app.js": 29096,
+   "charts.js": 3178,
+   "map.js": 16344,
+   "voice.js": 12079,
+   "home.js": 23294
+  },
+  "python_tests_passed": 1139,
+  "javascript_suites": 10,
+  "verification_steps": 27,
+  "verification_failed": 0,
+  "live_loopback_check": "research/reviews/frontend-overhaul-20260915/live-http-checks-p3.json",
   "browser_rendering_verified": false,
   "browser_rendering_blocker": "the agent-browser CLI could not launch Chrome inside this session sandbox",
   "hosting_performed": false,

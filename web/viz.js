@@ -484,7 +484,90 @@
     if (!documents.length) box.append(make('p', 'No edition is listed for this filter, so there is nothing to show.', 'viz-empty'));
     return box;
   }
-  global.viz = { ensembleFan: ensembleFan, meteogram: meteogram, warningMatrix: warningMatrix, libraryCards: libraryCards };
+
+  /* ---- the 'now' band ------------------------------------------------------ */
+  /* One band, three lanes, three products kept apart: what a station observed, what the published
+     district product says, and what the model holds next. A lane is drawn only from the timestamps
+     the engine returned; an instant is a tick and a window is a span, and the read-at marker comes
+     from the payload's own generated_at_utc rather than from the reader's clock. */
+  function nowBand(chart) {
+    const lanes = (chart.lanes || []).filter(lane => lane && lane.from);
+    const box = make('section', undefined, 'viz viz-now');
+    const head = make('div', undefined, 'viz-now-head');
+    head.append(make('h3', chart.title || 'Right now', 'viz-title'));
+    if (chart.place) head.append(make('span', chart.place, 'viz-now-place'));
+    if (chart.read_at) head.append(make('span', 'read ' + chart.read_at.slice(11, 16) + ' UTC', 'viz-now-read'));
+    box.append(head);
+    if (chart.note) box.append(make('p', chart.note, 'viz-note'));
+    if (!lanes.length) {
+      box.append(make('p', 'No lane of this reading carried a timestamp, so there is nothing to place on the band.', 'viz-empty'));
+      return box;
+    }
+    const starts = lanes.map(lane => Date.parse(lane.from));
+    const ends = lanes.map(lane => Date.parse(lane.to || lane.from));
+    const readAt = chart.read_at ? Date.parse(chart.read_at) : null;
+    const first = Math.min.apply(null, starts.concat(readAt ? [readAt] : []));
+    const last = Math.max.apply(null, ends.concat(readAt ? [readAt] : []));
+    const width = 660, height = 132, pad = { left: 96, right: 18 };
+    const svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
+    svg.setAttribute('role', 'group');
+    svg.setAttribute('class', 'viz-frame viz-now-frame');
+    svg.setAttribute('aria-label', (chart.title || 'Right now') + ', lanes kept apart');
+    const scale = at => pad.left + (at - first) / Math.max(1, last - first) * (width - pad.left - pad.right);
+    const readoutLine = make('p', 'Focus a lane to read what it is and where it came from.', 'viz-readout');
+    readoutLine.setAttribute('aria-live', 'polite');
+    lanes.forEach((lane, index) => {
+      const y = 26 + index * 30;
+      const start = Date.parse(lane.from);
+      const end = Date.parse(lane.to || lane.from);
+      const span = end - start > 60 * 1000;
+      const label = make('text', '', { x: pad.left - 10, y: y + 4, 'text-anchor': 'end', 'class': 'viz-axis' });
+      label.textContent = lane.label || lane.key || 'lane';
+      svg.append(label);
+      svgChild(svg, 'line', { x1: pad.left, x2: width - pad.right, y1: y + 14, y2: y + 14, 'class': 'viz-grid' });
+      const colour = lane.colour && ['red', 'orange', 'yellow', 'green'].indexOf(lane.colour) >= 0 ? lane.colour : null;
+      const mark = svgChild(svg, colour ? 'rect' : (span ? 'rect' : 'line'), colour || span ? {
+        x: scale(start).toFixed(1), y: y - 2, width: Math.max(span ? 3 : 3, (scale(end) - scale(start))).toFixed(1), height: span ? 16 : 4,
+        'class': 'viz-now-mark is-' + (colour || lane.kind || 'lane')
+      } : {
+        x1: scale(start).toFixed(1), x2: scale(start).toFixed(1), y1: y - 6, y2: y + 18,
+        'class': 'viz-now-mark is-' + (lane.kind || 'lane')
+      });
+      const detail = [lane.detail, lane.source ? 'source ' + lane.source : 'source not stated'].filter(Boolean).join(' · ');
+      const text = (lane.label || lane.key || 'lane') + ' · ' + (span
+        ? fmt(fromIso(start)) + ' to ' + fmt(fromIso(end))
+        : fmt(fromIso(start))) + (detail ? ' · ' + detail : '');
+      mark.setAttribute('tabindex', 0);
+      mark.setAttribute('role', 'button');
+      mark.setAttribute('aria-label', text);
+      const show = () => { readoutLine.textContent = text; };
+      mark.addEventListener('focus', show);
+      mark.addEventListener('mouseenter', show);
+      mark.addEventListener('click', show);
+      mark.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); show(); } });
+    });
+    if (readAt !== null && readAt >= first && readAt <= last) {
+      svgChild(svg, 'line', { x1: scale(readAt).toFixed(1), x2: scale(readAt).toFixed(1), y1: 12, y2: height - 20, 'class': 'viz-now-readat' });
+      svgChild(svg, 'text', { x: scale(readAt).toFixed(1), y: height - 8, 'text-anchor': 'middle', 'class': 'viz-axis' }, 'read at');
+    }
+    box.append(svg, readoutLine);
+    exactTable(box, ['Lane', 'From', 'To', 'Detail', 'Source'],
+      lanes.map(lane => [lane.label || lane.key || 'lane', fmt(fromIso(Date.parse(lane.from))),
+        lane.to && Date.parse(lane.to) - Date.parse(lane.from) > 60000 ? fmt(fromIso(Date.parse(lane.to))) : 'an instant, not a window',
+        lane.detail || 'no detail returned', lane.source || 'not stated']),
+      'Every lane as text (' + lanes.length + ')');
+    return box;
+  }
+
+  function fromIso(at) { return new Date(at).toISOString(); }
+
+  function fmt(iso) {
+    const at = Date.parse(iso);
+    if (!Number.isFinite(at)) return 'not stated';
+    return new Date(at).toISOString().replace('T', ' ').slice(0, 16) + 'Z';
+  }
+  global.viz = { ensembleFan: ensembleFan, meteogram: meteogram, warningMatrix: warningMatrix, libraryCards: libraryCards, nowBand: nowBand };
   /* In a browser `window` is the global object; in a component harness it is a stand-in, so the
      API is attached to both and `viz` resolves the same way in either. */
   if (typeof globalThis !== 'undefined' && globalThis.viz !== global.viz) globalThis.viz = global.viz;

@@ -79,7 +79,8 @@ time, page/row locator, evidence id) and disclosures for requested tasks, scope 
 
 - **Right now, and what happens next.** The nearest station reports with distance and age, the
   published district day, and the next model hours — kept apart, with one line naming what is not
-  connected. Point forecasts cover rainfall totals on whole source hours, rain probability,
+  connected. The Today surface opens with a **Now band** that places the observed instant, the published district
+  window and the model hours on one time axis, with the read-at instant taken from the payload. Point forecasts cover rainfall totals on whole source hours, rain probability,
   temperature, feels-like temperature, wind and gusts, humidity and visibility, with a bounded refresh
   when stored evidence is stale. Two sources can be compared with their difference and the
   shared-lineage caveat, never a score; ensemble member statistics (mean, spread, range, nearest-rank
@@ -115,6 +116,8 @@ time, page/row locator, evidence id) and disclosures for requested tasks, scope 
 - **Farming advisories.** Published district agromet passages for a district, crop and stage, with page
   locators and the source's own conditions quoted as conditions; no diagnosis, dosage or field
   clearance.
+Places can be pinned from the command palette (⌘K) and switched from the topbar; the shortlist is local and a
+  pin without coordinates is refused.
 - **Conversation control and output.** Follow-ups and corrections in one thread, clarify-on-ambiguity
   with every candidate offered, a stop control, elapsed time, and a conversation ledger with search,
   restore and local delete. Any answer can be copied, printed, saved as Markdown, downloaded as a JSON

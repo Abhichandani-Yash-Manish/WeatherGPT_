@@ -168,5 +168,25 @@ both new primitives, the renderer with the ruler hits, and the national route an
 while the corpus route answers with 588 editions of which 584 still hold their body.
 
 
-**Next (not started).** Place memory, a compare tray and the unified timeline; the command-centre shell
-phase; craft polish; and browser-level acceptance, which this sandbox still cannot run.
+**P3 — command-centre shell, first slice.** The Today surface now opens with the **Now band**: one row per
+ product on a single time axis. A station report is an instant and is drawn as a tick; the published district
+ day is a window and is drawn in the colour the source printed; the model hours are a dashed span between the
+ first and last returned hour. The read-at marker comes from the payload own generated instant, never from the
+ reader clock, and every lane is focusable and reads out its values with its source.
+
+The shell also has **place memory**: pin the working place from the command palette, switch back from a chip in
+ the topbar, and the shortlist is a small local list of place records. A pin is refused unless it carries a
+ label and two real coordinates — the test that caught this found `Number(null) === 0`, which would have stored
+ a null pin as the Gulf of Guinea.
+
+**Performance budget, measured as far as this host allows.** Served frontend assets total **434.6 KiB**
+ (11 files; `panels.js` 106 KiB, `shell.js` 64 KiB, `viz.js` 33 KiB, `tokens.css` 5.7 KiB). Browser paint,
+ layout shift and animation frame time are recorded as **not measured**: this sandbox cannot launch Chrome,
+ and a number invented here would be worse than the gap.
+
+Live record: `research/reviews/frontend-overhaul-20260915/live-http-checks-p3.json` — the page serves the
+ pinned strip, the shell carries place memory with its routable guard, the engine carries the band, and
+ `/api/now` returns all three lanes (observed station, published yellow day, six model hours).
+
+**Next (not started).** A compare tray and map exploration; the rest of the command-centre shell
+craft polish (loading skeletons, the receipt artifact); and browser-level acceptance, which this sandbox still cannot run.

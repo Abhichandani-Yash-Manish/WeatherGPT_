@@ -71,6 +71,8 @@ a printed issue date — never from decoration.
 | `viz-matrix` | District x day grid. A cell carries the colour the source printed; an unknown code is flagged, never dropped; rows are ordered by the product own colour rank and the ordering is stated. |
 | `viz-card` | A corpus edition as a card: family rail, printed issue date, currency, pages and passages, and the state of its saved body. Only a held body offers a file. |
 | `ruler-readout` | The validity ruler is inspectable: every covered span and every gap is focusable and says what it is, including that a gap is never interpolated. |
+| `now-band` | Three products on one axis. An instant is a tick, a window is a span, a published colour is the colour the source printed, and the read-at marker is the payload own instant. |
+| `pinned-place` | A local shortlist of places. A pin is refused unless it carries a label and two real coordinates; the topbar chip switches the working place without re-resolving it. |
 
 ## Chart language (`viz.js`)
 

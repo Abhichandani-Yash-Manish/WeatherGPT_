@@ -114,6 +114,22 @@ const PAYLOADS = {
   '/api/plans/check': { schema_version: 'plan-check-v1', result: { checked: 1, notified: 0, read: true } },
   '/api/places/search': envelope('places.search', 'ok', { matches: [{ label: 'Surat, Sūrat, State of Gujarāt', name: 'Surat', source_id: 'geonames', kind: 'city', coordinates: { latitude: 21.1959, longitude: 72.8302 } }] }),
   '/api/conversations': { schema_version: 'conversation-ledger-v1', total: 1, limit: 6, conversations: [{ id: 'c1', opening_question: 'Will it rain in Surat tomorrow?', asked: 2, turns: 4, updated: '2026-09-14T18:00:00+00:00' }] },
+  '/api/now': envelope('now.composed', 'ok',
+    { schema_version: 'now-v1', generated_at_utc: '2026-09-14T18:00:00+00:00',
+      point: { latitude: 23.03, longitude: 72.59, label: null },
+      observed: { status: 'ok', rows_in_radius: 1, stations: [{ kind: 'metar', network: 'metar', name: 'AHMEDABAD',
+        station_code: 'VAAH', distance_km: 6.9, observed_at_utc: '2026-09-14T17:00:00+00:00', age_minutes: 25.8,
+        parameters: [{ field: 'temp', value: 26, unit: null, unit_stated_by_source: false }], source_id: 'S63' }] },
+      in_force: { status: 'ok', district: 'AHMADABAD', state: 'GUJARAT', day: 1, day_label: '14 Sep 2026',
+        starts_utc: '2026-09-13T18:30:00+00:00', ends_utc: '2026-09-14T18:30:00+00:00', colour: 'yellow',
+        hazards: ['Thunderstorm/lightning/squall'], quiet: false,
+        status_line: 'Official district warning: yellow - Thunderstorm/lightning/squall',
+        issued_at_utc: '2026-09-14T06:00:00+00:00', source_id: 'S63', source_locator: '$.features[112]' },
+      next_hours: { status: 'ok', source_id: 'S62', rows: [
+        { at: '2026-09-14T18:00:00+00:00', temperature_2m: 26.5, precipitation_probability: 1, precipitation: 0, wind_speed_10m: 9.4 },
+        { at: '2026-09-14T19:00:00+00:00', temperature_2m: 26.2, precipitation_probability: 0, precipitation: 0, wind_speed_10m: 9.5 }] },
+      summary: 'Freshest station report here: AHMEDABAD, 6.9 km away.',
+      not_connected: ['radar and satellite imagery'], limitations: ['A quiet day is not an all-clear.'], not_established: [] }),
   '/api/air-quality': envelope('air_quality.point', 'ok',
     { parameters: { pm2_5: { unit: '\u03bcg/m\u00b3', points: [{ t: '2026-09-14T00:00:00+00:00', v: 7.3, source_locator: '$.hourly.pm2_5[0]' }] },
                     us_aqi: { unit: 'US AQI', points: [{ t: '2026-09-14T00:00:00+00:00', v: 53, source_locator: '$.hourly.us_aqi[0]' }] } },
@@ -227,6 +243,10 @@ async function run() {
   assert(walk(overview).some(node => textOf(node).indexOf('National warning picture') >= 0), 'overview names the national picture');
   assert(withClass(overview, 'wchip').length >= 2, 'overview shows the warning tally as colours');
   assert(walk(overview).some(node => /not an all-clear/i.test(textOf(node))), 'overview keeps the all-clear caveat');
+  assert.equal(withClass(overview, 'viz-now').length, 1, 'Today opens with the Now band');
+  assert.equal(withClass(overview, 'viz-now-mark').length, 3, 'one lane exists per product the reading returned');
+  withClass(overview, 'viz-now-mark')[0].events.focus[0]();
+  assert(/AHMEDABAD/.test(textOf(withClass(overview, 'viz-readout')[0])), 'a lane reads out its own values');
   console.log('PASS: the overview surface paints the national tally and keeps its caveats');
 
   const warnings = await render('warnings', place);
@@ -455,6 +475,18 @@ async function run() {
   assert.equal(h.window.location.hash, '#/changes', 'running a palette item moves the shell to that surface');
   assert.equal(palette.hidden, true, 'running an item closes the palette');
   console.log('PASS: the command palette lists surfaces, places and recents and runs the chosen item');
+
+  const memory = h.api();
+  memory.pinPlace({ label: 'Kochi, Kerala', latitude: 9.93, longitude: 76.27 });
+  assert(memory.pinnedPlaces().some(item => item.label === 'Kochi, Kerala'), 'a pinned place is remembered locally');
+  assert(memory.isPinned({ label: 'Kochi, Kerala' }), 'a pinned place reads as pinned');
+  assert(typeof memory.paintPinned === 'function', 'the topbar strip can be repainted from the palette action');
+  memory.unpinPlace({ label: 'Kochi, Kerala' });
+  assert(!memory.isPinned({ label: 'Kochi, Kerala' }), 'unpinning forgets it');
+  memory.pinPlace({ label: 'Nowhere', latitude: null, longitude: null });
+  assert(!memory.pinnedPlaces().some(item => item.label === 'Nowhere'),
+    'a place without coordinates is refused, so a pin can never invent a location');
+  console.log('PASS: pinned places are remembered locally and a pin without coordinates is refused');
 
   const untokened = h.calls.filter(call => call.headers['X-WeatherGPT-Token'] !== TOKEN);
   assert.equal(untokened.length, 0, 'every request carries the workspace token, missing on: ' + JSON.stringify(untokened.map(call => call.path)));

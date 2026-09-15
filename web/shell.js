@@ -303,6 +303,63 @@ const WG = window.WG;
     render();
   }
 
+  /* ---------- place memory -------------------------------------------------- */
+  /* Pinned places are the reader's own shortlist: a small local list, no server, no account. A pin
+     stores exactly the place record the workspace is already working with, so switching back to it
+     cannot invent a coordinate. */
+  const PIN_KEY = 'weathergpt.pinned';
+  const PIN_LIMIT = 8;
+  /* A pin must be routable: a label and two real coordinates. Number(null) is 0, so a null would
+     otherwise be stored as the Gulf of Guinea and a click would carry the workspace there. */
+  function routable(place) {
+    if (!place || !place.label) return false;
+    return [place.latitude, place.longitude].every(value =>
+      value !== null && value !== undefined && value !== '' && Number.isFinite(Number(value)));
+  }
+  function pinnedPlaces() {
+    try {
+      const raw = window.localStorage.getItem(PIN_KEY);
+      const list = raw ? JSON.parse(raw) : [];
+      return Array.isArray(list) ? list.filter(routable) : [];
+    } catch (error) {
+      return [];
+    }
+  }
+  function savePinned(list) {
+    try { window.localStorage.setItem(PIN_KEY, JSON.stringify(list.slice(0, PIN_LIMIT))); } catch (error) { /* private mode: pins last the session */ }
+    paintPinned();
+  }
+  function pinPlace(place) {
+    const target = place || WG.state.place;
+    if (!routable(target)) return pinnedPlaces();
+    const list = pinnedPlaces().filter(item => item.label !== target.label);
+    list.unshift({ label: target.label, latitude: target.latitude, longitude: target.longitude });
+    savePinned(list);
+    return pinnedPlaces();
+  }
+  function unpinPlace(place) {
+    const target = place || WG.state.place;
+    if (!target || !target.label) return pinnedPlaces();
+    savePinned(pinnedPlaces().filter(item => item.label !== target.label));
+    return pinnedPlaces();
+  }
+  function isPinned(place) {
+    const target = place || WG.state.place;
+    return !!target && pinnedPlaces().some(item => item.label === target.label);
+  }
+  function paintPinned() {
+    const host = document.getElementById('pinned-places');
+    if (!host) return;
+    clear(host);
+    const active = WG.state.place && WG.state.place.label;
+    pinnedPlaces().forEach(place => {
+      const chip = el('button', place.label, 'pinned-place' + (place.label === active ? ' is-active' : ''));
+      chip.type = 'button';
+      chip.setAttribute('aria-label', 'Switch the working place to ' + place.label);
+      chip.addEventListener('click', () => setPlace(place));
+      host.append(chip);
+    });
+  }
   /* ---------- place search ---------- */
   function wirePlaceSearch() {
     const input = document.getElementById('place-input');
@@ -994,6 +1051,10 @@ const WG = window.WG;
       list.push({ group: 'Actions', glyph: '◷', label: 'Check watches now', note: 'foreground only', run: () => { const b = document.getElementById('notify-toggle'); if (b) b.click(); } });
       list.push({ group: 'Actions', glyph: '⤓', label: 'Save this conversation', note: 'markdown', run: () => { const b = document.getElementById('export-transcript'); if (b) b.click(); } });
       list.push({ group: 'Actions', glyph: '⎙', label: 'Print the open answer', note: 'print', run: () => { if (window.print) window.print(); } });
+      list.push({ group: 'Actions', glyph: '★', label: isPinned() ? 'Unpin this place' : 'Pin this place', note: 'keep it in the topbar',
+                  run: () => { if (isPinned()) unpinPlace(); else pinPlace(); } });
+      pinnedPlaces().forEach(place => list.push({ group: 'Pinned places', glyph: '★', label: place.label,
+                                                  note: 'switch the working place', run: () => setPlace(place) }));
       return list;
     }
     function filtered(query) {
@@ -1104,6 +1165,7 @@ const WG = window.WG;
         if (input) input.focus();
       });
     }
+    paintPinned();
     const close = document.getElementById('drawer-close');
     if (close) close.addEventListener('click', closeDrawer);
     document.addEventListener('keydown', event => { if (event.key === 'Escape') { closeDrawer(); } });
@@ -1160,6 +1222,11 @@ const WG = window.WG;
   WG.provenanceList = provenanceList;
   WG.colourChip = colourChip;
   WG.openDrawer = openDrawer;
+  WG.pinnedPlaces = pinnedPlaces;
+  WG.pinPlace = pinPlace;
+  WG.unpinPlace = unpinPlace;
+  WG.isPinned = isPinned;
+  WG.paintPinned = paintPinned;
   WG.closeDrawer = closeDrawer;
   WG.setPlace = setPlace;
   WG.render = render;

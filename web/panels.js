@@ -102,6 +102,44 @@
     const view = await WGref.api('/api/overview', { place: placeQuery(WGref).lat + ',' + placeQuery(WGref).lon });
     WGref.state.freshness = WG.freshness(view);
     const data = view.data;
+    /* The Now band is the command-centre reading: one row per product, placed on the same time
+       axis, so a reader can see what is observed, what is published and what is modelled, and
+       where each of them starts. Every lane comes from the payload; nothing is placed by hand. */
+    let nowReading = null;
+    try { nowReading = await WGref.api('/api/now', { lat: placeQuery(WGref).lat, lon: placeQuery(WGref).lon }); }
+    catch (error) { nowReading = null; }
+    if (nowReading && typeof viz !== 'undefined' && viz.nowBand) {
+      const reading = nowReading.data || {};
+      const station = (((reading.observed || {}).stations) || [])[0] || null;
+      const day = reading.in_force || {};
+      const hours = ((reading.next_hours || {}).rows) || [];
+      const lanes = [];
+      if (station && station.observed_at_utc) {
+        lanes.push({ key: 'observed', label: 'Observed', kind: 'observed', from: station.observed_at_utc,
+          detail: [station.name || station.station_code, station.distance_km === null || station.distance_km === undefined ? null : Math.round(station.distance_km * 10) / 10 + ' km away',
+            (station.parameters || []).slice(0, 2).map(parameter => parameter.field + ' ' + parameter.value).join(', ')].filter(Boolean).join(' \u00b7 '),
+          source: station.source_id || 'S63' });
+      }
+      if (day.status === 'ok' && day.starts_utc && day.ends_utc) {
+        lanes.push({ key: 'published', label: 'Published', kind: 'published', from: day.starts_utc, to: day.ends_utc,
+          colour: day.colour, detail: day.status_line || 'the product stated a colour without wording', source: day.source_id || 'S63' });
+      }
+      if (hours.length) {
+        const firstHour = hours[0].at, lastHour = hours[hours.length - 1].at;
+        const firstTemp = hours[0].temperature_2m, lastTemp = hours[hours.length - 1].temperature_2m;
+        lanes.push({ key: 'model', label: 'Model next', kind: 'model', from: firstHour, to: lastHour,
+          detail: hours.length + ' hour(s) returned, ' + (firstTemp === undefined ? 'temperature not returned' : firstTemp + ' \u00b0C at the first hour') +
+            ' and ' + (lastTemp === undefined ? 'temperature not returned' : lastTemp + ' \u00b0C at the last'),
+          source: (reading.next_hours || {}).source_id || 'source not stated' });
+      }
+      host.append(viz.nowBand({
+        title: 'Now',
+        place: WGref.state.place ? WGref.state.place.label : null,
+        read_at: reading.generated_at_utc || nowReading.generated_at_utc,
+        note: 'Three products on one axis, kept apart: an observation is an instant, the published day is a district window, and the model hours are model output.',
+        lanes: lanes
+      }));
+    }
     const tally = el('div', undefined, 'metric-row');
     Object.keys(data.national.tally || {}).sort().forEach(colour => {
       const card = el('div', undefined, 'metric');
@@ -126,8 +164,8 @@
        and satellite imagery, sub-hourly refresh and push are not connected and say so here. */
     const nowCard = WG.block('Right now at this place', 'Station observations, the published day and the next model hours, kept apart.');
     try {
-      const nowView = await WGref.api('/api/now', { lat: placeQuery(WGref).lat, lon: placeQuery(WGref).lon });
-      const now = nowView.data;
+      const now = (nowReading || {}).data;
+      if (!now) throw new Error('the right-now reading could not be read');
       const stations = ((now.observed || {}).stations) || [];
       if (stations.length) {
         nowCard.append(WG.table(['Station', 'Network', 'Distance', 'Reported', 'Age'],

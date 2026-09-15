@@ -1,0 +1,69 @@
+{
+  "schema_version": "frontend-overhaul-live-http-v1",
+  "batch": "P3 command-centre shell: the Now band and place memory",
+  "checked_at_utc": "2026-09-15T17:31:14+00:00",
+  "base": "http://127.0.0.1:8795",
+  "method": "Loopback HTTP against a fresh workspace process: the served shell, the served engine and the reading the band draws. No DOM rendering: the session sandbox cannot launch Chrome.",
+  "checks": [
+    {
+      "check": "page token and pinned strip",
+      "status": 200,
+      "ms": 5,
+      "token_present": true,
+      "pinned_strip_present": true
+    },
+    {
+      "check": "the shell carries place memory",
+      "status": 200,
+      "ms": 0,
+      "bytes": 66004,
+      "pin_place": true,
+      "routable_guard": true,
+      "palette_action": true,
+      "pinned_strip_paint": true
+    },
+    {
+      "check": "the engine carries the now band",
+      "status": 200,
+      "ms": 0,
+      "bytes": 33798,
+      "now_band": true,
+      "read_at_marker": true
+    },
+    {
+      "check": "the band has three products to place",
+      "path": "/api/now",
+      "status": 200,
+      "ms": 1235,
+      "observed_lane": true,
+      "published_lane": true,
+      "model_lane": 6,
+      "colour": "yellow",
+      "read_at": "2026-09-15T17:31:14.858579+00:00"
+    }
+  ],
+  "budget": {
+    "note": "Served-asset sizes are measured here; browser paint, layout shift and animation frame time were not measurable in this sandbox and are recorded as not measured rather than guessed.",
+    "measured": "served asset bytes",
+    "not_measured": [
+      "first contentful paint",
+      "cumulative layout shift",
+      "animation frame time"
+    ],
+    "assets": {
+      "tokens.css": 5826,
+      "style.css": 68366,
+      "viz.js": 33798,
+      "views.js": 78322,
+      "panels.js": 108712,
+      "shell.js": 66004,
+      "app.js": 29096,
+      "charts.js": 3178,
+      "map.js": 16344,
+      "voice.js": 12079,
+      "home.js": 23294
+    },
+    "assets_total_bytes": 445019,
+    "assets_total_kib": 434.6
+  }
+}
