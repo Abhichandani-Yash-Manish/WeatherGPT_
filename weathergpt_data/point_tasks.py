@@ -102,6 +102,15 @@ def execute_point_task(engine, result, plan, task, resolved, coordinates):
     if not plan['start_local'] or not plan['end_local']:
         result.update(answer='Please specify the date or time window.',follow_up='A date or ordered range of dates');return result
     start,end=parsed(plan['start_local']),parsed(plan['end_local']);now=engine.workspace.clock()
+    if task.get('kind')=='forecast':
+        # Only a forecast day is read on the source's :30 boundaries. A history day is
+        # midnight-to-midnight by contract and must not be shifted.
+        from .transport import align_source_day
+        aligned_start,aligned_end,aligned_note=align_source_day(start,end)
+        if aligned_note:
+            start,end=aligned_start,aligned_end
+            plan['start_local']=start.isoformat();plan['end_local']=end.isoformat()
+            result.setdefault('notes',[]).append(aligned_note)
     if any(t.utcoffset()!=timedelta(hours=5,minutes=30) for t in [start,end]) or end<=start:
         raise SourceError('Use an ordered interval with Indian Standard Time endpoints')
     if daily:

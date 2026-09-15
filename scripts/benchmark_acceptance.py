@@ -135,14 +135,26 @@ def main():
     parser.add_argument('--set', required=True, choices=['development', 'holdout', 'all'])
     parser.add_argument('--output', type=Path, required=True, help='a new directory; an existing one is refused')
     parser.add_argument('--registry', type=Path, default=REGISTRY)
+    parser.add_argument('--case', action='append', default=None,
+                        help='re-measure only these case ids (for example --case D07 --case D10)')
     args = parser.parse_args()
     document = json.loads(args.registry.read_text())
     if args.set == 'all':
         target = args.output
         for name in ('development', 'holdout'):
-            run_set(name, document['sets'][name], target / name)
+            run_set(name, _selected(document['sets'][name], args.case), target / name)
     else:
-        run_set(args.set, document['sets'][args.set], args.output)
+        run_set(args.set, _selected(document['sets'][args.set], args.case), args.output)
+
+
+def _selected(cases, only):
+    if not only:
+        return cases
+    wanted = {item.strip().upper() for item in only}
+    chosen = [case for case in cases if str(case.get('id', '')).upper() in wanted]
+    if not chosen:
+        raise SystemExit('No declared case matched: ' + ', '.join(sorted(wanted)))
+    return chosen
 
 
 if __name__ == '__main__':

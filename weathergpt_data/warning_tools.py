@@ -65,6 +65,17 @@ def _gazetteer_ladder(engine, place):
         if len(confident) == 1 and confident[0].get('match_type') != 'approximate_name_requires_confirmation':
             return confident[0], len(matches), None
         if len(confident) > 1:
+            # A user who wrote "Patna, Bihar" narrowed the name already. When one
+            # administrative seat outranks the villages sharing the name, attach the warning to
+            # that seat and disclose the reading rather than asking again; a genuinely
+            # same-order ambiguity still asks.
+            from .gazetteer import preferred_match, rank_matches
+            chosen, why = preferred_match(confident)
+            if chosen is not None:
+                others = [item['label'] for item in rank_matches(confident) if item['id'] != chosen['id']][:4]
+                chosen['accepted_because'] = why
+                chosen['alternatives'] = others
+                return chosen, len(matches), None
             return None, len(matches), confident[:20]
     return None, 0, None
 
@@ -103,6 +114,11 @@ def execute_warning(engine, result, plan, task, resolved=None, coordinates=None)
                     ambiguous = candidates
                     break
                 if match is not None:
+                    if match.get('accepted_because'):
+                        result['notes'].append('Place read as ' + (match.get('label') or label) + ' — ' +
+                                               match['accepted_because'] + '.' +
+                                               (' Other places share this name: ' + '; '.join(match.get('alternatives') or []) +
+                                                '. Say which one you meant to switch.' if match.get('alternatives') else ''))
                     chosen.append({'place': match.get('label') or label, 'point': match['coordinates']})
                     continue
                 # No settlement answer: the official district label may still carry the name.

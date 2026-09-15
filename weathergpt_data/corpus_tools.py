@@ -36,6 +36,33 @@ STOPWORDS = set(('the a an of for in on at to and or is are was were be been wit
 INDIC_SCRIPT = re.compile(r'[\u0900-\u0d7f]')
 # A question about the document as a whole, not about a topic inside it. This is matched
 # deterministically so the behaviour does not depend on the planner's wording that day.
+# A question about the document as a whole, not about a topic inside it. The strong markers
+# settle it; the weaker "what does X say" phrasing only counts when the question carries no
+# topic of its own, so "what does the bulletin say about heavy rainfall" stays a topic search.
+WHOLE_DOCUMENT_STRONG = re.compile(
+    r"\b(?:main points?|overall|summar(?:y|ise|ize|ising|izing)|synoptic|synopsis|highlights?|key points?|gist|"
+    r"whole (?:document|edition|bulletin)|in general|general (?:advice|situation|context))\b", re.I)
+WHOLE_DOCUMENT_WEAK = re.compile(
+    r"\bwhat does (?:the|this) [^?]{0,60}(?:document|edition|bulletin|release|advisory|guidance) say\b|"
+    r"\bwhat (?:is|are) in (?:the|this) [^?]{0,60}(?:document|edition|bulletin|release|advisory|guidance)\b", re.I)
+WHOLE_DOCUMENT_GENERIC = set((
+    'what does do say says the a an latest national state district regional weather bulletin bulletins advisory '
+    'advisories release press document edition summary about in of and for from this that today yesterday issued '
+    'published all india according give me tell show').split())
+
+
+def whole_document_question(question):
+    """True when the question asks about the edition itself rather than a topic inside it."""
+    if not isinstance(question, str):
+        return False
+    if WHOLE_DOCUMENT_STRONG.search(question):
+        return True
+    if not WHOLE_DOCUMENT_WEAK.search(question):
+        return False
+    leftover = [token for token in re.findall(r'[a-z]{3,}', question.lower()) if token not in WHOLE_DOCUMENT_GENERIC]
+    return not leftover
+
+
 WHOLE_DOCUMENT_QUERY = re.compile(
     r"\b(?:main points?|overall|summar(?:y|ise|ize|ising|izing)|synoptic|synopsis|highlights?|key points?|gist|"
     r"whole (?:document|edition|bulletin)|full (?:document|edition|bulletin)|in general|general (?:advice|situation|context)|"
@@ -367,7 +394,7 @@ def execute_corpus(engine, result, plan, task, resolved=None):
     # into it) or an explicit planner flag, never from a topic query that merely happens
     # to sit inside a wider question.
     change_question = bool(CHANGE_QUERY.search(query))
-    whole_document = (bool(request.get('whole_document')) or bool(WHOLE_DOCUMENT_QUERY.search(query))
+    whole_document = (bool(request.get('whole_document')) or whole_document_question(query)
                       # "What changed in this bulletin?" is a question about the edition, and a
                       # keyword search for the word "changed" would find nothing in it.
                       or (change_question and bool(family)))
@@ -706,7 +733,11 @@ def execute_corpus(engine, result, plan, task, resolved=None):
                                      'families': sorted({views[sha]['family'] for sha in kept}),
                                      'documents': kept, 'filters': {'family': family or None, 'scope': scope or None, 'region': region},
                                      'scores_are_confidence': False})
-    partial = bool(warning_hits or currency_unknown or expired or retired or conflicts or filtered_out
+    # A served passage that is warning-classified does not make the reading incomplete: it is
+    # served with its reference-only label and the answer says so. Partial means the request
+    # itself was reduced: an unstated issue date, expired printed validity, a retired edition,
+    # a filtered document, a disclosed weaker match, or opposing wording that was found.
+    partial = bool(currency_unknown or expired or retired or conflicts or filtered_out
                    or match_basis != 'lexical_overlap')
     result['status'] = 'partial' if partial else 'answered'
     return result

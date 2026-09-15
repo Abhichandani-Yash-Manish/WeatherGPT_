@@ -10,6 +10,49 @@ DEFAULT=ROOT/'data/processed/geography/geonames-india-20260912/places.sqlite'
 def norm(value):
     return ' '.join(''.join(c for c in unicodedata.normalize('NFKD',value).casefold() if not unicodedata.combining(c)).split())
 
+SEAT_ORDER={'PPLC':0,'PPLA':1,'PPLA2':2,'PPLA3':3,'PPLA4':4,'PPLA5':5,'PPLX':6,'PPL':7}
+
+
+def feature_rank(feature):
+    """Administrative seats first: a district or state seat outranks a village of the same name."""
+    return SEAT_ORDER.get(str(feature or '').upper(),8)
+
+
+def rank_matches(matches):
+    """Stable order for candidates: seat order, then a canonical name, then the catalogue id."""
+    return sorted(matches,key=lambda match:(feature_rank(match.get('feature')),
+                                            0 if match.get('name_match_basis')=='canonical' else 1,
+                                            str(match.get('id'))))
+
+
+def preferred_match(matches):
+    """(chosen, reason) when one administrative seat outranks the places sharing the name.
+
+    This never substitutes a different place: the chosen entry carries the requested name and
+    sits inside the state the caller supplied. It answers the common case where a user writes
+    "Patna, Bihar" and four villages share the name with the district seat, and it still asks
+    when the candidates are of the same order with nothing to tell them apart.
+    """
+    ranked=rank_matches(matches)
+    if not ranked:return None,'no match'
+    if len(ranked)==1:return ranked[0],'the only place with this name under the supplied filters'
+    best=feature_rank(ranked[0].get('feature'))
+    if best<=2 and feature_rank(ranked[1].get('feature'))>best:
+        return ranked[0],'the only administrative seat among the places that share this name'
+    # GeoNames India marks a district by the town it is named for. When exactly one candidate
+    # sits in the district of its own name, that town is the one a person means by it; the
+    # villages sharing the name sit in districts that carry other names.
+    import difflib
+    target=norm(ranked[0].get('name') or '')
+    def district_carries_the_name(match):
+        district=norm(match.get('admin2') or '')
+        if not district or not target:return False
+        return district==target or difflib.SequenceMatcher(None,district,target).ratio()>=0.82
+    same_district=[match for match in ranked if district_carries_the_name(match)]
+    if len(same_district)==1:
+        return same_district[0],'its district carries the same name, and no other place that shares this name does'
+    return None,'more than one place shares this name at the same order'
+
 def build(archive,output=DEFAULT):
     archive=Path(archive);output=Path(output)
     if output.exists():raise FileExistsError('Gazetteer output already exists')
@@ -57,6 +100,18 @@ class Gazetteer:
         con=sqlite3.connect(self.path.resolve().as_uri()+'?mode=ro',uri=True)
         try:return [row[0] for row in con.execute('SELECT name FROM aliases WHERE id=? ORDER BY name LIMIT ?',(place_id,max(1,min(int(limit),500))))]
         finally:con.close()
+
+    @staticmethod
+    def feature_rank(feature):
+        return feature_rank(feature)
+
+    @classmethod
+    def rank_matches(cls,matches):
+        return rank_matches(matches)
+
+    @classmethod
+    def preferred(cls,matches):
+        return preferred_match(matches)
 
     def search(self,name,state='',district=''):
         if hashlib.sha256(self.path.read_bytes()).hexdigest()!=self.expected_sha256:raise ValueError('Place catalogue changed after verification')

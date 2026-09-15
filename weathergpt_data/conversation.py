@@ -14,7 +14,7 @@ from .providers import default_model
 from .gazetteer import Gazetteer
 from .research_answers import lookup_plan
 from .watches import watch_intent
-from .transport import SourceError,parsed
+from .transport import SourceError,align_source_day,parsed
 
 CHAT_QUEUE_CAPACITY=3
 CHAT_QUEUE_TIMEOUT=45.0
@@ -451,7 +451,26 @@ class ConversationEngine:
                     result.update(status='needs_clarification',answer=f"I could not find a settlement named {p['name']}"+(f" in {p['state']}" if p['state'] else '')+'. Please give its district/state, an alternative spelling, or a pin. I will not replace it with a nearby city.',follow_up='District/state, alternative spelling, or coordinates');return None
                 for match in matches:match['for_place_name']=p['name']
                 if len(matches)>1 or matches[0]['match_type']=='approximate_name_requires_confirmation':
-                    result.update(status='needs_selection',answer=f"I found {len(matches)} possible places for {p['name']}. Please confirm the intended location and spelling.",choices=matches[:20],follow_up='Choose a place, or add its district and state.');return None
+                    chosen,why=(None,'the spelling is approximate and must be confirmed')
+                    if len(matches)>1 and matches[0]['match_type']!='approximate_name_requires_confirmation':
+                        from .gazetteer import preferred_match,rank_matches as rank_places
+                        chosen,why=preferred_match(matches)
+                    if chosen is not None:
+                        # The user already narrowed the name (state, district) and one
+                        # administrative seat outranks villages that share it. The choice is
+                        # disclosed with its reason and the alternatives, so a wrong reading
+                        # is visible and correctable rather than silent.
+                        others=[match['label'] for match in rank_places(matches)
+                                if match['id']!=chosen['id']][:4]
+                        chosen['accepted_because']=why
+                        chosen['alternatives']=others
+                        result['notes'].append('Place read as '+chosen['label']+' — '+why+'.'+
+                                               (' Other places share this name: '+'; '.join(others)+
+                                                '. Say which one you meant to switch.' if others else ''))
+                        points.append(chosen);resolved[p['name']]=chosen
+                        continue
+                    from .gazetteer import rank_matches as rank_places_for_choices
+                    result.update(status='needs_selection',answer=f"I found {len(matches)} possible places for {p['name']}. Please confirm the intended location and spelling.",choices=rank_places_for_choices(matches)[:20],follow_up='Choose a place, or add its district and state.');return None
                 points.append(matches[0]);resolved[p['name']]=matches[0]
         return points
 
@@ -463,6 +482,11 @@ class ConversationEngine:
             result.update(answer='When should I check the weather for this plan? A day and approximate time are enough.',follow_up='Departure or activity date/time');return result
         start,end=parsed(plan['start_local']),parsed(plan['end_local'])
         if start.utcoffset()!=timedelta(hours=5,minutes=30) or end.utcoffset()!=timedelta(hours=5,minutes=30) or end<=start or end-start>timedelta(days=7):raise SourceError('The interpreted time window is invalid; please specify the day and approximate hours')
+        aligned_start,aligned_end,aligned_note=align_source_day(start,end)
+        if aligned_note:
+            start,end=aligned_start,aligned_end
+            plan['start_local']=start.isoformat();plan['end_local']=end.isoformat()
+            result['notes'].append(aligned_note)
         if start<=now:
             if plan['explicit_times'] or end<=now:
                 result.update(status='outside_validity',answer='That time window has already started or passed. I can check upcoming forecast hours; past observed conditions need a historical observation source.');return result

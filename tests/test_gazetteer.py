@@ -30,4 +30,62 @@ class GazetteerTests(unittest.TestCase):
         self.assertFalse(self.output.exists())
         self.assertFalse(list(self.output.parent.glob('.building-*')))
 
+class SeatPreferenceTests(unittest.TestCase):
+    """A supplied state plus one administrative seat answers the question; peers still ask.
+
+    These run against the real vendored catalogue, which is the only place the seat order
+    exists. They take no measurement of GeoNames beyond what the archive already records.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        from weathergpt_data.gazetteer import Gazetteer
+        cls.gazetteer = Gazetteer()
+
+    def choose(self, name, state=''):
+        return Gazetteer.preferred(self.gazetteer.search(name, state))
+
+    def matches_for(self, name, state=''):
+        return self.gazetteer.search(name, state)
+
+    def test_a_district_seat_outranks_villages_sharing_the_name(self):
+        from weathergpt_data.gazetteer import Gazetteer
+        chosen, why = self.choose('Patna', 'Bihar')
+        self.assertGreater(len(self.matches_for('Patna', 'Bihar')), 1, 'the fixture must be a shared name')
+        self.assertIsNotNone(chosen, 'the district seat must be preferred: ' + why)
+        self.assertEqual(chosen['name'], 'Patna')
+        self.assertEqual(chosen['admin2'], 'Patna')
+        self.assertEqual(chosen['admin1'], 'State of Bihar')
+        self.assertEqual(chosen['feature'], 'PPLA')
+        self.assertIn('administrative seat', why)
+
+    def test_peer_places_of_the_same_order_still_ask(self):
+        chosen, why = self.choose('Kochi')
+        self.assertIsNone(chosen, 'villages sharing a name must not be guessed')
+        self.assertIn('same order', why)
+
+    def test_a_lone_place_is_the_only_match(self):
+        chosen, why = self.choose('Ahmedabad', 'Gujarat')
+        self.assertIsNotNone(chosen)
+        self.assertEqual(chosen['admin1'], 'State of Gujarāt')
+        self.assertIn('only place', why)
+
+    def test_a_town_whose_own_district_carries_its_name_is_preferred(self):
+        # Ahmedabad in Gujarat is published in the district of the same name; the other
+        # Ahmedabad in the catalogue sits in District Rampur, Uttar Pradesh.
+        chosen, why = self.choose('Ahmedabad')
+        self.assertIsNotNone(chosen, 'the district-name rule must decide this one: ' + why)
+        self.assertEqual(chosen['admin1'], 'State of Gujarāt')
+        self.assertIn('district carries the same name', why)
+
+    def test_ranking_is_stable_and_seat_first(self):
+        from weathergpt_data.gazetteer import Gazetteer
+        matches = self.gazetteer.search('Patna', 'Bihar')
+        ranked = Gazetteer.rank_matches(matches)
+        ranks = [Gazetteer.feature_rank(item.get('feature')) for item in ranked]
+        self.assertEqual(ranks, sorted(ranks), 'candidates are ordered seat first')
+        self.assertEqual([item['id'] for item in ranked], [item['id'] for item in Gazetteer.rank_matches(matches)],
+                         'ranking is deterministic for the same input')
+
+
 if __name__=='__main__':unittest.main()

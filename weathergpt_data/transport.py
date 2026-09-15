@@ -16,6 +16,25 @@ def parsed(value):
     result=datetime.fromisoformat(value.replace('Z','+00:00'))
     if result.tzinfo is None:raise SourceError('Timestamp must specify its timezone')
     return result
+def align_source_day(start,end):
+    """Read a midnight-to-midnight IST calendar day as the source's own day, and say so.
+
+    Source hours start at :30 IST, so a 00:00-to-00:00 window contains 23 complete hours and
+    a whole-day question comes back reduced for a reason the user did not ask about. The
+    returned note is meant to be shown; the window is returned unchanged in every other case.
+    """
+    from datetime import timedelta
+    from zoneinfo import ZoneInfo
+    start,end=parsed(start) if isinstance(start,str) else start,parsed(end) if isinstance(end,str) else end
+    ist=ZoneInfo('Asia/Kolkata')
+    local_start,local_end=start.astimezone(ist),end.astimezone(ist)
+    if (local_start.strftime('%H:%M'),local_end.strftime('%H:%M'))==('00:00','00:00') and \
+       local_end-local_start==timedelta(days=1):
+        return (local_start+timedelta(minutes=30),local_end+timedelta(minutes=30),
+                'The day was asked for as 00:00 to 00:00 IST; source hours start at :30 IST, so it is read as 00:30 to 00:30 IST.')
+    return start,end,None
+
+
 def digest(data):return hashlib.sha256(data).hexdigest()
 def write_json(path,value):
     import os,tempfile

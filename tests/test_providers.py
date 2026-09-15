@@ -300,6 +300,74 @@ class RulePlannerTests(unittest.TestCase):
         request = self.request_for('What is the groundwater level in Ahmedabad?')
         self.assertEqual(request['tasks'][0]['kind'], 'research')
 
+    def test_a_named_district_is_read_without_a_preposition(self):
+        request = self.request_for('What does the Ahmedabad district agromet bulletin say about cotton?')
+        self.assertEqual([place['name'] for place in request['places']], ['Ahmedabad'])
+        self.assertEqual(request['places'][0]['kind'], 'district')
+
+    def test_a_crop_with_a_bulletin_is_an_advisory_task_not_a_generic_document(self):
+        request = self.request_for('What does the Ahmedabad district agromet bulletin say about cotton?')
+        task = request['tasks'][0]
+        self.assertEqual(task['kind'], 'agriculture')
+        self.assertEqual(task['parameters'], ['agricultural_advisory'])
+        self.assertEqual(task['document_request']['crop'], 'cotton')
+        self.assertEqual(task['document_request']['mode'], 'source_lookup')
+        self.assertEqual(task['document_request']['topic'], 'general')
+
+    def test_a_decision_question_asks_for_decision_support(self):
+        request = self.request_for('Should I irrigate my cotton crop in Ahmedabad, Gujarat today?')
+        task = request['tasks'][0]
+        self.assertEqual(task['kind'], 'agriculture')
+        self.assertEqual(task['document_request']['mode'], 'decision_support')
+        self.assertEqual(task['document_request']['topic'], 'irrigation')
+
+    def test_a_state_agromet_summary_keeps_state_scope_and_the_whole_edition_flag(self):
+        request = self.request_for('What does the whole Gujarat state agromet advisory bulletin say overall?')
+        task = request['tasks'][0]
+        self.assertEqual(task['kind'], 'document')
+        self.assertEqual(task['corpus_request']['family'], 'state_agromet')
+        self.assertEqual(task['corpus_request']['scope'], 'state')
+        self.assertTrue(task['corpus_request']['whole_document'])
+
+    def test_a_district_bulletin_question_uses_district_scope(self):
+        request = self.request_for('What does the Ahmedabad district agromet bulletin say?')
+        task = request['tasks'][0]
+        self.assertEqual(task['kind'], 'document')
+        self.assertEqual(task['corpus_request']['family'], 'district_agromet')
+        self.assertEqual(task['corpus_request']['scope'], 'district')
+
+    def test_a_hinglish_place_after_the_name_is_read_without_the_day_word(self):
+        request = self.request_for('Kal Ahmedabad me barish hogi kya?')
+        self.assertIsNotNone(request)
+        self.assertEqual([place['name'] for place in request['places']], ['Ahmedabad'])
+        self.assertEqual(request['language'], 'hi-Latn')
+        self.assertEqual(request['tasks'][0]['kind'], 'forecast')
+        second = self.request_for('Aaj Delhi me garmi kitni hogi?')
+        self.assertEqual([place['name'] for place in second['places']], ['Delhi'])
+
+    def test_a_relative_span_becomes_a_bounded_upcoming_window(self):
+        request = self.request_for('What is the river discharge near Patna, Bihar in the next three days?')
+        task = request['tasks'][0]
+        self.assertEqual(task['kind'], 'river')
+        self.assertTrue(task['start_local'].startswith('2026-09-15T00:30:00+05:30'))
+        self.assertTrue(task['end_local'].startswith('2026-09-17T23:30:00+05:30'))
+        self.assertFalse(request['explicit_times'])
+        week = self.request_for('Show the wave conditions near Veraval for the next week?')
+        self.assertTrue(week['tasks'][0]['end_local'].startswith('2026-09-21T23:30:00+05:30'))
+
+    def test_a_context_referencing_follow_up_is_left_to_a_model(self):
+        history = [{'role': 'assistant', 'content': 'Structured conversation focus',
+                    'context_state': {'accepted_places': {'Kochi': {'label': 'Kochi, Kerala'}}}}]
+        self.assertIsNone(rule_request('Compare the rain amount for that same morning period with GFS too.',
+                                       NOW, history))
+
+    def test_a_self_contained_question_in_a_conversation_is_still_planned_by_rules(self):
+        history = [{'role': 'assistant', 'content': 'Structured conversation focus',
+                    'context_state': {'accepted_places': {'Kochi': {'label': 'Kochi, Kerala'}}}}]
+        request = rule_request('Will it rain in Surat, Gujarat tomorrow evening?', NOW, history)
+        self.assertIsNotNone(request)
+        self.assertEqual(request['tasks'][0]['kind'], 'forecast')
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -146,7 +146,13 @@ class RetrievalTests(CorpusCase):
         self.publish(document('coastal_bulletin', 'marine', None, '2026-09-14',
                               'Storm Surge Warning: swell waves are forecast off the coast.', section='COASTAL WARNING'))
         result = self.run_corpus({'places': []}, {'query': 'swell waves', 'family': 'coastal_bulletin', 'scope': 'marine'})
-        self.assertEqual(result['status'], 'partial')
+        # Serving a warning-classified passage does not reduce the reading to partial: the
+        # passage is served with its label, the answer says what it is and is not, and the
+        # warning *task* is the only thing that can speak about applicability. A reduced
+        # reading stays partial for the reasons the other checks pin: an unstated issue date,
+        # expired printed validity, a retired edition or a disclosed weaker match.
+        self.assertEqual(result['status'], 'answered')
+        self.assertEqual(result['retrieval_coverage']['evidence_classes'].get('warning_reference'), 1)
         self.assertIn('reference only', result['answer'])
         self.assertIn('not a current applicable official warning', result['answer'])
         self.assertEqual(result['passages'][0]['evidence_kind'], 'warning_reference')
