@@ -1,0 +1,450 @@
+{
+  "schema_version": "reanalysis-catalogue-probe-v1",
+  "generated_at_utc": "2026-09-15T06:52:38.085949+00:00",
+  "endpoint": "https://archive-api.open-meteo.com/v1/archive",
+  "point": {
+    "latitude": 23.02579,
+    "longitude": 72.58727
+  },
+  "candidates": [
+    "precipitation_sum",
+    "rain_sum",
+    "precipitation_hours",
+    "temperature_2m_mean",
+    "temperature_2m_max",
+    "temperature_2m_min",
+    "apparent_temperature_mean",
+    "relative_humidity_2m_mean",
+    "relative_humidity_2m_max",
+    "relative_humidity_2m_min",
+    "dewpoint_2m_mean",
+    "surface_pressure_mean",
+    "cloud_cover_mean",
+    "wind_speed_10m_max",
+    "wind_gusts_10m_max",
+    "wind_direction_10m_dominant",
+    "shortwave_radiation_sum",
+    "et0_fao_evapotranspiration",
+    "soil_moisture_0_to_7cm_mean",
+    "soil_temperature_0_to_7cm_mean"
+  ],
+  "models": {
+    "era5": {
+      "model": "era5",
+      "request": "https://archive-api.open-meteo.com/v1/archive?latitude=23.02579&longitude=72.58727&start_date=2025-07-01&end_date=2025-07-03&daily=precipitation_sum,rain_sum,precipitation_hours,temperature_2m_mean,temperature_2m_max,temperature_2m_min,apparent_temperature_mean,relative_humidity_2m_mean,relative_humidity_2m_max,relative_humidity_2m_min,dewpoint_2m_mean,surface_pressure_mean,cloud_cover_mean,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant,shortwave_radiation_sum,et0_fao_evapotranspiration,soil_moisture_0_to_7cm_mean,soil_temperature_0_to_7cm_mean&timezone=Asia/Kolkata&models=era5",
+      "timezone": "Asia/Kolkata",
+      "window": [
+        "2025-07-01",
+        "2025-07-03"
+      ],
+      "fields": {
+        "precipitation_sum": {
+          "state": "returned",
+          "unit": "mm",
+          "values": 3,
+          "non_null": 3
+        },
+        "rain_sum": {
+          "state": "returned",
+          "unit": "mm",
+          "values": 3,
+          "non_null": 3
+        },
+        "precipitation_hours": {
+          "state": "returned",
+          "unit": "h",
+          "values": 3,
+          "non_null": 3
+        },
+        "temperature_2m_mean": {
+          "state": "returned",
+          "unit": "°C",
+          "values": 3,
+          "non_null": 3
+        },
+        "temperature_2m_max": {
+          "state": "returned",
+          "unit": "°C",
+          "values": 3,
+          "non_null": 3
+        },
+        "temperature_2m_min": {
+          "state": "returned",
+          "unit": "°C",
+          "values": 3,
+          "non_null": 3
+        },
+        "apparent_temperature_mean": {
+          "state": "returned",
+          "unit": "°C",
+          "values": 3,
+          "non_null": 3
+        },
+        "relative_humidity_2m_mean": {
+          "state": "returned",
+          "unit": "%",
+          "values": 3,
+          "non_null": 3
+        },
+        "relative_humidity_2m_max": {
+          "state": "returned",
+          "unit": "%",
+          "values": 3,
+          "non_null": 3
+        },
+        "relative_humidity_2m_min": {
+          "state": "returned",
+          "unit": "%",
+          "values": 3,
+          "non_null": 3
+        },
+        "dewpoint_2m_mean": {
+          "state": "returned",
+          "unit": "°C",
+          "values": 3,
+          "non_null": 3
+        },
+        "surface_pressure_mean": {
+          "state": "returned",
+          "unit": "hPa",
+          "values": 3,
+          "non_null": 3
+        },
+        "cloud_cover_mean": {
+          "state": "returned",
+          "unit": "%",
+          "values": 3,
+          "non_null": 3
+        },
+        "wind_speed_10m_max": {
+          "state": "returned",
+          "unit": "km/h",
+          "values": 3,
+          "non_null": 3
+        },
+        "wind_gusts_10m_max": {
+          "state": "returned",
+          "unit": "km/h",
+          "values": 3,
+          "non_null": 3
+        },
+        "wind_direction_10m_dominant": {
+          "state": "returned",
+          "unit": "°",
+          "values": 3,
+          "non_null": 3
+        },
+        "shortwave_radiation_sum": {
+          "state": "returned",
+          "unit": "MJ/m²",
+          "values": 3,
+          "non_null": 3
+        },
+        "et0_fao_evapotranspiration": {
+          "state": "returned",
+          "unit": "mm",
+          "values": 3,
+          "non_null": 3
+        },
+        "soil_moisture_0_to_7cm_mean": {
+          "state": "returned",
+          "unit": "m³/m³",
+          "values": 3,
+          "non_null": 3
+        },
+        "soil_temperature_0_to_7cm_mean": {
+          "state": "returned",
+          "unit": "°C",
+          "values": 3,
+          "non_null": 3
+        }
+      }
+    },
+    "era5_land": {
+      "model": "era5_land",
+      "request": "https://archive-api.open-meteo.com/v1/archive?latitude=23.02579&longitude=72.58727&start_date=2025-07-01&end_date=2025-07-03&daily=precipitation_sum,rain_sum,precipitation_hours,temperature_2m_mean,temperature_2m_max,temperature_2m_min,apparent_temperature_mean,relative_humidity_2m_mean,relative_humidity_2m_max,relative_humidity_2m_min,dewpoint_2m_mean,surface_pressure_mean,cloud_cover_mean,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant,shortwave_radiation_sum,et0_fao_evapotranspiration,soil_moisture_0_to_7cm_mean,soil_temperature_0_to_7cm_mean&timezone=Asia/Kolkata&models=era5_land",
+      "timezone": "Asia/Kolkata",
+      "window": [
+        "2025-07-01",
+        "2025-07-03"
+      ],
+      "fields": {
+        "precipitation_sum": {
+          "state": "all_null",
+          "unit": "mm",
+          "values": 3,
+          "non_null": 0
+        },
+        "rain_sum": {
+          "state": "all_null",
+          "unit": "mm",
+          "values": 3,
+          "non_null": 0
+        },
+        "precipitation_hours": {
+          "state": "returned",
+          "unit": "h",
+          "values": 3,
+          "non_null": 3
+        },
+        "temperature_2m_mean": {
+          "state": "returned",
+          "unit": "°C",
+          "values": 3,
+          "non_null": 3
+        },
+        "temperature_2m_max": {
+          "state": "returned",
+          "unit": "°C",
+          "values": 3,
+          "non_null": 3
+        },
+        "temperature_2m_min": {
+          "state": "returned",
+          "unit": "°C",
+          "values": 3,
+          "non_null": 3
+        },
+        "apparent_temperature_mean": {
+          "state": "all_null",
+          "unit": "°C",
+          "values": 3,
+          "non_null": 0
+        },
+        "relative_humidity_2m_mean": {
+          "state": "returned",
+          "unit": "%",
+          "values": 3,
+          "non_null": 3
+        },
+        "relative_humidity_2m_max": {
+          "state": "returned",
+          "unit": "%",
+          "values": 3,
+          "non_null": 3
+        },
+        "relative_humidity_2m_min": {
+          "state": "returned",
+          "unit": "%",
+          "values": 3,
+          "non_null": 3
+        },
+        "dewpoint_2m_mean": {
+          "state": "returned",
+          "unit": "°C",
+          "values": 3,
+          "non_null": 3
+        },
+        "surface_pressure_mean": {
+          "state": "all_null",
+          "unit": "hPa",
+          "values": 3,
+          "non_null": 0
+        },
+        "cloud_cover_mean": {
+          "state": "all_null",
+          "unit": "%",
+          "values": 3,
+          "non_null": 0
+        },
+        "wind_speed_10m_max": {
+          "state": "all_null",
+          "unit": "km/h",
+          "values": 3,
+          "non_null": 0
+        },
+        "wind_gusts_10m_max": {
+          "state": "all_null",
+          "unit": "km/h",
+          "values": 3,
+          "non_null": 0
+        },
+        "wind_direction_10m_dominant": {
+          "state": "all_null",
+          "unit": "°",
+          "values": 3,
+          "non_null": 0
+        },
+        "shortwave_radiation_sum": {
+          "state": "all_null",
+          "unit": "MJ/m²",
+          "values": 3,
+          "non_null": 0
+        },
+        "et0_fao_evapotranspiration": {
+          "state": "all_null",
+          "unit": "mm",
+          "values": 3,
+          "non_null": 0
+        },
+        "soil_moisture_0_to_7cm_mean": {
+          "state": "returned",
+          "unit": "m³/m³",
+          "values": 3,
+          "non_null": 3
+        },
+        "soil_temperature_0_to_7cm_mean": {
+          "state": "returned",
+          "unit": "°C",
+          "values": 3,
+          "non_null": 3
+        }
+      }
+    },
+    "era5_seamless": {
+      "model": "era5_seamless",
+      "request": "https://archive-api.open-meteo.com/v1/archive?latitude=23.02579&longitude=72.58727&start_date=2025-07-01&end_date=2025-07-03&daily=precipitation_sum,rain_sum,precipitation_hours,temperature_2m_mean,temperature_2m_max,temperature_2m_min,apparent_temperature_mean,relative_humidity_2m_mean,relative_humidity_2m_max,relative_humidity_2m_min,dewpoint_2m_mean,surface_pressure_mean,cloud_cover_mean,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant,shortwave_radiation_sum,et0_fao_evapotranspiration,soil_moisture_0_to_7cm_mean,soil_temperature_0_to_7cm_mean&timezone=Asia/Kolkata&models=era5_seamless",
+      "timezone": "Asia/Kolkata",
+      "window": [
+        "2025-07-01",
+        "2025-07-03"
+      ],
+      "fields": {
+        "precipitation_sum": {
+          "state": "returned",
+          "unit": "mm",
+          "values": 3,
+          "non_null": 3
+        },
+        "rain_sum": {
+          "state": "returned",
+          "unit": "mm",
+          "values": 3,
+          "non_null": 3
+        },
+        "precipitation_hours": {
+          "state": "returned",
+          "unit": "h",
+          "values": 3,
+          "non_null": 3
+        },
+        "temperature_2m_mean": {
+          "state": "returned",
+          "unit": "°C",
+          "values": 3,
+          "non_null": 3
+        },
+        "temperature_2m_max": {
+          "state": "returned",
+          "unit": "°C",
+          "values": 3,
+          "non_null": 3
+        },
+        "temperature_2m_min": {
+          "state": "returned",
+          "unit": "°C",
+          "values": 3,
+          "non_null": 3
+        },
+        "apparent_temperature_mean": {
+          "state": "returned",
+          "unit": "°C",
+          "values": 3,
+          "non_null": 3
+        },
+        "relative_humidity_2m_mean": {
+          "state": "returned",
+          "unit": "%",
+          "values": 3,
+          "non_null": 3
+        },
+        "relative_humidity_2m_max": {
+          "state": "returned",
+          "unit": "%",
+          "values": 3,
+          "non_null": 3
+        },
+        "relative_humidity_2m_min": {
+          "state": "returned",
+          "unit": "%",
+          "values": 3,
+          "non_null": 3
+        },
+        "dewpoint_2m_mean": {
+          "state": "returned",
+          "unit": "°C",
+          "values": 3,
+          "non_null": 3
+        },
+        "surface_pressure_mean": {
+          "state": "returned",
+          "unit": "hPa",
+          "values": 3,
+          "non_null": 3
+        },
+        "cloud_cover_mean": {
+          "state": "returned",
+          "unit": "%",
+          "values": 3,
+          "non_null": 3
+        },
+        "wind_speed_10m_max": {
+          "state": "returned",
+          "unit": "km/h",
+          "values": 3,
+          "non_null": 3
+        },
+        "wind_gusts_10m_max": {
+          "state": "returned",
+          "unit": "km/h",
+          "values": 3,
+          "non_null": 3
+        },
+        "wind_direction_10m_dominant": {
+          "state": "returned",
+          "unit": "°",
+          "values": 3,
+          "non_null": 3
+        },
+        "shortwave_radiation_sum": {
+          "state": "returned",
+          "unit": "MJ/m²",
+          "values": 3,
+          "non_null": 3
+        },
+        "et0_fao_evapotranspiration": {
+          "state": "returned",
+          "unit": "mm",
+          "values": 3,
+          "non_null": 3
+        },
+        "soil_moisture_0_to_7cm_mean": {
+          "state": "returned",
+          "unit": "m³/m³",
+          "values": 3,
+          "non_null": 3
+        },
+        "soil_temperature_0_to_7cm_mean": {
+          "state": "returned",
+          "unit": "°C",
+          "values": 3,
+          "non_null": 3
+        }
+      }
+    }
+  },
+  "long_record": [
+    {
+      "model": "era5",
+      "date": "1960-07-01",
+      "request": "https://archive-api.open-meteo.com/v1/archive?latitude=23.02579&longitude=72.58727&start_date=1960-07-01&end_date=1960-07-01&daily=temperature_2m_mean,precipitation_sum,relative_humidity_2m_mean,soil_moisture_0_to_7cm_mean&models=era5&timezone=Asia/Kolkata",
+      "non_null": {
+        "temperature_2m_mean": 1,
+        "precipitation_sum": 1,
+        "relative_humidity_2m_mean": 1,
+        "soil_moisture_0_to_7cm_mean": 1
+      }
+    },
+    {
+      "model": "era5_land",
+      "date": "1950-07-01",
+      "request": "https://archive-api.open-meteo.com/v1/archive?latitude=23.02579&longitude=72.58727&start_date=1950-07-01&end_date=1950-07-01&daily=temperature_2m_mean,precipitation_sum,relative_humidity_2m_mean,soil_moisture_0_to_7cm_mean&models=era5_land&timezone=Asia/Kolkata",
+      "non_null": {
+        "temperature_2m_mean": 1,
+        "precipitation_sum": 0,
+        "relative_humidity_2m_mean": 1,
+        "soil_moisture_0_to_7cm_mean": 1
+      }
+    }
+  ]
+}
