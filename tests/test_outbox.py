@@ -17,7 +17,7 @@ from weathergpt_data.outbox import (ACK_RESPONSES, FeedbackStore, OutboxStore, a
                                     build_notification_payload, check_transition,
                                     dispatch_outbox, escalate_unacked, retry_delay, MAX_RETRIES)
 from weathergpt_data.transport import SourceError
-from weathergpt_data.watches import WatchStore, check_watch, compute_fingerprint
+from weathergpt_data.watches import WatchStore, check_due, check_watch, compute_fingerprint
 
 NOW = datetime(2026, 9, 16, tzinfo=timezone.utc)
 
@@ -475,15 +475,372 @@ class DMATests(unittest.TestCase):
             stub = types.SimpleNamespace(watch_store=lambda: WatchStore(path), clock=lambda: NOW)
             from weathergpt_data.workspace import Workspace
             packet = Workspace.watch_dma(stub, {})
-            self.assertEqual(packet['schema_version'], 'watch-dma-v1')
-            self.assertEqual(len(packet['districts']), 1)
-            district = packet['districts'][0]
-            self.assertEqual(district['place'], 'Ahmedabad, Gujarat')
-            self.assertEqual(district['watches'], 1)
-            self.assertEqual(district['notifications'], 1)
-            self.assertEqual(district['acked'], 1)
-            self.assertEqual(district['need_help'], 1)
-            self.assertEqual(district['unacked'], 0)
+            self.assertEqual(packet['schema_version'], 'watch-dma-v2')
+            self.assertEqual(len(packet['places']), 1)
+            place = packet['places'][0]
+            self.assertEqual(place['place'], 'Ahmedabad, Gujarat')
+            self.assertEqual(place['watches'], 1)
+            self.assertEqual(place['notifications'], 1)
+            self.assertEqual(place['acked'], 1)
+            self.assertEqual(place['need_help'], 1)
+            self.assertEqual(place['unacked'], 0)
+            self.assertEqual(place['sources']['S15']['notifications'], 1)
+            self.assertEqual(place['sources']['S15']['acked'], 1)
+
+
+class ChannelValidationTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.path = Path(self.tmp.name) / 'watches.sqlite'
+        self.store = WatchStore(self.path)
+        self.watch = make_watch(self.store)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def test_unknown_channels_and_removed_inbox_raise(self):
+        with self.assertRaises(SourceError):
+            self.store.set_channels(self.watch['id'], ['local_inbox', 'sms'], now=NOW)
+        with self.assertRaises(SourceError):
+            self.store.set_channels(self.watch['id'], ['web_push'], now=NOW)
+        with self.assertRaises(SourceError):
+            self.store.set_channels(self.watch['id'], [], now=NOW)
+        with self.assertRaises(SourceError):
+            self.store.set_channels(self.watch['id'], ['local_inbox', 'web_push'],
+                                    consent_source='imagined_grant', now=NOW)
+        with self.assertRaises(SourceError):
+            self.store.set_channels('no-such-watch', ['local_inbox'], now=NOW)
+
+    def test_add_and_remove_round_trip_consent(self):
+        updated = self.store.set_channels(self.watch['id'], ['local_inbox', 'web_push'],
+                                          consent_source='browser_push_grant', now=NOW)
+        self.assertEqual(updated['channels'], ['local_inbox', 'web_push'])
+        self.assertEqual(updated['consent_record']['web_push']['source'], 'browser_push_grant')
+        self.assertIn('local_inbox', updated['consent_record'])
+        removed = self.store.set_channels(self.watch['id'], ['local_inbox'], now=NOW)
+        self.assertEqual(removed['channels'], ['local_inbox'])
+        self.assertNotIn('web_push', removed['consent_record'])
+
+
+class PerChannelEnqueueTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.path = Path(self.tmp.name) / 'watches.sqlite'
+        self.store = WatchStore(self.path)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def test_change_enqueues_one_row_per_deliverable_channel(self):
+        from weathergpt_data.push import PushStore
+        watch = make_watch(self.store)
+        run_check(self.store, watch, [fact([4])])
+        PushStore(self.path).subscribe('https://push.example.org/e', 'AAA', 'BBB',
+                                       watch_id=watch['id'], now=NOW)
+        watch = self.store.get(watch['id'])
+        result = run_check(self.store, watch, [fact([16])])
+        self.assertEqual(result['channels_notified'], ['local_inbox', 'web_push'])
+        self.assertEqual(result['channels_skipped'], [])
+        self.assertEqual(len(result['notifications']), 2)
+        rows = OutboxStore(self.path).list()
+        self.assertEqual(sorted(row['channel'] for row in rows), ['local_inbox', 'web_push'])
+        self.assertEqual(rows[0]['correlation_id'], rows[1]['correlation_id'])
+
+    def test_undeliverable_channels_skip_without_blocking(self):
+        watch = make_watch(self.store)
+        run_check(self.store, watch, [fact([4])])
+        self.store.set_channels(watch['id'], ['local_inbox', 'web_push'],
+                                consent_source='browser_push_grant', now=NOW)
+        watch = self.store.get(watch['id'])
+        result = run_check(self.store, watch, [fact([16])])
+        self.assertEqual(result['channels_notified'], ['local_inbox'])
+        self.assertEqual(result['channels_skipped'][0]['reason'], 'no active push subscription')
+        self.assertEqual(len(OutboxStore(self.path).list()), 1)
+
+
+class ChannelRouteTests(unittest.TestCase):
+    def test_set_channels_route_validates_and_applies(self):
+        import types
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'watches.sqlite'
+            store = WatchStore(path)
+            watch = make_watch(store)
+            stub = types.SimpleNamespace(watch_store=lambda: WatchStore(path), clock=lambda: NOW)
+            from weathergpt_data.workspace import Workspace
+            with self.assertRaises(SourceError):
+                Workspace.set_watch_channels(stub, {'id': watch['id'], 'channels': ['local_inbox', 'web_push']})
+            with self.assertRaises(SourceError):
+                Workspace.set_watch_channels(stub, {'id': watch['id'], 'channels': ['local_inbox', 'sms']})
+            with self.assertRaises(SourceError):
+                Workspace.set_watch_channels(stub, {'id': 'no-such-watch', 'channels': ['local_inbox']})
+            with self.assertRaises(SourceError):
+                Workspace.set_watch_channels(stub, {'id': watch['id']})
+            from weathergpt_data.push import PushStore
+            PushStore(path).subscribe('https://push.example.org/e', 'AAA', 'BBB',
+                                      watch_id=watch['id'], now=NOW)
+            result = Workspace.set_watch_channels(
+                stub, {'id': watch['id'], 'channels': ['local_inbox', 'web_push']})
+            self.assertEqual(result['schema_version'], 'watch-channels-v1')
+            self.assertIn('web_push', result['channels'])
+
+
+class GoneStateTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.path = Path(self.tmp.name) / 'watches.sqlite'
+        self.store = WatchStore(self.path)
+        self.box = OutboxStore(self.path)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def test_gone_is_terminal_and_reachable_from_open_states(self):
+        for old in ['created', 'queued', 'sent', 'failed']:
+            self.assertEqual(check_transition(old, 'gone'), 'gone')
+        entry = self.box.enqueue('w1', 'c', 'fp', 'local_inbox', {}, now=NOW)
+        self.box.set_state(entry['id'], 'sent', 'delivered', now=NOW)
+        failed = self.box.enqueue('w1', 'c2', 'fp2', 'local_inbox', {}, now=NOW)
+        self.box.set_state(failed['id'], 'failed', 'x', now=NOW,
+                           next_retry_at='2026-09-17T00:00:00+00:00')
+        for row_id in (entry['id'], failed['id']):
+            self.box.set_state(row_id, 'gone', 'superseded', now=NOW)
+            self.assertEqual(self.box.get(row_id)['state'], 'gone')
+            with self.assertRaises(SourceError):
+                self.box.set_state(row_id, 'queued', now=NOW)
+        self.assertEqual(dispatch_outbox(self.path, now=NOW), [])
+
+    def test_lapsed_window_marks_queued_gone_instead_of_sending(self):
+        watch = self.store.create('Notify me about a heavy rain warning for Ahmedabad',
+                                  {'name': 'Ahmedabad'}, 'heavy_rain',
+                                  window_start='2026-09-16T00:00:00+05:30',
+                                  window_end='2026-09-16T01:00:00+05:30')
+        entry = self.box.enqueue(watch['id'], 'c1', 'fp1', 'local_inbox', {}, now=NOW)
+        results = dispatch_outbox(self.path, now=NOW + __import__('datetime').timedelta(hours=5))
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0]['to'], 'gone')
+        self.assertEqual(self.box.get(entry['id'])['state'], 'gone')
+
+
+class ArchiveSentTests(unittest.TestCase):
+    def test_archive_cancels_sent_rows_and_blocks_escalation(self):
+        from datetime import timedelta
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'watches.sqlite'
+            store = WatchStore(path)
+            box = OutboxStore(path)
+            watch = make_watch(store)
+            run_check(store, watch, [fact([4])])
+            watch = store.get(watch['id'])
+            run_check(store, watch, [fact([16])])
+            dispatch_outbox(path, now=NOW)
+            self.assertEqual(len(box.list(state='sent')), 1)
+            result = store.archive(watch['id'], now=NOW)
+            self.assertEqual(result['cancelled_notifications'], 1)
+            self.assertEqual(box.list(state='sent'), [])
+            late = NOW + timedelta(hours=3)
+            self.assertEqual(escalate_unacked(path, now=late), [])
+
+
+class CrashAtomicityTests(unittest.TestCase):
+    def test_failed_enqueue_leaves_no_row_and_no_fingerprint(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'watches.sqlite'
+            store = WatchStore(path)
+            box = OutboxStore(path)
+            watch = make_watch(store)
+            run_check(store, watch, [fact([4])])
+            watch = store.get(watch['id'])
+            before = watch['fingerprint_sha256']
+            with patch.object(OutboxStore, '_record', side_effect=RuntimeError('crash')):
+                with self.assertRaises(RuntimeError):
+                    box.enqueue_changed(watch['id'], 'corr', 'fp-new', ['local_inbox'], {}, now=NOW)
+            self.assertEqual(box.list(), [])
+            self.assertEqual(store.get(watch['id'])['fingerprint_sha256'], before)
+
+
+class UnconnectedHeldTests(unittest.TestCase):
+    def test_flood_watch_advances_fingerprint_but_never_enqueues(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'watches.sqlite'
+            store = WatchStore(path)
+            watch = store.create('Notify me if an official flood warning is issued for Patna tonight',
+                                 {'name': 'Patna, Bihar'}, 'flood')
+            first = run_check(store, watch, [fact([1], quiet=True)])
+            self.assertEqual(first['fingerprint_basis'], 'baseline')
+            watch = store.get(watch['id'])
+            second = run_check(store, watch, [fact([16])])
+            self.assertEqual(second['fingerprint_basis'], 'not_connected_held')
+            self.assertIsNone(second['notification'])
+            self.assertEqual(OutboxStore(path).list(), [])
+            self.assertNotEqual(store.get(watch['id'])['fingerprint_sha256'],
+                                first['fingerprint_sha256'])
+
+
+class HoldUnavailableTests(unittest.TestCase):
+    def test_unavailable_holds_fingerprint_and_enqueues_nothing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'watches.sqlite'
+            store = WatchStore(path)
+            watch = make_watch(store)
+            result = run_check(store, watch, [fact([4])], status='unavailable')
+            self.assertEqual(result['fingerprint_basis'], 'held_unavailable')
+            self.assertIsNone(store.get(watch['id'])['fingerprint_sha256'])
+            self.assertEqual(OutboxStore(path).list(), [])
+            baseline = run_check(store, store.get(watch['id']), [fact([4])])
+            self.assertEqual(baseline['fingerprint_basis'], 'baseline')
+            self.assertEqual(OutboxStore(path).list(), [])
+
+
+class CapHashTests(unittest.TestCase):
+    def test_cap_counts_move_the_fingerprint(self):
+        before = compute_fingerprint('w1', 'heavy_rain', 'P', [fact([16])], 'r', 'answered', 2, 5)
+        same = compute_fingerprint('w1', 'heavy_rain', 'P', [fact([16])], 'r', 'answered', 2, 5)
+        after = compute_fingerprint('w1', 'heavy_rain', 'P', [fact([16])], 'r', 'answered', 1, 5)
+        self.assertEqual(before, same)
+        self.assertNotEqual(before, after)
+        legacy = compute_fingerprint('w1', 'heavy_rain', 'P', [fact([16])], 'r', 'answered')
+        self.assertEqual(len(legacy), 64)
+
+    def test_cap_cancel_drives_exactly_one_notification(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'watches.sqlite'
+            store = WatchStore(path)
+            watch = make_watch(store)
+            trace = [{'name': 'official_district_warning', 'cap_lifecycle_eligible': 2, 'cap_messages': 5}]
+
+            def fake(engine, packet, plan, task, **kw):
+                return {**packet, 'facts': [fact([16])], 'status': 'answered',
+                        'trace': {'tools': list(trace), 'generation': None}}
+
+            with patch('weathergpt_data.warning_tools.execute_warning', side_effect=fake):
+                first = check_watch(store, object(), watch, now=NOW)
+            self.assertEqual(first['fingerprint_basis'], 'baseline')
+            trace[:] = [{'name': 'official_district_warning', 'cap_lifecycle_eligible': 0,
+                         'cap_messages': 5}]
+            with patch('weathergpt_data.warning_tools.execute_warning', side_effect=fake):
+                second = check_watch(store, object(), store.get(watch['id']), now=NOW)
+            self.assertEqual(second['fingerprint_basis'], 'changed')
+            self.assertIsNotNone(second['notification'])
+            self.assertEqual(len(OutboxStore(path).list()), 1)
+
+
+class LockTests(unittest.TestCase):
+    def test_second_holder_gets_a_clean_refusal(self):
+        import subprocess
+        import sys
+        import time
+        root = str(Path(__file__).resolve().parents[1])
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'watches.sqlite'
+            store = WatchStore(path)
+            lock_path = str(path.with_suffix('.watch-check.lock'))
+            holder = subprocess.Popen(
+                [sys.executable, '-c',
+                 'import sys,time; sys.path.insert(0, %r);'
+                 'from weathergpt_data.filelock import try_lock_exclusive;'
+                 'h = open(%r, "a"); try_lock_exclusive(h); time.sleep(20)' % (root, lock_path)])
+            try:
+                deadline = time.time() + 10
+                acquired = False
+                while time.time() < deadline:
+                    time.sleep(0.5)
+                    try:
+                        from weathergpt_data.watches import check_lock
+                        with check_lock(path):
+                            pass
+                    except SourceError:
+                        acquired = True
+                        break
+                self.assertTrue(acquired, 'lock holder never took the lock')
+                with self.assertRaises(SourceError):
+                    check_due(store, object(), now=NOW)
+            finally:
+                holder.terminate()
+                try:
+                    holder.wait(timeout=15)
+                except Exception:
+                    holder.kill()
+
+
+class CreateWatchRouteTests(unittest.TestCase):
+    def test_create_validates_and_registers_without_guessing(self):
+        import types
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'watches.sqlite'
+            stub = types.SimpleNamespace(watch_store=lambda: WatchStore(path), clock=lambda: NOW)
+            from weathergpt_data.workspace import Workspace
+            result = Workspace.create_watch(stub, {'place': {'name': 'Kochi', 'latitude': 9.93,
+                                                             'longitude': 76.27, 'state': 'Kerala'},
+                                                   'hazard': 'heavy rain'})
+            self.assertEqual(result['schema_version'], 'watch-create-v1')
+            self.assertEqual(result['hazard'], 'heavy_rain')
+            self.assertTrue(result['connected'])
+            stored = WatchStore(path).get(result['id'])
+            self.assertEqual(stored['place']['coordinates']['latitude'], 9.93)
+            self.assertEqual(stored['place']['kind'], 'unknown')
+            bad = [({} , 'missing place'),
+                   ({'place': {'name': 'X', 'latitude': 1, 'longitude': 1}}, 'short name'),
+                   ({'place': {'name': 'Kochi', 'latitude': 'north', 'longitude': 1}}, 'bad coords'),
+                   ({'place': {'name': 'Kochi', 'latitude': 99, 'longitude': 1}}, 'bad range'),
+                   ('not-a-dict', 'bad body')]
+            for body, _ in bad:
+                with self.assertRaises(SourceError):
+                    Workspace.create_watch(stub, body)
+
+
+class AckRouteTests(unittest.TestCase):
+    def test_ack_route_validates_body_state_and_identity(self):
+        import types
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'watches.sqlite'
+            store = WatchStore(path)
+            box = OutboxStore(path)
+            stub = types.SimpleNamespace(watch_store=lambda: WatchStore(path), clock=lambda: NOW)
+            from weathergpt_data.workspace import Workspace
+            entry = box.enqueue('w1', 'c1', 'fp1', 'local_inbox', {}, now=NOW)
+            box.set_state(entry['id'], 'sent', 'delivered', now=NOW)
+            result = Workspace.ack_notification(stub, entry['id'], {'response': 'evacuating'})
+            self.assertEqual(result['schema_version'], 'outbox-ack-v1')
+            self.assertEqual(result['response'], 'evacuating')
+            for body in ({}, {'response': 'panicking'}, {'response': ''}):
+                with self.assertRaises(SourceError):
+                    Workspace.ack_notification(stub, entry['id'], body)
+            with self.assertRaises(SourceError):
+                Workspace.ack_notification(stub, 'no-such-id', {'response': 'safe'})
+            with self.assertRaises(SourceError):
+                Workspace.ack_notification(stub, entry['id'], {'response': 'safe'})
+
+
+class AckPathTests(unittest.TestCase):
+    def test_parse_ack_path_accepts_only_the_ack_shape(self):
+        from weathergpt_data.workspace import parse_ack_path
+        self.assertEqual(parse_ack_path('/api/outbox/abc-123/ack'), 'abc-123')
+        for bad in ('/api/outbox/abc-123', '/api/outbox/abc-123/ack/',
+                    '/api/outbox//ack', '/api/outbox/abc-123/nack',
+                    '/api/watches/abc-123/ack', '', None, '/api/outbox/abc-123/ack?x=1'):
+            self.assertIsNone(parse_ack_path(bad))
+
+
+class RobustnessTests(unittest.TestCase):
+    def test_corrupt_rows_degrade_to_safe_defaults(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'watches.sqlite'
+            store = WatchStore(path)
+            box = OutboxStore(path)
+            entry = box.enqueue('w1', 'c1', 'fp1', 'local_inbox', {'a': 1}, now=NOW)
+            db = sqlite3.connect(path)
+            try:
+                db.execute('UPDATE outbox SET payload=? WHERE id=?', ('{broken', entry['id']))
+                db.execute("INSERT INTO watches (id,created_at,question,place,hazard,state,channels,consent_record)"
+                           " VALUES ('w-bad','2026-09-16T00:00:00+00:00','q','{broken','heavy_rain',"
+                           "'registered_check_on_request','[broken','{broken')")
+                db.commit()
+            finally:
+                db.close()
+            self.assertEqual(box.get(entry['id'])['payload'], {})
+            bad = store.get('w-bad')
+            self.assertEqual(bad['channels'], ['local_inbox'])
+            self.assertEqual(bad['consent_record'], {})
 
 
 class PayloadTests(unittest.TestCase):

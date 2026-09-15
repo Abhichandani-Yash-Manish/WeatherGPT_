@@ -21,19 +21,24 @@ SCHEMA = 'outbox-v1'
 MAX_RETRIES = 3
 RETRY_BACKOFF_SECONDS = (60, 300, 900)
 
-STATES = ('created', 'queued', 'sent', 'failed', 'dead', 'acked')
-TERMINAL_STATES = {'dead', 'acked'}
+# `created` is reserved for a future producer that stages a row before queueing;
+# every producer today enqueues directly into `queued`.
+STATES = ('created', 'queued', 'sent', 'failed', 'dead', 'acked', 'gone')
+TERMINAL_STATES = {'dead', 'acked', 'gone'}
 DISPATCHABLE_STATES = {'created', 'queued'}
 
 # Allowed (old_state -> new_state) moves. A failed row may record another failure
-# (failed -> failed) while retries remain; dead and acked are terminal.
+# (failed -> failed) while retries remain. `gone` is for rows overtaken by events:
+# the watch window lapsed while queued, or the edition was superseded. Terminal
+# states (dead, acked, gone) are never re-dispatched.
 TRANSITIONS = {
-    'created': {'queued', 'dead'},
-    'queued': {'sent', 'failed', 'dead'},
-    'sent': {'acked', 'failed', 'dead'},
-    'failed': {'queued', 'failed', 'dead'},
+    'created': {'queued', 'dead', 'gone'},
+    'queued': {'sent', 'failed', 'dead', 'gone'},
+    'sent': {'acked', 'failed', 'dead', 'gone'},
+    'failed': {'queued', 'failed', 'dead', 'gone'},
     'dead': set(),
     'acked': set(),
+    'gone': set(),
 }
 
 NOTIFICATION_LIMITATIONS = [
@@ -96,7 +101,12 @@ class OutboxStore:
 
     @staticmethod
     def _decode(item):
-        item['payload'] = json.loads(item['payload'] or '{}')
+        try:
+            item['payload'] = json.loads(item['payload'] or '{}')
+        except ValueError:
+            item['payload'] = {}
+        if not isinstance(item['payload'], dict):
+            item['payload'] = {}
         return item
 
     def _record(self, db, outbox_id, event, detail, now):
@@ -124,6 +134,35 @@ class OutboxStore:
         finally:
             db.close()
         return entry
+
+    def enqueue_changed(self, watch_id, correlation_id, fingerprint_sha256, channels, payload, now=None):
+        """Enqueue one row per channel and store the new fingerprint in one transaction.
+
+        Either every row lands together with the fingerprint, or nothing lands: a crash
+        between enqueue and fingerprint can never produce a duplicate on the next check.
+        Returns the list of enqueued entries.
+        """
+        now = now or utcnow()
+        entries = [{'id': str(uuid.uuid4()), 'watch_id': watch_id, 'correlation_id': correlation_id,
+                    'fingerprint_sha256': fingerprint_sha256, 'state': 'queued', 'channel': channel,
+                    'payload': payload, 'created_at': stamp(now), 'updated_at': stamp(now),
+                    'retry_count': 0, 'max_retries': MAX_RETRIES, 'next_retry_at': None, 'last_error': None}
+                   for channel in channels]
+        db = sqlite3.connect(self.path)
+        try:
+            for entry in entries:
+                db.execute('INSERT INTO outbox VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                           (entry['id'], watch_id, correlation_id, fingerprint_sha256, 'queued',
+                            entry['channel'], json.dumps(payload, ensure_ascii=False),
+                            entry['created_at'], entry['updated_at'], 0, MAX_RETRIES, None, None))
+                self._record(db, entry['id'], 'queued',
+                             {'channel': entry['channel'], 'correlation_id': correlation_id,
+                              'fingerprint_sha256': fingerprint_sha256}, now)
+            db.execute('UPDATE watches SET fingerprint_sha256=? WHERE id=?', (fingerprint_sha256, watch_id))
+            db.commit()
+        finally:
+            db.close()
+        return entries
 
     def list(self, state=None, watch_id=None):
         query = 'SELECT * FROM outbox'
@@ -323,9 +362,18 @@ def escalate_unacked(store_path, now=None, timeout_seconds=ESCALATION_TIMEOUT_SE
         marker = (row.get('payload') or {}).get('escalation') or {}
         if marker.get('of') is not None:
             escalated.add((marker['of'], int(marker.get('depth', 0))))
+    retired_watches = None
+    try:
+        from .watches import WatchStore
+        retired_watches = {row['id'] for row in WatchStore(store_path).list(now=now)
+                           if row.get('state') == 'expired' or row.get('expired')}
+    except (SourceError, OSError, sqlite3.Error):
+        retired_watches = None
     created = []
     for entry in rows:
         if entry['state'] != 'sent':
+            continue
+        if retired_watches is not None and entry.get('watch_id') in retired_watches:
             continue
         payload = entry.get('payload') or {}
         depth = int((payload.get('escalation') or {}).get('depth', 0))
@@ -352,6 +400,7 @@ def dispatch_outbox(store_path, now=None, send=None):
     """Send every due outbox row through its channel and record the outcome.
 
     store_path is the watches.sqlite path (outbox tables live beside watches).
+    Rows whose watch window lapsed while queued are marked gone, never sent.
     Success marks sent; failure marks failed with a backoff while retries remain
     and dead once MAX_RETRIES is reached. Returns one summary row per dispatch.
     """
@@ -359,8 +408,25 @@ def dispatch_outbox(store_path, now=None, send=None):
     now = now or utcnow()
     send = send or default_sender
     box = OutboxStore(store_path)
+    try:
+        from .watches import WatchStore
+        windows = {row['id']: row.get('window_end') for row in WatchStore(store_path).list(now=now)}
+    except (SourceError, OSError):
+        windows = {}
     results = []
     for entry in box.due(now=now):
+        window_end = windows.get(entry.get('watch_id'))
+        if window_end:
+            try:
+                lapsed = parsed(window_end) <= now
+            except SourceError:
+                lapsed = False
+            if lapsed and entry['state'] in ('created', 'queued'):
+                row = box.set_state(entry['id'], 'gone', 'Watch window lapsed before delivery', now=now)
+                results.append({'id': entry['id'], 'watch_id': entry['watch_id'], 'channel': entry['channel'],
+                                'from': entry['state'], 'to': 'gone',
+                                'detail': 'Watch window lapsed before delivery', 'retry_count': row['retry_count']})
+                continue
         try:
             ok, detail = send(entry)
         except Exception as exc:  # A sender must never break the dispatch loop.

@@ -124,6 +124,43 @@ class LifecycleTests(unittest.TestCase):
         self.assertEqual(self.box.get(entry['id'])['state'], 'dead')
         self.assertEqual(dispatch_outbox(self.path, now=moment), [])
 
+    def test_multichannel_change_delivers_to_bound_push(self):
+        import base64
+        from weathergpt_data.push import PushStore, channel_sender, vapid_keypair
+        key_path = self.path.parent / 'push-vapid.json'
+        vapid_keypair(key_path)
+        p256dh = base64.urlsafe_b64encode(b'0' * 65).rstrip(b'=').decode()
+        auth = base64.urlsafe_b64encode(b'1' * 16).rstrip(b'=').decode()
+        PushStore(self.path).subscribe('https://push.example.org/e2e', p256dh, auth,
+                                       watch_id=self.watch['id'], now=NOW)
+        self.assertIn('web_push', self.store.get(self.watch['id'])['channels'])
+        self.check()
+        self.facts = [fact([16])]
+        warned = self.check()
+        self.assertEqual(sorted(warned['channels_notified']), ['local_inbox', 'web_push'])
+        self.assertEqual(len(warned['notifications']), 2)
+        with patch('pywebpush.webpush', return_value=None):
+            dispatched = dispatch_outbox(self.path, now=NOW,
+                                         send=channel_sender(key_path, self.path))
+        self.assertEqual(len(dispatched), 2)
+        self.assertTrue(all(row['to'] == 'sent' for row in dispatched))
+        pushed = [row for row in self.box.list() if row['channel'] == 'web_push'][0]
+        acknowledge(self.path, pushed['id'], 'safe', now=NOW)
+        self.assertEqual(self.box.get(pushed['id'])['state'], 'acked')
+
+    def test_lapsed_window_marks_queued_gone(self):
+        from datetime import timedelta
+        self.check()
+        self.facts = [fact([16])]
+        warned = self.check()
+        self.assertIsNotNone(warned['notification'])
+        late = NOW + timedelta(days=10)
+        results = dispatch_outbox(self.path, now=late)
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0]['to'], 'gone')
+        self.assertEqual(self.box.get(warned['notification'])['state'], 'gone')
+        self.assertEqual(dispatch_outbox(self.path, now=late), [])
+
     def test_escalation_fires_only_for_unacked_rows(self):
         from datetime import timedelta
         self.check()

@@ -105,11 +105,14 @@ class PushStore:
         from .watches import WatchStore
         now = now or utcnow()
         validate_subscription(endpoint, p256dh, auth)
-        if watch_id is not None:
-            WatchStore(self.path).get(str(watch_id))
+        bound = str(watch_id) if watch_id is not None else None
+        if bound is not None:
+            WatchStore(self.path).get(bound)
+        for row in self.list(state='active'):
+            if row.get('endpoint') == endpoint and row.get('watch_id') == bound:
+                return dict(row, duplicate=True)
         entry = {'id': str(uuid.uuid4()), 'endpoint': endpoint, 'p256dh': p256dh, 'auth': auth,
-                 'watch_id': str(watch_id) if watch_id is not None else None,
-                 'state': 'active', 'created_at': stamp(now), 'expires_at': expires_at}
+                 'watch_id': bound, 'state': 'active', 'created_at': stamp(now), 'expires_at': expires_at}
         db = sqlite3.connect(self.path)
         try:
             db.execute('INSERT INTO push_subscriptions VALUES (?,?,?,?,?,?,?,?)',
@@ -118,6 +121,12 @@ class PushStore:
             db.commit()
         finally:
             db.close()
+        if bound is not None:
+            store = WatchStore(self.path)
+            watch = store.get(bound)
+            if 'web_push' not in (watch.get('channels') or []):
+                store.set_channels(bound, list((watch.get('channels') or ['local_inbox'])) + ['web_push'],
+                                   consent_source='browser_push_grant', now=now)
         return entry
 
     def list(self, state=None, watch_id=None):
@@ -157,8 +166,13 @@ class PushStore:
             db.close()
 
     def unsubscribe(self, endpoint, now=None):
+        from .watches import WatchStore
+        now = now or utcnow()
         db = sqlite3.connect(self.path)
         try:
+            db.row_factory = sqlite3.Row
+            bound = [row['watch_id'] for row in db.execute(
+                "SELECT watch_id FROM push_subscriptions WHERE endpoint=? AND state='active'", (endpoint,))]
             cursor = db.execute("UPDATE push_subscriptions SET state='revoked' WHERE endpoint=? AND state='active'",
                                 (endpoint,))
             db.commit()
@@ -167,7 +181,18 @@ class PushStore:
             db.close()
         if not revoked:
             raise SourceError('No active push subscription for this endpoint')
-        return {'endpoint': endpoint, 'revoked': revoked}
+        unlinked = []
+        store = WatchStore(self.path)
+        for watch_id in sorted({item for item in bound if item}):
+            try:
+                watch = store.get(watch_id)
+            except SourceError:
+                continue
+            if 'web_push' in (watch.get('channels') or []):
+                remaining = [channel for channel in watch['channels'] if channel != 'web_push']
+                store.set_channels(watch_id, remaining, now=now)
+                unlinked.append(watch_id)
+        return {'endpoint': endpoint, 'revoked': revoked, 'channels_removed': unlinked}
 
     def purge_expired(self, now=None):
         """Retire subscriptions past their expiry. Returns the retired count."""
@@ -180,6 +205,55 @@ class PushStore:
                 self.set_state(row['id'], 'expired', now=now)
                 retired += 1
         return {'retired': retired}
+
+
+def deliverable_channels(db_path, watch, now=None):
+    """Which of a watch's channels may receive a notification right now.
+
+    local_inbox is always deliverable. web_push needs both a recorded consent entry
+    and at least one active subscription; anything else fails closed with a reason.
+    Returns (deliverable, skipped) where skipped rows carry channel + reason.
+    """
+    from .watches import DEFAULT_CHANNELS
+    channels = watch.get('channels') or list(DEFAULT_CHANNELS)
+    consent = watch.get('consent_record') or {}
+    store = PushStore(db_path)
+    ok, skipped = [], []
+    for channel in channels:
+        if channel == 'local_inbox':
+            ok.append(channel)
+        elif channel == 'web_push':
+            if not isinstance(consent.get('web_push'), dict):
+                skipped.append({'channel': channel, 'reason': 'no recorded push consent'})
+            elif not store.active_for_watch(watch.get('id')):
+                skipped.append({'channel': channel, 'reason': 'no active push subscription'})
+            else:
+                ok.append(channel)
+        else:
+            skipped.append({'channel': channel, 'reason': 'channel not connected'})
+    return ok, skipped
+
+
+def push_ttl(entry, now=None):
+    """Time-to-live for a push message, derived from the watch window.
+
+    The push service holds an undelivered message at most until the watched window
+    ends (clamped to 60s–24h); without a window end the standing default applies.
+    """
+    from datetime import timedelta
+    from .transport import parsed
+    now = now or utcnow()
+    try:
+        ends = ((entry.get('payload') or {}).get('window') or {}).get('ends')
+        if ends:
+            seconds = (parsed(ends) - now).total_seconds()
+            if seconds > 0:
+                return int(max(60, min(86400, seconds)))
+    except (SourceError, ValueError, TypeError, OverflowError):
+        pass
+    if not isinstance(PUSH_TTL_SECONDS, int):
+        raise SourceError('Push TTL is misconfigured')
+    return PUSH_TTL_SECONDS
 
 
 def push_payload(entry):
@@ -196,9 +270,12 @@ def push_payload(entry):
     lines.append('A no-match result is not an all-clear.' if not payload.get('matched')
                  else 'Official product state, not an instruction.')
     body = ' · '.join(lines)[:500]
-    return {'title': title[:120], 'body': body,
-            'watch_id': payload.get('watch_id'), 'outbox_id': entry.get('id'),
-            'checked_at_utc': payload.get('checked_at_utc')}
+    message = {'title': title[:120], 'body': body,
+               'watch_id': payload.get('watch_id'), 'outbox_id': entry.get('id'),
+               'checked_at_utc': payload.get('checked_at_utc')}
+    if payload.get('watch_id'):
+        message['url'] = '/?watch=' + str(payload['watch_id'])
+    return message
 
 
 def send_push(entry, vapid, subscriptions):
@@ -209,13 +286,14 @@ def send_push(entry, vapid, subscriptions):
     """
     from pywebpush import WebPushException, webpush
     message = json.dumps(push_payload(entry), ensure_ascii=False)
+    ttl = push_ttl(entry)
     delivered, purged, errors = [], [], []
     for sub in subscriptions:
         try:
             webpush({'endpoint': sub['endpoint'],
                      'keys': {'p256dh': sub['p256dh'], 'auth': sub['auth']}},
                     message, vapid_private_key=vapid,
-                    vapid_claims={'sub': VAPID_SUBJECT}, ttl=PUSH_TTL_SECONDS)
+                    vapid_claims={'sub': VAPID_SUBJECT}, ttl=ttl)
             delivered.append(sub['id'])
         except WebPushException as exc:
             status = getattr(exc.response, 'status_code', None) if exc.response is not None else None

@@ -462,7 +462,22 @@ const WG = window.WG;
       for (let i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
       return bytes;
     }
-    async function pushPanel(into) {
+    async function subscribeBrowser(watchId) {
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') throw new Error('Notification permission was not granted.');
+      const vapid = await api('/api/push/vapid-key');
+      const registration = await navigator.serviceWorker.register('/sw.js');
+      const subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array(vapid.public_key)
+      });
+      const raw = subscription.toJSON();
+      return postJson('/api/push/subscribe', {
+        endpoint: raw.endpoint, keys: raw.keys || {},
+        expirationTime: raw.expirationTime || null,
+        watch_id: watchId || null
+      });
+    }
+    async function pushPanel(into, watches) {
       const supported = ('serviceWorker' in navigator) && ('PushManager' in window) && ('Notification' in window);
       if (!supported) {
         into.append(stateBlock('plain', 'Push notifications are not supported in this browser.',
@@ -475,30 +490,40 @@ const WG = window.WG;
       const counts = (state && state.subscriptions) || {};
       into.append(stateBlock('plain', 'Push subscriptions: ' + (counts.active || 0) + ' active.',
         'Permission is ' + Notification.permission + '. Purged expired: ' + (state.purged_expired || 0) + '.'));
+      try {
+        const registration = await navigator.serviceWorker.getRegistration('/sw.js');
+        const existing = registration && registration.pushManager ? await registration.pushManager.getSubscription() : null;
+        if (Notification.permission === 'granted' && !existing) {
+          into.append(stateBlock('plain', 'This browser has no push subscription (it may have been retired).',
+            'Press Subscribe below to restore it; bound watches regain push on resubscribe.'));
+        }
+      } catch (error) { /* status stays as reported; the button below still works */ }
       const enable = el('button', Notification.permission === 'granted' ? 'Subscribe this browser' : 'Enable notifications', 'ghost');
       enable.type = 'button';
       enable.addEventListener('click', async () => {
         enable.disabled = true;
-        try {
-          const permission = await Notification.requestPermission();
-          if (permission !== 'granted') throw new Error('Notification permission was not granted.');
-          const vapid = await api('/api/push/vapid-key');
-          const registration = await navigator.serviceWorker.register('/sw.js');
-          const subscription = await registration.pushManager.subscribe({
-            userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array(vapid.public_key)
-          });
-          const raw = subscription.toJSON();
-          await postJson('/api/push/subscribe', {
-            endpoint: raw.endpoint, keys: raw.keys || {},
-            expirationTime: raw.expirationTime || null
-          });
-          paint();
-        } catch (error) {
+        try { await subscribeBrowser(null); paint(); }
+        catch (error) {
           enable.disabled = false;
           into.append(stateBlock('down', 'Notifications could not be enabled.', error.message));
         }
       });
       into.append(enable);
+      (watches || []).filter(watch => (watch.channels || []).indexOf('web_push') < 0).forEach(watch => {
+        const label = (watch.place && (watch.place.name || watch.place.label)) || 'this place';
+        const bind = el('button', 'Push to ' + label, 'ghost');
+        bind.type = 'button';
+        bind.setAttribute('aria-label', 'Subscribe this browser to push for ' + label);
+        bind.addEventListener('click', async () => {
+          bind.disabled = true;
+          try { await subscribeBrowser(watch.id); paint(); }
+          catch (error) {
+            bind.disabled = false;
+            into.append(stateBlock('down', 'Push could not be bound to ' + label + '.', error.message));
+          }
+        });
+        into.append(bind);
+      });
     }
     async function paint() {
       clear(body);
@@ -521,12 +546,13 @@ const WG = window.WG;
       body.append(stateBlock('plain', watches.length ? watches.length + ' local watch(es) registered.' : 'No watches registered yet.',
         'Register one by asking the assistant to notify you. Watches are checked only when asked; a no-match result is not an all-clear.'));
       if (watches.length) {
-        body.append(table(['Hazard', 'Place', 'State', 'Pending', 'Last checked'], watches.map(watch => [
+        body.append(table(['Hazard', 'Place', 'State', 'Pending', 'Last checked', 'Last notified'], watches.map(watch => [
           watch.hazard,
           (watch.place && (watch.place.name || watch.place.label)) || '—',
           watch.state,
           String(watch.outbox_pending || 0),
-          watch.last_checked_at || 'not yet checked'
+          watch.last_checked_at || 'not yet checked',
+          watch.last_notification_at || 'never notified'
         ])));
         const retireList = el('ul', undefined, 'notes');
         watches.forEach(watch => {
@@ -540,6 +566,26 @@ const WG = window.WG;
             catch (error) { retire.disabled = false; body.append(stateBlock('down', 'The watch could not be retired.', error.message)); }
           });
           item.append(retire);
+          const channels = watch.channels || ['local_inbox'];
+          const consent = watch.consent_record || {};
+          const channelNote = el('span', ' Channels: ' + channels.join(', ') +
+            (consent.web_push ? ' (push granted ' + String((consent.web_push.granted_at || '')).slice(0, 10) + ')' : ''), 'field-note');
+          item.append(channelNote);
+          const hasPush = channels.indexOf('web_push') >= 0;
+          const toggle = el('button', hasPush ? 'Disable push' : 'Enable push', 'ghost');
+          toggle.type = 'button';
+          toggle.setAttribute('aria-label', (hasPush ? 'Disable push for ' : 'Enable push for ') + ((watch.place && (watch.place.name || watch.place.label)) || 'this place'));
+          toggle.addEventListener('click', async () => {
+            toggle.disabled = true;
+            const next = hasPush ? channels.filter(channel => channel !== 'web_push') : channels.concat(['web_push']);
+            try { await postJson('/api/watches/channels', { id: watch.id, channels: next }); paint(); }
+            catch (error) {
+              toggle.disabled = false;
+              body.append(stateBlock('down', 'Channels could not be changed.' +
+                (hasPush ? '' : ' Subscribe this browser first, then enable push.'), error.message));
+            }
+          });
+          item.append(toggle);
           retireList.append(item);
         });
         body.append(retireList);
@@ -592,9 +638,33 @@ const WG = window.WG;
         }
       });
       body.append(check);
+      const createHost = el('div', undefined, 'watch-create');
+      createHost.append(el('p', 'Register a watch for explicit coordinates (no place guessing; the warning tool still resolves the district at check time).', 'field-note'));
+      const nameInput = el('input', undefined, 'palette-input');
+      nameInput.placeholder = 'Place name';
+      const latInput = el('input', undefined, 'palette-input');
+      latInput.placeholder = 'Latitude';
+      const lonInput = el('input', undefined, 'palette-input');
+      lonInput.placeholder = 'Longitude';
+      const hazardInput = el('input', undefined, 'palette-input');
+      hazardInput.placeholder = 'Hazard (optional, e.g. heavy rain)';
+      const create = el('button', 'Register watch', 'ghost');
+      create.type = 'button';
+      create.addEventListener('click', async () => {
+        create.disabled = true;
+        try {
+          await postJson('/api/watches/create', { place: { name: nameInput.value, latitude: latInput.value, longitude: lonInput.value }, hazard: hazardInput.value || null });
+          paint();
+        } catch (error) {
+          create.disabled = false;
+          body.append(stateBlock('down', 'The watch could not be registered.', error.message));
+        }
+      });
+      [nameInput, latInput, lonInput, hazardInput, create].forEach(node => createHost.append(node));
+      body.append(createHost);
       const pushHost = el('div', undefined, 'push-panel');
       body.append(pushHost);
-      pushPanel(pushHost);
+      pushPanel(pushHost, watches);
       body.append(limits());
     }
     const KIND_LABELS = { change: 'Change', check_in: 'Evening check-in', degraded: 'Watch degraded' };
@@ -717,6 +787,14 @@ const WG = window.WG;
       if (!panel.hidden) paint();
     });
     if (close) close.addEventListener('click', () => { panel.hidden = true; toggle.setAttribute('aria-expanded', 'false'); });
+    try {
+      const deep = /[?&]watch=([^&]+)/.exec((window.location && window.location.search) || '');
+      if (deep && deep[1]) {
+        panel.hidden = false;
+        toggle.setAttribute('aria-expanded', 'true');
+        paint();
+      }
+    } catch (error) { /* the deep link is optional; the panel still opens by hand */ }
   }
 
   /* ---------- plan notifications: an unread count, and browser notifications if allowed ---------- */

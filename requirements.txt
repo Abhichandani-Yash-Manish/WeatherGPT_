@@ -5,3 +5,7 @@
 -r requirements-bulletins.txt
 # Web push delivery for watch notifications (Feature 4, D5). Verified 16 Sep 2026.
 pywebpush==2.5.0
+# Pinned because installing pywebpush silently upgraded cryptography 46.0.7 to
+# 50.0.1 on the Windows build machine; the full suite (626 passed) was verified
+# against 50.0.1, so every checkout must resolve the same version.
+cryptography==50.0.1

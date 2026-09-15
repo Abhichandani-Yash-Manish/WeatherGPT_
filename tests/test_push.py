@@ -123,6 +123,131 @@ class PushStoreTests(unittest.TestCase):
         with self.assertRaises(SourceError):
             self.store.set_state('no-such-id', 'bogus')
 
+    def test_repeat_subscribe_is_idempotent(self):
+        first = self.store.subscribe(ENDPOINT, P256DH, AUTH, watch_id=self.watch['id'], now=NOW)
+        second = self.store.subscribe(ENDPOINT, P256DH, AUTH, watch_id=self.watch['id'], now=NOW)
+        self.assertEqual(first['id'], second['id'])
+        self.assertTrue(second.get('duplicate'))
+        self.assertEqual(len(self.store.list(state='active')), 1)
+
+    def test_bound_subscribe_adds_channel_and_consent(self):
+        self.store.subscribe(ENDPOINT, P256DH, AUTH, watch_id=self.watch['id'], now=NOW)
+        watch = self.watches.get(self.watch['id'])
+        self.assertIn('web_push', watch['channels'])
+        self.assertEqual(watch['consent_record']['web_push']['source'], 'browser_push_grant')
+
+    def test_unbound_subscribe_changes_no_watch(self):
+        self.store.subscribe(ENDPOINT, P256DH, AUTH, now=NOW)
+        watch = self.watches.get(self.watch['id'])
+        self.assertEqual(watch['channels'], ['local_inbox'])
+
+    def test_unsubscribe_removes_channel_and_consent(self):
+        self.store.subscribe(ENDPOINT, P256DH, AUTH, watch_id=self.watch['id'], now=NOW)
+        result = self.store.unsubscribe(ENDPOINT, now=NOW)
+        self.assertEqual(result['channels_removed'], [self.watch['id']])
+        watch = self.watches.get(self.watch['id'])
+        self.assertEqual(watch['channels'], ['local_inbox'])
+        self.assertNotIn('web_push', watch['consent_record'])
+
+
+class DeliverableChannelTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.path = Path(self.tmp.name) / 'watches.sqlite'
+        self.watches = WatchStore(self.path)
+        self.store = PushStore(self.path)
+        self.watch = self.watches.create('Notify me if a thunderstorm warning is issued for Ahmedabad tomorrow',
+                                         {'name': 'Ahmedabad'}, 'thunderstorm')
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def test_local_inbox_is_always_deliverable(self):
+        from weathergpt_data.push import deliverable_channels
+        ok, skipped = deliverable_channels(self.path, self.watches.get(self.watch['id']), now=NOW)
+        self.assertEqual(ok, ['local_inbox'])
+        self.assertEqual(skipped, [])
+
+    def test_push_needs_consent_and_subscription(self):
+        from weathergpt_data.push import deliverable_channels
+        self.watches.set_channels(self.watch['id'], ['local_inbox', 'web_push'],
+                                  consent_source='browser_push_grant', now=NOW)
+        ok, skipped = deliverable_channels(self.path, self.watches.get(self.watch['id']), now=NOW)
+        self.assertEqual(ok, ['local_inbox'])
+        self.assertEqual(skipped[0]['reason'], 'no active push subscription')
+        self.store.subscribe(ENDPOINT, P256DH, AUTH, watch_id=self.watch['id'], now=NOW)
+        ok, skipped = deliverable_channels(self.path, self.watches.get(self.watch['id']), now=NOW)
+        self.assertEqual(ok, ['local_inbox', 'web_push'])
+        self.assertEqual(skipped, [])
+
+    def test_channel_without_consent_is_skipped(self):
+        from weathergpt_data.push import deliverable_channels
+        watch = self.watches.get(self.watch['id'])
+        watch['channels'] = ['local_inbox', 'web_push']
+        watch['consent_record'] = {}
+        ok, skipped = deliverable_channels(self.path, watch, now=NOW)
+        self.assertEqual(ok, ['local_inbox'])
+        self.assertEqual(skipped[0]['reason'], 'no recorded push consent')
+
+
+class TtlTests(unittest.TestCase):
+    def test_ttl_follows_the_window_end_with_bounds(self):
+        from datetime import timedelta
+        from weathergpt_data.push import push_ttl, PUSH_TTL_SECONDS
+        soon = {'payload': {'window': {'ends': (NOW + timedelta(minutes=10)).isoformat()}}}
+        self.assertEqual(push_ttl(soon, now=NOW), 600)
+        far = {'payload': {'window': {'ends': (NOW + timedelta(days=30)).isoformat()}}}
+        self.assertEqual(push_ttl(far, now=NOW), 86400)
+        past = {'payload': {'window': {'ends': (NOW - timedelta(hours=1)).isoformat()}}}
+        self.assertEqual(push_ttl(past, now=NOW), PUSH_TTL_SECONDS)
+        self.assertEqual(push_ttl({'payload': {}}, now=NOW), PUSH_TTL_SECONDS)
+
+
+class SubscribeRouteTests(unittest.TestCase):
+    def setUp(self):
+        import types
+        self.tmp = tempfile.TemporaryDirectory()
+        self.path = Path(self.tmp.name) / 'watches.sqlite'
+        self.watches = WatchStore(self.path)
+        self.store = PushStore(self.path)
+        self.watch = self.watches.create('Notify me if a thunderstorm warning is issued for Ahmedabad tomorrow',
+                                         {'name': 'Ahmedabad'}, 'thunderstorm')
+        self.stub = types.SimpleNamespace(watch_store=lambda: WatchStore(self.path), clock=lambda: NOW)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def test_subscribe_route_binds_and_reports(self):
+        from weathergpt_data.workspace import Workspace
+        result = Workspace.push_subscribe(self.stub, {'endpoint': ENDPOINT,
+                                                      'keys': {'p256dh': P256DH, 'auth': AUTH},
+                                                      'watch_id': self.watch['id']})
+        self.assertEqual(result['schema_version'], 'push-subscription-v1')
+        self.assertEqual(result['watch_id'], self.watch['id'])
+        self.assertFalse(result['duplicate'])
+        self.assertIn('web_push', WatchStore(self.path).get(self.watch['id'])['channels'])
+        again = Workspace.push_subscribe(self.stub, {'endpoint': ENDPOINT,
+                                                     'keys': {'p256dh': P256DH, 'auth': AUTH},
+                                                     'watch_id': self.watch['id']})
+        self.assertTrue(again['duplicate'])
+        for body in ({}, {'endpoint': 'http://bad/x', 'keys': {}},
+                     {'endpoint': ENDPOINT, 'keys': {'p256dh': P256DH, 'auth': AUTH},
+                      'watch_id': 'no-such-watch'}):
+            with self.assertRaises(SourceError):
+                Workspace.push_subscribe(self.stub, body)
+
+    def test_unsubscribe_route_revokes_and_unlinks(self):
+        from weathergpt_data.workspace import Workspace
+        Workspace.push_subscribe(self.stub, {'endpoint': ENDPOINT,
+                                             'keys': {'p256dh': P256DH, 'auth': AUTH},
+                                             'watch_id': self.watch['id']})
+        result = Workspace.push_unsubscribe(self.stub, {'endpoint': ENDPOINT})
+        self.assertEqual(result['channels_removed'], [self.watch['id']])
+        with self.assertRaises(SourceError):
+            Workspace.push_unsubscribe(self.stub, {})
+        with self.assertRaises(SourceError):
+            Workspace.push_unsubscribe(self.stub, {'endpoint': ENDPOINT})
+
 
 class PayloadTests(unittest.TestCase):
     def test_payload_carries_official_facts_verbatim(self):
