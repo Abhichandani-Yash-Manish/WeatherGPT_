@@ -1,0 +1,67 @@
+{
+  "sequence": "S3_year",
+  "questions": [
+    "What was India's rainfall in 2024?",
+    "and for 2023?"
+  ],
+  "turns": [
+    {
+      "turn": 1,
+      "question": "What was India's rainfall in 2024?",
+      "status": "answered",
+      "duration_s": 3.11,
+      "tasks": [
+        {
+          "kind": "history",
+          "operation": "lookup",
+          "parameters": [
+            "rainfall"
+          ],
+          "years": [
+            2024
+          ],
+          "start_local": "",
+          "end_local": ""
+        }
+      ],
+      "context_resolution": {
+        "action": "new",
+        "changed_fields": [],
+        "inherited_fields": []
+      },
+      "answer": "All India · annual 2024\nrainfall: 1206.6 mm [t1-f1]\nRetrieved 1 published historical values for the requested places, parameters and years."
+    },
+    {
+      "turn": 2,
+      "question": "and for 2023?",
+      "status": "answered",
+      "duration_s": 3.44,
+      "tasks": [
+        {
+          "kind": "history",
+          "operation": "lookup",
+          "parameters": [
+            "rainfall"
+          ],
+          "years": [
+            2023
+          ],
+          "start_local": "",
+          "end_local": ""
+        }
+      ],
+      "context_resolution": {
+        "action": "follow_up",
+        "changed_fields": [
+          "time"
+        ],
+        "inherited_fields": [
+          "places",
+          "parameters",
+          "operation"
+        ]
+      },
+      "answer": "All India · annual 2023\nrainfall: 1102.8 mm [t1-f1]\nRetrieved 1 published historical values for the requested places, parameters and years."
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+ "schema_version": "watch-check-run-v1",
+ "checked": 4,
+ "delivery": "local_inbox_only_no_push",
+ "no_match_is_not_an_all_clear": true,
+ "results": [
+  {
+   "id": "8b604cf9-6bb4-45d4-ae28-6a5a195dafd0",
+   "state": "checked_no_match",
+   "matched": false,
+   "detail": "No current day of the connected official district warning product matches this watch for the resolved district. This is not an all-clear and it does not cover products that are not connected.",
+   "packet_status": "answered",
+   "packet_answer": "IMD district warning for THIRUVANANTHAPURAM, bulletin of 14 Sep 2026 11:30 IST. Day 2 covers today, 15 Sep 2026: yellow - Thunderstorm/lightning/squall, Strong surface winds. Every other published day in this bulletin is also no warning in this product. This is IMD district-level warning guidance. It is not a flood warning, not an all-clear, and not a CAP alert; a CAP alert covering the same area is reported separately. CAP relay assessment: 9 retrieved messages, 0 pass the time/status/reference checks; the newest was sent 2026-09-09T12:54:34+05:30. Geographic applicability of the CAP relay to this place is not established here, its origin is not authenticated, and its completeness is unverified. A reachable feed and an empty eligible set are both not an all-clear."
+  },
+  {
+   "id": "cd6f7ba8-c02d-4dec-8bdc-e9fedde7d620",
+   "state": "hazard_not_connected",
+   "matched": false,
+   "detail": "The connected official products are the IMD district warning product and the CAP relay; neither carries a flood or cyclone warning product. This watch is recorded, but it cannot be satisfied by mapping your words onto a similar-sounding product.",
+   "packet_status": "answered",
+   "packet_answer": "IMD district warning for KAMRUP, bulletin of 14 Sep 2026 11:30 IST. Day 2 covers today, 15 Sep 2026: green - no warning in this product. Other published days: day 4 17 Sep 2026 yellow Thunderstorm/lightning/squall; day 5 18 Sep 2026 yellow Thunderstorm/lightning/squall. This is IMD district-level warning guidance. It is not a flood warning, not an all-clear, and not a CAP alert; a CAP alert covering the same area is reported separately. CAP relay assessment: 9 retrieved messages, 0 pass the time/status/reference checks; the newest was sent 2026-09-09T12:54:34+05:30. Geographic applicability of the CAP relay to this place is not established here, its origin is not authenticated, and its completeness is unverified. A reachable feed and an empty eligible set are both not an all-clear."
+  },
+  {
+   "id": "8d3b8c7f-8b7b-489e-b094-a61f7d2d795d",
+   "state": "hazard_not_connected",
+   "matched": false,
+   "detail": "The connected official products are the IMD district warning product and the CAP relay; neither carries a flood or cyclone warning product. This watch is recorded, but it cannot be satisfied by mapping your words onto a similar-sounding product.",
+   "packet_status": "answered",
+   "packet_answer": "IMD district warning for KAMRUP, bulletin of 14 Sep 2026 11:30 IST. Day 2 covers today, 15 Sep 2026: green - no warning in this product. Other published days: day 4 17 Sep 2026 yellow Thunderstorm/lightning/squall; day 5 18 Sep 2026 yellow Thunderstorm/lightning/squall. This is IMD district-level warning guidance. It is not a flood warning, not an all-clear, and not a CAP alert; a CAP alert covering the same area is reported separately. CAP relay assessment: 9 retrieved messages, 0 pass the time/status/reference checks; the newest was sent 2026-09-09T12:54:34+05:30. Geographic applicability of the CAP relay to this place is not established here, its origin is not authenticated, and its completeness is unverified. A reachable feed and an empty eligible set are both not an all-clear."
+  },
+  {
+   "id": "e0d81a4c-2330-4262-9fa5-386665908c39",
+   "state": "hazard_not_connected",
+   "matched": false,
+   "detail": "The connected official products are the IMD district warning product and the CAP relay; neither carries a flood or cyclone warning product. This watch is recorded, but it cannot be satisfied by mapping your words onto a similar-sounding product.",
+   "packet_status": "answered",
+   "packet_answer": "IMD district warning for KAMRUP, bulletin of 14 Sep 2026 11:30 IST. Day 2 covers today, 15 Sep 2026: green - no warning in this product. Other published days: day 4 17 Sep 2026 yellow Thunderstorm/lightning/squall; day 5 18 Sep 2026 yellow Thunderstorm/lightning/squall. This is IMD district-level warning guidance. It is not a flood warning, not an all-clear, and not a CAP alert; a CAP alert covering the same area is reported separately. CAP relay assessment: 9 retrieved messages, 0 pass the time/status/reference checks; the newest was sent 2026-09-09T12:54:34+05:30. Geographic applicability of the CAP relay to this place is not established here, its origin is not authenticated, and its completeness is unverified. A reachable feed and an empty eligible set are both not an all-clear."
+  }
+ ]
+}

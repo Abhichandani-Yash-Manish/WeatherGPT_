@@ -1,0 +1,76 @@
+{
+  "schema_version": "historical-alias-journeys-v1",
+  "recorded_at_utc": "2026-09-14T22:53:40.763232+00:00",
+  "scope": "Live local-model journeys on one machine. Candidates are place-index labels requiring confirmation, not reviewed crosswalks.",
+  "cases": {
+    "A1": {
+      "question": "What was the annual rainfall in Mysuru district, Karnataka in 2010?",
+      "turns": [
+        {
+          "turn": 1,
+          "status": "needs_selection",
+          "answer": "Which place do you mean? Mysore district series, Karnataka (S27) — the place index places Mysuru in Mysore district. Choose one, or type its state/district.",
+          "choices": [
+            {
+              "selection_id": "history-district:Karnataka|Mysore",
+              "label": "Mysore district series, Karnataka (S27) — the place index places Mysuru in Mysore district"
+            }
+          ]
+        },
+        {
+          "turn": 2,
+          "selected": "Mysore district series, Karnataka (S27) — the place index places Mysuru in Mysore district",
+          "status": "answered",
+          "answer": "Mysore, Karnataka · annual 2010\nrainfall: 883.4 mm [t1-f1]\nRetrieved 1 published historical values for the requested places, parameters and years.",
+          "facts": 1,
+          "tasks": [
+            [
+              "history",
+              "answered"
+            ]
+          ]
+        }
+      ]
+    },
+    "A2": {
+      "question": "What was the annual rainfall in Bhubaneswar, Odisha in 2010?",
+      "turns": [
+        {
+          "turn": 1,
+          "status": "needs_selection",
+          "answer": "Which place do you mean? Khurda district series, Orissa (S27) — the place index records 'khurda' as another name for Khordha. Choose one, or type its state/district.",
+          "choices": [
+            {
+              "selection_id": "history-district:Orissa|Khurda",
+              "label": "Khurda district series, Orissa (S27) — the place index records 'khurda' as another name for Khordha"
+            }
+          ]
+        },
+        {
+          "turn": 2,
+          "selected": "Khurda district series, Orissa (S27) — the place index records 'khurda' as another name for Khordha",
+          "status": "answered",
+          "answer": "Khurda, Orissa · annual 2010\nrainfall: 1507.6 mm [t1-f1]\nRetrieved 1 published historical values for the requested places, parameters and years.",
+          "facts": 1,
+          "tasks": [
+            [
+              "history",
+              "answered"
+            ]
+          ]
+        }
+      ]
+    },
+    "A3": {
+      "question": "What was the annual rainfall in Nowhere district, Karnataka in 2010?",
+      "turns": [
+        {
+          "turn": 1,
+          "status": "unavailable",
+          "answer": "Nowhere, rainfall, 2010: I could not find a historical district series named Nowhere in Karnataka. Please give the source district name and state; I will not substitute national or nearby-district data.",
+          "choices": []
+        }
+      ]
+    }
+  }
+}

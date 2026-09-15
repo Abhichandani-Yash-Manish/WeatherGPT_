@@ -1,0 +1,63 @@
+{
+  "sequence": "S2_time",
+  "questions": [
+    "Will it rain in Ahmedabad, Gujarat tomorrow morning?",
+    "aur shaam ko?"
+  ],
+  "turns": [
+    {
+      "turn": 1,
+      "question": "Will it rain in Ahmedabad, Gujarat tomorrow morning?",
+      "status": "answered",
+      "duration_s": 4.92,
+      "tasks": [
+        {
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "start_local": "2026-09-16T06:30:00+05:30",
+          "end_local": "2026-09-16T12:30:00+05:30"
+        }
+      ],
+      "context_resolution": {
+        "action": "new",
+        "changed_fields": [],
+        "inherited_fields": []
+      },
+      "answer": "Ahmedabad · 16 Sep, 06:30–16 Sep, 12:30 IST: Forecast precipitation: 0.1 mm. Source: GFS forecast; conditions can change."
+    },
+    {
+      "turn": 2,
+      "question": "aur shaam ko?",
+      "status": "answered",
+      "duration_s": 5.35,
+      "tasks": [
+        {
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "start_local": "2026-09-16T18:30:00+05:30",
+          "end_local": "2026-09-16T22:30:00+05:30"
+        }
+      ],
+      "context_resolution": {
+        "action": "follow_up",
+        "changed_fields": [
+          "time"
+        ],
+        "inherited_fields": [
+          "places",
+          "parameters",
+          "operation"
+        ]
+      },
+      "answer": "Ahmedabad · 16 Sep, 18:30–16 Sep, 22:30 IST: Forecast precipitation: 0.0 mm. Source: GFS forecast; conditions can change."
+    }
+  ]
+}

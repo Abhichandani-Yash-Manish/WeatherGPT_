@@ -51,6 +51,13 @@ class Gazetteer:
         manifest=json.loads((self.path.parent/'manifest.json').read_text())
         self.expected_sha256=manifest['database_sha256']
         if hashlib.sha256(self.path.read_bytes()).hexdigest()!=self.expected_sha256:raise ValueError('Place catalogue integrity failed')
+    def alternates(self,place_id,limit=200):
+        """Every alias name recorded for one place, bounded. Source labels, not a crosswalk."""
+        if hashlib.sha256(self.path.read_bytes()).hexdigest()!=self.expected_sha256:raise ValueError('Place catalogue changed after verification')
+        con=sqlite3.connect(self.path.resolve().as_uri()+'?mode=ro',uri=True)
+        try:return [row[0] for row in con.execute('SELECT name FROM aliases WHERE id=? ORDER BY name LIMIT ?',(place_id,max(1,min(int(limit),500))))]
+        finally:con.close()
+
     def search(self,name,state='',district=''):
         if hashlib.sha256(self.path.read_bytes()).hexdigest()!=self.expected_sha256:raise ValueError('Place catalogue changed after verification')
         con=sqlite3.connect(self.path.resolve().as_uri()+'?mode=ro',uri=True);con.row_factory=sqlite3.Row

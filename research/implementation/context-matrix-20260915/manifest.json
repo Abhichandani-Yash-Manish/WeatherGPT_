@@ -1,0 +1,5 @@
+{
+  "schema_version": "context-matrix-journeys-v1",
+  "recorded_at_utc": "2026-09-14T22:43:37.865437+00:00",
+  "scope": "Live local-model multi-turn runs on one machine; paraphrases and repeats, not a benchmark."
+}

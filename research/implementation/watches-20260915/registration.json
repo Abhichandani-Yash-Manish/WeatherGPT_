@@ -1,0 +1,74 @@
+{
+  "schema_version": "watch-registration-journeys-v1",
+  "cases": [
+    {
+      "id": "W1",
+      "question": "Notify me if an official flood warning is issued for Guwahati, Assam tonight",
+      "status": "answered",
+      "watch": {
+        "id": "cd6f7ba8-c02d-4dec-8bdc-e9fedde7d620",
+        "state": "registered_check_on_request",
+        "hazard": "flood",
+        "place": {
+          "name": "Guwahati",
+          "state": "Assam",
+          "district": ""
+        },
+        "window": [
+          "2026-09-15T18:30:00+05:30",
+          "2026-09-15T22:30:00+05:30"
+        ],
+        "delivery": "local_inbox_only_no_push",
+        "checked_products": [
+          "S15 IMD district warning product",
+          "S06 CAP relay assessment"
+        ]
+      },
+      "tasks": [
+        [
+          "warning",
+          "answered"
+        ]
+      ],
+      "answer": "IMD district warning for KAMRUP, bulletin of 14 Sep 2026 11:30 IST. Day 2 covers today, 15 Sep 2026: green - no warning in this product. Other published days: day 4 17 Sep 2026 yellow Thunderstorm/lightning/squall; day 5 18 Sep 2026 yellow Thunderstorm/lightning/squall. This is IMD district-level warning guidance. It is not a flood warning, not an all-clear, and not a CAP alert; a CAP alert covering the same area is reported separately. CAP relay assessment: 9 retrieved messages, 0 pass the time",
+      "notes": [
+        "Day windows are derived from the bulletin date and the IMD day selector, not from a validity field published per day.",
+        "The district warning layer was read as a complete collection with no truncation; its geometry is not an LGD village crosswalk.",
+        "Local watch cd6f7ba8-c02d-4dec-8bdc-e9fedde7d620 registered with state registered_check_on_request."
+      ]
+    },
+    {
+      "id": "W2",
+      "question": "Notify me if a heavy rain warning is issued for Thiruvananthapuram, Kerala tomorrow",
+      "status": "answered",
+      "watch": {
+        "id": "8b604cf9-6bb4-45d4-ae28-6a5a195dafd0",
+        "state": "registered_check_on_request",
+        "hazard": "heavy_rain",
+        "place": {
+          "name": "Thiruvananthapuram",
+          "state": "Kerala",
+          "district": ""
+        },
+        "window": null,
+        "delivery": "local_inbox_only_no_push",
+        "checked_products": [
+          "S15 IMD district warning product",
+          "S06 CAP relay assessment"
+        ]
+      },
+      "tasks": [
+        [
+          "warning",
+          "answered"
+        ]
+      ],
+      "answer": "IMD district warning for THIRUVANANTHAPURAM, bulletin of 14 Sep 2026 11:30 IST. Day 2 covers today, 15 Sep 2026: yellow - Thunderstorm/lightning/squall, Strong surface winds. Every other published day in this bulletin is also no warning in this product. This is IMD district-level warning guidance. It is not a flood warning, not an all-clear, and not a CAP alert; a CAP alert covering the same area is reported separately. CAP relay assessment: 9 retrieved messages, 0 pass the time/status/reference",
+      "notes": [
+        "Day windows are derived from the bulletin date and the IMD day selector, not from a validity field published per day.",
+        "The district warning layer was read as a complete collection with no truncation; its geometry is not an LGD village crosswalk.",
+        "Local watch 8b604cf9-6bb4-45d4-ae28-6a5a195dafd0 registered with state registered_check_on_request."
+      ]
+    }
+  ]
+}

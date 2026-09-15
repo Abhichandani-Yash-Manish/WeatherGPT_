@@ -1,0 +1,26 @@
+{
+  "token_probe": true,
+  "cancel_response": [
+    {
+      "request_id": "11111111-2222-4333-8444-555555555555",
+      "state": "cancel_requested",
+      "stage": "started",
+      "detail": "The server was asked to stop this turn at the next stage boundary; anything already retrieved for it is discarded."
+    },
+    0.0
+  ],
+  "chat_status": "cancelled",
+  "chat_duration_s": 24.81,
+  "chat_cancelled": {
+    "request_id": "11111111-2222-4333-8444-555555555555",
+    "stage": "planned"
+  },
+  "cancel_after": [
+    {
+      "request_id": "11111111-2222-4333-8444-555555555555",
+      "state": "not_running",
+      "detail": "No turn with this identifier is running here. It may have finished before the stop arrived; nothing of it was kept back."
+    },
+    0.0
+  ]
+}

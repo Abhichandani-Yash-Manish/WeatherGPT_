@@ -1,0 +1,13 @@
+{
+  "first": {
+    "status": "answered",
+    "case_duration_s": 6.57
+  },
+  "second": {
+    "status": "answered",
+    "case_duration_s": 13.45,
+    "rejected": false
+  },
+  "wall_s": 13.45,
+  "note": "Two concurrent questions: one active, one waiting in the bounded queue; neither was rejected instantly."
+}

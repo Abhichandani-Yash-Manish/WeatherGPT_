@@ -1,0 +1,18 @@
+{
+ "schema_version": "queue-cancel-journeys-v1",
+ "recorded_at_utc": "2026-09-15T05:00:00+00:00",
+ "surface": "local loopback HTTP, ports 8798-8799, local Ollama qwen3.6 planner",
+ "checks": [
+  {"id": "QC1", "route": "POST /api/chat/cancel", "observed": "cancel_requested", "stage": "started",
+   "note": "The stop arrived while the turn was planning; the running turn then returned status cancelled at the planned checkpoint and discarded all partial work."},
+  {"id": "QC2", "route": "POST /api/chat/cancel after completion", "observed": "not_running",
+   "note": "A stop that arrives after the turn finished says so instead of claiming a cancel."},
+  {"id": "QC3", "route": "two concurrent POST /api/chat", "observed": "answered / answered",
+   "note": "The second question waited about 7 seconds in the bounded queue and answered; it was not rejected instantly."}
+ ],
+ "limitations": [
+  "Cancellation is checked at stage boundaries; an Ollama inference already in flight completes before the stop takes effect.",
+  "The live run was two journeys, not a load or capacity test.",
+  "Queue capacity is three waiting turns; a fourth and a wait past 45 seconds are refused, and that refusal was not produced live, only in component tests."
+ ]
+}

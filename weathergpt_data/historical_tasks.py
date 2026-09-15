@@ -42,6 +42,12 @@ def execute_history(plan,task,lookup=lookup_plan):
                     value={'status':'unavailable','text':str(exc),'facts':[],'citations':[],'notes':[]}
                 result['lookups'].append({'place':place,'parameter':parameter,'year':year,'evidence':value})
                 result['notes']+=value.get('notes',[])
+                if value.get('status')=='needs_selection' and value.get('choices'):
+                    # The publisher's own series name differs from the asked name. Offer
+                    # source-lined candidates and stop; nothing is substituted unasked.
+                    result.update(status='needs_selection',answer=value['text'],choices=value['choices'],
+                                  follow_up='Choose the source series, or give its exact district and state.')
+                    return result
                 if value['status']!='answered' or not value['facts']:
                     complete=False;messages.append(f"{place['name']}, {parameter}, {year}: {value['text']}")
                     series.append({'year':year,'value':None});continue

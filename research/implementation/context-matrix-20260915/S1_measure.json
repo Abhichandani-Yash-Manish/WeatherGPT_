@@ -1,0 +1,94 @@
+{
+  "sequence": "S1_measure",
+  "questions": [
+    "Will it rain in Kochi, Kerala tomorrow morning?",
+    "And what about the afternoon?",
+    "Compare the rain amount for that same afternoon period with GFS too."
+  ],
+  "turns": [
+    {
+      "turn": 1,
+      "question": "Will it rain in Kochi, Kerala tomorrow morning?",
+      "status": "answered",
+      "duration_s": 5.03,
+      "tasks": [
+        {
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "start_local": "2026-09-16T06:30:00+05:30",
+          "end_local": "2026-09-16T12:30:00+05:30"
+        }
+      ],
+      "context_resolution": {
+        "action": "new",
+        "changed_fields": [],
+        "inherited_fields": []
+      },
+      "answer": "Kochi · 16 Sep, 06:30–16 Sep, 12:30 IST: Forecast precipitation: 0.0 mm. Source: GFS forecast; conditions can change."
+    },
+    {
+      "turn": 2,
+      "question": "And what about the afternoon?",
+      "status": "answered",
+      "duration_s": 5.23,
+      "tasks": [
+        {
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "start_local": "2026-09-16T12:30:00+05:30",
+          "end_local": "2026-09-16T18:30:00+05:30"
+        }
+      ],
+      "context_resolution": {
+        "action": "follow_up",
+        "changed_fields": [
+          "time"
+        ],
+        "inherited_fields": [
+          "places",
+          "parameters",
+          "operation"
+        ]
+      },
+      "answer": "Kochi · 16 Sep, 12:30–16 Sep, 18:30 IST: Forecast precipitation: 0.5 mm. Source: GFS forecast; conditions can change."
+    },
+    {
+      "turn": 3,
+      "question": "Compare the rain amount for that same afternoon period with GFS too.",
+      "status": "answered",
+      "duration_s": 5.47,
+      "tasks": [
+        {
+          "kind": "forecast",
+          "operation": "crosscheck",
+          "parameters": [
+            "precipitation"
+          ],
+          "years": [],
+          "start_local": "2026-09-16T12:30:00+05:30",
+          "end_local": "2026-09-16T18:30:00+05:30"
+        }
+      ],
+      "context_resolution": {
+        "action": "follow_up",
+        "changed_fields": [
+          "operation"
+        ],
+        "inherited_fields": [
+          "places",
+          "parameters",
+          "time"
+        ]
+      },
+      "answer": "Kochi · 16 Sep, 12:30–16 Sep, 18:30 IST: Forecast precipitation: 0.5 mm. Source: GFS forecast; conditions can change.\n\nKochi · 16 Sep, 12:30–16 Sep, 18:30 IST: Total precipitation over this period: 0.0 mm. Precipitation in individual hours: 0.0 mm. Source: Open-Meteo best-match forecast; conditions can change.\n\nFor the same point and interval, GFS: 0.5 mm; best-match: 0.0 mm. Best-match minus GFS:"
+    }
+  ]
+}
