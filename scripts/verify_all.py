@@ -16,7 +16,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 NODE_SUITES = ['tests/test_charts.js', 'tests/test_views.js', 'tests/test_bulletin_ui.js',
-               'tests/test_conversation_ui.js', 'tests/test_suite_ui.js', 'tests/test_voice_ui.js']
+               'tests/test_conversation_ui.js', 'tests/test_suite_ui.js', 'tests/test_voice_ui.js',
+               'tests/test_briefcase_ui.js']
 REGISTRIES = ['data/registry/sources.json', 'data/registry/source-review.json', 'data/registry/product-progress.json',
               'data/registry/hardening-progress.json', 'data/registry/language-support.json',
               'data/registry/acceptance-benchmark.json', 'data/registry/answer-policy.json']

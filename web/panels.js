@@ -193,6 +193,26 @@
           const limits = el('ul', undefined, 'notes');
           (brief.not_established || []).forEach(item => limits.append(el('li', item)));
           body.append(limits);
+          const keep = el('div', undefined, 'brief-tools');
+          const save = el('button', 'Save to briefcase', 'ghost');
+          save.type = 'button';
+          save.setAttribute('aria-label', 'Keep this brief in the local briefcase');
+          save.addEventListener('click', () => {
+            save.disabled = true;
+            save.textContent = 'Saving…';
+            WGref.post('/api/briefs/save', { kind: 'alert_brief', lat: place.latitude, lon: place.longitude, day: 1 })
+              .then(result => {
+                save.textContent = 'Kept';
+                body.append(el('p', 'Kept as “' + String((result.entry || {}).title || 'a brief') + '”. Nothing was delivered: open the Briefcase to reopen or export it.', 'block-note'));
+              })
+              .catch(error => {
+                save.disabled = false;
+                save.textContent = 'Save to briefcase';
+                body.append(el('p', 'This brief was not kept: ' + String(error.message || error), 'block-note'));
+              });
+          });
+          keep.append(save);
+          body.append(keep);
           body.append(el('p', 'A brief records what a product published. It is not a warning issued here, not a forecast and not an all-clear.', 'field-note'));
         }).catch(error => {
           WG.clear(body);
@@ -743,5 +763,86 @@
     sourceLine(view, host);
   };
 
+
+  /* ---------- the briefcase ---------- */
+  /* Briefs the workspace composed and kept. The page can save, reopen, export and delete
+     one; it cannot post a brief of its own, because the server composes from sources. */
+  function briefTitle(entry) { return String(entry.title || 'Brief'); }
+  function briefRows(entry) {
+    return [
+      ['Kind', entry.kind, entry.delivery || 'local_only_no_delivery'],
+      ['Place', (entry.place || {}).label || (entry.place || {}).district || 'not stated', (entry.place || {}).state || ''],
+      ['Window', (entry.window || {}).label || 'not stated', (entry.window || {}).starts_utc ? entry.window.starts_utc + ' to ' + entry.window.ends_utc : ''],
+      ['Sources named', (entry.sources || []).join(', ') || 'none named in this brief', 'source identifiers as stored'],
+      ['Content hash', 'sha256 ' + String(entry.content_sha256 || '').slice(0, 16), 'the content hash recorded when it was composed'],
+      ['Kept', entry.saved_at, 'entry ' + String(entry.id).slice(0, 8)]
+    ];
+  }
+  WG.panels.briefcase = async function (host, WGref) {
+    const view = await WGref.api('/api/briefs');
+    WGref.state.freshness = WGref.freshness(view);
+    const entries = view.briefs || [];
+    const block = WGref.block('Kept briefs', entries.length + ' kept in the local store · ' + (view.delivery || 'local_only_no_delivery'));
+    block.append(el('p', view.note || 'Nothing kept here is delivered or pushed.', 'block-note'));
+    if (!entries.length) {
+      block.append(WGref.stateBlock('plain', 'Nothing is kept yet.',
+        'Open Warnings and write the alert brief for the working place, then keep it here. A brief is composed from its sources by the server: this page cannot save a brief the workspace did not compose.'));
+      host.append(block);
+      return;
+    }
+    const list = el('ul', undefined, 'brief-list');
+    entries.forEach(entry => {
+      const item = el('li', undefined, 'brief-item');
+      item.append(el('p', briefTitle(entry), 'brief-title'));
+      item.append(el('p', 'Kept ' + entry.saved_at + ' · ' + ((entry.place || {}).label || (entry.place || {}).district || 'place not stated') + ' · sources ' + ((entry.sources || []).join(', ') || 'none named'), 'brief-meta'));
+      const tools = el('div', undefined, 'brief-tools');
+      const open = el('button', 'Open', 'ghost');
+      open.type = 'button';
+      open.setAttribute('data-brief-open', entry.id);
+      open.addEventListener('click', () => {
+        WGref.openDrawer(briefTitle(entry), body => {
+          const note = el('p', 'Reading the kept entry from the local store…', 'field-note');
+          body.append(note);
+          WGref.api('/api/briefs/get', { id: entry.id }).then(saved => {
+            WGref.clear(body);
+            body.append(WGref.table(['Field', 'Value', 'Provenance'], briefRows(saved.entry || entry)));
+            body.append(el('p', 'Export as written', 'field-label'));
+            body.append(el('pre', saved.markdown || '', 'brief-markdown'));
+            const limits = el('ul', undefined, 'notes');
+            (((saved.entry || entry).evidence || {}).not_established || []).forEach(limit => limits.append(el('li', limit)));
+            if (limits.childNodes.length) { body.append(el('p', 'What this brief says is not established', 'field-label')); body.append(limits); }
+          }).catch(error => { WGref.clear(body); body.append(el('p', 'This entry could not be read: ' + String(error.message || error), 'block-note')); });
+        });
+      });
+      const exportButton = el('button', 'Export Markdown', 'ghost');
+      exportButton.type = 'button';
+      exportButton.setAttribute('data-brief-export', entry.id);
+      exportButton.addEventListener('click', async () => {
+        try {
+          const text = await WGref.apiText('/api/briefs/export?id=' + encodeURIComponent(entry.id));
+          WGref.download(String(entry.title || 'brief').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60) + '-' + String(entry.id).slice(0, 8) + '.md', text, 'text/markdown');
+        } catch (error) {
+          WGref.openDrawer('Export failed', body => body.append(el('p', 'The export could not be read from the local store: ' + String(error.message || error), 'block-note')));
+        }
+      });
+      const remove = el('button', 'Delete', 'ghost danger');
+      remove.type = 'button';
+      remove.setAttribute('data-brief-delete', entry.id);
+      remove.addEventListener('click', async () => {
+        try {
+          await WGref.post('/api/briefs/delete', { id: entry.id });
+          WGref.render();
+        } catch (error) {
+          WGref.openDrawer('Delete failed', body => body.append(el('p', 'This entry was not removed: ' + String(error.message || error), 'block-note')));
+        }
+      });
+      tools.append(open, exportButton, remove);
+      item.append(tools);
+      list.append(item);
+    });
+    block.append(list);
+    block.append(el('p', 'Deleting removes the entry from this machine\'s local store. An exported file stays where you saved it.', 'block-note'));
+    host.append(block);
+  };
   WG.panels.assistant = async function () { /* the conversation is owned by app.js */ };
 })();

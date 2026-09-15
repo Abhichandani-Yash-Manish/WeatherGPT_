@@ -46,6 +46,61 @@ class Workspace:
         from .watches import WatchStore
         return WatchStore(self.service.ingestion_database.parent/'watches.sqlite')
 
+    def briefcase_store(self):
+        from .briefcase import BriefStore
+        return BriefStore(self.service.ingestion_database.parent/'briefcase.sqlite')
+
+    def briefs(self):
+        """The local briefcase: briefs the workspace composed, kept, and never delivered."""
+        from .briefcase import NO_DELIVERY
+        entries=[]
+        for entry in self.briefcase_store().list():
+            entries.append({'id':entry['id'],'saved_at':entry['saved_at'],'kind':entry['kind'],'title':entry['title'],
+                            'place':entry['place'],'window':entry['window'],'content_sha256':entry['content_sha256'],
+                            'sources':entry['sources'],'status':entry['payload'].get('status'),'evidence':entry['evidence'],
+                            'delivery':entry['delivery']})
+        return {'schema_version':'briefcase-v1','delivery':'local_only_no_delivery','note':NO_DELIVERY,'briefs':entries}
+
+    def saved_brief(self,brief_id):
+        """One kept brief with the Markdown it exports to."""
+        from .briefcase import markdown
+        entry=self.briefcase_store().get(brief_id)
+        return {'schema_version':'briefcase-entry-v1','delivery':'local_only_no_delivery','entry':entry,
+                'markdown':markdown(entry)}
+
+    def brief_export(self,brief_id):
+        """The export pair: a file name derived from the entry, and the Markdown itself."""
+        from .briefcase import markdown
+        entry=self.briefcase_store().get(brief_id)
+        safe=re.sub(r'[^a-z0-9]+','-',str(entry['title']).lower()).strip('-')[:60] or 'brief'
+        return safe+'-'+str(entry['id'])[:8]+'.md',markdown(entry)
+
+    def save_brief(self,body):
+        """Compose a brief from sources and keep it. The client asks for a brief; it cannot post one."""
+        if not isinstance(body,dict):raise SourceError('Send the brief request as JSON')
+        kind=body.get('kind')
+        if kind not in ('alert_brief','advisory_brief'):raise SourceError('Save an alert brief or an advisory brief')
+        if kind=='alert_brief':
+            from . import product_api
+            latitude,longitude=body.get('lat'),body.get('lon')
+            if latitude is None or longitude is None:
+                raise SourceError('An alert brief is composed for a point: give lat and lon')
+            day=body.get('day')
+            view=product_api.alert_brief_view(self.foundation(),float(latitude),float(longitude),
+                                              day=int(day) if day is not None else None)
+            brief=view.get('data') or {}
+        else:
+            brief=self.advisory_brief(body)
+        entry=self.briefcase_store().save(kind,brief,now=self.clock())
+        return {'schema_version':'briefcase-entry-v1','delivery':'local_only_no_delivery','entry':entry,
+                'saved':True,'detail':'The brief was composed from its sources and kept in the local store; nothing was delivered.'}
+
+    def delete_brief(self,body):
+        if not isinstance(body,dict) or not body.get('id'):raise SourceError('Give the identifier of the kept brief')
+        removed=self.briefcase_store().delete(str(body['id']))
+        removed['briefs']=self.briefs()['briefs']
+        return removed
+
     def watches(self):
         """The local watch inbox: registered requests, their states and their limits."""
         return {'schema_version':'watch-inbox-v1','delivery':'local_inbox_only_no_push',
@@ -478,11 +533,12 @@ def make_server(workspace, port=8765):
     class Handler(BaseHTTPRequestHandler):
         def log_message(self,*args):pass  # Do not log private questions or coordinates.
 
-        def respond(self, code, data, kind='application/json'):
+        def respond(self, code, data, kind='application/json', filename=None):
             if kind=='application/json':data=json.dumps(data,ensure_ascii=False,allow_nan=False).encode()
             elif isinstance(data,str):data=data.encode()
             self.send_response(code)
             self.send_header('Content-Type',kind+'; charset=utf-8')
+            if filename:self.send_header('Content-Disposition','attachment; filename="'+filename+'"')
             self.send_header('Content-Length',str(len(data)))
             self.send_header('Cache-Control','no-store')
             self.send_header('X-Content-Type-Options','nosniff')
@@ -519,7 +575,8 @@ def make_server(workspace, port=8765):
             if path.startswith('/api/'):
                 known=(workspace.is_product(path) or path=='/api/conversations' or path=='/api/health'
                        or path=='/api/languages' or path=='/api/watches' or path=='/api/chat/progress'
-                       or path=='/api/advisories/brief'
+                       or path=='/api/advisories/brief' or path=='/api/briefs'
+                       or path.startswith('/api/briefs/')
                        or path.startswith('/api/conversations/') or path.startswith('/api/map/static/'))
                 if not known:return self.respond(404,{'error':'Not found'})
                 if not self.authorized():return self.respond(403,{'error':'Reload this local workspace before reading stored data'})
@@ -530,6 +587,13 @@ def make_server(workspace, port=8765):
                     if path=='/api/watches':return self.respond(200,workspace.watches())
                     if path=='/api/chat/progress':return self.respond(200,workspace.chat_progress())
                     if path=='/api/advisories/brief':return self.respond(200,workspace.advisory_brief(parse_qs(urlsplit(self.path).query)))
+                    if path=='/api/briefs':return self.respond(200,workspace.briefs())
+                    if path in ('/api/briefs/get','/api/briefs/export'):
+                        brief_id=(parse_qs(urlsplit(self.path).query).get('id') or [''])[0]
+                        if not brief_id:raise ValueError('Give the identifier of the kept brief')
+                        if path=='/api/briefs/get':return self.respond(200,workspace.saved_brief(brief_id))
+                        name,text=workspace.brief_export(brief_id)
+                        return self.respond(200,text,'text/markdown',filename=name)
                     if path.startswith('/api/conversations/'):return self.respond(200,workspace.conversation_transcript(path.removeprefix('/api/conversations/')))
                     if path.startswith('/api/map/static/'):
                         return self.respond(200,workspace.map_layer(path.removeprefix('/api/map/static/')),'application/geo+json')
@@ -562,7 +626,8 @@ def make_server(workspace, port=8765):
                     or not hmac.compare_digest(supplied,token)):
                 return self.respond(403,{'error':'Reload this local workspace before sending a request'})
             routes={'/api/answer':workspace.answer,'/api/refresh':workspace.refresh,'/api/chat':workspace.chat,
-                    '/api/chat/cancel':workspace.cancel_chat,'/api/watches/check':workspace.check_watches,
+                    '/api/chat/cancel':workspace.cancel_chat,'/api/watches/check':workspace.check_watches,'/api/briefs/save':workspace.save_brief,
+                    '/api/briefs/delete':workspace.delete_brief,
                     '/api/speech/transcribe':workspace.transcribe,'/api/speech/speak':workspace.speak}
             if self.path not in routes:return self.respond(404,{'error':'Not found'})
             # A recording is far larger than a question, so it gets its own limit rather

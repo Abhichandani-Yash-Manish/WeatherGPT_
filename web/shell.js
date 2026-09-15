@@ -14,12 +14,14 @@ const WG = window.WG;
 
 (function () {
   const TOKEN = (document.querySelector('meta[name="workspace-token"]') || {}).content || '';
-  const VIEWS = ['overview', 'warnings', 'map', 'observations', 'forecast', 'changes', 'climate', 'advisories', 'aviation', 'marine', 'assistant', 'settings'];
+  const VIEWS = ['overview', 'warnings', 'map', 'observations', 'forecast', 'changes', 'climate', 'advisories', 'aviation', 'marine', 'assistant', 'briefcase', 'settings'];
   const VIEW_LABELS = { assistant: 'Ask', overview: 'Today', warnings: 'Warnings', map: 'Map', forecast: 'Forecast',
                         changes: 'What changed', observations: 'Observations', advisories: 'Farm advisories',
-                        climate: 'Climate records', marine: 'Sea and rivers', aviation: 'Aviation', settings: 'Sources and settings' };
+                        climate: 'Climate records', marine: 'Sea and rivers', aviation: 'Aviation', briefcase: 'Briefcase',
+                        settings: 'Sources and settings' };
   const VIEW_GLYPHS = { assistant: '✦', overview: '◎', warnings: '▲', map: '◈', forecast: '〜', changes: '∆',
-                        observations: '⌖', advisories: '☘', climate: '◔', marine: '≈', aviation: '✈', settings: '⚙' };
+                        observations: '⌖', advisories: '☘', climate: '◔', marine: '≈', aviation: '✈', briefcase: '❑',
+                        settings: '⚙' };
   const DEFAULT_PLACE = { label: 'Ahmedabad, Gujarat', latitude: 23.02579, longitude: 72.58727 };
 
   /* ---------- transport ---------- */
@@ -48,6 +50,37 @@ const WG = window.WG;
     return parts.length ? '?' + parts.join('&') : '';
   }
   function api(path, params) { return request(path + query(params)); }
+  /* The briefcase is the one place the page sends a request of its own, so it gets its
+     own helper: a token, a JSON body, and the same classified error path. */
+  async function post(path, body) {
+    const response = await fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-WeatherGPT-Token': TOKEN }, body: JSON.stringify(body) });
+    let payload = null;
+    try { payload = await response.json(); } catch (error) { payload = null; }
+    if (!response.ok) throw classify(response.status, payload);
+    return payload;
+  }
+  /* An export is served as a file behind the token, so it is fetched as text rather than
+     parsed, and written to disk from a blob the page owns. */
+  async function apiText(path) {
+    const response = await fetch(path, { headers: { 'X-WeatherGPT-Token': TOKEN } });
+    if (!response.ok) {
+      let payload = null;
+      try { payload = await response.json(); } catch (error) { payload = null; }
+      throw classify(response.status, payload);
+    }
+    return response.text();
+  }
+  function download(name, text, kind) {
+    const blob = new Blob([text], { type: (kind || 'text/plain') + ';charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = name;
+    document.body.append(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  }
   /* Binary map geometry is served as a file, so it is fetched rather than parsed. */
   async function apiJsonFile(path) {
     const response = await fetch(path, { headers: { 'X-WeatherGPT-Token': TOKEN } });
@@ -166,6 +199,73 @@ const WG = window.WG;
     if (drawer) drawer.hidden = true;
   }
 
+  /* ---------- reading position ---------- */
+  /* A persona is a reading position: it changes the emphasis, the surfaces offered first
+     and the questions suggested. It never changes a value, a source or a warning level, and
+     every answer carries the position it was read under. */
+  const PERSONA_KEY = 'weathergpt.persona';
+  let personaCatalogue = { personas: [] };
+  function personaId() {
+    try { return window.localStorage.getItem(PERSONA_KEY) || ''; } catch (error) { return WG.state.persona || ''; }
+  }
+  function personaEntry(id) {
+    const wanted = id === undefined ? personaId() : id;
+    return (personaCatalogue.personas || []).filter(item => item.id === wanted)[0] || null;
+  }
+  function applyPersonaFocus(entry) {
+    const focus = entry ? (entry.surfaces || []) : [];
+    document.querySelectorAll('.rail .rail-group').forEach(group => {
+      const items = Array.from(group.querySelectorAll('[data-view]'));
+      if (items.length < 2) return;
+      items.forEach((item, index) => { if (!item.dataset.order) item.dataset.order = String(index); });
+      items.slice().sort((left, right) => {
+        const rank = item => {
+          const at = focus.indexOf(item.getAttribute('data-view'));
+          return at < 0 ? focus.length + Number(item.dataset.order) : at;
+        };
+        return rank(left) - rank(right);
+      }).forEach(item => group.append(item));
+    });
+  }
+  function paintPersonaNote(entry) {
+    const note = document.getElementById('briefcase-note');
+    if (!note) return;
+    note.textContent = entry
+      ? 'Briefs the workspace composed and kept, read as ' + entry.label + ': ' + entry.who + ' A persona changes the emphasis, never a value, a source or a warning level. Nothing here is delivered, pushed or published; an export is a file you keep.'
+      : 'Briefs the workspace composed from its sources and kept. Nothing here is delivered, pushed or published; an export is a file you keep.';
+  }
+  function setPersona(id) {
+    try {
+      if (id) window.localStorage.setItem(PERSONA_KEY, id);
+      else window.localStorage.removeItem(PERSONA_KEY);
+    } catch (error) { /* private mode: the choice lasts this page only */ }
+    WG.state.persona = id || '';
+    const entry = personaEntry(id);
+    applyPersonaFocus(entry);
+    paintPersonaNote(entry);
+  }
+  async function loadPersonas() {
+    try {
+      const view = await api('/api/personas');
+      personaCatalogue = view.data || { personas: [] };
+    } catch (error) { personaCatalogue = { personas: [] }; }
+    const select = document.getElementById('persona');
+    if (select) {
+      (personaCatalogue.personas || []).forEach(item => {
+        const option = el('option', item.label);
+        option.value = item.id;
+        option.title = item.who;
+        select.append(option);
+      });
+      select.value = personaId();
+      select.addEventListener('change', () => setPersona(select.value));
+    }
+    WG.state.persona = personaId();
+    const entry = personaEntry();
+    applyPersonaFocus(entry);
+    paintPersonaNote(entry);
+    if (window.WeatherGPT && typeof window.WeatherGPT.refreshWelcome === 'function') window.WeatherGPT.refreshWelcome();
+  }
   /* ---------- working place ---------- */
   function loadPlace() {
     try {
@@ -551,6 +651,7 @@ const WG = window.WG;
     wireTheme();
     wirePalette();
     paintHealthMini();
+    loadPersonas();
     document.addEventListener('keydown', event => {
       if ((event.metaKey || event.ctrlKey) && String(event.key).toLowerCase() === 'k') {
         event.preventDefault();
@@ -568,6 +669,12 @@ const WG = window.WG;
 
   WG.api = api;
   WG.apiJsonFile = apiJsonFile;
+  WG.post = post;
+  WG.apiText = apiText;
+  WG.download = download;
+  WG.personaEntry = personaEntry;
+  WG.setPersona = setPersona;
+  WG.loadPersonas = loadPersonas;
   WG.clear = clear;
   WG.append = append;
   WG.chip = chip;

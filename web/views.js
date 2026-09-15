@@ -438,6 +438,14 @@ function renderTasks(packet) {
   counts.append(el('span', 'The engine counts a task answered only when it returned evidence; a clarification or abstention is not counted as answered.'));
   const wrap = el('div');
   wrap.append(counts);
+  /* The position the answer was read under travels with the answer, so the framing is
+     never mistaken for the finding. */
+  if (packet.persona) {
+    const read = el('p', undefined, 'coverage');
+    read.append(el('span', 'Read as: ' + packet.persona.label));
+    read.append(el('span', packet.persona.note));
+    wrap.append(read);
+  }
   const list = el('div', undefined, 'tasks');
   results.forEach(task => {
     const row = el('div', 'task', 'task' + ' ' + (task.status === 'answered' ? 'is-answered' : 'is-incomplete'));
@@ -885,12 +893,20 @@ function renderWelcome(handlers) {
   box.append(el('h1', 'Ask about a place and a time.'));
   box.append(el('p', 'Ask in your own words and follow up in the same conversation. WeatherGPT resolves the place, retrieves the evidence, and keeps the source, the window and the retrieval time attached to every value. When a name is shared between places it asks you which one you mean.'));
   const starters = el('div', undefined, 'starters');
-  [
+  const examples = [
     ['Will it rain in Ahmedabad, Gujarat tomorrow morning?', 'Ask about rain'],
     ['What is the chance of rain in Kochi, Kerala tomorrow afternoon?', 'Ask for a probability'],
     ['Show the annual rainfall trend for Ahmedabad district, Gujarat from 1981 to 2010.', 'Look at a trend'],
     ['What is the current weather at VOBL?', 'Ask for an airport report']
-  ].forEach(pair => {
+  ];
+  /* The reading position changes which questions are offered first. It changes nothing
+     about how they are answered. */
+  const reading = (typeof WG !== 'undefined' && WG.personaEntry) ? WG.personaEntry() : null;
+  if (reading) {
+    (reading.starters || []).slice(0, 3).forEach(question => examples.unshift([question, 'Ask as ' + reading.label.toLowerCase()]));
+    box.append(el('p', 'Reading as ' + reading.label + ': ' + reading.who + ' ' + reading.note, 'welcome-limit'));
+  }
+  examples.slice(0, reading ? 6 : 4).forEach(pair => {
     const button = el('button', pair[1], 'ghost');
     button.type = 'button';
     button.addEventListener('click', () => handlers.onExample(pair[0]));

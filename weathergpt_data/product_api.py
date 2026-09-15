@@ -42,7 +42,7 @@ PRODUCT_PATHS = ('/api/overview', '/api/warnings/national', '/api/warnings/place
                  '/api/forecast', '/api/forecast/changes', '/api/marine', '/api/river', '/api/aviation', '/api/places/search',
                  '/api/map/layers', '/api/warnings/cap', '/api/warnings/alert-brief', '/api/settings/capabilities',
                  '/api/climate/index', '/api/climate/series', '/api/advisories/states',
-                 '/api/advisories/districts')
+                 '/api/advisories/districts', '/api/personas')
 _REGISTRY = {'path': None, 'mtime': None, 'products': {}}
 
 
@@ -50,6 +50,15 @@ def envelope(view, status, data, sources=None, coverage=None, limitations=None, 
     return {'schema_version': SCHEMA, 'generated_at_utc': stamp(utcnow()), 'view': view, 'status': status,
             'data': data, 'sources': sources or [], 'coverage': coverage or {},
             'limitations': limitations or [], 'not_established': not_established or []}
+
+
+def personas_view():
+    """Who is reading: three registered positions, each framing and never finding."""
+    from .personas import PERSONA_NOTE, catalogue
+    return envelope('personas.catalogue', 'ok', catalogue(),
+                    limitations=[PERSONA_NOTE,
+                                 'The same question under two personas retrieves the same evidence; only the emphasis, the '
+                                 'starting surfaces and the listed limits differ.'])
 
 
 def registry_products():
@@ -726,6 +735,8 @@ def dispatch(foundation, path, params):
             raise SourceError('Use metar or taf')
         stations = [code.strip().upper() for code in str(raw).split(',') if code.strip()]
         return aviation(foundation, stations, kind=kind, refresh=_flag(params, 'refresh'))
+    if path == '/api/personas':
+        return personas_view()
     if path == '/api/places/search':
         return places_search(_first(params, 'q', ''), limit=_int(params, 'limit', 12, low=1, high=30))
     if path == '/api/map/layers':

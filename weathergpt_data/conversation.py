@@ -93,7 +93,11 @@ class ConversationEngine:
                        (cid,json.dumps(state,ensure_ascii=False),self.workspace.clock().isoformat()))
 
     def ask(self,body):
-        if not isinstance(body,dict) or set(body)-{'question','conversation_id','selection_id','coordinates','output_language','request_id'}:raise SourceError('Send a question and optional conversation/place/language selection')
+        if not isinstance(body,dict) or set(body)-{'question','conversation_id','selection_id','coordinates','output_language','request_id','persona'}:raise SourceError('Send a question and optional conversation/place/language selection')
+        # A persona is a reading position: it is checked before any work is done and it
+        # changes no evidence, so an unknown one is refused rather than guessed.
+        from .personas import get as persona_of
+        persona_of(body.get('persona'))
         q=body.get('question')
         if not isinstance(q,str) or not 1<=len(q)<=1500:raise SourceError('Enter a question of 1–1500 characters')
         supplied=body.get('request_id')
@@ -367,6 +371,11 @@ class ConversationEngine:
         if not body.get('selection_id'):state['history'].append({'role':'user','content':q})
         state['history'].append({'role':'assistant','content':result['answer'][:2000]})
         state['history']=state['history'][-12:];self.save(cid,state)
+        # The persona the answer was read under travels with the answer, so the framing
+        # can never be mistaken for the finding.
+        from .personas import annotate as persona_block
+        block=persona_block(body.get('persona'))
+        if block:result['persona']=block
         return result
 
     def _watch_plan(self,question):

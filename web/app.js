@@ -274,6 +274,7 @@
     state.requestId = newRequestId();
     try {
       const body = { question:question, output_language:state.language || '', request_id:state.requestId };
+      if (typeof WG !== 'undefined' && typeof WG.personaEntry === 'function' && WG.personaEntry()) body.persona = WG.personaEntry().id;
       if (state.conversationId) body.conversation_id = state.conversationId;
       if (request.selection && request.selection.selection_id) body.selection_id = request.selection.selection_id;
       if (request.selection && request.selection.coordinates) body.coordinates = request.selection.coordinates;
@@ -509,6 +510,16 @@
   }
   function ledgerHandlers() { return { currentId:() => state.conversationId, onOpen:restore, onDelete:remove }; }
 
+  /* The reading position arrives from its own route after the page paints. If the
+     welcome is still on screen, it is repainted so the questions offered match the
+     position; a conversation already under way is never disturbed. */
+  function refreshWelcome() {
+    if (state.busy || state.conversationId) return;
+    const box = thread();
+    if (!box || !box.querySelector('.welcome')) return;
+    box.replaceChildren(renderWelcome(handlers()));
+  }
+
   function start() {
     bind();
     const box = thread();
@@ -526,5 +537,5 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
 
-  window.WeatherGPT = { ask:ask, state:state, loadLedger:loadLedger, loadHealth:loadHealth, restore:restore, buildFieldSentence:buildFieldSentence, firstPoint:firstPoint };
+  window.WeatherGPT = { ask:ask, state:state, refreshWelcome:refreshWelcome, loadLedger:loadLedger, loadHealth:loadHealth, restore:restore, buildFieldSentence:buildFieldSentence, firstPoint:firstPoint };
 })();
