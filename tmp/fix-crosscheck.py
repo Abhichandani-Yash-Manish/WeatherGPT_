@@ -1,8 +1,9 @@
 import pathlib
 p = pathlib.Path('weathergpt_data/rule_planner.py')
-t = p.read_text()
-old = "        if operation == 'crosscheck':\n            tasks[-1]['changed_fields'] = ['operation']\n"
-assert t.count(old) == 1, t.count(old)
-t = t.replace(old, '', 1)
-p.write_text(t)
-print('removed')
+lines = p.read_text().splitlines(keepends=True)
+# Remove the duplicated tail (lines 9 and 10 of the inspected window, 1-based 82 and 83).
+assert "r'model (?:comparison|agreement)|gfs (?:vs|versus)|(?:vs|versus) (?:gfs|ecmwf|icon|best[- ]match)|'" in lines[81], repr(lines[81])
+assert "r'check another (?:model|source)|do the models agree)\\b', re.I)" in lines[82], repr(lines[82])
+del lines[81:83]
+p.write_text(''.join(lines))
+print('removed duplicate tail')

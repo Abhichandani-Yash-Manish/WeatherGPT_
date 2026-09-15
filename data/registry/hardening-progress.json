@@ -1,7 +1,7 @@
 {
   "schema_version": "hardening-progress-v1",
   "review": "research/reviews/national-readiness-20260912/review.md",
-  "updated_at_utc": "2026-09-15T06:21:35+00:00",
+  "updated_at_utc": "2026-09-15T06:39:47+00:00",
   "operational_ready": false,
   "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
   "findings": [
@@ -1532,6 +1532,38 @@
       "No accuracy claim: the reading reports what the connected products returned at that instant.",
       "One point and one instant were measured; a station layer can be stale between source hours.",
       "No mobile, screen-reader or cross-browser acceptance of the panel."
+    ]
+  },
+  "paraphrase_robustness_batch": {
+    "report": "docs/59-paraphrase-robustness.md",
+    "evidence_directory": "research/implementation/paraphrase-robustness-20260915",
+    "operational_ready": false,
+    "scope": "Paraphrase robustness (finding A01): a deterministic measurement of eleven declared shapes across 38 wording variants, and the eight repairs it found - agromet bulletins in the document vocabulary, a station code read as a station request with an acronym guard, Hinglish past markers in the history vocabulary, tide as an unconnected domain, an order-independent crosscheck shape, Indic-script questions planned in their own language, a native-script state disclosed as unused rather than emptying the candidate list, and 'sea_area' accepted by the plan schema and validator.",
+    "automated_tests": 813,
+    "javascript_component_checks": 70,
+    "measured": {
+      "variants_before": 34,
+      "held_before": 25,
+      "rate_before": 0.735,
+      "variants_after": 38,
+      "held_after": 38,
+      "rate_after": 1.0,
+      "shapes": 11,
+      "live_journeys": {
+        "devanagari_rain": "answered",
+        "gujarati_rain": "answered",
+        "station_code": "answered",
+        "agromet_bulletin": "answered",
+        "tide": "unavailable (the honest gap)",
+        "crosscheck_hinglish": "answered"
+      },
+      "all_live_journeys_planned_by": "deterministic_rules/rule-planner-v1"
+    },
+    "limitations": [
+      "A development set written and tuned by the same hand: not a generalisation measurement.",
+      "A plan is not an answer, and no answer was checked against its source by a human.",
+      "No native speaker has reviewed the Indic-script output.",
+      "Variants are generated deterministically, not sampled from users."
     ]
   }
 }
