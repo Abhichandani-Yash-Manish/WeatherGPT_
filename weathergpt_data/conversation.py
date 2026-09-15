@@ -324,6 +324,15 @@ class ConversationEngine:
         # Understanding the question's language never establishes output support.
         # An explicit selection is data the caller sends, not an instruction appended to
         # the question for the planner to read back, so it cannot be lost to inference.
+        # Two products in one turn can be compared without being ranked. The comparison is
+        # built from evidence this turn already retrieved; it retrieves nothing new.
+        from .comparison import compare_products,summarise
+        comparison=compare_products(result)
+        if comparison:
+            result['product_comparison']=comparison
+            sentence=summarise(comparison)
+            if sentence and sentence not in (result.get('answer') or ''):
+                result['answer']=(result.get('answer') or '').rstrip()+chr(10)+chr(10)+sentence
         self._checkpoint(request_id,'assembling')
         from .answer_language import deliver,target_language
         target,why=target_language(body,state,plan)

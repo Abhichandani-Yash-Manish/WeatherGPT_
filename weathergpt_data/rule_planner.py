@@ -12,6 +12,8 @@ import re
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
+from .gazetteer import norm
+
 IST = ZoneInfo('Asia/Kolkata')
 INDIC = re.compile(r'[\u0900-\u0d7f]')
 HINGLISH = re.compile(r'\b(barish|baarish|paani|kya|kitni|kitna|kal|aaj|shaam|subah|dopahar|raat|'
@@ -182,15 +184,100 @@ def history_years(question):
     return sorted({int(value) for value in HISTORY.findall(question) if 1800 <= int(value) <= 2200})
 
 
+CLAUSE_BREAK = re.compile(r'\s*;\s*|\?\s+|\s*,\s*and\s+|\s*,\s*also\s+|\s+and also\s+|\s*,\s*as well as\s+', re.I)
+
+
+def clauses_of(question):
+    """Split a compound question on safe boundaries, keeping every clause a substring.
+
+    A comma alone is not a boundary: "Patna, Bihar" is one place. The boundaries here are
+    punctuation and conjunctions that join requests, and each resulting clause is checked to
+    be a substring of the question so the task quotes stay verifiable.
+    """
+    if not isinstance(question, str):
+        return []
+    parts = [part.strip() for part in CLAUSE_BREAK.split(question) if part and part.strip()]
+    return [part for part in parts if part in question]
+
+
 def rule_request(question, now, history=None):
-    """A planner request for a recognised shape, or None to fall through to a model."""
+    """A planner request for a recognised shape, or None to fall through to a model.
+
+    A compound question is planned clause by clause, so "will it rain tomorrow, and is there a
+    warning?" becomes two tasks and the answer can compare the two products. When fewer than
+    two clauses plan, the single-shape path below decides.
+    """
     if not isinstance(question, str) or not question.strip():
         return None
+    pieces = clauses_of(question)
+    if len(pieces) > 1:
+        requests = [single_request(piece, now, history) for piece in pieces]
+        requests = [request for request in requests if request]
+        if len(requests) >= 2:
+            return merge_requests(requests)
+    request = single_request(question, now, history)
+    if request and 'and' in question.lower() and dropped_conjunction_place(question, request['places']):
+        # "Will it rain in Surat and Vadodara?" names two places; the rules planned one. A
+        # silent omission is worse than a model call, so the turn falls through instead.
+        return None
+    return request
+
+
+def dropped_conjunction_place(question, places):
+    """True when a place after a conjunction was named but not planned."""
+    planned = {norm(place['name']) for place in (places or [])}
+    for match in re.finditer(r'\band\s+((?:[A-Z][\w\u2019.\-]+)(?:\s+[A-Z][\w\u2019.\-]+){0,2})', question):
+        candidate = match.group(1).split(',')[0].strip()
+        if len(candidate) < 3 or candidate.lower() in PLACE_NOISE:
+            continue
+        if norm(candidate) not in planned:
+            return True
+    return False
+
+
+def merge_requests(requests):
+    """One request from several: tasks in order, places deduplicated, windows kept per task."""
+    merged = {'language': requests[0]['language'], 'places': [], 'assumptions': [],
+              'clarification': '', 'explicit_times': any(r['explicit_times'] for r in requests),
+              'tasks': [], 'context_action': 'new', 'changed_fields': ['places', 'time', 'parameters']}
+    seen_places, seen_tasks = {}, []
+    for request in requests:
+        for place in request['places']:
+            if place['name'] not in seen_places:
+                seen_places[place['name']] = len(merged['places'])
+                merged['places'].append(place)
+    for request in requests:
+        index = {place['name']: position for position, place in enumerate(request['places'])}
+        for task in request['tasks']:
+            task = dict(task)
+            task['place_indices'] = [seen_places[request['places'][position]['name']]
+                                     for position in task.get('place_indices', []) if position in index]
+            key = (task['kind'], task['operation'], tuple(task['parameters']), tuple(task['place_indices']),
+                   task.get('start_local'), task.get('end_local'))
+            if key in seen_tasks:
+                continue
+            seen_tasks.append(key)
+            merged['tasks'].append(task)
+        for note in request.get('assumptions') or []:
+            if note not in merged['assumptions']:
+                merged['assumptions'].append(note)
+    # A clause that names no place of its own is about the place the question named:
+    # "will it rain in Patna tomorrow, and is there any warning?" is one place and two
+    # questions, not an unplaced warning request.
+    if merged['places']:
+        for task in merged['tasks']:
+            if not task['place_indices']:
+                task['place_indices'] = list(range(len(merged['places'])))
+    return merged
+
+
+def single_request(question, now, history=None):
     language = language_of(question)
     if language is None:
         return None
     if FOLLOW_UP.search(question):
         return None
+    question = question.strip().rstrip('?').strip() or question
     mid_conversation = any(isinstance(message, dict) and message.get('context_state') is not None
                            for message in (history or []))
     if mid_conversation and CONTEXT_REFERENCE.search(question):

@@ -494,6 +494,29 @@ function renderAirportReports(packet) {
   });
   return wrap;
 }
+function renderProductComparison(packet) {
+  const items = packet.product_comparison || [];
+  if (!items.length) return null;
+  // The comparison is part of the answer, not an appendix: it is rendered in the open, with
+  // the products, the reading and the refusal to rank them all visible without a click.
+  const wrap = el('section', undefined, 'block');
+  wrap.append(el('h2', 'Products compared (' + items.length + ')', 'block-title'));
+  items.forEach(item => {
+    const row = el('div', undefined, 'product-comparison');
+    row.append(el('p', (item.place || 'this turn') + ' \u00b7 ' + ((item.window || {}).label || 'window not stated') +
+      ' \u00b7 ' + item.reading.replace(/_/g, ' '), 'field-label'));
+    (item.products || []).forEach(product => {
+      const line = el('p', undefined, 'passage-text');
+      line.append(el('span', (product.source_id || 'source not stated') + ' \u00b7 ' + product.product + ' \u00b7 ', 'data'));
+      line.append(el('span', product.statement || ''));
+      row.append(line);
+    });
+    if (item.why) row.append(el('p', 'Reading: ' + item.why, 'field-note'));
+    if (item.note) row.append(el('p', item.note, 'field-note'));
+    wrap.append(row);
+  });
+  return wrap;
+}
 function renderEditionDifferences(packet) {
   const items = packet.edition_differences || [];
   if (!items.length) return null;
@@ -820,6 +843,8 @@ function renderTurn(packet, handlers) {
   if (airport) body.append(airport);
   const passages = renderPassages(packet);
   if (passages) body.append(passages);
+  const comparison = renderProductComparison(packet);
+  if (comparison) body.append(comparison);
   const rest = facts.filter(fact => fact !== primary);
   if (rest.length) body.append(renderFacts(packet, rest));
   if (packet.follow_up) body.append(el('p', packet.follow_up, 'notice is-calm'));

@@ -289,3 +289,29 @@ assert(/not in the newer one|not print that section/.test(corpusText), 'A droppe
 assert(/does not decide which edition is current/.test(corpusText), 'The workspace refuses to rank the editions');
 assert(!/corrected|superseded by|withdrawn/i.test(corpusText), 'No edition is called wrong, superseding or withdrawn');
 console.log('PASS: a whole-edition reading and a cross-edition difference are labelled, counted and never ranked');
+
+
+// 19. two products in one turn are compared in plain terms and never ranked
+const comparedPacket = {
+  schema_version:'weather-conversation-v1', conversation_id:'c', question:'Will it rain in Patna, and is there a warning?',
+  status:'answered', answer:'Both products are shown.', citations:[], notes:[], choices:[], charts:[], calculations:[],
+  task_results:[], facts:[], passages:[],
+  product_comparison:[{
+    kind:'official_warning_and_forecast', place:'Patna, Patna, State of Bihar', window:{ label:'16 Sep 2026' },
+    reading:'differ',
+    products:[
+      { source_id:'S15', product:'IMD district warning product', statement:'yellow · Thunderstorm/lightning/squall' },
+      { source_id:'S21', product:'Model forecast', statement:'rainfall 0.0 mm across 1 forecast value(s)' }
+    ],
+    why:'the official product carries a rain or storm hazard for this window while the model forecast shows no rain in it; neither product is a measurement of the other',
+    note:'Both products are named here and neither is ranked; a comparison is not a score, a skill measurement or a warning. Only the official product speaks about warnings, and a quiet day in it is not a forecast of no rain.'
+  }]
+};
+const comparedCard = context.renderTurn(comparedPacket, {});
+const comparedText = String(comparedCard.textContent);
+assert(/Products compared \(1\)/.test(comparedText), 'The comparison block is titled and counted');
+assert(/S15/.test(comparedText) && /S21/.test(comparedText), 'Both products keep their source ids');
+assert(/differ/.test(comparedText), 'The reading is named in words');
+assert(/neither is ranked/.test(comparedText) && /not a score/.test(comparedText), 'The block repeats that nothing is ranked');
+assert(!/confidence|skill score/i.test(comparedText), 'No confidence or score language leaks into the comparison');
+console.log('PASS: two products in one turn are compared in plain terms and never ranked');

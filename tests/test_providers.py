@@ -345,6 +345,19 @@ class RulePlannerTests(unittest.TestCase):
         second = self.request_for('Aaj Delhi me garmi kitni hogi?')
         self.assertEqual([place['name'] for place in second['places']], ['Delhi'])
 
+    def test_a_compound_question_is_planned_clause_by_clause(self):
+        request = self.request_for('Will it rain in Patna, Bihar tomorrow, and is there any warning?')
+        self.assertIsNotNone(request)
+        self.assertEqual([task['kind'] for task in request['tasks']], ['forecast', 'warning'])
+        self.assertEqual([place['name'] for place in request['places']], ['Patna'])
+        for task in request['tasks']:
+            self.assertEqual(task['place_indices'], [0],
+                             'a clause that names no place is about the place the question named')
+            self.assertTrue(task['request_quote'] in 'Will it rain in Patna, Bihar tomorrow, and is there any warning?')
+
+    def test_a_two_place_question_is_left_to_a_model_rather_than_silently_shortened(self):
+        self.assertIsNone(rule_request('Will it rain in Surat and Vadodara tomorrow?', NOW))
+
     def test_a_relative_span_becomes_a_bounded_upcoming_window(self):
         request = self.request_for('What is the river discharge near Patna, Bihar in the next three days?')
         task = request['tasks'][0]
