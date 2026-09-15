@@ -288,6 +288,17 @@ class BulletinIndex:
             if not vector or any(not isinstance(v,(int,float)) or not math.isfinite(v) for v in vector):raise SourceError('Invalid stored passage embedding')
             out.append((json.loads(payload),vector,sha))
         return out
+    def document_passages(self,sha):
+        """Every indexed passage of one stored document, with its integrity verified."""
+        with self.connection() as db:
+            rows=db.execute('SELECT payload,payload_hash,embedding,embedding_hash,model_revision FROM passages '
+                            'WHERE document_sha=?',(sha,)).fetchall()
+        out=[]
+        for payload,phash,encoded,ehash,revision in rows:
+            if digest(payload.encode())!=phash or digest(encoded.encode())!=ehash or revision!=REVISION:raise SourceError('Stored passage integrity failed')
+            out.append(json.loads(payload))
+        return out
+
     def document_families(self):
         with self.connection() as db:rows=db.execute('SELECT family,scope,region,count(*) FROM passages GROUP BY family,scope,region ORDER BY family').fetchall()
         families={}
