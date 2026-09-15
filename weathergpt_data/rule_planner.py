@@ -107,6 +107,18 @@ WHOLE_DOC = re.compile(r'\b(main points?|overall|summar|synoptic|whole (?:docume
                        r"what does .{0,60}(?:bulletin|advisory|release) say)\b", re.I)
 MONTHS = ('jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec')
 SEASONS = {'winter': 'jf', 'pre-monsoon': 'mam', 'monsoon': 'jjas', 'post-monsoon': 'ond'}
+MONTH_NAMES = ('january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september',
+               'october', 'november', 'december', 'jan', 'feb', 'mar', 'apr', 'jun', 'jul', 'aug',
+               'sep', 'sept', 'oct', 'nov', 'dec')
+# A day-level date: an ISO date, a day-of-month with a month name, or a day range inside one
+# month. A month with only a year ("July 2024") stays an annual/monthly table lookup; the named
+# day makes it a daily request that the annual table and the hourly forecast cannot answer, so
+# the rules must leave it to the daily path rather than misread it as an annual value.
+DAY_LEVEL_DATE = re.compile(
+    r'\b\d{4}-\d{2}-\d{2}\b'
+    r'|\b\d{1,2}(?:st|nd|rd|th)?\s*(?:to|through|thru|[-\u2013])\s*\d{1,2}(?:st|nd|rd|th)?\s+(?:' + '|'.join(MONTH_NAMES) + r')\b'
+    r'|\b\d{1,2}(?:st|nd|rd|th)?\s+(?:' + '|'.join(MONTH_NAMES) + r')\b'
+    r'|\b(?:' + '|'.join(MONTH_NAMES) + r')\s+\d{1,2}(?:st|nd|rd|th)?\b', re.I)
 
 
 def language_of(question):
@@ -355,6 +367,11 @@ def single_request(question, now, history=None):
         own_time = bool(window_for(question, now)[0]) or bool(history_years(question))
         if not (own_place and own_time):
             return None
+    if DAY_LEVEL_DATE.search(question) and not DOCUMENT.search(question):
+        # A day-level date is a daily request the annual table cannot answer, so the rules must
+        # not claim it as a historical lookup or a forecast. The model reads the date and the
+        # daily prompt routes it; a month with only a year is left annual and is unaffected.
+        return None
     places = places_of(question)
     start, end, explicit, basis = window_for(question, now)
     quote = question.strip()
