@@ -1,0 +1,32 @@
+{
+  "id": "H01",
+  "domain": "document",
+  "turns": [
+    {
+      "question": "What does the Gujarat state agromet advisory bulletin say about irrigation?",
+      "status": "answered",
+      "status_allowed": true,
+      "task_shape_matches": true,
+      "tasks": [
+        {
+          "declared": {
+            "kind": "document",
+            "operation": "lookup",
+            "parameters": [
+              "published_document"
+            ]
+          },
+          "outcome": "completed",
+          "executed_status": "answered"
+        }
+      ],
+      "answered_language": null,
+      "language_trace": null,
+      "prohibited_hits": [],
+      "abstained": false,
+      "duration_s": 0.688,
+      "turn": 1,
+      "wall_s": 0.69
+    }
+  ]
+}

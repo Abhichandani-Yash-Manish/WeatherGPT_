@@ -1,0 +1,32 @@
+{
+  "id": "H03",
+  "domain": "history",
+  "turns": [
+    {
+      "question": "Show the rainfall trend for Ahmedabad district, Gujarat from 1981 to 2010.",
+      "status": "answered",
+      "status_allowed": true,
+      "task_shape_matches": true,
+      "tasks": [
+        {
+          "declared": {
+            "kind": "history",
+            "operation": "trend",
+            "parameters": [
+              "rainfall"
+            ]
+          },
+          "outcome": "completed",
+          "executed_status": "answered"
+        }
+      ],
+      "answered_language": null,
+      "language_trace": null,
+      "prohibited_hits": [],
+      "abstained": false,
+      "duration_s": 0.533,
+      "turn": 1,
+      "wall_s": 0.54
+    }
+  ]
+}
