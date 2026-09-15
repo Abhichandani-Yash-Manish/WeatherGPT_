@@ -313,14 +313,31 @@ class RulePlannerTests(unittest.TestCase):
             with self.subTest(question=question):
                 self.assertIsNone(rule_request(question, NOW), 'rules must not guess: ' + question)
 
-    def test_a_day_level_date_is_left_to_the_daily_history_path(self):
-        for question in ('Daily mean temperature in Ahmedabad from 1 through 3 July 2025.',
-                         'Relative humidity in Ahmedabad on 2024-07-01.',
-                         'Soil moisture in Ahmedabad from 1 to 3 July 2025.',
-                         'Rainfall in Ahmedabad on 1 July 2024.'):
+    def test_a_past_day_level_date_becomes_a_daily_history_task(self):
+        expected = {
+            'Daily mean temperature in Ahmedabad from 1 through 3 July 2025.': 'temperature_2m_mean',
+            'Relative humidity in Ahmedabad on 2024-07-01.': 'relative_humidity_2m_mean',
+            'Soil moisture in Ahmedabad from 1 to 3 July 2025.': 'soil_moisture_0_to_7cm_mean',
+            'Rainfall in Ahmedabad on 1 July 2024.': 'precipitation_sum',
+        }
+        for question, parameter in expected.items():
+            with self.subTest(question=question):
+                request = self.request_for(question)
+                self.assertIsNotNone(request, 'a past day-level date must plan without a model')
+                task = request['tasks'][0]
+                self.assertEqual(task['kind'], 'history')
+                self.assertEqual(task['operation'], 'daily')
+                self.assertIn(parameter, task['parameters'])
+        request = self.request_for('Rainfall in Ahmedabad from 1 through 3 July 2024.')
+        self.assertEqual(request['tasks'][0]['start_local'], '2024-07-01T00:00:00+05:30')
+        self.assertEqual(request['tasks'][0]['end_local'], '2024-07-04T00:00:00+05:30')
+
+    def test_a_future_or_unresolvable_day_level_date_is_left_to_a_model(self):
+        for question in ('Rainfall in Ahmedabad on 1 December 2026.',
+                         'Rainfall in Ahmedabad July 1 to 3, 2024.'):
             with self.subTest(question=question):
                 self.assertIsNone(rule_request(question, NOW),
-                                  'a day-level date must not be read as an annual table')
+                                  'a future or unshortened range is not a daily history task')
 
     def test_a_month_with_only_a_year_stays_a_table_lookup(self):
         request = self.request_for('What was the rainfall in Ahmedabad in July 1990?')

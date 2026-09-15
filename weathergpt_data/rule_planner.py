@@ -9,7 +9,7 @@ question is outside the recognised shapes - a follow-up, an Indic script, a rari
 case the caller must use a model rather than guess.
 """
 import re
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
 
 from .gazetteer import norm
@@ -119,6 +119,76 @@ DAY_LEVEL_DATE = re.compile(
     r'|\b\d{1,2}(?:st|nd|rd|th)?\s*(?:to|through|thru|[-\u2013])\s*\d{1,2}(?:st|nd|rd|th)?\s+(?:' + '|'.join(MONTH_NAMES) + r')\b'
     r'|\b\d{1,2}(?:st|nd|rd|th)?\s+(?:' + '|'.join(MONTH_NAMES) + r')\b'
     r'|\b(?:' + '|'.join(MONTH_NAMES) + r')\s+\d{1,2}(?:st|nd|rd|th)?\b', re.I)
+RANGE_MARKER = re.compile(r'\b(?:to|through|thru)\b|(?<=\d)\s*[-\u2013]\s*(?=\d)')
+MONTH_NUMBER = {'january': 1, 'jan': 1, 'february': 2, 'feb': 2, 'march': 3, 'mar': 3, 'april': 4, 'apr': 4,
+                'may': 5, 'june': 6, 'jun': 6, 'july': 7, 'jul': 7, 'august': 8, 'aug': 8, 'september': 9,
+                'sep': 9, 'sept': 9, 'october': 10, 'oct': 10, 'november': 11, 'nov': 11, 'december': 12, 'dec': 12}
+# The measure a daily-history question names, most specific first: "soil moisture" must not
+# also read as "moisture", and "maximum temperature" must not also read as "temperature".
+DAILY_MEASURES = (
+    (re.compile(r'\b(soil moisture|soil water)\b', re.I), 'soil_moisture_0_to_7cm_mean'),
+    (re.compile(r'\b(soil temperature)\b', re.I), 'soil_temperature_0_to_7cm_mean'),
+    (re.compile(r'\b(evapotranspiration|et0)\b', re.I), 'et0_fao_evapotranspiration'),
+    (re.compile(r'\b(radiation|solar)\b', re.I), 'shortwave_radiation_sum'),
+    (re.compile(r'\b(dew ?point)\b', re.I), 'dewpoint_2m_mean'),
+    (re.compile(r'\b(humidity|humid)\b', re.I), 'relative_humidity_2m_mean'),
+    (re.compile(r'\b(gust|gusts|gusty)\b', re.I), 'wind_gusts_10m_max'),
+    (re.compile(r'\b(wind|windy|breeze)\b', re.I), 'wind_speed_10m_max'),
+    (re.compile(r'\b(pressure)\b', re.I), 'surface_pressure_mean'),
+    (re.compile(r'\b(cloud|cloudy)\b', re.I), 'cloud_cover_mean'),
+    (re.compile(r'\b(feels?[ -]?like|apparent temperature)\b', re.I), 'apparent_temperature_mean'),
+    (re.compile(r'\b(max(?:imum)? (?:temperature|temp)|temperature maximum)\b', re.I), 'temperature_2m_max'),
+    (re.compile(r'\b(min(?:imum)? (?:temperature|temp)|temperature minimum)\b', re.I), 'temperature_2m_min'),
+    (re.compile(r'\b(temperature|temp)\b', re.I), 'temperature_2m_mean'),
+    (re.compile(r'\b(rainfall|rain|precipitation|shower|barish|baarish|varsha)\b', re.I), 'precipitation_sum'),
+)
+
+
+def daily_measures(question):
+    """The daily reanalysis measures a question names, from the same wording the forecast uses."""
+    found = []
+    for pattern, name in DAILY_MEASURES:
+        if pattern.search(question) and name not in found:
+            found.append(name)
+    return found
+
+
+def daily_span(question):
+    """The whole-day IST span a day-level date names, or None when the date is not day-level.
+
+    Only an explicit day is read. A month with only a year is not a daily span and stays the
+    annual/monthly table lookup it already was. A range that cannot be resolved to two days is
+    left to a model rather than shortened to its first day.
+    """
+    iso = re.findall(r'\b(\d{4})-(\d{1,2})-(\d{1,2})\b', question)
+    if iso:
+        dates = sorted(date(int(year), int(month), int(day)) for year, month, day in iso)
+        return dates[0], dates[-1]
+    years = HISTORY.findall(question)
+    year = int(years[0]) if years else None
+    match = re.search(r'\b(\d{1,2})(?:st|nd|rd|th)?\s*(?:to|through|thru|[-\u2013])\s*(\d{1,2})(?:st|nd|rd|th)?\s+([A-Za-z]+)(?:\s+(\d{4}))?', question)
+    if match and _month(match.group(3)):
+        chosen = int(match.group(4)) if match.group(4) else year
+        if chosen:
+            month = _month(match.group(3))
+            return date(chosen, month, int(match.group(1))), date(chosen, month, int(match.group(2)))
+    match = re.search(r'\b(\d{1,2})(?:st|nd|rd|th)?\s+([A-Za-z]+)(?:\s+(\d{4}))?', question)
+    if match and _month(match.group(2)):
+        chosen = int(match.group(3)) if match.group(3) else year
+        if chosen:
+            day = date(chosen, _month(match.group(2)), int(match.group(1)))
+            return (None if RANGE_MARKER.search(question) else (day, day))
+    match = re.search(r'\b([A-Za-z]+)\s+(\d{1,2})(?:st|nd|rd|th)?\b(?:\s*,?\s*(\d{4}))?', question)
+    if match and _month(match.group(1)):
+        chosen = int(match.group(3)) if match.group(3) else year
+        if chosen:
+            day = date(chosen, _month(match.group(1)), int(match.group(2)))
+            return (None if RANGE_MARKER.search(question) else (day, day))
+    return None
+
+
+def _month(name):
+    return MONTH_NUMBER.get((name or '').lower())
 
 
 def language_of(question):
@@ -367,11 +437,6 @@ def single_request(question, now, history=None):
         own_time = bool(window_for(question, now)[0]) or bool(history_years(question))
         if not (own_place and own_time):
             return None
-    if DAY_LEVEL_DATE.search(question) and not DOCUMENT.search(question):
-        # A day-level date is a daily request the annual table cannot answer, so the rules must
-        # not claim it as a historical lookup or a forecast. The model reads the date and the
-        # daily prompt routes it; a month with only a year is left annual and is unaffected.
-        return None
     places = places_of(question)
     start, end, explicit, basis = window_for(question, now)
     quote = question.strip()
@@ -383,6 +448,25 @@ def single_request(question, now, history=None):
                  'start_local': start, 'end_local': end, 'place_indices': list(range(len(places)))}
         entry.update(extra)
         return entry
+
+    if DAY_LEVEL_DATE.search(question) and not DOCUMENT.search(question):
+        # A past day-level date is a daily reanalysis request the annual table cannot answer.
+        # It is planned here so the deterministic path answers it with no model. A future or
+        # window longer than a week is left to the model rather than shortened or misread.
+        span = daily_span(question)
+        measures = daily_measures(question)
+        today = now.astimezone(IST).date()
+        if span and measures and span[1] < today and 1 <= (span[1] - span[0]).days + 1 <= 7:
+            first, last = span
+            entry = task('history', 'daily', measures)
+            entry['years'] = []
+            entry['start_local'] = datetime(first.year, first.month, first.day, tzinfo=IST).isoformat()
+            closed = last + timedelta(days=1)
+            entry['end_local'] = datetime(closed.year, closed.month, closed.day, tzinfo=IST).isoformat()
+            return {'language': language, 'places': places, 'assumptions': [], 'clarification': '',
+                    'explicit_times': True, 'tasks': [entry], 'context_action': 'new',
+                    'changed_fields': ['places', 'time', 'parameters']}
+        return None
 
     years = history_years(question)
     if OUT_OF_SCOPE.search(question) and not (WARNING.search(question) or DOCUMENT.search(question)):
