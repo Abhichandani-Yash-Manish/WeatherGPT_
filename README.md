@@ -1,100 +1,139 @@
 # WeatherGPT — SIH26068
 
-A local conversational weather prototype for India. Ask about a place and a time in your own words and get an answer that keeps its **source, its window and its retrieval time attached to every value** — backed by governed numerical adapters, published records and a local model.
-
-Nationwide and specialist **operational acceptance is not achieved**. This is an evidence-conscious prototype whose limits are part of the interface, not a finished service.
+A local, evidence-first conversational weather workspace for India. Ask about a place and a time in
+your own words and the answer keeps its **entity, window, unit and source attached to every value**,
+backed by governed adapters, published records and — when you configure one — a model.
 
 ![The workspace answering a point forecast](research/reviews/frontend-v2-20260915/after/surface-assistant.png)
 
-## Current project status
+**Operational acceptance is not achieved.** This is a working prototype whose limits are part of the
+interface: it says what it did not read, which state is unknown, and when a value is model output,
+published wording, an observation or an official warning. The requirement-by-requirement verdict is
+[the integrated PS assessment](docs/72-integrated-status-and-ps-review.md); the newest batch is
+[OpenRouter routing and frontend delivery](docs/76-openrouter-routing-and-frontend-delivery.md).
 
-See [the integrated PS assessment](docs/72-integrated-status-and-ps-review.md) for the current requirement-by-requirement verdict, release checks and remaining acceptance gates. Earlier batch numbers below describe their own checkpoints.
+## Status at a glance
 
-## Unified workspace
-
-The app now opens on a place-centered workspace: separately dated warning, observation and forecast readings,
-fifteen searchable tools with guided question previews, and direct access to saved briefs and plans.
-Air quality now uses the same guided entry point and plots its hourly evidence. Model comparison, bulletin retrieval and a warning brief saved, reopened and exported were checked in the
-browser. Slow source reads remain a practical limit. See [the product audit and acceptance record](docs/71-unified-user-workspace.md).
-Restart an older serving process to load current backend routes; changing files alone does not update it.
+| | |
+|---|---|
+| **Delivered in scope** | Point forecasts and cross-source comparison, published historical and climate records, official district-warning applicability resolved against IMD's own geometry, plan monitoring with a local inbox, published-document retrieval with page/issue/currency attached, marine and river point products, airport reports, air quality, ensemble spread, farming advisories, a desktop workspace with fifteen guided tools, and a conversation that carries its artefacts. |
+| **Partial** | Warning delivery (outbox, consented Web Push and acknowledgements exist; no live device journey has been demonstrated), language output and voice (measured per direction, not accepted by native speakers), retrieval breadth (whole-document and contradiction handling remain open), operations (foreground watcher, no sustained service). |
+| **Not connected** | Radar/satellite **imagery**, official sea-area and coastal bulletins as live products, observed water level or gauge readings, danger levels, flood extent, tide, current, sea-surface temperature, ground air-quality monitors, SMS/IVR/WhatsApp delivery, road or route clearance, crop diagnosis or pesticide dosage, and any confidence, risk or skill score. |
+| **Not accepted** | Nationwide corpus acceptance, mobile and rural journeys, noisy-input and native-speaker review, live changed-edition to device notification, fresh-machine and cross-platform installation, sustained load. Hosting is on hold. |
 
 ## Run it
-
-Install the declared dependencies in a project environment before starting (the push package has a
-Python-version-specific pin):
 
 ```sh
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install -r requirements.txt
-python scripts/start_weather.py
+python -m pip install -r requirements.txt      # runtime, including the optional PDF stack
+python scripts/start_weather.py                # preflight first, then serve on 127.0.0.1:8765
 ```
 
-Open <http://127.0.0.1:8765>. The launcher starts installed Ollama if needed and uses `qwen3.6:latest`; set `WEATHERGPT_MODEL` to another installed model. The engine plans the core question shapes with rules and no model at all, and the rest through whatever providers exist. No paid gateway is required, and the server answers only on loopback with a per-process session token.
+Open <http://127.0.0.1:8765>. The server answers only on loopback, behind a per-process session
+token, and it refuses to start on a check it cannot pass (a registry that does not parse, an unusable
+store, a taken port) rather than serving a half-working workspace. **Restart a running server after
+pulling**: changing files does not update a process that is already serving.
 
-OpenRouter free models are optional and take two steps. The key is entered with echo off, so it never reaches shell history, a printed line or a log, and no paid model is ever routed:
+The push suites and the push panel need `pywebpush` and `cryptography` from the project
+environment; a bare system `python3` runs everything else but reports the push checks as missing
+dependencies, and the preflight names that state too.
+
+Try *“Will it rain in Ahmedabad, Gujarat tomorrow morning?”*, then *“And what about the evening?”*.
+Or *“Show the annual rainfall trend for Ahmedabad district, Gujarat from 1981 to 2010.”*, or
+*“कल अहमदाबाद में बारिश होगी क्या?”*.
+
+## Providers: rules first, then OpenRouter free, then the local model
+
+The core question shapes are planned by deterministic rules with **no model at all** — that floor
+never depends on a key, a network or a GPU. Above it:
+
+- **OpenRouter free models are used first when a key is configured.** The key is entered with echo off
+  and never reaches shell history, a printed line or a log; it is stored in the git-ignored
+  `data/runtime/model-config.json` at mode 0600. Only ids ending in `:free` can ever be routed: a
+  paid id is refused by name before a request is built, so configuration cannot bill an account.
+- **The ranking is measured, not assumed.** `python3 scripts/models.py --probe-free` intersects the
+  curated ranking with the live catalogue and records what it observed. Re-run it when a provider
+  retires models: a catalogue read on 15 September 2026 found that none of the previously ranked free
+  ids were still published.
+- **The local model is the fallback.** `python3 scripts/models.py` prints the order, what is
+  available and why anything is not. With no key, nothing changes except the order.
 
 ```sh
-python3 scripts/models.py --set-key     # hidden prompt; writes data/runtime/model-config.json at mode 0600
-python3 scripts/start_weather.py        # restart the server so the key is read
+python3 scripts/models.py              # routing order, availability, key source
+python3 scripts/models.py --set-key    # hidden prompt; writes the local config at mode 0600
+python3 scripts/models.py --probe-free # measure the ranking against the live catalogue
+python3 scripts/models.py --check      # plan two questions through the router and print the trace
 ```
 
-`python3 scripts/models.py --probe-free` then measures which ranked ids OpenRouter actually publishes and records that observation in `data/registry/openrouter-free-models.json`; with no key it reports **not configured** instead of guessing, and exits 0. The routing order is the curated free ranking, most capable first, followed by any `WEATHERGPT_MODELS` or `model-config.json` ids — an id that does not end in `:free` is skipped with a recorded reason rather than routed.
+Whichever provider plans a turn, it supplies **candidates only**: model output never executes code,
+never supplies a measurement, and never decides an entity, window, unit or source. Every answer's trace
+names the provider, the model and any failover. Routing a question to a hosted model is a stated trade
+— the question text leaves this machine; the rules floor and the local model stay local.
 
-Try “Will it rain in Ahmedabad, Gujarat tomorrow morning?”, then “And what about the afternoon?”. Or ask “Show the annual rainfall trend for Ahmedabad district, Gujarat from 1981 to 2010.”, or “कल अहमदाबाद में बारिश होगी क्या?” and choose the intended place.
+## What it answers today
 
-## What works today
+Each answer leads with the value, its unit and its window, then shows a **validity ruler** over the
+covered source hours, a structured **evidence receipt** (entity, window, method, source, retrieval
+time, page/row locator, evidence id) and disclosures for requested tasks, scope and provenance.
 
-Each answer is presented answer-first — an exact value with its unit and window — followed by a **validity ruler** of the covered source hours, a structured **evidence receipt** (entity, window, method, source, retrieval time, page/row locator, record paths, evidence id) and expandable disclosures for requested tasks, scope, sources and provenance.
+- **Right now, and what happens next.** The nearest station reports with distance and age, the
+  published district day, and the next model hours — kept apart, with one line naming what is not
+  connected. Point forecasts cover rainfall totals on whole source hours, rain probability,
+  temperature, feels-like temperature, wind and gusts, humidity and visibility, with a bounded refresh
+  when stored evidence is stale. Two sources can be compared with their difference and the
+  shared-lineage caveat, never a score; ensemble member statistics (mean, spread, range, nearest-rank
+  p10/p50/p90) are shown as a distribution and never as probability or skill.
+- **Published records.** District rainfall and national climate series with charts, exact-value
+  inspection and page/row locators; a bounded daily reanalysis window labelled as modelled; airport
+  METAR and TAF reports each with their own station and validity.
+- **Warnings and plans.** The official district warning day resolved to your place against IMD's own
+  geometry, with the CAP relay reported separately and never merged into one verdict; an alert brief
+  you can keep, a plan-monitoring inbox, and legacy watches that record a changed official state.
+  A no-match is never an all-clear and origin authentication remains unverified.
+- **The published corpus.** A named national, state, district or marine product answers from the
+  indexed documents with its family, region, physical page, printed issue date, measured currency and
+  retrieval instant attached; warning-classified text stays reference-only, earlier editions are
+  retired from current retrieval, and a saved PDF opens from this origin on request.
+- **Specialist products.** Modelled wave height, direction and period near a coastal place, and
+  modelled river discharge near a point — each naming the answering cell and its distance, never
+  standing in for an observed water level, gauge, danger level, flood extent, tide or current. The
+  national sub-basin list is shown with its day fields verbatim and no derived flood class.
+- **Station networks.** A search-radius reading of the METAR and AWS networks, a single-network
+  inventory, and the radar **status** layer reporting on itself with status codes and remarks shown as
+  published. Radar imagery is not retrieved.
+- **Farming advisories.** Published district agromet passages for a district, crop and stage, with page
+  locators and the source's own conditions quoted as conditions; no diagnosis, dosage or field
+  clearance.
+- **Conversation control and output.** Follow-ups and corrections in one thread, clarify-on-ambiguity
+  with every candidate offered, a stop control, elapsed time, and a conversation ledger with search,
+  restore and local delete. Any answer can be copied, printed, saved as Markdown, downloaded as a JSON
+  receipt, or kept in a briefcase; briefings can be written into a dated local series.
+- **Language and voice, measured.** A selector offers only languages that pass a measured write gate
+  (19 of 23 registered). Rendering keeps a deterministic gate between evidence and reader: values are
+  substituted, safety-critical clauses are held, and a rendering in the wrong script is refused in
+  favour of the source language. Press-to-talk shows a transcript for correction before it becomes a
+  question; Listen speaks answers already produced. No native speaker has reviewed any output.
+- **Reading positions.** Farmer, district officer and traveller change which surfaces and questions
+  open first; every answer names the position it was read under and states that it changes no value,
+  unit, window, warning level or source.
 
-- **Point forecasts** at a named place or pinned coordinate: rainfall totals on whole source hours, hourly rain probability, temperature, feels-like temperature, wind and gusts, humidity and visibility, with a bounded refresh when stored evidence is stale.
-- **Historical and climate records**: published district rainfall and national climate lookups, comparisons, period totals, charts with exact-value and evidence-id inspection, and a short daily reanalysis window labelled as modeled.
-- **Specialist tools**: airport reports for supported ICAO codes (METAR observations and TAF forecasts, each with its own station and validity), modeled wave height, direction and period near a coastal place, and modeled river discharge near a resolved place — each naming the answering model cell and its distance.
-- **Published bulletins**: crop/stage passages with page locators and saved source PDFs you can open and download, kept separate from general and warning context. The wider indexed corpus is also conversational: a named national, state or marine product answers with its family, region, physical page, printed issue date, measured currency and retrieval instant attached, warning-classified text kept reference-only, and earlier editions retired from current retrieval.
-- **Conversation control**: follow-ups and corrections in one thread, clarify-on-ambiguity with every candidate offered, a stop control, elapsed time, a conversation ledger with search, restore and local delete, and a read-only collection-health panel.
-- **Portable output and spoken access**: copy, print a stylesheet-stripped answer, save a turn as Markdown, download the JSON receipt, or save a whole stored conversation; press-to-talk with a transcript shown for correction before it becomes a question, Listen over answers already produced, and a language selector that offers only measured languages.
-- **The wider published corpus**: a named national, state or marine product answers from the indexed documents with its printed issue date, measured currency, retrieval instant, physical page and document identity attached; warning-classified text stays reference-only and earlier editions are retired from current retrieval.
+## What it deliberately does not do
 
-## What is not connected
+The interface states these limits instead of filling them:
 
-The interface states these limits rather than filling the gaps:
-
-- **Official warning delivery is absent.** District warning applicability *is* resolved to a place against IMD's own geometry, but origin authentication is unverified and CAP lifecycle diagnostics never authorise dissemination. There is no subscription, outbox, delivery or update/cancel service, and no all-clear. Rain, model output, published bulletin wording and a resolved document hash are never presented as an alert.
-- **No live station observation for an arbitrary place**, no observed water level, gauge reading, danger level, flood extent, tide or current, and no road, route or travel clearance.
-- **No field or marine clearance**, no crop diagnosis, no pesticide dosage, and no flood-impact prediction.
-- **No invented scores.** No confidence, risk, suitability or probability value is computed for display.
-- **Language output is measured per direction, not fluent.** Nineteen of twenty-three registered languages pass a measured `write` gate (including Hindi and Gujarati); ten of those also pass measured speech and hearing, the rest are readable but speech for them is beta-gated by the provider. Four fail the write gate and are refused rather than offered with a warning, each with its recorded reason. Rendering puts a deterministic gate between the evidence and the reader: values are withheld and substituted, safety-critical clauses are held, and the gate now also refuses a rendering that mixes Indian scripts or that is not written in the requested script at all - a Tamil rendering carrying Telugu characters was shipped before that check existed. A failed gate keeps the source-language answer and says which failure it was. Quoted published passages are evidence and are never rewritten: of 6,739 indexed passages only 107 contain Devanagari, all of them bilingual letterheads, so document coverage in the language sense is not established. No native speaker has reviewed any output.
-- **Voice exists but is not accepted.** Speech input with a confirmable transcript, spoken answers over gated text, and spoken/recognition states are implemented. A presence-only round-trip measurement now records place, unit and negation presence for Hindi and Gujarati, with numerals again observed as word forms; speech accuracy, noisy input and browser/audio acceptance remain unmeasured, and no native speaker has reviewed any output.
-- **An advisory brief for a crop.** One district, one crop and one stage become an artefact: published advice quoted with its page and printed issue date, the source conditions quoted as conditions, the forecast kept apart as context, what a decision still needs when asked, and no prescription, diagnosis or dose decision. Another crop is never served for the one asked about. Written with scripts/advisory_brief.py.
-- **An alert brief you can keep.** One place and one published warning day become an artefact: the day status in the product own terms, the bulletin identity and retrieval instant, the CAP relay reported separately, what would change it, what is not established, and a content hash. Written with scripts/alert_brief.py. Nothing is delivered anywhere.
-- **Two products, one answer.** When a turn retrieves an official district warning and a model forecast for the same window, the answer compares them in words - consistent, differing or not comparable - names both, and never ranks them.
-- **A reading position, and a briefcase for what you keep.** Farmer, district officer and traveller each open the page on their own surfaces and questions, and every answer names the position it was read under and states that it changes no value, unit, window, warning level or source. Briefs the workspace composed can be kept, reopened, exported as Markdown and deleted on this machine; nothing is delivered, pushed or scheduled. See [docs/50](docs/50-personas-and-the-briefcase.md).
-- **A briefing you can have waiting.** A runner reads the connected products for named places and writes a dated briefing: the official district warning day per place, the CAP relay reported separately, the forecast window as retrieved, what could not be read, and what changed since the previous run — measured against that run record. The interval is a foreground loop inside the command, not a service: nothing is delivered or pushed. See [docs/51](docs/51-scheduled-briefing.md).
-- **One command, and a preflight that tells the truth.** `python3 scripts/start_weather.py` reports the Python version, the registries, the indexed corpus, the gazetteer, the port, the runtime store and the model providers before it serves - and it starts without a model at all, because the rules floor answers. A blocked check (a registry that does not parse, an unusable store, a taken port) refuses to start and names what to fix. No key material is printed. Measured latency over eight representative turns: p50 4.844 s, p90 6.327 s, with the rules floor planning seven of eight. See [docs/53](docs/53-operations.md).
-- **A sealed holdout, run once.** The declared benchmark's numbers describe the cases they were tuned on: its earlier holdout had been read during development. A fresh set of ten unseen cases was authored, sealed in the registry with a rule against tuning on it, and run once — 8 of 13 declared tasks, 0 prohibited claims, 0 crashes. The difference between that and 17/17 is the honest estimate of shape coverage. See [docs/54](docs/54-holdout-generalisation.md).
-- **The conversation carries the artefacts.** Every answer offers what its own evidence supports: the right-now reading (stations with distance and age, the published day, the next model hours, and what is not connected), an alert brief or an advisory brief composed in place with save-to-briefcase, and a briefing written into the local series. Pending slots, retrieval coverage, the edition comparison and each edition printed issue date and currency render from the tools own records, and the trace names the provider, the model and any failover. The OpenRouter key goes in with one command: python3 scripts/models.py --set-key (hidden prompt, owner-only file, never printed), and only free model ids are ever routed, ranked most capable first, with the local model as the fallback. See [docs/61](docs/62-chat-surface-and-provider-ux.md).
-- **Desktop web only.** The desktop surface carries a day/night/system appearance, a command palette (⌘K) over surfaces, actions, places and stored conversations, a twelfth surface comparing stored forecast retrievals, and a raw-packet inspector on every answer. Small screens are usable, but this is not mobile platform compliance or mobile acceptance.
-- **Hosting remains on hold.** GitHub source publication for this integrated batch is authorized.
-
-## Reproducible setup
-
-The runtime libraries are pinned in `requirements.txt` (which includes the optional PDF
-stack). The test runner and the remaining development dependencies are declared separately
-so a fresh checkout can run the suite:
-
-```sh
-python3 -m pip install -r requirements-dev.txt        # pytest + runtime requirements
-python3 -m pytest tests/ -q
-```
-
-The saved bulletin layout fixtures are resolved from the tracked curated evidence under
-`research/implementation/*` (see `tests/source_fixtures.py`), not from the Git-ignored
-`data/runtime` cache, so the layout tests run on a clean checkout. A changed current
-bulletin is never substituted for a missing historical fixture. The optional multilingual
-embedding stack (`requirements-bulletins.txt`) is only needed to build the real indexed
-corpus; the intake tests inject a deterministic encoder, so they do not require the model.
-The live document corpus under `data/runtime` is a runtime store: `scripts/doctor.py`
-reports whether it is present, and `scripts/ingest_documents.py` rebuilds it.
+- **No invented warnings or all-clears.** CAP lifecycle diagnostics never authorise dissemination, and
+  a resolved document hash or a quiet day is never an alert.
+- **No invented numbers.** No confidence, risk, suitability or probability value is computed for
+  display; no arithmetic is applied to source values; no skill claim is made from prototype checks.
+- **No observation where none exists.** No observed water level, gauge reading, danger level, flood
+  extent, tide, current or sea-surface temperature, and no station observation for an arbitrary place.
+- **No field, marine, medical or travel clearance.** No crop diagnosis, no pesticide dosage, no
+  flood-impact prediction, no road or route advice.
+- **No delivery service.** Plans and watches are evaluated while the workspace runs; notifications are
+  local or consented browser push. SMS, IVR and WhatsApp are not connected channels.
+- **No universal language claim.** Coverage is per direction and measured; the four refused languages
+  are named with their reasons.
 
 ## How it is checked
 
@@ -106,111 +145,99 @@ node tests/test_bulletin_ui.js                       #  6
 node tests/test_conversation_ui.js                   # 13
 node tests/test_suite_ui.js                          # 18
 node tests/test_voice_ui.js                          #  3
-node tests/test_briefcase_ui.js                     # 10
-node tests/test_workspace_ui.js                     # workspace behaviour and recovery
-node tests/test_notify_ui.js                        # watch delivery controls
+node tests/test_briefcase_ui.js                      # 10
+node tests/test_workspace_ui.js                      # workspace behaviour and recovery
+node tests/test_notify_ui.js                         # watch delivery controls
 python3 scripts/doctor.py                            # environment, providers and corpus presence
 python3 scripts/models.py --check                    # the rules-first floor and the configured providers
 python3 scripts/models.py --probe-free               # the curated free ranking measured against the live catalogue
-python3 scripts/verify_all.py                       # environment, registries, drift guard, tests
-python3 scripts/run_daily_cycle.py --families national_bulletin  # one bounded foreground cycle
+python3 scripts/verify_all.py                        # environment, registries, drift guard, tests, component suites
 python3 scripts/audit_workspace_frontend.py --baseline
 ```
 
-The component checks run against a small DOM shim, so they are **not** browser, visual, load or fluent-language acceptance. What they do hold is specific: every displayed number must come from the returned packet with no arithmetic applied, no renderer may leak a stylesheet class name into visible text, a clarification must offer every candidate, an unverified warning must stay held, and stopping a turn must not claim the server stopped working.
+The component checks run against a small DOM shim, so they are **not** browser, visual, load or
+fluent-language acceptance. What they do hold is specific: every displayed number must come from the
+returned packet with no arithmetic applied, no renderer may leak a stylesheet class name into visible
+text, a clarification must offer every candidate, an unverified warning must stay held, and every
+request must carry the workspace token. The suite counts measure regression coverage, not completion.
 
-Real journeys are recorded with screenshots in [the frontend batch evidence](research/reviews/frontend-v2-20260915/after/live-checks.json), which also carries ten automated accessibility scans and the viewport measurements quoted in [docs/46](docs/46-frontend-instrument-desk.md). The suite counts are not a completion measure.
+The saved bulletin layout fixtures resolve from tracked curated evidence under
+`research/implementation/*` (see `tests/source_fixtures.py`), not from the git-ignored
+`data/runtime` cache, so the layout tests run on a clean checkout. The test runner and the remaining
+development dependencies are declared in `requirements-dev.txt`; the optional multilingual embedding
+stack (`requirements-bulletins.txt`) is only needed to build the real indexed corpus. Recorded real
+journeys, accessibility scans and viewport measurements live in
+[the frontend batch evidence](research/reviews/frontend-v2-20260915/after/live-checks.json), and the
+most recent live loopback and chat records in `research/reviews/frontend-delivery-20260915/`.
 
 ## What it feels like to use
 
-Open the workspace, and it shows the working place, the published district warning days, and a composer asking
-*What is it like right now in Ahmedabad?*. Answering that leads with the freshest station report (name,
-distance, age), then the published district day with its issue instant and source, then the next six model
-hours, then one line naming what is not connected. Follow up in the same conversation with *and what about the
-afternoon?* and only the window changes. Ask *Is any warning in force for Patna, Bihar today?* and the answer's
-actions offer **Write the alert brief** and **Save to briefcase**; ask about a district agromet advisory and
-they offer **Write the advisory brief**; any answer with a point offers **Right now here** and **Write a
-briefing**, which writes a dated briefing into the local series. Every answer also shows *What was retrieved,
-and what is missing*: the pending questions, the search counts, the editions read with their printed issue dates
-and currency, and the source of every value. [docs/63](docs/63-product-walkthrough.md) walks the thirteen
-recorded journeys, with what is fast and what is still slow.
+Open the workspace and it shows the working place, the published district warning days, and a composer
+asking *What is it like right now in Ahmedabad?*. That answer leads with the freshest station report
+(name, distance, age), then the published district day with its issue instant, then the next six model
+hours, then one line naming what is not connected. Ask *Is any warning in force for Patna, Bihar
+today?* and the answer offers **Write the alert brief** and **Save to briefcase**; ask about a district
+agromet advisory and it offers **Write the advisory brief**. Every answer can show *What was retrieved,
+and what is missing*: pending questions, search counts, the editions read with their printed issue dates
+and currency, and the source of every value. [docs/63](docs/63-product-walkthrough.md) walks the
+recorded journeys, fast and slow.
 
-## Status and open work
+## Repository map
 
-- [Air quality](docs/70-air-quality.md) - CAMS modelled concentrations of six pollutants and the source's own US and European indices at a point, reachable from chat with the provider current hour kept apart from the window; no health advice, no risk score and no ground monitor connected.
-- [Plan Watch](docs/67-plan-watch.md) - saved plans checked against the IMD district-warning product while the local workspace runs, with in-app and browser notifications only.
-- [Ensemble spread](docs/65-ensemble-spread.md) - the member distribution of one governed model (mean, population spread, range and nearest-rank p10/p50/p90) reachable from chat and never scored; the endpoint requires a model id, the per-model support set is measured, and a day-level spread question is planned by the deterministic rules.
-- [Reading the question in every language we can write](docs/66-language-reading-coverage.md)
-- [A question in one language, documents in another](docs/68-crosslingual-retrieval.md)
-- [A translated answer that does not stall](docs/69-render-latency-and-quotations.md) - source quotations held back from translation, sentences rendered concurrently through the same gate, a bounded local render cache, and the measured cold/repeat seconds. - six questions in five scripts that now reach the English sources through a translation used for retrieval only, with the product words, the folded comparison, the unit-word places and the named limits. - day, part-of-day, measure and place words per language, one definition per part of day, and the five languages declared unread rather than guessed.
-- [The district corpus becomes reachable, and the topic word decides](docs/64-district-corpus-reachability.md) - four defects and two answer-quality problems on the published-corpus route: the district family was unrequestable, a printed valid-till time crashed the turn, an absent state and an absent district now name what is held, the reader’s own name is tried against the publisher’s directory, the indexed edition answers when the live reader cannot verify one, and the words that name the topic decide which passage is served.
-- [The product, walked through](docs/63-product-walkthrough.md) - thirteen recorded journeys with what a user gets in five minutes, the rebuilt first-run screen, and the honest list of what is still slow or unconnected.
-- [The chat surface and the key you paste](docs/62-chat-surface-and-provider-ux.md) - the audit that found a whole-turn renderer crash, the artefact actions now wired into the conversation, three place and freshness defects fixed, and the one-command OpenRouter key flow with a ranked free-model list.
-- [State agromet coverage](docs/60-state-agromet-coverage.md) - a 22-centre sweep that took state coverage from one edition to five, the sixteen centres that answer 404, and the marker defect that would have accepted any PDF as a bulletin.
-- [Paraphrase robustness](docs/59-paraphrase-robustness.md) - 38 deterministic variants over eleven declared shapes, the eight repairs that took the held rate from 25/34 to 38/38, and the honest note that this is a development set, not generalisation.
-- [The right-now reading](docs/58-right-now-reading.md) - live station observations in the conversation, and one reading composing the observed, the published day and the model hours next, with radar, sub-hourly refresh and push named as not connected.
-- [Comparing two forecast sources](docs/57-model-comparison.md) - the crosscheck operation now runs on the rules-first floor, with both sources, their difference, the shared-lineage caveat, and no skill, average or confidence score.
-- [A second sealed holdout](docs/56-second-holdout.md) - 6 of 11 declared tasks after the repairs, but every miss now an absence the product states rather than a wrong product or a mis-read place, plus the case-authoring lesson recorded from two vocabulary mistakes.
-- [Two gaps the sealed holdout exposed](docs/55-place-typos-and-coasts.md) - a misspelt state that emptied a candidate list, and a coast searched for as a settlement: both repaired, pinned by tests over the real index, and recorded as having turned the sealed set into development data.
-- [A sealed holdout, run once](docs/54-holdout-generalisation.md) - ten unseen cases, 8 of 13 declared tasks, 0 prohibited claims, the five misses with their causes, and why the tuned sets overstate coverage.
-- [Operations: one command, a preflight and measured latency](docs/53-operations.md) - a preflight that reports each state rather than refusing to start, a clean-runtime start recorded against an empty store, eight measured turns with p50 4.844 s and p90 6.327 s, the three defects that measurement found, and a release checklist with what it does not establish.
-- [Language and voice, re-measured](docs/52-language-and-voice-measurement.md) - a stricter gate that refuses mixed scripts, the ledger re-measured at 19 of 23 write and 10 of 23 speak and hear, six journeys including a Hindi clarification rendered through the gate, real audio for Hindi and Gujarati, and the measured document-language gap.
-- [A briefing you write on a schedule](docs/51-scheduled-briefing.md) - a dated briefing over named places with the change since the previous run measured against that run own record, a foreground interval that says what it is not, and the WS7 exit check now met with its limits recorded.
-- [Personas and the briefcase](docs/50-personas-and-the-briefcase.md) - three registered reading positions that change emphasis and never evidence, disclosed in every answer, and a local briefcase that keeps, reopens, exports and deletes composed briefs. WS7's scheduled-briefing half is explicitly still open.
-- [Critical full-solution review](docs/21-full-solution-critical-review.md) — the current verdict, findings A01–A08 and the recommended trajectory.
-- [Source activation and national document intake](docs/29-source-activation-and-document-intake.md) — every registered source measured, the national bulletin corpus, and what it still cannot answer.
-- [Multilingual output and voice access](docs/30-multilingual-and-voice-path.md) — the plan for PS features 6 and 8. A plan, not a batch: nothing built and nothing measured yet.
-- [Engine and architecture: gap analysis, rounds 1-2](docs/49-engine-architecture-and-gap-analysis.md) — the declared benchmark moved from 66.7% to 100% on the development set and 4/4 holdout after the plan-quality repairs, with the holdout no longer sealed; the provider layer with OpenRouter-free routing and a rules-first floor that answers with no model at all, plus the WS1-WS9 plan to full problem-statement coverage.
-- [The intake holds what it cannot verify](docs/48-intake-publication-identity.md) — publication identity is content and address, a held target no longer aborts the sweep, and the live corpus still holds one edition per product.
-- [Answer transparency and cross-edition coverage](docs/47-answer-transparency-and-edition-coverage.md) — engine stages and queue position reported as facts, whole-edition readings, cross-edition differences named and never ranked, and a keyboard journey with its repairs.
-- [The Instrument Desk](docs/46-frontend-instrument-desk.md) — the current desktop surface: design direction, the capabilities added, the live measurements, the accessibility repairs and what none of it establishes.
-- [Frontend overhaul batch](docs/25-frontend-overhaul-batch.md) — the earlier surface, its findings FE01–FE06 and what it does not establish.
-- [Frontend overhaul plan](docs/24-frontend-overhaul-plan.md) — scope, design direction and batch gates.
-- [Machine-readable product plan](data/registry/product-progress.json) and [living hardening checklist](data/registry/hardening-progress.json) — stage and finding status.
-- [RAG readiness decision](data/registry/rag-readiness.json) and [source registry](data/registry/README.md).
+| Path | What lives there |
+|---|---|
+| `weathergpt_data/` | The engine: adapters, governed tools, planner, conversation, retrieval, providers, the product read-model API and the workspace server. |
+| `web/` | The desktop surface served by the workspace: shell, panels, views, charts, map, voice, service worker, stylesheet. |
+| `scripts/` | Operator commands: start and preflight, intake and audits, measurement and rehearsal, model configuration, verification, backup and restore. |
+| `tests/` | Python suites and the Node component suites with their DOM shim. |
+| `data/registry/` | Machine-readable state: sources and their review status, product and hardening progress, language support, answer policy, benchmark, free-model ranking. |
+| `research/` | Curated evidence: review batches, implementation records, recorded journeys and scans. |
+| `docs/` | The written record: the problem statement, batch reports and the standing reviews. |
+| `tmp/pdfs/` | Saved source PDFs referenced by evidence records (tracked; runtime stores are not). |
 
-Known-open priorities: reliable warning lifecycle and delivery, representative multi-turn and multi-parameter acceptance, native-speaker and noisy-audio review, mobile journeys, dated geographic crosswalks, document applicability and sustained service operation. The bounded queue, stage progress, local plan watcher and browser inbox are implemented in scope; they are not evidence of dependable unattended warning delivery. Earlier development and holdout scores are historical and use different scorer versions. See [the current PS review](docs/72-integrated-status-and-ps-review.md) and [the chronological gap record](docs/31-full-solution-gap-register.md).
+### Where to start reading
 
-## Milestones, newest first
+- [The recorded problem statement](docs/00-problem-statement.md) — the authoritative SIH26068 summary and what this team's interpretations are.
+- [The integrated PS assessment](docs/72-integrated-status-and-ps-review.md) — the current requirement-by-requirement verdict and remaining gates.
+- [OpenRouter routing and frontend delivery](docs/76-openrouter-routing-and-frontend-delivery.md) — the newest batch.
+- [The dissemination integration review](docs/73-dissemination-integration-review.md) — alert delivery machinery and its limits.
+- [The chronological gap register](docs/31-full-solution-gap-register.md) — what is open, in order of value.
+- [The critical full-solution review](docs/21-full-solution-critical-review.md) — findings A01–A08 and the staged trajectory.
+- [The product plan](data/registry/product-progress.json) and [hardening checklist](data/registry/hardening-progress.json) — finding status as data.
+- [Source registry](data/registry/README.md) and [RAG readiness decision](data/registry/rag-readiness.json).
 
-Each links to the batch that recorded it. Older entries are **historical evidence, not current completion claims**.
+### Batch records, newest first
 
-- [The intake holds what it cannot verify](docs/48-intake-publication-identity.md) — a re-fetch is not a new edition, the sweep no longer aborts on one held target, and no product holds two editions yet.
-- [Answer transparency and cross-edition coverage](docs/47-answer-transparency-and-edition-coverage.md) — 654 tests, 60 component checks, live stage readings, and the honest note that no live two-edition comparison was possible.
-- [The Instrument Desk frontend overhaul](docs/46-frontend-instrument-desk.md) — 57 component checks, ten accessibility scans at zero violations, the composer measured on the viewport bottom at three widths, and the repairs recorded as FE07.
-- [The acceptance benchmark grows to seventeen development cases](docs/45-benchmark-expansion.md) — 66.7% declared-task completion on the expanded set, every incomplete published.
-- [Remaining blocked and held items](docs/44-remaining-blocked-and-held-items.md) — the closing register state and the exact input each item waits on.
-- [Forecast vintages: what can be measured, and what still cannot](docs/43-forecast-vintage-variance.md) — 635 tests, vintage variance measured, skill recorded as blocked.
-- [Specialist sea-area identity: the recorded decision](docs/42-specialist-sea-area-decision.md) — what is reachable and what is deliberately not invented.
-- [Spoken round trips, voice checks and the opt-in daily cycle](docs/41-speech-roundtrip-voice-checks-and-daily-cycle.md) — 633 tests, presence-only speech measurement, foreground cycle.
-- [Embedded PDF viewing and its accessible controls](docs/40-embedded-pdf-and-aria.md) — 631 tests, 19 verify steps, same-origin viewer.
-- [Verification, backup and the drift guard](docs/39-verification-backup-and-drift-guard.md) — 631 tests, one verify command, rehearsed restore.
-- [Watch requests](docs/38-watch-requests.md) — 627 tests, local watches registered, checked on request and never delivered silently.
-- [Historical alias candidates](docs/37-historical-alias-candidates.md) — 627 tests, candidate-based history resolution with live journeys.
-- [Context edit matrix](docs/36-context-edit-matrix.md) — 611 tests, three recorded live multi-turn sequences.
-- [Declared acceptance benchmark](docs/35-acceptance-benchmark.md) — 604 tests, first live run over development and holdout sets, failures published.
-- [Bounded queue and stage-boundary cancellation](docs/34-bounded-queue-and-cancellation.md) — 598 tests, three recorded queue/cancel checks.
-- [Language write reach](docs/33-language-write-reach.md) — 591 tests, write coverage measured at 20 of 23 languages, speech beta-gated by the provider.
-- [The indexed document corpus becomes conversational](docs/32-corpus-chat-and-planner-robustness.md) — 588 tests, five recorded corpus journeys, 26 sources reachable.
-- [Full-solution gap register](docs/31-full-solution-gap-register.md) — the current gap list, G01–G18, kept separate from batch records.
-- [Source activation and national document intake](docs/29-source-activation-and-document-intake.md) — 543 tests, 67 sources measured, national district sweep recorded.
-- [Frontend overhaul batch](docs/25-frontend-overhaul-batch.md) — 374 Python tests, 34 component checks, five recorded journeys.
-- [Marine wave and river discharge tools](docs/23-marine-and-river-tools.md) — 374 tests, nine local-model turns.
-- [Engine context, language disclosure and task dependency](docs/22-engine-context-repairs.md) — 362 tests, eight component checks.
-- [Bulletin parent context and qualified guidance](docs/20-bulletin-parent-context.md) — 356 tests, 16 HTTP turns, four saved PDFs matched by hash.
-- [Context and retrieval coverage](docs/19-context-and-retrieval-coverage.md) — 340-test checkpoint.
-- [Bulletin retrieval and warning lifecycle](docs/18-bulletin-retrieval-and-warning-lifecycle.md) — 319 tests, 15 HTTP turns.
-- [Conversation engine refinement](docs/17-conversation-engine-refinement.md) — 280 tests.
-- [Hourly and daily point tools](docs/16-hourly-and-daily-point-tools.md).
-- [Answer fidelity and historical analysis](docs/15-answer-fidelity-and-historical-analysis.md).
-- [Product review and progress plan](docs/14-product-review-and-progress-plan.md) — the standing stage plan.
-- [Conversational recovery](docs/13-conversational-recovery.md), [product workspace and repairs](docs/12-product-workspace-and-repairs.md), [extensive validation and RAG gate](docs/11-extensive-validation-and-rag-gate.md), [grounded answer workflow](docs/10-grounded-answer-workflow.md).
-- [Bounded ingestion](docs/09-bounded-ingestion.md), [geography and coverage](docs/07-geography-and-coverage.md), [hardening batch one](docs/06-hardening-batch-one.md), [foundation hardening plan](docs/05-foundation-hardening-plan.md), [data foundation](docs/04-data-foundation.md), [climate pipeline](docs/03-climate-pipeline.md), [data layer design](docs/02-data-layer-design.md), [idea analysis](docs/01-idea-analysis-and-critique.md).
-- [The recorded problem statement](docs/00-problem-statement.md) distinguishes the authoritative SIH26068 summary from team interpretation.
+Each links to the batch that recorded it. Older entries are **historical evidence, not completion
+claims**, and the test counts in them are the counts of their own checkpoint.
+
+- [Provider routing and the surfaces that reached the frontend](docs/76-openrouter-routing-and-frontend-delivery.md) — the free-model ranking re-measured, body-level failover repaired, radar coordinate order fixed, five capability paths surfaced.
+- [Concurrent alert delivery and its critical limits](docs/73-dissemination-integration-review.md) — outbox, consented push, acknowledgements; no live device-delivery claim.
+- [The dissemination build reports](docs/74-dissemination-build.md) — the branch's historical record, preserved at renumbered paths.
+- [Stakeholder audit and its repairs](docs/64-stakeholder-repairs.md) — six findings repaired at their cause.
+- [Air quality](docs/70-air-quality.md) — CAMS modelled concentrations and the source's own indices; no health advice, risk score or ground monitor.
+- [Plan Watch](docs/67-plan-watch.md) — saved plans checked against the district-warning product while the workspace runs.
+- [Ensemble spread](docs/65-ensemble-spread.md) — one model's member distribution, never scored.
+- [The district corpus becomes reachable](docs/64-district-corpus-reachability.md) — the district family, the printed valid-till crash, and the topic word that decides which passage is served.
+- [Reading the question in every language we can write](docs/66-language-reading-coverage.md) and [a question in one language, documents in another](docs/68-crosslingual-retrieval.md).
+- [A translated answer that does not stall](docs/69-render-latency-and-quotations.md) — quotations held back from translation and the measured render seconds.
+- [The product, walked through](docs/63-product-walkthrough.md) and [the chat surface and the key you paste](docs/62-chat-surface-and-provider-ux.md).
+- [State agromet coverage](docs/60-state-agromet-coverage.md), [paraphrase robustness](docs/59-paraphrase-robustness.md), [the right-now reading](docs/58-right-now-reading.md), [comparing two sources](docs/57-model-comparison.md).
+- [The sealed holdouts](docs/54-holdout-generalisation.md), [the second one](docs/56-second-holdout.md) and [two gaps they exposed](docs/55-place-typos-and-coasts.md) — what the tuned sets do and do not show.
+- [Operations](docs/53-operations.md) — the preflight, measured latency and the release checklist.
+- [Language and voice, re-measured](docs/52-language-and-voice-measurement.md), [a scheduled briefing](docs/51-scheduled-briefing.md), [personas and the briefcase](docs/50-personas-and-the-briefcase.md).
+- [The Instrument Desk](docs/46-frontend-instrument-desk.md) — the desktop surface, its measurements and what none of it establishes.
+- [Source activation and national document intake](docs/29-source-activation-and-document-intake.md) — every registered source measured and the corpus it produced.
+- [Multilingual and voice path](docs/30-multilingual-and-voice-path.md) — a plan with its governing invariant: no number, unit, date, place, source id or negation crosses a generative step unchecked.
+- [The intake holds what it cannot verify](docs/48-intake-publication-identity.md), [answer transparency](docs/47-answer-transparency-and-edition-coverage.md), [verification and backup](docs/39-verification-backup-and-drift-guard.md), [watch requests](docs/38-watch-requests.md), [the acceptance benchmark](docs/35-acceptance-benchmark.md), [bounded queue and cancellation](docs/34-bounded-queue-and-cancellation.md), [the indexed corpus becomes conversational](docs/32-corpus-chat-and-planner-robustness.md).
+- [The full-solution gap register](docs/31-full-solution-gap-register.md), [critical review](docs/21-full-solution-critical-review.md), [engine context repairs](docs/22-engine-context-repairs.md), [marine and river tools](docs/23-marine-and-river-tools.md), [frontend overhaul](docs/25-frontend-overhaul-batch.md).
+- [Earlier batches](docs/14-product-review-and-progress-plan.md): [conversational recovery](docs/13-conversational-recovery.md), [product workspace](docs/12-product-workspace-and-repairs.md), [extensive validation and RAG gate](docs/11-extensive-validation-and-rag-gate.md), [grounded answer workflow](docs/10-grounded-answer-workflow.md), [bounded ingestion](docs/09-bounded-ingestion.md), [geography and coverage](docs/07-geography-and-coverage.md), [hardening](docs/06-hardening-batch-one.md), [data foundation](docs/04-data-foundation.md), [climate pipeline](docs/03-climate-pipeline.md), [data layer design](docs/02-data-layer-design.md), [idea analysis](docs/01-idea-analysis-and-critique.md).
 
 ## Ground rules
 
-The user-supplied SIH26068 statement is authoritative, and final scope includes nationwide and specialist coverage. Reuse the existing adapters, source registries, numerical contracts and provenance rather than replacing them. Keep entity, time, parameter, unit and source attached to every factual claim, and preserve unknown, missing, stale, cancelled and reference-only states. Credentials belong in local backend configuration and must not reach browser code or chat. Do not publish runtime conversations, logs or restricted source material. GeoNames place data is used under CC BY 4.0.
-
-- [Concurrent alert-delivery integration and critical limits](docs/73-dissemination-integration-review.md) — outbox, consented push machinery and acknowledgements; synthetic HTTP acceptance, separate watch systems and no live device-delivery claim.
-- [OpenRouter first, and the surfaces that reached the frontend](docs/76-openrouter-routing-and-frontend-delivery.md) — the free-model ranking re-measured from the live catalogue, a body-level upstream failure that now fails over, the radar coordinate order repaired, and the five capability paths that had no frontend control; no browser rendering in that batch.
+The user-supplied SIH26068 statement is authoritative, and final scope includes nationwide and
+specialist coverage. Reuse the existing adapters, source registries, numerical contracts and provenance
+rather than replacing them. Keep entity, time, parameter, unit and source attached to every factual
+claim, and preserve unknown, missing, stale, cancelled and reference-only states. Credentials belong in
+local backend configuration and must not reach browser code or chat. Do not publish runtime
+conversations, logs or restricted source material. GeoNames place data is used under CC BY 4.0.
