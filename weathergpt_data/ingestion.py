@@ -20,7 +20,7 @@ from urllib.parse import urlparse,parse_qs
 from .geography import canonical, identity, point
 from .transport import Store, SourceError, parsed, stamp, utcnow
 from .foundation import Foundation
-from .adapters import FORECAST,MARINE,EXTENDED,HISTORY_LOCAL,REANALYSIS_MODELS,temporal_support
+from .adapters import FORECAST,MARINE,EXTENDED,HISTORY_LOCAL,REANALYSIS_MODELS,reanalysis_variables,temporal_support
 
 PRODUCTS = {'forecast': ('S21', 'weather_forecast', 'api.open-meteo.com', '/v1/gfs', 4),
             'marine': ('S56', 'marine_forecast', 'marine-api.open-meteo.com', '/v1/marine', 3),
@@ -35,7 +35,7 @@ def request_parameters(spec):
     if spec['product']=='history_local':
         return {'latitude':str(spec['latitude']),'longitude':str(spec['longitude']),
                 'start_date':spec['start_date'],'end_date':spec['end_date'],
-                'daily':','.join(HISTORY_LOCAL),'models':spec.get('models','era5'),'timezone':'Asia/Kolkata'}
+                'daily':','.join(reanalysis_variables(spec.get('models','era5'))),'models':spec.get('models','era5'),'timezone':'Asia/Kolkata'}
     params={'latitude':str(spec['latitude']),'longitude':str(spec['longitude']),'forecast_days':str(spec['days'])}
     if spec['product']=='river':params['daily']='river_discharge'
     else:
@@ -206,6 +206,7 @@ class IngestionDB:
 
     def complete(self, job, result):
         spec = json.loads(job['spec']); sid,family,_,_,variables = PRODUCTS[spec['product']]
+        if spec['product']=='history_local':variables=len(reanalysis_variables(spec.get('models','era5')))
         meta = result.get('provenance',{}); quality = result.get('quality',{})
         attempt=meta.get('ingestion_attempt',{})
         if attempt.get('job_id')!=job['id'] or attempt.get('token')!=job['token']:
@@ -225,7 +226,8 @@ class IngestionDB:
         expected_times = {stamp(start+timedelta(days=i)) for i in range(spec['days'])} if daily else {stamp(start+timedelta(hours=i)) for i in range(spec['days']*24)}
         if {stamp(parsed(t)) for t in times} != expected_times: raise ValueError('Result interval differs from fixed job date')
         support=temporal_support(result['records'])
-        parameters=set({'forecast':FORECAST,'extended_forecast':EXTENDED,'history_local':HISTORY_LOCAL,'marine':MARINE,'river':{'river_discharge'}}[spec['product']])
+        parameters=set(reanalysis_variables(spec.get('models','era5')) if spec['product']=='history_local'
+                       else {'forecast':FORECAST,'extended_forecast':EXTENDED,'marine':MARINE,'river':{'river_discharge'}}[spec['product']])
         if set(support)!=parameters or any(v['sample_count']!=expected//variables for v in support.values()):
             raise ValueError('Every required variable must cover the complete sample axis')
         encoded = canonical(result)
