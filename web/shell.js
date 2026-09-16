@@ -763,7 +763,7 @@ const WG = window.WG;
         try {
           const outbox = await api('/api/outbox');
           const rows = outbox.notifications || [];
-          const queued = rows.filter(row => row.state === 'queued' || row.state === 'created');
+          const queued = rows.filter(row => row.state === 'queued' || row.state === 'created' || row.state === 'claimed');
           body.append(stateBlock('plain', queued.length ? queued.length + ' notification(s) waiting in the local outbox.' : (rows.length ? 'No notifications are waiting in the local outbox.' : 'The local outbox is empty.'),
             'Changed official state is queued for the local inbox and any consented push subscriptions.'));
           if (rows.length) {
@@ -799,6 +799,17 @@ const WG = window.WG;
               });
               body.append(answers);
             });
+            const dead = rows.filter(row => row.state === 'dead');
+            if (dead.length) {
+              body.append(stateBlock('plain', dead.length + ' notification(s) failed all retries (dead-letter).',
+                'They are kept for audit with their last error and are never retried automatically. A repeated dead-letter for one watch means its channel needs attention.'));
+              body.append(table(['Watch', 'Channel', 'Updated', 'Last error'], dead.slice(0, 10).map(row => [
+                String(row.watch_id || '').slice(0, 8),
+                row.channel || '—',
+                row.updated_at || '—',
+                String(row.last_error || 'no recorded error').slice(0, 120)
+              ])));
+            }
           }
         } catch (error) { body.append(stateBlock('down', 'The local outbox could not be read.', error.message)); }
       }

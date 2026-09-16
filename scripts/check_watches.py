@@ -36,6 +36,13 @@ def main():
                                  send=channel_sender(key_path, store.path))
     escalated = escalate_unacked(store.path, now=workspace.clock())
     notified = sum(1 for row in results if row.get('notification'))
+    from weathergpt_data.watches import record_heartbeat
+    record_heartbeat(store.path, {'trigger': 'manual-cli',
+                                  'stale_after_seconds': 3600,
+                                  'checked': len(results),
+                                  'notifications_enqueued': notified,
+                                  'dispatched': len(dispatched),
+                                  'escalated': len(escalated)}, now=workspace.clock())
     packet = {'schema_version': 'watch-check-run-v1', 'checked': len(results),
               'delivery': 'local_inbox_only_no_push',
               'no_match_is_not_an_all_clear': True,

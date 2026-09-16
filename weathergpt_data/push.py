@@ -301,6 +301,20 @@ def push_ttl(entry, now=None):
     return PUSH_TTL_SECONDS
 
 
+def push_urgency(entry):
+    """Provider urgency hint for one outbox row: high for red/orange facts.
+
+    Advisory only — push services may ignore or cap it. Everything else,
+    including quiet-state and no-match rows, goes normal so routine checks
+    never buzz a device urgently.
+    """
+    for fact in (entry.get('payload') or {}).get('facts') or []:
+        value = str((fact or {}).get('value') or '').lower()
+        if 'red' in value or 'orange' in value:
+            return 'high'
+    return 'normal'
+
+
 def push_payload(entry):
     """The push message for one outbox row: official facts, verbatim, under 4KB intent."""
     payload = entry.get('payload') or {}
@@ -342,7 +356,8 @@ def send_push(entry, vapid, subscriptions):
             webpush({'endpoint': sub['endpoint'],
                      'keys': {'p256dh': sub['p256dh'], 'auth': sub['auth']}},
                     message, vapid_private_key=vapid,
-                    vapid_claims={'sub': VAPID_SUBJECT}, ttl=ttl, timeout=15)
+                    vapid_claims={'sub': VAPID_SUBJECT}, ttl=ttl, timeout=15,
+                    headers={'Urgency': push_urgency(entry)})
             delivered.append(sub['id'])
         except WebPushException as exc:
             status = getattr(exc.response, 'status_code', None) if exc.response is not None else None

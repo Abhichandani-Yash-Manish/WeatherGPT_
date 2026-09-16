@@ -238,6 +238,12 @@ class Foundation:
         return result
 
 def parse_cap(raw,meta,now):
+    if isinstance(raw,(bytes,bytearray)):head=bytes(raw[:2048]).decode('ascii',errors='ignore')
+    else:head=str(raw)[:2048]
+    if '<!doctype' in head.lower():
+        # CAP 1.2 carries no document type; a DOCTYPE only enables entity
+        # games against the stdlib parser, so the message is quarantined.
+        raise SourceError('CAP message declares a document type')
     try:root=ET.fromstring(raw)
     except ET.ParseError as exc:raise SourceError('Invalid CAP XML') from exc
     ns={'c':'urn:oasis:names:tc:emergency:cap:1.2'}
