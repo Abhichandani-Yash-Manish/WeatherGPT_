@@ -1,0 +1,283 @@
+{
+  "schema_version": "verification-chat-v1",
+  "generated_at_utc": "2026-09-16T14:39:01.805453+00:00",
+  "note": "Deterministic-rules turns; the archived-run and ERA5 reference fetches are live through the governed store.",
+  "turns": [
+    {
+      "question": "How accurate was the temperature forecast for Ahmedabad over the last two weeks?",
+      "status": "answered",
+      "provider": "deterministic_rules",
+      "tasks": [
+        {
+          "kind": "verification",
+          "operation": "lookup",
+          "parameters": [
+            "temperature_2m"
+          ],
+          "start_local": "",
+          "end_local": ""
+        }
+      ],
+      "products": [
+        "Archived gfs_seamless runs at fixed lead-time offsets",
+        "ERA5 hourly reanalysis, used as the reference"
+      ],
+      "statistics": [
+        {
+          "parameter": "temperature_2m_bias",
+          "value": "1.596",
+          "unit": "°C",
+          "method": "mean of (forecast minus reference) over matched hours over 336 matched hours"
+        },
+        {
+          "parameter": "temperature_2m_mae",
+          "value": "1.707",
+          "unit": "°C",
+          "method": "mean of the absolute error over matched hours over 336 matched hours"
+        },
+        {
+          "parameter": "temperature_2m_rmse",
+          "value": "2.055",
+          "unit": "°C",
+          "method": "square root of the mean squared error over matched hours over 336 matched hours"
+        },
+        {
+          "parameter": "temperature_2m_correlation",
+          "value": "0.923",
+          "unit": "r",
+          "method": "Pearson product-moment correlation over matched hours over 336 matched hours"
+        },
+        {
+          "parameter": "temperature_2m_bias",
+          "value": "1.553",
+          "unit": "°C",
+          "method": "mean of (forecast minus reference) over matched hours over 336 matched hours"
+        },
+        {
+          "parameter": "temperature_2m_mae",
+          "value": "1.642",
+          "unit": "°C",
+          "method": "mean of the absolute error over matched hours over 336 matched hours"
+        },
+        {
+          "parameter": "temperature_2m_rmse",
+          "value": "1.969",
+          "unit": "°C",
+          "method": "square root of the mean squared error over matched hours over 336 matched hours"
+        },
+        {
+          "parameter": "temperature_2m_correlation",
+          "value": "0.920",
+          "unit": "r",
+          "method": "Pearson product-moment correlation over matched hours over 336 matched hours"
+        },
+        {
+          "parameter": "temperature_2m_bias",
+          "value": "1.294",
+          "unit": "°C",
+          "method": "mean of (forecast minus reference) over matched hours over 336 matched hours"
+        },
+        {
+          "parameter": "temperature_2m_mae",
+          "value": "1.700",
+          "unit": "°C",
+          "method": "mean of the absolute error over matched hours over 336 matched hours"
+        },
+        {
+          "parameter": "temperature_2m_rmse",
+          "value": "2.100",
+          "unit": "°C",
+          "method": "square root of the mean squared error over matched hours over 336 matched hours"
+        },
+        {
+          "parameter": "temperature_2m_correlation",
+          "value": "0.810",
+          "unit": "r",
+          "method": "Pearson product-moment correlation over matched hours over 336 matched hours"
+        }
+      ],
+      "fact_count": 28,
+      "notes": [
+        "Place read as Ahmedabad, Ahmadābād, State of Gujarāt — its district carries the same name, and no other place that shares this name does. Other places share this name: Ahmedābād, District Rampur, Uttar Pradesh. Say which one you meant to switch.",
+        "No past window was named, so the most recent completed fourteen-day window was measured.",
+        "gfs_seamless archived runs matched to ERA5 hourly reanalysis over 2026-08-28 to 2026-09-10 at the {'latitude': 23.019852, 'longitude': 72.53906} grid cell.",
+        "The reference is ERA5 reanalysis, a modelled analysis, not a station observation.",
+        "The statistics describe this sample for this model, variable and window; they are not operational skill, a confidence or a risk.",
+        "A lead with fewer than 24 matched hours is reported as unmeasured, not given a number.",
+        "A model is never ranked against another and no single skill score is produced.",
+        "The reference is ERA5 reanalysis, a modelled analysis rather than a station observation; the upstream run identity is not exposed, and these statistics are not forecast skill, a confidence, a risk or a model ranking."
+      ],
+      "answer": "Forecast verification for Ahmedabad, Ahmadābād, State of Gujarāt · gfs_seamless archived runs against ERA5 reanalysis, 2026-08-28 to 2026-09-10.\nTemperature (2 m) mean absolute error by lead time: day 1 1.707 °C (336 matched hours); day 2 1.642 °C (336 matched hours); day 3 1.700 °C (336 matched hours); day 4 1.485 °C (336 matched hours); day 5 1.224 °C (336 matched hours); day 6 1.132 °C (336 matched hours); day 7 1.197 °C (336 matched hours).\nEvery figure is computed over the hours the archived run and the reference both carry; the tables below give the bias, mean absolute error, root mean square error and correlation for each lead time. It is not forecast skill, a confidence or a risk, and no model is ranked against another."
+    },
+    {
+      "question": "Verify the precipitation forecast for Ahmedabad.",
+      "status": "answered",
+      "provider": "deterministic_rules",
+      "tasks": [
+        {
+          "kind": "verification",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "start_local": "",
+          "end_local": ""
+        }
+      ],
+      "products": [
+        "Archived gfs_seamless runs at fixed lead-time offsets",
+        "ERA5 hourly reanalysis, used as the reference"
+      ],
+      "statistics": [
+        {
+          "parameter": "precipitation_bias",
+          "value": "-0.008",
+          "unit": "mm",
+          "method": "mean of (forecast minus reference) over matched hours over 336 matched hours"
+        },
+        {
+          "parameter": "precipitation_mae",
+          "value": "0.016",
+          "unit": "mm",
+          "method": "mean of the absolute error over matched hours over 336 matched hours"
+        },
+        {
+          "parameter": "precipitation_rmse",
+          "value": "0.062",
+          "unit": "mm",
+          "method": "square root of the mean squared error over matched hours over 336 matched hours"
+        },
+        {
+          "parameter": "precipitation_correlation",
+          "value": "-0.026",
+          "unit": "r",
+          "method": "Pearson product-moment correlation over matched hours over 336 matched hours"
+        },
+        {
+          "parameter": "precipitation_bias",
+          "value": "-0.011",
+          "unit": "mm",
+          "method": "mean of (forecast minus reference) over matched hours over 336 matched hours"
+        },
+        {
+          "parameter": "precipitation_mae",
+          "value": "0.013",
+          "unit": "mm",
+          "method": "mean of the absolute error over matched hours over 336 matched hours"
+        },
+        {
+          "parameter": "precipitation_rmse",
+          "value": "0.039",
+          "unit": "mm",
+          "method": "square root of the mean squared error over matched hours over 336 matched hours"
+        },
+        {
+          "parameter": "precipitation_correlation",
+          "value": "-0.036",
+          "unit": "r",
+          "method": "Pearson product-moment correlation over matched hours over 336 matched hours"
+        },
+        {
+          "parameter": "precipitation_bias",
+          "value": "0.008",
+          "unit": "mm",
+          "method": "mean of (forecast minus reference) over matched hours over 336 matched hours"
+        },
+        {
+          "parameter": "precipitation_mae",
+          "value": "0.031",
+          "unit": "mm",
+          "method": "mean of the absolute error over matched hours over 336 matched hours"
+        },
+        {
+          "parameter": "precipitation_rmse",
+          "value": "0.138",
+          "unit": "mm",
+          "method": "square root of the mean squared error over matched hours over 336 matched hours"
+        },
+        {
+          "parameter": "precipitation_correlation",
+          "value": "0.042",
+          "unit": "r",
+          "method": "Pearson product-moment correlation over matched hours over 336 matched hours"
+        }
+      ],
+      "fact_count": 28,
+      "notes": [
+        "Place read as Ahmedabad, Ahmadābād, State of Gujarāt — its district carries the same name, and no other place that shares this name does. Other places share this name: Ahmedābād, District Rampur, Uttar Pradesh. Say which one you meant to switch.",
+        "No past window was named, so the most recent completed fourteen-day window was measured.",
+        "gfs_seamless archived runs matched to ERA5 hourly reanalysis over 2026-08-28 to 2026-09-10 at the {'latitude': 23.019852, 'longitude': 72.53906} grid cell.",
+        "The reference is ERA5 reanalysis, a modelled analysis, not a station observation.",
+        "The statistics describe this sample for this model, variable and window; they are not operational skill, a confidence or a risk.",
+        "A lead with fewer than 24 matched hours is reported as unmeasured, not given a number.",
+        "A model is never ranked against another and no single skill score is produced.",
+        "The reference is ERA5 reanalysis, a modelled analysis rather than a station observation; the upstream run identity is not exposed, and these statistics are not forecast skill, a confidence, a risk or a model ranking."
+      ],
+      "answer": "Forecast verification for Ahmedabad, Ahmadābād, State of Gujarāt · gfs_seamless archived runs against ERA5 reanalysis, 2026-08-28 to 2026-09-10.\nPrecipitation mean absolute error by lead time: day 1 0.016 mm (336 matched hours); day 2 0.013 mm (336 matched hours); day 3 0.031 mm (336 matched hours); day 4 0.021 mm (336 matched hours); day 5 0.013 mm (336 matched hours); day 6 0.020 mm (336 matched hours); day 7 0.015 mm (336 matched hours).\nEvery figure is computed over the hours the archived run and the reference both carry; the tables below give the bias, mean absolute error, root mean square error and correlation for each lead time. It is not forecast skill, a confidence or a risk, and no model is ranked against another."
+    },
+    {
+      "question": "How accurate was the temperature forecast for Ahmedabad yesterday?",
+      "status": "unavailable",
+      "provider": "deterministic_rules",
+      "tasks": [
+        {
+          "kind": "verification",
+          "operation": "lookup",
+          "parameters": [
+            "temperature_2m"
+          ],
+          "start_local": "",
+          "end_local": ""
+        }
+      ],
+      "products": [],
+      "statistics": [],
+      "fact_count": 0,
+      "notes": [],
+      "answer": "Forecast verification needs a completed window: the question names a single recent day, and ERA5 hourly reanalysis is published with about a five-day delay, so a window ending after 2026-09-11 cannot be measured yet. Name a completed window ending on or before that date."
+    },
+    {
+      "question": "Will it rain in Ahmedabad tomorrow?",
+      "status": "answered",
+      "provider": "deterministic_rules",
+      "tasks": [
+        {
+          "kind": "forecast",
+          "operation": "lookup",
+          "parameters": [
+            "precipitation"
+          ],
+          "start_local": "2026-09-17T00:30:00+05:30",
+          "end_local": "2026-09-18T00:30:00+05:30"
+        }
+      ],
+      "products": [
+        "GFS forecast delivery",
+        "India place catalogue",
+        "GFS forecast delivery",
+        "India place catalogue"
+      ],
+      "statistics": [
+        {
+          "parameter": "precipitation",
+          "value": "0.8",
+          "unit": "mm",
+          "method": "preceding_hour_sum"
+        },
+        {
+          "parameter": "precipitation",
+          "value": "0.0",
+          "unit": "mm",
+          "method": "preceding_hour_sum"
+        }
+      ],
+      "fact_count": 2,
+      "notes": [
+        "Time window read from the question: tomorrow whole day.",
+        "Place read as Ahmedabad, Ahmadābād, State of Gujarāt — its district carries the same name, and no other place that shares this name does. Other places share this name: Ahmedābād, District Rampur, Uttar Pradesh. Say which one you meant to switch.",
+        "Model forecasts at the selected place point, not observations or district averages. Source model run time and local representativeness remain unverified."
+      ],
+      "answer": "Ahmedabad · 17 Sep, 00:30–18 Sep, 00:30 IST: Forecast precipitation: 0.0–0.8 mm. Source: GFS forecast; conditions can change."
+    }
+  ]
+}
