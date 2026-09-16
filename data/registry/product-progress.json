@@ -1,6 +1,6 @@
 {
   "schema_version": "product-progress-plan-v1",
-  "as_of_utc": "2026-09-16T16:04:24+00:00",
+  "as_of_utc": "2026-09-16T16:40:00+00:00",
   "status": "implementation_in_progress",
   "user_direction": "Desktop web now. Hosting/sharing on hold. Preserve final nationwide and specialist scope.",
   "next_batch": [
@@ -293,8 +293,8 @@
       "prerequisite": "Reviewed domain tools; no unsupported risk scores"
     }
   ],
-  "latest_batch": "docs/81-user-facing-gap-batch.md",
-  "next_batch_note": "Prioritize live warning-change delivery acceptance, independent task/evidence adjudication, bounded source latency, native-speaker and real-audio review, and mobile/domain acceptance. The unified workspace exposes 15 tools. The concurrently landed forecast-verification batch is recorded in docs/80-forecast-verification.md.",
+  "latest_batch": "docs/82-chatbot-experience.md",
+  "next_batch_note": "The chat batch delivered C1: an instant first reading from the deterministic rules, the conversation own receipt in the placeholder, and Ask as the landing surface. Next are the C2 conversational-continuity journeys (measured, then repaired) and the C3 reader-chosen register. Still open from earlier batches: live warning-change delivery acceptance, independent task/evidence adjudication, bounded source latency, native-speaker and real-audio review, and mobile/domain acceptance. The unified workspace exposes 15 tools; the forecast-verification batch is recorded in docs/80-forecast-verification.md.",
   "open_paths": [
     {
       "path": "source_and_document",

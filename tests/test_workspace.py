@@ -1,6 +1,7 @@
 """Functional HTTP journeys and refresh boundaries for the local workspace."""
 import json
 import re
+import sqlite3
 import threading
 import unittest
 import urllib.error
@@ -111,5 +112,35 @@ class WorkspaceTests(unittest.TestCase):
         self.assertNotIn('%',json.dumps(packet))
         with self.assertRaises(urllib.error.HTTPError) as error:urllib.request.urlopen(base+'/api/chat/progress')
         self.assertEqual(error.exception.code,403)
+
+    def test_http_first_reading_is_token_gated_and_binds_no_conversation(self):
+        server=make_server(self.app,0)
+        thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+        self.addCleanup(lambda:(server.shutdown(),server.server_close(),thread.join()))
+        base='http://127.0.0.1:'+str(server.server_port)
+        html=urllib.request.urlopen(base).read().decode()
+        token=re.search(r'name="workspace-token" content="([^"]+)"',html)[1]
+        def post(path,body):
+            headers={'Content-Type':'application/json','X-WeatherGPT-Token':token}
+            with urllib.request.urlopen(urllib.request.Request(base+path,json.dumps(body).encode(),headers)) as response:
+                self.assertEqual(response.headers['Cache-Control'],'no-store')
+                return json.load(response)
+        packet=post('/api/chat/preview',{'question':'Will it rain in Ahmedabad tomorrow morning?'})
+        self.assertEqual(packet['schema_version'],'chat-preview-v1')
+        self.assertTrue(packet['provisional'])
+        self.assertEqual(packet['model_calls'],0)
+        reading=packet['reading']
+        self.assertEqual(reading['basis'],'rules')
+        self.assertEqual(reading['places'],['Ahmedabad'])
+        self.assertIn('rain',reading['measures'])
+        # Nothing acquired, and the preview bound no conversation: it plans with the rules only.
+        self.assertEqual(self.calls,0)
+        with sqlite3.connect(self.root/'conversations.sqlite') as db:
+            self.assertEqual(db.execute('SELECT COUNT(*) FROM conversations').fetchone()[0],0)
+        with self.assertRaises(urllib.error.HTTPError) as missing:urllib.request.urlopen(base+'/api/chat/preview')
+        self.assertEqual(missing.exception.code,404)
+        with self.assertRaises(urllib.error.HTTPError) as untokened:
+            urllib.request.urlopen(urllib.request.Request(base+'/api/chat/preview',json.dumps({'question':'Will it rain?'}).encode(),{'Content-Type':'application/json'}))
+        self.assertEqual(untokened.exception.code,403)
 
 if __name__=='__main__':unittest.main()

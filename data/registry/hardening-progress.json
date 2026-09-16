@@ -1,7 +1,7 @@
 {
  "schema_version": "hardening-progress-v1",
  "review": "research/reviews/national-readiness-20260912/review.md",
- "updated_at_utc": "2026-09-16T15:58:00+00:00",
+ "updated_at_utc": "2026-09-16T16:40:00+00:00",
  "operational_ready": false,
  "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
  "findings": [
@@ -2521,6 +2521,31 @@
   "verification_failed": 0,
   "open": [
    "the national table and the place view can serve different bulletin editions from their own caches; the fix made this visible and it needs its own batch"
+  ],
+  "hosting_performed": false,
+  "same_host_only": true
+ },
+ "chatbot_experience_batch": {
+  "report": "docs/82-chatbot-experience.md",
+  "evidence_directory": "research/reviews/chatbot-20260916",
+  "scope": "the conversational front door: an instant first reading of the question, the conversation own receipt in the placeholder, and Ask as the landing surface",
+  "delivered": [
+   "POST /api/chat/preview plans with the deterministic rules only: no model call, no network read, no place into the bounded wait queue, no conversation bound and no turn saved",
+   "a reading names the place, window, measures and products the rules heard, carries provisional:true, and publishes no value, citation, status or expiry",
+   "a bare continuation reports what the conversation is still carrying instead of guessing at a reading the rules cannot make",
+   "the working placeholder shows the reading and the conversation own receipt (place and server answer time), and the answer card replaces it",
+   "a fresh visit with no route opens Ask; every route still opens its own surface, an unknown route falls back to Ask, and the rail keeps every guided surface"
+  ],
+  "tests_added": [
+   "tests/test_chat_preview.py (8 checks): rules-only planning, no acquisition, no value or citation, no saved turn, carried-context reading, refusal of anything but a question, and no waiting behind a running turn",
+   "tests/test_workspace.py: the token-gated HTTP preview route binds no conversation and acquires nothing",
+   "tests/test_views.js: the reading is provisional and repeats no value; the placeholder receipt is not fresh evidence",
+   "tests/test_suite_ui.js: a fresh visit opens Ask and an unknown route falls back to it"
+  ],
+  "live_loopback_check": "research/reviews/chatbot-20260916/live-http-checks.json",
+  "open": [
+   "the preview states the reading, not held values: no read model exposes a held value with the provenance and validity that printing one would require",
+   "the C2 conversational-continuity journeys and the C3 reader-chosen register are planned in docs/82, not built"
   ],
   "hosting_performed": false,
   "same_host_only": true

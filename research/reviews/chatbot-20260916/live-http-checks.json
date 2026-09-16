@@ -1,0 +1,55 @@
+{
+  "batch": "docs/82-chatbot-experience.md",
+  "captured_at_utc": "2026-09-16T16:24:40Z",
+  "surface": "loopback workspace server, real local store",
+  "checks": [
+    {
+      "check": "page_serves_token",
+      "served": true
+    },
+    {
+      "check": "preview_for_a_recognised_question",
+      "seconds": 0.1,
+      "schema_version": "chat-preview-v1",
+      "provisional": true,
+      "model_calls": 0,
+      "basis": "rules",
+      "places": [
+        "Ahmedabad"
+      ],
+      "measures": [
+        "rain"
+      ],
+      "products": [
+        "forecast"
+      ],
+      "line": "place: Ahmedabad \u00b7 window: 17 Sep 2026 09:30-12:30 IST \u00b7 asking about: rain \u00b7 will read: a point forecast",
+      "carries_facts_or_citations": false
+    },
+    {
+      "check": "preview_of_a_continuation",
+      "conversation": "d3d7f8d6-548c-4b7a-a495-fd09c5ab5b8c",
+      "seconds": 0.001,
+      "basis": "carried",
+      "line": "carrying from your last message \u00b7 place: Jehanabad, Bihar",
+      "model_calls": 0
+    },
+    {
+      "check": "previews_added_no_conversation",
+      "before": 1244,
+      "after": 1244,
+      "added": 0
+    },
+    {
+      "check": "progress_is_readable_beside_a_preview",
+      "state": "idle",
+      "stages_are_facts_not_progress": true
+    }
+  ],
+  "limits": [
+    "One machine, one store, one session; this is not national or multi-user acceptance.",
+    "The preview is measured as a reading, not as an answer: it carries no value."
+  ],
+  "conversations_held_before": 1244,
+  "conversations_held_after": 1244
+}

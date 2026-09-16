@@ -25,6 +25,27 @@ STAGE_LABELS={'started':'Reading the question','planned':'Planning the tasks','r
               'task boundary':'Stopping at the task boundary'}
 STAGE_NOTE='A stage names the work the server is in now. It is not a completion estimate.'
 LABELS={'precipitation':'Forecast rainfall','temperature_2m':'Temperature samples','relative_humidity_2m':'Humidity samples','wind_speed_10m':'Wind samples'}
+# The first reading of a question, shown while the real turn is still working. The deterministic
+# rules plan it, so it can be said in milliseconds, and it never becomes a number: no value, no
+# source claim, no citation. See ConversationEngine.preview.
+PREVIEW_NOTE=('A first reading by the deterministic rules planner, before any retrieval and before any model '
+              'call. The model planner may revise it, and the values follow with the answer. Nothing in this '
+              'reading is evidence.')
+PRODUCT_LABELS={'forecast':'a point forecast','history':'a historical record','travel':'travel context',
+                'agriculture':'a published crop advisory','warning':'the official district warnings',
+                'observation':'a station observation','research':'a research source',
+                'explanation':'the previous answer','aviation':'an aviation product',
+                'marine':'a marine wave product','river':'a river-discharge product',
+                'document':'a published document','ensemble':'an ensemble spread',
+                'air_quality':'a modelled air-quality product','verification':'a forecast-verification measurement'}
+MEASURE_LABELS={'precipitation':'rain','precipitation_probability':'rain chance','temperature_2m':'temperature',
+                'relative_humidity_2m':'humidity','wind_speed_10m':'wind','apparent_temperature':'feels-like temperature',
+                'wind_gusts_10m':'wind gusts','visibility':'visibility','rainfall':'rainfall',
+                'wave_height':'wave height','wave_direction':'wave direction','wave_period':'wave period',
+                'river_discharge':'river discharge','metar':'a METAR report','taf':'a TAF forecast',
+                'pm2_5':'PM2.5','pm10':'PM10','nitrogen_dioxide':'nitrogen dioxide','ozone':'ozone',
+                'carbon_monoxide':'carbon monoxide','sulphur_dioxide':'sulphur dioxide','us_aqi':'the US AQI',
+                'european_aqi':'the European AQI'}
 
 
 class ConversationCancelled(Exception):
@@ -203,6 +224,116 @@ class ConversationEngine:
         with self.cancel_lock:
             self.active.pop(request_id,None)
             self.cancelled.discard(request_id)
+
+    def preview(self,body):
+        """The engine's own first reading of a question: rules only, no retrieval, no model call, no turn.
+
+        Deliberately weak. It answers "what did it hear?" while the real turn is still working, so a
+        reader is never looking at nothing. It acquires nothing, resolves no place through the
+        gazetteer, binds no conversation and is never saved, so it cannot satisfy a follow-up or stand
+        in for evidence.
+        """
+        if not isinstance(body,dict) or set(body)-{'question','conversation_id'}:
+            raise SourceError('Send a question for a first reading')
+        q=body.get('question')
+        if not isinstance(q,str) or not 1<=len(q)<=1500:raise SourceError('Enter a question of 1-1500 characters')
+        now=self.workspace.clock()
+        result={'schema_version':'chat-preview-v1','question':q,'provisional':True,'reading':None,
+                'note':PREVIEW_NOTE,'reading_is_not_evidence':True,'model_calls':0,
+                'checked_at_utc':now.isoformat()}
+        state=None;history=[]
+        if body.get('conversation_id'):
+            _cid,state=self.state(body['conversation_id'])
+            history=list(state['history'])
+            from .dialogue import context_message
+            context=context_message(state)
+            if context:history.append({'role':'assistant','content':'Structured conversation focus','context_state':context})
+        from .language import interpret_plan
+        from .rule_planner import rule_request
+        try:
+            seed=rule_request(q,now,history)
+            if seed is not None:
+                plan,_meta=interpret_plan(None,q,now,history,seed=seed)
+                if state:
+                    from .dialogue import reconcile
+                    plan=reconcile(plan,state,q)
+                reading=self.reading_of(plan)
+                reading['basis']='rules'
+                result['reading']=reading
+                return result
+            # The rules refuse a bare continuation ("and tomorrow?"), because only the model
+            # planner can see what it continues. What the engine *is* carrying it already knows,
+            # so it says that instead of guessing at the new reading.
+            carried=self.carried_reading(state)
+            if carried is not None:result['reading']=carried
+        except (SourceError,TypeError,KeyError,ValueError):
+            # A question that cannot be read this way gets no first reading rather than a guess;
+            # the working placeholder and the stage line carry the wait on their own.
+            return result
+        return result
+
+    def carried_reading(self,state):
+        """What the conversation is still carrying from the last planned turn, in plain words."""
+        plan=(state or {}).get('last_plan') or {}
+        if not isinstance(plan,dict):return None
+        reading=self.reading_of(plan)
+        if not (reading['places'] or reading['window'] or reading['measures'] or reading['products']):
+            return None
+        reading['basis']='carried'
+        pieces=[]
+        if reading['places']:pieces.append('place: '+'; '.join(reading['places']))
+        if reading['window']:pieces.append('window: '+reading['window']['label'])
+        if reading['measures']:pieces.append('asking about: '+', '.join(reading['measures']))
+        reading['line']='carrying from your last message \u00b7 '+' \u00b7 '.join(pieces)
+        reading['clarification']=''
+        return reading
+
+    def reading_of(self,plan):
+        """One plan read out in plain words. Structured fields only: no value and no source claim."""
+        labels=[]
+        for place in plan.get('places') or []:
+            if not isinstance(place,dict):continue
+            name=str(place.get('name') or '').strip()
+            if not name:continue
+            district=str(place.get('district') or '').strip()
+            if district and district.lower()!=name.lower():name=name+' district'
+            if place.get('state'):name=name+', '+str(place['state']).strip()
+            labels.append(name)
+        window=None
+        if plan.get('start_local') and plan.get('end_local'):
+            start,end=parsed(plan['start_local']),parsed(plan['end_local'])
+            label=(start.strftime('%d %b %Y %H:%M')+'-'+end.strftime('%H:%M') if start.date()==end.date()
+                   else start.strftime('%d %b %Y %H:%M')+'-'+end.strftime('%d %b %Y %H:%M'))
+            window={'start_local':plan['start_local'],'end_local':plan['end_local'],'label':label+' IST'}
+        measures=[]
+        for task in plan.get('tasks') or []:
+            for parameter in task.get('parameters') or []:
+                if parameter in {'official_warning','published_document','agricultural_advisory'}:continue
+                text=MEASURE_LABELS.get(parameter,str(parameter).replace('_',' '))
+                if text not in measures:measures.append(text)
+        for variable in plan.get('variables') or []:
+            # The settled plan carries the measure list as well as the tasks; the fixture and the
+            # model path can disagree about where it sits, and a reading must not lose it.
+            text=MEASURE_LABELS.get(variable,str(variable).replace('_',' '))
+            if text not in measures:measures.append(text)
+        products=[]
+        for task in plan.get('tasks') or []:
+            kind=task.get('kind')
+            if not kind or kind in [item['kind'] for item in products]:continue
+            products.append({'kind':kind,'operation':task.get('operation'),
+                             'label':PRODUCT_LABELS.get(kind,str(kind).replace('_',' '))})
+        clarification=str(plan.get('clarification') or '').strip()
+        reading={'intent':plan.get('intent'),'intent_label':PRODUCT_LABELS.get(plan.get('intent')),
+                 'places':labels,'window':window,'measures':measures,'products':products,
+                 'clarification':clarification,'context_action':plan.get('context_action') or 'new'}
+        pieces=[]
+        if labels:pieces.append('place: '+'; '.join(labels))
+        if window:pieces.append('window: '+window['label'])
+        if measures:pieces.append('asking about: '+', '.join(measures))
+        if products:pieces.append('will read: '+', '.join(item['label'] for item in products))
+        if clarification:pieces.append('will ask you for: '+clarification.rstrip('.'))
+        reading['line']=' \u00b7 '.join(pieces)
+        return reading
 
     def _cancelled(self,body,q,request_id,stage):
         cid,state=self.state(body.get('conversation_id'))

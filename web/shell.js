@@ -461,8 +461,10 @@ const WG = window.WG;
     // A view name may carry a hyphen (air-quality), so the route pattern must allow one: the
     // first live browser sweep found #/air-quality matching only 'air' and falling back to Ask.
     const match = /^#\/([a-z-]+)/.exec(window.location.hash || '');
-    /* A fresh visit opens the workspace; conversation deep links still open Ask. */
-    const name = match ? match[1] : 'workspace';
+    /* A fresh visit opens Ask, the conversational front door; a route still opens its own
+       surface, and an unknown one falls back to Ask. The guided surfaces are all still reachable
+       from the rail, and the keyboard hints on it name the view they actually open. */
+    const name = match ? match[1] : 'assistant';
     return VIEWS.indexOf(name) >= 0 ? name : 'assistant';
   }
   function showView(name) {
@@ -1319,6 +1321,7 @@ const WG = window.WG;
   WG.setPlace = setPlace;
   WG.render = render;
   WG.paintView = paintView;
+  WG.currentView = currentView;  /* exposed for the component checks, which set the hash themselves */
   WG.freshness = freshness;
   WG.VIEWS = VIEWS;
   WG.VIEW_SHORTCUTS = VIEW_SHORTCUTS;

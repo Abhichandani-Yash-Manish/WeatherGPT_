@@ -547,6 +547,17 @@ async function run() {
   h.api().render();
   console.log('PASS: every routed view name resolves to itself, including one that carries a hyphen');
 
+  // The front door is the conversation. A fresh visit with no route opens Ask, and an unknown
+  // route falls back to it; every guided surface is still opened by the route that names it.
+  h.window.location.hash = '';
+  assert.equal(h.api().currentView(), 'assistant', 'a fresh visit with no route opens Ask');
+  h.api().render();
+  assert.equal(h.api().state.view, 'assistant', 'and Ask is the surface that is shown');
+  h.window.location.hash = '#/nothing-here';
+  assert.equal(h.api().currentView(), 'assistant', 'an unknown route falls back to Ask, not to a broken view');
+  h.window.location.hash = '#/overview';
+  console.log('PASS: a fresh visit opens the conversational front door and an unknown route falls back to it');
+
   const loadingNode = h.api().loading('Reading the sources…');
   assert.equal(withClass(loadingNode, 'skeleton-bar').length, 3, 'a loading state shows the shape of the answer that is coming');
   assert(withClass(loadingNode, 'skeleton-frame').length === 1, 'a loading state reserves the chart frame before it arrives');

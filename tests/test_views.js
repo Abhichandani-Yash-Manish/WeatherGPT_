@@ -413,3 +413,33 @@ console.log('PASS: two products in one turn are compared in plain terms and neve
   assert.equal(withClass(savedCard, 'lead-number').length, 0, 'a plan is never presented as a headline value');
 }());
 console.log('PASS: a plan question offers quick replies, and a saved plan card offers Change and Undo');
+
+
+// 19. the first reading is provisional, repeats no value, and a carried one is not a new reading
+const c1Reading = context.readingLine({ provisional:true, model_calls:0,
+  note:'A first reading by the deterministic rules planner, before any retrieval and before any model call. The model planner may revise it, and the values follow with the answer. Nothing in this reading is evidence.',
+  reading:{ basis:'rules', line:'place: Ahmedabad, Gujarat · window: 13 Sep 2026 06:30-12:30 IST · asking about: rain · will read: a point forecast' } });
+assert(c1Reading, 'A reading packet produces a reading line');
+const c1ReadingText = String(c1Reading.textContent);
+assert(/Ahmedabad/.test(c1ReadingText), 'The reading names the place the rules heard');
+assert(/rain/.test(c1ReadingText), 'The reading names the measure the rules heard');
+assert(!/[0-9]+\s*(mm|cm|km\/h|°C)/.test(c1ReadingText), 'The reading repeats no value with a unit');
+assert(!/citation|sha256/i.test(c1ReadingText), 'The reading carries no citation');
+assert(/not evidence|may revise/i.test(c1ReadingText), 'The reading states that it is provisional and not evidence');
+assert(context.readingLine({ reading:null, note:'x' }) === null, 'A packet with no reading produces no reading line');
+assert(context.readingLine({}) === null, 'A packet without a reading field produces no reading line');
+const c1Carried = context.readingLine({ reading:{ basis:'carried', line:'carrying from your last message · place: Ahmedabad, Gujarat · asking about: rain' } });
+assert(c1Carried, 'A carried context produces a reading line');
+assert(/not a new reading/i.test(String(c1Carried.textContent)), 'A carried reading says it is what the conversation holds, not a new reading');
+console.log('PASS: the first reading is labelled provisional, repeats no value and is never evidence');
+
+
+// 20. the placeholder carries the receipt the conversation already holds, with its own time
+const c1WithReceipt = context.renderWorking('Will it rain?', { place:'Ahmedabad', at:'13 Sep 2026, 06:12 IST' });
+const c1ReceiptText = String(c1WithReceipt.textContent);
+assert(/last read Ahmedabad at 13 Sep 2026, 06:12 IST/.test(c1ReceiptText), 'The placeholder names where the conversation last read and when');
+assert(/stands until this turn replaces it/.test(c1ReceiptText), 'The receipt is stated as the conversation own receipt, not fresh evidence');
+const c1WithoutReceipt = context.renderWorking('Will it rain?', null);
+assert(!/last read/.test(String(c1WithoutReceipt.textContent)), 'No receipt is shown when the conversation holds none');
+assert(/Working on it/.test(String(c1WithoutReceipt.textContent)), 'The placeholder still says it is working');
+console.log('PASS: the placeholder states the conversation own receipt without dressing it as fresh evidence');

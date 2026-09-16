@@ -36,11 +36,23 @@ class Workspace:
         self._foundation=None
 
     def chat(self,body):
+        return self.engine().ask(body)
+
+    def chat_preview(self,body):
+        """The first reading of a question, while the real turn is still working. Never evidence.
+
+        It shares the conversation engine so it reads the same conversation state the answer will,
+        and it takes no place in the wait queue: it plans with the deterministic rules only and
+        acquires nothing.
+        """
+        return self.engine().preview(body)
+
+    def engine(self):
         from .conversation import ConversationEngine
         if self.conversation is None:
             with self._conversation_lock:
                 if self.conversation is None:self.conversation=ConversationEngine(self)
-        return self.conversation.ask(body)
+        return self.conversation
 
     def watch_store(self):
         from .watches import WatchStore
@@ -1053,6 +1065,7 @@ def make_server(workspace, port=8765):
                     or not hmac.compare_digest(supplied,token)):
                 return self.respond(403,{'error':'Reload this local workspace before sending a request'})
             routes={'/api/answer':workspace.answer,'/api/refresh':workspace.refresh,'/api/chat':workspace.chat,
+                    '/api/chat/preview':workspace.chat_preview,
                     '/api/chat/cancel':workspace.cancel_chat,'/api/watches/check':workspace.check_watches,'/api/watches/delete':workspace.delete_watch,'/api/watches/channels':workspace.set_watch_channels,'/api/watches/create':workspace.create_watch,'/api/warm':workspace.warm,
                     '/api/briefing/run':workspace.run_briefing,
                     '/api/plans/check':workspace.check_plans,'/api/plans/update':workspace.update_plan,'/api/plans/replay':workspace.replay_plans,

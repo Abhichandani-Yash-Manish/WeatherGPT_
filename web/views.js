@@ -1196,12 +1196,20 @@ function renderWelcome(handlers) {
   box.append(home);
   return box;
 }
-function renderWorking(question) {
+function renderWorking(question, receipt) {
   const box = el('div', undefined, 'working');
   box.append(el('span', undefined, 'working-dot'));
   const body = el('div', undefined, 'working-body');
   body.append(el('p', 'Working on it', 'working-title'));
   body.append(el('p', 'Resolving the place and window, then retrieving evidence. A local model is interpreting your question, so this can take up to about a minute.', 'working-note'));
+  /* The engine's own first reading of this question lands here while the turn works. It arrives
+     carrying provisional:true, it repeats no value, and the answer card replaces this whole box. */
+  const reading = el('p', undefined, 'working-reading');
+  reading.hidden = true;
+  body.append(reading);
+  if (receipt && receipt.place && receipt.at) {
+    body.append(el('p', 'This conversation last read ' + receipt.place + ' at ' + receipt.at + '; that receipt stands until this turn replaces it.', 'working-receipt'));
+  }
   const clock = el('p', undefined, 'working-clock');
   clock.dataset.since = String(Date.now());
   body.append(clock);
@@ -1476,5 +1484,20 @@ function stageLine(progress) {
   if (isFinite(seconds) && seconds >= 2) wrap.append(el('span', Math.round(seconds) + ' s in this stage', 'stage-note'));
   if ((progress.stages_seen || []).length > 1) wrap.append(el('span', progress.stages_seen.join(' → '), 'stage-note'));
   wrap.append(el('span', progress.stage_note || 'A stage names work in progress; it is not a completion estimate.', 'stage-note'));
+  return wrap;
+}
+function readingLine(packet) {
+  // The engine's own first reading of the question, shown while the answer is still being
+  // retrieved. It is provisional by contract: it repeats no value, cites nothing and is never
+  // saved, and the card that replaces it carries the evidence. A carried reading is what the
+  // conversation already holds; it is not a claim about the new message.
+  const reading = packet && packet.reading;
+  if (!reading || !reading.line) return null;
+  const wrap = el('span', undefined, 'reading-readout');
+  wrap.append(el('span', '\u25c7', 'reading-glyph'));
+  wrap.append(el('span', reading.line, 'reading-text'));
+  wrap.append(el('span', reading.basis === 'carried'
+    ? 'What the conversation is still carrying. Not a new reading, not evidence.'
+    : (packet.note || 'A first reading, not evidence.'), 'reading-note'));
   return wrap;
 }

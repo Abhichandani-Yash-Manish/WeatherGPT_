@@ -12,7 +12,7 @@
      how an explicit choice could be lost to inference. */
   const LANGUAGES = { loaded:false, rows:[], speakable:new Set() };
   const state = { conversationId:null, busy:false, controller:null, language:'', startedAt:0, ticker:null, ledger:null, lastSeen:null,
-                  requestId:null, cancelRequested:false, stageTimer:null };
+                  requestId:null, cancelRequested:false, stageTimer:null, lastReceipt:null, previewSeq:0 };
 
   /* ---------- surface state ---------- */
   function setService(text, cls) {
@@ -55,6 +55,46 @@
   function stopStage() {
     if (state.stageTimer) { clearInterval(state.stageTimer); state.stageTimer = null; }
     paintStage(null);
+  }
+  /* The engine's own first reading of the question, asked for beside the real turn. It is
+     provisional by contract, so it fills the placeholder and nothing else; the answer card
+     replaces the whole placeholder. A reading that never arrives costs the turn nothing. */
+  function paintReading(host, packet) {
+    if (!host) return;
+    const line = (typeof readingLine === 'function') ? readingLine(packet) : null;
+    if (!line) return;
+    host.textContent = '';
+    host.append(line);
+    host.hidden = false;
+  }
+  async function askPreview(question, working, seq) {
+    const host = working && working.querySelector ? working.querySelector('.working-reading') : null;
+    if (!host) return;
+    const body = { question:question };
+    if (state.conversationId) body.conversation_id = state.conversationId;
+    let packet = null;
+    try { packet = await call('/api/chat/preview', jsonRequest('POST', body, state.controller ? state.controller.signal : null)); }
+    catch (error) { return; /* the first reading is an extra; its absence must not fail the turn */ }
+    if (seq !== state.previewSeq) return;
+    paintReading(host, packet);
+  }
+  /* The receipt the conversation already holds: where it last read, and when the server answered.
+     It is shown as the conversation's own receipt, never as fresh evidence. */
+  function istClock(iso) {
+    const when = new Date(iso);
+    if (isNaN(when.getTime())) return '';
+    try {
+      return new Intl.DateTimeFormat('en-IN', { timeZone:'Asia/Kolkata', day:'2-digit', month:'short',
+        hour:'2-digit', minute:'2-digit', hour12:false }).format(when) + ' IST';
+    } catch (error) { return ''; }
+  }
+  function rememberReceipt(packet) {
+    const facts = (packet && packet.facts) || [];
+    const plan = (packet && packet.plan) || {};
+    const place = (facts.length && facts[0].place) ||
+      ((plan.places || []).map(item => item && item.name).filter(Boolean).join(', ')) || '';
+    const at = istClock(packet && packet.answered_at_utc);
+    state.lastReceipt = (place && at) ? { place:place, at:at } : null;
   }
   function startTicker() {
     stopTicker();
@@ -207,6 +247,7 @@
   function newConversation() {
     if (state.busy) { showError('Wait for the current turn before starting a new conversation.', true); return; }
     state.conversationId = null;
+    state.lastReceipt = null;
     closeRail();
     clearError();
     if (window.location.hash && window.history && window.history.replaceState) window.history.replaceState(null, '', window.location.pathname + '#/assistant');
@@ -268,13 +309,15 @@
     if (!question) { showError('Type a question first.'); return; }
     clearError();
     if (request.showQuestion !== false) { retireWelcome(); append(renderUserTurn(question)); }
-    const working = renderWorking(question);
+    const working = renderWorking(question, state.lastReceipt);
     append(working);
     setBusy(true, 'Interpreting the question, then retrieving evidence…');
     setService('Working', 'is-busy');
     state.controller = new AbortController();
     state.cancelRequested = false;
     state.requestId = newRequestId();
+    state.previewSeq += 1;
+    askPreview(question, working, state.previewSeq);
     try {
       const body = { question:question, output_language:state.language || '', request_id:state.requestId };
       if (typeof WG !== 'undefined' && typeof WG.personaEntry === 'function' && WG.personaEntry()) body.persona = WG.personaEntry().id;
@@ -284,6 +327,7 @@
       const packet = await call('/api/chat', jsonRequest('POST', body, state.controller.signal));
       if (packet.conversation_id) state.conversationId = packet.conversation_id;
       if (packet.status === 'answered' || packet.status === 'partial') rememberAnswer();
+      rememberReceipt(packet);
       working.remove();
       const card = renderTurn(packet, handlers());
       append(card);
