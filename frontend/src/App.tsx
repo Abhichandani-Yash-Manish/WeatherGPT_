@@ -11,6 +11,7 @@ import { AskSurface } from './chat/AskSurface';
 import { Landing } from './landing/Landing';
 import { OwnerGate } from './landing/OwnerGate';
 import { closeGate, hasOwnerVerifier, isGateOpen } from './landing/owner';
+import { ErrorBoundary } from './shell/ErrorBoundary';
 import { Palette } from './shell/Palette';
 import { Rail } from './shell/Rail';
 import { SkyBackground } from './shell/SkyBackground';
@@ -52,6 +53,15 @@ function Shell() {
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
+  /* The document title follows the surface, so a deep link is identifiable in the tab, in the history and in
+     a bookmark. It names the product first for the same reason the rail does. */
+  useEffect(() => {
+    if (shell === 'landing') document.title = 'WeatherGPT — evidence-first weather, on this machine';
+    else if (shell === 'signin') document.title = 'WeatherGPT — owner gate';
+    else if (view.id === 'assistant') document.title = 'WeatherGPT — Ask';
+    else document.title = 'WeatherGPT — ' + view.label;
+  }, [shell, view.id, view.label]);
+
   const ask = useCallback(
     (question: string) => {
       setSeed({ question, nonce: Date.now() });
@@ -88,13 +98,15 @@ function Shell() {
             go('signin');
           }}
         />
-        {view.id === 'assistant' ? (
-          <section className="mx-auto flex min-h-0 w-full max-w-5xl flex-1 flex-col px-4 py-4" data-surface="assistant">
-            <AskSurface language={language} persona={persona} seed={seed} />
-          </section>
-        ) : (
-          <SurfaceHost view={view} onAsk={ask} />
-        )}
+        <ErrorBoundary onReset={() => open('assistant')}>
+          {view.id === 'assistant' ? (
+            <section className="mx-auto flex min-h-0 w-full max-w-5xl flex-1 flex-col px-4 py-4" data-surface="assistant">
+              <AskSurface language={language} persona={persona} seed={seed} />
+            </section>
+          ) : (
+            <SurfaceHost view={view} onAsk={ask} />
+          )}
+        </ErrorBoundary>
         <p className="px-4 pb-3 text-[11px] quiet" data-print="drop">
           Every value on this page arrived with its source, its window and the time it was retrieved. The workspace
           answers on this machine only and will not invent a warning, an observation, a water level or a forecast.

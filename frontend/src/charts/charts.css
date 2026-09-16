@@ -1,0 +1,7 @@
+/* The chart language, ported with the renderer: a grid, a series, and points that are the parts of the
+   figure a reader can inspect. A missing point is simply not drawn. */
+.chart-grid { stroke: var(--line); stroke-width: 1; }
+.chart-axis { fill: var(--mute); font-size: 11px; font-family: var(--mono); }
+.chart-series { stroke: var(--data); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.chart-point { fill: var(--data); cursor: pointer; }
+.chart-point:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }

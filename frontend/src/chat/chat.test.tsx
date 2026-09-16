@@ -118,6 +118,20 @@ describe('the transcript', () => {
     expect(within(card).queryByText('Evidence receipt')).toBeNull();
   });
 
+  it('names what a continuation carried and what it changed', async () => {
+    server.use(
+      ...handlers({
+        ...FORECAST,
+        trace: { ...FORECAST.trace, context_resolution: { action: 'revise', inherited_fields: ['place', 'window'], changed_fields: ['measure'] } },
+      }),
+    );
+    withClient(<AskSurface language="" persona="" />);
+    await ask('and what about the evening?');
+    const carried = await screen.findByTestId('carried-context');
+    expect(carried).toHaveTextContent('Carried from the previous turn: place, window');
+    expect(carried).toHaveTextContent('changed here: measure');
+  });
+
   it('sets a held answer apart from a retrieved one', async () => {
     server.use(...handlers({ ...FORECAST, status: 'unavailable', facts: [], citations: [], answer: 'I could not retrieve a usable forecast for that window.' }));
     withClient(<AskSurface language="" persona="" />);

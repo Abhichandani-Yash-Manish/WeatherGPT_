@@ -87,8 +87,9 @@ build is served beside it:
 The React surface now has the transcript (the question kept above its answer, the working turn naming the
 engine's stages and its provisional first reading, the validity ruler, the receipt, the sources, the reading
 register, stored conversations, and a voice path that keeps the measured-language rules), six real modules
-(Today, Warnings, Forecast, Observations, Published documents, Sources and settings), a command palette, the
-front door and the local owner gate. Thirteen surfaces are still placeholders that say which stage they arrive
+(Today, Warnings, Forecast, Observations, Published documents, Sources and settings, Map, What changed,
+Farm advisories, Air quality), the chart block, a command palette, the
+front door and the local owner gate. Nine surfaces are still placeholders that say which stage they arrive
 in; the renderings are in [docs/90](90-frontend-r2-flagship-transcript.md) and in frontend/public/shots/.
 
 The served page keeps the session-token contract and the **strict** CSP (`script-src 'self'`, `style-src
@@ -273,7 +274,7 @@ The interface states these limits instead of filling them:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 1292 Python tests
+python3 -m pytest tests/ -q                          # 1295 Python tests
 cd frontend && npx tsc --noEmit && npm test          # 10 React suites, 68 component checks
 node tests/test_charts.js                            #  2 of 110 printed component checks
 node tests/test_viz.js                               #  9; the chart engine: plume, meteogram, gaps and locators

@@ -4,6 +4,7 @@
 
 import { useState } from 'react';
 import type { AnswerPacket, Fact } from '../api/types';
+import { ChartBlock } from '../charts/ChartBlock';
 import { istStamp } from '../lib/time';
 import { answerText, copyText, downloadFile, markdownTurn, stampName } from './actions';
 import type { Register } from './model';
@@ -33,6 +34,13 @@ export function AnswerTurn({ packet, register, onFollowUp, onRefresh, onAnswer }
   const coverage = coverageNote(packet);
   const point = firstPoint(packet);
   const conversational = packet.status === 'conversation';
+  const resolution = packet.trace?.context_resolution;
+  const carried = resolution && (resolution.inherited_fields || []).length
+    ? 'Carried from the previous turn: ' +
+      (resolution.inherited_fields || []).join(', ') +
+      ((resolution.changed_fields || []).length ? ' · changed here: ' + (resolution.changed_fields || []).join(', ') : ' · nothing else changed') +
+      '.'
+    : null;
   const full = register === 'full';
   const open = register !== 'brief';
 
@@ -51,6 +59,11 @@ export function AnswerTurn({ packet, register, onFollowUp, onRefresh, onAnswer }
       ) : null}
 
       {coverage ? <p className="text-xs text-ink-soft">{coverage}</p> : null}
+
+      {/* A continuation keeps what the previous turn resolved. Saying so on the card is the difference between
+          "it remembered" and "it guessed": the engine reports which fields were inherited and which changed, so
+          the reader can see the thread rather than trust it. */}
+      {carried ? <p className="reading-line" data-testid="carried-context">{carried}</p> : null}
 
       {primary && !conversational ? <LeadReading packet={packet} fact={primary} /> : null}
       {primary && open && !conversational ? <ValidityRuler packet={packet} /> : null}
@@ -74,6 +87,12 @@ export function AnswerTurn({ packet, register, onFollowUp, onRefresh, onAnswer }
       ) : null}
 
       {open && rest.length ? <FactsTable packet={packet} facts={rest} /> : null}
+
+      {/* A series the engine returned with the answer is drawn by the chart block, which keeps a missing
+          point a gap and keeps the numbers reachable as a table. */}
+      {(packet.charts || []).map((chart, index) => (
+        <ChartBlock key={'chart-' + index} chart={chart} />
+      ))}
 
       {(packet.choices || []).length ? (
         <div className="card px-3 py-2">

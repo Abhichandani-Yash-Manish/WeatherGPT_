@@ -76,7 +76,7 @@
     {
       "file": "test_suite_ui.js",
       "checks": 33,
-      "ported": 4,
+      "ported": 8,
       "evidence": [
         {
           "spec": "src/modules/modules.test.tsx",
@@ -85,6 +85,23 @@
             "renders only the colours the payload stated, beside the product wording, and says what it filters",
             "renders the index counts, states an unprinted issue date and a pruned body honestly",
             "renders the capability and source counts, each provider\u2019s own availability, and the local state"
+          ]
+        },
+        {
+          "spec": "src/modules/map.test.tsx",
+          "tests": [
+            "draws only the colours the features stated, and lists the same features in the table",
+            "draws the layer the reader chooses, and states when no feature carried a colour",
+            "prints both printed editions with their vintages, invents no delta, and reads the district product"
+          ]
+        },
+        {
+          "spec": "src/modules/advisories.test.tsx",
+          "tests": [
+            "renders the directory rows it was given, reads the selected state, and filters only the rows already read",
+            "asks for a district and does not read a brief from a coordinate when none is named",
+            "renders the modelled parameters with their units, the cell and its distance, and says it is a model",
+            "records a cell distance the payload does not state as absent, never as a number computed here"
           ]
         }
       ]
@@ -116,8 +133,17 @@
     {
       "file": "test_charts.js",
       "checks": 2,
-      "ported": 0,
-      "evidence": []
+      "ported": 2,
+      "evidence": [
+        {
+          "spec": "src/charts/charts.test.tsx",
+          "tests": [
+            "draws only returned values, leaves a missing point as a gap, and keeps the table alongside",
+            "says so when every point is missing rather than drawing an empty frame",
+            "says so when the series came back with no points at all"
+          ]
+        }
+      ]
     }
   ],
   "react_only": [
@@ -154,7 +180,27 @@
     {
       "spec": "src/modules/modules.test.tsx",
       "tests": 13,
-      "note": "The six ported module surfaces; four checks are claimed as ports above."
+      "note": "The six first-tranche module surfaces; four checks are claimed as ports above."
+    },
+    {
+      "spec": "src/modules/map.test.tsx",
+      "tests": 6,
+      "note": "The map and what-changed surfaces: new."
+    },
+    {
+      "spec": "src/modules/advisories.test.tsx",
+      "tests": 7,
+      "note": "Farm advisories and air quality: new."
+    },
+    {
+      "spec": "src/charts/charts.test.tsx",
+      "tests": 3,
+      "note": "The chart block; two checks are claimed as ports of test_charts.js."
+    },
+    {
+      "spec": "src/shell/errorboundary.test.tsx",
+      "tests": 2,
+      "note": "The surface error boundary: new."
     }
   ]
 }

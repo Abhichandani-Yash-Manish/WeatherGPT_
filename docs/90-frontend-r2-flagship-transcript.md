@@ -26,13 +26,13 @@ The build gate is unchanged: `verify_all.py` stays green and the vanilla fronten
 
 | Measure | Value | How it was measured |
 | --- | --- | --- |
-| Frontend component checks | **10 suites, 68 checks** | `cd frontend && npx vitest run` |
+| Frontend component checks | **14 suites, 88 checks** | `cd frontend && npx vitest run` |
 | TypeScript | **0 errors** | `npx tsc --noEmit` |
 | Initial bundle graph | **107 KB gzip** against the 312 KB budget | `scripts/audit_react_build.py`, which follows the manifest's static imports |
 | Per-module chunks | 2.2–2.6 KB gzip each | the same manifest: each module is its own lazy chunk |
 | Built-output audit | 11 of 11 pass | `scripts/audit_react_build.py` |
 | Surface registry audit | 8 of 8 pass | `scripts/audit_surface_registry.py` |
-| Check-port ledger | 5 of 5 pass | `scripts/audit_check_port.py` |
+| Check-port ledger | 5 of 5 pass; **25 of the 110** checks name a React counterpart | `scripts/audit_check_port.py` |
 | Live HTTP acceptance of the served build | **14 of 14 pass** | `research/reviews/frontend-react-r2-20260917/live-r2.py` (page, token, CSP, hashed assets, authorised and refused reads, a real turn, progress, preview) |
 | A real turn through the served build | 43.14 s cold, 4.72 s warm | the same run, against the configured providers |
 | Browser evidence | 10 screenshots at 1440×900 | headless Chrome (agent-browser) against `--frontend react` on loopback, throwaway store |
@@ -102,12 +102,45 @@ and never claims to be authentication or encryption. It does not stand in the wa
 set, the workspace is exactly as open as it has always been, and the gate appears when an owner has set a
 passphrase and left the interface locked, or when a reader asks for it.
 
+## 6b. Second tranche: map, what changed, farm advisories and air quality
+
+The four surfaces the docs/88 ranking put next were added after the first tranche, in the same shape as the
+first six:
+
+- **Map** reads the layer manifest from /api/map/layers and then a served layer from /api/map/static/<layer>,
+  drawing the returned features as an SVG figure fitted to their own coordinates and listing the same features
+  in a table beside it. It says what it is: a schematic drawn from the served geometries, not a cartographic
+  basemap, not a location map and not a warning service; a feature the payload gave no colour for is drawn
+  without one and the surface says so.
+- **What changed** reads /api/forecast/changes (and the published district product for the same point) and
+  prints both stored editions with their vintages. It invents no delta: where the payload states one it is shown,
+  and where it does not the two printed values stand side by side with the payload's own note that comparing two
+  editions is not a skill or accuracy claim.
+- **Farm advisories** reads the published directory (/api/advisories/states, /api/advisories/districts) and the
+  composed brief for a named district. It refuses to read a district out of a coordinate, exactly as the engine
+  does, and it states that the advice is the publisher's text for a named district rather than a field
+  recommendation, a crop diagnosis or a dosage.
+- **Air quality** reads /api/air-quality for a grid cell: the parameters with their units, the cell and its
+  distance exactly as stated, and the sentence that this is a model and not a monitor. A cell distance the
+  payload did not state is recorded as absent rather than computed here.
+
+With them the frontend has **14 suites and 88 checks**, and the surface-registry audit now reports how many
+surfaces have a real module: 10 of the 19, with nine placeholders that state their stage and offer their
+questions to the conversation.
+
+R4 began in the same batch: **the chart block**. web/charts.js was the specification, so its rules are now React
+checks — only a value the engine returned is drawn, a missing point breaks the line instead of becoming a zero,
+every drawn point names its exact source value and evidence id, and the same numbers stay reachable as a table.
+The engine itself is served to the React build from its one tracked copy at /viz.js (pinned by
+`tests/test_react_vendor_assets.py`), so the vanilla geometry checks keep covering the code a React surface draws
+with; the forecast surface and every answer card that carries a series now draw it.
+
 ## 7. What is not done
 
-- **Thirteen surfaces are still placeholders**: map, farm advisories, air quality, aviation, what changed, climate,
-  sea and rivers, ensemble spread, forecast verification, compare places, briefcase, workspace, and the deep-link
-  brief pages. Each states its stage and offers its questions to the conversation in the meantime.
-- **The port ledger covers 19 of 110 vanilla checks.** The vanilla suites remain the regression net and still run
+- **Nine surfaces are still placeholders**: climate records, aviation, ensemble spread, forecast verification,
+  compare places, briefcase, workspace, sea and rivers and the deep-link brief pages. Each states its stage and
+  offers its questions to the conversation in the meantime.
+- **The port ledger covers 25 of 110 vanilla checks.** The vanilla suites remain the regression net and still run
   in `verify_all.py` until R6; `docs/86` keeps the one-for-one port as R2's gate and this batch does not claim it
   is complete.
 - **No screen-reader, keyboard-only or contrast acceptance per surface.** The foundation is in (one `h1` per
@@ -122,7 +155,7 @@ passphrase and left the interface locked, or when a reader asks for it.
 
 - `research/reviews/frontend-react-r2-20260917/live-r2.py` and `live-r2.json` — the served build read over HTTP.
 - `research/reviews/frontend-react-r2-20260917/check-port.json` — the port ledger the audit verifies.
-- `research/reviews/frontend-react-r2-20260917/shots-clean/` — the ten captures, and
+- `research/reviews/frontend-react-r2-20260917/shots-clean/` — seventeen captures at 1440x900 (the front page, the transcript welcome, a turn working, an answer, the gate, the two screenshots of the front page at scroll, and one of every ported surface including the map, what changed, farm advisories, air quality and the forecast picker), and
   `frontend/public/shots/` — the eight the landing page shows.
 - `scripts/audit_check_port.py` — now a step of `scripts/verify_all.py`.
 

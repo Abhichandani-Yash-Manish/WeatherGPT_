@@ -1142,6 +1142,14 @@ def make_server(workspace, port=8765):
                     if not page.exists():
                         return self.respond(503,'The React frontend has not been built. Run: cd frontend && npm install && npm run build. The vanilla frontend is served with --frontend legacy.','text/plain')
                     return self.respond(200,page.read_text().replace('__WORKSPACE_TOKEN__',token),'text/html',csp=REACT_CSP)
+                # The chart engine is served from its one tracked copy (web/viz.js) rather than bundled, so the
+                # vanilla checks that cover its geometry keep covering the code a React surface draws with. It
+                # is not content-hashed, so it is not cached immutably: a change must be picked up on reload.
+                if path=='/viz.js':
+                    engine=ROOT/'web'/'viz.js'
+                    if not engine.exists():
+                        return self.respond(404,{'error':'This workspace file is missing; restart the workspace from a complete checkout.'})
+                    return self.respond(200,engine.read_text(),'text/javascript',csp=REACT_CSP)
                 asset=_re.fullmatch(r'/assets/([A-Za-z0-9._-]+)',path)
                 if asset:
                     target=(root/'assets'/asset[1]).resolve()

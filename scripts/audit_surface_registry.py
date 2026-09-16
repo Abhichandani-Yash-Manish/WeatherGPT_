@@ -15,6 +15,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+MODULE_REGISTRY = ROOT / 'frontend' / 'src' / 'modules' / 'registry.ts'
+MODULE_IMPORT = re.compile(r"(?:'([a-z-]+)':\s*|([a-z-]+):\s*)\{\s*load:\s*\(\)\s*=>\s*import\('(\.[^']+)'\)")
 sys.path.insert(0, str(ROOT))
 from weathergpt_data.product_api import PRODUCT_PATHS  # noqa: E402
 from weathergpt_data.workspace import post_routes, Workspace  # noqa: E402
@@ -73,6 +75,14 @@ def main():
     workspace = Workspace.__new__(Workspace)  # the route table only needs bound methods, not stores
     mutations = set(post_routes(workspace))
     products = set(PRODUCT_PATHS)
+    registry_text = MODULE_REGISTRY.read_text(encoding='utf-8') if MODULE_REGISTRY.exists() else ''
+    ported = MODULE_IMPORT.findall(registry_text)
+    ported_ids = {quoted or bare for quoted, bare, _ in ported}
+    missing_modules = sorted(
+        spec.strip('./') + '.tsx'
+        for _, _, spec in ported
+        if not (MODULE_REGISTRY.parent / (spec.strip('./') + '.tsx')).exists()
+    )
     server = (ROOT / 'weathergpt_data' / 'workspace.py').read_text(encoding='utf-8')
     GATED_READ_ROUTES = {path for path in re.findall(r"path=='(/api/[a-z0-9/_-]+)'", server) if path not in products}
 
@@ -93,6 +103,12 @@ def main():
          str(len(SUBROUTE_REASONS)) + ' exemption(s), each with a reason'),
         ('no_surface_calls_a_mutation_route', not ({route for route in SURFACE_ROUTES.values() if route} & mutations),
          'a read surface must not be wired to a mutating route'),
+        ('every_ported_module_is_a_declared_surface', not (ported_ids - set(SURFACE_ROUTES)),
+         'modules with no surface: ' + str(sorted(ported_ids - set(SURFACE_ROUTES))) if ported_ids - set(SURFACE_ROUTES)
+         else str(len(ported_ids)) + ' of ' + str(len(SURFACE_ROUTES)) + ' surfaces have a real module, '
+              + str(len(set(SURFACE_ROUTES) - ported_ids)) + ' are placeholders that state their stage'),
+        ('every_ported_module_file_exists', not missing_modules,
+         ', '.join(missing_modules) if missing_modules else str(len(ported_ids)) + ' module file(s) present'),
     ]
     failed = [name for name, ok, _ in findings if not ok]
     if args.json:

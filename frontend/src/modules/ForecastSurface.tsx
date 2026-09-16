@@ -8,6 +8,7 @@ import type { Envelope } from '../api/types';
 import { count, orNot } from '../lib/format';
 import { istStamp } from '../lib/time';
 import { viewById } from '../shell/views';
+import { ChartBlock } from '../charts/ChartBlock';
 import { DataTable, EvidenceFooter, Failure, Facts, NO_ROW, NOT_RECORDED, PlacePicker, Reading, SurfaceShell, type PlaceChoice } from './Evidence';
 
 type Point = { unit?: string | null; points?: { t?: string | null; v?: number | null }[] };
@@ -128,6 +129,9 @@ export function Surface(): JSX.Element {
                     {count(points.length, 'point')} returned, {gaps ? count(gaps, 'point') + ' holding no value' : 'every returned point holds a value'}.
                     A missing point is a gap, never a zero.
                   </p>
+                  {/* The same points the table holds, drawn: a point with no value breaks the line instead
+                      of being drawn at zero. */}
+                  <ChartBlock chart={{ title: name, unit: series.unit || '', axis_label: 'Valid at', points }} />
                   <DataTable
                     caption={'Every point the product returned for ' + name + '.'}
                     columns={['Valid at (IST)', 'Value as returned']}

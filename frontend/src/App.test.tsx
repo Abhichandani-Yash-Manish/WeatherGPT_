@@ -40,6 +40,15 @@ describe('the shell', () => {
     expect(screen.getByLabelText('Your question')).toBeInTheDocument();
   });
 
+  it('names the surface in the tab, the history entry and a bookmark', async () => {
+    window.location.hash = '#/warnings';
+    render(<App />);
+    await waitFor(() => expect(document.title).toBe('WeatherGPT — Warnings'));
+    window.location.hash = '';
+    render(<App />);
+    await waitFor(() => expect(document.title).toMatch(/evidence-first weather/));
+  });
+
   it('keeps the keyboard shortcut contract the rail prints', async () => {
     window.location.hash = '#/assistant';
     render(<App />);

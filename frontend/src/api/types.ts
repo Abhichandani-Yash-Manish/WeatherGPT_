@@ -101,12 +101,26 @@ export type ResolvedPoint = {
   for_place_name?: string;
 };
 
+/* A returned series point. The engine states the instant as `t` and the value as `v`; the historical-record
+   charts state a `year` and an `x`, which is why both shapes are here rather than a guess in a component. */
+export type ChartPoint = {
+  t?: string | null;
+  v?: number | string | null;
+  value?: number | string | null;
+  label?: string;
+  x?: number;
+  year?: number;
+  evidence_id?: string;
+  source_locator?: string;
+};
+
 export type Chart = {
   kind?: string;
   title?: string;
   unit?: string;
-  points?: { t?: string; v?: number | null }[];
-  series?: { label?: string; points?: { t?: string; v?: number | null }[] }[];
+  axis_label?: string;
+  points?: ChartPoint[];
+  series?: { label?: string; points?: ChartPoint[] }[];
   source_id?: string;
   note?: string;
   [key: string]: unknown;
