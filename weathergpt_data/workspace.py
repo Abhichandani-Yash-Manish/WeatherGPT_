@@ -16,6 +16,7 @@ from .answers import AnswerService, ROOT
 from .ingestion import IngestionDB, run_one
 from .rag import context_from_answer
 from .documents import DocumentPruned
+from .ratelimit import RateLimited
 from .speech import LanguageServiceUnavailable
 from .transport import SourceError, parsed, utcnow
 
@@ -272,6 +273,8 @@ class Workspace:
             with self._conversation_lock:
                 if self.conversation is None:self.conversation=ConversationEngine(self)
         store=self.watch_store()
+        from .ratelimit import check as rate_check
+        rate_check('watches/check', store.path)
         send=channel_sender(self._push_key_path(),store.path)
         if body.get('id'):
             with check_lock(store.path):
@@ -307,7 +310,7 @@ class Workspace:
             raise SourceError('Unknown outbox state: '+str(state))
         store=self.watch_store()
         rows=OutboxStore(store.path).list(state=state,watch_id=watch_id)
-        summaries=[{key:row[key] for key in ('id','watch_id','correlation_id','fingerprint_sha256','state','channel','created_at','updated_at','retry_count','max_retries','next_retry_at','last_error')} for row in rows]
+        summaries=[{key:row[key] for key in ('id','watch_id','correlation_id','fingerprint_sha256','state','channel','created_at','updated_at','retry_count','max_retries','next_retry_at','last_error','error_class')} for row in rows]
         for summary,row in zip(summaries,rows):summary['payload']=row.get('payload') or {}
         return {'schema_version':'outbox-v1','delivery':'local_inbox_and_opt_in_web_push',
                 'note':'A notification is enqueued only when a watch check observes a changed official state; delivery is recorded per channel.',
@@ -332,6 +335,8 @@ class Workspace:
             raise SourceError('Send the watch id and a channels list')
         store=self.watch_store()
         watch_id=str(body['id'])
+        from .ratelimit import check as rate_check
+        rate_check('watches/channels', store.path)
         channels=list(body['channels'])
         if 'web_push' in channels and not PushStore(store.path).active_for_watch(watch_id):
             raise SourceError('No active push subscription for this watch; subscribe this browser first')
@@ -347,6 +352,8 @@ class Workspace:
         from .outbox import acknowledge
         if not isinstance(body,dict) or not body.get('response'):
             raise SourceError('Send one of: safe, need_help, evacuating, seen')
+        from .ratelimit import check as rate_check
+        rate_check('outbox/ack', self.watch_store().path)
         result=acknowledge(self.watch_store().path,str(outbox_id),str(body['response']),now=self.clock())
         result['schema_version']='outbox-ack-v1'
         return result
@@ -407,6 +414,8 @@ class Workspace:
             question='Notify me if an official '+body['hazard'].strip()+' warning is issued for '+name.strip()
         hazard=hazard_of(question)
         store=self.watch_store()
+        from .ratelimit import check as rate_check
+        rate_check('watches/create', store.path)
         watch=store.create(question,{'name':name.strip(),'state':place.get('state') or '',
                                      'district':place.get('district') or '','kind':'unknown',
                                      'coordinates':{'latitude':latitude,'longitude':longitude}},
@@ -443,6 +452,8 @@ class Workspace:
         """Store a browser push subscription, optionally bound to one watch."""
         from .push import PushStore
         if not isinstance(body,dict):raise SourceError('Send a push subscription')
+        from .ratelimit import check as rate_check
+        rate_check('push/subscribe', self.watch_store().path)
         keys=body.get('keys') or {}
         entry=PushStore(self.watch_store().path).subscribe(
             body.get('endpoint'),keys.get('p256dh'),keys.get('auth'),
@@ -457,6 +468,8 @@ class Workspace:
         """Revoke the browser push subscription for one endpoint."""
         from .push import PushStore
         if not isinstance(body,dict) or not body.get('endpoint'):raise SourceError('Send the endpoint to revoke')
+        from .ratelimit import check as rate_check
+        rate_check('push/unsubscribe', self.watch_store().path)
         return PushStore(self.watch_store().path).unsubscribe(str(body['endpoint']))
 
     # Plan Watch: plans described in chat, checked against the official district warning
@@ -1127,6 +1140,7 @@ def make_server(workspace, port=8765):
                 if outbox_id is not None:self.respond(200,workspace.ack_notification(outbox_id,body))
                 else:self.respond(200,routes[self.path](body))
             except LanguageServiceUnavailable as exc:self.respond(503,{'error':str(exc)})
+            except RateLimited as exc:self.respond(429,{'error':str(exc)})
             except (ValueError,TypeError,KeyError) as exc:self.respond(400,{'error':str(exc)})
             except (OSError,sqlite3.Error):self.respond(503,{'error':'The local evidence store is unavailable. Check its files and retry.'})
 
