@@ -228,6 +228,39 @@ class Workspace:
                 'checked_products':['S15 IMD district warning product','S06 CAP relay assessment'],
                 'watches':watches}
 
+    def watch_health(self):
+        """Supervision truth for the watch pipeline: last tick, freshness, queue, watchers.
+
+        A fresh daemon heartbeat means checks are running on schedule; anything
+        else is reported as manual-only or stale — never as a running service.
+        """
+        from .outbox import OutboxStore
+        from .watches import heartbeat_status, read_heartbeat
+        now=self.clock()
+        store=self.watch_store()
+        box=OutboxStore(store.path)
+        heartbeat=read_heartbeat(store.path)
+        tick=heartbeat_status(heartbeat,now=now)
+        watches=store.list(now=now)
+        active=[watch for watch in watches if not watch.get('expired') and watch.get('state')!='expired']
+        try:plan_watcher=self.plan_watcher().status()
+        except Exception:plan_watcher={'running':False}
+        trigger=(heartbeat or {}).get('trigger')
+        if tick['fresh'] and trigger=='daemon':
+            mode='foreground-supervised'
+        elif tick['fresh']:
+            mode='manual-recent'
+        else:
+            mode='manual-only'
+        return {'schema_version':'watch-health-v1',
+                'mode':mode,
+                'note':('No hosted daemon or OS scheduler is installed: checks run while a supervisor loop or a manual trigger fires. '
+                        'A stale tick means nobody is checking watches, and queued warnings wait until the next run.'),
+                'heartbeat':heartbeat,'tick':tick,
+                'outbox':box.stats(now=now),
+                'watches':{'total':len(watches),'active':len(active),'expired':len(watches)-len(active)},
+                'plan_watcher':plan_watcher}
+
     def check_watches(self,body):
         """Check one watch or every open watch, in the foreground, and record the outcome."""
         from .conversation import ConversationEngine
@@ -250,6 +283,13 @@ class Workspace:
         results=check_due(store,self.conversation,now=self.clock())
         dispatched=dispatch_outbox(store.path,now=self.clock(),send=send)
         escalated=escalate_unacked(store.path,now=self.clock())
+        from .watches import record_heartbeat
+        record_heartbeat(store.path,{'trigger':'manual-api',
+                                     'stale_after_seconds':3600,
+                                     'checked':len(results),
+                                     'enqueued':sum(1 for row in results if row.get('notification')),
+                                     'dispatched':len(dispatched),
+                                     'escalated':len(escalated)},now=self.clock())
         return {'schema_version':'watch-check-v1','delivery':'local_inbox_and_opt_in_web_push',
                 'note':'Foreground check only; no daemon is installed. Web push delivers to subscribed browsers only.',
                 'results':results,'dispatched':dispatched,'escalated':escalated}
@@ -263,7 +303,7 @@ class Workspace:
             if isinstance(value,(list,tuple)):value=value[0] if value else None
             return value
         state=first('state');watch_id=first('watch_id')
-        if state is not None and state not in {'created','queued','sent','failed','dead','acked','gone'}:
+        if state is not None and state not in {'created','queued','claimed','sent','failed','dead','acked','gone'}:
             raise SourceError('Unknown outbox state: '+str(state))
         store=self.watch_store()
         rows=OutboxStore(store.path).list(state=state,watch_id=watch_id)
@@ -325,7 +365,7 @@ class Workspace:
                                           'unacked':0,'sources':{}})
             entry['watches']+=1
             for row in box.list(watch_id=watch['id']):
-                if row['state'] in ('created','queued','sent','failed','dead','acked','gone'):
+                if row['state'] in ('created','queued','claimed','sent','failed','dead','acked','gone'):
                     entry['notifications']+=1
                     for fact in (row.get('payload') or {}).get('facts') or []:
                         source=str((fact or {}).get('source_id') or 'unknown')
@@ -1007,7 +1047,7 @@ def make_server(workspace, port=8765):
             if path.startswith('/api/'):
                 known=(workspace.is_product(path) or path=='/api/conversations' or path=='/api/health'
                        or path=='/api/languages' or path=='/api/watches' or path=='/api/watches/dma' or path=='/api/outbox' or path=='/api/plans' or path=='/api/chat/progress'
-                       or path=='/api/push/vapid-key' or path=='/api/push/state'
+                        or path=='/api/push/vapid-key' or path=='/api/push/state' or path=='/api/watch-health'
                        or path=='/api/advisories/brief' or path=='/api/briefs' or path=='/api/briefing/latest'
                        or path.startswith('/api/briefs/')
                        or path.startswith('/api/conversations/') or path.startswith('/api/map/static/'))
@@ -1022,6 +1062,7 @@ def make_server(workspace, port=8765):
                     if path=='/api/outbox':return self.respond(200,workspace.outbox(parse_qs(urlsplit(self.path).query)))
                     if path=='/api/push/vapid-key':return self.respond(200,workspace.vapid_public_key())
                     if path=='/api/push/state':return self.respond(200,workspace.push_state(parse_qs(urlsplit(self.path).query)))
+                    if path=='/api/watch-health':return self.respond(200,workspace.watch_health())
                     if path=='/api/plans':return self.respond(200,workspace.plans(parse_qs(urlsplit(self.path).query)))
                     if path=='/api/chat/progress':return self.respond(200,workspace.chat_progress())
                     if path=='/api/advisories/brief':return self.respond(200,workspace.advisory_brief(parse_qs(urlsplit(self.path).query)))

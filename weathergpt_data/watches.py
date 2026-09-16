@@ -450,3 +450,79 @@ def check_due(store, engine, now=None):
                 continue
             results.append(check_watch(store, engine, watch, now=now, correlation_id=correlation_id))
     return results
+
+
+HEARTBEAT_SCHEMA = 'watch-heartbeat-v1'
+
+
+def heartbeat_path(store_path):
+    """Where the last successful watch-check run records its tick (gitignored runtime)."""
+    from pathlib import Path
+    return Path(store_path).parent / 'watch-heartbeat.json'
+
+
+def record_heartbeat(store_path, tick, now=None):
+    """Atomically record one watch-check run tick. Never raises for I/O reasons.
+
+    `tick` carries trigger/cycle/owner/counts; bookkeeping (schema, tick time)
+    is added here. A failed write returns False so callers can note it, but a
+    monitoring tick must never break the run it reports on.
+    """
+    import os
+    import tempfile
+    now = now or utcnow()
+    path = heartbeat_path(store_path)
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        record = {'schema_version': HEARTBEAT_SCHEMA, 'tick_at_utc': stamp(now)}
+        record.update(tick or {})
+        with tempfile.NamedTemporaryFile(mode='w', encoding='utf-8', dir=path.parent,
+                                         delete=False) as output:
+            temporary = output.name
+            json.dump(record, output, ensure_ascii=False)
+            output.flush()
+            os.fsync(output.fileno())
+        os.replace(temporary, path)
+        return True
+    except OSError:
+        try:
+            if 'temporary' in dir() and os.path.exists(temporary):
+                os.unlink(temporary)
+        except OSError:
+            pass
+        return False
+
+
+def read_heartbeat(store_path):
+    """The last recorded tick, or None when no runner ever reported (or it is unreadable)."""
+    path = heartbeat_path(store_path)
+    try:
+        record = json.loads(path.read_text(encoding='utf-8'))
+    except (OSError, ValueError):
+        return None
+    return record if isinstance(record, dict) else None
+
+
+def heartbeat_status(heartbeat, now=None):
+    """Fresh/stale verdict for a heartbeat. Stale means nobody is checking.
+
+    Each tick names its own `stale_after_seconds` (daemon: two intervals plus
+    grace; manual: one hour). Absent or unreadable heartbeats are stale by
+    definition — the supervisor cannot prove a check ever ran.
+    """
+    now = now or utcnow()
+    if not isinstance(heartbeat, dict) or not heartbeat.get('tick_at_utc'):
+        return {'fresh': False, 'age_seconds': None, 'reason': 'no watch-check run has ever reported'}
+    try:
+        age = (now - parsed(heartbeat['tick_at_utc'])).total_seconds()
+    except (SourceError, ValueError, TypeError):
+        return {'fresh': False, 'age_seconds': None, 'reason': 'the recorded tick time is unreadable'}
+    stale_after = heartbeat.get('stale_after_seconds')
+    try:
+        stale_after = float(stale_after)
+    except (TypeError, ValueError):
+        stale_after = 3600.0
+    if age <= stale_after:
+        return {'fresh': True, 'age_seconds': age, 'reason': 'a check run reported within its freshness window'}
+    return {'fresh': False, 'age_seconds': age,
+            'reason': 'the last reported check run is older than its freshness window'}
