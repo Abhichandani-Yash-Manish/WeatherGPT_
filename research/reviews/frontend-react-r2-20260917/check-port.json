@@ -110,14 +110,20 @@
           "tests": [
             "shows the transcript for correction, labels recognition confidence as recognition only, and puts the heard text in the question box"
           ]
+        },
+        {
+          "spec": "src/chat/voice-detail.test.tsx",
+          "tests": [
+            "states the language the recogniser heard and its confidence about that hearing, as recognition only"
+          ]
         }
       ],
-      "note": "Complete: the measured-write language list, the speakable rule, and the transcript shown for correction with the recogniser own confidence labelled as recognition only."
+      "note": "Complete, and richer than the vanilla suite: the measured-write language list, the speakable rule, the transcript shown for correction with the recogniser own confidence labelled as recognition only, and the recogniser own report of the language it heard and its confidence in that hearing."
     },
     {
       "file": "test_workspace_ui.js",
       "checks": 6,
-      "ported": 3,
+      "ported": 4,
       "evidence": [
         {
           "spec": "src/modules/workspace.test.tsx",
@@ -131,6 +137,12 @@
           "spec": "src/modules/workspace.parity.test.tsx",
           "tests": [
             "keeps a late read for an earlier point from overwriting the reading for the point chosen after it"
+          ]
+        },
+        {
+          "spec": "src/chat/voice-detail.test.tsx",
+          "tests": [
+            "says the server may still be finishing a request the client stopped waiting for"
           ]
         }
       ]

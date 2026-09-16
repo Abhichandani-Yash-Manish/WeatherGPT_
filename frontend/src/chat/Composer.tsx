@@ -54,11 +54,18 @@ export function Composer({ draft, onDraft, onSend, busy, language, languages, on
         return;
       }
       setVoiceNote('');
+      /* The recogniser's own report about its hearing is shown as it returned it: which language it thinks it
+         heard, and how confident it is about that hearing. Recognition confidence is never answer confidence. */
+      const heardLanguage = result.detected_language_code ? 'Heard as ' + result.detected_language_code : 'Language as heard not recorded';
+      const confidence = typeof result.recognition_probability === 'number'
+        ? 'recognition confidence ' + result.recognition_probability
+        : 'recognition confidence not recorded';
       setHeard({
         text,
         detail:
-          'Recognition confidence is the recogniser’s own number about its hearing, and is not any answer confidence. ' +
-          'The transcript is a proposal: correct it before asking.',
+          heardLanguage + ' · ' + confidence +
+          " — the recogniser’s own number about its hearing, and not any answer confidence, not a forecast and not any kind of" +
+          ' confidence in a value. The transcript is a proposal: correct it before asking.',
       });
     } catch (error) {
       setVoiceNote(String((error as Error)?.message || error));

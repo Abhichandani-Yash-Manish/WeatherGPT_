@@ -85,7 +85,13 @@ export async function api<T>(path: string, init: RequestInit = {}, options: Requ
   } catch (error) {
     if (error instanceof ApiError) throw error;
     if ((error as Error)?.name === 'AbortError') {
-      throw new ApiError('That request was stopped before the workspace answered it.', 0, 'offline', 'aborted');
+      throw new ApiError(
+        'That request was stopped before the workspace answered it. The server may still be finishing it: nothing here' +
+          ' claims it stopped, and the next read shows what it stored.',
+        0,
+        'offline',
+        'aborted',
+      );
     }
     throw new ApiError(
       'The workspace did not answer. It answers on this machine only: check that the server is still running.',
