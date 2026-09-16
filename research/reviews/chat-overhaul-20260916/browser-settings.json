@@ -1,0 +1,13 @@
+{
+  "batch": "docs/83-intelligent-chat-overhaul.md",
+  "captured_at_utc": "2026-09-16T18:55:00Z",
+  "surface": "Chrome 153 headless over CDP, real loopback workspace on 127.0.0.1:8795, #/settings",
+  "runner": "research/reviews/chat-overhaul-20260916/browser-check-settings.sh",
+  "check": "the settings surface states the live provider state",
+  "measured_card": "Model providers — Who answers, in what order, and what failed last. deepseek available deepseek-chat; openrouter available (7 free ids); Planner model; First look on; Order deepseek_first; Key handling local only",
+  "screenshot": "browser-settings-providers.png",
+  "limits": [
+    "One browser, one machine, one run.",
+    "No last-failure row appeared because no provider had failed in that process; the row is rendered only when the router has recorded one."
+  ]
+}

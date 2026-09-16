@@ -2576,6 +2576,7 @@
   "router_and_availability_check": "research/reviews/chat-overhaul-20260916/router-tier-and-quota.json",
   "browser_check": "research/reviews/chat-overhaul-20260916/browser-conversation.json",
   "browser_check_deepseek": "research/reviews/chat-overhaul-20260916/browser-deepseek.json",
+  "browser_check_settings": "research/reviews/chat-overhaul-20260916/browser-settings.json",
   "open": [
    "Stage A3: a model-written narrative for evidence answers behind the existing validation, with the tool-owned fact renderer as the floor (today a turn with facts is rendered deterministically)",
    "Stage A4: language breadth through the language gate, and dialogue.SCRIPTS widening with each language made writable",
