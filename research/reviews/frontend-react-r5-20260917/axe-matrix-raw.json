@@ -1,0 +1,137 @@
+[
+  {
+    "mode": "dark",
+    "setting": "media dark",
+    "surface": "landing",
+    "route": "/",
+    "violations": [],
+    "passes": 25,
+    "note": ""
+  },
+  {
+    "mode": "dark",
+    "setting": "media dark",
+    "surface": "ask",
+    "route": "/#/assistant",
+    "violations": [],
+    "passes": 24,
+    "note": ""
+  },
+  {
+    "mode": "dark",
+    "setting": "media dark",
+    "surface": "warnings",
+    "route": "/#/warnings",
+    "violations": [],
+    "passes": 30,
+    "note": ""
+  },
+  {
+    "mode": "dark",
+    "setting": "media dark",
+    "surface": "settings",
+    "route": "/#/settings",
+    "violations": [],
+    "passes": 29,
+    "note": ""
+  },
+  {
+    "mode": "dark",
+    "setting": "media dark",
+    "surface": "documents",
+    "route": "/#/documents",
+    "violations": [],
+    "passes": 30,
+    "note": ""
+  },
+  {
+    "mode": "reduced-motion",
+    "setting": "media light reduced-motion",
+    "surface": "landing",
+    "route": "/",
+    "violations": [],
+    "passes": 25,
+    "note": ""
+  },
+  {
+    "mode": "reduced-motion",
+    "setting": "media light reduced-motion",
+    "surface": "ask",
+    "route": "/#/assistant",
+    "violations": [],
+    "passes": 24,
+    "note": ""
+  },
+  {
+    "mode": "reduced-motion",
+    "setting": "media light reduced-motion",
+    "surface": "warnings",
+    "route": "/#/warnings",
+    "violations": [],
+    "passes": 30,
+    "note": ""
+  },
+  {
+    "mode": "reduced-motion",
+    "setting": "media light reduced-motion",
+    "surface": "settings",
+    "route": "/#/settings",
+    "violations": [],
+    "passes": 29,
+    "note": ""
+  },
+  {
+    "mode": "reduced-motion",
+    "setting": "media light reduced-motion",
+    "surface": "documents",
+    "route": "/#/documents",
+    "violations": [],
+    "passes": 30,
+    "note": ""
+  },
+  {
+    "mode": "narrow",
+    "setting": "viewport 390 844",
+    "surface": "landing",
+    "route": "/",
+    "violations": [],
+    "passes": 25,
+    "note": ""
+  },
+  {
+    "mode": "narrow",
+    "setting": "viewport 390 844",
+    "surface": "ask",
+    "route": "/#/assistant",
+    "violations": [],
+    "passes": 24,
+    "note": ""
+  },
+  {
+    "mode": "narrow",
+    "setting": "viewport 390 844",
+    "surface": "warnings",
+    "route": "/#/warnings",
+    "violations": [],
+    "passes": 30,
+    "note": ""
+  },
+  {
+    "mode": "narrow",
+    "setting": "viewport 390 844",
+    "surface": "settings",
+    "route": "/#/settings",
+    "violations": [],
+    "passes": 29,
+    "note": ""
+  },
+  {
+    "mode": "narrow",
+    "setting": "viewport 390 844",
+    "surface": "documents",
+    "route": "/#/documents",
+    "violations": [],
+    "passes": 30,
+    "note": ""
+  }
+]

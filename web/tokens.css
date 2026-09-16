@@ -153,6 +153,62 @@
   --viz-day: rgba(205, 180, 120, .08);
   --viz-night: rgba(79, 179, 190, .05);
 }
+/* The system theme is a real choice, not a label: with no data-theme set, the browser's own
+   preference selects the dark values. The two blocks below must stay identical, and
+   tests/test_theme_parity.py reads both and fails if they drift. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+  color-scheme: dark;
+  --ground:  #0b1216;
+  --paper:   #121c21;
+  --sunk:    #0e171c;
+  --raiser:  #16232a;
+  --ink:     #e3ece9;
+  --ink-soft:#b2c3c1;
+  --mute:    #889da2;
+  --line:    #25353c;
+  --line-strong:#3a4d55;
+  --scrim:   rgba(4,9,12,.6);
+
+  --data:      #4fb3be;
+  --data-ink:  #05201f;
+  --data-wash: #123236;
+  --slate:     #9db6cd;
+  --sand:      #cdb478;
+  --sand-wash: #2f2a17;
+
+  --red:    #ff7a72;  --red-wash:    #3a1b1b;
+  --orange: #f0a35a;  --orange-wash: #38260f;
+  --yellow: #e6c85e;  --yellow-wash: #373012;
+  --green:  #6fc592;  --green-wash:  #12301f;
+
+  --housing:    #070d10;
+  --housing-2:  #0f191e;
+  --housing-ink:#d8e4e1;
+  --housing-mute:#7e959a;
+  --housing-line:#1d2b32;
+  --housing-grid:rgba(126,160,166,.07);
+  --lift-1: 0 1px 0 rgba(0,0,0,.45);
+  --lift-2: 0 18px 44px -30px rgba(0,0,0,.95), 0 2px 8px -4px rgba(0,0,0,.65);
+  --lift-3: 0 30px 70px -36px rgba(0,0,0,1), 0 4px 12px -6px rgba(0,0,0,.7);
+
+  --viz-surface: #101a20;
+  --viz-grid: #23343b;
+  --viz-axis: #8ba0a2;
+  --viz-line: #4fb3be;
+  --viz-model: #9db6cd;
+  --viz-observed: #6fc592;
+  --viz-band: rgba(79, 179, 190, .18);
+  --viz-band-line: rgba(79, 179, 190, .42);
+  --viz-rain: #58b6d8;
+  --viz-wind: #9fb4b8;
+  --viz-missing: #3a4d55;
+  --viz-crosshair: rgba(157, 182, 205, .55);
+  --viz-day: rgba(205, 180, 120, .08);
+  --viz-night: rgba(79, 179, 190, .05);
+  }
+}
+
 
 /* Motion is an offer, not a requirement. */
 @media (prefers-reduced-motion: reduce) {

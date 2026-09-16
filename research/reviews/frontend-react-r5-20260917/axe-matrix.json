@@ -1,0 +1,229 @@
+{
+  "checked_at_utc": "2026-09-16T22:38:48.357Z",
+  "tool": "axe-core 4.10 injected into the served page and run by CDP",
+  "environment": "headless Chrome via agent-browser against the served React build (--frontend react, throwaway store copy)",
+  "rules": "tags wcag2a, wcag2aa, wcag21a, wcag21aa",
+  "what_this_adds": "docs/91 recorded the light-theme sweep at 1440x900; this record adds the dark theme, prefers-reduced-motion, and a 390x844 viewport over the five surfaces that carry the most structure (front door, conversation, warnings, sources and settings, published documents). It also holds the light/dark pair measured after the theme transition settles.",
+  "measurements": [
+    {
+      "mode": "dark",
+      "setting": "media dark",
+      "surface": "landing",
+      "route": "/",
+      "violations": [],
+      "passes": 25
+    },
+    {
+      "mode": "dark",
+      "setting": "media dark",
+      "surface": "ask",
+      "route": "/#/assistant",
+      "violations": [],
+      "passes": 24
+    },
+    {
+      "mode": "dark",
+      "setting": "media dark",
+      "surface": "warnings",
+      "route": "/#/warnings",
+      "violations": [],
+      "passes": 30
+    },
+    {
+      "mode": "dark",
+      "setting": "media dark",
+      "surface": "settings",
+      "route": "/#/settings",
+      "violations": [],
+      "passes": 29
+    },
+    {
+      "mode": "dark",
+      "setting": "media dark",
+      "surface": "documents",
+      "route": "/#/documents",
+      "violations": [],
+      "passes": 30
+    },
+    {
+      "mode": "reduced-motion",
+      "setting": "media light reduced-motion",
+      "surface": "landing",
+      "route": "/",
+      "violations": [],
+      "passes": 25
+    },
+    {
+      "mode": "reduced-motion",
+      "setting": "media light reduced-motion",
+      "surface": "ask",
+      "route": "/#/assistant",
+      "violations": [],
+      "passes": 24
+    },
+    {
+      "mode": "reduced-motion",
+      "setting": "media light reduced-motion",
+      "surface": "warnings",
+      "route": "/#/warnings",
+      "violations": [],
+      "passes": 30
+    },
+    {
+      "mode": "reduced-motion",
+      "setting": "media light reduced-motion",
+      "surface": "settings",
+      "route": "/#/settings",
+      "violations": [],
+      "passes": 29
+    },
+    {
+      "mode": "reduced-motion",
+      "setting": "media light reduced-motion",
+      "surface": "documents",
+      "route": "/#/documents",
+      "violations": [],
+      "passes": 30
+    },
+    {
+      "mode": "narrow",
+      "setting": "viewport 390 844",
+      "surface": "landing",
+      "route": "/",
+      "violations": [],
+      "passes": 25
+    },
+    {
+      "mode": "narrow",
+      "setting": "viewport 390 844",
+      "surface": "ask",
+      "route": "/#/assistant",
+      "violations": [],
+      "passes": 24
+    },
+    {
+      "mode": "narrow",
+      "setting": "viewport 390 844",
+      "surface": "warnings",
+      "route": "/#/warnings",
+      "violations": [],
+      "passes": 30
+    },
+    {
+      "mode": "narrow",
+      "setting": "viewport 390 844",
+      "surface": "settings",
+      "route": "/#/settings",
+      "violations": [],
+      "passes": 29
+    },
+    {
+      "mode": "narrow",
+      "setting": "viewport 390 844",
+      "surface": "documents",
+      "route": "/#/documents",
+      "violations": [],
+      "passes": 30
+    }
+  ],
+  "totals": {
+    "measurements": 15,
+    "violations": 0
+  },
+  "not_measured": [
+    "a screen reader or other assistive technology walkthrough",
+    "browser zoom above 100% and 400% reflow",
+    "the reduced-motion check is the media query; it does not prove every animation honours it (the stylesheet collapses durations and the sky band and land hero band disable their transitions)",
+    "mobile is measured as a narrow viewport in this desktop browser, not as a device or a mobile acceptance run"
+  ],
+  "themes": {
+    "measured": [
+      {
+        "theme": "light",
+        "settled": "light",
+        "surface": "warnings",
+        "route": "/#/warnings",
+        "violations": [],
+        "passes": 30
+      },
+      {
+        "theme": "light",
+        "settled": "light",
+        "surface": "today",
+        "route": "/#/overview",
+        "violations": [],
+        "passes": 30
+      },
+      {
+        "theme": "light",
+        "settled": "light",
+        "surface": "settings",
+        "route": "/#/settings",
+        "violations": [],
+        "passes": 29
+      },
+      {
+        "theme": "light",
+        "settled": "light",
+        "surface": "ask",
+        "route": "/#/assistant",
+        "violations": [],
+        "passes": 25
+      },
+      {
+        "theme": "light",
+        "settled": "light",
+        "surface": "landing",
+        "route": "/",
+        "violations": [],
+        "passes": 25
+      },
+      {
+        "theme": "dark",
+        "settled": "dark",
+        "surface": "warnings",
+        "route": "/#/warnings",
+        "violations": [],
+        "passes": 30
+      },
+      {
+        "theme": "dark",
+        "settled": "dark",
+        "surface": "today",
+        "route": "/#/overview",
+        "violations": [],
+        "passes": 30
+      },
+      {
+        "theme": "dark",
+        "settled": "dark",
+        "surface": "settings",
+        "route": "/#/settings",
+        "violations": [],
+        "passes": 29
+      },
+      {
+        "theme": "dark",
+        "settled": "dark",
+        "surface": "ask",
+        "route": "/#/assistant",
+        "violations": [],
+        "passes": 25
+      },
+      {
+        "theme": "dark",
+        "settled": "dark",
+        "surface": "landing",
+        "route": "/",
+        "violations": [],
+        "passes": 25
+      }
+    ],
+    "totals": {
+      "measurements": 10,
+      "violations": 0
+    },
+    "how": "the theme was set through the topbar control, the page was allowed to settle for 1.4 s after the change, and then axe ran",
+    "finding": "the first attempt measured 150 colour-contrast violations because axe ran while the theme transition was still animating: the reported colours (#987a12 on #d2cbaf) were mid-transition values, and the settled page measures 0. The lesson is recorded rather than the artefact: an accessibility scan must run on a settled page, and any transition on a text background makes a naive scan wrong."
+  }
+}
