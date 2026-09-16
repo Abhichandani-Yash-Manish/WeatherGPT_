@@ -5,7 +5,7 @@
     {
       "file": "test_conversation_ui.js",
       "checks": 14,
-      "ported": 7,
+      "ported": 11,
       "evidence": [
         {
           "spec": "src/chat/chat.test.tsx",
@@ -42,13 +42,29 @@
             "has no component reaching for fetch outside the api client",
             "sends the session token on every request the client makes"
           ]
+        },
+        {
+          "spec": "src/chat/turn.parity.test.tsx",
+          "tests": [
+            "sends one question with only the request keys the engine accepts",
+            "keeps the conversation id on a follow-up and never sends the rejected entity_id key",
+            "carries the workspace token on every request the surface makes",
+            "asks the server to cancel the turn in flight and reports its own reply",
+            "reports a full queue as a bounded queue rather than a generic failure",
+            "asks for a reload when the workspace token is no longer held",
+            "names the local evidence store when that store is unavailable",
+            "returns a refused question to the box and sends it again when the reader asks",
+            "starts a new conversation without sending a question and forgets the identifier",
+            "lists the stored conversations and filters them by their first question"
+          ]
         }
-      ]
+      ],
+      "note": "Eleven of these fourteen are held: the accepted keys a question sends, the conversation id a follow-up keeps, the selection id a chosen place returns, the bounded queue wording, the cancelled turn and its server response, the collection request, the new conversation, the ledger with its search, the local delete, the field builder and the register. Not held as checks: the refused empty question (the Ask control is disabled, but no check asserts it) and the split between an expired token and an unavailable store (the client distinguishes them; no surface check reads both)."
     },
     {
       "file": "test_views.js",
       "checks": 25,
-      "ported": 10,
+      "ported": 19,
       "evidence": [
         {
           "spec": "src/chat/chat.test.tsx",
@@ -90,8 +106,31 @@
             "reads the resolved point out of the packet, and reports it absent when there is none",
             "deletes a stored conversation through the local route only, and says when the delete failed"
           ]
+        },
+        {
+          "spec": "src/chat/card.parity.test.tsx",
+          "tests": [
+            "titles each status with its own words instead of one generic answer title",
+            "tags the status, the requested output and an unread reply beside the answer",
+            "keeps a held warning and a conversational reply free of any value, receipt or window",
+            "draws the validity ruler from the retrieved window and describes every drawn segment",
+            "reads a focused part of the window out in words",
+            "draws no window where the evidence has no interval",
+            "keeps the retrieved volume bounded and never re-lists a plotted value as a fact row",
+            "never headlines one member of a returned series, and draws the series instead",
+            "gives every remaining fact its measure, kind, value, place, window and source in one row",
+            "shows no number that is not in the packet the engine returned",
+            "keeps entity, window, source and retrieval time together in the receipt rows",
+            "says the clipboard refused the copy instead of claiming a success",
+            "lists each source an answer reached, with its product and provider",
+            "adds the full-evidence disclosures in that register, and never changes what the card says",
+            "shows the exact rendered packet in the machine record rather than a summary",
+            "offers every place candidate the engine sent for a shared name",
+            "sends the selection id of the candidate the reader chose back to the engine"
+          ]
         }
-      ]
+      ],
+      "note": "Nineteen of these twenty-five are held by React checks: the answer-first headline, the ruler and its segments, the receipt, the task accounting, the bounded volume and the unduplicated plotted values, the place clarification with its selection id, the unwritten language, the held warning, the airport report, the series lead, the warning day with its period, the raw-packet inspector, the stage readout, the edition labelling, the two-product comparison, the quick replies, the provisional first reading, the continuation carrying, the register and the conversational labelling. Not held: the between-source difference (no such component), the class-name leak scan (a source-level check would fit here), the plan card Change and Undo actions, and the placeholder receipt wording."
     },
     {
       "file": "test_voice_ui.js",
