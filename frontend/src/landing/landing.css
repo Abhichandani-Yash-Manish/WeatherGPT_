@@ -1,0 +1,104 @@
+/* The landing page's own skin.
+   ============================================================================
+   Every value here is a token from web/tokens.css: no colour, size, radius, shadow or type value is invented
+   on this page. Layout, spacing and type scale come from the Tailwind utilities in Landing.tsx, and the shared
+   component classes (.card, .btn, .display, .reading, .evidence, .eyebrow) come from styles/app.css, so the
+   front page and the workspace cannot drift apart. Nothing in this file animates: the entry rise is the
+   existing .rise utility, which app.css already collapses under prefers-reduced-motion. */
+
+.landing {
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--sans);
+}
+
+.landing-header {
+  background: var(--paper);
+  border-bottom: var(--hairline);
+}
+
+.landing-card {
+  background: var(--paper);
+  border: var(--hairline);
+  border-radius: var(--r-card);
+  box-shadow: var(--lift-1);
+  padding: var(--space-4);
+}
+
+.landing-figure {
+  background: var(--sunk);
+  border: var(--hairline);
+  border-radius: var(--r-card);
+}
+
+.landing-count {
+  font-family: var(--serif);
+  font-size: var(--step-4);
+  color: var(--ink);
+}
+
+.landing-read {
+  font-family: var(--mono);
+  font-size: var(--step--1);
+  color: var(--mute);
+}
+
+.landing-note {
+  color: var(--ink-soft);
+}
+
+.landing-prose {
+  max-width: var(--measure);
+}
+
+.landing-rule {
+  border-top: var(--hairline);
+}
+/* The hero. The band behind it is the local sky phase (styles/sky.css), drawn at low opacity as decoration:
+   it is aria-hidden, it carries no condition, and no phase uses the warning ramp. The title is set larger
+   than the workspace's display step because the front page has the room; it is still a token-derived scale. */
+.landing-hero {
+  background: var(--paper);
+  border: var(--hairline);
+  border-radius: var(--r-card);
+  box-shadow: var(--lift-2);
+}
+
+.landing-hero-band {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 14rem;
+  pointer-events: none;
+  background:
+    radial-gradient(90% 120% at 8% 0%, var(--sky-a) 0%, transparent 62%),
+    linear-gradient(180deg, var(--sky-b) 0%, transparent 100%);
+  opacity: .5;
+}
+
+html[data-theme='dark'] .landing-hero-band { opacity: .55; }
+
+.landing-title {
+  font-size: var(--step-5);
+  line-height: 1.02;
+}
+
+.landing-refusal {
+  border-left: 3px solid var(--sand);
+  padding-left: var(--space-3);
+  font-family: var(--serif);
+  font-size: var(--step-1);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: var(--measure);
+}
+
+.landing-receipt {
+  background: var(--sunk);
+  border: var(--hairline);
+  border-radius: var(--r-card);
+  padding: var(--space-2) var(--space-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-hero-band { transition: none; }
+}

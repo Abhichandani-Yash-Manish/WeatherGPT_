@@ -1,46 +1,74 @@
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { App } from './App';
 import { VIEWS } from './shell/views';
+import { forgetOwner } from './landing/owner';
 
-describe('the R1 shell', () => {
+/* The shell's own contract: the front door, the workspace behind it, the rail from the registry, the
+   keyboard contract the rail prints, and the gate that is described before it asks for anything. */
+describe('the shell', () => {
   beforeEach(() => {
     window.location.hash = '';
+    try {
+      window.localStorage.clear();
+    } catch {
+      /* storage is optional */
+    }
+    forgetOwner();
   });
 
-  it('renders the rail from the registry and lands on Ask', () => {
+  it('shows the front door at an empty address, and one way in', () => {
+    render(<App />);
+    expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Open the workspace/i })).toBeInTheDocument();
+  });
+
+  it('opens the workspace from the front door, with the question box ready', async () => {
+    render(<App />);
+    await userEvent.click(screen.getByRole('button', { name: /Open the workspace/i }));
+    expect(window.location.hash).toBe('#/assistant');
+    expect(await screen.findByLabelText('Your question')).toBeInTheDocument();
+  });
+
+  it('renders the rail from the registry and lands on Ask for its own route', async () => {
+    window.location.hash = '#/assistant';
     render(<App />);
     const rail = within(screen.getByRole('navigation', { name: 'Workspace navigation' }));
     for (const view of VIEWS) {
-      // Scoped to the rail, and anchored: the composer also has a button called Ask, and "Forecast"
-      // is a prefix of "Forecast verification", so a loose pattern would match two entries.
       expect(rail.getByRole('button', { name: new RegExp('^' + view.label + '( ⌥[1-9])?$') })).toBeInTheDocument();
     }
     expect(screen.getByLabelText('Your question')).toBeInTheDocument();
-    expect(screen.getByTestId('r1-note')).toHaveTextContent(/not wired yet/i);
-  });
-
-  it('opens a module from the rail, and the route decides the surface', async () => {
-    render(<App />);
-    const rail = within(screen.getByRole('navigation', { name: 'Workspace navigation' }));
-    await userEvent.click(rail.getByRole('button', { name: /Warnings/ }));
-    expect(window.location.hash).toBe('#/warnings');
-    const surface = document.querySelector('[data-surface="warnings"]');
-    expect(surface).not.toBeNull();
-    expect(surface?.textContent).toMatch(/not ported yet/i);
-    expect(surface?.textContent).toMatch(/R3/);
   });
 
   it('keeps the keyboard shortcut contract the rail prints', async () => {
+    window.location.hash = '#/assistant';
     render(<App />);
     await userEvent.keyboard('{Alt>}2{/Alt}');
     expect(window.location.hash).toBe('#/overview');
   });
 
   it('honours a deep link instead of overriding it', () => {
-    window.location.hash = '#/settings';
+    window.location.hash = '#/marine';
     render(<App />);
-    expect(document.querySelector('[data-surface="settings"]')).not.toBeNull();
+    expect(document.querySelector('[data-surface="marine"]')).not.toBeNull();
     expect(screen.queryByLabelText('Your question')).toBeNull();
+  });
+
+  it('opens the command palette from the keyboard and names every surface', async () => {
+    window.location.hash = '#/assistant';
+    render(<App />);
+    await userEvent.keyboard('{Alt>}k{/Alt}');
+    const palette = await screen.findByRole('dialog', { name: 'Command palette' });
+    expect(within(palette).getByRole('option', { name: /Open Warnings/ })).toBeInTheDocument();
+    expect(within(palette).getByRole('option', { name: /Start a new conversation/ })).toBeInTheDocument();
+  });
+
+  it('sends the interface to the owner gate on request, and the gate explains itself first', async () => {
+    window.location.hash = '#/assistant';
+    render(<App />);
+    await userEvent.click(screen.getByRole('button', { name: 'Lock' }));
+    expect(window.location.hash).toBe('#/signin');
+    await waitFor(() => expect(screen.getByText(/not authentication/i)).toBeInTheDocument());
+    expect(screen.getByRole('button', { name: /Skip/i })).toBeInTheDocument();
   });
 });

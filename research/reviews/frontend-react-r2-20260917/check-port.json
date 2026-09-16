@@ -1,0 +1,160 @@
+{
+  "note": "Which vanilla component checks a React spec now carries. Curated, and checked by scripts/audit_check_port.py: the counts are re-read from the suites on every run, and every named test must exist in the named spec. The vanilla suites stay the regression net until R6.",
+  "recorded_at": "2026-09-17",
+  "suites": [
+    {
+      "file": "test_conversation_ui.js",
+      "checks": 14,
+      "ported": 7,
+      "evidence": [
+        {
+          "spec": "src/chat/chat.test.tsx",
+          "tests": [
+            "marks a conversational reply as having read no source and shows no fact table",
+            "shows the first reading and the stages while a turn works, and stops on request",
+            "returns the question to the box and states the server message when a turn fails",
+            "unfolds more of the evidence in the full register, and remembers the choice",
+            "falls back to the conversational register when the stored value is unreadable"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "test_views.js",
+      "checks": 25,
+      "ported": 4,
+      "evidence": [
+        {
+          "spec": "src/chat/chat.test.tsx",
+          "tests": [
+            "renders a retrieved answer with its value, its source and its window",
+            "sets a held answer apart from a retrieved one",
+            "states the language downgrade in words rather than passing as answered",
+            "draws an uncovered part of the window as a gap and says so"
+          ]
+        },
+        {
+          "spec": "src/App.test.tsx",
+          "tests": [
+            "renders the rail from the registry and lands on Ask for its own route",
+            "keeps the keyboard shortcut contract the rail prints",
+            "honours a deep link instead of overriding it",
+            "opens the command palette from the keyboard and names every surface"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "test_voice_ui.js",
+      "checks": 3,
+      "ported": 2,
+      "evidence": [
+        {
+          "spec": "src/chat/chat.test.tsx",
+          "tests": [
+            "offers only the languages whose writing this project measured, sorted by name",
+            "does not treat a written language as speakable unless speech was verified"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "test_workspace_ui.js",
+      "checks": 6,
+      "ported": 2,
+      "evidence": [
+        {
+          "spec": "src/shell/topbar.test.tsx",
+          "tests": [
+            "states the store state it read, and never a blank chip",
+            "shows an unreachable store as unreachable",
+            "offers every known language, marked where this project has not measured its writing"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "test_suite_ui.js",
+      "checks": 33,
+      "ported": 4,
+      "evidence": [
+        {
+          "spec": "src/modules/modules.test.tsx",
+          "tests": [
+            "renders the national counts, the stated tally, the evidence and its own limits",
+            "renders only the colours the payload stated, beside the product wording, and says what it filters",
+            "renders the index counts, states an unprinted issue date and a pruned body honestly",
+            "renders the capability and source counts, each provider\u2019s own availability, and the local state"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "test_bulletin_ui.js",
+      "checks": 6,
+      "ported": 0,
+      "evidence": []
+    },
+    {
+      "file": "test_notify_ui.js",
+      "checks": 11,
+      "ported": 0,
+      "evidence": []
+    },
+    {
+      "file": "test_briefcase_ui.js",
+      "checks": 1,
+      "ported": 0,
+      "evidence": []
+    },
+    {
+      "file": "test_viz.js",
+      "checks": 9,
+      "ported": 0,
+      "evidence": []
+    },
+    {
+      "file": "test_charts.js",
+      "checks": 2,
+      "ported": 0,
+      "evidence": []
+    }
+  ],
+  "react_only": [
+    {
+      "spec": "src/landing/Landing.test.tsx",
+      "tests": 7,
+      "note": "The front door has no vanilla predecessor."
+    },
+    {
+      "spec": "src/landing/OwnerGate.test.tsx",
+      "tests": 7,
+      "note": "The gate interactions are new in R7/R2."
+    },
+    {
+      "spec": "src/landing/owner.test.ts",
+      "tests": 8,
+      "note": "The verifier derivation is new."
+    },
+    {
+      "spec": "src/shell/sky.test.ts",
+      "tests": 4,
+      "note": "Sky phases are new."
+    },
+    {
+      "spec": "src/shell/shell.test.tsx",
+      "tests": 2,
+      "note": "The React routing contract is new."
+    },
+    {
+      "spec": "src/shell/surfacehost.test.tsx",
+      "tests": 2,
+      "note": "One React chunk per module, and the placeholder contract: new."
+    },
+    {
+      "spec": "src/modules/modules.test.tsx",
+      "tests": 13,
+      "note": "The six ported module surfaces; four checks are claimed as ports above."
+    }
+  ]
+}

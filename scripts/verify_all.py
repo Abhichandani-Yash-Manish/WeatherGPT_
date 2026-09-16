@@ -71,6 +71,10 @@ def main():
     # The surfaces a reader can reach must be served, and the two frontends must agree on them.
     ok, tail, err = run([sys.executable, 'scripts/audit_surface_registry.py'])
     steps.append(('surface registry audit', ok, tail or err))
+    # A ported check has to be named in the ledger, and every named test has to exist in its spec. This
+    # reads the vanilla suites and the React specs; a missing React build does not affect it.
+    ok, tail, err = run([sys.executable, 'scripts/audit_check_port.py'])
+    steps.append(('component check port ledger', ok, tail or err))
 
     width = max(len(name) for name, _, _ in steps) + 2
     for name, ok, detail in steps:

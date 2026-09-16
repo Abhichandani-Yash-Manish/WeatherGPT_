@@ -2789,5 +2789,48 @@
   ],
   "hosting_performed": false,
   "same_host_only": true
- }
+ },
+ "frontend_react_r2_batch": {
+ "report": "docs/90-frontend-r2-flagship-transcript.md",
+ "evidence_directory": "research/reviews/frontend-react-r2-20260917",
+ "scope": "R2 of the React overhaul: the flagship transcript, the first six real modules, the front door and the owner gate, the harness repairs the ported checks found, and the port ledger",
+ "delivered": [
+  "the transcript as components: the question is kept above its answer, the working turn names the stages /api/chat/progress reports and the deterministic first reading from /api/chat/preview (labelled a reading, not evidence), and the answer card carries the lead value, the validity ruler with uncovered intervals drawn as gaps, the other facts, the evidence receipt, the sources, the disclosures and the actions",
+  "the reading register (brief / conversational / full), remembered per browser, changing how much evidence is unfolded and nothing else; the rule vocabulary of web/views.js was ported rather than rewritten",
+  "the voice path: recording through /api/speech/transcribe for correction, the recogniser confidence labelled as recognition only, and speech refused where the project has not measured it (the measured-language rules of tests/test_voice_ui.js are now React checks)",
+  "stored conversations beside the transcript (ledger, filter, open, delete) with the engine note about what the store is",
+  "six real modules (Today, Warnings, Forecast, Observations, Published documents, Sources and settings) each rendering its envelope with coverage, limitations, not-established and source rows; a hazard colour is drawn only where the payload stated one, a 410 is the edition stated state, and a missing point is a gap not a zero",
+  "the module host with one lazily loaded chunk per module and a generated placeholder for the thirteen surfaces still to port, each naming its stage and offering its questions to the conversation",
+  "R7 front door and owner gate: a landing page that shows the shape of a receipt rather than a sample value, reads four counts live from this machine with their read times, lists the registry surfaces, quotes the README limits verbatim and shows eight pictures of this build; a local PBKDF2-SHA-256 owner gate (16-byte salt, 600000 iterations, 256-bit) that explains what it is not before asking and does not stand in the way by default",
+  "shell work: command palette (Alt+K), reading-position switch from /api/personas, theme cycle, sky phases from the local clock, and one route hook covering surfaces and shell routes",
+  "four defects found by the ported checks and fixed at their cause: the jsdom/undici AbortSignal mismatch that made every client read fail in tests, a turn question being replaced by its own answer in the reducer, the absent Element.scrollTo and dialog.showModal, and the absent localStorage",
+  "scripts/audit_check_port.py: a ledger (research/reviews/frontend-react-r2-20260917/check-port.json) that names which vanilla checks a React spec now carries, re-reads the suite counts on every run, and refuses any claimed test name that is not in the named spec; added as a verify_all.py step"
+ ],
+ "tests_added": [
+  "frontend/src/chat/chat.test.tsx (11 checks: the answer card, the conversational tag, a held status, the language downgrade, a window gap, the working turn and its stop, a failed turn keeping the question, the register, and two voice language rules)",
+  "frontend/src/modules/modules.test.tsx (13 checks over the six surfaces)",
+  "frontend/src/landing/Landing.test.tsx (7), src/landing/OwnerGate.test.tsx (7), src/landing/owner.test.ts (8)",
+  "frontend/src/shell/surfacehost.test.tsx (2: a ported module rendered from the registry, and the placeholder contract)",
+  "frontend/src/App.test.tsx rewritten for the shell routes (7), src/shell/topbar.test.tsx rewritten (7)"
+ ],
+ "live_check": "research/reviews/frontend-react-r2-20260917/live-r2.json",
+ "measured": [
+  "frontend: 10 suites, 68 component checks, tsc clean, initial bundle graph 107 KB gzip against the 312 KB budget, each module chunk 2.2-2.6 KB gzip",
+  "built-output audit 11/11, surface registry audit 8/8, port ledger 5/5",
+  "live HTTP acceptance 14/14 against the served React build (page, injected session token, no inline script, nothing off-origin, strict CSP, hashed asset with immutable caching, authorised and refused reads, a real turn, progress, preview)",
+  "a real turn through the served build: 43.14 s cold, 4.72 s warm, with the configured providers",
+  "browser evidence: ten captures at 1440x900 in headless Chrome against the served build on a throwaway store; eight are shown on the front page",
+  "the port ledger names 19 of the 110 vanilla component checks; the vanilla suites still run in verify_all.py and remain the regression net until R6"
+ ],
+ "open": [
+  "thirteen surfaces are still placeholders that state their stage: map, farm advisories, air quality, aviation, what changed, climate, sea and rivers, ensemble spread, forecast verification, compare places, briefcase, workspace and the brief pages",
+  "91 of the 110 vanilla component checks are not yet named to a React spec",
+  "no screen-reader, keyboard-only or contrast acceptance per surface has been recorded; R5 is that work",
+  "the answer still arrives as one response rather than a stream of written text (the SSE seam is its own batch)",
+  "voice has interface coverage but no real-audio or field acceptance",
+  "mobile and hosting are unchanged: desktop web is the surface and hosting is held"
+ ],
+ "hosting_performed": false,
+ "same_host_only": true
+}
 }

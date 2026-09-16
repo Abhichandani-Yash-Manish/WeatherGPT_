@@ -1,0 +1,70 @@
+/* The transcript's own voice. Values are mono, sentences are serif, chrome is sans, and nothing
+   here animates in a way that could be read as a measurement or as progress. */
+
+.turn { animation: rise var(--motion-base) var(--ease-out) both; }
+.turn-user {
+  align-self: flex-end;
+  max-width: min(46rem, 82%);
+  background: var(--data-wash);
+  border: 1px solid var(--data);
+  color: var(--ink);
+  border-radius: var(--r-card) var(--r-card) 2px var(--r-card);
+  padding: 10px 14px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.working-dot {
+  width: 9px; height: 9px; border-radius: var(--r-pill); margin-top: 6px;
+  background: var(--data); animation: pulse-dot 1.6s var(--ease-in-out) infinite; flex: none;
+}
+.working-clock { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: var(--step--1); color: var(--mute); }
+.stage-list { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.stage-step { display: inline-flex; align-items: center; gap: 6px; font-size: var(--step--1); color: var(--mute); }
+.stage-step[data-state='now'] { color: var(--ink); font-weight: 600; }
+.stage-step[data-state='done'] { color: var(--ink-soft); }
+.stage-mark { width: 6px; height: 6px; border-radius: var(--r-pill); background: currentColor; opacity: .5; flex: none; }
+.stage-step[data-state='now'] .stage-mark { opacity: 1; animation: pulse-dot 1.5s var(--ease-in-out) infinite; }
+
+.reading-line {
+  border-left: 2px solid var(--sand);
+  background: var(--sand-wash);
+  padding: 8px 12px;
+  border-radius: 0 var(--r-card) var(--r-card) 0;
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+}
+
+.receipt { background: var(--sunk); border: 1px solid var(--line); border-radius: var(--r-card); }
+.receipt-row { display: grid; grid-template-columns: 8.5rem 1fr; gap: 8px; padding: 3px 0; border-bottom: 1px dashed var(--line); }
+.receipt-row:last-child { border-bottom: 0; }
+.receipt-key { color: var(--mute); font-size: var(--step--1); }
+.receipt-val { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: var(--step--1); overflow-wrap: anywhere; }
+.receipt-chain { display: flex; flex-wrap: wrap; gap: 6px; align-items: baseline; font-size: var(--step--1); }
+
+.ruler-rail { fill: var(--sunk); stroke: var(--line); }
+.ruler-covered { fill: var(--data); opacity: .82; }
+.ruler-gap { fill: var(--sunk); stroke: var(--line-strong); stroke-dasharray: 3 3; }
+.ruler-edge { stroke: var(--line-strong); }
+.ruler-hour { stroke: var(--line-strong); opacity: .6; }
+.ruler-tick-label, .ruler-caption { fill: var(--mute); font-size: 11px; font-family: var(--mono); }
+.ruler-hit { fill: transparent; cursor: pointer; }
+.ruler-hit:focus-visible { outline: 2px solid var(--data); outline-offset: 1px; }
+
+.fact-row { display: grid; grid-template-columns: minmax(9rem, 14rem) 1fr auto; gap: 10px; align-items: baseline; padding: 6px 0; border-bottom: 1px dashed var(--line); }
+.fact-row:last-child { border-bottom: 0; }
+.fact-value { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: var(--step-1); color: var(--ink); }
+.fact-source { color: var(--mute); font-size: var(--step--1); font-family: var(--mono); }
+
+.lead-value { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: var(--step-4); line-height: 1; letter-spacing: var(--track-tight); }
+.lead-unit { font-family: var(--mono); font-size: var(--step-1); color: var(--ink-soft); }
+
+.machine-record { font-family: var(--mono); font-size: var(--step--1); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 22rem; overflow: auto; background: var(--sunk); border-radius: var(--r-card); padding: 10px; }
+
+.starters-grid { display: grid; gap: 8px; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
+.composer-shell { background: var(--paper); border: 1px solid var(--line-strong); border-radius: var(--r-card); box-shadow: var(--lift-1); }
+.composer-shell[data-busy='true'] { border-color: var(--data); }
+.composer-shell textarea { resize: none; }
+@media (max-width: 720px) {
+  .fact-row { grid-template-columns: 1fr; }
+  .receipt-row { grid-template-columns: 1fr; }
+}

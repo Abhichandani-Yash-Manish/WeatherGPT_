@@ -1,0 +1,90 @@
+{
+ "checked_at_utc": "2026-09-16T20:57:16.894669+00:00",
+ "checks": [
+  {
+   "check": "the page is served at the root",
+   "ok": true,
+   "detail": "HTTP 200"
+  },
+  {
+   "check": "the session token is injected into the built page",
+   "ok": true,
+   "detail": "token meta tag carries a per-process value"
+  },
+  {
+   "check": "the page carries no inline script",
+   "ok": true,
+   "detail": "every script tag carries a src"
+  },
+  {
+   "check": "the page loads nothing off-origin",
+   "ok": true,
+   "detail": "no external URL in the served HTML"
+  },
+  {
+   "check": "the strict page policy is sent",
+   "ok": true,
+   "detail": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; media-src 'self' blob"
+  },
+  {
+   "check": "the module entry is served",
+   "ok": true,
+   "detail": "/assets/main-CzRBTPsX.js HTTP 200, 339429 bytes"
+  },
+  {
+   "check": "a hashed asset is immutable-cached",
+   "ok": true,
+   "detail": "public, max-age=31536000, immutable"
+  },
+  {
+   "check": "an authorised read answers",
+   "ok": true,
+   "detail": "HTTP 200 {\"schema_version\": \"source-health-v1\", \"available\": true, \"warm\": null, \"products\": [{\"product\": \"extended_forecast\", \"j"
+  },
+  {
+   "check": "an unauthorised read is refused",
+   "ok": true,
+   "detail": "HTTP 403 for a request without the session token"
+  },
+  {
+   "check": "the stored conversation ledger answers",
+   "ok": true,
+   "detail": "HTTP 200"
+  },
+  {
+   "check": "a real turn answers through the served build's API",
+   "ok": true,
+   "detail": "HTTP 200 in 4.72 s, status answered"
+  },
+  {
+   "check": "the turn keeps a fact count, not a confidence",
+   "ok": true,
+   "detail": "no confidence field in the response"
+  },
+  {
+   "check": "progress names a stage and refuses to be a percentage",
+   "ok": true,
+   "detail": "state idle"
+  },
+  {
+   "check": "the first reading is served and marks itself provisional",
+   "ok": true,
+   "detail": "place: Surat \u00b7 window: 18 Sep 2026 09:30-12:30 IST \u00b7 asking about: rain \u00b7 will read: a point forecast"
+  }
+ ],
+ "basis": "live loopback HTTP, React build in web/dist",
+ "turn": {
+  "question": "What is it like right now in Ahmedabad?",
+  "seconds": 4.72,
+  "status": "answered",
+  "planner_policy": "model",
+  "provider": "local_ollama",
+  "facts": 5,
+  "answer_characters": 805
+ },
+ "summary": {
+  "checks": 14,
+  "failed": 0,
+  "port": 56768
+ }
+}

@@ -1,0 +1,9 @@
+/* Printing a turn keeps its distinctions: the composer and the raw machine record are dropped, the
+   receipt is kept, and a source link prints as its address so a paper copy still names its origin. */
+@media print {
+  :root { --paper: #ffffff; --raiser: #ffffff; --ground: #ffffff; --ink: #000000; }
+  body { background: #fff; color: #000; }
+  [data-print='drop'], .machine-record, .composer-shell, [data-shell='rail'], .sky-band { display: none !important; }
+  .turn, .card { border-color: #999; box-shadow: none; break-inside: avoid; }
+  a[href^='http']::after { content: ' (' attr(href) ')'; font-size: 10px; color: #444; word-break: break-all; }
+}

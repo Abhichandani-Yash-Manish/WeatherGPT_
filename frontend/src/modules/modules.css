@@ -1,0 +1,118 @@
+/* Module surfaces. Everything here is built from the existing token layer in web/tokens.css and the
+   class vocabulary in styles/app.css: no new colour, no new typeface, and no shape that reads as a
+   measurement. The hazard ramp is drawn only through .chip-colour[data-colour], which Evidence.tsx
+   sets only when the payload stated a colour, so a surface cannot imply a warning state by styling. */
+
+.module {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--pad);
+  width: 100%;
+  max-width: 84rem;
+}
+
+.module-head { display: flex; flex-direction: column; gap: 6px; }
+.module h1 { margin: 0; font-family: var(--serif); font-size: var(--step-3); line-height: 1.18; }
+.module h2 {
+  margin: 0;
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: var(--track-wide);
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.module h3 { margin: 0; font-size: var(--step-0); }
+.module-lead { margin: 0; max-width: var(--measure); color: var(--ink-soft); }
+.module-note { margin: 0; max-width: var(--measure); color: var(--mute); font-size: var(--step--1); }
+.module-envelope { margin: 0; color: var(--mute); font-size: var(--step--1); }
+
+.module-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  box-shadow: var(--lift-1);
+  padding: var(--space-4);
+}
+.module-section h2, .module-section h3 { align-self: start; }
+
+/* ---- controls ------------------------------------------------------------------------------- */
+.module-controls { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--space-3); }
+.module-field { display: flex; flex-direction: column; gap: 4px; font-size: var(--step--1); color: var(--mute); }
+.module-field :where(input, select) {
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-card);
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--step-0);
+  padding: 7px 9px;
+  min-width: 12rem;
+}
+.module-place { display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: flex-start; }
+.module-place-results { flex: 1 1 22rem; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.module-place-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.module-place-button { width: 100%; justify-content: flex-start; text-align: left; }
+
+/* ---- tabular data: real tables and definition lists, never divs pretending ------------------ */
+.module-table { width: 100%; border-collapse: collapse; font-size: var(--step--1); }
+.module-table caption { padding-bottom: 6px; text-align: left; color: var(--mute); }
+.module-table :where(th, td) {
+  padding: 5px 10px 5px 0;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+.module-table thead th { color: var(--mute); font-weight: 600; }
+.module-table tbody th { font-weight: 600; }
+.module-table td.evidence, .module-table th.evidence, .module-table .evidence { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+.module-facts { display: grid; gap: 0; margin: 0; }
+.module-fact-label { color: var(--ink-soft); }
+
+/* ---- evidence footer ------------------------------------------------------------------------ */
+.module-evidence {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  border-top: 1px solid var(--line-strong);
+  padding-top: var(--space-4);
+}
+.module-coverage, .module-limits, .module-sources { display: flex; flex-direction: column; gap: 6px; }
+.module-limits ul { margin: 0; padding-left: 18px; max-width: var(--measure); }
+.module-limits li { margin-bottom: 3px; }
+.module-counts { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 2px var(--space-4); margin: 0; }
+.module-count { display: flex; justify-content: space-between; gap: var(--space-2); border-bottom: 1px dashed var(--line); }
+.module-count dt { color: var(--ink-soft); }
+.module-count dd { margin: 0; }
+
+/* A failed read looks like a failed read, and it is not styled like evidence. */
+.module-failure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  border: 1px solid var(--line-strong);
+  border-left: 3px solid var(--red);
+  border-radius: var(--r-card);
+  padding: var(--space-4);
+}
+
+/* ---- state chips: palette assigned by the payload, never by the surface --------------------- */
+.chip-colour { font-weight: 600; }
+.chip-colour[data-colour='red'] { background: var(--red-wash); border-color: var(--red); color: var(--red); }
+.chip-colour[data-colour='orange'] { background: var(--orange-wash); border-color: var(--orange); color: var(--orange); }
+.chip-colour[data-colour='yellow'] { background: var(--yellow-wash); border-color: var(--yellow); color: var(--yellow); }
+.chip-colour[data-colour='green'] { background: var(--green-wash); border-color: var(--green); color: var(--green); }
+.chip-unstated { border-style: dashed; color: var(--mute); }
+.chip.is-stale { background: var(--red-wash); border-color: var(--red); color: var(--red); }
+.chip.is-current { background: var(--green-wash); border-color: var(--green); color: var(--green); }
+.chip.is-unknown { border-style: dashed; color: var(--mute); }
+.module-gap { color: var(--mute); }
+
+@media (max-width: 60rem) {
+  .module-table { font-size: var(--step--1); }
+  .module-table :where(th, td) { padding-right: 8px; }
+}

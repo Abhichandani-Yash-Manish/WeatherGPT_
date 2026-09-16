@@ -124,6 +124,47 @@ answered green, and the weather-native design language specified. Implemented in
   the render capture is recorded as not captured rather than replaced by a claim
   (`research/reviews/frontend-react-r1-20260917/r1-verification.json`).
 
+## R2 delivered: the transcript, and the first real modules (17 September 2026)
+
+Evidence: research/reviews/frontend-react-r2-20260917/ (live-r2.json and live-r2.py, check-port.json, ten
+screenshots) and docs/90, which is the batch report.
+
+- the transcript is components: the question is kept above its answer, the working turn names the stages the
+  engine reports and shows the deterministic first reading labelled as a reading, and the answer card carries the
+  lead value, the validity ruler, the other facts, the receipt, the sources, the disclosures and the actions;
+- the reading register (brief / conversational / full) changes how much of the evidence is unfolded and nothing
+  else, is remembered per browser, and the rule set from web/views.js was ported rather than rewritten;
+- voice input goes through the engine's transcript for correction, keeps the recogniser's confidence labelled as
+  recognition only, and refuses speech where the project has not measured it;
+- the six ported modules (Today, Warnings, Forecast, Observations, Published documents, Sources and settings) each
+  render their envelope with coverage, limitations, not-established and source rows, and each is its own lazily
+  loaded chunk (2.2-2.6 KB gzip);
+- the module host renders a ported module from the registry and states, for one that is not ported, the stage it
+  arrives in and the questions it will answer - the placeholder is generated, not hand-written;
+- R7's front door and owner gate are built (docs/90 section 6): the landing page shows the shape of a receipt
+  rather than a sample value, reads four counts live from this machine, quotes the README's limits verbatim, and
+  shows eight pictures of this build; the gate is a local PBKDF2 verifier that explains what it is not and does
+  not stand in the way by default;
+- measured: 10 frontend suites and 68 checks, tsc clean, the initial graph 107 KB gzip against the 312 KB budget,
+  the built-output audit 11/11, the surface-registry audit 8/8, a new port-ledger audit 5/5, and 14/14 live HTTP
+  acceptance checks against the served build (a real turn took 43.14 s cold and 4.72 s warm);
+- four defects were found by the ported checks and fixed at their cause (docs/90 section 3): the jsdom/undici
+  AbortSignal mismatch, a turn's question being replaced by its own answer, the absent scrollTo and modal dialog,
+  and the absent localStorage;
+- the R1 exit items are closed with it: a browser acceptance run exists (ten captures at 1440x900 in headless
+  Chrome against the served build on a throwaway store), and the port ledger names 19 of the 110 vanilla checks
+  against a React spec, each verified to exist by scripts/audit_check_port.py, a step of verify_all.py.
+
+Still open from R1/R2: the remaining 91 vanilla checks are not yet ported (the vanilla suites remain the net
+until R6), no screen-reader or keyboard-only acceptance has been recorded per surface, and the answer still
+arrives as one response rather than as a stream of written text.
+
+## R3 in progress: the guided surfaces
+
+Six of the nineteen surfaces are ported (docs/90 section 5). The rest state their stage and offer their questions
+to the conversation in the meantime. The order for the rest is the docs/88 ranking; map and what-changed come
+first because PS feature 4 is still the weakest journey.
+
 ## What each stage must prove
 
 1. **No behaviour regression**: a ported spec is the same assertion against the same payload.

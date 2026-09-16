@@ -71,15 +71,25 @@ token, and it refuses to start on a check it cannot pass (a registry that does n
 store, a taken port) rather than serving a half-working workspace. **Restart a running server after
 pulling**: changing files does not update a process that is already serving.
 
-### The React frontend (R0 groundwork)
+### The React frontend (R1 shell, R2 transcript, first R3 modules)
 
-The frontend overhaul is planned in [docs/86](86-react-frontend-overhaul-plan.md) and researched in
-[docs/87](87-frontend-research-and-inspiration.md). R0 groundwork is delivered and the **vanilla frontend is
-still the default**; the React build is served beside it:
+The frontend overhaul is planned in [docs/86](86-react-frontend-overhaul-plan.md), researched in
+[docs/87](87-frontend-research-and-inspiration.md) and reported per batch — the current one is
+[docs/90](90-frontend-r2-flagship-transcript.md). The **vanilla frontend is still the default**; the React
+build is served beside it:
 
     cd frontend && npm install && npm run build    # builds web/dist
     python3 -m weathergpt_data.workspace --frontend react --port 8790
+    cd frontend && npm test                        # 10 suites, 68 component checks
     python3 scripts/audit_react_build.py           # 11 checks over the built output
+    python3 scripts/audit_check_port.py            # which vanilla checks a React spec now carries
+
+The React surface now has the transcript (the question kept above its answer, the working turn naming the
+engine's stages and its provisional first reading, the validity ruler, the receipt, the sources, the reading
+register, stored conversations, and a voice path that keeps the measured-language rules), six real modules
+(Today, Warnings, Forecast, Observations, Published documents, Sources and settings), a command palette, the
+front door and the local owner gate. Thirteen surfaces are still placeholders that say which stage they arrive
+in; the renderings are in [docs/90](90-frontend-r2-flagship-transcript.md) and in frontend/public/shots/.
 
 The served page keeps the session-token contract and the **strict** CSP (`script-src 'self'`, `style-src
 'self'`): docs/87 predicted a `style-src-attr` relaxation would be needed for Radix, TanStack Virtual and
@@ -264,16 +274,18 @@ The interface states these limits instead of filling them:
 
 ```sh
 python3 -m pytest tests/ -q                          # 1292 Python tests
+cd frontend && npx tsc --noEmit && npm test          # 10 React suites, 68 component checks
 node tests/test_charts.js                            #  2 of 110 printed component checks
 node tests/test_viz.js                               #  9; the chart engine: plume, meteogram, gaps and locators
 node tests/test_views.js                             # 25
 node tests/test_bulletin_ui.js                       #  6
 node tests/test_conversation_ui.js                   # 14
-node tests/test_suite_ui.js                          # 32
+node tests/test_suite_ui.js                          # 33
 node tests/test_voice_ui.js                          #  3
 node tests/test_briefcase_ui.js                      #  1
-node tests/test_workspace_ui.js                      # workspace behaviour and recovery
+node tests/test_workspace_ui.js                      #  6; workspace behaviour and recovery
 node tests/test_notify_ui.js                         # 11; watch delivery controls, the outbox and watch supervision
+python3 scripts/audit_check_port.py                  # 19 of 110 named against a React spec, each verified to exist
 python3 scripts/doctor.py                            # environment, providers and corpus presence
 python3 scripts/models.py --check                    # the rules-first floor and the configured providers
 python3 scripts/models.py --probe-free               # the curated free ranking measured against the live catalogue
@@ -348,6 +360,7 @@ recorded journeys, fast and slow.
 Each links to the batch that recorded it. Older entries are **historical evidence, not completion
 claims**, and the test counts in them are the counts of their own checkpoint.
 
+- [The flagship transcript, the first real modules, and the front door](docs/90-frontend-r2-flagship-transcript.md) — the R2 transcript (question kept, stages, first reading, evidence receipt, register, stored conversations, voice), the first six R3 modules, the landing page and the owner gate, the four defects the ported checks found, 68 frontend checks, 14 live HTTP acceptance checks and ten screenshots of the served build, and what is still open.
 - [Final integration audit and closure plan](docs/89-final-integration-audit-and-closure-plan.md) — what is actually wired (78 modules, 63 routes, 29 sources connected and wired to chat, 19 surfaces identical in both frontends), the gaps found and closed here, and every PS feature with the acceptance criteria that would let it be called done.
 - [The React overhaul: research and stack](docs/87-frontend-research-and-inspiration.md) — the component landscape read from primary sources (assistant-ui, React Spectrum S2 AI components, Radix, shadcn/ui, Mantine, Motion, TanStack, MapLibre, Tremor, Lucide, axe-core, Noto, AI SDK), the licence table, the chosen stack, the **chat-first module architecture** (one backend-derived registry; every module has a compact Block, a full Surface and its intents) and the one CSP cost it forces.
 - [The React frontend overhaul: plan](docs/86-react-frontend-overhaul-plan.md) — a plan, not a build: Vite + React + TypeScript, the same CSP, the 110 checks ported one-for-one, six independently shippable stages (R0 groundwork, R1 shell, R2 the transcript, R3 the guided surfaces, R4 charts/map/print, R5 accessibility/i18n/voice, R6 decommission) and the exit check each one must meet.
