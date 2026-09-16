@@ -1,24 +1,22 @@
-C2 part: offer only next questions the rules can read, and say what a continuation carried
+C2: the continuity journeys, measured with a planner that answers
 
-The continuity work started with a measurement rather than a design: the rules floor reads a forecast
-question when it names a day AND a part of day, and refuses one that names only the day (twelve of twelve
-shapes tested). The local model planner was not reachable while this ran - http://127.0.0.1:11434 refused
-the connection - so the four continuity journeys are recorded as not measured, and nothing here depends on
-a model call.
+The earlier chat batch could not measure these because the local model planner was unreachable. With DeepSeek
+answering, all four journeys ran end to end against the real engine
+(research/reviews/chat-overhaul-20260916/continuity.json):
 
-- next-question chips are built from the plan own day and part of day, and every candidate reply is planned
-  by the rules at offer time; a shape they refuse is dropped rather than shown as a promise. A chip names a
-  place and a day only - never a value, a probability, a warning or a source this turn did not read - and it
-  uses the plan own place name, because the gazetteer label can read as several places ("Surat, Surat, State
-  of Gujarat" read as two).
-- measured live on the real store: a rules-planned answer in 0.148 s offered three chips, all three readable
-  by the rules and each resolving to one place.
-- a continuation discloses what it carried and what the person changed, from the plan own context_action and
-  changed_fields, and labels it as context kept rather than new evidence. A fresh question gets no line.
+- a forecast, then "and tomorrow afternoon?": answered as follow_up, only the time changed, the place Surat
+  retained, the window moved to 12:30-18:30, same source S21;
+- then "what about the evening?": answered, place retained, window 18:30-22:30;
+- "no, I meant Ahmedabad": answered as correction, only the places changed, the 09:30-12:30 window kept;
+- "thanks! and tomorrow?": answered as follow_up with retrieval - a greeting attached to a request does not
+  swallow the request;
+- an ambiguous name: disclosed as ambiguous with the resolved label on the card, and the refinement "the one in
+  Gujarat" refused honestly ("I could not find a settlement named Springfield in Gujarat... I will not replace
+  it with a nearby city") instead of being substituted.
 
-The journeys themselves stay open: measuring them end-to-end needs a reachable model planner, and the batch
-says so instead of assuming it.
+The engine half is pinned in tests/test_continuity_journeys.py (3 checks): a continuation that names no place
+keeps the accepted place and the source and moves the window; a correction replaces the place and keeps the
+window; a greeting attached to a request still retrieves. The model's own reading stays in the live record,
+because the suite must not depend on it.
 
-Tests: tests/test_follow_up_replies.py (7 checks) pins the offer-time rules gate, the absence of values, the
-rules-planned tap with no model, and the withheld chips; tests/test_views.js pins the continuation line.
-1183 Python tests, 10 component suites, 27 verification steps, none failing.
+1223 Python tests, 10 component suites (109 printed checks), 27 verification steps, none failing.

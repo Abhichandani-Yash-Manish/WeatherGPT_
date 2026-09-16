@@ -2550,7 +2550,9 @@
    "scripts/models.py --set-key takes openrouter (default) or deepseek, so the key command printed in the workspace is one that runs",
    "A4: dialogue.SCRIPTS is derived from the language registry, so all 22 measurable languages are checked by the adherence test instead of Hindi and Gujarati only",
    "a romanised request (hi-Latn) is reported as unverifiable_script with a note rather than not_applicable, because the request was made and could not be met",
-   "measured delivery for ten languages one weather question each: seven rendered with protected values, two (bn, ml) refused as values_did_not_survive and kept in the source language, one (hi-Latn) never claimed"
+   "measured delivery for ten languages one weather question each: seven rendered with protected values, two (bn, ml) refused as values_did_not_survive and kept in the source language, one (hi-Latn) never claimed",
+   "C2: the four continuity journeys are measured with a reachable planner - a bare continuation keeps the accepted place and the source and moves the window, a changed part of day keeps the place, a correction replaces the place and keeps the window, a greeting attached to a request still retrieves, and an ambiguous name is disclosed with its resolved label while a refinement naming a state with no such settlement is refused honestly",
+   "the engine half of the journeys is pinned in tests/test_continuity_journeys.py; the model own reading stays in the live record"
   ],
   "measured_live": [
    "hello: 11.0 s, conversation, natural greeting, no acquisition",
@@ -2570,6 +2572,7 @@
   ],
   "live_check": "research/reviews/chat-overhaul-20260916/journeys.json",
   "language_check": "research/reviews/chat-overhaul-20260916/languages.json",
+  "continuity_check": "research/reviews/chat-overhaul-20260916/continuity.json",
   "router_and_availability_check": "research/reviews/chat-overhaul-20260916/router-tier-and-quota.json",
   "browser_check": "research/reviews/chat-overhaul-20260916/browser-conversation.json",
   "browser_check_deepseek": "research/reviews/chat-overhaul-20260916/browser-deepseek.json",
@@ -2623,7 +2626,7 @@
   ],
   "open": [
    "the preview states the reading, not held values: no read model exposes a held value with the provenance and validity that printing one would require",
-   "the four C2 continuity journeys (bare continuation, referent, correction, clarification answered in a second message) are not measured end-to-end: they need a reachable model planner, which this machine did not have",
+
    "the register switch changes what is shown, not the reading order inside a card; re-ordering facts away from their labels was refused deliberately (see docs/82)"
   ],
   "hosting_performed": false,

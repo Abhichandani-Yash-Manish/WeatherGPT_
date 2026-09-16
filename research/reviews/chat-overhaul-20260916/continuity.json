@@ -1,0 +1,393 @@
+{
+  "batch": "docs/83-intelligent-chat-overhaul.md",
+  "captured_at_utc": "2026-09-16T18:20:16Z",
+  "journeys": [
+    {
+      "journey": "a bare continuation after a forecast answer",
+      "turns": [
+        {
+          "step": "first",
+          "question": "Will it rain in Surat tomorrow morning?",
+          "conversation": "2b765262-adf6-45c1-b942-36b729923316",
+          "seconds": 6.99,
+          "status": "answered",
+          "intent": "forecast",
+          "context_action": "new",
+          "changed_fields": [
+            "parameters",
+            "places",
+            "time"
+          ],
+          "places": [
+            "Surat"
+          ],
+          "window": [
+            "2026-09-17T09:30:00+05:30",
+            "2026-09-17T12:30:00+05:30"
+          ],
+          "planner": {
+            "provider": "deepseek",
+            "tier": null,
+            "policy": "model"
+          },
+          "facts": {
+            "count": 1,
+            "sources": [
+              "S21"
+            ],
+            "places": [
+              "Surat"
+            ],
+            "windows": [
+              [
+                "2026-09-17T09:30:00+05:30",
+                "2026-09-17T12:30:00+05:30"
+              ]
+            ]
+          },
+          "answer": "In Surat, for the window 17 Sep 2026 09:30-12:30 IST, the forecast rainfall is 0.4 mm. Source: GFS forecast; conditions can change."
+        },
+        {
+          "step": "continuation",
+          "question": "and tomorrow afternoon?",
+          "conversation": "2b765262-adf6-45c1-b942-36b729923316",
+          "seconds": 5.88,
+          "status": "answered",
+          "intent": "forecast",
+          "context_action": "follow_up",
+          "changed_fields": [
+            "time"
+          ],
+          "places": [
+            "Surat"
+          ],
+          "window": [
+            "2026-09-17T12:30:00+05:30",
+            "2026-09-17T18:30:00+05:30"
+          ],
+          "planner": {
+            "provider": "deepseek",
+            "tier": null,
+            "policy": "model"
+          },
+          "facts": {
+            "count": 1,
+            "sources": [
+              "S21"
+            ],
+            "places": [
+              "Surat"
+            ],
+            "windows": [
+              [
+                "2026-09-17T12:30:00+05:30",
+                "2026-09-17T18:30:00+05:30"
+              ]
+            ]
+          },
+          "answer": "For Surat, in the window 17 Sep 2026 12:30-18:30 IST, the forecast rainfall is 0.0 mm. Source: GFS forecast; conditions can change."
+        },
+        {
+          "step": "changed part of day",
+          "question": "what about the evening?",
+          "conversation": "2b765262-adf6-45c1-b942-36b729923316",
+          "seconds": 6.06,
+          "status": "answered",
+          "intent": "forecast",
+          "context_action": "follow_up",
+          "changed_fields": [
+            "time"
+          ],
+          "places": [
+            "Surat"
+          ],
+          "window": [
+            "2026-09-17T18:30:00+05:30",
+            "2026-09-17T22:30:00+05:30"
+          ],
+          "planner": {
+            "provider": "deepseek",
+            "tier": null,
+            "policy": "model"
+          },
+          "facts": {
+            "count": 1,
+            "sources": [
+              "S21"
+            ],
+            "places": [
+              "Surat"
+            ],
+            "windows": [
+              [
+                "2026-09-17T18:30:00+05:30",
+                "2026-09-17T22:30:00+05:30"
+              ]
+            ]
+          },
+          "answer": "For Surat, in the window 17 Sep 2026 18:30-22:30 IST, the forecast rainfall is 0.0 mm. Source: GFS forecast; conditions can change."
+        }
+      ]
+    },
+    {
+      "journey": "a corrected place",
+      "turns": [
+        {
+          "step": "first",
+          "question": "Will it rain in Surat tomorrow morning?",
+          "conversation": "bdd3e486-f5f8-49bc-84df-575b724594e4",
+          "seconds": 5.9,
+          "status": "answered",
+          "intent": "forecast",
+          "context_action": "new",
+          "changed_fields": [
+            "parameters",
+            "places",
+            "time"
+          ],
+          "places": [
+            "Surat"
+          ],
+          "window": [
+            "2026-09-17T09:30:00+05:30",
+            "2026-09-17T12:30:00+05:30"
+          ],
+          "planner": {
+            "provider": "deepseek",
+            "tier": null,
+            "policy": "model"
+          },
+          "facts": {
+            "count": 1,
+            "sources": [
+              "S21"
+            ],
+            "places": [
+              "Surat"
+            ],
+            "windows": [
+              [
+                "2026-09-17T09:30:00+05:30",
+                "2026-09-17T12:30:00+05:30"
+              ]
+            ]
+          },
+          "answer": "In Surat, for the window 17 Sep 2026 09:30-12:30 IST, the forecast rainfall is 0.4 mm. This is a model forecast at the selected place point, not an observation or district average. Source: GFS forecast; conditions can change."
+        },
+        {
+          "step": "correction",
+          "question": "no, I meant Ahmedabad",
+          "conversation": "bdd3e486-f5f8-49bc-84df-575b724594e4",
+          "seconds": 6.95,
+          "status": "answered",
+          "intent": "forecast",
+          "context_action": "correction",
+          "changed_fields": [
+            "places"
+          ],
+          "places": [
+            "Ahmedabad"
+          ],
+          "window": [
+            "2026-09-17T09:30:00+05:30",
+            "2026-09-17T12:30:00+05:30"
+          ],
+          "planner": {
+            "provider": "deepseek",
+            "tier": null,
+            "policy": "model"
+          },
+          "facts": {
+            "count": 1,
+            "sources": [
+              "S21"
+            ],
+            "places": [
+              "Ahmedabad"
+            ],
+            "windows": [
+              [
+                "2026-09-17T09:30:00+05:30",
+                "2026-09-17T12:30:00+05:30"
+              ]
+            ]
+          },
+          "answer": "For Ahmedabad, Ahmadābād, State of Gujarāt, the forecast rainfall for 17 Sep 2026 09:30-12:30 IST is 0.0 mm. Source: GFS forecast; conditions can change."
+        }
+      ]
+    },
+    {
+      "journey": "a clarification answered in a second message",
+      "turns": [
+        {
+          "step": "ambiguous",
+          "question": "Will it rain in Springfield tomorrow morning?",
+          "conversation": "1f1d08ca-22b4-4e2c-93c5-82d6e8ebee6b",
+          "seconds": 7.13,
+          "status": "answered",
+          "intent": "forecast",
+          "context_action": "new",
+          "changed_fields": [
+            "parameters",
+            "places",
+            "time"
+          ],
+          "places": [
+            "Springfield"
+          ],
+          "window": [
+            "2026-09-17T09:30:00+05:30",
+            "2026-09-17T12:30:00+05:30"
+          ],
+          "planner": {
+            "provider": "deepseek",
+            "tier": null,
+            "policy": "model"
+          },
+          "facts": {
+            "count": 1,
+            "sources": [
+              "S21"
+            ],
+            "places": [
+              "Springfield"
+            ],
+            "windows": [
+              [
+                "2026-09-17T09:30:00+05:30",
+                "2026-09-17T12:30:00+05:30"
+              ]
+            ]
+          },
+          "answer": "In Springfield, for 17 Sep 2026 09:30-12:30 IST, forecast rainfall is 1.5 mm. Source: GFS forecast; conditions can change."
+        },
+        {
+          "step": "answer",
+          "question": "the one in Gujarat",
+          "conversation": "1f1d08ca-22b4-4e2c-93c5-82d6e8ebee6b",
+          "seconds": 2.69,
+          "status": "needs_clarification",
+          "intent": "forecast",
+          "context_action": "clarification_answer",
+          "changed_fields": [
+            "places"
+          ],
+          "places": [
+            "Springfield"
+          ],
+          "window": [
+            "2026-09-17T09:30:00+05:30",
+            "2026-09-17T12:30:00+05:30"
+          ],
+          "planner": {
+            "provider": "deepseek",
+            "tier": null,
+            "policy": "model"
+          },
+          "facts": {
+            "count": 0,
+            "sources": [],
+            "places": [],
+            "windows": []
+          },
+          "answer": "I could not find a settlement named Springfield in Gujarat. Please give its district/state, an alternative spelling, or a pin. I will not replace it with a nearby city."
+        }
+      ]
+    },
+    {
+      "journey": "an unrelated greeting mid-conversation",
+      "turns": [
+        {
+          "step": "first",
+          "question": "Will it rain in Surat tomorrow morning?",
+          "conversation": "8b89bc15-39a8-4ba3-9f30-e1c7a7b8f282",
+          "seconds": 6.19,
+          "status": "answered",
+          "intent": "forecast",
+          "context_action": "new",
+          "changed_fields": [
+            "parameters",
+            "places",
+            "time"
+          ],
+          "places": [
+            "Surat"
+          ],
+          "window": [
+            "2026-09-17T09:30:00+05:30",
+            "2026-09-17T12:30:00+05:30"
+          ],
+          "planner": {
+            "provider": "deepseek",
+            "tier": null,
+            "policy": "model"
+          },
+          "facts": {
+            "count": 1,
+            "sources": [
+              "S21"
+            ],
+            "places": [
+              "Surat"
+            ],
+            "windows": [
+              [
+                "2026-09-17T09:30:00+05:30",
+                "2026-09-17T12:30:00+05:30"
+              ]
+            ]
+          },
+          "answer": "In Surat, for 17 Sep 2026 09:30-12:30 IST, the forecast rainfall is 0.4 mm. This is a model forecast at the selected place point, not an observation or district average. Source: GFS forecast; conditions can change."
+        },
+        {
+          "step": "greeting",
+          "question": "thanks! and tomorrow?",
+          "conversation": "8b89bc15-39a8-4ba3-9f30-e1c7a7b8f282",
+          "seconds": 7.05,
+          "status": "answered",
+          "intent": "forecast",
+          "context_action": "follow_up",
+          "changed_fields": [
+            "time"
+          ],
+          "places": [
+            "Surat"
+          ],
+          "window": [
+            "2026-09-17T00:30:00+05:30",
+            "2026-09-18T00:30:00+05:30"
+          ],
+          "planner": {
+            "provider": "deepseek",
+            "tier": null,
+            "policy": "model"
+          },
+          "facts": {
+            "count": 2,
+            "sources": [
+              "S21"
+            ],
+            "places": [
+              "Surat"
+            ],
+            "windows": [
+              [
+                "2026-09-17T00:30:00+05:30",
+                "2026-09-17T23:30:00+05:30"
+              ],
+              [
+                "2026-09-17T23:30:00+05:30",
+                "2026-09-18T00:30:00+05:30"
+              ]
+            ]
+          },
+          "answer": "For Surat, in the window 17 Sep 2026 00:30-23:30 IST, forecast rainfall is 0.7 mm. For Surat, in the window 17 Sep 2026 23:30-18 Sep 2026 00:30 IST, forecast rainfall is 0.1 mm. Source: GFS forecast; conditions can change."
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "One conversation per journey, one run, one machine: a model may answer differently on another day.",
+    "A carried slot is read from the settled plan the engine recorded, not from the answer text alone."
+  ]
+}

@@ -309,6 +309,24 @@ protected place, and the gate refused the rendering rather than showing a partly
 contract working, and it is the honest outcome: seven languages rendered, one was never claimed, two were
 refused and said so.
 
+### C2: the continuity journeys, measured with a reachable planner (16 September 2026)
+
+With the model planner reachable again, the four journeys the earlier chat batch could not measure were run
+against the real engine (`research/reviews/chat-overhaul-20260916/continuity.py`, record in `continuity.json`):
+
+| Journey | Result |
+| --- | --- |
+| forecast, then "and tomorrow afternoon?" | answered; `follow_up`, only `time` changed, place **Surat retained**, window moved to 12:30-18:30, same source S21 |
+| then "what about the evening?" | answered; `follow_up`, place retained, window 18:30-22:30 |
+| "no, I meant Ahmedabad" | answered; `correction`, only `places` changed, the 09:30-12:30 window **kept** |
+| "thanks! and tomorrow?" | answered; `follow_up`, place retained, window moved - a greeting attached to a request does not swallow the request |
+| an ambiguous name, then "the one in Gujarat" | the ambiguous name is disclosed ("Springfield is ambiguous; no state or district was supplied, so the name is used as given") with the resolved label on the card; the refinement is refused honestly ("I could not find a settlement named Springfield in Gujarat... I will not replace it with a nearby city") |
+
+The measurable half of this is pinned in `tests/test_continuity_journeys.py`: a continuation that names no place
+keeps the accepted place and the source and moves the window; a correction replaces the place and keeps the
+window; a greeting attached to a request still retrieves. What the suite cannot pin is the model own reading, so
+the live record is kept beside it.
+
 ## Still to come in this batch
 
 - **Stage A3**: a model-written narrative sentence for evidence answers behind the existing validation, with the
