@@ -26,6 +26,24 @@ CONNECTED_CHANNELS = ('local_inbox', 'web_push')
 CONSENT_SOURCES = ('explicit_chat_request', 'browser_push_grant')
 
 
+def _dedupe_key(place, hazard, window_start, window_end):
+    """Identity of an equivalent subscription: place + hazard + window.
+
+    Coordinates are rounded to ~10 m so repeated pins of the same place match;
+    a named place without coordinates keys on its normalised name and state.
+    """
+    place = place or {}
+    coords = place.get('coordinates') or {}
+    try:
+        lat = round(float(coords.get('latitude')), 4)
+        lon = round(float(coords.get('longitude')), 4)
+        point = '%s,%s' % (lat, lon)
+    except (TypeError, ValueError):
+        point = 'name:' + re.sub(r'\s+', ' ', str(place.get('name') or '').strip().lower()) \
+                + '|state:' + str(place.get('state') or '').strip().lower()
+    return (point, hazard, window_start or '', window_end or '')
+
+
 def _decode_json_list(raw, fallback):
     try:
         value = json.loads(raw) if raw else fallback
@@ -56,21 +74,13 @@ def compute_fingerprint(watch_id, hazard, place_name, facts, reason, packet_stat
     records. A colour-code change, a new hazard code, a CAP lifecycle move, or a
     different evaluation reason all change the fingerprint; an identical official
     state reproduces it, which is what makes duplicate suppression exact.
+
+    Implemented in :mod:`warning_state` (canon-v1); this wrapper preserves the
+    historical hash byte-for-byte so stored fingerprints stay valid.
     """
-    items = []
-    for fact in facts or []:
-        if not isinstance(fact, dict) or fact.get('parameter') != 'official_district_warning':
-            continue
-        items.append({'id': fact.get('id'), 'label': fact.get('label'), 'value': fact.get('value'),
-                      'start': fact.get('start'), 'end': fact.get('end'),
-                      'hazard_codes': sorted(fact.get('hazard_codes') or []),
-                      'quiet': bool(fact.get('quiet')), 'source_id': fact.get('source_id')})
-    items.sort(key=lambda item: json.dumps(item, sort_keys=True, ensure_ascii=False))
-    canonical = json.dumps({'watch_id': watch_id, 'hazard': hazard, 'place': place_name or '',
-                            'facts': items, 'reason': reason,
-                            'packet_status': packet_status, 'cap_eligible': cap_eligible,
-                            'cap_messages': cap_messages}, sort_keys=True, ensure_ascii=False)
-    return hashlib.sha256(canonical.encode('utf-8')).hexdigest()
+    from .warning_state import canonical_input, fingerprint
+    return fingerprint(canonical_input(watch_id, hazard, place_name, facts, reason,
+                                       packet_status, cap_eligible, cap_messages))
 
 
 def _cap_counts(packet):
@@ -175,8 +185,19 @@ class WatchStore:
                 db.execute('ALTER TABLE watches ADD COLUMN %s %s' % (name, decl))
 
     def create(self, question, place, hazard, window_start=None, window_end=None, now=None,
-               channels=None, consent_record=None):
+                channels=None, consent_record=None):
         now = now or utcnow()
+        for existing in self.list(now=now):
+            if existing.get('expired') or existing.get('state') == 'expired':
+                continue
+            if _dedupe_key(existing.get('place'), existing.get('hazard'),
+                           existing.get('window_start'), existing.get('window_end')) == \
+               _dedupe_key(place, hazard, window_start, window_end):
+                found = dict(existing, duplicate=True)
+                # Stored rows predate the inline summary fields create()
+                # returns; fill the stable defaults so callers see one shape.
+                found.setdefault('delivery', 'local_inbox_only_no_push')
+                return found
         channels = list(channels) if channels else list(DEFAULT_CHANNELS)
         consent_record = consent_record if isinstance(consent_record, dict) else default_consent(now)
         watch = {'id': str(uuid.uuid4()), 'created_at': stamp(now), 'question': question, 'place': place, 'hazard': hazard,
@@ -328,6 +349,7 @@ def check_watch(store, engine, watch, now=None, correlation_id=None):
     Dispatch (sending) happens separately in dispatch_outbox.
     """
     from .outbox import OutboxStore, build_notification_payload
+    from .warning_state import build_snapshot, detect, snapshot_from_stored
     from .warning_tools import execute_warning
     now = now or utcnow()
     if watch.get('window_end') and parsed(watch['window_end']) < now:
@@ -347,30 +369,43 @@ def check_watch(store, engine, watch, now=None, correlation_id=None):
               'packet_status': packet.get('status'), 'packet_answer': packet.get('answer')}
     place = watch.get('place') or {}
     cap_eligible, cap_messages = _cap_counts(packet)
-    fingerprint = compute_fingerprint(watch['id'], watch.get('hazard'), place.get('name'),
-                                      packet.get('facts'), outcome.get('reason'), packet.get('status'),
-                                      cap_eligible, cap_messages)
+    new_snapshot = build_snapshot(watch['id'], watch.get('hazard'), place.get('name'),
+                                  packet.get('facts'), outcome.get('reason'), packet.get('status'),
+                                  cap_eligible, cap_messages, matched=outcome['matched'])
+    fingerprint = new_snapshot['fingerprint_sha256']
     result['fingerprint_sha256'] = fingerprint
     result['notification'] = None
     result['notifications'] = []
     result['channels_notified'] = []
     result['channels_skipped'] = []
-    if packet.get('status') == 'unavailable':
-        result['fingerprint_basis'] = 'held_unavailable'
+    old_snapshot = snapshot_from_stored(watch)
+    # First readable check always establishes the baseline silently — even for
+    # hazards the connected products do not carry (historical behaviour pinned
+    # by UnconnectedHeldTests). Unavailable holds regardless of check number.
+    event = detect(old_snapshot, new_snapshot,
+                   unavailable=(packet.get('status') == 'unavailable'),
+                   not_connected=(old_snapshot is not None
+                                  and outcome.get('reason') == 'hazard_not_connected'
+                                  and packet.get('status') != 'unavailable'))
+    result['change_kind'] = event['kind']
+    if event['kind'] == 'held':
+        if event['reason'] == 'not_connected_held':
+            # Historical behaviour: the state advances (so oscillation is
+            # visible) but nothing is ever enqueued for unconnected hazards.
+            store.set_fingerprint(watch['id'], fingerprint)
+        result['fingerprint_basis'] = event['reason']
         return result
-    stored = watch.get('fingerprint_sha256')
-    if not stored:
+    if event['kind'] == 'baseline':
         store.set_fingerprint(watch['id'], fingerprint)
         result['fingerprint_basis'] = 'baseline'
-    elif stored != fingerprint:
-        from .outbox import OutboxStore
+    elif event['kind'] == 'no_change':
+        result['fingerprint_basis'] = 'unchanged'
+    else:
         from .push import deliverable_channels
-        if outcome.get('reason') == 'hazard_not_connected':
-            store.set_fingerprint(watch['id'], fingerprint)
-            result['fingerprint_basis'] = 'not_connected_held'
-            return result
         correlation_id = correlation_id or str(uuid.uuid4())
         payload = build_notification_payload(watch, outcome, packet.get('facts'), packet.get('status'), now=now)
+        payload['change_kind'] = event['kind']
+        payload['change_reason'] = event['reason']
         channels, skipped = deliverable_channels(store.path, watch, now=now)
         notified = OutboxStore(store.path).enqueue_changed(
             watch['id'], correlation_id, fingerprint, channels, payload, now=now)
@@ -379,8 +414,6 @@ def check_watch(store, engine, watch, now=None, correlation_id=None):
         result['channels_notified'] = channels
         result['channels_skipped'] = skipped
         result['fingerprint_basis'] = 'changed'
-    else:
-        result['fingerprint_basis'] = 'unchanged'
     return result
 
 
