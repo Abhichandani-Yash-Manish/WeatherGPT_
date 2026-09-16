@@ -267,6 +267,8 @@ class ProductViewTests(unittest.TestCase):
         self.assertEqual(view['status'], 'ok')
         self.assertIn('temperature_2m', view['data']['variables'])
         self.assertEqual({source['source_id'] for source in view['sources']}, {'S70', 'S22'})
+        import json
+        self.assertTrue(json.dumps(view))  # the packet must serialise exactly as the server serves it
 
     def test_route_requires_a_window(self):
         from weathergpt_data import product_api

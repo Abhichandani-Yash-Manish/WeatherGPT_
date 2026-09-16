@@ -117,8 +117,9 @@ class Foundation:
         reference=self.era5_hourly(lat,lon,start,end,variables=variables,refresh=refresh)
         result=verification_summarise(forecast,reference)
         for side,packet in (('forecast',forecast),('reference',reference)):
-            result[side].update({'retrieved_at_utc':(packet.get('provenance') or {}).get('retrieved_at_utc'),
-                                 'url':(packet.get('provenance') or {}).get('url')})
+            provenance=packet.get('provenance') or {}
+            result[side].update({'retrieved_at_utc':provenance.get('retrieved_at_utc'),
+                                 'url':provenance.get('url'),'sha256':provenance.get('sha256')})
         result['window']={'start':start,'end':end}
         return result
     def history_local(self,lat,lon,start,end,refresh=False,models='era5'):
