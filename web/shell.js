@@ -14,7 +14,7 @@ const WG = window.WG;
 
 (function () {
   const TOKEN = (document.querySelector('meta[name="workspace-token"]') || {}).content || '';
-  const VIEWS = ['workspace', 'overview', 'warnings', 'map', 'observations', 'forecast', 'changes', 'climate', 'advisories', 'air-quality', 'aviation', 'ensemble', 'compare', 'marine', 'assistant', 'documents', 'briefcase', 'settings'];
+  const VIEWS = ['workspace', 'overview', 'warnings', 'map', 'observations', 'forecast', 'changes', 'climate', 'advisories', 'air-quality', 'aviation', 'ensemble', 'verification', 'compare', 'marine', 'assistant', 'documents', 'briefcase', 'settings'];
   /* The keyboard hints the rail prints are the contract: Alt+1…9 must open the surface the
      hint is written on, not whatever happens to sit at that index in VIEWS. Measured
      15 September 2026: the two disagreed from Alt+5 onward, so the hints lied. */
@@ -24,11 +24,12 @@ const WG = window.WG;
                         changes: 'What changed', observations: 'Observations', advisories: 'Farm advisories',
                         climate: 'Climate records', marine: 'Sea and rivers', aviation: 'Aviation', briefcase: 'Briefcase',
                         documents: 'Published documents', 'air-quality': 'Air quality', ensemble: 'Ensemble spread',
+                        verification: 'Forecast verification',
                         compare: 'Compare places',
                         settings: 'Sources and settings' };
   const VIEW_GLYPHS = { workspace: '◒', assistant: '✦', overview: '◎', warnings: '▲', map: '◈', forecast: '〜', changes: '∆',
                         observations: '⌖', advisories: '☘', climate: '◔', marine: '≈', aviation: '✈', briefcase: '❑',
-                        documents: '❒', 'air-quality': '❋', ensemble: '⁂', compare: '⇄',
+                        documents: '❒', 'air-quality': '❋', ensemble: '⁂', verification: '⊞', compare: '⇄',
                         settings: '⚙' };
   const DEFAULT_PLACE = { label: 'Ahmedabad, Gujarat', latitude: 23.02579, longitude: 72.58727 };
 
@@ -569,7 +570,8 @@ const WG = window.WG;
       aviation: 'What is the airport report for VAAH?',
       marine: 'What are the wave conditions near ' + place.label + '?',
       'air-quality': 'What is the modelled air quality for ' + place.label + '?',
-      ensemble: 'Show the ensemble spread for temperature in ' + place.label + '.'
+      ensemble: 'Show the ensemble spread for temperature in ' + place.label + '.',
+      verification: 'How well has the GFS model forecast ' + place.label + ' recently?'
     };
     return { question: templates[view] || templates.overview, summary: place.label };
   }

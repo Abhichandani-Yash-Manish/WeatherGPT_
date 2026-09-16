@@ -8,6 +8,9 @@ from .adapters import json_payload,hourly,FORECAST,MARINE,RIVER,aviation,warning
 from .adapters import EXTENDED,HISTORY_LOCAL,REANALYSIS_MODELS,reanalysis_fields,reanalysis_label
 from .adapters import ENSEMBLE,ENSEMBLE_MODELS,ensemble
 from .adapters import AIR_QUALITY,air_quality
+from .adapters import (ERA5_HOURLY,PREVIOUS_RUNS,PREVIOUS_RUNS_MODELS,PREVIOUS_RUN_LEADS,
+                       era5_hourly as era5_hourly_adapter,previous_runs as previous_runs_adapter)
+from .verification import summarise as verification_summarise
 ROOT=Path(__file__).resolve().parents[1]
 
 class Foundation:
@@ -72,6 +75,53 @@ class Foundation:
                             {**point,'hourly':','.join(selected),'current':','.join(selected),
                              'forecast_days':days,'timezone':'UTC','timeformat':'unixtime'},refresh=refresh,product_parser=parse)
         return parse(data,meta)
+    def _verification_window(self,start,end,label):
+        a=date.fromisoformat(start);b=date.fromisoformat(end)
+        if a>b or (b-a).days>30:raise SourceError(label+' supports one to thirty-one ordered completed days')
+        today=self.store.clock().astimezone(timezone.utc).date()
+        if b>today:raise SourceError(label+' needs completed dates; a future date is not a vintage')
+        return a,b
+    def previous_runs(self,lat,lon,start,end,model='gfs_seamless',variables=None,leads=None,refresh=False):
+        """Archived model runs at fixed lead-time offsets, for verification only."""
+        point=self.point(lat,lon);a,b=self._verification_window(start,end,'Previous-runs retrieval')
+        if model not in PREVIOUS_RUNS_MODELS:raise SourceError('Unsupported previous-runs model: '+str(model))
+        selected=tuple(variables) if variables else tuple(PREVIOUS_RUNS)
+        chosen=tuple(leads) if leads else PREVIOUS_RUN_LEADS
+        if any(name not in PREVIOUS_RUNS for name in selected) or any(lead not in PREVIOUS_RUN_LEADS for lead in chosen):
+            raise SourceError('Unsupported previous-runs variable or lead time')
+        fields={name:PREVIOUS_RUNS[name] for name in selected}
+        columns=[name+'_previous_day%d'%lead for name in selected for lead in chosen]
+        parse=lambda d,m:previous_runs_adapter(d,m,fields,model,chosen,point,(a,b))
+        data,meta=self.get('S70','https://previous-runs-api.open-meteo.com/v1/forecast',
+                            {**point,'hourly':','.join(columns),'models':model,'start_date':start,'end_date':end,
+                             'timezone':'UTC','timeformat':'unixtime','temperature_unit':'celsius',
+                             'precipitation_unit':'mm'},refresh=refresh,product_parser=parse)
+        return parse(data,meta)
+    def era5_hourly(self,lat,lon,start,end,variables=None,refresh=False):
+        """ERA5 hourly reanalysis for a completed window. The verification reference, not an observation."""
+        point=self.point(lat,lon);a,b=self._verification_window(start,end,'ERA5 hourly retrieval')
+        today=self.store.clock().astimezone(timezone.utc).date()
+        if (today-b).days<5:raise SourceError('ERA5 hourly is published with about a five-day delay; choose an earlier window')
+        selected=tuple(variables) if variables else tuple(ERA5_HOURLY)
+        if any(name not in ERA5_HOURLY for name in selected):raise SourceError('Unsupported ERA5 hourly variable')
+        fields={name:ERA5_HOURLY[name] for name in selected}
+        parse=lambda d,m:era5_hourly_adapter(d,m,fields,point,(a,b))
+        data,meta=self.get('S22','https://archive-api.open-meteo.com/v1/archive',
+                            {**point,'hourly':','.join(selected),'models':'era5','start_date':start,'end_date':end,
+                             'timezone':'UTC','timeformat':'unixtime','temperature_unit':'celsius',
+                             'precipitation_unit':'mm'},refresh=refresh,product_parser=parse)
+        return parse(data,meta)
+    def verification(self,lat,lon,start,end,model='gfs_seamless',variables=None,leads=None,refresh=False):
+        """Measure archived runs against ERA5 reanalysis. A measurement, not an operational skill score."""
+        forecast=self.previous_runs(lat,lon,start,end,model=model,variables=variables,leads=leads,refresh=refresh)
+        reference=self.era5_hourly(lat,lon,start,end,variables=variables,refresh=refresh)
+        result=verification_summarise(forecast,reference)
+        for side,packet in (('forecast',forecast),('reference',reference)):
+            provenance=packet.get('provenance') or {}
+            result[side].update({'retrieved_at_utc':provenance.get('retrieved_at_utc'),
+                                 'url':provenance.get('url'),'sha256':provenance.get('sha256')})
+        result['window']={'start':start,'end':end}
+        return result
     def history_local(self,lat,lon,start,end,refresh=False,models='era5'):
         point=self.point(lat,lon);a=date.fromisoformat(start);b=date.fromisoformat(end)
         if a>b or (b-a).days>6:raise SourceError('Local daily retrieval supports one to seven days per task')

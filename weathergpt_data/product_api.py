@@ -42,7 +42,8 @@ PRODUCT_PATHS = ('/api/overview', '/api/warnings/national', '/api/warnings/place
                  '/api/forecast', '/api/forecast/changes', '/api/marine', '/api/river', '/api/aviation', '/api/places/search',
                  '/api/map/layers', '/api/warnings/cap', '/api/warnings/alert-brief', '/api/settings/capabilities',
                  '/api/climate/index', '/api/climate/series', '/api/advisories/states',
-                 '/api/advisories/districts', '/api/personas', '/api/now', '/api/ensemble', '/api/air-quality', '/api/corpus')
+                 '/api/advisories/districts', '/api/personas', '/api/now', '/api/ensemble', '/api/air-quality',
+                 '/api/corpus', '/api/verification')
 _REGISTRY = {'path': None, 'mtime': None, 'products': {}}
 
 
@@ -482,6 +483,22 @@ def air_quality(foundation, latitude, longitude, days=3, variables=None, refresh
                                      'risk score or official warning is produced from it.'])
 
 
+def verification(foundation, latitude, longitude, start, end, model='gfs_seamless', variables=None, leads=None, refresh=False):
+    result = foundation.verification(latitude, longitude, start, end, model=model, variables=variables,
+                                     leads=leads, refresh=refresh)
+    sources = [source_entry(result['forecast'].get('source_id'), result['forecast'],
+                            product='Archived model runs at fixed lead-time offsets'),
+               source_entry(result['reference'].get('source_id'), result['reference'],
+                            product='ERA5 hourly reanalysis, used as the reference')]
+    data = dict(result)
+    return envelope('verification.skill', 'ok' if result.get('variables') else 'unavailable', data,
+                    sources=sources, coverage={'window': result.get('window'), 'model': result['forecast'].get('model'),
+                                               'grid': result['forecast'].get('grid')},
+                    limitations=list(result.get('limits') or []),
+                    not_established=['This measures one model against reanalysis over one bounded window; it is not '
+                                     'forecast skill, an observation-based verification or a model ranking.'])
+
+
 def forecast_changes(latitude, longitude, database=None, limit=40):
     """How stored forecast retrievals for this point differ for the same valid hour.
 
@@ -887,6 +904,19 @@ def dispatch(foundation, path, params):
         return air_quality(foundation, latitude, longitude,
                            days=_int(params, 'days', 3, low=1, high=7),
                            variables=variables, refresh=_flag(params, 'refresh'))
+    if path == '/api/verification':
+        latitude, longitude = _point_params(params)
+        start = _first(params, 'start') or ''
+        end = _first(params, 'end') or ''
+        if not start or not end:
+            raise SourceError('Give a completed start and end date for the verification window')
+        raw = _first(params, 'variable') or ''
+        variables = [name.strip() for name in str(raw).split(',') if name.strip()] or None
+        raw_leads = _first(params, 'leads') or ''
+        leads = [int(value) for value in str(raw_leads).split(',') if value.strip().isdigit()] or None
+        return verification(foundation, latitude, longitude, start, end,
+                            model=_first(params, 'model', 'gfs_seamless'), variables=variables, leads=leads,
+                            refresh=_flag(params, 'refresh'))
     if path == '/api/corpus':
         return corpus_documents(foundation, family=_first(params, 'family'), query=_first(params, 'q'),
                                 limit=_int(params, 'limit', 50, low=1, high=200))

@@ -70,6 +70,7 @@
       <a class="nav-item" href="#/marine" data-view="marine"><span class="glyph" aria-hidden="true">≈</span> Sea and rivers</a>
       <a class="nav-item" href="#/aviation" data-view="aviation"><span class="glyph" aria-hidden="true">✈</span> Aviation</a>
       <a class="nav-item" href="#/ensemble" data-view="ensemble"><span class="glyph" aria-hidden="true">⁂</span> Ensemble spread</a>
+      <a class="nav-item" href="#/verification" data-view="verification"><span class="glyph" aria-hidden="true">⊞</span> Forecast verification</a>
       <a class="nav-item" href="#/compare" data-view="compare"><span class="glyph" aria-hidden="true">⇄</span> Compare places</a>
       </details>
       <a class="nav-item" href="#/documents" data-view="documents"><span class="glyph" aria-hidden="true">❒</span> Published documents</a>
@@ -291,6 +292,14 @@
         <div class="surface-actions"><button type="button" class="ghost" data-ask-about="ensemble">Ask about this</button></div>
       </header>
       <div class="surface-body" id="ensemble-body"></div>
+    </section>
+
+    <section class="surface" data-surface="verification" hidden>
+      <header class="surface-head">
+        <div><h1>Forecast verification</h1><p class="surface-note">Archived model runs at fixed lead-time offsets, matched to ERA5 reanalysis. A measurement against reanalysis, not an observation-based skill score, and no model is ranked against another.</p></div>
+        <div class="surface-actions"><button type="button" class="ghost" data-ask-about="verification">Ask about this</button></div>
+      </header>
+      <div class="surface-body" id="verification-body"></div>
     </section>
 
     <section class="surface" data-surface="compare" hidden>

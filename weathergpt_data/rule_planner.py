@@ -370,6 +370,19 @@ AIR_QUALITY_DEFAULT = ('pm2_5', 'pm10', 'us_aqi', 'european_aqi')
 
 def air_quality_variables(question):
     return list(dict.fromkeys(name for pattern, name in AIR_QUALITY_WORDS if pattern.search(question)))
+# Forecast verification: a question asking how accurate a past forecast was, or naming an
+# error statistic, is measured against ERA5 reanalysis over a completed window. The words
+# "skill" and "accuracy" are read as a request to measure, never as a claim about a model.
+VERIFICATION = re.compile(r'\b(?:verif(?:y|ies|ication)|forecast (?:accuracy|skill|error|errors|bias)|'
+                          r'how (?:accurate|close|good|well) (?:was|were|is|are|did)\b[^?]{0,40}'
+                          r'\b(?:forecast|model|prediction)|did the (?:forecast|model|prediction) (?:get|come|do)|'
+                          r'(?:mean absolute error|root mean square error|rmse|mae|model bias|forecast bias))\b', re.I)
+VERIFICATION_WORDS = ((re.compile(r'\btemperature\b', re.I), 'temperature_2m'),
+                      (re.compile(r'\b(?:rain|rainfall|precipitation)\b', re.I), 'precipitation'))
+
+
+def verification_variables(question):
+    return list(dict.fromkeys(name for pattern, name in VERIFICATION_WORDS if pattern.search(question)))
 AVIATION = re.compile(r'\b(metar|taf|airport|aerodrome|terminal forecast)\b', re.I)
 ACRONYMS = {'IMD','GFS','WRF','AWS','CAP','CWC','WMO','TAF','METAR','PDF','JSON','HTML','API','SIH','UTC','IST','LGD','RMC'}
 
@@ -1029,6 +1042,8 @@ def single_request(question, now, history=None):
         tasks.append(task('ensemble', 'lookup', named or list(ENSEMBLE_VARIABLES)))
     elif AIR_QUALITY.search(question):
         tasks.append(task('air_quality', 'lookup', air_quality_variables(question) or list(AIR_QUALITY_DEFAULT)))
+    elif VERIFICATION.search(question):
+        tasks.append(task('verification', 'lookup', verification_variables(question) or ['temperature_2m', 'precipitation']))
     elif OBSERVATION.search(question) and re.search(r'\b[A-Z]{4}\b', question):
         # A four-letter station code in a right-now question is an airport report request: the
         # station's own product answers it, with the airport tool's provenance. Measured on

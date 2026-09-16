@@ -1978,6 +1978,50 @@
    }
   }
  },
+ "forecast_verification_batch": {
+  "report": "docs/80-forecast-verification.md",
+  "evidence_directory": "research/implementation/forecast-verification-20260916",
+  "operational_ready": false,
+  "scope": "Archived model runs at fixed lead-time offsets (S70) measured against ERA5 hourly reanalysis (S22) over a completed window, reporting matched-hour counts, bias, MAE, RMSE and Pearson correlation per lead, exposed as a CLI artefact, a product view, a verification surface and a deterministic chat shape. The reference is a modelled reanalysis, not an observation; the run identity is not exposed, and no skill, calibration, ranking or single score is produced.",
+  "finding_links": [
+   "P05",
+   "P09",
+   "R04"
+  ],
+  "automated_tests": 1160,
+  "measured": {
+   "live_probe": {
+    "status": "ok",
+    "negative_controls": [
+     "daily",
+     "lead_beyond_7_returns_nulls"
+    ]
+   },
+   "artefact": {
+    "model": "gfs_seamless",
+    "window": "2026-08-28..2026-09-10",
+    "leads": 5,
+    "matched_hours_per_lead": 336,
+    "temperature_mae_c": "1.197-1.707",
+    "precipitation_mae_mm": "0.013-0.031",
+    "evidence": "research/implementation/forecast-verification-20260916/verification-gfs_seamless-2026-09-16T131714Z.json"
+   },
+   "chat": {
+    "status": "answered",
+    "provider": "deterministic_rules",
+    "leads": 7,
+    "facts_per_accuracy_question": 28,
+    "refused": "a single recent day (five-day reanalysis delay)",
+    "evidence": "research/implementation/forecast-verification-20260916/live-chat.json"
+   }
+  },
+  "limitations": [
+   "The reference is ERA5 reanalysis, a modelled analysis, not a station observation.",
+   "Upstream model run identity is not exposed.",
+   "The statistics describe one model, variable and window; they are not forecast skill, calibration, a confidence, a risk or a model ranking.",
+   "One live point and one live window; no nationwide, seasonal or observational acceptance."
+  ]
+ },
  "unified_workspace_batch": {
   "report": "docs/71-unified-user-workspace.md",
   "evidence_directory": "research/implementation/unified-workspace-20260915",
@@ -2457,7 +2501,7 @@
   "same_host_only": true
  },
  "warning_day_windows_batch": {
-  "report": "docs/80-user-facing-gap-batch.md",
+  "report": "docs/81-user-facing-gap-batch.md",
   "evidence_directory": "research/reviews/warning-days-20260916",
   "scope": "one authority for the derived district-warning day windows, and one key for the day date across the read paths",
   "delivered": [

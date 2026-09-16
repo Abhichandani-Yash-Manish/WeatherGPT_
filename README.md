@@ -10,13 +10,13 @@ backed by governed adapters, published records and — when you configure one �
 interface: it says what it did not read, which state is unknown, and when a value is model output,
 published wording, an observation or an official warning. The requirement-by-requirement verdict is
 [the integrated PS assessment](docs/72-integrated-status-and-ps-review.md); the newest batch is
-[OpenRouter routing and frontend delivery](docs/76-openrouter-routing-and-frontend-delivery.md).
+[Forecast verification](docs/80-forecast-verification.md).
 
 ## Status at a glance
 
 | | |
 |---|---|
-| **Delivered in scope** | Point forecasts and cross-source comparison, published historical and climate records, official district-warning applicability resolved against IMD's own geometry, plan monitoring with a local inbox, published-document retrieval with page/issue/currency attached, marine and river point products, airport reports, air quality, ensemble spread, farming advisories, a desktop workspace with fifteen guided tools, and a conversation that carries its artefacts. |
+| **Delivered in scope** | Point forecasts and cross-source comparison, published historical and climate records, official district-warning applicability resolved against IMD's own geometry, plan monitoring with a local inbox, published-document retrieval with page/issue/currency attached, marine and river point products, airport reports, air quality, ensemble spread, archived-run forecast verification against reanalysis, farming advisories, a desktop workspace with sixteen guided tools, and a conversation that carries its artefacts. |
 | **Partial** | Warning delivery (outbox, consented Web Push and acknowledgements exist; no live device journey has been demonstrated), language output and voice (measured per direction, not accepted by native speakers), retrieval breadth (whole-document and contradiction handling remain open), operations (foreground watcher, no sustained service). |
 | **Not connected** | Radar/satellite **imagery**, official sea-area and coastal bulletins as live products, observed water level or gauge readings, danger levels, flood extent, tide, current, sea-surface temperature, ground air-quality monitors, SMS/IVR/WhatsApp delivery, road or route clearance, crop diagnosis or pesticide dosage, and any confidence, risk or skill score. |
 | **Not accepted** | Nationwide corpus acceptance, mobile and rural journeys, noisy-input and native-speaker review, live changed-edition to device notification, fresh-machine and cross-platform installation, sustained load. Hosting is on hold. |
@@ -163,7 +163,7 @@ The interface states these limits instead of filling them:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 1146 Python tests
+python3 -m pytest tests/ -q                          # 1167 Python tests
 node tests/test_charts.js                            #  2 of 70 component checks
 node tests/test_viz.js                               #  the chart engine: plume, meteogram, gaps and locators
 node tests/test_views.js                             # 18
@@ -226,7 +226,7 @@ recorded journeys, fast and slow.
 - [The recorded problem statement](docs/00-problem-statement.md) — the authoritative SIH26068 summary and what this team's interpretations are.
 - [The integrated PS assessment](docs/72-integrated-status-and-ps-review.md) — the current requirement-by-requirement verdict and remaining gates.
 - [The frontend overhaul plan](docs/78-frontend-overhaul-plan.md) and [DESIGN.md](DESIGN.md) — the phased overhaul, the stack decision and the design system it commits to.
-- [The corpus front door and surface completion](docs/77-corpus-front-door-and-surface-completion.md) — the newest batch.
+- [The corpus front door and surface completion](docs/77-corpus-front-door-and-surface-completion.md) — the newest batch on the surface work.
 - [OpenRouter routing and frontend delivery](docs/76-openrouter-routing-and-frontend-delivery.md) — the free-model ranking, failover and the radar coordinate repair.
 - [The dissemination integration review](docs/73-dissemination-integration-review.md) — alert delivery machinery and its limits.
 - [The chronological gap register](docs/31-full-solution-gap-register.md) — what is open, in order of value.
@@ -239,6 +239,7 @@ recorded journeys, fast and slow.
 Each links to the batch that recorded it. Older entries are **historical evidence, not completion
 claims**, and the test counts in them are the counts of their own checkpoint.
 
+- [Forecast verification](docs/80-forecast-verification.md) — archived model runs measured against ERA5 reanalysis, with the method, sample floor and no-skill-claim limit attached.
 - [The frontend overhaul: plan and design system](docs/78-frontend-overhaul-plan.md) — the stack decision, the token layer, the chart engine and the signature visuals, phase by phase.
 - [The corpus front door and surface completion](docs/77-corpus-front-door-and-surface-completion.md) — the README overhaul, the published-documents browser, air quality and ensemble surfaces, and two repairs found while building.
 - [Provider routing and the surfaces that reached the frontend](docs/76-openrouter-routing-and-frontend-delivery.md) — the free-model ranking re-measured, body-level failover repaired, radar coordinate order fixed, five capability paths surfaced.
