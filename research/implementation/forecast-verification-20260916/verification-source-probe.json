@@ -1,0 +1,105 @@
+{
+  "schema_version": "verification-source-probe-v1",
+  "generated_at_utc": "2026-09-16T13:14:11.248514+00:00",
+  "forecast_endpoint": "https://previous-runs-api.open-meteo.com/v1/forecast",
+  "reference_endpoint": "https://archive-api.open-meteo.com/v1/archive",
+  "point": {
+    "latitude": 23.02579,
+    "longitude": 72.58727
+  },
+  "variables": [
+    "temperature_2m",
+    "precipitation"
+  ],
+  "leads": [
+    1,
+    2,
+    3,
+    5,
+    7
+  ],
+  "window": [
+    "2026-08-01",
+    "2026-08-07"
+  ],
+  "forecast": {
+    "url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=23.02579&longitude=72.58727&timezone=UTC&timeformat=unixtime&hourly=temperature_2m%2Cprecipitation%2Ctemperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Ctemperature_2m_previous_day5%2Ctemperature_2m_previous_day7%2Cprecipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cprecipitation_previous_day5%2Cprecipitation_previous_day7&start_date=2026-08-01&end_date=2026-08-07&models=gfs_seamless",
+    "error": null,
+    "utc_offset_seconds": 0,
+    "grid": {
+      "latitude": 23.019852,
+      "longitude": 72.53906
+    },
+    "hours": 168,
+    "first_time_utc": "2026-08-01T00:00:00+00:00",
+    "units": {
+      "temperature_2m": "°C",
+      "precipitation": "mm"
+    },
+    "lead_columns": {
+      "temperature_2m_previous_day1": true,
+      "temperature_2m_previous_day2": true,
+      "temperature_2m_previous_day3": true,
+      "temperature_2m_previous_day5": true,
+      "temperature_2m_previous_day7": true,
+      "precipitation_previous_day1": true,
+      "precipitation_previous_day2": true,
+      "precipitation_previous_day3": true,
+      "precipitation_previous_day5": true,
+      "precipitation_previous_day7": true
+    },
+    "non_null": {
+      "temperature_2m_previous_day1": 168,
+      "temperature_2m_previous_day2": 168,
+      "temperature_2m_previous_day3": 168,
+      "temperature_2m_previous_day5": 168,
+      "temperature_2m_previous_day7": 168,
+      "precipitation_previous_day1": 168,
+      "precipitation_previous_day2": 168,
+      "precipitation_previous_day3": 168,
+      "precipitation_previous_day5": 168,
+      "precipitation_previous_day7": 168
+    }
+  },
+  "daily_rejected": {
+    "url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=23.02579&longitude=72.58727&timezone=UTC&timeformat=unixtime&models=gfs_seamless&daily=temperature_2m_max_previous_day1&past_days=5",
+    "error": "HTTPError: HTTP Error 400: Bad Request {\"reason\":\"Invalid value: Cannot initialize ForecastVariableDaily from invalid String value temperature_2m_max_previous_day1\",\"error\":true}"
+  },
+  "lead_beyond_7": {
+    "url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=23.02579&longitude=72.58727&timezone=UTC&timeformat=unixtime&models=gfs_seamless&hourly=temperature_2m_previous_day7%2Ctemperature_2m_previous_day8&past_days=3",
+    "error": null,
+    "day7_non_null": 240,
+    "day8_non_null": 0,
+    "note": "The service accepts a lead beyond day 7 and returns nulls, not an error."
+  },
+  "models": {
+    "gfs_seamless": {
+      "url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=23.02579&longitude=72.58727&timezone=UTC&timeformat=unixtime&models=gfs_seamless&hourly=temperature_2m_previous_day1&past_days=2",
+      "error": null,
+      "hours": 216
+    },
+    "ecmwf_ifs025": {
+      "url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=23.02579&longitude=72.58727&timezone=UTC&timeformat=unixtime&models=ecmwf_ifs025&hourly=temperature_2m_previous_day1&past_days=2",
+      "error": null,
+      "hours": 216
+    },
+    "best_match": {
+      "url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=23.02579&longitude=72.58727&timezone=UTC&timeformat=unixtime&models=best_match&hourly=temperature_2m_previous_day1&past_days=2",
+      "error": null,
+      "hours": 216
+    }
+  },
+  "reference": {
+    "url": "https://archive-api.open-meteo.com/v1/archive?latitude=23.02579&longitude=72.58727&timezone=UTC&timeformat=unixtime&hourly=temperature_2m%2Cprecipitation&models=era5&start_date=2026-08-01&end_date=2026-08-07",
+    "error": null,
+    "hours": 168,
+    "units": {
+      "temperature_2m": "°C",
+      "precipitation": "mm"
+    },
+    "non_null": {
+      "temperature_2m": 168,
+      "precipitation": 168
+    }
+  }
+}
