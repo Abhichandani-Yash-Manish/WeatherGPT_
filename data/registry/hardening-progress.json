@@ -1,7 +1,7 @@
 {
  "schema_version": "hardening-progress-v1",
  "review": "research/reviews/national-readiness-20260912/review.md",
- "updated_at_utc": "2026-09-17T02:25:00+00:00",
+ "updated_at_utc": "2026-09-17T03:10:00+00:00",
  "operational_ready": false,
  "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
  "findings": [
@@ -2766,5 +2766,28 @@
    "research/reviews/frontend-react-r1-20260917/r1-verification.json",
    "docs/88-overhaul-decisions-and-design-language.md"
   ]
+ },
+ "final_integration_audit_batch": {
+  "report": "docs/89-final-integration-audit-and-closure-plan.md",
+  "evidence_directory": "research/reviews/final-audit-20260917",
+  "scope": "a final architectural integration audit, the front-facing deliverables inventory, two integration gates, and a feature-by-feature closure plan with acceptance criteria",
+  "delivered": [
+   "research/reviews/final-audit-20260917/architecture-inventory.py writes the inventory it audits: 78 engine modules with none orphaned, 63 routes (27 product, 16 gated GET, 20 POST), 14 capability tools over 12 kinds, 70 registered sources with 29 connected and wired to chat and 15 blocked, 19 surfaces identical in both frontends, 90 documents, 18 registries, 1287 Python tests plus 10 Node suites and 13 frontend checks",
+   "two corrections recorded rather than hidden: the source ledger keeps connected/wired_to_chat nested under connector (a first pass read zero), and URL-string route coverage is not a usable measure here because the suite exercises handlers directly",
+   "tests/test_route_inventory.py: the POST route table moved to module scope so it can be enumerated, and 5 checks pin it (callable handlers, no duplicates, every product path served, a bounded gated GET list)",
+   "scripts/audit_surface_registry.py: 8 checks in verify_all.py that keep the two frontends agreeing and every surface backed by a served route, with exemptions that must carry a reason",
+   "the closure plan: each PS feature now has explicit acceptance criteria, its current state, and the exact remaining delta, with a sequenced order whose steps are named"
+  ],
+  "tests_added": [
+   "tests/test_route_inventory.py (5 checks)"
+  ],
+  "live_check": "research/reviews/final-audit-20260917/architecture-inventory.json",
+  "open": [
+   "the React module registry is hand-written: the audit prevents drift, and deriving it from /api/settings/capabilities is the R3 follow-up",
+   "the 110 vanilla component checks are not yet ported to the React frontend, and the React shell has no recorded browser acceptance run",
+   "the feature closures themselves are scheduled in docs/89 section 6: R1 completion, the feature-4 live device journey, feature-5 contradiction handling, per-product coverage statements, native-speaker language review, voice acceptance, the dated district crosswalk, then the landing page and owner gate"
+  ],
+  "hosting_performed": false,
+  "same_host_only": true
  }
 }

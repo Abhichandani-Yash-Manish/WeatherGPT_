@@ -263,7 +263,7 @@ The interface states these limits instead of filling them:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 1287 Python tests
+python3 -m pytest tests/ -q                          # 1292 Python tests
 node tests/test_charts.js                            #  2 of 110 printed component checks
 node tests/test_viz.js                               #  9; the chart engine: plume, meteogram, gaps and locators
 node tests/test_views.js                             # 25
@@ -348,6 +348,7 @@ recorded journeys, fast and slow.
 Each links to the batch that recorded it. Older entries are **historical evidence, not completion
 claims**, and the test counts in them are the counts of their own checkpoint.
 
+- [Final integration audit and closure plan](docs/89-final-integration-audit-and-closure-plan.md) — what is actually wired (78 modules, 63 routes, 29 sources connected and wired to chat, 19 surfaces identical in both frontends), the gaps found and closed here, and every PS feature with the acceptance criteria that would let it be called done.
 - [The React overhaul: research and stack](docs/87-frontend-research-and-inspiration.md) — the component landscape read from primary sources (assistant-ui, React Spectrum S2 AI components, Radix, shadcn/ui, Mantine, Motion, TanStack, MapLibre, Tremor, Lucide, axe-core, Noto, AI SDK), the licence table, the chosen stack, the **chat-first module architecture** (one backend-derived registry; every module has a compact Block, a full Surface and its intents) and the one CSP cost it forces.
 - [The React frontend overhaul: plan](docs/86-react-frontend-overhaul-plan.md) — a plan, not a build: Vite + React + TypeScript, the same CSP, the 110 checks ported one-for-one, six independently shippable stages (R0 groundwork, R1 shell, R2 the transcript, R3 the guided surfaces, R4 charts/map/print, R5 accessibility/i18n/voice, R6 decommission) and the exit check each one must meet.
 - [The Feature 4 dissemination backbone](docs/85-feature4-dissemination-backbone.md) — canon-v1 warning state and a named change detector, a claim/lease outbox with a retry taxonomy, a supervised cycle with a heartbeat and GET /api/watch-health, route budgets, the CAP geographic matcher and district aliases. Live-device push and a sustained live-IMD run stay explicitly not claimed.

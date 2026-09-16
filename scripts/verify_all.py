@@ -68,6 +68,9 @@ def main():
     # build is a reported skip while the vanilla frontend is still the default.
     ok, tail, err = run([sys.executable, 'scripts/audit_react_build.py'])
     steps.append(('react build audit', ok, tail or err))
+    # The surfaces a reader can reach must be served, and the two frontends must agree on them.
+    ok, tail, err = run([sys.executable, 'scripts/audit_surface_registry.py'])
+    steps.append(('surface registry audit', ok, tail or err))
 
     width = max(len(name) for name, _, _ in steps) + 2
     for name, ok, detail in steps:

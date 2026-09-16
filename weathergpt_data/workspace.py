@@ -1033,6 +1033,23 @@ REACT_ASSET_TYPES={'.js':'text/javascript','.css':'text/css','.map':'application
                    '.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp','.json':'application/json'}
 
 
+def post_routes(workspace):
+    """The POST route table, at module scope so a test and the surface audit can read it.
+
+    The table used to live inside the request handler, where only the server could see it: a route could then
+    exist without any test being able to enumerate it, and a rail entry could point at a route nobody served.
+    """
+    return {'/api/answer':workspace.answer,'/api/refresh':workspace.refresh,'/api/chat':workspace.chat,
+            '/api/chat/preview':workspace.chat_preview,
+            '/api/chat/cancel':workspace.cancel_chat,'/api/watches/check':workspace.check_watches,'/api/watches/delete':workspace.delete_watch,'/api/watches/channels':workspace.set_watch_channels,'/api/watches/create':workspace.create_watch,'/api/warm':workspace.warm,
+            '/api/briefing/run':workspace.run_briefing,
+            '/api/plans/check':workspace.check_plans,'/api/plans/update':workspace.update_plan,'/api/plans/replay':workspace.replay_plans,
+            '/api/briefs/save':workspace.save_brief,
+            '/api/briefs/delete':workspace.delete_brief,
+            '/api/push/subscribe':workspace.push_subscribe,'/api/push/unsubscribe':workspace.push_unsubscribe,
+            '/api/speech/transcribe':workspace.transcribe,'/api/speech/speak':workspace.speak}
+
+
 def make_server(workspace, port=8765):
     token=secrets.token_urlsafe(32)
     class Handler(BaseHTTPRequestHandler):
@@ -1155,15 +1172,7 @@ def make_server(workspace, port=8765):
             if (not self.allowed_host() or self.headers.get('Origin',origin)!=origin
                     or not hmac.compare_digest(supplied,token)):
                 return self.respond(403,{'error':'Reload this local workspace before sending a request'})
-            routes={'/api/answer':workspace.answer,'/api/refresh':workspace.refresh,'/api/chat':workspace.chat,
-                    '/api/chat/preview':workspace.chat_preview,
-                    '/api/chat/cancel':workspace.cancel_chat,'/api/watches/check':workspace.check_watches,'/api/watches/delete':workspace.delete_watch,'/api/watches/channels':workspace.set_watch_channels,'/api/watches/create':workspace.create_watch,'/api/warm':workspace.warm,
-                    '/api/briefing/run':workspace.run_briefing,
-                    '/api/plans/check':workspace.check_plans,'/api/plans/update':workspace.update_plan,'/api/plans/replay':workspace.replay_plans,
-                    '/api/briefs/save':workspace.save_brief,
-                    '/api/briefs/delete':workspace.delete_brief,
-                    '/api/push/subscribe':workspace.push_subscribe,'/api/push/unsubscribe':workspace.push_unsubscribe,
-                    '/api/speech/transcribe':workspace.transcribe,'/api/speech/speak':workspace.speak}
+            routes=post_routes(workspace)
             outbox_id=parse_ack_path(self.path)
             if self.path not in routes and outbox_id is None:return self.respond(404,{'error':'Not found'})
             # A recording is far larger than a question, so it gets its own limit rather
