@@ -23,6 +23,18 @@ def no_model_planner_by_default(monkeypatch):
     the model path builds its router with policy='model' and its own stub client.
     """
     monkeypatch.setenv(providers.PLANNER_POLICY_ENV, 'rules')
+    # The cheap routing tier is on in the product and off in the suite, so no component check
+    # spends a call on it by accident; a test that wants it builds a router with router=True.
+    monkeypatch.setenv('WEATHERGPT_ROUTER', 'off')
+    # No provider is reachable from a component check. The engine a test builds without naming a
+    # model therefore gets a router with no clients: every composition call reports
+    # ProviderUnavailable, which callers already treat as "no model text", so nothing reaches the
+    # network, spends credits or hangs on a slow endpoint. A test that wants model behaviour builds
+    # its own router over a stub endpoint.
+    from weathergpt_data.conversation import ConversationEngine
+    from weathergpt_data.providers import ModelRouter
+    monkeypatch.setattr('weathergpt_data.conversation.default_model',
+                        lambda: ModelRouter(clients=[], rules=True, policy='rules'))
     yield
 
 

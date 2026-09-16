@@ -8,16 +8,19 @@ which is how "what can you do?" came to be answered vaguely before this module e
 import json
 
 
-def brief(now, limit=1500):
+def brief(now, limit=1500, tool_names_only=False):
     """The workspace as data: clock, callable tools, source ledger counts, and what it does not do.
 
     Bounded on purpose: a conversational reply needs a picture, not an inventory dump, and the
     planner prompt is already long. Tools are dropped from the end when the picture will not fit.
+    tool_names_only serves the cheap routing tier, which needs to know what exists, not what each
+    tool does.
     """
     from zoneinfo import ZoneInfo
     from .capabilities import planner_catalogue
     from .foundation import ROOT
-    tools = [{'tool': c.get('tool'), 'kind': c.get('kind'), 'purpose': c.get('purpose')}
+    tools = [({'tool': c.get('tool')} if tool_names_only
+              else {'tool': c.get('tool'), 'kind': c.get('kind'), 'purpose': c.get('purpose')})
              for c in planner_catalogue()]
     sources = {'registered': None, 'status_counts': {}, 'blocked_access': []}
     try:

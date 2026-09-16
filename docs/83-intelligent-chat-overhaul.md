@@ -176,6 +176,111 @@ with a repair call only when a reply is refused. The reading line and the engine
 for questions the deterministic rules can read, but a greeting has no reading to show. A cheaper routing tier
 (a short classification call before the full plan) is the candidate fix, not built here.
 
+## Delivered after the first measurement: the cheap first look, the frozen provider, the written answer
+
+### The cheap first look (stage A2.5)
+
+A short routing call now runs before the planner: it decides *conversation or task* against a ~700-character
+workspace picture, and a conversation is answered in that same call. A task falls through to the full planner,
+which still owns every plan, so nothing is planned more cheaply than before. The route the model cannot decide
+is a task, and a first look that fails or exceeds its 12 s budget changes nothing. The tier decides no value:
+the reply it returns is checked by the engine exactly as a planned reply is.
+
+Measured on the same afternoon and the same provider order (research/reviews/chat-overhaul-20260916/router-tier-and-quota.json):
+
+| Message | Before | With the first look |
+| --- | --- | --- |
+| "hello" | 11.0 s | **4.2 s** |
+| "what can you do?" | 19.3 s | **4.2 s** |
+| "what is 17 times 3?" | 48.3 s | **8.0 s** (and it now answers "51" as general knowledge) |
+| "नमस्ते" | 9.3 s | 10.1 s |
+| weather question | 19.5 s | 102.4 s in that run - see below |
+
+The cost is real and measured: a task turn pays for the first look as well, about 3-4 s more than before, and
+the switch can be turned off per workspace (WEATHERGPT_ROUTER=off). The 102 s weather turn was the written
+answer's tail latency, not retrieval: a **25 s wall-clock budget for the whole composition step** was added in
+response (measured after that run: a refused or slow composition now falls to the tool-owned facts within the
+budget, and the planner step itself is bounded at 45 s, so a refused provider reaches the reader in about a
+minute instead of a two-minute retry loop).
+
+### The provider policy is frozen to the free cloud models (reader decision, 16 September)
+
+WEATHERGPT_PROVIDERS=cloud_free is the default: only the curated free OpenRouter ids answer, ordered most
+capable first and failing over between them. The local model runs only under WEATHERGPT_PROVIDERS=local, which
+is kept for diagnosing an offline machine and is not a fallback that runs by itself. With no key configured
+there is no provider at all, and the planner says so rather than routing around it. The policy is recorded in
+every planning and composition trace (`provider_policy`), and `ModelRouter.state()` reports the policy, the
+planner policy, the first-look switch and each provider's availability.
+
+### The written answer for a turn with facts (stage A3)
+
+A turn that retrieved facts now asks the model for the reader's answer in two or three sentences, from those
+facts only, behind the checks that already covered model text: every number must come from the facts, every
+measurement must match a fact's own unit (the unit set is read from the facts, so a changed unit is caught as a
+changed unit), the place the facts belong to must be named, the supporting evidence ids must exist, and no
+link, certainty or unrequested language may appear. Any failure - including a slow or refused call, bounded at
+25 s for the whole step - leaves the tool-owned renderer stating the facts, with the refusal recorded in
+`trace.generation`. The fact rows, ruler and receipt stay tool-owned on the card; the claim-attribution
+invariant now reads "the model may write the answer, and it may not rewrite what the facts say", which
+tests/test_product_stage_one.py exercises with a changed value, a changed unit and a lost place.
+
+### DeepSeek integration (16 September 2026, at the reader request)
+
+The OpenRouter free-models-per-day quota was exhausted, so the reader supplied a DeepSeek key. It is stored in
+`data/runtime/model-config.json` (git-ignored, never logged, never returned) and the reader set the policy to
+`deepseek_first`. It is a **paid** endpoint billed to that key, and prompts leave the machine: that trade is
+the reader's stated choice, not a silent one.
+
+- `DeepSeekClient` speaks the OpenAI-compatible endpoint at api.deepseek.com with `deepseek-chat`. DeepSeek
+  accepts a JSON object reply, not a JSON schema on the wire, so the schema travels in the system message and
+  the reply is parsed with the same tolerance the OpenRouter client uses (extract_json), then validated exactly
+  as before. The trace records the model, the attempt count, the latency and the tokens (including cache hits),
+  so a paid turn can be accounted for.
+- `WEATHERGPT_PROVIDERS` now takes `deepseek_first` (the reader's choice), `deepseek`, `cloud_free` or `local`.
+  The default is `deepseek_first` when a DeepSeek key is configured and `cloud_free` otherwise. The free
+  OpenRouter ids stay behind the paid endpoint as failover, so a key problem does not stop the workspace, and
+  the deepseek-only policy with no key has no provider at all rather than falling back on its own.
+- A refused key (401/403) disables the client for the process; a missing balance (402) is named as such; a rate
+  limit or a server error is retried once and then the router moves on.
+
+### Measured on DeepSeek: six live journeys, no failures
+
+`research/reviews/chat-overhaul-20260916/journeys-deepseek.json`, same runner as before:
+
+| Message | Free provider | DeepSeek | Result |
+| --- | --- | --- | --- |
+| "hello" | 11.0 s | **0.93 s** | conversation, natural greeting |
+| "what can you do?" | 19.3 s | **1.11 s** | conversation, names the tools and the limits |
+| "what is 17 times 3?" | 48.3 s | **0.89 s** | conversation, "51", stated as general knowledge |
+| "नमस्ते" | 9.3 s | **1.14 s** | conversation in Devanagari |
+| "Will it rain in Surat tomorrow morning?" | 19.5 s | **5.94 s** | answered; written answer, 1 fact, 0.4 mm, GFS |
+| "thanks!" | 19.5 s | **0.73 s** | conversation, continuity kept |
+
+### What the written answer does now, and where it stops
+
+The written answer applies to a **point reading** - a forecast, an observation, a wave or discharge figure -
+where the deterministic text is a short sentence list (at most four lines, 600 characters). A published
+historical table, a quoted bulletin passage, an advisory extract or a long hourly series keeps its own
+renderer: the model does not rewrite a record that was laid out to be read. Measured on the marine turn
+("What is the sea like near Kochi tomorrow?", 72 hourly facts): the typed renderer still draws the rows, and no
+model text replaces them.
+
+The place label, the window label and the source clause are **tool-owned strings**: the narrative prompt
+receives `place_label` ("Surat", not the gazetteer's "Surat, Sūrat, State of Gujarāt"), a pre-rendered
+`window_label` ("17 Sep 2026 09:30-12:30 IST"), and the answer carries the source clause from the deterministic
+text ("Source: GFS forecast; conditions can change."). A measured turn reads: *"In Surat, for the window 17 Sep
+2026 09:30-12:30 IST, the forecast rainfall is 0.4 mm. This is a model forecast at the selected place point, not
+an observation or district average. Source: GFS forecast; conditions can change."*
+
+### Measured incident: the free quota ran out
+
+Later the same afternoon, every cloud-free call was refused: `HTTP 429 Rate limit exceeded: free-models-per-day.`
+With the cloud-only policy frozen and nothing else enabled, a turn reports "No model provider could answer"
+honestly and holds its facts - measured on "thanks!" at 53.8 s before the step budgets were added, and on
+"hello" at 52.5 s after them (12 s first look + 45 s plan, both refused). Options are recorded, not chosen
+here: wait for the daily reset, add a small credit to the account, lower the request count with
+WEATHERGPT_ROUTER=off, or unfreeze the local model - which the reader deliberately froze.
+
 ## Still to come in this batch
 
 - **Stage A3**: a model-written narrative sentence for evidence answers behind the existing validation, with the

@@ -1,0 +1,244 @@
+{
+  "batch": "docs/83-intelligent-chat-overhaul.md",
+  "captured_at_utc": "2026-09-16T18:00:44Z",
+  "planner_policy": "model",
+  "providers": [
+    {
+      "provider": "deepseek",
+      "model": null,
+      "models": [
+        "deepseek-chat"
+      ],
+      "available": true,
+      "reason": ""
+    },
+    {
+      "provider": "openrouter",
+      "model": null,
+      "models": [
+        "nvidia/nemotron-3-super-120b-a12b:free",
+        "nex-agi/nex-n2.5-pro:free",
+        "google/gemma-4-31b-it:free",
+        "dots-studio/dots-3-note-preview:free",
+        "nex-agi/nex-n2.5-mini:free",
+        "google/gemma-4-26b-a4b-it:free",
+        "liquid/lfm-2.5-2.6b:free"
+      ],
+      "available": true,
+      "reason": ""
+    }
+  ],
+  "turns": [
+    {
+      "question": "hello",
+      "conversation": "c6b75222-77b6-46ab-9ebd-ceeef0eb8aad",
+      "seconds": 0.93,
+      "status": "conversation",
+      "answer_basis": "conversation",
+      "intent": "chat",
+      "planner": {
+        "provider": "deepseek",
+        "model": "deepseek-chat",
+        "policy": "model",
+        "latency_ms": 875,
+        "tier": "router",
+        "chat_kind": "greeting",
+        "provider_policy": "deepseek_first",
+        "failover": []
+      },
+      "generation": {
+        "provider": "deepseek",
+        "status": "composed",
+        "authored_by": "model",
+        "language_adherence": "not_applicable",
+        "repair": null
+      },
+      "tools": [
+        "conversation"
+      ],
+      "facts": 0,
+      "first_fact": null,
+      "quick_replies": 0,
+      "chat_leak_check": null,
+      "answer": "Hello! I'm here to help with weather questions for this workspace. What would you like to know?"
+    },
+    {
+      "question": "what can you do?",
+      "conversation": "d8ed19c2-2ad7-4b05-8de9-f8b94949275c",
+      "seconds": 1.11,
+      "status": "conversation",
+      "answer_basis": "conversation",
+      "intent": "chat",
+      "planner": {
+        "provider": "deepseek",
+        "model": "deepseek-chat",
+        "policy": "model",
+        "latency_ms": 1102,
+        "tier": "router",
+        "chat_kind": "capability",
+        "provider_policy": "deepseek_first",
+        "failover": []
+      },
+      "generation": {
+        "provider": "deepseek",
+        "status": "composed",
+        "authored_by": "model",
+        "language_adherence": "not_applicable",
+        "repair": null
+      },
+      "tools": [
+        "conversation"
+      ],
+      "facts": 0,
+      "first_fact": null,
+      "quick_replies": 0,
+      "chat_leak_check": null,
+      "answer": "I can pull together local weather information from the sources wired into this workspace, such as a forecast summary. I can't send official warnings, give confidence or risk scores, or offer advice beyond what the published sources say."
+    },
+    {
+      "question": "what is 17 times 3?",
+      "conversation": "bca53944-2add-4e32-b673-8dba721e17bb",
+      "seconds": 0.89,
+      "status": "conversation",
+      "answer_basis": "conversation",
+      "intent": "chat",
+      "planner": {
+        "provider": "deepseek",
+        "model": "deepseek-chat",
+        "policy": "model",
+        "latency_ms": 886,
+        "tier": "router",
+        "chat_kind": "logic",
+        "provider_policy": "deepseek_first",
+        "failover": []
+      },
+      "generation": {
+        "provider": "deepseek",
+        "status": "composed",
+        "authored_by": "model",
+        "language_adherence": "not_applicable",
+        "repair": null
+      },
+      "tools": [
+        "conversation"
+      ],
+      "facts": 0,
+      "first_fact": null,
+      "quick_replies": 0,
+      "chat_leak_check": null,
+      "answer": "17 times 3 is 51. That's general knowledge, not from any weather source here."
+    },
+    {
+      "question": "नमस्ते",
+      "conversation": "b6ead796-28ed-4d41-80b6-0def54ee906d",
+      "seconds": 1.14,
+      "status": "conversation",
+      "answer_basis": "conversation",
+      "intent": "chat",
+      "planner": {
+        "provider": "deepseek",
+        "model": "deepseek-chat",
+        "policy": "model",
+        "latency_ms": 1132,
+        "tier": "router",
+        "chat_kind": "greeting",
+        "provider_policy": "deepseek_first",
+        "failover": []
+      },
+      "generation": {
+        "provider": "deepseek",
+        "status": "composed",
+        "authored_by": "model",
+        "language_adherence": "written_in_requested_script",
+        "repair": null
+      },
+      "tools": [
+        "conversation"
+      ],
+      "facts": 0,
+      "first_fact": null,
+      "quick_replies": 0,
+      "chat_leak_check": null,
+      "answer": "नमस्ते! मैं आपकी मौसम संबंधी जानकारी में मदद कर सकता हूँ। बताइए, आप क्या जानना चाहेंगे?"
+    },
+    {
+      "question": "Will it rain in Surat tomorrow morning?",
+      "conversation": "658e3cdf-74ef-4421-8c98-bde078f60430",
+      "seconds": 5.94,
+      "status": "answered",
+      "answer_basis": null,
+      "intent": "forecast",
+      "planner": {
+        "provider": "deepseek",
+        "model": "deepseek-chat",
+        "policy": "model",
+        "latency_ms": 1471,
+        "tier": null,
+        "chat_kind": null,
+        "provider_policy": "deepseek_first",
+        "failover": []
+      },
+      "generation": {
+        "provider": "deepseek",
+        "status": null,
+        "authored_by": "model",
+        "language_adherence": "not_applicable",
+        "repair": null
+      },
+      "tools": [
+        "gazetteer_search",
+        "point_forecast",
+        "forecast"
+      ],
+      "facts": 1,
+      "first_fact": {
+        "place": "Surat, Sūrat, State of Gujarāt",
+        "label": "Forecast rainfall",
+        "value": "0.4",
+        "unit": "mm",
+        "source_id": "S21"
+      },
+      "quick_replies": 3,
+      "chat_leak_check": null,
+      "answer": "In Surat, Sūrat, State of Gujarāt, forecast rainfall is 0.4 mm for the window 2026-09-17T09:30:00+05:30 to 2026-09-17T12:30:00+05:30."
+    },
+    {
+      "question": "thanks!",
+      "conversation": "658e3cdf-74ef-4421-8c98-bde078f60430",
+      "seconds": 0.73,
+      "status": "conversation",
+      "answer_basis": "conversation",
+      "intent": "chat",
+      "planner": {
+        "provider": "deepseek",
+        "model": "deepseek-chat",
+        "policy": "model",
+        "latency_ms": 724,
+        "tier": "router",
+        "chat_kind": "thanks",
+        "provider_policy": "deepseek_first",
+        "failover": []
+      },
+      "generation": {
+        "provider": "deepseek",
+        "status": "composed",
+        "authored_by": "model",
+        "language_adherence": "not_applicable",
+        "repair": null
+      },
+      "tools": [
+        "conversation"
+      ],
+      "facts": 0,
+      "first_fact": null,
+      "quick_replies": 0,
+      "chat_leak_check": null,
+      "answer": "You're welcome! Happy to help anytime you need weather details."
+    }
+  ],
+  "limits": [
+    "One machine, one provider order, one run: a model may answer differently on another day.",
+    "The weather turn reads the real ingestion store; its collection status is whatever the store held.",
+    "Latency is measured once per turn and is not a service level."
+  ]
+}

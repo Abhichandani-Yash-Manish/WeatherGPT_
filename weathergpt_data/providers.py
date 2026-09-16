@@ -30,6 +30,12 @@ FREE_MODEL_REGISTRY = ROOT / 'data' / 'registry' / 'openrouter-free-models.json'
 OPENROUTER_BASE = 'https://openrouter.ai/api/v1'
 OPENROUTER_MODELS_URL = OPENROUTER_BASE + '/models'
 OPENROUTER_CHAT_URL = OPENROUTER_BASE + '/chat/completions'
+# DeepSeek's OpenAI-compatible endpoint. It accepts a JSON object reply, not a JSON schema on the
+# wire, so the schema travels in the prompt and the reply is parsed and checked exactly as the
+# OpenRouter client's is. It is a paid endpoint billed to the key configured on this machine: the
+# reader chose it on 16 September 2026, and every call records its model, tokens and latency.
+DEEPSEEK_BASE = 'https://api.deepseek.com'
+DEEPSEEK_MODELS = ('deepseek-chat',)
 # Free-tier ids this workspace has itself observed in the OpenRouter catalogue, most recent
 # observation first. The curated ranking in FREE_MODEL_REGISTRY is the routing order and names
 # more; this tuple is the floor used only when that registry is missing. Re-measured on
@@ -68,6 +74,12 @@ def local_config():
 def openrouter_key():
     """The OpenRouter key from the environment first, then local configuration."""
     key = os.getenv('OPENROUTER_API_KEY') or local_config().get('openrouter_api_key') or ''
+    return str(key).strip()
+
+
+def deepseek_key():
+    """The DeepSeek key from the environment first, then local configuration."""
+    key = os.getenv('DEEPSEEK_API_KEY') or local_config().get('deepseek_api_key') or ''
     return str(key).strip()
 
 
@@ -256,7 +268,7 @@ class OllamaClient:
                            '"ollama pull ' + str(self.model) + '"')
         return True, ''
 
-    def complete(self, system, user, schema, max_tokens=1100):
+    def complete(self, system, user, schema, max_tokens=1100, timeout=None):
         payload = {'model': self.model, 'messages': [{'role': 'system', 'content': system},
                                                      {'role': 'user', 'content': user}],
                    'stream': False, 'think': False, 'format': schema, 'keep_alive': '20m',
@@ -267,7 +279,7 @@ class OllamaClient:
             raise ProviderUnavailable('The local model is answering another question. Try again shortly.')
         began = time.monotonic()
         try:
-            with urllib.request.urlopen(request, timeout=self.timeout) as response:
+            with urllib.request.urlopen(request, timeout=timeout or self.timeout) as response:
                 data = json.loads(response.read(200000))
         except (urllib.error.URLError, OSError, ValueError) as error:
             raise ProviderUnavailable('The local model did not answer: ' + type(error).__name__) from error
@@ -318,9 +330,9 @@ class OpenRouterClient:
             return False, self.disabled_reason
         return True, ''
 
-    def http(self, url, body=None, headers=None):
+    def http(self, url, body=None, headers=None, timeout=None):
         request = urllib.request.Request(url, body, headers or {})
-        return self.opener(request, timeout=self.timeout)
+        return self.opener(request, timeout=timeout or self.timeout)
 
     def catalogue(self, with_key=False):
         """The public model list. No key is needed to read it; with_key sends the configured one."""
@@ -332,7 +344,8 @@ class OpenRouterClient:
         rows = data.get('data') if isinstance(data, dict) else data
         return [row for row in (rows or []) if isinstance(row, dict) and row.get('id')]
 
-    def complete(self, system, user, schema, max_tokens=1100):
+    def complete(self, system, user, schema, max_tokens=1100, timeout=None):
+        """One bounded call. A per-call timeout lets a composition step keep its own budget."""
         available, reason = self.available()
         if not available:
             raise ProviderUnavailable(reason)
@@ -351,7 +364,8 @@ class OpenRouterClient:
                 headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + self.key,
                            'HTTP-Referer': 'http://127.0.0.1:8790', 'X-Title': 'WeatherGPT local prototype'}
                 try:
-                    with self.http(self.base + '/chat/completions', json.dumps(payload).encode(), headers) as response:
+                    with self.http(self.base + '/chat/completions', json.dumps(payload).encode(), headers,
+                                   timeout=timeout) as response:
                         data = json.loads(response.read(400000))
                 except urllib.error.HTTPError as error:
                     detail = ''
@@ -394,6 +408,9 @@ class OpenRouterClient:
         raise ProviderUnavailable('OpenRouter could not answer: ' + str(last_error or 'no model was tried'))
 
 
+# The whole-step budget when a caller does not set one: a refusal from a free endpoint must reach
+# the reader as an honest error in a reasonable time, not as a two-minute wait through retries.
+PROVIDER_BUDGET_SECONDS=float(os.getenv('WEATHERGPT_PROVIDER_BUDGET') or 45.0)
 PLANNER_POLICY_ENV='WEATHERGPT_PLANNER'
 
 def planner_policy():
@@ -406,6 +423,96 @@ def planner_policy():
     return policy if policy in {'model','rules'} else 'model'
 
 
+class DeepSeekClient:
+    """DeepSeek in JSON-object mode: the schema travels in the prompt, the reply is parsed as JSON.
+
+    Paid and billed to the configured key, so every reply records its model, its tokens and its
+    latency. An invalid key disables the client for this process rather than retrying it, a missing
+    balance is named as such, and a rate limit or a server error is retried once before the router
+    moves on.
+    """
+
+    name = 'deepseek'
+
+    def __init__(self, key=None, models=None, timeout=DEFAULT_TIMEOUT, opener=None, base=DEEPSEEK_BASE):
+        self.key = (key if key is not None else deepseek_key()).strip()
+        self.models = tuple(models or DEEPSEEK_MODELS)
+        self.timeout = timeout
+        self.opener = opener or urllib.request.urlopen
+        self.base = base.rstrip('/')
+        self.disabled_reason = ''
+
+    def available(self):
+        if not self.key:
+            return False, 'no DeepSeek key is configured'
+        if self.disabled_reason:
+            return False, self.disabled_reason
+        return True, ''
+
+    def http(self, url, body=None, headers=None, timeout=None):
+        request = urllib.request.Request(url, body, headers or {})
+        return self.opener(request, timeout=timeout or self.timeout)
+
+    def complete(self, system, user, schema, max_tokens=1100, timeout=None):
+        available, reason = self.available()
+        if not available:
+            raise ProviderUnavailable(reason)
+        instruction = ('Return only one JSON object, and nothing else, that validates against this JSON '
+                       'schema: ' + json.dumps(schema, ensure_ascii=False))
+        last_error = None
+        attempts = 0
+        for model in self.models:
+            for attempt in range(MAX_ATTEMPTS_PER_MODEL):
+                attempts += 1
+                began = time.monotonic()
+                payload = {'model': model, 'temperature': 0, 'max_tokens': max_tokens,
+                           'response_format': {'type': 'json_object'},
+                           'messages': [{'role': 'system', 'content': system + ' ' + instruction},
+                                        {'role': 'user', 'content': user}]}
+                headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + self.key}
+                try:
+                    with self.http(self.base + '/chat/completions', json.dumps(payload).encode(), headers,
+                                   timeout=timeout) as response:
+                        data = json.loads(response.read(400000))
+                except urllib.error.HTTPError as error:
+                    detail = ''
+                    try:
+                        detail = (json.loads(error.read(4000)) or {}).get('error', {}).get('message', '')
+                    except Exception:  # noqa: BLE001 - the status is what matters
+                        detail = ''
+                    if error.code in (401, 403):
+                        self.disabled_reason = 'the DeepSeek key was refused (HTTP ' + str(error.code) + ')'
+                        raise ProviderUnavailable(self.disabled_reason) from error
+                    if error.code == 402:
+                        self.disabled_reason = 'the DeepSeek account has no balance for this call'
+                        raise ProviderUnavailable(self.disabled_reason) from error
+                    last_error = 'HTTP ' + str(error.code) + ' ' + str(detail)[:120]
+                    if error.code == 429 or error.code >= 500:
+                        time.sleep(RETRY_BACKOFF_SECONDS * (attempt + 1))
+                        continue
+                    break
+                except (urllib.error.URLError, OSError, ValueError) as error:
+                    last_error = type(error).__name__ + ' ' + str(error)[:100]
+                    continue
+                failure = route_failure(data)
+                if failure:
+                    last_error = model + ': ' + failure
+                    continue
+                latency = round((time.monotonic() - began) * 1000)
+                content = ((data.get('choices') or [{}])[0].get('message') or {}).get('content', '')
+                usage = data.get('usage') or {}
+                try:
+                    parsed = extract_json(content)
+                except ProviderUnavailable as error:
+                    last_error = str(error) + ' from ' + model
+                    continue
+                return parsed, {'provider': self.name, 'model': model, 'attempts': attempts,
+                                'latency_ms': latency, 'input_tokens': usage.get('prompt_tokens'),
+                                'output_tokens': usage.get('completion_tokens'),
+                                'cache_hit_tokens': usage.get('prompt_cache_hit_tokens')}
+        raise ProviderUnavailable('DeepSeek could not answer: ' + str(last_error or 'no model was tried'))
+
+
 class ModelRouter:
     """Let the model plan the turn, or the deterministic rules when the policy asks for them.
 
@@ -414,8 +521,11 @@ class ModelRouter:
     checked here as well as inside the client.
     """
 
-    def __init__(self, clients=None, rules=True, policy=None):
+    def __init__(self, clients=None, rules=True, policy=None, router=None):
         self.policy = policy or planner_policy()
+        self.provider_policy = provider_policy()
+        from .chat_router import router_enabled
+        self.router = router_enabled() if router is None else bool(router)
         self.clients = []
         for client in clients or default_clients():
             if getattr(client, 'name', '') == OpenRouterClient.name:
@@ -425,6 +535,11 @@ class ModelRouter:
             self.clients.append(client)
         self.rules = rules
         self.trace = []
+
+    def state(self):
+        """The provider policy, the planner policy and the cheap-router switch, for trace and health."""
+        return {'provider_policy': self.provider_policy, 'planner_policy': self.policy,
+                'chat_router': self.router, 'providers': self.describe()}
 
     def describe(self):
         rows = []
@@ -437,18 +552,38 @@ class ModelRouter:
                          'available': available, 'reason': reason})
         return rows
 
-    def complete(self, system, user, schema, max_tokens=1100):
-        """Ask each provider in order; the first parsed reply wins, with its trace."""
+    def complete(self, system, user, schema, max_tokens=1100, timeout=None):
+        """Ask each provider in order; the first parsed reply wins, with its trace.
+
+        A timeout is the budget for the whole step, not for one attempt: a composition step that has
+        spent it stops trying, because a slow tail on a free endpoint must not hold a turn that
+        already has the retrieved facts to state. Without a timeout the clients keep their own.
+        """
         errors = []
+        began = time.monotonic()
+        timeout = PROVIDER_BUDGET_SECONDS if timeout is None else timeout
+
+        def remaining():
+            return timeout - (time.monotonic() - began)
+
         for client in self.clients:
             available, reason = (client.available() if hasattr(client, 'available') else (True, ''))
             if not available:
                 errors.append(client.name + ': ' + reason)
                 continue
+            left = remaining()
+            if left is not None and left <= 1.0:
+                errors.append('the %.0f s budget for this step was spent before ' % timeout + client.name + ' answered')
+                break
             try:
-                data, meta = client.complete(system, user, schema, max_tokens=max_tokens)
+                try:
+                    data, meta = client.complete(system, user, schema, max_tokens=max_tokens,
+                                                 timeout=left if left is not None else None)
+                except TypeError:
+                    data, meta = client.complete(system, user, schema, max_tokens=max_tokens)
                 meta = dict(meta or {})
                 meta.setdefault('provider', client.name)
+                meta['provider_policy'] = self.provider_policy
                 meta['failover'] = list(errors)
                 self.trace.append(meta)
                 return data, meta
@@ -478,6 +613,18 @@ class ModelRouter:
                         attempts=0, latency_ms=0, failover=[])
             self.trace.append(meta)
             return plan, meta
+        if self.router:
+            from .chat_router import route
+            try:
+                routed = route(self, question, now, history)
+            except (ProviderUnavailable, SourceError, OSError, TimeoutError, TypeError, KeyError, ValueError):
+                # A first look that fails changes nothing: the full planner still owns the turn.
+                routed = None
+            if routed is not None:
+                plan, meta = routed
+                meta = dict(meta or {})
+                meta['planner_policy'] = 'model'
+                return plan, meta
         try:
             plan, meta = interpret_plan(self.complete, question, now, history)
         except ProviderUnavailable as error:
@@ -496,21 +643,44 @@ class DeterministicClient:
     model = RULE_MODEL
 
 
-def default_clients():
-    """The provider order: the routed free models first when a key is configured, then the local model.
+PROVIDER_POLICY_ENV='WEATHERGPT_PROVIDERS'
 
-    The workspace is run by a reader who asked for the free cloud models to be used and the local
-    model to be the fallback, so a configured key puts OpenRouter first: the router takes the most
-    capable free id first and fails over on any refusal. With no key, the local model is the first
-    provider and nothing changes. Whatever the order, a planning failure never loses the turn: the
-    next client is tried and the failover is recorded in the trace."""
-    clients = []
-    if openrouter_key():
-        clients.append(OpenRouterClient())
-    try:
-        clients.append(OllamaClient())
-    except ValueError:
-        pass
+def provider_policy():
+    """Which providers may answer: the curated free cloud models, or the frozen local fallback.
+
+    The reader chose the free cloud models on 16 September 2026 and froze everything else, so
+    'cloud_free' is the default: only the curated free OpenRouter ids answer, and a provider outage is
+    reported rather than quietly served by a different machine. 'local' is kept so an offline machine
+    can still be diagnosed; it is not a fallback that runs by itself.
+    """
+    default='deepseek_first' if deepseek_key() else 'cloud_free'
+    policy=str(os.getenv(PROVIDER_POLICY_ENV) or local_config().get('provider_policy') or default).strip().lower()
+    return policy if policy in {'deepseek_first','deepseek','cloud_free','local'} else default
+
+
+def default_clients():
+    """The configured providers: the curated free cloud models, or the frozen local model on request.
+
+    Free-cloud policy: OpenRouter only, with the curated free ids, ordered most capable first and
+    failing over between them on any refusal. A planning failure never loses the turn while another
+    free id can answer, and the failover is recorded in the trace. With no key configured there is no
+    provider at all, which the planner reports rather than routing around.
+    """
+    policy=provider_policy()
+    if policy=='local':
+        try:
+            return [OllamaClient()]
+        except ValueError:
+            return []
+    if policy=='deepseek':
+        return [DeepSeekClient()] if deepseek_key() else []
+    if policy=='cloud_free':
+        return [OpenRouterClient()] if openrouter_key() else []
+    # deepseek_first: the endpoint the reader configured, then the free ids as failover. The
+    # paid key answers when it is there, and a free model still carries the turn if it is not.
+    clients=[]
+    if deepseek_key():clients.append(DeepSeekClient())
+    if openrouter_key():clients.append(OpenRouterClient())
     return clients
 
 
