@@ -288,8 +288,11 @@ WEATHERGPT_ROUTER=off, or unfreeze the local model - which the reader deliberate
   renderer, which is honest but terse.
 - **Stage A4**: evidence narratives through the language gate for more languages, and dialogue.SCRIPTS widening
   with each language made writable.
-- **Stage A5**: the provider and planner policy surfaced in the settings and health surfaces, so a reader can
-  see which provider is answering and what last failed.
+- **Stage A5 (delivered, 16 September)**: the settings surface now states who answers, in what order, the
+  planner policy, whether the cheap first look is on, the availability of each provider, and the last time
+  every provider refused with its reason and time. The payload comes from `ModelRouter.state()`; the router
+  records a failure per refused client and, if none answers, the whole chain. `scripts/models.py --set-key`
+  takes `openrouter` (default) or `deepseek`, so the command printed in the UI is a command that works.
 
 ## What this batch does not establish
 

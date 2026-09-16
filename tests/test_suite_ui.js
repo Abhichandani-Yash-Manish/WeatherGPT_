@@ -69,7 +69,17 @@ const PAYLOADS = {
   '/api/marine': envelope('marine.point', 'ok', { parameters: { wave_height: { unit: 'm', model: 'test', quality_flags: [], points: [{ t: '2026-09-14T00:00:00+00:00', v: 1.04, source_locator: '$.hourly.wave_height[0]' }] } }, days: 1, grid: { latitude: 9.95, longitude: 76.2 }, requested: { latitude: 9.93, longitude: 76.26 }, grid_distance_km: 5.2 },
     { not_established: ['No official sea-area bulletin, observed buoy value, tide, current or sea-surface temperature is retrieved here.'] }),
   '/api/river': envelope('river.point', 'ok', { parameters: { river_discharge: { unit: 'm³/s', model: 'test', quality_flags: [], points: [{ t: '2026-09-14', v: 7.45, source_locator: '$.daily.river_discharge[0]' }] } }, days: 1, grid: { latitude: 23.02, longitude: 72.57 }, grid_distance_km: 1.1 }),
-  '/api/settings/capabilities': envelope('settings.capabilities', 'ok', { capabilities: [{ tool: 'official_warning', kind: 'warning', operations: ['lookup'], purpose: 'official warning guidance' }], sources: [{ source_id: 'S15', product: 'IMD public warning-map WFS', integration_status: 'prototype_adapter_tested', user_review: 'pending', usage_terms: 'unresolved', selection: 'proposed' }], registered_sources: 63, connected_sources: 1 }),
+  '/api/settings/capabilities': envelope('settings.capabilities', 'ok', { capabilities: [{ tool: 'official_warning', kind: 'warning', operations: ['lookup'], purpose: 'official warning guidance' }], sources: [{ source_id: 'S15', product: 'IMD public warning-map WFS', integration_status: 'prototype_adapter_tested', user_review: 'pending', usage_terms: 'unresolved', selection: 'proposed' }], registered_sources: 63, connected_sources: 1,
+    provider: { policy: 'deepseek_first', planner_policy: 'model', chat_router: true,
+      providers: [{ provider: 'deepseek', model: 'deepseek-chat', models: [], available: true, reason: '' },
+                  { provider: 'openrouter', model: null, models: ['a/b:free'], available: true, reason: '' }],
+      last_failure: { provider: 'openrouter', reason: 'HTTP 429 free-models-per-day', at_utc: '2026-09-16T17:52:00+00:00' },
+      deepseek: { configured: true, model: 'deepseek-chat', note: 'A paid endpoint billed to the key configured on this machine.' },
+      openrouter: { configured: true, key_source: 'data/runtime/model-config.json', routing_order: ['a/b:free'], refused: [], note: 'Only ids ending in :free are routed, behind the paid endpoint as failover.' },
+      set_key_command: 'python3 scripts/models.py --set-key',
+      set_deepseek_key_command: 'python3 scripts/models.py --set-key deepseek',
+      probe_command: 'python3 scripts/models.py --check',
+      key_note: 'A key is written to local configuration on this machine with owner-only permissions, and is never printed by the workspace.' } }),
   '/api/map/layers': envelope('map.layers', 'ok', { build_id: 'basemap-v1-test', layers: [{ name: 'districts', file: 'districts.geojson', bytes: 10, budget_bytes: 20 }], district_polygons: 756, skipped_without_a_name: 1, state_attribution: { districts: 756, attributed: 755, exact_name_matches: 619 }, attribution: 'IMD' }),
   '/api/forecast/changes': envelope('forecast.changes', 'ok', {
     point: { latitude: 23.02579, longitude: 72.58727 }, requested_point: { latitude: 23.02579, longitude: 72.58727 },
@@ -386,6 +396,15 @@ async function run() {
   assert(walk(settings).some(node => textOf(node) === 'S15'), 'settings lists the source');
   assert(walk(settings).some(node => /usage terms|unresolved/i.test(textOf(node))), 'settings states the unresolved terms');
   console.log('PASS: the settings surface lists capabilities, sources and their terms');
+
+  // The provider card states who answers, in what order, and what failed last.
+  assert(walk(settings).some(node => textOf(node) === 'deepseek'), 'settings names the provider that answers first');
+  assert(walk(settings).some(node => /deepseek_first/.test(textOf(node))), 'settings states the provider policy in force');
+  assert(walk(settings).some(node => /first look/i.test(textOf(node))), 'settings states whether the cheap first look is on');
+  assert(walk(settings).some(node => /last failure/i.test(textOf(node)) && /429/.test(textOf(node))),
+    'settings reports the last provider failure with its reason');
+  assert(walk(settings).some(node => /set-key deepseek/.test(textOf(node))), 'settings prints the key command it actually supports');
+  console.log('PASS: the settings surface names the providers, the policy in force and the last failure');
 
   const advisories = await render('advisories', place);
   assert(withClass(advisories, 'chip-button').length >= 1, 'advisories offers district entries');

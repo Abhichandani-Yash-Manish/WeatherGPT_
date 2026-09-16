@@ -18,11 +18,11 @@ import threading
 import time
 import urllib.error
 import urllib.request
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from .transport import SourceError
+from .transport import SourceError, stamp
 
 ROOT = Path(__file__).resolve().parents[1]
 LOCAL_CONFIG = ROOT / 'data' / 'runtime' / 'model-config.json'
@@ -405,6 +405,8 @@ class OpenRouterClient:
                                 'latency_ms': latency, 'input_tokens': usage.get('prompt_tokens'),
                                 'output_tokens': usage.get('completion_tokens'),
                                 'route': data.get('provider')}
+        self.last_failure = {'provider': self.name, 'reason': str(last_error or 'no model was tried')[:300],
+                             'at_utc': stamp(datetime.now(timezone.utc))}
         raise ProviderUnavailable('OpenRouter could not answer: ' + str(last_error or 'no model was tried'))
 
 
@@ -510,6 +512,8 @@ class DeepSeekClient:
                                 'latency_ms': latency, 'input_tokens': usage.get('prompt_tokens'),
                                 'output_tokens': usage.get('completion_tokens'),
                                 'cache_hit_tokens': usage.get('prompt_cache_hit_tokens')}
+        self.last_failure = {'provider': self.name, 'reason': str(last_error or 'no model was tried')[:300],
+                             'at_utc': stamp(datetime.now(timezone.utc))}
         raise ProviderUnavailable('DeepSeek could not answer: ' + str(last_error or 'no model was tried'))
 
 
@@ -526,6 +530,9 @@ class ModelRouter:
         self.provider_policy = provider_policy()
         from .chat_router import router_enabled
         self.router = router_enabled() if router is None else bool(router)
+        # The last time every provider failed, with the reason, so a reader can see why a turn was
+        # refused rather than guessing from a single error message.
+        self.last_failure = None
         self.clients = []
         for client in clients or default_clients():
             if getattr(client, 'name', '') == OpenRouterClient.name:
@@ -537,9 +544,10 @@ class ModelRouter:
         self.trace = []
 
     def state(self):
-        """The provider policy, the planner policy and the cheap-router switch, for trace and health."""
+        """The provider policy, the planner policy, the first look, availability and the last failure."""
         return {'provider_policy': self.provider_policy, 'planner_policy': self.policy,
-                'chat_router': self.router, 'providers': self.describe()}
+                'chat_router': self.router, 'providers': self.describe(),
+                'last_failure': self.last_failure}
 
     def describe(self):
         rows = []
@@ -589,6 +597,10 @@ class ModelRouter:
                 return data, meta
             except ProviderUnavailable as error:
                 errors.append(client.name + ': ' + str(error))
+                self.last_failure = {'provider': client.name, 'reason': str(error)[:300],
+                                     'at_utc': stamp(datetime.now(timezone.utc))}
+        self.last_failure = self.last_failure or {'provider': 'all', 'reason': ' | '.join(errors)[:300],
+                                                 'at_utc': stamp(datetime.now(timezone.utc))}
         raise ProviderUnavailable('No model provider could answer. ' + ' | '.join(errors))
 
     def plan(self, question, now, history):

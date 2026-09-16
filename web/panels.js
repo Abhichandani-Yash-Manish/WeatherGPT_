@@ -1420,37 +1420,54 @@
     sourceCard.append(el('p', 'Usage terms', 'field-label'), terms);
     sourceCard.append(el('p', 'A registered source is not a serving approval, and a tested adapter is not operational readiness.', 'field-note'));
 
-    /* Which model answers, what it may spend, and where the key goes: the page states it rather
-       than leaving the reader to read a config file. Nothing here prints or stores the key. */
+    /* Who answers, in what order, and what failed last: the page states it rather than leaving the
+       reader to read a config file or a trace. Nothing here prints or stores a key. */
     const provider = (view.data && view.data.provider) || null;
     if (provider) {
-      const card = WG.block('Model providers',
-        provider.openrouter.configured
-          ? 'OpenRouter is configured; only free-tier model ids are routed, most capable first.'
-          : 'No OpenRouter key is configured yet. The rules floor and any local model still answer.');
-      card.append(WG.table(['Provider', 'State', 'Detail'], [
-        ['Rules floor', 'always available', String((provider.rules_floor || {}).model || 'rule-planner') + ' — ' + String((provider.rules_floor || {}).detail || '')],
-        ['OpenRouter', provider.openrouter.configured ? 'configured' : 'not configured',
-          'key source: ' + String(provider.openrouter.key_source || 'not configured') + ' · ' + String((provider.openrouter.routing_order || []).length) + ' free model id(s) ranked'],
-        ['Key handling', 'local only', String(provider.key_note || '')]
-      ]));
-      if ((provider.openrouter.routing_order || []).length) {
-        card.append(el('p', 'Free models, most capable first (a workload judgement, not a provider statement)', 'field-label'));
-        const order = el('ol', undefined, 'notes');
-        (provider.openrouter.routing_order || []).forEach(model => order.append(el('li', String(model))));
-        card.append(order);
+      const rows = (provider.providers || []).map(row => [
+        String(row.provider || 'a provider'),
+        row.available ? 'available' : 'not available',
+        (row.model || (row.models || []).join(', ') || 'no model named') + (row.reason ? ' · ' + String(row.reason) : '')]);
+      rows.push(['Planner', String(provider.planner_policy || 'model'),
+        provider.planner_policy === 'rules'
+          ? 'the deterministic rules plan this workspace; set WEATHERGPT_PLANNER=model to plan with a model'
+          : 'the model plans every turn; the deterministic rules plan only under WEATHERGPT_PLANNER=rules']);
+      rows.push(['First look', provider.chat_router ? 'on' : 'off',
+        'a short call decides conversation or task before the planner runs (WEATHERGPT_ROUTER)']);
+      rows.push(['Order', String(provider.policy || 'not stated'), 'the providers above are tried in this order']);
+      rows.push(['Key handling', 'local only', String(provider.key_note || '')]);
+      const card = WG.block('Model providers', 'Who answers, in what order, and what failed last.');
+      card.append(WG.table(['Provider', 'State', 'Detail'], rows));
+      if (provider.last_failure) {
+        card.append(el('p', 'Last failure: ' + String(provider.last_failure.provider || 'a provider') + ' — '
+          + String(provider.last_failure.reason || 'reason not recorded')
+          + (provider.last_failure.at_utc ? ' (' + istStamp(provider.last_failure.at_utc) + ')' : ''), 'field-note'));
       }
-      if ((provider.openrouter.refused || []).length) {
+      if ((provider.deepseek || {}).configured) {
+        card.append(el('p', 'DeepSeek: ' + String((provider.deepseek || {}).model || 'deepseek-chat') + '. '
+          + String((provider.deepseek || {}).note || ''), 'field-note'));
+      }
+      const free = provider.openrouter || {};
+      if (free.configured) {
+        card.append(el('p', 'Free OpenRouter models behind it, most capable first (a workload judgement, not a provider statement)', 'field-label'));
+        const order = el('ol', undefined, 'notes');
+        (free.routing_order || []).forEach(model => order.append(el('li', String(model))));
+        card.append(order);
+      } else {
+        card.append(el('p', 'No OpenRouter key is configured, so the free ids are not part of the order above.', 'field-note'));
+      }
+      if ((free.refused || []).length) {
         const refused = el('ul', undefined, 'notes');
-        (provider.openrouter.refused || []).forEach(item => refused.append(el('li', String(item.model_id || 'an id') + ' — ' + String(item.reason || 'refused'))));
+        (free.refused || []).forEach(item => refused.append(el('li', String(item.model_id || 'an id') + ' — ' + String(item.reason || 'refused'))));
         card.append(el('p', 'Refused, and why (a paid id is never routed)', 'field-label'));
         card.append(refused);
       }
-      card.append(el('p', 'To provide a key, run this on the machine that serves this workspace, then restart the server:', 'field-note'));
+      card.append(el('p', 'To provide or replace a key, run this on the machine that serves this workspace, then restart the server:', 'field-note'));
+      card.append(el('pre', String(provider.set_deepseek_key_command || 'python3 scripts/models.py --set-key deepseek'), 'brief-markdown'));
       card.append(el('pre', String(provider.set_key_command || 'python3 scripts/models.py --set-key'), 'brief-markdown'));
-      card.append(el('p', 'To measure what the account can actually reach, with the key configured:', 'field-note'));
-      card.append(el('pre', String(provider.probe_command || 'python3 scripts/models.py --probe-free'), 'brief-markdown'));
-      card.append(el('p', String((provider.openrouter || {}).note || ''), 'field-note'));
+      card.append(el('p', 'To measure what the configured order can actually reach:', 'field-note'));
+      card.append(el('pre', String(provider.probe_command || 'python3 scripts/models.py --check'), 'brief-markdown'));
+      card.append(el('p', String(free.note || ''), 'field-note'));
       host.append(card);
     }
 

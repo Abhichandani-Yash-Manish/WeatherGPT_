@@ -994,21 +994,30 @@ def settings_view():
                         'integration_status': (entry.get('integration') or {}).get('status') or entry.get('evidence_stage'),
                         'user_review': entry.get('user_review'), 'usage_terms': entry.get('usage_terms'),
                         'selection': entry.get('selection')})
-    from .providers import RULE_MODEL, free_model_choices, key_source
+    from .providers import RULE_MODEL, ModelRouter, deepseek_key, free_model_choices, key_source
     choices = free_model_choices()
     configured = key_source() != 'not configured'
-    provider = {'rules_floor': {'model': RULE_MODEL, 'available': True,
-                                'detail': 'the core question shapes are planned with no model at all'},
-                 'openrouter': {'configured': configured, 'key_source': key_source(),
-                                'routing_order': list(choices.get('routing_order') or []),
-                                'refused': list(choices.get('refused') or []),
-                                'note': ('Only ids ending in :free are routed. The order is a capability judgement for this workload, '
-                                         'most capable first, not a provider statement, and only a keyed probe measures what the '
-                                         'account can actually reach.')},
-                 'set_key_command': 'python3 scripts/models.py --set-key',
-                 'probe_command': 'python3 scripts/models.py --probe-free',
-                 'key_note': ('The key is written to local configuration on this machine with owner-only permissions, is never sent '
-                              'anywhere except the provider it belongs to, and is never printed by the workspace.')}
+    # The live state of the router: which policy is in force, who can answer, and what failed last.
+    # Constructing the router reads local configuration and availability; it makes no model call.
+    live = ModelRouter().state()
+    provider = {'policy': live['provider_policy'], 'planner_policy': live['planner_policy'],
+                'chat_router': live['chat_router'], 'providers': live['providers'],
+                'last_failure': live['last_failure'],
+                'rules_floor': {'model': RULE_MODEL, 'available': True,
+                                'detail': 'the deterministic rules plan only under WEATHERGPT_PLANNER=rules, for an offline machine or a benchmark'},
+                'deepseek': {'configured': bool(deepseek_key()), 'model': 'deepseek-chat',
+                             'note': 'A paid endpoint billed to the key configured on this machine. The model, the tokens and the latency of every call are recorded on the turn.'},
+                'openrouter': {'configured': configured, 'key_source': key_source(),
+                               'routing_order': list(choices.get('routing_order') or []),
+                               'refused': list(choices.get('refused') or []),
+                               'note': ('Only ids ending in :free are routed, behind the paid endpoint as failover. The order is a '
+                                        'capability judgement for this workload, most capable first, not a provider statement, and only '
+                                        'a keyed probe measures what the account can actually reach.')},
+                'set_key_command': 'python3 scripts/models.py --set-key',
+                'set_deepseek_key_command': 'python3 scripts/models.py --set-key deepseek',
+                'probe_command': 'python3 scripts/models.py --check',
+                'key_note': ('A key is written to local configuration on this machine with owner-only permissions, is never sent '
+                             'anywhere except the provider it belongs to, and is never printed by the workspace.')}
     return envelope('settings.capabilities', 'ok',
                     {'capabilities': [{key: value for key, value in capability.items() if key != 'sources'}
                                       for capability in CAPABILITIES],

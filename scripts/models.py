@@ -98,13 +98,19 @@ def check_router():
     return 1 if failures and not providers.openrouter_key() else 0
 
 
-def set_key(reader=None, path=None):
-    """Store the OpenRouter key in local backend configuration at mode 0600, without echoing it.
+def set_key(reader=None, path=None, provider='openrouter'):
+    """Store a provider key in local backend configuration at mode 0600, without echoing it.
 
     The key arrives through getpass (hidden input, no shell history) and is never printed. An
     empty or clearly mistyped key, an unreadable existing configuration and a missing parent
     directory are all named rather than worked around; other configuration keys are kept.
     """
+    provider = str(provider or 'openrouter').strip().lower()
+    if provider not in {'openrouter', 'deepseek'}:
+        print('refused: unknown provider ' + provider + '. Use openrouter or deepseek.')
+        return 2
+    field = 'deepseek_api_key' if provider == 'deepseek' else 'openrouter_api_key'
+    label = 'DeepSeek API key' if provider == 'deepseek' else 'OpenRouter API key'
     path = Path(path or providers.LOCAL_CONFIG)
     reader = reader or getpass.getpass
     existing = {}
@@ -118,22 +124,22 @@ def set_key(reader=None, path=None):
             print('refused: ' + str(path) + ' does not hold a JSON object. Nothing was written.')
             return 2
     try:
-        key = str(reader('OpenRouter API key (hidden, never printed): ') or '').strip()
+        key = str(reader(label + ' (hidden, never printed): ') or '').strip()
     except (EOFError, KeyboardInterrupt):
         print('cancelled: nothing was written.')
         return 2
     if len(key) < MIN_KEY_LENGTH:
-        print('refused: that entry is ' + str(len(key)) + ' character(s) and OpenRouter keys are longer. '
+        print('refused: that entry is ' + str(len(key)) + ' character(s) and ' + label + 's are longer. '
               'Nothing was written.')
         return 2
     path.parent.mkdir(parents=True, exist_ok=True)
-    existing['openrouter_api_key'] = key
+    existing[field] = key
     descriptor = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
     with os.fdopen(descriptor, 'w', encoding='utf-8') as handle:
         handle.write(json.dumps(existing, indent=2, ensure_ascii=False) + '\n')
     os.chmod(path, 0o600)
-    print('key stored in ' + str(path) + ' at mode 0600; it was not printed and data/runtime is git-ignored')
-    print('next: restart the server (python3 scripts/start_weather.py), then python3 scripts/models.py --probe-free')
+    print(provider + ' key stored in ' + str(path) + ' at mode 0600; it was not printed and data/runtime is git-ignored')
+    print('next: restart the server (python3 scripts/start_weather.py), then python3 scripts/models.py --check')
     return 0
 
 
@@ -231,12 +237,12 @@ def main():
     parser.add_argument('--check', action='store_true', help='plan a question through the router')
     parser.add_argument('--probe-free', action='store_true',
                         help='measure the live free catalogue against the curated ranking and record it')
-    parser.add_argument('--set-key', action='store_true',
-                        help='prompt without echo and store the OpenRouter key at mode 0600')
+    parser.add_argument('--set-key', nargs='?', const='openrouter', choices=['openrouter', 'deepseek'],
+                        help='prompt without echo and store a provider key at mode 0600 (openrouter, or deepseek)')
     parser.add_argument('--json', action='store_true', help='print the provider report as JSON')
     arguments = parser.parse_args()
     if arguments.set_key:
-        return set_key()
+        return set_key(provider=arguments.set_key)
     if arguments.probe_free:
         return probe_free()
     if arguments.catalogue:
