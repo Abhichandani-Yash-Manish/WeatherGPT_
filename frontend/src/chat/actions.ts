@@ -15,7 +15,12 @@ export function kindOf(fact: Fact): string {
 
 export function receiptRows(packet: AnswerPacket, fact: Fact): [string, string][] {
   const citation = (packet.citations || []).find(entry => (fact.citation_ids || []).includes(entry.id));
-  const locator = (fact.source_locators || [])[0];
+  /* The engine states a locator either as an object with page/row/column or as the plain path it read from
+     ("$.hourly.precipitation[26]"). Both are the record locator, so both are printed. */
+  const locator = (fact.source_locators || [])[0] as
+    | { page?: number | string; row?: number | string; column?: string; prefix?: string; locator?: string }
+    | string
+    | undefined;
   const rows: [string, string][] = [];
   rows.push(['Measure', parameterName(fact) + (fact.parameter ? ' (' + fact.parameter + ')' : '')]);
   rows.push(['Value', String(fact.value) + (fact.unit ? ' ' + fact.unit : '') + (fact.method ? ' \u00b7 method ' + fact.method : '')]);
@@ -28,8 +33,14 @@ export function receiptRows(packet: AnswerPacket, fact: Fact): [string, string][
   if (citation?.product) rows.push(['Source product', citation.product]);
   if (citation?.retrieved_at_utc) rows.push(['Retrieved', istStamp(citation.retrieved_at_utc)]);
   if (citation?.url) rows.push(['Address', citation.url]);
-  if (locator) {
-    const parts = [locator.page ? 'page ' + locator.page : null, locator.row ? 'row ' + locator.row : null, locator.column || null].filter(Boolean);
+  if (typeof locator === 'string') {
+    if (locator.trim()) rows.push(['Locator', locator.trim()]);
+  } else if (locator) {
+    const parts = [
+      locator.page ? 'page ' + locator.page : null,
+      locator.row ? 'row ' + locator.row : null,
+      locator.column || locator.prefix || locator.locator || null,
+    ].filter(Boolean);
     if (parts.length) rows.push(['Locator', parts.join(' \u00b7 ')]);
   }
   if (fact.evidence_version) rows.push(['Evidence id', String(fact.evidence_version).slice(0, 16) + '\u2026']);
