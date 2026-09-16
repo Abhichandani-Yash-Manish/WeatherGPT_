@@ -104,6 +104,35 @@ continuous. Then the two user-visible repairs: quick replies derived from the en
 (hand-written templates bound to engine state, never generated), and a plain "carried from your last message"
 line when a turn is a continuation.
 
+### Measured first: what the deterministic path will and will not read
+
+The rules floor was measured before any chip was designed, and it decided the design:
+
+- a forecast question is read by the rules when it names **a day and a part of day** (*"… the day after
+  tomorrow morning?"*), and is **refused** when it names only the day — twelve of twelve shapes tested
+  ("Will it rain in Ahmedabad tomorrow?", "Are there any official warnings for Ahmedabad?", "What is the
+  temperature in Ahmedabad tomorrow afternoon?" and nine more) fell through to the model planner;
+- the local model planner was **not reachable** while this batch ran — `http://127.0.0.1:11434` refused the
+  connection — so the four continuity journeys above are recorded as **not measured**, not as working. A chip
+  that depended on a model call would have been a promise this machine could not keep.
+
+### Delivered: next questions the rules can read, and the continuation line
+
+**Next-question chips** are built from the plan's own day and part of day, and every candidate reply is planned
+by the rules **at offer time**; a shape they refuse is dropped rather than shown. So a tapped chip always lands
+on a question the deterministic engine can plan, and a chip names a place and a day only — never a value, a
+probability, a warning or a source this turn did not read. The plan's own place name is used, not the gazetteer
+label, because a label can read as several places (*"Surat, Sūrat, State of Gujarāt"* read as two). Measured
+live on the real store: a rules-planned answer in **0.148 s** offered three chips, **all three rules-readable**
+and each resolving to one place (`research/reviews/chatbot-20260916/live-http-checks.json`).
+
+**A continuation is disclosed** from the plan's own `context_action` and `changed_fields`: *"Continuing from
+your last message · changed: time. Context the engine kept. Not new evidence."* A fresh question, and a packet
+whose plan carries no context action, get no line at all. The line is rendered, never generated.
+
+**What is still open in C2**: measuring the four journeys end-to-end needs a reachable model planner; the
+carried reading and the continuation line are the deterministic parts that work without it.
+
 ## C3 — register and reading order
 
 - **Register switch**: brief / conversational / full evidence, remembered per browser. It changes **framing and

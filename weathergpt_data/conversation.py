@@ -487,6 +487,10 @@ class ConversationEngine:
             if sentence and sentence not in (result.get('answer') or ''):
                 result['answer']=(result.get('answer') or '').rstrip()+chr(10)+chr(10)+sentence
         self._offer_plan(state,result,q)
+        # The engine own next questions, after the plan offer so a saved plan stays visible, and
+        # only in shapes the deterministic rules read as standalone questions.
+        replies=self.follow_up_replies(result,result.get('plan') or {})
+        if replies:result['quick_replies']=list(result.get('quick_replies') or [])+replies
         self._checkpoint(request_id,'assembling')
         from .answer_language import deliver,target_language
         target,why=target_language(body,state,plan)
@@ -572,6 +576,71 @@ class ConversationEngine:
         state['last_question']=q;state['choices']=[]
         self.save(cid,state)
         return packet
+
+    def follow_up_replies(self,result,plan):
+        """The engine own next questions, offered only where the deterministic rules read them.
+
+        A chip is a reply like any other: tapping it sends its text as the person next message. So
+        every candidate is planned by the rules before it is offered, and a shape the rules refuse is
+        dropped rather than handed to the reader as a promise. A chip names a place and a day only:
+        never a value, a probability, a warning or a source it has not read.
+        """
+        if plan.get('intent')!='forecast' or result.get('status') not in {'answered','partial'}:return []
+        facts=[fact for fact in result.get('facts') or [] if fact.get('place')]
+        if not facts:return []
+        # The plan own place name, not the gazetteer label the fact carries: a label can read as
+        # several places ("Surat, Surat, State of Gujarat"), and a chip must resolve to one.
+        place=''
+        for item in plan.get('places') or []:
+            if isinstance(item,dict) and str(item.get('name') or '').strip():place=str(item['name']).strip();break
+        if not place:place=str(facts[0]['place']).split(',')[0].strip() or str(facts[0]['place'])
+        ist=ZoneInfo('Asia/Kolkata')
+        today=self.workspace.clock().astimezone(ist).date()
+        day=today
+        if plan.get('start_local'):
+            try:day=parsed(plan['start_local']).astimezone(ist).date()
+            except (TypeError,ValueError):day=today
+        target=day+timedelta(days=1)
+        # Measured 16 September 2026: the rules read a forecast question when it names a day AND a
+        # part of day ("... the day after tomorrow morning?"), and refuse one that names only the
+        # day. So a chip carries both, and a day the rules have no phrase for is not offered at all
+        # rather than spelled out in a form the deterministic path refuses.
+        day_word={0:'today',1:'tomorrow',2:'the day after tomorrow'}.get((target-today).days)
+        part=self.part_of_day(plan.get('start_local'))
+        candidates=[]
+        if day_word and part:
+            candidates.append(('Chance of rain '+day_word+'?','What is the chance of rain in '+place+' '+day_word+' '+part+'?'))
+            candidates.append(('How much rain '+day_word+'?','How much rain is forecast in '+place+' '+day_word+' '+part+'?'))
+        candidates.append(('Any warnings for '+place+'?','Are there any official warnings for '+place+'?'))
+        replies=[]
+        for label,reply in candidates:
+            if not self._rules_read(reply):continue
+            replies.append({'label':label,'reply':reply,'basis':'deterministic_rules'})
+        return replies
+
+    def part_of_day(self,start_local):
+        """The part of day the plan own window starts in, in the rules own vocabulary."""
+        if not start_local:return ''
+        try:hour=parsed(start_local).astimezone(ZoneInfo('Asia/Kolkata')).hour
+        except (TypeError,ValueError):return ''
+        if 4<=hour<12:return 'morning'
+        if 12<=hour<17:return 'afternoon'
+        if 17<=hour<22:return 'evening'
+        return ''
+
+    def _rules_read(self,question):
+        """True when the deterministic rules alone plan this question, the gate the preview uses too."""
+        from .language import interpret_plan
+        from .rule_planner import rule_request
+        try:
+            now=self.workspace.clock()
+            # An empty history, not None: the settle path reads the history to ground a
+            # continuation, and a chip is a standalone question with nothing to continue.
+            seed=rule_request(question,now,[])
+            if seed is None:return False
+            interpret_plan(None,question,now,[],seed=seed)
+            return True
+        except (SourceError,TypeError,KeyError,ValueError):return False
 
     def _offer_plan(self,state,result,q):
         """Offer to watch a dated activity plan, and mention a saved plan the answer touches."""

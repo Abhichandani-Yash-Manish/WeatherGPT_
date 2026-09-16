@@ -1,6 +1,6 @@
 {
   "batch": "docs/82-chatbot-experience.md",
-  "captured_at_utc": "2026-09-16T16:24:40Z",
+  "captured_at_utc": "2026-09-16T16:29:50Z",
   "surface": "loopback workspace server, real local store",
   "checks": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "check": "preview_for_a_recognised_question",
-      "seconds": 0.1,
+      "seconds": 0.102,
       "schema_version": "chat-preview-v1",
       "provisional": true,
       "model_calls": 0,
@@ -28,17 +28,61 @@
     },
     {
       "check": "preview_of_a_continuation",
-      "conversation": "d3d7f8d6-548c-4b7a-a495-fd09c5ab5b8c",
+      "conversation": "2c5cd239-05c9-478b-b762-9ee946ad4e53",
       "seconds": 0.001,
       "basis": "carried",
-      "line": "carrying from your last message \u00b7 place: Jehanabad, Bihar",
+      "line": "carrying from your last message \u00b7 place: Surat \u00b7 window: 17 Sep 2026 09:30-12:30 IST \u00b7 asking about: rain",
       "model_calls": 0
     },
     {
       "check": "previews_added_no_conversation",
-      "before": 1244,
-      "after": 1244,
+      "before": 1245,
+      "after": 1245,
       "added": 0
+    },
+    {
+      "check": "a_live_answer_offers_only_rules_readable_next_questions",
+      "question": "Will it rain in Surat tomorrow morning?",
+      "seconds": 0.148,
+      "status": "answered",
+      "planner": {
+        "provider": "deterministic_rules",
+        "model": "rule-planner-v1",
+        "model_calls": 0,
+        "attempts": 0,
+        "latency_ms": 0,
+        "failover": []
+      },
+      "chips": [
+        {
+          "label": "Chance of rain the day after tomorrow?",
+          "reply": "What is the chance of rain in Surat the day after tomorrow morning?",
+          "planned_from": "deterministic_rules",
+          "rules_read_the_reply": true,
+          "read_places": [
+            "Surat"
+          ]
+        },
+        {
+          "label": "How much rain the day after tomorrow?",
+          "reply": "How much rain is forecast in Surat the day after tomorrow morning?",
+          "planned_from": "deterministic_rules",
+          "rules_read_the_reply": true,
+          "read_places": [
+            "Surat"
+          ]
+        },
+        {
+          "label": "Any warnings for Surat?",
+          "reply": "Are there any official warnings for Surat?",
+          "planned_from": "deterministic_rules",
+          "rules_read_the_reply": true,
+          "read_places": [
+            "Surat"
+          ]
+        }
+      ],
+      "all_chips_rules_readable": true
     },
     {
       "check": "progress_is_readable_beside_a_preview",
@@ -48,8 +92,15 @@
   ],
   "limits": [
     "One machine, one store, one session; this is not national or multi-user acceptance.",
-    "The preview is measured as a reading, not as an answer: it carries no value."
+    "The preview is measured as a reading, not as an answer: it carries no value.",
+    "The model planner was not reachable while this ran, so the continuity journeys are not measured here."
   ],
-  "conversations_held_before": 1244,
-  "conversations_held_after": 1244
+  "model_planner": {
+    "endpoint": "http://127.0.0.1:11434",
+    "reachable": false,
+    "reason": "<urlopen error [Errno 61] Connection refused>"
+  },
+  "conversations_held_before": 1245,
+  "conversations_held_after": 1246,
+  "conversations_added_by_the_measured_turn": 1
 }

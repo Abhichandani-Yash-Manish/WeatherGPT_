@@ -294,7 +294,7 @@
     }
   ],
   "latest_batch": "docs/82-chatbot-experience.md",
-  "next_batch_note": "The chat batch delivered C1: an instant first reading from the deterministic rules, the conversation own receipt in the placeholder, and Ask as the landing surface. Next are the C2 conversational-continuity journeys (measured, then repaired) and the C3 reader-chosen register. Still open from earlier batches: live warning-change delivery acceptance, independent task/evidence adjudication, bounded source latency, native-speaker and real-audio review, and mobile/domain acceptance. The unified workspace exposes 15 tools; the forecast-verification batch is recorded in docs/80-forecast-verification.md.",
+  "next_batch_note": "The chat batch delivered C1 (an instant first reading from the deterministic rules, the conversation own receipt in the placeholder, and Ask as the landing surface) and the deterministic half of C2 (next-question chips the rules read before they are offered, and a continuation line from the plan own context action). The four C2 continuity journeys still need a reachable model planner, which this machine did not have; the C3 reader-chosen register is next. Still open from earlier batches: live warning-change delivery acceptance, independent task/evidence adjudication, bounded source latency, native-speaker and real-audio review, and mobile/domain acceptance. The unified workspace exposes 15 tools; the forecast-verification batch is recorded in docs/80-forecast-verification.md.",
   "open_paths": [
     {
       "path": "source_and_document",

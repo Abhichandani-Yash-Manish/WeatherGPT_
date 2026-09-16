@@ -554,6 +554,24 @@ function renderChoices(packet, handlers) {
   wrap.append(tools);
   return wrap;
 }
+const TURN_CHANGE_LABELS = { places:'place', time:'time', parameters:'measure', operation:'operation',
+                             language:'language', crop:'crop', growth_stage:'growth stage', topic:'topic', detail:'detail' };
+function renderCarried(packet) {
+  // What a continuation inherited and what the person changed, taken from the plan the engine
+  // itself settled. It claims nothing about the new values: the facts carry those. A fresh
+  // question, and a packet without a settled context action, get no line at all.
+  const plan = packet && packet.plan;
+  if (!plan || !plan.context_action || plan.context_action === 'new') return null;
+  const action = { follow_up:'Continuing from your last message', correction:'Correcting the previous message',
+                   clarification_answer:'Answering the question you were asked',
+                   explain_previous:'Explaining the previous answer' }[plan.context_action];
+  if (!action) return null;
+  const changed = (plan.changed_fields || []).map(field => TURN_CHANGE_LABELS[field] || field);
+  const line = el('p', undefined, 'carried-line');
+  line.append(el('span', changed.length ? action + ' · changed: ' + changed.join(', ') + '.' : action + '.', 'carried-text'));
+  line.append(el('span', 'Context the engine kept. Not new evidence.', 'carried-note'));
+  return line;
+}
 /* Quick replies answer the one question a plan still needs. Each sends its reply as the
    person's next message, so a typed answer and a tapped one take the same path. */
 function renderQuickReplies(packet, handlers) {
@@ -1099,6 +1117,8 @@ function renderTurn(packet, handlers) {
     notice.append(el('p', downgrade, 'field-note'));
     body.append(notice);
   }
+  const carried = renderCarried(packet);
+  if (carried) body.append(carried);
   const calculations = renderCalculations(packet);
   if (packet.status === 'needs_selection' || packet.status === 'needs_clarification') {
     body.append(el('p', packet.answer, 'answer-copy'));

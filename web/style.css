@@ -398,6 +398,9 @@ input:hover, select:hover, textarea:hover { border-color: var(--data); }
 .reading-glyph { color: var(--data); }
 .reading-text { color: var(--ink-soft); font-weight: 600; }
 .reading-note { font-size: var(--step--1); color: var(--mute); }
+.carried-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 3px 8px; }
+.carried-text { color: var(--ink-soft); font-weight: 600; }
+.carried-note { font-size: var(--step--1); color: var(--mute); }
 .jump { position: sticky; bottom: 12px; align-self: center; z-index: 5; box-shadow: var(--lift-2); }
 
 /* transcript and composer */

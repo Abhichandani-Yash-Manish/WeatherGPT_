@@ -443,3 +443,25 @@ const c1WithoutReceipt = context.renderWorking('Will it rain?', null);
 assert(!/last read/.test(String(c1WithoutReceipt.textContent)), 'No receipt is shown when the conversation holds none');
 assert(/Working on it/.test(String(c1WithoutReceipt.textContent)), 'The placeholder still says it is working');
 console.log('PASS: the placeholder states the conversation own receipt without dressing it as fresh evidence');
+
+
+// 21. a continuation says what it carried and what the person changed; a fresh question does not
+const c1CarriedPacket = { schema_version:'weather-conversation-v1', conversation_id:'c', question:'And tomorrow afternoon?',
+  status:'answered', answer:'Ahmedabad: Forecast rainfall 6.0 mm.', answered_at_utc:'2026-09-12T12:00:00+00:00',
+  facts:[{ id:'f1', label:'Forecast rainfall', value:'6.0', unit:'mm', place:'Ahmedabad',
+           start:'2026-09-13T06:30:00+05:30', end:'2026-09-13T12:30:00+05:30', source_id:'S21' }],
+  citations:[], notes:[], choices:[], charts:[], calculations:[], task_results:[],
+  plan:{ intent:'forecast', language:'en', context_action:'follow_up', changed_fields:['time'], places:[{ name:'Ahmedabad' }] } };
+const c1CarriedCard = context.renderTurn(c1CarriedPacket, {});
+const c1CarriedText = String(c1CarriedCard.textContent);
+assert(/Continuing from your last message/.test(c1CarriedText), 'a continuation says it continued the last message');
+assert(/changed: time/.test(c1CarriedText), 'the field the person changed is named from the plan own list');
+assert(/not new evidence/i.test(c1CarriedText), 'carried context is not presented as evidence');
+const c1Fresh = context.renderTurn({ ...c1CarriedPacket, plan:{ intent:'forecast', language:'en', context_action:'new', changed_fields:[] } }, {});
+assert(!/Continuing from your last message/.test(String(c1Fresh.textContent)), 'a fresh question shows no continuation line');
+const c1NoPlan = context.renderTurn({ ...c1CarriedPacket, plan:undefined }, {});
+assert(!/Continuing from your last message/.test(String(c1NoPlan.textContent)), 'a packet without a settled plan shows no continuation line');
+const c1Correction = context.renderTurn({ ...c1CarriedPacket, plan:{ intent:'forecast', language:'en', context_action:'correction', changed_fields:['places'] } }, {});
+assert(/Correcting the previous message/.test(String(c1Correction.textContent)), 'a correction says it is replacing a detail');
+assert(/changed: place/.test(String(c1Correction.textContent)), 'the replaced field is named');
+console.log('PASS: a continuation states what it carried and what changed, and never as evidence');

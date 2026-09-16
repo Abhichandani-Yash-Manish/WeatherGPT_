@@ -2534,18 +2534,26 @@
    "a reading names the place, window, measures and products the rules heard, carries provisional:true, and publishes no value, citation, status or expiry",
    "a bare continuation reports what the conversation is still carrying instead of guessing at a reading the rules cannot make",
    "the working placeholder shows the reading and the conversation own receipt (place and server answer time), and the answer card replaces it",
-   "a fresh visit with no route opens Ask; every route still opens its own surface, an unknown route falls back to Ask, and the rail keeps every guided surface"
+   "a fresh visit with no route opens Ask; every route still opens its own surface, an unknown route falls back to Ask, and the rail keeps every guided surface",
+   "C2 part: next-question chips built from the plan own day and part of day, each candidate planned by the rules at offer time and dropped when they refuse it; the chip uses the plan own place name, so it resolves to one place",
+   "C2 part: a continuation discloses what it carried and what the person changed from the plan own context_action and changed_fields, labelled as context and not new evidence"
+  ],
+  "measured_before_design": [
+   "the rules floor reads a forecast question only when it names a day AND a part of day; twelve of twelve shapes naming only the day were refused and fell through to the model planner",
+   "the local model planner was unreachable during this batch (http://127.0.0.1:11434 connection refused), so the four C2 continuity journeys are recorded as not measured"
   ],
   "tests_added": [
    "tests/test_chat_preview.py (8 checks): rules-only planning, no acquisition, no value or citation, no saved turn, carried-context reading, refusal of anything but a question, and no waiting behind a running turn",
+   "tests/test_follow_up_replies.py (7 checks): every chip is rules-readable before it is offered, carries no value or probability, is planned by the rules when tapped with no model, and is withheld when a choice is still pending",
    "tests/test_workspace.py: the token-gated HTTP preview route binds no conversation and acquires nothing",
-   "tests/test_views.js: the reading is provisional and repeats no value; the placeholder receipt is not fresh evidence",
+   "tests/test_views.js: the reading is provisional and repeats no value; the placeholder receipt is not fresh evidence; a continuation states what it carried and what changed",
    "tests/test_suite_ui.js: a fresh visit opens Ask and an unknown route falls back to it"
   ],
   "live_loopback_check": "research/reviews/chatbot-20260916/live-http-checks.json",
   "open": [
    "the preview states the reading, not held values: no read model exposes a held value with the provenance and validity that printing one would require",
-   "the C2 conversational-continuity journeys and the C3 reader-chosen register are planned in docs/82, not built"
+   "the four C2 continuity journeys (bare continuation, referent, correction, clarification answered in a second message) are not measured end-to-end: they need a reachable model planner, which this machine did not have",
+   "the C3 reader-chosen register is planned in docs/82, not built"
   ],
   "hosting_performed": false,
   "same_host_only": true
