@@ -1,0 +1,48 @@
+{
+  "batch": "docs/87-frontend-research-and-inspiration.md",
+  "stage": "R0 groundwork",
+  "probe_page": "frontend/src/probe.tsx built to web/dist/probe.html (development entry, not a product surface)",
+  "libraries": [
+    "@radix-ui/react-popover@1",
+    "@tanstack/react-virtual@3",
+    "motion@12"
+  ],
+  "question": "do the components the overhaul wants need style-src-attr unsafe-inline?",
+  "method": "the page measures the computed style of one element per library and reports it; a blocked inline style is ignored by the engine while its attribute stays in the DOM, so the computed value is the honest signal. The strict policy was captured with Chrome --dump-dom; the proposed policy with the page own POST.",
+  "measured": {
+    "strict_policy": {
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; ...",
+      "source": "csp-probe-strict-dom.html",
+      "applied": {
+        "radix-popover": {
+          "computed": "fixed",
+          "applied": true
+        },
+        "tanstack-virtual": {
+          "computed": "absolute",
+          "applied": true
+        },
+        "motion": {
+          "computed": "matrix(1, 0, 0, 1, 1.01381, 0)",
+          "applied": true
+        }
+      },
+      "violations": []
+    },
+    "proposed_attribute_policy": {
+      "csp": "style-src 'self'; style-src-attr 'unsafe-inline'",
+      "source": "csp-report-react.json (the page own POST)",
+      "applied": {},
+      "violations": null
+    }
+  },
+  "conclusion": "No CSP change is needed: all three components were position-, transform- and virtualisation-correct under the strict policy the workspace already uses, because React writes styles through the CSSOM at runtime, which CSP does not police. The risk that would need style-src-attr is markup-level style attributes and injected <style> elements, and both stay out: the built HTML carries no style attribute (checked in live-r0.json) and runtime CSS-in-JS libraries are excluded by docs/87.",
+  "runner": {
+    "script": "csp-probe.py",
+    "note": "headless Chrome one-shot invocations are flaky in this sandbox: one dump-dom completed and the page POST completed; the script records which channel produced each variant rather than hiding the difference."
+  },
+  "limits": [
+    "One Chrome build, one machine, one build of the app.",
+    "The probe does not exercise every component in the chosen libraries, only one representative each."
+  ]
+}

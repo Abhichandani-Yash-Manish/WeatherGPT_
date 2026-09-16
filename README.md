@@ -71,6 +71,21 @@ token, and it refuses to start on a check it cannot pass (a registry that does n
 store, a taken port) rather than serving a half-working workspace. **Restart a running server after
 pulling**: changing files does not update a process that is already serving.
 
+### The React frontend (R0 groundwork)
+
+The frontend overhaul is planned in [docs/86](86-react-frontend-overhaul-plan.md) and researched in
+[docs/87](87-frontend-research-and-inspiration.md). R0 groundwork is delivered and the **vanilla frontend is
+still the default**; the React build is served beside it:
+
+    cd frontend && npm install && npm run build    # builds web/dist
+    python3 -m weathergpt_data.workspace --frontend react --port 8790
+    python3 scripts/audit_react_build.py           # 11 checks over the built output
+
+The served page keeps the session-token contract and the **strict** CSP (`script-src 'self'`, `style-src
+'self'`): docs/87 predicted a `style-src-attr` relaxation would be needed for Radix, TanStack Virtual and
+Motion, and the R0 probe measured that it is not — all three get the computed styles they need under the
+existing policy. A missing build is refused with the command to build it, never served as a blank page.
+
 The push suites and the push panel need `pywebpush` and `cryptography` from the project
 environment; a bare system `python3` runs everything else but reports the push checks as missing
 dependencies, and the preflight names that state too.

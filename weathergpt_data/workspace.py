@@ -29,7 +29,11 @@ RETENTION_DAYS=7
 
 
 class Workspace:
-    def __init__(self, database=DEFAULT_DATABASE, raw_root=DEFAULT_RAW, geography=DEFAULT_GEOGRAPHY, clock=utcnow, opener=None):
+    def __init__(self, database=DEFAULT_DATABASE, raw_root=DEFAULT_RAW, geography=DEFAULT_GEOGRAPHY, clock=utcnow, opener=None,
+                 frontend='legacy'):
+        # Which frontend this process serves: 'legacy' (web/*.js, served as source) or 'react'
+        # (web/dist, built by frontend/). Both speak the same API and the same token contract.
+        self.frontend=frontend
         self.service=AnswerService(database,raw_root,geography,clock=clock)
         self.clock=clock;self.opener=opener
         self.conversation=None
@@ -1013,22 +1017,38 @@ def parse_ack_path(path):
     return None
 
 
+# The page policy. Scripts are never inline and nothing is loaded from a CDN. The React build adds
+# one relaxation, style-src-attr, because component libraries position and virtualise through style
+# attributes; injected <style> elements stay blocked. This is scoped to the React surface and the
+# vanilla frontend keeps the strict policy, so the change is visible and reversible.
+STRICT_CSP=("default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; "
+            "media-src 'self' blob: data:; frame-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'")
+# The React surface was planned to need style-src-attr 'unsafe-inline' for component positioning and
+# virtualisation. Measured in R0 (research/reviews/frontend-react-r0-20260917/csp-probe.json): Radix, TanStack
+# Virtual and Motion all end up with the computed styles they need under this strict policy, because React
+# writes styles through the CSSOM at runtime, which CSP does not police. No relaxation is applied; the audit
+# keeps the built HTML free of markup-level style attributes.
+REACT_CSP=STRICT_CSP
+REACT_ASSET_TYPES={'.js':'text/javascript','.css':'text/css','.map':'application/json','.woff2':'font/woff2',
+                   '.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp','.json':'application/json'}
+
+
 def make_server(workspace, port=8765):
     token=secrets.token_urlsafe(32)
     class Handler(BaseHTTPRequestHandler):
         def log_message(self,*args):pass  # Do not log private questions or coordinates.
 
-        def respond(self, code, data, kind='application/json', filename=None):
+        def respond(self, code, data, kind='application/json', filename=None, csp=None, cache=None):
             if kind=='application/json':data=json.dumps(data,ensure_ascii=False,allow_nan=False).encode()
             elif isinstance(data,str):data=data.encode()
             self.send_response(code)
             self.send_header('Content-Type',kind+'; charset=utf-8')
             if filename:self.send_header('Content-Disposition','attachment; filename="'+filename+'"')
             self.send_header('Content-Length',str(len(data)))
-            self.send_header('Cache-Control','no-store')
+            self.send_header('Cache-Control',cache or 'no-store')
             self.send_header('X-Content-Type-Options','nosniff')
             self.send_header('Referrer-Policy','no-referrer')
-            self.send_header('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; media-src 'self' blob: data:; frame-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'")
+            self.send_header('Content-Security-Policy',csp or STRICT_CSP)
             self.end_headers();self.wfile.write(data)
 
         def allowed_host(self):
@@ -1095,6 +1115,23 @@ def make_server(workspace, port=8765):
                     return self.respond(200,view)
                 except ValueError as exc:return self.respond(400,{'error':str(exc)})
                 except (OSError,sqlite3.Error):return self.respond(503,{'error':'The local evidence store is unavailable. Check its files and retry.'})
+            if getattr(workspace,'frontend','legacy')=='react':
+                # The React build: one HTML entry with the session token injected, and the hashed
+                # assets beside it. A missing build is refused in words, never served as a blank page.
+                import re as _re
+                root=ROOT/'web'/'dist'
+                if path in {'/','/index.html','/probe.html'}:
+                    page=root/('probe.html' if path=='/probe.html' else 'index.html')
+                    if not page.exists():
+                        return self.respond(503,'The React frontend has not been built. Run: cd frontend && npm install && npm run build. The vanilla frontend is served with --frontend legacy.','text/plain')
+                    return self.respond(200,page.read_text().replace('__WORKSPACE_TOKEN__',token),'text/html',csp=REACT_CSP)
+                asset=_re.fullmatch(r'/assets/([A-Za-z0-9._-]+)',path)
+                if asset:
+                    target=(root/'assets'/asset[1]).resolve()
+                    if root.resolve() not in target.parents or not target.exists():
+                        return self.respond(404,{'error':'Not found'})
+                    return self.respond(200,target.read_bytes(),REACT_ASSET_TYPES.get(target.suffix,'application/octet-stream'),
+                                        csp=REACT_CSP,cache='public, max-age=31536000, immutable')
             assets={'/':('index.html','text/html'),'/app.js':('app.js','text/javascript'),'/views.js':('views.js','text/javascript'),'/charts.js':('charts.js','text/javascript'),'/shell.js':('shell.js','text/javascript'),'/panels.js':('panels.js','text/javascript'),'/map.js':('map.js','text/javascript'),'/voice.js':('voice.js','text/javascript'),'/home.js':('home.js','text/javascript'),'/sw.js':('sw.js','application/javascript'),'/tokens.css':('tokens.css','text/css'),'/viz.js':('viz.js','text/javascript'),'/style.css':('style.css','text/css')}
             if path not in assets:return self.respond(404,{'error':'Not found'})
             filename,kind=assets[path]
@@ -1155,11 +1192,14 @@ def main():
     p.add_argument('--geography-database',type=Path,default=DEFAULT_GEOGRAPHY)
     p.add_argument('--no-warm',action='store_true',help='do not read the slow layers once at startup')
     p.add_argument('--no-plan-watcher',action='store_true',help='Do not check saved plans in the background')
+    p.add_argument('--frontend',choices=['legacy','react'],default='legacy',
+                   help='legacy serves web/*.js as source; react serves the built web/dist bundle')
     a=p.parse_args()
-    workspace=Workspace(a.database,a.raw_root,a.geography_database)
+    workspace=Workspace(a.database,a.raw_root,a.geography_database,frontend=a.frontend)
     if not a.no_warm:workspace.start_warming()
     server=make_server(workspace,a.port)
     print('WeatherGPT: http://127.0.0.1:'+str(server.server_port)+' — local prototype; Ctrl-C to stop.',flush=True)
+    print('Frontend: '+a.frontend+(' (web/dist)' if a.frontend=='react' else ' (web/*.js)'),flush=True)
     if not a.no_plan_watcher:
         workspace.plan_watcher().start()
         print('Plan Watch: saved plans are checked every 30 minutes while this process runs.',flush=True)

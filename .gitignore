@@ -9,6 +9,10 @@ tmp/tmp*/
 # Runtime chat stores and the screenshot serving copy: session state, not curated evidence.
 tmp/*.sqlite
 tmp/screenshots/
+tmp/npm-cache/
+# The React build output and its dependencies: reproducible from frontend/ with npm ci && npm run build.
+web/dist/
+frontend/node_modules/
 
 __pycache__/
 *.pyc

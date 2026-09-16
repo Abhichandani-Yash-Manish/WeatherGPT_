@@ -1,0 +1,112 @@
+{
+  "batch": "docs/86-react-frontend-overhaul-plan.md",
+  "captured_at_utc": "2026-09-16T19:45:34Z",
+  "stage": "R0 groundwork",
+  "checks": [
+    {
+      "check": "the_react_build_is_served_at_root",
+      "http": 200,
+      "seconds": 0.003,
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 702,
+      "token_injected": true,
+      "token_is_not_the_placeholder": true,
+      "module_script": true,
+      "inline_script": false,
+      "inline_style_attribute": false,
+      "external_urls": []
+    },
+    {
+      "check": "the_page_policy_for_the_react_surface",
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; media-src 'self' blob: data:; frame-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'",
+      "script_src_self": true,
+      "style_src_attr_relaxed": false,
+      "style_src_still_self_only": true,
+      "cache_control": "no-store"
+    },
+    {
+      "check": "every_referenced_asset_is_served_and_matches_the_build",
+      "assets": [
+        {
+          "path": "/assets/app-CV6xsSkl.js",
+          "http": 200,
+          "bytes": 212903,
+          "seconds": 0.001,
+          "content_type": "text/javascript; charset=utf-8",
+          "cache_control": "public, max-age=31536000, immutable",
+          "sha256_matches_disk": true
+        },
+        {
+          "path": "/assets/app-D6gEFMv-.css",
+          "http": 200,
+          "bytes": 11419,
+          "seconds": 0.0,
+          "content_type": "text/css; charset=utf-8",
+          "cache_control": "public, max-age=31536000, immutable",
+          "sha256_matches_disk": true
+        },
+        {
+          "path": "/assets/main-CoJMKJOk.js",
+          "http": 200,
+          "bytes": 1991,
+          "seconds": 0.0,
+          "content_type": "text/javascript; charset=utf-8",
+          "cache_control": "public, max-age=31536000, immutable",
+          "sha256_matches_disk": true
+        },
+        {
+          "path": "/assets/react-ClmQX-5w.js",
+          "http": 200,
+          "bytes": 12461,
+          "seconds": 0.0,
+          "content_type": "text/javascript; charset=utf-8",
+          "cache_control": "public, max-age=31536000, immutable",
+          "sha256_matches_disk": true
+        }
+      ]
+    },
+    {
+      "check": "the_build_manifest_names_the_entry",
+      "entry": [
+        "_app-CV6xsSkl.js",
+        "_app-D6gEFMv-.css",
+        "_react-ClmQX-5w.js",
+        "index.html",
+        "probe.html"
+      ],
+      "files": {
+        "_app-CV6xsSkl.js": "assets/app-CV6xsSkl.js",
+        "_app-D6gEFMv-.css": "assets/app-D6gEFMv-.css",
+        "_react-ClmQX-5w.js": "assets/react-ClmQX-5w.js",
+        "index.html": "assets/main-CoJMKJOk.js",
+        "probe.html": "assets/probe-BL92A35z.js"
+      }
+    },
+    {
+      "check": "a_missing_build_is_refused_in_words",
+      "http": 503,
+      "content_type": "text/plain; charset=utf-8",
+      "body": "The React frontend has not been built. Run: cd frontend && npm install && npm run build. The vanilla frontend is served with --frontend legacy.",
+      "blank_page": false
+    },
+    {
+      "check": "the_vanilla_frontend_still_serves_by_default",
+      "http": 200,
+      "shell_script_referenced": true,
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; media-src 'self' blob: data:; frame-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'",
+      "strict_policy_kept": true,
+      "react_policy_not_leaked": true,
+      "token_injected": true
+    },
+    {
+      "check": "the_vanilla_assets_still_serve",
+      "http": 200,
+      "bytes": 32967,
+      "content_type": "text/javascript; charset=utf-8"
+    }
+  ],
+  "limits": [
+    "One machine, one loopback server per mode, one build; this is not layout or accessibility acceptance.",
+    "The missing-build case is measured by moving the build aside for one request and restoring it."
+  ]
+}

@@ -1,7 +1,7 @@
 {
  "schema_version": "hardening-progress-v1",
  "review": "research/reviews/national-readiness-20260912/review.md",
- "updated_at_utc": "2026-09-16T23:05:00+00:00",
+ "updated_at_utc": "2026-09-17T01:35:00+00:00",
  "operational_ready": false,
  "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
  "findings": [
@@ -2697,6 +2697,35 @@
    "six decisions await the user before R0: the CSP style-src-attr change, streaming or staged answers, chat centre with a workbench panel, assistant-ui adoption, font self-hosting scope, and the Tailwind/shadcn baseline confirmation",
    "the citation-layout eye-tracking study is flagged to read before R2, not cited",
    "MapLibre licence re-verification before any vendoring; no library is installed yet"
+  ],
+  "hosting_performed": false,
+  "same_host_only": true
+ },
+ "frontend_react_r0_batch": {
+  "report": "docs/86-react-frontend-overhaul-plan.md#r0-delivered-groundwork-17-september-2026",
+  "evidence_directory": "research/reviews/frontend-react-r0-20260917",
+  "scope": "R0 groundwork of the React overhaul: a build pipeline, a serving path behind a flag, a build audit, and the CSP measurement the research asked for",
+  "delivered": [
+   "frontend/ Vite + React 19 + TypeScript + Tailwind v4 project building to web/dist with a manifest and hashed assets; the token placeholder survives the build",
+   "workspace server --frontend react serves the build with the injected session token, immutable caching for hashed assets, and a words-not-blank refusal when the build is missing; legacy remains the default and is unchanged",
+   "scripts/audit_react_build.py: 11 checks over the built output (no inline script, no markup style attribute, nothing off-origin, token placeholder, module entry, manifest hash parity, external CSS imports, initial-graph bundle budget) and a step in verify_all.py",
+   "the CSP question answered by measurement rather than assumption: the strict policy is kept and no style-src-attr relaxation was taken",
+   "a live R0 record: both surfaces over HTTP, every referenced asset hash-checked against disk, the missing-build refusal, and the vanilla path still serving with its own strict policy"
+  ],
+  "tests_added": [
+   "frontend/src/App.test.tsx (2 checks, Vitest + Testing Library, the first ported frontend spec)"
+  ],
+  "live_check": "research/reviews/frontend-react-r0-20260917/live-r0.json",
+  "measured": [
+   "initial bundle graph 70 KB gzip against a 312 KB budget",
+   "Radix positioning, TanStack Virtual rows and Motion transforms all applied under the strict CSP",
+   "1287 Python tests, 10 component suites, 28 verification steps, 0 failed"
+  ],
+  "open": [
+   "the six decisions in docs/87 were not answered before the round; the round used the documented recommendations and dropped the CSP one on measurement",
+   "R1 (shell) is next: rail, router, palette, the surface registry and the 110 vanilla component checks ported one-for-one",
+   "frontend/probe.html is a development entry and must leave the production input list in R1",
+   "the vanilla frontend stays the default until R6, and every stage must leave verify_all.py green"
   ],
   "hosting_performed": false,
   "same_host_only": true

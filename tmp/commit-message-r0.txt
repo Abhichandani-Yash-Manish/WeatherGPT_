@@ -1,0 +1,27 @@
+R0 groundwork: the React build is served beside the vanilla frontend, with the CSP question measured
+
+frontend/ is a Vite + React 19 + TypeScript project; Tailwind v4 consumes web/tokens.css as its theme source, so
+the design system stays single-sourced. The build lands in web/dist with a manifest and hashed assets.
+
+- the workspace server takes --frontend react (legacy stays the default): the built page receives the session
+  token, hashed assets are served immutable, and a missing build is refused in words with the command to build
+  it, never as a blank page. The vanilla path is untouched and still serves with its own strict policy.
+- scripts/audit_react_build.py audits the build as a browser receives it - no inline script, no markup style
+  attribute, nothing off-origin, the token placeholder, the module entry, manifest hash parity, external CSS
+  imports and a budget over the initial graph from the manifest, not the entry file alone - and it is a step of
+  verify_all.py now (28 steps).
+- the CSP relaxation the research predicted was measured and NOT taken: Radix positioning, TanStack Virtual rows
+  and Motion transforms all end up with the computed styles they need under the existing strict policy, because
+  React writes them through the CSSOM, which CSP does not police. Zero violations were reported. script-src and
+  style-src both stay self; the audit enforces the property (no markup style attribute) that keeps it that way.
+- the initial graph is 70 KB gzip (entry 1 KB + React 4 KB + app 64 KB) against a 312 KB budget.
+- a first ported spec runs in Vitest + Testing Library (2 checks), the harness R2 will port the other 110 into.
+
+Evidence: research/reviews/frontend-react-r0-20260917/ (live-r0.json for both surfaces over HTTP with every
+referenced asset hash-checked, csp-probe.json and the strict-policy DOM dump for the policy measurement, two
+screenshots). 1287 Python tests, 10 component suites, 28 verification steps, 0 failed.
+
+Docs/86 records R0 as delivered; docs/87's CSP section is corrected by the measurement; the registry carries the
+batch. The six decisions in docs/87 were not answered before this round, so the round used the documented
+recommendations - the chat-centre layout and the assistant-ui adoption are exercised in R1 and R2 and can still
+be revisited there.

@@ -1,0 +1,23 @@
+@import "../../../web/tokens.css";
+@import "tailwindcss";
+
+/* Tailwind consumes the existing token layer rather than replacing it: the design system stays in
+   web/tokens.css, which the vanilla frontend still uses, and R6 keeps only one copy. */
+@theme {
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-mute: var(--mute);
+  --color-paper: var(--paper);
+  --color-data: var(--data);
+  --color-sand: var(--sand);
+  --color-line: var(--line-strong);
+  --radius-card: var(--r-card);
+}
+
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans, ui-sans-serif, system-ui, sans-serif);
+}

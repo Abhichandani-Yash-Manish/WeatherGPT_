@@ -55,6 +55,34 @@ base for everything a judge sees, and a big-bang port would put all of it behind
 | **R5 accessibility, i18n, voice** | focus order and live regions audited per surface; RTL for Urdu; the language selector wired to `output_language`; the Listen control retained | an axe-style scan per surface recorded; language and voice behaviour unchanged |
 | **R6 parity and decommission** | the vanilla path removed, `web/legacy/` deleted, docs and README updated, `docs/images/` regenerated | `verify_all.py` passes on the React-only tree and the browser acceptance record is refreshed |
 
+## R0 delivered: groundwork (17 September 2026)
+
+Evidence: research/reviews/frontend-react-r0-20260917/ (live-r0.json, csp-probe.json, the strict-policy DOM
+dump and two screenshots).
+
+- frontend/ holds a Vite + React 19 + TypeScript project; Tailwind v4 consumes web/tokens.css as its theme
+  source so the design system stays single-sourced; the build lands in web/dist/ with a manifest and
+  content-hashed assets.
+- the workspace server serves that build under `--frontend react` (the default stays `legacy`): the page gets
+  the session token injected, hashed assets are served with immutable caching, and a **missing build is refused
+  in words** (503 with the command to build it), never as a blank page.
+- the built HTML carries no inline script, no markup style attribute and nothing off-origin;
+  `scripts/audit_react_build.py` (11 checks, including the manifest-hash parity and a bundle budget) is a step
+  of verify_all.py, so the gate reads the build as a browser receives it.
+- the CSP relaxation the research expected was **not needed and was not taken**: measured, Radix positioning,
+  TanStack Virtual rows and Motion transforms all end up with the styles they need under the existing strict
+  policy, because React writes them through the CSSOM, which CSP does not police. `style-src` stays `self`.
+- the initial bundle graph is 70 KB gzip (entry 1 KB + React 4 KB + app 64 KB) against a 312 KB budget that
+  follows the manifest's static imports rather than the entry file alone.
+- the vanilla frontend is untouched and still served by default; 1287 Python tests, 10 component suites and 28
+  verification steps pass, 0 failed.
+- frontend/probe.html is the CSP probe: a development entry, not a product surface. R1 removes it from the
+  production input list.
+
+The six decisions docs/87 put to the user were not answered before this round started; the round proceeded on
+the documented recommendations, with the CSP recommendation dropped because the measurement made it moot. The
+chat-centre layout and the assistant-ui adoption are exercised in R1 and R2 and can still be revisited there.
+
 ## What each stage must prove
 
 1. **No behaviour regression**: a ported spec is the same assertion against the same payload.

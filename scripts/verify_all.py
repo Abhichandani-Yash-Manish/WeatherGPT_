@@ -64,6 +64,10 @@ def main():
             steps.append(('node ' + Path(suite).name, ok, tail or err))
     ok, tail, err = run([sys.executable, 'scripts/audit_workspace_frontend.py', '--baseline'])
     steps.append(('frontend workspace audit', ok, tail or err))
+    # The React build is audited from the built files, since that is what a browser receives. A missing
+    # build is a reported skip while the vanilla frontend is still the default.
+    ok, tail, err = run([sys.executable, 'scripts/audit_react_build.py'])
+    steps.append(('react build audit', ok, tail or err))
 
     width = max(len(name) for name, _, _ in steps) + 2
     for name, ok, detail in steps:

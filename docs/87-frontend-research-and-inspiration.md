@@ -125,18 +125,25 @@ Today the frontend has 19 routed surfaces and the conversation is one of them. T
   existing local endpoint (Sarvam key, stated trade), not a hidden third party.
 - **Full-app kits** (LibreChat, Chatbot UI): they would replace the engine contract and the evidence discipline.
 
-## The one policy change this forces, with its exact cost
+## The policy question the research raised, and the measurement that settled it
 
-`style-src self` blocks **inline style attributes**, and every serious positioning/virtualisation/animation
-library sets them (Radix/Floating UI positioning, TanStack Virtual transforms, Motion). Without a change, a
-modern chat transcript cannot be built on these libraries. The option this research recommends is:
+The research predicted that `style-src self` would block the inline style attributes that positioning,
+virtualisation and animation libraries rely on, and recommended `style-src-attr unsafe-inline`. **Measured in
+R0, that prediction was wrong and the relaxation was not taken.** The probe page renders one component from
+each candidate and reports the *computed* style, because a blocked inline style is ignored by the engine while
+its attribute stays in the DOM:
 
-    style-src self; style-src-attr unsafe-inline
+| Library | Computed style under the existing strict policy | Applied |
+| --- | --- | --- |
+| @radix-ui/react-popover | `position: fixed` (wrapper positioned by transform) | yes |
+| @tanstack/react-virtual | `position: absolute` on a virtual row | yes |
+| motion | `transform: matrix(1, 0, 0, 1, ~1, 0)` | yes |
 
-That allows style *attributes* while continuing to block injected `<style>` elements, keeping `script-src self`
-untouched, and it is recorded in the frontend audit so the change is visible rather than silent. The alternative —
-no inline attributes at all — would mean hand-writing positioning and virtualisation, which is the opposite of the
-user instruction to use the best components available.
+Zero CSP violations were reported by the document, and the settings that would have needed the relaxation are
+set by React through the **CSSOM at runtime**, which CSP does not police. What CSP does police is markup-level
+`style` attributes (absent from the build, and checked by `scripts/audit_react_build.py`) and injected `<style>`
+elements (which is why runtime CSS-in-JS libraries stay excluded). So `script-src` and `style-src` both remain
+`self`, and the audit now enforces the property that keeps it that way.
 
 ## Open questions for the user
 
