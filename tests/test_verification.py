@@ -151,5 +151,68 @@ class MetricTests(unittest.TestCase):
         self.assertEqual(result['reference']['source_id'], 'S22')
 
 
+class FoundationVerificationTests(unittest.TestCase):
+    class Response:
+        status = 200
+        headers = {'Content-Type': 'application/json'}
+
+        def __init__(self, body):
+            self.body = body
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+        def read(self, size):
+            return self.body[:size]
+
+    def foundation(self, forecast_body, reference_body):
+        import json
+        import tempfile
+        from datetime import datetime as dt
+        from weathergpt_data.foundation import Foundation
+        from weathergpt_data.transport import Store
+
+        def opener(request, *args, **kwargs):
+            url = request.full_url if hasattr(request, 'full_url') else str(request)
+            body = reference_body if 'archive-api' in url else forecast_body
+            return self.Response(json.dumps(body).encode())
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        store = Store(directory.name, opener=opener, clock=lambda: dt(2026, 9, 15, tzinfo=UTC))
+        return Foundation(store)
+
+    def test_verification_matches_a_lead_to_the_reference(self):
+        length = 48
+        times = hours(length, start=datetime(2026, 8, 1, tzinfo=UTC))
+        forecast_body = body({'temperature_2m_previous_day1': [float(index + 1) for index in range(length)]}, times=times)
+        reference_body = {'latitude': 23.0, 'longitude': 72.5, 'utc_offset_seconds': 0,
+                          'hourly': {'time': times, 'temperature_2m': [float(index) for index in range(length)]},
+                          'hourly_units': {'temperature_2m': '°C'}}
+        result = self.foundation(forecast_body, reference_body).verification(
+            23.0, 72.5, '2026-08-01', '2026-08-02', model='gfs_seamless', variables=['temperature_2m'], leads=[1])
+        lead = result['variables']['temperature_2m'][0]
+        self.assertEqual(result['forecast']['source_id'], 'S70')
+        self.assertEqual(result['reference']['source_id'], 'S22')
+        self.assertEqual(lead['n'], length)
+        self.assertEqual(str(lead['bias']), '1.000')
+        self.assertEqual(result['method'], {'bias': 'mean of (forecast minus reference) over matched hours',
+                                            'mae': 'mean of the absolute error over matched hours',
+                                            'rmse': 'square root of the mean squared error over matched hours',
+                                            'correlation': 'Pearson product-moment correlation over matched hours'})
+
+    def test_a_window_inside_the_reanalysis_delay_is_refused(self):
+        times = hours(24, start=datetime(2026, 9, 12, tzinfo=UTC))
+        forecast_body = body({'temperature_2m_previous_day1': [float(index) for index in range(24)]}, times=times)
+        reference_body = {'latitude': 23.0, 'longitude': 72.5, 'utc_offset_seconds': 0,
+                          'hourly': {'time': times, 'temperature_2m': [float(index) for index in range(24)]},
+                          'hourly_units': {'temperature_2m': '°C'}}
+        with self.assertRaises(SourceError):
+            self.foundation(forecast_body, reference_body).verification(
+                23.0, 72.5, '2026-09-12', '2026-09-12', variables=['temperature_2m'], leads=[1])
+
+
 if __name__ == '__main__':
     unittest.main()
