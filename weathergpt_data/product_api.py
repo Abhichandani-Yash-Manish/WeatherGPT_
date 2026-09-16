@@ -430,6 +430,31 @@ def series_from_packet(packet):
     return parameters
 
 
+def _grid_distance(coverage, latitude, longitude):
+    """How far the grid cell that answered is from the point that was asked for.
+
+    Several products state it themselves; where one does not, it is computed from the requested point and the
+    returned cell with the same great-circle helper the point, specialist, ensemble, air-quality and
+    verification modules use, so a surface can always name the answering cell and its distance instead of
+    printing a blank. It returns None rather than a guess when the read states no returned cell, and it never
+    substitutes the distance of a different cell."""
+    stated = coverage.get('grid_distance_km')
+    if isinstance(stated, (int, float)) and not isinstance(stated, bool):
+        return stated
+    grid = coverage.get('returned_grid')
+    if not isinstance(grid, dict):
+        return None
+    try:
+        point = {'latitude': float(grid.get('latitude')), 'longitude': float(grid.get('longitude'))}
+    except (TypeError, ValueError):
+        return None
+    requested = coverage.get('requested_point')
+    if not isinstance(requested, dict) or 'latitude' not in requested or 'longitude' not in requested:
+        requested = {'latitude': latitude, 'longitude': longitude}
+    from .answers import distance_km
+    return round(distance_km(requested, point), 3)
+
+
 def _series_view(view, packet, extra, sources, limitations, not_established):
     parameters = series_from_packet(packet)
     data = {'parameters': parameters}
@@ -616,9 +641,10 @@ def forecast_changes(latitude, longitude, database=None, limit=40):
 def marine(foundation, latitude, longitude, days=3, refresh=False):
     packet = foundation.marine(latitude, longitude, days, refresh=refresh)
     coverage = packet.get('coverage') or {}
+    requested = coverage.get('requested_point') or {'latitude': latitude, 'longitude': longitude}
     return _series_view('marine.point', packet,
-                        {'days': days, 'grid': coverage.get('returned_grid'), 'requested': coverage.get('requested_point'),
-                         'grid_distance_km': coverage.get('grid_distance_km')},
+                        {'days': days, 'grid': coverage.get('returned_grid'), 'requested': requested,
+                         'grid_distance_km': _grid_distance(coverage, latitude, longitude)},
                         None, [],
                         ['No official sea-area bulletin, observed buoy value, tide, current or sea-surface temperature is retrieved here.'])
 
@@ -626,9 +652,10 @@ def marine(foundation, latitude, longitude, days=3, refresh=False):
 def river(foundation, latitude, longitude, days=3, refresh=False):
     packet = foundation.river(latitude, longitude, days, refresh=refresh)
     coverage = packet.get('coverage') or {}
+    requested = coverage.get('requested_point') or {'latitude': latitude, 'longitude': longitude}
     return _series_view('river.point', packet,
-                        {'days': days, 'grid': coverage.get('returned_grid'),
-                         'grid_distance_km': coverage.get('grid_distance_km')},
+                        {'days': days, 'grid': coverage.get('returned_grid'), 'requested': requested,
+                         'grid_distance_km': _grid_distance(coverage, latitude, longitude)},
                         None, [],
                         ['No observed gauge level, danger level, inundation extent or official flood warning is established by a discharge value.'])
 

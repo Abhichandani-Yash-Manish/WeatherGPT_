@@ -159,6 +159,52 @@ Still open from R1/R2: the remaining 91 vanilla checks are not yet ported (the v
 until R6), no screen-reader or keyboard-only acceptance has been recorded per surface, and the answer still
 arrives as one response rather than as a stream of written text.
 
+## R3 delivered: every surface is a module (17 September 2026)
+
+Evidence: docs/91 and research/reviews/frontend-react-r5-20260917/.
+
+- all nineteen surfaces are ported. Eighteen have a module in frontend/src/modules/ (Today, Warnings, Map,
+  What changed, Forecast, Observations, Farm advisories, Air quality, Published documents, Climate records,
+  Aviation, Ensemble spread, Forecast verification, Compare places, Sea and rivers, Briefcase, Workspace,
+  Sources and settings); the nineteenth, Ask, is the conversation itself;
+- each module renders its own route through the shared evidence framing: one h1, the envelope coverage counts,
+  its limitations and not-established lines as visible sections, its source rows, and a failure sentence with
+  a retry. A hazard colour is drawn only where the payload stated one, and the payload wording stays beside it;
+- the placeholder path (a surface with no module) still states its stage and offers its questions to the
+  conversation, and that contract has a check that does not depend on which surfaces are left;
+- the surface-registry audit reports module coverage on every run and refuses a module key that is not a
+  declared surface: 18 of 19 surfaces carry a module.
+
+## R4 delivered: charts, print parity and the engine seam (17 September 2026)
+
+- frontend/src/charts/ChartBlock.tsx is the React side of the chart language, ported from the rules
+  web/charts.js was checked against: only a value the engine returned is drawn, a missing point breaks the
+  line instead of becoming a zero, every drawn point names its exact source value and evidence id, and the
+  same numbers stay reachable as a table. It draws the series on the forecast surface and any series an
+  answer carries;
+- the chart engine is served to the built page from its one tracked copy at /viz.js, pinned by
+  tests/test_react_vendor_assets.py (served verbatim, the same bytes the vanilla checks cover, no immutable
+  caching for an unhashed file, and a stated 404 for anything else);
+- print parity: frontend/src/styles/print.css and frontend/src/chat/print.test.tsx hold together what a
+  printed card keeps (the receipt, the window, the sources) and what it drops (the composer, the action row,
+  the raw machine record).
+
+## R5 in progress: accessibility measured, RTL and language acceptance open (17 September 2026)
+
+- axe-core runs in two places: src/a11y/a11y.test.tsx over five rendered surfaces in jsdom (0 violations,
+  with the colour-contrast rule recorded as not measurable without a layout engine), and a browser sweep over
+  15 surfaces against the served build (0 violations, 391 rules passed), recorded in
+  research/reviews/frontend-react-r5-20260917/;
+- the browser sweep found three real defects on its first pass and all three were fixed at their cause: the
+  active rail row read muted ink on the sand rule colour (2.29:1), the service chip read soft ink on sand
+  (3.3:1), and a surface taller than the viewport scrolled without being focusable;
+- keyboard acceptance is a check of its own: the skip link reaches the question box, Alt+1..9 opens a
+  surface, Alt+K opens the palette and focuses its search field, and Enter opens the chosen surface;
+- an answer sentence carries dir="auto", so an Urdu or mixed-script answer is laid out by its own first
+  strong character. THE SHELL IS NOT MIRRORED and no language run has been recorded on the React interface;
+  both are R5 work still open, together with the dark theme, reduced motion, zoom and a screen-reader
+  walkthrough.
+
 ## R3 in progress: the guided surfaces
 
 Six of the nineteen surfaces are ported (docs/90 section 5). The rest state their stage and offer their questions

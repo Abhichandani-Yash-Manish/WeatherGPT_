@@ -14,7 +14,15 @@ export function SurfaceHost({ view, onAsk }: { view: ViewEntry; onAsk: (question
 
   if (Lazy) {
     return (
-      <div className="min-h-0 flex-1 overflow-y-auto px-6 py-5" data-surface={view.id}>
+      /* A surface longer than the viewport scrolls, so it takes focus itself: otherwise the only way to read
+         the rest of it is a pointer or a scroll wheel (axe: scrollable-region-focusable). */
+      <div
+        className="min-h-0 flex-1 overflow-y-auto px-6 py-5"
+        data-surface={view.id}
+        tabIndex={0}
+        role="region"
+        aria-label={view.label + ' surface'}
+      >
         <Suspense
           fallback={
             <p className="text-xs quiet" role="status">

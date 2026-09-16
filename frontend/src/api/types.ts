@@ -365,7 +365,9 @@ export type BriefRecord = {
   content_sha256?: string;
   sources?: string[];
   status?: string;
-  evidence?: { sources?: SourceEntry[]; not_established?: string[]; why?: string | null; notes?: string[] };
+  /* The kept-brief route states source identifiers, not registry rows: the recorded payloads carry plain ids
+     such as "S63", so the type says so rather than promising a row the read does not return. */
+  evidence?: { sources?: (SourceEntry | string)[]; not_established?: string[]; why?: string | null; notes?: string[] };
   delivery?: string;
 };
 

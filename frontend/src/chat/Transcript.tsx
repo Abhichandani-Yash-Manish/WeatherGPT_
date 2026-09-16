@@ -46,7 +46,15 @@ export function Transcript({ turns, working, register, onFollowUp, onStop, onRef
 
   return (
     <div className="relative min-h-0 flex-1">
-      <div ref={box} className="flex h-full flex-col gap-5 overflow-y-auto px-1 py-4" role="log" aria-relevant="additions">
+      {/* The log scrolls, so it is focusable: a keyboard reader can then scroll it with the arrow keys. */}
+      <div
+        ref={box}
+        className="flex h-full flex-col gap-5 overflow-y-auto px-1 py-4"
+        role="log"
+        aria-relevant="additions"
+        tabIndex={0}
+        aria-label="Conversation transcript"
+      >
         {turns.map(turn => {
           if (turn.role === 'user') {
             return (

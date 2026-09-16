@@ -68,7 +68,11 @@ export function AnswerTurn({ packet, register, onFollowUp, onRefresh, onAnswer }
       {primary && !conversational ? <LeadReading packet={packet} fact={primary} /> : null}
       {primary && open && !conversational ? <ValidityRuler packet={packet} /> : null}
 
-      <p className={conversational ? 'reading' : 'reading'}>{packet.answer}</p>
+      {/* dir="auto" lets the browser read the direction of the sentence itself, so an Urdu or mixed
+          Devanagari answer is not laid out in the wrong direction before the shell is mirrored (R5). */}
+      <p className="reading" dir="auto">
+        {packet.answer}
+      </p>
 
       {/* A warning is an official statement with hazards and a validity window: it is never folded into
           the ordinary fact rows. */}
@@ -194,7 +198,7 @@ export function AnswerTurn({ packet, register, onFollowUp, onRefresh, onAnswer }
         </>
       ) : null}
 
-      <div className="flex flex-wrap items-center gap-2 no-print">
+      <div className="no-print flex flex-wrap items-center gap-2" data-print="drop">
         <button
           type="button"
           className="btn btn-ghost"

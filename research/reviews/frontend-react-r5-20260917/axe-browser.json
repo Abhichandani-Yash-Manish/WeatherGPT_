@@ -1,0 +1,168 @@
+{
+  "checked_at_utc": "2026-09-16T22:29:13.378Z",
+  "tool": "axe-core 4.10, injected into the served page over loopback and run by CDP",
+  "environment": "headless Chrome via agent-browser, viewport 1440x900, the served React build (--frontend react, throwaway store copy)",
+  "rules": "tags wcag2a, wcag2aa, wcag21a, wcag21aa",
+  "note": "Colour contrast IS measured here (the jsdom run records it as not measurable without a layout engine). Light theme only; the dark theme and reduced-motion pass are not in this record.",
+  "measurement_taken": "after the fixes recorded in docs/91 (rail highlight and service chip on a sand wash, focusable scroll regions)",
+  "surfaces": [
+    {
+      "surface": "landing",
+      "route": "/",
+      "bundle": "main-83VgKxjg.js",
+      "violations": [],
+      "passes": 25,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "surface": "ask",
+      "route": "/#/assistant",
+      "bundle": "main-83VgKxjg.js",
+      "violations": [],
+      "passes": 24,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "surface": "today",
+      "route": "/#/overview",
+      "bundle": "main-83VgKxjg.js",
+      "violations": [],
+      "passes": 30,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "surface": "warnings",
+      "route": "/#/warnings",
+      "bundle": "main-83VgKxjg.js",
+      "violations": [],
+      "passes": 30,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "surface": "map",
+      "route": "/#/map",
+      "bundle": "main-83VgKxjg.js",
+      "violations": [],
+      "passes": 31,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "surface": "forecast",
+      "route": "/#/forecast",
+      "bundle": "main-83VgKxjg.js",
+      "violations": [],
+      "passes": 23,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "surface": "documents",
+      "route": "/#/documents",
+      "bundle": "main-83VgKxjg.js",
+      "violations": [],
+      "passes": 30,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "surface": "settings",
+      "route": "/#/settings",
+      "bundle": "main-83VgKxjg.js",
+      "violations": [],
+      "passes": 29,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "surface": "advisories",
+      "route": "/#/advisories",
+      "bundle": "main-83VgKxjg.js",
+      "violations": [],
+      "passes": 30,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "surface": "ensemble",
+      "route": "/#/ensemble",
+      "bundle": "main-83VgKxjg.js",
+      "violations": [],
+      "passes": 23,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "surface": "climate",
+      "route": "/#/climate",
+      "bundle": "main-83VgKxjg.js",
+      "violations": [],
+      "passes": 29,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "surface": "briefcase",
+      "route": "/#/briefcase",
+      "bundle": "main-83VgKxjg.js",
+      "violations": [],
+      "passes": 24,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "surface": "verification",
+      "route": "/#/verification",
+      "bundle": "main-83VgKxjg.js",
+      "violations": [],
+      "passes": 23,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "surface": "compare",
+      "route": "/#/compare",
+      "bundle": "main-83VgKxjg.js",
+      "violations": [],
+      "passes": 24,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "surface": "owner gate",
+      "route": "/#/signin",
+      "bundle": "main-83VgKxjg.js",
+      "violations": [],
+      "passes": 16,
+      "incomplete": []
+    }
+  ],
+  "totals": {
+    "surfaces": 15,
+    "violations": 0,
+    "passes": 391
+  },
+  "previously_found_and_fixed": [
+    "color-contrast 2.29:1 — the keyboard hint on the active rail row read muted ink on the full sand rule colour; the highlight is now a sand wash with ink on it",
+    "color-contrast 3.3:1 — the service-state chip read soft ink on sand; it now sits on the sunken surface",
+    "scrollable-region-focusable — a surface taller than the viewport scrolled but could not take focus; the surface container and the transcript log are focusable regions with names"
+  ]
+}

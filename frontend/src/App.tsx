@@ -80,7 +80,20 @@ function Shell() {
 
   return (
     <div className="flex h-full min-h-screen" data-shell="react" data-surface={view.id}>
-      <a className="skip-link" href="#question">Skip to the question box</a>
+      {/* A visible-on-focus skip link, and it moves focus rather than only scrolling: the question box is
+          where a keyboard reader wants to be on arrival. */}
+      <a
+        className="skip-link"
+        href="#question"
+        onClick={event => {
+          const box = document.getElementById('question');
+          if (!box) return;
+          event.preventDefault();
+          box.focus();
+        }}
+      >
+        Skip to the question box
+      </a>
       <SkyBackground />
       <Rail active={view.id} onOpen={open} />
       <main className="flex min-w-0 flex-1 flex-col">

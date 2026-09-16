@@ -41,7 +41,9 @@ export function Rail({ active, onOpen }: { active: string; onOpen: (id: string) 
                 onClick={() => onOpen(view.id)}
                 className={
                   'flex w-full items-center justify-between rounded-card px-2 py-2 text-left text-sm ' +
-                  (current ? 'bg-sand font-semibold' : 'hover:bg-sand/40')
+                  /* A rail highlight is a sand wash with ink on it. The full sand is a rule colour, not a
+                     surface: measured in a browser, muted ink on it reads at 2.29:1. */
+                  (current ? 'bg-sand-wash font-semibold text-ink' : 'hover:bg-sand-wash/60')
                 }
               >
                 <span>{view.label}</span>

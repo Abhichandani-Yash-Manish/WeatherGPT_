@@ -43,6 +43,8 @@ export function Palette({
       setQuery('');
       setActive(0);
       node.showModal();
+      /* The search field takes focus when the palette opens, so a keyboard reader can type straight away. */
+      node.querySelector<HTMLInputElement>('#palette-search')?.focus();
     }
     if (!open && node.open) node.close();
   }, [open]);

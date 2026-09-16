@@ -43,7 +43,7 @@ export function Topbar({ language, onLanguage, persona, onPersona, theme, onThem
         WeatherGPT
       </button>
       <span role="status" data-testid="service-state" title={service.detail || ''}
-        className={'rounded-card px-2 py-0.5 text-xs ' + (service.tone === 'down' ? 'bg-warn text-paper' : 'bg-sand text-ink-soft')}>
+        className={'rounded-card px-2 py-0.5 text-xs ' + (service.tone === 'down' ? 'bg-warn text-paper' : 'bg-sunk text-ink-soft')}>
         {service.label}
       </span>
 

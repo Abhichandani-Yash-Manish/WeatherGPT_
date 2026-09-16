@@ -2840,5 +2840,46 @@
   ],
   "hosting_performed": false,
   "same_host_only": true
+ },
+ "frontend_react_r3_r5_batch": {
+  "report": "docs/91-frontend-r3-r5-all-surfaces.md",
+  "evidence_directory": "research/reviews/frontend-react-r5-20260917",
+  "scope": "the last eight guided surfaces, the end of R4 (charts, print parity, the chart engine seam) and the R5 accessibility pass measured in a real browser, plus one engine repair the surface work exposed",
+  "delivered": [
+   "the eight remaining surfaces as modules: climate records, aviation, ensemble spread, forecast verification, compare places, sea and rivers, briefcase and the workspace builder. Every one of the nineteen surfaces is now a real module (eighteen modules; Ask is the conversation itself)",
+   "the surface-registry audit now reports module coverage on every run and refuses a module key that is not a declared surface (18 of 19 surfaces carry a module, 10 checks pass)",
+   "the charts seam finished: the chart engine is served to the built page from its one tracked copy at /viz.js and pinned by three Python checks, so the vanilla geometry checks keep covering the code a React surface draws with",
+   "print parity: what a printed card keeps (the receipt, the window, the sources) and what it drops (the composer, the action row, the raw machine record) are checked together with the stylesheet",
+   "accessibility measured twice: axe-core over five rendered surfaces in jsdom (0 violations, colour contrast recorded as not measurable without a layout engine) and a browser sweep over 15 surfaces against the served build (0 violations, 391 rules passed)",
+   "the browser sweep found three real defects on its first pass and all three were fixed at their cause: muted ink on the sand rule colour in the active rail row (2.29:1), soft ink on sand in the service chip (3.3:1), and a surface taller than the viewport that scrolled without being focusable",
+   "keyboard acceptance as its own checks: the skip link reaches the question box, Alt+1..9 opens a surface, Alt+K opens the palette and focuses its search field, and Enter opens the chosen surface",
+   "an answer sentence carries dir=\"auto\" so a mixed-script or right-to-left answer is laid out by its own first strong character; the shell is not mirrored and no language run has been recorded on the React interface, both recorded as open",
+   "engine repair: the marine and river point products now name the answering grid cell AND its distance (product_api._grid_distance), computed with the same great-circle helper the other point products use, returning nothing rather than a guess when the read states no cell",
+   "shared-component repairs found by the surface authors: the Failure/Reading sentences no longer double an article (\"The the national overview read failed.\"), the kept-brief evidence sources type admits the identifier strings the route actually returns, and the aviation surface deliberately does not render the flight category the payload carries because a category is an operational determination this product does not make"
+  ],
+  "tests_added": [
+   "frontend/src/modules/{climate,aviation,ensemble,verification,compare,marine,briefcase,workspace}.test.tsx (35 checks over the eight surfaces)",
+   "frontend/src/chat/parity.test.tsx (4: the receipt chain, the clarification choices, the resolved point read from the packet, and deleting a stored conversation through the local route only)",
+   "frontend/src/chat/print.test.tsx (2), src/a11y/a11y.test.tsx (5), src/shell/keyboard.test.tsx (4)",
+   "tests/test_grid_distance_naming.py (7 Python checks over the distance repair)"
+  ],
+  "live_check": "research/reviews/frontend-react-r5-20260917/axe-browser.json",
+  "measured": [
+   "frontend: 26 suites, 135 component checks, tsc clean, initial bundle graph 108 KB gzip against the 312 KB budget",
+   "audits: built output 11/11, surface registry 10/10 with 18 of 19 surfaces carrying a module, port ledger 5/5 with 33 of the 110 vanilla checks named and 41 test names verified",
+   "browser accessibility: 15 surfaces, 0 violations, 391 rules passed under wcag2a/2aa/21a/21aa at 1440x900 on the served build (light theme only)",
+   "Python suite: 1302 tests (7 added by this batch)",
+   "pictures: 25 captures at 1440x900 in the evidence directory"
+  ],
+  "open": [
+   "R6 (decommission) has not started: the vanilla frontend is still the default and still serves until verify_all.py passes on a React-only tree",
+   "77 of the 110 vanilla component checks are still only in the vanilla suites; the ledger names the 33 that have a React counterpart",
+   "the browser accessibility sweep is one theme at one width and a rule engine, not a screen reader: dark theme, reduced motion, zoom and an assistive-technology walkthrough are not measured",
+   "RTL is not mirrored (only the answer sentence carries dir=auto), and no language run has been recorded on the React interface",
+   "voice has interface coverage but no real-audio or field acceptance",
+   "engine gaps reported by the surface authors: series_from_packet drops the per-record member counts, product_api.ensemble does not propagate the adapter stale/partial status, and the marine sea-cell selection has no distance guard"
+  ],
+  "hosting_performed": false,
+  "same_host_only": true
  }
 }

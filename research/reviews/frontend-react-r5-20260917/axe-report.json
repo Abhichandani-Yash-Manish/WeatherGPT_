@@ -1,0 +1,64 @@
+{
+  "checked_at_utc": "2026-09-16T22:03:44.593Z",
+  "tool": "axe-core",
+  "environment": "jsdom (vitest) — no layout engine, so colour contrast is not measured here",
+  "options": {
+    "rules": {
+      "color-contrast": {
+        "enabled": false
+      }
+    }
+  },
+  "surfaces": [
+    {
+      "surface": "landing",
+      "violations": 0,
+      "passes": 29,
+      "incomplete": 0,
+      "disabled": [
+        "color-contrast (needs a layout engine; run in a browser instead)"
+      ]
+    },
+    {
+      "surface": "ask (welcome)",
+      "violations": 0,
+      "passes": 15,
+      "incomplete": 0,
+      "disabled": [
+        "color-contrast (needs a layout engine; run in a browser instead)"
+      ]
+    },
+    {
+      "surface": "warnings",
+      "violations": 0,
+      "passes": 4,
+      "incomplete": 0,
+      "disabled": [
+        "color-contrast (needs a layout engine; run in a browser instead)"
+      ]
+    },
+    {
+      "surface": "marine (placeholder)",
+      "violations": 0,
+      "passes": 6,
+      "incomplete": 0,
+      "disabled": [
+        "color-contrast (needs a layout engine; run in a browser instead)"
+      ]
+    },
+    {
+      "surface": "owner gate",
+      "violations": 0,
+      "passes": 13,
+      "incomplete": 0,
+      "disabled": [
+        "color-contrast (needs a layout engine; run in a browser instead)"
+      ]
+    }
+  ],
+  "totals": {
+    "surfaces": 5,
+    "violations": 0,
+    "passes": 67
+  }
+}

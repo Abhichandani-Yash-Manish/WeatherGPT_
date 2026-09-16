@@ -8,7 +8,7 @@ import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { server } from '../test/msw';
 import { SurfaceHost } from './SurfaceHost';
-import { viewById } from './views';
+import { viewById, type ViewEntry } from './views';
 
 const WARNINGS = {
   schema_version: 'product-view-v1',
@@ -55,11 +55,27 @@ describe('the surface host', () => {
   });
 
   it('states that a module is not ported yet, names its stage, and offers its questions to the conversation', async () => {
-    const onAsk = host('marine');
+    /* A synthetic entry rather than a registry id: the placeholder contract must stay checkable after every
+       surface has been ported, and this way the check does not depend on which ones are left. */
+    const pending: ViewEntry = {
+      /* An id no module claims, so the placeholder path is exercised even once every real surface is ported. */
+      id: 'not-yet-ported' as ViewEntry['id'],
+      label: 'Sea and rivers',
+      group: 'more',
+      portedIn: 'R4',
+      intents: ['What is the sea like near Kochi tomorrow?', 'How much water is in the river at Surat?'],
+    };
+    const onAsk = vi.fn();
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    render(
+      <QueryClientProvider client={client}>
+        <SurfaceHost view={pending} onAsk={onAsk} />
+      </QueryClientProvider>,
+    );
     expect(screen.getByRole('heading', { level: 1, name: 'Sea and rivers' })).toBeInTheDocument();
     expect(screen.getByText(/not ported yet/i)).toBeInTheDocument();
     expect(screen.getByText('R4')).toBeInTheDocument();
     await userEvent.click(screen.getAllByRole('button', { name: /Ask this in the conversation/i })[0]);
-    expect(onAsk).toHaveBeenCalledWith(viewById('marine')!.intents[0]);
+    expect(onAsk).toHaveBeenCalledWith(pending.intents[0]);
   });
 });

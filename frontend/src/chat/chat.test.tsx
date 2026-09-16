@@ -118,6 +118,14 @@ describe('the transcript', () => {
     expect(within(card).queryByText('Evidence receipt')).toBeNull();
   });
 
+  it('lets the browser read the direction of the answer sentence', async () => {
+    server.use(...handlers({ ...FORECAST, answer: 'احمد آباد میں بارش متوقع ہے۔' }));
+    withClient(<AskSurface language="ur" persona="" />);
+    await ask('کیا بارش ہوگی؟');
+    const paragraph = await screen.findByText('احمد آباد میں بارش متوقع ہے۔');
+    expect(paragraph).toHaveAttribute('dir', 'auto');
+  });
+
   it('names what a continuation carried and what it changed', async () => {
     server.use(
       ...handlers({

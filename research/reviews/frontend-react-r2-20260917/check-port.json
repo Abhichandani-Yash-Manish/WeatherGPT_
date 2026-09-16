@@ -61,7 +61,7 @@
     {
       "file": "test_workspace_ui.js",
       "checks": 6,
-      "ported": 2,
+      "ported": 4,
       "evidence": [
         {
           "spec": "src/shell/topbar.test.tsx",
@@ -70,13 +70,20 @@
             "shows an unreachable store as unreachable",
             "offers every known language, marked where this project has not measured its writing"
           ]
+        },
+        {
+          "spec": "src/modules/workspace.test.tsx",
+          "tests": [
+            "writes the fields into the editable question box, moves focus there, and sends nothing",
+            "renders the station rows with their distances, ages and staleness, the district line and the hour units"
+          ]
         }
       ]
     },
     {
       "file": "test_suite_ui.js",
       "checks": 33,
-      "ported": 8,
+      "ported": 14,
       "evidence": [
         {
           "spec": "src/modules/modules.test.tsx",
@@ -102,6 +109,38 @@
             "asks for a district and does not read a brief from a coordinate when none is named",
             "renders the modelled parameters with their units, the cell and its distance, and says it is a model",
             "records a cell distance the payload does not state as absent, never as a number computed here"
+          ]
+        },
+        {
+          "spec": "src/modules/aviation.test.tsx",
+          "tests": [
+            "renders the station rows and decoded values the METAR read returned, with each own instant, age and freshness",
+            "reads a report the source marks stale as stale, and never restyles another word as current"
+          ]
+        },
+        {
+          "spec": "src/modules/climate.test.tsx",
+          "tests": [
+            "renders the counts and rows the index stated, offers only those districts, and reads the series for one",
+            "states a year with no row, and a row holding no value, as absent rather than as a zero"
+          ]
+        },
+        {
+          "spec": "src/modules/marine.test.tsx",
+          "tests": [
+            "renders each read with its own cell, the distance the payload states, model and unit, and states the boundary"
+          ]
+        },
+        {
+          "spec": "src/modules/ensemble.test.tsx",
+          "tests": [
+            "renders the member counts the read returned, the spread it stated, and its own limits"
+          ]
+        },
+        {
+          "spec": "src/modules/verification.test.tsx",
+          "tests": [
+            "renders the window, sources, per-lead counts and metrics, and leaves an unmeasured lead unmeasured"
           ]
         }
       ]
@@ -201,6 +240,66 @@
       "spec": "src/shell/errorboundary.test.tsx",
       "tests": 2,
       "note": "The surface error boundary: new."
+    },
+    {
+      "spec": "src/modules/aviation.test.tsx",
+      "tests": 7,
+      "note": "The aviation surface: new, two checks claimed above."
+    },
+    {
+      "spec": "src/modules/climate.test.tsx",
+      "tests": 6,
+      "note": "The climate surface: new, two checks claimed above."
+    },
+    {
+      "spec": "src/modules/compare.test.tsx",
+      "tests": 2,
+      "note": "The compare surface: new."
+    },
+    {
+      "spec": "src/modules/ensemble.test.tsx",
+      "tests": 3,
+      "note": "The ensemble surface: new, one check claimed above."
+    },
+    {
+      "spec": "src/modules/verification.test.tsx",
+      "tests": 3,
+      "note": "The verification surface: new, one check claimed above."
+    },
+    {
+      "spec": "src/modules/marine.test.tsx",
+      "tests": 2,
+      "note": "The marine surface: new, one check claimed above."
+    },
+    {
+      "spec": "src/modules/briefcase.test.tsx",
+      "tests": 5,
+      "note": "The briefcase surface: new."
+    },
+    {
+      "spec": "src/modules/workspace.test.tsx",
+      "tests": 3,
+      "note": "The workspace surface: new, two checks claimed above."
+    },
+    {
+      "spec": "src/chat/parity.test.tsx",
+      "tests": 4,
+      "note": "Receipt chain, clarification choices, resolved point, stored-conversation delete."
+    },
+    {
+      "spec": "src/chat/print.test.tsx",
+      "tests": 2,
+      "note": "Print parity for a card: R4."
+    },
+    {
+      "spec": "src/a11y/a11y.test.tsx",
+      "tests": 5,
+      "note": "axe-core over five rendered surfaces in jsdom: R5."
+    },
+    {
+      "spec": "src/shell/keyboard.test.tsx",
+      "tests": 4,
+      "note": "Keyboard acceptance for the skip link, the shortcuts and the palette: R5."
     }
   ]
 }

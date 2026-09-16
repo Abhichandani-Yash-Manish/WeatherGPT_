@@ -20,6 +20,14 @@ export const MODULES: Partial<Record<ViewId, Entry>> = {
   advisories: { load: () => import('./AdvisoriesSurface'), stage: 'R3' },
   'air-quality': { load: () => import('./AirQualitySurface'), stage: 'R3' },
   documents: { load: () => import('./DocumentsSurface'), stage: 'R3' },
+  climate: { load: () => import('./ClimateSurface'), stage: 'R3' },
+  ensemble: { load: () => import('./EnsembleSurface'), stage: 'R4' },
+  verification: { load: () => import('./VerificationSurface'), stage: 'R4' },
+  compare: { load: () => import('./CompareSurface'), stage: 'R3' },
+  briefcase: { load: () => import('./BriefcaseSurface'), stage: 'R3' },
+  marine: { load: () => import('./MarineSurface'), stage: 'R4' },
+  workspace: { load: () => import('./WorkspaceSurface'), stage: 'R3' },
+  aviation: { load: () => import('./AviationSurface'), stage: 'R3' },
   settings: { load: () => import('./SettingsSurface'), stage: 'R3' },
 };
 

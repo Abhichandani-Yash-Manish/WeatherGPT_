@@ -37,10 +37,16 @@ export function failureSentence(error: unknown): string {
   return 'This read did not answer: ' + (message && message.trim() ? message : NOT_RECORDED);
 }
 
+/* A caller may name its subject with or without a leading article ('the advisory directory', 'district
+   directory'). The article is stripped here so both read as one sentence rather than as 'The the ...'. */
+function subject(what: string): string {
+  return what.replace(/^the\s+/i, '').trim();
+}
+
 export function Reading({ what }: { what: string }): JSX.Element {
   return (
     <p className="module-note" role="status">
-      Reading {what} from the local store…
+      Reading {subject(what)} from the local store…
     </p>
   );
 }
@@ -50,7 +56,7 @@ export function Failure({ error, what, onRetry }: { error: unknown; what: string
     <div className="module-failure" role="alert">
       <p className="reading">{failureSentence(error)}</p>
       <p className="module-note">
-        The {what} read failed. This surface shows that failure; it is not an empty result and not a quiet day.
+        The {subject(what)} read failed. This surface shows that failure; it is not an empty result and not a quiet day.
       </p>
       {onRetry ? (
         <button type="button" className="btn" onClick={onRetry}>
