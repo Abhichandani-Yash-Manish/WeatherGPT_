@@ -1,0 +1,157 @@
+{
+  "schema_version": "verification-result-v1",
+  "method": {
+    "bias": "mean of (forecast minus reference) over matched hours",
+    "mae": "mean of the absolute error over matched hours",
+    "rmse": "square root of the mean squared error over matched hours",
+    "correlation": "Pearson product-moment correlation over matched hours"
+  },
+  "minimum_sample_hours": 24,
+  "forecast": {
+    "source_id": "S70",
+    "model": "gfs_seamless",
+    "grid": {
+      "latitude": 23.019852,
+      "longitude": 72.53906
+    },
+    "retrieved_at_utc": "2026-09-16T13:17:03.199790+00:00",
+    "url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=23.02579&longitude=72.58727&hourly=precipitation_previous_day1%2Cprecipitation_previous_day2%2Cprecipitation_previous_day3%2Cprecipitation_previous_day5%2Cprecipitation_previous_day7%2Ctemperature_2m_previous_day1%2Ctemperature_2m_previous_day2%2Ctemperature_2m_previous_day3%2Ctemperature_2m_previous_day5%2Ctemperature_2m_previous_day7&models=gfs_seamless&start_date=2026-08-28&end_date=2026-09-10&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&precipitation_unit=mm",
+    "sha256": "150bac735547aa043ce953bd41ef857cc96d64b727e23a997c66bd33046488ad"
+  },
+  "reference": {
+    "source_id": "S22",
+    "grid": {
+      "latitude": 23.0,
+      "longitude": 72.5
+    },
+    "retrieved_at_utc": "2026-09-16T13:17:03.827673+00:00",
+    "url": "https://archive-api.open-meteo.com/v1/archive?latitude=23.02579&longitude=72.58727&hourly=precipitation%2Ctemperature_2m&models=era5&start_date=2026-08-28&end_date=2026-09-10&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&precipitation_unit=mm",
+    "sha256": "932b0dcc6022ac94b5521746d6d3ba16d6462acffe6da3dac7258a6007eeed2a"
+  },
+  "variables": {
+    "precipitation": [
+      {
+        "n": 336,
+        "status": "measured",
+        "bias": "-0.008",
+        "mae": "0.016",
+        "rmse": "0.062",
+        "correlation": "-0.026",
+        "lead_days": 1,
+        "forecast_hours": 336,
+        "unmatched_hours": 0
+      },
+      {
+        "n": 336,
+        "status": "measured",
+        "bias": "-0.011",
+        "mae": "0.013",
+        "rmse": "0.039",
+        "correlation": "-0.036",
+        "lead_days": 2,
+        "forecast_hours": 336,
+        "unmatched_hours": 0
+      },
+      {
+        "n": 336,
+        "status": "measured",
+        "bias": "0.008",
+        "mae": "0.031",
+        "rmse": "0.138",
+        "correlation": "0.042",
+        "lead_days": 3,
+        "forecast_hours": 336,
+        "unmatched_hours": 0
+      },
+      {
+        "n": 336,
+        "status": "measured",
+        "bias": "-0.010",
+        "mae": "0.013",
+        "rmse": "0.040",
+        "correlation": "0.010",
+        "lead_days": 5,
+        "forecast_hours": 336,
+        "unmatched_hours": 0
+      },
+      {
+        "n": 336,
+        "status": "measured",
+        "bias": "-0.009",
+        "mae": "0.015",
+        "rmse": "0.043",
+        "correlation": "-0.052",
+        "lead_days": 7,
+        "forecast_hours": 336,
+        "unmatched_hours": 0
+      }
+    ],
+    "temperature_2m": [
+      {
+        "n": 336,
+        "status": "measured",
+        "bias": "1.596",
+        "mae": "1.707",
+        "rmse": "2.055",
+        "correlation": "0.923",
+        "lead_days": 1,
+        "forecast_hours": 336,
+        "unmatched_hours": 0
+      },
+      {
+        "n": 336,
+        "status": "measured",
+        "bias": "1.553",
+        "mae": "1.642",
+        "rmse": "1.969",
+        "correlation": "0.920",
+        "lead_days": 2,
+        "forecast_hours": 336,
+        "unmatched_hours": 0
+      },
+      {
+        "n": 336,
+        "status": "measured",
+        "bias": "1.294",
+        "mae": "1.700",
+        "rmse": "2.100",
+        "correlation": "0.810",
+        "lead_days": 3,
+        "forecast_hours": 336,
+        "unmatched_hours": 0
+      },
+      {
+        "n": 336,
+        "status": "measured",
+        "bias": "0.918",
+        "mae": "1.224",
+        "rmse": "1.496",
+        "correlation": "0.867",
+        "lead_days": 5,
+        "forecast_hours": 336,
+        "unmatched_hours": 0
+      },
+      {
+        "n": 336,
+        "status": "measured",
+        "bias": "1.017",
+        "mae": "1.197",
+        "rmse": "1.454",
+        "correlation": "0.906",
+        "lead_days": 7,
+        "forecast_hours": 336,
+        "unmatched_hours": 0
+      }
+    ]
+  },
+  "limits": [
+    "The reference is ERA5 reanalysis, a modelled analysis, not a station observation.",
+    "The statistics describe this sample for this model, variable and window; they are not operational skill, a confidence or a risk.",
+    "A lead with fewer than 24 matched hours is reported as unmeasured, not given a number.",
+    "A model is never ranked against another and no single skill score is produced."
+  ],
+  "window": {
+    "start": "2026-08-28",
+    "end": "2026-09-10"
+  }
+}
