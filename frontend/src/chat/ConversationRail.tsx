@@ -23,12 +23,15 @@ export function ConversationRail({
   onNew,
   register,
   onRegister,
+  wide = false,
 }: {
   currentId: string | null;
   onOpen: (id: string) => void;
   onNew: () => void;
   register: Register;
   onRegister: (value: Register) => void;
+  /** Full width when it sits under the composer instead of beside the transcript. */
+  wide?: boolean;
 }) {
   const client = useQueryClient();
   const [query, setQuery] = useState('');
@@ -43,7 +46,13 @@ export function ConversationRail({
   );
 
   return (
-    <aside className="card flex w-64 shrink-0 flex-col gap-3 px-3 py-3" aria-label="Stored conversations and reading register">
+    <aside
+      className={
+        'card flex shrink-0 flex-col gap-3 px-3 py-3 ' +
+        (wide ? 'w-full' : 'w-64')
+      }
+      aria-label="Stored conversations and reading register"
+    >
       <div>
         <p className="eyebrow">Reading register</p>
         <div className="mt-1 flex flex-wrap gap-1">

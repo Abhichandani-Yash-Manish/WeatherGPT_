@@ -26,6 +26,8 @@ function renderTopbar(overrides: Partial<React.ComponentProps<typeof Topbar>> = 
     onNew: vi.fn(),
     onPalette: vi.fn(),
     onOwner: vi.fn(),
+    onMenu: vi.fn(),
+    railOpen: false,
     ...overrides,
   };
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
@@ -82,6 +84,16 @@ describe('the topbar', () => {
     await userEvent.selectOptions(screen.getByLabelText('Reading as'), 'farmer');
     expect(props.onPersona).toHaveBeenCalledWith('farmer');
     expect(screen.getByLabelText('Reading as')).toHaveAttribute('title', expect.stringContaining('changes no value'));
+  });
+
+
+  it('offers the navigation drawer control, and reports its state', async () => {
+    const props = renderTopbar({ railOpen: true });
+    const toggle = screen.getByTestId('rail-toggle');
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    expect(toggle).toHaveAttribute('aria-controls', 'workspace-rail');
+    await userEvent.click(toggle);
+    expect(props.onMenu).toHaveBeenCalled();
   });
 
   it('names the theme it would move to, and the two actions beside it', async () => {

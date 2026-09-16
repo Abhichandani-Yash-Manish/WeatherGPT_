@@ -34,6 +34,7 @@ function Shell() {
   const [language, setLanguage] = useState('');
   const [persona, setPersona] = useState('');
   const [palette, setPalette] = useState(false);
+  const [railOpen, setRailOpen] = useState(false);
   const [seed, setSeed] = useState<Seed>(null);
   useSkyPhase();
 
@@ -95,7 +96,14 @@ function Shell() {
         Skip to the question box
       </a>
       <SkyBackground />
-      <Rail active={view.id} onOpen={open} />
+      <Rail active={view.id} onOpen={open} open={railOpen} onClose={() => setRailOpen(false)} />
+      <button
+        type="button"
+        className="rail-backdrop"
+        aria-label="Close the navigation"
+        hidden={!railOpen}
+        onClick={() => setRailOpen(false)}
+      />
       <main className="flex min-w-0 flex-1 flex-col">
         <Topbar
           language={language}
@@ -106,6 +114,8 @@ function Shell() {
           onTheme={cycleTheme}
           onNew={() => { setSeed(null); go('assistant'); open('assistant'); }}
           onPalette={() => setPalette(true)}
+          onMenu={() => setRailOpen(value => !value)}
+          railOpen={railOpen}
           onOwner={() => {
             closeGate();
             go('signin');

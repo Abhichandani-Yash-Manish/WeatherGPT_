@@ -171,4 +171,52 @@ describe('the saved-document viewer', () => {
       meta.remove();
     }
   });
+
+  it('trusts the row that says the body is held, and does not pull the file through the client again', async () => {
+    const asked: string[] = [];
+    server.use(
+      http.get('/api/documents/:sha', ({ request }) => {
+        asked.push(request.url);
+        return pdf();
+      }),
+    );
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } });
+    render(
+      <QueryClientProvider client={client}>
+        <DocumentViewer sha={SHA} title={TITLE} body="available" onClose={() => {}} />
+      </QueryClientProvider>,
+    );
+    /* The row already stated that the body is held, so the frame is served the file and the route is not read
+       to answer a question the row answered: a held body used to be transferred twice. */
+    expect(await screen.findByRole('link', { name: 'Save this PDF' })).toHaveAttribute('href', '/api/documents/' + SHA);
+    expect(asked).toEqual([]);
+    expect(screen.getByTestId('document-viewer-row-state')).toHaveTextContent(/reports the saved body as held/);
+    expect(screen.getByTestId('document-viewer-row-state')).toHaveTextContent(/410 in the frame/);
+  });
+
+  it('takes Escape inside the panel, never from the surface field around it', async () => {
+    const onClose = vi.fn();
+    server.use(http.get('/api/documents/:sha', () => pdf()));
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } });
+    render(
+      <QueryClientProvider client={client}>
+        <>
+          <label htmlFor="catalogue-filter">Catalogue filter</label>
+          <input id="catalogue-filter" />
+          <DocumentViewer sha={SHA} title={TITLE} onClose={onClose} />
+        </>
+      </QueryClientProvider>,
+    );
+    await screen.findByRole('link', { name: 'Save this PDF' });
+
+    // The panel has focus inside it, so Escape is the panel's way out.
+    await userEvent.keyboard('{Escape}');
+    expect(onClose).toHaveBeenCalledTimes(1);
+
+    // The same key pressed in the surface's own field belongs to that field, not to the viewer.
+    await userEvent.click(screen.getByLabelText('Catalogue filter'));
+    await userEvent.keyboard('{Escape}');
+    expect(onClose).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument();
+  });
 });

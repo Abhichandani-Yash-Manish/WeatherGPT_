@@ -3,205 +3,41 @@
 @import "./sky.css";
 @import "./transcript.css";
 @import "./print.css";
+/* ---- narrow widths ---------------------------------------------------------------------------
+   Desktop web is the surface this product is measured on, and it has to remain usable when the
+   window is narrow: the rail becomes a drawer, the stored-conversation column moves under the
+   composer, and the topbar wraps. Nothing here claims a mobile run — the browser evidence records
+   a 390x844 viewport, not a device. */
+.rail { position: sticky; top: 0; height: 100vh; }
+.rail-backdrop { display: none; }
 
-/* Tailwind consumes the existing token layer rather than replacing it: the design system stays in
-   web/tokens.css, which the vanilla frontend still uses, and the two agree by construction. Every
-   name below is a token, so a surface cannot introduce a colour the design system does not hold. */
-@theme {
-  --color-ink: var(--ink);
-  --color-ink-soft: var(--ink-soft);
-  --color-mute: var(--mute);
-  --color-ground: var(--ground);
-  --color-paper: var(--paper);
-  --color-sunk: var(--sunk);
-  --color-raiser: var(--raiser);
-  --color-data: var(--data);
-  --color-data-ink: var(--data-ink);
-  --color-data-wash: var(--data-wash);
-  --color-slate: var(--slate);
-  --color-sand: var(--sand);
-  --color-sand-wash: var(--sand-wash);
-  --color-line: var(--line-strong);
-  --color-hairline: var(--line);
-  --color-warn: var(--orange);
-  --color-alert: var(--red);
-  --color-caution: var(--yellow);
-  --color-clear: var(--green);
-  --color-housing: var(--housing);
-  --color-housing-2: var(--housing-2);
-  --color-housing-ink: var(--housing-ink);
-  --color-housing-mute: var(--housing-mute);
-  --color-housing-line: var(--housing-line);
-
-  --radius-token: var(--r);
-  --radius-card: var(--r-card);
-  --radius-pill: var(--r-pill);
-
-  --font-serif: var(--serif);
-  --font-sans: var(--sans);
-  --font-mono: var(--mono);
-
-  --shadow-lift-1: var(--lift-1);
-  --shadow-lift-2: var(--lift-2);
-  --shadow-lift-3: var(--lift-3);
+@media (max-width: 64rem) {
+  .rail {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 40;
+    width: min(18rem, 82vw);
+    height: 100vh;
+    transform: translateX(-102%);
+    transition: transform var(--motion-base) var(--ease-out);
+    box-shadow: var(--lift-3);
+  }
+  .rail[data-open='true'] { transform: none; }
+  .rail-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    background: var(--scrim);
+  }
+  .rail-backdrop[hidden] { display: none; }
+  .narrow-only { display: inline-flex; }
 }
 
-html, body, #root { height: 100%; }
-
-body {
-  margin: 0;
-  background: var(--ground);
-  color: var(--ink);
-  font-family: var(--sans);
-  font-size: var(--step-0);
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+@media (min-width: 64.001rem) {
+  .narrow-only { display: none; }
 }
-
-::selection { background: var(--data-wash); color: var(--ink); }
-
-/* Keyboard focus is always visible, on every surface, in both themes and on both ground levels.
-   :focus-visible only, so a pointer press does not ring every control it touches. */
-:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-  outline: 2px solid var(--data);
-  outline-offset: 2px;
-  border-radius: var(--r);
-}
-[data-ground='housing'] :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-  outline-color: var(--housing-ink);
-}
-
-/* Scrollbars belong to the instrument: thin and quiet, and only where a surface scrolls. */
-* { scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
-*::-webkit-scrollbar { width: 10px; height: 10px; }
-*::-webkit-scrollbar-thumb { background: var(--line-strong); border: 3px solid transparent; background-clip: content-box; border-radius: var(--r-pill); }
-*::-webkit-scrollbar-track { background: transparent; }
-
-.skip-link {
-  position: absolute;
-  left: -9999px;
-  top: 0;
-  z-index: 60;
-  background: var(--housing);
-  color: var(--housing-ink);
-  padding: 10px 14px;
-  border-radius: 0 0 var(--r-card) 0;
-}
-.skip-link:focus { left: 0; }
-
-/* ---- type roles ----------------------------------------------------------------------------
-   Three voices, and which one a thing is set in is a claim of its own: serif is a sentence the
-   workspace wrote, sans is chrome, mono is a measured value, unit, time, identifier or source.
-   A number therefore never looks like chrome. */
-.eyebrow {
-  font-size: var(--step--1);
-  letter-spacing: var(--track-wide);
-  text-transform: uppercase;
-  color: var(--mute);
-  font-weight: 600;
-}
-.display {
-  font-family: var(--serif);
-  font-size: var(--step-4);
-  line-height: 1.12;
-  letter-spacing: var(--track-tight);
-  color: var(--ink);
-  text-wrap: balance;
-}
-.reading {
-  font-family: var(--serif);
-  font-size: var(--step-1);
-  line-height: 1.62;
-  color: var(--ink);
-  max-width: var(--measure);
-}
-.reading strong { font-weight: 600; }
-.evidence { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: .94em; }
-.quiet { color: var(--mute); }
-.soft { color: var(--ink-soft); }
-
-/* ---- surfaces ------------------------------------------------------------------------------ */
-.card {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--r-card);
-  box-shadow: var(--lift-1);
-}
-.card-raised { background: var(--raiser); box-shadow: var(--lift-2); }
-.hairline { border-top: 1px solid var(--line); }
-.house { background: var(--housing); color: var(--housing-ink); border: 1px solid var(--housing-line); }
-
-/* ---- controls ------------------------------------------------------------------------------ */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--r-card);
-  background: var(--paper);
-  color: var(--ink);
-  font-size: var(--step--1);
-  font-weight: 600;
-  letter-spacing: .01em;
-  padding: 7px 11px;
-  transition: background var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out),
-              transform var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out);
-}
-.btn:hover:not(:disabled) { background: var(--sunk); }
-.btn:active:not(:disabled) { transform: translateY(1px); }
-.btn:disabled { opacity: .55; cursor: not-allowed; }
-.btn-primary { background: var(--data); border-color: var(--data); color: var(--data-ink); }
-.btn-primary:hover:not(:disabled) { background: var(--data); filter: brightness(1.08); }
-.btn-ghost { background: transparent; border-color: transparent; color: var(--ink-soft); }
-.btn-ghost:hover:not(:disabled) { background: var(--sunk); color: var(--ink); }
-.btn-danger { color: var(--red); border-color: var(--line-strong); }
-.tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  border: 1px solid var(--line);
-  border-radius: var(--r-pill);
-  padding: 2px 9px;
-  font-size: var(--step--1);
-  font-weight: 600;
-  letter-spacing: .01em;
-  background: var(--sunk);
-  color: var(--ink-soft);
-  white-space: nowrap;
-}
-.tag-quiet { background: transparent; border-style: dashed; color: var(--mute); font-weight: 500; }
-.tag-held { background: var(--yellow-wash); border-color: var(--yellow); color: var(--yellow); }
-.tag-good { background: var(--green-wash); border-color: var(--green); color: var(--green); }
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--r-pill);
-  background: var(--paper);
-  padding: 6px 12px;
-  font-size: var(--step--1);
-  color: var(--ink-soft);
-  transition: background var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out);
-}
-.chip:hover:not(:disabled) { background: var(--data-wash); color: var(--ink); border-color: var(--data); }
-
-/* ---- motion: explains a change of state, never decorates it --------------------------------- */
-@keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
-@keyframes pulse-dot {
-  0%, 100% { opacity: .35; transform: scale(.86); }
-  50% { opacity: 1; transform: scale(1); }
-}
-.rise { animation: rise var(--motion-base) var(--ease-out) both; }
-.fade { animation: fade var(--motion-base) var(--ease-out) both; }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 1ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 1ms !important;
-    scroll-behavior: auto !important;
-  }
+  .rail { transition: none; }
 }

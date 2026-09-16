@@ -38,7 +38,7 @@ function currency(document: DocumentRow): string {
 export function Surface(): JSX.Element {
   const [family, setFamily] = useState('');
   const [term, setTerm] = useState('');
-  const [selected, setSelected] = useState<{ sha: string; label: string } | null>(null);
+  const [selected, setSelected] = useState<{ sha: string; label: string; state: string | null } | null>(null);
 
   const corpus = useQuery({
     queryKey: ['corpus', family, term],
@@ -119,7 +119,7 @@ export function Surface(): JSX.Element {
                 type="button"
                 className="btn btn-ghost"
                 disabled={!document.sha256}
-                onClick={() => setSelected({ sha: String(document.sha256 || ''), label: document.family_label || document.family || 'this edition' })}
+                onClick={() => setSelected({ sha: String(document.sha256 || ''), label: document.family_label || document.family || 'this edition', state: document.body ? String(document.body) : null })}
               >
                 Read what the document route answers
               </button>
@@ -130,7 +130,7 @@ export function Surface(): JSX.Element {
           /* The reader asked for this body, so it opens in place: the viewer answers 200, 410 (the edition's
              stated state) and a failed read as three different states, and it is the same component on every
              route that offers a saved body. */
-          <DocumentViewer sha={selected.sha} title={selected.label} onClose={() => setSelected(null)} />
+          <DocumentViewer sha={selected.sha} title={selected.label} body={selected.state} onClose={() => setSelected(null)} />
         ) : (
           <p className="module-note">No document has been opened yet. A saved body opens in place here; a body the index reports as pruned states what survives.</p>
         )}

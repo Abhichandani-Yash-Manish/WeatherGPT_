@@ -9,13 +9,17 @@ export class ApiError extends Error {
   status: number;
   kind: ApiErrorKind;
   detail: string;
+  /** The parsed JSON body when the server sent one: a route that answers 410 states what survives in fields,
+      and a component must be able to read them rather than restate them. */
+  body: Record<string, unknown> | null;
 
-  constructor(message: string, status: number, kind: ApiErrorKind, detail = '') {
+  constructor(message: string, status: number, kind: ApiErrorKind, detail = '', body: Record<string, unknown> | null = null) {
     super(message);
     this.name = 'ApiError';
     this.status = status;
     this.kind = kind;
     this.detail = detail;
+    this.body = body;
   }
 }
 
@@ -37,12 +41,14 @@ function classify(status: number, message: string): ApiErrorKind {
    characters"). That sentence is the error message, so it is read out of the body rather than replaced. */
 async function failure(response: Response): Promise<ApiError> {
   let message = 'The workspace answered HTTP ' + response.status + '.';
+  let body: Record<string, unknown> | null = null;
   try {
     const text = await response.text();
     if (text) {
       try {
-        const body = JSON.parse(text) as { error?: string; detail?: string };
-        message = body.error || body.detail || message;
+        const parsed = JSON.parse(text) as Record<string, unknown>;
+        body = parsed;
+        message = String(parsed.error || parsed.detail || message);
       } catch {
         message = text.slice(0, 400);
       }
@@ -50,7 +56,7 @@ async function failure(response: Response): Promise<ApiError> {
   } catch {
     /* the body could not be read: the status line stands as the message */
   }
-  return new ApiError(message, response.status, classify(response.status, message));
+  return new ApiError(message, response.status, classify(response.status, message), '', body);
 }
 
 export type RequestOptions = { signal?: AbortSignal; timeoutMs?: number };

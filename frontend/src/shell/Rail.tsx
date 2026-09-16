@@ -10,7 +10,24 @@ const GROUPS: { id: ViewEntry['group']; title?: string }[] = [
   { id: 'more', title: 'Models, history & specialists' },
 ];
 
-export function Rail({ active, onOpen }: { active: string; onOpen: (id: string) => void }) {
+export type RailProps = {
+  active: string;
+  onOpen: (id: string) => void;
+  /** Below the wide breakpoint the rail is a drawer: closed by default, opened from the topbar. */
+  open: boolean;
+  onClose: () => void;
+};
+
+export function Rail({ active, onOpen, open, onClose }: RailProps) {
+  useEffect(() => {
+    if (!open) return;
+    const onEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onEscape);
+    return () => window.removeEventListener('keydown', onEscape);
+  }, [open, onClose]);
+
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (!event.altKey || event.ctrlKey || event.metaKey) return;
@@ -26,7 +43,12 @@ export function Rail({ active, onOpen }: { active: string; onOpen: (id: string) 
   }, [onOpen]);
 
   return (
-    <nav aria-label="Workspace navigation" className="w-56 shrink-0 border-r border-line px-2 py-3">
+    <nav
+      aria-label="Workspace navigation"
+      id="workspace-rail"
+      data-open={open ? 'true' : 'false'}
+      className="rail w-56 shrink-0 overflow-y-auto border-r border-line bg-paper px-2 py-3"
+    >
       {GROUPS.map(group => (
         <div key={group.id} className="mb-2">
           {group.title ? <h2 className="px-2 pt-2 text-xs uppercase tracking-wide text-mute">{group.title}</h2> : null}
@@ -38,7 +60,10 @@ export function Rail({ active, onOpen }: { active: string; onOpen: (id: string) 
                 type="button"
                 aria-current={current ? 'page' : undefined}
                 data-view={view.id}
-                onClick={() => onOpen(view.id)}
+                onClick={() => {
+                  onOpen(view.id);
+                  onClose();
+                }}
                 className={
                   'flex w-full items-center justify-between rounded-card px-2 py-2 text-left text-sm ' +
                   /* A rail highlight is a sand wash with ink on it. The full sand is a rule colour, not a

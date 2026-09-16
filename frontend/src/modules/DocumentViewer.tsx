@@ -18,19 +18,38 @@ import { Facts, Failure, Reading } from './Evidence';
 
 const documentPath = (sha: string): string => '/api/documents/' + sha;
 
-export function DocumentViewer({ sha, title, onClose }: { sha: string; title?: string; onClose: () => void }): JSX.Element {
+export type DocumentViewerProps = {
+  sha: string;
+  title?: string;
+  onClose: () => void;
+  /** The state the catalogue row already states for this body ('available', 'pruned', ...). When the row
+      says the body is held there is nothing to ask: the frame is served the file directly, and the route is
+      not read a second time through the client (which would transfer the whole PDF to answer a question the
+      row already answered). Any other state, or none, asks the route. */
+  body?: string | null;
+};
+
+export function DocumentViewer({ sha, title, onClose, body = null }: DocumentViewerProps): JSX.Element {
+  const heldByTheRow = body === 'available';
   const read = useQuery({
     queryKey: ['document-body', sha],
     queryFn: () => getJson<unknown>(documentPath(sha), { timeoutMs: 20_000 }),
     retry: false,
+    enabled: !heldByTheRow,
   });
   const headingId = useId();
+  const panel = useRef<HTMLElement | null>(null);
   const close = useRef<HTMLButtonElement | null>(null);
   /* The viewer is opened by a control elsewhere on the page, so focus lands on its own way out: the panel
      is left with a keyboard rather than only a pointer. */
   useEffect(() => { close.current?.focus(); }, []);
+  /* Escape closes the panel the reader is in, and only that: this panel sits inside a surface that has its
+     own fields, and a key pressed in the catalogue's filter must not be taken as the viewer's exit. */
   useEffect(() => {
-    const escape = (event: KeyboardEvent) => { if (event.key === 'Escape') onClose(); };
+    const escape = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape' || !panel.current?.contains(event.target as Node)) return;
+      onClose();
+    };
     document.addEventListener('keydown', escape);
     return () => document.removeEventListener('keydown', escape);
   }, [onClose]);
@@ -40,13 +59,13 @@ export function DocumentViewer({ sha, title, onClose }: { sha: string; title?: s
   const pruned = read.error instanceof ApiError && read.error.status === 410;
 
   return (
-    <section className="module-section" role="dialog" aria-labelledby={headingId} data-testid="document-viewer">
+    <section ref={panel} className="module-section" role="dialog" aria-labelledby={headingId} data-testid="document-viewer">
       <h3 id={headingId}>{name}</h3>
       <p className="module-note">
         Saved source document from this machine · sha256 <span className="evidence">{sha}</span>
       </p>
 
-      {read.isPending ? <Reading what="the saved source document" /> : null}
+      {read.isPending && !heldByTheRow ? <Reading what="the saved source document" /> : null}
 
       {read.isError && pruned ? (
         <div role="status" data-testid="document-viewer-410">
@@ -63,8 +82,8 @@ export function DocumentViewer({ sha, title, onClose }: { sha: string; title?: s
             ]}
           />
           <p className="module-note">
-            A pruned body is not a crash and not a blank page, and there is no file to offer here: the edition stays listed
-            in the catalogue with its own printed issue date and currency, and no PDF is embedded or downloaded.
+            A pruned body is not a crash and not a blank page, and there is no file to offer here, so no PDF is embedded or
+            downloaded from this panel.
           </p>
           <p className="module-note" data-testid="document-viewer-not-a-warning">
             A stored document is the record of one printed edition: not a current warning, not an all-clear and not a statement that it applies to a place or a decision.
@@ -76,7 +95,7 @@ export function DocumentViewer({ sha, title, onClose }: { sha: string; title?: s
         <Failure error={read.error} what="saved source document" onRetry={() => { void read.refetch(); }} />
       ) : null}
 
-      {read.isSuccess ? (
+      {read.isSuccess || heldByTheRow ? (
         <>
           <div role="region" aria-label="The saved source document, rendered in this page from this machine">
             <iframe
@@ -90,6 +109,13 @@ export function DocumentViewer({ sha, title, onClose }: { sha: string; title?: s
             The browser's own PDF viewer renders this frame from this machine's copy of the file, never from the publisher's
             address. If the frame stays blank, use Save this PDF.
           </p>
+          {heldByTheRow ? (
+            <p className="module-note" data-testid="document-viewer-row-state">
+              The catalogue row this viewer was opened from reports the saved body as held, so the frame is served
+              the file directly and the route was not read again: a body pruned since that row was read would answer
+              410 in the frame instead.
+            </p>
+          ) : null}
           <div className="module-controls">
             <a className="btn" href={path} download={'source-' + sha.slice(0, 12) + '.pdf'}>Save this PDF</a>
           </div>

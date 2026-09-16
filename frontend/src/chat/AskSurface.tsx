@@ -11,6 +11,7 @@ import { ConversationRail } from './ConversationRail';
 import { Transcript } from './Transcript';
 import { Welcome } from './Welcome';
 import { useConversation } from './useConversation';
+import { useWideScreen } from '../shell/useWideScreen';
 
 export type AskSurfaceProps = {
   language: string;
@@ -22,6 +23,7 @@ export type AskSurfaceProps = {
 
 export function AskSurface({ language, persona, personas, languages, seed }: AskSurfaceProps) {
   const conversation = useConversation({ outputLanguage: language, persona });
+  const wide = useWideScreen();
   const sentSeed = useRef<number | null>(null);
 
   useEffect(() => {
@@ -98,13 +100,33 @@ export function AskSurface({ language, persona, personas, languages, seed }: Ask
           />
         </div>
       </div>
-      <ConversationRail
-        currentId={conversation.conversationId}
-        onOpen={id => void conversation.restore(id)}
-        onNew={conversation.clear}
-        register={conversation.register}
-        onRegister={conversation.setRegister}
-      />
+      {wide ? (
+        <ConversationRail
+          currentId={conversation.conversationId}
+          onOpen={id => void conversation.restore(id)}
+          onNew={conversation.clear}
+          register={conversation.register}
+          onRegister={conversation.setRegister}
+        />
+      ) : (
+        /* One instance, one set of controls: below the wide breakpoint the same column sits under the
+           conversation, where a narrow window can actually use it. */
+        <details className="card mt-2 px-3 py-2" data-testid="rail-narrow" open>
+          <summary className="cursor-pointer text-xs font-semibold text-ink-soft">
+            Reading register and stored conversations
+          </summary>
+          <div className="mt-2 flex">
+            <ConversationRail
+              currentId={conversation.conversationId}
+              onOpen={id => void conversation.restore(id)}
+              onNew={conversation.clear}
+              register={conversation.register}
+              onRegister={conversation.setRegister}
+              wide
+            />
+          </div>
+        </details>
+      )}
     </div>
   );
 }

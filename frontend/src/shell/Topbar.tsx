@@ -18,9 +18,11 @@ export type TopbarProps = {
   onNew: () => void;
   onPalette: () => void;
   onOwner: () => void;
+  onMenu: () => void;
+  railOpen: boolean;
 };
 
-export function Topbar({ language, onLanguage, persona, onPersona, theme, onTheme, onNew, onPalette, onOwner }: TopbarProps) {
+export function Topbar({ language, onLanguage, persona, onPersona, theme, onTheme, onNew, onPalette, onOwner, onMenu, railOpen }: TopbarProps) {
   const health = useQuery({ queryKey: ['health'], queryFn: () => getJson<Health>('/api/health'), refetchInterval: 60_000 });
   const languages = useQuery({ queryKey: ['languages'], queryFn: () => getJson<Languages>('/api/languages'), staleTime: 300_000 });
   const catalogue = useQuery({ queryKey: ['personas'], queryFn: () => readPersonas(), staleTime: 300_000 });
@@ -42,6 +44,17 @@ export function Topbar({ language, onLanguage, persona, onPersona, theme, onThem
       <button type="button" className="text-sm font-semibold tracking-wide" onClick={onPalette} title="Open the command palette (Alt+K)">
         WeatherGPT
       </button>
+      <button
+        type="button"
+        className="btn narrow-only"
+        aria-expanded={railOpen}
+        aria-controls="workspace-rail"
+        onClick={onMenu}
+        data-testid="rail-toggle"
+      >
+        Menu
+      </button>
+
       <span role="status" data-testid="service-state" title={service.detail || ''}
         className={'rounded-card px-2 py-0.5 text-xs ' + (service.tone === 'down' ? 'bg-warn text-paper' : 'bg-sunk text-ink-soft')}>
         {service.label}
