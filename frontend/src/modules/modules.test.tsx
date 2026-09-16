@@ -522,7 +522,7 @@ describe('the Documents surface', () => {
     expect(table.getByRole('link', { name: 'Open the saved body' })).toHaveAttribute('href', '/api/documents/' + 'a'.repeat(64));
     expect(screen.getByText('A stored document is the record of one printed edition: never a current warning, an all-clear or advice.')).toBeInTheDocument();
     expect(screen.getByText('Nothing here establishes that a document applies to a place, a crop or a decision.')).toBeInTheDocument();
-    expect(screen.getByText('No document route has been read yet, so no saved-body state is stated here.')).toBeInTheDocument();
+    expect(screen.getByText(/No document has been opened yet/)).toBeInTheDocument();
   });
 
   it('renders the document route 410 as that edition’s stated state, not as a crash', async () => {
@@ -537,11 +537,15 @@ describe('the Documents surface', () => {
     expect(await screen.findAllByRole('button', { name: 'Read what the document route answers' })).toHaveLength(1);
     await userEvent.click(screen.getByRole('button', { name: 'Read what the document route answers' }));
 
-    const state = await screen.findByTestId('document-state-410');
-    expect(state).toHaveTextContent('HTTP 410');
+    const viewer = await screen.findByTestId('document-viewer');
+    const state = within(viewer).getByTestId('document-viewer-410');
+    expect(state).toHaveTextContent('410');
     expect(state).toHaveTextContent('The source document body is outside the local retention window.');
-    expect(state).toHaveTextContent('pruned');
+    expect(state).toHaveTextContent(/pruned|survives/i);
     expect(screen.queryByRole('alert')).toBeNull();
+    /* The viewer is the one component that answers a saved body, so the 410 is the document's state here
+       rather than a second implementation somewhere else. */
+    expect(within(viewer).getByRole('button', { name: /Close/ })).toBeInTheDocument();
   });
 });
 

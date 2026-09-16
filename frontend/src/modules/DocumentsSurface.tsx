@@ -3,11 +3,12 @@
    pruned body is a state the document route states, not a crash. */
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { ApiError, getJson, withQuery } from '../api/client';
+import { getJson, withQuery } from '../api/client';
 import type { Envelope } from '../api/types';
 import { count, orNot } from '../lib/format';
 import { viewById } from '../shell/views';
-import { DataTable, Failure, NOT_RECORDED, Reading, SurfaceShell } from './Evidence';
+import { DataTable, NOT_RECORDED, SurfaceShell } from './Evidence';
+import { DocumentViewer } from './DocumentViewer';
 
 type DocumentRow = {
   sha256?: string; sha_prefix?: string; family?: string; family_label?: string; scope?: string | null;
@@ -32,37 +33,6 @@ const BODY_WORDS: Record<string, string> = { available: 'body held', pruned: 'bo
 function currency(document: DocumentRow): string {
   if (document.age_days === null || document.age_days === undefined) return orNot(document.currency_recorded_at_intake, 'unknown');
   return document.age_days + ' day(s) after the printed issue date';
-}
-
-/* The one read of the document route: a 410 is the document's stated state, every other failure is a
-   failed read with a retry, and nothing here decides that a document does not exist. */
-function DocumentBodyState({ sha, label }: { sha: string; label: string }): JSX.Element {
-  const read = useQuery({
-    queryKey: ['document-body', sha],
-    queryFn: () => getJson<unknown>('/api/documents/' + sha, { timeoutMs: 20_000 }),
-    retry: false,
-  });
-  if (read.isPending) return <Reading what="the document route" />;
-  if (read.isError) {
-    const status = read.error instanceof ApiError ? read.error.status : 0;
-    if (status === 410) {
-      return (
-        <div className="module-note" role="status" data-testid="document-state-410">
-          <p className="reading">{label}: this read answered HTTP 410 for the saved body, with its own sentence — {read.error.message}</p>
-          <p className="module-note">
-            That is the edition's stated state, not a crash: the body was pruned while the identity, pages and passages stay indexed.
-          </p>
-        </div>
-      );
-    }
-    return <Failure error={read.error} what="document route" onRetry={() => read.refetch()} />;
-  }
-  return (
-    <p className="reading" role="status" data-testid="document-state-held">
-      {label}: this read answered with the saved body, so the file is still held and can be read at{' '}
-      <a href={'/api/documents/' + sha}>/api/documents/{sha.slice(0, 12)}…</a>.
-    </p>
-  );
 }
 
 export function Surface(): JSX.Element {
@@ -157,9 +127,12 @@ export function Surface(): JSX.Element {
           ])}
         />
         {selected ? (
-          <DocumentBodyState sha={selected.sha} label={selected.label} />
+          /* The reader asked for this body, so it opens in place: the viewer answers 200, 410 (the edition's
+             stated state) and a failed read as three different states, and it is the same component on every
+             route that offers a saved body. */
+          <DocumentViewer sha={selected.sha} title={selected.label} onClose={() => setSelected(null)} />
         ) : (
-          <p className="module-note">No document route has been read yet, so no saved-body state is stated here.</p>
+          <p className="module-note">No document has been opened yet. A saved body opens in place here; a body the index reports as pruned states what survives.</p>
         )}
       </section>
 
