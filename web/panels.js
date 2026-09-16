@@ -1848,6 +1848,84 @@
         });
     });
   };
+  WG.panels.verification = async function (host, WGref) {
+    const card = WG.block('Forecast verification',
+      'Archived model runs at fixed lead-time offsets, matched to ERA5 reanalysis. A measurement against reanalysis, not an observation-based skill score, and no model is ranked against another.');
+    const controls = el('div', undefined, 'controls');
+    const modelSelect = el('select'); modelSelect.setAttribute('aria-label', 'Model to verify');
+    [['gfs_seamless', 'GFS seamless'], ['ecmwf_ifs025', 'ECMWF IFS 0.25\u00b0']].forEach(pair => { const option = el('option', pair[1]); option.value = pair[0]; modelSelect.append(option); });
+    const variableSelect = el('select'); variableSelect.setAttribute('aria-label', 'Variable to verify');
+    [['temperature_2m', 'Temperature (2 m)'], ['precipitation', 'Precipitation']].forEach(pair => { const option = el('option', pair[1]); option.value = pair[0]; variableSelect.append(option); });
+    const windowSelect = el('select'); windowSelect.setAttribute('aria-label', 'Verification window');
+    [[7, 'Last 7 days'], [14, 'Last 14 days'], [30, 'Last 30 days']].forEach(pair => { const option = el('option', pair[1]); option.value = String(pair[0]); if (pair[0] === 14) option.selected = true; windowSelect.append(option); });
+    modelSelect.value = 'gfs_seamless';
+    variableSelect.value = 'temperature_2m';
+    windowSelect.value = '14';
+    const refresh = el('button', 'Refresh from the sources', 'ghost'); refresh.type = 'button';
+    controls.append(modelSelect, variableSelect, windowSelect, refresh);
+    card.append(controls);
+    const host2 = el('div'); card.append(host2); host.append(card);
+    let view = null;
+    function range(days) {
+      const iso = value => value.toISOString().slice(0, 10);
+      const end = new Date(Date.now() - 6 * 86400000);
+      return { start: iso(new Date(end.getTime() - (days - 1) * 86400000)), end: iso(end) };
+    }
+    function paint() {
+      WG.clear(host2);
+      const variable = variableSelect.value;
+      const rows = (view.data.variables && view.data.variables[variable]) || [];
+      if (!rows.length) {
+        host2.append(WG.stateBlock('plain', 'No lead time was returned for this model and variable.',
+          'That is a missing result, not a perfect forecast.'));
+        return;
+      }
+      const unit = (view.data.units || {})[variable] || '';
+      const points = rows.map(row => ({ x: row.lead_days, label: 'Day ' + row.lead_days,
+                                        value: row.status === 'measured' ? row.mae : null, evidence_id: 'lead ' + row.lead_days }));
+      host2.append(historicalChart({ title: 'Mean absolute error by lead time \u00b7 ' + variable, unit: unit,
+                                     points: points, axis_label: 'Lead time (days)' }));
+      const table = rows.map(row => ['Day ' + row.lead_days, String(row.n),
+        row.status === 'measured' ? row.bias : 'unmeasured', row.status === 'measured' ? row.mae : '\u2014',
+        row.status === 'measured' ? row.rmse : '\u2014',
+        row.status === 'measured' ? (row.correlation === null ? 'undefined' : row.correlation) : '\u2014']);
+      host2.append(WG.table(['Lead', 'Matched hours', 'Bias', 'MAE', 'RMSE', 'Correlation'], table));
+      host2.append(el('p', 'Reference: ERA5 hourly reanalysis, not an observation. Model: ' +
+        (view.data.forecast.model || 'not stated') + ' \u00b7 window ' + view.data.window.start + ' to ' +
+        view.data.window.end + ' UTC \u00b7 grid ' + JSON.stringify(view.data.forecast.grid) + '.', 'block-note'));
+      host2.append(WG.disclosure('What these numbers are and are not', body => {
+        const list = el('ul', undefined, 'notes');
+        ['Bias is the mean of forecast minus reference; MAE the mean absolute error; RMSE the root mean squared error; correlation is Pearson over the matched hours.',
+         'The reference is a modelled reanalysis, so this is not an observation-based verification.',
+         'These figures describe this model, variable and window. They are not operational skill, a confidence or a risk, and no model is ranked against another.',
+         'A lead with fewer than 24 matched hours is reported as unmeasured, not given a number.'].forEach(note => list.append(el('li', note)));
+        body.append(list);
+      }));
+      host2.append(WG.limitationList(view));
+      host2.append(WG.sourceDisclosure(view));
+    }
+    async function load(force) {
+      WG.clear(host2);
+      host2.append(WG.loading('Matching archived runs to reanalysis\u2026'));
+      try {
+        const window = range(Number(windowSelect.value));
+        view = await WGref.api('/api/verification', placeQuery(WGref, {
+          model: modelSelect.value, variable: variableSelect.value, leads: '1,2,3,4,5,6,7',
+          start: window.start, end: window.end, refresh: force ? '1' : '' }));
+        WGref.state.freshness = WG.freshness(view);
+        paint();
+      } catch (error) {
+        WG.clear(host2);
+        host2.append(WG.stateBlock('error', 'The verification could not be read.', String(error.message || error)));
+      }
+    }
+    modelSelect.addEventListener('change', () => load(false));
+    variableSelect.addEventListener('change', () => load(false));
+    windowSelect.addEventListener('change', () => load(false));
+    refresh.addEventListener('click', () => load(true));
+    await load(false);
+  };
+
   /* Exposed for the surfaces that offer them: the warnings panel, the chat actions and the briefcase. */
   WG.briefDrawers = { alert: WG.alertBriefDrawer, advisory: WG.advisoryBriefDrawer, now: WG.nowDrawer, briefing: WG.writeBriefing, workingPlace: workingPlace };
   WG.panels.assistant = async function () { /* the conversation is owned by app.js */ };

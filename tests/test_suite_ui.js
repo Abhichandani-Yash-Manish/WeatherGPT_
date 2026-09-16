@@ -148,6 +148,18 @@ const PAYLOADS = {
       member_total: { temperature_2m: 30 }, model: 'gfs025', days: 1, grid: { latitude: 23.0, longitude: 72.6 },
       requested: { latitude: 23.03, longitude: 72.59 } },
     { not_established: ['Spread is not a probability, a confidence, a risk or a skill measure.'] }),
+  '/api/verification': envelope('verification.skill', 'ok',
+    { variables: { temperature_2m: [
+        { lead_days: 1, n: 336, status: 'measured', bias: '1.596', mae: '1.707', rmse: '2.055', correlation: '0.923' },
+        { lead_days: 3, n: 20, status: 'unmeasured', reason: 'fewer than 24 matched hours' }] },
+      units: { temperature_2m: '\u00b0C' },
+      window: { start: '2026-08-28', end: '2026-09-10' },
+      forecast: { model: 'gfs_seamless', grid: { latitude: 23.0, longitude: 72.5 }, source_id: 'S70' },
+      reference: { source_id: 'S22' } },
+    { sources: [{ source_id: 'S70', product: 'Archived model runs at fixed lead-time offsets' },
+                { source_id: 'S22', product: 'ERA5 hourly reanalysis, used as the reference' }],
+      limitations: ['The reference is ERA5 reanalysis, a modelled analysis, not a station observation.'],
+      not_established: ['It is not forecast skill.'] }),
   '/api/corpus': envelope('corpus.documents', 'ok',
     { documents: [
         { sha256: 'a'.repeat(64), sha_prefix: 'a'.repeat(12), family: 'national_bulletin',
@@ -225,7 +237,7 @@ function settle(ms) { return new Promise(resolve => setTimeout(resolve, ms === u
 async function run() {
   const h = harness();
   const WG = h.api();
-  const expected = ['overview', 'warnings', 'map', 'observations', 'forecast', 'changes', 'climate', 'advisories', 'air-quality', 'aviation', 'ensemble', 'compare', 'marine', 'documents', 'settings', 'assistant'];
+  const expected = ['overview', 'warnings', 'map', 'observations', 'forecast', 'changes', 'climate', 'advisories', 'air-quality', 'aviation', 'ensemble', 'verification', 'compare', 'marine', 'documents', 'settings', 'assistant'];
   expected.forEach(name => assert.equal(typeof WG.panels[name], 'function', name + ' panel is registered'));
   assert.equal(typeof WG.map.render, 'function', 'the map renderer is registered');
   console.log('PASS: every surface has a renderer, including the map (component only)');
@@ -333,6 +345,14 @@ async function run() {
   assert(withClass(ensemble, 'viz-median').length >= 1, 'the plume draws the median as its own line');
   assert(withClass(ensemble, 'viz-hit').length >= 2, 'every drawn hour is focusable for its exact values');
   console.log('PASS: the ensemble surface draws member statistics without scoring them');
+
+  const verification = await render('verification', place);
+  assert(withTag(verification, 'svg').length >= 1, 'the verification surface draws the error by lead time');
+  assert(walk(verification).some(node => textOf(node) === '1.707'), 'the MAE is shown as the exact source value');
+  assert(walk(verification).some(node => /unmeasured/.test(textOf(node))), 'a lead below the sample floor is unmeasured, not scored');
+  assert(/not operational skill/i.test(textOf(verification)) && /no model is ranked/i.test(textOf(verification)),
+    'the verification surface refuses the skill and ranking readings');
+  console.log('PASS: the verification surface draws errors by lead time and refuses the skill reading');
 
   const documents = await render('documents');
   assert(/2 document\(s\) \u00b7 79 passage\(s\)/.test(textOf(documents)), 'the corpus summary counts documents and passages');
