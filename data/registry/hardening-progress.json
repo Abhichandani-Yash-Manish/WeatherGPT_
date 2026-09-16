@@ -1,7 +1,7 @@
 {
  "schema_version": "hardening-progress-v1",
  "review": "research/reviews/national-readiness-20260912/review.md",
- "updated_at_utc": "2026-09-16T21:30:00+00:00",
+ "updated_at_utc": "2026-09-16T22:15:00+00:00",
  "operational_ready": false,
  "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
  "findings": [
@@ -2644,8 +2644,39 @@
   ],
   "open": [
    "the preview states the reading, not held values: no read model exposes a held value with the provenance and validity that printing one would require",
-
    "the register switch changes what is shown, not the reading order inside a card; re-ordering facts away from their labels was refused deliberately (see docs/82)"
+  ],
+  "hosting_performed": false,
+  "same_host_only": true
+ },
+ "feature4_dissemination_backbone_batch": {
+  "report": "docs/85-feature4-dissemination-backbone.md",
+  "evidence_directory": "research/reviews/feature4-backbone-20260916",
+  "merged_from": "PR #9 on feature/feature4-alert-dissemination (7 commits), merged without conflict; the PR doc was renumbered from 84 to 85 because docs/84 already holds the PS progress assessment",
+  "scope": "watches become subscriptions with a canonical warning state and a change detector; the outbox becomes claim/lease with a retry taxonomy; a supervised foreground cycle records a heartbeat and answers GET /api/watch-health; route budgets, a CAP parser guard, the CAP geographic matcher and a reviewed district-alias table",
+  "delivered": [
+   "canon-v1 canonical warning state with the legacy fingerprint input reproduced byte-for-byte, and detect() with named change kinds (created, updated, cancelled, expired, no_change and the rest)",
+   "idempotent watch creation: the same place, hazard and window returns the existing watch (verified live: same id, one watch total)",
+   "claim/lease outbox with duplicate-safe enqueue, stale-lease recovery, a retry taxonomy and error_class on every row and summary",
+   "a supervised foreground cycle (scripts/watch_daemon.py) that survives one bad cycle, records a heartbeat tick, and is read back by GET /api/watch-health with the modes foreground-supervised, manual-recent and manual-only",
+   "per-route budgets on six watch/push/ack mutations, answered as HTTP 429 with a retry hint (verified live: the 61st call returned 429)",
+   "CAP parser DOCTYPE quarantine, push urgency, a dead-letter block in the inbox panel, the CAP geographic matcher and a reviewed district-alias table",
+   "integration into the product surface: the Plans & inbox panel now renders the supervision mode, the last-check age and the outbox counts (including claimed and dead) from /api/watch-health, so a queue cannot be read as a delivery service"
+  ],
+  "tests_added": [
+   "tests/test_warning_state.py, tests/test_outbox_claim.py, tests/test_watch_health.py, tests/test_ratelimit.py, tests/test_cap_injection.py, tests/test_cap_geo.py (64 new checks, all passing on the merge)",
+   "tests/test_notify_ui.js: the inbox panel states the watch supervision mode and the outbox counts (11 printed checks)"
+  ],
+  "live_check": "research/reviews/feature4-backbone-20260916/live-backbone.json",
+  "verified_on_merge": [
+   "full suite on the merged tree: 1287 passed, 0 failed (the PR note about pre-existing environment failures did not reproduce here)",
+   "live: watch-health before any run reports manual-only with no heartbeat; a created watch is idempotent; a manual cycle records a heartbeat and moves the mode to manual-recent; the outbox answers outbox-v1; the route budget answers 429; the check watch is retired again"
+  ],
+  "open": [
+   "no live changed-edition to real-device push-to-ack journey, and no sustained live-IMD run; both are explicitly not claimed",
+   "origin, geographic and completeness verifiers stay forced false: the matcher is built, promotion waits on live proof",
+   "foreground supervision only: unattended operation needs an OS supervisor, and the heartbeat is what would prove it alive",
+   "flood, cyclone, heat, cold and sea-area hazards stay held as not connected; no out-of-band channel; escalation stays inbox-local"
   ],
   "hosting_performed": false,
   "same_host_only": true

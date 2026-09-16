@@ -1,0 +1,1 @@
+{"schema_version": "watch-heartbeat-v1", "tick_at_utc": "2026-09-16T18:47:15.342355+00:00", "trigger": "manual-api", "stale_after_seconds": 3600, "checked": 1, "enqueued": 0, "dispatched": 0, "escalated": 0}

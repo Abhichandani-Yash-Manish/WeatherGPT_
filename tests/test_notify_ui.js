@@ -34,6 +34,11 @@ const PAYLOADS = {
   '/api/watches/delete': { schema_version: 'watch-check-v1', id: 'w1', state: 'expired', cancelled_notifications: 1, watches: [] },
   '/api/watches/channels': { schema_version: 'watch-channels-v1', id: 'w1', channels: ['local_inbox', 'web_push'], consent_record: {}, detail: '' },
   '/api/watches/create': { schema_version: 'watch-create-v1', id: 'w2', state: 'registered_check_on_request', hazard: 'heavy_rain', connected: true, place: {}, delivery: '', detail: '' },
+  '/api/watch-health': { schema_version: 'watch-health-v1', mode: 'manual-only',
+                         note: 'No hosted daemon or OS scheduler is installed.',
+                         heartbeat: null, tick: { fresh: false, age_seconds: null, reason: 'no watch-check run has ever reported' },
+                         outbox: { counts: { created: 0, queued: 2, claimed: 1, sent: 4, failed: 1, dead: 1, acked: 1, gone: 0 } },
+                         watches: { total: 1, active: 1, expired: 0 }, plan_watcher: { running: false } },
   '/api/outbox': { schema_version: 'outbox-v1', delivery: 'local_inbox_and_opt_in_web_push', note: '', notifications: ROWS },
   '/api/outbox/o1/ack': { schema_version: 'outbox-ack-v1', id: 'o1', state: 'acked', response: 'safe', feedback_id: 'f1' },
   '/api/watches/dma': { schema_version: 'watch-dma-v2', note: 'Counts of local notifications and the responses owners sent back, broken down by official source.',
@@ -196,6 +201,16 @@ async function run() {
   await settle(60);
   assert.equal(h.document.getElementById('notify-panel').hidden, false, 'a watch deep link opens the panel');
   console.log('PASS: ?watch= opens the watch panel');
+
+  // The panel states the supervision truth beside the outbox, so a reader cannot read a queue as a service.
+  h = harness();
+  const healthBody = await openPanel(h);
+  const panelText = textOf(healthBody);
+  assert(/No supervisor loop is installed/i.test(panelText), 'the panel says no supervisor loop is installed');
+  assert(/Supervision manual-only/.test(panelText), 'the panel names the supervision mode it read');
+  assert(/last check never/.test(panelText), 'a pipeline that never ran says so instead of showing a fresh tick');
+  assert(/waiting 2, in flight 1, dead-lettered 1/.test(panelText), 'the outbox counts are the outbox own numbers');
+  console.log('PASS: the inbox panel states the watch supervision mode and the outbox counts');
 
   const untokened = h.calls.filter(call => call.headers['X-WeatherGPT-Token'] !== TOKEN);
   assert.equal(untokened.length, 0, 'every request carries the workspace token');

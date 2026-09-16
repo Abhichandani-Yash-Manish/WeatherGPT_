@@ -1,0 +1,122 @@
+{
+  "batch": "docs/85-feature4-dissemination-backbone.md",
+  "captured_at_utc": "2026-09-16T18:47:13Z",
+  "surface": "loopback workspace over a throwaway copy of the ingestion store",
+  "checks": [
+    {
+      "check": "watch_health_before_any_run",
+      "http": 200,
+      "seconds": 0.06,
+      "schema": "watch-health-v1",
+      "mode": "manual-only",
+      "heartbeat": null,
+      "tick": {
+        "fresh": false,
+        "age_seconds": null,
+        "reason": "no watch-check run has ever reported"
+      },
+      "outbox": {
+        "counts": {
+          "created": 0,
+          "queued": 0,
+          "claimed": 0,
+          "sent": 0,
+          "failed": 0,
+          "dead": 0,
+          "acked": 0,
+          "gone": 0
+        },
+        "undispatched_depth": 0,
+        "oldest_undispatched_created_at": null
+      },
+      "watches": {
+        "total": 0,
+        "active": 0,
+        "expired": 0
+      },
+      "plan_watcher": {
+        "running": false,
+        "interval_seconds": 1800,
+        "last_result": null
+      },
+      "note": "No hosted daemon or OS scheduler is installed: checks run while a supervisor loop or a manual trigger fires. A stale tick means nobody is checking watches, and queued warnings wait until the next run."
+    },
+    {
+      "check": "create_a_watch",
+      "http": 200,
+      "seconds": 0.0,
+      "schema": "watch-create-v1",
+      "watch_id": "42b72b73-19f3-4590-8809-528fa4955183",
+      "hazard": "heavy_rain",
+      "state": "registered_check_on_request",
+      "connected": true,
+      "detail": "Watch registered locally for explicit coordinates; it is checked only when asked."
+    },
+    {
+      "check": "the_same_watch_is_idempotent",
+      "http": 200,
+      "same_id": true,
+      "watches_total": 1
+    },
+    {
+      "check": "a_foreground_check_cycle",
+      "http": 200,
+      "seconds": 1.37,
+      "results": 1,
+      "dispatched": 0,
+      "escalated": 0,
+      "note": "Foreground check only; no daemon is installed. Web push delivers to subscribed browsers only."
+    },
+    {
+      "check": "watch_health_after_a_run",
+      "http": 200,
+      "mode": "manual-recent",
+      "tick": {
+        "fresh": true,
+        "age_seconds": 0.001128,
+        "reason": "a check run reported within its freshness window"
+      },
+      "heartbeat_trigger": "manual-api",
+      "outbox": {
+        "counts": {
+          "created": 0,
+          "queued": 0,
+          "claimed": 0,
+          "sent": 0,
+          "failed": 0,
+          "dead": 0,
+          "acked": 0,
+          "gone": 0
+        },
+        "undispatched_depth": 0,
+        "oldest_undispatched_created_at": null
+      }
+    },
+    {
+      "check": "outbox_shape_after_the_run",
+      "http": 200,
+      "schema": "outbox-v1",
+      "rows": 0,
+      "states": [],
+      "has_error_class": null
+    },
+    {
+      "check": "the_route_budget_answers_429",
+      "calls": 62,
+      "first": 400,
+      "last": 429,
+      "count_429": 2,
+      "detail": "Too many push/unsubscribe requests; retry in 59 seconds"
+    },
+    {
+      "check": "the_check_watch_is_removed_again",
+      "http": 200,
+      "state": "expired",
+      "note": null
+    }
+  ],
+  "limits": [
+    "One machine, one store copy, one run; the reader own watches and outbox were not touched.",
+    "A synthetic cycle is not a live IMD edition run and not a device delivery."
+  ]
+}

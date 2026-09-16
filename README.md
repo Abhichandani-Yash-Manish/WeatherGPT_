@@ -33,7 +33,7 @@ All eight pictures (including `08-today.png`) are the real workspace on loopback
 | | |
 |---|---|
 | **Delivered in scope** | Point forecasts and cross-source comparison, published historical and climate records, official district-warning applicability resolved against IMD's own geometry, plan monitoring with a local inbox, published-document retrieval with page/issue/currency attached, marine and river point products, airport reports, air quality, ensemble spread, archived-run forecast verification against reanalysis, farming advisories, a desktop workspace with sixteen guided tools, and a model-planned conversation that decides when to retrieve, answers a greeting without inventing anything, writes the sentence around tool-owned facts, and carries its artefacts. |
-| **Partial** | Warning delivery (outbox, consented Web Push and acknowledgements exist; no live device journey has been demonstrated), language output and voice (measured per direction, not accepted by native speakers), retrieval breadth (whole-document and contradiction handling remain open), operations (foreground watcher, no sustained service). |
+| **Partial** | Warning delivery (canonical warning state with a named change detector, a claim/lease outbox with a retry taxonomy, consented Web Push, acknowledgements and a supervision heartbeat now exist; **no live device journey and no sustained live-IMD run have been demonstrated**), language output and voice (measured per direction, not accepted by native speakers), retrieval breadth (whole-document and contradiction handling remain open), operations (foreground watcher only, no hosted scheduler). |
 | **Not connected** | Radar/satellite **imagery**, official sea-area and coastal bulletins as live products, observed water level or gauge readings, danger levels, flood extent, tide, current, sea-surface temperature, ground air-quality monitors, SMS/IVR/WhatsApp delivery, road or route clearance, crop diagnosis or pesticide dosage, and any confidence, risk or skill score. |
 | **Not accepted** | Nationwide corpus acceptance, mobile and rural journeys, noisy-input and native-speaker review, live changed-edition to device notification, fresh-machine and cross-platform installation, sustained load. Hosting is on hold. |
 
@@ -140,6 +140,22 @@ supplies a measurement, and never decides an entity, window, unit or source. Eve
 provider, the model and any failover. Routing a question to a hosted model is a stated trade — the question
 text leaves this machine, and the paid endpoint is billed to the key the reader configured.
 
+## Watch delivery, and the supervision truth
+
+Watches are checked in the foreground: by the API when you ask, by scripts/check_watches.py, or by the
+supervised loop below. **No hosted daemon or OS scheduler is installed**, and the product says so rather than
+implying a service:
+
+    python3 scripts/watch_daemon.py --interval 900   # check, dispatch, escalate, heartbeat
+    curl -s -H "X-WeatherGPT-Token: $TOKEN" http://127.0.0.1:8765/api/watch-health
+
+GET /api/watch-health reports the supervision mode (foreground-supervised when a fresh daemon heartbeat is
+present, manual-recent after a manual run, otherwise manual-only), the heartbeat and its freshness, the
+outbox counts by state (including claimed and dead), the watch counts and the plan watcher. The **Plans &
+inbox** panel renders the same truth, including dead-letter rows with their last error, so a queue is never
+read as a delivery service. For unattended operation the loop belongs under an OS supervisor; a stale
+heartbeat is what would prove it stopped.
+
 ## What it answers today
 
 Each answer leads with the value, its unit and its window, then shows a **validity ruler** over the
@@ -232,8 +248,8 @@ The interface states these limits instead of filling them:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 1223 Python tests
-node tests/test_charts.js                            #  2 of 109 printed component checks
+python3 -m pytest tests/ -q                          # 1287 Python tests
+node tests/test_charts.js                            #  2 of 110 printed component checks
 node tests/test_viz.js                               #  9; the chart engine: plume, meteogram, gaps and locators
 node tests/test_views.js                             # 25
 node tests/test_bulletin_ui.js                       #  6
@@ -242,7 +258,7 @@ node tests/test_suite_ui.js                          # 32
 node tests/test_voice_ui.js                          #  3
 node tests/test_briefcase_ui.js                      #  1
 node tests/test_workspace_ui.js                      # workspace behaviour and recovery
-node tests/test_notify_ui.js                         # watch delivery controls
+node tests/test_notify_ui.js                         # 11; watch delivery controls, the outbox and watch supervision
 python3 scripts/doctor.py                            # environment, providers and corpus presence
 python3 scripts/models.py --check                    # the rules-first floor and the configured providers
 python3 scripts/models.py --probe-free               # the curated free ranking measured against the live catalogue
@@ -317,6 +333,8 @@ recorded journeys, fast and slow.
 Each links to the batch that recorded it. Older entries are **historical evidence, not completion
 claims**, and the test counts in them are the counts of their own checkpoint.
 
+- [The React frontend overhaul: plan](docs/86-react-frontend-overhaul-plan.md) — a plan, not a build: Vite + React + TypeScript, the same CSP, the 110 checks ported one-for-one, six independently shippable stages (R0 groundwork, R1 shell, R2 the transcript, R3 the guided surfaces, R4 charts/map/print, R5 accessibility/i18n/voice, R6 decommission) and the exit check each one must meet.
+- [The Feature 4 dissemination backbone](docs/85-feature4-dissemination-backbone.md) — canon-v1 warning state and a named change detector, a claim/lease outbox with a retry taxonomy, a supervised cycle with a heartbeat and GET /api/watch-health, route budgets, the CAP geographic matcher and district aliases. Live-device push and a sustained live-IMD run stay explicitly not claimed.
 - [PS progress and the picture set](docs/84-ps-progress-and-pictures.md) — the current requirement-by-requirement reading, and eight screenshots with their provenance.
 - [The intelligent-chat overhaul](docs/83-intelligent-chat-overhaul.md) — the model plans every turn, a conversation is a real answer, a cheap first look, the written answer, language breadth, provider visibility, and the continuity journeys.
 - [The chatbot experience](docs/82-chatbot-experience.md) — the first reading, the conversation's own receipt, next-question chips and the reader-chosen register.

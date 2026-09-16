@@ -761,6 +761,25 @@ const WG = window.WG;
         });
         body.append(retireList);
         try {
+          /* Supervision truth: a fresh heartbeat means checks run on schedule, and anything else says
+             so rather than implying a service. The counts are the outbox's own, not a progress figure. */
+          try {
+            const health = await api('/api/watch-health');
+            const tick = health.tick || {};
+            const counts = (health.outbox || {}).counts || {};
+            const mode = health.mode === 'foreground-supervised'
+              ? 'A supervisor loop is running watch checks on its interval.'
+              : health.mode === 'manual-recent'
+                ? 'A check ran recently, but no supervisor loop is installed: nothing is checking on its own.'
+                : 'No supervisor loop is installed and no check has reported: watches are checked only when asked.';
+            body.append(stateBlock('plain', mode,
+              'Supervision ' + String(health.mode || 'unknown')
+              + ' · last check ' + (tick.age_seconds === null || tick.age_seconds === undefined ? 'never' : Math.round(tick.age_seconds) + ' s ago')
+              + ' · waiting ' + String(counts.queued || 0) + ', in flight ' + String(counts.claimed || 0)
+              + ', dead-lettered ' + String(counts.dead || 0) + '.'));
+          } catch (healthError) {
+            body.append(stateBlock('down', 'The watch-health route did not answer.', healthError.message));
+          }
           const outbox = await api('/api/outbox');
           const rows = outbox.notifications || [];
           const queued = rows.filter(row => row.state === 'queued' || row.state === 'created' || row.state === 'claimed');

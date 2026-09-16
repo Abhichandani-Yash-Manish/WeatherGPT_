@@ -1,0 +1,24 @@
+Merge PR #9 (the Feature 4 dissemination backbone), integrate it into the product, and plan the React overhaul
+
+Reviewed the open pull request against the standing rules before merging: additive schema changes only, the
+verifiers it could not prove stay forced false, and its own record names what it does not claim. Merged clean
+(no conflicts) and renumbered its batch document from 84 to 85, because docs/84 is the PS progress assessment
+that landed first; the move is noted in the file.
+
+Integration, so nothing in the PR is reachable only from its tests:
+- the Plans & inbox panel now reads GET /api/watch-health and states the supervision mode, the last-check age and
+  the outbox counts (waiting, in flight, dead-lettered) beside the queue, so a queue cannot be read as a service;
+- the README documents the supervised loop, the health route and the honest supervision vocabulary;
+- the registry records the batch with its evidence, the checks it added and its open items.
+
+Verified on the merge: 1287 Python tests pass with zero failures (the PR note about pre-existing environment
+failures did not reproduce on this tree), every component suite and the frontend audit pass, and a live run over
+a throwaway store copy proves the backbone: watch-health reports manual-only with no heartbeat before any run, a
+created watch is idempotent, a manual cycle records a heartbeat and moves the mode to manual-recent, the outbox
+answers outbox-v1, the route budget answers HTTP 429 on the 61st call, and the check watch is retired again
+(research/reviews/feature4-backbone-20260916/live-backbone.json).
+
+docs/86-react-frontend-overhaul-plan.md plans the frontend overhaul as six independently shippable stages (R0
+groundwork, R1 shell, R2 the transcript, R3 the guided surfaces, R4 charts/map/print, R5 accessibility/i18n/voice,
+R6 decommission), with the same CSP, the 110 checks ported one-for-one to Vitest/jsdom, browser acceptance kept,
+and the rule that a stage which cannot meet its exit check does not land. It promises no new capability.
