@@ -1,0 +1,558 @@
+# assistant-ui
+
+> React components for AI chat interfaces
+
+## LLM Documentation Files
+
+- [Full documentation](https://www.assistant-ui.com/llms-full.txt): every documentation page rendered into one large text file.
+- Per-page markdown: append `.md` to any docs page URL. `.mdx` is kept as a backwards-compatible alias for agents that request source-style URLs. For example, `/docs/installation.md` and `/docs/installation.mdx` both return markdown for `/docs/installation`.
+- Markdown by Accept header: requesting a docs, examples, design or elements page with `Accept: text/markdown` also returns that page's markdown.
+- Use the index below to choose a specific page. Remove the `.md` or `.mdx` suffix to open the human-readable docs page.
+
+## Agent Discovery
+
+- [Agent instructions](https://www.assistant-ui.com/AGENTS.md)
+- [Site skill](https://www.assistant-ui.com/skill.md)
+- [API catalog](https://www.assistant-ui.com/.well-known/api-catalog)
+- [Agent Skills index](https://www.assistant-ui.com/.well-known/agent-skills/index.json)
+- Agent skills: task-shaped SKILL.md guides listed in the Agent Skills index, one per area (assistant-ui, cloud, copilots, elements, generative-ui, ink, markdown, observability, primitives, react-mcp, react-native, runtime, setup, streaming, thread-list, tools, update).
+- [Markdown sitemap](https://www.assistant-ui.com/sitemap.md)
+- [Documentation MCP endpoint](https://www.assistant-ui.com/mcp)
+
+## Table of Contents
+
+### architecture
+
+- [Architecture](https://www.assistant-ui.com/docs/architecture.md): How components, runtimes, and cloud services fit together.
+
+### root
+
+- [Overview](https://www.assistant-ui.com/docs.md): Components, runtimes, and primitives for building AI chat interfaces in React, React Native, and the terminal.
+
+### llm
+
+- [Agent Skills](https://www.assistant-ui.com/docs/llm.md): Use AI tools to build with assistant-ui faster. AI-accessible documentation, Claude Code skills, and MCP integration.
+
+### base-ui
+
+- [Radix UI and Base UI](https://www.assistant-ui.com/docs/base-ui.md): How the assistant-ui component registry serves Radix UI and Base UI flavored components for every shadcn style.
+
+### cli
+
+- [CLI](https://www.assistant-ui.com/docs/cli.md): Scaffold projects, add components, and manage updates from the command line.
+
+### devtools
+
+- [DevTools](https://www.assistant-ui.com/docs/devtools.md): Inspect runtime state, context, and events in the browser.
+
+### installation
+
+- [Installation](https://www.assistant-ui.com/docs/installation.md): Get assistant-ui running in 5 minutes with npm and your first chat component.
+
+### rtl
+
+- [RTL Support](https://www.assistant-ui.com/docs/rtl.md): Use assistant-ui with right-to-left languages like Arabic, Hebrew, and Persian.
+
+### cloud
+
+- [Authentication](https://www.assistant-ui.com/docs/cloud/authorization.md): How the browser and your server prove who they are to a project, and the access rules a project enforces.
+- [Introduction](https://www.assistant-ui.com/docs/cloud.md): Assistant Cloud persists conversations, reports every run, and gives you a dashboard over threads, runs, models, users a
+- [Plans and pricing](https://www.assistant-ui.com/docs/cloud/pricing.md): What each plan includes, how active users are counted, and what happens at the cap.
+- [Quickstart](https://www.assistant-ui.com/docs/cloud/quickstart.md): From an empty project to a persisted, reported conversation in the dashboard.
+- [Alerts](https://www.assistant-ui.com/docs/cloud/alerts.md): Watch one metric of a project once an hour and get a signed webhook when it crosses a threshold.
+- [Intelligence](https://www.assistant-ui.com/docs/cloud/intelligence.md): Topics, tasks, unanswered questions, sentiment and resolution, judged over your conversations by a model of your choice.
+- [Overview](https://www.assistant-ui.com/docs/cloud/overview.md): The pages of the dashboard, what each one answers, and the conventions they share.
+- [Settings](https://www.assistant-ui.com/docs/cloud/settings.md): Every project setting, what it changes, and its limits.
+- [REST API](https://www.assistant-ui.com/docs/cloud/api.md): The project API the SDK talks to, endpoint by endpoint, with the headers, request shapes and responses.
+- [Limits](https://www.assistant-ui.com/docs/cloud/limits.md): Every limit a project enforces, in one place.
+- [AI SDK](https://www.assistant-ui.com/docs/cloud/ai-sdk-assistant-ui.md): Connect the AI SDK runtime to the cloud for persisted threads, titles, run reports, engagement, feedback and attachments
+- [Migrate from Cloud AI SDK](https://www.assistant-ui.com/docs/cloud/ai-sdk.md): @assistant-ui/cloud-ai-sdk, the Cloud AI SDK, is deprecated. The last published version keeps working; new work moves to
+- [LangGraph, LangChain and ADK](https://www.assistant-ui.com/docs/cloud/langgraph.md): Add the cloud thread list, automatic titles and message feedback to runtimes whose backend keeps the transcript.
+- [Local runtime](https://www.assistant-ui.com/docs/cloud/local-runtime.md): Give any backend cloud threads, persistence, titles and run reports through useLocalRuntime, or compose the cloud thread
+- [Servers and bots](https://www.assistant-ui.com/docs/cloud/servers.md): Use the client from a server with an API key, so an app without a browser is persisted and measured like any other.
+- [Engagement and feedback](https://www.assistant-ui.com/docs/cloud/engagement.md): What users do around the answers, recorded without message text, plus the thumbs and scores stored next to a conversatio
+- [Run reports](https://www.assistant-ui.com/docs/cloud/telemetry.md): What the SDK reports about every assistant response, which fields each integration fills, and how to enrich or silence t
+- [Traces](https://www.assistant-ui.com/docs/cloud/traces.md): Send your server's model and tool spans to the project and merge them with the browser's run report into one run.
+
+### copilots
+
+- [Assistant Frame API](https://www.assistant-ui.com/docs/copilots/assistant-frame.md): Share model context across iframe boundaries
+- [makeAssistantVisible](https://www.assistant-ui.com/docs/copilots/make-assistant-visible.md): Make React components visible and interactive to assistants via higher-order component wrapping.
+- [Model Context](https://www.assistant-ui.com/docs/copilots/model-context.md): Configure assistant behavior through system instructions, tools, and context providers.
+- [Intelligent Components](https://www.assistant-ui.com/docs/copilots/motivation.md): Add intelligence to React components through readable interfaces and assistant tools.
+- [useAssistantInstructions](https://www.assistant-ui.com/docs/copilots/use-assistant-instructions.md): React hook for setting system instructions to guide assistant behavior.
+
+### ink
+
+- [Adapters](https://www.assistant-ui.com/docs/ink/adapters.md): Attachment, title generation, and storage adapters for React Ink.
+- [Custom Backend](https://www.assistant-ui.com/docs/ink/custom-backend.md): Connect your terminal app to your own backend API.
+- [Hooks](https://www.assistant-ui.com/docs/ink/hooks.md): Reactive hooks for accessing runtime state in React Ink.
+- [Installation](https://www.assistant-ui.com/docs/ink.md): Get assistant-ui running in a terminal app with your first chat interface.
+- [Migration from Web](https://www.assistant-ui.com/docs/ink/migration.md): Migrate an existing @assistant-ui/react app to the terminal with React Ink.
+- [Primitives](https://www.assistant-ui.com/docs/ink/primitives.md): Composable terminal components for building chat UIs with Ink.
+
+### guides
+
+- [File Attachments](https://www.assistant-ui.com/docs/guides/attachments.md): Let users attach images, PDFs, and other files to AI chat messages in React. Drag-drop, paste, and vision-model support,
+- [Message Branching](https://www.assistant-ui.com/docs/guides/branching.md): Edit messages or regenerate AI responses, then switch between alternative replies. Branching navigation built into assis
+- [Chain of Thought UI](https://www.assistant-ui.com/docs/guides/chain-of-thought.md): Show AI reasoning steps and tool calls in a collapsible thinking accordion. Build chain-of-thought visualizations in Rea
+- [ChatGPT Subscription](https://www.assistant-ui.com/docs/guides/chatgpt-subscription.md): Run your assistant-ui app on your ChatGPT Plus or Pro subscription via Codex OAuth. Local development without an OpenAI 
+- [Assistant Context API](https://www.assistant-ui.com/docs/guides/context-api.md): Read and update assistant state to build custom React components in your chat UI — composable context API for thread, me
+- [Speech-to-Text Dictation](https://www.assistant-ui.com/docs/guides/dictation.md): Add voice dictation to your AI chat composer with the Web Speech API or a custom adapter. Speech-to-text in React, integ
+- [Message Editing](https://www.assistant-ui.com/docs/guides/editing.md): Let users edit their messages and regenerate AI responses with custom editor interfaces. Edit-and-resubmit patterns for 
+- [Electron](https://www.assistant-ui.com/docs/guides/electron.md): Run assistant-ui in an Electron renderer with a hosted backend or a secure, streaming preload and IPC bridge.
+- [Headless Composer Input](https://www.assistant-ui.com/docs/guides/headless-composer-input.md): Build a custom composer input while keeping assistant-ui composer state and send gating.
+- [Image Generation](https://www.assistant-ui.com/docs/guides/image-generation.md): Generate images in your backend and render them inline in an assistant-ui thread.
+- [Guides](https://www.assistant-ui.com/docs/guides.md): Practical recipes for building AI chat features in React with assistant-ui — attachments, branching, multi-agent, voice,
+- [Input History](https://www.assistant-ui.com/docs/guides/input-history.md): Terminal-style ArrowUp/ArrowDown recall of previously sent messages in the assistant-ui React composer.
+- [LaTeX in Chat Messages](https://www.assistant-ui.com/docs/guides/latex.md): Render LaTeX math expressions in AI chat messages with KaTeX — drop-in equation support for React chat UIs built on assi
+- [Mentions in Chat](https://www.assistant-ui.com/docs/guides/mentions.md): Let users @-mention tools or custom items in the AI chat composer to guide the LLM. Mention picker built into assistant-
+- [Message Timing & Token Stats](https://www.assistant-ui.com/docs/guides/message-timing.md): Display stream metadata in AI chat — generation duration, tokens per second, and time to first token, rendered via assis
+- [Message Part Grouping](https://www.assistant-ui.com/docs/guides/part-grouping.md): Organize message parts into custom groups with flexible grouping functions.
+- [Quote Selected Text](https://www.assistant-ui.com/docs/guides/quoting.md): Let users select text from AI messages and quote it back into the composer. Full quoting flow with backend handling and 
+- [Resumable Stream Deployment](https://www.assistant-ui.com/docs/guides/resumable-stream-deployment.md): Production hardening for resumable streams. Authorization, serverless lifetimes, TTLs, key isolation, observability, res
+- [Custom Resumable Stream Stores](https://www.assistant-ui.com/docs/guides/resumable-stream-stores.md): Implement the ResumableStreamStore interface to back resumable streams with Postgres, Cloudflare Durable Objects, Upstas
+- [Resumable Streams](https://www.assistant-ui.com/docs/guides/resumable-streams.md): Persist an in-flight LLM response on the server so the client can reload, lose its connection, or open a new tab and pic
+- [Custom Scrollbar](https://www.assistant-ui.com/docs/guides/scrollbar.md): Replace the default scrollbar with a custom Radix UI scroll area.
+- [Slash Commands](https://www.assistant-ui.com/docs/guides/slash-commands.md): Trigger predefined actions in your AI chat by typing / — slash command palette with popover, search, and action handlers
+- [Text-to-Speech for Chat](https://www.assistant-ui.com/docs/guides/speech.md): Read AI chat messages aloud with the Web Speech API or a custom TTS adapter. Speech synthesis for React chat UIs, integr
+- [Reading State Outside the Thread](https://www.assistant-ui.com/docs/guides/state-outside-the-thread.md): Bind a header, a sidebar, a status tray, or code in another React root to thread state without lifting it into a second 
+- [Streamdown Markdown Renderer](https://www.assistant-ui.com/docs/guides/streamdown.md): Stream markdown into a React chat UI with syntax highlighting, math, and Mermaid diagrams. Powered by Vercel Streamdown,
+- [Suggested Prompts](https://www.assistant-ui.com/docs/guides/suggestions.md): Display suggested starter prompts in your AI chat to onboard users faster. Configurable suggestion components for React,
+- [Thread Virtualization](https://www.assistant-ui.com/docs/guides/virtualization.md): Render very long threads with @tanstack/react-virtual, with ThreadPrimitive.Unstable_MessageById and ThreadPrimitive.Mes
+- [Realtime Voice Chat](https://www.assistant-ui.com/docs/guides/voice.md): Build bidirectional voice conversations with AI in React. Realtime audio streaming, interruption handling, and visual st
+
+### integrations
+
+- [Integrations](https://www.assistant-ui.com/docs/integrations.md): Adapters for Vercel AI SDK, LangChain, LangGraph, Mastra, plus auth, persistence, observability, and tool services — dro
+- [Custom attachment uploads](https://www.assistant-ui.com/docs/integrations/attachments/custom-adapter.md): Upload chat attachments to object storage with a presigned-URL AttachmentAdapter.
+- [better-auth](https://www.assistant-ui.com/docs/integrations/auth/better-auth.md): TypeScript-first auth with database-owned sessions; gate the chat route and scope threads to the signed-in user.
+- [Clerk](https://www.assistant-ui.com/docs/integrations/auth/clerk.md): Gate the chat route and scope thread persistence to the signed-in user with Clerk.
+- [Auth.js (next-auth)](https://www.assistant-ui.com/docs/integrations/auth/next-auth.md): Gate the chat route and scope thread persistence to the signed-in user with Auth.js v5.
+- [Vercel AI SDK](https://www.assistant-ui.com/docs/integrations/frameworks/ai-sdk.md): Wire the Vercel AI SDK into a React chat UI with assistant-ui — useChat, streaming, tools, attachments, multi-step agent
+- [Cloudflare Agents](https://www.assistant-ui.com/docs/integrations/frameworks/cloudflare-agents.md): Wire Cloudflare's stateful agent framework into a React chat UI with assistant-ui via the standard AI SDK runtime. WebSo
+- [LLM Gateway Integrations](https://www.assistant-ui.com/docs/integrations/gateways.md): Route AI chat traffic through OpenAI-compatible LLM gateways (OpenRouter, LiteLLM, Portkey, etc.) for cost, fallback, an
+- [Assistant Cloud](https://www.assistant-ui.com/docs/integrations/observability/assistant-cloud.md): Correlate AI SDK OpenTelemetry spans with Assistant Cloud runs for one view of browser and server activity.
+- [Helicone](https://www.assistant-ui.com/docs/integrations/observability/helicone.md): Log and monitor LLM calls by routing them through the Helicone proxy.
+- [Langfuse](https://www.assistant-ui.com/docs/integrations/observability/langfuse.md): Trace AI SDK calls into Langfuse via OpenTelemetry for tracing, evals, and prompt management.
+- [LangSmith](https://www.assistant-ui.com/docs/integrations/observability/langsmith.md): Trace AI SDK calls into LangSmith with the wrapAISDK helper.
+- [Custom thread persistence](https://www.assistant-ui.com/docs/integrations/persistence/custom-adapter.md): Persist threads and messages to your own database with RemoteThreadListAdapter and ThreadHistoryAdapter.
+- [Full-stack integration](https://www.assistant-ui.com/docs/integrations/frameworks/mastra/full-stack.md): Run Mastra agents inside your Next.js API routes.
+- [Mastra Integration](https://www.assistant-ui.com/docs/integrations/frameworks/mastra/overview.md): Wire the Mastra TypeScript agent framework into a React chat UI with assistant-ui, with full streaming, tool calling, mu
+- [Separate server integration](https://www.assistant-ui.com/docs/integrations/frameworks/mastra/separate-server.md): Run Mastra as a standalone server with assistant-ui as a separate frontend.
+
+### migrations
+
+- [Deprecation Policy](https://www.assistant-ui.com/docs/migrations/deprecation-policy.md): Stability guarantees and deprecation timelines for assistant-ui features.
+- [Migration Guides](https://www.assistant-ui.com/docs/migrations.md): Upgrade assistant-ui versions and migrate deprecated APIs and integrations.
+- [Using old React versions](https://www.assistant-ui.com/docs/migrations/react-compatibility.md): Compatibility notes for React 18 and 19.
+- [Migrating to react-langgraph v0.7](https://www.assistant-ui.com/docs/migrations/react-langgraph-v0-7.md): Guide to upgrading to the simplified LangGraph integration API.
+- [Migrating Tools to Toolkits](https://www.assistant-ui.com/docs/migrations/toolkit-tools.md): Move makeAssistantTool, useAssistantTool, makeAssistantToolUI, and useAssistantToolUI registrations to the toolkit API.
+- [Migration to v0.11](https://www.assistant-ui.com/docs/migrations/v0-11.md): ContentPart renamed to MessagePart for better semantic clarity.
+- [Migration to v0.12](https://www.assistant-ui.com/docs/migrations/v0-12.md): Unified state API replaces individual context hooks.
+- [Migration to v0.14](https://www.assistant-ui.com/docs/migrations/v0-14.md): Drops APIs deprecated since v0.11/v0.12, and primitives migrate from components prop to children render functions.
+- [Migration to v0.15](https://www.assistant-ui.com/docs/migrations/v0-15.md): Drops the v0.12-era legacy runtime hooks, the deprecated tools map, and the "mcp-app" group key. Scope accessors become 
+
+### react-native
+
+- [Adapters](https://www.assistant-ui.com/docs/react-native/adapters.md): Persistence and title generation adapters for React Native.
+- [Attachments](https://www.assistant-ui.com/docs/react-native/attachments.md): Add image attachments to a React Native composer and send their content to your model.
+- [Custom Backend](https://www.assistant-ui.com/docs/react-native/custom-backend.md): Connect your React Native app to your own backend API.
+- [Elements](https://www.assistant-ui.com/docs/react-native/elements.md): The React Native elements, what each one installs, and what changes when the same design runs on a phone.
+- [Add to an Existing App](https://www.assistant-ui.com/docs/react-native/existing-app.md): Bring the React Native elements into an app that already has its own runtime, its own styles and its own navigation.
+- [Windowed History](https://www.assistant-ui.com/docs/react-native/history.md): Keep a long thread light by loading older messages above the window as the reader scrolls up.
+- [Hooks](https://www.assistant-ui.com/docs/react-native/hooks.md): Reactive hooks for accessing runtime state in React Native.
+- [Installation](https://www.assistant-ui.com/docs/react-native.md): Get assistant-ui running in an Expo or React Native app with your first chat screen.
+- [Migration from Web](https://www.assistant-ui.com/docs/react-native/migration.md): Migrate an existing @assistant-ui/react app to React Native.
+- [Primitives](https://www.assistant-ui.com/docs/react-native/primitives.md): Composable React Native components for building chat UIs.
+- [Testing the native kit](https://www.assistant-ui.com/docs/react-native/testing.md): Test copied React Native elements with Vitest, jsdom, and react-native-web.
+- [Thread list](https://www.assistant-ui.com/docs/react-native/thread-list.md): Show, select, and create conversations from a React Native thread list.
+- [Tool UI and approvals](https://www.assistant-ui.com/docs/react-native/tool-ui.md): Render tool calls, register native tool interfaces, and ask for approval before a tool continues.
+- [Static web export](https://www.assistant-ui.com/docs/react-native/web-export.md): Export the Expo example for the web and understand the React Native Web limits that affect chat screens.
+
+### primitives
+
+- [ActionBar](https://www.assistant-ui.com/docs/primitives/action-bar.md): Build message action buttons with auto-hide, copy state, and intelligent disabling.
+- [AssistantModal](https://www.assistant-ui.com/docs/primitives/assistant-modal.md): A floating chat popover with a fixed-position trigger button that opens a chat panel.
+- [Attachment](https://www.assistant-ui.com/docs/primitives/attachment.md): File and image attachment rendering for the composer and messages.
+- [BranchPicker](https://www.assistant-ui.com/docs/primitives/branch-picker.md): Navigate between message branches, which are alternative responses the user can flip through.
+- [ChainOfThought](https://www.assistant-ui.com/docs/primitives/chain-of-thought.md): Collapsible accordion for grouping reasoning steps and tool calls.
+- [Composer](https://www.assistant-ui.com/docs/primitives/composer.md): Build custom message input UIs with full control over layout and behavior.
+- [Error](https://www.assistant-ui.com/docs/primitives/error.md): Accessible error display for messages with automatic error text extraction.
+- [Overview](https://www.assistant-ui.com/docs/primitives.md): Unstyled, accessible building blocks for AI chat interfaces — Thread, Composer, Message, and more, ready to compose with
+- [Message](https://www.assistant-ui.com/docs/primitives/message.md): Build custom message rendering with content parts, attachments, and hover state.
+- [SelectionToolbar](https://www.assistant-ui.com/docs/primitives/selection-toolbar.md): A floating toolbar that appears when text is selected within a message.
+- [Suggestion](https://www.assistant-ui.com/docs/primitives/suggestion.md): Suggested prompts that users can click to quickly send or populate the composer.
+- [ThreadList](https://www.assistant-ui.com/docs/primitives/thread-list.md): Multi-thread management for listing, creating, switching, archiving, and deleting conversations.
+- [Thread](https://www.assistant-ui.com/docs/primitives/thread.md): Build custom scrollable message containers with auto-scroll, empty states, and message rendering.
+
+### runtimes
+
+- [Claude Managed Agents](https://www.assistant-ui.com/docs/runtimes/claude-managed-agents.md): Connect Anthropic's Managed Agents sessions to assistant-ui with the external store runtime, folding the session event l
+- [LangChain React Runtime](https://www.assistant-ui.com/docs/runtimes/langchain.md): Use LangChain's useStream hook with a React chat UI through assistant-ui — a lighter LangGraph adapter that delegates st
+- [Picking a runtime](https://www.assistant-ui.com/docs/runtimes/pick-a-runtime.md): Decision guide for choosing the right runtime, by framework or by feature.
+- [Client and hooks](https://www.assistant-ui.com/docs/runtimes/a2a/client-and-hooks.md): A2AClient, useA2ARuntime options, hooks, task states, artifacts, errors.
+- [A2A Agent Runtime](https://www.assistant-ui.com/docs/runtimes/a2a/overview.md): Connect any A2A v1.0 protocol-compliant agent server to a React chat UI with assistant-ui — full streaming, tool calls, 
+- [Quickstart](https://www.assistant-ui.com/docs/runtimes/a2a/quickstart.md): Minimal runtime and Thread setup against an A2A server.
+- [Agent state](https://www.assistant-ui.com/docs/runtimes/ag-ui/agent-state.md): Read and optimistically update agent-owned state with useAgUiState and useAgUiSetState over AG-UI.
+- [AG-UI Agent Runtime](https://www.assistant-ui.com/docs/runtimes/ag-ui/overview.md): Wire AG-UI (Agent-User Interaction) protocol agents into a React chat UI with assistant-ui — bidirectional events, gener
+- [Quickstart](https://www.assistant-ui.com/docs/runtimes/ag-ui/quickstart.md): Minimal HttpAgent + useAgUiRuntime setup against an AG-UI server.
+- [Runtime options](https://www.assistant-ui.com/docs/runtimes/ag-ui/runtime-options.md): useAgUiRuntime options, adapters, message conversion, thread list.
+- [Vercel AI SDK Runtime](https://www.assistant-ui.com/docs/runtimes/ai-sdk/overview.md): Connect the Vercel AI SDK to a React chat UI via assistant-ui — useChat hooks, custom transports, frontend tools, attach
+- [AI SDK v4 (legacy)](https://www.assistant-ui.com/docs/runtimes/ai-sdk/v4-legacy.md): Reference for projects still on AI SDK v4. New projects should use v7.
+- [AI SDK v5 (legacy)](https://www.assistant-ui.com/docs/runtimes/ai-sdk/v5-legacy.md): Reference for projects still on AI SDK v5. New projects should use v7.
+- [AI SDK v6 (legacy)](https://www.assistant-ui.com/docs/runtimes/ai-sdk/v6-legacy.md): Reference for projects still on AI SDK v6. New projects should use v7.
+- [AI SDK v7](https://www.assistant-ui.com/docs/runtimes/ai-sdk/v7.md): Integrate Vercel AI SDK v7 with assistant-ui for streaming chat.
+- [Adapters](https://www.assistant-ui.com/docs/runtimes/concepts/adapters.md): Reusable extension points for attachments, speech, feedback, history, and suggestions.
+- [Runtime architecture](https://www.assistant-ui.com/docs/runtimes/concepts/architecture.md): How core runtimes, protocol layers, and framework adapters fit together.
+- [Stability](https://www.assistant-ui.com/docs/runtimes/concepts/stability.md): What unstable_ means, when APIs become stable, and how to track changes.
+- [Threads](https://www.assistant-ui.com/docs/runtimes/concepts/threads.md): Single-thread, cloud, and custom-database thread management.
+- [Assistant Transport](https://www.assistant-ui.com/docs/runtimes/custom/assistant-transport.md): Stream agent state to the frontend and handle user commands for custom agents.
+- [Data Stream Protocol](https://www.assistant-ui.com/docs/runtimes/custom/data-stream.md): Standard message-streaming protocol on top of LocalRuntime.
+- [ExternalStoreRuntime](https://www.assistant-ui.com/docs/runtimes/custom/external-store.md): Bring your own redux, zustand, or state manager.
+- [LocalRuntime](https://www.assistant-ui.com/docs/runtimes/custom/local-runtime.md): Quickest path to a working chat. Handles state while you handle the API.
+- [Custom Runtime](https://www.assistant-ui.com/docs/runtimes/custom/overview.md): Build a React chat UI for any AI backend with assistant-ui — four runtime patterns covering local state, REST, custom pr
+- [Eve Runtime](https://www.assistant-ui.com/docs/runtimes/eve/overview.md): Connect an Eve agent to assistant-ui with useEveAgentRuntime, eve/next, durable sessions, streaming messages, and human-
+- [Quickstart](https://www.assistant-ui.com/docs/runtimes/eve/quickstart.md): Template, Eve CLI, and manual setup paths to a working Eve agent chat in assistant-ui.
+- [API reference](https://www.assistant-ui.com/docs/runtimes/google-adk/api.md): createAdkStream, server helpers, session adapter, threads, message editing.
+- [Hooks](https://www.assistant-ui.com/docs/runtimes/google-adk/hooks.md): Tool confirmations, auth, input requests, artifacts, escalation, metadata, structured events.
+- [Google ADK Runtime](https://www.assistant-ui.com/docs/runtimes/google-adk/overview.md): Connect Google's Agent Development Kit (ADK) to a React chat UI with assistant-ui — streaming, tool calls, and multi-age
+- [Quickstart](https://www.assistant-ui.com/docs/runtimes/google-adk/quickstart.md): Minimal API route and client setup with createAdkApiRoute.
+- [Agent state](https://www.assistant-ui.com/docs/runtimes/langgraph/agent-state.md): Read and optimistically update graph state with useLangGraphState and useLangGraphSetState in LangGraph.
+- [LangGraph Generative UI](https://www.assistant-ui.com/docs/runtimes/langgraph/generative-ui.md): Render structured UI components emitted by LangGraph alongside assistant messages.
+- [Interrupts and message editing](https://www.assistant-ui.com/docs/runtimes/langgraph/interrupts.md): Interrupt persistence and checkpoint-based message editing.
+- [LangGraph UI Runtime](https://www.assistant-ui.com/docs/runtimes/langgraph/overview.md): Build a chat UI for LangGraph agents in React with assistant-ui — streaming, subgraph events, UI messages, interrupts, a
+- [Quickstart](https://www.assistant-ui.com/docs/runtimes/langgraph/quickstart.md): From-template and manual setup paths to a working LangGraph chat.
+- [Streaming](https://www.assistant-ui.com/docs/runtimes/langgraph/streaming.md): Event handlers, message accumulator, conversion, metadata, and generative UI.
+- [Threads](https://www.assistant-ui.com/docs/runtimes/langgraph/threads.md): Basic thread support, AssistantCloud, and custom thread list adapter.
+- [Hooks](https://www.assistant-ui.com/docs/runtimes/opencode/hooks.md): Permissions, questions, session state, runtime extras.
+- [OpenCode Runtime](https://www.assistant-ui.com/docs/runtimes/opencode/overview.md): Build a React chat UI for OpenCode coding agents with assistant-ui — streaming, tool calls, file edits, and terminal out
+- [Quickstart](https://www.assistant-ui.com/docs/runtimes/opencode/quickstart.md): Minimal useOpenCodeRuntime setup against a local OpenCode server.
+- [Introduction](https://www.assistant-ui.com/docs/runtimes/langgraph/tutorial/introduction.md): Build a stockbroker assistant with LangGraph and assistant-ui.
+- [Part 1: Setup frontend](https://www.assistant-ui.com/docs/runtimes/langgraph/tutorial/part-1.md): Create a Next.js project with the LangGraph assistant-ui template.
+- [Part 2: Generative UI](https://www.assistant-ui.com/docs/runtimes/langgraph/tutorial/part-2.md): Display stock ticker information with generative UI components.
+- [Part 3: Approval UI](https://www.assistant-ui.com/docs/runtimes/langgraph/tutorial/part-3.md): Add human-in-the-loop approval for tool calls.
+
+### store
+
+- [API Reference](https://www.assistant-ui.com/docs/store/api-reference.md): All exports from @assistant-ui/store.
+- [Child Scopes](https://www.assistant-ui.com/docs/store/child-scopes.md): Derive scopes from parent data with Derived, useClientResource, and useClientLookup.
+- [Events](https://www.assistant-ui.com/docs/store/events.md): Emit and subscribe to typed events.
+- [Meta](https://www.assistant-ui.com/docs/store/meta.md): Track scope origin with source and query.
+- [Methods](https://www.assistant-ui.com/docs/store/methods.md): Access scope methods with useAui.
+- [Quickstart](https://www.assistant-ui.com/docs/store/quickstart.md): Install Store and connect your first Tap resource to React.
+- [Rendering Lists](https://www.assistant-ui.com/docs/store/rendering-lists.md): How to efficiently render lists of items from store state.
+- [Scopes](https://www.assistant-ui.com/docs/store/scopes.md): Named, independent units of state in your store.
+- [Sibling Scopes](https://www.assistant-ui.com/docs/store/sibling-scopes.md): Scopes that reference each other at the same level.
+- [State](https://www.assistant-ui.com/docs/store/state.md): Subscribe to state changes with useAuiState.
+- [Why Store](https://www.assistant-ui.com/docs/store/why-store.md): The problem Store solves.
+
+### tap
+
+- [API Reference](https://www.assistant-ui.com/docs/tap/api-reference.md): Public API exported from @assistant-ui/tap.
+- [Composition](https://www.assistant-ui.com/docs/tap/composition.md): Combine Resources into reusable state trees.
+- [Context](https://www.assistant-ui.com/docs/tap/context.md): Pass values through resource boundaries without prop drilling.
+- [How tap differs from React](https://www.assistant-ui.com/docs/tap/differences-from-react.md): The handful of behaviors that aren't quite React.
+- [Introduction](https://www.assistant-ui.com/docs/tap.md): State management based on React Hooks.
+- [Lifecycle](https://www.assistant-ui.com/docs/tap/lifecycle.md): How resources render, mount, update, and unmount.
+- [Motivation](https://www.assistant-ui.com/docs/tap/motivation.md): Composable configuration and state built on React's lifecycle.
+- [Outside React](https://www.assistant-ui.com/docs/tap/outside-react.md): Run resources standalone, with no React tree.
+- [Quickstart](https://www.assistant-ui.com/docs/tap/quickstart.md): Install tap and build your first Resource.
+- [Resources](https://www.assistant-ui.com/docs/tap/resources.md): Package stateful behavior into reusable, configurable values.
+- [Trees & Re-renders](https://www.assistant-ui.com/docs/tap/trees-and-rerenders.md): How resource trees re-render and where scheduling boundaries form.
+
+### utilities
+
+- [heat-graph](https://www.assistant-ui.com/docs/utilities/heat-graph.md): Headless, composable activity heatmap components for React.
+- [react-o11y](https://www.assistant-ui.com/docs/utilities/react-o11y.md): Headless primitives for visualizing observability spans as collapsible trace trees, waterfalls, and agent and LLM call t
+- [tw-shimmer](https://www.assistant-ui.com/docs/utilities/tw-shimmer.md): Tailwind CSS v4 plugin for shimmer effects.
+
+### tools
+
+- [A2UI over AG-UI](https://www.assistant-ui.com/docs/tools/a2ui.md): Render A2UI surfaces from AG-UI activity snapshots as generative UI, using the community a2ui-surface convention.
+- [Backend Tools](https://www.assistant-ui.com/docs/tools/backend.md): Wire assistant-ui toolkits into your server with the AI SDK — AISDKToolkit, frontendTools, mixing client and server tool
+- [Defining Tools](https://www.assistant-ui.com/docs/tools/defining-tools.md): Define tools for your AI chat with assistant-ui toolkits and the "use generative" directive — frontend, backend, human, 
+- [Dynamic Tools](https://www.assistant-ui.com/docs/tools/dynamic-tools.md): Tools whose executor closes over React state — declare the contract with stubTool() in a "use generative" file and suppl
+- [Generative UI primitive](https://www.assistant-ui.com/docs/tools/generative-ui-primitive.md): Render agent-described React UI from a JSON spec with a consumer-provided component allowlist, using the MessagePrimitiv
+- [Generative UI on Slack](https://www.assistant-ui.com/docs/tools/generative-ui-slack.md): Convert a generative UI tree into Slack Block Kit, post it, and decode the block_actions payload Slack sends back into y
+- [Generative UI on Microsoft Teams](https://www.assistant-ui.com/docs/tools/generative-ui-teams.md): Convert a generative UI tree into an Adaptive Card, send it from a bot, and decode the Action.Submit payload Teams sends
+- [Generative UI](https://www.assistant-ui.com/docs/tools/generative-ui.md): Let the model compose an interface at runtime from a component vocabulary you ship, using the present tool from @assista
+- [Tools](https://www.assistant-ui.com/docs/tools.md): Give the model callable capabilities with assistant-ui toolkits — define frontend, backend, human, and provider tools, r
+- [Interactable Tool UIs](https://www.assistant-ui.com/docs/tools/interactables.md): Build stateful components and tool UIs that both the user and the model can read and edit. Render them beside the thread
+- [MCP Apps](https://www.assistant-ui.com/docs/tools/mcp-apps.md): Render MCP App UI resources inline in chat. Native renderer for the Model Context Protocol Apps spec — sandboxed iframes
+- [Model Context Protocol (MCP)](https://www.assistant-ui.com/docs/tools/mcp.md): Connect MCP servers as a tool catalog in your assistant-ui app.
+- [Multi-Agent Chat UI](https://www.assistant-ui.com/docs/tools/multi-agent.md): Render sub-agent conversations and handoffs inside tool calls. Build supervisor and multi-agent patterns in a React chat
+- [OpenUI](https://www.assistant-ui.com/docs/tools/openui.md): Render streaming OpenUI Lang interfaces in an assistant-ui conversation with @openuidev/assistant-ui, the integration pa
+- [Tool UI](https://www.assistant-ui.com/docs/tools/tool-ui.md): Render AI tool calls as custom React components — show loading, result, and interactive states for each tool invocation 
+- [User-managed MCP servers](https://www.assistant-ui.com/docs/tools/user-managed-mcp.md): Let end users add and authenticate MCP servers from the browser with @assistant-ui/react-mcp.
+- [WebMCP provider](https://www.assistant-ui.com/docs/tools/webmcp.md): Expose your app's frontend tools to a WebMCP-capable browser with unstable_useWebMcpProvider.
+
+### vue
+
+- [Vue](https://www.assistant-ui.com/docs/vue.md): Build streaming AI chat interfaces with Vue, Nuxt, and the AI SDK.
+- [Quickstart](https://www.assistant-ui.com/docs/vue/quickstart.md): Build a streaming Nuxt chat with Vue, assistant-ui, and the AI SDK.
+- [Runtimes](https://www.assistant-ui.com/docs/vue/runtimes.md): Choose a single AI SDK chat, a multi-thread AI SDK chat, or a custom external store.
+- [Server rendering](https://www.assistant-ui.com/docs/vue/ssr.md): Keep Vue assistant state in a client-only Nuxt component and stream from Nitro.
+- [Tool UI](https://www.assistant-ui.com/docs/vue/tool-ui.md): Render AI SDK tool calls with Vue components, text descriptors, and human-in-the-loop actions.
+
+### api-reference
+
+- [API Reference](https://www.assistant-ui.com/docs/api-reference/overview.md): Complete assistant-ui React API reference for building AI chat UIs with primitives, hooks, runtimes, adapters, tools, tr
+- [Attachment Adapters](https://www.assistant-ui.com/docs/api-reference/adapters/attachments.md): Attachment adapters for uploading files, handling lifecycle events, and bringing app-owned content into assistant-ui com
+- [Feedback Adapter](https://www.assistant-ui.com/docs/api-reference/adapters/feedback.md): Capture and respond to message feedback submitted through action primitives or runtime actions.
+- [Adapters API Reference](https://www.assistant-ui.com/docs/api-reference/adapters.md): Adapter interfaces for connecting chat models, persistence, file attachments, feedback, and suggestions to assistant-ui 
+- [Model Adapters](https://www.assistant-ui.com/docs/api-reference/adapters/model.md): Adapter interfaces for connecting chat models, streaming responses, and model execution to assistant-ui runtimes.
+- [Persistence Adapters](https://www.assistant-ui.com/docs/api-reference/adapters/persistence.md): Persistence adapters for saving assistant-ui message history, remote thread lists, and long-running chat sessions across
+- [Runtime Adapter Context](https://www.assistant-ui.com/docs/api-reference/adapters/runtime.md): Provide assistant-ui runtime adapters through React context for model, attachment, speech, and feedback behavior.
+- [Suggestion Adapters](https://www.assistant-ui.com/docs/api-reference/adapters/suggestions.md): Suggestion adapters for providing starter prompts, contextual actions, and guided composer options to assistant-ui runti
+- [External Store API Reference](https://www.assistant-ui.com/docs/api-reference/external-store.md): External store runtime, message conversion helpers, and adapters for assistant-ui React apps that own their chat state o
+- [Message Conversion](https://www.assistant-ui.com/docs/api-reference/external-store/message-conversion.md): Convert external message formats into assistant-ui's message and thread state for the external store runtime.
+- [External Store Runtime](https://www.assistant-ui.com/docs/api-reference/external-store/runtime.md): Runtime components, options, and adapters for using assistant-ui with externally owned chat state.
+- [AssistantRuntimeProvider](https://www.assistant-ui.com/docs/api-reference/context-providers/assistant-runtime-provider.md): Root React provider that connects an assistant-ui runtime to primitives, hooks, threads, and composer state.
+- [Context Providers API Reference](https://www.assistant-ui.com/docs/api-reference/context-providers.md): React context providers including AssistantRuntimeProvider that scope assistant-ui runtime, thread, message part, and at
+- [Scoped Providers](https://www.assistant-ui.com/docs/api-reference/context-providers/scoped-providers.md): Lower-level assistant-ui providers for custom renderers, scoped message parts, attachments, and advanced composition.
+- [A2UI](https://www.assistant-ui.com/docs/api-reference/generative-ui/a2ui.md): Convert A2UI surface operations into generative UI specs.
+- [Generative UI Actions](https://www.assistant-ui.com/docs/api-reference/generative-ui/actions.md): Register handlers for model-emitted $action payloads and dispatch them from interactive generative UI components.
+- [Generative UI Components](https://www.assistant-ui.com/docs/api-reference/generative-ui/components.md): Define the component library JSONGenerativeUI can render, including schemas, render functions, and the default vocabular
+- [Generative UI API Reference](https://www.assistant-ui.com/docs/api-reference/generative-ui.md): Spec-driven generative UI for assistant-ui. The data format an assistant streams, the component registry that resolves i
+- [JSONGenerativeUI](https://www.assistant-ui.com/docs/api-reference/generative-ui/json-generative-ui.md): Create present and prompt_user tools from a generative UI component library, with options for display mode and action di
+- [Generative UI Rendering](https://www.assistant-ui.com/docs/api-reference/generative-ui/rendering.md): Render generative UI trees, build present-tool schemas, and inspect or serialize model-produced UI nodes.
+- [Slack Block Kit](https://www.assistant-ui.com/docs/api-reference/generative-ui/slack.md): Convert generative UI trees to Slack Block Kit payloads and decode block_actions interactions back into $action payloads
+- [Generative UI Spec](https://www.assistant-ui.com/docs/api-reference/generative-ui/spec.md): The serializable node tree an assistant emits to describe generative UI. Covers the GenerativeUISpec format, its nodes, 
+- [Microsoft Teams](https://www.assistant-ui.com/docs/api-reference/generative-ui/teams.md): Convert generative UI trees to Teams Adaptive Cards and decode Action.Submit payloads back into $action payloads.
+- [Generative UI Tokens](https://www.assistant-ui.com/docs/api-reference/generative-ui/tokens.md): Shared token arrays used by the default generative UI vocabulary for sizing, color, alignment, and component variants.
+- [Composer Trigger Hooks](https://www.assistant-ui.com/docs/api-reference/hooks/composer-triggers.md): Unstable assistant-ui hooks for mention menus, slash commands, and custom composer trigger popovers.
+- [Hooks API Reference](https://www.assistant-ui.com/docs/api-reference/hooks.md): React hooks for assistant-ui: useAui, useAuiState, runtime creation, model context registration, and helpers for buildin
+- [Model Context Hooks](https://www.assistant-ui.com/docs/api-reference/hooks/model-context.md): React hooks for registering assistant-ui tools, data renderers, instructions, and model context providers.
+- [Primitive Hooks](https://www.assistant-ui.com/docs/api-reference/hooks/primitives.md): Primitive hooks for reading scoped assistant-ui runtime state, viewport behavior, timing, and message part data inside R
+- [Runtime Hooks](https://www.assistant-ui.com/docs/api-reference/hooks/runtimes.md): Runtime creation hooks for local, remote, cloud, external-store, and AI SDK powered assistant-ui chat experiences.
+- [State Hooks](https://www.assistant-ui.com/docs/api-reference/hooks/state.md): State selector and action hooks for reading assistant-ui runtime state and controlling threads, composers, messages, and
+- [@assistant-ui/ai-sdk](https://www.assistant-ui.com/docs/api-reference/integrations/ai-sdk.md): Vercel AI SDK runtime hooks, chat transports, and message conversion utilities for assistant-ui applications.
+- [assistant-cloud/ai-sdk](https://www.assistant-ui.com/docs/api-reference/integrations/assistant-cloud-ai-sdk.md): The AI SDK message format adapter and run telemetry extraction that the assistant-ui runtime uses, typed against UIMessa
+- [assistant-cloud/telemetry](https://www.assistant-ui.com/docs/api-reference/integrations/assistant-cloud-telemetry.md): OpenTelemetry exporter, span processor and stream metadata helpers that send a server's GenAI spans to Assistant Cloud a
+- [assistant-cloud](https://www.assistant-ui.com/docs/api-reference/integrations/assistant-cloud.md): The assistant-cloud client for threads, messages, runs, events, scores and files, with the reporters, persistence and ru
+- [@assistant-ui/eve](https://www.assistant-ui.com/docs/api-reference/integrations/eve.md): Eve runtime hook and message conversion utilities for assistant-ui React applications.
+- [Integrations API Reference](https://www.assistant-ui.com/docs/api-reference/integrations.md): Package-level APIs for connecting assistant-ui React to the Vercel AI SDK, Assistant Cloud, and adjacent chat ecosystem 
+- [@assistant-ui/react-data-stream](https://www.assistant-ui.com/docs/api-reference/integrations/react-data-stream.md): Data stream runtime hook and message conversion utilities for custom assistant-ui streaming backends.
+- [Model Context](https://www.assistant-ui.com/docs/api-reference/model-context/context.md): Provide model instructions, contextual state, and inline renderers to assistant-ui runtimes.
+- [Model Context API Reference](https://www.assistant-ui.com/docs/api-reference/model-context.md): Model instructions, contextual state, provider registries, and renderers for giving assistant-ui runtimes app-aware cont
+- [Model Context Registry](https://www.assistant-ui.com/docs/api-reference/model-context/registry.md): Register and manage assistant-ui model context providers that contribute instructions and app state.
+- [AssistantRuntime](https://www.assistant-ui.com/docs/api-reference/runtimes/assistant-runtime.md): Top-level assistant-ui runtime actions and state for tools, threads, composers, messages, and assistant behavior.
+- [AttachmentRuntime](https://www.assistant-ui.com/docs/api-reference/runtimes/attachment-runtime.md): AttachmentRuntime state and actions for reading attachment data and controlling files inside assistant-ui messages and c
+- [ComposerRuntime](https://www.assistant-ui.com/docs/api-reference/runtimes/composer-runtime.md): ComposerRuntime state and actions for controlling assistant-ui composer text, attachments, submission, cancellation, and
+- [Runtime State API Reference](https://www.assistant-ui.com/docs/api-reference/runtimes.md): Runtime state and actions exposed through useAui and useAuiState, covering AssistantRuntime, ThreadRuntime, ThreadListRu
+- [MessagePartRuntime](https://www.assistant-ui.com/docs/api-reference/runtimes/message-part-runtime.md): MessagePartRuntime state and helpers for inspecting assistant-ui text, tool calls, data parts, reasoning, and custom mes
+- [MessageRuntime](https://www.assistant-ui.com/docs/api-reference/runtimes/message-runtime.md): MessageRuntime state and actions for editing, reloading, copying, rating, speaking, and branching assistant-ui messages.
+- [QueueItemState](https://www.assistant-ui.com/docs/api-reference/runtimes/queue-state.md): State shape for queued assistant-ui thread operations and pending runtime work.
+- [ThreadListItemRuntime](https://www.assistant-ui.com/docs/api-reference/runtimes/thread-list-item-runtime.md): ThreadListItemRuntime state and actions for selecting, archiving, unarchiving, deleting, and renaming assistant-ui conve
+- [ThreadListRuntime](https://www.assistant-ui.com/docs/api-reference/runtimes/thread-list-runtime.md): ThreadListRuntime state and actions for managing remote assistant-ui conversations, active thread selection, and new thr
+- [ThreadRuntime](https://www.assistant-ui.com/docs/api-reference/runtimes/thread-runtime.md): ThreadRuntime state and actions for controlling assistant-ui messages, composers, suggestions, model context, and the fu
+- [ActionBarMorePrimitive](https://www.assistant-ui.com/docs/api-reference/primitives/action-bar-more.md): Overflow menu primitives for grouping secondary assistant message actions in a custom React UI.
+- [ActionBarPrimitive](https://www.assistant-ui.com/docs/api-reference/primitives/action-bar.md): Composable message action controls for copy, edit, reload, speech, and feedback in assistant-ui chat interfaces.
+- [AuiIf](https://www.assistant-ui.com/docs/api-reference/primitives/assistant-if.md): Conditional rendering primitive for showing React UI from assistant-ui thread, message, composer, and runtime state.
+- [AssistantModalPrimitive](https://www.assistant-ui.com/docs/api-reference/primitives/assistant-modal.md): Floating assistant modal primitives for building support chat, copilot, and embedded assistant experiences.
+- [AttachmentPrimitive](https://www.assistant-ui.com/docs/api-reference/primitives/attachment.md): Attachment primitives for rendering file previews, names, thumbnails, and remove controls in assistant-ui messages and c
+- [BranchPickerPrimitive](https://www.assistant-ui.com/docs/api-reference/primitives/branch-picker.md): Branch picker primitives for navigating regenerated assistant responses and alternate message paths inside a chat thread
+- [ChainOfThoughtPrimitive](https://www.assistant-ui.com/docs/api-reference/primitives/chain-of-thought.md): Chain of thought primitives for rendering assistant reasoning, step lists, and collapsible disclosure UI in message cont
+- [ComposerPrimitive](https://www.assistant-ui.com/docs/api-reference/primitives/composer.md): Composable input primitives for assistant-ui prompts, send controls, cancellation, attachments, and composer state.
+- [Composition](https://www.assistant-ui.com/docs/api-reference/primitives/composition.md): How to compose primitives with custom components using asChild.
+- [ErrorPrimitive](https://www.assistant-ui.com/docs/api-reference/primitives/error.md): Error primitives for rendering assistant-ui runtime, thread, and message failures inside custom chat interfaces.
+- [Primitives API Reference](https://www.assistant-ui.com/docs/api-reference/primitives.md): Composable React primitives for assistant-ui chat UIs: Thread, Composer, Message, BranchPicker, ActionBar, and the parts
+- [MessagePartPrimitive](https://www.assistant-ui.com/docs/api-reference/primitives/message-part.md): Message part primitives for rendering text, tool calls, data parts, reasoning, source content, and custom assistant outp
+- [MessagePrimitive](https://www.assistant-ui.com/docs/api-reference/primitives/message.md): Message primitives for rendering assistant and user turns, message parts, attachments, actions, editing, and branch cont
+- [QueueItemPrimitive](https://www.assistant-ui.com/docs/api-reference/primitives/queue-item.md): Queue item primitives for rendering pending assistant-ui thread operations, optimistic work, and runtime queue state.
+- [SelectionToolbarPrimitive](https://www.assistant-ui.com/docs/api-reference/primitives/selection-toolbar.md): Selection toolbar primitives for quote, copy, and contextual actions on selected chat text.
+- [SuggestionPrimitive](https://www.assistant-ui.com/docs/api-reference/primitives/suggestion.md): Suggestion primitives for rendering starter prompts, follow-up actions, and composer suggestions in assistant-ui threads
+- [ThreadListItemMorePrimitive](https://www.assistant-ui.com/docs/api-reference/primitives/thread-list-item-more.md): Overflow menu primitives for secondary thread list item actions in custom assistant-ui sidebars.
+- [ThreadListItemPrimitive](https://www.assistant-ui.com/docs/api-reference/primitives/thread-list-item.md): Thread list item primitives for rendering selectable conversation rows with titles, archive controls, delete actions, an
+- [ThreadListPrimitive](https://www.assistant-ui.com/docs/api-reference/primitives/thread-list.md): Thread list primitives for rendering conversation navigation, new thread actions, and custom assistant sidebars.
+- [ThreadPrimitive](https://www.assistant-ui.com/docs/api-reference/primitives/thread.md): Thread primitives for rendering chat transcripts, message lists, viewport state, suggestions, and composers in assistant
+- [Assistant Transport](https://www.assistant-ui.com/docs/api-reference/transport/assistant-transport.md): Command, protocol, and transport types for connecting assistant-ui runtimes across execution boundaries.
+- [Assistant Frame](https://www.assistant-ui.com/docs/api-reference/transport/frame.md): Frame bridge APIs and serialized message types for embedding assistant-ui runtimes in external contexts.
+- [Transport API Reference](https://www.assistant-ui.com/docs/api-reference/transport.md): Transport commands, frame messages, and protocol types for synchronizing assistant-ui runtimes across process or iframe 
+- [Component Tools](https://www.assistant-ui.com/docs/api-reference/tools/component-tools.md): Register assistant tools from mounted React components, scoped to the lifetime of part of the UI tree.
+- [Tools API Reference](https://www.assistant-ui.com/docs/api-reference/tools.md): Tool definitions, React renderers, status helpers, and toolkits for exposing callable app capabilities to assistant-ui c
+- [Interactables (legacy)](https://www.assistant-ui.com/docs/api-reference/tools/interactables-legacy.md): Deprecated legacy interactables APIs for registering model-editable components with per-instance update tools.
+- [Interactables](https://www.assistant-ui.com/docs/api-reference/tools/interactables.md): Unstable interactables APIs for model-editable app and message state, including hooks, resources, toolkit helpers, and s
+- [Tool Rendering](https://www.assistant-ui.com/docs/api-reference/tools/rendering.md): Register React renderers for assistant-ui tool calls, tool results, and model data parts.
+- [Tool Status](https://www.assistant-ui.com/docs/api-reference/tools/status.md): Read tool arguments, execution status, and result state inside assistant-ui tool UI components.
+- [Toolkits](https://www.assistant-ui.com/docs/api-reference/tools/toolkits.md): Define model-facing tools and compose them into named toolkits registered with an assistant-ui runtime scope.
+- [Utilities API Reference](https://www.assistant-ui.com/docs/api-reference/utilities.md): Utility exports for custom rendering, composition, and advanced assistant-ui behavior that does not fit a larger API fam
+- [Utilities](https://www.assistant-ui.com/docs/api-reference/utilities/miscellaneous.md): Miscellaneous @assistant-ui/react utilities for custom rendering, composition, and advanced assistant UI behavior.
+- [Voice API Reference](https://www.assistant-ui.com/docs/api-reference/voice.md): Realtime voice, speech synthesis, and dictation contracts for wiring spoken assistant flows into React chat UIs.
+- [Voice Sessions](https://www.assistant-ui.com/docs/api-reference/voice/session.md): Create and control realtime assistant-ui voice sessions, state, controls, and helpers.
+- [Speech and Dictation](https://www.assistant-ui.com/docs/api-reference/voice/speech-dictation.md): Connect speech synthesis and dictation adapters to assistant-ui voice and composer workflows.
+
+### examples
+
+- [AI SDK Chat Persistence](https://www.assistant-ui.com/examples/ai-sdk.md): Vercel AI SDK chat with thread persistence — open-source React example combining the AI SDK and assistant-ui for streami
+- [Claude Artifacts Example](https://www.assistant-ui.com/examples/artifacts.md): Open-source Claude Artifacts implementation in React — generate websites and components in a side panel from chat messag
+- [ChatGPT Clone Example](https://www.assistant-ui.com/examples/chatgpt.md): Open-source ChatGPT clone built in React with assistant-ui — centered welcome composer, high-contrast user bubbles, tool
+- [Claude Clone](https://www.assistant-ui.com/examples/claude.md): Open-source Claude clone in React — warm cream theme, serif typography, hover-only action bars, and a clean minimal-shad
+- [Expo React Native AI Chat](https://www.assistant-ui.com/examples/expo.md): Native iOS and Android AI chat app with Expo — drawer navigation, thread persistence, and the assistant-ui React Native 
+- [Form-Filling AI Copilot](https://www.assistant-ui.com/examples/form-demo.md): Open-source AI copilot that fills forms for users — sidebar UI, field-aware tool calls, and a working React example buil
+- [Gemini Clone](https://www.assistant-ui.com/examples/gemini.md): Open-source Gemini clone in React with a centered greeting over an ambient glow, a single-row pill composer, avatar-free
+- [Generative UI Example](https://www.assistant-ui.com/examples/generative-ui.md): Live demo of the present tool, where the model composes a dashboard from a component vocabulary at runtime, alongside th
+- [Grok Clone](https://www.assistant-ui.com/examples/grok.md): Open-source Grok clone in React — pill composer with paperclip, animated Mic↔Send, functional model picker dropdown, and
+- [Examples](https://www.assistant-ui.com/examples.md): Production-ready examples of AI chat in React. ChatGPT clones, copilots, generative UI, artifacts, multimodal, and more,
+- [Mem0 Memory Chat](https://www.assistant-ui.com/examples/mem0.md): AI chat with persistent memory powered by Mem0 — remembers user preferences, facts, and history across sessions. Open-so
+- [Floating Modal Chat](https://www.assistant-ui.com/examples/modal.md): Embeddable AI assistant in a floating button modal — drop into any React app for in-product copilots or support chat, bu
+- [Perplexity Clone](https://www.assistant-ui.com/examples/perplexity.md): Open-source Perplexity-style chat in React — theme-aware composer, functional Search and Model dropdowns, four-state pri
+- [LangGraph Stockbroker Demo](https://www.assistant-ui.com/examples/stockbroker.md): Human-in-the-loop AI stockbroker built on LangGraph and assistant-ui — interrupt handling, tool approval, and an interac
+
+### design
+
+- [Accordion](https://www.assistant-ui.com/design/components/accordion.md): Stacked headings that reveal or hide content sections.
+- [Avatar](https://www.assistant-ui.com/design/components/avatar.md): People as initials or images, alone or stacked in groups.
+- [Badge](https://www.assistant-ui.com/design/components/badge.md): A small label component for displaying status, categories, or metadata.
+- [Breadcrumb](https://www.assistant-ui.com/design/components/breadcrumb.md): Where you are, as a path you can walk back up.
+- [Button](https://www.assistant-ui.com/design/components/button.md): The pressable object: thin, flat, and 8px round, in every weight a surface needs.
+- [Callout](https://www.assistant-ui.com/design/components/callout.md): A quiet aside on a colored rule, for notes, warnings, and errors in prose.
+- [Code Block](https://www.assistant-ui.com/design/components/code-block.md): Highlighted code on a field panel, with a title bar and a copy button.
+- [Collapsible](https://www.assistant-ui.com/design/components/collapsible.md): One region that folds open and closed in place.
+- [Combobox](https://www.assistant-ui.com/design/components/combobox.md): Type to filter, then pick: a select with a search field.
+- [Command Tabs](https://www.assistant-ui.com/design/components/command-tabs.md): One command in several dialects, with synced tabs and a copy button.
+- [Definition List](https://www.assistant-ui.com/design/components/definition-list.md): A spec sheet of terms and details, one hairline per row.
+- [Dialog](https://www.assistant-ui.com/design/components/dialog.md): A modal sheet for decisions that need the page to wait.
+- [Diff Viewer](https://www.assistant-ui.com/design/components/diff-viewer.md): Code changes as unified or split diffs, line by line, on the kit's field panel.
+- [Dot Matrix](https://www.assistant-ui.com/design/components/dot-matrix.md): Tiny 5x5 dot-matrix indicator with 20 state-specific blink patterns.
+- [Dropdown Menu](https://www.assistant-ui.com/design/components/dropdown-menu.md): Actions behind a trigger: items, shortcuts, and separators on a quiet surface.
+- [Input](https://www.assistant-ui.com/design/components/input.md): A single-line field with a label, drawn with a hairline.
+- [Kbd](https://www.assistant-ui.com/design/components/kbd.md): Keyboard keys as printed caps, for shortcuts and hints.
+- [Number Roll](https://www.assistant-ui.com/design/components/number-roll.md): Animated number that rolls digits odometer-style when the value changes.
+- [Popover](https://www.assistant-ui.com/design/components/popover.md): Anchored detail on demand, dismissed by clicking away.
+- [Scrollbar](https://www.assistant-ui.com/design/components/scrollbar.md): A quiet overlay scrollbar for panes that keep their own scroll.
+- [Select](https://www.assistant-ui.com/design/components/select.md): A dropdown select component with composable sub-components.
+- [Separator](https://www.assistant-ui.com/design/components/separator.md): A hairline between things, horizontal or vertical.
+- [Sheet](https://www.assistant-ui.com/design/components/sheet.md): A panel that slides in from an edge for secondary flows.
+- [Skeleton](https://www.assistant-ui.com/design/components/skeleton.md): The loading shape of content that has a known layout.
+- [Steps](https://www.assistant-ui.com/design/components/steps.md): A numbered rail for processes that happen in order.
+- [Switch](https://www.assistant-ui.com/design/components/switch.md): A binary control in two sizes; the only capsule in the kit.
+- [Table](https://www.assistant-ui.com/design/components/table.md): A print-register data table with hairline rules and mono headers.
+- [Tabs](https://www.assistant-ui.com/design/components/tabs.md): A tabs component for organizing content into switchable panels.
+- [Toast](https://www.assistant-ui.com/design/components/toast.md): A passing message for outcomes: success, error, and undo.
+- [Tooltip](https://www.assistant-ui.com/design/components/tooltip.md): A short label that appears on hover and stays out of the way.
+
+### elements
+
+- [Activity graph](https://www.assistant-ui.com/elements/activity-graph.md): A half-year of runs as a calendar of cells, dense where the work was.
+- [Agent card](https://www.assistant-ui.com/elements/agent-card.md): Who you are about to talk to: its skills, its model, and the endpoint behind it.
+- [Handoff](https://www.assistant-ui.com/elements/agent-handoff.md): Control passing between agents, with the reason and what came along.
+- [Agent plan](https://www.assistant-ui.com/elements/agent-plan.md): A checklist the agent works through, with progress you can glance.
+- [Agent status](https://www.assistant-ui.com/elements/agent-status.md): One pill that always answers: what is it doing, and for how long.
+- [Approval card](https://www.assistant-ui.com/elements/approval-card.md): Human in the loop: the agent asks before it runs anything with side effects.
+- [Artifact card](https://www.assistant-ui.com/elements/artifact-card.md): A generated document as a tangible object, written live and versioned.
+- [Assistant modal](https://www.assistant-ui.com/elements/assistant-modal.md): A floating chat bubble for support widgets, help desks, and embedded assistants.
+- [Assistant sidebar](https://www.assistant-ui.com/elements/assistant-sidebar.md): A resizable side panel for copilot experiences and contextual assistance.
+- [Attachment](https://www.assistant-ui.com/elements/attachment.md): Runtime attachments for the composer and messages, with previews, progress, and removal.
+- [Background runs](https://www.assistant-ui.com/elements/background-inbox.md): Work still going somewhere else, and the results waiting to be collected.
+- [Canvas](https://www.assistant-ui.com/elements/canvas-split.md): The thread steps aside and the document takes the room, still being written as you read.
+- [Chart](https://www.assistant-ui.com/elements/chart.md): Area, line, and bars, with points landing one at a time as the series streams in.
+- [Chat panel](https://www.assistant-ui.com/elements/chat-panel.md): The whole family working together: a message, a pause, a streamed reply.
+- [Checkpoints](https://www.assistant-ui.com/elements/checkpoint-history.md): Points you can fall back to, with what each one would give back.
+- [Code diff](https://www.assistant-ui.com/elements/code-diff.md): A unified diff with tinted additions and removals, sized for chat.
+- [Code runner](https://www.assistant-ui.com/elements/code-runner.md): A snippet with a run button, and the output it produced attached below it.
+- [Command palette](https://www.assistant-ui.com/elements/command-palette.md): Everything the app can do, one keystroke away and grouped by where it acts.
+- [Comparison](https://www.assistant-ui.com/elements/comparison-card.md): Two options weighed side by side, with the pick named and argued.
+- [Attachments](https://www.assistant-ui.com/elements/composer-attachments.md): Files stage inside the composer with per-file progress before the message sends.
+- [Context](https://www.assistant-ui.com/elements/composer-context.md): A token ring in the rail fills as the conversation grows, warning near the limit.
+- [Mentions](https://www.assistant-ui.com/elements/composer-mentions.md): Type @ to pull people and agents into the conversation, filtered as you go.
+- [Models](https://www.assistant-ui.com/elements/composer-model-picker.md): The model lives in the composer rail, one tap away with context at a glance.
+- [Slash commands](https://www.assistant-ui.com/elements/composer-slash-commands.md): Type a slash and the command menu floats above the input, filtering as you continue.
+- [Composer trigger popover](https://www.assistant-ui.com/elements/composer-trigger-popover.md): A character-triggered picker for mentions, slash commands, and nested composer actions.
+- [Dictation](https://www.assistant-ui.com/elements/composer-voice.md): The mic morphs the input into a live waveform, then lands the transcript as text.
+- [Composer](https://www.assistant-ui.com/elements/composer.md): The unified input: attachments, commands, mentions, models, voice, and context in one surface.
+- [Computer use](https://www.assistant-ui.com/elements/computer-use.md): The screen the agent is driving, with a cursor trail and what it is doing right now.
+- [Confidence](https://www.assistant-ui.com/elements/confidence-marker.md): Which claims came from a source, which were inferred, and which are guesses.
+- [Connection state](https://www.assistant-ui.com/elements/connection-state.md): The socket drops, the run keeps going on the server, and the stream is picked back up.
+- [Context breakdown](https://www.assistant-ui.com/elements/context-breakdown.md): Where the window actually went: prompt, tools, files, conversation, and what's left.
+- [Context display](https://www.assistant-ui.com/elements/context-display.md): Model context usage as a ring, bar, or text value with a detailed hover view.
+- [Search in conversation](https://www.assistant-ui.com/elements/conversation-search.md): Find inside a long thread, with every hit marked down the scrollbar.
+- [Cost meter](https://www.assistant-ui.com/elements/cost-meter.md): What the run spent, split by model, against the session total.
+- [Data table](https://www.assistant-ui.com/elements/data-table.md): A small comparison table the model can answer with directly.
+- [Timestamps](https://www.assistant-ui.com/elements/day-separator.md): Chronology in a long thread: days marked, times on hover.
+- [Diagram](https://www.assistant-ui.com/elements/diagram.md): A drawn answer with zoom, reset, and a full-bleed view; you hand it the rendered graphic.
+- [Directive text](https://www.assistant-ui.com/elements/directive-text.md): A message renderer that turns mention directives into inline, runtime-aware chips.
+- [Document reference](https://www.assistant-ui.com/elements/document-reference.md): A document the answer leans on, with the quoted passage and the page to jump to.
+- [Draft restore](https://www.assistant-ui.com/elements/draft-restore.md): Come back to a thread and the sentence you never sent is still waiting.
+- [Edit a sent message](https://www.assistant-ui.com/elements/edit-message.md): Rewrite a turn in place, told up front how many replies the edit throws away.
+- [Elicitation form](https://www.assistant-ui.com/elements/elicitation-form.md): A server pausing mid-tool-call to ask you for the fields it still needs.
+- [Empty state](https://www.assistant-ui.com/elements/empty-state.md): The first screen: a greeting, three ways in, and the composer front and center.
+- [Error state](https://www.assistant-ui.com/elements/error-state.md): A quiet failure banner with a retry path, not a modal in your face.
+- [Feedback dialog](https://www.assistant-ui.com/elements/feedback-dialog.md): A thumbs-down that asks why, so the signal arrives with a reason attached.
+- [File tree](https://www.assistant-ui.com/elements/file-tree.md): Everything a run touched, as a tree, with the churn spelled out per file.
+- [File](https://www.assistant-ui.com/elements/file.md): File message parts with type-aware icons, filename, size, and download actions.
+- [Flow graph](https://www.assistant-ui.com/elements/flow-graph.md): Work as a graph rather than a list: branches that fan out and rejoin.
+- [Follow-up suggestions](https://www.assistant-ui.com/elements/follow-up-suggestions.md): Prompt chips populated from the runtime's generated follow-up suggestions.
+- [Generative UI](https://www.assistant-ui.com/elements/generative-ui.md): A styled component library for rendering structured generative UI output.
+- [Guardrail notice](https://www.assistant-ui.com/elements/guardrail-notice.md): A refusal in its own shape, with the nearest thing it can do instead.
+- [Heat graph](https://www.assistant-ui.com/elements/heat-graph.md): An activity heat map with month labels, weekday labels, legend, and tooltip.
+- [Image generation](https://www.assistant-ui.com/elements/image-generation.md): A dot grid holds the frame while the image resolves out of a blur.
+- [Image](https://www.assistant-ui.com/elements/image.md): Image message parts with preview, loading states, actions, and a fullscreen view.
+- [Inline citation](https://www.assistant-ui.com/elements/inline-citation.md): Numbered references inside a sentence, each with a hover preview of its source.
+- [Job progress](https://www.assistant-ui.com/elements/job-progress.md): Work measured in minutes: weighted stages, an ETA, and a way out.
+- [Launcher](https://www.assistant-ui.com/elements/launcher-bubble.md): The floating entry point, and the panel it opens into.
+- [Loader](https://www.assistant-ui.com/elements/loading-state.md): A pixel matrix that keeps time while the model has nothing to show yet.
+- [Model logos](https://www.assistant-ui.com/elements/logos.md): Inline SVG marks for OpenAI, Anthropic, and Google model providers.
+- [Map](https://www.assistant-ui.com/elements/map-answer.md): A location answer: pins, a route between them, and the list they came from.
+- [Markdown text](https://www.assistant-ui.com/elements/markdown-text.md): Assistant markdown with headings, lists, links, tables, and code blocks.
+- [Math](https://www.assistant-ui.com/elements/math-block.md): Rendered expressions with the working shown, one step at a time.
+- [MCP config dialog](https://www.assistant-ui.com/elements/mcp-config.md): A dialog for connectors and custom MCP servers, including authentication and connection state.
+- [Server panel](https://www.assistant-ui.com/elements/mcp-server-panel.md): Which servers are connected, what each one brought, and which is still waiting on you.
+- [Memory](https://www.assistant-ui.com/elements/memory-chips.md): What it now remembers about you, written during the turn and removable.
+- [Mermaid diagram](https://www.assistant-ui.com/elements/mermaid-diagram.md): Mermaid diagrams rendered inside messages, including partial streaming input.
+- [Message actions](https://www.assistant-ui.com/elements/message-actions.md): Copy, rate, and regenerate. Each action confirms itself with a small state change.
+- [Message branches](https://www.assistant-ui.com/elements/message-branches.md): Navigate between regenerated versions of the same answer without losing your place.
+- [Message pair](https://www.assistant-ui.com/elements/message-pair.md): A user bubble and a streaming assistant reply, with actions that appear on hover.
+- [Message queue](https://www.assistant-ui.com/elements/message-queue.md): Turns you typed while a run was in flight, stacked and cancelable until it finishes.
+- [Message timing](https://www.assistant-ui.com/elements/message-timing.md): Streaming statistics for the current message, including first token, total time, and speed.
+- [Mobile composer](https://www.assistant-ui.com/elements/mobile-composer.md): The bottom sheet: keyboard-aware, quick actions above, thumb-sized targets.
+- [Model selector](https://www.assistant-ui.com/elements/model-selector.md): A searchable runtime model picker with grouped providers and reasoning effort controls.
+- [Number ticker](https://www.assistant-ui.com/elements/number-ticker.md): Digits that roll into place as a count updates in real time.
+- [Onboarding](https://www.assistant-ui.com/elements/onboarding.md): First run: three moves that teach what this assistant is actually for.
+- [Orb](https://www.assistant-ui.com/elements/orb.md): The realtime voice orb, with connection, mute, and speaking state controls.
+- [Permission grant](https://www.assistant-ui.com/elements/permission-grant.md): Granting a capability rather than approving one action, with the reach spelled out.
+- [Prompt library](https://www.assistant-ui.com/elements/prompt-library.md): Prompts you saved, searchable, with their variables shown before you insert one.
+- [Quota banner](https://www.assistant-ui.com/elements/quota-banner.md): How much is left, when it comes back, and the way to get more.
+- [Quote](https://www.assistant-ui.com/elements/quote.md): Select message text, quote it from a floating toolbar, and carry it into the composer.
+- [Read aloud](https://www.assistant-ui.com/elements/read-aloud.md): An answer played back, the spoken word lit as it goes, speed under your thumb.
+- [Reasoning effort](https://www.assistant-ui.com/elements/reasoning-effort.md): How hard to think, and how much of that budget the run actually spent.
+- [Reasoning](https://www.assistant-ui.com/elements/reasoning.md): A collapsible renderer for assistant reasoning that follows the active message part.
+- [Recommendation card](https://www.assistant-ui.com/elements/recommendation-card.md): The agent proposes a change with its confidence, and waits for a yes.
+- [Regenerate with](https://www.assistant-ui.com/elements/regenerate-menu.md): Fork the same turn to a different model instead of rolling the same dice.
+- [Research report](https://www.assistant-ui.com/elements/research-report.md): An outline that fills in section by section, each carrying the sources behind it.
+- [Retrieval chunks](https://www.assistant-ui.com/elements/retrieval-chunks.md): The passages a retrieval answer stands on, scored, before the answer itself arrives.
+- [Reviewable diff](https://www.assistant-ui.com/elements/reviewable-diff.md): The same diff, but each hunk is a decision: keep it, discard it, apply what survived.
+- [Schedule](https://www.assistant-ui.com/elements/schedule-card.md): A run that repeats on its own, with its cadence and how it has been doing.
+- [Score breakdown](https://www.assistant-ui.com/elements/score-breakdown.md): A verdict with its arithmetic shown: criteria, weights, and what pulled it down.
+- [Scroll anchor](https://www.assistant-ui.com/elements/scroll-anchor.md): Streaming never steals your scroll position; a pill offers the way back down.
+- [Settings](https://www.assistant-ui.com/elements/settings-panel.md): Model, system prompt, temperature, and what the assistant is allowed to do.
+- [Shared conversation](https://www.assistant-ui.com/elements/shared-conversation.md): A read-only transcript someone sent you, with a way to pick it up yourself.
+- [Shiki highlighter](https://www.assistant-ui.com/elements/shiki-highlighter.md): Shiki code highlighting that defers tokenization until a message part settles.
+- [Sources](https://www.assistant-ui.com/elements/sources.md): Runtime sources with favicon links for URLs and file badges for documents.
+- [Speaker identity](https://www.assistant-ui.com/elements/speaker-identity.md): Who is talking, once a thread holds more than a user and one model.
+- [Spec sheet](https://www.assistant-ui.com/elements/spec-sheet.md): The most common structured answer after a table: one object, labeled.
+- [Stopped run](https://www.assistant-ui.com/elements/stopped-run.md): You pressed stop. The half-written answer stays, and continuing is one tap away.
+- [Streaming text](https://www.assistant-ui.com/elements/streaming-text.md): Tokens arrive softly: the newest words land in blue and settle into ink.
+- [Subagent list](https://www.assistant-ui.com/elements/subagent-list.md): Parallel workers with their own progress, models, and completions.
+- [Syntax highlighter](https://www.assistant-ui.com/elements/syntax-highlighter.md): Prism-based code highlighting for assistant markdown code blocks.
+- [Task card](https://www.assistant-ui.com/elements/task-card.md): A delegated task with its state, timing, result, and transcript in one card.
+- [Terminal block](https://www.assistant-ui.com/elements/terminal-block.md): Command output that streams line by line and ends with an exit status.
+- [Thinking indicator](https://www.assistant-ui.com/elements/thinking-indicator.md): A live status line that names what the agent is doing right now, with elapsed time.
+- [Thread list sidebar](https://www.assistant-ui.com/elements/thread-list-sidebar.md): A complete sidebar shell that places the runtime thread list beside the active conversation.
+- [Thread list](https://www.assistant-ui.com/elements/thread-list.md): Runtime-backed conversation switching with search, active selection, and thread actions.
+- [Thread search](https://www.assistant-ui.com/elements/thread-search.md): History you can actually get back into: pinned first, then grouped by when.
+- [Thread](https://www.assistant-ui.com/elements/thread.md): A complete chat container with messages, composer, auto-scroll, and accessibility built in.
+- [Timeline](https://www.assistant-ui.com/elements/timeline.md): Events on a time axis, with what already happened and what is still coming.
+- [Todo list](https://www.assistant-ui.com/elements/todo-list.md): The agent's own working list, rewritten mid-run as it discovers what else is needed.
+- [Tool call](https://www.assistant-ui.com/elements/tool-call.md): One tool invocation with its request and result tucked behind a disclosure.
+- [Tool failure](https://www.assistant-ui.com/elements/tool-error.md): One call failed. The error, the attempt count, and a retry that doesn't restart the turn.
+- [Tool fallback](https://www.assistant-ui.com/elements/tool-fallback.md): The default runtime renderer for tool calls that do not have dedicated UI.
+- [Tool group](https://www.assistant-ui.com/elements/tool-group.md): A collapsible runtime wrapper around consecutive tool calls in one assistant turn.
+- [Tool timeline](https://www.assistant-ui.com/elements/tool-timeline.md): A whole working session summarized as verbs, targets, and file stats.
+- [Tooltip icon button](https://www.assistant-ui.com/elements/tooltip-icon-button.md): An accessible icon button with a tooltip label and shared interaction states.
+- [Trace waterfall](https://www.assistant-ui.com/elements/trace-waterfall.md): Every span in a run on one time axis, nested, so you can see where it actually went.
+- [Typing indicator](https://www.assistant-ui.com/elements/typing-indicator.md): The classic three dots, tuned to read as presence rather than noise.
+- [Voice conversation](https://www.assistant-ui.com/elements/voice-conversation.md): A live call: the orb tracks your voice, the caption names the turn, the transcript follows.
+- [Web preview](https://www.assistant-ui.com/elements/web-preview.md): Chrome for a sandboxed preview: a URL bar, reload, and open-in-new around a frame you isolate.
+- [Web search](https://www.assistant-ui.com/elements/web-search.md): A search query and its results landing one by one as the agent reads.

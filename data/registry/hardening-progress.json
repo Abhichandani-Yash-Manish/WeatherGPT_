@@ -1,7 +1,7 @@
 {
  "schema_version": "hardening-progress-v1",
  "review": "research/reviews/national-readiness-20260912/review.md",
- "updated_at_utc": "2026-09-16T22:15:00+00:00",
+ "updated_at_utc": "2026-09-16T23:05:00+00:00",
  "operational_ready": false,
  "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
  "findings": [
@@ -2677,6 +2677,26 @@
    "origin, geographic and completeness verifiers stay forced false: the matcher is built, promotion waits on live proof",
    "foreground supervision only: unattended operation needs an OS supervisor, and the heartbeat is what would prove it alive",
    "flood, cyclone, heat, cold and sea-area hazards stay held as not connected; no out-of-band channel; escalation stays inbox-local"
+  ],
+  "hosting_performed": false,
+  "same_host_only": true
+ },
+ "frontend_research_batch": {
+  "report": "docs/87-frontend-research-and-inspiration.md",
+  "evidence_directory": "research/discovery/frontend-libraries-20260917",
+  "scope": "research the component landscape before the React overhaul, decide the stack, and define the chat-first module architecture",
+  "delivered": [
+   "primary-source reading of assistant-ui, React Spectrum S2 AI components, React Aria, Radix, shadcn/ui registry, Mantine, Motion, TanStack Virtual/Query/Table, MapLibre, Tremor, Lucide, axe-core, Noto, Vercel AI SDK and the 2026 chat-library landscape, kept as 384 KB of fetched documentation",
+   "licence verification for 26 candidates through the GitHub licence API: every one permissive (MIT, Apache-2.0, ISC, BSD-3-Clause, MPL-2.0 for the development-only scanner, OFL for fonts)",
+   "the stack decision: Vite + React + TypeScript, Tailwind v4 CSS-first theme seeded from tokens.css, shadcn/Radix primitives, assistant-ui transcript primitives over our engine contract, TanStack Query/Table/Virtual, viz.js kept for evidence charts, Motion, Lucide, self-hosted per-script Noto fonts, Vitest + RTL + MSW + axe-core, the existing CDP browser harness",
+   "the chat-first module architecture: one registry derived from the backend capability catalogue, each module exposing a compact Block, a full Surface and its intents, so a capability is reachable through the conversation and escalatable to the workbench",
+   "the CSP finding this forces: style-src self blocks inline style attributes, which positioning, virtualisation and animation libraries require; style-src-attr unsafe-inline is recommended with scripts left strict"
+  ],
+  "tests_added": [],
+  "open": [
+   "six decisions await the user before R0: the CSP style-src-attr change, streaming or staged answers, chat centre with a workbench panel, assistant-ui adoption, font self-hosting scope, and the Tailwind/shadcn baseline confirmation",
+   "the citation-layout eye-tracking study is flagged to read before R2, not cited",
+   "MapLibre licence re-verification before any vendoring; no library is installed yet"
   ],
   "hosting_performed": false,
   "same_host_only": true

@@ -1,0 +1,310 @@
+# Motion
+
+> Motion is a production-grade animation library for JavaScript, React and Vue. This index links the official documentation, tutorials and articles for the Motion library and the Motion+ premium toolkit.
+
+## React docs
+
+- [Motion component](https://motion.dev/docs/react-motion-component): Animate elements with a declarative API. Supports variants, gestures, and layout animations.
+- [Install Motion+](https://motion.dev/docs/react-motion-plus-installation): Install Motion+ in your React project from the private registry, keeping your token out of source control.
+- [Motion x Framer integration guide](https://motion.dev/docs/framer): Add animations to your Framer project, in Code Components and Overrides.
+- [Figma Motion: animate with Figma and export to Motion](https://motion.dev/docs/figma): Animate in Figma Motion and export to real Motion code for React. Or use Motion directly inside Figma Sites.
+- [Animating with Tailwind CSS](https://motion.dev/docs/react-tailwind): Combine Motion with Tailwind CSS's utility-first workflow.
+- [Base UI & Motion](https://motion.dev/docs/base-ui): Animate Base UI components with Motion.
+- [Radix UI & Motion](https://motion.dev/docs/radix): Animate Radix UI components with Motion.
+- [useCurtains](https://motion.dev/docs/react-use-curtains): Page transitions for React with the useCurtains hook: cover the view with an effect, swap content while it's hidden, then reveal once React has committed.
+- [Accessibility](https://motion.dev/docs/react-accessibility): Respect users' Reduced Motion preferences with the reducedMotion option and useReducedMotion hook.
+- [AnimateActivity](https://motion.dev/docs/react-animate-activity): Add enter, exit, and layout animations to components inside React's Activity boundaries.
+- [AnimateNumber](https://motion.dev/docs/react-animate-number): Number ticker and countdown animations for React.
+- [AnimatePresence](https://motion.dev/docs/react-animate-presence): Run exit animations on React components when they're removed from the page.
+- [AnimateView](https://motion.dev/docs/react-animate-view): View transitions and page animations for React, with the AnimateView component.
+- [Carousel](https://motion.dev/docs/react-carousel): A performant, accessible, and infinitely scrollable carousel for React.
+- [Cursor](https://motion.dev/docs/cursor): Custom cursor and follow-along effects for React.
+- [Drag animation](https://motion.dev/docs/react-drag): Physics-based drag interactions for React.
+- [Gesture animation](https://motion.dev/docs/react-gestures): An overview of the gestures available in Motion for React.
+- [Get started with Motion for React](https://motion.dev/docs/react): Install Motion for React and animate elements with springs.
+- [Hover animation](https://motion.dev/docs/react-hover-animation): Hover animations and interactions for React.
+- [Installation guide for Motion for React](https://motion.dev/docs/react-installation): Install Motion in your React project.
+- [Layout animation](https://motion.dev/docs/react-layout-animations): Smoothly animate layout changes and shared element transitions.
+- [LayoutGroup](https://motion.dev/docs/react-layout-group): Coordinate React layout animations between Motion components.
+- [LazyMotion](https://motion.dev/docs/react-lazy-motion): Load Motion's animation features on demand, shrinking initial bundle size to as low as 4.6kb.
+- [Motion Courses for React](https://motion.dev/docs/react-courses): Motion-Certified courses and community resources for learning Motion for React.
+- [Motion values overview](https://motion.dev/docs/react-motion-value): Composable, animatable values that update styles without re-rendering React.
+- [MotionConfig](https://motion.dev/docs/react-motion-config): Configure default transition options and manage reduced motion preferences.
+- [React animation](https://motion.dev/docs/react-animation): An overview of animating React with motion components, variants, gestures, and keyframes.
+- [React scroll animation](https://motion.dev/docs/react-scroll-animations): Scroll-triggered and scroll-linked effects in React: parallax, progress, and more.
+- [Reduce bundle size](https://motion.dev/docs/react-reduce-bundle-size): Techniques for shrinking your Motion for React bundle.
+- [Reorder](https://motion.dev/docs/react-reorder): Drag-to-reorder lists and grids with automatic layout and exit animations.
+- [ScrambleText](https://motion.dev/docs/react-scramble-text): A scramble text animation component for React, with stagger and renderless control.
+- [SVG animation](https://motion.dev/docs/react-svg-animation): Animate SVGs in React, including line drawing and morphing effects.
+- [Text animation](https://motion.dev/docs/text-animation): A complete overview of text animation techniques: splitting, staggering, clipped reveals, rolling labels, scramble text, typewriters, numbers and scroll-linked words.
+- [Ticker](https://motion.dev/docs/react-ticker): Infinitely-scrolling ticker and marquee effects, driven by time, drag, or scroll.
+- [Transitions](https://motion.dev/docs/react-transitions): Control timing with duration, easing, springs, delay, and stagger.
+- [Typewriter](https://motion.dev/docs/react-typewriter): A typewriter component for React with human-like variance, stylable cursors, and accessibility.
+- [Upgrade guide](https://motion.dev/docs/react-upgrade-guide): Step-by-step upgrade notes between Motion for React versions.
+- [useAnimate](https://motion.dev/docs/react-use-animate): Manually start and control animations, scoped to the current React component.
+- [useAnimationFrame](https://motion.dev/docs/react-use-animation-frame): Run a callback every frame, with elapsed time and delta arguments.
+- [useDragControls](https://motion.dev/docs/react-use-drag-controls): Manually start and stop drag gestures, with snap to cursor and more.
+- [useInView](https://motion.dev/docs/react-use-in-view): Switch React state when an element enters or leaves the viewport.
+- [useMotionTemplate](https://motion.dev/docs/react-use-motion-template): Combine motion values into dynamic, interpolated strings.
+- [useMotionValueEvent](https://motion.dev/docs/react-use-motion-value-event): Fire events when the value of a motion value changes.
+- [usePageInView](https://motion.dev/docs/react-use-page-in-view): Pause animations when the document isn't visible. SSR-compatible.
+- [useReducedMotion](https://motion.dev/docs/react-use-reduced-motion): Adapt or disable animations based on the device's Reduced Motion setting.
+- [useScroll](https://motion.dev/docs/react-use-scroll): Track scroll progress as motion values, for parallax and progress bars.
+- [useSpring](https://motion.dev/docs/react-use-spring): A spring-powered motion value. Standalone, or attached to another motion value.
+- [useTime](https://motion.dev/docs/react-use-time): A motion value that returns elapsed time in milliseconds, every frame.
+- [useTransform](https://motion.dev/docs/react-use-transform): Transform the output of one motion value into a new motion value.
+- [useVelocity](https://motion.dev/docs/react-use-velocity): A motion value that outputs the velocity of another motion value.
+
+## JavaScript docs
+
+- [animate](https://motion.dev/docs/animate): animate() runs easing and spring animations, hardware-accelerated where supported.
+- [Install Motion+](https://motion.dev/docs/motion-plus-installation): Install Motion+ in your project from the private registry, keeping your token out of source control.
+- [View animations](https://motion.dev/docs/animate-view): animateView() runs view transitions with spring animations and interruption handling.
+- [scroll](https://motion.dev/docs/scroll): scroll() binds animations to scroll progress, hardware-accelerated where supported.
+- [Easing functions](https://motion.dev/docs/easing-functions): Motion's built-in easing functions and modifiers, from cubicBezier to anticipate.
+- [Layout animations](https://motion.dev/docs/layout-animations): Animate complex layout changes and shared element transitions.
+- [Curtains](https://motion.dev/docs/curtains): curtains() runs a page transition that covers the viewport with an effect, swaps your content while it's hidden, then reveals it.
+- [3D transforms and perspective](https://motion.dev/docs/3d-transforms): How the z axis, perspective and preserve-3d work on the web, and how to animate them with Motion.
+- [Add animations to your Squarespace site](https://motion.dev/docs/squarespace): Add Motion to a Squarespace site for animations beyond what templates allow.
+- [Add animations to your WordPress site](https://motion.dev/docs/wordpress): Add Motion to a WordPress site for high-performance animations on any theme.
+- [Animation performance](https://motion.dev/docs/performance): How browsers render animations, and how to write ones that hit 120fps.
+- [arc](https://motion.dev/docs/arc): `arc` can change the path between two points from a straight line to a curved one.
+- [attrEffect](https://motion.dev/docs/attr-effect): attrEffect() applies motion values to HTML element attributes.
+- [CSS](https://motion.dev/docs/css): Spring animations as CSS, ready for React Server Components, Astro, Vue, and CSS-in-JS.
+- [delay](https://motion.dev/docs/delay): delay() is a setTimeout replacement that fires in tandem with Motion's frame loop.
+- [FAQs](https://motion.dev/docs/faqs): Find answers to common questions about Motion, including browser support and other troubleshooting.
+- [frame](https://motion.dev/docs/frame): frame() schedules tasks on Motion's animation loop, batching reads, updates, and renders.
+- [Get started with Motion](https://motion.dev/docs/quick-start): Install Motion and animate HTML, SVG, or WebGL with springs.
+- [GSAP vs Motion: Which should you use?](https://motion.dev/docs/gsap-vs-motion): Compare Motion (formerly Framer Motion) and GSAP across bundle size, performance, and licensing.
+- [hover](https://motion.dev/docs/hover): hover() fires callbacks when a hover gesture starts and ends.
+- [Improvements to Web Animations API](https://motion.dev/docs/improvements-to-the-web-animations-api-dx): Springs, custom easings, persistent state, and independent transforms on top of the Web Animations API.
+- [Integrate Motion with Webflow](https://motion.dev/docs/webflow): Add Motion to a Webflow site for hardware-accelerated animations beyond native capabilities.
+- [inView](https://motion.dev/docs/inview): inView() runs callbacks when elements enter and leave the viewport, built on IntersectionObserver.
+- [mapValue](https://motion.dev/docs/map-value): mapValue() maps a motion value's output range to numbers, colours, or complex strings.
+- [Migrate from GSAP to Motion](https://motion.dev/docs/migrate-from-gsap-to-motion): Move from GSAP to Motion: tweens, timelines, scroll, and React, mapped step by step.
+- [mix](https://motion.dev/docs/mix): mix() interpolates between two values: numbers, colours, complex strings, arrays, and objects.
+- [motionValue](https://motion.dev/docs/motion-value): Motion values track the state and velocity of an animated property. The reactive primitive at Motion's core.
+- [press](https://motion.dev/docs/press): press() detects press gestures, with keyboard support and pointer filtering built in.
+- [propEffect](https://motion.dev/docs/prop-effect): propEffect() applies motion values to JavaScript object properties, useful with libraries like Three.js.
+- [resize](https://motion.dev/docs/resize): resize() reacts to size changes on the viewport or any element, via ResizeObserver.
+- [scrambleText](https://motion.dev/docs/scramble-text): scrambleText() animates text by scrambling characters, with stagger and timing controls.
+- [splitText](https://motion.dev/docs/split-text): splitText() breaks text into characters, words, and lines for granular text animation.
+- [spring](https://motion.dev/docs/spring): spring() creates physics-based spring animations, configured by bounce, stiffness, damping, and mass.
+- [springValue](https://motion.dev/docs/spring-value): springValue() creates motion values driven by physics, with stiffness, damping, and mass.
+- [stagger](https://motion.dev/docs/stagger): stagger() distributes a delay across elements, with control over origin and easing.
+- [styleEffect](https://motion.dev/docs/style-effect): styleEffect() applies motion values to HTML element styles, with independent transforms.
+- [SVG animation: every technique compared](https://motion.dev/docs/svg-animation): There are four ways to animate SVG on the web: SMIL, CSS, the Web Animations API and JavaScript. Here's how each SVG animation technique actually works, and which one to reach for.
+- [svgEffect](https://motion.dev/docs/svg-effect): svgEffect() applies motion values to SVG styles and attributes, including pathLength for draw animations.
+- [Three.js](https://motion.dev/docs/three): Animate Three.js objects, materials, shader uniforms and TSL nodes with Motion.
+- [transform](https://motion.dev/docs/transform): transform() maps an input range to numbers, colours, or complex strings.
+- [transformValue](https://motion.dev/docs/transform-value): transformValue() derives a new motion value by computing output from one or more existing values.
+- [Tween animations](https://motion.dev/docs/tween): A tween animates between a start and end value over a set duration, shaped by an easing curve.
+- [Upgrade guide](https://motion.dev/docs/upgrade-guide): Step-by-step upgrade notes between Motion versions.
+- [vgpu](https://motion.dev/docs/vgpu): Animate vgpu uniforms, shader bindings, scene nodes, cameras, lights and materials with Motion.
+- [wrap](https://motion.dev/docs/wrap): wrap() constrains a value within a range, ideal for pagination and looping indices.
+
+## Vue docs
+
+- [Motion component](https://motion.dev/docs/vue-motion-component): Animate Vue elements with a declarative API. Supports variants, gestures, and layout animations.
+- [AnimateNumber](https://motion.dev/docs/vue-animate-number): Create beautiful number animations like countdowns with AnimateNumber and Motion. Leverages Motion's layout animations and transitions. Lightweight at just 2.5kb.
+- [AnimatePresence](https://motion.dev/docs/vue-animate-presence): Run exit animations on Vue components via the exit prop.
+- [Carousel](https://motion.dev/docs/vue-carousel): A performant, accessible, and infinitely scrollable carousel for Vue.
+- [Cursor](https://motion.dev/docs/vue-cursor): Create custom cursors and follow-along effects in Vue with Motion+ Cursor. It auto-adapts to links, text, & buttons. Style with CSS, animate with Motion.
+- [Gesture animation](https://motion.dev/docs/vue-gestures): Hover, tap, pan, drag, and inView gestures for Motion for Vue.
+- [Get started with Motion for Vue](https://motion.dev/docs/vue): Install Motion for Vue and animate elements with springs.
+- [Integrate Motion with Reka](https://motion.dev/docs/vue-radix): Animate Reka-UI primitives with Motion for Vue.
+- [Layout animation](https://motion.dev/docs/vue-layout-animations): Animate layout changes between elements, including shared element transitions via layoutId.
+- [LayoutGroup](https://motion.dev/docs/vue-layout-group): Coordinate layout animations between Vue components, even when they aren't rendered together.
+- [LazyMotion](https://motion.dev/docs/vue-lazymotion): Load Motion's animation features on demand, shrinking initial bundle size to as low as 6kb.
+- [Motion Directive](https://motion.dev/docs/vue-directive): v-motion adds gestures, layout, and variants to any HTML or SVG element without a wrapper component.
+- [Motion values](https://motion.dev/docs/vue-motion-value): Composable, animatable values that update styles without re-rendering Vue.
+- [MotionConfig](https://motion.dev/docs/vue-motion-config): Configure default transitions and reduced motion preferences for all child Motion components.
+- [Reorder](https://motion.dev/docs/vue-reorder): Drag-to-reorder lists and grids with automatic layout and exit animations.
+- [Scroll animation](https://motion.dev/docs/vue-scroll-animations): Scroll-triggered and scroll-linked animations for Vue, via whileInView and useScroll.
+- [Ticker](https://motion.dev/docs/vue-ticker): Create infinitly-scrolling ticker and marquee effects with Motion for Vue's Ticker component. Looping, dragging and scrolling animations are all possible with this lightweight and performant component.
+- [Transition options](https://motion.dev/docs/vue-transitions): Control timing with duration, easing, springs, delay, and repeat.
+- [Typewriter](https://motion.dev/docs/vue-typewriter): A customizable typewriter animation component for Vue that creates realistic typing animations with human-like variance, stylable cursors and accessibility.
+- [useAnimate](https://motion.dev/docs/vue-use-animate): Manually start and control animations, scoped to the current Vue component.
+- [useAnimationFrame](https://motion.dev/docs/vue-use-animation-frame): Run a callback every frame, with elapsed time and delta arguments.
+- [useDragControls](https://motion.dev/docs/vue-use-drag-controls): Manually start and stop drag gestures, with snap-to-cursor and touch support.
+- [useInView](https://motion.dev/docs/vue-use-in-view): Switch Vue state when an element enters or leaves the viewport. 0.6kb.
+- [useMotionTemplate](https://motion.dev/docs/vue-use-motion-template): Combine motion values into dynamic, interpolated strings.
+- [useMotionValueEvent](https://motion.dev/docs/vue-use-motion-value-event): Subscribe to motion value events like change and animationComplete, with auto-cleanup.
+- [useReducedMotion](https://motion.dev/docs/vue-use-reduced-motion): Adapt or disable animations based on the device's Reduced Motion setting.
+- [useScroll](https://motion.dev/docs/vue-use-scroll): Track scroll progress as motion values, for parallax and progress bars.
+- [useSpring](https://motion.dev/docs/vue-use-spring): A spring-powered motion value. Standalone, or attached to another motion value.
+- [useTime](https://motion.dev/docs/vue-use-time): A motion value that returns elapsed time in milliseconds, every frame.
+- [useTransform](https://motion.dev/docs/vue-use-transform): Map a motion value's output to a new motion value, with clamp and easing options.
+- [useVelocity](https://motion.dev/docs/vue-use-velocity): A motion value that outputs the velocity of another motion value.
+- [Vue animation](https://motion.dev/docs/vue-animation): An overview of animating Vue with motion components, variants, gestures, and keyframes.
+
+## AI Kit docs
+
+- [Docs & examples for your agent](https://motion.dev/docs/ai-kit-context): Give your AI editor always-current Motion docs to search, plus source code for every premium example on Motion+.
+- [MotionScore for Agents](https://motion.dev/docs/motionscore-code-audit): Find and fix animation performance issues in source code and running local sites with MotionScore for Agents.
+- [Generate CSS](https://motion.dev/docs/ai-kit-generate-css): Generate CSS spring and bounce easing curves directly from your LLM via the Motion AI Kit MCP.
+- [Transition editor](https://motion.dev/docs/ai-kit-transition-editor): Edit your CSS and Motion animations visually with the Motion AI Kit.
+- [Get started with the Motion AI Kit](https://motion.dev/docs/ai-kit): Make your AI agent a Motion expert with current docs, MotionScore for Agents, examples search, CSS springs and a transition editor.
+- [Install the Motion AI Kit](https://motion.dev/docs/ai-kit-install): Install the Motion AI Kit with our easy installer script.
+
+## Tutorials
+
+- [Bobble hover](https://motion.dev/examples/react-bobble-hover): A 3x3 grid of tiles that bobble with a spring when hovered, with the bounce scaled to how fast the pointer was moving, using Motion for React.
+- [Command Palette](https://motion.dev/examples/react-command-palette): A ⌘K-style command palette with spring-animated entrance, filtered search, and keyboard navigation
+- [Scroll Direction: Hide Header](https://motion.dev/examples/react-scroll-hide-header): A sticky header that hides when scrolling down and reappears when scrolling up. Uses useMotionValueEvent to detect scroll direction.
+- [Scroll Image Reveal](https://motion.dev/examples/react-scroll-image-reveal): Images reveal with a clip-path curtain effect as you scroll. Uses useScroll with element targeting and useTransform for clipPath and scale.
+- [Scroll Zoom Hero](https://motion.dev/examples/react-scroll-zoom-hero): An immersive hero section where the background image scales up, blurs, and fades as you scroll. Creates a dramatic entry effect.
+- [Scroll velocity: 3D planes](https://motion.dev/examples/react-scroll-velocity-linked-offset): A 3D carousel with scroll velocity-linked wave effect using Motion for React.
+- [iOS App Folder](https://motion.dev/examples/react-ios-app-folder): An iOS-style app folder that expands to reveal apps inside, using Motion for React's layout animations and AnimatePresence.
+- [To-do list](https://motion.dev/examples/react-todo-list): A draggable to-do list with animated checkboxes and strikethrough effects using Motion for React's Reorder component.
+- [Carousel: iOS exposure slider](https://motion.dev/examples/react-carousel-ios-exposure-slider): An example of creating a camera exposure slider interface with animated notches using the Motion+ Carousel component for React.
+- [AnimatePresence modes](https://motion.dev/examples/react-animate-presence-modes): An example of the three AnimatePresence modes (sync, wait, and popLayout) demonstrating how elements enter and exit the DOM with Motion for React.
+- [Cursor: Floating target](https://motion.dev/examples/react-cursor-floating-target): An example of creating a floating target with rotating text and hover effects using the Motion+ Cursor and usePointerPosition.
+- [Card stack](https://motion.dev/examples/react-card-stack): An example of creating a swipeable card stack with photos in Motion for React.
+- [Material Design: Ripple](https://motion.dev/examples/js-material-design-ripple): An example of creating a press ripple with Motion, inspired by Google Material Design.
+- [Material Design: Ripple](https://motion.dev/examples/react-material-design-ripple): An example of creating a press ripple with Motion for React, inspired by Google Material Design.
+- [Magnetic filings](https://motion.dev/examples/react-magnetic-filings): An example of creating a grid of metal filings that rotate to point towards the cursor position using Motion for React.
+- [Cursor trail velocity](https://motion.dev/examples/react-cursor-trail-velocity): An example of creating a cursor trail with velocity-based inertia animations in Motion for React.
+- [Cursor trail](https://motion.dev/examples/react-cursor-trail): An example of creating a cursor trail with images in Motion for React.
+- [Infinite loading](https://motion.dev/examples/react-infinite-loading): An example of creating an infinite loading list with staggered animations in Motion for React.
+- [Scroll highlight](https://motion.dev/examples/js-scroll-highlight): An example of creating a scroll-triggered skill showcase with dynamic highlighting in Motion.
+- [Loading: Infinite path drawing](https://motion.dev/examples/js-loading-infinite-path-drawing): An example of creating an infinite path drawing loading animation with Motion. This example uses svgEffect to animate the path. svgEffect is the next-generation Motion SVG renderer that makes it easy to create these infinitely looping drawing animations. In a future version of Motion it'll be possible to just use the animate function below without the svgEffect setup.
+- [Apple Intelligence ripple](https://motion.dev/examples/react-apple-intelligence): An example of the 'ripple' part of the Apple Intelligence animation using Motion for React. It uses a cloned version of the current content rather than using shaders.
+- [Family-style dialog](https://motion.dev/examples/js-family-dialog): Family-style dialog using Motion. It uses the HTML dialog and Motion's animateView function for View Transitions.
+- [Split text](https://motion.dev/examples/react-split-text): An example of creating a text reveal animation with split text in Motion for React
+- [Hold to confirm](https://motion.dev/examples/js-hold-to-confirm): A Motion example showing long-press interaction. The button's events update a progress motion value that drives multiple animations of other motion values.
+- [Multi state badge](https://motion.dev/examples/js-multi-state-badge): A badge that can be in multiple states, such as processing, success, or error.
+- [Notifications stack](https://motion.dev/examples/js-notifications-stack): A iOS inspired notifications stack using Motion's variants.
+- [Hold to confirm](https://motion.dev/examples/react-hold-to-confirm): A Motion for React example showing long-press interaction. The button's events update a progress motion value that drives multiple animations of other motion values.
+- [Characters remaining](https://motion.dev/examples/js-characters-remaining): An example of creating a character counter with spring animations in Motion
+- [Multi state badge](https://motion.dev/examples/react-multi-state-badge): A badge that can be in multiple states, such as processing, success, or error.
+- [Loading: Circle spinner](https://motion.dev/examples/vue-loading-circle-spinner): An example of creating a circle spinner loading animation with Motion for Vue.
+- [Fill text](https://motion.dev/examples/vue-loading-fill-text): An example of creating a text fill loading animation with Motion for Vue.
+- [Loading: Jumping dots](https://motion.dev/examples/vue-loading-jumping-dots): An example of creating a jumping dots loading animation with Motion for Vue.
+- [Loading overlay](https://motion.dev/examples/vue-loading-line-reveal): An example of creating a line reveal loading animation with clipPath in Motion for Vue
+- [Loading progress bar](https://motion.dev/examples/vue-loading-progress-bar): An example of creating a progress bar loading animation with Motion for Vue.
+- [Loading ripple](https://motion.dev/examples/vue-loading-ripple): An example of creating a ripple loading animation with Motion for Vue.
+- [Loading: Pulse dots](https://motion.dev/examples/vue-loading-three-dots-pulse): An example of creating a pulsing dots loading animation with Motion for Vue.
+- [Loading: Circle spinner](https://motion.dev/examples/js-loading-circle-spinner): An example of creating a circle spinner loading animation with Motion.
+- [Fill text](https://motion.dev/examples/js-loading-fill-text): An example of creating a text fill loading animation with Motion.
+- [Loading: Jumping dots](https://motion.dev/examples/js-loading-jumping-dots): An example of creating a jumping dots loading animation with Motion.
+- [Loading overlay](https://motion.dev/examples/js-loading-line-reveal): An example of creating a line reveal loading animation with clipPath in Motion
+- [Loading progress bar](https://motion.dev/examples/js-loading-progress-bar): An example of creating a progress bar loading animation with Motion.
+- [Loading ripple](https://motion.dev/examples/js-loading-ripple): An example of creating a ripple loading animation with Motion.
+- [Loading: Pulse dots](https://motion.dev/examples/js-loading-three-dots-pulse): An example of creating a pulsing dots loading animation with Motion.
+- [Loading: Circle spinner](https://motion.dev/examples/react-loading-circle-spinner): An example of creating a circle spinner loading animation with Motion for React.
+- [Fill text](https://motion.dev/examples/react-loading-fill-text): An example of creating a text fill loading animation with Motion for React.
+- [Loading: Jumping dots](https://motion.dev/examples/react-loading-jumping-dots): An example of creating a jumping dots loading animation with Motion for React.
+- [Loading overlay](https://motion.dev/examples/react-loading-line-reveal): An example of creating a line reveal loading animation with clipPath in Motion for React
+- [Loading progress bar](https://motion.dev/examples/react-loading-progress-bar): An example of creating a progress bar loading animation with Motion for React.
+- [Loading ripple](https://motion.dev/examples/react-loading-ripple): An example of creating a ripple loading animation with Motion for React.
+- [Loading: Pulse dots](https://motion.dev/examples/react-loading-three-dots-pulse): An example of creating a pulsing dots loading animation with Motion for React.
+- [Physical stagger](https://motion.dev/examples/js-staggered-grid): An example of animating elements with a delay staggered by physical distance.
+- [iOS App Store: Layout animation](https://motion.dev/examples/js-app-store-layout): An example of creating a card layout inspired by the iOS App Store with Modal functionality using Motion's animateLayout for shared element animations.
+- [iOS App Store](https://motion.dev/examples/js-app-store): An example of creating a card layout inspired by the iOS App Store with Modal functionality using View Transitions in Motion.
+- [Conic gradient pointer](https://motion.dev/examples/js-conic-gradient-pointer): An example of creating a dynamic conic gradient that follows the pointer position.
+- [Image reveal slider](https://motion.dev/examples/js-image-reveal-slider): An image reveal slider that uses Motion's drag functionality to create a before/after image comparison with a sliding reveal effect. It includes keyboard accessibility and smooth animations.
+- [iOS slider](https://motion.dev/examples/js-ios-slider): An example of recreating the iOS slider using Motion for JavaScript. This example creates a brightness slider with iOS-like overscroll and springy animations.
+- [Notifications list](https://motion.dev/examples/js-notifications-list): An example of animating a list of animations as they're added and removed, using Motion for JavaScript's animation capabilities. It implements manual FLIP animations so that notifications animate into their new layouts.
+- [Tilt card](https://motion.dev/examples/js-tilt-card): A card that tilts based on pointer position using Motion's spring animations.
+- [Typewriter](https://motion.dev/examples/js-typewriter): An example of a typewriter effect using Motion for JavaScript animation values.
+- [Tilt card](https://motion.dev/examples/react-tilt-card): A card that tilts based on pointer position using Motion for React's useSpring hook.
+- [Split Text: Scatter](https://motion.dev/examples/js-split-text-scatter): Demonstrate how to use the splitText function from Motion+ to create scatter text animations.
+- [Split Text: Wavy](https://motion.dev/examples/js-split-text-wavy): Demonstrate how to use the splitText function from Motion+ to create wavy text animations.
+- [Split Text](https://motion.dev/examples/js-split-text): Demonstrate how to use the splitText function from Motion+ to create staggered text animations.
+- [Color interpolation](https://motion.dev/examples/js-color-interpolation): A comparison of color interpolation between Motion and the browser's native interpolation. Motion uses linear RGB color space, which avoids the dimming effect suffered by browser interpolation.
+- [Image reveal slider](https://motion.dev/examples/react-image-reveal-slider): An example of creating an interactive image comparison slider with Motion for React.
+- [Gestures](https://motion.dev/examples/js-gestures): An example of using Motion's press and hover functions to animate elements as a user presses and hovers over them.
+- [Accordion](https://motion.dev/examples/js-accordion): An example of an accordion component using Motion. Animate accordion content using height: auto and accessible markup. Uses focus events and shared layout animations for keyboard accessibility.
+- [Bounce easing](https://motion.dev/examples/js-bounce-easing): A toggle switch that demonstrates custom easing functions with both bounce and spring animations.
+- [Modal dialog](https://motion.dev/examples/js-modal): An example of a modal dialog using Motion and the HTML <dialog /> element. This example demonstrates smooth animations for opening and closing the modal, with a backdrop overlay and click-outside-to-close functionality.
+- [Reveal text effect](https://motion.dev/examples/js-text-reveal): An example of revealing text on hover using flexbox and Motion's layout animations.
+- [Spring: Follow Cursor](https://motion.dev/examples/js-spring-follow-cursor): An example of a spring animation that follows the cursor.
+- [Press](https://motion.dev/examples/js-press): An example of using Motion's press function to animate elements as a user presses them. press() automatically filters out right clicks and secondary touch points. Every element with a press gesture is keyboard accessible by default.
+- [Swipe actions](https://motion.dev/examples/react-swipe-actions): iOS-style swipe actions where UI elements and animations respond dynamically to swipe progress. Actions trigger via taps or full swipes (for primary actions). A modern, space-efficient alternative to dropdown menus that keeps actions hidden behind the main item until revealed by a swipe gesture.
+- [Hover](https://motion.dev/examples/js-hover): An example of using Motion's hover function to animate elements as a user hovers over them. hover() automatically filters out polyfilled hover events from touch screens, which can normally lead to broken visual states.
+- [Accordion](https://motion.dev/examples/react-accordion): An example of an accordion component using Motion for React. Animate accordion content using height: auto and accessible markup. Uses focus events and shared layout animations for keyboard accessibility.
+- [iOS slider](https://motion.dev/examples/react-ios-slider): An example of recreating the iOS slider using Motion for React. This example uses useTransform to map input to slider state, and slider state to pull, squish and squash animations. It uses React'setModal onFocus and onBlur to set up keyboard-accessible inputs, with Motion's whileFocus prop to animate a custom focus indicator.
+- [Smooth Tabs](https://motion.dev/examples/react-smooth-tabs): Segmented control with sliding indicator and directional content transitions
+- [Tab select](https://motion.dev/examples/react-tab-select): An example of using making a tab select component with Motion for React's shared layout animations. Because it uses onTap and whileFocus, it's keyboard-accessible by default. Try tabbing between the options and hitting Enter.
+- [iOS App Store](https://motion.dev/examples/react-app-store): An example of animating cards inspired by the iOS App Store using Motion for React's layout animations.
+- [Follow pointer with spring](https://motion.dev/examples/react-follow-pointer-with-spring): An example of making an element follow the pointer with a spring using Motion for React's useSpring hook.
+- [HTML content](https://motion.dev/examples/react-html-content): An example using Motion for React to animate HTML content by rendering a MotionValue.
+- [Keyframe wildcards](https://motion.dev/examples/react-keyframes-wildcards): An example of using Motion for React's keyframe wildcards to create interruptible keyframe animations.
+- [Parallax](https://motion.dev/examples/react-parallax): Scroll-linked parallax effect where background images move at a different speed to foreground content, creating a sense of depth.
+- [Spinning 3D cube](https://motion.dev/examples/react-use-animation-frame): An example of using Motion for React's useAnimationFrame hook to animate a 3D cube.
+- [CSS spring](https://motion.dev/examples/react-css-spring): An example of generating a spring animation in CSS using Motion's spring function.
+- [Lightbox](https://motion.dev/examples/js-lightbox): An example and tutorial for a lightbox shared element transition, using Motion's view function.
+- [Page wipe](https://motion.dev/examples/js-page-wipe): An example of combining a full page wipe with a shared element transition using Motion's view function. The view function is built on the browser's native View Transition API.
+- [iOS Notifications stack](https://motion.dev/examples/react-notifications-stack): A iOS inspired notifications stack using Motion for React's variants.
+- [Shared view animation](https://motion.dev/examples/js-shared-view-animation): Animate shared elements between states using View Transitions API via Motion's view() function.
+- [View animation](https://motion.dev/examples/js-view-animation): An example of animating a layout change using the View Transitions API via Motion's simple view function.
+- [HTML content](https://motion.dev/examples/js-html-content): An example using Motion to animate HTML content via the Element.innerText property.
+- [Basic animation](https://motion.dev/examples/js-options): An example of using easing and duration options to customise a scale animation in Motion.
+- [Parallax](https://motion.dev/examples/js-parallax): An example of creating a parallax effect using Motion's scroll function.
+- [Rotate](https://motion.dev/examples/js-rotate): An example of a rotation animation in Motion.
+- [Scroll fade in/out](https://motion.dev/examples/js-scroll-fade): An example of fading content in and out as you scroll using Motion's scroll function.
+- [Scroll pinning](https://motion.dev/examples/js-scroll-pinning): An example of pinning content on scroll and animating content horizontally using position: sticky and Motion's scroll function.
+- [Scroll-triggered animation](https://motion.dev/examples/js-scroll-triggered): An example of using Motion's inView function to trigger animations when elements enter the viewport.
+- [Spring](https://motion.dev/examples/js-spring): An example of a spring animation in Motion.
+- [Stagger](https://motion.dev/examples/js-stagger): An example of staggering animations in Motion using its stagger() function.
+- [SVG loading spinner](https://motion.dev/examples/js-svg-loading-spinner): An example of using Motion to animate an SVG loading spinner.
+- [SVG path morphing](https://motion.dev/examples/js-svg-path-morphing): An example of using Motion and Flubber to animate an SVG between different shapes.
+- [Three.js](https://motion.dev/examples/js-three): An example of a rotating cube using Three.js and Motion.
+- [Exit animation](https://motion.dev/examples/react-exit-animation): An example of animating an element when it's removed from the DOM using AnimatePresence in Motion for React.
+- [Drag](https://motion.dev/examples/react-drag): An example of making an element draggable using Motion for React's drag prop.
+- [Enter animation](https://motion.dev/examples/react-enter-animation): An example of animating an element when it's added to the DOM using Motion for React.
+- [Gestures](https://motion.dev/examples/react-gestures): An example of using gestures to animate an element using Motion for React's simple whileTap and whileHover props.
+- [Keyframes](https://motion.dev/examples/react-keyframes): An example of animating an element using keyframes with Motion for React.
+- [Layout animation](https://motion.dev/examples/react-layout-animation): An example of animating a layout change using Motion for React's simple layout prop.
+- [Motion along a path](https://motion.dev/examples/react-motion-path): An example of animating an element along a path using Motion for React.
+- [Path drawing](https://motion.dev/examples/react-path-drawing): An example of animating a SVG path to make a path drawing effect, using Motion for React.
+- [Path morphing](https://motion.dev/examples/react-path-morphing): An example of creating smooth SVG path morphing animations with Motion for React.
+- [Transition options](https://motion.dev/examples/react-transition): An example of setting transition options in Motion for React.
+- [Variants](https://motion.dev/examples/react-variants): An example of orchestrating animation sequences using Motion for React's variants.
+- [Rotate](https://motion.dev/examples/react-rotate): An example of animation the rotation of an element with Motion for React
+
+## Magazine
+
+- [Introducing Motion UI](https://motion.dev/magazine/introducing-motion-ui): Production-ready animated sections and components for React. Everything performance-graded with MotionScore, drop-in to your design system via shadcn tokens or AI.
+- [A View Transition API for the rest of us](https://motion.dev/magazine/a-view-transitions-api-for-the-rest-of-us): The View Transition API can animate the impossible, but using it can be painful. Here's how Motion's animateView(), now free in the core library, fixes its rough edges.
+- [Crashing cars and improving hover detection](https://motion.dev/magazine/collision-detection-in-hover-detection): Fast pointer movements can skip over elements, breaking hover detection. The surprising solution can be found in game development.
+- [How To: Hardware-accelerate your favourite GSAP easing functions](https://motion.dev/magazine/how-to-use-your-favourite-gsap-easings-with-waapi): The Web Animations API is included with every browser, but only supports CSS timing functions. Let's supercharge it with GSAP's easing functions!
+- [Interview: David Haz, creator of React Bits](https://motion.dev/magazine/interview-david-haz-creator-of-react-bits): We sit down with David Haz, creator of React Bits, about AI, build systems, productivity and more.
+- [Introducing the Motion+ Carousel](https://motion.dev/magazine/introducing-the-motion-carousel): Meet the Motion+ Carousel for React. A performant and accessible component with infinite loops and pixel-perfect swiping.
+- [Motion's independence: One year in review](https://motion.dev/magazine/motion-independence-one-year-in-review): It's been an entire year since I took Framer Motion independent as Motion. Here's how it's gone, and what I learned in this first year.
+- [The Web Animation Performance Tier List](https://motion.dev/magazine/web-animation-performance-tier-list): Learn what makes web animations fast, slow, and everything in between with our 2025 web animation performance tier list.
+- [Building the ultimate ticker](https://motion.dev/magazine/building-the-ultimate-ticker): Ticker compoments are becoming common decorative features, but building a good one isn't easy. Let's take a look at the problem with CSS components, and how Motion+ Ticker aims to solve them.
+- [Introducing magnetic and zoning features in Motion+ Cursor](https://motion.dev/magazine/introducing-magnetic-cursors-in-motion-cursor): Motion+ Cursor gains powerful magnetic and zoning features, allowing your cursors to react to, snap to, and morph to hit targets.
+- [Supercharging the GTA VI website with Motion](https://motion.dev/magazine/supercharging-the-gta-vi-website-with-motion): Rockstar's beautiful GTA VI website could load even faster with Motion's deferred keyframe resolution and use of native browser APIs.
+- [Introducing Motion for Vue](https://motion.dev/magazine/introducing-motion-for-vue): Motion finally arrives on Vue, complete with variants, scroll, layout animations, and everything else you love from Framer Motion.
+- [Revealed: React's experimental animations API](https://motion.dev/magazine/reacts-experimental-view-transition-api): React is experimenting with a new animation API based on the View Transition API. How does it work? What can it do? We reveal all in this blog post.
+- [How to add cmd-k search shortcut to your Framer site](https://motion.dev/magazine/how-to-add-cmd-k-search-shortcut-to-your-framer-site): By default, the Framer Search component doesn't support the cmd-k keyboard shortcut. Here's how to add it to your Framer site.
+- [Framer Motion is now independent, introducing Motion](https://motion.dev/magazine/framer-motion-is-now-independent-introducing-motion): Framer Motion is now independent. Introducing Motion, a new animation library for React and all JavaScript environments. Here's what it means for you.
+- [Do you still need Framer Motion?](https://motion.dev/magazine/do-you-still-need-framer-motion): CSS has closed the gap on five of Framer Motion's headline features. Here's what you can now drop the library for, and where a JS animation library still wins.
+- [When browsers throttle requestAnimationFrame](https://motion.dev/magazine/when-browsers-throttle-requestanimationframe): In specific situations Safari and Firefox may throttle requestAnimationFrame. Here’s why your JavaScript animations are janky.
+
+## Optional
+
+- [Motion changelog (RSS)](https://motion.dev/changelog/rss.xml): Release notes for Motion, Motion+, Motion UI and Motion AI Kit. Paged: 50 releases per page, follow rel="next" for the archive.
+- [Motion Magazine (RSS)](https://motion.dev/magazine/rss.xml): Every published article, with an excerpt of each.
+- [Perform animation on null](https://motion.dev/troubleshooting/animate-null): You're trying to perform an animation on null. Ensure that selectors are correctly finding elements and refs are correctly hydrated.
+- [Color not animatable](https://motion.dev/troubleshooting/color-not-animatable): '${color}' is not an animatable color. Use the equivalent color code instead.
+- [Complex values are too different](https://motion.dev/troubleshooting/complex-values-different): Complex values '${origin}' and '${target}' too different to mix. Ensure all colors are of the same type, and that each contains the same quantity of number and color values. Falling back to instant transition.
+- [Incorrect cubic bezier length](https://motion.dev/troubleshooting/cubic-bezier-length): Cubic bezier arrays must contain four numerical values.
+- [Custom component ref is not an element](https://motion.dev/troubleshooting/custom-component-ref): motion.create() components must forward their ref to a HTML or SVG element
+- [dragConstraints ref not hydrated](https://motion.dev/troubleshooting/drag-constraints-ref): If `dragConstraints` is set as a React ref, that ref must be passed to another component's `ref` prop.
+- [Invalid easing type](https://motion.dev/troubleshooting/invalid-easing-type): Invalid easing type '${definition}'
+- [Lazy strict mode](https://motion.dev/troubleshooting/lazy-strict-mode): You have rendered a `motion` component within a `LazyMotion` component. This will break tree shaking. Import and render a `m` component instead.
+- [Max CSS variable depth](https://motion.dev/troubleshooting/max-css-var-depth): Max CSS variable fallback depth detected in property \"${current}\". This may indicate a circular fallback dependency.
+- [Mini animate() doesn't support type: \"spring\"](https://motion.dev/troubleshooting/mini-spring): Mini animate() doesn't support \"type\" as a string.
+- [No valid elements](https://motion.dev/troubleshooting/no-valid-elements): No valid elements provided.
+- [Range length mismatch](https://motion.dev/troubleshooting/range-length): Both input and output ranges must be the same length.
+- [Reduced Motion enabled](https://motion.dev/troubleshooting/reduced-motion-disabled): You have Reduced Motion enabled on your device. Animations may not appear as expected.
+- [Reorder.Item must be child of Reorder.Group](https://motion.dev/troubleshooting/reorder-item-child): Reorder.Item must be a child of Reorder.Group
+- [Reorder.Group must be provided values](https://motion.dev/troubleshooting/reorder-values): Reorder.Group must be provided a values prop
+- [Repeat count too high](https://motion.dev/troubleshooting/repeat-count-too-high): Repeat count too high, must be less than 20.
+- [Spring duration limit](https://motion.dev/troubleshooting/spring-duration-limit): Spring duration must be 10 seconds or less
+- [Spring only supports two keyframes](https://motion.dev/troubleshooting/spring-two-frames): Only two keyframes currently supported with spring and inertia animations. Trying to animate ${keyframes}.
+- [useScroll ref is not hydrated](https://motion.dev/troubleshooting/use-scroll-ref): Container/Target ref is defined but not hydrated
+- [Value not animatable](https://motion.dev/troubleshooting/value-not-animatable): You are trying to animate ${name} from \"${originKeyframe}\" to \"${targetKeyframe}\". \"${invalidKeyframe}\" is not an animatable value.

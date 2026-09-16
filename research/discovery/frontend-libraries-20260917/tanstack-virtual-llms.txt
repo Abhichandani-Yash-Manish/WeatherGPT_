@@ -1,0 +1,102 @@
+# TanStack Virtual docs
+
+> Virtualize only the visible content for massive scrollable DOM nodes at 60FPS in TS/JS, React, Vue, Solid, Svelte, Lit, Angular & Marko while retaining 100% control over markup and styles.
+
+- [Docs index](https://tanstack.com/virtual/latest/docs/index.md): This same Markdown index.
+- [LLMs index](https://tanstack.com/virtual/latest/llms.txt): This same Markdown index.
+- [Library home](https://tanstack.com/virtual/latest)
+- [GitHub](https://github.com/tanstack/virtual)
+- Packages: @tanstack/virtual-core, react-virtual.
+- Frameworks: React, Solid, Vue, Svelte, Lit, Angular, Marko.
+
+Use this index as the routing layer for the docs. Fetch one linked Markdown page at a time, and prefer framework-specific pages when the user names a framework.
+
+## Get Started
+
+### Getting Started
+
+- [Introduction](https://tanstack.com/virtual/latest/docs/introduction.md)
+- [Installation](https://tanstack.com/virtual/latest/docs/installation.md)
+- [Text Measurement with Pretext](https://tanstack.com/virtual/latest/docs/pretext.md)
+- [React: React Virtual](https://tanstack.com/virtual/latest/docs/framework/react/react-virtual.md)
+- [Angular: Angular Virtual](https://tanstack.com/virtual/latest/docs/framework/angular/angular-virtual.md)
+- [Solid: Solid Virtual](https://tanstack.com/virtual/latest/docs/framework/solid/solid-virtual.md)
+- [Svelte: Svelte Virtual](https://tanstack.com/virtual/latest/docs/framework/svelte/svelte-virtual.md)
+- [Vue: Vue Virtual](https://tanstack.com/virtual/latest/docs/framework/vue/vue-virtual.md)
+- [Marko: Marko Virtual](https://tanstack.com/virtual/latest/docs/framework/marko/marko-virtual.md)
+
+## Guides
+
+### Guides
+
+- [Chat](https://tanstack.com/virtual/latest/docs/chat.md)
+
+## API
+
+### Core APIs
+
+- [Virtualizer](https://tanstack.com/virtual/latest/docs/api/virtualizer.md)
+- [VirtualItem](https://tanstack.com/virtual/latest/docs/api/virtual-item.md)
+
+## Examples
+
+### Examples
+
+- [Angular: Fixed](https://tanstack.com/virtual/latest/docs/framework/angular/examples/fixed.md)
+- [Angular: Variable](https://tanstack.com/virtual/latest/docs/framework/angular/examples/variable.md)
+- [Angular: Dynamic](https://tanstack.com/virtual/latest/docs/framework/angular/examples/dynamic.md)
+- [Angular: Padding](https://tanstack.com/virtual/latest/docs/framework/angular/examples/padding.md)
+- [Angular: Sticky](https://tanstack.com/virtual/latest/docs/framework/angular/examples/sticky.md)
+- [Angular: Infinite Scroll](https://tanstack.com/virtual/latest/docs/framework/angular/examples/infinite-scroll.md)
+- [Angular: Chat](https://tanstack.com/virtual/latest/docs/framework/angular/examples/chat.md)
+- [Angular: Smooth Scroll](https://tanstack.com/virtual/latest/docs/framework/angular/examples/smooth-scroll.md)
+- [Angular: Table](https://tanstack.com/virtual/latest/docs/framework/angular/examples/table.md)
+- [Angular: Window](https://tanstack.com/virtual/latest/docs/framework/angular/examples/window.md)
+- [React: Fixed](https://tanstack.com/virtual/latest/docs/framework/react/examples/fixed.md)
+- [React: Variable](https://tanstack.com/virtual/latest/docs/framework/react/examples/variable.md)
+- [React: Dynamic](https://tanstack.com/virtual/latest/docs/framework/react/examples/dynamic.md)
+- [React: Pretext](https://tanstack.com/virtual/latest/docs/framework/react/examples/pretext.md)
+- [React: Padding](https://tanstack.com/virtual/latest/docs/framework/react/examples/padding.md)
+- [React: Scroll Padding](https://tanstack.com/virtual/latest/docs/framework/react/examples/scroll-padding.md)
+- [React: Sticky](https://tanstack.com/virtual/latest/docs/framework/react/examples/sticky.md)
+- [React: Infinite Scroll](https://tanstack.com/virtual/latest/docs/framework/react/examples/infinite-scroll.md)
+- [React: Chat](https://tanstack.com/virtual/latest/docs/framework/react/examples/chat.md)
+- [React: Smooth Scroll](https://tanstack.com/virtual/latest/docs/framework/react/examples/smooth-scroll.md)
+- [React: Table](https://tanstack.com/virtual/latest/docs/framework/react/examples/table.md)
+- [React: Window](https://tanstack.com/virtual/latest/docs/framework/react/examples/window.md)
+- [Svelte: Fixed](https://tanstack.com/virtual/latest/docs/framework/svelte/examples/fixed.md)
+- [Svelte: Dynamic](https://tanstack.com/virtual/latest/docs/framework/svelte/examples/dynamic.md)
+- [Svelte: Sticky](https://tanstack.com/virtual/latest/docs/framework/svelte/examples/sticky.md)
+- [Svelte: Infinite Scroll](https://tanstack.com/virtual/latest/docs/framework/svelte/examples/infinite-scroll.md)
+- [Svelte: Smooth Scroll](https://tanstack.com/virtual/latest/docs/framework/svelte/examples/smooth-scroll.md)
+- [Svelte: Table](https://tanstack.com/virtual/latest/docs/framework/svelte/examples/table.md)
+- [Vue: Fixed](https://tanstack.com/virtual/latest/docs/framework/vue/examples/fixed.md)
+- [Vue: Variable](https://tanstack.com/virtual/latest/docs/framework/vue/examples/variable.md)
+- [Vue: Dynamic](https://tanstack.com/virtual/latest/docs/framework/vue/examples/dynamic.md)
+- [Vue: Sticky](https://tanstack.com/virtual/latest/docs/framework/vue/examples/sticky.md)
+- [Vue: Infinite Scroll](https://tanstack.com/virtual/latest/docs/framework/vue/examples/infinite-scroll.md)
+- [Vue: Smooth Scroll](https://tanstack.com/virtual/latest/docs/framework/vue/examples/smooth-scroll.md)
+- [Vue: Table](https://tanstack.com/virtual/latest/docs/framework/vue/examples/table.md)
+- [Vue: Padding](https://tanstack.com/virtual/latest/docs/framework/vue/examples/padding.md)
+- [Vue: Scroll Padding](https://tanstack.com/virtual/latest/docs/framework/vue/examples/scroll-padding.md)
+- [Lit: Fixed](https://tanstack.com/virtual/latest/docs/framework/lit/examples/fixed.md)
+- [Lit: Dynamic](https://tanstack.com/virtual/latest/docs/framework/lit/examples/dynamic.md)
+- [Marko: Fixed](https://tanstack.com/virtual/latest/docs/framework/marko/examples/fixed.md)
+- [Marko: Variable](https://tanstack.com/virtual/latest/docs/framework/marko/examples/variable.md)
+- [Marko: Dynamic](https://tanstack.com/virtual/latest/docs/framework/marko/examples/dynamic.md)
+- [Marko: Grid](https://tanstack.com/virtual/latest/docs/framework/marko/examples/grid.md)
+- [Marko: Pretext](https://tanstack.com/virtual/latest/docs/framework/marko/examples/pretext.md)
+- [Marko: Padding](https://tanstack.com/virtual/latest/docs/framework/marko/examples/padding.md)
+- [Marko: Scroll Padding](https://tanstack.com/virtual/latest/docs/framework/marko/examples/scroll-padding.md)
+- [Marko: Sticky](https://tanstack.com/virtual/latest/docs/framework/marko/examples/sticky.md)
+- [Marko: Infinite Scroll](https://tanstack.com/virtual/latest/docs/framework/marko/examples/infinite-scroll.md)
+- [Marko: Chat](https://tanstack.com/virtual/latest/docs/framework/marko/examples/chat.md)
+- [Marko: Chat + Pretext](https://tanstack.com/virtual/latest/docs/framework/marko/examples/chat-pretext.md)
+- [Marko: Smooth Scroll](https://tanstack.com/virtual/latest/docs/framework/marko/examples/smooth-scroll.md)
+- [Marko: Table](https://tanstack.com/virtual/latest/docs/framework/marko/examples/table.md)
+- [Marko: Window](https://tanstack.com/virtual/latest/docs/framework/marko/examples/window.md)
+- [Marko: SSR: No Fetch, Rows Render on Client](https://tanstack.com/virtual/latest/docs/framework/marko/examples/ssr.md)
+- [Marko: SSR: Fetch on Server, Rows Render on Client](https://tanstack.com/virtual/latest/docs/framework/marko/examples/ssr-fetch.md)
+- [Marko: SSR: Fetch on Server, Rows Render on Server](https://tanstack.com/virtual/latest/docs/framework/marko/examples/ssr-slice.md)
+- [Marko: SSR: Fetch on Server, Rows Render on Server at Offset](https://tanstack.com/virtual/latest/docs/framework/marko/examples/ssr-restore.md)
+- [Marko: SSR Window: Fetch on Server, Rows Render on Server](https://tanstack.com/virtual/latest/docs/framework/marko/examples/window-ssr-slice.md)
