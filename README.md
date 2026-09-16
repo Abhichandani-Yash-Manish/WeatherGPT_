@@ -274,7 +274,7 @@ The interface states these limits instead of filling them:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 1302 Python tests
+python3 -m pytest tests/ -q                          # 1304 Python tests
 cd frontend && npx tsc --noEmit && npm test          # 26 React suites, 135 component checks
 node tests/test_charts.js                            #  2 of 110 printed component checks
 node tests/test_viz.js                               #  9; the chart engine: plume, meteogram, gaps and locators
@@ -363,6 +363,7 @@ claims**, and the test counts in them are the counts of their own checkpoint.
 
 - [The flagship transcript, the first real modules, and the front door](docs/90-frontend-r2-flagship-transcript.md) — the R2 transcript (question kept, stages, first reading, evidence receipt, register, stored conversations, voice), the first six R3 modules, the landing page and the owner gate, the four defects the ported checks found, 68 frontend checks, 14 live HTTP acceptance checks and ten screenshots of the served build, and what is still open.
 - [Every surface ported, R4 finished, and the accessibility pass measured in a browser](docs/91-frontend-r3-r5-all-surfaces.md) — the eight remaining surfaces (so all nineteen are real modules), print parity, the chart engine served to the built page, a browser accessibility sweep over 15 surfaces with the three defects it found and fixed, an engine repair that makes the marine and river products name the answering cell distance, and what is still open.
+- [R6 readiness: what has to be true before the vanilla frontend is removed](docs/92-r6-decommission-readiness.md) — the deletion in order, the inventory of what exists, the four frontend-audit checks that still need a React equivalent, the two decisions R6 has to make in writing (the vendor chart engine and the service worker), and the order that closes the remaining work.
 - [Final integration audit and closure plan](docs/89-final-integration-audit-and-closure-plan.md) — what is actually wired (78 modules, 63 routes, 29 sources connected and wired to chat, 19 surfaces identical in both frontends), the gaps found and closed here, and every PS feature with the acceptance criteria that would let it be called done.
 - [The React overhaul: research and stack](docs/87-frontend-research-and-inspiration.md) — the component landscape read from primary sources (assistant-ui, React Spectrum S2 AI components, Radix, shadcn/ui, Mantine, Motion, TanStack, MapLibre, Tremor, Lucide, axe-core, Noto, AI SDK), the licence table, the chosen stack, the **chat-first module architecture** (one backend-derived registry; every module has a compact Block, a full Surface and its intents) and the one CSP cost it forces.
 - [The React frontend overhaul: plan](docs/86-react-frontend-overhaul-plan.md) — a plan, not a build: Vite + React + TypeScript, the same CSP, the 110 checks ported one-for-one, six independently shippable stages (R0 groundwork, R1 shell, R2 the transcript, R3 the guided surfaces, R4 charts/map/print, R5 accessibility/i18n/voice, R6 decommission) and the exit check each one must meet.
