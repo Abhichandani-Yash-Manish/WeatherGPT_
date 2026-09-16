@@ -1,4 +1,4 @@
-"""The React frontend draws charts with the one tracked copy of the chart engine.
+"""The React frontend is served two vanilla files from their one tracked copy.
 
 A React surface cannot import a file the server does not serve: under --frontend react the page is served from
 web/dist and nothing else is reachable. This pins the seam — the engine is served verbatim from web/viz.js, the
@@ -16,13 +16,16 @@ import pytest
 from weathergpt_data.workspace import Workspace, make_server
 
 ROOT_ENGINE = None
+ROOT_WORKER = None
 
 
 @pytest.fixture(scope="module")
 def served():
     from pathlib import Path
-    global ROOT_ENGINE
-    ROOT_ENGINE = Path(__file__).resolve().parents[1] / "web" / "viz.js"
+    global ROOT_ENGINE, ROOT_WORKER
+    web = Path(__file__).resolve().parents[1] / "web"
+    ROOT_ENGINE = web / "viz.js"
+    ROOT_WORKER = web / "sw.js"
     workspace = Workspace(frontend="react")
     server = make_server(workspace, 0)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
@@ -62,3 +65,20 @@ def test_a_path_that_is_not_the_engine_is_not_a_script(served):
     status, body, headers = get(served + "/viz.js.map")
     assert status == 404
     assert "error" in json.loads(body)
+
+
+def test_the_notification_worker_is_served_verbatim_to_the_react_frontend(served):
+    """The plans panel registers /sw.js for push. It is a push worker, not an offline cache: it has no
+    fetch handler, so serving it makes notifications possible and caches nothing."""
+    status, body, headers = get(served + "/sw.js")
+    assert status == 200
+    assert headers.get("Content-Type", "").startswith("application/javascript")
+    assert body == ROOT_WORKER.read_bytes(), "the served worker is not the tracked file"
+    assert "immutable" not in headers.get("Cache-Control", "")
+    assert b"addEventListener(" in body, "the served file does not register listeners"
+    assert b"fetch" not in body, "this worker must not cache: it is a push worker"
+
+
+def test_a_near_miss_on_the_worker_is_not_a_script(served):
+    status, body, _ = get(served + "/sw.js.map")
+    assert status == 404

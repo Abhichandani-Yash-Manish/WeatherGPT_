@@ -5,6 +5,7 @@
 import { useState } from 'react';
 import type { AnswerPacket, Fact } from '../api/types';
 import { ChartBlock } from '../charts/ChartBlock';
+import { Passages } from './Passages';
 import { istStamp } from '../lib/time';
 import { answerText, copyText, downloadFile, markdownTurn, stampName } from './actions';
 import type { Register } from './model';
@@ -94,6 +95,10 @@ export function AnswerTurn({ packet, register, onFollowUp, onRefresh, onAnswer }
 
       {/* A series the engine returned with the answer is drawn by the chart block, which keeps a missing
           point a gap and keeps the numbers reachable as a table. */}
+      {/* A document answer quotes the source. The passages are rendered with their locators, and a
+          bulletin-context section is labelled apart from a crop row. */}
+      {open ? <Passages packet={packet} /> : null}
+
       {(packet.charts || []).map((chart, index) => (
         <ChartBlock key={'chart-' + index} chart={chart} />
       ))}

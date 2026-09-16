@@ -39,7 +39,7 @@ what has to be true before the deletion.
 | --- | --- | --- |
 | ~~The plans / watches / inbox panel~~ **delivered** | `src/plans/PlanWatch.tsx` (848 lines, 9 checks), opened from the topbar or the palette; it is deliberately not a rail surface, so the registry keeps the nineteen public surfaces | this batch |
 | ~~A saved-document viewer~~ **delivered** | `src/modules/DocumentViewer.tsx`, mounted by the documents surface; the route is answered before the token gate so the frame is same-origin, and the row own body state means a held body is not transferred twice | this batch |
-| The service worker | **decided, not ported in this batch**: the plans panel states that a push subscription registers `/sw.js` and that the browser refuses the subscription while the React build serves no worker. Browser push is therefore unverified on the React path (with `py_vapid` absent on this machine, the VAPID route refuses too). Porting it against the built manifest, or dropping offline in words, is the R6 step | R6 |
+| The service worker | **decided and delivered**: `web/sw.js` is served to the React build from its one tracked copy, like `web/viz.js`, and pinned by `tests/test_react_vendor_assets.py`. Reading it settles the question: it is a **push worker** (it shows the official state from the push body, handles `pushsubscriptionchange` and focuses the workspace on click); it has **no fetch handler and caches nothing**, so there was never an offline behaviour to port. Offline stays what it has always been: the shell needs the local server, which is what owns the evidence | closed |
 | ~~Mobile layout~~ **delivered, narrow viewport only** | below 64rem the rail is a drawer with a Menu control, Escape, a backdrop and close-on-pick; the stored-conversation column moves under the conversation below 80rem with one instance rendered either way; measured at 390x844 (main 390 px, no horizontal overflow, a wide table scrolling inside its region). This is a narrow desktop viewport, not a device or a mobile acceptance run | this batch |
 | The remaining 77 checks | deleting the vanilla suites without them removes the regression net | port batches |
 | Regenerated `docs/images/` | the README's gallery is still the vanilla build's screenshots | R6 |
@@ -53,10 +53,10 @@ the React build or shown to be held by an existing React check. The mapping as i
 | Check | What it holds | Where it stands for React |
 | --- | --- | --- |
 | FE01 mobile reachability | the question box is not below a competing form | held by the drawer and the measured narrow layout (`research/reviews/frontend-react-r6-20260917/r6-readiness.json`); a check that reads the built page at a narrow width is still open |
-| FE02 bounded collection reachable | a refresh can be asked for from the page | held by the answer card's "Collect fresh evidence" control; **not yet a check** |
-| FE03 no unreachable renderer | no renderer wired to a request the server rejects | held in spirit by `scripts/audit_surface_registry.py` (every surface's route is served); a renderer-level check is **open** |
+| FE02 bounded collection reachable | a refresh can be asked for from the page | held by `src/chat/collection.test.tsx`: the control appears only for an answer with a resolved point, and it asks for that exact point |
+| FE03 no unreachable renderer | no renderer wired to a request the server rejects | held by `scripts/audit_surface_registry.py` (every surface route is served) and by `src/chat/collection.test.tsx`: no component calls `fetch` directly, so every request goes through the client that carries the token and the route contract |
 | FE04 task accounting | a task count is not a bare affirmative | held by the answer card's task-coverage sentence and its check in `src/chat/chat.test.tsx` |
-| FE05 scope and language | the scope text names the connected tools and a language control exists | held by the topbar's language control and each module's limits section; **no single check reads both** |
+| FE05 scope and language | the scope text names the connected tools and a language control exists | held by the topbar language checks (`src/shell/topbar.test.tsx`) and the settings surface check that renders the capability catalogue it read from `/api/settings/capabilities`; **no single check reads both** - that is the remaining gap, and it is a reporting gap rather than a product one |
 | FE06 one question input | the builder writes the box and never submits it | held by `src/modules/workspace.test.tsx` (the builder's own check) |
 | FE07 overhaul surfaces served | the surfaces exist and a live record exists | held by the surface registry audit plus `research/reviews/frontend-react-r2-20260917/live-r2.json` |
 | FE08 transparency and edition coverage | what changed between editions is reachable | held by `src/modules/ChangesSurface.tsx` and `src/modules/map.test.tsx` |
@@ -72,9 +72,15 @@ FE01 needs product work (a narrow layout), not only a check.
    served it at `/viz.js` on purpose so the same bytes are covered by the same checks. R6 can either keep it as a
    served vendor script (and say so in the docs, with the React audit checking the route) or port it into the bundle
    and re-home its checks. Keeping it is the smaller, more honest change; deleting it loses nine checks.
-2. **The service worker.** Offline behaviour was never measured for the React build. The honest options are to port
-   `sw.js` against the built manifest with a measured offline run, or to drop offline and state it in the README's
-   limits. Porting it without measuring the result would be the one option this repository does not take.
+2. **The service worker: decided, and the decision was cheaper than the question.** `web/sw.js` is not an
+   offline shell - it is the push worker. It has no `fetch` handler, it caches nothing, and its only jobs are
+   to show the outbox payload own facts as a notification, to tell the owner when the browser retired a
+   subscription, and to focus the workspace when a notification is tapped. Nothing about it is
+   vanilla-specific, so it is served to the React build from its one tracked copy (with `web/viz.js`) and
+   pinned by `tests/test_react_vendor_assets.py`: served verbatim, the right content type, no immutable
+   caching for an unhashed file, a stated 404 for a near miss, and an assertion that the file still has no
+   `fetch` handler - so a later change that quietly turned it into a cache would fail the gate. **There is
+   no offline path to port**; the shell needs the local server, which is what owns the evidence.
 
 ## 5. The order this suggests
 
