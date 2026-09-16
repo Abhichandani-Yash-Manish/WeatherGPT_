@@ -99,6 +99,25 @@ export function AskSurface({ language, persona, personas, languages, seed }: Ask
             onStop={() => void conversation.stop()}
           />
         </div>
+        {!wide ? (
+          /* The stored-conversation column belongs to this column at narrow widths. As a sibling of the
+             conversation it took width from the composer, which collapsed the question box. */
+          <details className="card mb-2 px-3 py-2" data-testid="rail-narrow">
+            <summary className="cursor-pointer text-xs font-semibold text-ink-soft">
+              Reading register and stored conversations
+            </summary>
+            <div className="mt-2 flex">
+              <ConversationRail
+                currentId={conversation.conversationId}
+                onOpen={id => void conversation.restore(id)}
+                onNew={conversation.clear}
+                register={conversation.register}
+                onRegister={conversation.setRegister}
+                wide
+              />
+            </div>
+          </details>
+        ) : null}
       </div>
       {wide ? (
         <ConversationRail
@@ -108,25 +127,7 @@ export function AskSurface({ language, persona, personas, languages, seed }: Ask
           register={conversation.register}
           onRegister={conversation.setRegister}
         />
-      ) : (
-        /* One instance, one set of controls: below the wide breakpoint the same column sits under the
-           conversation, where a narrow window can actually use it. */
-        <details className="card mt-2 px-3 py-2" data-testid="rail-narrow" open>
-          <summary className="cursor-pointer text-xs font-semibold text-ink-soft">
-            Reading register and stored conversations
-          </summary>
-          <div className="mt-2 flex">
-            <ConversationRail
-              currentId={conversation.conversationId}
-              onOpen={id => void conversation.restore(id)}
-              onNew={conversation.clear}
-              register={conversation.register}
-              onRegister={conversation.setRegister}
-              wide
-            />
-          </div>
-        </details>
-      )}
+      ) : null}
     </div>
   );
 }
