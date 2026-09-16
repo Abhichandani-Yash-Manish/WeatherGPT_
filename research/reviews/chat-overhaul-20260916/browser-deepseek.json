@@ -1,0 +1,24 @@
+{
+  "batch": "docs/83-intelligent-chat-overhaul.md",
+  "captured_at_utc": "2026-09-16T18:10:00Z",
+  "surface": "Chrome 153 headless over CDP, real loopback workspace on 127.0.0.1:8796, viewport 1280x900, DeepSeek primary",
+  "runner": "research/reviews/chat-overhaul-20260916/browser-check-deepseek.sh",
+  "checks": [
+    {
+      "question": "hello",
+      "card_status": "Conversational replyNo source read16 Sept 2026, 23:34 IST",
+      "answer": "Hello! I'm here to help with weather questions for this workspace. What would you like to know?"
+    },
+    {
+      "question": "Will it rain in Surat tomorrow morning?",
+      "card_status": "Evidence retrieved16 Sept 2026, 23:34 IST",
+      "answer": "In Surat, for the window 17 Sep 2026 09:30-12:30 IST, the forecast rainfall is 0.4 mm. Source: GFS forecast; conditions can change.",
+      "provider_named_in_the_card_trace": true
+    }
+  ],
+  "screenshot": "browser-deepseek.png",
+  "limits": [
+    "One browser, one viewport, one machine, one run on the paid endpoint.",
+    "The written answer varies between runs; the values, the window, the place and the source clause are tool-owned strings."
+  ]
+}
