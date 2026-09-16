@@ -83,6 +83,26 @@ The six decisions docs/87 put to the user were not answered before this round st
 the documented recommendations, with the CSP recommendation dropped because the measurement made it moot. The
 chat-centre layout and the assistant-ui adoption are exercised in R1 and R2 and can still be revisited there.
 
+## R1 in progress: the shell frame, the registry and the test harness
+
+- `src/shell/views.ts` is the surface registry: the same 19 ids the vanilla `WG.VIEWS` uses, so every existing
+  deep link (`#/warnings?day=2`, `?watch=`) keeps working; each entry names the stage that ports it and the
+  questions it will answer, so an unported module cannot pass as done.
+- `src/shell/useHashRoute.ts` reads the address in one place: an empty or unknown route falls back to Ask, and a
+  query string survives a route change.
+- `src/shell/Rail.tsx` renders the registry with the group headings and the **Alt+1…9 contract the rail prints**,
+  with `aria-current` on the active view.
+- `src/shell/SurfaceHost.tsx` states, for a module that is not ported, the stage it arrives in and the questions
+  it will answer — generated from the registry rather than hand-written.
+- the harness R2 needs is in: **Vitest + Testing Library + MSW** (`src/test/msw.ts`) replaces the per-suite
+  hand-written fetch stub, with 6 checks over the rail, the routing contract, the shortcut contract, a deep link
+  and a recorded payload.
+- the CSP probe has left the production input list: it builds from its own config to `web/dist-probe`.
+
+Still open in R1: the topbar controls (persona, language, service state, health, theme, palette) and the stored-
+conversation rail; the **110 vanilla component checks ported one-for-one**, which is the gate R2 must not pass
+without; and a recorded browser acceptance run for the React shell.
+
 ## What each stage must prove
 
 1. **No behaviour regression**: a ported spec is the same assertion against the same payload.

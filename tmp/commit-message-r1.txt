@@ -1,0 +1,20 @@
+R1 shell (in progress): the rail, the route contract, the registry and the test harness
+
+- src/shell/views.ts is the surface registry, with the same 19 ids the vanilla WG.VIEWS uses so every existing
+  deep link keeps working; each entry names the stage that ports it and the questions it will answer, so an
+  unported module cannot pass as done.
+- src/shell/useHashRoute.ts reads the address in one place: an empty or unknown route falls back to Ask, and a
+  query string survives a route change.
+- src/shell/Rail.tsx renders the registry with the group headings and the Alt+1..9 contract the rail prints, with
+  aria-current on the active view; SurfaceHost states the stage an unported module arrives in.
+- the harness R2 needs is in: Vitest + Testing Library + MSW replaces the per-suite hand-written fetch stub, with
+  6 checks over the rail, the routing contract, the shortcut contract, a deep link and a recorded payload.
+- the CSP probe left the production input list: it has its own config and builds to web/dist-probe, so the
+  production build's initial graph is 71 KB gzip (66 KB app + 4 KB React + 1 KB entry) against the 312 KB budget.
+
+Verified: frontend typecheck, 6 Vitest checks, the React build audit (11 checks) and verify_all (28 steps, 0
+failed) all pass with the vanilla frontend still the default.
+
+Still open in R1: the topbar controls (persona, language, service state, health, theme, palette) and the
+stored-conversation rail; the 110 vanilla component checks ported one-for-one, which gates R2; and a browser
+acceptance run for the React shell. docs/86 and the registry record R1 as in progress rather than done.

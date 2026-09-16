@@ -1,7 +1,7 @@
 {
  "schema_version": "hardening-progress-v1",
  "review": "research/reviews/national-readiness-20260912/review.md",
- "updated_at_utc": "2026-09-17T01:35:00+00:00",
+ "updated_at_utc": "2026-09-17T01:45:00+00:00",
  "operational_ready": false,
  "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
  "findings": [
@@ -2702,7 +2702,7 @@
   "same_host_only": true
  },
  "frontend_react_r0_batch": {
-  "report": "docs/86-react-frontend-overhaul-plan.md#r0-delivered-groundwork-17-september-2026",
+  "report": "docs/86-react-frontend-overhaul-plan.md",
   "evidence_directory": "research/reviews/frontend-react-r0-20260917",
   "scope": "R0 groundwork of the React overhaul: a build pipeline, a serving path behind a flag, a build audit, and the CSP measurement the research asked for",
   "delivered": [
@@ -2726,6 +2726,33 @@
    "R1 (shell) is next: rail, router, palette, the surface registry and the 110 vanilla component checks ported one-for-one",
    "frontend/probe.html is a development entry and must leave the production input list in R1",
    "the vanilla frontend stays the default until R6, and every stage must leave verify_all.py green"
+  ],
+  "hosting_performed": false,
+  "same_host_only": true,
+  "report_section": "R0 delivered: groundwork"
+ },
+ "frontend_react_r1_batch": {
+  "report": "docs/86-react-frontend-overhaul-plan.md",
+  "report_section": "R1 shell (in progress)",
+  "evidence_directory": "frontend/src/shell",
+  "scope": "R1 shell: the rail, the route contract, the surface registry and the frontend test harness",
+  "delivered": [
+   "src/shell/views.ts: the surface registry with the same 19 ids the vanilla WG.VIEWS uses, so every existing deep link keeps working; each entry names the stage that ports it and the questions it will answer",
+   "src/shell/useHashRoute.ts: one place reads the address; an unknown or empty route falls back to Ask, and a query string survives the route",
+   "src/shell/Rail.tsx: the rail renders the registry with the group headings and the Alt+1..9 shortcuts the vanilla rail prints",
+   "src/shell/SurfaceHost.tsx: an unported module states the stage that will port it and the questions it will answer, generated from the registry rather than hand-written",
+   "a test harness: Vitest + Testing Library + MSW (src/test/msw.ts) replaces per-suite fetch stubs; 6 checks pass over the rail, the routing contract, the shortcut contract, a deep link and a recorded payload through the harness",
+   "the CSP probe left the production input list: it has its own config and builds to web/dist-probe"
+  ],
+  "tests_added": [
+   "frontend/src/App.test.tsx (4 checks)",
+   "frontend/src/shell/shell.test.tsx (2 checks)"
+  ],
+  "open": [
+   "the topbar controls (persona, language, service state, health, theme, palette) and the stored-conversation rail are not ported yet",
+   "the 110 vanilla component checks are not ported one-for-one yet: that is the rest of R1 and it gates R2",
+   "no browser acceptance run has been recorded for the React shell yet",
+   "the vanilla frontend remains the default"
   ],
   "hosting_performed": false,
   "same_host_only": true

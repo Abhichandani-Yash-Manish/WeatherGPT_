@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 from weathergpt_data.workspace import REACT_CSP, STRICT_CSP
 
-DIST = ROOT / 'web' / 'dist'
+DIST = ROOT / 'web' / 'dist-probe'  # the probe has its own config; it never enters the production build
 TYPES = {'.js': 'text/javascript', '.css': 'text/css', '.html': 'text/html', '.json': 'application/json'}
 
 

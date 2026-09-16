@@ -15,13 +15,7 @@ export default defineConfig({
     assetsInlineLimit: 0,
     sourcemap: false,
     rollupOptions: {
-      input: {
-        main: 'index.html',
-        // The CSP probe is a development page built beside the app so the browser check can measure
-        // what the served policy allows Radix, TanStack Virtual and Motion to do. It is not a product
-        // surface and nothing links to it; R1 removes it from the production input list.
-        probe: 'probe.html',
-      },
+      input: { main: 'index.html' },
       output: {
         manualChunks: {
           react: ['react', 'react-dom'],
