@@ -137,7 +137,10 @@ class DeliveryTests(unittest.TestCase):
 
     def test_a_latin_script_language_never_claims_a_verified_rendering(self):
         packet = answer_language.deliver(result(), 'hi-Latn', translator=devanagari)
-        self.assertEqual(packet['trace']['generation']['language_adherence'], 'not_applicable')
+        # Not "not applicable": the reader asked for romanised output, the rendering cannot be verified
+        # by script, and the answer says so rather than passing English off as that language.
+        self.assertEqual(packet['trace']['generation']['language_adherence'], 'unverifiable_script')
+        self.assertTrue(any('cannot be verified here' in note for note in packet['notes']))
 
     def test_the_trace_always_records_what_was_asked_for_and_why(self):
         packet = answer_language.deliver(result(), 'hi', translator=devanagari,

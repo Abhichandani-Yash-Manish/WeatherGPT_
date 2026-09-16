@@ -281,13 +281,43 @@ honestly and holds its facts - measured on "thanks!" at 53.8 s before the step b
 here: wait for the daily reset, add a small credit to the account, lower the request count with
 WEATHERGPT_ROUTER=off, or unfreeze the local model - which the reader deliberately froze.
 
+### Stage A4: language breadth, measured (16 September 2026)
+
+**The adherence table is the registry now.** `dialogue.SCRIPTS` held two entries (Hindi, Gujarati), so an
+answer promised in Tamil, Bengali, Punjabi, Odia, Kannada, Telugu, Malayalam, Marathi or Urdu was never
+checked at all. It is derived from the language registry, so all 22 measurable languages are checked, and a
+language added there is measured rather than passing silently. English and romanised Hinglish share the Latin
+script and cannot be checked this way; they say so instead.
+
+**A romanised request is no longer reported as "not applicable".** Measured need: a reader asking for
+`hi-Latn` got an English answer and a trace that said nothing had been asked for. The tier now reports
+`unverifiable_script` and tells the reader the answer stays in its source language, because the request was
+made and not met.
+
+**Measured delivery, ten languages, one weather question each with an explicit output language**
+(`research/reviews/chat-overhaul-20260916/languages.json`):
+
+| Requested | Status | Adherence | Result |
+| --- | --- | --- | --- |
+| hi, gu, ta, mr, pa, od, ur | answered | rendered_with_protected_values | rendered, every value as the original characters (6.5-9.1 s) |
+| bn, ml | **partial** | values_did_not_survive | the service dropped protected placeholders on the written sentence, so the source-language answer was kept and the refusal recorded |
+| hi-Latn | answered | unverifiable_script | not claimed: the answer stays in its source language and says so |
+
+The two failures are the translation service losing placeholders, not a gap in the protection patterns: the
+sentence that failed carried a protected named date, two protected clocks, a protected unit value and a
+protected place, and the gate refused the rendering rather than showing a partly rewritten value. That is the
+contract working, and it is the honest outcome: seven languages rendered, one was never claimed, two were
+refused and said so.
+
 ## Still to come in this batch
 
 - **Stage A3**: a model-written narrative sentence for evidence answers behind the existing validation, with the
   tool-owned fact renderer as the floor. Today a turn with facts is still rendered by the deterministic
   renderer, which is honest but terse.
-- **Stage A4**: evidence narratives through the language gate for more languages, and dialogue.SCRIPTS widening
-  with each language made writable.
+- **Stage A4 (delivered, 16 September)**: dialogue.SCRIPTS is derived from the language registry (22
+  measurable languages instead of two), a romanised request is reported as unverifiable rather than "not
+  applicable", and delivery was measured live for ten languages - seven rendered with protected values, two
+  refused because the service dropped placeholders, one never claimed.
 - **Stage A5 (delivered, 16 September)**: the settings surface now states who answers, in what order, the
   planner policy, whether the cheap first look is on, the availability of each provider, and the last time
   every provider refused with its reason and time. The payload comes from `ModelRouter.state()`; the router

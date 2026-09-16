@@ -1,7 +1,7 @@
 {
  "schema_version": "hardening-progress-v1",
  "review": "research/reviews/national-readiness-20260912/review.md",
- "updated_at_utc": "2026-09-16T20:05:00+00:00",
+ "updated_at_utc": "2026-09-16T20:40:00+00:00",
  "operational_ready": false,
  "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
  "findings": [
@@ -2547,7 +2547,10 @@
    "the written answer for a point reading now uses tool-owned place_label and window_label strings and carries the deterministic source clause into the answer, so a reader sees the source without opening the receipt",
    "A5: the settings surface states the provider policy in force, the planner policy, the first-look switch, each provider with its availability and model, and the last provider failure with its reason and time, all from ModelRouter.state()",
    "the router records a failure per refused client and, when none answers, the whole chain, so the reason a turn was refused is readable without a trace",
-   "scripts/models.py --set-key takes openrouter (default) or deepseek, so the key command printed in the workspace is one that runs"
+   "scripts/models.py --set-key takes openrouter (default) or deepseek, so the key command printed in the workspace is one that runs",
+   "A4: dialogue.SCRIPTS is derived from the language registry, so all 22 measurable languages are checked by the adherence test instead of Hindi and Gujarati only",
+   "a romanised request (hi-Latn) is reported as unverifiable_script with a note rather than not_applicable, because the request was made and could not be met",
+   "measured delivery for ten languages one weather question each: seven rendered with protected values, two (bn, ml) refused as values_did_not_survive and kept in the source language, one (hi-Latn) never claimed"
   ],
   "measured_live": [
    "hello: 11.0 s, conversation, natural greeting, no acquisition",
@@ -2566,6 +2569,7 @@
    "tests/test_views.js: a conversational reply is shown as a conversation, tagged No source read, and drawn with no receipt or validity window"
   ],
   "live_check": "research/reviews/chat-overhaul-20260916/journeys.json",
+  "language_check": "research/reviews/chat-overhaul-20260916/languages.json",
   "router_and_availability_check": "research/reviews/chat-overhaul-20260916/router-tier-and-quota.json",
   "browser_check": "research/reviews/chat-overhaul-20260916/browser-conversation.json",
   "browser_check_deepseek": "research/reviews/chat-overhaul-20260916/browser-deepseek.json",

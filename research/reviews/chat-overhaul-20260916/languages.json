@@ -1,0 +1,251 @@
+{
+  "batch": "docs/83-intelligent-chat-overhaul.md",
+  "captured_at_utc": "2026-09-16T18:17:02Z",
+  "question": "Will it rain in Surat tomorrow morning?",
+  "turns": [
+    {
+      "requested": "hi",
+      "seconds": 9.1,
+      "status": "answered",
+      "answered_language": "hi",
+      "adherence": "rendered_with_protected_values",
+      "render_report": {
+        "sentences": 3,
+        "translated": 3,
+        "held_safety_critical": 0,
+        "held_quotations": 0,
+        "held_quotation_characters": 0,
+        "failed": 0,
+        "ok": true
+      },
+      "render_failures": null,
+      "rendered": true,
+      "language_trace": null,
+      "notes": [],
+      "answer": "Surat में, 17 Sep 2026-09:30-12:30 IST खिड़कियों के लिए, पूर्वानुमान वर्षा 0.4 mm है। यह चयनित स्थान बिंदु पर एक मॉडल पूर्वानुमान है, न कि अवलोकन या जिला औसत। स्रोत: GFS पूर्वानुमान; स्थितियाँ बदल सकत"
+    },
+    {
+      "requested": "gu",
+      "seconds": 6.96,
+      "status": "answered",
+      "answered_language": "gu",
+      "adherence": "rendered_with_protected_values",
+      "render_report": {
+        "sentences": 2,
+        "translated": 2,
+        "held_safety_critical": 0,
+        "held_quotations": 0,
+        "held_quotation_characters": 0,
+        "failed": 0,
+        "ok": true
+      },
+      "render_failures": null,
+      "rendered": true,
+      "language_trace": null,
+      "notes": [],
+      "answer": "Surat માં, 17 Sep 2026 09:30-12:30 IST માટે, વરસાદની આગાહી 0.4 mm છે. સ્રોત: GFS આગાહી; પરિસ્થિતિઓ બદલાઈ શકે છે."
+    },
+    {
+      "requested": "ta",
+      "seconds": 7.12,
+      "status": "answered",
+      "answered_language": "ta",
+      "adherence": "rendered_with_protected_values",
+      "render_report": {
+        "sentences": 2,
+        "translated": 2,
+        "held_safety_critical": 0,
+        "held_quotations": 0,
+        "held_quotation_characters": 0,
+        "failed": 0,
+        "ok": true
+      },
+      "render_failures": null,
+      "rendered": true,
+      "language_trace": null,
+      "notes": [],
+      "answer": "Suratஇல், 17 Sep 2026-09:30-12:30 IST ஜன்னலுக்கு, முன்னறிவிக்கப்பட்ட மழைப்பொழிவு 0.4 mm ஆக உள்ளது. ஆதாரம்: GFS முன்னறிவிப்பு; நிலைமைகள் மாறலாம்."
+    },
+    {
+      "requested": "bn",
+      "seconds": 7.55,
+      "status": "partial",
+      "answered_language": null,
+      "adherence": "values_did_not_survive",
+      "render_report": {
+        "sentences": 2,
+        "translated": 1,
+        "held_safety_critical": 0,
+        "held_quotations": 0,
+        "held_quotation_characters": 0,
+        "failed": 1,
+        "ok": false
+      },
+      "render_failures": [
+        {
+          "sentence": "In Surat, for the window 17 Sep 2026 09:30-12:30 IST, the forecast rainfall is 0.4 mm.",
+          "reason": "protected values did not survive",
+          "ok": false,
+          "protected": 5,
+          "missing": [
+            {
+              "placeholder": "#V4#",
+              "original": "12:30 IST",
+              "kind": "clock"
+            }
+          ],
+          "duplicated": [],
+          "unknown_placeholders": []
+        }
+      ],
+      "rendered": false,
+      "language_trace": null,
+      "notes": [
+        "This answer was not rewritten in the requested language because some of its values did not survive the rendering intact. Showing a partly rewritten answer could change what a number or a warning means, so the source-language answer is kept instead."
+      ],
+      "answer": "In Surat, for the window 17 Sep 2026 09:30-12:30 IST, the forecast rainfall is 0.4 mm. Source: GFS forecast; conditions can change."
+    },
+    {
+      "requested": "mr",
+      "seconds": 7.06,
+      "status": "answered",
+      "answered_language": "mr",
+      "adherence": "rendered_with_protected_values",
+      "render_report": {
+        "sentences": 2,
+        "translated": 2,
+        "held_safety_critical": 0,
+        "held_quotations": 0,
+        "held_quotation_characters": 0,
+        "failed": 0,
+        "ok": true
+      },
+      "render_failures": null,
+      "rendered": true,
+      "language_trace": null,
+      "notes": [],
+      "answer": "Surat मध्ये, खिडकी 17 Sep 2026 09:30-12:30 IST साठी, अंदाजित पर्जन्यमान 0.4 mm आहे. स्रोत: GFS अंदाज; परिस्थिती बदलू शकते."
+    },
+    {
+      "requested": "pa",
+      "seconds": 6.98,
+      "status": "answered",
+      "answered_language": "pa",
+      "adherence": "rendered_with_protected_values",
+      "render_report": {
+        "sentences": 3,
+        "translated": 3,
+        "held_safety_critical": 0,
+        "held_quotations": 0,
+        "held_quotation_characters": 0,
+        "failed": 0,
+        "ok": true
+      },
+      "render_failures": null,
+      "rendered": true,
+      "language_trace": null,
+      "notes": [],
+      "answer": "Surat ਵਿੱਚ, ਵਿੰਡੋ 17 Sep 2026 09:30-12:30 IST ਲਈ, ਭਵਿੱਖਬਾਣੀ ਵਰਖਾ 0.4 mm ਹੈ। ਇਹ ਚੁਣੇ ਗਏ ਸਥਾਨ ਦੇ ਬਿੰਦੂ 'ਤੇ ਇੱਕ ਮਾਡਲ ਭਵਿੱਖਬਾਣੀ ਹੈ, ਨਾ ਕਿ ਨਿਰੀਖਣ ਜਾਂ ਜ਼ਿਲ੍ਹਾ ਔਸਤ। ਸਰੋਤਃ GFS ਭਵਿੱਖਬਾਣੀ; ਹਾਲਾਤ ਬਦਲ ਸਕਦੇ ਹਨ।"
+    },
+    {
+      "requested": "od",
+      "seconds": 7.32,
+      "status": "answered",
+      "answered_language": "od",
+      "adherence": "rendered_with_protected_values",
+      "render_report": {
+        "sentences": 2,
+        "translated": 2,
+        "held_safety_critical": 0,
+        "held_quotations": 0,
+        "held_quotation_characters": 0,
+        "failed": 0,
+        "ok": true
+      },
+      "render_failures": null,
+      "rendered": true,
+      "language_trace": null,
+      "notes": [],
+      "answer": "Suratରେ, 17 Sep 2026-09:30-12:30 IST ୱିଣ୍ଡୋ ପାଇଁ, ପୂର୍ବାନୁମାନ ବର୍ଷାପାତ 0.4 mm ଅଟେ। ଉତ୍ସ: GFS ପୂର୍ବାନୁମାନ; ପରିସ୍ଥିତି ପରିବର୍ତ୍ତନ ହୋଇପାରେ।"
+    },
+    {
+      "requested": "ur",
+      "seconds": 7.88,
+      "status": "answered",
+      "answered_language": "ur",
+      "adherence": "rendered_with_protected_values",
+      "render_report": {
+        "sentences": 3,
+        "translated": 3,
+        "held_safety_critical": 0,
+        "held_quotations": 0,
+        "held_quotation_characters": 0,
+        "failed": 0,
+        "ok": true
+      },
+      "render_failures": null,
+      "rendered": true,
+      "language_trace": null,
+      "notes": [],
+      "answer": "Surat میں، 17 Sep 2026 09:30-12:30 IST کے لیے، متوقع بارش 0.4 mm ہے۔ یہ منتخب کردہ مقام پر ماڈل کی پیش گوئی ہے، مشاہدہ یا ضلع کی اوسط نہیں ہے۔ ماخذ: GFS پیش گوئی؛ حالات بدل سکتے ہیں۔"
+    },
+    {
+      "requested": "hi-Latn",
+      "seconds": 6.49,
+      "status": "answered",
+      "answered_language": null,
+      "adherence": "unverifiable_script",
+      "render_report": null,
+      "render_failures": null,
+      "rendered": false,
+      "language_trace": null,
+      "notes": [
+        "This language is written in the Latin script, so whether an answer is in it cannot be verified here and is not claimed. The answer stays in its source language."
+      ],
+      "answer": "In Surat, for 17 Sep 2026 09:30-12:30 IST, the forecast rainfall is 0.4 mm. Source: GFS forecast; conditions can change."
+    },
+    {
+      "requested": "ml",
+      "seconds": 9.13,
+      "status": "partial",
+      "answered_language": null,
+      "adherence": "values_did_not_survive",
+      "render_report": {
+        "sentences": 2,
+        "translated": 1,
+        "held_safety_critical": 0,
+        "held_quotations": 0,
+        "held_quotation_characters": 0,
+        "failed": 1,
+        "ok": false
+      },
+      "render_failures": [
+        {
+          "sentence": "In Surat, for the window 17 Sep 2026 09:30-12:30 IST, the forecast rainfall is 0.4 mm.",
+          "reason": "protected values did not survive",
+          "ok": false,
+          "protected": 5,
+          "missing": [
+            {
+              "placeholder": "#V3#",
+              "original": "09:30",
+              "kind": "clock"
+            }
+          ],
+          "duplicated": [],
+          "unknown_placeholders": []
+        }
+      ],
+      "rendered": false,
+      "language_trace": null,
+      "notes": [
+        "This answer was not rewritten in the requested language because some of its values did not survive the rendering intact. Showing a partly rewritten answer could change what a number or a warning means, so the source-language answer is kept instead."
+      ],
+      "answer": "In Surat, for the window 17 Sep 2026 09:30-12:30 IST, the forecast rainfall is 0.4 mm. Source: GFS forecast; conditions can change."
+    }
+  ],
+  "limits": [
+    "One question, one place, one window: language delivery is measured here for this shape only.",
+    "The translation service is the configured Sarvam endpoint; a different day or quota may behave differently."
+  ]
+}

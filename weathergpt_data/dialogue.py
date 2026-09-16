@@ -63,9 +63,24 @@ def negated_measures(text):
     return found
 
 
-# Romanized Hinglish (hi-Latn) is correctly written in Latin script and is not
-# checked here; only a promised Indian script can be measured this way.
-SCRIPTS={'hi':'ऀ-ॿ','gu':'઀-૿'}
+def _measurable_scripts():
+    """The script range for every language whose written form can be measured, from the registry.
+
+    This table held only Hindi and Gujarati, which meant an answer promised in Tamil, Bengali, Punjabi,
+    Odia, Kannada, Telugu, Malayalam, Marathi or Urdu passed the adherence check without being measured
+    at all. It is derived from the language registry now, so a language added there is checked here
+    rather than passing silently. Romanized Hinglish (hi-Latn) and English share the Latin script and
+    cannot be measured this way; the answer-language tier reports them as unverifiable instead.
+    """
+    from .languages import LANGUAGES, script_pattern
+    table={}
+    for code in LANGUAGES:
+        pattern=script_pattern(code)
+        if pattern:table[code.lower()]=pattern
+    return table
+
+
+SCRIPTS=_measurable_scripts()
 
 
 def language_gap(text,language):

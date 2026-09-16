@@ -107,11 +107,23 @@ def deliver(result, target, translator=None, reason='none'):
     generation['language_selection'] = reason
     answer = result.get('answer') or ''
 
-    if not target or target == 'en' or target in ROMANISED:
-        # English needs no rendering, and a romanised answer shares the Latin script so
-        # it cannot be verified by script. Neither may claim to have been rendered.
+    if not target or target == 'en':
+        # English needs no rendering.
         generation['language_adherence'] = 'not_applicable'
         result['trace']['generation'] = generation
+        return result
+
+    if target in ROMANISED:
+        # A romanised language shares the Latin script, so a rendering into it cannot be verified by
+        # script. Reporting "not applicable" read as if nothing had been asked for; the reader asked
+        # for romanised output and did not get it, so the answer says so and stays in its source
+        # language rather than passing an English answer off as the requested one.
+        generation['language_adherence'] = 'unverifiable_script'
+        result['trace']['generation'] = generation
+        note = ('This language is written in the Latin script, so whether an answer is in it cannot be '
+                'verified here and is not claimed. The answer stays in its source language.')
+        if note not in result['notes']:
+            result['notes'].append(note)
         return result
 
     if written_in(answer, target):
