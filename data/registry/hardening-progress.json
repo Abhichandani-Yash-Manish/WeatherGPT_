@@ -1,7 +1,7 @@
 {
  "schema_version": "hardening-progress-v1",
  "review": "research/reviews/national-readiness-20260912/review.md",
- "updated_at_utc": "2026-09-16T18:45:00+00:00",
+ "updated_at_utc": "2026-09-16T19:30:00+00:00",
  "operational_ready": false,
  "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
  "findings": [
@@ -2541,7 +2541,10 @@
    "A2.5: a cheap first look (chat_router) decides conversation or task against a ~700-character workspace picture and answers a conversation in that same call; a task still goes to the full planner, an undecided route is a task, a failed or slow first look (12 s budget) changes nothing, and the plan it builds is validated like any other",
    "the provider policy is frozen to the free cloud models: WEATHERGPT_PROVIDERS=cloud_free is the default, the local model runs only when the policy asks for it, no key means no provider, and the policy is recorded in every planning and composition trace",
    "A3: a turn with facts gets a model-written two-or-three-sentence answer behind the existing checks extended with the fact unit set, the fact place and a 25 s wall-clock budget for the whole composition step, with the tool-owned renderer as the floor and the refusal recorded in trace.generation",
-   "whole-step provider budgets (45 s planning, 25 s composition, 12 s first look) so a refused free endpoint reaches the reader with an honest error in about a minute instead of a two-minute retry loop"
+   "whole-step provider budgets (45 s planning, 25 s composition, 12 s first look) so a refused free endpoint reaches the reader with an honest error in about a minute instead of a two-minute retry loop",
+   "DeepSeekClient: the reader key stored in local configuration only (git-ignored), OpenAI-compatible chat completions with the JSON schema in the prompt because DeepSeek accepts a JSON object reply rather than a schema on the wire, the reply parsed and validated exactly as before, and the model, latency and tokens recorded so a paid turn is accounted for",
+   "WEATHERGPT_PROVIDERS=deepseek_first is the reader choice: the paid endpoint answers first and the free OpenRouter ids stay behind it as failover; a refused key disables the client for the process, a missing balance is named, a rate limit is retried once",
+   "the written answer for a point reading now uses tool-owned place_label and window_label strings and carries the deterministic source clause into the answer, so a reader sees the source without opening the receipt"
   ],
   "measured_live": [
    "hello: 11.0 s, conversation, natural greeting, no acquisition",
@@ -2549,7 +2552,9 @@
    "what is 17 times 3?: 48.3 s, conversation, fifty-one stated as general knowledge",
    "नमस्ते: 9.3 s, conversation in Devanagari, language_adherence written_in_requested_script",
    "Will it rain in Surat tomorrow morning?: 19.5 s, answered with one tool-owned fact (0.4 mm, GFS) and three quick replies",
-   "thanks! in the same conversation: 19.5 s, conversation, continuity kept"
+   "thanks! in the same conversation: 19.5 s, conversation, continuity kept",
+   "DeepSeek (research/reviews/chat-overhaul-20260916/journeys-deepseek.json): hello 0.93 s, what can you do? 1.11 s, 17 times 3 0.89 s answering fifty-one, नमस्ते 1.14 s, weather 5.94 s answered with a written answer from one tool-owned fact (0.4 mm, GFS), thanks 0.73 s - six journeys, no failures",
+   "the written answer applies to a point reading only (a short sentence list, at most four lines and 600 characters): the marine turn with 72 hourly facts kept the typed renderer, measured, so a laid-out record is not rewritten by the model"
   ],
   "tests_added": [
    "tests/test_conversational_turns.py (9 checks): the reply path, one repair attempt with the violation named, withholding, every leak class with clean counter-examples, the conversation state without evidence, a Hindi greeting, and graceful degradation for an outage and for an unplannable question",

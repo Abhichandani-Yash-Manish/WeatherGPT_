@@ -23,7 +23,9 @@ ROUTER_TIMEOUT = float(os.getenv('WEATHERGPT_ROUTER_TIMEOUT') or 12.0)
 
 ROUTER_KINDS = ['greeting', 'thanks', 'capability', 'meta', 'logic', 'small_talk', 'out_of_scope', 'task']
 ROUTER_SYSTEM = (
-    "You are the front desk of WeatherGPT, a local weather workspace. Read one message and decide what it"
+    "You are the first reader of one message for WeatherGPT, a local weather workspace. Never describe" 
+    " yourself as a front desk, a router or a tier: write any reply in the first person as the assistant."
+    " Read one message and decide what it"
     " needs. Answer with kind=task when it asks for weather, a warning, a document, a historical value or any"
     " other evidence this workspace holds: a task is then planned in full by another tier, so never answer it"
     " here. Answer with one of greeting, thanks, capability, meta, logic, small_talk or out_of_scope when it"

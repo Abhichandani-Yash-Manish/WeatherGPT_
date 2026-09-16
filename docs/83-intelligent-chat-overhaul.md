@@ -224,6 +224,54 @@ link, certainty or unrequested language may appear. Any failure - including a sl
 invariant now reads "the model may write the answer, and it may not rewrite what the facts say", which
 tests/test_product_stage_one.py exercises with a changed value, a changed unit and a lost place.
 
+### DeepSeek integration (16 September 2026, at the reader request)
+
+The OpenRouter free-models-per-day quota was exhausted, so the reader supplied a DeepSeek key. It is stored in
+`data/runtime/model-config.json` (git-ignored, never logged, never returned) and the reader set the policy to
+`deepseek_first`. It is a **paid** endpoint billed to that key, and prompts leave the machine: that trade is
+the reader's stated choice, not a silent one.
+
+- `DeepSeekClient` speaks the OpenAI-compatible endpoint at api.deepseek.com with `deepseek-chat`. DeepSeek
+  accepts a JSON object reply, not a JSON schema on the wire, so the schema travels in the system message and
+  the reply is parsed with the same tolerance the OpenRouter client uses (extract_json), then validated exactly
+  as before. The trace records the model, the attempt count, the latency and the tokens (including cache hits),
+  so a paid turn can be accounted for.
+- `WEATHERGPT_PROVIDERS` now takes `deepseek_first` (the reader's choice), `deepseek`, `cloud_free` or `local`.
+  The default is `deepseek_first` when a DeepSeek key is configured and `cloud_free` otherwise. The free
+  OpenRouter ids stay behind the paid endpoint as failover, so a key problem does not stop the workspace, and
+  the deepseek-only policy with no key has no provider at all rather than falling back on its own.
+- A refused key (401/403) disables the client for the process; a missing balance (402) is named as such; a rate
+  limit or a server error is retried once and then the router moves on.
+
+### Measured on DeepSeek: six live journeys, no failures
+
+`research/reviews/chat-overhaul-20260916/journeys-deepseek.json`, same runner as before:
+
+| Message | Free provider | DeepSeek | Result |
+| --- | --- | --- | --- |
+| "hello" | 11.0 s | **0.93 s** | conversation, natural greeting |
+| "what can you do?" | 19.3 s | **1.11 s** | conversation, names the tools and the limits |
+| "what is 17 times 3?" | 48.3 s | **0.89 s** | conversation, "51", stated as general knowledge |
+| "नमस्ते" | 9.3 s | **1.14 s** | conversation in Devanagari |
+| "Will it rain in Surat tomorrow morning?" | 19.5 s | **5.94 s** | answered; written answer, 1 fact, 0.4 mm, GFS |
+| "thanks!" | 19.5 s | **0.73 s** | conversation, continuity kept |
+
+### What the written answer does now, and where it stops
+
+The written answer applies to a **point reading** - a forecast, an observation, a wave or discharge figure -
+where the deterministic text is a short sentence list (at most four lines, 600 characters). A published
+historical table, a quoted bulletin passage, an advisory extract or a long hourly series keeps its own
+renderer: the model does not rewrite a record that was laid out to be read. Measured on the marine turn
+("What is the sea like near Kochi tomorrow?", 72 hourly facts): the typed renderer still draws the rows, and no
+model text replaces them.
+
+The place label, the window label and the source clause are **tool-owned strings**: the narrative prompt
+receives `place_label` ("Surat", not the gazetteer's "Surat, Sūrat, State of Gujarāt"), a pre-rendered
+`window_label` ("17 Sep 2026 09:30-12:30 IST"), and the answer carries the source clause from the deterministic
+text ("Source: GFS forecast; conditions can change."). A measured turn reads: *"In Surat, for the window 17 Sep
+2026 09:30-12:30 IST, the forecast rainfall is 0.4 mm. This is a model forecast at the selected place point, not
+an observation or district average. Source: GFS forecast; conditions can change."*
+
 ### Measured incident: the free quota ran out
 
 Later the same afternoon, every cloud-free call was refused: `HTTP 429 Rate limit exceeded: free-models-per-day.`

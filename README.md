@@ -163,7 +163,7 @@ The interface states these limits instead of filling them:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 1204 Python tests
+python3 -m pytest tests/ -q                          # 1210 Python tests
 node tests/test_charts.js                            #  2 of 108 printed component checks
 node tests/test_viz.js                               #  9; the chart engine: plume, meteogram, gaps and locators
 node tests/test_views.js                             # 25

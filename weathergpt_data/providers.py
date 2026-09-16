@@ -30,6 +30,12 @@ FREE_MODEL_REGISTRY = ROOT / 'data' / 'registry' / 'openrouter-free-models.json'
 OPENROUTER_BASE = 'https://openrouter.ai/api/v1'
 OPENROUTER_MODELS_URL = OPENROUTER_BASE + '/models'
 OPENROUTER_CHAT_URL = OPENROUTER_BASE + '/chat/completions'
+# DeepSeek's OpenAI-compatible endpoint. It accepts a JSON object reply, not a JSON schema on the
+# wire, so the schema travels in the prompt and the reply is parsed and checked exactly as the
+# OpenRouter client's is. It is a paid endpoint billed to the key configured on this machine: the
+# reader chose it on 16 September 2026, and every call records its model, tokens and latency.
+DEEPSEEK_BASE = 'https://api.deepseek.com'
+DEEPSEEK_MODELS = ('deepseek-chat',)
 # Free-tier ids this workspace has itself observed in the OpenRouter catalogue, most recent
 # observation first. The curated ranking in FREE_MODEL_REGISTRY is the routing order and names
 # more; this tuple is the floor used only when that registry is missing. Re-measured on
@@ -68,6 +74,12 @@ def local_config():
 def openrouter_key():
     """The OpenRouter key from the environment first, then local configuration."""
     key = os.getenv('OPENROUTER_API_KEY') or local_config().get('openrouter_api_key') or ''
+    return str(key).strip()
+
+
+def deepseek_key():
+    """The DeepSeek key from the environment first, then local configuration."""
+    key = os.getenv('DEEPSEEK_API_KEY') or local_config().get('deepseek_api_key') or ''
     return str(key).strip()
 
 
@@ -411,6 +423,96 @@ def planner_policy():
     return policy if policy in {'model','rules'} else 'model'
 
 
+class DeepSeekClient:
+    """DeepSeek in JSON-object mode: the schema travels in the prompt, the reply is parsed as JSON.
+
+    Paid and billed to the configured key, so every reply records its model, its tokens and its
+    latency. An invalid key disables the client for this process rather than retrying it, a missing
+    balance is named as such, and a rate limit or a server error is retried once before the router
+    moves on.
+    """
+
+    name = 'deepseek'
+
+    def __init__(self, key=None, models=None, timeout=DEFAULT_TIMEOUT, opener=None, base=DEEPSEEK_BASE):
+        self.key = (key if key is not None else deepseek_key()).strip()
+        self.models = tuple(models or DEEPSEEK_MODELS)
+        self.timeout = timeout
+        self.opener = opener or urllib.request.urlopen
+        self.base = base.rstrip('/')
+        self.disabled_reason = ''
+
+    def available(self):
+        if not self.key:
+            return False, 'no DeepSeek key is configured'
+        if self.disabled_reason:
+            return False, self.disabled_reason
+        return True, ''
+
+    def http(self, url, body=None, headers=None, timeout=None):
+        request = urllib.request.Request(url, body, headers or {})
+        return self.opener(request, timeout=timeout or self.timeout)
+
+    def complete(self, system, user, schema, max_tokens=1100, timeout=None):
+        available, reason = self.available()
+        if not available:
+            raise ProviderUnavailable(reason)
+        instruction = ('Return only one JSON object, and nothing else, that validates against this JSON '
+                       'schema: ' + json.dumps(schema, ensure_ascii=False))
+        last_error = None
+        attempts = 0
+        for model in self.models:
+            for attempt in range(MAX_ATTEMPTS_PER_MODEL):
+                attempts += 1
+                began = time.monotonic()
+                payload = {'model': model, 'temperature': 0, 'max_tokens': max_tokens,
+                           'response_format': {'type': 'json_object'},
+                           'messages': [{'role': 'system', 'content': system + ' ' + instruction},
+                                        {'role': 'user', 'content': user}]}
+                headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + self.key}
+                try:
+                    with self.http(self.base + '/chat/completions', json.dumps(payload).encode(), headers,
+                                   timeout=timeout) as response:
+                        data = json.loads(response.read(400000))
+                except urllib.error.HTTPError as error:
+                    detail = ''
+                    try:
+                        detail = (json.loads(error.read(4000)) or {}).get('error', {}).get('message', '')
+                    except Exception:  # noqa: BLE001 - the status is what matters
+                        detail = ''
+                    if error.code in (401, 403):
+                        self.disabled_reason = 'the DeepSeek key was refused (HTTP ' + str(error.code) + ')'
+                        raise ProviderUnavailable(self.disabled_reason) from error
+                    if error.code == 402:
+                        self.disabled_reason = 'the DeepSeek account has no balance for this call'
+                        raise ProviderUnavailable(self.disabled_reason) from error
+                    last_error = 'HTTP ' + str(error.code) + ' ' + str(detail)[:120]
+                    if error.code == 429 or error.code >= 500:
+                        time.sleep(RETRY_BACKOFF_SECONDS * (attempt + 1))
+                        continue
+                    break
+                except (urllib.error.URLError, OSError, ValueError) as error:
+                    last_error = type(error).__name__ + ' ' + str(error)[:100]
+                    continue
+                failure = route_failure(data)
+                if failure:
+                    last_error = model + ': ' + failure
+                    continue
+                latency = round((time.monotonic() - began) * 1000)
+                content = ((data.get('choices') or [{}])[0].get('message') or {}).get('content', '')
+                usage = data.get('usage') or {}
+                try:
+                    parsed = extract_json(content)
+                except ProviderUnavailable as error:
+                    last_error = str(error) + ' from ' + model
+                    continue
+                return parsed, {'provider': self.name, 'model': model, 'attempts': attempts,
+                                'latency_ms': latency, 'input_tokens': usage.get('prompt_tokens'),
+                                'output_tokens': usage.get('completion_tokens'),
+                                'cache_hit_tokens': usage.get('prompt_cache_hit_tokens')}
+        raise ProviderUnavailable('DeepSeek could not answer: ' + str(last_error or 'no model was tried'))
+
+
 class ModelRouter:
     """Let the model plan the turn, or the deterministic rules when the policy asks for them.
 
@@ -551,8 +653,9 @@ def provider_policy():
     reported rather than quietly served by a different machine. 'local' is kept so an offline machine
     can still be diagnosed; it is not a fallback that runs by itself.
     """
-    policy=str(os.getenv(PROVIDER_POLICY_ENV) or local_config().get('provider_policy') or 'cloud_free').strip().lower()
-    return policy if policy in {'cloud_free','local'} else 'cloud_free'
+    default='deepseek_first' if deepseek_key() else 'cloud_free'
+    policy=str(os.getenv(PROVIDER_POLICY_ENV) or local_config().get('provider_policy') or default).strip().lower()
+    return policy if policy in {'deepseek_first','deepseek','cloud_free','local'} else default
 
 
 def default_clients():
@@ -563,14 +666,22 @@ def default_clients():
     free id can answer, and the failover is recorded in the trace. With no key configured there is no
     provider at all, which the planner reports rather than routing around.
     """
-    if provider_policy()=='local':
+    policy=provider_policy()
+    if policy=='local':
         try:
             return [OllamaClient()]
         except ValueError:
             return []
-    if openrouter_key():
-        return [OpenRouterClient()]
-    return []
+    if policy=='deepseek':
+        return [DeepSeekClient()] if deepseek_key() else []
+    if policy=='cloud_free':
+        return [OpenRouterClient()] if openrouter_key() else []
+    # deepseek_first: the endpoint the reader configured, then the free ids as failover. The
+    # paid key answers when it is there, and a free model still carries the turn if it is not.
+    clients=[]
+    if deepseek_key():clients.append(DeepSeekClient())
+    if openrouter_key():clients.append(OpenRouterClient())
+    return clients
 
 
 def default_model():

@@ -37,7 +37,8 @@ class ChatRouterTests(unittest.TestCase):
     def test_a_greeting_is_answered_in_one_call(self):
         stub = Stub([reply(json.dumps({'kind': 'greeting', 'reply': 'Hello! Ask me about a place and a day.'}))])
         self.addCleanup(stub.close)
-        plan, meta = router_with(stub).plan('hello', NOW, [])
+        with patch.dict('os.environ', {'WEATHERGPT_PROVIDERS': 'cloud_free'}):
+            plan, meta = router_with(stub).plan('hello', NOW, [])
         self.assertEqual(plan['intent'], 'chat')
         self.assertEqual(plan['tasks'][0]['kind'], 'chat')
         self.assertEqual(plan['tasks'][0]['operation'], 'reply')
@@ -109,8 +110,30 @@ class ProviderPolicyTests(unittest.TestCase):
     def test_the_local_provider_runs_only_when_the_policy_asks_for_it(self):
         with patch.dict('os.environ', {'WEATHERGPT_PROVIDERS': 'local'}):
             self.assertEqual([client.name for client in providers.default_clients()], ['ollama'])
-        with patch.dict('os.environ', {'WEATHERGPT_PROVIDERS': 'something-else'}):
-            self.assertEqual(providers.provider_policy(), 'cloud_free', 'an unknown policy falls back to the frozen default')
+        with patch.dict('os.environ', {'WEATHERGPT_PROVIDERS': 'something-else'}), \
+             patch.object(providers, 'deepseek_key', return_value=''):
+            self.assertEqual(providers.provider_policy(), 'cloud_free',
+                             'an unknown policy with no paid key falls back to the free cloud models')
+        with patch.dict('os.environ', {'WEATHERGPT_PROVIDERS': 'something-else'}), \
+             patch.object(providers, 'deepseek_key', return_value='k'):
+            self.assertEqual(providers.provider_policy(), 'deepseek_first',
+                             'an unknown policy with a configured paid key falls back to the configured provider')
+
+    def test_the_configured_order_puts_the_paid_endpoint_first_and_the_free_models_after_it(self):
+        with patch.dict('os.environ', {'WEATHERGPT_PROVIDERS': 'deepseek_first'}), \
+             patch.object(providers, 'deepseek_key', return_value='k'), \
+             patch.object(providers, 'openrouter_key', return_value='k2'):
+            self.assertEqual([client.name for client in providers.default_clients()], ['deepseek', 'openrouter'])
+        with patch.dict('os.environ', {'WEATHERGPT_PROVIDERS': 'deepseek_first'}), \
+             patch.object(providers, 'deepseek_key', return_value=''), \
+             patch.object(providers, 'openrouter_key', return_value='k2'):
+            self.assertEqual([client.name for client in providers.default_clients()], ['openrouter'],
+                             'the free ids still carry the turn when no paid key is configured')
+        with patch.dict('os.environ', {'WEATHERGPT_PROVIDERS': 'deepseek'}), \
+             patch.object(providers, 'deepseek_key', return_value=''), \
+             patch.object(providers, 'openrouter_key', return_value='k2'):
+            self.assertEqual(providers.default_clients(), [],
+                             'the deepseek-only policy with no key has no provider, and never falls back on its own')
 
 
 if __name__ == '__main__':

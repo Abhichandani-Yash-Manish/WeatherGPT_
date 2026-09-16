@@ -14,7 +14,8 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from unittest.mock import patch
 
 from weathergpt_data import providers
-from weathergpt_data.providers import ModelRouter, OllamaClient, OpenRouterClient, ProviderUnavailable, extract_json
+from weathergpt_data.providers import (DeepSeekClient, ModelRouter, OllamaClient, OpenRouterClient,
+                                       ProviderUnavailable, extract_json)
 from weathergpt_data.transport import SourceError
 from weathergpt_data.rule_planner import rule_request
 
@@ -306,6 +307,70 @@ class RouterTests(unittest.TestCase):
         self.assertFalse(rows[0]['available'])
         self.assertIn('key', rows[0]['reason'])
         self.assertNotIn('key', json.dumps(rows[1]))
+
+
+class DeepSeekTests(unittest.TestCase):
+    """The paid endpoint: JSON-object mode, the schema in the prompt, and its refusals named."""
+
+    def test_the_client_sends_json_object_mode_and_the_schema_in_the_prompt(self):
+        stub = Stub([reply('{"ok": true}')])
+        self.addCleanup(stub.close)
+        client = DeepSeekClient(key='k', base=stub.base)
+        data, meta = client.complete('System text.', 'User text.', SCHEMA, max_tokens=50)
+        self.assertEqual(data, {'ok': True})
+        self.assertEqual(meta['provider'], 'deepseek')
+        self.assertEqual(meta['model'], 'deepseek-chat')
+        request = stub.requests[0]
+        self.assertEqual(request['path'], '/chat/completions')
+        self.assertEqual(request['headers'].get('Authorization'), 'Bearer k')
+        self.assertEqual(request['body']['response_format'], {'type': 'json_object'})
+        self.assertIn('validates against this JSON schema', request['body']['messages'][0]['content'])
+        self.assertIn('"ok"', request['body']['messages'][0]['content'])
+        self.assertEqual(request['body']['messages'][1]['content'], 'User text.')
+
+    def test_usage_is_recorded_so_a_paid_turn_can_be_accounted_for(self):
+        stub = Stub([reply('{"ok": true}', usage={'prompt_tokens': 120, 'completion_tokens': 8,
+                                                  'total_tokens': 128, 'prompt_cache_hit_tokens': 40})])
+        self.addCleanup(stub.close)
+        _data, meta = DeepSeekClient(key='k', base=stub.base).complete('s', 'u', SCHEMA)
+        self.assertEqual(meta['input_tokens'], 120)
+        self.assertEqual(meta['output_tokens'], 8)
+        self.assertEqual(meta['cache_hit_tokens'], 40)
+
+    def test_a_refused_key_disables_the_client_and_a_missing_balance_is_named(self):
+        stub = Stub([(401, {'error': {'message': 'invalid key'}})])
+        self.addCleanup(stub.close)
+        client = DeepSeekClient(key='k', base=stub.base)
+        with self.assertRaises(ProviderUnavailable) as raised:
+            client.complete('s', 'u', SCHEMA)
+        self.assertIn('refused', str(raised.exception))
+        available, reason = client.available()
+        self.assertFalse(available, 'a refused key is not retried for this process')
+        self.assertIn('HTTP 401', reason)
+        stub2 = Stub([(402, {'error': {'message': 'Insufficient Balance'}})])
+        self.addCleanup(stub2.close)
+        with self.assertRaises(ProviderUnavailable) as raised:
+            DeepSeekClient(key='k', base=stub2.base).complete('s', 'u', SCHEMA)
+        self.assertIn('balance', str(raised.exception))
+
+    def test_a_rate_limit_is_retried_once_and_then_answered(self):
+        stub = Stub([(429, {'error': {'message': 'rate limited'}}), reply('{"ok": true}')])
+        self.addCleanup(stub.close)
+        with patch.object(providers, 'RETRY_BACKOFF_SECONDS', 0.01):
+            data, meta = DeepSeekClient(key='k', base=stub.base).complete('s', 'u', SCHEMA)
+        self.assertEqual(data, {'ok': True})
+        self.assertEqual(meta['attempts'], 2)
+
+    def test_no_key_means_no_request(self):
+        stub = Stub([reply()])
+        self.addCleanup(stub.close)
+        client = DeepSeekClient(key='', base=stub.base)
+        available, reason = client.available()
+        self.assertFalse(available)
+        self.assertIn('key', reason)
+        with self.assertRaises(ProviderUnavailable):
+            client.complete('s', 'u', SCHEMA)
+        self.assertEqual(stub.requests, [])
 
 
 class OllamaTests(unittest.TestCase):
