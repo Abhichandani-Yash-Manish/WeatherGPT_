@@ -8,6 +8,8 @@ from weathergpt_data.adapters import ERA5_HOURLY, PREVIOUS_RUNS, era5_hourly, pr
 from weathergpt_data.transport import SourceError
 from weathergpt_data.verification import MIN_SAMPLE_HOURS, error_statistics, summarise
 
+import test_conversation as fixtures
+
 UTC = timezone.utc
 META = {'source_id': 'S70', 'sha256': 'e' * 64}
 POINT = {'latitude': 23.0, 'longitude': 72.5}
@@ -274,6 +276,97 @@ class ProductViewTests(unittest.TestCase):
         from weathergpt_data import product_api
         with self.assertRaises(SourceError):
             product_api.dispatch(self.foundation_with({}, {}), '/api/verification', {'lat': ['23'], 'lon': ['72']})
+
+
+def verification_packet():
+    from datetime import timedelta
+    base = datetime(2026, 8, 28, tzinfo=UTC)
+    forecast_records, reference_records = [], []
+    for lead in (1, 2, 3, 5, 7):
+        for index in range(48):
+            moment = (base + timedelta(hours=index)).isoformat()
+            reference_records.append({'variable': 'temperature_2m', 'valid_time_utc': moment,
+                                      'value': 30.0 + index * 0.1})
+            forecast_records.append({'variable': 'temperature_2m', 'valid_time_utc': moment,
+                                     'value': 30.0 + index * 0.1 + 0.2 * lead, 'lead_days': lead,
+                                     'unit': '°C',
+                                     'source_locator': '$.hourly.temperature_2m_previous_day%d[%d]' % (lead, index)})
+    forecast = {'source_id': 'S70', 'records': forecast_records,
+                'coverage': {'model': 'gfs_seamless', 'returned_grid': {'latitude': 23.02, 'longitude': 72.54}}}
+    reference = {'source_id': 'S22', 'records': reference_records,
+                 'coverage': {'returned_grid': {'latitude': 23.02, 'longitude': 72.54}}}
+    result = summarise(forecast, reference)
+    result['forecast'].update({'retrieved_at_utc': '2026-09-16T00:00:00+00:00',
+                               'url': 'https://previous-runs-api.open-meteo.com/v1/forecast', 'sha256': 'e' * 64})
+    result['reference'].update({'retrieved_at_utc': '2026-09-16T00:00:00+00:00',
+                                'url': 'https://archive-api.open-meteo.com/v1/archive', 'sha256': 'f' * 64})
+    result['window'] = {'start': '2026-08-28', 'end': '2026-09-10'}
+    return result
+
+
+class VerificationPlannerTests(unittest.TestCase):
+    NOW = datetime(2026, 9, 16, 12, 0, tzinfo=timezone.utc)
+
+    def request(self, question):
+        from zoneinfo import ZoneInfo
+        from weathergpt_data.rule_planner import rule_request
+        return rule_request(question, self.NOW.astimezone(ZoneInfo('Asia/Kolkata')))
+
+    def test_a_verification_question_is_a_verification_task(self):
+        request = self.request('How accurate was the temperature forecast for Ahmedabad over the last two weeks?')
+        self.assertIsNotNone(request)
+        self.assertEqual([(task['kind'], task['operation']) for task in request['tasks']],
+                         [('verification', 'lookup')])
+        self.assertEqual(request['tasks'][0]['parameters'], ['temperature_2m'])
+
+    def test_naming_precipitation_narrows_the_verification_variable(self):
+        request = self.request('Verify the precipitation forecast for Surat.')
+        self.assertEqual(request['tasks'][0]['parameters'], ['precipitation'])
+
+    def test_an_ordinary_forecast_stays_a_forecast(self):
+        request = self.request('Will it rain in Ahmedabad tomorrow?')
+        self.assertEqual(request['tasks'][0]['kind'], 'forecast')
+
+
+class VerificationChatTests(unittest.TestCase):
+    setUp = fixtures.ConversationTests.setUp
+    publish = fixtures.ConversationTests.publish
+    add_place = fixtures.ConversationTests.add_place
+    ask = fixtures.ConversationTests.ask
+    chat = fixtures.ConversationTests.chat
+
+    def test_a_verification_question_answers_with_computed_statistics(self):
+        from unittest.mock import patch
+        from test_product_stage_one import task
+        question = 'How accurate was the temperature forecast for Ahmedabad over the last two weeks?'
+        self.model.value['tasks'] = [task(kind='verification', operation='lookup', parameters=['temperature_2m'],
+                                          years=[], start_local='', end_local='', request_quote=question)]
+        with patch('weathergpt_data.foundation.Foundation.verification', return_value=verification_packet()):
+            result = self.chat(question=question)
+        self.assertEqual(result['status'], 'answered', result['answer'])
+        parameters = {fact['parameter'] for fact in result['facts']}
+        self.assertIn('temperature_2m_mae', parameters)
+        self.assertIn('temperature_2m_bias', parameters)
+        self.assertIn('temperature_2m_correlation', parameters)
+        self.assertTrue(all('matched hours' in fact['method'] for fact in result['facts']))
+        self.assertTrue(all(fact['evidence_kind'] == 'verification_statistic' for fact in result['facts']))
+        self.assertTrue(any('reanalysis' in note for note in result['notes']))
+        self.assertTrue(any('most recent completed fourteen-day window' in note for note in result['notes']))
+        self.assertIn('mean absolute error by lead time', result['answer'])
+        self.assertFalse(result['operational_eligible'])
+        self.assertTrue(result['citations'])
+        self.assertEqual(result['charts'], [])
+
+    def test_a_window_inside_the_reanalysis_delay_is_not_verified(self):
+        from test_product_stage_one import task
+        question = 'How accurate was the temperature forecast for Ahmedabad yesterday?'
+        self.model.value['tasks'] = [task(kind='verification', operation='lookup', parameters=['temperature_2m'],
+                                          years=[], start_local='2026-09-10T00:30:00+05:30',
+                                          end_local='2026-09-11T00:30:00+05:30', request_quote=question)]
+        result = self.chat(question=question)
+        self.assertEqual(result['status'], 'unavailable', result['answer'])
+        self.assertIn('five-day delay', result['answer'])
+        self.assertFalse(result['facts'])
 
 
 if __name__ == '__main__':
