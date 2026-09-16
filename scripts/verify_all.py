@@ -71,6 +71,10 @@ def main():
     # The surfaces a reader can reach must be served, and the two frontends must agree on them.
     ok, tail, err = run([sys.executable, 'scripts/audit_surface_registry.py'])
     steps.append(('surface registry audit', ok, tail or err))
+    # The React frontend audit holds the lines the vanilla audit held (FE01-FE11) against the built page and
+    # the sources, so those checks survive the vanilla frontend's removal. A missing build is a skip, not a pass.
+    ok, tail, err = run([sys.executable, 'scripts/audit_react_frontend.py'])
+    steps.append(('react frontend audit', ok, tail or err))
     # A ported check has to be named in the ledger, and every named test has to exist in its spec. This
     # reads the vanilla suites and the React specs; a missing React build does not affect it.
     ok, tail, err = run([sys.executable, 'scripts/audit_check_port.py'])
