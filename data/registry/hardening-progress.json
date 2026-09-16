@@ -1,7 +1,7 @@
 {
  "schema_version": "hardening-progress-v1",
  "review": "research/reviews/national-readiness-20260912/review.md",
- "updated_at_utc": "2026-09-16T18:10:00+00:00",
+ "updated_at_utc": "2026-09-16T18:45:00+00:00",
  "operational_ready": false,
  "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
  "findings": [
@@ -2537,7 +2537,11 @@
    "the planner receives a deterministic workspace picture: the clock, the callable tools, the source ledger counts and what the workspace does not do, so a capability answer comes from the ledger instead of the model memory",
    "a conversational reply is checked for measurement units (including spelled-out forms), dates and times, numbers beside a weather word, warning claims, source identifiers, links and present-weather claims; one repair attempt is made with the violation named, and a reply that still fails is withheld",
    "a conversational turn acquires nothing, holds no fact, cites nothing, carries status conversation with a visible No source read tag, and never becomes retrievable evidence in the conversation state",
-   "the language tier labels a model-written answer in the requested script as written_in_requested_script instead of claiming a template wrote it"
+   "the language tier labels a model-written answer in the requested script as written_in_requested_script instead of claiming a template wrote it",
+   "A2.5: a cheap first look (chat_router) decides conversation or task against a ~700-character workspace picture and answers a conversation in that same call; a task still goes to the full planner, an undecided route is a task, a failed or slow first look (12 s budget) changes nothing, and the plan it builds is validated like any other",
+   "the provider policy is frozen to the free cloud models: WEATHERGPT_PROVIDERS=cloud_free is the default, the local model runs only when the policy asks for it, no key means no provider, and the policy is recorded in every planning and composition trace",
+   "A3: a turn with facts gets a model-written two-or-three-sentence answer behind the existing checks extended with the fact unit set, the fact place and a 25 s wall-clock budget for the whole composition step, with the tool-owned renderer as the floor and the refusal recorded in trace.generation",
+   "whole-step provider budgets (45 s planning, 25 s composition, 12 s first look) so a refused free endpoint reaches the reader with an honest error in about a minute instead of a two-minute retry loop"
   ],
   "measured_live": [
    "hello: 11.0 s, conversation, natural greeting, no acquisition",
@@ -2554,13 +2558,16 @@
    "tests/test_views.js: a conversational reply is shown as a conversation, tagged No source read, and drawn with no receipt or validity window"
   ],
   "live_check": "research/reviews/chat-overhaul-20260916/journeys.json",
+  "router_and_availability_check": "research/reviews/chat-overhaul-20260916/router-tier-and-quota.json",
   "browser_check": "research/reviews/chat-overhaul-20260916/browser-conversation.json",
   "open": [
    "Stage A3: a model-written narrative for evidence answers behind the existing validation, with the tool-owned fact renderer as the floor (today a turn with facts is rendered deterministically)",
    "Stage A4: language breadth through the language gate, and dialogue.SCRIPTS widening with each language made writable",
    "Stage A5: the provider order, planner policy and last failure surfaced in settings and health",
    "the leak check is a bounded heuristic: a number written as a word passes it; the structural guarantees are that a conversational turn acquires nothing, holds no fact, is labelled, and is never stored as evidence",
-   "latency: planning is 9-48 s on the free provider; a cheaper routing tier before the full plan is the candidate fix, not built"
+   "latency: the first look cuts a conversational turn from 11-48 s to 4-8 s and costs a task turn about 3-4 s; recorded in research/reviews/chat-overhaul-20260916/router-tier-and-quota.json",
+   "availability: the OpenRouter free-models-per-day quota was exhausted at 17:52 UTC on 16 September 2026 and every cloud-free call was refused (HTTP 429). With the cloud-only policy frozen and nothing else enabled, the turn reports no provider honestly and holds its facts. Options recorded, not chosen: wait for the daily reset, add a small credit, run with WEATHERGPT_ROUTER=off, or unfreeze the local model",
+   "the journey record for the first-look measurements is the values printed by that run (its JSON was overwritten by the later rate-limited run) and says so; a fresh full journeys.json capture needs a provider that answers"
   ],
   "hosting_performed": false,
   "same_host_only": true

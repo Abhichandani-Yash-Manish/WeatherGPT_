@@ -240,7 +240,7 @@ class RouterTests(unittest.TestCase):
         stub = Stub([reply(planned)])
         self.addCleanup(stub.close)
         router = ModelRouter(clients=[OpenRouterClient(key='k', models=('first/model:free',), base=stub.base)],
-                             policy='model')
+                             policy='model', router=False)
         plan, meta = router.plan('Will it rain in Ahmedabad, Gujarat tomorrow morning?', NOW, [])
         self.assertEqual(meta['provider'], 'openrouter')
         self.assertEqual(meta['planner_policy'], 'model')
@@ -265,7 +265,7 @@ class RouterTests(unittest.TestCase):
         stub = Stub([])
         self.addCleanup(stub.close)
         router = ModelRouter(clients=[OpenRouterClient(key='k', models=('first/model:free',), base=stub.base)],
-                             policy='model')
+                             policy='model', router=False)
         with self.assertRaises(SourceError) as raised:
             router.plan('Will it rain in Ahmedabad, Gujarat tomorrow morning?', NOW, [])
         message = str(raised.exception)
@@ -281,7 +281,7 @@ class RouterTests(unittest.TestCase):
                            '"context_action": "follow_up", "changed_fields": ["time"]}')])
         self.addCleanup(stub.close)
         router = ModelRouter(clients=[OpenRouterClient(key='k', models=('first/model:free',), base=stub.base)],
-                             policy='model')
+                             policy='model', router=False)
         plan, meta = router.plan('And what about the evening?', NOW, [])
         self.assertEqual(meta['provider'], 'openrouter')
         self.assertEqual(meta['planner_policy'], 'model')

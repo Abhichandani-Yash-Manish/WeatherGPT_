@@ -37,6 +37,8 @@ def summarise(question, packet, seconds, conversation):
             'answer_basis': packet.get('answer_basis'), 'intent': (packet.get('plan') or {}).get('intent'),
             'planner': {'provider': planning.get('provider'), 'model': planning.get('model'),
                         'policy': planning.get('planner_policy'), 'latency_ms': planning.get('latency_ms'),
+                        'tier': planning.get('planner_tier'), 'chat_kind': planning.get('chat_kind'),
+                        'provider_policy': planning.get('provider_policy'),
                         'failover': planning.get('failover')},
             'generation': {'provider': generation.get('provider'), 'status': generation.get('status'),
                            'authored_by': generation.get('authored_by'),

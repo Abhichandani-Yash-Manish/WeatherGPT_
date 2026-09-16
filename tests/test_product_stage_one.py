@@ -45,13 +45,44 @@ class PublicationTests(unittest.TestCase):
             with self.assertRaisesRegex(SourceError,'manifest integrity'):verify_database(db,pin['manifest_sha256'])
 
     def test_claim_attribution_cannot_be_rewritten_by_model(self):
+        # The model may write the answer from the retrieved facts (docs/83, stage A3). What it may
+        # not do is change what those facts say: a narrative that moves a value, changes a unit or
+        # loses the place is refused, and the tool-owned renderer states the facts instead.
+        facts=[{'id':'f1','label':'Rainfall','value':'3.5','unit':'mm','place':'Ahmedabad'},{'id':'f2','label':'Rainfall','value':'11.0','unit':'mm','place':'Delhi'}]
+        class Model:
+            def __init__(self,text,ids=('f1','f2')):self.text=text;self.ids=list(ids);self.calls=0
+            def complete(self,*a,**kw):
+                self.calls+=1
+                return {'answer':self.text,'evidence_ids':self.ids},{'provider':'stub','model':'stub-1'}
+        def turn(text,ids=('f1','f2')):
+            e=ConversationEngine.__new__(ConversationEngine);e.model=Model(text,ids)
+            return e.explain({'facts':[dict(f) for f in facts],'plan':{'language':'en','intent':'forecast'},'status':'answered','trace':{},'notes':[],'question':'What was the rainfall?'})
+        shipped=turn('Ahmedabad recorded 3.5 mm of rainfall.')
+        self.assertEqual(shipped['answer'],'Ahmedabad recorded 3.5 mm of rainfall.')
+        self.assertEqual(shipped['trace']['generation']['authored_by'],'model')
+        for text,reason in [('Ahmedabad recorded 9.9 mm of rainfall.','not in the retrieved facts'),
+                            ('Ahmedabad recorded 3.5 cm of rainfall.','source unit'),
+                            ('The rainfall was 3.5 mm in the district.','place'),
+                            ('Delhi recorded 3.5 mm of rainfall.','place')]:
+            with self.subTest(text=text):
+                refused=turn(text)
+                self.assertIn('Ahmedabad\nRainfall: 3.5 mm [f1]',refused['answer'])
+                self.assertIn('Delhi\nRainfall: 11.0 mm [f2]',refused['answer'])
+                self.assertEqual(refused['trace']['generation']['provider'],'verified_fact_renderer')
+                self.assertIn(reason,refused['trace']['generation']['reason'])
+
+    def test_a_slow_or_failed_narrative_leaves_the_tool_owned_facts(self):
+        # The written answer is a bonus over the facts, never a reason to wait or to lose them.
         e=ConversationEngine.__new__(ConversationEngine)
         class Model:
-            def complete(self,*a,**kw):raise AssertionError('Source facts must not reach free-form generation')
+            def complete(self,*a,**kw):raise TimeoutError('the endpoint did not answer within the budget')
         e.model=Model()
-        facts=[{'id':'f1','label':'Rainfall','value':'3.5','unit':'mm','place':'Ahmedabad'},{'id':'f2','label':'Rainfall','value':'11.0','unit':'mm','place':'Delhi'}]
-        r=e.explain({'facts':facts,'plan':{'language':'en','intent':'forecast'},'status':'answered','trace':{}})
-        self.assertIn('Ahmedabad\nRainfall: 3.5 mm [f1]',r['answer']);self.assertIn('Delhi\nRainfall: 11.0 mm [f2]',r['answer'])
+        r=e.explain({'facts':[{'id':'f1','label':'Rainfall','value':'3.5','unit':'mm','place':'Ahmedabad'}],
+                     'plan':{'language':'en','intent':'forecast'},'status':'answered','trace':{},'notes':[],'question':'Rainfall?'})
+        self.assertIn('Ahmedabad\nRainfall: 3.5 mm [f1]',r['answer'])
+        self.assertEqual(r['trace']['generation']['provider'],'verified_fact_renderer')
+        self.assertIn('narrative',r['trace']['generation']['status'])
+        self.assertIn('did not answer',r['trace']['generation']['reason'])
 
     def test_series_slope_known_linear_and_constant_oracles(self):
         self.assertEqual(slope_per_decade([(1980+i,str(100+2*i)) for i in range(30)]),'20.000')

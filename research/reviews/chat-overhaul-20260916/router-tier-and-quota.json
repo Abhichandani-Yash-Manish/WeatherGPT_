@@ -1,0 +1,81 @@
+{
+  "batch": "docs/83-intelligent-chat-overhaul.md",
+  "captured_at_utc": "2026-09-16T17:50:00Z",
+  "subject": "the cheap routing tier measured against the full planner, and the free-tier quota refusal that followed",
+  "provider_policy": "cloud_free (WEATHERGPT_PROVIDERS default, chosen by the reader: free cloud models only, everything else frozen)",
+  "router_tier_measured": {
+    "run": "same machine, same provider order, before the daily free quota was spent",
+    "turns": [
+      {
+        "question": "hello",
+        "seconds_before_router": 11,
+        "seconds_with_router": 4.18,
+        "tier": "router",
+        "kind": "greeting",
+        "answer": "Hello! How can I help you today?"
+      },
+      {
+        "question": "what can you do?",
+        "seconds_before_router": 19.3,
+        "seconds_with_router": 4.16,
+        "tier": "router",
+        "kind": "capability",
+        "answer": "I can retrieve a forecast summary for a location using the forecast_summary tool. I cannot issue official warnings, provide confidence or risk scores, or give personalised advice beyond the published source."
+      },
+      {
+        "question": "what is 17 times 3?",
+        "seconds_before_router": 48.3,
+        "seconds_with_router": 7.97,
+        "tier": "router",
+        "kind": "logic",
+        "answer": "Using general knowledge, 17 x 3 = 51."
+      },
+      {
+        "question": "नमस्ते",
+        "seconds_before_router": 9.3,
+        "seconds_with_router": 10.08,
+        "tier": "router",
+        "kind": "greeting",
+        "answer": "नमस्ते! मैं WeatherGPT हूँ, आपका स्थानीय मौसम सहायक।"
+      },
+      {
+        "question": "Will it rain in Surat tomorrow morning?",
+        "seconds_before_router": 19.5,
+        "seconds_with_router": 102.41,
+        "tier": "planner",
+        "answer": "Surat · 17 Sep, 09:30–17 Sep, 12:30 IST: Forecast precipitation: 0.4 mm. Source: GFS forecast; conditions can change.",
+        "note": "the written narrative call was attempted after retrieval and its tail latency held the turn; a 25 s wall-clock budget for the whole composition step was added in response (see docs/83)"
+      },
+      {
+        "question": "thanks!",
+        "seconds_before_router": 19.5,
+        "seconds_with_router": 53.76,
+        "tier": null,
+        "status": "unavailable",
+        "answer": "No model provider could answer this turn, so the question was not interpreted.",
+        "note": "the free endpoint refused this call; with the cloud-only policy there is no fallback, which is the reader choice, and the turn says so instead of guessing"
+      }
+    ],
+    "recorded_note": "the run that produced these numbers printed them per turn while it ran; its JSON was overwritten by the later rate-limited run, so this file records the measured values with that provenance stated rather than restating them as a fresh capture"
+  },
+  "quota_refusal": {
+    "measured_at_utc": "2026-09-16T17:52:00Z",
+    "probe": "a direct provider call with a 20 s budget through the configured router",
+    "error": "ProviderUnavailable: No model provider could answer. openrouter: OpenRouter could not answer: HTTP 429 Rate limit exceeded: free-models-per-day. Add 5 credits to unlock 1000 free models...",
+    "consequence": [
+      "every cloud-free call is refused until the daily quota resets (free-models-per-day) or the account is topped up",
+      "with the cloud-only policy frozen and no other provider enabled, a turn reports \"No model provider could answer\" honestly and holds its facts rather than answering from a weaker path",
+      "each refused turn now costs a bounded wait: 12 s for the first look, 45 s for the plan, 25 s for a written answer, instead of a two-minute retry loop"
+    ],
+    "options_measured_or_stated": [
+      "wait for the daily free-quota reset",
+      "add a small credit to the OpenRouter account (1000 free-model calls per day)",
+      "unfreeze the local model as a fallback (deliberately not enabled: the reader froze everything else)",
+      "run with the cheap first look off (WEATHERGPT_ROUTER=off) to lower the request count, which does not help once the quota is spent"
+    ]
+  },
+  "limits": [
+    "The quota state is a property of the provider account and the day, not of this workspace: the same code answered all six journeys earlier the same afternoon.",
+    "No number here is a service level; each turn is one measurement."
+  ]
+}
