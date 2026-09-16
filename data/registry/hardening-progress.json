@@ -1,7 +1,7 @@
 {
  "schema_version": "hardening-progress-v1",
  "review": "research/reviews/national-readiness-20260912/review.md",
- "updated_at_utc": "2026-09-17T01:45:00+00:00",
+ "updated_at_utc": "2026-09-17T02:25:00+00:00",
  "operational_ready": false,
  "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
  "findings": [
@@ -2742,19 +2742,29 @@
    "src/shell/Rail.tsx: the rail renders the registry with the group headings and the Alt+1..9 shortcuts the vanilla rail prints",
    "src/shell/SurfaceHost.tsx: an unported module states the stage that will port it and the questions it will answer, generated from the registry rather than hand-written",
    "a test harness: Vitest + Testing Library + MSW (src/test/msw.ts) replaces per-suite fetch stubs; 6 checks pass over the rail, the routing contract, the shortcut contract, a deep link and a recorded payload through the harness",
-   "the CSP probe left the production input list: it has its own config and builds to web/dist-probe"
+   "the CSP probe left the production input list: it has its own config and builds to web/dist-probe",
+   "the weather-native design language: six sky phases from the local clock (or a sourced sun time), applied as data-sky with contrast-checked pairs in both themes, with the storm phase reserved for a surface that already states an official warning",
+   "a decorative band that is aria-hidden, carries the note that it is decoration rather than a condition, and respects prefers-reduced-motion",
+   "the topbar on TanStack Query: store state from /api/health (an unreachable read shown as unreachable), the language list from /api/languages with unmeasured languages marked, a theme cycle and a new-conversation action",
+   "the design decisions recorded in docs/88, including the landing page and the owner gate plan (a passphrase that is labelled not-authentication and explains itself before asking)"
   ],
   "tests_added": [
    "frontend/src/App.test.tsx (4 checks)",
-   "frontend/src/shell/shell.test.tsx (2 checks)"
+   "frontend/src/shell/shell.test.tsx (2 checks)",
+   "frontend/src/shell/sky.test.ts (4 checks)",
+   "frontend/src/shell/topbar.test.tsx (3 checks)"
   ],
   "open": [
-   "the topbar controls (persona, language, service state, health, theme, palette) and the stored-conversation rail are not ported yet",
+   "browser acceptance for the React shell is not captured: headless Chrome hung in this session and the CDP client reported a socket error; the attempt is recorded in research/reviews/frontend-react-r1-20260917/r1-verification.json",
    "the 110 vanilla component checks are not ported one-for-one yet: that is the rest of R1 and it gates R2",
-   "no browser acceptance run has been recorded for the React shell yet",
+   "the workbench panel and the chat-centre layout are decided but not built (R2)",
    "the vanilla frontend remains the default"
   ],
   "hosting_performed": false,
-  "same_host_only": true
+  "same_host_only": true,
+  "evidence": [
+   "research/reviews/frontend-react-r1-20260917/r1-verification.json",
+   "docs/88-overhaul-decisions-and-design-language.md"
+  ]
  }
 }

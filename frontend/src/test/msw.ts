@@ -6,7 +6,10 @@ import { http, HttpResponse } from 'msw';
    payloads into handlers; R1 proves the harness works. */
 export const server = setupServer(
   http.get('/api/health', () =>
-    HttpResponse.json({ schema_version: 'source-health-v1', available: false, products: [], note: 'no store in this test' })),
+    HttpResponse.json({ schema_version: 'source-health-v1', available: true, products: [], note: 'test store' })),
+  // The shell reads the language catalogue on mount; a suite that cares about it overrides this handler.
+  http.get('/api/languages', () =>
+    HttpResponse.json({ schema_version: 'language-support-view-v1', service_configured: false, languages: [] })),
 );
 
 export const unhandled: string[] = [];

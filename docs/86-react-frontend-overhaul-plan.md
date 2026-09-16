@@ -103,6 +103,27 @@ Still open in R1: the topbar controls (persona, language, service state, health,
 conversation rail; the **110 vanilla component checks ported one-for-one**, which is the gate R2 must not pass
 without; and a recorded browser acceptance run for the React shell.
 
+
+### R1 continued: the weather ground and the topbar (17 September 2026)
+
+Decisions from this message are recorded in [docs/88](88-overhaul-decisions-and-design-language.md): all six
+answered green, and the weather-native design language specified. Implemented in the shell:
+
+- **Sky phases** (`src/shell/sky.ts`, `src/styles/sky.css`): six phases selected from the local clock (or a
+  sourced sunrise/sunset when a caller has one), applied as `data-sky` with contrast-checked surface/ink pairs in
+  both themes; the `storm` phase is reserved for a surface already stating an official warning. The band is
+  `aria-hidden` with the note that it is decoration, not a condition, and its transitions respect
+  `prefers-reduced-motion`.
+- **Topbar** (`src/shell/Topbar.tsx`) with TanStack Query: store state from `/api/health` (and an unreachable
+  read shown as unreachable), the language select from `/api/languages` with unmeasured languages marked, a theme
+  cycle and a new-conversation action.
+- **Thirteen frontend checks** now pass (rail, routing contract, shortcuts, deep link, topbar states, language
+  options, deep-link fallback, sky phases including a sourced sun time), and the initial graph is 83 KB gzip
+  against the 312 KB budget.
+- **Browser acceptance is still open**: headless Chrome hung in this session after the earlier successful runs, so
+  the render capture is recorded as not captured rather than replaced by a claim
+  (`research/reviews/frontend-react-r1-20260917/r1-verification.json`).
+
 ## What each stage must prove
 
 1. **No behaviour regression**: a ported spec is the same assertion against the same payload.

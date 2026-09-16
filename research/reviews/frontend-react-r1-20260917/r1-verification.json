@@ -1,0 +1,41 @@
+{
+  "batch": "docs/88-overhaul-decisions-and-design-language.md",
+  "stage": "R1 shell",
+  "captured_at_utc": "2026-09-16T20:15:16Z",
+  "checks": [
+    {
+      "check": "the_react_shell_serves_over_http",
+      "evidence": "research/reviews/frontend-react-r0-20260917/live-r0.json",
+      "result": "HTTP 200 with the injected session token, strict CSP, hashed assets",
+      "measured_by": "R0 live check (unchanged serving path)"
+    },
+    {
+      "check": "the_shell_behaviour_is_pinned_in_jsdom",
+      "result": "13 checks pass",
+      "covers": [
+        "the rail renders every registry entry",
+        "a rail click changes the route and the surface",
+        "Alt+1..9 opens the view the rail prints",
+        "a deep link is honoured",
+        "the routing contract falls back to Ask and keeps the query",
+        "the topbar states store health, unreachable reads and only the published languages",
+        "the sky phase follows the clock and a sourced sun time"
+      ]
+    },
+    {
+      "check": "the_build_is_audited",
+      "result": "11 checks pass",
+      "evidence": "scripts/audit_react_build.py in verify_all.py",
+      "detail": "initial graph 83 KB gzip against a 312 KB budget"
+    },
+    {
+      "check": "browser_render_capture",
+      "result": "NOT CAPTURED",
+      "detail": "headless Chrome invocations hung in this session after the earlier successful runs: --dump-dom and --screenshot both timed out against a server that answered HTTP 200, and the CDP client reported a socket error. The attempt is recorded rather than replaced by a claim; the page is verified by the jsdom checks, the build audit and the R0 live serving record, and a fresh browser session is an open item."
+    }
+  ],
+  "limits": [
+    "A render check is not layout, keyboard, focus or screen-reader acceptance, and none of those is claimed.",
+    "The design language is implemented for the shell and the topbar only; modules carry their blocks from R3."
+  ]
+}
