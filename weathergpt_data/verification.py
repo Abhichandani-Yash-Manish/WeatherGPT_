@@ -40,13 +40,14 @@ def error_statistics(pairs):
                           for forecast, reference in pairs), Decimal(0))
         forecast_variance = sum(((value - forecast_mean) ** 2 for value in forecasts), Decimal(0))
         reference_variance = sum(((value - reference_mean) ** 2 for value in references), Decimal(0))
-        statistics = {'n': n, 'status': 'measured', 'bias': _quantize(bias),
-                      'mae': _quantize(mae), 'rmse': _quantize(rmse)}
+        # Exact source-style strings, so the packet serialises the same way every product view does.
+        statistics = {'n': n, 'status': 'measured', 'bias': str(_quantize(bias)),
+                      'mae': str(_quantize(mae)), 'rmse': str(_quantize(rmse))}
         if forecast_variance == 0 or reference_variance == 0:
             statistics['correlation'] = None
             statistics['correlation_note'] = 'undefined: one series has no variation in this sample'
         else:
-            statistics['correlation'] = _quantize(covariance / (forecast_variance * reference_variance).sqrt())
+            statistics['correlation'] = str(_quantize(covariance / (forecast_variance * reference_variance).sqrt()))
         return statistics
 
 
@@ -58,7 +59,9 @@ def summarise(forecast, reference):
             continue
         reference_index[(record['variable'], record['valid_time_utc'])] = Decimal(str(record['value']))
     grouped = {}
+    units = {}
     for record in forecast.get('records') or []:
+        units.setdefault(record['variable'], record.get('unit'))
         key = (record['variable'], record.get('lead_days'))
         bucket = grouped.setdefault(key, {'matched': [], 'hours': 0, 'missing': 0})
         bucket['hours'] += 1
@@ -82,6 +85,7 @@ def summarise(forecast, reference):
                      'grid': forecast.get('coverage', {}).get('returned_grid')},
         'reference': {'source_id': reference.get('source_id'), 'grid': reference.get('coverage', {}).get('returned_grid')},
         'variables': variables,
+        'units': units,
         'limits': [
             'The reference is ERA5 reanalysis, a modelled analysis, not a station observation.',
             'The statistics describe this sample for this model, variable and window; they are not operational skill, a confidence or a risk.',

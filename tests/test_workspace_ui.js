@@ -53,7 +53,7 @@ async function run() {
  assert(host.textContent.includes('Source temporarily offline'));
  assert(host.textContent.includes('No upcoming source hours'));
  assert(host.textContent.includes('Retry this source'));
- assert.equal(host.querySelectorAll('.desk-tool').length,15);
+ assert.equal(host.querySelectorAll('.desk-tool').length,16);
  assert(!host.textContent.includes('undefined'));
  const search = host.querySelector('#tool-search'); search.value='airport'; search.dispatch('input');
  assert.equal(host.querySelectorAll('.desk-tool').length,1);
