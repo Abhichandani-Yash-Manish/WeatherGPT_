@@ -10,7 +10,20 @@ suite cannot come to depend on the network without someone noticing.
 """
 import pytest
 
-from weathergpt_data import answer_language, speech
+from weathergpt_data import answer_language, providers, speech
+
+
+@pytest.fixture(autouse=True)
+def no_model_planner_by_default(monkeypatch):
+    """The suite plans with the deterministic rules unless a test asks for a model and stubs it.
+
+    The product default is the model (WEATHERGPT_PLANNER=model) and a live journey measures that.
+    A component check that reaches a real provider is not a check: it costs credits, it fails when
+    the network does, and its result depends on a model that can change under it. A test that wants
+    the model path builds its router with policy='model' and its own stub client.
+    """
+    monkeypatch.setenv(providers.PLANNER_POLICY_ENV, 'rules')
+    yield
 
 
 @pytest.fixture(autouse=True)

@@ -394,15 +394,28 @@ class OpenRouterClient:
         raise ProviderUnavailable('OpenRouter could not answer: ' + str(last_error or 'no model was tried'))
 
 
+PLANNER_POLICY_ENV='WEATHERGPT_PLANNER'
+
+def planner_policy():
+    """Which planner answers a turn: the model by default, the deterministic rules only on request.
+
+    The rules floor is never a silent substitute for a model call. An offline machine or a benchmark
+    can ask for it explicitly, and the trace records that it was asked for.
+    """
+    policy=str(os.getenv(PLANNER_POLICY_ENV) or local_config().get('planner_policy') or 'model').strip().lower()
+    return policy if policy in {'model','rules'} else 'model'
+
+
 class ModelRouter:
-    """Try the rule planner, then each provider in order, recording every attempt.
+    """Let the model plan the turn, or the deterministic rules when the policy asks for them.
 
     A client presenting itself as OpenRouter while holding a non-free model is refused at
     construction: the router is the last place before the network, so the paid-id guard is
     checked here as well as inside the client.
     """
 
-    def __init__(self, clients=None, rules=True):
+    def __init__(self, clients=None, rules=True, policy=None):
+        self.policy = policy or planner_policy()
         self.clients = []
         for client in clients or default_clients():
             if getattr(client, 'name', '') == OpenRouterClient.name:
@@ -444,25 +457,36 @@ class ModelRouter:
         raise ProviderUnavailable('No model provider could answer. ' + ' | '.join(errors))
 
     def plan(self, question, now, history):
-        """Rules first, then providers. The rule path needs nothing and says so."""
+        """Plan a turn. The model plans by default; the rules plan only when the policy asks.
+
+        A provider outage names every provider that was tried and is never quietly answered from the
+        rules floor. The floor exists for an explicit offline policy, and the trace says which policy
+        and which planner answered, so a reader never has to infer why an answer looks the way it does.
+        """
         from .language import interpret_plan
         from .rule_planner import rule_request
-        if self.rules:
+        if self.policy == 'rules':
+            if not self.rules:
+                raise SourceError('This router has no rule planner and its policy is rules-only.')
             seed = rule_request(question, now, history)
-            if seed is not None:
-                try:
-                    plan, meta = interpret_plan(None, question, now, history, seed=seed)
-                    meta = dict(meta or {})
-                    meta.update(provider='deterministic_rules', model=RULE_MODEL, attempts=0, latency_ms=0,
-                                failover=[])
-                    self.trace.append(meta)
-                    return plan, meta
-                except (SourceError, TypeError, KeyError):
-                    pass
+            if seed is None:
+                raise SourceError('The deterministic rules cannot read this question and this workspace '
+                                  'is in rules-only mode (' + PLANNER_POLICY_ENV + '=rules).')
+            plan, meta = interpret_plan(None, question, now, history, seed=seed)
+            meta = dict(meta or {})
+            meta.update(provider='deterministic_rules', model=RULE_MODEL, planner_policy='rules',
+                        attempts=0, latency_ms=0, failover=[])
+            self.trace.append(meta)
+            return plan, meta
         try:
-            return interpret_plan(self.complete, question, now, history)
+            plan, meta = interpret_plan(self.complete, question, now, history)
         except ProviderUnavailable as error:
-            raise SourceError('The question could not be interpreted: ' + str(error)) from error
+            raise SourceError('No model provider could answer: ' + str(error) +
+                              ' The rules planner is not used as a silent substitute; set ' +
+                              PLANNER_POLICY_ENV + '=rules to run this workspace offline.') from error
+        meta = dict(meta or {})
+        meta['planner_policy'] = 'model'
+        return plan, meta
 
 
 class DeterministicClient:

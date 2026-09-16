@@ -485,3 +485,21 @@ assert.equal(String(c3Host.textContent), c3Text, 'the register changes what is s
 assert.equal(context.applyRegister(c3Host, 'detailed'), null, 'an unknown register is refused rather than guessed');
 assert.equal(c3Host.getAttribute('data-register'), 'brief', 'a refused register name changes nothing');
 console.log('PASS: the reading register opens and restores disclosures without changing what a card says');
+
+
+// 23. a conversational reply is shown as a conversation and says no source was read
+const c4Chat = { schema_version:'weather-conversation-v1', conversation_id:'c', question:'hello', status:'conversation',
+  answer:'Hello! I can check the weather, the official district warnings and published documents. Tell me a place and a day.',
+  answer_basis:'conversation', facts:[], citations:[], choices:[], charts:[], calculations:[], task_results:[],
+  notes:['A conversational reply written by the model for this message. It is not retrieved evidence.'],
+  answered_at_utc:'2026-09-16T17:00:00+00:00', plan:{ intent:'chat', language:'en', context_action:'new', changed_fields:[] } };
+const c4Card = context.renderTurn(c4Chat, {});
+const c4Text = String(c4Card.textContent);
+assert(/Conversation/.test(c4Text), 'a conversational turn is titled as a conversation');
+assert(/Conversational reply/.test(c4Text), 'the status names it a conversational reply');
+assert(/No source read/.test(c4Text), 'the card says beside the answer that no source was read');
+assert(!/Evidence retrieved/.test(c4Text), 'a conversational reply is never labelled as retrieved evidence');
+assert.equal(withClass(c4Card, 'receipt').length, 0, 'a conversational reply draws no receipt');
+assert.equal(withClass(c4Card, 'ruler').length, 0, 'a conversational reply draws no validity window');
+assert(/not retrieved evidence/.test(c4Text), 'the note states that it is not evidence');
+console.log('PASS: a conversational reply is labelled as one and never as retrieved evidence');

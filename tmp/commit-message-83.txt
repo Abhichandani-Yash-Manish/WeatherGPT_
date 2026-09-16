@@ -1,0 +1,37 @@
+The model plans every turn, and a conversation is a real answer
+
+Measured first: "hello" used to end the turn with a validation error, because a greeting has no task to
+quote, and "what can you do?" was answered from the model's memory of itself in 28.9 s. The planner also
+silently preferred the deterministic rules and died rather than degrading when a model plan did not validate.
+
+- ModelRouter plans with the provider chain by default. The deterministic rules plan only when
+  WEATHERGPT_PLANNER=rules, and trace.planning.planner_policy records which policy answered each turn. A
+  provider outage names every provider tried and is never quietly answered from the rules floor.
+- a plan that cannot be validated is repaired with the validator's own message, and a turn that still cannot
+  be planned degrades to a readable answer with the reason in the trace instead of raising at the reader.
+- a new chat task kind carries the model's own reply for greetings, thank-yous, capability and meta questions,
+  general reasoning and out-of-scope messages. No tool runs and nothing is acquired.
+- the planner receives a deterministic workspace picture - the clock, the callable tools, the source ledger
+  counts and what this workspace does not do - so a capability answer comes from the ledger, not from memory.
+- a conversational reply is checked for measurement units (including spelled-out forms), dates and times,
+  numbers beside a weather word, warning claims, source identifiers, links and present-weather claims; one
+  repair attempt is made with the violation named, and a reply that still fails is withheld.
+- a conversational turn holds no fact, cites nothing, carries a visible "No source read" tag on the card, and
+  never becomes retrievable evidence in the conversation state.
+- the language tier now labels a model-written answer in the requested script as written_in_requested_script
+  instead of claiming a template wrote it.
+
+Live journeys (OpenRouter free first, local Ollama second; recorded in
+research/reviews/chat-overhaul-20260916/journeys.json): "hello" 11.0 s conversation; "what can you do?" 19.3 s
+naming the real tools and limits; "what is 17 times 3?" 48.3 s answering fifty-one as general knowledge;
+"नमस्ते" 9.3 s in Devanagari; "Will it rain in Surat tomorrow morning?" 19.5 s answered with one tool-owned
+fact (0.4 mm, GFS) and three quick replies; "thanks!" in the same conversation 19.5 s. No turn needed a repair.
+
+The leak check is a bounded heuristic and docs/83 says so: a number written as a word passes it. What a reader
+can rely on is the structure - a conversational turn acquires nothing, holds no fact, is labelled and is never
+stored as evidence. Latency (9-48 s on the free provider) is the open cost.
+
+Tests: tests/test_conversational_turns.py (9 checks), the planner-policy checks in tests/test_providers.py,
+the suite-wide rule that no component check reaches a provider (tests/conftest.py), and the conversation card
+in tests/test_views.js. 1194 Python tests, 10 component suites (108 printed checks), 27 verification steps,
+none failing.

@@ -8,7 +8,8 @@ const STATUS_LABELS = {
   answered:'Evidence retrieved', partial:'Partly answered', needs_selection:'Choose a place',
   needs_clarification:'One more detail', unavailable:'Evidence gap', explanation:'General explanation',
   outside_validity:'Choose an upcoming window', stale:'Evidence expired',
-  degraded:'Refresh incomplete', prototype_answer:'Forecast available'
+  degraded:'Refresh incomplete', prototype_answer:'Forecast available',
+  conversation:'Conversational reply'
 };
 const HELD_STATUS = ['needs_selection','needs_clarification','unavailable','outside_validity','stale','partial','degraded'];
 const EVIDENCE_KINDS = {
@@ -1102,6 +1103,7 @@ function renderExpiry(packet) {
 
 /* ---------- the turn ---------- */
 function turnTitle(packet) {
+  if (packet.status === 'conversation') return 'Conversation';
   if (packet.status === 'needs_selection') return 'Which place do you mean?';
   if (packet.status === 'needs_clarification') return 'One more detail needed';
   if (packet.status === 'unavailable') return 'No verified evidence for this';
@@ -1122,6 +1124,9 @@ function renderTurn(packet, handlers) {
   if (packet.plan && packet.plan.language && packet.plan.language !== 'en') {
     status.append(el('span', 'Requested output: ' + (LANGUAGE_NAMES[packet.plan.language] || packet.plan.language), 'tag is-quiet'));
   }
+  /* A conversational turn read no source. The tag says so beside the answer, not only in a
+     disclosure, so the reply can never be mistaken for retrieved evidence. */
+  if (packet.answer_basis === 'conversation') status.append(el('span', 'No source read', 'tag is-quiet'));
   status.append(el('span', packet.answered_at_utc ? istStamp(packet.answered_at_utc) : 'Time not recorded', 'tag is-quiet'));
   head.append(status);
   card.append(head);

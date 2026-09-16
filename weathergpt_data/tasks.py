@@ -1,8 +1,8 @@
 """Bounded, explicit requested operations; no executable SQL, URLs or inferred data."""
 from datetime import datetime,timedelta
 from .transport import SourceError
-KINDS=['forecast','history','travel','agriculture','warning','observation','research','explanation','aviation','marine','river','document','ensemble','air_quality','verification']
-OPERATIONS=['lookup','compare','series','trend','daily','timeline','onset','crosscheck']
+KINDS=['forecast','history','travel','agriculture','warning','observation','research','explanation','aviation','marine','river','document','ensemble','air_quality','verification','chat']
+OPERATIONS=['lookup','compare','series','trend','daily','timeline','onset','crosscheck','reply']
 PERIODS=['annual','jf','mam','jjas','ond','jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec']
 FIELDS={'kind','operation','parameters','years','period','start_local','end_local','place_indices'}
 DOCUMENT_SCOPES=['','national','state','district','regional','marine']
@@ -11,7 +11,9 @@ def validate_tasks(tasks,places):
     if not isinstance(tasks,list) or not 1<=len(tasks)<=6:raise SourceError('Use one to six explicit weather tasks')
     cells=0
     for t in tasks:
-        if not isinstance(t,dict) or not FIELDS<=set(t) or set(t)-FIELDS-{'request_quote','document_request','corpus_request'}:raise SourceError('Invalid task schema')
+        if not isinstance(t,dict) or not FIELDS<=set(t) or set(t)-FIELDS-{'request_quote','document_request','corpus_request','reply'}:raise SourceError('Invalid task schema')
+        if 'reply' in t and (not isinstance(t['reply'],str) or len(t['reply'])>1200):raise SourceError('Invalid conversational reply text')
+        if t.get('kind')=='chat' and t.get('operation')!='reply':raise SourceError('A conversational turn uses operation reply')
         if 'document_request' in t:
             d=t['document_request']
             if t['kind']!='agriculture' or not isinstance(d,dict) or not {'query','crop','growth_stage','topic','mode'}<=set(d) or set(d)-{'query','crop','growth_stage','topic','mode','selection'}:raise SourceError('Invalid bulletin request schema')

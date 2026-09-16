@@ -63,7 +63,7 @@ class FollowUpReplyTests(unittest.TestCase):
 
     def test_a_tapped_chip_is_planned_by_the_rules_with_no_model(self):
         packet = self.answer()
-        rules_only = ConversationEngine(self.app, ModelRouter(clients=[], rules=True), Places(),
+        rules_only = ConversationEngine(self.app, ModelRouter(clients=[], rules=True, policy='rules'), Places(),
                                         self.root / 'rules-only.sqlite')
         for reply in packet['quick_replies']:
             with self.subTest(reply=reply['reply']):

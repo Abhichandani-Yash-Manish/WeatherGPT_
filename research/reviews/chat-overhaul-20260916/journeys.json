@@ -1,0 +1,224 @@
+{
+  "batch": "docs/83-intelligent-chat-overhaul.md",
+  "captured_at_utc": "2026-09-16T17:09:20Z",
+  "planner_policy": "model",
+  "providers": [
+    {
+      "provider": "openrouter",
+      "model": null,
+      "models": [
+        "nvidia/nemotron-3-super-120b-a12b:free",
+        "nex-agi/nex-n2.5-pro:free",
+        "google/gemma-4-31b-it:free",
+        "dots-studio/dots-3-note-preview:free",
+        "nex-agi/nex-n2.5-mini:free",
+        "google/gemma-4-26b-a4b-it:free",
+        "liquid/lfm-2.5-2.6b:free"
+      ],
+      "available": true,
+      "reason": ""
+    },
+    {
+      "provider": "ollama",
+      "model": "qwen3.6:latest",
+      "models": [],
+      "available": true,
+      "reason": ""
+    }
+  ],
+  "turns": [
+    {
+      "question": "hello",
+      "conversation": "c6503f91-c88d-4d66-9d93-7cab50388b66",
+      "seconds": 10.96,
+      "status": "conversation",
+      "answer_basis": "conversation",
+      "intent": "chat",
+      "planner": {
+        "provider": "openrouter",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "policy": "model",
+        "latency_ms": 10858,
+        "failover": []
+      },
+      "generation": {
+        "provider": "openrouter",
+        "status": "composed",
+        "authored_by": "model",
+        "language_adherence": "not_applicable",
+        "repair": null
+      },
+      "tools": [
+        "conversation"
+      ],
+      "facts": 0,
+      "first_fact": null,
+      "quick_replies": 0,
+      "chat_leak_check": null,
+      "answer": "Hello! I can help you with weather forecasts, historical data, warnings, and more. Just let me know what you need and where."
+    },
+    {
+      "question": "what can you do?",
+      "conversation": "cae6a5d9-ea89-4cde-8813-e9f49d20ffcd",
+      "seconds": 19.34,
+      "status": "conversation",
+      "answer_basis": "conversation",
+      "intent": "chat",
+      "planner": {
+        "provider": "openrouter",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "policy": "model",
+        "latency_ms": 19321,
+        "failover": []
+      },
+      "generation": {
+        "provider": "openrouter",
+        "status": "composed",
+        "authored_by": "model",
+        "language_adherence": "not_applicable",
+        "repair": null
+      },
+      "tools": [
+        "conversation"
+      ],
+      "facts": 0,
+      "first_fact": null,
+      "quick_replies": 0,
+      "chat_leak_check": null,
+      "answer": "I can provide weather forecasts (summary, hourly, and cross‑checked), historical rainfall and temperature data (published aggregates and daily reanalysis), aviation reports (METAR/TAF), and access to published agricultural advisories and documents. I cannot send official warning alerts, give forecast skill or confidence scores, or offer personalized advice beyond the published sources."
+    },
+    {
+      "question": "what is 17 times 3?",
+      "conversation": "805c35da-af0d-4ca2-a95e-09c7573e93b2",
+      "seconds": 48.25,
+      "status": "conversation",
+      "answer_basis": "conversation",
+      "intent": "chat",
+      "planner": {
+        "provider": "openrouter",
+        "model": "nex-agi/nex-n2.5-pro:free",
+        "policy": "model",
+        "latency_ms": 46639,
+        "failover": []
+      },
+      "generation": {
+        "provider": "openrouter",
+        "status": "composed",
+        "authored_by": "model",
+        "language_adherence": "not_applicable",
+        "repair": null
+      },
+      "tools": [
+        "conversation"
+      ],
+      "facts": 0,
+      "first_fact": null,
+      "quick_replies": 0,
+      "chat_leak_check": null,
+      "answer": "Using general knowledge, seventeen multiplied by three is fifty-one. This is general knowledge, not a measurement or a local fact."
+    },
+    {
+      "question": "नमस्ते",
+      "conversation": "6809f725-67f9-4d7a-a806-e8c36e485d45",
+      "seconds": 9.27,
+      "status": "conversation",
+      "answer_basis": "conversation",
+      "intent": "chat",
+      "planner": {
+        "provider": "openrouter",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "policy": "model",
+        "latency_ms": 9259,
+        "failover": []
+      },
+      "generation": {
+        "provider": "openrouter",
+        "status": "composed",
+        "authored_by": "model",
+        "language_adherence": "written_in_requested_script",
+        "repair": null
+      },
+      "tools": [
+        "conversation"
+      ],
+      "facts": 0,
+      "first_fact": null,
+      "quick_replies": 0,
+      "chat_leak_check": null,
+      "answer": "नमस्ते! मैं आपकी मौसम संबंधी जानकारी कैसे मदद कर सकता हूँ?"
+    },
+    {
+      "question": "Will it rain in Surat tomorrow morning?",
+      "conversation": "4e664dce-098b-4ad0-9df5-46f53f35120a",
+      "seconds": 19.49,
+      "status": "answered",
+      "answer_basis": null,
+      "intent": "forecast",
+      "planner": {
+        "provider": "openrouter",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "policy": "model",
+        "latency_ms": 19332,
+        "failover": []
+      },
+      "generation": {
+        "provider": "typed_task_renderers",
+        "status": null,
+        "authored_by": null,
+        "language_adherence": "not_applicable",
+        "repair": null
+      },
+      "tools": [
+        "gazetteer_search",
+        "point_forecast",
+        "forecast"
+      ],
+      "facts": 1,
+      "first_fact": {
+        "place": "Surat, Sūrat, State of Gujarāt",
+        "label": "Forecast rainfall",
+        "value": "0.4",
+        "unit": "mm",
+        "source_id": "S21"
+      },
+      "quick_replies": 3,
+      "chat_leak_check": null,
+      "answer": "Surat · 17 Sep, 09:30–17 Sep, 12:30 IST: Forecast precipitation: 0.4 mm. Source: GFS forecast; conditions can change."
+    },
+    {
+      "question": "thanks!",
+      "conversation": "4e664dce-098b-4ad0-9df5-46f53f35120a",
+      "seconds": 19.45,
+      "status": "conversation",
+      "answer_basis": "conversation",
+      "intent": "chat",
+      "planner": {
+        "provider": "openrouter",
+        "model": "nex-agi/nex-n2.5-pro:free",
+        "policy": "model",
+        "latency_ms": 17219,
+        "failover": []
+      },
+      "generation": {
+        "provider": "openrouter",
+        "status": "composed",
+        "authored_by": "model",
+        "language_adherence": "not_applicable",
+        "repair": null
+      },
+      "tools": [
+        "conversation"
+      ],
+      "facts": 0,
+      "first_fact": null,
+      "quick_replies": 0,
+      "chat_leak_check": null,
+      "answer": "You're welcome!"
+    }
+  ],
+  "limits": [
+    "One machine, one provider order, one run: a model may answer differently on another day.",
+    "The weather turn reads the real ingestion store; its collection status is whatever the store held.",
+    "Latency is measured once per turn and is not a service level."
+  ]
+}

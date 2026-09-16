@@ -115,8 +115,11 @@ def deliver(result, target, translator=None, reason='none'):
         return result
 
     if written_in(answer, target):
-        # A reviewed template already produced it. Nothing to translate.
-        generation['language_adherence'] = 'written_by_template'
+        # It is already in the requested language, and the trace says who wrote it: a reviewed
+        # template, or a model that wrote in the requested script. Neither claims a translation.
+        author = (result.get('trace', {}).get('generation') or {}).get('provider')
+        generation['language_adherence'] = ('written_by_template' if author in (None, 'controlled_localized_template')
+                                            else 'written_in_requested_script')
         result['trace']['generation'] = generation
         return result
 
@@ -185,7 +188,7 @@ def deliver(result, target, translator=None, reason='none'):
 def _downgrade(result, generation, adherence, note):
     generation['language_adherence'] = adherence
     result['trace']['generation'] = generation
-    if result.get('status') in {'answered', 'explanation'}:
+    if result.get('status') in {'answered', 'explanation', 'conversation'}:
         result['status'] = 'partial'
     if note not in result['notes']:
         result['notes'].append(note)

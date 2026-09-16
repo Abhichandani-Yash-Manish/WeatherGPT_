@@ -5,7 +5,7 @@ from zoneinfo import ZoneInfo
 from .transport import SourceError
 
 LOCK=threading.Lock()
-INTENTS=['forecast','history','travel','agriculture','warning','observation','research','explanation','document','ensemble','air_quality','verification']
+INTENTS=['forecast','history','travel','agriculture','warning','observation','research','explanation','document','ensemble','air_quality','verification','chat']
 VARIABLES=['precipitation','temperature_2m','relative_humidity_2m','wind_speed_10m']
 
 def obj(properties):return {'type':'object','properties':properties,'required':list(properties),'additionalProperties':False}
@@ -25,6 +25,10 @@ TASK_SCHEMA=obj({'request_quote':string(),'kind':{'type':'string','enum':KINDS},
  'parameters':{'type':'array','maxItems':8,'items':string()},'years':{'type':'array','maxItems':200,'items':{'type':'integer'}},
  'period':{'type':'string','enum':PERIODS},'start_local':string(),'end_local':string(),
  'place_indices':{'type':'array','maxItems':2,'items':{'type':'integer'}}})
+# A conversational turn carries its own reply. Only chat tasks use it, so it stays optional:
+# the model writes the reply beside the plan, and the engine validates it before a reader sees it.
+TASK_SCHEMA['properties']['reply']=string()
+TASK_SCHEMA['required']=[field for field in TASK_SCHEMA['required'] if field!='reply']
 TASK_SCHEMA['properties']['document_request']=obj({'query':string(),'crop':string(),'growth_stage':string(),'topic':{'type':'string','enum':['general','irrigation','sowing','pest','nutrition','harvest']},'mode':{'type':'string','enum':['source_lookup','decision_support']}})
 TASK_SCHEMA['properties']['document_request']['properties']['selection']={'type':'string','enum':['top','all']}
 TASK_SCHEMA['properties']['corpus_request']=obj({'query':string(),'family':string(),'scope':string(),'whole_document':{'type':'boolean'}})
@@ -55,6 +59,7 @@ ENSEMBLE SPREAD: a question about an ensemble, its members, its spread or its ra
 VERIFICATION: a question about how accurate a past forecast was, or about forecast error, bias or verification, is verification/lookup with parameters from temperature_2m and precipitation and a completed window, empty when the user names no past period. The archived model runs are measured against ERA5 reanalysis, a modelled analysis rather than an observation; the statistics describe one model, variable and window and are never forecast skill, a confidence, a risk, a ranking or a single score. A window that is not complete, or that ends inside the five-day reanalysis delay, cannot be verified and the tool will say so rather than approximate it.
 AIR QUALITY: a question about air quality, pollution, smog or a pollutant is air_quality/lookup with parameters from pm2_5, pm10, nitrogen_dioxide, ozone, carbon_monoxide, sulphur_dioxide, us_aqi and european_aqi, and a window. The values are CAMS modelled output and an index is the source's own; never turn them into a health assessment, a risk score, protective advice or an official warning, and never rename a concentration to an index or an index to a concentration.
 
+CONVERSATION AND SMALL TALK: a message that asks for no weather, document or historical evidence - a greeting, a thank-you, a question about what this workspace can do, a piece of general reasoning or arithmetic, a question about the current time or the workspace itself, or a message outside weather - is exactly ONE task with kind chat, operation reply, parameters [], years [], period annual, empty start_local and end_local, place_indices [], and request_quote copied exactly from the message (empty only when no part of the message can be quoted). Write the reply itself in that task's reply field, in the reader's language, using only the supplied workspace picture: the tools that exist, the sources the ledger says are connected, and what this workspace does not do. Never state a weather value, a forecast, a warning, a date, a time, a place-specific fact, a source identifier or a number in a reply. If the message asks for weather, say plainly that you can check it and ask for the place and day only when they are not already established; never answer a weather question from memory. General reasoning that needs no source - arithmetic, a definition, or how to approach something - may be answered from general knowledge, and the reply must say that it is general knowledge and not a measurement or a local fact. When a message mixes a greeting with a real request, plan ONLY the real request and add no chat task.
 Time: use provided current_time_IST. Tomorrow is the next local date. Morning defaults 06:30–12:30 IST; afternoon 12:30–18:30; evening 18:30–22:30; a named whole forecast day 00:00 to next 00:00 IST (tools will disclose any unsupported boundary intervals). "Kal" with a future rain question is the next local date, never the upcoming twelve hours. Explain defaults in assumptions. Keep explicit requested hours, do not round. Forecast time unspecified: upcoming twelve hours, with disclosed assumption. ISO time strings must include +05:30. Non-time requests use empty dates. No invented history year when absent.
 Follow-ups inherit only the established places, parameters and dates they have not changed. Explicit new details override old ones. "And for 2023?" after India's rainfall and temperature for 2024 retains BOTH measures but changes year to 2023. Asking to correct/choose a different place must not reuse the old selection silently.
 
@@ -139,7 +144,8 @@ def interpret_plan(complete,question,now,history,seed=None):
     for message in history:
         if message.get('context_state') is not None:context=message['context_state']
         else:recent.append(message)
-    user=json.dumps({'current_time_IST':now.astimezone(ZoneInfo('Asia/Kolkata')).isoformat(),'recent_conversation':recent[-4:],'conversation_state':context,'available_tools':planner_catalogue(),'question':question},ensure_ascii=False)
+    from .workspace_brief import brief as workspace_brief
+    user=json.dumps({'current_time_IST':now.astimezone(ZoneInfo('Asia/Kolkata')).isoformat(),'recent_conversation':recent[-4:],'conversation_state':context,'available_tools':planner_catalogue(),'workspace':workspace_brief(now),'question':question},ensure_ascii=False)
     attempts=[]
     if seed is not None:
         plan=_settle_plan(seed,question,now,context,recent)
@@ -242,6 +248,9 @@ def validate_request_coverage(plan,question):
     """Conservative omission guards supplement, not replace, semantic evaluation."""
     seen=set();quotes=[]
     for task in plan['tasks']:
+        if task.get('kind')=='chat':
+            # A conversational turn requests no measurement, so there is nothing to cover or quote.
+            continue
         quote=task.get('request_quote')
         if quote is not None:
             if not quote or quote not in question:raise SourceError('Every task request_quote must copy its supporting clause exactly from the current question')

@@ -101,8 +101,40 @@ GAPS={
  'travel':'I can describe forecast weather at the named places, but I do not have verified road closures, bridge conditions or live transport status. Endpoint weather cannot establish conditions along the full route or whether travel is safe.',
  'agriculture':'Weather can inform your field plan, but it cannot by itself diagnose crop symptoms or determine pesticide dosage, irrigation need or whether an operation is safe. A local advisory and crop/stage/field context are still needed.',
  'research':'This workspace currently retrieves published national climate and historical district rainfall. It does not contain a validated local population, soil, groundwater or water-quality dataset.'}
+# The placeholder plan for a turn the model could not interpret into a task. It is deliberately empty:
+# an unplanned turn retrieves nothing, and _unplanned says what happened instead of raising.
+DEGRADED_PLAN={'intent':'research','language':'en','places':[],'start_local':'','end_local':'',
+               'explicit_times':False,'variables':[],'year':0,'period':'annual','history_parameter':'rainfall',
+               'unsupported_parameters':[],'assumptions':[],'clarification':'','requested_outcome':'',
+               'tasks':[],'context_action':'new','changed_fields':[]}
 
 class ConversationEngine:
+    # A conversational reply states no measurement, no date and no place-specific weather, because
+    # this turn read nothing. These patterns are the leak check: a reply that trips one is repaired
+    # with the violation named, and if it still trips, it is withheld rather than shipped.
+    CHAT_UNITS=re.compile(r'\b(?:mm|cm|m/s|km/h|kmph|kph|hpa|mb|aqi|dbz|kt|knots|millimetres?|millimeters?|'
+                          r'centimetres?|centimeters?|hectopascals?|kilometres per hour|kilometers per hour|'
+                          r'degrees? celsius|degree celsius|per cent|percent)\b|°|%',re.I)
+    # A number is allowed only where it is not a weather measurement, not a date or time, and not
+    # standing beside a weather word: "17 times 3 is 51" is general reasoning, "it is 24 degrees in
+    # Surat" is a claim about the world that this turn has not read.
+    CHAT_MEASURE_WORDS=re.compile(r'\b(?:rain|rainfall|shower|precipitation|temperature|degrees|wind|winds|gust|gusts|'
+                                  r'humidity|cloud|clouds|fog|storm|cyclone|snow|hail|heat|cold|forecast|warning|alert|'
+                                  r'wave|waves|swell|river|discharge|flood|tide|visibility|aqi|pollution|pm2\.?5|pm10)\b',re.I)
+    CHAT_DATE=re.compile(r'\b\d{4}-\d{2}-\d{2}\b|\b\d{1,2}[:.]\d{2}\b|\b\d{1,2}\s*(?:am|pm)\b|\b\d{1,2}(?:st|nd|rd|th)\b',re.I)
+    # Naming a capability ("I can read warnings") is not a warning claim; asserting one is. The
+    # check is therefore about the claim: a colour plus alert, a warning header, a warning word with
+    # a claim verb, or a claim verb within 40 characters of a warning word.
+    CHAT_WARNING=re.compile(r'\b(?:red|orange|yellow)\s*(?:alert|warning)\b|\b(?:warning|alert)s?\s*[:\-]|'
+                            r'\b(?:warning|alert)s?\s+(?:is|are|was|were|has been|have been|in force|in effect|issued|current|active)\b|'
+                            r'\b(?:is|are|issued|in force|in effect|active|current)\b[^.\n]{0,40}\b(?:warning|alert)s?\b|'
+                            r'(?:लाल|नारंगी|पीला|નારંગી|પીળી)\s*(?:चेतावनी|ચેતવણી)',re.I)
+    CHAT_CLAIM=re.compile(r"\b(?:it(?:'s| is)|there (?:is|are))\s+(?:currently\s+)?(?:raining|snowing|sunny|cloudy|clear|dry|hot|cold|warm|windy|foggy|stormy)\b",re.I)
+    CHAT_SOURCE=re.compile(r'\bS\d{2}\b|https?://|www\.',re.I)
+    CHAT_NOTE=('A conversational reply written by the model for this message. It is not retrieved '
+               'evidence: no source was read for it, and it states no weather value, forecast, warning, '
+               'date or place-specific fact.')
+
     def __init__(self,workspace,model=None,gazetteer=None,database=None,gate=None):
         self.workspace=workspace;self.model=model or default_model();self.gazetteer=gazetteer or Gazetteer()
         self.database=Path(database or workspace.service.ingestion_database.parent/'conversations.sqlite')
@@ -369,7 +401,7 @@ class ConversationEngine:
         document_reply=direct_reply(state,q) if not body.get('selection_id') else None
         from .dialogue import select_reply
         text_selection=select_reply(q,state.get('choices',[])) if not body.get('selection_id') else None
-        resolved={}
+        resolved={};degraded=None
         if body.get('selection_id'):
             if q!=state['last_question']:raise SourceError('This place choice belongs to another question. Ask again to select a place.')
             choices=[c for c in state['choices'] if c['selection_id']==body['selection_id']]
@@ -394,24 +426,32 @@ class ConversationEngine:
             history=list(state['history'])
             context=context_message(state)
             if context:history.append({'role':'assistant','content':'Structured conversation focus','context_state':context})
+            degraded=None
             try:
                 plan,meta=self.model.plan(q,self.workspace.clock(),history)
-            except SourceError:
-                # A request to be notified must not be lost to planner variance. The
-                # bounded fallback keeps the same warning tool and place resolution.
-                if not watch_intent(q):raise
-                plan=self._watch_plan(q);meta={'provider':'deterministic_watch_plan','model_calls':0}
-            plan=reconcile(plan,state,q)
+                plan=reconcile(plan,state,q)
+            except SourceError as exc:
+                # A request to be notified must not be lost to planner variance. The bounded fallback
+                # keeps the same warning tool and place resolution. Anything else the model cannot
+                # plan becomes a turn that says so, never a raw error at the reader.
+                if watch_intent(q):
+                    plan=reconcile(self._watch_plan(q),state,q)
+                    meta={'provider':'deterministic_watch_plan','planner_policy':'bounded_watch_plan','model_calls':0}
+                else:
+                    plan=dict(DEGRADED_PLAN);meta={'provider':'unplanned','model_calls':0,
+                                                   'planner_policy':getattr(self.model,'policy','model')}
+                    degraded=str(exc)
             result['trace']['planning']=meta
-            result['trace']['context_resolution']=plan.pop('_context_resolution')
-            # Reuse a source-backed accepted identity only if the new interpretation
-            # names the same place and does not supply a conflicting state/district.
-            from .gazetteer import norm
-            for p in plan['places']:
-                previous=state.get('resolved_points',{}).get(p['name'])
-                if previous and p['kind'] in {'settlement','unknown'} and not plan.get('clarification'):
-                    label=norm(previous['label'])
-                    if all(not p[k] or norm(p[k]) in label for k in ['state','district']):resolved[p['name']]=previous
+            if degraded is None:
+                result['trace']['context_resolution']=plan.pop('_context_resolution')
+                # Reuse a source-backed accepted identity only if the new interpretation
+                # names the same place and does not supply a conflicting state/district.
+                from .gazetteer import norm
+                for p in plan['places']:
+                    previous=state.get('resolved_points',{}).get(p['name'])
+                    if previous and p['kind'] in {'settlement','unknown'} and not plan.get('clarification'):
+                        label=norm(previous['label'])
+                        if all(not p[k] or norm(p[k]) in label for k in ['state','district']):resolved[p['name']]=previous
         from .dialogue import apply_historical_choice
         plan=apply_historical_choice(plan,selected) if selected else plan
         if plan.get('context_action') in {'follow_up','correction','clarification_answer'}:
@@ -420,7 +460,11 @@ class ConversationEngine:
         result['plan']=plan
         result['notes']+=plan['assumptions']
         self._checkpoint(request_id,'planned')
-        if plan.get('context_action')=='explain_previous':
+        if degraded is not None:
+            result=self._unplanned(result,degraded)
+        elif plan.get('intent')=='chat':
+            result=self.chat_turn(result,plan)
+        elif plan.get('context_action')=='explain_previous':
             prior=state.get('last_evidence')
             if prior and (not prior['expires_at_utc'] or parsed(prior['expires_at_utc'])>self.workspace.clock()):
                 answered_at=result['answered_at_utc']
@@ -494,7 +538,7 @@ class ConversationEngine:
         self._checkpoint(request_id,'assembling')
         from .answer_language import deliver,target_language
         target,why=target_language(body,state,plan)
-        if target and result['status'] in {'answered','explanation','partial'}:
+        if target and result['status'] in {'answered','explanation','partial','conversation'}:
             deliver(result,target,reason=why)
         elif target and result['status'] in {'needs_clarification','needs_selection','outside_validity','stale','unavailable'}:
             # A clarification does not claim to have answered, but the user still asked
@@ -514,7 +558,7 @@ class ConversationEngine:
                 result['trace']['language']={'requested':target,'selection':why,'adherence':'not_rendered_no_service','rendered':False}
         else:
             from .dialogue import language_gap
-            if language_gap(result['answer'],plan.get('language')) and result['status'] in {'answered','explanation'}:
+            if language_gap(result['answer'],plan.get('language')) and result['status'] in {'answered','explanation','conversation'}:
                 result['status']='partial'
                 result['notes'].append('The requested output language could not be rendered for this answer; the evidence above remains in its source language. Answering in that language is not supported yet for this kind of request.')
                 result['trace']['generation']=dict(result['trace'].get('generation') or {},language_adherence='failed',requested_language=plan.get('language'))
@@ -641,6 +685,94 @@ class ConversationEngine:
             interpret_plan(None,question,now,[],seed=seed)
             return True
         except (SourceError,TypeError,KeyError,ValueError):return False
+
+    def chat_turn(self,result,plan):
+        """Answer a conversational message: no tool runs, no fact is written, and the model writes the reply.
+
+        The reply comes from the plan the model already made, written from the workspace picture. The
+        engine checks it before a reader sees it: a digit, a unit, a warning word, a source identifier,
+        a link or a present-weather claim means the sentence has left the conversational layer. One
+        repair attempt is made with the violation named, and a reply that still fails is withheld.
+        """
+        baseline=(result.get('trace') or {}).get('planning') or {}
+        task=(plan.get('tasks') or [{}])[0]
+        reply=task.get('reply') if isinstance(task.get('reply'),str) else ''
+        problem=self.chat_reply_problem(reply)
+        generation={'provider':baseline.get('provider'),'model':baseline.get('model'),
+                    'planner_policy':baseline.get('planner_policy'),'authored_by':'model',
+                    'validation':'conversational reply: no number, unit, warning word, source identifier, link or present-weather claim'}
+        if problem:
+            try:
+                reply=self.compose_chat_reply(result['question'],plan,problem)
+                generation['repair']={'reason':problem,'provider':'model'}
+                problem=self.chat_reply_problem(reply)
+            except SourceError as exc:
+                problem=problem+' (and the repair could not be written: '+str(exc)[:200]+')'
+        if problem:
+            generation['status']='withheld'
+            generation['reason']=problem
+            result['answer']=('I could not write a conversational reply to that without stating something this '
+                              'workspace has not read. Ask a weather, warning or document question and the tools '
+                              'will answer it with their sources.')
+            result['notes'].append('A conversational reply was withheld: the model wrote one that '+problem+'.')
+        else:
+            result['answer']=reply.strip()
+            generation['status']='composed'
+        result.update(status='conversation',answer_basis='conversation',facts=[],citations=[],charts=[],
+                      calculations=[],choices=[],follow_up=None,expires_at_utc=None,operational_eligible=False)
+        result['notes'].append(self.CHAT_NOTE)
+        result['trace']['generation']=generation
+        result['trace']['tools'].append({'name':'conversation','status':generation['status'],'model_calls':1})
+        return result
+
+    def chat_reply_problem(self,text):
+        """Why this sentence may not be sent as a conversational reply, or None when it may be."""
+        if not isinstance(text,str) or not text.strip():return 'was empty'
+        if len(text)>1400:return 'was too long to be a conversational reply'
+        if self.CHAT_UNITS.search(text):return 'stated a measurement unit'
+        if self.CHAT_DATE.search(text):return 'stated a date or a time, which is a window claim this turn cannot make'
+        for number in re.finditer(r'\d+(?:\.\d+)?',text):
+            beside=text[max(0,number.start()-48):number.end()+48]
+            if self.CHAT_MEASURE_WORDS.search(beside):
+                return 'stated a number beside a weather word, and this turn read no source'
+        if self.CHAT_WARNING.search(text):return 'used warning language, and this turn cannot verify any warning'
+        if self.CHAT_SOURCE.search(text):return 'named a source or a link it did not read'
+        if self.CHAT_CLAIM.search(text):return 'described the weather at a place'
+        return None
+
+    def compose_chat_reply(self,question,plan,problem=None):
+        """Ask the model for a conversational reply from the workspace picture, and nothing else."""
+        from .workspace_brief import brief
+        system=("You are WeatherGPT, a local weather workspace, answering one conversational message. This "
+                "turn reads no source: there is no evidence, and you must not state any weather value, forecast, "
+                "warning, observation, date, time or place-specific fact. Use only the workspace picture "
+                "supplied. Be brief, natural and useful, under 90 words, plain paragraphs without Markdown. "
+                "Write in the language of the message: "+str((plan or {}).get('language') or 'en')+". If the "
+                "message asks for weather, say plainly that you can check it, and ask for the place and day only "
+                "when they are not already established. General questions that need no source - arithmetic, a "
+                "definition, or how to approach something - may be answered from general knowledge: say that it is "
+                "general knowledge, and keep every measurement, date and local fact out of it. Return JSON.")
+        if problem:system+=' The previous reply was refused because it '+problem+'. Write a reply that does not.'
+        payload={'message':question,'language':(plan or {}).get('language'),'workspace':brief(self.workspace.clock())}
+        generated,meta=self.model.complete(system,json.dumps(payload,ensure_ascii=False),obj({'answer':string()}),max_tokens=400)
+        text=generated.get('answer') if isinstance(generated,dict) else None
+        if not isinstance(text,str) or not text.strip() or len(text)>1400:
+            raise SourceError('the model did not return a usable conversational reply')
+        return text.strip()
+
+    def _unplanned(self,result,detail):
+        """A model that cannot produce a valid plan must not end the turn with a raw error."""
+        if 'No model provider could answer' in detail:
+            result.update(status='unavailable',
+                          answer='No model provider could answer this turn, so the question was not interpreted. '
+                                 'Check the local model or the configured provider, then ask again.')
+        else:
+            result.update(status='needs_clarification',
+                          answer='I could not interpret that into a task this workspace can run. Rephrase it, or '
+                                 'ask for a weather, warning, document or historical answer.')
+        result['notes'].append('The question was not interpreted into a valid plan: '+detail[:400])
+        result['trace']['planning_error']=detail[:800]
+        return result
 
     def _offer_plan(self,state,result,q):
         """Offer to watch a dated activity plan, and mention a saved plan the answer touches."""

@@ -1,9 +1,10 @@
-"""Model access: provider routing, failover, budgets and the rules-first floor.
+"""Model access: provider routing, failover, budgets and the planner policy.
 
 These are component checks over stub endpoints and local configuration. They take no
 measurement of any provider: what they pin is the behaviour the architecture promises -
-the product plans with no model at all, a provider failure is named and routed around, and
-nothing in this layer can put a value into an answer.
+the model plans every turn by default, the deterministic rules plan only when the policy asks
+for them, a provider failure is named and routed around rather than answered from the rules
+floor, and nothing in this layer can put a value into an answer.
 """
 import json
 import threading
@@ -14,6 +15,7 @@ from unittest.mock import patch
 
 from weathergpt_data import providers
 from weathergpt_data.providers import ModelRouter, OllamaClient, OpenRouterClient, ProviderUnavailable, extract_json
+from weathergpt_data.transport import SourceError
 from weathergpt_data.rule_planner import rule_request
 
 NOW = datetime(2026, 9, 15, 3, 0, tzinfo=timezone.utc)
@@ -226,16 +228,50 @@ class OpenRouterTests(unittest.TestCase):
 
 
 class RouterTests(unittest.TestCase):
-    def test_a_core_shape_is_planned_by_rules_without_touching_a_provider(self):
+    def test_the_model_plans_a_turn_by_default_and_the_policy_is_recorded(self):
+        planned = json.dumps({'language': 'en',
+                              'places': [{'name': 'Ahmedabad', 'state': 'Gujarat', 'district': '', 'kind': 'settlement'}],
+                              'assumptions': [], 'clarification': '', 'explicit_times': False,
+                              'tasks': [{'request_quote': 'Will it rain in Ahmedabad, Gujarat tomorrow morning?',
+                                         'kind': 'forecast', 'operation': 'lookup', 'parameters': ['precipitation'],
+                                         'years': [], 'period': 'annual', 'start_local': '2026-09-16T06:30:00+05:30',
+                                         'end_local': '2026-09-16T12:30:00+05:30', 'place_indices': [0]}],
+                              'context_action': 'new', 'changed_fields': []})
+        stub = Stub([reply(planned)])
+        self.addCleanup(stub.close)
+        router = ModelRouter(clients=[OpenRouterClient(key='k', models=('first/model:free',), base=stub.base)],
+                             policy='model')
+        plan, meta = router.plan('Will it rain in Ahmedabad, Gujarat tomorrow morning?', NOW, [])
+        self.assertEqual(meta['provider'], 'openrouter')
+        self.assertEqual(meta['planner_policy'], 'model')
+        self.assertTrue(stub.requests, 'the model plans the turn, so the provider is called')
+        self.assertEqual(plan['intent'], 'forecast')
+        self.assertEqual([task['kind'] for task in plan['tasks']], ['forecast'])
+
+    def test_the_rules_plan_only_when_the_policy_asks_for_them(self):
         stub = Stub([reply()])
         self.addCleanup(stub.close)
-        router = ModelRouter(clients=[OpenRouterClient(key='k', models=('first/model:free',), base=stub.base)])
+        router = ModelRouter(clients=[OpenRouterClient(key='k', models=('first/model:free',), base=stub.base)],
+                             policy='rules')
         plan, meta = router.plan('Will it rain in Ahmedabad, Gujarat tomorrow morning?', NOW, [])
         self.assertEqual(meta['provider'], 'deterministic_rules')
-        self.assertEqual(stub.requests, [], 'the rules path must not call a provider')
+        self.assertEqual(meta['planner_policy'], 'rules')
+        self.assertEqual(stub.requests, [], 'the rules policy must not call a provider')
         self.assertEqual(plan['intent'], 'forecast')
         self.assertEqual([task['kind'] for task in plan['tasks']], ['forecast'])
         self.assertEqual(plan['places'][0]['name'], 'Ahmedabad')
+
+    def test_a_provider_outage_is_named_and_never_answered_from_the_rules_floor(self):
+        stub = Stub([])
+        self.addCleanup(stub.close)
+        router = ModelRouter(clients=[OpenRouterClient(key='k', models=('first/model:free',), base=stub.base)],
+                             policy='model')
+        with self.assertRaises(SourceError) as raised:
+            router.plan('Will it rain in Ahmedabad, Gujarat tomorrow morning?', NOW, [])
+        message = str(raised.exception)
+        self.assertIn('No model provider could answer', message)
+        self.assertIn('not used as a silent substitute', message)
+        self.assertIn('WEATHERGPT_PLANNER=rules', message)
 
     def test_a_follow_up_falls_through_to_a_provider(self):
         stub = Stub([reply('{"language": "en", "places": [], "assumptions": [], "clarification": "", '
@@ -244,16 +280,19 @@ class RouterTests(unittest.TestCase):
                            '"start_local": "", "end_local": "", "place_indices": []}], '
                            '"context_action": "follow_up", "changed_fields": ["time"]}')])
         self.addCleanup(stub.close)
-        router = ModelRouter(clients=[OpenRouterClient(key='k', models=('first/model:free',), base=stub.base)])
+        router = ModelRouter(clients=[OpenRouterClient(key='k', models=('first/model:free',), base=stub.base)],
+                             policy='model')
         plan, meta = router.plan('And what about the evening?', NOW, [])
         self.assertEqual(meta['provider'], 'openrouter')
+        self.assertEqual(meta['planner_policy'], 'model')
         self.assertEqual(len(stub.requests), 1)
         self.assertEqual(plan['context_action'], 'follow_up')
 
     def test_every_provider_failing_is_named_when_rules_cannot_help(self):
         stub = Stub([(500, {'error': {'message': 'boom'}})] * 4)
         self.addCleanup(stub.close)
-        router = ModelRouter(clients=[OpenRouterClient(key='k', models=('first/model:free',), base=stub.base)])
+        router = ModelRouter(clients=[OpenRouterClient(key='k', models=('first/model:free',), base=stub.base)],
+                             policy='model')
         with patch.object(providers, 'RETRY_BACKOFF_SECONDS', 0.01):
             with self.assertRaises(Exception) as raised:
                 router.plan('And what about the evening?', NOW, [])

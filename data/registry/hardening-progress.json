@@ -1,7 +1,7 @@
 {
  "schema_version": "hardening-progress-v1",
  "review": "research/reviews/national-readiness-20260912/review.md",
- "updated_at_utc": "2026-09-16T16:40:00+00:00",
+ "updated_at_utc": "2026-09-16T18:10:00+00:00",
  "operational_ready": false,
  "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
  "findings": [
@@ -2521,6 +2521,45 @@
   "verification_failed": 0,
   "open": [
    "the national table and the place view can serve different bulletin editions from their own caches; the fix made this visible and it needs its own batch"
+  ],
+  "hosting_performed": false,
+  "same_host_only": true
+ },
+ "intelligent_chat_batch": {
+  "report": "docs/83-intelligent-chat-overhaul.md",
+  "evidence_directory": "research/reviews/chat-overhaul-20260916",
+  "scope": "the model becomes the planner, and a conversational message becomes a real answer without retrieval",
+  "delivered": [
+   "ModelRouter plans with the provider chain by default; the deterministic rules plan only when WEATHERGPT_PLANNER=rules, and trace.planning.planner_policy records which policy answered every turn",
+   "a provider outage names every provider tried and is never quietly answered from the rules floor",
+   "a plan that cannot be validated is repaired with the validator own message, and an unplannable turn degrades to a readable answer with the reason in the trace instead of raising at the reader",
+   "a new chat task kind (operation reply) carries the model own reply for greetings, thank-yous, capability and meta questions, general reasoning and out-of-scope messages",
+   "the planner receives a deterministic workspace picture: the clock, the callable tools, the source ledger counts and what the workspace does not do, so a capability answer comes from the ledger instead of the model memory",
+   "a conversational reply is checked for measurement units (including spelled-out forms), dates and times, numbers beside a weather word, warning claims, source identifiers, links and present-weather claims; one repair attempt is made with the violation named, and a reply that still fails is withheld",
+   "a conversational turn acquires nothing, holds no fact, cites nothing, carries status conversation with a visible No source read tag, and never becomes retrievable evidence in the conversation state",
+   "the language tier labels a model-written answer in the requested script as written_in_requested_script instead of claiming a template wrote it"
+  ],
+  "measured_live": [
+   "hello: 11.0 s, conversation, natural greeting, no acquisition",
+   "what can you do?: 19.3 s, conversation naming the real tools and the limits from the ledger",
+   "what is 17 times 3?: 48.3 s, conversation, fifty-one stated as general knowledge",
+   "नमस्ते: 9.3 s, conversation in Devanagari, language_adherence written_in_requested_script",
+   "Will it rain in Surat tomorrow morning?: 19.5 s, answered with one tool-owned fact (0.4 mm, GFS) and three quick replies",
+   "thanks! in the same conversation: 19.5 s, conversation, continuity kept"
+  ],
+  "tests_added": [
+   "tests/test_conversational_turns.py (9 checks): the reply path, one repair attempt with the violation named, withholding, every leak class with clean counter-examples, the conversation state without evidence, a Hindi greeting, and graceful degradation for an outage and for an unplannable question",
+   "tests/test_providers.py: the model plans by default with the policy recorded; the rules plan only when asked; a provider outage is named and never answered from the rules floor",
+   "tests/conftest.py: the suite plans with the rules unless a test asks for a model and stubs it, so no component check reaches a provider",
+   "tests/test_views.js: a conversational reply is shown as a conversation, tagged No source read, and drawn with no receipt or validity window"
+  ],
+  "live_check": "research/reviews/chat-overhaul-20260916/journeys.json",
+  "open": [
+   "Stage A3: a model-written narrative for evidence answers behind the existing validation, with the tool-owned fact renderer as the floor (today a turn with facts is rendered deterministically)",
+   "Stage A4: language breadth through the language gate, and dialogue.SCRIPTS widening with each language made writable",
+   "Stage A5: the provider order, planner policy and last failure surfaced in settings and health",
+   "the leak check is a bounded heuristic: a number written as a word passes it; the structural guarantees are that a conversational turn acquires nothing, holds no fact, is labelled, and is never stored as evidence",
+   "latency: planning is 9-48 s on the free provider; a cheaper routing tier before the full plan is the candidate fix, not built"
   ],
   "hosting_performed": false,
   "same_host_only": true
