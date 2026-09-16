@@ -49,6 +49,13 @@ describe('the shell', () => {
     await waitFor(() => expect(document.title).toMatch(/evidence-first weather/));
   });
 
+
+  it('opens the plans panel from a ?watch= deep link, so a notification can land on what it is about', async () => {
+    window.location.hash = '#/assistant?watch=w1';
+    render(<App />);
+    expect(await screen.findByRole('heading', { level: 2, name: /Plans, watches and the notification inbox/ })).toBeInTheDocument();
+  });
+
   it('keeps the keyboard shortcut contract the rail prints', async () => {
     window.location.hash = '#/assistant';
     render(<App />);

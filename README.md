@@ -274,7 +274,7 @@ The interface states these limits instead of filling them:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 1304 Python tests
+python3 -m pytest tests/ -q                          # 1306 Python tests
 cd frontend && npx tsc --noEmit && npm test          # 26 React suites, 135 component checks
 node tests/test_charts.js                            #  2 of 110 printed component checks
 node tests/test_viz.js                               #  9; the chart engine: plume, meteogram, gaps and locators

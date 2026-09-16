@@ -30,7 +30,10 @@ const queryClient = new QueryClient({
 export type Seed = { question: string; nonce: number } | null;
 
 function Shell() {
-  const { view, shell, open, go } = useHashRoute();
+  const { view, shell, open, go, query } = useHashRoute();
+  /* A deep link such as #/assistant?watch=<id> opens the panel the link names. The query is read here
+     rather than in a surface, so the same link works from anywhere in the app. */
+  const watchId = query.get('watch');
   const [theme, cycleTheme] = useTheme();
   const [language, setLanguage] = useState('');
   const [persona, setPersona] = useState('');
@@ -55,6 +58,10 @@ function Shell() {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
+
+  useEffect(() => {
+    if (watchId) setPlansOpen(true);
+  }, [watchId]);
 
   /* The document title follows the surface, so a deep link is identifiable in the tab, in the history and in
      a bookmark. It names the product first for the same reason the rail does. */
