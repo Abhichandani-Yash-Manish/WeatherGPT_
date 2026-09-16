@@ -398,6 +398,17 @@ input:hover, select:hover, textarea:hover { border-color: var(--data); }
 .reading-glyph { color: var(--data); }
 .reading-text { color: var(--ink-soft); font-weight: 600; }
 .reading-note { font-size: var(--step--1); color: var(--mute); }
+/* The reading register: brief hides the evidence apparatus, full opens every disclosure. Every
+   value, unit, date, source identifier, status and caveat stays in the card at every register. */
+.register-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: 0 0 10px; }
+.register-label { font-size: var(--step--1); color: var(--mute); text-transform: uppercase; letter-spacing: .06em; }
+.register-option { font: inherit; font-size: var(--step--1); padding: 3px 10px; border: 1px solid var(--line-strong); border-radius: var(--r-pill, 999px); background: var(--paper); color: var(--ink-soft); cursor: pointer; }
+.register-option[aria-pressed="true"] { background: var(--data); border-color: var(--data); color: var(--paper); font-weight: 600; }
+.register-note { font-size: var(--step--1); color: var(--mute); }
+[data-register="brief"] .turn .ruler,
+[data-register="brief"] .turn .receipt,
+[data-register="brief"] .turn .disclosure,
+[data-register="brief"] .turn .product-comparison { display: none; }
 .carried-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 3px 8px; }
 .carried-text { color: var(--ink-soft); font-weight: 600; }
 .carried-note { font-size: var(--step--1); color: var(--mute); }

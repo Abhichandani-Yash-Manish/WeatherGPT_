@@ -101,6 +101,13 @@
       </header>
       <div class="assistant-layout">
         <div class="assistant-desk">
+          <div class="register-switch" role="group" aria-label="How much of each answer to show">
+            <span class="register-label">Show</span>
+            <button type="button" class="register-option" data-register="brief" aria-pressed="false">Brief</button>
+            <button type="button" class="register-option" data-register="conversational" aria-pressed="true">Conversational</button>
+            <button type="button" class="register-option" data-register="full" aria-pressed="false">Full evidence</button>
+            <span class="register-note">Changes what is shown, never what a source said.</span>
+          </div>
           <section class="thread" id="thread" role="log" aria-live="polite" aria-relevant="additions" aria-label="Conversation"></section>
           <button type="button" class="jump" id="jump-latest" hidden>Jump to the newest answer</button>
           <p class="error" id="error" role="alert" hidden></p>

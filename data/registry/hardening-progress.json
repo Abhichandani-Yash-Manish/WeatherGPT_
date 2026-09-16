@@ -2536,7 +2536,8 @@
    "the working placeholder shows the reading and the conversation own receipt (place and server answer time), and the answer card replaces it",
    "a fresh visit with no route opens Ask; every route still opens its own surface, an unknown route falls back to Ask, and the rail keeps every guided surface",
    "C2 part: next-question chips built from the plan own day and part of day, each candidate planned by the rules at offer time and dropped when they refuse it; the chip uses the plan own place name, so it resolves to one place",
-   "C2 part: a continuation discloses what it carried and what the person changed from the plan own context_action and changed_fields, labelled as context and not new evidence"
+   "C2 part: a continuation discloses what it carried and what the person changed from the plan own context_action and changed_fields, labelled as context and not new evidence",
+   "C3 part: a Brief / Conversational / Full-evidence register switch on the transcript, remembered per browser, that hides the evidence apparatus in brief and opens the disclosures in full without re-ordering or re-wording any card"
   ],
   "measured_before_design": [
    "the rules floor reads a forecast question only when it names a day AND a part of day; twelve of twelve shapes naming only the day were refused and fell through to the model planner",
@@ -2553,7 +2554,7 @@
   "open": [
    "the preview states the reading, not held values: no read model exposes a held value with the provenance and validity that printing one would require",
    "the four C2 continuity journeys (bare continuation, referent, correction, clarification answered in a second message) are not measured end-to-end: they need a reachable model planner, which this machine did not have",
-   "the C3 reader-chosen register is planned in docs/82, not built"
+   "the register switch changes what is shown, not the reading order inside a card; re-ordering facts away from their labels was refused deliberately (see docs/82)"
   ],
   "hosting_performed": false,
   "same_host_only": true

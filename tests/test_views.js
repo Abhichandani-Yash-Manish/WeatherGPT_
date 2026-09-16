@@ -465,3 +465,23 @@ const c1Correction = context.renderTurn({ ...c1CarriedPacket, plan:{ intent:'for
 assert(/Correcting the previous message/.test(String(c1Correction.textContent)), 'a correction says it is replacing a detail');
 assert(/changed: place/.test(String(c1Correction.textContent)), 'the replaced field is named');
 console.log('PASS: a continuation states what it carried and what changed, and never as evidence');
+
+
+// 22. the reading register opens and restores disclosures, and never rewrites a card
+const c3Host = context.el('div', undefined, 'thread');
+const c3Open = context.disclosure('Scope, assumptions and limits (1)', into => into.append(context.el('p', 'A stated limit.')), true);
+const c3Shut = context.disclosure('Sources (1)', into => into.append(context.el('p', 'A citation.')));
+c3Host.append(c3Open, c3Shut);
+const c3Text = String(c3Host.textContent);
+assert.equal(context.applyRegister(c3Host, 'conversational'), 'conversational', 'the conversational register is accepted');
+assert.equal(c3Host.getAttribute('data-register'), 'conversational', 'the register is set on the transcript, not on a card');
+assert.equal(c3Open.open, true, 'a disclosure the renderer opened stays open');
+assert.equal(c3Shut.open, false, 'a disclosure the renderer closed stays closed');
+assert.equal(context.applyRegister(c3Host, 'full'), 'full', 'the full-evidence register is accepted');
+assert.equal(c3Shut.open, true, 'full evidence opens every disclosure it was not asked to open');
+assert.equal(context.applyRegister(c3Host, 'brief'), 'brief', 'the brief register is accepted');
+assert.equal(c3Shut.open, false, 'leaving full evidence restores the disclosure the renderer built');
+assert.equal(String(c3Host.textContent), c3Text, 'the register changes what is shown, never the text a card carries');
+assert.equal(context.applyRegister(c3Host, 'detailed'), null, 'an unknown register is refused rather than guessed');
+assert.equal(c3Host.getAttribute('data-register'), 'brief', 'a refused register name changes nothing');
+console.log('PASS: the reading register opens and restores disclosures without changing what a card says');

@@ -141,6 +141,22 @@ carried reading and the continuation line are the deterministic parts that work 
   they are now; full evidence opens the ruler, receipt and disclosures.
 - **Answer-first order**: the lead line, then facts, then the receipt.
 
+### Delivered: the register switch, and the one thing it does not do
+
+The switch sits above the transcript (Brief · Conversational · Full evidence) and sets a `data-register`
+attribute on the thread itself, so it applies to **every card already on screen** without re-rendering a turn.
+**Brief** hides the evidence apparatus (the ruler, the receipt, the disclosures and the product comparison);
+**conversational** is the renderer's own card; **full evidence** opens every disclosure in the thread and
+restores the disclosures exactly as the renderer built them when the reader leaves that register. The choice is
+remembered per browser, and an unreadable or absent stored value falls back to conversational rather than being
+guessed at.
+
+What it deliberately does **not** do is re-order or re-word a card. Nothing about a value, unit, date, place,
+source identifier, status, caveat or negation changes: a component check asserts the card's text is identical
+before and after the switch is moved, and the register only decides what is displayed. That is why the
+"answer-first order" above is a property of the renderer rather than something the switch rearranges: moving a
+fact away from its label is exactly where a number can lose its entity, window or source.
+
 ## Front door
 
 Ask becomes the landing surface (a fresh visit with no route). The rail keeps every guided surface, and the

@@ -272,5 +272,31 @@ async function run() {
   assert.equal(h.api().firstPoint({ resolved_points: {} }), null, 'No resolved point means no collection claim');
   console.log('PASS: the resolved collection point comes from the packet, or is reported absent');
 
+  // 14. the register switch applies the reader's choice to the transcript and remembers it
+  h = harness();
+  const stored = {};
+  h.window.localStorage = { getItem: key => (key in stored ? stored[key] : null),
+                            setItem: (key, value) => { stored[key] = String(value); } };
+  const switchHost = h.document.createElement('div');
+  ['brief', 'conversational', 'full'].forEach(name => {
+    const button = h.document.createElement('button');
+    button.className = 'register-option';
+    button.setAttribute('data-register', name);
+    switchHost.append(button);
+  });
+  h.api().wireRegister(switchHost);
+  assert.equal(h.document.getElementById('thread').getAttribute('data-register'), 'conversational',
+    'the conversational register is what an unreadable or absent choice falls back to');
+  switchHost.children[2].click();
+  assert.equal(h.document.getElementById('thread').getAttribute('data-register'), 'full',
+    'a click applies the chosen register to the transcript');
+  assert.equal(switchHost.children[2].getAttribute('aria-pressed'), 'true', 'the chosen register is the one marked pressed');
+  assert.equal(switchHost.children[1].getAttribute('aria-pressed'), 'false', 'the others are not marked pressed');
+  assert.equal(stored['weathergpt.register'], 'full', 'the choice is remembered per browser');
+  assert.equal(h.api().register(), 'full', 'a reload reads the remembered register');
+  stored['weathergpt.register'] = 'detailed';
+  assert.equal(h.api().register(), 'conversational', 'an unreadable stored value falls back instead of being guessed at');
+  console.log('PASS: the register switch applies the reader choice to the transcript and remembers it');
+
 }
 run().then(() => process.exit(0), error => { console.error(error); process.exit(1); });

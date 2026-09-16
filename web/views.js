@@ -488,6 +488,27 @@ function renderFacts(packet, facts) {
   });
   return grid;
 }
+const REGISTERS = ['brief', 'conversational', 'full'];
+function applyRegister(host, name) {
+  // How much of each card is shown. It changes what is displayed and never what a source said:
+  // brief hides the evidence apparatus, full opens every disclosure, and every value, unit, date,
+  // source identifier, status and caveat stays in the card at every register. The reading order
+  // inside a card is the renderer's and does not change with the register.
+  if (!host || REGISTERS.indexOf(name) < 0) return null;
+  host.setAttribute('data-register', name);
+  const boxes = (host.querySelectorAll ? host.querySelectorAll('details') : null) || [];
+  Array.prototype.slice.call(boxes).forEach(box => {
+    if (!box.dataset) return;
+    if (name === 'full') {
+      if (box.dataset.registerOpen === undefined) box.dataset.registerOpen = box.open ? '1' : '0';
+      box.open = true;
+    } else if (box.dataset.registerOpen !== undefined) {
+      box.open = box.dataset.registerOpen === '1';
+      delete box.dataset.registerOpen;
+    }
+  });
+  return name;
+}
 function disclosure(summary, build, open) {
   const box = el('details', undefined, 'disclosure');
   if (open) box.open = true;

@@ -164,14 +164,14 @@ The interface states these limits instead of filling them:
 
 ```sh
 python3 -m pytest tests/ -q                          # 1183 Python tests
-node tests/test_charts.js                            #  2 of 70 component checks
-node tests/test_viz.js                               #  the chart engine: plume, meteogram, gaps and locators
-node tests/test_views.js                             # 18
+node tests/test_charts.js                            #  2 of 107 printed component checks
+node tests/test_viz.js                               #  9; the chart engine: plume, meteogram, gaps and locators
+node tests/test_views.js                             # 24
 node tests/test_bulletin_ui.js                       #  6
-node tests/test_conversation_ui.js                   # 13
-node tests/test_suite_ui.js                          # 18
+node tests/test_conversation_ui.js                   # 14
+node tests/test_suite_ui.js                          # 32
 node tests/test_voice_ui.js                          #  3
-node tests/test_briefcase_ui.js                      # 10
+node tests/test_briefcase_ui.js                      #  1
 node tests/test_workspace_ui.js                      # workspace behaviour and recovery
 node tests/test_notify_ui.js                         # watch delivery controls
 python3 scripts/doctor.py                            # environment, providers and corpus presence

@@ -583,6 +583,38 @@
     box.replaceChildren(renderWelcome(handlers()));
   }
 
+  /* How much of each answer to show. The switch changes what is displayed and never what a
+     source said; the choice is remembered per browser, and an unreadable stored value falls back
+     to the conversational register rather than guessing. */
+  function restoreRegister() {
+    let name = 'conversational';
+    try {
+      const stored = window.localStorage.getItem('weathergpt.register');
+      if (stored === 'brief' || stored === 'conversational' || stored === 'full') name = stored;
+    } catch (error) { /* private mode: the default stands */ }
+    return name;
+  }
+  function registerButtons(scope) {
+    const root = scope || document;
+    const found = (root.querySelectorAll ? root.querySelectorAll('.register-option') : null) || [];
+    return Array.prototype.slice.call(found);
+  }
+  function showRegister(name, scope) {
+    const host = byId('thread');
+    if (host && typeof applyRegister === 'function') applyRegister(host, name);
+    registerButtons(scope).forEach(button => button.setAttribute('aria-pressed', button.getAttribute('data-register') === name ? 'true' : 'false'));
+    return name;
+  }
+  function wireRegister(scope) {
+    showRegister(restoreRegister(), scope);
+    registerButtons(scope).forEach(button => {
+      button.addEventListener('click', () => {
+        const name = showRegister(button.getAttribute('data-register'), scope);
+        try { window.localStorage.setItem('weathergpt.register', name); } catch (error) { /* private mode: no persistence */ }
+      });
+    });
+  }
+
   function start() {
     bind();
     const box = thread();
@@ -590,6 +622,7 @@
     try { state.lastSeen = window.localStorage.getItem('weathergpt.lastAnswer'); } catch (error) { state.lastSeen = null; }
     updateConnectionBanner(false);
     wireJump();
+    wireRegister();
     setService('Ready', 'is-ready');
     setBusy(false);
     loadLedger();
@@ -600,5 +633,5 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
 
-  window.WeatherGPT = { newConversation:newConversation, ask:ask, state:state, refreshWelcome:refreshWelcome, loadLedger:loadLedger, loadHealth:loadHealth, restore:restore, buildFieldSentence:buildFieldSentence, firstPoint:firstPoint };
+  window.WeatherGPT = { newConversation:newConversation, ask:ask, state:state, refreshWelcome:refreshWelcome, loadLedger:loadLedger, loadHealth:loadHealth, restore:restore, buildFieldSentence:buildFieldSentence, firstPoint:firstPoint, wireRegister:wireRegister, register:restoreRegister };
 })();
