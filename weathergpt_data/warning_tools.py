@@ -133,6 +133,20 @@ def execute_warning(engine, result, plan, task, resolved=None, coordinates=None)
                 if len(exact) == 1:
                     chosen.append({'place': exact[0].get('district_label'), 'record': exact[0]})
                     continue
+                # Reviewed-alias fallback: a publisher spelling the crosswalk
+                # knows, disclosed — never a guess, and ambiguity stays unresolved.
+                from .district_aliases import CROSSWALK_VERSION, resolve as resolve_alias
+                canonical, why = resolve_alias(place.get('name'), place.get('state'))
+                if canonical is not None:
+                    aliased = [record for record in records
+                               if normalise(record.get('district_label')) == normalise(canonical)]
+                    if len(aliased) == 1:
+                        result['notes'].append(
+                            'Place read as ' + str(aliased[0].get('district_label')) + ' via the reviewed '
+                            'district-alias table (' + str(why.get('basis')) + ', confidence '
+                            + str(why.get('confidence')) + ', ' + CROSSWALK_VERSION + ').')
+                        chosen.append({'place': aliased[0].get('district_label'), 'record': aliased[0]})
+                        continue
                 unresolved.append(place.get('name') or 'your location')
     except (ValueError, OSError) as exc:
         result.update(status='unavailable',
@@ -193,6 +207,29 @@ def execute_warning(engine, result, plan, task, resolved=None, coordinates=None)
     for entry in districts:
         facts += dw.facts(entry['record'], entry['rows'], entry['issued'], 'district-warning', entry['place'])
     result['facts'] = list(result.get('facts') or []) + facts
+    # CAP geometric applicability per resolved point: additive assessment only.
+    # It never changes facts, lifecycle, or fingerprints — held stays held, and
+    # dissemination_eligible stays False. A failure here holds, never breaks.
+    cap_applicability = []
+    try:
+        from .cap_geo import assess_records
+        for item in chosen:
+            point = item.get('point')
+            if not isinstance(point, dict):
+                continue
+            assessed = assess_records(cap['records'], point.get('latitude'), point.get('longitude'))
+            cap_applicability.append({
+                'place': item.get('place'),
+                'assessed_records': len(assessed),
+                'applicable_records': sum(1 for row in assessed if row['verdict'] == 'applicable'),
+                'held_records': sum(1 for row in assessed if row['verdict'] == 'held'),
+                'records': assessed})
+    except Exception:
+        cap_applicability = [{'place': item.get('place') if isinstance(item, dict) else None,
+                              'assessed_records': 0, 'applicable_records': 0, 'held_records': 0,
+                              'records': [], 'verdict': 'held',
+                              'reason': 'CAP applicability could not be assessed.'}
+                             for item in chosen]
 
     message_count = len(cap['records'])
     result['warning_evidence'] = {
@@ -203,7 +240,8 @@ def execute_warning(engine, result, plan, task, resolved=None, coordinates=None)
                               for entry in districts],
         'stale_districts': [{'place': label, 'district': record.get('district_label'),
                              'issued_at_utc': issued.isoformat()} for label, record, issued in stale],
-        'points_outside_districts': outside, 'places_without_a_point': unresolved}
+        'points_outside_districts': outside, 'places_without_a_point': unresolved,
+        'cap_applicability': cap_applicability}
     result['citations'] = citations
     result['trace']['tools'].append({'name': 'official_district_warning', 'districts': len(districts),
                                      'stale_districts': len(stale), 'outside_districts': len(outside),
