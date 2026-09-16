@@ -226,4 +226,23 @@ assert.equal(heads.filter(head => head.indexOf('date not stated by the source') 
   'the following days say the source states no separate date instead of repeating one date five times');
 assert.equal(repeated.withClass('viz-daycol-observed').length, 1, 'the station is placed on one day, not on every day that shares a date');
 console.log('PASS: a repeated bulletin date is disclosed rather than presented as five dated days');
+
+/* The read model now derives its own windows, so a day says which IST day it is and which hours it
+   covers; the repeat disclosure above stays as the guard for a payload that dates them all alike. */
+const windowed = viz.dayTimeline({
+  days: [
+    { day: 1, date_utc: '2026-09-15', label: '15 Sep 2026', colour: 'yellow', hazards: ['Thunderstorm/lightning/squall'],
+      unknown_hazard_codes: [], starts_utc: '2026-09-14T18:30:00+00:00', ends_utc: '2026-09-15T18:30:00+00:00', is_today: true },
+    { day: 2, date_utc: '2026-09-16', label: '16 Sep 2026', colour: 'green', hazards: ['No warning in this product'],
+      unknown_hazard_codes: [], starts_utc: '2026-09-15T18:30:00+00:00', ends_utc: '2026-09-16T18:30:00+00:00', is_today: false }
+  ],
+  hours: []
+});
+const windowHeads = windowed.allNodes().filter(node => String(node.className) === 'viz-daycol-head').map(node => node.textContent);
+assert.equal(windowHeads[0], 'Day 1 · 15 Sep 2026', 'a day shows the label of its own derived date');
+const windows = windowed.allNodes().filter(node => String(node.className) === 'viz-daycol-window').map(node => node.textContent);
+assert.equal(windows[0], 'IST window 00:00–24:00 (derived from the bulletin date)',
+  'a derived IST day window ends at 24:00 rather than reading as a zero-length day: ' + windows[0]);
+assert.equal(windowed.withClass('viz-daycol-today').length, 1, 'the day containing the retrieval moment is marked once');
+console.log('PASS: a derived day shows its own label, its IST window and whether it is today');
 process.exit(0);

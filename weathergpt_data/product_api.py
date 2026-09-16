@@ -226,6 +226,14 @@ def warning_attributes(foundation, refresh=False, ttl=900):
 
 
 def decode_days(properties):
+    """The five published days, dated and windowed by the district-warnings contract.
+
+    One authority, not two. Measured 15 September 2026: this function stamped the bulletin date on
+    all five rows while district_warnings.day_rows derived five different IST days, so the national
+    table, the matrix header and the day timeline showed one date five times and the place strip
+    showed no date at all. The derivation now runs through the same contract the S63 adapter and the
+    place view use, and every row says it is derived rather than published per day.
+    """
     issued = None
     day_value = str(properties.get('Date') or '').strip()
     hour = properties.get('UTC')
@@ -236,22 +244,44 @@ def decode_days(properties):
                 issued = issued.replace(hour=hour)
         except ValueError:
             issued = None
-    days = []
+    source_days = []
     for index in range(1, 6):
         raw = properties.get('Day_%d' % index)
         colour_code = properties.get('Day%d_Color' % index)
         source_text = (properties.get('Day%d_text' % index) or '').strip() or None
         codes = [int(token.strip()) for token in str(raw or '').split(',') if token.strip().isdigit()]
-        unknown = [code for code in codes if code not in HAZARDS]
+        source_days.append({'source_day': index, 'hazard_codes': codes,
+                            'hazards': [HAZARDS[code] for code in codes if code in HAZARDS],
+                            'colour_code': colour_code if isinstance(colour_code, int) else None,
+                            'colour': COLOURS.get(colour_code) if isinstance(colour_code, int) else None,
+                            'source_text': source_text})
+    derived = {}
+    if issued is not None:
+        try:
+            rows, _ = dw.day_rows({'issued_at_utc': issued.isoformat(), 'days': source_days})
+            derived = {row['day']: row for row in rows}
+        except SourceError:
+            derived = {}
+    days = []
+    for source_day in source_days:
+        index = source_day['source_day']
+        row = derived.get(index) or {}
+        codes = source_day['hazard_codes']
         days.append({'day': index,
-                     'date_utc': issued.date().isoformat() if issued else None,
+                     'date_utc': row.get('date_local'),
+                     'date_local': row.get('date_local'),
+                     'label': row.get('label'),
+                     'starts_utc': row.get('starts_utc'),
+                     'ends_utc': row.get('ends_utc'),
+                     'is_today': row.get('is_today'),
+                     'is_past': row.get('is_past'),
                      'hazard_codes': codes,
-                     'hazards': [HAZARDS[code] for code in codes if code in HAZARDS],
-                     'colour_code': colour_code if isinstance(colour_code, int) else None,
-                     'colour': COLOURS.get(colour_code) if isinstance(colour_code, int) else None,
-                     'source_text': source_text,
-                     'unknown_hazard_codes': unknown,
-                     'quiet': bool(codes) and all(code == 1 for code in codes) and not source_text})
+                     'hazards': source_day['hazards'],
+                     'colour_code': source_day['colour_code'],
+                     'colour': source_day['colour'],
+                     'source_text': source_day['source_text'],
+                     'unknown_hazard_codes': [code for code in codes if code not in HAZARDS],
+                     'quiet': bool(codes) and all(code == 1 for code in codes) and not source_day['source_text']})
     return issued, days
 
 
@@ -302,6 +332,10 @@ def warnings_place(foundation, latitude, longitude, refresh=False):
                         not_established=['The point does not fall inside any district polygon of this product, so no district guidance applies there.'])
     record = records[0]
     rows, issued = dw.day_rows(record)
+    # One key for the day date across both read paths: the place view derived the dates all
+    # along, under a name no surface read, while the national table published the same fact as
+    # date_utc. Both keys now carry the same derived IST date.
+    rows = [dict(row, date_utc=row.get('date_local')) for row in rows]
     state, attribution = state_for(record.get('district_label'))
     # The headline is derived from the same day rows the strip shows, never from a field the
     # endpoint does not supply. An absent summary is unknown, not "no warning": the opening

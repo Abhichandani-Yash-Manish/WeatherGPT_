@@ -1,0 +1,71 @@
+{
+  "schema_version": "warning-days-live-http-v1",
+  "batch": "W1 the five published days become five dated days",
+  "checked_at_utc": "2026-09-16T15:56:59+00:00",
+  "base": "http://127.0.0.1:8795",
+  "method": "Loopback HTTP against a fresh workspace process, over the three read paths the warning surfaces use.",
+  "checks": [
+    {
+      "check": "page token",
+      "status": 200,
+      "ms": 5,
+      "token_present": true
+    },
+    {
+      "check": "national table days",
+      "path": "/api/warnings/national",
+      "status": 200,
+      "ms": 1324,
+      "districts": 756,
+      "dates": [
+        "2026-09-11",
+        "2026-09-12",
+        "2026-09-13",
+        "2026-09-14",
+        "2026-09-15"
+      ],
+      "distinct_dates": 5,
+      "labels": [
+        "11 Sep 2026",
+        "12 Sep 2026",
+        "13 Sep 2026",
+        "14 Sep 2026",
+        "15 Sep 2026"
+      ],
+      "windows_consecutive": true,
+      "is_today_count": 0
+    },
+    {
+      "check": "overview place strip days",
+      "path": "/api/overview",
+      "status": 200,
+      "ms": 597,
+      "district": "AHMADABAD",
+      "dates": [
+        "2026-09-15",
+        "2026-09-16",
+        "2026-09-17",
+        "2026-09-18",
+        "2026-09-19"
+      ],
+      "distinct_dates": 5,
+      "is_today_count": 1
+    },
+    {
+      "check": "place view days",
+      "path": "/api/warnings/place",
+      "status": 200,
+      "ms": 21372,
+      "district": "AHMADABAD",
+      "dates": [
+        "2026-09-15",
+        "2026-09-16",
+        "2026-09-17",
+        "2026-09-18",
+        "2026-09-19"
+      ],
+      "date_local_matches_date_utc": true,
+      "headline": "A yellow warning is published for this district"
+    }
+  ]
+}

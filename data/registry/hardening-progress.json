@@ -1,7 +1,7 @@
 {
  "schema_version": "hardening-progress-v1",
  "review": "research/reviews/national-readiness-20260912/review.md",
- "updated_at_utc": "2026-09-15T19:16:28+00:00",
+ "updated_at_utc": "2026-09-16T15:58:00+00:00",
  "operational_ready": false,
  "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
  "findings": [
@@ -2453,6 +2453,31 @@
   "verification_steps": 27,
   "verification_failed": 0,
   "acceptance_record": "research/reviews/frontend-overhaul-20260915/acceptance.json",
+  "hosting_performed": false,
+  "same_host_only": true
+ },
+ "warning_day_windows_batch": {
+  "report": "docs/80-user-facing-gap-batch.md",
+  "evidence_directory": "research/reviews/warning-days-20260916",
+  "scope": "one authority for the derived district-warning day windows, and one key for the day date across the read paths",
+  "delivered": [
+   "product_api.decode_days derives through district_warnings.day_rows instead of stamping the bulletin date on all five rows",
+   "every day row carries date_utc, date_local, label, starts_utc, ends_utc, is_today and is_past",
+   "the place view publishes the derived date as date_utc beside date_local, so no surface can miss it",
+   "the day timeline and the day strip show the day own label, its derived IST window and the today marker"
+  ],
+  "tests_added": [
+   "tests/test_district_warnings.py: ReadModelDayTests (6 checks) and PlaceDayKeyTests (1)",
+   "tests/test_viz.js: derived label, IST window and today marker"
+  ],
+  "live_loopback_check": "research/reviews/warning-days-20260916/live-http-checks.json",
+  "python_tests_passed": 1146,
+  "javascript_suites": 10,
+  "verification_steps": 27,
+  "verification_failed": 0,
+  "open": [
+   "the national table and the place view can serve different bulletin editions from their own caches; the fix made this visible and it needs its own batch"
+  ],
   "hosting_performed": false,
   "same_host_only": true
  }

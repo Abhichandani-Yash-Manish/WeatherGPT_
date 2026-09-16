@@ -580,6 +580,13 @@
      timestamp falls in and the station observation on the day it was reported. Day windows are the
      product's own IST calendar days, so this never invents a boundary; model hours are counted, and
      no value is combined across days. */
+  function istClockText(iso) {
+    const at = Date.parse(iso);
+    if (!Number.isFinite(at)) return null;
+    const shifted = new Date(at + 5.5 * 3600 * 1000);
+    return String(shifted.getUTCHours()).padStart(2, '0') + ':' + String(shifted.getUTCMinutes()).padStart(2, '0');
+  }
+
   function istDayKey(iso) {
     const at = Date.parse(iso);
     if (!Number.isFinite(at)) return null;
@@ -625,7 +632,8 @@
       const unknown = (day.unknown_hazard_codes || []).length > 0;
       const repeats = datesRepeated && dateOccurrences[day.date_utc] > 1;
       const showDate = !repeats || firstIndexOfDate[day.date_utc] === position;
-      const headline = 'Day ' + day.day + ' \u00b7 ' + (showDate ? day.date_utc : 'date not stated by the source');
+      const dateText = day.label || day.date_utc || null;
+      const headline = 'Day ' + day.day + ' \u00b7 ' + (showDate && dateText ? dateText : 'date not stated by the source');
       const column = make('button', undefined, 'viz-daycol ' + (known ? 'is-' + day.colour : 'is-unknown') + (unknown ? ' is-unverified' : ''));
       column.type = 'button';
       column.append(make('span', headline, 'viz-daycol-head'));
@@ -633,6 +641,14 @@
       column.append(make('span', hazard || 'no hazard wording printed', 'viz-daycol-hazard'));
       const meta = make('span', count + ' model hour(s) returned here', 'viz-daycol-meta');
       column.append(meta);
+      if (day.starts_utc && day.ends_utc) {
+        const opens = istClockText(day.starts_utc);
+        const rawClose = istClockText(day.ends_utc);
+        // A 24-hour IST day ends at the next midnight, which reads as 24:00 rather than 00:00.
+        const closes = (opens === '00:00' && rawClose === '00:00') ? '24:00' : rawClose;
+        if (opens && closes) column.append(make('span', 'IST window ' + opens + '\u2013' + closes + ' (derived from the bulletin date)', 'viz-daycol-window'));
+      }
+      if (day.is_today) column.append(make('span', 'today in IST', 'viz-daycol-today'));
       if (day.quiet) column.append(make('span', 'the product states no warning for this day', 'viz-daycol-quiet'));
       const observedDay = observedKey === day.date_utc && observed && !observedPlaced;
       if (observedDay) { column.append(make('span', (observed.label || 'station') + ' reported here', 'viz-daycol-observed')); observedPlaced = true; }

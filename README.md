@@ -96,7 +96,9 @@ time, page/row locator, evidence id) and disclosures for requested tasks, scope 
 - **Warnings and plans.** The official district warning day resolved to your place against IMD's own
   geometry, with the CAP relay reported separately and never merged into one verdict; an alert brief
   you can keep, a plan-monitoring inbox, and legacy watches that record a changed official state.
-  A no-match is never an all-clear and origin authentication remains unverified. The national product is
+  A no-match is never an all-clear and origin authentication remains unverified. Each of the five days carries
+  its own derived IST date and window (Day 1 is the bulletin date), and every surface says the window is
+  derived rather than published per day. The national product is
   also drawn as a district x day matrix whose cells carry only the colour the source printed, with an unknown
   hazard code flagged on the cell rather than dropped.
 - **The published corpus.** A named national, state, district or marine product answers from the
@@ -161,7 +163,7 @@ The interface states these limits instead of filling them:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 1139 Python tests
+python3 -m pytest tests/ -q                          # 1146 Python tests
 node tests/test_charts.js                            #  2 of 70 component checks
 node tests/test_viz.js                               #  the chart engine: plume, meteogram, gaps and locators
 node tests/test_views.js                             # 18

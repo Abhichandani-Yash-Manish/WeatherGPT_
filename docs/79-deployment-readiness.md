@@ -1,3 +1,6 @@
+> **Cancelled 16 September 2026 at the user request.** No deployment was performed: the readiness analysis
+> below is kept as a record. The local loopback service remains the supported deployment, and no hosted
+> mode was built.
 # Deployment readiness
 
 16 September 2026. The question asked was "let's deploy it". This records what is running now, what the

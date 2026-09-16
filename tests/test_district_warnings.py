@@ -10,6 +10,7 @@ from zoneinfo import ZoneInfo
 
 from weathergpt_data import district_warnings as dw
 from weathergpt_data import warning_tools as wt
+from weathergpt_data import product_api
 from weathergpt_data.adapters import COLOURS, HAZARDS
 
 IST = ZoneInfo('Asia/Kolkata')
@@ -198,6 +199,87 @@ class ResolutionLadderTests(unittest.TestCase):
         self.assertEqual(wt.normalise('Ahmadabad, State of Gujar\u0101t'), 'AHMADABADSTATEOFGUJART')
         self.assertEqual(wt.normalise('AHMADABAD'), 'AHMADABAD')
 
+
+
+class ReadModelDayTests(unittest.TestCase):
+    """The read model must not date the days its own way.
+
+    Measured 15 September 2026: product_api.decode_days stamped the bulletin date on all five rows
+    while district_warnings.day_rows derived five IST days, so every national surface showed one date
+    five times and the place strip showed no date at all. The read model now runs the same contract."""
+
+    def properties(self, **overrides):
+        values = {'District': 'PATNA', 'Date': '2026-09-14', 'UTC': 6,
+                  'Day_1': '4', 'Day_2': '1', 'Day_3': '1', 'Day_4': '1', 'Day_5': '1',
+                  'Day1_Color': 3, 'Day2_Color': 4, 'Day3_Color': 4, 'Day4_Color': 4, 'Day5_Color': 4}
+        values.update(overrides)
+        return values
+
+    def test_five_rows_carry_five_dates_counted_from_the_bulletin_date(self):
+        _, days = product_api.decode_days(self.properties())
+        self.assertEqual([day['date_utc'] for day in days],
+                         ['2026-09-14', '2026-09-15', '2026-09-16', '2026-09-17', '2026-09-18'])
+        self.assertEqual(days[1]['label'], '15 Sep 2026')
+        self.assertEqual([day['date_local'] for day in days], [day['date_utc'] for day in days])
+
+    def test_every_row_carries_a_consecutive_ist_window(self):
+        _, days = product_api.decode_days(self.properties())
+        for day in days:
+            opens = datetime.fromisoformat(day['starts_utc']).astimezone(IST)
+            closes = datetime.fromisoformat(day['ends_utc']).astimezone(IST)
+            self.assertEqual(opens.strftime('%H:%M'), '00:00')
+            self.assertEqual(closes - opens, timedelta(days=1))
+            self.assertEqual(opens.date().isoformat(), day['date_utc'])
+        self.assertEqual(days[1]['starts_utc'], days[0]['ends_utc'])
+
+    def test_the_read_model_and_the_contract_agree_on_every_date(self):
+        issued, days = product_api.decode_days(self.properties())
+        rows, _ = dw.day_rows({'issued_at_utc': issued.isoformat(),
+                               'days': [{'source_day': index, 'hazard_codes': day['hazard_codes'],
+                                         'hazards': day['hazards'], 'colour': day['colour'],
+                                         'colour_code': day['colour_code'], 'source_text': day['source_text']}
+                                        for index, day in enumerate(days, start=1)]})
+        self.assertEqual([row['date_local'] for row in rows], [day['date_utc'] for day in days])
+
+    def test_a_record_without_a_bulletin_date_invents_none(self):
+        for value in ('', 'not a date'):
+            _, days = product_api.decode_days(self.properties(Date=value))
+            self.assertTrue(all(day['date_utc'] is None for day in days), value)
+            self.assertTrue(all(day['starts_utc'] is None and day['ends_utc'] is None for day in days), value)
+            self.assertEqual(days[0]['colour'], 'yellow', 'the colour still arrives without a date')
+            self.assertEqual(days[0]['unknown_hazard_codes'], [])
+
+    def test_colours_hazards_and_quiet_flags_are_unchanged_by_the_derivation(self):
+        _, days = product_api.decode_days(self.properties(Day_2='99', Day2_Color=3))
+        self.assertEqual(days[1]['colour'], 'yellow')
+        self.assertEqual(days[1]['unknown_hazard_codes'], [99])
+        self.assertEqual(days[1]['hazards'], [])
+        self.assertTrue(days[2]['quiet'])
+        self.assertFalse(days[0]['quiet'])
+
+    def test_is_today_marks_one_day_for_a_current_bulletin_and_none_for_an_old_one(self):
+        today = datetime.now(IST).date().isoformat()
+        _, current = product_api.decode_days(self.properties(Date=today))
+        self.assertEqual(sum(1 for day in current if day['is_today']), 1)
+        _, old = product_api.decode_days(self.properties(Date='2020-01-01'))
+        self.assertEqual(sum(1 for day in old if day['is_today']), 0)
+        self.assertTrue(all(day['is_past'] for day in old))
+
+
+class PlaceDayKeyTests(unittest.TestCase):
+    """Both read paths publish the day date under the same key, so no surface can miss it."""
+
+    class Foundation:
+        def warning_snapshot(self, latitude, longitude, refresh=False):
+            return {'records': [record()],
+                    'provenance': {'source_id': 'S63', 'retrieved_at_utc': '2026-09-14T06:05:00+00:00'},
+                    'coverage': {'features_returned': 1, 'districts_listed': 1}}
+
+    def test_the_place_view_carries_date_utc_beside_date_local(self):
+        view = product_api.warnings_place(self.Foundation(), 25.6, 85.1)
+        days = view['data']['days']
+        self.assertEqual([day['date_utc'] for day in days], [day['date_local'] for day in days])
+        self.assertEqual([day['date_utc'] for day in days], ['2026-09-14', '2026-09-15'])
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
