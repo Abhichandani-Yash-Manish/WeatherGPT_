@@ -86,6 +86,25 @@ describe('every request goes through one place', () => {
     expect(offenders, 'these files call fetch directly instead of src/api/client.ts').toEqual([]);
   });
 
+
+  it('renders no literal escape sequence in place of a character', () => {
+    /* JSX text does not interpret backslash escapes, so a component that writes a character that way shows the
+       reader the code. This check renders a card with a receipt, a source list and a working turn, and fails if
+       any of them shows an escape sequence instead of the character it stands for. */
+    const { container } = mount(
+      <AnswerTurn
+        packet={{ ...PACKET, resolved_points: {}, notes: ['A note.'], task_results: [{ id: 't1', request: {}, status: 'answered' }] } as never}
+        register="full"
+        onFollowUp={() => {}}
+      />,
+    );
+    const escapes = (container.innerHTML.match(/\\u[0-9a-fA-F]{4}/g) || []).filter(
+      (value: string) => !value.startsWith('\\u00'),
+    );
+    expect(escapes, 'these escape sequences reached the DOM: ' + escapes.join(', ')).toEqual([]);
+    expect(container.textContent).not.toMatch(/\\u[0-9a-fA-F]{4}/);
+  });
+
   it('sends the session token on every request the client makes', async () => {
     let seen = '';
     server.use(

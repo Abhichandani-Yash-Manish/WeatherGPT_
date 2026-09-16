@@ -150,7 +150,7 @@ export function Composer({ draft, onDraft, onSend, busy, language, languages, on
 
       <div id="composer-hint" className="mt-1 flex flex-wrap items-center justify-between gap-2 text-[11px] quiet">
         <span>
-          Questions and answers stay on this machine. Ctrl/\u2318 + Enter sends; every value keeps its source and
+          Questions and answers stay on this machine. Ctrl/⌘ + Enter sends; every value keeps its source and
           retrieval time.
         </span>
         {voiceNote ? <span role="status">{voiceNote}</span> : null}

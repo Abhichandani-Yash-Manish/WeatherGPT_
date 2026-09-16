@@ -1,7 +1,7 @@
 /* Parity checks for the workspace surface, ported from the vanilla component suite tests/test_workspace_ui.js
-   (6 printed checks; four of those rules are already held by src/modules/workspace.test.tsx and the shell
-   specs: the published/quiet warning states, the station rows with their distances and freshness, one failed
-   read leaving the rest of the surface standing, and the guided question builder).
+   (6 printed checks; the earlier ones are held by src/modules/workspace.test.tsx and the shell specs: the
+   published/quiet warning states, the station rows with their distances and freshness, one failed read
+   leaving the rest of the surface standing, and the guided question builder).
 
    Held here:
    - check 3  a late response from an earlier task cannot overwrite a new task. The vanilla check opened a new
@@ -10,16 +10,16 @@
               point cannot replace the reading for the second. The vanilla check recorded no payload (it was a
               drawer/DOM rule): the two bodies below are minimal now.composed reads shaped like the recorded one
               the existing React workspace spec uses.
-
-   Not portable, reported rather than asserted:
-   - check 4  a timed-out source read explains that server work may continue. The React client states a stopped
-              read ("That request was stopped before the workspace answered it.") and no surface says the server
-              may still be working, so the vanilla sentence has no React equivalent. */
+   - check 4  a timed-out source read explains that server work may continue. The vanilla check had no payload
+              either (it stubbed fetch and shortened the 45 s timer); the React transport is driven here with
+              the real client, MSW and a short timeout, and its own sentence must say the server may still be
+              finishing the read. */
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
+import { ApiError, api } from '../api/client';
 import { server } from '../test/msw';
 import { Surface as WorkspaceSurface } from './WorkspaceSurface';
 
@@ -113,5 +113,25 @@ describe('the workspace surface', () => {
     // The earlier point's answer arrived after the new task was on screen, and it is nowhere on it.
     expect(screen.getByText(/NEW STATION/)).toBeInTheDocument();
     expect(screen.queryByText(/OLD STATION/)).toBeNull();
+  });
+
+  it('explains a timed-out source read as stopped and says the server may still be finishing it', async () => {
+    server.use(
+      http.get('/api/slow-read', async () => {
+        await new Promise(resolve => setTimeout(resolve, 120));
+        return HttpResponse.json({ answered: true });
+      }),
+    );
+
+    const thrown = await api<unknown>('/api/slow-read', {}, { timeoutMs: 20 }).then(
+      () => null,
+      (reason: unknown) => reason,
+    );
+
+    expect(thrown).toBeInstanceOf(ApiError);
+    const error = thrown as ApiError;
+    expect(error.kind).toBe('offline');
+    expect(error.message).toMatch(/stopped before the workspace answered/);
+    expect(error.message).toMatch(/server may still/);
   });
 });

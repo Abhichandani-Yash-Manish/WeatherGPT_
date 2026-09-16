@@ -154,10 +154,10 @@ export function AnswerTurn({ packet, register, onFollowUp, onRefresh, onAnswer }
                 {(packet.task_results || []).map(task => (
                   <li key={task.id} className="text-xs">
                     <p className="font-semibold">
-                      {task.request?.kind || 'task'} \u00b7 {task.status}
+                      {task.request?.kind || 'task'} · {task.status}
                       {task.request?.operation ? ' \u00b7 ' + task.request.operation : ''}
                     </p>
-                    {task.request?.request_quote ? <p className="quiet">\u201c{task.request.request_quote}\u201d</p> : null}
+                    {task.request?.request_quote ? <p className="quiet">“{task.request.request_quote}”</p> : null}
                     {task.answer ? <p className="mt-1">{task.answer}</p> : null}
                   </li>
                 ))}
@@ -169,7 +169,7 @@ export function AnswerTurn({ packet, register, onFollowUp, onRefresh, onAnswer }
               <ul className="space-y-2">
                 {(packet.retrieval_plan || []).map(entry => (
                   <li key={entry.task_id} className="text-xs">
-                    <p className="font-semibold">{entry.kind || 'task'} \u00b7 {entry.status || 'status not recorded'}</p>
+                    <p className="font-semibold">{entry.kind || 'task'} · {entry.status || 'status not recorded'}</p>
                     {(entry.candidates || []).map((candidate, index) => (
                       <p key={(candidate.tool || 'tool') + index} className="quiet">
                         {(candidate.selected ? 'used ' : 'considered ') + (candidate.tool || 'tool') + (candidate.reason ? ' \u2014 ' + candidate.reason : '')}

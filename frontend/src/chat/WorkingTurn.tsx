@@ -37,7 +37,7 @@ export function WorkingTurn({ working, onStop }: { working: Working; onStop: () 
               <span key={stage} className="stage-step" data-state={state} data-stage={stage}>
                 <span className="stage-mark" aria-hidden="true" />
                 {stageLabel(stage)}
-                {state === 'now' ? <span className="quiet"> \u2014 now</span> : null}
+                {state === 'now' ? <span className="quiet"> — now</span> : null}
               </span>
             );
           })}
@@ -64,7 +64,7 @@ export function WorkingTurn({ working, onStop }: { working: Working; onStop: () 
 
         <div className="mt-2 flex flex-wrap items-center gap-3">
           <p className="working-clock" aria-hidden="true">
-            {elapsedWords(elapsed)} since you asked \u00b7 {elapsedWords(progress?.turn_seconds ?? null)} of server work recorded
+            {elapsedWords(elapsed)} since you asked · {elapsedWords(progress?.turn_seconds ?? null)} of server work recorded
           </p>
           {working.stopRequested ? (
             <p className="text-[11px] text-ink-soft">{working.stopDetail || 'Stop requested.'}</p>

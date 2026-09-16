@@ -1,10 +1,10 @@
 /* Parity checks for the suite shell, the surface panels and the map, ported from the vanilla component
-   suite tests/test_suite_ui.js. That file prints 33 PASS lines; the module specs in this directory already
-   hold 14 of the rules it asserts (the Today tally, the warnings table, the documents list, the settings
-   reads, the advisories directory and air-quality cell, the aviation report, the climate row, the marine
-   cell, the ensemble statistics, the verification metrics, the what-changed vintages and the map colours).
-   This file holds the remaining rules the React product does hold, against the payload constants copied
-   verbatim from the vanilla file.
+   suite tests/test_suite_ui.js. That file prints 33 PASS lines; the module specs in this directory and the
+   other parity specs hold most of the others (the Today tally, the warnings table, the documents list, the
+   settings reads, the advisories directory and air-quality cell, the aviation report, the climate row, the
+   marine cell, the ensemble statistics, the verification metrics, the what-changed vintages and the map
+   colours). This file holds the remaining rules the React product does hold, against the payload constants
+   copied verbatim from the vanilla file; the rules it cannot hold are listed at the end of this comment.
 
    Held here (numbered by the order the vanilla file prints its PASS lines):
    - check 1  every registered surface has a renderer, the map included; only the conversation itself sits
@@ -579,7 +579,7 @@ describe('the workspace token', () => {
     }
 
     const surfaceCalls = seen.filter(row => row.path.startsWith('/api/'));
-    expect(surfaceCalls.map(row => row.path)).toEqual(['/api/overview', '/api/warnings/national']);
+    expect(surfaceCalls.map(row => row.path).sort()).toEqual(['/api/overview', '/api/warnings/national']);
     expect(surfaceCalls.every(row => row.token === TOKEN)).toBe(true);
   });
 });

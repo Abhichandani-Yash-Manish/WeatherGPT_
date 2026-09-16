@@ -5,10 +5,10 @@
    - check 2  a transcript is shown for correction, labelled with the recogniser's own confidence as
               recognition only, and confirmable.
 
-   The recorded transcribe payload below is copied verbatim from the vanilla suite. The React composer shows
-   the heard text and the recognition-only label, and takes the text into the question box on request; unlike
-   the vanilla panel it does not print the detected language code or the numeric probability from that payload,
-   so those two assertions of the vanilla check are reported rather than asserted.
+   The recorded transcribe payload below is copied verbatim from the vanilla suite. The React composer
+   prints the heard text, the language the recogniser reports ("Heard as hi-IN") and its own confidence
+   number from that payload, labels the number as recognition only, and takes the text into the question box
+   on request.
 
    The microphone is the one stub this file supplies: jsdom has no MediaRecorder, and the vanilla harness
    likewise drove the panel without a real recording. Everything else (the composer, the transcribe route and
@@ -80,7 +80,9 @@ describe('the heard transcript', () => {
 
     const panel = await screen.findByTestId('transcript-panel');
     expect(screen.getByTestId('transcript-heard')).toHaveTextContent(HEARD.transcript);
-    expect(panel).toHaveTextContent(/Recognition confidence is the recogniser’s own number about its hearing, and is not any answer confidence/);
+    expect(panel).toHaveTextContent('Heard as hi-IN');
+    expect(panel).toHaveTextContent(/recognition confidence 0\.83/);
+    expect(panel).toHaveTextContent(/not any answer confidence/);
     expect(panel).toHaveTextContent(/The transcript is a proposal: correct it before asking/);
     expect(asked).toHaveLength(1);
 

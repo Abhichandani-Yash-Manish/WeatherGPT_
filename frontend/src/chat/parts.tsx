@@ -149,7 +149,10 @@ export function ValidityRuler({ packet }: { packet: AnswerPacket }) {
     <div className="card px-3 py-3">
       <p className="eyebrow">Window covered by the evidence</p>
       <svg viewBox={'0 0 ' + width + ' ' + (y + height + 34)} role="img" className="mt-2 w-full"
-           aria-label={'Requested window ' + istWindow(String(facts[0].start), String(facts[0].end)) + ', covering ' + hours + ' hours across ' + spans.length + ' retrieved samples'}>
+           aria-label={
+             'Requested window ' + istWindow(String(facts[0].start), String(facts[0].end)) + ', covering ' + hours + ' hours across ' +
+             spans.length + ' retrieved sample' + (spans.length === 1 ? '' : 's')
+           }>
         <defs>
           <pattern id="ruler-hatch" width="6" height="6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
             <line x1="0" y1="0" x2="0" y2="6" stroke="var(--line-strong)" strokeWidth="1" />
@@ -237,9 +240,9 @@ export function EvidenceReceipt({ packet, fact }: { packet: AnswerPacket; fact: 
       </div>
       <p className="receipt-chain mt-2 text-ink-soft">
         <span className="evidence">{fact.source_id || 'source not stated'}</span>
-        <span aria-hidden="true">\u2192</span>
+        <span aria-hidden="true">→</span>
         <span>retrieved {citation?.retrieved_at_utc ? istStamp(citation.retrieved_at_utc) : 'time not recorded'}</span>
-        <span aria-hidden="true">\u2192</span>
+        <span aria-hidden="true">→</span>
         <span>{fact.method || kindOf(fact) || 'typed contract'}</span>
       </p>
       <p className="mt-2 text-[11px] quiet">
@@ -260,19 +263,19 @@ export function SourceRows({ sources, citations }: { sources?: SourceEntry[]; ci
         {rows.map(source => (
           <li key={source.source_id + (source.url || '')} className="text-xs">
             <span className="evidence font-semibold">{source.source_id}</span>
-            {source.product ? <span className="soft"> \u00b7 {source.product}</span> : null}
-            {source.retrieved_at_utc ? <span className="quiet"> \u00b7 retrieved {istStamp(source.retrieved_at_utc)}</span> : null}
-            {source.sha256_prefix ? <span className="quiet"> \u00b7 sha256 {source.sha256_prefix}\u2026</span> : null}
-            {source.integration_status ? <span className="quiet"> \u00b7 {source.integration_status}</span> : null}
+            {source.product ? <span className="soft"> · {source.product}</span> : null}
+            {source.retrieved_at_utc ? <span className="quiet"> · retrieved {istStamp(source.retrieved_at_utc)}</span> : null}
+            {source.sha256_prefix ? <span className="quiet"> · sha256 {source.sha256_prefix}…</span> : null}
+            {source.integration_status ? <span className="quiet"> · {source.integration_status}</span> : null}
             {source.url ? <a className="ml-1 underline" href={source.url} rel="noreferrer noopener" target="_blank">source address</a> : null}
           </li>
         ))}
         {(citations || []).map(citation => (
           <li key={citation.id} className="text-xs">
             <span className="evidence font-semibold">{citation.source_id}</span>
-            {citation.product ? <span className="soft"> \u00b7 {citation.product}</span> : null}
-            {citation.provider ? <span className="quiet"> \u00b7 {citation.provider}</span> : null}
-            {citation.retrieved_at_utc ? <span className="quiet"> \u00b7 retrieved {istStamp(citation.retrieved_at_utc)}</span> : null}
+            {citation.product ? <span className="soft"> · {citation.product}</span> : null}
+            {citation.provider ? <span className="quiet"> · {citation.provider}</span> : null}
+            {citation.retrieved_at_utc ? <span className="quiet"> · retrieved {istStamp(citation.retrieved_at_utc)}</span> : null}
           </li>
         ))}
       </ul>
