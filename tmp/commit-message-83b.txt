@@ -1,0 +1,10 @@
+Browser check for the conversational card, and the record of the leak check's shape
+
+A real Chrome run over CDP on the same build asked "hello" through the live page and the live provider chain:
+the card is titled Conversation, tagged "Conversational reply - No source read - 16 Sept 2026, 22:44 IST",
+answers "Hello! How can I help you with weather information today?", and draws zero fact rows, zero receipts
+and no headline number.
+
+docs/83 also records the browser run and restates what the leak check is: a bounded heuristic over one reply,
+where a number written as a word passes. What a reader can rely on is the structure - a conversational turn
+acquires nothing, holds no fact, cites nothing, is labelled, and never becomes retrievable evidence.

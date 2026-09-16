@@ -1,0 +1,21 @@
+{
+  "batch": "docs/83-intelligent-chat-overhaul.md",
+  "captured_at_utc": "2026-09-16T17:15:00Z",
+  "surface": "Chrome 153 headless over CDP, real loopback workspace on 127.0.0.1:8797, viewport 1280x900, real provider chain",
+  "runner": "research/reviews/chat-overhaul-20260916/browser-check.sh",
+  "check": "a conversational turn is answered and shown as a conversation",
+  "measured": {
+    "question": "hello",
+    "turn_title": "Conversation",
+    "status_line": "Conversational replyNo source read16 Sept 2026, 22:44 IST",
+    "answer": "Hello! How can I help you with weather information today?",
+    "fact_rows": 0,
+    "receipts": 0,
+    "headline_numbers": 0
+  },
+  "screenshot": "browser-conversation.png",
+  "limits": [
+    "One browser, one viewport, one machine, one run.",
+    "The card carries no fact, no receipt and no headline number, which is the structural claim; the reply text itself is model prose and is labelled as such."
+  ]
+}

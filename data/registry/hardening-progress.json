@@ -2554,6 +2554,7 @@
    "tests/test_views.js: a conversational reply is shown as a conversation, tagged No source read, and drawn with no receipt or validity window"
   ],
   "live_check": "research/reviews/chat-overhaul-20260916/journeys.json",
+  "browser_check": "research/reviews/chat-overhaul-20260916/browser-conversation.json",
   "open": [
    "Stage A3: a model-written narrative for evidence answers behind the existing validation, with the tool-owned fact renderer as the floor (today a turn with facts is rendered deterministically)",
    "Stage A4: language breadth through the language gate, and dialogue.SCRIPTS widening with each language made writable",

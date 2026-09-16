@@ -157,7 +157,11 @@ Ollama second; both available), recorded in research/reviews/chat-overhaul-20260
 | "Will it rain in Surat tomorrow morning?" | openrouter | 19.5 | answered; 1 fact, 0.4 mm, GFS, three quick replies |
 | "thanks!" (same conversation) | openrouter | 19.5 | conversation; continuity kept |
 
-No turn needed a repair, and the leak check passed on every conversational reply. The weather turn kept the
+No turn needed a repair, and the leak check passed on every conversational reply. A real browser run on the
+same build (Chrome 153 over CDP, 1280x900, recorded in research/reviews/chat-overhaul-20260916/browser-conversation.json)
+asked "hello" and got the card titled **Conversation**, tagged *Conversational reply · No source read · 16 Sept
+2026, 22:44 IST*, with the answer "Hello! How can I help you with weather information today?", zero fact rows,
+zero receipts and no headline number. The weather turn kept the
 evidence path exactly as it was: the fact is tool-owned, the source is named, and the renderer is
 typed_task_renderers.
 
