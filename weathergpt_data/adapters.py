@@ -365,6 +365,95 @@ def air_quality(data,meta,variables,request_point,expected_dates=None):
     return result
 
 
+# Forecast verification sources. The forecast side is the Previous Runs API, which returns
+# a variable at fixed lead-time offsets; the reference side is ERA5 hourly reanalysis. A
+# metric computed from these is a measurement against reanalysis, not an observation-based
+# skill claim. The service accepts a lead beyond day 7 and answers it with null, so the lead
+# set is capped here and an all-null lead is carried as unmeasured rather than as zero.
+PREVIOUS_RUNS_MODELS=('gfs_seamless','ecmwf_ifs025')
+PREVIOUS_RUN_LEADS=(1,2,3,4,5,6,7)
+PREVIOUS_RUNS={'temperature_2m':('°C','instant',None,None),
+               'precipitation':('mm','preceding_hour_sum',0,None)}
+ERA5_HOURLY_MODEL='ERA5 hourly via Open-Meteo'
+ERA5_HOURLY={'temperature_2m':('°C','instant',None,None),
+             'precipitation':('mm','preceding_hour_sum',0,None)}
+
+
+def _hourly_axis(data,expected_dates,label):
+    if not isinstance(data,dict):raise SourceError('Expected one-location '+label+' object')
+    if type(data.get('utc_offset_seconds')) not in {int,float} or data['utc_offset_seconds']!=0:raise SourceError(label+' requires numeric UTC offset zero')
+    grid=grid_identity(data)
+    block=data.get('hourly');units=data.get('hourly_units')
+    if not isinstance(block,dict) or not isinstance(units,dict):raise SourceError('Missing hourly schema')
+    times=block.get('time')
+    if not isinstance(times,list) or not times:raise SourceError('Missing time axis')
+    if any(not isinstance(t,int) or isinstance(t,bool) for t in times):raise SourceError('Expected Unix-second time axis')
+    if any(b-a!=3600 for a,b in zip(times,times[1:])):raise SourceError('Non-hourly, duplicated or unordered time axis')
+    if expected_dates:
+        a,b=expected_dates
+        start=int(datetime.combine(a,datetime.min.time(),timezone.utc).timestamp())
+        end=int(datetime.combine(b+timedelta(days=1),datetime.min.time(),timezone.utc).timestamp())
+        if len(times)!=(end-start)//3600 or times[0]!=start or times[-1]!=end-3600:raise SourceError('Incomplete or mismatched requested '+label+' interval')
+    return grid,block,units,times
+
+
+def _hourly_records(meta,variable,name,unit,aggregation,values,times,minimum,maximum,locator,extra=None):
+    if not isinstance(values,list) or len(values)!=len(times):raise SourceError('Misaligned field '+name)
+    records=[]
+    for i,(t,value) in enumerate(zip(times,values)):
+        v=numeric(value,minimum,maximum);valid=datetime.fromtimestamp(t,timezone.utc)
+        record={'record_id':digest(('%s|%s|%s'%(meta['sha256'],name,t)).encode()),
+                'parameter':name,'variable':variable,'value':v,'unit':unit,'valid_time_utc':stamp(valid),
+                'interval_start_utc':stamp(valid-timedelta(hours=1)) if aggregation.startswith('preceding_hour_') else None,
+                'interval_end_utc':stamp(valid) if aggregation.startswith('preceding_hour_') else None,
+                'aggregation':aggregation,'model':extra.get('model') if extra else None,
+                'quality_flags':['source_value_missing'] if v is None else [],
+                'source_locator':locator%i}
+        if extra:record.update({k:v for k,v in extra.items() if k!='model'})
+        records.append(record)
+    return records
+
+
+def previous_runs(data,meta,variables,model,leads,request_point,expected_dates=None):
+    """Normalise a Previous Runs response into one series per variable and lead time."""
+    if model not in PREVIOUS_RUNS_MODELS:raise SourceError('Unsupported previous-runs model: '+str(model))
+    if not leads or any(lead not in PREVIOUS_RUN_LEADS for lead in leads):raise SourceError('Valid lead times are 1 to 7 days')
+    grid,block,units,times=_hourly_axis(data,expected_dates,'previous-runs')
+    records=[]
+    for variable,(unit,aggregation,minimum,maximum) in variables.items():
+        for lead in leads:
+            name='%s_previous_day%d'%(variable,lead)
+            if name not in block:raise SourceError('Missing lead column '+name)
+            if units.get(name)!=unit:raise SourceError('Unexpected unit for '+name+': '+str(units.get(name)))
+            records+=_hourly_records(meta,variable,name,unit,aggregation,block.get(name),times,minimum,maximum,
+                                     '$.hourly.'+name+'[%d]',{'model':model,'lead_days':lead})
+    result=envelope('previous_runs_forecast',meta['source_id'],records,meta,
+                    ['Archived model runs at fixed lead-time offsets; the offset is relative to valid time and the model run identity is not exposed.',
+                     'Modelled grid values, not observations.',
+                     'A lead with no archived value is carried as missing, never as zero.'],
+                    {'requested_point':request_point,'returned_grid':grid,'time_basis':'UTC','model':model,
+                     'leads':list(leads),'variables':list(variables)})
+    numeric_quality(result,expected_dates is not None)
+    if expected_dates is None and meta.get('checked_at_utc') and datetime.fromtimestamp(times[-1],timezone.utc)<=parsed(meta['checked_at_utc']):result['status']='stale'
+    return result
+
+
+def era5_hourly(data,meta,variables,request_point,expected_dates=None):
+    """Normalise an ERA5 hourly response. This is the verification reference, not an observation."""
+    grid,block,units,times=_hourly_axis(data,expected_dates,'ERA5 hourly')
+    records=[]
+    for variable,(unit,aggregation,minimum,maximum) in variables.items():
+        if variable not in block:raise SourceError('Missing requested variable '+variable)
+        if units.get(variable)!=unit:raise SourceError('Unexpected unit for '+variable+': '+str(units.get(variable)))
+        records+=_hourly_records(meta,variable,variable,unit,aggregation,block.get(variable),times,minimum,maximum,
+                                 '$.hourly.'+variable+'[%d]',{'model':ERA5_HOURLY_MODEL})
+    result=envelope('reanalysis_hourly',meta['source_id'],records,meta,
+                    ['ERA5 hourly reanalysis at a grid cell; it is a modelled analysis, not a station observation.',
+                     'Recent days are published with a delay and are excluded by the caller.'],
+                    {'requested_point':request_point,'returned_grid':grid,'time_basis':'UTC'})
+    return numeric_quality(result,expected_dates is not None)
+
+
 def aviation(data,meta,kind,requested_ids,now):
     if not isinstance(data,list):raise SourceError('Expected aviation report array')
     records=[]
