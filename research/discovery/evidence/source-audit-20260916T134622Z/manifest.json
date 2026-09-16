@@ -1,0 +1,26 @@
+{
+ "generated_at_utc": "2026-09-16T13:46:22+00:00",
+ "offline": false,
+ "probes": [
+  {
+   "attempts": 1,
+   "checked_at_utc": "2026-09-16T13:46:22+00:00",
+   "content_length": null,
+   "content_range": null,
+   "content_type": "application/json",
+   "elapsed_ms": 650,
+   "error": null,
+   "final_url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=23.02579&longitude=72.58727&hourly=temperature_2m_previous_day1&past_days=2&models=gfs_seamless",
+   "http_status": 200,
+   "method": "GET",
+   "request_id": "0630f4128cc3",
+   "sample_bytes": 5477,
+   "sample_sha256": "84ce4805bb8ff88bdfcde7054debe9d2b8b83b311ba2d95cd2671b1b4e1c7499",
+   "text": true,
+   "url": "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=23.02579&longitude=72.58727&hourly=temperature_2m_previous_day1&past_days=2&models=gfs_seamless"
+  }
+ ],
+ "reused_measurements_from": null,
+ "sample_cap_bytes": 65536,
+ "user_agent": "WeatherGPT-local-prototype/1.0 (source activation audit; local prototype use)"
+}

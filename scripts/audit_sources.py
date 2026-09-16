@@ -314,6 +314,11 @@ C = {
                 limits=['CAMS modelled air quality at a coarse grid cell; not a monitor measurement.',
                         'An air-quality index is the source\'s own index, not a health assessment or a warning.'],
                 action='Keep as the air-quality supply; connect a ground monitor and add budgets before counting it as a governed observation.'),
+    'S70': dict(status='active', kind='point', connected=True,
+                limits=['Archived model runs at fixed lead-time offsets; the upstream model cycle is not exposed.',
+                        'The ERA5 reference is a modelled reanalysis, not a station observation.',
+                        'The error statistics describe one model, variable and window and are not a skill score or a ranking.'],
+                action='Keep as the archived-run supply for verification; connect matched observations and obtain run identity before any skill, calibration or representativeness claim.'),
     'S68': dict(status='active', kind='point', connected=True,
                 limits=['One ensemble model at a grid cell; the spread and percentiles are properties of the '
                         'returned members, not a probability, confidence or skill score.',
