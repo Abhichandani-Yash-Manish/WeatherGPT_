@@ -2,8 +2,11 @@
 import unittest
 from datetime import date, datetime, timezone
 
+from decimal import Decimal
+
 from weathergpt_data.adapters import ERA5_HOURLY, PREVIOUS_RUNS, era5_hourly, previous_runs
 from weathergpt_data.transport import SourceError
+from weathergpt_data.verification import MIN_SAMPLE_HOURS, error_statistics, summarise
 
 UTC = timezone.utc
 META = {'source_id': 'S70', 'sha256': 'e' * 64}
@@ -98,6 +101,54 @@ class Era5HourlyTests(unittest.TestCase):
                    'hourly_units': {'temperature_2m': 'K'}}
         with self.assertRaises(SourceError):
             era5_hourly(payload, META, {'temperature_2m': ERA5_HOURLY['temperature_2m']}, POINT)
+
+
+class MetricTests(unittest.TestCase):
+    def test_closed_form_statistics(self):
+        # forecast = reference + 1 for 24 hours: every error is exactly 1 and the series rise together.
+        pairs = [(Decimal(index + 1), Decimal(index)) for index in range(MIN_SAMPLE_HOURS)]
+        stats = error_statistics(pairs)
+        self.assertEqual(stats['status'], 'measured')
+        self.assertEqual(stats['n'], MIN_SAMPLE_HOURS)
+        self.assertEqual(str(stats['bias']), '1.000')
+        self.assertEqual(str(stats['mae']), '1.000')
+        self.assertEqual(str(stats['rmse']), '1.000')
+        self.assertEqual(str(stats['correlation']), '1.000')
+
+    def test_too_few_hours_is_unmeasured(self):
+        stats = error_statistics([(Decimal(1), Decimal(0))] * 4)
+        self.assertEqual(stats['status'], 'unmeasured')
+        self.assertNotIn('bias', stats)
+
+    def test_correlation_is_undefined_without_variation(self):
+        pairs = [(Decimal(index), Decimal(5)) for index in range(MIN_SAMPLE_HOURS)]
+        stats = error_statistics(pairs)
+        self.assertEqual(stats['status'], 'measured')
+        self.assertIsNone(stats['correlation'])
+        self.assertIn('no variation', stats['correlation_note'])
+
+    def test_summarise_matches_leads_and_counts_unmatched_hours(self):
+        length = MIN_SAMPLE_HOURS + 1
+        times = hours(length)
+        forecast_values = [float(index + 1) for index in range(length)]
+        forecast_values[0] = None
+        forecast = previous_runs(
+            body({'temperature_2m_previous_day1': forecast_values}, times=times), META,
+            {'temperature_2m': PREVIOUS_RUNS['temperature_2m']}, 'gfs_seamless', [1], POINT)
+        reference = era5_hourly(
+            {'latitude': 23.0, 'longitude': 72.5, 'utc_offset_seconds': 0,
+             'hourly': {'time': times, 'temperature_2m': [float(index) for index in range(length)]},
+             'hourly_units': {'temperature_2m': '°C'}},
+            {'source_id': 'S22', 'sha256': 'r' * 64}, {'temperature_2m': ERA5_HOURLY['temperature_2m']}, POINT)
+        result = summarise(forecast, reference)
+        lead = result['variables']['temperature_2m'][0]
+        self.assertEqual(lead['lead_days'], 1)
+        self.assertEqual(lead['n'], MIN_SAMPLE_HOURS)
+        self.assertEqual(lead['unmatched_hours'], 1)
+        self.assertEqual(str(lead['bias']), '1.000')
+        self.assertEqual(str(lead['mae']), '1.000')
+        self.assertEqual(result['forecast']['model'], 'gfs_seamless')
+        self.assertEqual(result['reference']['source_id'], 'S22')
 
 
 if __name__ == '__main__':
