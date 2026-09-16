@@ -170,6 +170,29 @@ keyboard shortcuts keep pointing at the view their hint names.
 - live HTTP evidence for `/api/chat/preview` and the front-door route;
 - the standing gates: `scripts/verify_all.py`, the frontend audit, and the status-drift check.
 
+## Browser acceptance (16 September)
+
+The three slices were then run in a real browser against the real loopback workspace: Chrome 153 headless over
+CDP, viewport 1280×900, the page instrumented only to **delay** the answer request inside the page so the wait
+could be observed. Record: `research/reviews/chatbot-20260916/browser-acceptance.json`, with four screenshots
+and the runner that produced them.
+
+- a fresh visit opened **Ask** with no route (`#` empty); the rail's first item is Ask, then Workspace;
+- the register switch was served with three options, defaulted to *conversational*, applied *full evidence* to
+  the thread and remembered it in local storage;
+- during the turn the placeholder showed the **first reading** — *"◇ place: Surat · window: 17 Sep 2026
+  09:30-12:30 IST · asking about: rain · will read: a point forecast"* — with its provisional note, and the page
+  requested `/api/chat/preview` before `/api/chat`;
+- the answer card arrived from a **rules-planned** live turn (*"Surat · 17 Sep, 09:30–17 Sep, 12:30 IST:
+  Forecast precipitation: 0.4 mm. Source: GFS forecast…"*) with three quick replies rendered as chips;
+- *brief* hid the receipt and the disclosures while the answer stayed on screen, and *conversational* brought
+  the receipt back.
+
+What that acceptance does **not** cover is stated in the record: one browser, one viewport, one machine; a
+model-planned turn was not exercised because the model planner was not reachable; and Chrome needed
+`--no-sandbox` with a workspace-writable HOME to start in this sandbox, which is an environment workaround
+rather than a product change.
+
 ## What this batch does not establish
 
 It does not claim the engine understands every phrasing, does not add confidence or risk scores, does not make

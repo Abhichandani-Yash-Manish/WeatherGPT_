@@ -1,0 +1,21 @@
+Browser acceptance for the chat batch: the front door, the first reading and the register
+
+Run in Chrome 153 headless over CDP against the real loopback workspace at 1280x900. The only
+intervention is inside the page: the answer request is delayed by 5 s in the page's own fetch so the
+working placeholder can be observed. No server behaviour was changed.
+
+Measured (research/reviews/chatbot-20260916/browser-acceptance.json, four screenshots and the runner):
+- a fresh visit opened Ask with no route, and the rail's first item is Ask;
+- the register switch was served with three options, defaulted to conversational, applied full evidence
+  to the thread, and remembered it in local storage;
+- during the turn the placeholder rendered the first reading - "place: Surat - window: 17 Sep 2026
+  09:30-12:30 IST - asking about: rain - will read: a point forecast" - with its provisional note, and the
+  page requested /api/chat/preview before /api/chat;
+- a live rules-planned turn rendered its card: forecast precipitation 0.4 mm for Surat, source GFS
+  forecast, with three quick replies as chips;
+- brief hid the receipt and the disclosures while the answer stayed on screen, and conversational
+  brought the receipt back.
+
+The record states what this does not cover: one browser, one viewport, one machine, no model-planned
+turn (the model planner was unreachable), and Chrome needed --no-sandbox with a workspace-writable HOME
+to start in this sandbox - an environment workaround, not a product change.

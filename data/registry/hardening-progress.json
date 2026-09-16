@@ -2551,6 +2551,15 @@
    "tests/test_suite_ui.js: a fresh visit opens Ask and an unknown route falls back to it"
   ],
   "live_loopback_check": "research/reviews/chatbot-20260916/live-http-checks.json",
+  "browser_check": "research/reviews/chatbot-20260916/browser-acceptance.json",
+  "browser_measured": [
+   "Chrome 153 headless over CDP, viewport 1280x900, real loopback workspace: a fresh visit opened Ask with no route and the rail first item is Ask",
+   "the register switch was served with three options, defaulted to conversational, applied full evidence to the thread and remembered it in local storage",
+   "the placeholder showed the first reading (place, window, measures, products) with its provisional note while the answer request was delayed in the page, and the page asked /api/chat/preview before /api/chat",
+   "the answer card rendered a live rules-planned fact: Surat, 17 Sep 09:30-12:30 IST, forecast precipitation 0.4 mm, source GFS forecast, with three quick replies",
+   "brief hid the receipt and the disclosures with the answer still on screen; conversational brought the receipt back",
+   "not covered: one browser, one viewport, one machine, no model-planned turn (the model planner was unreachable), and Chrome needed --no-sandbox with a workspace-writable HOME in this sandbox"
+  ],
   "open": [
    "the preview states the reading, not held values: no read model exposes a held value with the provenance and validity that printing one would require",
    "the four C2 continuity journeys (bare continuation, referent, correction, clarification answered in a second message) are not measured end-to-end: they need a reachable model planner, which this machine did not have",

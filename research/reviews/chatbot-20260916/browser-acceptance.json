@@ -1,0 +1,73 @@
+{
+  "batch": "docs/82-chatbot-experience.md",
+  "captured_at_utc": "2026-09-16T16:36:00Z",
+  "surface": "Chrome 153 headless (CDP 9222), real loopback workspace on 127.0.0.1:8799, viewport 1280x900",
+  "runner": "research/reviews/chatbot-20260916/browser-check.sh",
+  "intervention": "the page own fetch was wrapped in the page to delay /api/chat by 5 s so the working placeholder could be observed; no server behaviour was changed",
+  "checks": [
+    {
+      "check": "a_fresh_visit_opens_ask",
+      "landing_surface": "assistant",
+      "location_hash": "",
+      "rail_first_item": "✦ Ask⌥1",
+      "rail_first_item_top_px": 74,
+      "rail_workspace_item_top_px": 119
+    },
+    {
+      "check": "the_register_switch_is_served_and_remembers_the_choice",
+      "options": 3,
+      "default_thread_register": "conversational",
+      "after_clicking_full": "full",
+      "stored_value": "full"
+    },
+    {
+      "check": "the_first_reading_is_rendered_while_the_turn_works",
+      "working_title": "Working on it",
+      "working_reading": "◇ place: Surat · window: 17 Sep 2026 09:30-12:30 IST · asking about: rain · will read: a point forecast",
+      "reading_note": "A first reading by the deterministic rules planner, before any retrieval and before any model call. The model planner may revise it, and the values follow with the answer. Nothing in this reading is evidence."
+    },
+    {
+      "check": "the_page_asks_for_the_reading_before_the_answer",
+      "requests": [
+        "/api/chat/progress",
+        "/api/chat/preview",
+        "/api/chat",
+        "/api/chat/progress",
+        "/api/chat/progress",
+        "/api/chat/progress",
+        "/api/chat/progress",
+        "/api/chat/progress",
+        "/api/conversations"
+      ]
+    },
+    {
+      "check": "a_live_rules_planned_answer_is_rendered_with_its_source",
+      "answer": "Surat · 17 Sep, 09:30–17 Sep, 12:30 IST: Forecast precipitation: 0.4 mm. Source: GFS forecast; conditions can change.",
+      "status_line": "Evidence retrieved16 Sept 2026, 22:06 IST",
+      "quick_replies": [
+        "Chance of rain the day after tomorrow?",
+        "How much rain the day after tomorrow?",
+        "Any warnings for Surat?"
+      ]
+    },
+    {
+      "check": "the_register_changes_what_is_shown_not_what_is_said",
+      "brief_receipt_display": "none",
+      "brief_disclosure_display": "none",
+      "brief_answer_present": true,
+      "conversational_receipt_display": "block"
+    }
+  ],
+  "screenshots": [
+    "browser-01-landing.png",
+    "browser-02-first-reading.png",
+    "browser-03-answer.png",
+    "browser-04-brief.png"
+  ],
+  "limits": [
+    "One browser, one machine, one viewport (1280x900); this is not multi-browser, mobile or accessibility acceptance.",
+    "The model planner was not reachable while this ran, so a model-planned turn (a bare continuation or a correction) was not exercised in the browser.",
+    "The answer request was delayed inside the page so the placeholder could be observed; the reading line itself is produced by the server in 0.1 s.",
+    "Chrome needed --no-sandbox and a workspace-writable HOME to start in this sandbox; that is an environment workaround, not a product change."
+  ]
+}
