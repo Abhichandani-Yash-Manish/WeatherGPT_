@@ -214,5 +214,65 @@ class FoundationVerificationTests(unittest.TestCase):
                 23.0, 72.5, '2026-09-12', '2026-09-12', variables=['temperature_2m'], leads=[1])
 
 
+class ProductViewTests(unittest.TestCase):
+    class Response:
+        status = 200
+        headers = {'Content-Type': 'application/json'}
+
+        def __init__(self, body):
+            self.body = body
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+        def read(self, size):
+            return self.body[:size]
+
+    def foundation_with(self, forecast_body, reference_body):
+        import json
+        import tempfile
+        from datetime import datetime as dt
+        from weathergpt_data.foundation import Foundation
+        from weathergpt_data.transport import Store
+
+        def opener(request, *args, **kwargs):
+            url = request.full_url if hasattr(request, 'full_url') else str(request)
+            body = reference_body if 'archive-api' in url else forecast_body
+            return self.Response(json.dumps(body).encode())
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        store = Store(directory.name, opener=opener, clock=lambda: dt(2026, 9, 15, tzinfo=UTC))
+        return Foundation(store)
+
+    def bodies(self):
+        length = 48
+        times = hours(length, start=datetime(2026, 8, 1, tzinfo=UTC))
+        forecast = body({'temperature_2m_previous_day1': [float(index) for index in range(length)]}, times=times)
+        reference = {'latitude': 23.0, 'longitude': 72.5, 'utc_offset_seconds': 0,
+                     'hourly': {'time': times, 'temperature_2m': [float(index) for index in range(length)]},
+                     'hourly_units': {'temperature_2m': '°C'}}
+        return forecast, reference
+
+    def test_route_returns_the_metric_series(self):
+        from weathergpt_data import product_api
+        forecast, reference = self.bodies()
+        view = product_api.dispatch(self.foundation_with(forecast, reference), '/api/verification',
+                                    {'lat': ['23.0'], 'lon': ['72.5'], 'start': ['2026-08-01'],
+                                     'end': ['2026-08-02'], 'model': ['gfs_seamless'],
+                                     'variable': ['temperature_2m'], 'leads': ['1']})
+        self.assertEqual(view['view'], 'verification.skill')
+        self.assertEqual(view['status'], 'ok')
+        self.assertIn('temperature_2m', view['data']['variables'])
+        self.assertEqual({source['source_id'] for source in view['sources']}, {'S70', 'S22'})
+
+    def test_route_requires_a_window(self):
+        from weathergpt_data import product_api
+        with self.assertRaises(SourceError):
+            product_api.dispatch(self.foundation_with({}, {}), '/api/verification', {'lat': ['23'], 'lon': ['72']})
+
+
 if __name__ == '__main__':
     unittest.main()
