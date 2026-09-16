@@ -1,0 +1,15 @@
+Document the batch, read progress against the PS, and overhaul the README with real pictures
+
+- docs/84-ps-progress-and-pictures.md reads every SIH26068 feature and expectation against this repository: state
+  in the registry vocabulary, evidence in the repo, and the explicit gap for each row, plus what a judge can be
+  shown and what cannot be claimed. It supersedes the state in docs/72 (which stays as its dated snapshot).
+- eight screenshots of the real workspace at 1440x900 in headless Chrome over CDP, taken against a throwaway copy
+  of the ingestion store so no reader conversation appears, with captions and provenance in docs/images.
+- the README is reorganised around the conversation: a picture gallery, the measured journeys (hello 0.93 s,
+  capability 1.11 s, 17x3 0.89 s, नमस्ते 1.14 s, weather 5.9 s with a written answer, thanks 0.73 s), the PS
+  progress table, the current provider policy (deepseek_first with the free ids behind it), refreshed counts and
+  the newest batch records.
+- .gitignore now covers runtime chat stores and the screenshot serving copy, so session state cannot be
+  committed by accident.
+
+1223 Python tests, 10 component suites (109 printed checks), 27 verification steps, none failing.

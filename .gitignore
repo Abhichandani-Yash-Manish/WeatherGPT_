@@ -6,6 +6,9 @@ data/runtime/
 tmp/chrome-profile/
 # Throwaway directories the test suite creates under tmp/ (mkdtemp debris).
 tmp/tmp*/
+# Runtime chat stores and the screenshot serving copy: session state, not curated evidence.
+tmp/*.sqlite
+tmp/screenshots/
 
 __pycache__/
 *.pyc

@@ -1,7 +1,7 @@
 {
  "schema_version": "hardening-progress-v1",
  "review": "research/reviews/national-readiness-20260912/review.md",
- "updated_at_utc": "2026-09-16T20:40:00+00:00",
+ "updated_at_utc": "2026-09-16T21:30:00+00:00",
  "operational_ready": false,
  "scope": "Nationwide and specialist SIH26068 coverage; source inventory is not operational acceptance.",
  "findings": [
@@ -2521,6 +2521,23 @@
   "verification_failed": 0,
   "open": [
    "the national table and the place view can serve different bulletin editions from their own caches; the fix made this visible and it needs its own batch"
+  ],
+  "hosting_performed": false,
+  "same_host_only": true
+ },
+ "documentation_and_ps_review_batch": {
+  "report": "docs/84-ps-progress-and-pictures.md",
+  "evidence_directory": "docs/images",
+  "scope": "document the batch, read progress against the SIH26068 requirements, and overhaul the README with real screenshots",
+  "delivered": [
+   "docs/84 reads every PS feature and expectation against the repository with its evidence and its explicit gaps, in the registry vocabulary, and states what a judge can be shown and what cannot be claimed",
+   "eight screenshots of the real workspace at 1440x900 in headless Chrome against a throwaway copy of the store, with captions and provenance, in docs/images",
+   "the README is reorganised around the conversation: a picture gallery, the measured journeys, the PS progress table, the current provider policy, refreshed counts and the newest batch records"
+  ],
+  "tests_added": [],
+  "open": [
+   "screenshots are display evidence, not acceptance: one render of one page on one machine on one day",
+   "the PS assessment carries the same open items as the batches it summarises: dissemination to a device, mobile, voice and native-speaker acceptance, nationwide corpus acceptance and service-scale operation"
   ],
   "hosting_performed": false,
   "same_host_only": true

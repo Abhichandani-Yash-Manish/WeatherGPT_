@@ -1,25 +1,61 @@
 # WeatherGPT — SIH26068
 
 A local, evidence-first conversational weather workspace for India. Ask about a place and a time in
-your own words and the answer keeps its **entity, window, unit and source attached to every value**,
-backed by governed adapters, published records and — when you configure one — a model.
+your own words — the model decides whether to retrieve and which tools to use, and the answer keeps its
+**entity, window, unit and source attached to every value**. A greeting is answered as a conversation, with
+no source read and no fact invented.
 
-![The Today surface: the Now band and the five published days](research/reviews/frontend-overhaul-20260915/screens/overview-1440-light.png)
+![An evidence answer: the written sentence, the tool-owned fact, the validity ruler and the receipt naming source S21](docs/images/03-answer-written.png)
 
 **Operational acceptance is not achieved.** This is a working prototype whose limits are part of the
 interface: it says what it did not read, which state is unknown, and when a value is model output,
 published wording, an observation or an official warning. The requirement-by-requirement verdict is
-[the integrated PS assessment](docs/72-integrated-status-and-ps-review.md); the newest batch is
-[Forecast verification](docs/80-forecast-verification.md).
+[the PS progress assessment](docs/84-ps-progress-and-pictures.md); the newest batch is
+[the intelligent-chat overhaul](docs/83-intelligent-chat-overhaul.md).
+
+## What it looks like
+
+|  |  |
+| --- | --- |
+| ![Ask is the landing surface](docs/images/01-ask-landing.png) | ![The first reading while the answer is retrieved](docs/images/02-first-reading.png) |
+| **Ask is the front door.** The conversation is the landing surface; every guided tool stays in the rail. | **No dead air.** The engine's own first reading — place, window, measures, products — appears while the turn works, labelled as a reading and not evidence. |
+| ![A conversational reply card](docs/images/04-conversation.png) | ![A Hindi conversation](docs/images/05-multilingual-answer.png) |
+| **A conversation is an answer too.** Greetings, capability and reasoning questions are answered with no tool run, tagged *Conversational reply · No source read*. | **Multilingual.** The reply is written in the question's language, and an evidence answer is rendered behind a gate that withholds values from translation. |
+| ![The provider state on the settings surface](docs/images/06-settings-providers.png) | ![The Warnings surface](docs/images/07-warnings.png) |
+| **Who answers, in what order, and what failed last.** The settings surface states the provider policy, the planner, the first look and each provider's availability. | **The guided surfaces stay.** Warnings, map, forecast, observations, advisories, documents, briefcase and more remain reachable beside the conversation. |
+
+All eight pictures (including `08-today.png`) are the real workspace on loopback, captured 16 September 2026 at
+1440×900 in headless Chrome against a throwaway copy of the store, so no reader conversation appears in them:
+[captions and provenance](docs/84-ps-progress-and-pictures.md#the-picture-set).
 
 ## Status at a glance
 
 | | |
 |---|---|
-| **Delivered in scope** | Point forecasts and cross-source comparison, published historical and climate records, official district-warning applicability resolved against IMD's own geometry, plan monitoring with a local inbox, published-document retrieval with page/issue/currency attached, marine and river point products, airport reports, air quality, ensemble spread, archived-run forecast verification against reanalysis, farming advisories, a desktop workspace with sixteen guided tools, and a conversation that carries its artefacts. |
+| **Delivered in scope** | Point forecasts and cross-source comparison, published historical and climate records, official district-warning applicability resolved against IMD's own geometry, plan monitoring with a local inbox, published-document retrieval with page/issue/currency attached, marine and river point products, airport reports, air quality, ensemble spread, archived-run forecast verification against reanalysis, farming advisories, a desktop workspace with sixteen guided tools, and a model-planned conversation that decides when to retrieve, answers a greeting without inventing anything, writes the sentence around tool-owned facts, and carries its artefacts. |
 | **Partial** | Warning delivery (outbox, consented Web Push and acknowledgements exist; no live device journey has been demonstrated), language output and voice (measured per direction, not accepted by native speakers), retrieval breadth (whole-document and contradiction handling remain open), operations (foreground watcher, no sustained service). |
 | **Not connected** | Radar/satellite **imagery**, official sea-area and coastal bulletins as live products, observed water level or gauge readings, danger levels, flood extent, tide, current, sea-surface temperature, ground air-quality monitors, SMS/IVR/WhatsApp delivery, road or route clearance, crop diagnosis or pesticide dosage, and any confidence, risk or skill score. |
 | **Not accepted** | Nationwide corpus acceptance, mobile and rural journeys, noisy-input and native-speaker review, live changed-edition to device notification, fresh-machine and cross-platform installation, sustained load. Hosting is on hold. |
+
+## Progress against the problem statement
+
+The eight features SIH26068 names, read against this repository today. The full assessment, with the evidence and
+the explicit gaps for each row, is [docs/84](docs/84-ps-progress-and-pictures.md); no row claims acceptance from a
+check, a count or a screenshot.
+
+| PS requirement | State | One line |
+| --- | --- | --- |
+| 1 Real-time weather information | **partial** | Refreshable forecasts, station reports, published warning days and a composed Now reading; coverage, freshness and station quality vary by place. |
+| 2 Natural-language querying | **delivered in scope, partial overall** | The model plans every turn, a conversation is answered without retrieval, and a fact turn gets a written answer behind checks; unfamiliar compound requests are not independently adjudicated. |
+| 3 NWP integration (GFS/WRF named) | **delivered in scope** | Governed GFS and best-match products with comparison and provenance; WRF is not connected, and a comparison can share lineage. |
+| 4 Alerts and early-warning dissemination | **partial — the weakest journey** | District warning applicability, plans, an outbox and consented push exist; no live changed-edition to a real device has been demonstrated, and CAP reference resolution never authorises dissemination. |
+| 5 Location-based forecasts and advisories | **partial** | Place resolution, district identity, crop/stage intake and cited bulletins; nationwide advisory acceptance and field applicability remain open. |
+| 6 Indian-language support | **partial, now measured** | 22 measurable languages are checked; measured delivery for ten: seven rendered with protected values, two refused, one unverifiable; no native-speaker quality acceptance. |
+| 7 Climate trends and historical analysis | **partial** | Published history, source-constrained trends and charts, short reanalysis windows; not a climate-research workspace and no attribution claims. |
+| 8 Voice for rural accessibility | **path implemented, not accepted** | Transcription, spoken output, Hindi/Gujarati round trips and a Listen control; no noisy-field or native-speaker validation. |
+| Mobile-based platform | **not accepted** | Responsive layouts are checked; the desktop web is the current surface by user direction, and touch/permission/low-bandwidth journeys remain open. |
+| Met databases/APIs and an LLM query engine | **delivered in scope, breadth partial** | 70 ledger entries with a recorded status and probe; governed tools, an index and provenance; registration is not selection. |
+| Scalable real-time ingestion | **not demonstrated at service scale** | Bounded queues, leases, retries and retention; no load, uptime or fresh-machine acceptance, and hosting is held. |
 
 ## Run it
 
@@ -43,33 +79,66 @@ Try *“Will it rain in Ahmedabad, Gujarat tomorrow morning?”*, then *“And w
 Or *“Show the annual rainfall trend for Ahmedabad district, Gujarat from 1981 to 2010.”*, or
 *“कल अहमदाबाद में बारिश होगी क्या?”*.
 
-## Providers: rules first, then OpenRouter free, then the local model
+## Ask it anything — how the conversation decides
 
-The core question shapes are planned by deterministic rules with **no model at all** — that floor
-never depends on a key, a network or a GPU. Above it:
+**The model plans every turn** (`WEATHERGPT_PLANNER=model`, recorded on the turn as
+`trace.planning.planner_policy`). The deterministic rules are not a silent fallback: they plan only when
+the policy asks for them, and a provider outage is reported by name instead of being answered from a floor.
 
-- **OpenRouter free models are used first when a key is configured.** The key is entered with echo off
-  and never reaches shell history, a printed line or a log; it is stored in the git-ignored
-  `data/runtime/model-config.json` at mode 0600. Only ids ending in `:free` can ever be routed: a
-  paid id is refused by name before a request is built, so configuration cannot bill an account.
-- **The ranking is measured, not assumed.** `python3 scripts/models.py --probe-free` intersects the
-  curated ranking with the live catalogue and records what it observed. Re-run it when a provider
-  retires models: a catalogue read on 15 September 2026 found that none of the previously ranked free
-  ids were still published.
-- **The local model is the fallback.** `python3 scripts/models.py` prints the order, what is
-  available and why anything is not. With no key, nothing changes except the order.
+- **It decides when to retrieve.** A short first look (`WEATHERGPT_ROUTER`) asks *conversation or task*.
+  A conversation is answered in that same call; a task goes to the full planner, which owns every task.
+  A route the model cannot decide is a task, so the safe path is the default.
+- **It talks.** Greetings, thank-yous, capability questions, meta questions, general reasoning and
+  off-topic messages are answered from a deterministic picture of this workspace — the clock, the callable
+  tools, the source-ledger counts and what it does not do — with **no tool run**. The turn carries
+  `status: conversation`, no fact and no citation, and the card says *No source read*.
+- **Nothing is invented.** A conversational reply is rejected if it states a measurement unit, a date or a
+  time, a number beside a weather word, a warning claim, a source identifier, a link or present weather at a
+  place. One repair is attempted with the violation named; a reply that still fails is withheld and the turn
+  says so.
+- **A turn with facts gets a written answer** from those facts, behind number, unit, evidence-id, place,
+  link, certainty and language checks. Any failure leaves the tool-owned renderer stating the facts, with the
+  refusal recorded in `trace.generation`. The fact row, the ruler and the receipt stay tool-owned.
+- **The conversation carries.** A continuation inherited from the last turn says what it kept and what
+  changed (*"Continuing from your last message · changed: time. Context the engine kept. Not new evidence."*),
+  and the four continuity journeys are measured end to end.
+
+| Message | Provider | Result |
+| --- | --- | --- |
+| "hello" | DeepSeek | 0.93 s, a conversational reply, no source read |
+| "what can you do?" | DeepSeek | 1.11 s, the real tools and limits, from the workspace ledger |
+| "what is 17 times 3?" | DeepSeek | 0.89 s, "51", stated as general knowledge |
+| "नमस्ते" | DeepSeek | 1.14 s, answered in Devanagari |
+| "Will it rain in Surat tomorrow morning?" | DeepSeek | 5.9 s, one tool-owned fact (0.4 mm, GFS) with a written sentence |
+| "thanks!" | DeepSeek | 0.73 s, continuity kept |
+
+## Providers: free cloud models, the reader's key first
+
+The configured order is stated on the **Sources and settings** surface, with each provider's availability and
+the last failure, so a reader never has to guess who answered or why something was slow.
+
+- **`WEATHERGPT_PROVIDERS`** takes `deepseek_first` (the configured default when a DeepSeek key is
+  present), `deepseek`, `cloud_free` or `local`. `deepseek_first` answers from the paid DeepSeek endpoint
+  and keeps the curated free OpenRouter ids behind it as failover.
+- **Keys live in local configuration only** — `data/runtime/model-config.json`, git-ignored, mode 0600,
+  never printed and never logged. Only ids ending in `:free` are ever routed on OpenRouter, so that
+  configuration cannot bill an account.
+- **The local model is frozen**, not a fallback that runs by itself: it is used only under
+  `WEATHERGPT_PROVIDERS=local`, which exists to diagnose an offline machine.
+- **Whole-step budgets** bound every call (12 s for the first look, 25 s for a written answer, 45 s for a
+  plan), so a refused endpoint reaches the reader with an honest error instead of a two-minute retry loop.
 
 ```sh
-python3 scripts/models.py              # routing order, availability, key source
-python3 scripts/models.py --set-key    # hidden prompt; writes the local config at mode 0600
-python3 scripts/models.py --probe-free # measure the ranking against the live catalogue
-python3 scripts/models.py --check      # plan two questions through the router and print the trace
+python3 scripts/models.py                     # routing order, availability, key source
+python3 scripts/models.py --set-key deepseek  # hidden prompt; writes the local config at mode 0600
+python3 scripts/models.py --set-key           # the same, for OpenRouter
+python3 scripts/models.py --check             # plan two questions through the router and print the trace
 ```
 
-Whichever provider plans a turn, it supplies **candidates only**: model output never executes code,
-never supplies a measurement, and never decides an entity, window, unit or source. Every answer's trace
-names the provider, the model and any failover. Routing a question to a hosted model is a stated trade
-— the question text leaves this machine; the rules floor and the local model stay local.
+Whichever provider plans a turn, it supplies **candidates only**: model output never executes code, never
+supplies a measurement, and never decides an entity, window, unit or source. Every answer's trace names the
+provider, the model and any failover. Routing a question to a hosted model is a stated trade — the question
+text leaves this machine, and the paid endpoint is billed to the key the reader configured.
 
 ## What it answers today
 
@@ -164,7 +233,7 @@ The interface states these limits instead of filling them:
 
 ```sh
 python3 -m pytest tests/ -q                          # 1223 Python tests
-node tests/test_charts.js                            #  2 of 108 printed component checks
+node tests/test_charts.js                            #  2 of 109 printed component checks
 node tests/test_viz.js                               #  9; the chart engine: plume, meteogram, gaps and locators
 node tests/test_views.js                             # 25
 node tests/test_bulletin_ui.js                       #  6
@@ -194,12 +263,21 @@ development dependencies are declared in `requirements-dev.txt`; the optional mu
 stack (`requirements-bulletins.txt`) is only needed to build the real indexed corpus. Recorded real
 journeys, accessibility scans and viewport measurements live in
 [the frontend batch evidence](research/reviews/frontend-v2-20260915/after/live-checks.json), and the
-most recent live loopback and chat records in `research/reviews/frontend-delivery-20260915/`.
+most recent chat records in `research/reviews/chat-overhaul-20260916/` (six live journeys on the configured
+provider, ten language deliveries, four continuity journeys, three browser runs) and the newest screenshots in
+`docs/images/`.
 
 ## What it feels like to use
 
-Open the workspace and it shows the working place, the published district warning days, and a composer
-asking *What is it like right now in Ahmedabad?*. That answer leads with the freshest station report
+Open the workspace and it lands on **Ask**. Say *hello* and the turn is answered as a conversation, with no
+source read. Ask *Will it rain in Surat tomorrow morning?* and the first reading appears while the work runs,
+then a written sentence with the tool-owned fact, the validity ruler and the receipt beneath it; the next
+questions are offered as chips, and the register switch decides whether you read the brief card or the full
+evidence. Switch the language selector to Hindi and ask again: the reply is written in Devanagari, and an
+evidence answer is only rewritten when the value-protecting gate passes.
+
+Every guided surface is still there beside the conversation: open **Today** and it shows the working place, the
+published district warning days, and the same composer. That answer leads with the freshest station report
 (name, distance, age), then the published district day with its issue instant, then the next six model
 hours, then one line naming what is not connected. Ask *Is any warning in force for Patna, Bihar
 today?* and the answer offers **Write the alert brief** and **Save to briefcase**; ask about a district
@@ -239,6 +317,9 @@ recorded journeys, fast and slow.
 Each links to the batch that recorded it. Older entries are **historical evidence, not completion
 claims**, and the test counts in them are the counts of their own checkpoint.
 
+- [PS progress and the picture set](docs/84-ps-progress-and-pictures.md) — the current requirement-by-requirement reading, and eight screenshots with their provenance.
+- [The intelligent-chat overhaul](docs/83-intelligent-chat-overhaul.md) — the model plans every turn, a conversation is a real answer, a cheap first look, the written answer, language breadth, provider visibility, and the continuity journeys.
+- [The chatbot experience](docs/82-chatbot-experience.md) — the first reading, the conversation's own receipt, next-question chips and the reader-chosen register.
 - [Forecast verification](docs/80-forecast-verification.md) — archived model runs measured against ERA5 reanalysis, with the method, sample floor and no-skill-claim limit attached.
 - [The frontend overhaul: plan and design system](docs/78-frontend-overhaul-plan.md) — the stack decision, the token layer, the chart engine and the signature visuals, phase by phase.
 - [The corpus front door and surface completion](docs/77-corpus-front-door-and-surface-completion.md) — the README overhaul, the published-documents browser, air quality and ensemble surfaces, and two repairs found while building.

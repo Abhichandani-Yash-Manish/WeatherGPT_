@@ -1,5 +1,7 @@
 # Intelligent chat overhaul: the model owns the conversation, the tools own the facts
 
+> Current requirement-by-requirement reading after this batch: [docs/84](84-ps-progress-and-pictures.md).
+
 16 September 2026. The instruction that set this batch: make the chat the core feature, make it seamless and
 flexible - it should decide **when to retrieve** and when to simply answer ("hello", a thank-you, a capability
 question, a piece of logic) - and make sure a **real LLM call is made**, with no silent hardcoded or scripted
