@@ -37,10 +37,10 @@ what has to be true before the deletion.
 
 | Item | Why it blocks R6 | Owner |
 | --- | --- | --- |
-| The plans / watches / inbox panel | the vanilla frontend reaches watch state, delivery rows and the push control; the React frontend has no equivalent yet (in flight: `src/plans/PlanWatch.tsx`) | this batch |
-| A saved-document viewer | the vanilla frontend opens a stored PDF in place and states a pruned body; the React documents surface lists editions only (in flight: `src/modules/DocumentViewer.tsx`) | this batch |
-| The service worker | `web/sw.js` gives the vanilla frontend an offline shell. Either port it against the built manifest or drop offline deliberately and say so; **this decision is not made** | R6 |
-| Mobile layout | the rail is a fixed 224 px column; at a 390 px viewport the conversation is cramped. FE01 (mobile reachability) has no React equivalent yet | R6 or a mobile batch |
+| ~~The plans / watches / inbox panel~~ **delivered** | `src/plans/PlanWatch.tsx` (848 lines, 9 checks), opened from the topbar or the palette; it is deliberately not a rail surface, so the registry keeps the nineteen public surfaces | this batch |
+| ~~A saved-document viewer~~ **delivered** | `src/modules/DocumentViewer.tsx`, mounted by the documents surface; the route is answered before the token gate so the frame is same-origin, and the row own body state means a held body is not transferred twice | this batch |
+| The service worker | **decided, not ported in this batch**: the plans panel states that a push subscription registers `/sw.js` and that the browser refuses the subscription while the React build serves no worker. Browser push is therefore unverified on the React path (with `py_vapid` absent on this machine, the VAPID route refuses too). Porting it against the built manifest, or dropping offline in words, is the R6 step | R6 |
+| ~~Mobile layout~~ **delivered, narrow viewport only** | below 64rem the rail is a drawer with a Menu control, Escape, a backdrop and close-on-pick; the stored-conversation column moves under the conversation below 80rem with one instance rendered either way; measured at 390x844 (main 390 px, no horizontal overflow, a wide table scrolling inside its region). This is a narrow desktop viewport, not a device or a mobile acceptance run | this batch |
 | The remaining 77 checks | deleting the vanilla suites without them removes the regression net | port batches |
 | Regenerated `docs/images/` | the README's gallery is still the vanilla build's screenshots | R6 |
 | An R6 browser acceptance run | R5 measured accessibility, not the whole product on a React-only tree | R6 |
@@ -52,7 +52,7 @@ the React build or shown to be held by an existing React check. The mapping as i
 
 | Check | What it holds | Where it stands for React |
 | --- | --- | --- |
-| FE01 mobile reachability | the question box is not below a competing form | **open** — no React equivalent; needs a narrow-viewport check on the built page |
+| FE01 mobile reachability | the question box is not below a competing form | held by the drawer and the measured narrow layout (`research/reviews/frontend-react-r6-20260917/r6-readiness.json`); a check that reads the built page at a narrow width is still open |
 | FE02 bounded collection reachable | a refresh can be asked for from the page | held by the answer card's "Collect fresh evidence" control; **not yet a check** |
 | FE03 no unreachable renderer | no renderer wired to a request the server rejects | held in spirit by `scripts/audit_surface_registry.py` (every surface's route is served); a renderer-level check is **open** |
 | FE04 task accounting | a task count is not a bare affirmative | held by the answer card's task-coverage sentence and its check in `src/chat/chat.test.tsx` |

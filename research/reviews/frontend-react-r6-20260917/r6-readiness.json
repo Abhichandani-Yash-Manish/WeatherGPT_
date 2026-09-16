@@ -1,0 +1,20 @@
+{
+  "checked_at_utc": "2026-09-17T09:30:00+00:00",
+  "scope": "R6 readiness work: the narrow layout (FE01), the plans/watches panel, the saved-document viewer, and the two decisions docs/92 names",
+  "measured": {
+    "narrow_viewport": "390x844 in headless Chrome against the served React build: main 390px, composer 358px, composer textarea 263px, skip link absolute, document scrollWidth 390 = clientWidth 390 (no horizontal overflow)",
+    "drawer": "aria-expanded true and data-open true after the topbar Menu control, scrim present, and a surface pick leaves the rail closed",
+    "wide_table_on_a_narrow_screen": "the warnings table is 539px inside a 390px viewport and scrolls inside its focusable region instead of pushing the page sideways",
+    "frontend_checks": "29 suites, 158 checks"
+  },
+  "screenshots": [
+    "shots/01-ask-narrow.png",
+    "shots/02-rail-drawer-narrow.png",
+    "shots/03-warnings-narrow.png",
+    "shots/04-ask-wide-restored.png",
+    "shots/05-plans-panel.png"
+  ],
+  "defect_found_and_fixed": "appending to frontend/src/styles/app.css by reading only the first lines truncated the file: the design-system vocabulary (.skip-link, .card, .btn, .reading, .display and the rest) was deleted and the page still rendered, with the skip link in flow taking 175px of the narrow row. Restored from git, re-applied whole, and src/styles/styles.test.ts now names the vocabulary and fails if one is missing.",
+  "service_worker_decision": "NOT ported in this batch. The plans panel states that a push subscription registers /sw.js and that the subscription is refused while the React build serves no worker. Together with py_vapid not being installed on this machine, browser push is unverified on the React path; the panel never claims delivery.",
+  "push_on_this_machine": "GET /api/push/vapid-key raises because py_vapid is absent (requirements.txt lists pywebpush==2.5.0, not installed here). The panel shows the route own refusal rather than a control that would fail silently."
+}
