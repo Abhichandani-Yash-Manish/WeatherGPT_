@@ -19,10 +19,11 @@ export type TopbarProps = {
   onPalette: () => void;
   onOwner: () => void;
   onMenu: () => void;
+  onPlans: () => void;
   railOpen: boolean;
 };
 
-export function Topbar({ language, onLanguage, persona, onPersona, theme, onTheme, onNew, onPalette, onOwner, onMenu, railOpen }: TopbarProps) {
+export function Topbar({ language, onLanguage, persona, onPersona, theme, onTheme, onNew, onPalette, onOwner, onMenu, railOpen, onPlans }: TopbarProps) {
   const health = useQuery({ queryKey: ['health'], queryFn: () => getJson<Health>('/api/health'), refetchInterval: 60_000 });
   const languages = useQuery({ queryKey: ['languages'], queryFn: () => getJson<Languages>('/api/languages'), staleTime: 300_000 });
   const catalogue = useQuery({ queryKey: ['personas'], queryFn: () => readPersonas(), staleTime: 300_000 });
@@ -90,6 +91,7 @@ export function Topbar({ language, onLanguage, persona, onPersona, theme, onThem
           ))}
         </select>
 
+        <button type="button" className="btn" onClick={onPlans} data-testid="plans-open">Plans</button>
         <button type="button" className="btn" onClick={onPalette} data-testid="palette-open">Commands</button>
         <button type="button" className="btn" onClick={onTheme} data-testid="theme-toggle">
           {theme === 'system' ? 'System theme' : theme === 'dark' ? 'Dark' : 'Light'}

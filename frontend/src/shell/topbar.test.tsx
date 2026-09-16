@@ -28,6 +28,7 @@ function renderTopbar(overrides: Partial<React.ComponentProps<typeof Topbar>> = 
     onOwner: vi.fn(),
     onMenu: vi.fn(),
     railOpen: false,
+    onPlans: vi.fn(),
     ...overrides,
   };
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
@@ -94,6 +95,13 @@ describe('the topbar', () => {
     expect(toggle).toHaveAttribute('aria-controls', 'workspace-rail');
     await userEvent.click(toggle);
     expect(props.onMenu).toHaveBeenCalled();
+  });
+
+
+  it('offers the plans and watches inbox', async () => {
+    const props = renderTopbar();
+    await userEvent.click(screen.getByTestId('plans-open'));
+    expect(props.onPlans).toHaveBeenCalled();
   });
 
   it('names the theme it would move to, and the two actions beside it', async () => {

@@ -12,6 +12,7 @@ import { Landing } from './landing/Landing';
 import { OwnerGate } from './landing/OwnerGate';
 import { closeGate, hasOwnerVerifier, isGateOpen } from './landing/owner';
 import { ErrorBoundary } from './shell/ErrorBoundary';
+import { PlanWatch } from './plans/PlanWatch';
 import { Palette } from './shell/Palette';
 import { Rail } from './shell/Rail';
 import { SkyBackground } from './shell/SkyBackground';
@@ -35,6 +36,7 @@ function Shell() {
   const [persona, setPersona] = useState('');
   const [palette, setPalette] = useState(false);
   const [railOpen, setRailOpen] = useState(false);
+  const [plansOpen, setPlansOpen] = useState(false);
   const [seed, setSeed] = useState<Seed>(null);
   useSkyPhase();
 
@@ -114,6 +116,7 @@ function Shell() {
           onTheme={cycleTheme}
           onNew={() => { setSeed(null); go('assistant'); open('assistant'); }}
           onPalette={() => setPalette(true)}
+          onPlans={() => setPlansOpen(true)}
           onMenu={() => setRailOpen(value => !value)}
           railOpen={railOpen}
           onOwner={() => {
@@ -135,11 +138,18 @@ function Shell() {
           answers on this machine only and will not invent a warning, an observation, a water level or a forecast.
         </p>
       </main>
+      {/* The plans, watches and inbox panel: not a surface, opened from the topbar or the palette. */}
+      {plansOpen ? (
+        <div className="planwatch-host" role="presentation">
+          <PlanWatch onClose={() => setPlansOpen(false)} />
+        </div>
+      ) : null}
       <Palette
         open={palette}
         onClose={() => setPalette(false)}
         onOpenView={id => open(id)}
         onNewConversation={() => { setSeed(null); open('assistant'); }}
+        actions={[{ id: 'plans', label: 'Open plans, watches and the inbox', hint: 'what the workspace will check again, and what it delivered', run: () => setPlansOpen(true) }]}
       />
     </div>
   );

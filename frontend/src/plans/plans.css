@@ -1,0 +1,80 @@
+/* The plans, watches and notification inbox panel.
+
+   Every value here is a token from web/tokens.css (or a name the Tailwind theme in styles/app.css
+   re-exports from that layer): no colour, size, radius, shadow or typeface is introduced by this file,
+   so the panel cannot draw a state the design system does not hold. The hazard ramp stays where
+   modules.css put it, and a colour word is only ever drawn as a chip by Evidence.tsx. */
+
+.planwatch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--pad);
+  background: var(--paper);
+  color: var(--ink);
+  border: var(--hairline);
+  border-radius: var(--r-card);
+  box-shadow: var(--lift-1);
+}
+
+.planwatch-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.planwatch-title {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.planwatch-head h2 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: var(--step-2);
+  letter-spacing: var(--track-tight);
+}
+
+.planwatch-subhead {
+  margin: 0;
+  font-size: var(--step-0);
+  color: var(--ink-soft);
+}
+
+.planwatch-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.planwatch-actions .module-note { max-width: var(--measure); }
+
+.planwatch-row {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.planwatch-result {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--sunk);
+  border: var(--hairline);
+  border-radius: var(--r-card);
+}
+
+.planwatch-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding-left: var(--space-5);
+  max-width: var(--measure);
+}

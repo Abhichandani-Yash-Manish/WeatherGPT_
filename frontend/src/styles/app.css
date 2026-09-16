@@ -246,3 +246,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .rail { transition: none; }
 }
+
+/* The plans panel is a modal host: it sits above the shell and is dismissed on Escape by the panel. */
+.planwatch-host { position: fixed; inset: 0; z-index: 50; overflow-y: auto; background: var(--scrim); padding: var(--space-4); }
+.planwatch-host > * { margin-inline: auto; background: var(--paper); }
