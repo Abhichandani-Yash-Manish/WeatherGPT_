@@ -139,6 +139,50 @@ the ledger was left untouched. The next attempt should read the three surfaces f
 `modules/WarningsSurface.tsx`, `modules/ObservationsSurface.tsx`, `plans/PlanWatch.tsx` — because that is
 the step both a hasty check and a stalled one skip.
 
+### 4d.1 The payload each open check needs, written out
+
+Both delegates stalled at the same step, so the step is written down here as data rather than as an
+instruction. The next session writes the assertions against these payloads and the surfaces it reads.
+
+**1. Four warning states stay distinct** (`test_workspace_ui.js`). One district, four rendered states,
+from the shape `/api/warnings/national` returns:
+
+```json
+{"district": "PATNA", "state": "BIHAR", "bulletin_date": "2026-09-14", "days": [
+  {"date": "2026-09-14", "day_label": "Day 1", "colour": "yellow", "colour_code": 3,
+   "hazards": ["Thunderstorm"], "wording": "Thunderstorm/lightning/squall",
+   "starts_utc": "2026-09-13T18:30:00+00:00", "ends_utc": "2026-09-14T18:30:00+00:00"},
+  {"date": null, "day_label": null, "colour": null, "wording": ""},
+  {"date": "2026-09-11", "day_label": "Day 1", "colour": "yellow", "wording": "Thunderstorm/lightning/squall",
+   "starts_utc": "2026-09-10T18:30:00+00:00", "ends_utc": "2026-09-11T18:30:00+00:00"},
+  {"date": "2026-09-14", "day_label": "Day 1", "colour": "green", "quiet": true,
+   "source_text": "No warning in this product"}]}
+```
+
+The check asserts each state is still readable as itself: the hazard day keeps its colour and the product
+wording; the undated day says the date was not stated; the expired day is distinct because its window is
+printed rather than compared against a clock the surface would have to invent; and the quiet day reads
+*No warning in this product*, which the surface already states is not an all-clear.
+
+**2. Network-shaped observations keep identity, freshness, zero and unknown units**
+(`test_workspace_ui.js`). `/api/observations/network` returns instrument rows; the payload carries a
+station name and code, a network, `distance_km`, `age_minutes`, `stale`, and parameters where one value is
+`0` and one row states no unit at all. The check asserts the `0` renders as a value, the unstated unit
+renders as *unit not stated* and is not borrowed from the row above, and the stale row is the only one
+marked stale.
+
+**3. The inbox renders outbox state, channels, ack answers, toggles and the create form**
+(`test_notify_ui.js`). One payload set: `/api/outbox` with a row in state `sent` and one `queued`;
+`/api/watches` with a watch whose `channels` include `local_inbox` and `web_push`; `/api/plans`,
+`/api/watch-health` and `/api/push/state` minimal but present. The check asserts the five controls are in
+one view: the row state word, the channel list, the acknowledgement choice with all four answers the store
+accepts (safe, need_help, evacuating, seen), the channel toggle, and the coordinates form.
+
+**4. The per-watch notification history** (`test_notify_ui.js`). This is the one that may be a product gap:
+if `/api/plans` `notifications[]` (each with `plan_id`, `kind`, `created_at`, `visible_at` and its `receipt`)
+is not rendered per watch today, add the section and say so; if it is rendered, the check reads it and
+asserts each row keeps its own state and receipt facts rather than being summarised into a count.
+
 ## 5. The order this suggests
 
 1. Finish the two in-flight pieces (the plans panel, the document viewer) and port the checks they are written
