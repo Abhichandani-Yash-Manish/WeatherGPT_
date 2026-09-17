@@ -109,6 +109,19 @@ describe('saved-document viewer parity', () => {
     expect(reads).toBe(1);
   });
 
+
+  it('opens the saved copy at the printed page a passage cited', async () => {
+    server.use(http.get('/api/documents/:sha', () => pdf()));
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } });
+    render(
+      <QueryClientProvider client={client}>
+        <DocumentViewer sha={SHA} title="Kamrup district bulletin" page={3} onClose={() => {}} />
+      </QueryClientProvider>,
+    );
+    const frame = await screen.findByTitle(/Saved source document/);
+    expect(frame).toHaveAttribute('src', '/api/documents/' + SHA + '#page=3');
+  });
+
   it('labels a stored edition apart from current alerts rather than as a warning', async () => {
     server.use(http.get('/api/documents/:sha', () => pdf()));
     mount(<DocumentViewer sha={SHA} title={TITLE} onClose={() => {}} />);

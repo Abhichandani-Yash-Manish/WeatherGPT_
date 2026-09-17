@@ -340,7 +340,7 @@
     {
       "file": "test_bulletin_ui.js",
       "checks": 6,
-      "ported": 5,
+      "ported": 6,
       "evidence": [
         {
           "spec": "src/modules/documentviewer.parity.test.tsx",
@@ -348,6 +348,7 @@
             "opens the copy this machine holds in place rather than the changing publisher address",
             "keeps a same-origin download fallback beside the in-place view",
             "renders the stored PDF in place from this origin only, once the route has answered",
+            "opens the saved copy at the printed page a passage cited",
             "labels a stored edition apart from current alerts rather than as a warning"
           ]
         },
@@ -361,7 +362,7 @@
           ]
         }
       ],
-      "note": "The saved-PDF half is carried by the viewer checks (same-origin frame, download fallback, stored copy preferred, a stored edition labelled apart from current alerts) and the quotation half by the passage checks (the literal text with its printed page, a bulletin-context section labelled apart, a javascript: address never made clickable). The #page= locator and the parent/crop label on the viewer itself are still open."
+      "note": "Complete: the saved-PDF half is held by the viewer checks (same-origin frame, download fallback, stored copy preferred over the publisher address, a stored edition labelled apart from current alerts, and the frame opening at the printed page a passage cited), and the quotation half by the passage checks (the literal source text with its printed page, a bulletin-context section labelled apart from crop evidence, and a javascript: address never made clickable)."
     },
     {
       "file": "test_notify_ui.js",

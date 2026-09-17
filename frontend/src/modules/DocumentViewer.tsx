@@ -27,9 +27,12 @@ export type DocumentViewerProps = {
       not read a second time through the client (which would transfer the whole PDF to answer a question the
       row already answered). Any other state, or none, asks the route. */
   body?: string | null;
+  /** The printed page a passage cited, when a passage opened this viewer: the frame and the anchor
+      carry it so a reader lands on the page the evidence names rather than the first page. */
+  page?: number | string | null;
 };
 
-export function DocumentViewer({ sha, title, onClose, body = null }: DocumentViewerProps): JSX.Element {
+export function DocumentViewer({ sha, title, onClose, body = null, page = null }: DocumentViewerProps): JSX.Element {
   const heldByTheRow = body === 'available';
   const read = useQuery({
     queryKey: ['document-body', sha],
@@ -56,6 +59,8 @@ export function DocumentViewer({ sha, title, onClose, body = null }: DocumentVie
 
   const name = orNot(title, 'Saved source document');
   const path = documentPath(sha);
+  /* A page anchor the browser own PDF viewer understands; without one the file opens at the start. */
+  const anchored = page === null || page === undefined || page === '' ? path : path + '#page=' + String(page);
   const pruned = read.error instanceof ApiError && read.error.status === 410;
 
   return (
@@ -99,7 +104,7 @@ export function DocumentViewer({ sha, title, onClose, body = null }: DocumentVie
         <>
           <div role="region" aria-label="The saved source document, rendered in this page from this machine">
             <iframe
-              src={path}
+              src={anchored}
               title={'Saved source document ' + shortHash(sha)}
               loading="lazy"
               style={{ width: '100%', height: 'min(76vh, 44rem)', border: '1px solid var(--line)', borderRadius: 'var(--r-card)', background: 'var(--paper)' }}
