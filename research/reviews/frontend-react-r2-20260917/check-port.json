@@ -187,7 +187,7 @@
     {
       "file": "test_workspace_ui.js",
       "checks": 6,
-      "ported": 4,
+      "ported": 6,
       "evidence": [
         {
           "spec": "src/modules/workspace.test.tsx",
@@ -208,8 +208,16 @@
           "tests": [
             "says the server may still be finishing a request the client stopped waiting for"
           ]
+        },
+        {
+          "spec": "src/modules/observations.gaps.test.tsx",
+          "tests": [
+            "keeps published hazards, missing dates, expired days and explicit quiet distinct",
+            "keeps station identity, freshness, a zero value and an unstated unit, and borrows no unit from the next row"
+          ]
         }
-      ]
+      ],
+      "note": "Complete: the late response that cannot overwrite a newer task, the timed-out read and the builder are held by the parity and workspace specs; the four warning states (hazard, undated, expired and explicit quiet) staying distinct, and network-shaped observations keeping station identity, freshness, a zero and an unstated unit without borrowing one from the next row, are held by the observations gap spec. None of the checks was retired."
     },
     {
       "file": "test_suite_ui.js",
@@ -367,7 +375,7 @@
     {
       "file": "test_notify_ui.js",
       "checks": 11,
-      "ported": 9,
+      "ported": 11,
       "evidence": [
         {
           "spec": "src/plans/planwatch.parity.test.tsx",
@@ -391,9 +399,16 @@
             "registers one watch from explicit coordinates, sending them as given, and says no coordinate is turned into a district here",
             "prints the create route\u2019s own refusal, with a retry that sends the same request again"
           ]
+        },
+        {
+          "spec": "src/plans/planwatch.history.test.tsx",
+          "tests": [
+            "renders the inbox with the outbox state, channels, ack answers, toggles and the create form",
+            "renders the notifications the payload carries for each watch, each with its own state and receipt facts"
+          ]
         }
       ],
-      "note": "Nine of these eleven checks are held by React specs: the retire, channels and unsubscribe routes; the ack route and its server reply; the coordinate create form with the route's own refusal; the per-place and per-source aggregate; the per-watch push binding; the supervision mode and outbox counts as returned; the watch and delivery rows; and the token on every request. The rendering half of check 1 is held by the parity spec too, and check 9 (the ?watch= deep link) is held by src/App.test.tsx under the test_views.js entry. The four former gaps (ack, create form, aggregate, binding) are closed by src/plans/planwatch.gaps.test.tsx."
+      "note": "Complete: the inbox rendering the outbox state, the channels, the four acknowledgement answers, the channel toggle and the coordinates form in one view, and the notifications the payload carries for each watch with their own state and receipt facts, are held by the history spec and the gaps spec. The seven controls a reader can act on are each held by their own check as well."
     },
     {
       "file": "test_briefcase_ui.js",

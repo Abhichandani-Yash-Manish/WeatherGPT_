@@ -470,6 +470,24 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
     });
   });
 
+  /* Each watch's own notification rows, filtered from the outbox read by the watch_id the row carries.
+     The state and the receipt facts are printed from that row, and nothing is merged across watches. */
+  const watchHistoryRows: ReactNode[][] = watchRows.flatMap(watch =>
+    outboxRows
+      .filter(row => row.watch_id === watch.id)
+      .map(row => [
+        watchLabel(watch),
+        row.id ? shortHash(String(row.id), 8) : NOT_RECORDED,
+        orNot(row.channel, 'channel not returned'),
+        orNot(row.state, 'state not returned'),
+        row.created_at ? istStamp(row.created_at) : NOT_RECORDED,
+        row.updated_at ? istStamp(row.updated_at) : NOT_RECORDED,
+        'correlation_id ' + orNot(row.correlation_id) + ' \u00b7 fingerprint ' +
+          (row.fingerprint_sha256 ? shortHash(String(row.fingerprint_sha256), 16) : NOT_RECORDED) +
+          ' \u00b7 retries ' + orNot(row.retry_count) + ' of ' + orNot(row.max_retries) +
+          ' \u00b7 last error ' + orNot(row.last_error, 'no error recorded'),
+      ]));
+
   return (
     <section className="planwatch" aria-labelledby="planwatch-heading" data-testid="planwatch">
       <header className="planwatch-head">
@@ -851,6 +869,37 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
               connected fails rather than being reported as sent, and this panel adds no claim of its own about any row.
             </p>
           </>
+        ) : null}
+      </section>
+
+      <section className="module-section" data-testid="planwatch-watch-history-section">
+        <h3>Notifications for each watch</h3>
+        <p className="module-note" data-testid="planwatch-watch-history-note">
+          The outbox rows this read carries for each registered watch, with the state and the receipt facts recorded on
+          each row: the channel it was written for, when it was written and last updated, its correlation id and
+          fingerprint, its retries and any last error. A row here is this machine's record of writing a notification; it
+          is not a claim that anyone received it, and a channel that is not connected fails rather than being reported
+          as sent.
+        </p>
+        {outbox.isPending ? <Reading what="the per-watch notification history" /> : null}
+        {outbox.isError ? (
+          <Failure error={outbox.error} what="per-watch notification history" onRetry={() => { void outbox.refetch(); }} />
+        ) : null}
+        {watches.data && outbox.data ? (
+          watchHistoryRows.length ? (
+            <DataTable
+              testId="planwatch-watch-history"
+              caption="Every notification row the outbox read carries for a registered watch, with that row's own state and receipt facts."
+              columns={['Watch', 'Notification', 'Channel', 'State as returned', 'Written', 'Updated', 'Receipt facts as returned']}
+              rows={watchHistoryRows}
+            />
+          ) : (
+            <p className="module-note" data-testid="planwatch-watch-history-empty">
+              The outbox read carried no notification row for a watch this read returned ({NO_ROW}), so no per-watch
+              history is shown. An empty history here is not evidence that nothing was written, and not evidence that
+              nothing was delivered.
+            </p>
+          )
         ) : null}
       </section>
 

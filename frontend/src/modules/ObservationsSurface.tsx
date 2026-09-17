@@ -1,7 +1,8 @@
 /* Observations: what connected stations reported near one point, and the wider single network read.
-   A station describes itself with its own instant, age and distance; it is not a district average and
-   not a forecast. A stale row reads as stale, and an unrecorded staleness flag is not treated as
-   current. */
+   A station describes itself with its own instant, age, distance and the values it reported; it is not a
+   district average and not a forecast. A stale row reads as stale, an unrecorded staleness flag is not
+   treated as current, a reported zero stays a zero, and a unit the read did not state is stated as
+   unstated rather than borrowed from another station or parameter. */
 import { useState, type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getJson, withQuery } from '../api/client';
@@ -10,6 +11,13 @@ import { count, orNot } from '../lib/format';
 import { istStamp } from '../lib/time';
 import { viewById } from '../shell/views';
 import { DataTable, EvidenceFooter, Failure, Facts, NO_ROW, NOT_RECORDED, PlacePicker, Reading, SurfaceShell, type PlaceChoice } from './Evidence';
+
+type StationParameter = {
+  field?: string | null;
+  value?: unknown;
+  unit?: string | null;
+  unit_stated_by_source?: boolean;
+};
 
 type StationRow = {
   kind?: string;
@@ -21,6 +29,7 @@ type StationRow = {
   stale?: boolean;
   source_id?: string | null;
   network?: string;
+  parameters?: StationParameter[];
 };
 
 type NearData = { networks?: Record<string, StationRow[]>; stations?: StationRow[]; rejected?: { reason?: string }[] };
@@ -50,6 +59,20 @@ function age(station: StationRow): string {
     : station.age_minutes + ' minutes before retrieval';
 }
 
+/* A value the read stated is printed as it arrived: a zero is a value and never 'not recorded'. A unit
+   the read did not state is named as unstated; it is never taken from another parameter or station row. */
+function parameterWords(parameter: StationParameter): string {
+  const value = parameter.value;
+  const shown = value === null || value === undefined || value === '' ? 'value not recorded' : String(value);
+  const unit = typeof parameter.unit === 'string' && parameter.unit.trim() ? parameter.unit.trim() : 'unit not stated';
+  return orNot(parameter.field, 'field not recorded') + ' ' + shown + ' (' + unit + ')';
+}
+
+function reported(station: StationRow): string {
+  const parameters = station.parameters || [];
+  return parameters.length ? parameters.map(parameterWords).join('; ') : NOT_RECORDED;
+}
+
 function stationRows(stations: StationRow[], network: string): ReactNode[][] {
   return stations.map(station => [
     stationName(station),
@@ -60,10 +83,11 @@ function stationRows(stations: StationRow[], network: string): ReactNode[][] {
     age(station),
     orNot(station.source_id),
     staleness(station),
+    reported(station),
   ]);
 }
 
-const STATION_COLUMNS = ['Station', 'Network', 'Kind', 'Distance', 'Observed at', 'Age at retrieval', 'Source', 'State of the report'];
+const STATION_COLUMNS = ['Station', 'Network', 'Kind', 'Distance', 'Observed at', 'Age at retrieval', 'Source', 'State of the report', 'What the station reported'];
 
 export function Surface(): JSX.Element {
   const [place, setPlace] = useState<PlaceChoice | null>(null);

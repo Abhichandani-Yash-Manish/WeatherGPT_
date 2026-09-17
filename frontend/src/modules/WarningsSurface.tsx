@@ -33,6 +33,7 @@ type WarningDay = {
   wording?: string | null;
   source_text?: string | null;
   quiet?: boolean;
+  is_past?: boolean | null;
 };
 
 type DistrictRow = {
@@ -150,6 +151,16 @@ function dayWindow(day: WarningDay): string {
   return day.starts_utc && day.ends_utc ? istWindow(day.starts_utc, day.ends_utc) : NOT_RECORDED;
 }
 
+/* The state the read stated for a district-day, in its own column: a day whose published window has
+   closed is not a quiet day, an explicitly quiet day is not an unknown one, and a day whose quiet flag
+   the read did not return is never passed off as quiet. */
+function dayState(day: WarningDay): string {
+  if (day.is_past === true) return 'past as returned: the window this product published for this day has closed';
+  if (day.quiet === true) return 'quiet as returned: no warning in this product for this district-day';
+  if (day.quiet === false) return 'not quiet as returned: this district-day is not a quiet day in this product';
+  return 'the quiet flag was not returned: this district-day is not stated as quiet';
+}
+
 function briefReason(data: BriefData): string {
   return orNot(data.why || data.status_line, 'no brief was composed and the payload stated no reason');
 }
@@ -240,7 +251,9 @@ export function Surface(): JSX.Element {
         <h2>District-days</h2>
         <p className="module-note">
           A colour chip is drawn only where the product stated a colour for that district-day; an unstated colour is
-          set as a word, never as a colour of this surface's choosing.
+          set as a word, never as a colour of this surface's choosing. The state column keeps the distinctions the read
+          returned: a past day, a quiet day, a day the product published a hazard for, and a day whose quiet flag was
+          not returned are four different states.
         </p>
         <p className="module-note">
           Choosing a district-day opens its own detail below: the hazard wording the product published, the validity
@@ -249,7 +262,7 @@ export function Surface(): JSX.Element {
         <DataTable
           testId="warnings-table"
           caption="One row per district-day, exactly as returned."
-          columns={['District', 'State', 'Day', 'Date', 'Colour as published', 'Hazard wording as published']}
+          columns={['District', 'State', 'Day', 'Date', 'Colour as published', 'Hazard wording as published', 'Day state as returned']}
           rows={shown.map(({ row, day }) => [
             <button type="button" className="btn btn-ghost" key="district" onClick={() => setChosen({ row, day })}>
               {orNot(row.district)}
@@ -259,6 +272,7 @@ export function Surface(): JSX.Element {
             dayDate(day),
             <ColourTag key="colour" colour={day.colour} text={day.colour || undefined} />,
             dayWording(day),
+            dayState(day),
           ])}
         />
         <DataTable
@@ -301,13 +315,14 @@ export function Surface(): JSX.Element {
           <DataTable
             testId="warnings-district-days"
             caption="Every published day this district row returned, with its own validity window and hazard wording."
-            columns={['Day', 'Date', 'Colour as published', 'Validity window as returned', 'Hazard wording as published']}
+            columns={['Day', 'Date', 'Colour as published', 'Validity window as returned', 'Hazard wording as published', 'Day state as returned']}
             rows={(chosen.row.days || []).map(dayRow => [
               dayName(dayRow),
               dayDate(dayRow),
               <ColourTag key="colour" colour={dayRow.colour} text={dayRow.colour || undefined} />,
               dayWindow(dayRow),
               dayWording(dayRow),
+              dayState(dayRow),
             ])}
           />
           <div className="module-controls">
