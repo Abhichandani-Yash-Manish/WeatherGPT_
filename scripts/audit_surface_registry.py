@@ -69,8 +69,12 @@ def main():
     parser.add_argument('--json', action='store_true')
     args = parser.parse_args()
 
-    index = (ROOT / 'web' / 'index.html').read_text(encoding='utf-8')
-    vanilla = re.findall(r'data-view="([a-z-]+)"', index)
+    # The vanilla rail was removed in R6. Its nineteen ids are kept here as the frozen expectation the
+    # React registry is measured against, so a surface cannot be dropped without this list being edited
+    # on purpose.
+    vanilla = ['assistant', 'workspace', 'overview', 'warnings', 'map', 'forecast', 'observations',
+               'changes', 'climate', 'advisories', 'air-quality', 'aviation', 'ensemble', 'verification',
+               'compare', 'marine', 'documents', 'briefcase', 'settings']
     react = re.findall(r"id: '([a-z-]+)'", (ROOT / 'frontend' / 'src' / 'shell' / 'views.ts').read_text(encoding='utf-8'))
     workspace = Workspace.__new__(Workspace)  # the route table only needs bound methods, not stores
     mutations = set(post_routes(workspace))
@@ -87,7 +91,7 @@ def main():
     GATED_READ_ROUTES = {path for path in re.findall(r"path=='(/api/[a-z0-9/_-]+)'", server) if path not in products}
 
     findings = [
-        ('vanilla_rail_present', bool(vanilla), str(len(vanilla)) + ' rail entr(ies)'),
+        ('frozen_rail_expectation', len(vanilla) == 19, str(len(vanilla)) + ' surface(s) in the frozen expectation'),
         ('react_registry_present', bool(react), str(len(react)) + ' registry entr(ies)'),
         ('the_two_frontends_agree', set(vanilla) == set(react),
          'only vanilla: ' + str(sorted(set(vanilla) - set(react))) + '; only react: ' + str(sorted(set(react) - set(vanilla)))),

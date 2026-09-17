@@ -1162,13 +1162,9 @@ def make_server(workspace, port=8765):
                         return self.respond(404,{'error':'Not found'})
                     return self.respond(200,target.read_bytes(),REACT_ASSET_TYPES.get(target.suffix,'application/octet-stream'),
                                         csp=REACT_CSP,cache='public, max-age=31536000, immutable')
-            assets={'/':('index.html','text/html'),'/app.js':('app.js','text/javascript'),'/views.js':('views.js','text/javascript'),'/charts.js':('charts.js','text/javascript'),'/shell.js':('shell.js','text/javascript'),'/panels.js':('panels.js','text/javascript'),'/map.js':('map.js','text/javascript'),'/voice.js':('voice.js','text/javascript'),'/home.js':('home.js','text/javascript'),'/sw.js':('sw.js','application/javascript'),'/tokens.css':('tokens.css','text/css'),'/viz.js':('viz.js','text/javascript'),'/style.css':('style.css','text/css')}
-            if path not in assets:return self.respond(404,{'error':'Not found'})
-            filename,kind=assets[path]
-            try:text=(ROOT/'web'/filename).read_text()
-            except OSError:return self.respond(404,{'error':'This workspace file is missing; restart the workspace from a complete checkout.'})
-            if filename=='index.html':text=text.replace('__WORKSPACE_TOKEN__',token)
-            self.respond(200,text,kind)
+            # The vanilla surface was removed in R6. Everything a reader can reach is served from
+            # web/dist above, with the chart engine and the notification worker from their tracked copies.
+            return self.respond(404,{'error':'Not found'})
 
         def do_DELETE(self):
             if not self.allowed_host() or not self.authorized():

@@ -15,9 +15,10 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-NODE_SUITES = ['tests/test_charts.js', 'tests/test_viz.js', 'tests/test_views.js', 'tests/test_bulletin_ui.js',
-               'tests/test_conversation_ui.js', 'tests/test_suite_ui.js', 'tests/test_voice_ui.js',
-               'tests/test_briefcase_ui.js', 'tests/test_workspace_ui.js', 'tests/test_notify_ui.js']
+# The vanilla component suites were removed in R6. Their checks are named against React specs in
+# research/reviews/frontend-react-r2-20260917/check-port.json, and the React specs are the net now.
+NODE_SUITES = []
+
 REGISTRIES = ['data/registry/sources.json', 'data/registry/source-review.json', 'data/registry/product-progress.json',
               'data/registry/hardening-progress.json', 'data/registry/language-support.json',
               'data/registry/acceptance-benchmark.json', 'data/registry/answer-policy.json',
@@ -62,8 +63,6 @@ def main():
         for suite in NODE_SUITES:
             ok, tail, err = run(['node', suite])
             steps.append(('node ' + Path(suite).name, ok, tail or err))
-    ok, tail, err = run([sys.executable, 'scripts/audit_workspace_frontend.py', '--baseline'])
-    steps.append(('frontend workspace audit', ok, tail or err))
     # The React build is audited from the built files, since that is what a browser receives. A missing
     # build is a reported skip while the vanilla frontend is still the default.
     ok, tail, err = run([sys.executable, 'scripts/audit_react_build.py'])
@@ -75,11 +74,6 @@ def main():
     # the sources, so those checks survive the vanilla frontend's removal. A missing build is a skip, not a pass.
     ok, tail, err = run([sys.executable, 'scripts/audit_react_frontend.py'])
     steps.append(('react frontend audit', ok, tail or err))
-    # A ported check has to be named in the ledger, and every named test has to exist in its spec. This
-    # reads the vanilla suites and the React specs; a missing React build does not affect it.
-    ok, tail, err = run([sys.executable, 'scripts/audit_check_port.py'])
-    steps.append(('component check port ledger', ok, tail or err))
-
     width = max(len(name) for name, _, _ in steps) + 2
     for name, ok, detail in steps:
         print('%-*s %s %s' % (width, name, 'PASS' if ok else 'FAIL', detail))
