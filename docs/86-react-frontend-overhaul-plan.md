@@ -211,6 +211,27 @@ Six of the nineteen surfaces are ported (docs/90 section 5). The rest state thei
 to the conversation in the meantime. The order for the rest is the docs/88 ranking; map and what-changed come
 first because PS feature 4 is still the weakest journey.
 
+## R6 delivered: the vanilla frontend is removed (17 September 2026)
+
+Evidence: docs/92 4c and 4d, research/reviews/frontend-react-r6-20260917/ (the HTTP acceptance record, the
+browser captures and the readiness note), and the commit that removed the tree.
+
+- the workspace serves one surface: the built React page, with the legacy asset map replaced by a 404 at
+  the same depth so the React branch above it was untouched;
+- twenty-three files removed: the vanilla surfaces, their stylesheet and page, the DOM shim and the ten
+  component suites, and the two scripts that only existed to read them;
+- three web files kept, with the reason printed by scripts/decommission_vanilla.py: tokens.css (imported
+  by the React stylesheet), viz.js (served to the React build, so the nine viz checks keep covering the
+  code a chart draws with) and sw.js (the notification worker the plans panel registers);
+- verify_all.py runs the React gates only - registry parsing, the drift guard, the Python suite, the React
+  build audit, the surface registry audit and the React frontend audit - and the surface registry audit
+  now measures the React registry against the nineteen ids frozen inside it;
+- the exit check is met: verify_all.py green on a React-only tree, 19 steps, 0 failed;
+- the port ledger stands at 101 of 110, the nine test_viz.js checks staying with the served engine by
+  architecture rather than by waiver.
+
+Owed and recorded: docs/images regenerated from the React build.
+
 ## What each stage must prove
 
 1. **No behaviour regression**: a ported spec is the same assertion against the same payload.

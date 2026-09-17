@@ -196,7 +196,19 @@ they do not need to be - the React build is served the same `web/viz.js` bytes a
 `tests/test_react_vendor_assets.py`, so those checks still run against the code a React chart draws with.
 That is a property of the architecture, not a waiver.
 
-## 5. The order this suggests
+## 5. Executed on 17 September 2026
+
+The deletion ran with --force, and the reason is printed by the script itself: 101 of the 110 checks are
+named against a React spec and the nine test_viz.js checks stay with the served engine, because the React
+build is handed the same web/viz.js bytes at /viz.js. The gate on the React-only tree is 19 steps, 0
+failed, which is the exit check this document set out to reach.
+
+Two follow-ups were done with it: verify_all.py runs the React gates only, and the surface registry audit
+measures the React registry against the nineteen ids frozen inside it, with the comment recording that the
+vanilla rail was the second list until R6. One is owed: docs/images regenerated from the React build.
+
+The order below is kept as the record of how the stage was planned, not as work still to do.
+
 
 1. Finish the two in-flight pieces (the plans panel, the document viewer) and port the checks they are written
    against (notify, bulletin, briefcase and the remaining suite checks).
