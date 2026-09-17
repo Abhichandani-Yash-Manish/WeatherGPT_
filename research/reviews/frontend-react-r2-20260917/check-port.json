@@ -280,7 +280,7 @@
     {
       "file": "test_notify_ui.js",
       "checks": 11,
-      "ported": 5,
+      "ported": 9,
       "evidence": [
         {
           "spec": "src/plans/planwatch.parity.test.tsx",
@@ -292,9 +292,20 @@
             "renders the registered watch with its channels and last-notified instant, and the outbox states as recorded",
             "carries the workspace token on every request the panel made"
           ]
+        },
+        {
+          "spec": "src/plans/planwatch.gaps.test.tsx",
+          "tests": [
+            "answers a sent delivery row through its own ack route with the reader\u2019s chosen answer, and prints the server\u2019s reply",
+            "offers the acknowledgement only on a sent row, with every answer the store accepts",
+            "binds this browser\u2019s subscription to one watch through the subscribe route, and says the binding delivers nothing by itself",
+            "renders the per-place delivery aggregate with the payload\u2019s own labels and counts, and says it is not a delivery claim",
+            "registers one watch from explicit coordinates, sending them as given, and says no coordinate is turned into a district here",
+            "prints the create route\u2019s own refusal, with a retry that sends the same request again"
+          ]
         }
       ],
-      "note": "Six React checks carry five of these eleven: the retire, channels and unsubscribe routes, the supervision mode and outbox counts as returned, the watch and delivery rows, and the token on every request. No React control exists yet for the outbox acknowledgement, the coordinate create form, the per-place aggregate or a per-watch push binding."
+      "note": "Nine of these eleven checks are held by React specs: the retire, channels and unsubscribe routes; the ack route and its server reply; the coordinate create form with the route's own refusal; the per-place and per-source aggregate; the per-watch push binding; the supervision mode and outbox counts as returned; the watch and delivery rows; and the token on every request. The rendering half of check 1 is held by the parity spec too, and check 9 (the ?watch= deep link) is held by src/App.test.tsx under the test_views.js entry. The four former gaps (ack, create form, aggregate, binding) are closed by src/plans/planwatch.gaps.test.tsx."
     },
     {
       "file": "test_briefcase_ui.js",

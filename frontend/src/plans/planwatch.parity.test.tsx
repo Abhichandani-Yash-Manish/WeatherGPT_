@@ -2,20 +2,20 @@
    suite tests/test_notify_ui.js. Every payload constant below is copied verbatim from that suite, so each
    rule is held here against the same recorded reads the vanilla check used.
 
-   Held here (5 of the suite's 11 printed checks, plus the rendering half of check 1):
+   Held here (five of the suite's eleven printed checks, plus the rendering half of check 1):
    - check 2  Retire calls POST /api/watches/delete with the watch id;
    - check 4  the push toggle calls POST /api/watches/channels keeps local_inbox and adds web_push;
    - check 6  revocation calls POST /api/push/unsubscribe with the endpoint the browser was granted for;
    - check 10 watch-health's supervision mode, tick reason and per-state outbox counts are printed as returned;
    - check 11 every request carries the workspace token;
    - check 1  in part: the watch row renders its channels and last-notified instant, and the outbox rows render
-              the store's own states. The React panel renders no 'n watch(es) registered' count, no ack answer
-              buttons and no create form.
+              the store's own states.
 
-   Not portable, reported rather than asserted: check 3 (a 'Safe' ack over /api/outbox/<id>/ack), check 5 (the
-   coordinates create form over /api/watches/create), check 7 (the per-place, per-source delivery aggregate over
-   /api/watches/dma), check 8 (per-watch push binding posting watch_id), and check 9 (the ?watch= deep link that
-   opens the panel: the React shell opens it from the topbar or the palette only). */
+   The four checks this spec could not carry when it was written are held by src/plans/planwatch.gaps.test.tsx:
+   check 3 (a sent row acknowledged over /api/outbox/<id>/ack), check 5 (the explicit-coordinates create form
+   over /api/watches/create), check 7 (the per-place, per-source delivery aggregate over /api/watches/dma) and
+   check 8 (per-watch push binding posting watch_id). Check 9 (the ?watch= deep link) is held by src/App.test.tsx
+   and claimed under the test_views.js ledger entry. */
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor, within } from '@testing-library/react';
@@ -98,6 +98,7 @@ function serveRecordedReads() {
     http.get('/api/outbox', async ({ request }) => { await note(request); return HttpResponse.json(PAYLOADS['/api/outbox']); }),
     http.get('/api/watch-health', async ({ request }) => { await note(request); return HttpResponse.json(PAYLOADS['/api/watch-health']); }),
     http.get('/api/push/state', async ({ request }) => { await note(request); return HttpResponse.json(PAYLOADS['/api/push/state']); }),
+    http.get('/api/watches/dma', async ({ request }) => { await note(request); return HttpResponse.json(PAYLOADS['/api/watches/dma']); }),
     post('/api/watches/delete'),
     post('/api/watches/channels'),
     post('/api/push/unsubscribe'),
@@ -221,10 +222,10 @@ describe('watch inbox parity', () => {
       await screen.findByTestId('planwatch-watch-retired');
 
       const reads = new Set(seen.filter(entry => entry.method === 'GET').map(entry => entry.path));
-      expect(reads).toEqual(new Set(['/api/plans', '/api/watches', '/api/outbox', '/api/watch-health', '/api/push/state']));
+      expect(reads).toEqual(new Set(['/api/plans', '/api/watches', '/api/outbox', '/api/watch-health', '/api/push/state', '/api/watches/dma']));
       expect(retired('/api/watches/delete')).toHaveLength(1);
       expect(seen.filter(entry => entry.token !== TOKEN)).toEqual([]);
-      await waitFor(() => expect(seen.length).toBeGreaterThanOrEqual(6));
+      await waitFor(() => expect(seen.length).toBeGreaterThanOrEqual(7));
     } finally {
       cleanup();
     }

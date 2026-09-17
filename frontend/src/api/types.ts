@@ -126,6 +126,72 @@ export type Chart = {
   [key: string]: unknown;
 };
 
+/* A value the engine computed from retrieved facts. `kind`/`operation` say what kind of computation it is;
+   the method, interpretation, input ids and source ids are the engine's own words about how it was made. */
+export type Calculation = {
+  kind?: string;
+  operation?: string;
+  label?: string;
+  value?: string | number;
+  unit?: string | null;
+  method?: string;
+  expression?: string;
+  interpretation?: string;
+  input_ids?: string[];
+  source_ids?: string[];
+  sample_count?: number;
+  task_id?: string;
+  [key: string]: unknown;
+};
+
+/* An airport report the engine retrieved: the raw text as the source transmitted it, the kind this product
+   read (metar is an observation with an observed time, taf is a forecast with a validity interval) and the
+   instants the report carried. */
+export type AirportReport = {
+  station?: string;
+  kind?: string;
+  raw_report?: string;
+  source_locator?: string;
+  citation_ids?: string[];
+  observed_at?: string | null;
+  valid_start?: string | null;
+  valid_end?: string | null;
+  [key: string]: unknown;
+};
+
+/* One day of an IMD district warning product as the engine's parser states it. A day the product leaves
+   unlabelled or uncoloured is absent here rather than defaulted by a surface. */
+export type WarningDay = {
+  day?: number;
+  label?: string;
+  colour?: string | null;
+  colour_code?: number | null;
+  quiet?: boolean;
+  hazards?: string[];
+  source_text?: string;
+  starts_utc?: string | null;
+  ends_utc?: string | null;
+  [key: string]: unknown;
+};
+
+export type DistrictWarningEntry = {
+  place?: string;
+  district?: string;
+  issued_at_utc?: string | null;
+  days?: WarningDay[];
+  [key: string]: unknown;
+};
+
+export type WarningEvidenceEntry = {
+  records?: unknown[];
+  latest_sent?: string | null;
+  assessment?: { eligible_by_lifecycle?: number; all_clear?: boolean; [key: string]: unknown } | null;
+  district_warnings?: DistrictWarningEntry[];
+  stale_districts?: { place?: string; district?: string; issued_at_utc?: string | null }[];
+  points_outside_districts?: string[];
+  [key: string]: unknown;
+};
+
 export type Passage = {
   id?: string;
   text?: string;
@@ -164,10 +230,11 @@ export type AnswerPacket = {
   resolved_points?: Record<string, ResolvedPoint>;
   pending_slots?: { name?: string; question?: string; [key: string]: unknown }[];
   charts?: Chart[];
-  calculations?: { label?: string; value?: string; method?: string; inputs?: unknown }[];
+  calculations?: Calculation[];
   document_evidence?: Passage[];
   passages?: Passage[];
-  airport_reports?: Record<string, unknown>[];
+  airport_reports?: AirportReport[];
+  warning_evidence?: WarningEvidenceEntry[];
   refresh?: { state?: string; job_id?: string; worker_state?: string; message?: string; [key: string]: unknown } | null;
   warnings?: unknown;
   [key: string]: unknown;

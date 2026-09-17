@@ -289,9 +289,9 @@ const WATCH_CHECK = {
   results: [{ id: 'w1', state: 'checked_no_match', matched: false, detail: 'No current day matches; this is not an all-clear.' }],
 };
 
-/* The plan/watch panel also reads the outbox, the watch-health and the push state. The vanilla suite has no
-   recorded payload for those three routes (its panel read the same views from a single notify body), so they
-   are the smallest bodies the panel renders without inventing a value. */
+/* The plan/watch panel also reads the outbox, the watch-health, the push state and the delivery aggregate.
+   The vanilla suite has no recorded payload for those four routes (its panel read the same views from a
+   single notify body), so they are the smallest bodies the panel renders without inventing a value. */
 const OUTBOX = { schema_version: 'outbox-v1', delivery: 'local_inbox_only_no_push', note: 'Nothing has been dispatched from this machine.', notifications: [] };
 
 const WATCH_HEALTH = {
@@ -306,6 +306,12 @@ const WATCH_HEALTH = {
 
 const PUSH_STATE = { schema_version: 'push-state-v1', subscriptions: { active: 0 } };
 
+const WATCH_DMA = {
+  schema_version: 'watch-dma-v2',
+  note: 'Counts of local notifications and the responses owners sent back, broken down by official source.',
+  places: [],
+};
+
 function planWatchHandlers(onPlanCheck: () => void, onWatchCheck: () => void) {
   return [
     http.get('/api/plans', () => HttpResponse.json(PLANS)),
@@ -313,6 +319,7 @@ function planWatchHandlers(onPlanCheck: () => void, onWatchCheck: () => void) {
     http.get('/api/outbox', () => HttpResponse.json(OUTBOX)),
     http.get('/api/watch-health', () => HttpResponse.json(WATCH_HEALTH)),
     http.get('/api/push/state', () => HttpResponse.json(PUSH_STATE)),
+    http.get('/api/watches/dma', () => HttpResponse.json(WATCH_DMA)),
     http.post('/api/plans/check', () => {
       onPlanCheck();
       return HttpResponse.json(PLAN_CHECK);

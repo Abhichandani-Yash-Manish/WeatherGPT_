@@ -6,12 +6,14 @@
 
    Every value below is a value a route returned: /api/plans for saved plans, their notifications and
    the plan watcher; /api/watches for the registered watch requests and the products they are checked
-   against; /api/outbox for the delivery rows; /api/watch-health for the supervision truth; and
-   /api/push/state for the consented browser-push record. The panel's own words are about what it does
-   and does not do. It publishes nothing, sends nothing to anyone else, and no result here is an
+   against; /api/outbox for the delivery rows and /api/outbox/<id>/ack for a reader's answer to one of
+   them; /api/watches/dma for the per-place delivery aggregate; /api/watch-health for the supervision
+   truth; /api/watches/create for registering one watch from explicit coordinates; and /api/push/state
+   with /api/push/subscribe for the consented browser-push record. The panel's own words are about what
+   it does and does not do. It publishes nothing, sends nothing to anyone else, and no result here is an
    all-clear. */
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { ReactNode } from 'react';
+import { useState, type FormEvent, type ReactNode } from 'react';
 import { ApiError, getJson, postJson } from '../api/client';
 import { count, orNot, shortHash } from '../lib/format';
 import { istStamp } from '../lib/time';
@@ -163,9 +165,50 @@ type PushSubscribeView = { schema_version?: string; subscribed?: boolean; id?: s
                            duplicate?: boolean; detail?: string };
 type PushUnsubscribeView = { endpoint?: string; revoked?: number; channels_removed?: string[] };
 
+/* The acknowledgement route returns the store's own record of the answer. */
+type OutboxAckView = { schema_version?: string; id?: string; state?: string; response?: string; feedback_id?: string };
+
+/* The create route stores exactly the coordinates it was sent and resolves no district itself. */
+type WatchCreateView = {
+  schema_version?: string;
+  id?: string;
+  state?: string;
+  hazard?: string;
+  connected?: boolean;
+  place?: { name?: string; label?: string; district?: string; state?: string };
+  delivery?: string;
+  detail?: string;
+};
+
+type WatchDmaSource = { notifications?: number; acked?: number };
+
+type WatchDmaPlace = {
+  place?: string;
+  watches?: number;
+  notifications?: number;
+  acked?: number;
+  safe?: number;
+  need_help?: number;
+  evacuating?: number;
+  seen?: number;
+  unacked?: number;
+  sources?: Record<string, WatchDmaSource>;
+};
+
+type WatchDmaView = { schema_version?: string; note?: string; places?: WatchDmaPlace[] };
+
 /* The outbox's own states, in the order the store declares them; a row's state is always printed as
    the string the payload returned, never mapped onto a friendlier word. */
 const OUTBOX_STATES = ['created', 'queued', 'claimed', 'sent', 'failed', 'dead', 'acked', 'gone'];
+
+/* The answers the outbox store accepts, in the order weathergpt_data/outbox.py declares them. Each one is
+   the reader's report of what they did, never an instruction to anyone else. */
+const ACK_ANSWERS: [string, string][] = [
+  ['safe', 'Safe'],
+  ['need_help', 'Need help'],
+  ['evacuating', 'Evacuating'],
+  ['seen', 'Seen'],
+];
 const KIND_WORDS: Record<string, string> = { change: 'Change', check_in: 'Evening check-in', degraded: 'Watch degraded' };
 
 function kindWords(kind?: string): string {
@@ -255,6 +298,14 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
   const outbox = useQuery({ queryKey: ['outbox'], queryFn: () => getJson<OutboxView>('/api/outbox'), retry: false });
   const health = useQuery({ queryKey: ['watch-health'], queryFn: () => getJson<WatchHealthView>('/api/watch-health'), retry: false });
   const push = useQuery({ queryKey: ['push-state'], queryFn: () => getJson<PushStateView>('/api/push/state'), retry: false });
+  const dma = useQuery({ queryKey: ['watches-dma'], queryFn: () => getJson<WatchDmaView>('/api/watches/dma'), retry: false });
+
+  /* The coordinate form keeps what was typed: the route stores the name and coordinates as given and
+     refuses what it cannot read, so nothing here parses a coordinate or resolves a district first. */
+  const [placeName, setPlaceName] = useState('');
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState('');
+  const [hazard, setHazard] = useState('');
 
   const checkPlans = useMutation({
     mutationFn: () => postJson<PlanCheckView>('/api/plans/check', {}),
@@ -288,8 +339,27 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
     retry: false,
     onSuccess: () => { void client.invalidateQueries({ queryKey: ['watches'] }); },
   });
+  const acknowledge = useMutation({
+    mutationFn: (input: { row: OutboxRow; response: string }) =>
+      postJson<OutboxAckView>('/api/outbox/' + String(input.row.id) + '/ack', { response: input.response }),
+    retry: false,
+    onSuccess: () => {
+      void client.invalidateQueries({ queryKey: ['outbox'] });
+      void client.invalidateQueries({ queryKey: ['watch-health'] });
+      void client.invalidateQueries({ queryKey: ['watches-dma'] });
+    },
+  });
+  const createWatch = useMutation({
+    mutationFn: (input: { place: { name: string; latitude: string; longitude: string }; hazard: string | null }) =>
+      postJson<WatchCreateView>('/api/watches/create', input),
+    retry: false,
+    onSuccess: () => {
+      void client.invalidateQueries({ queryKey: ['watches'] });
+      void client.invalidateQueries({ queryKey: ['watches-dma'] });
+    },
+  });
   const subscribePush = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (watch: WatchRow | null) => {
       const unsupported = browserPushSupport();
       if (unsupported) throw new Error('This browser cannot take a push subscription: ' + unsupported + '.');
       if (Notification.permission === 'denied') {
@@ -308,7 +378,8 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
       });
       const raw = subscription.toJSON();
       return postJson<PushSubscribeView>('/api/push/subscribe', {
-        endpoint: raw.endpoint, keys: raw.keys || {}, expirationTime: raw.expirationTime ?? null, watch_id: null,
+        endpoint: raw.endpoint, keys: raw.keys || {}, expirationTime: raw.expirationTime ?? null,
+        watch_id: watch?.id ?? null,
       });
     },
     retry: false,
@@ -344,6 +415,53 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
   const planWatcher = healthData?.plan_watcher;
   const pushCounts = push.data?.subscriptions;
   const support = browserPushSupport();
+  const dmaView = dma.data;
+  const dmaPlaces = dmaView?.places || [];
+  const dmaSourceRows: ReactNode[][] = [];
+  dmaPlaces.forEach(place => {
+    const sources = place.sources || {};
+    Object.keys(sources).sort().forEach(source => {
+      const cell = sources[source] || {};
+      dmaSourceRows.push([
+        orNot(place.place, 'place not returned'),
+        source,
+        orNot(cell.notifications),
+        orNot(cell.acked),
+      ]);
+    });
+  });
+
+  /* The acknowledgement control is offered only where the store can take one: a row the payload states
+     is sent, with the identifier the route needs. Everything else is stated as it is. */
+  const acknowledgeCell = (row: OutboxRow): ReactNode => {
+    if (row.state !== 'sent') {
+      return (
+        <span className="module-note">
+          only a sent row can be acknowledged; this row is {orNot(row.state, 'state not returned')}
+        </span>
+      );
+    }
+    if (!row.id) {
+      return <span className="module-note">this row returned no identifier, so no acknowledgement can be recorded for it</span>;
+    }
+    return (
+      <span className="planwatch-row">
+        {ACK_ANSWERS.map(([answer, label]) => (
+          <button key={answer} type="button" className="btn btn-ghost"
+                  disabled={acknowledge.isPending && acknowledge.variables?.row.id === row.id && acknowledge.variables?.response === answer}
+                  aria-label={label + ' for notification ' + shortHash(String(row.id), 8)}
+                  onClick={() => acknowledge.mutate({ row, response: answer })}>
+            {label}
+          </button>
+        ))}
+      </span>
+    );
+  };
+
+  const submitCreateWatch = (event: FormEvent<HTMLFormElement>): void => {
+    event.preventDefault();
+    createWatch.mutate({ place: { name: placeName, latitude, longitude }, hazard: hazard || null });
+  };
 
   const receiptRows: ReactNode[][] = [];
   notifications.forEach(item => {
@@ -508,12 +626,19 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
               The watch read's own note: {orNot(watches.data.note, 'this read returned no note')}
             </p>
             <p className="module-note">
-              A watch is registered in a conversation and checked only when asked; this panel does not create one.
-              Channels are replaced here, and adding web_push needs an active push subscription on this machine first.
+              A watch is registered in a conversation or with the explicit-coordinates form below, and it is checked
+              only when the workspace is asked. Channels are replaced here, and adding web_push needs an active push
+              subscription on this machine first.
             </p>
             <p className="module-note">
               Products this read states the watches are checked against:{' '}
               {checkedProducts.length ? checkedProducts.join(', ') : 'this read named none'}
+            </p>
+            <p className="module-note" data-testid="planwatch-watch-push-binding-note">
+              Push to a watch binds this browser's push subscription to that one watch through POST
+              /api/push/subscribe: the route stores the watch_id with the subscription. The binding delivers nothing
+              by itself; the route's own returned state is what this panel shows, and a stored subscription is a
+              consent record, not a delivery.
             </p>
             {watchRows.length ? (
               <DataTable
@@ -543,6 +668,14 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
                               onClick={() => setChannels.mutate({ id: watch.id, channels: withWebPush(watch.channels, !hasPush) })}>
                         {hasPush ? 'Disable push' : 'Enable push'}
                       </button>
+                      {!hasPush ? (
+                        <button type="button" className="btn btn-ghost"
+                                disabled={subscribePush.isPending && subscribePush.variables?.id === watch.id}
+                                aria-label={'Push to ' + placeWords(watch)}
+                                onClick={() => subscribePush.mutate(watch)}>
+                          Push to {placeWords(watch)}
+                        </button>
+                      ) : null}
                       <span className="module-note">
                         consent as stored: {watch.consent_record ? Object.keys(watch.consent_record).join(', ') || 'none recorded' : NOT_RECORDED}
                       </span>
@@ -552,8 +685,8 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
               />
             ) : (
               <p className="module-note" data-testid="planwatch-watches-empty">
-                This read returned no watch request: {NO_ROW}. Watching starts in a conversation ("notify me if ..."), and
-                an empty list means nothing is being checked.
+                This read returned no watch request: {NO_ROW}. Watching starts in a conversation ("notify me if ...") or
+                with the coordinates form below, and an empty list means nothing is being checked.
               </p>
             )}
             {retireWatch.data ? (
@@ -581,6 +714,72 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
                 <button type="button" className="btn" onClick={() => setChannels.mutate(setChannels.variables ?? { channels: [] })}>Retry this channel change</button>
               </div>
             ) : null}
+            {subscribePush.data && subscribePush.variables ? (
+              <p className="module-note" role="status" data-testid="planwatch-watch-push-bound">
+                The workspace answered for the binding: {orNot(subscribePush.data.detail, 'this route returned no detail line')}{' '}
+                It returns subscribed: {orNot(subscribePush.data.subscribed)}, subscription{' '}
+                {shortHash(String(subscribePush.data.id ?? ''), 8)}, watch_id as returned{' '}
+                {orNot(subscribePush.data.watch_id, 'no watch binding')}, duplicate as returned{' '}
+                {orNot(subscribePush.data.duplicate)}. This binds this browser's subscription to one watch; it delivers
+                nothing by itself, and the route's own state is what this panel shows.
+              </p>
+            ) : null}
+            {subscribePush.isError && subscribePush.variables ? (
+              <div role="alert" className="module-failure">
+                <p className="reading">{browserSentence(subscribePush.error)}</p>
+                <p className="module-note">The binding did not complete; the sentence above is the browser's or the route's own.</p>
+                <button type="button" className="btn"
+                        onClick={() => { if (subscribePush.variables) subscribePush.mutate(subscribePush.variables); }}>
+                  Retry this binding
+                </button>
+              </div>
+            ) : null}
+            <h4 className="planwatch-subhead">Register a watch for explicit coordinates</h4>
+            <p className="module-note" data-testid="planwatch-create-note">
+              This form registers one watch for this machine. The name and coordinates are stored exactly as typed: no
+              gazetteer lookup runs here and this form turns no coordinate into a district. The engine resolves names
+              when a question is asked, and the watch is checked against the published district warning product only,
+              when a check is asked for.
+            </p>
+            <form className="planwatch-actions" data-testid="planwatch-create" onSubmit={submitCreateWatch}>
+              <label className="module-field">
+                <span>Watch place name</span>
+                <input type="text" value={placeName} onChange={event => setPlaceName(event.target.value)} />
+              </label>
+              <label className="module-field">
+                <span>Latitude</span>
+                <input type="text" inputMode="decimal" value={latitude} onChange={event => setLatitude(event.target.value)} />
+              </label>
+              <label className="module-field">
+                <span>Longitude</span>
+                <input type="text" inputMode="decimal" value={longitude} onChange={event => setLongitude(event.target.value)} />
+              </label>
+              <label className="module-field">
+                <span>Hazard to watch (optional)</span>
+                <input type="text" value={hazard} onChange={event => setHazard(event.target.value)} />
+              </label>
+              <button type="submit" className="btn" disabled={createWatch.isPending}>Register watch</button>
+            </form>
+            {createWatch.data ? (
+              <p className="module-note" role="status" data-testid="planwatch-watch-created">
+                The workspace answered: watch {shortHash(String(createWatch.data.id ?? ''), 8)} is returned state{' '}
+                {orNot(createWatch.data.state, 'state not returned')}, hazard as returned{' '}
+                {orNot(createWatch.data.hazard, 'hazard not returned')}, connected as returned{' '}
+                {createWatch.data.connected === undefined ? NOT_RECORDED : String(createWatch.data.connected)}, place as
+                returned {orNot(createWatch.data.place?.label || createWatch.data.place?.name, 'place not returned')}.
+                Its own detail line: {orNot(createWatch.data.detail, 'this read returned no detail line')}
+              </p>
+            ) : null}
+            {createWatch.isError ? (
+              <div role="alert" className="module-failure">
+                <p className="reading">{failureSentence(createWatch.error)}</p>
+                <p className="module-note">The route refused this registration; its own sentence is printed above, and nothing was registered.</p>
+                <button type="button" className="btn"
+                        onClick={() => { if (createWatch.variables) createWatch.mutate(createWatch.variables); }}>
+                  Retry this registration
+                </button>
+              </div>
+            ) : null}
           </>
         ) : null}
       </section>
@@ -597,8 +796,8 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
             {outboxRows.length ? (
               <DataTable
                 testId="planwatch-outbox"
-                caption="Every delivery row this read returned, with its state exactly as the payload returned it."
-                columns={['Notification', 'Watch', 'Channel', 'State', 'Retries', 'Updated', 'Last error']}
+                caption="Every delivery row this read returned, with its state exactly as the payload returned it, and the acknowledgement control only where the store accepts one."
+                columns={['Notification', 'Watch', 'Channel', 'State', 'Retries', 'Updated', 'Last error', "Reader's acknowledgement"]}
                 rows={outboxRows.map(row => [
                   shortHash(String(row.id ?? ''), 8),
                   shortHash(String(row.watch_id ?? ''), 8),
@@ -608,6 +807,7 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
                   row.updated_at ? istStamp(row.updated_at) : NOT_RECORDED,
                   orNot(row.last_error, 'no error recorded') +
                     (row.error_class ? ' · ' + row.error_class : ''),
+                  acknowledgeCell(row),
                 ])}
               />
             ) : (
@@ -617,10 +817,92 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
                 only record of what happened to a notification.
               </p>
             )}
+            {outboxRows.length ? (
+              <p className="module-note" data-testid="planwatch-ack-what-it-means">
+                An acknowledgement belongs to a sent row and is the reader telling this workspace what they did: the
+                answer is recorded against that notification in this machine's own feedback store. It is not an
+                instruction to anyone else, no emergency service is contacted, and it says nothing about whether anyone
+                else saw the notice.
+              </p>
+            ) : null}
+            {acknowledge.data ? (
+              <p className="module-note" role="status" data-testid="planwatch-ack-recorded">
+                The workspace answered: notification {shortHash(String(acknowledge.data.id ?? ''), 8)} is returned state{' '}
+                {orNot(acknowledge.data.state, 'state not returned')}, response as returned{' '}
+                {orNot(acknowledge.data.response, 'response not returned')}, feedback_id as returned{' '}
+                {orNot(acknowledge.data.feedback_id, 'no feedback row returned')}. That is this workspace recording the
+                reader's own answer; nothing was sent to anyone else.
+              </p>
+            ) : null}
+            {acknowledge.isError ? (
+              <div role="alert" className="module-failure">
+                <p className="reading">{failureSentence(acknowledge.error)}</p>
+                <p className="module-note">The acknowledgement was not recorded; the route's own sentence is printed above.</p>
+                <button type="button" className="btn"
+                        onClick={() => { if (acknowledge.variables) acknowledge.mutate(acknowledge.variables); }}>
+                  Retry this acknowledgement
+                </button>
+              </div>
+            ) : null}
             <p className="module-note">
               States are the store's own: {OUTBOX_STATES.join(', ')}. The channel and state on each row are this
               machine's record of what happened to that notification and the only record there is: a channel that is not
               connected fails rather than being reported as sent, and this panel adds no claim of its own about any row.
+            </p>
+          </>
+        ) : null}
+      </section>
+
+      <section className="module-section" data-testid="planwatch-dma-section">
+        <h3>Delivery by place and source</h3>
+        {dma.isPending ? <Reading what="the delivery aggregate" /> : null}
+        {dma.isError ? <Failure error={dma.error} what="delivery aggregate" onRetry={() => { void dma.refetch(); }} /> : null}
+        {dmaView ? (
+          <>
+            <p className="module-note" data-testid="planwatch-dma-note">
+              The aggregate read's own note: {orNot(dmaView.note, 'this read returned no note')}
+            </p>
+            {dmaPlaces.length ? (
+              <>
+                <DataTable
+                  testId="planwatch-dma-places"
+                  caption="The per-place aggregate this read returned, with the payload's own counts and nothing averaged or inferred."
+                  columns={['place', 'watches', 'notifications', 'acked', 'safe', 'need_help', 'evacuating', 'seen', 'unacked']}
+                  rows={dmaPlaces.map(place => [
+                    orNot(place.place, 'place not returned'),
+                    orNot(place.watches),
+                    orNot(place.notifications),
+                    orNot(place.acked),
+                    orNot(place.safe),
+                    orNot(place.need_help),
+                    orNot(place.evacuating),
+                    orNot(place.seen),
+                    orNot(place.unacked),
+                  ])}
+                />
+                {dmaSourceRows.length ? (
+                  <DataTable
+                    testId="planwatch-dma-sources"
+                    caption="The per-source counts the payload carries inside each place, with the source identifiers as returned."
+                    columns={['place', 'source', 'notifications', 'acked']}
+                    rows={dmaSourceRows}
+                  />
+                ) : (
+                  <p className="module-note">
+                    No place in this read carried a per-source count, so no source row is shown.
+                  </p>
+                )}
+              </>
+            ) : (
+              <p className="module-note" data-testid="planwatch-dma-empty">
+                No aggregate row came back with this read: {NO_ROW}. Nothing is counted because no notification row
+                exists on this machine yet; an empty aggregate is not evidence that delivery works.
+              </p>
+            )}
+            <p className="module-note" data-testid="planwatch-dma-limit">
+              A count is not a receipt: it does not prove a device showed the notice, and an unacknowledged row may
+              still have been delivered. This table counts rows this machine produced; it is never a delivery claim, and
+              nothing in it leaves this machine.
             </p>
           </>
         ) : null}
@@ -762,7 +1044,7 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
               when you press a control below.
             </p>
             <div className="planwatch-actions">
-              <button type="button" className="btn" disabled={subscribePush.isPending} onClick={() => subscribePush.mutate()}>
+              <button type="button" className="btn" disabled={subscribePush.isPending} onClick={() => subscribePush.mutate(null)}>
                 Subscribe this browser for push
               </button>
               <button type="button" className="btn btn-ghost" disabled={unsubscribePush.isPending} onClick={() => unsubscribePush.mutate()}>
@@ -771,7 +1053,7 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
             </div>
           </>
         )}
-        {subscribePush.data ? (
+        {subscribePush.data && !subscribePush.variables ? (
           <p className="module-note" role="status" data-testid="planwatch-push-subscribed">
             The workspace answered: {orNot(subscribePush.data.detail, 'this read returned no detail line')} It returns
             subscribed: {orNot(subscribePush.data.subscribed)}, subscription {shortHash(String(subscribePush.data.id ?? ''), 8)},
@@ -779,10 +1061,10 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
             not say a notification was delivered, and nothing above is a delivery claim.
           </p>
         ) : null}
-        {subscribePush.isError ? (
+        {subscribePush.isError && !subscribePush.variables ? (
           <div role="alert" className="module-failure">
             <p className="reading">{browserSentence(subscribePush.error)}</p>
-            <button type="button" className="btn" onClick={() => subscribePush.mutate()}>Retry this subscription</button>
+            <button type="button" className="btn" onClick={() => subscribePush.mutate(null)}>Retry this subscription</button>
           </div>
         ) : null}
         {unsubscribePush.data ? (

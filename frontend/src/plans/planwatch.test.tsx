@@ -129,13 +129,22 @@ const pushPayload = {
   purged_expired: 0, subscriptions: { active: 0, expired: 0, revoked: 0 },
 };
 
-function serveReads(overrides: { plans?: unknown; watches?: unknown; outbox?: unknown; health?: unknown; push?: unknown } = {}) {
+/* The aggregate route's own note, read from the recorded payload in tests/test_notify_ui.js. This suite
+   does not test the aggregate itself; it serves the read so a panel mount is not an unhandled request. */
+const dmaPayload = {
+  schema_version: 'watch-dma-v2',
+  note: 'Counts of local notifications and the responses owners sent back, broken down by official source.',
+  places: [],
+};
+
+function serveReads(overrides: { plans?: unknown; watches?: unknown; outbox?: unknown; health?: unknown; push?: unknown; dma?: unknown } = {}) {
   server.use(
     http.get('/api/plans', () => HttpResponse.json(overrides.plans ?? plansPayload)),
     http.get('/api/watches', () => HttpResponse.json(overrides.watches ?? watchesPayload)),
     http.get('/api/outbox', () => HttpResponse.json(overrides.outbox ?? emptyOutbox)),
     http.get('/api/watch-health', () => HttpResponse.json(overrides.health ?? healthPayload)),
     http.get('/api/push/state', () => HttpResponse.json(overrides.push ?? pushPayload)),
+    http.get('/api/watches/dma', () => HttpResponse.json(overrides.dma ?? dmaPayload)),
   );
 }
 
