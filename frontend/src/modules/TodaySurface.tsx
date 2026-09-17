@@ -13,6 +13,8 @@ import type { Envelope, NowReading } from '../api/types';
 import { count, orNot } from '../lib/format';
 import { istStamp } from '../lib/time';
 import { viewById } from '../shell/views';
+import { VizFigure } from '../charts/VizFigure';
+import { nowBandSpec } from '../charts/vizSpecs';
 import {
   EvidenceFooter, ColourTag, DataTable, Facts, Failure, NO_ROW, NOT_RECORDED, PlacePicker, Reading,
   SurfaceShell, type PlaceChoice,
@@ -257,6 +259,16 @@ export function Surface(): JSX.Element {
      overview read failed) is pending with an idle fetch, and claiming it is being read would be untrue. */
   const stillReading = warnings.isPending && warnings.fetchStatus !== 'idle';
   const reading = now.data?.data;
+  /* The three lanes the vanilla Today drew on one axis, from this same read: an observation is an
+     instant, the published day is a district window, and the model hours are model output. */
+  const band = useMemo(
+    () => (reading
+      ? nowBandSpec(reading as never, place?.label || null,
+          'Three products on one axis, kept apart: an observation is an instant, the published day is a district ' +
+          'window, and the model hours are model output.')
+      : null),
+    [reading, place],
+  );
   const hours = reading?.next_hours;
   const inForce = reading?.in_force;
   const unit = hours?.unit || {};
@@ -562,6 +574,7 @@ export function Surface(): JSX.Element {
               testId="today-place"
               rows={[['Place read', place.label ? place.label : 'label not recorded'], ['Coordinates', place.latitude + ', ' + place.longitude]]}
             />
+            {band ? <VizFigure kind="nowBand" spec={band} /> : null}
             <h3>Observed</h3>
             <Facts rows={stationFacts(reading)} />
             <h3>In force</h3>

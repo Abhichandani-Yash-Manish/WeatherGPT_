@@ -46,7 +46,8 @@ PRODUCT_PATHS = ('/api/overview', '/api/warnings/national', '/api/warnings/place
                  '/api/forecast', '/api/forecast/changes', '/api/marine', '/api/river', '/api/aviation', '/api/places/search',
                  '/api/map/layers', '/api/warnings/cap', '/api/warnings/alert-brief', '/api/settings/capabilities',
                  '/api/climate/index', '/api/climate/series', '/api/advisories/states',
-                 '/api/advisories/districts', '/api/personas', '/api/now', '/api/ensemble', '/api/air-quality',
+                 '/api/advisories/districts', '/api/advisories/holdings',
+                 '/api/personas', '/api/now', '/api/ensemble', '/api/air-quality',
                  '/api/corpus', '/api/verification')
 _REGISTRY = {'path': None, 'mtime': None, 'products': {}}
 
@@ -1207,8 +1208,38 @@ def advisory_districts(foundation, state, language='en'):
                     not_established=['A listed district is a directory entry, not proof of a current bulletin.'])
 
 
+def advisory_holdings(foundation, family='district_agromet', state=None, query=None, limit=200):
+    """The advisory editions this machine holds, one row per published region.
+
+    The advisories surface showed the publisher's directory and nothing else, so a reader could see 36
+    states listed and find no advisory text on the page while 571 district editions and 6,187 passages were
+    indexed here. This view is the holdings half: region, state, the edition's own printed date, its measured
+    age, its passage count and the documents carrying it. It is an inventory of what is ingested, not a
+    coverage claim, and a region whose edition states no printed date keeps that unknown.
+    """
+    from . import corpus_overview
+    packet = corpus_overview.holdings(foundation.store.root, family=(family or 'district_agromet'),
+                                      state=state, query=query, limit=limit)
+    counts = packet.get('counts') or {}
+    source_ids = sorted({sid for region in packet.get('regions') or [] for sid in (region.get('source_ids') or [])})
+    return envelope('advisories.holdings', packet.get('status') or 'unavailable',
+                    {'regions': packet.get('regions') or [], 'states': packet.get('states') or [],
+                     'families': packet.get('families') or [], 'counts': counts,
+                     'filters': packet.get('filters') or {}},
+                    sources=[source_entry(source_id, {}) for source_id in source_ids],
+                    coverage={'regions': counts.get('regions'), 'regions_listed': counts.get('regions_listed'),
+                              'documents': counts.get('documents'), 'passages': counts.get('passages'),
+                              'states_named': counts.get('states_named'),
+                              'regions_without_a_printed_issue_date': counts.get('regions_without_a_printed_issue_date')},
+                    limitations=([packet.get('reason')] if packet.get('reason') else []) + [
+                        'An indexed edition is what this machine ingested, not proof that the publisher issued one today.',
+                        'Currency is measured from the edition printed issue date against its own retrieval instant, and stays unknown when the document states no printed date.'],
+                    not_established=['A holding is not a current advisory: the printed edition may be days old and its forecast window may have ended.',
+                                     'No passage, crop or growth stage is asserted by this inventory.'])
+
+
 ADVISORY_EXTRA_PATHS = ('/api/warnings/cap', '/api/warnings/alert-brief', '/api/settings/capabilities', '/api/climate/index', '/api/climate/series',
-                        '/api/advisories/states', '/api/advisories/districts')
+                        '/api/advisories/states', '/api/advisories/districts', '/api/advisories/holdings')
 
 
 def dispatch_extra(foundation, path, params):
@@ -1239,4 +1270,7 @@ def dispatch_extra(foundation, path, params):
         return advisory_states(foundation, _first(params, 'language', 'en'))
     if path == '/api/advisories/districts':
         return advisory_districts(foundation, _first(params, 'state'), _first(params, 'language', 'en'))
+    if path == '/api/advisories/holdings':
+        return advisory_holdings(foundation, _first(params, 'family', 'district_agromet'), _first(params, 'state'),
+                                 _first(params, 'q'), _int(params, 'limit') or 200)
     raise SourceError('Unknown product view')

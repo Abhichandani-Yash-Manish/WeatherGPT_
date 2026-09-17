@@ -1,7 +1,7 @@
 /* Forecast: the model series for one point, each parameter as its own table, and the changed-edition
    view of stored retrievals for the same point. Two routes, one product family: a model forecast is
    not an observation, and a change between two retrievals is not skill. */
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getJson, withQuery } from '../api/client';
 import type { Envelope } from '../api/types';
@@ -9,6 +9,8 @@ import { count, orNot } from '../lib/format';
 import { istStamp } from '../lib/time';
 import { viewById } from '../shell/views';
 import { ChartBlock } from '../charts/ChartBlock';
+import { VizFigure } from '../charts/VizFigure';
+import { meteogramSpec } from '../charts/vizSpecs';
 import { DataTable, EvidenceFooter, Failure, Facts, NO_ROW, NOT_RECORDED, PlacePicker, Reading, SurfaceShell, type PlaceChoice } from './Evidence';
 
 type Point = { unit?: string | null; points?: { t?: string | null; v?: number | null }[] };
@@ -62,6 +64,10 @@ export function Surface(): JSX.Element {
   });
 
   const data = forecast.data?.data;
+
+  /* The meteogram spec is built from the same returned series the parameter tables read, so the figure and
+     the tables can never disagree about a value. */
+  const meteogram = useMemo(() => meteogramSpec(data?.parameters || {}), [data]);
   const parameters = Object.entries(data?.parameters || {});
   const changeData = changes.data?.data;
 
@@ -108,6 +114,19 @@ export function Surface(): JSX.Element {
           />
         )}
       </section>
+
+      {place && !forecast.isPending && !forecast.isError && meteogram ? (
+  <section className="module-section">
+          <h2>Meteogram</h2>
+          <p className="module-note">
+            Temperature, precipitation and wind on one time axis, drawn by the chart engine this build serves. A gap
+            is a source gap: nothing is interpolated, and a zero bar is a returned zero. Night hours are shaded by the
+            IST clock.
+          </p>
+          <VizFigure kind="meteogram" spec={meteogram} />
+        </section>
+
+      ) : null}
 
       {place && !forecast.isPending && !forecast.isError ? (
         <section className="module-section">

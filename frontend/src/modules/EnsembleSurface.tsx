@@ -3,13 +3,15 @@
    those runs at that cell and instant, and it is not a probability of the outcome at your place, not a
    confidence in the answer and not a skill score. The member count is the read's own count, never a
    completeness percentage computed here, and a member the payload did not return is absent. */
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getJson, withQuery } from '../api/client';
 import type { Envelope } from '../api/types';
 import { count, orNot } from '../lib/format';
 import { istStamp } from '../lib/time';
 import { viewById } from '../shell/views';
+import { VizFigure } from '../charts/VizFigure';
+import { ensembleFanSpec } from '../charts/vizSpecs';
 import { DataTable, Facts, NO_ROW, NOT_RECORDED, PlacePicker, SurfaceShell, type PlaceChoice } from './Evidence';
 
 type Point = { t?: string | null; v?: number | string | null; start?: string | null; end?: string | null };
@@ -75,6 +77,15 @@ export function Surface(): JSX.Element {
     else groups.push([variable, [[name, series]]]);
   });
   const spread = parameters.filter(([name]) => name.endsWith('_spread'));
+  /* The distribution figure: the shaded band is p10 to p90, the heavy line the median and the thin whiskers
+     min to max, all as the read returned them. Spread is a property of the returned runs, not a probability, a
+     confidence or a skill score. */
+  const families = groups.map(([name]) => name);
+  const chosen = variableFor(String(families[0] || ''), totals);
+  const fan = useMemo(
+    () => (chosen ? ensembleFanSpec(data?.parameters || {}, chosen, data?.model || null, totals?.[chosen], data?.statistics) : null),
+    [data, chosen, totals],
+  );
 
   return (
     <SurfaceShell
@@ -139,6 +150,18 @@ export function Surface(): JSX.Element {
           </>
         )}
       </section>
+
+      {place && !read.isPending && !read.isError && fan ? (
+        <section className="module-section" data-testid="ensemble-fan-section">
+          <h2>Member distribution</h2>
+          <p className="module-note">
+            The members this read returned, drawn as a distribution by the chart engine this build serves: the shaded
+            band is p10 to p90, the heavy line the median and the thin whiskers min to max. Spread is a property of
+            those runs, not a probability, a confidence or a skill score.
+          </p>
+          <VizFigure kind="ensembleFan" spec={fan} />
+        </section>
+      ) : null}
 
       {place && !read.isPending && !read.isError ? (
         <section className="module-section">

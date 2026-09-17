@@ -171,6 +171,27 @@ class Gazetteer:
     def preferred(cls,matches):
         return preferred_match(matches)
 
+    def district_seat(self, district, state=''):
+        """The town the catalogue itself lists as a district's administrative centre.
+
+        A district is not a point, so a district question used to be answered by asking which village to check,
+        which left "my farm is in Chhindwara district, what is the rain tomorrow" unanswered. The catalogue does
+        carry the district's own seat: GeoNames records the seat with its district in admin2 (Chhindwāra,
+        Chhindwāra, Madhya Pradesh). This returns that row and the basis, or (no row, reason) - it never invents a
+        coordinate and never substitutes a nearby city.
+        """
+        matches = self.search(district, state, '')
+        if not matches:
+            return None, 'the place catalogue holds no row under this district name'
+        wanted = norm(district)
+        for match in matches:
+            if norm(match.get('admin2') or '') == wanted:
+                return match, 'the place catalogue lists this town as the administrative centre of ' + str(district) + ' district'
+        same_name = [match for match in matches if norm(match.get('name') or '') == wanted]
+        if len(same_name) == 1:
+            return same_name[0], 'the place catalogue holds one town of this name and it is the district seat it sits in'
+        return None, 'the place catalogue does not record which of its rows is this district\'s seat'
+
     def search(self,name,state='',district=''):
         if hashlib.sha256(self.path.read_bytes()).hexdigest()!=self.expected_sha256:raise ValueError('Place catalogue changed after verification')
         con=sqlite3.connect(self.path.resolve().as_uri()+'?mode=ro',uri=True);con.row_factory=sqlite3.Row

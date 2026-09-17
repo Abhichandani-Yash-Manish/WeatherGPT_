@@ -295,7 +295,7 @@ export function EvidenceFooter({ envelope }: { envelope: Envelope<unknown> }): J
   );
 }
 
-export function SurfaceShell({ title, lead, what, envelope, busy, error, onRetry, children }: {
+export function SurfaceShell({ title, lead, what, envelope, busy, error, onRetry, children, className }: {
   title: string;
   lead: string;
   what: string;
@@ -304,13 +304,15 @@ export function SurfaceShell({ title, lead, what, envelope, busy, error, onRetry
   error?: unknown;
   onRetry?: () => void;
   children: ReactNode;
+  /* A surface may ask for its own layout class (the workspace dashboard composes its own grid). */
+  className?: string;
 }): JSX.Element {
   /* The header of every surface: the icon the rail uses, the surface's own name, its lead, and the
      envelope's own line as chips. Nothing here is a status the envelope did not state. */
   const Icon = SURFACE_ICONS[(envelope?.view || '').split('.')[0]] ?? SURFACE_ICONS[title.toLowerCase()] ?? ListChecks;
   const status = envelope?.status;
   return (
-    <section className="module fade-up" data-module={envelope?.view || title.toLowerCase()}>
+    <section className={'module fade-up' + (className ? ' ' + className : '')} data-module={envelope?.view || title.toLowerCase()}>
       <header className="module-head">
         <div className="flex items-start gap-3">
           <span className="icon-tile h-10 w-10 shrink-0" aria-hidden="true"><Icon size={20} /></span>
@@ -519,8 +521,87 @@ export function PinnedPlaces(): JSX.Element {
 
 /* The reader names a place; the catalogue answers with rows, and only a row that states coordinates
    can be read as a point. A row without coordinates is shown as one rather than resolved elsewhere. */
-export function PlacePicker({ onPick, hint }: { onPick: (place: PlaceChoice) => void; hint?: string }): JSX.Element {
+/* ---- the working place -------------------------------------------------------------------------
+   The vanilla frontend carried one working place across every surface; the port asks each surface for
+   its own, so a reader who has just read Pune on the dashboard has to name it again on Forecast. The
+   place this browser last resolved is remembered here and offered as a one-click choice beside the
+   search box (with the pins). It is an offer, never an automatic read: a surface still reads only when
+   the reader chooses a place, so nothing is fetched behind the reader's back. */
+export const PLACE_KEY = 'weathergpt.place';
+
+let sessionPlace: PlaceChoice | null = null;
+const placeListeners = new Set<() => void>();
+
+export function readWorkingPlace(): PlaceChoice | null {
+  if (sessionPlace) return sessionPlace;
+  try {
+    const raw = window.localStorage.getItem(PLACE_KEY);
+    if (!raw) return null;
+    const value: unknown = JSON.parse(raw);
+    return routablePlace(value as PinCandidate) ? (value as PlaceChoice) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function rememberPlace(place: PlaceChoice | null | undefined): void {
+  if (!place || !routablePlace(place as PinCandidate)) return;
+  const next: PlaceChoice = { label: place.label ? String(place.label) : null, latitude: Number(place.latitude), longitude: Number(place.longitude) };
+  sessionPlace = next;
+  try {
+    window.localStorage.setItem(PLACE_KEY, JSON.stringify(next));
+  } catch {
+    /* the browser refused storage: the place still serves this page load */
+  }
+  placeListeners.forEach(listener => listener());
+}
+
+export function useWorkingPlace(): PlaceChoice | null {
+  const snapshot = useSyncExternalStore(
+    listener => {
+      placeListeners.add(listener);
+      return () => placeListeners.delete(listener);
+    },
+    () => JSON.stringify(readWorkingPlace()),
+  );
+  return useMemo(() => (snapshot ? (JSON.parse(snapshot) as PlaceChoice | null) : null), [snapshot]);
+}
+
+/* ---- reading a product again from its source ----------------------------------------------------
+   Every product view takes `refresh=1`, which the vanilla surfaces exposed as "Refresh from the
+   source". The token is part of the query key, so asking again is a new read rather than a cached
+   one, and the button says which state it is in. */
+export function useSourceRefresh(): { token: number; param: Record<string, string>; ask: () => void } {
+  const [token, setToken] = useState(0);
+  return {
+    token,
+    param: token ? { refresh: '1' } : {},
+    ask: () => setToken(value => value + 1),
+  };
+}
+
+export function RefreshButton({ onClick, busy, what }: { onClick: () => void; busy?: boolean; what: string }): JSX.Element {
+  return (
+    <button type="button" className="btn btn-ghost module-refresh" onClick={onClick} disabled={busy} aria-label={'Refresh ' + what + ' from the source'}>
+      {busy ? 'Reading the source…' : 'Refresh from the source'}
+    </button>
+  );
+}
+
+/* The reader names a place; the catalogue answers with rows, and only a row that states coordinates
+   can be read as a point. A row without coordinates is shown as one rather than resolved elsewhere. */
+export function PlacePicker({ onPick, hint, clearOnPick = false }: { onPick: (place: PlaceChoice) => void; hint?: string; clearOnPick?: boolean }): JSX.Element {
   const [term, setTerm] = useState('');
+  const working = useWorkingPlace();
+  const pins = usePinnedPlaces();
+  const quick = [
+    ...(working && working.label ? [{ ...working, why: 'the place you last opened' }] : []),
+    ...pins.filter(pin => !working || pin.label !== working.label).map(pin => ({ ...pin, why: 'pinned in this browser' })),
+  ].slice(0, 5);
+  const choose = (place: PlaceChoice) => {
+    rememberPlace(place);
+    onPick(place);
+  };
   const query = term.trim();
   const field = useId();
   const rowId = field + '-row-';
@@ -543,6 +624,27 @@ export function PlacePicker({ onPick, hint }: { onPick: (place: PlaceChoice) => 
           onChange={event => setTerm(event.target.value)}
         />
       </label>
+      {quick.length ? (
+        <div className="module-place-quick" role="group" aria-label="Places this browser remembers">
+          {quick.map(place => {
+            /* The chip carries the place's own first part, and names itself for a reader: the whole label and the
+               coordinates it holds stay in its title, so a shortcut can never read as a different place. */
+            const short = String(place.label).split(', ')[0];
+            return (
+              <button
+                key={place.label}
+                type="button"
+                className="chip module-place-chip"
+                aria-label={'Read ' + short + ' again · ' + place.why}
+                title={place.label + ' · ' + place.why + ' · ' + place.latitude + ', ' + place.longitude}
+                onClick={() => { choose(place); if (clearOnPick) setTerm(''); }}
+              >
+                {short}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
       <div className="module-place-results" aria-live="polite">
         {query.length < 2 ? (
           <p className="module-note">{hint || 'The place search reads GET /api/places/search and needs at least two characters.'}</p>
@@ -565,7 +667,11 @@ export function PlacePicker({ onPick, hint }: { onPick: (place: PlaceChoice) => 
                           type="button"
                           id={rowId + index}
                           className="btn btn-ghost module-place-button"
-                          onClick={() => onPick(point)}
+                          onClick={() => {
+                            choose(point);
+                            /* A picker that heads a surface folds its list away once a row is chosen. */
+                            if (clearOnPick) setTerm('');
+                          }}
                         >
                           {label} · {where} · {point.latitude}, {point.longitude}
                         </button>

@@ -189,7 +189,23 @@ def execute_document(engine,result,plan,task,resolved=None):
         raise
     today=engine.workspace.clock().astimezone(__import__('zoneinfo').ZoneInfo('Asia/Kolkata')).date().isoformat()
     if today>doc['forecast_end'] or today<doc['issue_date']:
-        result.update(status='unavailable',answer=f"The retrieved {district} bulletin is dated {doc['issue_date']}, with forecast context {doc['forecast_start']}–{doc['forecast_end']}. It cannot answer a request for current advisory context.");return result
+        # The bulletin's forecast window has passed. A question about the published text ("what does the
+        # advisory say for cotton") is still answerable from the edition this machine holds, with its printed
+        # issue date and the staleness stated; only a request for current advisory context is refused.
+        # Measured 17 September 2026: the same question answered from the indexed edition or was refused,
+        # depending on whether the live fetch happened to succeed, and a Hindi question about cotton sowing
+        # was refused while its English twin was answered.
+        stale_sentence=(f"The retrieved {district} bulletin is dated {doc['issue_date']}, with forecast context "
+                        f"{doc['forecast_start']}–{doc['forecast_end']}, which ended before this read: its forecast half is not current. ")
+        if mode!='decision_support':
+            fallback=indexed_reading(engine,result,plan,task,district,query,stale_sentence.strip())
+            if fallback is not None:
+                fallback.setdefault('notes',[]).append(stale_sentence+
+                    'The published advisory text is served as the record it is, with the edition printed date shown; '
+                    'it is not current guidance and the current bulletin has not been retrieved.')
+                fallback['status']='partial' if fallback.get('status')=='answered' else fallback.get('status')
+                return fallback
+        result.update(status='unavailable',answer=stale_sentence+"It cannot answer a request for current advisory context.");return result
     if task.get('start_local') and (parsed(task['start_local']).date().isoformat()<doc['forecast_start'] or (parsed(task['end_local'])-timedelta(microseconds=1)).date().isoformat()>doc['forecast_end']):
         result.update(status='unavailable',answer=f"The requested dates are outside this bulletin's {doc['forecast_start']}–{doc['forecast_end']} forecast context. No applicable bulletin has been retrieved for that interval.");return result
     doc,hits,trace=index.search(state,district,query,crop,stage,request.get('topic','general'),limit=20 if request.get('selection')=='all' else 3)
@@ -220,8 +236,23 @@ def execute_document(engine,result,plan,task,resolved=None):
         result['follow_up']=('Crop growth stage, ' if not stage else '')+'the intended treatment and current field conditions are still needed for an activity-specific assessment.'
     if selection=='all':pieces.append(f"Returned {len(hits)} of {trace['candidates']} matching indexed passages.")
     if trace['candidates']>len(hits):pieces.append(f"Showing {len(hits)} of {trace['candidates']} matching source passages; this is a selected extract, not the complete bulletin.")
-    for h in hits:
-        pieces.append(f"{h['crop']} · {h['stage'] or 'stage not stated'} · page {h['page']}:\n“{h['text']}”")
+    # A printed dose instruction is quoted as the label it is, never as the district's advice. The reader
+    # gets the label wording in its own list so a dose never reads as the workspace's recommendation.
+    from .corpus_tools import clean_quoted, label_text_only
+    advice_hits = [h for h in hits if not label_text_only(h.get('text'))]
+    label_hits = [h for h in hits if label_text_only(h.get('text'))]
+    for h in advice_hits:
+        grow = ' · '.join(str(part) for part in (h.get('crop'), h.get('stage') or 'stage not stated') if part)
+        pieces.append(grow + ' · page ' + str(h['page']) + ':' + chr(10) + '“' + clean_quoted(h['text']) + '”')
+    if label_hits:
+        pieces.append('Printed product-label or dose text in this bulletin (a label, not advice):')
+        for h in label_hits:
+            grow = ' · '.join(str(part) for part in (h.get('crop'), h.get('stage')) if part)
+            pieces.append((grow + ' · ' if grow else '') + 'page ' + str(h['page']) + ':' + chr(10) + '“' + clean_quoted(h['text']) + '”')
+        pieces.append('That text is what the bulletin printed as a product label. It is not chosen, adjusted or endorsed '
+                      'here: no dose decision is made, and the product label and the local advisory decide what may be applied.')
+        result['notes'].append(str(len(label_hits)) + ' retrieved passage(s) are printed product-label or dose text and are '
+                               'quoted as the label, not as advice.')
     if context:
         pieces.append('Context from the same bulletin edition follows. These are separate source sections, not crop-specific matches or verified current official warnings. Printed warning dates and conditions are preserved; bulletin forecast dates do not extend their validity.')
         for section in context:

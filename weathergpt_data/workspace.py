@@ -575,9 +575,14 @@ class Workspace:
             return default if value in (None, '') else value
 
         region = first('region')
-        if not region:
+        state_only = first('state') if not region else None
+        if not region and not state_only:
             raise SourceError('Name the district or region whose published advice should be read; '
                               'the workspace will not guess one from a coordinate.')
+        if not region and state_only:
+            # A state on its own is a published product too (the state composite agromet bulletin), and the form
+            # offers the field. Refusing it meant the state edition could not be read from the surface at all.
+            pass
         state = first('state')
         crop = first('crop', '')
         stage = first('stage', '')

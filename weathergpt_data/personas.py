@@ -44,6 +44,16 @@ PERSONAS = (
                   'Are there warnings for the route or the coast along the way?'),
      'keeps_aside': ('An airport report describes that station, not the whole route to it.',
                      'A wave or discharge value is a model or lookup value, never an observed water level.')},
+    {'id': 'researcher',
+     'label': 'Researcher or analyst',
+     'who': 'Reads the record rather than the moment: the published district series, the archived runs and their verification, the observation network, and the editions this machine holds.',
+     'surfaces': ('climate', 'verification', 'ensemble', 'observations', 'documents', 'compare'),
+     'evidence_first': ('observation', 'forecast', 'published_advice'),
+     'starters': ('What does the published district series state across its coverage?',
+                  'How did the archived runs compare with the reanalysis for this place?',
+                  'Which editions does this machine hold, and what do their passages say about this district?'),
+     'keeps_aside': ('A trend or regression describes the published series; it is not a forecast of the next year.',
+                     'An archived run compared with reanalysis measures that comparison, not the skill of future forecasts.')},
 )
 
 PERSONA_IDS = tuple(item['id'] for item in PERSONAS)

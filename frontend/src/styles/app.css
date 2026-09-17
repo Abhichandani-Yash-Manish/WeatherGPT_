@@ -250,6 +250,12 @@ body {
   }
 }
 
+/* The aurora field is decoration and its blurred blobs are wider than the viewport: measured 18 September
+   2026, the document reported 113px of horizontal overflow at 1440 on every route although the field itself
+   is fixed, inset 0 and overflow hidden (a blur counts in the scrollable overflow). overflow-x: clip on the
+   shell removes it without creating a scroll container, so the sticky rail and topbar keep working. */
+[data-shell='react'] { overflow-x: clip; }
+
 /* ---- narrow widths ---------------------------------------------------------------------------
    Desktop web is the surface this product is measured on, and it has to remain usable when the
    window is narrow: the rail becomes a drawer, the stored-conversation column moves under the

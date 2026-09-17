@@ -186,8 +186,14 @@ class AnswerTests(unittest.TestCase):
         self.assertEqual(request['start_local'],'2026-09-14T09:30:00+05:30')
         request=understand(QUESTION.replace('09:30','23:30').replace('12:30','01:30'),NOW,'Asia/Kolkata')
         self.assertTrue(request['overnight'])
-        for question in [QUESTION.replace('09:30','25:30'),QUESTION.replace('09:30','12:30'),QUESTION.replace('tomorrow','on 2026-02-30')]:
+        for question in [QUESTION.replace('09:30','25:30'),QUESTION.replace('tomorrow','on 2026-02-30')]:
             self.assertEqual(self.ask(question)['status'],'needs_clarification')
+        # Equal clock times read as the 24 hours that follow them, which is how one whole source day is asked
+        # for: source hours start at :30, so "12:30 to 12:30" is a complete day and previously could not be
+        # requested at all (the three-day rainfall window of 17 September 2026 needed it).
+        whole=self.ask(QUESTION.replace('09:30','12:30'))
+        self.assertNotEqual(whole['status'],'needs_clarification')
+        self.assertNotEqual(whole['status'],'unavailable')
         self.assertEqual(self.ask(timezone_name='not/a/timezone')['status'],'needs_clarification')
         self.assertEqual(self.ask(QUESTION.replace('tomorrow','today'))['status'],'outside_validity')
 

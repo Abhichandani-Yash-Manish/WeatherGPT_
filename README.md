@@ -280,8 +280,8 @@ The interface states these limits instead of filling them:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 1338 Python tests
-cd frontend && npx tsc --noEmit && npm test          # 59 React suites, 329 component checks
+python3 -m pytest tests/ -q                          # 1351 Python tests
+cd frontend && npx tsc --noEmit && npm test          # 61 React suites, 340 component checks
 python3 scripts/audit_react_frontend.py              # 13 checks over the built page and its sources
 python3 scripts/audit_react_build.py                 # 11 checks over the built output
 python3 scripts/audit_port_ledger.py                 # every component check the ledger names, verified in its spec
@@ -356,6 +356,9 @@ recorded journeys, fast and slow.
 
 - [The recorded problem statement](docs/00-problem-statement.md) — the authoritative SIH26068 summary and what this team's interpretations are.
 - [The integrated PS assessment](docs/72-integrated-status-and-ps-review.md) — the requirement-by-requirement verdict and remaining gates.
+- [Satisfactory farm answers](docs/101-farm-answer-repairs.md) — the window the planner read (a spoken hour range), the daily product for a window beyond the hourly horizon, the district read at the seat its own catalogue records, and dose instructions labelled as the label rather than served as advice; the two reported questions now answer, with the checks that pin each repair.
+- [The ZIP intake, the audits and the 100-question assistant test](docs/INTEGRATION_ARCHITECTURE_AUDIT.md) — what the extracted weathergptfinal tree contained, what was intaken from its redesign (the served chart engine finally mounted, the real Workspace dashboard, the India warning map), the eight audit documents the brief asked for, and the measured results: 19 of 19 routes clean, 95 of 100 assistant questions passing with five recorded open items.
+- [The agriculture repairs](docs/100-agriculture-repairs.md) — farming questions answered from the edition this machine holds with the staleness stated, quotes taken from the sentence the question is about with label text labelled rather than advised, source rows travelling with a document answer, and the holdings view that finally shows the 571 district editions and 6,187 passages on the farm surface.
 - [The four reported defects](docs/99-reported-bugs-repairs.md) — the editions card that announced an absence the page could disprove, the district map that could not be inspected, the bubble matrix that collapsed its rows, and the map surface whose district layer had no colour to draw, each with its cause, its check and the live evidence.
 - [The aurora-glass frontend overhaul](docs/98-frontend-v2-aurora-glass.md) — the design layer, the component kit, the shell, the chat and the map deck rebuilt from the supplied reference and the four named libraries, with what was adopted from each and what was declined, and the measured bundle, audit and accessibility evidence.
 - [The final PS progress review and the closure queue](docs/93-ps-closure-queue.md) — the measured state after R6, the eight features and the cross-cutting rows with the delta each still owes, and the ordered queue with the artefact that closes each row.

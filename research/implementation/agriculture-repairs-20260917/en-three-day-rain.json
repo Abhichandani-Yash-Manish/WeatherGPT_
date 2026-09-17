@@ -1,0 +1,230 @@
+{
+ "question": "How much rain is forecast in the next three days for Nashik?",
+ "response": {
+  "status": "answered",
+  "answer": "In Nashik, for 18 Sep 2026 01:30-19 Sep 2026 01:30 IST, the forecast rainfall is 0.6 mm. For 19 Sep 2026 01:30-20 Sep 2026 01:30 IST, the forecast rainfall is 1.5 mm. For 20 Sep 2026 01:30-21 Sep 2026 00:30 IST, the forecast rainfall is 5.6 mm. Source: GFS forecast; conditions can change.",
+  "facts": [
+   {
+    "id": "t1-f1",
+    "label": "Forecast rainfall",
+    "value": "0.6",
+    "unit": "mm",
+    "place": "Nashik, Nashik Division, State of Mahārāshtra",
+    "start": "2026-09-18T01:30:00+05:30",
+    "end": "2026-09-19T01:30:00+05:30",
+    "source_id": "S21",
+    "method": "preceding_hour_sum",
+    "source_locators": [
+     "$.hourly.precipitation[21]",
+     "$.hourly.precipitation[22]",
+     "$.hourly.precipitation[23]",
+     "$.hourly.precipitation[24]",
+     "$.hourly.precipitation[25]",
+     "$.hourly.precipitation[26]",
+     "$.hourly.precipitation[27]",
+     "$.hourly.precipitation[28]",
+     "$.hourly.precipitation[29]",
+     "$.hourly.precipitation[30]",
+     "$.hourly.precipitation[31]",
+     "$.hourly.precipitation[32]",
+     "$.hourly.precipitation[33]",
+     "$.hourly.precipitation[34]",
+     "$.hourly.precipitation[35]",
+     "$.hourly.precipitation[36]",
+     "$.hourly.precipitation[37]",
+     "$.hourly.precipitation[38]",
+     "$.hourly.precipitation[39]",
+     "$.hourly.precipitation[40]",
+     "$.hourly.precipitation[41]",
+     "$.hourly.precipitation[42]",
+     "$.hourly.precipitation[43]",
+     "$.hourly.precipitation[44]"
+    ],
+    "parameter": "precipitation",
+    "entity_id": "geonames:1261731",
+    "evidence_version": "34246b5409df88ea5a8bbc6db85f2a8a3131c577eb1eb05dd7d2a5e4c3506afb",
+    "citation_ids": [
+     "t1-c-34246b5409df88ea5a8bbc6db85f2a8a3131c577eb1eb05dd7d2a5e4c3506afb"
+    ],
+    "task_id": "t1"
+   },
+   {
+    "id": "t1-f2",
+    "label": "Forecast rainfall",
+    "value": "1.5",
+    "unit": "mm",
+    "place": "Nashik, Nashik Division, State of Mahārāshtra",
+    "start": "2026-09-19T01:30:00+05:30",
+    "end": "2026-09-20T01:30:00+05:30",
+    "source_id": "S21",
+    "method": "preceding_hour_sum",
+    "source_locators": [
+     "$.hourly.precipitation[45]",
+     "$.hourly.precipitation[46]",
+     "$.hourly.precipitation[47]",
+     "$.hourly.precipitation[48]",
+     "$.hourly.precipitation[49]",
+     "$.hourly.precipitation[50]",
+     "$.hourly.precipitation[51]",
+     "$.hourly.precipitation[52]",
+     "$.hourly.precipitation[53]",
+     "$.hourly.precipitation[54]",
+     "$.hourly.precipitation[55]",
+     "$.hourly.precipitation[56]",
+     "$.hourly.precipitation[57]",
+     "$.hourly.precipitation[58]",
+     "$.hourly.precipitation[59]",
+     "$.hourly.precipitation[60]",
+     "$.hourly.precipitation[61]",
+     "$.hourly.precipitation[62]",
+     "$.hourly.precipitation[63]",
+     "$.hourly.precipitation[64]",
+     "$.hourly.precipitation[65]",
+     "$.hourly.precipitation[66]",
+     "$.hourly.precipitation[67]",
+     "$.hourly.precipitation[68]"
+    ],
+    "parameter": "precipitation",
+    "entity_id": "geonames:1261731",
+    "evidence_version": "34246b5409df88ea5a8bbc6db85f2a8a3131c577eb1eb05dd7d2a5e4c3506afb",
+    "citation_ids": [
+     "t1-c-34246b5409df88ea5a8bbc6db85f2a8a3131c577eb1eb05dd7d2a5e4c3506afb"
+    ],
+    "task_id": "t1"
+   },
+   {
+    "id": "t1-f3",
+    "label": "Forecast rainfall",
+    "value": "5.6",
+    "unit": "mm",
+    "place": "Nashik, Nashik Division, State of Mahārāshtra",
+    "start": "2026-09-20T01:30:00+05:30",
+    "end": "2026-09-21T00:30:00+05:30",
+    "source_id": "S21",
+    "method": "preceding_hour_sum",
+    "source_locators": [
+     "$.hourly.precipitation[69]",
+     "$.hourly.precipitation[70]",
+     "$.hourly.precipitation[71]",
+     "$.hourly.precipitation[72]",
+     "$.hourly.precipitation[73]",
+     "$.hourly.precipitation[74]",
+     "$.hourly.precipitation[75]",
+     "$.hourly.precipitation[76]",
+     "$.hourly.precipitation[77]",
+     "$.hourly.precipitation[78]",
+     "$.hourly.precipitation[79]",
+     "$.hourly.precipitation[80]",
+     "$.hourly.precipitation[81]",
+     "$.hourly.precipitation[82]",
+     "$.hourly.precipitation[83]",
+     "$.hourly.precipitation[84]",
+     "$.hourly.precipitation[85]",
+     "$.hourly.precipitation[86]",
+     "$.hourly.precipitation[87]",
+     "$.hourly.precipitation[88]",
+     "$.hourly.precipitation[89]",
+     "$.hourly.precipitation[90]",
+     "$.hourly.precipitation[91]"
+    ],
+    "parameter": "precipitation",
+    "entity_id": "geonames:1261731",
+    "evidence_version": "429d8b117dc03fbe01362bbfb2216b8cace2be9240fc4c3ce6795d460c94f108",
+    "citation_ids": [
+     "t1-c-429d8b117dc03fbe01362bbfb2216b8cace2be9240fc4c3ce6795d460c94f108"
+    ],
+    "task_id": "t1"
+   }
+  ],
+  "task_coverage": {
+   "requested": 1,
+   "completed": 1,
+   "incomplete_ids": []
+  },
+  "notes": [
+   "The next three days are taken as 2026-09-18 00:00 to 2026-09-21 00:00 IST.",
+   "The 3 days were asked for as midnight to midnight IST; source hours start at :30 IST, so they are read as 18 Sep 2026 00:30 to 21 Sep 2026 00:30 IST.",
+   "Only the remaining forecast period is included, starting 2026-09-18T01:30:00+05:30.",
+   "Model forecasts at the selected place point, not observations or district averages. Source model run time and local representativeness remain unverified."
+  ],
+  "task_results": [
+   {
+    "id": "t1",
+    "request": {
+     "request_quote": "How much rain is forecast in the next three days for Nashik?",
+     "kind": "forecast",
+     "operation": "lookup",
+     "parameters": [
+      "precipitation"
+     ],
+     "years": [],
+     "period": "annual",
+     "start_local": "2026-09-18T00:00:00+05:30",
+     "end_local": "2026-09-21T00:00:00+05:30",
+     "place_indices": [
+      0
+     ]
+    },
+    "status": "answered",
+    "answer": "Nashik · 18 Sep, 01:30–21 Sep, 00:30 IST: Forecast precipitation: 0.6–5.6 mm. Source: GFS forecast; conditions can change.",
+    "fact_ids": [
+     "t1-f1",
+     "t1-f2",
+     "t1-f3"
+    ],
+    "passage_ids": []
+   }
+  ],
+  "plan": {
+   "language": "en",
+   "places": [
+    {
+     "name": "Nashik",
+     "state": "",
+     "district": "",
+     "kind": "settlement"
+    }
+   ],
+   "assumptions": [
+    "The next three days are taken as 2026-09-18 00:00 to 2026-09-21 00:00 IST."
+   ],
+   "clarification": "",
+   "explicit_times": false,
+   "tasks": [
+    {
+     "request_quote": "How much rain is forecast in the next three days for Nashik?",
+     "kind": "forecast",
+     "operation": "lookup",
+     "parameters": [
+      "precipitation"
+     ],
+     "years": [],
+     "period": "annual",
+     "start_local": "2026-09-18T00:00:00+05:30",
+     "end_local": "2026-09-21T00:00:00+05:30",
+     "place_indices": [
+      0
+     ]
+    }
+   ],
+   "context_action": "new",
+   "changed_fields": [
+    "operation",
+    "parameters",
+    "places",
+    "time"
+   ],
+   "intent": "forecast",
+   "start_local": "2026-09-18T00:00:00+05:30",
+   "end_local": "2026-09-21T00:00:00+05:30",
+   "variables": [
+    "precipitation"
+   ],
+   "year": 0,
+   "period": "annual",
+   "history_parameter": "rainfall",
+   "unsupported_parameters": [],
+   "requested_outcome": "Complete all explicitly requested tasks"
+  }
+ }
+}

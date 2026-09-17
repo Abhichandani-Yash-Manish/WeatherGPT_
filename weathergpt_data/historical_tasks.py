@@ -24,7 +24,41 @@ def execute_history(plan,task,lookup=lookup_plan):
         result.update(status='unavailable',answer='This historical operation is not implemented.');return result
     years=expanded_years(task);places=[plan['places'][i] for i in task['place_indices']]
     parameters=task['parameters']
-    if not years:result['answer']='Which year or year range should I look up?';return result
+    if not years and task.get('parameters')==['temperature']:
+        # The stored district table carries rainfall; district temperature is not in it, and asking for a year
+        # range would hide that. The national temperature table is separate and is named here.
+        result.update(status='unavailable', answer='The stored district historical table carries rainfall, not district '
+                       'temperature, so no year range is asked for a series that does not exist. National mean '
+                       'temperature is published separately; ask for India temperature for a year to read that.')
+        return result
+    if not years:
+        # A question that names no years is answered from the published range the source itself states, bounded
+        # to the most recent thirty published years; the range is disclosed on the answer. Measured 18 September
+        # 2026: six climate questions ("what is the average monsoon rainfall in Nashik district?") were answered
+        # by asking for a year range although the stored series states its own coverage.
+        from .research_answers import series_range
+        spans={}
+        for index in task['place_indices']:
+            info=series_range({**plan,'places':[plan['places'][index]]})
+            if info:spans[index]=info
+        if not spans:
+            result['answer']='Which year or year range should I look up?';return result
+        last=max(info['last_year'] for info in spans.values())
+        first=max(min(info['first_year'] for info in spans.values()),last-29)
+        years=list(range(first,last+1))
+        # The published series keeps its own historical spelling (Nasik for Nashik). The lookup is made under
+        # the source's own name and the reading is disclosed, so a resolved series is actually read instead of
+        # failing on the modern spelling while the range came from the old one.
+        for index, info in spans.items():
+            place=plan['places'][index]
+            if str(info.get('district') or '').casefold()!=str(place.get('name') or '').casefold():
+                result['notes'].append('Read as '+str(info['district'])+', '+str(info['state'])+
+                    ' - the source district name ('+str(info.get('basis') or 'the publisher spelling')+').')
+                place['name']=info['district']
+                place['state']=info['state']
+        result.setdefault('notes',[]).append('No year range was named, so the most recent published years '
+            +str(first)+'-'+str(last)+' were read ('+', '.join(str(info['district'])+' '+str(info['first_year'])
+            +'-'+str(info['last_year']) for info in spans.values())+'). The source states that coverage; it is not a choice of this workspace.')
     if not places:result['answer']='Which historical district and state, or All India, should I check?';return result
     if not parameters:result['answer']='Do you want historical rainfall, temperature, or both?';return result
     messages=[];complete=True;unsupported=[]

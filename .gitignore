@@ -35,3 +35,7 @@ tmp/qa-chrome-profile*/
 tmp/qa-home/
 tmp/qa-session.txt
 tmp/qa-token.txt
+# Any session token this machine writes while testing, whatever name it is given: the token is per process
+# and must never be committed. Measured 18 September 2026: a second token file (tmp/qa-acceptance-token.txt)
+# slipped past the two exact names above and reached the index.
+tmp/*token*

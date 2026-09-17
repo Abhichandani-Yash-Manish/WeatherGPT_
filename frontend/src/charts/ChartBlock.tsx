@@ -7,7 +7,7 @@
    3. the figure is accompanied by the same numbers as a table, so the picture is never the only copy;
    4. a series with nothing to draw says so instead of rendering an empty frame. */
 
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import type { Chart } from '../api/types';
 import './charts.css';
 import { orNot } from '../lib/format';
@@ -31,8 +31,18 @@ function axisOf(point: Point, index: number): number {
   return index;
 }
 
-export function ChartBlock({ chart, title, unit }: { chart: Chart; title?: string; unit?: string }) {
+/* The panel variant is the dashboard reference's chart container: a sentence-case title with a muted window beside it and a
+   shorter plot. It draws the same points with the same rules. */
+export function ChartBlock({ chart, title, unit, variant, subtitle, tone }: { chart: Chart; title?: string; unit?: string; variant?: 'panel'; subtitle?: string; tone?: 'rain' }) {
+  const panel = variant === 'panel';
+  const H = panel ? 262 : 300;
+  /* The drawing box is wider for a full-width figure. A 640-unit box stretched to about 1100px scaled its points,
+     strokes and axis text by 1.7, which is why the card charts read as oversized; a wider box draws the same figure
+     close to its intended size. The panel variant keeps the reference dashboard's box. */
+  const W = panel ? 640 : 980;
+  const RIGHT = W - 28;
   const [readout, setReadout] = useState('Select a point to inspect its exact source value. Missing intervals remain gaps.');
+  const gradient = 'chart-fill-' + useId().replace(/:/g, '');
   const points = pointsOf(chart);
   const drawn = points.filter(point => point.value !== null && point.value !== undefined && Number.isFinite(Number(point.value)));
   const heading = title || chart.title || 'Retrieved series';
@@ -59,8 +69,8 @@ export function ChartBlock({ chart, title, unit }: { chart: Chart; title?: strin
     low -= 1;
     high += 1;
   }
-  const x = (value: number) => 62 + ((value - first) / Math.max(1, last - first)) * 550;
-  const y = (value: number) => 215 - ((Number(value) - low) / (high - low)) * 180;
+  const x = (value: number) => 62 + ((value - first) / Math.max(1, last - first)) * (RIGHT - 62);
+  const y = (value: number) => H - 55 - ((Number(value) - low) / (high - low)) * (H - 90);
 
   const segments: string[][] = [];
   let current: string[] = [];
@@ -75,25 +85,39 @@ export function ChartBlock({ chart, title, unit }: { chart: Chart; title?: strin
   if (current.length > 1) segments.push(current);
 
   return (
-    <figure className="card px-3 py-3" data-testid="chart-block">
-      <figcaption className="eyebrow">
+    <figure className={panel ? 'chart-panel' + (tone === 'rain' ? ' chart-rain' : '') : 'card px-3 py-3'} data-testid="chart-block">
+      <figcaption className={panel ? 'chart-panel-title' : 'eyebrow'}>
         {heading}
-        {measure ? <span className="quiet"> · {measure}</span> : null}
+        {panel && subtitle ? <span className="chart-panel-sub"> ({subtitle})</span> : null}
+        {!panel && measure ? <span className="quiet"> · {measure}</span> : null}
       </figcaption>
       {drawn.length ? (
-        <svg viewBox="0 0 640 270" role="group" aria-label={heading + (measure ? ' in ' + measure : '')} className="mt-2 w-full">
+        <svg viewBox={'0 0 ' + W + ' ' + H} role="group" aria-label={heading + (measure ? ' in ' + measure : '')} className="mt-2 w-full">
           {[0, 0.5, 1].map(fraction => {
             const value = low + (high - low) * fraction;
             return (
               <g key={'grid-' + fraction}>
-                <line x1={62} x2={612} y1={y(value)} y2={y(value)} className="chart-grid" />
+                <line x1={62} x2={RIGHT} y1={y(value)} y2={y(value)} className="chart-grid" />
                 <text x={54} y={y(value) + 4} textAnchor="end" className="chart-axis">{value.toFixed(1)}</text>
               </g>
             );
           })}
           <text x={62} y={22} className="chart-axis">{measure}</text>
-          <text x={62} y={245} className="chart-axis">{points[0].label || String(points[0].t || '')}</text>
-          <text x={612} y={245} textAnchor="end" className="chart-axis">{points[points.length - 1].label || String(points[points.length - 1].t || '')}</text>
+          <text x={62} y={H - 25} className="chart-axis">{points[0].label || String(points[0].t || '')}</text>
+          <text x={RIGHT} y={H - 25} textAnchor="end" className="chart-axis">{points[points.length - 1].label || String(points[points.length - 1].t || '')}</text>
+          <defs>
+            <linearGradient id={gradient} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" className="chart-fill-top" />
+              <stop offset="100%" className="chart-fill-bottom" />
+            </linearGradient>
+          </defs>
+          {/* The area sits only under a returned segment and closes to the axis at that segment's own ends, so a gap in
+              the series stays an empty gap in the fill as well. */}
+          {segments.map(segment => {
+            const firstX = segment[0].split(',')[0];
+            const lastX = segment[segment.length - 1].split(',')[0];
+            return <polygon key={'area-' + segment[0]} points={firstX + ',' + (H - 55) + ' ' + segment.join(' ') + ' ' + lastX + ',' + (H - 55)} fill={'url(#' + gradient + ')'} className="chart-area" aria-hidden="true" />;
+          })}
           {segments.map(segment => (
             <polyline key={segment[0]} points={segment.join(' ')} fill="none" className="chart-series" />
           ))}

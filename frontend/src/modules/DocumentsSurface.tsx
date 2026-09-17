@@ -1,12 +1,14 @@
 /* Published documents: what this machine has indexed, one row per printed edition, with the measured
    state of its saved body. An index entry is not nationwide coverage and not a current warning; a
    pruned body is a state the document route states, not a crash. */
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getJson, withQuery } from '../api/client';
 import type { Envelope } from '../api/types';
 import { count, orNot } from '../lib/format';
 import { viewById } from '../shell/views';
+import { VizFigure } from '../charts/VizFigure';
+import { libraryCardsSpec } from '../charts/vizSpecs';
 import { DataTable, NOT_RECORDED, SurfaceShell } from './Evidence';
 import { DocumentViewer } from './DocumentViewer';
 
@@ -34,6 +36,8 @@ export const intents: string[] = (viewById('documents')?.intents ?? []).concat([
 
 const BODY_WORDS: Record<string, string> = { available: 'body held', pruned: 'body pruned', unknown: 'body location unrecorded' };
 
+/* The library draws this many edition cards; the table below carries every row. */
+const LIBRARY_CARDS_SHOWN = 24;
 function currency(document: DocumentRow): string {
   if (document.age_days === null || document.age_days === undefined) return orNot(document.currency_recorded_at_intake, 'unknown');
   return document.age_days + ' day(s) after the printed issue date';
@@ -53,6 +57,15 @@ export function Surface(): JSX.Element {
   const data = corpus.data?.data;
   const documents = data?.documents || [];
   const counts = data?.counts || {};
+
+  /* The library the vanilla Documents drew: one card per edition, opening the same viewer as the table below. */
+  const library = useMemo(
+    () => libraryCardsSpec(documents, LIBRARY_CARDS_SHOWN, (document: unknown) => {
+      const row = document as DocumentRow;
+      if (row.sha256) setSelected({ sha: String(row.sha256), label: row.family_label || row.family || 'this edition', state: row.body ? String(row.body) : null });
+    }),
+    [documents],
+  );
   const families = data?.families || [];
   const quarantined = documents.filter(document => (document.quarantined_passages || 0) > 0);
   const unregisteredCount = counts.documents_in_an_unregistered_family || 0;
@@ -105,6 +118,17 @@ export function Surface(): JSX.Element {
         <p className="module-note">Index this read used: <span className="evidence">{orNot(data?.index)}</span></p>
         {data?.reason ? <p className="module-note">{data.reason}</p> : null}
       </section>
+
+      {library ? (
+        <section className="module-section" data-testid="documents-library-section">
+          <h2>The library</h2>
+          <p className="module-note">
+            The editions this read returned as cards: what each one is, when it was printed, how much text it
+            carries and whether the saved body is still held. Choosing a card opens the same viewer as the table below.
+          </p>
+          <VizFigure kind="libraryCards" spec={library} />
+        </section>
+      ) : null}
 
       <section className="module-section">
         <h2>The editions indexed</h2>

@@ -80,6 +80,52 @@ def alias_candidates(place,database,gazetteer=None):
     return [found[key] for key in order][:3]
 
 
+def series_range(plan):
+    """The published first and last year of the district series a plan names, or None.
+
+    The climate questions in the 100-question set ("what is the average monsoon rainfall in Nashik district?")
+    were answered by asking for a year range, although the stored series states its own coverage: the source
+    rows carry min(year) and max(year) per district. This reads that coverage so a question with no years can
+    be answered from the published range, with the range stated on the answer.
+    """
+    places=plan.get('places') or []
+    if len(places)!=1:return None
+    place=places[0]
+    if place.get('kind') in {'relative','country','state'}:return None
+    if plan.get('history_parameter')!='rainfall':return None
+    registry=json.loads((ROOT/'data/registry/sources.json').read_text())
+    products={p['id']:p for p in registry['products']}
+    database=publication_database('S27',products)
+    state=place.get('state');source_state=SERIES_STATE_EQUIVALENTS.get((state or '').casefold(),state)
+    name=place.get('name') or ''
+    district=name[:-8].strip() if name.casefold().endswith(' district') else name
+    with verified_connection(database) as con:
+        options=con.execute('SELECT state,district,min(year),max(year),count(*) FROM rainfall WHERE lower(district)=lower(?) GROUP BY state,district',(district,)).fetchall()
+    if source_state:options=[row for row in options if row[0].casefold()==source_state.casefold()]
+    resolved='the source spelling matches the requested district'
+    if len(options)!=1 and len(district)>=4:
+        # The publisher keeps its own historical spelling (Nasik for Nashik). A single source district whose
+        # name starts with the requested one, inside the named state, is used and the reading is disclosed.
+        candidates=[]
+        for width in (4,3):
+            prefix=district[:width].casefold()
+            with verified_connection(database) as con:
+                near=con.execute('SELECT state,district,min(year),max(year),count(*) FROM rainfall '
+                                 'WHERE lower(district) LIKE ? GROUP BY state,district',(prefix+'%',)).fetchall()
+            if source_state:near=[row for row in near if row[0].casefold()==source_state.casefold()]
+            if len(near)==1:
+                candidates=near
+                break
+            if near:
+                candidates=near
+        if len(candidates)==1:
+            options=candidates
+            resolved='the source district is spelled '+str(candidates[0][1])+' and it is the only source series in that state starting with the requested name'
+    if len(options)!=1:return None
+    st,dist,first,last,count=options[0]
+    return {'state':st,'district':dist,'first_year':first,'last_year':last,'years':count,'basis':resolved}
+
+
 def lookup_plan(plan):
     year=plan['year'];period=plan['period'];places=plan['places']
     if not year:return {'status':'needs_clarification','text':'Which year and month or season should I look up?','facts':[],'citations':[]}

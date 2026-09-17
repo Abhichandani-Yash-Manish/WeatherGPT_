@@ -114,7 +114,10 @@ def reconcile(plan,state,question):
             place['kind']='sea_area'
 
     action=plan.get('context_action','new');changed=set(plan.get('changed_fields',[]))
-    previous=state.get('last_plan',{})
+    # A conversation with no stored plan yet (the key is present and None, which a fresh state installs)
+    # must reconcile against nothing rather than raise. Measured 18 September 2026: a humidity follow-up
+    # crashed the request thread with AttributeError: 'NoneType' object has no attribute 'get'.
+    previous=state.get('last_plan') or {}
     # Literal crop/topic corrections outrank an omitted model changed_fields tag.
     from .bulletin_index import ALIASES,crop_name
     from .gazetteer import norm

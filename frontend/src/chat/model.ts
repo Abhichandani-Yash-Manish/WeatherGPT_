@@ -156,7 +156,25 @@ export function languageRequested(packet: AnswerPacket): string | null {
 }
 
 export function languageDowngradeNote(packet: AnswerPacket): string | null {
-  return (packet.notes || []).find(note => /output language could not be rendered/i.test(note)) || null;
+  /* The engine records which of six things happened to a requested output language, and the reader is told in
+     words rather than being handed a source-language answer that looks like the one they asked for. Matching the
+     note by one sentence missed the others: measured 18 September 2026, a Kannada turn carried
+     "This answer was not rewritten in the requested language because some of its values did not survive the
+     rendering intact" while this function looked only for "output language could not be rendered", so the
+     warning never reached the screen. The structured state is the definition; the note is its wording. */
+  const generation = packet.trace?.generation as { language_adherence?: string; rendered?: boolean } | undefined;
+  const states = new Set([
+    'values_did_not_survive', 'rendered_in_another_script', 'render_failed', 'no_language_service',
+    'language_service_unavailable', 'unverifiable_script', 'not_rendered',
+  ]);
+  const language = packet.language as { adherence?: string; rendered?: boolean } | undefined;
+  const adherence = generation?.language_adherence || language?.adherence;
+  const downgraded = (adherence !== undefined && states.has(String(adherence))) || generation?.rendered === false || language?.rendered === false;
+  const wording = (packet.notes || []).find(note => /not rewritten in the requested language|output language could not be rendered|shares the Latin script|cannot be verified here and is not claimed|could not be written in the requested language/i.test(note));
+  if (wording) return wording;
+  return downgraded
+    ? 'The requested output language could not be rendered for this answer; the evidence stands in its source language rather than in a partly rewritten one.'
+    : null;
 }
 
 export function statusLabel(status: string): string {

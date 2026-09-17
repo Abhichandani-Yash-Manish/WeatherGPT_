@@ -1,0 +1,142 @@
+{
+ "question": "माझे शेत नाशिक जिल्ह्यात आहे, उद्या पाऊस पडेल का?",
+ "response": {
+  "status": "answered",
+  "answer": "Nashik साठी 19 Sep 2026 00:30-20 Sep 2026 00:30 IST या कालावधीत अंदाजित पाऊस 1.5 mm आहे.",
+  "facts": [
+   {
+    "id": "t1-f1",
+    "label": "Forecast rainfall",
+    "value": "1.5",
+    "unit": "mm",
+    "place": "Nashik, Nashik Division, State of Mahārāshtra",
+    "start": "2026-09-19T00:30:00+05:30",
+    "end": "2026-09-20T00:30:00+05:30",
+    "source_id": "S21",
+    "method": "preceding_hour_sum",
+    "source_locators": [
+     "$.hourly.precipitation[44]",
+     "$.hourly.precipitation[45]",
+     "$.hourly.precipitation[46]",
+     "$.hourly.precipitation[47]",
+     "$.hourly.precipitation[48]",
+     "$.hourly.precipitation[49]",
+     "$.hourly.precipitation[50]",
+     "$.hourly.precipitation[51]",
+     "$.hourly.precipitation[52]",
+     "$.hourly.precipitation[53]",
+     "$.hourly.precipitation[54]",
+     "$.hourly.precipitation[55]",
+     "$.hourly.precipitation[56]",
+     "$.hourly.precipitation[57]",
+     "$.hourly.precipitation[58]",
+     "$.hourly.precipitation[59]",
+     "$.hourly.precipitation[60]",
+     "$.hourly.precipitation[61]",
+     "$.hourly.precipitation[62]",
+     "$.hourly.precipitation[63]",
+     "$.hourly.precipitation[64]",
+     "$.hourly.precipitation[65]",
+     "$.hourly.precipitation[66]",
+     "$.hourly.precipitation[67]"
+    ],
+    "parameter": "precipitation",
+    "entity_id": "geonames:1261731",
+    "evidence_version": "34246b5409df88ea5a8bbc6db85f2a8a3131c577eb1eb05dd7d2a5e4c3506afb",
+    "citation_ids": [
+     "t1-c-34246b5409df88ea5a8bbc6db85f2a8a3131c577eb1eb05dd7d2a5e4c3506afb"
+    ],
+    "task_id": "t1"
+   }
+  ],
+  "task_coverage": {
+   "requested": 1,
+   "completed": 1,
+   "incomplete_ids": []
+  },
+  "notes": [
+   "उद्या म्हणजे 19 सप्टेंबर 2026 चा स्थानिक दिवस, 00:00 ते 24:00 IST असा विचार केला आहे.",
+   "वेळ नमूद केलेली नसल्याने संपूर्ण दिवसाचा अंदाज घेतला आहे.",
+   "Time window read from the question: उद्या whole day.",
+   "Model forecasts at the selected place point, not observations or district averages. Source model run time and local representativeness remain unverified."
+  ],
+  "task_results": [
+   {
+    "id": "t1",
+    "request": {
+     "request_quote": "उद्या पाऊस पडेल का?",
+     "kind": "forecast",
+     "operation": "lookup",
+     "parameters": [
+      "precipitation"
+     ],
+     "years": [],
+     "period": "annual",
+     "start_local": "2026-09-19T00:30:00+05:30",
+     "end_local": "2026-09-20T00:30:00+05:30",
+     "place_indices": [
+      0
+     ]
+    },
+    "status": "answered",
+    "answer": "Nashik · 19 Sep, 00:30–20 Sep, 00:30 IST: अनुमानित वर्षा की मात्रा: 1.5 mm. स्रोत: GFS पूर्वानुमान; मौसम बदल सकता है।",
+    "fact_ids": [
+     "t1-f1"
+    ],
+    "passage_ids": []
+   }
+  ],
+  "plan": {
+   "language": "hi",
+   "places": [
+    {
+     "name": "Nashik",
+     "state": "",
+     "district": "",
+     "kind": "settlement"
+    }
+   ],
+   "assumptions": [
+    "उद्या म्हणजे 19 सप्टेंबर 2026 चा स्थानिक दिवस, 00:00 ते 24:00 IST असा विचार केला आहे.",
+    "वेळ नमूद केलेली नसल्याने संपूर्ण दिवसाचा अंदाज घेतला आहे.",
+    "Time window read from the question: उद्या whole day."
+   ],
+   "clarification": "",
+   "explicit_times": false,
+   "tasks": [
+    {
+     "request_quote": "उद्या पाऊस पडेल का?",
+     "kind": "forecast",
+     "operation": "lookup",
+     "parameters": [
+      "precipitation"
+     ],
+     "years": [],
+     "period": "annual",
+     "start_local": "2026-09-19T00:30:00+05:30",
+     "end_local": "2026-09-20T00:30:00+05:30",
+     "place_indices": [
+      0
+     ]
+    }
+   ],
+   "context_action": "new",
+   "changed_fields": [
+    "parameters",
+    "places",
+    "time"
+   ],
+   "intent": "forecast",
+   "start_local": "2026-09-19T00:30:00+05:30",
+   "end_local": "2026-09-20T00:30:00+05:30",
+   "variables": [
+    "precipitation"
+   ],
+   "year": 0,
+   "period": "annual",
+   "history_parameter": "rainfall",
+   "unsupported_parameters": [],
+   "requested_outcome": "Complete all explicitly requested tasks"
+  }
+ }
+}

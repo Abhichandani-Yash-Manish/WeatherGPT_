@@ -54,6 +54,7 @@ SUBROUTE_REASONS = {
     '/api/warnings/alert-brief': 'the alert brief the warnings surface offers',
     '/api/warnings/cap': 'the CAP relay assessment inside the warnings surface',
     '/api/advisories/districts': 'the district step of the advisories surface',
+    '/api/advisories/holdings': 'the advisory editions this machine holds, shown above the directory on the advisories surface',
     '/api/climate/series': 'the series view inside the climate surface',
     '/api/observations/near': 'the nearby-station view inside the observations surface',
     '/api/river': 'the river half of the Sea and rivers surface',

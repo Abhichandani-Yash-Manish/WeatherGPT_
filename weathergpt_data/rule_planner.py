@@ -652,6 +652,12 @@ def language_of(question):
 # and its disclosure disagreed, and the disclosure was the correct reading.
 CLOCK_AMPM = re.compile(r"\b(\d{1,2})(?:[:.]([0-5]\d))?\s*(a\.?m\.?|p\.?m\.?|o'?clock)\b", re.I)
 
+# A spoken range of hours, which is how a farmer gives a window: kal 6 se 9 AM, 6 to 9 am, 6-9 am,
+# 6 AM se 9 AM. Without this the first hour was lost and a three-hour window became the single
+# instant 09:00, so the answer covered one hour and reported no rain chance for the rest
+# (measured 17 September 2026: Kal 6 se 9 AM ka rain chance aur wind speed batao).
+CLOCK_RANGE = re.compile(r"\b(\d{1,2})(?:[:.]([0-5]\d))?\s*(?:a\.?m\.?|p\.?m\.?)?\s*(?:se|to|till|until|[\u2013\u2014-])\s*(\d{1,2})(?:[:.]([0-5]\d))?\s*(a\.?m\.?|p\.?m\.?)\b", re.I)
+
 
 def clock_hour(token, minute, meridiem):
     """24-hour (hour, minute) for an am/pm/o'clock token; None when the token is impossible."""
@@ -691,6 +697,12 @@ def window_for(question, now):
     # "at 9 am", "9 o'clock", "at 6.30 pm" - the same instant the colon form names, in the
     # form a reader writes. The colon form stays the first reading when both appear.
     spoken = [entry for entry in (clock_hour(*match) for match in CLOCK_AMPM.findall(question)) if entry]
+    spoken_range = None
+    for first_hour, first_minute, second_hour, second_minute, meridiem in CLOCK_RANGE.findall(question):
+        head, tail = clock_hour(first_hour, first_minute, meridiem), clock_hour(second_hour, second_minute, meridiem)
+        if head and tail:
+            spoken_range = (head, tail)
+            break
     if spoken and re.search(r"\b(?:a\.?m\.?|p\.?m\.?|o'?clock)\b", question, re.I):
         # One token, one reading: "at 6.30 pm" must not be read as the bare 06:30 the colon
         # form would give (measured 17 September 2026 - the meridiem token was ignored and the
@@ -731,6 +743,14 @@ def window_for(question, now):
         else:
             last = '%02d:%s' % (min(int(clock[0][0]) + 3, 23), clock[0][1])
         return stamp(first), stamp(last), True, basis or 'explicit clock times'
+    if spoken_range:
+        # The reader gave two hours, so the window runs from the first to the second, in the meridiem
+        # both carry. This is read before the single-hour rule, which would keep only the second hour
+        # and answer for one hour of a three-hour request.
+        first = '%02d:%02d' % spoken_range[0]
+        last = '%02d:%02d' % spoken_range[1]
+        label = (str(basis) + ' ' + first + '-' + last) if basis else ('from ' + first + ' to ' + last)
+        return stamp(first), stamp(last), True, label
     if spoken:
         # A named hour is read as that hour's window, not the three-hour block the colon form
         # uses: "at 9 am" is the hour around nine, and the answer says so.

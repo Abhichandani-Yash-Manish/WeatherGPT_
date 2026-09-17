@@ -416,7 +416,14 @@ def _target(plans, text, now, focus):
     return plans
 
 
-def related_plans(store, result):
+def related_plans(store, result, question=''):
+    """Sentences naming a saved plan whose place and day an ordinary answer covers.
+
+    A recurring plan is mentioned only when the question is about warnings or a hazard. Announcing a standing
+    watch inside every answer that happens to name its place is noise, and it read as the workspace changing
+    the subject: measured 17 September 2026, a Marathi rainfall question was answered with a sentence about a
+    saved heavy-rain watch for the same city.
+    """
     """Sentences naming a saved plan whose place and day an ordinary answer covers."""
     points = [point for point in (result.get('resolved_points') or {}).values() if isinstance(point, dict)]
     names = {str(point.get('name') or '').casefold() for point in points}
@@ -424,6 +431,10 @@ def related_plans(store, result):
     names.discard('')
     if not names:
         return []
+    # A hazard word in the question is what makes a standing plan relevant to this answer.
+    from .watches import HAZARD_WORDS
+    asking_about_warnings = bool(re.search(r'\b(?:warning|alert|watch|advisory|notify)\b', question or '', re.I)) or any(
+        re.search(pattern, question or '', re.I) for _hazard, pattern in HAZARD_WORDS)
     days = set()
     for fact in result.get('facts') or []:
         for key in ('start', 'end'):
@@ -443,7 +454,7 @@ def related_plans(store, result):
             part = plan.get('part_label') if plan.get('part_label') not in (None, 'all day') else ''
             sentences.append(P.day_phrase(plan['date_local']) + (' ' + part if part else '') + ' is ' + plan_phrase(plan) +
                              ' plan; I am watching IMD district warnings for it.')
-        else:
+        elif asking_about_warnings:
             sentences.append('You have a standing plan for ' + place_phrase(plan) + '; I am watching IMD district warnings for it.')
     return sentences[:2]
 

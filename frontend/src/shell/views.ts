@@ -20,7 +20,7 @@ export type ViewEntry = {
 export const VIEWS: ViewEntry[] = [
   { id: 'assistant', label: 'Ask', group: 'start', shortcut: 1, portedIn: 'R2',
     intents: ['hello', 'what can you do?', 'Will it rain in Surat tomorrow morning?'] },
-  { id: 'workspace', label: 'Workspace', group: 'start', portedIn: 'R3',
+  { id: 'workspace', label: 'Dashboard', group: 'start', portedIn: 'R3',
     intents: ['What is it like right now in Ahmedabad?'] },
   { id: 'overview', label: 'Today', group: 'start', shortcut: 2, portedIn: 'R3',
     intents: ['What is the national warning picture today?'] },

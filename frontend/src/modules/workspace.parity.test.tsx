@@ -16,7 +16,7 @@
               finishing the read. */
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { ApiError, api } from '../api/client';
@@ -106,12 +106,13 @@ describe('the workspace surface', () => {
     await userEvent.type(input, 'Surat');
     await userEvent.click(await screen.findByRole('button', { name: /Surat ·/ }));
 
-    expect(await screen.findByText(/NEW STATION/)).toBeInTheDocument();
+    /* The station name also heads the dashboard's observed line, so the reading is checked in the station table it belongs to. */
+    expect(await within(await screen.findByTestId('workspace-stations')).findByText(/NEW STATION/)).toBeInTheDocument();
     await waitFor(() => expect(lateArrived).toBe(true));
     await new Promise(resolve => setTimeout(resolve, 50));
 
     // The earlier point's answer arrived after the new task was on screen, and it is nowhere on it.
-    expect(screen.getByText(/NEW STATION/)).toBeInTheDocument();
+    expect(within(screen.getByTestId('workspace-stations')).getByText(/NEW STATION/)).toBeInTheDocument();
     expect(screen.queryByText(/OLD STATION/)).toBeNull();
   });
 

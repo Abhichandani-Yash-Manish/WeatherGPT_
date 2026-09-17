@@ -85,3 +85,19 @@ afterEach(() => {
   window.location.hash = '';
 });
 afterAll(() => server.close());
+
+/* jsdom implements no IntersectionObserver, and the workspace dashboard's sections use one to read only when
+   they come near the screen. The harness observer never reports an intersection, which is what a section far
+   below the fold sees: such a section does not read in a test unless its own control is used. */
+if (typeof globalThis.IntersectionObserver === 'undefined') {
+  class HarnessIntersectionObserver {
+    readonly root = null;
+    readonly rootMargin = '0px';
+    readonly thresholds = [0];
+    observe(): void {}
+    unobserve(): void {}
+    disconnect(): void {}
+    takeRecords(): IntersectionObserverEntry[] { return []; }
+  }
+  vi.stubGlobal('IntersectionObserver', HarnessIntersectionObserver);
+}

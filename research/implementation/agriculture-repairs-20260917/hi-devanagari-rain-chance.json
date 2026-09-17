@@ -1,0 +1,167 @@
+{
+ "question": "मेरा खेत नासिक जिले में है। कल सुबह 6 से 9 बजे बारिश की संभावना बताइए।",
+ "response": {
+  "status": "answered",
+  "answer": "Nashik के लिए 19 Sep 2026 09:30-10:30 IST की अवधि में वर्षा की संभावना 49% है। इसके बाद 10:30-11:30 IST में 71% और 11:30-12:30 IST में 84% है।",
+  "facts": [
+   {
+    "id": "t1-f1",
+    "parameter": "precipitation_probability",
+    "label": "Hourly precipitation probability (>0.1 mm)",
+    "value": "49",
+    "unit": "%",
+    "place": "Nashik, Nashik Division, State of Mahārāshtra",
+    "entity_id": "geonames:1261731",
+    "start": "2026-09-19T09:30:00+05:30",
+    "end": "2026-09-19T10:30:00+05:30",
+    "source_id": "S62",
+    "evidence_kind": "forecast",
+    "evidence_version": "89b29cfc50de7fa94c8bad4243bbf540a3d3c6c1e5e5c3d4676a9debce4c9e76",
+    "citation_ids": [
+     "t1-c-89b29cfc50de7fa94c8bad4243bbf540a3d3c6c1e5e5c3d4676a9debce4c9e76"
+    ],
+    "source_locators": [
+     "$.hourly.precipitation_probability[53]"
+    ],
+    "method": "preceding_hour_probability",
+    "task_id": "t1"
+   },
+   {
+    "id": "t1-f2",
+    "parameter": "precipitation_probability",
+    "label": "Hourly precipitation probability (>0.1 mm)",
+    "value": "71",
+    "unit": "%",
+    "place": "Nashik, Nashik Division, State of Mahārāshtra",
+    "entity_id": "geonames:1261731",
+    "start": "2026-09-19T10:30:00+05:30",
+    "end": "2026-09-19T11:30:00+05:30",
+    "source_id": "S62",
+    "evidence_kind": "forecast",
+    "evidence_version": "89b29cfc50de7fa94c8bad4243bbf540a3d3c6c1e5e5c3d4676a9debce4c9e76",
+    "citation_ids": [
+     "t1-c-89b29cfc50de7fa94c8bad4243bbf540a3d3c6c1e5e5c3d4676a9debce4c9e76"
+    ],
+    "source_locators": [
+     "$.hourly.precipitation_probability[54]"
+    ],
+    "method": "preceding_hour_probability",
+    "task_id": "t1"
+   },
+   {
+    "id": "t1-f3",
+    "parameter": "precipitation_probability",
+    "label": "Hourly precipitation probability (>0.1 mm)",
+    "value": "84",
+    "unit": "%",
+    "place": "Nashik, Nashik Division, State of Mahārāshtra",
+    "entity_id": "geonames:1261731",
+    "start": "2026-09-19T11:30:00+05:30",
+    "end": "2026-09-19T12:30:00+05:30",
+    "source_id": "S62",
+    "evidence_kind": "forecast",
+    "evidence_version": "89b29cfc50de7fa94c8bad4243bbf540a3d3c6c1e5e5c3d4676a9debce4c9e76",
+    "citation_ids": [
+     "t1-c-89b29cfc50de7fa94c8bad4243bbf540a3d3c6c1e5e5c3d4676a9debce4c9e76"
+    ],
+    "source_locators": [
+     "$.hourly.precipitation_probability[55]"
+    ],
+    "method": "preceding_hour_probability",
+    "task_id": "t1"
+   }
+  ],
+  "task_coverage": {
+   "requested": 1,
+   "completed": 1,
+   "incomplete_ids": []
+  },
+  "notes": [
+   "अगली स्थानीय तारीख 19 सितंबर 2026 को \"कल सुबह\" माना गया है।",
+   "समय 06:00 से 09:00 IST तक रखा गया है, जैसा आपने बताया।",
+   "Time window read from the question: कल सुबह.",
+   "Read at Nashik, Nashik Division, State of Mahārāshtra — the place catalogue holds one town of this name and it is the district seat it sits in. A district is not a point: this is the district seat the catalogue states, not the field, and it is not a district-wide map.",
+   "Precipitation includes rain, showers and snow water equivalent; it is not a rain-only gauge measurement.",
+   "Source hours are on UTC boundaries (:30 in IST). Each probability is for >0.1 mm in its preceding hour. Hourly probabilities are never combined into a period probability.",
+   "Best-match model selection may differ by variable; upstream run and local representativeness are unverified. Hourly values cannot determine an exact rain start minute or issue an official warning."
+  ],
+  "task_results": [
+   {
+    "id": "t1",
+    "request": {
+     "request_quote": "कल सुबह 6 से 9 बजे बारिश की संभावना बताइए",
+     "kind": "forecast",
+     "operation": "lookup",
+     "parameters": [
+      "precipitation_probability"
+     ],
+     "years": [],
+     "period": "annual",
+     "start_local": "2026-09-19T09:30:00+05:30",
+     "end_local": "2026-09-19T12:30:00+05:30",
+     "place_indices": [
+      0
+     ]
+    },
+    "status": "answered",
+    "answer": "Nashik · 19 Sep, 09:30–19 Sep, 12:30 IST: हर घंटे बारिश की संभावना: 49–84 %. सबसे अधिक 84% संभावना 19 Sep, 11:30–12:30 IST के घंटे में है। ये अलग-अलग घंटों की संभावनाएँ हैं; पूरे दिन का एक प्रतिशत नहीं। स्रोत: Open-Meteo best-match पूर्वानुमान; मौसम बदल सकता है।",
+    "fact_ids": [
+     "t1-f1",
+     "t1-f2",
+     "t1-f3"
+    ],
+    "passage_ids": []
+   }
+  ],
+  "plan": {
+   "language": "hi",
+   "places": [
+    {
+     "name": "Nashik",
+     "state": "",
+     "district": "",
+     "kind": "district"
+    }
+   ],
+   "assumptions": [
+    "अगली स्थानीय तारीख 19 सितंबर 2026 को \"कल सुबह\" माना गया है।",
+    "समय 06:00 से 09:00 IST तक रखा गया है, जैसा आपने बताया।",
+    "Time window read from the question: कल सुबह."
+   ],
+   "clarification": "",
+   "explicit_times": true,
+   "tasks": [
+    {
+     "request_quote": "कल सुबह 6 से 9 बजे बारिश की संभावना बताइए",
+     "kind": "forecast",
+     "operation": "lookup",
+     "parameters": [
+      "precipitation_probability"
+     ],
+     "years": [],
+     "period": "annual",
+     "start_local": "2026-09-19T09:30:00+05:30",
+     "end_local": "2026-09-19T12:30:00+05:30",
+     "place_indices": [
+      0
+     ]
+    }
+   ],
+   "context_action": "new",
+   "changed_fields": [
+    "parameters",
+    "places",
+    "time"
+   ],
+   "intent": "forecast",
+   "start_local": "2026-09-19T09:30:00+05:30",
+   "end_local": "2026-09-19T12:30:00+05:30",
+   "variables": [],
+   "year": 0,
+   "period": "annual",
+   "history_parameter": "rainfall",
+   "unsupported_parameters": [],
+   "requested_outcome": "Complete all explicitly requested tasks"
+  }
+ }
+}

@@ -114,9 +114,13 @@ def understand(question, now, timezone_name):
     today=now.astimezone(zone).date();day=match['day'].lower()
     day=today if day=='today' else today+timedelta(days=1) if day=='tomorrow' else date.fromisoformat(day[3:])
     start_time=match['start'] or match['between_start'];end_time=match['end'] or match['between_end']
-    if start_time==end_time:raise ValueError('Start and end must differ; use explicit distinct times')
+    # Equal clock times read as the 24 hours that follow them, which is how a whole source day is asked for:
+    # source hours start at :30 IST, so "00:30 to 00:30" is one complete day of the source's own intervals.
+    # Measured 17 September 2026: a three-day rainfall question could not be asked at all because only 23 of
+    # each day's 24 hours are expressible with distinct clock times.
+    same=start_time==end_time
     start=local_instant(day,start_time,zone)
-    end=local_instant(day+timedelta(days=int(end_time<start_time)),end_time,zone)
+    end=local_instant(day+timedelta(days=1 if (same or end_time<start_time) else 0),end_time,zone)
     if end<=start:raise ValueError('Requested interval must be ordered')
     intent=match['intent'].lower()
     variables=['precipitation'] if intent.startswith('how much rain') else (

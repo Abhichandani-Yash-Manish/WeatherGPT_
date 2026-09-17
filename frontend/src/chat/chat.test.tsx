@@ -155,6 +155,26 @@ describe('the transcript', () => {
     expect(await screen.findByText(/not in the language you asked for/)).toBeInTheDocument();
   });
 
+  it('states a rendering that did not survive the values intact, not only the unreachable service', async () => {
+    /* Measured 18 September 2026: a Kannada question was answered in English with the engine's own sentence
+       "This answer was not rewritten in the requested language because some of its values did not survive the
+       rendering intact", and the card looked only for "output language could not be rendered", so the reader
+       was handed a source-language answer with no warning. The structured state is what the card now reads. */
+    const downgraded = {
+      ...FORECAST,
+      status: 'partial',
+      notes: ['This answer was not rewritten in the requested language because some of its values did not survive the rendering intact. Showing a partly rewritten answer could change what a number or a warning means, so the source-language answer is kept instead.'],
+      trace: { ...FORECAST.trace, generation: { provider: 'typed_task_renderers', requested_language: 'kn', language_selection: 'user_selected', language_adherence: 'values_did_not_survive' } },
+    };
+    server.use(...handlers(downgraded));
+    withClient(<AskSurface language="kn" persona="" />);
+    await ask('ಬೆಂಗಳೂರಿನಲ್ಲಿ ಈಗ ಮಳೆ ಬರುತ್ತಿದೆಯೇ?');
+    expect(await screen.findByText(/not in the language you asked for/)).toBeInTheDocument();
+    /* The sentence appears on the downgrade card and again in the notes list; one copy is enough to
+       prove the reader is warned, and the card is the one that matters. */
+    expect((await screen.findAllByText(/did not survive the rendering intact/)).length).toBeGreaterThan(0);
+  });
+
   it('draws an uncovered part of the window as a gap and says so', async () => {
     const gapped = {
       ...FORECAST,

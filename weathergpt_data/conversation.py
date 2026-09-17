@@ -810,7 +810,7 @@ class ConversationEngine:
             state.pop('plan_candidate',None)
         path=self.workspace.service.ingestion_database.parent/'plans.sqlite'
         if not path.exists():return
-        try:sentences=related_plans(self.plan_store(),result)
+        try:sentences=related_plans(self.plan_store(),result,q)
         except (OSError,ValueError,sqlite3.Error):return
         if sentences:
             result['notes']+=sentences
@@ -898,7 +898,27 @@ class ConversationEngine:
             result['resolved_points']=resolved
             sea_areas=[]
             for p in places:
-                if p['kind'] in {'district','state','country','relative'}:
+                if p['kind']=='district':
+                    # A district is not a point, but the place catalogue records the district's own
+                    # administrative centre, and a farmer who says "my farm is in Chhindwara district" is
+                    # asking about the district. The seat is used with that stated, so the reader knows the
+                    # reading is the district's reference town and not their field. Asking for a village
+                    # instead left the question unanswered (measured 17 September 2026, Hindi/Hinglish).
+                    seat_lookup=getattr(getattr(self,'gazetteer',None),'district_seat',None)
+                    seat, seat_why = (seat_lookup(p['name'], p.get('state') or '')
+                                      if seat_lookup else (None, 'the place catalogue cannot name a seat for this district'))
+                    if seat:
+                        chosen=dict(seat);chosen['for_place_name']=p['name']
+                        chosen['district_reference']=True
+                        result['notes'].append('Read at '+str(chosen.get('label') or chosen.get('name'))+' — '+str(seat_why)+
+                                               '. A district is not a point: this is the district seat the catalogue states, '+
+                                               'not the field, and it is not a district-wide map.')
+                        points.append(chosen);resolved[p['name']]=chosen
+                        continue
+                    result.update(answer='Which village or town within '+p['name']+' should I check? '+str(seat_why).capitalize()+
+                                         ', so name a town or supply a pin; the district is not being replaced with a nearby city.',
+                                  follow_up='Name a village/town, or supply a pin.');return None
+                if p['kind'] in {'state','country','relative'}:
                     result.update(answer='Which village or town '+('near '+p['name'] if p['kind']=='relative' else 'within '+p['name'])+' should I check? I can retrieve model data for a precise place; I cannot yet give a verified map of weather across that whole area.',follow_up='Name a village/town and state, or supply a pin.');return None
                 if p['kind']=='sea_area':
                     # A coast is not a settlement: measured on 15 September 2026, "the Kerala
@@ -994,7 +1014,9 @@ class ConversationEngine:
             # windows into daily pieces and keep each piece's coverage distinct.
             cursor=start
             while cursor<end:
-                finish=min(end,cursor+timedelta(hours=23))
+                # Each piece is one source day (24 complete source hours), so an exact daily total exists;
+                # 23-hour pieces cut the source's own day and the answer could only report a split interval.
+                finish=min(end,cursor+timedelta(days=1)) if (end-cursor)>=timedelta(days=1) else min(end,cursor+timedelta(hours=23))
                 question=f"{intent} for selected point on {cursor.date().isoformat()} from {cursor.strftime('%H:%M')} to {finish.strftime('%H:%M')}?"
                 body={'question':question,'coordinates':place['coordinates']}
                 packet=self.workspace.answer(body)

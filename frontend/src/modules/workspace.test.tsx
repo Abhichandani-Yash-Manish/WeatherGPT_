@@ -109,7 +109,8 @@ describe('the Workspace surface', () => {
       }),
     );
     const { container } = mount(<WorkspaceSurface />);
-    expect(await screen.findByRole('heading', { level: 1, name: 'Workspace' })).toBeInTheDocument();
+    /* The surface is labelled Dashboard since the design migration; its route stays #/workspace. */
+    expect(await screen.findByRole('heading', { level: 1, name: 'Dashboard' })).toBeInTheDocument();
     await nameAPlace();
 
     const stations = within(await screen.findByTestId('workspace-stations'));

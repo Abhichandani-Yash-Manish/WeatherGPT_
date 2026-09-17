@@ -5,13 +5,15 @@
    area and is kept in its own block: CAP reference resolution alone never authorises dissemination.
    A brief for one point is composed only when the reader asks, and says which point it was resolved
    for. */
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getJson, withQuery } from '../api/client';
 import type { Envelope } from '../api/types';
 import { count, orNot, shortHash } from '../lib/format';
 import { istStamp, istWindow } from '../lib/time';
 import { viewById } from '../shell/views';
+import { VizFigure } from '../charts/VizFigure';
+import { warningMatrixSpec } from '../charts/vizSpecs';
 import {
   ColourTag, DataTable, Failure, Facts, Limits, NO_ROW, NOT_RECORDED, PlacePicker, Reading, SurfaceShell,
   type PlaceChoice,
@@ -135,6 +137,8 @@ export const intents: string[] = (viewById('warnings')?.intents ?? []).concat([
 ]);
 
 const DAY_ROWS_SHOWN = 150;
+/* The matrix draws this many districts at once; the table below carries every row. */
+const MATRIX_ROWS_SHOWN = 60;
 const DISTRICT_ROWS_SHOWN = 60;
 const PUBLISHED_DAYS = ['1', '2', '3', '4', '5'];
 /* The product's own day contract, stated in words rather than re-derived here. */
@@ -232,6 +236,16 @@ export function Surface(): JSX.Element {
   const matched = term ? districts.filter(row => String(row.district || '').toLowerCase().includes(term)) : districts;
   const rows = matched.flatMap(row => (row.days || []).map(day => ({ row, day })));
   const shown = rows.slice(0, DAY_ROWS_SHOWN);
+
+  /* The scan view of the same rows: the district x day matrix the served chart engine draws, filtered by the same
+     search, with a cell opening that district-day below. */
+  const matrix = useMemo(
+    () => warningMatrixSpec(matched as never, MATRIX_ROWS_SHOWN, row => {
+      const full = (row as DistrictRow).days || [];
+      if (full.length) setChosen({ row: row as DistrictRow, day: full[0] });
+    }),
+    [matched],
+  );
   const skipped = data?.skipped || [];
   const behindNewest = data?.districts_behind_the_newest_edition || 0;
 
@@ -282,6 +296,18 @@ export function Surface(): JSX.Element {
               : 'Showing all ' + count(rows.length, 'district-day row') + ' this read returned.'}
         </p>
       </section>
+
+      {matrix ? (
+        <section className="module-section" data-testid="warnings-matrix-section">
+          <h2>District × day matrix</h2>
+          <p className="module-note">
+            The published product as a grid, drawn by the chart engine this build serves. A cell shows the colour
+            the source printed for that district-day; focus one to read its hazard wording, and choose one to open
+            that district below. A colour is what the product printed, never a verdict of this surface.
+          </p>
+          <VizFigure kind="warningMatrix" spec={matrix} />
+        </section>
+      ) : null}
 
       <section className="module-section">
         <h2>District-days</h2>

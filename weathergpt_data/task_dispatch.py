@@ -7,7 +7,7 @@ from .transport import SourceError,parsed
 from .claims import render_facts
 from .point_tasks import execute_point_task, render_point_facts
 from .adapters import EXTENDED
-from .capabilities import retrieval_plan,forecast_tool
+from .capabilities import retrieval_plan,forecast_tool,hourly_horizon_exceeded
 from .briefing import render_brief
 
 GAPS={
@@ -28,6 +28,12 @@ def execute_plan(engine,result,plan,resolved,coordinates):
         packet=None
         try:
             new_point=(task['kind']=='history' and task['operation']=='daily') or (task['kind']=='forecast' and forecast_tool(task,result.get('retrieval_preferences'))=='hourly_forecast')
+            if new_point and task['kind']=='forecast' and hourly_horizon_exceeded(task):
+                # A window beyond the hourly horizon is answered from the daily product rather than refused.
+                # The reader is told which product answered and that its resolution is a day, not an hour.
+                new_point=False
+                result.setdefault('notes',[]).append('Hourly detail supports up to 48 hours per task, so this window is '
+                                                     'answered from the daily forecast product: day-level values, not hourly ones.')
             if task['kind']=='forecast' and task['operation']=='crosscheck':
                 from .crosscheck import compare_forecasts
                 packet=copy.deepcopy({k:v for k,v in result.items() if k not in {'task_results','charts','calculations','passages','document_evidence','airport_reports','warning_evidence','pending_slots','retrieval_coverage'}})
@@ -165,6 +171,12 @@ def execute_plan(engine,result,plan,resolved,coordinates):
         if packet.get('edition_comparison'):result['edition_comparison']=packet['edition_comparison']
         if packet.get('edition_differences'):
             result.setdefault('edition_differences',[]).extend(packet['edition_differences'])
+        # Source rows carried by a tool (the corpus path sets them for document answers) travel into the
+        # response, deduplicated: before this the merge copied facts, citations and passages but not
+        # sources, so a document answer arrived with an empty source list on every surface that reads it.
+        for source in packet.get('sources',[]):
+            if source not in result.setdefault('sources',[]):
+                result['sources'].append(source)
         result['facts']+=facts;result['citations']+=citations;result['notes']+=packet.get('notes',[])
         result['charts']+=packet.get('charts',[]);result['calculations']+=packet.get('calculations',[])
         result['trace']['tools']+=packet.get('trace',{}).get('tools',[])

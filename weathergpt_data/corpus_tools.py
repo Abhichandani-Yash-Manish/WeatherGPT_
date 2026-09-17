@@ -183,6 +183,96 @@ def excerpt(text, limit=EXCERPT_LIMIT):
     return cut.rstrip() + ' … [excerpt; full passage retained in evidence]'
 
 
+def clean_quoted(text):
+    """The printed words of a passage with the PDF's page furniture taken out.
+
+    A quoted sentence that begins "3 | P a g e" or carries the private-use bullet glyph the PDF text
+    layer emits reads as noise and pushes the source's own words past the excerpt limit. Only the
+    furniture is removed here: no wording is rewritten, reordered or summarised, and the passage kept
+    in evidence still holds the extraction exactly as it came back.
+    """
+    body = str(text or '')
+    body = re.sub(r'\b\d{1,3}\s*\|\s*P\s*a\s*g\s*e\b', ' ', body, flags=re.I)
+    body = re.sub(r'\bPage\s+\d{1,3}\s+of\s+\d{1,3}\b', ' ', body, flags=re.I)
+    body = re.sub(r'[\ue000-\uf8ff]', ' ', body)
+    body = re.sub(r'\s+', ' ', body)
+    return body.strip(' ·•-—')
+
+
+def sentence_spans(text):
+    """The passage split into sentences, keeping their order. Printed bullets are boundaries too."""
+    body = clean_quoted(text)
+    parts = re.split(r'(?<=[.!?;])\s+|\s*[•·]\s*', body)
+    return [part.strip() for part in parts if part.strip()]
+
+
+def on_topic_excerpt(text, terms, limit=EXCERPT_LIMIT):
+    """The part of a passage that answers the question, quoted whole.
+
+    A district edition is extracted as long blocks that run several districts, crops and sections
+    together. Quoting the head of such a block answered an irrigation question with a sentence about
+    milking animals, because the head was the block's first line and the topic word came 400 characters
+    later. The sentence containing the asked word is quoted, with the sentence before and after it for
+    context, and the limit is applied to whole sentences. When no asked word appears the head of the
+    passage is quoted, and the answer says the passage was served on the other words of the request.
+    """
+    sentences = sentence_spans(text)
+    if not sentences:
+        return ''
+    wanted = [term for term in (terms or []) if term]
+    index = None
+    for position, sentence in enumerate(sentences):
+        haystack = norm(sentence)
+        if any(re.search(r'(?<!\w)' + re.escape(term), haystack) for term in wanted):
+            index = position
+            break
+    if index is None:
+        window = sentences[:3]
+    else:
+        # The matching sentence and the one after it. The sentence before is pulled in only when the match
+        # is short enough to need it: in these blocks the preceding sentence frequently belongs to another
+        # district, which is how an irrigation question once led with a milking-animal sentence.
+        window = sentences[index:index + 2]
+        if index > 0 and len(sentences[index]) < 80:
+            window = sentences[index - 1:index + 2]
+    quoted = ' '.join(window)
+    if len(quoted) > limit:
+        quoted = ' '.join(sentences[index if index is not None else 0:]) if index is not None else quoted
+        while len(quoted) > limit and window:
+            window = window[:-1]
+            quoted = ' '.join(window)
+        if len(quoted) > limit:
+            cut = quoted[:limit]
+            space = cut.rfind(' ')
+            quoted = (cut[:space] if space > limit // 2 else cut).rstrip()
+    trimmed = quoted.rstrip() != clean_quoted(text).rstrip()
+    return quoted + (' … [excerpt; the full passage is retained in evidence]' if trimmed else '')
+
+
+DOSE = re.compile(r'\b\d+(?:\.\d+)?\s*(?:ml|m\.l|g|gm|gms|kg|litre|litres|l)\b|\b\d+(?:\.\d+)?\s*%|'
+                  r'\b(?:SC|WP|EC|WG|SL|ZC)\b|per\s+10\s*(?:l|litre|litres)\b|\b(?:dose|dosage|spray)\b', re.I)
+
+
+APPLICATION = re.compile(r'\b(?:spray|spraying|apply|applied|application|drench|dust|sprinkle|mix|dissolve|treat)\b', re.I)
+
+
+def label_text_only(text):
+    """True when a passage is a product-label or dose instruction rather than advisory guidance.
+
+    The workspace does not repeat a pesticide dose as advice. Printed dose lines are still indexed and still
+    serve a reader who asks for the label, but they are quoted under a label that says what they are, so a
+    dose never arrives as the workspace's own recommendation. Two shapes count: a sentence carrying several
+    measures, and a sentence that both names a measure and instructs an application ("Spray Spinosad 45 SC
+    0.3 ml ... to protect the crop") - measured 17 September 2026, when three such maize sentences were
+    served as the district's advice for a farmer's maize question.
+    """
+    sentences = sentence_spans(text)
+    if not sentences:
+        return False
+    dosing = sum(1 for sentence in sentences
+                 if len(DOSE.findall(sentence)) >= 2 or (DOSE.search(sentence) and APPLICATION.search(sentence)))
+    return dosing >= 1 and dosing * 2 >= len(sentences)
+
 def printed_validity(document):
     """The printed valid-till instant, anchored on the printed issue date, or None."""
     times = document.get('printed_times') or {}
@@ -905,14 +995,48 @@ def execute_corpus(engine, result, plan, task, resolved=None):
                              str(item['nearer']['issue_date']) + ' edition (page ' + str(item['nearer']['page']) + ').')
         parts.append('Both editions are retained and none is ranked: the workspace does not decide which edition is current or '
                      'correct, and a section a later edition does not print is not a withdrawal.')
+    # What the question is about, used to quote the part of a long extraction block that answers it. The
+    # topic words come first; when the request names no topic, the question's own content words are used, so
+    # a passage is never quoted from its head when the asked word sits further down.
+    quote_terms = list(topics) or query_tokens(lexical_query)
+    advice_hits, label_hits = [], []
     for sha in kept:
-        head = heads.get((views[sha]['family'], views[sha].get('region'))) or {}
-        parts.append(document_headline(sha, head) + '.')
         for hit in documents[sha]['_hits']:
             if evidence_class(hit) == 'warning_reference':
                 continue
-            section = (' · ' + hit['section']) if hit.get('section') else ''
-            parts.append('· page ' + str(hit.get('physical_page')) + section + ': “' + excerpt(hit['text']) + '”')
+            (label_hits if label_text_only(hit.get('text')) else advice_hits).append((sha, hit))
+
+    def quoted_line(sha, hit, with_document=False):
+        head = heads.get((views[sha]['family'], views[sha].get('region'))) or {}
+        where = (str(views[sha].get('region') or 'national') + ', ') if with_document else ''
+        printed = str(hit.get('section') or '')
+        if printed and label_text_only(printed):
+            section = ' · printed heading is product-label text, not repeated here'
+        elif printed:
+            section = ' · ' + printed
+        else:
+            section = ''
+        parts = [str(part) for part in (hit.get('crop'), hit.get('growth_stage')) if part]
+        grow = (' · ' + ' · '.join(parts)) if parts else ''
+        when = ' · issue ' + str(views[sha].get('issue_date')) if views[sha].get('issue_date') else ''
+        del head
+        return ('· ' + where + 'page ' + str(hit.get('physical_page')) + section + grow + when + ': “' +
+                on_topic_excerpt(hit.get('text'), quote_terms) + '”')
+
+    for sha in kept:
+        head = heads.get((views[sha]['family'], views[sha].get('region'))) or {}
+        parts.append(document_headline(sha, head) + '.')
+        for hit_sha, hit in advice_hits:
+            if hit_sha == sha:
+                parts.append(quoted_line(sha, hit))
+
+    # A dose table is quoted as a label, never as the workspace's advice: the reader is told what it is.
+    if label_hits:
+        parts.append('Printed product-label or dose text in these documents (a label, not advice):')
+        for sha, hit in label_hits:
+            parts.append(quoted_line(sha, hit, with_document=True))
+        parts.append('That text is what the label or the bulletin printed. It is not chosen, adjusted or endorsed here: '
+                     'no dose decision is made, and the product label and the local advisory decide what may be applied.')
     if warning_hits:
         parts.append('Warning-related text published in these documents (reference only):')
         for hit in warning_hits:
@@ -959,9 +1083,25 @@ def execute_corpus(engine, result, plan, task, resolved=None):
         parts.append('No indexed passage of this product and region contains ' + ', '.join(topics) +
                      '. What is shown shares the other words of the request only, so it does not answer it and no passage was '
                      'substituted from another product or region.')
+    if any(DOSE.search(hit.get('text') or '') for _, hit in advice_hits):
+        parts.append('Some quoted text prints product-label or dose wording. It is quoted as the source printed '
+                     'it and is not a recommendation from this workspace: no dose is chosen, adjusted or endorsed here.')
     parts.append('These are original source excerpts. They are not a forecast, an observation, an official warning or personalized advice.')
     result['answer'] = '\n\n'.join(parts)
     result['citations'] = citations
+    # The same documents as source rows, shaped like every other product read's source table, so a surface
+    # (and the answer card) that lists sources has rows for a document answer too. Before this the reader saw
+    # a document answer with no source rows at all, because only citations were set.
+    result['sources'] = [{'source_id': views[sha].get('source_id'),
+                          'product': views[sha].get('family_label'),
+                          'family': views[sha].get('family'),
+                          'region': views[sha].get('region'),
+                          'state': views[sha].get('state'),
+                          'issue_date': views[sha].get('issue_date'),
+                          'retrieved_at_utc': (heads.get((views[sha]['family'], views[sha].get('region'))) or {}).get('checked_at'),
+                          'sha256_prefix': str(sha)[:12],
+                          'locator': 'document ' + str(sha)[:12] + '; passages carry their own physical page',
+                          'scope': views[sha].get('scope')} for sha in kept]
     result['whole_document'] = whole
     result['edition_differences'] = differences
     result['edition_comparison'] = comparison
