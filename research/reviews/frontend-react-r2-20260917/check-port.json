@@ -315,6 +315,7 @@
             "answers a sent delivery row through its own ack route with the reader\u2019s chosen answer, and prints the server\u2019s reply",
             "offers the acknowledgement only on a sent row, with every answer the store accepts",
             "binds this browser\u2019s subscription to one watch through the subscribe route, and says the binding delivers nothing by itself",
+            "offers no binding control in a browser that cannot take a push subscription, and says so",
             "renders the per-place delivery aggregate with the payload\u2019s own labels and counts, and says it is not a delivery claim",
             "registers one watch from explicit coordinates, sending them as given, and says no coordinate is turned into a district here",
             "prints the create route\u2019s own refusal, with a retry that sends the same request again"

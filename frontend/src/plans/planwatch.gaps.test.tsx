@@ -180,6 +180,14 @@ describe('the notify gaps the vanilla checks named', () => {
     expect(screen.queryByTestId('planwatch-push-subscribed')).toBeNull();
   });
 
+  it('offers no binding control in a browser that cannot take a push subscription, and says so', async () => {
+    mount(<PlanWatch onClose={() => {}} />);
+
+    await screen.findByTestId('planwatch-watches');
+    expect(screen.queryByRole('button', { name: 'Push to Thiruvananthapuram, Kerala' })).toBeNull();
+    expect(screen.getByTestId('planwatch-push-unsupported')).toHaveTextContent('cannot take a push subscription');
+  });
+
   it('renders the per-place delivery aggregate with the payload’s own labels and counts, and says it is not a delivery claim', async () => {
     mount(<PlanWatch onClose={() => {}} />);
 

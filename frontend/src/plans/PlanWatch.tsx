@@ -638,7 +638,8 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
               Push to a watch binds this browser's push subscription to that one watch through POST
               /api/push/subscribe: the route stores the watch_id with the subscription. The binding delivers nothing
               by itself; the route's own returned state is what this panel shows, and a stored subscription is a
-              consent record, not a delivery.
+              consent record, not a delivery. No binding control is offered in a browser that cannot take a push
+              subscription: the push section below states that browser's own reason.
             </p>
             {watchRows.length ? (
               <DataTable
@@ -668,7 +669,7 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
                               onClick={() => setChannels.mutate({ id: watch.id, channels: withWebPush(watch.channels, !hasPush) })}>
                         {hasPush ? 'Disable push' : 'Enable push'}
                       </button>
-                      {!hasPush ? (
+                      {!hasPush && !support ? (
                         <button type="button" className="btn btn-ghost"
                                 disabled={subscribePush.isPending && subscribePush.variables?.id === watch.id}
                                 aria-label={'Push to ' + placeWords(watch)}
