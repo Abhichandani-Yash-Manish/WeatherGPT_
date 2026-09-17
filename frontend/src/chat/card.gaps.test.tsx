@@ -31,8 +31,8 @@ function mount(p: AnswerPacket, register: 'conversational' | 'full' = 'conversat
   return render(<AnswerTurn packet={p} register={register} onFollowUp={() => {}} />);
 }
 
-describe('the computed value', () => {
-  it('shows a computation with the engine method, and a source comparison as a difference rather than a score', () => {
+describe('the airport report', () => {
+  it('keeps the source text, names the report kind, and says neither kind is a clearance', () => {
     mount(packet({
       /* The engine names these fields station, kind, raw_report, observed_at, valid_start and valid_end;
          the card keeps those names rather than renaming what it was sent. */
@@ -52,6 +52,27 @@ describe('the computed value', () => {
   });
 });
 
+describe('the computed value', () => {
+  it('shows a computation with the engine method, and a source comparison as a difference rather than a score', () => {
+    mount(packet({
+      calculations: [{
+        kind: 'source_comparison',
+        value: '-0.8',
+        unit: 'mm',
+        method: 'difference of complete matching point/window totals',
+        interpretation: 'not skill or confidence',
+        input_ids: ['t1-f1', 't1-f2'],
+        source_ids: ['S21', 'S62'],
+      }],
+    }));
+    const block = document.querySelector('.calc') as HTMLElement;
+    expect(block).not.toBeNull();
+    expect(block).toHaveTextContent('-0.8');
+    expect(block).toHaveTextContent('Difference between sources');
+    expect(block).toHaveTextContent('not skill or confidence');
+    expect(block).toHaveTextContent(/is not a skill score, an accuracy measure or a confidence value/);
+  });
+});
 describe('the series receipt', () => {
   it('receipts the values it plotted when every returned value is already drawn', () => {
     mount(packet({
