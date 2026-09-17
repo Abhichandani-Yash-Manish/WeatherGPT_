@@ -1,0 +1,448 @@
+
+> weathergpt-frontend@0.0.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /Users/yashabhichandani/Desktop/WeatherGPT/frontend
+
+(node:60582) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60575) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60584) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60578) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60589) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60588) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60580) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60583) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60586) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60574) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60579) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60577) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60581) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60585) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60576) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60573) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60587) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/plans/planwatch.parity.test.tsx (6 tests) 471ms
+ ✓ src/modules/warnings.gaps.test.tsx (5 tests) 482ms
+ ✓ src/modules/workspace.test.tsx (3 tests) 504ms
+ ✓ src/chat/print.test.tsx (2 tests) 448ms
+ ✓ src/modules/aviation.test.tsx (7 tests) 509ms
+ ✓ src/modules/workspace.parity.test.tsx (2 tests) 559ms
+   ✓ the workspace surface > keeps a late read for an earlier point from overwriting the reading for the point chosen after it  534ms
+stderr | src/App.test.tsx > the shell > opens the plans panel from a ?watch= deep link, so a notification can land on what it is about
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/plans
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/watches
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/outbox
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/watch-health
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/push/state
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/watches/dma
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+ ✓ src/shell/palette.gaps.test.tsx (4 tests) 749ms
+ ✓ src/modules/advisories.test.tsx (7 tests) 777ms
+ ✓ src/modules/modules.test.tsx (13 tests) 749ms
+ ✓ src/chat/card.parity.test.tsx (17 tests) 693ms
+(node:60646) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/plans/planwatch.gaps.test.tsx (7 tests) 883ms
+   ✓ the notify gaps the vanilla checks named > registers one watch from explicit coordinates, sending them as given, and says no coordinate is turned into a district here  336ms
+(node:60649) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60647) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/App.test.tsx (10 tests) 751ms
+(node:60650) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60648) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/plans/planwatch.test.tsx (9 tests) 924ms
+   ✓ the plans, watches and notification inbox panel > renders the saved plans with the state the payload states, its limits, and the close control  336ms
+(node:60660) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/modules/surface.parity.test.tsx (12 tests) 985ms
+stderr | src/modules/briefcase.test.tsx > the Briefcase surface > renders the kept entries, the count, the payload delivery sentence and its own local-only limits
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/briefing/latest
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+ ✓ src/landing/OwnerGate.test.tsx (7 tests) 1260ms
+   ✓ the owner gate > unlocks with the passphrase it was given, and counts a wrong one as an attempt  323ms
+   ✓ the owner gate > accepts the passphrase it stored, and never stores the passphrase itself  365ms
+(node:60670) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60669) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60676) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60675) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+stderr | src/modules/briefcase.test.tsx > the Briefcase surface > opens one kept brief in full and states the fields the entry did not record
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/briefing/latest
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+(node:60683) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60684) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60685) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+stderr | src/modules/briefcase.test.tsx > the Briefcase surface > asks the server to compose an alert brief for a resolved point, and cannot post a brief itself
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/briefing/latest
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+ ✓ src/chat/chat.test.tsx (13 tests) 1358ms
+ ✓ src/shell/surfacehost.test.tsx (2 tests) 402ms
+   ✓ the surface host > loads a ported module as its own chunk and renders it with its own limits  376ms
+ ✓ src/modules/map.gaps.test.tsx (4 tests) 394ms
+ ✓ src/chat/turn.parity.test.tsx (10 tests) 1420ms
+ ✓ src/modules/map.test.tsx (6 tests) 417ms
+stderr | src/modules/briefcase.test.tsx > the Briefcase surface > confirms a removal in words and then states what was removed
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/briefing/latest
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/modules/briefcase.parity.test.tsx > briefcase parity > renders the kept brief with the time it was kept, the source it named and the no-delivery sentence the store returned
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/briefing/latest
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+(node:60695) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/modules/compare.test.tsx (2 tests) 473ms
+   ✓ the Compare places surface > fetches each place separately, keeps each read's instant and source, and states a missing point or parameter for the read that lacks it  311ms
+(node:60697) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/modules/marine.test.tsx (2 tests) 426ms
+stderr | src/modules/briefcase.parity.test.tsx > briefcase parity > reads an opened brief through the token-authenticated store route and shows the limits and hash stored with it
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/briefing/latest
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/chat/page.test.tsx > the page rules > names the state a failed read left the reader in, not only the server sentence
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/chat/progress
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/chat/page.test.tsx > the page rules > names the state a failed read left the reader in, not only the server sentence
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • POST /api/chat/preview
+
+  • Request body: {"question":"Will it rain?"}
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/modules/briefcase.test.tsx > the Briefcase surface > states a failed read as that failure, and the retry re-reads it
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/briefing/latest
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+ ✓ src/modules/briefcase.test.tsx (5 tests) 551ms
+stderr | src/modules/briefcase.parity.test.tsx > briefcase parity > deletes only after a stated confirmation, names the brief, and re-reads the list rather than assuming
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/briefing/latest
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/a11y/a11y.test.tsx > accessibility of the rendered surfaces > has no violations on the front door
+An update to Landing inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/landing/owner.test.ts (8 tests) 334ms
+stderr | src/chat/page.test.tsx > the page rules > names an unavailable store as its own state
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/chat/progress
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/chat/page.test.tsx > the page rules > names an unavailable store as its own state
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • POST /api/chat/preview
+
+  • Request body: {"question":"Will it rain?"}
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+ ✓ src/chat/page.test.tsx (4 tests) 368ms
+stderr | src/modules/briefcase.parity.test.tsx > briefcase parity > says nothing is kept when the store is empty, and invents no entry
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/briefing/latest
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/modules/briefcase.parity.test.tsx > briefcase parity > asks the server to compose a brief for a resolved point rather than posting a brief body itself
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/briefing/latest
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/a11y/a11y.test.tsx > accessibility of the rendered surfaces > has no violations on the conversation at rest
+An update to ConversationRail inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/landing/Landing.test.tsx (7 tests) 433ms
+(node:60708) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+stderr | src/a11y/a11y.test.tsx > accessibility of the rendered surfaces > has no violations on the owner gate
+A suspended resource finished loading inside a test, but the event was not wrapped in act(...).
+
+When testing, code that resolves suspended data should be wrapped into act(...):
+
+act(() => {
+  /* finish loading suspended data */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+A suspended resource finished loading inside a test, but the event was not wrapped in act(...).
+
+When testing, code that resolves suspended data should be wrapped into act(...):
+
+act(() => {
+  /* finish loading suspended data */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+A suspended resource finished loading inside a test, but the event was not wrapped in act(...).
+
+When testing, code that resolves suspended data should be wrapped into act(...):
+
+act(() => {
+  /* finish loading suspended data */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+A suspended resource finished loading inside a test, but the event was not wrapped in act(...).
+
+When testing, code that resolves suspended data should be wrapped into act(...):
+
+act(() => {
+  /* finish loading suspended data */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/modules/briefcase.parity.test.tsx (5 tests) 395ms
+ ✓ src/a11y/a11y.test.tsx (5 tests) 454ms
+   ✓ accessibility of the rendered surfaces > has no violations on the front door  342ms
+(node:60713) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/modules/ensemble.test.tsx (3 tests) 397ms
+(node:60714) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60710) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60715) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/shell/keyboard.test.tsx (5 tests) 460ms
+(node:60722) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60724) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/modules/verification.test.tsx (3 tests) 396ms
+ ✓ src/modules/climate.test.tsx (6 tests) 381ms
+(node:60733) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60730) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60735) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60742) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/modules/observations.gaps.test.tsx (2 tests) 237ms
+ ✓ src/plans/planwatch.history.test.tsx (2 tests) 191ms
+(node:60743) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60744) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60748) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/shell/topbar.test.tsx (9 tests) 291ms
+ ✓ src/modules/documentviewer.test.tsx (7 tests) 253ms
+(node:60754) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/chat/card.recorded.test.tsx (8 tests) 154ms
+stderr | src/shell/transitions.test.tsx > view transitions on a route change > uses the document view transition for a route change when the browser offers it, and the surface still changes
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/overview
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+ ✓ src/modules/briefcase.gaps.test.tsx (4 tests) 218ms
+ ✓ src/modules/documentviewer.parity.test.tsx (5 tests) 169ms
+ ✓ src/shell/pins.test.tsx (4 tests) 296ms
+ ✓ src/chat/collection.test.tsx (5 tests) 176ms
+(node:60763) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/shell/transitions.test.tsx (3 tests) 293ms
+(node:60764) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/chat/voice.parity.test.tsx (1 test) 144ms
+ ✓ src/chat/parity.test.tsx (4 tests) 142ms
+ ✓ src/chat/passages.test.tsx (4 tests) 150ms
+ ✓ src/charts/charts.test.tsx (3 tests) 89ms
+ ✓ src/shell/topbar.gaps.test.tsx (3 tests) 236ms
+(node:60774) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/modules/loading.test.tsx (2 tests) 78ms
+(node:60773) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60776) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60780) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60781) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/chat/voice-detail.test.tsx (2 tests) 78ms
+(node:60782) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/shell/shell.test.tsx (2 tests) 15ms
+ ✓ src/shell/sky.test.ts (4 tests) 4ms
+ ✓ src/styles/styles.test.ts (4 tests) 3ms
+ ✓ src/charts/viz.parity.test.ts (9 tests) 10ms
+stderr | src/shell/errorboundary.test.tsx > the error boundary > states what failed and offers to try again
+Error: the surface could not read its payload
+    at Broken (/Users/yashabhichandani/Desktop/WeatherGPT/frontend/src/shell/errorboundary.test.tsx:7:9)
+    at Object.react_stack_bottom_frame (/Users/yashabhichandani/Desktop/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:28571:20)
+    at renderWithHooks (/Users/yashabhichandani/Desktop/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:8030:22)
+    at updateFunctionComponent (/Users/yashabhichandani/Desktop/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:10569:19)
+    at beginWork (/Users/yashabhichandani/Desktop/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:12205:18)
+    at runWithFiberInDEV (/Users/yashabhichandani/Desktop/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at performUnitOfWork (/Users/yashabhichandani/Desktop/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:19176:22)
+    at workLoopSync (/Users/yashabhichandani/Desktop/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:19004:41)
+    at renderRootSync (/Users/yashabhichandani/Desktop/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:18985:11)
+    at performWorkOnRoot (/Users/yashabhichandani/Desktop/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:18094:35) {
+  [stack]: [Getter/Setter],
+  [message]: 'the surface could not read its payload'
+}
+
+The above error occurred in the <Broken> component.
+
+React will try to recreate this component tree from scratch using the error boundary you provided, ErrorBoundary.
+
+WeatherGPT surface failed: Error: the surface could not read its payload
+    at Broken (/Users/yashabhichandani/Desktop/WeatherGPT/frontend/src/shell/errorboundary.test.tsx:7:9)
+    at Object.react_stack_bottom_frame (/Users/yashabhichandani/Desktop/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:28571:20)
+    at renderWithHooks (/Users/yashabhichandani/Desktop/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:8030:22)
+    at updateFunctionComponent (/Users/yashabhichandani/Desktop/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:10569:19)
+    at beginWork (/Users/yashabhichandani/Desktop/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:12205:18)
+    at runWithFiberInDEV (/Users/yashabhichandani/Desktop/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at performUnitOfWork (/Users/yashabhichandani/Desktop/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:19176:22)
+    at workLoopSync (/Users/yashabhichandani/Desktop/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:19004:41)
+    at renderRootSync (/Users/yashabhichandani/Desktop/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:18985:11)
+    at performWorkOnRoot (/Users/yashabhichandani/Desktop/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:18094:35) 
+    at Broken (/Users/yashabhichandani/Desktop/WeatherGPT/frontend/src/shell/errorboundary.test.tsx:5:9)
+    at ErrorBoundary (/Users/yashabhichandani/Desktop/WeatherGPT/frontend/src/shell/ErrorBoundary.tsx:5:1)
+
+ ✓ src/shell/errorboundary.test.tsx (2 tests) 48ms
+ ✓ src/chat/card.gaps.test.tsx (6 tests) 50ms
+
+ Test Files  55 passed (55)
+      Tests  296 passed (296)
+   Start at  07:20:30
+   Duration  3.85s (transform 1.27s, setup 7.38s, collect 9.30s, tests 23.13s, environment 14.00s, prepare 2.50s)
+

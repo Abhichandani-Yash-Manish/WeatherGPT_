@@ -5,6 +5,9 @@ refinements, a final PS progress review, and a plan that closes features **one b
 partial**. This document is that review and that plan. It changes no claim made elsewhere; where it finds a gap
 it names it and schedules it.
 
+**Superseded overlay:** the current reading and the ordered queue are in [docs/93](93-ps-closure-queue.md)
+(17 September 2026, after R6). This document stays as the audit that defined each feature’s done state.
+
 ## 1. How this audit was made
 
 `research/reviews/final-audit-20260917/architecture-inventory.py` reads the code and the registries and writes

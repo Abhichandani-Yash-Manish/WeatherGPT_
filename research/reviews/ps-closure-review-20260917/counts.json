@@ -1,0 +1,19 @@
+{
+  "compiled_at_utc": "2026-09-16T13:46:23+00:00",
+  "counts": {
+    "blocked_access": 15,
+    "active": 20,
+    "reachable_not_connected": 10,
+    "product_address_pending": 5,
+    "not_a_data_product": 10,
+    "active_via": 3,
+    "address_missing": 4,
+    "not_a_source": 3
+  },
+  "regions_read_by_the_documents_page": {
+    "documents": 588,
+    "passages": 7372,
+    "regions": 570,
+    "source": "docs/images/06-documents.png capture, 17 September 2026"
+  }
+}

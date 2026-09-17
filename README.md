@@ -10,8 +10,8 @@ no source read and no fact invented.
 **Operational acceptance is not achieved.** This is a working prototype whose limits are part of the
 interface: it says what it did not read, which state is unknown, and when a value is model output,
 published wording, an observation or an official warning. The requirement-by-requirement verdict is
-[the PS progress assessment](docs/84-ps-progress-and-pictures.md); the newest batch is
-[the intelligent-chat overhaul](docs/83-intelligent-chat-overhaul.md).
+[the PS progress assessment](docs/84-ps-progress-and-pictures.md); the current review and the ordered
+closure queue are in [docs/93](docs/93-ps-closure-queue.md).
 
 ## What it looks like
 
@@ -355,7 +355,8 @@ recorded journeys, fast and slow.
 ### Where to start reading
 
 - [The recorded problem statement](docs/00-problem-statement.md) — the authoritative SIH26068 summary and what this team's interpretations are.
-- [The integrated PS assessment](docs/72-integrated-status-and-ps-review.md) — the current requirement-by-requirement verdict and remaining gates.
+- [The integrated PS assessment](docs/72-integrated-status-and-ps-review.md) — the requirement-by-requirement verdict and remaining gates.
+- [The final PS progress review and the closure queue](docs/93-ps-closure-queue.md) — the measured state after R6, the eight features and the cross-cutting rows with the delta each still owes, and the ordered queue with the artefact that closes each row.
 - [The frontend overhaul plan](docs/78-frontend-overhaul-plan.md) and [DESIGN.md](DESIGN.md) — the phased overhaul, the stack decision and the design system it commits to.
 - [The corpus front door and surface completion](docs/77-corpus-front-door-and-surface-completion.md) — the newest batch on the surface work.
 - [OpenRouter routing and frontend delivery](docs/76-openrouter-routing-and-frontend-delivery.md) — the free-model ranking, failover and the radar coordinate repair.
@@ -370,6 +371,7 @@ recorded journeys, fast and slow.
 Each links to the batch that recorded it. Older entries are **historical evidence, not completion
 claims**, and the test counts in them are the counts of their own checkpoint.
 
+- [The final PS progress review and the closure queue](docs/93-ps-closure-queue.md) — the measured state after R6 (a 20-step gate, 1309 Python tests, 55 React suites and 296 checks, a 110-of-110 port ledger audited on every run), the eight features and the cross-cutting rows with the delta each still owes, and the Q1–Q10 queue that names the artefact closing each row.
 - [The flagship transcript, the first real modules, and the front door](docs/90-frontend-r2-flagship-transcript.md) — the R2 transcript (question kept, stages, first reading, evidence receipt, register, stored conversations, voice), the first six R3 modules, the landing page and the owner gate, the four defects the ported checks found, 68 frontend checks, 14 live HTTP acceptance checks and ten screenshots of the served build, and what is still open.
 - [Every surface ported, R4 finished, and the accessibility pass measured in a browser](docs/91-frontend-r3-r5-all-surfaces.md) — the eight remaining surfaces (so all nineteen are real modules), print parity, the chart engine served to the built page, a browser accessibility sweep over 15 surfaces with the three defects it found and fixed, an engine repair that makes the marine and river products name the answering cell distance, and what is still open.
 - [R6: the readiness assessment for removing the vanilla frontend, and the record of its execution](docs/92-r6-decommission-readiness.md) — the deletion in order and the inventory it required; §4c the default flip, §4d the two decisions in writing (the vendor chart engine is served as shared bytes; the service worker was kept), §4d.2 the fork on the nine chart checks, §5 what was executed and measured on 17 September 2026, and what the React tree still leaves open.

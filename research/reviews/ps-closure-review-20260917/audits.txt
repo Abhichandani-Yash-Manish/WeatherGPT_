@@ -1,0 +1,47 @@
+== scripts/audit_react_build.py ==
+PASS built_html_present                 web/dist/index.html
+PASS no_inline_script                   every script tag carries a src
+PASS no_markup_style_attribute          no style attribute in the built HTML
+PASS no_external_urls                   nothing loaded off-origin
+PASS token_placeholder_survives         the server injects the session token into the built page
+PASS module_entry_present               /assets/main-BM82nwfr.js
+PASS entry_exists:/assets/main-BM82nwfr.js web/dist/assets/main-BM82nwfr.js
+PASS manifest_files_exist               20 manifest file(s) present
+PASS manifest_entry_matches_page        manifest entry assets/main-BM82nwfr.js vs page /assets/main-BM82nwfr.js
+PASS no_external_css_imports            1 stylesheet(s) checked
+PASS initial_bundle_within_budget       main-BM82nwfr.js 411 KB raw, 123 KB gzip; react-BZPdts19.js 12 KB raw, 4 KB gzip | total 127 KB gzip (budget 312 KB gzip for the whole initial graph)
+11 check(s), 0 failed
+
+== scripts/audit_surface_registry.py ==
+PASS frozen_rail_expectation              19 surface(s) in the frozen expectation
+PASS react_registry_present               19 registry entr(ies)
+PASS the_two_frontends_agree              only vanilla: []; only react: []
+PASS every_surface_declares_a_route       unmapped: []
+PASS every_declared_route_is_served       not served: []
+PASS every_product_has_a_surface_or_a_reason products with neither: []
+PASS every_exemption_carries_a_reason     11 exemption(s), each with a reason
+PASS no_surface_calls_a_mutation_route    a read surface must not be wired to a mutating route
+PASS every_ported_module_is_a_declared_surface 18 of 19 surfaces have a real module, 1 are placeholders that state their stage
+PASS every_ported_module_file_exists      18 module file(s) present
+10 check(s), 0 failed
+
+== scripts/audit_react_frontend.py ==
+PASS built_page_present                 web/dist/index.html
+PASS FE01_mobile_reachability           composer is not a form: True; narrow-width drawer rules: True
+PASS FE02_bounded_collection_reachable  the card offers the control and a check exercises it
+PASS FE03_no_unreachable_renderer       no product component calls fetch outside src/api/client.ts (the CSP probe is a development entry, built by its own config)
+PASS FE04_task_accounting               the card states requested, completed and the incomplete ids
+PASS FE05_scope_and_language            language control: True; surfaces rendering the evidence footer: 19
+PASS FE06_one_question_input            question inputs in the composer: 1; builder writes and does not send: True
+PASS FE07_surfaces_served_and_recorded  live acceptance record: True; surface registry audit: True
+PASS FE08_edition_coverage              the changed-edition surface exists with a check
+PASS FE10_print_parity                  the print rules and the card markup name the same hooks
+PASS FE11_view_contract                 every surface is a registry entry loaded by the host, and the registry audit compares both frontends
+PASS port_ledger_parses                 10 suites, 110 checks, 110 named against a React spec
+PASS probe_is_not_a_product_entry       the probe is absent from the built manifest
+13 check(s), 0 failed
+
+== scripts/audit_port_ledger.py ==
+PASS ledger totals                          10 suites, 110 checks, 110 named against a React spec
+PASS every named test exists in its spec    203 name(s) verified in 33 spec file(s)
+2 check(s), 0 failed

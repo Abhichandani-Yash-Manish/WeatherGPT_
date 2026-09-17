@@ -1,14 +1,19 @@
 {
  "schema_version": "product-progress-plan-v1",
- "as_of_utc": "2026-09-16T22:15:00+00:00",
+ "as_of_utc": "2026-09-17T08:30:00+00:00",
  "status": "implementation_in_progress",
  "user_direction": "Desktop web now. Hosting/sharing on hold. Preserve final nationwide and specialist scope.",
  "next_batch": [
-  "Capture and verify the real warning-change lifecycle through the browser inbox and notification permission path",
-  "Independently audit task, measure, place, time, source and output-language completion on unfamiliar cases",
-  "Bound source reads and lock waits; measure concurrent cold/warm behavior",
-  "Native-speaker and noisy-audio acceptance; real mobile journeys",
-  "Review domain applicability, dated geography and sustainable operation"
+  "Q1 the corpus chat path: whole-document recall and cross-edition contradiction handling",
+  "Q2 Feature 4 live journey: a changed edition to a real device, the acknowledgement and a cancellation",
+  "Q3 Feature 5: reconcile one general/warning passage with its crop passage, or disclose both",
+  "Q4 Feature 1: per-product coverage statements and a measured cold-read bound",
+  "Q5 Feature 2: independent adjudication of an unfamiliar request that mixes two products",
+  "Q6 Feature 6: native-speaker review per script and interface localisation",
+  "Q7 Feature 8: real-audio acceptance",
+  "Q8 Feature 7: the dated district crosswalk, then a trend re-run with it attached",
+  "Q9 the engine-gap batch: member counts, ensemble stale/partial propagation, the marine sea-cell distance guard",
+  "Q10 mobile, service scale and operations, while hosting is held by user direction"
  ],
  "parallel_discovery_note": "Begin official access/validity/geography work early; no requirement to wait for every other stage.",
  "stages": [
@@ -260,14 +265,14 @@
   "P13": {
    "status": "partial",
    "evidence": "docs/18-bulletin-retrieval-and-warning-lifecycle.md",
-   "latest_evidence": "docs/72-integrated-status-and-ps-review.md",
-   "current_evidence": "The desktop workspace exposes fifteen guided tools and every declared read-model path has a direct surface. The Today surface opens with a Now band that places the observed instant, the published district window and the model hours on one axis, and the shell keeps a local shortlist of pinned places reachable from the command palette and the topbar. The frontend overhaul is under way: a token layer (tokens.css), a chart engine v2 (viz.js) and its first two signature visuals — the ensemble member plume and the multi-parameter meteogram — are wired into the Ensemble and Forecast surfaces, with motion primitives and a focus ring. The language ledger has 19 verified write gates and 10 speak/hear gates; voice controls and audio probes exist. Native-speaker, noisy-input, screen-reader and real mobile acceptance remain open. Loading states now reserve the shape of the answer without carrying a number, the evidence receipt can be copied or printed, and a local compare tray reads up to three places side by side without differencing them. The Map reads out a districts published day on hover and focus, loads the vendored city layer so a settlement can be selected as the working place at its own coordinates, and states in its legend what is drawn and how many of each. Surface changes are offered as a view transition where the browser supports one, and a print block keeps the published colours and drops hover-only controls so a printed page carries the same distinctions as the screen. The Today surface lays out the five published days as columns with the source colours, counts the model hours into the IST day their timestamp falls in, places the station on the day it reported, and states that it computes no daily value. The overhaul was verified in a real browser: eight surfaces, twelve screenshots at four viewport/appearance combinations, and four defects repaired that no component suite could see (missing surface hosts, a hyphenated route, an invalid element tag, and SVG text created outside the SVG namespace)."
+   "latest_evidence": "docs/93-ps-closure-queue.md",
+   "current_evidence": "The workspace is the React build only: Ask plus eighteen module surfaces, a command palette with pinned places, print parity, and the vendored chart engine served at /viz.js. The language selector offers only languages that pass a measured write gate and the Listen control stays; no native-speaker review has been recorded."
   },
   "P14": {
    "status": "partial",
    "evidence": "research/reviews/product-potential-20260912/findings.json",
-   "latest_evidence": "docs/72-integrated-status-and-ps-review.md",
-   "current_evidence": "The working tree passes 1,139 Python tests, ten Node component suites, the frontend workspace audit and all 27 verification steps on this macOS Python 3.9 host, with the status drift guard green. The frontend overhaul batch adds a token layer and a chart engine pinned by tests/test_viz.js (gaps stay gaps, locators travel with every drawn point). Live loopback records are in research/reviews/frontend-overhaul-20260915, corpus-and-surfaces-20260915 and frontend-delivery-20260915; no DOM or browser rendering was available in the session sandbox. Fresh-machine/Windows installation, real-device notification delivery, CI, sustained load and deployment remain unaccepted; hosting held."
+   "latest_evidence": "docs/93-ps-closure-queue.md",
+   "current_evidence": "The working tree passes 1309 Python tests, 55 React suites and 296 component checks, and the 20-step verification gate (drift guard, the three React audits and the port-ledger audit), with the port ledger at 110 of 110 and 203 test names verified in 33 spec files. Fresh-machine and Windows installation, real-device notification delivery, CI, sustained load and deployment remain unaccepted; hosting held."
   },
   "P15": {
    "status": "partial",
@@ -293,8 +298,8 @@
    "prerequisite": "Reviewed domain tools; no unsupported risk scores"
   }
  ],
- "latest_batch": "docs/85-feature4-dissemination-backbone.md",
- "next_batch_note": "PR #9 (the Feature 4 dissemination backbone) is merged and integrated: real watch mutations are budgeted, the outbox survives overlap and crashes, and the supervision truth is on the inbox panel. Next by user direction: the React frontend overhaul, planned in docs/86-react-frontend-overhaul-plan.md with staged, independently shippable slices and the existing audit and component checks ported stage by stage. Still open and unchanged: live device delivery, sustained live-IMD editions, native-speaker and noisy-audio acceptance, mobile journeys, hosting.",
+ "latest_batch": "docs/93-ps-closure-queue.md",
+ "next_batch_note": "docs/93 (17 September 2026) is the current review: the React frontend overhaul closed at R6, the port ledger is 110 of 110 and audited on every gate run, and the closure queue names the artefact each remaining feature row owes. Q1 is the corpus chat path (whole-document recall and contradiction handling); Q2 is the live Feature 4 device journey.",
  "open_paths": [
   {
    "path": "source_and_document",

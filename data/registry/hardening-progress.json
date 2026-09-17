@@ -2914,5 +2914,32 @@
   ],
   "hosting_performed": false,
   "same_host_only": true
+ },
+ "ps_closure_queue_batch": {
+  "report": "docs/93-ps-closure-queue.md",
+  "evidence_directory": "research/reviews/ps-closure-review-20260917",
+  "scope": "the final PS solution progress review after R6, and the ordered closure queue",
+  "delivered": [
+   "docs/93: the measured state on 17 September 2026, the eight features and the cross-cutting rows with the delta each still owes, and the Q1-Q10 queue naming the artefact that closes each row",
+   "the README points at the review, its gallery and its batch record; docs/89 carries the superseded-overlay pointer; docs/92 records the independent replay of the recovered vanilla chart suite",
+   "the product registry refreshes its current-evidence rows (P13, P14) to the React-only surface and the 20-step gate"
+  ],
+  "tests_added": [
+   "none: this batch is a review; the parity spec that closed the port ledger landed with frontend_react_r6_batch"
+  ],
+  "live_check": "research/reviews/ps-closure-review-20260917/gate.txt",
+  "measured": [
+   "gate: verify_all.py 20 steps, 0 failed (drift guard 0 problems, 1309 Python tests collected and recorded)",
+   "Python suite 1309 tests; React suite 55 files, 296 checks, tsc clean",
+   "audits: built output 11 checks, surface registry 10, React frontend 13, port ledger 2 (110 of 110 claims, 203 names in 33 spec files)",
+   "source ledger: 70 registered addresses (20 active, 3 active via another source, 15 blocked, 10 reachable not connected, 5 product address pending, 10 not data products, 4 without an address, 3 not sources)"
+  ],
+  "open": [
+   "every row of docs/93 section 2 remains short of its stated criterion; the queue is the plan, not a closure",
+   "Q6 and Q7 need people outside this workspace (native speakers, field users); Q10 needs user direction on mobile and is blocked on hosting being held",
+   "the corpus chat path (Q1) is the highest-value engine gap and gates Q3"
+  ],
+  "hosting_performed": false,
+  "same_host_only": true
  }
 }

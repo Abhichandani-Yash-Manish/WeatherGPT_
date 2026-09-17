@@ -214,6 +214,10 @@ the visual-acceptance gap.
 `scripts/audit_port_ledger.py` is a `verify_all.py` step: it re-reads the ledger and refuses a claimed test name
 that is not written in the spec the ledger names (203 names across 33 spec files at this writing).
 
+Checked independently the same day: the deleted suite was recovered from git (`git show 19c38e6:tests/test_viz.js`),
+run against the served `web/viz.js`, and it still prints its nine PASS lines; `git diff 19c38e6..HEAD -- web/viz.js` is
+empty, so the port runs the bytes the vanilla checks ran.
+
 ## 5. Executed on 17 September 2026
 
 The deletion ran with --force because it was taken before the last port (§4d.3 closed it the same day, and `scripts/decommission_vanilla.py` needs no force now). The reason it printed: 101 of the 110 checks were
