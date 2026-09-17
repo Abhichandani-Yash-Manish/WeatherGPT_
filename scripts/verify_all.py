@@ -74,6 +74,10 @@ def main():
     # the sources, so those checks survive the vanilla frontend's removal. A missing build is a skip, not a pass.
     ok, tail, err = run([sys.executable, 'scripts/audit_react_frontend.py'])
     steps.append(('react frontend audit', ok, tail or err))
+    # Every check named in the port ledger is a claim about a React spec; this re-reads it and refuses a
+    # claimed test name that is not written in the spec the ledger names.
+    ok, tail, err = run([sys.executable, 'scripts/audit_port_ledger.py'])
+    steps.append(('port ledger audit', ok, tail or err))
     width = max(len(name) for name, _, _ in steps) + 2
     for name, ok, detail in steps:
         print('%-*s %s %s' % (width, name, 'PASS' if ok else 'FAIL', detail))

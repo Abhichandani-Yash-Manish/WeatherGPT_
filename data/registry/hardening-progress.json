@@ -2881,5 +2881,38 @@
   ],
   "hosting_performed": false,
   "same_host_only": true
+ },
+ "frontend_react_r6_batch": {
+  "report": "docs/86-react-frontend-overhaul-plan.md",
+  "evidence_directory": "research/reviews/frontend-react-r6-20260917",
+  "scope": "the R6 decommission: the React build becomes the only served surface and the vanilla tree is removed, with the port ledger closed and held to account",
+  "delivered": [
+   "the workspace serves one surface: the built React page, with the legacy asset map replaced by a 404 at the same depth so the React branch above it was untouched",
+   "twenty-three files removed: the vanilla surfaces, their stylesheet and page, the DOM shim and the ten component suites, and the two scripts that only existed to read them",
+   "three web files kept, with the reason printed by scripts/decommission_vanilla.py: tokens.css (imported by the React stylesheet), viz.js (served to the React build) and sw.js (the notification worker the plans panel registers)",
+   "the port ledger is 110 of 110: the last nine checks are frontend/src/charts/viz.parity.test.ts, which reads the served web/viz.js from disk and runs it in the stand-in DOM the vanilla suite used",
+   "scripts/audit_port_ledger.py is a verify_all.py step: it re-reads the ledger and refuses any claimed test name that is not written in the spec the ledger names",
+   "verify_all.py runs the React gates only and passes on the React-only tree",
+   "the README, docs/86, docs/92 and docs/84 now state the React-only surface, and the pre-R6 picture set is separated from the current React captures"
+  ],
+  "tests_added": [
+   "frontend/src/charts/viz.parity.test.ts (9 checks, the nine test_viz.js claims, read against the served web/viz.js bytes)"
+  ],
+  "live_check": "research/reviews/frontend-react-r6-20260917/live-r6.json",
+  "measured": [
+   "gate: verify_all.py 20 steps, 0 failed on the React-only tree",
+   "frontend: 55 suites, 296 component checks, tsc clean",
+   "port ledger: 110 of 110 claimed, 203 test names verified across 33 spec files",
+   "Python suite: 1309 tests",
+   "pictures: eight React captures at 1440x900 regenerated into docs/images/ from the served build against a throwaway store"
+  ],
+  "open": [
+   "RTL shell mirroring and a language run on the React interface remain unrecorded",
+   "voice still has interface coverage only: no real-audio or field acceptance",
+   "mobile and service-scale acceptance remain open",
+   "engine gaps carried forward: series_from_packet drops per-record member counts, product_api.ensemble does not propagate adapter stale/partial status, and the marine sea-cell selection has no distance guard"
+  ],
+  "hosting_performed": false,
+  "same_host_only": true
  }
 }

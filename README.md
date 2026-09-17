@@ -5,7 +5,7 @@ your own words — the model decides whether to retrieve and which tools to use,
 **entity, window, unit and source attached to every value**. A greeting is answered as a conversation, with
 no source read and no fact invented.
 
-![An evidence answer: the written sentence, the tool-owned fact, the validity ruler and the receipt naming source S21](docs/images/03-answer-written.png)
+![The React workspace opens on Ask: the module rail, the question box and the reading register](docs/images/02-ask-welcome.png)
 
 **Operational acceptance is not achieved.** This is a working prototype whose limits are part of the
 interface: it says what it did not read, which state is unknown, and when a value is model output,
@@ -17,22 +17,25 @@ published wording, an observation or an official warning. The requirement-by-req
 
 |  |  |
 | --- | --- |
-| ![Ask is the landing surface](docs/images/01-ask-landing.png) | ![The first reading while the answer is retrieved](docs/images/02-first-reading.png) |
-| **Ask is the front door.** The conversation is the landing surface; every guided tool stays in the rail. | **No dead air.** The engine's own first reading — place, window, measures, products — appears while the turn works, labelled as a reading and not evidence. |
-| ![A conversational reply card](docs/images/04-conversation.png) | ![A Hindi conversation](docs/images/05-multilingual-answer.png) |
-| **A conversation is an answer too.** Greetings, capability and reasoning questions are answered with no tool run, tagged *Conversational reply · No source read*. | **Multilingual.** The reply is written in the question's language, and an evidence answer is rendered behind a gate that withholds values from translation. |
-| ![The provider state on the settings surface](docs/images/06-settings-providers.png) | ![The Warnings surface](docs/images/07-warnings.png) |
-| **Who answers, in what order, and what failed last.** The settings surface states the provider policy, the planner, the first look and each provider's availability. | **The guided surfaces stay.** Warnings, map, forecast, observations, advisories, documents, briefcase and more remain reachable beside the conversation. |
+| ![The React front door: WeatherGPT, the shape of an answer, and the workspace buttons](docs/images/01-ask-landing.png) | ![The React Ask surface: the module rail, the question box, the reading register and an empty stored-conversation list](docs/images/02-ask-welcome.png) |
+| **The front door is a React surface.** It states what an answer is made of, and opens the workspace or the assistant directly. | **Ask is the front door.** The conversation is the landing surface; every guided tool stays in the rail, and the capture's throwaway store holds no reader conversation. |
+| ![The React Warnings surface: the district filter and the district-day rows with the colour the product printed](docs/images/03-warnings.png) | ![The React Today surface: the national district-warning picture and the colour tallies](docs/images/04-today.png) |
+| **Warnings as printed.** One row per district-day, keeping the colour and hazard wording the product itself published. | **Today, composed.** The national picture this machine read: districts, source features without a district name, radar stations and the colour tallies. |
+| ![The React Forecast surface: the point entry with no place named](docs/images/05-forecast.png) | ![The React Published documents surface: filters, index counts and the editions indexed](docs/images/06-documents.png) |
+| **Forecast states its own limit.** A route capture with no place named, so the surface says no series was requested rather than drawing one. | **Documents keep their issue and currency.** Filters and counts over the indexed editions, each with printed issue date, pages, passages and saved-body state. |
+| ![The React Sources and settings surface: the capability table with tool, kind, operations and stated purpose](docs/images/07-settings.png) | ![The React Map surface: the layer files with byte counts and the schematic figure controls](docs/images/08-map.png) |
+| **Who answers, and for what.** Each capability as the read returned it: tool, kind, operations and stated purpose. | **The Map draws what it can name.** Layer files, byte counts and budgets exactly as returned; the figure is a schematic, not a cartographic basemap. |
 
-All eight pictures (including `08-today.png`) are the real workspace on loopback, captured 16 September 2026 at
-1440×900 in headless Chrome against a throwaway copy of the store, so no reader conversation appears in them:
-[captions and provenance](docs/84-ps-progress-and-pictures.md#the-picture-set).
+All eight pictures are this machine's React build — the only served surface after R6 — captured 17 September 2026
+at 1440×900 in headless Chrome on loopback against a throwaway copy of the store, so no reader conversation
+appears in them. The earlier pre-R6 picture set and its per-file captions stay in
+[docs/84](docs/84-ps-progress-and-pictures.md#the-picture-set).
 
 ## Status at a glance
 
 | | |
 |---|---|
-| **Delivered in scope** | Point forecasts and cross-source comparison, published historical and climate records, official district-warning applicability resolved against IMD's own geometry, plan monitoring with a local inbox, published-document retrieval with page/issue/currency attached, marine and river point products, airport reports, air quality, ensemble spread, archived-run forecast verification against reanalysis, farming advisories, a desktop workspace with sixteen guided tools, and a model-planned conversation that decides when to retrieve, answers a greeting without inventing anything, writes the sentence around tool-owned facts, and carries its artefacts. |
+| **Delivered in scope** | Point forecasts and cross-source comparison, published historical and climate records, official district-warning applicability resolved against IMD's own geometry, plan monitoring with a local inbox, published-document retrieval with page/issue/currency attached, marine and river point products, airport reports, air quality, ensemble spread, archived-run forecast verification against reanalysis, farming advisories, a desktop workspace with eighteen guided surfaces beside Ask, and a model-planned conversation that decides when to retrieve, answers a greeting without inventing anything, writes the sentence around tool-owned facts, and carries its artefacts. |
 | **Partial** | Warning delivery (canonical warning state with a named change detector, a claim/lease outbox with a retry taxonomy, consented Web Push, acknowledgements and a supervision heartbeat now exist; **no live device journey and no sustained live-IMD run have been demonstrated**), language output and voice (measured per direction, not accepted by native speakers), retrieval breadth (whole-document and contradiction handling remain open), operations (foreground watcher only, no hosted scheduler). |
 | **Not connected** | Radar/satellite **imagery**, official sea-area and coastal bulletins as live products, observed water level or gauge readings, danger levels, flood extent, tide, current, sea-surface temperature, ground air-quality monitors, SMS/IVR/WhatsApp delivery, road or route clearance, crop diagnosis or pesticide dosage, and any confidence, risk or skill score. |
 | **Not accepted** | Nationwide corpus acceptance, mobile and rural journeys, noisy-input and native-speaker review, live changed-edition to device notification, fresh-machine and cross-platform installation, sustained load. Hosting is on hold. |
@@ -66,7 +69,7 @@ python -m pip install -r requirements.txt      # runtime, including the optional
 python scripts/start_weather.py                # preflight first, then serve on 127.0.0.1:8765
 ```
 
-Open <http://127.0.0.1:8765>. **The served surface is the built React frontend**: build it once with cd frontend && npm install && npm run build; a missing build is refused in words rather than served as a blank page. The legacy web/*.js frontend is still selectable with --frontend legacy until its tree is deleted. The server answers only on loopback, behind a per-process session
+Open <http://127.0.0.1:8765>. **The served surface is the built React frontend**: build it once with cd frontend && npm install && npm run build; a missing build is refused in words rather than served as a blank page. The vanilla web/*.js frontend was deleted when R6 closed; the built React frontend is the only served surface (docs/92, §5). The server answers only on loopback, behind a per-process session
 token, and it refuses to start on a check it cannot pass (a registry that does not parse, an unusable
 store, a taken port) rather than serving a half-working workspace. **Restart a running server after
 pulling**: changing files does not update a process that is already serving.
@@ -74,23 +77,26 @@ pulling**: changing files does not update a process that is already serving.
 ### The React frontend (shell, transcript, and every surface as a module)
 
 The frontend overhaul is planned in [docs/86](86-react-frontend-overhaul-plan.md), researched in
-[docs/87](87-frontend-research-and-inspiration.md) and reported per batch — the current one is
-[docs/90](90-frontend-r2-flagship-transcript.md). The **vanilla frontend is still the default**; the React
-build is served beside it:
+[docs/87](87-frontend-research-and-inspiration.md) and reported per batch — the R6 batch and the record of its execution are
+[docs/92](92-r6-decommission-readiness.md). **The React build is the default and the only served surface**: R6
+deleted the vanilla tree on 17 September 2026, having first ported the component checks (docs/92 §5). Build it,
+serve it, and check it:
 
     cd frontend && npm install && npm run build    # builds web/dist
-    python3 -m weathergpt_data.workspace --frontend react --port 8790
-    cd frontend && npm test                        # 26 suites, 135 component checks
+    python3 -m weathergpt_data.workspace --port 8790
+    cd frontend && npm test                        # 55 component suites, 296 checks, run under Vitest
+    python3 scripts/audit_react_frontend.py        # 13 checks over the built page and its sources
     python3 scripts/audit_react_build.py           # 11 checks over the built output
-    python3 scripts/audit_check_port.py            # which vanilla checks a React spec now carries
 
 The React surface now has the transcript (the question kept above its answer, the working turn naming the
 engine's stages and its provisional first reading, the validity ruler, the receipt, the sources, the reading
-register, stored conversations, and a voice path that keeps the measured-language rules), six real modules
+register, stored conversations, and a voice path that keeps the measured-language rules), eighteen real modules
 (Today, Warnings, Forecast, Observations, Published documents, Sources and settings, Map, What changed,
 Farm advisories, Air quality, Climate records, Aviation, Ensemble spread, Forecast verification, Compare places, Sea and rivers, Briefcase, Workspace), the chart block, a command palette, the
-front door and the local owner gate. Every surface is now a real module (eighteen of them; Ask is the conversation itself)
-; the renderings are in [docs/90](90-frontend-r2-flagship-transcript.md), [docs/91](91-frontend-r3-r5-all-surfaces.md) and frontend/public/shots/.
+front door and the local owner gate. Every surface in the frozen registry is a real module — eighteen of them, with Ask as the conversation
+itself, and `scripts/audit_surface_registry.py` holds the served surfaces against the same ids the vanilla build
+answered ([docs/91](91-frontend-r3-r5-all-surfaces.md)). Renderings: [docs/90](90-frontend-r2-flagship-transcript.md),
+[docs/91](91-frontend-r3-r5-all-surfaces.md), the React picture set above, and `frontend/public/shots/`.
 
 The served page keeps the session-token contract and the **strict** CSP (`script-src 'self'`, `style-src
 'self'`): docs/87 predicted a `style-src-attr` relaxation would be needed for Radix, TanStack Virtual and
@@ -275,30 +281,32 @@ The interface states these limits instead of filling them:
 
 ```sh
 python3 -m pytest tests/ -q                          # 1309 Python tests
-cd frontend && npx tsc --noEmit && npm test          # 26 React suites, 135 component checks
-node tests/test_charts.js                            #  2 of 110 printed component checks
-node tests/test_viz.js                               #  9; the chart engine: plume, meteogram, gaps and locators
-node tests/test_views.js                             # 25
-node tests/test_bulletin_ui.js                       #  6
-node tests/test_conversation_ui.js                   # 14
-node tests/test_suite_ui.js                          # 33
-node tests/test_voice_ui.js                          #  3
-node tests/test_briefcase_ui.js                      #  1
-node tests/test_workspace_ui.js                      #  6; workspace behaviour and recovery
-node tests/test_notify_ui.js                         # 11; watch delivery controls, the outbox and watch supervision
-python3 scripts/audit_check_port.py                  # 33 of 110 named against a React spec, each verified to exist
+cd frontend && npx tsc --noEmit && npm test          # 55 React suites, 296 component checks
+python3 scripts/audit_react_frontend.py              # 13 checks over the built page and its sources
+python3 scripts/audit_react_build.py                 # 11 checks over the built output
+python3 scripts/audit_port_ledger.py                 # every component check the ledger names, verified in its spec
+python3 scripts/audit_surface_registry.py            # the served surfaces against the frozen registry
+python3 scripts/decommission_vanilla.py              # dry run: what remains of the vanilla tree, and why
 python3 scripts/doctor.py                            # environment, providers and corpus presence
 python3 scripts/models.py --check                    # the rules-first floor and the configured providers
 python3 scripts/models.py --probe-free               # the curated free ranking measured against the live catalogue
-python3 scripts/verify_all.py                        # environment, registries, drift guard, tests, component suites
-python3 scripts/audit_workspace_frontend.py --baseline
+python3 scripts/verify_all.py                        # environment, registries, drift guard, Python tests, the four React gates
 ```
 
-The component checks run against a small DOM shim, so they are **not** browser, visual, load or
-fluent-language acceptance. What they do hold is specific: every displayed number must come from the
+These are regression checks, not acceptance. The React component checks run in jsdom (Vitest with Testing
+Library and MSW), so they are **not** browser, visual, load or fluent-language acceptance. What they do hold is specific: every displayed number must come from the
 returned packet with no arithmetic applied, no renderer may leak a stylesheet class name into visible
 text, a clarification must offer every candidate, an unverified warning must stay held, and every
 request must carry the workspace token. The suite counts measure regression coverage, not completion.
+
+All 110 vanilla component checks are named against a React spec now, and the ledger is held to account rather
+than trusted: `research/reviews/frontend-react-r2-20260917/check-port.json` records 110 of 110, and
+`scripts/audit_port_ledger.py` — a gate step — re-reads it and refuses any claimed test name that is not written in
+the spec it names (203 names across 33 spec files at this writing). The last nine are the chart-engine checks:
+`frontend/src/charts/viz.parity.test.ts` reads the served `web/viz.js` from disk and runs it in the stand-in DOM the
+vanilla suite used, so those checks exercise the same bytes a React chart draws with.
+[docs/92](docs/92-r6-decommission-readiness.md) §4d.2 records the fork and §4d.3 its closure. A named spec is
+regression coverage, not acceptance — the stand-in DOM is not a browser.
 
 The saved bulletin layout fixtures resolve from tracked curated evidence under
 `research/implementation/*` (see `tests/source_fixtures.py`), not from the git-ignored
@@ -335,9 +343,10 @@ recorded journeys, fast and slow.
 | Path | What lives there |
 |---|---|
 | `weathergpt_data/` | The engine: adapters, governed tools, planner, conversation, retrieval, providers, the product read-model API and the workspace server. |
-| `web/` | The desktop surface served by the workspace: shell, panels, views, charts, map, voice, service worker, stylesheet. |
+| `frontend/` | The React and TypeScript source: the shell, the transcript, the eighteen module surfaces, plans, styles and their Vitest suites with MSW handlers. |
+| `web/` | What the server serves: the built React frontend in `web/dist` (git-ignored), the vendored `viz.js` chart engine, the service worker and the design tokens. |
 | `scripts/` | Operator commands: start and preflight, intake and audits, measurement and rehearsal, model configuration, verification, backup and restore. |
-| `tests/` | Python suites and the Node component suites with their DOM shim. |
+| `tests/` | The Python suites; the component suites live beside the code in `frontend/src`. |
 | `data/registry/` | Machine-readable state: sources and their review status, product and hardening progress, language support, answer policy, benchmark, free-model ranking. |
 | `research/` | Curated evidence: review batches, implementation records, recorded journeys and scans. |
 | `docs/` | The written record: the problem statement, batch reports and the standing reviews. |
@@ -363,12 +372,12 @@ claims**, and the test counts in them are the counts of their own checkpoint.
 
 - [The flagship transcript, the first real modules, and the front door](docs/90-frontend-r2-flagship-transcript.md) — the R2 transcript (question kept, stages, first reading, evidence receipt, register, stored conversations, voice), the first six R3 modules, the landing page and the owner gate, the four defects the ported checks found, 68 frontend checks, 14 live HTTP acceptance checks and ten screenshots of the served build, and what is still open.
 - [Every surface ported, R4 finished, and the accessibility pass measured in a browser](docs/91-frontend-r3-r5-all-surfaces.md) — the eight remaining surfaces (so all nineteen are real modules), print parity, the chart engine served to the built page, a browser accessibility sweep over 15 surfaces with the three defects it found and fixed, an engine repair that makes the marine and river products name the answering cell distance, and what is still open.
-- [R6 readiness: what has to be true before the vanilla frontend is removed](docs/92-r6-decommission-readiness.md) — the deletion in order, the inventory of what exists, the four frontend-audit checks that still need a React equivalent, the two decisions R6 has to make in writing (the vendor chart engine and the service worker), and the order that closes the remaining work.
+- [R6: the readiness assessment for removing the vanilla frontend, and the record of its execution](docs/92-r6-decommission-readiness.md) — the deletion in order and the inventory it required; §4c the default flip, §4d the two decisions in writing (the vendor chart engine is served as shared bytes; the service worker was kept), §4d.2 the fork on the nine chart checks, §5 what was executed and measured on 17 September 2026, and what the React tree still leaves open.
 - [Final integration audit and closure plan](docs/89-final-integration-audit-and-closure-plan.md) — what is actually wired (78 modules, 63 routes, 29 sources connected and wired to chat, 19 surfaces identical in both frontends), the gaps found and closed here, and every PS feature with the acceptance criteria that would let it be called done.
 - [The React overhaul: research and stack](docs/87-frontend-research-and-inspiration.md) — the component landscape read from primary sources (assistant-ui, React Spectrum S2 AI components, Radix, shadcn/ui, Mantine, Motion, TanStack, MapLibre, Tremor, Lucide, axe-core, Noto, AI SDK), the licence table, the chosen stack, the **chat-first module architecture** (one backend-derived registry; every module has a compact Block, a full Surface and its intents) and the one CSP cost it forces.
-- [The React frontend overhaul: plan](docs/86-react-frontend-overhaul-plan.md) — a plan, not a build: Vite + React + TypeScript, the same CSP, the 110 checks ported one-for-one, six independently shippable stages (R0 groundwork, R1 shell, R2 the transcript, R3 the guided surfaces, R4 charts/map/print, R5 accessibility/i18n/voice, R6 decommission) and the exit check each one must meet.
+- [The React frontend overhaul: plan](docs/86-react-frontend-overhaul-plan.md) — a plan, not a build: Vite + React + TypeScript, the same CSP, the 110 checks ported one-for-one (the nine chart-engine checks forked in docs/92 §4d.2), six independently shippable stages (R0 groundwork, R1 shell, R2 the transcript, R3 the guided surfaces, R4 charts/map/print, R5 accessibility/i18n/voice, R6 decommission) and the exit check each one must meet.
 - [The Feature 4 dissemination backbone](docs/85-feature4-dissemination-backbone.md) — canon-v1 warning state and a named change detector, a claim/lease outbox with a retry taxonomy, a supervised cycle with a heartbeat and GET /api/watch-health, route budgets, the CAP geographic matcher and district aliases. Live-device push and a sustained live-IMD run stay explicitly not claimed.
-- [PS progress and the picture set](docs/84-ps-progress-and-pictures.md) — the current requirement-by-requirement reading, and eight screenshots with their provenance.
+- [PS progress and the picture set](docs/84-ps-progress-and-pictures.md) — the current requirement-by-requirement reading, and the pre-R6 picture set with its provenance (the React set is in `docs/images/` and the gallery above).
 - [The intelligent-chat overhaul](docs/83-intelligent-chat-overhaul.md) — the model plans every turn, a conversation is a real answer, a cheap first look, the written answer, language breadth, provider visibility, and the continuity journeys.
 - [The chatbot experience](docs/82-chatbot-experience.md) — the first reading, the conversation's own receipt, next-question chips and the reader-chosen register.
 - [Forecast verification](docs/80-forecast-verification.md) — archived model runs measured against ERA5 reanalysis, with the method, sample floor and no-skill-claim limit attached.

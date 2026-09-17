@@ -54,6 +54,13 @@ headless over CDP, against a **throwaway copy** of the ingestion store in `tmp/s
 conversation appears in them. The runner is
 `research/reviews/chat-overhaul-20260916/capture-screenshots.sh` (and its three follow-ups).
 
+**These are pre-R6 captures, kept as evidence.** They show the vanilla surface as it was on 16 September
+2026; after the R6 decommission on 17 September 2026
+([docs/92](92-r6-decommission-readiness.md#5-executed-on-17-september-2026)) the workspace serves only the React
+build. One filename in the table has since been recaptured: `01-ask-landing.png` now holds the React front door,
+so that row describes the picture that was there, not the file on disk today. The other seven files are
+unchanged, and the current eight-picture React set is in the [README](../README.md#what-it-looks-like).
+
 | Image | What it shows |
 | --- | --- |
 | `01-ask-landing.png` | the front door: Ask is the landing surface, the guided rail stays beside it |

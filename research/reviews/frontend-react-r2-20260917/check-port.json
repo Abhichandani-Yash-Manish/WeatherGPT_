@@ -1,5 +1,5 @@
 {
-  "note": "Which vanilla component checks a React spec now carries. Curated, and checked by scripts/audit_check_port.py: the counts are re-read from the suites on every run, and every named test must exist in the named spec. The vanilla suites stay the regression net until R6.",
+  "note": "Which vanilla component checks a React spec now carries. Curated, and checked by scripts/audit_check_port.py: the counts are re-read from the suites on every run, and every named test must exist in the named spec. The vanilla suites stay the regression net until R6. Revised 17 September 2026: the vanilla suites were removed in R6, so the counts below are the ledger's record and scripts/audit_port_ledger.py holds the names to account on every run. The last nine checks are ported too.",
   "recorded_at": "2026-09-17",
   "suites": [
     {
@@ -237,8 +237,8 @@
             "states each station row with its own distance, instant, age and source, and reads a stale row as stale",
             "reads the wider network on its own and shows its own coverage",
             "renders the index counts, states an unprinted issue date and a pruned body honestly",
-            "renders the document route 410 as that edition\u2019s stated state, not as a crash",
-            "renders the capability and source counts, each provider\u2019s own availability, and the local state",
+            "renders the document route 410 as that edition’s stated state, not as a crash",
+            "renders the capability and source counts, each provider’s own availability, and the local state",
             "states a failed store read as a failure with a retry, and leaves the rest of the surface standing"
           ]
         },
@@ -258,7 +258,7 @@
           "tests": [
             "renders the directory rows it was given, reads the selected state, and filters only the rows already read",
             "asks for a district and does not read a brief from a coordinate when none is named",
-            "renders the brief\u2019s own sections, its forecast context and every line it does not establish",
+            "renders the brief’s own sections, its forecast context and every line it does not establish",
             "states a failed directory read as that failure, with a retry control",
             "renders the modelled parameters with their units, the cell and its distance, and says it is a model",
             "records a cell distance the payload does not state as absent, never as a number computed here",
@@ -391,13 +391,13 @@
         {
           "spec": "src/plans/planwatch.gaps.test.tsx",
           "tests": [
-            "answers a sent delivery row through its own ack route with the reader\u2019s chosen answer, and prints the server\u2019s reply",
+            "answers a sent delivery row through its own ack route with the reader’s chosen answer, and prints the server’s reply",
             "offers the acknowledgement only on a sent row, with every answer the store accepts",
-            "binds this browser\u2019s subscription to one watch through the subscribe route, and says the binding delivers nothing by itself",
+            "binds this browser’s subscription to one watch through the subscribe route, and says the binding delivers nothing by itself",
             "offers no binding control in a browser that cannot take a push subscription, and says so",
-            "renders the per-place delivery aggregate with the payload\u2019s own labels and counts, and says it is not a delivery claim",
+            "renders the per-place delivery aggregate with the payload’s own labels and counts, and says it is not a delivery claim",
             "registers one watch from explicit coordinates, sending them as given, and says no coordinate is turned into a district here",
-            "prints the create route\u2019s own refusal, with a retry that sends the same request again"
+            "prints the create route’s own refusal, with a retry that sends the same request again"
           ]
         },
         {
@@ -440,9 +440,24 @@
     {
       "file": "test_viz.js",
       "checks": 9,
-      "ported": 0,
-      "evidence": [],
-      "note": "Not claimed: this suite checks the geometry of web/viz.js, which the React build is served from its one tracked copy at /viz.js, so the same checks still run against the same bytes (pinned by tests/test_react_vendor_assets.py). Claiming them as ported would be false; retiring them would drop nine checks that still pass against the served engine."
+      "ported": 9,
+      "evidence": [
+        {
+          "spec": "src/charts/viz.parity.test.ts",
+          "tests": [
+            "draws the ensemble band, median, whiskers and exact member values from returned fields only",
+            "refuses to draw a distribution without member statistics",
+            "draws only returned hours, splits gaps and reads exact values with locators (meteogram)",
+            "carries source colours, flags unknown codes and prints nothing it was not given (warning matrix)",
+            "states printed dates, body state and links on the library cards",
+            "places each product lane from returned timestamps and never draws a window for an instant (now band)",
+            "lays out published days, counts model hours into IST days and places the station",
+            "discloses a repeated bulletin date instead of presenting five dated days",
+            "shows a derived day its own label, its IST window and whether it is today"
+          ]
+        }
+      ],
+      "note": "Ported 17 September 2026. The spec reads web/viz.js from disk, so these checks and the React chart block see the same bytes; it runs the engine in a stand-in DOM, which is what the vanilla suite did and is not browser, layout or pixel coverage."
     },
     {
       "file": "test_charts.js",
@@ -576,5 +591,7 @@
       "tests": 4,
       "note": "Keyboard acceptance for the skip link, the shortcuts and the palette: R5."
     }
-  ]
+  ],
+  "revised_at": "2026-09-17",
+  "revision": "The nine test_viz.js checks were left with the served web/viz.js bytes when R6 ran, and are now also carried by src/charts/viz.parity.test.ts, which reads web/viz.js from disk and evaluates it in the stand-in DOM the vanilla suite used. The ledger is 110 of 110 named against a React spec. Two assertions the vanilla file left in its timeline section (the SVG namespace of every lane label, and every lane being labelled) run beside the now band checks in the parity spec; the claims are unchanged."
 }

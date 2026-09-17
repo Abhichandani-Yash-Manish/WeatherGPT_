@@ -227,8 +227,13 @@ browser captures and the readiness note), and the commit that removed the tree.
   build audit, the surface registry audit and the React frontend audit - and the surface registry audit
   now measures the React registry against the nineteen ids frozen inside it;
 - the exit check is met: verify_all.py green on a React-only tree, 19 steps, 0 failed;
-- the port ledger stands at 101 of 110, the nine test_viz.js checks staying with the served engine by
-  architecture rather than by waiver.
+- the port ledger closed the same day: the nine test_viz.js checks are now carried by
+  frontend/src/charts/viz.parity.test.ts, which reads the served web/viz.js from disk and runs it in the stand-in
+  DOM the vanilla suite used, so the ledger stands at 110 of 110 (docs/92 4d.3) and the architecture note in 4d.2
+  is kept as the reason it was safe to leave them, not as a waiver still relied on;
+- scripts/audit_port_ledger.py is a verify_all.py step: it re-reads the ledger and refuses any claimed test name
+  that is not written in the spec the ledger names (203 names across 33 spec files at this writing), so the ledger
+  is a checked claim rather than a note.
 
 Owed and recorded: docs/images regenerated from the React build.
 

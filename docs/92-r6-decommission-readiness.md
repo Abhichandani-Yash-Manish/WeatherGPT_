@@ -196,12 +196,30 @@ they do not need to be - the React build is served the same `web/viz.js` bytes a
 `tests/test_react_vendor_assets.py`, so those checks still run against the code a React chart draws with.
 That is a property of the architecture, not a waiver.
 
+### 4d.3 The nine chart checks are ported (17 September 2026)
+
+The exception argued above is closed, and the argument is kept because it is still true: the React build is served
+the same `web/viz.js` bytes, and the port uses those bytes rather than a copy.
+`frontend/src/charts/viz.parity.test.ts` reads `web/viz.js` from disk, evaluates it in the stand-in DOM the vanilla
+suite used, and carries the nine checks as nine named tests — the ensemble plume, the thin plume, the meteogram, the
+warning matrix, the library cards, the now band, the day timeline, the repeated bulletin date and the derived
+IST-day window.
+
+Two assertions the vanilla file left in its timeline section (that every lane is labelled, and that a label inside
+the SVG is created in the SVG namespace) run beside the now-band checks; the claims are unchanged. The port adds no
+browser, layout or pixel coverage — the stand-in DOM is what the vanilla suite used — so it closes the ledger, not
+the visual-acceptance gap.
+
+`research/reviews/frontend-react-r2-20260917/check-port.json` records the revision and stands at **110 of 110**.
+`scripts/audit_port_ledger.py` is a `verify_all.py` step: it re-reads the ledger and refuses a claimed test name
+that is not written in the spec the ledger names (203 names across 33 spec files at this writing).
+
 ## 5. Executed on 17 September 2026
 
-The deletion ran with --force, and the reason is printed by the script itself: 101 of the 110 checks are
+The deletion ran with --force because it was taken before the last port (§4d.3 closed it the same day, and `scripts/decommission_vanilla.py` needs no force now). The reason it printed: 101 of the 110 checks were
 named against a React spec and the nine test_viz.js checks stay with the served engine, because the React
 build is handed the same web/viz.js bytes at /viz.js. The gate on the React-only tree is 19 steps, 0
-failed, which is the exit check this document set out to reach.
+failed (20 once the port-ledger audit step of §4d.3 was added), which is the exit check this document set out to reach.
 
 Two follow-ups were done with it: verify_all.py runs the React gates only, and the surface registry audit
 measures the React registry against the nineteen ids frozen inside it, with the comment recording that the
