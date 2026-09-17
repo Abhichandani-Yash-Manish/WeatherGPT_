@@ -183,6 +183,19 @@ if `/api/plans` `notifications[]` (each with `plan_id`, `kind`, `created_at`, `v
 is not rendered per watch today, add the section and say so; if it is rendered, the check reads it and
 asserts each row keeps its own state and receipt facts rather than being summarised into a count.
 
+### 4d.2 The fork decided: port, not retire
+
+The choice above is made and recorded here so it is not re-litigated: **the four checks are ported, not
+retired.** The reason is the objective itself - *all 110 existing component checks ported one-for-one* -
+and a retirement would leave four rules the vanilla net held with no React check at all, which is a gap in
+the product review rather than a tidy ledger. `--force` therefore stays unused, and the gate keeps
+refusing until the four assertions exist.
+
+The exception already argued and recorded stands: the nine `test_viz.js` checks are not ported because
+they do not need to be - the React build is served the same `web/viz.js` bytes at `/viz.js`, pinned by
+`tests/test_react_vendor_assets.py`, so those checks still run against the code a React chart draws with.
+That is a property of the architecture, not a waiver.
+
 ## 5. The order this suggests
 
 1. Finish the two in-flight pieces (the plans panel, the document viewer) and port the checks they are written
