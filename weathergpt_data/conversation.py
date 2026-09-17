@@ -30,9 +30,15 @@ NARRATIVE_TIMEOUT=float(os.getenv('WEATHERGPT_NARRATIVE_TIMEOUT') or 25.0)
 
 
 def window_label(start_iso,end_iso):
-    """A human IST window label, produced here so a written answer never reformats a boundary."""
+    """A human IST window label, produced here so a written answer never reformats a boundary.
+
+    An hourly value states the instant it is valid for, so start equals end. This used to print
+    "18 Sep 2026 00:30-00:30 IST", and the written answer echoed it verbatim (measured 17 September
+    2026 on the air-quality turn): a zero-length range reads as a window while saying nothing.
+    """
     try:start,end=parsed(start_iso),parsed(end_iso)
     except (TypeError,ValueError):return ''
+    if start==end:return start.strftime('%d %b %Y %H:%M')+' IST'
     if start.date()==end.date():return start.strftime('%d %b %Y %H:%M')+'-'+end.strftime('%H:%M')+' IST'
     return start.strftime('%d %b %Y %H:%M')+'-'+end.strftime('%d %b %Y %H:%M')+' IST'
 LABELS={'precipitation':'Forecast rainfall','temperature_2m':'Temperature samples','relative_humidity_2m':'Humidity samples','wind_speed_10m':'Wind samples'}

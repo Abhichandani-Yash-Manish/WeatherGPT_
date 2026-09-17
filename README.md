@@ -19,11 +19,11 @@ closure queue are in [docs/93](docs/93-ps-closure-queue.md).
 | --- | --- |
 | ![The React front door: WeatherGPT, the shape of an answer, and the workspace buttons](docs/images/01-ask-landing.png) | ![The React Ask surface: the module rail, the question box, the reading register and an empty stored-conversation list](docs/images/02-ask-welcome.png) |
 | **The front door is a React surface.** It states what an answer is made of, and opens the workspace or the assistant directly. | **Ask is the front door.** The conversation is the landing surface; every guided tool stays in the rail, and the capture's throwaway store holds no reader conversation. |
-| ![The React Warnings surface: the district filter and the district-day rows with the colour the product printed](docs/images/03-warnings.png) | ![The React Today surface: the national district-warning picture and the colour tallies](docs/images/04-today.png) |
+| ![The React Warnings surface: the district filter and the district-day rows with the colour the product printed](docs/images/03-warnings.png) | ![The React Today dashboard: the four counted KPIs, the district map filled only where a colour was published, and the published-colour by published-day matrix](docs/images/04-today.png) |
 | **Warnings as printed.** One row per district-day, keeping the colour and hazard wording the product itself published. | **Today, composed.** The national picture this machine read: districts, source features without a district name, radar stations and the colour tallies. |
 | ![The React Forecast surface: the point entry with no place named](docs/images/05-forecast.png) | ![The React Published documents surface: filters, index counts and the editions indexed](docs/images/06-documents.png) |
 | **Forecast states its own limit.** A route capture with no place named, so the surface says no series was requested rather than drawing one. | **Documents keep their issue and currency.** Filters and counts over the indexed editions, each with printed issue date, pages, passages and saved-body state. |
-| ![The React Sources and settings surface: the capability table with tool, kind, operations and stated purpose](docs/images/07-settings.png) | ![The React Map surface: the layer files with byte counts and the schematic figure controls](docs/images/08-map.png) |
+| ![The React Sources and settings surface: the capability table with tool, kind, operations and stated purpose](docs/images/07-settings.png) | ![The React Map surface: the layer files with byte counts, the figure deck with zoom, find-a-feature and a legend drawn from the features on screen](docs/images/08-map.png) |
 | **Who answers, and for what.** Each capability as the read returned it: tool, kind, operations and stated purpose. | **The Map draws what it can name.** Layer files, byte counts and budgets exactly as returned; the figure is a schematic, not a cartographic basemap. |
 
 All eight pictures are this machine's React build — the only served surface after R6 — captured 17 September 2026
@@ -280,8 +280,8 @@ The interface states these limits instead of filling them:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 1309 Python tests
-cd frontend && npx tsc --noEmit && npm test          # 55 React suites, 296 component checks
+python3 -m pytest tests/ -q                          # 1338 Python tests
+cd frontend && npx tsc --noEmit && npm test          # 59 React suites, 329 component checks
 python3 scripts/audit_react_frontend.py              # 13 checks over the built page and its sources
 python3 scripts/audit_react_build.py                 # 11 checks over the built output
 python3 scripts/audit_port_ledger.py                 # every component check the ledger names, verified in its spec
@@ -356,6 +356,8 @@ recorded journeys, fast and slow.
 
 - [The recorded problem statement](docs/00-problem-statement.md) — the authoritative SIH26068 summary and what this team's interpretations are.
 - [The integrated PS assessment](docs/72-integrated-status-and-ps-review.md) — the requirement-by-requirement verdict and remaining gates.
+- [The four reported defects](docs/99-reported-bugs-repairs.md) — the editions card that announced an absence the page could disprove, the district map that could not be inspected, the bubble matrix that collapsed its rows, and the map surface whose district layer had no colour to draw, each with its cause, its check and the live evidence.
+- [The aurora-glass frontend overhaul](docs/98-frontend-v2-aurora-glass.md) — the design layer, the component kit, the shell, the chat and the map deck rebuilt from the supplied reference and the four named libraries, with what was adopted from each and what was declined, and the measured bundle, audit and accessibility evidence.
 - [The final PS progress review and the closure queue](docs/93-ps-closure-queue.md) — the measured state after R6, the eight features and the cross-cutting rows with the delta each still owes, and the ordered queue with the artefact that closes each row.
 - [Mentor status brief](docs/94-mentor-status-brief.md) — a hand-over document: what runs today, the SIH26068 status, the source position, why the fifteen blocked IMD addresses matter, the specific asks, and how to verify every claim.
 - [The frontend overhaul plan](docs/78-frontend-overhaul-plan.md) and [DESIGN.md](DESIGN.md) — the phased overhaul, the stack decision and the design system it commits to.
@@ -373,7 +375,7 @@ Each links to the batch that recorded it. Older entries are **historical evidenc
 claims**, and the test counts in them are the counts of their own checkpoint.
 
 - [Mentor status brief](docs/94-mentor-status-brief.md) — what runs today and how to see it in ten minutes, the SIH26068 status, the source position (70 registered addresses, 15 of them blocked IMD APIs), why those blocked rows matter and which ones keep journeys closed, the five specific asks, and the falsifiable limits.
-- [The final PS progress review and the closure queue](docs/93-ps-closure-queue.md) — the measured state after R6 (a 20-step gate, 1309 Python tests, 55 React suites and 296 checks, a 110-of-110 port ledger audited on every run), the eight features and the cross-cutting rows with the delta each still owes, and the Q1–Q10 queue that names the artefact closing each row.
+- [The final PS progress review and the closure queue](docs/93-ps-closure-queue.md) — the measured state after R6 (a 20-step gate, 1309 Python tests, 55 React suites and 296 checks, a 110-of-110 port ledger audited on every run), with the 17 September QA repairs recorded in docs/96 (1338 Python tests) and the aurora-glass frontend overhaul recorded in docs/98 (58 React suites, 321 checks), the eight features and the cross-cutting rows with the delta each still owes, and the Q1–Q10 queue that names the artefact closing each row.
 - [The flagship transcript, the first real modules, and the front door](docs/90-frontend-r2-flagship-transcript.md) — the R2 transcript (question kept, stages, first reading, evidence receipt, register, stored conversations, voice), the first six R3 modules, the landing page and the owner gate, the four defects the ported checks found, 68 frontend checks, 14 live HTTP acceptance checks and ten screenshots of the served build, and what is still open.
 - [Every surface ported, R4 finished, and the accessibility pass measured in a browser](docs/91-frontend-r3-r5-all-surfaces.md) — the eight remaining surfaces (so all nineteen are real modules), print parity, the chart engine served to the built page, a browser accessibility sweep over 15 surfaces with the three defects it found and fixed, an engine repair that makes the marine and river products name the answering cell distance, and what is still open.
 - [R6: the readiness assessment for removing the vanilla frontend, and the record of its execution](docs/92-r6-decommission-readiness.md) — the deletion in order and the inventory it required; §4c the default flip, §4d the two decisions in writing (the vendor chart engine is served as shared bytes; the service worker was kept), §4d.2 the fork on the nine chart checks, §5 what was executed and measured on 17 September 2026, and what the React tree still leaves open.

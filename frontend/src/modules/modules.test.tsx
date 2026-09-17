@@ -54,6 +54,66 @@ const overviewPayload = {
   not_established: ['Origin authentication of the service is not established.'],
 };
 
+/* The dashboard's two further reads. The Today surface joins the warning rows to the served geometry by the
+   district key, so a suite that mounts it declares both. */
+const todayWarningsPayload = {
+  ...HEAD,
+  view: 'warnings.national',
+  status: 'ok',
+  data: {
+    districts: [
+      {
+        key: 'PATNA', district: 'PATNA', state: 'BIHAR', bulletin_date: '2026-09-15', bulletin_age_days: 2,
+        bulletin_behind_the_newest_read_days: 0, bulletin_is_older_than_this_read: false,
+        days: [
+          { day: 3, label: '17 Sep 2026', date_local: '2026-09-17', colour: 'yellow', hazard_codes: [5],
+            hazards: ['Heavy rain'], quiet: false, is_today: true },
+          { day: 4, label: '18 Sep 2026', date_local: '2026-09-18', colour: 'green', hazard_codes: [1],
+            hazards: ['No warning in this product'], quiet: true, is_today: false },
+        ],
+      },
+      {
+        key: 'SAITUAL', district: 'SAITUAL', state: 'MIZORAM', bulletin_date: '2026-09-11', bulletin_age_days: 6,
+        bulletin_behind_the_newest_read_days: 4, bulletin_is_older_than_this_read: true,
+        days: [
+          { day: 3, label: '17 Sep 2026', date_local: '2026-09-17', colour: null, hazard_codes: [], hazards: [],
+            quiet: false, is_today: true },
+        ],
+      },
+      {
+        key: 'QUIET', district: 'QUIETVILLE', state: 'BIHAR', bulletin_date: '2026-09-15', bulletin_age_days: 2,
+        days: [
+          { day: 3, label: '17 Sep 2026', date_local: '2026-09-17', colour: 'green', hazard_codes: [1],
+            hazards: ['No warning in this product'], quiet: true, is_today: true },
+        ],
+      },
+    ],
+    /* 'orange' is deliberately absent: a colour the tally did not state must read as 'not recorded', not 0. */
+    tally: { red: 1, yellow: 1, green: 5, unset: 1 },
+    newest_bulletin_date_in_this_read: '2026-09-15',
+    districts_behind_the_newest_edition: 1,
+    oldest_bulletin_age_days: 6,
+  },
+  sources: [SOURCE_S63],
+  limitations: ['A quiet day means the source published no hazard for that district-day in this product. It is not an all-clear.'],
+  not_established: ['Origin authentication of the service is not established.'],
+};
+
+function square(west: number, south: number, side: number) {
+  return { type: 'Polygon', coordinates: [[[west, south], [west + side, south], [west + side, south + side], [west, south + side], [west, south]]] };
+}
+
+const todayGeometryPayload = {
+  type: 'FeatureCollection',
+  features: [
+    { type: 'Feature', properties: { k: 'PATNA', n: 'PATNA', s: 'BIHAR' }, geometry: square(85.0, 25.4, 0.4) },
+    { type: 'Feature', properties: { k: 'SAITUAL', n: 'SAITUAL', s: 'MIZORAM' }, geometry: square(92.6, 23.3, 0.4) },
+    { type: 'Feature', properties: { k: 'QUIET', n: 'QUIETVILLE', s: 'BIHAR' }, geometry: square(85.6, 25.4, 0.4) },
+    /* A geometry the warning read returned no row for: drawn as an outline, never filled. */
+    { type: 'Feature', properties: { k: 'NOROW', n: 'NOROW', s: 'BIHAR' }, geometry: square(86.2, 25.4, 0.4) },
+  ],
+};
+
 const nowPayload = {
   ...HEAD,
   view: 'now.composed',
@@ -133,20 +193,31 @@ async function nameAPlace(name = 'Patna') {
 
 describe('the Today surface', () => {
   it('renders the national counts, the stated tally, the evidence and its own limits', async () => {
-    server.use(http.get('/api/overview', () => HttpResponse.json(overviewPayload)));
+    server.use(
+      http.get('/api/overview', () => HttpResponse.json(overviewPayload)),
+      http.get('/api/warnings/national', () => HttpResponse.json(todayWarningsPayload)),
+      http.get('/api/map/static/districts', () => HttpResponse.json(todayGeometryPayload)),
+    );
     const { container } = mount(<TodaySurface />);
 
     expect(await screen.findByRole('heading', { level: 1, name: 'Today' })).toBeInTheDocument();
+    /* The KPI row states the same numbers the old fact list did, each in its own card: the district count
+       with its unit, the radar counts in words, and an absent field as 'not recorded'. */
     const national = await screen.findByTestId('today-national');
-    expect(national).toHaveTextContent('36 districts');
+    const districts = within(await screen.findByTestId('today-kpi-districts'));
+    expect(districts.getByText('36')).toBeInTheDocument();
+    expect(districts.getByText('districts')).toBeInTheDocument();
     expect(national).toHaveTextContent('31 stations');
     expect(national).toHaveTextContent('28');
     // The payload stated no bulletin_date and no tally for 'unset': both are stated as absent.
     expect(national).toHaveTextContent('not recorded');
     const tally = within(screen.getByTestId('today-tally'));
     expect(tally.getByText('red').closest('[data-colour]')).toHaveAttribute('data-colour', 'red');
+    /* The tally this read returned stated no orange count, so the row says so; the unset count it did state is shown. */
+    expect(tally.getByRole('rowheader', { name: /orange/ })).toBeInTheDocument();
+    expect(tally.getByRole('rowheader', { name: /orange/ }).nextSibling).toHaveTextContent('not recorded');
     expect(tally.getByRole('rowheader', { name: /unset/ })).toBeInTheDocument();
-    expect(tally.getByRole('rowheader', { name: /unset/ }).nextSibling).toHaveTextContent('not recorded');
+    expect(tally.getByRole('rowheader', { name: /unset/ }).nextSibling).toHaveTextContent('1');
 
     expect(screen.getByText('Day fields are official hazard code lists, not severity stages.')).toBeInTheDocument();
     expect(screen.getByText('Origin authentication of the service is not established.')).toBeInTheDocument();
@@ -159,6 +230,8 @@ describe('the Today surface', () => {
   it('reads the right-now view only once a place is named, and keeps the three products apart', async () => {
     server.use(
       http.get('/api/overview', () => HttpResponse.json(overviewPayload)),
+      http.get('/api/warnings/national', () => HttpResponse.json(todayWarningsPayload)),
+      http.get('/api/map/static/districts', () => HttpResponse.json(todayGeometryPayload)),
       http.get('/api/places/search', () => HttpResponse.json(placesPayload())),
       http.get('/api/now', () => HttpResponse.json(nowPayload)),
     );
@@ -243,7 +316,9 @@ describe('the Warnings surface', () => {
     expect(table.getByText('Heavy rain at a few places.')).toBeInTheDocument();
     expect(table.getAllByText('colour not stated')).toHaveLength(1);
     expect(table.getByText('no hazard wording published for this district-day')).toBeInTheDocument();
-    expect(screen.getByText('Showing 3 district-day rows of 3 district-day rows matching this filter.')).toBeInTheDocument();
+    // With no filter set the summary says what the read returned; it only speaks of "this filter"
+    // when one is entered (repaired 17 September 2026: it claimed a filter that was not set).
+    expect(screen.getByText('Showing all 3 district-day rows this read returned.')).toBeInTheDocument();
     expect(screen.getByText(/This filter runs in this browser over the 2 district rows this read returned/)).toBeInTheDocument();
     expect(screen.getByText('A quiet day means the source published no hazard for that district-day in this product. It is not an all-clear.')).toBeInTheDocument();
     expect(screen.getByText('No live update, cancel or supersede edition has been observed for this layer.')).toBeInTheDocument();
@@ -260,7 +335,7 @@ describe('the Warnings surface', () => {
 
     const count = screen.getByTestId('warnings-count');
     expect(count).toHaveAttribute('role', 'status');
-    expect(count).toHaveTextContent('Showing 1 district-day row of 1 district-day row matching this filter.');
+    expect(count).toHaveTextContent('Showing 1 of 1 district-day row matching this filter.');
     const table = within(screen.getByTestId('warnings-table'));
     expect(table.getByText('Surat')).toBeInTheDocument();
     expect(table.queryByText('Patna')).toBeNull();
@@ -510,6 +585,9 @@ describe('the Documents surface', () => {
     expect(count).toHaveAttribute('role', 'status');
     expect(count).toHaveTextContent('2 documents in the index');
     expect(count).toHaveTextContent('19 passages');
+    // A family this build does not register is listed, not fatal: measured 17 September 2026, one
+    // such family in the index answered the whole read 400 and the surface showed a retry card.
+    expect(screen.queryByTestId('corpus-unregistered')).toBeNull();
     expect(count).toHaveTextContent('2 families indexed');
     expect(count).toHaveTextContent('1 with a saved body, 1 pruned');
     expect(count).toHaveTextContent('1 without a printed issue date');
@@ -546,6 +624,26 @@ describe('the Documents surface', () => {
     /* The viewer is the one component that answers a saved body, so the 410 is the document's state here
        rather than a second implementation somewhere else. */
     expect(within(viewer).getByRole('button', { name: /Close/ })).toBeInTheDocument();
+  });
+
+  it('lists a document in a family this build does not register instead of failing the read', async () => {
+    const withUnknownFamily = {
+      ...corpusPayload,
+      data: {
+        ...corpusPayload.data,
+        counts: { ...corpusPayload.data.counts, documents_in_an_unregistered_family: 1 },
+        unregistered_families: ['gkms_grid'],
+      },
+    };
+    server.use(http.get('/api/corpus', () => HttpResponse.json(withUnknownFamily)));
+    mount(<DocumentsSurface />);
+
+    const note = await screen.findByTestId('corpus-unregistered');
+    expect(note).toHaveTextContent('1 document in this index belong to a family this build does not register');
+    expect(note).toHaveTextContent('gkms_grid');
+    expect(note).toHaveTextContent('opening one is refused rather than answered from an unregistered product');
+    expect(screen.queryByRole('alert')).toBeNull();
+    expect(screen.getByTestId('corpus-table')).toBeInTheDocument();
   });
 });
 

@@ -11,7 +11,7 @@ from datetime import date
 from pathlib import Path
 
 from .bulletin_index import EXTRACTION_VERSION
-from .corpus_tools import family_label
+from .corpus_tools import family_label, family_registered
 
 BODY_AVAILABLE = 'available'
 BODY_PRUNED = 'pruned'
@@ -113,6 +113,7 @@ def documents(runtime_root, family=None, query=None, limit=50):
             'sha_prefix': sha[:12],
             'family': counted_row.get('family') or payload.get('family') or 'family not stated',
             'family_label': family_label(counted_row.get('family') or payload.get('family') or ''),
+            'family_registered': family_registered(counted_row.get('family') or payload.get('family') or ''),
             'intake_family': payload.get('family'),
             'scope': counted_row.get('scope') or payload.get('scope'),
             'region': region or None,
@@ -144,6 +145,7 @@ def documents(runtime_root, family=None, query=None, limit=50):
     families = {}
     for row in rows:
         entry = families.setdefault(row['family'], {'family': row['family'], 'label': row['family_label'],
+                                                    'registered': row['family_registered'],
                                                     'documents': 0, 'passages': 0, 'newest_issue_date': None})
         entry['documents'] += 1
         entry['passages'] += row['passages']
@@ -157,5 +159,7 @@ def documents(runtime_root, family=None, query=None, limit=50):
                        'regions': len({row['region'] for row in rows if row['region']}),
                        'pruned': len([row for row in rows if row['body'] == BODY_PRUNED]),
                        'bodies_available': len([row for row in rows if row['body'] == BODY_AVAILABLE]),
-                       'documents_without_a_printed_issue_date': len([row for row in rows if not row['issue_date']])},
+                       'documents_without_a_printed_issue_date': len([row for row in rows if not row['issue_date']]),
+                       'documents_in_an_unregistered_family': len([row for row in rows if not row['family_registered']]),
+                       'unregistered_families': sorted({row['family'] for row in rows if not row['family_registered']})},
             'reason': '' if rows else 'The index holds no document yet.'}

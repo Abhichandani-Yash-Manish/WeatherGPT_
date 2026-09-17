@@ -646,6 +646,33 @@ def language_of(question):
     return 'en'
 
 
+# The clock forms a reader actually writes. The rules floor read only the colon form until
+# 17 September 2026, so "Should I take my bike to work in Bengaluru at 9 am tomorrow?" planned
+# a whole day while the model's own assumption said the 09:00-10:00 window was used: the plan
+# and its disclosure disagreed, and the disclosure was the correct reading.
+CLOCK_AMPM = re.compile(r"\b(\d{1,2})(?:[:.]([0-5]\d))?\s*(a\.?m\.?|p\.?m\.?|o'?clock)\b", re.I)
+
+
+def clock_hour(token, minute, meridiem):
+    """24-hour (hour, minute) for an am/pm/o'clock token; None when the token is impossible."""
+    hour = int(token)
+    if not minute:
+        minute = '00'
+    mark = meridiem.lower().replace('.', '').replace("'", '')
+    if mark == 'oclock':
+        if not 1 <= hour <= 12:
+            return None
+    elif mark.startswith('a'):
+        if not 1 <= hour <= 12:
+            return None
+        hour = 0 if hour == 12 else hour
+    else:
+        if not 1 <= hour <= 12:
+            return None
+        hour = 12 if hour == 12 else hour + 12
+    return hour, int(minute)
+
+
 def window_for(question, now):
     """Local IST window for the named day and part of day, with the product's boundaries."""
     lower = question.lower()
@@ -661,15 +688,23 @@ def window_for(question, now):
             part = word
             break
     clock = re.findall(r'\b([01]?\d|2[0-3])[:.]([0-5]\d)\b', question)
+    # "at 9 am", "9 o'clock", "at 6.30 pm" - the same instant the colon form names, in the
+    # form a reader writes. The colon form stays the first reading when both appear.
+    spoken = [entry for entry in (clock_hour(*match) for match in CLOCK_AMPM.findall(question)) if entry]
+    if spoken and re.search(r"\b(?:a\.?m\.?|p\.?m\.?|o'?clock)\b", question, re.I):
+        # One token, one reading: "at 6.30 pm" must not be read as the bare 06:30 the colon
+        # form would give (measured 17 September 2026 - the meridiem token was ignored and the
+        # afternoon request answered for the morning).
+        clock = []
     span = re.search(r'\bnext\s+(?:(\d{1,2}|one|two|three|four|five|six|seven|a|an)\s*)?(day|days|week|weeks)\b', lower)
-    if offset is None and part and not clock and not span:
+    if offset is None and part and not clock and not spoken and not span:
         # A part of day with no day word means the coming one. Measured 15 September 2026:
         # "Will it rain in the morning?" set no window at all, so the turn asked for a date and
         # an hour instead of reading the morning. Today's window is taken, and tomorrow's once
         # that window has already begun - the same reading the English word carries.
         offset = 1 if now.astimezone(IST).strftime('%H:%M') >= WINDOWS[part][0] else 0
         basis = 'the coming ' + str(part)
-    if offset is None and not clock and not span:
+    if offset is None and not clock and not spoken and not span:
         return '', '', False, None
     if span:
         words = {'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 'seven': 7, 'a': 1, 'an': 1}
@@ -696,6 +731,20 @@ def window_for(question, now):
         else:
             last = '%02d:%s' % (min(int(clock[0][0]) + 3, 23), clock[0][1])
         return stamp(first), stamp(last), True, basis or 'explicit clock times'
+    if spoken:
+        # A named hour is read as that hour's window, not the three-hour block the colon form
+        # uses: "at 9 am" is the hour around nine, and the answer says so.
+        first = '%02d:%02d' % spoken[0]
+        if len(spoken) > 1:
+            last = '%02d:%02d' % spoken[1]
+        elif spoken[0][0] == 23:
+            last = '23:59'
+        else:
+            last = '%02d:%02d' % (spoken[0][0] + 1, spoken[0][1])
+        label = (str(basis) + ' at ' + first) if basis else ('the hour ' + first)
+        if len(spoken) > 1:
+            label = (str(basis) + ' ' + first + '-' + last) if basis else ('from ' + first + ' to ' + last)
+        return stamp(first), stamp(last), True, label
     if not part:
         # A whole day is read as the source's own day, which starts at :30 IST: 00:30 to the
         # next day's 00:30 exclusive. That is 24 complete contained hours, not 23.

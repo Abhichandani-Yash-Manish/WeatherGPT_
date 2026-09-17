@@ -20,8 +20,12 @@ type DocumentRow = {
 
 type CorpusData = {
   documents?: DocumentRow[];
-  families?: { family?: string; label?: string; documents?: number; passages?: number; newest_issue_date?: string | null }[];
+  families?: { family?: string; label?: string; documents?: number; passages?: number; newest_issue_date?: string | null; registered?: boolean }[];
   counts?: Record<string, number>; index?: string; reason?: string;
+  /* Families this build does not register but the index holds, reported per row rather than
+     aborting the whole listing (repaired 17 September 2026: one such family answered the whole
+     read 400 and this surface showed a retry card instead of what the machine holds). */
+  unregistered_families?: string[];
 };
 
 export const intents: string[] = (viewById('documents')?.intents ?? []).concat([
@@ -51,6 +55,8 @@ export function Surface(): JSX.Element {
   const counts = data?.counts || {};
   const families = data?.families || [];
   const quarantined = documents.filter(document => (document.quarantined_passages || 0) > 0);
+  const unregisteredCount = counts.documents_in_an_unregistered_family || 0;
+  const unregisteredNames = (data?.unregistered_families || []).join(', ');
 
   return (
     <SurfaceShell
@@ -87,6 +93,15 @@ export function Surface(): JSX.Element {
           {count(counts.families, 'family', 'families')} indexed · {orNot(counts.bodies_available)} with a saved body, {orNot(counts.pruned)} pruned ·{' '}
           {orNot(counts.documents_without_a_printed_issue_date)} without a printed issue date
         </p>
+        {/* An index can hold a document family this build does not register. It is listed and
+            labelled rather than dropped, and the reader is told which family it is. */}
+        {unregisteredCount ? (
+          <p className="module-note" data-testid="corpus-unregistered">
+            {count(unregisteredCount, 'document')} in this index belong to a family this build does not register
+            ({orNot(unregisteredNames) || 'family name not stated'}). They are listed with the family name the index
+            holds; opening one is refused rather than answered from an unregistered product.
+          </p>
+        ) : null}
         <p className="module-note">Index this read used: <span className="evidence">{orNot(data?.index)}</span></p>
         {data?.reason ? <p className="module-note">{data.reason}</p> : null}
       </section>

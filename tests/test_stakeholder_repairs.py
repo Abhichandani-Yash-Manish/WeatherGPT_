@@ -14,6 +14,36 @@ NOW = datetime(2026, 9, 15, 4, 0, tzinfo=timezone.utc)
 
 # --- SA01: the opening warning headline is derived from the same day rows as the strip ---
 
+class ClimateRouteParameterTests(unittest.TestCase):
+    """The route passes the requested parameter through to the view.
+
+    Measured 17 September 2026: /api/climate/series?parameter=temperature answered 200 with
+    'parameter': 'rainfall' and 110 rainfall points, because dispatch_extra dropped the
+    parameter and the view's own guard never ran.
+    """
+
+    def test_an_unsupported_parameter_is_refused_by_the_route(self):
+        from weathergpt_data import product_api
+        from weathergpt_data.transport import SourceError
+
+        with self.assertRaises(SourceError):
+            product_api.dispatch_extra(None, '/api/climate/series',
+                                       {'district': ['Ahmedabad'], 'parameter': ['temperature']})
+
+    def test_the_supported_parameter_is_read_from_the_query(self):
+        from weathergpt_data import product_api
+
+        view = product_api.dispatch_extra(None, '/api/climate/series',
+                                         {'district': ['Ahmedabad'], 'parameter': ['rainfall']})
+        self.assertEqual(view['data']['parameter'], 'rainfall')
+
+    def test_a_missing_parameter_keeps_the_published_rainfall_default(self):
+        from weathergpt_data import product_api
+
+        view = product_api.dispatch_extra(None, '/api/climate/series', {'district': ['Ahmedabad']})
+        self.assertEqual(view['data']['parameter'], 'rainfall')
+
+
 class WarningHeadlineTests(unittest.TestCase):
     def foundation(self, saved):
         class Stub:
@@ -88,6 +118,33 @@ class MultiMeasureHistoryTests(unittest.TestCase):
         self.assertEqual(seen, ['rainfall', 'temperature'])
         self.assertEqual(result['status'], 'answered')
         self.assertEqual({f['parameter'] for f in result['facts']}, {'rainfall', 'temperature'})
+
+    def test_a_trend_sentence_states_the_published_precision(self):
+        # Measured 17 September 2026: the answer read "54.654 mm/decade" for values published to a
+        # tenth of a millimetre. The sentence states 0.1 while the calculation record keeps the slope.
+        from decimal import Decimal
+
+        from weathergpt_data.historical_tasks import execute_history
+
+        def lookup(query):
+            results = []
+            for year in range(1981, 2011):
+                value = str(Decimal('800') + Decimal(year - 1981) * Decimal('5.4654'))
+                results.append({'status': 'answered', 'text': 'value',
+                                'facts': [{'value': value, 'unit': 'mm', 'place': 'Ahmedabad, Gujarat',
+                                           'source_id': 'S27', 'year': year}],
+                                'citations': [{'id': 'c', 'source_id': 'S27'}], 'notes': [],
+                                'raw': {'provenance': {'series_id': 'IMD110-P611'}}})
+            return results[query['year'] - 1981]
+
+        plan = {'places': [{'name': 'Ahmedabad', 'state': 'Gujarat', 'district': '', 'kind': 'district'}]}
+        task = {'kind': 'history', 'operation': 'trend', 'parameters': ['rainfall'], 'years': [1981, 2010],
+                'period': 'annual', 'place_indices': [0]}
+        result = execute_history(plan, task, lookup=lookup)
+        self.assertEqual(result['status'], 'answered')
+        self.assertRegex(result['answer'], r'trend 54\.7 mm/decade')
+        self.assertNotIn('54.654', result['answer'])
+        self.assertEqual(result['calculations'][0]['value'], '54.654')
 
 
 # --- SA03: an unsupported water level is stated, not answered with weather ---

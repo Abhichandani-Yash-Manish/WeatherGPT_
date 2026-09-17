@@ -74,8 +74,13 @@ def execute_history(plan,task,lookup=lookup_plan):
                     complete=False;messages.append('Trend withheld: provide at least ten years for this descriptive annual/seasonal/monthly series.')
                 else:
                     value=slope_per_decade([(f['year'],f['value']) for f in group_facts])
-                    result['calculations'].append({'operation':'linear_trend','label':label+' · '+parameter,'value':value,'unit':unit+'/decade','input_ids':series_ids,'sample_count':len(series_ids),'method':'OLS against actual calendar year; slope multiplied by 10; rounded to 0.001','interpretation':'Descriptive source-series slope, not homogenized climate change attribution or a future projection'})
-                    messages.append(f"{label}: descriptive {parameter} trend {value} {unit}/decade over {min(years)}–{max(years)} ({len(years)} values).")
+                    result['calculations'].append({'operation':'linear_trend','label':label+' · '+parameter,'value':value,'unit':unit+'/decade','input_ids':series_ids,'sample_count':len(series_ids),'method':'OLS against actual calendar year; slope multiplied by 10; the record keeps 0.001 and the sentence states 0.1','interpretation':'Descriptive source-series slope, not homogenized climate change attribution or a future projection'})
+                    # The source values are published to a tenth of a millimetre, so the sentence
+                    # states one decimal and the calculation record keeps the full slope. Measured
+                    # 17 September 2026: the answer read "54.654 mm/decade", more precision than the
+                    # published values carry.
+                    stated=format(Decimal(value).quantize(Decimal('0.1')),'f')
+                    messages.append(f"{label}: descriptive {parameter} trend {stated} {unit}/decade over {min(years)}–{max(years)} ({len(years)} values), from a least-squares slope over the published values.")
     if unsupported:messages.append('Historical parameters not implemented: '+', '.join(unsupported)+'.')
     result['notes']=list(dict.fromkeys(result['notes']))
     if task['operation']=='trend':result['notes'].append('Source transcription is verified, but historical boundary comparability and homogeneity are unresolved. The descriptive slope is not proof of a statistically significant climate trend, causation or future conditions.')

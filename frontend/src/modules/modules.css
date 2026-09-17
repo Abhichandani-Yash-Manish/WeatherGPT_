@@ -9,18 +9,37 @@
   gap: var(--space-5);
   padding: var(--pad);
   width: 100%;
-  max-width: 84rem;
+  max-width: 88rem;
+  margin-inline: auto;
 }
 
-.module-head { display: flex; flex-direction: column; gap: 6px; }
-.module h1 { margin: 0; font-family: var(--serif); font-size: var(--step-3); line-height: 1.18; }
+.module-head { display: flex; flex-direction: column; gap: 10px; }
+.module h1 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: var(--step-4);
+  line-height: 1.08;
+  letter-spacing: var(--track-tight);
+  text-wrap: balance;
+}
 .module h2 {
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: var(--step--1);
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: var(--track-wide);
   text-transform: uppercase;
   color: var(--mute);
+}
+.module h2::before {
+  content: '';
+  width: 14px;
+  height: 2px;
+  border-radius: var(--r-pill);
+  background: var(--data);
+  opacity: .7;
 }
 .module h3 { margin: 0; font-size: var(--step-0); }
 .module-lead { margin: 0; max-width: var(--measure); color: var(--ink-soft); }
@@ -30,47 +49,65 @@
 .module-section {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--r-card);
-  box-shadow: var(--lift-1);
-  padding: var(--space-4);
+  gap: var(--space-4);
+  background: var(--glass-1);
+  border: 1px solid var(--glass-line);
+  border-radius: var(--r-2xl);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  padding: clamp(var(--space-4), 2vw, var(--space-5));
+  transition: box-shadow var(--motion-base) var(--ease-out-soft), border-color var(--motion-base) var(--ease-out-soft);
 }
+.module-section:hover { border-color: color-mix(in oklab, var(--data) 24%, var(--glass-line)); box-shadow: var(--glass-shadow-lg); }
 .module-section h2, .module-section h3 { align-self: start; }
 
 /* ---- controls ------------------------------------------------------------------------------- */
 .module-controls { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--space-3); }
 .module-field { display: flex; flex-direction: column; gap: 4px; font-size: var(--step--1); color: var(--mute); }
 .module-field :where(input, select) {
-  border: 1px solid var(--line-strong);
-  border-radius: var(--r-card);
-  background: var(--paper);
+  border: 1px solid var(--glass-line);
+  border-radius: var(--r-pill);
+  background: var(--glass-2);
   color: var(--ink);
   font: inherit;
   font-size: var(--step-0);
-  padding: 7px 9px;
+  padding: 8px 12px;
   min-width: 12rem;
+  backdrop-filter: blur(10px) saturate(1.15);
+  -webkit-backdrop-filter: blur(10px) saturate(1.15);
+  transition: border-color var(--motion-fast) var(--ease-out-soft), background var(--motion-fast) var(--ease-out-soft);
 }
+.module-field :where(input, select):hover { border-color: var(--line-strong); background: var(--glass-1); }
 .module-place { display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: flex-start; }
 .module-place-results { flex: 1 1 22rem; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
 .module-place-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
 .module-place-button { width: 100%; justify-content: flex-start; text-align: left; }
 
 /* ---- tabular data: real tables and definition lists, never divs pretending ------------------ */
-.module-table { width: 100%; border-collapse: collapse; font-size: var(--step--1); }
-.module-table caption { padding-bottom: 6px; text-align: left; color: var(--mute); }
+.module-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: var(--step--1); }
+.module-table caption { padding-bottom: 8px; text-align: left; color: var(--mute); }
 .module-table :where(th, td) {
-  padding: 5px 10px 5px 0;
-  border-bottom: 1px solid var(--line);
+  padding: 7px 10px 7px 8px;
+  border-bottom: 1px solid var(--glass-line);
   text-align: left;
   vertical-align: top;
 }
-.module-table thead th { color: var(--mute); font-weight: 600; }
+.module-table tbody tr { transition: background var(--motion-fast) var(--ease-out-soft); }
+.module-table tbody tr:hover { background: color-mix(in oklab, var(--data) 8%, transparent); }
+.module-table thead th {
+  color: var(--mute);
+  font-weight: 700;
+  font-size: var(--step--1);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--line-strong);
+}
 .module-table tbody th { font-weight: 600; }
 .module-table td.evidence, .module-table th.evidence, .module-table .evidence { font-family: var(--mono); font-variant-numeric: tabular-nums; }
 
 .module-facts { display: grid; gap: 0; margin: 0; }
+.module-facts > .fact-row + .fact-row { border-top: 1px solid var(--glass-line); }
 .module-fact-label { color: var(--ink-soft); }
 
 /* ---- evidence footer ------------------------------------------------------------------------ */
@@ -84,8 +121,15 @@
 .module-coverage, .module-limits, .module-sources { display: flex; flex-direction: column; gap: 6px; }
 .module-limits ul { margin: 0; padding-left: 18px; max-width: var(--measure); }
 .module-limits li { margin-bottom: 3px; }
-.module-counts { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 2px var(--space-4); margin: 0; }
-.module-count { display: flex; justify-content: space-between; gap: var(--space-2); border-bottom: 1px dashed var(--line); }
+.module-counts { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 4px var(--space-3); margin: 0; }
+.module-count {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: 4px 8px;
+  border-radius: var(--r);
+  background: color-mix(in oklab, var(--sunk) 42%, transparent);
+}
 .module-count dt { color: var(--ink-soft); }
 .module-count dd { margin: 0; }
 
@@ -93,10 +137,12 @@
 .module-failure {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
-  border: 1px solid var(--line-strong);
+  align-items: flex-start;
+  gap: var(--space-3);
+  border: 1px solid color-mix(in oklab, var(--red) 32%, var(--glass-line));
   border-left: 3px solid var(--red);
-  border-radius: var(--r-card);
+  border-radius: var(--r-2xl);
+  background: color-mix(in oklab, var(--red) 6%, transparent);
   padding: var(--space-4);
 }
 
@@ -116,3 +162,334 @@
   .module-table { font-size: var(--step--1); }
   .module-table :where(th, td) { padding-right: 8px; }
 }
+/* ---- dashboard (docs/97) ------------------------------------------------------------------------
+   The command view on the Today surface. Everything here is built from the token layer in
+   web/tokens.css: no new colour, no new typeface, no shape that reads as a measurement. Hazard
+   colours appear only on elements that carry a published colour, through the same data-colour
+   attributes the chip vocabulary uses, so a surface cannot imply a warning state by styling. */
+
+.dash-bar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  box-shadow: var(--lift-1);
+  padding: var(--space-4);
+}
+.dash-bar-fields { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--space-3); }
+.dash-bar-fields .module-field :where(input, select) { min-width: 10rem; }
+.dash-toggles { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.dash-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  background: var(--paper);
+  color: var(--ink-soft);
+  font-size: var(--step--1);
+  cursor: pointer;
+}
+.dash-toggle:has(input:checked) { border-color: var(--data); color: var(--ink); background: var(--data-wash); }
+.dash-toggle input { accent-color: var(--data); }
+
+/* KPI row --------------------------------------------------------------------------------------- */
+.dash-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); }
+.dash-kpi {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-height: 11rem;
+  background: var(--glass-1);
+  border: 1px solid var(--glass-line);
+  border-radius: var(--r-2xl);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  padding: var(--space-4);
+  transition: transform var(--motion-base) var(--ease-spring), box-shadow var(--motion-base) var(--ease-out-soft);
+}
+.dash-kpi:hover { transform: translateY(-2px); box-shadow: var(--glass-shadow-lg); }
+.dash-kpi-label { margin: 0; color: var(--mute); font-size: var(--step--1); letter-spacing: .02em; }
+.dash-kpi-value { margin: 0; display: flex; align-items: baseline; gap: 6px; }
+.dash-kpi-number { font-family: var(--serif); font-size: var(--step-5); line-height: 1; letter-spacing: var(--track-tight); font-variant-numeric: tabular-nums; }
+.dash-kpi-unit { color: var(--ink-soft); font-size: var(--step-0); }
+.dash-kpi-micro { margin-top: auto; }
+.dash-kpi-caption { margin: 0; color: var(--mute); font-size: var(--step--1); }
+
+/* micro-visuals --------------------------------------------------------------------------------- */
+.dash-strip { display: flex; height: 14px; border: 1px solid var(--glass-line); border-radius: var(--r-pill); overflow: hidden; }
+.dash-strip-part { display: block; min-width: 4px; background: var(--sunk); }
+.dash-strip-red { background: color-mix(in oklab, var(--red) 72%, transparent); }
+.dash-strip-orange { background: color-mix(in oklab, var(--orange) 72%, transparent); }
+.dash-strip-yellow { background: color-mix(in oklab, var(--yellow) 68%, transparent); }
+.dash-strip-green { background: color-mix(in oklab, var(--green) 62%, transparent); }
+.dash-strip-unset {
+  background: repeating-linear-gradient(45deg, var(--line) 0 4px, transparent 4px 8px);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+}
+.dash-minibars { display: flex; flex-direction: column; gap: 4px; }
+.dash-minibar { display: flex; align-items: center; gap: 6px; }
+.dash-minibar-bar { display: block; height: 10px; min-width: 2px; border-radius: var(--r-pill); }
+.dash-minibar-label { font-size: var(--step--1); font-variant-numeric: tabular-nums; }
+.dash-ring { width: 48px; height: 48px; }
+.dash-ring-track { fill: none; stroke: var(--sunk); stroke-width: 6; }
+.dash-ring-arc { fill: none; stroke: var(--data); stroke-width: 6; stroke-linecap: round; }
+.dash-ruler { display: flex; align-items: center; gap: 6px; margin: 0; padding-top: 6px; border-top: 1px dashed var(--line); }
+.dash-ruler-mark { width: 10px; height: 10px; border-radius: 2px; background: var(--sand); }
+.dash-ruler-label { font-size: var(--step--1); font-variant-numeric: tabular-nums; }
+.dash-gap { margin: 0; color: var(--mute); font-size: var(--step--1); }
+
+/* bands and cards ------------------------------------------------------------------------------ */
+.dash-band { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-3); align-items: start; }
+.dash-column { display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; }
+.dash-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  box-shadow: var(--lift-1);
+  padding: var(--space-4);
+}
+.dash-card-map { background: var(--raiser); box-shadow: var(--lift-2); }
+.dash-card-head { display: flex; flex-direction: column; gap: 4px; }
+.dash-card-head h2 { margin: 0; font-size: var(--step--1); font-weight: 600; letter-spacing: var(--track-wide); text-transform: uppercase; color: var(--mute); }
+
+/* map ------------------------------------------------------------------------------------------ */
+.dash-map { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+.dash-map-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.dash-map-controls .btn { min-width: 44px; min-height: 44px; justify-content: center; }
+.dash-map-zoom { font-size: var(--step--1); }
+.dash-map-frame {
+  display: grid;
+  place-items: center;
+  min-height: 22rem;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--r-card);
+  background: var(--sunk);
+  padding: var(--space-4);
+  text-align: center;
+}
+.dash-map-skeleton { background: repeating-linear-gradient(90deg, var(--sunk) 0 28px, var(--paper) 28px 56px); }
+.dash-map-figure { margin: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+.dash-map-svg {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 11;
+  max-height: 34rem;
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  background: linear-gradient(var(--paper), var(--ground));
+}
+.dash-map-svg:focus-visible { outline: 2px solid var(--data); outline-offset: 2px; }
+.dash-map-caption { color: var(--mute); font-size: var(--step--1); }
+.dash-map-readout { min-height: 2.6em; }
+.dash-map-legend { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-3); }
+.dash-map-legend li { display: inline-flex; align-items: center; gap: 6px; font-size: var(--step--1); }
+/* A filled district is filled with the colour its own row published, at a low fill-opacity so the shape of
+   the country still reads through the colours. Fill-opacity is a presentation property rather than a colour
+   of this surface's own making: the hue is the product's, and only for a district that published one. */
+.district { fill: var(--ground); stroke: var(--line-strong); stroke-width: .01; vector-effect: non-scaling-stroke; }
+.district-quiet { fill: var(--green); fill-opacity: .22; }
+.district-red { fill: var(--red); fill-opacity: .88; stroke: var(--red); stroke-opacity: 1; stroke-width: .06; }
+.district-orange { fill: var(--orange); fill-opacity: .85; stroke: var(--orange); stroke-opacity: 1; stroke-width: .06; }
+.district-yellow { fill: var(--yellow); fill-opacity: .78; stroke: var(--yellow); stroke-opacity: 1; stroke-width: .06; }
+.district-green { fill: var(--green); fill-opacity: .62; stroke: var(--green); stroke-opacity: 1; stroke-width: .06; }
+.district-stated-not-on-ramp { fill: var(--sunk); stroke: var(--slate); stroke-dasharray: 2 2; }
+.district-muted { opacity: .3; }
+.district-cursor { stroke-width: .05; }
+.district-selected { stroke: var(--data); stroke-width: .12; }
+
+/* charts --------------------------------------------------------------------------------------- */
+.dash-chart { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+.dash-chart-svg { width: 100%; height: auto; max-height: 15rem; }
+.dash-axis { fill: var(--mute); font-size: 7px; font-family: var(--mono); }
+.dash-value { fill: var(--ink); font-size: 7px; font-family: var(--mono); text-anchor: middle; }
+.dash-gridline { stroke: var(--line); stroke-width: .5; }
+/* An SVG shape cannot take an HTML background: the hazard ramp is restated here as fill/stroke for the two
+   shapes that are SVG (a matrix bubble and a donut slice), from the same tokens and only for a published
+   colour. A shape with no published colour stays neutral. */
+.dash-bubble { fill: var(--line); fill-opacity: .55; stroke: var(--line-strong); stroke-width: .3; }
+.dash-bubble.dash-strip-red { fill: var(--red); fill-opacity: .55; stroke: var(--red); }
+.dash-bubble.dash-strip-orange { fill: var(--orange); fill-opacity: .55; stroke: var(--orange); }
+.dash-bubble.dash-strip-yellow { fill: var(--yellow); fill-opacity: .5; stroke: var(--yellow); }
+.dash-bubble.dash-strip-green { fill: var(--green); fill-opacity: .4; stroke: var(--green); }
+.dash-bubble.dash-strip-unset { fill: var(--line); fill-opacity: .5; stroke: var(--line-strong); stroke-dasharray: 1 1; }
+.dash-bar { fill: var(--data-wash); stroke: var(--data); stroke-width: .5; }
+.dash-donut-wrap { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); }
+.dash-donut { width: 8.5rem; height: 8.5rem; }
+.dash-donut-slice { fill: none; stroke-width: 14; stroke: var(--line); }
+.dash-donut-slice.dash-strip-red { stroke: var(--red); }
+.dash-donut-slice.dash-strip-orange { stroke: var(--orange); }
+.dash-donut-slice.dash-strip-yellow { stroke: var(--yellow); }
+.dash-donut-slice.dash-strip-green { stroke: var(--green); }
+.dash-donut-slice.dash-strip-unset { stroke: var(--line-strong); stroke-dasharray: 3 2; }
+.dash-legend { display: flex; flex-direction: column; gap: 4px; margin: 0; }
+.dash-legend-row { display: flex; align-items: center; gap: var(--space-2); }
+.dash-legend-row dt { display: inline-flex; align-items: center; gap: 6px; margin: 0; color: var(--ink-soft); font-size: var(--step--1); }
+.dash-legend-row dd { margin: 0; font-size: var(--step--1); }
+.dash-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; border: 1px solid var(--line-strong); }
+.dash-swatch-empty { background: repeating-linear-gradient(45deg, var(--line) 0 3px, transparent 3px 6px); }
+
+/* warned-district list ------------------------------------------------------------------------- */
+.dash-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.dash-list-row {
+  display: grid;
+  grid-template-columns: auto minmax(7rem, 14rem) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 10px;
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--r-card);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.dash-list-row:hover { background: var(--sunk); }
+.dash-list-row:focus-visible { outline: 2px solid var(--data); outline-offset: 1px; }
+.dash-list-row-active { border-color: var(--data); background: var(--data-wash); }
+.dash-list-name { font-weight: 600; }
+.dash-list-wording { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dash-list-meta { font-size: var(--step--1); white-space: nowrap; }
+
+/* responsive ----------------------------------------------------------------------------------- */
+@media (max-width: 87.5rem) {
+  .dash-band { grid-template-columns: minmax(0, 1fr); }
+  .dash-column { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 64rem) {
+  .dash-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dash-column { grid-template-columns: minmax(0, 1fr); }
+  .dash-map-svg { aspect-ratio: 4 / 3; }
+}
+@media (max-width: 40rem) {
+  .dash-bar-fields { flex-direction: column; align-items: stretch; }
+  .dash-bar-fields .module-field :where(input, select) { min-width: 0; width: 100%; }
+  .dash-kpi { min-height: 9rem; }
+  .dash-kpi-number { font-size: var(--step-4); }
+  .dash-map-svg { aspect-ratio: 4 / 5; max-height: none; }
+  .dash-list-row { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: 'colour name' 'wording wording' 'meta meta'; }
+  .dash-list-row > :nth-child(1) { grid-area: colour; }
+  .dash-list-row > :nth-child(2) { grid-area: name; }
+  .dash-list-row > :nth-child(3) { grid-area: wording; white-space: normal; }
+  .dash-list-row > :nth-child(4) { grid-area: meta; }
+}
+
+/* ---- dashboard v3: the value slot, the edition profile, the matrix and the map inspector ----------- */
+
+/* A numeral keeps the display size; a word steps down and balances. The slot is measured by the card, so a
+   long word can never push the layout or spill over the card edge. */
+.dash-kpi-number-word {
+  font-family: var(--serif);
+  font-size: var(--step-2);
+  line-height: 1.14;
+  letter-spacing: 0;
+  font-variant-numeric: normal;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}
+.dash-kpi[data-value-kind='word'] .dash-kpi-value { align-items: flex-start; }
+.dash-kpi-value { min-width: 0; flex-wrap: wrap; }
+
+/* The edition profile: one bar per printed date the read returned, the newest marked with the accent. */
+.dash-edition-bar { fill: color-mix(in oklab, var(--slate) 42%, transparent); stroke: var(--line-strong); stroke-width: .5; }
+.dash-edition-newest { fill: color-mix(in oklab, var(--data) 55%, transparent); stroke: var(--data); }
+
+/* The matrix: vertical day guides, quiet second-line date labels, and a hover that states the cell. */
+.dash-gridline-vertical { stroke: var(--line); stroke-width: .5; stroke-dasharray: 3 4; opacity: .7; }
+.dash-axis-quiet { fill: var(--mute); font-size: 9px; }
+.dash-bubble-cell:hover .dash-bubble { stroke-width: 1.6; }
+.dash-bubble-cell:hover .dash-value { font-weight: 700; }
+
+/* ---- the map inspector and the hover tip ---------------------------------------------------------- */
+.dash-map-layout { display: grid; gap: var(--space-3); grid-template-columns: minmax(0, 1.55fr) minmax(17rem, 1fr); align-items: start; }
+.dash-map-side { display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; }
+.dash-map-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.dash-map-hint { flex: 1 1 12rem; min-width: 0; }
+
+.map-tip {
+  position: fixed;
+  z-index: 50;
+  pointer-events: none;
+  max-width: 20rem;
+  padding: 8px 10px;
+  border-radius: var(--r-xl);
+  background: var(--glass-2);
+  border: 1px solid var(--glass-line);
+  box-shadow: var(--glass-shadow-lg);
+  backdrop-filter: blur(18px) saturate(1.3);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  color: var(--ink);
+  font-size: var(--step--1);
+}
+.map-tip-name { font-weight: 700; }
+.map-tip-line { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 4px; color: var(--ink-soft); }
+.map-tip-code { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--mute); }
+.map-tip-fixed { position: absolute; inset: auto 8px 8px auto; }
+
+/* The inspector panel: a real detail card, so the side of the map is never blank. */
+.inspector { display: flex; flex-direction: column; gap: var(--space-3); }
+.inspector-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-2); }
+.inspector-title { font-family: var(--serif); font-size: var(--step-2); line-height: 1.15; margin: 0; text-wrap: balance; }
+.inspector-days { display: flex; flex-direction: column; gap: 6px; }
+.inspector-day {
+  display: grid;
+  grid-template-columns: 4.5rem auto 1fr;
+  gap: 8px;
+  align-items: center;
+  padding: 7px 9px;
+  border-radius: var(--r-card);
+  border: 1px solid var(--glass-line);
+  background: var(--glass-3);
+}
+.inspector-day[data-today='true'] { border-color: color-mix(in oklab, var(--data) 45%, var(--glass-line)); background: color-mix(in oklab, var(--data) 8%, transparent); }
+.inspector-day-when { font-family: var(--mono); font-size: var(--step--1); color: var(--mute); }
+.inspector-day-text { font-size: var(--step--1); color: var(--ink-soft); overflow-wrap: anywhere; }
+.inspector-list { display: flex; flex-direction: column; gap: 4px; max-height: 18rem; overflow-y: auto; }
+.inspector-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: var(--r);
+  border: 1px solid transparent;
+  background: transparent;
+  text-align: left;
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+  transition: background var(--motion-fast) var(--ease-out-soft), border-color var(--motion-fast) var(--ease-out-soft);
+}
+.inspector-row:hover { background: var(--glass-3); border-color: var(--glass-line); color: var(--ink); }
+.inspector-row[aria-current='true'] { background: color-mix(in oklab, var(--data) 14%, transparent); border-color: color-mix(in oklab, var(--data) 35%, transparent); color: var(--ink); font-weight: 600; }
+.inspector-count { margin-left: auto; font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--mute); }
+.inspector-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+@media (max-width: 87.5rem) {
+  .dash-map-layout { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* A chip always reads on one line: 'no colour stated' over two lines made the table look broken. */
+.chip { white-space: nowrap; }
+.module-table :where(th, td) { hyphens: none; }
+.module-table td .chip { vertical-align: middle; }
+
+/* The strip and the profile read at full strength: these are published colours and printed dates, and a
+   pale yellow over a glass card read as an empty bar. */
+.dash-strip-red { background: color-mix(in oklab, var(--red) 92%, transparent); }
+.dash-strip-orange { background: color-mix(in oklab, var(--orange) 92%, transparent); }
+.dash-strip-yellow { background: color-mix(in oklab, var(--yellow) 95%, transparent); }
+.dash-strip-green { background: color-mix(in oklab, var(--green) 85%, transparent); }
+.dash-edition-old { fill: color-mix(in oklab, var(--orange) 38%, transparent); stroke: var(--orange); stroke-dasharray: 2 1.5; }

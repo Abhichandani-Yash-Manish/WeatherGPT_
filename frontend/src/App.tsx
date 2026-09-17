@@ -9,6 +9,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 import { AskSurface } from './chat/AskSurface';
+import { Aurora } from './shell/Aurora';
+import { ToastHost } from './ui/kit';
 import { Landing } from './landing/Landing';
 import { OwnerGate } from './landing/OwnerGate';
 import { closeGate, hasOwnerVerifier, isGateOpen } from './landing/owner';
@@ -89,6 +91,7 @@ function Shell() {
   const [language, setLanguage] = useState('');
   const [persona, setPersona] = useState('');
   const [palette, setPalette] = useState(false);
+  const askedSeeded = useRef(false);
   const [railOpen, setRailOpen] = useState(false);
   const [plansOpen, setPlansOpen] = useState(false);
   const [seed, setSeed] = useState<Seed>(null);
@@ -113,6 +116,16 @@ function Shell() {
   useEffect(() => {
     if (watchId) setPlansOpen(true);
   }, [watchId]);
+
+  /* A surface can hand a question to the conversation: #/assistant?ask=<question>. It is seeded once, so a
+     re-render does not re-ask it, and the question is the caller's own words. */
+  useEffect(() => {
+    const asked = query.get('ask');
+    if (!asked || askedSeeded.current) return;
+    askedSeeded.current = true;
+    setSeed({ question: asked, nonce: Date.now() });
+    go('assistant');
+  }, [query, go]);
 
   /* The document title follows the surface, so a deep link is identifiable in the tab, in the history and in
      a bookmark. It names the product first for the same reason the rail does. */
@@ -155,6 +168,7 @@ function Shell() {
       >
         Skip to the question box
       </a>
+      <Aurora />
       <SkyBackground />
       <Rail active={view.id} onOpen={open} open={railOpen} onClose={() => setRailOpen(false)} />
       <button
@@ -164,7 +178,7 @@ function Shell() {
         hidden={!railOpen}
         onClick={() => setRailOpen(false)}
       />
-      <main className="flex min-w-0 flex-1 flex-col">
+      <main className="relative flex min-w-0 flex-1 flex-col">
         <Topbar
           language={language}
           onLanguage={setLanguage}
@@ -187,7 +201,7 @@ function Shell() {
         <PinnedPlaces />
         <ErrorBoundary onReset={() => open('assistant')}>
           {view.id === 'assistant' ? (
-            <section className="mx-auto flex min-h-0 w-full max-w-5xl flex-1 flex-col px-4 py-4" data-surface="assistant">
+            <section className="mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col px-4 py-4" data-surface="assistant">
               <AskSurface language={language} persona={persona} seed={seed} restoreId={query.get('conversation')} />
             </section>
           ) : (
@@ -222,7 +236,11 @@ export function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <MotionConfig reducedMotion="user">
-        <Shell />
+        {/* The toast host states what a reader just did (copied, saved, refused). It sits outside the
+            surfaces so a message survives a route change, and it is chrome, never evidence. */}
+        <ToastHost>
+          <Shell />
+        </ToastHost>
       </MotionConfig>
     </QueryClientProvider>
   );

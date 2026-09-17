@@ -26,9 +26,40 @@ from .evidence_transport import evidence_store
 from .foundation import Foundation
 from .transport import SourceError, parsed, stamp
 
+# The warning evidence store, relative to the ingestion root: the same convention corpus and
+# forecast citations use, named here because these two products are fetched through it.
+WARNING_EVIDENCE_STORE = 'warning-evidence'
+
 CAP_LIMITS = ('Geographic applicability of the CAP relay to this place is not established here, its origin is not '
               'authenticated, and its completeness is unverified. A reachable feed and an empty eligible set are '
               'both not an all-clear.')
+
+
+def stored_evidence(meta_row):
+    """Where the bytes of a fetched warning response are kept, when the store recorded a blob.
+
+    A response hash with no way back to the stored bytes is not a walkable chain: measured
+    17 September 2026, the S15 and S06 citations carried response_sha256 while every forecast
+    citation also carried the relative path of the blob it was read from.
+    """
+    blob = (meta_row or {}).get('blob')
+    return {'raw_relative_path': blob, 'raw_store': WARNING_EVIDENCE_STORE} if blob else {}
+
+
+def warning_citations(meta, snapshot_meta, has_districts):
+    """The two product citations, each carrying the store path of the bytes it was read from."""
+    citations = [{'id': 'cap-feed', 'source_id': 'S06',
+                  'provider': 'IMD-labelled CAP relay; origin authentication unverified',
+                  'product': 'Retrieved CAP feed state', 'url': meta['url'],
+                  'response_sha256': meta['sha256'], 'retrieved_at_utc': meta['retrieved_at_utc'],
+                  **stored_evidence(meta)}]
+    if has_districts and snapshot_meta:
+        citations.append({'id': 'district-warning', 'source_id': 'S15', 'provider': 'India Meteorological Department',
+                          'product': 'District-wise warning product (GeoServer district_warnings_india)',
+                          'url': snapshot_meta.get('url'), 'response_sha256': snapshot_meta.get('sha256'),
+                          'retrieved_at_utc': snapshot_meta.get('retrieved_at_utc'),
+                          **stored_evidence(snapshot_meta)})
+    return citations
 
 
 def normalise(value):
@@ -190,19 +221,12 @@ def execute_warning(engine, result, plan, task, resolved=None, coordinates=None)
         if not current:
             stale.append((item['place'], record, issued))
         else:
-            districts.append({'place': item['place'], 'record': record, 'rows': current, 'issued': issued})
+            districts.append({'place': item['place'], 'record': record, 'rows': current, 'issued': issued,
+                              'published': rows, 'now': engine.workspace.clock()})
 
     meta = cap['meta']
     assessment = cap['assessment']
-    citations = [{'id': 'cap-feed', 'source_id': 'S06',
-                  'provider': 'IMD-labelled CAP relay; origin authentication unverified',
-                  'product': 'Retrieved CAP feed state', 'url': meta['url'],
-                  'response_sha256': meta['sha256'], 'retrieved_at_utc': meta['retrieved_at_utc']}]
-    if districts and snapshot_meta:
-        citations.append({'id': 'district-warning', 'source_id': 'S15', 'provider': 'India Meteorological Department',
-                          'product': 'District-wise warning product (GeoServer district_warnings_india)',
-                          'url': snapshot_meta.get('url'), 'response_sha256': snapshot_meta.get('sha256'),
-                          'retrieved_at_utc': snapshot_meta.get('retrieved_at_utc')})
+    citations = warning_citations(meta, snapshot_meta, bool(districts))
     facts = []
     for entry in districts:
         facts += dw.facts(entry['record'], entry['rows'], entry['issued'], 'district-warning', entry['place'])
@@ -255,7 +279,10 @@ def execute_warning(engine, result, plan, task, resolved=None, coordinates=None)
     cap_line = ('CAP relay assessment: ' + str(message_count) + ' retrieved messages, ' +
                 str(assessment['eligible_by_lifecycle']) + ' pass the time/status/reference checks' +
                 ('; the newest was sent ' + cap['latest_sent'] + '.' if cap['latest_sent'] else '.') + ' ' + CAP_LIMITS)
-    chunks = [dw.summary(entry['record'], entry['rows'], entry['issued']) for entry in districts]
+    # The statement is made over every day the bulletin publishes, not only the days a
+    # question returned, and the read instant is carried so the edition's age is stated.
+    chunks = [dw.summary(entry['record'], entry['rows'], entry['issued'], published=entry.get('published'),
+                         now=entry.get('now')) for entry in districts]
     for label, record, issued in stale:
         chunks.append('The stored IMD district warning for ' + label + ' is dated ' + issued.strftime('%d %b %Y') +
                       ' and every day it publishes has already passed, so it carries no current facts. Ask again for a '
@@ -264,6 +291,12 @@ def execute_warning(engine, result, plan, task, resolved=None, coordinates=None)
         chunks.append('The resolved point for ' + label + ' does not fall inside any district polygon of the IMD '
                       'district warning product, so no district warning applies there. That product covers land '
                       'districts only; ask for a nearby town for district guidance.')
+    if districts:
+        # Measured 17 September 2026: the plan window was IST ("2026-09-17T00:00:00+05:30") while the
+        # day row was UTC ("2026-09-16T18:30:00+00:00"). The two are the same instant, and nothing said
+        # so, which makes two correct readings look like a contradiction.
+        chunks.append('The plan window is written as IST calendar days and each day row as UTC instants; '
+                      'each pair names the same interval, and neither is a second validity.')
     if chunks:
         chunks.append(cap_line)
     else:

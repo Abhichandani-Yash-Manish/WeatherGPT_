@@ -1,4 +1,5 @@
 @import "../../../web/tokens.css";
+@import "../../../web/tokens-v2.css";
 @import "tailwindcss";
 @import "./sky.css";
 @import "./transcript.css";
@@ -44,6 +45,29 @@
   --shadow-lift-1: var(--lift-1);
   --shadow-lift-2: var(--lift-2);
   --shadow-lift-3: var(--lift-3);
+
+  /* The v2 layer: glass, aurora and the accent gradient, all derived from the tokens above. */
+  --color-glass: var(--glass-1);
+  --color-glass-2: var(--glass-2);
+  --color-glass-3: var(--glass-3);
+  --color-glass-line: var(--glass-line);
+  --color-aurora-a: var(--aurora-a);
+  --color-aurora-b: var(--aurora-b);
+  --color-aurora-c: var(--aurora-c);
+
+  --radius-xl2: var(--r-xl);
+  --radius-2xl2: var(--r-2xl);
+  --radius-3xl: var(--r-3xl);
+
+  --shadow-glass: var(--glass-shadow);
+  --shadow-glass-lg: var(--glass-shadow-lg);
+  --shadow-glow: var(--glow-data);
+
+  --ease-spring: var(--ease-spring);
+  --ease-out-soft: var(--ease-out-soft);
+
+  --animate-fade-up: fade-up var(--motion-base) var(--ease-out-soft) both;
+  --animate-pop-in: pop-in var(--motion-fast) var(--ease-spring) both;
 }
 
 html, body, #root { height: 100%; }
@@ -122,13 +146,22 @@ body {
 .soft { color: var(--ink-soft); }
 
 /* ---- surfaces ------------------------------------------------------------------------------ */
+/* A card is a glass pane over the aurora field: the token layer derives the glass from the paper
+   colour, so both themes keep the same relationship between ground, pane and ink. */
 .card {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--r-card);
-  box-shadow: var(--lift-1);
+  background: var(--glass-1);
+  border: 1px solid var(--glass-line);
+  border-radius: var(--r-xl);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
 }
-.card-raised { background: var(--raiser); box-shadow: var(--lift-2); }
+.card-raised {
+  background: var(--glass-2);
+  box-shadow: var(--glass-shadow-lg);
+  backdrop-filter: blur(22px) saturate(1.3);
+  -webkit-backdrop-filter: blur(22px) saturate(1.3);
+}
 .hairline { border-top: 1px solid var(--line); }
 .house { background: var(--housing); color: var(--housing-ink); border: 1px solid var(--housing-line); }
 
@@ -137,36 +170,44 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--r-card);
-  background: var(--paper);
+  border: 1px solid var(--glass-line);
+  border-radius: var(--r-pill);
+  background: var(--glass-2);
   color: var(--ink);
   font-size: var(--step--1);
   font-weight: 600;
   letter-spacing: .01em;
-  padding: 7px 11px;
-  transition: background var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out),
-              transform var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out);
+  padding: 7px 13px;
+  backdrop-filter: blur(10px) saturate(1.2);
+  -webkit-backdrop-filter: blur(10px) saturate(1.2);
+  transition: background var(--motion-fast) var(--ease-out-soft), border-color var(--motion-fast) var(--ease-out-soft),
+              transform var(--motion-fast) var(--ease-spring), color var(--motion-fast) var(--ease-out-soft),
+              box-shadow var(--motion-fast) var(--ease-out-soft);
 }
-.btn:hover:not(:disabled) { background: var(--sunk); }
-.btn:active:not(:disabled) { transform: translateY(1px); }
+.btn:hover:not(:disabled) { background: var(--glass-1); border-color: var(--line-strong); transform: translateY(-1px); }
+.btn:active:not(:disabled) { transform: translateY(0); }
 .btn:disabled { opacity: .55; cursor: not-allowed; }
-.btn-primary { background: var(--data); border-color: var(--data); color: var(--data-ink); }
-.btn-primary:hover:not(:disabled) { background: var(--data); filter: brightness(1.08); }
+.btn-primary {
+  background: var(--grad-accent);
+  border-color: color-mix(in oklab, var(--data) 70%, transparent);
+  color: var(--data-ink);
+  box-shadow: var(--glow-data);
+}
+.btn-primary:hover:not(:disabled) { border-color: var(--data); filter: brightness(1.06); }
 .btn-ghost { background: transparent; border-color: transparent; color: var(--ink-soft); }
-.btn-ghost:hover:not(:disabled) { background: var(--sunk); color: var(--ink); }
+.btn-ghost:hover:not(:disabled) { background: var(--glass-3); color: var(--ink); }
 .btn-danger { color: var(--red); border-color: var(--line-strong); }
 .tag {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--glass-line);
   border-radius: var(--r-pill);
-  padding: 2px 9px;
+  padding: 2px 10px;
   font-size: var(--step--1);
   font-weight: 600;
   letter-spacing: .01em;
-  background: var(--sunk);
+  background: var(--glass-3);
   color: var(--ink-soft);
   white-space: nowrap;
 }
@@ -177,15 +218,18 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  border: 1px solid var(--line-strong);
+  border: 1px solid var(--glass-line);
   border-radius: var(--r-pill);
-  background: var(--paper);
-  padding: 6px 12px;
+  background: var(--glass-2);
+  padding: 6px 13px;
   font-size: var(--step--1);
   color: var(--ink-soft);
-  transition: background var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out);
+  backdrop-filter: blur(10px) saturate(1.2);
+  -webkit-backdrop-filter: blur(10px) saturate(1.2);
+  transition: background var(--motion-fast) var(--ease-out-soft), color var(--motion-fast) var(--ease-out-soft),
+              border-color var(--motion-fast) var(--ease-out-soft), transform var(--motion-fast) var(--ease-spring);
 }
-.chip:hover:not(:disabled) { background: var(--data-wash); color: var(--ink); border-color: var(--data); }
+.chip:hover:not(:disabled) { background: var(--glass-1); color: var(--ink); border-color: var(--data); transform: translateY(-1px); }
 
 /* ---- motion: explains a change of state, never decorates it --------------------------------- */
 @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
@@ -211,7 +255,15 @@ body {
    window is narrow: the rail becomes a drawer, the stored-conversation column moves under the
    composer, and the topbar wraps. Nothing here claims a mobile run — the browser evidence records
    a 390x844 viewport, not a device. */
-.rail { position: sticky; top: 0; height: 100vh; }
+.rail {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  background: var(--glass-2);
+  border-right: 1px solid var(--glass-line);
+  backdrop-filter: blur(20px) saturate(1.25);
+  -webkit-backdrop-filter: blur(20px) saturate(1.25);
+}
 .rail-backdrop { display: none; }
 
 @media (max-width: 64rem) {

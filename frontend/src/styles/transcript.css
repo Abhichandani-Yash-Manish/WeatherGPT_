@@ -1,15 +1,18 @@
 /* The transcript's own voice. Values are mono, sentences are serif, chrome is sans, and nothing
    here animates in a way that could be read as a measurement or as progress. */
 
-.turn { animation: rise var(--motion-base) var(--ease-out) both; }
+.turn { animation: fade-up var(--motion-base) var(--ease-out-soft) both; }
 .turn-user {
   align-self: flex-end;
   max-width: min(46rem, 82%);
-  background: var(--data-wash);
-  border: 1px solid var(--data);
+  background: linear-gradient(135deg, color-mix(in oklab, var(--data) 22%, transparent), color-mix(in oklab, var(--data) 10%, transparent));
+  border: 1px solid color-mix(in oklab, var(--data) 40%, transparent);
   color: var(--ink);
-  border-radius: var(--r-card) var(--r-card) 2px var(--r-card);
-  padding: 10px 14px;
+  border-radius: var(--r-2xl) var(--r-2xl) 4px var(--r-2xl);
+  padding: 12px 16px;
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
@@ -27,15 +30,15 @@
 
 .reading-line {
   border-left: 2px solid var(--sand);
-  background: var(--sand-wash);
-  padding: 8px 12px;
-  border-radius: 0 var(--r-card) var(--r-card) 0;
+  background: color-mix(in oklab, var(--sand) 14%, transparent);
+  padding: 9px 13px;
+  border-radius: 0 var(--r-xl) var(--r-xl) 0;
   font-size: var(--step--1);
   color: var(--ink-soft);
 }
 
-.receipt { background: var(--sunk); border: 1px solid var(--line); border-radius: var(--r-card); }
-.receipt-row { display: grid; grid-template-columns: 8.5rem 1fr; gap: 8px; padding: 3px 0; border-bottom: 1px dashed var(--line); }
+.receipt { background: var(--glass-3); border: 1px solid var(--glass-line); border-radius: var(--r-xl); box-shadow: var(--glass-shadow); }
+.receipt-row { display: grid; grid-template-columns: 8.5rem 1fr; gap: 8px; padding: 5px 0; border-bottom: 1px dashed var(--glass-line); }
 .receipt-row:last-child { border-bottom: 0; }
 .receipt-key { color: var(--mute); font-size: var(--step--1); }
 .receipt-val { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: var(--step--1); overflow-wrap: anywhere; }
@@ -50,7 +53,8 @@
 .ruler-hit { fill: transparent; cursor: pointer; }
 .ruler-hit:focus-visible { outline: 2px solid var(--data); outline-offset: 1px; }
 
-.fact-row { display: grid; grid-template-columns: minmax(9rem, 14rem) 1fr auto; gap: 10px; align-items: baseline; padding: 6px 0; border-bottom: 1px dashed var(--line); }
+.fact-row { display: grid; grid-template-columns: minmax(9rem, 14rem) 1fr auto; gap: 10px; align-items: baseline; padding: 9px 12px; border-bottom: 1px solid var(--glass-line); transition: background var(--motion-fast) var(--ease-out-soft); }
+.fact-row:hover { background: color-mix(in oklab, var(--data) 6%, transparent); }
 .fact-row:last-child { border-bottom: 0; }
 .fact-value { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: var(--step-1); color: var(--ink); }
 .fact-source { color: var(--mute); font-size: var(--step--1); font-family: var(--mono); }
@@ -58,10 +62,10 @@
 .lead-value { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: var(--step-4); line-height: 1; letter-spacing: var(--track-tight); }
 .lead-unit { font-family: var(--mono); font-size: var(--step-1); color: var(--ink-soft); }
 
-.machine-record { font-family: var(--mono); font-size: var(--step--1); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 22rem; overflow: auto; background: var(--sunk); border-radius: var(--r-card); padding: 10px; }
+.machine-record { font-family: var(--mono); font-size: var(--step--1); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 22rem; overflow: auto; background: var(--glass-3); border: 1px solid var(--glass-line); border-radius: var(--r-xl); padding: 12px; }
 
 .starters-grid { display: grid; gap: 8px; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
-.composer-shell { background: var(--paper); border: 1px solid var(--line-strong); border-radius: var(--r-card); box-shadow: var(--lift-1); }
+.composer-shell { background: var(--glass-1); border: 1px solid var(--glass-line); border-radius: var(--r-2xl); box-shadow: var(--glass-shadow-lg); backdrop-filter: blur(20px) saturate(1.25); -webkit-backdrop-filter: blur(20px) saturate(1.25); }
 .composer-shell[data-busy='true'] { border-color: var(--data); }
 .composer-shell textarea { resize: none; }
 @media (max-width: 720px) {

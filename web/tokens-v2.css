@@ -1,0 +1,242 @@
+/* WeatherGPT — design layer v2: aurora, glass and motion.
+   ==========================================================================
+   Imported after tokens.css, so every value here is derived from the design tokens and the
+   light/dark blocks keep working without a second palette:
+
+   1. No new brand colour. Glass, aurora and accent surfaces are color-mix() over the existing
+      tokens, so a theme change (or the system preference) re-derives all of them.
+   2. Hazard colours stay hazard colours: the ramp is untouched here and is still used only by
+      .chip-colour[data-colour] and the map fills, both of which read a published colour.
+   3. Motion is bounded and collapses: every animation in this file is inside a
+      prefers-reduced-motion guard at the bottom, and none of them carry meaning.
+   ========================================================================== */
+
+:root {
+  /* glass ------------------------------------------------------------------ */
+  --glass-1:        color-mix(in oklab, var(--paper) 82%, transparent);
+  --glass-2:        color-mix(in oklab, var(--paper) 64%, transparent);
+  --glass-3:        color-mix(in oklab, var(--paper) 46%, transparent);
+  --glass-line:     color-mix(in oklab, var(--line-strong) 48%, transparent);
+  --glass-edge:     color-mix(in oklab, #ffffff 70%, transparent);
+  --glass-blur:     16px;
+  --glass-saturate: 1.25;
+  --glass-shadow:   0 1px 0 var(--glass-edge) inset, 0 1px 2px rgba(16, 26, 32, .05),
+                    0 26px 60px -36px rgba(16, 26, 32, .55);
+  --glass-shadow-lg: 0 1px 0 var(--glass-edge) inset, 0 2px 6px rgba(16, 26, 32, .06),
+                     0 40px 90px -48px rgba(16, 26, 32, .62);
+
+  /* aurora ------------------------------------------------------------------ */
+  --aurora-a: color-mix(in oklab, var(--data) 30%, transparent);
+  --aurora-b: color-mix(in oklab, var(--slate) 26%, transparent);
+  --aurora-c: color-mix(in oklab, var(--sand) 24%, transparent);
+  --aurora-veil: color-mix(in oklab, var(--ground) 82%, transparent);
+  --grid-line: color-mix(in oklab, var(--line-strong) 26%, transparent);
+
+  /* accent ------------------------------------------------------------------ */
+  --grad-accent: linear-gradient(135deg,
+                  color-mix(in oklab, var(--data) 88%, #ffffff),
+                  color-mix(in oklab, var(--data) 62%, var(--slate)));
+  --glow-data: 0 0 0 1px color-mix(in oklab, var(--data) 35%, transparent),
+               0 10px 30px -12px color-mix(in oklab, var(--data) 55%, transparent);
+
+  /* geometry ---------------------------------------------------------------- */
+  --r-xl: 18px;
+  --r-2xl: 26px;
+  --r-3xl: 34px;
+
+  /* motion ------------------------------------------------------------------ */
+  --motion-fast: 140ms;
+  --motion-base: 240ms;
+  --motion-slow: 420ms;
+  --ease-spring: cubic-bezier(.22, 1, .36, 1);
+  --ease-out-soft: cubic-bezier(.16, 1, .3, 1);
+}
+
+/* The dark blocks derive their own glass: a white edge on a dark pane reads as plastic, so the edge
+   is a faint light line and the shadow deepens. */
+:root[data-theme='dark'] {
+  --glass-edge: rgba(255, 255, 255, .07);
+  --glass-shadow: 0 1px 0 var(--glass-edge) inset, 0 1px 2px rgba(0, 0, 0, .4),
+                  0 28px 64px -36px rgba(0, 0, 0, .9);
+  --glass-shadow-lg: 0 1px 0 var(--glass-edge) inset, 0 2px 8px rgba(0, 0, 0, .5),
+                     0 44px 96px -48px rgba(0, 0, 0, .95);
+  --aurora-a: color-mix(in oklab, var(--data) 26%, transparent);
+  --aurora-b: color-mix(in oklab, var(--slate) 22%, transparent);
+  --aurora-c: color-mix(in oklab, var(--sand) 18%, transparent);
+  --aurora-veil: color-mix(in oklab, var(--ground) 78%, transparent);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --glass-edge: rgba(255, 255, 255, .07);
+    --glass-shadow: 0 1px 0 var(--glass-edge) inset, 0 1px 2px rgba(0, 0, 0, .4),
+                    0 28px 64px -36px rgba(0, 0, 0, .9);
+    --glass-shadow-lg: 0 1px 0 var(--glass-edge) inset, 0 2px 8px rgba(0, 0, 0, .5),
+                       0 44px 96px -48px rgba(0, 0, 0, .95);
+    --aurora-a: color-mix(in oklab, var(--data) 26%, transparent);
+    --aurora-b: color-mix(in oklab, var(--slate) 22%, transparent);
+    --aurora-c: color-mix(in oklab, var(--sand) 18%, transparent);
+    --aurora-veil: color-mix(in oklab, var(--ground) 78%, transparent);
+  }
+}
+
+/* ---- the aurora field ---------------------------------------------------------------------
+   Three drifting washes over the ground, behind every surface. Decorative only: it carries no
+   value, no state and no colour that a reading uses, and a surface paints its own panel over it. */
+.aurora {
+  position: fixed;
+  inset: 0;
+  /* Behind the static content: the shell's panels are not positioned, so a field at z-index 0 would
+     paint over them. The sky band sits at the same depth and comes later in the DOM, so it tints the top. */
+  z-index: -2;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(115% 85% at 12% 0%, var(--aurora-a) 0%, transparent 58%),
+    radial-gradient(95% 75% at 88% 8%, var(--aurora-b) 0%, transparent 62%),
+    radial-gradient(120% 90% at 60% 100%, var(--aurora-c) 0%, transparent 60%),
+    var(--ground);
+}
+.aurora-blob {
+  position: absolute;
+  width: 46vw;
+  height: 46vw;
+  min-width: 22rem;
+  min-height: 22rem;
+  border-radius: 50%;
+  filter: blur(64px);
+  opacity: .72;
+  will-change: transform;
+}
+.aurora-blob-a { top: -12vw; left: -8vw; background: var(--aurora-a); animation: aurora-drift-a 44s var(--ease-out-soft) infinite alternate; }
+.aurora-blob-b { top: 6vw; right: -12vw; background: var(--aurora-b); animation: aurora-drift-b 52s var(--ease-out-soft) infinite alternate; }
+.aurora-blob-c { bottom: -16vw; left: 26vw; background: var(--aurora-c); animation: aurora-drift-c 60s var(--ease-out-soft) infinite alternate; }
+.aurora-veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, transparent 0%, var(--aurora-veil) 78%),
+    repeating-linear-gradient(0deg, var(--grid-line) 0 1px, transparent 1px 88px),
+    repeating-linear-gradient(90deg, var(--grid-line) 0 1px, transparent 1px 88px);
+  opacity: .34;
+}
+
+@keyframes aurora-drift-a { from { transform: translate3d(0, 0, 0) scale(1); } to { transform: translate3d(6vw, 4vw, 0) scale(1.12); } }
+@keyframes aurora-drift-b { from { transform: translate3d(0, 0, 0) scale(1.05); } to { transform: translate3d(-5vw, 6vw, 0) scale(1); } }
+@keyframes aurora-drift-c { from { transform: translate3d(0, 0, 0) scale(1); } to { transform: translate3d(4vw, -5vw, 0) scale(1.15); } }
+
+/* ---- glass panels ------------------------------------------------------------------------- */
+.glass {
+  background: var(--glass-1);
+  border: 1px solid var(--glass-line);
+  border-radius: var(--r-xl);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+}
+.glass-strong {
+  background: var(--glass-2);
+  border: 1px solid var(--glass-line);
+  border-radius: var(--r-2xl);
+  box-shadow: var(--glass-shadow-lg);
+  backdrop-filter: blur(22px) saturate(1.3);
+  -webkit-backdrop-filter: blur(22px) saturate(1.3);
+}
+.glass-soft {
+  background: var(--glass-3);
+  border: 1px solid var(--glass-line);
+  border-radius: var(--r-xl);
+  backdrop-filter: blur(12px) saturate(1.15);
+  -webkit-backdrop-filter: blur(12px) saturate(1.15);
+}
+.glass-inset {
+  background: color-mix(in oklab, var(--sunk) 55%, transparent);
+  border: 1px solid var(--glass-line);
+  border-radius: var(--r-card);
+}
+.glass-hairline { border-color: var(--glass-line); }
+
+/* A sheen that follows the pointer on a card: purely decorative, and it is not a state. */
+.sheen { position: relative; overflow: hidden; }
+.sheen::after {
+  content: '';
+  position: absolute;
+  inset: -60% -20%;
+  background: linear-gradient(115deg, transparent 42%, color-mix(in oklab, #ffffff 26%, transparent) 50%, transparent 58%);
+  transform: translateX(-60%);
+  transition: transform var(--motion-slow) var(--ease-out-soft);
+  pointer-events: none;
+}
+.sheen:hover::after { transform: translateX(60%); }
+
+/* ---- small pieces the shell and surfaces share -------------------------------------------- */
+.icon-tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--r-card);
+  background: color-mix(in oklab, var(--data) 14%, transparent);
+  color: var(--data);
+  border: 1px solid color-mix(in oklab, var(--data) 22%, transparent);
+}
+.icon-tile-sm { width: 1.5rem; height: 1.5rem; border-radius: var(--r); }
+.icon-tile-quiet { background: color-mix(in oklab, var(--mute) 12%, transparent); color: var(--mute); border-color: var(--glass-line); }
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 1.75rem;
+  padding: 0 10px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--glass-line);
+  background: var(--glass-2);
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+}
+.pill-accent { background: color-mix(in oklab, var(--data) 16%, transparent); border-color: color-mix(in oklab, var(--data) 30%, transparent); color: var(--data); }
+.pill-quiet { color: var(--mute); }
+
+.stat { display: flex; flex-direction: column; gap: 6px; }
+.stat-label { font-size: var(--step--1); color: var(--mute); letter-spacing: .02em; }
+.stat-value { font-family: var(--serif); font-size: var(--step-4); line-height: 1.05; letter-spacing: var(--track-tight); }
+.stat-unit { color: var(--ink-soft); font-size: var(--step-0); }
+.stat-foot { font-size: var(--step--1); color: var(--mute); }
+
+.meter { height: 6px; border-radius: var(--r-pill); background: color-mix(in oklab, var(--line-strong) 40%, transparent); overflow: hidden; }
+.meter > span { display: block; height: 100%; border-radius: var(--r-pill); background: var(--grad-accent); }
+
+.tooltip-host { position: relative; }
+.tooltip-host::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translate(-50%, 4px);
+  white-space: nowrap;
+  padding: 6px 10px;
+  border-radius: var(--r);
+  background: var(--housing);
+  color: var(--housing-ink);
+  border: 1px solid var(--housing-line);
+  font-size: var(--step--1);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--motion-fast) var(--ease-out-soft), transform var(--motion-fast) var(--ease-out-soft);
+  z-index: 40;
+}
+.tooltip-host:hover::after, .tooltip-host:focus-visible::after { opacity: 1; transform: translate(-50%, 0); }
+
+/* Entry motion the surfaces share. It explains arrival, so it is short and it never blocks input. */
+@keyframes fade-up { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes pop-in { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: none; } }
+@keyframes pulse-soft { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+.fade-up { animation: fade-up var(--motion-base) var(--ease-out-soft) both; }
+.pop-in { animation: pop-in var(--motion-fast) var(--ease-spring) both; }
+.pulse-soft { animation: pulse-soft 1.8s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-blob, .fade-up, .pop-in, .pulse-soft, .sheen::after { animation: none !important; transition: none !important; }
+  .sheen::after { display: none; }
+}

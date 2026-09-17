@@ -275,4 +275,18 @@ describe('the turn, held against the vanilla client checks', () => {
     expect(note).toHaveTextContent('40 listed');
     expect(note).toHaveTextContent('stored locally');
   });
+
+  /* The audit of 17 September 2026 measured the delete control at 2.91:1 (foreground #cf7f7e on
+     #fbfcfa at 12px), a serious colour-contrast violation: the 'opacity-60' resting state blended
+     --red into the paper. A text-opacity utility on this control is the cause, so its absence is
+     what this pins; the rendered contrast is measured by the axe audit, not by this check. */
+  it('keeps the delete control readable rather than fading it below the contrast floor', async () => {
+    server.use(http.get('/api/conversations', () => HttpResponse.json(LEDGER)));
+    withClient(<ConversationRail currentId={null} onOpen={() => {}} onNew={() => {}} register="conversational" onRegister={() => {}} />);
+    const deletes = await screen.findAllByRole('button', { name: /^Delete the stored conversation:/ });
+    expect(deletes).toHaveLength(3);
+    deletes.forEach(button => {
+      expect(button.className).not.toMatch(/opacity-\d/);
+    });
+  });
 });

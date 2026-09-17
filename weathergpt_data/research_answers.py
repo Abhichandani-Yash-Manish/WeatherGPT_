@@ -96,7 +96,11 @@ def lookup_plan(plan):
         notes=['This is the published All India aggregate; it does not describe an individual village or district.']
         check=data['reconciliation']
         if check and check.get('difference_mm') not in {None,'0','0.0','0.00'}:notes.append('The source aggregate differs from the sum of its published months; the original total and reconciliation are retained.')
-        return {'status':'answered' if r['value_decimal'] is not None else 'unavailable','text':text,'facts':[{'label':plan['history_parameter'],'value':r['value_decimal'],'unit':r['unit'],'year':year,'period':period,'source_id':sid,'place':'All India'}] if r['value_decimal'] is not None else [],
+        # The receipt row is built from this list, so a published value with no locator shows the
+        # reader nothing about where the number came from (measured 17 September 2026: both All India
+        # facts carried no locator while the district series' product view carried page/row/file).
+        locators=['CSV row ' + str(r['source_row']) + ', column ' + str(r['source_column'])]
+        return {'status':'answered' if r['value_decimal'] is not None else 'unavailable','text':text,'facts':[{'label':plan['history_parameter'],'value':r['value_decimal'],'unit':r['unit'],'year':year,'period':period,'source_id':sid,'place':'All India','source_locators':locators}] if r['value_decimal'] is not None else [],
                 'citations':[{'source_id':sid,'url':c['url'],'provider':'IMD','product':'Published All India historical table',**c}],'notes':notes,'raw':data}
     if place['kind'] in {'relative','country','state'}:return {'status':'needs_clarification','text':'The local historical table contains source districts. Which historical district and state do you mean?','facts':[],'citations':[]}
     if plan['history_parameter']!='rainfall':return {'status':'unavailable','text':'The stored district table contains rainfall, not district temperature. I can look up national mean temperature or district rainfall.','facts':[],'citations':[]}
@@ -135,5 +139,6 @@ def lookup_plan(plan):
                   'legacy_index_status':data.pop('source_transcription',None)}
     data['source_transcription']={'status':'covered_by_previous_full_source_audit' if matched_input and verification['all_series_matched'] else 'unverified','evidence':str(audit.relative_to(ROOT))}
     citation={'source_id':'S27','provider':'IMD','product':'Historical district rainfall publication','url':products['S27']['access_url'],'page':prov['original_publication_page'],'source_file':prov['source_file'],'sha256':prov['asset_sha256'],'row':prov['source_row'],'column':prov['column']}
-    return {'status':'answered' if data['value_decimal'] is not None else 'unavailable','text':text,'facts':[{'label':'rainfall','value':data['value_decimal'],'unit':'mm','year':year,'period':period,'source_id':'S27','place':dist+', '+st}] if data['value_decimal'] is not None else [],
+    locators=['page ' + str(prov['original_publication_page']) + ', row ' + str(prov['source_row']) + ', column ' + str(prov['column'])]
+    return {'status':'answered' if data['value_decimal'] is not None else 'unavailable','text':text,'facts':[{'label':'rainfall','value':data['value_decimal'],'unit':'mm','year':year,'period':period,'source_id':'S27','place':dist+', '+st,'source_locators':locators}] if data['value_decimal'] is not None else [],
             'citations':[citation],'notes':notes,'verification':verification,'raw':data}

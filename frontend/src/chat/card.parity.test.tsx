@@ -216,7 +216,10 @@ describe('the answer card, held against the vanilla checks', () => {
     expect(text).toContain('8');
     expect(text).toContain('kt');
     expect(text).toContain('VOBL \u00b7 Bangaluru Intl');
-    expect(text).toContain('14 Sep 2026 16:30-16:30 IST');
+    /* An observation is one instant: the window label used to print '16:30-16:30', a zero-length
+       range that reads as a window while saying nothing (repaired 17 September 2026). */
+    expect(text).toContain('14 Sep 2026, 16:30 IST');
+    expect(text).not.toContain('16:30-16:30');
     expect(text).toContain('S18');
   });
 

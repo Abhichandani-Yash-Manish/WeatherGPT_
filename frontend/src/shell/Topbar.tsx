@@ -5,6 +5,7 @@
    with no product rows says so rather than showing a zero. */
 
 import { useQuery } from '@tanstack/react-query';
+import { CalendarClock, Lock, MonitorCog, Moon, Plus, Search, Sun } from 'lucide-react';
 import { getJson } from '../api/client';
 import type { Health, Languages } from '../api/types';
 import { personas as readPersonas } from '../chat/api';
@@ -12,6 +13,8 @@ import { allLanguages, measuredFor } from '../chat/voice';
 import { orNot } from '../lib/format';
 import { istStamp } from '../lib/time';
 import { NOT_RECORDED } from '../modules/Evidence';
+import { Badge, Button, IconButton } from '../ui/kit';
+import { cn } from '../ui/cn';
 
 export type TopbarProps = {
   language: string;
@@ -54,12 +57,16 @@ export function Topbar({ language, onLanguage, persona, onPersona, theme, onThem
   const cooldowns = health.data?.cooldowns || [];
   /* A failed read keeps the chip's failure state and shows no product panel: there are no rows to show. */
   const showProducts = Boolean(health.data) && !health.isError;
+  const themeLabel = theme === 'system' ? 'System theme' : theme === 'dark' ? 'Dark' : 'Light';
+  const ThemeIcon = theme === 'system' ? MonitorCog : theme === 'dark' ? Moon : Sun;
 
   return (
-    <header className="flex flex-wrap items-center gap-2 border-b border-line bg-paper px-4 py-2" data-topbar="react">
-      <button type="button" className="text-sm font-semibold tracking-wide" onClick={onPalette} title="Open the command palette (Alt+K)">
-        WeatherGPT
-      </button>
+    <header className="glass sticky top-0 z-30 flex flex-wrap items-center gap-2 rounded-none border-x-0 border-t-0 px-3 py-2" data-topbar="react">
+      <Button variant="subtle" size="sm" onClick={onPalette} tip="Open the command palette (Alt+K)">
+        <span className="icon-tile icon-tile-sm" aria-hidden="true"><Search size={14} /></span>
+        <span className="font-semibold tracking-tight text-ink">WeatherGPT</span>
+        <kbd className="hidden rounded-md border border-glass-line px-1.5 py-0.5 text-[10px] text-mute md:inline-block">Alt K</kbd>
+      </Button>
       <button
         type="button"
         className="btn narrow-only"
@@ -71,42 +78,42 @@ export function Topbar({ language, onLanguage, persona, onPersona, theme, onThem
         Menu
       </button>
 
-      <span role="status" data-testid="service-state" title={service.detail || ''}
-        className={'rounded-card px-2 py-0.5 text-xs ' + (service.tone === 'down' ? 'bg-warn text-paper' : 'bg-sunk text-ink-soft')}>
-        {service.label}
+      <span role="status" data-testid="service-state" title={service.detail || ''} className="inline-flex">
+        <Badge tone={service.tone === 'down' ? 'alert' : service.tone === 'ok' ? 'good' : 'quiet'}>
+          <span className={cn('h-1.5 w-1.5 rounded-full', service.tone === 'down' ? 'bg-alert' : service.tone === 'ok' ? 'bg-clear pulse-soft' : 'bg-mute')} aria-hidden="true" />
+          {service.label}
+        </Badge>
       </span>
 
       {showProducts ? (
         <details className="relative" data-testid="health-products">
           <summary
-            className="cursor-pointer rounded-card bg-sunk px-2 py-0.5 text-xs text-ink-soft"
+            className="cursor-pointer rounded-full border border-glass-line bg-glass-3 px-2.5 py-0.5 text-[length:var(--step--1)] text-ink-soft"
             title="Per-product collection health as this read returned it"
           >
             By product
           </summary>
-          <div className="absolute left-0 top-full z-20 mt-1 w-[min(34rem,92vw)] rounded-card border border-line bg-paper p-3 text-xs shadow-lift-2">
+          <div className="glass-strong absolute left-0 top-full z-40 mt-2 w-[min(34rem,92vw)] p-3 text-[length:var(--step--1)]">
             {products.length ? (
-              <table className="w-full border-collapse text-left text-xs">
+              <table className="module-table">
                 <caption className="pb-1 text-left text-mute">
                   Every product row this read returned, with the counts and commit it states for that product.
                 </caption>
                 <thead>
                   <tr>
-                    <th scope="col" className="border-b border-hairline pb-1 pr-2 font-semibold text-mute">Product</th>
-                    <th scope="col" className="border-b border-hairline pb-1 pr-2 font-semibold text-mute">Jobs</th>
-                    <th scope="col" className="border-b border-hairline pb-1 pr-2 font-semibold text-mute">Job states</th>
-                    <th scope="col" className="border-b border-hairline pb-1 font-semibold text-mute">Newest commit</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Jobs</th>
+                    <th scope="col">Job states</th>
+                    <th scope="col">Newest commit</th>
                   </tr>
                 </thead>
                 <tbody>
                   {products.map(product => (
                     <tr key={product.product}>
-                      <th scope="row" className="border-b border-hairline py-1 pr-2 font-semibold">{orNot(product.product)}</th>
-                      <td className="border-b border-hairline py-1 pr-2">{orNot(product.jobs, NOT_RECORDED)}</td>
-                      <td className="border-b border-hairline py-1 pr-2">{statesInWords(product.states)}</td>
-                      <td className="border-b border-hairline py-1">
-                        {product.newest_commit_utc ? istStamp(product.newest_commit_utc) : NOT_RECORDED}
-                      </td>
+                      <th scope="row">{orNot(product.product)}</th>
+                      <td>{orNot(product.jobs, NOT_RECORDED)}</td>
+                      <td>{statesInWords(product.states)}</td>
+                      <td>{product.newest_commit_utc ? istStamp(product.newest_commit_utc) : NOT_RECORDED}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -126,12 +133,12 @@ export function Topbar({ language, onLanguage, persona, onPersona, theme, onThem
       ) : null}
 
       <div className="ml-auto flex flex-wrap items-center gap-2">
-        <label className="text-xs quiet" htmlFor="persona">Reading as</label>
+        <label className="text-[length:var(--step--1)] quiet" htmlFor="persona">Reading as</label>
         <select
           id="persona"
           value={persona}
           onChange={event => onPersona(event.target.value)}
-          className="rounded-card border border-line bg-paper px-2 py-1 text-xs"
+          className="rounded-full border border-glass-line bg-glass-2 px-2.5 py-1 text-[length:var(--step--1)] text-ink"
           title="A reading position changes the emphasis and which questions are offered first. It changes no value and no warning level."
         >
           <option value="">Default reading</option>
@@ -140,12 +147,12 @@ export function Topbar({ language, onLanguage, persona, onPersona, theme, onThem
           ))}
         </select>
 
-        <label className="text-xs quiet" htmlFor="language">Answer in</label>
+        <label className="text-[length:var(--step--1)] quiet" htmlFor="language">Answer in</label>
         <select
           id="language"
           value={language}
           onChange={event => onLanguage(event.target.value)}
-          className="rounded-card border border-line bg-paper px-2 py-1 text-xs"
+          className="rounded-full border border-glass-line bg-glass-2 px-2.5 py-1 text-[length:var(--step--1)] text-ink"
         >
           <option value="">Match my question</option>
           {allLanguages(languages.data).map(entry => (
@@ -155,15 +162,14 @@ export function Topbar({ language, onLanguage, persona, onPersona, theme, onThem
           ))}
         </select>
 
-        <button type="button" className="btn" onClick={onPlans} data-testid="plans-open">Plans</button>
-        <button type="button" className="btn" onClick={onPalette} data-testid="palette-open">Commands</button>
-        <button type="button" className="btn" onClick={onTheme} data-testid="theme-toggle">
-          {theme === 'system' ? 'System theme' : theme === 'dark' ? 'Dark' : 'Light'}
-        </button>
-        <button type="button" className="btn" onClick={onNew} data-testid="new-conversation">New</button>
-        <button type="button" className="btn btn-ghost" onClick={onOwner} title="Lock or unlock this interface on this machine">
-          Lock
-        </button>
+        <IconButton label="Plans, watches and the inbox" icon={<CalendarClock size={15} />} onClick={onPlans} tip="Plans, watches and the inbox" data-testid="plans-open" />
+        <IconButton label="Open the command palette" icon={<Search size={15} />} onClick={onPalette} tip="Commands · Alt K" data-testid="palette-open" />
+        <Button size="sm" icon={<ThemeIcon size={15} />} onClick={onTheme} data-testid="theme-toggle" tip="Theme: light, dark or the system preference">
+          {themeLabel}
+        </Button>
+        <Button size="sm" variant="primary" icon={<Plus size={15} />} onClick={onNew} data-testid="new-conversation">New</Button>
+        {/* The accessible name stays the word the button acts on; the sentence explaining it is the tip. */}
+        <IconButton label="Lock" icon={<Lock size={15} />} onClick={onOwner} tip="Lock or unlock this interface on this machine" />
       </div>
     </header>
   );

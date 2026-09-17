@@ -107,7 +107,23 @@ class AnswerTests(unittest.TestCase):
     def test_stale_snapshot_is_not_served_as_current(self):
         self.now+=timedelta(seconds=3601)
         result=self.ask();self.assertEqual(result['status'],'stale');self.assertFalse(result['values'])
+        # The reader is told the collection state, not only that an age limit was crossed:
+        # measured 17 September 2026, the trace held a failed contract check and the answer
+        # said only that stored evidence was outside a retrieval-age limit.
+        self.assertIn('governed collection',result['answer'])
+        self.assertIn(result['freshness']['refresh_health'],result['answer'])
         self.now+=timedelta(days=1);self.assertEqual(self.ask()['status'],'stale')
+
+    def test_a_point_with_no_published_forecast_names_the_failure_that_produced_that(self):
+        lat,lon=34.,74.
+        self.db.enqueue('forecast',lat,lon,3,self.now.isoformat())
+        run_one(self.db,self.root/'raw',lambda *a,**k:Response(b'{}'))
+        result=self.ask(QUESTION.replace('Ahmedabad','selected point'),
+                        coordinates={'latitude':lat,'longitude':lon})
+        self.assertEqual(result['status'],'unavailable')
+        self.assertFalse(result['values'])
+        self.assertIn('governed collection',result['answer'])
+        self.assertIn('No published forecast snapshot exists for this point',result['answer'])
 
     def test_failure_and_future_job_stay_visible_in_answer(self):
         self.now+=timedelta(minutes=1)

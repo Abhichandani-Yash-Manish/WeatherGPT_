@@ -129,7 +129,7 @@ describe('the district-day rows', () => {
 
     // The district with no day rows is still named, and it contributes no district-day row.
     expect(within(screen.getByTestId('warnings-bulletins')).getByText('KOLKATA')).toBeInTheDocument();
-    expect(screen.getByTestId('warnings-count')).toHaveTextContent('Showing 4 district-day rows of 4 district-day rows matching this filter.');
+    expect(screen.getByTestId('warnings-count')).toHaveTextContent('Showing all 4 district-day rows this read returned.');
   });
 });
 

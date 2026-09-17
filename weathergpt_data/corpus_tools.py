@@ -131,8 +131,26 @@ def family_spec(family):
     raise SourceError('Unknown published document family: ' + str(family))
 
 
+def family_registered(family):
+    """Whether the family carries a registered spec. An index row may hold a family this
+    build does not register: the publisher ingested it earlier, and _family_spec is the
+    strict gate for a *request* that names a family."""
+    return bool(family) and family in ALL_FAMILIES
+
+
 def family_label(family):
-    return family_spec(family).get('label') or family
+    """A label for an index row, never a raise.
+
+    Measured 17 September 2026: the whole Published documents read answered 400
+    'Unknown published document family: gkms_grid' because three families present in the
+    index (gkms_grid, arnej_grid, tnau_grid) were not registered in this build. A listing
+    of what this machine holds must be able to say "family not registered here" about one
+    row rather than refusing to list any of them. A question that names a family still
+    goes through family_spec, which stays strict.
+    """
+    if family_registered(family):
+        return ALL_FAMILIES[family].get('label') or family
+    return str(family or 'family not stated')
 
 
 def directory_states(district):

@@ -10,13 +10,15 @@
    never an empty list. */
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { CornerDownLeft, Search, Sparkles } from 'lucide-react';
+import { SURFACE_ICONS } from '../ui/icons';
 import { useQuery } from '@tanstack/react-query';
 import { getJson, withQuery } from '../api/client';
 import type { Envelope, Ledger } from '../api/types';
 import { failureSentence } from '../modules/Evidence';
 import { VIEWS } from './views';
 
-export type PaletteAction = { id: string; group?: string; label: string; hint?: string; run: () => void };
+export type PaletteAction = { id: string; group?: string; label: string; hint?: string; run: () => void; viewId?: string };
 
 type PlaceRow = {
   label?: string | null; name?: string | null; source_id?: string | null; kind?: string | null;
@@ -86,7 +88,7 @@ export function Palette({
   const items = useMemo(() => {
     const rows: PaletteAction[] = [
       { id: 'new-conversation', group: 'Start', label: 'Start a new conversation', hint: 'the workspace keeps every stored conversation', run: onNewConversation },
-      ...VIEWS.map(view => ({ id: view.id, group: 'Surfaces', label: 'Open ' + view.label, hint: view.intents[0], run: () => onOpenView(view.id) })),
+      ...VIEWS.map(view => ({ id: view.id, group: 'Surfaces', label: 'Open ' + view.label, hint: view.intents[0], viewId: view.id, run: () => onOpenView(view.id) })),
       ...actions.map(action => ({ ...action, group: action.group || 'Actions' })),
     ];
     (conversations.data?.conversations || []).slice(0, 6).forEach(row => {
@@ -156,9 +158,11 @@ export function Palette({
   }, [active, items.length]);
 
   return (
-    <dialog ref={dialog} className="card w-[min(38rem,92vw)] p-0 backdrop:bg-[var(--scrim)]" onClose={onClose} aria-label="Command palette">
+    <dialog ref={dialog} className="glass-strong w-[min(40rem,94vw)] p-0 backdrop:bg-[var(--scrim)]" onClose={onClose} aria-label="Command palette">
       <div className="px-3 py-3">
         <label className="sr-only" htmlFor="palette-search">Search commands, surfaces, places and stored conversations</label>
+        <div className="relative">
+          <Search size={16} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-mute" aria-hidden="true" />
         <input
           id="palette-search"
           value={query}
@@ -174,8 +178,9 @@ export function Palette({
             }
           }}
           placeholder="Where do you want to go?"
-          className="w-full rounded-card border border-line bg-paper px-3 py-2 text-sm"
+          className="w-full rounded-full border border-glass-line bg-glass-2 py-2.5 pl-10 pr-4 text-[length:var(--step-0)] text-ink"
         />
+        </div>
         {failures.map(entry => (
           <div key={entry.what} className="mt-2 rounded-card border border-line px-2 py-2 text-xs" role="alert">
             <p className="reading">{failureSentence(entry.error)}</p>
@@ -194,12 +199,16 @@ export function Palette({
                   <li key={item.id} role="option" aria-selected={index === active}>
                     <button
                       type="button"
-                      className={'w-full rounded-card px-2 py-2 text-left text-sm ' + (index === active ? 'bg-sand' : 'hover:bg-sand/40')}
+                      className={'flex w-full items-center gap-3 rounded-xl px-2.5 py-2 text-left text-[length:var(--step-0)] transition-colors ' + (index === active ? 'bg-glass border border-glass-line' : 'hover:bg-glass-3')}
                       onMouseEnter={() => setActive(index)}
                       onClick={() => { item.run(); onClose(); }}
                     >
-                      <span>{item.label}</span>
-                      {item.hint ? <span className="mt-0.5 block text-[11px] quiet">{item.hint}</span> : null}
+                      {<PaletteIcon viewId={item.viewId} />}
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate">{item.label}</span>
+                        {item.hint ? <span className="mt-0.5 block truncate text-[11px] quiet">{item.hint}</span> : null}
+                      </span>
+                      {index === active ? <CornerDownLeft size={14} className="shrink-0 text-mute" aria-hidden="true" /> : null}
                     </button>
                   </li>
                 ))}
@@ -218,4 +227,11 @@ export function Palette({
       </div>
     </dialog>
   );
+}
+
+/* The palette draws the same icon a surface is drawn with; an entry that is not a surface gets the
+   sparkle the product uses for its own actions. */
+function PaletteIcon({ viewId }: { viewId?: string }) {
+  const Icon = (viewId && SURFACE_ICONS[viewId]) || Sparkles;
+  return <span className="icon-tile icon-tile-sm shrink-0" aria-hidden="true"><Icon size={14} /></span>;
 }

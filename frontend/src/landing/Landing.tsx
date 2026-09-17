@@ -1,4 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
+import {
+  ArrowRight, Compass, Database, Gauge, Images, Layers, ListChecks, ShieldCheck, Sparkles,
+} from 'lucide-react';
+import { Button } from '../ui/kit';
 import { getJson, withQuery } from '../api/client';
 import type { CapabilitiesData, Envelope, Health } from '../api/types';
 import { istStamp } from '../lib/time';
@@ -141,6 +145,21 @@ function failureSentence(error: unknown): string {
   return error instanceof Error && error.message ? error.message : 'the workspace gave no reason';
 }
 
+const STEP_ICONS = [Compass, Layers, Database, Gauge];
+
+/* A tile says which read it is with an icon, from the same map the surfaces use. */
+function LiveIcon({ name }: { name: string }) {
+  const Icon = LIVE_ICONS[name] ?? Gauge;
+  return <Icon size={14} aria-hidden="true" />;
+}
+
+const LIVE_ICONS: Record<string, typeof Gauge> = {
+  health: Gauge,
+  capabilities: ListChecks,
+  corpus: Database,
+  warnings: ShieldCheck,
+};
+
 export function Landing({ onEnter }: { onEnter: () => void }) {
   const health = useQuery({ queryKey: ['landing', 'health'], queryFn: () => getJson<Health>('/api/health'), retry: false, staleTime: 30_000 });
   const capabilities = useQuery({
@@ -209,11 +228,11 @@ export function Landing({ onEnter }: { onEnter: () => void }) {
         {/* The hero states the product in one breath and shows the shape of an answer beside it. The panel on
             the right carries no number: it is the structure of a receipt, labelled as such, because a front
             page that showed an unread value would make the one claim this product refuses to make. */}
-        <section aria-labelledby="landing-hero" className="landing-hero relative mt-6 overflow-hidden rounded-card px-6 py-10 sm:px-10">
+        <section aria-labelledby="landing-hero" className="glass-strong landing-hero relative mt-6 overflow-hidden px-6 py-10 sm:px-10">
           <span className="landing-hero-band" aria-hidden="true" />
           <div className="relative grid gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:items-start">
             <div>
-              <p className="eyebrow">WeatherGPT · SIH26068 · a local workspace</p>
+              <p className="pill pill-accent mb-1"><Sparkles size={13} aria-hidden="true" />WeatherGPT · SIH26068 · a local workspace</p>
               <h1 id="landing-hero" className="display landing-title mt-3">WeatherGPT</h1>
               <p className="reading mt-5">
                 A local, evidence-first conversational weather workspace for India: ask about a place and a time in
@@ -225,21 +244,22 @@ export function Landing({ onEnter }: { onEnter: () => void }) {
                 it states missing evidence as missing.
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-3">
-                <button type="button" className="btn btn-primary" data-testid="open-workspace" onClick={onEnter}>
+                <Button variant="primary" size="lg" icon={<ArrowRight size={16} />} data-testid="open-workspace" onClick={onEnter}>
                   Open the workspace
-                </button>
+                </Button>
                 <a className="btn" href="#/assistant">
+                  <Sparkles size={15} aria-hidden="true" />
                   Open the assistant directly
                 </a>
               </div>
               <ul className="mt-6 flex flex-wrap gap-2" aria-label="What the workspace guarantees about its answers">
-                <li className="tag">Loopback only, per-process token</li>
-                <li className="tag">Every value keeps its source and retrieval time</li>
-                <li className="tag tag-quiet">No confidence score is produced anywhere</li>
+                <li className="pill"><ShieldCheck size={13} aria-hidden="true" />Loopback only, per-process token</li>
+                <li className="pill"><Database size={13} aria-hidden="true" />Every value keeps its source and retrieval time</li>
+                <li className="pill pill-quiet">No confidence score is produced anywhere</li>
               </ul>
             </div>
 
-            <aside className="landing-card card-raised" aria-labelledby="landing-shape">
+            <aside className="glass-soft landing-card p-4" aria-labelledby="landing-shape">
               <p className="eyebrow" id="landing-shape">The shape of an answer</p>
               <p className="mt-2 text-xs text-mute">
                 Not a reading: the receipt structure every answer fills in. This page prints no measurement it did
@@ -265,22 +285,27 @@ export function Landing({ onEnter }: { onEnter: () => void }) {
         </section>
 
         <section aria-labelledby="landing-method" className="landing-rule pt-8">
-          <h2 id="landing-method" className="display">Ask, and the evidence answers</h2>
+          <div className="flex items-center gap-3"><span className="icon-tile" aria-hidden="true"><ListChecks size={18} /></span><h2 id="landing-method" className="display m-0">Ask, and the evidence answers</h2></div>
           <p className="landing-note landing-prose mt-2 text-sm">
             The four steps between a question and an answer, in the order the retrieval path takes them.
           </p>
-          <ol className="landing-prose mt-4 grid list-decimal gap-3 pl-6">
-            {METHOD.map(step => (
-              <li key={step.name}>
-                <span className="font-semibold">{step.name}</span>
-                <p className="mt-1 text-sm text-ink-soft">{step.text}</p>
+          <ol className="landing-prose mt-5 grid list-none gap-3 p-0 sm:grid-cols-2">
+            {METHOD.map((step, index) => (
+              <li key={step.name} className="glass-soft flex items-start gap-3 p-4">
+                <span className="icon-tile shrink-0" aria-hidden="true">
+                  {STEP_ICONS[index] ? (() => { const Step = STEP_ICONS[index]; return <Step size={16} />; })() : null}
+                </span>
+                <span>
+                  <span className="block font-semibold">{step.name}</span>
+                  <span className="mt-1 block text-sm text-ink-soft">{step.text}</span>
+                </span>
               </li>
             ))}
           </ol>
         </section>
 
         <section aria-labelledby="landing-live" className="landing-rule pt-8">
-          <h2 id="landing-live" className="display">What this machine is holding right now</h2>
+          <div className="flex items-center gap-3"><span className="icon-tile" aria-hidden="true"><Gauge size={18} /></span><h2 id="landing-live" className="display m-0">What this machine is holding right now</h2></div>
           <p className="landing-note landing-prose mt-2 text-sm">
             Read live from the local workspace, with the read time beside every number. A read that fails says
             it failed instead of showing a number.
@@ -299,10 +324,13 @@ export function Landing({ onEnter }: { onEnter: () => void }) {
             {readings.map(reading => (
               <li
                 key={reading.key}
-                className={'landing-card' + (reading.failure ? ' border-dashed' : '')}
+                className={'glass landing-card p-4' + (reading.failure ? ' border-dashed' : '')}
                 data-testid={'live-' + reading.key}
               >
-                <p className="eyebrow">{reading.label}</p>
+                <p className="eyebrow flex items-center gap-2">
+                  <LiveIcon name={reading.key} />
+                  {reading.label}
+                </p>
                 {reading.failure ? (
                   <>
                     <p className="mt-2 text-sm font-semibold text-ink-soft">The read failed.</p>
@@ -329,7 +357,7 @@ export function Landing({ onEnter }: { onEnter: () => void }) {
         </section>
 
         <section aria-labelledby="landing-modules" className="landing-rule pt-8">
-          <h2 id="landing-modules" className="display">The surfaces, and the questions they answer</h2>
+          <div className="flex items-center gap-3"><span className="icon-tile" aria-hidden="true"><Layers size={18} /></span><h2 id="landing-modules" className="display m-0">The surfaces, and the questions they answer</h2></div>
           <p className="landing-note landing-prose mt-2 text-sm">
             Every surface the workspace registry declares, grouped the way the rail groups them. Each one names
             the questions the conversation can reach it with, and the deep link that opens it.
@@ -361,7 +389,7 @@ export function Landing({ onEnter }: { onEnter: () => void }) {
         </section>
 
         <section aria-labelledby="landing-refusals" className="landing-rule pt-8">
-          <h2 id="landing-refusals" className="display">What it deliberately does not do</h2>
+          <div className="flex items-center gap-3"><span className="icon-tile" aria-hidden="true"><ShieldCheck size={18} /></span><h2 id="landing-refusals" className="display m-0">What it deliberately does not do</h2></div>
           <p className="reading mt-3">
             <strong>Operational acceptance is not achieved.</strong> This is a working prototype whose limits are
             part of the interface: it says what it did not read, which state is unknown, and when a value is model
@@ -372,8 +400,9 @@ export function Landing({ onEnter }: { onEnter: () => void }) {
           </p>
           <ul className="landing-prose mt-4 space-y-3">
             {REFUSALS.map(refusal => (
-              <li key={refusal.lead} className="text-sm">
-                <strong>{refusal.lead}</strong> {refusal.text}
+              <li key={refusal.lead} className="glass-soft flex items-start gap-2 p-3 text-sm">
+                <ShieldCheck size={15} className="mt-0.5 shrink-0 text-mute" aria-hidden="true" />
+                <span><strong>{refusal.lead}</strong> {refusal.text}</span>
               </li>
             ))}
           </ul>
@@ -384,7 +413,7 @@ export function Landing({ onEnter }: { onEnter: () => void }) {
         </section>
 
         <section aria-labelledby="landing-pictures" className="landing-rule pt-8 pb-10">
-          <h2 id="landing-pictures" className="display">The workspace, as recorded</h2>
+          <div className="flex items-center gap-3"><span className="icon-tile" aria-hidden="true"><Images size={18} /></span><h2 id="landing-pictures" className="display m-0">The workspace, as recorded</h2></div>
           <p className="landing-note landing-prose mt-2 text-sm">
             Eight pictures of this build, captured 17 September 2026 at 1440×900 in headless Chrome against a
             throwaway copy of the store, so no reader conversation appears in them. They show the same surfaces
@@ -392,7 +421,7 @@ export function Landing({ onEnter }: { onEnter: () => void }) {
           </p>
           <ul className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {PICTURES.map(picture => (
-              <li key={picture.file} className="landing-figure">
+              <li key={picture.file} className="landing-figure glass overflow-hidden p-1">
                 <img
                   className="h-auto w-full rounded-card"
                   src={'/shots/' + picture.file}

@@ -17,6 +17,7 @@ import type { Envelope, NowReading } from '../api/types';
 import { count, orNot } from '../lib/format';
 import { istStamp } from '../lib/time';
 import { viewById } from '../shell/views';
+import { Button } from '../ui/kit';
 import {
   ColourTag, DataTable, Failure, Facts, HAZARD_COLOURS, Limits, NO_ROW, NOT_RECORDED, Reading, Sources,
   SurfaceShell,
@@ -26,13 +27,18 @@ export const intents: string[] = (viewById('map')?.intents ?? []).concat([
   'Which layers can this machine draw, and what does the served geometry state about them?',
 ]);
 
+type WarningDayPayload = { day?: number; label?: string | null; date_utc?: string | null; date_local?: string | null; colour?: string | null; hazards?: string[]; hazard_codes?: number[]; source_text?: string | null; quiet?: boolean | null; is_today?: boolean | null; is_past?: boolean | null };
+type WarningRowPayload = { key?: string; district?: string | null; state?: string | null; bulletin_date?: string | null; bulletin_age_days?: number | null; days?: WarningDayPayload[] };
+type WarningPayload = { districts?: WarningRowPayload[]; newest_bulletin_date_in_this_read?: string | null; bulletin_date?: string | null; tally?: Record<string, number> };
+
 type LayerRow = { name?: string; file?: string; kind?: string; bytes?: number; budget_bytes?: number | null };
 type LayersData = { build_id?: string; layers?: LayerRow[]; join_file?: string; attribution?: string;
   district_polygons?: number; skipped_without_a_name?: number };
-type Position = number[];
-type Geometry = { type?: string; coordinates?: unknown } | null | undefined;
-type Feature = { type?: string; properties?: Record<string, unknown> | null; geometry?: Geometry };
-type Collection = { type?: string; features?: Feature[] };
+import { areaPath, fitView, numberAt, pointAt, propertyText, type Collection, type Position } from './mapFigure';
+import type { MapDay, MapWarningRow } from './DistrictRiskMap';
+import { MapTip, type TipState } from './MapTip';
+import { DistrictInspector } from './DistrictInspector';
+
 type ChosenPlace = { label: string; latitude: number; longitude: number };
 
 /* The property names read from a feature's own properties; a layer that uses none of them is shown as
@@ -42,56 +48,37 @@ const STATE_KEYS = ['s', 'state', 'state_name', 'admin1', 'a'];
 const WORDING_KEYS = ['hazards', 'hazard', 'wording', 'hazard_wording', 'status_line', 'source_text', 'headline'];
 const COLOUR_KEYS = ['colour', 'color', 'hazard_colour', 'hazard_color', 'warning_colour', 'warning_color', 'fill'];
 
-function numberAt(point: unknown, index: number): number | null {
-  const value = Array.isArray(point) ? point[index] : undefined;
-  return typeof value === 'number' && Number.isFinite(value) ? value : null;
+type Shape = {
+  key: number; d?: string; at?: Position; colour: string | null; describe: string;
+  place: ChosenPlace | null;
+  /* what the shape is, for the inspector and the hover tip */
+  name: string | null; state: string | null; published: string | null; wording: string | null;
+  drawnAs: string; joinKey: string | null; cx: number; cy: number;
+};
+type Plan = { viewBox: string; radius: number; shapes: Shape[]; rows: ReactNode[][]; drawn: number; coloured: number; centreX: number; centreY: number };
+
+/* The join the districts layer needs: its own geometry states a key, a name and a state, and the warning
+   product states the colour, the hazard wording and the edition for that key. Without this join a district
+   layer can only ever be outlines, which is exactly what this surface used to draw for the one layer that
+   carries the warning colours. */
+type JoinOptions = { rows: MapWarningRow[]; dayIndex: number | null; colourOnly: boolean; join: boolean };
+
+function dayForRow(row: MapWarningRow | null, dayIndex: number | null): MapDay | null {
+  if (!row) return null;
+  const days = row.days || [];
+  if (dayIndex === null) return days.find(day => day.is_today === true) || null;
+  return days.find(day => day.day === dayIndex) || null;
 }
 
-function collectPositions(value: unknown, out: Position[]): void {
-  if (!Array.isArray(value)) return;
-  if (typeof value[0] === 'number' && typeof value[1] === 'number') { out.push(value as Position); return; }
-  value.forEach(item => collectPositions(item, out));
-}
-
-/* A ring is drawn as a closed path and a multipolygon's rings are joined into one path per feature. */
-function ringPath(ring: unknown): string {
-  const steps: string[] = [];
-  (Array.isArray(ring) ? ring : []).forEach(point => {
-    const x = numberAt(point, 0); const y = numberAt(point, 1);
-    if (x !== null && y !== null) steps.push((steps.length ? 'L' : 'M') + x + ' ' + -y);
-  });
-  return steps.length > 2 ? steps.join(' ') + ' Z' : '';
-}
-
-function areaPath(geometry: Geometry): string {
-  const { type, coordinates } = geometry || {};
-  if (!Array.isArray(coordinates)) return '';
-  if (type === 'Polygon') return coordinates.map(ringPath).filter(Boolean).join(' ');
-  if (type === 'MultiPolygon') return coordinates.map(p => (Array.isArray(p) ? p.map(ringPath).filter(Boolean).join(' ') : '')).filter(Boolean).join(' ');
-  return '';
-}
-
-function pointAt(geometry: Geometry): Position[] {
-  if (geometry?.type !== 'Point' && geometry?.type !== 'MultiPoint') return [];
-  const out: Position[] = [];
-  collectPositions(geometry?.coordinates, out);
-  return out;
-}
-
-function propertyText(properties: Record<string, unknown> | null | undefined, keys: string[]): string | null {
-  if (!properties) return null;
-  for (const key of keys) {
-    const value = properties[key];
-    if (typeof value === 'string' && value.trim()) return value.trim();
-    if (typeof value === 'number' && Number.isFinite(value)) return String(value);
-    const words = Array.isArray(value) ? value.filter(item => typeof item === 'string' && item.trim()) as string[] : [];
-    if (words.length) return words.join(', ');
+function joinedWording(day: MapDay | null, fallback: string | null): string | null {
+  if (day) {
+    if (day.source_text) return day.source_text;
+    if (day.hazards && day.hazards.length) return day.hazards.join(', ');
+    if (day.hazard_codes && day.hazard_codes.length) return 'hazard codes ' + day.hazard_codes.join(', ');
+    if (day.quiet === true) return 'no hazard published in this product for this day';
   }
-  return null;
+  return fallback;
 }
-
-type Shape = { key: number; d?: string; at?: Position; colour: string | null; describe: string; place: ChosenPlace | null };
-type Plan = { viewBox: string; radius: number; shapes: Shape[]; rows: ReactNode[][]; drawn: number; coloured: number };
 
 /* The sentence the readout states for an area: its own name and state, the colour it published and the
    hazard wording it published, with the absence of either stated as absence. */
@@ -124,21 +111,14 @@ function drawNote(drawable: boolean, ramp: string | null, published: string | nu
     : 'outline only: no colour stated in these properties';
 }
 
-function drawPlan(collection: Collection | undefined): Plan {
+function drawPlan(collection: Collection | undefined, options?: JoinOptions): Plan {
   const features = collection?.features || [];
-  const everything: Position[] = [];
-  features.forEach(feature => { if (feature?.geometry) collectPositions(feature.geometry.coordinates, everything); });
-  let west = Infinity; let east = -Infinity; let south = Infinity; let north = -Infinity;
-  everything.forEach(point => {
-    const x = numberAt(point, 0); const y = numberAt(point, 1);
-    if (x === null || y === null) return;
-    west = Math.min(west, x); east = Math.max(east, x);
-    south = Math.min(south, y); north = Math.max(north, y);
-  });
-  const box = Number.isFinite(west) && Number.isFinite(north)
-    ? { minX: west, minY: -north, width: east - west || 1, height: north - south || 1 }
-    : { minX: -1, minY: -1, width: 2, height: 2 };
-  const radius = Math.max(box.width, box.height) / 200;
+  const join = options?.join ? options : null;
+  const byKey = new Map<string, MapWarningRow>();
+  (join?.rows || []).forEach(row => { if (row.key) byKey.set(row.key, row); });
+  /* The projection now lives in mapFigure, shared with the Today dashboard's map, so one read has one fit. */
+  const view = fitView(collection);
+  const radius = Math.max(view.width, view.height) / 200;
   const shapes: Shape[] = [];
   const rows: ReactNode[][] = [];
   let drawn = 0; let coloured = 0;
@@ -146,9 +126,15 @@ function drawPlan(collection: Collection | undefined): Plan {
     const properties = feature?.properties || null;
     const name = propertyText(properties, NAME_KEYS);
     const state = propertyText(properties, STATE_KEYS);
-    const wording = propertyText(properties, WORDING_KEYS);
-    const published = propertyText(properties, COLOUR_KEYS);
-    const ramp = published && HAZARD_COLOURS.includes(published.toLowerCase()) ? published.toLowerCase() : null;
+    const ownWording = propertyText(properties, WORDING_KEYS);
+    const ownColour = propertyText(properties, COLOUR_KEYS);
+    const joinKey = propertyText(properties, ['k', 'key', 'id']);
+    const row = join && joinKey ? byKey.get(joinKey) || null : null;
+    const day = dayForRow(row, join ? join.dayIndex : null);
+    const published = (day && day.colour ? String(day.colour) : null) || ownColour;
+    const wording = joinedWording(day, ownWording);
+    const stated = published ? published.trim().toLowerCase() : '';
+    const ramp = published && HAZARD_COLOURS.includes(stated) ? stated : null;
     const placeholder = properties?.p === 1;
     const d = areaPath(feature?.geometry);
     const points = pointAt(feature?.geometry);
@@ -156,7 +142,15 @@ function drawPlan(collection: Collection | undefined): Plan {
     if (drawable) {
       drawn += 1;
       if (ramp) coloured += 1;
-      if (d) shapes.push({ key: index, d, colour: ramp, place: null, describe: areaDescription(name, state, published, wording, placeholder) });
+      if (d) {
+        shapes.push({
+          key: index, d, colour: ramp, place: null,
+          describe: areaDescription(name, state, published, wording, placeholder),
+          name, state, published: published || null, wording: wording || null,
+          drawnAs: drawNote(drawable, ramp, published), joinKey: joinKey || null,
+          cx: centroidX(feature?.geometry), cy: centroidY(feature?.geometry),
+        });
+      }
       points.forEach((at, order) => {
         const latitude = numberAt(at, 1); const longitude = numberAt(at, 0);
         const location = latitude !== null && longitude !== null ? { latitude, longitude } : null;
@@ -165,16 +159,56 @@ function drawPlan(collection: Collection | undefined): Plan {
           key: index * 1000 + order, at, colour: ramp,
           place: stated && location ? { label: stated, ...location } : null,
           describe: placeDescription(name, state, latitude, longitude),
+          name, state, published: published || null, wording: wording || null,
+          drawnAs: drawNote(drawable, ramp, published), joinKey: joinKey || null,
+          cx: at[0], cy: at[1],
         });
       });
     }
     rows.push([
       orNot(name, 'name not stated in these properties'), orNot(state),
       <ColourTag key="colour" colour={ramp || published} text={published || undefined} />,
-      wording || 'no hazard wording published in these properties', drawNote(drawable, ramp, published),
+      wording || 'no hazard wording published in these properties',
+      drawNote(drawable, ramp, published) + (row ? ' · joined to the warning row for this key' : ''),
     ]);
   });
-  return { viewBox: [box.minX, box.minY, box.width, box.height].join(' '), radius, shapes, rows, drawn, coloured };
+  return { viewBox: view.viewBox, radius, shapes, rows, drawn, coloured, centreX: view.centre.x, centreY: view.centre.y };
+}
+
+/* The centre of a feature's own coordinates: used to hold a zoomed selection still. */
+function walkPositions(value: unknown, into: Position[]): void {
+  if (Array.isArray(value) && typeof value[0] === 'number' && typeof value[1] === 'number') { into.push(value as Position); return; }
+  if (Array.isArray(value)) value.forEach(entry => walkPositions(entry, into));
+}
+
+function boundsOf(geometry: { coordinates?: unknown } | null | undefined): { cx: number; cy: number } | null {
+  if (!geometry) return null;
+  const positions: Position[] = [];
+  walkPositions(geometry.coordinates, positions);
+  if (!positions.length) return null;
+  let minX = Infinity; let maxX = -Infinity; let minY = Infinity; let maxY = -Infinity;
+  positions.forEach(point => {
+    const x = point[0]; const y = -point[1];
+    minX = Math.min(minX, x); maxX = Math.max(maxX, x); minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+  });
+  if (!Number.isFinite(minX)) return null;
+  return { cx: (minX + maxX) / 2, cy: (minY + maxY) / 2 };
+}
+
+function centroidX(geometry: { coordinates?: unknown } | null | undefined): number {
+  const bounds = boundsOf(geometry);
+  return bounds ? bounds.cx : 0;
+}
+
+function centroidY(geometry: { coordinates?: unknown } | null | undefined): number {
+  const bounds = boundsOf(geometry);
+  return bounds ? bounds.cy : 0;
+}
+
+/* The id a feature is selected by: its own join key when it states one, so the inspector can look up the
+   warning row the feature belongs to, and its position in the draw pass otherwise. */
+function shapeId(shape: { joinKey: string | null; key: number }): string {
+  return shape.joinKey || String(shape.key);
 }
 
 function layerKey(layer: LayerRow): string {
@@ -194,14 +228,49 @@ export function Surface(): JSX.Element {
   const [picked, setPicked] = useState('');
   const [cursor, setCursor] = useState(0);
   const [readout, setReadout] = useState('');
+  const [zoom, setZoom] = useState(1);
+  const [find, setFind] = useState('');
   const [place, setPlace] = useState<ChosenPlace | null>(null);
+  const [colourOnly, setColourOnly] = useState(true);
+  const [dayPick, setDayPick] = useState('today');
+  const [selected, setSelected] = useState('');
+  const [tip, setTip] = useState<TipState>(null);
   const shapeNodes = useRef<(SVGPathElement | SVGCircleElement | null)[]>([]);
   const layers = useQuery({ queryKey: ['map-layers'], queryFn: () => getJson<Envelope<LayersData>>('/api/map/layers'), retry: false });
   const listed = layers.data?.data?.layers || [];
-  const chosen = listed.some(row => layerKey(row) === picked) ? picked : listed.length ? layerKey(listed[0]) : '';
+
+  /* The layer the surface opens on. A district layer is the one that can carry the warning colours once it is
+     joined to the warning product, so it is chosen ahead of the alphabetical first layer; every other layer
+     stays one selection away. This is stated in the note under the selector, not left implicit. */
+  const preferred = useMemo(() => {
+    const districts = listed.find(row => /district/i.test(row.name || row.file || ''));
+    return districts ? layerKey(districts) : listed.length ? layerKey(listed[0]) : '';
+  }, [listed]);
+  const chosen = listed.some(row => layerKey(row) === picked) ? picked : preferred;
+  const districtLayer = /district/i.test(chosen || '');
   const layer = useQuery({ queryKey: ['map-layer', chosen], enabled: Boolean(chosen), retry: false,
     queryFn: () => getJson<Collection>('/api/map/static/' + encodeURIComponent(chosen)) });
-  const plan = useMemo(() => drawPlan(layer.data), [layer.data]);
+
+  /* The warning rows the district layer is joined to. The key is the same one the Today surface uses, so the
+     1.65 MB read is shared between the two surfaces rather than fetched twice. A layer whose geometry states
+     its own colours needs no join, and no join is attempted for it. */
+  const warnings = useQuery({
+    queryKey: ['warnings-national'],
+    queryFn: () => getJson<Envelope<WarningPayload>>('/api/warnings/national'),
+    enabled: districtLayer,
+    staleTime: 120_000,
+  });
+  const rows: MapWarningRow[] = useMemo(() => (warnings.data?.data?.districts || []).map(row => ({
+    key: row.key, district: row.district, state: row.state,
+    bulletin_date: row.bulletin_date, bulletin_age_days: row.bulletin_age_days,
+    days: (row.days || []) as MapDay[],
+  })), [warnings.data]);
+
+  const dayIndex = dayPick === 'today' ? null : Number(dayPick);
+  const join = Boolean(districtLayer && rows.length);
+  const plan = useMemo(
+    () => drawPlan(layer.data, { rows, dayIndex, colourOnly, join }),
+    [layer.data, rows, dayIndex, colourOnly, join]);
   const manifest = layers.data?.data;
 
   /* The chosen place is exactly the point the chosen city feature states: the name from its properties and
@@ -224,6 +293,20 @@ export function Surface(): JSX.Element {
 
   const cursorIndex = plan.shapes.length ? Math.min(cursor, plan.shapes.length - 1) : 0;
 
+  /* What the tip states: the feature's own name and state, the colour its row published and the hazard wording
+     as printed, with the edition it came from. Every field is what the read returned. */
+  const tipFor = (shape: Shape, event: React.MouseEvent): TipState => ({
+    x: event.clientX,
+    y: event.clientY,
+    name: shape.name || 'name not stated in these properties',
+    state: shape.state,
+    colour: shape.colour,
+    colourText: shape.published || undefined,
+    wording: shape.wording || 'no hazard wording published in these properties',
+    meta: shape.drawnAs,
+  });
+
+
   const moveCursor = (index: number) => {
     if (!plan.shapes.length) return;
     const next = Math.max(0, Math.min(plan.shapes.length - 1, index));
@@ -236,6 +319,8 @@ export function Surface(): JSX.Element {
     setPlace(target);
     setReadout('Working place set to ' + target.label + ' at the coordinates the vendored geometry carries (' + target.latitude + ', ' + target.longitude + ').');
   };
+
+  const selectedShape = plan.shapes.find(shape => shapeId(shape) === selected) || null;
 
   const onShapeKey = (event: KeyboardEvent<SVGElement>, index: number) => {
     const key = event.key;
@@ -288,28 +373,31 @@ export function Surface(): JSX.Element {
           <Failure error={layer.error} what="chosen map layer" onRetry={() => layer.refetch()} />
         ) : (
           <>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-4)', alignItems: 'flex-start' }}>
+            <div className="flex flex-wrap items-start gap-4">
               {plan.drawn ? (
-                <figure style={{ flex: '1 1 24rem', minWidth: 0 }}>
+                <figure className="glass-soft m-0 flex min-w-0 flex-[1_1_28rem] flex-col p-3">
                   <svg data-testid="map-figure" role="group" viewBox={plan.viewBox} preserveAspectRatio="xMidYMid meet"
                     aria-label={'Schematic of the ' + chosen + ' layer: ' + count(plan.drawn, 'feature') + ' drawn from the served coordinates. Not a cartographic basemap.'}
-                    style={{ width: '100%', height: 'auto', maxWidth: '36rem' }}>
+                    className="h-auto w-full max-w-[46rem] text-[color:var(--line-strong)]">
+                    <g transform={zoom === 1 ? undefined : 'translate(' + plan.centreX + ' ' + plan.centreY + ') scale(' + zoom + ') translate(' + -plan.centreX + ' ' + -plan.centreY + ')'}>
                     {plan.shapes.map((shape, index) => shape.d ? (
                       <path
                         key={shape.key}
                         d={shape.d}
                         ref={node => { shapeNodes.current[index] = node; }}
+                        className={(shape.colour ? 'district district-' + shape.colour : 'district') + (selected === shapeId(shape) ? ' district-selected' : '')}
+                        data-colour={shape.colour || undefined}
                         tabIndex={index === cursorIndex ? 0 : -1}
                         role="img"
                         aria-label={shape.describe}
-                        className={shape.colour ? 'chip-colour' : undefined}
-                        data-colour={shape.colour || undefined}
                         fill={shape.colour ? 'currentColor' : 'none'}
                         stroke="currentColor"
                         strokeWidth={0.5}
-                        onMouseEnter={() => setReadout(shape.describe)}
+                        onMouseEnter={event => { setReadout(shape.describe); setTip(tipFor(shape, event)); }}
+                        onMouseLeave={() => setTip(null)}
                         onFocus={() => { setCursor(index); setReadout(shape.describe); }}
                         onKeyDown={event => onShapeKey(event, index)}
+                        onClick={() => setSelected(shapeId(shape))}
                       />
                     ) : shape.at ? (
                       <circle
@@ -321,31 +409,163 @@ export function Surface(): JSX.Element {
                         tabIndex={index === cursorIndex ? 0 : -1}
                         role={shape.place ? 'button' : 'img'}
                         aria-label={shape.describe}
-                        className={shape.colour ? 'chip-colour' : undefined}
-                        data-colour={shape.colour || undefined}
                         fill={shape.colour ? 'currentColor' : 'none'}
                         stroke="currentColor"
                         strokeWidth={plan.radius / 3}
-                        onMouseEnter={() => setReadout(shape.describe)}
+                        onMouseEnter={event => { setReadout(shape.describe); setTip(tipFor(shape, event)); }}
+                        onMouseLeave={() => setTip(null)}
                         onFocus={() => { setCursor(index); setReadout(shape.describe); }}
                         onKeyDown={event => onShapeKey(event, index)}
-                        onClick={shape.place ? () => choosePlace(shape.place as ChosenPlace) : undefined}
+                        onClick={() => {
+                          setSelected(shapeId(shape));
+                          if (shape.place) choosePlace(shape.place as ChosenPlace);
+                        }}
                       />
                     ) : null)}
+                  </g>
                   </svg>
+                  {/* Controls sit outside the figure element: the figure's own circles are the drawn
+                      features, and a control's icon must not be counted among them. */}
+                  <div className="order-first mb-2 flex flex-wrap items-center gap-2">
+                    <Button size="sm" aria-label="Zoom in" onClick={() => setZoom(2)}>+</Button>
+                    <Button size="sm" aria-label="Zoom out" onClick={() => setZoom(1)}>-</Button>
+                    <span className="pill pill-quiet">zoom {zoom}x</span>
+                    {join ? (
+                      <>
+                        <label className="flex items-center gap-2 text-[length:var(--step--1)] quiet" htmlFor="map-day">
+                          Day to inspect
+                          <select
+                            id="map-day"
+                            value={dayPick}
+                            onChange={event => setDayPick(event.target.value)}
+                            className="rounded-full border border-glass-line bg-glass-2 px-2 py-1 text-[length:var(--step--1)] text-ink"
+                          >
+                            <option value="today">the day covering today</option>
+                            {[1, 2, 3, 4, 5].map(day => <option key={day} value={day}>{'day ' + day}</option>)}
+                          </select>
+                        </label>
+                        <label className="dash-toggle">
+                          <input type="checkbox" checked={colourOnly} onChange={event => setColourOnly(event.target.checked)} />
+                          <span>Colour only where published</span>
+                        </label>
+                      </>
+                    ) : null}
+                    <label className="ml-auto flex items-center gap-2 text-[length:var(--step--1)] quiet" htmlFor="map-find">
+                      Find a feature
+                      <input
+                        id="map-find"
+                        type="search"
+                        value={find}
+                        placeholder="e.g. Patna"
+                        className="rounded-full border border-glass-line bg-glass-2 px-2.5 py-1 text-[length:var(--step--1)] text-ink"
+                        onChange={event => {
+                          const value = event.target.value;
+                          setFind(value);
+                          const needle = value.trim().toLowerCase();
+                          if (needle.length < 2) return;
+                          const index = plan.shapes.findIndex(shape => shape.describe.toLowerCase().includes(needle));
+                          if (index >= 0) moveCursor(index);
+                        }}
+                      />
+                    </label>
+                  </div>
+                  {/* The legend is built from what the draw pass actually drew, not from the ramp: a colour
+                      with no feature is not shown, and the outline count is stated. */}
+                  <ul className="mt-2 flex flex-wrap items-center gap-3" aria-label="Legend of the drawn features">
+                    {HAZARD_COLOURS.map(colour => {
+                      const shown = plan.shapes.filter(shape => shape.colour === colour).length;
+                      if (!shown) return null;
+                      return (
+                        <li key={colour} className="flex items-center gap-2 text-[length:var(--step--1)]">
+                          <ColourTag colour={colour} text={colour} />
+                          <span className="quiet evidence">{shown}</span>
+                        </li>
+                      );
+                    })}
+                    <li className="flex items-center gap-2 text-[length:var(--step--1)]">
+                      <ColourTag colour={null} text="outline only" />
+                      <span className="quiet evidence">{plan.drawn - plan.coloured}</span>
+                    </li>
+                  </ul>
                   <figcaption className="module-note">
                     Drawn from the served coordinates of the {chosen} layer. A feature is filled only with a colour its own properties stated,
                     and only when that colour is in the product's hazard ramp ({HAZARD_COLOURS.join(', ')}); every other feature is an outline.
                   </figcaption>
                 </figure>
               ) : null}
-              <div style={{ flex: '1 1 24rem', minWidth: 0 }}>
+              <MapTip tip={tip} />
+              <div className="dash-map-side min-w-0 flex-[1_1_20rem]">
+                {join ? (
+                  <DistrictInspector
+                    rows={rows}
+                    selectedKey={selected}
+                    dayIndex={dayIndex}
+                    statePick=""
+                    onSelect={setSelected}
+                    onState={() => undefined}
+                    askHref={question => '#/assistant?ask=' + encodeURIComponent(question)}
+                    warningsHref={district => district ? '#/warnings?district=' + encodeURIComponent(district) : '#/warnings'}
+                  />
+                ) : null}
+                {/* A layer that carries no warning rows still gets a real panel: the selected feature's own
+                    properties, the layer's own provenance, and a count of what was drawn. */}
+                <section className="glass-soft inspector p-3" data-testid="map-inspector">
+                  <div className="inspector-head">
+                    <div className="min-w-0">
+                      <p className="eyebrow m-0">Layer inspector</p>
+                      <h3 className="inspector-title mt-1">{chosen || 'no layer chosen'}</h3>
+                      <p className="module-note m-0">
+                        {plan.drawn
+                          ? count(plan.drawn, 'feature') + ' drawn: ' + count(plan.coloured, 'feature') + ' carried a published colour, '
+                            + count(plan.drawn - plan.coloured, 'feature') + ' ' + (plan.drawn - plan.coloured === 1 ? 'is' : 'are') + ' an outline.'
+                          : 'No feature with drawable coordinates came back for this layer.'}
+                        {districtLayer
+                          ? (rows.length
+                              ? ' Filled from the warning rows this read returned, joined by district key.'
+                              : warnings.isPending
+                                ? ' Reading the warning rows this layer is joined to…'
+                                : warnings.isError
+                                  ? ' The warning rows read failed, so this layer is drawn as outlines.'
+                                  : ' The warning read returned no row to join.')
+                          : ' This layer states its own properties; it carries no warning rows, so the colour column is what its own fields say.'}
+                      </p>
+                    </div>
+                  </div>
+                  {selectedShape ? (
+                    <dl className="module-facts glass-soft overflow-hidden" data-testid="map-feature-detail">
+                      <div className="fact-row"><dt className="module-fact-label">Feature</dt><dd className="fact-value">{selectedShape.name || 'name not stated in these properties'}</dd></div>
+                      <div className="fact-row"><dt className="module-fact-label">State</dt><dd className="fact-value">{selectedShape.state || 'state not stated in these properties'}</dd></div>
+                      <div className="fact-row"><dt className="module-fact-label">Colour as published</dt><dd className="fact-value">
+                        <ColourTag colour={selectedShape.colour} text={selectedShape.published || 'colour not stated'} />
+                      </dd></div>
+                      <div className="fact-row"><dt className="module-fact-label">Hazard wording</dt><dd className="fact-value">{selectedShape.wording || 'no hazard wording published in these properties'}</dd></div>
+                      <div className="fact-row"><dt className="module-fact-label">Drawn as</dt><dd className="fact-value">{selectedShape.drawnAs}</dd></div>
+                      <div className="fact-row"><dt className="module-fact-label">Join key</dt><dd className="fact-value evidence">{selectedShape.joinKey || 'no key stated in these properties'}</dd></div>
+                    </dl>
+                  ) : (
+                    <p className="module-note m-0">
+                      Select a feature on the figure, with the pointer or with the keyboard, to read its own
+                      properties here. Nothing is guessed for a feature that states none of them.
+                    </p>
+                  )}
+                  <p className="module-note m-0" data-testid="map-attribution">
+                    {orNot(manifest?.attribution, 'Attribution not stated in this read')} Build {orNot(manifest?.build_id)}.
+                  </p>
+                </section>
+              </div>
+            </div>
+            {/* The accessible equivalent stays on the page, collapsed: the table is the same read the figure draws. */}
+            <details className="mt-2">
+              <summary className="cursor-pointer text-[length:var(--step--1)] quiet">
+                The table behind the figure ({plan.drawn ? count(plan.drawn, 'row') : 'no rows'})
+              </summary>
+              <div className="mt-2">
                 <DataTable testId="map-features"
                   caption="Every feature this read returned, as the layer states it: name, state, colour as published, hazard wording as published, and how the figure drew it."
                   columns={['Feature', 'State', 'Colour as published', 'Hazard wording as published', 'Drawn as']}
                   rows={plan.rows} />
               </div>
-            </div>
+            </details>
             {plan.drawn ? (
               <>
                 <p className="module-note" role="status" aria-live="polite" data-testid="map-readout">
