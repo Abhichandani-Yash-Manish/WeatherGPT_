@@ -1,0 +1,50 @@
+{
+ "checked_at_utc": "2026-09-17T00:51:11.838356+00:00",
+ "checks": [
+  {
+   "check": "the default surface is the React page",
+   "ok": true,
+   "detail": "HTTP 200"
+  },
+  {
+   "check": "the vanilla page is not what a default start serves",
+   "ok": true,
+   "detail": "no legacy script in the served page"
+  },
+  {
+   "check": "the session token is injected into the built page",
+   "ok": true,
+   "detail": "meta tag carries a per-process value"
+  },
+  {
+   "check": "the built module entry is served",
+   "ok": true,
+   "detail": "/assets/main-CkL0Eq9k.js HTTP 200"
+  },
+  {
+   "check": "the strict page policy is sent",
+   "ok": true,
+   "detail": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img"
+  },
+  {
+   "check": "an authorised read answers",
+   "ok": true,
+   "detail": "HTTP 200"
+  },
+  {
+   "check": "the chart engine the chart block draws with is still served",
+   "ok": true,
+   "detail": "HTTP 200"
+  },
+  {
+   "check": "the notification worker the plans panel registers is still served",
+   "ok": true,
+   "detail": "HTTP 200"
+  }
+ ],
+ "summary": {
+  "checks": 8,
+  "failed": 0,
+  "port": 59898
+ }
+}

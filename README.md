@@ -66,7 +66,7 @@ python -m pip install -r requirements.txt      # runtime, including the optional
 python scripts/start_weather.py                # preflight first, then serve on 127.0.0.1:8765
 ```
 
-Open <http://127.0.0.1:8765>. The server answers only on loopback, behind a per-process session
+Open <http://127.0.0.1:8765>. **The served surface is the built React frontend**: build it once with cd frontend && npm install && npm run build; a missing build is refused in words rather than served as a blank page. The legacy web/*.js frontend is still selectable with --frontend legacy until its tree is deleted. The server answers only on loopback, behind a per-process session
 token, and it refuses to start on a check it cannot pass (a registry that does not parse, an unusable
 store, a taken port) rather than serving a half-working workspace. **Restart a running server after
 pulling**: changing files does not update a process that is already serving.
@@ -274,7 +274,7 @@ The interface states these limits instead of filling them:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 1306 Python tests
+python3 -m pytest tests/ -q                          # 1309 Python tests
 cd frontend && npx tsc --noEmit && npm test          # 26 React suites, 135 component checks
 node tests/test_charts.js                            #  2 of 110 printed component checks
 node tests/test_viz.js                               #  9; the chart engine: plume, meteogram, gaps and locators

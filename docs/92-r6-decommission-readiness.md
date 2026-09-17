@@ -99,6 +99,25 @@ FE01 needs product work (a narrow layout), not only a check.
 
 Two things follow from the table. First, the decommission no longer waits on the *card* or the *conversation*: those suites are effectively done, and what remains is a named set of surface features (the warnings drawer, the map interactions, the palette reads, the loading shapes) plus the briefcase furniture. Second, the nine viz checks are not a gap to close but a property to keep: they are the reason `web/viz.js` stays served rather than bundled, and `tests/test_react_vendor_assets.py` is what makes that decision safe.
 
+## 4c. R6 step one executed: the React build is the default surface (17 September 2026)
+
+The workspace serves the built React page with no argument: the constructor default and the command-line
+default are both `react`, the request path falls through to the React branch by default, and the legacy
+surface is reachable only by naming it (`--frontend legacy`) until its tree is deleted. A missing build is
+still refused in words with the command to build it.
+
+Evidence: `research/reviews/frontend-react-r6-20260917/live-r6.json` (eight checks over the loopback
+server started with no frontend argument: the page is the React page, no legacy script is served, the
+session token is injected, the module entry answers, the strict policy is sent, an authorised read
+answers, and both tracked vendor files /viz.js and /sw.js are still served) and
+`tests/test_frontend_default.py` (three Python checks over the constructor, the command line and the
+missing-build message).
+
+What this does **not** do: the vanilla tree is still present and still selectable, its ten component suites
+and the DOM shim still run in `verify_all.py`, and `audit_workspace_frontend.py` still audits it. The
+deletion is the step that follows, and it is the one that retires those, so it happens only once the five
+remaining claimable checks are named against a React spec.
+
 ## 5. The order this suggests
 
 1. Finish the two in-flight pieces (the plans panel, the document viewer) and port the checks they are written

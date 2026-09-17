@@ -30,9 +30,10 @@ RETENTION_DAYS=7
 
 class Workspace:
     def __init__(self, database=DEFAULT_DATABASE, raw_root=DEFAULT_RAW, geography=DEFAULT_GEOGRAPHY, clock=utcnow, opener=None,
-                 frontend='legacy'):
-        # Which frontend this process serves: 'legacy' (web/*.js, served as source) or 'react'
-        # (web/dist, built by frontend/). Both speak the same API and the same token contract.
+                 frontend='react'):
+        # Which frontend this process serves: 'react' (web/dist, built by frontend/) is the default since R6,
+        # and 'legacy' (web/*.js, served as source) is kept only until the vanilla tree is deleted. Both
+        # speak the same API and the same token contract.
         self.frontend=frontend
         self.service=AnswerService(database,raw_root,geography,clock=clock)
         self.clock=clock;self.opener=opener
@@ -1132,7 +1133,7 @@ def make_server(workspace, port=8765):
                     return self.respond(200,view)
                 except ValueError as exc:return self.respond(400,{'error':str(exc)})
                 except (OSError,sqlite3.Error):return self.respond(503,{'error':'The local evidence store is unavailable. Check its files and retry.'})
-            if getattr(workspace,'frontend','legacy')=='react':
+            if getattr(workspace,'frontend','react')=='react':
                 # The React build: one HTML entry with the session token injected, and the hashed
                 # assets beside it. A missing build is refused in words, never served as a blank page.
                 import re as _re
@@ -1140,7 +1141,7 @@ def make_server(workspace, port=8765):
                 if path in {'/','/index.html','/probe.html'}:
                     page=root/('probe.html' if path=='/probe.html' else 'index.html')
                     if not page.exists():
-                        return self.respond(503,'The React frontend has not been built. Run: cd frontend && npm install && npm run build. The vanilla frontend is served with --frontend legacy.','text/plain')
+                        return self.respond(503,'The React frontend has not been built. Run: cd frontend && npm install && npm run build.','text/plain')
                     return self.respond(200,page.read_text().replace('__WORKSPACE_TOKEN__',token),'text/html',csp=REACT_CSP)
                 # Two vanilla files are served to the React build from their one tracked copy rather than
                 # bundled, because a vanilla check covers each of them and that check must keep covering the
@@ -1213,14 +1214,14 @@ def main():
     p.add_argument('--geography-database',type=Path,default=DEFAULT_GEOGRAPHY)
     p.add_argument('--no-warm',action='store_true',help='do not read the slow layers once at startup')
     p.add_argument('--no-plan-watcher',action='store_true',help='Do not check saved plans in the background')
-    p.add_argument('--frontend',choices=['legacy','react'],default='legacy',
-                   help='legacy serves web/*.js as source; react serves the built web/dist bundle')
+    p.add_argument('--frontend',choices=['legacy','react'],default='react',
+                   help='react serves the built web/dist bundle (the default); legacy serves web/*.js as source')
     a=p.parse_args()
     workspace=Workspace(a.database,a.raw_root,a.geography_database,frontend=a.frontend)
     if not a.no_warm:workspace.start_warming()
     server=make_server(workspace,a.port)
     print('WeatherGPT: http://127.0.0.1:'+str(server.server_port)+' — local prototype; Ctrl-C to stop.',flush=True)
-    print('Frontend: '+a.frontend+(' (web/dist)' if a.frontend=='react' else ' (web/*.js)'),flush=True)
+    print('Frontend: '+a.frontend+(' (web/dist, the default)' if a.frontend=='react' else ' (web/*.js, kept until the vanilla tree is deleted)'),flush=True)
     if not a.no_plan_watcher:
         workspace.plan_watcher().start()
         print('Plan Watch: saved plans are checked every 30 minutes while this process runs.',flush=True)

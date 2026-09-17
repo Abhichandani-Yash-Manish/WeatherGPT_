@@ -209,22 +209,33 @@ async function namePoint() {
 describe('the district-day detail', () => {
   it('opens a chosen district-day detail with the published hazard wording, its validity window, the source id and the bulletin it came from', async () => {
     server.use(http.get('/api/warnings/national', () => HttpResponse.json(NATIONAL)));
-    mount();
-    const detail = await openPatna();
+    const seen: string[] = [];
+    const passthrough = globalThis.fetch;
+    const spy = vi.spyOn(globalThis, 'fetch').mockImplementation(async (input, init) => {
+      seen.push(String(input));
+      return passthrough(input, init);
+    });
+    try {
+      mount();
+      const detail = await openPatna();
 
-    expect(detail).toHaveTextContent('District detail · PATNA, BIHAR');
-    expect(detail).toHaveTextContent('Opened from 14 Sep 2026 · 2026-09-14');
-    // The wording the product published for that district-day.
-    expect(detail).toHaveTextContent('Thunderstorm/lightning/squall');
-    // The validity window as the row returned it, in IST.
-    expect(detail).toHaveTextContent('15 Sep 2026, 00:00-16 Sep 2026, 00:00 IST');
-    // The source id and the bulletin the rows came from.
-    expect(detail).toHaveTextContent('S63');
-    expect(detail).toHaveTextContent('IMD district warning product');
-    expect(detail).toHaveTextContent('2026-09-14');
-    expect(detail).toHaveTextContent('IST calendar day');
-    // The detail reads the national payload already held: it is not a second product read.
-    expect(screen.getAllByTestId('warnings-district-days')).toHaveLength(1);
+      expect(detail).toHaveTextContent('District detail · PATNA, BIHAR');
+      expect(detail).toHaveTextContent('Opened from 14 Sep 2026 · 2026-09-14');
+      // The wording the product published for that district-day.
+      expect(detail).toHaveTextContent('Thunderstorm/lightning/squall');
+      // The validity window as the row returned it, in IST.
+      expect(detail).toHaveTextContent('15 Sep 2026, 00:00-16 Sep 2026, 00:00 IST');
+      // The source id and the bulletin the rows came from.
+      expect(detail).toHaveTextContent('S63');
+      expect(detail).toHaveTextContent('IMD district warning product');
+      expect(detail).toHaveTextContent('2026-09-14');
+      expect(detail).toHaveTextContent('IST calendar day');
+      // The detail reads the national payload already held: one product read, and no place lookup.
+      expect(seen.filter(path => path.includes('/api/warnings/place'))).toHaveLength(0);
+      expect(seen.filter(path => path.includes('/api/warnings/national'))).toHaveLength(1);
+    } finally {
+      spy.mockRestore();
+    }
   });
 });
 
