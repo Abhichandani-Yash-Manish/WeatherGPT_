@@ -4,12 +4,13 @@
    are. The server composes a brief when asked; nothing here is delivered or published. */
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getJson, postJson, withQuery } from '../api/client';
+import { api, getJson, postJson, withQuery } from '../api/client';
 import type { Envelope } from '../api/types';
+import { downloadFile } from '../chat/actions';
 import { count, orNot } from '../lib/format';
 import { istStamp, istWindow } from '../lib/time';
 import { viewById } from '../shell/views';
-import { DataTable, Facts, Failure, NOT_RECORDED, PlacePicker, Reading, SurfaceShell, failureSentence, type PlaceChoice } from './Evidence';
+import { DataTable, Facts, Failure, NOT_RECORDED, PinPlaceButton, PlacePicker, Reading, SurfaceShell, failureSentence, type PlaceChoice } from './Evidence';
 
 export const intents: string[] = (viewById('briefcase')?.intents ?? []).concat([
   'Which briefs are kept on this machine, and what does each one rest on?',
@@ -28,6 +29,30 @@ type BriefsView = { schema_version?: string; delivery?: string; note?: string; b
 type OpenedView = { schema_version?: string; delivery?: string; entry?: BriefEntry; markdown?: string };
 type KeepView = { detail?: string; saved?: boolean; entry?: BriefEntry };
 type DeletedView = { deleted?: string; detail?: string };
+
+/* /api/briefing/latest is a file-series read, not a service: it states whether a briefing exists in
+   this machine's series directory, the run it holds and the limits written with it. */
+type BriefingRun = {
+  generated_at_utc?: string | null; briefing_id?: string | null; place_count?: number | null; day_number?: number | null;
+  forecast_days?: number | null; sources?: string[]; change?: string | null; latency_seconds?: number | null;
+  interval_seconds?: number | null; record_path?: string | null; markdown_path?: string | null; runner_note?: string | null;
+};
+type BriefingSeriesRow = { run?: number | null; generated_at_utc?: string | null; place_count?: number | null; latency_seconds?: number | null; change?: string | null };
+type BriefingView = {
+  schema_version?: string; present?: boolean; directory?: string | null; note?: string | null; detail?: string | null;
+  run?: BriefingRun | null; briefing?: { not_established?: string[] } | null; markdown?: string | null; series?: BriefingSeriesRow[];
+};
+
+/* The export file name is derived from the entry the same way the store route derives it: a slug of the
+   title and the first eight characters of the identifier. Nothing is invented, and the browser writes the
+   file, so an export is a file the reader keeps on this machine. */
+export function exportFileName(entry: BriefEntry): string {
+  const slug = String(entry.title || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60) || 'brief';
+  return slug + '-' + String(entry.id || '').slice(0, 8) + '.md';
+}
+
+const placesInWords = (value?: number | null): string => (typeof value === 'number' ? value + ' place(s)' : NOT_RECORDED);
+const secondsInWords = (value?: number | null): string => (typeof value === 'number' ? value + ' s' : NOT_RECORDED);
 
 function listEnvelope(view: BriefsView): Envelope<BriefsView> {
   return { schema_version: orNot(view.schema_version), data: view };
@@ -78,6 +103,19 @@ export function Surface(): JSX.Element {
       void client.invalidateQueries({ queryKey: ['briefcase'] });
     },
   });
+  /* An export reads the file route for one entry and hands the browser the Markdown file it returned.
+     The read goes through the API client like every other read, and nothing is delivered, pushed or
+     published by it: the file stays wherever the reader saves it. */
+  const exportBrief = useMutation({
+    mutationFn: async (item: BriefEntry) => {
+      const markdown = await api<string>(withQuery('/api/briefs/export', { id: item.id }));
+      const name = exportFileName(item);
+      downloadFile(name, markdown, 'text/markdown');
+      return { name: name, title: item.title || item.id || 'the kept brief' };
+    },
+    retry: false,
+  });
+  const briefing = useQuery({ queryKey: ['briefing-latest'], queryFn: () => getJson<BriefingView>('/api/briefing/latest'), retry: false });
   const view = kept.data;
   const entries = view?.briefs || [];
   const entry = opened.data?.entry;
@@ -117,10 +155,29 @@ export function Surface(): JSX.Element {
             orNot(item.status, 'status not recorded'),
             <span key="controls">
               <button type="button" className="btn btn-ghost" aria-label={'Open ' + (item.title || item.id)} onClick={() => setOpenId(item.id || null)}>Open</button>{' '}
+              <button type="button" className="btn btn-ghost" aria-label={'Export ' + (item.title || item.id)} onClick={() => { exportBrief.reset(); exportBrief.mutate(item); }}>Export</button>{' '}
               <button type="button" className="btn btn-ghost btn-danger" aria-label={'Delete ' + (item.title || item.id)} onClick={() => { remove.reset(); setRemoved(null); setConfirming(item); }}>Delete</button>
             </span>,
           ])}
         />
+        <p className="module-note" data-testid="briefcase-export-note">
+          Download reads GET /api/briefs/export?id=&lt;entry&gt; and hands the browser the Markdown file the store composed for that
+          entry. An export is a file you keep on this machine; nothing is delivered, pushed or published by it.
+        </p>
+        {exportBrief.isPending ? <Reading what="the export file" /> : null}
+        {exportBrief.data ? (
+          <p className="module-note" role="status" data-testid="briefcase-export">
+            Exported “{exportBrief.data.title}” as {exportBrief.data.name} — a Markdown file you keep on this machine. Nothing was
+            delivered, pushed or published.
+          </p>
+        ) : null}
+        {exportBrief.isError ? (
+          <div role="alert">
+            <p className="reading">{failureSentence(exportBrief.error)}</p>
+            <p className="module-note">This export was not written: the read failed, and no file was handed to the browser.</p>
+            <button type="button" className="btn" onClick={() => { if (exportBrief.variables) exportBrief.mutate(exportBrief.variables); }}>Retry this export</button>
+          </div>
+        ) : null}
         {confirming ? (
           <div className="module-section" data-testid="briefcase-confirm">
             <h3>Remove “{orNot(confirming.title, confirming.id || NOT_RECORDED)}” from this machine's local store?</h3>
@@ -191,9 +248,10 @@ export function Surface(): JSX.Element {
                      hint="Type at least two characters; only a row that states coordinates can be read as a point." />
         {point ? (
           <>
-            <Facts testId="briefcase-point" rows={[['Point resolved', orNot(point.label, 'label not recorded')], ['Coordinates', point.latitude + ', ' + point.longitude]]} />
+            <Facts testId="briefcase-point" id="briefcase-point-facts" rows={[['Point resolved', orNot(point.label, 'label not recorded')], ['Coordinates', point.latitude + ', ' + point.longitude]]} />
             <div className="module-controls">
               <button type="button" className="btn" disabled={keep.isPending} onClick={() => keep.mutate()}>Compose and keep an alert brief for this point</button>
+              <PinPlaceButton place={point} describedBy="briefcase-point-facts" />
             </div>
             {keep.data ? (
               <p className="module-note" role="status" data-testid="briefcase-kept">
@@ -212,6 +270,81 @@ export function Surface(): JSX.Element {
         ) : (
           <p className="module-note">No point is resolved yet, so no compose control is offered: a brief is composed for a point, and the route refuses a request without lat and lon.</p>
         )}
+      </section>
+
+      {/* The briefing series is a local file series, not a service. The surface reads the newest run the
+          workspace series directory holds and states the run, the limits written with it and what it
+          does not establish; with no run written yet it says so rather than omitting the section. */}
+      <section className="module-section" data-testid="briefing-latest">
+        <h2>Latest briefing on this machine</h2>
+        <p className="module-note">
+          A briefing is a foreground run of this local prototype: it reads the connected products for named places and writes a
+          Markdown file and a series record into this machine's briefings directory. It is not a warning, not an all-clear and not
+          advice, and the workspace schedules, delivers and pushes nothing.
+        </p>
+        {briefing.isPending ? <Reading what="the briefing series" /> : null}
+        {briefing.isError ? <Failure error={briefing.error} what="briefing series" onRetry={() => { void briefing.refetch(); }} /> : null}
+        {briefing.data ? (
+          <>
+            <p className="module-envelope evidence" data-testid="briefing-status">
+              {orNot(briefing.data.schema_version)} · present: {briefing.data.present ? 'yes' : 'no'} · series directory:{' '}
+              {orNot(briefing.data.directory, 'directory not recorded')}
+            </p>
+            {briefing.data.note ? <p className="module-note">This read's own note: {briefing.data.note}</p> : null}
+            {briefing.data.present ? (
+              <>
+                <Facts
+                  testId="briefing-run"
+                  rows={[
+                    ['Run instant', briefing.data.run?.generated_at_utc ? istStamp(briefing.data.run.generated_at_utc) : NOT_RECORDED],
+                    ['Briefing identity', briefing.data.run?.briefing_id ? 'sha256 ' + briefing.data.run.briefing_id.slice(0, 16) : NOT_RECORDED],
+                    ['Places read', placesInWords(briefing.data.run?.place_count)],
+                    ['Official day', briefing.data.run?.day_number === null || briefing.data.run?.day_number === undefined
+                      ? NOT_RECORDED : 'day ' + briefing.data.run.day_number + ' of the published product'],
+                    ['Forecast days retrieved', briefing.data.run?.forecast_days === null || briefing.data.run?.forecast_days === undefined
+                      ? NOT_RECORDED : String(briefing.data.run.forecast_days)],
+                    ['Sources named', briefing.data.run?.sources?.length ? briefing.data.run.sources.join(', ') : 'none named in this record'],
+                    ['Change since the previous run', orNot(briefing.data.run?.change, 'not recorded')],
+                    ['Interval', typeof briefing.data.run?.interval_seconds === 'number'
+                      ? briefing.data.run.interval_seconds + ' s between runs in that invocation' : 'a single run'],
+                    ['Latency', secondsInWords(briefing.data.run?.latency_seconds)],
+                    ['Written to', [briefing.data.run?.record_path, briefing.data.run?.markdown_path].filter(Boolean).join(' · ') || NOT_RECORDED],
+                  ]}
+                />
+                <h3>Runs in this series</h3>
+                <DataTable
+                  testId="briefing-series"
+                  caption="Every run this series index recorded, as the read returned it."
+                  columns={['Run', 'Generated', 'Places', 'Latency', 'Change']}
+                  rows={(briefing.data.series || []).map(row => [
+                    row.run === null || row.run === undefined ? NOT_RECORDED : 'run ' + row.run,
+                    row.generated_at_utc ? istStamp(row.generated_at_utc) : NOT_RECORDED,
+                    placesInWords(row.place_count),
+                    secondsInWords(row.latency_seconds),
+                    orNot(row.change, 'not recorded'),
+                  ])}
+                />
+                <h3>The briefing as written</h3>
+                {typeof briefing.data.markdown === 'string' && briefing.data.markdown.trim() ? (
+                  <pre data-testid="briefing-markdown">{briefing.data.markdown}</pre>
+                ) : (
+                  <p className="module-note">This read returned no Markdown for the briefing.</p>
+                )}
+                <h3>What this briefing says is not established</h3>
+                {briefing.data.briefing?.not_established?.length ? (
+                  <ul>{briefing.data.briefing.not_established.map((line, index) => <li key={index}>{line}</li>)}</ul>
+                ) : (
+                  <p className="module-note">This record carried no not-established line.</p>
+                )}
+              </>
+            ) : (
+              <p className="module-note" role="status" data-testid="briefing-absent">
+                This machine holds no briefing yet. Nothing has been scheduled or delivered.{' '}
+                {orNot(briefing.data.detail, 'This read returned no detail line for the missing briefing.')}
+              </p>
+            )}
+          </>
+        ) : null}
       </section>
     </SurfaceShell>
   );

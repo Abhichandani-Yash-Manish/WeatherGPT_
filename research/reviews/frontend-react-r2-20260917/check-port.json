@@ -214,7 +214,7 @@
     {
       "file": "test_suite_ui.js",
       "checks": 33,
-      "ported": 23,
+      "ported": 29,
       "evidence": [
         {
           "spec": "src/modules/modules.test.tsx",
@@ -273,8 +273,51 @@
             "lists every surface as a command, filters by what is typed, and runs the chosen item",
             "is carried on every request the surfaces made"
           ]
+        },
+        {
+          "spec": "src/modules/map.gaps.test.tsx",
+          "tests": [
+            "reads out the district, its colour and its hazard wording under the pointer and on focus",
+            "moves one district tab stop with the arrow keys, Home and End, announcing every stop",
+            "sets the working place from a city the layer states and reads /api/now for exactly those coordinates",
+            "refuses to name a working place from a coordinate when the feature states no name"
+          ]
+        },
+        {
+          "spec": "src/shell/palette.gaps.test.tsx",
+          "tests": [
+            "keeps every surface as a command, filters them by what is typed, and runs the active item with the keyboard",
+            "searches the place catalogue for a typed term and asks about the place the payload named",
+            "lists the stored conversations with their asked counts and opens the one the reader chooses",
+            "states what a place entry did when the shell supplies no question control, rather than passing as filled"
+          ]
+        },
+        {
+          "spec": "src/shell/transitions.test.tsx",
+          "tests": [
+            "uses the document view transition for a route change when the browser offers it, and the surface still changes",
+            "changes the surface without attempting a transition when the browser has no such API",
+            "offers no transition for shell state that is not a route change"
+          ]
+        },
+        {
+          "spec": "src/shell/pins.test.tsx",
+          "tests": [
+            "lists the places this browser remembers in the shell, and removes one when the reader asks",
+            "pins the place a read resolved, keeps only its name and coordinates, and remembers it in this browser",
+            "refuses a place the record did not give coordinates for, so a pin can never invent a location",
+            "states that a pin is a shortcut to a place name, never a saved answer or a claim about it"
+          ]
+        },
+        {
+          "spec": "src/modules/loading.test.tsx",
+          "tests": [
+            "reserves the shape of a read in progress with an aria-hidden skeleton beside the sentence that says so",
+            "carries no number, no label and no progress control, so nothing in it can be read as data or progress"
+          ]
         }
-      ]
+      ],
+      "note": "Twenty-nine of thirty-three. The newer specs close the map pointer readout, the city layer that sets a working place, the district keyboard cursor, the palette place search and stored conversations, the view transition, pinned places and the loading shapes that reserve the space a read will fill. Still open: the warnings district detail drawer with its CAP-relay note and the write-the-alert-brief control, and the per-product collection-health rows behind the topbar chip."
     },
     {
       "file": "test_bulletin_ui.js",
@@ -336,7 +379,7 @@
     {
       "file": "test_briefcase_ui.js",
       "checks": 1,
-      "ported": 0,
+      "ported": 1,
       "evidence": [
         {
           "spec": "src/modules/briefcase.parity.test.tsx",
@@ -347,9 +390,18 @@
             "says nothing is kept when the store is empty, and invents no entry",
             "asks the server to compose a brief for a resolved point rather than posting a brief body itself"
           ]
+        },
+        {
+          "spec": "src/modules/briefcase.gaps.test.tsx",
+          "tests": [
+            "offers a download control that reads the export file route for the entry and says the file is kept, not delivered",
+            "renders the briefing series from the latest-briefing read with its own status, run facts, series, limits and Markdown",
+            "states that this machine holds no briefing yet, and names how one is written, rather than omitting the section",
+            "states a failed briefing read as that failure, with a retry that re-reads it"
+          ]
         }
       ],
-      "note": "The vanilla check bundles ten sub-rules into one PASS, and five of them are held by the parity spec (kept entries with their no-delivery sentence, the token-authenticated open, delete after a stated confirmation, the empty store, and the compose request). The whole check is not carried: no export control and no briefing-series surface exist in the React frontend, so the integer stays 0 rather than claiming a pass."
+      "note": "The single check bundles ten sub-rules and every one of them is now held: the kept entries with their no-delivery sentence, the token-authenticated open, delete after a stated confirmation, the empty store, the compose request, and the export control and briefing series the gap spec adds."
     },
     {
       "file": "test_viz.js",

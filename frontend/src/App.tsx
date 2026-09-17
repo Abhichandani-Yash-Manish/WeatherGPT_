@@ -6,11 +6,13 @@
 
 import { MotionConfig } from 'motion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
 import { AskSurface } from './chat/AskSurface';
 import { Landing } from './landing/Landing';
 import { OwnerGate } from './landing/OwnerGate';
 import { closeGate, hasOwnerVerifier, isGateOpen } from './landing/owner';
+import { PinnedPlaces } from './modules/Evidence';
 import { ErrorBoundary } from './shell/ErrorBoundary';
 import { PlanWatch } from './plans/PlanWatch';
 import { Palette } from './shell/Palette';
@@ -29,8 +31,57 @@ const queryClient = new QueryClient({
 
 export type Seed = { question: string; nonce: number } | null;
 
+/* The View Transition API is optional here: this project runs in jsdom and in browsers that do not
+   implement it, so it is named locally rather than read from the DOM types as a method that must exist. */
+type ViewTransitionDocument = { startViewTransition?: (callback: () => void) => unknown };
+
+function transitionDocument(): ViewTransitionDocument {
+  return document as unknown as ViewTransitionDocument;
+}
+
+function routeKey(route: ReturnType<typeof useHashRoute>): string {
+  return route.shell + '|' + route.view.id + '|' + route.query.toString();
+}
+
+/* Progressive enhancement: a route change is offered to the browser as a view transition when it offers
+   document.startViewTransition, and stays a plain route state update when it does not. The two paths show
+   the same surface — with no API the route is read straight from the hook, so a browser that has never
+   heard of the API behaves exactly as before, and the transition is never required for anything to work. */
+function useTransitionedRoute(): ReturnType<typeof useHashRoute> {
+  const route = useHashRoute();
+  const supported = typeof document !== 'undefined' && typeof transitionDocument().startViewTransition === 'function';
+  const [shown, setShown] = useState(route);
+  const shownKey = useRef(routeKey(route));
+  useEffect(() => {
+    const key = routeKey(route);
+    if (key === shownKey.current) return;
+    if (!supported) {
+      /* No API: the hook's own route is rendered, so there is nothing to defer and nothing to attempt. */
+      shownKey.current = key;
+      return;
+    }
+    const update = () => {
+      shownKey.current = key;
+      /* The DOM update has to happen inside the callback or the browser captures the new surface twice. */
+      flushSync(() => setShown(route));
+    };
+    /* A microtask rather than the effect body itself: React refuses a synchronous flush from inside a
+       lifecycle, and the microtask runs before the browser paints, so the old surface is still on screen
+       when the transition starts. */
+    let cancelled = false;
+    queueMicrotask(() => {
+      if (cancelled) return;
+      transitionDocument().startViewTransition?.(update);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [route, supported]);
+  return supported ? shown : route;
+}
+
 function Shell() {
-  const { view, shell, open, go, query } = useHashRoute();
+  const { view, shell, open, go, query } = useTransitionedRoute();
   /* A deep link such as #/assistant?watch=<id> opens the panel the link names. The query is read here
      rather than in a surface, so the same link works from anywhere in the app. */
   const watchId = query.get('watch');
@@ -131,6 +182,9 @@ function Shell() {
             go('signin');
           }}
         />
+        {/* The places this browser remembers, in the shell rather than inside one surface: a reader can
+            pin the place a read resolved and see it here from any route, and remove it from here. */}
+        <PinnedPlaces />
         <ErrorBoundary onReset={() => open('assistant')}>
           {view.id === 'assistant' ? (
             <section className="mx-auto flex min-h-0 w-full max-w-5xl flex-1 flex-col px-4 py-4" data-surface="assistant">

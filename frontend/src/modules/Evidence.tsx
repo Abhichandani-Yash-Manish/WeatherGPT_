@@ -1,8 +1,10 @@
 /* The framing every module surface shares: one h1, the envelope's own header, named coverage counts,
    the limitations and not-established lines in the surface's own voice, and the source rows.
    Nothing here invents a value or a meaning. Absence is stated as absence ('not recorded',
-   'no row returned', 'this read did not answer'), never as a blank, a zero or an empty chart. */
-import { useId, useState, type ReactNode } from 'react';
+   'no row returned', 'this read did not answer'), never as a blank, a zero or an empty chart.
+   It also owns the two small local memories a reader keeps beside a read: the loading skeleton that
+   reserves the shape of an answer in progress, and the pinned-place list the shell shows on every route. */
+import { useId, useMemo, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { ApiError, getJson, withQuery } from '../api/client';
 import type { Envelope, SourceEntry } from '../api/types';
@@ -43,11 +45,29 @@ function subject(what: string): string {
   return what.replace(/^the\s+/i, '').trim();
 }
 
+/* A read that is still working reserves the shape of what it will occupy: bars stand for the lines a
+   result will carry and a frame stands for a chart. It is aria-hidden because the sentence is the part
+   worth announcing, carries no number, colour or label that could be read as data, and is drawn without
+   animation: this project has no measured progress to animate, so nothing here may read as one. */
+export function Skeleton(): JSX.Element {
+  return (
+    <div className="mt-2 flex flex-col gap-1.5" data-testid="skeleton" aria-hidden="true">
+      <span className="h-[9px] w-[82%] rounded bg-sunk" data-skeleton="bar" />
+      <span className="h-[9px] w-full rounded bg-sunk" data-skeleton="bar" />
+      <span className="h-[9px] w-[46%] rounded bg-sunk" data-skeleton="bar" />
+      <span className="h-[92px] rounded-card border border-dashed border-line bg-sunk" data-skeleton="frame" />
+    </div>
+  );
+}
+
 export function Reading({ what }: { what: string }): JSX.Element {
   return (
-    <p className="module-note" role="status">
-      Reading {subject(what)} from the local store…
-    </p>
+    <div data-reading={subject(what)}>
+      <p className="module-note" role="status">
+        Reading {subject(what)} from the local store…
+      </p>
+      <Skeleton />
+    </div>
   );
 }
 
@@ -83,9 +103,9 @@ export function ColourTag({ colour, text }: { colour?: string | null; text?: str
 
 export type Fact = [label: string, value: ReactNode];
 
-export function Facts({ rows, testId }: { rows: Fact[]; testId?: string }): JSX.Element {
+export function Facts({ rows, testId, id }: { rows: Fact[]; testId?: string; id?: string }): JSX.Element {
   return (
-    <dl className="module-facts" data-testid={testId}>
+    <dl className="module-facts" data-testid={testId} id={id}>
       {rows.map(([label, value]) => (
         <div className="fact-row" key={label}>
           <dt className="module-fact-label">{label}</dt>
@@ -275,12 +295,172 @@ function placePoint(row: PlaceMatch): PlaceChoice | null {
   return { label: row.label || row.name || null, latitude, longitude };
 }
 
+/* ---- pinned places -----------------------------------------------------------------------------
+   A pin is the reader's own shortcut to a place name: a label and two coordinates held in this
+   browser's local storage, and nothing else. It saves no answer, carries no reading and makes no
+   claim about the place. A place the record did not give coordinates for is refused rather than
+   guessed, because a pin without a coordinate would invent a location; and when this browser refuses
+   local storage the pin lasts only until the page is reloaded, which the panel states. */
+export type PinnedPlace = { label: string; latitude: number; longitude: number };
+export type PinCandidate = { label?: string | null; latitude?: number | null; longitude?: number | null };
+export const PIN_KEY = 'weathergpt.pinned';
+export const PIN_LIMIT = 8;
+
+function routablePlace(place: PinCandidate | null | undefined): boolean {
+  if (!place || !place.label) return false;
+  return [place.latitude, place.longitude].every(value => typeof value === 'number' && Number.isFinite(value));
+}
+
+function parsePins(raw: string | null): PinnedPlace[] {
+  if (!raw) return [];
+  try {
+    const list: unknown = JSON.parse(raw);
+    if (!Array.isArray(list)) return [];
+    return list
+      .filter((item): item is PinnedPlace => routablePlace(item as PinCandidate))
+      .map(item => ({ label: String(item.label), latitude: Number(item.latitude), longitude: Number(item.longitude) }))
+      .slice(0, PIN_LIMIT);
+  } catch {
+    return [];
+  }
+}
+
+/* When local storage refuses a write the list is kept for this page load instead of disappearing. */
+let sessionPins: PinnedPlace[] | null = null;
+const pinListeners = new Set<() => void>();
+
+export function readPins(): PinnedPlace[] {
+  if (sessionPins) return sessionPins;
+  try {
+    return parsePins(window.localStorage.getItem(PIN_KEY));
+  } catch {
+    return [];
+  }
+}
+
+export function subscribePins(listener: () => void): () => void {
+  pinListeners.add(listener);
+  return () => {
+    pinListeners.delete(listener);
+  };
+}
+
+function pinnedSnapshot(): string {
+  return JSON.stringify(readPins());
+}
+
+function savePins(list: PinnedPlace[]): PinnedPlace[] {
+  const next = list.slice(0, PIN_LIMIT);
+  try {
+    window.localStorage.setItem(PIN_KEY, JSON.stringify(next));
+  } catch {
+    /* the browser refused storage; keep the list for this page load and say so in the panel */
+    sessionPins = next;
+  }
+  pinListeners.forEach(listener => listener());
+  return next;
+}
+
+export function pinPlace(place: PinCandidate | null | undefined): PinnedPlace[] {
+  if (!routablePlace(place)) return readPins();
+  const target: PinnedPlace = { label: String(place?.label), latitude: Number(place?.latitude), longitude: Number(place?.longitude) };
+  return savePins([target].concat(readPins().filter(item => item.label !== target.label)));
+}
+
+export function unpinPlace(place: PinCandidate | null | undefined): PinnedPlace[] {
+  const label = place?.label ? String(place.label) : '';
+  if (!label) return readPins();
+  return savePins(readPins().filter(item => item.label !== label));
+}
+
+export function isPinned(place: PinCandidate | null | undefined): boolean {
+  return Boolean(place?.label) && readPins().some(item => item.label === place?.label);
+}
+
+export function pinsAreStoredLocally(): boolean {
+  return sessionPins === null;
+}
+
+export function usePinnedPlaces(): PinnedPlace[] {
+  const snapshot = useSyncExternalStore(subscribePins, pinnedSnapshot);
+  return useMemo(() => parsePins(snapshot), [snapshot]);
+}
+
+/* The pin control states the place it would keep and flips its own label; a place without coordinates
+   is told it cannot be pinned rather than being pinned anyway. When the place is already written next
+   to the control, the control names itself and points at that text instead of repeating the name. */
+export function PinPlaceButton({ place, describedBy }: { place: PinCandidate; describedBy?: string }): JSX.Element {
+  const pinned = useSyncExternalStore(subscribePins, () => isPinned(place));
+  if (!routablePlace(place)) {
+    return (
+      <span className="module-note">
+        Coordinates are not recorded for this place, so it cannot be pinned: a pin is never guessed.
+      </span>
+    );
+  }
+  const label = orNot(place.label, 'place name not recorded');
+  return (
+    <button
+      type="button"
+      className="btn btn-ghost"
+      aria-label={(pinned ? 'Unpin' : 'Pin') + (describedBy ? ' this place' : ' ' + label)}
+      aria-describedby={describedBy}
+      onClick={() => {
+        if (pinned) unpinPlace(place);
+        else pinPlace(place);
+      }}
+    >
+      {pinned ? 'Unpin' : 'Pin'}
+    </button>
+  );
+}
+
+/* The list the shell shows wherever the reader is: the pins this browser remembers, each with the
+   coordinates it holds and its own removal. Nothing here reads a route or states a value. */
+export function PinnedPlaces(): JSX.Element {
+  const pins = usePinnedPlaces();
+  return (
+    <section className="border-b border-line bg-paper px-4 py-2" aria-label="Pinned places" data-testid="pinned-places">
+      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <h2 className="eyebrow">Pinned places</h2>
+        <p className="text-xs quiet">
+          A pin is a shortcut to a place name you resolved. It saves no answer and makes no claim about the place; it is kept in this
+          browser's local storage and sent nowhere.
+        </p>
+      </div>
+      {pins.length ? (
+        <ul className="mt-1 flex flex-wrap items-center gap-2" data-testid="pinned-places-list">
+          {pins.map(pin => (
+            <li key={pin.label} className="flex items-center gap-2 rounded-pill bg-sunk px-2 py-0.5 text-xs">
+              <span className="evidence">{pin.label}</span>
+              <span className="quiet">
+                {pin.latitude}, {pin.longitude}
+              </span>
+              <button type="button" className="btn btn-ghost" aria-label={'Remove pin ' + pin.label} onClick={() => unpinPlace(pin)}>
+                Remove
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="module-note" data-testid="pinned-places-empty">
+          No place is pinned in this browser yet.
+        </p>
+      )}
+      {pins.length && !pinsAreStoredLocally() ? (
+        <p className="module-note">This browser refused local storage, so these pins last only until this page is reloaded.</p>
+      ) : null}
+    </section>
+  );
+}
+
 /* The reader names a place; the catalogue answers with rows, and only a row that states coordinates
    can be read as a point. A row without coordinates is shown as one rather than resolved elsewhere. */
 export function PlacePicker({ onPick, hint }: { onPick: (place: PlaceChoice) => void; hint?: string }): JSX.Element {
   const [term, setTerm] = useState('');
   const query = term.trim();
   const field = useId();
+  const rowId = field + '-row-';
   const search = useQuery({
     queryKey: ['places', query],
     queryFn: () => getJson<Envelope<{ matches?: PlaceMatch[] }>>(withQuery('/api/places/search', { q: query })),
@@ -308,24 +488,38 @@ export function PlacePicker({ onPick, hint }: { onPick: (place: PlaceChoice) => 
         ) : search.isError ? (
           <Failure error={search.error} what="place search" onRetry={() => search.refetch()} />
         ) : matches.length ? (
-          <ul className="module-place-list">
-            {matches.map((row, index) => {
-              const point = placePoint(row);
-              const label = orNot(row.label || row.name, 'place name not recorded');
-              const where = orNot([row.admin2, row.admin1].filter(Boolean).join(', '), 'administrative area not recorded');
-              return (
-                <li key={row.selection_id || label + ':' + index}>
-                  {point ? (
-                    <button type="button" className="btn btn-ghost module-place-button" onClick={() => onPick(point)}>
-                      {label} · {where} · {point.latitude}, {point.longitude}
-                    </button>
-                  ) : (
-                    <span className="module-note">{label} · {where} · coordinates not recorded, so this row cannot be read as a point</span>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
+          <>
+            <ul className="module-place-list">
+              {matches.map((row, index) => {
+                const point = placePoint(row);
+                const label = orNot(row.label || row.name, 'place name not recorded');
+                const where = orNot([row.admin2, row.admin1].filter(Boolean).join(', '), 'administrative area not recorded');
+                return (
+                  <li key={row.selection_id || label + ':' + index} className="flex flex-wrap items-center gap-2">
+                    {point ? (
+                      <>
+                        <button
+                          type="button"
+                          id={rowId + index}
+                          className="btn btn-ghost module-place-button"
+                          onClick={() => onPick(point)}
+                        >
+                          {label} · {where} · {point.latitude}, {point.longitude}
+                        </button>
+                        <PinPlaceButton place={point} describedBy={rowId + index} />
+                      </>
+                    ) : (
+                      <span className="module-note">{label} · {where} · coordinates not recorded, so this row cannot be read as a point</span>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+            <p className="module-note">
+              Pinning a row keeps its name and these coordinates in this browser as a shortcut to that place. A pin saves no answer, no
+              reading and no claim about the place.
+            </p>
+          </>
         ) : (
           <p className="module-note">No place row came back for this name. {NO_ROW}.</p>
         )}

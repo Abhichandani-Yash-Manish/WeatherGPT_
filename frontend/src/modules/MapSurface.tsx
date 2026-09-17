@@ -2,14 +2,25 @@
    FeatureCollection. The figure is a schematic fit of the returned coordinates: not a cartographic
    basemap, not a location map and not a warning service, and a feature is filled only with a colour
    its own properties stated. Absence is stated: no colour means an outline, a field the manifest did
-   not state is "not recorded", and the table beside the figure is the accessible equivalent. */
-import { useMemo, useState, type ReactNode } from 'react';
+   not state is "not recorded", and the table beside the figure is the accessible equivalent.
+
+   The readout beside the figure states what is under the pointer or the keyboard cursor in words, from
+   the feature's own properties only: the name, the colour as published and the hazard wording as
+   published, or the absence of each. The drawn features act as one tab stop that the arrow keys, Home
+   and End move, so the figure is not pointer-only. A place feature that states its own name and its own
+   coordinates can be made the working place, and the surface reads /api/now for exactly those
+   coordinates; nothing is ever inferred from a coordinate. */
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getJson } from '../api/client';
-import type { Envelope } from '../api/types';
+import { getJson, withQuery } from '../api/client';
+import type { Envelope, NowReading } from '../api/types';
 import { count, orNot } from '../lib/format';
+import { istStamp } from '../lib/time';
 import { viewById } from '../shell/views';
-import { ColourTag, DataTable, Failure, HAZARD_COLOURS, SurfaceShell } from './Evidence';
+import {
+  ColourTag, DataTable, Failure, Facts, HAZARD_COLOURS, Limits, NO_ROW, NOT_RECORDED, Reading, Sources,
+  SurfaceShell,
+} from './Evidence';
 
 export const intents: string[] = (viewById('map')?.intents ?? []).concat([
   'Which layers can this machine draw, and what does the served geometry state about them?',
@@ -22,6 +33,7 @@ type Position = number[];
 type Geometry = { type?: string; coordinates?: unknown } | null | undefined;
 type Feature = { type?: string; properties?: Record<string, unknown> | null; geometry?: Geometry };
 type Collection = { type?: string; features?: Feature[] };
+type ChosenPlace = { label: string; latitude: number; longitude: number };
 
 /* The property names read from a feature's own properties; a layer that uses none of them is shown as
    "not recorded" rather than guessed at from a list this surface keeps. */
@@ -78,8 +90,32 @@ function propertyText(properties: Record<string, unknown> | null | undefined, ke
   return null;
 }
 
-type Shape = { key: number; d?: string; at?: Position; colour: string | null };
+type Shape = { key: number; d?: string; at?: Position; colour: string | null; describe: string; place: ChosenPlace | null };
 type Plan = { viewBox: string; radius: number; shapes: Shape[]; rows: ReactNode[][]; drawn: number; coloured: number };
+
+/* The sentence the readout states for an area: its own name and state, the colour it published and the
+   hazard wording it published, with the absence of either stated as absence. */
+function areaDescription(name: string | null, state: string | null, published: string | null, wording: string | null, placeholder: boolean): string {
+  const where = (name || 'name not stated in these properties') + (state ? ', ' + state : '');
+  const colour = published || 'colour not supplied';
+  const hazard = wording || 'no hazard wording published in these properties';
+  const box = placeholder ? ' (the source supplies a bounding box for this feature, not a coastline)' : '';
+  return where + ': ' + colour + ' \u00b7 ' + hazard + box;
+}
+
+/* The sentence the readout states for a point: its own name and its own geometry coordinates. A point
+   that states no name is not offered as a working place, because a working place is never guessed from
+   its coordinates. */
+function placeDescription(name: string | null, state: string | null, latitude: number | null, longitude: number | null): string {
+  const label = name ? (state ? name + ', ' + state : name) : 'place name not stated in these properties';
+  const coordinates = latitude === null || longitude === null ? 'coordinates not stated in these properties' : latitude + ', ' + longitude;
+  if (!name || latitude === null || longitude === null) {
+    const missing = !name && (latitude === null || longitude === null) ? 'no name and no coordinates of its own'
+      : !name ? 'no name of its own' : 'no coordinates of its own';
+    return 'Point ' + label + ' \u00b7 ' + coordinates + ' \u00b7 this feature states ' + missing + ', so it cannot be made the working place';
+  }
+  return 'Place ' + label + ' \u00b7 ' + coordinates + ' \u00b7 select it to make it the working place';
+}
 
 function drawNote(drawable: boolean, ramp: string | null, published: string | null): string {
   if (!drawable) return 'not drawn: this surface draws the served polygons and points only';
@@ -113,14 +149,24 @@ function drawPlan(collection: Collection | undefined): Plan {
     const wording = propertyText(properties, WORDING_KEYS);
     const published = propertyText(properties, COLOUR_KEYS);
     const ramp = published && HAZARD_COLOURS.includes(published.toLowerCase()) ? published.toLowerCase() : null;
+    const placeholder = properties?.p === 1;
     const d = areaPath(feature?.geometry);
     const points = pointAt(feature?.geometry);
     const drawable = Boolean(d) || points.length > 0;
     if (drawable) {
       drawn += 1;
       if (ramp) coloured += 1;
-      if (d) shapes.push({ key: index, d, colour: ramp });
-      points.forEach((at, order) => shapes.push({ key: index * 1000 + order, at, colour: ramp }));
+      if (d) shapes.push({ key: index, d, colour: ramp, place: null, describe: areaDescription(name, state, published, wording, placeholder) });
+      points.forEach((at, order) => {
+        const latitude = numberAt(at, 1); const longitude = numberAt(at, 0);
+        const location = latitude !== null && longitude !== null ? { latitude, longitude } : null;
+        const stated = name && location ? (state ? name + ', ' + state : name) : null;
+        shapes.push({
+          key: index * 1000 + order, at, colour: ramp,
+          place: stated && location ? { label: stated, ...location } : null,
+          describe: placeDescription(name, state, latitude, longitude),
+        });
+      });
     }
     rows.push([
       orNot(name, 'name not stated in these properties'), orNot(state),
@@ -146,6 +192,10 @@ function figureCount(plan: Plan): string {
 
 export function Surface(): JSX.Element {
   const [picked, setPicked] = useState('');
+  const [cursor, setCursor] = useState(0);
+  const [readout, setReadout] = useState('');
+  const [place, setPlace] = useState<ChosenPlace | null>(null);
+  const shapeNodes = useRef<(SVGPathElement | SVGCircleElement | null)[]>([]);
   const layers = useQuery({ queryKey: ['map-layers'], queryFn: () => getJson<Envelope<LayersData>>('/api/map/layers'), retry: false });
   const listed = layers.data?.data?.layers || [];
   const chosen = listed.some(row => layerKey(row) === picked) ? picked : listed.length ? layerKey(listed[0]) : '';
@@ -153,6 +203,49 @@ export function Surface(): JSX.Element {
     queryFn: () => getJson<Collection>('/api/map/static/' + encodeURIComponent(chosen)) });
   const plan = useMemo(() => drawPlan(layer.data), [layer.data]);
   const manifest = layers.data?.data;
+
+  /* The chosen place is exactly the point the chosen city feature states: the name from its properties and
+     the coordinates from its geometry. The reading is GET /api/now for those coordinates. */
+  const now = useQuery({
+    queryKey: ['map-now', place?.latitude, place?.longitude],
+    queryFn: () => getJson<Envelope<NowReading>>(withQuery('/api/now', { lat: place?.latitude, lon: place?.longitude })),
+    enabled: place !== null,
+    retry: false,
+  });
+  const reading = now.data?.data;
+  const station = reading?.observed?.stations?.[0];
+  const inForce = reading?.in_force;
+
+  useEffect(() => {
+    setCursor(0);
+    setReadout('');
+    shapeNodes.current = [];
+  }, [chosen]);
+
+  const cursorIndex = plan.shapes.length ? Math.min(cursor, plan.shapes.length - 1) : 0;
+
+  const moveCursor = (index: number) => {
+    if (!plan.shapes.length) return;
+    const next = Math.max(0, Math.min(plan.shapes.length - 1, index));
+    setCursor(next);
+    setReadout(plan.shapes[next].describe);
+    shapeNodes.current[next]?.focus?.();
+  };
+
+  const choosePlace = (target: ChosenPlace) => {
+    setPlace(target);
+    setReadout('Working place set to ' + target.label + ' at the coordinates the vendored geometry carries (' + target.latitude + ', ' + target.longitude + ').');
+  };
+
+  const onShapeKey = (event: KeyboardEvent<SVGElement>, index: number) => {
+    const key = event.key;
+    if (key === 'ArrowRight' || key === 'ArrowDown') { event.preventDefault(); moveCursor(index + 1); return; }
+    if (key === 'ArrowLeft' || key === 'ArrowUp') { event.preventDefault(); moveCursor(index - 1); return; }
+    if (key === 'Home') { event.preventDefault(); moveCursor(0); return; }
+    if (key === 'End') { event.preventDefault(); moveCursor(plan.shapes.length - 1); return; }
+    const target = plan.shapes[index]?.place;
+    if ((key === 'Enter' || key === ' ') && target) { event.preventDefault(); choosePlace(target); }
+  };
 
   return (
     <SurfaceShell
@@ -194,35 +287,124 @@ export function Surface(): JSX.Element {
         {!chosen ? null : layer.isError ? (
           <Failure error={layer.error} what="chosen map layer" onRetry={() => layer.refetch()} />
         ) : (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-4)', alignItems: 'flex-start' }}>
-            {plan.drawn ? (
-              <figure style={{ flex: '1 1 24rem', minWidth: 0 }}>
-                <svg data-testid="map-figure" role="img" viewBox={plan.viewBox} preserveAspectRatio="xMidYMid meet"
-                  aria-label={'Schematic of the ' + chosen + ' layer: ' + count(plan.drawn, 'feature') + ' drawn from the served coordinates. Not a cartographic basemap.'}
-                  style={{ width: '100%', height: 'auto', maxWidth: '36rem' }}>
-                  {plan.shapes.map(shape => shape.d ? (
-                    <path key={shape.key} d={shape.d} className={shape.colour ? 'chip-colour' : undefined} data-colour={shape.colour || undefined}
-                      fill={shape.colour ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={0.5} />
-                  ) : shape.at ? (
-                    <circle key={shape.key} cx={shape.at[0]} cy={-shape.at[1]} r={plan.radius} className={shape.colour ? 'chip-colour' : undefined}
-                      data-colour={shape.colour || undefined} fill={shape.colour ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={plan.radius / 3} />
-                  ) : null)}
-                </svg>
-                <figcaption className="module-note">
-                  Drawn from the served coordinates of the {chosen} layer. A feature is filled only with a colour its own properties stated,
-                  and only when that colour is in the product's hazard ramp ({HAZARD_COLOURS.join(', ')}); every other feature is an outline.
-                </figcaption>
-              </figure>
-            ) : null}
-            <div style={{ flex: '1 1 24rem', minWidth: 0 }}>
-              <DataTable testId="map-features"
-                caption="Every feature this read returned, as the layer states it: name, state, colour as published, hazard wording as published, and how the figure drew it."
-                columns={['Feature', 'State', 'Colour as published', 'Hazard wording as published', 'Drawn as']}
-                rows={plan.rows} />
+          <>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-4)', alignItems: 'flex-start' }}>
+              {plan.drawn ? (
+                <figure style={{ flex: '1 1 24rem', minWidth: 0 }}>
+                  <svg data-testid="map-figure" role="group" viewBox={plan.viewBox} preserveAspectRatio="xMidYMid meet"
+                    aria-label={'Schematic of the ' + chosen + ' layer: ' + count(plan.drawn, 'feature') + ' drawn from the served coordinates. Not a cartographic basemap.'}
+                    style={{ width: '100%', height: 'auto', maxWidth: '36rem' }}>
+                    {plan.shapes.map((shape, index) => shape.d ? (
+                      <path
+                        key={shape.key}
+                        d={shape.d}
+                        ref={node => { shapeNodes.current[index] = node; }}
+                        tabIndex={index === cursorIndex ? 0 : -1}
+                        role="img"
+                        aria-label={shape.describe}
+                        className={shape.colour ? 'chip-colour' : undefined}
+                        data-colour={shape.colour || undefined}
+                        fill={shape.colour ? 'currentColor' : 'none'}
+                        stroke="currentColor"
+                        strokeWidth={0.5}
+                        onMouseEnter={() => setReadout(shape.describe)}
+                        onFocus={() => { setCursor(index); setReadout(shape.describe); }}
+                        onKeyDown={event => onShapeKey(event, index)}
+                      />
+                    ) : shape.at ? (
+                      <circle
+                        key={shape.key}
+                        cx={shape.at[0]}
+                        cy={-shape.at[1]}
+                        r={plan.radius}
+                        ref={node => { shapeNodes.current[index] = node; }}
+                        tabIndex={index === cursorIndex ? 0 : -1}
+                        role={shape.place ? 'button' : 'img'}
+                        aria-label={shape.describe}
+                        className={shape.colour ? 'chip-colour' : undefined}
+                        data-colour={shape.colour || undefined}
+                        fill={shape.colour ? 'currentColor' : 'none'}
+                        stroke="currentColor"
+                        strokeWidth={plan.radius / 3}
+                        onMouseEnter={() => setReadout(shape.describe)}
+                        onFocus={() => { setCursor(index); setReadout(shape.describe); }}
+                        onKeyDown={event => onShapeKey(event, index)}
+                        onClick={shape.place ? () => choosePlace(shape.place as ChosenPlace) : undefined}
+                      />
+                    ) : null)}
+                  </svg>
+                  <figcaption className="module-note">
+                    Drawn from the served coordinates of the {chosen} layer. A feature is filled only with a colour its own properties stated,
+                    and only when that colour is in the product's hazard ramp ({HAZARD_COLOURS.join(', ')}); every other feature is an outline.
+                  </figcaption>
+                </figure>
+              ) : null}
+              <div style={{ flex: '1 1 24rem', minWidth: 0 }}>
+                <DataTable testId="map-features"
+                  caption="Every feature this read returned, as the layer states it: name, state, colour as published, hazard wording as published, and how the figure drew it."
+                  columns={['Feature', 'State', 'Colour as published', 'Hazard wording as published', 'Drawn as']}
+                  rows={plan.rows} />
+              </div>
             </div>
-          </div>
+            {plan.drawn ? (
+              <>
+                <p className="module-note" role="status" aria-live="polite" data-testid="map-readout">
+                  {readout || 'Hover or focus a drawn feature to read out what the payload states about it.'}
+                </p>
+                <p className="module-note">
+                  Keyboard: Tab reaches the figure, the arrow keys move between the drawn features of the chosen layer, Home and End jump to
+                  the first and last, and Enter makes the focused place the working place when that feature states its own name and coordinates.
+                </p>
+              </>
+            ) : null}
+          </>
         )}
       </section>
+
+      {place ? (
+        <section className="module-section">
+          <h2>Right now at the place chosen on the map</h2>
+          <p className="module-note">
+            The working place was set from the name that feature states and the coordinates its vendored geometry carries; nothing was
+            inferred from a coordinate. The reading below is GET /api/now for exactly that point.
+          </p>
+          <Facts testId="map-chosen-place" rows={[['Place read', place.label], ['Coordinates', place.latitude + ', ' + place.longitude]]} />
+          {now.isPending ? (
+            <Reading what="the right-now reading for the chosen place" />
+          ) : now.isError ? (
+            <Failure error={now.error} what="right-now reading for the chosen place" onRetry={() => now.refetch()} />
+          ) : (
+            <>
+              <p className="reading" data-testid="map-now-summary">{orNot(reading?.summary, NO_ROW)}</p>
+              <Facts testId="map-now-station" rows={[
+                ['Point the route read', reading?.point ? reading.point.latitude + ', ' + reading.point.longitude : NOT_RECORDED],
+                ['Freshest station', station ? orNot(station.name || station.station_code) : NO_ROW],
+                ['Distance', typeof station?.distance_km === 'number' ? station.distance_km + ' km' : NOT_RECORDED],
+                ['Observed at', station?.observed_at_utc ? istStamp(station.observed_at_utc) : NOT_RECORDED],
+                ['Age at retrieval', typeof station?.age_minutes === 'number' ? station.age_minutes + ' minutes before retrieval' : NOT_RECORDED],
+                ['Staleness', station?.stale === true ? 'stale: the report is older than the layer\u2019s freshness window'
+                  : station?.stale === false ? 'current' : 'staleness not recorded'],
+              ]} />
+              {inForce && (inForce.district || inForce.status_line) ? (
+                <p>
+                  <ColourTag colour={inForce.colour} text={inForce.colour || 'colour not stated'} />{' '}
+                  <span className="reading">{orNot(inForce.status_line, NO_ROW)}</span>
+                </p>
+              ) : (
+                <p className="module-note">
+                  No district-day row was returned for this point. {NO_ROW}: a point outside every district polygon of the warning product
+                  carries no district guidance.
+                </p>
+              )}
+              <Limits
+                limitations={Array.from(new Set([...(reading?.limitations || []), ...(now.data?.limitations || [])]))}
+                not_established={Array.from(new Set([...(reading?.not_established || []), ...(now.data?.not_established || [])]))}
+              />
+              <Sources sources={now.data?.sources} />
+            </>
+          )}
+        </section>
+      ) : null}
     </SurfaceShell>
   );
 }
