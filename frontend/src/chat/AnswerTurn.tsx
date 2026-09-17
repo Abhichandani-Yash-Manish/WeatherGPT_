@@ -9,8 +9,8 @@ import { Passages } from './Passages';
 import { istStamp } from '../lib/time';
 import { answerText, copyText, downloadFile, markdownTurn, stampName } from './actions';
 import type { Register } from './model';
-import { coverageNote, firstPoint, languageDowngradeNote, sequenceFacts, turnTitle, warningFacts } from './model';
-import { Disclosure, EvidenceReceipt, FactsTable, LeadReading, SourceRows, StatusTags, ValidityRuler } from './parts';
+import { coverageNote, firstPoint, hasWarningDays, languageDowngradeNote, sequenceFacts, turnTitle, warningFacts } from './model';
+import { AirportReports, Calculations, Disclosure, EvidenceReceipt, FactsTable, LeadReading, SeriesReceipt, SourceRows, StatusTags, TaskAccounting, ValidityRuler, WarningPanel } from './parts';
 
 export type AnswerTurnProps = {
   packet: AnswerPacket;
@@ -31,6 +31,9 @@ export function AnswerTurn({ packet, register, onFollowUp, onRefresh, onAnswer }
   const primary = facts[0] || null;
   const rest = facts.slice(1);
   const warnings = warningFacts(packet);
+  /* A warning day is an official statement and carries its own provenance receipt. Only where there is
+     neither a fact to receipt nor a warning does a returned series receipt the values it plotted. */
+  const receiptFact = primary || warnings[0] || null;
   const downgrade = languageDowngradeNote(packet);
   const coverage = coverageNote(packet);
   const point = firstPoint(packet);
@@ -69,15 +72,25 @@ export function AnswerTurn({ packet, register, onFollowUp, onRefresh, onAnswer }
       {primary && !conversational ? <LeadReading packet={packet} fact={primary} /> : null}
       {primary && open && !conversational ? <ValidityRuler packet={packet} /> : null}
 
+      {/* A computed value is the answer's own arithmetic, shown where the answer is, with the engine's own
+          classification and method. It is never promoted to the lead reading. */}
+      <Calculations packet={packet} />
+
       {/* dir="auto" lets the browser read the direction of the sentence itself, so an Urdu or mixed
           Devanagari answer is not laid out in the wrong direction before the shell is mirrored (R5). */}
       <p className="reading" dir="auto">
         {packet.answer}
       </p>
 
+      {/* The source's own airport text, typed as the report it is: an observation or a forecast, never a
+          flight status, a runway state or an operational clearance. */}
+      <AirportReports packet={packet} />
+
       {/* A warning is an official statement with hazards and a validity window: it is never folded into
-          the ordinary fact rows. */}
-      {warnings.length ? (
+          the ordinary fact rows. Where the payload carries district day rows they are drawn as the named
+          period they are; a warning fact without a day keeps the plain block rather than being dropped. */}
+      <WarningPanel packet={packet} />
+      {warnings.length && !hasWarningDays(packet) ? (
         <div className="card px-3 py-2">
           <p className="eyebrow">Official warning carried by this answer</p>
           {warnings.map(fact => (
@@ -141,20 +154,23 @@ export function AnswerTurn({ packet, register, onFollowUp, onRefresh, onAnswer }
         </Disclosure>
       ) : null}
 
-      {open && primary ? <EvidenceReceipt packet={packet} fact={primary} /> : null}
+      {open && receiptFact ? <EvidenceReceipt packet={packet} fact={receiptFact} /> : null}
+      {open && !receiptFact ? <SeriesReceipt packet={packet} /> : null}
       {open && !primary && (packet.task_results || []).length === 0 && (packet.citations || []).length ? (
         <SourceRows citations={packet.citations} />
       ) : null}
+
+      {open ? <TaskAccounting packet={packet} /> : null}
 
       {full ? (
         <>
           {(packet.task_results || []).length ? (
             <Disclosure summary="Requested tasks" count={(packet.task_results || []).length}>
-              <ul className="space-y-2">
+              <ul className="tasks space-y-2">
                 {(packet.task_results || []).map(task => (
-                  <li key={task.id} className="text-xs">
+                  <li key={task.id} className={'task text-xs ' + (task.status === 'answered' ? 'is-answered' : 'is-incomplete')}>
                     <p className="font-semibold">
-                      {task.request?.kind || 'task'} · {task.status}
+                      {task.id} · {task.request?.kind || 'task'} · {task.status}
                       {task.request?.operation ? ' \u00b7 ' + task.request.operation : ''}
                     </p>
                     {task.request?.request_quote ? <p className="quiet">“{task.request.request_quote}”</p> : null}

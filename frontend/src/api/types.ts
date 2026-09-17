@@ -43,8 +43,14 @@ export type Citation = {
   url?: string;
   sha256?: string;
   retrieved_at_utc?: string;
-  page?: number;
+  /* A citation names where inside the record the value came from: a printed page, a row or column of a
+     published table, or the address the engine read. Any of them may be absent, and an absent one is stated
+     as absent rather than filled with a guess. */
+  page?: number | string;
+  row?: number | string;
+  column?: string;
   locator?: string;
+  local_document_path?: string;
 };
 
 export type TaskResult = {

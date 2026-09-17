@@ -3,7 +3,7 @@
    These constants are ported from the vanilla transcript (web/views.js) one-for-one, because the
    wording a reader has already been shown is part of the product, not a detail of its markup. */
 
-import type { AnswerPacket, ChatPreview, ChatProgress, Fact, ResolvedPoint } from '../api/types';
+import type { AnswerPacket, Calculation, ChatPreview, ChatProgress, Fact, ResolvedPoint } from '../api/types';
 import { istWindow } from '../lib/time';
 
 export const STATUS_LABELS: Record<string, string> = {
@@ -101,6 +101,23 @@ export function parameterName(fact?: Fact | null): string {
   return fact.label || PARAMETER_NAMES[fact.parameter] || fact.parameter || 'Answer';
 }
 
+/* The engine states a calculation's kind in its own fields; where it states only the operation or the
+   method, that is rendered rather than a category invented here. A source comparison is always named as a
+   difference, because that is what it is. */
+export function calculationKind(calculation: Calculation): string {
+  if (calculation.kind === 'source_comparison') return 'Difference between sources';
+  if (calculation.operation === 'linear_trend') return 'Descriptive trend';
+  if (calculation.operation === 'difference') return 'Difference';
+  if (calculation.method && /sum/i.test(calculation.method)) return 'Deterministic total';
+  return calculation.operation || calculation.kind || 'Computed value';
+}
+
+/* True when the payload carries at least one district warning day, which the warning panel renders. A
+   warning fact without a day row keeps the plain warning block instead of being dropped. */
+export function hasWarningDays(packet: AnswerPacket): boolean {
+  return (packet.warning_evidence || []).some(entry => (entry.district_warnings || []).length > 0);
+}
+
 export function placeOf(packet: AnswerPacket, fact?: Fact | null): string | null {
   if (fact?.place) return fact.place;
   const resolved = packet.resolved_points || {};
@@ -158,6 +175,7 @@ export function turnTitle(packet: AnswerPacket): string {
   if (packet.status === 'outside_validity') return 'That window is not available';
   if (packet.status === 'explanation') return 'General explanation';
   if (packet.status === 'cancelled') return 'Stopped';
+  if ((packet.airport_reports || []).length) return 'Airport report';
   if ((packet.charts || []).length) return 'Retrieved series';
   return 'Answer';
 }

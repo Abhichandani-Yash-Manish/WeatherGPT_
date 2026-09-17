@@ -64,7 +64,7 @@
     {
       "file": "test_views.js",
       "checks": 25,
-      "ported": 19,
+      "ported": 25,
       "evidence": [
         {
           "spec": "src/chat/chat.test.tsx",
@@ -128,9 +128,25 @@
             "offers every place candidate the engine sent for a shared name",
             "sends the selection id of the candidate the reader chose back to the engine"
           ]
+        },
+        {
+          "spec": "src/chat/card.gaps.test.tsx",
+          "tests": [
+            "shows a computation with the engine method, and a source comparison as a difference rather than a score",
+            "receipts the values it plotted when every returned value is already drawn",
+            "reports asked, answered and incomplete separately, and names the incomplete task",
+            "draws the district day as its named period with the stated colour and the no-all-clear sentence",
+            "states that a quiet district-day is not an all-clear"
+          ]
+        },
+        {
+          "spec": "src/chat/page.test.tsx",
+          "tests": [
+            "never renders a stylesheet class name as visible text"
+          ]
         }
       ],
-      "note": "Nineteen of these twenty-five are held by React checks: the answer-first headline, the ruler and its segments, the receipt, the task accounting, the bounded volume and the unduplicated plotted values, the place clarification with its selection id, the unwritten language, the held warning, the airport report, the series lead, the warning day with its period, the raw-packet inspector, the stage readout, the edition labelling, the two-product comparison, the quick replies, the provisional first reading, the continuation carrying, the register and the conversational labelling. Not held: the between-source difference (no such component), the class-name leak scan (a source-level check would fit here), the plan card Change and Undo actions, and the placeholder receipt wording."
+      "note": "Complete: every one of the twenty-five checks has a React counterpart. The card specs hold the answer-first headline, the ruler and its segments and readout, the receipt, the bounded volume, the clarification with its selection id, the language downgrade, the held warning, the raw-packet inspector, the stage readout, the edition labelling, the two-product comparison, the quick replies, the provisional first reading, the continuation carrying, the register and the conversational labelling; the gap spec holds the computed value (and that a source comparison is a difference), the airport report and its type, the series receipt, task accounting and the warning day; and the page spec holds the class-name leak rule. None of the checks was retired."
     },
     {
       "file": "test_voice_ui.js",

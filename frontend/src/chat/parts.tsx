@@ -2,10 +2,10 @@
    packet holds nothing; none of them computes a value, a colour meaning or a coverage claim. */
 
 import { useState, type ReactNode } from 'react';
-import type { AnswerPacket, Citation, Fact, SourceEntry } from '../api/types';
+import type { AnswerPacket, AirportReport, Calculation, Citation, Fact, SourceEntry } from '../api/types';
 import { istClock, istDay, istStamp, istWindow } from '../lib/time';
 import { copyText, receiptRows, receiptText } from './actions';
-import { isHeld, kindOf, parameterName, placeOf, statusLabel, windowFacts } from './model';
+import { calculationKind, chartEvidenceIds, coverageFacts, isHeld, kindOf, parameterName, placeOf, statusLabel, windowFacts } from './model';
 
 export function Tag({ children, tone = 'default', title }: { children: ReactNode; tone?: 'default' | 'quiet' | 'held' | 'good'; title?: string }) {
   const cls = tone === 'quiet' ? 'tag tag-quiet' : tone === 'held' ? 'tag tag-held' : tone === 'good' ? 'tag tag-good' : 'tag';
@@ -91,6 +91,85 @@ export function FactsTable({ packet, facts }: { packet: AnswerPacket; facts: Fac
             </div>
             <div className="fact-source text-right">{fact.source_id || 'source not stated'}</div>
           </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ---- calculations --------------------------------------------------------------------------- */
+/* A value the engine computed is evidence with its own provenance, not a measurement of ours: it is shown
+   in its own block, with the engine's own classification, method and input/source counts. It is never
+   promoted to the card's lead reading, and a difference between two sources is stated as a difference
+   rather than as skill, accuracy or confidence. */
+export function Calculations({ packet }: { packet: AnswerPacket }) {
+  const calculations: Calculation[] = packet.calculations || [];
+  if (!calculations.length) return null;
+  return (
+    <div className="flex flex-col gap-2">
+      {calculations.map((calculation, index) => {
+        const comparison = calculation.kind === 'source_comparison';
+        const inputs = calculation.input_ids || [];
+        const sources = calculation.source_ids || [];
+        const words = [
+          inputs.length + ' input value' + (inputs.length === 1 ? '' : 's'),
+          sources.length ? 'from ' + sources.join(', ') : null,
+          calculation.method || null,
+          calculation.interpretation || null,
+        ].filter(Boolean).join(' \u00b7 ');
+        return (
+          <div key={(calculation.label || 'calculation') + '-' + index} className={'calc card px-3 py-2' + (comparison ? ' is-comparison' : '')}>
+            <p className="flex flex-wrap items-baseline gap-2">
+              <span className="calc-value font-mono">{String(calculation.value ?? 'value not stated')}</span>
+              {calculation.unit ? <span className="text-xs text-ink-soft">{calculation.unit}</span> : null}
+              <span className="quiet text-xs">{calculationKind(calculation)}</span>
+            </p>
+            {calculation.label ? <p className="calc-label mt-1 text-xs font-semibold">{calculation.label}</p> : null}
+            <p className="mt-1 text-xs text-ink-soft">{words}.</p>
+            {comparison ? (
+              <p className="mt-1 text-xs text-ink-soft">
+                A difference between two sources is not a skill score, an accuracy measure or a confidence value,
+                and agreement between them does not establish correctness.
+              </p>
+            ) : null}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ---- airport reports ------------------------------------------------------------------------- */
+/* An airport report is the source's own text, kept exactly as it was transmitted, and typed as what it is:
+   a METAR is an observation with an observed time, a TAF is a forecast over its stated validity. Neither is
+   a flight status, a runway state or an operational clearance, and the card says so beside the report. */
+export function AirportReports({ packet }: { packet: AnswerPacket }) {
+  const reports: AirportReport[] = packet.airport_reports || [];
+  if (!reports.length) return null;
+  return (
+    <div className="flex flex-col gap-2">
+      {reports.map((report, index) => {
+        const kindWords = report.kind === 'taf' ? 'Forecast (TAF)' : report.kind === 'metar' ? 'Observed report (METAR)' : (report.kind || 'Report kind not stated');
+        const at = report.observed_at || report.valid_start;
+        const validity = report.valid_start || report.valid_end
+          ? 'Valid ' + (report.valid_start ? istStamp(report.valid_start) : 'not stated') + ' to ' + (report.valid_end ? istStamp(report.valid_end) : 'not stated') + '.'
+          : 'No validity interval was stated in this report.';
+        return (
+          <section key={(report.station || 'station') + '-' + index} className="capability card px-3 py-2">
+            <div className="capability-head flex flex-wrap items-baseline justify-between gap-2">
+              <h3 className="font-semibold">{(report.station || 'station not stated') + ' \u00b7 ' + kindWords}</h3>
+              <Tag tone="quiet">{at ? istStamp(at) : 'Time not supplied'}</Tag>
+            </div>
+            {report.raw_report ? (
+              <pre className="raw-report mt-2 whitespace-pre-wrap font-mono text-xs">{report.raw_report}</pre>
+            ) : (
+              <p className="mt-1 text-xs text-ink-soft">This report states no raw text.</p>
+            )}
+            <p className="mt-1 text-[11px] text-ink-soft">
+              {validity} A report describes its station and its stated validity, not conditions across a whole city,
+              and not a flight status or a clearance; it is also not a runway state and not an operational clearance.
+            </p>
+          </section>
         );
       })}
     </div>
@@ -248,6 +327,168 @@ export function EvidenceReceipt({ packet, fact }: { packet: AnswerPacket; fact: 
       <p className="mt-2 text-[11px] quiet">
         A receipt for the moment it was retrieved, not a standing fact. Model output is not an observation and not a district average.
       </p>
+    </div>
+  );
+}
+
+/* ---- the series receipt --------------------------------------------------------------------- */
+/* A series whose every value is already drawn still carries a receipt: how many values were retrieved, from
+   which source and when, and the sentence that a reading of the record is descriptive rather than a
+   projection or an attribution. It is drawn only where the payload plotted the values; a fact that is not
+   drawn keeps its own row. */
+export function SeriesReceipt({ packet }: { packet: AnswerPacket }) {
+  const charts = packet.charts || [];
+  if (!charts.length) return null;
+  const plotted = chartEvidenceIds(packet);
+  const series = coverageFacts(packet).filter(fact => plotted.has(fact.id));
+  if (!series.length) return null;
+  const measures: string[] = [];
+  series.forEach(fact => {
+    const name = parameterName(fact);
+    if (measures.indexOf(name) < 0) measures.push(name);
+  });
+  const sources: string[] = [];
+  series.forEach(fact => {
+    if (fact.source_id && sources.indexOf(fact.source_id) < 0) sources.push(fact.source_id);
+  });
+  const citation = (packet.citations || []).find(entry => (series[0].citation_ids || []).includes(entry.id));
+  const sourceLine = [sources.join(', '), citation?.provider, citation?.product].filter(Boolean).join(' \u00b7 ');
+  const locator = citation
+    ? [citation.page ? 'page ' + citation.page : null, citation.row ? 'row ' + citation.row : null, citation.column || null].filter(Boolean).join(' \u00b7 ')
+    : '';
+  return (
+    <div className="receipt px-3 py-3">
+      <p className="eyebrow">Evidence receipt</p>
+      <div className="mt-2">
+        <div className="receipt-row">
+          <span className="receipt-key">Measure</span>
+          <span className="receipt-val">{measures.join(', ') || 'measure not recorded'}</span>
+        </div>
+        <div className="receipt-row">
+          <span className="receipt-key">Values</span>
+          <span className="receipt-val">{series.length + ' retrieved values, each plotted and inspectable with its own evidence id'}</span>
+        </div>
+        <div className="receipt-row">
+          <span className="receipt-key">Place</span>
+          <span className="receipt-val">{placeOf(packet, series[0]) || 'place not recorded'}</span>
+        </div>
+        <div className="receipt-row">
+          <span className="receipt-key">Source</span>
+          <span className="receipt-val">{sourceLine || 'source not stated'}</span>
+        </div>
+        <div className="receipt-row">
+          <span className="receipt-key">Retrieved</span>
+          <span className="receipt-val">{citation?.retrieved_at_utc ? istStamp(citation.retrieved_at_utc) : 'time not recorded'}</span>
+        </div>
+        {locator ? (
+          <div className="receipt-row">
+            <span className="receipt-key">First locator</span>
+            <span className="receipt-val">{locator}</span>
+          </div>
+        ) : null}
+        {series[0].evidence_version ? (
+          <div className="receipt-row">
+            <span className="receipt-key">Evidence id</span>
+            <span className="receipt-val">{String(series[0].evidence_version).slice(0, 16) + '\u2026'}</span>
+          </div>
+        ) : null}
+      </div>
+      <p className="mt-2 text-[11px] quiet">
+        A receipt for the moment the series was retrieved, not a standing fact. The chart is drawn from these
+        values; a descriptive slope is not a projection, an attribution or a validated trend.
+      </p>
+    </div>
+  );
+}
+
+/* ---- task accounting ------------------------------------------------------------------------ */
+/* Asked, answered and incomplete are three different numbers and are reported as three, with the task ids
+   the engine returned, so a turn cannot read as wholly answered when part of it was not. */
+export function TaskAccounting({ packet }: { packet: AnswerPacket }) {
+  const results = packet.task_results || [];
+  if (!results.length) return null;
+  const coverage = packet.task_coverage;
+  const asked = coverage ? coverage.requested : results.length;
+  const answered = coverage ? coverage.completed : results.filter(task => task.status === 'answered').length;
+  const incomplete = coverage ? (coverage.incomplete_ids || []) : results.filter(task => task.status !== 'answered').map(task => task.id);
+  const ids = results.map(task => task.id).filter(Boolean);
+  const answeredIds = results.filter(task => task.status === 'answered').map(task => task.id).filter(Boolean);
+  return (
+    <div className="card px-3 py-2">
+      <p className="eyebrow">Task accounting</p>
+      <p className="coverage mt-1 flex flex-wrap gap-x-4 gap-y-1 text-xs">
+        <span>{'Asked: ' + asked + (ids.length ? ' \u00b7 ' + ids.join(', ') : ' \u00b7 no task id returned')}</span>
+        <span className="quiet">{'Answered: ' + answered + (answeredIds.length ? ' \u00b7 ' + answeredIds.join(', ') : '')}</span>
+        <span className="quiet">{'Incomplete: ' + incomplete.length + (incomplete.length ? ' \u00b7 ' + incomplete.join(', ') : ' \u00b7 none named')}</span>
+      </p>
+      <p className="mt-1 text-[11px] quiet">
+        The engine counts a task answered only when it returned evidence; a clarification or abstention is not
+        counted as answered.
+      </p>
+    </div>
+  );
+}
+
+/* ---- the official district warning day ------------------------------------------------------ */
+/* A warning day is an official statement for a named district-day: its own period, the colour the payload
+   stated and the hazard wording the payload carried, drawn as a table rather than as a measured sample. A
+   day the payload leaves unlabelled or uncoloured says so rather than being given a label or a colour here,
+   and a quiet district-day is stated to be no all-clear. */
+export function WarningPanel({ packet }: { packet: AnswerPacket }) {
+  const districts = (packet.warning_evidence || []).flatMap(entry => entry.district_warnings || []);
+  if (!districts.length) return null;
+  return (
+    <div className="flex flex-col gap-2">
+      {districts.map((district, index) => {
+        const days = district.days || [];
+        return (
+          <section key={(district.district || district.place || 'district') + '-' + index} className="warning-panel card px-3 py-2">
+            <div className="warning-head flex flex-wrap items-baseline justify-between gap-2">
+              <h3 className="font-semibold">{'IMD district warning \u00b7 ' + (district.district || district.place || 'district not named')}</h3>
+              <Tag tone="quiet">{'Bulletin ' + (district.issued_at_utc ? istStamp(district.issued_at_utc) : 'time not recorded')}</Tag>
+            </div>
+            {days.length ? (
+              <table className="warning-days mt-2 w-full text-left text-xs">
+                <thead>
+                  <tr>
+                    <th scope="col">Day</th>
+                    <th scope="col">IMD colour</th>
+                    <th scope="col">Official hazard</th>
+                    <th scope="col">Window (IST)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {days.map((day, dayIndex) => (
+                    <tr key={(day.label || 'day') + '-' + dayIndex}>
+                      <td>
+                        {(day.day === undefined || day.day === null ? 'day index not stated' : 'Day ' + day.day) +
+                          (day.label ? ' \u00b7 ' + day.label : ' \u00b7 day label not stated')}
+                      </td>
+                      <td><span className="wchip">{day.colour || 'colour not supplied'}</span></td>
+                      <td>{day.quiet ? 'No warning in this product' : (day.source_text || (day.hazards || []).join(', ') || 'No hazard code supplied')}</td>
+                      <td>{istWindow(day.starts_utc, day.ends_utc)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <p className="mt-1 text-xs text-ink-soft">This district row states no day rows in this product.</p>
+            )}
+            <p className="field-note mt-1 text-[11px] text-ink-soft">
+              Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is
+              the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows
+              are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for
+              that district-day, and the hazard text is IMD's own wording.
+            </p>
+            {days.some(day => day.quiet) ? (
+              <p className="field-note mt-1 text-[11px] text-ink-soft">
+                A day marked "No warning in this product" means IMD published no warning hazard for that district-day
+                in this product. It is not an all-clear, and not a statement that nothing will happen.
+              </p>
+            ) : null}
+          </section>
+        );
+      })}
     </div>
   );
 }
