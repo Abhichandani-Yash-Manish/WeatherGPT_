@@ -56,6 +56,23 @@ describe('the shell', () => {
     expect(await screen.findByRole('heading', { level: 2, name: /Plans, watches and the notification inbox/ })).toBeInTheDocument();
   });
 
+
+  it('opens a stored conversation named in the address', async () => {
+    const { http, HttpResponse } = await import('msw');
+    const { server } = await import('./test/msw');
+    server.use(
+      http.get('/api/conversations/:id', () =>
+        HttpResponse.json({ schema_version: 'conversation-transcript-v1', id: '11111111-1111-4111-8111-111111111111',
+          updated: '2026-09-17T10:00:00+00:00', turns: [
+            { role: 'user', content: 'Will it rain in Surat tomorrow?' },
+            { role: 'assistant', content: 'Surat: forecast precipitation 0.3 mm.' },
+          ], note: 'Restored transcript.' })),
+    );
+    window.location.hash = '#/assistant?conversation=11111111-1111-4111-8111-111111111111';
+    render(<App />);
+    expect(await screen.findByText(/Surat: forecast precipitation 0.3 mm/)).toBeInTheDocument();
+  });
+
   it('keeps the keyboard shortcut contract the rail prints', async () => {
     window.location.hash = '#/assistant';
     render(<App />);

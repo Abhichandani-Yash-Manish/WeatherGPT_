@@ -99,9 +99,12 @@ describe('pinned places', () => {
 
     const panel = screen.getByTestId('pinned-places');
     expect(within(panel).getByText('AHMADABAD')).toBeInTheDocument();
+    /* The row the reader chose and the resolved point the brief read are offered by the same control
+       over the same local list: both read the pin just stored. */
+    expect(screen.getAllByRole('button', { name: 'Unpin this place' })).toHaveLength(2);
     await userEvent.click(within(panel).getByRole('button', { name: 'Remove pin AHMADABAD' }));
     expect(within(panel).getByTestId('pinned-places-empty')).toBeInTheDocument();
-    expect(screen.getAllByRole('button', { name: 'Pin this place' }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole('button', { name: 'Pin this place' })).toHaveLength(2);
   });
 
   it('refuses a place the record did not give coordinates for, so a pin can never invent a location', () => {

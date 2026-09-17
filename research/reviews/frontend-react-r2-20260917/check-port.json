@@ -214,7 +214,7 @@
     {
       "file": "test_suite_ui.js",
       "checks": 33,
-      "ported": 29,
+      "ported": 33,
       "evidence": [
         {
           "spec": "src/modules/modules.test.tsx",
@@ -315,9 +315,27 @@
             "reserves the shape of a read in progress with an aria-hidden skeleton beside the sentence that says so",
             "carries no number, no label and no progress control, so nothing in it can be read as data or progress"
           ]
+        },
+        {
+          "spec": "src/modules/warnings.gaps.test.tsx",
+          "tests": [
+            "opens a chosen district-day detail with the published hazard wording, its validity window, the source id and the bulletin it came from",
+            "keeps the CAP relay assessment in its own block, separate from the printed product, and says CAP reference resolution alone never authorises dissemination",
+            "composes the brief for the point that was named, with the payload",
+            "leaves the day out of the brief request when the first published day is left to the product",
+            "states a failed alert-brief read as the server"
+          ]
+        },
+        {
+          "spec": "src/shell/topbar.gaps.test.tsx",
+          "tests": [
+            "lists each product",
+            "states a read with no product rows as no rows returned rather than a zero",
+            "keeps the unreachable-store chip and shows no product rows when the health read fails"
+          ]
         }
       ],
-      "note": "Twenty-nine of thirty-three. The newer specs close the map pointer readout, the city layer that sets a working place, the district keyboard cursor, the palette place search and stored conversations, the view transition, pinned places and the loading shapes that reserve the space a read will fill. Still open: the warnings district detail drawer with its CAP-relay note and the write-the-alert-brief control, and the per-product collection-health rows behind the topbar chip."
+      "note": "Complete: every one of the thirty-three checks has a React counterpart. The surface specs hold the renderer registry, the forecast chart, the Alt+hint contract, the plans panel, the watch inbox, the theme cycle, the palette with its place search and stored conversations, the routed names including the hyphenated route, the fresh and unknown route, compare side by side without ranking, empty compare, the token on every request, the map pointer readout, the city working place and the district keyboard cursor, the view transition, pinned places and the loading shapes; and the warning specs hold the district-day detail with its published hazard wording, the CAP relay assessment in its own block with the rule that reference resolution never authorises dissemination, the alert brief left to the product when no day is named, and the per-product collection-health rows behind the topbar chip. None of the checks was retired."
     },
     {
       "file": "test_bulletin_ui.js",

@@ -188,7 +188,7 @@ function Shell() {
         <ErrorBoundary onReset={() => open('assistant')}>
           {view.id === 'assistant' ? (
             <section className="mx-auto flex min-h-0 w-full max-w-5xl flex-1 flex-col px-4 py-4" data-surface="assistant">
-              <AskSurface language={language} persona={persona} seed={seed} />
+              <AskSurface language={language} persona={persona} seed={seed} restoreId={query.get('conversation')} />
             </section>
           ) : (
             <SurfaceHost view={view} onAsk={ask} />
@@ -210,6 +210,8 @@ function Shell() {
         onClose={() => setPalette(false)}
         onOpenView={id => open(id)}
         onNewConversation={() => { setSeed(null); open('assistant'); }}
+        onAsk={ask}
+        onOpenConversation={id => open('assistant', { conversation: id })}
         actions={[{ id: 'plans', label: 'Open plans, watches and the inbox', hint: 'what the workspace will check again, and what it delivered', run: () => setPlansOpen(true) }]}
       />
     </div>

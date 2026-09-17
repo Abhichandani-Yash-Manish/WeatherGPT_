@@ -19,12 +19,23 @@ export type AskSurfaceProps = {
   personas?: { id: string; label: string; who?: string; starters?: string[]; note?: string }[];
   languages?: Languages;
   seed?: { question: string; nonce: number } | null;
+  /** A stored conversation to open on arrival, from #/assistant?conversation=<id>. */
+  restoreId?: string | null;
 };
 
-export function AskSurface({ language, persona, personas, languages, seed }: AskSurfaceProps) {
+export function AskSurface({ language, persona, personas, languages, seed, restoreId = null }: AskSurfaceProps) {
   const conversation = useConversation({ outputLanguage: language, persona });
   const wide = useWideScreen();
   const sentSeed = useRef<number | null>(null);
+  const restored = useRef<string | null>(null);
+
+  /* A conversation named in the address is opened once, so a reader can be sent to one and then
+     keep reading without the address fighting every later turn. */
+  useEffect(() => {
+    if (!restoreId || restored.current === restoreId) return;
+    restored.current = restoreId;
+    void conversation.restore(restoreId);
+  }, [restoreId, conversation]);
 
   useEffect(() => {
     if (!seed || sentSeed.current === seed.nonce) return;
