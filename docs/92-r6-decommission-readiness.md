@@ -118,6 +118,27 @@ and the DOM shim still run in `verify_all.py`, and `audit_workspace_frontend.py`
 deletion is the step that follows, and it is the one that retires those, so it happens only once the five
 remaining claimable checks are named against a React spec.
 
+## 4d. The four open checks, and why they are written last (17 September 2026)
+
+`scripts/decommission_vanilla.py` refuses to run while any vanilla check is unclaimed, so the ledger is the
+gate. Four claimable checks are open, and each one needs the surface read before a check can be written,
+because the rule it holds is about a distinction a careless fixture would erase:
+
+| Check | Suite | What reading it needs | What a lazy check would get wrong |
+| --- | --- | --- | --- |
+| published hazards, missing dates, expired days and explicit quiet remain distinct | test_workspace_ui.js | a payload carrying all four states and the warnings surface rendering of each | a fixture with one hazard row would assert distinctness it never exercised |
+| network-shaped observations keep identity, freshness, zero and unknown units | test_workspace_ui.js | the observations surface station and network rows | a payload whose value is absent, not zero, would pass while asserting the opposite rule |
+| the inbox renders outbox state, channels, ack answers, toggles and the create form | test_notify_ui.js | one payload with a sent row and a registered watch, and the panel labels | five separate specs already hold the controls; this one is the summary and must read the same labels |
+| the per-watch notification history | test_notify_ui.js | the panel, to decide build or record | asserting a block that does not exist is the one failure mode this repository treats as worse than an open item |
+
+The nine `test_viz.js` checks are not open in the same sense: they stay with the served engine, and the
+decommission script prints that with the reason, so applying it with `--force` would not be hiding a claim.
+
+A subagent was given exactly these four and produced no file; it was stopped rather than left running, and
+the ledger was left untouched. The next attempt should read the three surfaces first —
+`modules/WarningsSurface.tsx`, `modules/ObservationsSurface.tsx`, `plans/PlanWatch.tsx` — because that is
+the step both a hasty check and a stalled one skip.
+
 ## 5. The order this suggests
 
 1. Finish the two in-flight pieces (the plans panel, the document viewer) and port the checks they are written
