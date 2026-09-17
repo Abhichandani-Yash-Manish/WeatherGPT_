@@ -1,9 +1,10 @@
 """The React build is the surface this workspace serves by default.
 
 R6 flips the default: a fresh checkout that runs the workspace gets the React page, and the vanilla frontend
-is reachable only by asking for it by name until its tree is deleted. This check reads the constructor and the
-command line rather than starting a server, and the live serving path is pinned by
-research/reviews/frontend-react-r0-20260917/live-r0.json and the R6 acceptance run.
+was removed with that stage. This check reads the constructor and the command line rather than starting a
+server, and it holds the refusal: asking for the removed surface by name gets the product's own sentence, not
+a bare 404. The live serving path is pinned by research/reviews/frontend-react-r0-20260917/live-r0.json and
+the R6 acceptance run.
 """
 import inspect
 import re
@@ -27,7 +28,10 @@ def test_the_request_path_falls_through_to_the_react_branch_by_default():
     flag = re.search(r"p\.add_argument\('--frontend'[^)]*\)", text, re.S)
     assert flag and "default='react'" in flag.group(0), "the command line default was not flipped"
     assert "choices=['legacy','react']" in flag.group(0), \
-        "the legacy surface must stay selectable by name until its tree is deleted"
+        "the removed name stays selectable so the refusal is the product sentence"
+    assert "was removed in R6" in text and "frontend react" in text, \
+        "asking for the removed frontend must be refused in words"
+    assert "raise SystemExit(2)" in text, "the refusal must stop the process"
 
 
 def test_a_missing_build_is_refused_in_words():

@@ -31,9 +31,9 @@ RETENTION_DAYS=7
 class Workspace:
     def __init__(self, database=DEFAULT_DATABASE, raw_root=DEFAULT_RAW, geography=DEFAULT_GEOGRAPHY, clock=utcnow, opener=None,
                  frontend='react'):
-        # Which frontend this process serves: 'react' (web/dist, built by frontend/) is the default since R6,
-        # and 'legacy' (web/*.js, served as source) is kept only until the vanilla tree is deleted. Both
-        # speak the same API and the same token contract.
+        # Which frontend this process serves: 'react' (web/dist, built by frontend/) is the only surface since
+        # R6 removed the vanilla tree, and the command line refuses 'legacy' in words rather than serving a
+        # 404 page for it. Both values speak the same API and the same token contract.
         self.frontend=frontend
         self.service=AnswerService(database,raw_root,geography,clock=clock)
         self.clock=clock;self.opener=opener
@@ -1211,13 +1211,18 @@ def main():
     p.add_argument('--no-warm',action='store_true',help='do not read the slow layers once at startup')
     p.add_argument('--no-plan-watcher',action='store_true',help='Do not check saved plans in the background')
     p.add_argument('--frontend',choices=['legacy','react'],default='react',
-                   help='react serves the built web/dist bundle (the default); legacy serves web/*.js as source')
+                   help="react serves the built web/dist bundle (the only surface since R6); 'legacy' is "
+                        "refused in words rather than served")
     a=p.parse_args()
+    if a.frontend!='react':
+        print('The legacy web/*.js frontend was removed in R6 (docs/92): this workspace serves the built'
+              ' React frontend only. Run without --frontend, or with --frontend react.',flush=True)
+        raise SystemExit(2)
     workspace=Workspace(a.database,a.raw_root,a.geography_database,frontend=a.frontend)
     if not a.no_warm:workspace.start_warming()
     server=make_server(workspace,a.port)
     print('WeatherGPT: http://127.0.0.1:'+str(server.server_port)+' — local prototype; Ctrl-C to stop.',flush=True)
-    print('Frontend: '+a.frontend+(' (web/dist, the default)' if a.frontend=='react' else ' (web/*.js, kept until the vanilla tree is deleted)'),flush=True)
+    print('Frontend: react (web/dist, the only surface since R6)',flush=True)
     if not a.no_plan_watcher:
         workspace.plan_watcher().start()
         print('Plan Watch: saved plans are checked every 30 minutes while this process runs.',flush=True)
