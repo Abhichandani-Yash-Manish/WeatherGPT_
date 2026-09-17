@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { AnswerPacket } from '../api/types';
 import { istStamp } from '../lib/time';
 import { AnswerTurn } from './AnswerTurn';
-import type { Register, Turn } from './model';
+import { noticeHint, type Register, type Turn } from './model';
 import { WorkingTurn } from './WorkingTurn';
 import type { Working } from './model';
 
@@ -68,6 +68,9 @@ export function Transcript({ turns, working, register, onFollowUp, onStop, onRef
             return (
               <div key={turn.key} className={turn.tone === 'error' ? 'card border-l-4 px-3 py-2' : 'card px-3 py-2'} style={turn.tone === 'error' ? { borderLeftColor: 'var(--red)' } : undefined}>
                 <p className="text-sm">{turn.text}</p>
+                {noticeHint(turn.kind) ? (
+                  <p className="mt-1 text-xs text-ink-soft">{noticeHint(turn.kind)}</p>
+                ) : null}
                 <p className="mt-1 text-[11px] quiet">Your question is back in the box so it stays editable.</p>
               </div>
             );

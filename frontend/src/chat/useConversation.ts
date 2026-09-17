@@ -155,7 +155,14 @@ export function useConversation(options: ConversationOptions = {}) {
         dispatch({
           type: 'notice',
           key,
-          turn: { key: key + ':notice', role: 'notice', tone: calm ? 'calm' : 'error', text: message, at: new Date().toISOString() },
+          turn: {
+            key: key + ':notice',
+            role: 'notice',
+            tone: calm ? 'calm' : 'error',
+            text: message,
+            at: new Date().toISOString(),
+            kind: error instanceof ApiError ? error.kind : undefined,
+          },
           draft: question,
         });
       } finally {

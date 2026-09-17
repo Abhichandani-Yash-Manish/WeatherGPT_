@@ -52,6 +52,34 @@ describe('the page rules', () => {
     expect(screen.queryByText(/precipitation 0.3 mm/)).toBeNull();
   });
 
+
+  it('names the state a failed read left the reader in, not only the server sentence', async () => {
+    /* An expired token and an unavailable store must read differently: they call for different actions, and a
+       generic failure sentence would leave the reader guessing which one happened. */
+    server.use(
+      http.post('/api/chat', () => HttpResponse.json({ error: 'The workspace token is no longer accepted.' }, { status: 403 })),
+    );
+    mount(<AskSurface language="" persona="" />);
+    const box = screen.getByLabelText('Your question');
+    await userEvent.type(box, 'Will it rain?');
+    await userEvent.click(screen.getByTestId('send-question'));
+    expect(await screen.findByText(/The workspace token is no longer accepted/)).toBeInTheDocument();
+    expect(screen.getByText(/If the server was restarted, reload the page/)).toBeInTheDocument();
+    expect(screen.queryByText(/The local evidence store did not answer/)).toBeNull();
+  });
+
+  it('names an unavailable store as its own state', async () => {
+    server.use(
+      http.post('/api/chat', () => HttpResponse.json({ error: 'The local evidence store is unavailable.' }, { status: 503 })),
+    );
+    mount(<AskSurface language="" persona="" />);
+    const box = screen.getByLabelText('Your question');
+    await userEvent.type(box, 'Will it rain?');
+    await userEvent.click(screen.getByTestId('send-question'));
+    expect(await screen.findByText(/The local evidence store is unavailable/)).toBeInTheDocument();
+    expect(screen.getByText(/Nothing was read, so this is not an empty result/)).toBeInTheDocument();
+  });
+
   it('never renders a stylesheet class name as visible text', () => {
     /* Every class name the stylesheets declare, collected from the sources the built page uses. A text node
        that matched one would be chrome shown as a measure. */

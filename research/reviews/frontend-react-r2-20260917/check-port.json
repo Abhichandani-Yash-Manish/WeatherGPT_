@@ -5,7 +5,7 @@
     {
       "file": "test_conversation_ui.js",
       "checks": 14,
-      "ported": 11,
+      "ported": 14,
       "evidence": [
         {
           "spec": "src/chat/chat.test.tsx",
@@ -57,9 +57,18 @@
             "starts a new conversation without sending a question and forgets the identifier",
             "lists the stored conversations and filters them by their first question"
           ]
+        },
+        {
+          "spec": "src/chat/page.test.tsx",
+          "tests": [
+            "refuses an empty question without sending anything",
+            "names the state a failed read left the reader in, not only the server sentence",
+            "names an unavailable store as its own state",
+            "never renders a stylesheet class name as visible text"
+          ]
         }
       ],
-      "note": "Eleven of these fourteen are held: the accepted keys a question sends, the conversation id a follow-up keeps, the selection id a chosen place returns, the bounded queue wording, the cancelled turn and its server response, the collection request, the new conversation, the ledger with its search, the local delete, the field builder and the register. Not held as checks: the refused empty question (the Ask control is disabled, but no check asserts it) and the split between an expired token and an unavailable store (the client distinguishes them; no surface check reads both)."
+      "note": "Complete: every one of the fourteen checks has a React counterpart. The turn spec holds the accepted request keys, the conversation id a follow-up keeps, the bounded queue, cancellation and its reply, the new conversation and the ledger with its search; the card spec holds the selection id a chosen place returns and the resolved point read from the packet; the parity spec holds the local delete; the field builder checks hold the editable box the builder never submits; and the page spec holds the refused empty question and the split between an expired token and an unavailable store, each stated as its own state with the action it calls for. None of the checks was retired."
     },
     {
       "file": "test_views.js",

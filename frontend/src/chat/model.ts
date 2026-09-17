@@ -230,7 +230,24 @@ export function stageLabel(stage?: string | null): string {
 
 export type UserTurn = { key: string; role: 'user'; text: string; at: string };
 export type AnswerTurn = { key: string; role: 'answer'; packet: AnswerPacket; at: string; restored?: boolean };
-export type NoticeTurn = { key: string; role: 'notice'; tone: 'calm' | 'error'; text: string; at: string };
+/* The kind a failed read came back as, kept so the transcript can name the state the reader is in rather
+   than only repeating the server's sentence. */
+export type NoticeKind = 'offline' | 'busy' | 'unavailable' | 'refused' | 'server';
+
+export type NoticeTurn = { key: string; role: 'notice'; tone: 'calm' | 'error'; text: string; at: string; kind?: NoticeKind };
+
+/* What each state means, in the reader's terms, and never a claim about what the server did. */
+export const NOTICE_HINTS: Record<NoticeKind, string> = {
+  offline: 'The workspace did not answer at all. It answers on this machine only: check that the server is still running.',
+  busy: 'The workspace is answering as many questions as it allows at once. Nothing was read for this one.',
+  unavailable: 'The local evidence store did not answer. Nothing was read, so this is not an empty result and not a quiet one.',
+  refused: 'The workspace refused this request. If the server was restarted, reload the page: the session token belongs to one process.',
+  server: 'The workspace accepted the request and then failed. Nothing was read for it.',
+};
+
+export function noticeHint(kind?: NoticeKind): string | null {
+  return kind ? NOTICE_HINTS[kind] : null;
+}
 /* A restored transcript is the stored sentence, not a receipt: the engine keeps the text of past turns
    and a restored turn says so rather than pretending to be a freshly retrieved answer. */
 export type RestoredTurn = { key: string; role: 'restored'; text: string; at: string };
