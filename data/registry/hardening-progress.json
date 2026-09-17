@@ -2941,5 +2941,26 @@
   ],
   "hosting_performed": false,
   "same_host_only": true
+ },
+ "mentor_status_brief_batch": {
+  "report": "docs/94-mentor-status-brief.md",
+  "evidence_directory": "research/reviews/ps-closure-review-20260917",
+  "scope": "a mentor-facing status brief: what runs, the SIH26068 state, the source position, why the blocked IMD addresses matter, and the asks",
+  "delivered": [
+   "docs/94: the product in one paragraph, the ten-minute walkthrough, the eleven-row requirement table, the source ledger position, the blocked-access analysis in three parts, the five asks, the falsifiable limits and the queue",
+   "the blocked rows are grouped by whether a substitute exists: nine rows where a layer or model stands in but is not the authority, five rows with no substitute (district rainfall monitoring, cyclone wind polygons, cyclone cone of uncertainty, port warning, sea-area and coastal bulletins), and the provenance argument that a key authenticates the channel and not the content"
+  ],
+  "tests_added": [
+   "none: this batch is a hand-over document; every number in it is the already recorded run in research/reviews/ps-closure-review-20260917"
+  ],
+  "live_check": "research/reviews/ps-closure-review-20260917/gate.txt",
+  "measured": [
+   "the brief cites the same measured state: gate 20 steps, 1309 Python tests, 55 React suites and 296 checks, port ledger 110 of 110, source ledger 70 addresses with 15 blocked"
+  ],
+  "open": [
+   "the asks need answers outside the workspace: an IMD API key or a written refusal, review permission for the public routes, native-speaker and field reviewers, a mobile scope decision, and a licensing confirmation"
+  ],
+  "hosting_performed": false,
+  "same_host_only": true
  }
 }
