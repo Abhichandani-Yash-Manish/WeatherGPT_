@@ -169,7 +169,10 @@ export type AirportReport = {
    unlabelled or uncoloured is absent here rather than defaulted by a surface. */
 export type WarningDay = {
   day?: number;
+  /* The district read states each day's own label as `label`; a payload that spells the same value
+     `day_label` is read rather than shown as unlabelled. */
   label?: string;
+  day_label?: string;
   colour?: string | null;
   colour_code?: number | null;
   quiet?: boolean;

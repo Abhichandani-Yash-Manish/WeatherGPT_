@@ -458,17 +458,21 @@ export function WarningPanel({ packet }: { packet: AnswerPacket }) {
                   </tr>
                 </thead>
                 <tbody>
-                  {days.map((day, dayIndex) => (
-                    <tr key={(day.label || 'day') + '-' + dayIndex}>
-                      <td>
-                        {(day.day === undefined || day.day === null ? 'day index not stated' : 'Day ' + day.day) +
-                          (day.label ? ' \u00b7 ' + day.label : ' \u00b7 day label not stated')}
-                      </td>
-                      <td><span className="wchip">{day.colour || 'colour not supplied'}</span></td>
-                      <td>{day.quiet ? 'No warning in this product' : (day.source_text || (day.hazards || []).join(', ') || 'No hazard code supplied')}</td>
-                      <td>{istWindow(day.starts_utc, day.ends_utc)}</td>
-                    </tr>
-                  ))}
+                  {days.map((day, dayIndex) => {
+                    /* A day states the label the payload carries, in whichever field the payload spells it.
+                       Where the payload states none, the day says so rather than being given a label here. */
+                    const statedLabel = day.label || day.day_label || null;
+                    const statedIndex = day.day === undefined || day.day === null ? null : 'Day ' + day.day;
+                    const dayWords = statedIndex && statedLabel ? statedIndex + ' \u00b7 ' + statedLabel : statedIndex || statedLabel || 'day label not stated';
+                    return (
+                      <tr key={(statedLabel || 'day') + '-' + dayIndex}>
+                        <td>{dayWords}</td>
+                        <td><span className="wchip">{day.colour || 'colour not supplied'}</span></td>
+                        <td>{day.quiet ? 'No warning in this product' : (day.source_text || (day.hazards || []).join(', ') || 'No hazard code supplied')}</td>
+                        <td>{istWindow(day.starts_utc, day.ends_utc)}</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             ) : (
