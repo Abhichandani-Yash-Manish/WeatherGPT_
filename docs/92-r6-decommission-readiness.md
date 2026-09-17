@@ -31,7 +31,7 @@ what has to be true before the deletion.
 | Print | parity between the card's markup and the print stylesheet | `src/chat/print.test.tsx` |
 | Accessibility | axe in jsdom (5 surfaces) and in a browser (15 surfaces, both themes, reduced motion, narrow) | `research/reviews/frontend-react-r5-20260917/` |
 | Owner gate, theme, palette, keyboard | delivered | docs/90, `src/shell/keyboard.test.tsx` |
-| Port ledger | **33 of 110** vanilla checks carry a React spec | `research/reviews/frontend-react-r2-20260917/check-port.json` |
+| Port ledger | **82 of 110** vanilla checks carry a React spec, and one suite is complete: `test_views.js`, the largest at twenty-five checks. Nine `test_viz.js` checks are not claimed and cannot be - the React build is served the same engine bytes at /viz.js, so they still run against the same code, pinned by `tests/test_react_vendor_assets.py` | `research/reviews/frontend-react-r2-20260917/check-port.json`, `scripts/audit_check_port.py` |
 
 ### Still missing on the React side
 
@@ -81,6 +81,23 @@ FE01 needs product work (a narrow layout), not only a check.
    caching for an unhashed file, a stated 404 for a near miss, and an assertion that the file still has no
    `fetch` handler - so a later change that quietly turned it into a cache would fail the gate. **There is
    no offline path to port**; the shell needs the local server, which is what owns the evidence.
+
+## 4b. Where the port stands (9 September 2026)
+
+| Suite | Checks | Named against a React spec | What is left |
+| --- | --- | --- | --- |
+| test_views.js | 25 | **25** | none - the card, the ruler, the receipt, the computed value, the airport report, the series receipt, the task accounting, the warning day and the class-leak rule are all held |
+| test_conversation_ui.js | 14 | 12 | the split between an expired token and an unavailable store as its own service state |
+| test_suite_ui.js | 33 | 23 | the warnings district drawer with its CAP note and the alert-brief control; the observations radar board, rejected-feature list and station parameter units; the map pointer readout, city selection and keyboard cursor; the per-product collection-health rows; the palette place search and stored conversations; view transitions; pins; loading shapes |
+| test_notify_ui.js | 11 | 9 | the per-watch notification history and the ack feedback list |
+| test_workspace_ui.js | 6 | 4 | the two checks the React builder holds differently (the field sentence and the retry path) |
+| test_voice_ui.js | 3 | 3 | none |
+| test_charts.js | 2 | 2 | none |
+| test_bulletin_ui.js | 6 | 5 | the page-anchored locator on the viewer itself |
+| test_briefcase_ui.js | 1 | 0 | the export control and the briefing series (in flight) |
+| test_viz.js | 9 | 0 | not claimable: the same engine bytes are served to both frontends, so these checks still cover the code a React chart runs |
+
+Two things follow from the table. First, the decommission no longer waits on the *card* or the *conversation*: those suites are effectively done, and what remains is a named set of surface features (the warnings drawer, the map interactions, the palette reads, the loading shapes) plus the briefcase furniture. Second, the nine viz checks are not a gap to close but a property to keep: they are the reason `web/viz.js` stays served rather than bundled, and `tests/test_react_vendor_assets.py` is what makes that decision safe.
 
 ## 5. The order this suggests
 
