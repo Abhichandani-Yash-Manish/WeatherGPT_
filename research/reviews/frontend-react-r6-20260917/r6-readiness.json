@@ -16,5 +16,14 @@
   ],
   "defect_found_and_fixed": "appending to frontend/src/styles/app.css by reading only the first lines truncated the file: the design-system vocabulary (.skip-link, .card, .btn, .reading, .display and the rest) was deleted and the page still rendered, with the skip link in flow taking 175px of the narrow row. Restored from git, re-applied whole, and src/styles/styles.test.ts now names the vocabulary and fails if one is missing.",
   "service_worker_decision": "NOT ported in this batch. The plans panel states that a push subscription registers /sw.js and that the subscription is refused while the React build serves no worker. Together with py_vapid not being installed on this machine, browser push is unverified on the React path; the panel never claims delivery.",
-  "push_on_this_machine": "GET /api/push/vapid-key raises because py_vapid is absent (requirements.txt lists pywebpush==2.5.0, not installed here). The panel shows the route own refusal rather than a control that would fail silently."
+  "push_on_this_machine": "GET /api/push/vapid-key raises because py_vapid is absent (requirements.txt lists pywebpush==2.5.0, not installed here). The panel shows the route own refusal rather than a control that would fail silently.",
+  "default_surface_browser_run": {
+    "what": "the workspace started with no frontend argument, opened in headless Chrome over loopback",
+    "observed": "the served page is the React landing surface (the header, the hero and the live reads render); /#/assistant renders the conversation; the server banner reads \"Frontend: react (web/dist, the default)\"",
+    "captures": [
+      "default-surface.png",
+      "default-ask.png"
+    ],
+    "caveat": "one desktop viewport in one browser; the legacy surface was not started in this run because the point of the run is which surface a default start serves"
+  }
 }
