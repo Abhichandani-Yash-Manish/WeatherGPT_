@@ -463,7 +463,9 @@ export function WarningPanel({ packet }: { packet: AnswerPacket }) {
                        Where the payload states none, the day says so rather than being given a label here. */
                     const statedLabel = day.label || day.day_label || null;
                     const statedIndex = day.day === undefined || day.day === null ? null : 'Day ' + day.day;
-                    const dayWords = statedIndex && statedLabel ? statedIndex + ' \u00b7 ' + statedLabel : statedIndex || statedLabel || 'day label not stated';
+                    const dayWords = statedLabel
+                      ? (statedIndex ? statedIndex + ' \u00b7 ' + statedLabel : statedLabel)
+                      : (statedIndex ? statedIndex + ' \u00b7 day label not stated' : 'day label not stated');
                     return (
                       <tr key={(statedLabel || 'day') + '-' + dayIndex}>
                         <td>{dayWords}</td>
