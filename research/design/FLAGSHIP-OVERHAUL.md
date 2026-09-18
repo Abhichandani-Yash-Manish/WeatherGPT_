@@ -1,0 +1,72 @@
+# The flagship overhaul
+
+Working record for the frontend overhaul begun 19 September 2026. Each phase is committed as it lands, with the
+capture that justifies it. Companion to the design language documents; this file is the *state* of the work.
+
+## Where the work started
+
+The tree already held a ChatGPT-shaped shell (`frontend/src/gpt/`): a rail, a top bar, a centred column, a
+docking composer, and a canvas field whose colour came from the hour. Capture `now-1200.png` shows what it looked
+like: a **dark navy** page at midday, no glass panel, and a permanent rail taking a sixth of the sky.
+
+The chosen captures this work is aimed at:
+
+| capture | what it shows |
+|---|---|
+| `chat-1312ist@1440.png` | bright azure sky over warm sand, the conversation floating in a pale glass panel, chips inside it, a mono legend at the foot |
+| `react-gust.png` | the same structure at dusk: violet through rose to amber, dark ink still |
+| `gpt4-chat-1200.png` | the running conversation: question bubble, answer column, the work list, the ledger, the composer docked in the panel |
+
+## Phase one — the hour paints the page (committed `6801e04`)
+
+1. **The chrome follows the reader's sun.** `data-mode` is derived from `hourOf()`: a bright page with dark ink by
+   day, dark glass with light ink at night, the same panel geometry at every hour so nothing jumps at dusk.
+2. **The four hour palettes repainted** in `fieldPaint.ts` from the captures. Midday is no longer dark navy: it is
+   a saturated azure falling to sand at the foot. Golden runs violet through rose to amber; night is lifted a little
+   so its horizon stays readable.
+3. **One frosted sheet** holds the conversation: a faint fill, a 22px blur, a highlight along the top edge. Content
+   height at the welcome, tall once there are turns. The sky is visible around it and faintly through it.
+4. **The rail became a drawer at every width.** It was a permanent sixth of the sky; it is now something a reader
+   opens.
+5. **A foot legend** in mono names what painted the field and what stays on this machine, so the decoration is
+   declared where it is drawn.
+
+Measured while doing it: at three-quarters opaque the panel read as a grey sheet laid over the sky — the opposite of
+the reference — so the light glass settled at `rgba(255,255,255,0.46)` and the night glass at
+`rgba(14,17,21,0.44)`.
+
+Captures: `p1c-1200.png`, `p1c-2221.png`.
+
+## Phase two — the conversation inside the glass (first pass)
+
+- A reader turn is a bubble that hugs its words at the right edge (`width: fit-content`, one squared corner),
+  not a band across the panel.
+- The transcript keeps its own measure inside the sheet (720px) so a long answer does not run the full width.
+- The running status is a quiet mono line with a live dot, not a sentence competing with the answer.
+- The glass thins to 40% while a conversation is running, because the sheet is tall and the sky should stay present.
+
+Capture: `p2b-chat.png` — the answer with its claims, the `how this was answered` line, task accounting, the folds
+and the action chips, all inside the sheet.
+
+## Still to do, in the order I would take it
+
+1. **The claim and the ledger as flagship components.** The claim cards and the evidence receipt are still the
+   instrument's: they need the mono key column, the hairline rows, and a hover that reveals the source line.
+2. **Motion, one arrival per answer.** The work list ticking, the claims staggering in, the numbers landing on
+   exactly the value the tool returned, and all of it collapsing to a plain render under reduced motion.
+3. **The fold and the action row.** `What this answer does not cover` is a full-width band; it should be a quiet
+   hairline row with a chevron.
+4. **The board.** The dashboard is still the old instrument's tiles; it should be the same language as the panel.
+5. **The empty state's second beat.** When the reader starts typing, the field should step back and the panel come
+   forward, rather than both being static.
+6. **The sun and the moon.** The field is a painted gradient; the reference has a disc that travels, which the
+   canvas can draw in the same pass.
+
+## Notes for whoever picks this up
+
+- **Pushing is not possible from this sandbox** (the shell has no network). Commits are local and land on `main`;
+  `git push` has to run from a machine with credentials.
+- The capture tool (`frontend/tools/audit-shot.mjs`) now accepts either composer: the older surface's
+  `Your question` label or the flagship composer's placeholder and `Send` button.
+- The parallel session's work and this one share the tree: check `git status` before staging, and stage only the
+  files this work changed.

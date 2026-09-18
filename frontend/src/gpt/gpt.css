@@ -444,3 +444,26 @@ html, body { background: var(--g-bg); }
 /* The hero gets the room the reference gives it. */
 .g-panel .g-hero { font-size: clamp(2rem, 1.25rem + 2.3vw, 2.9rem); line-height: 1.14; }
 .g-panel .g-hero-sub { font-size: clamp(1.02rem, 0.96rem + 0.42vw, 1.2rem); line-height: 1.55; }
+
+/* Phase two, first pass: the turns inside the glass.
+   ----------------------------------------------------------------------------
+   A reader turn is a bubble that hugs its words at the right edge, not a band across the panel; the transcript
+   keeps its own measure inside the sheet so a long answer does not run the full width of the frame. */
+.g-turn { display: flex; flex-direction: column; align-items: stretch; }
+.g-you {
+  align-self: flex-end;
+  justify-self: end;
+  width: fit-content;
+  max-width: min(78%, 34rem);
+  border-radius: 18px 18px 6px 18px;
+  border: 1px solid var(--g-line);
+  padding: 10px 15px;
+}
+.g[data-mode='light'] .g-you { background: rgba(255, 255, 255, 0.66); }
+/* The measure of the transcript inside the sheet. */
+.g-panel .g-col { max-width: 720px; margin-inline: auto; }
+/* While a conversation is running the sheet is tall, so the glass is thinner to keep the sky present. */
+.g[data-mode='light'] .g-panel[data-chatting='true'] { --g-panel: rgba(255, 255, 255, 0.4); }
+.g[data-mode='dark'] .g-panel[data-chatting='true'] { --g-panel: rgba(14, 17, 21, 0.4); }
+/* The status line: a quiet mono statement with a live dot, not a sentence competing with the answer. */
+.g-stream { display: inline-flex; align-items: center; gap: 9px; font-family: var(--g-mono); font-size: 12px; color: var(--g-ink-2); }

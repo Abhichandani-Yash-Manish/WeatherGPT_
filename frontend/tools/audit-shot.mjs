@@ -50,8 +50,15 @@ for (const shot of shots) {
   /* A shot may ask a question, so the conversation state can be captured as it really is rather than styled
      into existence. It types into the page's own question box and presses Ask. */
   if (shot.ask) {
-    await page.getByLabel('Your question').fill(shot.ask);
-    await page.getByRole('button', { name: 'Ask' }).click();
+    /* The question box is whichever the shell mounts: the older surface labelled it "Your question", the
+       flagship composer labels the placeholder and the send button. Both are accepted so a capture script is
+       not a reason to keep a label. */
+    const box = page.getByLabel('Your question');
+    if (await box.count()) await box.fill(shot.ask);
+    else await page.getByPlaceholder('Ask about a place and a time…').fill(shot.ask);
+    const ask = page.getByRole('button', { name: 'Ask' });
+    if (await ask.count()) await ask.click();
+    else await page.getByRole('button', { name: 'Send' }).click();
     await page.waitForTimeout(shot.askWait ?? 9000);
   }
   if (shot.click) {
