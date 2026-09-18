@@ -1057,7 +1057,7 @@ def execute_corpus(engine, result, plan, task, resolved=None):
                      'current crop stage or the weather at that field, and it is not a personal go/no-go decision.')
     for flag in conditional_guidance:
         parts.append('On ' + str(flag['activity']) + ', this edition states one rule in two places rather than two '
-                     'opposing ones: it restricts the operation ' + str(flag['restricted_when']) + ' and permits it ' +
+                     'opposing ones: it restricts the operation ' + str(flag['restricted_when']) + ', and permits it ' +
                      str(flag['permitted_when']) + '. Whether that condition holds at a particular field is not '
                      'established here, and the passages are quoted above as printed.')
     if conflicts:

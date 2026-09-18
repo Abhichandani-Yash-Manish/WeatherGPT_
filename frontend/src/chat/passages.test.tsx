@@ -30,7 +30,7 @@ function packet(overrides: Partial<AnswerPacket> = {}): AnswerPacket {
 }
 
 function mount(p: AnswerPacket) {
-  return render(<AnswerTurn packet={p} register="conversational" onFollowUp={() => {}} />);
+  return render(<AnswerTurn packet={p} onFollowUp={() => {}} />);
 }
 
 describe('the passages an answer carries', () => {

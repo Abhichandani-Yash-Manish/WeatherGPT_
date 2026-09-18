@@ -290,6 +290,15 @@ export type Register = 'brief' | 'conversational' | 'full';
 export const REGISTER_KEY = 'weathergpt.register';
 export const REGISTER_ORDER: Register[] = ['brief', 'conversational', 'full'];
 
+/* One vocabulary for the register, wherever it is offered. The conversation rail and the front door both
+   read these, so a reader cannot be told two different things about the same choice. */
+export const REGISTER_LABEL: Record<Register, string> = { brief: 'Brief', conversational: 'Conversational', full: 'Full evidence' };
+export const REGISTER_NOTE: Record<Register, string> = {
+  brief: 'the answer and its leading value',
+  conversational: 'adds the window, the other facts, the receipt and the sources',
+  full: 'adds the requested tasks, the retrieval choices and the machine record',
+};
+
 export function readRegister(): Register {
   try {
     const stored = window.localStorage.getItem(REGISTER_KEY);

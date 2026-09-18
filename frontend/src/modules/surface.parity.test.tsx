@@ -48,9 +48,8 @@ import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { App } from '../App';
 import { PlanWatch } from '../plans/PlanWatch';
-import { THEME_KEY } from '../shell/theme';
 import { parseHash } from '../shell/useHashRoute';
-import { shortcutView, VIEWS } from '../shell/views';
+import { VIEWS } from '../shell/views';
 import { server } from '../test/msw';
 import { Surface as CompareSurface } from './CompareSurface';
 import { Surface as ForecastSurface } from './ForecastSurface';
@@ -224,10 +223,6 @@ const AIR_QUALITY = envelope(
   { not_established: ['An air-quality index is the source\u2019s own index, and no health advice, risk score or official warning is produced from it.'] },
 );
 
-const CLIMATE_INDEX = envelope('climate.index', 'ok', {
-  states: [{ state: 'Gujarat', districts: [{ district: 'Ahmedabad', years: 110, first_year: 1901, last_year: 2010 }] }],
-  districts: 1,
-});
 
 const PLANS = {
   schema_version: 'plan-inbox-v1',
@@ -381,27 +376,6 @@ describe('the forecast surface draws a chart', () => {
     expect(within(chart).getByRole('button', { name: /26 °C/ })).toBeInTheDocument();
   });
 });
-
-describe('the printed surface shortcuts', () => {
-  it('prints one Alt+number hint per shortcut and opens the surface each hint names', async () => {
-    server.use(http.get('/api/climate/index', () => HttpResponse.json(CLIMATE_INDEX)));
-    window.location.hash = '#/assistant';
-    mount(<App />);
-
-    const rail = within(screen.getByRole('navigation', { name: 'Workspace navigation' }));
-    const hinted = VIEWS.filter(view => view.shortcut);
-    expect(hinted).toHaveLength(9);
-    for (const view of hinted) {
-      const button = rail.getByRole('button', { name: new RegExp('^' + view.label + ' ⌥' + view.shortcut + '$') });
-      expect(button).toHaveAttribute('data-view', view.id);
-      expect(shortcutView(view.shortcut as number)?.id).toBe(view.id);
-    }
-
-    await userEvent.keyboard('{Alt>}9{/Alt}');
-    expect(window.location.hash).toBe('#/climate');
-  });
-});
-
 describe('the plans and watches panel', () => {
   it('lists the saved plans and their notifications, and checks plans only when asked', async () => {
     let checks = 0;
@@ -445,32 +419,6 @@ describe('the plans and watches panel', () => {
     expect(within(result).getByText('No current day matches; this is not an all-clear.')).toBeInTheDocument();
   });
 });
-
-describe('the appearance', () => {
-  it('cycles system, day and night and records the choice', async () => {
-    window.location.hash = '#/assistant';
-    mount(<App />);
-
-    const toggle = await screen.findByTestId('theme-toggle');
-    expect(toggle).toHaveTextContent('System theme');
-    expect(document.documentElement.hasAttribute('data-theme')).toBe(false);
-
-    await userEvent.click(toggle);
-    expect(document.documentElement.getAttribute('data-theme')).toBe('light');
-    expect(window.localStorage.getItem(THEME_KEY)).toBe('light');
-
-    await userEvent.click(toggle);
-    expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
-    expect(toggle).toHaveTextContent('Dark');
-    expect(window.localStorage.getItem(THEME_KEY)).toBe('dark');
-
-    await userEvent.click(toggle);
-    expect(document.documentElement.hasAttribute('data-theme')).toBe(false);
-    expect(toggle).toHaveTextContent('System theme');
-    expect(window.localStorage.getItem(THEME_KEY)).toBe('system');
-  });
-});
-
 describe('the routed names', () => {
   it('resolves every routed view name to itself, including the hyphenated air-quality route', async () => {
     expect(parseHash('#/air-quality').view.id).toBe('air-quality');
@@ -484,15 +432,16 @@ describe('the routed names', () => {
   });
 
   it('routes a fresh visit to the conversation and falls back to it for an unknown route', async () => {
-    // A fresh visit now opens the landing front door first (a recorded change from the vanilla shell); the
-    // route it holds is the conversation, and its one action opens it.
+    // A fresh visit opens the front door first (a recorded change from the vanilla shell) and the route it
+    // holds is the conversation. The door's one action — handing a question to the conversation — is
+    // checked in App.test.tsx; here the contract is the route and the reachable question box.
     window.location.hash = '';
     const front = render(<App />);
     expect(parseHash('').view.id).toBe('assistant');
-    expect(screen.getByRole('button', { name: /Open the workspace/i })).toBeInTheDocument();
-    await userEvent.click(screen.getByRole('button', { name: /Open the workspace/i }));
-    expect(window.location.hash).toBe('#/assistant');
-    expect(await screen.findByLabelText('Your question')).toBeInTheDocument();
+    expect(screen.getByLabelText('Your question')).toBeInTheDocument();
+    /* The door is served at the empty address and does not redirect: the conversation is the route it
+       holds, and reaching it is the reader's action rather than a side effect of arriving. */
+    expect(window.location.hash).toBe('');
     front.unmount();
 
     window.location.hash = '#/nothing-here';

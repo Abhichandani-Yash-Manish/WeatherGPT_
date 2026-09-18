@@ -6,16 +6,17 @@ import { viewById, type ViewEntry } from './views';
    address, so a route cannot mean two things in two components. Two shell routes sit outside the
    surface registry: the front door (an empty hash) and the owner gate. */
 
-export type ShellRoute = 'landing' | 'signin';
+export type ShellRoute = 'landing' | 'signin' | 'unknown';
 
-export function parseHash(hash: string): { view: ViewEntry; query: URLSearchParams; shell: ShellRoute | null } {
+export function parseHash(hash: string): { view: ViewEntry; query: URLSearchParams; shell: ShellRoute | null; unknown?: string } {
   const raw = (hash || '').replace(/^#\/?/, '');
   const [path, search] = raw.split('?');
   const query = new URLSearchParams(search || '');
   if (path === 'signin') return { view: viewById('assistant')!, query, shell: 'signin' };
   if (!path) return { view: viewById('assistant')!, query, shell: 'landing' };
   const found = viewById(path);
-  if (!found) return { view: viewById('assistant')!, query, shell: null };
+  /* A page the registry does not hold is named in words on the conversation, never shown as if it were it. */
+  if (!found) return { view: viewById('assistant')!, query, shell: 'unknown', unknown: path };
   return { view: found, query, shell: null };
 }
 
@@ -37,5 +38,5 @@ export function useHashRoute() {
     window.location.hash = target === 'landing' ? '#/' : target === 'signin' ? '#/signin' : '#/assistant';
   }, []);
 
-  return { view: route.view, query: route.query, shell: route.shell, open, go };
+  return { view: route.view, query: route.query, shell: route.shell, unknown: route.unknown || null, open, go };
 }

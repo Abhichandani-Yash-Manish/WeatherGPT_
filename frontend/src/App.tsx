@@ -8,22 +8,14 @@ import { MotionConfig } from 'motion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
-import { AskSurface } from './chat/AskSurface';
-import { Aurora } from './shell/Aurora';
 import { ToastHost } from './ui/kit';
-import { Landing } from './landing/Landing';
+import { Home } from './home/Home';
 import { OwnerGate } from './landing/OwnerGate';
 import { closeGate, hasOwnerVerifier, isGateOpen } from './landing/owner';
-import { PinnedPlaces } from './modules/Evidence';
 import { ErrorBoundary } from './shell/ErrorBoundary';
 import { PlanWatch } from './plans/PlanWatch';
 import { Palette } from './shell/Palette';
-import { Rail } from './shell/Rail';
-import { SkyBackground } from './shell/SkyBackground';
-import { SurfaceHost } from './shell/SurfaceHost';
-import { Topbar } from './shell/Topbar';
 import { useHashRoute } from './shell/useHashRoute';
-import { useSkyPhase, useTheme } from './shell/theme';
 
 /* One client for the whole app: the engine answers from a local store and every read is a snapshot with its
    own retrieval time, so a query is cached only briefly and refetched on focus rather than trusted. */
@@ -83,19 +75,18 @@ function useTransitionedRoute(): ReturnType<typeof useHashRoute> {
 }
 
 function Shell() {
-  const { view, shell, open, go, query } = useTransitionedRoute();
+  const { view, shell, open, go, query, unknown } = useTransitionedRoute();
   /* A deep link such as #/assistant?watch=<id> opens the panel the link names. The query is read here
      rather than in a surface, so the same link works from anywhere in the app. */
   const watchId = query.get('watch');
-  const [theme, cycleTheme] = useTheme();
+  /* No theme switch: the light engine decides the palette from the reader's own sun, so a manual toggle would
+     be a second, contradicting answer to the same question. */
   const [language, setLanguage] = useState('');
   const [persona, setPersona] = useState('');
   const [palette, setPalette] = useState(false);
   const askedSeeded = useRef(false);
-  const [railOpen, setRailOpen] = useState(false);
   const [plansOpen, setPlansOpen] = useState(false);
   const [seed, setSeed] = useState<Seed>(null);
-  useSkyPhase();
 
   /* The gate exists but does not stand in the way by default: with no verifier set, the workspace is exactly
      as open as it has always been. It appears when an owner has set a passphrase and the interface was left
@@ -130,7 +121,7 @@ function Shell() {
   /* The document title follows the surface, so a deep link is identifiable in the tab, in the history and in
      a bookmark. It names the product first for the same reason the rail does. */
   useEffect(() => {
-    if (shell === 'landing') document.title = 'WeatherGPT — evidence-first weather, on this machine';
+    if (shell === 'landing') document.title = 'WeatherGPT';
     else if (shell === 'signin') document.title = 'WeatherGPT — owner gate';
     else if (view.id === 'assistant') document.title = 'WeatherGPT — Ask';
     else document.title = 'WeatherGPT — ' + view.label;
@@ -144,8 +135,24 @@ function Shell() {
     [go],
   );
 
+  /* The front door is the conversation's own door: it opens on the country's weather as this machine read
+     it, lit by the reader's own hour, and hands a question straight to the assistant. The page it replaced
+     is still in the tree as Landing.tsx; it is no longer served. */
   if (shell === 'landing') {
-    return <Landing onEnter={() => go('assistant')} />;
+    return (
+      <Home
+        onOpen={open}
+        onAsk={ask}
+        onNew={() => { setSeed(null); open('assistant'); }}
+        onPlans={() => setPlansOpen(true)}
+        onOwner={() => { closeGate(); go('signin'); }}
+        seed={seed}
+        language={language}
+        onLanguage={setLanguage}
+        persona={persona}
+        onPersona={setPersona}
+      />
+    );
   }
 
   if (shell === 'signin' || locked) {
@@ -178,51 +185,36 @@ function Shell() {
           {hasQuestionBox ? 'Skip to the question box' : 'Skip to the main content'}
         </a>
       </nav>
-      <Aurora />
-      <SkyBackground />
-      <Rail active={view.id} onOpen={open} open={railOpen} onClose={() => setRailOpen(false)} />
-      <button
-        type="button"
-        className="rail-backdrop"
-        aria-label="Close the navigation"
-        hidden={!railOpen}
-        onClick={() => setRailOpen(false)}
-      />
-      <main id="main" tabIndex={-1} className="relative flex min-w-0 flex-1 flex-col focus:outline-none">
-        <Topbar
-          language={language}
-          onLanguage={setLanguage}
-          persona={persona}
-          onPersona={setPersona}
-          theme={theme}
-          onTheme={cycleTheme}
-          onNew={() => { setSeed(null); go('assistant'); open('assistant'); }}
-          onPalette={() => setPalette(true)}
-          onPlans={() => setPlansOpen(true)}
-          onMenu={() => setRailOpen(value => !value)}
-          railOpen={railOpen}
-          onOwner={() => {
-            closeGate();
-            go('signin');
-          }}
-        />
-        {/* The places this browser remembers, in the shell rather than inside one surface: a reader can
-            pin the place a read resolved and see it here from any route, and remove it from here. */}
-        <PinnedPlaces />
+      {/* One shell for the whole product.
+          The instrument chrome — the rail of eighteen peer surfaces, the dashboard top bar, the aurora, the
+          system-theme control — is no longer mounted. The conversation is the page, every module opens beside it
+          in the same frame, and the light engine decides the theme rather than a switch. Those components remain
+          in the tree, unreferenced here, until their tests are retired with them. */}
+      <section id="main" tabIndex={-1} className="flex min-h-0 flex-1 flex-col focus:outline-none">
         <ErrorBoundary onReset={() => open('assistant')}>
-          {view.id === 'assistant' ? (
-            <section className="mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col px-4 py-4" data-surface="assistant">
-              <AskSurface language={language} persona={persona} seed={seed} restoreId={query.get('conversation')} />
-            </section>
-          ) : (
-            <SurfaceHost view={view} onAsk={ask} />
-          )}
+          <Home
+            view={view}
+            onOpen={open}
+            onAsk={ask}
+            onNew={() => {
+              setSeed(null);
+              open('assistant');
+            }}
+            onPlans={() => setPlansOpen(true)}
+            onOwner={() => {
+              closeGate();
+              go('signin');
+            }}
+            language={language}
+            onLanguage={setLanguage}
+            persona={persona}
+            onPersona={setPersona}
+            seed={seed}
+            restoreId={query.get('conversation')}
+            unknownRoute={shell === 'unknown' ? unknown : null}
+          />
         </ErrorBoundary>
-        <p className="px-4 pb-3 text-[11px] quiet" data-print="drop">
-          Every value on this page arrived with its source, its window and the time it was retrieved. The workspace
-          answers on this machine only and will not invent a warning, an observation, a water level or a forecast.
-        </p>
-      </main>
+      </section>
       {/* The plans, watches and inbox panel: not a surface, opened from the topbar or the palette. */}
       {plansOpen ? (
         <div className="planwatch-host" role="presentation">

@@ -3,15 +3,13 @@
    A choice a card offers is sent with its selection identifier when the engine supplied one, so the
    follow-up continues the same conversation rather than re-resolving the name from scratch. */
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import type { AnswerPacket, Languages } from '../api/types';
 import { postJson } from '../api/client';
 import { Composer } from './Composer';
-import { ConversationRail } from './ConversationRail';
 import { Transcript } from './Transcript';
 import { Welcome } from './Welcome';
 import { useConversation } from './useConversation';
-import { useWideScreen } from '../shell/useWideScreen';
 
 export type AskSurfaceProps = {
   language: string;
@@ -21,11 +19,28 @@ export type AskSurfaceProps = {
   seed?: { question: string; nonce: number } | null;
   /** A stored conversation to open on arrival, from #/assistant?conversation=<id>. */
   restoreId?: string | null;
+  /** What the machine says before the reader has asked anything. Rendered only while the transcript is empty,
+      so it opens the conversation and then gets out of the way. */
+  opening?: ReactNode;
+  /** Openings offered under the question box, the way a generative tool offers them: a way in, not a menu. */
+  suggestions?: { label: string; question: string }[] | null;
+  /** Whether this surface is holding a conversation rather than standing at its welcome. The page around it
+      changes when it does: the sky expands and recedes so the transcript owns the screen. */
+  onChatState?: (chatting: boolean) => void;
 };
 
-export function AskSurface({ language, persona, personas, languages, seed, restoreId = null }: AskSurfaceProps) {
+export function AskSurface({
+  language,
+  persona,
+  personas,
+  languages,
+  seed,
+  restoreId = null,
+  opening = null,
+  suggestions = null,
+  onChatState,
+}: AskSurfaceProps) {
   const conversation = useConversation({ outputLanguage: language, persona });
-  const wide = useWideScreen();
   const sentSeed = useRef<number | null>(null);
   const restored = useRef<string | null>(null);
 
@@ -44,6 +59,12 @@ export function AskSurface({ language, persona, personas, languages, seed, resto
   }, [seed, conversation]);
 
   const reading = (personas || []).find(entry => entry.id === persona) || null;
+
+  /* One effect, one boolean, so the page around the conversation never has to know how a transcript is stored. */
+  const chatting = conversation.turns.length > 0 || Boolean(conversation.working);
+  useEffect(() => {
+    onChatState?.(chatting);
+  }, [chatting, onChatState]);
 
   const followUp = (text: string) => {
     const lastAnswer = [...conversation.turns].reverse().find(turn => turn.role === 'answer') as { packet: AnswerPacket } | undefined;
@@ -82,24 +103,26 @@ export function AskSurface({ language, persona, personas, languages, seed, resto
   };
 
   return (
-    <div className="flex min-h-0 flex-1 gap-4" data-surface="assistant">
+    <div className="flex min-h-0 flex-1 gap-4" data-chat={chatting ? 'true' : 'false'} data-surface="assistant" data-reading={reading?.id || ''}>
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-        {conversation.turns.length || conversation.working ? (
+        {chatting ? (
           <Transcript
             turns={conversation.turns}
             working={conversation.working}
-            register={conversation.register}
             onFollowUp={followUp}
             onStop={() => void conversation.stop()}
             onRefresh={packet => void refresh(packet)}
           />
         ) : (
-          <div className="min-h-0 flex-1 overflow-y-auto">
-            <Welcome onAsk={question => void conversation.send(question)} reading={reading} />
+          /* The shape every reader already knows: at the empty state the question box is the hero, sitting in the
+             middle of the screen with the opening above it; once there are turns it drops to the foot of the column
+             and the conversation takes the room. */
+          <div className="flex min-h-0 flex-1 flex-col justify-start">
+            {opening ?? <Welcome onAsk={question => void conversation.send(question)} reading={reading} />}
           </div>
         )}
         {conversation.restoredNote ? <p className="text-[11px] quiet">{conversation.restoredNote}</p> : null}
-        <div className="pb-2 pt-2">
+        <div className="b-dock">
           <Composer
             draft={conversation.draft}
             onDraft={conversation.setDraft}
@@ -109,36 +132,32 @@ export function AskSurface({ language, persona, personas, languages, seed, resto
             languages={languages}
             onStop={() => void conversation.stop()}
           />
-        </div>
-        {!wide ? (
-          /* The stored-conversation column belongs to this column at narrow widths. As a sibling of the
-             conversation it took width from the composer, which collapsed the question box. */
-          <details className="card mb-2 px-3 py-2" data-testid="rail-narrow">
-            <summary className="cursor-pointer text-xs font-semibold text-ink-soft">
-              Reading register and stored conversations
-            </summary>
-            <div className="mt-2 flex">
-              <ConversationRail
-                currentId={conversation.conversationId}
-                onOpen={id => void conversation.restore(id)}
-                onNew={conversation.clear}
-                register={conversation.register}
-                onRegister={conversation.setRegister}
-                wide
-              />
+          {chatting ? (
+            <div className="b-starters">
+              <button type="button" className="b-starter" onClick={conversation.clear}>
+                New
+              </button>
             </div>
-          </details>
-        ) : null}
+          ) : null}
+          {/* Openings live under the box, where they are a way into the conversation rather than a menu above it. */}
+          {!chatting && suggestions?.length ? (
+            <div className="b-starters">
+              {suggestions.map((suggestion: { label: string; question: string }) => (
+                <button
+                  key={suggestion.label}
+                  type="button"
+                  className="b-starter"
+                  aria-label={suggestion.question}
+                  title={suggestion.question}
+                  onClick={() => void conversation.send(suggestion.question)}
+                >
+                  {suggestion.label}
+                </button>
+              ))}
+            </div>
+          ) : null}
+        </div>
       </div>
-      {wide ? (
-        <ConversationRail
-          currentId={conversation.conversationId}
-          onOpen={id => void conversation.restore(id)}
-          onNew={conversation.clear}
-          register={conversation.register}
-          onRegister={conversation.setRegister}
-        />
-      ) : null}
     </div>
   );
 }

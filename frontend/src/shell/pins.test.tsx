@@ -7,7 +7,6 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { server } from '../test/msw';
-import { App } from '../App';
 import { PIN_KEY, PinPlaceButton, PinnedPlaces, pinPlace, readPins } from '../modules/Evidence';
 import { Surface as BriefcaseSurface } from '../modules/BriefcaseSurface';
 
@@ -54,7 +53,7 @@ describe('pinned places', () => {
 
   it('lists the places this browser remembers in the shell, and removes one when the reader asks', async () => {
     window.localStorage.setItem(PIN_KEY, JSON.stringify([PINNED]));
-    render(<App />);
+    mount(<PinnedPlaces />);
 
     const panel = screen.getByTestId('pinned-places');
     expect(within(panel).getByText('Kochi, Kerala')).toBeInTheDocument();

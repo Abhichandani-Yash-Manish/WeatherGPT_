@@ -213,17 +213,13 @@ describe('the transcript', () => {
     expect(screen.getByLabelText('Your question')).toHaveValue('Will it rain in Ahmedabad?');
   });
 
-  it('unfolds more of the evidence in the full register, and remembers the choice', async () => {
+  it('keeps the receipt and the machine record reachable as depth under the answer', async () => {
     server.use(...handlers(FORECAST));
     withClient(<AskSurface language="" persona="" />);
     await ask('Will it rain in Ahmedabad?');
     await screen.findByText('Evidence receipt');
-    const user = userEvent.setup();
-    await user.click(screen.getByRole('button', { name: 'Full evidence' }));
+    expect(screen.getByText('where this came from')).toBeInTheDocument();
     expect(await screen.findByText(/Machine record/)).toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: 'Brief' }));
-    await waitFor(() => expect(screen.queryByText('Evidence receipt')).toBeNull());
-    expect(window.localStorage.getItem(REGISTER_KEY)).toBe('brief');
   });
 
   it('falls back to the conversational register when the stored value is unreadable', () => {

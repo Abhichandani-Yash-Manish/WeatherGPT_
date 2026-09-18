@@ -1,136 +1,78 @@
-# DESIGN.md — the WeatherGPT design system
+# DESIGN.md — the design system
 
-This is the design system the frontend commits to. Read it before adding a surface.
-
-> **The governing idea changed on 18 September 2026.** It is now *the conversation is the product*, set
-> out in [docs/104](docs/104-conversation-first-design-philosophy.md), and that document wins wherever
-> this one still argues for the instrument framing. The rest of this file — the colour discipline, the
-> type roles, the spacing, motion and chart language — stands unchanged, because the reframe changes
-> what leads, not what is true. Two notes on what is stale below: the source of truth is `frontend/src`,
-> not `web/` (the vanilla frontend was deleted when R6 closed), and the new surfaces carry an added
-> design layer scoped to `.v3` in `frontend/src/styles/voices.css` while the reframe moves surface by
-> surface.
+**The governing idea, since 18 September 2026: the conversation is the product, and the sky is the answer.**
+The visual system this file replaces — a field instrument in cool paper and indigo, then an aurora-glass
+reframe — has been deleted; what it contained is recorded in
+[the decommission record](research/design/DECOMMISSION-OLD-UI.md). This file describes only what exists.
 
 ## The idea
 
-**The conversation is the product, and the answer leads.** The product measures published and modelled
-weather for one place at one time, and every value carries where it came from. Nothing precedes the
-answer: each disclosure attaches to the value it qualifies rather than standing in front of it, and the
-apparatus is reachable rather than compulsory. Beauty comes from arranging real facts — a validity ruler,
-a member plume, a district matrix, a printed issue date — never from decoration.
+One place, one hour, one answer, and every value carrying where it came from. Two things are true of this
+product and of nothing else in the category: **every reading knows its place and its hour**, and **every value
+has a chain of custody**. The design is built from those two facts rather than from a mood.
 
-**Two voices, and they are typographic.** A model plans and writes; a governed tool owns every value. So
-prose is set in the human face and every tool-owned value in the machine face, and a reader can tell them
-apart without being told. A number in the human face is a defect.
+**The background is the answer.** The field behind the conversation is composited from the same reads that
+answer questions — the sun's computed position, the forecast's rain and visibility for the hour covering now,
+and the colour a district bulletin printed for today. It is not decoration pretending to be weather: when there
+is nothing to paint with, the sky is astronomy alone. The legend under every surface names each input.
 
 ## Colour
 
-- **Hazard colour belongs to hazards.** `--red`, `--orange`, `--yellow`, `--green` are IMD hazard
-  colours. They may appear only on hazard chips, hazard days and hazard text read from a source.
-  Interface state never uses them: a loading state is not amber, an error is not red, a success is not
-  green.
-- **Interface state is carried by wording, weight, position and monochrome glyphs.** The one accent is
-  `--data` (measured paths, links, focus). `--slate` structures, `--sand` rules and eyebrows.
-- **Chart colour is its own palette** (`--viz-*`): line, model, observed, band, band-line, rain, wind,
-  grid, axis, missing, crosshair, night. A chart never uses a hazard colour, because a spread or a
-  model value is not a warning.
-- **Two themes, same semantics.** Light and dark define the same token names with equal contrast; a
-  surface must never hard-code a colour.
+`--l-*`, computed per place and hour in `src/light/solar.ts`:
+
+- The **ground** is a function of the sun's altitude: seven complete grounds — night, twilight, low light,
+  golden, day, high day — interpolated continuously. A surface never hard-codes a colour; a light-mode surface
+  is not a dark one inverted.
+- The **accent** is the current ground's own, chosen to sit away from all four IMD hazard hues in every mode.
+- **Hazard colour belongs to hazards.** Red, orange, yellow and green are reached only through a value a source
+  printed, they always carry that source's own words beside them, and interface state never borrows them: a
+  failed step is monochrome and struck through, because a red glyph beside a red hazard chip is a lie about
+  severity.
+- **Missing has a texture, not a colour.** Covered spans are drawn; a gap stays hatched; a stale value dims; a
+  quarantined page keeps its quarantine mark.
 
 ## Type
 
-- Families: `--sans` for interface text, `--serif` for the hero/welcome voice, `--mono` for values,
-  locators, timestamps and axis labels.
-- Scale: `--step--1` (labels, notes) → `--step-0` (body) → `--step-1` (card titles) → `--step-2`
-  (block titles) → `--step-3` (surface titles) → `--step-4` (hero) → `--step-5` (hero numerals).
-- Every number is tabular (`font-variant-numeric: tabular-nums`) so columns do not shimmy.
-- Eyebrows and units are uppercase with `--track-wide`; display lines use `--track-tight`.
-- Line length is bounded by `--measure` (74ch) for prose; tables and charts may run wider.
+Two voices, and the split is semantic rather than decorative:
 
-## Space, shape, elevation
+- **Martian Mono** — everything a tool owns: values, units, place names the resolver returned, ids, timestamps,
+  editions, states.
+- **Anek Latin** — everything a model wrote: sentences, invitations, explanations.
 
-- Spacing is the 4px scale `--space-1…7`. Cards are separated by `--space-4/5`, sections by `--space-6`.
-- Radii: `--r` (controls), `--r-card` (surfaces), `--r-pill` (chips).
-- Three elevations only: `--lift-1` (hairline on a surface), `--lift-2` (drawer, palette), `--lift-3`
-  (modal moments). Most surfaces use a hairline (`--hairline`) instead of a shadow.
+A numeral in the human face is a defect. Both faces are self-hosted and bundled; the workspace serves under
+`default-src 'self'`, so no CDN face can load here at all.
+
+## The claim
+
+One value, one window, one source, one state — the same atom in an answer, on a board tile, and in a comparison
+sheet. It carries an optional window ruler (covered spans solid, everything else hatched), a provenance line
+under a hairline, and one light strip along its top: the source's published colour where the value *is* a
+published hazard, and the layer's accent everywhere else.
+
+## Structure
+
+- **The stage** — one rounded field of computed sky, the conversation centred on it, the legend at its foot.
+- **The conversation is the page.** Nothing precedes the answer; the country's picture opens the conversation as
+  the machine's first line, and the openings beneath it are the registry's own questions.
+- **Depth is unfolded, not laid out.** The board is its own surface (`#/board`), not a rail of peers.
+- **The work is openable.** Real steps with real durations; a failed step stays in the list with its reason.
 
 ## Motion
 
-- Durations: `--motion-fast` 120ms (state), `--motion-base` 200ms (hover, focus), `--motion-slow` 320ms
-  (surface entry), `--motion-slower` 520ms (chart draw). Easings: `--ease-out`, `--ease-in-out`,
-  `--ease-spring` for a single emphasis.
-- **Motion explains.** It may show where a surface came from (view transition), that new evidence
-  arrived (row/block rise), or how a line was drawn (stroke draw-in). It may not loop, bounce for
-  decoration, animate a number to a *different* number, or delay reading a value.
-- `prefers-reduced-motion: reduce` collapses every duration to 1ms in `tokens.css`; nothing may depend
-  on an animation having run.
-
-## Components
-
-| Component | Rule |
-|---|---|
-| `block` (card) | One idea per card; a title that states the claim, a note that states the limit. |
-| `stateBlock` | Four voices: plain, loading, error, down. Each names what is missing and whether it is a source state or a local fault. |
-| `chip` | Small, monochrome by default; hazard chips only from source data. |
-| `data-table` | Headers are nouns, cells are values or explicit absences; a missing value prints as `missing`, `not stated` or `—`, never as 0. |
-| `disclosure` | Secondary detail (exact values, provenance, method) lives here, never hidden entirely. |
-| `ruler` | The validity ruler: covered hours in `--data`, uncovered hours as a hairline, model hours dashed. |
-| `receipt` | The evidence artifact: entity, window, method, source, retrieval time, locator, hash. Copyable. |
-| `rail` | Sectioned navigation; every item keyboard reachable; hints must match the handler. |
-| `palette` | Every surface and action is reachable from ⌘K; the palette is the power-user's rail. |
-| `drawer` | Evidence in context, dismissible with Escape, focus returned to the opener. |
-| `viz-matrix` | District x day grid. A cell carries the colour the source printed; an unknown code is flagged, never dropped; rows are ordered by the product own colour rank and the ordering is stated. |
-| `viz-card` | A corpus edition as a card: family rail, printed issue date, currency, pages and passages, and the state of its saved body. Only a held body offers a file. |
-| `ruler-readout` | The validity ruler is inspectable: every covered span and every gap is focusable and says what it is, including that a gap is never interpolated. |
-| `now-band` | Three products on one axis. An instant is a tick, a window is a span, a published colour is the colour the source printed, and the read-at marker is the payload own instant. |
-| `pinned-place` | A local shortlist of places. A pin is refused unless it carries a label and two real coordinates; the topbar chip switches the working place without re-resolving it. |
-| `skeleton` | A loading state reserves the shape of the answer — bars and a chart frame — and carries no number, because it has no source. |
-| `receipt-actions` | The receipt copies itself as text and prints; a refused clipboard says so rather than claiming success. |
-| `compare-column` | One place per column, each with its own timestamps and sources. No difference, ranking or average is computed between columns. |
-| `map-readout` | A live line under the map. Districts read out their published day and hazard wording; cities read out their coordinates and say that selecting one sets the working place. |
-| `city-pin` | Selecting a city sets the working place at the coordinates the vendored geometry carries — never at a projected or rounded guess. |
-| `view-transition` | Offered when the browser has the API and reduced motion is not requested. The paint runs inside the callback either way, so a missing API is not a missing surface. |
-| `@media print` | A printed answer keeps the source colours it was given (`print-color-adjust`), drops hover-only controls, and never turns a coloured cell into an unmarked one. |
-| `day-timeline` | One column per published day. Model hours are counted into the IST day their timestamp falls in, the station is placed on the day it reported, and no value is combined across days. |
-| `view host` | A routed view needs a rail entry, a surface section, a body host and a renderer; the static audit asserts all four (FE11) with two declared exceptions. |
-
-## Chart language (`viz.js`)
-
-1. **A mark exists only where the engine returned a value.** A missing hour splits a line, leaves a bar
-   out, and prints as `missing` in the exact-value table. Nothing is interpolated or zero-filled.
-2. **Every drawn point carries its `source_locator`** into the readout and the table.
-3. **Encodings:** solid line = observation or published series; dashed = model or mean; shaded band =
-   p10–p90 member spread; thin rule = min–max; bars = accumulation; arrows = direction; night = a shaded
-   hour band derived from the source timestamp.
-4. **Direct reading first, exact reading always.** A hover/focus readout names the value, its unit and
-   its locator; every chart has an `Exact values and evidence` table below it.
-5. **Hit targets.** In-chart hit areas are 10–12px wide with ≥44px effective spacing on touch, and are
-   focusable with Enter/Space producing the same readout as hover.
-6. **No chartjunk.** No 3D, no gradients for their own sake, no dual axes without an explicit unit
-   label, no smoothing that implies measured continuity.
+- The field is **printed at twelve frames a second**, because print does not need sixty. Motion is slow by
+  construction: the drift follows the wind, the rain falls at its measured rate, the light moves a degree every
+  four minutes.
+- **The reading moves the field; the reader moves the light.** When a read returns different values the field
+  repaints from them, so the sky changes when the answer changes. (A cross-fade between the previous field and
+  the new one is the next motion item and is **not** implemented: today the repaint is immediate.) The pointer
+  springs the light's centre and a click sends a ring travelling along the wind — the reader's presence, and the
+  one thing in the field that is decoration, which is why the legend says "the pointer's light is decoration".
+- `prefers-reduced-motion: reduce` stops everything, including the pointer response, and leaves one still frame.
+- Motion may explain and may accompany. It never loops for decoration, never animates a number to a *different*
+  number, and never delays reading a value.
 
 ## Accessibility
 
-- Text contrast ≥ 4.5:1, large text ≥ 3:1, in both themes.
-- `:focus-visible` is always a 2px `--data` outline with 2px offset.
-- Charts are `role="group"` with an `aria-label`; readouts are `aria-live="polite"`.
-- Keyboard: every surface reachable from the rail and the palette; drawers return focus; Escape closes.
-- Nothing depends on colour alone: state is always also a word.
-
-## Anti-patterns (refused by review)
-
-- A gauge, dial or needle for a quantity that has no threshold (feels-like temperature has no scale).
-- A confidence, risk or skill score the engine does not compute.
-- A colour implying severity the source did not publish.
-- A spark or pulse animation on a product whose whole ethic is that a quiet day is not an all-clear.
-- A chart that draws a value the engine did not return, including a zero for a gap.
-
-## Files
-
-| File | Role |
-|---|---|
-| `web/tokens.css` | Every colour, type, space, elevation, motion and chart token, light and dark. |
-| `web/style.css` | Structure and surfaces; consumes tokens only, no raw colour. |
-| `web/viz.js` | Chart engine v2: ensemble plume, meteogram, shared scales/axes/readouts. |
-| `web/charts.js` | The original single-series chart (annual series, hourly readings). |
-| `web/panels.js`, `web/views.js`, `web/shell.js` | Surfaces, answer rendering, shell and transport. |
+The gate is `tests/ui/a11y.spec.ts` (axe, wcag2a/aa + 21a/aa + best-practice) over every registered route *and*
+the front door, which is not in the route registry. Contrast is guaranteed by construction rather than checked
+by eye: ink and ground come from the same computed light. Nothing is carried by colour alone.

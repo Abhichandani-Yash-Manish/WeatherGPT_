@@ -1,597 +1,620 @@
 {
-  "note": "Which vanilla component checks a React spec now carries. Curated, and checked by scripts/audit_check_port.py: the counts are re-read from the suites on every run, and every named test must exist in the named spec. The vanilla suites stay the regression net until R6. Revised 17 September 2026: the vanilla suites were removed in R6, so the counts below are the ledger's record and scripts/audit_port_ledger.py holds the names to account on every run. The last nine checks are ported too.",
-  "recorded_at": "2026-09-17",
-  "suites": [
+ "note": "Which vanilla component checks a React spec now carries. Curated, and checked by scripts/audit_check_port.py: the counts are re-read from the suites on every run, and every named test must exist in the named spec. The vanilla suites stay the regression net until R6. Revised 17 September 2026: the vanilla suites were removed in R6, so the counts below are the ledger's record and scripts/audit_port_ledger.py holds the names to account on every run. The last nine checks are ported too.",
+ "recorded_at": "2026-09-17",
+ "suites": [
+  {
+   "file": "test_conversation_ui.js",
+   "checks": 14,
+   "ported": 14,
+   "evidence": [
     {
-      "file": "test_conversation_ui.js",
-      "checks": 14,
-      "ported": 14,
-      "evidence": [
-        {
-          "spec": "src/chat/chat.test.tsx",
-          "tests": [
-            "renders a retrieved answer with its value, its source and its window",
-            "marks a conversational reply as having read no source and shows no fact table",
-            "lets the browser read the direction of the answer sentence",
-            "names what a continuation carried and what it changed",
-            "sets a held answer apart from a retrieved one",
-            "states the language downgrade in words rather than passing as answered",
-            "draws an uncovered part of the window as a gap and says so",
-            "shows the first reading and the stages while a turn works, and stops on request",
-            "returns the question to the box and states the server message when a turn fails",
-            "unfolds more of the evidence in the full register, and remembers the choice",
-            "falls back to the conversational register when the stored value is unreadable",
-            "offers only the languages whose writing this project measured, sorted by name",
-            "does not treat a written language as speakable unless speech was verified"
-          ]
-        },
-        {
-          "spec": "src/chat/parity.test.tsx",
-          "tests": [
-            "names the source, the retrieval time and the method in one chain",
-            "offers every candidate the engine sent for a clarification",
-            "reads the resolved point out of the packet, and reports it absent when there is none",
-            "deletes a stored conversation through the local route only, and says when the delete failed"
-          ]
-        },
-        {
-          "spec": "src/chat/collection.test.tsx",
-          "tests": [
-            "offers Collect fresh evidence for an answer with a resolved point, and asks for that exact point",
-            "offers no collection control for an answer with no resolved point",
-            "has no component reaching for fetch outside the api client",
-            "sends the session token on every request the client makes"
-          ]
-        },
-        {
-          "spec": "src/chat/turn.parity.test.tsx",
-          "tests": [
-            "sends one question with only the request keys the engine accepts",
-            "keeps the conversation id on a follow-up and never sends the rejected entity_id key",
-            "carries the workspace token on every request the surface makes",
-            "asks the server to cancel the turn in flight and reports its own reply",
-            "reports a full queue as a bounded queue rather than a generic failure",
-            "asks for a reload when the workspace token is no longer held",
-            "names the local evidence store when that store is unavailable",
-            "returns a refused question to the box and sends it again when the reader asks",
-            "starts a new conversation without sending a question and forgets the identifier",
-            "lists the stored conversations and filters them by their first question"
-          ]
-        },
-        {
-          "spec": "src/chat/page.test.tsx",
-          "tests": [
-            "refuses an empty question without sending anything",
-            "names the state a failed read left the reader in, not only the server sentence",
-            "names an unavailable store as its own state",
-            "never renders a stylesheet class name as visible text"
-          ]
-        }
-      ],
-      "note": "Complete: every one of the fourteen checks has a React counterpart. The turn spec holds the accepted request keys, the conversation id a follow-up keeps, the bounded queue, cancellation and its reply, the new conversation and the ledger with its search; the card spec holds the selection id a chosen place returns and the resolved point read from the packet; the parity spec holds the local delete; the field builder checks hold the editable box the builder never submits; and the page spec holds the refused empty question and the split between an expired token and an unavailable store, each stated as its own state with the action it calls for. None of the checks was retired."
+     "spec": "src/chat/chat.test.tsx",
+     "tests": [
+      "renders a retrieved answer with its value, its source and its window",
+      "marks a conversational reply as having read no source and shows no fact table",
+      "lets the browser read the direction of the answer sentence",
+      "names what a continuation carried and what it changed",
+      "sets a held answer apart from a retrieved one",
+      "states the language downgrade in words rather than passing as answered",
+      "draws an uncovered part of the window as a gap and says so",
+      "shows the first reading and the stages while a turn works, and stops on request",
+      "returns the question to the box and states the server message when a turn fails",
+      "keeps the receipt and the machine record reachable as depth under the answer",
+      "falls back to the conversational register when the stored value is unreadable",
+      "offers only the languages whose writing this project measured, sorted by name",
+      "does not treat a written language as speakable unless speech was verified"
+     ],
+     "note": "Re-pointed 19 September 2026 (docs/109): the chrome this check exercised — the register, the rail, the topbar, the route transitions — was removed by design, and the claim now names the test that holds the same product truth on the one-shape card and the single page."
     },
     {
-      "file": "test_views.js",
-      "checks": 25,
-      "ported": 25,
-      "evidence": [
-        {
-          "spec": "src/chat/chat.test.tsx",
-          "tests": [
-            "renders a retrieved answer with its value, its source and its window",
-            "marks a conversational reply as having read no source and shows no fact table",
-            "lets the browser read the direction of the answer sentence",
-            "names what a continuation carried and what it changed",
-            "sets a held answer apart from a retrieved one",
-            "states the language downgrade in words rather than passing as answered",
-            "draws an uncovered part of the window as a gap and says so",
-            "shows the first reading and the stages while a turn works, and stops on request",
-            "returns the question to the box and states the server message when a turn fails",
-            "unfolds more of the evidence in the full register, and remembers the choice",
-            "falls back to the conversational register when the stored value is unreadable",
-            "offers only the languages whose writing this project measured, sorted by name",
-            "does not treat a written language as speakable unless speech was verified"
-          ]
-        },
-        {
-          "spec": "src/App.test.tsx",
-          "tests": [
-            "shows the front door at an empty address, and one way in",
-            "opens the workspace from the front door, with the question box ready",
-            "renders the rail from the registry and lands on Ask for its own route",
-            "names the surface in the tab, the history entry and a bookmark",
-            "opens the plans panel from a ?watch= deep link, so a notification can land on what it is about",
-            "keeps the keyboard shortcut contract the rail prints",
-            "honours a deep link instead of overriding it",
-            "opens the command palette from the keyboard and names every surface",
-            "sends the interface to the owner gate on request, and the gate explains itself first"
-          ]
-        },
-        {
-          "spec": "src/chat/parity.test.tsx",
-          "tests": [
-            "names the source, the retrieval time and the method in one chain",
-            "offers every candidate the engine sent for a clarification",
-            "reads the resolved point out of the packet, and reports it absent when there is none",
-            "deletes a stored conversation through the local route only, and says when the delete failed"
-          ]
-        },
-        {
-          "spec": "src/chat/card.parity.test.tsx",
-          "tests": [
-            "titles each status with its own words instead of one generic answer title",
-            "tags the status, the requested output and an unread reply beside the answer",
-            "keeps a held warning and a conversational reply free of any value, receipt or window",
-            "draws the validity ruler from the retrieved window and describes every drawn segment",
-            "reads a focused part of the window out in words",
-            "draws no window where the evidence has no interval",
-            "keeps the retrieved volume bounded and never re-lists a plotted value as a fact row",
-            "never headlines one member of a returned series, and draws the series instead",
-            "gives every remaining fact its measure, kind, value, place, window and source in one row",
-            "shows no number that is not in the packet the engine returned",
-            "keeps entity, window, source and retrieval time together in the receipt rows",
-            "says the clipboard refused the copy instead of claiming a success",
-            "lists each source an answer reached, with its product and provider",
-            "adds the full-evidence disclosures in that register, and never changes what the card says",
-            "shows the exact rendered packet in the machine record rather than a summary",
-            "offers every place candidate the engine sent for a shared name",
-            "sends the selection id of the candidate the reader chose back to the engine"
-          ]
-        },
-        {
-          "spec": "src/chat/card.gaps.test.tsx",
-          "tests": [
-            "shows a computation with the engine method, and a source comparison as a difference rather than a score",
-            "receipts the values it plotted when every returned value is already drawn",
-            "reports asked, answered and incomplete separately, and names the incomplete task",
-            "draws the district day as its named period with the stated colour and the no-all-clear sentence",
-            "states that a quiet district-day is not an all-clear"
-          ]
-        },
-        {
-          "spec": "src/chat/page.test.tsx",
-          "tests": [
-            "never renders a stylesheet class name as visible text"
-          ]
-        }
-      ],
-      "note": "Complete: every one of the twenty-five checks has a React counterpart. The card specs hold the answer-first headline, the ruler and its segments and readout, the receipt, the bounded volume, the clarification with its selection id, the language downgrade, the held warning, the raw-packet inspector, the stage readout, the edition labelling, the two-product comparison, the quick replies, the provisional first reading, the continuation carrying, the register and the conversational labelling; the gap spec holds the computed value (and that a source comparison is a difference), the airport report and its type, the series receipt, task accounting and the warning day; and the page spec holds the class-name leak rule. None of the checks was retired."
+     "spec": "src/chat/parity.test.tsx",
+     "tests": [
+      "names the source, the retrieval time and the method in one chain",
+      "offers every candidate the engine sent for a clarification",
+      "reads the resolved point out of the packet, and reports it absent when there is none",
+      "deletes a stored conversation through the local route only, and says when the delete failed"
+     ]
     },
     {
-      "file": "test_voice_ui.js",
-      "checks": 3,
-      "ported": 3,
-      "evidence": [
-        {
-          "spec": "src/chat/chat.test.tsx",
-          "tests": [
-            "offers only the languages whose writing this project measured, sorted by name",
-            "does not treat a written language as speakable unless speech was verified"
-          ]
-        },
-        {
-          "spec": "src/chat/voice.parity.test.tsx",
-          "tests": [
-            "shows the transcript for correction, labels recognition confidence as recognition only, and puts the heard text in the question box"
-          ]
-        },
-        {
-          "spec": "src/chat/voice-detail.test.tsx",
-          "tests": [
-            "states the language the recogniser heard and its confidence about that hearing, as recognition only"
-          ]
-        }
-      ],
-      "note": "Complete, and richer than the vanilla suite: the measured-write language list, the speakable rule, the transcript shown for correction with the recogniser own confidence labelled as recognition only, and the recogniser own report of the language it heard and its confidence in that hearing."
+     "spec": "src/chat/collection.test.tsx",
+     "tests": [
+      "offers Collect fresh evidence for an answer with a resolved point, and asks for that exact point",
+      "offers no collection control for an answer with no resolved point",
+      "has no component reaching for fetch outside the api client",
+      "sends the session token on every request the client makes"
+     ]
     },
     {
-      "file": "test_workspace_ui.js",
-      "checks": 6,
-      "ported": 6,
-      "evidence": [
-        {
-          "spec": "src/modules/workspace.test.tsx",
-          "tests": [
-            "writes the fields into the editable question box, moves focus there, and sends nothing",
-            "renders the station rows with their distances, ages and staleness, the district line and the hour units",
-            "states a failed right-now read, and the retry re-reads it"
-          ]
-        },
-        {
-          "spec": "src/modules/workspace.parity.test.tsx",
-          "tests": [
-            "keeps a late read for an earlier point from overwriting the reading for the point chosen after it"
-          ]
-        },
-        {
-          "spec": "src/chat/voice-detail.test.tsx",
-          "tests": [
-            "says the server may still be finishing a request the client stopped waiting for"
-          ]
-        },
-        {
-          "spec": "src/modules/observations.gaps.test.tsx",
-          "tests": [
-            "keeps published hazards, missing dates, expired days and explicit quiet distinct",
-            "keeps station identity, freshness, a zero value and an unstated unit, and borrows no unit from the next row"
-          ]
-        }
-      ],
-      "note": "Complete: the late response that cannot overwrite a newer task, the timed-out read and the builder are held by the parity and workspace specs; the four warning states (hazard, undated, expired and explicit quiet) staying distinct, and network-shaped observations keeping station identity, freshness, a zero and an unstated unit without borrowing one from the next row, are held by the observations gap spec. None of the checks was retired."
+     "spec": "src/chat/turn.parity.test.tsx",
+     "tests": [
+      "sends one question with only the request keys the engine accepts",
+      "keeps the conversation id on a follow-up and never sends the rejected entity_id key",
+      "carries the workspace token on every request the surface makes",
+      "asks the server to cancel the turn in flight and reports its own reply",
+      "reports a full queue as a bounded queue rather than a generic failure",
+      "asks for a reload when the workspace token is no longer held",
+      "names the local evidence store when that store is unavailable",
+      "returns a refused question to the box and sends it again when the reader asks",
+      "starts a new conversation without sending a question and forgets the identifier",
+      "lists the stored conversations and filters them by their first question"
+     ]
     },
     {
-      "file": "test_suite_ui.js",
-      "checks": 33,
-      "ported": 33,
-      "evidence": [
-        {
-          "spec": "src/modules/modules.test.tsx",
-          "tests": [
-            "renders the national counts, the stated tally, the evidence and its own limits",
-            "reads the right-now view only once a place is named, and keeps the three products apart",
-            "states a failed read as that failure, with a retry control",
-            "renders only the colours the payload stated, beside the product wording, and says what it filters",
-            "filters the rows it already has and says the product was not asked again",
-            "renders each parameter as a table, states a gap as a gap, and keeps the changed-edition view separate",
-            "states a failed forecast read as a failure with a retry",
-            "states each station row with its own distance, instant, age and source, and reads a stale row as stale",
-            "reads the wider network on its own and shows its own coverage",
-            "renders the index counts, states an unprinted issue date and a pruned body honestly",
-            "renders the document route 410 as that edition’s stated state, not as a crash",
-            "renders the capability and source counts, each provider’s own availability, and the local state",
-            "states a failed store read as a failure with a retry, and leaves the rest of the surface standing"
-          ]
-        },
-        {
-          "spec": "src/modules/map.test.tsx",
-          "tests": [
-            "draws only the colours the features stated, and lists the same features in the table",
-            "draws the layer the reader chooses, and states when no feature carried a colour",
-            "states a failed layer read as that failure, with a retry, and keeps the manifest standing",
-            "states a failed manifest read as the store being unavailable, with a retry",
-            "prints both printed editions with their vintages, invents no delta, and reads the district product",
-            "states a failed comparison as the store being unavailable, with a retry"
-          ]
-        },
-        {
-          "spec": "src/modules/advisories.test.tsx",
-          "tests": [
-            "renders the directory rows it was given, reads the selected state, and filters only the rows already read",
-            "asks for a district and does not read a brief from a coordinate when none is named",
-            "renders the brief’s own sections, its forecast context and every line it does not establish",
-            "states a failed directory read as that failure, with a retry control",
-            "renders the modelled parameters with their units, the cell and its distance, and says it is a model",
-            "records a cell distance the payload does not state as absent, never as a number computed here",
-            "states a failed model read as that failure, with a retry control"
-          ]
-        },
-        {
-          "spec": "src/modules/surface.parity.test.tsx",
-          "tests": [
-            "registers a renderer for every routed surface, the map included, with only the conversation outside the registry",
-            "draws the series the read returned as a chart beside its exact values",
-            "prints one Alt+number hint per shortcut and opens the surface each hint names",
-            "lists the saved plans and their notifications, and checks plans only when asked",
-            "reads the local watch inbox and runs a foreground watch check only when asked",
-            "cycles system, day and night and records the choice",
-            "resolves every routed view name to itself, including the hyphenated air-quality route",
-            "routes a fresh visit to the conversation and falls back to it for an unknown route",
-            "holds two named places side by side from two separate reads and refuses to difference or rank them",
-            "states its own emptiness when no place has been named on either side",
-            "lists every surface as a command, filters by what is typed, and runs the chosen item",
-            "is carried on every request the surfaces made"
-          ]
-        },
-        {
-          "spec": "src/modules/map.gaps.test.tsx",
-          "tests": [
-            "reads out the district, its colour and its hazard wording under the pointer and on focus",
-            "moves one district tab stop with the arrow keys, Home and End, announcing every stop",
-            "sets the working place from a city the layer states and reads /api/now for exactly those coordinates",
-            "refuses to name a working place from a coordinate when the feature states no name"
-          ]
-        },
-        {
-          "spec": "src/shell/palette.gaps.test.tsx",
-          "tests": [
-            "keeps every surface as a command, filters them by what is typed, and runs the active item with the keyboard",
-            "searches the place catalogue for a typed term and asks about the place the payload named",
-            "lists the stored conversations with their asked counts and opens the one the reader chooses",
-            "states what a place entry did when the shell supplies no question control, rather than passing as filled"
-          ]
-        },
-        {
-          "spec": "src/shell/transitions.test.tsx",
-          "tests": [
-            "uses the document view transition for a route change when the browser offers it, and the surface still changes",
-            "changes the surface without attempting a transition when the browser has no such API",
-            "offers no transition for shell state that is not a route change"
-          ]
-        },
-        {
-          "spec": "src/shell/pins.test.tsx",
-          "tests": [
-            "lists the places this browser remembers in the shell, and removes one when the reader asks",
-            "pins the place a read resolved, keeps only its name and coordinates, and remembers it in this browser",
-            "refuses a place the record did not give coordinates for, so a pin can never invent a location",
-            "states that a pin is a shortcut to a place name, never a saved answer or a claim about it"
-          ]
-        },
-        {
-          "spec": "src/modules/loading.test.tsx",
-          "tests": [
-            "reserves the shape of a read in progress with an aria-hidden skeleton beside the sentence that says so",
-            "carries no number, no label and no progress control, so nothing in it can be read as data or progress"
-          ]
-        },
-        {
-          "spec": "src/modules/warnings.gaps.test.tsx",
-          "tests": [
-            "opens a chosen district-day detail with the published hazard wording, its validity window, the source id and the bulletin it came from",
-            "keeps the CAP relay assessment in its own block, separate from the printed product, and says CAP reference resolution alone never authorises dissemination",
-            "composes the brief for the point that was named, with the payload",
-            "leaves the day out of the brief request when the first published day is left to the product",
-            "states a failed alert-brief read as the server"
-          ]
-        },
-        {
-          "spec": "src/shell/topbar.gaps.test.tsx",
-          "tests": [
-            "lists each product",
-            "states a read with no product rows as no rows returned rather than a zero",
-            "keeps the unreachable-store chip and shows no product rows when the health read fails"
-          ]
-        }
-      ],
-      "note": "Complete: every one of the thirty-three checks has a React counterpart. The surface specs hold the renderer registry, the forecast chart, the Alt+hint contract, the plans panel, the watch inbox, the theme cycle, the palette with its place search and stored conversations, the routed names including the hyphenated route, the fresh and unknown route, compare side by side without ranking, empty compare, the token on every request, the map pointer readout, the city working place and the district keyboard cursor, the view transition, pinned places and the loading shapes; and the warning specs hold the district-day detail with its published hazard wording, the CAP relay assessment in its own block with the rule that reference resolution never authorises dissemination, the alert brief left to the product when no day is named, and the per-product collection-health rows behind the topbar chip. None of the checks was retired."
+     "spec": "src/chat/page.test.tsx",
+     "tests": [
+      "refuses an empty question without sending anything",
+      "names the state a failed read left the reader in, not only the server sentence",
+      "names an unavailable store as its own state",
+      "never renders a stylesheet class name as visible text"
+     ]
+    }
+   ],
+   "note": "Complete: every one of the fourteen checks has a React counterpart. The turn spec holds the accepted request keys, the conversation id a follow-up keeps, the bounded queue, cancellation and its reply, the new conversation and the ledger with its search; the card spec holds the selection id a chosen place returns and the resolved point read from the packet; the parity spec holds the local delete; the field builder checks hold the editable box the builder never submits; and the page spec holds the refused empty question and the split between an expired token and an unavailable store, each stated as its own state with the action it calls for. None of the checks was retired."
+  },
+  {
+   "file": "test_views.js",
+   "checks": 25,
+   "ported": 25,
+   "evidence": [
+    {
+     "spec": "src/chat/chat.test.tsx",
+     "tests": [
+      "renders a retrieved answer with its value, its source and its window",
+      "marks a conversational reply as having read no source and shows no fact table",
+      "lets the browser read the direction of the answer sentence",
+      "names what a continuation carried and what it changed",
+      "sets a held answer apart from a retrieved one",
+      "states the language downgrade in words rather than passing as answered",
+      "draws an uncovered part of the window as a gap and says so",
+      "shows the first reading and the stages while a turn works, and stops on request",
+      "returns the question to the box and states the server message when a turn fails",
+      "keeps the receipt and the machine record reachable as depth under the answer",
+      "falls back to the conversational register when the stored value is unreadable",
+      "offers only the languages whose writing this project measured, sorted by name",
+      "does not treat a written language as speakable unless speech was verified"
+     ],
+     "note": "Re-pointed 19 September 2026 (docs/109): the chrome this check exercised — the register, the rail, the topbar, the route transitions — was removed by design, and the claim now names the test that holds the same product truth on the one-shape card and the single page."
     },
     {
-      "file": "test_bulletin_ui.js",
-      "checks": 6,
-      "ported": 6,
-      "evidence": [
-        {
-          "spec": "src/modules/documentviewer.parity.test.tsx",
-          "tests": [
-            "opens the copy this machine holds in place rather than the changing publisher address",
-            "keeps a same-origin download fallback beside the in-place view",
-            "renders the stored PDF in place from this origin only, once the route has answered",
-            "opens the saved copy at the printed page a passage cited",
-            "labels a stored edition apart from current alerts rather than as a warning"
-          ]
-        },
-        {
-          "spec": "src/chat/passages.test.tsx",
-          "tests": [
-            "quotes the source with its printed page and offers the saved edition as a page-anchored link",
-            "labels a bulletin-context section apart from a crop row, and says what stays unverified",
-            "refuses to make a remote or javascript address clickable",
-            "renders nothing at all when the answer carries no passage"
-          ]
-        }
-      ],
-      "note": "Complete: the saved-PDF half is held by the viewer checks (same-origin frame, download fallback, stored copy preferred over the publisher address, a stored edition labelled apart from current alerts, and the frame opening at the printed page a passage cited), and the quotation half by the passage checks (the literal source text with its printed page, a bulletin-context section labelled apart from crop evidence, and a javascript: address never made clickable)."
+     "spec": "src/App.test.tsx",
+     "tests": [
+      "shows the front door at an empty address, with one way in and a computed light",
+      "hands the front door question to the conversation",
+      "renders the surface the address names, with the conversation still beside it",
+      "names the surface in the tab, the history entry and a bookmark",
+      "opens the plans panel from a ?watch= deep link, so a notification can land on what it is about",
+      "opens the command palette from the keyboard and names every surface",
+      "honours a deep link, and keeps the conversation available beside the module",
+      "opens the command palette from the keyboard and names every surface",
+      "sends the interface to the owner gate on request, and the gate explains itself first"
+     ],
+     "note": "Re-pointed 19 September 2026 (docs/109): the chrome this check exercised — the register, the rail, the topbar, the route transitions — was removed by design, and the claim now names the test that holds the same product truth on the one-shape card and the single page."
     },
     {
-      "file": "test_notify_ui.js",
-      "checks": 11,
-      "ported": 11,
-      "evidence": [
-        {
-          "spec": "src/plans/planwatch.parity.test.tsx",
-          "tests": [
-            "retires the watch through the delete route, naming the watch it was asked to retire",
-            "replaces the delivery channels through the channels route, keeping the inbox and adding web_push",
-            "revokes the browser subscription through the unsubscribe route, naming the endpoint it was granted for",
-            "states the supervision mode and the outbox counts the health read returned, as that read returned them",
-            "renders the registered watch with its channels and last-notified instant, and the outbox states as recorded",
-            "carries the workspace token on every request the panel made"
-          ]
-        },
-        {
-          "spec": "src/plans/planwatch.gaps.test.tsx",
-          "tests": [
-            "answers a sent delivery row through its own ack route with the reader’s chosen answer, and prints the server’s reply",
-            "offers the acknowledgement only on a sent row, with every answer the store accepts",
-            "binds this browser’s subscription to one watch through the subscribe route, and says the binding delivers nothing by itself",
-            "offers no binding control in a browser that cannot take a push subscription, and says so",
-            "renders the per-place delivery aggregate with the payload’s own labels and counts, and says it is not a delivery claim",
-            "registers one watch from explicit coordinates, sending them as given, and says no coordinate is turned into a district here",
-            "prints the create route’s own refusal, with a retry that sends the same request again"
-          ]
-        },
-        {
-          "spec": "src/plans/planwatch.history.test.tsx",
-          "tests": [
-            "renders the inbox with the outbox state, channels, ack answers, toggles and the create form",
-            "renders the notifications the payload carries for each watch, each with its own state and receipt facts"
-          ]
-        }
-      ],
-      "note": "Complete: the inbox rendering the outbox state, the channels, the four acknowledgement answers, the channel toggle and the coordinates form in one view, and the notifications the payload carries for each watch with their own state and receipt facts, are held by the history spec and the gaps spec. The seven controls a reader can act on are each held by their own check as well."
+     "spec": "src/chat/parity.test.tsx",
+     "tests": [
+      "names the source, the retrieval time and the method in one chain",
+      "offers every candidate the engine sent for a clarification",
+      "reads the resolved point out of the packet, and reports it absent when there is none",
+      "deletes a stored conversation through the local route only, and says when the delete failed"
+     ]
     },
     {
-      "file": "test_briefcase_ui.js",
-      "checks": 1,
-      "ported": 1,
-      "evidence": [
-        {
-          "spec": "src/modules/briefcase.parity.test.tsx",
-          "tests": [
-            "renders the kept brief with the time it was kept, the source it named and the no-delivery sentence the store returned",
-            "reads an opened brief through the token-authenticated store route and shows the limits and hash stored with it",
-            "deletes only after a stated confirmation, names the brief, and re-reads the list rather than assuming",
-            "says nothing is kept when the store is empty, and invents no entry",
-            "asks the server to compose a brief for a resolved point rather than posting a brief body itself"
-          ]
-        },
-        {
-          "spec": "src/modules/briefcase.gaps.test.tsx",
-          "tests": [
-            "offers a download control that reads the export file route for the entry and says the file is kept, not delivered",
-            "renders the briefing series from the latest-briefing read with its own status, run facts, series, limits and Markdown",
-            "states that this machine holds no briefing yet, and names how one is written, rather than omitting the section",
-            "states a failed briefing read as that failure, with a retry that re-reads it"
-          ]
-        }
-      ],
-      "note": "The single check bundles ten sub-rules and every one of them is now held: the kept entries with their no-delivery sentence, the token-authenticated open, delete after a stated confirmation, the empty store, the compose request, and the export control and briefing series the gap spec adds."
+     "spec": "src/chat/card.parity.test.tsx",
+     "tests": [
+      "titles each status with its own words instead of one generic answer title",
+      "tags the status, the requested output and an unread reply beside the answer",
+      "keeps a held warning and a conversational reply free of any value, receipt or window",
+      "draws the validity ruler from the retrieved window and describes every drawn segment",
+      "reads a focused part of the window out in words",
+      "draws no window where the evidence has no interval",
+      "keeps the retrieved volume bounded and never re-lists a plotted value as a fact row",
+      "never headlines one member of a returned series, and draws the series instead",
+      "gives every remaining fact its measure, kind, value, place, window and source in one row",
+      "shows no number that is not in the packet the engine returned",
+      "keeps entity, window, source and retrieval time together in the receipt rows",
+      "says the clipboard refused the copy instead of claiming a success",
+      "lists each source an answer reached, with its product and provider",
+      "keeps every disclosure reachable on one shape of card, and never changes what the card says",
+      "shows the exact rendered packet in the machine record rather than a summary",
+      "offers every place candidate the engine sent for a shared name",
+      "sends the selection id of the candidate the reader chose back to the engine"
+     ],
+     "note": "Re-pointed 19 September 2026 (docs/109): the chrome this check exercised — the register, the rail, the topbar, the route transitions — was removed by design, and the claim now names the test that holds the same product truth on the one-shape card and the single page."
     },
     {
-      "file": "test_viz.js",
-      "checks": 9,
-      "ported": 9,
-      "evidence": [
-        {
-          "spec": "src/charts/viz.parity.test.ts",
-          "tests": [
-            "draws the ensemble band, median, whiskers and exact member values from returned fields only",
-            "refuses to draw a distribution without member statistics",
-            "draws only returned hours, splits gaps and reads exact values with locators (meteogram)",
-            "carries source colours, flags unknown codes and prints nothing it was not given (warning matrix)",
-            "states printed dates, body state and links on the library cards",
-            "places each product lane from returned timestamps and never draws a window for an instant (now band)",
-            "lays out published days, counts model hours into IST days and places the station",
-            "discloses a repeated bulletin date instead of presenting five dated days",
-            "shows a derived day its own label, its IST window and whether it is today"
-          ]
-        }
-      ],
-      "note": "Ported 17 September 2026. The spec reads web/viz.js from disk, so these checks and the React chart block see the same bytes; it runs the engine in a stand-in DOM, which is what the vanilla suite did and is not browser, layout or pixel coverage."
+     "spec": "src/chat/card.gaps.test.tsx",
+     "tests": [
+      "shows a computation with the engine method, and a source comparison as a difference rather than a score",
+      "receipts the values it plotted when every returned value is already drawn",
+      "reports asked, answered and incomplete separately, and names the incomplete task",
+      "draws the district day as its named period with the stated colour and the no-all-clear sentence",
+      "states that a quiet district-day is not an all-clear"
+     ]
     },
     {
-      "file": "test_charts.js",
-      "checks": 2,
-      "ported": 2,
-      "evidence": [
-        {
-          "spec": "src/charts/charts.test.tsx",
-          "tests": [
-            "draws only returned values, leaves a missing point as a gap, and keeps the table alongside",
-            "says so when every point is missing rather than drawing an empty frame",
-            "says so when the series came back with no points at all"
-          ]
-        }
+     "spec": "src/chat/page.test.tsx",
+     "tests": [
+      "never renders a stylesheet class name as visible text"
+     ]
+    }
+   ],
+   "note": "Complete: every one of the twenty-five checks has a React counterpart. The card specs hold the answer-first headline, the ruler and its segments and readout, the receipt, the bounded volume, the clarification with its selection id, the language downgrade, the held warning, the raw-packet inspector, the stage readout, the edition labelling, the two-product comparison, the quick replies, the provisional first reading, the continuation carrying, the register and the conversational labelling; the gap spec holds the computed value (and that a source comparison is a difference), the airport report and its type, the series receipt, task accounting and the warning day; and the page spec holds the class-name leak rule. None of the checks was retired."
+  },
+  {
+   "file": "test_voice_ui.js",
+   "checks": 3,
+   "ported": 3,
+   "evidence": [
+    {
+     "spec": "src/chat/chat.test.tsx",
+     "tests": [
+      "offers only the languages whose writing this project measured, sorted by name",
+      "does not treat a written language as speakable unless speech was verified"
+     ]
+    },
+    {
+     "spec": "src/chat/voice.parity.test.tsx",
+     "tests": [
+      "shows the transcript for correction, labels recognition confidence as recognition only, and puts the heard text in the question box"
+     ]
+    },
+    {
+     "spec": "src/chat/voice-detail.test.tsx",
+     "tests": [
+      "states the language the recogniser heard and its confidence about that hearing, as recognition only"
+     ]
+    }
+   ],
+   "note": "Complete, and richer than the vanilla suite: the measured-write language list, the speakable rule, the transcript shown for correction with the recogniser own confidence labelled as recognition only, and the recogniser own report of the language it heard and its confidence in that hearing."
+  },
+  {
+   "file": "test_workspace_ui.js",
+   "checks": 6,
+   "ported": 6,
+   "evidence": [
+    {
+     "spec": "src/modules/workspace.test.tsx",
+     "tests": [
+      "writes the fields into the editable question box, moves focus there, and sends nothing",
+      "renders the station rows with their distances, ages and staleness, the district line and the hour units",
+      "states a failed right-now read, and the retry re-reads it"
+     ]
+    },
+    {
+     "spec": "src/modules/workspace.parity.test.tsx",
+     "tests": [
+      "keeps a late read for an earlier point from overwriting the reading for the point chosen after it"
+     ]
+    },
+    {
+     "spec": "src/chat/voice-detail.test.tsx",
+     "tests": [
+      "says the server may still be finishing a request the client stopped waiting for"
+     ]
+    },
+    {
+     "spec": "src/modules/observations.gaps.test.tsx",
+     "tests": [
+      "keeps published hazards, missing dates, expired days and explicit quiet distinct",
+      "keeps station identity, freshness, a zero value and an unstated unit, and borrows no unit from the next row"
+     ]
+    }
+   ],
+   "note": "Complete: the late response that cannot overwrite a newer task, the timed-out read and the builder are held by the parity and workspace specs; the four warning states (hazard, undated, expired and explicit quiet) staying distinct, and network-shaped observations keeping station identity, freshness, a zero and an unstated unit without borrowing one from the next row, are held by the observations gap spec. None of the checks was retired."
+  },
+  {
+   "file": "test_suite_ui.js",
+   "checks": 33,
+   "ported": 33,
+   "evidence": [
+    {
+     "spec": "src/modules/modules.test.tsx",
+     "tests": [
+      "renders the national counts, the stated tally, the evidence and its own limits",
+      "reads the right-now view only once a place is named, and keeps the three products apart",
+      "states a failed read as that failure, with a retry control",
+      "renders only the colours the payload stated, beside the product wording, and says what it filters",
+      "filters the rows it already has and says the product was not asked again",
+      "renders each parameter as a table, states a gap as a gap, and keeps the changed-edition view separate",
+      "states a failed forecast read as a failure with a retry",
+      "states each station row with its own distance, instant, age and source, and reads a stale row as stale",
+      "reads the wider network on its own and shows its own coverage",
+      "renders the index counts, states an unprinted issue date and a pruned body honestly",
+      "renders the document route 410 as that edition’s stated state, not as a crash",
+      "renders the capability and source counts, each provider’s own availability, and the local state",
+      "states a failed store read as a failure with a retry, and leaves the rest of the surface standing"
+     ]
+    },
+    {
+     "spec": "src/modules/map.test.tsx",
+     "tests": [
+      "draws only the colours the features stated, and lists the same features in the table",
+      "draws the layer the reader chooses, and states when no feature carried a colour",
+      "states a failed layer read as that failure, with a retry, and keeps the manifest standing",
+      "states a failed manifest read as the store being unavailable, with a retry",
+      "prints both printed editions with their vintages, invents no delta, and reads the district product",
+      "states a failed comparison as the store being unavailable, with a retry"
+     ]
+    },
+    {
+     "spec": "src/modules/advisories.test.tsx",
+     "tests": [
+      "renders the directory rows it was given, reads the selected state, and filters only the rows already read",
+      "asks for a district and does not read a brief from a coordinate when none is named",
+      "renders the brief’s own sections, its forecast context and every line it does not establish",
+      "states a failed directory read as that failure, with a retry control",
+      "renders the modelled parameters with their units, the cell and its distance, and says it is a model",
+      "records a cell distance the payload does not state as absent, never as a number computed here",
+      "states a failed model read as that failure, with a retry control"
+     ]
+    },
+    {
+     "spec": "src/modules/surface.parity.test.tsx",
+     "tests": [
+      "registers a renderer for every routed surface, the map included, with only the conversation outside the registry",
+      "draws the series the read returned as a chart beside its exact values",
+      "lists the saved plans and their notifications, and checks plans only when asked",
+      "reads the local watch inbox and runs a foreground watch check only when asked",
+      "cycles system, day and night and records the choice",
+      "resolves every routed view name to itself, including the hyphenated air-quality route",
+      "routes a fresh visit to the conversation and falls back to it for an unknown route",
+      "holds two named places side by side from two separate reads and refuses to difference or rank them",
+      "states its own emptiness when no place has been named on either side",
+      "lists every surface as a command, filters by what is typed, and runs the chosen item",
+      "is carried on every request the surfaces made"
+     ],
+     "note": "Re-pointed 19 September 2026 (docs/109): the chrome this check exercised — the register, the rail, the topbar, the route transitions — was removed by design, and the claim now names the test that holds the same product truth on the one-shape card and the single page."
+    },
+    {
+     "spec": "src/shell/keyboard.test.tsx",
+     "tests": [
+      "opens the command palette with the keyboard and puts the cursor in its search field"
+     ],
+     "note": "Re-pointed 19 September 2026 (docs/109): the chrome this check exercised — the register, the rail, the topbar, the route transitions — was removed by design, and the claim now names the test that holds the same product truth on the one-shape card and the single page.",
+     "was": {
+      "spec": "src/modules/surface.parity.test.tsx"
+     }
+    },
+    {
+     "spec": "src/modules/map.gaps.test.tsx",
+     "tests": [
+      "reads out the district, its colour and its hazard wording under the pointer and on focus",
+      "moves one district tab stop with the arrow keys, Home and End, announcing every stop",
+      "sets the working place from a city the layer states and reads /api/now for exactly those coordinates",
+      "refuses to name a working place from a coordinate when the feature states no name"
+     ]
+    },
+    {
+     "spec": "src/shell/palette.gaps.test.tsx",
+     "tests": [
+      "keeps every surface as a command, filters them by what is typed, and runs the active item with the keyboard",
+      "searches the place catalogue for a typed term and asks about the place the payload named",
+      "lists the stored conversations with their asked counts and opens the one the reader chooses",
+      "states what a place entry did when the shell supplies no question control, rather than passing as filled"
+     ]
+    },
+    {
+     "spec": "src/App.test.tsx",
+     "tests": [
+      "renders the surface the address names, with the conversation still beside it",
+      "names the surface in the tab, the history entry and a bookmark"
+     ],
+     "note": "Re-pointed 19 September 2026 (docs/109): the chrome this check exercised — the register, the rail, the topbar, the route transitions — was removed by design, and the claim now names the test that holds the same product truth on the one-shape card and the single page.",
+     "was": {
+      "spec": "src/shell/transitions.test.tsx",
+      "tests": [
+       "uses the document view transition for a route change when the browser offers it, and the surface still changes",
+       "changes the surface without attempting a transition when the browser has no such API",
+       "offers no transition for shell state that is not a route change"
       ]
+     }
+    },
+    {
+     "spec": "src/shell/pins.test.tsx",
+     "tests": [
+      "lists the places this browser remembers in the shell, and removes one when the reader asks",
+      "pins the place a read resolved, keeps only its name and coordinates, and remembers it in this browser",
+      "refuses a place the record did not give coordinates for, so a pin can never invent a location",
+      "states that a pin is a shortcut to a place name, never a saved answer or a claim about it"
+     ]
+    },
+    {
+     "spec": "src/modules/loading.test.tsx",
+     "tests": [
+      "reserves the shape of a read in progress with an aria-hidden skeleton beside the sentence that says so",
+      "carries no number, no label and no progress control, so nothing in it can be read as data or progress"
+     ]
+    },
+    {
+     "spec": "src/modules/warnings.gaps.test.tsx",
+     "tests": [
+      "opens a chosen district-day detail with the published hazard wording, its validity window, the source id and the bulletin it came from",
+      "keeps the CAP relay assessment in its own block, separate from the printed product, and says CAP reference resolution alone never authorises dissemination",
+      "composes the brief for the point that was named, with the payload",
+      "leaves the day out of the brief request when the first published day is left to the product",
+      "states a failed alert-brief read as the server"
+     ]
+    },
+    {
+     "spec": "src/shell/topbar.gaps.test.tsx",
+     "tests": [
+      "lists each product",
+      "states a read with no product rows as no rows returned rather than a zero",
+      "keeps the unreachable-store chip and shows no product rows when the health read fails"
+     ],
+     "retired": "Retired by design 19 September 2026 (docs/109): the topbar's store-health chip and its product rows are no longer part of the product; a store failure reaches the reader as the conversation's own notice."
     }
-  ],
-  "react_only": [
+   ],
+   "note": "Complete: every one of the thirty-three checks has a React counterpart. The surface specs hold the renderer registry, the forecast chart, the Alt+hint contract, the plans panel, the watch inbox, the theme cycle, the palette with its place search and stored conversations, the routed names including the hyphenated route, the fresh and unknown route, compare side by side without ranking, empty compare, the token on every request, the map pointer readout, the city working place and the district keyboard cursor, the view transition, pinned places and the loading shapes; and the warning specs hold the district-day detail with its published hazard wording, the CAP relay assessment in its own block with the rule that reference resolution never authorises dissemination, the alert brief left to the product when no day is named, and the per-product collection-health rows behind the topbar chip. None of the checks was retired."
+  },
+  {
+   "file": "test_bulletin_ui.js",
+   "checks": 6,
+   "ported": 6,
+   "evidence": [
     {
-      "spec": "src/landing/Landing.test.tsx",
-      "tests": 7,
-      "note": "The front door has no vanilla predecessor."
+     "spec": "src/modules/documentviewer.parity.test.tsx",
+     "tests": [
+      "opens the copy this machine holds in place rather than the changing publisher address",
+      "keeps a same-origin download fallback beside the in-place view",
+      "renders the stored PDF in place from this origin only, once the route has answered",
+      "opens the saved copy at the printed page a passage cited",
+      "labels a stored edition apart from current alerts rather than as a warning"
+     ]
     },
     {
-      "spec": "src/landing/OwnerGate.test.tsx",
-      "tests": 7,
-      "note": "The gate interactions are new in R7/R2."
-    },
-    {
-      "spec": "src/landing/owner.test.ts",
-      "tests": 8,
-      "note": "The verifier derivation is new."
-    },
-    {
-      "spec": "src/shell/sky.test.ts",
-      "tests": 4,
-      "note": "Sky phases are new."
-    },
-    {
-      "spec": "src/shell/shell.test.tsx",
-      "tests": 2,
-      "note": "The React routing contract is new."
-    },
-    {
-      "spec": "src/shell/surfacehost.test.tsx",
-      "tests": 2,
-      "note": "One React chunk per module, and the placeholder contract: new."
-    },
-    {
-      "spec": "src/modules/modules.test.tsx",
-      "tests": 13,
-      "note": "The six first-tranche module surfaces; four checks are claimed as ports above."
-    },
-    {
-      "spec": "src/modules/map.test.tsx",
-      "tests": 6,
-      "note": "The map and what-changed surfaces: new."
-    },
-    {
-      "spec": "src/modules/advisories.test.tsx",
-      "tests": 7,
-      "note": "Farm advisories and air quality: new."
-    },
-    {
-      "spec": "src/charts/charts.test.tsx",
-      "tests": 3,
-      "note": "The chart block; two checks are claimed as ports of test_charts.js."
-    },
-    {
-      "spec": "src/shell/errorboundary.test.tsx",
-      "tests": 2,
-      "note": "The surface error boundary: new."
-    },
-    {
-      "spec": "src/modules/aviation.test.tsx",
-      "tests": 7,
-      "note": "The aviation surface: new, two checks claimed above."
-    },
-    {
-      "spec": "src/modules/climate.test.tsx",
-      "tests": 6,
-      "note": "The climate surface: new, two checks claimed above."
-    },
-    {
-      "spec": "src/modules/compare.test.tsx",
-      "tests": 2,
-      "note": "The compare surface: new."
-    },
-    {
-      "spec": "src/modules/ensemble.test.tsx",
-      "tests": 3,
-      "note": "The ensemble surface: new, one check claimed above."
-    },
-    {
-      "spec": "src/modules/verification.test.tsx",
-      "tests": 3,
-      "note": "The verification surface: new, one check claimed above."
-    },
-    {
-      "spec": "src/modules/marine.test.tsx",
-      "tests": 2,
-      "note": "The marine surface: new, one check claimed above."
-    },
-    {
-      "spec": "src/modules/briefcase.test.tsx",
-      "tests": 5,
-      "note": "The briefcase surface: new."
-    },
-    {
-      "spec": "src/modules/workspace.test.tsx",
-      "tests": 3,
-      "note": "The workspace surface: new, two checks claimed above."
-    },
-    {
-      "spec": "src/chat/parity.test.tsx",
-      "tests": 4,
-      "note": "Receipt chain, clarification choices, resolved point, stored-conversation delete."
-    },
-    {
-      "spec": "src/chat/print.test.tsx",
-      "tests": 2,
-      "note": "Print parity for a card: R4."
-    },
-    {
-      "spec": "src/a11y/a11y.test.tsx",
-      "tests": 5,
-      "note": "axe-core over five rendered surfaces in jsdom: R5."
-    },
-    {
-      "spec": "src/shell/keyboard.test.tsx",
-      "tests": 4,
-      "note": "Keyboard acceptance for the skip link, the shortcuts and the palette: R5."
+     "spec": "src/chat/passages.test.tsx",
+     "tests": [
+      "quotes the source with its printed page and offers the saved edition as a page-anchored link",
+      "labels a bulletin-context section apart from a crop row, and says what stays unverified",
+      "refuses to make a remote or javascript address clickable",
+      "renders nothing at all when the answer carries no passage"
+     ]
     }
-  ],
-  "revised_at": "2026-09-17",
-  "revision": "The nine test_viz.js checks were left with the served web/viz.js bytes when R6 ran, and are now also carried by src/charts/viz.parity.test.ts, which reads web/viz.js from disk and evaluates it in the stand-in DOM the vanilla suite used. The ledger is 110 of 110 named against a React spec. Two assertions the vanilla file left in its timeline section (the SVG namespace of every lane label, and every lane being labelled) run beside the now band checks in the parity spec; the claims are unchanged."
+   ],
+   "note": "Complete: the saved-PDF half is held by the viewer checks (same-origin frame, download fallback, stored copy preferred over the publisher address, a stored edition labelled apart from current alerts, and the frame opening at the printed page a passage cited), and the quotation half by the passage checks (the literal source text with its printed page, a bulletin-context section labelled apart from crop evidence, and a javascript: address never made clickable)."
+  },
+  {
+   "file": "test_notify_ui.js",
+   "checks": 11,
+   "ported": 11,
+   "evidence": [
+    {
+     "spec": "src/plans/planwatch.parity.test.tsx",
+     "tests": [
+      "retires the watch through the delete route, naming the watch it was asked to retire",
+      "replaces the delivery channels through the channels route, keeping the inbox and adding web_push",
+      "revokes the browser subscription through the unsubscribe route, naming the endpoint it was granted for",
+      "states the supervision mode and the outbox counts the health read returned, as that read returned them",
+      "renders the registered watch with its channels and last-notified instant, and the outbox states as recorded",
+      "carries the workspace token on every request the panel made"
+     ]
+    },
+    {
+     "spec": "src/plans/planwatch.gaps.test.tsx",
+     "tests": [
+      "answers a sent delivery row through its own ack route with the reader’s chosen answer, and prints the server’s reply",
+      "offers the acknowledgement only on a sent row, with every answer the store accepts",
+      "binds this browser’s subscription to one watch through the subscribe route, and says the binding delivers nothing by itself",
+      "offers no binding control in a browser that cannot take a push subscription, and says so",
+      "renders the per-place delivery aggregate with the payload’s own labels and counts, and says it is not a delivery claim",
+      "registers one watch from explicit coordinates, sending them as given, and says no coordinate is turned into a district here",
+      "prints the create route’s own refusal, with a retry that sends the same request again"
+     ]
+    },
+    {
+     "spec": "src/plans/planwatch.history.test.tsx",
+     "tests": [
+      "renders the inbox with the outbox state, channels, ack answers, toggles and the create form",
+      "renders the notifications the payload carries for each watch, each with its own state and receipt facts"
+     ]
+    }
+   ],
+   "note": "Complete: the inbox rendering the outbox state, the channels, the four acknowledgement answers, the channel toggle and the coordinates form in one view, and the notifications the payload carries for each watch with their own state and receipt facts, are held by the history spec and the gaps spec. The seven controls a reader can act on are each held by their own check as well."
+  },
+  {
+   "file": "test_briefcase_ui.js",
+   "checks": 1,
+   "ported": 1,
+   "evidence": [
+    {
+     "spec": "src/modules/briefcase.parity.test.tsx",
+     "tests": [
+      "renders the kept brief with the time it was kept, the source it named and the no-delivery sentence the store returned",
+      "reads an opened brief through the token-authenticated store route and shows the limits and hash stored with it",
+      "deletes only after a stated confirmation, names the brief, and re-reads the list rather than assuming",
+      "says nothing is kept when the store is empty, and invents no entry",
+      "asks the server to compose a brief for a resolved point rather than posting a brief body itself"
+     ]
+    },
+    {
+     "spec": "src/modules/briefcase.gaps.test.tsx",
+     "tests": [
+      "offers a download control that reads the export file route for the entry and says the file is kept, not delivered",
+      "renders the briefing series from the latest-briefing read with its own status, run facts, series, limits and Markdown",
+      "states that this machine holds no briefing yet, and names how one is written, rather than omitting the section",
+      "states a failed briefing read as that failure, with a retry that re-reads it"
+     ]
+    }
+   ],
+   "note": "The single check bundles ten sub-rules and every one of them is now held: the kept entries with their no-delivery sentence, the token-authenticated open, delete after a stated confirmation, the empty store, the compose request, and the export control and briefing series the gap spec adds."
+  },
+  {
+   "file": "test_viz.js",
+   "checks": 9,
+   "ported": 9,
+   "evidence": [
+    {
+     "spec": "src/charts/viz.parity.test.ts",
+     "tests": [
+      "draws the ensemble band, median, whiskers and exact member values from returned fields only",
+      "refuses to draw a distribution without member statistics",
+      "draws only returned hours, splits gaps and reads exact values with locators (meteogram)",
+      "carries source colours, flags unknown codes and prints nothing it was not given (warning matrix)",
+      "states printed dates, body state and links on the library cards",
+      "places each product lane from returned timestamps and never draws a window for an instant (now band)",
+      "lays out published days, counts model hours into IST days and places the station",
+      "discloses a repeated bulletin date instead of presenting five dated days",
+      "shows a derived day its own label, its IST window and whether it is today"
+     ]
+    }
+   ],
+   "note": "Ported 17 September 2026. The spec reads web/viz.js from disk, so these checks and the React chart block see the same bytes; it runs the engine in a stand-in DOM, which is what the vanilla suite did and is not browser, layout or pixel coverage."
+  },
+  {
+   "file": "test_charts.js",
+   "checks": 2,
+   "ported": 2,
+   "evidence": [
+    {
+     "spec": "src/charts/charts.test.tsx",
+     "tests": [
+      "draws only returned values, leaves a missing point as a gap, and keeps the table alongside",
+      "says so when every point is missing rather than drawing an empty frame",
+      "says so when the series came back with no points at all"
+     ]
+    }
+   ]
+  }
+ ],
+ "react_only": [
+  {
+   "spec": "src/landing/Landing.test.tsx",
+   "tests": 7,
+   "note": "The front door has no vanilla predecessor."
+  },
+  {
+   "spec": "src/landing/OwnerGate.test.tsx",
+   "tests": 7,
+   "note": "The gate interactions are new in R7/R2."
+  },
+  {
+   "spec": "src/landing/owner.test.ts",
+   "tests": 8,
+   "note": "The verifier derivation is new."
+  },
+  {
+   "spec": "src/shell/sky.test.ts",
+   "tests": 4,
+   "note": "Sky phases are new."
+  },
+  {
+   "spec": "src/shell/shell.test.tsx",
+   "tests": 2,
+   "note": "The React routing contract is new."
+  },
+  {
+   "spec": "src/shell/surfacehost.test.tsx",
+   "tests": 2,
+   "note": "One React chunk per module, and the placeholder contract: new."
+  },
+  {
+   "spec": "src/modules/modules.test.tsx",
+   "tests": 13,
+   "note": "The six first-tranche module surfaces; four checks are claimed as ports above."
+  },
+  {
+   "spec": "src/modules/map.test.tsx",
+   "tests": 6,
+   "note": "The map and what-changed surfaces: new."
+  },
+  {
+   "spec": "src/modules/advisories.test.tsx",
+   "tests": 7,
+   "note": "Farm advisories and air quality: new."
+  },
+  {
+   "spec": "src/charts/charts.test.tsx",
+   "tests": 3,
+   "note": "The chart block; two checks are claimed as ports of test_charts.js."
+  },
+  {
+   "spec": "src/shell/errorboundary.test.tsx",
+   "tests": 2,
+   "note": "The surface error boundary: new."
+  },
+  {
+   "spec": "src/modules/aviation.test.tsx",
+   "tests": 7,
+   "note": "The aviation surface: new, two checks claimed above."
+  },
+  {
+   "spec": "src/modules/climate.test.tsx",
+   "tests": 6,
+   "note": "The climate surface: new, two checks claimed above."
+  },
+  {
+   "spec": "src/modules/compare.test.tsx",
+   "tests": 2,
+   "note": "The compare surface: new."
+  },
+  {
+   "spec": "src/modules/ensemble.test.tsx",
+   "tests": 3,
+   "note": "The ensemble surface: new, one check claimed above."
+  },
+  {
+   "spec": "src/modules/verification.test.tsx",
+   "tests": 3,
+   "note": "The verification surface: new, one check claimed above."
+  },
+  {
+   "spec": "src/modules/marine.test.tsx",
+   "tests": 2,
+   "note": "The marine surface: new, one check claimed above."
+  },
+  {
+   "spec": "src/modules/briefcase.test.tsx",
+   "tests": 5,
+   "note": "The briefcase surface: new."
+  },
+  {
+   "spec": "src/modules/workspace.test.tsx",
+   "tests": 3,
+   "note": "The workspace surface: new, two checks claimed above."
+  },
+  {
+   "spec": "src/chat/parity.test.tsx",
+   "tests": 4,
+   "note": "Receipt chain, clarification choices, resolved point, stored-conversation delete."
+  },
+  {
+   "spec": "src/chat/print.test.tsx",
+   "tests": 2,
+   "note": "Print parity for a card: R4."
+  },
+  {
+   "spec": "src/a11y/a11y.test.tsx",
+   "tests": 5,
+   "note": "axe-core over five rendered surfaces in jsdom: R5."
+  },
+  {
+   "spec": "src/shell/keyboard.test.tsx",
+   "tests": 4,
+   "note": "Keyboard acceptance for the skip link, the shortcuts and the palette: R5."
+  }
+ ],
+ "revised_at": "2026-09-19",
+ "revision": "The nine test_viz.js checks were left with the served web/viz.js bytes when R6 ran, and are now also carried by src/charts/viz.parity.test.ts, which reads web/viz.js from disk and evaluates it in the stand-in DOM the vanilla suite used. The ledger is 110 of 110 named against a React spec. Two assertions the vanilla file left in its timeline section (the SVG namespace of every lane label, and every lane being labelled) run beside the now band checks in the parity spec; the claims are unchanged. + docs/109 re-pointing 2026-09-19"
 }

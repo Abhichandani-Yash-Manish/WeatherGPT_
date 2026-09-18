@@ -1,11 +1,10 @@
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { App } from './App';
-import { VIEWS } from './shell/views';
 import { forgetOwner } from './landing/owner';
 
-/* The shell's own contract: the front door, the workspace behind it, the rail from the registry, the
-   keyboard contract the rail prints, and the gate that is described before it asks for anything. */
+/* The shell's own contract: the front door, the workspace behind it, each route's own surface with the
+   conversation beside it, and the gate that is described before it asks for anything. */
 describe('the shell', () => {
   beforeEach(() => {
     window.location.hash = '';
@@ -17,27 +16,45 @@ describe('the shell', () => {
     forgetOwner();
   });
 
-  it('shows the front door at an empty address, and one way in', () => {
+  it('shows the front door at an empty address, with one way in and a computed light', () => {
     render(<App />);
-    expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Open the workspace/i })).toBeInTheDocument();
+    /* The one way in is the reader's own question box. The front door no longer offers a second door
+       beside it: the conversation is the product, so the box is the door. */
+    expect(screen.getByLabelText('Your question')).toBeInTheDocument();
+    /* Paper, ink and the published colours: no photograph, no canvas, nothing that needs a disclaimer. */
+    expect(document.querySelector('[data-design="bulletin"]')).not.toBeNull();
+    expect(document.querySelector('img, canvas')).toBeNull();
   });
 
-  it('opens the workspace from the front door, with the question box ready', async () => {
+  it('hands the front door question to the conversation', async () => {
+    const { http, HttpResponse } = await import('msw');
+    const { server } = await import('./test/msw');
+    /* The question is taken by the conversation rather than carried somewhere else, so the send is answered
+       here: a test that passes while printing unhandled-request noise is not evidence. */
+    server.use(http.post('/api/chat', () => HttpResponse.json({ error: 'the engine is not part of this check' }, { status: 503 })));
     render(<App />);
-    await userEvent.click(screen.getByRole('button', { name: /Open the workspace/i }));
-    expect(window.location.hash).toBe('#/assistant');
-    expect(await screen.findByLabelText('Your question')).toBeInTheDocument();
+    await userEvent.type(screen.getByLabelText('Your question'), 'Will it rain in Surat tomorrow?');
+    await userEvent.click(screen.getByRole('button', { name: 'Ask' }));
+    /* The page is the conversation, so asking stays on the page: the reader's own words appear in the
+       transcript instead of the app navigating to a different surface. */
+    expect(window.location.hash).toBe('');
+    const asked = await screen.findAllByText(/Will it rain in Surat tomorrow\?/);
+    expect(asked.length).toBeGreaterThan(0);
   });
 
-  it('renders the rail from the registry and lands on Ask for its own route', async () => {
+  /* The rail of eighteen peer surfaces is gone: a module now opens **beside** the conversation, in the same
+     frame, and the reader never loses the thread by looking something up. What the rail used to guarantee —
+     that a route renders its surface — is what this test keeps. */
+  it('renders the surface the address names, with the conversation still beside it', async () => {
     window.location.hash = '#/assistant';
     render(<App />);
-    const rail = within(screen.getByRole('navigation', { name: 'Workspace navigation' }));
-    for (const view of VIEWS) {
-      expect(rail.getByRole('button', { name: new RegExp('^' + view.label + '( ⌥[1-9])?$') })).toBeInTheDocument();
-    }
     expect(screen.getByLabelText('Your question')).toBeInTheDocument();
+
+    window.location.hash = '#/climate';
+    render(<App />);
+    const modules = await screen.findAllByRole('region', { name: 'Climate records surface' });
+    expect(modules.length).toBeGreaterThan(0);
+    expect(screen.getAllByLabelText('Your question').length).toBeGreaterThan(0);
   });
 
   it('names the surface in the tab, the history entry and a bookmark', async () => {
@@ -46,7 +63,7 @@ describe('the shell', () => {
     await waitFor(() => expect(document.title).toBe('WeatherGPT — Warnings'));
     window.location.hash = '';
     render(<App />);
-    await waitFor(() => expect(document.title).toMatch(/evidence-first weather/));
+    await waitFor(() => expect(document.title).toBe('WeatherGPT'));
   });
 
 
@@ -73,18 +90,12 @@ describe('the shell', () => {
     expect(await screen.findByText(/Surat: forecast precipitation 0.3 mm/)).toBeInTheDocument();
   });
 
-  it('keeps the keyboard shortcut contract the rail prints', async () => {
-    window.location.hash = '#/assistant';
-    render(<App />);
-    await userEvent.keyboard('{Alt>}2{/Alt}');
-    expect(window.location.hash).toBe('#/overview');
-  });
-
-  it('honours a deep link instead of overriding it', () => {
+  it('honours a deep link, and keeps the conversation available beside the module', async () => {
     window.location.hash = '#/marine';
     render(<App />);
-    expect(document.querySelector('[data-surface="marine"]')).not.toBeNull();
-    expect(screen.queryByLabelText('Your question')).toBeNull();
+    expect(await screen.findByRole('region', { name: 'Sea and rivers surface' })).toBeInTheDocument();
+    /* Beside, never instead of: the question box is still there to ask about what is on the screen. */
+    expect(screen.getByLabelText('Your question')).toBeInTheDocument();
   });
 
   it('opens the command palette from the keyboard and names every surface', async () => {
@@ -99,7 +110,7 @@ describe('the shell', () => {
   it('sends the interface to the owner gate on request, and the gate explains itself first', async () => {
     window.location.hash = '#/assistant';
     render(<App />);
-    await userEvent.click(screen.getByRole('button', { name: 'Lock' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Owner gate' }));
     expect(window.location.hash).toBe('#/signin');
     await waitFor(() => expect(screen.getByText(/not authentication/i)).toBeInTheDocument());
     expect(screen.getByRole('button', { name: /Skip/i })).toBeInTheDocument();

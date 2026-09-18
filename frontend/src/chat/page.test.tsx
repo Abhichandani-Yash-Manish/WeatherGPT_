@@ -102,7 +102,7 @@ describe('the page rules', () => {
     collect('../web');
     expect(classes.size).toBeGreaterThan(20);
 
-    const { container } = mount(<AnswerTurn packet={PACKET} register="full" onFollowUp={() => {}} />);
+    const { container } = mount(<AnswerTurn packet={PACKET} onFollowUp={() => {}} />);
     const words = (container.textContent || '').split(/[^A-Za-z0-9-]+/).filter(Boolean);
     const leaked = words.filter(word => classes.has(word));
     expect(leaked, 'class names reached the visible text: ' + leaked.join(', ')).toEqual([]);

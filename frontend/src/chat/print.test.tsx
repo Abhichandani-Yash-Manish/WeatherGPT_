@@ -66,10 +66,10 @@ describe('printing a turn', () => {
 
   it('keeps the raw machine record out of the printout', async () => {
     const user = await askAndRender();
-    await user.click(screen.getByRole('button', { name: 'Full evidence' }));
     await waitFor(() => expect(screen.getByText(/Machine record/)).toBeInTheDocument());
+    await user.click(screen.getByText('Machine record (the exact response)'));
     const record = document.querySelector('.machine-record');
-    expect(record, 'the machine record exists in the full register').not.toBeNull();
+    expect(record, 'the machine record exists as depth').not.toBeNull();
     expect(PRINT_CSS).toMatch(/\.machine-record[^{]*\{[^}]*display:\s*none/);
   });
 });

@@ -194,8 +194,8 @@ def qualification_flags(crop_hits, sections):
             flags.append({'kind': 'activity_conditional_guidance', 'activity': activity,
                           'passage_ids': passage_ids,
                           'resolution': 'reconciled by the edition\'s own weather condition',
-                          'restricted_when': 'rain, wet foliage, thunderstorm or strong wind',
-                          'permitted_when': 'dry, rain-free conditions',
+                          'restricted_when': 'during rain, wet foliage, thunderstorm or strong wind',
+                          'permitted_when': 'in dry, rain-free conditions',
                           'clauses': [clause['sentence'] for clause in restrictions + permissions]})
         else:
             flags.append({'kind': 'potential_activity_conflict', 'activity': activity,

@@ -12,8 +12,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render } from '@testing-library/react';
 import { writeFileSync } from 'node:fs';
 import { AskSurface } from '../chat/AskSurface';
-import { FrontDoor } from '../landing/FrontDoor';
-import { Landing } from '../landing/Landing';
+import { Home } from '../home/Home';
 import { OwnerGate } from '../landing/OwnerGate';
 import { SurfaceHost } from '../shell/SurfaceHost';
 import { viewById } from '../shell/views';
@@ -89,15 +88,10 @@ describe('accessibility of the rendered surfaces', () => {
     );
   });
 
+  /* The front door is the conversation now, so this scans the face the reader actually meets at an empty
+     address — the same page the browser gate checks over the served build. */
   it('has no violations on the front door', async () => {
-    await scan('front door', <FrontDoor onAsk={() => {}} onEnter={() => {}} />);
-  });
-
-  /* The page the front door replaced. It is no longer served — App renders FrontDoor at an empty address —
-     and it is scanned here only until the shell reframe removes it, so that a component still in the tree
-     is still under the gate rather than quietly unchecked. */
-  it('has no violations on the superseded landing page', async () => {
-    await scan('landing (superseded)', <Landing onEnter={() => {}} />);
+    await scan('front door', <Home onOpen={() => {}} language="" onLanguage={() => {}} persona="" onPersona={() => {}} />);
   });
 
   it('has no violations on the conversation at rest', async () => {

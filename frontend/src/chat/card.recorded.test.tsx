@@ -50,8 +50,8 @@ const WARNING_DAY: AnswerPacket = {
   }],
 };
 
-function mountCard(packet: AnswerPacket, register: 'conversational' | 'full' = 'conversational') {
-  return render(<AnswerTurn packet={packet} register={register} onFollowUp={() => {}} />);
+function mountCard(packet: AnswerPacket, _register: 'conversational' | 'full' = 'conversational') {
+  return render(<AnswerTurn packet={packet} onFollowUp={() => {}} />);
 }
 
 describe('the calculations the engine returned', () => {

@@ -1,0 +1,59 @@
+{
+ "schema_version": "ps-scorecard-v1",
+ "as_of": "2026-09-19",
+ "plan": "docs/108-master-plan-to-a-real-product.md",
+ "rule": "A row is 'met' only with an evidence path that exists in the repository. Progress is criteria met of criteria total, per PS row; no percentage of the product is ever derived from this file.",
+ "rows": [
+  {"id": "F1a", "feature": "1 Real-time weather information", "criterion": "a named place resolves to a source-backed point or station and the distance is stated", "state": "met", "evidence": "docs/16-hourly-and-daily-point-tools.md", "phase": null},
+  {"id": "F1b", "feature": "1 Real-time weather information", "criterion": "the reading carries the retrieval time and the source for every value", "state": "met", "evidence": "docs/47-answer-transparency-and-edition-coverage.md", "phase": null},
+  {"id": "F1c", "feature": "1 Real-time weather information", "criterion": "a cold read completes within a stated bound and the bound is measured", "state": "partial", "evidence": "docs/53-operations.md", "phase": "P5"},
+  {"id": "F1d", "feature": "1 Real-time weather information", "criterion": "coverage is stated per product, not implied nationwide", "state": "open", "evidence": null, "phase": "P5"},
+
+  {"id": "F2a", "feature": "2 Natural-language querying", "criterion": "an unfamiliar request that mixes two products is answered with both or explicitly refused", "state": "open", "evidence": null, "phase": "P5"},
+  {"id": "F2b", "feature": "2 Natural-language querying", "criterion": "a continuation keeps place, window and source without restating them", "state": "met", "evidence": "docs/22-engine-context-repairs.md", "phase": null},
+  {"id": "F2c", "feature": "2 Natural-language querying", "criterion": "a capability question is answered from the ledger, not from memory", "state": "met", "evidence": "docs/72-integrated-status-and-ps-review.md", "phase": null},
+  {"id": "F2d", "feature": "2 Natural-language querying", "criterion": "every answered turn carries a task-coverage record asserted in a test", "state": "partial", "evidence": "docs/93-ps-closure-queue.md", "phase": "P5"},
+
+  {"id": "F3a", "feature": "3 NWP integration", "criterion": "each served model product names its source, run reference and answering cell", "state": "met", "evidence": "docs/23-marine-and-river-tools.md", "phase": null},
+  {"id": "F3b", "feature": "3 NWP integration", "criterion": "a comparison states shared lineage instead of implying independence", "state": "met", "evidence": "docs/43-forecast-vintage-variance.md", "phase": null},
+  {"id": "F3c", "feature": "3 NWP integration", "criterion": "a forecast value can be traced to the archived run used to verify it", "state": "met", "evidence": "docs/80-forecast-verification.md", "phase": null},
+
+  {"id": "F4a", "feature": "4 Alerts and early-warning dissemination", "criterion": "a live changed edition produces a notification on a real device", "state": "open", "evidence": null, "phase": "P3"},
+  {"id": "F4b", "feature": "4 Alerts and early-warning dissemination", "criterion": "the acknowledgement returns to the ledger", "state": "open", "evidence": null, "phase": "P3"},
+  {"id": "F4c", "feature": "4 Alerts and early-warning dissemination", "criterion": "an update and a cancellation each behave", "state": "open", "evidence": null, "phase": "P3"},
+  {"id": "F4d", "feature": "4 Alerts and early-warning dissemination", "criterion": "origin authentication is established or the product continues to refuse dissemination and says why", "state": "partial", "evidence": "docs/85-feature4-dissemination-backbone.md", "phase": "P3"},
+
+  {"id": "F5a", "feature": "5 Location-based forecasts and advisories", "criterion": "a district advisory is retrieved with printed geography, issue date and currency", "state": "met", "evidence": "docs/64-district-corpus-reachability.md", "phase": null},
+  {"id": "F5b", "feature": "5 Location-based forecasts and advisories", "criterion": "a conditional statement in a general section is reconciled with the crop passage or disclosed", "state": "met", "evidence": "docs/107-corpus-condition-reconciliation.md", "phase": null},
+  {"id": "F5c", "feature": "5 Location-based forecasts and advisories", "criterion": "an unheld layout is quarantined rather than parsed", "state": "met", "evidence": "docs/29-source-activation-and-document-intake.md", "phase": null},
+  {"id": "F5d", "feature": "5 Location-based forecasts and advisories", "criterion": "a field-level decision is refused in words", "state": "met", "evidence": "docs/64-stakeholder-repairs.md", "phase": null},
+  {"id": "F5e", "feature": "5 Location-based forecasts and advisories", "criterion": "cross-edition contradiction is reconciled or disclosed", "state": "open", "evidence": null, "phase": "P5"},
+
+  {"id": "F6a", "feature": "6 Indian-language support", "criterion": "every offered language has a recorded delivery measurement per direction", "state": "met", "evidence": "docs/52-language-and-voice-measurement.md", "phase": null},
+  {"id": "F6b", "feature": "6 Indian-language support", "criterion": "a rendering that fails the invariant check keeps the source language and says so", "state": "met", "evidence": "docs/103-persona-language-grounding-verification.md", "phase": null},
+  {"id": "F6c", "feature": "6 Indian-language support", "criterion": "a native speaker has accepted a sample per script", "state": "open", "evidence": null, "phase": "P7"},
+  {"id": "F6d", "feature": "6 Indian-language support", "criterion": "the interface itself is localised (labels, dates, numerals)", "state": "open", "evidence": null, "phase": "P4"},
+
+  {"id": "F7a", "feature": "7 Climate trends and historical analysis", "criterion": "a trend states its period, source and method and refuses attribution", "state": "met", "evidence": "docs/15-answer-fidelity-and-historical-analysis.md", "phase": null},
+  {"id": "F7b", "feature": "7 Climate trends and historical analysis", "criterion": "district boundaries are dated or the analysis names the uncertainty", "state": "open", "evidence": null, "phase": "P7"},
+  {"id": "F7c", "feature": "7 Climate trends and historical analysis", "criterion": "a chart is reproducible from its own receipt", "state": "met", "evidence": "docs/47-answer-transparency-and-edition-coverage.md", "phase": null},
+
+  {"id": "F8a", "feature": "8 Voice for rural accessibility", "criterion": "a noisy or code-mixed recording transcribes with a confirm-before-send step", "state": "open", "evidence": null, "phase": "P4"},
+  {"id": "F8b", "feature": "8 Voice for rural accessibility", "criterion": "spoken output is measured, not assumed", "state": "partial", "evidence": "docs/52-language-and-voice-measurement.md", "phase": "P4"},
+  {"id": "F8c", "feature": "8 Voice for rural accessibility", "criterion": "a field user completes a journey without a keyboard", "state": "open", "evidence": null, "phase": "P7"},
+
+  {"id": "M1", "feature": "Mobile-based platform", "criterion": "a touch journey is recorded on a device with the network interrupted and restored", "state": "open", "evidence": null, "phase": "P2"},
+  {"id": "M2", "feature": "Mobile-based platform", "criterion": "the app is reachable behind a real URL and installs as a PWA", "state": "open", "evidence": null, "phase": "P2"},
+
+  {"id": "I1", "feature": "Met databases, websites and APIs", "criterion": "each connected source has answered a real request in a recorded journey (29 sources)", "state": "partial", "evidence": "data/registry/source-review.json", "phase": "P5"},
+  {"id": "E1", "feature": "LLM query-understanding engine", "criterion": "the model plans every turn and supplies no value; every fact carries a source id", "state": "met", "evidence": "docs/103-persona-language-grounding-verification.md", "phase": null},
+  {"id": "S1", "feature": "Scalable real-time ingestion", "criterion": "a sustained run records queue depth, stalls and recovery on a fresh machine", "state": "open", "evidence": null, "phase": "P6"},
+  {"id": "S2", "feature": "Scalable real-time ingestion", "criterion": "the gate runs on every push (CI)", "state": "open", "evidence": null, "phase": "P0"},
+
+  {"id": "X1", "feature": "Beyond the PS: provenance on screen", "criterion": "no number appears on any screen outside a Claim with its source line (audit_claims in the gate)", "state": "open", "evidence": null, "phase": "P1"},
+  {"id": "X2", "feature": "Beyond the PS: live feed on stage", "criterion": "a judge names a district and the answer is live, sourced and timed", "state": "partial", "evidence": "docs/94-mentor-status-brief.md", "phase": "P2"},
+  {"id": "X3", "feature": "Beyond the PS: the alert climax", "criterion": "a changed edition makes a phone in the room buzz with the official words and the ack lands in the ledger", "state": "open", "evidence": null, "phase": "P3"},
+  {"id": "X4", "feature": "Beyond the PS: one engine, many personas", "criterion": "a fifth persona is added live from the registry with no code change", "state": "partial", "evidence": "docs/50-personas-and-the-briefcase.md", "phase": "P1"},
+  {"id": "X5", "feature": "Beyond the PS: voice on stage", "criterion": "a spoken Gujarati question from a phone gets a spoken answer on the room's network", "state": "open", "evidence": null, "phase": "P4"}
+ ]
+}

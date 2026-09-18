@@ -1,10 +1,8 @@
 @import "../../../web/tokens.css";
 @import "../../../web/tokens-v2.css";
 @import "tailwindcss";
-@import "./sky.css";
 @import "./transcript.css";
 @import "./print.css";
-@import "./voices.css";
 
 /* Tailwind consumes the existing token layer rather than replacing it: the design system stays in
    web/tokens.css, which the vanilla frontend still uses, and the two agree by construction. Every

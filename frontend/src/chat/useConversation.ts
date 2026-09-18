@@ -32,7 +32,17 @@ type Action =
   | { type: 'restore'; turns: Turn[]; conversationId: string; note: string | null }
   | { type: 'clear' };
 
-const initial: ConversationState = { turns: [], working: null, conversationId: null, register: readRegister(), draft: '', restoredNote: null };
+/* The register is a stored preference, so it is read when a conversation surface mounts rather than once
+   when this module is imported. A reader who sets it on the front door and then asks a question gets the
+   register they chose, in the same session, without a reload. */
+const freshConversation = (): ConversationState => ({
+  turns: [],
+  working: null,
+  conversationId: null,
+  register: readRegister(),
+  draft: '',
+  restoredNote: null,
+});
 
 function reducer(state: ConversationState, action: Action): ConversationState {
   switch (action.type) {
@@ -82,7 +92,7 @@ function nextKey(prefix: string): string {
 export type ConversationOptions = { outputLanguage?: string; persona?: string };
 
 export function useConversation(options: ConversationOptions = {}) {
-  const [state, dispatch] = useReducer(reducer, initial);
+  const [state, dispatch] = useReducer(reducer, undefined, freshConversation);
   const pollRef = useRef<number | null>(null);
   const controllerRef = useRef<AbortController | null>(null);
   const previewRef = useRef<AbortController | null>(null);

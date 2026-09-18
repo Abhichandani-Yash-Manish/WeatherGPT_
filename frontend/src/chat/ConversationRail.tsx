@@ -8,14 +8,7 @@ import { useState } from 'react';
 import { getJson } from '../api/client';
 import type { Ledger } from '../api/types';
 import { forgetConversation } from './api';
-import { REGISTER_ORDER, type Register } from './model';
-
-const REGISTER_LABEL: Record<Register, string> = { brief: 'Brief', conversational: 'Conversational', full: 'Full evidence' };
-const REGISTER_NOTE: Record<Register, string> = {
-  brief: 'the answer and its leading value',
-  conversational: 'adds the window, the other facts, the receipt and the sources',
-  full: 'adds the requested tasks, the retrieval choices and the machine record',
-};
+import { REGISTER_LABEL, REGISTER_NOTE, REGISTER_ORDER, type Register } from './model';
 
 export function ConversationRail({
   currentId,

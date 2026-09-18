@@ -48,6 +48,9 @@ def main():
     specs = set()
     for suite in suites:
         for entry in suite.get("evidence", []):
+            # A check retired by design names its reason and no spec: accounted for, not verified.
+            if entry.get("retired"):
+                continue
             spec = entry.get("spec", "")
             path = ROOT / "frontend" / spec
             if not path.exists():

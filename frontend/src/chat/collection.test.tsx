@@ -52,14 +52,14 @@ describe('a bounded collection is reachable from a card', () => {
         body: JSON.stringify({ question: packet.question, coordinates: point.coordinates }),
       });
     };
-    mount(<AnswerTurn packet={PACKET as never} register="conversational" onFollowUp={() => {}} onRefresh={onRefresh} />);
+    mount(<AnswerTurn packet={PACKET as never} onFollowUp={() => {}} onRefresh={onRefresh} />);
     await userEvent.click(screen.getByRole('button', { name: 'Collect fresh evidence' }));
     await waitFor(() => expect(asked).toHaveLength(1));
     expect(asked[0]).toEqual({ question: 'Will it rain in Ahmedabad tomorrow?', coordinates: { latitude: 23.02579, longitude: 72.58727 } });
   });
 
   it('offers no collection control for an answer with no resolved point', () => {
-    mount(<AnswerTurn packet={{ ...PACKET, resolved_points: {} } as never} register="conversational" onFollowUp={() => {}} onRefresh={() => {}} />);
+    mount(<AnswerTurn packet={{ ...PACKET, resolved_points: {} } as never} onFollowUp={() => {}} onRefresh={() => {}} />);
     expect(screen.queryByRole('button', { name: 'Collect fresh evidence' })).toBeNull();
   });
 });
@@ -94,7 +94,6 @@ describe('every request goes through one place', () => {
     const { container } = mount(
       <AnswerTurn
         packet={{ ...PACKET, resolved_points: {}, notes: ['A note.'], task_results: [{ id: 't1', request: {}, status: 'answered' }] } as never}
-        register="full"
         onFollowUp={() => {}}
       />,
     );

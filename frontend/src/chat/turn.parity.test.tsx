@@ -261,7 +261,7 @@ describe('the turn, held against the vanilla client checks', () => {
 
   it('lists the stored conversations and filters them by their first question', async () => {
     server.use(http.get('/api/conversations', () => HttpResponse.json(LEDGER)));
-    withClient(<ConversationRail currentId={null} onOpen={() => {}} onNew={() => {}} register="conversational" onRegister={() => {}} />);
+    withClient(<ConversationRail register="conversational" currentId={null} onOpen={() => {}} onNew={() => {}} onRegister={() => {}} />);
     const rows = () => screen.queryAllByRole('button', { name: /^Open the stored conversation:/ });
     await waitFor(() => expect(rows()).toHaveLength(3));
     const user = userEvent.setup();
@@ -282,7 +282,7 @@ describe('the turn, held against the vanilla client checks', () => {
      what this pins; the rendered contrast is measured by the axe audit, not by this check. */
   it('keeps the delete control readable rather than fading it below the contrast floor', async () => {
     server.use(http.get('/api/conversations', () => HttpResponse.json(LEDGER)));
-    withClient(<ConversationRail currentId={null} onOpen={() => {}} onNew={() => {}} register="conversational" onRegister={() => {}} />);
+    withClient(<ConversationRail register="conversational" currentId={null} onOpen={() => {}} onNew={() => {}} onRegister={() => {}} />);
     const deletes = await screen.findAllByRole('button', { name: /^Delete the stored conversation:/ });
     expect(deletes).toHaveLength(3);
     deletes.forEach(button => {

@@ -1,0 +1,250 @@
+/* Bulletin — the design system.
+   ============================================================================
+   docs/108 §3. Everything the product shows is read from a published bulletin or a governed model product,
+   by a person who is often on a phone, outdoors, on a poor network. So the language is a bulletin's: paper
+   in daylight, ink, one accent, and the four official colours reached only through a published value.
+
+   No glass, no shadow, no gradient, no photograph, no motion that answers nobody. Contrast is the design.
+
+   Two voices, typographic:
+     --b-human   Anek — what a model wrote (a sentence, an invitation).
+     --b-machine Martian Mono — what a tool measured (a value, a unit, a source, a time, an id).
+     --b-ui      Anek — controls and labels.
+   A number set in the human face is a defect. */
+
+:root {
+  --b-paper: #fbfaf6;
+  --b-paper-2: #f1efe8;
+  --b-ink: #14181d;
+  --b-ink-2: #3e454d;
+  --b-ink-3: #6b737c;
+  --b-rule: #d9d6cc;
+  --b-rule-2: #ebe8df;
+  --b-accent: #1f4e9c;
+  --b-accent-ink: #163a75;
+  --b-accent-wash: #e8eef8;
+
+  /* The four published colours. Never used for interface state; a chip carries the source's own words. */
+  --b-red: #c8102e;
+  --b-orange: #e8730c;
+  --b-yellow: #e9b400;
+  --b-green: #2e8b3d;
+
+  --b-human: 'Anek Latin Variable', 'Anek Devanagari', 'Noto Sans', system-ui, sans-serif;
+  --b-machine: 'Martian Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
+  --b-ui: var(--b-human);
+
+  --b-11: 0.6875rem;
+  --b-13: 0.8125rem;
+  --b-15: 0.9375rem;
+  --b-17: 1.0625rem;
+  --b-21: 1.3125rem;
+  --b-28: clamp(1.5rem, 1.1rem + 1.6vw, 1.875rem);
+  --b-40: clamp(2rem, 1.3rem + 3vw, 2.75rem);
+
+  --b-measure: 62ch;
+  --b-gutter: clamp(1rem, 0.6rem + 2vw, 2rem);
+  --b-r: 6px;
+  --b-r-2: 12px;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --b-paper: #0f1318;
+    --b-paper-2: #161b22;
+    --b-ink: #ecefe9;
+    --b-ink-2: #b9c0c7;
+    --b-ink-3: #8a939c;
+    --b-rule: #2b333c;
+    --b-rule-2: #1f262e;
+    --b-accent: #8fb0ee;
+    --b-accent-ink: #b7cbf5;
+    --b-accent-wash: #16223a;
+    --b-yellow: #f0c11e;
+    color-scheme: dark;
+  }
+}
+
+html, body { background: var(--b-paper); color: var(--b-ink); }
+
+.b {
+  background: var(--b-paper);
+  color: var(--b-ink);
+  font-family: var(--b-ui);
+  font-size: var(--b-15);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.b *:focus-visible { outline: 2px solid var(--b-accent); outline-offset: 2px; border-radius: 4px; }
+
+/* ---- the page ---------------------------------------------------------------------------------- */
+.b-page { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
+
+.b-bar {
+  position: sticky; top: 0; z-index: 5;
+  display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
+  padding: 0.6rem var(--b-gutter);
+  background: var(--b-paper);
+  border-bottom: 1px solid var(--b-rule);
+}
+.b-brand { font-family: var(--b-ui); font-weight: 600; font-size: var(--b-15); letter-spacing: 0.01em; }
+.b-bar-right { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; justify-content: flex-end; }
+
+.b-main {
+  flex: 1; display: flex; flex-direction: column;
+  width: 100%; max-width: 46rem; margin-inline: auto;
+  padding: 0 var(--b-gutter);
+}
+
+.b-foot { padding: 0.75rem var(--b-gutter) 1rem; font-size: var(--b-11); color: var(--b-ink-3); text-align: center; }
+
+/* ---- controls ---------------------------------------------------------------------------------- */
+.b-chip, .b-select {
+  font-family: var(--b-ui); font-size: var(--b-13); font-weight: 500;
+  color: var(--b-ink); background: var(--b-paper); border: 1px solid var(--b-rule);
+  border-radius: 999px; padding: 0.35rem 0.8rem; line-height: 1.2; cursor: pointer;
+  min-height: 36px;
+}
+.b-chip:hover, .b-select:hover { border-color: var(--b-ink-3); }
+.b-chip[aria-pressed='true'], .b-chip[data-on='true'] { background: var(--b-ink); color: var(--b-paper); border-color: var(--b-ink); }
+.b-chip-accent { background: var(--b-accent); color: #fff; border-color: var(--b-accent); }
+.b-chip-accent:hover { background: var(--b-accent-ink); }
+.b-chip:disabled { opacity: 0.5; cursor: default; }
+.b-select { appearance: none; padding-right: 1.6rem; background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%); background-position: calc(100% - 14px) 55%, calc(100% - 9px) 55%; background-size: 5px 5px; background-repeat: no-repeat; }
+
+.b-notice { font-size: var(--b-13); color: var(--b-ink-2); border-left: 3px solid var(--b-accent); padding: 0.4rem 0.75rem; margin: 0.75rem 0 0; background: var(--b-accent-wash); border-radius: 0 var(--b-r) var(--b-r) 0; }
+
+/* ---- the two voices ---------------------------------------------------------------------------- */
+.b-human { font-family: var(--b-human); }
+.b-machine { font-family: var(--b-machine); font-variant-numeric: tabular-nums; font-feature-settings: 'zero' 1; letter-spacing: -0.01em; }
+.b-label { font-family: var(--b-ui); font-size: var(--b-11); font-weight: 500; color: var(--b-ink-3); letter-spacing: 0.02em; }
+
+/* The sentence: what the model wrote, the first thing in any answer. */
+.b-sentence {
+  font-family: var(--b-human); font-size: var(--b-21); line-height: 1.4; font-weight: 500;
+  max-width: var(--b-measure); margin: 0; text-wrap: pretty;
+}
+.b-sentence-lead { font-size: var(--b-28); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em; text-wrap: balance; }
+
+/* ---- the claim --------------------------------------------------------------------------------- */
+.b-claim {
+  border: 1px solid var(--b-rule); border-radius: var(--b-r-2);
+  padding: 0.85rem 1rem; background: var(--b-paper);
+  display: flex; flex-direction: column; gap: 0.35rem;
+  position: relative;
+}
+.b-claim-eyebrow { font-family: var(--b-ui); font-size: var(--b-13); color: var(--b-ink-2); margin: 0; }
+.b-claim-value { display: flex; align-items: baseline; gap: 0.45rem; flex-wrap: wrap; margin: 0; }
+.b-claim-number { font-family: var(--b-machine); font-size: var(--b-40); font-weight: 500; line-height: 1; letter-spacing: -0.02em; }
+.b-claim-unit { font-family: var(--b-machine); font-size: var(--b-17); color: var(--b-ink-2); }
+.b-claim-compact .b-claim-number { font-size: var(--b-21); }
+.b-claim-note { font-size: var(--b-13); color: var(--b-ink-2); margin: 0; }
+.b-claim-source { font-family: var(--b-machine); font-size: var(--b-11); color: var(--b-ink-3); margin: 0; overflow-wrap: anywhere; }
+.b-claim-absent { font-family: var(--b-machine); font-size: var(--b-13); color: var(--b-ink-3); margin: 0; }
+
+/* The published colour: only where a source printed one, always with the source's own words. */
+.b-hazard {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: var(--b-machine); font-size: var(--b-15); font-weight: 500;
+  padding: 0.3rem 0.7rem 0.3rem 0.5rem; border-radius: 999px;
+  border: 1px solid var(--b-rule); width: fit-content;
+}
+.b-hazard::before { content: ''; width: 12px; height: 12px; border-radius: 3px; background: var(--b-hz, var(--b-ink-3)); }
+
+/* The window ruler: covered spans solid, gaps hatched. Never interpolated. */
+.b-ruler { position: relative; height: 8px; border-radius: 4px; overflow: hidden; background: repeating-linear-gradient(135deg, var(--b-rule-2) 0 4px, transparent 4px 8px); margin-top: 0.2rem; }
+.b-ruler i { position: absolute; top: 0; bottom: 0; background: var(--b-accent); }
+
+/* Depth: what unfolds under a claim. */
+.b-depth { margin-top: 0.35rem; }
+.b-depth > summary { list-style: none; cursor: pointer; font-family: var(--b-ui); font-size: var(--b-13); font-weight: 500; color: var(--b-accent); display: inline-flex; gap: 0.35rem; align-items: center; }
+.b-depth > summary::-webkit-details-marker { display: none; }
+.b-depth > summary::before { content: '›'; display: inline-block; transition: transform 120ms; }
+.b-depth[open] > summary::before { transform: rotate(90deg); }
+.b-depth-body { margin-top: 0.6rem; border-top: 1px solid var(--b-rule-2); padding-top: 0.6rem; }
+
+/* ---- the work ---------------------------------------------------------------------------------- */
+.b-work { border-top: 1px solid var(--b-rule-2); padding-top: 0.5rem; }
+.b-work > summary { list-style: none; cursor: pointer; font-family: var(--b-machine); font-size: var(--b-13); color: var(--b-ink-2); }
+.b-work > summary::-webkit-details-marker { display: none; }
+.b-work-row { display: grid; grid-template-columns: 1.2rem 1fr auto; gap: 0.5rem; align-items: baseline; padding: 0.3rem 0; font-size: var(--b-13); }
+.b-work-row[data-state='refused'] .b-work-title { text-decoration: line-through; color: var(--b-ink-3); }
+.b-work-glyph { font-family: var(--b-machine); color: var(--b-ink-3); }
+.b-work-title { margin: 0; font-weight: 500; }
+.b-work-detail { margin: 0; color: var(--b-ink-3); font-size: var(--b-11); }
+.b-work-ms { font-family: var(--b-machine); font-size: var(--b-11); color: var(--b-ink-3); }
+
+/* ---- the transcript ---------------------------------------------------------------------------- */
+.b-turn { display: flex; flex-direction: column; gap: 0.75rem; padding: 1rem 0; border-bottom: 1px solid var(--b-rule-2); }
+.b-turn:last-child { border-bottom: 0; }
+.b-you { font-family: var(--b-human); font-size: var(--b-15); color: var(--b-ink-2); margin: 0; }
+.b-you::before { content: 'You · '; color: var(--b-ink-3); }
+.b-stamp { font-family: var(--b-machine); font-size: var(--b-11); color: var(--b-ink-3); margin: 0; }
+.b-status { font-family: var(--b-machine); font-size: var(--b-11); color: var(--b-ink-3); border: 1px solid var(--b-rule); border-radius: 999px; padding: 0.1rem 0.5rem; }
+.b-status[data-held='true'] { color: var(--b-ink); border-color: var(--b-ink); }
+.b-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.b-claims { display: flex; flex-direction: column; gap: 0.6rem; }
+.b-list { margin: 0; padding-left: 1.1rem; font-size: var(--b-13); color: var(--b-ink-2); }
+
+/* ---- the opening and the composer -------------------------------------------------------------- */
+.b-opening { padding: clamp(1.5rem, 1rem + 4vw, 4rem) 0 1rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.b-dock { position: sticky; bottom: 0; padding: 0.75rem 0 max(0.75rem, env(safe-area-inset-bottom, 0px)); background: var(--b-paper); border-top: 1px solid var(--b-rule-2); }
+.b-starters { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.6rem; }
+.b-starter { font-family: var(--b-human); font-size: var(--b-13); color: var(--b-accent); background: none; border: 1px solid var(--b-rule); border-radius: 999px; padding: 0.35rem 0.75rem; cursor: pointer; }
+.b-starter:hover { border-color: var(--b-accent); }
+
+@media (max-width: 40rem) {
+  .b-bar-right .b-select { max-width: 9rem; }
+  .b-claim-number { font-size: var(--b-28); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .b *, .b *::before, .b *::after { transition: none !important; animation: none !important; }
+}
+
+/* ---- the parts still drawn by the older components, held to the same paper ------------------------ */
+/* The warning table, the receipt, the disclosures and the chart block are older components that carry
+   their own class names. Until each is rebuilt on the Claim, they are held to this language here: ink on
+   paper, one rule, no shadow, and no colour that is not a published one. */
+.b .card, .b .card-raised, .b .receipt { background: var(--b-paper); border: 1px solid var(--b-rule); border-radius: var(--b-r-2); box-shadow: none; padding: 0.75rem 0.9rem; }
+.b .eyebrow { font-family: var(--b-ui); font-size: var(--b-13); font-weight: 500; color: var(--b-ink-2); text-transform: none; letter-spacing: 0; }
+.b .tag { font-family: var(--b-machine); font-size: var(--b-11); color: var(--b-ink-3); border: 1px solid var(--b-rule); border-radius: 999px; padding: 0.1rem 0.5rem; background: none; }
+.b .tag-held { color: var(--b-ink); border-color: var(--b-ink); }
+.b .btn, .b .btn-ghost, .b .chip { font-family: var(--b-ui); font-size: var(--b-13); font-weight: 500; color: var(--b-ink); background: var(--b-paper); border: 1px solid var(--b-rule); border-radius: 999px; padding: 0.35rem 0.8rem; box-shadow: none; }
+.b .btn:hover, .b .btn-ghost:hover, .b .chip:hover { border-color: var(--b-ink-3); background: var(--b-paper); }
+.b .reading, .b .reading-line { font-family: var(--b-human); font-size: var(--b-15); color: var(--b-ink-2); }
+.b .quiet, .b .text-ink-soft { color: var(--b-ink-3); }
+.b table { font-size: var(--b-13); border-collapse: collapse; width: 100%; }
+.b th { font-family: var(--b-ui); font-weight: 500; color: var(--b-ink-2); text-align: left; padding: 0.3rem 0.4rem; border-bottom: 1px solid var(--b-rule); }
+.b td { padding: 0.3rem 0.4rem; border-bottom: 1px solid var(--b-rule-2); vertical-align: top; }
+.b .receipt-key { font-family: var(--b-ui); color: var(--b-ink-3); }
+.b .receipt-val, .b .evidence, .b .fact-source, .b .coverage { font-family: var(--b-machine); font-size: var(--b-13); }
+.b details > summary { cursor: pointer; }
+.b .machine-record { font-family: var(--b-machine); font-size: var(--b-11); background: var(--b-paper-2); border: 1px solid var(--b-rule); border-radius: var(--b-r); padding: 0.6rem; max-height: 22rem; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; }
+
+/* A long sentence is a paragraph, and is set like one. */
+.b-sentence[data-long='true'] { font-size: var(--b-17); font-weight: 400; line-height: 1.55; }
+
+/* ---- the composer ------------------------------------------------------------------------------- */
+.b .composer, .b .b-composer { border: 1px solid var(--b-rule); border-radius: var(--b-r-2); background: var(--b-paper); padding: 0.5rem; display: flex; flex-direction: column; gap: 0.4rem; box-shadow: none; }
+.b .composer textarea, .b .composer input[type='text'], .b .b-composer textarea { font-family: var(--b-human); font-size: var(--b-17); color: var(--b-ink); background: transparent; border: 0; outline: none; resize: none; width: 100%; min-height: 2.6rem; padding: 0.3rem 0.4rem; }
+.b .composer textarea:focus { outline: none; box-shadow: none; }
+.b .composer .composer-row, .b .b-composer-row { display: flex; gap: 0.4rem; align-items: center; justify-content: flex-end; flex-wrap: wrap; }
+.b .composer .btn-primary { background: var(--b-accent); color: #fff; border-color: var(--b-accent); }
+.b .composer .btn-primary:hover { background: var(--b-accent-ink); }
+.b .composer .composer-note, .b .composer .text-\[11px\] { font-size: var(--b-11); color: var(--b-ink-3); }
+
+@media (max-width: 40rem) {
+  .b-phone-hide { display: none; }
+}
+
+/* The composer's controls come from the shared kit; on the paper they are chips, and Ask is the accent. */
+.b .composer button { font-family: var(--b-ui); font-size: var(--b-13); font-weight: 500; color: var(--b-ink); background: var(--b-paper); border: 1px solid var(--b-rule); border-radius: 999px; padding: 0.4rem 0.85rem; min-height: 36px; box-shadow: none; }
+.b .composer button:hover { border-color: var(--b-ink-3); }
+.b .composer button[data-testid='send-question'] { background: var(--b-accent); color: #fff; border-color: var(--b-accent); }
+.b .composer button[data-testid='send-question']:disabled { background: var(--b-paper-2); color: var(--b-ink-3); border-color: var(--b-rule); }
+.b .composer button[aria-pressed='true'] { background: var(--b-ink); color: var(--b-paper); border-color: var(--b-ink); }
+.b .composer textarea::placeholder { color: var(--b-ink-3); }

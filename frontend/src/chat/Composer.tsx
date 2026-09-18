@@ -75,7 +75,7 @@ export function Composer({ draft, onDraft, onSend, busy, language, languages, on
   };
 
   return (
-    <div className="composer-shell glass-strong px-3 py-2.5" data-busy={busy ? 'true' : 'false'}>
+    <div className="composer b-composer" data-busy={busy ? 'true' : 'false'}>
       {heard ? (
         <div className="glass-strong pop-in mb-2 p-3" data-testid="transcript-panel">
           <p className="eyebrow flex items-center gap-2"><Mic size={14} aria-hidden="true" />Heard, for correction</p>
@@ -114,7 +114,7 @@ export function Composer({ draft, onDraft, onSend, busy, language, languages, on
             }
           }}
           placeholder="What is it like right now in Ahmedabad?"
-          className="min-h-11 flex-1 resize-none bg-transparent px-1 py-2 text-step-0 text-ink outline-none placeholder:text-mute"
+          className="b-human min-h-11 flex-1 resize-none bg-transparent px-1 py-2 outline-none"
           aria-describedby="composer-hint"
         />
         <div className="flex items-center gap-1.5 pb-0.5">
@@ -162,8 +162,7 @@ export function Composer({ draft, onDraft, onSend, busy, language, languages, on
       <div id="composer-hint" className="mt-1.5 flex flex-wrap items-center justify-between gap-2 text-[11px] quiet">
         <span className="flex items-center gap-1.5">
           <Keyboard size={13} aria-hidden="true" />
-          Questions and answers stay on this machine. Ctrl/⌘ + Enter sends; every value keeps its source and
-          retrieval time.
+          Ctrl/⌘ + Enter sends.
         </span>
         {voiceNote ? <span role="status">{voiceNote}</span> : null}
       </div>

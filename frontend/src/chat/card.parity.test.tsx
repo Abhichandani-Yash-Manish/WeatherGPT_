@@ -73,8 +73,8 @@ const partial = (status: string): AnswerPacket => ({
   conversation_id: 'partial', question: 'A partial packet', status, answer: 'A partial packet, for the title rule only.',
 });
 
-function mountCard(packet: AnswerPacket, register: 'brief' | 'conversational' | 'full' = 'conversational') {
-  return render(<AnswerTurn packet={packet} register={register} onFollowUp={() => {}} />);
+function mountCard(packet: AnswerPacket, _register: 'brief' | 'conversational' | 'full' = 'conversational') {
+  return render(<AnswerTurn packet={packet} onFollowUp={() => {}} />);
 }
 
 function withClient(node: React.ReactElement) {
@@ -274,34 +274,19 @@ describe('the answer card, held against the vanilla checks', () => {
     expect(list.textContent).toContain('India Meteorological Department');
   });
 
-  it('adds the full-evidence disclosures in that register, and never changes what the card says', () => {
-    const cardOf = (register: 'brief' | 'conversational' | 'full') => {
-      const { container, unmount } = mountCard(RECORDED.forecast, register);
-      const value = {
-        summaries: Array.from(container.querySelectorAll('summary')).map(summary => summary.textContent || ''),
-        answer: container.querySelector('.reading')?.textContent,
-        value: container.querySelector('.lead-value')?.textContent,
-      };
-      unmount();
-      return value;
-    };
-    const brief = cardOf('brief');
-    const conversational = cardOf('conversational');
-    const full = cardOf('full');
-    expect(brief.summaries).toEqual([]);
-    expect(conversational.summaries).toEqual(['What this answer does not cover']);
-    expect(full.summaries).toContain('Requested tasks (1)');
-    expect(full.summaries).toContain('How the retrieval chose its sources (1)');
-    expect(full.summaries).toContain('What produced this answer');
-    expect(full.summaries).toContain('Machine record (the exact response)');
-    expect(brief.answer).toBe(conversational.answer);
-    expect(full.answer).toBe(conversational.answer);
-    expect(full.value).toBe(conversational.value);
-    expect(conversational.value).toBe('0.3');
+  it('keeps every disclosure reachable on one shape of card, and never changes what the card says', () => {
+    const { container } = mountCard(RECORDED.forecast);
+    const summaries = Array.from(container.querySelectorAll('summary')).map(summary => summary.textContent || '');
+    expect(summaries).toContain('where this came from');
+    expect(summaries.some(text => /Machine record/.test(text))).toBe(true);
+    expect(summaries.some(text => /how this was answered/.test(text))).toBe(true);
+    expect(container.querySelector('.b-sentence')?.textContent).toBe(RECORDED.forecast.answer);
+    expect(container.querySelector('.lead-value')).not.toBeNull();
   });
 
   it('shows the exact rendered packet in the machine record rather than a summary', () => {
     const { container } = mountCard(RECORDED.forecast, 'full');
+    fireEvent.click(within(container).getByText('Machine record (the exact response)'));
     const pre = container.querySelector('pre')!;
     expect(pre.textContent).toContain('"conversation_id"');
     expect(JSON.parse(pre.textContent || '')).toEqual(RECORDED.forecast);

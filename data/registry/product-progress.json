@@ -308,7 +308,7 @@
    "next": [
     "Widen extraction families for 45 held layouts and review OCR",
     "Engine repairs A01, A04, A07 and the declared acceptance benchmark (G08)",
-    "Cross-edition contradiction handling and full-document recall measurement",
+    "Within-edition activity-wording contradiction is handled (docs/107): a restriction and a permission the edition separates by its own weather condition are reconciled and stated as one rule, and wording it does not separate stays a disclosed unresolved conflict. Cross-edition contradiction handling and general semantic contradiction remain open; full-document recall is implemented and measured only on reviewed layouts.",
     "Forecast skill now has archived runs measured against ERA5 reanalysis (docs/80); matched observations, run identity and calibration remain open"
    ]
   },

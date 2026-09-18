@@ -46,21 +46,22 @@ def main():
         css = "\n".join(read(sheet) for sheet in sorted((DIST / "assets").glob("*.css")))
 
     app = read(SRC / "App.tsx")
-    topbar = read(SRC / "shell" / "Topbar.tsx")
-    rail = read(SRC / "shell" / "Rail.tsx")
+    # The shell since docs/109: one page (home/Home.tsx) with the controls in its bar; there is no rail and no topbar.
+    home = read(SRC / "home" / "Home.tsx")
+    bulletin_css = read(SRC / "bulletin" / "bulletin.css")
     answer = read(SRC / "chat" / "AnswerTurn.tsx")
     composer = read(SRC / "chat" / "Composer.tsx")
     host = read(SRC / "shell" / "SurfaceHost.tsx")
     print_css = read(SRC / "styles" / "print.css")
-    app_css = read(SRC / "styles" / "app.css")
 
     # FE01: the question box is reachable and not below a competing form. The React shell keeps the prompt in
-    # the composer, there is no other form on the page, and the narrow-width rules make the rail a drawer.
+    # the composer, there is no other form on the page, and the page is one column at every width.
     no_other_form = len(re.findall(r"<form", composer)) == 0 and "onSubmit" not in composer
-    narrow = "@media (max-width: 64rem)" in app_css and ".rail" in app_css
-    drawer = "rail-backdrop" in app and "aria-expanded" in topbar and "data-open" in rail
-    findings.append(("FE01_mobile_reachability", no_other_form and narrow and drawer,
-                     "composer is not a form: " + str(no_other_form) + "; narrow-width drawer rules: " + str(narrow and drawer)))
+    # One column at every width: the composer is a sticky dock and the bar collapses on a phone. Nothing has to
+    # be opened before the question box can be reached.
+    narrow = "@media (max-width: 40rem)" in bulletin_css and ".b-dock" in bulletin_css and "b-dock" in read(SRC / "chat" / "AskSurface.tsx")
+    findings.append(("FE01_mobile_reachability", no_other_form and narrow,
+                     "composer is not a form: " + str(no_other_form) + "; one-column dock rules: " + str(narrow)))
 
     # FE02: a bounded collection is reachable from an answer, and a check holds it.
     fe02 = "Collect fresh evidence" in answer and any_source("*.test.tsx", "Collect fresh evidence")
@@ -83,8 +84,8 @@ def main():
                      "the card states requested, completed and the incomplete ids" if fe04 else "no task-coverage sentence in the card"))
 
     # FE05: a language control exists and every surface states its own scope. The scope is the evidence footer
-    # each module renders, and the control is the topbar select.
-    language_control = "Answer in" in topbar and "allLanguages" in topbar
+    # each module renders, and the control is the page bar's select.
+    language_control = "Answer language" in home and "allLanguages" in home
     # A surface states its scope through SurfaceShell, which renders the evidence footer: counting the files that
     # call the shell is counting the surfaces that carry their coverage, limits and sources.
     footers = len([path for path in sources("*.tsx") if "SurfaceShell" in read(path) or "EvidenceFooter" in read(path)])

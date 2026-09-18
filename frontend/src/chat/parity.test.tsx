@@ -41,7 +41,7 @@ function packet(overrides: Partial<AnswerPacket> = {}): AnswerPacket {
 
 describe('transcript parity', () => {
   it('names the source, the retrieval time and the method in one chain', () => {
-    mount(<AnswerTurn packet={packet()} register="conversational" onFollowUp={() => {}} />);
+    mount(<AnswerTurn packet={packet()} onFollowUp={() => {}} />);
     const receipt = document.querySelector('.receipt')!;
     const chain = receipt.querySelector('.receipt-chain')!;
     expect(chain.textContent).toMatch(/S21/);
@@ -61,7 +61,6 @@ describe('transcript parity', () => {
             { label: 'Surat, Himachal Pradesh', value: 'Surat HP', selection_id: 'geonames:1255365' },
           ],
         })}
-        register="conversational"
         onFollowUp={() => {}}
       />,
     );
@@ -89,7 +88,7 @@ describe('transcript parity', () => {
         return HttpResponse.json({ removed: String(params.id) });
       }),
     );
-    mount(<ConversationRail currentId={null} onOpen={() => {}} onNew={() => {}} register="conversational" onRegister={() => {}} />);
+    mount(<ConversationRail register="conversational" currentId={null} onOpen={() => {}} onNew={() => {}} onRegister={() => {}} />);
     const row = await screen.findByText('hello');
     expect(row).toBeInTheDocument();
     const button = within(row.parentElement!.parentElement as HTMLElement).getByRole('button', { name: /Delete/ });

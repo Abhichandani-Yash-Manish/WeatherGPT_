@@ -27,8 +27,8 @@ function packet(overrides: Partial<AnswerPacket> = {}): AnswerPacket {
   };
 }
 
-function mount(p: AnswerPacket, register: 'conversational' | 'full' = 'conversational') {
-  return render(<AnswerTurn packet={p} register={register} onFollowUp={() => {}} />);
+function mount(p: AnswerPacket, _register: 'conversational' | 'full' = 'conversational') {
+  return render(<AnswerTurn packet={p} onFollowUp={() => {}} />);
 }
 
 describe('the airport report', () => {

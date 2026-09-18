@@ -24,29 +24,7 @@ describe('keyboard acceptance', () => {
     expect(document.activeElement).toBe(box);
   });
 
-  it('reaches every numbered surface from the keyboard alone', async () => {
-    render(<App />);
-    await userEvent.keyboard('{Alt>}3{/Alt}');
-    expect(window.location.hash).toBe('#/warnings');
-    await userEvent.keyboard('{Alt>}1{/Alt}');
-    expect(window.location.hash).toBe('#/assistant');
-  });
-
-
-  it('opens the navigation drawer from the keyboard and reports its state', async () => {
-    render(<App />);
-    const toggle = screen.getByTestId('rail-toggle');
-    expect(toggle).toHaveAttribute('aria-expanded', 'false');
-    const rail = document.getElementById('workspace-rail')!;
-    expect(rail).toHaveAttribute('data-open', 'false');
-    await userEvent.click(toggle);
-    expect(toggle).toHaveAttribute('aria-expanded', 'true');
-    expect(document.getElementById('workspace-rail')).toHaveAttribute('data-open', 'true');
-    await userEvent.keyboard('{Escape}');
-    expect(document.getElementById('workspace-rail')).toHaveAttribute('data-open', 'false');
-  });
-
-  it('opens the command palette with the keyboard and puts the cursor in its search field', async () => {
+      it('opens the command palette with the keyboard and puts the cursor in its search field', async () => {
     render(<App />);
     await userEvent.keyboard('{Alt>}k{/Alt}');
     const palette = await screen.findByRole('dialog', { name: 'Command palette' });
