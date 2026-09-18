@@ -62,6 +62,25 @@ budget), surface registry **10/10**, port ledger **2/2** with all 203 names veri
 The harness in `tmp/qa/` is this session's instrument, not part of the product: `driver.py` speaks CDP to a
 headless Chrome, and the scripts above are the measurements quoted in the other records.
 
+Starting that instrument on this machine, measured 18 September 2026:
+
+```bash
+mkdir -p tmp/qa-chrome-crash
+/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome \
+  --headless=new --remote-debugging-port=9333 --user-data-dir=tmp/qa-chrome-profile10 \
+  --crash-dumps-dir=tmp/qa-chrome-crash --disable-crash-reporter --disable-breakpad \
+  --no-first-run --disable-gpu --no-sandbox &
+python3 tmp/qa/driver.py --port 8899 &
+```
+
+The four crash-reporting flags are needed in a sandboxed shell: Chrome's crashpad writer is denied
+`~/Library/Application Support/Google/Chrome/Crashpad`, and without these flags it aborts at launch and the
+debug port never opens (measured: `Operation not permitted` in the launch log and no listener on 9333). Both
+paths stay inside the workspace so nothing is written elsewhere. The first request to the driver after a fresh
+start may answer `{"error": "reconnected; retry"}`; retry it. A browser that has never loaded the app sits on
+an error page, so navigate to `http://127.0.0.1:8765/` before changing the hash.
+
+
 ## 5. First-run state versus a worked state
 
 - `data/runtime/` holds the ingested editions, conversations, watches, plans and briefs. It is git-ignored: a
