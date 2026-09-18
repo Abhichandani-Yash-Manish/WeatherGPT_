@@ -17,7 +17,7 @@ from zoneinfo import ZoneInfo
 from .document_ingest import ALL_FAMILIES
 from .gazetteer import near_names, norm
 from .transport import SourceError
-from .bulletin_context import qualification_flags
+from .bulletin_context import qualification_flags, unresolved_conflicts
 
 IST = ZoneInfo('Asia/Kolkata')
 NATIONAL_OR_MARINE = {'national_bulletin', 'extended_range', 'erf_marquee', 'press_release',
@@ -913,7 +913,12 @@ def execute_corpus(engine, result, plan, task, resolved=None):
         if 'reading_order_unverified' in str(view.get('extraction_status') or ''):
             reading_order.append(sha)
 
-    conflicts = qualification_flags(conflict_items, [])
+    # Opposing wording the edition itself qualifies by weather state is one rule stated twice, not a
+    # conflict: it is disclosed with its condition and does not reduce the answer. Only wording the
+    # edition does not separate still stands as unresolved.
+    activity_flags = qualification_flags(conflict_items, [])
+    conditional_guidance = [flag for flag in activity_flags if flag['kind'] == 'activity_conditional_guidance']
+    conflicts = unresolved_conflicts(activity_flags)
     citations, evidence, passages = [], [], []
     for sha in kept:
         view = views[sha]
@@ -1050,9 +1055,15 @@ def execute_corpus(engine, result, plan, task, resolved=None):
     if crop_hits:
         parts.append('Crop guidance is district-level published advice. It has not been validated against an individual field, '
                      'current crop stage or the weather at that field, and it is not a personal go/no-go decision.')
+    for flag in conditional_guidance:
+        parts.append('On ' + str(flag['activity']) + ', this edition states one rule in two places rather than two '
+                     'opposing ones: it restricts the operation ' + str(flag['restricted_when']) + ' and permits it ' +
+                     str(flag['permitted_when']) + '. Whether that condition holds at a particular field is not '
+                     'established here, and the passages are quoted above as printed.')
     if conflicts:
         parts.append('Opposing wording was found for ' + ', '.join(flag['activity'] for flag in conflicts) +
-                     '. Their conditions, dates and scopes may differ; the passages are retained and no conclusion has been made.')
+                     ', and this edition does not separate the two by a weather condition. Their dates and scopes may '
+                     'differ; the passages are retained and no conclusion has been made.')
     if CHANGE_QUERY.search(query) and comparison.get('state') == 'single_edition_indexed':
         family_name = str(views[kept[0]].get('family_label'))
         where = str(views[kept[0]].get('region') or 'national')
@@ -1118,6 +1129,10 @@ def execute_corpus(engine, result, plan, task, resolved=None):
                                                           if translation else None),
                                     'filters': {'family': family or None, 'scope': scope or None, 'region': region},
                                     'evidence_classes': classes,
+                                    # The two states stay apart in the payload as well as in the prose: a
+                                    # reconciled rule is not a conflict that was quietly dropped.
+                                    'activity_conditional_guidance': conditional_guidance,
+                                    'activity_conflicts_unresolved': conflicts,
                                     'superseded_retired': len(retired),
                                     'currency_unknown': len(currency_unknown),
                                     'expired_printed_validity': len(expired),

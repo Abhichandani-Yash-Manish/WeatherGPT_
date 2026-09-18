@@ -84,7 +84,7 @@ serve it, and check it:
 
     cd frontend && npm install && npm run build    # builds web/dist
     python3 -m weathergpt_data.workspace --port 8790
-    cd frontend && npm test                        # 55 component suites, 296 checks, run under Vitest
+    cd frontend && npm test                        # 62 component suites, 348 checks, run under Vitest
     python3 scripts/audit_react_frontend.py        # 13 checks over the built page and its sources
     python3 scripts/audit_react_build.py           # 11 checks over the built output
 
@@ -280,8 +280,8 @@ The interface states these limits instead of filling them:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 1351 Python tests
-cd frontend && npx tsc --noEmit && npm test          # 61 React suites, 340 component checks
+python3 -m pytest tests/ -q                          # 1356 Python tests
+cd frontend && npx tsc --noEmit && npm test          # 62 React suites, 349 component checks
 python3 scripts/audit_react_frontend.py              # 13 checks over the built page and its sources
 python3 scripts/audit_react_build.py                 # 11 checks over the built output
 python3 scripts/audit_port_ledger.py                 # every component check the ledger names, verified in its spec

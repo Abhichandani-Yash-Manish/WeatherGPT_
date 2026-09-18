@@ -4,6 +4,7 @@
 @import "./sky.css";
 @import "./transcript.css";
 @import "./print.css";
+@import "./voices.css";
 
 /* Tailwind consumes the existing token layer rather than replacing it: the design system stays in
    web/tokens.css, which the vanilla frontend still uses, and the two agree by construction. Every
@@ -101,6 +102,10 @@ body {
 *::-webkit-scrollbar { width: 10px; height: 10px; }
 *::-webkit-scrollbar-thumb { background: var(--line-strong); border: 3px solid transparent; background-clip: content-box; border-radius: var(--r-pill); }
 *::-webkit-scrollbar-track { background: transparent; }
+
+/* The skip link's own landmark. display: contents keeps it out of the layout while the landmark stays in the
+   accessibility tree, which is what the content-in-landmarks rule asks for. */
+.skip-links { display: contents; }
 
 .skip-link {
   position: absolute;

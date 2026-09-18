@@ -152,22 +152,32 @@ function Shell() {
     return <OwnerGate onOpen={() => go('assistant')} onSkip={() => go('assistant')} onEnter={() => go('assistant')} />;
   }
 
+  /* The surfaces that carry a question box are the two the skip link can point at; every other surface
+     points at the main landmark instead, which exists on all of them. */
+  const hasQuestionBox = view.id === 'assistant' || view.id === 'workspace';
+
   return (
     <div className="flex h-full min-h-screen" data-shell="react" data-surface={view.id}>
-      {/* A visible-on-focus skip link, and it moves focus rather than only scrolling: the question box is
-          where a keyboard reader wants to be on arrival. */}
-      <a
-        className="skip-link"
-        href="#question"
-        onClick={event => {
-          const box = document.getElementById('question');
-          if (!box) return;
-          event.preventDefault();
-          box.focus();
-        }}
-      >
-        Skip to the question box
-      </a>
+      {/* A visible-on-focus skip link, and it moves focus rather than only scrolling. It is wrapped in its own
+          landmark: a skip link that sits outside every landmark is reported by axe as unlandmarked content
+          (measured 18 September 2026 on all 17 surfaces that have no question box), and it pointed at #question
+          on surfaces where that id does not exist, so the link did nothing and axe reported a missing target.
+          The target is now chosen from what the surface actually has: the question box where one exists, the
+          main landmark everywhere else. */}
+      <nav aria-label="Skip to" className="skip-links" data-testid="skip-links">
+        <a
+          className="skip-link"
+          href={hasQuestionBox ? '#question' : '#main'}
+          onClick={event => {
+            const box = document.getElementById(hasQuestionBox ? 'question' : 'main');
+            if (!box) return;
+            event.preventDefault();
+            box.focus();
+          }}
+        >
+          {hasQuestionBox ? 'Skip to the question box' : 'Skip to the main content'}
+        </a>
+      </nav>
       <Aurora />
       <SkyBackground />
       <Rail active={view.id} onOpen={open} open={railOpen} onClose={() => setRailOpen(false)} />
@@ -178,7 +188,7 @@ function Shell() {
         hidden={!railOpen}
         onClick={() => setRailOpen(false)}
       />
-      <main className="relative flex min-w-0 flex-1 flex-col">
+      <main id="main" tabIndex={-1} className="relative flex min-w-0 flex-1 flex-col focus:outline-none">
         <Topbar
           language={language}
           onLanguage={setLanguage}

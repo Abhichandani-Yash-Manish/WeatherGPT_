@@ -1,0 +1,4447 @@
+{
+ "url": "http://127.0.0.1:8765/#/overview",
+ "tokens": {
+  "colours": [
+   {
+    "value": "rgb(22, 36, 43)",
+    "count": 1653
+   },
+   {
+    "value": "rgb(89, 105, 110)",
+    "count": 292
+   },
+   {
+    "value": "rgb(13, 109, 119)",
+    "count": 154
+   },
+   {
+    "value": "rgb(61, 82, 91)",
+    "count": 153
+   },
+   {
+    "value": "rgb(44, 110, 69)",
+    "count": 99
+   },
+   {
+    "value": "rgb(0, 0, 0)",
+    "count": 95
+   },
+   {
+    "value": "rgb(133, 104, 0)",
+    "count": 90
+   },
+   {
+    "value": "rgb(178, 43, 43)",
+    "count": 6
+   },
+   {
+    "value": "rgb(163, 86, 17)",
+    "count": 6
+   },
+   {
+    "value": "rgb(255, 255, 255)",
+    "count": 5
+   },
+   {
+    "value": "rgb(219, 230, 226)",
+    "count": 1
+   }
+  ],
+  "backgrounds": [
+   {
+    "value": "rgb(44, 110, 69)",
+    "count": 49
+   },
+   {
+    "value": "rgb(225, 239, 230)",
+    "count": 48
+   },
+   {
+    "value": "rgb(247, 240, 213)",
+    "count": 43
+   },
+   {
+    "value": "rgb(133, 104, 0)",
+    "count": 43
+   },
+   {
+    "value": "oklab(0.98975 -0.00171524 0.00223333 / 0.64)",
+    "count": 27
+   },
+   {
+    "value": "oklab(0.489747 -0.0723544 -0.0358096 / 0.14)",
+    "count": 24
+   },
+   {
+    "value": "rgb(251, 252, 250)",
+    "count": 11
+   },
+   {
+    "value": "oklab(0.98975 -0.00171524 0.00223333 / 0.82)",
+    "count": 9
+   },
+   {
+    "value": "oklab(0.98975 -0.00171524 0.00223333 / 0.46)",
+    "count": 9
+   },
+   {
+    "value": "oklab(0.531115 0.001142 0.10853 / 0.95)",
+    "count": 9
+   },
+   {
+    "value": "oklab(0.48405 -0.0846071 0.0420492 / 0.85)",
+    "count": 9
+   },
+   {
+    "value": "oklab(0.535315 0.0717472 0.102924 / 0.92)",
+    "count": 6
+   },
+   {
+    "value": "rgb(61, 82, 91)",
+    "count": 6
+   },
+   {
+    "value": "oklab(0.505115 0.154615 0.0750422 / 0.92)",
+    "count": 5
+   },
+   {
+    "value": "oklab(0.927291 -0.00904098 0.00423717 / 0.42)",
+    "count": 4
+   },
+   {
+    "value": "rgb(248, 227, 225)",
+    "count": 3
+   },
+   {
+    "value": "rgb(178, 43, 43)",
+    "count": 3
+   },
+   {
+    "value": "rgb(249, 235, 219)",
+    "count": 3
+   },
+   {
+    "value": "rgb(163, 86, 17)",
+    "count": 3
+   },
+   {
+    "value": "oklab(0.489747 -0.0723544 -0.0358096 / 0.16)",
+    "count": 2
+   },
+   {
+    "value": "oklab(0.48405 -0.0846071 0.0420492 / 0.16)",
+    "count": 2
+   },
+   {
+    "value": "rgb(16, 26, 32)",
+    "count": 1
+   },
+   {
+    "value": "rgb(236, 240, 236)",
+    "count": 1
+   },
+   {
+    "value": "oklab(0.489747 -0.0723544 -0.0358096 / 0.3)",
+    "count": 1
+   }
+  ],
+  "borders": [
+   {
+    "value": "rgba(0, 0, 0, 0)",
+    "count": 52
+   },
+   {
+    "value": "oklab(0.810333 -0.0178533 0.0061726 / 0.48)",
+    "count": 49
+   },
+   {
+    "value": "rgb(44, 110, 69)",
+    "count": 48
+   },
+   {
+    "value": "rgb(133, 104, 0)",
+    "count": 43
+   },
+   {
+    "value": "oklab(0.489747 -0.0723544 -0.0358096 / 0.22)",
+    "count": 24
+   },
+   {
+    "value": "rgb(214, 223, 217)",
+    "count": 12
+   },
+   {
+    "value": "rgb(183, 197, 189)",
+    "count": 7
+   },
+   {
+    "value": "rgb(178, 43, 43)",
+    "count": 3
+   },
+   {
+    "value": "rgb(163, 86, 17)",
+    "count": 3
+   },
+   {
+    "value": "oklab(0.489747 -0.0723544 -0.0358096 / 0.7)",
+    "count": 1
+   },
+   {
+    "value": "oklab(0.489747 -0.0723544 -0.0358096 / 0.3)",
+    "count": 1
+   },
+   {
+    "value": "rgb(13, 109, 119)",
+    "count": 1
+   }
+  ],
+  "fonts": [
+   {
+    "value": "system-ui, -apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Noto Sans\", sans-serif",
+    "count": 2432
+   },
+   {
+    "value": "ui-monospace, \"SF Mono\", SFMono-Regular, Menlo, Consolas, \"Roboto Mono\", monospace",
+    "count": 116
+   },
+   {
+    "value": "ui-serif, \"Iowan Old Style\", \"Palatino Linotype\", \"Book Antiqua\", Georgia, serif",
+    "count": 6
+   }
+  ],
+  "sizes": [
+   {
+    "value": "14.88px",
+    "count": 1491
+   },
+   {
+    "value": "12px",
+    "count": 956
+   },
+   {
+    "value": "7px",
+    "count": 43
+   },
+   {
+    "value": "11px",
+    "count": 23
+   },
+   {
+    "value": "13.9872px",
+    "count": 16
+   },
+   {
+    "value": "11.28px",
+    "count": 6
+   },
+   {
+    "value": "17px",
+    "count": 5
+   },
+   {
+    "value": "9px",
+    "count": 5
+   },
+   {
+    "value": "10px",
+    "count": 4
+   },
+   {
+    "value": "58px",
+    "count": 4
+   },
+   {
+    "value": "42px",
+    "count": 1
+   }
+  ],
+  "weights": [
+   {
+    "value": "400",
+    "count": 2157
+   },
+   {
+    "value": "600",
+    "count": 365
+   },
+   {
+    "value": "700",
+    "count": 32
+   }
+  ],
+  "radii": [
+   {
+    "value": "999px",
+    "count": 128
+   },
+   {
+    "value": "3.35544e+07px",
+    "count": 112
+   },
+   {
+    "value": "3px",
+    "count": 67
+   },
+   {
+    "value": "8px",
+    "count": 45
+   },
+   {
+    "value": "12px",
+    "count": 42
+   },
+   {
+    "value": "18px",
+    "count": 9
+   },
+   {
+    "value": "26px",
+    "count": 7
+   },
+   {
+    "value": "50%",
+    "count": 3
+   },
+   {
+    "value": "0px 0px 8px",
+    "count": 1
+   },
+   {
+    "value": "6px",
+    "count": 1
+   }
+  ],
+  "shadows": [
+   {
+    "value": "rgba(21, 36, 43, 0.05) 0px 1px 0px 0px",
+    "count": 10
+   },
+   {
+    "value": "oklab(1 0 5.96046e-8 / 0.7) 0px 1px 0px 0px inset, rgba(16, 26, 32, 0.05) 0px 1px 2px 0px, rgba(16, 26, 32, 0.55) 0px 26px 60px -36px",
+    "count": 7
+   },
+   {
+    "value": "rgb(183, 197, 189) 0px 0px 0px 1px inset",
+    "count": 4
+   },
+   {
+    "value": "oklab(1 0 5.96046e-8 / 0.7) 0px 1px 0px 0px inset, rgba(16, 26, 32, 0.06) 0px 2px 6px 0px, rgba(16, 26, 32, 0.62) 0px 40px 90px -48px",
+    "count": 2
+   },
+   {
+    "value": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(21, 36, 43, 0.05) 0px 1px 0px 0px",
+    "count": 1
+   },
+   {
+    "value": "oklab(0.489747 -0.0723544 -0.0358096 / 0.35) 0px 0px 0px 1px, oklab(0.489747 -0.0723544 -0.0358096 / 0.55) 0px 10px 30px -12px",
+    "count": 1
+   },
+   {
+    "value": "rgba(21, 36, 43, 0.6) 0px 16px 38px -28px, rgba(21, 36, 43, 0.28) 0px 2px 6px -4px",
+    "count": 1
+   }
+  ],
+  "spacing": [
+   {
+    "value": "0px 0px 0px 0px",
+    "count": 411
+   },
+   {
+    "value": "7px 10px 7px 8px",
+    "count": 342
+   },
+   {
+    "value": "gap 6px",
+    "count": 137
+   },
+   {
+    "value": "6px 13px 6px 13px",
+    "count": 103
+   },
+   {
+    "value": "gap 8px",
+    "count": 73
+   },
+   {
+    "value": "6px 8px 6px 8px",
+    "count": 36
+   },
+   {
+    "value": "8px 10px 8px 10px",
+    "count": 32
+   },
+   {
+    "value": "gap 12px",
+    "count": 31
+   },
+   {
+    "value": "gap 10px",
+    "count": 25
+   },
+   {
+    "value": "gap 4px",
+    "count": 16
+   },
+   {
+    "value": "16px 16px 16px 16px",
+    "count": 11
+   },
+   {
+    "value": "7px 13px 7px 13px",
+    "count": 7
+   },
+   {
+    "value": "8px 12px 8px 12px",
+    "count": 6
+   },
+   {
+    "value": "0px 0px 8px 0px",
+    "count": 6
+   },
+   {
+    "value": "8px 8px 8px 8px",
+    "count": 5
+   },
+   {
+    "value": "gap 16px",
+    "count": 4
+   },
+   {
+    "value": "2px 10px 2px 10px",
+    "count": 4
+   },
+   {
+    "value": "9px 12px 9px 12px",
+    "count": 4
+   },
+   {
+    "value": "4px 8px 4px 8px",
+    "count": 4
+   },
+   {
+    "value": "0px 8px 4px 8px",
+    "count": 2
+   },
+   {
+    "value": "12px 12px 12px 12px",
+    "count": 2
+   },
+   {
+    "value": "4px 10px 4px 10px",
+    "count": 2
+   },
+   {
+    "value": "gap 4px 12px",
+    "count": 2
+   },
+   {
+    "value": "0px 10px 0px 10px",
+    "count": 2
+   }
+  ]
+ },
+ "contrast": [
+  {
+   "text": "Skip to the question box",
+   "colour": "#dbe6e2",
+   "background": "#101a20",
+   "ratio": 13.8,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "400"
+  },
+  {
+   "text": "WeatherGPT",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 4.5,
+   "passes": true,
+   "size": 17,
+   "weight": "600"
+  },
+  {
+   "text": "Evidence-first workspace",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Ask",
+   "colour": "#3d525b",
+   "background": "#ecf0ec",
+   "ratio": 7.14,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "400"
+  },
+  {
+   "text": "Dashboard",
+   "colour": "#3d525b",
+   "background": "#ecf0ec",
+   "ratio": 7.14,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "400"
+  },
+  {
+   "text": "Today",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "600"
+  },
+  {
+   "text": "Weather & advice",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "Warnings",
+   "colour": "#3d525b",
+   "background": "#ecf0ec",
+   "ratio": 7.14,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "400"
+  },
+  {
+   "text": "Map",
+   "colour": "#3d525b",
+   "background": "#ecf0ec",
+   "ratio": 7.14,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "400"
+  },
+  {
+   "text": "Forecast",
+   "colour": "#3d525b",
+   "background": "#ecf0ec",
+   "ratio": 7.14,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "400"
+  },
+  {
+   "text": "Observations",
+   "colour": "#3d525b",
+   "background": "#ecf0ec",
+   "ratio": 7.14,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "400"
+  },
+  {
+   "text": "Farm advisories",
+   "colour": "#3d525b",
+   "background": "#ecf0ec",
+   "ratio": 7.14,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "400"
+  },
+  {
+   "text": "Air quality",
+   "colour": "#3d525b",
+   "background": "#ecf0ec",
+   "ratio": 7.14,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "400"
+  },
+  {
+   "text": "Models, history & specialists",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "What changed",
+   "colour": "#3d525b",
+   "background": "#ecf0ec",
+   "ratio": 7.14,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "400"
+  },
+  {
+   "text": "Climate records",
+   "colour": "#3d525b",
+   "background": "#ecf0ec",
+   "ratio": 7.14,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "400"
+  },
+  {
+   "text": "Sea and rivers",
+   "colour": "#3d525b",
+   "background": "#ecf0ec",
+   "ratio": 7.14,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "400"
+  },
+  {
+   "text": "Aviation",
+   "colour": "#3d525b",
+   "background": "#ecf0ec",
+   "ratio": 7.14,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "400"
+  },
+  {
+   "text": "Ensemble spread",
+   "colour": "#3d525b",
+   "background": "#ecf0ec",
+   "ratio": 7.14,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "400"
+  },
+  {
+   "text": "Forecast verification",
+   "colour": "#3d525b",
+   "background": "#ecf0ec",
+   "ratio": 7.14,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "400"
+  },
+  {
+   "text": "Compare places",
+   "colour": "#3d525b",
+   "background": "#ecf0ec",
+   "ratio": 7.14,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "400"
+  },
+  {
+   "text": "Published documents",
+   "colour": "#3d525b",
+   "background": "#ecf0ec",
+   "ratio": 7.14,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "400"
+  },
+  {
+   "text": "Briefcase",
+   "colour": "#3d525b",
+   "background": "#ecf0ec",
+   "ratio": 7.14,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "400"
+  },
+  {
+   "text": "Sources and settings",
+   "colour": "#3d525b",
+   "background": "#ecf0ec",
+   "ratio": 7.14,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "400"
+  },
+  {
+   "text": "WeatherGPT",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "Alt K",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 10,
+   "weight": "600"
+  },
+  {
+   "text": "By product",
+   "colour": "#3d525b",
+   "background": "#ecf0ec",
+   "ratio": 7.14,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Every product row this read returned, wi",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Product",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "700"
+  },
+  {
+   "text": "Jobs",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "700"
+  },
+  {
+   "text": "Job states",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "700"
+  },
+  {
+   "text": "Newest commit",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "700"
+  },
+  {
+   "text": "extended_forecast",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "62",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "succeeded 62",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026, 02:44 IST",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "forecast",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "160",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "succeeded 158 · failed 1 · expired 1",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026, 16:20 IST",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "history_local",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "succeeded 4",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "13 Sep 2026, 00:25 IST",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "marine",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "32",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "succeeded 16 · failed 16",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026, 02:02 IST",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "river",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "9",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "succeeded 9",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026, 02:02 IST",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Job states across this read: expired 1 ·",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Reading as",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Answer in",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Pinned places",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "A pin is a shortcut to a place name you ",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No place is pinned in this browser yet.",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Today",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 3,
+   "passes": true,
+   "size": 42,
+   "weight": "400"
+  },
+  {
+   "text": "The national district warning picture as",
+   "colour": "#3d525b",
+   "background": "#ecf0ec",
+   "ratio": 7.14,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "400"
+  },
+  {
+   "text": "overview",
+   "colour": "#0d6d77",
+   "background": "#ecf0ec",
+   "ratio": 5.26,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "status ok",
+   "colour": "#2c6e45",
+   "background": "#ecf0ec",
+   "ratio": 5.33,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "read 18 Sep 2026, 17:13 IST",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 11.28,
+   "weight": "400"
+  },
+  {
+   "text": "Search district",
+   "colour": "#59696e",
+   "background": "#fbfcfa",
+   "ratio": 5.56,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "State",
+   "colour": "#59696e",
+   "background": "#fbfcfa",
+   "ratio": 5.56,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Published colour",
+   "colour": "#59696e",
+   "background": "#fbfcfa",
+   "ratio": 5.56,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Day to inspect",
+   "colour": "#59696e",
+   "background": "#fbfcfa",
+   "ratio": 5.56,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Colour only where published",
+   "colour": "#16242b",
+   "background": "#dcebeb",
+   "ratio": 12.96,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Dim districts with no published hazard",
+   "colour": "#3d525b",
+   "background": "#fbfcfa",
+   "ratio": 7.98,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Filters run in this browser over the 756",
+   "colour": "#59696e",
+   "background": "#fbfcfa",
+   "ratio": 5.56,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Districts in this read",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "756",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 3,
+   "passes": true,
+   "size": 58,
+   "weight": "400"
+  },
+  {
+   "text": "districts",
+   "colour": "#3d525b",
+   "background": "#ecf0ec",
+   "ratio": 7.14,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "400"
+  },
+  {
+   "text": "Read from the national district warning ",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "District-days with a published colour",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "1865",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 3,
+   "passes": true,
+   "size": 58,
+   "weight": "400"
+  },
+  {
+   "text": "district-days",
+   "colour": "#3d525b",
+   "background": "#ecf0ec",
+   "ratio": 7.14,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "400"
+  },
+  {
+   "text": "orange 26",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "yellow 1819",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "green 19",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "unset 5",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Counted from the tally the product retur",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Editions behind the newest in this read",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "14",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 3,
+   "passes": true,
+   "size": 58,
+   "weight": "400"
+  },
+  {
+   "text": "districts",
+   "colour": "#3d525b",
+   "background": "#ecf0ec",
+   "ratio": 7.14,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "400"
+  },
+  {
+   "text": "One bar per printed bulletin date this r",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Newest printed edition in this read: 202",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Radar stations reporting a status",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "39",
+   "colour": "#16242b",
+   "background": "#ecf0ec",
+   "ratio": 13.81,
+   "required": 3,
+   "passes": true,
+   "size": 58,
+   "weight": "400"
+  },
+  {
+   "text": "of 39 returned",
+   "colour": "#3d525b",
+   "background": "#ecf0ec",
+   "ratio": 7.14,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "400"
+  },
+  {
+   "text": "Radar stations returned: 39 stations. A ",
+   "colour": "#59696e",
+   "background": "#ecf0ec",
+   "ratio": 4.97,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Published warning colour by district",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "A join of two reads by district key: the",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "+",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "−",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "Reset",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "zoom 1×",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "A schematic fit of the served district c",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "SAITUAL, MIZORAM — published day coverin",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "States in this read",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "Where the published colours are",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 14.88,
+   "weight": "400"
+  },
+  {
+   "text": "Ordered by how many districts published ",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "UTTAR PRADESH",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "75 / 75",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "MADHYA PRADESH",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "52 / 52",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "38 / 38",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "TAMIL NADU",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "38 / 38",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "MAHARASHTRA",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "36 / 36",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "ASSAM",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "35 / 35",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "GUJARAT",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "33 / 33",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "RAJASTHAN",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "33 / 33",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "TELANGANA",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "33 / 33",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "KARNATAKA",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "31 / 31",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "ODISHA",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "30 / 30",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "CHHATTISGARH",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "28 / 28",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "ANDHRA PRADESH",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "26 / 26",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "ARUNACHAL PRADESH",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "JHARKHAND",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "24 / 24",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "WEST BENGAL",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "23 / 23",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "HARYANA",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "22 / 22",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "JAMMU AND KASHMIR",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "PUNJAB",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "22 / 22",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "MANIPUR",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "16 / 16",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "KERALA",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "14 / 14",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "UTTARAKHAND",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "13 / 13",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "HIMACHAL PRADESH",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "11 / 11",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "MEGHALAYA",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "11 / 11",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "NAGALAND",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "11 / 11",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "TRIPURA",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "SIKKIM",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "ANDAMAN & NICOBAR",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "DADRA & NAGAR HAVELI & DAMAN & DIU",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "PUDUCHERRY",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "LADAKH",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "CHANDIGARH",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "state not stated in this read",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "MIZORAM",
+   "colour": "#3d525b",
+   "background": "#ffffff",
+   "ratio": 8.21,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "0 / 12",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "1 district-days",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "26 district-days",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "1819 district-days",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "19 district-days",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "5 district-days",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "The table behind the figure: one row per",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "District",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "700"
+  },
+  {
+   "text": "State",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "700"
+  },
+  {
+   "text": "Day",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "700"
+  },
+  {
+   "text": "Date",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "700"
+  },
+  {
+   "text": "Colour as published",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "700"
+  },
+  {
+   "text": "Hazard wording as published",
+   "colour": "#59696e",
+   "background": "#ffffff",
+   "ratio": 5.72,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "700"
+  },
+  {
+   "text": "SAITUAL",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "MIZORAM",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "no row returned",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "2026-09-11",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "no published day in this read",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "LAWNGTLAI",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "MIZORAM",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "no row returned",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "2026-09-11",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "no published day in this read",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "JAMNAGAR",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "GUJARAT",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "KACHCHH",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "GUJARAT",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "ALWAR",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "RAJASTHAN",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "ARWAL",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "BIHAR",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Thunderstorm/lightning/squall, Strong su",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "BHARATPUR",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "RAJASTHAN",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "BELGAUM",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "KARNATAKA",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Thunderstorm/lightning/squall, Strong su",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "BIJAPUR",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "CHHATTISGARH",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Thunderstorm/lightning/squall",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "CHHATARPUR",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "MADHYA PRADESH",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Thunderstorm/lightning/squall, Strong su",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "CHITTORGARH",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "RAJASTHAN",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "CHURU",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "RAJASTHAN",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "HANUMANGARH",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "RAJASTHAN",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "JHUNJHUNU",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "RAJASTHAN",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "JODHPUR",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "RAJASTHAN",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "JAIPUR",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "RAJASTHAN",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "JHANSI",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "UTTAR PRADESH",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "KARAIKAL",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "PUDUCHERRY",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Thunderstorm/lightning/squall",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "NORTH GOA",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "GOA",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "RAJNANDGAON",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "CHHATTISGARH",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "SAGAR",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "MADHYA PRADESH",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Thunderstorm/lightning/squall, Strong su",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "SHARANPUR",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "UTTAR PRADESH",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "SAHEBGANJ",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "JHARKHAND",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Thunderstorm/lightning/squall, Strong su",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "SHAHADRA",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "DELHI",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "SOUTH GOA",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "GOA",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "SIRMAUR",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "HIMACHAL PRADESH",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "THRISSUR",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "KERALA",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Thunderstorm/lightning/squall",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "TUMKUR",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "KARNATAKA",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Thunderstorm/lightning/squall, Strong su",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "DIU",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "DADRA & NAGAR HAVELI & DAMAN & DIU",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "AMBALA",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "HARYANA",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "DAVANGERE",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "KARNATAKA",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Thunderstorm/lightning/squall, Strong su",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "MAYILADUTHURAI",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "TAMIL NADU",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Thunderstorm/lightning/squall",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "VIJAYANAGARA",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "KARNATAKA",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Thunderstorm/lightning/squall, Strong su",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "CHIRANG",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "ASSAM",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "MORIGAON",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "ASSAM",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "NAGAON",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "ASSAM",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "NALBARI",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "ASSAM",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "MAJULI",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "ASSAM",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "BAJALI",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "ASSAM",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "TAMULPUR",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "ASSAM",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "4",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "18 Sep 2026",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "No warning in this product",
+   "colour": "#16242b",
+   "background": "#ffffff",
+   "ratio": 15.89,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Published colour by published day",
+   "colour": "#59696e",
+   "background": "#fbfcfa",
+   "ratio": 5.56,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "600"
+  },
+  {
+   "text": "One bubble per cell the rows returned, a",
+   "colour": "#59696e",
+   "background": "#fbfcfa",
+   "ratio": 5.56,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Bubble area is proportional to the count",
+   "colour": "#59696e",
+   "background": "#fbfcfa",
+   "ratio": 5.56,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "The matrix as exact counts, one row per ",
+   "colour": "#59696e",
+   "background": "#fbfcfa",
+   "ratio": 5.56,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "Colour",
+   "colour": "#59696e",
+   "background": "#fbfcfa",
+   "ratio": 5.56,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "700"
+  },
+  {
+   "text": "Day 1",
+   "colour": "#59696e",
+   "background": "#fbfcfa",
+   "ratio": 5.56,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "700"
+  },
+  {
+   "text": "Day 2",
+   "colour": "#59696e",
+   "background": "#fbfcfa",
+   "ratio": 5.56,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "700"
+  },
+  {
+   "text": "Day 3",
+   "colour": "#59696e",
+   "background": "#fbfcfa",
+   "ratio": 5.56,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "700"
+  },
+  {
+   "text": "Day 4",
+   "colour": "#59696e",
+   "background": "#fbfcfa",
+   "ratio": 5.56,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "700"
+  },
+  {
+   "text": "Day 5",
+   "colour": "#59696e",
+   "background": "#fbfcfa",
+   "ratio": 5.56,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "700"
+  },
+  {
+   "text": "1",
+   "colour": "#16242b",
+   "background": "#fbfcfa",
+   "ratio": 15.44,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "not recorded",
+   "colour": "#16242b",
+   "background": "#fbfcfa",
+   "ratio": 15.44,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "not recorded",
+   "colour": "#16242b",
+   "background": "#fbfcfa",
+   "ratio": 15.44,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "not recorded",
+   "colour": "#16242b",
+   "background": "#fbfcfa",
+   "ratio": 15.44,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "not recorded",
+   "colour": "#16242b",
+   "background": "#fbfcfa",
+   "ratio": 15.44,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "23",
+   "colour": "#16242b",
+   "background": "#fbfcfa",
+   "ratio": 15.44,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "not recorded",
+   "colour": "#16242b",
+   "background": "#fbfcfa",
+   "ratio": 15.44,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "3",
+   "colour": "#16242b",
+   "background": "#fbfcfa",
+   "ratio": 15.44,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "not recorded",
+   "colour": "#16242b",
+   "background": "#fbfcfa",
+   "ratio": 15.44,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "not recorded",
+   "colour": "#16242b",
+   "background": "#fbfcfa",
+   "ratio": 15.44,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "433",
+   "colour": "#16242b",
+   "background": "#fbfcfa",
+   "ratio": 15.44,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "387",
+   "colour": "#16242b",
+   "background": "#fbfcfa",
+   "ratio": 15.44,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "394",
+   "colour": "#16242b",
+   "background": "#fbfcfa",
+   "ratio": 15.44,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "300",
+   "colour": "#16242b",
+   "background": "#fbfcfa",
+   "ratio": 15.44,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "305",
+   "colour": "#16242b",
+   "background": "#fbfcfa",
+   "ratio": 15.44,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "298",
+   "colour": "#16242b",
+   "background": "#fbfcfa",
+   "ratio": 15.44,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "368",
+   "colour": "#16242b",
+   "background": "#fbfcfa",
+   "ratio": 15.44,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "358",
+   "colour": "#16242b",
+   "background": "#fbfcfa",
+   "ratio": 15.44,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  },
+  {
+   "text": "455",
+   "colour": "#16242b",
+   "background": "#fbfcfa",
+   "ratio": 15.44,
+   "required": 4.5,
+   "passes": true,
+   "size": 12,
+   "weight": "400"
+  }
+ ],
+ "overflow": 0,
+ "contrast_failures": []
+}

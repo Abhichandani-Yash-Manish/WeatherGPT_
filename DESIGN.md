@@ -1,16 +1,27 @@
-# DESIGN.md — the WeatherGPT instrument
+# DESIGN.md — the WeatherGPT design system
 
-This is the design system the frontend overhaul commits to. It is a working document for whoever
-touches `web/`: the tokens in `web/tokens.css` are the vocabulary, `web/style.css` is the only place
-that consumes them, and `web/viz.js` is the chart language. Read it before adding a surface.
+This is the design system the frontend commits to. Read it before adding a surface.
+
+> **The governing idea changed on 18 September 2026.** It is now *the conversation is the product*, set
+> out in [docs/104](docs/104-conversation-first-design-philosophy.md), and that document wins wherever
+> this one still argues for the instrument framing. The rest of this file — the colour discipline, the
+> type roles, the spacing, motion and chart language — stands unchanged, because the reframe changes
+> what leads, not what is true. Two notes on what is stale below: the source of truth is `frontend/src`,
+> not `web/` (the vanilla frontend was deleted when R6 closed), and the new surfaces carry an added
+> design layer scoped to `.v3` in `frontend/src/styles/voices.css` while the reframe moves surface by
+> surface.
 
 ## The idea
 
-**A field instrument, not a dashboard.** The product measures published and modelled weather for one
-place at one time, and every value carries where it came from. The interface should feel like a
-well-made instrument: quiet chrome, precise type, a surface you can read at a glance and inspect on
-demand. Beauty comes from arranging real facts — a validity ruler, a member plume, a district matrix,
-a printed issue date — never from decoration.
+**The conversation is the product, and the answer leads.** The product measures published and modelled
+weather for one place at one time, and every value carries where it came from. Nothing precedes the
+answer: each disclosure attaches to the value it qualifies rather than standing in front of it, and the
+apparatus is reachable rather than compulsory. Beauty comes from arranging real facts — a validity ruler,
+a member plume, a district matrix, a printed issue date — never from decoration.
+
+**Two voices, and they are typographic.** A model plans and writes; a governed tool owns every value. So
+prose is set in the human face and every tool-owned value in the machine face, and a reader can tell them
+apart without being told. A number in the human face is a defect.
 
 ## Colour
 

@@ -52,6 +52,10 @@
 .viz-matrix-row.is-head { position: sticky; top: 0; z-index: 1; background: var(--surface-card, var(--paper)); }
 .viz-matrix-head, .viz-matrix-corner { font: 600 9.5px/1.3 var(--sans); letter-spacing: var(--track-wide); text-transform: uppercase; color: var(--mute); padding: 2px 0; }
 .viz-matrix-name { align-self: center; font-size: var(--step--1); color: var(--ink-soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: var(--space-2); }
+/* The cell role sits on this wrapper, the button inside it stays the control. display: contents keeps the
+   wrapper out of the grid layout so every row's columns still align. */
+.viz-cell-holder { display: contents; }
+
 .viz-cell {
   display: flex; align-items: center; justify-content: center; min-height: 26px; padding: 2px 4px; border: 1px solid var(--line);
   border-radius: var(--r); background: var(--sunk); color: var(--ink-soft); cursor: pointer; font: 600 9.5px/1 var(--mono); letter-spacing: .04em;

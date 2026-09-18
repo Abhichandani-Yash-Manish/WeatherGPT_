@@ -243,7 +243,7 @@ export function Surface(): JSX.Element {
             </p>
             <DataTable testId="advisories-holdings"
               caption="The advisory editions this machine holds for the filter above, newest printed edition first. A row is an ingested edition, not proof of a current issue."
-              columns={['Region', 'State as published', 'Newest printed issue', 'Age at its retrieval', 'Documents', 'Passages', '']}
+              columns={['Region', 'State as published', 'Newest printed issue', 'Age at its retrieval', 'Documents', 'Passages', <span className="sr-only" key="read">Read the advice for this region</span>]}
               rows={heldRegions.slice(0, 60).map(entry => [
                 orNot(entry.region),
                 orNot(entry.state, 'state not stated in the held edition'),

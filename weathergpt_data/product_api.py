@@ -796,6 +796,29 @@ def most_common_date(rows):
         return None
     return sorted(counts.items(), key=lambda item: (-item[1], str(item[0])))[0][0]
 
+
+def today_tally(rows):
+    """What the districts in this read publish for the day that covers now.
+
+    This is deliberately not `tally`. That one counts every non-quiet day in the five-day table, so it
+    spans days already past: measured 18 September 2026, the national read carried one red and 26 orange
+    district-days and *every one of them was in the past*, while the column covering today held nothing
+    but green and yellow. A reader asking what today looks like is asking about one column of that
+    table, and a quiet green day is still a published green, so quiet days are counted here where the
+    other tally drops them.
+
+    Districts whose table has no day covering today are counted rather than dropped: an absent column is
+    a state the surface has to be able to say, not a row to silently lose."""
+    counts, without = {}, 0
+    for row in rows:
+        day = next((entry for entry in row.get('days') or [] if entry.get('is_today')), None)
+        if day is None:
+            without += 1
+            continue
+        colour = day.get('colour') or 'unset'
+        counts[colour] = counts.get(colour, 0) + 1
+    return {'counts': counts, 'districts_with_no_day_covering_today': without}
+
 def overview(foundation, places=None, refresh=False, now=None):
     """One situational read: the national warning picture, the radar network, and a strip per place."""
     national_view = warnings_national(foundation, refresh=refresh)
@@ -819,6 +842,7 @@ def overview(foundation, places=None, refresh=False, now=None):
                              'note': None if row else 'The district polygon is present but the warning table has no row for it.'})
     return envelope('overview', 'ok' if rows else 'unavailable',
                     {'national': {'districts': len(rows), 'tally': national_view['data']['tally'],
+                                  'today': today_tally(rows),
                                   'skipped': len(national_view['data']['skipped']),
                                   'bulletin_date': most_common_date(rows),
                                   'bulletin_dates': bulletin_date_counts(rows),

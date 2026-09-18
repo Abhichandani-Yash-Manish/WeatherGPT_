@@ -133,7 +133,10 @@ export function Facts({ rows, testId, id }: { rows: Fact[]; testId?: string; id?
 
 export function DataTable({ caption, columns, rows, testId }: {
   caption: string;
-  columns: string[];
+  /* A column heading is usually a word, but a column of buttons is named for a screen reader only:
+     measured 18 September 2026, the advisory holdings table carried an empty seventh header, which axe
+     reports as an empty table header. */
+  columns: ReactNode[];
   rows: ReactNode[][];
   testId?: string;
 }): JSX.Element {
@@ -144,8 +147,8 @@ export function DataTable({ caption, columns, rows, testId }: {
       <caption>{caption}</caption>
       <thead>
         <tr>
-          {columns.map(name => (
-            <th key={name} scope="col">
+          {columns.map((name, index) => (
+            <th key={index} scope="col">
               {name}
             </th>
           ))}

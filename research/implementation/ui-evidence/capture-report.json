@@ -1,0 +1,122 @@
+[
+ {
+  "scheme": "light",
+  "width": 1440,
+  "route": "overview",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/implementation/ui-evidence/light-overview@1440.png",
+  "overflow": 0,
+  "heading": "Today",
+  "sections": 13,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1440,
+  "route": "warnings",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/implementation/ui-evidence/light-warnings@1440.png",
+  "overflow": 0,
+  "heading": "Warnings",
+  "sections": 9,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1440,
+  "route": "map",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/implementation/ui-evidence/light-map@1440.png",
+  "overflow": 0,
+  "heading": "Map",
+  "sections": 6,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1024,
+  "route": "overview",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/implementation/ui-evidence/light-overview@1024.png",
+  "overflow": 0,
+  "heading": "Today",
+  "sections": 13,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1024,
+  "route": "warnings",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/implementation/ui-evidence/light-warnings@1024.png",
+  "overflow": 0,
+  "heading": "Warnings",
+  "sections": 9,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1024,
+  "route": "map",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/implementation/ui-evidence/light-map@1024.png",
+  "overflow": 0,
+  "heading": "Map",
+  "sections": 6,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 768,
+  "route": "overview",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/implementation/ui-evidence/light-overview@768.png",
+  "overflow": 0,
+  "heading": "Today",
+  "sections": 13,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 768,
+  "route": "warnings",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/implementation/ui-evidence/light-warnings@768.png",
+  "overflow": 0,
+  "heading": "Warnings",
+  "sections": 9,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 768,
+  "route": "map",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/implementation/ui-evidence/light-map@768.png",
+  "overflow": 0,
+  "heading": "Map",
+  "sections": 6,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 390,
+  "route": "overview",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/implementation/ui-evidence/light-overview@390.png",
+  "overflow": 0,
+  "heading": "Today",
+  "sections": 13,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 390,
+  "route": "warnings",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/implementation/ui-evidence/light-warnings@390.png",
+  "overflow": 0,
+  "heading": "Warnings",
+  "sections": 9,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 390,
+  "route": "map",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/implementation/ui-evidence/light-map@390.png",
+  "overflow": 0,
+  "heading": "Map",
+  "sections": 6,
+  "failures": []
+ }
+]

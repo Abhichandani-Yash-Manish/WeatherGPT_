@@ -387,7 +387,11 @@
         const cell = make('button', known ? String(entry.colour).toUpperCase() : 'NOT STATED',
           'viz-cell ' + (known ? 'is-' + entry.colour : 'is-unknown') + (unknown ? ' is-unverified' : ''));
         cell.type = 'button';
-        cell.setAttribute('role', 'cell');
+        /* The cell role belongs to a wrapper, not to the button: a button does not allow role=cell
+           (measured 18 September 2026, axe reported aria-allowed-role on every matrix cell). The wrapper
+           is display:contents, so the grid layout and the keyboard behaviour are unchanged. */
+        const holder = make('div', undefined, 'viz-cell-holder');
+        holder.setAttribute('role', 'cell');
         const hazard = entry.source_text || (entry.hazards && entry.hazards.length ? entry.hazards.join(', ') : '');
         const label = (row.district || 'district not stated') + (row.state ? ', ' + row.state : '') +
           ' · ' + (day.label || ('Day ' + (index + 1))) + (day.date ? ' (' + day.date + ')' : '') +
@@ -402,7 +406,8 @@
         if (typeof chart.onOpen === 'function') {
           cell.addEventListener('click', () => chart.onOpen(row, index));
         }
-        line.append(cell);
+        holder.append(cell);
+        line.append(holder);
       });
       grid.append(line);
     });

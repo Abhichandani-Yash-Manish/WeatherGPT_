@@ -39,3 +39,10 @@ tmp/qa-token.txt
 # and must never be committed. Measured 18 September 2026: a second token file (tmp/qa-acceptance-token.txt)
 # slipped past the two exact names above and reached the index.
 tmp/*token*
+
+# Playwright run artifacts. The reviewed baselines under tests/ui/*-snapshots stay tracked; these do not.
+frontend/test-results/
+frontend/playwright-report/
+frontend/blob-report/
+frontend/.playwright/
+tmp/npm-cache/

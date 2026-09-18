@@ -13,8 +13,8 @@ table `post_routes()` returns, and every view answers the same envelope. Counts 
 | /api/warnings/place | the view of the same name | Warnings, Today |
 | /api/observations/near | the view of the same name | Observations |
 | /api/observations/network | the view of the same name | Observations |
-| /api/radar | the view of the same name | Observations |
-| /api/basins | the view of the same name | Sea and rivers |
+| /api/radar | the view of the same name | **no UI calls it** (measured 18 September 2026 with a grep over `frontend/src`) |
+| /api/basins | the view of the same name | **no UI calls it** (measured 18 September 2026) |
 | /api/forecast | the view of the same name | Forecast, Dashboard |
 | /api/forecast/changes | the view of the same name | What changed |
 | /api/marine | the view of the same name | Sea and rivers |
@@ -36,6 +36,13 @@ table `post_routes()` returns, and every view answers the same envelope. Counts 
 | /api/air-quality | the view of the same name | Air quality, Dashboard |
 | /api/corpus | the view of the same name | Published documents |
 | /api/verification | the view of the same name | Forecast verification |
+
+**Seven built routes are called by no UI.** Measured 18 September 2026 by searching `frontend/src` for each
+path: `/api/radar`, `/api/basins`, `/api/answer`, `/api/briefing/run`, `/api/plans/replay`, `/api/plans/update`,
+`/api/warm`. They are served and tested, and their product reads are reachable through other routes (radar status
+arrives inside `/api/overview`, the marine and river reads answer through `/api/marine` and `/api/river`), but no
+control on any surface calls these seven directly. A route no reader can reach is recorded here as such rather
+than claimed as a wired feature.
 
 ## Conversation and action routes (20)
 
