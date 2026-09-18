@@ -721,3 +721,101 @@ html, body { background: var(--g-bg); }
   mix-blend-mode: screen;
   transition: opacity 1.4s ease, background-position 1.4s ease;
 }
+
+/* ============================================================================
+   Phase five: the module surfaces, in the panel language.
+   ============================================================================
+   The dashboard surfaces are assembled from the module classes — module-section, module-note, module-field, the
+   dash- components — and they already render inside the same glass frame. What is left is their own chrome:
+   heavier borders than the panel and labels at body weight. A module is a table of readings, so it reads like
+   the ledger: mono small capitals for what a number is, mono tabular figures for the number, hairlines between. */
+.g .module-section {
+  border: 1px solid var(--g-line);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--g-bg-2) 42%, transparent);
+  box-shadow: none;
+}
+.g .module-note { color: var(--g-ink-3); font-size: 12.5px; line-height: 1.55; }
+.g .module-field, .g .module-controls { color: var(--g-ink-2); }
+.g .module-field label, .g .module-fact-label, .g .stat-label, .g .dash-kpi-label {
+  font-family: var(--g-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--g-ink-3);
+}
+.g .dash-kpi, .g .module-count {
+  border: 1px solid var(--g-line);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--g-bg-2) 40%, transparent);
+  box-shadow: none;
+}
+.g .dash-kpi-value, .g .dash-kpi-number, .g .stat-value, .g .module-count-value, .g .dash-value {
+  font-family: var(--g-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  color: var(--g-ink);
+}
+.g .dash-kpi-unit, .g .dash-kpi-micro, .g .stat-unit, .g .stat-foot {
+  font-family: var(--g-mono);
+  font-size: 10.5px;
+  color: var(--g-ink-3);
+}
+/* Tables inside a module follow the ledger: hairline rows, no zebra bands, no heavy header. */
+.g .module-table, .g table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.g .module-table th, .g table thead th {
+  font-family: var(--g-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--g-ink-3);
+  text-align: left;
+  border-bottom: 1px solid var(--g-line);
+  padding: 8px 10px;
+}
+.g .module-table td, .g table tbody td {
+  border-bottom: 1px solid color-mix(in srgb, var(--g-ink) 7%, transparent);
+  padding: 8px 10px;
+  font-size: 13px;
+}
+/* A chip inside a module is the same chip as everywhere else. */
+.g .chip, .g .pill {
+  border-radius: 999px;
+  border: 1px solid var(--g-line);
+  background: color-mix(in srgb, var(--g-bg-2) 38%, transparent);
+  font-family: var(--g-mono);
+  font-size: 11px;
+  padding: 3px 10px;
+}
+/* A surface states what it is before it shows anything: the sheet header already does, so its own hero drops a
+   step in size to keep the frame the loudest thing on the page. */
+.g [data-surface] .display, .g [data-surface] h1 {
+  font-size: clamp(1.5rem, 1.05rem + 1.5vw, 2.1rem);
+  line-height: 1.14;
+}
+
+/* Corrected on the capture: the mono labels are wider than the tiles were built for, and a four-digit number at
+   the inherited size ran out of its own box and overlapped the next one. A tile now reserves its label, caps its
+   number, and the row wraps to fewer columns instead of squeezing. */
+.g .dash-kpis, .g .module-counts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 12px;
+}
+.g .dash-kpi, .g .module-count { min-width: 0; overflow: hidden; }
+.g .dash-kpi-label, .g .stat-label {
+  letter-spacing: 0.07em;
+  font-size: 9.5px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+.g .dash-kpi-number, .g .dash-kpi-value, .g .stat-value, .g .dash-value {
+  display: block;
+  font-size: clamp(1.45rem, 1rem + 1.7vw, 2.35rem);
+  line-height: 1.05;
+  white-space: nowrap;
+}
+.g .dash-kpi-unit, .g .stat-unit, .g .dash-kpi-micro { letter-spacing: 0; }

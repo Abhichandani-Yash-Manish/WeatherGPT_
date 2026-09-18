@@ -70,3 +70,52 @@ and the action chips, all inside the sheet.
   `Your question` label or the flagship composer's placeholder and `Send` button.
 - The parallel session's work and this one share the tree: check `git status` before staging, and stage only the
   files this work changed.
+
+## Phase four and five, and what the documents changed
+
+**Phase four — the sky is computed from the sun.** docs/110 asks for an atmosphere computed from the sun at the
+reader's place and hour, with the glow placed by its real azimuth and altitude. The shell was bucketing a local
+solar *hour* and discarding latitude outright (`void latitude`), so 8°N and 34°N lit identically. Now:
+
+- `flagship/solar.ts` — NOAA/Meeus solar position (declination, the equation of time, hour angle, altitude,
+  azimuth), `phaseOf`, `glowPoint`, `glowStrength`;
+- five tests in `flagship/solar.test.ts`, each naming its place and instant;
+- `fieldPaint.hourOf` derives the phase from that position, so the palettes are phases of the sky;
+- the shell publishes `data-phase` plus the sun's point and strength, and a glow layer paints it.
+
+Measured difference: at 18:30 IST in mid-September the sun is below the horizon and the page is dark, where the
+clock bucket painted golden until 19:30. Captures `sun-0900.png`, `sun-1830.png`.
+
+**Phase five — the module surfaces in the panel language.** One finding first: **`#/board` does not exist any
+more**, and that is a decision rather than a break — docs/110 line 91 records that "the register, the rail, the
+topbar and the conversation rail stay deleted". The dashboard work is therefore the module surfaces, which do
+render inside the same glass frame (`#/overview`, `#/climate`, …), with a sheet header naming the surface and two
+ways back to the conversation.
+
+In that frame the modules were assembling their own chrome: heavier borders than the panel, labels at body
+weight. Now the ledger language reaches them — mono small capitals for what a number is, mono tabular figures for
+the number, hairlines between rows, tables without zebra bands.
+
+One defect found by looking, not by reasoning: the mono labels are wider than the KPI tiles were built for, and a
+four-digit number at the inherited size ran out of its box and overlapped its neighbour (`mod2-overview.png`).
+The tiles now reserve their label, cap their number and wrap to fewer columns (`mod3-overview.png`).
+
+## Verification for these phases
+
+| Gate | Result |
+|---|---|
+| `tsc --noEmit` | clean |
+| `vitest run` | **57 files, 317 checks passing** |
+| axe, every surface at 1440 | **20 passed, 0 failed** (57 s) |
+| frames delivered | **60 fps at 1440, 61 at 390** |
+| captures | `sun-0900`, `sun-1830`, `p3d-chat`, `mod-overflow` series, `mod3-overview` |
+
+## Still open, in the documents' own terms
+
+1. **HeroUI v3 as the chrome.** docs/110 records it as adopted; the top bar still uses plain `<select>`s, so the
+   controls are the one place the adopted library is not in use.
+2. **The 90-second drift and the grain.** The grain is in the canvas; the drift should be checked against the doc.
+3. **Watch** as the second of the three surfaces — the panel opens, but the surface itself is the old one.
+4. Re-run the capture set for the record after each phase (done here) and keep `git push` to a machine with
+   network: the sandbox has none.
+
