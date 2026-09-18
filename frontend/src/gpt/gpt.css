@@ -288,3 +288,159 @@ html, body { background: var(--g-bg); }
 @media (prefers-reduced-motion: reduce) {
   .g *, .g *::before, .g *::after { animation: none !important; transition: none !important; }
 }
+
+/* ============================================================================
+   Phase one of the overhaul: the light-aware shell.
+   ============================================================================
+   The hour decides the chrome, not a switch. By day the page is a bright sky with dark ink on white glass;
+   at night the same structure inverts to dark glass and light ink. The conversation floats in one frosted
+   panel, so the sky is visible around it and faintly through it, and the words never sit directly on the
+   weather. The legend at the foot says what painted the field and what leaves the machine. */
+.g[data-mode='light'] {
+  --g-bg: #e9f0fa;
+  --g-bg-2: #ffffff;
+  --g-panel: rgba(255, 255, 255, 0.74);
+  --g-rail: rgba(255, 255, 255, 0.62);
+  --g-line: rgba(12, 22, 32, 0.1);
+  --g-line-2: rgba(12, 22, 32, 0.17);
+  --g-ink: #0f1a22;
+  --g-ink-2: #3c4b57;
+  --g-ink-3: #6b7a86;
+  --g-accent: #1f6feb;
+  --g-accent-ink: #ffffff;
+  --g-user: rgba(255, 255, 255, 0.9);
+}
+/* The panel: one frosted sheet, floating, with the sky still readable behind its edges. */
+.g-panel {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  width: min(100% - 32px, 900px);
+  margin: 0 auto 14px;
+  border-radius: 30px;
+  border: 1px solid var(--g-line-2);
+  background: var(--g-panel);
+  backdrop-filter: blur(22px) saturate(1.15);
+  -webkit-backdrop-filter: blur(22px) saturate(1.15);
+  box-shadow: 0 40px 90px -50px rgba(0, 0, 0, 0.55), 0 2px 6px -4px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  animation: g-panel-in 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes g-panel-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.994); }
+  to { opacity: 1; transform: none; }
+}
+.g-panel .g-thread { padding-top: 6px; }
+.g-panel .g-dock { background: linear-gradient(180deg, transparent, var(--g-panel) 40%); }
+.g-panel .g-welcome { min-height: auto; padding: 34px 0 26px; }
+/* The legend: mono, quiet, and it names the decoration as decoration. */
+.g-legend {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 18px;
+  width: min(100% - 32px, 900px);
+  margin: 0 auto 12px;
+  font-family: var(--g-mono);
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: var(--g-ink-3);
+}
+/* By day the tools are glass chips rather than dark buttons. */
+.g[data-mode='light'] .g-tool {
+  background: rgba(255, 255, 255, 0.55);
+  border-color: var(--g-line-2);
+  color: var(--g-ink-2);
+}
+.g[data-mode='light'] .g-tool:hover { background: #ffffff; color: var(--g-ink); }
+.g[data-mode='light'] .g-composer {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 18px 44px -30px rgba(12, 22, 32, 0.6);
+}
+.g[data-mode='light'] .g-you { background: rgba(255, 255, 255, 0.92); }
+/* Night keeps the darker chrome but gains the same panel geometry, so the shape does not change at dusk. */
+.g[data-mode='dark'] .g-panel { --g-panel: rgba(14, 17, 21, 0.72); }
+
+/* Phase one, continued: the page owns the sky again.
+   ----------------------------------------------------------------------------
+   The rail becomes a drawer at every width — the reference keeps the page clean, and the conversation list is
+   something a reader opens, not a column that permanently takes a sixth of the sky. The panel stops being a
+   full-height slab: at the welcome it is as tall as its content and sits in the middle, and once there are turns
+   it takes the height it needs, up to the viewport. */
+.g-rail-toggle { display: inline-flex !important; }
+.g-rail {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  transform: translateX(-100%);
+  transition: transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 30;
+  height: 100dvh;
+  background: var(--g-panel);
+  backdrop-filter: blur(22px) saturate(1.1);
+  -webkit-backdrop-filter: blur(22px) saturate(1.1);
+}
+.g[data-rail='open'] .g-rail { transform: none; }
+.g[data-rail='open'] .g-scrim { display: block; position: fixed; inset: 0; background: rgba(6, 10, 16, 0.42); z-index: 20; }
+/* The panel: content height at the welcome, tall once there is a conversation, never a slab. */
+.g-panel {
+  flex: 0 0 auto;
+  max-height: calc(100dvh - 132px);
+  margin-block: auto 14px;
+}
+.g-panel[data-chatting='true'] {
+  flex: 1 1 auto;
+}
+/* Glass that lets the hour through: a faint fill, a strong blur, and a highlight along the top edge. */
+.g[data-mode='light'] .g-panel, .g[data-mode='dark'] .g-panel {
+  background: color-mix(in srgb, var(--g-panel) 82%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.34),
+    0 40px 90px -54px rgba(6, 12, 20, 0.6),
+    0 2px 8px -6px rgba(6, 12, 20, 0.3);
+}
+.g[data-mode='dark'] .g-panel {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 40px 90px -50px rgba(0, 0, 0, 0.85);
+}
+/* A little more room around the words now that the panel is the frame. */
+.g-panel .g-col { padding: 0 26px; }
+.g-panel .g-hero { margin-top: 12px; }
+
+/* Phase one, finished: the glass lets the hour through.
+   ----------------------------------------------------------------------------
+   Measured against the captures: at three quarters opaque the panel read as a grey sheet laid over the sky,
+   which is the opposite of the reference. At a little under half, the hour tints the glass and the words still
+   hold contrast — by day the ink is dark on a bright tint, by night it is light on a dark one. */
+.g[data-mode='light'] { --g-panel: rgba(255, 255, 255, 0.46); }
+.g[data-mode='dark'] { --g-panel: rgba(14, 17, 21, 0.44); }
+/* The panel is narrower than the column was: the sky needs to be seen around the conversation, not only behind it. */
+.g-panel { width: min(100% - 32px, 840px); }
+/* The composer is an inset bar inside the glass, not a second sheet on top of it. */
+.g[data-mode='light'] .g-composer {
+  background: rgba(255, 255, 255, 0.5);
+  border-color: rgba(12, 22, 32, 0.14);
+}
+.g[data-mode='dark'] .g-composer {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+/* The openings: quiet chips with a hairline, so they read as doors rather than as data. */
+.g[data-mode='light'] .g-chip {
+  background: rgba(255, 255, 255, 0.42);
+  border-color: rgba(12, 22, 32, 0.14);
+  color: var(--g-ink-2);
+  padding: 8px 14px;
+  font-size: 13.5px;
+}
+.g[data-mode='light'] .g-chip:hover { background: #ffffff; color: var(--g-ink); }
+/* The hero gets the room the reference gives it. */
+.g-panel .g-hero { font-size: clamp(2rem, 1.25rem + 2.3vw, 2.9rem); line-height: 1.14; }
+.g-panel .g-hero-sub { font-size: clamp(1.02rem, 0.96rem + 0.42vw, 1.2rem); line-height: 1.55; }

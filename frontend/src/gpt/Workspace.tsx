@@ -183,7 +183,15 @@ export function Workspace({
   const turns = useMemo(() => conversation.turns, [conversation.turns]);
 
   return (
-    <div className="g" data-rail={railOpen ? 'open' : 'closed'} data-hour={hour} data-design="gpt">
+    <div
+      className="g"
+      data-rail={railOpen ? 'open' : 'closed'}
+      data-hour={hour}
+      /* The chrome follows the hour: a bright page with dark ink by day, dark glass at night. The Field already
+         computes the hour from the reader's own sun, so there is no second opinion here. */
+      data-mode={hour === 'night' ? 'dark' : 'light'}
+      data-design="gpt"
+    >
       <Field hour={hour} expanded={chatting} />
       <button type="button" className="g-scrim" aria-label="Close the conversation list" onClick={() => setRailOpen(false)} />
       <Rail
@@ -222,8 +230,10 @@ export function Workspace({
           </div>
         </header>
 
-        <div className="g-thread" ref={thread}>
-          <div className="g-col">
+        {/* One frosted sheet holds the conversation: the sky stays visible around it and faintly through it. */}
+        <div className="g-panel" data-chatting={chatting ? 'true' : 'false'}>
+          <div className="g-thread" ref={thread}>
+            <div className="g-col">
             {unknownRoute ? (
               <p className="g-notice" role="status">There is no page called “{unknownRoute}”. This is the conversation — ask your question here.</p>
             ) : null}
@@ -297,7 +307,15 @@ export function Workspace({
           </div>
         </div>
 
-        {chatting ? <div className="g-col">{composer}</div> : null}
+          {chatting ? <div className="g-col">{composer}</div> : null}
+        </div>
+        {/* What painted the field, and what leaves this machine. Decoration is named as decoration. */}
+        <footer className="g-legend">
+          <span>
+            {hour} sky, computed from this place and hour · the drifting layer is decoration · never a condition report
+          </span>
+          <span>every value keeps its source and the time it was read · questions and answers stay on this machine</span>
+        </footer>
       </main>
     </div>
   );
