@@ -1,0 +1,47 @@
+[
+  {
+    "label": "dawn",
+    "title": "File:Early Morning at Ajmer, Rajasthan, India.jpg",
+    "licence": "CC BY-SA 4.0",
+    "artist": "Neeti0145",
+    "source": "https://commons.wikimedia.org/wiki/File:Early_Morning_at_Ajmer,_Rajasthan,_India.jpg",
+    "file": "frontend/public/sky/dawn.jpg",
+    "kb": 1203
+  },
+  {
+    "label": "day",
+    "title": "File:Bright blue sky with scenic white cloud patterns.jpg",
+    "licence": "CC0",
+    "artist": "Trixia Lao",
+    "source": "https://commons.wikimedia.org/wiki/File:Bright_blue_sky_with_scenic_white_cloud_patterns.jpg",
+    "file": "frontend/public/sky/day.jpg",
+    "kb": 1247
+  },
+  {
+    "label": "dusk",
+    "title": "File:Monsoon clouds in Bengal India.jpg",
+    "licence": "CC BY 2.0",
+    "artist": "Rajarshi MITRA from Mumbai, India",
+    "source": "https://commons.wikimedia.org/wiki/File:Monsoon_clouds_in_Bengal_India.jpg",
+    "file": "frontend/public/sky/dusk.jpg",
+    "kb": 4223
+  },
+  {
+    "label": "night",
+    "title": "File:Milkyway stars Universe India (1) 05.jpg",
+    "licence": "CC BY-SA 4.0",
+    "artist": "Nikhil More",
+    "source": "https://commons.wikimedia.org/wiki/File:Milkyway_stars_Universe_India_(1)_05.jpg",
+    "file": "frontend/public/sky/night.jpg",
+    "kb": 761
+  },
+  {
+    "label": "rain",
+    "title": "File:Rain clouds over Bramble Bay, Sandgate Pier IMGP5273.jpg",
+    "licence": "CC0",
+    "artist": "John Robert McPherson",
+    "source": "https://commons.wikimedia.org/wiki/File:Rain_clouds_over_Bramble_Bay,_Sandgate_Pier_IMGP5273.jpg",
+    "file": "frontend/public/sky/rain.jpg",
+    "kb": 1888
+  }
+]
