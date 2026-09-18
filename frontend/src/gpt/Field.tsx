@@ -13,6 +13,18 @@ export function useHour(at: Date, latitude?: number, longitude?: number): Hour {
 
 export function Field({ hour, expanded }: { hour: Hour; expanded: boolean }) {
   const canvas = useRef<HTMLCanvasElement | null>(null);
+  /* The hour that was showing, held on a canvas underneath, so a phase change is a cross-fade rather than a cut.
+     paintField is deterministic in the hour, so the frame underneath is the exact one the reader was looking at,
+     not an approximation of it. */
+  const under = useRef<HTMLCanvasElement | null>(null);
+  const previous = useRef<Hour | null>(null);
+
+  useEffect(() => {
+    const node = under.current;
+    if (!node) return;
+    if (previous.current && previous.current !== hour) paintField(node, { hour: previous.current, drift: 0 });
+    previous.current = hour;
+  }, [hour]);
 
   useEffect(() => {
     const node = canvas.current;
@@ -38,7 +50,9 @@ export function Field({ hour, expanded }: { hour: Hour; expanded: boolean }) {
 
   return (
     <div className="g-field" data-expanded={expanded ? 'true' : 'false'} aria-hidden="true">
-      <canvas ref={canvas} className="g-field-canvas" />
+      <canvas ref={under} className="g-field-canvas g-field-under" />
+      {/* Keyed on the hour, so a phase change mounts a fresh canvas and the fade in the stylesheet runs. */}
+      <canvas key={hour} ref={canvas} className="g-field-canvas g-field-in" />
     </div>
   );
 }

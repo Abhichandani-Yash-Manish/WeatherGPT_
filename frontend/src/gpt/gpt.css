@@ -819,3 +819,22 @@ html, body { background: var(--g-bg); }
   white-space: nowrap;
 }
 .g .dash-kpi-unit, .g .stat-unit, .g .dash-kpi-micro { letter-spacing: 0; }
+
+/* The cross-fade between phases.
+   ----------------------------------------------------------------------------
+   docs/110 asks for an atmosphere rather than a background image, and the objective asks for the transition to
+   be cinematic. The hour underneath holds the frame the reader was already looking at; the new hour fades in over
+   1.6 seconds. Under reduced motion the global rule kills the animation, so the new frame simply appears — the
+   right answer for a reader who asked for no motion. */
+.g-field-under { position: absolute; inset: 0; }
+.g-field-in { position: absolute; inset: 0; animation: g-field-phase 1600ms ease both; }
+@keyframes g-field-phase {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Corrected: the two frames stack on a grid cell rather than being pinned with inset, because inset would
+   override the canvas height and the field would stop respecting its own 62vh and expanded states. */
+.g-field { display: grid; }
+.g-field-under { grid-area: 1 / 1; }
+.g-field-in { grid-area: 1 / 1; }
