@@ -23,3 +23,19 @@ __pycache__/
 
 # Local project dependency environment.
 .venv/
+
+# Local QA harness debris: the driver's own directory, headless-browser profiles, driver logs and the
+# per-process session token this machine writes while a workspace is being tested. None of it is curated
+# evidence, and the saved source pages under tmp/pdfs stay tracked.
+nohup.out
+tmp/*.log
+tmp/qa/
+tmp/qa-browser/
+tmp/qa-chrome-profile*/
+tmp/qa-home/
+tmp/qa-session.txt
+tmp/qa-token.txt
+# Any session token this machine writes while testing, whatever name it is given: the token is per process
+# and must never be committed. Measured 18 September 2026: a second token file (tmp/qa-acceptance-token.txt)
+# slipped past the two exact names above and reached the index.
+tmp/*token*

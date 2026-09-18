@@ -30,7 +30,9 @@ export type Fact = {
   evidence_kind?: string;
   evidence_version?: string;
   citation_ids?: string[];
-  source_locators?: { page?: number | string; row?: number | string; column?: string; prefix?: string; locator?: string }[];
+  /* The engine states a locator as the record path it read ("$.hourly.precipitation[26]") or as an
+     object with page/row/column. Both are the same record locator and both are printed. */
+  source_locators?: (string | { page?: number | string; row?: number | string; column?: string; prefix?: string; locator?: string })[];
   method?: string;
   task_id?: string;
 };

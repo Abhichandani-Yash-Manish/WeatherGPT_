@@ -17,7 +17,11 @@ Rules this layer holds to:
 """
 import json
 import re
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
+from zoneinfo import ZoneInfo
+
+# The product's own clock: a bulletin date is an IST calendar day, and its age is counted in IST days.
+IST = ZoneInfo('Asia/Kolkata')
 from pathlib import Path
 
 from . import district_warnings as dw
@@ -42,7 +46,8 @@ PRODUCT_PATHS = ('/api/overview', '/api/warnings/national', '/api/warnings/place
                  '/api/forecast', '/api/forecast/changes', '/api/marine', '/api/river', '/api/aviation', '/api/places/search',
                  '/api/map/layers', '/api/warnings/cap', '/api/warnings/alert-brief', '/api/settings/capabilities',
                  '/api/climate/index', '/api/climate/series', '/api/advisories/states',
-                 '/api/advisories/districts', '/api/personas', '/api/now', '/api/ensemble', '/api/air-quality',
+                 '/api/advisories/districts', '/api/advisories/holdings',
+                 '/api/personas', '/api/now', '/api/ensemble', '/api/air-quality',
                  '/api/corpus', '/api/verification')
 _REGISTRY = {'path': None, 'mtime': None, 'products': {}}
 
@@ -290,6 +295,7 @@ def warnings_national(foundation, refresh=False):
     data, meta = warning_attributes(foundation, refresh=refresh)
     build, join = district_join()
     districts, skipped, tally = [], [], {}
+    now = foundation.store.clock() if getattr(foundation, 'store', None) is not None else datetime.now(timezone.utc)
     for properties in (feature.get('properties') or {} for feature in data['features']):
         raw = properties.get('District')
         key = norm(raw)
@@ -301,14 +307,39 @@ def warnings_national(foundation, refresh=False):
             if not day['quiet']:
                 label = day['colour'] or 'unset'
                 tally[label] = tally.get(label, 0) + 1
+        # Currency is measured from the printed bulletin date to the read instant, never inferred
+        # from the retrieval: measured 17 September 2026, one district in this national read (YANAM)
+        # carried bulletin days dated November 2023 and nothing on the surface said so.
+        issued_date = issued.astimezone(IST).date() if issued else None
+        age_days = (now.astimezone(IST).date() - issued_date).days if issued_date else None
         districts.append({'key': key, 'district': raw,
                           'state': (join['districts'].get(key) or {}).get('state'),
                           'bulletin_date': properties.get('Date') or None,
                           'issued_at_utc': stamp(issued) if issued else None,
+                          'bulletin_age_days': age_days,
                           'updated_at': properties.get('updated_at'),
                           'days': days})
+    # An edition two days old can be the current official product: its own Day fields cover today
+    # (measured 17 September 2026, 755 of 756 districts carried the 15 September edition, which is
+    # this product's current read). So the fact stated here is relative and local: which districts
+    # lag the newest edition this read returned, and by how many days.
+    dated = [district for district in districts if district.get('bulletin_date')]
+    newest = max((str(district['bulletin_date']) for district in dated), default=None)
+    for district in dated:
+        district['bulletin_behind_the_newest_read_days'] = (date.fromisoformat(newest) - date.fromisoformat(str(district['bulletin_date']))).days
+        district['bulletin_is_older_than_this_read'] = district['bulletin_behind_the_newest_read_days'] > 0
+    behind = [district for district in dated if district['bulletin_is_older_than_this_read']]
     return envelope('warnings.national', 'ok' if districts else 'unavailable',
-                    {'districts': districts, 'tally': tally, 'skipped': skipped, 'basemap_build': build.name},
+                    {'districts': districts, 'tally': tally, 'skipped': skipped, 'basemap_build': build.name,
+                     'newest_bulletin_date_in_this_read': newest,
+                     'districts_behind_the_newest_edition': len(behind),
+                     'oldest_bulletin_age_days': max((district['bulletin_age_days'] for district in behind
+                                                      if district['bulletin_age_days'] is not None), default=None),
+                     'oldest_edition_examples': [{'district': district['district'], 'state': district['state'],
+                                                  'bulletin_date': district['bulletin_date'],
+                                                  'bulletin_age_days': district['bulletin_age_days'],
+                                                  'days_behind_the_newest_edition': district['bulletin_behind_the_newest_read_days']}
+                                                 for district in behind[:5]]},
                     sources=[source_entry('S63', meta, layer='imd:district_warnings_india')],
                     coverage={'features_returned': len(data['features']), 'districts_listed': len(districts),
                               'skipped_without_a_name': len(skipped), 'basemap_districts': len(join['districts'])},
@@ -354,13 +385,19 @@ def warnings_place(foundation, latitude, longitude, refresh=False):
         headline = 'No warning in this product'
     else:
         headline = 'Warning state not established'
+    # The edition's age, measured from the printed bulletin date to the read instant. A bulletin
+    # two days old can still be the official product for today, and the surface says how old it is
+    # rather than letting the reader read it as today's.
+    now = foundation.store.clock() if getattr(foundation, 'store', None) is not None else None
+    age_days = (now.astimezone(IST).date() - issued.astimezone(IST).date()).days if now is not None else None
     return envelope('warnings.place', 'ok',
                     {'district': record.get('district_label'), 'state': state,
                      'issued_at_utc': stamp(issued), 'temporal_applicability': record.get('temporal_applicability'),
+                     'bulletin_age_days': age_days,
                      'day_boundary_basis': record.get('day_boundary_basis'),
                      'overlap': attribution.get('overlap'), 'days': rows,
                      'severity': level if has_hazard else None, 'has_hazard': has_hazard,
-                     'headline': headline, 'summary': dw.summary(record, rows, issued),
+                     'headline': headline, 'summary': dw.summary(record, rows, issued, now=now),
                      'source_locator': record.get('source_locator')},
                     sources=[source_entry('S63', meta, layer='imd:district_warnings_india')],
                     coverage=snapshot.get('coverage'),
@@ -784,7 +821,10 @@ def overview(foundation, places=None, refresh=False, now=None):
                     {'national': {'districts': len(rows), 'tally': national_view['data']['tally'],
                                   'skipped': len(national_view['data']['skipped']),
                                   'bulletin_date': most_common_date(rows),
-                                  'bulletin_dates': bulletin_date_counts(rows)},
+                                  'bulletin_dates': bulletin_date_counts(rows),
+                                  'newest_bulletin_date_in_this_read': national_view['data'].get('newest_bulletin_date_in_this_read'),
+                                  'districts_behind_the_newest_edition': national_view['data'].get('districts_behind_the_newest_edition'),
+                                  'oldest_bulletin_age_days': national_view['data'].get('oldest_bulletin_age_days')},
                      'radar': {'stations': len(network['stations']),
                                'reported': len([s for s in network['stations'] if s.get('status') is not None])},
                      'places': place_strips},
@@ -1168,8 +1208,38 @@ def advisory_districts(foundation, state, language='en'):
                     not_established=['A listed district is a directory entry, not proof of a current bulletin.'])
 
 
+def advisory_holdings(foundation, family='district_agromet', state=None, query=None, limit=200):
+    """The advisory editions this machine holds, one row per published region.
+
+    The advisories surface showed the publisher's directory and nothing else, so a reader could see 36
+    states listed and find no advisory text on the page while 571 district editions and 6,187 passages were
+    indexed here. This view is the holdings half: region, state, the edition's own printed date, its measured
+    age, its passage count and the documents carrying it. It is an inventory of what is ingested, not a
+    coverage claim, and a region whose edition states no printed date keeps that unknown.
+    """
+    from . import corpus_overview
+    packet = corpus_overview.holdings(foundation.store.root, family=(family or 'district_agromet'),
+                                      state=state, query=query, limit=limit)
+    counts = packet.get('counts') or {}
+    source_ids = sorted({sid for region in packet.get('regions') or [] for sid in (region.get('source_ids') or [])})
+    return envelope('advisories.holdings', packet.get('status') or 'unavailable',
+                    {'regions': packet.get('regions') or [], 'states': packet.get('states') or [],
+                     'families': packet.get('families') or [], 'counts': counts,
+                     'filters': packet.get('filters') or {}},
+                    sources=[source_entry(source_id, {}) for source_id in source_ids],
+                    coverage={'regions': counts.get('regions'), 'regions_listed': counts.get('regions_listed'),
+                              'documents': counts.get('documents'), 'passages': counts.get('passages'),
+                              'states_named': counts.get('states_named'),
+                              'regions_without_a_printed_issue_date': counts.get('regions_without_a_printed_issue_date')},
+                    limitations=([packet.get('reason')] if packet.get('reason') else []) + [
+                        'An indexed edition is what this machine ingested, not proof that the publisher issued one today.',
+                        'Currency is measured from the edition printed issue date against its own retrieval instant, and stays unknown when the document states no printed date.'],
+                    not_established=['A holding is not a current advisory: the printed edition may be days old and its forecast window may have ended.',
+                                     'No passage, crop or growth stage is asserted by this inventory.'])
+
+
 ADVISORY_EXTRA_PATHS = ('/api/warnings/cap', '/api/warnings/alert-brief', '/api/settings/capabilities', '/api/climate/index', '/api/climate/series',
-                        '/api/advisories/states', '/api/advisories/districts')
+                        '/api/advisories/states', '/api/advisories/districts', '/api/advisories/holdings')
 
 
 def dispatch_extra(foundation, path, params):
@@ -1191,9 +1261,16 @@ def dispatch_extra(foundation, path, params):
         first, last = _int(params, 'from'), _int(params, 'to')
         if first is not None and last is not None:
             years = (first, last)
-        return climate_series(_first(params, 'district', ''), _first(params, 'state'), years)
+        # The route dropped the requested parameter, so the endpoint answered with rainfall for
+        # every request and its own guard never ran (measured 17 September 2026:
+        # /api/climate/series?parameter=temperature returned 110 rainfall points with status ok).
+        return climate_series(_first(params, 'district', ''), _first(params, 'state'), years,
+                              _first(params, 'parameter', 'rainfall') or 'rainfall')
     if path == '/api/advisories/states':
         return advisory_states(foundation, _first(params, 'language', 'en'))
     if path == '/api/advisories/districts':
         return advisory_districts(foundation, _first(params, 'state'), _first(params, 'language', 'en'))
+    if path == '/api/advisories/holdings':
+        return advisory_holdings(foundation, _first(params, 'family', 'district_agromet'), _first(params, 'state'),
+                                 _first(params, 'q'), _int(params, 'limit') or 200)
     raise SourceError('Unknown product view')

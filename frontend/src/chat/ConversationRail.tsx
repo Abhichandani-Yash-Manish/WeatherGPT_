@@ -113,7 +113,7 @@ export function ConversationRail({
               </button>
               <button
                 type="button"
-                className="btn btn-ghost btn-danger mt-1 opacity-60 hover:opacity-100"
+                className="btn btn-ghost btn-danger mt-1"
                 onClick={() => remove.mutate(row.id)}
                 aria-label={'Delete the stored conversation: ' + (row.opening_question || 'Conversation')}
               >

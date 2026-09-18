@@ -59,9 +59,12 @@ def markdown_payload():
 
 
 class PersonaTests(unittest.TestCase):
-    def test_three_personas_with_unique_identifiers(self):
-        self.assertEqual(PERSONA_IDS, ('farmer', 'district_officer', 'traveller'))
-        self.assertEqual(len(set(PERSONA_IDS)), 3)
+    def test_every_registered_persona_has_a_unique_identifier(self):
+        # The researcher position was added on 18 September 2026 with the persona and language
+        # verification batch: the brief asks for farmers, civilians and researchers by name, and
+        # only three positions were registered.
+        self.assertEqual(PERSONA_IDS, ('farmer', 'district_officer', 'traveller', 'researcher'))
+        self.assertEqual(len(set(PERSONA_IDS)), 4)
 
     def test_every_persona_carries_the_registered_keys(self):
         for item in catalogue()['personas']:

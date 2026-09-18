@@ -2,6 +2,18 @@
    figure a reader can inspect. A missing point is simply not drawn. */
 .chart-grid { stroke: var(--line); stroke-width: 1; }
 .chart-axis { fill: var(--mute); font-size: 11px; font-family: var(--mono); }
-.chart-series { stroke: var(--data); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
-.chart-point { fill: var(--data); cursor: pointer; }
+.chart-series { stroke: var(--viz-line); stroke-width: 2.4; stroke-linejoin: round; stroke-linecap: round; stroke-dasharray: 2400; stroke-dashoffset: 2400; animation: chart-draw var(--motion-slower) var(--ease-out) forwards; }
+.chart-area { stroke: none; animation: fade var(--motion-slower) var(--ease-out) both; }
+.chart-fill-top { stop-color: var(--viz-line); stop-opacity: .28; }
+.chart-fill-bottom { stop-color: var(--viz-line); stop-opacity: 0; }
+.chart-point { fill: var(--viz-surface); stroke: var(--viz-line); stroke-width: 2; cursor: pointer; transition: r var(--motion-fast) var(--ease-out); }
+.chart-point:hover { r: 6; }
+/* The line is drawn in once when the figure mounts: motion that shows how a line was drawn (DESIGN.md). */
+@keyframes chart-draw { to { stroke-dashoffset: 0; } }
 .chart-point:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+/* The figure is drawn in a 640-unit box; at phone width that box is half size, so the axis text is set in larger units
+   to land near 11px on screen. */
+@media (max-width: 40rem) {
+  .chart-axis { font-size: 20px; }
+  .chart-series { stroke-width: 3; }
+}

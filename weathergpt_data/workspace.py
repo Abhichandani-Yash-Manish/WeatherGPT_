@@ -575,9 +575,14 @@ class Workspace:
             return default if value in (None, '') else value
 
         region = first('region')
-        if not region:
+        state_only = first('state') if not region else None
+        if not region and not state_only:
             raise SourceError('Name the district or region whose published advice should be read; '
                               'the workspace will not guess one from a coordinate.')
+        if not region and state_only:
+            # A state on its own is a published product too (the state composite agromet bulletin), and the form
+            # offers the field. Refusing it meant the state edition could not be read from the surface at all.
+            pass
         state = first('state')
         crop = first('crop', '')
         stage = first('stage', '')
@@ -958,15 +963,16 @@ class Workspace:
         now=time.time()
         db=sqlite3.connect(database)
         try:
-            specs=db.execute('SELECT id,spec,state FROM jobs').fetchall()
+            specs=db.execute('SELECT id,spec,state,attempts,max_attempts,due,last_error FROM jobs').fetchall()
             commits=dict((job_id,committed) for job_id,committed in db.execute('SELECT job_id,committed FROM versions'))
             job_states=dict(db.execute('SELECT state,count(*) FROM jobs GROUP BY state').fetchall())
             streams=db.execute('SELECT count(DISTINCT stream) FROM jobs').fetchone()[0]
             leases=db.execute('SELECT count(*) FROM requests WHERE finished=0 AND lease_until>?',(now,)).fetchone()[0]
             cooldowns=db.execute('SELECT provider,until FROM cooldowns WHERE until>? ORDER BY until',(now,)).fetchall()
         finally:db.close()
+        standards={}
         products={}
-        for job_id,spec,state in specs:
+        for job_id,spec,state,attempts,max_attempts,due,last_error in specs:
             try:product=(json.loads(spec) or {}).get('product') or 'unlabelled'
             except (TypeError,ValueError):product='unlabelled'
             entry=products.setdefault(product,{'product':product,'jobs':0,'states':{},'newest_commit_utc':None})
@@ -976,13 +982,24 @@ class Workspace:
                 stamp_value=stamp(committed)
                 if entry['newest_commit_utc'] is None or committed>entry['newest_commit_utc_value']:
                     entry['newest_commit_utc']=stamp_value;entry['newest_commit_utc_value']=committed
-        for entry in products.values():entry.pop('newest_commit_utc_value',None)
+            if state=='failed':
+                detail=failure_detail(state,attempts,max_attempts,due,last_error)
+                entry['failed_jobs']=entry.get('failed_jobs',0)+1
+                if detail['retryable'] is False:entry['failed_jobs_not_retryable']=entry.get('failed_jobs_not_retryable',0)+1
+                key=(product,detail['message'],detail['retryable'])
+                total=standards.setdefault(key,{**detail,'product':product,'jobs':0})
+                total['jobs']+=1
+        for entry in products.values():
+            entry.pop('newest_commit_utc_value',None)
+            entry.setdefault('failed_jobs',0);entry.setdefault('failed_jobs_not_retryable',0)
+        failures=sorted(standards.values(),key=lambda item:(item['product'],item['message']))
         return {'schema_version':'source-health-v1','available':True,
                 'warm':getattr(self,'warm_state',None),
                 'products':sorted(products.values(),key=lambda entry:entry['product']),
                 'job_states':job_states,'total_jobs':len(specs),'streams':streams,'active_leases':leases,
                 'cooldowns':[{'provider':provider,'until_utc':stamp(until)} for provider,until in cooldowns],
-                'note':'Read-only projection of the local ingestion store: which products were collected, what happened to those jobs, and when the newest evidence was committed. A stream is a pseudonymous point identity, so no requested location is shown here. These counts are not coverage, forecast skill or operational readiness.'}
+                'failed_jobs':failures,
+                'note':'Read-only projection of the local ingestion store: which products were collected, what happened to those jobs, why a failed job failed, and when the newest evidence was committed. A stream is a pseudonymous point identity, so no requested location is shown here; a failure is grouped by its recorded reason rather than by the point it came from. These counts are not coverage, forecast skill or operational readiness.'}
 
 
 RECORDED_EDITIONS=ROOT/'research/implementation/plan-watch-editions'
@@ -1032,6 +1049,25 @@ STRICT_CSP=("default-src 'self'; script-src 'self'; style-src 'self'; connect-sr
 REACT_CSP=STRICT_CSP
 REACT_ASSET_TYPES={'.js':'text/javascript','.css':'text/css','.map':'application/json','.woff2':'font/woff2',
                    '.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp','.json':'application/json'}
+
+
+def failure_detail(state,attempts,max_attempts,due,last_error):
+    """One failed job, described without the point it came from.
+
+    Measured 17 September 2026: /api/health reported "forecast 82 succeeded / 1 failed" and
+    "marine 15 / 12 failed" with no reason at all, so a reader could not tell a scheduled retry
+    from a contract check that fails every time. The spec's coordinates are deliberately not
+    part of this: a stream is a pseudonymous point identity.
+    """
+    detail={}
+    if last_error:
+        try:detail=json.loads(last_error) or {}
+        except (TypeError,ValueError):detail={}
+    retryable=detail.get('retryable')
+    return {'state':state,'message':str(detail.get('message') or '')[:300],
+            'retryable':None if retryable is None else bool(retryable),
+            'attempts':int(attempts or 0),'max_attempts':int(max_attempts or 0),
+            'due_utc':stamp(due) if due else None}
 
 
 def post_routes(workspace):

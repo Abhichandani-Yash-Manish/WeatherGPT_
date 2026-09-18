@@ -35,10 +35,65 @@ def corpus_sources():
     return sorted({spec['source_id'] for spec in ALL_FAMILIES.values()})
 
 
-def forecast_tool(task,preferences=None):
-    from .transport import parsed
-    return 'hourly_forecast' if (preferences or {}).get('forecast_source')=='S62' or task['operation'] in {'timeline','onset'} or any(task.get(k) and parsed(task[k]).minute!=30 for k in ['start_local','end_local']) or set(task['parameters'])&{'precipitation_probability','rain_probability','apparent_temperature','wind_gusts_10m','visibility'} else 'forecast_summary'
+HOURLY_ONLY_PARAMETERS = {'precipitation_probability', 'rain_probability', 'apparent_temperature',
+                         'wind_gusts_10m', 'visibility'}
+DAILY_CAPABLE_PARAMETERS = {'precipitation', 'rainfall', 'rain', 'temperature', 'temperature_2m',
+                            'wind_speed_10m', 'wind_speed', 'wind', 'relative_humidity_2m', 'humidity'}
+HOURLY_HORIZON_HOURS = 48
 
+
+def hourly_horizon_exceeded(task):
+    """True when a forecast task asks for a window the hourly product cannot serve.
+
+    The hourly product stops at 48 hours per task. A multi-day rainfall question is a daily question, and
+    routing it to the hourly product returned an evidence gap instead of an answer: measured 17 September
+    2026, "આગામી ત્રણ દિવસમાં કેટલો વરસાદ પડવાની આગાહી છે?" (three days of rain) and its English twin
+    were both refused with "hourly detail supports up to 48 hours".
+    """
+    from .transport import parsed
+    start, end = task.get('start_local'), task.get('end_local')
+    if not start or not end:
+        return False
+    try:
+        window = parsed(end) - parsed(start)
+    except (TypeError, ValueError):
+        return False
+    parameters = set(task.get('parameters') or [])
+    if parameters & HOURLY_ONLY_PARAMETERS:
+        return False
+    if not parameters or parameters <= DAILY_CAPABLE_PARAMETERS:
+        return window.total_seconds() > HOURLY_HORIZON_HOURS * 3600
+    return False
+
+
+def forecast_tool(task, preferences=None):
+    """Which forecast product serves this task.
+
+    The rule was "any window that does not start or end on the half hour needs hourly data", which sent a
+    midnight-to-midnight three-day rainfall question to the 48-hour hourly product and produced an evidence
+    gap. The window's own length and the resolution the question asks for decide now: an explicit clock
+    window or an hourly-only parameter gets the hourly product, a window longer than the hourly horizon gets
+    the daily summary, and everything else is a daily question.
+    """
+    from .transport import parsed
+    if (preferences or {}).get('forecast_source') == 'S62':
+        return 'hourly_forecast'
+    if task.get('operation') in {'timeline', 'onset'}:
+        return 'hourly_forecast'
+    if set(task.get('parameters') or []) & HOURLY_ONLY_PARAMETERS:
+        return 'hourly_forecast'
+    if hourly_horizon_exceeded(task):
+        return 'forecast_summary'
+    start, end = task.get('start_local'), task.get('end_local')
+    if start and end:
+        try:
+            window = parsed(end) - parsed(start)
+        except (TypeError, ValueError):
+            return 'hourly_forecast'
+        clocked = parsed(start).minute != 30 or parsed(end).minute != 30
+        if clocked and (task.get('explicit_times') or window.total_seconds() <= 12 * 3600):
+            return 'hourly_forecast'
+    return 'forecast_summary'
 
 def _registry_status(registry, source_id):
     entry = registry.get(source_id) or {}

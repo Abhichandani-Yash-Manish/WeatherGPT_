@@ -246,6 +246,19 @@ def execute_point_task(engine, result, plan, task, resolved, coordinates):
     if daily:result['notes'].append(reanalysis_label(model)+' reanalysis for the selected grid point, with provider daily aggregation in Asia/Kolkata; not observed station data or district averages.')
     else:
         result['notes'].append('Source hours are on UTC boundaries (:30 in IST). Each probability is for >0.1 mm in its preceding hour. Hourly probabilities are never combined into a period probability.')
+        # A clock window rarely sits on the source's own grid, and a reader who asked for 6-9 AM should be
+        # told which part of it the product covers rather than left with a bare 'partial'.
+        collected = result.get('facts') or []
+        if collected:
+            first, last = parsed(collected[0]['start']), parsed(collected[-1]['end'])
+            edges = []
+            if first != start:
+                edges.append('from ' + first.astimezone(ZoneInfo('Asia/Kolkata')).strftime('%d %b %H:%M'))
+            if last != end:
+                edges.append('up to ' + last.astimezone(ZoneInfo('Asia/Kolkata')).strftime('%d %b %H:%M'))
+            if edges:
+                result['notes'].append('The source grid runs on :30 IST boundaries, so this window is covered ' +
+                                       ' and '.join(edges) + ' IST; the remaining minutes are not in this product.')
         result['notes'].append('Best-match model selection may differ by variable; upstream run and local representativeness are unverified. Hourly values cannot determine an exact rain start minute or issue an official warning.')
     result['status']='partial' if missing and result['facts'] else 'answered' if result['facts'] else 'unavailable'
     result['answer']=render_point_facts(result)

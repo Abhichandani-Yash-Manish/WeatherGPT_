@@ -17,23 +17,34 @@ def parsed(value):
     if result.tzinfo is None:raise SourceError('Timestamp must specify its timezone')
     return result
 def align_source_day(start,end):
-    """Read a midnight-to-midnight IST calendar day as the source's own day, and say so.
+    """Read a midnight-to-midnight IST window as the source's own days, and say so.
 
-    Source hours start at :30 IST, so a 00:00-to-00:00 window contains 23 complete hours and
-    a whole-day question comes back reduced for a reason the user did not ask about. The
-    returned note is meant to be shown; the window is returned unchanged in every other case.
+    Source hours start at :30 IST, so a 00:00-to-00:00 window contains 23 complete hours in each day and a
+    whole-day question comes back reduced for a reason the user did not ask about. One day and a whole number
+    of days are both aligned; the returned note names the days that were read, and the window is returned
+    unchanged in every other case. The multi-day case was added on 17 September 2026: a three-day rainfall
+    question ("how much rain in the next three days") was refused with "the requested boundary splits a source
+    hourly rain interval" because only the single-day form was aligned.
     """
     from datetime import timedelta
     from zoneinfo import ZoneInfo
     start,end=parsed(start) if isinstance(start,str) else start,parsed(end) if isinstance(end,str) else end
     ist=ZoneInfo('Asia/Kolkata')
     local_start,local_end=start.astimezone(ist),end.astimezone(ist)
-    if (local_start.strftime('%H:%M'),local_end.strftime('%H:%M'))==('00:00','00:00') and \
-       local_end-local_start==timedelta(days=1):
+    span_days=None
+    if (local_start.strftime('%H:%M'),local_end.strftime('%H:%M'))==('00:00','00:00'):
+        whole=local_end-local_start
+        if whole==timedelta(days=1):
+            span_days=1
+        elif whole>timedelta(days=1) and whole==timedelta(days=whole.days):
+            span_days=whole.days
+    if span_days is not None:
         shifted_start,shifted_end=local_start+timedelta(minutes=30),local_end+timedelta(minutes=30)
+        when='The day was' if span_days==1 else 'The '+str(span_days)+' days were'
+        pronoun='it is' if span_days==1 else 'they are'
         return (shifted_start,shifted_end,
-                'The day was asked for as midnight to midnight IST; source hours start at :30 IST, so it is read as '
-                +shifted_start.strftime('%d %b %Y %H:%M')+' to '+shifted_end.strftime('%d %b %Y %H:%M')+' IST.')
+                when+' asked for as midnight to midnight IST; source hours start at :30 IST, so '+pronoun+
+                ' read as '+shifted_start.strftime('%d %b %Y %H:%M')+' to '+shifted_end.strftime('%d %b %Y %H:%M')+' IST.')
     return start,end,None
 
 

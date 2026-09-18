@@ -38,6 +38,63 @@ PATTERN=re.compile(
     r'between (?P<between_start>\d{2}:\d{2}) and (?P<between_end>\d{2}:\d{2}))\??', re.I)
 
 
+def _job_state(job):
+    """The state and the recorded reason from one collection job, for a reader-facing sentence."""
+    if not job:
+        return None, None, None
+    error = job.get('last_error')
+    if isinstance(error, str):
+        try:
+            error = json.loads(error)
+        except (TypeError, ValueError):
+            error = None
+    if isinstance(error, dict):
+        return job.get('state'), error.get('message'), error.get('retryable')
+    return job.get('state'), None, None
+
+
+def _freshness_without_a_snapshot(snapshots):
+    """What the store says when no published snapshot exists for an exact point.
+
+    Same shape as the freshness block a served answer carries, so one sentence builder and the
+    receipt can read both. Nothing here names coordinates: a stream is a pseudonymous point.
+    """
+    severity = {'failed': 8, 'expired': 7, 'lease_expired': 6, 'overdue_pending': 5,
+                'retry': 4, 'running': 3, 'pending': 2, 'succeeded': 0}
+    jobs = [s['latest_collection_job'] for s in (snapshots or []) if s.get('latest_collection_job')]
+    best = max(jobs, key=lambda job: (severity.get(job.get('state'), 9), job.get('id') or '')) if jobs else None
+    return {'retrieved_at_utc': None, 'retrieval_age_seconds': None, 'source_issue_time_utc': None,
+            'source_issue_freshness': 'unknown', 'collection_cycle_at': None, 'committed_at': None,
+            'refresh_health': (best or {}).get('state') or 'no_due_collection',
+            'snapshot_status': 'no_published_snapshot', 'refresh_scope': 'all_forecast_horizons_at_exact_requested_point',
+            'latest_collection_jobs': [best] if best else [], 'next_planned_collection': None,
+            'maximum_retrieval_age_seconds': MAX_AGE_SECONDS}
+
+
+def collection_state_sentence(freshness):
+    """Name the local collection state behind a stale or unavailable forecast answer.
+
+    Measured 17 September 2026: the turn's trace held "Product validation failed: Incomplete or
+    mismatched requested forecast interval" with retryable false for one city, and the reader was
+    told only that stored evidence was outside a retrieval-age limit. An age limit is a product
+    policy; a failed contract check is the actual reason no fresh value exists.
+    """
+    if not freshness:
+        return ''
+    health = freshness.get('refresh_health') or 'unknown'
+    jobs = [job for job in (freshness.get('latest_collection_jobs') or []) if job]
+    state, message, retryable = _job_state(jobs[0]) if jobs else (None, None, None)
+    parts = ['The local governed collection for this point is reported as ' + str(state or health) + '.']
+    if message:
+        parts.append('Its newest attempt reported: ' + str(message).rstrip('.') + '.')
+    if retryable is False:
+        parts.append('That failure is recorded as not retryable, so repeating the same collection does not resolve it.')
+    if freshness.get('snapshot_status') == 'no_published_snapshot':
+        parts.append('No published forecast snapshot exists for this point yet.')
+    parts.append('This is the ingestion store state, not a weather statement.')
+    return ' '.join(parts)
+
+
 def local_instant(day, clock_time, zone):
     naive=datetime.combine(day,time.fromisoformat(clock_time))
     candidates={}
@@ -57,9 +114,13 @@ def understand(question, now, timezone_name):
     today=now.astimezone(zone).date();day=match['day'].lower()
     day=today if day=='today' else today+timedelta(days=1) if day=='tomorrow' else date.fromisoformat(day[3:])
     start_time=match['start'] or match['between_start'];end_time=match['end'] or match['between_end']
-    if start_time==end_time:raise ValueError('Start and end must differ; use explicit distinct times')
+    # Equal clock times read as the 24 hours that follow them, which is how a whole source day is asked for:
+    # source hours start at :30 IST, so "00:30 to 00:30" is one complete day of the source's own intervals.
+    # Measured 17 September 2026: a three-day rainfall question could not be asked at all because only 23 of
+    # each day's 24 hours are expressible with distinct clock times.
+    same=start_time==end_time
     start=local_instant(day,start_time,zone)
-    end=local_instant(day+timedelta(days=int(end_time<start_time)),end_time,zone)
+    end=local_instant(day+timedelta(days=1 if (same or end_time<start_time) else 0),end_time,zone)
     if end<=start:raise ValueError('Requested interval must be ordered')
     intent=match['intent'].lower()
     variables=['precipitation'] if intent.startswith('how much rain') else (
@@ -200,7 +261,8 @@ class AnswerService:
         except (ValueError,sqlite3.Error,OSError,KeyError,TypeError,OverflowError) as exc:
             response['status']='unavailable';response['values']=[];response['eligibility']['prototype_numeric']=False
             response['missing_information'].append('Usable stored forecast evidence: '+str(exc))
-            response['answer']='I cannot provide a verified numeric result from the stored evidence for this request.'
+            response['answer']=('I cannot provide a verified numeric result from the stored evidence for this request. '
+                                + (collection_state_sentence(response.get('freshness')) if response.get('freshness') else ''))
             return response
 
     def _select_and_answer(self,db,response,start,end,now):
@@ -221,7 +283,12 @@ class AnswerService:
         if not candidates:raise ValueError('No governed forecast collection exists for the selected coordinates')
         snapshots=[db.latest(s) for s in candidates]
         available=[s for s in snapshots if 'result' in s and parsed(s['committed_at'])<=now]
-        if not available:raise ValueError('No published forecast is available for the selected point')
+        if not available:
+            # The reader is owed the collection state, not only "no published forecast": on
+            # 17 September 2026 the trace held "Product validation failed ... retryable: false"
+            # for Bengaluru while the answer said only that no verified numeric result existed.
+            response['freshness']=_freshness_without_a_snapshot(snapshots)
+            raise ValueError('No published forecast is available for the selected point')
         # Never silently select an older forecast for convenience when a newer collection exists.
         newest=max(s['collection_cycle_at'] for s in available)
         available=[s for s in available if s['collection_cycle_at']==newest]
@@ -256,7 +323,9 @@ class AnswerService:
                                'next_planned_collection':min(planned,key=lambda j:(j['cycle'],j['id'])) if planned else None,
                                'maximum_retrieval_age_seconds':MAX_AGE_SECONDS}
         if snapshot['status'] in {'request_date_expired','not_available_at_requested_time'} or not 0<=snapshot['retrieval_age_seconds']<=MAX_AGE_SECONDS:
-            response['status']='stale';response['answer']='Stored forecast evidence is outside this prototype’s retrieval-age or collection-date limit.'
+            response['status']='stale'
+            response['answer']=('Stored forecast evidence is outside this prototype’s retrieval-age or collection-date limit. '
+                                + collection_state_sentence(response['freshness']))
             response['missing_information']=['A recent governed forecast collection'];return response
         if result['source_id']!='S21' or result['family']!='weather_forecast' or meta['validation_scope']!='product' or result['status']!='ok':
             raise ValueError('Only complete, product-validated S21 model forecasts support this workflow')

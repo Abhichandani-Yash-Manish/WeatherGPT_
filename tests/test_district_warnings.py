@@ -152,6 +152,78 @@ class HonestyTests(unittest.TestCase):
         self.assertTrue(all(row['is_past'] for row in rows))
         self.assertEqual([row for row in rows if not row['is_past']], [])
 
+    def test_a_quiet_day_outside_the_returned_rows_is_not_called_quiet(self):
+        # The bulletin's first two days carried hazards and are already past; the question asks
+        # about the days that are still current. The statement must not claim every published
+        # day is quiet, which is what the 17 September 2026 Patna answer did.
+        days = [
+            {'source_day': 1, 'hazard_codes': [4, 8], 'hazards': ['Thunderstorm/lightning/squall', 'Strong surface winds'],
+             'colour': 'orange', 'colour_code': 2, 'source_text': ''},
+            {'source_day': 2, 'hazard_codes': [3], 'hazards': ['Heavy rain'], 'colour': 'yellow',
+             'colour_code': 3, 'source_text': ''},
+        ] + [{'source_day': n, 'hazard_codes': [1], 'hazards': ['No warning in this product'],
+              'colour': 'green', 'colour_code': 4, 'source_text': ''} for n in (3, 4, 5)]
+        later = datetime(2026, 9, 17, 6, tzinfo=timezone.utc)
+        rows, issued = dw.day_rows(record(days=days), now=later)
+        current = [row for row in rows if not row['is_past']]
+        self.assertEqual([row['day'] for row in current], [4, 5])
+        text = dw.summary(record(days=days), current, issued, published=rows)
+        self.assertNotIn('Every other published day', text)
+        self.assertIn('day 1', text)
+        self.assertIn('orange', text)
+        self.assertIn('(already past)', text)
+
+    def test_every_published_day_quiet_is_still_not_an_all_clear(self):
+        days = [{'source_day': n, 'hazard_codes': [1], 'hazards': ['No warning in this product'],
+                 'colour': 'green', 'colour_code': 4, 'source_text': ''} for n in range(1, 6)]
+        rows, issued = dw.day_rows(record(days=days), now=CLOCK)
+        current = [row for row in rows if not row['is_past']]
+        text = dw.summary(record(days=days), current, issued, published=rows)
+        self.assertIn('Every published day in this bulletin is also no warning in this product', text)
+        self.assertIn('not an all-clear', text)
+
+    def test_the_edition_age_is_stated_when_the_bulletin_predates_the_read(self):
+        rows, issued = dw.day_rows(record(), now=CLOCK)
+        text = dw.summary(record(), rows, issued, now=datetime(2026, 9, 17, 6, tzinfo=timezone.utc))
+        self.assertIn('3 day(s) before this read', text)
+        self.assertIn('no newer edition has been read here', text)
+
+    def test_the_edition_age_is_absent_on_the_day_of_issue(self):
+        rows, issued = dw.day_rows(record(), now=CLOCK)
+        text = dw.summary(record(), rows, issued, now=CLOCK)
+        self.assertNotIn('before this read', text)
+
+
+class CitationStoreTests(unittest.TestCase):
+    """A warning citation says where the bytes it was read from are kept.
+
+    Measured 17 September 2026: both warning citations carried a response hash with no path to
+    the stored blob, while every forecast citation carried one, so the warning chain could not be
+    walked from the answer back to the bytes.
+    """
+
+    def test_both_warning_citations_carry_the_store_path(self):
+        meta = {'url': 'https://cap-sources.s3.amazonaws.com/in-imd-en/rss.xml', 'sha256': 'a' * 64,
+                'retrieved_at_utc': '2026-09-17T09:39:32+00:00', 'blob': 'blobs/' + 'a' * 64 + '.bin'}
+        snapshot = {'url': 'https://reactjs.imd.gov.in/geoserver/wfs', 'sha256': 'b' * 64,
+                    'retrieved_at_utc': '2026-09-17T09:40:01+00:00', 'blob': 'blobs/' + 'b' * 64 + '.bin'}
+        citations = wt.warning_citations(meta, snapshot, True)
+        self.assertEqual([c['id'] for c in citations], ['cap-feed', 'district-warning'])
+        for citation in citations:
+            with self.subTest(citation=citation['id']):
+                self.assertEqual(citation['raw_store'], 'warning-evidence')
+                self.assertTrue(citation['raw_relative_path'].startswith('blobs/'))
+                self.assertEqual(citation['response_sha256'], citation['raw_relative_path'][6:-4])
+
+    def test_a_response_with_no_recorded_blob_does_not_invent_a_path(self):
+        meta = {'url': 'https://cap-sources.s3.amazonaws.com/in-imd-en/rss.xml', 'sha256': 'c' * 64,
+                'retrieved_at_utc': '2026-09-17T09:39:32+00:00'}
+        citations = wt.warning_citations(meta, None, False)
+        self.assertEqual(citations[0], {'id': 'cap-feed', 'source_id': 'S06',
+                                        'provider': 'IMD-labelled CAP relay; origin authentication unverified',
+                                        'product': 'Retrieved CAP feed state', 'url': meta['url'],
+                                        'response_sha256': meta['sha256'], 'retrieved_at_utc': meta['retrieved_at_utc']})
+
 
 class ResolutionLadderTests(unittest.TestCase):
     class Engine(object):

@@ -105,8 +105,17 @@ class DialogueContracts(unittest.TestCase):
         for preferences,source in [({},'forecast_summary'),({'forecast_source':'S62'},'hourly_forecast')]:
             r=retrieval_plan(p,preferences)[0]
             self.assertEqual([c['tool'] for c in r['candidates'] if c['selected']],[source])
-        p['tasks'][0]['start_local']='2026-09-13T00:00:00+05:30'
+        # A midnight-to-midnight day is a daily question: the hourly product was chosen for every window
+        # that did not sit on the :30 boundary, which sent a three-day rainfall question to the 48-hour
+        # hourly product and produced an evidence gap (measured 17 September 2026). A clock window still
+        # belongs to the hourly product.
+        p['tasks'][0]['parameters']=['precipitation']
+        p['tasks'][0].update(start_local='2026-09-13T00:00:00+05:30',end_local='2026-09-14T00:00:00+05:30')
+        self.assertEqual([c['tool'] for c in retrieval_plan(p)[0]['candidates'] if c['selected']],['forecast_summary'])
+        p['tasks'][0].update(start_local='2026-09-13T06:00:00+05:30',end_local='2026-09-13T09:00:00+05:30',explicit_times=True)
         self.assertEqual([c['tool'] for c in retrieval_plan(p)[0]['candidates'] if c['selected']],['hourly_forecast'])
+        p['tasks'][0].update(start_local='2026-09-13T00:00:00+05:30',end_local='2026-09-16T00:00:00+05:30',explicit_times=False)
+        self.assertEqual([c['tool'] for c in retrieval_plan(p)[0]['candidates'] if c['selected']],['forecast_summary'])
 
     def test_relative_date_survives_missing_place_before_model_repair(self):
         from weathergpt_data.language import LocalModel

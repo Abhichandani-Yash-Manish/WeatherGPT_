@@ -125,6 +125,35 @@ const briefPayload = {
   sources: ['S57'],
 };
 
+const holdingsPayload = {
+  ...HEAD,
+  view: 'advisories.holdings',
+  data: {
+    regions: [
+      { region: 'Ahmedabad', state: 'Gujarat', family: 'district_agromet', scope: 'district', documents: 3, passages: 31,
+        oldest_issue_date: '2026-09-05', newest_issue_date: '2026-09-11', retrieved_at_utc: '2026-09-12T19:42:12+00:00', age_days: 1,
+        languages: ['en'], source_ids: ['S57'], body: 'available' },
+      { region: 'Surguja', state: 'Chhattisgarh', family: 'district_agromet', scope: 'district', documents: 1, passages: 20,
+        oldest_issue_date: '2026-09-13', newest_issue_date: '2026-09-13', retrieved_at_utc: null, age_days: null,
+        languages: ['en'], source_ids: ['S57'], body: 'available' },
+      { region: 'Undated', state: null, family: 'district_agromet', scope: 'district', documents: 1, passages: 4,
+        oldest_issue_date: null, newest_issue_date: null, retrieved_at_utc: null, age_days: null,
+        languages: ['en'], source_ids: ['S57'], body: 'pruned' },
+    ],
+    states: [
+      { state: 'Gujarat', regions: 1, documents: 3, passages: 31, newest_issue_date: '2026-09-11' },
+      { state: 'Chhattisgarh', regions: 1, documents: 1, passages: 20, newest_issue_date: '2026-09-13' },
+    ],
+    families: [{ family: 'district_agromet', label: 'District agromet advisory bulletin', registered: true, regions: 3, documents: 5, passages: 55, newest_issue_date: '2026-09-13' }],
+    counts: { regions: 3, regions_listed: 3, regions_matching: 3, documents: 5, passages: 55, states_named: 2, regions_without_a_printed_issue_date: 1 },
+    filters: { family: 'district_agromet', state: '', q: '', listed: 3 },
+  },
+  sources: [SOURCE_S57],
+  coverage: { regions: 3, documents: 5, passages: 55 },
+  limitations: ['An indexed edition is what this machine ingested, not proof that the publisher issued one today.'],
+  not_established: ['A holding is not a current advisory: the printed edition may be days old and its forecast window may have ended.'],
+};
+
 const placeMatch = {
   label: 'Delhi, Delhi, India',
   latitude: 28.6139,
@@ -327,6 +356,98 @@ describe('the Farm advisories surface', () => {
     expect(failure).toHaveTextContent('The local evidence store is unavailable');
     expect(failure).toHaveTextContent('the store could not be opened');
     expect(within(failure).getByRole('button', { name: 'Retry this read' })).toBeInTheDocument();
+  });
+
+  it('shows the editions from the corpus read when this build does not serve the holdings view', async () => {
+    /* A workspace started before the holdings view existed answers 404 for it. The surface must not be blank
+       for that: the corpus read it does serve carries the same editions, and the panel says which read
+       produced the rows and how to serve the newer one. */
+    const corpusPayload = {
+      ...HEAD,
+      view: 'corpus',
+      data: {
+        documents: [
+          { region: 'Surat', state: 'Gujarat', family: 'district_agromet', issue_date: '2026-09-11', age_days: 1, passages: 12 },
+          { region: 'Vadodara', state: 'Gujarat', family: 'district_agromet', issue_date: null, age_days: null, passages: 4 },
+        ],
+        counts: { documents_listed: 2 },
+      },
+      sources: [SOURCE_S57],
+    };
+    server.use(
+      http.get('/api/advisories/states', () => HttpResponse.json(statesPayload)),
+      http.get('/api/advisories/districts', () => HttpResponse.json(districtsPayload)),
+      http.get('/api/advisories/holdings', () => HttpResponse.json({ error: 'Not found' }, { status: 404 })),
+      http.get('/api/corpus', () => HttpResponse.json(corpusPayload)),
+      http.get('/api/advisories/brief', () => HttpResponse.json(briefPayload)),
+    );
+    mount(<AdvisoriesSurface />);
+
+    const table = within(await screen.findByTestId('advisories-holdings'));
+    expect(table.getByText('Surat')).toBeInTheDocument();
+    expect(table.getByText('Vadodara')).toBeInTheDocument();
+    /* The edition that states no printed date keeps that unknown, from this read too. */
+    expect(table.getByText('2026-09-11')).toBeInTheDocument();
+    const counts = within(screen.getByTestId('advisories-holdings-counts'));
+    expect(counts.getByText('Regions held')).toBeInTheDocument();
+    expect(counts.getAllByText('2').length).toBeGreaterThan(0);
+
+    const note = screen.getByTestId('advisories-holdings-source');
+    expect(note).toHaveTextContent('/api/corpus');
+    expect(note).toHaveTextContent('/api/advisories/holdings');
+    expect(note).toHaveTextContent(/restart the local workspace/i);
+
+    /* Reading a region's advice still works from the fallback rows. */
+    await userEvent.click(screen.getByTestId('advisory-read-Surat'));
+    const passages = await screen.findByTestId('advisories-passages');
+    expect(passages).toHaveTextContent('If irrigation facilities are available');
+  });
+});
+
+describe('the Air quality surface', () => {
+
+
+  it('shows the advisory editions this machine holds, and reads one region\'s advice from its own row', async () => {
+    /* The surface showed the publisher's directory and no advisory text at all, so a reader with 571
+       district editions indexed here still saw "no data". The holdings are the missing half, and a row
+       composes the brief for exactly the region the publisher's edition carries. */
+    const briefs: string[] = [];
+    server.use(
+      http.get('/api/advisories/states', () => HttpResponse.json(statesPayload)),
+      http.get('/api/advisories/districts', () => HttpResponse.json(districtsPayload)),
+      http.get('/api/advisories/holdings', () => HttpResponse.json(holdingsPayload)),
+      http.get('/api/advisories/brief', ({ request }) => {
+        briefs.push(request.url);
+        return HttpResponse.json(briefPayload);
+      }),
+    );
+    mount(<AdvisoriesSurface />);
+
+    const counts = await screen.findByTestId('advisories-holdings-counts');
+    expect(within(counts).getByText('Regions held')).toBeInTheDocument();
+    expect(within(counts).getByText('3')).toBeInTheDocument();
+    expect(within(counts).getByText('55')).toBeInTheDocument();
+
+    const table = within(await screen.findByTestId('advisories-holdings'));
+    expect(table.getByText('Ahmedabad')).toBeInTheDocument();
+    expect(table.getByText('2026-09-11')).toBeInTheDocument();
+    /* An edition whose own payload stated no printed date keeps that unknown, and a state the edition
+       does not name is stated as unstated rather than filled in from a list this surface keeps. */
+    expect(table.getByText('Undated')).toBeInTheDocument();
+    expect(table.getAllByText('state not stated in the held edition').length).toBeGreaterThan(0);
+
+    await userEvent.click(screen.getByTestId('advisory-read-Ahmedabad'));
+    await screen.findByTestId('advisories-brief-idle').catch(() => undefined);
+    expect(briefs.length).toBeGreaterThan(0);
+    const asked = decodeURIComponent(briefs[briefs.length - 1]);
+    expect(asked).toContain('region=Ahmedabad');
+    expect(asked).toContain('state=Gujarat');
+    expect(asked).toContain('mode=source_lookup');
+
+    /* The brief's own passage renders with its page, its printed issue date, its crop and its stage. */
+    const passages = await screen.findByTestId('advisories-passages');
+    expect(passages).toHaveTextContent('If irrigation facilities are available');
+    expect(passages).toHaveTextContent('cotton');
   });
 });
 

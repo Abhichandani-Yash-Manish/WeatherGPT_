@@ -13,7 +13,7 @@ import unittest
 from pathlib import Path
 
 from weathergpt_data.dialogue import apply_historical_choice
-from weathergpt_data.research_answers import _same_series_state, alias_candidates
+from weathergpt_data.research_answers import ROOT, _same_series_state, alias_candidates, lookup_plan
 
 
 class StubGazetteer:
@@ -102,6 +102,39 @@ class CandidateTests(unittest.TestCase):
         self.assertEqual(rewritten['places'][0]['kind'], 'district')
         self.assertEqual(rewritten['changed_fields'], ['places'])
         self.assertEqual(rewritten['tasks'][0]['operation'], 'lookup')
+
+
+class PublishedValueLocatorTests(unittest.TestCase):
+    """A published historical value carries where it was read from.
+
+    The receipt row is built from the fact's locators. Measured 17 September 2026: the All India
+    rainfall and mean-temperature facts carried no locator while the district series carried page,
+    row and file, so one receipt explained itself and the other did not.
+    """
+
+    def plan(self, parameter, place):
+        return {'year': 2024 if place['kind'] == 'country' else 2010, 'period': 'annual',
+                'history_parameter': parameter, 'places': [place]}
+
+    def require_database(self):
+        if not (ROOT / 'data/processed/climate').exists():
+            self.skipTest('the published climate database is not present in this checkout')
+
+    def test_a_national_value_carries_its_csv_locator(self):
+        self.require_database()
+        for parameter in ('rainfall', 'temperature'):
+            with self.subTest(parameter=parameter):
+                result = lookup_plan(self.plan(parameter, {'name': 'India', 'state': '', 'district': '', 'kind': 'country'}))
+                self.assertEqual(result['status'], 'answered')
+                fact = result['facts'][0]
+                self.assertTrue(fact.get('source_locators'), 'a served historical value has no locator')
+                self.assertRegex(fact['source_locators'][0], r'row \d+, column \S+')
+
+    def test_a_district_value_carries_its_page_row_and_column(self):
+        self.require_database()
+        result = lookup_plan(self.plan('rainfall', {'name': 'Ahmedabad', 'state': 'Gujarat', 'district': '', 'kind': 'district'}))
+        self.assertEqual(result['status'], 'answered')
+        self.assertRegex(result['facts'][0]['source_locators'][0], r'^page \S+, row \d+, column \S+$')
 
 
 if __name__ == '__main__':

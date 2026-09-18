@@ -14,6 +14,12 @@ import { DataTable, EvidenceFooter, Failure, Facts, Limits, NO_ROW, NOT_RECORDED
   SurfaceShell, type PlaceChoice } from './Evidence';
 
 type Entry = { id?: string; label?: string };
+type HoldingRow = { region?: string; state?: string | null; documents?: number; passages?: number;
+  newest_issue_date?: string | null; oldest_issue_date?: string | null; age_days?: number | null; languages?: string[]; body?: string | null };
+type HoldingState = { state?: string; regions?: number; documents?: number; passages?: number; newest_issue_date?: string | null };
+/* The corpus read's document row, used only when this server build does not serve the holdings view. */
+type CorpusDocument = { region?: string | null; state?: string | null; issue_date?: string | null; age_days?: number | null;
+  passages?: number; family?: string; sha_prefix?: string };
 type Point_ = { latitude?: number | null; longitude?: number | null };
 type Window_ = { first_valid?: string | null; last_valid?: string | null };
 type Passage = { source_id?: string; page?: number | string | null; issue_date?: string | null; section?: string | null; crop?: string | null; growth_stage?: string | null; quote?: string | null };
@@ -43,6 +49,8 @@ export function Surface(): JSX.Element {
   const [asked, setAsked] = useState<Record<string, string> | null>(null);
   const [refused, setRefused] = useState(false);
   const [point, setPoint] = useState<PlaceChoice | null>(null);
+  const [holdingNeedle, setHoldingNeedle] = useState('');
+  const [holdingState, setHoldingState] = useState('');
 
   const states = useQuery({
     queryKey: ['advisory-states'],
@@ -50,6 +58,24 @@ export function Surface(): JSX.Element {
     retry: false,
   });
   const stateRows = states.data?.data?.states || [];
+  /* What this machine holds, from the corpus index. The surface used to open on the publisher's
+     directory alone, so a reader could see 36 listed states and no advisory text at all. */
+  const holdings = useQuery({
+    queryKey: ['advisory-holdings'],
+    queryFn: () => getJson<Envelope<{ regions?: HoldingRow[]; states?: HoldingState[]; counts?: Record<string, number> }>>(
+      withQuery('/api/advisories/holdings', { family: 'district_agromet', limit: 1000 })),
+    retry: false, staleTime: 120_000,
+  });
+  /* A workspace started before the holdings view existed answers 404 for it, and the surface must not be blank
+     for that: the corpus read it already serves carries the same editions. The fallback is used only when the
+     dedicated read fails, and the panel says which read produced the rows. */
+  const corpusFallback = useQuery({
+    queryKey: ['advisory-holdings-fallback'],
+    queryFn: () => getJson<Envelope<{ documents?: CorpusDocument[]; counts?: Record<string, number> }>>(
+      withQuery('/api/corpus', { family: 'district_agromet', documents_listed: 200 })),
+    enabled: holdings.isError, retry: false, staleTime: 60_000,
+  });
+  const holdingsStatus = holdings.isError ? (holdings.error as { status?: number } | null)?.status : undefined;
   /* The first directory row the payload returned selects the state; a row with no id selects none. */
   const activeState = chosen || stateRows[0]?.id || '';
   const districts = useQuery({
@@ -67,6 +93,38 @@ export function Surface(): JSX.Element {
   const districtRows = districts.data?.data?.districts || [];
   /* The state name the payload printed for the selected row; the payload's own id stands in when it printed none. */
   const activeLabel = stateRows.find(entry => entry.id === activeState)?.label || activeState;
+  /* Rows from the holdings view, or derived from the corpus documents when only that read answered. */
+  const fallbackDocuments = (corpusFallback.data?.data?.documents || []).filter(row => Boolean(row.region));
+  const fallbackRows: HoldingRow[] = fallbackDocuments.map(row => ({
+    region: row.region || undefined, state: row.state ?? null, documents: 1, passages: row.passages,
+    newest_issue_date: row.issue_date ?? null, age_days: row.age_days ?? null,
+  }));
+  const holdingRows = holdings.data?.data?.regions || fallbackRows;
+  const holdingStates = holdings.data?.data?.states?.length
+    ? holdings.data!.data!.states!
+    : Array.from(fallbackRows.reduce((buckets, row) => {
+        const name = row.state || 'state not stated in the held editions';
+        const bucket = buckets.get(name) || { state: name, regions: 0, documents: 0, passages: 0, newest_issue_date: null as string | null };
+        bucket.regions = (bucket.regions || 0) + 1;
+        bucket.documents = (bucket.documents || 0) + (row.documents || 0);
+        bucket.passages = (bucket.passages || 0) + (row.passages || 0);
+        if (row.newest_issue_date && (!bucket.newest_issue_date || row.newest_issue_date > bucket.newest_issue_date)) bucket.newest_issue_date = row.newest_issue_date;
+        buckets.set(name, bucket);
+        return buckets;
+      }, new Map<string, HoldingState>()).values());
+  const holdingCounts = holdings.data?.data?.counts || {
+    regions: holdingRows.length,
+    documents: holdingRows.reduce((sum, row) => sum + (row.documents || 0), 0),
+    passages: holdingRows.reduce((sum, row) => sum + (row.passages || 0), 0),
+    states_named: new Set(holdingRows.map(row => row.state).filter(Boolean)).size,
+    regions_without_a_printed_issue_date: holdingRows.filter(row => !row.newest_issue_date).length,
+  };
+  const holdingsFromFallback = holdings.isError && fallbackRows.length > 0;
+  const heldTerm = holdingNeedle.trim().toLowerCase();
+  const heldRegions = holdingRows.filter(entry => (
+    (!holdingState || String(entry.state || '') === holdingState)
+    && (!heldTerm || (String(entry.region || '') + ' ' + String(entry.state || '')).toLowerCase().includes(heldTerm))));
+
   const term = needle.trim().toLowerCase();
   const matched = term ? districtRows.filter(row => String(row.label || row.id || '').toLowerCase().includes(term)) : districtRows;
   const path = brief.data;
@@ -126,6 +184,90 @@ export function Surface(): JSX.Element {
               columns={['District as published', 'Source identifier', 'State read']}
               rows={matched.map(entry => [orNot(entry.label), orNot(entry.id), orNot(districts.data?.data?.state, activeState)])} />
             {districts.data ? <EvidenceFooter envelope={districts.data} /> : null}
+          </>
+        )}
+      </section>
+
+      <section className="module-section">
+        <h2>What this machine holds</h2>
+        <p className="module-note">
+          The advisory editions this machine has ingested, one row per published region, with the edition&rsquo;s
+          own printed issue date, the age the corpus measured against that edition&rsquo;s retrieval instant, and
+          the number of indexed passages behind it. This is an inventory, not a coverage claim: a region the
+          publisher lists and this machine does not hold does not appear here, and a region whose edition states
+          no printed date shows that as unknown.
+        </p>
+        <div className="module-controls">
+          <label className="module-field" htmlFor="advisory-holding-filter">
+            <span>Region or state contains</span>
+            <input id="advisory-holding-filter" type="search" value={holdingNeedle} placeholder="e.g. Ahmedabad or Gujarat"
+              onChange={event => setHoldingNeedle(event.target.value)} />
+          </label>
+          <label className="module-field" htmlFor="advisory-holding-state">
+            <span>State held</span>
+            <select id="advisory-holding-state" value={holdingState} onChange={event => setHoldingState(event.target.value)}>
+              <option value="">Every state this machine holds editions for</option>
+              {holdingStates.map(entry => (
+                <option key={entry.state} value={entry.state}>{orNot(entry.state)} ({entry.regions})</option>
+              ))}
+            </select>
+          </label>
+        </div>
+        {holdings.isPending ? (
+          <Reading what="the advisory holdings" />
+        ) : holdings.isError && !holdingsFromFallback ? (
+          <Failure error={holdings.error} what="advisory holdings" onRetry={() => { holdings.refetch(); corpusFallback.refetch(); }} />
+        ) : corpusFallback.isPending && holdings.isError ? (
+          <Reading what="the advisory holdings from the corpus index" />
+        ) : (
+          <>
+            <Facts testId="advisories-holdings-counts" rows={[
+              ['Regions held', orNot(holdingCounts.regions)],
+              ['Documents held', orNot(holdingCounts.documents)],
+              ['Indexed passages', orNot(holdingCounts.passages)],
+              ['States named by the editions', orNot(holdingCounts.states_named)],
+              ['Regions whose edition states no printed date', orNot(holdingCounts.regions_without_a_printed_issue_date)],
+            ]} />
+            {holdingsFromFallback ? (
+              <p className="module-note" data-testid="advisories-holdings-source">
+                These rows come from the corpus index read (<span className="evidence">/api/corpus</span>) because this
+                workspace build did not answer the holdings view
+                {holdingsStatus === 404 ? ' (it answered 404, so it was started before that view existed)' : ''}.
+                Restart the local workspace to serve <span className="evidence">/api/advisories/holdings</span>; the
+                editions listed here are the same ones either way.
+              </p>
+            ) : null}
+            <p className="module-note" role="status" data-testid="advisories-holdings-status">
+              Showing {count(heldRegions.length, 'region')} of {count(holdingRows.length, 'region')} held here
+              {holdingState ? ' in ' + holdingState : ''}. Reading a region&rsquo;s advice quotes its published text below.
+            </p>
+            <DataTable testId="advisories-holdings"
+              caption="The advisory editions this machine holds for the filter above, newest printed edition first. A row is an ingested edition, not proof of a current issue."
+              columns={['Region', 'State as published', 'Newest printed issue', 'Age at its retrieval', 'Documents', 'Passages', '']}
+              rows={heldRegions.slice(0, 60).map(entry => [
+                orNot(entry.region),
+                orNot(entry.state, 'state not stated in the held edition'),
+                orNot(entry.newest_issue_date, NOT_RECORDED),
+                typeof entry.age_days === 'number' ? entry.age_days + ' days' : NOT_RECORDED,
+                orNot(entry.documents),
+                orNot(entry.passages),
+                <button key="read" type="button" className="btn" data-testid={'advisory-read-' + entry.region}
+                  onClick={() => {
+                    /* A holding row names the region the publisher's edition carries, so the brief is asked for
+                       exactly that region in source-lookup mode: the published text, not a decision. */
+                    const next = { ...form, region: String(entry.region || ''), state: String(entry.state || ''), mode: 'source_lookup' };
+                    setForm(next);
+                    setRefused(false);
+                    setAsked({ ...next, ...(point ? { lat: String(point.latitude), lon: String(point.longitude) } : {}) });
+                    setChosen(stateRows.find(row => row.label === entry.state)?.id || '');
+                  }}>
+                  Read its advice
+                </button>,
+              ])} />
+            {heldRegions.length > 60 ? (
+              <p className="module-note">Showing the first 60 of {count(heldRegions.length, 'region')} that match; narrow the filter to reach the rest.</p>
+            ) : null}
+            {holdings.data ? <EvidenceFooter envelope={holdings.data} /> : null}
           </>
         )}
       </section>

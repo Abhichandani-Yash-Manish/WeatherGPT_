@@ -4,9 +4,12 @@
    'no row returned', 'this read did not answer'), never as a blank, a zero or an empty chart.
    It also owns the two small local memories a reader keeps beside a read: the loading skeleton that
    reserves the shape of an answer in progress, and the pinned-place list the shell shows on every route. */
-import { useId, useMemo, useState, useSyncExternalStore, type ReactNode } from 'react';
+import { useEffect, useId, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { AlertTriangle, Database, FileCheck2, Gauge, Info, ListChecks, RefreshCw } from 'lucide-react';
 import { ApiError, getJson, withQuery } from '../api/client';
+import { Badge, Button, Panel } from '../ui/kit';
+import { SURFACE_ICONS } from '../ui/icons';
 import type { Envelope, SourceEntry } from '../api/types';
 import { orNot, titleCase } from '../lib/format';
 import { istStamp } from '../lib/time';
@@ -51,37 +54,43 @@ function subject(what: string): string {
    animation: this project has no measured progress to animate, so nothing here may read as one. */
 export function Skeleton(): JSX.Element {
   return (
-    <div className="mt-2 flex flex-col gap-1.5" data-testid="skeleton" aria-hidden="true">
-      <span className="h-[9px] w-[82%] rounded bg-sunk" data-skeleton="bar" />
-      <span className="h-[9px] w-full rounded bg-sunk" data-skeleton="bar" />
-      <span className="h-[9px] w-[46%] rounded bg-sunk" data-skeleton="bar" />
-      <span className="h-[92px] rounded-card border border-dashed border-line bg-sunk" data-skeleton="frame" />
+    <div className="mt-2 flex flex-col gap-2" data-testid="skeleton" aria-hidden="true">
+      <span className="pulse-soft h-2.5 w-[82%] rounded-full bg-[color-mix(in_oklab,var(--line-strong)_38%,transparent)]" data-skeleton="bar" />
+      <span className="pulse-soft h-2.5 w-full rounded-full bg-[color-mix(in_oklab,var(--line-strong)_38%,transparent)]" data-skeleton="bar" />
+      <span className="pulse-soft h-2.5 w-[46%] rounded-full bg-[color-mix(in_oklab,var(--line-strong)_38%,transparent)]" data-skeleton="bar" />
+      <span className="glass-soft mt-1 block h-24 border-dashed" data-skeleton="frame" />
     </div>
   );
 }
 
 export function Reading({ what }: { what: string }): JSX.Element {
   return (
-    <div data-reading={subject(what)}>
-      <p className="module-note" role="status">
+    <Panel className="pop-in" data-reading={subject(what)}>
+      <p className="module-note flex items-center gap-2" role="status">
+        <Gauge size={15} className="text-data" aria-hidden="true" />
         Reading {subject(what)} from the local store…
       </p>
       <Skeleton />
-    </div>
+    </Panel>
   );
 }
 
 export function Failure({ error, what, onRetry }: { error: unknown; what: string; onRetry?: () => void }): JSX.Element {
   return (
-    <div className="module-failure" role="alert">
-      <p className="reading">{failureSentence(error)}</p>
+    <div className="module-failure glass-soft pop-in" role="alert">
+      <p className="m-0 flex items-start gap-2">
+        <AlertTriangle size={17} className="mt-0.5 shrink-0 text-alert" aria-hidden="true" />
+        <span className="reading m-0">{failureSentence(error)}</span>
+      </p>
       <p className="module-note">
-        The {subject(what)} read failed. This surface shows that failure; it is not an empty result and not a quiet day.
+        The {subject(what)} read failed. This surface shows that failure; it is not an empty result and not a quiet
+        day. A retry sends the same request: fix whatever the sentence above names first, or the read will fail the
+        same way.
       </p>
       {onRetry ? (
-        <button type="button" className="btn" onClick={onRetry}>
+        <Button icon={<RefreshCw size={14} />} onClick={onRetry}>
           Retry this read
-        </button>
+        </Button>
       ) : null}
     </div>
   );
@@ -92,10 +101,16 @@ export function Failure({ error, what, onRetry }: { error: unknown; what: string
 export function ColourTag({ colour, text }: { colour?: string | null; text?: string }): JSX.Element {
   const stated = typeof colour === 'string' ? colour.trim().toLowerCase() : '';
   if (!HAZARD_COLOURS.includes(stated)) {
-    return <span className="chip chip-unstated">{text || stated || COLOUR_NOT_STATED}</span>;
+    return (
+      <span className="chip chip-unstated">
+        <span className="h-2 w-2 rounded-full bg-current" aria-hidden="true" />
+        {text || stated || COLOUR_NOT_STATED}
+      </span>
+    );
   }
   return (
     <span className="chip chip-colour" data-colour={stated}>
+      <span className="h-2 w-2 rounded-full bg-current" aria-hidden="true" />
       {text || stated}
     </span>
   );
@@ -105,7 +120,7 @@ export type Fact = [label: string, value: ReactNode];
 
 export function Facts({ rows, testId, id }: { rows: Fact[]; testId?: string; id?: string }): JSX.Element {
   return (
-    <dl className="module-facts" data-testid={testId} id={id}>
+    <dl className="module-facts glass-soft overflow-hidden" data-testid={testId} id={id}>
       {rows.map(([label, value]) => (
         <div className="fact-row" key={label}>
           <dt className="module-fact-label">{label}</dt>
@@ -124,6 +139,7 @@ export function DataTable({ caption, columns, rows, testId }: {
 }): JSX.Element {
   if (!rows.length) return <p className="module-note">{NO_ROW} for this table: {caption}</p>;
   return (
+    <ScrollBox label={caption}>
     <table className="module-table" data-testid={testId}>
       <caption>{caption}</caption>
       <thead>
@@ -151,6 +167,39 @@ export function DataTable({ caption, columns, rows, testId }: {
         ))}
       </tbody>
     </table>
+    </ScrollBox>
+  );
+}
+
+/* A wide table can scroll horizontally on a narrow window. A scrollable region has to be reachable by
+   keyboard, and a region that does not scroll must not add a tab stop: the check measures the element
+   rather than guessing, so a table that fits stays out of the tab order. */
+function ScrollBox({ label, children }: { label: string; children: ReactNode }): JSX.Element {
+  const box = useRef<HTMLDivElement | null>(null);
+  const [overflowing, setOverflowing] = useState(false);
+  useEffect(() => {
+    const node = box.current;
+    if (!node) return;
+    const check = () => setOverflowing(node.scrollWidth > node.clientWidth + 1);
+    check();
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(check);
+    observer?.observe(node);
+    window.addEventListener('resize', check);
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener('resize', check);
+    };
+  }, []);
+  return (
+    <div
+      ref={box}
+      className="glass-soft overflow-x-auto p-2"
+      tabIndex={overflowing ? 0 : undefined}
+      role={overflowing ? 'region' : undefined}
+      aria-label={overflowing ? label : undefined}
+    >
+      {children}
+    </div>
   );
 }
 
@@ -164,7 +213,7 @@ export function Coverage({ coverage }: { coverage?: Record<string, unknown> }): 
   const names = Object.keys(coverage || {});
   return (
     <div className="module-coverage">
-      <h3>Coverage as this read returned it</h3>
+      <h3 className="flex items-center gap-2"><FileCheck2 size={15} className="text-data" aria-hidden="true" />Coverage as this read returned it</h3>
       {names.length ? (
         <dl className="module-counts">
           {names.map(name => (
@@ -186,7 +235,7 @@ export function Limits({ limitations, not_established }: { limitations?: string[
   const open = not_established || [];
   return (
     <div className="module-limits">
-      <h3>Limits of this read</h3>
+      <h3 className="flex items-center gap-2"><Info size={15} className="text-mute" aria-hidden="true" />Limits of this read</h3>
       {limits.length ? (
         <ul>
           {limits.map((line, index) => (
@@ -196,7 +245,7 @@ export function Limits({ limitations, not_established }: { limitations?: string[
       ) : (
         <p className="module-note">This read returned no limitation line.</p>
       )}
-      <h3>Not established here</h3>
+      <h3 className="flex items-center gap-2"><AlertTriangle size={15} className="text-caution" aria-hidden="true" />Not established here</h3>
       {open.length ? (
         <ul>
           {open.map((line, index) => (
@@ -214,7 +263,7 @@ export function Sources({ sources }: { sources?: SourceEntry[] }): JSX.Element {
   const rows = sources || [];
   return (
     <div className="module-sources">
-      <h3>Sources</h3>
+      <h3 className="flex items-center gap-2"><Database size={15} className="text-data" aria-hidden="true" />Sources</h3>
       {rows.length ? (
         <DataTable
           caption="Every source row this read attached, as the registry returned it."
@@ -238,7 +287,7 @@ export function Sources({ sources }: { sources?: SourceEntry[] }): JSX.Element {
 export function EvidenceFooter({ envelope }: { envelope: Envelope<unknown> }): JSX.Element {
   return (
     <footer className="module-evidence">
-      <h2>What this read returned</h2>
+      <h2 className="flex items-center gap-2"><ListChecks size={16} className="text-data" aria-hidden="true" />What this read returned</h2>
       <Coverage coverage={envelope.coverage} />
       <Limits limitations={envelope.limitations} not_established={envelope.not_established} />
       <Sources sources={envelope.sources} />
@@ -246,7 +295,7 @@ export function EvidenceFooter({ envelope }: { envelope: Envelope<unknown> }): J
   );
 }
 
-export function SurfaceShell({ title, lead, what, envelope, busy, error, onRetry, children }: {
+export function SurfaceShell({ title, lead, what, envelope, busy, error, onRetry, children, className }: {
   title: string;
   lead: string;
   what: string;
@@ -255,22 +304,38 @@ export function SurfaceShell({ title, lead, what, envelope, busy, error, onRetry
   error?: unknown;
   onRetry?: () => void;
   children: ReactNode;
+  /* A surface may ask for its own layout class (the workspace dashboard composes its own grid). */
+  className?: string;
 }): JSX.Element {
+  /* The header of every surface: the icon the rail uses, the surface's own name, its lead, and the
+     envelope's own line as chips. Nothing here is a status the envelope did not state. */
+  const Icon = SURFACE_ICONS[(envelope?.view || '').split('.')[0]] ?? SURFACE_ICONS[title.toLowerCase()] ?? ListChecks;
+  const status = envelope?.status;
   return (
-    <section className="module" data-module={envelope?.view || title.toLowerCase()}>
+    <section className={'module fade-up' + (className ? ' ' + className : '')} data-module={envelope?.view || title.toLowerCase()}>
       <header className="module-head">
-        <h1>{title}</h1>
-        <p className="module-lead">{lead}</p>
+        <div className="flex items-start gap-3">
+          <span className="icon-tile h-10 w-10 shrink-0" aria-hidden="true"><Icon size={20} /></span>
+          <div className="min-w-0">
+            <h1>{title}</h1>
+            <p className="module-lead">{lead}</p>
+          </div>
+        </div>
         {envelope ? (
-          <p className="module-envelope evidence">
-            {orNot(envelope.view)} · status {orNot(envelope.status)} · read{' '}
-            {envelope.generated_at_utc ? istStamp(envelope.generated_at_utc) : NOT_RECORDED}
+          <p className="module-envelope flex flex-wrap items-center gap-2">
+            <Badge tone="accent">{orNot(envelope.view)}</Badge>
+            <Badge tone={status === 'ok' ? 'good' : status === 'unavailable' ? 'alert' : status ? 'held' : 'quiet'}>
+              status {orNot(status)}
+            </Badge>
+            <span className="evidence text-mute">
+              read {envelope.generated_at_utc ? istStamp(envelope.generated_at_utc) : NOT_RECORDED}
+            </span>
           </p>
         ) : null}
       </header>
       {busy ? <Reading what={what} /> : null}
       {!busy && error ? <Failure error={error} what={what} onRetry={onRetry} /> : null}
-      {!busy && !error ? children : null}
+      {!busy && !error ? <div className="flex flex-col gap-5">{children}</div> : null}
       {!busy && !error && envelope ? <EvidenceFooter envelope={envelope} /> : null}
     </section>
   );
@@ -420,7 +485,7 @@ export function PinPlaceButton({ place, describedBy }: { place: PinCandidate; de
 export function PinnedPlaces(): JSX.Element {
   const pins = usePinnedPlaces();
   return (
-    <section className="border-b border-line bg-paper px-4 py-2" aria-label="Pinned places" data-testid="pinned-places">
+    <section className="glass rounded-none border-x-0 border-t-0 px-4 py-2" aria-label="Pinned places" data-testid="pinned-places">
       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
         <h2 className="eyebrow">Pinned places</h2>
         <p className="text-xs quiet">
@@ -431,7 +496,7 @@ export function PinnedPlaces(): JSX.Element {
       {pins.length ? (
         <ul className="mt-1 flex flex-wrap items-center gap-2" data-testid="pinned-places-list">
           {pins.map(pin => (
-            <li key={pin.label} className="flex items-center gap-2 rounded-pill bg-sunk px-2 py-0.5 text-xs">
+            <li key={pin.label} className="flex items-center gap-2 rounded-full border border-glass-line bg-glass-3 px-2 py-0.5 text-xs">
               <span className="evidence">{pin.label}</span>
               <span className="quiet">
                 {pin.latitude}, {pin.longitude}
@@ -456,8 +521,87 @@ export function PinnedPlaces(): JSX.Element {
 
 /* The reader names a place; the catalogue answers with rows, and only a row that states coordinates
    can be read as a point. A row without coordinates is shown as one rather than resolved elsewhere. */
-export function PlacePicker({ onPick, hint }: { onPick: (place: PlaceChoice) => void; hint?: string }): JSX.Element {
+/* ---- the working place -------------------------------------------------------------------------
+   The vanilla frontend carried one working place across every surface; the port asks each surface for
+   its own, so a reader who has just read Pune on the dashboard has to name it again on Forecast. The
+   place this browser last resolved is remembered here and offered as a one-click choice beside the
+   search box (with the pins). It is an offer, never an automatic read: a surface still reads only when
+   the reader chooses a place, so nothing is fetched behind the reader's back. */
+export const PLACE_KEY = 'weathergpt.place';
+
+let sessionPlace: PlaceChoice | null = null;
+const placeListeners = new Set<() => void>();
+
+export function readWorkingPlace(): PlaceChoice | null {
+  if (sessionPlace) return sessionPlace;
+  try {
+    const raw = window.localStorage.getItem(PLACE_KEY);
+    if (!raw) return null;
+    const value: unknown = JSON.parse(raw);
+    return routablePlace(value as PinCandidate) ? (value as PlaceChoice) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function rememberPlace(place: PlaceChoice | null | undefined): void {
+  if (!place || !routablePlace(place as PinCandidate)) return;
+  const next: PlaceChoice = { label: place.label ? String(place.label) : null, latitude: Number(place.latitude), longitude: Number(place.longitude) };
+  sessionPlace = next;
+  try {
+    window.localStorage.setItem(PLACE_KEY, JSON.stringify(next));
+  } catch {
+    /* the browser refused storage: the place still serves this page load */
+  }
+  placeListeners.forEach(listener => listener());
+}
+
+export function useWorkingPlace(): PlaceChoice | null {
+  const snapshot = useSyncExternalStore(
+    listener => {
+      placeListeners.add(listener);
+      return () => placeListeners.delete(listener);
+    },
+    () => JSON.stringify(readWorkingPlace()),
+  );
+  return useMemo(() => (snapshot ? (JSON.parse(snapshot) as PlaceChoice | null) : null), [snapshot]);
+}
+
+/* ---- reading a product again from its source ----------------------------------------------------
+   Every product view takes `refresh=1`, which the vanilla surfaces exposed as "Refresh from the
+   source". The token is part of the query key, so asking again is a new read rather than a cached
+   one, and the button says which state it is in. */
+export function useSourceRefresh(): { token: number; param: Record<string, string>; ask: () => void } {
+  const [token, setToken] = useState(0);
+  return {
+    token,
+    param: token ? { refresh: '1' } : {},
+    ask: () => setToken(value => value + 1),
+  };
+}
+
+export function RefreshButton({ onClick, busy, what }: { onClick: () => void; busy?: boolean; what: string }): JSX.Element {
+  return (
+    <button type="button" className="btn btn-ghost module-refresh" onClick={onClick} disabled={busy} aria-label={'Refresh ' + what + ' from the source'}>
+      {busy ? 'Reading the source…' : 'Refresh from the source'}
+    </button>
+  );
+}
+
+/* The reader names a place; the catalogue answers with rows, and only a row that states coordinates
+   can be read as a point. A row without coordinates is shown as one rather than resolved elsewhere. */
+export function PlacePicker({ onPick, hint, clearOnPick = false }: { onPick: (place: PlaceChoice) => void; hint?: string; clearOnPick?: boolean }): JSX.Element {
   const [term, setTerm] = useState('');
+  const working = useWorkingPlace();
+  const pins = usePinnedPlaces();
+  const quick = [
+    ...(working && working.label ? [{ ...working, why: 'the place you last opened' }] : []),
+    ...pins.filter(pin => !working || pin.label !== working.label).map(pin => ({ ...pin, why: 'pinned in this browser' })),
+  ].slice(0, 5);
+  const choose = (place: PlaceChoice) => {
+    rememberPlace(place);
+    onPick(place);
+  };
   const query = term.trim();
   const field = useId();
   const rowId = field + '-row-';
@@ -480,6 +624,27 @@ export function PlacePicker({ onPick, hint }: { onPick: (place: PlaceChoice) => 
           onChange={event => setTerm(event.target.value)}
         />
       </label>
+      {quick.length ? (
+        <div className="module-place-quick" role="group" aria-label="Places this browser remembers">
+          {quick.map(place => {
+            /* The chip carries the place's own first part, and names itself for a reader: the whole label and the
+               coordinates it holds stay in its title, so a shortcut can never read as a different place. */
+            const short = String(place.label).split(', ')[0];
+            return (
+              <button
+                key={place.label}
+                type="button"
+                className="chip module-place-chip"
+                aria-label={'Read ' + short + ' again · ' + place.why}
+                title={place.label + ' · ' + place.why + ' · ' + place.latitude + ', ' + place.longitude}
+                onClick={() => { choose(place); if (clearOnPick) setTerm(''); }}
+              >
+                {short}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
       <div className="module-place-results" aria-live="polite">
         {query.length < 2 ? (
           <p className="module-note">{hint || 'The place search reads GET /api/places/search and needs at least two characters.'}</p>
@@ -502,7 +667,11 @@ export function PlacePicker({ onPick, hint }: { onPick: (place: PlaceChoice) => 
                           type="button"
                           id={rowId + index}
                           className="btn btn-ghost module-place-button"
-                          onClick={() => onPick(point)}
+                          onClick={() => {
+                            choose(point);
+                            /* A picker that heads a surface folds its list away once a row is chosen. */
+                            if (clearOnPick) setTerm('');
+                          }}
                         >
                           {label} · {where} · {point.latitude}, {point.longitude}
                         </button>

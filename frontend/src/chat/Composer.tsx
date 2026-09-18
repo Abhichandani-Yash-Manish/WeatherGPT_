@@ -2,7 +2,9 @@
    sending does, and offers voice only where this project has measured the language. */
 
 import { useEffect, useRef, useState } from 'react';
+import { ArrowUp, Check, Keyboard, Mic, MicOff, Square, X } from 'lucide-react';
 import type { Languages } from '../api/types';
+import { Button } from '../ui/kit';
 import { transcribe } from './api';
 import { blobToBase64, findLanguage, isSpeakable, startRecording, type Recorder } from './voice';
 
@@ -73,16 +75,16 @@ export function Composer({ draft, onDraft, onSend, busy, language, languages, on
   };
 
   return (
-    <div className="composer-shell px-3 py-2" data-busy={busy ? 'true' : 'false'}>
+    <div className="composer-shell glass-strong px-3 py-2.5" data-busy={busy ? 'true' : 'false'}>
       {heard ? (
-        <div className="card mb-2 px-3 py-2" data-testid="transcript-panel">
-          <p className="eyebrow">Heard, for correction</p>
+        <div className="glass-strong pop-in mb-2 p-3" data-testid="transcript-panel">
+          <p className="eyebrow flex items-center gap-2"><Mic size={14} aria-hidden="true" />Heard, for correction</p>
           <p className="reading mt-1" data-testid="transcript-heard">{heard.text}</p>
           <p className="mt-1 text-[11px] quiet">{heard.detail}</p>
-          <div className="mt-2 flex flex-wrap gap-2">
-            <button
-              type="button"
-              className="btn btn-primary"
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Button
+              variant="primary"
+              icon={<Check size={14} />}
               onClick={() => {
                 onDraft(heard.text);
                 setHeard(null);
@@ -90,8 +92,8 @@ export function Composer({ draft, onDraft, onSend, busy, language, languages, on
               }}
             >
               Use this text
-            </button>
-            <button type="button" className="btn" onClick={() => setHeard(null)}>Discard it</button>
+            </Button>
+            <Button icon={<X size={14} />} onClick={() => setHeard(null)}>Discard it</Button>
           </div>
         </div>
       ) : null}
@@ -112,22 +114,31 @@ export function Composer({ draft, onDraft, onSend, busy, language, languages, on
             }
           }}
           placeholder="What is it like right now in Ahmedabad?"
-          className="min-h-11 flex-1 bg-transparent text-step-0 outline-none"
+          className="min-h-11 flex-1 resize-none bg-transparent px-1 py-2 text-step-0 text-ink outline-none placeholder:text-mute"
           aria-describedby="composer-hint"
         />
-        <div className="flex flex-col items-stretch gap-1">
+        <div className="flex items-center gap-1.5 pb-0.5">
           {busy ? (
-            <button type="button" className="btn" onClick={onStop}>Stop</button>
+            <Button icon={<Square size={14} />} onClick={onStop}>Stop</Button>
           ) : (
-            <button type="button" className="btn btn-primary" onClick={submit} disabled={!draft.trim()} data-testid="send-question">
+            <Button
+              variant="primary"
+              size="lg"
+              icon={<ArrowUp size={16} />}
+              onClick={submit}
+              disabled={!draft.trim()}
+              data-testid="send-question"
+            >
               Ask
-            </button>
+            </Button>
           )}
-          <button
-            type="button"
-            className="btn btn-ghost"
+          {/* The recording control keeps a written label: an icon alone cannot say which of two states
+              a control that captures a voice is in. */}
+          <Button
+            icon={recording ? <MicOff size={16} /> : <Mic size={16} />}
             aria-pressed={recording}
-            title={canSpeak ? 'Record a question' : 'Speech in this language has not been measured by this project'}
+            tip={canSpeak ? 'Record a question' : 'Speech in this language has not been measured by this project'}
+            className={recording ? 'text-alert' : undefined}
             onClick={() => {
               if (recording) void stopRecording();
               else {
@@ -144,12 +155,13 @@ export function Composer({ draft, onDraft, onSend, busy, language, languages, on
             data-testid="record-question"
           >
             {recording ? 'Stop recording' : 'Speak'}
-          </button>
+          </Button>
         </div>
       </div>
 
-      <div id="composer-hint" className="mt-1 flex flex-wrap items-center justify-between gap-2 text-[11px] quiet">
-        <span>
+      <div id="composer-hint" className="mt-1.5 flex flex-wrap items-center justify-between gap-2 text-[11px] quiet">
+        <span className="flex items-center gap-1.5">
+          <Keyboard size={13} aria-hidden="true" />
           Questions and answers stay on this machine. Ctrl/⌘ + Enter sends; every value keeps its source and
           retrieval time.
         </span>

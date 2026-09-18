@@ -227,5 +227,74 @@ class BengaliDocumentRoutingTests(unittest.TestCase):
         decomposed = ''.join(chr(code) for code in (0x0986, 0x09AC, 0x09B9, 0x09BE, 0x0993, 0x09AF, 0x09BC, 0x09BE))
         self.assertTrue(mentions(decomposed, (precomposed,)))
 
+
+class SpokenClockTests(unittest.TestCase):
+    """A clock time the reader states, in the form the reader writes it.
+
+    Measured 17 September 2026: "Should I take my bike to work in Bengaluru at 9 am tomorrow?"
+    planned the whole day (00:30 to the next 00:30) while the model's own assumption told the
+    reader the 09:00-10:00 window was used. The rules floor read only the colon form, so the
+    plan and its own disclosure disagreed.
+    """
+
+    NOW = datetime(2026, 9, 17, 4, 0, tzinfo=IST)
+
+    def test_a_named_hour_becomes_that_hours_window(self):
+        start, end, explicit, basis = window_for('Should I take my bike to work in Bengaluru at 9 am tomorrow?', self.NOW)
+        self.assertTrue(explicit)
+        self.assertEqual(start, '2026-09-18T09:00:00+05:30')
+        self.assertEqual(end, '2026-09-18T10:00:00+05:30')
+        self.assertIn('09:00', basis)
+
+    def test_an_afternoon_hour_is_not_read_as_the_morning(self):
+        start, end, _, _ = window_for('What is the weather in Kochi at 6.30 pm tomorrow?', self.NOW)
+        self.assertEqual(start, '2026-09-18T18:30:00+05:30')
+        self.assertEqual(end, '2026-09-18T19:30:00+05:30')
+
+    def test_twelve_am_and_twelve_pm_are_midnight_and_noon(self):
+        self.assertEqual(window_for('Will it rain in Pune at 12 am?', self.NOW)[0], '2026-09-17T00:00:00+05:30')
+        self.assertEqual(window_for('Will it rain in Pune at 12 pm?', self.NOW)[0], '2026-09-17T12:00:00+05:30')
+
+    def test_an_impossible_hour_is_not_a_window(self):
+        self.assertEqual(window_for('Will it rain in Pune at 15 pm?', self.NOW)[:2], ('', ''))
+
+    def test_an_explicit_range_still_wins_over_a_named_hour(self):
+        start, end, explicit, _ = window_for('Will it rain in Ahmedabad from 09:30 to 12:30 tomorrow?', self.NOW)
+        self.assertTrue(explicit)
+        self.assertEqual((start, end), ('2026-09-18T09:30:00+05:30', '2026-09-18T12:30:00+05:30'))
+
+    def test_the_prompt_states_the_same_windows_as_the_shared_tables(self):
+        # A model writes the assumptions the reader sees. If the prompt states a different
+        # morning than the tables enforce, every model-planned turn discloses a window the
+        # answer never read (measured 17 September 2026).
+        from weathergpt_data.language import PLAN_PROMPT
+
+        for part, (start, end) in PART_WINDOWS.items():
+            self.assertIn(start + '–' + end + ' IST', PLAN_PROMPT, part + ' window is not in the prompt')
+
+
+class PartOfDayDisclosureTests(unittest.TestCase):
+    def test_a_disclosure_with_the_wrong_morning_is_repaired(self):
+        from weathergpt_data.dialogue import reconcile_part_of_day_text
+
+        plan = {'assumptions': ['Morning is taken as 06:30-12:30 IST.', 'Unrelated note.']}
+        out = reconcile_part_of_day_text(plan)
+        self.assertEqual(out['assumptions'][0], 'Morning is taken as 09:30–12:30 IST.')
+        self.assertEqual(out['assumptions'][1], 'Unrelated note.')
+
+    def test_a_correct_disclosure_is_left_alone(self):
+        from weathergpt_data.dialogue import reconcile_part_of_day_text
+
+        plan = {'assumptions': ['Evening is taken as 18:30–22:30 IST.']}
+        self.assertEqual(reconcile_part_of_day_text(plan)['assumptions'][0], 'Evening is taken as 18:30–22:30 IST.')
+
+    def test_a_disclosure_naming_two_parts_of_day_is_not_rewritten(self):
+        from weathergpt_data.dialogue import reconcile_part_of_day_text
+
+        note = 'Morning 06:30-12:30 and evening 18:30-22:30 were both requested.'
+        plan = {'assumptions': [note]}
+        self.assertEqual(reconcile_part_of_day_text(plan)['assumptions'][0], note)
+
+
 if __name__ == '__main__':
     unittest.main()

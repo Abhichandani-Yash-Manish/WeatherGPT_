@@ -147,6 +147,16 @@ const WARNINGS = envelope(
   { coverage: { features_returned: 764, districts_listed: 1, skipped_without_a_name: 1, basemap_districts: 756 } },
 );
 
+/* One district polygon for the dashboard's map read: the token contract is what this file checks, so the
+   geometry only has to be a readable FeatureCollection. */
+const DISTRICT_GEOMETRY = {
+  type: 'FeatureCollection',
+  features: [
+    { type: 'Feature', properties: { k: 'PATNA', n: 'PATNA', s: 'BIHAR' },
+      geometry: { type: 'Polygon', coordinates: [[[85.0, 25.4], [85.4, 25.4], [85.4, 25.8], [85.0, 25.8], [85.0, 25.4]]] } },
+  ],
+};
+
 const FORECAST = envelope('forecast.point', 'ok', {
   parameters: {
     temperature_2m: {
@@ -570,6 +580,8 @@ describe('the workspace token', () => {
       server.use(
         http.get('/api/overview', () => HttpResponse.json(OVERVIEW)),
         http.get('/api/warnings/national', () => HttpResponse.json(WARNINGS)),
+        /* The Today dashboard joined a third read to itself: the served district geometry its map draws. */
+        http.get('/api/map/static/districts', () => HttpResponse.json(DISTRICT_GEOMETRY)),
       );
       mount(
         <>
@@ -579,14 +591,17 @@ describe('the workspace token', () => {
       );
       await screen.findByTestId('today-national');
       await screen.findByTestId('warnings-table');
-      await waitFor(() => expect(seen.filter(row => row.path.startsWith('/api/'))).toHaveLength(2));
+      /* Three distinct reads. The today dashboard and the warnings surface name the warning read with the same
+         cache key, so the app's 30 s staleTime serves the second observer from the first fetch; this harness
+         sets no staleTime, so it may fetch that URL once per observer and the set is what is asserted. */
+      await waitFor(() => expect(new Set(seen.filter(row => row.path.startsWith('/api/')).map(row => row.path)).size).toBe(3));
     } finally {
       spy.mockRestore();
       meta.remove();
     }
 
     const surfaceCalls = seen.filter(row => row.path.startsWith('/api/'));
-    expect(surfaceCalls.map(row => row.path).sort()).toEqual(['/api/overview', '/api/warnings/national']);
+    expect(Array.from(new Set(surfaceCalls.map(row => row.path))).sort()).toEqual(['/api/map/static/districts', '/api/overview', '/api/warnings/national']);
     expect(surfaceCalls.every(row => row.token === TOKEN)).toBe(true);
   });
 });

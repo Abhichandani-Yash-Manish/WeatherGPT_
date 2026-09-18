@@ -51,6 +51,11 @@ export function istWindow(start?: string | null, end?: string | null): string {
   const from = istParts(start);
   const to = istParts(end);
   if (!from || !to) return 'Window not stated';
+  /* An hourly value carries the instant it is valid for, so start equals end. Printing that as
+     '00:30-00:30' tells the reader nothing and reads as a zero-length window (measured 17 September
+     2026: a whole day of hourly air-quality values was summarised as "18 Sep 2026 00:30-00:30 IST").
+     One instant is printed as one instant. */
+  if (istStamp(start) === istStamp(end)) return istStamp(start);
   if (from.day === to.day && from.month === to.month && from.year === to.year) {
     return from.day + ' ' + from.month + ' ' + from.year + ' ' + from.hour + ':' + from.minute + '-' + to.hour + ':' + to.minute + ' IST';
   }

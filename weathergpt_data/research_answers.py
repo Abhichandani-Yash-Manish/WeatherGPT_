@@ -80,6 +80,52 @@ def alias_candidates(place,database,gazetteer=None):
     return [found[key] for key in order][:3]
 
 
+def series_range(plan):
+    """The published first and last year of the district series a plan names, or None.
+
+    The climate questions in the 100-question set ("what is the average monsoon rainfall in Nashik district?")
+    were answered by asking for a year range, although the stored series states its own coverage: the source
+    rows carry min(year) and max(year) per district. This reads that coverage so a question with no years can
+    be answered from the published range, with the range stated on the answer.
+    """
+    places=plan.get('places') or []
+    if len(places)!=1:return None
+    place=places[0]
+    if place.get('kind') in {'relative','country','state'}:return None
+    if plan.get('history_parameter')!='rainfall':return None
+    registry=json.loads((ROOT/'data/registry/sources.json').read_text())
+    products={p['id']:p for p in registry['products']}
+    database=publication_database('S27',products)
+    state=place.get('state');source_state=SERIES_STATE_EQUIVALENTS.get((state or '').casefold(),state)
+    name=place.get('name') or ''
+    district=name[:-8].strip() if name.casefold().endswith(' district') else name
+    with verified_connection(database) as con:
+        options=con.execute('SELECT state,district,min(year),max(year),count(*) FROM rainfall WHERE lower(district)=lower(?) GROUP BY state,district',(district,)).fetchall()
+    if source_state:options=[row for row in options if row[0].casefold()==source_state.casefold()]
+    resolved='the source spelling matches the requested district'
+    if len(options)!=1 and len(district)>=4:
+        # The publisher keeps its own historical spelling (Nasik for Nashik). A single source district whose
+        # name starts with the requested one, inside the named state, is used and the reading is disclosed.
+        candidates=[]
+        for width in (4,3):
+            prefix=district[:width].casefold()
+            with verified_connection(database) as con:
+                near=con.execute('SELECT state,district,min(year),max(year),count(*) FROM rainfall '
+                                 'WHERE lower(district) LIKE ? GROUP BY state,district',(prefix+'%',)).fetchall()
+            if source_state:near=[row for row in near if row[0].casefold()==source_state.casefold()]
+            if len(near)==1:
+                candidates=near
+                break
+            if near:
+                candidates=near
+        if len(candidates)==1:
+            options=candidates
+            resolved='the source district is spelled '+str(candidates[0][1])+' and it is the only source series in that state starting with the requested name'
+    if len(options)!=1:return None
+    st,dist,first,last,count=options[0]
+    return {'state':st,'district':dist,'first_year':first,'last_year':last,'years':count,'basis':resolved}
+
+
 def lookup_plan(plan):
     year=plan['year'];period=plan['period'];places=plan['places']
     if not year:return {'status':'needs_clarification','text':'Which year and month or season should I look up?','facts':[],'citations':[]}
@@ -96,7 +142,11 @@ def lookup_plan(plan):
         notes=['This is the published All India aggregate; it does not describe an individual village or district.']
         check=data['reconciliation']
         if check and check.get('difference_mm') not in {None,'0','0.0','0.00'}:notes.append('The source aggregate differs from the sum of its published months; the original total and reconciliation are retained.')
-        return {'status':'answered' if r['value_decimal'] is not None else 'unavailable','text':text,'facts':[{'label':plan['history_parameter'],'value':r['value_decimal'],'unit':r['unit'],'year':year,'period':period,'source_id':sid,'place':'All India'}] if r['value_decimal'] is not None else [],
+        # The receipt row is built from this list, so a published value with no locator shows the
+        # reader nothing about where the number came from (measured 17 September 2026: both All India
+        # facts carried no locator while the district series' product view carried page/row/file).
+        locators=['CSV row ' + str(r['source_row']) + ', column ' + str(r['source_column'])]
+        return {'status':'answered' if r['value_decimal'] is not None else 'unavailable','text':text,'facts':[{'label':plan['history_parameter'],'value':r['value_decimal'],'unit':r['unit'],'year':year,'period':period,'source_id':sid,'place':'All India','source_locators':locators}] if r['value_decimal'] is not None else [],
                 'citations':[{'source_id':sid,'url':c['url'],'provider':'IMD','product':'Published All India historical table',**c}],'notes':notes,'raw':data}
     if place['kind'] in {'relative','country','state'}:return {'status':'needs_clarification','text':'The local historical table contains source districts. Which historical district and state do you mean?','facts':[],'citations':[]}
     if plan['history_parameter']!='rainfall':return {'status':'unavailable','text':'The stored district table contains rainfall, not district temperature. I can look up national mean temperature or district rainfall.','facts':[],'citations':[]}
@@ -135,5 +185,6 @@ def lookup_plan(plan):
                   'legacy_index_status':data.pop('source_transcription',None)}
     data['source_transcription']={'status':'covered_by_previous_full_source_audit' if matched_input and verification['all_series_matched'] else 'unverified','evidence':str(audit.relative_to(ROOT))}
     citation={'source_id':'S27','provider':'IMD','product':'Historical district rainfall publication','url':products['S27']['access_url'],'page':prov['original_publication_page'],'source_file':prov['source_file'],'sha256':prov['asset_sha256'],'row':prov['source_row'],'column':prov['column']}
-    return {'status':'answered' if data['value_decimal'] is not None else 'unavailable','text':text,'facts':[{'label':'rainfall','value':data['value_decimal'],'unit':'mm','year':year,'period':period,'source_id':'S27','place':dist+', '+st}] if data['value_decimal'] is not None else [],
+    locators=['page ' + str(prov['original_publication_page']) + ', row ' + str(prov['source_row']) + ', column ' + str(prov['column'])]
+    return {'status':'answered' if data['value_decimal'] is not None else 'unavailable','text':text,'facts':[{'label':'rainfall','value':data['value_decimal'],'unit':'mm','year':year,'period':period,'source_id':'S27','place':dist+', '+st,'source_locators':locators}] if data['value_decimal'] is not None else [],
             'citations':[citation],'notes':notes,'verification':verification,'raw':data}

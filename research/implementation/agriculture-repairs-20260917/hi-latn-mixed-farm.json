@@ -1,0 +1,291 @@
+{
+ "question": "Mera farm Chhindwara district mein hai, maize 45 din ki hai. Kal 6 se 9 AM ka rain chance aur wind speed batao, aur latest official advisory ka source bhi do.",
+ "response": {
+  "status": "partial",
+  "answer": "Task 1: Chhindwāra · 19 Sep, 06:30–19 Sep, 08:30 IST: Har ghante barish ki sambhavna: 0–2 %. Sabse zyada 2% sambhavna 19 Sep, 07:30–08:30 IST ke ghante mein hai. Ye alag-alag ghanton ki sambhavnayein hain; poore din ka ek pratishat nahi. Hawa ki raftaar: 3.6–4.5 km/h. Srot: Open-Meteo best-match ka poorvanuman; mausam badal sakta hai.\n\nSawal ka kuch hissa abhi adhura hai; jo samay ya jaankari nahi mili, woh neeche di gayi hai.\n\nTask 2: Chhindwara, Madhya Pradesh: 2026-09-15 ke prakashit bulletin se, fasal maize ke liye:\n\nShowing 3 of 4 matching source passages; this is a selected extract, not the complete bulletin.\n\nMAIZE · Fruit formation · page 2:\n“Monitor cobs, husks and leaves for ear/cob rot, leaf blight and other fungal diseases, especially after consecutive cloudy and wet days.”\n\nPrinted product-label or dose text in this bulletin (a label, not advice):\n\nMAIZE · Fruit formation · page 2:\n“In some areas, due to excess moisture in the maize crop, infection of Sheath blight has been reported, to prevent this, farmers are advised to spray Carbendazim 1.5 g / liter or propiconazole 1ml / liter of water in the stem.”\n\nMAIZE · Fruit formation · page 2:\n“If fall army worm is observed in field Spray Spinosad 45 SC 0.3 ml or Emamectin benzoate 5 SG@ 0.4 gm/lit of water to protect the crop at early stage or Spray with Chlorantraniliprol 18.5 SC 0.3 ml per liter of water.”\n\nThat text is what the bulletin printed as a product label. It is not chosen, adjusted or endorsed here: no dose decision is made, and the product label and the local advisory decide what may be applied.\n\nContext from the same bulletin edition follows. These are separate source sections, not crop-specific matches or verified current official warnings. Printed warning dates and conditions are preserved; bulletin forecast dates do not extend their validity.\n\nForecast Summary: · page 1:\n“As per forecast received from Indian Meteorological Department, Bhopal weather during next five days (16th September –20th September) over Chhindwara, heavy to medium clouds and light rainfall with thunderstorm, lightning and gusty winds (30-40 Kmph) are expected in the next 120 hours. Maximum and Minimum temperature will be around 29-31 degree C and 21-23 degree C respectively & Maximum and Minimum Relative Humidity will be around of 89-95% and 73-79% respectively. Wind will blow mainly from South-West, West and North-West direction with an average speed of 06-10 km/h.”\n\nWeather Warnings (Valid Till 08:30 IST of the next day) · page 1:\n“During next five days (16th September –20th September) over Chhindwara, heavy to medium clouds and light rainfall with thunderstorm, lightning and gusty winds (30-40 Kmph) are expected in the next 120 hours.”\n\nLikely impacts of weather warnings on Agriculture and associated Agromet advisories · page 1:\n“Nil”\n\nGeneral Advisory: · page 1:\n“• According to the weather forecast issued by the India Meteorological Department, Bhopal, light rains are expected in the coming days, so farmers should not sow early peas and potatoes till the weather is clear. • Provide physical support (stakes/twine) for tall and creeping crops like banana, tomatoes, and climbers.”\n\nSMS Advisory: · page 2:\n“• To avoid lodging in sugarcane tie three or four canes each other with the help of green leaves.”\n\nLikely impacts of weather warnings (General) · page 3:\n“Nil”\n\nImpact based advisories (General) · page 3:\n“Nil”\n\nThese are original English source excerpts, including their conditions. The bulletin is district guidance; it has not been validated for your individual field.",
+  "facts": [
+   {
+    "id": "t1-f1",
+    "parameter": "precipitation_probability",
+    "label": "Hourly precipitation probability (>0.1 mm)",
+    "value": "0",
+    "unit": "%",
+    "place": "Chhindwāra, Chhindwāra, Madhya Pradesh",
+    "entity_id": "geonames:1274304",
+    "start": "2026-09-19T06:30:00+05:30",
+    "end": "2026-09-19T07:30:00+05:30",
+    "source_id": "S62",
+    "evidence_kind": "forecast",
+    "evidence_version": "22cf0db209832c088fff31f4d05288566bfe113117c79622bfe202fdb5d1b1a4",
+    "citation_ids": [
+     "t1-c-22cf0db209832c088fff31f4d05288566bfe113117c79622bfe202fdb5d1b1a4"
+    ],
+    "source_locators": [
+     "$.hourly.precipitation_probability[50]"
+    ],
+    "method": "preceding_hour_probability",
+    "task_id": "t1"
+   },
+   {
+    "id": "t1-f2",
+    "parameter": "precipitation_probability",
+    "label": "Hourly precipitation probability (>0.1 mm)",
+    "value": "2",
+    "unit": "%",
+    "place": "Chhindwāra, Chhindwāra, Madhya Pradesh",
+    "entity_id": "geonames:1274304",
+    "start": "2026-09-19T07:30:00+05:30",
+    "end": "2026-09-19T08:30:00+05:30",
+    "source_id": "S62",
+    "evidence_kind": "forecast",
+    "evidence_version": "22cf0db209832c088fff31f4d05288566bfe113117c79622bfe202fdb5d1b1a4",
+    "citation_ids": [
+     "t1-c-22cf0db209832c088fff31f4d05288566bfe113117c79622bfe202fdb5d1b1a4"
+    ],
+    "source_locators": [
+     "$.hourly.precipitation_probability[51]"
+    ],
+    "method": "preceding_hour_probability",
+    "task_id": "t1"
+   },
+   {
+    "id": "t1-f3",
+    "parameter": "wind_speed_10m",
+    "label": "Wind speed sample",
+    "value": "4.5",
+    "unit": "km/h",
+    "place": "Chhindwāra, Chhindwāra, Madhya Pradesh",
+    "entity_id": "geonames:1274304",
+    "start": "2026-09-19T06:30:00+05:30",
+    "end": "2026-09-19T06:30:00+05:30",
+    "source_id": "S62",
+    "evidence_kind": "forecast",
+    "evidence_version": "22cf0db209832c088fff31f4d05288566bfe113117c79622bfe202fdb5d1b1a4",
+    "citation_ids": [
+     "t1-c-22cf0db209832c088fff31f4d05288566bfe113117c79622bfe202fdb5d1b1a4"
+    ],
+    "source_locators": [
+     "$.hourly.wind_speed_10m[49]"
+    ],
+    "method": "instant",
+    "sample_at": "2026-09-19T06:30:00+05:30",
+    "task_id": "t1"
+   },
+   {
+    "id": "t1-f4",
+    "parameter": "wind_speed_10m",
+    "label": "Wind speed sample",
+    "value": "4.4",
+    "unit": "km/h",
+    "place": "Chhindwāra, Chhindwāra, Madhya Pradesh",
+    "entity_id": "geonames:1274304",
+    "start": "2026-09-19T07:30:00+05:30",
+    "end": "2026-09-19T07:30:00+05:30",
+    "source_id": "S62",
+    "evidence_kind": "forecast",
+    "evidence_version": "22cf0db209832c088fff31f4d05288566bfe113117c79622bfe202fdb5d1b1a4",
+    "citation_ids": [
+     "t1-c-22cf0db209832c088fff31f4d05288566bfe113117c79622bfe202fdb5d1b1a4"
+    ],
+    "source_locators": [
+     "$.hourly.wind_speed_10m[50]"
+    ],
+    "method": "instant",
+    "sample_at": "2026-09-19T07:30:00+05:30",
+    "task_id": "t1"
+   },
+   {
+    "id": "t1-f5",
+    "parameter": "wind_speed_10m",
+    "label": "Wind speed sample",
+    "value": "3.6",
+    "unit": "km/h",
+    "place": "Chhindwāra, Chhindwāra, Madhya Pradesh",
+    "entity_id": "geonames:1274304",
+    "start": "2026-09-19T08:30:00+05:30",
+    "end": "2026-09-19T08:30:00+05:30",
+    "source_id": "S62",
+    "evidence_kind": "forecast",
+    "evidence_version": "22cf0db209832c088fff31f4d05288566bfe113117c79622bfe202fdb5d1b1a4",
+    "citation_ids": [
+     "t1-c-22cf0db209832c088fff31f4d05288566bfe113117c79622bfe202fdb5d1b1a4"
+    ],
+    "source_locators": [
+     "$.hourly.wind_speed_10m[51]"
+    ],
+    "method": "instant",
+    "sample_at": "2026-09-19T08:30:00+05:30",
+    "task_id": "t1"
+   }
+  ],
+  "task_coverage": {
+   "requested": 2,
+   "completed": 1,
+   "incomplete_ids": [
+    "t1"
+   ]
+  },
+  "notes": [
+   "Kal ka matlab 19 September 2026 (agla local din) liya gaya hai.",
+   "6 se 9 AM ka window aapke diye exact clock times ke hisaab se rakha gaya hai.",
+   "Advisory ke liye crop maize aur 45 din ka stage source-search term ke roop mein use kiya gaya hai.",
+   "Read at Chhindwāra, Chhindwāra, Madhya Pradesh — the place catalogue lists this town as the administrative centre of Chhindwara district. A district is not a point: this is the district seat the catalogue states, not the field, and it is not a district-wide map.",
+   "precipitation_probability: the requested boundaries split source hours or exceed available support; only complete contained intervals are shown",
+   "Precipitation includes rain, showers and snow water equivalent; it is not a rain-only gauge measurement.",
+   "Source hours are on UTC boundaries (:30 in IST). Each probability is for >0.1 mm in its preceding hour. Hourly probabilities are never combined into a period probability.",
+   "The source grid runs on :30 IST boundaries, so this window is covered from 19 Sep 06:30 and up to 19 Sep 08:30 IST; the remaining minutes are not in this product.",
+   "Best-match model selection may differ by variable; upstream run and local representativeness are unverified. Hourly values cannot determine an exact rain start minute or issue an official warning.",
+   "2 retrieved passage(s) are printed product-label or dose text and are quoted as the label, not as advice.",
+   "Printed district, state, issue date and five-day forecast context verified. Forecast dates are not an asserted expiry for every crop recommendation.",
+   "Source passages are retained in their original English. Chemical amounts and conditional instructions are not rewritten or personalized.",
+   "This language is written in the Latin script, so whether an answer is in it cannot be verified here and is not claimed. The answer stays in its source language."
+  ],
+  "task_results": [
+   {
+    "id": "t1",
+    "request": {
+     "request_quote": "Kal 6 se 9 AM ka rain chance aur wind speed batao",
+     "kind": "forecast",
+     "operation": "lookup",
+     "parameters": [
+      "precipitation_probability",
+      "wind_speed_10m"
+     ],
+     "years": [],
+     "period": "annual",
+     "start_local": "2026-09-19T06:00:00+05:30",
+     "end_local": "2026-09-19T09:00:00+05:30",
+     "place_indices": [
+      0
+     ]
+    },
+    "status": "partial",
+    "answer": "Chhindwāra · 19 Sep, 06:30–19 Sep, 08:30 IST: Har ghante barish ki sambhavna: 0–2 %. Sabse zyada 2% sambhavna 19 Sep, 07:30–08:30 IST ke ghante mein hai. Ye alag-alag ghanton ki sambhavnayein hain; poore din ka ek pratishat nahi. Hawa ki raftaar: 3.6–4.5 km/h. Srot: Open-Meteo best-match ka poorvanuman; mausam badal sakta hai.\n\nSawal ka kuch hissa abhi adhura hai; jo samay ya jaankari nahi mili, woh neeche di gayi hai.",
+    "fact_ids": [
+     "t1-f1",
+     "t1-f2",
+     "t1-f3",
+     "t1-f4",
+     "t1-f5"
+    ],
+    "passage_ids": []
+   },
+   {
+    "id": "t2",
+    "request": {
+     "request_quote": "latest official advisory ka source bhi do",
+     "kind": "agriculture",
+     "operation": "lookup",
+     "parameters": [
+      "agricultural_advisory"
+     ],
+     "years": [],
+     "period": "annual",
+     "start_local": "",
+     "end_local": "",
+     "place_indices": [
+      0
+     ],
+     "document_request": {
+      "query": "latest official advisory for maize 45 days old in Chhindwara district",
+      "crop": "maize",
+      "growth_stage": "",
+      "topic": "general",
+      "mode": "source_lookup"
+     }
+    },
+    "status": "answered",
+    "answer": "Chhindwara, Madhya Pradesh: 2026-09-15 ke prakashit bulletin se, fasal maize ke liye:\n\nShowing 3 of 4 matching source passages; this is a selected extract, not the complete bulletin.\n\nMAIZE · Fruit formation · page 2:\n“Monitor cobs, husks and leaves for ear/cob rot, leaf blight and other fungal diseases, especially after consecutive cloudy and wet days.”\n\nPrinted product-label or dose text in this bulletin (a label, not advice):\n\nMAIZE · Fruit formation · page 2:\n“In some areas, due to excess moisture in the maize crop, infection of Sheath blight has been reported, to prevent this, farmers are advised to spray Carbendazim 1.5 g / liter or propiconazole 1ml / liter of water in the stem.”\n\nMAIZE · Fruit formation · page 2:\n“If fall army worm is observed in field Spray Spinosad 45 SC 0.3 ml or Emamectin benzoate 5 SG@ 0.4 gm/lit of water to protect the crop at early stage or Spray with Chlorantraniliprol 18.5 SC 0.3 ml per liter of water.”\n\nThat text is what the bulletin printed as a product label. It is not chosen, adjusted or endorsed here: no dose decision is made, and the product label and the local advisory decide what may be applied.\n\nContext from the same bulletin edition follows. These are separate source sections, not crop-specific matches or verified current official warnings. Printed warning dates and conditions are preserved; bulletin forecast dates do not extend their validity.\n\nForecast Summary: · page 1:\n“As per forecast received from Indian Meteorological Department, Bhopal weather during next five days (16th September –20th September) over Chhindwara, heavy to medium clouds and light rainfall with thunderstorm, lightning and gusty winds (30-40 Kmph) are expected in the next 120 hours. Maximum and Minimum temperature will be around 29-31 degree C and 21-23 degree C respectively & Maximum and Minimum Relative Humidity will be around of 89-95% and 73-79% respectively. Wind will blow mainly from South-West, West and North-West direction with an average speed of 06-10 km/h.”\n\nWeather Warnings (Valid Till 08:30 IST of the next day) · page 1:\n“During next five days (16th September –20th September) over Chhindwara, heavy to medium clouds and light rainfall with thunderstorm, lightning and gusty winds (30-40 Kmph) are expected in the next 120 hours.”\n\nLikely impacts of weather warnings on Agriculture and associated Agromet advisories · page 1:\n“Nil”\n\nGeneral Advisory: · page 1:\n“• According to the weather forecast issued by the India Meteorological Department, Bhopal, light rains are expected in the coming days, so farmers should not sow early peas and potatoes till the weather is clear. • Provide physical support (stakes/twine) for tall and creeping crops like banana, tomatoes, and climbers.”\n\nSMS Advisory: · page 2:\n“• To avoid lodging in sugarcane tie three or four canes each other with the help of green leaves.”\n\nLikely impacts of weather warnings (General) · page 3:\n“Nil”\n\nImpact based advisories (General) · page 3:\n“Nil”\n\nThese are original English source excerpts, including their conditions. The bulletin is district guidance; it has not been validated for your individual field.",
+    "fact_ids": [],
+    "passage_ids": [
+     "9580db134f2892b384568b4df032385e42119c70c76eb722847283927a101f3e",
+     "8336a11093bcc1386b105f8ab81534ef21ebc1bc0cd411a86a4e92891a995e92",
+     "44a458f2e86b9ddf9ea5903d3cf9e1484be7618ac7bf3e0d765651c94747329d",
+     "12810e23dfa0f1705c273c3897c8ec05d1e98afe4b42059f26e04b1f8365e893",
+     "36e483e8ebdae3c782b9fa4931692a1a56880f53166abd73370ff685f6b12850",
+     "5fae790b900fafffd100a5718a88c319379b74722c9e8f3d035b838f756a1fa3",
+     "c036a0e3a0487ba588b9fdcd15f7f84e2f72a23ec5147de9bce1978b026ee063",
+     "15c1059deffe9e5aaa3c95ddfbc4d3759ad46546f7189c3663e33b5798042a83",
+     "70249a61f64fb368454e734e1c0f7b4c75ad73ff7d42c561c8a1fd99d7f17e86",
+     "884f6dca31c2d99be99446313d85fb03d74f87b7d4321abea30fdf6161a900c0"
+    ]
+   }
+  ],
+  "plan": {
+   "language": "hi-Latn",
+   "places": [
+    {
+     "name": "Chhindwara",
+     "state": "",
+     "district": "Chhindwara",
+     "kind": "district"
+    }
+   ],
+   "assumptions": [
+    "Kal ka matlab 19 September 2026 (agla local din) liya gaya hai.",
+    "6 se 9 AM ka window aapke diye exact clock times ke hisaab se rakha gaya hai.",
+    "Advisory ke liye crop maize aur 45 din ka stage source-search term ke roop mein use kiya gaya hai."
+   ],
+   "clarification": "",
+   "explicit_times": true,
+   "tasks": [
+    {
+     "request_quote": "Kal 6 se 9 AM ka rain chance aur wind speed batao",
+     "kind": "forecast",
+     "operation": "lookup",
+     "parameters": [
+      "precipitation_probability",
+      "wind_speed_10m"
+     ],
+     "years": [],
+     "period": "annual",
+     "start_local": "2026-09-19T06:00:00+05:30",
+     "end_local": "2026-09-19T09:00:00+05:30",
+     "place_indices": [
+      0
+     ]
+    },
+    {
+     "request_quote": "latest official advisory ka source bhi do",
+     "kind": "agriculture",
+     "operation": "lookup",
+     "parameters": [
+      "agricultural_advisory"
+     ],
+     "years": [],
+     "period": "annual",
+     "start_local": "",
+     "end_local": "",
+     "place_indices": [
+      0
+     ],
+     "document_request": {
+      "query": "latest official advisory for maize 45 days old in Chhindwara district",
+      "crop": "maize",
+      "growth_stage": "",
+      "topic": "general",
+      "mode": "source_lookup"
+     }
+    }
+   ],
+   "context_action": "new",
+   "changed_fields": [
+    "crop",
+    "parameters",
+    "places",
+    "time"
+   ],
+   "intent": "forecast",
+   "start_local": "2026-09-19T06:00:00+05:30",
+   "end_local": "2026-09-19T09:00:00+05:30",
+   "variables": [
+    "wind_speed_10m"
+   ],
+   "year": 0,
+   "period": "annual",
+   "history_parameter": "rainfall",
+   "unsupported_parameters": [],
+   "requested_outcome": "Complete all explicitly requested tasks"
+  }
+ }
+}

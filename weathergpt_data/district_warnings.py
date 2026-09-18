@@ -157,8 +157,18 @@ def facts(record, rows, issued, citation_id, place_label):
     return facts
 
 
-def summary(record, rows, issued):
-    """A deterministic statement of the official product, with no verdict beyond it."""
+def summary(record, rows, issued, published=None, now=None):
+    """A deterministic statement of the official product, with no verdict beyond it.
+
+    `published` is every day the bulletin publishes, which can be wider than the rows one
+    question returned. A claim about "every published day" is made only over the whole
+    bulletin: measured 17 September 2026, a Patna answer called every other published day
+    quiet while the bulletin's own first day was orange, because the caller had filtered the
+    rows to the days a question asked for.
+
+    `now` is the read instant, when the caller has one. It adds the edition's age, because a
+    bulletin dated before the read is still the official product and must not read as today's.
+    """
     named = record.get('district_label') or 'this district'
     today = [row for row in rows if row['is_today']]
     lead = today[0] if today else rows[0]
@@ -169,13 +179,20 @@ def summary(record, rows, issued):
                      ('no warning in this product' if lead['quiet'] else hazard_text(lead)) + '.')
     else:
         parts.append('Its first published day is ' + lead['label'] + ', not today.')
-    others = [row for row in rows if row is not lead and not row['quiet']]
+    whole = list(published) if published is not None else list(rows)
+    others = [row for row in whole if row is not lead and not row['quiet']]
     if others:
         parts.append('Other published days: ' + '; '.join(
-            'day ' + str(row['day']) + ' ' + row['label'] + ' ' + (row['colour'] or 'colour not supplied') + ' ' + hazard_text(row)
+            'day ' + str(row['day']) + ' ' + row['label'] + ' ' + (row['colour'] or 'colour not supplied') + ' ' +
+            hazard_text(row) + (' (already past)' if row.get('is_past') else '')
             for row in others) + '.')
-    elif len(rows) > 1:
-        parts.append('Every other published day in this bulletin is also no warning in this product.')
+    elif len(whole) > 1 and all(row['quiet'] for row in whole):
+        parts.append('Every published day in this bulletin is also no warning in this product.')
+    if now is not None:
+        age = (now.astimezone(IST).date() - issued.astimezone(IST).date()).days
+        if age >= 1:
+            parts.append('This edition is dated ' + issued.strftime('%d %b %Y') + ', ' + str(age) +
+                         ' day(s) before this read, and no newer edition has been read here; a newer bulletin may supersede it.')
     parts.append('This is IMD district-level warning guidance. It is not a flood warning, not an all-clear, '
                  'and not a CAP alert; a CAP alert covering the same area is reported separately.')
     return ' '.join(parts)

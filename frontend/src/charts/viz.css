@@ -1,0 +1,151 @@
+/* The chart language of the served engine (`/viz.js`), ported from the stylesheet that was deleted with the vanilla
+   frontend (commit 486c403, `web/style.css` sections 10–15).
+
+   The engine draws the meteogram, the district × day matrix, the now band, the published-day timeline, the ensemble
+   fan and the library cards. It writes plain class names and no inline colour, so these rules are what make its
+   figures legible; every value here is a token, so both themes follow. Nothing about the drawing rules is changed:
+   a mark exists only where the engine returned a value, and every point carries its source locator. */
+
+.viz-host { margin: var(--space-3) 0 0; }
+.viz { margin: 0 0 var(--space-4); }
+.viz-title { margin: 0 0 var(--space-1); font: 600 var(--step-0)/1.3 var(--sans); letter-spacing: var(--track-tight); color: var(--ink); }
+.viz-note { margin: 0 0 var(--space-3); max-width: var(--measure); color: var(--mute); font-size: var(--step--1); }
+.viz-legend { display: flex; flex-wrap: wrap; gap: var(--space-3); margin: 0 0 var(--space-2); font-size: var(--step--1); color: var(--mute); }
+.viz-legend-item { display: inline-flex; align-items: center; gap: 6px; }
+.viz-swatch { display: inline-block; width: 14px; height: 8px; border-radius: 2px; background: var(--viz-band); border: 1px solid var(--viz-band-line); }
+.viz-swatch.is-median { height: 2px; background: var(--viz-line); border-color: var(--viz-line); }
+.viz-swatch.is-mean { height: 0; border: 0; border-top: 2px dashed var(--viz-model); background: none; }
+.viz-swatch.is-whisker { width: 2px; height: 11px; border: 0; border-left: 2px solid var(--viz-missing); background: none; }
+
+.viz-frame { display: block; width: 100%; height: auto; background: var(--viz-surface); border: 1px solid var(--line); border-radius: var(--r-card); }
+.viz-grid { stroke: var(--viz-grid); stroke-width: 1; }
+.viz-axis { fill: var(--viz-axis); font: 500 10px/1 var(--mono); font-variant-numeric: tabular-nums; }
+.viz-unit { fill: var(--mute); font: 600 9.5px/1 var(--sans); letter-spacing: var(--track-wide); text-transform: uppercase; }
+.viz-band { fill: var(--viz-band); }
+.viz-band-line { fill: none; stroke: var(--viz-band-line); stroke-width: 1; }
+.viz-median { fill: none; stroke: var(--viz-line); stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; }
+.viz-mean { fill: none; stroke: var(--viz-model); stroke-width: 1.4; stroke-dasharray: 5 4; }
+.viz-whisker { stroke: var(--viz-missing); stroke-width: 1; opacity: .7; }
+.viz-line { fill: none; stroke: var(--viz-observed); stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; }
+.viz-bar { fill: var(--viz-rain); opacity: .85; }
+.viz-arrow { fill: var(--viz-wind); font-size: 11px; }
+.viz-night { fill: var(--viz-night); }
+.viz-hit { fill: transparent; cursor: crosshair; }
+.viz-hit:focus-visible { outline: 2px solid var(--data); outline-offset: -1px; }
+.viz-readout { margin: var(--space-2) 0 0; font: 500 var(--step--1)/1.45 var(--mono); color: var(--ink-soft); min-height: 1.45em; }
+.viz-method { margin: var(--space-2) 0 0; color: var(--mute); font-size: var(--step--1); }
+.viz-empty { margin: 0; color: var(--mute); font-size: var(--step--1); }
+.viz-values { margin-top: var(--space-2); }
+.viz-values summary { cursor: pointer; color: var(--data); font-size: var(--step--1); }
+.viz-values table { width: 100%; border-collapse: collapse; margin-top: var(--space-2); font-variant-numeric: tabular-nums; display: block; overflow-x: auto; }
+.viz-values th, .viz-values td { text-align: left; padding: 4px 8px 4px 0; border-bottom: 1px solid var(--line); font-size: var(--step--1); white-space: nowrap; }
+
+/* the district × day matrix */
+.viz-matrix-block { margin-top: var(--space-3); }
+.viz-matrix { display: grid; gap: 3px; overflow-x: auto; padding-bottom: var(--space-1); }
+.viz-matrix-row { display: grid; gap: 3px; grid-template-columns: minmax(148px, 1.6fr) repeat(5, minmax(50px, 1fr)); align-items: stretch; }
+.viz-matrix-block[data-days='1'] .viz-matrix-row { grid-template-columns: minmax(148px, 1.6fr) 1fr; }
+.viz-matrix-block[data-days='2'] .viz-matrix-row { grid-template-columns: minmax(148px, 1.6fr) repeat(2, 1fr); }
+.viz-matrix-block[data-days='3'] .viz-matrix-row { grid-template-columns: minmax(148px, 1.6fr) repeat(3, 1fr); }
+.viz-matrix-block[data-days='4'] .viz-matrix-row { grid-template-columns: minmax(148px, 1.6fr) repeat(4, 1fr); }
+.viz-matrix-block[data-days='6'] .viz-matrix-row { grid-template-columns: minmax(148px, 1.6fr) repeat(6, 1fr); }
+.viz-matrix-row.is-head { position: sticky; top: 0; z-index: 1; background: var(--surface-card, var(--paper)); }
+.viz-matrix-head, .viz-matrix-corner { font: 600 9.5px/1.3 var(--sans); letter-spacing: var(--track-wide); text-transform: uppercase; color: var(--mute); padding: 2px 0; }
+.viz-matrix-name { align-self: center; font-size: var(--step--1); color: var(--ink-soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: var(--space-2); }
+.viz-cell {
+  display: flex; align-items: center; justify-content: center; min-height: 26px; padding: 2px 4px; border: 1px solid var(--line);
+  border-radius: var(--r); background: var(--sunk); color: var(--ink-soft); cursor: pointer; font: 600 9.5px/1 var(--mono); letter-spacing: .04em;
+  transition: transform var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out);
+}
+.viz-cell:hover { transform: translateY(-1px); box-shadow: var(--lift-1); }
+.viz-cell.is-red { background: var(--red-wash); border-color: var(--red); color: var(--red); }
+.viz-cell.is-orange { background: var(--orange-wash); border-color: var(--orange); color: var(--orange); }
+.viz-cell.is-yellow { background: var(--yellow-wash); border-color: var(--yellow); color: var(--yellow); }
+.viz-cell.is-green { background: var(--green-wash); border-color: var(--green); color: var(--green); }
+.viz-cell.is-unknown { background: var(--sunk); border-style: dashed; color: var(--mute); }
+.viz-cell.is-unverified { position: relative; }
+.viz-cell.is-unverified::after {
+  content: '?'; position: absolute; top: -4px; right: -4px; width: 12px; height: 12px; border-radius: 50%;
+  background: var(--slate); color: var(--paper); font-size: 9px; line-height: 12px; text-align: center;
+}
+
+/* the corpus library cards */
+.viz-library { margin-top: var(--space-3); }
+.viz-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: var(--space-3); margin-top: var(--space-3); }
+.viz-card {
+  position: relative; display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
+  background: var(--surface-card, var(--raiser)); border: 1px solid var(--line); border-radius: var(--r-card); box-shadow: var(--lift-1);
+  transition: transform var(--motion-base) var(--ease-out), box-shadow var(--motion-base) var(--ease-out);
+}
+.viz-card:hover { transform: translateY(-2px); box-shadow: var(--lift-2); }
+.viz-card-rail { display: flex; flex-direction: column; gap: 2px; padding-left: var(--space-2); border-left: 3px solid var(--data); }
+.viz-card-family { font: 600 9.5px/1.3 var(--sans); letter-spacing: var(--track-wide); text-transform: uppercase; color: var(--data); }
+.viz-card-scope { font-size: 10px; letter-spacing: var(--track-wide); text-transform: uppercase; color: var(--mute); }
+.viz-card-chip {
+  position: absolute; top: var(--space-3); right: var(--space-3); font: 600 9.5px/1 var(--mono); padding: 3px 7px; border-radius: var(--r-pill);
+  border: 1px solid var(--line); color: var(--mute); background: var(--sunk);
+}
+.viz-card-chip.is-available { color: var(--data); border-color: var(--data); background: var(--data-wash); }
+.viz-card-chip.is-pruned { border-style: dashed; }
+.viz-card-title { margin: var(--space-1) 0 0; font: 600 var(--step-1)/1.25 var(--sans); letter-spacing: var(--track-tight); }
+.viz-card-open { font: inherit; color: var(--ink); background: none; border: 0; padding: 0; text-align: left; cursor: pointer; border-bottom: 1px dashed var(--line-strong); }
+.viz-card-open:hover { color: var(--data); border-bottom-color: var(--data); }
+.viz-card-open:disabled { cursor: default; color: var(--ink); border-bottom: 0; }
+.viz-card-facts { display: grid; grid-template-columns: auto 1fr; gap: 2px var(--space-2); margin: 0; }
+.viz-card-key { font: 600 9.5px/1.5 var(--sans); letter-spacing: var(--track-wide); text-transform: uppercase; color: var(--mute); }
+.viz-card-value { margin: 0; font-size: var(--step--1); color: var(--ink-soft); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.viz-card-links { margin: auto 0 0; font-size: var(--step--1); }
+.viz-card-note { margin: auto 0 0; font-size: var(--step--1); color: var(--mute); }
+
+/* the now band: three products on one axis */
+.viz-now { margin: var(--space-2) 0 var(--space-3); padding: var(--space-4); background: var(--surface-card, var(--raiser)); border: 1px solid var(--line); border-radius: var(--r-card); }
+.viz-now-head { display: flex; align-items: baseline; gap: var(--space-3); flex-wrap: wrap; }
+.viz-now-head .viz-title { margin: 0; }
+.viz-now-place { font: 600 var(--step-1)/1.2 var(--sans); letter-spacing: var(--track-tight); }
+.viz-now-read { margin-left: auto; font: 500 10px/1 var(--mono); letter-spacing: var(--track-wide); text-transform: uppercase; color: var(--mute); }
+.viz-now-frame { margin-top: var(--space-2); }
+.viz-now-mark { cursor: pointer; }
+.viz-now-mark.is-observed { fill: var(--viz-observed); }
+.viz-now-mark.is-model { fill: var(--viz-model); opacity: .55; }
+.viz-now-mark.is-published { fill: var(--sand); }
+.viz-now-mark.is-red { fill: var(--red); }
+.viz-now-mark.is-orange { fill: var(--orange); }
+.viz-now-mark.is-yellow { fill: var(--yellow); }
+.viz-now-mark.is-green { fill: var(--green); }
+.viz-now-readat { stroke: var(--viz-crosshair); stroke-dasharray: 2 3; }
+
+/* the published-day timeline */
+.viz-daygrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--space-2); margin-top: var(--space-3); }
+.viz-daycol {
+  display: flex; flex-direction: column; gap: 4px; align-items: flex-start; text-align: left; padding: var(--space-3);
+  border: 1px solid var(--line); border-top-width: 4px; border-radius: var(--r-card); background: var(--surface-card, var(--raiser)); cursor: pointer; font: inherit;
+  transition: transform var(--motion-base) var(--ease-out), box-shadow var(--motion-base) var(--ease-out);
+}
+.viz-daycol:hover { transform: translateY(-2px); box-shadow: var(--lift-2); }
+.viz-daycol.is-red { border-top-color: var(--red); }
+.viz-daycol.is-orange { border-top-color: var(--orange); }
+.viz-daycol.is-yellow { border-top-color: var(--yellow); }
+.viz-daycol.is-green { border-top-color: var(--green); }
+.viz-daycol.is-unknown { border-top-style: dashed; border-top-color: var(--line-strong); }
+.viz-daycol-head { font: 600 9.5px/1.3 var(--sans); letter-spacing: var(--track-wide); text-transform: uppercase; color: var(--mute); }
+.viz-daycol-colour { font: 600 var(--step-0)/1.1 var(--mono); letter-spacing: .04em; }
+.viz-daycol.is-red .viz-daycol-colour { color: var(--red); }
+.viz-daycol.is-orange .viz-daycol-colour { color: var(--orange); }
+.viz-daycol.is-yellow .viz-daycol-colour { color: var(--yellow); }
+.viz-daycol.is-green .viz-daycol-colour { color: var(--green); }
+.viz-daycol-hazard { font-size: var(--step--1); color: var(--ink-soft); }
+.viz-daycol-meta, .viz-daycol-quiet, .viz-daycol-observed, .viz-daycol-flag { font-size: 10px; letter-spacing: .02em; color: var(--mute); }
+.viz-daycol-observed { color: var(--viz-observed); font-weight: 600; }
+.viz-daycol-flag { color: var(--slate); font-weight: 600; }
+.viz-daycol-window { font-size: 10px; color: var(--mute); }
+.viz-daycol-today { box-shadow: 0 0 0 1px var(--data); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .viz-median, .viz-line { stroke-dasharray: 1400; stroke-dashoffset: 1400; animation: viz-draw var(--motion-slower) var(--ease-out) forwards; }
+  @keyframes viz-draw { to { stroke-dashoffset: 0; } }
+}
+
+/* The engine writes the colour twice into a matrix cell: once as the button's own text and once as a span. The vanilla
+   stylesheet never hid the span, so the cells read "REDRED". The cell keeps its aria-label, so the duplicate is hidden
+   rather than removed — the engine's bytes stay the ones its nine checks cover. */
+.viz-cell-word { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

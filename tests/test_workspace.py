@@ -33,6 +33,25 @@ class WorkspaceTests(unittest.TestCase):
         packet=self.app.refresh(self.body)
         self.assertEqual(packet['refresh']['state'],'already_fresh');self.assertEqual(self.calls,0)
 
+    def test_health_names_why_a_failed_collection_failed(self):
+        # Measured 17 September 2026: /api/health reported "forecast 82 succeeded / 1 failed"
+        # with no reason, so a reader could not tell a scheduled retry from a contract check that
+        # fails every time. The point the job came from is deliberately still hidden.
+        self.now+=timedelta(minutes=1)
+        body={'question':fixture.QUESTION.replace('Ahmedabad','selected point'),
+              'coordinates':{'latitude':24.,'longitude':72.5}}
+        self.app.opener=lambda *a,**k:Response(b'{}')
+        self.assertEqual(self.app.refresh(body)['refresh']['state'],'failed')
+        report=self.app.health()
+        forecast=next(entry for entry in report['products'] if entry['product']=='forecast')
+        self.assertGreaterEqual(forecast['failed_jobs'],1)
+        self.assertIn('failed_jobs_not_retryable',forecast)
+        failed=next(entry for entry in report['failed_jobs'] if entry['product']=='forecast')
+        self.assertTrue(failed['message'])
+        self.assertFalse(failed['retryable'])
+        self.assertNotIn('latitude',json.dumps(report))
+        self.assertNotIn('longitude',json.dumps(report))
+
     def test_stale_to_refreshed_and_repeated_click_is_noop(self):
         self.now+=timedelta(minutes=61)
         self.assertEqual(self.app.answer(self.body)['answer']['status'],'stale')

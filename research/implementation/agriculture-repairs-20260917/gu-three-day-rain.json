@@ -1,0 +1,229 @@
+{
+ "question": "હું બનાસકાંઠા જિલ્લાના ડીસામાં બાજરી ઉગાડું છું. આગામી ત્રણ દિવસમાં કેટલો વરસાદ પડવાની આગાહી છે?",
+ "response": {
+  "status": "answered",
+  "answer": "પસંદ કરેલા સ્થળ માટે મોડેલની આગાહી:\nDeesa, Banās Kāntha, State of Gujarāt · 2026-09-19 00:30 → 2026-09-20 00:30 IST\nવરસાદની અંદાજિત માત્રા: 0.6 mm [t1-f1]\nDeesa, Banās Kāntha, State of Gujarāt · 2026-09-20 00:30 → 2026-09-21 00:30 IST\nવરસાદની અંદાજિત માત્રા: 0.1 mm [t1-f2]\nDeesa, Banās Kāntha, State of Gujarāt · 2026-09-21 00:30 → 2026-09-22 00:30 IST\nવરસાદની અંદાજિત માત્રા: 0.0 mm [t1-f3]\nઆ પસંદ કરેલા સ્થળ-બિંદુ માટે મોડેલની આગાહી છે, સ્થળ પરનું અવલોકન કે આખા જિલ્લાની સરેરાશ નથી. આગાહી બદલાઈ શકે છે.",
+  "facts": [
+   {
+    "id": "t1-f1",
+    "label": "Forecast rainfall",
+    "value": "0.6",
+    "unit": "mm",
+    "place": "Deesa, Banās Kāntha, State of Gujarāt",
+    "start": "2026-09-19T00:30:00+05:30",
+    "end": "2026-09-20T00:30:00+05:30",
+    "source_id": "S21",
+    "method": "preceding_hour_sum",
+    "source_locators": [
+     "$.hourly.precipitation[44]",
+     "$.hourly.precipitation[45]",
+     "$.hourly.precipitation[46]",
+     "$.hourly.precipitation[47]",
+     "$.hourly.precipitation[48]",
+     "$.hourly.precipitation[49]",
+     "$.hourly.precipitation[50]",
+     "$.hourly.precipitation[51]",
+     "$.hourly.precipitation[52]",
+     "$.hourly.precipitation[53]",
+     "$.hourly.precipitation[54]",
+     "$.hourly.precipitation[55]",
+     "$.hourly.precipitation[56]",
+     "$.hourly.precipitation[57]",
+     "$.hourly.precipitation[58]",
+     "$.hourly.precipitation[59]",
+     "$.hourly.precipitation[60]",
+     "$.hourly.precipitation[61]",
+     "$.hourly.precipitation[62]",
+     "$.hourly.precipitation[63]",
+     "$.hourly.precipitation[64]",
+     "$.hourly.precipitation[65]",
+     "$.hourly.precipitation[66]",
+     "$.hourly.precipitation[67]"
+    ],
+    "parameter": "precipitation",
+    "entity_id": "geonames:1272513",
+    "evidence_version": "d9032dee050eeb5979656a7b4a55b585e930b0780b75b40e6c815ee8e85897df",
+    "citation_ids": [
+     "t1-c-d9032dee050eeb5979656a7b4a55b585e930b0780b75b40e6c815ee8e85897df"
+    ],
+    "task_id": "t1"
+   },
+   {
+    "id": "t1-f2",
+    "label": "Forecast rainfall",
+    "value": "0.1",
+    "unit": "mm",
+    "place": "Deesa, Banās Kāntha, State of Gujarāt",
+    "start": "2026-09-20T00:30:00+05:30",
+    "end": "2026-09-21T00:30:00+05:30",
+    "source_id": "S21",
+    "method": "preceding_hour_sum",
+    "source_locators": [
+     "$.hourly.precipitation[68]",
+     "$.hourly.precipitation[69]",
+     "$.hourly.precipitation[70]",
+     "$.hourly.precipitation[71]",
+     "$.hourly.precipitation[72]",
+     "$.hourly.precipitation[73]",
+     "$.hourly.precipitation[74]",
+     "$.hourly.precipitation[75]",
+     "$.hourly.precipitation[76]",
+     "$.hourly.precipitation[77]",
+     "$.hourly.precipitation[78]",
+     "$.hourly.precipitation[79]",
+     "$.hourly.precipitation[80]",
+     "$.hourly.precipitation[81]",
+     "$.hourly.precipitation[82]",
+     "$.hourly.precipitation[83]",
+     "$.hourly.precipitation[84]",
+     "$.hourly.precipitation[85]",
+     "$.hourly.precipitation[86]",
+     "$.hourly.precipitation[87]",
+     "$.hourly.precipitation[88]",
+     "$.hourly.precipitation[89]",
+     "$.hourly.precipitation[90]",
+     "$.hourly.precipitation[91]"
+    ],
+    "parameter": "precipitation",
+    "entity_id": "geonames:1272513",
+    "evidence_version": "f8249b47a54b4f3c54cdfdcc03f09d5036fdfa702c1af75f60236f48b1ef25ea",
+    "citation_ids": [
+     "t1-c-f8249b47a54b4f3c54cdfdcc03f09d5036fdfa702c1af75f60236f48b1ef25ea"
+    ],
+    "task_id": "t1"
+   },
+   {
+    "id": "t1-f3",
+    "label": "Forecast rainfall",
+    "value": "0.0",
+    "unit": "mm",
+    "place": "Deesa, Banās Kāntha, State of Gujarāt",
+    "start": "2026-09-21T00:30:00+05:30",
+    "end": "2026-09-22T00:30:00+05:30",
+    "source_id": "S21",
+    "method": "preceding_hour_sum",
+    "source_locators": [
+     "$.hourly.precipitation[92]",
+     "$.hourly.precipitation[93]",
+     "$.hourly.precipitation[94]",
+     "$.hourly.precipitation[95]",
+     "$.hourly.precipitation[96]",
+     "$.hourly.precipitation[97]",
+     "$.hourly.precipitation[98]",
+     "$.hourly.precipitation[99]",
+     "$.hourly.precipitation[100]",
+     "$.hourly.precipitation[101]",
+     "$.hourly.precipitation[102]",
+     "$.hourly.precipitation[103]",
+     "$.hourly.precipitation[104]",
+     "$.hourly.precipitation[105]",
+     "$.hourly.precipitation[106]",
+     "$.hourly.precipitation[107]",
+     "$.hourly.precipitation[108]",
+     "$.hourly.precipitation[109]",
+     "$.hourly.precipitation[110]",
+     "$.hourly.precipitation[111]",
+     "$.hourly.precipitation[112]",
+     "$.hourly.precipitation[113]",
+     "$.hourly.precipitation[114]",
+     "$.hourly.precipitation[115]"
+    ],
+    "parameter": "precipitation",
+    "entity_id": "geonames:1272513",
+    "evidence_version": "8c1b1a72c22d4c420d433ffed65d06378128f2a4cc7c2c9e2033c1da0f292de5",
+    "citation_ids": [
+     "t1-c-8c1b1a72c22d4c420d433ffed65d06378128f2a4cc7c2c9e2033c1da0f292de5"
+    ],
+    "task_id": "t1"
+   }
+  ],
+  "task_coverage": {
+   "requested": 1,
+   "completed": 1,
+   "incomplete_ids": []
+  },
+  "notes": [
+   "Forecast window assumed as the next three local days: 19 September 2026 00:00 to 22 September 2026 00:00 IST, since no clock times were given.",
+   "The 3 days were asked for as midnight to midnight IST; source hours start at :30 IST, so they are read as 19 Sep 2026 00:30 to 22 Sep 2026 00:30 IST.",
+   "Model forecasts at the selected place point, not observations or district averages. Source model run time and local representativeness remain unverified."
+  ],
+  "task_results": [
+   {
+    "id": "t1",
+    "request": {
+     "request_quote": "આગામી ત્રણ દિવસમાં કેટલો વરસાદ પડવાની આગાહી છે?",
+     "kind": "forecast",
+     "operation": "lookup",
+     "parameters": [
+      "precipitation"
+     ],
+     "years": [],
+     "period": "annual",
+     "start_local": "2026-09-19T00:00:00+05:30",
+     "end_local": "2026-09-22T00:00:00+05:30",
+     "place_indices": [
+      0
+     ]
+    },
+    "status": "answered",
+    "answer": "પસંદ કરેલા સ્થળ માટે મોડેલની આગાહી:\nDeesa, Banās Kāntha, State of Gujarāt · 2026-09-19 00:30 → 2026-09-20 00:30 IST\nવરસાદની અંદાજિત માત્રા: 0.6 mm [t1-f1]\nDeesa, Banās Kāntha, State of Gujarāt · 2026-09-20 00:30 → 2026-09-21 00:30 IST\nવરસાદની અંદાજિત માત્રા: 0.1 mm [t1-f2]\nDeesa, Banās Kāntha, State of Gujarāt · 2026-09-21 00:30 → 2026-09-22 00:30 IST\nવરસાદની અંદાજિત માત્રા: 0.0 mm [t1-f3]\nઆ પસંદ કરેલા સ્થળ-બિંદુ માટે મોડેલની આગાહી છે, સ્થળ પરનું અવલોકન કે આખા જિલ્લાની સરેરાશ નથી. આગાહી બદલાઈ શકે છે.",
+    "fact_ids": [
+     "t1-f1",
+     "t1-f2",
+     "t1-f3"
+    ],
+    "passage_ids": []
+   }
+  ],
+  "plan": {
+   "language": "gu",
+   "places": [
+    {
+     "name": "Deesa",
+     "state": "",
+     "district": "",
+     "kind": "settlement"
+    }
+   ],
+   "assumptions": [
+    "Forecast window assumed as the next three local days: 19 September 2026 00:00 to 22 September 2026 00:00 IST, since no clock times were given."
+   ],
+   "clarification": "",
+   "explicit_times": false,
+   "tasks": [
+    {
+     "request_quote": "આગામી ત્રણ દિવસમાં કેટલો વરસાદ પડવાની આગાહી છે?",
+     "kind": "forecast",
+     "operation": "lookup",
+     "parameters": [
+      "precipitation"
+     ],
+     "years": [],
+     "period": "annual",
+     "start_local": "2026-09-19T00:00:00+05:30",
+     "end_local": "2026-09-22T00:00:00+05:30",
+     "place_indices": [
+      0
+     ]
+    }
+   ],
+   "context_action": "new",
+   "changed_fields": [
+    "parameters",
+    "places",
+    "time"
+   ],
+   "intent": "forecast",
+   "start_local": "2026-09-19T00:00:00+05:30",
+   "end_local": "2026-09-22T00:00:00+05:30",
+   "variables": [
+    "precipitation"
+   ],
+   "year": 0,
+   "period": "annual",
+   "history_parameter": "rainfall",
+   "unsupported_parameters": [],
+   "requested_outcome": "Complete all explicitly requested tasks"
+  }
+ }
+}

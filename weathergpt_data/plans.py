@@ -76,8 +76,15 @@ NOTIFY = re.compile(
     r"|\bkeep\s+(?:an?\s+)?(?:eye|watch)\s+on\b"
     r"|\bkeep\s+(?:me|us)\s+(?:posted|updated|informed)\b"
     r"|\btell\s+(?:me|us)\s+(?:if|when|whenever|in case)\s+(?!it\s+will\b|there\s+will\b|it\s+is\s+going\b|it'?s\s+going\b)"
-    r"|\bbata(?:na|dena|dijiye|iye|te\s+rehna)\b|बता(?:ना|देना|इए|ते रहना)|सूचित|જણાવ(?:જો|શો)",
-    re.I)
+    # Keep-me-informed forms only. A bare tell-me verb is a question, not a watch: "बताइए" / "batana" /
+    # "જણાવજો" ask for an answer once. Measured 17 September 2026: a Devanagari rain-chance question
+    # ("बारिश की संभावना बताइए") was answered by creating a watch instead of the forecast. The keep-telling
+    # form ("batate rehna"), the explicit "inform" verb, and a tell-me form that carries a condition
+    # ("बारिश हो तो बताइए", "bata dena jab barish ho") still register a watch.
+    r"|\bbata(?:te|tey)\s+rehna\b|बता(?:ते|ते)\s+रहना"
+    r"|(?:तो|तर)\s*बताइए"
+    r"|\b(?:bata\s+(?:dena|do|dijiye)|bata(?:na|dena|dijiye)|જણાવ(?:જો|શો)|बता(?:ना|देना|इए))(?=[^.?!]{0,60}\b(?:if|when|whenever|jab|agar|जब|अगर)\b)"
+    r"|सूचित", re.I)
 
 ALWAYS = _words(r'always|every ?day|daily|whenever|any ?time|all the time|hamesha|हमेशा|હંમેશા|'
                 r'keep (?:an? )?(?:eye|watch) on|(?:my|our) (?:farm|field|home|house|village)')

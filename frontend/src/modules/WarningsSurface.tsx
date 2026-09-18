@@ -5,13 +5,15 @@
    area and is kept in its own block: CAP reference resolution alone never authorises dissemination.
    A brief for one point is composed only when the reader asks, and says which point it was resolved
    for. */
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getJson, withQuery } from '../api/client';
 import type { Envelope } from '../api/types';
 import { count, orNot, shortHash } from '../lib/format';
 import { istStamp, istWindow } from '../lib/time';
 import { viewById } from '../shell/views';
+import { VizFigure } from '../charts/VizFigure';
+import { warningMatrixSpec } from '../charts/vizSpecs';
 import {
   ColourTag, DataTable, Failure, Facts, Limits, NO_ROW, NOT_RECORDED, PlacePicker, Reading, SurfaceShell,
   type PlaceChoice,
@@ -42,6 +44,15 @@ type DistrictRow = {
   state?: string | null;
   bulletin_date?: string | null;
   issued_at_utc?: string | null;
+  /* Measured from the printed bulletin date to the read instant. A district whose edition is older
+     than the read is stated as older: on 17 September 2026 one district in the national read still
+     carried bulletin days dated November 2023. */
+  bulletin_age_days?: number | null;
+  /* Whether this district's edition lags the newest edition this read returned, and by how many
+     days. An edition two days old can be the current product for today, so the surface states the
+     relative fact rather than calling a current edition stale. */
+  bulletin_behind_the_newest_read_days?: number | null;
+  bulletin_is_older_than_this_read?: boolean | null;
   updated_at?: string | null;
   days?: WarningDay[];
 };
@@ -50,6 +61,10 @@ type WarningsData = {
   districts?: DistrictRow[];
   tally?: Record<string, number>;
   skipped?: { obj_id?: string | number | null; reason?: string }[];
+  newest_bulletin_date_in_this_read?: string | null;
+  districts_behind_the_newest_edition?: number;
+  oldest_bulletin_age_days?: number | null;
+  oldest_edition_examples?: { district?: string | null; state?: string | null; bulletin_date?: string | null; bulletin_age_days?: number | null; days_behind_the_newest_edition?: number | null }[];
 };
 
 type CapRecord = {
@@ -122,6 +137,8 @@ export const intents: string[] = (viewById('warnings')?.intents ?? []).concat([
 ]);
 
 const DAY_ROWS_SHOWN = 150;
+/* The matrix draws this many districts at once; the table below carries every row. */
+const MATRIX_ROWS_SHOWN = 60;
 const DISTRICT_ROWS_SHOWN = 60;
 const PUBLISHED_DAYS = ['1', '2', '3', '4', '5'];
 /* The product's own day contract, stated in words rather than re-derived here. */
@@ -165,8 +182,24 @@ function briefReason(data: BriefData): string {
   return orNot(data.why || data.status_line, 'no brief was composed and the payload stated no reason');
 }
 
+/* The district a deep link names, or an empty filter when the link names none. */
+function districtFromHash(): string {
+  const hash = typeof window === 'undefined' ? '' : window.location.hash;
+  const start = hash.indexOf('?');
+  if (start === -1) return '';
+  return new URLSearchParams(hash.slice(start + 1)).get('district') || '';
+}
+
 export function Surface(): JSX.Element {
-  const [needle, setNeedle] = useState('');
+  /* A deep link from the Today inspector carries the district it was inspecting: #/warnings?district=Patna.
+     The filter is initialised from it, and the same link opening a second time updates it rather than leaving
+     the reader on the previous district. Nothing else about the surface changes. */
+  const [needle, setNeedle] = useState(() => districtFromHash());
+  useEffect(() => {
+    const onHash = () => setNeedle(districtFromHash());
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
   const [chosen, setChosen] = useState<{ row: DistrictRow; day: WarningDay } | null>(null);
   const [place, setPlace] = useState<PlaceChoice | null>(null);
   const [day, setDay] = useState('');
@@ -203,7 +236,18 @@ export function Surface(): JSX.Element {
   const matched = term ? districts.filter(row => String(row.district || '').toLowerCase().includes(term)) : districts;
   const rows = matched.flatMap(row => (row.days || []).map(day => ({ row, day })));
   const shown = rows.slice(0, DAY_ROWS_SHOWN);
+
+  /* The scan view of the same rows: the district x day matrix the served chart engine draws, filtered by the same
+     search, with a cell opening that district-day below. */
+  const matrix = useMemo(
+    () => warningMatrixSpec(matched as never, MATRIX_ROWS_SHOWN, row => {
+      const full = (row as DistrictRow).days || [];
+      if (full.length) setChosen({ row: row as DistrictRow, day: full[0] });
+    }),
+    [matched],
+  );
   const skipped = data?.skipped || [];
+  const behindNewest = data?.districts_behind_the_newest_edition || 0;
 
   const capData = cap.data?.data;
   const briefData = brief.data?.data;
@@ -241,11 +285,29 @@ export function Surface(): JSX.Element {
           This filter runs in this browser over the {count(districts.length, 'district row')} this read returned. The
           product is not asked again, so a district this read did not return cannot appear here.
         </p>
+        {/* A filter that is not set cannot be described as if it were: the earlier wording said the rows
+            shown were "matching this filter" whether or not one had been entered. */}
         <p className="module-note" role="status" data-testid="warnings-count">
-          Showing {count(shown.length, 'district-day row')} of {count(rows.length, 'district-day row')} matching this
-          filter{rows.length > shown.length ? ', listing the first ' + DAY_ROWS_SHOWN + '.' : '.'}
+          {needle.trim()
+            ? 'Showing ' + shown.length + ' of ' + count(rows.length, 'district-day row') + ' matching this filter'
+              + (rows.length > shown.length ? ', listing the first ' + DAY_ROWS_SHOWN + '.' : '.')
+            : rows.length > shown.length
+              ? 'Showing the first ' + DAY_ROWS_SHOWN + ' of ' + count(rows.length, 'district-day row') + ' this read returned.'
+              : 'Showing all ' + count(rows.length, 'district-day row') + ' this read returned.'}
         </p>
       </section>
+
+      {matrix ? (
+        <section className="module-section" data-testid="warnings-matrix-section">
+          <h2>District × day matrix</h2>
+          <p className="module-note">
+            The published product as a grid, drawn by the chart engine this build serves. A cell shows the colour
+            the source printed for that district-day; focus one to read its hazard wording, and choose one to open
+            that district below. A colour is what the product printed, never a verdict of this surface.
+          </p>
+          <VizFigure kind="warningMatrix" spec={matrix} />
+        </section>
+      ) : null}
 
       <section className="module-section">
         <h2>District-days</h2>
@@ -258,6 +320,20 @@ export function Surface(): JSX.Element {
         <p className="module-note">
           Choosing a district-day opens its own detail below: the hazard wording the product published, the validity
           window of each day, and the bulletin and source it came from.
+        </p>
+        {/* Currency is measured from each printed bulletin date, and stated relative to the newest
+            edition this read returned: an edition two days old can still be the current official
+            product for today, so no district is called stale for being recent (measured 17 September
+            2026: 755 of 756 districts carried the 15 September edition and one carried November 2023). */}
+        <p className="module-note" data-testid="warnings-bulletin-age">
+          {behindNewest
+            ? count(behindNewest, 'district') + ' in this read carry an edition older than the newest edition of this read'
+              + (data?.newest_bulletin_date_in_this_read ? ' (' + data.newest_bulletin_date_in_this_read + ')' : '')
+              + (data?.oldest_bulletin_age_days ? ', the oldest ' + data.oldest_bulletin_age_days + ' days before this read' : '')
+              + '. An older edition is still the official product for the days it covers; it is simply behind what this read held.'
+            : data?.newest_bulletin_date_in_this_read
+              ? 'Every district in this read carries the newest edition this read held (' + data.newest_bulletin_date_in_this_read + ').'
+              : 'The returned rows state no bulletin date, so currency is not established here.'}
         </p>
         <DataTable
           testId="warnings-table"
@@ -278,10 +354,18 @@ export function Surface(): JSX.Element {
         <DataTable
           testId="warnings-bulletins"
           caption="Bulletin identity per district row this read returned."
-          columns={['District', 'Bulletin date', 'Issued', 'Updated']}
+          columns={['District', 'Bulletin date', 'Bulletin age at this read', 'Issued', 'Updated']}
           rows={matched.slice(0, DISTRICT_ROWS_SHOWN).map(row => [
             orNot(row.district),
-            orNot(row.bulletin_date),
+            /* A printed date must not break across lines: measured 17 September 2026, '2026-09-11'
+               wrapped as '2026-' / '09-11' inside the date column at 1440x900. */
+            <span className="whitespace-nowrap" key="date">{orNot(row.bulletin_date)}</span>,
+            row.bulletin_age_days === null || row.bulletin_age_days === undefined
+              ? NOT_RECORDED
+              : String(row.bulletin_age_days) + (row.bulletin_age_days === 1 ? ' day' : ' days')
+                + (row.bulletin_is_older_than_this_read
+                  ? ' \u00b7 ' + String(row.bulletin_behind_the_newest_read_days) + ' days behind the newest edition in this read'
+                  : ''),
             row.issued_at_utc ? istStamp(row.issued_at_utc) : NOT_RECORDED,
             row.updated_at ? istStamp(row.updated_at) : NOT_RECORDED,
           ])}

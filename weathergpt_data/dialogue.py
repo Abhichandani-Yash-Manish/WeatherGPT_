@@ -114,7 +114,10 @@ def reconcile(plan,state,question):
             place['kind']='sea_area'
 
     action=plan.get('context_action','new');changed=set(plan.get('changed_fields',[]))
-    previous=state.get('last_plan',{})
+    # A conversation with no stored plan yet (the key is present and None, which a fresh state installs)
+    # must reconcile against nothing rather than raise. Measured 18 September 2026: a humidity follow-up
+    # crashed the request thread with AttributeError: 'NoneType' object has no attribute 'get'.
+    previous=state.get('last_plan') or {}
     # Literal crop/topic corrections outrank an omitted model changed_fields tag.
     from .bulletin_index import ALIASES,crop_name
     from .gazetteer import norm
@@ -453,4 +456,30 @@ def ground_relative_slots(plan,question,now):
         t['start_local']=a.isoformat();t['end_local']=b.isoformat()
         plan['assumptions'].append('Resolved the stated relative day to '+a.isoformat()+' through '+b.isoformat()+'; this remains known even when the place is missing.')
     plan['start_local']=plan['tasks'][0]['start_local'];plan['end_local']=plan['tasks'][0]['end_local']
+    return plan
+
+
+def reconcile_part_of_day_text(plan):
+    """Keep a disclosure about a part of a day saying what the shared tables say.
+
+    Measured 17 September 2026: every tested "tomorrow morning" turn planned 09:30-12:30 and
+    its own assumption told the reader "Morning is taken as 06:30-12:30 IST". The window was
+    right and the sentence was wrong, so the reader was told about hours the answer never read.
+    The plan's window is already settled from the shared tables; this repairs the sentence that
+    describes it, and never moves the window itself.
+    """
+    from .rule_planner import PART_WINDOWS, WINDOWS, boundary_pattern
+    range_pattern = re.compile(r'\b([01]?\d|2[0-3]):([0-5]\d)\s*(?:-|–|—|to|until)\s*([01]?\d|2[0-3]):([0-5]\d)\b')
+    fixed = []
+    for note in plan.get('assumptions') or []:
+        text = str(note)
+        parts = [part for part in PART_WINDOWS if boundary_pattern(part).search(text)]
+        if len(parts) == 1:
+            canonical = PART_WINDOWS[parts[0]]
+            match = range_pattern.search(text)
+            if match and (match.group(1).zfill(2), match.group(2)) != canonical:
+                text = text[:match.start()] + canonical[0] + '–' + canonical[1] + text[match.end():]
+        fixed.append(text)
+    if fixed:
+        plan['assumptions'] = fixed
     return plan

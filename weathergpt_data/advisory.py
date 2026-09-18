@@ -28,7 +28,17 @@ NON_PRESCRIPTION = [
 ]
 CONDITION = re.compile(r'\b(?:if|when|where|considering|in case|provided)\b', re.I)
 CROP_ROW = re.compile(r'\b(cotton|wheat|rice|paddy|maize|groundnut|sugarcane|soybean|bajra|jowar|mustard|onion|potato|'
-                      r'tomato|mango|banana|pulses|gram|turmeric|chilli|grapes|cumin|castor|sesame)\b', re.I)
+                      r'tomato|mango|banana|pulses|gram|turmeric|chilli|grapes|cumin|castor|sesame|pearl millet|'
+                      r'finger millet|sorghum|ragi|pigeon ?pea|arhar|tur|chickpea|chana|moong|mung|urad|masoor|lentil|'
+                      r'barley|oats|sunflower|linseed|safflower|napier|berseem|tea|coffee|rubber|coconut|areca ?nut|'
+                      r'cashew|jute|peas|cauliflower|cabbage|brinjal|okra|bhindi|guava|papaya|pomegranate|lemon|lime|'
+                      r'orange|sapota|custard apple|watermelon|muskmelon|cucumber|pumpkin|bottle ?gourd|bitter ?gourd|'
+                      r'ridge ?gourd|spinach|fenugreek|coriander|garlic|ginger|tobacco|isabgol|fennel|ajwain)\b', re.I)
+
+# A section that reports the weather outlook rather than crop advice: it is context for the brief, and the
+# brief already carries its own forecast half, so it is quoted after the advice rather than before it.
+FORECAST_SECTION = re.compile(r'forecast summary|weather during next|as per forecast|rainfall forecast', re.I)
+
 STAGE = re.compile(r'\b(sowing|sowing time|nursery|transplant|vegetative|squaring|flowering|boll formation|pod formation|'
                    r'tillering|booting|grain filling|maturity|harvest|harvesting|germination|seedling)\b', re.I)
 
@@ -59,9 +69,27 @@ def resolve_indexed_name(index, family, scope, wanted):
 
 
 def clean(text, limit=QUOTE_LIMIT):
-    body = ' '.join(str(text or '').split())
-    return body if len(body) <= limit else body[:limit].rstrip() + ' …'
+    """A quoted passage with the PDF page furniture out and the cut on a sentence boundary.
 
+    The brief quoted "2 | P a g e Advisory General advice ..." and cut mid-sentence, because it only
+    collapsed whitespace. The cleaning and the boundary rules are the corpus ones, so a quote looks the
+    same wherever the workspace serves it, and no wording is rewritten: only page furniture is removed.
+    """
+    from .corpus_tools import clean_quoted, sentence_spans
+    body = clean_quoted(text)
+    if len(body) <= limit:
+        return body
+    kept, size = [], 0
+    for sentence in sentence_spans(body):
+        if size + len(sentence) > limit and kept:
+            break
+        kept.append(sentence)
+        size += len(sentence) + 1
+    cut = ' '.join(kept) if kept else body[:limit]
+    if len(cut) > limit:
+        space = cut[:limit].rfind(' ')
+        cut = cut[:space] if space > limit // 2 else cut[:limit]
+    return cut.rstrip(' ,;') + ' …'
 
 def crop_and_stage(text):
     """The crop and growth stage the passage names, read from its own words."""
@@ -69,6 +97,21 @@ def crop_and_stage(text):
     stage = STAGE.search(text or '')
     return (crop.group(1).lower() if crop else None, stage.group(1).lower() if stage else None)
 
+
+def crop_section(text):
+    """The crop a passage is a section *about*, or None when it merely mentions one.
+
+    A district bulletin writes each crop section under its own heading: "COTTON (Flowering) ...",
+    "SORGHUM(JOWAR/GREATMILLET) (Vegetative ...)". A general paragraph can mention crops too ("tall standing
+    crops such as sugarcane, cotton"), and a livestock line can name a material that is also a plant word
+    ("adding slaked lime powder"). Only a name in the passage's own opening is read as the section's crop, so a
+    mention does not make a livestock paragraph a crop section. Measured 17 September 2026: a general farm
+    request for Surat was led by "Poultry Shed Care" because "lime" appeared later in that paragraph.
+    """
+    match = CROP_ROW.search(text or '')
+    if not match or match.start(1) > 24:
+        return None
+    return match.group(1).lower()
 
 def conditions_of(text):
     """The source's own conditional clauses, quoted, bounded to three."""
@@ -134,7 +177,11 @@ def compose(index, request, forecast=None, encoder=None):
                 notes.append('The state was read as "' + publisher_state + '" from the requested "' + state + '".')
             attempts.append(('state_agromet', 'state', publisher_state))
     for family, scope, where in attempts:
-        kwargs = {'family': family, 'scope': scope, 'region': where, 'limit': 6}
+        # A crop request retrieves a few clearly-matching passages; a general request asks for a wider candidate
+        # set, because the first six sections of an edition are often its livestock and outlook text and the crop
+        # guidance sits further in (measured 17 September 2026: a general farm request for Surat was led by
+        # "Poultry Shed Care" although the same edition carries cotton advice).
+        kwargs = {'family': family, 'scope': scope, 'region': where, 'limit': 12 if not crop else 6}
         if encoder is not None:
             kwargs['encoder'] = encoder
         try:
@@ -181,10 +228,88 @@ def compose(index, request, forecast=None, encoder=None):
     if crop and not any(passage_crop == crop for passage_crop in [crop_and_stage(hit.get('text'))[0] for hit in kept]):
         notes.append('The edition does not name ' + crop + ' in the passages retrieved for this request; what follows is '
                      'the district edition\'s own general advice, quoted as printed.')
-    hits = kept
+    # A printed dose instruction is quoted as the label it is, never as the district's advice: the workspace
+    # does not choose, adjust or endorse a dose. The two groups are reported separately so a reader can tell
+    # which sentences are guidance and which are the product label.
+    from .corpus_tools import label_text_only
+    label_hits = [hit for hit in kept if label_text_only(hit.get('text'))]
+    advice_hits = [hit for hit in kept if not label_text_only(hit.get('text'))]
+    if label_hits:
+        notes.append(str(len(label_hits)) + ' retrieved passage(s) are printed product-label or dose text. They are ' +
+                     'quoted in a separate list, labelled as the label, and are not served as advice: no dose is ' +
+                     'chosen, adjusted or endorsed here.')
+    hits = advice_hits or (label_hits if not advice_hits else [])
+    if not crop and hits:
+        # The district editions carry their crop sections as passages of one document, and the retrieval query for a
+        # general request ("advisory") does not reach them: the first sections of an edition are its title, forecast
+        # and livestock text. Measured 17 September 2026: a general farm request for Surat was answered with "Poultry
+        # Shed Care" while the same edition's stored passages include COTTON, PIGEON PEA and SORGHUM sections. The
+        # edition's own passages are therefore the candidate set for a general request, and each section's crop is
+        # read from its own heading. Nothing is fetched from another edition, and every claim below is quoted with
+        # its own printed page.
+        sha = hits[0].get('document_sha256')
+        try:
+            stored = [payload for payload in index.document_passages(sha)] if sha else []
+        except (TypeError, ValueError, OSError):
+            stored = []
+        if len(stored) > len(hits):
+            notes.append('No crop was named, so every indexed passage of this edition was considered (' +
+                         str(len(stored)) + ' passages) and the crop sections were read from their own printed headings; '
+                         'the retrieval query alone would have returned the title, forecast and livestock sections.')
+            hits = stored
+
+    if not crop and len(hits) > 1:
+        # With no crop named, a general request should see the edition's crop guidance rather than four sections
+        # of livestock and outlook text: one passage per crop the edition names (earliest printed page for each),
+        # then the remaining general or livestock sections, then the weather outlook. Measured 17 September 2026:
+        # a general farm request for Surat and for Patna was led by "Poultry Shed Care" and "Live Stock Advisory".
+        # Nothing is dropped from the brief's own record; the ordering and the selection are both disclosed.
+        per_crop, seen_crops, others, outlook = [], set(), [], []
+        for hit in hits:
+            text = hit.get('text') or ''
+            named = crop_section(text)
+            if FORECAST_SECTION.search(text[:400]):
+                outlook.append(hit)
+            elif named:
+                if named not in seen_crops:
+                    seen_crops.add(named)
+                    per_crop.append(hit)
+            else:
+                others.append(hit)
+        spread = per_crop + others + outlook
+        if spread != list(hits):
+            notes.append('With no crop named, the passages are chosen one per crop the edition names (' +
+                         ', '.join(sorted(seen_crops)) + ') and the general, livestock and outlook sections follow.'
+                         if seen_crops else
+                         'With no crop named, the edition states no crop section in the retrieved passages, so the '
+                         'general and livestock sections are shown and the weather outlook is quoted last.')
+            hits = spread
+
+    def passage_rank(hit):
+        text = hit.get('text') or ''
+        named = crop_section(text)
+        early = text[:300].lower()
+        page = str(hit.get('physical_page') or '')
+        if crop:
+            # The requested crop's own passages lead, and a passage naming it in its opening lines leads over
+            # one that mentions it once inside a long multi-crop block.
+            return (0 if crop in early else 1, 0 if named else 1, page)
+        if named:
+            return (0, 0, page)
+        if FORECAST_SECTION.search(text[:400]):
+            # The weather outlook is context, not crop advice, and this brief carries its own forecast half.
+            return (2, 0, page)
+        return (1, 0, page)
+
+    printed_order = list(hits)
+    hits = sorted(hits, key=passage_rank)
+    if hits != printed_order:
+        notes.append('The passages are ordered with the requested crop first, then the other advice, and the weather '
+                     'outlook last; the bulletin printed order differs. Every retrieved passage is kept.')
+
     passages = []
     for hit in hits:
-        crop_seen, stage_seen = crop_and_stage(hit.get('text'))
+        crop_seen, stage_seen = crop_section(hit.get('text')), crop_and_stage(hit.get('text'))[1]
         passages.append({'source_id': hit.get('source_id'), 'family': hit.get('family'), 'region': hit.get('region'),
                          'page': hit.get('physical_page'), 'issue_date': hit.get('issue_date'), 'section': hit.get('section'),
                          'crop': crop_seen, 'growth_stage': stage_seen, 'quote': clean(hit.get('text')),
@@ -204,7 +329,15 @@ def compose(index, request, forecast=None, encoder=None):
                     'mode': (request.get('mode') or 'source_lookup'), 'region': region or None, 'state': state or None,
                     'point': request.get('point'), 'window': request.get('window')},
         'published_advice': {'family': family_used, 'scope': scope_used, 'region': where_used,
-                             'passages': passages, 'matched': len(hits)},
+                             'passages': passages, 'matched': len(kept),
+                             'label_text': [{'source_id': hit.get('source_id'), 'page': hit.get('physical_page'),
+                                             'issue_date': hit.get('issue_date'), 'section': hit.get('section'),
+                                             'crop': crop_and_stage(hit.get('text'))[0],
+                                             'growth_stage': crop_and_stage(hit.get('text'))[1],
+                                             'quote': clean(hit.get('text')),
+                                             'source_locator': hit.get('source_locator'),
+                                             'document_sha256_prefix': str(hit.get('document_sha256') or '')[:12]}
+                                            for hit in label_hits[:MAX_PASSAGES]]},
         'forecast': forecast_context(forecast, request.get('window')),
         'conditions_named_by_the_source': [clause for passage in passages for clause in passage['conditions']][:6],
         'not_established': list(NON_PRESCRIPTION) + notes,

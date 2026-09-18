@@ -168,6 +168,42 @@ class CorpusViewTests(unittest.TestCase):
         self.assertEqual(view['sources'][0]['source_id'], 'S57')
         self.assertTrue(view['data']['families'][0]['label'])
 
+    def test_an_unregistered_family_is_reported_rather_than_failing_the_whole_read(self):
+        # Measured 17 September 2026: the index held gkms_grid, arnej_grid and tnau_grid
+        # documents while this build registered none of them, so /api/corpus answered 400 and
+        # the Published documents surface showed a retry card instead of what the machine holds.
+        with tempfile.TemporaryDirectory() as directory:
+            runtime = Path(directory)
+            path = corpus_overview.index_path(runtime)
+            path.parent.mkdir(parents=True)
+            known, unknown = 'e' * 64, 'f' * 64
+            with sqlite3.connect(path) as db:
+                db.executescript(SCHEMA)
+                db.executemany('INSERT INTO documents VALUES (?,?,?)', [
+                    document_row(known, 'district_agromet', '2026-09-11', district='Ahmedabad'),
+                    document_row(unknown, 'gkms_grid', '2026-09-11', district='Jorhat'),
+                ])
+                db.executemany('INSERT INTO passages VALUES (?,?,?,?,?,?,?,?,?,?)', [
+                    passage_row(known, 'district_agromet', 1, 1, region='Ahmedabad'),
+                    passage_row(unknown, 'gkms_grid', 2, 1, region='Jorhat'),
+                ])
+            view = product_api.corpus_documents(StubFoundation(runtime))
+        self.assertEqual(view['status'], 'ok')
+        self.assertEqual(view['data']['counts']['documents'], 2)
+        self.assertEqual(view['data']['counts']['documents_in_an_unregistered_family'], 1)
+        self.assertEqual(view['data']['counts']['unregistered_families'], ['gkms_grid'])
+        listed = {row['sha256']: row for row in view['data']['documents']}
+        self.assertTrue(listed[known]['family_registered'])
+        self.assertFalse(listed[unknown]['family_registered'])
+        self.assertEqual(listed[unknown]['family_label'], 'gkms_grid')
+        families = {entry['family']: entry for entry in view['data']['families']}
+        self.assertFalse(families['gkms_grid']['registered'])
+        self.assertTrue(families['district_agromet']['registered'])
+
+    def test_a_question_that_names_an_unregistered_family_is_still_refused(self):
+        with self.assertRaises(corpus_tools.SourceError):
+            corpus_tools.family_spec('gkms_grid')
+
 
 if __name__ == '__main__':
     unittest.main()

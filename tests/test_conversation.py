@@ -4,10 +4,31 @@ from datetime import timedelta
 from pathlib import Path
 import test_answers as fixture
 from test_ingestion import Response,payload
-from weathergpt_data.conversation import ConversationEngine
+from weathergpt_data.conversation import ConversationEngine, window_label
 from weathergpt_data.workspace import Workspace
 from weathergpt_data.language import validate_plan
 from weathergpt_data.transport import SourceError
+
+
+class WindowLabelTests(unittest.TestCase):
+    """The label the written answer is told to copy, never to reformat."""
+
+    def test_one_instant_is_not_a_zero_length_range(self):
+        # Measured 17 September 2026: an hourly air-quality fact carries start == end, the label read
+        # "18 Sep 2026 00:30-00:30 IST", and the written answer copied it verbatim.
+        self.assertEqual(window_label('2026-09-18T00:30:00+05:30', '2026-09-18T00:30:00+05:30'),
+                         '18 Sep 2026 00:30 IST')
+
+    def test_a_same_day_range_keeps_both_times(self):
+        self.assertEqual(window_label('2026-09-18T09:30:00+05:30', '2026-09-18T12:30:00+05:30'),
+                         '18 Sep 2026 09:30-12:30 IST')
+
+    def test_a_window_across_midnight_keeps_both_dates(self):
+        self.assertEqual(window_label('2026-09-18T00:30:00+05:30', '2026-09-19T00:30:00+05:30'),
+                         '18 Sep 2026 00:30-19 Sep 2026 00:30 IST')
+
+    def test_an_unreadable_instant_is_not_a_label(self):
+        self.assertEqual(window_label(None, '2026-09-18T00:30:00+05:30'), '')
 
 
 def plan():return {'intent':'forecast','language':'en','places':[{'name':'Ahmedabad','state':'Gujarat','district':'','kind':'settlement'}],

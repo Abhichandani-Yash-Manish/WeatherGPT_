@@ -131,19 +131,64 @@ describe('the Map surface', () => {
     expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
   });
 
+
+  it('opens on the district layer and fills a district from the warning row it is joined to', async () => {
+    /* The live districts layer states a key, a name and a state and no colour at all, so before this join the
+       one layer that carries the warning colours could only ever be drawn as outlines. The row below states a
+       colour for the same key, and the join is what puts it on the figure. */
+    const warnings = {
+      ...HEAD,
+      view: 'warnings.national',
+      data: {
+        districts: [
+          { key: 'PATNA', district: 'Patna', state: 'Bihar', bulletin_date: '2026-09-15', bulletin_age_days: 2,
+            days: [{ day: 3, label: '17 Sep 2026', date_local: '2026-09-17', colour: 'red', hazards: ['Heavy rain at isolated places'],
+              quiet: false, is_today: true }] },
+        ],
+        newest_bulletin_date_in_this_read: '2026-09-15',
+      },
+    };
+    server.use(
+      http.get('/api/warnings/national', () => HttpResponse.json(warnings)),
+      http.get('/api/map/layers', () => HttpResponse.json(layersPayload)),
+      http.get('/api/map/static/districts', () => HttpResponse.json(districtsLayer)),
+      http.get('/api/map/static/places', () => HttpResponse.json(placesLayer)),
+    );
+    const { container } = mount(<MapSurface />);
+
+    expect(await screen.findByTestId('map-figure')).toBeInTheDocument();
+    expect(screen.getByLabelText('Layer to draw')).toHaveValue('districts');
+    /* The row's red replaces the orange the feature states on its own: the joined read is the newer one. */
+    await waitFor(() => expect(container.querySelector('path[data-colour="red"]')).not.toBeNull());
+    expect(screen.getByText(/joined to the warning row for this key/)).toBeInTheDocument();
+
+    await userEvent.click(container.querySelector('path[data-colour="red"]') as Element);
+    const inspector = await screen.findByTestId('today-inspector-district');
+    expect(within(inspector).getByText('Patna')).toBeInTheDocument();
+    expect(within(inspector).getByText(/Heavy rain at isolated places/)).toBeInTheDocument();
+    expect(within(inspector).getByRole('link', { name: /Open in Warnings/ })).toHaveAttribute('href', '#/warnings?district=Patna');
+
+    /* The day selector moves the join off the day that covers today, and the figure follows it. */
+    await userEvent.selectOptions(screen.getByLabelText('Day to inspect'), '2');
+    await waitFor(() => expect(container.querySelector('path[data-colour="red"]')).toBeNull());
+  });
+
   it('draws the layer the reader chooses, and states when no feature carried a colour', async () => {
     server.use(
       http.get('/api/map/layers', () => HttpResponse.json(layersPayload)),
       http.get('/api/map/static/districts', () => HttpResponse.json(districtsLayer)),
       http.get('/api/map/static/places', () => HttpResponse.json(placesLayer)),
     );
-    const { container } = mount(<MapSurface />);
+    mount(<MapSurface />);
     expect(await screen.findByTestId('map-figure')).toBeInTheDocument();
 
     await userEvent.selectOptions(screen.getByLabelText('Layer to draw'), 'places');
 
-    await waitFor(() => expect(container.querySelectorAll('svg circle')).toHaveLength(2));
-    expect(container.querySelectorAll('svg circle[data-colour]')).toHaveLength(0);
+    /* Scoped to the figure: the shell's own icons are SVGs too, and a decorative circle in a header
+       is not a drawn feature. */
+    const figure = screen.getByTestId('map-figure');
+    await waitFor(() => expect(figure.querySelectorAll('circle')).toHaveLength(2));
+    expect(figure.querySelectorAll('circle[data-colour]')).toHaveLength(0);
     const count = screen.getByTestId('map-count');
     expect(count).toHaveTextContent('No feature carried a colour');
     const table = within(screen.getByTestId('map-features'));

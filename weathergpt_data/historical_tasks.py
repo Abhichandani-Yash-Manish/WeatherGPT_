@@ -24,7 +24,41 @@ def execute_history(plan,task,lookup=lookup_plan):
         result.update(status='unavailable',answer='This historical operation is not implemented.');return result
     years=expanded_years(task);places=[plan['places'][i] for i in task['place_indices']]
     parameters=task['parameters']
-    if not years:result['answer']='Which year or year range should I look up?';return result
+    if not years and task.get('parameters')==['temperature']:
+        # The stored district table carries rainfall; district temperature is not in it, and asking for a year
+        # range would hide that. The national temperature table is separate and is named here.
+        result.update(status='unavailable', answer='The stored district historical table carries rainfall, not district '
+                       'temperature, so no year range is asked for a series that does not exist. National mean '
+                       'temperature is published separately; ask for India temperature for a year to read that.')
+        return result
+    if not years:
+        # A question that names no years is answered from the published range the source itself states, bounded
+        # to the most recent thirty published years; the range is disclosed on the answer. Measured 18 September
+        # 2026: six climate questions ("what is the average monsoon rainfall in Nashik district?") were answered
+        # by asking for a year range although the stored series states its own coverage.
+        from .research_answers import series_range
+        spans={}
+        for index in task['place_indices']:
+            info=series_range({**plan,'places':[plan['places'][index]]})
+            if info:spans[index]=info
+        if not spans:
+            result['answer']='Which year or year range should I look up?';return result
+        last=max(info['last_year'] for info in spans.values())
+        first=max(min(info['first_year'] for info in spans.values()),last-29)
+        years=list(range(first,last+1))
+        # The published series keeps its own historical spelling (Nasik for Nashik). The lookup is made under
+        # the source's own name and the reading is disclosed, so a resolved series is actually read instead of
+        # failing on the modern spelling while the range came from the old one.
+        for index, info in spans.items():
+            place=plan['places'][index]
+            if str(info.get('district') or '').casefold()!=str(place.get('name') or '').casefold():
+                result['notes'].append('Read as '+str(info['district'])+', '+str(info['state'])+
+                    ' - the source district name ('+str(info.get('basis') or 'the publisher spelling')+').')
+                place['name']=info['district']
+                place['state']=info['state']
+        result.setdefault('notes',[]).append('No year range was named, so the most recent published years '
+            +str(first)+'-'+str(last)+' were read ('+', '.join(str(info['district'])+' '+str(info['first_year'])
+            +'-'+str(info['last_year']) for info in spans.values())+'). The source states that coverage; it is not a choice of this workspace.')
     if not places:result['answer']='Which historical district and state, or All India, should I check?';return result
     if not parameters:result['answer']='Do you want historical rainfall, temperature, or both?';return result
     messages=[];complete=True;unsupported=[]
@@ -74,8 +108,13 @@ def execute_history(plan,task,lookup=lookup_plan):
                     complete=False;messages.append('Trend withheld: provide at least ten years for this descriptive annual/seasonal/monthly series.')
                 else:
                     value=slope_per_decade([(f['year'],f['value']) for f in group_facts])
-                    result['calculations'].append({'operation':'linear_trend','label':label+' · '+parameter,'value':value,'unit':unit+'/decade','input_ids':series_ids,'sample_count':len(series_ids),'method':'OLS against actual calendar year; slope multiplied by 10; rounded to 0.001','interpretation':'Descriptive source-series slope, not homogenized climate change attribution or a future projection'})
-                    messages.append(f"{label}: descriptive {parameter} trend {value} {unit}/decade over {min(years)}–{max(years)} ({len(years)} values).")
+                    result['calculations'].append({'operation':'linear_trend','label':label+' · '+parameter,'value':value,'unit':unit+'/decade','input_ids':series_ids,'sample_count':len(series_ids),'method':'OLS against actual calendar year; slope multiplied by 10; the record keeps 0.001 and the sentence states 0.1','interpretation':'Descriptive source-series slope, not homogenized climate change attribution or a future projection'})
+                    # The source values are published to a tenth of a millimetre, so the sentence
+                    # states one decimal and the calculation record keeps the full slope. Measured
+                    # 17 September 2026: the answer read "54.654 mm/decade", more precision than the
+                    # published values carry.
+                    stated=format(Decimal(value).quantize(Decimal('0.1')),'f')
+                    messages.append(f"{label}: descriptive {parameter} trend {stated} {unit}/decade over {min(years)}–{max(years)} ({len(years)} values), from a least-squares slope over the published values.")
     if unsupported:messages.append('Historical parameters not implemented: '+', '.join(unsupported)+'.')
     result['notes']=list(dict.fromkeys(result['notes']))
     if task['operation']=='trend':result['notes'].append('Source transcription is verified, but historical boundary comparability and homogeneity are unresolved. The descriptive slope is not proof of a statistically significant climate trend, causation or future conditions.')

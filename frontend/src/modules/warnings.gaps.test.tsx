@@ -329,4 +329,63 @@ describe('the alert brief', () => {
     expect(alert).toHaveTextContent('the warning store is unavailable');
     expect(within(alert).getByRole('button', { name: 'Retry this read' })).toBeInTheDocument();
   });
+
+  /* The two wording defects the audit of 17 September 2026 found in this surface: the summary
+     described rows as "matching this filter" when no filter was set, and a printed ISO date wrapped
+     inside its column ('2026-' / '09-11'). */
+  it('describes the row count honestly with no filter set, and keeps a printed date on one line', async () => {
+    server.use(http.get('/api/warnings/national', () => HttpResponse.json(NATIONAL)));
+    mount();
+
+    const summary = await screen.findByTestId('warnings-count');
+    expect(summary).toHaveTextContent('2 district-day rows this read returned');
+    expect(summary).not.toHaveTextContent('matching this filter');
+
+    const table = await screen.findByTestId('warnings-bulletins');
+    const date = within(table).getByText('2026-09-14');
+    expect(date.className).toMatch(/whitespace-nowrap/);
+
+    await userEvent.type(screen.getByLabelText('District name contains'), 'Patna');
+    expect(screen.getByTestId('warnings-count')).toHaveTextContent('matching this filter');
+  });
+
+  it('states which districts are behind the newest edition this read held', async () => {
+    const aged = envelope('warnings.national', 'ok', {
+      districts: [
+        {
+          key: 'YANAM', district: 'YANAM', state: 'PUDUCHERRY',
+          bulletin_date: '2023-11-05', issued_at_utc: '2023-11-05T06:00:00+00:00',
+          bulletin_age_days: 1047, bulletin_behind_the_newest_read_days: 1040,
+          bulletin_is_older_than_this_read: true, days: DAYS,
+        },
+      ],
+      tally: { yellow: 1 },
+      skipped: [],
+      newest_bulletin_date_in_this_read: '2026-09-15',
+      districts_behind_the_newest_edition: 1,
+      oldest_bulletin_age_days: 1047,
+      oldest_edition_examples: [{ district: 'YANAM', state: 'PUDUCHERRY', bulletin_date: '2023-11-05', bulletin_age_days: 1047, days_behind_the_newest_edition: 1040 }],
+    });
+    server.use(http.get('/api/warnings/national', () => HttpResponse.json(aged)));
+    mount();
+
+    const note = await screen.findByTestId('warnings-bulletin-age');
+    expect(note).toHaveTextContent('carry an edition older than the newest edition of this read');
+    expect(note).toHaveTextContent('2026-09-15');
+    expect(note).toHaveTextContent('the oldest 1047 days before this read');
+    expect(note).toHaveTextContent('still the official product for the days it covers');
+
+    const table = await screen.findByTestId('warnings-bulletins');
+    expect(within(table).getByText(/1047 days/)).toHaveTextContent('1040 days behind the newest edition in this read');
+  });
+
+  it('does not call a recent edition stale when it is the newest this read held', async () => {
+    // 17 September 2026 measured 755 of 756 districts on the 15 September edition, which is this
+    // product's current read: its own Day fields cover today.
+    server.use(http.get('/api/warnings/national', () => HttpResponse.json(NATIONAL)));
+    mount();
+    const note = await screen.findByTestId('warnings-bulletin-age');
+    expect(note).not.toHaveTextContent('older than the newest');
+    expect(note).not.toHaveTextContent('days before this read');
+  });
 });
