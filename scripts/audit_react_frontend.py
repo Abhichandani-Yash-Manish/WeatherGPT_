@@ -46,20 +46,21 @@ def main():
         css = "\n".join(read(sheet) for sheet in sorted((DIST / "assets").glob("*.css")))
 
     app = read(SRC / "App.tsx")
-    # The shell since docs/109: one page (home/Home.tsx) with the controls in its bar; there is no rail and no topbar.
-    home = read(SRC / "home" / "Home.tsx")
-    flagship_css = read(SRC / "flagship" / "flagship.css")
+    # The shell since docs/111: gpt/Workspace.tsx — a conversation rail, a centred column and a docking
+    # composer, targeting ChatGPT's architecture. There is no module rail and no dashboard topbar.
+    workspace = read(SRC / "gpt" / "Workspace.tsx")
+    gpt_css = read(SRC / "gpt" / "gpt.css")
     answer = read(SRC / "chat" / "AnswerTurn.tsx")
-    composer = read(SRC / "chat" / "Composer.tsx")
+    composer = read(SRC / "gpt" / "Composer.tsx")
     host = read(SRC / "shell" / "SurfaceHost.tsx")
     print_css = read(SRC / "styles" / "print.css")
 
     # FE01: the question box is reachable and not below a competing form. The React shell keeps the prompt in
-    # the composer, there is no other form on the page, and the page is one column at every width.
+    # the composer, there is no other form on the page, and the column is one at every width.
     no_other_form = len(re.findall(r"<form", composer)) == 0 and "onSubmit" not in composer
     # One column at every width: the composer is a sticky dock and the bar collapses on a phone. Nothing has to
     # be opened before the question box can be reached.
-    narrow = "@media (max-width: 40rem)" in flagship_css and ".f-dock" in flagship_css and "f-dock" in read(SRC / "chat" / "AskSurface.tsx")
+    narrow = "@media (max-width: 880px)" in gpt_css and ".g-dock" in gpt_css and "g-dock" in workspace
     findings.append(("FE01_mobile_reachability", no_other_form and narrow,
                      "composer is not a form: " + str(no_other_form) + "; one-column dock rules: " + str(narrow)))
 
@@ -85,7 +86,7 @@ def main():
 
     # FE05: a language control exists and every surface states its own scope. The scope is the evidence footer
     # each module renders, and the control is the page bar's select.
-    language_control = "Answer language" in home and "allLanguages" in home
+    language_control = "Answer language" in workspace and "allLanguages" in workspace
     # A surface states its scope through SurfaceShell, which renders the evidence footer: counting the files that
     # call the shell is counting the surfaces that carry their coverage, limits and sources.
     footers = len([path for path in sources("*.tsx") if "SurfaceShell" in read(path) or "EvidenceFooter" in read(path)])

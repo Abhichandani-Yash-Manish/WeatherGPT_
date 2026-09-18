@@ -22,8 +22,10 @@ describe('the shell', () => {
        beside it: the conversation is the product, so the box is the door. */
     expect(screen.getByLabelText('Your question')).toBeInTheDocument();
     /* Paper, ink and the published colours: no photograph, no canvas, nothing that needs a disclaimer. */
-    expect(document.querySelector('[data-design]')).not.toBeNull();
-    expect(document.querySelector('img, canvas')).toBeNull();
+    expect(document.querySelector('[data-design="gpt"]')).not.toBeNull();
+    /* The field is one canvas painted from the hour. No photograph is ever fetched. */
+    expect(document.querySelector('img')).toBeNull();
+    expect(document.querySelector('canvas.g-field-canvas')).not.toBeNull();
   });
 
   it('hands the front door question to the conversation', async () => {
@@ -34,7 +36,7 @@ describe('the shell', () => {
     server.use(http.post('/api/chat', () => HttpResponse.json({ error: 'the engine is not part of this check' }, { status: 503 })));
     render(<App />);
     await userEvent.type(screen.getByLabelText('Your question'), 'Will it rain in Surat tomorrow?');
-    await userEvent.click(screen.getByRole('button', { name: 'Ask' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Send' }));
     /* The page is the conversation, so asking stays on the page: the reader's own words appear in the
        transcript instead of the app navigating to a different surface. */
     expect(window.location.hash).toBe('');

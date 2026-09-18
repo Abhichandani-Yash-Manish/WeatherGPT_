@@ -12,7 +12,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render } from '@testing-library/react';
 import { writeFileSync } from 'node:fs';
 import { AskSurface } from '../chat/AskSurface';
-import { Home } from '../home/Home';
+import { Workspace } from '../gpt/Workspace';
 import { OwnerGate } from '../landing/OwnerGate';
 import { SurfaceHost } from '../shell/SurfaceHost';
 import { viewById } from '../shell/views';
@@ -91,7 +91,7 @@ describe('accessibility of the rendered surfaces', () => {
   /* The front door is the conversation now, so this scans the face the reader actually meets at an empty
      address — the same page the browser gate checks over the served build. */
   it('has no violations on the front door', async () => {
-    await scan('front door', <Home onOpen={() => {}} language="" onLanguage={() => {}} persona="" onPersona={() => {}} />);
+    await scan('workspace', <Workspace onOpen={() => {}} language="" onLanguage={() => {}} persona="" onPersona={() => {}} />);
   });
 
   it('has no violations on the conversation at rest', async () => {

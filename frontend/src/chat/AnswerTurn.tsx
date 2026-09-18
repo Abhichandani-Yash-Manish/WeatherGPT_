@@ -131,29 +131,29 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
   const taskCoverage = packet.task_coverage;
 
   return (
-    <article className="f-turn" data-turn-status={packet.status}>
-      <header className="f-actions" style={{ alignItems: 'baseline', justifyContent: 'space-between' }}>
-        <h2 className="f-kicker" style={{ margin: 0 }}>{turnTitle(packet)}</h2>
+    <article className="g-answer" data-turn-status={packet.status}>
+      <header className="g-chips" style={{ alignItems: 'baseline', justifyContent: 'space-between' }}>
+        <h2 className="g-eyebrow" style={{ margin: 0 }}>{turnTitle(packet)}</h2>
         <StatusTags packet={packet} />
       </header>
 
       {downgrade ? (
-        <div className="f-notice">
+        <div className="g-notice">
           <p style={{ margin: 0, fontWeight: 600 }}>The answer below is not in the language you asked for.</p>
-          <p className="f-claim-note" style={{ marginTop: 4 }}>{downgrade}</p>
+          <p className="g-claim-note" style={{ marginTop: 4 }}>{downgrade}</p>
         </div>
       ) : null}
-      {coverage ? <p className="f-claim-note">{coverage}</p> : null}
-      {carried ? <p className="f-claim-source" data-testid="carried-context">{carried}</p> : null}
+      {coverage ? <p className="g-claim-note">{coverage}</p> : null}
+      {carried ? <p className="g-claim-source" data-testid="carried-context">{carried}</p> : null}
 
       {/* The sentence first. dir="auto" lets the browser read an Urdu or mixed-script answer correctly. */}
-      <p className="f-sentence" data-long={(packet.answer || '').length > 240 ? 'true' : 'false'} dir="auto">
+      <p className="g-prose" data-long={(packet.answer || '').length > 240 ? 'true' : 'false'} dir="auto">
         {packet.answer}
       </p>
 
       {/* The claims the tools own. */}
       {(primary && !conversational) || warnings.length || rest.length ? (
-        <div className="f-claims">
+        <div className="g-claims">
           {primary && !conversational ? (
             <Claim
               testId="lead-claim"
@@ -178,7 +178,7 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
                 testId="warning-claim"
                 eyebrow={'Official warning' + (placeOf(packet, warnings[0]) ? ' · ' + placeOf(packet, warnings[0]) : '')}
                 hazard={String(warnings[0].value)}
-                hazardColour={'var(--f-' + String(warnings[0].value).toLowerCase().split(/[^a-z]/)[0] + ')'}
+                hazardColour={'var(--g-' + String(warnings[0].value).toLowerCase().split(/[^a-z]/)[0] + ')'}
                 source={sourceLine(packet, warnings[0])}
                 depth={!primary && receiptFact ? [{ label: 'where this came from', body: <EvidenceReceipt packet={packet} fact={receiptFact} /> }] : []}
               />
@@ -188,7 +188,7 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
                   key={fact.id}
                   eyebrow={'Official warning' + (fact.place ? ' · ' + fact.place : '')}
                   hazard={String(fact.value)}
-                  hazardColour={'var(--f-' + String(fact.value).toLowerCase().split(/[^a-z]/)[0] + ')'}
+                  hazardColour={'var(--g-' + String(fact.value).toLowerCase().split(/[^a-z]/)[0] + ')'}
                   source={sourceLine(packet, fact)}
                 />
               ))
@@ -221,12 +221,12 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
 
       {(packet.choices || []).length ? (
         <div>
-          <p className="f-kicker">Choose one, then the question continues</p>
-          <div className="f-actions" style={{ marginTop: 6 }}>
+          <p className="g-eyebrow">Choose one, then the question continues</p>
+          <div className="g-chips" style={{ marginTop: 6 }}>
             {(packet.choices || []).map((choice, index) => {
               const text = choiceText(choice as Record<string, unknown>);
               return (
-                <button key={text + index} type="button" className="f-chip chip" onClick={() => onFollowUp(text)} disabled={!text}>
+                <button key={text + index} type="button" className="g-chip chip" onClick={() => onFollowUp(text)} disabled={!text}>
                   {String((choice as Record<string, unknown>).label || text || 'Choose')}
                 </button>
               );
@@ -236,20 +236,20 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
       ) : null}
 
       {(packet.quick_replies || []).length ? (
-        <div className="f-actions">
+        <div className="g-chips">
           {(packet.quick_replies || []).map(reply => (
-            <button key={reply.reply} type="button" className="f-starter" onClick={() => onFollowUp(reply.reply)}>
+            <button key={reply.reply} type="button" className="g-chip" onClick={() => onFollowUp(reply.reply)}>
               {reply.label}
             </button>
           ))}
         </div>
       ) : null}
 
-      {packet.follow_up ? <p className="f-claim-note">{packet.follow_up}</p> : null}
+      {packet.follow_up ? <p className="g-claim-note">{packet.follow_up}</p> : null}
 
       {(packet.notes || []).length ? (
         <Disclosure summary="What this answer does not cover">
-          <ul className="f-list">
+          <ul className="g-list">
             {(packet.notes || []).map(note => (
               <li key={note}>{note}</li>
             ))}
@@ -273,15 +273,15 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
       <TaskAccounting packet={packet} />
       {(packet.task_results || []).length ? (
         <Disclosure summary="Requested tasks" count={(packet.task_results || []).length}>
-          <ul className="tasks f-list">
+          <ul className="tasks g-list">
             {(packet.task_results || []).map(task => (
               <li key={task.id} className={'task ' + (task.status === 'answered' ? 'is-answered' : 'is-incomplete')}>
                 <p style={{ margin: 0, fontWeight: 500 }}>
                   {task.id} · {task.request?.kind || 'task'} · {task.status}
                   {task.request?.operation ? ' · ' + task.request.operation : ''}
                 </p>
-                {task.request?.request_quote ? <p className="f-claim-source">“{task.request.request_quote}”</p> : null}
-                {task.answer ? <p className="f-claim-note">{task.answer}</p> : null}
+                {task.request?.request_quote ? <p className="g-claim-source">“{task.request.request_quote}”</p> : null}
+                {task.answer ? <p className="g-claim-note">{task.answer}</p> : null}
               </li>
             ))}
           </ul>
@@ -291,15 +291,15 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
       <details className="f-depth">
         <summary onClick={() => setRecordOpen(true)}>Machine record (the exact response)</summary>
         <div className="f-depth-body">
-          <p className="f-claim-note">The complete response this card was rendered from, for audit.</p>
+          <p className="g-claim-note">The complete response this card was rendered from, for audit.</p>
           {recordOpen ? <pre className="machine-record">{JSON.stringify(packet, null, 2)}</pre> : null}
         </div>
       </details>
 
-      <div className="f-actions no-print" data-print="drop">
+      <div className="g-chips no-print" data-print="drop">
         <button
           type="button"
-          className="f-chip"
+          className="g-chip"
           onClick={async () => {
             const outcome = await copyText(answerText(packet));
             setCopied(outcome);
@@ -308,17 +308,17 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
         >
           {copied === 'copied' ? 'Copied' : copied === 'unsupported' ? 'Copy refused by this browser' : 'Copy the answer'}
         </button>
-        <button type="button" className="f-chip" onClick={() => downloadFile(stampName('weathergpt-turn', 'md'), markdownTurn(packet))}>
+        <button type="button" className="g-chip" onClick={() => downloadFile(stampName('weathergpt-turn', 'md'), markdownTurn(packet))}>
           Save this turn as Markdown
         </button>
-        <button type="button" className="f-chip" onClick={() => downloadFile(stampName('weathergpt-answer', 'json'), JSON.stringify(packet, null, 2), 'application/json')}>
+        <button type="button" className="g-chip" onClick={() => downloadFile(stampName('weathergpt-answer', 'json'), JSON.stringify(packet, null, 2), 'application/json')}>
           Download this answer as JSON
         </button>
-        <button type="button" className="f-chip" onClick={() => window.print()}>
+        <button type="button" className="g-chip" onClick={() => window.print()}>
           Print this answer
         </button>
         {point && onRefresh ? (
-          <button type="button" className="f-chip" onClick={() => onRefresh(packet)}>
+          <button type="button" className="g-chip" onClick={() => onRefresh(packet)}>
             Collect fresh evidence
           </button>
         ) : null}

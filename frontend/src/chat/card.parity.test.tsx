@@ -280,7 +280,7 @@ describe('the answer card, held against the vanilla checks', () => {
     expect(summaries).toContain('where this came from');
     expect(summaries.some(text => /Machine record/.test(text))).toBe(true);
     expect(summaries.some(text => /how this was answered/.test(text))).toBe(true);
-    expect(container.querySelector('.f-sentence')?.textContent).toBe(RECORDED.forecast.answer);
+    expect(container.querySelector('.g-prose')?.textContent).toBe(RECORDED.forecast.answer);
     expect(container.querySelector('.lead-value')).not.toBeNull();
   });
 

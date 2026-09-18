@@ -9,7 +9,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 import { ToastHost } from './ui/kit';
-import { Home } from './home/Home';
+import { Workspace } from './gpt/Workspace';
 import { OwnerGate } from './landing/OwnerGate';
 import { closeGate, hasOwnerVerifier, isGateOpen } from './landing/owner';
 import { ErrorBoundary } from './shell/ErrorBoundary';
@@ -140,7 +140,7 @@ function Shell() {
      is still in the tree as Landing.tsx; it is no longer served. */
   if (shell === 'landing') {
     return (
-      <Home
+      <Workspace
         onOpen={open}
         onAsk={ask}
         onNew={() => { setSeed(null); open('assistant'); }}
@@ -192,7 +192,7 @@ function Shell() {
           in the tree, unreferenced here, until their tests are retired with them. */}
       <section id="main" tabIndex={-1} className="flex min-h-0 flex-1 flex-col focus:outline-none">
         <ErrorBoundary onReset={() => open('assistant')}>
-          <Home
+          <Workspace
             view={view}
             onOpen={open}
             onAsk={ask}

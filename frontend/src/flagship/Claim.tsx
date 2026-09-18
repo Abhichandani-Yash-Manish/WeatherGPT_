@@ -13,7 +13,7 @@ export type ClaimSpan = { from: number; to: number };
 
 export function Ruler({ spans }: { spans: ClaimSpan[] }) {
   return (
-    <div className="f-ruler" aria-hidden="true">
+    <div className="g-ruler" aria-hidden="true">
       {spans.map((span, index) => (
         <i key={index} style={{ left: `${span.from}%`, width: `${Math.max(0.5, span.to - span.from)}%` }} />
       ))}
@@ -45,37 +45,37 @@ export function Claim({ eyebrow, value, unit, hazard, hazardColour, note, source
     <section
       role="group"
       aria-label={typeof eyebrow === 'string' ? eyebrow : undefined}
-      className={'f-claim f-glass' + (compact ? ' f-claim-compact' : '') + (row ? ' fact-row' : '')}
-      style={hazardColour ? ({ '--f-claim-lit': hazardColour } as CSSProperties) : undefined}
+      className={'g-claim ' + (compact ? ' g-claim-compact' : '') + (row ? ' fact-row' : '')}
+      style={hazardColour ? ({ '--g-claim-lit': hazardColour } as CSSProperties) : undefined}
       data-testid={testId}
       data-lead={lead ? 'true' : undefined}
       data-state={absent ? 'not-stated' : 'stated'}
     >
-      <p className="f-claim-eyebrow">{eyebrow}</p>
+      <p className="g-claim-eyebrow">{eyebrow}</p>
       {hazard ? (
-        <span className="f-hazard" style={hazardColour ? ({ '--f-hz': hazardColour } as CSSProperties) : undefined}>
+        <span className="g-hazard" style={hazardColour ? ({ '--g-lit': hazardColour } as CSSProperties) : undefined}>
           {hazard}
         </span>
       ) : absent ? (
-        <p className="f-claim-absent">not stated in this read</p>
+        <p className="g-claim-absent">not stated in this read</p>
       ) : (
-        <p className="f-claim-value">
+        <p className="g-claim-value">
           {text !== null ? (
-            <AnimatedNumber value={text} className={'f-claim-number ' + (lead ? 'lead-value' : 'fact-value')} />
+            <AnimatedNumber value={text} className={'g-claim-number ' + (lead ? 'lead-value' : 'fact-value')} />
           ) : (
-            <span className={'f-claim-number ' + (lead ? 'lead-value' : 'fact-value')}>{value}</span>
+            <span className={'g-claim-number ' + (lead ? 'lead-value' : 'fact-value')}>{value}</span>
           )}
-          {unit ? <span className="f-claim-unit">{unit}</span> : null}
+          {unit ? <span className="g-claim-unit">{unit}</span> : null}
         </p>
       )}
-      {note ? <p className="f-claim-note">{note}</p> : null}
+      {note ? <p className="g-claim-note">{note}</p> : null}
       {spans && spans.length ? <Ruler spans={spans} /> : null}
-      {source ? <p className="f-claim-source">{source}</p> : null}
+      {source ? <p className="g-claim-source">{source}</p> : null}
       {children}
       {(depth || []).map(entry => (
-        <details key={entry.label} className="f-depth" open={entry.open}>
+        <details key={entry.label} className="g-fold" open={entry.open}>
           <summary>{entry.label}</summary>
-          <div className="f-depth-body">{entry.body}</div>
+          <div className="g-fold-body">{entry.body}</div>
         </details>
       ))}
     </section>

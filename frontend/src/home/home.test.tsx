@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { http, HttpResponse } from 'msw';
 import { server } from '../test/msw';
-import { Home } from './Home';
+import { Workspace } from '../gpt/Workspace';
 
 /* The front door is the conversation, so these pin the ways the page around it can lie:
    ----------------------------------------------------------------------------
@@ -50,7 +50,7 @@ function renderHome() {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: 0 } } });
   return render(
     <QueryClientProvider client={client}>
-      <Home onOpen={() => {}} language="" onLanguage={() => {}} persona="" onPersona={() => {}} />
+      <Workspace onOpen={() => {}} language="" onLanguage={() => {}} persona="" onPersona={() => {}} />
     </QueryClientProvider>,
   );
 }
@@ -104,12 +104,14 @@ describe('the front door', () => {
     expect(screen.getByText(/the store is locked/i)).toBeInTheDocument();
   });
 
-  it('draws no decoration: no photograph, no canvas, and nothing that needs a disclaimer', async () => {
+  it('paints its ground from the hour and fetches no image', async () => {
     serve(overview(QUIET_DAY));
     renderHome();
     await screen.findByText(/No district is under an orange or red warning today/i);
-    expect(document.querySelector('[data-design]')).not.toBeNull();
-    expect(document.querySelector('img, canvas, svg.l-noise')).toBeNull();
+    expect(document.querySelector('[data-design="gpt"]')).not.toBeNull();
+    /* The ground is one canvas painted from the hour; no photograph is ever fetched, and it states nothing. */
+    expect(document.querySelector('img')).toBeNull();
+    expect(document.querySelector('canvas.g-field-canvas')).not.toBeNull();
     expect(screen.queryByText(/condition report/i)).toBeNull();
   });
 });
