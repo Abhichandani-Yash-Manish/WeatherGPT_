@@ -1,5 +1,11 @@
 # 109 — Bulletin: the design language, built from scratch
 
+> **Superseded in part on 19 September 2026 by [docs/110](110-flagship-ui.md).** Bulletin's *rules* stand —
+> the sentence, the Claim, the Work, published colour only through a published value, no number outside a
+> claim. Its *implementation* moved: the atoms now live in `frontend/src/flagship/` and are styled by the
+> flagship layer, and `frontend/src/bulletin/` no longer exists. Where this document describes paper, ink
+> and the `.b-*` classes, read docs/110 instead.
+
 19 September 2026. The user's direction: plan and work the entire design philosophy from scratch, on the
 React stack, and do the frontend overhaul first and fast. This is the record of what was built in that batch.
 It carries out docs/108 §3; it does not change the engine, a route contract or an evidence rule.

@@ -7,8 +7,8 @@
 
 import { useState } from 'react';
 import type { AnswerPacket, Fact } from '../api/types';
-import { Claim, type ClaimSpan } from '../bulletin/Claim';
-import { Work, type WorkStep } from '../bulletin/Work';
+import { Claim, type ClaimSpan } from '../flagship/Claim';
+import { Work, type WorkStep } from '../flagship/Work';
 import { ChartBlock } from '../charts/ChartBlock';
 import { Passages } from './Passages';
 import { istStamp, istWindow } from '../lib/time';
@@ -131,29 +131,29 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
   const taskCoverage = packet.task_coverage;
 
   return (
-    <article className="b-turn" data-turn-status={packet.status}>
-      <header className="b-actions" style={{ alignItems: 'baseline', justifyContent: 'space-between' }}>
-        <h2 className="b-label" style={{ margin: 0 }}>{turnTitle(packet)}</h2>
+    <article className="f-turn" data-turn-status={packet.status}>
+      <header className="f-actions" style={{ alignItems: 'baseline', justifyContent: 'space-between' }}>
+        <h2 className="f-kicker" style={{ margin: 0 }}>{turnTitle(packet)}</h2>
         <StatusTags packet={packet} />
       </header>
 
       {downgrade ? (
-        <div className="b-notice">
+        <div className="f-notice">
           <p style={{ margin: 0, fontWeight: 600 }}>The answer below is not in the language you asked for.</p>
-          <p className="b-claim-note" style={{ marginTop: 4 }}>{downgrade}</p>
+          <p className="f-claim-note" style={{ marginTop: 4 }}>{downgrade}</p>
         </div>
       ) : null}
-      {coverage ? <p className="b-claim-note">{coverage}</p> : null}
-      {carried ? <p className="b-claim-source" data-testid="carried-context">{carried}</p> : null}
+      {coverage ? <p className="f-claim-note">{coverage}</p> : null}
+      {carried ? <p className="f-claim-source" data-testid="carried-context">{carried}</p> : null}
 
       {/* The sentence first. dir="auto" lets the browser read an Urdu or mixed-script answer correctly. */}
-      <p className="b-sentence" data-long={(packet.answer || '').length > 240 ? 'true' : 'false'} dir="auto">
+      <p className="f-sentence" data-long={(packet.answer || '').length > 240 ? 'true' : 'false'} dir="auto">
         {packet.answer}
       </p>
 
       {/* The claims the tools own. */}
       {(primary && !conversational) || warnings.length || rest.length ? (
-        <div className="b-claims">
+        <div className="f-claims">
           {primary && !conversational ? (
             <Claim
               testId="lead-claim"
@@ -178,7 +178,7 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
                 testId="warning-claim"
                 eyebrow={'Official warning' + (placeOf(packet, warnings[0]) ? ' · ' + placeOf(packet, warnings[0]) : '')}
                 hazard={String(warnings[0].value)}
-                hazardColour={'var(--b-' + String(warnings[0].value).toLowerCase().split(/[^a-z]/)[0] + ')'}
+                hazardColour={'var(--f-' + String(warnings[0].value).toLowerCase().split(/[^a-z]/)[0] + ')'}
                 source={sourceLine(packet, warnings[0])}
                 depth={!primary && receiptFact ? [{ label: 'where this came from', body: <EvidenceReceipt packet={packet} fact={receiptFact} /> }] : []}
               />
@@ -188,7 +188,7 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
                   key={fact.id}
                   eyebrow={'Official warning' + (fact.place ? ' · ' + fact.place : '')}
                   hazard={String(fact.value)}
-                  hazardColour={'var(--b-' + String(fact.value).toLowerCase().split(/[^a-z]/)[0] + ')'}
+                  hazardColour={'var(--f-' + String(fact.value).toLowerCase().split(/[^a-z]/)[0] + ')'}
                   source={sourceLine(packet, fact)}
                 />
               ))
@@ -221,12 +221,12 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
 
       {(packet.choices || []).length ? (
         <div>
-          <p className="b-label">Choose one, then the question continues</p>
-          <div className="b-actions" style={{ marginTop: 6 }}>
+          <p className="f-kicker">Choose one, then the question continues</p>
+          <div className="f-actions" style={{ marginTop: 6 }}>
             {(packet.choices || []).map((choice, index) => {
               const text = choiceText(choice as Record<string, unknown>);
               return (
-                <button key={text + index} type="button" className="b-chip chip" onClick={() => onFollowUp(text)} disabled={!text}>
+                <button key={text + index} type="button" className="f-chip chip" onClick={() => onFollowUp(text)} disabled={!text}>
                   {String((choice as Record<string, unknown>).label || text || 'Choose')}
                 </button>
               );
@@ -236,20 +236,20 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
       ) : null}
 
       {(packet.quick_replies || []).length ? (
-        <div className="b-actions">
+        <div className="f-actions">
           {(packet.quick_replies || []).map(reply => (
-            <button key={reply.reply} type="button" className="b-starter" onClick={() => onFollowUp(reply.reply)}>
+            <button key={reply.reply} type="button" className="f-starter" onClick={() => onFollowUp(reply.reply)}>
               {reply.label}
             </button>
           ))}
         </div>
       ) : null}
 
-      {packet.follow_up ? <p className="b-claim-note">{packet.follow_up}</p> : null}
+      {packet.follow_up ? <p className="f-claim-note">{packet.follow_up}</p> : null}
 
       {(packet.notes || []).length ? (
         <Disclosure summary="What this answer does not cover">
-          <ul className="b-list">
+          <ul className="f-list">
             {(packet.notes || []).map(note => (
               <li key={note}>{note}</li>
             ))}
@@ -273,33 +273,33 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
       <TaskAccounting packet={packet} />
       {(packet.task_results || []).length ? (
         <Disclosure summary="Requested tasks" count={(packet.task_results || []).length}>
-          <ul className="tasks b-list">
+          <ul className="tasks f-list">
             {(packet.task_results || []).map(task => (
               <li key={task.id} className={'task ' + (task.status === 'answered' ? 'is-answered' : 'is-incomplete')}>
                 <p style={{ margin: 0, fontWeight: 500 }}>
                   {task.id} · {task.request?.kind || 'task'} · {task.status}
                   {task.request?.operation ? ' · ' + task.request.operation : ''}
                 </p>
-                {task.request?.request_quote ? <p className="b-claim-source">“{task.request.request_quote}”</p> : null}
-                {task.answer ? <p className="b-claim-note">{task.answer}</p> : null}
+                {task.request?.request_quote ? <p className="f-claim-source">“{task.request.request_quote}”</p> : null}
+                {task.answer ? <p className="f-claim-note">{task.answer}</p> : null}
               </li>
             ))}
           </ul>
         </Disclosure>
       ) : null}
 
-      <details className="b-depth">
+      <details className="f-depth">
         <summary onClick={() => setRecordOpen(true)}>Machine record (the exact response)</summary>
-        <div className="b-depth-body">
-          <p className="b-claim-note">The complete response this card was rendered from, for audit.</p>
+        <div className="f-depth-body">
+          <p className="f-claim-note">The complete response this card was rendered from, for audit.</p>
           {recordOpen ? <pre className="machine-record">{JSON.stringify(packet, null, 2)}</pre> : null}
         </div>
       </details>
 
-      <div className="b-actions no-print" data-print="drop">
+      <div className="f-actions no-print" data-print="drop">
         <button
           type="button"
-          className="b-chip"
+          className="f-chip"
           onClick={async () => {
             const outcome = await copyText(answerText(packet));
             setCopied(outcome);
@@ -308,17 +308,17 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
         >
           {copied === 'copied' ? 'Copied' : copied === 'unsupported' ? 'Copy refused by this browser' : 'Copy the answer'}
         </button>
-        <button type="button" className="b-chip" onClick={() => downloadFile(stampName('weathergpt-turn', 'md'), markdownTurn(packet))}>
+        <button type="button" className="f-chip" onClick={() => downloadFile(stampName('weathergpt-turn', 'md'), markdownTurn(packet))}>
           Save this turn as Markdown
         </button>
-        <button type="button" className="b-chip" onClick={() => downloadFile(stampName('weathergpt-answer', 'json'), JSON.stringify(packet, null, 2), 'application/json')}>
+        <button type="button" className="f-chip" onClick={() => downloadFile(stampName('weathergpt-answer', 'json'), JSON.stringify(packet, null, 2), 'application/json')}>
           Download this answer as JSON
         </button>
-        <button type="button" className="b-chip" onClick={() => window.print()}>
+        <button type="button" className="f-chip" onClick={() => window.print()}>
           Print this answer
         </button>
         {point && onRefresh ? (
-          <button type="button" className="b-chip" onClick={() => onRefresh(packet)}>
+          <button type="button" className="f-chip" onClick={() => onRefresh(packet)}>
             Collect fresh evidence
           </button>
         ) : null}

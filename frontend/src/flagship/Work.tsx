@@ -13,21 +13,24 @@ const GLYPH: Record<WorkState, string> = { done: '✓', working: '◐', refused:
 
 export function Work({ steps, summary, foot, open, testId }: { steps: WorkStep[]; summary: string; foot?: ReactNode; open?: boolean; testId?: string }) {
   return (
-    <details className="b-work" open={open} data-testid={testId}>
-      <summary>{summary}</summary>
+    <details className="f-work" open={open} data-testid={testId}>
+      <summary>
+        <span className="f-work-dot" aria-hidden="true" />
+        {summary}
+      </summary>
       <div>
         {steps.map((step, index) => (
-          <div className="b-work-row" data-state={step.state} key={index}>
-            <span className="b-work-glyph" aria-hidden="true">{GLYPH[step.state]}</span>
+          <div className="f-work-row" data-state={step.state} key={index}>
+            <span className="f-work-glyph" aria-hidden="true">{GLYPH[step.state]}</span>
             <div>
-              <p className="b-work-title">{step.title}</p>
-              {step.detail ? <p className="b-work-detail">{step.detail}</p> : null}
+              <p className="f-work-title">{step.title}</p>
+              {step.detail ? <p className="f-work-detail">{step.detail}</p> : null}
             </div>
-            {step.ms ? <span className="b-work-ms">{step.ms}</span> : <span />}
+            {step.ms ? <span className="f-work-ms">{step.ms}</span> : <span />}
           </div>
         ))}
       </div>
-      {foot ? <p className="b-work-detail" style={{ marginTop: 8 }}>{foot}</p> : null}
+      {foot ? <p className="f-work-detail" style={{ marginTop: 8 }}>{foot}</p> : null}
     </details>
   );
 }

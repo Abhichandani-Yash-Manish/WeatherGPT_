@@ -57,27 +57,27 @@ export function Transcript({ turns, working, onFollowUp, onStop, onRefresh }: Tr
         {turns.map(turn => {
           if (turn.role === 'user') {
             return (
-              <div key={turn.key} className="b-turn" style={{ paddingBottom: 4, borderBottom: 0 }}>
-                <p className="b-you">{turn.text}</p>
-                {turn.at ? <p className="b-stamp">{istStamp(turn.at)}</p> : null}
+              <div key={turn.key} className="f-turn" style={{ paddingBottom: 4, borderBottom: 0 }}>
+                <p className="f-you">{turn.text}</p>
+                {turn.at ? <p className="f-claim-source">{istStamp(turn.at)}</p> : null}
               </div>
             );
           }
           if (turn.role === 'notice') {
             return (
-              <div key={turn.key} className="b-notice" data-tone={turn.tone}>
+              <div key={turn.key} className="f-notice" data-tone={turn.tone}>
                 <p style={{ margin: 0 }}>{turn.text}</p>
-                {noticeHint(turn.kind) ? <p className="b-claim-note" style={{ marginTop: 4 }}>{noticeHint(turn.kind)}</p> : null}
-                <p className="b-claim-source" style={{ marginTop: 4 }}>Your question is back in the box so it stays editable.</p>
+                {noticeHint(turn.kind) ? <p className="f-claim-note" style={{ marginTop: 4 }}>{noticeHint(turn.kind)}</p> : null}
+                <p className="f-claim-source" style={{ marginTop: 4 }}>Your question is back in the box so it stays editable.</p>
               </div>
             );
           }
           if (turn.role === 'restored') {
             return (
-              <article key={turn.key} className="b-turn" data-restored="true">
-                <p className="b-label">Restored from the local store</p>
-                <p className="b-sentence">{turn.text}</p>
-                <p className="b-claim-note">
+              <article key={turn.key} className="f-turn" data-restored="true">
+                <p className="f-kicker">Restored from the local store</p>
+                <p className="f-sentence">{turn.text}</p>
+                <p className="f-claim-note">
                   The stored sentence, kept as it was written. It is a receipt from the moment it was retrieved, not a
                   standing fact, and it carries no fresh values: ask again before relying on it.
                 </p>
@@ -90,7 +90,7 @@ export function Transcript({ turns, working, onFollowUp, onStop, onRefresh }: Tr
       </div>
       {showJump ? (
         <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center pb-3">
-          <button type="button" className="b-chip b-chip-accent pointer-events-auto" onClick={() => toEnd()}>
+          <button type="button" className="f-chip f-chip-accent pointer-events-auto" onClick={() => toEnd()}>
             Jump to the latest
           </button>
         </div>

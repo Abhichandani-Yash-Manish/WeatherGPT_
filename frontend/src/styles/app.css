@@ -1,6 +1,7 @@
 @import "../../../web/tokens.css";
 @import "../../../web/tokens-v2.css";
-@import "tailwindcss";
+/* HeroUI v3 imports Tailwind v4 itself, so it stands where the bare Tailwind import stood. */
+@import "@heroui/styles";
 @import "./transcript.css";
 @import "./print.css";
 

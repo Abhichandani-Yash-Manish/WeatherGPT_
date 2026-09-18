@@ -75,7 +75,7 @@ export function Composer({ draft, onDraft, onSend, busy, language, languages, on
   };
 
   return (
-    <div className="composer b-composer" data-busy={busy ? 'true' : 'false'}>
+    <div className="composer f-composer" data-busy={busy ? 'true' : 'false'}>
       {heard ? (
         <div className="glass-strong pop-in mb-2 p-3" data-testid="transcript-panel">
           <p className="eyebrow flex items-center gap-2"><Mic size={14} aria-hidden="true" />Heard, for correction</p>
@@ -114,7 +114,7 @@ export function Composer({ draft, onDraft, onSend, busy, language, languages, on
             }
           }}
           placeholder="What is it like right now in Ahmedabad?"
-          className="b-human min-h-11 flex-1 resize-none bg-transparent px-1 py-2 outline-none"
+          className="f-human min-h-11 flex-1 resize-none bg-transparent px-1 py-2 outline-none"
           aria-describedby="composer-hint"
         />
         <div className="flex items-center gap-1.5 pb-0.5">

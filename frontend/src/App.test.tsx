@@ -22,7 +22,7 @@ describe('the shell', () => {
        beside it: the conversation is the product, so the box is the door. */
     expect(screen.getByLabelText('Your question')).toBeInTheDocument();
     /* Paper, ink and the published colours: no photograph, no canvas, nothing that needs a disclaimer. */
-    expect(document.querySelector('[data-design="bulletin"]')).not.toBeNull();
+    expect(document.querySelector('[data-design]')).not.toBeNull();
     expect(document.querySelector('img, canvas')).toBeNull();
   });
 

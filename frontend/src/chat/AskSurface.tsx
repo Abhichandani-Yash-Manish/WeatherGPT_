@@ -117,12 +117,12 @@ export function AskSurface({
           /* The shape every reader already knows: at the empty state the question box is the hero, sitting in the
              middle of the screen with the opening above it; once there are turns it drops to the foot of the column
              and the conversation takes the room. */
-          <div className="flex min-h-0 flex-1 flex-col justify-start">
+          <div className="flex flex-col">
             {opening ?? <Welcome onAsk={question => void conversation.send(question)} reading={reading} />}
           </div>
         )}
         {conversation.restoredNote ? <p className="text-[11px] quiet">{conversation.restoredNote}</p> : null}
-        <div className="b-dock">
+        <div className="f-dock">
           <Composer
             draft={conversation.draft}
             onDraft={conversation.setDraft}
@@ -133,20 +133,20 @@ export function AskSurface({
             onStop={() => void conversation.stop()}
           />
           {chatting ? (
-            <div className="b-starters">
-              <button type="button" className="b-starter" onClick={conversation.clear}>
+            <div className="f-starters">
+              <button type="button" className="f-starter" onClick={conversation.clear}>
                 New
               </button>
             </div>
           ) : null}
           {/* Openings live under the box, where they are a way into the conversation rather than a menu above it. */}
           {!chatting && suggestions?.length ? (
-            <div className="b-starters">
+            <div className="f-starters">
               {suggestions.map((suggestion: { label: string; question: string }) => (
                 <button
                   key={suggestion.label}
                   type="button"
-                  className="b-starter"
+                  className="f-starter"
                   aria-label={suggestion.question}
                   title={suggestion.question}
                   onClick={() => void conversation.send(suggestion.question)}
