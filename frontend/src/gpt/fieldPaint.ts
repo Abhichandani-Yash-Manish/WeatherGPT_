@@ -14,6 +14,8 @@ export type Hour = 'daybreak' | 'noon' | 'golden' | 'night';
 
 /* Each hour is a stack of stops down the field, plus two wide blooms that give it an aurora's drift.
    Read off the capture the user chose: a violet-mauve body over a blue-grey base, going black at the foot. */
+import { phaseOf, solarPosition } from '../flagship/solar';
+
 const FIELDS: Record<Hour, { stops: [number, string][]; blooms: [number, number, number, string][] }> = {
   night: {
     stops: [[0, '#080b14'], [0.30, '#151a2c'], [0.52, '#2a3350'], [0.68, '#3b3f5c'], [0.82, '#22263a'], [1, '#0a0c12']],
@@ -143,13 +145,10 @@ export function paintField(canvas: HTMLCanvasElement, options: FieldOptions): vo
 
 /** Which field the hour gets. Astronomy decides, never a reading. */
 export function hourOf(at: Date, latitude = 23.0, longitude = 82.5): Hour {
-  /* A local solar hour is enough here: the field only has to know morning from afternoon from night, and a
-     full solar position would be precision nobody can see in a background. */
-  const utcHours = at.getUTCHours() + at.getUTCMinutes() / 60;
-  const solar = (utcHours + longitude / 15 + 24) % 24;
-  void latitude;
-  if (solar >= 5 && solar < 9) return 'daybreak';
-  if (solar >= 9 && solar < 16) return 'noon';
-  if (solar >= 16 && solar < 19.5) return 'golden';
-  return 'night';
+  /* The phase comes from the sun itself now — altitude and azimuth from the reader's own place and hour, the
+     equation of time included — rather than from a bucket on the clock. A place at 8°N and a place at 34°N no
+     longer light identically, and the palettes are the four phases of the sky (docs/110, "the sky is the
+     interface"). The Hour names are kept because four palettes already carry them. */
+  const phase = phaseOf(solarPosition(latitude, longitude, at));
+  return phase === 'night' ? 'night' : phase === 'dawn' ? 'daybreak' : phase === 'day' ? 'noon' : 'golden';
 }

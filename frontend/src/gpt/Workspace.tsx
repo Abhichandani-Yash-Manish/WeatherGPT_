@@ -7,7 +7,7 @@
    The rail, the column width, the docking composer, the transient hover actions and the streaming stop are
    ChatGPT's shape. The claim, the source line, the published colour and the work panel are ours. */
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { PanelLeft, Bell, KeyRound, ArrowLeft } from 'lucide-react';
 import { getJson } from '../api/client';
@@ -23,6 +23,8 @@ import { AnswerTurn } from '../chat/AnswerTurn';
 import { Composer } from './Composer';
 import { Field } from './Field';
 import { hourOf } from './fieldPaint';
+import { glowPoint, glowStrength, phaseOf, solarPosition } from '../flagship/solar';
+import { useWorkingPlace } from '../modules/Evidence';
 import { Rail } from './Rail';
 import './gpt.css';
 
@@ -118,7 +120,17 @@ export function Workspace({
     const timer = window.setInterval(() => setNow(new Date()), 120_000);
     return () => window.clearInterval(timer);
   }, []);
-  const hour = hourOf(now);
+  /* The reader's own place when one is held, the national default otherwise. The sun is the same sun either way;
+     what changes is where it stands over the page. */
+  const workingPlace = useWorkingPlace();
+  const latitude = workingPlace?.latitude ?? 23.0;
+  const longitude = workingPlace?.longitude ?? 82.5;
+  const hour = hourOf(now, latitude, longitude);
+  const sun = solarPosition(latitude, longitude, now);
+  const glow = glowPoint(sun);
+  /* A sun on the horizon is the strongest light of the day and a deep night has none, so this is placed and scaled
+     by astronomy rather than chosen. */
+  const glowAlpha = glowStrength(sun);
 
   useEffect(() => {
     if (!restoreId || restored.current === restoreId) return;
@@ -187,12 +199,23 @@ export function Workspace({
       className="g"
       data-rail={railOpen ? 'open' : 'closed'}
       data-hour={hour}
+      data-phase={phaseOf(sun)}
+      style={
+        {
+          '--g-sun-x': (glow.x * 100).toFixed(2) + '%',
+          '--g-sun-y': (glow.y * 100).toFixed(2) + '%',
+          '--g-sun-a': glowAlpha.toFixed(3),
+        } as CSSProperties
+      }
       /* The chrome follows the hour: a bright page with dark ink by day, dark glass at night. The Field already
          computes the hour from the reader's own sun, so there is no second opinion here. */
       data-mode={hour === 'night' ? 'dark' : 'light'}
       data-design="gpt"
     >
       <Field hour={hour} expanded={chatting} />
+      {/* The sun's own light, at its own azimuth and altitude. Decoration by construction: it is placed by
+          astronomy and can never state a condition. */}
+      <div className="g-sun" aria-hidden="true" />
       <button type="button" className="g-scrim" aria-label="Close the conversation list" onClick={() => setRailOpen(false)} />
       <Rail
         currentId={conversation.conversationId}

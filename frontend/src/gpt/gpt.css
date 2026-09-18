@@ -700,3 +700,24 @@ html, body { background: var(--g-bg); }
   margin-top: 14px;
 }
 .g-claims > * { width: 100%; }
+
+/* The sun, placed by its own azimuth and altitude.
+   ----------------------------------------------------------------------------
+   docs/110 asks for the glow to sit where the sun actually is. The shell publishes the point and the strength,
+   both from the solar position, and this paints it: a warm bloom, strongest when the sun is on the horizon and
+   gone once it is well down. It is light, so it can state nothing about the weather. */
+.g-sun {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: calc(var(--g-sun-a, 0) * 0.9);
+  background: radial-gradient(
+    circle 46vmax at var(--g-sun-x, 50%) var(--g-sun-y, 22%),
+    rgba(255, 236, 198, 0.55) 0%,
+    rgba(255, 224, 176, 0.18) 38%,
+    transparent 72%
+  );
+  mix-blend-mode: screen;
+  transition: opacity 1.4s ease, background-position 1.4s ease;
+}
