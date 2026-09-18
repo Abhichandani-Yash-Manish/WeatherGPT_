@@ -467,3 +467,236 @@ html, body { background: var(--g-bg); }
 .g[data-mode='dark'] .g-panel[data-chatting='true'] { --g-panel: rgba(14, 17, 21, 0.4); }
 /* The status line: a quiet mono statement with a live dot, not a sentence competing with the answer. */
 .g-stream { display: inline-flex; align-items: center; gap: 9px; font-family: var(--g-mono); font-size: 12px; color: var(--g-ink-2); }
+
+/* ============================================================================
+   Phase three: the answer, restated in this language.
+   ============================================================================
+   The transcript is assembled from the instrument classes — card, quiet, eyebrow, evidence — and the ledger
+   classes (receipt-row, receipt-key, receipt-val) plus the shell own claim classes. Restating them once, scoped
+   to .g, moves every answer at the same time. Nothing here changes what a class means: a receipt is still the
+   table of what the answer leaned on, and a claim still carries its own source. */
+.g .card {
+  border-radius: 16px;
+  border: 1px solid var(--g-line);
+  background: color-mix(in srgb, var(--g-bg-2) 55%, transparent);
+  box-shadow: none;
+}
+.g .quiet { color: var(--g-ink-3); }
+.g .eyebrow {
+  font-family: var(--g-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--g-ink-3);
+}
+.g .evidence { font-family: var(--g-mono); font-variant-numeric: tabular-nums; }
+/* The ledger: mono keys in a fixed column, mono values, hairline rows, no card around it. */
+.g .receipt {
+  background: none;
+  border: 0;
+  border-top: 1px solid var(--g-line);
+  border-radius: 0;
+  box-shadow: none;
+  margin-top: 12px;
+}
+.g .receipt-row {
+  display: grid;
+  grid-template-columns: 10.5rem 1fr;
+  gap: 12px;
+  padding: 7px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--g-ink) 8%, transparent);
+  align-items: baseline;
+}
+.g .receipt-key {
+  font-family: var(--g-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--g-ink-3);
+}
+.g .receipt-val {
+  font-family: var(--g-mono);
+  font-size: 12.5px;
+  color: var(--g-ink);
+  overflow-wrap: anywhere;
+}
+/* The line above an answer: what it cost, in mono, on a hairline. */
+.g-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+  padding-top: 10px;
+  border-top: 1px solid var(--g-line);
+  font-family: var(--g-mono);
+  font-size: 11px;
+  color: var(--g-ink-3);
+}
+/* A claim: the measure, its value, its note and its source, stacked and quiet. */
+.g-claim {
+  padding: 10px 0 12px;
+  border-bottom: 1px solid color-mix(in srgb, var(--g-ink) 8%, transparent);
+}
+.g-claim[data-lit]:not([data-lit='none']) { border-left: 2px solid var(--g-lit); padding-left: 12px; }
+.g-claim-source, .g-claim-note {
+  font-family: var(--g-mono);
+  font-size: 10.5px;
+  color: var(--g-ink-3);
+}
+/* A fold: a hairline row with a chevron, never a band across the panel. */
+.g details {
+  border-top: 1px solid var(--g-line);
+  padding: 8px 0 0;
+  margin-top: 14px;
+}
+.g details > summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--g-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--g-ink-3);
+  cursor: pointer;
+}
+.g details > summary::-webkit-details-marker { display: none; }
+.g details > summary::before { content: '▸'; font-size: 10px; color: var(--g-ink-3); }
+.g details[open] > summary::before { content: '▾'; }
+.g details > summary:hover { color: var(--g-ink); }
+/* Motion: one arrival per turn, and the claims inside it following in order. Nothing here moves a value. */
+.g-in { animation: g-arrive 460ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+@keyframes g-arrive {
+  from { opacity: 0; transform: translateY(7px); }
+  to { opacity: 1; transform: none; }
+}
+.g-in .g-claim { animation: g-claim-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.g-in .g-claim:nth-of-type(1) { animation-delay: 40ms; }
+.g-in .g-claim:nth-of-type(2) { animation-delay: 90ms; }
+.g-in .g-claim:nth-of-type(3) { animation-delay: 140ms; }
+.g-in .g-claim:nth-of-type(4) { animation-delay: 190ms; }
+.g-in .g-claim:nth-of-type(n + 5) { animation-delay: 240ms; }
+@keyframes g-claim-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+/* The numbers land without ever showing a value that is not the one the tool returned: no counting, a settle. */
+.g-num { animation: g-settle 380ms ease both; }
+@keyframes g-settle {
+  from { opacity: 0.35; }
+  to { opacity: 1; }
+}
+
+/* Phase three, continued: the claim, as a ledger row.
+   ----------------------------------------------------------------------------
+   A claim is a measure, its value, the note that qualifies it and the source it came from. It was drawn as a
+   loose card; it is now a row: the label in mono small capitals, the value beside it in the tool own face, and
+   the qualifiers underneath at reading size. A missing value is still a phrase — "not stated in this read" —
+   never a zero and never a colour. */
+.g-claim {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 18px;
+  align-items: baseline;
+  padding: 12px 0 13px;
+  border-bottom: 1px solid color-mix(in srgb, var(--g-ink) 8%, transparent);
+}
+.g-claim[data-state='not-stated'] { opacity: 1; }
+.g-claim-eyebrow {
+  grid-column: 1;
+  margin: 0;
+  font-family: var(--g-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--g-ink-3);
+}
+.g-claim-value {
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  font-family: var(--g-mono);
+  font-size: 21px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  color: var(--g-ink);
+  font-variant-numeric: tabular-nums;
+}
+.g-claim-compact .g-claim-value { font-size: 16px; }
+.g-claim[data-lead='true'] .g-claim-value { font-size: clamp(28px, 2rem + 1.4vw, 44px); }
+.g-claim-unit {
+  font-size: 12px;
+  letter-spacing: 0;
+  color: var(--g-ink-3);
+}
+.g-claim-absent {
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+  font-family: var(--g-mono);
+  font-size: 11px;
+  color: var(--g-ink-3);
+}
+.g-claim-note {
+  grid-column: 1 / -1;
+  margin: 6px 0 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--g-ink-2);
+}
+.g-claim-source {
+  grid-column: 1 / -1;
+  margin: 5px 0 0;
+  font-family: var(--g-mono);
+  font-size: 10.5px;
+  color: var(--g-ink-3);
+}
+/* A hazard chip is the one place a published hue is drawn, and it comes from the read or not at all. */
+.g-hazard {
+  grid-column: 2;
+  grid-row: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--g-lit, var(--g-ink)) 55%, transparent);
+  background: color-mix(in srgb, var(--g-lit, var(--g-ink)) 16%, transparent);
+  font-family: var(--g-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--g-ink);
+}
+.g-claim[data-lit] { padding-left: 12px; border-left: 2px solid var(--g-lit); }
+/* The spans a claim can draw when it carries a range. */
+.g-claim .g-ruler { grid-column: 1 / -1; margin-top: 8px; }
+/* A folded body inside a claim follows the same measure. */
+.g-fold-body { margin-top: 8px; }
+
+/* The claim wrapper was still drawing a card, and it shrank to its content so the label wrapped three times over.
+   In the transcript there is no card: the hairline rows are the structure, and the box is full width. */
+.g-turn .card, .g-turn .soft {
+  background: none;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+  width: 100%;
+  padding: 0;
+}
+.g-claim { width: 100%; grid-template-columns: minmax(9rem, 1fr) auto; }
+.g-claim-eyebrow { letter-spacing: 0.1em; }
+
+/* The claims container laid the measures out as narrow tiles, which squeezed a label like "observed station
+   pressure · 19 Sep 2026, 04:30 IST" into three lines. A ledger reads down, not across: one measure per row,
+   full width, with the hairlines doing the grouping. */
+.g-claims {
+  display: block;
+  margin-top: 14px;
+}
+.g-claims > * { width: 100%; }
