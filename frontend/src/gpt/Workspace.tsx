@@ -312,7 +312,7 @@ export function Workspace({
         {/* What painted the field, and what leaves this machine. Decoration is named as decoration. */}
         <footer className="g-legend">
           <span>
-            {hour} sky, computed from this place and hour · the drifting layer is decoration · never a condition report
+            {hour} sky, computed from this place and hour · the drifting layer is decoration, not evidence
           </span>
           <span>every value keeps its source and the time it was read · questions and answers stay on this machine</span>
         </footer>
