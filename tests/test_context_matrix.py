@@ -123,3 +123,32 @@ def test_a_future_follow_up_does_not_inherit_an_observation():
     assert _window_moved_past(tomorrow, right_now, None) is False
     # A window that cannot be parsed is not a reason to switch products.
     assert _window_moved_past({"start_local": "not a date"}, right_now, now) is False
+
+
+def test_evidence_for_a_window_already_underway_is_not_born_stale():
+    """A window that has already begun must not expire in the past.
+
+    The serving horizon clamped to the moment the requested window begins, whether or not it had begun.
+    "What is the air quality in Delhi today?" therefore retrieved two hundred facts and threw every one of
+    them away as stale, because "today" starts at midnight and midnight had happened. The same question
+    about tomorrow answered. Two independent copies of the rule had it wrong, so it lives in one place.
+    """
+    from datetime import datetime, timedelta, timezone
+    from weathergpt_data.answers import MAX_AGE_SECONDS, serving_horizon
+
+    retrieved = datetime(2026, 9, 20, 6, 0, tzinfo=timezone.utc)
+    ceiling = retrieved + timedelta(seconds=MAX_AGE_SECONDS)
+
+    # A window already underway: its start is in the past and must not drag the horizon back with it.
+    begun = datetime(2026, 9, 19, 18, 30, tzinfo=timezone.utc)
+    assert serving_horizon(retrieved, begun) == ceiling
+    assert serving_horizon(retrieved, begun) > retrieved
+
+    # A window that has not begun still closes the horizon: a forecast stops being one once it starts.
+    later = retrieved + timedelta(minutes=20)
+    assert serving_horizon(retrieved, later) == later
+
+    # Any other limit the caller supplies is honoured, and None limits are ignored.
+    sooner = retrieved + timedelta(minutes=5)
+    assert serving_horizon(retrieved, later, sooner) == sooner
+    assert serving_horizon(retrieved, None, None) == ceiling

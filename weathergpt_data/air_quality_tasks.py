@@ -12,6 +12,7 @@ from zoneinfo import ZoneInfo
 from .adapters import AIR_QUALITY, AIR_QUALITY_MODEL
 from .answers import distance_km
 from .geography import identity
+from .answers import serving_horizon
 from .transport import SourceError, parsed, stamp
 
 IST = ZoneInfo('Asia/Kolkata')
@@ -78,7 +79,9 @@ def execute_air_quality(engine, result, plan, task, resolved, coordinates):
             'model_run_time': None})
         if place.get('citation'):
             result['citations'].append(place['citation'])
-        expiry = min(parsed(meta['retrieved_at_utc']) + timedelta(hours=1), start)
+        # The same serving rule the forecast path uses, and for the same reason: clamping to the window's
+        # start regardless of whether it had begun made every "today" question expire in the past.
+        expiry = serving_horizon(parsed(meta['retrieved_at_utc']), start)
         if result['expires_at_utc'] is None or expiry < parsed(result['expires_at_utc']):
             result['expires_at_utc'] = stamp(expiry)
         result['trace']['tools'].append({'name': 'air_quality', 'variables': variables,

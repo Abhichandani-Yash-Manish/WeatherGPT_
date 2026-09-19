@@ -4,7 +4,7 @@ This is an evidence-selection boundary, not an LLM or a document embedding index
 Only fresh, complete prototype land forecasts enter numeric grounding context.
 """
 from datetime import timedelta
-from .answers import MAX_AGE_SECONDS
+from .answers import MAX_AGE_SECONDS,serving_horizon
 from .transport import parsed, stamp
 
 
@@ -48,7 +48,7 @@ def context_from_answer(answer):
         retrieved=parsed(answer['freshness']['retrieved_at_utc'])
         cycle=parsed(answer['freshness']['collection_cycle_at'])
         midnight=cycle.replace(hour=0,minute=0,second=0,microsecond=0)+timedelta(days=1)
-        expires=min(retrieved+timedelta(seconds=MAX_AGE_SECONDS),midnight,parsed(answer['request']['start_utc']))
+        expires=serving_horizon(retrieved,parsed(answer['request']['start_utc']),midnight)
         if parsed(answer['answered_at_utc'])>=expires:
             packet.update(status='abstain',answer_status='context_expired')
             packet['missing_information']+=['Evidence with remaining serving lifetime']

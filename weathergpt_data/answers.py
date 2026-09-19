@@ -19,6 +19,23 @@ from .transport import digest, parsed, stamp, utcnow
 
 SCHEMA='weather-answer-v1'
 MAX_AGE_SECONDS=3600  # Prototype serving ceiling, not a publisher SLA or run-age guarantee.
+
+
+def serving_horizon(retrieved,window_start=None,*limits):
+    """How long retrieved evidence may still be served.
+
+    Its own age ceiling, any limit the caller adds (the end of a collection day, a document's validity),
+    and - only for a window that has NOT begun - the moment that window begins, because a forecast stops
+    being a forecast once the period it describes is underway.
+
+    That last clamp used to be applied unconditionally, in two separate copies of this rule. A window that
+    had already begun therefore expired in the PAST, so every question about a period already underway -
+    today, this morning, this week - retrieved its evidence in full and then threw it away as stale. The
+    same question about tomorrow answered. It lives in one place now because it was wrong in both.
+    """
+    horizon=[retrieved+timedelta(seconds=MAX_AGE_SECONDS)]+[limit for limit in limits if limit]
+    if window_start and window_start>retrieved:horizon.append(window_start)
+    return min(horizon)
 MAX_GRID_DISTANCE_KM=50  # Reject distant samples; passing is not a representativeness assessment.
 EXAMPLE='How much rain is forecast for Ahmedabad tomorrow from 09:30 to 12:30?'
 ROOT=Path(__file__).resolve().parents[1]

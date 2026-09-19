@@ -208,6 +208,23 @@ class Gazetteer:
         same_name = [match for match in matches if norm(match.get('name') or '') == wanted]
         if len(same_name) == 1:
             return same_name[0], 'the place catalogue holds one town of this name and it is the district seat it sits in'
+        # The catalogue marks seats itself. GeoNames' PPLC and PPLA..PPLA5 mean "seat of an administrative
+        # division"; PPL means an ordinary settlement. Four rows are named Delhi and exactly one of them is
+        # PPLA, the other three being villages in Rewa - so the catalogue does record which row is the seat,
+        # in a column this never read. Asking "which village within Delhi?" of someone who asked about Delhi
+        # was a question the data could already answer.
+        #
+        # Only an unambiguous winner counts: one row must outrank every other of the same name, and it must
+        # carry a seat code rather than merely being the best of several villages. Anything else still
+        # declines, because a guess about which place a reader meant is the failure this product exists to
+        # avoid.
+        if len(same_name) > 1:
+            ranked = sorted(same_name, key=lambda match: feature_rank(match.get('feature')))
+            best, runner = feature_rank(ranked[0].get('feature')), feature_rank(ranked[1].get('feature'))
+            if best < runner and best <= SEAT_ORDER['PPLA5']:
+                feature = str(ranked[0].get('feature') or '').upper()
+                return ranked[0], ('the place catalogue marks this row ' + feature +
+                                   ', an administrative seat, and the other rows of this name ordinary settlements')
         return None, 'the place catalogue does not record which of its rows is this district\'s seat'
 
     def search(self,name,state='',district=''):
