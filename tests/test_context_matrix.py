@@ -152,3 +152,25 @@ def test_evidence_for_a_window_already_underway_is_not_born_stale():
     sooner = retrieved + timedelta(minutes=5)
     assert serving_horizon(retrieved, later, sooner) == sooner
     assert serving_horizon(retrieved, None, None) == ceiling
+
+
+def test_a_question_of_only_spaces_is_not_a_question():
+    """The length check measured the raw string, so "   " passed it and was answered as a greeting.
+
+    The composer trims before it sends, so this was only ever reachable through the API - which is exactly
+    why it should be checked there. A greeting invented for a reader who typed nothing is a sentence this
+    product did not have a reason to say.
+    """
+    import pytest
+    from weathergpt_data.transport import SourceError
+    from weathergpt_data.conversation import ConversationEngine
+
+    # Unbound on purpose: the guard is the first thing ask() does, before it touches any state, and this
+    # checks the guard rather than a whole engine.
+    for blank in ("   ", "\t", "\n  \n", ""):
+        with pytest.raises(SourceError):
+            ConversationEngine.ask(object.__new__(ConversationEngine), {"question": blank})
+    # A real question of one character still passes the length guard.
+    with pytest.raises(Exception) as raised:
+        ConversationEngine.ask(object.__new__(ConversationEngine), {"question": "x"})
+    assert "1-1500" not in str(raised.value) and "1\u20131500" not in str(raised.value)

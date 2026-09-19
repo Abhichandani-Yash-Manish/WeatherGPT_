@@ -181,7 +181,9 @@ class ConversationEngine:
         from .personas import get as persona_of
         persona_of(body.get('persona'))
         q=body.get('question')
-        if not isinstance(q,str) or not 1<=len(q)<=1500:raise SourceError('Enter a question of 1–1500 characters')
+        # Measured on the stripped question: a string of spaces has a length and is not a question. It
+        # passed this check and was answered as a greeting, because nothing downstream looks again.
+        if not isinstance(q,str) or not 1<=len(q.strip())<=1500:raise SourceError('Enter a question of 1–1500 characters')
         supplied=body.get('request_id')
         if supplied is not None:
             try:uuid.UUID(str(supplied))
@@ -285,7 +287,8 @@ class ConversationEngine:
         if not isinstance(body,dict) or set(body)-{'question','conversation_id'}:
             raise SourceError('Send a question for a first reading')
         q=body.get('question')
-        if not isinstance(q,str) or not 1<=len(q)<=1500:raise SourceError('Enter a question of 1-1500 characters')
+        # Stripped, for the reason the ask path gives: spaces are not a question.
+        if not isinstance(q,str) or not 1<=len(q.strip())<=1500:raise SourceError('Enter a question of 1-1500 characters')
         now=self.workspace.clock()
         result={'schema_version':'chat-preview-v1','question':q,'provisional':True,'reading':None,
                 'note':PREVIEW_NOTE,'reading_is_not_evidence':True,'model_calls':0,
