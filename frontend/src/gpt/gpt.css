@@ -1561,6 +1561,18 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
 .g-side-links { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
 .g-side-links .g-quiet { text-align: left; padding: 6px var(--g-2); }
 
+/* The panel's own blocks: what is published for the district, and the hours the model returned. Both are
+   compact by design — a 300px panel is for glancing, and the full rows live on the surfaces they link to. */
+.g-side-days { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.g-side-days li { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; font-size: 12px; }
+.g-side-when { font-family: var(--g-mono); font-size: 10.5px; color: var(--g-mist); min-width: 44px; }
+.g-side-quiet { font-size: 12px; color: var(--g-mist); }
+.g-side-hazard { font-size: 12px; color: var(--g-mist); }
+.g-side-hours { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; }
+.g-side-hours li { display: flex; align-items: baseline; gap: var(--g-2); font-size: 12px; }
+.g-side-hour { font-family: var(--g-mono); font-size: 10.5px; color: var(--g-mist); min-width: 34px; }
+.g-side-value { color: var(--g-paper); font-variant-numeric: tabular-nums; }
+
 /* The press back to the newest turn. It appears only when the thread is scrolled, and it sits above the
    composer rather than over the text. */
 .g-to-end {

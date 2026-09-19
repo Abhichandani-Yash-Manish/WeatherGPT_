@@ -12,14 +12,124 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { MapPin, X } from 'lucide-react';
-import { getJson } from '../api/client';
-import type { Languages } from '../api/types';
+import { getJson, withQuery } from '../api/client';
+import type { Envelope, Languages } from '../api/types';
+import { failureSentence } from '../modules/Evidence';
 import { allLanguages, measuredFor } from '../chat/voice';
 import { useSky } from './sky';
-import { istStamp } from '../lib/time';
+import { istClock, istStamp, istWindow } from '../lib/time';
 import { SkyGlyphIcon } from '../shell/icons';
 import { useWorkingPlace } from '../modules/Evidence';
 import type { Persona } from '../api/types';
+
+/* ---- what is published for this district, and what is coming --------------------------------------
+   The panel states the place; these two blocks say what the product holds for it. Both read the same governed
+   routes the surfaces read, both keep their own source line, and both say what they did not get: a district
+   with nothing published is not a quiet district, and a missing hour is not a zero.
+
+   The forecast block is a strip of the first hours the read returned, not a chart: the panel is 300px, and a
+   300px chart is a decoration. Every number keeps the unit and the source the payload stated. */
+
+type PlaceWarningDay = { date_local?: string; colour?: string | null; hazards?: string[]; quiet?: boolean; source_text?: string; label?: string };
+type PlaceWarnings = { district?: string; state?: string; issued_at_utc?: string; days?: PlaceWarningDay[] };
+type HourRow = { at?: string; temperature_2m?: number | null; precipitation_probability?: number | null; precipitation?: number | null };
+type HoursView = { status?: string; rows?: HourRow[]; source_id?: string; model?: string; unit?: Record<string, string>; starts?: string; ends?: string };
+
+function DistrictBlock({ place }: { place: { latitude: number; longitude: number } }) {
+  const read = useQuery({
+    queryKey: ['panel-warnings', place.latitude, place.longitude],
+    queryFn: () => getJson<Envelope<PlaceWarnings>>(withQuery('/api/warnings/place', { lat: place.latitude, lon: place.longitude })),
+    retry: false,
+  });
+  const published = read.data?.data;
+  const days = (published?.days || []).filter(day => day && (day.colour || day.hazards?.length || day.quiet));
+
+  return (
+    <section className="g-side-block">
+      <p className="g-side-label">Published for this district</p>
+      {read.isPending ? <p className="g-side-note">Reading the district’s published warning…</p> : null}
+      {read.isError ? <p className="g-side-note">{failureSentence(read.error)}</p> : null}
+      {!read.isPending && !read.isError && !published ? (
+        <p className="g-side-note">The read answered without a district block, so nothing is printed about a warning here.</p>
+      ) : null}
+      {published ? (
+        <>
+          <p className="g-side-note">
+            {[published.district, published.state].filter(Boolean).join(', ') || 'The read named no district for this point'}
+            {published.issued_at_utc ? ' · issued ' + istStamp(published.issued_at_utc) : ' · the read states no issue time'}
+          </p>
+          {days.length ? (
+            <ul className="g-side-days">
+              {days.slice(0, 3).map(day => (
+                <li key={(day.date_local || day.label || '') + (day.colour || '')}>
+                  <span className="g-side-when">{day.label || day.date_local || 'a published day'}</span>
+                  {/* A quiet day is a statement the source made, and it does not also need a hazard line
+                      saying the source said nothing: that is the same fact twice, once as a gap. */}
+                  {day.quiet ? (
+                    <span className="g-side-quiet">nothing flagged</span>
+                  ) : (
+                    <>
+                      <span className="wchip" data-colour={(day.colour || '').toLowerCase()}>{day.colour || 'colour not stated'}</span>
+                      {day.hazards?.length ? (
+                        <span className="g-side-hazard">{day.hazards.join(', ')}</span>
+                      ) : day.source_text ? (
+                        <span className="g-side-hazard">{day.source_text}</span>
+                      ) : null}
+                    </>
+                  )}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="g-side-note">This read published no day for this district, which is not the same as a quiet one.</p>
+          )}
+        </>
+      ) : null}
+    </section>
+  );
+}
+
+function HoursBlock({ place }: { place: { latitude: number; longitude: number } }) {
+  const read = useQuery({
+    queryKey: ['panel-hours', place.latitude, place.longitude],
+    queryFn: () => getJson<Envelope<HoursView>>(withQuery('/api/forecast', { lat: place.latitude, lon: place.longitude, days: 2 })),
+    retry: false,
+  });
+  const hours = read.data?.data;
+  const rows = (hours?.rows || []).slice(0, 6);
+  const unit = hours?.unit || {};
+
+  return (
+    <section className="g-side-block">
+      <p className="g-side-label">The next hours</p>
+      {read.isPending ? <p className="g-side-note">Reading the model hours…</p> : null}
+      {read.isError ? <p className="g-side-note">{failureSentence(read.error)}</p> : null}
+      {!read.isPending && !read.isError && !rows.length ? (
+        <p className="g-side-note">This read returned no hourly row for the point, so nothing is drawn rather than a value being invented.</p>
+      ) : null}
+      {rows.length ? (
+        <>
+          <ul className="g-side-hours">
+            {rows.map(row => (
+              <li key={String(row.at)}>
+                <span className="g-side-hour">{istClock(row.at)}</span>
+                <span className="g-side-value">
+                  {typeof row.temperature_2m === 'number' ? row.temperature_2m + (unit.temperature_2m || '') : 'temperature not returned'}
+                </span>
+                <span className="g-side-value">
+                  {typeof row.precipitation_probability === 'number' ? row.precipitation_probability + (unit.precipitation_probability || '') + ' rain chance' : 'rain chance not returned'}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <p className="g-side-source">
+            {[hours?.source_id, hours?.model, hours?.starts && hours?.ends ? istWindow(hours.starts, hours.ends) : null].filter(Boolean).join(' · ')}
+          </p>
+        </>
+      ) : null}
+    </section>
+  );
+}
 
 export type ReadingPanelProps = {
   language: string;
@@ -96,6 +206,13 @@ export function ReadingPanel({
           </>
         ) : null}
       </section>
+
+      {place && typeof place.latitude === 'number' && typeof place.longitude === 'number' ? (
+        <>
+          <DistrictBlock place={{ latitude: place.latitude, longitude: place.longitude }} />
+          <HoursBlock place={{ latitude: place.latitude, longitude: place.longitude }} />
+        </>
+      ) : null}
 
       <section className="g-side-block">
         <label className="g-side-label" htmlFor="answer-language">Answer language</label>

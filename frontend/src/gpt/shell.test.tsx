@@ -294,6 +294,50 @@ describe('the shell', () => {
     expect(screen.getByLabelText('Save this conversation as Markdown')).toBeInTheDocument();
   });
 
+  it('states what is published for the place, and the hours the model returned', async () => {
+    window.localStorage.setItem('weathergpt.place', JSON.stringify({ label: 'Patna, Bihar', latitude: 25.59, longitude: 85.14 }));
+    window.localStorage.setItem('weathergpt.shell', JSON.stringify({ rail: 'open', panel: true, pins: [], aliases: {} }));
+    server.use(
+      http.get('/api/warnings/place', () => HttpResponse.json(envelope({
+        district: 'Patna', state: 'Bihar', issued_at_utc: '2026-09-18T12:00:00+00:00',
+        days: [
+          { date_local: '2026-09-19', label: 'Day 1', colour: 'yellow', hazards: ['Thunderstorm', 'Lightning'] },
+          { date_local: '2026-09-20', label: 'Day 2', quiet: true },
+        ],
+      }))),
+      http.get('/api/forecast', () => HttpResponse.json(envelope({
+        status: 'ok', source_id: 'S62', model: 'gfs', starts: '2026-09-19T12:30:00+05:30', ends: '2026-09-21T12:30:00+05:30',
+        unit: { temperature_2m: '°C', precipitation_probability: '%' },
+        rows: [{ at: '2026-09-19T12:30:00+05:30', temperature_2m: 30.6, precipitation_probability: 63 }],
+      }))),
+    );
+    mount();
+    const panel = await screen.findByRole('complementary', { name: /how this conversation is read/i });
+    /* The district line keeps the district, the issue time and the colours the product itself printed. */
+    expect(await within(panel).findByText(/Patna, Bihar · issued 18 Sep 2026, 17:30 IST/)).toBeInTheDocument();
+    expect(within(panel).getByText('yellow')).toBeInTheDocument();
+    expect(within(panel).getByText('Thunderstorm, Lightning')).toBeInTheDocument();
+    /* A quiet day is said as quiet, and not also as a missing hazard line. */
+    expect(within(panel).getByText('nothing flagged')).toBeInTheDocument();
+    /* The hours keep their unit and their source. */
+    expect(within(panel).getByText('30.6°C')).toBeInTheDocument();
+    expect(within(panel).getByText(/63% rain chance/)).toBeInTheDocument();
+    expect(within(panel).getByText(/S62 · gfs/)).toBeInTheDocument();
+  });
+
+  it('says what the panel did not get rather than drawing a zero', async () => {
+    window.localStorage.setItem('weathergpt.place', JSON.stringify({ label: 'Patna, Bihar', latitude: 25.59, longitude: 85.14 }));
+    window.localStorage.setItem('weathergpt.shell', JSON.stringify({ rail: 'open', panel: true, pins: [], aliases: {} }));
+    server.use(
+      http.get('/api/warnings/place', () => HttpResponse.json(envelope({ district: 'Patna', state: 'Bihar', days: [] }))),
+      http.get('/api/forecast', () => HttpResponse.json({ error: 'the store is unavailable' }, { status: 503 })),
+    );
+    mount();
+    const panel = await screen.findByRole('complementary', { name: /how this conversation is read/i });
+    expect(await within(panel).findByText(/published no day for this district, which is not the same as a quiet one/)).toBeInTheDocument();
+    expect(within(panel).getByText(/local evidence store is unavailable/i)).toBeInTheDocument();
+  });
+
   it('opens the n-th conversation with ⌥-digit', async () => {
     const asked: string[] = [];
     server.use(http.get('/api/conversations/:id', ({ params }) => {

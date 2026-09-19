@@ -107,12 +107,32 @@ middle. The rail passes the matched turn with the conversation, the thread scrol
 and the turn is held in the accent wash for a moment and released. It is a state of the page rather than of the
 answer, so it never takes a colour any source published.
 
-## 7. Evidence
+## 7. The panel states the place
+
+The reading panel was three settings and a station report. It is now the place's own page in miniature: the
+place, the nearest station's report, **what is published for its district**, and the hours the model returned
+for it — with the language, the persona and the ways in under them.
+
+![The panel: place, station, the published district days with the colours the product printed, and the next hours](../images/shell/10-reading-panel.png)
+
+Four rules hold it, and they are the product's own rules rather than the panel's:
+
+1. **A quiet day is said as quiet.** A day the product flagged nothing for prints *nothing flagged* and stops
+   there; it does not also print a hazard line saying the source said nothing, which is the same fact twice —
+   once as a statement and once as a gap.
+2. **A district with no published day is not a quiet district.** The block says the read published no day for
+   this district, in those words, rather than leaving an empty list to imply calm.
+3. **Every number keeps its unit and its source.** The hours are a strip, not a chart: six rows at most, each
+   with the unit the payload stated, under the source id, the model and the window the read returned.
+4. **A failure is the server's own sentence.** Both blocks reuse `failureSentence`, so an unavailable store
+   reads as one here too.
+
+## 8. Evidence
 
 | Check | Result |
 | --- | --- |
 | `npx tsc --noEmit` | clean |
-| `npx vitest run` | **62 files, 352 checks** |
+| `npx vitest run` | **62 files, 354 checks** |
 | `python3 -m pytest tests/ -q` | **1373 Python tests** (six are this batch's ledger checks) |
 | `scripts/audit_react_frontend.py` | **18 checks, 0 failed** |
 | `scripts/audit_port_ledger.py` | **2 checks, 0 failed** |
@@ -128,7 +148,7 @@ One defect was found by the running product rather than by a test: the new dialo
 corner, because a stylesheet reset takes the browser's own `margin: auto` off a `<dialog>`. The fix is one
 line and a comment, and it is the kind of thing only a screenshot finds.
 
-## 8. What this does not claim
+## 9. What this does not claim
 
 - **No reader other than this machine's owner has used any of this**, and the place grouping has been looked
   at on one store on one machine.
@@ -139,7 +159,7 @@ line and a comment, and it is the kind of thing only a screenshot finds.
 - The corpus is still English. Two Indian poems more, still no reader-language line: that remains the
   translation project docs/30 gates.
 
-## 9. What is left, in order
+## 10. What is left, in order
 
 1. **The quote in the reader's language**, with the translation gate docs/30 specifies. Unchanged by this
    batch and still the largest content gap on the welcome screen.
