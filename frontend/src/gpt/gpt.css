@@ -799,6 +799,20 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
 }
 @media (prefers-reduced-motion: reduce) { .g-turn.g-found { animation: none; background: var(--g-accent-wash); } }
 
+/* The claim's copy action. It is the one control on the card, so it stays out of the reading until the
+   pointer or the keyboard is on the claim, and it is dropped from a printout like every other control. */
+.g-claim-copy {
+  position: absolute; top: var(--g-2); right: var(--g-2);
+  width: 26px; height: 26px; border-radius: var(--g-r-sm);
+  border: 1px solid transparent; background: transparent; color: var(--g-mist);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; opacity: 0;
+  transition: opacity var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease), background var(--g-fast) var(--g-ease);
+}
+.g-claim:hover .g-claim-copy, .g-claim-copy:focus-visible { opacity: 1; }
+.g-claim-copy:hover { color: var(--g-paper); background: var(--g-t3); }
+.g-claim-copy:focus-visible { outline: 2px solid var(--g-accent); outline-offset: 1px; opacity: 1; }
+
 /* ---- turns ----------------------------------------------------------------------------------------
    A turn does not get a card. The column is the container, and a hairline between turns is enough
    separation — boxing every message is the SaaS-kit tell and it costs the column its rhythm. */

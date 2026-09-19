@@ -50,9 +50,13 @@ describe('printing a turn', () => {
     await askAndRender();
     const card = screen.getByRole('article');
     expect(card.querySelector('.receipt'), 'the receipt is what makes the printout evidence').not.toBeNull();
-    const actions = card.querySelector('[data-print="drop"]');
-    expect(actions, 'the action row is marked so print can drop it').not.toBeNull();
-    expect(actions?.textContent).toMatch(/Copy the answer/);
+    /* Every control the card draws is marked for the drop, and there is more than one now: the action row
+       under the answer, and a copy on each claim. The row is the one that carries the words. */
+    const dropped = Array.from(card.querySelectorAll('[data-print="drop"]'));
+    expect(dropped.length, 'controls are marked so print can drop them').toBeGreaterThan(0);
+    const actions = dropped.find(node => /Copy the answer/.test(node.textContent || ''));
+    expect(actions, 'the action row is marked so print can drop it').not.toBeUndefined();
+    dropped.forEach(node => expect(node.className).toMatch(/no-print|g-chips/));
     expect(PRINT_CSS).toContain("[data-print='drop']");
     expect(PRINT_CSS).toContain('.machine-record');
     expect(PRINT_CSS).toContain('.composer-shell');

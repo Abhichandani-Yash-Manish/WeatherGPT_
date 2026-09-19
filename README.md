@@ -18,7 +18,7 @@ closure queue are in [docs/93](docs/93-ps-closure-queue.md).
 |  |  |
 | --- | --- |
 | ![Ask: one rail with the four homes, the place the answers are about and the stored conversations, beside the greeting, the station's reading and a line for the hour](docs/images/shell/01-ask-welcome.png) | ![The reading panel open beside the conversation: the place, the nearest station's own report, the answer language and the reading persona](docs/images/shell/02-reading-panel.png) |
-| **Ask is the front door, and the rail is the navigation.** Four homes, the place the answers are about, the reader's conversations with their own pins above the recency groups, and a line of verse under the reading — each line checked against the edition it came from. | **The reading panel** holds the three things every answer depends on — place, language, persona — and states the nearest station's report as the source printed it. |
+| **Ask is the front door, and the rail is the navigation.** Four homes, the place the answers are about, the reader's conversations with their own pins above the recency groups, and a line of verse under the reading — each line checked against the edition it came from. | **The reading panel** is the place's own page in miniature: the place, the nearest station, what is published for its district with the colours the product printed, and the model hours, each keeping its own source line ([docs/115](docs/115-panel-and-claim-copy.md)). Every claim carries its own copy action, which puts the claim's line — measure, value with unit, place, window, source — on the clipboard. |
 | ![The React Warnings surface: the district filter and the district-day rows with the colour the product printed](docs/images/03-warnings.png) | ![The React Today dashboard: the four counted KPIs, the district map filled only where a colour was published, and the published-colour by published-day matrix](docs/images/04-today.png) |
 | **Warnings as printed.** One row per district-day, keeping the colour and hazard wording the product itself published. | **Today, composed.** The national picture this machine read: districts, source features without a district name, radar stations and the colour tallies. |
 | ![The React Forecast surface: the point entry with no place named](docs/images/05-forecast.png) | ![The React Published documents surface: filters, index counts and the editions indexed](docs/images/06-documents.png) |
@@ -86,7 +86,7 @@ serve it, and check it:
 
     cd frontend && npm install && npm run build    # builds web/dist
     python3 -m weathergpt_data.workspace --port 8790
-    cd frontend && npm test                        # 62 component suites, 354 checks, run under Vitest
+    cd frontend && npm test                        # 62 component suites, 355 checks, run under Vitest
     python3 scripts/audit_react_frontend.py        # 18 checks over the built page and its sources
     python3 scripts/audit_react_build.py           # 11 checks over the built output
 
@@ -300,7 +300,7 @@ The interface states these limits instead of filling them:
 
 ```sh
 python3 -m pytest tests/ -q                          # 1373 Python tests
-cd frontend && npx tsc --noEmit && npm test          # 62 React suites, 354 component checks
+cd frontend && npx tsc --noEmit && npm test          # 62 React suites, 355 component checks
 python3 scripts/audit_react_frontend.py              # 18 checks over the built page and its sources
 python3 scripts/audit_react_build.py                 # 11 checks over the built output
 python3 scripts/audit_port_ledger.py                 # every component check the ledger names, verified in its spec

@@ -62,6 +62,25 @@ export function receiptText(packet: AnswerPacket, fact: Fact): string {
   return lines.join('\n');
 }
 
+/* One claim as a line of text, for a reader who has to send it to somebody else.
+   ============================================================================
+   The claim is the atom — a measure, a value with its unit, a place, a window and a source — so the line is
+   those things in that order and nothing else. No headings, no prose, no confidence: what is copied is what
+   the card states, and the card states only what a tool returned. */
+export function claimLine(packet: AnswerPacket, fact: Fact): string {
+  const window = fact.start && fact.end ? istWindow(String(fact.start), String(fact.end))
+    : fact.observed_at ? istWindow(String(fact.observed_at), String(fact.observed_at)) : null;
+  const parts = [
+    parameterName(fact) || fact.label || 'a measure',
+    String(fact.value) + (fact.unit ? ' ' + fact.unit : ''),
+    placeOf(packet, fact),
+    window,
+    fact.source_id ? 'source ' + fact.source_id : null,
+    kindOf(fact) || null,
+  ];
+  return parts.filter(Boolean).join(' · ');
+}
+
 export function answerText(packet: AnswerPacket): string {
   return ['Question: ' + packet.question, 'Answered: ' + istStamp(packet.answered_at_utc), 'Status: ' + packet.status, '', packet.answer].join('\n');
 }

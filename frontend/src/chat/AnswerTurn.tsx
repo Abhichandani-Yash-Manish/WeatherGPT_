@@ -12,7 +12,7 @@ import { Work, type WorkStep } from '../flagship/Work';
 import { ChartBlock } from '../charts/ChartBlock';
 import { Passages } from './Passages';
 import { istStamp, istWindow } from '../lib/time';
-import { answerText, copyText, downloadFile, markdownTurn, stampName } from './actions';
+import { answerText, claimLine, copyText, downloadFile, markdownTurn, stampName } from './actions';
 import { coverageNote, firstPoint, hasWarningDays, kindOf, languageDowngradeNote, parameterName, placeOf, sequenceFacts, turnTitle, warningFacts, windowFacts } from './model';
 import { AirportReports, Calculations, Disclosure, EvidenceReceipt, SeriesReceipt, SourceRows, StatusTags, TaskAccounting, ValidityRuler, WarningPanel } from './parts';
 import { HAZARD_COLOURS } from '../modules/Evidence';
@@ -191,6 +191,7 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
               unit={primary.unit}
               note={[kindOf(primary), placeOf(packet, primary)].filter(Boolean).join(' · ') || undefined}
               source={sourceLine(packet, primary)}
+              copy={claimLine(packet, primary)}
               lead
               depth={[
                 ...(receiptFact ? [{ label: 'where this came from', body: <EvidenceReceipt packet={packet} fact={receiptFact} /> }] : []),
@@ -234,6 +235,7 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
               unit={fact.unit}
               note={[kindOf(fact), placeOf(packet, fact)].filter(Boolean).join(' · ') || undefined}
               source={sourceLine(packet, fact)}
+              copy={claimLine(packet, fact)}
             />
           ))}
         </div>

@@ -338,6 +338,35 @@ describe('the shell', () => {
     expect(within(panel).getByText(/local evidence store is unavailable/i)).toBeInTheDocument();
   });
 
+  it('copies one claim with its place, window and source, and not the whole answer', async () => {
+    const written: string[] = [];
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: async (text: string) => { written.push(text); } },
+    });
+    server.use(http.post('/api/chat', () => HttpResponse.json({
+      conversation_id: '44444444-4444-4444-8444-444444444444', question: 'Will it rain in Ahmedabad?',
+      status: 'answered', answer: 'Ahmedabad: forecast precipitation 0.3 mm.',
+      facts: [{ id: 'f1', label: 'Forecast rainfall', value: '0.3', unit: 'mm', place: 'Ahmedabad, Gujarat',
+                start: '2026-09-18T06:30:00+05:30', end: '2026-09-18T12:30:00+05:30', source_id: 'S21',
+                parameter: 'precipitation', evidence_kind: 'forecast', citation_ids: [], task_id: 't1' }],
+      citations: [], notes: [], choices: [], charts: [], task_results: [], answered_at_utc: '2026-09-18T07:00:00+00:00',
+      resolved_points: {}, trace: {}, retrieval_plan: [],
+    })));
+    mount();
+    await userEvent.type(screen.getByLabelText('Your question'), 'Will it rain in Ahmedabad?');
+    await userEvent.click(screen.getByTestId('send-question'));
+    await screen.findByText('Ahmedabad: forecast precipitation 0.3 mm.');
+    const copies = screen.getAllByLabelText('Copy this value with its place, window and source');
+    await userEvent.click(copies[0]);
+    await waitFor(() => expect(written).toHaveLength(1));
+    /* The claim's own line, in the atom's order: measure, value with its unit, place, window, source, kind —
+       and the measure is named the way the card names it, not the way the payload spells it. */
+    expect(written[0]).toMatch(/^Forecast rainfall · 0\.3 mm · Ahmedabad, Gujarat/);
+    expect(written[0]).toContain('S21');
+    expect(written[0]).not.toContain('Ahmedabad: forecast precipitation 0.3 mm.');
+  });
+
   it('opens the n-th conversation with ⌥-digit', async () => {
     const asked: string[] = [];
     server.use(http.get('/api/conversations/:id', ({ params }) => {

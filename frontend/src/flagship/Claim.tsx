@@ -6,7 +6,9 @@
    prints its absence; a gap in the window stays hatched. Depth — the receipt, the series, the district
    grid — unfolds under the claim that owns it. Glass over the atmosphere, never a card in a grid. */
 
-import type { CSSProperties, ReactNode } from 'react';
+import { useState, type CSSProperties, type ReactNode } from 'react';
+import { Check, Copy } from 'lucide-react';
+import { copyText } from '../chat/actions';
 import { AnimatedNumber } from './motion';
 
 export type ClaimSpan = { from: number; to: number };
@@ -35,10 +37,17 @@ export type ClaimProps = {
   row?: boolean;
   depth?: { label: string; body: ReactNode; open?: boolean }[];
   testId?: string;
+  /**
+   * This claim as one line of text, for a reader who has to send it to somebody else. Passed in rather than
+   * read off the screen: the rendered element contains the depth panels' text as well, and a copy that
+   * silently included a fold nobody opened would be a different claim from the one on screen.
+   */
+  copy?: string;
   children?: ReactNode;
 };
 
-export function Claim({ eyebrow, value, unit, hazard, hazardColour, note, source, spans, compact, lead, row, depth, testId, children }: ClaimProps) {
+export function Claim({ eyebrow, value, unit, hazard, hazardColour, note, source, spans, compact, lead, row, depth, testId, copy, children }: ClaimProps) {
+  const [copied, setCopied] = useState('');
   const absent = !hazard && (value === undefined || value === null || value === '');
   const text = typeof value === 'string' || typeof value === 'number' ? String(value) : null;
   return (
@@ -56,6 +65,23 @@ export function Claim({ eyebrow, value, unit, hazard, hazardColour, note, source
       data-lead={lead ? 'true' : undefined}
       data-state={absent ? 'not-stated' : 'stated'}
     >
+      {copy ? (
+        <button
+          type="button"
+          className="g-claim-copy no-print"
+          data-print="drop"
+          aria-label="Copy this value with its place, window and source"
+          title="Copy this value with its place, window and source"
+          onClick={async () => {
+            const outcome = await copyText(copy);
+            setCopied(outcome === 'copied' ? 'copied' : 'refused');
+            window.setTimeout(() => setCopied(''), 2400);
+          }}
+        >
+          {copied === 'copied' ? <Check size={12} aria-hidden="true" /> : <Copy size={12} aria-hidden="true" />}
+          <span className="sr-only">{copied === 'copied' ? 'Copied' : copied === 'refused' ? 'Copy refused by this browser' : ''}</span>
+        </button>
+      ) : null}
       <p className="g-claim-eyebrow">{eyebrow}</p>
       {hazard ? (
         <span className="g-hazard" style={hazardColour ? ({ '--g-lit': hazardColour } as CSSProperties) : undefined}>
