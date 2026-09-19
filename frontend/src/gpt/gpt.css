@@ -920,3 +920,17 @@ html, body { background: var(--g-bg); }
 .g-scene { height: 30vh; }
 .g-scene-back { height: 30%; opacity: 0.62; }
 .g-scene-front { height: 64%; right: 8%; opacity: 0.92; }
+
+/* The legend was reading straight through the skyline band. It gets a glass shelf of its own: a short blur, a
+   faint ground that fades upward, and room to breathe. Measured against the capture at noon, where the ridge and
+   the skyline both sit at the foot of the page. */
+.g-legend {
+  margin-bottom: 0;
+  padding: 12px 14px calc(12px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid color-mix(in srgb, var(--g-ink) 8%, transparent);
+  background: linear-gradient(to top, color-mix(in srgb, var(--g-bg) 72%, transparent), color-mix(in srgb, var(--g-bg) 34%, transparent));
+  backdrop-filter: blur(8px) saturate(1.05);
+  -webkit-backdrop-filter: blur(8px) saturate(1.05);
+}
+/* The scene stops at the shelf rather than running under it. */
+.g-scene { bottom: 46px; height: 26vh; }
