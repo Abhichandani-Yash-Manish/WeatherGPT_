@@ -118,9 +118,9 @@
 .g-side-sources li:last-child { border-bottom: 0; padding-bottom: 0; }
 .g-side-source-id {
   grid-row: span 2; align-self: start;
-  font-family: var(--g-mono); font-size: 10.5px; color: var(--g-mist-2);
+  font-family: var(--g-mono); font-size: 11px; color: var(--g-mist-2);
   border: 1px solid var(--g-line); border-radius: var(--g-r-sm);
   padding: 2px 6px; white-space: nowrap;
 }
 .g-side-source-name { font-size: 12px; color: var(--g-paper); line-height: 1.4; }
-.g-side-source-meta { font-family: var(--g-mono); font-size: 10.5px; color: var(--g-mist-2); }
+.g-side-source-meta { font-family: var(--g-mono); font-size: 11px; color: var(--g-mist-2); }

@@ -19,8 +19,8 @@
 
 .viz-frame { display: block; width: 100%; height: auto; background: var(--viz-surface); border: 1px solid var(--line); border-radius: var(--r-card); }
 .viz-grid { stroke: var(--viz-grid); stroke-width: 1; }
-.viz-axis { fill: var(--viz-axis); font: 500 10px/1 var(--mono); font-variant-numeric: tabular-nums; }
-.viz-unit { fill: var(--mute); font: 600 9.5px/1 var(--sans); letter-spacing: var(--track-wide); text-transform: uppercase; }
+.viz-axis { fill: var(--viz-axis); font: 500 11px/1 var(--mono); font-variant-numeric: tabular-nums; }
+.viz-unit { fill: var(--mute); font: 600 11px/1 var(--sans); letter-spacing: var(--track-wide); text-transform: uppercase; }
 .viz-band { fill: var(--viz-band); }
 .viz-band-line { fill: none; stroke: var(--viz-band-line); stroke-width: 1; }
 .viz-median { fill: none; stroke: var(--viz-line); stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; }
@@ -50,7 +50,7 @@
 .viz-matrix-block[data-days='4'] .viz-matrix-row { grid-template-columns: minmax(148px, 1.6fr) repeat(4, 1fr); }
 .viz-matrix-block[data-days='6'] .viz-matrix-row { grid-template-columns: minmax(148px, 1.6fr) repeat(6, 1fr); }
 .viz-matrix-row.is-head { position: sticky; top: 0; z-index: 1; background: var(--surface-card, var(--paper)); }
-.viz-matrix-head, .viz-matrix-corner { font: 600 9.5px/1.3 var(--sans); letter-spacing: var(--track-wide); text-transform: uppercase; color: var(--mute); padding: 2px 0; }
+.viz-matrix-head, .viz-matrix-corner { font: 600 11px/1.3 var(--sans); letter-spacing: var(--track-wide); text-transform: uppercase; color: var(--mute); padding: 2px 0; }
 .viz-matrix-name { align-self: center; font-size: var(--step--1); color: var(--ink-soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: var(--space-2); }
 /* The cell role sits on this wrapper, the button inside it stays the control. display: contents keeps the
    wrapper out of the grid layout so every row's columns still align. */
@@ -58,7 +58,7 @@
 
 .viz-cell {
   display: flex; align-items: center; justify-content: center; min-height: 26px; padding: 2px 4px; border: 1px solid var(--line);
-  border-radius: var(--r); background: var(--sunk); color: var(--ink-soft); cursor: pointer; font: 600 9.5px/1 var(--mono); letter-spacing: .04em;
+  border-radius: var(--r); background: var(--sunk); color: var(--ink-soft); cursor: pointer; font: 600 11px/1 var(--mono); letter-spacing: .04em;
   transition: transform var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out);
 }
 .viz-cell:hover { transform: translateY(-1px); box-shadow: var(--lift-1); }
@@ -70,7 +70,7 @@
 .viz-cell.is-unverified { position: relative; }
 .viz-cell.is-unverified::after {
   content: '?'; position: absolute; top: -4px; right: -4px; width: 12px; height: 12px; border-radius: 50%;
-  background: var(--slate); color: var(--paper); font-size: 9px; line-height: 12px; text-align: center;
+  background: var(--slate); color: var(--paper); font-size: 11px; line-height: 12px; text-align: center;
 }
 
 /* the corpus library cards */
@@ -83,10 +83,10 @@
 }
 .viz-card:hover { transform: translateY(-2px); box-shadow: var(--lift-2); }
 .viz-card-rail { display: flex; flex-direction: column; gap: 2px; padding-left: var(--space-2); border-left: 3px solid var(--data); }
-.viz-card-family { font: 600 9.5px/1.3 var(--sans); letter-spacing: var(--track-wide); text-transform: uppercase; color: var(--data); }
-.viz-card-scope { font-size: 10px; letter-spacing: var(--track-wide); text-transform: uppercase; color: var(--mute); }
+.viz-card-family { font: 600 11px/1.3 var(--sans); letter-spacing: var(--track-wide); text-transform: uppercase; color: var(--data); }
+.viz-card-scope { font-size: 11px; letter-spacing: var(--track-wide); text-transform: uppercase; color: var(--mute); }
 .viz-card-chip {
-  position: absolute; top: var(--space-3); right: var(--space-3); font: 600 9.5px/1 var(--mono); padding: 3px 7px; border-radius: var(--r-pill);
+  position: absolute; top: var(--space-3); right: var(--space-3); font: 600 11px/1 var(--mono); padding: 3px 7px; border-radius: var(--r-pill);
   border: 1px solid var(--line); color: var(--mute); background: var(--sunk);
 }
 .viz-card-chip.is-available { color: var(--data); border-color: var(--data); background: var(--data-wash); }
@@ -96,7 +96,7 @@
 .viz-card-open:hover { color: var(--data); border-bottom-color: var(--data); }
 .viz-card-open:disabled { cursor: default; color: var(--ink); border-bottom: 0; }
 .viz-card-facts { display: grid; grid-template-columns: auto 1fr; gap: 2px var(--space-2); margin: 0; }
-.viz-card-key { font: 600 9.5px/1.5 var(--sans); letter-spacing: var(--track-wide); text-transform: uppercase; color: var(--mute); }
+.viz-card-key { font: 600 11px/1.5 var(--sans); letter-spacing: var(--track-wide); text-transform: uppercase; color: var(--mute); }
 .viz-card-value { margin: 0; font-size: var(--step--1); color: var(--ink-soft); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 .viz-card-links { margin: auto 0 0; font-size: var(--step--1); }
 .viz-card-note { margin: auto 0 0; font-size: var(--step--1); color: var(--mute); }
@@ -106,7 +106,7 @@
 .viz-now-head { display: flex; align-items: baseline; gap: var(--space-3); flex-wrap: wrap; }
 .viz-now-head .viz-title { margin: 0; }
 .viz-now-place { font: 600 var(--step-1)/1.2 var(--sans); letter-spacing: var(--track-tight); }
-.viz-now-read { margin-left: auto; font: 500 10px/1 var(--mono); letter-spacing: var(--track-wide); text-transform: uppercase; color: var(--mute); }
+.viz-now-read { margin-left: auto; font: 500 11px/1 var(--mono); letter-spacing: var(--track-wide); text-transform: uppercase; color: var(--mute); }
 .viz-now-frame { margin-top: var(--space-2); }
 .viz-now-mark { cursor: pointer; }
 .viz-now-mark.is-observed { fill: var(--viz-observed); }
@@ -131,17 +131,17 @@
 .viz-daycol.is-yellow { border-top-color: var(--yellow); }
 .viz-daycol.is-green { border-top-color: var(--green); }
 .viz-daycol.is-unknown { border-top-style: dashed; border-top-color: var(--line-strong); }
-.viz-daycol-head { font: 600 9.5px/1.3 var(--sans); letter-spacing: var(--track-wide); text-transform: uppercase; color: var(--mute); }
+.viz-daycol-head { font: 600 11px/1.3 var(--sans); letter-spacing: var(--track-wide); text-transform: uppercase; color: var(--mute); }
 .viz-daycol-colour { font: 600 var(--step-0)/1.1 var(--mono); letter-spacing: .04em; }
 .viz-daycol.is-red .viz-daycol-colour { color: var(--red); }
 .viz-daycol.is-orange .viz-daycol-colour { color: var(--orange); }
 .viz-daycol.is-yellow .viz-daycol-colour { color: var(--yellow); }
 .viz-daycol.is-green .viz-daycol-colour { color: var(--green); }
 .viz-daycol-hazard { font-size: var(--step--1); color: var(--ink-soft); }
-.viz-daycol-meta, .viz-daycol-quiet, .viz-daycol-observed, .viz-daycol-flag { font-size: 10px; letter-spacing: .02em; color: var(--mute); }
+.viz-daycol-meta, .viz-daycol-quiet, .viz-daycol-observed, .viz-daycol-flag { font-size: 11px; letter-spacing: .02em; color: var(--mute); }
 .viz-daycol-observed { color: var(--viz-observed); font-weight: 600; }
 .viz-daycol-flag { color: var(--slate); font-weight: 600; }
-.viz-daycol-window { font-size: 10px; color: var(--mute); }
+.viz-daycol-window { font-size: 11px; color: var(--mute); }
 .viz-daycol-today { box-shadow: 0 0 0 1px var(--data); }
 
 @media (prefers-reduced-motion: no-preference) {

@@ -161,7 +161,7 @@
 .dash-hi { color: var(--g-paper); }
 .dash-lo { color: var(--g-mist-2); }
 .dash-sep { color: var(--g-line); }
-.dash-day-meta { font-family: var(--g-mono); font-size: 10.5px; color: var(--g-mist-2); }
+.dash-day-meta { font-family: var(--g-mono); font-size: 11px; color: var(--g-mist-2); }
 /* The published colour, and only where a source published one. */
 .dash-day-flag { position: absolute; top: 6px; right: 6px; width: 6px; height: 6px; border-radius: 2px; }
 .dash-day-flag[data-colour='red'] { background: var(--g-red); }
@@ -204,7 +204,7 @@
 .dash-tool-title { margin: 0; font-size: 14px; font-weight: 600; color: var(--g-paper); }
 .dash-tool-detail { margin: 0; font-size: 12.5px; color: var(--g-mist); }
 .dash-tool-foot { display: flex; align-items: center; gap: var(--g-2); margin-top: auto; padding-top: var(--g-2); }
-.dash-tool-output { font-family: var(--g-mono); font-size: 10.5px; color: var(--g-mist-2); }
+.dash-tool-output { font-family: var(--g-mono); font-size: 11px; color: var(--g-mist-2); }
 
 /* ---- what is kept on this machine ------------------------------------------------------------------- */
 .dash-kept { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--g-4); }

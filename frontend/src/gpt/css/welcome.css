@@ -131,7 +131,7 @@
 .g-picker-row:hover:not(:disabled) { background: var(--g-t2); }
 .g-picker-row:disabled { color: var(--g-mist); cursor: default; }
 .g-picker-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.g-picker-where { font-family: var(--g-mono); font-size: 10px; color: var(--g-mist); }
+.g-picker-where { font-family: var(--g-mono); font-size: 11px; color: var(--g-mist); }
 
 /* ---- a line for the hour ----------------------------------------------------------------------------
    The quietest thing on the welcome screen, and the only thing on it a reader can change. It opens with a
@@ -157,7 +157,7 @@
 .w-quote figcaption {
   display: flex; align-items: baseline; justify-content: center; gap: 6px; flex-wrap: wrap;
   margin-top: var(--g-3);
-  font-family: var(--g-mono); font-size: 10.5px; line-height: 1.5; color: var(--g-mist);
+  font-family: var(--g-mono); font-size: 11px; line-height: 1.5; color: var(--g-mist);
 }
 .w-quote-author { font-weight: 500; }
 .w-quote-work { color: var(--g-mist); }

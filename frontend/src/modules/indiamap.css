@@ -100,6 +100,8 @@
 .imap-coast { stroke: color-mix(in srgb, var(--g-accent) 46%, transparent); stroke-width: 0.45; }
 .imap-basins { stroke: color-mix(in srgb, var(--g-accent) 30%, transparent); stroke-width: 0.35; }
 .imap-cities circle { fill: var(--g-paper); fill-opacity: 0.5; }
+/* 3 SVG user units, not 3 CSS pixels: this text lives inside a 480-wide viewBox that is scaled to the
+   frame, so it renders at roughly eleven pixels. The 11px floor is about what a reader sees. */
 .imap-cities text { fill: var(--g-mist); font-size: 3px; }
 
 .imap-marker { pointer-events: none; }

@@ -44,7 +44,7 @@
      leaves the dead space under the openings instead. It reads from the top and scrolls. */
   .g-welcome { min-height: 0; justify-content: flex-start; padding-top: var(--g-5); padding-bottom: var(--g-7); gap: var(--g-6); }
   /* Provenance is mono, and mono at 11.5px does not fit 390px — it broke mid-token across two lines. */
-  .g-source { font-size: 10.5px; line-height: 1.7; }
+  .g-source { font-size: 11px; line-height: 1.7; }
   .g-hero { font-size: clamp(1.75rem, 1.1rem + 3.4vw, 2.2rem); }
 }
 
@@ -71,7 +71,22 @@
    The --color-* names are what Tailwind's utilities resolve, and they must be redeclared here rather
    than at the root, because a custom property declared at :root computes there and descendants inherit
    the computed value — redefining --ink alone would never reach --color-ink. */
-.g {
+/* `.g` AND `[data-hour]`, which is on the document element.
+
+   A <dialog> opens in the browser's top layer, outside .g — the command palette is one. It inherited the
+   --g-* palette correctly, because that is declared on the document element, and then read `--mute` for
+   its quiet text, which was repointed only inside .g. So it fell back to the base token layer's #59696e
+   and rendered twenty-five labels at 3.67:1 on a dark ground: below AA, on every surface, because the
+   palette is in the DOM on all of them.
+
+   Declaring these on the document element as well is safe for the reason the note above gives: the --g-*
+   values are set on that same element, so `var(--g-mist-2)` resolves to the hour's value rather than to a
+   base one. Anything in the top layer is themed from here on.
+
+   `:root[data-hour]` rather than `[data-hour]`: the base token layer declares these on a bare `:root`,
+   which ties a plain attribute selector on specificity and then wins on source order. Two selectors, one
+   class and one attribute, is (0,2,0) and settles it whatever the import order turns out to be. */
+.g, :root[data-hour] {
   /* raw */
   --ink: var(--g-paper);
   --ink-soft: var(--g-mist);
@@ -185,7 +200,7 @@
 /* The published-colour washes were mixed for a light ground; on this one they read as stickers. The cell
    keeps the source's colour — that rule never moves — but carries it as ink and edge over the dark, which
    is the same information at the right contrast. */
-.g {
+.g, :root[data-hour] {
   --red-wash: color-mix(in srgb, var(--g-red) 16%, transparent);
   --orange-wash: color-mix(in srgb, var(--g-orange) 16%, transparent);
   --yellow-wash: color-mix(in srgb, var(--g-yellow) 16%, transparent);

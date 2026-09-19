@@ -340,6 +340,37 @@ def main():
                      "noon and night grounds differ by " + format(day_night, ".1f") + ":1"
                      if fe15 else "noon and night are indistinguishable: " + format(day_night, ".2f") + ":1"))
 
+    # FE17: nothing a reader is meant to read is set below eleven pixels.
+    #
+    # The chart engine's labels were at 9.5px and the module surfaces' meta lines at 10 and 10.5 — column
+    # headers on the district matrix, the family and scope labels on every document card, the tool output
+    # lines on the board. Small type is how a dense surface pretends to be less dense than it is, and the
+    # matrix labels in particular name a published hazard colour.
+    #
+    # Two things are exempt and both are exempt for a reason, not by convenience: text inside an SVG
+    # viewBox is in user units that scale with the frame rather than in CSS pixels, and a screen-reader-only
+    # rule is clipped to one pixel and never read by eye.
+    SVG_TEXT = re.compile(r"\bfill:", re.I)
+    small = []
+    for sheet in sorted((SRC).rglob("*.css")):
+        # Paper is not a screen. print.css expands a link into its URL after the text, and ten point on
+        # paper at print resolution is the convention for that, not a legibility failure.
+        if sheet.name == "print.css":
+            continue
+        text = re.sub(r"/\*.*?\*/", "", read(sheet), flags=re.S)
+        for block in re.finditer(r"([^{}]+)\{([^}]*)\}", text):
+            selector, body = block.group(1).strip(), block.group(2)
+            if "clip-path" in body or "clip:" in body:
+                continue
+            for size in re.findall(r"font-size:\s*([0-9]+(?:\.[0-9]+)?)px", body) + \
+                        re.findall(r"font:\s*[0-9]+\s+([0-9]+(?:\.[0-9]+)?)px/", body):
+                if float(size) < 11.0 and not SVG_TEXT.search(body):
+                    small.append(sheet.name + " " + selector.split("\n")[-1].strip()[:38] + " @" + size + "px")
+    fe17 = not small
+    findings.append(("FE17_type_floor", fe17,
+                     "no visible text is set below 11px"
+                     if fe17 else "below the 11px floor: " + "; ".join(sorted(set(small)))[:170]))
+
     # The port ledger is part of the frontend story now: it says which of the vanilla checks the React specs
     # carry, and it must parse and be internally consistent.
     try:

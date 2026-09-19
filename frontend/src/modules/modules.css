@@ -310,8 +310,8 @@
 /* charts --------------------------------------------------------------------------------------- */
 .dash-chart { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
 .dash-chart-svg { width: 100%; height: auto; max-height: 15rem; }
-.dash-axis { fill: var(--mute); font-size: 7px; font-family: var(--mono); }
-.dash-value { fill: var(--ink); font-size: 7px; font-family: var(--mono); text-anchor: middle; }
+.dash-axis { fill: var(--mute); font-size: 11px; font-family: var(--mono); }
+.dash-value { fill: var(--ink); font-size: 11px; font-family: var(--mono); text-anchor: middle; }
 .dash-gridline { stroke: var(--line); stroke-width: .5; }
 /* An SVG shape cannot take an HTML background: the hazard ramp is restated here as fill/stroke for the two
    shapes that are SVG (a matrix bubble and a donut slice), from the same tokens and only for a published
@@ -409,7 +409,7 @@
 
 /* The matrix: vertical day guides, quiet second-line date labels, and a hover that states the cell. */
 .dash-gridline-vertical { stroke: var(--line); stroke-width: .5; stroke-dasharray: 3 4; opacity: .7; }
-.dash-axis-quiet { fill: var(--mute); font-size: 9px; }
+.dash-axis-quiet { fill: var(--mute); font-size: 11px; }
 .dash-bubble-cell:hover .dash-bubble { stroke-width: 1.6; }
 .dash-bubble-cell:hover .dash-value { font-weight: 700; }
 

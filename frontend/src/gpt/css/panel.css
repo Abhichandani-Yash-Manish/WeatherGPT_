@@ -13,11 +13,11 @@
 .g-place-row .g-row-text { display: flex; align-items: center; gap: 5px; }
 .g-place-pinned { flex: 0 0 auto; color: var(--g-accent); }
 .g-place-count {
-  font-family: var(--g-mono); font-size: 10.5px; color: var(--g-mist);
+  font-family: var(--g-mono); font-size: 11px; color: var(--g-mist);
   padding: 1px 5px; border-radius: var(--g-r-pill); background: var(--g-t3);
 }
 .g-place-clear {
-  float: right; font-family: var(--g-sans); font-size: 10.5px; font-weight: 500;
+  float: right; font-family: var(--g-sans); font-size: 11px; font-weight: 500;
   padding: 1px 6px; color: var(--g-accent);
 }
 
@@ -30,7 +30,7 @@
    warning in force fo". */
 .g-row-name { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .g-row-place {
-  font-family: var(--g-mono); font-size: 10px; color: var(--g-mist);
+  font-family: var(--g-mono); font-size: 11px; color: var(--g-mist);
   max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 .g-row-match {
@@ -94,7 +94,7 @@
 .g-side-temp { font-family: var(--g-display); font-size: 1.65rem; font-weight: 700; letter-spacing: -0.03em; color: var(--g-paper); font-variant-numeric: tabular-nums; }
 .g-side-unit { font-size: 0.45em; font-weight: 600; margin-left: 3px; color: var(--g-mist); }
 .g-side-cond { font-size: 13.5px; color: var(--g-mist); }
-.g-side-source { margin: 0; font-family: var(--g-mono); font-size: 10.5px; line-height: 1.7; color: var(--g-mist); overflow-wrap: anywhere; }
+.g-side-source { margin: 0; font-family: var(--g-mono); font-size: 11px; line-height: 1.7; color: var(--g-mist); overflow-wrap: anywhere; }
 .g-side-warn { margin: 0; font-size: 12px; color: var(--g-orange); }
 .g-side-note { margin: 0; font-size: 12px; line-height: 1.6; color: var(--g-mist); }
 .g-side-select {
@@ -110,12 +110,12 @@
    compact by design — a 300px panel is for glancing, and the full rows live on the surfaces they link to. */
 .g-side-days { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
 .g-side-days li { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; font-size: 12px; }
-.g-side-when { font-family: var(--g-mono); font-size: 10.5px; color: var(--g-mist); min-width: 44px; }
+.g-side-when { font-family: var(--g-mono); font-size: 11px; color: var(--g-mist); min-width: 44px; }
 .g-side-quiet { font-size: 12px; color: var(--g-mist); }
 .g-side-hazard { font-size: 12px; color: var(--g-mist); }
 .g-side-hours { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; }
 .g-side-hours li { display: flex; align-items: baseline; gap: var(--g-2); font-size: 12px; }
-.g-side-hour { font-family: var(--g-mono); font-size: 10.5px; color: var(--g-mist); min-width: 34px; }
+.g-side-hour { font-family: var(--g-mono); font-size: 11px; color: var(--g-mist); min-width: 34px; }
 .g-side-value { color: var(--g-paper); font-variant-numeric: tabular-nums; }
 
 /* The press back to the newest turn. It appears only when the thread is scrolled, and it sits above the

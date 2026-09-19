@@ -76,7 +76,7 @@
 /* The shortcut, shown beside the row it belongs to and only where it fires. ⌥ rather than ⌘: a browser owns
    ⌘1–⌘9 for its tabs. */
 .g-kbd {
-  font-family: var(--g-mono); font-size: 10px; line-height: 1;
+  font-family: var(--g-mono); font-size: 11px; line-height: 1;
   padding: 3px 5px; border-radius: 5px; color: var(--g-mist);
   border: 1px solid var(--g-line-soft); background: var(--g-t1);
 }
