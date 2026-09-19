@@ -113,6 +113,31 @@ def publisher_date():
             'features': sum(dates.values())}
 
 
+def scheduler_state():
+    """Whether the refresh is scheduled, and what happened the last time it ran.
+
+    A shelf being current does not mean the schedule works - someone may simply have run it by hand, which
+    is exactly what happened here for five days before anyone noticed it had stopped. So the report says
+    both: how old the data is, and whether anything is arranged to keep it that way.
+    """
+    import subprocess
+    state = {'scheduled': False, 'entries': [], 'last_run': None}
+    try:
+        crontab = subprocess.run(['crontab', '-l'], capture_output=True, text=True, timeout=15).stdout
+        state['entries'] = [line.strip() for line in crontab.splitlines()
+                            if 'daily_refresh.sh' in line and not line.strip().startswith('#')]
+        state['scheduled'] = bool(state['entries'])
+    except Exception:
+        pass
+    record = ROOT / 'data/runtime/refresh/last-run.json'
+    if record.exists():
+        try:
+            state['last_run'] = json.loads(record.read_text())
+        except ValueError:
+            state['last_run'] = {'unreadable': True}
+    return state
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--json', action='store_true')
@@ -144,10 +169,11 @@ def main():
             stale.append(name)
 
     jobs = ingestion_health()
+    schedule = scheduler_state()
     upstream = publisher_date() if args.check_sources else None
     if args.json:
         print(json.dumps({'checked_at_utc': datetime.now(timezone.utc).isoformat(),
-                          'shelves': rows, 'ingestion_jobs': jobs, 'publisher': upstream,
+                          'shelves': rows, 'ingestion_jobs': jobs, 'publisher': upstream, 'schedule': schedule,
                           'stale': stale}, indent=1))
     else:
         print(f'{"shelf":22} {"covers":12} {"behind":>7} {"budget":>7}  state')
@@ -160,6 +186,21 @@ def main():
                 print(f'{"":22} -> {row["why"]}')
         if jobs:
             print(f'\ningestion jobs: {jobs}')
+        run = schedule.get('last_run') or {}
+        if schedule.get('scheduled'):
+            print(f'\nschedule: {len(schedule["entries"])} cron entr'
+                  f'{"y" if len(schedule["entries"]) == 1 else "ies"} installed')
+            for entry in schedule['entries']:
+                print(f'          {entry[:74]}')
+        else:
+            print('\nschedule: NOT SCHEDULED - nothing keeps this store current on its own')
+            print('          install with: scripts/install_daily_cron.sh')
+        if run.get('finished_at_utc'):
+            failed = run.get('failed_steps') or []
+            print(f'last run: {run["finished_at_utc"]} '
+                  + ('ok' if run.get('ok') else 'FAILED: ' + ', '.join(failed) if failed else 'FAILED'))
+        elif schedule.get('scheduled'):
+            print('last run: never - the schedule is installed but has not fired yet')
         if upstream is not None:
             if not upstream.get('reachable'):
                 print(f'\npublisher: unreachable - {upstream.get("why")}')

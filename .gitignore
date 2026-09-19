@@ -50,3 +50,6 @@ tmp/npm-cache/
 # machine-local tooling output, not evidence, and 2 MB of node_modules under research/ is neither.
 .dsh-vision-toolkit/
 research/design/probe-fonts/
+
+# The scheduled refresh's own runtime state: a log, a lock and the last run's outcome. Machine-local.
+data/runtime/refresh/
