@@ -49,8 +49,32 @@ export function Composer({ draft, onDraft, onSend, onStop, busy, language, place
       const { blob, contentType } = await active.stop();
       const encoded = await blobToBase64(blob);
       const result = await transcribe({ audio_base64: encoded, content_type: contentType, language: language || undefined });
-      if (result.text) setHeard({ text: result.text, detail: result.detail });
-      else setNote(result.detail || 'The recording did not transcribe into any text.');
+      /* The field the route actually answers with. This read `result.text`, and the recogniser returns
+         `transcript`: every recording that transcribed perfectly was reported to the reader as "did not
+         transcribe into any text", which is a sentence about the product's failure invented by the interface.
+         Both names are accepted because the type has always carried both; the order is the route's. */
+      const heardText = result.transcript || result.text || '';
+      if (!heardText) {
+        setNote(result.detail || 'The recording did not transcribe into any text.');
+        return;
+      }
+      /* The recogniser's own report about its hearing, shown as it returned it: which language it thinks it
+         heard, and how confident it is about that hearing. Recognition confidence is the model's own number
+         about a transcript — it is never answer confidence, never a forecast, and never confidence in a value.
+         The sentence is built from the payload's own fields, so a recogniser that stated neither is shown as
+         having stated neither. */
+      const heardLanguage = result.detected_language_code
+        ? 'Heard as ' + result.detected_language_code
+        : 'Language as heard not recorded';
+      const confidence = typeof result.recognition_probability === 'number'
+        ? 'recognition confidence ' + result.recognition_probability
+        : 'recognition confidence not recorded';
+      setHeard({
+        text: heardText,
+        detail: heardLanguage + ' · ' + confidence +
+          ' — the recogniser’s own number about its hearing, and not any answer confidence, not a forecast and not any kind of' +
+          ' confidence in a value. The transcript is a proposal: correct it before asking.',
+      });
     } catch (error) {
       setNote(String((error as Error)?.message || error));
     }
@@ -60,15 +84,16 @@ export function Composer({ draft, onDraft, onSend, onStop, busy, language, place
     <div className="g-composer">
       {/* What the microphone heard, for correction. Nothing is sent until the reader accepts it. */}
       {heard ? (
-        <div className="g-notice" style={{ margin: '0 0 6px' }} data-testid="heard">
-          <p style={{ margin: 0, fontSize: 13 }}>Heard: “{heard.text}”</p>
-          {heard.detail ? <p className="g-claim-source" style={{ marginTop: 4 }}>{heard.detail}</p> : null}
-          <div className="g-chips" style={{ marginTop: 8 }}>
+        <div className="g-heard" data-testid="transcript-panel">
+          <p className="g-heard-head"><Mic size={13} aria-hidden="true" /> Heard, for correction</p>
+          <p className="g-heard-text" data-testid="transcript-heard">{heard.text}</p>
+          <p className="g-claim-source">{heard.detail}</p>
+          <div className="g-chips">
             <button type="button" className="g-chip" onClick={() => { onDraft(heard.text); setHeard(null); box.current?.focus(); }}>
-              <Check size={13} aria-hidden="true" /> Use it
+              <Check size={13} aria-hidden="true" /> Use this text
             </button>
             <button type="button" className="g-chip" onClick={() => setHeard(null)}>
-              <X size={13} aria-hidden="true" /> Discard
+              <X size={13} aria-hidden="true" /> Discard it
             </button>
           </div>
         </div>
@@ -96,6 +121,7 @@ export function Composer({ draft, onDraft, onSend, onStop, busy, language, place
         <button
           type="button"
           className="g-tool"
+          data-testid="record-question"
           aria-pressed={recording}
           aria-label={recording ? 'Stop recording' : 'Record a question'}
           onClick={() => {
@@ -115,7 +141,7 @@ export function Composer({ draft, onDraft, onSend, onStop, busy, language, place
         {note ? <span className="g-claim-source" role="status">{note}</span> : null}
         <span className="g-spacer" />
         {busy ? (
-          <button type="button" className="g-send" onClick={onStop} aria-label="Stop generating">
+          <button type="button" className="g-send" onClick={onStop} aria-label="Stop generating" data-testid="stop-turn">
             <Square size={14} aria-hidden="true" />
           </button>
         ) : (

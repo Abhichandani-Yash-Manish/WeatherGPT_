@@ -4,13 +4,9 @@
    route only. */
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, screen, waitFor, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { http, HttpResponse } from 'msw';
+import { render, screen } from '@testing-library/react';
 import type { AnswerPacket } from '../api/types';
-import { server } from '../test/msw';
 import { AnswerTurn } from './AnswerTurn';
-import { ConversationRail } from './ConversationRail';
 import { firstPoint } from './model';
 
 function mount(node: React.ReactElement) {
@@ -76,23 +72,4 @@ describe('transcript parity', () => {
     expect(firstPoint(packet({ resolved_points: { nowhere: { label: 'nowhere' } } }))).toBeNull();
   });
 
-  it('deletes a stored conversation through the local route only, and says when the delete failed', async () => {
-    const asked: string[] = [];
-    server.use(
-      http.get('/api/conversations', () => HttpResponse.json({
-        schema_version: 'conversation-ledger-v1', total: 1, limit: 40, note: 'stored locally',
-        conversations: [{ id: '11111111-1111-4111-8111-111111111111', opening_question: 'hello', turns: 2, asked: 1 }],
-      })),
-      http.delete('/api/conversations/:id', async ({ request, params }) => {
-        asked.push(request.method + ' ' + String(params.id));
-        return HttpResponse.json({ removed: String(params.id) });
-      }),
-    );
-    mount(<ConversationRail register="conversational" currentId={null} onOpen={() => {}} onNew={() => {}} onRegister={() => {}} />);
-    const row = await screen.findByText('hello');
-    expect(row).toBeInTheDocument();
-    const button = within(row.parentElement!.parentElement as HTMLElement).getByRole('button', { name: /Delete/ });
-    await userEvent.click(button);
-    await waitFor(() => expect(asked).toEqual(['DELETE 11111111-1111-4111-8111-111111111111']));
-  });
 });

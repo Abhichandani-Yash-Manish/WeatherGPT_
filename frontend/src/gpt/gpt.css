@@ -747,6 +747,48 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
 }
 .g-quiet:hover { color: var(--g-paper); background: var(--g-t2); }
 
+/* ---- the working turn ------------------------------------------------------------------------------
+   What the machine is doing while a question is answered, in the four things a reader can be told honestly:
+   the stage it is on, the stages it has passed, the engine's provisional first reading, and how long it has
+   been. Deliberately calm — nothing counts up to a hundred, nothing promises an answer is near, and the
+   provisional line is labeled as provisional, because it is a reading that may be superseded. */
+.g-working { display: flex; flex-direction: column; gap: var(--g-2); }
+.g-working-head {
+  display: flex; align-items: center; gap: var(--g-2); margin: 0;
+  font-size: 14px; font-weight: 600; color: var(--g-paper);
+}
+.g-working-note { margin: 0; font-size: 12px; line-height: 1.6; color: var(--g-mist); max-width: 68ch; }
+/* A stage is a state, not a step in a progress bar: a dot either is the current one or has been passed. */
+.g-stages { list-style: none; margin: var(--g-1) 0 0; padding: 0; display: flex; flex-direction: column; gap: 3px; }
+.g-stages li { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--g-mist); }
+.g-stages li::before {
+  content: ''; width: 5px; height: 5px; border-radius: 50%; flex: 0 0 5px;
+  background: var(--g-accent); opacity: 0.35;
+}
+.g-stages li[data-state='now'] { color: var(--g-paper); }
+.g-stages li[data-state='now']::before { opacity: 1; }
+.g-reading-line {
+  margin: 0; font-size: 13px; line-height: 1.6; color: var(--g-mist);
+  border-left: 2px solid color-mix(in srgb, var(--g-accent) 40%, transparent); padding-left: var(--g-3);
+}
+.g-reading-line span { color: var(--g-paper); font-weight: 500; }
+
+/* ---- what the microphone heard ---------------------------------------------------------------------
+   A transcript is a proposal, not a question: it is read back before anything is sent, with the recogniser's
+   own report about its hearing under it. It sits above the composer's textarea rather than replacing it,
+   because the reader may correct it rather than accept it. */
+.g-heard {
+  display: flex; flex-direction: column; gap: var(--g-2);
+  margin: 0 0 var(--g-2); padding: var(--g-3);
+  border: 1px solid var(--g-line); border-radius: var(--g-r);
+  background: var(--g-t2);
+}
+.g-heard-head {
+  display: flex; align-items: center; gap: 6px; margin: 0;
+  font-size: 11.5px; font-weight: 600; letter-spacing: 0.01em; color: var(--g-mist);
+}
+.g-heard-text { margin: 0; font-size: 15px; line-height: 1.5; color: var(--g-paper); }
+
 /* ---- turns ----------------------------------------------------------------------------------------
    A turn does not get a card. The column is the container, and a hairline between turns is enough
    separation — boxing every message is the SaaS-kit tell and it costs the column its rhythm. */

@@ -11,11 +11,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { PanelLeft, Bell, ArrowDown, ArrowLeft, SlidersHorizontal } from 'lucide-react';
 
+import { postJson } from '../api/client';
 import { istStamp } from '../lib/time';
 import type { AnswerPacket } from '../api/types';
 import { personas as readPersonas } from '../chat/api';
 import { useConversation } from '../chat/useConversation';
-import { stageLabel } from '../chat/model';
+import { noticeHint, readingLine, stageLabel } from '../chat/model';
+import { elapsedWords } from '../lib/time';
 import { SurfaceHost } from '../shell/SurfaceHost';
 import { viewById, type ViewEntry } from '../shell/views';
 import { AnswerTurn } from '../chat/AnswerTurn';
@@ -170,8 +172,60 @@ export function Workspace({
     void conversation.send(text, selectionId ? { selectionId } : undefined);
   };
 
+  /* Collect fresh evidence. The answer card has always offered it, and the shell that replaced the old Ask
+     surface dropped the wire: the control was drawn only when a handler was passed, and none was, so the
+     feature existed in the component and nowhere in the product. It is re-connected here, with the same two
+     conditions the old surface held it to — the answer must have resolved exactly one point, and a failure is
+     the server's own sentence rather than a generic one. */
+  const collect = async (packet: AnswerPacket) => {
+    const point = Object.values(packet.resolved_points || {})[0];
+    const latitude = point?.coordinates?.latitude ?? point?.latitude;
+    const longitude = point?.coordinates?.longitude ?? point?.longitude;
+    if (typeof latitude !== 'number' || typeof longitude !== 'number') {
+      conversation.notify('This answer did not resolve a single place point, so a collection cannot be requested for it.', 'error');
+      return;
+    }
+    try {
+      const result = await postJson<{ refresh?: { message?: string; state?: string } }>('/api/refresh', {
+        question: packet.question,
+        coordinates: { latitude, longitude },
+      });
+      const refresh = result.refresh || {};
+      conversation.notify(
+        (refresh.message || 'A collection was requested.') +
+          (refresh.state === 'already_fresh' ? ' Nothing had to be collected: the stored evidence is still within its serving lifetime.' : ''),
+        'calm',
+      );
+    } catch (error) {
+      conversation.notify(String((error as Error)?.message || error), 'error');
+    }
+  };
+
   const working = conversation.working;
-  const stage = working ? stageLabel(working.progress?.stage) : '';
+  const progress = working?.progress;
+  /* The stages the engine has been through, with the one it is on marked. A single stage is shown as a single
+     stage rather than as a list of one. */
+  const stages = progress?.stages_seen?.length ? progress.stages_seen : progress?.stage ? [progress.stage] : ['started'];
+  const current = progress?.stage || null;
+  const firstReading = working ? readingLine(working.preview) : null;
+  const queue = progress?.queue;
+  const queueLine = queue && (queue.waiting > 0 || queue.capacity)
+    ? [
+        queue.active ? 'One turn is running on this workspace.' : '',
+        queue.waiting > 0 ? queue.waiting + ' question' + (queue.waiting === 1 ? '' : 's') + ' waiting' : 'No question is waiting',
+        queue.capacity ? 'the queue holds ' + queue.capacity + ' waiting' : '',
+        queue.wait_seconds_before_refusal ? 'a wait longer than ' + queue.wait_seconds_before_refusal + ' s is refused rather than queued' : '',
+      ].filter(Boolean).join(' · ') + '.'
+    : '';
+
+  /* The clock under a working turn: it answers "is this still going?", which is the only question a reader has
+     while it runs. It ticks once a second and stops when the turn does. */
+  const [elapsedNow, setElapsedNow] = useState(() => Date.now());
+  useEffect(() => {
+    if (!working) return;
+    const timer = window.setInterval(() => setElapsedNow(Date.now()), 1000);
+    return () => window.clearInterval(timer);
+  }, [working]);
   const composer = (
     <div className="g-dock">
       <Composer
@@ -332,7 +386,18 @@ export function Workspace({
                     );
                   }
                   if (turn.role === 'notice') {
-                    return <div key={turn.key} className="g-turn g-in"><p className="g-notice">{turn.text}</p></div>;
+                    /* A failed read says two things: what the server said, and what state that leaves the reader
+                       in. The second sentence is the difference between an expired session and a store that did
+                       not answer — they call for different actions — and it was carried by the surface this
+                       shell replaced but never rendered by the shell itself. */
+                    const hint = noticeHint(turn.kind);
+                    return (
+                      <div key={turn.key} className="g-turn g-in" data-tone={turn.tone}>
+                        <p className="g-notice">{turn.text}</p>
+                        {hint ? <p className="g-claim-note">{hint}</p> : null}
+                        <p className="g-claim-note">Your question is back in the box so it stays editable.</p>
+                      </div>
+                    );
                   }
                   if (turn.role === 'restored') {
                     return (
@@ -344,16 +409,43 @@ export function Workspace({
                   }
                   return (
                     <div key={turn.key} className="g-turn g-in">
-                      <AnswerTurn packet={turn.packet} onFollowUp={followUp} />
+                      <AnswerTurn packet={turn.packet} onFollowUp={followUp} onRefresh={packet => void collect(packet)} />
                     </div>
                   );
                 })}
                 {working ? (
-                  <div className="g-turn">
-                    <div className="g-stream" role="status" aria-live="polite">
+                  /* What the machine is doing, in the four things a reader can be told honestly: the stage it
+                     is on, the stages it has been through, the engine's provisional first reading, and how
+                     long it has been. No percentage, no ETA, and no claim that an answer is near. */
+                  <div className="g-turn g-working" data-testid="working-turn">
+                    <p className="g-working-head" role="status" aria-live="polite">
                       <span className="g-dots" aria-hidden="true"><i /><i /><i /></span>
-                      <span>{stage || 'Working'}</span>
-                    </div>
+                      <span>Working on it</span>
+                    </p>
+                    <p className="g-working-note">
+                      Resolving the place and window, then retrieving evidence. A local model is interpreting your
+                      question, so this can take up to about a minute.
+                    </p>
+                    <ol className="g-stages">
+                      {stages.map(entry => (
+                        <li key={entry} data-state={entry === current ? 'now' : 'done'}>
+                          {stageLabel(entry)}{entry === current ? ' — now' : ''}
+                        </li>
+                      ))}
+                    </ol>
+                    {firstReading ? (
+                      <p className="g-reading-line" data-testid="reading-line">
+                        <span>First reading: </span>{firstReading}
+                      </p>
+                    ) : null}
+                    {working.preview?.note ? <p className="g-working-note">{working.preview.note}</p> : null}
+                    {working.previewFailed ? <p className="g-working-note">{working.previewFailed}</p> : null}
+                    {queueLine ? <p className="g-working-note">{queueLine}</p> : null}
+                    <p className="g-working-note">
+                      {elapsedWords(elapsedNow / 1000)} since you asked
+                      {progress?.turn_seconds ? ' · ' + elapsedWords(progress.turn_seconds) + ' of server work recorded' : ''}
+                    </p>
+                    {working.stopRequested ? <p className="g-working-note">{working.stopDetail || 'Stop requested.'}</p> : null}
                   </div>
                 ) : null}
               </>

@@ -4,15 +4,14 @@
    The leak rule matters here because the card is assembled from class names; a renderer that pushed a class
    name into a text node would show the reader chrome instead of a measure. */
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { readdirSync, readFileSync } from 'node:fs';
 import { http, HttpResponse } from 'msw';
 import type { AnswerPacket } from '../api/types';
 import { AnswerTurn } from './AnswerTurn';
-import { AskSurface } from './AskSurface';
 import { server } from '../test/msw';
+import { renderAsk } from '../test/ask';
 
 const PACKET: AnswerPacket = {
   conversation_id: '44444444-4444-4444-8444-444444444444',
@@ -33,16 +32,11 @@ const PACKET: AnswerPacket = {
   retrieval_plan: [],
 };
 
-function mount(node: React.ReactElement) {
-  const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-  return render(<QueryClientProvider client={client}>{node}</QueryClientProvider>);
-}
-
 describe('the page rules', () => {
   it('refuses an empty question without sending anything', async () => {
     const asked: string[] = [];
     server.use(http.post('/api/chat', ({ request }) => { asked.push(request.url); return HttpResponse.json(PACKET); }));
-    mount(<AskSurface language="" persona="" />);
+    renderAsk();
     const box = screen.getByLabelText('Your question');
     expect(screen.getByTestId('send-question')).toBeDisabled();
     await userEvent.click(box);
@@ -59,7 +53,7 @@ describe('the page rules', () => {
     server.use(
       http.post('/api/chat', () => HttpResponse.json({ error: 'The workspace token is no longer accepted.' }, { status: 403 })),
     );
-    mount(<AskSurface language="" persona="" />);
+    renderAsk();
     const box = screen.getByLabelText('Your question');
     await userEvent.type(box, 'Will it rain?');
     await userEvent.click(screen.getByTestId('send-question'));
@@ -72,7 +66,7 @@ describe('the page rules', () => {
     server.use(
       http.post('/api/chat', () => HttpResponse.json({ error: 'The local evidence store is unavailable.' }, { status: 503 })),
     );
-    mount(<AskSurface language="" persona="" />);
+    renderAsk();
     const box = screen.getByLabelText('Your question');
     await userEvent.type(box, 'Will it rain?');
     await userEvent.click(screen.getByTestId('send-question'));
@@ -102,7 +96,7 @@ describe('the page rules', () => {
     collect('../web');
     expect(classes.size).toBeGreaterThan(20);
 
-    const { container } = mount(<AnswerTurn packet={PACKET} onFollowUp={() => {}} />);
+    const { container } = render(<AnswerTurn packet={PACKET} onFollowUp={() => {}} />);
     const words = (container.textContent || '').split(/[^A-Za-z0-9-]+/).filter(Boolean);
     const leaked = words.filter(word => classes.has(word));
     expect(leaked, 'class names reached the visible text: ' + leaked.join(', ')).toEqual([]);

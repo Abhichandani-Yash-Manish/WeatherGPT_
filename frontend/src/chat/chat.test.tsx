@@ -1,11 +1,10 @@
 /* The transcript's own checks. The payloads are the ones the vanilla component suite recorded, reused
    verbatim, so each check keeps testing the same rule it tested before the port. */
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, screen, waitFor, within } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
-import { AskSurface } from './AskSurface';
+import { renderAsk } from '../test/ask';
 import { readRegister, REGISTER_KEY, type Register } from './model';
 import { isSpeakable, writableLanguages } from './voice';
 import { server } from '../test/msw';
@@ -32,11 +31,6 @@ const FORECAST = {
   retrieval_plan: [], task_coverage: { requested: 1, completed: 1, incomplete_ids: [] },
   resolved_points: { Ahmedabad: { selection_id: 'geonames:1279233', label: 'Ahmedabad, Gujarat', coordinates: { latitude: 23.02579, longitude: 72.58727 } } },
 };
-
-function withClient(node: React.ReactElement) {
-  const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-  return render(<QueryClientProvider client={client}>{node}</QueryClientProvider>);
-}
 
 type ChatOptions = {
   preview?: unknown;
@@ -98,9 +92,10 @@ describe('the transcript', () => {
 
   it('renders a retrieved answer with its value, its source and its window', async () => {
     server.use(...handlers(FORECAST));
-    withClient(<AskSurface language="" persona="" />);
+    renderAsk();
     await ask('Will it rain in Ahmedabad?');
-    expect(await screen.findByText('Will it rain in Ahmedabad?')).toBeInTheDocument();
+    /* Twice, by design: the bar names the thread and the transcript holds the question. */
+    expect((await screen.findAllByText('Will it rain in Ahmedabad?')).length).toBeGreaterThan(0);
     const card = await screen.findByRole('article');
     expect(within(card).getByText('Forecast rainfall')).toBeInTheDocument();
     expect(within(card).getByText('0.3')).toBeInTheDocument();
@@ -111,7 +106,7 @@ describe('the transcript', () => {
 
   it('marks a conversational reply as having read no source and shows no fact table', async () => {
     server.use(...handlers({ ...FORECAST, status: 'conversation', answer_basis: 'conversation', facts: [], citations: [], answer: 'Hello. Ask me about a place and a time.' }));
-    withClient(<AskSurface language="" persona="" />);
+    renderAsk();
     await ask('hello');
     const card = await screen.findByRole('article');
     expect(within(card).getByText('No source read')).toBeInTheDocument();
@@ -120,7 +115,7 @@ describe('the transcript', () => {
 
   it('lets the browser read the direction of the answer sentence', async () => {
     server.use(...handlers({ ...FORECAST, answer: 'احمد آباد میں بارش متوقع ہے۔' }));
-    withClient(<AskSurface language="ur" persona="" />);
+    renderAsk({ language: "ur" });
     await ask('کیا بارش ہوگی؟');
     const paragraph = await screen.findByText('احمد آباد میں بارش متوقع ہے۔');
     expect(paragraph).toHaveAttribute('dir', 'auto');
@@ -133,7 +128,7 @@ describe('the transcript', () => {
         trace: { ...FORECAST.trace, context_resolution: { action: 'revise', inherited_fields: ['place', 'window'], changed_fields: ['measure'] } },
       }),
     );
-    withClient(<AskSurface language="" persona="" />);
+    renderAsk();
     await ask('and what about the evening?');
     const carried = await screen.findByTestId('carried-context');
     expect(carried).toHaveTextContent('Carried from the previous turn: place, window');
@@ -142,7 +137,7 @@ describe('the transcript', () => {
 
   it('sets a held answer apart from a retrieved one', async () => {
     server.use(...handlers({ ...FORECAST, status: 'unavailable', facts: [], citations: [], answer: 'I could not retrieve a usable forecast for that window.' }));
-    withClient(<AskSurface language="" persona="" />);
+    renderAsk();
     await ask('Will it rain in Surat tomorrow?');
     const tag = await screen.findByText('Evidence gap');
     expect(tag.className).toMatch(/tag-held/);
@@ -150,7 +145,7 @@ describe('the transcript', () => {
 
   it('states the language downgrade in words rather than passing as answered', async () => {
     server.use(...handlers({ ...FORECAST, notes: ['The output language could not be rendered, so the answer is in English.'] }));
-    withClient(<AskSurface language="hi" persona="" />);
+    renderAsk({ language: "hi" });
     await ask('बारिश होगी?');
     expect(await screen.findByText(/not in the language you asked for/)).toBeInTheDocument();
   });
@@ -167,7 +162,7 @@ describe('the transcript', () => {
       trace: { ...FORECAST.trace, generation: { provider: 'typed_task_renderers', requested_language: 'kn', language_selection: 'user_selected', language_adherence: 'values_did_not_survive' } },
     };
     server.use(...handlers(downgraded));
-    withClient(<AskSurface language="kn" persona="" />);
+    renderAsk({ language: "kn" });
     await ask('ಬೆಂಗಳೂರಿನಲ್ಲಿ ಈಗ ಮಳೆ ಬರುತ್ತಿದೆಯೇ?');
     expect(await screen.findByText(/not in the language you asked for/)).toBeInTheDocument();
     /* The sentence appears on the downgrade card and again in the notes list; one copy is enough to
@@ -184,7 +179,7 @@ describe('the transcript', () => {
       ],
     };
     server.use(...handlers(gapped));
-    withClient(<AskSurface language="" persona="" />);
+    renderAsk();
     await ask('Will it rain in Ahmedabad?');
     const hits = await screen.findAllByRole('button', { name: /No retrieved evidence/ });
     expect(hits.length).toBeGreaterThan(0);
@@ -194,7 +189,7 @@ describe('the transcript', () => {
   it('shows the first reading and the stages while a turn works, and stops on request', async () => {
     const cancelled: unknown[] = [];
     server.use(...handlers(FORECAST, { onCancel: body => cancelled.push(body), answerAfterMs: 900 }));
-    withClient(<AskSurface language="" persona="" />);
+    renderAsk();
     await ask('Will it rain in Ahmedabad?');
     expect(await screen.findByTestId('working-turn')).toBeInTheDocument();
     expect(await screen.findByTestId('reading-line')).toHaveTextContent(/place: Ahmedabad/);
@@ -207,7 +202,7 @@ describe('the transcript', () => {
 
   it('returns the question to the box and states the server message when a turn fails', async () => {
     server.use(...handlers(FORECAST, { refusal: { status: 503, error: 'The assistant is busy longer than the queue allows. Try again shortly.' } }));
-    withClient(<AskSurface language="" persona="" />);
+    renderAsk();
     await ask('Will it rain in Ahmedabad?');
     expect(await screen.findByText(/busy longer than the queue allows/)).toBeInTheDocument();
     expect(screen.getByLabelText('Your question')).toHaveValue('Will it rain in Ahmedabad?');
@@ -215,7 +210,7 @@ describe('the transcript', () => {
 
   it('keeps the receipt and the machine record reachable as depth under the answer', async () => {
     server.use(...handlers(FORECAST));
-    withClient(<AskSurface language="" persona="" />);
+    renderAsk();
     await ask('Will it rain in Ahmedabad?');
     await screen.findByText('Evidence receipt');
     expect(screen.getByText('where this came from')).toBeInTheDocument();

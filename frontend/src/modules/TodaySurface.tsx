@@ -23,6 +23,7 @@ import {
   BubbleMatrix, Card, ColourDonut, ColourStrip, EditionBars, EditionHistogram, Kpi, MiniBars, RAMP,
   ReportingRing, UNSET, notRecordedWhen, rampTotal, readingWhen, type MatrixCell, type Tally,
 } from './DashboardCharts';
+import { describeNational, useOverview } from '../home/overview';
 import { DistrictRiskMap, type MapWarningRow } from './DistrictRiskMap';
 import { DistrictInspector } from './DistrictInspector';
 import type { Collection } from './mapFigure';
@@ -52,20 +53,6 @@ type WarningsData = {
   districts_behind_the_newest_edition?: number | null;
   oldest_bulletin_age_days?: number | null;
   oldest_edition_examples?: { district?: string | null; state?: string | null; bulletin_date?: string | null; bulletin_age_days?: number | null }[];
-};
-
-type OverviewData = {
-  national?: {
-    districts?: number;
-    skipped?: number;
-    tally?: Tally;
-    bulletin_date?: string | null;
-    bulletin_dates?: Record<string, number>;
-    newest_bulletin_date_in_this_read?: string | null;
-    districts_behind_the_newest_edition?: number | null;
-    oldest_bulletin_age_days?: number | null;
-  };
-  radar?: { stations?: number; reported?: number };
 };
 
 function stationFacts(reading: NowReading | undefined): [string, string][] {
@@ -119,11 +106,10 @@ export function Surface(): JSX.Element {
   const [selected, setSelected] = useState<string | null>(null);
   const [showAll, setShowAll] = useState(false);
 
-  const overview = useQuery({
-    queryKey: ['overview'],
-    queryFn: () => getJson<Envelope<OverviewData>>('/api/overview'),
-    retry: false,
-  });
+  /* One definition of the national read, in home/overview.ts, so this surface and the welcome cannot describe
+     the same payload differently — and so the rules about what a count may say live in one place. */
+  const overview = useOverview();
+  const picture = describeNational(overview);
   const warnings = useQuery({
     /* The same read the Warnings surface asks for, under the same key: if both surfaces are ever mounted
        together they share one request and one cache entry instead of fetching the same URL twice. */
@@ -351,7 +337,8 @@ export function Surface(): JSX.Element {
           label="Districts in this read"
           value={notRecordedWhen(national?.districts)}
           unit={typeof national?.districts === 'number' ? 'districts' : undefined}
-          caption={'Read from the national district warning product. Source features without a district name: ' + orNot(national?.skipped) + '.'}
+          caption={'Read from the national district warning product. Source features without a district name: ' + orNot(national?.skipped) + '.' +
+            (picture.readAt ? ' Read ' + picture.readAt + '.' : ' The read time is not recorded in this payload.')}
         >
           <ColourStrip tally={tally} />
         </Kpi>

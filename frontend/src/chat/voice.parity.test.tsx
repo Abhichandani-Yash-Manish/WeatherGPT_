@@ -18,20 +18,9 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { server } from '../test/msw';
-import { Composer } from './Composer';
-import type { Languages } from '../api/types';
+import { Composer } from '../gpt/Composer';
 
 /* The vanilla constant, verbatim; the React Languages contract also requires the version the route serves. */
-const LANGUAGES: Languages = {
-  schema_version: 'language-support-view-v1',
-  service_configured: true,
-  languages: [
-    { code: 'en', english_name: 'English', native_name: 'English', measured: { write: 'verified', speak: 'verified' } },
-    { code: 'hi', english_name: 'Hindi', native_name: 'हिन्दी', measured: { write: 'verified', speak: 'verified' } },
-    { code: 'gu', english_name: 'Gujarati', native_name: 'ગુજરાતી', measured: { write: 'verified', speak: 'unmeasured' } },
-    { code: 'ta', english_name: 'Tamil', native_name: 'தமிழ்', measured: { write: 'failed', speak: 'unmeasured' } },
-  ],
-};
 
 const HEARD = {
   transcript: 'कल अहमदाबाद में 35 मिलीमीटर बारिश होगी',
@@ -72,10 +61,10 @@ describe('the heard transcript', () => {
     );
 
     const onDraft = vi.fn();
-    render(<Composer draft="" onDraft={onDraft} onSend={() => {}} busy={false} language="hi" languages={LANGUAGES} />);
+    render(<Composer draft="" onDraft={onDraft} onSend={() => {}} onStop={() => {}} busy={false} language="hi" />);
 
     await userEvent.click(screen.getByTestId('record-question'));
-    await waitFor(() => expect(screen.getByTestId('record-question')).toHaveTextContent('Stop recording'));
+    await waitFor(() => expect(screen.getByTestId('record-question')).toHaveAttribute('aria-label', 'Stop recording'));
     await userEvent.click(screen.getByTestId('record-question'));
 
     const panel = await screen.findByTestId('transcript-panel');

@@ -11,7 +11,9 @@ import axe from 'axe-core';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render } from '@testing-library/react';
 import { writeFileSync } from 'node:fs';
-import { AskSurface } from '../chat/AskSurface';
+/* The Ask surface is the shell itself now: the legacy chat page was deleted with the rest of the legacy
+   tree, and this scan is worth more against the surface that actually ships. */
+import { Workspace as AskSurface } from '../gpt/Workspace';
 import { Workspace } from '../gpt/Workspace';
 import { OwnerGate } from '../landing/OwnerGate';
 import { SurfaceHost } from '../shell/SurfaceHost';
@@ -95,7 +97,7 @@ describe('accessibility of the rendered surfaces', () => {
   });
 
   it('has no violations on the conversation at rest', async () => {
-    await scan('ask (welcome)', <AskSurface language="" persona="" />);
+    await scan('ask (welcome)', <AskSurface onOpen={() => {}} language="" onLanguage={() => {}} persona="" onPersona={() => {}} />);
   });
 
   it('has no violations on a ported module surface', async () => {

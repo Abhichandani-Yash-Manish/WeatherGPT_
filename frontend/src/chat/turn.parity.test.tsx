@@ -4,23 +4,12 @@
    workspace token"), which the parent asked to keep with these turn checks. The real surface runs against
    MSW, and the shared harness supplies the reads every mount performs. */
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { server } from '../test/msw';
-import { AskSurface } from './AskSurface';
-import { ConversationRail } from './ConversationRail';
+import { renderAsk } from '../test/ask';
 
-const LEDGER = {
-  schema_version: 'conversation-ledger-v1', total: 3, limit: 40,
-  conversations: [
-    { id: '11111111-1111-4111-8111-111111111111', updated: '2026-09-14T10:00:00+00:00', turns: 2, asked: 1, opening_question: 'Will it rain in Kochi, Kerala tomorrow?' },
-    { id: '22222222-2222-4222-8222-222222222222', updated: '2026-09-14T09:00:00+00:00', turns: 2, asked: 1, opening_question: 'What is the current weather at VOBL?' },
-    { id: '33333333-3333-4333-8333-333333333333', updated: '2026-09-14T08:00:00+00:00', turns: 4, asked: 2, opening_question: 'Show the annual rainfall trend for Ahmedabad district' },
-  ],
-  note: 'stored locally',
-};
 
 const FORECAST = {
   schema_version: 'weather-conversation-v1', conversation_id: '44444444-4444-4444-8444-444444444444',
@@ -59,11 +48,6 @@ const WORKING = {
   stages_seen: ['started', 'planned', 'resolving', 'retrieving'],
   queue: { waiting: 0, active: 1, capacity: 3, wait_seconds_before_refusal: 45 },
 };
-
-function withClient(node: React.ReactElement) {
-  const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-  return render(<QueryClientProvider client={client}>{node}</QueryClientProvider>);
-}
 
 /* The reads every mount performs, so a suite declares only what it is testing. Each records the workspace
    token it received, because every surface request must carry it. */
@@ -107,7 +91,7 @@ describe('the turn, held against the vanilla client checks', () => {
       }),
       ...reads(),
     );
-    withClient(<AskSurface language="en" persona="" />);
+    renderAsk({ language: "en" });
     expect(screen.getByTestId('welcome')).toBeInTheDocument();
     await ask('Will it rain in Ahmedabad?');
     await waitFor(() => expect(bodies).toHaveLength(1));
@@ -128,7 +112,7 @@ describe('the turn, held against the vanilla client checks', () => {
       }),
       ...reads(),
     );
-    withClient(<AskSurface language="" persona="" />);
+    renderAsk();
     const user = await ask('Will it rain in Ahmedabad?');
     await screen.findByText('Ahmedabad: forecast precipitation 0.3 mm.');
     const box = screen.getByLabelText('Your question');
@@ -151,7 +135,7 @@ describe('the turn, held against the vanilla client checks', () => {
       }),
       ...reads(seen),
     );
-    withClient(<AskSurface language="" persona="" />);
+    renderAsk();
     await ask('Will it rain in Ahmedabad?');
     await screen.findByText('Ahmedabad: forecast precipitation 0.3 mm.');
     expect(seen.length).toBeGreaterThan(0);
@@ -173,7 +157,7 @@ describe('the turn, held against the vanilla client checks', () => {
       }),
       ...reads(),
     );
-    withClient(<AskSurface language="" persona="" />);
+    renderAsk();
     await ask('Will it rain in Porbandar?');
     await userEvent.click(await screen.findByTestId('stop-turn'));
     await waitFor(() => expect(cancelBodies).toHaveLength(1));
@@ -187,7 +171,7 @@ describe('the turn, held against the vanilla client checks', () => {
         HttpResponse.json({ error: 'The assistant is already answering its maximum number of waiting questions. Try again shortly.' }, { status: 429 })),
       ...reads(),
     );
-    withClient(<AskSurface language="" persona="" />);
+    renderAsk();
     await ask('Will it rain in Surat?');
     expect(await screen.findByText(/maximum number of waiting questions/)).toBeInTheDocument();
     expect(screen.queryByRole('article')).toBeNull();
@@ -199,7 +183,7 @@ describe('the turn, held against the vanilla client checks', () => {
         HttpResponse.json({ error: 'Reload this local workspace before sending a request' }, { status: 403 })),
       ...reads(),
     );
-    withClient(<AskSurface language="" persona="" />);
+    renderAsk();
     await ask('Will it rain?');
     expect(await screen.findByText('Reload this local workspace before sending a request')).toBeInTheDocument();
   });
@@ -210,7 +194,7 @@ describe('the turn, held against the vanilla client checks', () => {
         HttpResponse.json({ error: 'The local evidence store is unavailable.' }, { status: 503 })),
       ...reads(),
     );
-    withClient(<AskSurface language="" persona="" />);
+    renderAsk();
     await ask('Will it rain?');
     expect(await screen.findByText('The local evidence store is unavailable.')).toBeInTheDocument();
     expect(screen.queryByText(/Reload this local workspace/)).toBeNull();
@@ -228,7 +212,7 @@ describe('the turn, held against the vanilla client checks', () => {
       }),
       ...reads(),
     );
-    withClient(<AskSurface language="" persona="" />);
+    renderAsk();
     await ask('Will it rain?');
     expect(await screen.findByText('The local evidence store is unavailable.')).toBeInTheDocument();
     expect(screen.getByLabelText('Your question')).toHaveValue('Will it rain?');
@@ -247,10 +231,10 @@ describe('the turn, held against the vanilla client checks', () => {
       }),
       ...reads(),
     );
-    withClient(<AskSurface language="" persona="" />);
+    renderAsk();
     const user = await ask('Will it rain in Ahmedabad?');
     await screen.findByText('Ahmedabad: forecast precipitation 0.3 mm.');
-    await user.click(screen.getByRole('button', { name: 'New' }));
+    await user.click(screen.getByRole('button', { name: /New conversation/ }));
     expect(await screen.findByTestId('welcome')).toBeInTheDocument();
     expect(bodies).toHaveLength(1);
     await user.type(screen.getByLabelText('Your question'), 'Is it raining now?');
@@ -259,34 +243,4 @@ describe('the turn, held against the vanilla client checks', () => {
     expect(bodies[1].conversation_id).toBeUndefined();
   });
 
-  it('lists the stored conversations and filters them by their first question', async () => {
-    server.use(http.get('/api/conversations', () => HttpResponse.json(LEDGER)));
-    withClient(<ConversationRail register="conversational" currentId={null} onOpen={() => {}} onNew={() => {}} onRegister={() => {}} />);
-    const rows = () => screen.queryAllByRole('button', { name: /^Open the stored conversation:/ });
-    await waitFor(() => expect(rows()).toHaveLength(3));
-    const user = userEvent.setup();
-    await user.type(screen.getByLabelText('Filter stored conversations'), 'kochi');
-    expect(rows()).toHaveLength(1);
-    expect(rows()[0]).toHaveAccessibleName(/Kochi/i);
-    await user.clear(screen.getByLabelText('Filter stored conversations'));
-    expect(rows()).toHaveLength(3);
-    const note = screen.getByText(/stored on this machine/);
-    expect(note).toHaveTextContent('3 stored on this machine');
-    expect(note).toHaveTextContent('40 listed');
-    expect(note).toHaveTextContent('stored locally');
-  });
-
-  /* The audit of 17 September 2026 measured the delete control at 2.91:1 (foreground #cf7f7e on
-     #fbfcfa at 12px), a serious colour-contrast violation: the 'opacity-60' resting state blended
-     --red into the paper. A text-opacity utility on this control is the cause, so its absence is
-     what this pins; the rendered contrast is measured by the axe audit, not by this check. */
-  it('keeps the delete control readable rather than fading it below the contrast floor', async () => {
-    server.use(http.get('/api/conversations', () => HttpResponse.json(LEDGER)));
-    withClient(<ConversationRail register="conversational" currentId={null} onOpen={() => {}} onNew={() => {}} onRegister={() => {}} />);
-    const deletes = await screen.findAllByRole('button', { name: /^Delete the stored conversation:/ });
-    expect(deletes).toHaveLength(3);
-    deletes.forEach(button => {
-      expect(button.className).not.toMatch(/opacity-\d/);
-    });
-  });
 });

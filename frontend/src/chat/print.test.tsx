@@ -5,11 +5,10 @@
    machine record is an audit artefact rather than the answer. The markup and the print stylesheet are checked
    together, so a rename on one side cannot quietly change what a printout contains. */
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { readFileSync } from 'node:fs';
 import { http, HttpResponse } from 'msw';
-import { AskSurface } from './AskSurface';
+import { renderAsk } from '../test/ask';
 import { server } from '../test/msw';
 
 const PACKET = {
@@ -36,12 +35,7 @@ async function askAndRender() {
     http.post('/api/chat/preview', () => HttpResponse.json({ schema_version: 'chat-preview-v1', provisional: true, note: 'provisional', reading: null })),
     http.get('/api/chat/progress', () => HttpResponse.json({ schema_version: 'chat-progress-v1', state: 'idle', stage: null, stages_seen: [], queue: { waiting: 0, active: 0, capacity: 3, wait_seconds_before_refusal: 45 } })),
   );
-  const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-  render(
-    <QueryClientProvider client={client}>
-      <AskSurface language="" persona="" />
-    </QueryClientProvider>,
-  );
+  renderAsk();
   const box = screen.getByLabelText('Your question');
   const { default: userEvent } = await import('@testing-library/user-event');
   const user = userEvent.setup();

@@ -13,14 +13,22 @@ import { getJson } from '../api/client';
 import type { Envelope } from '../api/types';
 
 export type TodayBlock = { counts?: Record<string, number>; districts_with_no_day_covering_today?: number };
+/* The whole of what GET /api/overview answers, in one place: the description below and the Today surface both
+   read this payload, and two local shapes for one response is how the same read starts meaning two things. */
 export type OverviewData = {
   national?: {
     districts?: number;
+    skipped?: number;
+    tally?: Record<string, number>;
     today?: TodayBlock;
     bulletin_date?: string | null;
+    bulletin_dates?: Record<string, number>;
     newest_bulletin_date_in_this_read?: string | null;
     districts_behind_the_newest_edition?: number | null;
+    oldest_bulletin_age_days?: number | null;
   };
+  radar?: { stations?: number; reported?: number };
+  places?: unknown[];
 };
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];

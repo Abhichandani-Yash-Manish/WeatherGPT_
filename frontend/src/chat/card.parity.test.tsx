@@ -4,14 +4,13 @@
    verbatim. Where a packet is partial the test says so. Nothing here re-implements a product rule: the real
    components decide, and these specs assert what a reader is shown. */
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import type { AnswerPacket } from '../api/types';
 import { server } from '../test/msw';
 import { AnswerTurn } from './AnswerTurn';
-import { AskSurface } from './AskSurface';
+import { renderAsk } from '../test/ask';
 import airportJson from '../../../research/reviews/frontend-overhaul-20260914/packets/airport.json';
 import clarificationJson from '../../../research/reviews/frontend-overhaul-20260914/packets/clarification.json';
 import forecastJson from '../../../research/reviews/frontend-overhaul-20260914/packets/forecast-simple.json';
@@ -75,11 +74,6 @@ const partial = (status: string): AnswerPacket => ({
 
 function mountCard(packet: AnswerPacket, _register: 'brief' | 'conversational' | 'full' = 'conversational') {
   return render(<AnswerTurn packet={packet} onFollowUp={() => {}} />);
-}
-
-function withClient(node: React.ReactElement) {
-  const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-  return render(<QueryClientProvider client={client}>{node}</QueryClientProvider>);
 }
 
 describe('the answer card, held against the vanilla checks', () => {
@@ -320,7 +314,7 @@ describe('the answer card, held against the vanilla checks', () => {
       http.get('/api/chat/progress', () => HttpResponse.json({ schema_version: 'chat-progress-v1', state: 'working', stage: 'started' })),
       http.get('/api/conversations', () => HttpResponse.json({ schema_version: 'conversation-ledger-v1', total: 0, limit: 40, conversations: [], note: 'stored locally' })),
     );
-    withClient(<AskSurface language="" persona="" />);
+    renderAsk();
     const user = userEvent.setup();
     await user.type(screen.getByLabelText('Your question'), 'Tell me about rainfall in Bhopal');
     await user.click(screen.getByTestId('send-question'));

@@ -38,6 +38,14 @@ export const server = setupServer(
     HttpResponse.json({ schema_version: 'plan-view-v1', status: 'ok', plans: [], note: 'no plans' })),
   http.get('/api/conversations', () =>
     HttpResponse.json({ schema_version: 'conversation-ledger-v1', total: 0, limit: 40, conversations: [], note: 'stored locally' })),
+  // A conversation makes two reads of its own while a turn runs: the provisional first line, and the stage
+  // the engine is on. They are part of mounting the conversation, so they have defaults here rather than in
+  // every suite — a spec that cares about either overrides its handler.
+  http.post('/api/chat/preview', () =>
+    HttpResponse.json({ schema_version: 'chat-preview-v1', provisional: true, note: 'provisional', reading: null })),
+  http.get('/api/chat/progress', () =>
+    HttpResponse.json({ schema_version: 'chat-progress-v1', state: 'idle', stage: null, stages_seen: [],
+      queue: { waiting: 0, active: 0, capacity: 3, wait_seconds_before_refusal: 45 } })),
 );
 
 export const unhandled: string[] = [];

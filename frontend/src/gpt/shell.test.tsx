@@ -105,6 +105,40 @@ describe('the shell', () => {
     expect(document.querySelector('.g-rail')?.getAttribute('data-collapsed')).toBe('false');
   });
 
+  it('lists the stored conversations and filters them by their first question', async () => {
+    server.use(http.get('/api/conversations', () => HttpResponse.json({
+      schema_version: 'conversation-ledger-v1', total: 3, limit: 40,
+      conversations: [
+        { id: 'k1', updated: new Date().toISOString(), turns: 2, asked: 1, opening_question: 'Will it rain in Kochi?' },
+        { id: 'k2', updated: new Date().toISOString(), turns: 2, asked: 1, opening_question: 'Any warning for Patna?' },
+        { id: 'k3', updated: new Date().toISOString(), turns: 2, asked: 1, opening_question: 'Is it humid in Surat?' },
+      ],
+    })));
+    mount();
+    /* The row itself, not the pin and delete controls beside it: those carry the question in their own
+       accessible names, which is exactly right for a screen reader and useless for counting rows. */
+    const rows = () => Array.from(
+      screen.getByRole('region', { name: 'Conversations' }).querySelectorAll('.g-row-text'),
+    );
+    await waitFor(() => expect(rows()).toHaveLength(3));
+    /* The field is behind the magnifier rather than standing in the rail: a search box on every visit costs
+       the column a row for something most visits do not do. */
+    await userEvent.click(screen.getByLabelText('Search conversations'));
+    await userEvent.type(screen.getByLabelText('Filter conversations'), 'kochi');
+    expect(rows()).toHaveLength(1);
+    expect(rows()[0]).toHaveTextContent('Will it rain in Kochi?');
+  });
+
+  /* The delete control is a real deletion of local evidence, and the audit of 17 September 2026 measured the
+     old one at 2.91:1 because a resting opacity blended --red into the paper. Its absence is what this pins;
+     the rendered contrast is measured by the axe run, not by this check. */
+  it('keeps the delete control readable rather than fading it below the contrast floor', async () => {
+    mount();
+    const deletes = await screen.findAllByRole('button', { name: /^Delete / });
+    expect(deletes.length).toBeGreaterThan(0);
+    deletes.forEach(button => expect(button.className).not.toMatch(/opacity-\d/));
+  });
+
   it('opens the n-th conversation with ⌥-digit', async () => {
     const asked: string[] = [];
     server.use(http.get('/api/conversations/:id', ({ params }) => {
@@ -116,5 +150,25 @@ describe('the shell', () => {
     /* The second row the rail is showing is the second conversation, and the transcript read names it. */
     fireEvent.keyDown(window, { altKey: true, code: 'Digit2', key: '™' });
     await waitFor(() => expect(asked).toContain('c2'));
+  });
+  it('deletes a stored conversation through the local route only', async () => {
+    const asked: string[] = [];
+    /* A real deletion of local evidence, asked for by name and confirmed first: the store is written to by
+       exactly one route, and a failed delete is said rather than swallowed. */
+    server.use(
+      http.get('/api/conversations', () => HttpResponse.json({
+        schema_version: 'conversation-ledger-v1', total: 1, limit: 40, note: 'stored locally',
+        conversations: [{ id: '11111111-1111-4111-8111-111111111111', opening_question: 'hello', turns: 2, asked: 1 }],
+      })),
+      http.delete('/api/conversations/:id', ({ request, params }) => {
+        asked.push(request.method + ' ' + String(params.id));
+        return HttpResponse.json({ removed: String(params.id) });
+      }),
+    );
+    const confirm = vi.spyOn(window, 'confirm').mockReturnValue(true);
+    mount();
+    await userEvent.click(await screen.findByLabelText('Delete hello'));
+    await waitFor(() => expect(asked).toEqual(['DELETE 11111111-1111-4111-8111-111111111111']));
+    confirm.mockRestore();
   });
 });

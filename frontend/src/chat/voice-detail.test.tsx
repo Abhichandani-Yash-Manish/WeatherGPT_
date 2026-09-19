@@ -10,7 +10,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { api } from '../api/client';
-import { Composer } from './Composer';
+import { Composer } from '../gpt/Composer';
 import { server } from '../test/msw';
 
 function mount(node: React.ReactElement) {
@@ -52,11 +52,11 @@ describe('the recogniser report and a stopped request', () => {
         state: 'transcribed',
       })),
     );
-    mount(<Composer draft="" onDraft={() => {}} onSend={() => {}} busy={false} language="hi" />);
+    mount(<Composer draft="" onDraft={() => {}} onSend={() => {}} onStop={() => {}} busy={false} language="hi" />);
     /* The control records until it is pressed again: the first press starts, the second stops and sends the
        recording for transcription. */
     await userEvent.click(screen.getByTestId('record-question'));
-    await waitFor(() => expect(screen.getByTestId('record-question')).toHaveTextContent('Stop recording'));
+    await waitFor(() => expect(screen.getByTestId('record-question')).toHaveAttribute('aria-label', 'Stop recording'));
     await userEvent.click(screen.getByTestId('record-question'));
     await waitFor(() => expect(screen.getByTestId('transcript-panel')).toBeInTheDocument());
     expect(screen.getByTestId('transcript-heard')).toHaveTextContent('कल अहमदाबाद');
