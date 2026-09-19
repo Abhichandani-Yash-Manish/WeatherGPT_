@@ -950,3 +950,28 @@ html, body { background: var(--g-bg); }
 .g .receipt-key {
   color: var(--g-ink-2);
 }
+
+/* The icon-only controls, given a real treatment.
+   ----------------------------------------------------------------------------
+   Recorded open last round: with the HeroUI ghost variant the Owner control was left to a class written for a
+   plain button, so on a bright sky it was almost invisible. An icon-only control carries no words to rescue it,
+   so it needs a visible edge and a visible glyph in both modes. */
+.g-act {
+  min-width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid var(--g-line-2);
+  background: color-mix(in srgb, var(--g-bg-2) 58%, transparent);
+  color: var(--g-ink-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+.g[data-mode='light'] .g-act { background: rgba(255, 255, 255, 0.62); color: var(--g-ink-2); }
+.g[data-mode='dark'] .g-act { background: rgba(255, 255, 255, 0.07); }
+.g-act:hover { background: var(--g-bg-2); color: var(--g-ink); }
+.g-act svg { width: 15px; height: 15px; }
+/* The toggle sits with the same weight as the controls it toggles. */
+.g-rail-toggle.g-act { border-color: var(--g-line-2); }
