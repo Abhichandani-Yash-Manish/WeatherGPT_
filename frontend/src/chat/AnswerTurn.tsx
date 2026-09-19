@@ -120,7 +120,7 @@ export function workSteps(packet: AnswerPacket): WorkStep[] {
    So the colour is read from the bulletin. The wording is matched against the district-warning days the
    packet carries; if no day matches, and the read returned exactly one distinct colour, that is the
    colour; otherwise nothing is returned and the swatch stays neutral. A guess is not a source. */
-function publishedColour(packet: AnswerPacket, value: string): string | undefined {
+function publishedColourName(packet: AnswerPacket, value: string): string | null {
   const days = (packet.warning_evidence || []).flatMap(entry =>
     (entry.district_warnings || []).flatMap(warning => warning.days || []),
   ) as { colour?: string | null; quiet?: boolean; hazards?: string[]; wording?: string; source_text?: string }[];
@@ -129,10 +129,34 @@ function publishedColour(packet: AnswerPacket, value: string): string | undefine
   const stated = (day: typeof days[number]) => String(day.colour || '').toLowerCase();
 
   const match = days.find(day => named(day).toLowerCase() === value.toLowerCase());
-  if (match && HAZARD_COLOURS.includes(stated(match))) return 'var(--g-' + stated(match) + ')';
+  if (match && HAZARD_COLOURS.includes(stated(match))) return stated(match);
 
   const distinct = [...new Set(days.map(stated).filter(colour => HAZARD_COLOURS.includes(colour)))];
-  return distinct.length === 1 ? 'var(--g-' + distinct[0] + ')' : undefined;
+  return distinct.length === 1 ? distinct[0] : null;
+}
+
+function publishedColour(packet: AnswerPacket, value: string): string | undefined {
+  const name = publishedColourName(packet, value);
+  return name ? 'var(--g-' + name + ')' : undefined;
+}
+
+/* One warning as a line of text, for the same reason a claim has one: a warning is something a reader may
+   have to send somebody. It is assembled from the same matching the swatch uses, so the colour a reader
+   copies is the colour the card drew and neither can drift from the other. A read that published no warning
+   says that first, rather than being prefixed with "Official warning". */
+function warningLine(packet: AnswerPacket, fact: Fact): string {
+  const value = String(fact.value ?? '');
+  const colour = publishedColourName(packet, value);
+  const nothing = /no warning/i.test(value);
+  const at = retrievedAt(packet, fact);
+  return [
+    nothing ? value : 'Official warning',
+    nothing ? null : value,
+    placeOf(packet, fact) || null,
+    colour || null,
+    fact.source_id ? 'source ' + fact.source_id : 'source not stated',
+    at ? 'read ' + at : null,
+  ].filter(Boolean).join(' · ');
 }
 
 export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTurnProps) {
@@ -158,6 +182,16 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
   const refused = steps.filter(step => step.state === 'refused').length;
   const seconds = typeof packet.trace?.duration_seconds === 'number' ? packet.trace.duration_seconds + ' s' : null;
   const taskCoverage = packet.task_coverage;
+  /* The watch this answer makes possible, as the sentence that would create it, or null. It needs both halves:
+     a place the engine resolved for this turn, and something that can actually be watched — a warning product
+     or a forecast. An answer about 1997 rainfall resolved a place and offers no watch, and the chip is absent
+     rather than present and useless. */
+  const watchPlace = firstPoint(packet)?.label || null;
+  const watchable = packet.facts || [];
+  const keepPosted = watchPlace && watchable.some(fact =>
+    ['official_district_warning', 'precipitation', 'precipitation_probability', 'temperature_2m'].includes(String(fact.parameter || '')))
+    ? 'Notify me if a heavy rain warning is issued for ' + watchPlace + ' tomorrow'
+    : null;
 
   return (
     <article className="g-answer" data-turn-status={packet.status}>
@@ -210,6 +244,7 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
                 hazard={String(warnings[0].value)}
                 hazardColour={publishedColour(packet, String(warnings[0].value))}
                 source={sourceLine(packet, warnings[0])}
+                copy={warningLine(packet, warnings[0])}
                 depth={!primary && receiptFact ? [{ label: 'where this came from', body: <EvidenceReceipt packet={packet} fact={receiptFact} /> }] : []}
               />
             ) : (
@@ -220,6 +255,7 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
                   hazard={String(fact.value)}
                   hazardColour={publishedColour(packet, String(fact.value))}
                   source={sourceLine(packet, fact)}
+                  copy={warningLine(packet, fact)}
                 />
               ))
             )
@@ -266,13 +302,22 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
         </div>
       ) : null}
 
-      {(packet.quick_replies || []).length ? (
+      {(packet.quick_replies || []).length || keepPosted ? (
         <div className="g-chips">
           {(packet.quick_replies || []).map(reply => (
             <button key={reply.reply} type="button" className="g-chip" onClick={() => onFollowUp(reply.reply)}>
               {reply.label}
             </button>
           ))}
+          {/* A watch is a question this product already knows how to plan — "notify me if …" is the notify
+              form the engine reads, and the reader must be able to read it back before it is sent. So the
+              chip carries the whole sentence, and pressing it asks that sentence and nothing else. No watch
+              is created here: the engine plans one, or refuses. */}
+          {keepPosted ? (
+            <button type="button" className="g-chip" title={keepPosted} onClick={() => onFollowUp(keepPosted)}>
+              Keep me posted
+            </button>
+          ) : null}
         </div>
       ) : null}
 

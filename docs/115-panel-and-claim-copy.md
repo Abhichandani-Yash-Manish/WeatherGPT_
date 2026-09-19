@@ -55,7 +55,21 @@ this browser's storage.
 It is read once per address, and a half-written one is refused rather than half-applied: a place is either a
 pair of coordinates that parse as numbers and fall inside the world, or it is nothing at all.
 
-## 4. Evidence
+## 4. The warning's own line, and a watch an answer can start
+
+**The warning claim carries its own copy line now**, and it is a different sentence from a measurement's: the
+colour is the one the bulletin printed and it is read from the packet's own day rows — never parsed out of the
+hazard wording, which is the failure the swatch was repaired for — and the line leads with the place and
+carries the source. A read that published no warning says that first rather than being prefixed with "Official
+warning".
+
+**An answer can start a watch, and the chip says the sentence it will ask.** "Notify me if a heavy rain warning
+is issued for Patna, Bihar tomorrow" is the notify form the engine already plans; the chip carries that whole
+sentence in its title and pressing it asks that sentence and nothing else. No watch is created by the
+interface, and the chip is absent when there is nothing to watch: an answer about the 1997 rainfall record
+resolved a place and offers no watch, because a record cannot be notified about. Two checks hold both sides.
+
+## 5. Evidence
 
 | Check | Result |
 | --- | --- |
@@ -68,7 +82,7 @@ Two checks fired on this batch: the **vocabulary check** refused the chip class 
 stylesheet knew it, and the **print-parity check** refused a card that had grown a second control without the
 drop being asserted on all of them.
 
-## 5. What this does not claim
+## 6. What this does not claim
 
 - The panel reads two governed routes per place and caches them for the session only; it is not a place page
   with its own route, and a reader cannot link to one.
@@ -76,12 +90,12 @@ drop being asserted on all of them.
   to nothing yet.
 - No reader other than this machine's owner has used any of this.
 
-## 6. What is left
+## 7. What is left
 
 1. **A place's own page**, with its own address, holding what the panel now shows plus its conversations. The
    address names the place and the panel shows it; what is still missing is the page — the panel is the glance,
    and the destination does not exist yet.
 2. **The panel's blocks as links**: "published for this district" should open the warnings surface at that
    district rather than leaving the reader to find it.
-3. **The same copy line on the warning claim**, which is a published colour and a hazard wording rather than a
-   measure and a value, and needs its own sentence rather than a re-use of this one.
+3. **A watch the reader can edit before it is created**: the chip sends one sentence form, and the engine's
+   other watch forms (a forecast threshold, a specific day) are reachable only by typing them.

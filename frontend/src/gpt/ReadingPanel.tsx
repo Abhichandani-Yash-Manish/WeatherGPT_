@@ -35,7 +35,7 @@ type PlaceWarnings = { district?: string; state?: string; issued_at_utc?: string
 type HourRow = { at?: string; temperature_2m?: number | null; precipitation_probability?: number | null; precipitation?: number | null };
 type HoursView = { status?: string; rows?: HourRow[]; source_id?: string; model?: string; unit?: Record<string, string>; starts?: string; ends?: string };
 
-function DistrictBlock({ place }: { place: { latitude: number; longitude: number } }) {
+function DistrictBlock({ place, onOpen }: { place: { latitude: number; longitude: number }; onOpen: (viewId: string) => void }) {
   const read = useQuery({
     queryKey: ['panel-warnings', place.latitude, place.longitude],
     queryFn: () => getJson<Envelope<PlaceWarnings>>(withQuery('/api/warnings/place', { lat: place.latitude, lon: place.longitude })),
@@ -52,6 +52,8 @@ function DistrictBlock({ place }: { place: { latitude: number; longitude: number
       {!read.isPending && !read.isError && !published ? (
         <p className="g-side-note">The read answered without a district block, so nothing is printed about a warning here.</p>
       ) : null}
+      {/* The glance and the destination: the panel says what is published, and the surface says it in full. */}
+      <button type="button" className="g-quiet" onClick={() => onOpen('warnings')}>Warnings in force →</button>
       {published ? (
         <>
           <p className="g-side-note">
@@ -89,7 +91,7 @@ function DistrictBlock({ place }: { place: { latitude: number; longitude: number
   );
 }
 
-function HoursBlock({ place }: { place: { latitude: number; longitude: number } }) {
+function HoursBlock({ place, onOpen }: { place: { latitude: number; longitude: number }; onOpen: (viewId: string) => void }) {
   const read = useQuery({
     queryKey: ['panel-hours', place.latitude, place.longitude],
     queryFn: () => getJson<Envelope<HoursView>>(withQuery('/api/forecast', { lat: place.latitude, lon: place.longitude, days: 2 })),
@@ -107,6 +109,7 @@ function HoursBlock({ place }: { place: { latitude: number; longitude: number } 
       {!read.isPending && !read.isError && !rows.length ? (
         <p className="g-side-note">This read returned no hourly row for the point, so nothing is drawn rather than a value being invented.</p>
       ) : null}
+      <button type="button" className="g-quiet" onClick={() => onOpen('forecast')}>The forecast surface →</button>
       {rows.length ? (
         <>
           <ul className="g-side-hours">
@@ -209,8 +212,8 @@ export function ReadingPanel({
 
       {place && typeof place.latitude === 'number' && typeof place.longitude === 'number' ? (
         <>
-          <DistrictBlock place={{ latitude: place.latitude, longitude: place.longitude }} />
-          <HoursBlock place={{ latitude: place.latitude, longitude: place.longitude }} />
+          <DistrictBlock place={{ latitude: place.latitude, longitude: place.longitude }} onOpen={onOpenView} />
+          <HoursBlock place={{ latitude: place.latitude, longitude: place.longitude }} onOpen={onOpenView} />
         </>
       ) : null}
 
@@ -248,9 +251,11 @@ export function ReadingPanel({
 
       <section className="g-side-block">
         <p className="g-side-label">Ways in</p>
+        {/* Only the destinations the blocks above do not already carry: "warnings in force" belongs to the
+            district block and "the forecast" to the hours, and a list that repeated them would be three ways
+            to the same two places. */}
         <div className="g-side-links">
           <button type="button" className="g-quiet" onClick={() => onOpenView('overview')}>Today across India</button>
-          <button type="button" className="g-quiet" onClick={() => onOpenView('warnings')}>Warnings in force</button>
           <button type="button" className="g-quiet" onClick={() => onOpenView('sources')}>Sources this machine reads</button>
         </div>
       </section>

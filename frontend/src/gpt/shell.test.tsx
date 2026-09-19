@@ -388,6 +388,98 @@ describe('the shell', () => {
     expect(JSON.parse(String(window.localStorage.getItem('weathergpt.place'))).label).toBe('Kochi, Kerala');
   });
 
+  it('links the panel blocks to the surfaces that own them', async () => {
+    window.localStorage.setItem('weathergpt.place', JSON.stringify({ label: 'Patna, Bihar', latitude: 25.59, longitude: 85.14 }));
+    window.localStorage.setItem('weathergpt.shell', JSON.stringify({ rail: 'open', panel: true, pins: [], aliases: {} }));
+    const opened: string[] = [];
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: 0 } } });
+    render(
+      <QueryClientProvider client={client}>
+        <Workspace onOpen={id => opened.push(String(id))} language="" onLanguage={() => {}} persona="" onPersona={() => {}} />
+      </QueryClientProvider>,
+    );
+    const panel = await screen.findByRole('complementary', { name: /how this conversation is read/i });
+    /* The glance is a glance: each block says where the full thing lives. */
+    await userEvent.click(within(panel).getByRole('button', { name: /Warnings in force/ }));
+    await userEvent.click(within(panel).getByRole('button', { name: /forecast surface/ }));
+    expect(opened).toEqual(['warnings', 'forecast']);
+  });
+
+  it('copies a warning as the product published it, colour and source together', async () => {
+    const written: string[] = [];
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (text: string) => { written.push(text); } } });
+    const packet = {
+      conversation_id: '44444444-4444-4444-8444-444444444444', question: 'Any warning in force for Patna?',
+      status: 'answered', answer: 'Patna is under the orange warning published for Day 2.',
+      facts: [{ id: 'w1', label: 'Heavy rain', value: 'Heavy rain', place: 'Patna, Patna, Bihar',
+                source_id: 'S15', parameter: 'official_district_warning', evidence_kind: 'warning', citation_ids: [], task_id: 't1' }],
+      citations: [{ id: 'c1', source_id: 'S15', product: 'IMD district warning', retrieved_at_utc: '2026-09-19T06:30:00+00:00' }],
+      warning_evidence: [{ district_warnings: [{ days: [{ colour: 'orange', hazards: ['Heavy rain'], wording: 'Heavy rain' }] }] }],
+      notes: [], choices: [], charts: [], task_results: [], answered_at_utc: '2026-09-19T07:00:00+00:00',
+      resolved_points: {}, trace: {}, retrieval_plan: [],
+    };
+    server.use(http.post('/api/chat', () => HttpResponse.json(packet)));
+    mount();
+    await userEvent.type(screen.getByLabelText('Your question'), 'Any warning in force for Patna?');
+    await userEvent.click(screen.getByTestId('send-question'));
+    await screen.findByText('Patna is under the orange warning published for Day 2.');
+    const copies = screen.getAllByLabelText('Copy this value with its place, window and source');
+    await userEvent.click(copies[copies.length - 1]);
+    await waitFor(() => expect(written.length).toBeGreaterThan(0));
+    const line = written[written.length - 1];
+    /* The colour is the one the bulletin printed, taken from the packet's own day rows — never parsed out of
+       the wording — and the line keeps the place and the source beside it. */
+    expect(line).toContain('orange');
+    expect(line).toContain('Heavy rain');
+    expect(line).toContain('Patna');
+    expect(line).toContain('source S15');
+  });
+
+  it('offers a watch only when the answer named a place and something watchable, and sends the sentence', async () => {
+    const asked: string[] = [];
+    const packet = {
+      conversation_id: '44444444-4444-4444-8444-444444444444', question: 'Any warning in force for Patna?',
+      status: 'answered', answer: 'Patna is under the orange warning published for Day 2.',
+      facts: [{ id: 'w1', label: 'Heavy rain', value: 'Heavy rain', place: 'Patna, Patna, Bihar',
+                source_id: 'S15', parameter: 'official_district_warning', evidence_kind: 'warning', citation_ids: [], task_id: 't1' }],
+      citations: [], warning_evidence: [{ district_warnings: [{ days: [{ colour: 'orange', hazards: ['Heavy rain'], wording: 'Heavy rain' }] }] }],
+      notes: [], choices: [], quick_replies: [], charts: [], task_results: [], answered_at_utc: '2026-09-19T07:00:00+00:00',
+      resolved_points: { patna: { label: 'Patna, Bihar', latitude: 25.59, longitude: 85.14 } }, trace: {}, retrieval_plan: [],
+    };
+    server.use(http.post('/api/chat', async ({ request }) => {
+      asked.push(String((await request.json() as { question?: string }).question));
+      return HttpResponse.json(packet);
+    }));
+    mount();
+    await userEvent.type(screen.getByLabelText('Your question'), 'Any warning in force for Patna?');
+    await userEvent.click(screen.getByTestId('send-question'));
+    await screen.findByText('Patna is under the orange warning published for Day 2.');
+    const chip = screen.getByRole('button', { name: /Keep me posted/ });
+    /* The chip says what it will ask, and asking it sends exactly that sentence — no watch is created here. */
+    expect(chip).toHaveAttribute('title', 'Notify me if a heavy rain warning is issued for Patna, Bihar tomorrow');
+    await userEvent.click(chip);
+    await waitFor(() => expect(asked).toContain('Notify me if a heavy rain warning is issued for Patna, Bihar tomorrow'));
+  });
+
+  it('offers no watch on an answer that named a place but nothing watchable', async () => {
+    const packet = {
+      conversation_id: '44444444-4444-4444-8444-444444444444', question: 'How much rain fell in 1997?',
+      status: 'answered', answer: 'The 1997 record for Ahmedabad is 12 mm in July.',
+      facts: [{ id: 'f1', label: 'Rainfall', value: '12', unit: 'mm', place: 'Ahmedabad, Gujarat', source_id: 'S27',
+                parameter: 'rainfall', evidence_kind: 'history', citation_ids: [], task_id: 't1' }],
+      citations: [], notes: [], choices: [], quick_replies: [], charts: [], task_results: [],
+      answered_at_utc: '2026-09-19T07:00:00+00:00',
+      resolved_points: { ahmedabad: { label: 'Ahmedabad, Gujarat', latitude: 23.02, longitude: 72.57 } }, trace: {}, retrieval_plan: [],
+    };
+    server.use(http.post('/api/chat', () => HttpResponse.json(packet)));
+    mount();
+    await userEvent.type(screen.getByLabelText('Your question'), 'How much rain fell in 1997?');
+    await userEvent.click(screen.getByTestId('send-question'));
+    await screen.findByText('The 1997 record for Ahmedabad is 12 mm in July.');
+    /* A record is not watchable: there is nothing to be notified about. */
+    expect(screen.queryByRole('button', { name: /Keep me posted/ })).toBeNull();
+  });
+
   it('opens the n-th conversation with ⌥-digit', async () => {
     const asked: string[] = [];
     server.use(http.get('/api/conversations/:id', ({ params }) => {
