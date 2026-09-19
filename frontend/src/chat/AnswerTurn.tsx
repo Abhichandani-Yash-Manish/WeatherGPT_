@@ -247,6 +247,9 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
 
       {packet.follow_up ? <p className="g-claim-note">{packet.follow_up}</p> : null}
 
+      {/* Everything from here down is how the answer was reached rather than what it says. It is one
+          region with one hairline above it, not four cards level with the reading. */}
+      <div className="g-behind">
       {(packet.notes || []).length ? (
         <Disclosure summary="What this answer does not cover">
           <ul className="g-list">
@@ -261,7 +264,7 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
         <Work
           testId="work"
           steps={steps}
-          summary={'how this was answered · ' + steps.length + ' step' + (steps.length === 1 ? '' : 's') + (seconds ? ' · ' + seconds : '') + (refused ? ' · ' + refused + ' refused' : ' · nothing refused')}
+          summary={'How this was answered · ' + steps.length + ' step' + (steps.length === 1 ? '' : 's') + (seconds ? ' · ' + seconds : '') + (refused ? ' · ' + refused + ' refused' : ' · nothing refused')}
           foot={
             taskCoverage
               ? 'Asked ' + taskCoverage.requested + ', answered ' + taskCoverage.completed + (taskCoverage.incomplete_ids?.length ? ', incomplete: ' + taskCoverage.incomplete_ids.join(', ') : '') + '. A task counts as answered only when it returned evidence.'
@@ -288,18 +291,20 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
         </Disclosure>
       ) : null}
 
-      <details className="f-depth">
+      <details className="g-fold">
         <summary onClick={() => setRecordOpen(true)}>Machine record (the exact response)</summary>
-        <div className="f-depth-body">
+        <div className="g-fold-body">
           <p className="g-claim-note">The complete response this card was rendered from, for audit.</p>
           {recordOpen ? <pre className="machine-record">{JSON.stringify(packet, null, 2)}</pre> : null}
         </div>
       </details>
 
+      </div>
+
       <div className="g-chips no-print" data-print="drop">
         <button
           type="button"
-          className="g-chip"
+          className="g-chip g-chip-lead"
           onClick={async () => {
             const outcome = await copyText(answerText(packet));
             setCopied(outcome);

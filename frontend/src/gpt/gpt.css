@@ -555,8 +555,37 @@ html, body { background: var(--g-void); }
 }
 .g-fold[open] > summary::before, .g-work[open] > summary::before { transform: rotate(45deg); }
 .g-fold-body { margin-top: var(--g-3); padding-left: var(--g-3); border-left: 1px solid var(--g-line-soft); animation: g-rise var(--g-mid) var(--g-ease) both; }
+/* ---- behind the answer ----------------------------------------------------------------------------
+   What the answer says is the subject. How it was reached is provenance, and provenance belongs behind a
+   hairline in one region — not in four boxes drawn like the evidence they explain. Four identical cards
+   stacked is the SaaS-kit tell, and this column had it: the notes, the accounting, the requested tasks and
+   the machine record were all peers of the reading. They are folds now, in one group, in a quieter voice. */
+.g-behind {
+  margin-top: var(--g-5);
+  padding-top: var(--g-4);
+  border-top: 1px solid var(--g-line-soft);
+  display: flex; flex-direction: column; gap: var(--g-3);
+}
+/* The accent is for the folds a reader opens inside an answer. These are audit, so they stay in the mist
+   and only take the accent on hover — the interest is available, not advertised. */
+.g-behind > .g-fold > summary, .g-behind .g-work > summary { color: var(--g-mist-2); font-weight: 400; }
+.g-behind > .g-fold > summary:hover { color: var(--g-accent); opacity: 1; }
+.g-behind .g-work { border-top: 0; padding-top: 0; }
+
+/* Three numbers and the ids behind them. It states a rule the product is built on — asked, answered and
+   incomplete are different numbers — so it keeps its heading and loses its box. */
+.g-tally { font-size: 12.5px; color: var(--g-mist); }
+.g-tally .coverage { font-family: var(--g-mono); font-size: 11.5px; color: var(--g-mist); }
+
+/* The lead action is the one a reader wants; the rest are available without competing for the same weight. */
+.g-chip-lead { color: var(--g-paper); border-color: color-mix(in srgb, var(--g-accent) 40%, var(--g-line)); }
+.g-chip-lead:hover { background: var(--g-accent-wash); }
+
 .g-work { border-top: 1px solid var(--g-line-soft); padding-top: var(--g-3); }
-.g-work > summary { font-family: var(--g-mono); font-size: 11.5px; color: var(--g-mist-2); }
+/* Sans, not mono. A monospace face is for a value a tool owns; set on a whole sentence at 11.5px and in
+   lower case, it read as console output, which is the decorative-mono tell this system claims to have
+   dropped. The counts inside it are small enough to sit in the sans without pretending to be prose. */
+.g-work > summary { font-family: var(--g-sans); font-size: 12.5px; color: var(--g-mist-2); }
 /* The work panel's own marker: a step either ran or it did not, so the dot is a state and not a decoration. */
 .g-work-dot {
   width: 5px; height: 5px; border-radius: 50%; flex: 0 0 5px;
@@ -624,6 +653,14 @@ html, body { background: var(--g-void); }
 .g details > summary { cursor: pointer; }
 .g-notice { font-size: 13.5px; color: var(--g-mist); border-left: 2px solid var(--g-accent); padding: var(--g-2) var(--g-3); background: var(--g-accent-wash); border-radius: 0 var(--g-r-sm) var(--g-r-sm) 0; margin: var(--g-3) 0 0; }
 .g-list { margin: 0; padding-left: 18px; font-size: 13px; color: var(--g-mist); }
+/* Two names left over from the deleted flagship layer, still used by the answer and undeclared since.
+   The warning panel is an official statement drawn as a table, so it keeps a surface; the task list is a
+   list and takes the list's own rhythm. */
+.g .warning-panel { background: var(--g-fill); border: 1px solid var(--g-line-soft); border-radius: var(--g-r); box-shadow: var(--g-e1); }
+.g .tasks { list-style: none; padding-left: 0; display: flex; flex-direction: column; gap: var(--g-2); }
+.g .tasks .task { padding-left: var(--g-3); border-left: 2px solid var(--g-line); }
+.g .tasks .task.is-answered { border-left-color: color-mix(in srgb, var(--g-green) 60%, transparent); }
+.g .tasks .task.is-incomplete { border-left-color: color-mix(in srgb, var(--g-orange) 60%, transparent); }
 
 /* ---- responsive ------------------------------------------------------------------------------------ */
 .g-rail-toggle { display: none !important; }

@@ -279,7 +279,9 @@ describe('the answer card, held against the vanilla checks', () => {
     const summaries = Array.from(container.querySelectorAll('summary')).map(summary => summary.textContent || '');
     expect(summaries).toContain('where this came from');
     expect(summaries.some(text => /Machine record/.test(text))).toBe(true);
-    expect(summaries.some(text => /how this was answered/.test(text))).toBe(true);
+    /* Case-insensitive on purpose: what this guards is that the work disclosure is reachable, not how the
+       label is cased. Sentence case is the system's rule, and a parity check should not pin presentation. */
+    expect(summaries.some(text => /how this was answered/i.test(text))).toBe(true);
     expect(container.querySelector('.g-prose')?.textContent).toBe(RECORDED.forecast.answer);
     expect(container.querySelector('.lead-value')).not.toBeNull();
   });

@@ -153,9 +153,9 @@ function Shell() {
         persona={persona}
         onPersona={setPersona}
       />
-      /* The front door renders its own Workspace, and this return never mounted the panels: the Watch control set
-         the state and nothing was there to draw it. Both shell paths mount the same panels now, so a control cannot
-         be wired on one path and dead on the other. */
+      {/* The front door renders its own Workspace, and this return never mounted the panels: the Watch control
+          set the state and nothing was there to draw it. Both shell paths mount the same panels now, so a
+          control cannot be wired on one path and dead on the other. */}
       {plansOpen ? (
         <div className="planwatch-host" role="presentation">
           <PlanWatch onClose={() => setPlansOpen(false)} />

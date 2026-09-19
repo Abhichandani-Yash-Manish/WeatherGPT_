@@ -19,13 +19,16 @@ export function Tag({ children, tone = 'default', title }: { children: ReactNode
 /* A disclosure is a detail a reader opens; the closed state still names what is inside, so nothing
    material is hidden behind a word like "more". */
 export function Disclosure({ summary, children, count, open = false }: { summary: string; children: ReactNode; count?: number; open?: boolean }) {
+  /* Not a card. A disclosure sits behind the answer, and giving it the same box as the evidence made four
+     of them read as four peers of the reading — the identical-card stack that flattens a column. It is a
+     fold now: a chevron, a name, and a hairline down the opened body. */
   return (
-    <details className="card px-3 py-2" open={open}>
-      <summary className="cursor-pointer select-none text-xs font-semibold text-ink-soft">
+    <details className="g-fold" open={open}>
+      <summary>
         {summary}
         {typeof count === 'number' ? <span className="quiet"> ({count})</span> : null}
       </summary>
-      <div className="mt-2">{children}</div>
+      <div className="g-fold-body">{children}</div>
     </details>
   );
 }
@@ -415,8 +418,8 @@ export function TaskAccounting({ packet }: { packet: AnswerPacket }) {
   const ids = results.map(task => task.id).filter(Boolean);
   const answeredIds = results.filter(task => task.status === 'answered').map(task => task.id).filter(Boolean);
   return (
-    <div className="card px-3 py-2">
-      <p className="eyebrow">Task accounting</p>
+    <div className="g-tally">
+      <p className="g-eyebrow">Task accounting</p>
       <p className="coverage mt-1 flex flex-wrap gap-x-4 gap-y-1 text-xs">
         <span>{'Asked: ' + asked + (ids.length ? ' \u00b7 ' + ids.join(', ') : ' \u00b7 no task id returned')}</span>
         <span className="quiet">{'Answered: ' + answered + (answeredIds.length ? ' \u00b7 ' + answeredIds.join(', ') : '')}</span>
