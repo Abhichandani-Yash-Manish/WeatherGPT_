@@ -1,6 +1,6 @@
 """Explicit conversational focus and bounded context; old answer prose is not evidence."""
 import copy,json,re
-from datetime import timedelta
+from datetime import datetime,timedelta
 from zoneinfo import ZoneInfo
 from .transport import SourceError,parsed
 
@@ -102,7 +102,35 @@ def context_message(state):
     return prior
 
 
-def reconcile(plan,state,question):
+def _window_moved_past(task,prior,now=None):
+    """True when the follow-up asks about a window the prior observation could not have covered.
+
+    Two shapes, because a "right now" task carries no explicit window at all:
+
+    - the prior task named a window, so the two are compared against each other and no clock is needed;
+    - the prior task named none, which is what "what is it like right now" produces, so the follow-up's
+      own start is compared against the turn's clock.
+
+    "and yesterday?" moves the window backwards and is not this case: an observation is the right product
+    for a window that has already happened. Without a clock and without a prior window this answers False,
+    which inherits as before rather than guessing.
+    """
+    start=task.get('start_local')
+    if not start:return False
+    try:moment=datetime.fromisoformat(str(start))
+    except ValueError:return False
+    fence=prior.get('end_local') or prior.get('start_local')
+    if fence:
+        try:return moment>datetime.fromisoformat(str(fence))
+        except ValueError:return False
+    if now is None:return False
+    try:
+        edge=now if getattr(now,'tzinfo',None) else None
+        return bool(edge) and moment>edge
+    except TypeError:return False
+
+
+def reconcile(plan,state,question,now=None):
     """Apply only model-declared context edits, checked against retained typed tasks."""
     plan=copy.deepcopy(plan);plan['language']=language_style(question,plan['language'])
     # A place named with a coast or sea word is a region, not a settlement. Measured on
@@ -177,7 +205,22 @@ def reconcile(plan,state,question):
                     if prior[k]:task[k]=copy.deepcopy(prior[k])
                 inherited.append('time')
             if 'operation' not in changed:
-                task['kind']=prior['kind'];task['operation']=prior['operation'];inherited.append('operation')
+                # An observation cannot cover a window that has not happened yet. "and tomorrow?" after
+                # "what is it like right now" inherited kind='observation' and read the station layer for a
+                # future window, which answers with the LATEST PAST reading - the previous turn's own
+                # numbers, returned as the answer to a question about tomorrow, with nothing saying they
+                # were not. The window itself resolved correctly; only the product read was wrong.
+                #
+                # So the operation is not inherited when the window has moved past what the prior one
+                # covered and the prior read was an observation. The change is recorded in changed_fields
+                # rather than made quietly: the card's "carried / changed here" line is how a reader sees
+                # that this turn asked a different product, and omitting it would be a lie by omission.
+                if prior['kind']=='observation' and _window_moved_past(task,prior,now):
+                    task['kind']='forecast';task['operation']=prior['operation']
+                    changed.add('operation')
+                    if 'changed_fields' in plan:plan['changed_fields']=sorted(changed)
+                else:
+                    task['kind']=prior['kind'];task['operation']=prior['operation'];inherited.append('operation')
             if 'places' not in changed:task['place_indices']=copy.deepcopy(prior['place_indices'])
             if task['kind']=='agriculture' and prior.get('document_request'):
                 d=task.setdefault('document_request',copy.deepcopy(prior['document_request']))

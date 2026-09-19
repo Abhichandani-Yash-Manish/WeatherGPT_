@@ -305,7 +305,7 @@ class ConversationEngine:
                 plan,_meta=interpret_plan(None,q,now,history,seed=seed)
                 if state:
                     from .dialogue import reconcile
-                    plan=reconcile(plan,state,q)
+                    plan=reconcile(plan,state,q,now)
                 reading=self.reading_of(plan)
                 reading['basis']='rules'
                 result['reading']=reading
@@ -446,13 +446,13 @@ class ConversationEngine:
             degraded=None
             try:
                 plan,meta=self.model.plan(q,self.workspace.clock(),history)
-                plan=reconcile(plan,state,q)
+                plan=reconcile(plan,state,q,self.workspace.clock())
             except SourceError as exc:
                 # A request to be notified must not be lost to planner variance. The bounded fallback
                 # keeps the same warning tool and place resolution. Anything else the model cannot
                 # plan becomes a turn that says so, never a raw error at the reader.
                 if watch_intent(q):
-                    plan=reconcile(self._watch_plan(q),state,q)
+                    plan=reconcile(self._watch_plan(q),state,q,self.workspace.clock())
                     meta={'provider':'deterministic_watch_plan','planner_policy':'bounded_watch_plan','model_calls':0}
                 else:
                     plan=dict(DEGRADED_PLAN);meta={'provider':'unplanned','model_calls':0,

@@ -88,3 +88,38 @@ class MeasureEditTests(unittest.TestCase):
 
 if __name__=='__main__':
     unittest.main()
+
+
+def test_a_future_follow_up_does_not_inherit_an_observation():
+    """"and tomorrow?" after "what is it like right now" must not read the station layer.
+
+    An observation cannot cover a window that has not happened yet. Inheriting the operation made the
+    follow-up read the station layer for a future window, which answers with the latest PAST reading — the
+    previous turn's own numbers, returned as the answer to a question about tomorrow, with nothing saying
+    they were not. The window resolved correctly all along; only the product read was wrong.
+
+    The switch is recorded in changed_fields rather than made quietly, because the card's
+    "carried / changed here" line is how a reader sees that this turn asked a different product.
+    """
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    from weathergpt_data.dialogue import _window_moved_past
+
+    now = datetime(2026, 9, 20, 11, 0, tzinfo=ZoneInfo("Asia/Kolkata"))
+    right_now = {"kind": "observation", "start_local": "", "end_local": ""}
+    tomorrow = {"start_local": "2026-09-21T00:30:00+05:30", "end_local": "2026-09-22T00:30:00+05:30"}
+    yesterday = {"start_local": "2026-09-19T00:30:00+05:30", "end_local": "2026-09-20T00:30:00+05:30"}
+
+    # A "right now" task carries no window, so the clock decides.
+    assert _window_moved_past(tomorrow, right_now, now) is True
+    assert _window_moved_past(yesterday, right_now, now) is False
+
+    # Where the prior task named a window, the two are compared and no clock is needed.
+    monday = {"start_local": "2026-09-20T00:00:00+05:30", "end_local": "2026-09-20T12:00:00+05:30"}
+    assert _window_moved_past(tomorrow, monday) is True
+    assert _window_moved_past(yesterday, monday) is False
+
+    # Without a clock and without a prior window it inherits as before rather than guessing.
+    assert _window_moved_past(tomorrow, right_now, None) is False
+    # A window that cannot be parsed is not a reason to switch products.
+    assert _window_moved_past({"start_local": "not a date"}, right_now, now) is False
