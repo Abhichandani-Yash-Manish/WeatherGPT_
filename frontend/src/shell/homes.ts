@@ -23,6 +23,7 @@ export type HomeId = 'ask' | 'warnings' | 'history' | 'board';
 
 export type Home = {
   id: HomeId;
+  /** The English label. The interface renders `home.<id>` from the catalogue and falls back to this. */
   label: string;
   /** What the section rail offers once you are inside. The first is the home's own landing surface. */
   views: string[];

@@ -78,7 +78,11 @@ function handlers(packet: Record<string, unknown>, options: ChatOptions = {}) {
 
 async function ask(text: string) {
   const user = userEvent.setup();
-  const box = screen.getByLabelText('Your question');
+  /* By its id, not by its English label. The composer's label is chrome now, so a spec that renders with
+     language "hi" gets "आपका प्रश्न" — which is the feature working, and which would otherwise make this
+     shared helper fail for every non-English test. Specs that mean to assert the English chrome still ask
+     for it by name; this one only needs the box. */
+  const box = document.getElementById('question') as HTMLTextAreaElement;
   await user.clear(box);
   await user.type(box, text);
   await user.click(screen.getByTestId('send-question'));

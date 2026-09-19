@@ -25,6 +25,8 @@ import { AnswerTurn } from '../chat/AnswerTurn';
 import { Composer } from './Composer';
 import { Field } from './Field';
 import { hourOf, lightAt } from './fieldPaint';
+import { chromeFor, i18n } from '../i18n';
+import { useTranslation } from 'react-i18next';
 import { useSky } from './sky';
 import { SkyGlyphIcon } from '../shell/icons';
 import { rememberPlace, useWorkingPlace } from '../modules/Evidence';
@@ -110,6 +112,7 @@ export function Workspace({
   placeParam = { label: null, latitude: null, longitude: null }, onHoldPlace,
   seed = null, restoreId = null, unknownRoute = null,
 }: WorkspaceProps) {
+  const { t } = useTranslation();
   const conversation = useConversation({ outputLanguage: language, persona });
   const client = useQueryClient();
   const [railOpen, setRailOpen] = useState(false);
@@ -137,6 +140,15 @@ export function Workspace({
      their background from it, so the page behind a short thread is the right hour rather than a strip of
      the old one; and color-scheme has to reach the document for native controls — a select's dropdown and
      the scrollbars — to render light on the light hours. */
+  /* The interface follows the answer language. A reader who picks Gujarati for answers gets a Gujarati
+     product rather than half of one — and the document's lang attribute follows too, because that is what
+     a screen reader and the browser's own hyphenation read. */
+  const chrome = chromeFor(language);
+  useEffect(() => {
+    void i18n.changeLanguage(chrome);
+    document.documentElement.lang = chrome;
+  }, [chrome]);
+
   /* Where the light is standing, from the reader's own sun. Every pane's catch-light and every shadow is
      derived from these four numbers, so the whole surface system is lit from one place and that place is
      the real one. The hour blocks in the stylesheet carry a sensible default for each of the four hours,
@@ -559,7 +571,7 @@ export function Workspace({
                     <p className="g-working-head">
                       <span className="g-dots" aria-hidden="true"><i /><i /><i /></span>
                       <span className="g-working-stage" role="status" aria-live="polite">
-                        {current ? stageLabel(current) : 'Working on it'}
+                        {current ? stageLabel(current) : t('working.default')}
                       </span>
                       {/* Outside the live region: a clock that ticks once a second would be announced once a
                           second, which is unusable with a screen reader. The DELTA, not the clock — this read
@@ -572,11 +584,11 @@ export function Workspace({
 
                     {/* A reader asked for this one, so it answers where it was asked. */}
                     {working.stopRequested ? (
-                      <p className="g-working-note">{working.stopDetail || 'Stop requested.'}</p>
+                      <p className="g-working-note">{working.stopDetail || t('working.stopRequested')}</p>
                     ) : null}
 
                     <details className="g-fold g-working-more">
-                      <summary>What it’s doing</summary>
+                      <summary>{t('working.whatItsDoing')}</summary>
                       <div className="g-fold-body">
                         <p className="g-working-note">
                           Resolving the place and window, then retrieving evidence. A local model is

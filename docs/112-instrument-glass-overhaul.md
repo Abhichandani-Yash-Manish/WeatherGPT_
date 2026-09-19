@@ -51,9 +51,9 @@ extrusion makes it feel pressable, the border makes it findable.
 | Batch | Work | State |
 | --- | --- | --- |
 | 1 | The light model and the pane system | done |
-| 2 | The rail as one calm list; conversations led by their place | next |
-| 3 | The context panel in the right column | planned |
-| 4 | Interface localisation (i18next) | planned |
+| 2 | The rail as one calm list; conversations led by their place | done |
+| 3 | The context panel in the right column | done |
+| 4 | Interface localisation (i18next) | done, chrome only |
 | 5 | Splitting `gpt.css` and `Workspace.tsx`; documentation | planned |
 
 ## 4. The resource list, honestly
@@ -83,3 +83,35 @@ The four hours' default light positions are hand-set to match the solar position
 a fallback, and the real position always wins when the script runs. The pane system has been looked at on
 one machine at three hours. The eighteen guided surfaces still carry the palette without having been
 rebuilt on it, which remains B1.3 in docs/108.
+
+
+## 6. What the interface may translate, and what it may not
+
+Batch 4 added i18next with four catalogues — English, Hindi, Gujarati, Tamil — and the interface follows
+the answer language the reader already chose, so picking Gujarati moves the whole product rather than half
+of it. The document's `lang` attribute follows too, because that is what a screen reader and the browser's
+own hyphenation read.
+
+Three rules govern it, and they come from where every other rule in this product comes from — that nothing
+is stated which a source did not state:
+
+1. **Chrome only.** Navigation, buttons, headings, empty states: the words this interface wrote about
+   itself. Everything a *source* wrote stays exactly as the source wrote it — hazard wording, place names
+   as the resolver returned them, units, source ids, status lines, the engine's own sentences. A
+   translated warning is a warning this product did not read.
+2. **Values never.** A number, a unit and a timestamp are formatted, not translated.
+3. **Absence stays absence.** A missing key falls back to English rather than to an empty string, because
+   a blank label is a worse lie than an English one — it cannot even be reported.
+
+Four checks hold the catalogues to it: every language carries exactly the English keys, no string is
+blank, a catalogue file exists for every language the interface claims, and no catalogue carries a unit,
+a source id or hazard wording.
+
+The chrome is translated into four languages and the engine answers in 22. `chromeFor` falls back to
+English for the other eighteen rather than claiming them, for the same reason the engine's own language
+support is measured per direction: claiming a language you do not have is the failure this product is
+built to avoid.
+
+**These translations are machine-authored and have not been reviewed by a native speaker.** They cover
+interface chrome only, so the risk is a clumsy label rather than a wrong warning — but they should be
+reviewed before anyone relies on them, and that review is not done.

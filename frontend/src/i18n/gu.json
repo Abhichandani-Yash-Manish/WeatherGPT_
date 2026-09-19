@@ -1,0 +1,87 @@
+{
+  "brand": "WeatherGPT",
+  "home": {
+    "ask": "પૂછો",
+    "warnings": "ચેતવણીઓ",
+    "history": "ઇતિહાસ",
+    "board": "બોર્ડ"
+  },
+  "rail": {
+    "newConversation": "નવી વાતચીત",
+    "watch": "દેખરેખ",
+    "search": "વાતચીત શોધો",
+    "searchPlaceholder": "પ્રશ્નો અને જવાબો શોધો",
+    "collapse": "પટ્ટી નાની કરો",
+    "expand": "પટ્ટી મોટી કરો",
+    "thisPlace": "આ સ્થળ",
+    "noPlace": "કોઈ સ્થળ નક્કી નથી",
+    "setPlace": "સ્થળ પસંદ કરો",
+    "changePlace": "બદલો",
+    "askAboutIt": "આ વિશે પૂછો",
+    "conversations": "વાતચીતો",
+    "settings": "સેટિંગ્સ",
+    "privacy": "પ્રશ્નો અને જવાબો આ મશીન પર જ રહે છે.",
+    "today": "આજે",
+    "yesterday": "ગઈકાલે",
+    "previous7": "છેલ્લા 7 દિવસ",
+    "older": "તેથી જૂનું",
+    "noneStored": "આ મશીન પર હજી કોઈ વાતચીત સાચવેલી નથી.",
+    "noneMatch": "તેને મળતી કોઈ સાચવેલી વાતચીત નથી.",
+    "pinned": "પિન કરેલા"
+  },
+  "composer": {
+    "placeholder": "કોઈ સ્થળ અને સમય વિશે પૂછો…",
+    "label": "તમારો પ્રશ્ન",
+    "send": "મોકલો",
+    "stop": "થોભાવો",
+    "record": "પ્રશ્ન રેકોર્ડ કરો",
+    "stopRecording": "રેકોર્ડિંગ થોભાવો",
+    "heard": "જે સંભળાયું, સુધારા માટે",
+    "useText": "આ લખાણ વાપરો",
+    "discard": "કાઢી નાખો",
+    "sourceNote": "દરેક મૂલ્ય તેનો સ્રોત અને વાંચ્યાનો સમય સાથે રાખે છે."
+  },
+  "welcome": {
+    "goodMorning": "સુપ્રભાત",
+    "goodAfternoon": "નમસ્કાર",
+    "goodEvening": "શુભ સાંજ",
+    "goodNight": "શુભ રાત્રિ",
+    "setYourPlace": "તમારું સ્થળ પસંદ કરો",
+    "namePlace": "કોઈ સ્થળ જણાવો અને તે તમારું થઈ જશે",
+    "readingStation": "નજીકના સ્ટેશનનો અહેવાલ વંચાઈ રહ્યો છે."
+  },
+  "working": {
+    "default": "કામ ચાલુ છે",
+    "whatItsDoing": "આ શું કરી રહ્યું છે",
+    "sinceYouAsked": "તમે પૂછ્યું ત્યારથી",
+    "stopRequested": "થોભાવવાની વિનંતી મોકલાઈ."
+  },
+  "panel": {
+    "title": "વાચન",
+    "close": "વાચન પેનલ બંધ કરો",
+    "open": "વાચન પેનલ ખોલો",
+    "place": "સ્થળ",
+    "nearestStation": "નજીકનું સ્ટેશન",
+    "answerLanguage": "જવાબની ભાષા",
+    "matchMyQuestion": "મારા પ્રશ્ન પ્રમાણે",
+    "readingAs": "કયા રૂપે વાંચવું",
+    "defaultReading": "સામાન્ય વાચન",
+    "waysIn": "પ્રવેશના રસ્તા",
+    "readInConversation": "આ વાતચીતમાં વંચાયેલા સ્રોત",
+    "claim_one": "{{count}} વિધાન",
+    "claim_other": "{{count}} વિધાનો",
+    "readTimeMissing": "વાંચ્યાનો સમય નોંધાયો નથી",
+    "noProductNamed": "સંદર્ભમાં કોઈ ઉત્પાદન જણાવાયું નથી"
+  },
+  "answer": {
+    "copy": "જવાબ કૉપિ કરો",
+    "copied": "કૉપિ થયું",
+    "saveMarkdown": "આ જવાબ Markdown માં સાચવો",
+    "downloadJson": "આ જવાબ JSON માં લો",
+    "print": "આ જવાબ છાપો",
+    "notCovered": "આ જવાબ શું આવરી લેતો નથી",
+    "howAnswered": "આ જવાબ કેવી રીતે બન્યો",
+    "machineRecord": "મશીન રેકોર્ડ (બરાબર એ જ જવાબ)",
+    "restored": "આ જ મશીનમાંથી પાછું મેળવ્યું"
+  }
+}

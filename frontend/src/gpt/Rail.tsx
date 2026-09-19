@@ -28,6 +28,7 @@ import {
   Bell, CornerDownLeft, History, KeyRound, Keyboard, LayoutGrid, MapPin, MessageSquare,
   MessageSquarePlus, PanelLeft, Pencil, Pin, PinOff, Search, Settings, Trash2, TriangleAlert, X,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { forgetConversation, ledger } from '../chat/api';
 import type { ConversationRow } from '../api/types';
 import { HOMES, viewsOf, type Home, type HomeId } from '../shell/homes';
@@ -56,6 +57,16 @@ function groupOf(updated: string | undefined, now: number): string {
 }
 
 const ORDER = ['Today', 'Yesterday', 'Previous 7 days', 'Older'];
+
+/* The grouping keys are English because they are data — the grouping is computed from a timestamp and has
+   to be stable whatever the interface is set to. These map them to the catalogue for rendering. */
+const GROUP_KEY: Record<string, string> = {
+  Pinned: 'rail.pinned',
+  Today: 'rail.today',
+  Yesterday: 'rail.yesterday',
+  'Previous 7 days': 'rail.previous7',
+  Older: 'rail.older',
+};
 /* ⌥1 to ⌥9: nine rows carry a number, and the tenth row is reached by scrolling like everything else. */
 const SHORTCUTS = 9;
 const PLACES_SHOWN = 5;
@@ -104,6 +115,7 @@ export function Rail({
      is never mistaken for a name a source published. */
   const nameOf = (label: string) => aliases[label] || label;
   const labelsOf = (known: Known) => known.labels.join(' · ');
+  const { t } = useTranslation();
   const [filter, setFilter] = useState('');
   const [term, setTerm] = useState('');
   const [searching, setSearching] = useState(false);
@@ -247,9 +259,9 @@ export function Rail({
           <button
             type="button"
             className="g-act"
-            aria-label="Search conversations"
+            aria-label={t('rail.search')}
             aria-pressed={searching}
-            title="Search every stored turn (⌥F)"
+            title={t('rail.search')}
             onClick={() => setSearching(value => !value)}
           >
             <Search size={15} aria-hidden="true" />
@@ -257,7 +269,7 @@ export function Rail({
           <button
             type="button"
             className="g-act"
-            aria-label={collapsed ? 'Expand the rail' : 'Collapse the rail'}
+            aria-label={collapsed ? t('rail.expand') : t('rail.collapse')}
             aria-expanded={!collapsed}
             title={collapsed ? 'Expand the rail (⌥B)' : 'Collapse the rail (⌥B)'}
             onClick={onToggle}
@@ -280,7 +292,7 @@ export function Rail({
             className="g-search"
             value={filter}
             onChange={event => setFilter(event.target.value)}
-            placeholder="Search questions and answers"
+            placeholder={t('rail.searchPlaceholder')}
             autoComplete="off"
             autoFocus
           />
@@ -303,11 +315,12 @@ export function Rail({
               type="button"
               className="g-home"
               aria-current={entry.id === here ? 'page' : undefined}
-              title={entry.label + ' — ' + entry.blurb}
+              title={t('home.' + entry.id, { defaultValue: entry.label }) + ' — ' + entry.blurb}
               onClick={() => onOpenView(entry.views[0])}
             >
               <Glyph size={16} aria-hidden="true" />
-              <span className="g-home-label">{entry.label}</span>
+              {/* The registry is data and stays English; the interface renders its own name for it. */}
+              <span className="g-home-label">{t('home.' + entry.id, { defaultValue: entry.label })}</span>
             </button>
           );
         })}
@@ -319,12 +332,12 @@ export function Rail({
         <div className="g-rail-actions-lead">
           <button type="button" className="g-new" onClick={onNew} title="New conversation (⌥N)">
             <MessageSquarePlus size={15} aria-hidden="true" />
-            <span className="g-new-label">New conversation</span>
+            <span className="g-new-label">{t('rail.newConversation')}</span>
             <kbd className="g-kbd">⌥N</kbd>
           </button>
           <button type="button" className="g-row g-row-plain g-rail-action" onClick={onPlans} title="Plans, watches and the notification inbox">
             <Bell size={15} aria-hidden="true" />
-            <span className="g-new-label">Watch</span>
+            <span className="g-new-label">{t('rail.watch')}</span>
           </button>
         </div>
 
@@ -345,10 +358,10 @@ export function Rail({
             reads it, the panel reads it — so the rail states it, with what the nearest station last printed
             there, rather than leaving a reader to infer it from the answers. */}
         <section className="g-section" aria-label="Place">
-          <p className="g-rail-label">This place</p>
+          <p className="g-rail-label">{t('rail.thisPlace')}</p>
           <div className="g-place" aria-current={place ? 'true' : undefined}>
             <MapPin size={14} aria-hidden="true" />
-            <span className="g-place-name">{place?.label || 'No place held'}</span>
+            <span className="g-place-name">{place?.label || t('rail.noPlace')}</span>
             {reading && (reading.temperature || reading.glyph) ? (
               <span className="g-place-reading" title={[reading.station, reading.sourceId,
                 reading.observedAt ? 'read ' + reading.observedAt : null].filter(Boolean).join(' · ')}>
@@ -358,7 +371,7 @@ export function Rail({
             ) : null}
           </div>
           <div className="g-rail-actions">
-            <button type="button" className="g-quiet" onClick={onFindPlace}>{place ? 'Change' : 'Set a place'}</button>
+            <button type="button" className="g-quiet" onClick={onFindPlace}>{place ? t('rail.changePlace') : t('rail.setPlace')}</button>
             {place?.label ? (
               <button type="button" className="g-quiet" onClick={() => onAsk('What is it like in ' + place.label + ' right now?')}>
                 Ask about it
@@ -434,7 +447,7 @@ export function Rail({
 
         <section className="g-section" aria-label="Conversations">
           <p className="g-rail-label">
-            Conversations
+            {t('rail.conversations')}
             {placeFilter ? (
               <button type="button" className="g-quiet g-place-clear" onClick={() => setPlaceFilter(null)}>
                 {placeFilter} ×
@@ -456,7 +469,9 @@ export function Rail({
 
           {grouped.map(([label, items]) => (
             <div key={label}>
-              <p className="g-group">{label}</p>
+              {/* The grouping key stays English in the data and is named here in the reader's language.
+                  "Pinned" is a group too, so it is keyed the same way rather than being special-cased. */}
+              <p className="g-group">{t(GROUP_KEY[label] || 'rail.older', { defaultValue: label })}</p>
               {items.map(row => {
                 const index = visible.indexOf(row.id);
                 const pinned = pins.includes(row.id);
@@ -517,7 +532,7 @@ export function Rail({
       <div className="g-rail-foot">
         <button type="button" className="g-row g-row-plain g-rail-action" onClick={() => onOpenView('settings')} title="Sources, settings and this machine's state">
           <Settings size={15} aria-hidden="true" />
-          <span className="g-new-label">Settings</span>
+          <span className="g-new-label">{t('rail.settings')}</span>
         </button>
         <button type="button" className="g-act" onClick={() => setKeysOpen(true)} aria-label="Keyboard shortcuts" title="Keyboard shortcuts (⌥/)">
           <Keyboard size={15} aria-hidden="true" />
@@ -526,7 +541,7 @@ export function Rail({
           <KeyRound size={15} aria-hidden="true" />
         </button>
       </div>
-      <p className="g-rail-note">Questions and answers stay on this machine.</p>
+      <p className="g-rail-note">{t('rail.privacy')}</p>
       {keysOpen ? <ShortcutDialog onClose={() => setKeysOpen(false)} /> : null}
     </aside>
   );

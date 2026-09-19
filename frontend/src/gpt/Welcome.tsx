@@ -23,12 +23,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { istStamp } from '../lib/time';
 import { SkyGlyphIcon } from '../shell/icons';
-import { greeting, useSky } from './sky';
+import { greetingKey, useSky } from './sky';
 import { solarPosition, type Hour } from './fieldPaint';
 import { QuoteLine } from './QuoteLine';
 import { PlacePicker } from './PlacePicker';
 import { useShellPrefs } from './shellState';
 import { useWorkingPlace } from '../modules/Evidence';
+import { useTranslation } from 'react-i18next';
 
 /* The national default, the same one the ground uses when the browser holds no place: the sun is the same
    sun either way, and what changes is where it stands over the page. */
@@ -36,6 +37,7 @@ const DEFAULT_LATITUDE = 23.0;
 const DEFAULT_LONGITUDE = 82.5;
 
 export function Welcome({ hour }: { hour: Hour }) {
+  const { t } = useTranslation();
   const sky = useSky();
   const held = useWorkingPlace();
   const latitude = held?.latitude ?? DEFAULT_LATITUDE;
@@ -89,7 +91,7 @@ export function Welcome({ hour }: { hour: Hour }) {
         )}
       </div>
 
-      <h1 className="w-greeting">{greeting(at)}</h1>
+      <h1 className="w-greeting">{t(greetingKey(at))}</h1>
 
       {/* The place, and the one control on this screen that can change what everything else is about. A
           reader who has no place is shown the hour and the sun, and this is how they get their own sky. */}
@@ -102,7 +104,7 @@ export function Welcome({ hour }: { hour: Hour }) {
       ) : (
         <p className="w-place w-place-none">
           <button type="button" className="w-place-button" onClick={() => setPicking(true)}>
-            Set your place
+            {t('welcome.setYourPlace')}
           </button>
         </p>
       )}
@@ -122,7 +124,7 @@ export function Welcome({ hour }: { hour: Hour }) {
       ) : null}
 
       {source || sky.isPending ? (
-        <p className="w-source">{sky.isPending ? 'Reading the nearest station report.' : source}</p>
+        <p className="w-source">{sky.isPending ? t('welcome.readingStation') : source}</p>
       ) : null}
 
       {/* The one thing on this screen that is not about today's weather, and the only thing on it a reader

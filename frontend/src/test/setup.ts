@@ -1,3 +1,9 @@
+/* The interface's own language. main.tsx initialises i18next at the entry point, and a test renders a
+   component rather than the entry, so without this every t() call returns its key and a spec looking for
+   "Your question" finds "composer.label" instead. Initialising it here is what the app does, not a
+   convenience for the tests: the catalogues are part of the interface, not a fixture. */
+import '../i18n';
+
 import '@testing-library/jest-dom/vitest';
 import { afterAll, afterEach, beforeAll, vi } from 'vitest';
 import { transferableAbortController } from 'node:util';

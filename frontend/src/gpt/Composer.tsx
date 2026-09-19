@@ -5,6 +5,7 @@
    the row rather than a second door, and it confirms what it heard before anything is sent. */
 
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ArrowUp, Check, Mic, Square, X } from 'lucide-react';
 import { transcribe } from '../chat/api';
 import { blobToBase64, startRecording, type Recorder } from '../chat/voice';
@@ -20,6 +21,7 @@ export type ComposerProps = {
 };
 
 export function Composer({ draft, onDraft, onSend, onStop, busy, language, placeholder }: ComposerProps) {
+  const { t } = useTranslation();
   const box = useRef<HTMLTextAreaElement | null>(null);
   const recorder = useRef<Recorder | null>(null);
   const [recording, setRecording] = useState(false);
@@ -85,28 +87,28 @@ export function Composer({ draft, onDraft, onSend, onStop, busy, language, place
       {/* What the microphone heard, for correction. Nothing is sent until the reader accepts it. */}
       {heard ? (
         <div className="g-heard" data-testid="transcript-panel">
-          <p className="g-heard-head"><Mic size={13} aria-hidden="true" /> Heard, for correction</p>
+          <p className="g-heard-head"><Mic size={13} aria-hidden="true" /> {t('composer.heard')}</p>
           <p className="g-heard-text" data-testid="transcript-heard">{heard.text}</p>
           <p className="g-claim-source">{heard.detail}</p>
           <div className="g-chips">
             <button type="button" className="g-chip" onClick={() => { onDraft(heard.text); setHeard(null); box.current?.focus(); }}>
-              <Check size={13} aria-hidden="true" /> Use this text
+              <Check size={13} aria-hidden="true" /> {t('composer.useText')}
             </button>
             <button type="button" className="g-chip" onClick={() => setHeard(null)}>
-              <X size={13} aria-hidden="true" /> Discard it
+              <X size={13} aria-hidden="true" /> {t('composer.discard')}
             </button>
           </div>
         </div>
       ) : null}
 
-      <label className="sr-only" htmlFor="question">Your question</label>
+      <label className="sr-only" htmlFor="question">{t('composer.label')}</label>
       <textarea
         id="question"
         ref={box}
         rows={1}
         value={draft}
         maxLength={1500}
-        placeholder={placeholder || 'Ask about a place and a time…'}
+        placeholder={placeholder || t('composer.placeholder')}
         onChange={event => onDraft(event.target.value)}
         onKeyDown={event => {
           if (event.key === 'Enter' && !event.shiftKey) {
@@ -123,7 +125,7 @@ export function Composer({ draft, onDraft, onSend, onStop, busy, language, place
           className="g-tool"
           data-testid="record-question"
           aria-pressed={recording}
-          aria-label={recording ? 'Stop recording' : 'Record a question'}
+          aria-label={recording ? t('composer.stopRecording') : t('composer.record')}
           onClick={() => {
             if (recording) void stopRecording();
             else {
@@ -141,11 +143,11 @@ export function Composer({ draft, onDraft, onSend, onStop, busy, language, place
         {note ? <span className="g-claim-source" role="status">{note}</span> : null}
         <span className="g-spacer" />
         {busy ? (
-          <button type="button" className="g-send" onClick={onStop} aria-label="Stop generating" data-testid="stop-turn">
+          <button type="button" className="g-send" onClick={onStop} aria-label={t('composer.stop')} data-testid="stop-turn">
             <Square size={14} aria-hidden="true" />
           </button>
         ) : (
-          <button type="button" className="g-send" onClick={submit} disabled={!draft.trim()} aria-label="Send" data-testid="send-question">
+          <button type="button" className="g-send" onClick={submit} disabled={!draft.trim()} aria-label={t('composer.send')} data-testid="send-question">
             <ArrowUp size={17} aria-hidden="true" />
           </button>
         )}

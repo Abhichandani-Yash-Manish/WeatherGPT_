@@ -1,0 +1,87 @@
+{
+  "brand": "WeatherGPT",
+  "home": {
+    "ask": "Ask",
+    "warnings": "Warnings",
+    "history": "History",
+    "board": "Board"
+  },
+  "rail": {
+    "newConversation": "New conversation",
+    "watch": "Watch",
+    "search": "Search conversations",
+    "searchPlaceholder": "Search questions and answers",
+    "collapse": "Collapse the rail",
+    "expand": "Expand the rail",
+    "thisPlace": "This place",
+    "noPlace": "No place held",
+    "setPlace": "Set a place",
+    "changePlace": "Change",
+    "askAboutIt": "Ask about it",
+    "conversations": "Conversations",
+    "settings": "Settings",
+    "privacy": "Questions and answers stay on this machine.",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "previous7": "Previous 7 days",
+    "older": "Older",
+    "noneStored": "No conversation is stored on this machine yet.",
+    "noneMatch": "No stored conversation matches that.",
+    "pinned": "Pinned"
+  },
+  "composer": {
+    "placeholder": "Ask about a place and a time…",
+    "label": "Your question",
+    "send": "Send",
+    "stop": "Stop generating",
+    "record": "Record a question",
+    "stopRecording": "Stop recording",
+    "heard": "Heard, for correction",
+    "useText": "Use this text",
+    "discard": "Discard it",
+    "sourceNote": "Every value keeps its source and the time it was read."
+  },
+  "welcome": {
+    "goodMorning": "Good morning",
+    "goodAfternoon": "Good afternoon",
+    "goodEvening": "Good evening",
+    "goodNight": "Good night",
+    "setYourPlace": "Set your place",
+    "namePlace": "Name a place and it becomes yours",
+    "readingStation": "Reading the nearest station report."
+  },
+  "working": {
+    "default": "Working on it",
+    "whatItsDoing": "What it’s doing",
+    "sinceYouAsked": "since you asked",
+    "stopRequested": "Stop requested."
+  },
+  "panel": {
+    "title": "Reading",
+    "close": "Close the reading panel",
+    "open": "Open the reading panel",
+    "place": "Place",
+    "nearestStation": "The nearest station",
+    "answerLanguage": "Answer language",
+    "matchMyQuestion": "Match my question",
+    "readingAs": "Reading as",
+    "defaultReading": "Default reading",
+    "waysIn": "Ways in",
+    "readInConversation": "Read in this conversation",
+    "claim_one": "{{count}} claim",
+    "claim_other": "{{count}} claims",
+    "readTimeMissing": "read time not recorded",
+    "noProductNamed": "no product named in the citation"
+  },
+  "answer": {
+    "copy": "Copy the answer",
+    "copied": "Copied",
+    "saveMarkdown": "Save this turn as Markdown",
+    "downloadJson": "Download this answer as JSON",
+    "print": "Print this answer",
+    "notCovered": "What this answer does not cover",
+    "howAnswered": "How this was answered",
+    "machineRecord": "Machine record (the exact response)",
+    "restored": "Restored from this machine"
+  }
+}

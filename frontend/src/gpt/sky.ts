@@ -106,3 +106,16 @@ export function greeting(at: Date): string {
   if (hour < 21) return 'Good evening';
   return 'Good night';
 }
+
+/* The same four bands as a catalogue key, because a greeting is chrome and belongs in the reader's own
+   language. A greeting is also the one string here that is not a translation of an English sentence but
+   the equivalent courtesy in that language — "नमस्कार" is what one says in the afternoon, not a rendering
+   of the words "good afternoon". */
+export function greetingKey(at: Date): string {
+  const hour = at.getHours();
+  if (hour < 5) return 'welcome.goodNight';
+  if (hour < 12) return 'welcome.goodMorning';
+  if (hour < 17) return 'welcome.goodAfternoon';
+  if (hour < 21) return 'welcome.goodEvening';
+  return 'welcome.goodNight';
+}

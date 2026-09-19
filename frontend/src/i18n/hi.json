@@ -1,0 +1,87 @@
+{
+  "brand": "WeatherGPT",
+  "home": {
+    "ask": "पूछें",
+    "warnings": "चेतावनियाँ",
+    "history": "इतिहास",
+    "board": "बोर्ड"
+  },
+  "rail": {
+    "newConversation": "नई बातचीत",
+    "watch": "निगरानी",
+    "search": "बातचीत खोजें",
+    "searchPlaceholder": "प्रश्न और उत्तर खोजें",
+    "collapse": "पट्टी छोटी करें",
+    "expand": "पट्टी बड़ी करें",
+    "thisPlace": "यह स्थान",
+    "noPlace": "कोई स्थान तय नहीं",
+    "setPlace": "स्थान चुनें",
+    "changePlace": "बदलें",
+    "askAboutIt": "इसके बारे में पूछें",
+    "conversations": "बातचीत",
+    "settings": "सेटिंग्स",
+    "privacy": "प्रश्न और उत्तर इसी मशीन पर रहते हैं।",
+    "today": "आज",
+    "yesterday": "कल",
+    "previous7": "पिछले 7 दिन",
+    "older": "इससे पुराने",
+    "noneStored": "इस मशीन पर अभी कोई बातचीत सहेजी नहीं गई है।",
+    "noneMatch": "इससे मेल खाती कोई सहेजी गई बातचीत नहीं है।",
+    "pinned": "पिन किए गए"
+  },
+  "composer": {
+    "placeholder": "किसी स्थान और समय के बारे में पूछें…",
+    "label": "आपका प्रश्न",
+    "send": "भेजें",
+    "stop": "रोकें",
+    "record": "प्रश्न रिकॉर्ड करें",
+    "stopRecording": "रिकॉर्डिंग रोकें",
+    "heard": "जो सुना गया, सुधार के लिए",
+    "useText": "यही पाठ लें",
+    "discard": "हटा दें",
+    "sourceNote": "हर मान अपना स्रोत और पढ़े जाने का समय साथ रखता है।"
+  },
+  "welcome": {
+    "goodMorning": "सुप्रभात",
+    "goodAfternoon": "नमस्कार",
+    "goodEvening": "शुभ संध्या",
+    "goodNight": "शुभ रात्रि",
+    "setYourPlace": "अपना स्थान चुनें",
+    "namePlace": "कोई स्थान बताइए और वह आपका हो जाएगा",
+    "readingStation": "निकटतम स्टेशन की रिपोर्ट पढ़ी जा रही है।"
+  },
+  "working": {
+    "default": "काम चल रहा है",
+    "whatItsDoing": "यह क्या कर रहा है",
+    "sinceYouAsked": "आपके पूछने के बाद से",
+    "stopRequested": "रोकने का अनुरोध भेजा गया।"
+  },
+  "panel": {
+    "title": "पठन",
+    "close": "पठन पैनल बंद करें",
+    "open": "पठन पैनल खोलें",
+    "place": "स्थान",
+    "nearestStation": "निकटतम स्टेशन",
+    "answerLanguage": "उत्तर की भाषा",
+    "matchMyQuestion": "मेरे प्रश्न के अनुसार",
+    "readingAs": "किस रूप में पढ़ें",
+    "defaultReading": "सामान्य पठन",
+    "waysIn": "प्रवेश के रास्ते",
+    "readInConversation": "इस बातचीत में पढ़े गए स्रोत",
+    "claim_one": "{{count}} कथन",
+    "claim_other": "{{count}} कथन",
+    "readTimeMissing": "पढ़ने का समय दर्ज नहीं",
+    "noProductNamed": "उद्धरण में कोई उत्पाद नहीं बताया गया"
+  },
+  "answer": {
+    "copy": "उत्तर कॉपी करें",
+    "copied": "कॉपी हो गया",
+    "saveMarkdown": "इस उत्तर को Markdown में सहेजें",
+    "downloadJson": "इस उत्तर को JSON में लें",
+    "print": "यह उत्तर प्रिंट करें",
+    "notCovered": "यह उत्तर क्या शामिल नहीं करता",
+    "howAnswered": "यह उत्तर कैसे बना",
+    "machineRecord": "मशीन रिकॉर्ड (ठीक वही उत्तर)",
+    "restored": "इसी मशीन से पुनः प्राप्त"
+  }
+}
