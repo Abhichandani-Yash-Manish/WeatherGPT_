@@ -269,3 +269,15 @@ Open, with evidence rather than adjectives:
 1. **The Watch control's handler never runs** — this section, and phases eleven to fourteen. Not a wiring defect in the three places that were checked; it is the gap between the click and the handler.
 2. **The landmark's midday framing** — visible since phase seven, still low in the frame.
 3. **Push** — impossible from this sandbox: the shell has no network. Seventeen commits sit on local `main` for a machine with credentials.
+
+## Phase sixteen — the Watch defect, found and fixed
+
+**The cause:** `App` renders `<Workspace>` on **two** shell paths — the front door (`/`) and the workspace — and only the workspace return mounted the plans panel. The Watch control on the front door set `plansOpen` and there was **nothing in that return to draw it**. The panel was never broken; the control was wired to a state whose host was mounted on the other path.
+
+That explains every observation from rounds eleven to fifteen: the handler ran (the button set its marker), the `onPlans` marker on the *workspace* path never fired (a different path's handler was invoked), the DOM had one control and one root with nothing over it, and the panel never appeared.
+
+**The fix:** both shell paths mount the same panels — the plans host is in the front-door return as well as the workspace return — with the comment saying why, so the next reader does not remove it again.
+
+**Verified by probe:** `host: true`, `panel: true` after a real click, `tsc` clean, build clean, 57 files / 317 checks passing.
+
+**The real lesson, four rounds long:** my probes checked the panel component, the state, the render block and the App handler — all on *one* path. The single thing I never checked was how many places render the shell in the first place. `grep -n '<Workspace'` would have ended this in the first round. The instrument that would have found it fastest was not inside React at all; it was an inventory of the mount points.
