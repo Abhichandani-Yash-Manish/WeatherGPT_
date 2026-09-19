@@ -468,8 +468,23 @@ export function Rail({
                       onClick={() => onOpen(row.id, row.match?.text)}
                       title={row.opening_question || 'Untitled conversation'}
                     >
-                      <span className="g-row-name">{row.opening_question || 'Untitled conversation'}</span>
-                      {row.place?.label ? <span className="g-row-place">{nameOf(row.place.label)}</span> : null}
+                      {/* The place leads, and the question follows quieter.
+
+                          Eight conversations about warnings all open with "Is any warning in force…", so a
+                          list titled by the question is eight identical rows — unscannable, and the reason
+                          the history read as noise. The fact that tells them apart is the place each one
+                          resolved, and the row already carried it as a small line underneath. Inverted.
+
+                          A conversation that resolved no place keeps the question as its title, because
+                          there is nothing truer to lead with. */}
+                      {row.place?.label ? (
+                        <>
+                          <span className="g-row-name">{nameOf(row.place.label)}</span>
+                          <span className="g-row-sub">{row.opening_question || 'Untitled conversation'}</span>
+                        </>
+                      ) : (
+                        <span className="g-row-name">{row.opening_question || 'Untitled conversation'}</span>
+                      )}
                       {row.match ? (
                         <span className="g-row-match" data-role={row.match.role}>
                           {row.match_question ? 'in the question: ' : row.match.role === 'user' ? 'in a question: ' : 'in the answer: '}

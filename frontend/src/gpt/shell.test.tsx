@@ -107,6 +107,34 @@ describe('the shell', () => {
     expect(document.querySelector('.g-rail')?.getAttribute('data-collapsed')).toBe('false');
   });
 
+  it('leads a conversation row with its place, and keeps the question under it', async () => {
+    /* Eight conversations about warnings all open with "Is any warning in force…", so a list titled by the
+       question is eight identical rows. The fact that tells them apart is the place each one resolved, and
+       the row already carried it — underneath, small. Inverted, so the list can be scanned.
+
+       A conversation that resolved no place keeps the question as its title, because there is nothing
+       truer to lead with. Both paths are pinned here. */
+    server.use(http.get('/api/conversations', () => HttpResponse.json({
+      schema_version: 'conversation-ledger-v1', total: 2, limit: 40,
+      conversations: [
+        { id: 'p1', updated: new Date().toISOString(), turns: 2, asked: 1,
+          opening_question: 'Is any warning in force?', place: { label: 'Patna, Patna, State of Bihar', latitude: 25.6, longitude: 85.1 } },
+        { id: 'p2', updated: new Date().toISOString(), turns: 2, asked: 1, opening_question: 'how are you' },
+      ],
+    })));
+    mount();
+    const region = await screen.findByRole('region', { name: 'Conversations' });
+    await waitFor(() => expect(region.querySelectorAll('.g-row-text')).toHaveLength(2));
+
+    const withPlace = region.querySelectorAll('.g-row-text')[0];
+    expect(withPlace.querySelector('.g-row-name')).toHaveTextContent('Patna');
+    expect(withPlace.querySelector('.g-row-sub')).toHaveTextContent('Is any warning in force?');
+
+    const withoutPlace = region.querySelectorAll('.g-row-text')[1];
+    expect(withoutPlace.querySelector('.g-row-name')).toHaveTextContent('how are you');
+    expect(withoutPlace.querySelector('.g-row-sub'), 'nothing truer to lead with, so no second line').toBeNull();
+  });
+
   it('lists the stored conversations, with the place each resolved, and searches every turn', async () => {
     /* The store's own behaviour, reproduced in miniature: a q reaches the turns rather than only the opening
        question, and a conversation that resolved a point carries the place its own answers resolved. */

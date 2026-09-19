@@ -402,16 +402,22 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
 
 /* The four homes. A grid rather than a stack of rows: they are peers, they never run to a fifth, and a
    reader who is looking for Warnings should find it in the same place every time. */
+/* One column, not a 2x2 grid.
+
+   The grid made the four homes a block sitting on top of the conversation list and competing with it for
+   the eye — a second thing to parse before reaching the first. The Codex reference this direction came
+   from does the opposite: everything in its rail is a row, one height, one size, one weight, and the rail
+   reads as a single calm list because of it. */
 .g-homes {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+  display: grid; grid-template-columns: 1fr; gap: 1px;
   padding: var(--g-1) var(--g-2) var(--g-3);
 }
-.g-rail[data-collapsed='true'] .g-homes { grid-template-columns: 1fr; padding: var(--g-1) 0 var(--g-3); }
+.g-rail[data-collapsed='true'] .g-homes { padding: var(--g-1) 0 var(--g-3); }
 .g-home {
   display: flex; align-items: center; gap: var(--g-2);
   padding: 8px var(--g-2); border-radius: var(--g-r-sm);
   border: 1px solid transparent; background: transparent;
-  color: var(--g-mist); font: inherit; font-size: 12.5px; font-weight: 500;
+  color: var(--g-mist); font: inherit; font-size: 13.5px; font-weight: 500;
   cursor: pointer; text-align: left; min-width: 0;
   transition: background var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease);
 }
@@ -1744,3 +1750,12 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
 @media (prefers-reduced-motion: reduce) {
   .g-pane, .g-raised { transition: none; }
 }
+
+
+/* The question, under the place it was asked about. Sans rather than mono: a question is what a person
+   wrote, and mono in this system belongs to values a tool owns. */
+.g-row-sub {
+  max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-size: 11.5px; color: var(--g-mist-2);
+}
+.g-row:hover .g-row-sub, .g-row[aria-current='true'] .g-row-sub { color: var(--g-mist); }
