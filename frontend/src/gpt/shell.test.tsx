@@ -105,15 +105,25 @@ describe('the shell', () => {
     expect(document.querySelector('.g-rail')?.getAttribute('data-collapsed')).toBe('false');
   });
 
-  it('lists the stored conversations and filters them by their first question', async () => {
-    server.use(http.get('/api/conversations', () => HttpResponse.json({
-      schema_version: 'conversation-ledger-v1', total: 3, limit: 40,
-      conversations: [
-        { id: 'k1', updated: new Date().toISOString(), turns: 2, asked: 1, opening_question: 'Will it rain in Kochi?' },
-        { id: 'k2', updated: new Date().toISOString(), turns: 2, asked: 1, opening_question: 'Any warning for Patna?' },
-        { id: 'k3', updated: new Date().toISOString(), turns: 2, asked: 1, opening_question: 'Is it humid in Surat?' },
-      ],
-    })));
+  it('lists the stored conversations, with the place each resolved, and searches every turn', async () => {
+    /* The store's own behaviour, reproduced in miniature: a q reaches the turns rather than only the opening
+       question, and a conversation that resolved a point carries the place its own answers resolved. */
+    const LEDGER = {
+      k1: { id: 'k1', updated: new Date().toISOString(), turns: 2, asked: 1,
+            opening_question: 'Will it rain in Kochi?', place: { label: 'Kochi, Kerala', latitude: 9.93, longitude: 76.26 } },
+      k2: { id: 'k2', updated: new Date().toISOString(), turns: 4, asked: 2,
+            opening_question: 'Any warning for Patna?',
+            match: { role: 'user', text: 'and what about Kochi tomorrow?' } },
+      k3: { id: 'k3', updated: new Date().toISOString(), turns: 2, asked: 1, opening_question: 'Is it humid in Surat?' },
+    };
+    const asked: string[] = [];
+    server.use(http.get('/api/conversations', ({ request }) => {
+      const q = new URL(request.url).searchParams.get('q');
+      asked.push(String(q));
+      const conversations = !q ? Object.values(LEDGER)
+        : Object.values(LEDGER).filter(row => JSON.stringify(row).toLowerCase().includes(q.toLowerCase()));
+      return HttpResponse.json({ schema_version: 'conversation-ledger-v1', total: conversations.length, limit: 40, conversations, query: q });
+    }));
     mount();
     /* The row itself, not the pin and delete controls beside it: those carry the question in their own
        accessible names, which is exactly right for a screen reader and useless for counting rows. */
@@ -121,12 +131,20 @@ describe('the shell', () => {
       screen.getByRole('region', { name: 'Conversations' }).querySelectorAll('.g-row-text'),
     );
     await waitFor(() => expect(rows()).toHaveLength(3));
+    /* The place the answers resolved is on the row, as the engine recorded it. */
+    expect(rows()[0]).toHaveTextContent('Kochi, Kerala');
+
     /* The field is behind the magnifier rather than standing in the rail: a search box on every visit costs
        the column a row for something most visits do not do. */
     await userEvent.click(screen.getByLabelText('Search conversations'));
     await userEvent.type(screen.getByLabelText('Filter conversations'), 'kochi');
-    expect(rows()).toHaveLength(1);
-    expect(rows()[0]).toHaveTextContent('Will it rain in Kochi?');
+    /* The search is the store's, and it waits for the typing to stop before asking. */
+    await waitFor(() => expect(asked).toContain('kochi'));
+    await waitFor(() => expect(rows()).toHaveLength(2));
+    /* The row that matched in a follow-up question says where it matched. */
+    const followUp = rows().find(row => row.textContent?.includes('Any warning for Patna?'));
+    expect(followUp).toHaveTextContent('in a question: and what about Kochi tomorrow?');
+    expect(screen.getByText(/2 conversations mention “kochi”/)).toBeInTheDocument();
   });
 
   /* The delete control is a real deletion of local evidence, and the audit of 17 September 2026 measured the
@@ -137,6 +155,37 @@ describe('the shell', () => {
     const deletes = await screen.findAllByRole('button', { name: /^Delete / });
     expect(deletes.length).toBeGreaterThan(0);
     deletes.forEach(button => expect(button.className).not.toMatch(/opacity-\d/));
+  });
+
+  it('filters the list to a place the conversations themselves resolved', async () => {
+    server.use(http.get('/api/conversations', () => HttpResponse.json({
+      schema_version: 'conversation-ledger-v1', total: 2, limit: 40,
+      conversations: [
+        { id: 'p1', updated: new Date().toISOString(), turns: 2, asked: 1,
+          opening_question: 'Will it rain in Kochi?', place: { label: 'Kochi, Kerala', latitude: 9.93, longitude: 76.26 } },
+        { id: 'p2', updated: new Date().toISOString(), turns: 2, asked: 1, opening_question: 'Any warning for Patna?' },
+      ],
+    })));
+    mount();
+    const places = await screen.findByRole('region', { name: 'Places this machine knows' });
+    /* Two controls carry the label: the row, which holds the place and filters by it, and the row's own
+       "Ask about it". The row is the one with no other name. */
+    await within(places).findByRole('button', { name: 'Kochi, Kerala' });
+    const rows = () => Array.from(screen.getByRole('region', { name: 'Conversations' }).querySelectorAll('.g-row-text'));
+    expect(rows()).toHaveLength(2);
+    /* Choosing a place makes it the place this browser holds — and narrows the list to it. */
+    await userEvent.click(within(places).getByRole('button', { name: 'Kochi, Kerala' }));
+    expect(Array.isArray(JSON.parse(String(window.localStorage.getItem('weathergpt.place'))))).toBe(false);
+    expect(JSON.parse(String(window.localStorage.getItem('weathergpt.place'))).label).toBe('Kochi, Kerala');
+    await waitFor(() => expect(rows()).toHaveLength(1));
+    expect(rows()[0]).toHaveTextContent('Will it rain in Kochi?');
+  });
+
+  it('opens the key list with ⌥/', async () => {
+    mount();
+    fireEvent.keyDown(window, { altKey: true, code: 'Slash', key: '÷' });
+    expect(await screen.findByRole('dialog', { name: 'Keyboard shortcuts' })).toBeInTheDocument();
+    expect(screen.getByText(/a page cannot take ⌘1–⌘9/i)).toBeInTheDocument();
   });
 
   it('opens the n-th conversation with ⌥-digit', async () => {

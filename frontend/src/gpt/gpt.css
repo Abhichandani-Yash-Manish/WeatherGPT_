@@ -1354,6 +1354,43 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
 /* The rail carries the name on a desktop, so the welcome's mark is only for the phone. */
 @media (min-width: 901px) { .w-mark { display: none; } }
 
+/* The place line is the one control on the welcome that changes what everything else is about. It is set in
+   the same type as the line it replaces and says what it does on hover, so the screen reads as a statement
+   until a reader wants to change it. */
+.w-place-button {
+  border: 0; background: transparent; font: inherit; color: inherit; cursor: pointer;
+  padding: 2px 6px; border-radius: var(--g-r-sm);
+  border-bottom: 1px dashed color-mix(in srgb, var(--g-mist) 42%, transparent);
+  transition: color var(--g-fast) var(--g-ease), border-color var(--g-fast) var(--g-ease), background var(--g-fast) var(--g-ease);
+}
+.w-place-button:hover { color: var(--g-paper); border-bottom-color: var(--g-accent); background: var(--g-t2); }
+.w-place-button:focus-visible { outline: 2px solid var(--g-accent); outline-offset: 2px; }
+.w-place-none { color: var(--g-mist); }
+
+/* ---- naming a place ---------------------------------------------------------------------------------- */
+.g-picker {
+  margin: auto; max-height: 88vh;
+  width: min(460px, 92vw); padding: var(--g-5);
+  border: 1px solid var(--g-line); border-radius: var(--g-r-lg);
+  background: var(--g-rail-bg); color: var(--g-paper);
+  backdrop-filter: blur(24px) saturate(1.3); -webkit-backdrop-filter: blur(24px) saturate(1.3);
+  box-shadow: var(--g-e3);
+}
+.g-picker::backdrop { background: var(--g-scrim); backdrop-filter: blur(2px); }
+.g-picker .g-search { margin-bottom: var(--g-2); }
+.g-picker-results { display: flex; flex-direction: column; gap: 2px; max-height: 46vh; overflow-y: auto; margin-bottom: var(--g-3); }
+.g-picker-row {
+  display: flex; align-items: center; gap: var(--g-2); width: 100%;
+  padding: 8px var(--g-2); border: 1px solid transparent; border-radius: var(--g-r-sm);
+  background: transparent; color: var(--g-paper); font: inherit; font-size: 13px;
+  cursor: pointer; text-align: left;
+}
+.g-picker-row svg { flex: 0 0 auto; color: var(--g-accent); }
+.g-picker-row:hover:not(:disabled) { background: var(--g-t2); }
+.g-picker-row:disabled { color: var(--g-mist); cursor: default; }
+.g-picker-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.g-picker-where { font-family: var(--g-mono); font-size: 10px; color: var(--g-mist); }
+
 /* ---- a line for the hour ----------------------------------------------------------------------------
    The quietest thing on the welcome screen, and the only thing on it a reader can change. It opens with a
    short rule rather than a heading, because it is a change of voice on the same page: the reading above it
@@ -1410,6 +1447,62 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
 @media (prefers-reduced-motion: reduce) {
   .w-glyph, .w-greeting, .w-place, .w-reading, .w-source { animation: none; }
 }
+
+/* ---- the places this machine knows ------------------------------------------------------------------
+   A place is the product's second entity after a conversation: the engine resolves one, the reader pins one,
+   and the rail lists both. A pin and a resolution are two different facts and the row shows which it is —
+   the pin mark, and the count of conversations whose own answers resolved it. */
+.g-place[aria-current='true'] .g-place-name { color: var(--g-paper); }
+.g-place-reading {
+  display: inline-flex; align-items: center; gap: 4px; margin-left: auto;
+  font-family: var(--g-mono); font-size: 11px; color: var(--g-mist);
+}
+.g-place-reading svg { color: var(--g-accent); }
+.g-place-pin { width: 22px; height: 22px; min-width: 22px; padding: 0; }
+.g-place-pin[aria-pressed='true'] { color: var(--g-accent); }
+.g-place-row .g-row-text { display: flex; align-items: center; gap: 5px; }
+.g-place-pinned { flex: 0 0 auto; color: var(--g-accent); }
+.g-place-count {
+  font-family: var(--g-mono); font-size: 10.5px; color: var(--g-mist);
+  padding: 1px 5px; border-radius: var(--g-r-pill); background: var(--g-t3);
+}
+.g-place-clear {
+  float: right; font-family: var(--g-sans); font-size: 10.5px; font-weight: 500;
+  padding: 1px 6px; color: var(--g-accent);
+}
+
+/* A conversation row carries the place its own answers resolved, and — while a search is on — the turn that
+   matched. Both are small, and both are stated only when a source stated them. */
+.g-row-conversation .g-row-text { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; }
+.g-row-place {
+  font-family: var(--g-mono); font-size: 10px; color: var(--g-mist);
+  max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.g-row-match {
+  display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
+  font-size: 11px; line-height: 1.45; color: var(--g-mist); white-space: normal;
+}
+.g-row-match[data-role='assistant'] { color: var(--g-mist); }
+.g-rail-note-search { padding: 0 var(--g-2) var(--g-1); }
+
+/* ---- the key list ------------------------------------------------------------------------------------ */
+.g-keys {
+  /* Centred on purpose: a stylesheet reset takes the browser's own `margin: auto` off a dialog, and a modal
+     that opens in the top-left corner reads as a broken page rather than as a dialog. */
+  margin: auto; max-height: 88vh; overflow-y: auto;
+  width: min(420px, 92vw); padding: var(--g-5);
+  border: 1px solid var(--g-line); border-radius: var(--g-r-lg);
+  background: var(--g-rail-bg); color: var(--g-paper);
+  backdrop-filter: blur(24px) saturate(1.3); -webkit-backdrop-filter: blur(24px) saturate(1.3);
+  box-shadow: var(--g-e3);
+}
+.g-keys::backdrop { background: var(--g-scrim); backdrop-filter: blur(2px); }
+.g-keys-title { margin: 0 0 var(--g-2); font-size: 15px; font-weight: 600; }
+.g-keys-note { margin: 0 0 var(--g-4); font-size: 12px; line-height: 1.6; color: var(--g-mist); }
+.g-keys-list { margin: 0 0 var(--g-4); display: flex; flex-direction: column; gap: var(--g-2); }
+.g-keys-row { display: flex; align-items: baseline; gap: var(--g-3); }
+.g-keys-row dt { flex: 0 0 76px; }
+.g-keys-row dd { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--g-mist); }
 
 /* A row that is a plain button: no chrome of its own, the row around it carries the state. */
 .g-row-plain {

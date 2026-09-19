@@ -40,8 +40,11 @@ export function cancel(requestId: string): Promise<CancelResult> {
   return postJson<CancelResult>('/api/chat/cancel', { request_id: requestId });
 }
 
-export function ledger(): Promise<Ledger> {
-  return getJson<Ledger>('/api/conversations');
+/* The stored conversations, newest first. A q searches every stored turn rather than only the opening
+   question, and the reply quotes the turn it matched so the search can say why a row is there. */
+export function ledger(q?: string): Promise<Ledger> {
+  const term = (q || '').trim();
+  return getJson<Ledger>(term ? withQuery('/api/conversations', { q: term }) : '/api/conversations');
 }
 
 export type Transcript = { schema_version: string; id: string; updated?: string; turns: { role: string; content: string }[]; note?: string };

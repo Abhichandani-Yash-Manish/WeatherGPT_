@@ -87,6 +87,23 @@ export const QUOTES: Quote[] = [
     hours: ['night'], months: [7, 8],
   },
   {
+    /* Kabir through Tagore's own English, which is the edition this wording was checked against. The couplet
+       is about the first rain of the season, and it is tagged to the monsoon months because that is when it
+       reads as what it is. */
+    id: 'kabir-clouds-thicken',
+    text: 'Clouds thicken in the sky! O, listen to the deep voice of their roaring; the rain comes from the east with its monotonous murmur.',
+    author: 'Kabir', work: 'Songs of Kabir, translated by Rabindranath Tagore', year: 1915,
+    basis: 'Project Gutenberg #6519, Songs of Kabir, poem I.71',
+    months: [6, 7, 8, 9],
+  },
+  {
+    id: 'kabir-sky-roars',
+    text: 'The sky roars and the lightning flashes, the waves arise in my heart; the rain falls, and my heart longs for my Lord.',
+    author: 'Kabir', work: 'Songs of Kabir, translated by Rabindranath Tagore', year: 1915,
+    basis: 'Project Gutenberg #6519, Songs of Kabir, poem LXXXVIII',
+    months: [6, 7, 8, 9],
+  },
+  {
     id: 'kalidasa-harbinger',
     text: '…the harbinger of rain, a cloud that charged the peak in mimic fray.',
     author: 'Kalidasa', work: 'The Cloud Messenger, translated by Arthur W. Ryder', year: 1912,

@@ -70,7 +70,7 @@
      "spec": "src/gpt/shell.test.tsx",
      "tests": [
       "deletes a stored conversation through the local route only, and says when the delete failed",
-      "lists the stored conversations and filters them by their first question"
+      "lists the stored conversations, with the place each resolved, and searches every turn"
      ]
     }
    ],
@@ -626,5 +626,5 @@
   }
  ],
  "revised_at": "2026-09-19",
- "revision": "The nine test_viz.js checks were left with the served web/viz.js bytes when R6 ran, and are now also carried by src/charts/viz.parity.test.ts, which reads web/viz.js from disk and evaluates it in the stand-in DOM the vanilla suite used. The ledger is 110 of 110 named against a React spec. Two assertions the vanilla file left in its timeline section (the SVG namespace of every lane label, and every lane being labelled) run beside the now band checks in the parity spec; the claims are unchanged. + docs/109 re-pointing 2026-09-19 Revised again 19 September 2026 (docs/113): the shell became one rail with a reading panel and the legacy chat surface was deleted, so the three checks that drive that rail \u2014 the two delete checks and the conversation filter \u2014 moved from src/chat/parity.test.tsx and src/chat/turn.parity.test.tsx to src/gpt/shell.test.tsx. The titles are unchanged, so the ledger still names what each vanilla check became."
+ "revision": "The nine test_viz.js checks were left with the served web/viz.js bytes when R6 ran, and are now also carried by src/charts/viz.parity.test.ts, which reads web/viz.js from disk and evaluates it in the stand-in DOM the vanilla suite used. The ledger is 110 of 110 named against a React spec. Two assertions the vanilla file left in its timeline section (the SVG namespace of every lane label, and every lane being labelled) run beside the now band checks in the parity spec; the claims are unchanged. + docs/109 re-pointing 2026-09-19 Revised again 19 September 2026 (docs/113): the shell became one rail with a reading panel and the legacy chat surface was deleted, so the three checks that drive that rail \u2014 the two delete checks and the conversation filter \u2014 moved from src/chat/parity.test.tsx and src/chat/turn.parity.test.tsx to src/gpt/shell.test.tsx. The titles are unchanged, so the ledger still names what each vanilla check became. Revised again 19 September 2026: the conversation-filter check became the ledger check \u2014 it now holds the place a conversation resolved and a search that reaches every stored turn \u2014 so the ledger names its new title."
 }

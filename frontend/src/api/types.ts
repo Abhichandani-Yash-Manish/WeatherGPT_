@@ -348,8 +348,22 @@ export type LanguageEntry = {
 
 export type Languages = { schema_version: string; service_configured: boolean; note?: string; languages: LanguageEntry[] };
 
-export type ConversationRow = { id: string; updated?: string; turns?: number; asked?: number; opening_question?: string };
-export type Ledger = { schema_version: string; total: number; limit: number; conversations: ConversationRow[]; note?: string };
+/* The place a conversation's own answers resolved, as the engine recorded it. Absent when the conversation
+   resolved no point: the ledger omits the field rather than filling one in from the question's wording. */
+export type ConversationPlace = { label: string | null; latitude?: number | null; longitude?: number | null };
+/* What a search found in a stored turn, and which turn it was: the rail says why a row matched rather than
+   showing a row that only looks like a match. */
+export type ConversationMatch = { role: string; text: string };
+export type ConversationRow = {
+  id: string; updated?: string; turns?: number; asked?: number; opening_question?: string;
+  place?: ConversationPlace | null;
+  match?: ConversationMatch | null;
+  match_question?: boolean;
+};
+export type Ledger = {
+  schema_version: string; total: number; limit: number; conversations: ConversationRow[];
+  query?: string | null; note?: string;
+};
 
 export type Persona = {
   id: string;

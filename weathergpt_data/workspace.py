@@ -855,11 +855,23 @@ class Workspace:
         from . import product_api
         return product_api.map_layer_path(name).read_bytes()
 
-    def conversations(self,limit=40):
+    def conversations(self,limit=40,q=None):
+        """The stored conversations, newest first, each with the place its own answers resolved to.
+
+        The place is the engine's own resolution, read out of the state it wrote when it answered -- never
+        inferred here from the question's words. A conversation that resolved no point carries no place, and
+        the ledger says so by omitting the field rather than by guessing one from a city name.
+
+        q searches the stored turns, not only the opening question: the store already holds every turn, and a
+        reader looking for the question they asked about Surat should find the one where Surat was the
+        follow-up. What comes back with a match is the turn it was found in, quoted, so the rail can say why
+        the row is there."""
         path=self.conversation_store()
         limit=max(1,min(int(limit),200))
+        needle=' '.join(str(q or '').split())[:120]
         if not path.exists():
             return {'schema_version':'conversation-ledger-v1','total':0,'limit':limit,'conversations':[],
+                    'query':needle or None,
                     'note':'No local conversation store exists yet; the first question creates it.'}
         db=sqlite3.connect(path)
         try:
@@ -872,11 +884,54 @@ class Workspace:
             except ValueError:state={}
             history=state.get('history') or []
             opening=next((turn.get('content') for turn in history if turn.get('role')=='user'),'')
-            items.append({'id':cid,'updated':updated,'turns':len(history),
-                          'asked':sum(1 for turn in history if turn.get('role')=='user'),
-                          'opening_question':excerpt(opening)})
+            item={'id':cid,'updated':updated,'turns':len(history),
+                  'asked':sum(1 for turn in history if turn.get('role')=='user'),
+                  'opening_question':excerpt(opening)}
+            place=self.resolved_place(state)
+            if place:item['place']=place
+            if needle:
+                found=self.turn_matching(history,needle)
+                if found is None:continue
+                role,text=found
+                item['match']={'role':role,'text':excerpt(text,140)}
+                item['match_question']=bool(opening and needle.lower() in str(opening).lower())
+            items.append(item)
         return {'schema_version':'conversation-ledger-v1','total':total,'limit':limit,'conversations':items,
+                'query':needle or None,
                 'note':'Stored on this machine for the person who asked. Excerpts are served over loopback only and never written to logs.'}
+
+    @staticmethod
+    def resolved_place(state):
+        """The place a conversation's own answers resolved, as the engine recorded it.
+
+        resolved_points is the engine's resolution, written when it answered; the first point in it is the
+        place the turn was about. A state with no resolution returns None, and the reply omits the field: an
+        absent place is never filled in from the question's wording."""
+        points=state.get('resolved_points') or {}
+        if not isinstance(points,dict):return None
+        for point in points.values():
+            if not isinstance(point,dict):continue
+            label=point.get('label') or point.get('name')
+            coordinates=point.get('coordinates') if isinstance(point.get('coordinates'),dict) else {}
+            latitude=point.get('latitude',coordinates.get('latitude'))
+            longitude=point.get('longitude',coordinates.get('longitude'))
+            if not label and latitude is None:continue
+            resolved={'label':str(label) if label else None}
+            if isinstance(latitude,(int,float)) and isinstance(longitude,(int,float)):
+                resolved['latitude']=float(latitude);resolved['longitude']=float(longitude)
+            return resolved
+        return None
+
+    @staticmethod
+    def turn_matching(history,needle):
+        """The first stored turn whose own text contains the needle, with its role. Case-insensitive, and the
+        needle is matched as the reader typed it rather than stemmed or expanded."""
+        wanted=needle.lower()
+        for turn in history:
+            content=str(turn.get('content') or '')
+            if wanted in content.lower():
+                return turn.get('role') or 'assistant',content
+        return None
 
     def conversation_transcript(self,cid):
         _conversation_id(cid)
@@ -1141,7 +1196,10 @@ def make_server(workspace, port=8765):
                 if not known:return self.respond(404,{'error':'Not found'})
                 if not self.authorized():return self.respond(403,{'error':'Reload this local workspace before reading stored data'})
                 try:
-                    if path=='/api/conversations':return self.respond(200,workspace.conversations())
+                    if path=='/api/conversations':
+                        stored=parse_qs(urlsplit(self.path).query)
+                        return self.respond(200,workspace.conversations(
+                            limit=(stored.get('limit') or ['40'])[0],q=(stored.get('q') or [None])[0]))
                     if path=='/api/health':return self.respond(200,workspace.health())
                     if path=='/api/languages':return self.respond(200,workspace.languages())
                     if path=='/api/watches':return self.respond(200,workspace.watches())

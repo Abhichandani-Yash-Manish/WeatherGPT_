@@ -86,17 +86,22 @@ serve it, and check it:
 
     cd frontend && npm install && npm run build    # builds web/dist
     python3 -m weathergpt_data.workspace --port 8790
-    cd frontend && npm test                        # 62 component suites, 346 checks, run under Vitest
+    cd frontend && npm test                        # 62 component suites, 348 checks, run under Vitest
     python3 scripts/audit_react_frontend.py        # 18 checks over the built page and its sources
     python3 scripts/audit_react_build.py           # 11 checks over the built output
 
-**The shell was rebuilt on 19 September 2026** ([docs/113](docs/113-shell-and-chat-surface.md)): one rail does all
-the navigation — four homes, the place the answers are about, the reader's conversations with their own pinned
-ones above the recency groups, ⌥N and ⌥1–⌥9 beside the rows they open — and it collapses to 60px, remembering
-the arrangement in this browser. A right-hand panel holds the three things an answer depends on (place, language,
-persona) and states the nearest station's report as its source printed it. The bar names the thread. The welcome
-states the reader's own sky, and a line of verse sits under it — twelve lines, each checked against the edition it
-came from ([docs/112](docs/112-welcome-screen-and-sky-mark.md)). The legacy chat surface and ten other unreachable
+**The shell was rebuilt on 19 September 2026** ([docs/113](docs/113-shell-and-chat-surface.md),
+[docs/114](docs/114-places-and-search.md)): one rail does all the navigation — four homes, the two actions, the
+places this machine knows, the reader's conversations with their own pinned ones above the recency groups, ⌥N and
+⌥1–⌥9 beside the rows they open, and ⌥/ for the list of keys — and it collapses to 60px, remembering the
+arrangement in this browser. **A place is the second entity**: each conversation row carries the place its own
+answers resolved (the engine's resolution, never a city name read out of the question), the places are listed with
+their counts, choosing one holds it and narrows the list, and a row can be pinned with the same store the module
+surfaces write. The search reaches every stored turn rather than only the opening question, and says which turn
+matched. A right-hand panel holds the three things an answer depends on (place, language, persona) and states the
+nearest station's report as its source printed it. The bar names the thread. The welcome states the reader's own
+sky, lets a reader name a place from the screen itself, and carries a line of verse — fourteen lines, each checked
+against the edition it came from ([docs/112](docs/112-welcome-screen-and-sky-mark.md)). The legacy chat surface and ten other unreachable
 modules were deleted in the same batch after measuring that nothing served still read them.
 
 The React surface has the transcript (the question kept above its answer, the working turn naming the engine's
@@ -292,8 +297,8 @@ The interface states these limits instead of filling them:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 1367 Python tests
-cd frontend && npx tsc --noEmit && npm test          # 62 React suites, 346 component checks
+python3 -m pytest tests/ -q                          # 1373 Python tests
+cd frontend && npx tsc --noEmit && npm test          # 62 React suites, 348 component checks
 python3 scripts/audit_react_frontend.py              # 18 checks over the built page and its sources
 python3 scripts/audit_react_build.py                 # 11 checks over the built output
 python3 scripts/audit_port_ledger.py                 # every component check the ledger names, verified in its spec

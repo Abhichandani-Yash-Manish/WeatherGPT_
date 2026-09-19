@@ -26,6 +26,7 @@ import { SkyGlyphIcon } from '../shell/icons';
 import { greeting, useSky } from './sky';
 import { solarPosition, type Hour } from './fieldPaint';
 import { QuoteLine } from './QuoteLine';
+import { PlacePicker } from './PlacePicker';
 import { useWorkingPlace } from '../modules/Evidence';
 
 /* The national default, the same one the ground uses when the browser holds no place: the sun is the same
@@ -39,6 +40,7 @@ export function Welcome({ hour }: { hour: Hour }) {
   const latitude = held?.latitude ?? DEFAULT_LATITUDE;
   const longitude = held?.longitude ?? DEFAULT_LONGITUDE;
   const [at, setAt] = useState(() => new Date());
+  const [picking, setPicking] = useState(false);
 
   useEffect(() => {
     const timer = window.setInterval(() => setAt(new Date()), 60_000);
@@ -84,7 +86,21 @@ export function Welcome({ hour }: { hour: Hour }) {
 
       <h1 className="w-greeting">{greeting(at)}</h1>
 
-      {place ? <p className="w-place">{place}</p> : null}
+      {/* The place, and the one control on this screen that can change what everything else is about. A
+          reader who has no place is shown the hour and the sun, and this is how they get their own sky. */}
+      {place ? (
+        <p className="w-place">
+          <button type="button" className="w-place-button" onClick={() => setPicking(true)} title="Change the place">
+            {place}
+          </button>
+        </p>
+      ) : (
+        <p className="w-place w-place-none">
+          <button type="button" className="w-place-button" onClick={() => setPicking(true)}>
+            Set your place
+          </button>
+        </p>
+      )}
 
       {/* The reading, as the station printed it. Absent stays absent: no placeholder value is ever shown
           where a source said nothing. */}
@@ -108,6 +124,8 @@ export function Welcome({ hour }: { hour: Hour }) {
           can change. It sits under everything the sky has said, so the page reads as a fact and then a
           thought rather than the other way round. */}
       <QuoteLine at={at} hour={hour} />
+
+      {picking ? <PlacePicker onClose={() => setPicking(false)} /> : null}
     </div>
   );
 }
