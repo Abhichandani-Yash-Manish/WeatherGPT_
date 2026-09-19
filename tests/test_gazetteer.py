@@ -89,3 +89,34 @@ class SeatPreferenceTests(unittest.TestCase):
 
 
 if __name__=='__main__':unittest.main()
+
+
+def test_a_catalogue_id_is_ordered_as_a_number_not_as_a_string():
+    """Five places are named Kochi and all five are PPL, so seat order ties and the id decides.
+
+    Comparing the ids as strings put `geonames:10453626` before `geonames:1273874` — a lexicographic
+    comparison of a number, which means nothing — and offered four Maharashtra villages ahead of the
+    Kerala port to anyone who asked about Kochi.
+
+    This checks the comparison, not a prominence ranking: this gazetteer carries no population, and
+    nothing here claims to know which Kochi is larger.
+    """
+    from weathergpt_data.gazetteer import catalogue_key, rank_matches
+
+    kochis = [
+        {"id": "geonames:10453626", "feature": "PPL", "admin1": "State of Mahārāshtra"},
+        {"id": "geonames:10454487", "feature": "PPL", "admin1": "State of Mahārāshtra"},
+        {"id": "geonames:10518944", "feature": "PPL", "admin1": "State of Mahārāshtra"},
+        {"id": "geonames:10574547", "feature": "PPL", "admin1": "State of Mahārāshtra"},
+        {"id": "geonames:1273874", "feature": "PPL", "admin1": "State of Kerala"},
+    ]
+    assert [match["id"] for match in rank_matches(kochis)][0] == "geonames:1273874"
+
+    # The ordering is by number, so a longer id is not automatically later.
+    assert catalogue_key("geonames:1273874") < catalogue_key("geonames:10453626")
+    # A seat still outranks a plain village whatever the ids are.
+    seat = {"id": "geonames:9999999", "feature": "PPLA", "admin1": "X"}
+    village = {"id": "geonames:1", "feature": "PPL", "admin1": "X"}
+    assert [match["id"] for match in rank_matches([village, seat])][0] == "geonames:9999999"
+    # An id that is not numeric still orders deterministically rather than raising.
+    assert catalogue_key("osm:relation/12") == (1, 0, "osm:relation/12")

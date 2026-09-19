@@ -76,11 +76,29 @@ def feature_rank(feature):
     return SEAT_ORDER.get(str(feature or '').upper(),8)
 
 
+def catalogue_key(value):
+    """A catalogue id, ordered as what it is.
+
+    The ids are `geonames:<n>`. Comparing them as strings puts `geonames:10453626` before
+    `geonames:1273874`, which is a lexicographic comparison of a number and means nothing. It decided a
+    real question: five places are named Kochi, all five are PPL, so seat order ties and this tiebreak
+    chose what a reader was offered first. It offered four Maharashtra villages ahead of the Kerala port.
+
+    A number sorts as a number here. That is a correct comparison rather than a prominence ranking: this
+    gazetteer carries no population, so nothing here claims to know which Kochi is larger. Lower GeoNames
+    ids happen to belong to entries catalogued earlier, which correlates loosely with prominence and is
+    not a substitute for it.
+    """
+    text = str(value or '')
+    _, _, tail = text.rpartition(':')
+    return (0, int(tail), text) if tail.isdigit() else (1, 0, text)
+
+
 def rank_matches(matches):
     """Stable order for candidates: seat order, then a canonical name, then the catalogue id."""
     return sorted(matches,key=lambda match:(feature_rank(match.get('feature')),
                                             0 if match.get('name_match_basis')=='canonical' else 1,
-                                            str(match.get('id'))))
+                                            catalogue_key(match.get('id'))))
 
 
 def preferred_match(matches):
