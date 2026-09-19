@@ -1759,3 +1759,22 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
   font-size: 11.5px; color: var(--g-mist-2);
 }
 .g-row:hover .g-row-sub, .g-row[aria-current='true'] .g-row-sub { color: var(--g-mist); }
+
+/* ---- what this conversation has read ----------------------------------------------------------------
+   A list, not a claim. The id is the machine's own handle for the source and stays in the machine voice;
+   the product and provider are what the citation named, in the human one; the read time and the number of
+   claims leaning on it are facts about this conversation. */
+.g-side-sources { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--g-2); }
+.g-side-sources li {
+  display: grid; grid-template-columns: auto 1fr; gap: 2px var(--g-2);
+  padding-bottom: var(--g-2); border-bottom: 1px solid var(--g-line-soft);
+}
+.g-side-sources li:last-child { border-bottom: 0; padding-bottom: 0; }
+.g-side-source-id {
+  grid-row: span 2; align-self: start;
+  font-family: var(--g-mono); font-size: 10.5px; color: var(--g-mist-2);
+  border: 1px solid var(--g-line); border-radius: var(--g-r-sm);
+  padding: 2px 6px; white-space: nowrap;
+}
+.g-side-source-name { font-size: 12px; color: var(--g-paper); line-height: 1.4; }
+.g-side-source-meta { font-family: var(--g-mono); font-size: 10.5px; color: var(--g-mist-2); }

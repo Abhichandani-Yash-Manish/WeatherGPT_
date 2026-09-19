@@ -134,7 +134,20 @@ function HoursBlock({ place, onOpen }: { place: { latitude: number; longitude: n
   );
 }
 
+/* One source, as this conversation reached it: the id a claim cites, who published it, and when this
+   machine last read it. The panel aggregates these across every answer in the thread. */
+export type SourceRead = {
+  sourceId: string;
+  provider: string | null;
+  product: string | null;
+  retrievedAt: string | null;
+  /** How many claims in this conversation rest on it. */
+  claims: number;
+};
+
 export type ReadingPanelProps = {
+  /** Every source this conversation has read, newest read first. */
+  sources: SourceRead[];
   language: string;
   onLanguage: (code: string) => void;
   persona: string;
@@ -146,7 +159,7 @@ export type ReadingPanelProps = {
 };
 
 export function ReadingPanel({
-  language, onLanguage, persona, onPersona, personas, onFindPlace, onOpenView, onClose,
+  sources, language, onLanguage, persona, onPersona, personas, onFindPlace, onOpenView, onClose,
 }: ReadingPanelProps) {
   const place = useWorkingPlace();
   const sky = useSky();
@@ -248,6 +261,32 @@ export function ReadingPanel({
           {personas.map(entry => <option key={entry.id} value={entry.id}>{entry.label}</option>)}
         </select>
       </section>
+
+      {/* What this conversation has actually read.
+
+          Every claim carries its own source underneath it, which proves that claim. Nothing showed the
+          whole set, and the whole set is the thing this product is for: a reader three turns in could not
+          say what the answers rested on without opening every fold. It is a list, not a claim, so it
+          states only what the citations stated and counts how many claims lean on each. */}
+      {sources.length ? (
+        <section className="g-side-block" aria-label="Sources read in this conversation">
+          <p className="g-side-label">Read in this conversation</p>
+          <ul className="g-side-sources">
+            {sources.map(source => (
+              <li key={source.sourceId}>
+                <span className="g-side-source-id">{source.sourceId}</span>
+                <span className="g-side-source-name">
+                  {[source.product, source.provider].filter(Boolean).join(' · ') || 'no product named in the citation'}
+                </span>
+                <span className="g-side-source-meta">
+                  {source.retrievedAt ? 'read ' + istStamp(source.retrievedAt) : 'read time not recorded'}
+                  {' · ' + source.claims + (source.claims === 1 ? ' claim' : ' claims')}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       <section className="g-side-block">
         <p className="g-side-label">Ways in</p>

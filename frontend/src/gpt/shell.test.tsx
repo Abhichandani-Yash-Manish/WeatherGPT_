@@ -6,6 +6,7 @@ import { server } from '../test/msw';
 import { Workspace } from './Workspace';
 import { renderAsk } from '../test/ask';
 import { SHELL_KEY } from './shellState';
+import { sourcesRead } from './Workspace';
 
 /* The shell's own contract, since the rail stopped being two columns:
    ----------------------------------------------------------------------------
@@ -557,5 +558,54 @@ describe('the shell', () => {
     await userEvent.click(await screen.findByLabelText('Delete hello'));
     await waitFor(() => expect(asked).toEqual(['DELETE 11111111-1111-4111-8111-111111111111']));
     confirm.mockRestore();
+  });
+});
+
+describe('what the conversation has read', () => {
+  /* Every claim carries the source that proves it, folded under its answer. Nothing showed the set, and
+     the set is what this product is for: three turns in, a reader could not say what the answers rested
+     on without opening every fold. These pin that the panel states only what the citations stated. */
+  it('lists each source once, with the newest read time and how many claims lean on it', () => {
+    const turns = [
+      { role: 'user' as const },
+      {
+        role: 'answer' as const,
+        packet: {
+          facts: [{ source_id: 'S15' }, { source_id: 'S15' }, { source_id: 'S21' }],
+          citations: [
+            { id: 'a', source_id: 'S15', provider: 'India Meteorological Department', product: 'District warning', retrieved_at_utc: '2026-09-19T05:00:00+00:00' },
+            { id: 'b', source_id: 'S21', provider: 'Open-Meteo', product: 'GFS forecast', retrieved_at_utc: '2026-09-19T05:02:00+00:00' },
+          ],
+        } as never,
+      },
+      {
+        role: 'answer' as const,
+        packet: {
+          facts: [{ source_id: 'S15' }],
+          /* The same source, read again later. The later read is the one that counts. */
+          citations: [{ id: 'c', source_id: 'S15', retrieved_at_utc: '2026-09-19T06:30:00+00:00' }],
+        } as never,
+      },
+    ];
+    const read = sourcesRead(turns);
+    expect(read.map(entry => entry.sourceId)).toEqual(['S15', 'S21']);
+
+    const imd = read[0];
+    expect(imd.retrievedAt, 'the newest read wins').toBe('2026-09-19T06:30:00+00:00');
+    expect(imd.claims, 'three claims across two turns cite S15').toBe(3);
+    /* The second citation named neither product nor provider; the first did, and that is not forgotten. */
+    expect(imd.product).toBe('District warning');
+    expect(imd.provider).toBe('India Meteorological Department');
+  });
+
+  it('invents nothing for a citation that named nothing', () => {
+    const read = sourcesRead([
+      { role: 'answer' as const, packet: { facts: [], citations: [{ id: 'a', source_id: 'S99' }] } as never },
+    ]);
+    expect(read).toHaveLength(1);
+    expect(read[0].provider).toBeNull();
+    expect(read[0].product).toBeNull();
+    expect(read[0].retrievedAt).toBeNull();
+    expect(read[0].claims, 'no fact cited it, so no claim leans on it').toBe(0);
   });
 });

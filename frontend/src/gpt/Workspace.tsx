@@ -29,7 +29,7 @@ import { useSky } from './sky';
 import { SkyGlyphIcon } from '../shell/icons';
 import { rememberPlace, useWorkingPlace } from '../modules/Evidence';
 import { Rail } from './Rail';
-import { ReadingPanel } from './ReadingPanel';
+import { ReadingPanel, type SourceRead } from './ReadingPanel';
 import { useShellPrefs } from './shellState';
 import { homeOf } from '../shell/homes';
 import { Welcome } from './Welcome';
@@ -66,6 +66,44 @@ export type WorkspaceProps = {
   restoreId?: string | null;
   unknownRoute?: string | null;
 };
+
+/* Every source this conversation has read, newest read first.
+   ============================================================================
+   Each claim already carries the source that proves it, folded under the answer. What no surface showed
+   was the set: a reader three turns in could not say what the whole conversation rested on without
+   opening every fold, which is a strange gap in a product whose proposition is chain of custody.
+
+   This states only what the citations stated. A citation with no product or provider is listed as having
+   named none rather than being given one, and the count is how many claims in the thread cite it — which
+   is a fact about this conversation, not a judgement about the source. */
+export function sourcesRead(turns: { role: string; packet?: AnswerPacket }[]): SourceRead[] {
+  const byId = new Map<string, SourceRead>();
+  turns.forEach(turn => {
+    if (turn.role !== 'answer' || !turn.packet) return;
+    const packet = turn.packet;
+    const cited = new Map<string, number>();
+    (packet.facts || []).forEach(fact => {
+      const id = String((fact as { source_id?: string }).source_id || '');
+      if (id) cited.set(id, (cited.get(id) || 0) + 1);
+    });
+    (packet.citations || []).forEach(citation => {
+      const id = String(citation.source_id || '');
+      if (!id) return;
+      const held = byId.get(id);
+      const claims = (held?.claims || 0) + (cited.get(id) || 0);
+      const retrievedAt = citation.retrieved_at_utc ? String(citation.retrieved_at_utc) : held?.retrievedAt || null;
+      byId.set(id, {
+        sourceId: id,
+        provider: citation.provider ? String(citation.provider) : held?.provider || null,
+        product: citation.product ? String(citation.product) : held?.product || null,
+        /* The newest read wins: a source read again later is as fresh as its latest read. */
+        retrievedAt: held?.retrievedAt && retrievedAt && held.retrievedAt > retrievedAt ? held.retrievedAt : retrievedAt,
+        claims,
+      });
+    });
+  });
+  return [...byId.values()].sort((a, b) => String(b.retrievedAt || '').localeCompare(String(a.retrievedAt || '')));
+}
 
 export function Workspace({
   onOpen, language, onLanguage, persona, onPersona, view, onAsk, onNew, onPlans, onOwner, onFindPlace,
@@ -586,6 +624,7 @@ export function Workspace({
 
       {prefs.panel ? (
         <ReadingPanel
+          sources={sourcesRead(turns)}
           language={language}
           onLanguage={onLanguage}
           persona={persona}
