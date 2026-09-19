@@ -162,6 +162,47 @@ def main():
                      "every uppercase rule is neutralised and no component uses the uppercase utility"
                      if fe12 else "still shouted: " + ", ".join(shouted + utility)[:160]))
 
+    # FE13: no element is drawn by the browser's defaults.
+    #
+    # WorkspaceSurface.tsx and IndiaWarningMap.tsx came into this tree from another one and their
+    # stylesheets did not. About a hundred dash-* names and twenty-four imap-* names had never had a rule
+    # here, so the dashboard's question box rendered as a letter, a naked textarea and an arrow on three
+    # separate lines, and the map's four overlay switches ran together with no space at all. Nothing threw;
+    # the page rendered; it looked like unstyled HTML because it was unstyled HTML.
+    #
+    # The test is held against the BUILT stylesheet, which carries the authored CSS and Tailwind's
+    # generated utilities together -- so a class that looks undeclared but sits beside `px-3 py-2` is not
+    # reported, because those utilities are doing the work. What is reported is an element whose whole
+    # class list resolves to nothing, which is the failure that produced the dashboard.
+    css = "".join(read(sheet) for sheet in sorted(DIST.glob("assets/*.css")))
+    styled = set(re.findall(r"\.(-?[A-Za-z_][\w-]*)", css))
+    # Four components are unreachable from the app -- nothing imports AskSurface or NationalReading, and
+    # AskSurface is the only importer of Transcript and chat/Composer. They still carry test coverage, so
+    # they are recorded here rather than deleted quietly; deleting them is its own change.
+    unreachable = {"chat/AskSurface.tsx", "chat/Transcript.tsx", "chat/Composer.tsx",
+                   "home/NationalReading.tsx", "flagship/motion.tsx"}
+    unstyled = []
+    for component in sorted((SRC).rglob("*.tsx")):
+        if ".test." in component.name or str(component.relative_to(SRC)) in unreachable:
+            continue
+        for match in re.finditer(r'className=(?:"([^"]*)"|\{((?:[^{}]|\{[^{}]*\})*)\})', read(component)):
+            if match.group(1) is not None:
+                chunks = [match.group(1)]
+            else:
+                # Only quoted literals in an expression are class names; identifiers are not. A literal
+                # on the right of a comparison is a value being tested, not a class -- in
+                # `tone === 'rain' ? ' chart-rain' : ''` the class is chart-rain and 'rain' is the test.
+                expression = re.sub(r"[=!]==?\s*(?:'[^']*'|\"[^\"]*\")", "", match.group(2))
+                chunks = [a or b for a, b in re.findall(r"'([^']*)'|\"([^\"]*)\"", expression)]
+            for chunk in chunks:
+                names = [n for n in chunk.split() if re.fullmatch(r"[a-z][a-z0-9-]{2,}", n)]
+                if names and not any(n in styled for n in names):
+                    unstyled.append(str(component.relative_to(SRC)) + ' "' + " ".join(names) + '"')
+    fe13 = bool(css) and not unstyled
+    findings.append(("FE13_no_unstyled_element", fe13,
+                     "every element resolves to at least one rule in the built stylesheet"
+                     if fe13 else "drawn by browser defaults: " + "; ".join(sorted(set(unstyled)))[:200]))
+
     # The port ledger is part of the frontend story now: it says which of the vanilla checks the React specs
     # carry, and it must parse and be internally consistent.
     try:

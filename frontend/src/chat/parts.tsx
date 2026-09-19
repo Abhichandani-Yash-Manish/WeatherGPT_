@@ -473,7 +473,7 @@ export function WarningPanel({ packet }: { packet: AnswerPacket }) {
                     return (
                       <tr key={(statedLabel || 'day') + '-' + dayIndex}>
                         <td>{dayWords}</td>
-                        <td><span className="wchip">{day.colour || 'colour not supplied'}</span></td>
+                        <td><span className="wchip" data-colour={day.colour ? String(day.colour).toLowerCase() : undefined}>{day.colour || 'colour not supplied'}</span></td>
                         <td>{day.quiet ? 'No warning in this product' : (day.source_text || (day.hazards || []).join(', ') || 'No hazard code supplied')}</td>
                         <td>{istWindow(day.starts_utc, day.ends_utc)}</td>
                       </tr>

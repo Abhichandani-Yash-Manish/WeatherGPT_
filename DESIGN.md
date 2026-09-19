@@ -92,6 +92,15 @@ replaced the bare Tailwind import in `styles/app.css`. The workspace's own chrom
 the tools — is written directly against these tokens rather than delegated, because the controls are few and
 the fit matters more than the head start. The Claim, the Work and the sentence are this product's own.
 
-The eighteen module surfaces still read the original token layer; `gpt.css` repoints those tokens rather than
+The eighteen guided surfaces still read the original token layer; `gpt.css` repoints those tokens rather than
 restyling twenty-six files. The `--color-*` names must be redeclared inside `.g`, not at the root: a custom
 property declared at `:root` computes there, so descendants inherit the computed value.
+
+The dashboard and the India warning map are the exception: they were taken into this tree without their
+stylesheets and had no rules at all, so `modules/dashboard.css` and `modules/indiamap.css` are written
+here, on the same `--g-*` tokens. docs/111 §7 records what that cost while it was missing.
+
+Two checks keep the claims in this file honest, because two of them were false when they were written.
+`FE12` requires every `text-transform: uppercase` in the tree to be neutralised and refuses Tailwind's
+`uppercase` utility. `FE13` holds every `className` string against the built stylesheet and fails when an
+element's whole class list resolves to nothing — the state the dashboard shipped in.

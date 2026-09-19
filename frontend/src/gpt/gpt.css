@@ -868,3 +868,50 @@ html, body { background: var(--g-void); }
   .g-top select[aria-label='Reading as'] { display: none; }
   .g-top select.g-tool { max-width: 9.5rem; }
 }
+
+/* ---- the last elements with no rule anywhere -------------------------------------------------------
+   Found by holding every className string in every component against the built stylesheet, which carries
+   the authored CSS and Tailwind's generated utilities together. Most class names that looked undeclared
+   turned out to be semantic hooks sitting beside utilities that do the work. These are the ones where the
+   whole class list resolved to nothing, so the element was being drawn by the browser's defaults. */
+
+/* The chart container in its panel form. A figure with a caption and no rule is an unframed caption and
+   an SVG, which is what the dashboard's charts were. */
+.g .chart-panel {
+  border: 1px solid var(--g-line-soft); border-radius: var(--g-r);
+  background: var(--g-fill); box-shadow: var(--g-e1);
+  padding: var(--g-4); margin: 0; min-width: 0;
+  display: flex; flex-direction: column; gap: var(--g-3);
+}
+.g .chart-panel-title { font-size: 13.5px; font-weight: 600; color: var(--g-paper); display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+.g .chart-panel-sub { font-size: 12px; font-weight: 400; color: var(--g-mist-2); }
+/* Rain is the one series with its own tone, and it is the accent rather than a colour of its own, because
+   a fifth colour beside four hazard colours is a colour a reader has to learn. */
+.g .chart-rain { border-color: color-mix(in srgb, var(--g-accent) 22%, var(--g-line-soft)); }
+
+/* The colour a district bulletin published, in the warning table. It was printing as plain text, so the
+   one cell in that table whose whole job is to carry a published colour carried none. The colour is the
+   ink and the edge, never a fill behind the word: a filled chip at this size reads as a sticker, and a
+   pale wash of a hazard colour on a dark ground loses the distinction between orange and red. */
+.g .wchip {
+  display: inline-flex; align-items: center;
+  font-family: var(--g-mono); font-size: 11px; line-height: 1;
+  padding: 3px 8px; border-radius: var(--g-r-pill);
+  border: 1px solid currentColor; color: var(--g-mist-2);
+}
+.g .wchip[data-colour='red'], .g td[data-colour='red'] .wchip { color: var(--g-red); }
+.g .wchip[data-colour='orange'], .g td[data-colour='orange'] .wchip { color: var(--g-orange); }
+.g .wchip[data-colour='yellow'], .g td[data-colour='yellow'] .wchip { color: var(--g-yellow); }
+.g .wchip[data-colour='green'], .g td[data-colour='green'] .wchip { color: var(--g-green); }
+
+/* A calculation held against another reading, and an aviation report the source marked stale: both are
+   states of a value rather than decorations, so each gets an edge and neither gets a hazard colour. */
+.g .is-comparison { border-left: 2px solid var(--g-accent); }
+.g .stale { color: var(--g-mist-2); font-style: normal; }
+.g .answered { color: var(--g-paper); }
+.g .good { color: var(--g-green); }
+
+/* The dashboard's own two: the surface wrapper, and the inline form of the "what changed" fold. */
+.g .module-dashboard { min-width: 0; }
+.g .dash-change-inline { display: inline-flex; }
+.g .module-place-quick { display: flex; flex-wrap: wrap; gap: var(--g-2); }
