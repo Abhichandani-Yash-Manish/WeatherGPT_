@@ -176,3 +176,26 @@ Recorded for the next round: **the Watch control does not open the panel in eith
 with the evidence in `watch-open.png` and `watch-open2.png`. This is the concrete reason Watch cannot yet count as
 the third surface.
 
+
+## Phase twelve — the Watch defect, narrowed to a handoff
+
+Round eight recorded that the Watch control does not open its panel. This round narrowed it with the structural
+probe the earlier rounds should have used:
+
+| Check | Result |
+|---|---|
+| `Workspace` renders the control | yes — a plain `<button onClick={() => onPlans?.()}>` |
+| `App` passes the handler | yes — `onPlans={() => setPlansOpen(true)}` |
+| `App` renders the panel | yes — `{plansOpen ? <div className="planwatch-host"><PlanWatch …/></div> : null}`, in the same return as the shell |
+| panel component intact | yes — `plans/PlanWatch.tsx:495` carries its heading and its `data-testid` |
+| after a real click | **neither `.planwatch-host` nor `[data-testid="planwatch"]` is in the DOM** |
+
+So the click lands (Playwright completes it, which it only does when the element receives the event), the handler
+and the state and the render block all exist, and the panel still never mounts. The suspect is therefore the
+**handoff between the control and the state** — the one link in the chain that has not been observed directly.
+The next probe is to log from inside `onPlans` rather than to change anything: three rounds have now been spent
+on a defect that a single instrumented click would localise.
+
+Not fixed this round: the context budget went on establishing that the panel component and the wiring are both
+intact, which is itself the useful result — the fix is small once the break is observed.
+
