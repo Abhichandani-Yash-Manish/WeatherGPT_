@@ -120,3 +120,25 @@ def test_a_catalogue_id_is_ordered_as_a_number_not_as_a_string():
     assert [match["id"] for match in rank_matches([village, seat])][0] == "geonames:9999999"
     # An id that is not numeric still orders deterministically rather than raising.
     assert catalogue_key("osm:relation/12") == (1, 0, "osm:relation/12")
+
+
+def test_a_place_with_no_district_is_not_labelled_with_an_empty_one():
+    """Delhi is a state seat with no district, and the label was built by joining three parts always.
+
+    A reader asking about air quality there was answered with "Delhi, , National Capital Territory of
+    Delhi" — the empty middle visible in the answer's own opening line. The label is used for display, for
+    matching and for the provenance under a claim, so the gap showed up in all three.
+    """
+
+    def label(name, admin2, admin1):
+        return ', '.join(part for part in (name, admin2, admin1) if str(part or '').strip())
+
+    assert label('Delhi', '', 'National Capital Territory of Delhi') == 'Delhi, National Capital Territory of Delhi'
+    assert label('Surat', 'Sūrat', 'State of Gujarāt') == 'Surat, Sūrat, State of Gujarāt'
+    assert ', ,' not in label('Delhi', None, 'National Capital Territory of Delhi')
+
+    # And the rule as the catalogue itself applies it, so this cannot drift from the source.
+    import inspect
+    from weathergpt_data import gazetteer
+    built = inspect.getsource(gazetteer.Gazetteer.search)
+    assert "if str(part or '').strip()" in built, 'the label join no longer filters empty parts'

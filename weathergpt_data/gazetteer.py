@@ -279,7 +279,7 @@ class Gazetteer:
         if canonical and not approximate:rows=canonical
         if approximate:rows=rows[:20]
         return [{**r,'name_match_basis':'canonical' if norm(r['name'])==norm(name) else 'alias_or_approximate',
-                 'state_match_basis':state_basis,'other_alias_matches':alias_alternatives,'match_type':'approximate_name_requires_confirmation' if approximate else 'source_name_or_alias','selection_id':'geonames:'+r['id'],'label':r['name']+', '+r['admin2']+', '+r['admin1'],
+                 'state_match_basis':state_basis,'other_alias_matches':alias_alternatives,'match_type':'approximate_name_requires_confirmation' if approximate else 'source_name_or_alias','selection_id':'geonames:'+r['id'],'label':', '.join(part for part in (r['name'],r['admin2'],r['admin1']) if str(part or '').strip()),
                  'coordinates':{'latitude':r['latitude'],'longitude':r['longitude']},'source_id':'S61',
                  'citation':{'source_id':'S61','url':'https://www.geonames.org/'+r['id'],'provider':'GeoNames','product':'India place catalogue','sha256':meta['archive_sha256'],'retrieved_at_utc':meta['retrieved_at_utc']},
                  'administrative_mapping':meta['administrative_mapping']} for r in rows]
