@@ -244,3 +244,28 @@ React is alive and delegating: a click that lands on the icon inside a control b
 Next: instrument node identity across `pointerdown` and `click`, and click the icon rather than the button centre.
 
 Cost, again because it is the lesson: three rounds went on fixes and elimination before one probe measured two candidates in a single run.
+
+## Phase fifteen — the closing observation, and the handover
+
+The promised instrumented click, on the icon rather than the button centre, with the event log watched:
+
+| Observation | Value |
+|---|---|
+| `pointerdown` | on the icon `svg` inside the button |
+| `click` | on the same `svg`, `defaultPrevented=false` |
+| `.planwatch-host` afterwards | absent |
+| the sibling Owner control, same bar, same markup pattern | **works** |
+
+So the control receives both a pointer event and an unprevented click on a child, inside the React root, with nothing over it, and the handler on the button never runs — while the control beside it does. Every hypothesis that can be checked from outside React is now spent; the next instrument has to be inside it: a render counter on the bar, a handler that logs, and a check of whether the two controls differ in what they receive.
+
+What is *not* in doubt: the panel component, the state, the render block and the App handler were each verified intact in earlier rounds. This is one control, one handler, and one unexplained gap between them.
+
+## Handover at the end of the goal rounds
+
+The objective's items (1) conversation-with-motion, (2) layered canvas with the travelling disc and crossfades, (3) the dashboard surfaces in the same language, and (4) per-phase verification are implemented, gated and recorded — seventeen commits, each with the capture that justifies it, each phase's gates run and written down.
+
+Open, with evidence rather than adjectives:
+
+1. **The Watch control's handler never runs** — this section, and phases eleven to fourteen. Not a wiring defect in the three places that were checked; it is the gap between the click and the handler.
+2. **The landmark's midday framing** — visible since phase seven, still low in the frame.
+3. **Push** — impossible from this sandbox: the shell has no network. Seventeen commits sit on local `main` for a machine with credentials.
