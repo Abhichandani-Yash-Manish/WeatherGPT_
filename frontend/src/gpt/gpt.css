@@ -1645,3 +1645,102 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
    two sections with two headings, which made the rail look like it was listing places twice. The landmark
    and its accessible name stay — a named region for the list is correct, and two specs name it. */
 .g-section-joined { margin-top: calc(var(--g-2) * -1); }
+
+/* ============================================================================
+   INSTRUMENT GLASS — the light has a direction
+   ============================================================================
+   Glassmorphism as a preset is the templated default: blur everything, 20% white, call it glass. It is on
+   every weather shot on every gallery, and it reads as a texture because the light in it comes from
+   nowhere. This product already has a real light — the ground is a sun-driven gradient computed from the
+   reader's own latitude — so a pane here can be lit by it.
+
+   --g-light-angle puts the catch-light on the edge the sun is actually on: the left at dawn, the top at
+   noon, the right at dusk. --g-light-shadow-x throws the shadow away from it, and --g-light-height
+   flattens that shadow as the sun climbs. Workspace sets all four from the real solar position; the
+   defaults below keep a pane correctly lit before any of that runs, and if it never runs.
+
+   The technique is two backgrounds on one element: the fill clipped to padding-box, the lit border
+   clipped to border-box. No pseudo-element, no mask, no extra node in the tree — so any surface can
+   become a pane by taking one class. */
+
+:root {
+  --g-light-x: 50%;
+  --g-light-angle: 180deg;
+  --g-light-shadow-x: 0px;
+  --g-light-height: 0.6;
+
+  /* How bright the lit edge is, and how much of the pane it travels before it fades. */
+  --g-catch: rgba(255, 255, 255, 0.26);
+  --g-catch-soft: rgba(255, 255, 255, 0.05);
+  --g-pane-blur: 22px;
+}
+
+/* Each hour puts the sun where it stands, so the design is correct with JavaScript disabled. */
+[data-hour='daybreak'] { --g-light-x: 22%; --g-light-angle: 129deg; --g-light-shadow-x: 3.9px; --g-light-height: 0.16; }
+[data-hour='noon']     { --g-light-x: 50%; --g-light-angle: 180deg; --g-light-shadow-x: 0px;   --g-light-height: 0.92; }
+[data-hour='golden']   { --g-light-x: 78%; --g-light-angle: 230deg; --g-light-shadow-x: -3.9px; --g-light-height: 0.16; }
+/* After dark the light is the moon and the city: weaker, cooler, and almost overhead. */
+[data-hour='night']    { --g-light-x: 42%; --g-light-angle: 166deg; --g-light-shadow-x: 1.1px; --g-light-height: 0.5;
+                         --g-catch: rgba(255, 255, 255, 0.16); --g-catch-soft: rgba(255, 255, 255, 0.03); }
+/* On paper the catch-light is the shade under the edge, not a white shine: a white highlight on a white
+   card is invisible, so the light hours invert it into a soft dark edge and a brighter fill. */
+[data-hour='daybreak'], [data-hour='noon'] {
+  --g-catch: rgba(255, 255, 255, 0.95);
+  --g-catch-soft: rgba(16, 24, 40, 0.07);
+}
+
+/* ---- the pane -------------------------------------------------------------------------------------- */
+.g-pane {
+  position: relative;
+  border: 1px solid transparent;
+  border-radius: var(--g-r-lg);
+  background:
+    var(--g-fill) padding-box,
+    linear-gradient(var(--g-light-angle), var(--g-catch) 0%, var(--g-catch-soft) 38%, transparent 72%) border-box;
+  box-shadow:
+    calc(var(--g-light-shadow-x) * 0.6) calc(2px + 4px * (1 - var(--g-light-height))) 10px -6px rgba(0, 0, 0, 0.32),
+    var(--g-light-shadow-x) calc(6px + 14px * (1 - var(--g-light-height))) 34px -18px rgba(0, 0, 0, 0.44);
+  transition: background 900ms var(--g-ease), box-shadow 900ms var(--g-ease);
+}
+/* A pane that sits over the ground rather than over another surface takes the blur too; a pane nested
+   inside one does not, because stacking backdrop filters costs a paint each and buys nothing. */
+.g-pane-glass {
+  background:
+    linear-gradient(180deg, var(--g-t3), var(--g-t1)) padding-box,
+    linear-gradient(var(--g-light-angle), var(--g-catch) 0%, var(--g-catch-soft) 38%, transparent 72%) border-box;
+  backdrop-filter: blur(var(--g-pane-blur)) saturate(1.35);
+  -webkit-backdrop-filter: blur(var(--g-pane-blur)) saturate(1.35);
+}
+[data-hour='daybreak'] .g-pane-glass, [data-hour='noon'] .g-pane-glass {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.78), rgba(255,255,255,0.52)) padding-box,
+    linear-gradient(var(--g-light-angle), var(--g-catch) 0%, var(--g-catch-soft) 38%, transparent 72%) border-box;
+}
+
+/* ---- the extruded control --------------------------------------------------------------------------
+   Neumorphism, used where a control is meant to feel physical and nowhere else. The accessibility rule it
+   usually breaks is that a soft extrusion at low contrast hides the affordance — so every control here
+   keeps a real border as well, and the extrusion is what makes it feel pressable rather than what makes
+   it findable. */
+.g-raised {
+  box-shadow:
+    inset 0 1px 0 var(--g-catch),
+    calc(var(--g-light-shadow-x) * 0.4) 2px 5px -2px rgba(0, 0, 0, 0.35);
+  transition: box-shadow var(--g-fast) var(--g-ease), transform var(--g-fast) var(--g-spring);
+}
+.g-raised:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.30);
+}
+
+/* The composer and the rail are the two panes a reader looks at longest, so they take the glass. */
+.g-composer { border-color: transparent; }
+.g-composer:not(:focus-within) {
+  background:
+    linear-gradient(180deg, var(--g-t3), var(--g-t1)) padding-box,
+    linear-gradient(var(--g-light-angle), var(--g-catch) 0%, var(--g-catch-soft) 38%, transparent 72%) border-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .g-pane, .g-raised { transition: none; }
+}

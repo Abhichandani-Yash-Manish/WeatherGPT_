@@ -90,3 +90,49 @@ export function hourOf(at: Date, latitude = 23.0, longitude = 82.5): Hour {
   const later = solarAltitude(latitude, longitude, new Date(at.getTime() + 900_000));
   return later > altitude ? 'daybreak' : 'golden';
 }
+
+/* ---- where the light is coming from ----------------------------------------------------------------
+   The ground is a real sun-driven gradient, so every raised surface in this product is a pane sitting in
+   that light — and a pane lit from nowhere in particular is the thing that makes glassmorphism read as a
+   texture rather than as glass.
+
+   So the catch-light on a surface's border follows the sun: the left edge at dawn, the top at noon, the
+   right edge at dusk, and the shadow falls away from it. One token drives every surface, which is what
+   keeps it coherent instead of decorative, and it is derived from the reader's own sky rather than chosen.
+
+   hourAngle is the input because it is already what it means: negative through the morning, zero at solar
+   noon, positive through the afternoon. Nothing here is a weather statement. */
+
+export type Light = {
+  /** Where the light stands across the page, 0 at the left edge and 1 at the right. */
+  x: number;
+  /** The CSS gradient angle that puts the highlight on the lit edge. 90deg is left, 180deg is top. */
+  angle: number;
+  /** How far a shadow is pushed away from the light, in pixels, signed. */
+  shadowX: number;
+  /** How high the light is, 0 on the horizon and 1 overhead. Flattens the shadow as the sun climbs. */
+  height: number;
+};
+
+/** Clamp, because an hourAngle before sunrise or after sunset must not push the light off the page. */
+const clamp = (value: number, low: number, high: number) => Math.min(high, Math.max(low, value));
+
+export function lightFrom(position: SolarPosition): Light {
+  /* ±90° of hour angle is roughly sunrise to sunset, and the light is kept a little inside the edges so
+     that a surface at the very edge of the window still has a lit side to show. */
+  const x = clamp(0.5 + position.hourAngle / 200, 0.08, 0.92);
+  const height = clamp(position.altitude / 75, 0, 1);
+  return {
+    x,
+    /* 90deg puts the gradient's start at the left edge, 270deg at the right; the light rides between them
+       and passes through 180deg — the top — at solar noon. */
+    angle: 90 + 180 * x,
+    shadowX: Number((((0.5 - x) * 2) * 7).toFixed(2)),
+    height: Number(height.toFixed(3)),
+  };
+}
+
+/** The light for a place and an instant, which is what a component actually has to hand. */
+export function lightAt(at: Date, latitude = 23.0, longitude = 82.5): Light {
+  return lightFrom(solarPosition(latitude, longitude, at));
+}

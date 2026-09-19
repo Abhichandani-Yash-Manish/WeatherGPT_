@@ -6,7 +6,7 @@
    It stopped being invisible the moment two of the hours became light pages — it would have put
    ten o'clock in the morning into a dusk palette. */
 
-import { hourOf, solarAltitude } from './fieldPaint';
+import { hourOf, lightFrom, solarAltitude } from './fieldPaint';
 
 /* Nagpur, near the centre of India, so the sun's timing is representative rather than extreme. */
 const LAT = 21.15;
@@ -54,5 +54,43 @@ describe('the hour, from the sun', () => {
        Kanyakumari still has the sun up. */
     const december = new Date(Date.UTC(2026, 11, 21, 12, 40, 0));
     expect(hourOf(december, 34.16, 77.58)).not.toBe(hourOf(december, 8.08, 77.55));
+  });
+});
+
+describe('where the light comes from', () => {
+  /* The catch-light on every pane follows the sun. These pin the three positions the design depends on,
+     because "the light has a direction" is only true if the direction is the real one. */
+  it('stands left in the morning, overhead at solar noon, and right in the afternoon', () => {
+    const morning = lightFrom({ altitude: 30, hourAngle: -60 });
+    const noon = lightFrom({ altitude: 78, hourAngle: 0 });
+    const afternoon = lightFrom({ altitude: 30, hourAngle: 60 });
+
+    expect(morning.x).toBeLessThan(0.5);
+    expect(noon.x).toBeCloseTo(0.5, 2);
+    expect(afternoon.x).toBeGreaterThan(0.5);
+    /* 90deg is the left edge, 180deg the top, 270deg the right. */
+    expect(noon.angle).toBeCloseTo(180, 0);
+    expect(morning.angle).toBeLessThan(180);
+    expect(afternoon.angle).toBeGreaterThan(180);
+  });
+
+  it('throws the shadow away from the light, and flattens it as the sun climbs', () => {
+    const morning = lightFrom({ altitude: 20, hourAngle: -75 });
+    const noon = lightFrom({ altitude: 80, hourAngle: 0 });
+    /* Light on the left, shadow to the right: the two must have opposite signs. */
+    expect(Math.sign(morning.shadowX)).toBe(1);
+    expect(Math.sign(lightFrom({ altitude: 20, hourAngle: 75 }).shadowX)).toBe(-1);
+    expect(Math.abs(noon.shadowX)).toBeLessThan(Math.abs(morning.shadowX));
+    expect(noon.height).toBeGreaterThan(morning.height);
+  });
+
+  it('keeps the light on the page before sunrise and after sunset', () => {
+    /* An hour angle well outside the day would otherwise put the highlight off the edge of every surface,
+       leaving panes with no lit side at all. */
+    for (const hourAngle of [-180, -140, 140, 180]) {
+      const light = lightFrom({ altitude: -20, hourAngle });
+      expect(light.x).toBeGreaterThanOrEqual(0.08);
+      expect(light.x).toBeLessThanOrEqual(0.92);
+    }
   });
 });

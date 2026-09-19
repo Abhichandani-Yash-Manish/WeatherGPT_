@@ -24,7 +24,7 @@ import { viewById, type ViewEntry } from '../shell/views';
 import { AnswerTurn } from '../chat/AnswerTurn';
 import { Composer } from './Composer';
 import { Field } from './Field';
-import { hourOf } from './fieldPaint';
+import { hourOf, lightAt } from './fieldPaint';
 import { useSky } from './sky';
 import { SkyGlyphIcon } from '../shell/icons';
 import { rememberPlace, useWorkingPlace } from '../modules/Evidence';
@@ -99,11 +99,25 @@ export function Workspace({
      their background from it, so the page behind a short thread is the right hour rather than a strip of
      the old one; and color-scheme has to reach the document for native controls — a select's dropdown and
      the scrollbars — to render light on the light hours. */
+  /* Where the light is standing, from the reader's own sun. Every pane's catch-light and every shadow is
+     derived from these four numbers, so the whole surface system is lit from one place and that place is
+     the real one. The hour blocks in the stylesheet carry a sensible default for each of the four hours,
+     so a pane is lit correctly before this ever runs and stays lit if it never does. */
+  const light = lightAt(now, latitude, longitude);
+
   useEffect(() => {
     const root = document.documentElement;
     root.dataset.hour = hour;
-    return () => { delete root.dataset.hour; };
-  }, [hour]);
+    root.style.setProperty('--g-light-x', (light.x * 100).toFixed(1) + '%');
+    root.style.setProperty('--g-light-angle', light.angle.toFixed(1) + 'deg');
+    root.style.setProperty('--g-light-shadow-x', light.shadowX + 'px');
+    root.style.setProperty('--g-light-height', String(light.height));
+    return () => {
+      delete root.dataset.hour;
+      ['--g-light-x', '--g-light-angle', '--g-light-shadow-x', '--g-light-height']
+        .forEach(name => root.style.removeProperty(name));
+    };
+  }, [hour, light.x, light.angle, light.shadowX, light.height]);
 
   useEffect(() => {
     if (!restoreId || restored.current === restoreId) return;
