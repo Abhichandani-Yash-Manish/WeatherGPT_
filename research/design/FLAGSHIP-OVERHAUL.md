@@ -139,3 +139,20 @@ capability built and left behind, and it is now wired:
 
 Open for the next pass: the legend still crosses the skyline band and wants more ground of its own.
 
+
+## Phase ten — the chrome library, actually used
+
+The design record says HeroUI v3 was adopted as the chrome. In the tree it was not: `@import "@heroui/styles"`
+sat in `styles/app.css` and **no component imported `@heroui/react`** — the stylesheet was being loaded for
+nothing. That is a documented capability left behind, and it is now used: the top bar’s Watch and Owner controls
+are HeroUI `Button`s with their accessible names unchanged, so the gates that check those names still mean
+something.
+
+Three API differences cost three round trips, and each is worth recording so the next reader does not fight a
+fork of the library: v3’s `Button` takes **no `radius`**, **no `startContent`** and **no `isIconOnly`** — the shape
+comes from the class, and an icon is a child. `variant` and `size` are real; the variant names are
+`primary | ghost | danger | outline | danger-soft | secondary | tertiary`, so `light` and `flat` do not exist.
+
+Open and recorded: the icon-only Owner control is nearly invisible against a bright sky because a `ghost` variant
+leaves it to our own class, which was written for a plain `<button>`. It wants a real treatment next round.
+
