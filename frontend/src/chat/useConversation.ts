@@ -55,10 +55,17 @@ function reducer(state: ConversationState, action: Action): ConversationState {
       if (!state.working || state.working.key !== action.key) return state;
       return { ...state, working: { ...state.working, progress: action.progress } };
     /* The question and its answer are two turns, and the question stays: the answer replaces the working
-       box, not the thing that was asked. */
+       box, not the thing that was asked.
+
+       Both are guarded by the turn's key, as preview and progress already were. A request that is still in
+       flight when the reader starts a new conversation would otherwise land in that new conversation —
+       minutes later, under a question no longer on screen — and a refusal would additionally put its
+       question back into a composer the reader had moved on from. An abandoned turn owns nothing. */
     case 'answer':
+      if (!state.working || state.working.key !== action.key) return state;
       return { ...state, turns: [...state.turns, action.turn], working: null, conversationId: action.conversationId || state.conversationId };
     case 'notice':
+      if (!state.working || state.working.key !== action.key) return state;
       return { ...state, turns: [...state.turns, action.turn], working: null, draft: action.draft };
     case 'stopping':
       if (!state.working || state.working.key !== action.key) return state;
@@ -126,6 +133,9 @@ export function useConversation(options: ConversationOptions = {}) {
       const question = text.trim();
       if (!question) return;
       stopPolling();
+      /* Whatever was in flight is abandoned here rather than left to resolve into a turn that has moved
+         on. The reducer would drop its answer anyway; this stops the work as well as the update. */
+      controllerRef.current?.abort();
       const requestId = chat.newRequestId();
       const key = keyFor(requestId);
       const at = new Date().toISOString();
@@ -155,7 +165,13 @@ export function useConversation(options: ConversationOptions = {}) {
       pollRef.current = window.setInterval(read, 900);
 
       try {
-        const packet: AnswerPacket = await chat.ask({ ...body(question), request_id: requestId, selection_id: extra.selectionId, coordinates: extra.coordinates });
+        /* The signal, which this never passed. The controller was created and stored and did nothing, so
+           an abandoned turn's request kept running to completion against a server that had been asked for
+           nothing. Stopping still asks the server to stop as well: that is what releases its work. */
+        const packet: AnswerPacket = await chat.ask(
+          { ...body(question), request_id: requestId, selection_id: extra.selectionId, coordinates: extra.coordinates },
+          controller.signal,
+        );
         stopPolling();
         dispatch({ type: 'answer', key, turn: { key: key + ':answer', role: 'answer', packet, at: packet.answered_at_utc || new Date().toISOString() }, conversationId: packet.conversation_id || null });
       } catch (error) {
@@ -198,6 +214,7 @@ export function useConversation(options: ConversationOptions = {}) {
 
   const clear = useCallback(() => {
     previewRef.current?.abort();
+    controllerRef.current?.abort();
     controllerRef.current = null;
     stopPolling();
     dispatch({ type: 'clear' });
