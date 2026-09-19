@@ -512,3 +512,33 @@ html, body { background: var(--g-bg); }
 .g .dash-kpi-value { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; min-width: 0; }
 .g .dash-kpis { align-items: start; }
 .g .dash-card { padding: var(--g-4); }
+
+/* A tracked-out all-caps label above a heading is one of the surest tells of a machine-made page, and it
+   survived inside the module surfaces after the conversation had dropped it. Sentence case everywhere: a
+   section heading is a heading, and a column header is a word, not a sign. Size and weight already carry
+   the hierarchy, so nothing is lost by letting the words read normally. */
+.g .eyebrow,
+.g .module-section > h2, .g .module-section > h3,
+.g .dash-card-head h2,
+.g th,
+.g .viz-matrix-head, .g .viz-matrix-corner, .g .viz-unit,
+.g .viz-card-family, .g .viz-card-scope {
+  text-transform: none;
+  letter-spacing: 0;
+}
+.g .module-section > h2, .g .module-section > h3, .g .dash-card-head h2 {
+  font-size: 13.5px; font-weight: 600; color: var(--g-mist);
+}
+.g .module-table thead th, .g th {
+  text-transform: none; letter-spacing: 0; font-size: 12px; font-weight: 600; color: var(--g-mist-2);
+}
+
+/* The two ways out of a surface belong beside the surface, not floating over the column's shoulder. */
+.g-sheet-actions { display: flex; justify-content: flex-end; gap: var(--g-2); padding-top: var(--g-4); }
+
+@media (max-width: 900px) {
+  /* The reading position is a refinement; on a phone the bar keeps the language and the rest moves to the
+     rail, rather than truncating two controls mid-word. */
+  .g-top select[aria-label='Reading as'] { display: none; }
+  .g-top select.g-tool { max-width: 9.5rem; }
+}
