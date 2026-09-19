@@ -203,6 +203,69 @@ def main():
                      "every element resolves to at least one rule in the built stylesheet"
                      if fe13 else "drawn by browser defaults: " + "; ".join(sorted(set(unstyled)))[:200]))
 
+    # FE14: the ink is legible on every hour's ground, measured rather than asserted.
+    #
+    # DESIGN.md has claimed "contrast is measured rather than assumed" since before there was anything
+    # measuring it. Now that two of the four hours are light pages, the claim has teeth: the same ink
+    # ladder cannot serve a near-white ground and a navy-black one, and the tertiary ink -- which carries
+    # the provenance line, the smallest type in the product -- is the one that fails first. It was at
+    # 3.54:1 on the light grounds and 4.30:1 on night when it was measured for the first time.
+    #
+    # WCAG AA is 4.5:1 for normal text. The provenance line is 11.5px, so it is normal text.
+    def _luminance(value):
+        value = value.lstrip("#")
+        channels = [int(value[i:i + 2], 16) / 255 for i in (0, 2, 4)]
+        linear = [c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4 for c in channels]
+        return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2]
+
+    def _contrast(ink, ground):
+        light, dark = sorted((_luminance(ink), _luminance(ground)), reverse=True)
+        return (light + 0.05) / (dark + 0.05)
+
+    FLOOR = 4.5
+    short = []
+    for hour in ("night", "golden", "daybreak", "noon"):
+        # Anchored to the line start so the shared light-hours block, whose selector list begins
+        # "[data-hour='daybreak'], [data-hour='noon'] {", is not mistaken for noon's own block.
+        block = re.search(r"^\[data-hour='" + hour + r"'\]\s*\{(.*?)\n\}", gpt_css, re.S | re.M)
+        if not block:
+            short.append(hour + ": no palette block")
+            continue
+        tokens = dict(re.findall(r"(--g-[a-z0-9-]+):\s*(#[0-9a-fA-F]{6})", block.group(1)))
+        ground = tokens.get("--g-bg")
+        if not ground:
+            short.append(hour + ": no --g-bg")
+            continue
+        for name in ("--g-paper", "--g-mist", "--g-mist-2"):
+            ink = tokens.get(name)
+            if not ink:
+                short.append(hour + " " + name + ": not declared")
+                continue
+            measured = _contrast(ink, ground)
+            if measured < FLOOR:
+                short.append(hour + " " + name + " " + format(measured, ".2f") + ":1")
+    fe14 = not short
+    findings.append(("FE14_ink_contrast", fe14,
+                     "every ink clears " + str(FLOOR) + ":1 on its own hour's ground"
+                     if fe14 else "below " + str(FLOOR) + ":1 — " + ", ".join(short)[:150]))
+
+    # FE15: the hours are actually distinguishable from one another.
+    #
+    # The failure this replaces: all four grounds were near-identical navy-blacks, 1.13:1 between noon and
+    # midnight, which is under the threshold where a difference is perceivable at all. The hour was
+    # computed from the reader's own latitude, applied, and then invisible.
+    grounds = {}
+    for hour in ("night", "golden", "daybreak", "noon"):
+        block = re.search(r"^\[data-hour='" + hour + r"'\]\s*\{(.*?)\n\}", gpt_css, re.S | re.M)
+        found = re.search(r"--g-bg:\s*(#[0-9a-fA-F]{6})", block.group(1)) if block else None
+        if found:
+            grounds[hour] = found.group(1)
+    day_night = _contrast(grounds["noon"], grounds["night"]) if len(grounds) == 4 else 0
+    fe15 = day_night >= 4.0
+    findings.append(("FE15_hours_differ", fe15,
+                     "noon and night grounds differ by " + format(day_night, ".1f") + ":1"
+                     if fe15 else "noon and night are indistinguishable: " + format(day_night, ".2f") + ":1"))
+
     # The port ledger is part of the frontend story now: it says which of the vanilla checks the React specs
     # carry, and it must parse and be internally consistent.
     try:

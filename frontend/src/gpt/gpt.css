@@ -56,19 +56,19 @@
   /* Elevation. Every raised thing takes one of these three, and every one of them carries the top-edge
      light in the same declaration, so a surface can never get the shadow and forget the highlight. */
   --g-e1:
-    inset 0 1px 0 rgba(255, 255, 255, 0.045),
+    inset 0 1px 0 var(--g-t2),
     0 1px 2px rgba(0, 0, 0, 0.30);
   --g-e2:
-    inset 0 1px 0 rgba(255, 255, 255, 0.055),
+    inset 0 1px 0 var(--g-t3),
     0 2px 4px rgba(0, 0, 0, 0.24),
     0 8px 18px -8px rgba(0, 0, 0, 0.50);
   --g-e3:
-    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    inset 0 1px 0 var(--g-t4),
     0 4px 10px rgba(0, 0, 0, 0.28),
     0 20px 48px -20px rgba(0, 0, 0, 0.72);
 
   /* A raised fill is a gradient, never a flat value — a flat fill is the wireframe tell. */
-  --g-fill: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012));
+  --g-fill: linear-gradient(180deg, var(--g-t2), var(--g-t1));
 
   --g-fast: 140ms; --g-mid: 220ms; --g-slow: 420ms;
   --g-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
@@ -77,26 +77,158 @@
   color-scheme: dark;
 }
 
-/* The hour, as a whisper. Four grounds a few degrees apart, none of them a picture. Each names its own
-   gradient, the colour of its light, and where on the width that light stands. */
-[data-hour='daybreak'] {
-  --g-sky-1: #111c33; --g-sky-2: #0c1322;
-  --g-aura-1: rgba(198, 158, 132, 0.16); --g-aura-2: rgba(120, 152, 214, 0.11); --g-halo-x: 24%;
-}
-[data-hour='noon'] {
-  --g-sky-1: #101e38; --g-sky-2: #0b1322;
-  --g-aura-1: rgba(138, 176, 236, 0.15); --g-aura-2: rgba(108, 142, 200, 0.10); --g-halo-x: 64%;
-}
-[data-hour='golden'] {
-  --g-sky-1: #171a2c; --g-sky-2: #0b1120;
-  --g-aura-1: rgba(212, 146, 112, 0.16); --g-aura-2: rgba(126, 122, 190, 0.12); --g-halo-x: 76%;
-}
-[data-hour='night'] {
-  --g-sky-1: #0a1124; --g-sky-2: #070b15;
-  --g-aura-1: rgba(120, 148, 210, 0.11); --g-aura-2: rgba(96, 116, 176, 0.08); --g-halo-x: 32%;
+/* ---- the four hours -------------------------------------------------------------------------------
+   The page follows the sun, and it is allowed to be light.
+
+   The previous version of this block shifted only the gradient and the halo "by a few degrees", which
+   measured out at 1.13:1 between noon and midnight — under the threshold where a difference is visible at
+   all. The hour was computed correctly from the reader's own latitude, applied correctly, and then
+   invisible. A product whose whole idea is one place and one hour cannot look identical at both.
+
+   So each hour carries a complete palette, not a tint. Two of them are light pages with dark ink.
+
+   Three things hold across all four, because they are the product's rules rather than its mood:
+
+   - The accent never approaches a hazard hue. At dusk, where a warm accent would be the obvious choice,
+     it goes violet instead — a warm accent beside IMD's orange is a colour a reader has to disambiguate
+     under time pressure, which is the one thing this interface must never ask.
+   - The four hazard colours are darkened on the light grounds and not otherwise changed. A hue that
+     carries meaning keeps its hue; what changes is only enough lightness to stay legible on paper.
+   - --g-paper is the PRIMARY TEXT colour, not the page. The name is from the dark original, where the ink
+     was the pale thing. It is near-black on the light hours, and the module token layer that reads it as
+     --ink follows automatically. */
+
+:root {
+  --g-t1: rgba(255, 255, 255, 0.015);
+  --g-t2: rgba(255, 255, 255, 0.04);
+  --g-t3: rgba(255, 255, 255, 0.055);
+  --g-t4: rgba(255, 255, 255, 0.08);
+  --g-t5: rgba(255, 255, 255, 0.10);
 }
 
-html, body { background: var(--g-void); }
+/* ---- NIGHT: the night-flight palette, unchanged ---------------------------------------------------- */
+[data-hour='night'] {
+  --g-void: #05080f; --g-bg: #0a0f1a; --g-raise: #111828; --g-raise-2: #172032;
+  --g-line: #222d40; --g-line-soft: #18212f;
+  --g-paper: #edf1f7; --g-mist: #9eabc0; --g-mist-2: #737f97;
+  --g-accent: #a8c7fa; --g-accent-2: #7ea6e8; --g-accent-wash: rgba(168, 199, 250, 0.10);
+  --g-red: #e2596f; --g-orange: #e08a47; --g-yellow: #d9b53f; --g-green: #4f9d6d;
+
+  --g-sky-1: #0a1124; --g-sky-2: #070b15;
+  --g-aura-1: rgba(120, 148, 210, 0.11); --g-aura-2: rgba(96, 116, 176, 0.08); --g-halo-x: 32%;
+  --g-vignette: rgba(3, 6, 12, 0.46);
+  --g-grain-a: 0.032; --g-grain-blend: overlay;
+
+  --g-rail-bg: linear-gradient(180deg, rgba(8, 12, 20, 0.86), rgba(5, 8, 15, 0.92));
+  --g-glass: rgba(14, 20, 33, 0.82); --g-glass-2: rgba(15, 22, 36, 0.60);
+  --g-scrim: rgba(4, 7, 13, 0.62);
+
+  --g-e1: inset 0 1px 0 rgba(255,255,255,0.045), 0 1px 2px rgba(0,0,0,0.30);
+  --g-e2: inset 0 1px 0 rgba(255,255,255,0.055), 0 2px 4px rgba(0,0,0,0.24), 0 8px 18px -8px rgba(0,0,0,0.50);
+  --g-e3: inset 0 1px 0 rgba(255,255,255,0.07), 0 4px 10px rgba(0,0,0,0.28), 0 20px 48px -20px rgba(0,0,0,0.72);
+  --g-fill: linear-gradient(180deg, var(--g-t2), var(--g-t1));
+
+  /* On a dark ground the send is the brightest thing on the page; on a light one it has to become the
+     accent instead, because a white button on paper is not a button. */
+  --g-send-bg: linear-gradient(180deg, #ffffff, #d7deea); --g-send-ink: var(--g-void);
+  --g-mark-2: #3f5d8f;
+  /* The three absences on the map. Never a hue — see indiamap.css. */
+  --g-absent-1: #3b4557; --g-absent-2: #28313f; --g-absent-3: #171f2b; --g-absent-4: #131a25;
+  --g-overlay-ink: rgba(232, 237, 245, 0.34);
+  color-scheme: dark;
+}
+
+/* ---- GOLDEN: dusk. Still dark, but warm, and plainly not midnight ---------------------------------- */
+[data-hour='golden'] {
+  --g-void: #0a0711; --g-bg: #14101c; --g-raise: #1e1729; --g-raise-2: #251d33;
+  --g-line: #372b45; --g-line-soft: #271f35;
+  --g-paper: #f3edf5; --g-mist: #ad9fb7; --g-mist-2: #857793;
+  /* Violet, not amber. A warm accent at dusk would sit beside IMD's orange. */
+  --g-accent: #c3aae8; --g-accent-2: #a98fd4; --g-accent-wash: rgba(195, 170, 232, 0.12);
+  --g-red: #e2596f; --g-orange: #e08a47; --g-yellow: #d9b53f; --g-green: #56a276;
+
+  --g-sky-1: #2a1f38; --g-sky-2: #140f1c;
+  --g-aura-1: rgba(226, 138, 86, 0.22); --g-aura-2: rgba(150, 110, 200, 0.16); --g-halo-x: 78%;
+  --g-vignette: rgba(8, 5, 14, 0.48);
+  --g-grain-a: 0.032; --g-grain-blend: overlay;
+
+  --g-rail-bg: linear-gradient(180deg, rgba(16, 11, 23, 0.86), rgba(10, 7, 17, 0.92));
+  --g-glass: rgba(26, 20, 36, 0.82); --g-glass-2: rgba(28, 21, 39, 0.60);
+  --g-scrim: rgba(8, 5, 14, 0.62);
+
+  --g-e1: inset 0 1px 0 rgba(255,255,255,0.045), 0 1px 2px rgba(0,0,0,0.30);
+  --g-e2: inset 0 1px 0 rgba(255,255,255,0.055), 0 2px 4px rgba(0,0,0,0.24), 0 8px 18px -8px rgba(0,0,0,0.50);
+  --g-e3: inset 0 1px 0 rgba(255,255,255,0.07), 0 4px 10px rgba(0,0,0,0.28), 0 20px 48px -20px rgba(0,0,0,0.72);
+  --g-fill: linear-gradient(180deg, var(--g-t2), var(--g-t1));
+  --g-send-bg: linear-gradient(180deg, #ffffff, #e6dcf0); --g-send-ink: var(--g-void);
+  --g-mark-2: #6b4a8f;
+  --g-absent-1: #473a55; --g-absent-2: #33283e; --g-absent-3: #1f1829; --g-absent-4: #1a1423;
+  --g-overlay-ink: rgba(243, 237, 245, 0.34);
+  color-scheme: dark;
+}
+
+/* ---- the two light hours --------------------------------------------------------------------------
+   The ink ladder is near-black rather than pure black, the raised surface is white and the page is not,
+   so a card lifts off the ground by being lighter than it — the inverse of the dark hours and the reason
+   a light interface can have depth without a heavier shadow. */
+[data-hour='daybreak'], [data-hour='noon'] {
+  --g-t1: rgba(16, 24, 40, 0.022);
+  --g-t2: rgba(16, 24, 40, 0.038);
+  --g-t3: rgba(16, 24, 40, 0.055);
+  --g-t4: rgba(16, 24, 40, 0.08);
+  --g-t5: rgba(16, 24, 40, 0.105);
+
+  /* Darkened for a light ground, and not otherwise changed: the hue that carries the meaning is kept. */
+  --g-red: #c32b45; --g-orange: #a85c14; --g-yellow: #7a6209; --g-green: #1f6b3a;
+
+  --g-grain-a: 0.022; --g-grain-blend: multiply;
+  --g-scrim: rgba(24, 30, 45, 0.40);
+
+  --g-e1: inset 0 1px 0 rgba(255,255,255,0.9), 0 1px 2px rgba(16,24,40,0.06);
+  --g-e2: inset 0 1px 0 rgba(255,255,255,0.9), 0 1px 3px rgba(16,24,40,0.07), 0 6px 16px -6px rgba(16,24,40,0.12);
+  --g-e3: inset 0 1px 0 rgba(255,255,255,0.9), 0 4px 10px rgba(16,24,40,0.08), 0 20px 44px -20px rgba(16,24,40,0.22);
+  --g-fill: linear-gradient(180deg, rgba(255,255,255,0.86), rgba(255,255,255,0.52));
+  --g-send-ink: #ffffff;
+  /* Three greys, light-ground versions. Still three lightnesses, still no hue: an absence must never be
+     mistakable for a severity, and a district with no published day must never read as green. */
+  --g-absent-1: #9aa5b6; --g-absent-2: #c2cad6; --g-absent-3: #e0e5ec; --g-absent-4: #eceff4;
+  --g-overlay-ink: rgba(36, 48, 70, 0.34);
+  color-scheme: light;
+}
+
+/* ---- DAYBREAK: first light. Warm paper -------------------------------------------------------------- */
+[data-hour='daybreak'] {
+  --g-void: #f0e9e1; --g-bg: #faf6f1; --g-raise: #ffffff; --g-raise-2: #f7f1ea;
+  --g-line: #e0d5c8; --g-line-soft: #ece4d9;
+  --g-paper: #241c14; --g-mist: #5a5042; --g-mist-2: #776b5e;
+  --g-accent: #2f5fc0; --g-accent-2: #244da3; --g-accent-wash: rgba(47, 95, 192, 0.09);
+
+  --g-sky-1: #fbe9d8; --g-sky-2: #faf6f1;
+  --g-aura-1: rgba(240, 168, 110, 0.34); --g-aura-2: rgba(186, 170, 226, 0.20); --g-halo-x: 22%;
+  --g-vignette: rgba(146, 126, 104, 0.13);
+
+  --g-rail-bg: linear-gradient(180deg, rgba(245, 238, 229, 0.90), rgba(239, 231, 220, 0.94));
+  --g-glass: rgba(255, 252, 247, 0.86); --g-glass-2: rgba(255, 253, 250, 0.72);
+  --g-send-bg: linear-gradient(180deg, #3a6bc9, #2f5fc0); --g-mark-2: #1c3f86;
+}
+
+/* ---- NOON: full day. Cool paper ---------------------------------------------------------------------- */
+[data-hour='noon'] {
+  --g-void: #e9eef6; --g-bg: #f5f8fc; --g-raise: #ffffff; --g-raise-2: #eff4fa;
+  --g-line: #d3dce9; --g-line-soft: #e3e9f2;
+  --g-paper: #121a27; --g-mist: #465166; --g-mist-2: #636e80;
+  --g-accent: #1f5ccc; --g-accent-2: #1849a8; --g-accent-wash: rgba(31, 92, 204, 0.09);
+
+  --g-sky-1: #dfeafb; --g-sky-2: #f5f8fc;
+  --g-aura-1: rgba(120, 170, 240, 0.30); --g-aura-2: rgba(160, 196, 245, 0.20); --g-halo-x: 64%;
+  --g-vignette: rgba(104, 124, 158, 0.12);
+
+  --g-rail-bg: linear-gradient(180deg, rgba(236, 241, 249, 0.90), rgba(229, 236, 246, 0.94));
+  --g-glass: rgba(255, 255, 255, 0.86); --g-glass-2: rgba(255, 255, 255, 0.72);
+  --g-send-bg: linear-gradient(180deg, #2a68d8, #1f5ccc); --g-mark-2: #15409b;
+}
+
+html, body { background: var(--g-bg); transition: background var(--g-slow) ease; }
 
 .g {
   min-height: 100dvh;
@@ -170,13 +302,13 @@ html, body { background: var(--g-void); }
 .g-field-grain {
   position: absolute; inset: -50%;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
-  opacity: 0.032;
-  mix-blend-mode: overlay;
+  opacity: var(--g-grain-a);
+  mix-blend-mode: var(--g-grain-blend);
 }
 
 .g-field-vignette {
   position: absolute; inset: 0;
-  background: radial-gradient(100% 78% at 50% 34%, transparent 42%, rgba(3, 6, 12, 0.46) 100%);
+  background: radial-gradient(100% 78% at 50% 34%, transparent 42%, var(--g-vignette) 100%);
 }
 
 /* The horizon: one hairline of atmosphere, drifting too slowly to be caught moving. */
@@ -202,7 +334,7 @@ html, body { background: var(--g-void); }
 .g-rail {
   position: sticky; top: 0; z-index: 3;
   width: var(--g-rail-w); flex: 0 0 var(--g-rail-w); height: 100dvh;
-  background: linear-gradient(180deg, rgba(8, 12, 20, 0.86), rgba(5, 8, 15, 0.92));
+  background: var(--g-rail-bg);
   backdrop-filter: blur(24px) saturate(1.3); -webkit-backdrop-filter: blur(24px) saturate(1.3);
   border-right: 1px solid var(--g-line-soft);
   display: flex; flex-direction: column;
@@ -211,7 +343,7 @@ html, body { background: var(--g-void); }
 .g-brand { display: flex; align-items: center; gap: var(--g-2); padding: var(--g-1) var(--g-2) var(--g-4); font-size: 14.5px; font-weight: 600; letter-spacing: -0.015em; }
 .g-brand-mark {
   width: 22px; height: 22px; border-radius: 7px; flex: 0 0 22px; position: relative;
-  background: linear-gradient(150deg, var(--g-accent), #3f5d8f 72%);
+  background: linear-gradient(150deg, var(--g-accent), var(--g-mark-2) 72%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.30), 0 2px 8px -2px rgba(168, 199, 250, 0.42);
 }
 /* A hairline horizon inside the mark: the product's own subject, at 22px. */
@@ -236,7 +368,7 @@ html, body { background: var(--g-void); }
 
 .g-search {
   width: 100%; padding: 9px var(--g-3) 9px var(--g-7); border-radius: var(--g-r);
-  border: 1px solid transparent; background: rgba(255, 255, 255, 0.035);
+  border: 1px solid transparent; background: var(--g-t2);
   color: var(--g-paper); font: inherit; font-size: 13px;
   transition: border-color var(--g-fast) var(--g-ease), background var(--g-fast) var(--g-ease),
               box-shadow var(--g-fast) var(--g-ease);
@@ -244,7 +376,7 @@ html, body { background: var(--g-void); }
 .g-search::placeholder { color: var(--g-mist-2); }
 .g-search:focus {
   border-color: color-mix(in srgb, var(--g-accent) 34%, var(--g-line));
-  background: rgba(255, 255, 255, 0.055);
+  background: var(--g-t3);
   box-shadow: 0 0 0 3px var(--g-accent-wash);
   outline: none;
 }
@@ -270,8 +402,8 @@ html, body { background: var(--g-void); }
   background: var(--g-accent); transform: scaleY(0); opacity: 0;
   transition: transform var(--g-mid) var(--g-spring), opacity var(--g-fast) var(--g-ease);
 }
-.g-row:hover { background: rgba(255, 255, 255, 0.04); color: var(--g-paper); }
-.g-row[aria-current='true'] { background: rgba(255, 255, 255, 0.062); color: var(--g-paper); }
+.g-row:hover { background: var(--g-t2); color: var(--g-paper); }
+.g-row[aria-current='true'] { background: var(--g-t3); color: var(--g-paper); }
 .g-row[aria-current='true']::before { transform: scaleY(1); opacity: 1; }
 .g-row-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .g-row-drop {
@@ -354,9 +486,7 @@ html, body { background: var(--g-void); }
 .g-composer {
   position: relative;
   border: 1px solid var(--g-line); border-radius: var(--g-r-xl);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015)),
-    rgba(14, 20, 33, 0.82);
+  background: linear-gradient(180deg, var(--g-t2), var(--g-t1)), var(--g-glass);
   backdrop-filter: blur(24px) saturate(1.3); -webkit-backdrop-filter: blur(24px) saturate(1.3);
   box-shadow: var(--g-e2);
   padding: var(--g-3) var(--g-3) var(--g-2);
@@ -399,8 +529,8 @@ html, body { background: var(--g-void); }
   transition: background var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease),
               border-color var(--g-fast) var(--g-ease);
 }
-.g-tool:hover { background: rgba(255, 255, 255, 0.06); color: var(--g-paper); }
-.g-tool:active { background: rgba(255, 255, 255, 0.09); }
+.g-tool:hover { background: var(--g-t3); color: var(--g-paper); }
+.g-tool:active { background: var(--g-t4); }
 .g-tool[aria-pressed='true'] { background: color-mix(in srgb, var(--g-red) 18%, transparent); color: var(--g-red); }
 
 /* The bar's selects are controls, so they look like controls: a real field with a chevron, not a bare
@@ -409,7 +539,7 @@ html, body { background: var(--g-void); }
   height: 34px; border-color: var(--g-line-soft);
   background: var(--g-fill); box-shadow: var(--g-e1);
 }
-.g-top .g-tool:hover { border-color: var(--g-line); background: rgba(255, 255, 255, 0.06); }
+.g-top .g-tool:hover { border-color: var(--g-line); background: var(--g-t3); }
 .g-top select.g-tool {
   max-width: 12rem; padding-right: 26px;
   appearance: none; -webkit-appearance: none;
@@ -422,18 +552,18 @@ html, body { background: var(--g-void); }
 
 .g-send {
   width: 34px; height: 34px; border-radius: var(--g-r-pill); border: 0; cursor: pointer;
-  background: linear-gradient(180deg, #ffffff, #d7deea);
-  color: var(--g-void);
+  background: var(--g-send-bg);
+  color: var(--g-send-ink);
   display: inline-flex; align-items: center; justify-content: center;
-  box-shadow: 0 2px 10px -2px rgba(168, 199, 250, 0.42), inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 10px -2px color-mix(in srgb, var(--g-accent) 42%, transparent), inset 0 -1px 0 rgba(0, 0, 0, 0.12);
   transition: transform var(--g-fast) var(--g-spring), box-shadow var(--g-fast) var(--g-ease),
               background var(--g-fast) var(--g-ease), opacity var(--g-fast) var(--g-ease);
 }
 .g-send:disabled {
-  background: rgba(255, 255, 255, 0.07); color: var(--g-mist-2); cursor: default;
+  background: var(--g-t4); color: var(--g-mist-2); cursor: default;
   box-shadow: none;
 }
-.g-send:not(:disabled):hover { transform: scale(1.08); box-shadow: 0 4px 16px -2px rgba(168, 199, 250, 0.58), inset 0 -1px 0 rgba(0, 0, 0, 0.12); }
+.g-send:not(:disabled):hover { transform: scale(1.08); box-shadow: 0 4px 16px -2px color-mix(in srgb, var(--g-accent) 58%, transparent), inset 0 -1px 0 rgba(0, 0, 0, 0.12); }
 .g-send:not(:disabled):active { transform: scale(0.94); }
 
 .g-hint { font-size: 11.5px; color: var(--g-mist-2); text-align: center; margin: var(--g-3) 0 0; }
@@ -466,8 +596,8 @@ html, body { background: var(--g-void); }
 .g-you { display: flex; justify-content: flex-end; }
 .g-you p {
   margin: 0; max-width: 80%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.055));
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: linear-gradient(180deg, var(--g-t5), var(--g-t3));
+  border: 1px solid var(--g-t4);
   border-radius: var(--g-r-xl) var(--g-r-xl) var(--g-r-sm) var(--g-r-xl);
   padding: 10px var(--g-4); font-size: 15px; color: var(--g-paper);
   box-shadow: var(--g-e1);
@@ -494,7 +624,7 @@ html, body { background: var(--g-void); }
   border: 0; background: transparent; color: var(--g-mist-2); cursor: pointer;
   transition: background var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease);
 }
-.g-act:hover { background: rgba(255, 255, 255, 0.06); color: var(--g-paper); }
+.g-act:hover { background: var(--g-t3); color: var(--g-paper); }
 
 /* ---- the claim ------------------------------------------------------------------------------------ */
 .g-claims { display: grid; gap: var(--g-2); grid-template-columns: 1fr; }
@@ -651,7 +781,7 @@ html, body { background: var(--g-void); }
 .g th { font-weight: 500; color: var(--g-mist-2); text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--g-line); }
 .g td { padding: 6px 8px; border-bottom: 1px solid var(--g-line-soft); vertical-align: top; color: var(--g-mist); }
 .g tbody tr { transition: background var(--g-fast) var(--g-ease); }
-.g tbody tr:hover { background: rgba(255, 255, 255, 0.022); }
+.g tbody tr:hover { background: var(--g-t1); }
 .g .receipt-key { color: var(--g-mist-2); }
 .g .receipt-val, .g .evidence, .g .fact-source, .g .coverage { font-family: var(--g-mono); font-size: 12px; }
 .g .machine-record { font-family: var(--g-mono); font-size: 11px; background: var(--g-void); border: 1px solid var(--g-line-soft); border-radius: var(--g-r-sm); padding: var(--g-3); max-height: 22rem; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--g-mist); }
@@ -674,7 +804,7 @@ html, body { background: var(--g-void); }
   .g-rail { position: fixed; left: 0; top: 0; transform: translateX(-100%); transition: transform var(--g-mid) var(--g-ease); z-index: 30; box-shadow: 0 0 60px rgba(0, 0, 0, 0.6); }
   .g[data-rail='open'] .g-rail { transform: none; }
   .g-rail-toggle { display: inline-flex !important; }
-  .g[data-rail='open'] .g-scrim { display: block; position: fixed; inset: 0; background: rgba(4, 7, 13, 0.62); backdrop-filter: blur(2px); z-index: 20; border: 0; animation: g-fade var(--g-mid) var(--g-ease) both; }
+  .g[data-rail='open'] .g-scrim { display: block; position: fixed; inset: 0; background: var(--g-scrim); backdrop-filter: blur(2px); z-index: 20; border: 0; animation: g-fade var(--g-mid) var(--g-ease) both; }
   @keyframes g-fade { from { opacity: 0 } to { opacity: 1 } }
   .g-col { padding: 0 var(--g-4); }
   .g-tool, .g-send { height: 44px; min-width: 44px; }

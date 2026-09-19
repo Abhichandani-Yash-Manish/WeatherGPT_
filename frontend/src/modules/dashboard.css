@@ -51,7 +51,7 @@
 /* ---- the hero: the model hour and what the station printed ---------------------------------------- */
 .dash-hero {
   border: 1px solid var(--g-line); border-radius: var(--g-r-lg);
-  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015)), rgba(15, 22, 36, 0.6);
+  background: linear-gradient(180deg, var(--g-t3), var(--g-t1)), var(--g-glass-2);
   box-shadow: var(--g-e2);
   padding: var(--g-5);
   display: flex; flex-direction: column; gap: var(--g-4);
@@ -220,7 +220,7 @@
 .dash-aside { min-width: 0; }
 .dash-ask {
   border: 1px solid var(--g-line); border-radius: var(--g-r-lg);
-  background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.012)), rgba(13, 19, 31, 0.66);
+  background: linear-gradient(180deg, var(--g-t2), var(--g-t1)), var(--g-glass-2);
   box-shadow: var(--g-e2);
   padding: var(--g-4); display: flex; flex-direction: column; gap: var(--g-3);
 }
@@ -230,11 +230,11 @@
 .dash-exchange { display: flex; flex-direction: column; gap: 5px; }
 .dash-said {
   margin: 0; font-size: 12.5px; line-height: 1.55; color: var(--g-mist);
-  background: rgba(255, 255, 255, 0.035); border-radius: var(--g-r-sm) var(--g-r) var(--g-r) var(--g-r);
+  background: var(--g-t2); border-radius: var(--g-r-sm) var(--g-r) var(--g-r) var(--g-r);
   padding: var(--g-2) var(--g-3);
 }
 .dash-said-user {
-  color: var(--g-paper); background: rgba(255, 255, 255, 0.08);
+  color: var(--g-paper); background: var(--g-t4);
   border-radius: var(--g-r) var(--g-r-sm) var(--g-r) var(--g-r);
 }
 
@@ -245,14 +245,14 @@
   border: 1px solid var(--g-line-soft); background: transparent; color: var(--g-mist);
   transition: background var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease), border-color var(--g-fast) var(--g-ease);
 }
-.dash-suggestion:hover { background: rgba(255,255,255,0.05); color: var(--g-paper); border-color: var(--g-line); }
+.dash-suggestion:hover { background: var(--g-t3); color: var(--g-paper); border-color: var(--g-line); }
 
 /* The question box: one control, so the badge, the field and the send read as one object rather than as
    a letter, a textarea and an arrow standing next to each other. */
 .dash-question-pill {
   display: flex; align-items: flex-end; gap: var(--g-2);
   border: 1px solid var(--g-line); border-radius: var(--g-r-lg);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--g-t2);
   padding: var(--g-2);
   transition: border-color var(--g-mid) var(--g-ease), box-shadow var(--g-mid) var(--g-ease);
 }
@@ -263,8 +263,8 @@
 .dash-pill-badge {
   flex: 0 0 22px; width: 22px; height: 22px; border-radius: 7px;
   display: inline-flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 600; color: var(--g-void);
-  background: linear-gradient(150deg, var(--g-accent), #3f5d8f 72%);
+  font-size: 11px; font-weight: 600; color: var(--g-send-ink);
+  background: linear-gradient(150deg, var(--g-accent), var(--g-mark-2) 72%);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
   align-self: flex-end; margin-bottom: 5px;
 }
@@ -278,11 +278,11 @@
 .dash-question textarea:focus-visible { outline: none; }
 .dash-send {
   flex: 0 0 30px; width: 30px; height: 30px; border-radius: var(--g-r-pill); border: 0; cursor: pointer;
-  background: linear-gradient(180deg, #ffffff, #d7deea); color: var(--g-void);
+  background: var(--g-send-bg); color: var(--g-send-ink);
   display: inline-flex; align-items: center; justify-content: center; text-decoration: none;
   transition: transform var(--g-fast) var(--g-spring), opacity var(--g-fast) var(--g-ease);
 }
-.dash-send:disabled { background: rgba(255,255,255,0.07); color: var(--g-mist-2); cursor: default; }
+.dash-send:disabled { background: var(--g-t4); color: var(--g-mist-2); cursor: default; }
 .dash-send:not(:disabled):hover { transform: scale(1.08); }
 .dash-send:not(:disabled):active { transform: scale(0.94); }
 

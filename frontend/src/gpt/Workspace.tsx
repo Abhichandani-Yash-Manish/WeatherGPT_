@@ -127,6 +127,16 @@ export function Workspace({
   const longitude = workingPlace?.longitude ?? 82.5;
   const hour = hourOf(now, latitude, longitude);
 
+  /* The hour is put on the document element as well as on the workspace. Two reasons: html and body take
+     their background from it, so the page behind a short thread is the right hour rather than a strip of
+     the old one; and color-scheme has to reach the document for native controls — a select's dropdown and
+     the scrollbars — to render light on the light hours. */
+  useEffect(() => {
+    const root = document.documentElement;
+    root.dataset.hour = hour;
+    return () => { delete root.dataset.hour; };
+  }, [hour]);
+
   useEffect(() => {
     if (!restoreId || restored.current === restoreId) return;
     restored.current = restoreId;

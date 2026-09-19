@@ -49,15 +49,26 @@ export function solarAltitude(latitude: number, longitude: number, at: Date): nu
   return 90 - deg(Math.acos(Math.min(1, Math.max(-1, cosZenith))));
 }
 
+/* The bands, in degrees of solar altitude.
+
+   -6 is civil twilight: the sun is down but there is still usable light, which is why it is the edge of
+   night rather than 0. 8 is roughly forty minutes either side of the horizon at these latitudes — long
+   enough for dawn and dusk to be their own hours, short enough that the day is the day.
+
+   The previous version gave 'golden' everything from -6 up to 22 degrees, which at 23 degrees north is
+   most of the morning and most of the afternoon. That was harmless while every palette was the same
+   near-black. It is not harmless now that two of the hours are light pages: it would have put the middle
+   of the morning into a dusk palette. Above HORIZON the page is simply day. */
+const NIGHT_BELOW = -6;
+const HORIZON = 8;
+
 /** The ground's hour, from the sun's own altitude at this place. */
 export function hourOf(at: Date, latitude = 23.0, longitude = 82.5): Hour {
   const altitude = solarAltitude(latitude, longitude, at);
-  if (altitude < -6) return 'night';
-  if (altitude < 8) {
-    /* Rising or setting decides which side of the day a low sun belongs to. */
-    const later = solarAltitude(latitude, longitude, new Date(at.getTime() + 900_000));
-    return later > altitude ? 'daybreak' : 'golden';
-  }
-  if (altitude < 22) return 'golden';
-  return 'noon';
+  if (altitude < NIGHT_BELOW) return 'night';
+  if (altitude >= HORIZON) return 'noon';
+  /* A low sun is either arriving or leaving, and the two look nothing alike. Sampling fifteen minutes on
+     is the cheapest way to ask which, and it needs no sunrise solver. */
+  const later = solarAltitude(latitude, longitude, new Date(at.getTime() + 900_000));
+  return later > altitude ? 'daybreak' : 'golden';
 }

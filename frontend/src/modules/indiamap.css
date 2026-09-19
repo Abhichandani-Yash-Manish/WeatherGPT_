@@ -24,8 +24,8 @@
   box-shadow: var(--g-e1);
   transition: color var(--g-fast) var(--g-ease), border-color var(--g-fast) var(--g-ease), background var(--g-fast) var(--g-ease);
 }
-.imap-zoom button:hover { color: var(--g-paper); border-color: var(--g-mist-2); background: rgba(255,255,255,0.06); }
-.imap-zoom button:active { background: rgba(255,255,255,0.09); }
+.imap-zoom button:hover { color: var(--g-paper); border-color: var(--g-mist-2); background: var(--g-t3); }
+.imap-zoom button:active { background: var(--g-t4); }
 
 /* The overlay switches. They were four native checkboxes run together with no space at all; each is a
    control now, and the whole group reads as one row of them. */
@@ -63,7 +63,7 @@
 .imap-frame {
   position: relative; min-width: 0;
   border: 1px solid var(--g-line-soft); border-radius: var(--g-r);
-  background: radial-gradient(120% 90% at 50% 0%, rgba(168,199,250,0.05), transparent 62%), var(--g-void);
+  background: radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--g-accent) 7%, transparent), transparent 62%), var(--g-void);
   box-shadow: var(--g-e1);
   overflow: hidden;
   aspect-ratio: 4 / 3;
@@ -87,18 +87,18 @@
 .imap-district[data-tone='green'] { fill: var(--g-green); }
 /* Three kinds of absence, three greys, no hue. 'unset' is a district whose bulletin printed a day but no
    colour; 'uncovered' published no day for this date; 'unmapped' is not in the warning table at all. */
-.imap-district[data-tone='unset'] { fill: #3b4557; }
-.imap-district[data-tone='uncovered'] { fill: #28313f; }
-.imap-district[data-tone='unmapped'] { fill: #171f2b; }
-.imap-district.is-placeholder { fill: #131a25; stroke-dasharray: 1 1; }
+.imap-district[data-tone='unset'] { fill: var(--g-absent-1); }
+.imap-district[data-tone='uncovered'] { fill: var(--g-absent-2); }
+.imap-district[data-tone='unmapped'] { fill: var(--g-absent-3); }
+.imap-district.is-placeholder { fill: var(--g-absent-4); stroke-dasharray: 1 1; }
 .imap-district.is-dimmed { opacity: 0.32; }
 .imap-district.is-found, .imap-district.is-home { stroke: var(--g-paper); stroke-width: 1.2; }
 
 /* The overlays: thin lines over the districts, never fills. */
 .imap-basins, .imap-coast, .imap-states { fill: none; pointer-events: none; }
-.imap-states { stroke: rgba(232, 237, 245, 0.34); stroke-width: 0.5; }
-.imap-coast { stroke: rgba(168, 199, 250, 0.34); stroke-width: 0.45; }
-.imap-basins { stroke: rgba(126, 166, 232, 0.24); stroke-width: 0.35; }
+.imap-states { stroke: var(--g-overlay-ink); stroke-width: 0.5; }
+.imap-coast { stroke: color-mix(in srgb, var(--g-accent) 46%, transparent); stroke-width: 0.45; }
+.imap-basins { stroke: color-mix(in srgb, var(--g-accent) 30%, transparent); stroke-width: 0.35; }
 .imap-cities circle { fill: var(--g-paper); fill-opacity: 0.5; }
 .imap-cities text { fill: var(--g-mist); font-size: 3px; }
 
@@ -130,9 +130,9 @@
   font: inherit; font-size: 12.5px; color: var(--g-mist); text-align: left; cursor: pointer;
   transition: background var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease), border-color var(--g-fast) var(--g-ease);
 }
-.imap-legend button:hover { background: rgba(255, 255, 255, 0.05); color: var(--g-paper); }
+.imap-legend button:hover { background: var(--g-t3); color: var(--g-paper); }
 .imap-legend button[aria-pressed='true'] {
-  background: rgba(255, 255, 255, 0.07); color: var(--g-paper);
+  background: var(--g-t4); color: var(--g-paper);
   border-color: color-mix(in srgb, var(--g-accent) 34%, var(--g-line));
 }
 /* The count sits at the far end of the row, in the machine voice, aligned on its digits. */
@@ -148,9 +148,9 @@
 .imap-swatch[data-tone='orange'] { background: var(--g-orange); }
 .imap-swatch[data-tone='yellow'] { background: var(--g-yellow); }
 .imap-swatch[data-tone='green'] { background: var(--g-green); }
-.imap-swatch[data-tone='unset'] { background: #3b4557; }
-.imap-swatch[data-tone='uncovered'] { background: #28313f; }
-.imap-swatch[data-tone='unmapped'] { background: #171f2b; }
+.imap-swatch[data-tone='unset'] { background: var(--g-absent-1); }
+.imap-swatch[data-tone='uncovered'] { background: var(--g-absent-2); }
+.imap-swatch[data-tone='unmapped'] { background: var(--g-absent-3); }
 
 .imap-readout { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--g-mist); min-height: 2.6em; }
 .imap-selected {
