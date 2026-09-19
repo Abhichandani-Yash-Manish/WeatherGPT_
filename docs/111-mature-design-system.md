@@ -72,6 +72,33 @@ The frontend-design brief lists the traits that mark a page as machine-made. Thi
 4. **A caption explaining the background** — removed entirely. The ground states the hour by being that
    hour, and it draws no condition to disclaim, so there is nothing to caption.
 
+### 4a. The first version of this section was false
+
+Written on 19 September. The claim above, as first recorded, said the all-caps label had been removed
+everywhere. It had not. The dashboard was still shouting CHOOSE YOUR PLACE and AI ASSISTANT at a reader,
+each behind a 14px rule that made it read "— CHOOSE YOUR PLACE": the tracked-out eyebrow *and* the
+spaced-dash label, two of the listed tells, on a surface this document called clean.
+
+The claim rested on a hand-written list of selectors in `gpt.css`, and four rules were missing from it:
+`.module h2`, which uppercased every section heading on every module surface, and three chart labels. The
+list was also checked with a regex that let `.module` count as covered by `.module-section`, which is why
+re-reading it did not find the gap.
+
+Two things follow, and both are the point of recording this.
+
+The first is that a claim in a document is worth what its check is worth. This one is now `FE12` in
+`scripts/audit_react_frontend.py`: every stylesheet under `frontend/src` is read, every selector declaring
+`text-transform: uppercase` is found, and each of its classes must be named in the block that neutralises
+them — with the trailing guard the original check lacked. Tailwind's `uppercase` utility is refused in any
+component. Adding a shouted rule anywhere fails the gate.
+
+The second is that a check can only see where it looks. `FE12` reads stylesheets, and the chart engine was
+uppercasing the published colour in JavaScript — `String(colour).toUpperCase()` — so the district matrix
+printed `RED` and `GREEN` in a product whose whole rule is that a value is printed as its source published
+it. No stylesheet check could have seen that. It was found by measuring the rendered page: six surfaces
+opened headless, every element's computed `text-transform` read. That measurement is the ground truth, and
+it now reads zero where it read eighteen.
+
 ## 4. The eighteen surfaces and the dashboard
 
 Restyling twenty-six module files would have been a rewrite. Instead the token layer they read is
@@ -112,9 +139,53 @@ order decided it and the module stylesheet won.
 | `scripts/verify_all.py` | **20 steps, 0 failed** |
 | `scripts/audit_react_frontend.py` | 13 checks, 0 failed — FE01 now tests the intent (a narrow-width rule, a docking composer, one column) rather than a literal breakpoint, which made it fail every time the breakpoint moved |
 
-## 7. What this does not claim
+## 7. Two surfaces had no stylesheet at all
 
-The module surfaces are **repointed, not rebuilt**: they carry the new palette and type, but their layout
-is still the one written for the instrument design. Rebuilding each on the Claim is B1.3 in docs/108. No
-reader other than this machine's owner has used this, and a capture is one render on one machine. The
-scene lab of docs/109 stays in `research/` as the record of a rejected direction.
+Recorded 19 September, and it revises §6 of this document as well as the section below it.
+
+`WorkspaceSurface.tsx` (966 lines) and `IndiaWarningMap.tsx` were taken into this tree from another one on
+18 September. Neither stylesheet came with them. About a hundred `dash-*` names and twenty-four `imap-*`
+names had never had a rule in this repository — not a regression, an intake that was never finished.
+
+What a reader got was the components' bare HTML. The dashboard's question box rendered as a letter `W`, a
+naked textarea and an arrow standing on three separate lines, because nothing told them they were one
+control. The map's four overlay switches ran together with no space at all, because they were four
+unstyled native checkboxes in a row. The surface that read as a page from 1990 was, structurally, a page
+from 1990.
+
+This is also why "repointed, not rebuilt" was too generous a description. Repointing a token layer does
+nothing for a surface that has no rules to point: the eighteen guided surfaces did carry the palette,
+because they read `modules.css`, but the dashboard and the map read nothing.
+
+Both are written now — `modules/dashboard.css` and `modules/indiamap.css`, on the `--g-*` tokens, so the
+dashboard, the map and the conversation are one system. The map keeps the product's rule explicitly: the
+four IMD hazard colours are reached only through a colour a bulletin published, and the three kinds of
+absence — not in the warning table, no published day for this date, colour not supplied — are three greys
+at distinguishable lightnesses. An absence never takes a hue that could read as a severity, and a missing
+value is never drawn green.
+
+Two name collisions turned up while writing them, both of which would have rendered wrongly rather than
+not at all: the dashboard used `.dash-strip` for the forecast day strip while `modules.css` defines
+`.dash-strip` as a 14px pill with `overflow: hidden`, which would have crushed it; and `.dash-bubble` for a
+chat bubble while `modules.css` defines it as an SVG fill. Renamed rather than made to fight.
+
+`FE13` is the check. Every `className` string in every component is held against the **built** stylesheet,
+which carries the authored CSS and Tailwind's generated utilities together — so a class that looks
+undeclared but sits beside `px-3 py-2` is not reported, because those utilities are doing the work. What is
+reported is an element whose whole class list resolves to nothing, which is exactly the failure that
+produced the dashboard.
+
+## 8. What this does not claim
+
+The eighteen guided surfaces are **repointed, not rebuilt**: they carry the palette and the type, but their
+layout is still the one written for the instrument design. Rebuilding each on the Claim is B1.3 in
+docs/108. The dashboard and the India map are newly written and have been looked at once each, at two
+widths, on one machine.
+
+Four components are unreachable from the app — nothing imports `AskSurface` or `NationalReading`, and
+`AskSurface` is the only importer of `Transcript` and `chat/Composer` — and the `f-*` class vocabulary they
+use is undeclared. They still carry test coverage in six spec files, so `FE13` records them by name rather
+than passing over them silently. Deleting them is its own change and has not been made.
+
+No reader other than this machine's owner has used any of this, and a capture is one render on one machine.
+The scene lab of docs/109 stays in `research/` as the record of a rejected direction.
