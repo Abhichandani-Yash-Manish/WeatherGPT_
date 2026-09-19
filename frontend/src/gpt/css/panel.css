@@ -1,0 +1,173 @@
+/* ---- the places this machine knows ------------------------------------------------------------------
+   A place is the product's second entity after a conversation: the engine resolves one, the reader pins one,
+   and the rail lists both. A pin and a resolution are two different facts and the row shows which it is —
+   the pin mark, and the count of conversations whose own answers resolved it. */
+.g-place[aria-current='true'] .g-place-name { color: var(--g-paper); }
+.g-place-reading {
+  display: inline-flex; align-items: center; gap: 4px; margin-left: auto;
+  font-family: var(--g-mono); font-size: 11px; color: var(--g-mist);
+}
+.g-place-reading svg { color: var(--g-accent); }
+.g-place-pin { width: 22px; height: 22px; min-width: 22px; padding: 0; }
+.g-place-pin[aria-pressed='true'] { color: var(--g-accent); }
+.g-place-row .g-row-text { display: flex; align-items: center; gap: 5px; }
+.g-place-pinned { flex: 0 0 auto; color: var(--g-accent); }
+.g-place-count {
+  font-family: var(--g-mono); font-size: 10.5px; color: var(--g-mist);
+  padding: 1px 5px; border-radius: var(--g-r-pill); background: var(--g-t3);
+}
+.g-place-clear {
+  float: right; font-family: var(--g-sans); font-size: 10.5px; font-weight: 500;
+  padding: 1px 6px; color: var(--g-accent);
+}
+
+/* A conversation row carries the place its own answers resolved, and — while a search is on — the turn that
+   matched. Both are small, and both are stated only when a source stated them. */
+.g-row-conversation .g-row-text { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; }
+/* The title needs a box of its own. `.g-row-text` carries the ellipsis rule, but this row turns it into a
+   flex column, and the title was a bare text node inside it — an anonymous flex item, which has no box for
+   text-overflow to act on. Every conversation name was being cut mid-word with no ellipsis: "Is any
+   warning in force fo". */
+.g-row-name { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.g-row-place {
+  font-family: var(--g-mono); font-size: 10px; color: var(--g-mist);
+  max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.g-row-match {
+  display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
+  font-size: 11px; line-height: 1.45; color: var(--g-mist); white-space: normal;
+}
+.g-row-match[data-role='assistant'] { color: var(--g-mist); }
+.g-rail-note-search { padding: 0 var(--g-2) var(--g-1); }
+
+/* ---- the key list ------------------------------------------------------------------------------------ */
+.g-keys {
+  /* Centred on purpose: a stylesheet reset takes the browser's own `margin: auto` off a dialog, and a modal
+     that opens in the top-left corner reads as a broken page rather than as a dialog. */
+  margin: auto; max-height: 88vh; overflow-y: auto;
+  width: min(420px, 92vw); padding: var(--g-5);
+  border: 1px solid var(--g-line); border-radius: var(--g-r-lg);
+  background: var(--g-rail-bg); color: var(--g-paper);
+  backdrop-filter: blur(24px) saturate(1.3); -webkit-backdrop-filter: blur(24px) saturate(1.3);
+  box-shadow: var(--g-e3);
+}
+.g-keys::backdrop { background: var(--g-scrim); backdrop-filter: blur(2px); }
+.g-keys-title { margin: 0 0 var(--g-2); font-size: 15px; font-weight: 600; }
+.g-keys-note { margin: 0 0 var(--g-4); font-size: 12px; line-height: 1.6; color: var(--g-mist); }
+.g-keys-list { margin: 0 0 var(--g-4); display: flex; flex-direction: column; gap: var(--g-2); }
+.g-keys-row { display: flex; align-items: baseline; gap: var(--g-3); }
+.g-keys-row dt { flex: 0 0 76px; }
+.g-keys-row dd { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--g-mist); }
+
+/* A row that is a plain button: no chrome of its own, the row around it carries the state. */
+.g-row-plain {
+  border: 0; background: transparent; color: inherit; font: inherit;
+  text-align: left; cursor: pointer; padding: 0;
+}
+
+/* ---- the reading panel -----------------------------------------------------------------------------
+   The right-hand panel: the three things an answer depends on — the place, the language, the persona — and
+   the station report the place resolves to. It replaces two native selects and a chip in the top bar, which
+   is where the page's machinery used to show through, and it is opened from the bar rather than always on
+   screen, because most of the time a reader is reading rather than configuring. */
+.g-panel-side {
+  position: sticky; top: 0; z-index: 3;
+  width: var(--g-side-w); flex: 0 0 var(--g-side-w); height: 100dvh;
+  background: var(--g-rail-bg);
+  backdrop-filter: blur(24px) saturate(1.3); -webkit-backdrop-filter: blur(24px) saturate(1.3);
+  border-left: 1px solid var(--g-line-soft);
+  display: flex; flex-direction: column;
+  overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--g-line) transparent;
+  animation: g-side-in var(--g-mid) var(--g-ease) both;
+}
+@keyframes g-side-in { from { opacity: 0; transform: translateX(12px) } to { opacity: 1; transform: none } }
+.g-side-head { display: flex; align-items: center; gap: var(--g-2); padding: var(--g-3) var(--g-3) var(--g-2); }
+.g-side-title { margin: 0; font-size: 14px; font-weight: 600; letter-spacing: -0.01em; color: var(--g-paper); }
+.g-side-head .g-act { margin-left: auto; }
+.g-side-block { padding: var(--g-2) var(--g-3) var(--g-4); border-top: 1px solid var(--g-line-soft); display: flex; flex-direction: column; align-items: flex-start; gap: var(--g-2); }
+.g-side-block:first-of-type { border-top: 0; }
+.g-side-label { margin: 0; font-size: 11px; font-weight: 600; letter-spacing: 0.02em; color: var(--g-mist); }
+.g-side-place { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 13.5px; color: var(--g-paper); min-width: 0; }
+.g-side-place svg { flex: 0 0 auto; color: var(--g-accent); }
+.g-side-reading { display: flex; align-items: baseline; gap: var(--g-2); margin: 0; flex-wrap: wrap; }
+.g-side-reading svg { align-self: center; color: var(--g-accent); }
+.g-side-temp { font-family: var(--g-display); font-size: 1.65rem; font-weight: 700; letter-spacing: -0.03em; color: var(--g-paper); font-variant-numeric: tabular-nums; }
+.g-side-unit { font-size: 0.45em; font-weight: 600; margin-left: 3px; color: var(--g-mist); }
+.g-side-cond { font-size: 13.5px; color: var(--g-mist); }
+.g-side-source { margin: 0; font-family: var(--g-mono); font-size: 10.5px; line-height: 1.7; color: var(--g-mist); overflow-wrap: anywhere; }
+.g-side-warn { margin: 0; font-size: 12px; color: var(--g-orange); }
+.g-side-note { margin: 0; font-size: 12px; line-height: 1.6; color: var(--g-mist); }
+.g-side-select {
+  width: 100%; padding: 8px var(--g-2); border-radius: var(--g-r-sm);
+  border: 1px solid var(--g-line); background: var(--g-fill); color: var(--g-paper);
+  font: inherit; font-size: 13px;
+}
+.g-side-select:focus-visible { outline: 2px solid var(--g-accent); outline-offset: 1px; }
+.g-side-links { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
+.g-side-links .g-quiet { text-align: left; padding: 6px var(--g-2); }
+
+/* The panel's own blocks: what is published for the district, and the hours the model returned. Both are
+   compact by design — a 300px panel is for glancing, and the full rows live on the surfaces they link to. */
+.g-side-days { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.g-side-days li { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; font-size: 12px; }
+.g-side-when { font-family: var(--g-mono); font-size: 10.5px; color: var(--g-mist); min-width: 44px; }
+.g-side-quiet { font-size: 12px; color: var(--g-mist); }
+.g-side-hazard { font-size: 12px; color: var(--g-mist); }
+.g-side-hours { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; }
+.g-side-hours li { display: flex; align-items: baseline; gap: var(--g-2); font-size: 12px; }
+.g-side-hour { font-family: var(--g-mono); font-size: 10.5px; color: var(--g-mist); min-width: 34px; }
+.g-side-value { color: var(--g-paper); font-variant-numeric: tabular-nums; }
+
+/* The press back to the newest turn. It appears only when the thread is scrolled, and it sits above the
+   composer rather than over the text. */
+.g-to-end {
+  position: absolute; left: 50%; transform: translateX(-50%); bottom: 96px; z-index: 6;
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--g-line); background: var(--g-glass);
+  backdrop-filter: blur(18px) saturate(1.2); -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  color: var(--g-mist); cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+  box-shadow: var(--g-e2);
+  transition: color var(--g-fast) var(--g-ease), transform var(--g-fast) var(--g-ease);
+}
+.g-to-end:hover { color: var(--g-paper); transform: translateX(-50%) translateY(-2px); }
+
+@media (max-width: 1180px) {
+  /* A panel that eats a third of a laptop screen is not a panel. Below this it is a sheet over the column. */
+  .g-panel-side {
+    position: fixed; right: 0; top: 0; bottom: 0; height: 100dvh;
+    width: min(340px, 92vw); flex-basis: auto; z-index: 28;
+    box-shadow: -24px 0 60px -30px rgba(0, 0, 0, 0.5);
+  }
+}
+
+@media (max-width: 900px) {
+  /* The rail is a drawer on a phone, at its full width: a reader taps once to change where they are, and
+     the page itself keeps the whole screen. The four homes are the top of the drawer. */
+  .g-rail { width: var(--g-rail-w); flex-basis: var(--g-rail-w); }
+  .g-to-end { bottom: 88px; }
+}
+
+/* ---- the wait, in one line -------------------------------------------------------------------------
+   The stage, the clock, and a fold. The stage is the only part that changes meaning, so it is the only
+   part set in the ink; the clock answers "is this still going?" and nothing more, so it is quiet and
+   tabular, and it never shifts the line as the digits grow. */
+.g-working-head {
+  display: flex; align-items: baseline; gap: var(--g-3);
+  margin: 0;
+}
+.g-working-stage { font-size: 14.5px; font-weight: 500; color: var(--g-paper); }
+.g-working-clock {
+  font-family: var(--g-mono); font-size: 11.5px; color: var(--g-mist-2);
+  font-variant-numeric: tabular-nums;
+}
+/* The fold sits under the line at a whisper, so a reader who wants the machinery can find it and a reader
+   who wants the weather is not handed it. */
+.g-working-more { margin-top: var(--g-1); }
+.g-working-more > summary { font-size: 12px; color: var(--g-mist-2); font-weight: 400; }
+.g-working-more > summary:hover { color: var(--g-accent); opacity: 1; }
+.g-working-more .g-fold-body { display: flex; flex-direction: column; gap: var(--g-2); }
+
+/* The places a reader has used sit directly under the place being held: one idea, one heading. They were
+   two sections with two headings, which made the rail look like it was listing places twice. The landmark
+   and its accessible name stay — a named region for the list is correct, and two specs name it. */
+.g-section-joined { margin-top: calc(var(--g-2) * -1); }

@@ -1,0 +1,171 @@
+/* ---- the rail ------------------------------------------------------------------------------------
+   One column for the whole product: the four homes, the place, and the reader's conversations. It is the
+   only navigation surface, and it collapses to 60px so a reader who is reading can give the column its width
+   back. The widths are the two the shell moves between, and the transition is the one the layout animates. */
+.g-rail {
+  position: sticky; top: 0; z-index: 3;
+  width: var(--g-rail-w); flex: 0 0 var(--g-rail-w); height: 100dvh;
+  background: var(--g-rail-bg);
+  backdrop-filter: blur(24px) saturate(1.3); -webkit-backdrop-filter: blur(24px) saturate(1.3);
+  border-right: 1px solid var(--g-line-soft);
+  display: flex; flex-direction: column;
+  transition: width var(--g-slow) var(--g-ease), flex-basis var(--g-slow) var(--g-ease);
+}
+.g-rail[data-collapsed='true'] { width: 60px; flex-basis: 60px; }
+.g-rail-head {
+  display: flex; align-items: center; gap: var(--g-1);
+  padding: var(--g-3) var(--g-2) var(--g-2) var(--g-3);
+}
+.g-rail[data-collapsed='true'] .g-rail-head { flex-direction: column; padding: var(--g-3) 0 var(--g-2); }
+.g-rail-controls { display: flex; align-items: center; gap: 2px; margin-left: auto; }
+.g-rail[data-collapsed='true'] .g-rail-controls { margin: var(--g-2) 0 0; flex-direction: column; }
+.g-rail[data-collapsed='true'] .g-rail-controls .g-act:not(:nth-child(2)) { display: none; }
+.g-brand { display: flex; align-items: center; gap: var(--g-2); font-size: 14.5px; font-weight: 600; letter-spacing: -0.015em; min-width: 0; }
+.g-rail[data-collapsed='true'] .g-brand-name { display: none; }
+.g-rail-search { padding: 0 var(--g-2) var(--g-2); }
+
+/* The four homes. A grid rather than a stack of rows: they are peers, they never run to a fifth, and a
+   reader who is looking for Warnings should find it in the same place every time. */
+/* One column, not a 2x2 grid.
+
+   The grid made the four homes a block sitting on top of the conversation list and competing with it for
+   the eye — a second thing to parse before reaching the first. The Codex reference this direction came
+   from does the opposite: everything in its rail is a row, one height, one size, one weight, and the rail
+   reads as a single calm list because of it. */
+.g-homes {
+  display: grid; grid-template-columns: 1fr; gap: 1px;
+  padding: var(--g-1) var(--g-2) var(--g-3);
+}
+.g-rail[data-collapsed='true'] .g-homes { padding: var(--g-1) 0 var(--g-3); }
+.g-home {
+  display: flex; align-items: center; gap: var(--g-2);
+  padding: 8px var(--g-2); border-radius: var(--g-r-sm);
+  border: 1px solid transparent; background: transparent;
+  color: var(--g-mist); font: inherit; font-size: 13.5px; font-weight: 500;
+  cursor: pointer; text-align: left; min-width: 0;
+  transition: background var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease);
+}
+.g-home svg { flex: 0 0 auto; }
+.g-home:hover { background: var(--g-t2); color: var(--g-paper); }
+.g-home[aria-current='page'] { background: var(--g-accent-wash); color: var(--g-accent); }
+.g-rail[data-collapsed='true'] .g-home { justify-content: center; padding: 8px 0; }
+.g-rail[data-collapsed='true'] .g-home-label { display: none; }
+
+.g-rail-body { flex: 1; min-height: 0; overflow-y: auto; padding: 0 var(--g-2) var(--g-5); scrollbar-width: thin; scrollbar-color: var(--g-line) transparent; }
+.g-rail-body::-webkit-scrollbar { width: 8px; }
+.g-rail-body::-webkit-scrollbar-thumb { background: var(--g-line); border-radius: 4px; border: 2px solid transparent; background-clip: content-box; }
+.g-section + .g-section { margin-top: var(--g-2); }
+.g-rail-label {
+  margin: var(--g-4) 0 var(--g-1); padding: 0 var(--g-2);
+  font-size: 11px; font-weight: 600; letter-spacing: 0.02em; color: var(--g-mist);
+}
+.g-rail[data-collapsed='true'] .g-section { display: none; }
+
+.g-place {
+  display: flex; align-items: center; gap: 6px; margin: 0; padding: 6px var(--g-2);
+  font-size: 13px; color: var(--g-paper); min-width: 0;
+}
+.g-place svg { flex: 0 0 auto; color: var(--g-accent); }
+.g-place-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.g-rail-actions { display: flex; align-items: center; gap: 2px; padding: 0 var(--g-2); flex-wrap: wrap; }
+.g-rail-actions-lead { padding: 0 0 var(--g-1); flex-direction: column; align-items: stretch; }
+.g-rail-action { display: flex; align-items: center; gap: var(--g-2); width: 100%; font-size: 13px; color: var(--g-mist); padding: 7px var(--g-2); border-radius: var(--g-r-sm); }
+.g-rail-action svg { flex: 0 0 auto; }
+.g-rail-action:hover { background: var(--g-t2); color: var(--g-paper); }
+
+/* The shortcut, shown beside the row it belongs to and only where it fires. ⌥ rather than ⌘: a browser owns
+   ⌘1–⌘9 for its tabs. */
+.g-kbd {
+  font-family: var(--g-mono); font-size: 10px; line-height: 1;
+  padding: 3px 5px; border-radius: 5px; color: var(--g-mist);
+  border: 1px solid var(--g-line-soft); background: var(--g-t1);
+}
+.g-new { display: flex; align-items: center; gap: var(--g-2); width: 100%; }
+/* A row's shortcut stays out of the way until the row is under the pointer or has focus: nine keyboard hints
+   stacked down a rail is a manual, not a rail. */
+.g-kbd-row { opacity: 0; transition: opacity var(--g-fast) var(--g-ease); }
+.g-row:hover .g-kbd-row, .g-row:focus-within .g-kbd-row { opacity: 1; }
+.g-brand-mark {
+  width: 22px; height: 22px; border-radius: 7px; flex: 0 0 22px; position: relative;
+  background: linear-gradient(150deg, var(--g-accent), var(--g-mark-2) 72%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.30), 0 2px 8px -2px rgba(168, 199, 250, 0.42);
+}
+/* A hairline horizon inside the mark: the product's own subject, at 22px. */
+.g-brand-mark::after {
+  content: ''; position: absolute; left: 4px; right: 4px; top: 12px; height: 1px;
+  background: rgba(255, 255, 255, 0.42); border-radius: 1px;
+}
+
+/* The one action in the rail, so it is the one row with any weight: a hairline, a lifted fill, the accent
+   on its glyph. Everything else in the column is a place rather than an action. */
+.g-new {
+  padding: 9px var(--g-2); border-radius: var(--g-r-sm);
+  border: 1px solid var(--g-line); background: var(--g-fill);
+  color: var(--g-paper); font: inherit; font-size: 13px; font-weight: 500;
+  cursor: pointer; text-align: left; box-shadow: var(--g-e1);
+  transition: background var(--g-fast) var(--g-ease), border-color var(--g-fast) var(--g-ease),
+              box-shadow var(--g-fast) var(--g-ease);
+}
+.g-new:hover { border-color: color-mix(in srgb, var(--g-accent) 30%, var(--g-line)); box-shadow: var(--g-e2); }
+.g-new svg { flex: 0 0 auto; color: var(--g-accent); }
+.g-new .g-kbd { margin-left: auto; }
+.g-new-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.g-search {
+  width: 100%; padding: 9px var(--g-3) 9px var(--g-7); border-radius: var(--g-r);
+  border: 1px solid transparent; background: var(--g-t2);
+  color: var(--g-paper); font: inherit; font-size: 13px;
+  transition: border-color var(--g-fast) var(--g-ease), background var(--g-fast) var(--g-ease),
+              box-shadow var(--g-fast) var(--g-ease);
+}
+.g-search::placeholder { color: var(--g-mist-2); }
+.g-search:focus {
+  border-color: color-mix(in srgb, var(--g-accent) 34%, var(--g-line));
+  background: var(--g-t3);
+  box-shadow: 0 0 0 3px var(--g-accent-wash);
+  outline: none;
+}
+
+.g-history { flex: 1; overflow-y: auto; padding: var(--g-2) var(--g-2) var(--g-6); scrollbar-width: thin; scrollbar-color: var(--g-line) transparent; }
+.g-history::-webkit-scrollbar { width: 8px; }
+.g-history::-webkit-scrollbar-thumb { background: var(--g-line); border-radius: 4px; border: 2px solid transparent; background-clip: content-box; }
+.g-history::-webkit-scrollbar-thumb:hover { background: var(--g-mist-2); background-clip: content-box; }
+
+.g-group { padding: var(--g-4) var(--g-2) var(--g-1); font-size: 11px; font-weight: 600; letter-spacing: 0.02em; color: var(--g-mist); }
+
+/* A row carries its selection on the left edge rather than as a fill: a filled row at this size reads as a
+   button, and these are places rather than actions. The bar scales from the centre so it grows into place. */
+.g-row {
+  position: relative;
+  display: flex; align-items: center; gap: var(--g-2); width: 100%;
+  padding: 8px var(--g-2) 8px var(--g-3); border-radius: var(--g-r-sm);
+  color: var(--g-mist); font-size: 13.5px;
+  transition: background var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease);
+}
+.g-row::before {
+  content: ''; position: absolute; left: 0; top: 7px; bottom: 7px; width: 2px; border-radius: 2px;
+  background: var(--g-accent); transform: scaleY(0); opacity: 0;
+  transition: transform var(--g-mid) var(--g-spring), opacity var(--g-fast) var(--g-ease);
+}
+.g-row:hover { background: var(--g-t2); color: var(--g-paper); }
+.g-row[aria-current='true'] { background: var(--g-t3); color: var(--g-paper); }
+.g-row[aria-current='true']::before { transform: scaleY(1); opacity: 1; }
+.g-row-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.g-row-drop {
+  opacity: 0; border: 0; background: transparent; color: var(--g-mist-2); cursor: pointer;
+  padding: 4px; border-radius: 6px; display: inline-flex;
+  transition: opacity var(--g-fast), color var(--g-fast), background var(--g-fast);
+}
+.g-row:hover .g-row-drop, .g-row-drop:focus-visible { opacity: 1; }
+.g-row-drop:hover { color: var(--g-red); background: color-mix(in srgb, var(--g-red) 14%, transparent); }
+
+.g-rail-foot {
+  display: flex; align-items: center; gap: var(--g-1);
+  border-top: 1px solid var(--g-line-soft); padding: var(--g-2);
+}
+.g-rail[data-collapsed='true'] .g-rail-foot { flex-direction: column; }
+.g-rail[data-collapsed='true'] .g-rail-foot .g-rail-action { justify-content: center; }
+.g-rail[data-collapsed='true'] .g-rail-foot .g-new-label { display: none; }
+.g-rail[data-collapsed='true'] .g-rail-note { display: none; }
+.g-rail-note { margin: 0; padding: 0 var(--g-3) var(--g-3); font-size: 11px; color: var(--g-mist); line-height: 1.5; }
+.g-empty-note { padding: var(--g-3) var(--g-2); font-size: 12.5px; color: var(--g-mist); line-height: 1.55; }

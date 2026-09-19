@@ -1,0 +1,191 @@
+/* ---- the welcome screen ----------------------------------------------------------------------------
+   Four things, each of which means something: the mark, the sky, the greeting, and the reading a station
+   actually reported — with the place it belongs to. The ground does the decorating, so nothing here has
+   to: no card, no border, no panel. The type sits directly on the colour, which is the whole move the
+   reference this screen came from is built on.
+
+   What is deliberately absent: the national warning brief that used to be the headline. A reader who
+   opens a chat has not asked to be briefed, and the count is the subject of the Warnings home. It is one
+   chip away, beneath the composer. */
+.w {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  gap: 2px;
+  padding-bottom: var(--g-2);
+}
+
+/* The product's name on a phone. On a desktop the rail carries it already, and saying it twice is a large
+   part of what made the page read as busy. */
+.w-mark {
+  display: inline-flex; align-items: center; gap: 7px; margin: 0 0 var(--g-6);
+  font-family: var(--g-display); font-size: 13.5px; font-weight: 700;
+  letter-spacing: 0.04em; color: var(--g-mist);
+}
+.w-mark-dot {
+  width: 15px; height: 15px; border-radius: 5px;
+  background: linear-gradient(150deg, var(--g-accent), var(--g-mark-2) 72%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.34);
+}
+
+/* The sky mark. Stroked rather than filled, except the sun and the moon: a filled weather icon is a
+   sticker, and a lit disc behind a drawn outline is an instrument. The bloom is positioned by the dial
+   itself when the dial is what is drawn, and centred when it is a condition glyph. */
+.w-glyph {
+  position: relative;
+  display: grid; place-items: center;
+  width: 96px; height: 96px;
+  color: var(--g-accent);
+  margin-bottom: var(--g-4);
+  animation: w-arrive 720ms var(--g-ease) both;
+}
+.w-bloom {
+  position: absolute; inset: -40%;
+  background: radial-gradient(closest-side at var(--w-x, 50%) var(--w-y, 50%),
+    color-mix(in srgb, var(--g-accent) 26%, transparent), transparent 74%);
+  pointer-events: none;
+}
+.w-glyph[data-kind='condition'] .w-bloom {
+  inset: -60%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--g-accent) 22%, transparent), transparent 72%);
+}
+/* The hour mark is quieter than a condition mark on purpose: one of them is a weather statement with a
+   source under it, and the other is only the time of day. They must not carry the same weight — so the
+   dial's ink is the mist, and the only accent on it is the sun itself. */
+.w-glyph[data-kind='hour'] { color: var(--g-mist); opacity: 0.9; }
+@media (max-width: 900px) { .w-glyph { width: 84px; height: 84px; } }
+
+.w-greeting {
+  font-family: var(--g-display);
+  font-size: clamp(2.3rem, 1.4rem + 3.1vw, 3.35rem);
+  font-weight: 700; letter-spacing: -0.028em; line-height: 1.04;
+  margin: 0; color: var(--g-paper);
+  animation: w-arrive 720ms var(--g-ease) 80ms both;
+}
+.w-place {
+  margin: var(--g-2) 0 0; font-size: 1.0625rem; color: var(--g-mist);
+  animation: w-arrive 720ms var(--g-ease) 140ms both;
+}
+
+.w-reading {
+  display: flex; align-items: baseline; justify-content: center; gap: var(--g-3);
+  flex-wrap: wrap; margin: var(--g-5) 0 0;
+  animation: w-arrive 720ms var(--g-ease) 200ms both;
+}
+/* The numeral is the one place the display face earns its keep at size, and it stays under the greeting:
+   this is a conversation, so the greeting leads and the reading follows it. Tabular figures, so a value
+   that changes between one look and the next does not shuffle the line it sits on. */
+.w-temp {
+  font-family: var(--g-display); font-size: clamp(1.9rem, 1.4rem + 1.6vw, 2.5rem);
+  font-weight: 700; letter-spacing: -0.03em; line-height: 1; color: var(--g-paper);
+  font-variant-numeric: tabular-nums;
+}
+.w-unit { font-size: 0.42em; font-weight: 600; margin-left: 3px; color: var(--g-mist); letter-spacing: 0; }
+/* The station's own word, verbatim and lower case as it printed it. */
+.w-cond { font-size: 1.0625rem; color: var(--g-mist); }
+.w-source {
+  font-family: var(--g-mono); font-size: 11px; line-height: 1.7; color: var(--g-mist);
+  margin: var(--g-4) 0 0; max-width: 78ch; overflow-wrap: anywhere;
+  animation: w-arrive 720ms var(--g-ease) 260ms both;
+}
+
+@keyframes w-arrive { from { opacity: 0; transform: translateY(10px) } to { opacity: 1; transform: none } }
+
+/* The welcome is centred and the openings sit under the composer. */
+.g-welcome { align-items: center; }
+.g-welcome > * { width: 100%; }
+.g-welcome .g-chips { justify-content: center; }
+/* The rail carries the name on a desktop, so the welcome's mark is only for the phone. */
+@media (min-width: 901px) { .w-mark { display: none; } }
+
+/* The place line is the one control on the welcome that changes what everything else is about. It is set in
+   the same type as the line it replaces and says what it does on hover, so the screen reads as a statement
+   until a reader wants to change it. */
+.w-place-button {
+  border: 0; background: transparent; font: inherit; color: inherit; cursor: pointer;
+  padding: 2px 6px; border-radius: var(--g-r-sm);
+  border-bottom: 1px dashed color-mix(in srgb, var(--g-mist) 42%, transparent);
+  transition: color var(--g-fast) var(--g-ease), border-color var(--g-fast) var(--g-ease), background var(--g-fast) var(--g-ease);
+}
+.w-place-button:hover { color: var(--g-paper); border-bottom-color: var(--g-accent); background: var(--g-t2); }
+.w-place-button:focus-visible { outline: 2px solid var(--g-accent); outline-offset: 2px; }
+.w-place-none { color: var(--g-mist); }
+
+/* ---- naming a place ---------------------------------------------------------------------------------- */
+.g-picker {
+  margin: auto; max-height: 88vh;
+  width: min(460px, 92vw); padding: var(--g-5);
+  border: 1px solid var(--g-line); border-radius: var(--g-r-lg);
+  background: var(--g-rail-bg); color: var(--g-paper);
+  backdrop-filter: blur(24px) saturate(1.3); -webkit-backdrop-filter: blur(24px) saturate(1.3);
+  box-shadow: var(--g-e3);
+}
+.g-picker::backdrop { background: var(--g-scrim); backdrop-filter: blur(2px); }
+.g-picker .g-search { margin-bottom: var(--g-2); }
+.g-picker-results { display: flex; flex-direction: column; gap: 2px; max-height: 46vh; overflow-y: auto; margin-bottom: var(--g-3); }
+.g-picker-row {
+  display: flex; align-items: center; gap: var(--g-2); width: 100%;
+  padding: 8px var(--g-2); border: 1px solid transparent; border-radius: var(--g-r-sm);
+  background: transparent; color: var(--g-paper); font: inherit; font-size: 13px;
+  cursor: pointer; text-align: left;
+}
+.g-picker-row svg { flex: 0 0 auto; color: var(--g-accent); }
+.g-picker-row:hover:not(:disabled) { background: var(--g-t2); }
+.g-picker-row:disabled { color: var(--g-mist); cursor: default; }
+.g-picker-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.g-picker-where { font-family: var(--g-mono); font-size: 10px; color: var(--g-mist); }
+
+/* ---- a line for the hour ----------------------------------------------------------------------------
+   The quietest thing on the welcome screen, and the only thing on it a reader can change. It opens with a
+   short rule rather than a heading, because it is a change of voice on the same page: the reading above it
+   is what a source said, and this is what somebody wrote a hundred years ago. */
+.w-quote {
+  margin: var(--g-6) 0 0;
+  padding-top: var(--g-4);
+  max-width: 40ch;
+  position: relative;
+  animation: w-arrive 720ms var(--g-ease) 320ms both;
+}
+.w-quote::before {
+  content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 28px; height: 1px; border-radius: 1px;
+  background: color-mix(in srgb, var(--g-accent) 46%, transparent);
+}
+.w-quote blockquote { margin: 0; animation: w-quote-in 520ms var(--g-ease) both; }
+.w-quote blockquote p {
+  margin: 0; font-size: 1rem; line-height: 1.62; color: var(--g-mist);
+  text-wrap: pretty;
+}
+.w-quote figcaption {
+  display: flex; align-items: baseline; justify-content: center; gap: 6px; flex-wrap: wrap;
+  margin-top: var(--g-3);
+  font-family: var(--g-mono); font-size: 10.5px; line-height: 1.5; color: var(--g-mist);
+}
+.w-quote-author { font-weight: 500; }
+.w-quote-work { color: var(--g-mist); }
+/* The turn. It is a control, so it says so on hover and takes a ring on focus — but at rest it is a mark
+   beside a citation rather than a button on a poster. */
+.w-quote-next {
+  border: 0; background: transparent; color: var(--g-mist); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px; padding: 0; border-radius: 50%;
+  transition: color var(--g-fast) var(--g-ease), background var(--g-fast) var(--g-ease), transform var(--g-slow) var(--g-ease);
+}
+.w-quote-next:hover { color: var(--g-paper); background: var(--g-t3); transform: rotate(90deg); }
+.w-quote-next:focus-visible { outline: 2px solid var(--g-accent); outline-offset: 1px; }
+
+@keyframes w-quote-in { from { opacity: 0 } to { opacity: 1 } }
+
+@media (max-width: 900px) { .w-quote { max-width: 32ch; } }
+@media (prefers-reduced-motion: reduce) { .w-quote, .w-quote blockquote { animation: none; } }
+
+/* ---- bold here, calm there --------------------------------------------------------------------------
+   The ground commits on the welcome screen, where there is nothing to read, and steps back the moment
+   there is. Both states are the same layers; what changes is how much of them there is. */
+.g-field[data-expanded='false'] .g-field-halo { opacity: 1; }
+.g-field[data-expanded='false'] .g-field-halo::before { transform: scale(1.18); }
+.g-field[data-expanded='false'] .g-field-sky { filter: saturate(1.4) contrast(1.03); }
+.g-field-sky, .g-field-halo, .g-field-mood, .g-field-mark { transition: opacity 900ms var(--g-ease), filter 900ms var(--g-ease); }
+.g-field[data-expanded='false'] .g-field-mood { opacity: 1.35; }
+
+@media (prefers-reduced-motion: reduce) {
+  .w-glyph, .w-greeting, .w-place, .w-reading, .w-source { animation: none; }
+}

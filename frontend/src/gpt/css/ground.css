@@ -1,0 +1,115 @@
+/* ---- the ground -----------------------------------------------------------------------------------
+   Five layers, all of them slow and none of them a subject:
+
+   1. the gradient, keyed to the hour;
+   2. two auras — broad, soft, low-opacity fields of the hour's own light that drift on long irrational
+      periods (67s and 89s) so the pair never visibly repeats;
+   3. grain, which is the layer that actually matters: a large flat gradient on an 8-bit display bands into
+      visible steps, and the bands are a strong part of what reads as cheap. Three percent of monochrome
+      turbulence removes them.
+   4. a vignette, to hold the eye in the column;
+   5. the horizon hairline — Firewatch's parallax reduced to the one edge that creates depth. */
+.g-field { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+
+.g-field-sky {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(120% 80% at 50% 0%, var(--g-sky-1) 0%, transparent 66%),
+    linear-gradient(178deg, var(--g-sky-1) 0%, var(--g-sky-2) 58%, var(--g-bg) 100%);
+  transition: background var(--g-slow) ease;
+}
+
+/* The auras. transform is the only animated property, so this compositor-only and costs nothing. */
+.g-field-halo { position: absolute; inset: 0; }
+.g-field-halo::before,
+.g-field-halo::after {
+  content: ''; position: absolute; border-radius: 50%;
+  will-change: transform;
+}
+.g-field-halo::before {
+  left: var(--g-halo-x); top: -34%;
+  width: 78rem; height: 52rem; margin-left: -39rem;
+  background: radial-gradient(closest-side, var(--g-aura-1), transparent 70%);
+  animation: g-aura-a 67s ease-in-out infinite alternate;
+  transition: left 1.6s var(--g-ease), background 1.2s ease;
+}
+.g-field-halo::after {
+  right: -14%; top: 22%;
+  width: 62rem; height: 46rem;
+  background: radial-gradient(closest-side, var(--g-aura-2), transparent 72%);
+  animation: g-aura-b 89s ease-in-out infinite alternate;
+  transition: background 1.2s ease;
+}
+@keyframes g-aura-a {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(5%, 4%, 0) scale(1.12); }
+}
+@keyframes g-aura-b {
+  from { transform: translate3d(0, 0, 0) scale(1.06); }
+  to   { transform: translate3d(-7%, -5%, 0) scale(0.94); }
+}
+
+/* Grain. Monochrome fractal turbulence, tiled at 180px, held at three percent — visible as texture,
+   never as noise. img-src allows data:, and this is why it is inline rather than a file. */
+.g-field-grain {
+  position: absolute; inset: -50%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+  opacity: var(--g-grain-a);
+  mix-blend-mode: var(--g-grain-blend);
+}
+
+.g-field-vignette {
+  position: absolute; inset: 0;
+  background: radial-gradient(100% 78% at 50% 34%, transparent 42%, var(--g-vignette) 100%);
+}
+
+/* ---- the sky's own colour, when a station printed one ---------------------------------------------
+   The one layer a reading can move, and the quietest of the six. A condition's hue at a fifth of full
+   strength, over the hour's sky — enough that a rainy afternoon and a clear one are different pages,
+   never enough to be mistaken for a hazard colour. The four published warning colours are red, orange,
+   yellow and green; every hue here is at least 40° from all of them, and the haze wash is a grey warmth
+   at 24 percent saturation rather than anything a bulletin could publish.
+
+   A dark ground has less light in it to shift, which is what --g-mood-k is: the same reading, a smaller
+   change, so nine o'clock at night stays night. */
+.g-field {
+  --g-mood-h: 218; --g-mood-s: 12%; --g-mood-a: 0; --g-mood-k: 1;
+}
+.g-field[data-sky='cloud'] { --g-mood-h: 219; --g-mood-s: 13%; --g-mood-a: 0.18; }
+.g-field[data-sky='rain'] { --g-mood-h: 213; --g-mood-s: 26%; --g-mood-a: 0.24; }
+.g-field[data-sky='storm'] { --g-mood-h: 262; --g-mood-s: 20%; --g-mood-a: 0.24; }
+.g-field[data-sky='haze'] { --g-mood-h: 34; --g-mood-s: 24%; --g-mood-a: 0.17; }
+/* Clear is the absence of a wash: a clear sky is what the hour's own palette already draws, and adding
+   light to it would make the one condition that needs no help the loudest thing on the page. */
+.g-field[data-sky='clear'] { --g-mood-a: 0; }
+/* Night and dusk: the same reading, a smaller change, because a dark ground has less light in it to move
+   and nine o'clock at night has to stay night. */
+.g[data-hour='night'] .g-field, .g[data-hour='golden'] .g-field { --g-mood-k: 0.62; }
+
+.g-field-mood {
+  position: absolute; inset: 0; opacity: 1;
+  background: linear-gradient(180deg,
+    hsl(var(--g-mood-h) var(--g-mood-s) 46% / calc(var(--g-mood-a) * var(--g-mood-k))) 0%,
+    transparent 74%);
+}
+
+/* The condition as a watermark — the "subtle detail in the background" — and only once a conversation is
+   running. On the welcome the mark is drawn properly at the top of the screen, so drawing it again behind
+   the text would be the same fact twice. Five percent is the point where it is a change in the light
+   rather than a picture of the weather; the column is 740px wide and never sits under it. */
+.g-field-mark {
+  position: absolute; right: -2%; top: 50%; transform: translateY(-50%);
+  color: var(--g-paper); opacity: 0.045; pointer-events: none;
+  /* It emerges from the right edge and does not exist on the left, so the ground behind the reading
+     column is never at a different shade from the ground beside it. */
+  mask-image: linear-gradient(90deg, transparent 4%, #000 46%, #000 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 4%, #000 46%, #000 100%);
+}
+/* A pale mark on a dark ground carries further than a dark one on paper, so the dark hours hold less. */
+.g[data-hour='night'] .g-field-mark, .g[data-hour='golden'] .g-field-mark { opacity: 0.035; }
+.g-field[data-expanded='false'] .g-field-mark { display: none; }
+@media (max-width: 1180px) { .g-field-mark { display: none; } }
+
+/* Once a conversation is running the ground steps back: the answer is the subject, so the light drops and
+   the horizon nearly goes. */
+.g-field[data-expanded='true'] .g-field-halo { opacity: 0.52; transition: opacity 900ms var(--g-ease); }

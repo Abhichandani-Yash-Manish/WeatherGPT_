@@ -1,0 +1,259 @@
+/* WeatherGPT — the workspace.
+   ============================================================================
+   The build before this one was half-dressed: Workspace.tsx rendered .g-panel, .g-sun, .g-disc, .g-scene,
+   .g-dots and .g-eyebrow, and not one of those six had a rule in this file. The JSX belonged to the
+   illustrated-scene direction and the stylesheet belonged to the rewrite that replaced it, so the chat sat
+   on undecorated black with an unstyled thread container and an invisible typing indicator. That is the
+   flatness, and it was a wiring fault rather than a matter of taste.
+
+   What is true about the taste: a ground can be quiet without being absent. This one is built in five
+   layers — gradient, two slow auras, grain, vignette, horizon — and its whole contrast range is still under
+   fifteen percent. Depth here comes from the same place it comes from in any well-made dark interface: a
+   one-pixel light on the top edge of every raised surface, a shadow underneath it that has more than one
+   stop, and a surface fill that is a gradient rather than a flat value. Those three details are most of the
+   distance between an interface that reads as built and one that reads as a wireframe.
+
+   Grounding: this product reads published meteorological bulletins. Its vernacular is instruments and
+   documents. The palette is a night-flight palette and the single accent is a pale instrument blue, chosen
+   to sit far from the four IMD hazard colours so an interface state can never be mistaken for a warning. */
+
+:root {
+  /* ground */
+  --g-void: #05080f;
+  --g-bg: #0a0f1a;
+  --g-raise: #111828;
+  --g-raise-2: #172032;
+  --g-line: #222d40;
+  --g-line-soft: #18212f;
+
+  /* ink */
+  --g-paper: #edf1f7;
+  --g-mist: #96a3b8;
+  --g-mist-2: #6b7890;
+
+  /* the one accent */
+  --g-accent: #a8c7fa;
+  --g-accent-2: #7ea6e8;
+  --g-accent-wash: rgba(168, 199, 250, 0.10);
+
+  /* published colours — reached only through a source */
+  --g-red: #e2596f;
+  --g-orange: #e08a47;
+  --g-yellow: #d9b53f;
+  --g-green: #4f9d6d;
+
+  --g-sans: 'Anek Latin Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --g-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  /* The display voice: rounded geometric, Latin only, display sizes only. It sets the greeting, the hour
+     and the reading's own numeral — never a sentence, and never a script it does not cover. The warmth in
+     a weather interface lives in the roundness of the face more than in the colour. */
+  --g-display: 'Nunito Variable', 'Nunito', var(--g-sans);
+
+  /* a 4px rhythm, used religiously */
+  --g-1: 4px; --g-2: 8px; --g-3: 12px; --g-4: 16px; --g-5: 20px;
+  --g-6: 24px; --g-7: 32px; --g-8: 40px; --g-9: 56px;
+
+  --g-rail-w: 268px;
+  --g-side-w: 300px;
+  --g-col: 748px;
+  --g-r-sm: 8px; --g-r: 12px; --g-r-lg: 16px; --g-r-xl: 22px; --g-r-pill: 999px;
+
+  /* Elevation. Every raised thing takes one of these three, and every one of them carries the top-edge
+     light in the same declaration, so a surface can never get the shadow and forget the highlight. */
+  --g-e1:
+    inset 0 1px 0 var(--g-t2),
+    0 1px 2px rgba(0, 0, 0, 0.30);
+  --g-e2:
+    inset 0 1px 0 var(--g-t3),
+    0 2px 4px rgba(0, 0, 0, 0.24),
+    0 8px 18px -8px rgba(0, 0, 0, 0.50);
+  --g-e3:
+    inset 0 1px 0 var(--g-t4),
+    0 4px 10px rgba(0, 0, 0, 0.28),
+    0 20px 48px -20px rgba(0, 0, 0, 0.72);
+
+  /* A raised fill is a gradient, never a flat value — a flat fill is the wireframe tell. */
+  --g-fill: linear-gradient(180deg, var(--g-t2), var(--g-t1));
+
+  --g-fast: 140ms; --g-mid: 220ms; --g-slow: 420ms;
+  --g-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --g-spring: cubic-bezier(0.34, 1.32, 0.48, 1);
+
+  color-scheme: dark;
+}
+
+/* ---- the four hours -------------------------------------------------------------------------------
+   The page follows the sun, and it is allowed to be light.
+
+   The previous version of this block shifted only the gradient and the halo "by a few degrees", which
+   measured out at 1.13:1 between noon and midnight — under the threshold where a difference is visible at
+   all. The hour was computed correctly from the reader's own latitude, applied correctly, and then
+   invisible. A product whose whole idea is one place and one hour cannot look identical at both.
+
+   So each hour carries a complete palette, not a tint. Two of them are light pages with dark ink.
+
+   Three things hold across all four, because they are the product's rules rather than its mood:
+
+   - The accent never approaches a hazard hue. At dusk, where a warm accent would be the obvious choice,
+     it goes violet instead — a warm accent beside IMD's orange is a colour a reader has to disambiguate
+     under time pressure, which is the one thing this interface must never ask.
+   - The four hazard colours are darkened on the light grounds and not otherwise changed. A hue that
+     carries meaning keeps its hue; what changes is only enough lightness to stay legible on paper.
+   - --g-paper is the PRIMARY TEXT colour, not the page. The name is from the dark original, where the ink
+     was the pale thing. It is near-black on the light hours, and the module token layer that reads it as
+     --ink follows automatically. */
+
+:root {
+  --g-t1: rgba(255, 255, 255, 0.015);
+  --g-t2: rgba(255, 255, 255, 0.04);
+  --g-t3: rgba(255, 255, 255, 0.055);
+  --g-t4: rgba(255, 255, 255, 0.08);
+  --g-t5: rgba(255, 255, 255, 0.10);
+}
+
+/* ---- NIGHT: the night-flight palette, unchanged ---------------------------------------------------- */
+[data-hour='night'] {
+  --g-void: #05080f; --g-bg: #0a0f1a; --g-raise: #111828; --g-raise-2: #172032;
+  --g-line: #222d40; --g-line-soft: #18212f;
+  --g-paper: #edf1f7; --g-mist: #9eabc0; --g-mist-2: #737f97;
+  --g-accent: #a8c7fa; --g-accent-2: #7ea6e8; --g-accent-wash: rgba(168, 199, 250, 0.10);
+  --g-red: #e2596f; --g-orange: #e08a47; --g-yellow: #d9b53f; --g-green: #4f9d6d;
+
+  --g-sky-1: #0a1124; --g-sky-2: #070b15;
+  --g-aura-1: rgba(120, 148, 210, 0.11); --g-aura-2: rgba(96, 116, 176, 0.08); --g-halo-x: 32%;
+  --g-vignette: rgba(3, 6, 12, 0.46);
+  --g-grain-a: 0.032; --g-grain-blend: overlay;
+
+  --g-rail-bg: linear-gradient(180deg, rgba(8, 12, 20, 0.86), rgba(5, 8, 15, 0.92));
+  --g-glass: rgba(14, 20, 33, 0.82); --g-glass-2: rgba(15, 22, 36, 0.60);
+  --g-scrim: rgba(4, 7, 13, 0.62);
+
+  --g-e1: inset 0 1px 0 rgba(255,255,255,0.045), 0 1px 2px rgba(0,0,0,0.30);
+  --g-e2: inset 0 1px 0 rgba(255,255,255,0.055), 0 2px 4px rgba(0,0,0,0.24), 0 8px 18px -8px rgba(0,0,0,0.50);
+  --g-e3: inset 0 1px 0 rgba(255,255,255,0.07), 0 4px 10px rgba(0,0,0,0.28), 0 20px 48px -20px rgba(0,0,0,0.72);
+  --g-fill: linear-gradient(180deg, var(--g-t2), var(--g-t1));
+
+  /* On a dark ground the send is the brightest thing on the page; on a light one it has to become the
+     accent instead, because a white button on paper is not a button. */
+  --g-send-bg: linear-gradient(180deg, #ffffff, #d7deea); --g-send-ink: var(--g-void);
+  --g-mark-2: #3f5d8f;
+  /* The three absences on the map. Never a hue — see indiamap.css. */
+  --g-absent-1: #3b4557; --g-absent-2: #28313f; --g-absent-3: #171f2b; --g-absent-4: #131a25;
+  --g-overlay-ink: rgba(232, 237, 245, 0.34);
+  color-scheme: dark;
+}
+
+/* ---- GOLDEN: dusk. Still dark, but warm, and plainly not midnight ---------------------------------- */
+[data-hour='golden'] {
+  --g-void: #0a0711; --g-bg: #14101c; --g-raise: #1e1729; --g-raise-2: #251d33;
+  --g-line: #372b45; --g-line-soft: #271f35;
+  --g-paper: #f3edf5; --g-mist: #ad9fb7; --g-mist-2: #857793;
+  /* Violet, not amber. A warm accent at dusk would sit beside IMD's orange. */
+  --g-accent: #c3aae8; --g-accent-2: #a98fd4; --g-accent-wash: rgba(195, 170, 232, 0.12);
+  --g-red: #e2596f; --g-orange: #e08a47; --g-yellow: #d9b53f; --g-green: #56a276;
+
+  --g-sky-1: #2a1f38; --g-sky-2: #140f1c;
+  --g-aura-1: rgba(226, 138, 86, 0.22); --g-aura-2: rgba(150, 110, 200, 0.16); --g-halo-x: 78%;
+  --g-vignette: rgba(8, 5, 14, 0.48);
+  --g-grain-a: 0.032; --g-grain-blend: overlay;
+
+  --g-rail-bg: linear-gradient(180deg, rgba(16, 11, 23, 0.86), rgba(10, 7, 17, 0.92));
+  --g-glass: rgba(26, 20, 36, 0.82); --g-glass-2: rgba(28, 21, 39, 0.60);
+  --g-scrim: rgba(8, 5, 14, 0.62);
+
+  --g-e1: inset 0 1px 0 rgba(255,255,255,0.045), 0 1px 2px rgba(0,0,0,0.30);
+  --g-e2: inset 0 1px 0 rgba(255,255,255,0.055), 0 2px 4px rgba(0,0,0,0.24), 0 8px 18px -8px rgba(0,0,0,0.50);
+  --g-e3: inset 0 1px 0 rgba(255,255,255,0.07), 0 4px 10px rgba(0,0,0,0.28), 0 20px 48px -20px rgba(0,0,0,0.72);
+  --g-fill: linear-gradient(180deg, var(--g-t2), var(--g-t1));
+  --g-send-bg: linear-gradient(180deg, #ffffff, #e6dcf0); --g-send-ink: var(--g-void);
+  --g-mark-2: #6b4a8f;
+  --g-absent-1: #473a55; --g-absent-2: #33283e; --g-absent-3: #1f1829; --g-absent-4: #1a1423;
+  --g-overlay-ink: rgba(243, 237, 245, 0.34);
+  color-scheme: dark;
+}
+
+/* ---- the two light hours --------------------------------------------------------------------------
+   The ink ladder is near-black rather than pure black, the raised surface is white and the page is not,
+   so a card lifts off the ground by being lighter than it — the inverse of the dark hours and the reason
+   a light interface can have depth without a heavier shadow. */
+[data-hour='daybreak'], [data-hour='noon'] {
+  --g-t1: rgba(16, 24, 40, 0.022);
+  --g-t2: rgba(16, 24, 40, 0.038);
+  --g-t3: rgba(16, 24, 40, 0.055);
+  --g-t4: rgba(16, 24, 40, 0.08);
+  --g-t5: rgba(16, 24, 40, 0.105);
+
+  /* Darkened for a light ground, and not otherwise changed: the hue that carries the meaning is kept.
+     Red and orange were measured against their own sixteen percent wash — the ground a hazard cell actually
+     prints on — at 4.21:1 and 3.90:1, both under AA for 9.5px text. They are the two that moved; yellow and
+     green already cleared it on the same wash, and moving a published colour without a measurement is how
+     the first pair got there. FE16 holds the four of them to the floor from now on. */
+  --g-red: #b0203a; --g-orange: #8e4c0d; --g-yellow: #7a6209; --g-green: #1f6b3a;
+
+  --g-grain-a: 0.022; --g-grain-blend: multiply;
+  --g-scrim: rgba(24, 30, 45, 0.40);
+
+  --g-e1: inset 0 1px 0 rgba(255,255,255,0.9), 0 1px 2px rgba(16,24,40,0.06);
+  --g-e2: inset 0 1px 0 rgba(255,255,255,0.9), 0 1px 3px rgba(16,24,40,0.07), 0 6px 16px -6px rgba(16,24,40,0.12);
+  --g-e3: inset 0 1px 0 rgba(255,255,255,0.9), 0 4px 10px rgba(16,24,40,0.08), 0 20px 44px -20px rgba(16,24,40,0.22);
+  --g-fill: linear-gradient(180deg, rgba(255,255,255,0.86), rgba(255,255,255,0.52));
+  --g-send-ink: #ffffff;
+  /* Three greys, light-ground versions. Still three lightnesses, still no hue: an absence must never be
+     mistakable for a severity, and a district with no published day must never read as green. */
+  --g-absent-1: #9aa5b6; --g-absent-2: #c2cad6; --g-absent-3: #e0e5ec; --g-absent-4: #eceff4;
+  --g-overlay-ink: rgba(36, 48, 70, 0.34);
+  color-scheme: light;
+}
+
+/* ---- DAYBREAK: first light. Warm paper --------------------------------------------------------------
+   The sky is a colour rather than a tinted grey, because a page whose top half is almost white reads as a
+   form, not as a morning. It is kept light enough that the ink ladder is unchanged: the darkest sky here
+   is 4.9:1 against --g-mist and better against the paper. */
+[data-hour='daybreak'] {
+  --g-void: #f0e9e1; --g-bg: #fdfaf6; --g-raise: #ffffff; --g-raise-2: #f8f2ea;
+  --g-line: #e2d7c9; --g-line-soft: #ede5da;
+  --g-paper: #241c14; --g-mist: #574d40; --g-mist-2: #6d6254;
+  --g-accent: #2f5fc0; --g-accent-2: #244da3; --g-accent-wash: rgba(47, 95, 192, 0.10);
+
+  --g-sky-1: #f6dcc0; --g-sky-2: #fcf1e6;
+  --g-aura-1: rgba(240, 166, 102, 0.36); --g-aura-2: rgba(184, 166, 226, 0.22); --g-halo-x: 22%;
+  --g-vignette: rgba(146, 126, 104, 0.14);
+
+  --g-rail-bg: linear-gradient(180deg, rgba(246, 238, 229, 0.86), rgba(240, 231, 220, 0.92));
+  --g-glass: rgba(255, 252, 247, 0.86); --g-glass-2: rgba(255, 253, 250, 0.72);
+  --g-send-bg: linear-gradient(180deg, #3a6bc9, #2f5fc0); --g-mark-2: #1c3f86;
+}
+
+/* ---- NOON: full day. Cool paper, and a plain blue sky above it --------------------------------------- */
+[data-hour='noon'] {
+  --g-void: #e9eef6; --g-bg: #f2f6fb; --g-raise: #ffffff; --g-raise-2: #eef4fa;
+  --g-line: #d3dce9; --g-line-soft: #e3e9f2;
+  --g-paper: #121a27; --g-mist: #465166; --g-mist-2: #5b6679;
+  --g-accent: #1f5ccc; --g-accent-2: #1849a8; --g-accent-wash: rgba(31, 92, 204, 0.10);
+
+  --g-sky-1: #c4d9f5; --g-sky-2: #e4eefb;
+  --g-aura-1: rgba(124, 170, 238, 0.34); --g-aura-2: rgba(150, 186, 240, 0.22); --g-halo-x: 64%;
+  --g-vignette: rgba(94, 118, 158, 0.11);
+
+  --g-rail-bg: linear-gradient(180deg, rgba(238, 244, 251, 0.86), rgba(231, 239, 249, 0.92));
+  --g-glass: rgba(255, 255, 255, 0.86); --g-glass-2: rgba(255, 255, 255, 0.72);
+  --g-send-bg: linear-gradient(180deg, #2a68d8, #1f5ccc); --g-mark-2: #15409b;
+}
+
+html, body { background: var(--g-bg); transition: background var(--g-slow) ease; }
+
+.g {
+  min-height: 100dvh;
+  display: flex;
+  background: var(--g-bg);
+  color: var(--g-paper);
+  font-family: var(--g-sans);
+  font-size: 15px;
+  line-height: 1.5;
+  letter-spacing: -0.002em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.g *:focus-visible { outline: 2px solid var(--g-accent); outline-offset: 2px; border-radius: var(--g-r-sm); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }

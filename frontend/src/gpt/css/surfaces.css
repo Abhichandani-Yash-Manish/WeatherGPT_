@@ -1,0 +1,285 @@
+/* ---- shared atoms inside the module surfaces ------------------------------------------------------ */
+.g .card, .g .card-raised, .g .receipt { background: var(--g-fill); border: 1px solid var(--g-line-soft); border-radius: var(--g-r); box-shadow: var(--g-e1); padding: var(--g-4); }
+.g .eyebrow { font-size: 13px; font-weight: 500; color: var(--g-mist); text-transform: none; letter-spacing: 0; }
+.g .tag { font-family: var(--g-mono); font-size: 11px; color: var(--g-mist); border: 1px solid var(--g-line); border-radius: var(--g-r-pill); padding: 2px 9px; background: transparent; }
+.g .tag-held { color: var(--g-paper); border-color: var(--g-mist-2); }
+.g .btn, .g .btn-ghost, .g .chip { font: inherit; font-size: 13px; color: var(--g-mist); background: var(--g-fill); border: 1px solid var(--g-line); border-radius: var(--g-r-pill); padding: 6px var(--g-3); box-shadow: var(--g-e1); transition: background var(--g-fast), color var(--g-fast), border-color var(--g-fast), transform var(--g-fast); }
+.g .btn:hover, .g .btn-ghost:hover, .g .chip:hover { color: var(--g-paper); border-color: color-mix(in srgb, var(--g-accent) 30%, var(--g-line)); transform: translateY(-1px); }
+.g .reading, .g .reading-line { font-size: 14px; color: var(--g-mist); }
+.g .quiet, .g .text-ink-soft { color: var(--g-mist-2); }
+.g table { font-size: 13px; border-collapse: collapse; width: 100%; }
+.g th { font-weight: 500; color: var(--g-mist-2); text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--g-line); }
+.g td { padding: 6px 8px; border-bottom: 1px solid var(--g-line-soft); vertical-align: top; color: var(--g-mist); }
+.g tbody tr { transition: background var(--g-fast) var(--g-ease); }
+.g tbody tr:hover { background: var(--g-t1); }
+.g .receipt-key { color: var(--g-mist-2); }
+.g .receipt-val, .g .evidence, .g .fact-source, .g .coverage { font-family: var(--g-mono); font-size: 12px; }
+.g .machine-record { font-family: var(--g-mono); font-size: 11px; background: var(--g-void); border: 1px solid var(--g-line-soft); border-radius: var(--g-r-sm); padding: var(--g-3); max-height: 22rem; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--g-mist); }
+.g details > summary { cursor: pointer; }
+.g-notice { font-size: 13.5px; color: var(--g-mist); border-left: 2px solid var(--g-accent); padding: var(--g-2) var(--g-3); background: var(--g-accent-wash); border-radius: 0 var(--g-r-sm) var(--g-r-sm) 0; margin: var(--g-3) 0 0; }
+.g-list { margin: 0; padding-left: 18px; font-size: 13px; color: var(--g-mist); }
+/* Two names left over from the deleted flagship layer, still used by the answer and undeclared since.
+   The warning panel is an official statement drawn as a table, so it keeps a surface; the task list is a
+   list and takes the list's own rhythm. */
+.g .warning-panel { background: var(--g-fill); border: 1px solid var(--g-line-soft); border-radius: var(--g-r); box-shadow: var(--g-e1); }
+.g .tasks { list-style: none; padding-left: 0; display: flex; flex-direction: column; gap: var(--g-2); }
+.g .tasks .task { padding-left: var(--g-3); border-left: 2px solid var(--g-line); }
+.g .tasks .task.is-answered { border-left-color: color-mix(in srgb, var(--g-green) 60%, transparent); }
+.g .tasks .task.is-incomplete { border-left-color: color-mix(in srgb, var(--g-orange) 60%, transparent); }
+
+/* ---- responsive ------------------------------------------------------------------------------------ */
+.g-rail-toggle { display: none !important; }
+.g-scrim { display: none; }
+@media (max-width: 900px) {
+  .g-rail { position: fixed; left: 0; top: 0; transform: translateX(-100%); transition: transform var(--g-mid) var(--g-ease); z-index: 30; box-shadow: 0 0 60px rgba(0, 0, 0, 0.6); }
+  .g[data-rail='open'] .g-rail { transform: none; }
+  .g-rail-toggle { display: inline-flex !important; }
+  .g[data-rail='open'] .g-scrim { display: block; position: fixed; inset: 0; background: var(--g-scrim); backdrop-filter: blur(2px); z-index: 20; border: 0; animation: g-fade var(--g-mid) var(--g-ease) both; }
+  @keyframes g-fade { from { opacity: 0 } to { opacity: 1 } }
+  .g-col { padding: 0 var(--g-4); }
+  .g-tool, .g-send { height: 44px; min-width: 44px; }
+  .g-send { width: 44px; }
+  .g-top .g-tool { height: 40px; }
+  /* On a phone the opening is taller than the viewport, so centring it pins the reading to the top and
+     leaves the dead space under the openings instead. It reads from the top and scrolls. */
+  .g-welcome { min-height: 0; justify-content: flex-start; padding-top: var(--g-5); padding-bottom: var(--g-7); gap: var(--g-6); }
+  /* Provenance is mono, and mono at 11.5px does not fit 390px — it broke mid-token across two lines. */
+  .g-source { font-size: 10.5px; line-height: 1.7; }
+  .g-hero { font-size: clamp(1.75rem, 1.1rem + 3.4vw, 2.2rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .g *, .g *::before, .g *::after { animation: none !important; transition-duration: 1ms !important; }
+  .g-welcome > * { opacity: 1; transform: none; }
+}
+
+/* The accent badge, repaired at its cause. HeroUI draws this pill as the accent colour on a sixteen
+   percent wash of the same accent, and on the light hours that pair measured 4.43:1 — below AA for 11.9px
+   text, and a real axe run at 390px failed it on three surfaces. The darker accent step exists for exactly
+   this: the ink moves, the hue does not, and the wash is unchanged.
+   Scoped to .g on purpose: HeroUI's own .pill-accent rule is emitted later in the same stylesheet and wins
+   on equal specificity, so an unscoped rule here would be silently lost — measured, not assumed. */
+.g .pill-accent { color: var(--g-accent-2); }
+
+/* ---- the module surfaces, repointed --------------------------------------------------------------
+   The eighteen guided surfaces, the charts and the plans panel are built on the original token layer
+   (web/tokens.css and the Tailwind @theme that consumes it). Restyling twenty-six files would be a
+   rewrite; repointing the tokens they read is one mapping, and it is the honest one — those surfaces
+   were always written to take their colour from the system rather than to hard-code it.
+
+   Two sets are needed. The raw names are what modules.css, plans.css and the chart CSS read directly.
+   The --color-* names are what Tailwind's utilities resolve, and they must be redeclared here rather
+   than at the root, because a custom property declared at :root computes there and descendants inherit
+   the computed value — redefining --ink alone would never reach --color-ink. */
+.g {
+  /* raw */
+  --ink: var(--g-paper);
+  --ink-soft: var(--g-mist);
+  --mute: var(--g-mist-2);
+  --ground: var(--g-bg);
+  --paper: var(--g-raise);
+  --sunk: var(--g-void);
+  --raiser: var(--g-raise-2);
+  --line: var(--g-line-soft);
+  --line-strong: var(--g-line);
+  --data: var(--g-accent);
+  --data-ink: var(--g-void);
+  --data-wash: var(--g-accent-wash);
+  --slate: var(--g-mist);
+  --sand: var(--g-line);
+  --sand-wash: var(--g-raise);
+  --surface-card: color-mix(in srgb, var(--g-raise) 55%, transparent);
+  --glass-1: color-mix(in srgb, var(--g-raise) 55%, transparent);
+  --glass-2: color-mix(in srgb, var(--g-raise) 70%, transparent);
+  --glass-3: color-mix(in srgb, var(--g-raise-2) 80%, transparent);
+  --glass-line: var(--g-line);
+  --housing: var(--g-raise);
+  --housing-2: var(--g-raise-2);
+  --housing-ink: var(--g-paper);
+  --housing-mute: var(--g-mist-2);
+  --housing-line: var(--g-line);
+  --serif: var(--g-sans);
+  --sans: var(--g-sans);
+  --mono: var(--g-mono);
+  --red: var(--g-red);
+  --orange: var(--g-orange);
+  --yellow: var(--g-yellow);
+  --green: var(--g-green);
+  --lift-1: none;
+  --lift-2: 0 18px 40px -28px rgba(0, 0, 0, 0.85);
+  --lift-3: 0 28px 60px -30px rgba(0, 0, 0, 0.9);
+  --viz-line: var(--g-accent);
+  --viz-grid: var(--g-line-soft);
+  --viz-axis: var(--g-mist-2);
+
+  /* Tailwind's resolved names */
+  --color-ink: var(--g-paper);
+  --color-ink-soft: var(--g-mist);
+  --color-mute: var(--g-mist-2);
+  --color-ground: var(--g-bg);
+  --color-paper: var(--g-raise);
+  --color-sunk: var(--g-void);
+  --color-raiser: var(--g-raise-2);
+  --color-data: var(--g-accent);
+  --color-data-ink: var(--g-void);
+  --color-data-wash: var(--g-accent-wash);
+  --color-slate: var(--g-mist);
+  --color-sand: var(--g-line);
+  --color-sand-wash: var(--g-raise);
+  --color-line: var(--g-line);
+  --color-hairline: var(--g-line-soft);
+  --color-glass: color-mix(in srgb, var(--g-raise) 55%, transparent);
+  --color-glass-2: color-mix(in srgb, var(--g-raise) 70%, transparent);
+  --color-glass-3: color-mix(in srgb, var(--g-raise-2) 80%, transparent);
+  --color-glass-line: var(--g-line);
+  --color-housing: var(--g-raise);
+  --color-housing-2: var(--g-raise-2);
+  --color-housing-ink: var(--g-paper);
+  --color-housing-mute: var(--g-mist-2);
+  --color-housing-line: var(--g-line);
+  --color-warn: var(--g-orange);
+  --color-alert: var(--g-red);
+  --color-caution: var(--g-yellow);
+  --color-clear: var(--g-green);
+  --font-serif: var(--g-sans);
+  --font-sans: var(--g-sans);
+  --font-mono: var(--g-mono);
+  --shadow-lift-1: none;
+  --shadow-lift-2: 0 18px 40px -28px rgba(0, 0, 0, 0.85);
+  --shadow-lift-3: 0 28px 60px -30px rgba(0, 0, 0, 0.9);
+}
+
+/* The surfaces keep their structure; only their dress changes. A few rules need saying outright because
+   they were written for a light ground. */
+.g .glass, .g .glass-soft, .g .glass-strong, .g .dash-card, .g .planwatch {
+  background: color-mix(in srgb, var(--g-raise) 55%, transparent);
+  border-color: var(--g-line-soft);
+  box-shadow: none;
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+}
+/* A surface title is a title, not a masthead: the display serif at 3rem belonged to the paper design. */
+.g .module-title, .g [data-surface] h1, .g [data-surface] h2 {
+  font-family: var(--g-sans); font-weight: 600; letter-spacing: -0.024em;
+}
+.g [data-surface] h1 { font-size: 1.7rem; line-height: 1.16; }
+.g [data-surface] h2 { font-size: 1.1rem; line-height: 1.3; }
+.g .module-note { color: var(--g-mist); font-size: 13.5px; }
+.g .module-section { border-color: var(--g-line-soft); }
+/* The published colours stay published: a chip keeps the source's colour, on this ground's contrast. */
+.g .chip-colour { border-color: var(--g-line); }
+.g .dash-kpi-number, .g .dash-value { font-family: var(--g-mono); letter-spacing: -0.035em; color: var(--g-paper); }
+.g .dash-kpi-label, .g .dash-kpi-caption { color: var(--g-mist); }
+/* The module surfaces' own fields — and only theirs. The workspace's chrome is styled above, and it has to
+   be excluded here by name: `.g textarea` and `.g-composer textarea` have identical specificity (0,1,1), so
+   source order decides and this block, being later, silently won. That is what drew a second bordered box
+   inside the composer around the placeholder, and what took the rail's filter back to an 8px radius. The
+   over-broad selector is the defect, so the selector is narrowed rather than the composer's raised. */
+.g input[type='text']:not(.g-search),
+.g input[type='search']:not(.g-search),
+.g select:not(.g-tool),
+.g textarea:not(.g-composer textarea) {
+  background: var(--g-raise); border: 1px solid var(--g-line); color: var(--g-paper); border-radius: var(--g-r-sm);
+}
+.g input::placeholder { color: var(--g-mist-2); }
+
+/* The published-colour washes were mixed for a light ground; on this one they read as stickers. The cell
+   keeps the source's colour — that rule never moves — but carries it as ink and edge over the dark, which
+   is the same information at the right contrast. */
+.g {
+  --red-wash: color-mix(in srgb, var(--g-red) 16%, transparent);
+  --orange-wash: color-mix(in srgb, var(--g-orange) 16%, transparent);
+  --yellow-wash: color-mix(in srgb, var(--g-yellow) 16%, transparent);
+  --green-wash: color-mix(in srgb, var(--g-green) 16%, transparent);
+}
+.g .viz-cell { border-radius: 6px; }
+.g .viz-cell:hover { box-shadow: none; }
+
+/* A counted value must fit the card it is counted in: the old scale was fixed and a four-figure count
+   ran into its neighbour. It scales with the card instead, and never sets a minimum wider than the box. */
+.g .dash-kpi-number { font-size: clamp(1.9rem, 1.1rem + 2.2vw, 3rem); line-height: 1.02; min-width: 0; overflow-wrap: anywhere; }
+.g .dash-kpi { min-width: 0; }
+.g .dash-kpi-value { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; min-width: 0; }
+.g .dash-kpis { align-items: start; }
+.g .dash-card { padding: var(--g-4); }
+
+/* A tracked-out all-caps label above a heading is one of the surest tells of a machine-made page, and it
+   survived inside the module surfaces after the conversation had dropped it. Sentence case everywhere: a
+   section heading is a heading, and a column header is a word, not a sign. Size and weight already carry
+   the hierarchy, so nothing is lost by letting the words read normally. */
+.g .eyebrow,
+.g .module h2, .g .module-section > h2, .g .module-section > h3,
+.g .dash-card-head h2,
+.g th,
+.g .viz-matrix-head, .g .viz-matrix-corner, .g .viz-unit,
+.g .viz-card-family, .g .viz-card-scope,
+.g .viz-card-key, .g .viz-now-read, .g .viz-daycol-head {
+  text-transform: none;
+  letter-spacing: 0;
+}
+.g .module h2, .g .module-section > h2, .g .module-section > h3, .g .dash-card-head h2 {
+  font-size: 13.5px; font-weight: 600; color: var(--g-mist);
+}
+/* Every section heading on a module surface carried a 14px rule before its first word, so each one read as
+   "— WORD": the spaced-dash label, which is one of the marks of a generated page. The heading is a
+   heading; it does not need a sign in front of it to be found. */
+.g .module h2::before { display: none; }
+.g .module-table thead th, .g th {
+  text-transform: none; letter-spacing: 0; font-size: 12px; font-weight: 600; color: var(--g-mist-2);
+}
+
+/* The two ways out of a surface belong beside the surface, not floating over the column's shoulder. */
+.g-sheet-actions { display: flex; justify-content: flex-end; gap: var(--g-2); padding-top: var(--g-4); }
+
+@media (max-width: 900px) {
+  /* The reading position is a refinement; on a phone the bar keeps the language and the rest moves to the
+     rail, rather than truncating two controls mid-word. */
+  .g-top select[aria-label='Reading as'] { display: none; }
+  .g-top select.g-tool { max-width: 9.5rem; }
+}
+
+/* ---- the last elements with no rule anywhere -------------------------------------------------------
+   Found by holding every className string in every component against the built stylesheet, which carries
+   the authored CSS and Tailwind's generated utilities together. Most class names that looked undeclared
+   turned out to be semantic hooks sitting beside utilities that do the work. These are the ones where the
+   whole class list resolved to nothing, so the element was being drawn by the browser's defaults. */
+
+/* The chart container in its panel form. A figure with a caption and no rule is an unframed caption and
+   an SVG, which is what the dashboard's charts were. */
+.g .chart-panel {
+  border: 1px solid var(--g-line-soft); border-radius: var(--g-r);
+  background: var(--g-fill); box-shadow: var(--g-e1);
+  padding: var(--g-4); margin: 0; min-width: 0;
+  display: flex; flex-direction: column; gap: var(--g-3);
+}
+.g .chart-panel-title { font-size: 13.5px; font-weight: 600; color: var(--g-paper); display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+.g .chart-panel-sub { font-size: 12px; font-weight: 400; color: var(--g-mist-2); }
+/* Rain is the one series with its own tone, and it is the accent rather than a colour of its own, because
+   a fifth colour beside four hazard colours is a colour a reader has to learn. */
+.g .chart-rain { border-color: color-mix(in srgb, var(--g-accent) 22%, var(--g-line-soft)); }
+
+/* The colour a district bulletin published, in the warning table. It was printing as plain text, so the
+   one cell in that table whose whole job is to carry a published colour carried none. The colour is the
+   ink and the edge, never a fill behind the word: a filled chip at this size reads as a sticker, and a
+   pale wash of a hazard colour on a dark ground loses the distinction between orange and red. */
+.g .wchip {
+  display: inline-flex; align-items: center;
+  font-family: var(--g-mono); font-size: 11px; line-height: 1;
+  padding: 3px 8px; border-radius: var(--g-r-pill);
+  border: 1px solid currentColor; color: var(--g-mist-2);
+}
+.g .wchip[data-colour='red'], .g td[data-colour='red'] .wchip { color: var(--g-red); }
+.g .wchip[data-colour='orange'], .g td[data-colour='orange'] .wchip { color: var(--g-orange); }
+.g .wchip[data-colour='yellow'], .g td[data-colour='yellow'] .wchip { color: var(--g-yellow); }
+.g .wchip[data-colour='green'], .g td[data-colour='green'] .wchip { color: var(--g-green); }
+
+/* A calculation held against another reading, and an aviation report the source marked stale: both are
+   states of a value rather than decorations, so each gets an edge and neither gets a hazard colour. */
+.g .is-comparison { border-left: 2px solid var(--g-accent); }
+.g .stale { color: var(--g-mist-2); font-style: normal; }
+.g .answered { color: var(--g-paper); }
+.g .good { color: var(--g-green); }
+
+/* The dashboard's own two: the surface wrapper, and the inline form of the "what changed" fold. */
+.g .module-dashboard { min-width: 0; }
+.g .dash-change-inline { display: inline-flex; }
+.g .module-place-quick { display: flex; flex-wrap: wrap; gap: var(--g-2); }

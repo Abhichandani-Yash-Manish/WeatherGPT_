@@ -19,6 +19,20 @@ SRC = ROOT / "frontend" / "src"
 LEDGER = ROOT / "research" / "reviews" / "frontend-react-r2-20260917" / "check-port.json"
 
 
+def _workspace_css() -> str:
+    """The workspace stylesheet, which is an index plus the parts it imports.
+
+    It was one file of 1780 lines until it was split; source order is the cascade there, so the parts are
+    concatenated in the order the index imports them rather than in directory order. Every check that asks
+    "is this rule declared" has to see all of it, or it passes by finding nothing — which is the failure
+    the checks exist to catch.
+    """
+    index_path = SRC / "gpt" / "gpt.css"
+    index = read(index_path)
+    parts = re.findall(r"@import\s+['\"]\./css/([A-Za-z0-9_-]+\.css)['\"]", index)
+    return index + "\n" + "\n".join(read(index_path.parent / "css" / name) for name in parts)
+
+
 def read(path):
     return path.read_text(encoding="utf-8")
 
@@ -49,7 +63,7 @@ def main():
     # The shell since docs/111: gpt/Workspace.tsx — a conversation rail, a centred column and a docking
     # composer, targeting ChatGPT's architecture. There is no module rail and no dashboard topbar.
     workspace = read(SRC / "gpt" / "Workspace.tsx")
-    gpt_css = read(SRC / "gpt" / "gpt.css")
+    gpt_css = _workspace_css()
     answer = read(SRC / "chat" / "AnswerTurn.tsx")
     composer = read(SRC / "gpt" / "Composer.tsx")
     host = read(SRC / "shell" / "SurfaceHost.tsx")
@@ -152,7 +166,7 @@ def main():
                             out.append(selector.strip())
         return out
 
-    gpt_css = read(SRC / "gpt" / "gpt.css")
+    gpt_css = _workspace_css()
     shouted = []
     for selector in _declared_uppercase():
         names = re.findall(r"\.([a-z][a-z0-9-]*)", selector)

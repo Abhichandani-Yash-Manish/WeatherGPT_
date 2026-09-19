@@ -1,0 +1,206 @@
+/* ---- the column ---------------------------------------------------------------------------------- */
+.g-main { position: relative; z-index: 2; flex: 1; min-width: 0; display: flex; flex-direction: column; height: 100dvh; }
+
+/* The bar has no fill of its own; it earns an edge only once the thread scrolls under it. */
+.g-top {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--g-2);
+  padding: var(--g-3) var(--g-5); flex: 0 0 auto; position: relative; z-index: 5;
+}
+.g-top::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--g-line-soft) 18%, var(--g-line-soft) 82%, transparent);
+  opacity: 0; transition: opacity var(--g-mid) var(--g-ease);
+}
+.g[data-scrolled='true'] .g-top::after { opacity: 1; }
+.g-top-left { display: flex; align-items: center; gap: var(--g-1); min-width: 0; }
+/* The thread's own name, in the bar: a conversation has one name — the question it opened with — and a
+   reader three turns in has otherwise lost which thread they are in. It truncates rather than wrapping,
+   because a bar is a bar. */
+.g-top-title {
+  margin: 0 0 0 var(--g-1); font-size: 13.5px; font-weight: 500; color: var(--g-paper);
+  max-width: 42ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+@media (max-width: 640px) { .g-top-title { max-width: 16ch; font-size: 13px; } }
+
+/* .g-panel is the frame the thread and the docked composer share. It had no rule at all before this, which
+   left .g-thread without a flex parent to take its height from. */
+.g-panel { flex: 1; min-height: 0; display: flex; flex-direction: column; position: relative; }
+
+.g-thread { flex: 1; min-height: 0; overflow-y: auto; scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--g-line) transparent; }
+.g-thread::-webkit-scrollbar { width: 10px; }
+.g-thread::-webkit-scrollbar-thumb { background: var(--g-line); border-radius: 5px; border: 3px solid transparent; background-clip: content-box; }
+.g-thread::-webkit-scrollbar-thumb:hover { background: var(--g-mist-2); background-clip: content-box; }
+.g-col { width: 100%; max-width: var(--g-col); margin-inline: auto; padding: 0 var(--g-5); transition: max-width var(--g-slow) var(--g-ease); }
+/* A conversation column is a reading measure — 740px, because a line longer than that is hard to read.
+   A dashboard or a district matrix is for scanning, not reading, and the same measure left it squeezed
+   into the middle third of the window with empty space either side. A surface widens the column it
+   opens in. */
+.g-col:has([data-surface]) { max-width: 1180px; }
+
+/* ---- the opening ---------------------------------------------------------------------------------
+   The reading is the hero. A sentence, set large and tight, left-aligned because this is a reading
+   interface and not a poster. Nothing sits above it: no label, no eyebrow.
+
+   The opening is the one orchestrated moment in the product — the reading, the composer and the openings
+   arrive in that order, 70ms apart, once. Everything else that moves is answering an action. */
+.g-welcome { min-height: calc(100dvh - 56px); display: flex; flex-direction: column; justify-content: center; gap: var(--g-6); }
+.g-welcome > * { animation: g-rise 560ms var(--g-ease) both; }
+.g-welcome > *:nth-child(1) { animation-delay: 40ms; }
+.g-welcome > *:nth-child(2) { animation-delay: 110ms; }
+.g-welcome > *:nth-child(3) { animation-delay: 180ms; }
+@keyframes g-rise { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: none } }
+
+.g-hero {
+  font-size: clamp(2rem, 1.3rem + 2.4vw, 2.9rem);
+  line-height: 1.08; font-weight: 600; letter-spacing: -0.034em;
+  margin: 0; max-width: 20ch; text-wrap: balance;
+}
+.g-hero-sub {
+  font-size: 1.0625rem; line-height: 1.58; color: var(--g-mist);
+  margin: var(--g-4) 0 0; max-width: 56ch; text-wrap: pretty;
+}
+.g-num { font-family: var(--g-mono); font-size: 0.95em; font-weight: 500; letter-spacing: -0.02em; color: var(--g-paper); font-variant-numeric: tabular-nums; }
+.g-source { font-family: var(--g-mono); font-size: 11.5px; line-height: 1.6; color: var(--g-mist-2); margin: var(--g-5) 0 0; overflow-wrap: anywhere; }
+
+/* ---- the composer --------------------------------------------------------------------------------
+   The one place the accent appears at rest, and the one control that gets the top elevation. */
+.g-dock { position: sticky; bottom: 0; z-index: 4; padding-bottom: var(--g-4); }
+.g-dock::before {
+  content: ''; position: absolute; inset: -48px 0 0 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(180deg, transparent, var(--g-bg) 52%);
+}
+.g-welcome .g-dock { position: static; padding-bottom: 0; }
+.g-welcome .g-dock::before { display: none; }
+
+.g-composer {
+  position: relative;
+  border: 1px solid var(--g-line); border-radius: var(--g-r-xl);
+  background: linear-gradient(180deg, var(--g-t2), var(--g-t1)), var(--g-glass);
+  backdrop-filter: blur(24px) saturate(1.3); -webkit-backdrop-filter: blur(24px) saturate(1.3);
+  box-shadow: var(--g-e2);
+  padding: var(--g-3) var(--g-3) var(--g-2);
+  display: flex; flex-direction: column;
+  transition: border-color var(--g-mid) var(--g-ease), box-shadow var(--g-mid) var(--g-ease),
+              transform var(--g-mid) var(--g-ease);
+}
+/* The focus ring is a separate layer so it can scale out from the edge instead of appearing at full size. */
+.g-composer::after {
+  content: ''; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none;
+  box-shadow: 0 0 0 3px var(--g-accent-wash);
+  opacity: 0; transform: scale(0.985);
+  transition: opacity var(--g-mid) var(--g-ease), transform var(--g-mid) var(--g-spring);
+}
+.g-composer:focus-within {
+  border-color: color-mix(in srgb, var(--g-accent) 42%, var(--g-line));
+  box-shadow: var(--g-e3);
+  transform: translateY(-2px);
+}
+.g-composer:focus-within::after { opacity: 1; transform: scale(1); }
+
+.g-composer textarea {
+  width: 100%; border: 0; outline: none; resize: none; background: transparent;
+  color: var(--g-paper); font: inherit; font-size: 15.5px; line-height: 1.55;
+  padding: 4px var(--g-2) 0; min-height: 26px; max-height: 208px;
+}
+.g-composer textarea::placeholder { color: var(--g-mist-2); }
+/* The shell already answers focus — it lifts, takes the accent on its edge and grows a ring. A second
+   outline drawn around the textarea inside it reads as a nested input box, which is most of what made the
+   composer look unfinished. The indicator is not removed, it is moved out one level. */
+.g-composer textarea:focus-visible { outline: none; }
+.g-composer-row { display: flex; align-items: center; gap: var(--g-1); margin-top: var(--g-2); }
+.g-composer-row .g-spacer { flex: 1; }
+
+.g-tool {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  height: 32px; min-width: 32px; padding: 0 10px; border-radius: var(--g-r-sm);
+  border: 1px solid transparent; background: transparent; color: var(--g-mist);
+  font: inherit; font-size: 13px; cursor: pointer;
+  transition: background var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease),
+              border-color var(--g-fast) var(--g-ease);
+}
+.g-tool:hover { background: var(--g-t3); color: var(--g-paper); }
+.g-tool:active { background: var(--g-t4); }
+.g-tool[aria-pressed='true'] { background: color-mix(in srgb, var(--g-red) 18%, transparent); color: var(--g-red); }
+
+/* The bar's selects are controls, so they look like controls: a real field with a chevron, not a bare
+   native select floating on the background with nothing to stand on. */
+/* The bar's two selects are configuration, not navigation, and they were drawn as filled bordered fields
+   with shadows — which is the greater part of why the top of the page read as a control panel. They are
+   text now, with the chevron still saying they open, and they keep their accessible names. */
+.g-top .g-tool {
+  height: 32px; padding: 0 var(--g-2);
+  border-color: transparent; background: transparent; box-shadow: none;
+  color: var(--g-mist);
+}
+.g-top .g-tool:hover { border-color: transparent; background: var(--g-t2); color: var(--g-paper); }
+.g-top select.g-tool {
+  max-width: 12rem; padding-right: 26px;
+  appearance: none; -webkit-appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: right 12px center, right 7px center;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+.g-top select.g-tool:hover { background-color: var(--g-t2); }
+.g-top select.g-tool option { background: var(--g-raise); color: var(--g-paper); }
+
+/* The place the conversation is reading. A statement, not a control: mist, no border, and it truncates
+   rather than pushing the bar around — a district label can be four words long. */
+.g-skyline {
+  display: flex; align-items: center; gap: 7px; min-width: 0; margin: 0 var(--g-2) 0 auto;
+  color: var(--g-mist); font-size: 12.5px; line-height: 1;
+}
+.g-skyline svg { flex: 0 0 auto; color: var(--g-accent); }
+.g-skyline-place { max-width: 20ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--g-paper); }
+.g-skyline-value { font-family: var(--g-mono); font-size: 12px; color: var(--g-paper); }
+.g-skyline-cond { max-width: 12ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 900px) { .g-skyline { display: none; } }
+
+.g-send {
+  width: 34px; height: 34px; border-radius: var(--g-r-pill); border: 0; cursor: pointer;
+  background: var(--g-send-bg);
+  color: var(--g-send-ink);
+  display: inline-flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 10px -2px color-mix(in srgb, var(--g-accent) 42%, transparent), inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+  transition: transform var(--g-fast) var(--g-spring), box-shadow var(--g-fast) var(--g-ease),
+              background var(--g-fast) var(--g-ease), opacity var(--g-fast) var(--g-ease);
+}
+.g-send:disabled {
+  background: var(--g-t4); color: var(--g-mist-2); cursor: default;
+  box-shadow: none;
+}
+.g-send:not(:disabled):hover { transform: scale(1.08); box-shadow: 0 4px 16px -2px color-mix(in srgb, var(--g-accent) 58%, transparent), inset 0 -1px 0 rgba(0, 0, 0, 0.12); }
+.g-send:not(:disabled):active { transform: scale(0.94); }
+
+.g-hint { font-size: 11.5px; color: var(--g-mist-2); text-align: center; margin: var(--g-3) 0 0; }
+
+/* ---- openings ------------------------------------------------------------------------------------- */
+.g-chips { display: flex; flex-wrap: wrap; gap: var(--g-2); }
+/* An opening is a question a reader could have asked, and it is not a button in a form: no fill, no
+   shadow, one hairline. Four filled pills with elevation under a composer that already carries the page's
+   highest elevation read as a second row of buttons, which is most of what made this row feel busy. */
+.g-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px var(--g-4); border-radius: var(--g-r-pill);
+  border: 1px solid var(--g-line-soft); background: transparent;
+  color: var(--g-mist); font: inherit; font-size: 13px; cursor: pointer;
+  transition: background var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease),
+              border-color var(--g-fast) var(--g-ease), transform var(--g-fast) var(--g-ease);
+}
+.g-chip:hover {
+  color: var(--g-paper); transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--g-accent) 34%, var(--g-line));
+  background: var(--g-accent-wash);
+}
+.g-chip:active { transform: translateY(0); }
+
+/* The way into the national picture, under the openings rather than beside them: it opens a surface, and
+   nobody would ever type it as a question. */
+.g-welcome-foot { margin: var(--g-2) 0 0; text-align: center; }
+.g-quiet {
+  border: 0; background: transparent; cursor: pointer; font: inherit;
+  font-size: 13px; color: var(--g-mist);
+  padding: 6px 10px; border-radius: var(--g-r-sm);
+  transition: color var(--g-fast) var(--g-ease), background var(--g-fast) var(--g-ease);
+}
+.g-quiet:hover { color: var(--g-paper); background: var(--g-t2); }

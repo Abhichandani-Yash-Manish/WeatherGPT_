@@ -78,7 +78,14 @@ describe('the stylesheet vocabulary', () => {
    So this one reads the components instead of a list. Every g- class any component names has to be declared
    in gpt.css, and the day one is not, this fails. */
 
-const GPT = readFileSync('src/gpt/gpt.css', 'utf8');
+/* The workspace stylesheet is nine files behind an index now, so "the stylesheet" is the index plus
+   everything it imports. Reading only the index would make this check pass by finding nothing, which is
+   the failure mode it exists to prevent — so the parts are asserted to be non-empty too. */
+const GPT_INDEX = readFileSync('src/gpt/gpt.css', 'utf8');
+const GPT_PARTS = readdirSync('src/gpt/css')
+  .filter(name => name.endsWith('.css'))
+  .map(name => ({ name, text: readFileSync('src/gpt/css/' + name, 'utf8') }));
+const GPT = GPT_INDEX + '\n' + GPT_PARTS.map(part => part.text).join('\n');
 
 function tsxUnder(dir: string): string[] {
   return readdirSync(dir).flatMap(entry => {
@@ -103,6 +110,16 @@ function classesNamed(): Map<string, string[]> {
   });
   return out;
 }
+
+describe('the workspace stylesheet, split into parts', () => {
+  it('imports every part it has, in one place', () => {
+    /* A part nobody imports is dead CSS that still passes every check that reads the directory. */
+    const unimported = GPT_PARTS.filter(part => !GPT_INDEX.includes("./css/" + part.name)).map(part => part.name);
+    expect(unimported, 'these parts exist but nothing imports them').toEqual([]);
+    expect(GPT_PARTS.length, 'the stylesheet was split into parts; this found none').toBeGreaterThan(4);
+    GPT_PARTS.forEach(part => expect(part.text.trim().length, part.name + ' is empty').toBeGreaterThan(40));
+  });
+});
 
 describe('the workspace vocabulary, derived from the components', () => {
   it('declares every g- class the components name', () => {

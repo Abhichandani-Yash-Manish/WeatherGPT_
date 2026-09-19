@@ -1,0 +1,246 @@
+/* ---- the working turn ------------------------------------------------------------------------------
+   What the machine is doing while a question is answered, in the four things a reader can be told honestly:
+   the stage it is on, the stages it has passed, the engine's provisional first reading, and how long it has
+   been. Deliberately calm — nothing counts up to a hundred, nothing promises an answer is near, and the
+   provisional line is labeled as provisional, because it is a reading that may be superseded. */
+.g-working { display: flex; flex-direction: column; gap: var(--g-2); }
+.g-working-head {
+  display: flex; align-items: center; gap: var(--g-2); margin: 0;
+  font-size: 14px; font-weight: 600; color: var(--g-paper);
+}
+.g-working-note { margin: 0; font-size: 12px; line-height: 1.6; color: var(--g-mist); max-width: 68ch; }
+/* A stage is a state, not a step in a progress bar: a dot either is the current one or has been passed. */
+.g-stages { list-style: none; margin: var(--g-1) 0 0; padding: 0; display: flex; flex-direction: column; gap: 3px; }
+.g-stages li { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--g-mist); }
+.g-stages li::before {
+  content: ''; width: 5px; height: 5px; border-radius: 50%; flex: 0 0 5px;
+  background: var(--g-accent); opacity: 0.35;
+}
+.g-stages li[data-state='now'] { color: var(--g-paper); }
+.g-stages li[data-state='now']::before { opacity: 1; }
+.g-reading-line {
+  margin: 0; font-size: 13px; line-height: 1.6; color: var(--g-mist);
+  border-left: 2px solid color-mix(in srgb, var(--g-accent) 40%, transparent); padding-left: var(--g-3);
+}
+.g-reading-line span { color: var(--g-paper); font-weight: 500; }
+
+/* ---- what the microphone heard ---------------------------------------------------------------------
+   A transcript is a proposal, not a question: it is read back before anything is sent, with the recogniser's
+   own report about its hearing under it. It sits above the composer's textarea rather than replacing it,
+   because the reader may correct it rather than accept it. */
+.g-heard {
+  display: flex; flex-direction: column; gap: var(--g-2);
+  margin: 0 0 var(--g-2); padding: var(--g-3);
+  border: 1px solid var(--g-line); border-radius: var(--g-r);
+  background: var(--g-t2);
+}
+.g-heard-head {
+  display: flex; align-items: center; gap: 6px; margin: 0;
+  font-size: 11.5px; font-weight: 600; letter-spacing: 0.01em; color: var(--g-mist);
+}
+.g-heard-text { margin: 0; font-size: 15px; line-height: 1.5; color: var(--g-paper); }
+
+/* The turn a search sent the reader to: held for a moment, then released. It is a state of the page rather
+   than of the answer, so it is a wash and never a colour any source published. */
+.g-turn.g-found { animation: g-found 2.6s var(--g-ease) both; }
+@keyframes g-found {
+  0% { background: var(--g-accent-wash); box-shadow: 0 0 0 2px color-mix(in srgb, var(--g-accent) 28%, transparent); }
+  70% { background: var(--g-accent-wash); box-shadow: 0 0 0 2px color-mix(in srgb, var(--g-accent) 18%, transparent); }
+  100% { background: transparent; box-shadow: 0 0 0 2px transparent; }
+}
+@media (prefers-reduced-motion: reduce) { .g-turn.g-found { animation: none; background: var(--g-accent-wash); } }
+
+/* The claim's copy action. It is the one control on the card, so it stays out of the reading until the
+   pointer or the keyboard is on the claim, and it is dropped from a printout like every other control. */
+.g-claim-copy {
+  position: absolute; top: var(--g-2); right: var(--g-2);
+  width: 26px; height: 26px; border-radius: var(--g-r-sm);
+  border: 1px solid transparent; background: transparent; color: var(--g-mist);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; opacity: 0;
+  transition: opacity var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease), background var(--g-fast) var(--g-ease);
+}
+.g-claim:hover .g-claim-copy, .g-claim-copy:focus-visible { opacity: 1; }
+.g-claim-copy:hover { color: var(--g-paper); background: var(--g-t3); }
+.g-claim-copy:focus-visible { outline: 2px solid var(--g-accent); outline-offset: 1px; opacity: 1; }
+
+/* ---- turns ----------------------------------------------------------------------------------------
+   A turn does not get a card. The column is the container, and a hairline between turns is enough
+   separation — boxing every message is the SaaS-kit tell and it costs the column its rhythm. */
+.g-turn { padding: var(--g-6) 0; }
+.g-turn + .g-turn { border-top: 1px solid var(--g-line-soft); }
+
+.g-you { display: flex; justify-content: flex-end; }
+.g-you p {
+  margin: 0; max-width: 80%;
+  background: linear-gradient(180deg, var(--g-t5), var(--g-t3));
+  border: 1px solid var(--g-t4);
+  border-radius: var(--g-r-xl) var(--g-r-xl) var(--g-r-sm) var(--g-r-xl);
+  padding: 10px var(--g-4); font-size: 15px; color: var(--g-paper);
+  box-shadow: var(--g-e1);
+}
+.g-answer { display: flex; flex-direction: column; gap: var(--g-4); }
+.g-prose { margin: 0; font-size: 15.5px; line-height: 1.72; color: var(--g-paper); max-width: 68ch; text-wrap: pretty; }
+
+/* The quiet label above a turn's title or a choice prompt. .g-eyebrow was used in three places and defined
+   in none, which is why "restored from the local store" rendered at body weight like console output. */
+.g-eyebrow {
+  margin: 0 0 var(--g-2); font-size: 12.5px; font-weight: 500;
+  color: var(--g-mist-2); letter-spacing: 0;
+}
+
+.g-meta { display: flex; align-items: center; gap: var(--g-3); font-size: 12px; color: var(--g-mist-2); }
+.g-badge { font-family: var(--g-mono); font-size: 11px; border: 1px solid var(--g-line); border-radius: var(--g-r-pill); padding: 2px 9px; color: var(--g-mist); }
+.g-badge[data-held='true'] { color: var(--g-paper); border-color: var(--g-mist-2); }
+
+.g-acts { display: flex; gap: 2px; opacity: 0; transform: translateY(-2px); transition: opacity var(--g-mid) var(--g-ease), transform var(--g-mid) var(--g-ease); }
+.g-turn:hover .g-acts, .g-turn:focus-within .g-acts { opacity: 1; transform: none; }
+.g-act {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 30px; min-width: 30px; border-radius: var(--g-r-sm);
+  border: 0; background: transparent; color: var(--g-mist-2); cursor: pointer;
+  transition: background var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease);
+}
+.g-act:hover { background: var(--g-t3); color: var(--g-paper); }
+
+/* ---- the claim ------------------------------------------------------------------------------------ */
+.g-claims { display: grid; gap: var(--g-2); grid-template-columns: 1fr; }
+@media (min-width: 620px) {
+  .g-claims { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .g-claim[data-lead='true'] { grid-column: 1 / -1; }
+}
+.g-claim {
+  position: relative;
+  border: 1px solid var(--g-line-soft); border-radius: var(--g-r);
+  background: var(--g-fill);
+  padding: var(--g-3) var(--g-4);
+  display: flex; flex-direction: column; gap: 5px;
+  box-shadow: var(--g-e1);
+}
+.g-claim[data-lead='true'] {
+  border: 0; background: transparent; box-shadow: none;
+  padding: 0 0 var(--g-2);
+}
+.g-claim[data-lit]::before {
+  content: ''; position: absolute; left: -1px; top: 10px; bottom: 10px; width: 3px;
+  border-radius: 3px; background: var(--g-lit);
+}
+.g-claim[data-lead='true'][data-lit]::before { left: -14px; top: 12px; bottom: 22px; }
+/* A compact claim is one of several in a row, so it gives up the breathing room a standalone one keeps. */
+.g-claim-compact { padding: var(--g-2) var(--g-3); gap: 3px; }
+.g-claim-compact .g-claim-number { font-size: 1.15rem; }
+.g-claim-eyebrow { font-size: 13px; color: var(--g-mist); margin: 0; }
+.g-claim-value { display: flex; align-items: baseline; gap: 7px; flex-wrap: wrap; margin: 0; }
+.g-claim-number {
+  font-family: var(--g-mono); font-size: 1.35rem; font-weight: 500;
+  letter-spacing: -0.03em; color: var(--g-paper); font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+/* The one exception to the two voices. A monospace face gives every glyph the same advance, so at display
+   size a decimal point floats in a gap of its own and 0.3 reads as "0 . 3". The claim's structure and the
+   source line beneath it already say the value is tool-owned, so the hero numeral is set in the sans. */
+.g-claim[data-lead='true'] .g-claim-number {
+  font-family: var(--g-sans);
+  font-size: clamp(2.4rem, 1.6rem + 2.6vw, 3.4rem);
+  font-weight: 600; letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+}
+.g-claim-unit { font-family: var(--g-mono); font-size: 14px; color: var(--g-mist); }
+.g-claim[data-lead='true'] .g-claim-unit { font-size: 1.125rem; }
+.g-claim-note { font-size: 13px; color: var(--g-mist); margin: 0; }
+.g-claim-source { font-family: var(--g-mono); font-size: 11px; line-height: 1.55; color: var(--g-mist-2); margin: 0; overflow-wrap: anywhere; }
+.g-claim-absent { font-family: var(--g-mono); font-size: 13px; color: var(--g-mist-2); margin: 0; }
+.g-hazard { display: inline-flex; align-items: center; gap: var(--g-2); font-size: 15px; color: var(--g-paper); }
+.g-hazard::before { content: ''; width: 8px; height: 8px; border-radius: 2px; background: var(--g-lit, var(--g-mist-2)); }
+.g-ruler { position: relative; height: 3px; border-radius: 2px; background: var(--g-line); overflow: hidden; margin-top: 6px; }
+.g-ruler i { position: absolute; top: 0; bottom: 0; background: color-mix(in srgb, var(--g-accent) 70%, transparent); }
+
+/* ---- folds and the work panel --------------------------------------------------------------------- */
+.g-fold { margin-top: 2px; }
+.g-fold > summary, .g-work > summary { list-style: none; cursor: pointer; display: inline-flex; gap: 7px; align-items: center; }
+.g-fold > summary::-webkit-details-marker, .g-work > summary::-webkit-details-marker { display: none; }
+.g-fold > summary { font-size: 13px; font-weight: 500; color: var(--g-accent); transition: opacity var(--g-fast); }
+.g-fold > summary:hover { opacity: 0.8; }
+.g-fold > summary::before, .g-work > summary::before {
+  content: ''; width: 5px; height: 5px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg); transition: transform var(--g-mid) var(--g-ease);
+}
+.g-fold[open] > summary::before, .g-work[open] > summary::before { transform: rotate(45deg); }
+.g-fold-body { margin-top: var(--g-3); padding-left: var(--g-3); border-left: 1px solid var(--g-line-soft); animation: g-rise var(--g-mid) var(--g-ease) both; }
+/* ---- behind the answer ----------------------------------------------------------------------------
+   What the answer says is the subject. How it was reached is provenance, and provenance belongs behind a
+   hairline in one region — not in four boxes drawn like the evidence they explain. Four identical cards
+   stacked is the SaaS-kit tell, and this column had it: the notes, the accounting, the requested tasks and
+   the machine record were all peers of the reading. They are folds now, in one group, in a quieter voice. */
+.g-behind {
+  margin-top: var(--g-5);
+  padding-top: var(--g-4);
+  border-top: 1px solid var(--g-line-soft);
+  display: flex; flex-direction: column; gap: var(--g-3);
+}
+/* The accent is for the folds a reader opens inside an answer. These are audit, so they stay in the mist
+   and only take the accent on hover — the interest is available, not advertised. */
+.g-behind > .g-fold > summary, .g-behind .g-work > summary { color: var(--g-mist-2); font-weight: 400; }
+.g-behind > .g-fold > summary:hover { color: var(--g-accent); opacity: 1; }
+.g-behind .g-work { border-top: 0; padding-top: 0; }
+
+/* Three numbers and the ids behind them. It states a rule the product is built on — asked, answered and
+   incomplete are different numbers — so it keeps its heading and loses its box. */
+.g-tally { font-size: 12.5px; color: var(--g-mist); }
+.g-tally .coverage { font-family: var(--g-mono); font-size: 11.5px; color: var(--g-mist); }
+
+/* The lead action is the one a reader wants; the rest are available without competing for the same weight. */
+.g-chip-lead { color: var(--g-paper); border-color: color-mix(in srgb, var(--g-accent) 40%, var(--g-line)); }
+.g-chip-lead:hover { background: var(--g-accent-wash); }
+
+.g-work { border-top: 1px solid var(--g-line-soft); padding-top: var(--g-3); }
+/* Sans, not mono. A monospace face is for a value a tool owns; set on a whole sentence at 11.5px and in
+   lower case, it read as console output, which is the decorative-mono tell this system claims to have
+   dropped. The counts inside it are small enough to sit in the sans without pretending to be prose. */
+.g-work > summary { font-family: var(--g-sans); font-size: 12.5px; color: var(--g-mist-2); }
+/* The work panel's own marker: a step either ran or it did not, so the dot is a state and not a decoration. */
+.g-work-dot {
+  width: 5px; height: 5px; border-radius: 50%; flex: 0 0 5px;
+  background: var(--g-mist-2);
+  transition: background var(--g-fast) var(--g-ease);
+}
+.g-work[open] > summary .g-work-dot { background: var(--g-accent); }
+.g-work > summary:hover { color: var(--g-mist); }
+.g-work-row { display: grid; grid-template-columns: 16px 1fr auto; gap: var(--g-2); align-items: baseline; padding: 5px 0; font-size: 13px; }
+.g-work-row[data-state='refused'] .g-work-title { text-decoration: line-through; color: var(--g-mist-2); }
+.g-work-glyph { font-family: var(--g-mono); color: var(--g-mist-2); font-size: 11px; }
+.g-work-title { margin: 0; color: var(--g-mist); }
+.g-work-detail { margin: 0; color: var(--g-mist-2); font-size: 11.5px; }
+.g-work-ms { font-family: var(--g-mono); font-size: 11px; color: var(--g-mist-2); }
+
+/* ---- the engine at work ---------------------------------------------------------------------------
+   Three dots and the engine's own word for the stage it is in. .g-dots had no rule before this, so the
+   three <i> elements were zero-sized and the indicator was a bare line of text. */
+.g-stream { display: flex; align-items: center; gap: var(--g-3); color: var(--g-mist); font-size: 14px; }
+.g-dots { display: inline-flex; align-items: center; gap: 4px; }
+.g-dots i {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--g-accent);
+  animation: g-dot 1.25s var(--g-ease) infinite;
+}
+.g-dots i:nth-child(2) { animation-delay: 0.16s; }
+.g-dots i:nth-child(3) { animation-delay: 0.32s; }
+@keyframes g-dot {
+  0%, 62%, 100% { opacity: 0.28; transform: translateY(0) scale(0.84); }
+  30% { opacity: 1; transform: translateY(-3px) scale(1); }
+}
+/* The stage word is the thing that changes, so it is the thing that is lit. */
+.g-stream > span:last-child {
+  background: linear-gradient(90deg, var(--g-mist) 20%, var(--g-paper) 48%, var(--g-mist) 76%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+  animation: g-sweep 2.4s linear infinite;
+}
+@keyframes g-sweep { from { background-position: 120% 0 } to { background-position: -120% 0 } }
+
+.g-pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--g-accent); animation: g-dot 1.8s var(--g-ease) infinite; }
+
+/* ---- arrival ---------------------------------------------------------------------------------------
+   One entrance, used by every turn. It answers a send, so it is motion that reports something changed. */
+@keyframes g-in { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
+.g-in { animation: g-in 320ms var(--g-ease) both; }
