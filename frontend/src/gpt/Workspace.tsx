@@ -131,6 +131,11 @@ export function Workspace({
   /* A sun on the horizon is the strongest light of the day and a deep night has none, so this is placed and scaled
      by astronomy rather than chosen. */
   const glowAlpha = glowStrength(sun);
+  const phase = phaseOf(sun);
+  const disc = phase === 'night' ? glowPoint({ altitude: -sun.altitude, azimuth: (sun.azimuth + 180) % 360 }) : glow;
+  /* The disc is visible whenever it is up. glowStrength belongs to the glow — it is strongest with the sun on the
+     horizon — and reusing it here made the sun invisible at midday, which the capture caught. */
+  const discAlpha = sun.altitude > -6 ? 1 : 0.86;
 
   useEffect(() => {
     if (!restoreId || restored.current === restoreId) return;
@@ -216,6 +221,20 @@ export function Workspace({
       {/* The sun's own light, at its own azimuth and altitude. Decoration by construction: it is placed by
           astronomy and can never state a condition. */}
       <div className="g-sun" aria-hidden="true" />
+      {/* The disc travels: it is placed by the sun's own azimuth and altitude, and takes 2.4 seconds to move when
+          the hour turns. After dark it stands at the anti-solar point, which is where a full moon is — decoration,
+          named as decoration in the legend, and never a condition. */}
+      <div
+        className="g-disc"
+        aria-hidden="true"
+        style={
+          {
+            '--g-disc-x': (disc.x * 100).toFixed(2) + '%',
+            '--g-disc-y': (disc.y * 100).toFixed(2) + '%',
+            '--g-disc-a': discAlpha.toFixed(2),
+          } as CSSProperties
+        }
+      />
       <button type="button" className="g-scrim" aria-label="Close the conversation list" onClick={() => setRailOpen(false)} />
       <Rail
         currentId={conversation.conversationId}

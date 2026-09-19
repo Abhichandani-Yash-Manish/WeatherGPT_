@@ -838,3 +838,30 @@ html, body { background: var(--g-bg); }
 .g-field { display: grid; }
 .g-field-under { grid-area: 1 / 1; }
 .g-field-in { grid-area: 1 / 1; }
+
+/* The disc: the sun by day, the moon after dark, travelling between the two.
+   ----------------------------------------------------------------------------
+   The user reference asks for a celestial body that physically moves rather than two images swapping. This one
+   is placed by the sun altitude and azimuth the shell already computes, transitions its position over 2.4
+   seconds, and is decoration: the legend says so, and light can state no condition. */
+.g-disc {
+  position: fixed;
+  z-index: 1;
+  left: var(--g-disc-x, 60%);
+  top: var(--g-disc-y, 20%);
+  width: clamp(48px, 5.4vw, 88px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  background: radial-gradient(circle at 34% 32%, rgba(255, 251, 238, 0.98), rgba(255, 228, 172, 0.92) 62%, rgba(255, 208, 142, 0.7));
+  box-shadow: 0 0 64px 22px rgba(255, 226, 170, 0.32);
+  /* The disc is visible whenever it is up; the glow has its own, separate strength. */
+  opacity: var(--g-disc-a, 0);
+  transition: left 2400ms ease, top 2400ms ease, opacity 1600ms ease, background 1600ms ease, box-shadow 1600ms ease;
+}
+.g[data-phase='night'] .g-disc {
+  background: radial-gradient(circle at 36% 34%, rgba(247, 251, 255, 0.96), rgba(214, 228, 246, 0.86) 64%, rgba(178, 198, 228, 0.55));
+  box-shadow: 0 0 46px 14px rgba(198, 216, 242, 0.22);
+  opacity: 0.86;
+}
