@@ -23,9 +23,10 @@ describe('the shell', () => {
     expect(screen.getByLabelText('Your question')).toBeInTheDocument();
     /* Paper, ink and the published colours: no photograph, no canvas, nothing that needs a disclaimer. */
     expect(document.querySelector('[data-design="gpt"]')).not.toBeNull();
-    /* The field is one canvas painted from the hour. No photograph is ever fetched. */
-    expect(document.querySelector('img')).toBeNull();
-    expect(document.querySelector('canvas.g-field-canvas')).not.toBeNull();
+    /* The ground is three CSS layers keyed to the hour. No image and no canvas is ever fetched or drawn. */
+    expect(document.querySelector('img, canvas')).toBeNull();
+    expect(document.querySelector('.g-field-sky')).not.toBeNull();
+    expect(document.querySelector('.g-field-horizon')).not.toBeNull();
   });
 
   it('hands the front door question to the conversation', async () => {

@@ -1,51 +1,65 @@
-/* The workspace.
+/* WeatherGPT — the workspace.
    ============================================================================
-   Two things decided this file. First, the design the user kept from 18 September 21:04: a dark ground that
-   fades from the upper half, a centred sentence as the hero, a quiet rounded composer, and claim cards whose
-   top edge carries the colour a source printed. Second, ChatGPT's architecture, targeted deliberately:
-   a 260px rail of past conversations grouped by recency, a 768px centred column, a composer that sits under
-   the hero when the page is empty and docks to the foot once a conversation is running, transient hover
-   actions on an answer, and a streaming state with a stop.
+   Six background directions failed here before this one, and every one failed the same way: the background
+   tried to be the subject, and read as unserious. This system inverts that. The ground whispers — its whole
+   contrast range is about twelve percent — and every bit of craft goes into the foreground: the type, the
+   spacing rhythm, the claim, the composer, and motion that only ever answers something a person did.
 
-   What is ours: the claim, the source line under every value, the published colour, and the work panel.
+   Grounding: this product reads published meteorological bulletins. Its vernacular is instruments and
+   documents. So the palette is a night-flight palette — a true navy-black rather than a tinted grey — and
+   the single accent is a pale instrument blue, cool and low in saturation, deliberately far from the four
+   IMD hazard colours so that an interface state can never be mistaken for a warning.
 
-   No illustration. No scene. The ground is a dark field with a single soft light in its upper half, tinted a
-   few degrees by the hour — enough to feel alive, never enough to compete with the sentence. */
+   Three tells were removed from the previous build: all-caps eyebrows, meta strings joined with middle dots,
+   and a monospace face used decoratively. Mono survives in exactly one role — a value a tool owns, or the
+   provenance line under it — because there it carries meaning. */
 
 :root {
-  --g-bg: #0b0d10;
-  --g-bg-2: #101317;
-  --g-panel: #16191e;
-  --g-rail: #0e1114;
-  --g-line: rgba(255, 255, 255, 0.08);
-  --g-line-2: rgba(255, 255, 255, 0.14);
-  --g-ink: #ececf1;
-  --g-ink-2: #b4b8c0;
-  --g-ink-3: #8a8f99;
-  --g-accent: #7aa2ff;
-  --g-accent-ink: #0b0d10;
-  --g-user: #1d2026;
+  /* ground */
+  --g-void: #070b14;
+  --g-bg: #0c1220;
+  --g-raise: #131b2b;
+  --g-raise-2: #182131;
+  --g-line: #1e2838;
+  --g-line-soft: #16202f;
 
-  --g-red: #f0556d;
-  --g-orange: #ff9d42;
-  --g-yellow: #f5c518;
-  --g-green: #4ac47c;
+  /* ink */
+  --g-paper: #e8edf5;
+  --g-mist: #8b98ad;
+  --g-mist-2: #67738a;
+
+  /* the one accent */
+  --g-accent: #a8c7fa;
+  --g-accent-wash: rgba(168, 199, 250, 0.10);
+
+  /* published colours — reached only through a source */
+  --g-red: #e2596f;
+  --g-orange: #e08a47;
+  --g-yellow: #d9b53f;
+  --g-green: #4f9d6d;
 
   --g-sans: 'Anek Latin Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --g-mono: 'Martian Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
+  --g-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
-  --g-rail-w: 260px;
-  --g-col: 768px;
-  --g-r: 14px;
-  --g-r-lg: 26px;
+  /* a 4px rhythm, used religiously */
+  --g-1: 4px; --g-2: 8px; --g-3: 12px; --g-4: 16px; --g-5: 20px;
+  --g-6: 24px; --g-7: 32px; --g-8: 40px; --g-9: 56px;
+
+  --g-rail-w: 264px;
+  --g-col: 740px;
+  --g-r-sm: 8px; --g-r: 12px; --g-r-lg: 18px; --g-r-pill: 999px;
+
+  --g-fast: 140ms; --g-mid: 220ms; --g-slow: 420ms;
+  --g-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
   color-scheme: dark;
 }
 
-/* The hour tints the light in the upper half. Four steps, a few degrees apart — never a picture. */
-[data-hour='daybreak'] { --g-glow: rgba(255, 186, 120, 0.16); --g-glow-2: rgba(140, 170, 255, 0.10); }
-[data-hour='noon']     { --g-glow: rgba(120, 165, 255, 0.16); --g-glow-2: rgba(90, 130, 220, 0.10); }
-[data-hour='golden']   { --g-glow: rgba(255, 140, 90, 0.16);  --g-glow-2: rgba(170, 110, 200, 0.10); }
-[data-hour='night']    { --g-glow: rgba(110, 140, 230, 0.13); --g-glow-2: rgba(70, 90, 170, 0.09); }
+/* The hour, as a whisper. Four grounds, each a few degrees apart, none of them a picture. */
+[data-hour='daybreak'] { --g-sky-1: #101a2e; --g-sky-2: #0d1524; --g-halo: rgba(196, 164, 140, 0.13); --g-halo-x: 24%; }
+[data-hour='noon']     { --g-sky-1: #101c33; --g-sky-2: #0c1524; --g-halo: rgba(150, 180, 230, 0.12); --g-halo-x: 66%; }
+[data-hour='golden']   { --g-sky-1: #141827; --g-sky-2: #0c1220; --g-halo: rgba(206, 150, 120, 0.13); --g-halo-x: 76%; }
+[data-hour='night']    { --g-sky-1: #0a1020; --g-sky-2: #080d18; --g-halo: rgba(130, 156, 210, 0.08); --g-halo-x: 32%; }
 
 html, body { background: var(--g-bg); }
 
@@ -53,936 +67,315 @@ html, body { background: var(--g-bg); }
   min-height: 100dvh;
   display: flex;
   background: var(--g-bg);
-  color: var(--g-ink);
+  color: var(--g-paper);
   font-family: var(--g-sans);
   font-size: 15px;
-  line-height: 1.55;
+  line-height: 1.5;
+  letter-spacing: -0.002em;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-.g *:focus-visible { outline: 2px solid var(--g-accent); outline-offset: 2px; border-radius: 6px; }
+.g *:focus-visible { outline: 2px solid var(--g-accent); outline-offset: 2px; border-radius: var(--g-r-sm); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
-/* ---- the field ----------------------------------------------------------------------------------- */
-/* The dithered aurora, scaled up from a small canvas and faded out by the middle of the page. */
+/* ---- the ground -----------------------------------------------------------------------------------
+   Three layers and nothing else: an hour-shifted gradient, one halo placed where the light is, and a
+   single horizon hairline. Firewatch's depth reduced to the one edge that actually creates it. */
 .g-field { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-.g-field-canvas {
-  width: 100%; height: 62vh; display: block;
-  image-rendering: pixelated;
-  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 42%, transparent 96%);
-  mask-image: linear-gradient(180deg, #000 0%, #000 42%, transparent 96%);
-  transition: height 700ms cubic-bezier(.2,.8,.2,1), opacity 700ms ease;
+.g-field-sky {
+  position: absolute; inset: 0;
+  background: linear-gradient(178deg, var(--g-sky-1) 0%, var(--g-sky-2) 46%, var(--g-bg) 78%);
+  transition: background var(--g-slow) ease;
 }
-/* Once a conversation is running the field expands and recedes, so the transcript owns the screen. */
-.g-field[data-expanded='true'] .g-field-canvas { height: 100vh; opacity: .34; }
-/* The column sits on a soft well of its own, so the sentence never competes with the grain behind it. */
-.g-field::after {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(64rem 34rem at 50% 30%, rgba(11,13,16,.55), transparent 70%);
+.g-field-halo {
+  position: absolute; left: var(--g-halo-x); top: -18%;
+  width: 88rem; height: 58rem; transform: translateX(-50%);
+  background: radial-gradient(closest-side, var(--g-halo), transparent 72%);
+  transition: left 1.2s var(--g-ease), background 1.2s ease, opacity var(--g-slow) ease;
 }
+/* The horizon: one hairline of atmosphere, drifting too slowly to be caught moving. */
+.g-field-horizon {
+  position: absolute; left: -10%; right: -10%; top: 46%; height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--g-accent) 26%, transparent) 38%, color-mix(in srgb, var(--g-accent) 14%, transparent) 62%, transparent);
+  opacity: 0.5;
+  animation: g-horizon 48s ease-in-out infinite alternate;
+  transition: opacity var(--g-slow) ease;
+}
+.g-field-horizon::after {
+  content: ''; position: absolute; inset: -40px 0 auto 0; height: 80px;
+  background: radial-gradient(60% 100% at 50% 50%, color-mix(in srgb, var(--g-accent) 7%, transparent), transparent 70%);
+}
+@keyframes g-horizon { from { transform: translateY(0) } to { transform: translateY(-14px) } }
+.g-field[data-expanded='true'] .g-field-halo { opacity: 0.5; }
+.g-field[data-expanded='true'] .g-field-horizon { opacity: 0.18; }
 
 /* ---- the rail ------------------------------------------------------------------------------------ */
 .g-rail {
-  position: relative; z-index: 3;
-  width: var(--g-rail-w); flex: 0 0 var(--g-rail-w);
-  background: var(--g-rail); border-right: 1px solid var(--g-line);
-  display: flex; flex-direction: column; height: 100dvh; position: sticky; top: 0;
+  position: sticky; top: 0; z-index: 3;
+  width: var(--g-rail-w); flex: 0 0 var(--g-rail-w); height: 100dvh;
+  background: color-mix(in srgb, var(--g-void) 82%, transparent);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-right: 1px solid var(--g-line-soft);
+  display: flex; flex-direction: column;
 }
-.g-rail-head { padding: 12px 12px 8px; display: flex; flex-direction: column; gap: 8px; }
-.g-brand { display: flex; align-items: center; gap: 9px; padding: 4px 8px; font-weight: 600; font-size: 14.5px; letter-spacing: 0.01em; }
-.g-brand-mark { width: 22px; height: 22px; border-radius: 7px; background: linear-gradient(145deg, var(--g-accent), #4b6fd4); flex: 0 0 22px; }
+.g-rail-head { padding: var(--g-4) var(--g-3) var(--g-2); display: flex; flex-direction: column; gap: var(--g-2); }
+.g-brand { display: flex; align-items: center; gap: var(--g-2); padding: var(--g-1) var(--g-2) var(--g-3); font-size: 14px; font-weight: 550; letter-spacing: -0.01em; }
+.g-brand-mark {
+  width: 20px; height: 20px; border-radius: 6px; flex: 0 0 20px;
+  background: linear-gradient(150deg, var(--g-accent), #3f5d8f 70%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
 .g-new {
-  display: flex; align-items: center; gap: 9px; width: 100%;
-  padding: 9px 11px; border-radius: 11px; border: 1px solid var(--g-line-2);
-  background: transparent; color: var(--g-ink); font: inherit; font-size: 14px; font-weight: 500;
-  cursor: pointer; text-align: left; transition: background 120ms ease;
+  display: flex; align-items: center; gap: var(--g-2); width: 100%;
+  padding: 9px var(--g-3); border-radius: var(--g-r);
+  border: 1px solid var(--g-line); background: transparent;
+  color: var(--g-paper); font: inherit; font-size: 14px; font-weight: 500;
+  cursor: pointer; text-align: left;
+  transition: background var(--g-fast) var(--g-ease);
 }
-.g-new:hover { background: var(--g-panel); }
+.g-new:hover { background: var(--g-raise); }
 .g-search {
-  width: 100%; padding: 8px 11px; border-radius: 11px; border: 1px solid var(--g-line);
-  background: var(--g-bg-2); color: var(--g-ink); font: inherit; font-size: 13.5px;
+  width: 100%; padding: 8px var(--g-3) 8px var(--g-7); border-radius: var(--g-r);
+  border: 1px solid transparent; background: var(--g-raise);
+  color: var(--g-paper); font: inherit; font-size: 13px;
+  transition: border-color var(--g-fast) var(--g-ease);
 }
-.g-search::placeholder { color: var(--g-ink-3); }
+.g-search::placeholder { color: var(--g-mist-2); }
+.g-search:focus { border-color: var(--g-line); outline: none; }
 
-.g-history { flex: 1; overflow-y: auto; padding: 6px 8px 16px; }
-.g-group { padding: 14px 8px 6px; font-size: 11.5px; font-weight: 600; color: var(--g-ink-3); letter-spacing: 0.02em; }
+.g-history { flex: 1; overflow-y: auto; padding: var(--g-2) var(--g-2) var(--g-6); }
+.g-group { padding: var(--g-4) var(--g-2) var(--g-1); font-size: 12px; font-weight: 550; color: var(--g-mist-2); }
 .g-row {
-  display: flex; align-items: center; gap: 8px; width: 100%;
-  padding: 8px 10px; border-radius: 10px; border: 0; background: transparent;
-  color: var(--g-ink-2); font: inherit; font-size: 13.5px; text-align: left; cursor: pointer;
-  transition: background 120ms ease, color 120ms ease;
+  display: flex; align-items: center; gap: var(--g-2); width: 100%;
+  padding: 7px var(--g-2) 7px var(--g-3); border-radius: var(--g-r-sm);
+  color: var(--g-mist); font-size: 13.5px;
+  transition: background var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease);
 }
-.g-row:hover { background: var(--g-panel); color: var(--g-ink); }
-.g-row[aria-current='true'] { background: var(--g-panel); color: var(--g-ink); }
+.g-row:hover { background: var(--g-raise); color: var(--g-paper); }
+.g-row[aria-current='true'] { background: var(--g-raise-2); color: var(--g-paper); }
 .g-row-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.g-row-drop { opacity: 0; border: 0; background: transparent; color: var(--g-ink-3); cursor: pointer; padding: 2px 4px; border-radius: 6px; }
+.g-row-drop { opacity: 0; border: 0; background: transparent; color: var(--g-mist-2); cursor: pointer; padding: 3px; border-radius: 6px; transition: opacity var(--g-fast), color var(--g-fast); }
 .g-row:hover .g-row-drop, .g-row-drop:focus-visible { opacity: 1; }
-.g-row-drop:hover { color: var(--g-ink); background: var(--g-bg); }
-.g-rail-foot { border-top: 1px solid var(--g-line); padding: 10px; display: flex; flex-direction: column; gap: 6px; }
-.g-empty-note { padding: 10px; font-size: 12.5px; color: var(--g-ink-3); }
+.g-row-drop:hover { color: var(--g-paper); }
+.g-rail-foot { border-top: 1px solid var(--g-line-soft); padding: var(--g-3); }
+.g-empty-note { padding: var(--g-3) var(--g-2); font-size: 13px; color: var(--g-mist-2); line-height: 1.5; }
 
 /* ---- the column ---------------------------------------------------------------------------------- */
 .g-main { position: relative; z-index: 2; flex: 1; min-width: 0; display: flex; flex-direction: column; height: 100dvh; }
-.g-top {
-  display: flex; align-items: center; justify-content: space-between; gap: 10px;
-  padding: 10px 20px; border-bottom: 1px solid transparent;
-}
-.g-top-left { display: flex; align-items: center; gap: 8px; min-width: 0; }
-.g-top select.g-tool { max-width: 13rem; }
+.g-top { display: flex; align-items: center; justify-content: space-between; gap: var(--g-2); padding: var(--g-3) var(--g-5); }
+.g-top-left { display: flex; align-items: center; gap: var(--g-1); min-width: 0; }
 .g-thread { flex: 1; overflow-y: auto; scroll-behavior: smooth; }
-.g-col { width: 100%; max-width: var(--g-col); margin-inline: auto; padding: 0 20px; }
+.g-col { width: 100%; max-width: var(--g-col); margin-inline: auto; padding: 0 var(--g-5); }
 
-/* The empty state: the hero and the composer sit together in the middle of the column. */
-.g-welcome { min-height: calc(100dvh - 130px); display: flex; flex-direction: column; justify-content: center; gap: 22px; padding-bottom: 40px; }
-.g-eyebrow { font-family: var(--g-mono); font-size: 11px; color: var(--g-ink-2); letter-spacing: 0.06em; text-transform: uppercase; margin: 0; }
-.g-hero { font-size: clamp(1.9rem, 1.2rem + 2.4vw, 2.7rem); line-height: 1.16; font-weight: 600; letter-spacing: -0.022em; margin: 10px 0 0; text-wrap: balance; }
-.g-hero-sub { font-size: clamp(1rem, 0.95rem + 0.4vw, 1.18rem); color: var(--g-ink-2); margin: 12px 0 0; max-width: 54ch; text-wrap: pretty; }
-.g-num { font-family: var(--g-mono); font-weight: 500; letter-spacing: -0.03em; }
-.g-source { font-family: var(--g-mono); font-size: 11px; color: var(--g-ink-3); margin: 12px 0 0; overflow-wrap: anywhere; }
-
-/* ---- the composer -------------------------------------------------------------------------------- */
-.g-dock { position: sticky; bottom: 0; z-index: 4; padding-bottom: max(14px, env(safe-area-inset-bottom, 0px)); background: linear-gradient(180deg, transparent, var(--g-bg) 34%); }
-.g-welcome .g-dock { position: static; background: none; padding-bottom: 0; }
-.g-composer {
-  border: 1px solid var(--g-line-2); border-radius: var(--g-r-lg); background: var(--g-panel);
-  padding: 10px 10px 8px; display: flex; flex-direction: column; gap: 6px;
-  box-shadow: 0 10px 34px -20px rgba(0, 0, 0, 0.9);
-  transition: border-color 140ms ease;
+/* ---- the opening ---------------------------------------------------------------------------------
+   The reading is the hero. A sentence, set large and tight, left-aligned because this is a reading
+   interface and not a poster. Nothing sits above it: no label, no eyebrow. */
+.g-welcome { min-height: calc(100dvh - 148px); display: flex; flex-direction: column; justify-content: center; gap: var(--g-7); padding-bottom: var(--g-9); }
+.g-hero {
+  font-size: clamp(2rem, 1.3rem + 2.4vw, 2.85rem);
+  line-height: 1.1; font-weight: 600; letter-spacing: -0.032em;
+  margin: 0; max-width: 20ch; text-wrap: balance;
 }
-.g-composer:focus-within { border-color: rgba(255, 255, 255, 0.24); }
+.g-hero-sub {
+  font-size: 1.0625rem; line-height: 1.58; color: var(--g-mist);
+  margin: var(--g-4) 0 0; max-width: 56ch; text-wrap: pretty;
+}
+.g-num { font-family: var(--g-mono); font-size: 0.95em; font-weight: 500; letter-spacing: -0.02em; color: var(--g-paper); font-variant-numeric: tabular-nums; }
+.g-source { font-family: var(--g-mono); font-size: 11.5px; line-height: 1.6; color: var(--g-mist-2); margin: var(--g-4) 0 0; overflow-wrap: anywhere; }
+
+/* ---- the composer --------------------------------------------------------------------------------
+   A glass slab that lifts on focus. The one place the accent appears at rest. */
+.g-dock { position: sticky; bottom: 0; z-index: 4; padding-bottom: var(--g-5); }
+.g-dock::before {
+  content: ''; position: absolute; inset: -40px 0 0 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(180deg, transparent, var(--g-bg) 46%);
+}
+.g-welcome .g-dock { position: static; padding-bottom: 0; }
+.g-welcome .g-dock::before { display: none; }
+.g-composer {
+  border: 1px solid var(--g-line); border-radius: var(--g-r-lg);
+  min-height: 0;
+  background: color-mix(in srgb, var(--g-raise) 78%, transparent);
+  backdrop-filter: blur(24px) saturate(1.2); -webkit-backdrop-filter: blur(24px) saturate(1.2);
+  padding: var(--g-3) var(--g-3) var(--g-2);
+  display: flex; flex-direction: column; gap: 0;
+  transition: border-color var(--g-mid) var(--g-ease), box-shadow var(--g-mid) var(--g-ease), transform var(--g-mid) var(--g-ease);
+}
+.g-composer:focus-within {
+  border-color: color-mix(in srgb, var(--g-accent) 38%, var(--g-line));
+  box-shadow: 0 0 0 4px var(--g-accent-wash), 0 18px 40px -28px rgba(0, 0, 0, 0.9);
+  transform: translateY(-1px);
+}
 .g-composer textarea {
   width: 100%; border: 0; outline: none; resize: none; background: transparent;
-  color: var(--g-ink); font: inherit; font-size: 16px; line-height: 1.5; padding: 6px 8px; min-height: 26px; max-height: 200px;
+  color: var(--g-paper); font: inherit; font-size: 15.5px; line-height: 1.55;
+  padding: 2px var(--g-2) 0; min-height: 24px; max-height: 208px;
 }
-.g-composer textarea::placeholder { color: var(--g-ink-3); }
-.g-composer-row { display: flex; align-items: center; gap: 6px; }
+.g-composer textarea::placeholder { color: var(--g-mist-2); }
+.g-composer-row { display: flex; align-items: center; gap: var(--g-1); margin-top: 2px; }
 .g-composer-row .g-spacer { flex: 1; }
+
 .g-tool {
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-  min-width: 34px; height: 34px; padding: 0 10px; border-radius: 999px;
-  border: 1px solid var(--g-line); background: transparent; color: var(--g-ink-2);
-  font: inherit; font-size: 13px; cursor: pointer; transition: background 120ms ease, color 120ms ease;
+  height: 32px; min-width: 32px; padding: 0 10px; border-radius: var(--g-r-sm);
+  border: 1px solid transparent; background: transparent; color: var(--g-mist);
+  font: inherit; font-size: 13px; cursor: pointer;
+  transition: background var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease);
 }
-.g-tool:hover { background: var(--g-bg-2); color: var(--g-ink); }
-.g-tool[aria-pressed='true'] { background: var(--g-red); border-color: transparent; color: #fff; }
+.g-tool:hover { background: var(--g-raise-2); color: var(--g-paper); }
+.g-tool[aria-pressed='true'] { background: color-mix(in srgb, var(--g-red) 18%, transparent); color: var(--g-red); }
+.g-top select.g-tool { max-width: 12rem; border-color: var(--g-line-soft); }
+
 .g-send {
-  width: 34px; height: 34px; border-radius: 999px; border: 0; cursor: pointer;
-  background: var(--g-ink); color: var(--g-accent-ink);
+  width: 32px; height: 32px; border-radius: var(--g-r-pill); border: 0; cursor: pointer;
+  background: var(--g-paper); color: var(--g-void);
   display: inline-flex; align-items: center; justify-content: center;
-  transition: opacity 120ms ease, transform 120ms ease;
+  transition: transform var(--g-fast) var(--g-ease), background var(--g-fast);
 }
-.g-send:disabled { opacity: 0.32; cursor: default; }
-.g-send:not(:disabled):hover { transform: translateY(-1px); }
-.g-hint { font-size: 11.5px; color: var(--g-ink-3); text-align: center; padding: 6px 0 0; }
-.g-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.g-send:disabled { background: var(--g-raise-2); color: var(--g-mist-2); cursor: default; }
+.g-send:not(:disabled):hover { transform: scale(1.06); }
+.g-send:not(:disabled):active { transform: scale(0.96); }
+
+.g-hint { font-size: 11.5px; color: var(--g-mist-2); text-align: center; margin: var(--g-3) 0 0; }
+.g-chips { display: flex; flex-wrap: wrap; gap: var(--g-2); }
 .g-chip {
-  padding: 8px 13px; border-radius: 999px; border: 1px solid var(--g-line-2); background: transparent;
-  color: var(--g-ink-2); font: inherit; font-size: 13.5px; cursor: pointer; transition: background 120ms ease, color 120ms ease;
+  padding: 7px var(--g-3); border-radius: var(--g-r-pill);
+  border: 1px solid var(--g-line); background: transparent;
+  color: var(--g-mist); font: inherit; font-size: 13px; cursor: pointer;
+  transition: background var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease);
 }
-.g-chip:hover { background: var(--g-panel); color: var(--g-ink); }
+.g-chip:hover { background: var(--g-raise); color: var(--g-paper); }
 
-/* ---- the turns ----------------------------------------------------------------------------------- */
-.g-turn { padding: 18px 0; }
-.g-turn + .g-turn { border-top: 1px solid rgba(255, 255, 255, 0.05); }
+/* ---- turns ---------------------------------------------------------------------------------------- */
+.g-turn { padding: var(--g-6) 0; }
+.g-turn + .g-turn { border-top: 1px solid var(--g-line-soft); }
 .g-you { display: flex; justify-content: flex-end; }
-.g-you p { margin: 0; max-width: 78%; background: var(--g-user); border-radius: 18px; padding: 10px 15px; font-size: 15px; }
-.g-answer { display: flex; flex-direction: column; gap: 12px; }
-.g-prose { margin: 0; font-size: 15.5px; line-height: 1.68; color: var(--g-ink); max-width: 68ch; text-wrap: pretty; }
-.g-meta { display: flex; align-items: center; gap: 8px; font-family: var(--g-mono); font-size: 11px; color: var(--g-ink-3); }
-.g-badge { border: 1px solid var(--g-line-2); border-radius: 999px; padding: 1px 8px; }
-.g-badge[data-held='true'] { color: var(--g-ink); border-color: var(--g-ink-3); }
+.g-you p {
+  margin: 0; max-width: 80%; background: var(--g-raise-2);
+  border-radius: var(--g-r-lg) var(--g-r-lg) var(--g-r-sm) var(--g-r-lg);
+  padding: 10px var(--g-4); font-size: 15px; color: var(--g-paper);
+}
+.g-answer { display: flex; flex-direction: column; gap: var(--g-4); }
+.g-prose { margin: 0; font-size: 15.5px; line-height: 1.72; color: var(--g-paper); max-width: 68ch; text-wrap: pretty; }
+.g-meta { display: flex; align-items: center; gap: var(--g-3); font-size: 12px; color: var(--g-mist-2); }
+.g-badge { font-family: var(--g-mono); font-size: 11px; border: 1px solid var(--g-line); border-radius: var(--g-r-pill); padding: 2px 9px; color: var(--g-mist); }
+.g-badge[data-held='true'] { color: var(--g-paper); border-color: var(--g-mist-2); }
 
-/* The transient action dock: hidden until the turn is hovered or focused. */
-.g-acts { display: flex; gap: 2px; opacity: 0; transition: opacity 140ms ease; }
+.g-acts { display: flex; gap: 2px; opacity: 0; transition: opacity var(--g-mid) var(--g-ease); }
 .g-turn:hover .g-acts, .g-turn:focus-within .g-acts { opacity: 1; }
 .g-act {
   display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px;
-  border: 0; border-radius: 8px; background: transparent; color: var(--g-ink-3); cursor: pointer;
-  transition: background 120ms ease, color 120ms ease;
+  border: 0; border-radius: var(--g-r-sm); background: transparent; color: var(--g-mist-2); cursor: pointer;
+  transition: background var(--g-fast), color var(--g-fast);
 }
-.g-act:hover { background: var(--g-panel); color: var(--g-ink); }
+.g-act:hover { background: var(--g-raise-2); color: var(--g-paper); }
 
-/* ---- the claim ----------------------------------------------------------------------------------- */
-.g-claims { display: grid; gap: 10px; grid-template-columns: 1fr; }
-@media (min-width: 620px) { .g-claims { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); } .g-claims > .g-claim[data-lead='true'] { grid-column: 1 / -1; } }
+/* ---- the claim -------------------------------------------------------------------------------------
+   Not a card kit: the leading claim is a plain block with the value at display size and no border at all;
+   supporting claims are quiet hairline slabs. Different jobs, different treatments. */
+.g-claims { display: grid; gap: var(--g-2); grid-template-columns: 1fr; }
+@media (min-width: 620px) {
+  .g-claims { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+  .g-claims > .g-claim[data-lead='true'] { grid-column: 1 / -1; }
+}
+
 .g-claim {
-  position: relative; border: 1px solid var(--g-line); border-radius: var(--g-r); background: var(--g-bg-2);
-  padding: 14px 15px; display: flex; flex-direction: column; gap: 5px; overflow: hidden;
+  position: relative; border: 1px solid var(--g-line-soft); border-radius: var(--g-r);
+  background: color-mix(in srgb, var(--g-raise) 55%, transparent);
+  padding: var(--g-4); display: flex; flex-direction: column; gap: 6px;
 }
-/* The published colour, on the top edge — the one place a source's colour appears. */
-.g-claim::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 2px; background: var(--g-lit, transparent); }
-.g-claim-eyebrow { font-size: 12.5px; color: var(--g-ink-3); margin: 0; }
+.g-claim[data-lead='true'] {
+  border: 0; border-bottom: 1px solid var(--g-line-soft); border-radius: 0;
+  background: none; padding: var(--g-2) 0 var(--g-5); gap: var(--g-1);
+}
+/* The published colour: a short bar beside the value, never a wash over the block. */
+.g-claim[data-lit]::before {
+  content: ''; position: absolute; left: 0; top: var(--g-4); bottom: var(--g-4);
+  width: 2px; border-radius: 2px; background: var(--g-lit);
+}
+.g-claim[data-lead='true'][data-lit]::before { left: -14px; top: 12px; bottom: 22px; }
+.g-claim-eyebrow { font-size: 13px; color: var(--g-mist); margin: 0; }
 .g-claim-value { display: flex; align-items: baseline; gap: 7px; flex-wrap: wrap; margin: 0; }
-.g-claim-number { font-family: var(--g-mono); font-size: 30px; font-weight: 500; line-height: 1.05; letter-spacing: -0.035em; }
-.g-claim[data-lead='true'] .g-claim-number { font-size: 44px; }
-.g-claim-unit { font-family: var(--g-mono); font-size: 14px; color: var(--g-ink-2); }
-.g-claim-note { font-size: 13px; color: var(--g-ink-2); margin: 0; }
-.g-claim-source { font-family: var(--g-mono); font-size: 10.5px; color: var(--g-ink-3); margin: 0; overflow-wrap: anywhere; }
-.g-claim-absent { font-family: var(--g-mono); font-size: 13px; color: var(--g-ink-3); margin: 0; }
-.g-hazard { display: inline-flex; align-items: center; gap: 8px; font-family: var(--g-mono); font-size: 14px; }
-.g-hazard::before { content: ''; width: 10px; height: 10px; border-radius: 3px; background: var(--g-lit, var(--g-ink-3)); }
-.g-ruler { position: relative; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.07); overflow: hidden; margin-top: 3px; }
-.g-ruler i { position: absolute; top: 0; bottom: 0; background: var(--g-accent); opacity: .85; }
+.g-claim-number {
+  font-family: var(--g-mono); font-size: 26px; font-weight: 500; line-height: 1.1;
+  letter-spacing: -0.04em; font-variant-numeric: tabular-nums; color: var(--g-paper);
+}
+.g-claim[data-lead='true'] .g-claim-number { font-size: clamp(2.4rem, 1.6rem + 2.6vw, 3.4rem); letter-spacing: -0.045em; }
+.g-claim-unit { font-family: var(--g-mono); font-size: 14px; color: var(--g-mist); }
+.g-claim[data-lead='true'] .g-claim-unit { font-size: 1.125rem; }
+.g-claim-note { font-size: 13px; color: var(--g-mist); margin: 0; }
+.g-claim-source { font-family: var(--g-mono); font-size: 11px; line-height: 1.55; color: var(--g-mist-2); margin: 0; overflow-wrap: anywhere; }
+.g-claim-absent { font-family: var(--g-mono); font-size: 13px; color: var(--g-mist-2); margin: 0; }
+.g-hazard { display: inline-flex; align-items: center; gap: var(--g-2); font-size: 15px; color: var(--g-paper); }
+.g-hazard::before { content: ''; width: 8px; height: 8px; border-radius: 2px; background: var(--g-lit, var(--g-mist-2)); }
+.g-ruler { position: relative; height: 3px; border-radius: 2px; background: var(--g-line); overflow: hidden; margin-top: 6px; }
+.g-ruler i { position: absolute; top: 0; bottom: 0; background: color-mix(in srgb, var(--g-accent) 70%, transparent); }
 
-/* ---- depth and work ------------------------------------------------------------------------------ */
-.g-fold { margin-top: 4px; }
-.g-fold > summary { list-style: none; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--g-accent); display: inline-flex; gap: 6px; align-items: center; }
-.g-fold > summary::-webkit-details-marker { display: none; }
-.g-fold > summary::before { content: '›'; transition: transform 140ms ease; display: inline-block; }
-.g-fold[open] > summary::before { transform: rotate(90deg); }
-.g-fold-body { margin-top: 10px; border-top: 1px solid var(--g-line); padding-top: 10px; }
-.g-work { border-top: 1px solid var(--g-line); padding-top: 9px; }
-.g-work > summary { list-style: none; cursor: pointer; font-family: var(--g-mono); font-size: 11.5px; color: var(--g-ink-3); display: inline-flex; gap: 7px; align-items: center; }
-.g-work > summary::-webkit-details-marker { display: none; }
-.g-work-row { display: grid; grid-template-columns: 18px 1fr auto; gap: 8px; align-items: baseline; padding: 4px 0; font-size: 13px; }
-.g-work-row[data-state='refused'] .g-work-title { text-decoration: line-through; color: var(--g-ink-3); }
-.g-work-glyph { font-family: var(--g-mono); color: var(--g-ink-3); }
-.g-work-title { margin: 0; }
-.g-work-detail { margin: 0; color: var(--g-ink-3); font-size: 11.5px; }
-.g-work-ms { font-family: var(--g-mono); font-size: 11px; color: var(--g-ink-3); }
+/* ---- folds and work -------------------------------------------------------------------------------- */
+.g-fold { margin-top: 2px; }
+.g-fold > summary, .g-work > summary { list-style: none; cursor: pointer; display: inline-flex; gap: 7px; align-items: center; }
+.g-fold > summary::-webkit-details-marker, .g-work > summary::-webkit-details-marker { display: none; }
+.g-fold > summary { font-size: 13px; font-weight: 500; color: var(--g-accent); transition: opacity var(--g-fast); }
+.g-fold > summary:hover { opacity: 0.8; }
+.g-fold > summary::before, .g-work > summary::before {
+  content: ''; width: 5px; height: 5px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg); transition: transform var(--g-mid) var(--g-ease);
+}
+.g-fold[open] > summary::before, .g-work[open] > summary::before { transform: rotate(45deg); }
+.g-fold-body { margin-top: var(--g-3); padding-left: var(--g-3); border-left: 1px solid var(--g-line-soft); }
+.g-work { border-top: 1px solid var(--g-line-soft); padding-top: var(--g-3); }
+.g-work > summary { font-family: var(--g-mono); font-size: 11.5px; color: var(--g-mist-2); }
+.g-work > summary:hover { color: var(--g-mist); }
+.g-work-row { display: grid; grid-template-columns: 16px 1fr auto; gap: var(--g-2); align-items: baseline; padding: 5px 0; font-size: 13px; }
+.g-work-row[data-state='refused'] .g-work-title { text-decoration: line-through; color: var(--g-mist-2); }
+.g-work-glyph { font-family: var(--g-mono); color: var(--g-mist-2); font-size: 11px; }
+.g-work-title { margin: 0; color: var(--g-mist); }
+.g-work-detail { margin: 0; color: var(--g-mist-2); font-size: 11.5px; }
+.g-work-ms { font-family: var(--g-mono); font-size: 11px; color: var(--g-mist-2); }
 
-/* ---- streaming ----------------------------------------------------------------------------------- */
-.g-stream { display: flex; align-items: center; gap: 10px; color: var(--g-ink-2); font-size: 14px; padding: 4px 0; }
-.g-dots { display: inline-flex; gap: 4px; }
-.g-dots i { width: 6px; height: 6px; border-radius: 50%; background: var(--g-ink-3); animation: g-bounce 1.3s ease-in-out infinite; }
-.g-dots i:nth-child(2) { animation-delay: .16s; }
-.g-dots i:nth-child(3) { animation-delay: .32s; }
-@keyframes g-bounce { 0%,60%,100% { transform: translateY(0); opacity: .45 } 30% { transform: translateY(-4px); opacity: 1 } }
-.g-caret { display: inline-block; width: 8px; height: 1.05em; background: var(--g-ink); margin-left: 3px; vertical-align: text-bottom; animation: g-blink 1.05s steps(2) infinite; }
-@keyframes g-blink { 0%,50% { opacity: 1 } 51%,100% { opacity: 0 } }
+/* ---- streaming -------------------------------------------------------------------------------------
+   One pulse, on one dot. The stage name is the engine's own word for what it is doing. */
+.g-stream { display: flex; align-items: center; gap: var(--g-3); color: var(--g-mist); font-size: 14px; }
+.g-pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--g-accent); animation: g-pulse 1.8s var(--g-ease) infinite; }
+@keyframes g-pulse { 0%, 100% { opacity: 0.35; transform: scale(0.85) } 50% { opacity: 1; transform: scale(1) } }
 
-/* ---- arrival ------------------------------------------------------------------------------------- */
-@keyframes g-in { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
-.g-in { animation: g-in 380ms cubic-bezier(.2,.8,.2,1) both; }
+/* ---- arrival: one motion, answering one action ----------------------------------------------------- */
+@keyframes g-in { from { opacity: 0; transform: translateY(6px) } to { opacity: 1; transform: none } }
+.g-in { animation: g-in var(--g-mid) var(--g-ease) both; }
 
-/* ---- older parts, held to this ground ------------------------------------------------------------ */
-.g .card, .g .card-raised, .g .receipt { background: var(--g-bg-2); border: 1px solid var(--g-line); border-radius: var(--g-r); box-shadow: none; padding: 12px 14px; }
-.g .eyebrow { font-size: 12.5px; font-weight: 500; color: var(--g-ink-3); text-transform: none; letter-spacing: 0; }
-.g .tag { font-family: var(--g-mono); font-size: 11px; color: var(--g-ink-3); border: 1px solid var(--g-line-2); border-radius: 999px; padding: 1px 8px; background: transparent; }
-.g .tag-held { color: var(--g-ink); border-color: var(--g-ink-3); }
-.g .btn, .g .btn-ghost, .g .chip { font-size: 13px; color: var(--g-ink-2); background: transparent; border: 1px solid var(--g-line-2); border-radius: 999px; padding: 6px 12px; box-shadow: none; }
-.g .btn:hover, .g .btn-ghost:hover, .g .chip:hover { background: var(--g-panel); color: var(--g-ink); }
-.g .reading, .g .reading-line { font-size: 14px; color: var(--g-ink-2); }
-.g .quiet, .g .text-ink-soft { color: var(--g-ink-3); }
+/* ---- older parts, held to this ground -------------------------------------------------------------- */
+.g .card, .g .card-raised, .g .receipt { background: color-mix(in srgb, var(--g-raise) 55%, transparent); border: 1px solid var(--g-line-soft); border-radius: var(--g-r); box-shadow: none; padding: var(--g-4); }
+.g .eyebrow { font-size: 13px; font-weight: 500; color: var(--g-mist); text-transform: none; letter-spacing: 0; }
+.g .tag { font-family: var(--g-mono); font-size: 11px; color: var(--g-mist); border: 1px solid var(--g-line); border-radius: var(--g-r-pill); padding: 2px 9px; background: transparent; }
+.g .tag-held { color: var(--g-paper); border-color: var(--g-mist-2); }
+.g .btn, .g .btn-ghost, .g .chip { font: inherit; font-size: 13px; color: var(--g-mist); background: transparent; border: 1px solid var(--g-line); border-radius: var(--g-r-pill); padding: 6px var(--g-3); box-shadow: none; transition: background var(--g-fast), color var(--g-fast); }
+.g .btn:hover, .g .btn-ghost:hover, .g .chip:hover { background: var(--g-raise); color: var(--g-paper); }
+.g .reading, .g .reading-line { font-size: 14px; color: var(--g-mist); }
+.g .quiet, .g .text-ink-soft { color: var(--g-mist-2); }
 .g table { font-size: 13px; border-collapse: collapse; width: 100%; }
-.g th { font-weight: 500; color: var(--g-ink-3); text-align: left; padding: 5px 6px; border-bottom: 1px solid var(--g-line); }
-.g td { padding: 5px 6px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: top; }
-.g .receipt-key { color: var(--g-ink-3); }
+.g th { font-weight: 500; color: var(--g-mist-2); text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--g-line); }
+.g td { padding: 6px 8px; border-bottom: 1px solid var(--g-line-soft); vertical-align: top; color: var(--g-mist); }
+.g .receipt-key { color: var(--g-mist-2); }
 .g .receipt-val, .g .evidence, .g .fact-source, .g .coverage { font-family: var(--g-mono); font-size: 12px; }
-.g .machine-record { font-family: var(--g-mono); font-size: 11px; background: var(--g-bg); border: 1px solid var(--g-line); border-radius: 10px; padding: 10px; max-height: 22rem; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; }
+.g .machine-record { font-family: var(--g-mono); font-size: 11px; background: var(--g-void); border: 1px solid var(--g-line-soft); border-radius: var(--g-r-sm); padding: var(--g-3); max-height: 22rem; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--g-mist); }
 .g details > summary { cursor: pointer; }
-.g-notice { font-size: 13.5px; color: var(--g-ink-2); border-left: 2px solid var(--g-accent); padding: 8px 12px; background: var(--g-bg-2); border-radius: 0 10px 10px 0; margin: 10px 0 0; }
-.g-list { margin: 0; padding-left: 18px; font-size: 13px; color: var(--g-ink-2); }
+.g-notice { font-size: 13.5px; color: var(--g-mist); border-left: 2px solid var(--g-accent); padding: var(--g-2) var(--g-3); background: var(--g-accent-wash); border-radius: 0 var(--g-r-sm) var(--g-r-sm) 0; margin: var(--g-3) 0 0; }
+.g-list { margin: 0; padding-left: 18px; font-size: 13px; color: var(--g-mist); }
 
-/* ---- responsive ---------------------------------------------------------------------------------- */
+/* ---- responsive ------------------------------------------------------------------------------------ */
 .g-rail-toggle { display: none !important; }
 .g-scrim { display: none; }
-@media (max-width: 880px) {
-  .g-rail { position: fixed; left: 0; top: 0; transform: translateX(-100%); transition: transform 220ms cubic-bezier(.2,.8,.2,1); z-index: 30; }
+@media (max-width: 900px) {
+  .g-rail { position: fixed; left: 0; top: 0; transform: translateX(-100%); transition: transform var(--g-mid) var(--g-ease); z-index: 30; }
   .g[data-rail='open'] .g-rail { transform: none; }
   .g-rail-toggle { display: inline-flex !important; }
-  .g[data-rail='open'] .g-scrim { display: block; position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 20; }
-  .g-col { padding: 0 14px; }
-  .g-tool, .g-send { min-height: 44px; height: 44px; }
+  .g[data-rail='open'] .g-scrim { display: block; position: fixed; inset: 0; background: rgba(4, 7, 13, 0.6); z-index: 20; border: 0; }
+  .g-col { padding: 0 var(--g-4); }
+  .g-tool, .g-send { height: 44px; min-width: 44px; }
   .g-send { width: 44px; }
 }
+
 @media (prefers-reduced-motion: reduce) {
-  .g *, .g *::before, .g *::after { animation: none !important; transition: none !important; }
+  .g *, .g *::before, .g *::after { animation: none !important; transition-duration: 1ms !important; }
 }
-
-/* ============================================================================
-   Phase one of the overhaul: the light-aware shell.
-   ============================================================================
-   The hour decides the chrome, not a switch. By day the page is a bright sky with dark ink on white glass;
-   at night the same structure inverts to dark glass and light ink. The conversation floats in one frosted
-   panel, so the sky is visible around it and faintly through it, and the words never sit directly on the
-   weather. The legend at the foot says what painted the field and what leaves the machine. */
-.g[data-mode='light'] {
-  --g-bg: #e9f0fa;
-  --g-bg-2: #ffffff;
-  --g-panel: rgba(255, 255, 255, 0.74);
-  --g-rail: rgba(255, 255, 255, 0.62);
-  --g-line: rgba(12, 22, 32, 0.1);
-  --g-line-2: rgba(12, 22, 32, 0.17);
-  --g-ink: #0f1a22;
-  --g-ink-2: #3c4b57;
-  --g-ink-3: #6b7a86;
-  --g-accent: #1f6feb;
-  --g-accent-ink: #ffffff;
-  --g-user: rgba(255, 255, 255, 0.9);
-}
-/* The panel: one frosted sheet, floating, with the sky still readable behind its edges. */
-.g-panel {
-  position: relative;
-  z-index: 2;
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  width: min(100% - 32px, 900px);
-  margin: 0 auto 14px;
-  border-radius: 30px;
-  border: 1px solid var(--g-line-2);
-  background: var(--g-panel);
-  backdrop-filter: blur(22px) saturate(1.15);
-  -webkit-backdrop-filter: blur(22px) saturate(1.15);
-  box-shadow: 0 40px 90px -50px rgba(0, 0, 0, 0.55), 0 2px 6px -4px rgba(0, 0, 0, 0.25);
-  overflow: hidden;
-  animation: g-panel-in 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-@keyframes g-panel-in {
-  from { opacity: 0; transform: translateY(8px) scale(0.994); }
-  to { opacity: 1; transform: none; }
-}
-.g-panel .g-thread { padding-top: 6px; }
-.g-panel .g-dock { background: linear-gradient(180deg, transparent, var(--g-panel) 40%); }
-.g-panel .g-welcome { min-height: auto; padding: 34px 0 26px; }
-/* The legend: mono, quiet, and it names the decoration as decoration. */
-.g-legend {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 6px 18px;
-  width: min(100% - 32px, 900px);
-  margin: 0 auto 12px;
-  font-family: var(--g-mono);
-  font-size: 10.5px;
-  line-height: 1.5;
-  color: var(--g-ink-3);
-}
-/* By day the tools are glass chips rather than dark buttons. */
-.g[data-mode='light'] .g-tool {
-  background: rgba(255, 255, 255, 0.55);
-  border-color: var(--g-line-2);
-  color: var(--g-ink-2);
-}
-.g[data-mode='light'] .g-tool:hover { background: #ffffff; color: var(--g-ink); }
-.g[data-mode='light'] .g-composer {
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 18px 44px -30px rgba(12, 22, 32, 0.6);
-}
-.g[data-mode='light'] .g-you { background: rgba(255, 255, 255, 0.92); }
-/* Night keeps the darker chrome but gains the same panel geometry, so the shape does not change at dusk. */
-.g[data-mode='dark'] .g-panel { --g-panel: rgba(14, 17, 21, 0.72); }
-
-/* Phase one, continued: the page owns the sky again.
-   ----------------------------------------------------------------------------
-   The rail becomes a drawer at every width — the reference keeps the page clean, and the conversation list is
-   something a reader opens, not a column that permanently takes a sixth of the sky. The panel stops being a
-   full-height slab: at the welcome it is as tall as its content and sits in the middle, and once there are turns
-   it takes the height it needs, up to the viewport. */
-.g-rail-toggle { display: inline-flex !important; }
-.g-rail {
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  transform: translateX(-100%);
-  transition: transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
-  z-index: 30;
-  height: 100dvh;
-  background: var(--g-panel);
-  backdrop-filter: blur(22px) saturate(1.1);
-  -webkit-backdrop-filter: blur(22px) saturate(1.1);
-}
-.g[data-rail='open'] .g-rail { transform: none; }
-.g[data-rail='open'] .g-scrim { display: block; position: fixed; inset: 0; background: rgba(6, 10, 16, 0.42); z-index: 20; }
-/* The panel: content height at the welcome, tall once there is a conversation, never a slab. */
-.g-panel {
-  flex: 0 0 auto;
-  max-height: calc(100dvh - 132px);
-  margin-block: auto 14px;
-}
-.g-panel[data-chatting='true'] {
-  flex: 1 1 auto;
-}
-/* Glass that lets the hour through: a faint fill, a strong blur, and a highlight along the top edge. */
-.g[data-mode='light'] .g-panel, .g[data-mode='dark'] .g-panel {
-  background: color-mix(in srgb, var(--g-panel) 82%, transparent);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.34),
-    0 40px 90px -54px rgba(6, 12, 20, 0.6),
-    0 2px 8px -6px rgba(6, 12, 20, 0.3);
-}
-.g[data-mode='dark'] .g-panel {
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 40px 90px -50px rgba(0, 0, 0, 0.85);
-}
-/* A little more room around the words now that the panel is the frame. */
-.g-panel .g-col { padding: 0 26px; }
-.g-panel .g-hero { margin-top: 12px; }
-
-/* Phase one, finished: the glass lets the hour through.
-   ----------------------------------------------------------------------------
-   Measured against the captures: at three quarters opaque the panel read as a grey sheet laid over the sky,
-   which is the opposite of the reference. At a little under half, the hour tints the glass and the words still
-   hold contrast — by day the ink is dark on a bright tint, by night it is light on a dark one. */
-.g[data-mode='light'] { --g-panel: rgba(255, 255, 255, 0.46); }
-.g[data-mode='dark'] { --g-panel: rgba(14, 17, 21, 0.44); }
-/* The panel is narrower than the column was: the sky needs to be seen around the conversation, not only behind it. */
-.g-panel { width: min(100% - 32px, 840px); }
-/* The composer is an inset bar inside the glass, not a second sheet on top of it. */
-.g[data-mode='light'] .g-composer {
-  background: rgba(255, 255, 255, 0.5);
-  border-color: rgba(12, 22, 32, 0.14);
-}
-.g[data-mode='dark'] .g-composer {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.12);
-}
-/* The openings: quiet chips with a hairline, so they read as doors rather than as data. */
-.g[data-mode='light'] .g-chip {
-  background: rgba(255, 255, 255, 0.42);
-  border-color: rgba(12, 22, 32, 0.14);
-  color: var(--g-ink-2);
-  padding: 8px 14px;
-  font-size: 13.5px;
-}
-.g[data-mode='light'] .g-chip:hover { background: #ffffff; color: var(--g-ink); }
-/* The hero gets the room the reference gives it. */
-.g-panel .g-hero { font-size: clamp(2rem, 1.25rem + 2.3vw, 2.9rem); line-height: 1.14; }
-.g-panel .g-hero-sub { font-size: clamp(1.02rem, 0.96rem + 0.42vw, 1.2rem); line-height: 1.55; }
-
-/* Phase two, first pass: the turns inside the glass.
-   ----------------------------------------------------------------------------
-   A reader turn is a bubble that hugs its words at the right edge, not a band across the panel; the transcript
-   keeps its own measure inside the sheet so a long answer does not run the full width of the frame. */
-.g-turn { display: flex; flex-direction: column; align-items: stretch; }
-.g-you {
-  align-self: flex-end;
-  justify-self: end;
-  width: fit-content;
-  max-width: min(78%, 34rem);
-  border-radius: 18px 18px 6px 18px;
-  border: 1px solid var(--g-line);
-  padding: 10px 15px;
-}
-.g[data-mode='light'] .g-you { background: rgba(255, 255, 255, 0.66); }
-/* The measure of the transcript inside the sheet. */
-.g-panel .g-col { max-width: 720px; margin-inline: auto; }
-/* While a conversation is running the sheet is tall, so the glass is thinner to keep the sky present. */
-.g[data-mode='light'] .g-panel[data-chatting='true'] { --g-panel: rgba(255, 255, 255, 0.4); }
-.g[data-mode='dark'] .g-panel[data-chatting='true'] { --g-panel: rgba(14, 17, 21, 0.4); }
-/* The status line: a quiet mono statement with a live dot, not a sentence competing with the answer. */
-.g-stream { display: inline-flex; align-items: center; gap: 9px; font-family: var(--g-mono); font-size: 12px; color: var(--g-ink-2); }
-
-/* ============================================================================
-   Phase three: the answer, restated in this language.
-   ============================================================================
-   The transcript is assembled from the instrument classes — card, quiet, eyebrow, evidence — and the ledger
-   classes (receipt-row, receipt-key, receipt-val) plus the shell own claim classes. Restating them once, scoped
-   to .g, moves every answer at the same time. Nothing here changes what a class means: a receipt is still the
-   table of what the answer leaned on, and a claim still carries its own source. */
-.g .card {
-  border-radius: 16px;
-  border: 1px solid var(--g-line);
-  background: color-mix(in srgb, var(--g-bg-2) 55%, transparent);
-  box-shadow: none;
-}
-.g .quiet { color: var(--g-ink-3); }
-.g .eyebrow {
-  font-family: var(--g-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--g-ink-3);
-}
-.g .evidence { font-family: var(--g-mono); font-variant-numeric: tabular-nums; }
-/* The ledger: mono keys in a fixed column, mono values, hairline rows, no card around it. */
-.g .receipt {
-  background: none;
-  border: 0;
-  border-top: 1px solid var(--g-line);
-  border-radius: 0;
-  box-shadow: none;
-  margin-top: 12px;
-}
-.g .receipt-row {
-  display: grid;
-  grid-template-columns: 10.5rem 1fr;
-  gap: 12px;
-  padding: 7px 0;
-  border-bottom: 1px solid color-mix(in srgb, var(--g-ink) 8%, transparent);
-  align-items: baseline;
-}
-.g .receipt-key {
-  font-family: var(--g-mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--g-ink-3);
-}
-.g .receipt-val {
-  font-family: var(--g-mono);
-  font-size: 12.5px;
-  color: var(--g-ink);
-  overflow-wrap: anywhere;
-}
-/* The line above an answer: what it cost, in mono, on a hairline. */
-.g-meta {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 18px;
-  padding-top: 10px;
-  border-top: 1px solid var(--g-line);
-  font-family: var(--g-mono);
-  font-size: 11px;
-  color: var(--g-ink-3);
-}
-/* A claim: the measure, its value, its note and its source, stacked and quiet. */
-.g-claim {
-  padding: 10px 0 12px;
-  border-bottom: 1px solid color-mix(in srgb, var(--g-ink) 8%, transparent);
-}
-.g-claim[data-lit]:not([data-lit='none']) { border-left: 2px solid var(--g-lit); padding-left: 12px; }
-.g-claim-source, .g-claim-note {
-  font-family: var(--g-mono);
-  font-size: 10.5px;
-  color: var(--g-ink-3);
-}
-/* A fold: a hairline row with a chevron, never a band across the panel. */
-.g details {
-  border-top: 1px solid var(--g-line);
-  padding: 8px 0 0;
-  margin-top: 14px;
-}
-.g details > summary {
-  list-style: none;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--g-mono);
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--g-ink-3);
-  cursor: pointer;
-}
-.g details > summary::-webkit-details-marker { display: none; }
-.g details > summary::before { content: '▸'; font-size: 10px; color: var(--g-ink-3); }
-.g details[open] > summary::before { content: '▾'; }
-.g details > summary:hover { color: var(--g-ink); }
-/* Motion: one arrival per turn, and the claims inside it following in order. Nothing here moves a value. */
-.g-in { animation: g-arrive 460ms cubic-bezier(0.22, 1, 0.36, 1) both; }
-@keyframes g-arrive {
-  from { opacity: 0; transform: translateY(7px); }
-  to { opacity: 1; transform: none; }
-}
-.g-in .g-claim { animation: g-claim-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both; }
-.g-in .g-claim:nth-of-type(1) { animation-delay: 40ms; }
-.g-in .g-claim:nth-of-type(2) { animation-delay: 90ms; }
-.g-in .g-claim:nth-of-type(3) { animation-delay: 140ms; }
-.g-in .g-claim:nth-of-type(4) { animation-delay: 190ms; }
-.g-in .g-claim:nth-of-type(n + 5) { animation-delay: 240ms; }
-@keyframes g-claim-in {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: none; }
-}
-/* The numbers land without ever showing a value that is not the one the tool returned: no counting, a settle. */
-.g-num { animation: g-settle 380ms ease both; }
-@keyframes g-settle {
-  from { opacity: 0.35; }
-  to { opacity: 1; }
-}
-
-/* Phase three, continued: the claim, as a ledger row.
-   ----------------------------------------------------------------------------
-   A claim is a measure, its value, the note that qualifies it and the source it came from. It was drawn as a
-   loose card; it is now a row: the label in mono small capitals, the value beside it in the tool own face, and
-   the qualifiers underneath at reading size. A missing value is still a phrase — "not stated in this read" —
-   never a zero and never a colour. */
-.g-claim {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  column-gap: 18px;
-  align-items: baseline;
-  padding: 12px 0 13px;
-  border-bottom: 1px solid color-mix(in srgb, var(--g-ink) 8%, transparent);
-}
-.g-claim[data-state='not-stated'] { opacity: 1; }
-.g-claim-eyebrow {
-  grid-column: 1;
-  margin: 0;
-  font-family: var(--g-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--g-ink-3);
-}
-.g-claim-value {
-  grid-column: 2;
-  grid-row: 1;
-  margin: 0;
-  display: flex;
-  align-items: baseline;
-  gap: 5px;
-  font-family: var(--g-mono);
-  font-size: 21px;
-  font-weight: 500;
-  letter-spacing: -0.03em;
-  color: var(--g-ink);
-  font-variant-numeric: tabular-nums;
-}
-.g-claim-compact .g-claim-value { font-size: 16px; }
-.g-claim[data-lead='true'] .g-claim-value { font-size: clamp(28px, 2rem + 1.4vw, 44px); }
-.g-claim-unit {
-  font-size: 12px;
-  letter-spacing: 0;
-  color: var(--g-ink-3);
-}
-.g-claim-absent {
-  grid-column: 2;
-  grid-row: 1;
-  margin: 0;
-  font-family: var(--g-mono);
-  font-size: 11px;
-  color: var(--g-ink-3);
-}
-.g-claim-note {
-  grid-column: 1 / -1;
-  margin: 6px 0 0;
-  font-size: 12.5px;
-  line-height: 1.5;
-  color: var(--g-ink-2);
-}
-.g-claim-source {
-  grid-column: 1 / -1;
-  margin: 5px 0 0;
-  font-family: var(--g-mono);
-  font-size: 10.5px;
-  color: var(--g-ink-3);
-}
-/* A hazard chip is the one place a published hue is drawn, and it comes from the read or not at all. */
-.g-hazard {
-  grid-column: 2;
-  grid-row: 1;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 3px 10px;
-  border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--g-lit, var(--g-ink)) 55%, transparent);
-  background: color-mix(in srgb, var(--g-lit, var(--g-ink)) 16%, transparent);
-  font-family: var(--g-mono);
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--g-ink);
-}
-.g-claim[data-lit] { padding-left: 12px; border-left: 2px solid var(--g-lit); }
-/* The spans a claim can draw when it carries a range. */
-.g-claim .g-ruler { grid-column: 1 / -1; margin-top: 8px; }
-/* A folded body inside a claim follows the same measure. */
-.g-fold-body { margin-top: 8px; }
-
-/* The claim wrapper was still drawing a card, and it shrank to its content so the label wrapped three times over.
-   In the transcript there is no card: the hairline rows are the structure, and the box is full width. */
-.g-turn .card, .g-turn .soft {
-  background: none;
-  border: 0;
-  box-shadow: none;
-  border-radius: 0;
-  width: 100%;
-  padding: 0;
-}
-.g-claim { width: 100%; grid-template-columns: minmax(9rem, 1fr) auto; }
-.g-claim-eyebrow { letter-spacing: 0.1em; }
-
-/* The claims container laid the measures out as narrow tiles, which squeezed a label like "observed station
-   pressure · 19 Sep 2026, 04:30 IST" into three lines. A ledger reads down, not across: one measure per row,
-   full width, with the hairlines doing the grouping. */
-.g-claims {
-  display: block;
-  margin-top: 14px;
-}
-.g-claims > * { width: 100%; }
-
-/* The sun, placed by its own azimuth and altitude.
-   ----------------------------------------------------------------------------
-   docs/110 asks for the glow to sit where the sun actually is. The shell publishes the point and the strength,
-   both from the solar position, and this paints it: a warm bloom, strongest when the sun is on the horizon and
-   gone once it is well down. It is light, so it can state nothing about the weather. */
-.g-sun {
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  opacity: calc(var(--g-sun-a, 0) * 0.9);
-  background: radial-gradient(
-    circle 46vmax at var(--g-sun-x, 50%) var(--g-sun-y, 22%),
-    rgba(255, 236, 198, 0.55) 0%,
-    rgba(255, 224, 176, 0.18) 38%,
-    transparent 72%
-  );
-  mix-blend-mode: screen;
-  transition: opacity 1.4s ease, background-position 1.4s ease;
-}
-
-/* ============================================================================
-   Phase five: the module surfaces, in the panel language.
-   ============================================================================
-   The dashboard surfaces are assembled from the module classes — module-section, module-note, module-field, the
-   dash- components — and they already render inside the same glass frame. What is left is their own chrome:
-   heavier borders than the panel and labels at body weight. A module is a table of readings, so it reads like
-   the ledger: mono small capitals for what a number is, mono tabular figures for the number, hairlines between. */
-.g .module-section {
-  border: 1px solid var(--g-line);
-  border-radius: 16px;
-  background: color-mix(in srgb, var(--g-bg-2) 42%, transparent);
-  box-shadow: none;
-}
-.g .module-note { color: var(--g-ink-3); font-size: 12.5px; line-height: 1.55; }
-.g .module-field, .g .module-controls { color: var(--g-ink-2); }
-.g .module-field label, .g .module-fact-label, .g .stat-label, .g .dash-kpi-label {
-  font-family: var(--g-mono);
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--g-ink-3);
-}
-.g .dash-kpi, .g .module-count {
-  border: 1px solid var(--g-line);
-  border-radius: 16px;
-  background: color-mix(in srgb, var(--g-bg-2) 40%, transparent);
-  box-shadow: none;
-}
-.g .dash-kpi-value, .g .dash-kpi-number, .g .stat-value, .g .module-count-value, .g .dash-value {
-  font-family: var(--g-mono);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.03em;
-  color: var(--g-ink);
-}
-.g .dash-kpi-unit, .g .dash-kpi-micro, .g .stat-unit, .g .stat-foot {
-  font-family: var(--g-mono);
-  font-size: 10.5px;
-  color: var(--g-ink-3);
-}
-/* Tables inside a module follow the ledger: hairline rows, no zebra bands, no heavy header. */
-.g .module-table, .g table {
-  border-collapse: collapse;
-  width: 100%;
-}
-.g .module-table th, .g table thead th {
-  font-family: var(--g-mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--g-ink-3);
-  text-align: left;
-  border-bottom: 1px solid var(--g-line);
-  padding: 8px 10px;
-}
-.g .module-table td, .g table tbody td {
-  border-bottom: 1px solid color-mix(in srgb, var(--g-ink) 7%, transparent);
-  padding: 8px 10px;
-  font-size: 13px;
-}
-/* A chip inside a module is the same chip as everywhere else. */
-.g .chip, .g .pill {
-  border-radius: 999px;
-  border: 1px solid var(--g-line);
-  background: color-mix(in srgb, var(--g-bg-2) 38%, transparent);
-  font-family: var(--g-mono);
-  font-size: 11px;
-  padding: 3px 10px;
-}
-/* A surface states what it is before it shows anything: the sheet header already does, so its own hero drops a
-   step in size to keep the frame the loudest thing on the page. */
-.g [data-surface] .display, .g [data-surface] h1 {
-  font-size: clamp(1.5rem, 1.05rem + 1.5vw, 2.1rem);
-  line-height: 1.14;
-}
-
-/* Corrected on the capture: the mono labels are wider than the tiles were built for, and a four-digit number at
-   the inherited size ran out of its own box and overlapped the next one. A tile now reserves its label, caps its
-   number, and the row wraps to fewer columns instead of squeezing. */
-.g .dash-kpis, .g .module-counts {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
-  gap: 12px;
-}
-.g .dash-kpi, .g .module-count { min-width: 0; overflow: hidden; }
-.g .dash-kpi-label, .g .stat-label {
-  letter-spacing: 0.07em;
-  font-size: 9.5px;
-  line-height: 1.35;
-  overflow-wrap: anywhere;
-}
-.g .dash-kpi-number, .g .dash-kpi-value, .g .stat-value, .g .dash-value {
-  display: block;
-  font-size: clamp(1.45rem, 1rem + 1.7vw, 2.35rem);
-  line-height: 1.05;
-  white-space: nowrap;
-}
-.g .dash-kpi-unit, .g .stat-unit, .g .dash-kpi-micro { letter-spacing: 0; }
-
-/* The cross-fade between phases.
-   ----------------------------------------------------------------------------
-   docs/110 asks for an atmosphere rather than a background image, and the objective asks for the transition to
-   be cinematic. The hour underneath holds the frame the reader was already looking at; the new hour fades in over
-   1.6 seconds. Under reduced motion the global rule kills the animation, so the new frame simply appears — the
-   right answer for a reader who asked for no motion. */
-.g-field-under { position: absolute; inset: 0; }
-.g-field-in { position: absolute; inset: 0; animation: g-field-phase 1600ms ease both; }
-@keyframes g-field-phase {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* Corrected: the two frames stack on a grid cell rather than being pinned with inset, because inset would
-   override the canvas height and the field would stop respecting its own 62vh and expanded states. */
-.g-field { display: grid; }
-.g-field-under { grid-area: 1 / 1; }
-.g-field-in { grid-area: 1 / 1; }
-
-/* The disc: the sun by day, the moon after dark, travelling between the two.
-   ----------------------------------------------------------------------------
-   The user reference asks for a celestial body that physically moves rather than two images swapping. This one
-   is placed by the sun altitude and azimuth the shell already computes, transitions its position over 2.4
-   seconds, and is decoration: the legend says so, and light can state no condition. */
-.g-disc {
-  position: fixed;
-  z-index: 1;
-  left: var(--g-disc-x, 60%);
-  top: var(--g-disc-y, 20%);
-  width: clamp(48px, 5.4vw, 88px);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  background: radial-gradient(circle at 34% 32%, rgba(255, 251, 238, 0.98), rgba(255, 228, 172, 0.92) 62%, rgba(255, 208, 142, 0.7));
-  box-shadow: 0 0 64px 22px rgba(255, 226, 170, 0.32);
-  /* The disc is visible whenever it is up; the glow has its own, separate strength. */
-  opacity: var(--g-disc-a, 0);
-  transition: left 2400ms ease, top 2400ms ease, opacity 1600ms ease, background 1600ms ease, box-shadow 1600ms ease;
-}
-.g[data-phase='night'] .g-disc {
-  background: radial-gradient(circle at 36% 34%, rgba(247, 251, 255, 0.96), rgba(214, 228, 246, 0.86) 64%, rgba(178, 198, 228, 0.55));
-  box-shadow: 0 0 46px 14px rgba(198, 216, 242, 0.22);
-  opacity: 0.86;
-}
-
-/* The scene: a ridge behind, the place landmark in front, both standing on the foot of the page.
-   ----------------------------------------------------------------------------
-   Tints come from the scene library palette for the phase, so the layers belong to the same hour the sky does.
-   The pair cross-fades when the place or the phase changes, which is the cinematic cut the reference asks for. */
-.g-scene {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 42vh;
-  z-index: 1;
-  pointer-events: none;
-  animation: g-scene-in 900ms ease both;
-}
-.g-scene svg { position: absolute; bottom: 0; left: 0; width: 100%; display: block; }
-.g-scene-back { height: 34%; opacity: 0.85; }
-.g-scene-front {
-  height: 78%;
-  width: auto;
-  left: auto;
-  right: 6%;
-  aspect-ratio: 480 / 340;
-  filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.18));
-}
-@keyframes g-scene-in {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: none; }
-}
-/* Once a conversation is running the scene steps back with the rest of the field. */
-.g-field[data-expanded='true'] ~ .g-scene { opacity: 0.55; }
-
-/* Corrected on the capture: the band was too short and the landmark sat under the panel, so the scene read as a
-   sliver at the foot. The band is taller, the ridge stays in the middle distance, and the landmark takes the
-   right third where the reference puts it. */
-.g-scene { height: 54vh; }
-.g-scene-back { height: 26%; opacity: 0.7; }
-.g-scene-front { height: 96%; right: 2%; }
-/* The legend sits over the scene once it is this tall, so it gets its own ground to read on. */
-.g-legend { position: relative; z-index: 3; }
-
-/* The landmark takes less of the foot, and the legend keeps its own ground so the ridge cannot run through it. */
-.g-scene-front { height: 76%; right: 4%; }
-/* A band under the legend: the scene stands behind the words rather than through them. */
-.g-legend {
-  padding-top: 10px;
-  background: linear-gradient(to top, color-mix(in srgb, var(--g-bg) 62%, transparent), transparent);
-}
-
-/* Third pass on the capture: at 54vh the scene fought the panel and the legend for the foot of the page. As
-   distant scenery — a shorter band, a smaller landmark, held back a little — it reads as depth behind the
-   conversation instead of a second subject in front of it. */
-.g-scene { height: 30vh; }
-.g-scene-back { height: 30%; opacity: 0.62; }
-.g-scene-front { height: 64%; right: 8%; opacity: 0.92; }
-
-/* The legend was reading straight through the skyline band. It gets a glass shelf of its own: a short blur, a
-   faint ground that fades upward, and room to breathe. Measured against the capture at noon, where the ridge and
-   the skyline both sit at the foot of the page. */
-.g-legend {
-  margin-bottom: 0;
-  padding: 12px 14px calc(12px + env(safe-area-inset-bottom, 0px));
-  border-top: 1px solid color-mix(in srgb, var(--g-ink) 8%, transparent);
-  background: linear-gradient(to top, color-mix(in srgb, var(--g-bg) 72%, transparent), color-mix(in srgb, var(--g-bg) 34%, transparent));
-  backdrop-filter: blur(8px) saturate(1.05);
-  -webkit-backdrop-filter: blur(8px) saturate(1.05);
-}
-/* The scene stops at the shelf rather than running under it. */
-.g-scene { bottom: 46px; height: 26vh; }
-
-/* axe caught this on #overview, and it was mine: the small mono labels and units I set at --g-ink-3 do not reach
-   4.5:1 on a light glass panel at 9.5-12px. Small type needs the darker of the two quiet inks. */
-.g .module-field label,
-.g .module-fact-label,
-.g .stat-label,
-.g .dash-kpi-label,
-.g .dash-kpi-unit,
-.g .dash-kpi-micro,
-.g .stat-unit,
-.g .stat-foot,
-.g .module-note,
-.g .fact-source,
-.g .receipt-key {
-  color: var(--g-ink-2);
-}
-
-/* The icon-only controls, given a real treatment.
-   ----------------------------------------------------------------------------
-   Recorded open last round: with the HeroUI ghost variant the Owner control was left to a class written for a
-   plain button, so on a bright sky it was almost invisible. An icon-only control carries no words to rescue it,
-   so it needs a visible edge and a visible glyph in both modes. */
-.g-act {
-  min-width: 34px;
-  height: 34px;
-  padding: 0;
-  border-radius: 999px;
-  border: 1px solid var(--g-line-2);
-  background: color-mix(in srgb, var(--g-bg-2) 58%, transparent);
-  color: var(--g-ink-2);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
-}
-.g[data-mode='light'] .g-act { background: rgba(255, 255, 255, 0.62); color: var(--g-ink-2); }
-.g[data-mode='dark'] .g-act { background: rgba(255, 255, 255, 0.07); }
-.g-act:hover { background: var(--g-bg-2); color: var(--g-ink); }
-.g-act svg { width: 15px; height: 15px; }
-/* The toggle sits with the same weight as the controls it toggles. */
-.g-rail-toggle.g-act { border-color: var(--g-line-2); }
-
-/* The landmark, made visible without making it a subject.
-   ----------------------------------------------------------------------------
-   Recorded open twice: the layers were wired but not seen. The band is taller, the landmark stands in the open
-   sky to the right of the panel rather than under it, and its distance is carried by opacity -- held back in the
-   light hours, full weight at night, where the reference wants a silhouette. */
-.g-scene { height: 34vh; bottom: 52px; }
-.g-scene-back { height: 28%; opacity: 0.6; }
-.g-scene-front { height: 88%; right: 3%; opacity: 0.62; }
-.g[data-phase='night'] .g-scene-front { opacity: 1; }
-.g[data-phase='dusk'] .g-scene-front { opacity: 0.85; }

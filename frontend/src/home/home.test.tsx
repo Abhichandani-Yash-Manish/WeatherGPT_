@@ -104,14 +104,15 @@ describe('the front door', () => {
     expect(screen.getByText(/the store is locked/i)).toBeInTheDocument();
   });
 
-  it('paints its ground from the hour and fetches no image', async () => {
+  it('keys its ground to the hour and draws no image', async () => {
     serve(overview(QUIET_DAY));
     renderHome();
     await screen.findByText(/No district is under an orange or red warning today/i);
     expect(document.querySelector('[data-design="gpt"]')).not.toBeNull();
-    /* The ground is one canvas painted from the hour; no photograph is ever fetched, and it states nothing. */
-    expect(document.querySelector('img')).toBeNull();
-    expect(document.querySelector('canvas.g-field-canvas')).not.toBeNull();
+    /* The ground is three CSS layers keyed to the hour. No image and no canvas is ever fetched or drawn. */
+    expect(document.querySelector('img, canvas')).toBeNull();
+    expect(document.querySelector('.g-field-sky')).not.toBeNull();
+    expect(document.querySelector('.g-field-horizon')).not.toBeNull();
     expect(screen.queryByText(/condition report/i)).toBeNull();
   });
 });

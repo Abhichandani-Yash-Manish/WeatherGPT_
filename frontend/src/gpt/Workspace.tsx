@@ -63,7 +63,7 @@ function Hero() {
   if (overview.isPending) {
     return (
       <div data-testid="reading">
-        <p className="g-eyebrow">reading the district warning bulletin…</p>
+        <p className="g-hero-sub" style={{ margin: 0 }}>Reading the district warning bulletin on this machine.</p>
       </div>
     );
   }
@@ -87,7 +87,6 @@ function Hero() {
   }
   return (
     <div data-testid="reading">
-      <p className="g-eyebrow">what the country’s weather is doing right now</p>
       <h1 className="g-hero">
         {picture.severe > 0 ? (
           <><V value={picture.severe} /> districts are under an orange or red warning today.</>
@@ -361,13 +360,8 @@ export function Workspace({
 
           {chatting ? <div className="g-col">{composer}</div> : null}
         </div>
-        {/* What painted the field, and what leaves this machine. Decoration is named as decoration. */}
-        <footer className="g-legend">
-          <span>
-            {hour} sky, computed from this place and hour · the drifting layer is decoration, not evidence
-          </span>
-          <span>every value keeps its source and the time it was read · questions and answers stay on this machine</span>
-        </footer>
+        {/* No legend: the ground states the hour by being that hour, and it draws no condition to disclaim.
+            What leaves this machine is said once, under the composer, where a reader is about to send. */}
       </main>
     </div>
   );
