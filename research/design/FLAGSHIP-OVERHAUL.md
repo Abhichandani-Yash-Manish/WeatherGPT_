@@ -199,3 +199,28 @@ on a defect that a single instrumented click would localise.
 Not fixed this round: the context budget went on establishing that the panel component and the wiring are both
 intact, which is itself the useful result — the fix is small once the break is observed.
 
+
+## Phase thirteen — the instrumented click, and what it rules out
+
+Round nine said the next probe was to instrument the handoff rather than change anything. Done: a `console.log`
+inside `onPlans`, then a real click.
+
+| Observation | Value |
+|---|---|
+| element clicked | `<button type="button" class="g-tool">` with our bell svg — the right control |
+| `[watch] onPlans fired` in the console | **never printed** |
+| `.planwatch-host` after the click | absent |
+
+So the pointer reaches the control, and **React never runs the handler**. That rules out everything below the
+handler — the state, the render block, the panel component — and moves the suspect above it: the event never
+reaches React, which points at either a second, stale copy of the shell in the tree being the one under the
+pointer, or React’s delegated listener not being attached for this subtree.
+
+The instrumentation was removed before committing: a probe is an instrument, not a feature. The next probe is to
+count how many `Watch` controls exist in the DOM and how many React roots are mounted, which distinguishes those
+two hypotheses in one run.
+
+Honest note on cost: this defect has now taken three rounds. The first round I spent on a fix, the second on
+elimination, and only the third on the instrument that produced a decisive observation. The instrument should
+have come first.
+
