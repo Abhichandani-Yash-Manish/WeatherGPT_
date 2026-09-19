@@ -119,3 +119,23 @@ The tiles now reserve their label, cap their number and wrap to fewer columns (`
 4. Re-run the capture set for the record after each phase (done here) and keep `git push` to a machine with
    network: the sandbox has none.
 
+
+## Phase eight — the layered scene, wired in at last
+
+The objective asks for "a layered canvas (CSS sky gradient + mid silhouette + front landmark) with location-aware
+morphing". The tree already held that library — `frontend/src/scene/`: eleven landmarks with city and regional
+matching, a palette per phase, plane tints derived from it — and **nothing in the app imported it**. That is a
+capability built and left behind, and it is now wired:
+
+- `gpt/Scene.tsx` renders the two layers the reference is about: a stretched ridge tinted by `planes().mid` and the
+  place's own landmark tinted by `planes().near`, with the landmark chosen by `landmarkFor(place)` — city first,
+  then region, then a skyline. No colour is invented: the tints come from the scene's palette for the phase.
+- Two defects the captures caught, not reasoning: the builders return `{ d, rule }` and the rule is `evenodd` —
+  that is what cuts a landmark's arches and windows, so a plain string left the path as `[object Object]` and
+  nothing drew at all. And the near plane at 0.64 toward ink is right against a dark sky and far too dark against
+  a bright one, so the day hours take the middle plane.
+- The composition took three passes against the capture: at 54vh the scene fought the panel and the legend for the
+  foot of the page. At 30vh with a smaller landmark it reads as depth behind the conversation.
+
+Open for the next pass: the legend still crosses the skyline band and wants more ground of its own.
+

@@ -25,6 +25,7 @@ import { Field } from './Field';
 import { hourOf } from './fieldPaint';
 import { glowPoint, glowStrength, phaseOf, solarPosition } from '../flagship/solar';
 import { useWorkingPlace } from '../modules/Evidence';
+import { Scene } from './Scene';
 import { Rail } from './Rail';
 import './gpt.css';
 
@@ -221,6 +222,9 @@ export function Workspace({
       {/* The sun's own light, at its own azimuth and altitude. Decoration by construction: it is placed by
           astronomy and can never state a condition. */}
       <div className="g-sun" aria-hidden="true" />
+      {/* The two layers the reference is about: a mid ridge and the place's own landmark, tinted by the scene's
+          palette for this phase. landmarkFor matches the place name, then the region, then a skyline. */}
+      <Scene place={workingPlace?.label} phase={hour} />
       {/* The disc travels: it is placed by the sun's own azimuth and altitude, and takes 2.4 seconds to move when
           the hour turns. After dark it stands at the anti-solar point, which is where a full moon is — decoration,
           named as decoration in the legend, and never a condition. */}

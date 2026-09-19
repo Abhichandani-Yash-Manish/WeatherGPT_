@@ -865,3 +865,58 @@ html, body { background: var(--g-bg); }
   box-shadow: 0 0 46px 14px rgba(198, 216, 242, 0.22);
   opacity: 0.86;
 }
+
+/* The scene: a ridge behind, the place landmark in front, both standing on the foot of the page.
+   ----------------------------------------------------------------------------
+   Tints come from the scene library palette for the phase, so the layers belong to the same hour the sky does.
+   The pair cross-fades when the place or the phase changes, which is the cinematic cut the reference asks for. */
+.g-scene {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 42vh;
+  z-index: 1;
+  pointer-events: none;
+  animation: g-scene-in 900ms ease both;
+}
+.g-scene svg { position: absolute; bottom: 0; left: 0; width: 100%; display: block; }
+.g-scene-back { height: 34%; opacity: 0.85; }
+.g-scene-front {
+  height: 78%;
+  width: auto;
+  left: auto;
+  right: 6%;
+  aspect-ratio: 480 / 340;
+  filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.18));
+}
+@keyframes g-scene-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+/* Once a conversation is running the scene steps back with the rest of the field. */
+.g-field[data-expanded='true'] ~ .g-scene { opacity: 0.55; }
+
+/* Corrected on the capture: the band was too short and the landmark sat under the panel, so the scene read as a
+   sliver at the foot. The band is taller, the ridge stays in the middle distance, and the landmark takes the
+   right third where the reference puts it. */
+.g-scene { height: 54vh; }
+.g-scene-back { height: 26%; opacity: 0.7; }
+.g-scene-front { height: 96%; right: 2%; }
+/* The legend sits over the scene once it is this tall, so it gets its own ground to read on. */
+.g-legend { position: relative; z-index: 3; }
+
+/* The landmark takes less of the foot, and the legend keeps its own ground so the ridge cannot run through it. */
+.g-scene-front { height: 76%; right: 4%; }
+/* A band under the legend: the scene stands behind the words rather than through them. */
+.g-legend {
+  padding-top: 10px;
+  background: linear-gradient(to top, color-mix(in srgb, var(--g-bg) 62%, transparent), transparent);
+}
+
+/* Third pass on the capture: at 54vh the scene fought the panel and the legend for the foot of the page. As
+   distant scenery — a shorter band, a smaller landmark, held back a little — it reads as depth behind the
+   conversation instead of a second subject in front of it. */
+.g-scene { height: 30vh; }
+.g-scene-back { height: 30%; opacity: 0.62; }
+.g-scene-front { height: 64%; right: 8%; opacity: 0.92; }
