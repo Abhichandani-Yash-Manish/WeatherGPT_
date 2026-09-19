@@ -42,16 +42,19 @@ ground, `#131b2b` raised, `#1e2838` line, `#8b98ad` mist, `#e8edf5` paper.
 
 ## Type
 
-Two voices, and the split is semantic rather than decorative:
+Three voices, and the split is semantic rather than decorative:
 
 - **IBM Plex Mono** — everything a tool owns: values, units, place names the resolver returned, ids,
   timestamps, editions, states. It replaced Martian Mono, which was mannered enough to make a serious
   product read as a toy. Mono is semantic only: it never dresses a label.
 - **Anek** — everything a model wrote: sentences, invitations, explanations. It is a pan-Indic family, so a
   Hindi or Tamil answer is set in a face drawn for it; the script faces load on demand.
+- **Nunito** — display only, and Latin only: the greeting, the hour, the reading's own numeral. A rounded
+  geometric, because roundness is where the warmth in a weather interface actually lives. It never sets a
+  sentence, and it never sets a script it does not cover.
 
-A numeral in the human face is a defect. Both faces are self-hosted and bundled; the workspace serves under
-`default-src 'self'`, so no CDN face can load here at all.
+A numeral in the human face is a defect. All three faces are self-hosted and bundled; the workspace serves
+under `default-src 'self'`, so no CDN face can load here at all.
 
 ## The claim
 
@@ -104,3 +107,59 @@ Two checks keep the claims in this file honest, because two of them were false w
 `FE12` requires every `text-transform: uppercase` in the tree to be neutralised and refuses Tailwind's
 `uppercase` utility. `FE13` holds every `className` string against the built stylesheet and fails when an
 element's whole class list resolves to nothing — the state the dashboard shipped in.
+
+
+## Instrument glass
+
+Glassmorphism as a preset is the templated default — blur everything, twenty percent white, call it glass.
+It is on every weather shot in every gallery, and it reads as a texture because the light in it comes from
+nowhere.
+
+This product has a real light: the ground is a sun-driven gradient computed from the reader's own
+latitude. So every raised surface is a pane sitting in that light, and **the light has a direction**.
+
+- `--g-light-angle` puts the catch-light on the edge the sun is actually on — the left at dawn, the top at
+  noon, the right at dusk.
+- `--g-light-shadow-x` throws the shadow away from it; `--g-light-height` flattens that shadow as the sun
+  climbs.
+- All four are set from the real solar position (`lightFrom`, from the hour angle). Each hour block holds
+  the position for that hour, so a pane is lit correctly before any script runs and stays lit if none does.
+
+On the light hours the catch-light **inverts**: a white highlight on a white card is invisible, so day
+takes a bright fill and a soft dark edge instead. Night takes a weaker, cooler highlight, because after
+dark the light is the moon and the city rather than the sun.
+
+A pane is two backgrounds on one element — the fill clipped to `padding-box`, the lit border clipped to
+`border-box` — so any surface becomes a pane by taking one class, with no pseudo-element and no extra node.
+
+**Neumorphism, selectively.** `.g-raised` goes on controls meant to feel physical and nowhere else. The
+accessibility failure of neumorphism is that a soft extrusion at low contrast hides the affordance, so
+every extruded control keeps a real border: the extrusion makes it feel pressable, the border makes it
+findable.
+
+## The interface's own language
+
+The engine answers in 22 languages; the chrome is translated into four (English, Hindi, Gujarati, Tamil)
+and follows the answer language the reader chose, so picking Gujarati moves the whole product rather than
+half of it. `chromeFor` falls back to English for the other eighteen rather than claiming them.
+
+Three rules, from the same place every other rule here comes from:
+
+1. **Chrome only.** The words this interface wrote about itself. Everything a *source* wrote stays as the
+   source wrote it — hazard wording, place names as the resolver returned them, units, source ids, status
+   lines, the engine's own sentences. A translated warning is a warning this product did not read.
+2. **Values never.** A number, a unit and a timestamp are formatted, not translated.
+3. **Absence stays absence.** A missing key falls back to English, never to an empty string: a blank label
+   is a worse lie than an English one, because it cannot even be reported.
+
+Four checks hold the catalogues to it, and the one that matters makes rule 1 mechanical — no catalogue may
+contain a unit, a source id or hazard wording. The translations are machine-authored and unreviewed by a
+native speaker (docs/112 §6).
+
+## Where the stylesheet lives
+
+`gpt.css` is an index; the rules are nine files under `gpt/css/` — tokens, ground, rail, chrome, thread,
+surfaces, welcome, panel, glass — imported in the order the single 1780-line file had. Source order is the
+cascade, so that order is not an aesthetic choice: both specificity faults found in this work were a rule
+at the bottom of that file silently beating one at the top. The split was verified by building before and
+after and comparing the output byte for byte.

@@ -54,7 +54,7 @@ extrusion makes it feel pressable, the border makes it findable.
 | 2 | The rail as one calm list; conversations led by their place | done |
 | 3 | The context panel in the right column | done |
 | 4 | Interface localisation (i18next) | done, chrome only |
-| 5 | Splitting `gpt.css` and `Workspace.tsx`; documentation | planned |
+| 5 | Splitting `gpt.css` and `Workspace.tsx`; documentation | done |
 
 ## 4. The resource list, honestly
 
