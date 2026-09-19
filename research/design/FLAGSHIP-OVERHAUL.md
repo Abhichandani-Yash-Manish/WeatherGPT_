@@ -156,3 +156,23 @@ comes from the class, and an icon is a child. `variant` and `size` are real; the
 Open and recorded: the icon-only Owner control is nearly invisible against a bright sky because a `ghost` variant
 leaves it to our own class, which was written for a plain `<button>`. It wants a real treatment next round.
 
+
+## Phase eleven — a defect found by probing, and a wrong diagnosis corrected
+
+Checking whether Watch works as the third surface, the probe showed the plan/watch panel does not open when the
+Watch control is clicked. My first reading was that phase ten’s HeroUI swap had killed it (React Aria’s `onPress`
+under a synthetic click), so I rolled the swap back — and **the panel still did not open**. The rollback changed
+nothing, which means the defect is in the shell’s own wiring and pre-dates the swap.
+
+Two lessons, both kept in the code comment:
+
+1. **Correlation is not cause.** A library swap and a broken control appeared together, so I blamed the swap.
+   The counter-test — revert and re-probe — took one run and disproved it.
+2. **A probe can be wrong before the thing it probes is.** The first probe grepped for panel text; the second the
+   same; both reported "not open" for a component whose heading is present in the source. The structural probe
+   (host element, role, class count) is the right instrument and is what the next round should use.
+
+Recorded for the next round: **the Watch control does not open the panel in either variant** — HeroUI or plain —
+with the evidence in `watch-open.png` and `watch-open2.png`. This is the concrete reason Watch cannot yet count as
+the third surface.
+

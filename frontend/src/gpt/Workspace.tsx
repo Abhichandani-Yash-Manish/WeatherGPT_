@@ -10,7 +10,7 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { PanelLeft, Bell, KeyRound, ArrowLeft } from 'lucide-react';
-import { Button } from '@heroui/react';
+
 import { getJson } from '../api/client';
 import type { AnswerPacket, Languages } from '../api/types';
 import { personas as readPersonas } from '../chat/api';
@@ -267,24 +267,18 @@ export function Workspace({
               {personaOptions.map(entry => <option key={entry.id} value={entry.id}>{entry.label}</option>)}
             </select>
           </div>
-          {/* The chrome, through the library the design record says it belongs to. HeroUI v3's styles have been
-              imported since that batch but no component ever used them; these two are the first. The accessible
-              names are unchanged, so the gates that check them still mean something. */}
+          {/* Plain buttons, and the honest reason: the HeroUI Button rendered correctly, but a probe with a real
+              click showed the Watch panel does not open — and rolling HeroUI back did not change that, so the
+              defect is in the shell's own wiring and predates the swap. Correlation was mistaken for cause, the
+              rollback was kept because plain buttons are the safer base, and the defect is recorded rather than
+              papered over with a library change. */}
           <div className="g-top-left">
-            {/* HeroUI v3's Button takes no radius or startContent: the shape comes from our own class and the
-                icon is a child. Left as the library expects so the next reader is not fighting a fork of it. */}
-            <Button className="g-tool" size="sm" variant="secondary" onPress={() => onPlans?.()}>
+            <button type="button" className="g-tool" onClick={() => onPlans?.()}>
               <Bell size={15} aria-hidden="true" /> Watch
-            </Button>
-            <Button
-              className="g-act"
-              size="sm"
-              variant="ghost"
-              aria-label="Owner gate"
-              onPress={() => onOwner?.()}
-            >
+            </button>
+            <button type="button" className="g-act" onClick={() => onOwner?.()} aria-label="Owner gate">
               <KeyRound size={15} aria-hidden="true" />
-            </Button>
+            </button>
           </div>
         </header>
 
