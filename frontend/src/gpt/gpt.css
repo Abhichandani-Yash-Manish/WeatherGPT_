@@ -379,3 +379,136 @@ html, body { background: var(--g-bg); }
 @media (prefers-reduced-motion: reduce) {
   .g *, .g *::before, .g *::after { animation: none !important; transition-duration: 1ms !important; }
 }
+
+/* ---- the module surfaces, repointed --------------------------------------------------------------
+   The eighteen guided surfaces, the charts and the plans panel are built on the original token layer
+   (web/tokens.css and the Tailwind @theme that consumes it). Restyling twenty-six files would be a
+   rewrite; repointing the tokens they read is one mapping, and it is the honest one — those surfaces
+   were always written to take their colour from the system rather than to hard-code it.
+
+   Two sets are needed. The raw names are what modules.css, plans.css and the chart CSS read directly.
+   The --color-* names are what Tailwind's utilities resolve, and they must be redeclared here rather
+   than at the root, because a custom property declared at :root computes there and descendants inherit
+   the computed value — redefining --ink alone would never reach --color-ink. */
+.g {
+  /* raw */
+  --ink: var(--g-paper);
+  --ink-soft: var(--g-mist);
+  --mute: var(--g-mist-2);
+  --ground: var(--g-bg);
+  --paper: var(--g-raise);
+  --sunk: var(--g-void);
+  --raiser: var(--g-raise-2);
+  --line: var(--g-line-soft);
+  --line-strong: var(--g-line);
+  --data: var(--g-accent);
+  --data-ink: var(--g-void);
+  --data-wash: var(--g-accent-wash);
+  --slate: var(--g-mist);
+  --sand: var(--g-line);
+  --sand-wash: var(--g-raise);
+  --surface-card: color-mix(in srgb, var(--g-raise) 55%, transparent);
+  --glass-1: color-mix(in srgb, var(--g-raise) 55%, transparent);
+  --glass-2: color-mix(in srgb, var(--g-raise) 70%, transparent);
+  --glass-3: color-mix(in srgb, var(--g-raise-2) 80%, transparent);
+  --glass-line: var(--g-line);
+  --housing: var(--g-raise);
+  --housing-2: var(--g-raise-2);
+  --housing-ink: var(--g-paper);
+  --housing-mute: var(--g-mist-2);
+  --housing-line: var(--g-line);
+  --serif: var(--g-sans);
+  --sans: var(--g-sans);
+  --mono: var(--g-mono);
+  --red: var(--g-red);
+  --orange: var(--g-orange);
+  --yellow: var(--g-yellow);
+  --green: var(--g-green);
+  --lift-1: none;
+  --lift-2: 0 18px 40px -28px rgba(0, 0, 0, 0.85);
+  --lift-3: 0 28px 60px -30px rgba(0, 0, 0, 0.9);
+  --viz-line: var(--g-accent);
+  --viz-grid: var(--g-line-soft);
+  --viz-axis: var(--g-mist-2);
+
+  /* Tailwind's resolved names */
+  --color-ink: var(--g-paper);
+  --color-ink-soft: var(--g-mist);
+  --color-mute: var(--g-mist-2);
+  --color-ground: var(--g-bg);
+  --color-paper: var(--g-raise);
+  --color-sunk: var(--g-void);
+  --color-raiser: var(--g-raise-2);
+  --color-data: var(--g-accent);
+  --color-data-ink: var(--g-void);
+  --color-data-wash: var(--g-accent-wash);
+  --color-slate: var(--g-mist);
+  --color-sand: var(--g-line);
+  --color-sand-wash: var(--g-raise);
+  --color-line: var(--g-line);
+  --color-hairline: var(--g-line-soft);
+  --color-glass: color-mix(in srgb, var(--g-raise) 55%, transparent);
+  --color-glass-2: color-mix(in srgb, var(--g-raise) 70%, transparent);
+  --color-glass-3: color-mix(in srgb, var(--g-raise-2) 80%, transparent);
+  --color-glass-line: var(--g-line);
+  --color-housing: var(--g-raise);
+  --color-housing-2: var(--g-raise-2);
+  --color-housing-ink: var(--g-paper);
+  --color-housing-mute: var(--g-mist-2);
+  --color-housing-line: var(--g-line);
+  --color-warn: var(--g-orange);
+  --color-alert: var(--g-red);
+  --color-caution: var(--g-yellow);
+  --color-clear: var(--g-green);
+  --font-serif: var(--g-sans);
+  --font-sans: var(--g-sans);
+  --font-mono: var(--g-mono);
+  --shadow-lift-1: none;
+  --shadow-lift-2: 0 18px 40px -28px rgba(0, 0, 0, 0.85);
+  --shadow-lift-3: 0 28px 60px -30px rgba(0, 0, 0, 0.9);
+}
+
+/* The surfaces keep their structure; only their dress changes. A few rules need saying outright because
+   they were written for a light ground. */
+.g .glass, .g .glass-soft, .g .glass-strong, .g .dash-card, .g .planwatch {
+  background: color-mix(in srgb, var(--g-raise) 55%, transparent);
+  border-color: var(--g-line-soft);
+  box-shadow: none;
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+}
+/* A surface title is a title, not a masthead: the display serif at 3rem belonged to the paper design. */
+.g .module-title, .g [data-surface] h1, .g [data-surface] h2 {
+  font-family: var(--g-sans); font-weight: 600; letter-spacing: -0.024em;
+}
+.g [data-surface] h1 { font-size: 1.7rem; line-height: 1.16; }
+.g [data-surface] h2 { font-size: 1.1rem; line-height: 1.3; }
+.g .module-note { color: var(--g-mist); font-size: 13.5px; }
+.g .module-section { border-color: var(--g-line-soft); }
+/* The published colours stay published: a chip keeps the source's colour, on this ground's contrast. */
+.g .chip-colour { border-color: var(--g-line); }
+.g .dash-kpi-number, .g .dash-value { font-family: var(--g-mono); letter-spacing: -0.035em; color: var(--g-paper); }
+.g .dash-kpi-label, .g .dash-kpi-caption { color: var(--g-mist); }
+.g input[type='text'], .g input[type='search'], .g select:not(.g-tool), .g textarea {
+  background: var(--g-raise); border: 1px solid var(--g-line); color: var(--g-paper); border-radius: var(--g-r-sm);
+}
+.g input::placeholder { color: var(--g-mist-2); }
+
+/* The published-colour washes were mixed for a light ground; on this one they read as stickers. The cell
+   keeps the source's colour — that rule never moves — but carries it as ink and edge over the dark, which
+   is the same information at the right contrast. */
+.g {
+  --red-wash: color-mix(in srgb, var(--g-red) 16%, transparent);
+  --orange-wash: color-mix(in srgb, var(--g-orange) 16%, transparent);
+  --yellow-wash: color-mix(in srgb, var(--g-yellow) 16%, transparent);
+  --green-wash: color-mix(in srgb, var(--g-green) 16%, transparent);
+}
+.g .viz-cell { border-radius: 6px; }
+.g .viz-cell:hover { box-shadow: none; }
+
+/* A counted value must fit the card it is counted in: the old scale was fixed and a four-figure count
+   ran into its neighbour. It scales with the card instead, and never sets a minimum wider than the box. */
+.g .dash-kpi-number { font-size: clamp(1.9rem, 1.1rem + 2.2vw, 3rem); line-height: 1.02; min-width: 0; overflow-wrap: anywhere; }
+.g .dash-kpi { min-width: 0; }
+.g .dash-kpi-value { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; min-width: 0; }
+.g .dash-kpis { align-items: start; }
+.g .dash-card { padding: var(--g-4); }

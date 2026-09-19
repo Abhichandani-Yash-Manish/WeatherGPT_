@@ -291,8 +291,7 @@ export function Workspace({
 
             {sheet ? (
               <section className="g-turn g-in" data-surface={sheet.id}>
-                <div className="g-meta" style={{ justifyContent: 'space-between' }}>
-                  <span>{sheet.label}</span>
+                <div className="g-meta" style={{ justifyContent: 'flex-end' }}>
                   <span className="g-chips">
                     <button type="button" className="g-chip" onClick={() => onOpen('assistant')}>
                       <ArrowLeft size={13} aria-hidden="true" /> Back to the conversation

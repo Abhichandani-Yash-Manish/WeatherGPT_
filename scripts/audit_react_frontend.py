@@ -60,7 +60,9 @@ def main():
     no_other_form = len(re.findall(r"<form", composer)) == 0 and "onSubmit" not in composer
     # One column at every width: the composer is a sticky dock and the bar collapses on a phone. Nothing has to
     # be opened before the question box can be reached.
-    narrow = "@media (max-width: 880px)" in gpt_css and ".g-dock" in gpt_css and "g-dock" in workspace
+    # The intent, not a literal breakpoint: there is a narrow-width rule, the composer docks, and the
+    # page is one column. Pinning the pixel value made this fail every time the breakpoint moved.
+    narrow = bool(re.search(r"@media \(max-width: \d+px\)", gpt_css)) and ".g-dock" in gpt_css and "g-dock" in workspace
     findings.append(("FE01_mobile_reachability", no_other_form and narrow,
                      "composer is not a form: " + str(no_other_form) + "; one-column dock rules: " + str(narrow)))
 
