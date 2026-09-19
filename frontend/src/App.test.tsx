@@ -23,10 +23,12 @@ describe('the shell', () => {
     expect(screen.getByLabelText('Your question')).toBeInTheDocument();
     /* Paper, ink and the published colours: no photograph, no canvas, nothing that needs a disclaimer. */
     expect(document.querySelector('[data-design="gpt"]')).not.toBeNull();
-    /* The ground is three CSS layers keyed to the hour. No image and no canvas is ever fetched or drawn. */
+    /* The ground is CSS layers keyed to the hour. No image and no canvas is ever fetched or drawn.
+       The horizon hairline was the sixth layer and has been removed: at welcome strength it read as a rule
+       drawn across the middle of the greeting, and the sky gradient carries the depth instead (docs/112). */
     expect(document.querySelector('img, canvas')).toBeNull();
     expect(document.querySelector('.g-field-sky')).not.toBeNull();
-    expect(document.querySelector('.g-field-horizon')).not.toBeNull();
+    expect(document.querySelector('.g-field-horizon')).toBeNull();
   });
 
   it('hands the front door question to the conversation', async () => {

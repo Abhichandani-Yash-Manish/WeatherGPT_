@@ -44,6 +44,10 @@
 
   --g-sans: 'Anek Latin Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --g-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  /* The display voice: rounded geometric, Latin only, display sizes only. It sets the greeting, the hour
+     and the reading's own numeral — never a sentence, and never a script it does not cover. The warmth in
+     a weather interface lives in the roundness of the face more than in the colour. */
+  --g-display: 'Nunito Variable', 'Nunito', var(--g-sans);
 
   /* a 4px rhythm, used religiously */
   --g-1: 4px; --g-2: 8px; --g-3: 12px; --g-4: 16px; --g-5: 20px;
@@ -178,8 +182,12 @@
   --g-t4: rgba(16, 24, 40, 0.08);
   --g-t5: rgba(16, 24, 40, 0.105);
 
-  /* Darkened for a light ground, and not otherwise changed: the hue that carries the meaning is kept. */
-  --g-red: #c32b45; --g-orange: #a85c14; --g-yellow: #7a6209; --g-green: #1f6b3a;
+  /* Darkened for a light ground, and not otherwise changed: the hue that carries the meaning is kept.
+     Red and orange were measured against their own sixteen percent wash — the ground a hazard cell actually
+     prints on — at 4.21:1 and 3.90:1, both under AA for 9.5px text. They are the two that moved; yellow and
+     green already cleared it on the same wash, and moving a published colour without a measurement is how
+     the first pair got there. FE16 holds the four of them to the floor from now on. */
+  --g-red: #b0203a; --g-orange: #8e4c0d; --g-yellow: #7a6209; --g-green: #1f6b3a;
 
   --g-grain-a: 0.022; --g-grain-blend: multiply;
   --g-scrim: rgba(24, 30, 45, 0.40);
@@ -196,34 +204,37 @@
   color-scheme: light;
 }
 
-/* ---- DAYBREAK: first light. Warm paper -------------------------------------------------------------- */
+/* ---- DAYBREAK: first light. Warm paper --------------------------------------------------------------
+   The sky is a colour rather than a tinted grey, because a page whose top half is almost white reads as a
+   form, not as a morning. It is kept light enough that the ink ladder is unchanged: the darkest sky here
+   is 4.9:1 against --g-mist and better against the paper. */
 [data-hour='daybreak'] {
-  --g-void: #f0e9e1; --g-bg: #faf6f1; --g-raise: #ffffff; --g-raise-2: #f7f1ea;
-  --g-line: #e0d5c8; --g-line-soft: #ece4d9;
-  --g-paper: #241c14; --g-mist: #5a5042; --g-mist-2: #776b5e;
-  --g-accent: #2f5fc0; --g-accent-2: #244da3; --g-accent-wash: rgba(47, 95, 192, 0.09);
+  --g-void: #f0e9e1; --g-bg: #fdfaf6; --g-raise: #ffffff; --g-raise-2: #f8f2ea;
+  --g-line: #e2d7c9; --g-line-soft: #ede5da;
+  --g-paper: #241c14; --g-mist: #574d40; --g-mist-2: #6d6254;
+  --g-accent: #2f5fc0; --g-accent-2: #244da3; --g-accent-wash: rgba(47, 95, 192, 0.10);
 
-  --g-sky-1: #fbe9d8; --g-sky-2: #faf6f1;
-  --g-aura-1: rgba(240, 168, 110, 0.34); --g-aura-2: rgba(186, 170, 226, 0.20); --g-halo-x: 22%;
-  --g-vignette: rgba(146, 126, 104, 0.13);
+  --g-sky-1: #f6dcc0; --g-sky-2: #fcf1e6;
+  --g-aura-1: rgba(240, 166, 102, 0.36); --g-aura-2: rgba(184, 166, 226, 0.22); --g-halo-x: 22%;
+  --g-vignette: rgba(146, 126, 104, 0.14);
 
-  --g-rail-bg: linear-gradient(180deg, rgba(245, 238, 229, 0.90), rgba(239, 231, 220, 0.94));
+  --g-rail-bg: linear-gradient(180deg, rgba(246, 238, 229, 0.86), rgba(240, 231, 220, 0.92));
   --g-glass: rgba(255, 252, 247, 0.86); --g-glass-2: rgba(255, 253, 250, 0.72);
   --g-send-bg: linear-gradient(180deg, #3a6bc9, #2f5fc0); --g-mark-2: #1c3f86;
 }
 
-/* ---- NOON: full day. Cool paper ---------------------------------------------------------------------- */
+/* ---- NOON: full day. Cool paper, and a plain blue sky above it --------------------------------------- */
 [data-hour='noon'] {
-  --g-void: #e9eef6; --g-bg: #f5f8fc; --g-raise: #ffffff; --g-raise-2: #eff4fa;
+  --g-void: #e9eef6; --g-bg: #f2f6fb; --g-raise: #ffffff; --g-raise-2: #eef4fa;
   --g-line: #d3dce9; --g-line-soft: #e3e9f2;
-  --g-paper: #121a27; --g-mist: #465166; --g-mist-2: #636e80;
-  --g-accent: #1f5ccc; --g-accent-2: #1849a8; --g-accent-wash: rgba(31, 92, 204, 0.09);
+  --g-paper: #121a27; --g-mist: #465166; --g-mist-2: #5b6679;
+  --g-accent: #1f5ccc; --g-accent-2: #1849a8; --g-accent-wash: rgba(31, 92, 204, 0.10);
 
-  --g-sky-1: #dfeafb; --g-sky-2: #f5f8fc;
-  --g-aura-1: rgba(120, 170, 240, 0.30); --g-aura-2: rgba(160, 196, 245, 0.20); --g-halo-x: 64%;
-  --g-vignette: rgba(104, 124, 158, 0.12);
+  --g-sky-1: #c4d9f5; --g-sky-2: #e4eefb;
+  --g-aura-1: rgba(124, 170, 238, 0.34); --g-aura-2: rgba(150, 186, 240, 0.22); --g-halo-x: 64%;
+  --g-vignette: rgba(94, 118, 158, 0.11);
 
-  --g-rail-bg: linear-gradient(180deg, rgba(236, 241, 249, 0.90), rgba(229, 236, 246, 0.94));
+  --g-rail-bg: linear-gradient(180deg, rgba(238, 244, 251, 0.86), rgba(231, 239, 249, 0.92));
   --g-glass: rgba(255, 255, 255, 0.86); --g-glass-2: rgba(255, 255, 255, 0.72);
   --g-send-bg: linear-gradient(180deg, #2a68d8, #1f5ccc); --g-mark-2: #15409b;
 }
@@ -262,8 +273,8 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
 .g-field-sky {
   position: absolute; inset: 0;
   background:
-    radial-gradient(120% 80% at 50% 0%, var(--g-sky-1) 0%, transparent 64%),
-    linear-gradient(178deg, var(--g-sky-1) 0%, var(--g-sky-2) 44%, var(--g-bg) 82%);
+    radial-gradient(120% 80% at 50% 0%, var(--g-sky-1) 0%, transparent 66%),
+    linear-gradient(178deg, var(--g-sky-1) 0%, var(--g-sky-2) 58%, var(--g-bg) 100%);
   transition: background var(--g-slow) ease;
 }
 
@@ -311,24 +322,56 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
   background: radial-gradient(100% 78% at 50% 34%, transparent 42%, var(--g-vignette) 100%);
 }
 
-/* The horizon: one hairline of atmosphere, drifting too slowly to be caught moving. */
-.g-field-horizon {
-  position: absolute; left: -10%; right: -10%; top: 46%; height: 1px;
-  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--g-accent) 24%, transparent) 38%, color-mix(in srgb, var(--g-accent) 12%, transparent) 62%, transparent);
-  opacity: 0.44;
-  animation: g-horizon 48s ease-in-out infinite alternate;
-  transition: opacity var(--g-slow) ease;
+/* ---- the sky's own colour, when a station printed one ---------------------------------------------
+   The one layer a reading can move, and the quietest of the six. A condition's hue at a fifth of full
+   strength, over the hour's sky — enough that a rainy afternoon and a clear one are different pages,
+   never enough to be mistaken for a hazard colour. The four published warning colours are red, orange,
+   yellow and green; every hue here is at least 40° from all of them, and the haze wash is a grey warmth
+   at 24 percent saturation rather than anything a bulletin could publish.
+
+   A dark ground has less light in it to shift, which is what --g-mood-k is: the same reading, a smaller
+   change, so nine o'clock at night stays night. */
+.g-field {
+  --g-mood-h: 218; --g-mood-s: 12%; --g-mood-a: 0; --g-mood-k: 1;
 }
-.g-field-horizon::after {
-  content: ''; position: absolute; inset: -40px 0 auto 0; height: 80px;
-  background: radial-gradient(60% 100% at 50% 50%, color-mix(in srgb, var(--g-accent) 6%, transparent), transparent 70%);
+.g-field[data-sky='cloud'] { --g-mood-h: 219; --g-mood-s: 13%; --g-mood-a: 0.18; }
+.g-field[data-sky='rain'] { --g-mood-h: 213; --g-mood-s: 26%; --g-mood-a: 0.24; }
+.g-field[data-sky='storm'] { --g-mood-h: 262; --g-mood-s: 20%; --g-mood-a: 0.24; }
+.g-field[data-sky='haze'] { --g-mood-h: 34; --g-mood-s: 24%; --g-mood-a: 0.17; }
+/* Clear is the absence of a wash: a clear sky is what the hour's own palette already draws, and adding
+   light to it would make the one condition that needs no help the loudest thing on the page. */
+.g-field[data-sky='clear'] { --g-mood-a: 0; }
+/* Night and dusk: the same reading, a smaller change, because a dark ground has less light in it to move
+   and nine o'clock at night has to stay night. */
+.g[data-hour='night'] .g-field, .g[data-hour='golden'] .g-field { --g-mood-k: 0.62; }
+
+.g-field-mood {
+  position: absolute; inset: 0; opacity: 1;
+  background: linear-gradient(180deg,
+    hsl(var(--g-mood-h) var(--g-mood-s) 46% / calc(var(--g-mood-a) * var(--g-mood-k))) 0%,
+    transparent 74%);
 }
-@keyframes g-horizon { from { transform: translateY(0) } to { transform: translateY(-14px) } }
+
+/* The condition as a watermark — the "subtle detail in the background" — and only once a conversation is
+   running. On the welcome the mark is drawn properly at the top of the screen, so drawing it again behind
+   the text would be the same fact twice. Five percent is the point where it is a change in the light
+   rather than a picture of the weather; the column is 740px wide and never sits under it. */
+.g-field-mark {
+  position: absolute; right: -2%; top: 50%; transform: translateY(-50%);
+  color: var(--g-paper); opacity: 0.045; pointer-events: none;
+  /* It emerges from the right edge and does not exist on the left, so the ground behind the reading
+     column is never at a different shade from the ground beside it. */
+  mask-image: linear-gradient(90deg, transparent 4%, #000 46%, #000 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 4%, #000 46%, #000 100%);
+}
+/* A pale mark on a dark ground carries further than a dark one on paper, so the dark hours hold less. */
+.g[data-hour='night'] .g-field-mark, .g[data-hour='golden'] .g-field-mark { opacity: 0.035; }
+.g-field[data-expanded='false'] .g-field-mark { display: none; }
+@media (max-width: 1180px) { .g-field-mark { display: none; } }
 
 /* Once a conversation is running the ground steps back: the answer is the subject, so the light drops and
    the horizon nearly goes. */
 .g-field[data-expanded='true'] .g-field-halo { opacity: 0.52; transition: opacity 900ms var(--g-ease); }
-.g-field[data-expanded='true'] .g-field-horizon { opacity: 0.14; }
 
 /* ---- the rail ------------------------------------------------------------------------------------ */
 .g-rail {
@@ -454,7 +497,7 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
 
    The opening is the one orchestrated moment in the product — the reading, the composer and the openings
    arrive in that order, 70ms apart, once. Everything else that moves is answering an action. */
-.g-welcome { min-height: calc(100dvh - 148px); display: flex; flex-direction: column; justify-content: center; gap: var(--g-7); padding-bottom: var(--g-9); }
+.g-welcome { min-height: calc(100dvh - 56px); display: flex; flex-direction: column; justify-content: center; gap: var(--g-6); }
 .g-welcome > * { animation: g-rise 560ms var(--g-ease) both; }
 .g-welcome > *:nth-child(1) { animation-delay: 40ms; }
 .g-welcome > *:nth-child(2) { animation-delay: 110ms; }
@@ -535,20 +578,37 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
 
 /* The bar's selects are controls, so they look like controls: a real field with a chevron, not a bare
    native select floating on the background with nothing to stand on. */
+/* The bar's two selects are configuration, not navigation, and they were drawn as filled bordered fields
+   with shadows — which is the greater part of why the top of the page read as a control panel. They are
+   text now, with the chevron still saying they open, and they keep their accessible names. */
 .g-top .g-tool {
-  height: 34px; border-color: var(--g-line-soft);
-  background: var(--g-fill); box-shadow: var(--g-e1);
+  height: 32px; padding: 0 var(--g-2);
+  border-color: transparent; background: transparent; box-shadow: none;
+  color: var(--g-mist);
 }
-.g-top .g-tool:hover { border-color: var(--g-line); background: var(--g-t3); }
+.g-top .g-tool:hover { border-color: transparent; background: var(--g-t2); color: var(--g-paper); }
 .g-top select.g-tool {
   max-width: 12rem; padding-right: 26px;
   appearance: none; -webkit-appearance: none;
-  background-image: linear-gradient(45deg, transparent 50%, var(--g-mist) 50%), linear-gradient(135deg, var(--g-mist) 50%, transparent 50%);
-  background-position: right 13px center, right 8px center;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: right 12px center, right 7px center;
   background-size: 5px 5px, 5px 5px;
   background-repeat: no-repeat;
 }
+.g-top select.g-tool:hover { background-color: var(--g-t2); }
 .g-top select.g-tool option { background: var(--g-raise); color: var(--g-paper); }
+
+/* The place the conversation is reading. A statement, not a control: mist, no border, and it truncates
+   rather than pushing the bar around — a district label can be four words long. */
+.g-skyline {
+  display: flex; align-items: center; gap: 7px; min-width: 0; margin: 0 var(--g-2) 0 auto;
+  color: var(--g-mist); font-size: 12.5px; line-height: 1;
+}
+.g-skyline svg { flex: 0 0 auto; color: var(--g-accent); }
+.g-skyline-place { max-width: 20ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--g-paper); }
+.g-skyline-value { font-family: var(--g-mono); font-size: 12px; color: var(--g-paper); }
+.g-skyline-cond { max-width: 12ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 900px) { .g-skyline { display: none; } }
 
 .g-send {
   width: 34px; height: 34px; border-radius: var(--g-r-pill); border: 0; cursor: pointer;
@@ -570,22 +630,34 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
 
 /* ---- openings ------------------------------------------------------------------------------------- */
 .g-chips { display: flex; flex-wrap: wrap; gap: var(--g-2); }
+/* An opening is a question a reader could have asked, and it is not a button in a form: no fill, no
+   shadow, one hairline. Four filled pills with elevation under a composer that already carries the page's
+   highest elevation read as a second row of buttons, which is most of what made this row feel busy. */
 .g-chip {
   display: inline-flex; align-items: center; gap: 6px;
-  padding: 8px var(--g-4); border-radius: var(--g-r-pill);
-  border: 1px solid var(--g-line); background: var(--g-fill);
+  padding: 7px var(--g-4); border-radius: var(--g-r-pill);
+  border: 1px solid var(--g-line-soft); background: transparent;
   color: var(--g-mist); font: inherit; font-size: 13px; cursor: pointer;
-  box-shadow: var(--g-e1);
   transition: background var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease),
-              border-color var(--g-fast) var(--g-ease), transform var(--g-fast) var(--g-ease),
-              box-shadow var(--g-fast) var(--g-ease);
+              border-color var(--g-fast) var(--g-ease), transform var(--g-fast) var(--g-ease);
 }
 .g-chip:hover {
   color: var(--g-paper); transform: translateY(-1px);
   border-color: color-mix(in srgb, var(--g-accent) 34%, var(--g-line));
-  box-shadow: var(--g-e2);
+  background: var(--g-accent-wash);
 }
-.g-chip:active { transform: translateY(0); box-shadow: var(--g-e1); }
+.g-chip:active { transform: translateY(0); }
+
+/* The way into the national picture, under the openings rather than beside them: it opens a surface, and
+   nobody would ever type it as a question. */
+.g-welcome-foot { margin: var(--g-2) 0 0; text-align: center; }
+.g-quiet {
+  border: 0; background: transparent; cursor: pointer; font: inherit;
+  font-size: 13px; color: var(--g-mist);
+  padding: 6px 10px; border-radius: var(--g-r-sm);
+  transition: color var(--g-fast) var(--g-ease), background var(--g-fast) var(--g-ease);
+}
+.g-quiet:hover { color: var(--g-paper); background: var(--g-t2); }
 
 /* ---- turns ----------------------------------------------------------------------------------------
    A turn does not get a card. The column is the container, and a hairline between turns is enough
@@ -823,6 +895,14 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
   .g-welcome > * { opacity: 1; transform: none; }
 }
 
+/* The accent badge, repaired at its cause. HeroUI draws this pill as the accent colour on a sixteen
+   percent wash of the same accent, and on the light hours that pair measured 4.43:1 — below AA for 11.9px
+   text, and a real axe run at 390px failed it on three surfaces. The darker accent step exists for exactly
+   this: the ink moves, the hue does not, and the wash is unchanged.
+   Scoped to .g on purpose: HeroUI's own .pill-accent rule is emitted later in the same stylesheet and wins
+   on equal specificity, so an unscoped rule here would be silently lost — measured, not assumed. */
+.g .pill-accent { color: var(--g-accent-2); }
+
 /* ---- the module surfaces, repointed --------------------------------------------------------------
    The eighteen guided surfaces, the charts and the plans panel are built on the original token layer
    (web/tokens.css and the Tailwind @theme that consumes it). Restyling twenty-six files would be a
@@ -1045,3 +1125,211 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
 .g .module-dashboard { min-width: 0; }
 .g .dash-change-inline { display: inline-flex; }
 .g .module-place-quick { display: flex; flex-wrap: wrap; gap: var(--g-2); }
+
+/* ---- the welcome screen ----------------------------------------------------------------------------
+   Four things, each of which means something: the mark, the sky, the greeting, and the reading a station
+   actually reported — with the place it belongs to. The ground does the decorating, so nothing here has
+   to: no card, no border, no panel. The type sits directly on the colour, which is the whole move the
+   reference this screen came from is built on.
+
+   What is deliberately absent: the national warning brief that used to be the headline. A reader who
+   opens a chat has not asked to be briefed, and the count is the subject of the Warnings home. It is one
+   chip away, beneath the composer. */
+.w {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  gap: 2px;
+  padding-bottom: var(--g-2);
+}
+
+/* The product's name on a phone. On a desktop the rail carries it already, and saying it twice is a large
+   part of what made the page read as busy. */
+.w-mark {
+  display: inline-flex; align-items: center; gap: 7px; margin: 0 0 var(--g-6);
+  font-family: var(--g-display); font-size: 13.5px; font-weight: 700;
+  letter-spacing: 0.04em; color: var(--g-mist);
+}
+.w-mark-dot {
+  width: 15px; height: 15px; border-radius: 5px;
+  background: linear-gradient(150deg, var(--g-accent), var(--g-mark-2) 72%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.34);
+}
+
+/* The sky mark. Stroked rather than filled, except the sun and the moon: a filled weather icon is a
+   sticker, and a lit disc behind a drawn outline is an instrument. The bloom is positioned by the dial
+   itself when the dial is what is drawn, and centred when it is a condition glyph. */
+.w-glyph {
+  position: relative;
+  display: grid; place-items: center;
+  width: 96px; height: 96px;
+  color: var(--g-accent);
+  margin-bottom: var(--g-4);
+  animation: w-arrive 720ms var(--g-ease) both;
+}
+.w-bloom {
+  position: absolute; inset: -40%;
+  background: radial-gradient(closest-side at var(--w-x, 50%) var(--w-y, 50%),
+    color-mix(in srgb, var(--g-accent) 26%, transparent), transparent 74%);
+  pointer-events: none;
+}
+.w-glyph[data-kind='condition'] .w-bloom {
+  inset: -60%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--g-accent) 22%, transparent), transparent 72%);
+}
+/* The hour mark is quieter than a condition mark on purpose: one of them is a weather statement with a
+   source under it, and the other is only the time of day. They must not carry the same weight — so the
+   dial's ink is the mist, and the only accent on it is the sun itself. */
+.w-glyph[data-kind='hour'] { color: var(--g-mist); opacity: 0.9; }
+@media (max-width: 900px) { .w-glyph { width: 84px; height: 84px; } }
+
+.w-greeting {
+  font-family: var(--g-display);
+  font-size: clamp(2.3rem, 1.4rem + 3.1vw, 3.35rem);
+  font-weight: 700; letter-spacing: -0.028em; line-height: 1.04;
+  margin: 0; color: var(--g-paper);
+  animation: w-arrive 720ms var(--g-ease) 80ms both;
+}
+.w-place {
+  margin: var(--g-2) 0 0; font-size: 1.0625rem; color: var(--g-mist);
+  animation: w-arrive 720ms var(--g-ease) 140ms both;
+}
+
+.w-reading {
+  display: flex; align-items: baseline; justify-content: center; gap: var(--g-3);
+  flex-wrap: wrap; margin: var(--g-5) 0 0;
+  animation: w-arrive 720ms var(--g-ease) 200ms both;
+}
+/* The numeral is the one place the display face earns its keep at size, and it stays under the greeting:
+   this is a conversation, so the greeting leads and the reading follows it. Tabular figures, so a value
+   that changes between one look and the next does not shuffle the line it sits on. */
+.w-temp {
+  font-family: var(--g-display); font-size: clamp(1.9rem, 1.4rem + 1.6vw, 2.5rem);
+  font-weight: 700; letter-spacing: -0.03em; line-height: 1; color: var(--g-paper);
+  font-variant-numeric: tabular-nums;
+}
+.w-unit { font-size: 0.42em; font-weight: 600; margin-left: 3px; color: var(--g-mist); letter-spacing: 0; }
+/* The station's own word, verbatim and lower case as it printed it. */
+.w-cond { font-size: 1.0625rem; color: var(--g-mist); }
+.w-source {
+  font-family: var(--g-mono); font-size: 11px; line-height: 1.7; color: var(--g-mist);
+  margin: var(--g-4) 0 0; max-width: 78ch; overflow-wrap: anywhere;
+  animation: w-arrive 720ms var(--g-ease) 260ms both;
+}
+
+@keyframes w-arrive { from { opacity: 0; transform: translateY(10px) } to { opacity: 1; transform: none } }
+
+/* The welcome is centred and the openings sit under the composer. */
+.g-welcome { align-items: center; }
+.g-welcome > * { width: 100%; }
+.g-welcome .g-chips { justify-content: center; }
+/* The rail carries the name on a desktop, so the welcome's mark is only for the phone. */
+@media (min-width: 901px) { .w-mark { display: none; } }
+
+/* ---- a line for the hour ----------------------------------------------------------------------------
+   The quietest thing on the welcome screen, and the only thing on it a reader can change. It opens with a
+   short rule rather than a heading, because it is a change of voice on the same page: the reading above it
+   is what a source said, and this is what somebody wrote a hundred years ago. */
+.w-quote {
+  margin: var(--g-6) 0 0;
+  padding-top: var(--g-4);
+  max-width: 40ch;
+  position: relative;
+  animation: w-arrive 720ms var(--g-ease) 320ms both;
+}
+.w-quote::before {
+  content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 28px; height: 1px; border-radius: 1px;
+  background: color-mix(in srgb, var(--g-accent) 46%, transparent);
+}
+.w-quote blockquote { margin: 0; animation: w-quote-in 520ms var(--g-ease) both; }
+.w-quote blockquote p {
+  margin: 0; font-size: 1rem; line-height: 1.62; color: var(--g-mist);
+  text-wrap: pretty;
+}
+.w-quote figcaption {
+  display: flex; align-items: baseline; justify-content: center; gap: 6px; flex-wrap: wrap;
+  margin-top: var(--g-3);
+  font-family: var(--g-mono); font-size: 10.5px; line-height: 1.5; color: var(--g-mist);
+}
+.w-quote-work { color: var(--g-mist); }
+/* The turn. It is a control, so it says so on hover and takes a ring on focus — but at rest it is a mark
+   beside a citation rather than a button on a poster. */
+.w-quote-next {
+  border: 0; background: transparent; color: var(--g-mist); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px; padding: 0; border-radius: 50%;
+  transition: color var(--g-fast) var(--g-ease), background var(--g-fast) var(--g-ease), transform var(--g-slow) var(--g-ease);
+}
+.w-quote-next:hover { color: var(--g-paper); background: var(--g-t3); transform: rotate(90deg); }
+.w-quote-next:focus-visible { outline: 2px solid var(--g-accent); outline-offset: 1px; }
+
+@keyframes w-quote-in { from { opacity: 0 } to { opacity: 1 } }
+
+@media (max-width: 900px) { .w-quote { max-width: 32ch; } }
+@media (prefers-reduced-motion: reduce) { .w-quote, .w-quote blockquote { animation: none; } }
+
+/* ---- bold here, calm there --------------------------------------------------------------------------
+   The ground commits on the welcome screen, where there is nothing to read, and steps back the moment
+   there is. Both states are the same layers; what changes is how much of them there is. */
+.g-field[data-expanded='false'] .g-field-halo { opacity: 1; }
+.g-field[data-expanded='false'] .g-field-halo::before { transform: scale(1.18); }
+.g-field[data-expanded='false'] .g-field-sky { filter: saturate(1.4) contrast(1.03); }
+.g-field-sky, .g-field-halo, .g-field-mood, .g-field-mark { transition: opacity 900ms var(--g-ease), filter 900ms var(--g-ease); }
+.g-field[data-expanded='false'] .g-field-mood { opacity: 1.35; }
+
+@media (prefers-reduced-motion: reduce) {
+  .w-glyph, .w-greeting, .w-place, .w-reading, .w-source { animation: none; }
+}
+
+/* ---- the home rail ----------------------------------------------------------------------------------
+   Four homes, 56px, left of everything. Deliberately not the conversation rail: that one lists what a
+   reader has said, this one lists where they can be. Collapsing the two is what left nineteen surfaces
+   sharing a column built for prose. */
+.h-rail {
+  position: sticky; top: 0; z-index: 4;
+  width: 56px; flex: 0 0 56px; height: 100dvh;
+  background: var(--g-rail-bg);
+  border-right: 1px solid var(--g-line-soft);
+  backdrop-filter: blur(24px) saturate(1.3); -webkit-backdrop-filter: blur(24px) saturate(1.3);
+  display: flex; flex-direction: column; align-items: center; gap: var(--g-1);
+  padding: var(--g-3) 0;
+}
+.h-rail-item {
+  position: relative;
+  width: 44px; height: 44px; border-radius: var(--g-r);
+  border: 1px solid transparent; background: transparent; color: var(--g-mist-2);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  font: inherit; cursor: pointer;
+  transition: color var(--g-fast) var(--g-ease), background var(--g-fast) var(--g-ease);
+}
+/* The name is carried, not hidden: an icon rail without names is a guessing game, and a title attribute
+   alone reaches neither a screen reader in list mode nor a reader in a hurry. */
+.h-rail-label { font-size: 8.5px; font-weight: 600; letter-spacing: 0.01em; }
+.h-rail-item:hover { color: var(--g-paper); background: var(--g-t3); }
+.h-rail-item[aria-current='page'] { color: var(--g-accent); background: var(--g-accent-wash); }
+/* The marker is on the rail's own edge rather than under the label, so the current home is findable
+   from the corner of the eye without reading anything. */
+.h-rail-item[aria-current='page']::before {
+  content: ''; position: absolute; left: -8px; top: 9px; bottom: 9px; width: 2.5px;
+  border-radius: 0 3px 3px 0; background: var(--g-accent);
+}
+
+/* A row that is a plain button: no chrome of its own, the row around it carries the state. */
+.g-row-plain {
+  border: 0; background: transparent; color: inherit; font: inherit;
+  text-align: left; cursor: pointer; padding: 0;
+}
+
+@media (max-width: 900px) {
+  /* On a phone the home rail becomes a bar at the foot, where a thumb is. */
+  .h-rail {
+    position: fixed; left: 0; right: 0; bottom: 0; top: auto;
+    width: auto; flex-direction: row; height: auto;
+    justify-content: space-around; gap: 0;
+    padding: var(--g-1) var(--g-2) calc(var(--g-2) + env(safe-area-inset-bottom, 0px));
+    border-right: 0; border-top: 1px solid var(--g-line-soft);
+    z-index: 25;
+  }
+  .h-rail-item[aria-current='page']::before { left: 50%; right: auto; top: -5px; bottom: auto; width: 20px; height: 2.5px; transform: translateX(-50%); border-radius: 0 0 3px 3px; }
+  .g-main { padding-bottom: 62px; }
+  .g-dock { bottom: 62px; }
+}

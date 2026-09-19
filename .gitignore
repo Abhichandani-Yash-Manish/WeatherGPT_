@@ -46,3 +46,7 @@ frontend/playwright-report/
 frontend/blob-report/
 frontend/.playwright/
 tmp/npm-cache/
+# The vision toolkit's own scratch (crops, heatmaps, reports) and a font probe's installed modules: both are
+# machine-local tooling output, not evidence, and 2 MB of node_modules under research/ is neither.
+.dsh-vision-toolkit/
+research/design/probe-fonts/node_modules/

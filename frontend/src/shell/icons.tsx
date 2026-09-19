@@ -28,11 +28,38 @@ export const EyeIcon = (p: IconProps) => <Icon {...p}><path d="M2.062 12.348a1 1
 export const GaugeIcon = (p: IconProps) => <Icon {...p}><path d="m12 14 4-4" /><path d="M3.34 19a10 10 0 1 1 17.32 0" /></Icon>;
 export const SparkleIcon = (p: IconProps) => <Icon {...p}><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z" /></Icon>;
 export const SendIcon = (p: IconProps) => <Icon {...p}><path d="M12 19V5" /><path d="m5 12 7-7 7 7" /></Icon>;
-export const CloudIcon = (p: IconProps) => <Icon {...p}><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" /></Icon>;
-export const CloudRainIcon = (p: IconProps) => <Icon {...p}><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" /><path d="M16 14v6M8 14v6M12 16v6" /></Icon>;
-export const CloudLightningIcon = (p: IconProps) => <Icon {...p}><path d="M6 16.326A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 .5 8.973" /><path d="m13 12-3 5h4l-3 5" /></Icon>;
-export const HazeIcon = (p: IconProps) => <Icon {...p}><path d="M3 8h13M3 12h18M3 16h13M7 20h10" /></Icon>;
-export const ClearSkyIcon = (p: IconProps) => <Icon {...p}><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" /></Icon>;
+/* The cloud every sky mark is built on, in one place so the four marks that carry one share its shape. */
+const CLOUD = <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />;
+export const CloudIcon = (p: IconProps) => <Icon {...p}>{CLOUD}</Icon>;
+export const CloudRainIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <g transform="translate(1.2 -1.8) scale(0.88)">{CLOUD}</g>
+    <path d="M9.4 17.4 8.3 20.9M13.2 17.4 12.1 20.9M17 17.4 15.9 20.9" />
+  </Icon>
+);
+export const CloudLightningIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <g transform="translate(1.2 -1.8) scale(0.88)">{CLOUD}</g>
+    <path d="M13 16.4 10.7 20.2h3L11.4 24" />
+  </Icon>
+);
+/* Three waves, not three rules: a station that printed haze printed a softness, and three straight lines
+   read as a text-alignment control in a toolbar. The bottom wave is shorter so the mark is not a block. */
+export const HazeIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M3.4 8.4c1.7-1.5 3.5-1.5 5.2 0s3.5 1.5 5.2 0 3.5-1.5 5.2 0" />
+    <path d="M3.4 13c1.7-1.5 3.5-1.5 5.2 0s3.5 1.5 5.2 0 3.5-1.5 5.2 0" />
+    <path d="M4.6 17.6c1.5-1.4 3.2-1.4 4.7 0s3.2 1.4 4.7 0 3.2-1.4 4.7 0" />
+  </Icon>
+);
+/* The sun is FILLED. An outlined disc with eight sticks is the generic weather glyph every icon set ships;
+   a lit disc with rays is the one thing on the welcome screen that should look like a source of light. */
+export const ClearSkyIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <circle cx="12" cy="12" r="4.4" fill="currentColor" stroke="none" />
+    <path d="M12 2.4v2.3M12 19.3v2.3M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2.4 12h2.3M19.3 12h2.3M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7" />
+  </Icon>
+);
 
 export type SkyGlyph = 'storm' | 'rain' | 'haze' | 'cloud' | 'clear';
 
@@ -49,8 +76,10 @@ export function skyGlyph(printed: string | null | undefined): SkyGlyph | null {
   return null;
 }
 
-export function SkyGlyphIcon({ glyph, size = 28 }: { glyph: SkyGlyph; size?: number }) {
-  const props = { size, strokeWidth: 1.6 };
+/* The stroke is in the icon's own 24-unit space, so a glyph drawn at 260px keeps the weight it was drawn
+   at rather than arriving with an 18px line through it. */
+export function SkyGlyphIcon({ glyph, size = 28, strokeWidth = 1.6 }: { glyph: SkyGlyph; size?: number; strokeWidth?: number }) {
+  const props = { size, strokeWidth };
   if (glyph === 'storm') return <CloudLightningIcon {...props} />;
   if (glyph === 'rain') return <CloudRainIcon {...props} />;
   if (glyph === 'haze') return <HazeIcon {...props} />;

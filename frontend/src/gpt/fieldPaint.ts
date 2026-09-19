@@ -11,8 +11,26 @@ export type Hour = 'daybreak' | 'noon' | 'golden' | 'night';
 const rad = (d: number) => (d * Math.PI) / 180;
 const deg = (r: number) => (r * 180) / Math.PI;
 
+export type SolarPosition = {
+  /** Degrees above the horizon. Negative is below it. */
+  altitude: number;
+  /** −90° at sunrise, 0° at solar noon, +90° at sunset. Morning is negative. */
+  hourAngle: number;
+};
+
+/** Where the sun stands over a place at an instant: the same approximation the hour is decided by, and
+    the only thing the welcome's dial is drawn from. It states the time of day, never the weather. */
+export function solarPosition(latitude: number, longitude: number, at: Date): SolarPosition {
+  const { altitude, hourAngle } = solarGeometry(latitude, longitude, at);
+  return { altitude, hourAngle };
+}
+
 /** The sun's altitude above the horizon, in degrees. */
 export function solarAltitude(latitude: number, longitude: number, at: Date): number {
+  return solarGeometry(latitude, longitude, at).altitude;
+}
+
+function solarGeometry(latitude: number, longitude: number, at: Date): SolarPosition {
   const ms = at.getTime();
   const jd = ms / 86_400_000 + 2_440_587.5;
   const t = (jd - 2_451_545) / 36_525;
@@ -46,7 +64,7 @@ export function solarAltitude(latitude: number, longitude: number, at: Date): nu
   const lat = rad(latitude);
   const cosZenith =
     Math.sin(lat) * Math.sin(rad(decl)) + Math.cos(lat) * Math.cos(rad(decl)) * Math.cos(rad(hourAngle));
-  return 90 - deg(Math.acos(Math.min(1, Math.max(-1, cosZenith))));
+  return { altitude: 90 - deg(Math.acos(Math.min(1, Math.max(-1, cosZenith)))), hourAngle };
 }
 
 /* The bands, in degrees of solar altitude.

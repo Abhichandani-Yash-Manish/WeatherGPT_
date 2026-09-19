@@ -222,6 +222,12 @@ def main():
         light, dark = sorted((_luminance(ink), _luminance(ground)), reverse=True)
         return (light + 0.05) / (dark + 0.05)
 
+    # The check this replaces read one ground per hour, --g-bg, and it passed while three surfaces were
+    # failing in a browser: --g-bg is the LIGHTEST part of a light hour and the DARKEST part of a dark one,
+    # so the one ground it never looked at was the one the top bar sits on. A browser probe on 19 September
+    # measured the sky at the top of the page: mist-2 came out at 2.87:1 on noon, and the tertiary ink is
+    # the provenance line. The grounds checked now are the whole gradient, and the two ink ladders are
+    # treated as what they are -- the tertiary step is a surface ink and is not used over the sky.
     FLOOR = 4.5
     short = []
     for hour in ("night", "golden", "daybreak", "noon"):
@@ -232,22 +238,72 @@ def main():
             short.append(hour + ": no palette block")
             continue
         tokens = dict(re.findall(r"(--g-[a-z0-9-]+):\s*(#[0-9a-fA-F]{6})", block.group(1)))
-        ground = tokens.get("--g-bg")
-        if not ground:
-            short.append(hour + ": no --g-bg")
+        grounds = [(name, tokens.get(name)) for name in ("--g-bg", "--g-sky-2", "--g-sky-1")]
+        if not all(value for _, value in grounds):
+            short.append(hour + ": " + ", ".join(name for name, value in grounds if not value) + " not declared")
             continue
         for name in ("--g-paper", "--g-mist", "--g-mist-2"):
             ink = tokens.get(name)
             if not ink:
                 short.append(hour + " " + name + ": not declared")
                 continue
-            measured = _contrast(ink, ground)
-            if measured < FLOOR:
-                short.append(hour + " " + name + " " + format(measured, ".2f") + ":1")
+            # Over the sky the product uses paper and mist; the tertiary step belongs to surfaces, and the
+            # stylesheet has no rule that paints it on the bare ground.
+            checked = grounds if name != "--g-mist-2" else grounds[:2]
+            for ground_name, ground in checked:
+                measured = _contrast(ink, ground)
+                if measured < FLOOR:
+                    short.append(hour + " " + name + " on " + ground_name + " " + format(measured, ".2f") + ":1")
     fe14 = not short
     findings.append(("FE14_ink_contrast", fe14,
-                     "every ink clears " + str(FLOOR) + ":1 on its own hour's ground"
-                     if fe14 else "below " + str(FLOOR) + ":1 — " + ", ".join(short)[:150]))
+                     "every ink clears " + str(FLOOR) + ":1 on every ground of its hour (the tertiary step on "
+                     "the page ground and the sky's lower band, the two upper inks on all three)"
+                     if fe14 else "below " + str(FLOOR) + ":1 — " + ", ".join(short)[:180]))
+
+    # FE16: a published hazard colour, printed as ink on its own wash, clears AA at the size it is printed.
+    #
+    # FE14 measures an ink against the page. A hazard cell is not on the page: it is on a 16 percent wash of
+    # its own colour, over a card that is itself a translucent raise -- so the ground under the ink is close
+    # to the ink's own hue, which is the worst case for a colour and the one no page-ground check sees.
+    # Measured in a browser on 19 September: red 4.21:1 and orange 3.90:1 at 9.5px on the light hours, both
+    # under the floor, while yellow and green cleared it. The four are held to it here.
+    #
+    # The composite is computed in sRGB while the stylesheets use oklab, so this is a close approximation
+    # rather than the browser's own number. It agrees with the measured pair to within 0.15 where both exist.
+    def _mix(a, b, weight):
+        first, second = a.lstrip("#"), b.lstrip("#")
+        return "#" + "".join(
+            format(round(weight * int(first[i:i + 2], 16) + (1 - weight) * int(second[i:i + 2], 16)), "02x")
+            for i in (0, 2, 4))
+
+    WASH, CARD = 0.16, 0.55
+    washed = []
+    # The two light hours share a block for the tokens that are not per-hour, and the published colours are
+    # declared in it. Reading only the hour's own block reported all four as "not declared", which is the
+    # same anchoring mistake FE14's comment records.
+    shared_light = re.search(r"^\[data-hour='daybreak'\], \[data-hour='noon'\]\s*\{(.*?)\n\}", gpt_css, re.S | re.M)
+    for hour in ("daybreak", "noon"):
+        block = re.search(r"^\[data-hour='" + hour + r"'\]\s*\{(.*?)\n\}", gpt_css, re.S | re.M)
+        tokens = {}
+        for body in (shared_light.group(1) if shared_light else "", block.group(1) if block else ""):
+            tokens.update(dict(re.findall(r"(--g-[a-z0-9-]+):\s*(#[0-9a-fA-F]{6})", body)))
+        if not tokens.get("--g-raise") or not tokens.get("--g-bg"):
+            washed.append(hour + ": no card tokens")
+            continue
+        card = _mix(tokens["--g-raise"], tokens["--g-bg"], CARD)
+        for name in ("--g-red", "--g-orange", "--g-yellow", "--g-green"):
+            ink = tokens.get(name)
+            if not ink:
+                washed.append(hour + " " + name + ": not declared")
+                continue
+            measured = _contrast(ink, _mix(ink, card, WASH))
+            if measured < FLOOR:
+                washed.append(hour + " " + name + " " + format(measured, ".2f") + ":1")
+    fe16 = not washed
+    findings.append(("FE16_published_colour_on_its_wash", fe16,
+                     "red, orange, yellow and green each clear " + str(FLOOR) + ":1 on their own " +
+                     str(int(WASH * 100)) + " percent wash over a card, on both light hours"
+                     if fe16 else "below " + str(FLOOR) + ":1 — " + ", ".join(washed)[:180]))
 
     # FE15: the hours are actually distinguishable from one another.
     #

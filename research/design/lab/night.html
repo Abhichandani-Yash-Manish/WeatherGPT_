@@ -1,0 +1,113 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Patna, Bihar 22:21 IST</title><style>
+
+@font-face{font-family:'Anek';src:url('../probe-fonts/node_modules/@fontsource-variable/anek-latin/files/anek-latin-latin-wght-normal.woff2') format('woff2');font-weight:100 900}
+@font-face{font-family:'Martian';src:url('../probe-fonts/node_modules/@fontsource-variable/martian-mono/files/martian-mono-latin-wght-normal.woff2') format('woff2');font-weight:100 900}
+@font-face{font-family:'Geist';src:url('../probe-fonts/node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2') format('woff2');font-weight:100 900}
+:root{--ink:#eef2f8;--dim:rgba(238,242,248,.66);--faint:rgba(238,242,248,.42);--hair:rgba(255,255,255,.13);
+ --ground:#070a10;--ground-deep:#04060b;--sky-1:#050810;--sky-2:#0a1020;--sky-3:#1a1c3a;--sky-4:#2a2440;--glow:rgba(244,168,105,0);--acc:#a8bcd8;--lightx:0;--starOpacity:0;--emissive:0}
+*{box-sizing:border-box}body{margin:0;background:#05070c;color:var(--ink);font-family:'Anek',system-ui,sans-serif}
+.stage{position:relative;width:100%;height:900px;overflow:hidden}
+.sky{position:absolute;left:0;right:0;top:0;height:596px;background:linear-gradient(to bottom,var(--sky-1) 0%,var(--sky-2) 40%,var(--sky-3) 74%,var(--sky-4) 95%,var(--glow) 100%)}
+.stars{position:absolute;left:0;right:0;top:0;height:596px;opacity:var(--starOpacity);
+ background-image:radial-gradient(1.5px 1.5px at 12% 18%,#fff,transparent),radial-gradient(1.2px 1.2px at 28% 9%,#fff,transparent),radial-gradient(1.6px 1.6px at 44% 24%,#fff,transparent),radial-gradient(1.1px 1.1px at 66% 12%,#fff,transparent),radial-gradient(1.4px 1.4px at 82% 27%,#fff,transparent),radial-gradient(1.2px 1.2px at 91% 8%,#fff,transparent),radial-gradient(1.1px 1.1px at 55% 5%,#fff,transparent),radial-gradient(1.3px 1.3px at 7% 34%,#fff,transparent)}
+.glow{position:absolute;left:0;right:0;top:0;height:676px;background:radial-gradient(54% 74% at calc(50% + var(--lightx) * 50%) 100%,var(--glow),transparent 74%)}
+.ground{position:absolute;left:0;right:0;top:596px;bottom:0;background:linear-gradient(to bottom,color-mix(in srgb,var(--ground) 86%,var(--sky-4)) 0%,var(--ground) 30%,var(--ground-deep) 100%)}
+.horizon{position:absolute;left:0;right:0;top:596px;height:1.5px;background:linear-gradient(to right,transparent,var(--acc) 14%,var(--acc) 88%,transparent);opacity:.5}
+.groundlight{position:absolute;left:0;right:0;top:596px;height:110px;background:linear-gradient(to bottom,var(--glow),transparent)}
+.panel{background:color-mix(in srgb,var(--ground) 74%,transparent);border:1px solid var(--hair);backdrop-filter:blur(10px)}
+.read{position:absolute;top:24px;left:52px;font-family:'Geist',monospace;font-size:9.5px;letter-spacing:.09em;line-height:1.95;color:var(--faint)}
+.read b{color:var(--dim);font-weight:500}
+.tools{position:absolute;top:22px;right:52px;display:flex;gap:8px}
+.chip{font-family:'Geist',monospace;font-size:9.5px;letter-spacing:.08em;color:var(--dim);border:1px solid var(--hair);border-radius:999px;padding:5px 11px}
+.probe{font-family:'Geist',monospace;font-size:8.5px;letter-spacing:.16em;color:var(--faint);border:1px dashed var(--hair);border-radius:4px;padding:4px 7px}
+.chat{position:absolute;left:52px;top:100px;width:900px}
+.q{font-family:'Geist',monospace;font-size:10.5px;letter-spacing:.05em;color:var(--faint);margin:0 0 13px}
+.steps{display:inline-flex;align-items:center;gap:9px;font-family:'Geist',monospace;font-size:9.5px;color:var(--faint);border:1px solid var(--hair);border-radius:999px;padding:5px 11px;margin:0 0 18px}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--acc)}
+.place{font-family:'Martian',monospace;font-size:14px;font-weight:500;letter-spacing:-.02em;color:var(--dim);margin:0 0 10px}
+.a{font-size:34px;line-height:1.24;margin:0;letter-spacing:-.012em;font-weight:300}
+.a b{font-family:'Martian',monospace;font-weight:500;font-size:30px;letter-spacing:-.055em}
+.atoms{position:absolute;left:52px;top:296px;display:flex;gap:14px}
+.atom{position:relative;width:286px;border-radius:15px;padding:15px 17px 13px;overflow:hidden}
+.atom .eb{font-family:'Geist',monospace;font-size:8.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--faint);margin-bottom:11px}
+.atom .val{display:flex;align-items:baseline;gap:7px;line-height:1}
+.atom .n{font-family:'Martian',monospace;font-weight:500;font-size:42px;letter-spacing:-.06em;text-shadow:0 0 calc(var(--emissive) * 26px) color-mix(in srgb,var(--acc) 55%,transparent)}
+.atom .u{font-family:'Geist',monospace;font-size:11px;color:var(--dim)}
+.atom .note{font-size:12.5px;line-height:1.45;color:var(--dim);margin-top:10px;min-height:36px}
+.atom .foot{margin-top:10px;padding-top:9px;border-top:1px solid var(--hair);font-family:'Geist',monospace;font-size:8.5px;line-height:1.6;color:var(--faint)}
+.ruler{position:relative;height:5px;margin-top:12px;border-radius:3px;background:repeating-linear-gradient(135deg,rgba(128,128,140,.30) 0 3px,transparent 3px 6px)}
+.ruler i{position:absolute;top:0;bottom:0;border-radius:3px;background:var(--acc)}
+.hz{font-family:'Geist',monospace;font-size:9.5px;letter-spacing:.1em;color:#241d00;background:#f5c400;border-radius:4px;padding:3px 7px;display:inline-block;margin-bottom:12px;font-weight:600}
+.composer{position:absolute;left:52px;top:530px;width:720px;display:flex;align-items:center;gap:12px;border-radius:15px;padding:14px 18px}
+.ph{flex:1;color:var(--dim);font-size:15.5px}
+.send{width:32px;height:32px;border-radius:10px;background:var(--ink);color:var(--ground);display:grid;place-items:center;font-weight:700}
+.boardhead{position:absolute;left:52px;right:52px;top:622px;display:flex;justify-content:space-between;align-items:baseline}
+.boardhead h2{font-family:'Geist',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);font-weight:500;margin:0}
+.foryou{font-family:'Geist',monospace;font-size:9.5px;color:var(--faint)}
+.foryou u{text-decoration:none;border-bottom:1px solid var(--hair);color:var(--dim)}
+.board{position:absolute;left:52px;right:52px;top:650px;display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.card{position:relative;border:1px solid var(--hair);border-radius:16px;padding:18px 17px 14px;min-height:210px;display:flex;flex-direction:column;overflow:hidden;background:color-mix(in srgb,var(--ground) 62%,transparent)}
+.card .lit{position:absolute;left:0;right:0;top:0;height:2px}
+.card .eb{font-family:'Geist',monospace;font-size:8.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--faint);margin-bottom:13px}
+.card .hero{display:flex;align-items:baseline}
+.card .n{font-family:'Martian',monospace;font-weight:500;font-size:52px;letter-spacing:-.065em;line-height:1;text-shadow:0 0 calc(var(--emissive) * 30px) color-mix(in srgb,var(--acc) 50%,transparent)}
+.card .u{font-family:'Geist',monospace;font-size:11px;color:var(--dim);margin-left:8px}
+.card .note{font-size:12.5px;line-height:1.45;color:var(--dim);margin-top:10px}
+.card .foot{margin-top:auto;padding-top:10px;font-family:'Geist',monospace;font-size:8.5px;line-height:1.6;color:var(--faint)}
+.card .localhour{position:absolute;top:17px;right:16px;font-family:'Geist',monospace;font-size:8.5px;color:var(--faint)}
+.plate{position:absolute;left:52px;right:52px;bottom:15px;display:flex;justify-content:space-between;font-family:'Geist',monospace;font-size:8.5px;color:var(--faint)}
+</style></head><body><div class="stage">
+<div class="sky"></div><div class="stars"></div><div class="glow"></div>
+<div class="ground"></div><div class="groundlight"></div><div class="horizon"></div>
+<div class="read" id="read"></div>
+<div class="tools"><span class="probe">DESIGN PROBE</span><span class="chip">EN</span><span class="chip">हिं</span></div>
+<div class="chat"><p class="q">YOU ASKED · what does today look like in Patna?</p><p class="steps"><span class="dot"></span>6 steps · resolved Patna · 2 sources · 4.1 s</p>
+<p class="place">Patna, Bihar</p><p class="a">The day closed at <b>33.8</b> °C. The rain is still ahead: about <b>6 mm</b> between 9 pm and midnight.</p></div>
+<div class="atoms"><div class="atom panel"><div class="eb">High today · 15:00</div><div class="val"><span class="n">34.2</span><span class="u">°C</span></div><div class="note">Returned hour, not a daily summary. Feels-like 38 °C at the same hour.</div><div class="ruler"><i style="left:18%;width:34%"></i><i style="left:62%;width:22%"></i></div><div class="foot">GFS 06Z · cell 25.61°N 85.14°E</div></div><div class="atom panel"><span class="hz">YELLOW · CAUTION</span><div class="note" style="margin-top:0">Heavy rain at isolated places — a caution the district printed, not a clearance.</div><div class="foot">IMD district bulletin · 15 Sep edition</div></div><div class="atom panel"><div class="eb">Rain · 21:00–24:00</div><div class="val"><span class="n">6</span><span class="u">mm</span></div><div class="note">Three hours covered, none interpolated. Heaviest 23:00 at 3.1 mm.</div><div class="ruler"><i style="left:8%;width:62%"></i></div><div class="foot">GFS 06Z · retrieved 05:51 IST</div></div></div>
+<div class="composer panel"><span class="ph">Ask about a district, a river, an airport, a crop…</span><span class="send">→</span></div>
+<div class="boardhead"><h2>Your board</h2><span class="foryou">ordered for you — you ask about Patna most mornings · <u>why these?</u></span></div>
+<div class="board"><article class="card"><div class="lit" style="background:linear-gradient(to right,rgba(255,178,116,.95),rgba(255,178,116,.08))"></div><span class="localhour">PATNA 05:52</span><div class="eb">Rain · overnight</div><div class="hero"><span class="n">6</span><span class="u">mm</span></div><div class="note">Heaviest hour 23:00 at 3.1 mm.</div><div class="foot">GFS 06Z · read 05:51 IST</div></article><article class="card"><div class="lit" style="background:var(--acc)"></div><span class="localhour">PATNA 05:52</span><div class="eb">Temperature · 15:00</div><div class="hero"><span class="n">34.2</span><span class="u">°C</span></div><div class="note">Feels-like 38 °C at the same hour.</div><div class="foot">GFS 06Z · read 05:51 IST</div></article><article class="card"><div class="lit" style="background:var(--acc)"></div><span class="localhour">PATNA 05:52</span><div class="eb">Spread · 31 members</div><div class="hero"><span class="n">9</span><span class="u">/ 31 above 5 mm</span></div><div class="note">Moderate agreement; members as returned.</div><div class="foot">Ensemble · read 05:51 IST</div></article><article class="card"><div class="lit" style="background:linear-gradient(to right,rgba(150,178,214,.9),rgba(150,178,214,.08))"></div><span class="localhour">NEW DELHI 05:52</span><div class="eb">Air quality · today</div><div class="hero"><span class="n">142</span><span class="u">µg/m³</span></div><div class="note">Modelled, not a station reading.</div><div class="foot">Modelled air quality · read 05:50 IST</div></article></div>
+<div class="plate"><span>Nothing on this page is unattributed.</span><span id="p2"></span></div>
+<script>
+var R=Math.PI/180;
+function solar(lat,lon,istHour,doy){var decl=23.44*Math.sin(2*Math.PI*(doy-81)/365)*R,latR=lat*R;
+ var st=istHour+(lon-82.5)/15,H=(st-12)*15*R;
+ var alt=Math.asin(Math.sin(latR)*Math.sin(decl)+Math.cos(latR)*Math.cos(decl)*Math.cos(H))/R;
+ var az=(180+Math.atan2(Math.sin(H),Math.cos(H)*Math.sin(latR)-Math.tan(decl)*Math.cos(latR))/R+360)%360;
+ return {alt:alt,az:az};}
+function mix(a,b,t){return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t];}
+function rgb(c,al){return 'rgba('+Math.round(c[0])+','+Math.round(c[1])+','+Math.round(c[2])+','+(al===undefined?1:al)+')';}
+var A=[
+ {alt:-90,z:[3,4,10],m:[5,7,16],l:[9,12,24],h:[16,22,40],g:[6,8,14],gd:[4,5,10],ink:[236,241,248],acc:[150,178,214],mode:'night'},
+ {alt:-12,z:[4,6,18],m:[8,11,30],l:[16,20,44],h:[32,38,68],g:[7,9,16],gd:[5,6,11],ink:[238,242,250],acc:[168,190,222],mode:'night'},
+ {alt:-4,z:[14,20,54],m:[44,38,84],l:[104,72,108],h:[168,110,106],g:[10,12,20],gd:[6,8,14],ink:[244,238,240],acc:[244,168,105],mode:'dark'},
+ {alt:0,z:[26,36,86],m:[74,64,124],l:[170,102,132],h:[242,167,106],g:[13,15,24],gd:[8,10,17],ink:[248,241,238],acc:[255,178,116],mode:'dark'},
+ {alt:8,z:[40,80,140],m:[104,144,190],l:[196,190,196],h:[246,206,158],g:[240,236,230],gd:[226,222,218],ink:[24,26,34],acc:[186,110,52],mode:'light'},
+ {alt:30,z:[46,110,180],m:[104,164,214],l:[176,206,232],h:[232,240,246],g:[238,241,244],gd:[224,229,235],ink:[17,22,32],acc:[176,104,44],mode:'light'},
+ {alt:90,z:[52,120,190],m:[110,170,218],l:[178,208,234],h:[236,242,248],g:[240,243,246],gd:[226,231,237],ink:[16,21,31],acc:[176,104,44],mode:'light'}];
+function theme(alt){var lo=A[0],hi=A[A.length-1];
+ for(var i=0;i<A.length-1;i++){if(alt>=A[i].alt&&alt<=A[i+1].alt){lo=A[i];hi=A[i+1];break;}}
+ if(alt<=A[0].alt){lo=hi=A[0];} if(alt>=A[A.length-1].alt){lo=hi=A[A.length-1];}
+ var t=(hi.alt===lo.alt)?0:(alt-lo.alt)/(hi.alt-lo.alt),out={};
+ ['z','m','l','h','g','gd','ink','acc'].forEach(function(k){out[k]=mix(lo[k],hi[k],t);});
+ out.mode=(t<0.5?lo.mode:hi.mode);return out;}
+var P={"lat":25.5941,"lon":85.1376,"ist":22.35,"doy":261};
+var s=solar(P.lat,P.lon,P.ist,P.doy),t=theme(s.alt),st=document.documentElement.style;
+function set(k,v){st.setProperty('--'+k,v);}
+set('sky-1',rgb(t.z));set('sky-2',rgb(t.m));set('sky-3',rgb(t.l));set('sky-4',rgb(t.h));
+set('ground',rgb(t.g));set('ground-deep',rgb(t.gd));set('ink',rgb(t.ink));set('acc',rgb(t.acc));
+set('dim',rgb(t.ink,.66));set('faint',rgb(t.ink,.44));
+set('hair',t.mode==='light'?'rgba(17,22,32,.16)':'rgba(255,255,255,.13)');
+var lx=Math.sin(s.az*R);set('lightx',lx.toFixed(3));
+var gs=Math.max(0,1-Math.abs(s.alt)/15);
+set('glow','rgba('+Math.round(t.h[0])+','+Math.round(t.h[1])+','+Math.round(t.h[2])+','+(0.5*gs+0.05).toFixed(3)+')');
+set('starOpacity',String(Math.max(0,Math.min(.85,(-s.alt-4)/10))));
+set('emissive',String(Math.max(0,Math.min(1,(-s.alt-2)/10))));
+var dirs=['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+var dir=dirs[Math.round(s.az/22.5)%16];
+var side=lx>0.25?'east — from the right':lx<-0.25?'west — from the left':'south — overhead';
+document.getElementById('read').innerHTML='SUN <b>'+s.alt.toFixed(1)+'°</b> · AZIMUTH <b>'+Math.round(s.az)+'° '+dir+'</b> · ground <b>'+(t.mode==='light'?'daylight':'low light')+'</b><br>'+
+ 'light enters from the <b>'+side+'</b>'+(Math.min(1,(-s.alt-2)/10)>0.3?' · below the horizon the page is lit by its own readings':'')+'<br>'+
+ 'computed from this place and hour · never a condition report';
+document.getElementById('p2').innerHTML='light for '+"Patna, Bihar"+' at '+"22:21 IST"+' · astronomy only';
+</script></div></body></html>

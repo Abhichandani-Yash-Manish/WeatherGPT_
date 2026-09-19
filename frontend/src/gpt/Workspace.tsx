@@ -12,6 +12,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { PanelLeft, Bell, KeyRound, ArrowLeft } from 'lucide-react';
 
 import { getJson } from '../api/client';
+import { istStamp } from '../lib/time';
 import type { AnswerPacket, Languages } from '../api/types';
 import { personas as readPersonas } from '../chat/api';
 import { allLanguages, measuredFor } from '../chat/voice';
@@ -19,20 +20,25 @@ import { useConversation } from '../chat/useConversation';
 import { stageLabel } from '../chat/model';
 import { SurfaceHost } from '../shell/SurfaceHost';
 import { viewById, type ViewEntry } from '../shell/views';
-import { describeNational, useOverview } from '../home/overview';
 import { AnswerTurn } from '../chat/AnswerTurn';
 import { Composer } from './Composer';
 import { Field } from './Field';
 import { hourOf } from './fieldPaint';
+import { useSky } from './sky';
+import { SkyGlyphIcon } from '../shell/icons';
 import { useWorkingPlace } from '../modules/Evidence';
 import { Rail } from './Rail';
+import { HomeRail } from '../shell/HomeRail';
+import { homeOf } from '../shell/homes';
+import { Welcome } from './Welcome';
 import './gpt.css';
 
+/* Three, not eight. The openings are a way in for someone who does not know what to type, not a menu of
+   everything the machine can read — that is what the Board home is for. */
 const STARTERS = [
-  { label: 'Today’s warnings', id: 'warnings' },
   { label: 'Will it rain tomorrow?', id: 'forecast' },
+  { label: 'Any warning near me?', id: 'warnings' },
   { label: 'My district advisory', id: 'advisories' },
-  { label: 'Airport report', id: 'aviation' },
 ]
   .map(entry => ({ label: entry.label, question: viewById(entry.id)?.intents?.[0] || '' }))
   .filter(entry => Boolean(entry.question));
@@ -52,56 +58,6 @@ export type WorkspaceProps = {
   restoreId?: string | null;
   unknownRoute?: string | null;
 };
-
-function Hero() {
-  const overview = useOverview();
-  const picture = describeNational(overview);
-  const V = ({ value }: { value: number }) => <span className="g-num">{value}</span>;
-
-  if (overview.isPending) {
-    return (
-      <div data-testid="reading">
-        <p className="g-hero-sub" style={{ margin: 0 }}>Reading the district warning bulletin on this machine.</p>
-      </div>
-    );
-  }
-  if (overview.isError) {
-    return (
-      <div data-testid="reading">
-        <h1 className="g-hero">The district warning bulletin could not be read from this machine.</h1>
-        <p className="g-hero-sub">
-          No count is printed, because no read produced one. {String((overview.error as Error)?.message || '').slice(0, 160)}
-        </p>
-      </div>
-    );
-  }
-  if (!picture.statedToday) {
-    return (
-      <div data-testid="reading">
-        <h1 className="g-hero">This read does not state today.</h1>
-        <p className="g-hero-sub">The overview came back without a today block, so no count is printed. An absent block is not a quiet day.</p>
-      </div>
-    );
-  }
-  return (
-    <div data-testid="reading">
-      <h1 className="g-hero">
-        {picture.severe > 0 ? (
-          <><V value={picture.severe} /> districts are under an orange or red warning today.</>
-        ) : (
-          <>No district is under an orange or red warning today.</>
-        )}
-      </h1>
-      <p className="g-hero-sub">
-        <V value={picture.yellow} /> carry a yellow caution, and <V value={picture.green} /> have nothing flagged.
-        {picture.behind !== null && picture.behind > 0 ? (
-          <> <V value={picture.behind} /> of those districts are still publishing an older edition than the newest this read returned, so their day above is what that older edition printed.</>
-        ) : null}
-      </p>
-      {picture.sourceLine ? <p className="g-source">{picture.sourceLine}</p> : null}
-    </div>
-  );
-}
 
 export function Workspace({
   onOpen, language, onLanguage, persona, onPersona, view, onAsk, onNew, onPlans, onOwner,
@@ -168,6 +124,13 @@ export function Workspace({
   const catalogue = useQuery({ queryKey: ['personas'], queryFn: () => readPersonas(), staleTime: 300_000 });
   const personaOptions = catalogue.data?.data?.personas || [];
   const sheet = view && view.id !== 'assistant' ? view : null;
+  const home = homeOf(String(view?.id || 'assistant'));
+  const sky = useSky();
+
+  /* The condition the ground may take its colour from, and the one rule about where it may: the sky
+     belongs to the conversation. A warnings or history surface carries the four published hazard colours,
+     and no ambient tint from a station's weather belongs beside them. */
+  const mood = home?.id === 'ask' ? sky.data?.glyph ?? null : null;
 
   const followUp = (text: string) => {
     const last = [...conversation.turns].reverse().find(turn => turn.role === 'answer') as { packet: AnswerPacket } | undefined;
@@ -191,9 +154,15 @@ export function Workspace({
         busy={Boolean(working)}
         language={language}
       />
-      <p className="g-hint" id="composer-hint">
-        Every value keeps its source and the time it was read. Questions and answers stay on this machine.
-      </p>
+      {chatting ? (
+        <p className="g-hint" id="composer-hint">
+          Every value keeps its source and the time it was read.
+        </p>
+      ) : (
+        /* The same sentence, for a screen reader only. It is the composer's described-by target, and a
+           described-by that points at nothing is an accessibility defect rather than a piece of design. */
+        <p className="sr-only" id="composer-hint">Every value keeps its source and the time it was read.</p>
+      )}
     </div>
   );
 
@@ -207,13 +176,18 @@ export function Workspace({
       data-scrolled={scrolled ? 'true' : 'false'}
       data-design="gpt"
     >
-      <Field hour={hour} expanded={chatting} />
+      <Field expanded={chatting} sky={mood} />
       <button type="button" className="g-scrim" aria-label="Close the conversation list" onClick={() => setRailOpen(false)} />
+      {/* The home, derived from the surface rather than from a second router. */}
+      <HomeRail current={home?.id ?? 'ask'} onOpen={id => { onOpen(id); setRailOpen(false); }} />
       <Rail
         currentId={conversation.conversationId}
         onOpen={id => { void conversation.restore(id); setRailOpen(false); }}
         onNew={() => { conversation.clear(); onNew?.(); setRailOpen(false); }}
         onClose={() => setRailOpen(false)}
+        home={home ?? null}
+        currentView={String(view?.id || 'assistant')}
+        onOpenView={id => { onOpen(id); setRailOpen(false); }}
       />
 
       <main className="g-main">
@@ -240,6 +214,22 @@ export function Workspace({
               defect is in the shell's own wiring and predates the swap. Correlation was mistaken for cause, the
               rollback was kept because plain buttons are the safer base, and the defect is recorded rather than
               papered over with a library change. */}
+          {/* The place the answers are about, and what the nearest station last printed there. It is a
+              statement and not a control — the place is changed by asking — and it exists because a reader
+              who has held a place for three turns otherwise has to infer it from the answers. */}
+          {sky.data?.place || sky.data?.temperature || sky.data?.condition ? (
+            <p
+              className="g-skyline"
+              data-testid="skyline"
+              title={[sky.data?.place, sky.data?.station, sky.data?.sourceId, sky.data?.observedAt ? 'read ' + istStamp(sky.data.observedAt) : null]
+                .filter(Boolean).join(' · ')}
+            >
+              {sky.data?.glyph ? <SkyGlyphIcon glyph={sky.data.glyph} size={15} strokeWidth={1.5} aria-hidden="true" /> : null}
+              {sky.data?.place ? <span className="g-skyline-place">{sky.data.place}</span> : null}
+              {sky.data?.temperature ? <span className="g-skyline-value">{sky.data.temperature}{sky.data.unit || ''}</span> : null}
+              {sky.data?.condition ? <span className="g-skyline-cond">{sky.data.condition}</span> : null}
+            </p>
+          ) : null}
           <div className="g-top-left">
             <button type="button" className="g-tool" onClick={() => onPlans?.()}>
               <Bell size={15} aria-hidden="true" /> Watch
@@ -276,7 +266,7 @@ export function Workspace({
 
             {!chatting ? (
               <div className="g-welcome">
-                <Hero />
+                <Welcome hour={hour} />
                 {composer}
                 <div className="g-chips">
                   {STARTERS.map(starter => (
@@ -285,6 +275,14 @@ export function Workspace({
                     </button>
                   ))}
                 </div>
+                {/* The national reading, which used to be the headline here. A way into the Warnings home
+                    for a reader who wants it, set as a way in rather than as a fourth question: it opens a
+                    surface, and it is not something a reader would ever type. */}
+                <p className="g-welcome-foot">
+                  <button type="button" className="g-quiet" onClick={() => onOpen('overview')}>
+                    Today across India
+                  </button>
+                </p>
               </div>
             ) : (
               <>

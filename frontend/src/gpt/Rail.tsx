@@ -12,6 +12,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { MessageSquarePlus, Search, Trash2, X } from 'lucide-react';
 import { forgetConversation, ledger } from '../chat/api';
 import type { ConversationRow } from '../api/types';
+import { type Home, viewsOf } from '../shell/homes';
 
 const DAY = 86_400_000;
 
@@ -32,11 +33,17 @@ export function Rail({
   onOpen,
   onNew,
   onClose,
+  home,
+  currentView,
+  onOpenView,
 }: {
   currentId: string | null;
   onOpen: (id: string) => void;
   onNew: () => void;
   onClose?: () => void;
+  home: Home | null;
+  currentView: string;
+  onOpenView: (id: string) => void;
 }) {
   const [filter, setFilter] = useState('');
   const client = useQueryClient();
@@ -63,6 +70,43 @@ export function Rail({
     await forgetConversation(row.id);
     void client.invalidateQueries({ queryKey: ['conversations'] });
   };
+
+  /* Outside Ask the rail lists the home's own surfaces instead of the reader's conversations. Same slot,
+     same width, different subject — a reader in Warnings is choosing a view, not a past question. */
+  if (home && home.id !== 'ask') {
+    return (
+      <aside className="g-rail" aria-label={home.label}>
+        <div className="g-rail-head">
+          <span className="g-brand">
+            <span className="g-brand-mark" aria-hidden="true" />
+            {home.label}
+            {onClose ? (
+              <button type="button" className="g-act g-rail-toggle" style={{ marginLeft: 'auto' }} onClick={onClose} aria-label="Close the section list">
+                <X size={16} aria-hidden="true" />
+              </button>
+            ) : null}
+          </span>
+          <p className="g-empty-note" style={{ padding: '0 8px 4px' }}>{home.blurb}</p>
+        </div>
+        <div className="g-history">
+          {viewsOf(home).map(view => (
+            <div key={view.id} className="g-row" aria-current={view.id === currentView ? 'true' : undefined}>
+              <button
+                type="button"
+                className="g-row-text g-row-plain"
+                onClick={() => onOpenView(String(view.id))}
+              >
+                {view.label}
+              </button>
+            </div>
+          ))}
+        </div>
+        <div className="g-rail-foot">
+          <p className="g-empty-note" style={{ padding: 0 }}>Every value keeps its source and the time it was read.</p>
+        </div>
+      </aside>
+    );
+  }
 
   return (
     <aside className="g-rail" aria-label="Conversations">
@@ -108,8 +152,7 @@ export function Rail({
               <div key={row.id} className="g-row" aria-current={row.id === currentId ? 'true' : undefined}>
                 <button
                   type="button"
-                  className="g-row-text"
-                  style={{ border: 0, background: 'transparent', color: 'inherit', font: 'inherit', textAlign: 'left', cursor: 'pointer', padding: 0 }}
+                  className="g-row-text g-row-plain"
                   onClick={() => onOpen(row.id)}
                 >
                   {row.opening_question || 'Untitled conversation'}

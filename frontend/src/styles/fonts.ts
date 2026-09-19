@@ -3,6 +3,11 @@
    The workspace serves under default-src 'self', so every face is bundled from node_modules and served
    from this origin; no font stylesheet can load from a CDN here.
 
+   - Nunito is the DISPLAY voice: the greeting, the hour, the reading's own numeral, the labels under a
+     condition glyph. It is a rounded geometric, and roundness is where the warmth in a weather interface
+     actually lives — the reference this direction came from gets most of its softness from the face
+     rather than from the colour. It is used only at display size and only for Latin; it never sets a
+     sentence, and it never sets a script it does not cover.
    - Anek is the HUMAN voice: what a model wrote. It is a pan-Indic family drawn per script, so a Hindi or
      Tamil answer is set in a face made for it rather than a fallback. The Latin face loads here; the
      script faces load on demand below, so a reader who never asks for Tamil never pays for a Tamil face.
@@ -13,6 +18,7 @@
    Loading a face is never a claim that the product can WRITE the language: that stays the engine's
    adherence gate, measured per direction. */
 
+import '@fontsource-variable/nunito';
 import '@fontsource-variable/anek-latin';
 import '@fontsource/ibm-plex-mono/400.css';
 import '@fontsource/ibm-plex-mono/500.css';

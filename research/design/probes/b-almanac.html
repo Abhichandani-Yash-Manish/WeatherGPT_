@@ -1,0 +1,70 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Probe B</title><style>
+@font-face{font-family:'Rozha One';src:url('../probe-fonts/node_modules/@fontsource/rozha-one/files/rozha-one-latin-400-normal.woff2') format('woff2');font-weight:400}
+@font-face{font-family:'Tiro Devanagari Hindi';src:url('../probe-fonts/node_modules/../probe-fonts/node_modules/../../frontend/node_modules/@fontsource/tiro-devanagari-hindi/files/tiro-devanagari-hindi-latin-400-normal.woff2') format('woff2');font-weight:400}
+@font-face{font-family:'Anek Latin';src:url('../probe-fonts/node_modules/@fontsource-variable/anek-latin/files/anek-latin-latin-wght-normal.woff2') format('woff2');font-weight:100 900}
+@font-face{font-family:'Martian Mono';src:url('../probe-fonts/node_modules/@fontsource-variable/martian-mono/files/martian-mono-latin-wght-normal.woff2') format('woff2');font-weight:100 900}
+:root{--paper:#eceae1;--card:#f5f4ee;--ink:#15161a;--inkdim:rgba(21,22,26,.62);--inkfaint:rgba(21,22,26,.44);
+--violet:#4a2a86;--rule:rgba(21,22,26,.22);--hy:#e8b400;--disp:'Rozha One',serif;--prose:'Tiro Devanagari Hindi',Georgia,serif;
+--ui:'Anek Latin',sans-serif;--mono:'Martian Mono',monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--ui)}
+.page{max-width:1400px;margin:0 auto;padding:22px 34px 28px;min-height:900px;display:flex;flex-direction:column}
+header{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:3px double var(--rule);padding-bottom:10px}
+.place{display:flex;align-items:baseline;gap:14px}.place h1{font-family:var(--disp);font-size:34px;font-weight:400;margin:0;letter-spacing:-.01em}
+.when{font-family:var(--mono);font-size:10px;color:var(--inkfaint)}
+.tools{display:flex;gap:8px;align-items:center}
+.chip{font-size:11px;color:var(--inkdim);border:1px solid var(--rule);border-radius:2px;padding:4px 9px}
+.probe{font-family:var(--mono);font-size:8.5px;letter-spacing:.15em;color:var(--violet);border:1px dashed var(--violet);border-radius:2px;padding:4px 7px}
+.chat{padding:26px 0 22px;border-bottom:1px solid var(--rule);display:flex;gap:38px;align-items:flex-start}
+.chat .main{flex:1;max-width:800px}
+.q{font-family:var(--ui);font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--inkfaint);margin:0 0 10px}
+.a{font-family:var(--prose);font-size:27px;line-height:1.4;margin:0 0 12px}
+.a b{font-family:var(--disp);font-weight:400;font-size:31px;color:var(--violet)}
+.src{font-family:var(--mono);font-size:9.5px;color:var(--inkfaint)}
+.composer{width:340px;border:1px solid var(--rule);background:var(--card);border-radius:2px;padding:12px 14px;box-shadow:3px 3px 0 rgba(21,22,26,.08)}
+.composer .ph{font-family:var(--prose);font-size:15px;color:var(--inkdim)}
+.composer .row{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-family:var(--mono);font-size:8.5px;color:var(--inkfaint)}
+.send{border:1px solid var(--ink);border-radius:2px;padding:3px 8px;color:var(--ink)}
+.boardhead{display:flex;align-items:baseline;justify-content:space-between;padding:18px 0 10px}
+.boardhead h2{font-family:var(--disp);font-size:22px;font-weight:400;margin:0}
+.lh{font-family:var(--mono);font-size:9px;color:var(--inkfaint)}
+.board{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.card{position:relative;padding:18px 18px 16px;min-height:300px;display:flex;flex-direction:column;background:var(--card);border-right:1px dashed var(--rule)}
+.card:last-child{border-right:0}
+.eyebrow{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--violet);font-weight:600;margin-bottom:14px}
+.hz{align-self:flex-start;font-size:11px;font-weight:600;background:var(--hy);border:1px solid rgba(21,22,26,.35);border-radius:2px;padding:3px 8px;margin-bottom:12px}
+.hero{font-family:var(--disp);font-weight:400;display:flex;align-items:baseline;gap:8px;line-height:1}
+.n{font-size:74px;letter-spacing:-.02em}.u{font-family:var(--mono);font-size:12px;color:var(--inkdim)}
+.word{font-size:44px}
+.note{font-family:var(--prose);font-size:15px;line-height:1.55;color:var(--inkdim);margin-top:10px}
+.foot{margin-top:auto;padding-top:10px;border-top:1px solid var(--rule);font-family:var(--mono);font-size:8.5px;line-height:1.6;color:var(--inkfaint)}
+.stamp{position:absolute;top:14px;right:14px;transform:rotate(-4deg);border:1.5px dashed var(--violet);color:var(--violet);
+font-family:var(--mono);font-size:7.5px;letter-spacing:.1em;padding:3px 5px;border-radius:2px;opacity:.85}
+.tickrow{display:flex;gap:3px;margin-top:16px}.tick{flex:1;height:16px;border:1px solid var(--rule);border-radius:1px}.tick.on{background:var(--violet);border-color:var(--violet)}
+.meter{display:flex;gap:10px;margin-top:14px;font-family:var(--mono);font-size:8.5px;color:var(--inkfaint)}
+.plate{margin-top:auto;padding-top:18px;display:flex;justify-content:space-between;font-family:var(--mono);font-size:8.5px;color:var(--inkfaint)}
+</style></head><body><div class="page">
+<header><div class="place"><h1>Surat, Gujarat</h1><span class="when">THU 18 SEP 2026 · 18:42 IST</span></div>
+<div class="tools"><span class="probe">DESIGN PROBE</span><span class="chip">EN</span><span class="chip">Light</span></div></header>
+<section class="chat"><div class="main">
+<p class="q">You asked · Will it rain in Surat tomorrow afternoon?</p>
+<p class="a">Rain starts after 4 pm tomorrow — about <b>8 mm</b> over three hours, heaviest near <b>6 pm</b>.</p>
+<p class="src">GFS 12Z run · grid cell 21.17°N 72.83°E, 3.2 km · retrieved 18:42 IST</p></div>
+<div class="composer"><div class="ph">Ask about a district, a river, an airport, a crop…</div>
+<div class="row"><span>EN · DISTRICT · TOMORROW</span><span class="send">ASK →</span></div></div></section>
+<div class="boardhead"><h2>Your board</h2><span class="lh">4 cards · edited 18:42 IST</span></div>
+<section class="board">
+<article class="card"><span class="stamp">15 SEP · ED 3/7</span><div class="eyebrow">District warning · today</div>
+<span class="hz">YELLOW · CAUTION</span><div class="note">Heavy rain at isolated places. The bulletin prints a caution, not a clearance.</div>
+<div class="foot">IMD district warning bulletin · 15 Sep edition<br>read 18:42 IST</div></article>
+<article class="card"><div class="eyebrow">Tomorrow · 16:00–19:00</div>
+<div class="hero"><span class="n">8</span><span class="u">mm</span></div><div class="note">Heaviest hour 18:00 at 3.4 mm. Three hours covered, none interpolated.</div>
+<div class="foot">GFS 12Z · cell 21.17°N 72.83°E<br>retrieved 18:42 IST</div></article>
+<article class="card"><div class="eyebrow">Tapi at Surat · discharge</div>
+<div class="hero"><span class="n">412</span><span class="u">m³/s</span></div><div class="note">Answering cell 38 km upstream. Modelled discharge — not an observed water level.</div>
+<div class="foot">GloFAS · read 18:40 IST</div></article>
+<article class="card"><div class="eyebrow">Rain · 31 members</div>
+<div class="hero"><span class="n">12</span><span class="u">/ 31</span></div><div class="tickrow"><span class="tick on"></span><span class="tick on"></span><span class="tick on"></span><span class="tick on"></span><span class="tick on"></span><span class="tick on"></span><span class="tick on"></span><span class="tick on"></span><span class="tick on"></span><span class="tick on"></span><span class="tick on"></span><span class="tick on"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span></div>
+<div class="foot">Members above 10 mm in the same window<br>retrieved 18:41 IST</div></article>
+</section>
+<div class="plate"><span>Every value keeps its entity, window, unit, source and retrieval time.</span><span>SET IN ROZHA ONE · TIRO · MARTIAN MONO</span></div>
+</div></body></html>

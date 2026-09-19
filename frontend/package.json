@@ -21,6 +21,7 @@
   "dependencies": {
     "@fontsource-variable/anek-latin": "^5.3.0",
     "@fontsource-variable/martian-mono": "^5.3.0",
+    "@fontsource-variable/nunito": "^5.3.0",
     "@fontsource/ibm-plex-mono": "^5.3.0",
     "@fontsource/ibm-plex-sans": "^5.3.0",
     "@fontsource/noto-serif-gujarati": "^5.3.0",
