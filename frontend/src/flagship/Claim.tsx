@@ -46,8 +46,13 @@ export function Claim({ eyebrow, value, unit, hazard, hazardColour, note, source
       role="group"
       aria-label={typeof eyebrow === 'string' ? eyebrow : undefined}
       className={'g-claim ' + (compact ? ' g-claim-compact' : '') + (row ? ' fact-row' : '')}
-      style={hazardColour ? ({ '--g-claim-lit': hazardColour } as CSSProperties) : undefined}
+      /* --g-lit, not --g-claim-lit: the rule that paints the edge reads --g-lit, so the old name left
+         `background: var(--g-lit)` invalid at computed-value time and the bar painted nothing. data-lit is
+         what that rule selects on, and it was never set either — so the published colour had two
+         independent reasons never to appear. The child .g-hazard inherits this now. */
+      style={hazardColour ? ({ '--g-lit': hazardColour } as CSSProperties) : undefined}
       data-testid={testId}
+      data-lit={hazardColour ? 'true' : undefined}
       data-lead={lead ? 'true' : undefined}
       data-state={absent ? 'not-stated' : 'stated'}
     >

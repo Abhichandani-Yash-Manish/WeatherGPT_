@@ -82,7 +82,7 @@ export function Rail({
         </button>
         <label className="sr-only" htmlFor="rail-filter">Filter conversations</label>
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-          <Search size={14} aria-hidden="true" style={{ position: 'absolute', left: 11, color: 'var(--g-ink-3)' }} />
+          <Search size={14} aria-hidden="true" style={{ position: 'absolute', left: 11, color: 'var(--g-mist-2)' }} />
           <input
             id="rail-filter"
             className="g-search"

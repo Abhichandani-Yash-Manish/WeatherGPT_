@@ -7,7 +7,7 @@
    The rail, the column width, the docking composer, the transient hover actions and the streaming stop are
    ChatGPT's shape. The claim, the source line, the published colour and the work panel are ours. */
 
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { PanelLeft, Bell, KeyRound, ArrowLeft } from 'lucide-react';
 
@@ -24,9 +24,7 @@ import { AnswerTurn } from '../chat/AnswerTurn';
 import { Composer } from './Composer';
 import { Field } from './Field';
 import { hourOf } from './fieldPaint';
-import { glowPoint, glowStrength, phaseOf, solarPosition } from '../flagship/solar';
 import { useWorkingPlace } from '../modules/Evidence';
-import { Scene } from './Scene';
 import { Rail } from './Rail';
 import './gpt.css';
 
@@ -112,6 +110,7 @@ export function Workspace({
   const conversation = useConversation({ outputLanguage: language, persona });
   const client = useQueryClient();
   const [railOpen, setRailOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const sentSeed = useRef<number | null>(null);
   const restored = useRef<string | null>(null);
   const thread = useRef<HTMLDivElement | null>(null);
@@ -127,16 +126,6 @@ export function Workspace({
   const latitude = workingPlace?.latitude ?? 23.0;
   const longitude = workingPlace?.longitude ?? 82.5;
   const hour = hourOf(now, latitude, longitude);
-  const sun = solarPosition(latitude, longitude, now);
-  const glow = glowPoint(sun);
-  /* A sun on the horizon is the strongest light of the day and a deep night has none, so this is placed and scaled
-     by astronomy rather than chosen. */
-  const glowAlpha = glowStrength(sun);
-  const phase = phaseOf(sun);
-  const disc = phase === 'night' ? glowPoint({ altitude: -sun.altitude, azimuth: (sun.azimuth + 180) % 360 }) : glow;
-  /* The disc is visible whenever it is up. glowStrength belongs to the glow — it is strongest with the sun on the
-     horizon — and reusing it here made the sun invisible at midday, which the capture caught. */
-  const discAlpha = sun.altitude > -6 ? 1 : 0.86;
 
   useEffect(() => {
     if (!restoreId || restored.current === restoreId) return;
@@ -205,40 +194,10 @@ export function Workspace({
       className="g"
       data-rail={railOpen ? 'open' : 'closed'}
       data-hour={hour}
-      data-phase={phaseOf(sun)}
-      style={
-        {
-          '--g-sun-x': (glow.x * 100).toFixed(2) + '%',
-          '--g-sun-y': (glow.y * 100).toFixed(2) + '%',
-          '--g-sun-a': glowAlpha.toFixed(3),
-        } as CSSProperties
-      }
-      /* The chrome follows the hour: a bright page with dark ink by day, dark glass at night. The Field already
-         computes the hour from the reader's own sun, so there is no second opinion here. */
-      data-mode={hour === 'night' ? 'dark' : 'light'}
+      data-scrolled={scrolled ? 'true' : 'false'}
       data-design="gpt"
     >
       <Field hour={hour} expanded={chatting} />
-      {/* The sun's own light, at its own azimuth and altitude. Decoration by construction: it is placed by
-          astronomy and can never state a condition. */}
-      <div className="g-sun" aria-hidden="true" />
-      {/* The two layers the reference is about: a mid ridge and the place's own landmark, tinted by the scene's
-          palette for this phase. landmarkFor matches the place name, then the region, then a skyline. */}
-      <Scene place={workingPlace?.label} phase={hour} />
-      {/* The disc travels: it is placed by the sun's own azimuth and altitude, and takes 2.4 seconds to move when
-          the hour turns. After dark it stands at the anti-solar point, which is where a full moon is — decoration,
-          named as decoration in the legend, and never a condition. */}
-      <div
-        className="g-disc"
-        aria-hidden="true"
-        style={
-          {
-            '--g-disc-x': (disc.x * 100).toFixed(2) + '%',
-            '--g-disc-y': (disc.y * 100).toFixed(2) + '%',
-            '--g-disc-a': discAlpha.toFixed(2),
-          } as CSSProperties
-        }
-      />
       <button type="button" className="g-scrim" aria-label="Close the conversation list" onClick={() => setRailOpen(false)} />
       <Rail
         currentId={conversation.conversationId}
@@ -283,7 +242,7 @@ export function Workspace({
 
         {/* One frosted sheet holds the conversation: the sky stays visible around it and faintly through it. */}
         <div className="g-panel" data-chatting={chatting ? 'true' : 'false'}>
-          <div className="g-thread" ref={thread}>
+          <div className="g-thread" ref={thread} onScroll={event => setScrolled(event.currentTarget.scrollTop > 8)}>
             <div className="g-col">
             {unknownRoute ? (
               <p className="g-notice" role="status">There is no page called “{unknownRoute}”. This is the conversation — ask your question here.</p>
@@ -333,7 +292,7 @@ export function Workspace({
                   if (turn.role === 'restored') {
                     return (
                       <div key={turn.key} className="g-turn g-in">
-                        <p className="g-eyebrow">restored from the local store</p>
+                        <p className="g-eyebrow">Restored from this machine</p>
                         <p className="g-prose">{turn.text}</p>
                       </div>
                     );

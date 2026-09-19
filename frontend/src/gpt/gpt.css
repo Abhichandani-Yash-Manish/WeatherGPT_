@@ -1,35 +1,39 @@
 /* WeatherGPT — the workspace.
    ============================================================================
-   Six background directions failed here before this one, and every one failed the same way: the background
-   tried to be the subject, and read as unserious. This system inverts that. The ground whispers — its whole
-   contrast range is about twelve percent — and every bit of craft goes into the foreground: the type, the
-   spacing rhythm, the claim, the composer, and motion that only ever answers something a person did.
+   The build before this one was half-dressed: Workspace.tsx rendered .g-panel, .g-sun, .g-disc, .g-scene,
+   .g-dots and .g-eyebrow, and not one of those six had a rule in this file. The JSX belonged to the
+   illustrated-scene direction and the stylesheet belonged to the rewrite that replaced it, so the chat sat
+   on undecorated black with an unstyled thread container and an invisible typing indicator. That is the
+   flatness, and it was a wiring fault rather than a matter of taste.
+
+   What is true about the taste: a ground can be quiet without being absent. This one is built in five
+   layers — gradient, two slow auras, grain, vignette, horizon — and its whole contrast range is still under
+   fifteen percent. Depth here comes from the same place it comes from in any well-made dark interface: a
+   one-pixel light on the top edge of every raised surface, a shadow underneath it that has more than one
+   stop, and a surface fill that is a gradient rather than a flat value. Those three details are most of the
+   distance between an interface that reads as built and one that reads as a wireframe.
 
    Grounding: this product reads published meteorological bulletins. Its vernacular is instruments and
-   documents. So the palette is a night-flight palette — a true navy-black rather than a tinted grey — and
-   the single accent is a pale instrument blue, cool and low in saturation, deliberately far from the four
-   IMD hazard colours so that an interface state can never be mistaken for a warning.
-
-   Three tells were removed from the previous build: all-caps eyebrows, meta strings joined with middle dots,
-   and a monospace face used decoratively. Mono survives in exactly one role — a value a tool owns, or the
-   provenance line under it — because there it carries meaning. */
+   documents. The palette is a night-flight palette and the single accent is a pale instrument blue, chosen
+   to sit far from the four IMD hazard colours so an interface state can never be mistaken for a warning. */
 
 :root {
   /* ground */
-  --g-void: #070b14;
-  --g-bg: #0c1220;
-  --g-raise: #131b2b;
-  --g-raise-2: #182131;
-  --g-line: #1e2838;
-  --g-line-soft: #16202f;
+  --g-void: #05080f;
+  --g-bg: #0a0f1a;
+  --g-raise: #111828;
+  --g-raise-2: #172032;
+  --g-line: #222d40;
+  --g-line-soft: #18212f;
 
   /* ink */
-  --g-paper: #e8edf5;
-  --g-mist: #8b98ad;
-  --g-mist-2: #67738a;
+  --g-paper: #edf1f7;
+  --g-mist: #96a3b8;
+  --g-mist-2: #6b7890;
 
   /* the one accent */
   --g-accent: #a8c7fa;
+  --g-accent-2: #7ea6e8;
   --g-accent-wash: rgba(168, 199, 250, 0.10);
 
   /* published colours — reached only through a source */
@@ -45,23 +49,54 @@
   --g-1: 4px; --g-2: 8px; --g-3: 12px; --g-4: 16px; --g-5: 20px;
   --g-6: 24px; --g-7: 32px; --g-8: 40px; --g-9: 56px;
 
-  --g-rail-w: 264px;
-  --g-col: 740px;
-  --g-r-sm: 8px; --g-r: 12px; --g-r-lg: 18px; --g-r-pill: 999px;
+  --g-rail-w: 268px;
+  --g-col: 748px;
+  --g-r-sm: 8px; --g-r: 12px; --g-r-lg: 16px; --g-r-xl: 22px; --g-r-pill: 999px;
+
+  /* Elevation. Every raised thing takes one of these three, and every one of them carries the top-edge
+     light in the same declaration, so a surface can never get the shadow and forget the highlight. */
+  --g-e1:
+    inset 0 1px 0 rgba(255, 255, 255, 0.045),
+    0 1px 2px rgba(0, 0, 0, 0.30);
+  --g-e2:
+    inset 0 1px 0 rgba(255, 255, 255, 0.055),
+    0 2px 4px rgba(0, 0, 0, 0.24),
+    0 8px 18px -8px rgba(0, 0, 0, 0.50);
+  --g-e3:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 4px 10px rgba(0, 0, 0, 0.28),
+    0 20px 48px -20px rgba(0, 0, 0, 0.72);
+
+  /* A raised fill is a gradient, never a flat value — a flat fill is the wireframe tell. */
+  --g-fill: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012));
 
   --g-fast: 140ms; --g-mid: 220ms; --g-slow: 420ms;
   --g-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --g-spring: cubic-bezier(0.34, 1.32, 0.48, 1);
 
   color-scheme: dark;
 }
 
-/* The hour, as a whisper. Four grounds, each a few degrees apart, none of them a picture. */
-[data-hour='daybreak'] { --g-sky-1: #101a2e; --g-sky-2: #0d1524; --g-halo: rgba(196, 164, 140, 0.13); --g-halo-x: 24%; }
-[data-hour='noon']     { --g-sky-1: #101c33; --g-sky-2: #0c1524; --g-halo: rgba(150, 180, 230, 0.12); --g-halo-x: 66%; }
-[data-hour='golden']   { --g-sky-1: #141827; --g-sky-2: #0c1220; --g-halo: rgba(206, 150, 120, 0.13); --g-halo-x: 76%; }
-[data-hour='night']    { --g-sky-1: #0a1020; --g-sky-2: #080d18; --g-halo: rgba(130, 156, 210, 0.08); --g-halo-x: 32%; }
+/* The hour, as a whisper. Four grounds a few degrees apart, none of them a picture. Each names its own
+   gradient, the colour of its light, and where on the width that light stands. */
+[data-hour='daybreak'] {
+  --g-sky-1: #111c33; --g-sky-2: #0c1322;
+  --g-aura-1: rgba(198, 158, 132, 0.16); --g-aura-2: rgba(120, 152, 214, 0.11); --g-halo-x: 24%;
+}
+[data-hour='noon'] {
+  --g-sky-1: #101e38; --g-sky-2: #0b1322;
+  --g-aura-1: rgba(138, 176, 236, 0.15); --g-aura-2: rgba(108, 142, 200, 0.10); --g-halo-x: 64%;
+}
+[data-hour='golden'] {
+  --g-sky-1: #171a2c; --g-sky-2: #0b1120;
+  --g-aura-1: rgba(212, 146, 112, 0.16); --g-aura-2: rgba(126, 122, 190, 0.12); --g-halo-x: 76%;
+}
+[data-hour='night'] {
+  --g-sky-1: #0a1124; --g-sky-2: #070b15;
+  --g-aura-1: rgba(120, 148, 210, 0.11); --g-aura-2: rgba(96, 116, 176, 0.08); --g-halo-x: 32%;
+}
 
-html, body { background: var(--g-bg); }
+html, body { background: var(--g-void); }
 
 .g {
   min-height: 100dvh;
@@ -80,101 +115,218 @@ html, body { background: var(--g-bg); }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
 /* ---- the ground -----------------------------------------------------------------------------------
-   Three layers and nothing else: an hour-shifted gradient, one halo placed where the light is, and a
-   single horizon hairline. Firewatch's depth reduced to the one edge that actually creates it. */
+   Five layers, all of them slow and none of them a subject:
+
+   1. the gradient, keyed to the hour;
+   2. two auras — broad, soft, low-opacity fields of the hour's own light that drift on long irrational
+      periods (67s and 89s) so the pair never visibly repeats;
+   3. grain, which is the layer that actually matters: a large flat gradient on an 8-bit display bands into
+      visible steps, and the bands are a strong part of what reads as cheap. Three percent of monochrome
+      turbulence removes them.
+   4. a vignette, to hold the eye in the column;
+   5. the horizon hairline — Firewatch's parallax reduced to the one edge that creates depth. */
 .g-field { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+
 .g-field-sky {
   position: absolute; inset: 0;
-  background: linear-gradient(178deg, var(--g-sky-1) 0%, var(--g-sky-2) 46%, var(--g-bg) 78%);
+  background:
+    radial-gradient(120% 80% at 50% 0%, var(--g-sky-1) 0%, transparent 64%),
+    linear-gradient(178deg, var(--g-sky-1) 0%, var(--g-sky-2) 44%, var(--g-bg) 82%);
   transition: background var(--g-slow) ease;
 }
-.g-field-halo {
-  position: absolute; left: var(--g-halo-x); top: -18%;
-  width: 88rem; height: 58rem; transform: translateX(-50%);
-  background: radial-gradient(closest-side, var(--g-halo), transparent 72%);
-  transition: left 1.2s var(--g-ease), background 1.2s ease, opacity var(--g-slow) ease;
+
+/* The auras. transform is the only animated property, so this compositor-only and costs nothing. */
+.g-field-halo { position: absolute; inset: 0; }
+.g-field-halo::before,
+.g-field-halo::after {
+  content: ''; position: absolute; border-radius: 50%;
+  will-change: transform;
 }
+.g-field-halo::before {
+  left: var(--g-halo-x); top: -34%;
+  width: 78rem; height: 52rem; margin-left: -39rem;
+  background: radial-gradient(closest-side, var(--g-aura-1), transparent 70%);
+  animation: g-aura-a 67s ease-in-out infinite alternate;
+  transition: left 1.6s var(--g-ease), background 1.2s ease;
+}
+.g-field-halo::after {
+  right: -14%; top: 22%;
+  width: 62rem; height: 46rem;
+  background: radial-gradient(closest-side, var(--g-aura-2), transparent 72%);
+  animation: g-aura-b 89s ease-in-out infinite alternate;
+  transition: background 1.2s ease;
+}
+@keyframes g-aura-a {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(5%, 4%, 0) scale(1.12); }
+}
+@keyframes g-aura-b {
+  from { transform: translate3d(0, 0, 0) scale(1.06); }
+  to   { transform: translate3d(-7%, -5%, 0) scale(0.94); }
+}
+
+/* Grain. Monochrome fractal turbulence, tiled at 180px, held at three percent — visible as texture,
+   never as noise. img-src allows data:, and this is why it is inline rather than a file. */
+.g-field-grain {
+  position: absolute; inset: -50%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+  opacity: 0.032;
+  mix-blend-mode: overlay;
+}
+
+.g-field-vignette {
+  position: absolute; inset: 0;
+  background: radial-gradient(100% 78% at 50% 34%, transparent 42%, rgba(3, 6, 12, 0.46) 100%);
+}
+
 /* The horizon: one hairline of atmosphere, drifting too slowly to be caught moving. */
 .g-field-horizon {
   position: absolute; left: -10%; right: -10%; top: 46%; height: 1px;
-  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--g-accent) 26%, transparent) 38%, color-mix(in srgb, var(--g-accent) 14%, transparent) 62%, transparent);
-  opacity: 0.5;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--g-accent) 24%, transparent) 38%, color-mix(in srgb, var(--g-accent) 12%, transparent) 62%, transparent);
+  opacity: 0.44;
   animation: g-horizon 48s ease-in-out infinite alternate;
   transition: opacity var(--g-slow) ease;
 }
 .g-field-horizon::after {
   content: ''; position: absolute; inset: -40px 0 auto 0; height: 80px;
-  background: radial-gradient(60% 100% at 50% 50%, color-mix(in srgb, var(--g-accent) 7%, transparent), transparent 70%);
+  background: radial-gradient(60% 100% at 50% 50%, color-mix(in srgb, var(--g-accent) 6%, transparent), transparent 70%);
 }
 @keyframes g-horizon { from { transform: translateY(0) } to { transform: translateY(-14px) } }
-.g-field[data-expanded='true'] .g-field-halo { opacity: 0.5; }
-.g-field[data-expanded='true'] .g-field-horizon { opacity: 0.18; }
+
+/* Once a conversation is running the ground steps back: the answer is the subject, so the light drops and
+   the horizon nearly goes. */
+.g-field[data-expanded='true'] .g-field-halo { opacity: 0.52; transition: opacity 900ms var(--g-ease); }
+.g-field[data-expanded='true'] .g-field-horizon { opacity: 0.14; }
 
 /* ---- the rail ------------------------------------------------------------------------------------ */
 .g-rail {
   position: sticky; top: 0; z-index: 3;
   width: var(--g-rail-w); flex: 0 0 var(--g-rail-w); height: 100dvh;
-  background: color-mix(in srgb, var(--g-void) 82%, transparent);
-  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  background: linear-gradient(180deg, rgba(8, 12, 20, 0.86), rgba(5, 8, 15, 0.92));
+  backdrop-filter: blur(24px) saturate(1.3); -webkit-backdrop-filter: blur(24px) saturate(1.3);
   border-right: 1px solid var(--g-line-soft);
   display: flex; flex-direction: column;
 }
 .g-rail-head { padding: var(--g-4) var(--g-3) var(--g-2); display: flex; flex-direction: column; gap: var(--g-2); }
-.g-brand { display: flex; align-items: center; gap: var(--g-2); padding: var(--g-1) var(--g-2) var(--g-3); font-size: 14px; font-weight: 550; letter-spacing: -0.01em; }
+.g-brand { display: flex; align-items: center; gap: var(--g-2); padding: var(--g-1) var(--g-2) var(--g-4); font-size: 14.5px; font-weight: 600; letter-spacing: -0.015em; }
 .g-brand-mark {
-  width: 20px; height: 20px; border-radius: 6px; flex: 0 0 20px;
-  background: linear-gradient(150deg, var(--g-accent), #3f5d8f 70%);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+  width: 22px; height: 22px; border-radius: 7px; flex: 0 0 22px; position: relative;
+  background: linear-gradient(150deg, var(--g-accent), #3f5d8f 72%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.30), 0 2px 8px -2px rgba(168, 199, 250, 0.42);
 }
+/* A hairline horizon inside the mark: the product's own subject, at 22px. */
+.g-brand-mark::after {
+  content: ''; position: absolute; left: 4px; right: 4px; top: 12px; height: 1px;
+  background: rgba(255, 255, 255, 0.42); border-radius: 1px;
+}
+
 .g-new {
   display: flex; align-items: center; gap: var(--g-2); width: 100%;
-  padding: 9px var(--g-3); border-radius: var(--g-r);
-  border: 1px solid var(--g-line); background: transparent;
+  padding: 10px var(--g-3); border-radius: var(--g-r);
+  border: 1px solid var(--g-line); background: var(--g-fill);
   color: var(--g-paper); font: inherit; font-size: 14px; font-weight: 500;
   cursor: pointer; text-align: left;
-  transition: background var(--g-fast) var(--g-ease);
+  box-shadow: var(--g-e1);
+  transition: background var(--g-fast) var(--g-ease), border-color var(--g-fast) var(--g-ease),
+              box-shadow var(--g-fast) var(--g-ease), transform var(--g-fast) var(--g-ease);
 }
-.g-new:hover { background: var(--g-raise); }
+.g-new:hover { border-color: color-mix(in srgb, var(--g-accent) 30%, var(--g-line)); box-shadow: var(--g-e2); }
+.g-new:active { transform: translateY(1px); box-shadow: var(--g-e1); }
+.g-new svg { color: var(--g-accent); }
+
 .g-search {
-  width: 100%; padding: 8px var(--g-3) 8px var(--g-7); border-radius: var(--g-r);
-  border: 1px solid transparent; background: var(--g-raise);
+  width: 100%; padding: 9px var(--g-3) 9px var(--g-7); border-radius: var(--g-r);
+  border: 1px solid transparent; background: rgba(255, 255, 255, 0.035);
   color: var(--g-paper); font: inherit; font-size: 13px;
-  transition: border-color var(--g-fast) var(--g-ease);
+  transition: border-color var(--g-fast) var(--g-ease), background var(--g-fast) var(--g-ease),
+              box-shadow var(--g-fast) var(--g-ease);
 }
 .g-search::placeholder { color: var(--g-mist-2); }
-.g-search:focus { border-color: var(--g-line); outline: none; }
+.g-search:focus {
+  border-color: color-mix(in srgb, var(--g-accent) 34%, var(--g-line));
+  background: rgba(255, 255, 255, 0.055);
+  box-shadow: 0 0 0 3px var(--g-accent-wash);
+  outline: none;
+}
 
-.g-history { flex: 1; overflow-y: auto; padding: var(--g-2) var(--g-2) var(--g-6); }
-.g-group { padding: var(--g-4) var(--g-2) var(--g-1); font-size: 12px; font-weight: 550; color: var(--g-mist-2); }
+.g-history { flex: 1; overflow-y: auto; padding: var(--g-2) var(--g-2) var(--g-6); scrollbar-width: thin; scrollbar-color: var(--g-line) transparent; }
+.g-history::-webkit-scrollbar { width: 8px; }
+.g-history::-webkit-scrollbar-thumb { background: var(--g-line); border-radius: 4px; border: 2px solid transparent; background-clip: content-box; }
+.g-history::-webkit-scrollbar-thumb:hover { background: var(--g-mist-2); background-clip: content-box; }
+
+.g-group { padding: var(--g-5) var(--g-2) var(--g-1); font-size: 11.5px; font-weight: 600; color: var(--g-mist-2); letter-spacing: 0.005em; }
+
+/* A row carries its selection on the left edge rather than as a fill: a filled row at this size reads as a
+   button, and these are places rather than actions. The bar scales from the centre so it grows into place. */
 .g-row {
+  position: relative;
   display: flex; align-items: center; gap: var(--g-2); width: 100%;
-  padding: 7px var(--g-2) 7px var(--g-3); border-radius: var(--g-r-sm);
+  padding: 8px var(--g-2) 8px var(--g-3); border-radius: var(--g-r-sm);
   color: var(--g-mist); font-size: 13.5px;
   transition: background var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease);
 }
-.g-row:hover { background: var(--g-raise); color: var(--g-paper); }
-.g-row[aria-current='true'] { background: var(--g-raise-2); color: var(--g-paper); }
+.g-row::before {
+  content: ''; position: absolute; left: 0; top: 7px; bottom: 7px; width: 2px; border-radius: 2px;
+  background: var(--g-accent); transform: scaleY(0); opacity: 0;
+  transition: transform var(--g-mid) var(--g-spring), opacity var(--g-fast) var(--g-ease);
+}
+.g-row:hover { background: rgba(255, 255, 255, 0.04); color: var(--g-paper); }
+.g-row[aria-current='true'] { background: rgba(255, 255, 255, 0.062); color: var(--g-paper); }
+.g-row[aria-current='true']::before { transform: scaleY(1); opacity: 1; }
 .g-row-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.g-row-drop { opacity: 0; border: 0; background: transparent; color: var(--g-mist-2); cursor: pointer; padding: 3px; border-radius: 6px; transition: opacity var(--g-fast), color var(--g-fast); }
+.g-row-drop {
+  opacity: 0; border: 0; background: transparent; color: var(--g-mist-2); cursor: pointer;
+  padding: 4px; border-radius: 6px; display: inline-flex;
+  transition: opacity var(--g-fast), color var(--g-fast), background var(--g-fast);
+}
 .g-row:hover .g-row-drop, .g-row-drop:focus-visible { opacity: 1; }
-.g-row-drop:hover { color: var(--g-paper); }
+.g-row-drop:hover { color: var(--g-red); background: color-mix(in srgb, var(--g-red) 14%, transparent); }
+
 .g-rail-foot { border-top: 1px solid var(--g-line-soft); padding: var(--g-3); }
-.g-empty-note { padding: var(--g-3) var(--g-2); font-size: 13px; color: var(--g-mist-2); line-height: 1.5; }
+.g-empty-note { padding: var(--g-3) var(--g-2); font-size: 12.5px; color: var(--g-mist-2); line-height: 1.55; }
 
 /* ---- the column ---------------------------------------------------------------------------------- */
 .g-main { position: relative; z-index: 2; flex: 1; min-width: 0; display: flex; flex-direction: column; height: 100dvh; }
-.g-top { display: flex; align-items: center; justify-content: space-between; gap: var(--g-2); padding: var(--g-3) var(--g-5); }
+
+/* The bar has no fill of its own; it earns an edge only once the thread scrolls under it. */
+.g-top {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--g-2);
+  padding: var(--g-3) var(--g-5); flex: 0 0 auto; position: relative; z-index: 5;
+}
+.g-top::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--g-line-soft) 18%, var(--g-line-soft) 82%, transparent);
+  opacity: 0; transition: opacity var(--g-mid) var(--g-ease);
+}
+.g[data-scrolled='true'] .g-top::after { opacity: 1; }
 .g-top-left { display: flex; align-items: center; gap: var(--g-1); min-width: 0; }
-.g-thread { flex: 1; overflow-y: auto; scroll-behavior: smooth; }
+
+/* .g-panel is the frame the thread and the docked composer share. It had no rule at all before this, which
+   left .g-thread without a flex parent to take its height from. */
+.g-panel { flex: 1; min-height: 0; display: flex; flex-direction: column; position: relative; }
+
+.g-thread { flex: 1; min-height: 0; overflow-y: auto; scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--g-line) transparent; }
+.g-thread::-webkit-scrollbar { width: 10px; }
+.g-thread::-webkit-scrollbar-thumb { background: var(--g-line); border-radius: 5px; border: 3px solid transparent; background-clip: content-box; }
+.g-thread::-webkit-scrollbar-thumb:hover { background: var(--g-mist-2); background-clip: content-box; }
 .g-col { width: 100%; max-width: var(--g-col); margin-inline: auto; padding: 0 var(--g-5); }
 
 /* ---- the opening ---------------------------------------------------------------------------------
    The reading is the hero. A sentence, set large and tight, left-aligned because this is a reading
-   interface and not a poster. Nothing sits above it: no label, no eyebrow. */
+   interface and not a poster. Nothing sits above it: no label, no eyebrow.
+
+   The opening is the one orchestrated moment in the product — the reading, the composer and the openings
+   arrive in that order, 70ms apart, once. Everything else that moves is answering an action. */
 .g-welcome { min-height: calc(100dvh - 148px); display: flex; flex-direction: column; justify-content: center; gap: var(--g-7); padding-bottom: var(--g-9); }
+.g-welcome > * { animation: g-rise 560ms var(--g-ease) both; }
+.g-welcome > *:nth-child(1) { animation-delay: 40ms; }
+.g-welcome > *:nth-child(2) { animation-delay: 110ms; }
+.g-welcome > *:nth-child(3) { animation-delay: 180ms; }
+@keyframes g-rise { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: none } }
+
 .g-hero {
-  font-size: clamp(2rem, 1.3rem + 2.4vw, 2.85rem);
-  line-height: 1.1; font-weight: 600; letter-spacing: -0.032em;
+  font-size: clamp(2rem, 1.3rem + 2.4vw, 2.9rem);
+  line-height: 1.08; font-weight: 600; letter-spacing: -0.034em;
   margin: 0; max-width: 20ch; text-wrap: balance;
 }
 .g-hero-sub {
@@ -182,38 +334,56 @@ html, body { background: var(--g-bg); }
   margin: var(--g-4) 0 0; max-width: 56ch; text-wrap: pretty;
 }
 .g-num { font-family: var(--g-mono); font-size: 0.95em; font-weight: 500; letter-spacing: -0.02em; color: var(--g-paper); font-variant-numeric: tabular-nums; }
-.g-source { font-family: var(--g-mono); font-size: 11.5px; line-height: 1.6; color: var(--g-mist-2); margin: var(--g-4) 0 0; overflow-wrap: anywhere; }
+.g-source { font-family: var(--g-mono); font-size: 11.5px; line-height: 1.6; color: var(--g-mist-2); margin: var(--g-5) 0 0; overflow-wrap: anywhere; }
 
 /* ---- the composer --------------------------------------------------------------------------------
-   A glass slab that lifts on focus. The one place the accent appears at rest. */
-.g-dock { position: sticky; bottom: 0; z-index: 4; padding-bottom: var(--g-5); }
+   The one place the accent appears at rest, and the one control that gets the top elevation. */
+.g-dock { position: sticky; bottom: 0; z-index: 4; padding-bottom: var(--g-4); }
 .g-dock::before {
-  content: ''; position: absolute; inset: -40px 0 0 0; z-index: -1; pointer-events: none;
-  background: linear-gradient(180deg, transparent, var(--g-bg) 46%);
+  content: ''; position: absolute; inset: -48px 0 0 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(180deg, transparent, var(--g-bg) 52%);
 }
 .g-welcome .g-dock { position: static; padding-bottom: 0; }
 .g-welcome .g-dock::before { display: none; }
+
 .g-composer {
-  border: 1px solid var(--g-line); border-radius: var(--g-r-lg);
-  min-height: 0;
-  background: color-mix(in srgb, var(--g-raise) 78%, transparent);
-  backdrop-filter: blur(24px) saturate(1.2); -webkit-backdrop-filter: blur(24px) saturate(1.2);
+  position: relative;
+  border: 1px solid var(--g-line); border-radius: var(--g-r-xl);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015)),
+    rgba(14, 20, 33, 0.82);
+  backdrop-filter: blur(24px) saturate(1.3); -webkit-backdrop-filter: blur(24px) saturate(1.3);
+  box-shadow: var(--g-e2);
   padding: var(--g-3) var(--g-3) var(--g-2);
-  display: flex; flex-direction: column; gap: 0;
-  transition: border-color var(--g-mid) var(--g-ease), box-shadow var(--g-mid) var(--g-ease), transform var(--g-mid) var(--g-ease);
+  display: flex; flex-direction: column;
+  transition: border-color var(--g-mid) var(--g-ease), box-shadow var(--g-mid) var(--g-ease),
+              transform var(--g-mid) var(--g-ease);
+}
+/* The focus ring is a separate layer so it can scale out from the edge instead of appearing at full size. */
+.g-composer::after {
+  content: ''; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none;
+  box-shadow: 0 0 0 3px var(--g-accent-wash);
+  opacity: 0; transform: scale(0.985);
+  transition: opacity var(--g-mid) var(--g-ease), transform var(--g-mid) var(--g-spring);
 }
 .g-composer:focus-within {
-  border-color: color-mix(in srgb, var(--g-accent) 38%, var(--g-line));
-  box-shadow: 0 0 0 4px var(--g-accent-wash), 0 18px 40px -28px rgba(0, 0, 0, 0.9);
-  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--g-accent) 42%, var(--g-line));
+  box-shadow: var(--g-e3);
+  transform: translateY(-2px);
 }
+.g-composer:focus-within::after { opacity: 1; transform: scale(1); }
+
 .g-composer textarea {
   width: 100%; border: 0; outline: none; resize: none; background: transparent;
   color: var(--g-paper); font: inherit; font-size: 15.5px; line-height: 1.55;
-  padding: 2px var(--g-2) 0; min-height: 24px; max-height: 208px;
+  padding: 4px var(--g-2) 0; min-height: 26px; max-height: 208px;
 }
 .g-composer textarea::placeholder { color: var(--g-mist-2); }
-.g-composer-row { display: flex; align-items: center; gap: var(--g-1); margin-top: 2px; }
+/* The shell already answers focus — it lifts, takes the accent on its edge and grows a ring. A second
+   outline drawn around the textarea inside it reads as a nested input box, which is most of what made the
+   composer look unfinished. The indicator is not removed, it is moved out one level. */
+.g-composer textarea:focus-visible { outline: none; }
+.g-composer-row { display: flex; align-items: center; gap: var(--g-1); margin-top: var(--g-2); }
 .g-composer-row .g-spacer { flex: 1; }
 
 .g-tool {
@@ -221,90 +391,142 @@ html, body { background: var(--g-bg); }
   height: 32px; min-width: 32px; padding: 0 10px; border-radius: var(--g-r-sm);
   border: 1px solid transparent; background: transparent; color: var(--g-mist);
   font: inherit; font-size: 13px; cursor: pointer;
-  transition: background var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease);
+  transition: background var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease),
+              border-color var(--g-fast) var(--g-ease);
 }
-.g-tool:hover { background: var(--g-raise-2); color: var(--g-paper); }
+.g-tool:hover { background: rgba(255, 255, 255, 0.06); color: var(--g-paper); }
+.g-tool:active { background: rgba(255, 255, 255, 0.09); }
 .g-tool[aria-pressed='true'] { background: color-mix(in srgb, var(--g-red) 18%, transparent); color: var(--g-red); }
-.g-top select.g-tool { max-width: 12rem; border-color: var(--g-line-soft); }
+
+/* The bar's selects are controls, so they look like controls: a real field with a chevron, not a bare
+   native select floating on the background with nothing to stand on. */
+.g-top .g-tool {
+  height: 34px; border-color: var(--g-line-soft);
+  background: var(--g-fill); box-shadow: var(--g-e1);
+}
+.g-top .g-tool:hover { border-color: var(--g-line); background: rgba(255, 255, 255, 0.06); }
+.g-top select.g-tool {
+  max-width: 12rem; padding-right: 26px;
+  appearance: none; -webkit-appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--g-mist) 50%), linear-gradient(135deg, var(--g-mist) 50%, transparent 50%);
+  background-position: right 13px center, right 8px center;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+.g-top select.g-tool option { background: var(--g-raise); color: var(--g-paper); }
 
 .g-send {
-  width: 32px; height: 32px; border-radius: var(--g-r-pill); border: 0; cursor: pointer;
-  background: var(--g-paper); color: var(--g-void);
+  width: 34px; height: 34px; border-radius: var(--g-r-pill); border: 0; cursor: pointer;
+  background: linear-gradient(180deg, #ffffff, #d7deea);
+  color: var(--g-void);
   display: inline-flex; align-items: center; justify-content: center;
-  transition: transform var(--g-fast) var(--g-ease), background var(--g-fast);
+  box-shadow: 0 2px 10px -2px rgba(168, 199, 250, 0.42), inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+  transition: transform var(--g-fast) var(--g-spring), box-shadow var(--g-fast) var(--g-ease),
+              background var(--g-fast) var(--g-ease), opacity var(--g-fast) var(--g-ease);
 }
-.g-send:disabled { background: var(--g-raise-2); color: var(--g-mist-2); cursor: default; }
-.g-send:not(:disabled):hover { transform: scale(1.06); }
-.g-send:not(:disabled):active { transform: scale(0.96); }
+.g-send:disabled {
+  background: rgba(255, 255, 255, 0.07); color: var(--g-mist-2); cursor: default;
+  box-shadow: none;
+}
+.g-send:not(:disabled):hover { transform: scale(1.08); box-shadow: 0 4px 16px -2px rgba(168, 199, 250, 0.58), inset 0 -1px 0 rgba(0, 0, 0, 0.12); }
+.g-send:not(:disabled):active { transform: scale(0.94); }
 
 .g-hint { font-size: 11.5px; color: var(--g-mist-2); text-align: center; margin: var(--g-3) 0 0; }
+
+/* ---- openings ------------------------------------------------------------------------------------- */
 .g-chips { display: flex; flex-wrap: wrap; gap: var(--g-2); }
 .g-chip {
-  padding: 7px var(--g-3); border-radius: var(--g-r-pill);
-  border: 1px solid var(--g-line); background: transparent;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px var(--g-4); border-radius: var(--g-r-pill);
+  border: 1px solid var(--g-line); background: var(--g-fill);
   color: var(--g-mist); font: inherit; font-size: 13px; cursor: pointer;
-  transition: background var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease);
+  box-shadow: var(--g-e1);
+  transition: background var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease),
+              border-color var(--g-fast) var(--g-ease), transform var(--g-fast) var(--g-ease),
+              box-shadow var(--g-fast) var(--g-ease);
 }
-.g-chip:hover { background: var(--g-raise); color: var(--g-paper); }
+.g-chip:hover {
+  color: var(--g-paper); transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--g-accent) 34%, var(--g-line));
+  box-shadow: var(--g-e2);
+}
+.g-chip:active { transform: translateY(0); box-shadow: var(--g-e1); }
 
-/* ---- turns ---------------------------------------------------------------------------------------- */
+/* ---- turns ----------------------------------------------------------------------------------------
+   A turn does not get a card. The column is the container, and a hairline between turns is enough
+   separation — boxing every message is the SaaS-kit tell and it costs the column its rhythm. */
 .g-turn { padding: var(--g-6) 0; }
 .g-turn + .g-turn { border-top: 1px solid var(--g-line-soft); }
+
 .g-you { display: flex; justify-content: flex-end; }
 .g-you p {
-  margin: 0; max-width: 80%; background: var(--g-raise-2);
-  border-radius: var(--g-r-lg) var(--g-r-lg) var(--g-r-sm) var(--g-r-lg);
+  margin: 0; max-width: 80%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.055));
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--g-r-xl) var(--g-r-xl) var(--g-r-sm) var(--g-r-xl);
   padding: 10px var(--g-4); font-size: 15px; color: var(--g-paper);
+  box-shadow: var(--g-e1);
 }
 .g-answer { display: flex; flex-direction: column; gap: var(--g-4); }
 .g-prose { margin: 0; font-size: 15.5px; line-height: 1.72; color: var(--g-paper); max-width: 68ch; text-wrap: pretty; }
+
+/* The quiet label above a turn's title or a choice prompt. .g-eyebrow was used in three places and defined
+   in none, which is why "restored from the local store" rendered at body weight like console output. */
+.g-eyebrow {
+  margin: 0 0 var(--g-2); font-size: 12.5px; font-weight: 500;
+  color: var(--g-mist-2); letter-spacing: 0;
+}
+
 .g-meta { display: flex; align-items: center; gap: var(--g-3); font-size: 12px; color: var(--g-mist-2); }
 .g-badge { font-family: var(--g-mono); font-size: 11px; border: 1px solid var(--g-line); border-radius: var(--g-r-pill); padding: 2px 9px; color: var(--g-mist); }
 .g-badge[data-held='true'] { color: var(--g-paper); border-color: var(--g-mist-2); }
 
-.g-acts { display: flex; gap: 2px; opacity: 0; transition: opacity var(--g-mid) var(--g-ease); }
-.g-turn:hover .g-acts, .g-turn:focus-within .g-acts { opacity: 1; }
+.g-acts { display: flex; gap: 2px; opacity: 0; transform: translateY(-2px); transition: opacity var(--g-mid) var(--g-ease), transform var(--g-mid) var(--g-ease); }
+.g-turn:hover .g-acts, .g-turn:focus-within .g-acts { opacity: 1; transform: none; }
 .g-act {
-  display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px;
-  border: 0; border-radius: var(--g-r-sm); background: transparent; color: var(--g-mist-2); cursor: pointer;
-  transition: background var(--g-fast), color var(--g-fast);
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 30px; min-width: 30px; border-radius: var(--g-r-sm);
+  border: 0; background: transparent; color: var(--g-mist-2); cursor: pointer;
+  transition: background var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease);
 }
-.g-act:hover { background: var(--g-raise-2); color: var(--g-paper); }
+.g-act:hover { background: rgba(255, 255, 255, 0.06); color: var(--g-paper); }
 
-/* ---- the claim -------------------------------------------------------------------------------------
-   Not a card kit: the leading claim is a plain block with the value at display size and no border at all;
-   supporting claims are quiet hairline slabs. Different jobs, different treatments. */
+/* ---- the claim ------------------------------------------------------------------------------------ */
 .g-claims { display: grid; gap: var(--g-2); grid-template-columns: 1fr; }
 @media (min-width: 620px) {
-  .g-claims { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
-  .g-claims > .g-claim[data-lead='true'] { grid-column: 1 / -1; }
+  .g-claims { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .g-claim[data-lead='true'] { grid-column: 1 / -1; }
 }
-
 .g-claim {
-  position: relative; border: 1px solid var(--g-line-soft); border-radius: var(--g-r);
-  background: color-mix(in srgb, var(--g-raise) 55%, transparent);
-  padding: var(--g-4); display: flex; flex-direction: column; gap: 6px;
+  position: relative;
+  border: 1px solid var(--g-line-soft); border-radius: var(--g-r);
+  background: var(--g-fill);
+  padding: var(--g-3) var(--g-4);
+  display: flex; flex-direction: column; gap: 5px;
+  box-shadow: var(--g-e1);
 }
 .g-claim[data-lead='true'] {
-  border: 0; border-bottom: 1px solid var(--g-line-soft); border-radius: 0;
-  background: none; padding: var(--g-2) 0 var(--g-5); gap: var(--g-1);
+  border: 0; background: transparent; box-shadow: none;
+  padding: 0 0 var(--g-2);
 }
-/* The published colour: a short bar beside the value, never a wash over the block. */
 .g-claim[data-lit]::before {
-  content: ''; position: absolute; left: 0; top: var(--g-4); bottom: var(--g-4);
-  width: 2px; border-radius: 2px; background: var(--g-lit);
+  content: ''; position: absolute; left: -1px; top: 10px; bottom: 10px; width: 3px;
+  border-radius: 3px; background: var(--g-lit);
 }
 .g-claim[data-lead='true'][data-lit]::before { left: -14px; top: 12px; bottom: 22px; }
+/* A compact claim is one of several in a row, so it gives up the breathing room a standalone one keeps. */
+.g-claim-compact { padding: var(--g-2) var(--g-3); gap: 3px; }
+.g-claim-compact .g-claim-number { font-size: 1.15rem; }
 .g-claim-eyebrow { font-size: 13px; color: var(--g-mist); margin: 0; }
 .g-claim-value { display: flex; align-items: baseline; gap: 7px; flex-wrap: wrap; margin: 0; }
 .g-claim-number {
-  font-family: var(--g-mono); font-size: 26px; font-weight: 500; line-height: 1.1;
-  letter-spacing: -0.04em; font-variant-numeric: tabular-nums; color: var(--g-paper);
+  font-family: var(--g-mono); font-size: 1.35rem; font-weight: 500;
+  letter-spacing: -0.03em; color: var(--g-paper); font-variant-numeric: tabular-nums;
+  line-height: 1.1;
 }
-/* The leading value is the one place the sans is used for a number. A monospace face gives every glyph the
-   same advance, so at display size a decimal point floats in a gap of its own and "0.3" reads as "0 . 3".
-   The claim's structure and the source line under it already say the value is tool-owned, so nothing is
-   lost by setting the hero numeral properly. Every supporting value stays in the machine face. */
+/* The one exception to the two voices. A monospace face gives every glyph the same advance, so at display
+   size a decimal point floats in a gap of its own and 0.3 reads as "0 . 3". The claim's structure and the
+   source line beneath it already say the value is tool-owned, so the hero numeral is set in the sans. */
 .g-claim[data-lead='true'] .g-claim-number {
   font-family: var(--g-sans);
   font-size: clamp(2.4rem, 1.6rem + 2.6vw, 3.4rem);
@@ -321,7 +543,7 @@ html, body { background: var(--g-bg); }
 .g-ruler { position: relative; height: 3px; border-radius: 2px; background: var(--g-line); overflow: hidden; margin-top: 6px; }
 .g-ruler i { position: absolute; top: 0; bottom: 0; background: color-mix(in srgb, var(--g-accent) 70%, transparent); }
 
-/* ---- folds and work -------------------------------------------------------------------------------- */
+/* ---- folds and the work panel --------------------------------------------------------------------- */
 .g-fold { margin-top: 2px; }
 .g-fold > summary, .g-work > summary { list-style: none; cursor: pointer; display: inline-flex; gap: 7px; align-items: center; }
 .g-fold > summary::-webkit-details-marker, .g-work > summary::-webkit-details-marker { display: none; }
@@ -332,9 +554,16 @@ html, body { background: var(--g-bg); }
   transform: rotate(-45deg); transition: transform var(--g-mid) var(--g-ease);
 }
 .g-fold[open] > summary::before, .g-work[open] > summary::before { transform: rotate(45deg); }
-.g-fold-body { margin-top: var(--g-3); padding-left: var(--g-3); border-left: 1px solid var(--g-line-soft); }
+.g-fold-body { margin-top: var(--g-3); padding-left: var(--g-3); border-left: 1px solid var(--g-line-soft); animation: g-rise var(--g-mid) var(--g-ease) both; }
 .g-work { border-top: 1px solid var(--g-line-soft); padding-top: var(--g-3); }
 .g-work > summary { font-family: var(--g-mono); font-size: 11.5px; color: var(--g-mist-2); }
+/* The work panel's own marker: a step either ran or it did not, so the dot is a state and not a decoration. */
+.g-work-dot {
+  width: 5px; height: 5px; border-radius: 50%; flex: 0 0 5px;
+  background: var(--g-mist-2);
+  transition: background var(--g-fast) var(--g-ease);
+}
+.g-work[open] > summary .g-work-dot { background: var(--g-accent); }
 .g-work > summary:hover { color: var(--g-mist); }
 .g-work-row { display: grid; grid-template-columns: 16px 1fr auto; gap: var(--g-2); align-items: baseline; padding: 5px 0; font-size: 13px; }
 .g-work-row[data-state='refused'] .g-work-title { text-decoration: line-through; color: var(--g-mist-2); }
@@ -343,28 +572,52 @@ html, body { background: var(--g-bg); }
 .g-work-detail { margin: 0; color: var(--g-mist-2); font-size: 11.5px; }
 .g-work-ms { font-family: var(--g-mono); font-size: 11px; color: var(--g-mist-2); }
 
-/* ---- streaming -------------------------------------------------------------------------------------
-   One pulse, on one dot. The stage name is the engine's own word for what it is doing. */
+/* ---- the engine at work ---------------------------------------------------------------------------
+   Three dots and the engine's own word for the stage it is in. .g-dots had no rule before this, so the
+   three <i> elements were zero-sized and the indicator was a bare line of text. */
 .g-stream { display: flex; align-items: center; gap: var(--g-3); color: var(--g-mist); font-size: 14px; }
-.g-pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--g-accent); animation: g-pulse 1.8s var(--g-ease) infinite; }
-@keyframes g-pulse { 0%, 100% { opacity: 0.35; transform: scale(0.85) } 50% { opacity: 1; transform: scale(1) } }
+.g-dots { display: inline-flex; align-items: center; gap: 4px; }
+.g-dots i {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--g-accent);
+  animation: g-dot 1.25s var(--g-ease) infinite;
+}
+.g-dots i:nth-child(2) { animation-delay: 0.16s; }
+.g-dots i:nth-child(3) { animation-delay: 0.32s; }
+@keyframes g-dot {
+  0%, 62%, 100% { opacity: 0.28; transform: translateY(0) scale(0.84); }
+  30% { opacity: 1; transform: translateY(-3px) scale(1); }
+}
+/* The stage word is the thing that changes, so it is the thing that is lit. */
+.g-stream > span:last-child {
+  background: linear-gradient(90deg, var(--g-mist) 20%, var(--g-paper) 48%, var(--g-mist) 76%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+  animation: g-sweep 2.4s linear infinite;
+}
+@keyframes g-sweep { from { background-position: 120% 0 } to { background-position: -120% 0 } }
 
-/* ---- arrival: one motion, answering one action ----------------------------------------------------- */
-@keyframes g-in { from { opacity: 0; transform: translateY(6px) } to { opacity: 1; transform: none } }
-.g-in { animation: g-in var(--g-mid) var(--g-ease) both; }
+.g-pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--g-accent); animation: g-dot 1.8s var(--g-ease) infinite; }
 
-/* ---- older parts, held to this ground -------------------------------------------------------------- */
-.g .card, .g .card-raised, .g .receipt { background: color-mix(in srgb, var(--g-raise) 55%, transparent); border: 1px solid var(--g-line-soft); border-radius: var(--g-r); box-shadow: none; padding: var(--g-4); }
+/* ---- arrival ---------------------------------------------------------------------------------------
+   One entrance, used by every turn. It answers a send, so it is motion that reports something changed. */
+@keyframes g-in { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
+.g-in { animation: g-in 320ms var(--g-ease) both; }
+
+/* ---- shared atoms inside the module surfaces ------------------------------------------------------ */
+.g .card, .g .card-raised, .g .receipt { background: var(--g-fill); border: 1px solid var(--g-line-soft); border-radius: var(--g-r); box-shadow: var(--g-e1); padding: var(--g-4); }
 .g .eyebrow { font-size: 13px; font-weight: 500; color: var(--g-mist); text-transform: none; letter-spacing: 0; }
 .g .tag { font-family: var(--g-mono); font-size: 11px; color: var(--g-mist); border: 1px solid var(--g-line); border-radius: var(--g-r-pill); padding: 2px 9px; background: transparent; }
 .g .tag-held { color: var(--g-paper); border-color: var(--g-mist-2); }
-.g .btn, .g .btn-ghost, .g .chip { font: inherit; font-size: 13px; color: var(--g-mist); background: transparent; border: 1px solid var(--g-line); border-radius: var(--g-r-pill); padding: 6px var(--g-3); box-shadow: none; transition: background var(--g-fast), color var(--g-fast); }
-.g .btn:hover, .g .btn-ghost:hover, .g .chip:hover { background: var(--g-raise); color: var(--g-paper); }
+.g .btn, .g .btn-ghost, .g .chip { font: inherit; font-size: 13px; color: var(--g-mist); background: var(--g-fill); border: 1px solid var(--g-line); border-radius: var(--g-r-pill); padding: 6px var(--g-3); box-shadow: var(--g-e1); transition: background var(--g-fast), color var(--g-fast), border-color var(--g-fast), transform var(--g-fast); }
+.g .btn:hover, .g .btn-ghost:hover, .g .chip:hover { color: var(--g-paper); border-color: color-mix(in srgb, var(--g-accent) 30%, var(--g-line)); transform: translateY(-1px); }
 .g .reading, .g .reading-line { font-size: 14px; color: var(--g-mist); }
 .g .quiet, .g .text-ink-soft { color: var(--g-mist-2); }
 .g table { font-size: 13px; border-collapse: collapse; width: 100%; }
 .g th { font-weight: 500; color: var(--g-mist-2); text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--g-line); }
 .g td { padding: 6px 8px; border-bottom: 1px solid var(--g-line-soft); vertical-align: top; color: var(--g-mist); }
+.g tbody tr { transition: background var(--g-fast) var(--g-ease); }
+.g tbody tr:hover { background: rgba(255, 255, 255, 0.022); }
 .g .receipt-key { color: var(--g-mist-2); }
 .g .receipt-val, .g .evidence, .g .fact-source, .g .coverage { font-family: var(--g-mono); font-size: 12px; }
 .g .machine-record { font-family: var(--g-mono); font-size: 11px; background: var(--g-void); border: 1px solid var(--g-line-soft); border-radius: var(--g-r-sm); padding: var(--g-3); max-height: 22rem; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--g-mist); }
@@ -376,17 +629,26 @@ html, body { background: var(--g-bg); }
 .g-rail-toggle { display: none !important; }
 .g-scrim { display: none; }
 @media (max-width: 900px) {
-  .g-rail { position: fixed; left: 0; top: 0; transform: translateX(-100%); transition: transform var(--g-mid) var(--g-ease); z-index: 30; }
+  .g-rail { position: fixed; left: 0; top: 0; transform: translateX(-100%); transition: transform var(--g-mid) var(--g-ease); z-index: 30; box-shadow: 0 0 60px rgba(0, 0, 0, 0.6); }
   .g[data-rail='open'] .g-rail { transform: none; }
   .g-rail-toggle { display: inline-flex !important; }
-  .g[data-rail='open'] .g-scrim { display: block; position: fixed; inset: 0; background: rgba(4, 7, 13, 0.6); z-index: 20; border: 0; }
+  .g[data-rail='open'] .g-scrim { display: block; position: fixed; inset: 0; background: rgba(4, 7, 13, 0.62); backdrop-filter: blur(2px); z-index: 20; border: 0; animation: g-fade var(--g-mid) var(--g-ease) both; }
+  @keyframes g-fade { from { opacity: 0 } to { opacity: 1 } }
   .g-col { padding: 0 var(--g-4); }
   .g-tool, .g-send { height: 44px; min-width: 44px; }
   .g-send { width: 44px; }
+  .g-top .g-tool { height: 40px; }
+  /* On a phone the opening is taller than the viewport, so centring it pins the reading to the top and
+     leaves the dead space under the openings instead. It reads from the top and scrolls. */
+  .g-welcome { min-height: 0; justify-content: flex-start; padding-top: var(--g-5); padding-bottom: var(--g-7); gap: var(--g-6); }
+  /* Provenance is mono, and mono at 11.5px does not fit 390px — it broke mid-token across two lines. */
+  .g-source { font-size: 10.5px; line-height: 1.7; }
+  .g-hero { font-size: clamp(1.75rem, 1.1rem + 3.4vw, 2.2rem); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .g *, .g *::before, .g *::after { animation: none !important; transition-duration: 1ms !important; }
+  .g-welcome > * { opacity: 1; transform: none; }
 }
 
 /* ---- the module surfaces, repointed --------------------------------------------------------------
@@ -497,7 +759,15 @@ html, body { background: var(--g-bg); }
 .g .chip-colour { border-color: var(--g-line); }
 .g .dash-kpi-number, .g .dash-value { font-family: var(--g-mono); letter-spacing: -0.035em; color: var(--g-paper); }
 .g .dash-kpi-label, .g .dash-kpi-caption { color: var(--g-mist); }
-.g input[type='text'], .g input[type='search'], .g select:not(.g-tool), .g textarea {
+/* The module surfaces' own fields — and only theirs. The workspace's chrome is styled above, and it has to
+   be excluded here by name: `.g textarea` and `.g-composer textarea` have identical specificity (0,1,1), so
+   source order decides and this block, being later, silently won. That is what drew a second bordered box
+   inside the composer around the placeholder, and what took the rail's filter back to an 8px radius. The
+   over-broad selector is the defect, so the selector is narrowed rather than the composer's raised. */
+.g input[type='text']:not(.g-search),
+.g input[type='search']:not(.g-search),
+.g select:not(.g-tool),
+.g textarea:not(.g-composer textarea) {
   background: var(--g-raise); border: 1px solid var(--g-line); color: var(--g-paper); border-radius: var(--g-r-sm);
 }
 .g input::placeholder { color: var(--g-mist-2); }
