@@ -934,3 +934,19 @@ html, body { background: var(--g-bg); }
 }
 /* The scene stops at the shelf rather than running under it. */
 .g-scene { bottom: 46px; height: 26vh; }
+
+/* axe caught this on #overview, and it was mine: the small mono labels and units I set at --g-ink-3 do not reach
+   4.5:1 on a light glass panel at 9.5-12px. Small type needs the darker of the two quiet inks. */
+.g .module-field label,
+.g .module-fact-label,
+.g .stat-label,
+.g .dash-kpi-label,
+.g .dash-kpi-unit,
+.g .dash-kpi-micro,
+.g .stat-unit,
+.g .stat-foot,
+.g .module-note,
+.g .fact-source,
+.g .receipt-key {
+  color: var(--g-ink-2);
+}
