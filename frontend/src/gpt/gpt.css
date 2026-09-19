@@ -309,7 +309,12 @@ html, body { background: var(--g-void); }
 .g-thread::-webkit-scrollbar { width: 10px; }
 .g-thread::-webkit-scrollbar-thumb { background: var(--g-line); border-radius: 5px; border: 3px solid transparent; background-clip: content-box; }
 .g-thread::-webkit-scrollbar-thumb:hover { background: var(--g-mist-2); background-clip: content-box; }
-.g-col { width: 100%; max-width: var(--g-col); margin-inline: auto; padding: 0 var(--g-5); }
+.g-col { width: 100%; max-width: var(--g-col); margin-inline: auto; padding: 0 var(--g-5); transition: max-width var(--g-slow) var(--g-ease); }
+/* A conversation column is a reading measure — 740px, because a line longer than that is hard to read.
+   A dashboard or a district matrix is for scanning, not reading, and the same measure left it squeezed
+   into the middle third of the window with empty space either side. A surface widens the column it
+   opens in. */
+.g-col:has([data-surface]) { max-width: 1180px; }
 
 /* ---- the opening ---------------------------------------------------------------------------------
    The reading is the hero. A sentence, set large and tight, left-aligned because this is a reading

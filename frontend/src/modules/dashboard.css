@@ -1,0 +1,301 @@
+/* The dashboard surface.
+   ============================================================================
+   WorkspaceSurface.tsx arrived in this tree from another one, 966 lines of it, and its stylesheet did not
+   come with it. Around a hundred dash-* class names had never had a rule here — not a regression, an
+   intake that was never finished. What a reader got was the component's bare HTML: a heading, a
+   paragraph, a naked textarea, a "W" and a sparkle standing on their own lines. That is the surface that
+   read as a page from 1990, because structurally it was one.
+
+   Two of those names also collided with rules that do exist: modules.css uses .dash-strip for a 14px KPI
+   pill with overflow hidden, and .dash-bubble for an SVG fill. The forecast day strip and the chat bubble
+   here are neither, so they are renamed (dash-daystrip, dash-said) rather than made to fight.
+
+   Everything below is built on the --g-* tokens, so the dashboard and the conversation are one system:
+   the same elevation, the same 4px rhythm, the same one accent. */
+
+/* ---- the frame ------------------------------------------------------------------------------------ */
+.dash {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--g-6);
+  align-items: start;
+}
+@media (min-width: 1100px) {
+  /* The conversation column is for reading; a dashboard is for scanning, so it takes the width and puts
+     the question box alongside rather than below. */
+  .dash { grid-template-columns: minmax(0, 1fr) 322px; }
+  .dash > .dash-hero, .dash > .dash-section { grid-column: 1; }
+  .dash > .dash-aside { grid-column: 2; grid-row: 1 / span 3; position: sticky; top: var(--g-4); }
+}
+
+.dash-section { display: flex; flex-direction: column; gap: var(--g-3); }
+.dash-section-head { display: flex; align-items: baseline; gap: var(--g-3); flex-wrap: wrap; }
+.dash-title, .dash-block-title, .dash-panel-title, .dash-kept-title, .dash-ask-title {
+  margin: 0; font-size: 15px; font-weight: 600; color: var(--g-paper); letter-spacing: -0.012em;
+}
+.dash-block-head { display: flex; align-items: baseline; gap: var(--g-3); flex-wrap: wrap; margin-bottom: var(--g-3); }
+.dash-block-sub, .dash-suggestions-label { font-size: 12.5px; color: var(--g-mist-2); }
+
+/* A link out of a section. The arrow is the component's own; it is held back so the word carries the
+   click and the mark only points. */
+.dash-link {
+  margin-left: auto; font-size: 13px; color: var(--g-accent); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;
+  transition: opacity var(--g-fast) var(--g-ease);
+}
+.dash-link:hover { opacity: 0.78; }
+.dash-link span { opacity: 0.55; transition: transform var(--g-fast) var(--g-ease); }
+.dash-link:hover span { transform: translateX(2px); }
+.dash-link-button { border: 0; background: transparent; font: inherit; cursor: pointer; padding: 0; }
+
+/* ---- the hero: the model hour and what the station printed ---------------------------------------- */
+.dash-hero {
+  border: 1px solid var(--g-line); border-radius: var(--g-r-lg);
+  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015)), rgba(15, 22, 36, 0.6);
+  box-shadow: var(--g-e2);
+  padding: var(--g-5);
+  display: flex; flex-direction: column; gap: var(--g-4);
+}
+.dash-hero-head { display: flex; align-items: flex-start; gap: var(--g-4); flex-wrap: wrap; }
+.dash-hero-title { min-width: 0; }
+.dash-hero-label { margin: 0 0 2px; font-size: 12.5px; color: var(--g-mist-2); }
+.dash-place { margin: 0; font-size: 1.5rem; font-weight: 600; letter-spacing: -0.028em; color: var(--g-paper); }
+.dash-hero-actions { margin-left: auto; display: flex; align-items: center; gap: var(--g-2); flex-wrap: wrap; }
+.dash-hero-more > summary, .dash-change > summary, .dash-builder > summary {
+  list-style: none; cursor: pointer; font-size: 12.5px; color: var(--g-mist-2);
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: color var(--g-fast) var(--g-ease);
+}
+.dash-hero-more > summary::-webkit-details-marker,
+.dash-change > summary::-webkit-details-marker,
+.dash-builder > summary::-webkit-details-marker { display: none; }
+.dash-hero-more > summary::before, .dash-change > summary::before, .dash-builder > summary::before {
+  content: ''; width: 5px; height: 5px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg); transition: transform var(--g-mid) var(--g-ease);
+}
+.dash-hero-more[open] > summary::before, .dash-change[open] > summary::before, .dash-builder[open] > summary::before { transform: rotate(45deg); }
+.dash-hero-more > summary:hover, .dash-change > summary:hover, .dash-builder > summary:hover { color: var(--g-accent); }
+.dash-hero-fine { margin: var(--g-2) 0 0; display: flex; flex-wrap: wrap; gap: 4px var(--g-3); }
+.dash-fine-metric { font-family: var(--g-mono); font-size: 11px; color: var(--g-mist-2); }
+.dash-change-body { margin-top: var(--g-2); font-size: 12.5px; color: var(--g-mist); }
+
+.dash-reading { display: flex; flex-direction: column; gap: var(--g-4); }
+.dash-hero-row { display: flex; align-items: flex-start; gap: var(--g-6); flex-wrap: wrap; }
+
+/* The reading itself. One value at display size, in the sans with tabular figures — the same exception
+   the lead claim takes, and for the same reason: a decimal point in a monospace face floats in its own
+   gap at this size and "28.4" reads as "28 . 4". */
+.dash-temp-block { min-width: 0; }
+.dash-temp { display: flex; align-items: baseline; gap: 6px; }
+.dash-numeral {
+  font-family: var(--g-sans); font-size: clamp(2.6rem, 1.8rem + 2.4vw, 3.6rem);
+  font-weight: 600; letter-spacing: -0.04em; line-height: 1; color: var(--g-paper);
+  font-variant-numeric: tabular-nums;
+}
+.dash-unit { font-family: var(--g-mono); font-size: 1rem; color: var(--g-mist); }
+.dash-temp-label { margin: var(--g-2) 0 0; font-size: 12px; color: var(--g-mist-2); }
+
+.dash-cond { display: flex; align-items: flex-start; gap: var(--g-3); min-width: 0; flex: 1; }
+.dash-cond-glyph { color: var(--g-accent); flex: 0 0 auto; opacity: 0.9; }
+.dash-cond-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.dash-cond-printed { font-size: 15px; color: var(--g-paper); }
+.dash-cond-by { font-size: 11.5px; color: var(--g-mist-2); }
+
+.dash-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: var(--g-3); margin: 0; }
+.dash-metric { min-width: 0; }
+.dash-metric dt { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--g-mist-2); margin: 0; }
+.dash-metric dd { margin: 3px 0 0; font-family: var(--g-mono); font-size: 14px; color: var(--g-paper); }
+.dash-metric-badge { display: inline-flex; color: var(--g-mist-2); }
+.dash-metric-unit { font-size: 11px; color: var(--g-mist-2); margin-left: 2px; }
+.dash-metric-label { font-size: 11.5px; color: var(--g-mist-2); }
+.dash-updated { display: flex; align-items: baseline; gap: var(--g-2); font-size: 11.5px; color: var(--g-mist-2); }
+
+.dash-empty { display: flex; flex-direction: column; gap: var(--g-3); }
+.dash-lead { margin: 0; font-size: 14.5px; color: var(--g-mist); max-width: 62ch; }
+.dash-pins { display: flex; flex-wrap: wrap; gap: var(--g-2); }
+
+/* ---- the two status panels ------------------------------------------------------------------------ */
+.dash-status { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--g-3); }
+.dash-panel {
+  border: 1px solid var(--g-line-soft); border-radius: var(--g-r);
+  background: var(--g-fill); box-shadow: var(--g-e1);
+  padding: var(--g-4); display: flex; flex-direction: column; gap: var(--g-2);
+}
+.dash-foot-strong { margin: 0; font-size: 14px; font-weight: 500; color: var(--g-paper); }
+.dash-foot-text { margin: 0; font-size: 13px; color: var(--g-mist); }
+.dash-foot-meta { margin: 0; font-family: var(--g-mono); font-size: 11px; color: var(--g-mist-2); }
+
+/* ---- the forecast strip --------------------------------------------------------------------------- */
+.dash-forecast { display: flex; flex-direction: column; }
+.dash-daystrip { position: relative; display: flex; align-items: stretch; gap: var(--g-2); }
+.dash-days {
+  display: flex; gap: var(--g-2); overflow-x: auto; scroll-snap-type: x mandatory;
+  padding-bottom: var(--g-2); scrollbar-width: thin; scrollbar-color: var(--g-line) transparent;
+}
+.dash-days::-webkit-scrollbar { height: 6px; }
+.dash-days::-webkit-scrollbar-thumb { background: var(--g-line); border-radius: 3px; }
+
+/* A day is a choice, so it answers the pointer and says which one is chosen. */
+.dash-day {
+  scroll-snap-align: start; flex: 0 0 auto; min-width: 92px;
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  padding: var(--g-3) var(--g-3) var(--g-2);
+  border: 1px solid var(--g-line-soft); border-radius: var(--g-r);
+  background: var(--g-fill); box-shadow: var(--g-e1);
+  color: var(--g-mist); font: inherit; cursor: pointer; position: relative;
+  transition: border-color var(--g-fast) var(--g-ease), transform var(--g-fast) var(--g-ease),
+              box-shadow var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease);
+}
+.dash-day:hover { transform: translateY(-2px); box-shadow: var(--g-e2); color: var(--g-paper); border-color: var(--g-line); }
+.dash-day[aria-pressed='true'] {
+  border-color: color-mix(in srgb, var(--g-accent) 46%, var(--g-line));
+  box-shadow: var(--g-e2), 0 0 0 3px var(--g-accent-wash);
+  color: var(--g-paper);
+}
+.dash-day-name { font-size: 12px; font-weight: 500; }
+/* The droplet fills by how wet the day the product returned is; --rain is set by the component from the
+   payload's own value, so nothing here invents a depth. */
+.dash-day-rain { position: relative; display: inline-flex; color: var(--g-line); }
+.dash-day-rain-fill { color: color-mix(in srgb, var(--g-accent) calc(var(--rain, 0) * 100%), var(--g-line)); }
+.dash-day-temps { display: flex; align-items: baseline; gap: 5px; font-family: var(--g-mono); font-size: 12.5px; }
+.dash-hi { color: var(--g-paper); }
+.dash-lo { color: var(--g-mist-2); }
+.dash-sep { color: var(--g-line); }
+.dash-day-meta { font-family: var(--g-mono); font-size: 10.5px; color: var(--g-mist-2); }
+/* The published colour, and only where a source published one. */
+.dash-day-flag { position: absolute; top: 6px; right: 6px; width: 6px; height: 6px; border-radius: 2px; }
+.dash-day-flag[data-colour='red'] { background: var(--g-red); }
+.dash-day-flag[data-colour='orange'] { background: var(--g-orange); }
+.dash-day-flag[data-colour='yellow'] { background: var(--g-yellow); }
+.dash-day-flag[data-colour='green'] { background: var(--g-green); }
+
+.dash-daystrip-more {
+  flex: 0 0 auto; align-self: center; width: 30px; height: 30px; border-radius: var(--g-r-pill);
+  border: 1px solid var(--g-line); background: var(--g-fill); color: var(--g-mist);
+  cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+  transition: color var(--g-fast), border-color var(--g-fast);
+}
+.dash-daystrip-more:hover { color: var(--g-paper); border-color: var(--g-mist-2); }
+.dash-daystrip-note { margin: var(--g-2) 0 0; font-size: 11.5px; color: var(--g-mist-2); }
+.dash-charts { margin-top: var(--g-4); display: flex; flex-direction: column; gap: var(--g-4); }
+
+/* ---- air quality ----------------------------------------------------------------------------------- */
+.dash-air { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: var(--g-3); margin: 0; }
+.dash-air-cell {
+  border: 1px solid var(--g-line-soft); border-radius: var(--g-r-sm);
+  background: var(--g-fill); padding: var(--g-3); min-width: 0;
+}
+.dash-air-cell dt { margin: 0; font-size: 11.5px; color: var(--g-mist-2); }
+.dash-air-cell dd { margin: 4px 0 0; font-family: var(--g-mono); font-size: 15px; color: var(--g-paper); }
+
+/* ---- the tool list ---------------------------------------------------------------------------------- */
+.dash-tool-controls { display: flex; flex-wrap: wrap; gap: var(--g-3); align-items: center; margin-bottom: var(--g-3); }
+.dash-filters { display: flex; flex-wrap: wrap; gap: var(--g-2); }
+.dash-tool-search { flex: 1; min-width: 180px; }
+.dash-tools { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); gap: var(--g-3); }
+.dash-tool {
+  border: 1px solid var(--g-line-soft); border-radius: var(--g-r);
+  background: var(--g-fill); box-shadow: var(--g-e1);
+  padding: var(--g-3) var(--g-4); display: flex; flex-direction: column; gap: 5px; min-width: 0;
+  transition: border-color var(--g-fast) var(--g-ease), transform var(--g-fast) var(--g-ease), box-shadow var(--g-fast) var(--g-ease);
+}
+.dash-tool:hover { transform: translateY(-2px); box-shadow: var(--g-e2); border-color: var(--g-line); }
+.dash-tool-group { margin: 0; font-size: 11px; color: var(--g-mist-2); }
+.dash-tool-title { margin: 0; font-size: 14px; font-weight: 600; color: var(--g-paper); }
+.dash-tool-detail { margin: 0; font-size: 12.5px; color: var(--g-mist); }
+.dash-tool-foot { display: flex; align-items: center; gap: var(--g-2); margin-top: auto; padding-top: var(--g-2); }
+.dash-tool-output { font-family: var(--g-mono); font-size: 10.5px; color: var(--g-mist-2); }
+
+/* ---- what is kept on this machine ------------------------------------------------------------------- */
+.dash-kept { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--g-4); }
+.dash-kept-col { display: flex; flex-direction: column; gap: var(--g-2); }
+.dash-kept-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 5px; }
+.dash-kept-list li {
+  display: flex; align-items: baseline; justify-content: space-between; gap: var(--g-3);
+  font-size: 13px; color: var(--g-mist); padding: 5px 0; border-bottom: 1px solid var(--g-line-soft);
+}
+.dash-kept-list li:last-child { border-bottom: 0; }
+
+/* ---- the question box alongside --------------------------------------------------------------------- */
+.dash-aside { min-width: 0; }
+.dash-ask {
+  border: 1px solid var(--g-line); border-radius: var(--g-r-lg);
+  background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.012)), rgba(13, 19, 31, 0.66);
+  box-shadow: var(--g-e2);
+  padding: var(--g-4); display: flex; flex-direction: column; gap: var(--g-3);
+}
+.dash-ask-spacer { display: flex; justify-content: center; color: var(--g-accent); opacity: 0.55; }
+.dash-ask-rules { font-size: 11.5px; color: var(--g-mist-2); margin: 0; }
+
+.dash-exchange { display: flex; flex-direction: column; gap: 5px; }
+.dash-said {
+  margin: 0; font-size: 12.5px; line-height: 1.55; color: var(--g-mist);
+  background: rgba(255, 255, 255, 0.035); border-radius: var(--g-r-sm) var(--g-r) var(--g-r) var(--g-r);
+  padding: var(--g-2) var(--g-3);
+}
+.dash-said-user {
+  color: var(--g-paper); background: rgba(255, 255, 255, 0.08);
+  border-radius: var(--g-r) var(--g-r-sm) var(--g-r) var(--g-r);
+}
+
+.dash-suggestions { display: flex; flex-direction: column; gap: var(--g-2); }
+.dash-suggestion {
+  text-align: left; font: inherit; font-size: 12.5px; cursor: pointer;
+  padding: 7px var(--g-3); border-radius: var(--g-r-sm);
+  border: 1px solid var(--g-line-soft); background: transparent; color: var(--g-mist);
+  transition: background var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease), border-color var(--g-fast) var(--g-ease);
+}
+.dash-suggestion:hover { background: rgba(255,255,255,0.05); color: var(--g-paper); border-color: var(--g-line); }
+
+/* The question box: one control, so the badge, the field and the send read as one object rather than as
+   a letter, a textarea and an arrow standing next to each other. */
+.dash-question-pill {
+  display: flex; align-items: flex-end; gap: var(--g-2);
+  border: 1px solid var(--g-line); border-radius: var(--g-r-lg);
+  background: rgba(255, 255, 255, 0.04);
+  padding: var(--g-2);
+  transition: border-color var(--g-mid) var(--g-ease), box-shadow var(--g-mid) var(--g-ease);
+}
+.dash-question-pill:focus-within {
+  border-color: color-mix(in srgb, var(--g-accent) 42%, var(--g-line));
+  box-shadow: 0 0 0 3px var(--g-accent-wash);
+}
+.dash-pill-badge {
+  flex: 0 0 22px; width: 22px; height: 22px; border-radius: 7px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; color: var(--g-void);
+  background: linear-gradient(150deg, var(--g-accent), #3f5d8f 72%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+  align-self: flex-end; margin-bottom: 5px;
+}
+.dash-question { flex: 1; min-width: 0; display: block; }
+.dash-question textarea {
+  width: 100%; border: 0; outline: none; resize: none; background: transparent;
+  color: var(--g-paper); font: inherit; font-size: 13.5px; line-height: 1.5;
+  padding: 6px 0; min-height: 22px; max-height: 140px;
+}
+.dash-question textarea::placeholder { color: var(--g-mist-2); }
+.dash-question textarea:focus-visible { outline: none; }
+.dash-send {
+  flex: 0 0 30px; width: 30px; height: 30px; border-radius: var(--g-r-pill); border: 0; cursor: pointer;
+  background: linear-gradient(180deg, #ffffff, #d7deea); color: var(--g-void);
+  display: inline-flex; align-items: center; justify-content: center; text-decoration: none;
+  transition: transform var(--g-fast) var(--g-spring), opacity var(--g-fast) var(--g-ease);
+}
+.dash-send:disabled { background: rgba(255,255,255,0.07); color: var(--g-mist-2); cursor: default; }
+.dash-send:not(:disabled):hover { transform: scale(1.08); }
+.dash-send:not(:disabled):active { transform: scale(0.94); }
+
+.dash-builder { margin-top: var(--g-1); }
+.dash-evidence { margin-top: var(--g-3); }
+.dash-chip {
+  display: inline-flex; align-items: center; gap: 5px; font-size: 12px;
+  padding: 5px var(--g-3); border-radius: var(--g-r-pill);
+  border: 1px solid var(--g-line); background: var(--g-fill); color: var(--g-mist);
+  cursor: pointer; transition: color var(--g-fast), border-color var(--g-fast);
+}
+.dash-chip:hover { color: var(--g-paper); border-color: var(--g-mist-2); }
+
+@media (prefers-reduced-motion: reduce) {
+  .dash-day:hover, .dash-tool:hover, .dash-send:hover { transform: none; }
+}

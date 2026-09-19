@@ -18,6 +18,7 @@ import type { Envelope } from '../api/types';
 import { count, orNot } from '../lib/format';
 import { istStamp } from '../lib/time';
 import { Failure, HAZARD_COLOURS, Reading } from './Evidence';
+import './indiamap.css';
 
 type WarningDay = {
   day?: number; date_local?: string; label?: string; colour?: string | null; hazards?: string[];

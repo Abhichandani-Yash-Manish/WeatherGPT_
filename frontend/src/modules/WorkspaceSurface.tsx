@@ -30,6 +30,7 @@ import {
 } from './Evidence';
 import { IndiaWarningMap } from './IndiaWarningMap';
 import { currentIndex, dayRows, valueAt, windowOf, type Series, type SeriesPoint } from './dashboard';
+import './dashboard.css';
 
 export const intents: string[] = (viewById('workspace')?.intents ?? []).concat([
   'Write a question for a place and a window, and read what is happening there right now.',
@@ -82,11 +83,11 @@ function LastExchange({ active }: { active: boolean }): JSX.Element | null {
   const answer = [...turns].reverse().find(turn => turn.role !== 'user' && turn.content)?.content;
   return (
     <div className="dash-exchange" aria-label="Your most recent stored conversation">
-      <motion.p className="dash-bubble dash-bubble-user" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.22 }}>
+      <motion.p className="dash-said dash-said-user" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.22 }}>
         {orNot(question, 'question not recorded')}
       </motion.p>
       {answer ? (
-        <motion.p className="dash-bubble" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.22, delay: 0.08 }}>
+        <motion.p className="dash-said" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.22, delay: 0.08 }}>
           {answer.length > 280 ? answer.slice(0, 280).trimEnd() + '…' : answer}
         </motion.p>
       ) : null}
@@ -445,7 +446,7 @@ function Outlook({ forecast, warnings, now_ms }: {
         <p className="module-note">{NO_ROW}: this read returned no temperature series to lay out by day.</p>
       ) : (
         <>
-          <div className="dash-strip">
+          <div className="dash-daystrip">
             <motion.div ref={strip} className="dash-days" role="group" aria-label="Choose a day for the hourly charts" variants={RISE} initial="hidden" animate="shown">
               {rows.map(row => {
                 const warning = published.find(entry => entry.date_local === row.date);
@@ -472,11 +473,11 @@ function Outlook({ forecast, warnings, now_ms }: {
                 );
               })}
             </motion.div>
-            <button type="button" className="dash-strip-more" aria-label="Scroll the forecast days" onClick={() => strip.current?.scrollBy({ left: 280, behavior: 'smooth' })}>
+            <button type="button" className="dash-daystrip-more" aria-label="Scroll the forecast days" onClick={() => strip.current?.scrollBy({ left: 280, behavior: 'smooth' })}>
               <span aria-hidden="true">›</span>
             </button>
           </div>
-          <p className="dash-strip-note" title="Hours the product returned, not a published daily figure. Choose a day for its hours; choose it again for the next 24 hours.">
+          <p className="dash-daystrip-note" title="Hours the product returned, not a published daily figure. Choose a day for its hours; choose it again for the next 24 hours.">
             Warmest | coolest returned hour ({orNot(temperature?.unit, 'unit not stated')}) · droplet: highest hourly rain chance · dot: published district colour{warnings.isError ? ' (district day read failed)' : ''} · choose a day for its hours
           </p>
           <div className="dash-charts">
