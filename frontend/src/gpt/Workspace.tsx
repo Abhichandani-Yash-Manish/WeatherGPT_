@@ -9,7 +9,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { PanelLeft, Bell, ArrowDown, ArrowLeft, Download, SlidersHorizontal } from 'lucide-react';
+import { PanelLeft, ArrowDown, ArrowLeft, Download, SlidersHorizontal } from 'lucide-react';
 
 import { postJson } from '../api/client';
 import { istStamp } from '../lib/time';
@@ -394,9 +394,6 @@ export function Workspace({
                 <Download size={16} aria-hidden="true" />
               </button>
             ) : null}
-            <button type="button" className="g-tool" onClick={() => onPlans?.()}>
-              <Bell size={15} aria-hidden="true" /> Watch
-            </button>
             {/* The panel holds the three things an answer depends on — place, language, persona — which used
                 to sit in this bar as two native selects. */}
             <button
@@ -495,38 +492,64 @@ export function Workspace({
                   );
                 })}
                 {working ? (
-                  /* What the machine is doing, in the four things a reader can be told honestly: the stage it
-                     is on, the stages it has been through, the engine's provisional first reading, and how
-                     long it has been. No percentage, no ETA, and no claim that an answer is near. */
+                  /* Quiet while it works.
+
+                     This printed five paragraphs while a reader waited to learn whether it would rain: an
+                     explanation of the pipeline, the stage list, the planner's provisional first reading, the
+                     queue depth, and the server-work figure. All of it true; none of it the question.
+                     Evidence proves an answer, and it cannot prove a wait — imposing it during one is how a
+                     careful product comes to read as an unfinished one.
+
+                     So the wait states the two things a reader wants, the stage and how long, and the rest
+                     moves one fold away where it stays reachable and stops competing. The first reading in
+                     particular is a transparency feature and is not removed: available, not imposed. */
                   <div className="g-turn g-working" data-testid="working-turn">
-                    <p className="g-working-head" role="status" aria-live="polite">
+                    <p className="g-working-head">
                       <span className="g-dots" aria-hidden="true"><i /><i /><i /></span>
-                      <span>Working on it</span>
+                      <span className="g-working-stage" role="status" aria-live="polite">
+                        {current ? stageLabel(current) : 'Working on it'}
+                      </span>
+                      {/* Outside the live region: a clock that ticks once a second would be announced once a
+                          second, which is unusable with a screen reader. The DELTA, not the clock — this read
+                          elapsedNow / 1000, the Unix epoch in seconds, so a four-second-old turn reported
+                          "497172 h 14 min since you asked". */}
+                      <span className="g-working-clock" aria-hidden="true">
+                        {elapsedWords(Math.max(0, elapsedNow - working.startedAt) / 1000)}
+                      </span>
                     </p>
-                    <p className="g-working-note">
-                      Resolving the place and window, then retrieving evidence. A local model is interpreting your
-                      question, so this can take up to about a minute.
-                    </p>
-                    <ol className="g-stages">
-                      {stages.map(entry => (
-                        <li key={entry} data-state={entry === current ? 'now' : 'done'}>
-                          {stageLabel(entry)}{entry === current ? ' — now' : ''}
-                        </li>
-                      ))}
-                    </ol>
-                    {firstReading ? (
-                      <p className="g-reading-line" data-testid="reading-line">
-                        <span>First reading: </span>{firstReading}
-                      </p>
+
+                    {/* A reader asked for this one, so it answers where it was asked. */}
+                    {working.stopRequested ? (
+                      <p className="g-working-note">{working.stopDetail || 'Stop requested.'}</p>
                     ) : null}
-                    {working.preview?.note ? <p className="g-working-note">{working.preview.note}</p> : null}
-                    {working.previewFailed ? <p className="g-working-note">{working.previewFailed}</p> : null}
-                    {queueLine ? <p className="g-working-note">{queueLine}</p> : null}
-                    <p className="g-working-note">
-                      {elapsedWords(elapsedNow / 1000)} since you asked
-                      {progress?.turn_seconds ? ' · ' + elapsedWords(progress.turn_seconds) + ' of server work recorded' : ''}
-                    </p>
-                    {working.stopRequested ? <p className="g-working-note">{working.stopDetail || 'Stop requested.'}</p> : null}
+
+                    <details className="g-fold g-working-more">
+                      <summary>What it’s doing</summary>
+                      <div className="g-fold-body">
+                        <p className="g-working-note">
+                          Resolving the place and window, then retrieving evidence. A local model is
+                          interpreting your question, so this can take up to about a minute.
+                        </p>
+                        <ol className="g-stages">
+                          {stages.map(entry => (
+                            <li key={entry} data-state={entry === current ? 'now' : 'done'}>
+                              {stageLabel(entry)}{entry === current ? ' — now' : ''}
+                            </li>
+                          ))}
+                        </ol>
+                        {firstReading ? (
+                          <p className="g-reading-line" data-testid="reading-line">
+                            <span>First reading: </span>{firstReading}
+                          </p>
+                        ) : null}
+                        {working.preview?.note ? <p className="g-working-note">{working.preview.note}</p> : null}
+                        {working.previewFailed ? <p className="g-working-note">{working.previewFailed}</p> : null}
+                        {queueLine ? <p className="g-working-note">{queueLine}</p> : null}
+                        {progress?.turn_seconds ? (
+                          <p className="g-working-note">{elapsedWords(progress.turn_seconds)} of server work recorded</p>
+                        ) : null}
+                      </div>
+                    </details>
                   </div>
                 ) : null}
               </>

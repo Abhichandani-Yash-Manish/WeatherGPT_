@@ -194,7 +194,12 @@ describe('the transcript', () => {
     expect(await screen.findByTestId('working-turn')).toBeInTheDocument();
     expect(await screen.findByTestId('reading-line')).toHaveTextContent(/place: Ahmedabad/);
     expect(await screen.findByText('Resolving the place')).toBeInTheDocument();
-    expect(screen.getByText(/Retrieving evidence/)).toBeInTheDocument();
+    /* The wait states the stage it is on, once, in the line a reader is looking at. It used to print five
+       paragraphs of pipeline, planner and queue detail here; those are still reached, but from a fold, so
+       waiting for an answer about rain is not also a briefing on the retrieval architecture. */
+    expect(document.querySelector('.g-working-stage')).toHaveTextContent(/Retrieving evidence/);
+    expect(screen.getByText('Resolving the place').closest('details'), 'the machinery belongs behind a fold').not.toBeNull();
+    expect(screen.getByTestId('reading-line').closest('details'), 'the first reading is available, not imposed').not.toBeNull();
     await userEvent.click(screen.getByTestId('stop-turn'));
     await waitFor(() => expect(cancelled.length).toBe(1));
     expect(await screen.findByText(/stop this turn at the next stage boundary/)).toBeInTheDocument();

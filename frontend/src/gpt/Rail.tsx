@@ -384,8 +384,7 @@ export function Rail({
         </section>
 
         {places.length ? (
-          <section className="g-section" aria-label="Places this machine knows">
-            <p className="g-rail-label">Places</p>
+          <section className="g-section g-section-joined" aria-label="Places this machine knows">
             {places.map(known => (
               <div
                 key={known.label}
@@ -469,7 +468,7 @@ export function Rail({
                       onClick={() => onOpen(row.id, row.match?.text)}
                       title={row.opening_question || 'Untitled conversation'}
                     >
-                      {row.opening_question || 'Untitled conversation'}
+                      <span className="g-row-name">{row.opening_question || 'Untitled conversation'}</span>
                       {row.place?.label ? <span className="g-row-place">{nameOf(row.place.label)}</span> : null}
                       {row.match ? (
                         <span className="g-row-match" data-role={row.match.role}>
