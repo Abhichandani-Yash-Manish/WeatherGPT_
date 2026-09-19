@@ -46,8 +46,13 @@ source.
 
 **Type.** Anek stays — variable, pan-Indic, correct for a product that answers in 22 languages, and not the
 default anyone reaches for. **Martian Mono was removed**: it is mannered, and it was a real part of why this
-read as a toy. IBM Plex Mono replaces it, and mono is now restricted to one job — a value a tool owns, or
-the provenance line under it. Spacing is a 4px rhythm used throughout.
+read as a toy. IBM Plex Mono replaces it, and mono is restricted to one job — a value a tool owns, or the
+provenance line under it. Spacing is a 4px rhythm used throughout.
+
+One deliberate exception: **the leading value of a claim is set in the sans**. A monospace face gives every
+glyph the same advance, so at display size a decimal point floats in a gap of its own and `0.3` reads as
+`0 . 3`. The claim's structure and the source line beneath it already establish that the value is
+tool-owned, so nothing is lost by setting the hero numeral properly. Every supporting value stays in mono.
 
 **Motion.** Only what answers an action: the composer lifts on focus, the send scales on press, a turn
 arrives once with a 6px rise, one dot pulses while the engine works. Nothing loops for decoration, and
@@ -76,10 +81,17 @@ Tailwind's utilities resolve. The second set has to be redeclared inside `.g` ra
 because a custom property declared at `:root` computes there and descendants inherit the computed value —
 redefining `--ink` alone would never have reached `--color-ink`.
 
-Three surface-level repairs went with it: the display serif masthead became a title at a sane size, the
+Four surface-level repairs went with it: the display serif masthead became a title at a sane size, the
 published-colour washes were remixed for a dark ground (the cell keeps the source's colour as ink and edge
-rather than a pale fill that read as a sticker), and a four-figure KPI no longer overflows into its
-neighbour — it scales with its card.
+rather than a pale fill that read as a sticker), a four-figure KPI no longer overflows into its neighbour — it scales with its card;
+and the validity ruler's first and last tick labels are anchored to their own edges instead of their
+middles, which was clipping `09:30` against the track.
+
+A later self-review pass found the all-caps label had survived inside the module surfaces after the
+conversation dropped it — section headings, every dashboard card head, every table column header, and the
+chart engine's axis and matrix labels. All are sentence case now. The table rule needed raised specificity
+rather than a new declaration: `.module-table thead th` and a bare `.g th` have equal specificity, so source
+order decided it and the module stylesheet won.
 
 ## 5. What a reader sees
 

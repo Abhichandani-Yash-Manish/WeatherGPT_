@@ -301,7 +301,16 @@ html, body { background: var(--g-bg); }
   font-family: var(--g-mono); font-size: 26px; font-weight: 500; line-height: 1.1;
   letter-spacing: -0.04em; font-variant-numeric: tabular-nums; color: var(--g-paper);
 }
-.g-claim[data-lead='true'] .g-claim-number { font-size: clamp(2.4rem, 1.6rem + 2.6vw, 3.4rem); letter-spacing: -0.045em; }
+/* The leading value is the one place the sans is used for a number. A monospace face gives every glyph the
+   same advance, so at display size a decimal point floats in a gap of its own and "0.3" reads as "0 . 3".
+   The claim's structure and the source line under it already say the value is tool-owned, so nothing is
+   lost by setting the hero numeral properly. Every supporting value stays in the machine face. */
+.g-claim[data-lead='true'] .g-claim-number {
+  font-family: var(--g-sans);
+  font-size: clamp(2.4rem, 1.6rem + 2.6vw, 3.4rem);
+  font-weight: 600; letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+}
 .g-claim-unit { font-family: var(--g-mono); font-size: 14px; color: var(--g-mist); }
 .g-claim[data-lead='true'] .g-claim-unit { font-size: 1.125rem; }
 .g-claim-note { font-size: 13px; color: var(--g-mist); margin: 0; }

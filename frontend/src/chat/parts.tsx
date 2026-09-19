@@ -251,7 +251,8 @@ export function ValidityRuler({ packet }: { packet: AnswerPacket }) {
         ))}
         {[0, 0.5, 1].map(fraction => {
           const at = from + (to - from) * fraction;
-          const anchor = fraction === 0 ? 'middle' : fraction === 1 ? 'end' : 'middle';
+          /* The first label is anchored to the start and the last to the end, or each clips on its own edge. */
+          const anchor = fraction === 0 ? 'start' : fraction === 1 ? 'end' : 'middle';
           return (
             <g key={'tick-' + fraction}>
               <line x1={scale(at).toFixed(1)} x2={scale(at).toFixed(1)} y1={y + height + 3} y2={y + height + 8} className="ruler-edge" />
