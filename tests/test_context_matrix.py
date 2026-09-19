@@ -174,3 +174,35 @@ def test_a_question_of_only_spaces_is_not_a_question():
     with pytest.raises(Exception) as raised:
         ConversationEngine.ask(object.__new__(ConversationEngine), {"question": "x"})
     assert "1-1500" not in str(raised.value) and "1\u20131500" not in str(raised.value)
+
+
+def test_a_journey_question_is_a_travel_question():
+    """Endpoint weather is not route weather, and the kind is what says so.
+
+    The planner answers these correctly - both endpoints, the right window - and emits kind='forecast',
+    so the travel limitation never attached: "I do not have verified road closures, bridge conditions or
+    live transport status." A reader asking what the weather is on the way got two forecasts and nothing
+    saying they were not a judgement about the journey.
+
+    Narrow on purpose. travel and forecast dispatch through the same branch, so this changes what is said
+    about the answer rather than how it is retrieved - but it must not fire on an ordinary two-place
+    question, which is why the wording is required as well as the places.
+    """
+    from weathergpt_data.dialogue import mark_journeys
+
+    def plan(kind="forecast", places=2):
+        return {"places": [{"name": "A"}, {"name": "B"}][:places], "tasks": [{"kind": kind}]}
+
+    journeys = ["I am driving from Surat to Vadodara tomorrow morning, what is the weather on the way?",
+                "what is the weather en route from Surat to Vadodara",
+                "road trip Surat to Vadodara tomorrow",
+                "I am travelling from Surat to Vadodara"]
+    for question in journeys:
+        assert mark_journeys(plan(), question)["tasks"][0]["kind"] == "travel", question
+
+    # Two places without journey wording is a comparison, not a journey.
+    assert mark_journeys(plan(), "Compare the forecast for Surat and Vadodara tomorrow")["tasks"][0]["kind"] == "forecast"
+    # Journey wording about one place is not a journey either.
+    assert mark_journeys(plan(places=1), "I am driving to Surat tomorrow")["tasks"][0]["kind"] == "forecast"
+    # Nothing but a forecast task is touched: a warning stays a warning.
+    assert mark_journeys(plan(kind="warning"), journeys[0])["tasks"][0]["kind"] == "warning"

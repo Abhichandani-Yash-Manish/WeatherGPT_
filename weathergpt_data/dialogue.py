@@ -249,6 +249,30 @@ def reconcile(plan,state,question,now=None):
     fields=DIALOGUE_REQUEST_SCHEMA['properties'] if 'context_action' in plan else REQUEST_SCHEMA['properties']
     plan=expand_request({k:plan[k] for k in fields}) if plan.get('tasks') else plan
     plan['_context_resolution']={'action':action,'changed_fields':sorted(changed),'inherited_fields':inherited}
+    return mark_journeys(plan,question)
+
+
+JOURNEY=re.compile(r'\b(driv\w*|travel\w*|journey|road ?trip|en route|on the way|commut\w*|'
+                   r'going from|heading (?:to|from)|between)\b',re.I)
+
+
+def mark_journeys(plan,question):
+    """A question about getting from one place to another is a travel question.
+
+    The planner answers these correctly - both endpoints, the right window - and emits kind='forecast',
+    so the travel limitation never attaches. That limitation is the whole point of the kind: endpoint
+    weather is not route weather, and this product holds no road closures, bridge conditions or live
+    transport status. "I am driving from Surat to Vadodara tomorrow morning, what is the weather on the
+    way?" came back with two correct forecasts and nothing saying they were not a judgement about the
+    journey, which is the one reading it must not support.
+
+    Deterministic and narrow: two or more places, journey wording in the question, and a forecast task.
+    travel and forecast dispatch through the same branch, so this changes what is SAID about the answer
+    rather than how it is retrieved.
+    """
+    if len(plan.get('places') or [])<2 or not JOURNEY.search(question or ''):return plan
+    for task in plan.get('tasks') or []:
+        if task.get('kind')=='forecast':task['kind']='travel'
     return plan
 
 

@@ -69,7 +69,11 @@ COVERAGE = [
     ('observation',  'What is it like right now in Surat?'),
     ('warning',      'Is any warning in force for Patna, Bihar today?'),
     ('history',      'Show the annual rainfall for Ahmedabad district in 2020.'),
-    ('agriculture',  'What does the district agromet advisory say for cotton in Ahmedabad this week?'),
+    # The agriculture kind dispatches to execute_document by design (task_dispatch), so reaching the
+    # document executor IS reaching this capability. The expectation names what should answer, not a
+    # label: an earlier version of this corpus asserted 'agriculture' and reported a defect that was the
+    # design working.
+    ('document',     'What does the district agromet advisory say for cotton in Ahmedabad this week?'),
     ('aviation',     'What is the current weather at VOBL?'),
     ('marine',       'What is the sea like near Kochi, Kerala tomorrow?'),
     ('river',        'What is the river level near Patna, Bihar?'),
