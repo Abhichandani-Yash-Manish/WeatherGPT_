@@ -834,17 +834,22 @@ html, body { background: var(--g-void); }
    section heading is a heading, and a column header is a word, not a sign. Size and weight already carry
    the hierarchy, so nothing is lost by letting the words read normally. */
 .g .eyebrow,
-.g .module-section > h2, .g .module-section > h3,
+.g .module h2, .g .module-section > h2, .g .module-section > h3,
 .g .dash-card-head h2,
 .g th,
 .g .viz-matrix-head, .g .viz-matrix-corner, .g .viz-unit,
-.g .viz-card-family, .g .viz-card-scope {
+.g .viz-card-family, .g .viz-card-scope,
+.g .viz-card-key, .g .viz-now-read, .g .viz-daycol-head {
   text-transform: none;
   letter-spacing: 0;
 }
-.g .module-section > h2, .g .module-section > h3, .g .dash-card-head h2 {
+.g .module h2, .g .module-section > h2, .g .module-section > h3, .g .dash-card-head h2 {
   font-size: 13.5px; font-weight: 600; color: var(--g-mist);
 }
+/* Every section heading on a module surface carried a 14px rule before its first word, so each one read as
+   "— WORD": the spaced-dash label, which is one of the marks of a generated page. The heading is a
+   heading; it does not need a sign in front of it to be found. */
+.g .module h2::before { display: none; }
 .g .module-table thead th, .g th {
   text-transform: none; letter-spacing: 0; font-size: 12px; font-weight: 600; color: var(--g-mist-2);
 }

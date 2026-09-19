@@ -193,7 +193,10 @@ export function Palette({
         <ul className="mt-2 max-h-80 overflow-y-auto" role="listbox" aria-label="Surfaces, places and stored conversations">
           {groups.map(group => (
             <li key={group.name} role="group" aria-label={group.name}>
-              <p className="px-2 pt-2 text-[10px] font-semibold uppercase tracking-wide quiet" aria-hidden="true">{group.name}</p>
+              {/* Sentence case, like every other group label in the product. A tracked-out all-caps label
+                  above a list is the template chrome this system removed everywhere else; the palette was
+                  the last place still carrying it, because the rule lived in a utility and not a stylesheet. */}
+              <p className="px-2 pt-2 text-[11px] font-semibold quiet" aria-hidden="true">{group.name}</p>
               <ul role="presentation">
                 {group.rows.map(({ item, index }) => (
                   <li key={item.id} role="option" aria-selected={index === active}>

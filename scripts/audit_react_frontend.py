@@ -125,6 +125,43 @@ def main():
     findings.append(("FE11_view_contract", fe11,
                      "every surface is a registry entry loaded by the host, and the registry audit compares both frontends"))
 
+    # FE12: no heading on any surface is shouted, and nothing claims otherwise.
+    #
+    # docs/111 recorded that the all-caps label had been removed everywhere. It had not: the claim rested on
+    # a hand-written list of selectors in gpt.css, and four rules were missing from it -- .module h2, which
+    # uppercased every section heading on every module surface, and three chart labels. The dashboard was
+    # still shouting CHOOSE YOUR PLACE and AI ASSISTANT at a reader while the document said it did not.
+    #
+    # So the list is checked rather than trusted. Every selector in the project's stylesheets that declares
+    # text-transform: uppercase must have each of its classes named in the block that neutralises them, and
+    # no component may reach for Tailwind's uppercase utility. Add a shouted rule anywhere and this fails.
+    def _declared_uppercase():
+        out = []
+        for sheet in sorted(SRC.rglob("*.css")):
+            if sheet.name == "gpt.css":
+                continue
+            text = re.sub(r"/\*.*?\*/", "", read(sheet), flags=re.S)
+            for block in re.finditer(r"([^{}]+)\{([^}]*)\}", text):
+                if re.search(r"text-transform:\s*uppercase", block.group(2)):
+                    for selector in block.group(1).split(","):
+                        if selector.strip():
+                            out.append(selector.strip())
+        return out
+
+    gpt_css = read(SRC / "gpt" / "gpt.css")
+    shouted = []
+    for selector in _declared_uppercase():
+        names = re.findall(r"\.([a-z][a-z0-9-]*)", selector)
+        # The trailing guard matters: ".module" must not be counted as covered by ".module-section".
+        if not names or not all(re.search(r"\." + re.escape(n) + r"(?![a-z0-9-])", gpt_css) for n in names):
+            shouted.append(selector)
+    utility = [str(f.relative_to(SRC)) for f in sorted(SRC.rglob("*.tsx"))
+               if ".test." not in f.name and re.search(r'className="[^"]*\buppercase\b', read(f))]
+    fe12 = not shouted and not utility
+    findings.append(("FE12_sentence_case", fe12,
+                     "every uppercase rule is neutralised and no component uses the uppercase utility"
+                     if fe12 else "still shouted: " + ", ".join(shouted + utility)[:160]))
+
     # The port ledger is part of the frontend story now: it says which of the vanilla checks the React specs
     # carry, and it must parse and be internally consistent.
     try:

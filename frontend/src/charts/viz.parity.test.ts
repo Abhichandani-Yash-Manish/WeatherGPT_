@@ -231,7 +231,10 @@ describe('the served chart engine (the nine checks tests/test_viz.js held)', () 
     expect(rowForDate('2026-09-15')[4]).toBe('1');
     expect(rowForDate('2026-09-17')[4]).toBe('1');
     expect(timeline.allNodes().some((node: StandInNode) => /AHMEDABAD, 6\.9 km away reported here/.test(node.textContent))).toBe(true);
-    expect(timeline.allNodes().some((node: StandInNode) => node.textContent === 'NOT STATED')).toBe(true);
+    /* The rule is that an absent colour is named rather than drawn as one; the casing is not the rule.
+       The engine used to shout the colour word, which put the all-caps tell in JavaScript where a check
+       reading stylesheets could never see it. A colour now prints as the source published it. */
+    expect(timeline.allNodes().some((node: StandInNode) => node.textContent === 'not stated')).toBe(true);
   });
 
   it('discloses a repeated bulletin date instead of presenting five dated days', () => {

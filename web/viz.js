@@ -384,7 +384,7 @@
         const entry = (row.days || [])[index] || {};
         const known = ['red', 'orange', 'yellow', 'green'].indexOf(entry.colour) >= 0;
         const unknown = (entry.unknown_hazard_codes || []).length > 0;
-        const cell = make('button', known ? String(entry.colour).toUpperCase() : 'NOT STATED',
+        const cell = make('button', known ? String(entry.colour) : 'not stated',
           'viz-cell ' + (known ? 'is-' + entry.colour : 'is-unknown') + (unknown ? ' is-unverified' : ''));
         cell.type = 'button';
         /* The cell role belongs to a wrapper, not to the button: a button does not allow role=cell
@@ -399,7 +399,7 @@
           (hazard ? ' · ' + hazard : ' · no hazard wording printed') +
           (unknown ? ' · contains an unknown hazard code' : '');
         cell.setAttribute('aria-label', label);
-        cell.append(make('span', known ? String(entry.colour).toUpperCase() : 'NOT STATED', 'viz-cell-word'));
+        cell.append(make('span', known ? String(entry.colour) : 'not stated', 'viz-cell-word'));
         const show = () => { readoutLine.textContent = label; };
         cell.addEventListener('focus', show);
         cell.addEventListener('mouseenter', show);
@@ -642,7 +642,7 @@
       const column = make('button', undefined, 'viz-daycol ' + (known ? 'is-' + day.colour : 'is-unknown') + (unknown ? ' is-unverified' : ''));
       column.type = 'button';
       column.append(make('span', headline, 'viz-daycol-head'));
-      column.append(make('span', known ? String(day.colour).toUpperCase() : 'NOT STATED', 'viz-daycol-colour'));
+      column.append(make('span', known ? String(day.colour) : 'not stated', 'viz-daycol-colour'));
       column.append(make('span', hazard || 'no hazard wording printed', 'viz-daycol-hazard'));
       const meta = make('span', count + ' model hour(s) returned here', 'viz-daycol-meta');
       column.append(meta);
