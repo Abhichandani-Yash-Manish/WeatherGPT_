@@ -224,3 +224,23 @@ Honest note on cost: this defect has now taken three rounds. The first round I s
 elimination, and only the third on the instrument that produced a decisive observation. The instrument should
 have come first.
 
+
+## Phase fourteen — two hypotheses disproved, and a contrast that matters
+
+Round ten left two candidates: a duplicate stale shell under the pointer, or React's delegated listener not attached for this subtree. Both are disproved by measurement.
+
+- Watch controls in the DOM: **1** (no duplicate).
+- The control is inside the React root: true.
+- Mounted roots: one (`#root`).
+- Element under the pointer at the button centre: `BUTTON.g-tool` — nothing intercepting.
+
+A second probe then measured whether any handler in the app fires, and produced the contrast that matters:
+
+- Clicking **Owner** works — the address moves to `#/signin` — and its native event target is the icon `<svg>` inside it.
+- Clicking **Watch** targets the `<button>` element itself, and the handler never runs.
+
+React is alive and delegating: a click that lands on the icon inside a control bubbles to that control. On Watch the pointer lands on the button element instead and nothing happens. That is a reproducible difference between two controls built the same way.
+
+Next: instrument node identity across `pointerdown` and `click`, and click the icon rather than the button centre.
+
+Cost, again because it is the lesson: three rounds went on fixes and elimination before one probe measured two candidates in a single run.
