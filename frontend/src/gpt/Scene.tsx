@@ -42,13 +42,10 @@ export function Scene({ place, phase }: SceneProps) {
       </svg>
       {/* The focal layer: the place's own building, or a skyline when nothing matches. */}
       <svg className="g-scene-front" viewBox={`0 0 ${LANDMARK_BOX.w} ${LANDMARK_BOX.h}`} preserveAspectRatio="xMidYMax meet">
-        {/* Measured on the capture: the near plane at 0.64 toward ink is right against a dark sky and far too dark
-            against a bright one, so the day hours take the middle plane and the dark hours keep the near one. */}
-        <path
-          d={landmark.d}
-          fillRule={landmark.rule as 'evenodd'}
-          fill={phase === 'night' || phase === 'golden' ? tint.near : tint.mid}
-        />
+        {/* One tint for the landmark, its distance carried by opacity instead of by two different planes. Measured
+            on the captures: a darker fill alone made it a black cut-out at noon, and a lighter fill made it vanish.
+            The near plane with the light hours holding it back reads as a building in the middle distance. */}
+        <path d={landmark.d} fillRule={landmark.rule as 'evenodd'} fill={tint.near} />
       </svg>
     </div>
   );

@@ -975,3 +975,14 @@ html, body { background: var(--g-bg); }
 .g-act svg { width: 15px; height: 15px; }
 /* The toggle sits with the same weight as the controls it toggles. */
 .g-rail-toggle.g-act { border-color: var(--g-line-2); }
+
+/* The landmark, made visible without making it a subject.
+   ----------------------------------------------------------------------------
+   Recorded open twice: the layers were wired but not seen. The band is taller, the landmark stands in the open
+   sky to the right of the panel rather than under it, and its distance is carried by opacity -- held back in the
+   light hours, full weight at night, where the reference wants a silhouette. */
+.g-scene { height: 34vh; bottom: 52px; }
+.g-scene-back { height: 28%; opacity: 0.6; }
+.g-scene-front { height: 88%; right: 3%; opacity: 0.62; }
+.g[data-phase='night'] .g-scene-front { opacity: 1; }
+.g[data-phase='dusk'] .g-scene-front { opacity: 0.85; }
