@@ -7,15 +7,13 @@
    The rail, the column width, the docking composer, the transient hover actions and the streaming stop are
    ChatGPT's shape. The claim, the source line, the published colour and the work panel are ours. */
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { PanelLeft, Bell, KeyRound, ArrowLeft } from 'lucide-react';
+import { PanelLeft, Bell, ArrowDown, ArrowLeft, SlidersHorizontal } from 'lucide-react';
 
-import { getJson } from '../api/client';
 import { istStamp } from '../lib/time';
-import type { AnswerPacket, Languages } from '../api/types';
+import type { AnswerPacket } from '../api/types';
 import { personas as readPersonas } from '../chat/api';
-import { allLanguages, measuredFor } from '../chat/voice';
 import { useConversation } from '../chat/useConversation';
 import { stageLabel } from '../chat/model';
 import { SurfaceHost } from '../shell/SurfaceHost';
@@ -28,7 +26,8 @@ import { useSky } from './sky';
 import { SkyGlyphIcon } from '../shell/icons';
 import { useWorkingPlace } from '../modules/Evidence';
 import { Rail } from './Rail';
-import { HomeRail } from '../shell/HomeRail';
+import { ReadingPanel } from './ReadingPanel';
+import { useShellPrefs } from './shellState';
 import { homeOf } from '../shell/homes';
 import { Welcome } from './Welcome';
 import './gpt.css';
@@ -49,6 +48,8 @@ export type WorkspaceProps = {
   onLanguage: (code: string) => void;
   persona: string;
   onPersona: (id: string) => void;
+  /** Opens the shell's place search — the palette, which is the one place surface the product has. */
+  onFindPlace?: () => void;
   view?: ViewEntry;
   onAsk?: (question: string) => void;
   onNew?: () => void;
@@ -60,13 +61,14 @@ export type WorkspaceProps = {
 };
 
 export function Workspace({
-  onOpen, language, onLanguage, persona, onPersona, view, onAsk, onNew, onPlans, onOwner,
+  onOpen, language, onLanguage, persona, onPersona, view, onAsk, onNew, onPlans, onOwner, onFindPlace,
   seed = null, restoreId = null, unknownRoute = null,
 }: WorkspaceProps) {
   const conversation = useConversation({ outputLanguage: language, persona });
   const client = useQueryClient();
   const [railOpen, setRailOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { prefs, set: setPrefs } = useShellPrefs();
   const sentSeed = useRef<number | null>(null);
   const restored = useRef<string | null>(null);
   const thread = useRef<HTMLDivElement | null>(null);
@@ -120,7 +122,6 @@ export function Workspace({
     void client.invalidateQueries({ queryKey: ['conversations'] });
   }, [conversation.conversationId, conversation.turns.length, client]);
 
-  const languages = useQuery({ queryKey: ['languages'], queryFn: () => getJson<Languages>('/api/languages'), staleTime: 300_000 });
   const catalogue = useQuery({ queryKey: ['personas'], queryFn: () => readPersonas(), staleTime: 300_000 });
   const personaOptions = catalogue.data?.data?.personas || [];
   const sheet = view && view.id !== 'assistant' ? view : null;
@@ -131,6 +132,33 @@ export function Workspace({
      belongs to the conversation. A warnings or history surface carries the four published hazard colours,
      and no ambient tint from a station's weather belongs beside them. */
   const mood = home?.id === 'ask' ? sky.data?.glyph ?? null : null;
+
+  /* The rail's collapse is a keyboard action as well as a control, and ⌥ rather than ⌘ for the reason the
+     rail records: a browser owns ⌘B and will not give it up.
+
+     The key is read from event.code, not event.key, and that is not a style preference: on macOS ⌥B produces
+     "∫" in event.key, so a handler written against the letter works on every machine except the one this
+     product was built on. The code is the physical key and is the same everywhere. */
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (!event.altKey || event.metaKey || event.ctrlKey) return;
+      if (event.code === 'KeyB') {
+        event.preventDefault();
+        setPrefs({ rail: prefs.rail === 'collapsed' ? 'open' : 'collapsed' });
+      }
+      if (event.code === 'KeyN') {
+        event.preventDefault();
+        conversation.clear();
+        onNew?.();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [prefs.rail, setPrefs, conversation, onNew]);
+
+  const toEnd = useCallback(() => {
+    thread.current?.scrollTo({ top: thread.current.scrollHeight, behavior: 'smooth' });
+  }, []);
 
   const followUp = (text: string) => {
     const last = [...conversation.turns].reverse().find(turn => turn.role === 'answer') as { packet: AnswerPacket } | undefined;
@@ -168,6 +196,13 @@ export function Workspace({
 
   const turns = useMemo(() => conversation.turns, [conversation.turns]);
 
+  /* What this thread is called. A conversation has one name — the question it opened with — taken from the
+     turns in front of us rather than re-read from the store, so the bar and the thread can never disagree. */
+  const opening = turns.find(turn => turn.role === 'user') as { text: string } | undefined;
+  const title = sheet ? sheet.label
+    : chatting && opening ? opening.text
+    : 'New conversation';
+
   return (
     <div
       className="g"
@@ -178,8 +213,8 @@ export function Workspace({
     >
       <Field expanded={chatting} sky={mood} />
       <button type="button" className="g-scrim" aria-label="Close the conversation list" onClick={() => setRailOpen(false)} />
-      {/* The home, derived from the surface rather than from a second router. */}
-      <HomeRail current={home?.id ?? 'ask'} onOpen={id => { onOpen(id); setRailOpen(false); }} />
+      {/* One rail for the whole product: the four homes, the place the answers are about, and the reader's
+          own conversations. It replaces a 56px strip and a 264px list standing side by side. */}
       <Rail
         currentId={conversation.conversationId}
         onOpen={id => { void conversation.restore(id); setRailOpen(false); }}
@@ -188,35 +223,28 @@ export function Workspace({
         home={home ?? null}
         currentView={String(view?.id || 'assistant')}
         onOpenView={id => { onOpen(id); setRailOpen(false); }}
+        onAsk={question => { onAsk?.(question); setRailOpen(false); }}
+        collapsed={prefs.rail === 'collapsed'}
+        onToggle={() => setPrefs({ rail: prefs.rail === 'collapsed' ? 'open' : 'collapsed' })}
+        pins={prefs.pins}
+        onPin={(id, pinned) => setPrefs({ pins: pinned ? [id, ...prefs.pins.filter(entry => entry !== id)].slice(0, 20) : prefs.pins.filter(entry => entry !== id) })}
+        onFindPlace={() => onFindPlace?.()}
+        onPlans={() => onPlans?.()}
+        onOwner={() => onOwner?.()}
       />
 
-      <main className="g-main">
+      <main className="g-main" data-panel={prefs.panel ? 'open' : 'closed'}>
         <header className="g-top">
           <div className="g-top-left">
             <button type="button" className="g-act g-rail-toggle" onClick={() => setRailOpen(value => !value)} aria-label="Conversations">
               <PanelLeft size={17} aria-hidden="true" />
             </button>
-            <select className="g-tool" aria-label="Answer language" value={language} onChange={event => onLanguage(event.target.value)}>
-              <option value="">Match my question</option>
-              {allLanguages(languages.data).map(entry => (
-                <option key={entry.code} value={entry.code}>
-                  {entry.english_name}{measuredFor(entry, 'write') !== 'verified' ? ' — writing not measured' : ''}
-                </option>
-              ))}
-            </select>
-            <select className="g-tool" aria-label="Reading as" value={persona} onChange={event => onPersona(event.target.value)}>
-              <option value="">Default reading</option>
-              {personaOptions.map(entry => <option key={entry.id} value={entry.id}>{entry.label}</option>)}
-            </select>
+            {/* What this thread is. A conversation has only ever had one name — the question it opened
+                with — and a reader three turns in has otherwise lost it. */}
+            <h1 className="g-top-title" title={title}>{title}</h1>
           </div>
-          {/* Plain buttons, and the honest reason: the HeroUI Button rendered correctly, but a probe with a real
-              click showed the Watch panel does not open — and rolling HeroUI back did not change that, so the
-              defect is in the shell's own wiring and predates the swap. Correlation was mistaken for cause, the
-              rollback was kept because plain buttons are the safer base, and the defect is recorded rather than
-              papered over with a library change. */}
           {/* The place the answers are about, and what the nearest station last printed there. It is a
-              statement and not a control — the place is changed by asking — and it exists because a reader
-              who has held a place for three turns otherwise has to infer it from the answers. */}
+              statement and not a control; the panel beside this bar is where it is changed. */}
           {sky.data?.place || sky.data?.temperature || sky.data?.condition ? (
             <p
               className="g-skyline"
@@ -234,8 +262,17 @@ export function Workspace({
             <button type="button" className="g-tool" onClick={() => onPlans?.()}>
               <Bell size={15} aria-hidden="true" /> Watch
             </button>
-            <button type="button" className="g-act" onClick={() => onOwner?.()} aria-label="Owner gate">
-              <KeyRound size={15} aria-hidden="true" />
+            {/* The panel holds the three things an answer depends on — place, language, persona — which used
+                to sit in this bar as two native selects. */}
+            <button
+              type="button"
+              className="g-act"
+              aria-pressed={prefs.panel}
+              aria-label={prefs.panel ? 'Close the reading panel' : 'Open the reading panel'}
+              title="How this conversation is read"
+              onClick={() => setPrefs({ panel: !prefs.panel })}
+            >
+              <SlidersHorizontal size={16} aria-hidden="true" />
             </button>
           </div>
         </header>
@@ -326,9 +363,29 @@ export function Workspace({
 
           {chatting ? <div className="g-col">{composer}</div> : null}
         </div>
+        {/* Only once there is something above it: a reader who has scrolled back into a long answer gets one
+            press back to the question they are still asking. */}
+        {chatting && scrolled ? (
+          <button type="button" className="g-to-end" onClick={toEnd} aria-label="Go to the newest turn">
+            <ArrowDown size={16} aria-hidden="true" />
+          </button>
+        ) : null}
         {/* No legend: the ground states the hour by being that hour, and it draws no condition to disclaim.
             What leaves this machine is said once, under the composer, where a reader is about to send. */}
       </main>
+
+      {prefs.panel ? (
+        <ReadingPanel
+          language={language}
+          onLanguage={onLanguage}
+          persona={persona}
+          onPersona={onPersona}
+          personas={personaOptions}
+          onFindPlace={() => onFindPlace?.()}
+          onOpenView={id => onOpen(id)}
+          onClose={() => setPrefs({ panel: false })}
+        />
+      ) : null}
     </div>
   );
 }

@@ -87,8 +87,12 @@ def main():
                      "the card states requested, completed and the incomplete ids" if fe04 else "no task-coverage sentence in the card"))
 
     # FE05: a language control exists and every surface states its own scope. The scope is the evidence footer
-    # each module renders, and the control is the page bar's select.
-    language_control = "Answer language" in workspace and "allLanguages" in workspace
+    # each module renders. The control moved out of the page bar into the reading panel — where the place, the
+    # language and the persona are one block rather than two native selects in a bar — so the check reads the
+    # shell's own files rather than one file by name. A control that moves should not read as a control that
+    # vanished, and one that changes name should: the label and the measured list must both still be there.
+    shell_sources = "\n".join(read(path) for path in sorted((SRC / "gpt").glob("*.tsx")))
+    language_control = "Answer language" in shell_sources and "allLanguages" in shell_sources
     # A surface states its scope through SurfaceShell, which renders the evidence footer: counting the files that
     # call the shell is counting the surfaces that carry their coverage, limits and sources.
     footers = len([path for path in sources("*.tsx") if "SurfaceShell" in read(path) or "EvidenceFooter" in read(path)])

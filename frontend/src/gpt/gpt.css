@@ -54,6 +54,7 @@
   --g-6: 24px; --g-7: 32px; --g-8: 40px; --g-9: 56px;
 
   --g-rail-w: 268px;
+  --g-side-w: 300px;
   --g-col: 748px;
   --g-r-sm: 8px; --g-r: 12px; --g-r-lg: 16px; --g-r-xl: 22px; --g-r-pill: 999px;
 
@@ -373,7 +374,10 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
    the horizon nearly goes. */
 .g-field[data-expanded='true'] .g-field-halo { opacity: 0.52; transition: opacity 900ms var(--g-ease); }
 
-/* ---- the rail ------------------------------------------------------------------------------------ */
+/* ---- the rail ------------------------------------------------------------------------------------
+   One column for the whole product: the four homes, the place, and the reader's conversations. It is the
+   only navigation surface, and it collapses to 60px so a reader who is reading can give the column its width
+   back. The widths are the two the shell moves between, and the transition is the one the layout animates. */
 .g-rail {
   position: sticky; top: 0; z-index: 3;
   width: var(--g-rail-w); flex: 0 0 var(--g-rail-w); height: 100dvh;
@@ -381,9 +385,76 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
   backdrop-filter: blur(24px) saturate(1.3); -webkit-backdrop-filter: blur(24px) saturate(1.3);
   border-right: 1px solid var(--g-line-soft);
   display: flex; flex-direction: column;
+  transition: width var(--g-slow) var(--g-ease), flex-basis var(--g-slow) var(--g-ease);
 }
-.g-rail-head { padding: var(--g-4) var(--g-3) var(--g-2); display: flex; flex-direction: column; gap: var(--g-2); }
-.g-brand { display: flex; align-items: center; gap: var(--g-2); padding: var(--g-1) var(--g-2) var(--g-4); font-size: 14.5px; font-weight: 600; letter-spacing: -0.015em; }
+.g-rail[data-collapsed='true'] { width: 60px; flex-basis: 60px; }
+.g-rail-head {
+  display: flex; align-items: center; gap: var(--g-1);
+  padding: var(--g-3) var(--g-2) var(--g-2) var(--g-3);
+}
+.g-rail[data-collapsed='true'] .g-rail-head { flex-direction: column; padding: var(--g-3) 0 var(--g-2); }
+.g-rail-controls { display: flex; align-items: center; gap: 2px; margin-left: auto; }
+.g-rail[data-collapsed='true'] .g-rail-controls { margin: var(--g-2) 0 0; flex-direction: column; }
+.g-rail[data-collapsed='true'] .g-rail-controls .g-act:not(:nth-child(2)) { display: none; }
+.g-brand { display: flex; align-items: center; gap: var(--g-2); font-size: 14.5px; font-weight: 600; letter-spacing: -0.015em; min-width: 0; }
+.g-rail[data-collapsed='true'] .g-brand-name { display: none; }
+.g-rail-search { padding: 0 var(--g-2) var(--g-2); }
+
+/* The four homes. A grid rather than a stack of rows: they are peers, they never run to a fifth, and a
+   reader who is looking for Warnings should find it in the same place every time. */
+.g-homes {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+  padding: var(--g-1) var(--g-2) var(--g-3);
+}
+.g-rail[data-collapsed='true'] .g-homes { grid-template-columns: 1fr; padding: var(--g-1) 0 var(--g-3); }
+.g-home {
+  display: flex; align-items: center; gap: var(--g-2);
+  padding: 8px var(--g-2); border-radius: var(--g-r-sm);
+  border: 1px solid transparent; background: transparent;
+  color: var(--g-mist); font: inherit; font-size: 12.5px; font-weight: 500;
+  cursor: pointer; text-align: left; min-width: 0;
+  transition: background var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease);
+}
+.g-home svg { flex: 0 0 auto; }
+.g-home:hover { background: var(--g-t2); color: var(--g-paper); }
+.g-home[aria-current='page'] { background: var(--g-accent-wash); color: var(--g-accent); }
+.g-rail[data-collapsed='true'] .g-home { justify-content: center; padding: 8px 0; }
+.g-rail[data-collapsed='true'] .g-home-label { display: none; }
+
+.g-rail-body { flex: 1; min-height: 0; overflow-y: auto; padding: 0 var(--g-2) var(--g-5); scrollbar-width: thin; scrollbar-color: var(--g-line) transparent; }
+.g-rail-body::-webkit-scrollbar { width: 8px; }
+.g-rail-body::-webkit-scrollbar-thumb { background: var(--g-line); border-radius: 4px; border: 2px solid transparent; background-clip: content-box; }
+.g-section + .g-section { margin-top: var(--g-2); }
+.g-rail-label {
+  margin: var(--g-4) 0 var(--g-1); padding: 0 var(--g-2);
+  font-size: 11px; font-weight: 600; letter-spacing: 0.02em; color: var(--g-mist);
+}
+.g-rail[data-collapsed='true'] .g-section { display: none; }
+
+.g-place {
+  display: flex; align-items: center; gap: 6px; margin: 0; padding: 6px var(--g-2);
+  font-size: 13px; color: var(--g-paper); min-width: 0;
+}
+.g-place svg { flex: 0 0 auto; color: var(--g-accent); }
+.g-place-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.g-rail-actions { display: flex; align-items: center; gap: 2px; padding: 0 var(--g-2); flex-wrap: wrap; }
+.g-rail-actions-lead { padding: 0 0 var(--g-1); flex-direction: column; align-items: stretch; }
+.g-rail-action { display: flex; align-items: center; gap: var(--g-2); width: 100%; font-size: 13px; color: var(--g-mist); padding: 7px var(--g-2); border-radius: var(--g-r-sm); }
+.g-rail-action svg { flex: 0 0 auto; }
+.g-rail-action:hover { background: var(--g-t2); color: var(--g-paper); }
+
+/* The shortcut, shown beside the row it belongs to and only where it fires. ⌥ rather than ⌘: a browser owns
+   ⌘1–⌘9 for its tabs. */
+.g-kbd {
+  font-family: var(--g-mono); font-size: 10px; line-height: 1;
+  padding: 3px 5px; border-radius: 5px; color: var(--g-mist);
+  border: 1px solid var(--g-line-soft); background: var(--g-t1);
+}
+.g-new { display: flex; align-items: center; gap: var(--g-2); width: 100%; }
+/* A row's shortcut stays out of the way until the row is under the pointer or has focus: nine keyboard hints
+   stacked down a rail is a manual, not a rail. */
+.g-kbd-row { opacity: 0; transition: opacity var(--g-fast) var(--g-ease); }
+.g-row:hover .g-kbd-row, .g-row:focus-within .g-kbd-row { opacity: 1; }
 .g-brand-mark {
   width: 22px; height: 22px; border-radius: 7px; flex: 0 0 22px; position: relative;
   background: linear-gradient(150deg, var(--g-accent), var(--g-mark-2) 72%);
@@ -395,19 +466,20 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
   background: rgba(255, 255, 255, 0.42); border-radius: 1px;
 }
 
+/* The one action in the rail, so it is the one row with any weight: a hairline, a lifted fill, the accent
+   on its glyph. Everything else in the column is a place rather than an action. */
 .g-new {
-  display: flex; align-items: center; gap: var(--g-2); width: 100%;
-  padding: 10px var(--g-3); border-radius: var(--g-r);
+  padding: 9px var(--g-2); border-radius: var(--g-r-sm);
   border: 1px solid var(--g-line); background: var(--g-fill);
-  color: var(--g-paper); font: inherit; font-size: 14px; font-weight: 500;
-  cursor: pointer; text-align: left;
-  box-shadow: var(--g-e1);
+  color: var(--g-paper); font: inherit; font-size: 13px; font-weight: 500;
+  cursor: pointer; text-align: left; box-shadow: var(--g-e1);
   transition: background var(--g-fast) var(--g-ease), border-color var(--g-fast) var(--g-ease),
-              box-shadow var(--g-fast) var(--g-ease), transform var(--g-fast) var(--g-ease);
+              box-shadow var(--g-fast) var(--g-ease);
 }
 .g-new:hover { border-color: color-mix(in srgb, var(--g-accent) 30%, var(--g-line)); box-shadow: var(--g-e2); }
-.g-new:active { transform: translateY(1px); box-shadow: var(--g-e1); }
-.g-new svg { color: var(--g-accent); }
+.g-new svg { flex: 0 0 auto; color: var(--g-accent); }
+.g-new .g-kbd { margin-left: auto; }
+.g-new-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 .g-search {
   width: 100%; padding: 9px var(--g-3) 9px var(--g-7); border-radius: var(--g-r);
@@ -429,7 +501,7 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
 .g-history::-webkit-scrollbar-thumb { background: var(--g-line); border-radius: 4px; border: 2px solid transparent; background-clip: content-box; }
 .g-history::-webkit-scrollbar-thumb:hover { background: var(--g-mist-2); background-clip: content-box; }
 
-.g-group { padding: var(--g-5) var(--g-2) var(--g-1); font-size: 11.5px; font-weight: 600; color: var(--g-mist-2); letter-spacing: 0.005em; }
+.g-group { padding: var(--g-4) var(--g-2) var(--g-1); font-size: 11px; font-weight: 600; letter-spacing: 0.02em; color: var(--g-mist); }
 
 /* A row carries its selection on the left edge rather than as a fill: a filled row at this size reads as a
    button, and these are places rather than actions. The bar scales from the centre so it grows into place. */
@@ -457,8 +529,16 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
 .g-row:hover .g-row-drop, .g-row-drop:focus-visible { opacity: 1; }
 .g-row-drop:hover { color: var(--g-red); background: color-mix(in srgb, var(--g-red) 14%, transparent); }
 
-.g-rail-foot { border-top: 1px solid var(--g-line-soft); padding: var(--g-3); }
-.g-empty-note { padding: var(--g-3) var(--g-2); font-size: 12.5px; color: var(--g-mist-2); line-height: 1.55; }
+.g-rail-foot {
+  display: flex; align-items: center; gap: var(--g-1);
+  border-top: 1px solid var(--g-line-soft); padding: var(--g-2);
+}
+.g-rail[data-collapsed='true'] .g-rail-foot { flex-direction: column; }
+.g-rail[data-collapsed='true'] .g-rail-foot .g-rail-action { justify-content: center; }
+.g-rail[data-collapsed='true'] .g-rail-foot .g-new-label { display: none; }
+.g-rail[data-collapsed='true'] .g-rail-note { display: none; }
+.g-rail-note { margin: 0; padding: 0 var(--g-3) var(--g-3); font-size: 11px; color: var(--g-mist); line-height: 1.5; }
+.g-empty-note { padding: var(--g-3) var(--g-2); font-size: 12.5px; color: var(--g-mist); line-height: 1.55; }
 
 /* ---- the column ---------------------------------------------------------------------------------- */
 .g-main { position: relative; z-index: 2; flex: 1; min-width: 0; display: flex; flex-direction: column; height: 100dvh; }
@@ -475,6 +555,14 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
 }
 .g[data-scrolled='true'] .g-top::after { opacity: 1; }
 .g-top-left { display: flex; align-items: center; gap: var(--g-1); min-width: 0; }
+/* The thread's own name, in the bar: a conversation has one name — the question it opened with — and a
+   reader three turns in has otherwise lost which thread they are in. It truncates rather than wrapping,
+   because a bar is a bar. */
+.g-top-title {
+  margin: 0 0 0 var(--g-1); font-size: 13.5px; font-weight: 500; color: var(--g-paper);
+  max-width: 42ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+@media (max-width: 640px) { .g-top-title { max-width: 16ch; font-size: 13px; } }
 
 /* .g-panel is the frame the thread and the docked composer share. It had no rule at all before this, which
    left .g-thread without a flex parent to take its height from. */
@@ -1250,6 +1338,7 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
   margin-top: var(--g-3);
   font-family: var(--g-mono); font-size: 10.5px; line-height: 1.5; color: var(--g-mist);
 }
+.w-quote-author { font-weight: 500; }
 .w-quote-work { color: var(--g-mist); }
 /* The turn. It is a control, so it says so on hover and takes a ring on focus — but at rest it is a mark
    beside a citation rather than a button on a poster. */
@@ -1280,56 +1369,78 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
   .w-glyph, .w-greeting, .w-place, .w-reading, .w-source { animation: none; }
 }
 
-/* ---- the home rail ----------------------------------------------------------------------------------
-   Four homes, 56px, left of everything. Deliberately not the conversation rail: that one lists what a
-   reader has said, this one lists where they can be. Collapsing the two is what left nineteen surfaces
-   sharing a column built for prose. */
-.h-rail {
-  position: sticky; top: 0; z-index: 4;
-  width: 56px; flex: 0 0 56px; height: 100dvh;
-  background: var(--g-rail-bg);
-  border-right: 1px solid var(--g-line-soft);
-  backdrop-filter: blur(24px) saturate(1.3); -webkit-backdrop-filter: blur(24px) saturate(1.3);
-  display: flex; flex-direction: column; align-items: center; gap: var(--g-1);
-  padding: var(--g-3) 0;
-}
-.h-rail-item {
-  position: relative;
-  width: 44px; height: 44px; border-radius: var(--g-r);
-  border: 1px solid transparent; background: transparent; color: var(--g-mist-2);
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
-  font: inherit; cursor: pointer;
-  transition: color var(--g-fast) var(--g-ease), background var(--g-fast) var(--g-ease);
-}
-/* The name is carried, not hidden: an icon rail without names is a guessing game, and a title attribute
-   alone reaches neither a screen reader in list mode nor a reader in a hurry. */
-.h-rail-label { font-size: 8.5px; font-weight: 600; letter-spacing: 0.01em; }
-.h-rail-item:hover { color: var(--g-paper); background: var(--g-t3); }
-.h-rail-item[aria-current='page'] { color: var(--g-accent); background: var(--g-accent-wash); }
-/* The marker is on the rail's own edge rather than under the label, so the current home is findable
-   from the corner of the eye without reading anything. */
-.h-rail-item[aria-current='page']::before {
-  content: ''; position: absolute; left: -8px; top: 9px; bottom: 9px; width: 2.5px;
-  border-radius: 0 3px 3px 0; background: var(--g-accent);
-}
-
 /* A row that is a plain button: no chrome of its own, the row around it carries the state. */
 .g-row-plain {
   border: 0; background: transparent; color: inherit; font: inherit;
   text-align: left; cursor: pointer; padding: 0;
 }
 
-@media (max-width: 900px) {
-  /* On a phone the home rail becomes a bar at the foot, where a thumb is. */
-  .h-rail {
-    position: fixed; left: 0; right: 0; bottom: 0; top: auto;
-    width: auto; flex-direction: row; height: auto;
-    justify-content: space-around; gap: 0;
-    padding: var(--g-1) var(--g-2) calc(var(--g-2) + env(safe-area-inset-bottom, 0px));
-    border-right: 0; border-top: 1px solid var(--g-line-soft);
-    z-index: 25;
+/* ---- the reading panel -----------------------------------------------------------------------------
+   The right-hand panel: the three things an answer depends on — the place, the language, the persona — and
+   the station report the place resolves to. It replaces two native selects and a chip in the top bar, which
+   is where the page's machinery used to show through, and it is opened from the bar rather than always on
+   screen, because most of the time a reader is reading rather than configuring. */
+.g-panel-side {
+  position: sticky; top: 0; z-index: 3;
+  width: var(--g-side-w); flex: 0 0 var(--g-side-w); height: 100dvh;
+  background: var(--g-rail-bg);
+  backdrop-filter: blur(24px) saturate(1.3); -webkit-backdrop-filter: blur(24px) saturate(1.3);
+  border-left: 1px solid var(--g-line-soft);
+  display: flex; flex-direction: column;
+  overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--g-line) transparent;
+  animation: g-side-in var(--g-mid) var(--g-ease) both;
+}
+@keyframes g-side-in { from { opacity: 0; transform: translateX(12px) } to { opacity: 1; transform: none } }
+.g-side-head { display: flex; align-items: center; gap: var(--g-2); padding: var(--g-3) var(--g-3) var(--g-2); }
+.g-side-title { margin: 0; font-size: 14px; font-weight: 600; letter-spacing: -0.01em; color: var(--g-paper); }
+.g-side-head .g-act { margin-left: auto; }
+.g-side-block { padding: var(--g-2) var(--g-3) var(--g-4); border-top: 1px solid var(--g-line-soft); display: flex; flex-direction: column; align-items: flex-start; gap: var(--g-2); }
+.g-side-block:first-of-type { border-top: 0; }
+.g-side-label { margin: 0; font-size: 11px; font-weight: 600; letter-spacing: 0.02em; color: var(--g-mist); }
+.g-side-place { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 13.5px; color: var(--g-paper); min-width: 0; }
+.g-side-place svg { flex: 0 0 auto; color: var(--g-accent); }
+.g-side-reading { display: flex; align-items: baseline; gap: var(--g-2); margin: 0; flex-wrap: wrap; }
+.g-side-reading svg { align-self: center; color: var(--g-accent); }
+.g-side-temp { font-family: var(--g-display); font-size: 1.65rem; font-weight: 700; letter-spacing: -0.03em; color: var(--g-paper); font-variant-numeric: tabular-nums; }
+.g-side-unit { font-size: 0.45em; font-weight: 600; margin-left: 3px; color: var(--g-mist); }
+.g-side-cond { font-size: 13.5px; color: var(--g-mist); }
+.g-side-source { margin: 0; font-family: var(--g-mono); font-size: 10.5px; line-height: 1.7; color: var(--g-mist); overflow-wrap: anywhere; }
+.g-side-warn { margin: 0; font-size: 12px; color: var(--g-orange); }
+.g-side-note { margin: 0; font-size: 12px; line-height: 1.6; color: var(--g-mist); }
+.g-side-select {
+  width: 100%; padding: 8px var(--g-2); border-radius: var(--g-r-sm);
+  border: 1px solid var(--g-line); background: var(--g-fill); color: var(--g-paper);
+  font: inherit; font-size: 13px;
+}
+.g-side-select:focus-visible { outline: 2px solid var(--g-accent); outline-offset: 1px; }
+.g-side-links { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
+.g-side-links .g-quiet { text-align: left; padding: 6px var(--g-2); }
+
+/* The press back to the newest turn. It appears only when the thread is scrolled, and it sits above the
+   composer rather than over the text. */
+.g-to-end {
+  position: absolute; left: 50%; transform: translateX(-50%); bottom: 96px; z-index: 6;
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--g-line); background: var(--g-glass);
+  backdrop-filter: blur(18px) saturate(1.2); -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  color: var(--g-mist); cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+  box-shadow: var(--g-e2);
+  transition: color var(--g-fast) var(--g-ease), transform var(--g-fast) var(--g-ease);
+}
+.g-to-end:hover { color: var(--g-paper); transform: translateX(-50%) translateY(-2px); }
+
+@media (max-width: 1180px) {
+  /* A panel that eats a third of a laptop screen is not a panel. Below this it is a sheet over the column. */
+  .g-panel-side {
+    position: fixed; right: 0; top: 0; bottom: 0; height: 100dvh;
+    width: min(340px, 92vw); flex-basis: auto; z-index: 28;
+    box-shadow: -24px 0 60px -30px rgba(0, 0, 0, 0.5);
   }
-  .h-rail-item[aria-current='page']::before { left: 50%; right: auto; top: -5px; bottom: auto; width: 20px; height: 2.5px; transform: translateX(-50%); border-radius: 0 0 3px 3px; }
-  .g-main { padding-bottom: 62px; }
-  .g-dock { bottom: 62px; }
+}
+
+@media (max-width: 900px) {
+  /* The rail is a drawer on a phone, at its full width: a reader taps once to change where they are, and
+     the page itself keeps the whole screen. The four homes are the top of the drawer. */
+  .g-rail { width: var(--g-rail-w); flex-basis: var(--g-rail-w); }
+  .g-to-end { bottom: 88px; }
 }
