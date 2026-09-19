@@ -72,6 +72,8 @@ export function Workspace({
   const [railOpen, setRailOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { prefs, set: setPrefs } = useShellPrefs();
+  /* The turn a search sent the reader to. Null unless a row was opened from a search with a match under it. */
+  const [spotlight, setSpotlight] = useState<string | null>(null);
   const sentSeed = useRef<number | null>(null);
   const restored = useRef<string | null>(null);
   const thread = useRef<HTMLDivElement | null>(null);
@@ -112,12 +114,24 @@ export function Workspace({
 
   const chatting = conversation.turns.length > 0 || Boolean(conversation.working);
 
-  /* The thread follows the newest turn, the way a chat should. */
+  /* The thread follows the newest turn, the way a chat should — unless a reader arrived from a search, in
+     which case it follows the turn they were looking for and holds it for a moment. Landing at the foot of a
+     long conversation when the search said the match is in the middle is a worse answer than the search. */
   useEffect(() => {
     const node = thread.current;
     if (!node || !chatting) return;
+    if (spotlight) {
+      const target = Array.from(node.querySelectorAll('.g-turn')).find(turn => turn.textContent?.includes(spotlight));
+      if (target) {
+        /* jsdom has no layout and therefore no scrollIntoView; the mark is what the check can see. */
+        if (typeof target.scrollIntoView === 'function') target.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        target.classList.add('g-found');
+        const timer = window.setTimeout(() => target.classList.remove('g-found'), 2600);
+        return () => window.clearTimeout(timer);
+      }
+    }
     node.scrollTo({ top: node.scrollHeight, behavior: 'smooth' });
-  }, [conversation.turns.length, conversation.working?.key, chatting]);
+  }, [conversation.turns.length, conversation.working?.key, chatting, spotlight]);
 
   /* A finished turn is a new stored conversation: the rail has to hear about it. */
   useEffect(() => {
@@ -286,8 +300,12 @@ export function Workspace({
           own conversations. It replaces a 56px strip and a 264px list standing side by side. */}
       <Rail
         currentId={conversation.conversationId}
-        onOpen={id => { void conversation.restore(id); setRailOpen(false); }}
-        onNew={() => { conversation.clear(); onNew?.(); setRailOpen(false); }}
+        onOpen={(id, match) => {
+          setSpotlight(match || null);
+          void conversation.restore(id);
+          setRailOpen(false);
+        }}
+        onNew={() => { conversation.clear(); setSpotlight(null); onNew?.(); setRailOpen(false); }}
         onClose={() => setRailOpen(false)}
         home={home ?? null}
         currentView={String(view?.id || 'assistant')}

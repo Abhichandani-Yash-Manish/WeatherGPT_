@@ -90,17 +90,29 @@ display name and nothing else: what travels to the engine is still the label the
 label stays in the row's title, and the alias is never presented as a place a source named. Stored in this
 browser beside the pins and the rail's arrangement, so one key clears all of it.
 
+**Rows merge when a reader gives two labels one name.** The places list is grouped by the name the reader
+sees, not by the raw label: calling \`Nadiād, Kheda, State of Gujarāt\` and \`Nadiad, Gujarat\` both *Nadiad* gives
+one row holding both labels, with the count summed and every label kept in the row's title. That is the merge
+problem from §9 below, solved by the same control that renames — and it is safe because the label that reaches
+the engine is still a real one: the place held is the first label of the group, never the reader's word for it.
+
 **The whole conversation in one file.** The per-turn actions live under each answer, which is right for one
 answer and wrong for an exchange. The bar now carries a save action while a conversation is running: one
 markdown file, every question and every answer, each answer keeping its own markdown — the values, the windows,
 the source ids and the status line — in the order it was asked.
+
+**A search lands on the turn that matched.** Opening a conversation from a search used to put the reader at the
+foot of the thread, which is right for a chat and wrong when the search has just said the match is in the
+middle. The rail passes the matched turn with the conversation, the thread scrolls to it instead of to the end,
+and the turn is held in the accent wash for a moment and released. It is a state of the page rather than of the
+answer, so it never takes a colour any source published.
 
 ## 7. Evidence
 
 | Check | Result |
 | --- | --- |
 | `npx tsc --noEmit` | clean |
-| `npx vitest run` | **62 files, 349 checks** |
+| `npx vitest run` | **62 files, 351 checks** |
 | `python3 -m pytest tests/ -q` | **1373 Python tests** (six are this batch's ledger checks) |
 | `scripts/audit_react_frontend.py` | **18 checks, 0 failed** |
 | `scripts/audit_port_ledger.py` | **2 checks, 0 failed** |
@@ -134,9 +146,10 @@ line and a comment, and it is the kind of thing only a screenshot finds.
 2. **A place's own page.** The rail can now group by place and filter by it, and there is nowhere to *go* for
    a place: its conversations, its station, its published warnings and its forecast are four reads that live
    on four surfaces.
-3. **Renaming and merging places.** The geocoder returns `Surat, Sūrat, State of Gujarāt` and the reader may
-   think of it as Surat; a conversation that resolved `Nadīād, Kheda` and one that resolved `Nadiad` are one
-   place to a person and two rows to the rail.
+3. **Merging places the reader never names.** Two labels of the same place merge as soon as a reader gives
+   them one name — but two labels that are *already* the same place to every reader still sit as two rows until
+   somebody decides to rename one. A catalogue-level identity, or a suggestion from the coordinates, would fix
+   that without the reader doing the work.
 4. **A watch from an answer** — "keep me posted about this" on a turn that named a place and a window.
 5. **The whole conversation as one export**, rather than one turn at a time.
 6. **Search that says how many turns matched**, and jumps to the match inside the transcript rather than

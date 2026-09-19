@@ -217,6 +217,64 @@ describe('the shell', () => {
     click.mockRestore();
   });
 
+  it('merges two labels the reader named the same thing', async () => {
+    server.use(http.get('/api/conversations', () => HttpResponse.json({
+      schema_version: 'conversation-ledger-v1', total: 2, limit: 40,
+      conversations: [
+        { id: 'm1', updated: new Date().toISOString(), turns: 2, asked: 1, opening_question: 'Rain in Nadiad?',
+          place: { label: 'Nadiād, Kheda, State of Gujarāt', latitude: 22.69, longitude: 72.86 } },
+        { id: 'm2', updated: new Date().toISOString(), turns: 2, asked: 1, opening_question: 'Rain in Nadiad again?',
+          place: { label: 'Nadiad, Gujarat', latitude: 22.69, longitude: 72.86 } },
+      ],
+    })));
+    /* The reader's own name for both labels: one row, both labels kept under it. */
+    window.localStorage.setItem('weathergpt.shell', JSON.stringify({
+      rail: 'open', panel: false, pins: [],
+      aliases: { 'Nadiād, Kheda, State of Gujarāt': 'Nadiad', 'Nadiad, Gujarat': 'Nadiad' },
+    }));
+    mount();
+    const places = await screen.findByRole('region', { name: 'Places this machine knows' });
+    const rows = within(places).getAllByRole('button', { name: /Nadiad/ });
+    expect(rows).toHaveLength(1);
+    /* The row carries both catalogue labels, so a merged row can still say which places it holds. */
+    expect(rows[0]).toHaveAttribute('title', expect.stringContaining('Nadiād, Kheda'));
+    expect(rows[0]).toHaveAttribute('title', expect.stringContaining('Nadiad, Gujarat'));
+    /* And the count is the two conversations, not one. */
+    expect(within(places).getByText('2')).toBeInTheDocument();
+  });
+
+  it('lands on the turn a search sent the reader to, and marks it', async () => {
+    server.use(
+      http.get('/api/conversations', () => HttpResponse.json({
+        schema_version: 'conversation-ledger-v1', total: 1, limit: 40,
+        conversations: [{
+          id: 's1', updated: new Date().toISOString(), turns: 4, asked: 2,
+          opening_question: 'Any warning for Patna?',
+          match: { role: 'user', text: 'what about the coastal districts' },
+        }],
+      })),
+      /* The transcript route's own flat shape, not an envelope: the hook reads \`stored.turns\` off it. */
+      http.get('/api/conversations/s1', () => HttpResponse.json({
+        schema_version: 'conversation-transcript-v1', id: 's1', updated: new Date().toISOString(),
+        turns: [
+          { role: 'user', content: 'Any warning for Patna?' },
+          { role: 'assistant', content: 'Patna has nothing flagged today.' },
+          { role: 'user', content: 'what about the coastal districts' },
+          { role: 'assistant', content: 'Kochi and Surat are the two to watch.' },
+        ],
+        note: null,
+      })),
+    );
+    mount();
+    await userEvent.click(screen.getByLabelText('Search conversations'));
+    await userEvent.type(screen.getByLabelText('Filter conversations'), 'coastal');
+    const row = await screen.findByText('Any warning for Patna?');
+    await userEvent.click(row);
+    /* The turn that matched is marked, so a reader who arrived from a search can see why they are here. */
+    await waitFor(() => expect(document.querySelector('.g-turn.g-found')).not.toBeNull());
+    expect(document.querySelector('.g-turn.g-found')?.textContent).toContain('coastal districts');
+  });
+
   it('opens the n-th conversation with ⌥-digit', async () => {
     const asked: string[] = [];
     server.use(http.get('/api/conversations/:id', ({ params }) => {

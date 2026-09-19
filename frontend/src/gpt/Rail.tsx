@@ -62,7 +62,8 @@ const PLACES_SHOWN = 5;
 
 export type RailProps = {
   currentId: string | null;
-  onOpen: (id: string) => void;
+  /** Open a conversation. \`match\` is the turn text a search sent the reader to, when there was one. */
+  onOpen: (id: string, match?: string) => void;
   onNew: () => void;
   onOpenView: (viewId: string) => void;
   onAsk: (question: string) => void;
@@ -81,7 +82,17 @@ export type RailProps = {
   onClose?: () => void;
 };
 
-type Known = { label: string; latitude: number; longitude: number; pinned: boolean; count: number };
+/* One row per name the reader sees: the labels the catalogue returned underneath it, the coordinates of the
+   first of them, and how many conversations resolved any of them. */
+type Known = {
+  name: string;
+  labels: string[];
+  label: string;
+  latitude: number;
+  longitude: number;
+  pinned: boolean;
+  count: number;
+};
 
 export function Rail({
   currentId, onOpen, onNew, onOpenView, onAsk, currentView, home,
@@ -90,6 +101,7 @@ export function Rail({
   /* What a reader calls a place. The catalogue's label travels with it in the title, so the reader's own word
      is never mistaken for a name a source published. */
   const nameOf = (label: string) => aliases[label] || label;
+  const labelsOf = (known: Known) => known.labels.join(' · ');
   const [filter, setFilter] = useState('');
   const [term, setTerm] = useState('');
   const [searching, setSearching] = useState(false);
@@ -113,32 +125,44 @@ export function Rail({
 
   /* The places this machine knows, in one list: what the reader pinned, and what the conversations
      themselves resolved. A pin with no conversation still appears, and a resolved place with no pin still
-     appears — they are two different facts about a place and neither implies the other. */
+     appears — they are two different facts about a place and neither implies the other.
+
+     Rows are grouped by **display name**, so a reader who calls \`Nadiād, Kheda, State of Gujarāt\` and
+     \`Nadiad\` the same thing gets one row with both labels under it. The name is the reader's; the labels
+     are the catalogue's, and the row keeps every one of them so nothing is answered about a place it did not
+     come from. */
   const places = useMemo(() => {
     const known = new Map<string, Known>();
-    pinnedPlaces.forEach(pin => {
-      if (!pin.label) return;
-      known.set(pin.label, { label: pin.label, latitude: pin.latitude, longitude: pin.longitude, pinned: true, count: 0 });
-    });
+    const upsert = (label: string, latitude: number, longitude: number, pinned: boolean) => {
+      const name = aliases[label] || label;
+      const existing = known.get(name);
+      known.set(name, {
+        name,
+        labels: existing?.labels.includes(label) ? existing.labels : [...(existing?.labels || []), label],
+        label: existing?.label || label,
+        latitude: existing?.latitude || latitude,
+        longitude: existing?.longitude || longitude,
+        pinned: pinned || Boolean(existing?.pinned),
+        count: existing?.count ?? 0,
+      });
+    };
+    pinnedPlaces.forEach(pin => { if (pin.label) upsert(pin.label, pin.latitude, pin.longitude, true); });
     found.forEach(row => {
       const label = row.place?.label;
       if (!label) return;
-      const existing = known.get(label);
-      known.set(label, {
-        label,
-        latitude: row.place?.latitude ?? existing?.latitude ?? 0,
-        longitude: row.place?.longitude ?? existing?.longitude ?? 0,
-        pinned: existing?.pinned ?? false,
-        count: (existing?.count ?? 0) + 1,
-      });
+      upsert(label, row.place?.latitude ?? 0, row.place?.longitude ?? 0, false);
+      const name = aliases[label] || label;
+      const entry = known.get(name);
+      if (entry) entry.count += 1;
     });
     return Array.from(known.values())
-      .sort((a, b) => Number(b.pinned) - Number(a.pinned) || b.count - a.count || a.label.localeCompare(b.label))
+      .sort((a, b) => Number(b.pinned) - Number(a.pinned) || b.count - a.count || a.name.localeCompare(b.name))
       .slice(0, PLACES_SHOWN);
-  }, [pinnedPlaces, found]);
+  }, [pinnedPlaces, found, aliases]);
 
+  /* A filter is by display name too, so choosing a merged row shows the conversations of every label in it. */
   const shown = placeFilter
-    ? found.filter(row => row.place?.label === placeFilter)
+    ? found.filter(row => row.place?.label && (aliases[row.place.label] || row.place.label) === placeFilter)
     : found;
 
   const grouped = useMemo(() => {
@@ -172,6 +196,8 @@ export function Rail({
     }
   };
 
+  /* The place that is held is a real label the catalogue returned, never the reader's name for it: the name
+     is a display preference, and what answers are read with has to be the place itself. */
   const hold = (known: Known) => rememberPlace({ label: known.label, latitude: known.latitude, longitude: known.longitude } as PlaceChoice);
 
   /* ⌥1–⌥9 opens the n-th row the rail is showing, in the order it is showing them. Read from event.code for
@@ -363,12 +389,12 @@ export function Rail({
                 <button
                   type="button"
                   className="g-row-text g-row-plain"
-                  title={nameOf(known.label) + ' — ' + known.label + '. ' +
+                  title={known.name + ' — ' + labelsOf(known) + '. ' +
                     (known.pinned ? 'Pinned. ' : '') +
                     (known.count ? known.count + ' conversation' + (known.count === 1 ? '' : 's') + ' resolved this place' : 'Pinned in this browser')}
-                  onClick={() => { hold(known); setPlaceFilter(current => (current === known.label ? null : known.label)); }}
+                  onClick={() => { hold(known); setPlaceFilter(current => (current === known.name ? null : known.name)); }}
                 >
-                  {nameOf(known.label)}
+                  {known.name}
                   {known.pinned ? <Pin size={11} aria-hidden="true" className="g-place-pinned" /> : null}
                 </button>
                 {known.count ? <span className="g-place-count">{known.count}</span> : null}
@@ -379,8 +405,8 @@ export function Rail({
                   title="Call this place something else, for this browser only"
                   onClick={() => {
                     const answer = window.prompt(
-                      'A name for this place in this browser. The label the catalogue returned stays on the row and is what answers are read with.',
-                      nameOf(known.label),
+                      'A name for this place in this browser. The label the catalogue returned stays on the row and is what answers are read with. Two labels given the same name become one row.',
+                      known.name,
                     );
                     if (answer !== null) onAlias(known.label, answer.trim());
                   }}
@@ -431,7 +457,12 @@ export function Rail({
                 const pinned = pins.includes(row.id);
                 return (
                   <div key={row.id} className="g-row g-row-conversation" aria-current={row.id === currentId ? 'true' : undefined}>
-                    <button type="button" className="g-row-text g-row-plain" onClick={() => onOpen(row.id)} title={row.opening_question || 'Untitled conversation'}>
+                    <button
+                      type="button"
+                      className="g-row-text g-row-plain"
+                      onClick={() => onOpen(row.id, row.match?.text)}
+                      title={row.opening_question || 'Untitled conversation'}
+                    >
                       {row.opening_question || 'Untitled conversation'}
                       {row.place?.label ? <span className="g-row-place">{nameOf(row.place.label)}</span> : null}
                       {row.match ? (

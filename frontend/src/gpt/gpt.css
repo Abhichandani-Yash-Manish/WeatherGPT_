@@ -789,6 +789,16 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
 }
 .g-heard-text { margin: 0; font-size: 15px; line-height: 1.5; color: var(--g-paper); }
 
+/* The turn a search sent the reader to: held for a moment, then released. It is a state of the page rather
+   than of the answer, so it is a wash and never a colour any source published. */
+.g-turn.g-found { animation: g-found 2.6s var(--g-ease) both; }
+@keyframes g-found {
+  0% { background: var(--g-accent-wash); box-shadow: 0 0 0 2px color-mix(in srgb, var(--g-accent) 28%, transparent); }
+  70% { background: var(--g-accent-wash); box-shadow: 0 0 0 2px color-mix(in srgb, var(--g-accent) 18%, transparent); }
+  100% { background: transparent; box-shadow: 0 0 0 2px transparent; }
+}
+@media (prefers-reduced-motion: reduce) { .g-turn.g-found { animation: none; background: var(--g-accent-wash); } }
+
 /* ---- turns ----------------------------------------------------------------------------------------
    A turn does not get a card. The column is the container, and a hairline between turns is enough
    separation — boxing every message is the SaaS-kit tell and it costs the column its rhythm. */
