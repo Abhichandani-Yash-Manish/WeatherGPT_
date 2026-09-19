@@ -151,7 +151,25 @@ describe('the shell', () => {
     fireEvent.keyDown(window, { altKey: true, code: 'Digit2', key: '™' });
     await waitFor(() => expect(asked).toContain('c2'));
   });
-  it('deletes a stored conversation through the local route only', async () => {
+  it('keeps the delete failure visible rather than emptying the list on a promise', async () => {
+    server.use(
+      http.get('/api/conversations', () => HttpResponse.json({
+        schema_version: 'conversation-ledger-v1', total: 1, limit: 40, note: 'stored locally',
+        conversations: [{ id: '11111111-1111-4111-8111-111111111111', opening_question: 'hello', turns: 2, asked: 1 }],
+      })),
+      http.delete('/api/conversations/:id', () => HttpResponse.json({ error: 'The local evidence store is unavailable.' }, { status: 503 })),
+    );
+    const confirm = vi.spyOn(window, 'confirm').mockReturnValue(true);
+    mount();
+    await userEvent.click(await screen.findByLabelText('Delete hello'));
+    expect(await screen.findByText(/was not deleted: The local evidence store is unavailable/)).toBeInTheDocument();
+    /* The row stays: a row that disappears while the store still holds it is a worse lie than a row that
+       stays with a sentence under it. */
+    expect(screen.getByText('hello')).toBeInTheDocument();
+    confirm.mockRestore();
+  });
+
+  it('deletes a stored conversation through the local route only, and says when the delete failed', async () => {
     const asked: string[] = [];
     /* A real deletion of local evidence, asked for by name and confirmed first: the store is written to by
        exactly one route, and a failed delete is said rather than swallowed. */

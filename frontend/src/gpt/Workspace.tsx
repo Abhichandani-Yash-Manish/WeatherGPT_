@@ -294,8 +294,13 @@ export function Workspace({
               <PanelLeft size={17} aria-hidden="true" />
             </button>
             {/* What this thread is. A conversation has only ever had one name — the question it opened
-                with — and a reader three turns in has otherwise lost it. */}
-            <h1 className="g-top-title" title={title}>{title}</h1>
+                with — and a reader three turns in has otherwise lost it.
+
+                It is the page's h1 only once a conversation exists: on the welcome the greeting is the
+                heading, and two h1s on one page is a structure a screen reader has to guess at. */}
+            {chatting
+              ? <h1 className="g-top-title" title={title}>{title}</h1>
+              : <p className="g-top-title" title={title}>{title}</p>}
           </div>
           {/* The place the answers are about, and what the nearest station last printed there. It is a
               statement and not a control; the panel beside this bar is where it is changed. */}

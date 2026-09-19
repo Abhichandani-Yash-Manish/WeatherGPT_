@@ -24,15 +24,14 @@
       "offers only the languages whose writing this project measured, sorted by name",
       "does not treat a written language as speakable unless speech was verified"
      ],
-     "note": "Re-pointed 19 September 2026 (docs/109): the chrome this check exercised — the register, the rail, the topbar, the route transitions — was removed by design, and the claim now names the test that holds the same product truth on the one-shape card and the single page."
+     "note": "Re-pointed 19 September 2026 (docs/109): the chrome this check exercised \u2014 the register, the rail, the topbar, the route transitions \u2014 was removed by design, and the claim now names the test that holds the same product truth on the one-shape card and the single page."
     },
     {
      "spec": "src/chat/parity.test.tsx",
      "tests": [
       "names the source, the retrieval time and the method in one chain",
       "offers every candidate the engine sent for a clarification",
-      "reads the resolved point out of the packet, and reports it absent when there is none",
-      "deletes a stored conversation through the local route only, and says when the delete failed"
+      "reads the resolved point out of the packet, and reports it absent when there is none"
      ]
     },
     {
@@ -55,8 +54,7 @@
       "asks for a reload when the workspace token is no longer held",
       "names the local evidence store when that store is unavailable",
       "returns a refused question to the box and sends it again when the reader asks",
-      "starts a new conversation without sending a question and forgets the identifier",
-      "lists the stored conversations and filters them by their first question"
+      "starts a new conversation without sending a question and forgets the identifier"
      ]
     },
     {
@@ -66,6 +64,13 @@
       "names the state a failed read left the reader in, not only the server sentence",
       "names an unavailable store as its own state",
       "never renders a stylesheet class name as visible text"
+     ]
+    },
+    {
+     "spec": "src/gpt/shell.test.tsx",
+     "tests": [
+      "deletes a stored conversation through the local route only, and says when the delete failed",
+      "lists the stored conversations and filters them by their first question"
      ]
     }
    ],
@@ -93,7 +98,7 @@
       "offers only the languages whose writing this project measured, sorted by name",
       "does not treat a written language as speakable unless speech was verified"
      ],
-     "note": "Re-pointed 19 September 2026 (docs/109): the chrome this check exercised — the register, the rail, the topbar, the route transitions — was removed by design, and the claim now names the test that holds the same product truth on the one-shape card and the single page."
+     "note": "Re-pointed 19 September 2026 (docs/109): the chrome this check exercised \u2014 the register, the rail, the topbar, the route transitions \u2014 was removed by design, and the claim now names the test that holds the same product truth on the one-shape card and the single page."
     },
     {
      "spec": "src/App.test.tsx",
@@ -108,15 +113,14 @@
       "opens the command palette from the keyboard and names every surface",
       "sends the interface to the owner gate on request, and the gate explains itself first"
      ],
-     "note": "Re-pointed 19 September 2026 (docs/109): the chrome this check exercised — the register, the rail, the topbar, the route transitions — was removed by design, and the claim now names the test that holds the same product truth on the one-shape card and the single page."
+     "note": "Re-pointed 19 September 2026 (docs/109): the chrome this check exercised \u2014 the register, the rail, the topbar, the route transitions \u2014 was removed by design, and the claim now names the test that holds the same product truth on the one-shape card and the single page."
     },
     {
      "spec": "src/chat/parity.test.tsx",
      "tests": [
       "names the source, the retrieval time and the method in one chain",
       "offers every candidate the engine sent for a clarification",
-      "reads the resolved point out of the packet, and reports it absent when there is none",
-      "deletes a stored conversation through the local route only, and says when the delete failed"
+      "reads the resolved point out of the packet, and reports it absent when there is none"
      ]
     },
     {
@@ -140,7 +144,7 @@
       "offers every place candidate the engine sent for a shared name",
       "sends the selection id of the candidate the reader chose back to the engine"
      ],
-     "note": "Re-pointed 19 September 2026 (docs/109): the chrome this check exercised — the register, the rail, the topbar, the route transitions — was removed by design, and the claim now names the test that holds the same product truth on the one-shape card and the single page."
+     "note": "Re-pointed 19 September 2026 (docs/109): the chrome this check exercised \u2014 the register, the rail, the topbar, the route transitions \u2014 was removed by design, and the claim now names the test that holds the same product truth on the one-shape card and the single page."
     },
     {
      "spec": "src/chat/card.gaps.test.tsx",
@@ -156,6 +160,12 @@
      "spec": "src/chat/page.test.tsx",
      "tests": [
       "never renders a stylesheet class name as visible text"
+     ]
+    },
+    {
+     "spec": "src/gpt/shell.test.tsx",
+     "tests": [
+      "deletes a stored conversation through the local route only, and says when the delete failed"
      ]
     }
    ],
@@ -241,8 +251,8 @@
       "states each station row with its own distance, instant, age and source, and reads a stale row as stale",
       "reads the wider network on its own and shows its own coverage",
       "renders the index counts, states an unprinted issue date and a pruned body honestly",
-      "renders the document route 410 as that edition’s stated state, not as a crash",
-      "renders the capability and source counts, each provider’s own availability, and the local state",
+      "renders the document route 410 as that edition\u2019s stated state, not as a crash",
+      "renders the capability and source counts, each provider\u2019s own availability, and the local state",
       "states a failed store read as a failure with a retry, and leaves the rest of the surface standing"
      ]
     },
@@ -262,7 +272,7 @@
      "tests": [
       "renders the directory rows it was given, reads the selected state, and filters only the rows already read",
       "asks for a district and does not read a brief from a coordinate when none is named",
-      "renders the brief’s own sections, its forecast context and every line it does not establish",
+      "renders the brief\u2019s own sections, its forecast context and every line it does not establish",
       "states a failed directory read as that failure, with a retry control",
       "renders the modelled parameters with their units, the cell and its distance, and says it is a model",
       "records a cell distance the payload does not state as absent, never as a number computed here",
@@ -284,14 +294,14 @@
       "lists every surface as a command, filters by what is typed, and runs the chosen item",
       "is carried on every request the surfaces made"
      ],
-     "note": "Re-pointed 19 September 2026 (docs/109): the chrome this check exercised — the register, the rail, the topbar, the route transitions — was removed by design, and the claim now names the test that holds the same product truth on the one-shape card and the single page."
+     "note": "Re-pointed 19 September 2026 (docs/109): the chrome this check exercised \u2014 the register, the rail, the topbar, the route transitions \u2014 was removed by design, and the claim now names the test that holds the same product truth on the one-shape card and the single page."
     },
     {
      "spec": "src/shell/keyboard.test.tsx",
      "tests": [
       "opens the command palette with the keyboard and puts the cursor in its search field"
      ],
-     "note": "Re-pointed 19 September 2026 (docs/109): the chrome this check exercised — the register, the rail, the topbar, the route transitions — was removed by design, and the claim now names the test that holds the same product truth on the one-shape card and the single page.",
+     "note": "Re-pointed 19 September 2026 (docs/109): the chrome this check exercised \u2014 the register, the rail, the topbar, the route transitions \u2014 was removed by design, and the claim now names the test that holds the same product truth on the one-shape card and the single page.",
      "was": {
       "spec": "src/modules/surface.parity.test.tsx"
      }
@@ -320,7 +330,7 @@
       "renders the surface the address names, with the conversation still beside it",
       "names the surface in the tab, the history entry and a bookmark"
      ],
-     "note": "Re-pointed 19 September 2026 (docs/109): the chrome this check exercised — the register, the rail, the topbar, the route transitions — was removed by design, and the claim now names the test that holds the same product truth on the one-shape card and the single page.",
+     "note": "Re-pointed 19 September 2026 (docs/109): the chrome this check exercised \u2014 the register, the rail, the topbar, the route transitions \u2014 was removed by design, and the claim now names the test that holds the same product truth on the one-shape card and the single page.",
      "was": {
       "spec": "src/shell/transitions.test.tsx",
       "tests": [
@@ -414,13 +424,13 @@
     {
      "spec": "src/plans/planwatch.gaps.test.tsx",
      "tests": [
-      "answers a sent delivery row through its own ack route with the reader’s chosen answer, and prints the server’s reply",
+      "answers a sent delivery row through its own ack route with the reader\u2019s chosen answer, and prints the server\u2019s reply",
       "offers the acknowledgement only on a sent row, with every answer the store accepts",
-      "binds this browser’s subscription to one watch through the subscribe route, and says the binding delivers nothing by itself",
+      "binds this browser\u2019s subscription to one watch through the subscribe route, and says the binding delivers nothing by itself",
       "offers no binding control in a browser that cannot take a push subscription, and says so",
-      "renders the per-place delivery aggregate with the payload’s own labels and counts, and says it is not a delivery claim",
+      "renders the per-place delivery aggregate with the payload\u2019s own labels and counts, and says it is not a delivery claim",
       "registers one watch from explicit coordinates, sending them as given, and says no coordinate is turned into a district here",
-      "prints the create route’s own refusal, with a retry that sends the same request again"
+      "prints the create route\u2019s own refusal, with a retry that sends the same request again"
      ]
     },
     {
@@ -616,5 +626,5 @@
   }
  ],
  "revised_at": "2026-09-19",
- "revision": "The nine test_viz.js checks were left with the served web/viz.js bytes when R6 ran, and are now also carried by src/charts/viz.parity.test.ts, which reads web/viz.js from disk and evaluates it in the stand-in DOM the vanilla suite used. The ledger is 110 of 110 named against a React spec. Two assertions the vanilla file left in its timeline section (the SVG namespace of every lane label, and every lane being labelled) run beside the now band checks in the parity spec; the claims are unchanged. + docs/109 re-pointing 2026-09-19"
+ "revision": "The nine test_viz.js checks were left with the served web/viz.js bytes when R6 ran, and are now also carried by src/charts/viz.parity.test.ts, which reads web/viz.js from disk and evaluates it in the stand-in DOM the vanilla suite used. The ledger is 110 of 110 named against a React spec. Two assertions the vanilla file left in its timeline section (the SVG namespace of every lane label, and every lane being labelled) run beside the now band checks in the parity spec; the claims are unchanged. + docs/109 re-pointing 2026-09-19 Revised again 19 September 2026 (docs/113): the shell became one rail with a reading panel and the legacy chat surface was deleted, so the three checks that drive that rail \u2014 the two delete checks and the conversation filter \u2014 moved from src/chat/parity.test.tsx and src/chat/turn.parity.test.tsx to src/gpt/shell.test.tsx. The titles are unchanged, so the ledger still names what each vanilla check became."
 }

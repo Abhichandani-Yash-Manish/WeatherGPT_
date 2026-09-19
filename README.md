@@ -5,7 +5,7 @@ your own words — the model decides whether to retrieve and which tools to use,
 **entity, window, unit and source attached to every value**. A greeting is answered as a conversation, with
 no source read and no fact invented.
 
-![The React workspace opens on Ask: the module rail, the question box and the reading register](docs/images/02-ask-welcome.png)
+![The Ask surface after the shell batch: one rail with the four homes, the place and the conversations; the greeting, the station's reading and a line for the hour; the question box under them](docs/images/shell/01-ask-welcome.png)
 
 **Operational acceptance is not achieved.** This is a working prototype whose limits are part of the
 interface: it says what it did not read, which state is unknown, and when a value is model output,
@@ -17,8 +17,8 @@ closure queue are in [docs/93](docs/93-ps-closure-queue.md).
 
 |  |  |
 | --- | --- |
-| ![The React front door: WeatherGPT, the shape of an answer, and the workspace buttons](docs/images/01-ask-landing.png) | ![The React Ask surface: the module rail, the question box, the reading register and an empty stored-conversation list](docs/images/02-ask-welcome.png) |
-| **The front door is a React surface.** It states what an answer is made of, and opens the workspace or the assistant directly. | **Ask is the front door.** The conversation is the landing surface; every guided tool stays in the rail, and the capture's throwaway store holds no reader conversation. |
+| ![Ask: one rail with the four homes, the place the answers are about and the stored conversations, beside the greeting, the station's reading and a line for the hour](docs/images/shell/01-ask-welcome.png) | ![The reading panel open beside the conversation: the place, the nearest station's own report, the answer language and the reading persona](docs/images/shell/02-reading-panel.png) |
+| **Ask is the front door, and the rail is the navigation.** Four homes, the place the answers are about, the reader's conversations with their own pins above the recency groups, and a line of verse under the reading — each line checked against the edition it came from. | **The reading panel** holds the three things every answer depends on — place, language, persona — and states the nearest station's report as the source printed it. |
 | ![The React Warnings surface: the district filter and the district-day rows with the colour the product printed](docs/images/03-warnings.png) | ![The React Today dashboard: the four counted KPIs, the district map filled only where a colour was published, and the published-colour by published-day matrix](docs/images/04-today.png) |
 | **Warnings as printed.** One row per district-day, keeping the colour and hazard wording the product itself published. | **Today, composed.** The national picture this machine read: districts, source features without a district name, radar stations and the colour tallies. |
 | ![The React Forecast surface: the point entry with no place named](docs/images/05-forecast.png) | ![The React Published documents surface: filters, index counts and the editions indexed](docs/images/06-documents.png) |
@@ -26,9 +26,11 @@ closure queue are in [docs/93](docs/93-ps-closure-queue.md).
 | ![The React Sources and settings surface: the capability table with tool, kind, operations and stated purpose](docs/images/07-settings.png) | ![The React Map surface: the layer files with byte counts, the figure deck with zoom, find-a-feature and a legend drawn from the features on screen](docs/images/08-map.png) |
 | **Who answers, and for what.** Each capability as the read returned it: tool, kind, operations and stated purpose. | **The Map draws what it can name.** Layer files, byte counts and budgets exactly as returned; the figure is a schematic, not a cartographic basemap. |
 
-All eight pictures are this machine's React build — the only served surface after R6 — captured 17 September 2026
-at 1440×900 in headless Chrome on loopback against a throwaway copy of the store, so no reader conversation
-appears in them. The earlier pre-R6 picture set and its per-file captions stay in
+The eight surface pictures are this machine's React build — the only served surface after R6 — captured 17
+September 2026 at 1440×900 in headless Chrome on loopback against a throwaway copy of the store, so no reader
+conversation appears in them. The first two are **19 September 2026**, after the shell was rebuilt as one rail
+with a reading panel ([docs/113](docs/113-shell-and-chat-surface.md)), and were taken the same way. The earlier
+pre-R6 picture set and its per-file captions stay in
 [docs/84](docs/84-ps-progress-and-pictures.md#the-picture-set).
 
 ## Status at a glance
@@ -84,13 +86,23 @@ serve it, and check it:
 
     cd frontend && npm install && npm run build    # builds web/dist
     python3 -m weathergpt_data.workspace --port 8790
-    cd frontend && npm test                        # 56 component suites, 312 checks, run under Vitest
-    python3 scripts/audit_react_frontend.py        # 13 checks over the built page and its sources
+    cd frontend && npm test                        # 62 component suites, 346 checks, run under Vitest
+    python3 scripts/audit_react_frontend.py        # 18 checks over the built page and its sources
     python3 scripts/audit_react_build.py           # 11 checks over the built output
 
-The React surface now has the transcript (the question kept above its answer, the working turn naming the
-engine's stages and its provisional first reading, the validity ruler, the receipt, the sources, the reading
-register, stored conversations, and a voice path that keeps the measured-language rules), eighteen real modules
+**The shell was rebuilt on 19 September 2026** ([docs/113](docs/113-shell-and-chat-surface.md)): one rail does all
+the navigation — four homes, the place the answers are about, the reader's conversations with their own pinned
+ones above the recency groups, ⌥N and ⌥1–⌥9 beside the rows they open — and it collapses to 60px, remembering
+the arrangement in this browser. A right-hand panel holds the three things an answer depends on (place, language,
+persona) and states the nearest station's report as its source printed it. The bar names the thread. The welcome
+states the reader's own sky, and a line of verse sits under it — twelve lines, each checked against the edition it
+came from ([docs/112](docs/112-welcome-screen-and-sky-mark.md)). The legacy chat surface and ten other unreachable
+modules were deleted in the same batch after measuring that nothing served still read them.
+
+The React surface has the transcript (the question kept above its answer, the working turn naming the engine's
+stages, its provisional first reading and the elapsed time, the validity ruler, the receipt, the sources, the
+reading register, stored conversations, and a voice path that keeps the measured-language rules and reads the
+recogniser's own report back as recognition only), eighteen real modules
 (Today, Warnings, Forecast, Observations, Published documents, Sources and settings, Map, What changed,
 Farm advisories, Air quality, Climate records, Aviation, Ensemble spread, Forecast verification, Compare places, Sea and rivers, Briefcase, Workspace), the chart block, a command palette, the
 front door and the local owner gate. Every surface in the frozen registry is a real module — eighteen of them, with Ask as the conversation
@@ -281,8 +293,8 @@ The interface states these limits instead of filling them:
 
 ```sh
 python3 -m pytest tests/ -q                          # 1367 Python tests
-cd frontend && npx tsc --noEmit && npm test          # 56 React suites, 312 component checks
-python3 scripts/audit_react_frontend.py              # 13 checks over the built page and its sources
+cd frontend && npx tsc --noEmit && npm test          # 62 React suites, 346 component checks
+python3 scripts/audit_react_frontend.py              # 18 checks over the built page and its sources
 python3 scripts/audit_react_build.py                 # 11 checks over the built output
 python3 scripts/audit_port_ledger.py                 # every component check the ledger names, verified in its spec
 python3 scripts/audit_surface_registry.py            # the served surfaces against the frozen registry
@@ -302,7 +314,8 @@ request must carry the workspace token. The suite counts measure regression cove
 All 110 vanilla component checks are named against a React spec now, and the ledger is held to account rather
 than trusted: `research/reviews/frontend-react-r2-20260917/check-port.json` records 110 of 110, and
 `scripts/audit_port_ledger.py` — a gate step — re-reads it and refuses any claimed test name that is not written in
-the spec it names (203 names across 33 spec files at this writing). The last nine are the chart-engine checks:
+the spec it names (199 names across 33 spec files at this writing; three checks moved with the rail that drives
+them on 19 September 2026, and the ledger was repointed rather than loosened). The last nine are the chart-engine checks:
 `frontend/src/charts/viz.parity.test.ts` reads the served `web/viz.js` from disk and runs it in the stand-in DOM the
 vanilla suite used, so those checks exercise the same bytes a React chart draws with.
 [docs/92](docs/92-r6-decommission-readiness.md) §4d.2 records the fork and §4d.3 its closure. A named spec is

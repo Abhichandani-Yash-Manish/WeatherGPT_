@@ -73,6 +73,7 @@ export function Rail({
 }: RailProps) {
   const [filter, setFilter] = useState('');
   const [searching, setSearching] = useState(false);
+  const [failed, setFailed] = useState('');
   const client = useQueryClient();
   const rows = useQuery({ queryKey: ['conversations'], queryFn: () => ledger(), staleTime: 15_000 });
   const place = useWorkingPlace();
@@ -102,8 +103,16 @@ export function Rail({
   const forget = async (row: ConversationRow) => {
     const name = row.opening_question || row.id;
     if (!window.confirm('Delete “' + name + '” from this machine? The stored turns go with it.')) return;
-    await forgetConversation(row.id);
-    void client.invalidateQueries({ queryKey: ['conversations'] });
+    setFailed('');
+    try {
+      await forgetConversation(row.id);
+      void client.invalidateQueries({ queryKey: ['conversations'] });
+    } catch (error) {
+      /* A delete that did not happen is said, in the server's own words. The list is left as it is rather than
+         optimistically emptied: a row that disappears while the store still holds it is a worse lie than a
+         row that stays with a sentence under it. */
+      setFailed('The stored conversation was not deleted: ' + String((error as Error)?.message || error));
+    }
   };
 
   /* ⌥1–⌥9 opens the n-th row the rail is showing, in the order it is showing them. Read from event.code for
@@ -240,6 +249,7 @@ export function Rail({
             </button>
           </div>
 
+          {failed ? <p className="g-notice" role="status">{failed}</p> : null}
           {rows.isPending ? <p className="g-empty-note">Reading the stored conversations…</p> : null}
           {rows.isError ? <p className="g-empty-note">The conversation store did not answer. Nothing is listed rather than an empty list being shown as none.</p> : null}
           {!rows.isPending && !rows.isError && !grouped.length ? (
