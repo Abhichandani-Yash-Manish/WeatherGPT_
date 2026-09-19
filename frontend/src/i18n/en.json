@@ -82,6 +82,7 @@
     "notCovered": "What this answer does not cover",
     "howAnswered": "How this was answered",
     "machineRecord": "Machine record (the exact response)",
-    "restored": "Restored from this machine"
+    "restored": "Restored from this machine",
+    "saveConversation": "Save this conversation as Markdown"
   }
 }

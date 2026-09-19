@@ -9,7 +9,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { PanelLeft, ArrowDown, ArrowLeft, Download, SlidersHorizontal } from 'lucide-react';
+import { ArrowDown, ArrowLeft } from 'lucide-react';
 
 import { postJson } from '../api/client';
 import { istStamp } from '../lib/time';
@@ -17,8 +17,7 @@ import type { AnswerPacket } from '../api/types';
 import { personas as readPersonas } from '../chat/api';
 import { useConversation } from '../chat/useConversation';
 import { downloadFile, markdownTurn, stampName } from '../chat/actions';
-import { noticeHint, readingLine, stageLabel } from '../chat/model';
-import { elapsedWords } from '../lib/time';
+import { noticeHint, readingLine } from '../chat/model';
 import { SurfaceHost } from '../shell/SurfaceHost';
 import { viewById, type ViewEntry } from '../shell/views';
 import { AnswerTurn } from '../chat/AnswerTurn';
@@ -26,15 +25,15 @@ import { Composer } from './Composer';
 import { Field } from './Field';
 import { hourOf, lightAt } from './fieldPaint';
 import { chromeFor, i18n } from '../i18n';
-import { useTranslation } from 'react-i18next';
 import { useSky } from './sky';
-import { SkyGlyphIcon } from '../shell/icons';
 import { rememberPlace, useWorkingPlace } from '../modules/Evidence';
 import { Rail } from './Rail';
 import { ReadingPanel, type SourceRead } from './ReadingPanel';
 import { useShellPrefs } from './shellState';
 import { homeOf } from '../shell/homes';
 import { Welcome } from './Welcome';
+import { WorkingTurn } from './WorkingTurn';
+import { TopBar } from './TopBar';
 import './gpt.css';
 
 /* Three, not eight. The openings are a way in for someone who does not know what to type, not a menu of
@@ -112,7 +111,6 @@ export function Workspace({
   placeParam = { label: null, latitude: null, longitude: null }, onHoldPlace,
   seed = null, restoreId = null, unknownRoute = null,
 }: WorkspaceProps) {
-  const { t } = useTranslation();
   const conversation = useConversation({ outputLanguage: language, persona });
   const client = useQueryClient();
   const [railOpen, setRailOpen] = useState(false);
@@ -320,14 +318,6 @@ export function Workspace({
       ].filter(Boolean).join(' · ') + '.'
     : '';
 
-  /* The clock under a working turn: it answers "is this still going?", which is the only question a reader has
-     while it runs. It ticks once a second and stops when the turn does. */
-  const [elapsedNow, setElapsedNow] = useState(() => Date.now());
-  useEffect(() => {
-    if (!working) return;
-    const timer = window.setInterval(() => setElapsedNow(Date.now()), 1000);
-    return () => window.clearInterval(timer);
-  }, [working]);
   const composer = (
     <div className="g-dock">
       <Composer
@@ -415,63 +405,15 @@ export function Workspace({
       />
 
       <main className="g-main" data-panel={prefs.panel ? 'open' : 'closed'}>
-        <header className="g-top">
-          <div className="g-top-left">
-            <button type="button" className="g-act g-rail-toggle" onClick={() => setRailOpen(value => !value)} aria-label="Conversations">
-              <PanelLeft size={17} aria-hidden="true" />
-            </button>
-            {/* What this thread is. A conversation has only ever had one name — the question it opened
-                with — and a reader three turns in has otherwise lost it.
-
-                It is the page's h1 only once a conversation exists: on the welcome the greeting is the
-                heading, and two h1s on one page is a structure a screen reader has to guess at. */}
-            {chatting
-              ? <h1 className="g-top-title" title={title}>{title}</h1>
-              : <p className="g-top-title" title={title}>{title}</p>}
-          </div>
-          {/* The place the answers are about, and what the nearest station last printed there. It is a
-              statement and not a control; the panel beside this bar is where it is changed. */}
-          {sky.data?.place || sky.data?.temperature || sky.data?.condition ? (
-            <p
-              className="g-skyline"
-              data-testid="skyline"
-              title={[sky.data?.place, sky.data?.station, sky.data?.sourceId, sky.data?.observedAt ? 'read ' + istStamp(sky.data.observedAt) : null]
-                .filter(Boolean).join(' · ')}
-            >
-              {sky.data?.glyph ? <SkyGlyphIcon glyph={sky.data.glyph} size={15} strokeWidth={1.5} aria-hidden="true" /> : null}
-              {sky.data?.place ? <span className="g-skyline-place">{sky.data.place}</span> : null}
-              {sky.data?.temperature ? <span className="g-skyline-value">{sky.data.temperature}{sky.data.unit || ''}</span> : null}
-              {sky.data?.condition ? <span className="g-skyline-cond">{sky.data.condition}</span> : null}
-            </p>
-          ) : null}
-          <div className="g-top-left">
-            {/* The whole exchange, not one turn: the per-turn actions live under each answer, and a reader
-                exporting a conversation should not have to do it one card at a time. */}
-            {chatting && turns.some(turn => turn.role === 'answer' || turn.role === 'restored') ? (
-              <button
-                type="button"
-                className="g-act"
-                onClick={exportConversation}
-                aria-label="Save this conversation as Markdown"
-                title="Save this conversation as Markdown"
-              >
-                <Download size={16} aria-hidden="true" />
-              </button>
-            ) : null}
-            {/* The panel holds the three things an answer depends on — place, language, persona — which used
-                to sit in this bar as two native selects. */}
-            <button
-              type="button"
-              className="g-act"
-              aria-pressed={prefs.panel}
-              aria-label={prefs.panel ? 'Close the reading panel' : 'Open the reading panel'}
-              title="How this conversation is read"
-              onClick={() => setPrefs({ panel: !prefs.panel })}
-            >
-              <SlidersHorizontal size={16} aria-hidden="true" />
-            </button>
-          </div>
-        </header>
+        <TopBar
+          title={title}
+          chatting={chatting}
+          sky={sky.data}
+          panelOpen={prefs.panel}
+          onTogglePanel={() => setPrefs({ panel: !prefs.panel })}
+          onToggleRail={() => setRailOpen(value => !value)}
+          onExport={chatting && turns.some(turn => turn.role === 'answer' || turn.role === 'restored') ? exportConversation : null}
+        />
 
         {/* One frosted sheet holds the conversation: the sky stays visible around it and faintly through it. */}
         <div className="g-panel" data-chatting={chatting ? 'true' : 'false'}>
@@ -556,65 +498,13 @@ export function Workspace({
                   );
                 })}
                 {working ? (
-                  /* Quiet while it works.
-
-                     This printed five paragraphs while a reader waited to learn whether it would rain: an
-                     explanation of the pipeline, the stage list, the planner's provisional first reading, the
-                     queue depth, and the server-work figure. All of it true; none of it the question.
-                     Evidence proves an answer, and it cannot prove a wait — imposing it during one is how a
-                     careful product comes to read as an unfinished one.
-
-                     So the wait states the two things a reader wants, the stage and how long, and the rest
-                     moves one fold away where it stays reachable and stops competing. The first reading in
-                     particular is a transparency feature and is not removed: available, not imposed. */
-                  <div className="g-turn g-working" data-testid="working-turn">
-                    <p className="g-working-head">
-                      <span className="g-dots" aria-hidden="true"><i /><i /><i /></span>
-                      <span className="g-working-stage" role="status" aria-live="polite">
-                        {current ? stageLabel(current) : t('working.default')}
-                      </span>
-                      {/* Outside the live region: a clock that ticks once a second would be announced once a
-                          second, which is unusable with a screen reader. The DELTA, not the clock — this read
-                          elapsedNow / 1000, the Unix epoch in seconds, so a four-second-old turn reported
-                          "497172 h 14 min since you asked". */}
-                      <span className="g-working-clock" aria-hidden="true">
-                        {elapsedWords(Math.max(0, elapsedNow - working.startedAt) / 1000)}
-                      </span>
-                    </p>
-
-                    {/* A reader asked for this one, so it answers where it was asked. */}
-                    {working.stopRequested ? (
-                      <p className="g-working-note">{working.stopDetail || t('working.stopRequested')}</p>
-                    ) : null}
-
-                    <details className="g-fold g-working-more">
-                      <summary>{t('working.whatItsDoing')}</summary>
-                      <div className="g-fold-body">
-                        <p className="g-working-note">
-                          Resolving the place and window, then retrieving evidence. A local model is
-                          interpreting your question, so this can take up to about a minute.
-                        </p>
-                        <ol className="g-stages">
-                          {stages.map(entry => (
-                            <li key={entry} data-state={entry === current ? 'now' : 'done'}>
-                              {stageLabel(entry)}{entry === current ? ' — now' : ''}
-                            </li>
-                          ))}
-                        </ol>
-                        {firstReading ? (
-                          <p className="g-reading-line" data-testid="reading-line">
-                            <span>First reading: </span>{firstReading}
-                          </p>
-                        ) : null}
-                        {working.preview?.note ? <p className="g-working-note">{working.preview.note}</p> : null}
-                        {working.previewFailed ? <p className="g-working-note">{working.previewFailed}</p> : null}
-                        {queueLine ? <p className="g-working-note">{queueLine}</p> : null}
-                        {progress?.turn_seconds ? (
-                          <p className="g-working-note">{elapsedWords(progress.turn_seconds)} of server work recorded</p>
-                        ) : null}
-                      </div>
-                    </details>
-                  </div>
+                  <WorkingTurn
+                    working={working}
+                    current={current}
+                    stages={stages}
+                    firstReading={firstReading}
+                    queueLine={queueLine}
+                  />
                 ) : null}
               </>
             )}
