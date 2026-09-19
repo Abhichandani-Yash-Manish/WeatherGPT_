@@ -144,3 +144,35 @@ describe('the official warning day', () => {
     expect(quiet).toHaveTextContent(/not an all-clear, and not a statement that nothing will happen/);
   });
 });
+
+describe('the published colour on a warning claim', () => {
+  /* The colour a claim lights its edge with used to be derived from the first word of the hazard wording:
+     'var(--g-' + value.split(/[^a-z]/)[0] + ')'. That failed in both directions. Real wording produced
+     var(--g-thunderstorm), which does not exist, so the one mark whose job is to carry a published colour
+     carried none; and wording that happened to begin with a colour word would have taken that colour with
+     no source saying so. Both directions are pinned here. */
+  const withDay = (colour: string | null, wording: string) => packet({
+    facts: [{ id: 'f1', parameter: 'official_district_warning', value: wording, place: 'Patna', source_id: 'S15' } as never],
+    warning_evidence: [{
+      district_warnings: [{
+        district: 'PATNA', state: 'BIHAR', issued_at_utc: '2026-09-17T06:00:00+00:00', source_id: 'S15',
+        days: [{ date: '2026-09-17', day_label: 'Day 1', colour, hazards: ['Thunderstorm'], wording,
+                 starts_utc: '2026-09-17T00:00:00+00:00', ends_utc: '2026-09-18T00:00:00+00:00' }],
+      }],
+    }],
+  });
+
+  it('lights the claim with the colour the bulletin published for that wording', () => {
+    const { container } = mount(withDay('yellow', 'Thunderstorm/lightning/squall'));
+    const lit = container.querySelector('[data-lit]') as HTMLElement | null;
+    expect(lit, 'a day with a published colour should light its claim').not.toBeNull();
+    expect(lit?.getAttribute('style') || '').toContain('--g-yellow');
+  });
+
+  it('lights nothing when the bulletin published no colour, whatever the wording says', () => {
+    /* The wording begins with "Red". No source published a colour, so no colour is drawn. */
+    const { container } = mount(withDay(null, 'Red soil dust haze expected'));
+    const lit = container.querySelector('[data-lit]');
+    expect(lit, 'a colour must be reached only through a published value').toBeNull();
+  });
+});

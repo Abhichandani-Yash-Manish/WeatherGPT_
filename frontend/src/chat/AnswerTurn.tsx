@@ -15,6 +15,7 @@ import { istStamp, istWindow } from '../lib/time';
 import { answerText, copyText, downloadFile, markdownTurn, stampName } from './actions';
 import { coverageNote, firstPoint, hasWarningDays, kindOf, languageDowngradeNote, parameterName, placeOf, sequenceFacts, turnTitle, warningFacts, windowFacts } from './model';
 import { AirportReports, Calculations, Disclosure, EvidenceReceipt, SeriesReceipt, SourceRows, StatusTags, TaskAccounting, ValidityRuler, WarningPanel } from './parts';
+import { HAZARD_COLOURS } from '../modules/Evidence';
 
 export type AnswerTurnProps = {
   packet: AnswerPacket;
@@ -106,6 +107,34 @@ export function workSteps(packet: AnswerPacket): WorkStep[] {
   return steps;
 }
 
+/* The published colour of a warning, and only ever a colour a bulletin printed.
+   ============================================================================
+   This used to be derived from the first word of the hazard wording:
+   'var(--g-' + value.toLowerCase().split(/[^a-z]/)[0] + ')'. Two things were wrong with that, in opposite
+   directions. "Thunderstorm/lightning/squall" asked for var(--g-thunderstorm), which does not exist, so
+   the swatch fell back to neutral for essentially every real hazard — the one mark whose whole job is to
+   carry the published colour carried it only when the wording happened to begin with a colour word. And a
+   wording that did begin with one would have taken that colour whether or not a source published it,
+   which is the failure this product exists to prevent.
+
+   So the colour is read from the bulletin. The wording is matched against the district-warning days the
+   packet carries; if no day matches, and the read returned exactly one distinct colour, that is the
+   colour; otherwise nothing is returned and the swatch stays neutral. A guess is not a source. */
+function publishedColour(packet: AnswerPacket, value: string): string | undefined {
+  const days = (packet.warning_evidence || []).flatMap(entry =>
+    (entry.district_warnings || []).flatMap(warning => warning.days || []),
+  ) as { colour?: string | null; quiet?: boolean; hazards?: string[]; wording?: string; source_text?: string }[];
+  const named = (day: typeof days[number]) =>
+    String(day.wording || day.source_text || (day.hazards || []).join(', ') || (day.quiet === true ? 'no warning in this product' : ''));
+  const stated = (day: typeof days[number]) => String(day.colour || '').toLowerCase();
+
+  const match = days.find(day => named(day).toLowerCase() === value.toLowerCase());
+  if (match && HAZARD_COLOURS.includes(stated(match))) return 'var(--g-' + stated(match) + ')';
+
+  const distinct = [...new Set(days.map(stated).filter(colour => HAZARD_COLOURS.includes(colour)))];
+  return distinct.length === 1 ? 'var(--g-' + distinct[0] + ')' : undefined;
+}
+
 export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTurnProps) {
   const [copied, setCopied] = useState<'idle' | 'copied' | 'unsupported'>('idle');
   /* The exact response is rendered only when opened: it is an audit artefact, and it must not sit in the
@@ -178,7 +207,7 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
                 testId="warning-claim"
                 eyebrow={'Official warning' + (placeOf(packet, warnings[0]) ? ' · ' + placeOf(packet, warnings[0]) : '')}
                 hazard={String(warnings[0].value)}
-                hazardColour={'var(--g-' + String(warnings[0].value).toLowerCase().split(/[^a-z]/)[0] + ')'}
+                hazardColour={publishedColour(packet, String(warnings[0].value))}
                 source={sourceLine(packet, warnings[0])}
                 depth={!primary && receiptFact ? [{ label: 'where this came from', body: <EvidenceReceipt packet={packet} fact={receiptFact} /> }] : []}
               />
@@ -188,7 +217,7 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
                   key={fact.id}
                   eyebrow={'Official warning' + (fact.place ? ' · ' + fact.place : '')}
                   hazard={String(fact.value)}
-                  hazardColour={'var(--g-' + String(fact.value).toLowerCase().split(/[^a-z]/)[0] + ')'}
+                  hazardColour={publishedColour(packet, String(fact.value))}
                   source={sourceLine(packet, fact)}
                 />
               ))
