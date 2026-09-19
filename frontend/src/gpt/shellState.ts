@@ -15,22 +15,37 @@ export type ShellPrefs = {
   panel: boolean;
   /** Conversation ids, most recently pinned first. The list is capped; a rail of pins is not a rail. */
   pins: string[];
+  /**
+   * A reader's own name for a place, keyed by the label the catalogue returned.
+   *
+   * The catalogue's labels are its own — \`Surat, Sūrat, State of Gujarāt\` — and a reader who thinks of it as
+   * Surat should be able to say so. This is a display name and nothing else: what travels to the engine is
+   * still the label the catalogue returned, and the alias is never presented as a place any source named.
+   */
+  aliases: Record<string, string>;
 };
 
 export const SHELL_KEY = 'weathergpt.shell';
-const DEFAULTS: ShellPrefs = { rail: 'open', panel: false, pins: [] };
+const DEFAULTS: ShellPrefs = { rail: 'open', panel: false, pins: [], aliases: {} };
 
 export function readShellPrefs(): ShellPrefs {
   try {
     const raw = window.localStorage.getItem(SHELL_KEY);
     if (!raw) return DEFAULTS;
     const value = JSON.parse(raw) as Partial<ShellPrefs>;
+    const aliases = value.aliases && typeof value.aliases === 'object' ? value.aliases : {};
     return {
       rail: value.rail === 'collapsed' ? 'collapsed' : 'open',
       panel: value.panel === true,
       pins: Array.isArray(value.pins)
         ? value.pins.filter(id => typeof id === 'string' && id).slice(0, 20)
         : [],
+      aliases: Object.fromEntries(
+        Object.entries(aliases as Record<string, unknown>)
+          .filter(([key, name]) => key && typeof name === 'string' && name)
+          .slice(0, 40)
+          .map(([key, name]) => [key, String(name).slice(0, 60)]),
+      ),
     };
   } catch {
     return DEFAULTS;

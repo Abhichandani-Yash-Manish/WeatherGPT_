@@ -97,8 +97,10 @@ places this machine knows, the reader's conversations with their own pinned ones
 arrangement in this browser. **A place is the second entity**: each conversation row carries the place its own
 answers resolved (the engine's resolution, never a city name read out of the question), the places are listed with
 their counts, choosing one holds it and narrows the list, and a row can be pinned with the same store the module
-surfaces write. The search reaches every stored turn rather than only the opening question, and says which turn
-matched. A right-hand panel holds the three things an answer depends on (place, language, persona) and states the
+surfaces write — or given the reader's own name, which is a display name and never the label an answer is read
+with. The search reaches every stored turn rather than only the opening question, and says which turn matched.
+A running conversation can be saved whole as one markdown file, each answer keeping its own values, windows and
+source ids. A right-hand panel holds the three things an answer depends on (place, language, persona) and states the
 nearest station's report as its source printed it. The bar names the thread. The welcome states the reader's own
 sky, lets a reader name a place from the screen itself, and carries a line of verse — fourteen lines, each checked
 against the edition it came from ([docs/112](docs/112-welcome-screen-and-sky-mark.md)). The legacy chat surface and ten other unreachable

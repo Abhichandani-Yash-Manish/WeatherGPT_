@@ -27,6 +27,7 @@ import { greeting, useSky } from './sky';
 import { solarPosition, type Hour } from './fieldPaint';
 import { QuoteLine } from './QuoteLine';
 import { PlacePicker } from './PlacePicker';
+import { useShellPrefs } from './shellState';
 import { useWorkingPlace } from '../modules/Evidence';
 
 /* The national default, the same one the ground uses when the browser holds no place: the sun is the same
@@ -41,6 +42,7 @@ export function Welcome({ hour }: { hour: Hour }) {
   const longitude = held?.longitude ?? DEFAULT_LONGITUDE;
   const [at, setAt] = useState(() => new Date());
   const [picking, setPicking] = useState(false);
+  const { prefs } = useShellPrefs();
 
   useEffect(() => {
     const timer = window.setInterval(() => setAt(new Date()), 60_000);
@@ -49,6 +51,9 @@ export function Welcome({ hour }: { hour: Hour }) {
 
   const reading = sky.data;
   const place = reading?.place ?? null;
+  /* The reader's own name for this place, if they gave it one. A display name only: what is sent to the
+     engine is the label the catalogue returned, and the title above says so. */
+  const alias = place ? prefs.aliases[place] : '';
   /* The station's own number, and its own unit only where the source stated one. A value with no unit is
      printed without a unit and said so below, rather than being given a scale the source never wrote. */
   const source = reading
@@ -90,8 +95,8 @@ export function Welcome({ hour }: { hour: Hour }) {
           reader who has no place is shown the hour and the sun, and this is how they get their own sky. */}
       {place ? (
         <p className="w-place">
-          <button type="button" className="w-place-button" onClick={() => setPicking(true)} title="Change the place">
-            {place}
+          <button type="button" className="w-place-button" onClick={() => setPicking(true)} title={'Change the place — ' + place}>
+            {alias || place}
           </button>
         </p>
       ) : (

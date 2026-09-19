@@ -26,7 +26,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   Bell, CornerDownLeft, History, KeyRound, Keyboard, LayoutGrid, MapPin, MessageSquare,
-  MessageSquarePlus, PanelLeft, Pin, PinOff, Search, Settings, Trash2, TriangleAlert, X,
+  MessageSquarePlus, PanelLeft, Pencil, Pin, PinOff, Search, Settings, Trash2, TriangleAlert, X,
 } from 'lucide-react';
 import { forgetConversation, ledger } from '../chat/api';
 import type { ConversationRow } from '../api/types';
@@ -72,6 +72,9 @@ export type RailProps = {
   onToggle: () => void;
   pins: string[];
   onPin: (id: string, pinned: boolean) => void;
+  /** The reader's own names for places, keyed by the label the catalogue returned. Display only. */
+  aliases: Record<string, string>;
+  onAlias: (label: string, name: string) => void;
   onFindPlace: () => void;
   onPlans: () => void;
   onOwner: () => void;
@@ -82,8 +85,11 @@ type Known = { label: string; latitude: number; longitude: number; pinned: boole
 
 export function Rail({
   currentId, onOpen, onNew, onOpenView, onAsk, currentView, home,
-  collapsed, onToggle, pins, onPin, onFindPlace, onPlans, onOwner, onClose,
+  collapsed, onToggle, pins, onPin, aliases, onAlias, onFindPlace, onPlans, onOwner, onClose,
 }: RailProps) {
+  /* What a reader calls a place. The catalogue's label travels with it in the title, so the reader's own word
+     is never mistaken for a name a source published. */
+  const nameOf = (label: string) => aliases[label] || label;
   const [filter, setFilter] = useState('');
   const [term, setTerm] = useState('');
   const [searching, setSearching] = useState(false);
@@ -357,13 +363,30 @@ export function Rail({
                 <button
                   type="button"
                   className="g-row-text g-row-plain"
-                  title={(known.pinned ? 'Pinned. ' : '') + (known.count ? known.count + ' conversation' + (known.count === 1 ? '' : 's') + ' resolved this place' : 'Pinned in this browser')}
+                  title={nameOf(known.label) + ' — ' + known.label + '. ' +
+                    (known.pinned ? 'Pinned. ' : '') +
+                    (known.count ? known.count + ' conversation' + (known.count === 1 ? '' : 's') + ' resolved this place' : 'Pinned in this browser')}
                   onClick={() => { hold(known); setPlaceFilter(current => (current === known.label ? null : known.label)); }}
                 >
-                  {known.label}
+                  {nameOf(known.label)}
                   {known.pinned ? <Pin size={11} aria-hidden="true" className="g-place-pinned" /> : null}
                 </button>
                 {known.count ? <span className="g-place-count">{known.count}</span> : null}
+                <button
+                  type="button"
+                  className="g-row-drop"
+                  aria-label={'Name ' + known.label + ' for yourself'}
+                  title="Call this place something else, for this browser only"
+                  onClick={() => {
+                    const answer = window.prompt(
+                      'A name for this place in this browser. The label the catalogue returned stays on the row and is what answers are read with.',
+                      nameOf(known.label),
+                    );
+                    if (answer !== null) onAlias(known.label, answer.trim());
+                  }}
+                >
+                  <Pencil size={13} aria-hidden="true" />
+                </button>
                 <button
                   type="button"
                   className="g-row-drop"
@@ -410,7 +433,7 @@ export function Rail({
                   <div key={row.id} className="g-row g-row-conversation" aria-current={row.id === currentId ? 'true' : undefined}>
                     <button type="button" className="g-row-text g-row-plain" onClick={() => onOpen(row.id)} title={row.opening_question || 'Untitled conversation'}>
                       {row.opening_question || 'Untitled conversation'}
-                      {row.place?.label ? <span className="g-row-place">{row.place.label}</span> : null}
+                      {row.place?.label ? <span className="g-row-place">{nameOf(row.place.label)}</span> : null}
                       {row.match ? (
                         <span className="g-row-match" data-role={row.match.role}>
                           {row.match_question ? 'in the question: ' : row.match.role === 'user' ? 'in a question: ' : 'in the answer: '}

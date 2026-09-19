@@ -188,6 +188,35 @@ describe('the shell', () => {
     expect(screen.getByText(/a page cannot take ⌘1–⌘9/i)).toBeInTheDocument();
   });
 
+  it('saves the whole conversation, not one answer', async () => {
+    const saved: { name: string; text: string }[] = [];
+    /* The download is a real browser action; jsdom has no Blob URL, so the anchor is what this watches. */
+    const click = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(function (this: HTMLAnchorElement) {
+      saved.push({ name: this.download, text: String((this as HTMLAnchorElement & { __text?: string }).__text || '') });
+    });
+    const createUrl = vi.fn(() => 'blob:fixture');
+    Object.defineProperty(URL, 'createObjectURL', { configurable: true, value: createUrl });
+    Object.defineProperty(URL, 'revokeObjectURL', { configurable: true, value: vi.fn() });
+    server.use(http.post('/api/chat', () => HttpResponse.json({
+      conversation_id: '44444444-4444-4444-8444-444444444444', question: 'Will it rain in Ahmedabad?',
+      status: 'answered', answer: 'Ahmedabad: forecast precipitation 0.3 mm.',
+      facts: [{ id: 'f1', label: 'Forecast rainfall', value: '0.3', unit: 'mm', place: 'Ahmedabad, Gujarat',
+                start: '2026-09-18T06:30:00+05:30', end: '2026-09-18T12:30:00+05:30', source_id: 'S21',
+                parameter: 'precipitation', evidence_kind: 'forecast', citation_ids: [], task_id: 't1' }],
+      citations: [], notes: [], choices: [], charts: [], task_results: [], answered_at_utc: '2026-09-18T07:00:00+00:00',
+      resolved_points: {}, trace: {}, retrieval_plan: [],
+    })));
+    mount();
+    await userEvent.type(screen.getByLabelText('Your question'), 'Will it rain in Ahmedabad?');
+    await userEvent.click(screen.getByTestId('send-question'));
+    await screen.findByText('Ahmedabad: forecast precipitation 0.3 mm.');
+    const save = await screen.findByLabelText('Save this conversation as Markdown');
+    await userEvent.click(save);
+    expect(click).toHaveBeenCalled();
+    expect(saved.length ? saved[0].name : '').toMatch(/^weathergpt-conversation-.*\.md$/);
+    click.mockRestore();
+  });
+
   it('opens the n-th conversation with ⌥-digit', async () => {
     const asked: string[] = [];
     server.use(http.get('/api/conversations/:id', ({ params }) => {

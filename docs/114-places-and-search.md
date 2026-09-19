@@ -82,12 +82,25 @@ Both are tagged to the monsoon months, so a January reader is not shown them. Th
 poems are joined into one line for the screen; the words are the edition's, and the poem number travels with
 each line so anyone can check.
 
-## 6. Evidence
+## 6. Two more things the rail can do
+
+**A reader's own name for a place.** The catalogue's labels are the catalogue's — `Surat, Sūrat, State of
+Gujarāt` — and a reader who thinks of it as Surat can say so, from the pencil on the place row. The alias is a
+display name and nothing else: what travels to the engine is still the label the catalogue returned, the real
+label stays in the row's title, and the alias is never presented as a place a source named. Stored in this
+browser beside the pins and the rail's arrangement, so one key clears all of it.
+
+**The whole conversation in one file.** The per-turn actions live under each answer, which is right for one
+answer and wrong for an exchange. The bar now carries a save action while a conversation is running: one
+markdown file, every question and every answer, each answer keeping its own markdown — the values, the windows,
+the source ids and the status line — in the order it was asked.
+
+## 7. Evidence
 
 | Check | Result |
 | --- | --- |
 | `npx tsc --noEmit` | clean |
-| `npx vitest run` | **62 files, 348 checks** |
+| `npx vitest run` | **62 files, 349 checks** |
 | `python3 -m pytest tests/ -q` | **1373 Python tests** (six are this batch's ledger checks) |
 | `scripts/audit_react_frontend.py` | **18 checks, 0 failed** |
 | `scripts/audit_port_ledger.py` | **2 checks, 0 failed** |
@@ -103,7 +116,7 @@ One defect was found by the running product rather than by a test: the new dialo
 corner, because a stylesheet reset takes the browser's own `margin: auto` off a `<dialog>`. The fix is one
 line and a comment, and it is the kind of thing only a screenshot finds.
 
-## 7. What this does not claim
+## 8. What this does not claim
 
 - **No reader other than this machine's owner has used any of this**, and the place grouping has been looked
   at on one store on one machine.
@@ -114,7 +127,7 @@ line and a comment, and it is the kind of thing only a screenshot finds.
 - The corpus is still English. Two Indian poems more, still no reader-language line: that remains the
   translation project docs/30 gates.
 
-## 8. What is left, in order
+## 9. What is left, in order
 
 1. **The quote in the reader's language**, with the translation gate docs/30 specifies. Unchanged by this
    batch and still the largest content gap on the welcome screen.

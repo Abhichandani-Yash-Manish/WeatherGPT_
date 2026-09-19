@@ -9,13 +9,14 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { PanelLeft, Bell, ArrowDown, ArrowLeft, SlidersHorizontal } from 'lucide-react';
+import { PanelLeft, Bell, ArrowDown, ArrowLeft, Download, SlidersHorizontal } from 'lucide-react';
 
 import { postJson } from '../api/client';
 import { istStamp } from '../lib/time';
 import type { AnswerPacket } from '../api/types';
 import { personas as readPersonas } from '../chat/api';
 import { useConversation } from '../chat/useConversation';
+import { downloadFile, markdownTurn, stampName } from '../chat/actions';
 import { noticeHint, readingLine, stageLabel } from '../chat/model';
 import { elapsedWords } from '../lib/time';
 import { SurfaceHost } from '../shell/SurfaceHost';
@@ -257,6 +258,20 @@ export function Workspace({
     : chatting && opening ? opening.text
     : 'New conversation';
 
+  /* The whole exchange as one file, for a reader who wants the conversation rather than one answer. Each
+     answer keeps its own markdown — the values, the windows, the source ids and the status line — so the
+     export carries the same evidence a printout of that turn would, in the order it was asked. */
+  const exportConversation = useCallback(() => {
+    const parts: string[] = ['# WeatherGPT — ' + title, '', '_Exported ' + istStamp(new Date().toISOString()) + ' from this machine._'];
+    turns.forEach(turn => {
+      if (turn.role === 'user') parts.push('## ' + turn.text);
+      else if (turn.role === 'answer') parts.push(markdownTurn(turn.packet));
+      else if (turn.role === 'restored') parts.push('### Restored from this machine', '', turn.text);
+      else if (turn.role === 'notice') parts.push('> ' + turn.text);
+    });
+    downloadFile(stampName('weathergpt-conversation', 'md'), parts.join('\n\n---\n\n'));
+  }, [turns, title]);
+
   return (
     <div
       className="g"
@@ -282,6 +297,12 @@ export function Workspace({
         onToggle={() => setPrefs({ rail: prefs.rail === 'collapsed' ? 'open' : 'collapsed' })}
         pins={prefs.pins}
         onPin={(id, pinned) => setPrefs({ pins: pinned ? [id, ...prefs.pins.filter(entry => entry !== id)].slice(0, 20) : prefs.pins.filter(entry => entry !== id) })}
+        aliases={prefs.aliases}
+        onAlias={(label, name) => setPrefs({
+          aliases: name
+            ? { ...prefs.aliases, [label]: name }
+            : Object.fromEntries(Object.entries(prefs.aliases).filter(([key]) => key !== label)),
+        })}
         onFindPlace={() => onFindPlace?.()}
         onPlans={() => onPlans?.()}
         onOwner={() => onOwner?.()}
@@ -318,6 +339,19 @@ export function Workspace({
             </p>
           ) : null}
           <div className="g-top-left">
+            {/* The whole exchange, not one turn: the per-turn actions live under each answer, and a reader
+                exporting a conversation should not have to do it one card at a time. */}
+            {chatting && turns.some(turn => turn.role === 'answer') ? (
+              <button
+                type="button"
+                className="g-act"
+                onClick={exportConversation}
+                aria-label="Save this conversation as Markdown"
+                title="Save this conversation as Markdown"
+              >
+                <Download size={16} aria-hidden="true" />
+              </button>
+            ) : null}
             <button type="button" className="g-tool" onClick={() => onPlans?.()}>
               <Bell size={15} aria-hidden="true" /> Watch
             </button>
