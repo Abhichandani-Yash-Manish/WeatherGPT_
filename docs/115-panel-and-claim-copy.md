@@ -45,7 +45,17 @@ The measure is named the way the card names it ("Forecast rainfall", the label t
 the way the payload's field spells it ("precipitation"), so the line a reader pastes reads like the card they
 read it from.
 
-## 3. Evidence
+## 3. The place can be in the address
+
+The panel states a place; the address can now name one. \`#/assistant?place=Kochi, Kerala&plat=9.93&plon=76.26\`
+holds that place on arrival and opens the panel on it, so the place the answers are about is a link somebody can
+send and a page a reader can bookmark. Choosing a place in the rail writes it into the address as well as into
+this browser's storage.
+
+It is read once per address, and a half-written one is refused rather than half-applied: a place is either a
+pair of coordinates that parse as numbers and fall inside the world, or it is nothing at all.
+
+## 4. Evidence
 
 | Check | Result |
 | --- | --- |
@@ -58,7 +68,7 @@ Two checks fired on this batch: the **vocabulary check** refused the chip class 
 stylesheet knew it, and the **print-parity check** refused a card that had grown a second control without the
 drop being asserted on all of them.
 
-## 4. What this does not claim
+## 5. What this does not claim
 
 - The panel reads two governed routes per place and caches them for the session only; it is not a place page
   with its own route, and a reader cannot link to one.
@@ -66,10 +76,11 @@ drop being asserted on all of them.
   to nothing yet.
 - No reader other than this machine's owner has used any of this.
 
-## 5. What is left
+## 6. What is left
 
-1. **A place's own page**, with its own address, holding what the panel now shows plus its conversations — the
-   panel is the glance and the page would be the destination.
+1. **A place's own page**, with its own address, holding what the panel now shows plus its conversations. The
+   address names the place and the panel shows it; what is still missing is the page — the panel is the glance,
+   and the destination does not exist yet.
 2. **The panel's blocks as links**: "published for this district" should open the warnings surface at that
    district rather than leaving the reader to find it.
 3. **The same copy line on the warning claim**, which is a published colour and a hazard wording rather than a

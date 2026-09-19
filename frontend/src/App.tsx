@@ -221,6 +221,19 @@ function Shell() {
             onPersona={setPersona}
             seed={seed}
             restoreId={query.get('conversation')}
+            /* The place named in the address, so a reader can bookmark the place the answers are about and
+               open somebody else's link to it. It is read here and held by the workspace, which is the one
+               place that knows how a place is remembered. */
+            placeParam={{
+              label: query.get('place'),
+              latitude: query.get('plat'),
+              longitude: query.get('plon'),
+            }}
+            onHoldPlace={place => open('assistant', {
+              place: place.label || '',
+              plat: String(place.latitude),
+              plon: String(place.longitude),
+            })}
             unknownRoute={shell === 'unknown' ? unknown : null}
           />
         </ErrorBoundary>

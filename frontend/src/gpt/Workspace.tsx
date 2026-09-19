@@ -27,7 +27,7 @@ import { Field } from './Field';
 import { hourOf } from './fieldPaint';
 import { useSky } from './sky';
 import { SkyGlyphIcon } from '../shell/icons';
-import { useWorkingPlace } from '../modules/Evidence';
+import { rememberPlace, useWorkingPlace } from '../modules/Evidence';
 import { Rail } from './Rail';
 import { ReadingPanel } from './ReadingPanel';
 import { useShellPrefs } from './shellState';
@@ -53,6 +53,10 @@ export type WorkspaceProps = {
   onPersona: (id: string) => void;
   /** Opens the shell's place search — the palette, which is the one place surface the product has. */
   onFindPlace?: () => void;
+  /** The place an address named, as its own strings: read on arrival, never inferred. */
+  placeParam?: { label: string | null; latitude: string | null; longitude: string | null };
+  /** Put the place in the address, so the place the answers are about is a link somebody can open. */
+  onHoldPlace?: (place: { label: string | null; latitude: number; longitude: number }) => void;
   view?: ViewEntry;
   onAsk?: (question: string) => void;
   onNew?: () => void;
@@ -65,6 +69,7 @@ export type WorkspaceProps = {
 
 export function Workspace({
   onOpen, language, onLanguage, persona, onPersona, view, onAsk, onNew, onPlans, onOwner, onFindPlace,
+  placeParam = { label: null, latitude: null, longitude: null }, onHoldPlace,
   seed = null, restoreId = null, unknownRoute = null,
 }: WorkspaceProps) {
   const conversation = useConversation({ outputLanguage: language, persona });
@@ -105,6 +110,24 @@ export function Workspace({
     restored.current = restoreId;
     void conversation.restore(restoreId);
   }, [restoreId, conversation]);
+
+  /* A place named in the address is held on arrival, and the panel is opened to show what it means — the
+     station, the published district days and the hours. It is read once per address, and a malformed or
+     half-written one is refused rather than half-applied: a place is either a pair of coordinates that parse
+     as numbers or it is nothing. */
+  const addressed = `${placeParam.latitude ?? ''},${placeParam.longitude ?? ''},${placeParam.label ?? ''}`;
+  const heldFromAddress = useRef<string | null>(null);
+  useEffect(() => {
+    if (!placeParam.latitude || !placeParam.longitude) return;
+    if (heldFromAddress.current === addressed) return;
+    heldFromAddress.current = addressed;
+    const latitude = Number(placeParam.latitude);
+    const longitude = Number(placeParam.longitude);
+    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return;
+    if (Math.abs(latitude) > 90 || Math.abs(longitude) > 180) return;
+    rememberPlace({ label: placeParam.label, latitude, longitude });
+    setPrefs({ panel: true });
+  }, [addressed, placeParam.latitude, placeParam.longitude, placeParam.label, setPrefs]);
 
   useEffect(() => {
     if (!seed || sentSeed.current === seed.nonce) return;
@@ -315,6 +338,7 @@ export function Workspace({
         onToggle={() => setPrefs({ rail: prefs.rail === 'collapsed' ? 'open' : 'collapsed' })}
         pins={prefs.pins}
         onPin={(id, pinned) => setPrefs({ pins: pinned ? [id, ...prefs.pins.filter(entry => entry !== id)].slice(0, 20) : prefs.pins.filter(entry => entry !== id) })}
+        onHoldPlace={onHoldPlace}
         aliases={prefs.aliases}
         onAlias={(label, name) => setPrefs({
           aliases: name

@@ -23,9 +23,14 @@ export type AskOptions = {
 
 export function renderAsk(options: AskOptions = {}) {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: 0 } } });
+  /* The shell's own wiring, in three lines: App reads the place out of the address and hands it to the
+     workspace. A harness that skipped this would let an address-only feature pass or fail by accident. */
+  const query = new URLSearchParams(window.location.hash.split('?')[1] || '');
+  const placeParam = { label: query.get('place'), latitude: query.get('plat'), longitude: query.get('plon') };
   return render(
     <QueryClientProvider client={client}>
       <Workspace
+        placeParam={placeParam}
         onOpen={() => {}}
         language={options.language ?? ''}
         onLanguage={() => {}}

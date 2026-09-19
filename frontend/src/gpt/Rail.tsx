@@ -77,6 +77,8 @@ export type RailProps = {
   aliases: Record<string, string>;
   onAlias: (label: string, name: string) => void;
   onFindPlace: () => void;
+  /** Put the place in the address, so the place the answers are about is a link somebody can open. */
+  onHoldPlace?: (place: { label: string | null; latitude: number; longitude: number }) => void;
   onPlans: () => void;
   onOwner: () => void;
   onClose?: () => void;
@@ -96,7 +98,7 @@ type Known = {
 
 export function Rail({
   currentId, onOpen, onNew, onOpenView, onAsk, currentView, home,
-  collapsed, onToggle, pins, onPin, aliases, onAlias, onFindPlace, onPlans, onOwner, onClose,
+  collapsed, onToggle, pins, onPin, aliases, onAlias, onFindPlace, onPlans, onOwner, onClose, onHoldPlace,
 }: RailProps) {
   /* What a reader calls a place. The catalogue's label travels with it in the title, so the reader's own word
      is never mistaken for a name a source published. */
@@ -197,8 +199,12 @@ export function Rail({
   };
 
   /* The place that is held is a real label the catalogue returned, never the reader's name for it: the name
-     is a display preference, and what answers are read with has to be the place itself. */
-  const hold = (known: Known) => rememberPlace({ label: known.label, latitude: known.latitude, longitude: known.longitude } as PlaceChoice);
+     is a display preference, and what answers are read with has to be the place itself. The address is
+     rewritten with it, so the place the answers are about can be bookmarked and sent. */
+  const hold = (known: Known) => {
+    rememberPlace({ label: known.label, latitude: known.latitude, longitude: known.longitude } as PlaceChoice);
+    onHoldPlace?.({ label: known.label, latitude: known.latitude, longitude: known.longitude });
+  };
 
   /* ⌥1–⌥9 opens the n-th row the rail is showing, in the order it is showing them. Read from event.code for
      the reason the collapse is: ⌥1 on macOS is "¡". */

@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { http, HttpResponse } from 'msw';
 import { server } from '../test/msw';
 import { Workspace } from './Workspace';
+import { renderAsk } from '../test/ask';
 import { SHELL_KEY } from './shellState';
 
 /* The shell's own contract, since the rail stopped being two columns:
@@ -48,6 +49,7 @@ function mount() {
 }
 
 describe('the shell', () => {
+  const carried: string[] = [];
   beforeEach(() => {
     serveTheShell();
     try {
@@ -365,6 +367,25 @@ describe('the shell', () => {
     expect(written[0]).toMatch(/^Forecast rainfall · 0\.3 mm · Ahmedabad, Gujarat/);
     expect(written[0]).toContain('S21');
     expect(written[0]).not.toContain('Ahmedabad: forecast precipitation 0.3 mm.');
+  });
+
+  it('holds a place the address names, and opens the panel on it', async () => {
+    server.use(http.get('/api/now', ({ request }) => {
+      const url = new URL(request.url);
+      carried.push(url.searchParams.get('lat') + ',' + url.searchParams.get('lon'));
+      return HttpResponse.json(envelope({ schema_version: 'now-v1',
+        point: { latitude: 9.93, longitude: 76.26, label: 'Kochi, Kerala' },
+        observed: { status: 'ok', stations: [{ name: 'KOCHI', source_id: 'S63', observed_at_utc: '2026-09-19T06:30:00+00:00',
+          parameters: [{ field: 'temp', value: 29, unit: '°C' }] }] } }));
+    }));
+    /* A link somebody can send: the place is in the address, not only in this browser's storage. */
+    window.location.hash = '#/assistant?place=Kochi, Kerala&plat=9.93&plon=76.26';
+    /* The harness mounts the shell the way App does: the address is read and handed over. */
+    renderAsk();
+    const panel = await screen.findByRole('complementary', { name: /how this conversation is read/i });
+    expect(await within(panel).findByText('Kochi, Kerala')).toBeInTheDocument();
+    expect(carried).toContain('9.93,76.26');
+    expect(JSON.parse(String(window.localStorage.getItem('weathergpt.place'))).label).toBe('Kochi, Kerala');
   });
 
   it('opens the n-th conversation with ⌥-digit', async () => {
