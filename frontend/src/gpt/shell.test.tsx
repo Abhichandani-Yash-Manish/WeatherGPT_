@@ -275,6 +275,25 @@ describe('the shell', () => {
     expect(document.querySelector('.g-turn.g-found')?.textContent).toContain('coastal districts');
   });
 
+  it('offers the save on a restored conversation too, which holds no packet of its own', async () => {
+    server.use(http.get('/api/conversations', () => HttpResponse.json({
+      schema_version: 'conversation-ledger-v1', total: 1, limit: 40,
+      conversations: [{ id: 'r1', updated: new Date().toISOString(), turns: 2, asked: 1, opening_question: 'Any warning for Patna?' }],
+    })));
+    server.use(http.get('/api/conversations/r1', () => HttpResponse.json({
+      schema_version: 'conversation-transcript-v1', id: 'r1', updated: new Date().toISOString(),
+      turns: [
+        { role: 'user', content: 'Any warning for Patna?' },
+        { role: 'assistant', content: 'Patna has nothing flagged today.' },
+      ],
+      note: null,
+    })));
+    mount();
+    await userEvent.click(await screen.findByText('Any warning for Patna?'));
+    await waitFor(() => expect(document.querySelector('.g-turn')).not.toBeNull());
+    expect(screen.getByLabelText('Save this conversation as Markdown')).toBeInTheDocument();
+  });
+
   it('opens the n-th conversation with ⌥-digit', async () => {
     const asked: string[] = [];
     server.use(http.get('/api/conversations/:id', ({ params }) => {

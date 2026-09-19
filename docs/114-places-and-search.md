@@ -112,7 +112,7 @@ answer, so it never takes a colour any source published.
 | Check | Result |
 | --- | --- |
 | `npx tsc --noEmit` | clean |
-| `npx vitest run` | **62 files, 351 checks** |
+| `npx vitest run` | **62 files, 352 checks** |
 | `python3 -m pytest tests/ -q` | **1373 Python tests** (six are this batch's ledger checks) |
 | `scripts/audit_react_frontend.py` | **18 checks, 0 failed** |
 | `scripts/audit_port_ledger.py` | **2 checks, 0 failed** |

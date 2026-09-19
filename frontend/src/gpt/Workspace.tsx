@@ -359,7 +359,7 @@ export function Workspace({
           <div className="g-top-left">
             {/* The whole exchange, not one turn: the per-turn actions live under each answer, and a reader
                 exporting a conversation should not have to do it one card at a time. */}
-            {chatting && turns.some(turn => turn.role === 'answer') ? (
+            {chatting && turns.some(turn => turn.role === 'answer' || turn.role === 'restored') ? (
               <button
                 type="button"
                 className="g-act"
