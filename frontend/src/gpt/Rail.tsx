@@ -204,6 +204,20 @@ export function Rail({
       </nav>
 
       <div className="g-rail-body">
+        {/* The two actions, directly under the homes: a reader scanning the rail for "start something" or
+            "what am I watching" should not have to look inside a section called Conversations for either. */}
+        <div className="g-rail-actions-lead">
+          <button type="button" className="g-new" onClick={onNew} title="New conversation (⌥N)">
+            <MessageSquarePlus size={15} aria-hidden="true" />
+            <span className="g-new-label">New conversation</span>
+            <kbd className="g-kbd">⌥N</kbd>
+          </button>
+          <button type="button" className="g-row g-row-plain g-rail-action" onClick={onPlans} title="Plans, watches and the notification inbox">
+            <Bell size={15} aria-hidden="true" />
+            <span className="g-new-label">Watch</span>
+          </button>
+        </div>
+
         {home && home.id !== 'ask' ? (
           <section className="g-section" aria-label={home.label}>
             <p className="g-rail-label">In {home.label}</p>
@@ -237,18 +251,6 @@ export function Rail({
 
         <section className="g-section" aria-label="Conversations">
           <p className="g-rail-label">Conversations</p>
-          <div className="g-rail-actions g-rail-actions-lead">
-            <button type="button" className="g-new" onClick={onNew} title="New conversation (⌥N)">
-              <MessageSquarePlus size={15} aria-hidden="true" />
-              <span className="g-new-label">New conversation</span>
-              <kbd className="g-kbd">⌥N</kbd>
-            </button>
-            <button type="button" className="g-row g-row-plain g-rail-action" onClick={onPlans} title="Plans, watches and the notification inbox">
-              <Bell size={15} aria-hidden="true" />
-              <span className="g-new-label">Watch</span>
-            </button>
-          </div>
-
           {failed ? <p className="g-notice" role="status">{failed}</p> : null}
           {rows.isPending ? <p className="g-empty-note">Reading the stored conversations…</p> : null}
           {rows.isError ? <p className="g-empty-note">The conversation store did not answer. Nothing is listed rather than an empty list being shown as none.</p> : null}
