@@ -5,7 +5,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 from .transport import Store,SourceError,utcnow,stamp,parsed
 from .adapters import json_payload,hourly,FORECAST,MARINE,RIVER,aviation,warnings,envelope,numeric,grid_identity,numeric_quality
-from .adapters import EXTENDED,HISTORY_LOCAL,REANALYSIS_MODELS,reanalysis_fields,reanalysis_label
+from .adapters import EXTENDED,HISTORY_LOCAL,MAX_DAILY_HISTORY_DAYS,REANALYSIS_MODELS,reanalysis_fields,reanalysis_label
 from .adapters import ENSEMBLE,ENSEMBLE_MODELS,ensemble
 from .adapters import AIR_QUALITY,air_quality
 from .adapters import (ERA5_HOURLY,PREVIOUS_RUNS,PREVIOUS_RUNS_MODELS,PREVIOUS_RUN_LEADS,
@@ -124,7 +124,7 @@ class Foundation:
         return result
     def history_local(self,lat,lon,start,end,refresh=False,models='era5'):
         point=self.point(lat,lon);a=date.fromisoformat(start);b=date.fromisoformat(end)
-        if a>b or (b-a).days>6:raise SourceError('Local daily retrieval supports one to seven days per task')
+        if a>b or (b-a).days>MAX_DAILY_HISTORY_DAYS-1:raise SourceError('Local daily retrieval supports at most %d days per task' % MAX_DAILY_HISTORY_DAYS)
         if models not in REANALYSIS_MODELS:raise SourceError('Unsupported reanalysis model: '+str(models))
         # Only the variables the selected model returns are requested. Asking for a variable a
         # model does not carry returns nulls, and a payload with null columns is not publishable.

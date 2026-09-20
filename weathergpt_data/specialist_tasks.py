@@ -186,11 +186,17 @@ def execute_specialist(engine,result,plan,task,resolved,coordinates):
 def render_specialist(result,profile):
     groups={}
     for f in result['facts']:groups.setdefault((f['place'],f['parameter']),[]).append(f)
-    lines=[]
+    lines=[];opening=result.get('lead')
     for (place,parameter),rows in groups.items():
         values=[Decimal(f['value']) for f in rows];unit=rows[0]['unit']
         window=rows[0]['start'][:16].replace('T',' ')+' to '+rows[-1]['end'][:16].replace('T',' ')+(' UTC' if profile['daily'] else ' IST')
         measure=str(values[0])+' '+unit if len(values)==1 else str(min(values))+'–'+str(max(values))+' '+unit+' across '+str(len(values))+(' daily values' if profile['daily'] else ' hourly samples')
-        lines.append(place+' · '+window+'\n'+LABELS[parameter]+': '+measure+'.')
+        if opening:
+            lines.append(LABELS[parameter]+': '+measure+' ('+window+').')
+        else:
+            lines.append(place+' · '+window+'\n'+LABELS[parameter]+': '+measure+'.')
     lines.append(profile['notes'][0])
+    # The product boundary sentence is held beside the text: a written answer replacing this floor
+    # must still say what the modelled value is not (docs/117 repair, 20 September).
+    result.setdefault('held_clauses',[]).append(profile['notes'][0])
     return '\n'.join(lines)

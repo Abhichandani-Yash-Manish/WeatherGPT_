@@ -19,7 +19,7 @@ from urllib.parse import urlparse,parse_qs
 from .geography import canonical, identity, point
 from .transport import Store, SourceError, parsed, stamp, utcnow
 from .foundation import Foundation
-from .adapters import FORECAST,MARINE,EXTENDED,HISTORY_LOCAL,REANALYSIS_MODELS,reanalysis_variables,temporal_support
+from .adapters import FORECAST,MARINE,EXTENDED,HISTORY_LOCAL,MAX_DAILY_HISTORY_DAYS,REANALYSIS_MODELS,reanalysis_variables,temporal_support
 
 # The most forecast days one collection may request. This is the real forecast horizon of the
 # point products, and adapters.FORECAST_HORIZON_DAYS must equal it - a question past this date
@@ -136,7 +136,10 @@ class IngestionDB:
     def enqueue(self, product, latitude, longitude, days, cycle_at, max_attempts=4, *, start_date=None, end_date=None, models=None):
         if product not in PRODUCTS: raise ValueError('Unsupported governed numeric product')
         point(latitude,longitude)
-        if type(days) is not int or not 1 <= days <= WORKER_MAX_FORECAST_DAYS: raise ValueError('Worker supports 1–%d whole days' % WORKER_MAX_FORECAST_DAYS)
+        # A forecast is capped by how far the model runs; an archive request is a date range and is
+        # capped only by how much of it this product is willing to read in one task.
+        ceiling = MAX_DAILY_HISTORY_DAYS if product=='history_local' else WORKER_MAX_FORECAST_DAYS
+        if type(days) is not int or not 1 <= days <= ceiling: raise ValueError('Worker supports 1–%d whole days for %s' % (ceiling,product))
         if type(max_attempts) is not int or not 1 <= max_attempts <= 6: raise ValueError('Use 1–6 attempts')
         cycle = epoch(cycle_at); dt = datetime.fromtimestamp(cycle,timezone.utc)
         end = dt.replace(hour=0,minute=0,second=0,microsecond=0)+timedelta(days=1)

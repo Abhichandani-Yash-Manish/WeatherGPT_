@@ -9,6 +9,7 @@ from weathergpt_data.transport import SourceError
 from weathergpt_data.verification import MIN_SAMPLE_HOURS, error_statistics, summarise
 
 import test_conversation as fixtures
+from test_task_coverage_battery import assert_coverage_consistent
 
 UTC = timezone.utc
 META = {'source_id': 'S70', 'sha256': 'e' * 64}
@@ -344,6 +345,7 @@ class VerificationChatTests(unittest.TestCase):
         with patch('weathergpt_data.foundation.Foundation.verification', return_value=verification_packet()):
             result = self.chat(question=question)
         self.assertEqual(result['status'], 'answered', result['answer'])
+        assert_coverage_consistent(self, result)
         parameters = {fact['parameter'] for fact in result['facts']}
         self.assertIn('temperature_2m_mae', parameters)
         self.assertIn('temperature_2m_bias', parameters)

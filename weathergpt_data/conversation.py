@@ -601,6 +601,7 @@ class ConversationEngine:
                 result['notes'].append('The requested output language could not be rendered for this answer; the evidence above remains in its source language. Answering in that language is not supported yet for this kind of request.')
                 result['trace']['generation']=dict(result['trace'].get('generation') or {},language_adherence='failed',requested_language=plan.get('language'))
         self._checkpoint(request_id,'finalising')
+        self._ensure_coverage(result)
         from .dialogue import save_focus
         save_focus(state,result)
         state['last_question']=q;state['last_plan']=state.get('last_plan',plan) if plan.get('context_action')=='explain_previous' else plan;state['choices']=result['choices'];state['resolved_points']=result.get('resolved_points',{})
@@ -612,6 +613,22 @@ class ConversationEngine:
         from .personas import annotate as persona_block
         block=persona_block(body.get('persona'))
         if block:result['persona']=block
+        return result
+
+    def _ensure_coverage(self,result):
+        """Every turn carries a task-coverage record, not only the turns the dispatcher ran.
+
+        A conversational turn, a direct historical lookup, a clarification and a gap answer each have
+        a plan and usually no task executions; the record says so plainly instead of being absent
+        (measured 20 September 2026: a conversation turn carried none at all). A turn the dispatcher
+        covered, or one replaying an earlier turn's evidence, keeps the record it already owns.
+        """
+        if result.get('task_coverage'):return result
+        tasks=(result.get('plan') or {}).get('tasks') or []
+        results=result.get('task_results') or []
+        result['task_coverage']={'requested':len(tasks),
+                                 'completed':sum(t.get('status') in {'answered','explanation'} for t in results),
+                                 'incomplete_ids':[t['id'] for t in results if t.get('status') not in {'answered','explanation'}]}
         return result
 
     def plan_store(self):
@@ -1143,14 +1160,34 @@ class ConversationEngine:
         except (SourceError,OSError,TimeoutError) as exc:
             generated=None;problem='the model could not write it: '+str(exc)[:200]
         else:
-            problem=(self.generated_answer_problem(generated['answer'],generated['evidence_ids'],result)
+            from .leadline import join_lead_tail
+            # The model writes the continuation; the opening is tool-owned. What is checked is exactly
+            # what a reader would see, joined first, so an acceptance cannot be about a fragment.
+            composed=join_lead_tail(result.get('lead'),generated['answer']) if generated else ''
+            if generated:generated['answer']=composed
+            problem=(self.generated_answer_problem(composed,generated['evidence_ids'],result)
                      if generated else 'the model returned no usable narrative')
+        if generated is not None and not generated['answer'].strip() and (result.get('lead') or '').strip():
+            # The model read the retrieved facts and had nothing to add to the tool-owned opening. That
+            # is not a refusal and not a failure: the opening is the finding, and the floor under it is
+            # the receipt. Recorded as its own outcome so a quiet turn is not filed as a broken one.
+            result['trace']['generation']={'provider':'tool_owned_opening','status':'opening_carries_the_finding',
+                                           'reason':'The opening sentence already states what the supplied facts support; the model added nothing.',
+                                           'validation':'Nothing was added, so nothing needed checking against the facts.',
+                                           'evidence_ids':[f['id'] for f in result['facts']]}
+            return result
         if generated and problem is None:
             # The source clause is tool-owned text, so it is carried into the written answer rather
             # than left only in the receipt: a reader should not have to open a drawer to see it.
             source_line=next((line.strip() for line in floor.split(chr(10)) if 'Source:' in line),'')
             source_clause=('Source:'+source_line.split('Source:',1)[1]).strip() if source_line else ''
             answer=generated['answer'].strip()
+            # Semantic-safety sentences and derived totals are tool-owned as well: the model's prose
+            # may stand as the answer, but never at the cost of the clause that says what the values
+            # are not (measured 20 September 2026: the hourly-probability semantics were dropped).
+            for clause in result.get('held_clauses') or []:
+                if clause.strip() and clause.strip() not in answer:
+                    answer=answer.rstrip()+' '+clause.strip()
             if source_clause and source_clause not in answer:
                 answer=answer.rstrip('. ')+'. '+source_clause
             result['answer']=answer
@@ -1198,7 +1235,10 @@ class ConversationEngine:
         if result['facts'] and not ids:return 'it omitted every evidence reference'
         if result['facts']:
             primary=str((result['facts'][0] or {}).get('place') or '')
-            if primary and primary.split(',')[0].strip().lower() not in text.lower():
+            # The place may be named by the tool-owned opening the model was told not to repeat, so the
+            # whole answer is what is checked, never the continuation alone.
+            whole=((result.get('lead') or '')+' '+text).strip()
+            if primary and primary.split(',')[0].strip().lower() not in whole.lower():
                 return 'it did not name the place the facts belong to'
         if re.search(r'https?://|\b(?:is|are|will be) guaranteed\b|\bdefinitely safe\b',text,re.I):return 'it contained an unsupported link or certainty'
         from .dialogue import language_gap
@@ -1208,16 +1248,19 @@ class ConversationEngine:
     def evidence_narrative(self,result):
         """Ask the model for the reader's answer to a turn that has retrieved facts."""
         schema=obj({'answer':string(),'evidence_ids':{'type':'array','items':string()}})
-        system=("You are WeatherGPT. Write the reader's answer in two or three sentences, using ONLY the supplied "
-                "facts. Copy every number and unit exactly as it appears: no arithmetic, no rounding, no "
-                "conversion. Name the place and the window the facts belong to. Never add a link, a source "
-                "identifier, a probability, a warning, an all-clear, advice, or a certainty the facts do not "
-                "carry. Use the supplied place_label and window_label exactly as they are written: never "
-                "reformat a place, a time or a date yourself. Write in the language code supplied. Return JSON, "
-                "with the ids of the facts you used in evidence_ids.")
+        system=("You are WeatherGPT. The answer's first sentence is already written and is supplied as "
+                "opening_sentence: it is not yours to rewrite, repeat or contradict. Write ONLY the sentence or "
+                "two that follow it, using ONLY the supplied facts. Copy every number and unit exactly as it "
+                "appears: no arithmetic, no rounding, no conversion. Never add a link, a source identifier, a "
+                "probability, a warning, an all-clear, advice, or a certainty the facts do not carry. Use the "
+                "supplied place_label and window_label exactly as they are written: never reformat a place, a "
+                "time or a date yourself. If the opening already says everything the facts support, return an "
+                "empty answer rather than padding it. Write in the language code supplied. Return JSON, with "
+                "the ids of the facts you used in evidence_ids.")
         plan=result.get('plan') or {}
         primary=(result['facts'] or [{}])[0]
         payload={'question':result.get('question',''),'language':plan.get('language'),
+                 'opening_sentence':result.get('lead'),
                  'place_label':str(primary.get('place') or '').split(',')[0].strip() or None,
                  'window_label':window_label(primary.get('start'),primary.get('end')) or None,
                  'facts':[{k:v for k,v in f.items() if k!='source_locators'} for f in result['facts']],
@@ -1227,5 +1270,7 @@ class ConversationEngine:
                                            max_tokens=450,timeout=NARRATIVE_TIMEOUT)
         if not isinstance(generated,dict):return None
         text=generated.get('answer');ids=generated.get('evidence_ids')
-        if not isinstance(text,str) or not text.strip():return None
+        if not isinstance(text,str):return None
+        # An empty continuation is a real outcome, not a failure: the tool-owned opening already states
+        # what the facts support, and padding it is exactly what the numeral budget exists to stop.
         return {'answer':text.strip(),'evidence_ids':ids if isinstance(ids,list) else [],'meta':meta or {}}

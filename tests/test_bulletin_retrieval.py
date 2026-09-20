@@ -4,6 +4,7 @@ from pathlib import Path
 from datetime import datetime,timezone,timedelta
 from unittest.mock import patch
 from weathergpt_data.bulletin_index import BulletinIndex,extract,metadata
+from test_task_coverage_battery import assert_coverage_consistent
 from weathergpt_data.transport import SourceError,digest,stamp
 from weathergpt_data.tasks import validate_tasks
 from weathergpt_data.dialogue import reconcile
@@ -98,7 +99,7 @@ class EngineDocumentTests(unittest.TestCase):
   patch('weathergpt_data.document_tools.parent_context',return_value=([],{'status':'extracted_scoped','omitted_sections':[]})).start()
   return doc,index
  def test_source_passages_have_task_citations_and_can_be_explained(self):
-  self.setup_document();r=self.chat(question='cotton bulletin');self.assertEqual(r['status'],'answered');self.assertEqual(r['passages'][0]['citation_ids'],[r['citations'][0]['id']]);self.assertEqual(r['task_coverage']['completed'],1)
+  self.setup_document();r=self.chat(question='cotton bulletin');self.assertEqual(r['status'],'answered');self.assertEqual(r['passages'][0]['citation_ids'],[r['citations'][0]['id']]);self.assertEqual(r['task_coverage']['completed'],1);assert_coverage_consistent(self,r)
   self.model.value.update(context_action='explain_previous',changed_fields=[]);e=self.chat(question='Explain that',conversation_id=r['conversation_id']);self.assertEqual(e['passages'],r['passages']);self.assertEqual(e['expires_at_utc'],r['expires_at_utc'])
  def test_expired_document_does_not_produce_passages(self):
   doc,index=self.setup_document();doc['forecast_end']='2026-09-11';r=self.chat(question='current cotton bulletin');self.assertEqual(r['status'],'unavailable');self.assertFalse(r.get('passages'));index.search.assert_not_called()

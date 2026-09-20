@@ -142,6 +142,12 @@ def execute_plan(engine,result,plan,resolved,coordinates):
                 if point.get('evidence_id'):point['evidence_id']=mapping[point['evidence_id']]
         for calc in packet.get('calculations',[]):
             calc['task_id']=tid;calc['input_ids']=[mapping[v] for v in calc['input_ids']]
+        # The opening sentence is composed once, here, from the task's own facts, and each renderer
+        # below is given it so it writes depth instead of a second receipt. A kind that cannot state a
+        # finding composes nothing and its own text stands (docs/117: an answer opens with the answer).
+        from . import leadline
+        language=str((sub.get('language') or 'en')).lower().split('-')[0]
+        packet['lead']=leadline.lead_sentence(packet,task['kind'],clock=engine.workspace.clock(),language=language)
         answer=packet['answer']
         # Re-render after namespacing instead of editing an LLM's numeric prose.
         if facts and packet.get('point_tool'):
@@ -149,9 +155,11 @@ def execute_plan(engine,result,plan,resolved,coordinates):
         elif facts and task['kind'] in {'forecast','travel','agriculture'}:
             localized={**packet,'facts':facts};answer=engine.explain(localized)['answer']
         elif facts and task['kind']=='history' and (task['operation'] in {'lookup','compare'} or len(facts)<=8):
-            answer=render_facts({'facts':facts,'status':packet['status']})+'\n'+answer
+            answer=render_facts({'facts':facts,'status':packet['status'],'lead':packet['lead']})+'\n'+answer
         if facts and (task['kind'] in {'forecast','aviation'} or task['kind']=='history' and task['operation'] in {'daily','lookup'}):
             packet['answer']=answer;answer=render_brief(packet)
+        if packet['lead'] and packet['lead'] not in answer:
+            answer=(packet['lead']+(chr(10)+chr(10)+answer if answer.strip() else '')).strip()
         result['retrieval_plan'][index]['status']=packet['status']
         result['retrieval_plan'][index]['returned_source_ids']=sorted({c['source_id'] for c in citations})
         for report in packet.get('airport_reports',[]):
@@ -178,6 +186,10 @@ def execute_plan(engine,result,plan,resolved,coordinates):
             if source not in result.setdefault('sources',[]):
                 result['sources'].append(source)
         result['facts']+=facts;result['citations']+=citations;result['notes']+=packet.get('notes',[])
+        # Tool-owned semantic-safety sentences travel with the turn: whichever path composes the final
+        # answer — renderer floor or written continuation — must still carry them.
+        for clause in packet.get('held_clauses',[]):
+            if clause not in result.setdefault('held_clauses',[]):result['held_clauses'].append(clause)
         result['charts']+=packet.get('charts',[]);result['calculations']+=packet.get('calculations',[])
         result['trace']['tools']+=packet.get('trace',{}).get('tools',[])
         result['trace']['tools'].append({'name':task['kind'],'task_id':tid,'status':packet['status']})
@@ -206,6 +218,11 @@ def execute_plan(engine,result,plan,resolved,coordinates):
     if hasattr(engine,'check_cancelled'):engine.check_cancelled()
     result['notes']=list(dict.fromkeys(result['notes']));result['resolved_points']=resolved
     result['answer']='\n\n'.join((f"Task {i+1}: " if len(plan['tasks'])>1 else '')+text for i,text in enumerate(chunks))
+    # One turn, one opening sentence: a single-task turn exposes the lead it was written with, so the
+    # written-answer path can keep the tool-owned opening instead of inventing a second one. A mixed
+    # turn has one lead per task and no single sentence to hoist, so it keeps none.
+    leads=[packet['lead'] for _tid,packet in executed if packet.get('lead')]
+    if len(chunks)==1 and len(leads)==1:result['lead']=leads[0]
     if len(result['task_results'])>len(chunks):result['answer']+='\nOther requested tasks are waiting for this place selection.'
     result['task_coverage']={'requested':len(plan['tasks']),'completed':sum(r['status'] in {'answered','explanation'} for r in result['task_results']),'incomplete_ids':[r['id'] for r in result['task_results'] if r['status'] not in {'answered','explanation'}]}
     result['trace']['generation']={'provider':'typed_task_renderers','validation':'Facts and calculations remain attached to task, entity, time and source; missing task outcomes are explicit.'}

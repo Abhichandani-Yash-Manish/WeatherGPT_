@@ -28,10 +28,12 @@ def render(result):
     if not facts:
         return 'No verified air-quality data could be retrieved. ' + ' '.join(result.get('notes', [])[:3])
     place = facts[0]['place']
+    opening = result.get('lead')
     lines = []
     current = [fact for fact in facts if fact['parameter'].endswith('_current')]
     if current:
-        lines.append(place + ' · provider current hour ' + current[0]['start'][:16].replace('T', ' ') + ' IST')
+        if not opening:
+            lines.append(place + ' · provider current hour ' + current[0]['start'][:16].replace('T', ' ') + ' IST')
         lines.append('; '.join(LABELS.get(fact['parameter'][:-len('_current')], fact['parameter']) + ' ' +
                                str(fact['value']) + ' ' + fact['unit'] for fact in current) + '.')
     groups = {}
@@ -41,7 +43,8 @@ def render(result):
         groups.setdefault(fact['parameter'], []).append(fact)
     for parameter, rows in groups.items():
         values = [Decimal(fact['value']) for fact in rows]
-        lines.append(place + ' · ' + LABELS.get(parameter, parameter) + ': ' + str(min(values)) + '–' +
+        prefix = '' if opening else place + ' · '
+        lines.append(prefix + LABELS.get(parameter, parameter) + ': ' + str(min(values)) + '–' +
                      str(max(values)) + ' ' + rows[0]['unit'] + ' across ' + str(len(rows)) + ' hourly values.')
     lines.append('Exact hours, values and evidence IDs are in the tables below.')
     return '\n'.join(lines)

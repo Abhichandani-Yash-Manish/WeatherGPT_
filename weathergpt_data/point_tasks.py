@@ -10,7 +10,7 @@ from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 from zoneinfo import ZoneInfo
 
-from .adapters import (EXTENDED, forecast_horizon_limit, HISTORY_LOCAL, MARINE, RIVER, hourly, json_payload,
+from .adapters import (EXTENDED, forecast_horizon_limit, HISTORY_LOCAL, MARINE, MAX_DAILY_HISTORY_DAYS, RIVER, hourly, json_payload,
                        REANALYSIS_DELAY_DAYS, REANALYSIS_MIN_YEAR, REANALYSIS_MODELS, reanalysis_fields, reanalysis_label,
                        reanalysis_model_for, reanalysis_supported)
 from .answers import distance_km, MAX_GRID_DISTANCE_KM
@@ -144,8 +144,9 @@ def execute_point_task(engine, result, plan, task, resolved, coordinates):
         # The reanalysis model is read from the user's own words. It is never guessed and
         # never inferred from a provider, and it is part of the collection identity.
         model=reanalysis_model_for(task.get('request_quote',''))
-        if any((t.hour,t.minute,t.second,t.microsecond)!=(0,0,0,0) for t in [start,end]) or end-start>timedelta(days=7):
-            raise SourceError('Daily history needs one to seven whole IST calendar days, ending at the following midnight')
+        if any((t.hour,t.minute,t.second,t.microsecond)!=(0,0,0,0) for t in [start,end]) or end-start>timedelta(days=MAX_DAILY_HISTORY_DAYS):
+            raise SourceError('Daily history needs whole IST calendar days, ending at the following midnight, and at '
+                              'most '+str(MAX_DAILY_HISTORY_DAYS)+' of them in one task')
         if start.year<REANALYSIS_MIN_YEAR[model]:
             raise SourceError(reanalysis_label(model)+' daily history needs completed dates from '+str(REANALYSIS_MIN_YEAR[model])+' onward')
         # "This week" and "the last ten days" run up to today, and the reanalysis is published about
@@ -312,6 +313,7 @@ def render_point_facts(result):
     facts=result.get('facts',[])
     if not facts:return 'No verified point data could be retrieved. '+' '.join(result.get('notes',[])[:3])
     daily=facts[0].get('evidence_kind')=='reanalysis'
+    opening=result.get('lead')
     if len(facts)<=3:answer=render_facts(result)
     else:
         groups={}
@@ -319,14 +321,29 @@ def render_point_facts(result):
         lines=[]
         for (place,parameter),rows in groups.items():
             values=[Decimal(f['value']) for f in rows]
-            lines.append(place+' · '+rows[0]['start'][:10]+' '+rows[0]['start'][11:16]+' to '+rows[-1]['end'][:10]+' '+rows[-1]['end'][11:16]+' IST\n'+LABELS[parameter]+': '+str(min(values))+'–'+str(max(values))+' '+rows[0]['unit']+' across '+str(len(rows))+(' daily values.' if daily else ' hourly values.'))
+            label=LABELS[parameter]+': '+str(min(values))+'–'+str(max(values))+' '+rows[0]['unit']+' across '+str(len(rows))+(' daily values.' if daily else ' hourly values.')
+            if opening:
+                lines.append(label)
+            else:
+                lines.append(place+' · '+rows[0]['start'][:10]+' '+rows[0]['start'][11:16]+' to '+rows[-1]['end'][:10]+' '+rows[-1]['end'][11:16]+' IST\n'+label)
         lines.append('Exact dates, times, values and evidence IDs are in the charts and tables below.')
         answer='\n'.join(lines)
-    if daily:answer+='\nERA5 reanalysis uses Indian calendar days here; these point values are not station observations or district averages.'
+    # Semantic-safety sentences and derived totals are registered as held clauses beside being printed:
+    # a written answer that replaces this floor must still carry them (docs/117 repair, 20 September).
+    held=result.setdefault('held_clauses',[])
+    if daily:
+        clause='ERA5 reanalysis uses Indian calendar days here; these point values are not station observations or district averages.'
+        answer+='\n'+clause;held.append(clause)
     else:
-        answer+='\nModel forecast for the selected point; source model run and local representativeness are unverified.'
-        if any(f['parameter']=='precipitation_probability' for f in facts):answer+=' Each probability concerns its own hour (>0.1 mm), not the chance for the whole requested period.'
-        if any(t.get('operation')=='onset' for t in result.get('plan',{}).get('tasks',[])):answer+=' Hourly detail does not establish an exact rain-start minute.'
-    for calc in result.get('calculations',[]):answer+='\n'+calc['label']+': '+calc['value']+' '+calc['unit']+'.'
+        clause='Model forecast for the selected point; source model run and local representativeness are unverified.'
+        answer+='\n'+clause;held.append(clause)
+        if any(f['parameter']=='precipitation_probability' for f in facts):
+            clause='Each probability concerns its own hour (>0.1 mm), not the chance for the whole requested period.'
+            answer+=' '+clause;held.append(clause)
+        if any(t.get('operation')=='onset' for t in result.get('plan',{}).get('tasks',[])):
+            clause='Hourly detail does not establish an exact rain-start minute.'
+            answer+=' '+clause;held.append(clause)
+    for calc in result.get('calculations',[]):
+        line=calc['label']+': '+calc['value']+' '+calc['unit']+'.';answer+='\n'+line;held.append(line)
     if result['status']=='partial':answer+=' Some requested intervals or parameters are missing; see limitations.'
     return answer

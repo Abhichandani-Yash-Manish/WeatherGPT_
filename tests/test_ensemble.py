@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 from decimal import Decimal
 
 import test_conversation as fixtures
+from test_task_coverage_battery import assert_coverage_consistent
 
 from weathergpt_data.adapters import (ENSEMBLE, ENSEMBLE_MODELS, ensemble, ensemble_model_for,
                                       ensemble_statistics, nearest_rank)
@@ -254,6 +255,7 @@ class EnsembleChatTests(unittest.TestCase):
         with patch('weathergpt_data.foundation.Foundation.ensemble', return_value=self.packet()):
             r = self.chat(question=question)
         self.assertEqual(r['status'], 'answered', r['answer'])
+        assert_coverage_consistent(self, r)
         parameters = {fact['parameter'] for fact in r['facts']}
         self.assertIn('temperature_2m_mean', parameters)
         self.assertIn('temperature_2m_spread', parameters)

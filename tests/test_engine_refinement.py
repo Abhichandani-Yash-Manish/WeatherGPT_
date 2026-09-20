@@ -7,6 +7,7 @@ from urllib.parse import urlparse
 import test_conversation as fixtures
 import test_point_tasks as point_fixtures
 from test_product_stage_one import task
+from test_task_coverage_battery import assert_coverage_consistent
 from test_ingestion import Response,NOW
 from weathergpt_data.dialogue import reconcile,ground_explicit_slots,select_reply,validate_relative_dates,language_style,named_parameters
 from weathergpt_data.language import expand_request,REQUEST_SCHEMA
@@ -277,7 +278,7 @@ class EngineJourneys(unittest.TestCase):
         history=task(kind='history',parameters=['rainfall'],years=[2010],place_indices=[1])
         self.model.value['places'] += [{'name':'Ahmedabad','state':'Gujarat','district':'','kind':'settlement'}]
         self.model.value['tasks'] += [forecast,history,task(kind='warning',years=[],parameters=['official_warning'],place_indices=[1])]
-        r=self.chat();self.assertEqual(r['status'],'partial');self.assertEqual(r['task_coverage']['completed'],3);self.assertEqual(r['task_coverage']['incomplete_ids'],['t4'])
+        r=self.chat();self.assertEqual(r['status'],'partial');self.assertEqual(r['task_coverage']['completed'],3);self.assertEqual(r['task_coverage']['incomplete_ids'],['t4']);assert_coverage_consistent(self,r)
         self.assertEqual({f['source_id'] for f in r['facts']},{'S18','S21','S27'})
 
 if __name__=='__main__':unittest.main()

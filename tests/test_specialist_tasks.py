@@ -6,6 +6,7 @@ from unittest.mock import patch
 import test_conversation as fixtures
 from test_ingestion import Response,payload
 from test_product_stage_one import task
+from test_task_coverage_battery import assert_coverage_consistent
 from weathergpt_data.specialist_tasks import requested_parameters,PROFILES
 
 
@@ -27,6 +28,7 @@ class SpecialistJourneys(unittest.TestCase):
     def test_wave_height_is_served_with_its_answering_sea_cell(self):
         self.setup_specialist();r=self.chat(question='How high are the waves off Ahmedabad tomorrow morning?')
         self.assertEqual(r['status'],'answered',r['answer'])
+        assert_coverage_consistent(self,r)
         self.assertEqual(len(r['facts']),6)
         self.assertEqual({f['unit'] for f in r['facts']},{'m'})
         self.assertEqual({f['parameter'] for f in r['facts']},{'wave_height'})

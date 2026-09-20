@@ -160,6 +160,13 @@ def forecast_horizon_limit(start,end,now):
                     end.strftime('%d %B %Y')+' and earlier only.'))
 
 
+# How many whole IST days one daily-history task may cover. The archive endpoint takes a date
+# RANGE, not a day count - request_parameters() never sends `days` for history_local - so the old
+# seven-day ceiling was generic worker validation applied where it meant nothing. It cost real
+# answers: "how much rain did Ahmedabad get in August 2026" had no seven-day shape to fall into,
+# so the planner reached for the annual series, which stops in 2010, and the turn refused.
+MAX_DAILY_HISTORY_DAYS=366
+
 REANALYSIS_MIN_YEAR={'era5':1940,'era5_land':1950,'era5_seamless':1950}
 # The reanalysis lags real time. The last published IST day is (today - REANALYSIS_DELAY_DAYS),
 # so a daily window may run up to midnight after it and no further.

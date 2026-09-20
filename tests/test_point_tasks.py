@@ -188,6 +188,54 @@ class PointJourneys(unittest.TestCase):
         r=self.chat();self.assertEqual(r['status'],'outside_validity')
         self.assertEqual(self.calls,0)
 
+    def test_a_whole_month_of_daily_history_is_one_task(self):
+        """"How much rain did Ahmedabad get in August 2026?" used to refuse.
+
+        Daily history was capped at seven days, so a month had no shape to fall into and the planner
+        reached for the annual series instead - which ends in 2010 and cannot supply a recent year. The
+        cap was generic worker validation: the archive endpoint takes a date RANGE and never receives a
+        day count (see request_parameters, which sends start_date/end_date for history_local).
+        """
+        t=self.setup_product(True)
+        t.update(start_local='2025-07-01T00:00:00+05:30',end_local='2025-08-01T00:00:00+05:30')
+        days=['2025-07-%02d'%d for d in range(1,32)]
+        self.response=self.daily_for(days,[1.0]*30+[5.5])
+        r=self.chat()
+        self.assertEqual(r['status'],'answered')
+        self.assertEqual(len(r['facts']),31*2,'one fact per day per requested parameter')
+        total=[c for c in r['calculations'] if 'Precipitation total' in c['label']]
+        self.assertEqual([c['value'] for c in total],['35.5'])
+
+    def test_a_reanalysis_window_is_never_called_an_annual_published_record(self):
+        """Measured 20 September 2026 on a seven-day window:
+
+            Ahmedabad: the annual rainfall was 0.4-94.3 mm (published record).
+
+        Every part of that is wrong. The range is the spread of DAILY values, the window is a week, and
+        "published record" names the curated 1901-2010 table the number did not come from. The cause was
+        structural rather than about span: point-task facts carry no `period` and no `year`, so a default
+        of "annual" fired on their absence and would have done so for a single day too.
+        """
+        t=self.setup_product(True)
+        t.update(start_local='2025-07-01T00:00:00+05:30',end_local='2025-07-04T00:00:00+05:30')
+        self.response=self.daily_for(['2025-07-01','2025-07-02','2025-07-03'],[1.0,2.0,3.0])
+        answer=self.chat()['answer']
+        self.assertNotIn('annual',answer.lower())
+        self.assertNotIn('published record',answer.lower())
+        self.assertIn('ERA5 reanalysis, not a gauge reading',answer)
+        self.assertIn('01 to 03 Jul 2025',answer,'the sentence names the window it actually covers')
+
+    def test_a_sum_question_opens_with_the_sum(self):
+        """The reader asked how MUCH rain fell; the first number they meet should be that one."""
+        t=self.setup_product(True)
+        t.update(start_local='2025-07-01T00:00:00+05:30',end_local='2025-07-04T00:00:00+05:30')
+        self.response=self.daily_for(['2025-07-01','2025-07-02','2025-07-03'],[1.0,2.0,3.0])
+        answer=self.chat()['answer']
+        lead=answer.split('\n')[0]
+        self.assertIn('6.0 mm',lead,'the total leads: %r'%lead)
+        self.assertIn('in total',lead)
+        self.assertIn('Daily values ranged 1.0\u20133.0 mm',lead,'the spread stays, as the second clause')
+
     def test_repeated_queries_reuse_collection_and_shared_budget(self):
         self.setup_product();self.chat();self.chat();self.assertEqual(self.calls,1)
         self.assertEqual(self.db.status()['network_attempts_reserved'],2)
@@ -224,7 +272,12 @@ class PointJourneys(unittest.TestCase):
         self.assertEqual(r['status'],'answered');self.assertEqual(len(r['facts']),6)
 
     def test_outside_scope_requests_and_disabled_source_do_not_fetch(self):
-        t=self.setup_product(True);t['end_local']='2025-07-09T00:00:00+05:30'
+        # Changed 20 September 2026: this used an EIGHT-day window as its out-of-scope case, which was
+        # out of scope only because daily history was capped at seven days. The archive endpoint takes a
+        # date range and never receives a day count, so that cap was generic worker validation applied
+        # where it meant nothing - and it cost real answers ("rain in August 2026"). A window longer than
+        # MAX_DAILY_HISTORY_DAYS is still out of scope, so that is what this now asserts.
+        t=self.setup_product(True);t['end_local']='2027-07-09T00:00:00+05:30'
         r=self.chat();self.assertEqual(r['status'],'unavailable');self.assertEqual(self.calls,0)
         self.setup_product();registry=self.root/'held-registry.json';registry.write_text(json.dumps({'products':[]}));self.app.service.registry_path=registry
         r=self.chat();self.assertEqual(r['status'],'unavailable');self.assertEqual(self.calls,0)

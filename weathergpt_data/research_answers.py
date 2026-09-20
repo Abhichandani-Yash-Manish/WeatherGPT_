@@ -138,7 +138,8 @@ def lookup_plan(plan):
         code='M'+str(['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'].index(period)+1).zfill(2) if period in climate.MONTHS or period in ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'] else period.upper()
         data=climate.lookup(database,sid,year,code)
         r=data['record'];c=data['citation']
-        text=f"India's published {period} {plan['history_parameter']} for {year} was {r['value_decimal']} {r['unit']}." if r['value_decimal'] is not None else f'The source has no value for {year}, {period}.'
+        from .leadline import display_unit
+        text=f"India's published {period} {plan['history_parameter']} for {year} was {r['value_decimal']} {display_unit(r['unit'])}." if r['value_decimal'] is not None else f'The source has no value for {year}, {period}.'
         notes=['This is the published All India aggregate; it does not describe an individual village or district.']
         check=data['reconciliation']
         if check and check.get('difference_mm') not in {None,'0','0.0','0.00'}:notes.append('The source aggregate differs from the sum of its published months; the original total and reconciliation are retained.')
@@ -146,7 +147,7 @@ def lookup_plan(plan):
         # reader nothing about where the number came from (measured 17 September 2026: both All India
         # facts carried no locator while the district series' product view carried page/row/file).
         locators=['CSV row ' + str(r['source_row']) + ', column ' + str(r['source_column'])]
-        return {'status':'answered' if r['value_decimal'] is not None else 'unavailable','text':text,'facts':[{'label':plan['history_parameter'],'value':r['value_decimal'],'unit':r['unit'],'year':year,'period':period,'source_id':sid,'place':'All India','source_locators':locators}] if r['value_decimal'] is not None else [],
+        return {'status':'answered' if r['value_decimal'] is not None else 'unavailable','text':text,'facts':[{'label':plan['history_parameter'],'value':r['value_decimal'],'unit':display_unit(r['unit']),'year':year,'period':period,'source_id':sid,'place':'All India','source_locators':locators}] if r['value_decimal'] is not None else [],
                 'citations':[{'source_id':sid,'url':c['url'],'provider':'IMD','product':'Published All India historical table',**c}],'notes':notes,'raw':data}
     if place['kind'] in {'relative','country','state'}:return {'status':'needs_clarification','text':'The local historical table contains source districts. Which historical district and state do you mean?','facts':[],'citations':[]}
     if plan['history_parameter']!='rainfall':return {'status':'unavailable','text':'The stored district table contains rainfall, not district temperature. I can look up national mean temperature or district rainfall.','facts':[],'citations':[]}

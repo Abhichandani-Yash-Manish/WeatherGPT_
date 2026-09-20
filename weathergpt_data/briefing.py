@@ -28,6 +28,10 @@ def short_place(value):
 def render_brief(result):
     lang=result.get('plan',{}).get('language','en');locale=1 if lang=='hi-Latn' else 2 if lang=='hi' else 0
     facts=result.get('facts',[])
+    # The opening sentence is owned by leadline and already states place, measure, value and window.
+    # This renderer is the depth under it, so it drops its own receipt heading when one is present
+    # rather than spelling the place and the window a second time.
+    opening=result.get('lead')
     if not facts:
         if result.get('choices'):
             labels=list(dict.fromkeys(c['label'] for c in result['choices']))
@@ -55,11 +59,13 @@ def render_brief(result):
         observed=first.get('evidence_kind')=='observation'
         if observed:
             at=parsed(first['observed_at']).astimezone(__import__('zoneinfo').ZoneInfo('Asia/Kolkata')).strftime('%d %b, %H:%M')
-            lead=[f'{p}, airport report at {at} IST:',f'{p}: {at} IST par airport ki report:',f'{p}: {at} IST की हवाई अड्डे की रिपोर्ट:'][locale]
+            heading=[f'{p}, airport report at {at} IST:',f'{p}: {at} IST par airport ki report:',f'{p}: {at} IST की हवाई अड्डे की रिपोर्ट:'][locale]
         else:
             a=min(parsed(f['start']) for f in group);b=max(parsed(f['end']) for f in group)
-            lead=f'{p} · {a:%d %b, %H:%M}–{b:%d %b, %H:%M} IST:'
-        lines=[lead];params=defaultdict(list)
+            heading=f'{p} · {a:%d %b, %H:%M}–{b:%d %b, %H:%M} IST:'
+        if opening:
+            heading=heading if p != short_place(opening.split(':')[0]) else ''
+        lines=[heading] if heading else [];params=defaultdict(list)
         for index,calc in enumerate(result.get('calculations',[])):
             if calc.get('kind')=='source_comparison' or set(calc.get('source_ids',[]))!={source} or not calc['label'].startswith(place+' · '):continue
             labels=['Total precipitation over this period','Is poore samay ki kul anumaanit barish','इस पूरी अवधि की कुल अनुमानित वर्षा']
@@ -77,9 +83,15 @@ def render_brief(result):
                 maximum=max(values);peak=rows[values.index(maximum)]
                 a,b=parsed(peak['start']),parsed(peak['end'])
                 lines.append([f'The highest hourly value is {maximum}% for {a:%d %b, %H:%M}–{b:%H:%M} IST.',f'Sabse zyada {maximum}% sambhavna {a:%d %b, %H:%M}–{b:%H:%M} IST ke ghante mein hai.',f'सबसे अधिक {maximum}% संभावना {a:%d %b, %H:%M}–{b:%H:%M} IST के घंटे में है।'][locale])
-                lines.append(['These percentages are for individual hours, not the chance for the whole day.','Ye alag-alag ghanton ki sambhavnayein hain; poore din ka ek pratishat nahi.','ये अलग-अलग घंटों की संभावनाएँ हैं; पूरे दिन का एक प्रतिशत नहीं।'][locale])
-        if source=='S22':lines.append(['ERA5 modeled history, not a rain-gauge observation.','Ye ERA5 ka aitihasik model-anumaan hai, rain-gauge ka maapa hua aankda nahi.','यह ERA5 का ऐतिहासिक मॉडल अनुमान है, वर्षामापी का प्रत्यक्ष आँकड़ा नहीं।'][locale])
-        elif observed:lines.append(['This report describes the airport, not conditions across the whole city.','Ye report airport ki hai, poore shehar ki nahi.','यह रिपोर्ट हवाई अड्डे की है, पूरे शहर की नहीं।'][locale])
+                clause=['These percentages are for individual hours, not the chance for the whole day.','Ye alag-alag ghanton ki sambhavnayein hain; poore din ka ek pratishat nahi.','ये अलग-अलग घंटों की संभावनाएँ हैं; पूरे दिन का एक प्रतिशत नहीं।'][locale]
+                # Held beside the text: a written answer replacing this floor must still carry the semantics.
+                lines.append(clause);result.setdefault('held_clauses',[]).append(clause)
+        if source=='S22':
+            clause=['ERA5 modeled history, not a rain-gauge observation.','Ye ERA5 ka aitihasik model-anumaan hai, rain-gauge ka maapa hua aankda nahi.','यह ERA5 का ऐतिहासिक मॉडल अनुमान है, वर्षामापी का प्रत्यक्ष आँकड़ा नहीं।'][locale]
+            lines.append(clause);result.setdefault('held_clauses',[]).append(clause)
+        elif observed:
+            clause=['This report describes the airport, not conditions across the whole city.','Ye report airport ki hai, poore shehar ki nahi.','यह रिपोर्ट हवाई अड्डे की है, पूरे शहर की नहीं।'][locale]
+            lines.append(clause);result.setdefault('held_clauses',[]).append(clause)
         elif source in {'S21','S62'}:
             model='GFS' if source=='S21' else 'Open-Meteo best-match'
             lines.append([f'Source: {model} forecast; conditions can change.',f'Srot: {model} ka poorvanuman; mausam badal sakta hai.',f'स्रोत: {model} पूर्वानुमान; मौसम बदल सकता है।'][locale])

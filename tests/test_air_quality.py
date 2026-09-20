@@ -3,6 +3,7 @@ import unittest
 from datetime import datetime, timezone
 
 import test_conversation as fixtures
+from test_task_coverage_battery import assert_coverage_consistent
 from weathergpt_data.adapters import AIR_QUALITY, air_quality
 from weathergpt_data.transport import SourceError
 
@@ -208,6 +209,7 @@ class AirQualityChatTests(unittest.TestCase):
         with patch('weathergpt_data.foundation.Foundation.air_quality', return_value=self.packet()):
             r = self.chat(question=question)
         self.assertEqual(r['status'], 'answered', r['answer'])
+        assert_coverage_consistent(self, r)
         parameters = {fact['parameter'] for fact in r['facts']}
         self.assertIn('pm2_5', parameters)
         self.assertIn('us_aqi_current', parameters)

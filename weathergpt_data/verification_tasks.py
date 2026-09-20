@@ -80,10 +80,13 @@ def render(result):
         lines.append(LABELS.get(variable, variable) + ' mean absolute error by lead time: ' +
                      '; '.join('day ' + str(fact['lead_days']) + ' ' + str(fact['value']) + ' ' + fact['unit'] +
                                ' (' + str(fact['sample_hours']) + ' matched hours)' for fact in rows) + '.')
-    lines.append('Every figure is computed over the hours the archived run and the reference both carry; '
-                 'the tables below give the bias, mean absolute error, root mean square error and '
-                 'correlation for each lead time. It is not forecast skill, a confidence or a risk, and '
-                 'no model is ranked against another.')
+    clause = ('Every figure is computed over the hours the archived run and the reference both carry; '
+              'the tables below give the bias, mean absolute error, root mean square error and '
+              'correlation for each lead time. It is not forecast skill, a confidence or a risk, and '
+              'no model is ranked against another.')
+    lines.append(clause)
+    # Held beside the text: a written answer replacing this floor must still say what the figures are not.
+    result.setdefault('held_clauses', []).append(clause)
     return '\n'.join(lines)
 
 
