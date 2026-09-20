@@ -13,6 +13,15 @@ published wording, an observation or an official warning. The requirement-by-req
 [the PS progress assessment](docs/84-ps-progress-and-pictures.md); the current review and the ordered
 closure queue are in [docs/93](docs/93-ps-closure-queue.md).
 
+**How the conversation is measured.** 276 scenarios across the eight features, multi-turn context and
+adversarial boundaries (`data/registry/chat-atlas.json`), each declaring the outcomes that would be
+honest for it. The number that matters is the **avoidable** refusal rate — a refusal because a
+publisher issued nothing is the product working, and is counted separately from one caused by a
+failed fetch, a bad route or a mishandled window. On the smaller 51-question corpus that rate went
+from 19% to 13% on 20 September, with avoidable refusals down from six to one. The atlas run is
+larger and slower and its current figures are in
+[docs/119](docs/119-what-the-atlas-measured.md).
+
 ## What it looks like
 
 |  |  |
@@ -38,9 +47,9 @@ pre-R6 picture set and its per-file captions stay in
 | | |
 |---|---|
 | **Delivered in scope** | Point forecasts and cross-source comparison, published historical and climate records, official district-warning applicability resolved against IMD's own geometry, plan monitoring with a local inbox, published-document retrieval with page/issue/currency attached, marine and river point products, airport reports, air quality, ensemble spread, archived-run forecast verification against reanalysis, farming advisories, a desktop workspace with eighteen guided surfaces beside Ask, and a model-planned conversation that decides when to retrieve, answers a greeting without inventing anything, writes the sentence around tool-owned facts, and carries its artefacts. |
-| **Partial** | Warning delivery (canonical warning state with a named change detector, a claim/lease outbox with a retry taxonomy, consented Web Push, acknowledgements and a supervision heartbeat now exist; **no live device journey and no sustained live-IMD run have been demonstrated**), language output and voice (measured per direction, not accepted by native speakers), retrieval breadth (whole-document and contradiction handling remain open), operations (foreground watcher only, no hosted scheduler). |
+| **Partial** | Warning delivery (canonical warning state with a named change detector, a claim/lease outbox with a retry taxonomy, consented Web Push, acknowledgements and a supervision heartbeat exist, and since 20 Sep the service worker and manifest that make them reachable in a real browser; **no live device journey and no sustained live-IMD run have been demonstrated**), language output and voice (measured per direction, not accepted by native speakers), retrieval breadth (whole-document and contradiction handling remain open). |
 | **Not connected** | Radar/satellite **imagery**, official sea-area and coastal bulletins as live products, observed water level or gauge readings, danger levels, flood extent, tide, current, sea-surface temperature, ground air-quality monitors, SMS/IVR/WhatsApp delivery, road or route clearance, crop diagnosis or pesticide dosage, and any confidence, risk or skill score. |
-| **Not accepted** | Nationwide corpus acceptance, mobile and rural journeys, noisy-input and native-speaker review, live changed-edition to device notification, fresh-machine and cross-platform installation, sustained load. Hosting is on hold. |
+| **Not accepted** | Nationwide corpus acceptance, mobile and rural journeys, noisy-input and native-speaker review, live changed-edition to device notification, fresh-machine and cross-platform installation, sustained load. Hosting is no longer held — `Dockerfile`, `fly.toml` and [docs/118](docs/118-deploying-this-workspace.md) exist — but **the image is unbuilt and nothing is deployed**. |
 
 ## Progress against the problem statement
 
@@ -53,14 +62,14 @@ check, a count or a screenshot.
 | 1 Real-time weather information | **partial** | Refreshable forecasts, station reports, published warning days and a composed Now reading; coverage, freshness and station quality vary by place. |
 | 2 Natural-language querying | **delivered in scope, partial overall** | The model plans every turn, a conversation is answered without retrieval, and a fact turn gets a written answer behind checks; unfamiliar compound requests are not independently adjudicated. |
 | 3 NWP integration (GFS/WRF named) | **delivered in scope** | Governed GFS and best-match products with comparison and provenance; WRF is not connected, and a comparison can share lineage. |
-| 4 Alerts and early-warning dissemination | **partial — the weakest journey** | District warning applicability, plans, an outbox and consented push exist; no live changed-edition to a real device has been demonstrated, and CAP reference resolution never authorises dissemination. |
+| 4 Alerts and early-warning dissemination | **partial — reachable now, still not demonstrated** | District warning applicability, plans, an outbox and consented push exist, and so, since 20 Sep, does the service worker the app had always registered but this repository never contained — until then no push could have arrived in any browser. A question naming a state now sweeps that state's districts. No live changed-edition to a real device has been demonstrated, and CAP reference resolution never authorises dissemination. |
 | 5 Location-based forecasts and advisories | **partial** | Place resolution, district identity, crop/stage intake and cited bulletins; nationwide advisory acceptance and field applicability remain open. |
-| 6 Indian-language support | **partial, now measured** | 22 measurable languages are checked; measured delivery for ten: seven rendered with protected values, two refused, one unverifiable; no native-speaker quality acceptance. |
-| 7 Climate trends and historical analysis | **partial** | Published history, source-constrained trends and charts, short reanalysis windows; not a climate-research workspace and no attribution claims. |
+| 6 Indian-language support | **partial, measured, awaiting a speaker** | 22 measurable languages are checked. Two rendering defects were found and fixed on 20 Sep: a bare metre unit ate the first letter of the following word, and the value placeholders were numbered in a sequence the translator would happily continue past the end. Sixteen live Hindi and Gujarati answers now render 15/16 in the requested script, and are with a native speaker for acceptance. |
+| 7 Climate trends and historical analysis | **partial** | Published history, source-constrained trends and charts, and reanalysis windows up to a year — a month or a season is one question since 20 Sep, where the seven-day cap used to push "rain in August 2026" onto an annual series that ends in 2010 and could only refuse. Not a climate-research workspace, and no attribution claims. |
 | 8 Voice for rural accessibility | **path implemented, not accepted** | Transcription, spoken output, Hindi/Gujarati round trips and a Listen control; no noisy-field or native-speaker validation. |
 | Mobile-based platform | **not accepted** | Responsive layouts are checked; the desktop web is the current surface by user direction, and touch/permission/low-bandwidth journeys remain open. |
 | Met databases/APIs and an LLM query engine | **delivered in scope, breadth partial** | 70 ledger entries with a recorded status and probe; governed tools, an index and provenance; registration is not selection. |
-| Scalable real-time ingestion | **not demonstrated at service scale** | Bounded queues, leases, retries and retention; no load, uptime or fresh-machine acceptance, and hosting is held. |
+| Scalable real-time ingestion | **not demonstrated at service scale** | Bounded queues, leases, retries and retention, and the gate now runs on every push. No load, uptime or fresh-machine acceptance. The stores are SQLite and a 306-question run alongside the test suite is enough to make them contend, which is the honest ceiling of this architecture rather than a tuning problem. |
 
 ## Run it
 
@@ -74,7 +83,28 @@ python scripts/start_weather.py                # preflight first, then serve on 
 Open <http://127.0.0.1:8765>. **The served surface is the built React frontend**: build it once with cd frontend && npm install && npm run build; a missing build is refused in words rather than served as a blank page. The vanilla web/*.js frontend was deleted when R6 closed; the built React frontend is the only served surface (docs/92, §5). The server answers only on loopback, behind a per-process session
 token, and it refuses to start on a check it cannot pass (a registry that does not parse, an unusable
 store, a taken port) rather than serving a half-working workspace. **Restart a running server after
-pulling**: changing files does not update a process that is already serving.
+pulling**: changing files does not update a process that is already serving. That one has bitten a
+measurement run, not just a reader — a scenario sweep against an unrestarted server reported, in
+detail, the behaviour the edit had just replaced.
+
+### On a phone, and on a real URL
+
+    ./scripts/demo_on_phone.sh      # an HTTPS link for a phone, in about a minute
+
+The Web Push API, service worker registration and PWA install all require a **secure context**, so a
+phone opening `http://192.168.1.x:8765` gets none of them — the browser refuses before any of this
+product's code runs. `localhost` is also a secure context, which is exactly why none of this shows
+up while developing. The script opens a Cloudflare quick tunnel (no account), reads the hostname and
+starts the workspace with that hostname allowed and an access key required.
+
+For a real deployment see [docs/118](docs/118-deploying-this-workspace.md), `Dockerfile` and
+`fly.toml`. Three things change outside loopback and each takes a deliberate flag rather than a new
+default: `--host` (still `127.0.0.1` by default), `--public-host` (the Host and Origin checks are a
+DNS-rebinding guard, and a mismatch refuses every request in a way that looks like a total outage),
+and `WEATHERGPT_ACCESS_KEY`. The last one matters because the page token stops another origin but
+not a person: anyone who can load the page is handed one. **The access key is a door key for a demo,
+not user authentication** — everyone holding it is the same anonymous visitor — and it exists so a
+public URL cannot spend this workspace's provider budget on whoever finds it.
 
 ### The React frontend (shell, transcript, and every surface as a module)
 
@@ -193,9 +223,10 @@ text leaves this machine, and the paid endpoint is billed to the key the reader 
 
 ## Watch delivery, and the supervision truth
 
-Watches are checked in the foreground: by the API when you ask, by scripts/check_watches.py, or by the
-supervised loop below. **No hosted daemon or OS scheduler is installed**, and the product says so rather than
-implying a service:
+Watches are checked in the foreground: by the API when you ask, by `scripts/check_watches.py`, or by
+the supervised loop below. **No hosted daemon is installed**, and the product says so rather than
+implying a service. An OS schedule now exists for the daily data refresh — see below — but it is a
+refresh schedule, not a delivery service:
 
     python3 scripts/watch_daemon.py --interval 900   # check, dispatch, escalate, heartbeat
     curl -s -H "X-WeatherGPT-Token: $TOKEN" http://127.0.0.1:8765/api/watch-health
@@ -206,6 +237,28 @@ outbox counts by state (including claimed and dead), the watch counts and the pl
 inbox** panel renders the same truth, including dead-letter rows with their last error, so a queue is never
 read as a delivery service. For unattended operation the loop belongs under an OS supervisor; a stale
 heartbeat is what would prove it stopped.
+
+## Keeping the data current, and knowing when it is not
+
+    scripts/install_daily_schedule.sh            # install or update the twice-daily refresh
+    scripts/install_daily_schedule.sh --show     # what is installed, and when it LAST ACTUALLY RAN
+    python3 scripts/audit_freshness.py           # what each shelf covers, and whether it is firing
+
+Twice a day, not once: a weather product refreshed once is stale for most of the day, and IMD
+publishes the district bulletins in the morning and updates the warning layer through the afternoon.
+
+**On macOS this is a LaunchAgent, not a crontab, and the reason matters.** The crontab entries were
+installed on 20 September and both of that day's slots passed without running — the laptop entered
+sleep ten minutes before the first one and cycled sleep/wake all morning, and macOS cron skips a job
+it missed while asleep rather than running it on wake. `crontab -l` showed two correct entries the
+whole time. On a laptop, that is worse than no schedule: it looks like one. launchd's
+`StartCalendarInterval` runs a missed slot as soon as the machine wakes, which is the behaviour a
+daily refresh actually needs. On Linux, where a server does not sleep, it stays a crontab.
+
+That episode also changed what the audit asks. Reporting *scheduled* was true throughout the
+failure. It now reports **installed**, **by what mechanism**, and whether it is **firing** — judged
+from when the refresh last ran, not from what is configured — and says `NOT FIRING` past a
+twenty-four hour budget.
 
 ## What it answers today
 
@@ -227,10 +280,18 @@ time, page/row locator, evidence id) and disclosures for requested tasks, scope 
   the provider’s current hour kept apart from the window; no health advice, no risk score, no
   protective action and no ground monitor connected.
 - **Published records.** District rainfall and national climate series with charts, exact-value
-  inspection and page/row locators; a bounded daily reanalysis window labelled as modelled; airport
-  METAR and TAF reports each with their own station and validity.
+  inspection and page/row locators; a daily reanalysis window of up to a year, labelled as modelled,
+  so a month or a season is one question and a window running into the publication delay serves its
+  published part and says where it stops; airport METAR and TAF reports each with their own station
+  and validity, reachable by the city name a reader actually uses rather than a four-letter ICAO code.
 - **Warnings and plans.** The official district warning day resolved to your place against IMD's own
-  geometry, with the CAP relay reported separately and never merged into one verdict; an alert brief
+  geometry, with the CAP relay reported separately and never merged into one verdict. **A question
+  that names a state, or no place at all, sweeps districts rather than hunting for a settlement**:
+  "any warnings in Kerala today?" used to offer four hamlets in Rajasthan spelled like it, because
+  the thirty-six states were sitting in the geography database unconsulted. A state answer reports
+  how many districts it could *not* attribute — the warning product publishes no state of its own, so
+  attribution is by name against the reviewed directory and is partial — because a count whose
+  incompleteness is invisible is worse than no count. an alert brief
   you can keep, a plan-monitoring inbox, and legacy watches that record a changed official state.
   A no-match is never an all-clear and origin authentication remains unverified. Each of the five days carries
   its own derived IST date and window (Day 1 is the bulletin date), and every surface says the window is
@@ -310,7 +371,26 @@ python3 scripts/doctor.py                            # environment, providers an
 python3 scripts/models.py --check                    # the rules-first floor and the configured providers
 python3 scripts/models.py --probe-free               # the curated free ranking measured against the live catalogue
 python3 scripts/verify_all.py                        # environment, registries, drift guard, Python tests, the four React gates
+python3 scripts/run_atlas.py --base http://127.0.0.1:8765   # 276 scenarios over all eight features
+python3 scripts/audit_freshness.py                   # what each shelf covers, and whether the schedule is FIRING
 ```
+
+**The gate also runs on every push.** [`.github/workflows/gate.yml`](.github/workflows/gate.yml) runs
+all of the above on Python 3.9 — the version the demo machine runs — after building the frontend, so
+the React audits audit something instead of reporting a skip. The suite is deliberately network-free
+(`tests/conftest.py` fails any test that reaches a provider), so a green run on a machine that has
+never seen this code means what a green run here means. It has already caught two defects a laptop
+hid: a test that passed only because this machine had API keys, and a stale test count in this file.
+
+**The scenario atlas is the chat measurement.** `data/registry/chat-atlas.json` holds 276 scenarios
+across the eight features, multi-turn context and adversarial boundaries, each declaring the
+outcomes that would be *honest* for it — a correct refusal is a pass, because a corpus that expects
+an answer to an unanswerable question teaches the wrong lesson. The number it exists to produce is
+the **avoidable** refusal rate, split from the publisher's own gaps and from the honest edge of what
+any product could answer. Three traps make it easy to measure the wrong thing, and all three were
+hit before they were understood: it talks to a *running* server, so an unrestarted one reports the
+behaviour your edit replaced; other work against the same store makes SQLite contend; and the shared
+provider ceiling, once spent, makes unrelated tools fail in ways that read as product defects.
 
 These are regression checks, not acceptance. The React component checks run in jsdom (Vitest with Testing
 Library and MSW), so they are **not** browser, visual, load or fluent-language acceptance. What they do hold is specific: every displayed number must come from the
