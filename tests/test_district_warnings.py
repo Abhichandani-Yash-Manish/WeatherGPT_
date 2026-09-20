@@ -447,3 +447,55 @@ class NationalSweepTests(unittest.TestCase):
         self.assertEqual(len(out['facts']), wt.FACT_CAP)
         # The cap is a display limit, never a measurement limit: the evidence keeps every match.
         self.assertEqual(len(out['warning_evidence']['national_sweep']['matched_districts']), wt.FACT_CAP + 7)
+
+
+class StateScopeTests(unittest.TestCase):
+    """A state is a state, not a village spelled like one.
+
+    Measured 20 September 2026 against the scenario atlas: "Are there any weather warnings in Kerala
+    today?" answered "Which place do you mean? Kerla, Pali District, State of Rājasthān / ...". Seven
+    atlas failures had this one cause - Kerala, Bihar, Punjab, Rajasthan, Gujarat, Uttarakhand - and
+    it is the most embarrassing thing this product could do to someone who named their own state.
+    """
+
+    def directory(self):
+        from weathergpt_data.workspace import Workspace
+        from weathergpt_data.states import StateDirectory
+        return StateDirectory(Workspace().service.geography_database)
+
+    def test_the_thirty_six_states_are_read_from_the_source_backed_directory(self):
+        states = self.directory().states()
+        self.assertEqual(len(states), 36, 'twenty-eight states and eight union territories')
+        for expected in ('Kerala', 'Bihar', 'Punjab', 'Rajasthan', 'Gujarat', 'Uttarakhand'):
+            self.assertIn(expected, states)
+
+    def test_a_state_resolves_through_its_official_alternates_but_a_hamlet_does_not(self):
+        directory = self.directory()
+        self.assertEqual(directory.resolve('Kerala'), 'Kerala')
+        self.assertEqual(directory.resolve('the state of Gujarat'), 'Gujarat')
+        # Renames and official alternates, not transliteration guesses.
+        self.assertEqual(directory.resolve('Orissa'), 'Odisha')
+        self.assertEqual(directory.resolve('J&K'), 'Jammu and Kashmir')
+        # The hamlet that was being offered in Kerala's place is not a state, and neither is a city.
+        self.assertIsNone(directory.resolve('Kerla'))
+        self.assertIsNone(directory.resolve('Ahmedabad'))
+
+    def test_attribution_reports_what_it_could_not_place(self):
+        """The warning product publishes no state, so attribution is by name and is partial.
+
+        A count that hides its own incompleteness is worse than no count: "27 districts in Gujarat"
+        read as complete would be wrong.
+        """
+        directory = self.directory()
+        records = [{'district_label': 'THRISSUR'}, {'district_label': 'ALAPPUZHA'},
+                   {'district_label': 'SURAT'}, {'district_label': 'NOT A REAL DISTRICT AT ALL'}]
+        matched, unattributed = directory.attribute(records, 'Kerala')
+        self.assertEqual(sorted(r['district_label'] for r in matched), ['ALAPPUZHA', 'THRISSUR'])
+        self.assertEqual(unattributed, 1, 'the unplaceable district is counted, not dropped')
+
+    def test_the_coverage_note_is_silent_only_when_nothing_was_lost(self):
+        from weathergpt_data.states import coverage_note
+        self.assertEqual(coverage_note(0, 742), '')
+        note = coverage_note(201, 742)
+        self.assertIn('201 of the 742', note)
+        self.assertIn('could be among them', note, 'the reader is told the count may be short')

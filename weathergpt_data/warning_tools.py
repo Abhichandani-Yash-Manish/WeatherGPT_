@@ -137,7 +137,8 @@ def requested_colours(text):
     return sorted(set(named)) or None
 
 
-def national_sweep(engine, result, plan, task, records, snapshot_meta, cap, colours):
+def national_sweep(engine, result, plan, task, records, snapshot_meta, cap, colours,
+                   state=None, directory=None):
     """Which districts carry a warning, across the whole country, with no place to narrow to.
 
     Added 20 September 2026. "Which districts are under a red warning today?" named no place, so the
@@ -153,6 +154,14 @@ def national_sweep(engine, result, plan, task, records, snapshot_meta, cap, colo
     """
     now = engine.workspace.clock()
     wanted = colours or ['red', 'orange', 'yellow']
+    # Scoped to one state when the reader named one. The warning product publishes no state of its
+    # own, so attribution is by name against the reviewed district directory and is PARTIAL - the
+    # districts it cannot place are counted and reported, never quietly dropped.
+    unattributed = 0
+    total_records = len(records)
+    if state and directory is not None:
+        records, unattributed = directory.attribute(records, state)
+    where = ' in ' + state if state else ''
     matched, lapsed_matched, current_districts, editions = [], [], 0, {}
     for record in records:
         try:
@@ -189,24 +198,25 @@ def national_sweep(engine, result, plan, task, records, snapshot_meta, cap, colo
 
     chunks = []
     if matched:
-        chunks.append(str(len(matched)) + ' district' + ('s' if len(matched) != 1 else '') +
+        chunks.append(str(len(matched)) + ' district' + ('s' if len(matched) != 1 else '') + where +
                       ' carry ' + colour_phrase + ' in the current IMD district bulletin: ' + names(matched) + '.')
         if len(matched) > FACT_CAP:
             chunks.append('The list above and the facts below are capped at ' + str(FACT_CAP) +
                           ' districts; the full matched set is in this turn\'s warning evidence.')
         result['status'] = 'answered'
     elif current_districts:
-        chunks.append('No district carries ' + colour_phrase + ' in the current IMD district bulletin. ' +
-                      str(current_districts) + ' districts have a day that has not yet passed, and none of them '
-                      'is at ' + colour_phrase + '. A green or absent colour is not a statement that nothing '
-                      'will happen.')
+        chunks.append('No district' + where + ' carries ' + colour_phrase + ' in the current IMD district '
+                      'bulletin. ' + str(current_districts) + ' district' +
+                      ('s have' if current_districts != 1 else ' has') + ' a day that has not yet passed, and '
+                      'none of them is at ' + colour_phrase + '. A green or absent colour is not a statement '
+                      'that nothing will happen.')
         result['status'] = 'answered'
     else:
-        chunks.append('No district can be reported at ' + colour_phrase + ' today, because no stored district '
-                      'bulletin still has a day in the future. The newest stored edition is dated ' +
-                      (newest or 'an unreadable date') + ' and covers ' + str(len(records)) + ' districts; every '
-                      'day it publishes has already passed. This is a gap in the published bulletin, not an '
-                      'all-clear.')
+        chunks.append('No district' + where + ' can be reported at ' + colour_phrase + ' today, because no '
+                      'stored district bulletin still has a day in the future. The newest stored edition is '
+                      'dated ' + (newest or 'an unreadable date') + ' and covers ' + str(len(records)) +
+                      ' districts' + where + '; every day it publishes has already passed. This is a gap in the '
+                      'published bulletin, not an all-clear.')
         if lapsed_matched:
             chunks.append('For the record, in that lapsed edition ' + str(len(lapsed_matched)) + ' district' +
                           ('s' if len(lapsed_matched) != 1 else '') + ' carried ' + colour_phrase + ' on a day that '
@@ -214,6 +224,11 @@ def national_sweep(engine, result, plan, task, records, snapshot_meta, cap, colo
                           'warning in force now, and it carries no current facts.')
         result['status'] = 'stale'
 
+    if state:
+        from .states import coverage_note
+        note = coverage_note(unattributed, total_records)
+        if note:
+            chunks.append(note)
     message_count = len(cap['records'])
     assessment = cap['assessment']
     chunks.append('CAP relay assessment: ' + str(message_count) + ' retrieved messages, ' +
@@ -226,6 +241,8 @@ def national_sweep(engine, result, plan, task, records, snapshot_meta, cap, colo
         'assessment': assessment, 'coverage': cap['coverage'], 'delivery': cap['meta']['delivery'],
         'latest_sent': cap['latest_sent'], 'requested_places': [], 'records': cap['records'],
         'national_sweep': {'colours': wanted, 'colours_named_by_reader': bool(colours),
+                           'state': state, 'districts_in_bulletin': total_records,
+                           'districts_not_attributed_to_any_state': unattributed,
                            'districts_in_store': len(records), 'districts_with_a_current_day': current_districts,
                            'matched_districts': [{'district': e['record'].get('district_label'),
                                                   'issued_at_utc': e['issued'].isoformat(),
@@ -250,8 +267,16 @@ def national_sweep(engine, result, plan, task, records, snapshot_meta, cap, colo
                                      'official_applicability_verified': bool(matched),
                                      'dissemination_eligible': False})
     result['answer'] = ' '.join(chunks)
+    # The sweep's first sentence IS the answer, so it owns the lead. Left to the generic composer,
+    # a thirteen-district sweep opened "Kerala: today the forecast value is yellow IMD district
+    # warning colour" - one district's colour presented as the state's, and a warning colour called
+    # a forecast. lead_sentence() keeps a lead that is already composed, and task_dispatch does not
+    # prepend one that already appears in the answer.
+    result['lead'] = chunks[0] if chunks else ''
     result['expires_at_utc'] = stamp(now + timedelta(minutes=15))
-    result['notes'] += ['No district or state was named, so every district in the official product was read.',
+    result['notes'] += [('Every district the official product attributes to ' + state + ' was read.')
+                        if state else
+                        'No district or state was named, so every district in the official product was read.',
                         'IMD district warning guidance concerns land districts and is not a flood warning, a cyclone '
                         'warning, an all-clear or a CAP alert.',
                         'CAP lifecycle eligibility never authorises dissemination; warning material is reported as '
@@ -263,6 +288,21 @@ def execute_warning(engine, result, plan, task, resolved=None, coordinates=None)
     chosen, ambiguous, unresolved, outside, stale, sea_areas = [], None, [], [], [], []
     records, snapshot_meta = [], None
     sweep = not plan['places']
+    # A state is not a settlement. Before any gazetteer search, ask whether the named place IS one of
+    # the thirty-six states: "warnings in Kerala" was being answered with four hamlets spelled like it.
+    state_scope = None
+    try:
+        from .states import StateDirectory
+        directory = StateDirectory(engine.workspace.service.geography_database)
+        for place in plan['places']:
+            resolved_state = directory.resolve(place.get('state') or place.get('name'))
+            if resolved_state:
+                state_scope = resolved_state
+                break
+    except (ValueError, OSError, AttributeError):
+        directory, state_scope = None, None
+    if state_scope:
+        sweep = True
     try:
         with evidence_store(engine.workspace, 'imd_cap',
                             engine.workspace.service.raw_root.parent / 'warning-evidence') as store:
@@ -329,7 +369,8 @@ def execute_warning(engine, result, plan, task, resolved=None, coordinates=None)
     if sweep:
         return national_sweep(engine, result, plan, task, records, snapshot_meta, cap,
                               requested_colours(str(task.get('request_quote') or '') + ' ' +
-                                                str(plan.get('requested_outcome') or '')))
+                                                str(plan.get('requested_outcome') or '')),
+                              state=state_scope, directory=directory if state_scope else None)
 
     if sea_areas and not chosen:
         result.update(status='needs_clarification',
