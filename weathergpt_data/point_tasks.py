@@ -4,14 +4,14 @@ No model-written URLs/calculations. Stored normalized values are rederived from
 hash-checked raw payloads before being used. Old exact GFS answers remain separate.
 """
 import json
-from datetime import date, datetime, timedelta, timezone
+from datetime import date, datetime, time as dt_time, timedelta, timezone
 from decimal import Decimal
 from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 from zoneinfo import ZoneInfo
 
 from .adapters import (EXTENDED, HISTORY_LOCAL, MARINE, RIVER, hourly, json_payload,
-                       REANALYSIS_MIN_YEAR, REANALYSIS_MODELS, reanalysis_fields, reanalysis_label,
+                       REANALYSIS_DELAY_DAYS, REANALYSIS_MIN_YEAR, REANALYSIS_MODELS, reanalysis_fields, reanalysis_label,
                        reanalysis_model_for, reanalysis_supported)
 from .answers import distance_km, MAX_GRID_DISTANCE_KM
 from .foundation import Foundation, ROOT
@@ -139,19 +139,31 @@ def execute_point_task(engine, result, plan, task, resolved, coordinates):
             result.setdefault('notes',[]).append(aligned_note)
     if any(t.utcoffset()!=timedelta(hours=5,minutes=30) for t in [start,end]) or end<=start:
         raise SourceError('Use an ordered interval with Indian Standard Time endpoints')
-    model='era5';model_missing=[]
+    model='era5';model_missing=[];asked_end=None
     if daily:
         # The reanalysis model is read from the user's own words. It is never guessed and
         # never inferred from a provider, and it is part of the collection identity.
         model=reanalysis_model_for(task.get('request_quote',''))
         if any((t.hour,t.minute,t.second,t.microsecond)!=(0,0,0,0) for t in [start,end]) or end-start>timedelta(days=7):
             raise SourceError('Daily history needs one to seven whole IST calendar days, ending at the following midnight')
-        if start.year<REANALYSIS_MIN_YEAR[model] or end>now:
+        if start.year<REANALYSIS_MIN_YEAR[model]:
             raise SourceError(reanalysis_label(model)+' daily history needs completed dates from '+str(REANALYSIS_MIN_YEAR[model])+' onward')
+        # "This week" and "the last ten days" run up to today, and the reanalysis is published about
+        # five days behind. Refusing the whole window for its unpublished tail threw away the days the
+        # source HAS published: measured 20 September 2026, "how much rain did Ahmedabad get this week?"
+        # refused outright. So the window is trimmed to the published portion and the answer is labelled
+        # with the window actually served - never with the one that was asked for.
+        published_end=datetime.combine(now.astimezone(IST).date()-timedelta(days=REANALYSIS_DELAY_DAYS-1),
+                                       dt_time(0,0),tzinfo=IST)
+        if end>published_end:
+            if published_end<=start:
+                result.update(status='unavailable',answer=reanalysis_label(model)+' daily reanalysis is published with '
+                              'about a five-day delay, and every day in the requested window falls inside that delay. '
+                              'No part of it has been published yet; yesterday is not being replaced with an annual '
+                              'value or a forecast.');return result
+            asked_end=end;end=published_end;plan['end_local']=end.isoformat()
         if any((start+timedelta(days=i)).replace(tzinfo=IST).utcoffset()!=timedelta(hours=5,minutes=30) for i in range((end-start).days+1)):
             raise SourceError('Historical timezone changes cannot be represented by this fixed IST daily contract')
-        if (end-timedelta(days=1)).date()>now.astimezone(IST).date()-timedelta(days=5):
-            result.update(status='unavailable',answer=reanalysis_label(model)+' daily reanalysis is published with about a five-day delay. This recent date is not eligible for this history tool yet; yesterday is not being replaced with an annual value or a forecast.');return result
         aliases={'rainfall':['precipitation_sum'],'rain':['precipitation_sum'],'precipitation':['precipitation_sum'],
                  'temperature':['temperature_2m_mean'],'temperature_2m':['temperature_2m_mean'],
                  'humidity':['relative_humidity_2m_mean'],'relative_humidity_2m':['relative_humidity_2m_mean'],
@@ -189,6 +201,27 @@ def execute_point_task(engine, result, plan, task, resolved, coordinates):
     if not parameters:raise SourceError('No supported parameters requested: '+', '.join(unsupported))
     points=engine.resolve_points(result,plan,resolved,coordinates)
     if points is None:return result
+    if daily and asked_end is not None and points:
+        # REANALYSIS_DELAY_DAYS is the advertised lag, and the real publication frontier moves. On
+        # 20 September 2026 the advertised cutoff allowed 15 September and the source still returned
+        # incomplete coverage for it, which failed the whole turn. Rather than hard-code a larger
+        # guess, step back one day at a time until the source actually serves a complete window. The
+        # probe is the same collection the loop below reads, so a success here costs nothing extra.
+        probe_end=end
+        while probe_end>start:
+            try:acquire(engine.workspace,product,points[0]['coordinates'],start,probe_end,models=model);break
+            except (ValueError,OSError):probe_end-=timedelta(days=1)
+        if probe_end<=start:
+            result.update(status='unavailable',answer=reanalysis_label(model)+' has not yet published any complete day '
+                          'in the requested window. The reanalysis runs behind real time, and a recent day is not being '
+                          'replaced with an annual value or a forecast.');return result
+        end=probe_end;plan['end_local']=end.isoformat()
+    if asked_end is not None:
+        result.setdefault('notes',[]).append(
+            'Asked for a window ending '+asked_end.strftime('%d %b %Y')+', but '+reanalysis_label(model)+
+            ' is published behind real time. The figure below covers the published part of that window only, '
+            +start.strftime('%d %b')+' to '+end.strftime('%d %b %Y')+' IST, and is not a total for the full '
+            'period asked about.')
     result.update(charts=[],calculations=[],point_tool=True)
     missing=list(unsupported)+model_missing
     if task['operation']=='onset':missing.append('Exact rain onset is not established by hourly model amounts. Hourly evidence is supplied; the onset subtask remains incomplete.')

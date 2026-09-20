@@ -98,6 +98,51 @@ class PointJourneys(unittest.TestCase):
         t=self.setup_product(True);t.update(start_local='2026-09-11T00:00:00+05:30',end_local='2026-09-12T00:00:00+05:30')
         r=self.chat();self.assertEqual(r['status'],'unavailable');self.assertEqual(self.calls,0);self.assertIn('five-day',r['answer'])
 
+    def daily_for(self, dates, rain):
+        """A daily reanalysis body covering exactly `dates`, so the served window is what is asked of it."""
+        fields={name:[1.0]*len(dates) for name in HISTORY_LOCAL}
+        fields.update(precipitation_sum=list(rain),temperature_2m_mean=[28.4]*len(dates),
+                      temperature_2m_max=[32.4]*len(dates),temperature_2m_min=[24.4]*len(dates))
+        return {'latitude':23.,'longitude':72.5,'utc_offset_seconds':19800,'timezone':'Asia/Kolkata',
+                'daily_units':{k:v[0] for k,v in HISTORY_LOCAL.items()},
+                'daily':{'time':list(dates),**fields}}
+
+    def test_a_window_running_into_the_delay_serves_its_published_part_and_says_so(self):
+        """"This week" is mostly published; refusing all of it threw away the days that were.
+
+        Measured 20 September 2026: "how much rain did Ahmedabad get this week?" refused outright
+        because the window ran to today and the reanalysis publishes days behind. The published part
+        is real evidence, so it is served - labelled with the window actually covered, never with the
+        window that was asked for.
+        """
+        t=self.setup_product(True)
+        # Clock is 12 September; the reanalysis has published through 7 September.
+        t.update(start_local='2026-09-06T00:00:00+05:30',end_local='2026-09-11T00:00:00+05:30')
+        self.response=self.daily_for(['2026-09-06','2026-09-07'],[3.0,5.0])
+        r=self.chat()
+
+        self.assertEqual(r['status'],'answered')
+        trim=[n for n in r['notes'] if 'published part of that window only' in n]
+        self.assertTrue(trim,'the reader is told the window shrank: %r'%(r['notes'],))
+        self.assertIn('11 Sep 2026',trim[0])   # what was asked for
+        self.assertIn('08 Sep 2026',trim[0])   # what was served
+        # The total is the published days only, and no fact is dated into the unpublished tail.
+        self.assertEqual(sorted(f['value'] for f in r['facts'] if f['parameter']=='precipitation_sum'),['3.0','5.0'])
+        self.assertTrue(all(f['end'][:10]<='2026-09-08' for f in r['facts']),
+                        'no fact claims a day the source has not published')
+        # The total is offered because the SERVED window is complete, and it sums only those days.
+        total=[c for c in r['calculations'] if 'Precipitation total' in c['label']]
+        self.assertEqual([c['value'] for c in total],['8.0'])
+
+    def test_a_window_entirely_inside_the_delay_is_still_refused(self):
+        """Trimming is not a licence to invent. With nothing published, there is nothing to serve."""
+        t=self.setup_product(True)
+        t.update(start_local='2026-09-10T00:00:00+05:30',end_local='2026-09-12T00:00:00+05:30')
+        r=self.chat()
+        self.assertEqual(r['status'],'unavailable')
+        self.assertEqual(self.calls,0,'nothing is fetched for a window the source cannot have')
+        self.assertIn('five-day',r['answer'])
+
     def test_repeated_queries_reuse_collection_and_shared_budget(self):
         self.setup_product();self.chat();self.chat();self.assertEqual(self.calls,1)
         self.assertEqual(self.db.status()['network_attempts_reserved'],2)

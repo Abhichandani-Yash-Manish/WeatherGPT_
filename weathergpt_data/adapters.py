@@ -114,6 +114,9 @@ EXTENDED={**FORECAST,'precipitation_probability':('%','preceding_hour_probabilit
 # Evidence: research/implementation/reanalysis-depth-<date>/catalogue-probe.json.
 REANALYSIS_MODELS=('era5','era5_land','era5_seamless')
 REANALYSIS_MIN_YEAR={'era5':1940,'era5_land':1950,'era5_seamless':1950}
+# The reanalysis lags real time. The last published IST day is (today - REANALYSIS_DELAY_DAYS),
+# so a daily window may run up to midnight after it and no further.
+REANALYSIS_DELAY_DAYS=5
 ERA5_AND_SEAMLESS=('era5','era5_seamless')
 ALL_REANALYSIS=('era5','era5_land','era5_seamless')
 REANALYSIS_DAILY={
