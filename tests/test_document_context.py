@@ -96,3 +96,45 @@ class BroadSourceTests(unittest.TestCase):
  def test_dibrugarh_does_not_inherit_kamrup_growth_stage(self):
   from weathergpt_data.bulletin_index import extract
   path=ROOT/'research/implementation/context-and-retrieval-20260913/source-pdfs/57e47b6892371cb3a87f9aa9ca648deee8adaa055f5bc36f7c935b00263ec8ee.pdf';d=extract(path.read_bytes(),'Assam','Dibrugarh',NOW);self.assertEqual(len(d['chunks']),8);self.assertTrue(all(not c['stage'] for c in d['chunks'] if c['crop_key']=='rice'))
+
+
+class AdvisoryOpeningTests(unittest.TestCase):
+    """An advisory answer opens with the advice, not with its own provenance.
+
+    Measured 20 September 2026 against the scenario atlas. Thirteen of the twenty-five advisory
+    scenarios came back opening with:
+
+        The live district bulletin could not be verified (...), so this reading is the Rajkot
+        edition already indexed here, served with its printed issue date, physical page and saved
+        document. Crop and growth-stage annotation belongs to the live extractor ...
+
+    Every word of that is true and it belongs in the answer. It does not belong before the advice: a
+    farmer asking what to do about cotton met a paragraph about extractor provenance first. docs/117
+    settled that an answer opens with the answer.
+    """
+
+    def test_the_disclosure_follows_the_advice_and_is_never_dropped(self):
+        from weathergpt_data import document_tools
+
+        packet = {'passages': [{'id': 'p1'}], 'answer': 'Sow after the rain stops.', 'notes': []}
+
+        def fake_corpus(engine, result, plan, task):
+            return packet
+
+        original = None
+        try:
+            import weathergpt_data.corpus_tools as corpus_tools
+            original = corpus_tools.execute_corpus
+            corpus_tools.execute_corpus = fake_corpus
+            out = document_tools.indexed_reading(None, {}, {}, {'request_quote': 'cotton'},
+                                                 'Rajkot', 'cotton advisory', 'a layout rule')
+        finally:
+            if original is not None:
+                corpus_tools.execute_corpus = original
+
+        self.assertIsNotNone(out)
+        self.assertTrue(out['answer'].startswith('Sow after the rain stops.'),
+                        'the advice comes first: %r' % out['answer'][:80])
+        self.assertIn('could not be verified', out['answer'], 'the disclosure is still in the answer')
+        self.assertTrue(any('could not be verified' in note for note in out['notes']),
+                        'and still in the notes')

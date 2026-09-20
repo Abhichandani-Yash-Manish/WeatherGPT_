@@ -95,7 +95,13 @@ def indexed_reading(engine,result,plan,task,district,query,reason):
                 ' edition already indexed here, served with its printed issue date, physical page and saved document. '
                 'Crop and growth-stage annotation belongs to the live extractor and is not claimed for it.')
     packet.setdefault('notes',[]).append(disclosure)
-    packet['answer']=disclosure+'\n\n'+str(packet.get('answer') or '')
+    # The disclosure follows the advice rather than preceding it. docs/117 settled that an answer
+    # opens with the answer, and this path was opening every advisory turn with two sentences of
+    # apparatus - a farmer asking what to do about cotton met a paragraph about extractor
+    # provenance before a word of advice. Nothing is dropped: the same sentence is in the notes and
+    # at the end of the answer, where it qualifies what has just been read.
+    body=str(packet.get('answer') or '').strip()
+    packet['answer']=(body+'\n\n'+disclosure) if body else disclosure
     return packet
 
 
