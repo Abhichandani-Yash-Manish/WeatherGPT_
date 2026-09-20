@@ -76,6 +76,11 @@ def execute_history(plan,task,lookup=lookup_plan):
                     value={'status':'unavailable','text':str(exc),'facts':[],'citations':[],'notes':[]}
                 result['lookups'].append({'place':place,'parameter':parameter,'year':year,'evidence':value})
                 result['notes']+=value.get('notes',[])
+                # A year the reader asked for and the source could not supply is held, so a written
+                # answer cannot quietly answer three of four years and read as though it answered all
+                # of them. Missing years are not interpolated, and they are not omitted either.
+                if value.get('status')=='unavailable' and str(value.get('text') or '').strip():
+                    result.setdefault('held_clauses',[]).append(str(value['text']).strip())
                 if value.get('status')=='needs_selection' and value.get('choices'):
                     # The publisher's own series name differs from the asked name. Offer
                     # source-lined candidates and stop; nothing is substituted unasked.

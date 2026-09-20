@@ -236,7 +236,11 @@ def execute_document(engine,result,plan,task,resolved=None):
     if conflicts:
         pieces.append('Source guidance needs reconciliation: different passages contain permission and restriction wording for '+', '.join(c['activity'] for c in conflicts)+'. Their conditions and time scopes may differ. Both are retained below; no personal go/no-go conclusion has been made.')
     if context_coverage['status'] in {'partial','unavailable'}:
-        pieces.append('Bulletin context is incomplete: '+('; '.join(x['section']+' — '+x['reason'] for x in context_coverage['omitted_sections']) or context_coverage.get('reason','unavailable'))+'. The crop excerpts do not establish complete bulletin guidance.')
+        incomplete=('Bulletin context is incomplete: '+('; '.join(x['section']+' — '+x['reason'] for x in context_coverage['omitted_sections']) or context_coverage.get('reason','unavailable'))+'. The crop excerpts do not establish complete bulletin guidance.')
+        pieces.append(incomplete)
+        # Held: a reader acting on crop excerpts as though they were the whole bulletin is the harm
+        # this sentence prevents, so it survives a rewrite of the prose around it.
+        result.setdefault('held_clauses',[]).append(incomplete)
     if mode=='decision_support':
         pieces.insert(0,'I cannot establish whether the activity is suitable for your field from this bulletin alone. The passages below are published district guidance, with the applicable crop-stage labels retained.')
         result['follow_up']=('Crop growth stage, ' if not stage else '')+'the intended treatment and current field conditions are still needed for an activity-specific assessment.'

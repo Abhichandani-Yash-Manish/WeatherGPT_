@@ -274,6 +274,13 @@ def national_sweep(engine, result, plan, task, records, snapshot_meta, cap, colo
     # prepend one that already appears in the answer.
     result['lead'] = chunks[0] if chunks else ''
     result['expires_at_utc'] = stamp(now + timedelta(minutes=15))
+    # Held for the same reason as on the per-place path: a model-written answer may rephrase the
+    # finding, and must not be able to drop what an absence means or what this reading is not.
+    swept_held = result.setdefault('held_clauses', [])
+    for clause in ('An absence of matching official guidance is not an all-clear.',
+                   'This reports official product state, not an instruction to act.'):
+        if clause not in swept_held:
+            swept_held.append(clause)
     result['notes'] += [('Every district the official product attributes to ' + state + ' was read.')
                         if state else
                         'No district or state was named, so every district in the official product was read.',
@@ -510,6 +517,14 @@ def execute_warning(engine, result, plan, task, resolved=None, coordinates=None)
                         'official product state, not as an instruction.',
                         'Day windows are derived from the bulletin date and the IMD day selector, not from a validity '
                         'field published per day.']
+    # A held clause survives into a model-written answer: written_answer appends any that the prose
+    # dropped. On a warning turn these are the two sentences that must never be lost in a rewrite -
+    # what an absence of matching guidance does NOT mean, and what a warning reading is not.
+    held = result.setdefault('held_clauses', [])
+    for clause in ('An absence of matching official guidance is not an all-clear.',
+                   'This reports official product state, not an instruction to act.'):
+        if clause not in held:
+            held.append(clause)
     if snapshot_meta is not None and records:
         result['notes'] += ['The district warning layer was read as a complete collection with no truncation; its '
                             'geometry is not an LGD village crosswalk.']

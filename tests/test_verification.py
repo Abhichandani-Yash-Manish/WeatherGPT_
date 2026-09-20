@@ -354,7 +354,12 @@ class VerificationChatTests(unittest.TestCase):
         self.assertTrue(all(fact['evidence_kind'] == 'verification_statistic' for fact in result['facts']))
         self.assertTrue(any('reanalysis' in note for note in result['notes']))
         self.assertTrue(any('most recent completed fourteen-day window' in note for note in result['notes']))
-        self.assertIn('mean absolute error by lead time', result['answer'])
+        # The renderer's own table heading. The reader's sentence is written by the model now, so
+        # this asserts the floor it is composed from; the clause saying what these figures are
+        # NOT - not skill, not confidence, not a ranking - is a held clause and is asserted below.
+        self.assertIn('mean absolute error by lead time', result['tool_answer'])
+        self.assertTrue(any('not forecast skill' in clause for clause in result.get('held_clauses') or []),
+                        'the figures must never reach a reader without what they are not')
         self.assertFalse(result['operational_eligible'])
         self.assertTrue(result['citations'])
         self.assertEqual(result['charts'], [])

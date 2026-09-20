@@ -41,7 +41,7 @@ class Model:
     def plan(self,q,now,history):self.histories.append(copy.deepcopy(history));return copy.deepcopy(self.value),dict(self.meta)
     def complete(self,system,user,schema,**kwargs):
         p=json.loads(user)
-        return {'answer':'9999 mm of rain.' if self.bad else 'Here is the retrieved weather evidence.','evidence_ids':[f['id'] for f in p['facts']]},{'provider':'fixture'}
+        return {'answer':'9999 mm of rain.' if self.bad else 'Here is the retrieved weather evidence.','evidence_ids':[f['id'] for f in p['facts'] if f.get('id')]},{'provider':'fixture'}
 
 class Places:
     def __init__(self):self.ambiguous=False;self.approximate=False;self.queries=[]

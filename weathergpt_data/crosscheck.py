@@ -45,6 +45,10 @@ def compare_forecasts(engine,result,plan,task,resolved,coordinates):
     caveat='Best-match may include GFS upstream. These are not independent confirmations, and agreement does not establish accuracy; neither an average nor a confidence score is produced.'
     if plan['language']=='hi-Latn':caveat='Best-match mein GFS ka data bhi ho sakta hai. Isliye ye do swatantra tasdeeq nahi hain; inka milna sahi hone ki guarantee nahi hai.'
     result['comparison_text']+=caveat;result['notes'].append(caveat)
+    # Held, not merely noted: a model-written answer must not be able to drop the sentence that says
+    # these two readings are not independent. Agreement between them would otherwise read as
+    # confirmation, which is the single wrong conclusion this comparison exists to prevent.
+    result.setdefault('held_clauses',[]).append(caveat)
     result['status']='answered' if common and len(packets)==2 and all(p['status']=='answered' for p in packets) and set(parameters)<=set(VARIABLES) else 'partial' if result['facts'] else 'unavailable'
     if 'precipitation' in common and result['facts'] and not comparisons:
         result['status']='partial';result['notes'].append('No complete matching point/window pair was available for the requested precipitation comparison.')

@@ -64,7 +64,7 @@ class PointJourneys(unittest.TestCase):
         r=self.chat();self.assertEqual(r['status'],'answered');self.assertEqual(len(r['facts']),18)
         for f in r['facts']:
             self.assertEqual(bool(f.get('sample_at')),f['parameter']!='wind_gusts_10m')
-        self.assertIn('31.2',r['answer'])
+        self.assertIn('31.2',r['tool_answer'])
 
     def test_exact_half_hour_boundary_is_not_interpolated(self):
         t=self.setup_product();t.update(start_local='2026-09-13T06:00:00+05:30',end_local='2026-09-13T08:00:00+05:30')
@@ -77,7 +77,7 @@ class PointJourneys(unittest.TestCase):
         self.assertEqual(r['status'],'answered',r['answer']);self.assertEqual(len(r['facts']),6)
         self.assertEqual(Decimal(r['calculations'][0]['value']),Decimal('4.6'))
         self.assertEqual(r['facts'][0]['start'],'2025-07-01T00:00:00+05:30')
-        self.assertIn('28.4',r['answer']);self.assertNotIn('These are model forecasts',r['answer'])
+        self.assertIn('28.4',r['tool_answer']);self.assertNotIn('These are model forecasts',r['tool_answer'])
         self.assertTrue(all(f['source_id']=='S22' and f['evidence_kind']=='reanalysis' for f in r['facts']))
         self.assertEqual(r['calculations'][0]['input_ids'],[f['id'] for f in r['facts'] if f['parameter']=='precipitation_sum'])
 
@@ -219,19 +219,20 @@ class PointJourneys(unittest.TestCase):
         t=self.setup_product(True)
         t.update(start_local='2025-07-01T00:00:00+05:30',end_local='2025-07-04T00:00:00+05:30')
         self.response=self.daily_for(['2025-07-01','2025-07-02','2025-07-03'],[1.0,2.0,3.0])
-        answer=self.chat()['answer']
-        self.assertNotIn('annual',answer.lower())
-        self.assertNotIn('published record',answer.lower())
-        self.assertIn('ERA5 reanalysis, not a gauge reading',answer)
-        self.assertIn('01 to 03 Jul 2025',answer,'the sentence names the window it actually covers')
+        # The lead is the tool-owned opening sentence this test is about. The reader's answer is now
+        # written by the model from the same facts, so the sentence is asserted where it is composed.
+        lead=self.chat()['lead']
+        self.assertNotIn('annual',lead.lower())
+        self.assertNotIn('published record',lead.lower())
+        self.assertIn('ERA5 reanalysis, not a gauge reading',lead)
+        self.assertIn('01 to 03 Jul 2025',lead,'the sentence names the window it actually covers')
 
     def test_a_sum_question_opens_with_the_sum(self):
         """The reader asked how MUCH rain fell; the first number they meet should be that one."""
         t=self.setup_product(True)
         t.update(start_local='2025-07-01T00:00:00+05:30',end_local='2025-07-04T00:00:00+05:30')
         self.response=self.daily_for(['2025-07-01','2025-07-02','2025-07-03'],[1.0,2.0,3.0])
-        answer=self.chat()['answer']
-        lead=answer.split('\n')[0]
+        lead=self.chat()['lead']
         self.assertIn('6.0 mm',lead,'the total leads: %r'%lead)
         self.assertIn('in total',lead)
         self.assertIn('Daily values ranged 1.0\u20133.0 mm',lead,'the spread stays, as the second clause')
