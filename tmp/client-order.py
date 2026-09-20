@@ -1,7 +1,0 @@
-import pathlib
-p = pathlib.Path('weathergpt_data/providers.py')
-t = p.read_text()
-assert t.count("def default_clients():\n    clients = []\n    try:\n        clients.append(OllamaClient())\n    except ValueError:\n        pass\n    if openrouter_key():\n        clients.append(OpenRouterClient())\n    return clients") == 1, 'client anchor'
-t = t.replace("def default_clients():\n    clients = []\n    try:\n        clients.append(OllamaClient())\n    except ValueError:\n        pass\n    if openrouter_key():\n        clients.append(OpenRouterClient())\n    return clients", "def default_clients():\n    \"\"\"The provider order: the routed free models first when a key is configured, then the local model.\n\n    The workspace is run by a reader who asked for the free cloud models to be used and the local\n    model to be the fallback, so a configured key puts OpenRouter first: the router takes the most\n    capable free id first and fails over on any refusal. With no key, the local model is the first\n    provider and nothing changes. Whatever the order, a planning failure never loses the turn: the\n    next client is tried and the failover is recorded in the trace.\"\"\"\n    clients = []\n    if openrouter_key():\n        clients.append(OpenRouterClient())\n    try:\n        clients.append(OllamaClient())\n    except ValueError:\n        pass\n    return clients", 1)
-p.write_text(t)
-print('openrouter ranks before ollama when a key is configured')

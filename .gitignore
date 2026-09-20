@@ -53,3 +53,7 @@ research/design/probe-fonts/
 
 # The scheduled refresh's own runtime state: a log, a lock and the last run's outcome. Machine-local.
 data/runtime/refresh/
+
+# Scratch scripts from working sessions. Never part of the product, and one of them had a real API key
+# in it on a public remote. Keep them on disk; keep them out of the repository.
+tmp/

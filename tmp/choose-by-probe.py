@@ -1,8 +1,0 @@
-import pathlib
-p = pathlib.Path('weathergpt_data/gazetteer.py')
-t = p.read_text()
-anchor = 'SEAT_ORDER='
-assert t.count(anchor) == 1, t.count(anchor)
-t = t.replace(anchor, "\ndef choose_by_probe(candidates, probe, limit=4):\n    \"\"\"The candidate the connected product can actually answer for, and what was tried.\n\n    Several Indian place names are shared by a city and a handful of villages, and the\n    gazetteer has no population or seat rank that separates them (all five Kochis are PPL).\n    Where a product can decide - a wave cell exists only near the coast, a station layer only\n    reports near a city - asking the reader is worse than asking the product, as long as the\n    choice and the alternatives are disclosed. A probe that raises or returns nothing is\n    recorded with its reason; the caller keeps the alternatives and never substitutes silently.\n    \"\"\"\n    tried = []\n    for candidate in list(candidates or [])[:limit]:\n        coordinates = candidate.get('coordinates') or {}\n        if coordinates.get('latitude') is None or coordinates.get('longitude') is None:\n            continue\n        try:\n            answer = probe(candidate, coordinates)\n        except Exception as failure:  # the product's own refusal is evidence, not an error to raise\n            tried.append({'label': candidate.get('label'), 'why': str(failure)[:160]})\n            continue\n        if answer:\n            return candidate, tried, answer\n        tried.append({'label': candidate.get('label'), 'why': 'the product returned nothing for this point'})\n    return None, tried, None\n" + anchor, 1)
-p.write_text(t)
-print('added choose_by_probe')

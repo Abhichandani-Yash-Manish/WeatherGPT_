@@ -1,8 +1,0 @@
-import pathlib
-p = pathlib.Path('weathergpt_data/observation_tasks.py')
-t = p.read_text()
-anchor = 'def _point(plan, resolved, coordinates, gazetteer=None, notes=None, probe=None):'
-assert t.count(anchor) == 1, t.count(anchor)
-t = t.replace(anchor, "\ndef _station_facts(result, station, label, source_id, evidence_version, citation_id):\n    \"\"\"One fact per reported field, with the station's own instant and distance attached.\"\"\"\n    observed = station.get('observed_at_utc') or station.get('observed_at')\n    if not observed:\n        return []\n    made = []\n    for field, parameter, label_text in FIELDS:\n        for entry in station.get('parameters') or []:\n            if entry.get('field') != field or entry.get('value') in (None, ''):\n                continue\n            made.append({'id': 'f' + str(len(result['facts']) + len(made) + 1), 'parameter': parameter,\n                         'label': label_text, 'value': str(entry.get('value')), 'unit': entry.get('unit'),\n                         'place': label, 'entity_id': 'station:' + str(station.get('station_code') or station.get('name')),\n                         'observed_at': observed, 'start': observed, 'end': observed, 'sample_at': observed,\n                         'source_id': source_id, 'evidence_kind': 'observation', 'evidence_version': evidence_version,\n                         'citation_ids': [citation_id] if citation_id else [], 'source_locators': [],\n                         'method': 'reported_station_observation'})\n    return made\n" + anchor, 1)
-p.write_text(t)
-print('restored _station_facts')
