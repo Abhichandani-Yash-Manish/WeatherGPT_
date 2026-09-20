@@ -710,6 +710,15 @@ class ConversationEngine:
         result['trace']['duration_seconds']=round(time.monotonic()-began,3)
         from .briefing import render_brief
         if not result['facts']:result['answer']=render_brief(result)
+        # After render_brief, not before: a clarification has no facts, so the brief renderer runs
+        # over it and would overwrite anything written earlier. This is the last word on the text.
+        #
+        # A turn that has to ask something back is still a turn a reader reads. These were written by
+        # whichever tool could not proceed - "Which city or village should I check?" - and they read
+        # like a form rejecting a field. The model rephrases the same question conversationally, and
+        # is allowed to add nothing: no value, no number, no guess at the answer.
+        if result.get('status') in {'needs_clarification','needs_selection'}:
+            result=self.spoken_clarification(result)
         # Understanding the question's language never establishes output support.
         # An explicit selection is data the caller sends, not an instruction appended to
         # the question for the planner to read back, so it cannot be lost to inference.
@@ -1603,6 +1612,46 @@ class ConversationEngine:
         from .dialogue import language_gap
         if language_gap(text,result['plan']['language']):return 'it did not honour the requested output language'
         return None
+
+    def spoken_clarification(self,result):
+        """Ask the reader's question back to them in words, not in form-field prose.
+
+        A clarification carries no retrieved value, so there is nothing here to get wrong about the
+        weather - and that is exactly why the rule is absolute: this may not state one. What comes
+        back must ask for the same thing the tool asked for, add no digit the tool did not write, and
+        remain a question. Anything else keeps the tool's own wording, which is always correct if
+        blunt.
+        """
+        asked=str(result.get('answer') or '').strip()
+        if not asked or len(asked)>700:return result
+        schema=obj({'question':string()})
+        system=("You are WeatherGPT. This turn cannot be answered until the reader tells you one more "
+                "thing, and a tool has written what is missing. Ask them for it the way a person "
+                "would: warm, brief, and specific about what you need and why it matters.\n\n"
+                "You may NOT answer the weather question, state or guess any value, name a place the "
+                "tool did not name, or introduce any number. Do not apologise and do not offer a list "
+                "of everything you can do. One or two sentences, ending in a question. Write in the "
+                "supplied language code. Return JSON.")
+        payload={'question':result.get('question',''),'language':(result.get('plan') or {}).get('language'),
+                 'what_the_tool_needs':asked,'the_field_it_needs':result.get('follow_up'),
+                 'choices':[c.get('label') for c in (result.get('choices') or [])][:6] or None}
+        try:
+            spoken,meta=self.model.complete(system,json.dumps(payload,ensure_ascii=False),schema,
+                                            max_tokens=160,timeout=NARRATIVE_TIMEOUT)
+        except (SourceError,OSError,TimeoutError):
+            return result
+        text=str((spoken or {}).get('question') or '').strip()
+        if not text or len(text)>400 or '?' not in text:return result
+        # No digit the tool did not already write. A clarification that invents "tomorrow's 31 °C"
+        # while asking which city is the one way this could mislead, and it is closed here.
+        if set(re.findall(r'\d',text))-set(re.findall(r'\d',asked+' '+str(result.get('question') or ''))):
+            return result
+        from .dialogue import language_gap
+        if language_gap(text,(result.get('plan') or {}).get('language')):return result
+        result['answer']=text
+        result['trace']['clarification']={**(meta or {}),'authored_by':'model','floor':asked,
+                                          'validation':'asks for the same thing, adds no digit the tool did not write, stays a question'}
+        return result
 
     def authored_answer(self,result):
         """The whole answer, written by the model from what this turn actually retrieved.
