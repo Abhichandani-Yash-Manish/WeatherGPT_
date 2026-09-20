@@ -34,7 +34,15 @@ SENTINEL_PATTERN = re.compile(r'#V(\d+)#')
 UNITS = ['mm/hr', 'mm/hour', 'm³/s', 'm3/s', 'km/h', 'kmph', 'km/hr', 'm/s', 'kt', 'knots',
          '°C', '°c', 'degC', '°', 'hPa', 'mm', 'cm', 'km', 'm', 'ft', 'okta',
          'octa', 'oktas', 'octas', '%']
-UNIT_PATTERN = '(?:' + '|'.join(re.escape(unit) for unit in UNITS) + ')'
+# A unit ends where it ends. Without this boundary the bare 'm' (metre) matched the first letter
+# of the next word, and the masked text handed to the translator read "#V1#inutes" for "46 minutes".
+# Measured 20 September 2026, the phrases this product actually writes that were being corrupted:
+# "46 minutes before retrieval", "a 5 metre swell", "the 12 month average", "3 members agreed".
+# The damage was invisible in English, because English answers are never masked: it only showed as
+# Hindi and Gujarati station reports arriving untranslated, after verify() found the values gone and
+# the whole answer was downgraded back to its source language.
+UNIT_BOUNDARY = r'(?![A-Za-z0-9])'
+UNIT_PATTERN = '(?:' + '|'.join(re.escape(unit) for unit in UNITS) + ')' + UNIT_BOUNDARY
 NUMBER = r'\d+(?:\.\d+)?'
 DASH = r'[–—-]'
 

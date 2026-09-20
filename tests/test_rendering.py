@@ -288,3 +288,43 @@ class LanguageRegistryTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class UnitBoundaryTests(unittest.TestCase):
+    """A unit ends where it ends.
+
+    Measured 20 September 2026. UNITS carries a bare 'm' for metre and the number+unit pattern had
+    no trailing boundary, so 'm' matched the first letter of the following word and the text handed
+    to the translator read '#V1#inutes' for '46 minutes'. English answers are never masked, so the
+    damage was invisible there; it surfaced as Hindi and Gujarati station reports arriving in
+    English, because verify() found the values gone and downgraded the whole answer to its source
+    language. These are the phrases this product actually writes.
+    """
+
+    def masked(self, text):
+        return rendering.protect(text)[0]
+
+    def test_a_word_beginning_with_a_unit_letter_is_not_eaten(self):
+        self.assertEqual(self.masked('reported 46 minutes before retrieval'),
+                         'reported #V1# minutes before retrieval')
+        self.assertEqual(self.masked('a 5 metre swell'), 'a #V1# metre swell')
+        self.assertEqual(self.masked('the 12 month average'), 'the #V1# month average')
+        self.assertEqual(self.masked('3 members agreed'), '#V1# members agreed')
+
+    def test_a_real_unit_is_still_protected_with_its_number(self):
+        for text in ('a 5 m swell', 'rain 6.0 mm', 'SURAT, 13.37 km away', 'temperature 28.4 °C',
+                     'humidity 82 %', 'gust 20 kt', 'river 12 m3/s'):
+            with self.subTest(text=text):
+                self.assertEqual(self.masked(text).count('#V'), 1, text)
+                self.assertNotIn('  ', self.masked(text))
+
+    def test_a_compound_unit_still_wins_over_its_prefix(self):
+        self.assertEqual(self.masked('wind 8 m/s and gusts 20 km/h'), 'wind #V1# and gusts #V2#')
+
+    def test_every_protected_value_survives_a_round_trip(self):
+        text = 'SURAT, 13.37 km away, reported 46 minutes before retrieval at 28.4 °C'
+        masked, values = rendering.protect(text)
+        self.assertEqual(rendering.restore(masked, values), text)
+        # The minute count is protected as a bare number, not as a quantity in metres.
+        self.assertEqual(values['#V2#']['kind'], 'bare_number')
+        self.assertEqual(values['#V1#']['original'], '13.37 km')
