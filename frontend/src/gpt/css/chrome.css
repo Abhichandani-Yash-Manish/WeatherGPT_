@@ -1,10 +1,17 @@
 /* ---- the column ---------------------------------------------------------------------------------- */
 .g-main { position: relative; z-index: 2; flex: 1; min-width: 0; display: flex; flex-direction: column; height: 100dvh; }
 
-/* The bar has no fill of its own; it earns an edge only once the thread scrolls under it. */
+/* The bar is quiet glass, always — not just once the thread scrolls under it. A wash of --g-bar-tint (task
+   3's own hue for this component, distinct from the rail's and a bubble's) sits behind it at all times, low
+   enough that it reads as atmosphere rather than a panel; the hairline this rule always had still only
+   appears once there is a thread to separate from, because a rule under an empty bar states a boundary that
+   is not there yet. */
 .g-top {
   display: flex; align-items: center; justify-content: space-between; gap: var(--g-2);
   padding: var(--g-3) var(--g-5); flex: 0 0 auto; position: relative; z-index: 5;
+  background: linear-gradient(180deg, var(--g-bar-tint), transparent 85%);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  transition: background 900ms var(--g-ease);
 }
 .g-top::after {
   content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
@@ -20,6 +27,10 @@
   margin: 0 0 0 var(--g-1); font-size: 13.5px; font-weight: 500; color: var(--g-paper);
   max-width: 42ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
+/* On the welcome screen this is a <p>, not the page's h1 (TopBar.tsx) — the same fact "New conversation"
+   states is restated at full size by the greeting a few lines down, so the bar's own copy steps back to
+   --g-mist rather than repeating the spotlight ink. */
+p.g-top-title { color: var(--g-mist); font-weight: 400; }
 @media (max-width: 640px) { .g-top-title { max-width: 16ch; font-size: 13px; } }
 
 /* .g-panel is the frame the thread and the docked composer share. It had no rule at all before this, which

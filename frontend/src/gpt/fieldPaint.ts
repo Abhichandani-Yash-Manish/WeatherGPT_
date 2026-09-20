@@ -77,8 +77,11 @@ function solarGeometry(latitude: number, longitude: number, at: Date): SolarPosi
    most of the morning and most of the afternoon. That was harmless while every palette was the same
    near-black. It is not harmless now that two of the hours are light pages: it would have put the middle
    of the morning into a dusk palette. Above HORIZON the page is simply day. */
-const NIGHT_BELOW = -6;
-const HORIZON = 8;
+/* Exported because spectrum.ts (the continuous palette) anchors its two regime changes — dark to light at
+   dawn, light to dark at dusk — on these exact same two degrees, so the continuous page and the discrete
+   `Hour` it used to be described by never disagree about where a day starts or ends. */
+export const NIGHT_BELOW = -6;
+export const HORIZON = 8;
 
 /** The ground's hour, from the sun's own altitude at this place. */
 export function hourOf(at: Date, latitude = 23.0, longitude = 82.5): Hour {

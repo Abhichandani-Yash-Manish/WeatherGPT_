@@ -71,9 +71,13 @@
 .g-turn + .g-turn { border-top: 1px solid var(--g-line-soft); }
 
 .g-you { display: flex; justify-content: flex-end; }
+/* A reader's own words take the third of the three component washes task 3 asked for: --g-bubble-tint, the
+   same hour's own colour again but pulled a different way than the rail's or the bar's, layered under the
+   existing elevation gradient rather than replacing it — the bubble still reads as a raised surface, it is
+   just no longer the exact grey every other raised surface in the column already is. */
 .g-you p {
   margin: 0; max-width: 80%;
-  background: linear-gradient(180deg, var(--g-t5), var(--g-t3));
+  background: linear-gradient(180deg, var(--g-bubble-tint), transparent 70%), linear-gradient(180deg, var(--g-t5), var(--g-t3));
   border: 1px solid var(--g-t4);
   border-radius: var(--g-r-xl) var(--g-r-xl) var(--g-r-sm) var(--g-r-xl);
   padding: 10px var(--g-4); font-size: 15px; color: var(--g-paper);

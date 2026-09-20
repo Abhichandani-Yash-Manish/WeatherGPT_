@@ -2,14 +2,18 @@
    One column for the whole product: the four homes, the place, and the reader's conversations. It is the
    only navigation surface, and it collapses to 60px so a reader who is reading can give the column its width
    back. The widths are the two the shell moves between, and the transition is the one the layout animates. */
+/* The rail's own identity in the family task 3 asked for: a faint wash of --g-rail-tint under the ground
+   glass everything else in this column already had, so the navigation reads as its own instrument rather
+   than the same grey the bar and a bubble also use. It is layered, not swapped — --g-rail-bg keeps doing
+   the work of separating the rail from the ground behind it, and the tint just says which one this is. */
 .g-rail {
   position: sticky; top: 0; z-index: 3;
   width: var(--g-rail-w); flex: 0 0 var(--g-rail-w); height: 100dvh;
-  background: var(--g-rail-bg);
+  background: linear-gradient(180deg, var(--g-rail-tint), transparent 55%), var(--g-rail-bg);
   backdrop-filter: blur(24px) saturate(1.3); -webkit-backdrop-filter: blur(24px) saturate(1.3);
   border-right: 1px solid var(--g-line-soft);
   display: flex; flex-direction: column;
-  transition: width var(--g-slow) var(--g-ease), flex-basis var(--g-slow) var(--g-ease);
+  transition: width var(--g-slow) var(--g-ease), flex-basis var(--g-slow) var(--g-ease), background 900ms var(--g-ease);
 }
 .g-rail[data-collapsed='true'] { width: 60px; flex-basis: 60px; }
 .g-rail-head {
@@ -20,7 +24,11 @@
 .g-rail-controls { display: flex; align-items: center; gap: 2px; margin-left: auto; }
 .g-rail[data-collapsed='true'] .g-rail-controls { margin: var(--g-2) 0 0; flex-direction: column; }
 .g-rail[data-collapsed='true'] .g-rail-controls .g-act:not(:nth-child(2)) { display: none; }
-.g-brand { display: flex; align-items: center; gap: var(--g-2); font-size: 14.5px; font-weight: 600; letter-spacing: -0.015em; min-width: 0; }
+/* The rail is a support element (frontend/src/gpt/glass.css: "the light has a direction" — the bold spending
+   happens once, on the welcome's own mark and greeting). Its own name in the brand row used to inherit the
+   full --g-paper ink, which meant the product's name sat at exactly the same weight in the chrome as the
+   greeting it was standing beside. --g-mist reads plainly and gives up the competition. */
+.g-brand { display: flex; align-items: center; gap: var(--g-2); font-size: 14.5px; font-weight: 600; letter-spacing: -0.015em; min-width: 0; color: var(--g-mist); }
 .g-rail[data-collapsed='true'] .g-brand-name { display: none; }
 .g-rail-search { padding: 0 var(--g-2) var(--g-2); }
 

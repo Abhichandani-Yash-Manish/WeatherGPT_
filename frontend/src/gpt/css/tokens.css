@@ -42,6 +42,14 @@
   --g-yellow: #d9b53f;
   --g-green: #4f9d6d;
 
+  /* The three component washes spectrum.ts paints continuously (docs: frontend/src/gpt/spectrum.ts). These
+     are the static fallback — what a reader with JavaScript off sees, and what the page looks like for the
+     one frame before Field's effect first runs — so they are hand-set here to the same values spectrum.ts
+     uses for 'night', which is this block's own hour. */
+  --g-rail-tint: rgba(168, 199, 250, 0.05);
+  --g-bar-tint: rgba(150, 176, 230, 0.06);
+  --g-bubble-tint: rgba(180, 168, 220, 0.07);
+
   --g-sans: 'Anek Latin Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --g-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
   /* The display voice: rounded geometric, Latin only, display sizes only. It sets the greeting, the hour
@@ -127,6 +135,7 @@
   --g-rail-bg: linear-gradient(180deg, rgba(8, 12, 20, 0.86), rgba(5, 8, 15, 0.92));
   --g-glass: rgba(14, 20, 33, 0.82); --g-glass-2: rgba(15, 22, 36, 0.60);
   --g-scrim: rgba(4, 7, 13, 0.62);
+  --g-rail-tint: rgba(168, 199, 250, 0.05); --g-bar-tint: rgba(150, 176, 230, 0.06); --g-bubble-tint: rgba(180, 168, 220, 0.07);
 
   --g-e1: inset 0 1px 0 rgba(255,255,255,0.045), 0 1px 2px rgba(0,0,0,0.30);
   --g-e2: inset 0 1px 0 rgba(255,255,255,0.055), 0 2px 4px rgba(0,0,0,0.24), 0 8px 18px -8px rgba(0,0,0,0.50);
@@ -160,6 +169,7 @@
   --g-rail-bg: linear-gradient(180deg, rgba(16, 11, 23, 0.86), rgba(10, 7, 17, 0.92));
   --g-glass: rgba(26, 20, 36, 0.82); --g-glass-2: rgba(28, 21, 39, 0.60);
   --g-scrim: rgba(8, 5, 14, 0.62);
+  --g-rail-tint: rgba(195, 170, 232, 0.05); --g-bar-tint: rgba(226, 148, 96, 0.06); --g-bubble-tint: rgba(170, 130, 190, 0.06);
 
   --g-e1: inset 0 1px 0 rgba(255,255,255,0.045), 0 1px 2px rgba(0,0,0,0.30);
   --g-e2: inset 0 1px 0 rgba(255,255,255,0.055), 0 2px 4px rgba(0,0,0,0.24), 0 8px 18px -8px rgba(0,0,0,0.50);
@@ -222,6 +232,7 @@
   --g-rail-bg: linear-gradient(180deg, rgba(246, 238, 229, 0.86), rgba(240, 231, 220, 0.92));
   --g-glass: rgba(255, 252, 247, 0.86); --g-glass-2: rgba(255, 253, 250, 0.72);
   --g-send-bg: linear-gradient(180deg, #3a6bc9, #2f5fc0); --g-mark-2: #1c3f86;
+  --g-rail-tint: rgba(47, 95, 192, 0.045); --g-bar-tint: rgba(224, 158, 96, 0.05); --g-bubble-tint: rgba(150, 120, 190, 0.05);
 }
 
 /* ---- NOON: full day. Cool paper, and a plain blue sky above it --------------------------------------- */
@@ -238,6 +249,7 @@
   --g-rail-bg: linear-gradient(180deg, rgba(238, 244, 251, 0.86), rgba(231, 239, 249, 0.92));
   --g-glass: rgba(255, 255, 255, 0.86); --g-glass-2: rgba(255, 255, 255, 0.72);
   --g-send-bg: linear-gradient(180deg, #2a68d8, #1f5ccc); --g-mark-2: #15409b;
+  --g-rail-tint: rgba(31, 92, 204, 0.04); --g-bar-tint: rgba(120, 170, 230, 0.05); --g-bubble-tint: rgba(90, 130, 200, 0.05);
 }
 
 html, body { background: var(--g-bg); transition: background var(--g-slow) ease; }
