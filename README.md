@@ -255,6 +255,19 @@ whole time. On a laptop, that is worse than no schedule: it looks like one. laun
 `StartCalendarInterval` runs a missed slot as soon as the machine wakes, which is the behaviour a
 daily refresh actually needs. On Linux, where a server does not sleep, it stays a crontab.
 
+**And installed is still not running.** Proving it exposed a second, larger blocker: with this
+project on the **Desktop**, the scheduled job cannot run at all. macOS protects Desktop, Documents
+and Downloads, and a launchd- or cron-spawned process does not inherit the Full Disk Access your
+terminal has — launchd fired the job, bash could not `getcwd` into the directory, and it exited 126
+having done nothing. Two ways out, the first needing no permission grant:
+
+1. Move the project somewhere unprotected (`~/WeatherGPT`) and re-run the installer.
+2. System Settings › Privacy & Security › Full Disk Access, add `/bin/bash`, re-run with `--verify`.
+
+`scripts/install_daily_schedule.sh --verify` runs the job through launchd and checks whether the
+refresh record actually moved, so this failure is loud instead of silent. **Until one of those two
+is done, the daily refresh on this machine runs only when someone runs it by hand.**
+
 That episode also changed what the audit asks. Reporting *scheduled* was true throughout the
 failure. It now reports **installed**, **by what mechanism**, and whether it is **firing** — judged
 from when the refresh last ran, not from what is configured — and says `NOT FIRING` past a

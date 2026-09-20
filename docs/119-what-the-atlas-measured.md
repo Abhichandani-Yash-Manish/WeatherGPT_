@@ -55,8 +55,23 @@ with six avoidable** to **13% with one avoidable** over 20 September. The single
 case is "is it safe to harvest wheat in Ludhiana tomorrow", which finds no matching bulletin passage
 and does not fall back to the forecast.
 
-The atlas itself is the broader measure. Its most valuable output has not been the rate but the
-*shape* of the failures — several dozen scenarios failing for one cause each time:
+The atlas itself is the broader measure. A clean run on the evening of 20 September, against a
+freshly started server with nothing else touching the store:
+
+    306 turns   256 passed (83%)
+    answered 203   partial 22   asked 29   declined 26   conversation 22   error 4
+    refusals: 14 upstream, 1 product limit, 11 avoidable
+
+    f1_realtime  100%   f4_warnings   96%   f6_languages 91%   officer      90%
+    ctx_context   88%   f2_paraphrase 88%   f2_mixed     83%   f8_specialist 80%
+    f3_nwp        80%   adv_boundary  75%   f7_climate   65%   f5_advisory   56%
+
+Earlier the same day the first run measured 78% with 32 avoidable refusals, and a middle run
+measured 72% — that middle figure was contaminated by the traps above and should not be compared.
+The weakest groups are advisories and climate, and they are where the next work belongs.
+
+Its most valuable output has not been the rate but the *shape* of the failures — several dozen
+scenarios failing for one cause each time:
 
 - **A state name was not a state.** "Any warnings in Kerala today?" offered four hamlets in
   Rajasthan spelled like it. Seven failures, one cause: the thirty-six states were already in the

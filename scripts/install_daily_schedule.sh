@@ -32,6 +32,60 @@ MORNING_M="${WEATHERGPT_MORNING_MINUTE:-10}"
 AFTERNOON_H="${WEATHERGPT_AFTERNOON_HOUR:-14}"
 AFTERNOON_M="${WEATHERGPT_AFTERNOON_MINUTE:-40}"
 
+verify_darwin() {
+  # Installed is not running, and running is not permitted. macOS TCC protects ~/Desktop,
+  # ~/Documents and ~/Downloads, and a launchd-spawned process does NOT inherit the Full Disk Access
+  # your terminal has. Measured 20 September 2026 with this project on the Desktop: launchd fired
+  # the job, bash could not even getcwd into the directory, and the run exited 126 having done
+  # nothing - "Operation not permitted". cron fails the same way for the same reason. So this
+  # actually runs the job and checks whether the record moved, instead of trusting that it will.
+  local before after
+  before="$(python3 -c "
+import json,sys
+try: print(json.load(open('$ROOT/data/runtime/refresh/last-run.json'))['started_at_utc'])
+except Exception: print('none')
+" 2>/dev/null || echo none)"
+  echo "verifying by running the job through launchd (this takes a few minutes)..."
+  launchctl kickstart "gui/$UID/$LABEL" > /dev/null 2>&1 || true
+  while launchctl print "gui/$UID/$LABEL" 2> /dev/null | grep -q 'state = running'; do sleep 10; done
+  after="$(python3 -c "
+import json,sys
+try: print(json.load(open('$ROOT/data/runtime/refresh/last-run.json'))['started_at_utc'])
+except Exception: print('none')
+" 2>/dev/null || echo none)"
+  local code
+  code="$(launchctl print "gui/$UID/$LABEL" 2> /dev/null | sed -n 's/.*last exit code = \([0-9]*\).*/\1/p' | head -1)"
+  if [ "$before" != "$after" ]; then
+    echo "VERIFIED: the job ran through launchd and the refresh record advanced to $after"
+    return 0
+  fi
+  echo "NOT VERIFIED: launchd ran the job (last exit code ${code:-unknown}) and the refresh record did"
+  echo "              not move. It is still $before."
+  if [ -s "$ROOT/data/runtime/refresh/launchd.err.log" ]; then
+    echo "              launchd said:"
+    tail -3 "$ROOT/data/runtime/refresh/launchd.err.log" | sed 's/^/                /'
+  fi
+  case "$ROOT" in
+    "$HOME"/Desktop/*|"$HOME"/Documents/*|"$HOME"/Downloads/*)
+      cat <<'TCC'
+
+  This project lives in a folder macOS protects (Desktop, Documents or Downloads). A scheduled job
+  does not inherit the Full Disk Access your terminal has, so it cannot read the project at all -
+  "Operation not permitted", exit 126, nothing done. cron fails identically; this is not a launchd
+  problem. Two ways out, and the first needs no permission grant:
+
+    1. Move the project somewhere unprotected, for example ~/WeatherGPT, and re-run this installer.
+    2. System Settings > Privacy & Security > Full Disk Access, add /bin/bash, then re-run
+       this installer with --verify. This is a broad grant; prefer option 1 if you can.
+
+  Until one of those is done the schedule is installed and will not run, which is the exact failure
+  this installer exists to stop being silent.
+TCC
+      ;;
+  esac
+  return 1
+}
+
 last_run() {
   if [ -f "$ROOT/data/runtime/refresh/last-run.json" ]; then
     echo
@@ -135,7 +189,11 @@ if [ "$(uname -s)" = "Darwin" ]; then
   case "$ACTION" in
     --show) show_launchd; last_run ;;
     --remove) remove_launchd ;;
-    *) install_launchd; last_run ;;
+    --verify) verify_darwin ;;
+    *) install_launchd; last_run
+       echo
+       echo "Installed is not the same as working. Prove it with:"
+       echo "  scripts/install_daily_schedule.sh --verify" ;;
   esac
 else
   case "$ACTION" in
