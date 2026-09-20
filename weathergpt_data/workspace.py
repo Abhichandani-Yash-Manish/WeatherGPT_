@@ -1149,6 +1149,18 @@ def make_server(workspace, port=8765, host='127.0.0.1', public_hosts=(), access_
     class Handler(BaseHTTPRequestHandler):
         def log_message(self,*args):pass  # Do not log private questions or coordinates.
 
+        def client_gone(self, exc):
+            """True when the reader's connection went away mid-answer.
+
+            BrokenPipeError and ConnectionResetError are OSError subclasses, so the store handlers
+            below were catching a client hanging up and reporting it as "the local evidence store is
+            unavailable" - to a socket that had already closed, and into a log that then blamed the
+            store. Measured 20 September 2026: every one of those 503s during a long run was this,
+            and nothing was wrong with any store. There is nobody left to answer, so the only
+            correct response is to stop.
+            """
+            return isinstance(exc, (BrokenPipeError, ConnectionResetError))
+
         def store_failure(self, exc):
             """Record WHY the evidence store failed, without recording what was asked.
 
@@ -1298,6 +1310,7 @@ def make_server(workspace, port=8765, host='127.0.0.1', public_hosts=(), access_
                     return self.respond(200,view)
                 except ValueError as exc:return self.respond(400,{'error':str(exc)})
                 except (OSError,sqlite3.Error) as exc:
+                    if self.client_gone(exc):return
                     self.store_failure(exc)
                     return self.respond(503,{'error':'The local evidence store is unavailable. Check its files and retry.'})
             if getattr(workspace,'frontend','react')=='react':
@@ -1341,6 +1354,7 @@ def make_server(workspace, port=8765, host='127.0.0.1', public_hosts=(), access_
             try:return self.respond(200,workspace.delete_conversation(path.removeprefix('/api/conversations/')))
             except ValueError as exc:return self.respond(400,{'error':str(exc)})
             except (OSError,sqlite3.Error) as exc:
+                if self.client_gone(exc):return
                 self.store_failure(exc)
                 return self.respond(503,{'error':'The local evidence store is unavailable. Check its files and retry.'})
 
@@ -1374,6 +1388,7 @@ def make_server(workspace, port=8765, host='127.0.0.1', public_hosts=(), access_
             except RateLimited as exc:self.respond(429,{'error':str(exc)})
             except (ValueError,TypeError,KeyError) as exc:self.respond(400,{'error':str(exc)})
             except (OSError,sqlite3.Error) as exc:
+                if self.client_gone(exc):return
                 self.store_failure(exc)
                 self.respond(503,{'error':'The local evidence store is unavailable. Check its files and retry.'})
 
