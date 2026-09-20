@@ -26,8 +26,18 @@ import re
 from .languages import foreign_script_letters, latin_digits, normalise, script_pattern, written_in
 from .transport import SourceError
 
-SENTINEL = '#V%d#'
-SENTINEL_PATTERN = re.compile(r'#V(\d+)#')
+# A sentinel a translator cannot guess by counting.
+#
+# Measured 20 September 2026 on a Hindi station report: the masked sentence carried twenty values as
+# #V1#..#V20#, and the translator returned #V21# through #V38# - sentinels that were never sent. A
+# plainly numbered sequence is a pattern, and a model asked to translate around one will continue it.
+# verify() then found placeholders it had not issued, the rendering was rejected, and the reader got
+# the English answer back. The nonce is letters and the index digits, so an invented "#V21#" cannot
+# collide with a real sentinel from this render, and the pattern still matches one so it can be seen
+# and removed rather than reaching a reader as literal text.
+SENTINEL = '#V%s%d#'
+SENTINEL_PATTERN = re.compile(r'#V([A-Za-z]*\d+)#')
+SENTINEL_NONCE_ALPHABET = 'bcdfghjkmnpqrstvwxz'
 
 # Units as they are written in this project's answers. Matched case sensitively where
 # case carries meaning (m versus M), and longest first so `m/s` never matches as `m`.
@@ -87,14 +97,24 @@ SAFETY_MARKERS = (
 )
 
 
-def protect(text, extra=()):
+def sentinel_nonce():
+    """A short per-render tag, so this render's sentinels are not the previous render's."""
+    import random
+    return ''.join(random.choice(SENTINEL_NONCE_ALPHABET) for _ in range(4))
+
+
+def protect(text, extra=(), nonce=None):
     """Mask every value that must reach the reader unchanged.
 
     `extra` carries values the caller knows are identities rather than prose, such as
     resolved place labels and district names taken from the answer's own facts.
+
+    `nonce` pins the sentinel tag; it exists so a test can assert on exact sentinels. Callers in the
+    product leave it out and get a fresh one per call.
     """
     if not isinstance(text, str):
         raise SourceError('Text is required')
+    tag = nonce if nonce is not None else sentinel_nonce()
     spans = []
     for name, pattern in PATTERNS:
         for match in re.finditer(pattern, text):
@@ -113,7 +133,7 @@ def protect(text, extra=()):
         boundary = end
     masked, tokens, cursor, parts = text, {}, 0, []
     for index, (start, end, name) in enumerate(chosen, 1):
-        sentinel = SENTINEL % index
+        sentinel = SENTINEL % (tag, index)
         tokens[sentinel] = {'original': text[start:end], 'kind': name}
         parts.append(text[cursor:start])
         parts.append(sentinel)
@@ -123,27 +143,40 @@ def protect(text, extra=()):
     return masked, tokens
 
 
-def restore(masked, tokens):
-    """Substitute the original values back, in whatever order they now appear."""
+def restore(masked, tokens, drop_unknown=False):
+    """Substitute the original values back, in whatever order they now appear.
+
+    `drop_unknown` removes a placeholder this render never issued. It is only ever set once verify()
+    has confirmed that every real value survived exactly once - an invented placeholder then stands
+    for nothing, and deleting it cannot remove a value. Left in, it would reach a reader as the
+    literal text "#V21#".
+    """
     def swap(match):
         sentinel = match.group(0)
         if sentinel not in tokens:
+            if drop_unknown:
+                return ''
             raise SourceError('Rendering produced an unknown value placeholder ' + sentinel)
         return tokens[sentinel]['original']
-    return SENTINEL_PATTERN.sub(swap, masked)
+    restored = SENTINEL_PATTERN.sub(swap, masked)
+    # Only tidy up when something was actually deleted. Collapsing whitespace unconditionally would
+    # rewrite a held source quotation, which must reach the reader exactly as the publisher wrote it.
+    return re.sub(r'\s{2,}', ' ', restored).strip() if drop_unknown else restored
 
 
 def verify(translated, tokens):
     """Every protected value must come back exactly once. Report what did not."""
-    found = SENTINEL_PATTERN.findall(translated or '')
     seen = {}
-    for number in found:
-        sentinel = SENTINEL % int(number)
-        seen[sentinel] = seen.get(sentinel, 0) + 1
+    for match in SENTINEL_PATTERN.finditer(translated or ''):
+        seen[match.group(0)] = seen.get(match.group(0), 0) + 1
     missing = sorted(s for s in tokens if s not in seen)
-    duplicated = sorted(s for s, count in seen.items() if count > 1)
+    duplicated = sorted(s for s, count in seen.items() if s in tokens and count > 1)
     unknown = sorted(s for s in seen if s not in tokens)
-    return {'ok': not (missing or duplicated or unknown),
+    # A value that vanished or was claimed twice is a broken rendering and stays one. A placeholder
+    # this render never issued is different in kind: it stands for nothing, so once every real value
+    # is present exactly once it can be removed and the rendering kept. Rejecting the whole answer
+    # for it sent Hindi and Gujarati readers an English one.
+    return {'ok': not (missing or duplicated),
             'protected': len(tokens),
             'missing': [{'placeholder': s, **tokens[s]} for s in missing],
             'duplicated': [{'placeholder': s, 'times': seen[s], **tokens[s]} for s in duplicated],
@@ -215,7 +248,8 @@ def translate_one(sentence, target, translator, identities, source='en-IN'):
     # Keep the translated prose before values are substituted back. Script adherence has to be
     # judged on what the model actually wrote: the restored answer carries Latin values and held
     # clauses by design, so checking it would always fail.
-    return restore(translated, tokens), SENTINEL_PATTERN.sub(' ', translated), None
+    return (restore(translated, tokens, drop_unknown=bool(report.get('unknown_placeholders'))),
+            SENTINEL_PATTERN.sub(' ', translated), None)
 
 
 def _transient(failure):

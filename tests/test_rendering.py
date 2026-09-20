@@ -27,10 +27,10 @@ def echo(text, target, source):
 
 def reordering(text, target, source):
     """Sentinels are reordered by real translation; that must remain acceptable."""
-    parts = rendering.SENTINEL_PATTERN.findall(text)
+    parts = [match.group(0) for match in rendering.SENTINEL_PATTERN.finditer(text)]
     # The prose is long enough to be a rendering in the target script: a stub emitting a
     # few characters is not a rendering, and the gate is entitled to say so.
-    return ' '.join(['अनुवादित वाक्य यहाँ है और मान सुरक्षित हैं'] + [rendering.SENTINEL % int(p) for p in reversed(parts)])
+    return ' '.join(['अनुवादित वाक्य यहाँ है और मान सुरक्षित हैं'] + list(reversed(parts)))
 
 
 class ProtectionTests(unittest.TestCase):
@@ -101,7 +101,9 @@ class ProtectionTests(unittest.TestCase):
 
 class GateTests(unittest.TestCase):
     def tokens(self, text=ANSWER):
-        return rendering.protect(text, ('Ahmedabad', 'Gujarat'))
+        # The nonce is pinned so these tests can name a sentinel; the product draws a fresh one per
+        # render, which is what stops a translator inventing the next number in a sequence.
+        return rendering.protect(text, ('Ahmedabad', 'Gujarat'), nonce='t')
 
     def test_an_untouched_rendering_passes(self):
         masked, tokens = self.tokens()
@@ -109,21 +111,40 @@ class GateTests(unittest.TestCase):
 
     def test_a_dropped_value_fails_and_names_what_was_lost(self):
         masked, tokens = self.tokens()
-        report = rendering.verify(masked.replace('#V1#', ''), tokens)
+        report = rendering.verify(masked.replace('#Vt1#', ''), tokens)
         self.assertFalse(report['ok'])
         self.assertEqual(report['missing'][0]['original'], '35 mm')
 
     def test_a_duplicated_value_fails(self):
         masked, tokens = self.tokens()
-        report = rendering.verify(masked + ' #V1#', tokens)
+        report = rendering.verify(masked + ' #Vt1#', tokens)
         self.assertFalse(report['ok'])
         self.assertEqual(report['duplicated'][0]['times'], 2)
 
-    def test_an_invented_placeholder_fails(self):
+    def test_an_invented_placeholder_is_reported_and_survivable(self):
+        """Changed 20 September 2026. This asserted that an invented placeholder fails the gate.
+
+        Measured on a Hindi station report: the masked sentence carried twenty values as #V1#..#V20#
+        and the live translator returned #V21# through #V38#, sentinels that were never sent. A
+        plainly numbered sequence is a pattern, and a model translating around one will continue it.
+        The whole rendering was then rejected and the reader got the English answer back.
+
+        A placeholder this render never issued stands for nothing. Once every real value is present
+        exactly once, removing it cannot remove a value - so it is reported and the rendering is
+        kept. A value that VANISHED or was claimed twice is a broken rendering and still is; those
+        two are asserted above. The sentinel now also carries a per-render nonce, so an invented
+        "#V21#" cannot collide with a real one.
+        """
         masked, tokens = self.tokens()
         report = rendering.verify(masked + ' #V99#', tokens)
-        self.assertFalse(report['ok'])
+        self.assertTrue(report['ok'], 'nothing real was lost')
         self.assertEqual(report['unknown_placeholders'], ['#V99#'])
+        self.assertFalse(report['missing'])
+        self.assertFalse(report['duplicated'])
+        # The invented placeholder must never reach a reader as literal text.
+        restored = rendering.restore(masked + ' #V99#', tokens, drop_unknown=True)
+        self.assertNotIn('#V', restored)
+        self.assertIn('35 mm', restored)
 
     def test_reordering_is_accepted_because_it_is_correct_grammar(self):
         masked, tokens = self.tokens('Rainfall of 35 mm is forecast for tomorrow.')
@@ -176,9 +197,9 @@ class RenderTests(unittest.TestCase):
         # contained Telugu characters and passed, because the script check only counted
         # the target script. Mixed scripts are not a rendering in the requested language.
         def mixed(text, target, source):
-            kept = rendering.SENTINEL_PATTERN.findall(text)
+            kept = [match.group(0) for match in rendering.SENTINEL_PATTERN.finditer(text)]
             body = 'అనువాదిత వాక్యం ఇక్కడ ఉంది మరియు విలువలు సురక్షితంగా ఉన్నాయి'
-            return body + ' ' + ' '.join(rendering.SENTINEL % int(item) for item in kept)
+            return body + ' ' + ' '.join(kept)
 
         text, report = rendering.render(ANSWER, 'hi', mixed, identities=('Ahmedabad', 'Gujarat'))
         self.assertFalse(report['ok'])
@@ -190,8 +211,8 @@ class RenderTests(unittest.TestCase):
 
     def test_prose_that_is_not_written_in_the_target_script_is_not_a_rendering(self):
         def latinised(text, target, source):
-            kept = rendering.SENTINEL_PATTERN.findall(text)
-            return 'Anuvadit vakya yahan hai aur maan surakshit hain ' + ' '.join(rendering.SENTINEL % int(item) for item in kept)
+            kept = [match.group(0) for match in rendering.SENTINEL_PATTERN.finditer(text)]
+            return 'Anuvadit vakya yahan hai aur maan surakshit hain ' + ' '.join(kept)
 
         _, report = rendering.render(ANSWER, 'hi', latinised, identities=('Ahmedabad', 'Gujarat'))
         self.assertFalse(report['ok'])
@@ -302,14 +323,16 @@ class UnitBoundaryTests(unittest.TestCase):
     """
 
     def masked(self, text):
-        return rendering.protect(text)[0]
+        # The nonce is pinned so these assertions name exact sentinels; the product uses a fresh one
+        # per render, which is what stops a translator guessing the next number in a sequence.
+        return rendering.protect(text, nonce='t')[0]
 
     def test_a_word_beginning_with_a_unit_letter_is_not_eaten(self):
         self.assertEqual(self.masked('reported 46 minutes before retrieval'),
-                         'reported #V1# minutes before retrieval')
-        self.assertEqual(self.masked('a 5 metre swell'), 'a #V1# metre swell')
-        self.assertEqual(self.masked('the 12 month average'), 'the #V1# month average')
-        self.assertEqual(self.masked('3 members agreed'), '#V1# members agreed')
+                         'reported #Vt1# minutes before retrieval')
+        self.assertEqual(self.masked('a 5 metre swell'), 'a #Vt1# metre swell')
+        self.assertEqual(self.masked('the 12 month average'), 'the #Vt1# month average')
+        self.assertEqual(self.masked('3 members agreed'), '#Vt1# members agreed')
 
     def test_a_real_unit_is_still_protected_with_its_number(self):
         for text in ('a 5 m swell', 'rain 6.0 mm', 'SURAT, 13.37 km away', 'temperature 28.4 °C',
@@ -319,12 +342,12 @@ class UnitBoundaryTests(unittest.TestCase):
                 self.assertNotIn('  ', self.masked(text))
 
     def test_a_compound_unit_still_wins_over_its_prefix(self):
-        self.assertEqual(self.masked('wind 8 m/s and gusts 20 km/h'), 'wind #V1# and gusts #V2#')
+        self.assertEqual(self.masked('wind 8 m/s and gusts 20 km/h'), 'wind #Vt1# and gusts #Vt2#')
 
     def test_every_protected_value_survives_a_round_trip(self):
         text = 'SURAT, 13.37 km away, reported 46 minutes before retrieval at 28.4 °C'
-        masked, values = rendering.protect(text)
+        masked, values = rendering.protect(text, nonce='t')
         self.assertEqual(rendering.restore(masked, values), text)
         # The minute count is protected as a bare number, not as a quantity in metres.
-        self.assertEqual(values['#V2#']['kind'], 'bare_number')
-        self.assertEqual(values['#V1#']['original'], '13.37 km')
+        self.assertEqual(values['#Vt2#']['kind'], 'bare_number')
+        self.assertEqual(values['#Vt1#']['original'], '13.37 km')

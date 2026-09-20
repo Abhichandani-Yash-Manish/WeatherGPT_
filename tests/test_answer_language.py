@@ -26,9 +26,9 @@ def result(answer='Rainfall of 35 mm is forecast for Ahmedabad tomorrow.', statu
 def devanagari(text, target, source):
     """A stub that returns Devanagari prose and keeps every placeholder."""
     from weathergpt_data.rendering import SENTINEL_PATTERN
-    kept = SENTINEL_PATTERN.findall(text)
+    kept = [match.group(0) for match in SENTINEL_PATTERN.finditer(text)]
     body = 'अनुवादित वाक्य यहाँ है और सभी मान अपने मूल अक्षरों में हैं'
-    return body + ' ' + ' '.join('#V%d#' % int(number) for number in kept)
+    return body + ' ' + ' '.join(kept)
 
 
 def lossy(text, target, source):
@@ -110,9 +110,9 @@ class DeliveryTests(unittest.TestCase):
         # was refused by the gate and then reported to the reader as an unreachable service.
         def telugu(text, target, source):
             from weathergpt_data.rendering import SENTINEL_PATTERN
-            kept = SENTINEL_PATTERN.findall(text)
+            kept = [match.group(0) for match in SENTINEL_PATTERN.finditer(text)]
             body = 'అనువాదిత వాక్యం ఇక్కడ ఉంది మరియు విలువలు సురక్షితంగా ఉన్నాయి'
-            return body + ' ' + ' '.join('#V%d#' % int(number) for number in kept)
+            return body + ' ' + ' '.join(kept)
 
         packet = answer_language.deliver(result(), 'hi', translator=telugu)
         self.assertEqual(packet['status'], 'partial')

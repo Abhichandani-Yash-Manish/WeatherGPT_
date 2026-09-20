@@ -16,9 +16,9 @@ from weathergpt_data.rendering import SENTINEL_PATTERN
 
 def tamil(text, target, source):
     """A stub translator that answers in Tamil and keeps every placeholder."""
-    kept = SENTINEL_PATTERN.findall(text)
+    kept = [match.group(0) for match in SENTINEL_PATTERN.finditer(text)]
     body = 'தமிழில் எழுதப்பட்ட வாக்கியம் இது'
-    return body + ' ' + ' '.join('#V%d#' % int(number) for number in kept)
+    return body + ' ' + ' '.join(kept)
 
 
 def result(answer='Rainfall of 35 mm is forecast for Ahmedabad tomorrow.', status='answered'):

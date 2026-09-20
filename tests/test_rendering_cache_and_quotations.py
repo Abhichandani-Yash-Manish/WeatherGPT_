@@ -33,7 +33,7 @@ class FakeTranslator:
 
     def __call__(self, text, target, source='en-IN'):
         self.calls.append(text)
-        sentinels = ' '.join(re.findall(r'#V\d+#', text))
+        sentinels = ' '.join(m.group(0) for m in rendering.SENTINEL_PATTERN.finditer(text))
         return (self.answer + ' ' + sentinels + ' और यह अनुवाद भी हिंदी में है').strip()
 
 
