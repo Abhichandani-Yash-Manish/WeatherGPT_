@@ -1,0 +1,361 @@
+{
+ "schema_version": "weather-conversation-v1",
+ "conversation_id": "c9d4fc98-2e66-4875-9f6e-846d41a88b41",
+ "question": "Will it rain in Ahmedabad tomorrow?",
+ "status": "answered",
+ "answer": "No rain is forecast for Ahmedabad tomorrow: rainfall of 0.0 mm is expected over the whole day, 22 Sep 2026 00:30 to 23 Sep 2026 00:30 IST. That figure is a model forecast for the selected place point, not an observation or a district average, and the model run time and local representativeness have not been verified. The place read here is Ahmedabad, Ahmadābād, State of Gujarāt; another place shares this name — Ahmedābād, District Rampur, Uttar Pradesh — so say which one you meant if that is not the one you had in mind. These are model forecasts for the selected points, not observed conditions or district averages. Source: GFS forecast; conditions can change.",
+ "facts": [
+  {
+   "id": "t1-f1",
+   "label": "Forecast rainfall",
+   "value": "0.0",
+   "unit": "mm",
+   "place": "Ahmedabad, Ahmadābād, State of Gujarāt",
+   "start": "2026-09-22T00:30:00+05:30",
+   "end": "2026-09-23T00:30:00+05:30",
+   "source_id": "S21",
+   "method": "preceding_hour_sum",
+   "source_locators": [
+    "$.hourly.precipitation[44]",
+    "$.hourly.precipitation[45]",
+    "$.hourly.precipitation[46]",
+    "$.hourly.precipitation[47]",
+    "$.hourly.precipitation[48]",
+    "$.hourly.precipitation[49]",
+    "$.hourly.precipitation[50]",
+    "$.hourly.precipitation[51]",
+    "$.hourly.precipitation[52]",
+    "$.hourly.precipitation[53]",
+    "$.hourly.precipitation[54]",
+    "$.hourly.precipitation[55]",
+    "$.hourly.precipitation[56]",
+    "$.hourly.precipitation[57]",
+    "$.hourly.precipitation[58]",
+    "$.hourly.precipitation[59]",
+    "$.hourly.precipitation[60]",
+    "$.hourly.precipitation[61]",
+    "$.hourly.precipitation[62]",
+    "$.hourly.precipitation[63]",
+    "$.hourly.precipitation[64]",
+    "$.hourly.precipitation[65]",
+    "$.hourly.precipitation[66]",
+    "$.hourly.precipitation[67]"
+   ],
+   "parameter": "precipitation",
+   "entity_id": "geonames:1279233",
+   "evidence_version": "7aebe6ec3b70891534c7408e0b7fe97f730ac5f7f73393b55a504215c820292d",
+   "citation_ids": [
+    "t1-c-7aebe6ec3b70891534c7408e0b7fe97f730ac5f7f73393b55a504215c820292d"
+   ],
+   "task_id": "t1"
+  }
+ ],
+ "citations": [
+  {
+   "source_id": "S21",
+   "provider": "Open-Meteo",
+   "product": "GFS forecast delivery",
+   "evidence_kind": "model_forecast",
+   "url": "https://api.open-meteo.com/v1/gfs?latitude=23.02579&longitude=72.58727&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=4&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+   "response_sha256": "7aebe6ec3b70891534c7408e0b7fe97f730ac5f7f73393b55a504215c820292d",
+   "raw_relative_path": "184a26330cceacfd9a36552abbb95b84c73a55cc57860b111c0f0fd190e8b078/23432cc59d6548a98b5d053dcd51dede/blobs/7aebe6ec3b70891534c7408e0b7fe97f730ac5f7f73393b55a504215c820292d.bin",
+   "published_job_id": "184a26330cceacfd9a36552abbb95b84c73a55cc57860b111c0f0fd190e8b078",
+   "source_locators": [
+    "$.hourly.precipitation[44]",
+    "$.hourly.precipitation[45]",
+    "$.hourly.precipitation[46]",
+    "$.hourly.precipitation[47]",
+    "$.hourly.precipitation[48]",
+    "$.hourly.precipitation[49]",
+    "$.hourly.precipitation[50]",
+    "$.hourly.precipitation[51]",
+    "$.hourly.precipitation[52]",
+    "$.hourly.precipitation[53]",
+    "$.hourly.precipitation[54]",
+    "$.hourly.precipitation[55]",
+    "$.hourly.precipitation[56]",
+    "$.hourly.precipitation[57]",
+    "$.hourly.precipitation[58]",
+    "$.hourly.precipitation[59]",
+    "$.hourly.precipitation[60]",
+    "$.hourly.precipitation[61]",
+    "$.hourly.precipitation[62]",
+    "$.hourly.precipitation[63]",
+    "$.hourly.precipitation[64]",
+    "$.hourly.precipitation[65]",
+    "$.hourly.precipitation[66]",
+    "$.hourly.precipitation[67]"
+   ],
+   "retrieved_at_utc": "2026-09-20T21:19:51.113914+00:00",
+   "issue_time_utc": null,
+   "id": "t1-c-7aebe6ec3b70891534c7408e0b7fe97f730ac5f7f73393b55a504215c820292d"
+  },
+  {
+   "source_id": "S61",
+   "url": "https://www.geonames.org/1279233",
+   "provider": "GeoNames",
+   "product": "India place catalogue",
+   "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+   "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+  }
+ ],
+ "notes": [
+  "Tomorrow is 2026-09-22; no time of day was given, so the upcoming twelve hours from now is not used and the whole day 00:00–24:00 IST is assumed.",
+  "Time window read from the question: tomorrow whole day.",
+  "Place read as Ahmedabad, Ahmadābād, State of Gujarāt — its district carries the same name, and no other place that shares this name does. Other places share this name: Ahmedābād, District Rampur, Uttar Pradesh. Say which one you meant to switch.",
+  "Model forecasts at the selected place point, not observations or district averages. Source model run time and local representativeness remain unverified."
+ ],
+ "choices": [],
+ "follow_up": null,
+ "operational_eligible": false,
+ "answered_at_utc": "2026-09-20T22:10:43.060197+00:00",
+ "expires_at_utc": "2026-09-20T22:19:51.113914+00:00",
+ "trace": {
+  "planning": {
+   "provider": "deepseek",
+   "model": "deepseek-chat",
+   "attempts": 1,
+   "latency_ms": 3267,
+   "input_tokens": 6082,
+   "output_tokens": 189,
+   "cache_hit_tokens": 4352,
+   "provider_policy": "deepseek_first",
+   "failover": [],
+   "planner_policy": "model"
+  },
+  "generation": {
+   "provider": "deepseek",
+   "model": "deepseek-chat",
+   "attempts": 1,
+   "latency_ms": 1579,
+   "input_tokens": 1032,
+   "output_tokens": 148,
+   "cache_hit_tokens": 896,
+   "provider_policy": "deepseek_first",
+   "failover": [],
+   "authored_by": "model",
+   "floor": "tool_owned_renderer",
+   "validation": "numbers, units, evidence references, links, certainty and output language all checked against the retrieved facts; the fact rows, ruler and receipt stay tool-owned",
+   "evidence_ids": [
+    "t1-f1"
+   ],
+   "requested_language": "en",
+   "language_selection": "inferred_from_question",
+   "language_adherence": "not_applicable"
+  },
+  "tools": [
+   {
+    "name": "gazetteer_search",
+    "query": {
+     "name": "Ahmedabad",
+     "state": "",
+     "district": "",
+     "kind": "settlement"
+    },
+    "matches": 2
+   },
+   {
+    "name": "point_forecast",
+    "location": "Ahmedabad, Ahmadābād, State of Gujarāt",
+    "status": "prototype_answer",
+    "refresh": null
+   },
+   {
+    "name": "forecast",
+    "task_id": "t1",
+    "status": "answered"
+   }
+  ],
+  "provider": "local_ollama",
+  "context_resolution": {
+   "action": "new",
+   "changed_fields": [
+    "parameters",
+    "places",
+    "time"
+   ],
+   "inherited_fields": []
+  },
+  "duration_seconds": 8.742
+ },
+ "plan": {
+  "language": "en",
+  "places": [
+   {
+    "name": "Ahmedabad",
+    "state": "",
+    "district": "",
+    "kind": "settlement"
+   }
+  ],
+  "assumptions": [
+   "Tomorrow is 2026-09-22; no time of day was given, so the upcoming twelve hours from now is not used and the whole day 00:00–24:00 IST is assumed.",
+   "Time window read from the question: tomorrow whole day."
+  ],
+  "clarification": "",
+  "explicit_times": false,
+  "tasks": [
+   {
+    "request_quote": "Will it rain in Ahmedabad tomorrow?",
+    "kind": "forecast",
+    "operation": "lookup",
+    "parameters": [
+     "precipitation"
+    ],
+    "years": [],
+    "period": "annual",
+    "start_local": "2026-09-22T00:30:00+05:30",
+    "end_local": "2026-09-23T00:30:00+05:30",
+    "place_indices": [
+     0
+    ]
+   }
+  ],
+  "context_action": "new",
+  "changed_fields": [
+   "parameters",
+   "places",
+   "time"
+  ],
+  "intent": "forecast",
+  "start_local": "2026-09-22T00:30:00+05:30",
+  "end_local": "2026-09-23T00:30:00+05:30",
+  "variables": [
+   "precipitation"
+  ],
+  "year": 0,
+  "period": "annual",
+  "history_parameter": "rainfall",
+  "unsupported_parameters": [],
+  "requested_outcome": "Complete all explicitly requested tasks"
+ },
+ "task_results": [
+  {
+   "id": "t1",
+   "request": {
+    "request_quote": "Will it rain in Ahmedabad tomorrow?",
+    "kind": "forecast",
+    "operation": "lookup",
+    "parameters": [
+     "precipitation"
+    ],
+    "years": [],
+    "period": "annual",
+    "start_local": "2026-09-22T00:30:00+05:30",
+    "end_local": "2026-09-23T00:30:00+05:30",
+    "place_indices": [
+     0
+    ]
+   },
+   "status": "answered",
+   "answer": "Ahmedabad: rainfall of 0.0 mm is forecast tomorrow.\n\nForecast precipitation: 0.0 mm. Source: GFS forecast; conditions can change.",
+   "fact_ids": [
+    "t1-f1"
+   ],
+   "passage_ids": []
+  }
+ ],
+ "charts": [],
+ "calculations": [],
+ "pending_slots": [],
+ "retrieval_coverage": [],
+ "retrieval_plan": [
+  {
+   "task_id": "t1",
+   "operation": "lookup",
+   "kind": "forecast",
+   "parameters": [
+    "precipitation"
+   ],
+   "candidates": [
+    {
+     "tool": "forecast_summary",
+     "selected": true,
+     "available": true,
+     "reason": "Exact-window GFS model summary",
+     "sources": [
+      {
+       "source_id": "S21",
+       "product": "Open-Meteo GFS forecast delivery",
+       "registry_status": "prototype_adapter_tested"
+      }
+     ]
+    },
+    {
+     "tool": "hourly_forecast",
+     "selected": false,
+     "available": true,
+     "reason": "Hourly evidence; exact onset and whole-period probability unavailable",
+     "sources": [
+      {
+       "source_id": "S62",
+       "product": "Open-Meteo best-match extended hourly forecast",
+       "registry_status": "prototype_adapter_tested"
+      }
+     ]
+    }
+   ],
+   "status": "answered",
+   "returned_source_ids": [
+    "S21",
+    "S61"
+   ]
+  }
+ ],
+ "document_evidence": [],
+ "held_clauses": [
+  "These are model forecasts for the selected points, not observed conditions or district averages."
+ ],
+ "resolved_points": {
+  "Ahmedabad": {
+   "id": "1279233",
+   "name": "Ahmedabad",
+   "latitude": 23.02579,
+   "longitude": 72.58727,
+   "feature": "PPL",
+   "admin1": "State of Gujarāt",
+   "admin2": "Ahmadābād",
+   "modified": "2024-01-06",
+   "rename_basis": "",
+   "name_match_basis": "canonical",
+   "state_match_basis": "",
+   "other_alias_matches": 0,
+   "match_type": "source_name_or_alias",
+   "selection_id": "geonames:1279233",
+   "label": "Ahmedabad, Ahmadābād, State of Gujarāt",
+   "coordinates": {
+    "latitude": 23.02579,
+    "longitude": 72.58727
+   },
+   "source_id": "S61",
+   "citation": {
+    "source_id": "S61",
+    "url": "https://www.geonames.org/1279233",
+    "provider": "GeoNames",
+    "product": "India place catalogue",
+    "sha256": "8f132b51092b11e26a1ae17e55cef7dba22c4278ecbfeb9061f705ede8c028a0",
+    "retrieved_at_utc": "2026-09-12T16:04:58.236553+00:00"
+   },
+   "administrative_mapping": "GeoNames source labels; not reviewed LGD codes or boundaries",
+   "for_place_name": "Ahmedabad",
+   "accepted_because": "its district carries the same name, and no other place that shares this name does",
+   "alternatives": [
+    "Ahmedābād, District Rampur, Uttar Pradesh"
+   ]
+  }
+ },
+ "lead": "Ahmedabad: rainfall of 0.0 mm is forecast tomorrow.",
+ "task_coverage": {
+  "requested": 1,
+  "completed": 1,
+  "incomplete_ids": []
+ },
+ "tool_answer": "Ahmedabad: rainfall of 0.0 mm is forecast tomorrow.\n\nForecast precipitation: 0.0 mm. Source: GFS forecast; conditions can change.",
+ "quick_replies": [
+  {
+   "label": "Any warnings for Ahmedabad?",
+   "reply": "Are there any official warnings for Ahmedabad?",
+   "basis": "deterministic_rules"
+  }
+ ]
+}

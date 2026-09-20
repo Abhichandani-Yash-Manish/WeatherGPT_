@@ -1,0 +1,33 @@
+{
+ "question": "Will it rain in Ahmedabad tomorrow?",
+ "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/chat/printed-answer.pdf",
+ "printMedia": {
+  "summary": {
+   "display": "inline-flex",
+   "width": 207,
+   "height": 20
+  },
+  "foldBody": {
+   "display": "block",
+   "width": 708,
+   "height": 99
+  },
+  "foldBodyContentVisibility": "visible",
+  "uaClosedFoldContent": {
+   "display": "block",
+   "width": 1024,
+   "height": 22
+  },
+  "screenOnlyControls": {
+   "display": "none",
+   "width": 0,
+   "height": 0
+  },
+  "recordRendered": false,
+  "lead": {
+   "display": "block",
+   "width": 673,
+   "height": 57
+  }
+ }
+}

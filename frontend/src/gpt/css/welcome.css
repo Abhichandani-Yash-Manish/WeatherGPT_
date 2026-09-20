@@ -58,7 +58,14 @@
   font-size: clamp(2.3rem, 1.4rem + 3.1vw, 3.35rem);
   font-weight: 700; letter-spacing: -0.028em; line-height: 1.04;
   margin: 0; color: var(--g-paper);
-  animation: w-arrive 720ms var(--g-ease) 80ms both;
+  /* The hour changes under the reader's feet, and this is the change's own expression: the greeting rises
+     out of a 3px blur rather than appearing, on the entrance duration. (transitions.dev text-states swap,
+     pattern 04, re-authored on this product's tokens.) */
+  animation: w-swap var(--g-enter) var(--g-ease-out) 80ms both;
+}
+@keyframes w-swap {
+  from { opacity: 0; transform: translateY(8px); filter: blur(3px); }
+  to   { opacity: 1; transform: none; filter: blur(0); }
 }
 .w-place {
   margin: var(--g-2) 0 0; font-size: 1.0625rem; color: var(--g-mist);

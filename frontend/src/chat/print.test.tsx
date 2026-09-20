@@ -30,6 +30,9 @@ const PACKET = {
 const PRINT_CSS = readFileSync('src/styles/print.css', 'utf8');
 
 async function askAndRender() {
+  /* `full` on purpose: the machine record is that register's own addition (docs/136), and this is the
+     spec that holds the printout to dropping it. A print copy of `conversational` has no record to drop. */
+  window.localStorage.setItem('weathergpt.register', 'full');
   server.use(
     http.post('/api/chat', () => HttpResponse.json(PACKET)),
     http.post('/api/chat/preview', () => HttpResponse.json({ schema_version: 'chat-preview-v1', provisional: true, note: 'provisional', reading: null })),

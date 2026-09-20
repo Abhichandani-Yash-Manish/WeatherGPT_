@@ -1,18 +1,23 @@
 /* ---- the column ---------------------------------------------------------------------------------- */
 .g-main { position: relative; z-index: 2; flex: 1; min-width: 0; display: flex; flex-direction: column; height: 100dvh; }
 
-/* The bar is quiet glass, always — not just once the thread scrolls under it. A wash of --g-bar-tint (task
-   3's own hue for this component, distinct from the rail's and a bubble's) sits behind it at all times, low
-   enough that it reads as atmosphere rather than a panel; the hairline this rule always had still only
-   appears once there is a thread to separate from, because a rule under an empty bar states a boundary that
-   is not there yet. */
+/* The bar is the light: the thinnest of the four materials, and the one that is least the ground's own
+   colour. It is a film over the sky rather than a panel with a blur, so the sky's change across the bar's own
+   height is the whole effect — and it is the bar that gives the top of the page its edge, where the ground
+   above it is the most saturated part of the gradient. The hairline this rule always had still only appears
+   once there is a thread to separate from, because a rule under an empty bar states a boundary that is not
+   there yet. */
 .g-top {
   display: flex; align-items: center; justify-content: space-between; gap: var(--g-2);
   padding: var(--g-3) var(--g-5); flex: 0 0 auto; position: relative; z-index: 5;
-  background: linear-gradient(180deg, var(--g-bar-tint), transparent 85%);
-  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  background: linear-gradient(180deg, var(--g-bar-fill), color-mix(in srgb, var(--g-bar-fill) 52%, transparent));
+  backdrop-filter: blur(18px) saturate(1.2); -webkit-backdrop-filter: blur(18px) saturate(1.2);
   transition: background 900ms var(--g-ease);
 }
+/* The bar's glyphs take the bar's own temperature, the way the rail's take the rail's. Only the icon buttons:
+   the two selects in this bar carry words, and a word takes an ink rather than a material. */
+.g-top .g-act { color: var(--g-bar-icon); }
+.g-top .g-act:hover { color: var(--g-paper); }
 .g-top::after {
   content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
   background: linear-gradient(90deg, transparent, var(--g-line-soft) 18%, var(--g-line-soft) 82%, transparent);

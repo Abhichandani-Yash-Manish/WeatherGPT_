@@ -13,6 +13,7 @@ Nothing here introduces a value: the composed sentence is built from the fact ro
 at the precision they were published with. It never rounds a value up, never turns a modelled cell into a
 station and never turns a forecast into an observation.
 """
+import re as _re
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal, InvalidOperation
 from zoneinfo import ZoneInfo
@@ -311,6 +312,11 @@ def _station_sentence(packet, rows, now, when):
 
     The station's own name and distance are read from the line the fact already carries, so the sentence
     cannot invent a nearer station than the evidence did.
+
+    What the station can SEE is stated with what it measured, because that is what a reader asking "what
+    is it like" means: a METAR reporting mist at 26 °C and 94 % humidity describes a different morning
+    from one reporting clear skies at the same numbers. Present weather is only ever the station's own
+    word - a layer that printed a bare code contributed no fact at all, and nothing is invented here.
     """
     key = {'temperature_c': 0, 'temperature_2m': 0, 'wind_speed_kt': 1, 'wind_speed_10m': 1,
            'relative_humidity_2m': 2, 'mslp': 3, 'wind_direction': 4}
@@ -328,27 +334,88 @@ def _station_sentence(packet, rows, now, when):
         if str(row.get('place') or '').split('·')[0].strip() != station:
             continue
         fields.setdefault(str(row.get('parameter')), row)
+    # The unit comes off the fact, which records whether the source stated it or the parameter is
+    # simply read in it. The fallback is the parameter's own unit, so a row built anywhere else in this
+    # product still cannot put a bare number in front of a reader.
+    def with_unit(row, fallback):
+        unit = display_unit(row.get('unit') or fallback)
+        if not unit:
+            return str(row.get('value'))
+        # A percent sign is not a word: "94.0%" is a reading and "94.0 %" is a typo with a space in it.
+        return str(row.get('value')) + (unit if unit.startswith(('%', '°')) and unit == '%' else ' ' + unit)
     parts = []
     temperature = fields.get('temperature_c') or fields.get('temperature_2m')
     if temperature is not None:
-        parts.append(str(temperature.get('value')) + ' °C')
+        parts.append(with_unit(temperature, '°C'))
+    weather = fields.get('present_weather')
+    if weather is not None:
+        parts.append(str(weather.get('value')))
     wind = fields.get('wind_speed_kt') or fields.get('wind_speed_10m')
     if wind is not None:
         unit = 'kt' if str(wind.get('parameter')).endswith('_kt') else str(wind.get('unit') or '')
-        parts.append(str(wind.get('value')) + (' ' + unit if unit else '') + ' wind')
+        parts.append(with_unit(wind, unit) + ' wind')
     humidity = fields.get('relative_humidity_2m')
     if humidity is not None:
-        parts.append(str(humidity.get('value')) + '% humidity')
+        parts.append(with_unit(humidity, '%') + ' humidity')
+    visibility = fields.get('visibility')
+    if visibility is not None and len(parts) < 4:
+        parts.append(with_unit(visibility, 'm') + ' visibility')
     pressure = fields.get('mslp')
     if pressure is not None and len(parts) < 2:
-        unit = str(pressure.get('unit') or '')
-        parts.append(str(pressure.get('value')) + (' ' + unit if unit else '') + ' pressure')
+        parts.append(with_unit(pressure, 'hPa') + ' pressure')
     if not parts:
         return None
     at = _observed_at(lead)
     where = str(station) + ((' ' + str(round(float(distance), 1)) + ' km away') if distance else '')
     return ('The nearest station to ' + requested + ', ' + where + ', reported ' + ' and '.join(parts) +
             (' at ' + at + ' IST' if at else '') + '.')
+
+
+def _next_hours_clause(packet):
+    """The model's own next hours for the same point, as the sentence that follows a station reading.
+
+    The right-now reading has always composed these rows and, until 21 September 2026, they reached a
+    reader only inside a block of text: the temperature a reader asking "what is it like" most wants was
+    in that prose and in no fact, so no answer could cite it. They are forecast rows for the grid cell
+    and the clause says so in the same breath, rather than leaving the reader to assume the station
+    forecast anything.
+    """
+    facts = [fact for fact in packet.get('facts') or [] if isinstance(fact, dict)
+             and fact.get('method') == 'model_hour_for_point']
+    if not facts:
+        return ''
+    by_parameter = {}
+    for fact in facts:
+        by_parameter.setdefault(str(fact.get('parameter')), []).append(fact)
+    first = min(facts, key=lambda fact: str(fact.get('start') or ''))
+    last = max(facts, key=lambda fact: str(fact.get('end') or fact.get('start') or ''))
+    start, end = parsed(first.get('start')), parsed(last.get('end') or last.get('start'))
+    if start is None or end is None:
+        return ''
+    span = (end - start).total_seconds() / 3600.0
+    window = 'the next ' + (str(int(span)) if span == int(span) else str(round(span, 1))) + ' hours'
+    clauses = []
+    for parameter in ('temperature_2m', 'precipitation_probability', 'precipitation', 'wind_speed_10m'):
+        rows = by_parameter.get(parameter)
+        if not rows:
+            continue
+        value, row = value_words(rows)
+        if value is None:
+            continue
+        unit = str((row or {}).get('unit') or '')
+        tail = ' ' + unit if unit and unit not in {'index'} else ''
+        if parameter == 'temperature_2m':
+            clauses.append('temperature ' + value + tail)
+        elif parameter == 'precipitation_probability':
+            clauses.append('the rain chance ' + value + (tail.strip() or '%'))
+        elif parameter == 'precipitation':
+            clauses.append('rainfall ' + value + (tail or ' mm'))
+        else:
+            clauses.append('wind ' + value + tail)
+    if not clauses:
+        return ''
+    return (' The model holds ' + ' and '.join(clauses[:3]) + ' for ' + window +
+            ' at ' + _place_phrase(packet) + '; that is grid-cell output, not this station\'s forecast.')
 
 
 def _window(packet, now):
@@ -437,6 +504,17 @@ def _reanalysis_window(rows):
     return 'from ' + first.strftime('%d %b') + ' to ' + last.strftime('%d %b %Y')
 
 
+def _trend_words(calculation):
+    """A computed slope as the sentence states it: one decimal, which is the precision the published
+    values carry. The calculation record keeps the full slope - `historical_tasks` explains why - so
+    the sentence and the record deliberately differ, and this is the one place the sentence's form is
+    decided. It is here rather than in the task because an allowed-number check reads the sentence."""
+    try:
+        return format(_decimal(calculation.get('value')).quantize(Decimal('0.1')), 'f')
+    except (InvalidOperation, TypeError, ValueError):
+        return str(calculation.get('value'))
+
+
 def _history_sentence(place, parameter, rows, packet):
     row = rows[0]
     year = row.get('year')
@@ -483,6 +561,26 @@ def _history_sentence(place, parameter, rows, packet):
     else:
         measure = 'annual ' + measure if not str(measure).startswith('annual') else measure
     unit_text = (' ' + unit) if unit else ''
+    # A range across YEARS is not a value for one year. Measured 21 September 2026: "Show the annual
+    # rainfall trend for Ahmedabad from 1981 to 2010" opened "recorded rainfall was 225.8-1132.3 mm in
+    # 1981", which is the thirty-year spread of the series pinned to its first year - the row's year
+    # taken from one row and the value taken from all of them. A series gets the span it covers, and
+    # when this product computed a slope over that series the slope is what the reader asked for.
+    years = sorted({int(item['year']) for item in rows if isinstance(item.get('year'), int)})
+    if len(years) > 1:
+        span = 'over ' + str(years[0]) + '\u2013' + str(years[-1])
+        slope = next((c for c in (packet.get('calculations') or [])
+                      if str(c.get('operation') or '') == 'linear_trend'
+                      and str(c.get('label') or '').endswith('\u00b7 ' + str(parameter))), None)
+        if slope and slope.get('value') is not None:
+            places = str(place)
+            stated = _trend_words(slope)
+            return (places + ': the published ' + measure + ' trend is ' + stated +
+                    ((' ' + str(slope['unit'])) if slope.get('unit') else '') + ' ' + span +
+                    ', with the yearly values ranging ' + value + unit_text +
+                    ' (published record, not a forecast).')
+        return (place + ': the published ' + measure + ' ranged ' + value + unit_text + ' ' + span +
+                ' (published record, not a forecast).')
     if parameter == 'rainfall':
         return (place + ': recorded rainfall was ' + value + unit_text + (' in ' + when if when else '') +
                 ' (published record, not a forecast).')
@@ -559,7 +657,8 @@ def lead_sentence(packet, kind=None, clock=None, language='en', now=None):
     if kind == 'aviation':
         return _aviation_sentence(packet, place, facts)
     if kind == 'observation':
-        return _station_sentence(packet, facts, now, when)
+        sentence = _station_sentence(packet, facts, now, when)
+        return (sentence + _next_hours_clause(packet)) if sentence else None
     if kind in {'marine', 'river'}:
         parameter, rows = _group(facts)
         return _specialist_sentence(packet, place, parameter, rows, when, where)
@@ -605,7 +704,6 @@ def join_lead_tail(lead, tail):
     A continuation that restates the opening is dropped rather than printed twice: the model was told the
     opening is fixed, and the first eight words repeating is the model ignoring that, not a second fact.
     """
-    import re as _re
     opening = str(lead or '').strip()
     body = str(tail or '').strip()
     if not opening:
@@ -650,3 +748,98 @@ def within_budget(text, limit=0.34, floor_words=40):
     if words <= floor_words:
         return True
     return numeral_ratio(text) <= limit
+
+
+# A series is stated as a range; the rows are depth. These are the two numbers that decide whether a
+# written answer describes what was retrieved or recites it, and they are read off a shape rather than
+# off a ratio: a recitation of nineteen facts and a good answer about the same nineteen facts can carry
+# the same numerals per word, and the ratio cannot tell them apart. Measured 21 September 2026 on the
+# answer that made this necessary - "What is it like right now in Surat?" came back naming eleven
+# separate measures, eleven of the thirteen the station and the model between them returned.
+def carried_by(clause, text, threshold=0.6):
+    """Whether `text` already says what `clause` says.
+
+    Tool-owned clauses are appended to a written answer because a model must not be able to drop them.
+    Appending one the answer ALREADY carries is the other failure, and it is the one a reader notices:
+    measured 21 September 2026, the Ahmedabad forecast answer said "not an observation or a district
+    average" and then had "not observed conditions or district averages" appended under it, and the
+    marine answer said "not an official marine bulletin or a measured buoy station" twice in a row.
+
+    The test is a prefix match rather than equality, because the two sentences are never spelled the
+    same: `forecast`/`forecasts`, `observed`/`observation`, `average`/`averages`. A five-character
+    prefix over the clause's own content words is coarse enough to see those as one word and fine enough
+    not to see `wind` in `window`.
+    """
+    words = [word for word in _re.split(r'[^a-z0-9]+', str(clause or '').lower())
+             if len(word) >= 4 and word not in _STOPWORDS]
+    # Two content words are enough to be a statement worth not repeating - the source caveat is
+    # "conditions can change" - and with a five-character prefix both of them have to be there, so a
+    # two-word clause cannot be matched by accident.
+    if len(words) < 2:
+        return False
+    body = [word for word in _re.split(r'[^a-z0-9]+', str(text or '').lower()) if word]
+    found = 0
+    for word in words:
+        key = word[:5]
+        if any(other.startswith(key) for other in body):
+            found += 1
+    return found >= max(2, int(round(threshold * len(words))))
+
+
+_STOPWORDS = {'that', 'this', 'these', 'those', 'from', 'with', 'they', 'them', 'their', 'there',
+              'which', 'while', 'would', 'could', 'have', 'been', 'does', 'into', 'over', 'than',
+              'when', 'what', 'some', 'such', 'same', 'also', 'only', 'each', 'more', 'most', 'must',
+              'because', 'about', 'against', 'between', 'points', 'selected'}
+
+
+def prose_shape(text, supplied):
+    """What a written answer did with its evidence: how many measures it stated, and how deep.
+
+    `supplied` is the payload the composer was handed, which is the definition of what the model was
+    shown. Every value is matched numerically so a source that printed `26` and a sentence that wrote
+    `26.0` are the same value, and a value the prose never states is not counted at all.
+    """
+    facts = []
+    payload = supplied if isinstance(supplied, dict) else {}
+    for row in payload.get('facts') or []:
+        if isinstance(row, dict):
+            facts.append(row)
+    values = {}
+    for row in facts:
+        parameter = str(row.get('parameter') or '')
+        if not parameter:
+            continue
+        for token in _re.findall(r'-?\d+(?:\.\d+)?', str(row.get('value') or '')):
+            values.setdefault(parameter, set()).add(_decimal(token))
+    words = set()
+    for token in _re.findall(r'-?\d+(?:\.\d+)?', str(text or '')):
+        number = _decimal(token)
+        if number is not None:
+            words.add(number)
+    stated = {}
+    for parameter, numbers in values.items():
+        found = sum(1 for number in numbers if number in words)
+        if found:
+            stated[parameter] = found
+    return {'measures_stated': len(stated), 'deepest': max(stated.values()) if stated else 0,
+            'measures_supplied': len(values), 'values_supplied': sum(len(item) for item in values.values()),
+            'values_stated': sum(stated.values())}
+
+
+def series_recited(text, supplied, measures=6, depth=3):
+    """Whether a written answer recited a retrieval instead of describing it.
+
+    Two ways over the line, because there are two ways to recite: a station reading answered by naming
+    every measure the station reported, and one series written out hour by hour. `depth` is deliberately
+    looser than a range needs - a range of four values is still a range - and both numbers live here
+    rather than in the prompt, because a prompt is a hope and this is the check that follows it.
+    """
+    shape = prose_shape(text, supplied)
+    # Depth is tested first and on its own: a retrieval with ONE parameter can still be recited by
+    # writing its hours out, and that is the ensemble answer this rule was written for. The count of
+    # measures only decides the other way over the line.
+    if shape['deepest'] > depth:
+        return True
+    if shape['measures_supplied'] <= measures:
+        return False
+    return shape['measures_stated'] >= measures

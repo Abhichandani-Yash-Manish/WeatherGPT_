@@ -1,0 +1,162 @@
+[
+ {
+  "scheme": "light",
+  "width": 1440,
+  "route": "assistant",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/light-and-material-20260921/light-assistant@1440.png",
+  "overflow": 0,
+  "heading": "Good night",
+  "sections": 0,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1440,
+  "route": "overview",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/light-and-material-20260921/light-overview@1440.png",
+  "overflow": 0,
+  "heading": "Today",
+  "sections": 13,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1024,
+  "route": "assistant",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/light-and-material-20260921/light-assistant@1024.png",
+  "overflow": 0,
+  "heading": "Good night",
+  "sections": 0,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1024,
+  "route": "overview",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/light-and-material-20260921/light-overview@1024.png",
+  "overflow": 0,
+  "heading": "Today",
+  "sections": 13,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 768,
+  "route": "assistant",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/light-and-material-20260921/light-assistant@768.png",
+  "overflow": 0,
+  "heading": "Good night",
+  "sections": 0,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 768,
+  "route": "overview",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/light-and-material-20260921/light-overview@768.png",
+  "overflow": 0,
+  "heading": "Today",
+  "sections": 13,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 390,
+  "route": "assistant",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/light-and-material-20260921/light-assistant@390.png",
+  "overflow": 0,
+  "heading": "Good night",
+  "sections": 0,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 390,
+  "route": "overview",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/light-and-material-20260921/light-overview@390.png",
+  "overflow": 0,
+  "heading": "Today",
+  "sections": 13,
+  "failures": []
+ },
+ {
+  "scheme": "dark",
+  "width": 1440,
+  "route": "assistant",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/light-and-material-20260921/dark-assistant@1440.png",
+  "overflow": 0,
+  "heading": "Good night",
+  "sections": 0,
+  "failures": []
+ },
+ {
+  "scheme": "dark",
+  "width": 1440,
+  "route": "overview",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/light-and-material-20260921/dark-overview@1440.png",
+  "overflow": 0,
+  "heading": "Today",
+  "sections": 13,
+  "failures": []
+ },
+ {
+  "scheme": "dark",
+  "width": 1024,
+  "route": "assistant",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/light-and-material-20260921/dark-assistant@1024.png",
+  "overflow": 0,
+  "heading": "Good night",
+  "sections": 0,
+  "failures": []
+ },
+ {
+  "scheme": "dark",
+  "width": 1024,
+  "route": "overview",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/light-and-material-20260921/dark-overview@1024.png",
+  "overflow": 0,
+  "heading": "Today",
+  "sections": 13,
+  "failures": []
+ },
+ {
+  "scheme": "dark",
+  "width": 768,
+  "route": "assistant",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/light-and-material-20260921/dark-assistant@768.png",
+  "overflow": 0,
+  "heading": "Good night",
+  "sections": 0,
+  "failures": []
+ },
+ {
+  "scheme": "dark",
+  "width": 768,
+  "route": "overview",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/light-and-material-20260921/dark-overview@768.png",
+  "overflow": 0,
+  "heading": "Today",
+  "sections": 13,
+  "failures": []
+ },
+ {
+  "scheme": "dark",
+  "width": 390,
+  "route": "assistant",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/light-and-material-20260921/dark-assistant@390.png",
+  "overflow": 0,
+  "heading": "Good night",
+  "sections": 0,
+  "failures": []
+ },
+ {
+  "scheme": "dark",
+  "width": 390,
+  "route": "overview",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/light-and-material-20260921/dark-overview@390.png",
+  "overflow": 0,
+  "heading": "Today",
+  "sections": 13,
+  "failures": []
+ }
+]

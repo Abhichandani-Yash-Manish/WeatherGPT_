@@ -73,14 +73,23 @@
 .g-panel-side {
   position: sticky; top: 0; z-index: 3;
   width: var(--g-side-w); flex: 0 0 var(--g-side-w); height: 100dvh;
-  background: var(--g-rail-bg);
-  backdrop-filter: blur(24px) saturate(1.3); -webkit-backdrop-filter: blur(24px) saturate(1.3);
+  /* The reading panel is the rail's material on the other edge of the same page: one frame, two columns, and
+     the sky reads through both. It is not a third material — a product with four materials and a fifth for
+     the panel would have a material for everything and an identity for nothing. */
+  background: linear-gradient(270deg, var(--g-rail-fill), color-mix(in srgb, var(--g-rail-fill) 74%, transparent));
+  backdrop-filter: blur(28px) saturate(1.28); -webkit-backdrop-filter: blur(28px) saturate(1.28);
   border-left: 1px solid var(--g-line-soft);
   display: flex; flex-direction: column;
   overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--g-line) transparent;
-  animation: g-side-in var(--g-mid) var(--g-ease) both;
+  /* A panel a reader opens takes the entrance duration, and blurs in rather than sliding a hard edge: a panel
+     arriving from the right of the page is the reason transitions.dev pairs a short travel with a cross-blur
+     (panel reveal, pattern 07). */
+  animation: g-side-in var(--g-enter) var(--g-ease-out) both;
 }
-@keyframes g-side-in { from { opacity: 0; transform: translateX(12px) } to { opacity: 1; transform: none } }
+@keyframes g-side-in {
+  from { opacity: 0; transform: translateX(14px); filter: blur(2px); }
+  to   { opacity: 1; transform: none; filter: blur(0); }
+}
 .g-side-head { display: flex; align-items: center; gap: var(--g-2); padding: var(--g-3) var(--g-3) var(--g-2); }
 .g-side-title { margin: 0; font-size: 14px; font-weight: 600; letter-spacing: -0.01em; color: var(--g-paper); }
 .g-side-head .g-act { margin-left: auto; }

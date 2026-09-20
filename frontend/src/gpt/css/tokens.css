@@ -42,13 +42,20 @@
   --g-yellow: #d9b53f;
   --g-green: #4f9d6d;
 
-  /* The three component washes spectrum.ts paints continuously (docs: frontend/src/gpt/spectrum.ts). These
-     are the static fallback — what a reader with JavaScript off sees, and what the page looks like for the
-     one frame before Field's effect first runs — so they are hand-set here to the same values spectrum.ts
+  /* The four materials spectrum.ts paints continuously (docs: frontend/src/gpt/spectrum.ts). Each is the film
+     its own component composites over the ground: the rail is the shade and the densest of them, the bar is
+     the light and the thinnest, the bubble is the reader's own warmth, the pane is the machine's own glass.
+     These are the static fallback — what a reader with JavaScript off sees, and what the page looks like for
+     the one frame before Field's effect first runs — so they are hand-set here to the same values spectrum.ts
      uses for 'night', which is this block's own hour. */
-  --g-rail-tint: rgba(168, 199, 250, 0.05);
-  --g-bar-tint: rgba(150, 176, 230, 0.06);
-  --g-bubble-tint: rgba(180, 168, 220, 0.07);
+  --g-rail-fill: rgba(20, 10, 50, 0.60);
+  --g-bar-fill: rgba(170, 200, 180, 0.16);
+  --g-bubble-fill: rgba(170, 90, 20, 0.38);
+  --g-pane-fill: rgba(110, 130, 210, 0.12);
+  --g-rail-icon: #8fa6c6;
+  --g-bar-icon: #9db0bd;
+  --g-mood-k: 0.62;
+  --g-mark-a: 0.035;
 
   --g-sans: 'Anek Latin Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --g-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
@@ -87,11 +94,30 @@
   --g-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
   --g-spring: cubic-bezier(0.34, 1.32, 0.48, 1);
 
+  /* Two more durations, because an entrance and an exit are not the same motion and giving them one number
+     is what makes a product feel like it is animating rather than answering. An entrance is what a reader is
+     waiting for, so it is the longer of the two; the exit gives the screen back immediately.
+     --g-ease-out is the exponential-out family transitions.dev uses across its panel, dropdown and accordion
+     patterns (Jakub Antalik, fetched for reference and not copied): it leaves fast and arrives slow, which is
+     the shape of something that has already decided where it is going.
+     --g-icon-swap is pattern 09's own duration, for two glyphs trading one slot. */
+  --g-enter: 400ms; --g-exit: 320ms;
+  --g-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --g-icon-swap: 180ms;
+
   color-scheme: dark;
 }
 
 /* ---- the four hours -------------------------------------------------------------------------------
    The page follows the sun, and it is allowed to be light.
+
+   One thing about these blocks is load-bearing rather than stylistic, and it is at the bottom of this file:
+   they are declared on the document element, and the `.g` element — which also carries `data-hour`, for the
+   scripts and the structural selectors that key off it — explicitly defers every property spectrum.ts owns
+   back to the document element. A declaration on `.g` beats the inline style spectrum.ts writes on `<html>`,
+   so without that deferral every property below is shadowed the moment JavaScript paints the continuous
+   palette: the spectrum worked and the reader saw the four static rooms (docs/134 measures both values side
+   by side).
 
    The previous version of this block shifted only the gradient and the halo "by a few degrees", which
    measured out at 1.13:1 between noon and midnight — under the threshold where a difference is visible at
@@ -127,15 +153,19 @@
   --g-accent: #a8c7fa; --g-accent-2: #7ea6e8; --g-accent-wash: rgba(168, 199, 250, 0.10);
   --g-red: #e2596f; --g-orange: #e08a47; --g-yellow: #d9b53f; --g-green: #4f9d6d;
 
-  --g-sky-1: #0a1124; --g-sky-2: #070b15;
-  --g-aura-1: rgba(120, 148, 210, 0.11); --g-aura-2: rgba(96, 116, 176, 0.08); --g-halo-x: 32%;
-  --g-vignette: rgba(3, 6, 12, 0.46);
+  --g-sky-1: #080f21; --g-sky-2: #060a16;
+  --g-aura-1: rgba(131, 147, 197, 0.121); --g-aura-2: rgba(102, 115, 178, 0.088); --g-halo-x: 36.8%;
+  --g-vignette: rgba(2, 4, 10, 0.52);
   --g-grain-a: 0.032; --g-grain-blend: overlay;
+  --g-mood-k: 0.634; --g-mark-a: 0.035;
+  --g-mood-k: 0.62; --g-mark-a: 0.035;
 
   --g-rail-bg: linear-gradient(180deg, rgba(8, 12, 20, 0.86), rgba(5, 8, 15, 0.92));
   --g-glass: rgba(14, 20, 33, 0.82); --g-glass-2: rgba(15, 22, 36, 0.60);
   --g-scrim: rgba(4, 7, 13, 0.62);
-  --g-rail-tint: rgba(168, 199, 250, 0.05); --g-bar-tint: rgba(150, 176, 230, 0.06); --g-bubble-tint: rgba(180, 168, 220, 0.07);
+  --g-rail-fill: rgba(0, 43, 63, 0.8); --g-bar-fill: rgba(98, 110, 43, 0.2);
+  --g-bubble-fill: rgba(108, 51, 0, 0.75); --g-pane-fill: rgba(63, 81, 70, 0.16);
+  --g-rail-icon: #9babc5; --g-bar-icon: #94aec3;
 
   --g-e1: inset 0 1px 0 rgba(255,255,255,0.045), 0 1px 2px rgba(0,0,0,0.30);
   --g-e2: inset 0 1px 0 rgba(255,255,255,0.055), 0 2px 4px rgba(0,0,0,0.24), 0 8px 18px -8px rgba(0,0,0,0.50);
@@ -161,15 +191,19 @@
   --g-accent: #c3aae8; --g-accent-2: #a98fd4; --g-accent-wash: rgba(195, 170, 232, 0.12);
   --g-red: #e2596f; --g-orange: #e08a47; --g-yellow: #d9b53f; --g-green: #56a276;
 
-  --g-sky-1: #2a1f38; --g-sky-2: #140f1c;
-  --g-aura-1: rgba(226, 138, 86, 0.22); --g-aura-2: rgba(150, 110, 200, 0.16); --g-halo-x: 78%;
-  --g-vignette: rgba(8, 5, 14, 0.48);
+  --g-sky-1: #18172e; --g-sky-2: #0d0d19;
+  --g-aura-1: rgba(222, 139, 92, 0.224); --g-aura-2: rgba(150, 113, 201, 0.162); --g-halo-x: 77.5%;
+  --g-vignette: rgba(5, 6, 13, 0.469);
   --g-grain-a: 0.032; --g-grain-blend: overlay;
+  --g-mood-k: 0.634; --g-mark-a: 0.035;
+  --g-mood-k: 0.62; --g-mark-a: 0.035;
 
   --g-rail-bg: linear-gradient(180deg, rgba(16, 11, 23, 0.86), rgba(10, 7, 17, 0.92));
   --g-glass: rgba(26, 20, 36, 0.82); --g-glass-2: rgba(28, 21, 39, 0.60);
   --g-scrim: rgba(8, 5, 14, 0.62);
-  --g-rail-tint: rgba(195, 170, 232, 0.05); --g-bar-tint: rgba(226, 148, 96, 0.06); --g-bubble-tint: rgba(170, 130, 190, 0.06);
+  --g-rail-fill: rgba(14, 67, 106, 0.5); --g-bar-fill: rgba(84, 133, 51, 0.2);
+  --g-bubble-fill: rgba(139, 69, 6, 0.672); --g-pane-fill: rgba(104, 111, 114, 0.16);
+  --g-rail-icon: #a4a4c1; --g-bar-icon: #98a9c2;
 
   --g-e1: inset 0 1px 0 rgba(255,255,255,0.045), 0 1px 2px rgba(0,0,0,0.30);
   --g-e2: inset 0 1px 0 rgba(255,255,255,0.055), 0 2px 4px rgba(0,0,0,0.24), 0 8px 18px -8px rgba(0,0,0,0.50);
@@ -225,14 +259,17 @@
   --g-paper: #241c14; --g-mist: #574d40; --g-mist-2: #6d6254;
   --g-accent: #2f5fc0; --g-accent-2: #244da3; --g-accent-wash: rgba(47, 95, 192, 0.10);
 
-  --g-sky-1: #f6dcc0; --g-sky-2: #fcf1e6;
-  --g-aura-1: rgba(240, 166, 102, 0.36); --g-aura-2: rgba(184, 166, 226, 0.22); --g-halo-x: 22%;
-  --g-vignette: rgba(146, 126, 104, 0.14);
+  --g-sky-1: #fbd8ce; --g-sky-2: #feefeb;
+  --g-aura-1: rgba(238, 166, 104, 0.36); --g-aura-2: rgba(183, 166, 226, 0.22); --g-halo-x: 22.7%;
+  --g-vignette: rgba(138, 125, 112, 0.136);
 
   --g-rail-bg: linear-gradient(180deg, rgba(246, 238, 229, 0.86), rgba(240, 231, 220, 0.92));
   --g-glass: rgba(255, 252, 247, 0.86); --g-glass-2: rgba(255, 253, 250, 0.72);
+  --g-mood-k: 1; --g-mark-a: 0.045;
   --g-send-bg: linear-gradient(180deg, #3a6bc9, #2f5fc0); --g-mark-2: #1c3f86;
-  --g-rail-tint: rgba(47, 95, 192, 0.045); --g-bar-tint: rgba(224, 158, 96, 0.05); --g-bubble-tint: rgba(150, 120, 190, 0.05);
+  --g-rail-fill: rgba(160, 220, 254, 0.832); --g-bar-fill: rgba(220, 247, 253, 0.75);
+  --g-bubble-fill: rgba(218, 210, 88, 0.46); --g-pane-fill: rgba(210, 230, 255, 0.75);
+  --g-rail-icon: #4b5245; --g-bar-icon: #4e5144;
 }
 
 /* ---- NOON: full day. Cool paper, and a plain blue sky above it --------------------------------------- */
@@ -242,14 +279,17 @@
   --g-paper: #121a27; --g-mist: #465166; --g-mist-2: #5b6679;
   --g-accent: #1f5ccc; --g-accent-2: #1849a8; --g-accent-wash: rgba(31, 92, 204, 0.10);
 
-  --g-sky-1: #c4d9f5; --g-sky-2: #e4eefb;
-  --g-aura-1: rgba(124, 170, 238, 0.34); --g-aura-2: rgba(150, 186, 240, 0.22); --g-halo-x: 64%;
-  --g-vignette: rgba(94, 118, 158, 0.11);
+  --g-sky-1: #c7daf4; --g-sky-2: #e5effb;
+  --g-aura-1: rgba(124, 170, 238, 0.34); --g-aura-2: rgba(150, 186, 240, 0.22); --g-halo-x: 63.9%;
+  --g-vignette: rgba(95, 118, 157, 0.111);
 
   --g-rail-bg: linear-gradient(180deg, rgba(238, 244, 251, 0.86), rgba(231, 239, 249, 0.92));
   --g-glass: rgba(255, 255, 255, 0.86); --g-glass-2: rgba(255, 255, 255, 0.72);
+  --g-mood-k: 1; --g-mark-a: 0.045;
   --g-send-bg: linear-gradient(180deg, #2a68d8, #1f5ccc); --g-mark-2: #15409b;
-  --g-rail-tint: rgba(31, 92, 204, 0.04); --g-bar-tint: rgba(120, 170, 230, 0.05); --g-bubble-tint: rgba(90, 130, 200, 0.05);
+  --g-rail-fill: rgba(136, 203, 231, 0.52); --g-bar-fill: rgba(247, 249, 215, 0.416);
+  --g-bubble-fill: rgba(241, 190, 39, 0.46); --g-pane-fill: rgba(189, 175, 192, 0.18);
+  --g-rail-icon: #3f526a; --g-bar-icon: #3a5468;
 }
 
 html, body { background: var(--g-bg); transition: background var(--g-slow) ease; }
@@ -269,3 +309,31 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
 
 .g *:focus-visible { outline: 2px solid var(--g-accent); outline-offset: 2px; border-radius: var(--g-r-sm); }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+
+/* ---- one owner for every property the spectrum writes -------------------------------------------------
+   `data-hour` is on two elements: the document element, where spectrum.ts writes the continuous palette
+   inline once a minute, and `.g`, which carries it for the scripts and the structural selectors that key off
+   it (`orb.ts` reads the document element's; glass.css's light-hour catch-light reads either).
+
+   A declaration on `.g` beats its parent's inline style — that is how the cascade works, and it is how every
+   colour in this file came to shadow the spectrum. So this element does not redeclare them: it takes them.
+   Every property in spectrum.ts's own list is named here deliberately, one by one, so that adding a token
+   there without adding it here is a visible omission rather than a silent one, and materials.test.ts holds
+   the two lists to each other.
+
+   `inherit` on a custom property is the parent's computed value, which is exactly the document element's —
+   the four static hour blocks when nothing is running, and the inline spectrum when it is. */
+.g[data-hour] {
+  --g-void: inherit; --g-bg: inherit; --g-raise: inherit; --g-raise-2: inherit;
+  --g-line: inherit; --g-line-soft: inherit;
+  --g-paper: inherit; --g-mist: inherit; --g-mist-2: inherit;
+  --g-accent: inherit; --g-accent-2: inherit; --g-accent-wash: inherit; --g-mark-2: inherit;
+  --g-glass: inherit; --g-glass-2: inherit; --g-scrim: inherit;
+  --g-rail-bg: inherit; --g-grain-a: inherit;
+  --g-sky-1: inherit; --g-sky-2: inherit; --g-vignette: inherit;
+  --g-aura-1: inherit; --g-aura-2: inherit; --g-halo-x: inherit;
+  --g-mood-k: inherit; --g-mark-a: inherit;
+  --g-rail-fill: inherit; --g-bar-fill: inherit; --g-bubble-fill: inherit; --g-pane-fill: inherit;
+  --g-rail-icon: inherit; --g-bar-icon: inherit;
+}

@@ -284,8 +284,14 @@ def national_sweep(engine, result, plan, task, records, snapshot_meta, cap, colo
     result['notes'] += [('Every district the official product attributes to ' + state + ' was read.')
                         if state else
                         'No district or state was named, so every district in the official product was read.',
-                        'IMD district warning guidance concerns land districts and is not a flood warning, a cyclone '
-                        'warning, an all-clear or a CAP alert.',
+                        # What is NOT said here is as deliberate as what is: the all-clear semantics belong
+                        # to the held clause below ("an absence of matching official guidance is not an
+                        # all-clear"), which is the sentence that survives a rewrite. Claiming them here as
+                        # well put "not an all-clear" into a limit the model then wrote, and the held clause
+                        # then said it again - measured 21 September 2026, the Patna warning answer carried
+                        # the phrase twice in 106 words.
+                        'IMD district warning guidance concerns land districts and is not a flood warning, a '
+                        'cyclone warning or a CAP alert.',
                         'CAP lifecycle eligibility never authorises dissemination; warning material is reported as '
                         'official product state, not as an instruction.']
     return result
@@ -340,10 +346,11 @@ def execute_warning(engine, result, plan, task, resolved=None, coordinates=None)
                     break
                 if match is not None:
                     if match.get('accepted_because'):
+                        # The namesake list used to be printed here as well. It is carried
+                        # structurally on the resolved point and the card offers it as a tapped ask,
+                        # so the prose keeps the disclosure and the list keeps its own home.
                         result['notes'].append('Place read as ' + (match.get('label') or label) + ' — ' +
-                                               match['accepted_because'] + '.' +
-                                               (' Other places share this name: ' + '; '.join(match.get('alternatives') or []) +
-                                                '. Say which one you meant to switch.' if match.get('alternatives') else ''))
+                                               match['accepted_because'] + '.')
                     chosen.append({'place': match.get('label') or label, 'point': match['coordinates']})
                     continue
                 # No settlement answer: the official district label may still carry the name.
@@ -511,8 +518,9 @@ def execute_warning(engine, result, plan, task, resolved=None, coordinates=None)
         result['status'] = 'unavailable'
     result['answer'] = ' '.join(chunks)
     result['expires_at_utc'] = stamp(engine.workspace.clock() + timedelta(minutes=15))
-    result['notes'] += ['IMD district warning guidance concerns land districts and is not a flood warning, a cyclone '
-                        'warning, an all-clear or a CAP alert.',
+    # The all-clear semantics are owned by the held clause below and are not restated here.
+    result['notes'] += ['IMD district warning guidance concerns land districts and is not a flood warning, a '
+                        'cyclone warning or a CAP alert.',
                         'CAP lifecycle eligibility never authorises dissemination; warning material is reported as '
                         'official product state, not as an instruction.',
                         'Day windows are derived from the bulletin date and the IMD day selector, not from a validity '

@@ -1,0 +1,682 @@
+[
+ {
+  "scheme": "light",
+  "width": 1440,
+  "route": "assistant",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-assistant@1440.png",
+  "overflow": 0,
+  "heading": "Good night",
+  "sections": 0,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1440,
+  "route": "workspace",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-workspace@1440.png",
+  "overflow": 0,
+  "heading": "Dashboard",
+  "sections": 7,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1440,
+  "route": "overview",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-overview@1440.png",
+  "overflow": 0,
+  "heading": "Today",
+  "sections": 13,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1440,
+  "route": "warnings",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-warnings@1440.png",
+  "overflow": 0,
+  "heading": "Warnings",
+  "sections": 9,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1440,
+  "route": "map",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-map@1440.png",
+  "overflow": 0,
+  "heading": "Map",
+  "sections": 6,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1440,
+  "route": "forecast",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-forecast@1440.png",
+  "overflow": 0,
+  "heading": "Forecast",
+  "sections": 3,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1440,
+  "route": "observations",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-observations@1440.png",
+  "overflow": 0,
+  "heading": "Observations",
+  "sections": 3,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1440,
+  "route": "changes",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-changes@1440.png",
+  "overflow": 0,
+  "heading": "What changed",
+  "sections": 3,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1440,
+  "route": "climate",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-climate@1440.png",
+  "overflow": 0,
+  "heading": "Climate records",
+  "sections": 5,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1440,
+  "route": "advisories",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-advisories@1440.png",
+  "overflow": 0,
+  "heading": "Farm advisories",
+  "sections": 5,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1440,
+  "route": "air-quality",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-air-quality@1440.png",
+  "overflow": 0,
+  "heading": "Air quality",
+  "sections": 3,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1440,
+  "route": "aviation",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-aviation@1440.png",
+  "overflow": 0,
+  "heading": "Aviation",
+  "sections": 3,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1440,
+  "route": "compare",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-compare@1440.png",
+  "overflow": 0,
+  "heading": "Compare places",
+  "sections": 3,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1440,
+  "route": "marine",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-marine@1440.png",
+  "overflow": 0,
+  "heading": "Sea and rivers",
+  "sections": 4,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1440,
+  "route": "documents",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-documents@1440.png",
+  "overflow": 0,
+  "heading": "Published documents",
+  "sections": 7,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1440,
+  "route": "briefcase",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-briefcase@1440.png",
+  "overflow": 0,
+  "heading": "Briefcase",
+  "sections": 5,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1440,
+  "route": "settings",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-settings@1440.png",
+  "overflow": 0,
+  "heading": "Sources and settings",
+  "sections": 7,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1024,
+  "route": "assistant",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-assistant@1024.png",
+  "overflow": 0,
+  "heading": "Good night",
+  "sections": 0,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1024,
+  "route": "workspace",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-workspace@1024.png",
+  "overflow": 0,
+  "heading": "Dashboard",
+  "sections": 7,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1024,
+  "route": "overview",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-overview@1024.png",
+  "overflow": 0,
+  "heading": "Today",
+  "sections": 13,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1024,
+  "route": "warnings",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-warnings@1024.png",
+  "overflow": 0,
+  "heading": "Warnings",
+  "sections": 9,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1024,
+  "route": "map",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-map@1024.png",
+  "overflow": 0,
+  "heading": "Map",
+  "sections": 6,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1024,
+  "route": "forecast",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-forecast@1024.png",
+  "overflow": 0,
+  "heading": "Forecast",
+  "sections": 3,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1024,
+  "route": "observations",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-observations@1024.png",
+  "overflow": 0,
+  "heading": "Observations",
+  "sections": 3,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1024,
+  "route": "changes",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-changes@1024.png",
+  "overflow": 0,
+  "heading": "What changed",
+  "sections": 3,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1024,
+  "route": "climate",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-climate@1024.png",
+  "overflow": 0,
+  "heading": "Climate records",
+  "sections": 5,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1024,
+  "route": "advisories",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-advisories@1024.png",
+  "overflow": 0,
+  "heading": "Farm advisories",
+  "sections": 5,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1024,
+  "route": "air-quality",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-air-quality@1024.png",
+  "overflow": 0,
+  "heading": "Air quality",
+  "sections": 3,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1024,
+  "route": "aviation",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-aviation@1024.png",
+  "overflow": 0,
+  "heading": "Aviation",
+  "sections": 3,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1024,
+  "route": "compare",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-compare@1024.png",
+  "overflow": 0,
+  "heading": "Compare places",
+  "sections": 3,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1024,
+  "route": "marine",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-marine@1024.png",
+  "overflow": 0,
+  "heading": "Sea and rivers",
+  "sections": 4,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1024,
+  "route": "documents",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-documents@1024.png",
+  "overflow": 0,
+  "heading": "Published documents",
+  "sections": 7,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1024,
+  "route": "briefcase",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-briefcase@1024.png",
+  "overflow": 0,
+  "heading": "Briefcase",
+  "sections": 5,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1024,
+  "route": "settings",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-settings@1024.png",
+  "overflow": 0,
+  "heading": "Sources and settings",
+  "sections": 7,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 768,
+  "route": "assistant",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-assistant@768.png",
+  "overflow": 0,
+  "heading": "Good night",
+  "sections": 0,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 768,
+  "route": "workspace",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-workspace@768.png",
+  "overflow": 0,
+  "heading": "Dashboard",
+  "sections": 7,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 768,
+  "route": "overview",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-overview@768.png",
+  "overflow": 0,
+  "heading": "Today",
+  "sections": 13,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 768,
+  "route": "warnings",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-warnings@768.png",
+  "overflow": 0,
+  "heading": "Warnings",
+  "sections": 9,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 768,
+  "route": "map",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-map@768.png",
+  "overflow": 0,
+  "heading": "Map",
+  "sections": 6,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 768,
+  "route": "forecast",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-forecast@768.png",
+  "overflow": 0,
+  "heading": "Forecast",
+  "sections": 3,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 768,
+  "route": "observations",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-observations@768.png",
+  "overflow": 0,
+  "heading": "Observations",
+  "sections": 3,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 768,
+  "route": "changes",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-changes@768.png",
+  "overflow": 0,
+  "heading": "What changed",
+  "sections": 3,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 768,
+  "route": "climate",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-climate@768.png",
+  "overflow": 0,
+  "heading": "Climate records",
+  "sections": 5,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 768,
+  "route": "advisories",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-advisories@768.png",
+  "overflow": 0,
+  "heading": "Farm advisories",
+  "sections": 5,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 768,
+  "route": "air-quality",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-air-quality@768.png",
+  "overflow": 0,
+  "heading": "Air quality",
+  "sections": 3,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 768,
+  "route": "aviation",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-aviation@768.png",
+  "overflow": 0,
+  "heading": "Aviation",
+  "sections": 3,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 768,
+  "route": "compare",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-compare@768.png",
+  "overflow": 0,
+  "heading": "Compare places",
+  "sections": 3,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 768,
+  "route": "marine",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-marine@768.png",
+  "overflow": 0,
+  "heading": "Sea and rivers",
+  "sections": 4,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 768,
+  "route": "documents",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-documents@768.png",
+  "overflow": 0,
+  "heading": "Published documents",
+  "sections": 7,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 768,
+  "route": "briefcase",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-briefcase@768.png",
+  "overflow": 0,
+  "heading": "Briefcase",
+  "sections": 5,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 768,
+  "route": "settings",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-settings@768.png",
+  "overflow": 0,
+  "heading": "Sources and settings",
+  "sections": 7,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 390,
+  "route": "assistant",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-assistant@390.png",
+  "overflow": 0,
+  "heading": "Good night",
+  "sections": 0,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 390,
+  "route": "workspace",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-workspace@390.png",
+  "overflow": 0,
+  "heading": "Dashboard",
+  "sections": 7,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 390,
+  "route": "overview",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-overview@390.png",
+  "overflow": 0,
+  "heading": "Today",
+  "sections": 13,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 390,
+  "route": "warnings",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-warnings@390.png",
+  "overflow": 0,
+  "heading": "Warnings",
+  "sections": 9,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 390,
+  "route": "map",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-map@390.png",
+  "overflow": 0,
+  "heading": "Map",
+  "sections": 6,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 390,
+  "route": "forecast",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-forecast@390.png",
+  "overflow": 0,
+  "heading": "Forecast",
+  "sections": 3,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 390,
+  "route": "observations",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-observations@390.png",
+  "overflow": 0,
+  "heading": "Observations",
+  "sections": 3,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 390,
+  "route": "changes",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-changes@390.png",
+  "overflow": 0,
+  "heading": "What changed",
+  "sections": 3,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 390,
+  "route": "climate",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-climate@390.png",
+  "overflow": 0,
+  "heading": "Climate records",
+  "sections": 5,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 390,
+  "route": "advisories",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-advisories@390.png",
+  "overflow": 0,
+  "heading": "Farm advisories",
+  "sections": 5,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 390,
+  "route": "air-quality",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-air-quality@390.png",
+  "overflow": 0,
+  "heading": "Air quality",
+  "sections": 3,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 390,
+  "route": "aviation",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-aviation@390.png",
+  "overflow": 0,
+  "heading": "Aviation",
+  "sections": 3,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 390,
+  "route": "compare",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-compare@390.png",
+  "overflow": 0,
+  "heading": "Compare places",
+  "sections": 3,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 390,
+  "route": "marine",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-marine@390.png",
+  "overflow": 0,
+  "heading": "Sea and rivers",
+  "sections": 4,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 390,
+  "route": "documents",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-documents@390.png",
+  "overflow": 0,
+  "heading": "Published documents",
+  "sections": 7,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 390,
+  "route": "briefcase",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-briefcase@390.png",
+  "overflow": 0,
+  "heading": "Briefcase",
+  "sections": 5,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 390,
+  "route": "settings",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/current/light-settings@390.png",
+  "overflow": 0,
+  "heading": "Sources and settings",
+  "sections": 7,
+  "failures": []
+ }
+]

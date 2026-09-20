@@ -1,0 +1,86 @@
+/* The answer as a page: the card's own classes.
+   ============================================================================
+   docs/136. The palette, the glass and the ground belong to src/gpt/css and are not restated here; this
+   file holds the rules the answer's own shape needs and nothing else.
+
+   Two things decide how these selectors are written.
+
+   `g-*` is the shared vocabulary the workspace stylesheet declares, and the vocabulary check holds every
+   component to it, so a class this card invented for itself is named without that prefix and claims no
+   name in it. Nothing here sets a colour of its own either - every value is a `--g-*` custom property, so
+   the hour and the light keep working underneath.
+
+   And the cascade: `.g-prose` and `.g-fold-body` already carry rules, and `src/gpt/gpt.css` is imported
+   after this file by the module that renders the card, so an equal-specificity rule here would lose. These
+   are therefore written as `.g-prose.answer-lead` - the shared class and this card's own, together - which
+   is the smallest specificity that wins without an `!important` anywhere. */
+
+/* The answer block: the finding, the publisher's own words, the engine's caveats, and the fold holding the
+   rest. One column, no box: depth unfolds, it is not laid out. */
+.answer-body { display: flex; flex-direction: column; gap: var(--g-3); }
+
+/* The finding. It is the answer, so it is set larger than the prose it came out of and in the paper ink;
+   the tail below it is the same reply at depth's size and depth's weight. */
+.g-prose.answer-lead {
+  font-size: 17.5px;
+  line-height: 1.62;
+  letter-spacing: -0.004em;
+  color: var(--g-paper);
+  text-wrap: pretty;
+}
+
+/* A publisher's sentence, kept where the reader is looking rather than behind a fold. */
+.g-prose.answer-quote { font-size: 15.5px; line-height: 1.7; color: var(--g-paper); }
+
+/* The engine's own safety wording: one sentence, quiet, and never mistaken for the finding. */
+.g-prose.answer-caveat {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--g-mist);
+  padding-inline-start: var(--g-3);
+  border-inline-start: 1px solid var(--g-line);
+  text-wrap: pretty;
+}
+
+.answer-rest { margin-top: calc(-1 * var(--g-1)); }
+.answer-rest > .g-fold-body { display: flex; flex-direction: column; gap: var(--g-2); }
+.answer-rest .g-prose { font-size: 14.5px; line-height: 1.7; color: var(--g-mist); }
+
+/* Who wrote the sentence, when the packet says. A byline rather than a badge: one line of prose about the
+   words above it, where a chip would make it look like a control. */
+.answer-by {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--g-mist-2);
+  max-width: 68ch;
+  text-wrap: pretty;
+}
+
+/* The place the answer was read at, and the other places that share its name: beside the claim it belongs
+   to, rather than spent on three lines of the answer. */
+.place-read { display: flex; flex-direction: column; gap: var(--g-2); margin-top: var(--g-2); }
+.place-read .g-chips { gap: var(--g-2); }
+.place-read .g-chip { font-size: 12px; }
+
+/* The window ruler, inside the fold that owns it. It is a block rather than the bordered card it used to be
+   - a card inside a fold is the nested card the design contract refuses - and its own drawing and readout
+   are the classes the chart and workspace stylesheets already declare. This rule is its own: the vocabulary
+   check refuses an element whose whole class list resolves to nothing, which is how the dashboard shipped. */
+.ruler { display: block; }
+
+/* The depth line: one quiet row that says how much of the card is unfolded and lets the reader change it.
+   A fold, because a preference is not something the answer depends on. */
+.answer-depth { margin-top: var(--g-2); }
+.answer-depth > summary { font-size: 12px; color: var(--g-mist-2); }
+.answer-depth .g-chips { gap: var(--g-2); }
+.answer-depth .g-chip[aria-pressed='true'] { border-color: var(--g-accent); color: var(--g-paper); }
+
+/* Printing. The fold's summary prints and the body is revealed, so a paper copy carries the whole answer
+   rather than a label saying there is more of it. Measured with page.pdf() and print media emulation in this
+   machine's Chromium: a closed `<details>` prints its content there even without these rules, and the second
+   of them is for the engines that do not - one hides a closed fold by `content-visibility` on the details
+   content, the other by `display: none` on the child, and each rule answers one of the two. */
+@media print {
+  .answer-rest > .g-fold-body { display: block; }
+  .answer-rest::details-content { content-visibility: visible; }
+}

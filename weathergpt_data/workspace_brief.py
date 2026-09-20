@@ -8,6 +8,36 @@ which is how "what can you do?" came to be answered vaguely before this module e
 import json
 
 
+def wired_source_ids():
+    """The ids the ledger says an ordinary conversation can reach.
+
+    A conversational reply has no evidence, and the one thing it must not do is explain that absence
+    with a claim about this workspace that is false. Measured 21 September 2026: "why?" after a warning
+    turn was answered "no source is wired to this chat, so I have no evidence to draw on" - from a
+    workspace with sources wired. The claim is checkable, so it is checked.
+    """
+    return sorted(row['id'] for row in _ledger_rows() if row.get('connector', {}).get('wired_to_chat'))
+
+
+def _ledger_rows():
+    """The source ledger's rows, or none.
+
+    `wired_to_chat` is nested under `connector`, and it is a different fact from `connected`: the
+    first says an ordinary conversation can reach the source, the second that a registered connector
+    ingests it. This module read the flag at the top level, where it does not exist, so the workspace
+    picture handed to a conversational turn said no source was wired to chat - and a reply explained
+    its own lack of evidence with exactly that (measured 21 September 2026: "why?" after a warning turn
+    came back "no source is wired to this chat, so I have no evidence to draw on"). The model was not
+    inventing; it was repeating a false input, which is worse.
+    """
+    from .foundation import ROOT
+    try:
+        ledger = json.loads((ROOT / 'data/registry/source-review.json').read_text())
+    except (OSError, ValueError, TypeError):
+        return []
+    return [row for row in (ledger.get('sources') or []) if isinstance(row, dict)]
+
+
 def brief(now, limit=1500, tool_names_only=False):
     """The workspace as data: clock, callable tools, source ledger counts, and what it does not do.
 
@@ -22,17 +52,15 @@ def brief(now, limit=1500, tool_names_only=False):
     tools = [({'tool': c.get('tool')} if tool_names_only
               else {'tool': c.get('tool'), 'kind': c.get('kind'), 'purpose': c.get('purpose')})
              for c in planner_catalogue()]
-    sources = {'registered': None, 'status_counts': {}, 'blocked_access': []}
-    try:
-        ledger = json.loads((ROOT / 'data/registry/source-review.json').read_text())
-        rows = ledger.get('sources') or []
+    rows = _ledger_rows()
+    sources = {'registered': len(rows) or None, 'status_counts': {}, 'blocked_access': []}
+    if rows:
         sources = {'registered': len(rows),
-                   'compiled_at_utc': ledger.get('compiled_at_utc'),
-                   'status_counts': ledger.get('counts') or {},
-                   'wired_to_chat': sorted(row.get('id') for row in rows if row.get('wired_to_chat')),
-                   'blocked_access': sorted(row.get('id') for row in rows if row.get('status') == 'blocked_access')}
-    except (OSError, ValueError, TypeError):
-        pass
+                   'connected': sorted(row['id'] for row in rows
+                                       if row.get('connector', {}).get('connected')),
+                   'wired_to_chat': sorted(row['id'] for row in rows
+                                           if row.get('connector', {}).get('wired_to_chat')),
+                   'blocked_access': sorted(row['id'] for row in rows if row.get('status') == 'blocked_access')}
     payload = {'now_ist': now.astimezone(ZoneInfo('Asia/Kolkata')).isoformat(timespec='minutes'),
                'callable_tools': tools,
                'sources': sources,

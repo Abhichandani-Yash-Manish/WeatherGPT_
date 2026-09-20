@@ -1,4 +1,11 @@
 # Live runtime state: conversation/cache databases, request blobs, model logs.
+# A process started from the repository root with a relative store path leaves these four
+# beside .gitignore. They are the same runtime state as data/runtime/, in the wrong
+# place, and the first sweep of this batch found 19 MB of them untracked and committable.
+/blobs/
+/cache/
+/events/
+/locks/
 # This is personal session state and retrieval cache, not curated evidence.
 # Curated fixtures, review batches and saved source pages stay tracked under
 # data/processed, data/registry, research/ and tmp/pdfs.

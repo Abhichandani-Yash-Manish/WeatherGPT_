@@ -32,7 +32,7 @@
   display: flex; flex-direction: column; gap: var(--g-2);
   margin: 0 0 var(--g-2); padding: var(--g-3);
   border: 1px solid var(--g-line); border-radius: var(--g-r);
-  background: var(--g-t2);
+  background: var(--g-pane-fill);
 }
 .g-heard-head {
   display: flex; align-items: center; gap: 6px; margin: 0;
@@ -71,16 +71,17 @@
 .g-turn + .g-turn { border-top: 1px solid var(--g-line-soft); }
 
 .g-you { display: flex; justify-content: flex-end; }
-/* A reader's own words take the third of the three component washes task 3 asked for: --g-bubble-tint, the
-   same hour's own colour again but pulled a different way than the rail's or the bar's, layered under the
-   existing elevation gradient rather than replacing it — the bubble still reads as a raised surface, it is
-   just no longer the exact grey every other raised surface in the column already is. */
+/* A reader's own words are the warmest surface in the product: --g-bubble-fill is the hour's own light
+   pulled warm, denser than the bar's film and thinner than the rail's, and it sits over the ground rather
+   than over another surface — so it takes the frost as well, and the sky reads through the one bubble on the
+   page that is a person speaking. */
 .g-you p {
   margin: 0; max-width: 80%;
-  background: linear-gradient(180deg, var(--g-bubble-tint), transparent 70%), linear-gradient(180deg, var(--g-t5), var(--g-t3));
+  background: linear-gradient(180deg, var(--g-bubble-fill), color-mix(in srgb, var(--g-bubble-fill) 84%, transparent));
   border: 1px solid var(--g-t4);
   border-radius: var(--g-r-xl) var(--g-r-xl) var(--g-r-sm) var(--g-r-xl);
   padding: 10px var(--g-4); font-size: 15px; color: var(--g-paper);
+  backdrop-filter: blur(12px) saturate(1.15); -webkit-backdrop-filter: blur(12px) saturate(1.15);
   box-shadow: var(--g-e1);
 }
 .g-answer { display: flex; flex-direction: column; gap: var(--g-4); }
@@ -119,10 +120,14 @@
   .g-claims { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .g-claim[data-lead='true'] { grid-column: 1 / -1; }
 }
+/* The machine's own material. The answer itself is not boxed — the column is its container and the lead
+   claim is a statement on the ground — so the machine's surface is what its evidence sits on: the supporting
+   claims, and the transcript it read back. --g-pane-fill is the instrument's own glass, cool where the
+   reader's bubble is warm, and it is the same film .g-pane and the reading panel take. */
 .g-claim {
   position: relative;
   border: 1px solid var(--g-line-soft); border-radius: var(--g-r);
-  background: var(--g-fill);
+  background: linear-gradient(180deg, var(--g-pane-fill), color-mix(in srgb, var(--g-pane-fill) 76%, transparent));
   padding: var(--g-3) var(--g-4);
   display: flex; flex-direction: column; gap: 5px;
   box-shadow: var(--g-e1);
@@ -158,7 +163,7 @@
 .g-claim-unit { font-family: var(--g-mono); font-size: 14px; color: var(--g-mist); }
 .g-claim[data-lead='true'] .g-claim-unit { font-size: 1.125rem; }
 .g-claim-note { font-size: 13px; color: var(--g-mist); margin: 0; }
-.g-claim-source { font-family: var(--g-mono); font-size: 11px; line-height: 1.55; color: var(--g-mist-2); margin: 0; overflow-wrap: anywhere; }
+.g-claim-source { font-family: var(--g-mono); font-size: 11px; line-height: 1.55; color: var(--g-mist); margin: 0; overflow-wrap: anywhere; }
 .g-claim-absent { font-family: var(--g-mono); font-size: 13px; color: var(--g-mist-2); margin: 0; }
 .g-hazard { display: inline-flex; align-items: center; gap: var(--g-2); font-size: 15px; color: var(--g-paper); }
 .g-hazard::before { content: ''; width: 8px; height: 8px; border-radius: 2px; background: var(--g-lit, var(--g-mist-2)); }
@@ -181,7 +186,7 @@
    rows the fold holds - so it is set in the mist step at the small size rather than in the value face; tabular
    figures keep it from shifting as it changes. The receipt is the provenance of the chart above it, separated
    by a hairline rather than by another box drawn like the evidence it explains. */
-.g-fold-count { color: var(--g-mist-2); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+.g-fold-count { color: var(--g-mist); font-size: 11.5px; font-variant-numeric: tabular-nums; }
 .g-series-receipt { margin-top: var(--g-3); padding-top: var(--g-2); border-top: 1px solid var(--g-line-soft); }
 /* ---- behind the answer ----------------------------------------------------------------------------
    What the answer says is the subject. How it was reached is provenance, and provenance belongs behind a

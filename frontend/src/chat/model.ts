@@ -27,6 +27,11 @@ export const HELD_STATUS = ['needs_selection', 'needs_clarification', 'unavailab
 
 export const EVIDENCE_KINDS: Record<string, string> = {
   forecast: 'Model forecast',
+  /* The engine's citation names this kind `model_forecast` (measured on a live GFS turn, 21 September
+     2026) while a fact states `forecast`. Both are the same kind of thing, and the card must say which
+     kind it is: a model forecast is never presented as an observation, so the label may not fall through
+     to a raw field name or to nothing at all. */
+  model_forecast: 'Model forecast',
   observation: 'Observation',
   reanalysis: 'Modeled reanalysis',
   air_quality_model: 'Modelled air quality',
@@ -436,10 +441,25 @@ export function readRegister(): Register {
   return 'conversational';
 }
 
+/* The register is one preference and it is read by every card on screen, so changing it where the reader
+   is looking changes all of them. Measured before this existed: the register was carried on every turn and
+   read by NOTHING - `readRegister` had a spec and no caller in a component - so a reader could not tell
+   that the choice existed, let alone make it. The store is what makes the choice reach the cards; the
+   writer is wherever the reader changes it (the card's own depth line, for one). */
+const registerListeners = new Set<() => void>();
+
+export function subscribeRegister(listener: () => void): () => void {
+  registerListeners.add(listener);
+  return () => {
+    registerListeners.delete(listener);
+  };
+}
+
 export function writeRegister(register: Register): void {
   try {
     window.localStorage.setItem(REGISTER_KEY, register);
   } catch {
     /* the choice simply does not survive this session */
   }
+  registerListeners.forEach(listener => listener());
 }

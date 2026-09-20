@@ -1,11 +1,14 @@
 /* One answer.
    ============================================================================
-   docs/108 §3. The order is the argument: the sentence the model wrote, then the claims the tools own,
-   then what unfolds under each claim, then the machine's own work, collapsed. A reader who stops after the
-   first claim has still seen the value, its window and its source. There is no register: the answer is
-   one shape, and depth is opened, never switched on. */
+   docs/136. The order is the argument: the sentence that answers, then the caveats the engine holds, then
+   the publisher's own words, then the claims the tools own, and only then the depth. A reader who stops
+   after the leading claim has still seen the value, its window, its source and the kind of thing it is.
 
-import { useState } from 'react';
+   The register - brief, conversational, full - is READ here rather than asserted somewhere else: it
+   decides how much of the evidence is unfolded, and it can be changed from the card's own depth line.
+   It never changes a value, a source, a kind or a warning. */
+
+import { useState, useSyncExternalStore } from 'react';
 import type { AnswerPacket, Fact } from '../api/types';
 import { Claim, type ClaimSpan } from '../flagship/Claim';
 import { Work, type WorkStep } from '../flagship/Work';
@@ -13,15 +16,24 @@ import { ChartBlock } from '../charts/ChartBlock';
 import { Passages } from './Passages';
 import { istStamp, istWindow } from '../lib/time';
 import { answerText, claimLine, copyText, downloadFile, markdownTurn, stampName } from './actions';
-import { coverageNote, firstPoint, hasWarningDays, kindOf, languageDowngradeNote, parameterName, placeOf, sequenceFacts, turnTitle, warningFacts, windowFacts } from './model';
-import { AirportReports, Calculations, Disclosure, EvidenceReceipt, SeriesReceipt, SourceRows, StatusTags, TaskAccounting, ValidityRuler, WarningPanel } from './parts';
+import { alternativeAsk, answerShape, authorshipNote, placeRead } from './answer';
+import {
+  coverageNote, firstPoint, hasWarningDays, kindOf, languageDowngradeNote, parameterName, placeOf,
+  readRegister, REGISTER_LABEL, REGISTER_NOTE, REGISTER_ORDER, sequenceFacts, subscribeRegister, turnTitle,
+  warningFacts, windowFacts, writeRegister, type Register,
+} from './model';
+import { AirportReports, Calculations, Disclosure, EvidenceReceipt, SeriesReceipt, SourceRows, StatusTags, TaskAccounting, ValidityRuler, WarningPanel, windowCoverage } from './parts';
 import { HAZARD_COLOURS } from '../modules/Evidence';
+import './chat.css';
 
 export type AnswerTurnProps = {
   packet: AnswerPacket;
   onFollowUp: (text: string) => void;
   onRefresh?: (packet: AnswerPacket) => void;
   onAnswer?: (packet: AnswerPacket) => void;
+  /* The reading register. Absent means the reader's stored choice; a spec passes one in so the three
+     unfoldings are checked without writing to storage. */
+  register?: Register;
 };
 
 function choiceText(choice: Record<string, unknown>): string {
@@ -67,6 +79,64 @@ function sourceLine(packet: AnswerPacket, fact: Fact): string {
   const at = retrievedAt(packet, fact);
   if (at) parts.push('read ' + at);
   return parts.join(' · ');
+}
+
+/* Which kind of thing this value is - a model forecast, an observation, a modelled air-quality index, a
+   source advisory. Measured on a live GFS turn on 21 September 2026: the FACT carries no evidence_kind and
+   the CITATION that owns it says `model_forecast`, so the claim read "Ahmedabad, Ahmadābād, State of
+   Gujarāt" and said nothing about the value being a forecast at all. That is the one statement this
+   product may never leave to the prose alone, so the citation's own kind is read here. */
+function factKind(packet: AnswerPacket, fact: Fact): string {
+  const own = kindOf(fact);
+  if (own) return own;
+  const citation = (packet.citations || []).find(entry => (fact.citation_ids || []).includes(entry.id));
+  const kind = (citation as { evidence_kind?: string } | undefined)?.evidence_kind;
+  return kind ? kindOf({ evidence_kind: kind } as Fact) : '';
+}
+
+/* The place the answer was read at, beside the claim it belongs to, with the other places that share the
+   name as a control rather than as a sentence of the answer.
+
+   Measured on the live Ahmedabad turn on 21 September 2026: the reply spent 189 characters of its 667 on
+   "The place read here is Ahmedabad, Ahmadābād, State of Gujarāt; another place shares this name —
+   Ahmedābād, District Rampur, Uttar Pradesh — so say which one you meant if that is the one you were
+   asking about." The resolver had already said all of it in the packet, in fields. A reader who asked
+   about Ahmedabad is served by being told which Ahmedabad they got and being able to move in one press. */
+function PlaceReadLine({ packet, place, onFollowUp }: { packet: AnswerPacket; place: ReturnType<typeof placeRead>; onFollowUp: (text: string) => void }) {
+  if (!place) return null;
+  const offered = place.alternatives.slice(0, 3).map(name => ({ name, ask: alternativeAsk(packet.question, place.matchedName, name) }));
+  /* A chip is offered only for an alternative the reader's own sentence can be moved to; the rest are
+     named and no control pretends to be missing. */
+  const movable = offered.filter(entry => Boolean(entry.ask));
+  const more = place.alternatives.length - offered.length;
+  const named = place.alternatives.join('; ') + (more > 0 ? ' and ' + more + ' more' : '');
+  /* One line, because the place is already in the claim's own note: this adds the thing the note cannot -
+     that the name has other owners, and which of them this is. */
+  const line = place.alternatives.length
+    ? 'Read at ' + place.label + '. ' + (place.alternatives.length === 1 ? 'Another place shares this name: ' : 'Other places share this name: ') + named + '.'
+    : place.acceptedBecause
+      ? 'Read at ' + place.label + ' — ' + place.acceptedBecause + '.'
+      : null;
+  return (
+    <div className="place-read">
+      {line ? <p className="g-claim-note">{line}</p> : null}
+      {movable.length ? (
+        <div className="g-chips no-print" data-print="drop">
+          {movable.map(entry => (
+            <button
+              key={entry.name}
+              type="button"
+              className="g-chip"
+              title={'Asks the same question at ' + entry.name + ' instead: “' + String(entry.ask) + '”'}
+              onClick={() => onFollowUp(String(entry.ask))}
+            >
+              Read it at {entry.name}
+            </button>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
 }
 
 /** The engine's own steps, in the order it ran them, with what it refused kept in place. */
@@ -161,31 +231,34 @@ function warningLine(packet: AnswerPacket, fact: Fact): string {
 
 /* The answer's paragraphs, and which of them are somebody else's words.
    ============================================================================
-   A quoted passage is a publisher's own text, held verbatim by the engine and never paraphrased. On
-   screen it should look like a quotation rather than like our sentence, so a reader can tell at a
-   glance which words this product wrote and which it is passing on. */
-export function answerParagraphs(answer: string | null | undefined): { text: string; quoted: boolean }[] {
-  return String(answer || '')
-    .split(/\n{2,}/)
-    .map(part => part.trim())
-    .filter(Boolean)
-    .map(text => ({ text, quoted: /^[“"]/.test(text) }));
-}
+   The rule moved to ./answer when the answer stopped being one grey block: this is a re-export so the
+   spec that pins it keeps reading it from the card it belongs to. */
+export { answerParagraphs } from './answer';
 
-export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTurnProps) {
+export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer, register: givenRegister }: AnswerTurnProps) {
   const [copied, setCopied] = useState<'idle' | 'copied' | 'unsupported'>('idle');
   /* The exact response is rendered only when opened: it is an audit artefact, and it must not sit in the
      page text beside the answer it records. */
   const [recordOpen, setRecordOpen] = useState(false);
+  const storedRegister = useSyncExternalStore(subscribeRegister, readRegister, readRegister);
+  const register: Register = givenRegister || storedRegister;
   const facts: Fact[] = sequenceFacts(packet);
   const primary = facts[0] || null;
-  const rest = facts.slice(1);
+  const otherFacts = facts.slice(1);
   const warnings = warningFacts(packet);
   const receiptFact = primary || warnings[0] || null;
   const downgrade = languageDowngradeNote(packet);
   const coverage = coverageNote(packet);
   const point = firstPoint(packet);
   const conversational = packet.status === 'conversation';
+  const shape = answerShape(packet.answer, packet.held_clauses as string[] | null | undefined);
+  /* The fold exists where there is something for the answer to stand on: a claim the tools own. Where
+     there is none - a greeting, a refusal, a question asked back - the whole reply is the answer and
+     folding half of it away would hide the only thing the turn says. */
+  const foldsRest = Boolean((primary && !conversational) || warnings.length);
+  const byline = authorshipNote(packet);
+  const placeAt = primary && !conversational ? placeRead(packet, primary) : null;
+  const windowCovered = windowCoverage(packet);
   const resolution = packet.trace?.context_resolution;
   const carried = resolution && (resolution.inherited_fields || []).length
     ? 'Carried from the previous turn: ' + (resolution.inherited_fields || []).join(', ') +
@@ -195,6 +268,18 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
   const refused = steps.filter(step => step.state === 'refused').length;
   const seconds = typeof packet.trace?.duration_seconds === 'number' ? packet.trace.duration_seconds + ' s' : null;
   const taskCoverage = packet.task_coverage;
+  /* The register, as six booleans rather than six inline comparisons: brief keeps the answer and its
+     leading value, conversational adds the window, the other facts, the receipt, the notes and the work,
+     and full adds the requested tasks, the retrieval choices and the machine record. Nothing here changes
+     a value, a kind or a warning - the claims own those at every register. */
+  const showNotes = register !== 'brief' && (packet.notes || []).length > 0;
+  const showWork = register !== 'brief' && steps.length > 0;
+  const showTally = register !== 'brief' && (packet.task_results || []).length > 0;
+  const showTasks = register === 'full' && (packet.task_results || []).length > 0;
+  const showChoices = register === 'full' && (packet.retrieval_plan || []).length > 0;
+  const showRecord = register === 'full';
+  /* An empty region is a defect, so the machine's-own-work block is drawn only when it holds something. */
+  const behindFilled = showNotes || showWork || showTally || showTasks || showChoices || showRecord;
   /* The watch this answer makes possible, as the sentence that would create it, or null. It needs both halves:
      a place the engine resolved for this turn, and something that can actually be watched — a warning product
      or a forecast. An answer about 1997 rainfall resolved a place and offers no watch, and the chip is absent
@@ -222,21 +307,55 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
       {coverage ? <p className="g-claim-note">{coverage}</p> : null}
       {carried ? <p className="g-claim-source" data-testid="carried-context">{carried}</p> : null}
 
-      {/* The answer first. dir="auto" lets the browser read an Urdu or mixed-script answer correctly.
-          Rendered paragraph by paragraph: since the model began writing whole answers, one of them can
-          carry a quoted bulletin passage after its own framing sentence, and a single <p> collapsed the
-          blank line between them into a space - the publisher's words ran straight on from ours. */}
-      <div className="g-prose" data-long={(packet.answer || '').length > 240 ? 'true' : 'false'}>
-        {answerParagraphs(packet.answer).map((paragraph, index) => (
-          /* dir on each paragraph, not on the block: dir="auto" resolves from the first strong
-             character of the element carrying it, so a quoted English bulletin inside an Urdu answer
-             reads left-to-right on its own rather than inheriting the answer's direction. */
-          <p key={index} className={paragraph.quoted ? 'g-prose-quote' : undefined} dir="auto">{paragraph.text}</p>
+      {/* The answer, in the order a reader needs it: the sentence that answers, the caveats the engine
+          holds, the publisher's own words, and then - unfolded on request - the rest of what the model
+          wrote. Before this, all of it was one block of prose at one weight, and the finding was the first
+          of seven lines with a repeated caveat inside it. */}
+      <div className="answer-body">
+        {shape.lead ? (
+          /* dir="auto" lets the browser read an Urdu or mixed-script answer correctly, and it sits on each
+             paragraph rather than on the block: dir="auto" resolves from the first strong character of the
+             element carrying it, so a quoted English bulletin inside an Urdu answer reads left-to-right on
+             its own rather than inheriting the answer's direction. */
+          <p className="g-prose answer-lead" dir="auto">{shape.lead}</p>
+        ) : null}
+
+        {/* The engine's held clauses, printed once. A clause the engine had to put back into the prose is
+            printed here and NOT repeated in the flow below it; a model's own paraphrase is the model's
+            sentence and stays where the model wrote it. */}
+        {shape.caveats.map(clause => (
+          <p key={clause} className="g-prose answer-caveat" dir="auto">{clause}</p>
         ))}
+
+        {/* A publisher's words are never folded: a quotation behind a click is a quotation nobody reads. */}
+        {shape.quotes.map(quote => (
+          <p key={quote} className="g-prose g-prose-quote answer-quote" dir="auto">{quote}</p>
+        ))}
+
+        {foldsRest && shape.rest.length ? (
+          <details className="g-fold answer-rest">
+            <summary>
+              The rest of the answer
+              <span className="quiet g-fold-count"> ({shape.rest.length} {shape.rest.length === 1 ? 'sentence' : 'sentences'})</span>
+            </summary>
+            <div className="g-fold-body">
+              {shape.rest.map((sentence, index) => (
+                <p key={index} className="g-prose" dir="auto">{sentence}</p>
+              ))}
+            </div>
+          </details>
+        ) : (
+          /* Where the answer has nothing to stand on - a conversational reply, a refusal, a clarification
+             - there is no fold: the whole of it is the answer, printed in the order the engine wrote it. */
+          shape.rest.map((sentence, index) => (
+            <p key={index} className="g-prose" dir="auto">{sentence}</p>
+          ))
+        )}
       </div>
+      {byline ? <p className="answer-by">{byline}</p> : null}
 
       {/* The claims the tools own. */}
-      {(primary && !conversational) || warnings.length || rest.length ? (
+      {(primary && !conversational) || warnings.length || otherFacts.length ? (
         <div className="g-claims">
           {primary && !conversational ? (
             <Claim
@@ -244,16 +363,25 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
               eyebrow={<><span>{parameterName(primary)}</span>{factWindow(primary) ? <span> · {factWindow(primary)}</span> : null}</>}
               value={String(primary.value)}
               unit={primary.unit}
-              note={[kindOf(primary), placeOf(packet, primary)].filter(Boolean).join(' · ') || undefined}
+              note={[factKind(packet, primary), placeOf(packet, primary)].filter(Boolean).join(' · ') || undefined}
               source={sourceLine(packet, primary)}
               copy={claimLine(packet, primary)}
               lead
-              depth={[
+              depth={register === 'brief' ? [] : [
+                /* The window ruler is depth, and the fold's own label carries its finding: a gap in the
+                   evidence is named on the closed fold, so folding it cannot hide one. It took a 250px
+                   block on the first screen to say "covered end to end" - a receipt drawn at display size. */
+                ...(windowCovered ? [{
+                  label: 'how much of the window this covers' + (windowCovered.gaps ? ' · ' + windowCovered.gaps + ' gap' + (windowCovered.gaps === 1 ? '' : 's') + ' in the retrieved evidence' : ' · every part of it covered'),
+                  body: <ValidityRuler packet={packet} />,
+                }] : []),
                 ...(receiptFact ? [{ label: 'where this came from', body: <EvidenceReceipt packet={packet} fact={receiptFact} /> }] : []),
                 ...((packet.charts || []).length ? [{ label: 'the series', body: (packet.charts || []).map((chart, index) => <ChartBlock key={index} chart={chart} />) }] : []),
               ]}
             >
-              <ValidityRuler packet={packet} />
+              {/* Brief keeps the leading value and the kind of thing it is; naming the other places that
+                  share the name is depth, and the reader can still change the place from the turn's own controls. */}
+              {placeAt && register !== 'brief' ? <PlaceReadLine packet={packet} place={placeAt} onFollowUp={onFollowUp} /> : null}
             </Claim>
           ) : null}
 
@@ -266,7 +394,7 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
                 hazardColour={publishedColour(packet, String(warnings[0].value))}
                 source={sourceLine(packet, warnings[0])}
                 copy={warningLine(packet, warnings[0])}
-                depth={!primary && receiptFact ? [{ label: 'where this came from', body: <EvidenceReceipt packet={packet} fact={receiptFact} /> }] : []}
+                depth={!primary && receiptFact && register !== 'brief' ? [{ label: 'where this came from', body: <EvidenceReceipt packet={packet} fact={receiptFact} /> }] : []}
               />
             ) : (
               warnings.map(fact => (
@@ -282,7 +410,7 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
             )
           ) : null}
 
-          {rest.map(fact => (
+          {register === 'brief' ? null : otherFacts.map(fact => (
             <Claim
               key={fact.id}
               compact
@@ -290,7 +418,7 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
               eyebrow={<><span>{parameterName(fact)}</span>{factWindow(fact) ? <span> · {factWindow(fact)}</span> : null}</>}
               value={String(fact.value)}
               unit={fact.unit}
-              note={[kindOf(fact), placeOf(packet, fact)].filter(Boolean).join(' · ') || undefined}
+              note={[factKind(packet, fact), placeOf(packet, fact)].filter(Boolean).join(' · ') || undefined}
               source={sourceLine(packet, fact)}
               copy={claimLine(packet, fact)}
             />
@@ -345,9 +473,12 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
       {packet.follow_up ? <p className="g-claim-note">{packet.follow_up}</p> : null}
 
       {/* Everything from here down is how the answer was reached rather than what it says. It is one
-          region with one hairline above it, not four cards level with the reading. */}
+          region with one hairline above it, not four cards level with the reading. The register decides how
+          much of it is on the card at all: brief keeps the answer and its leading value, full adds the
+          turn's own record. Nothing here is ever a second copy of a value: the claims above own those. */}
+      {behindFilled ? (
       <div className="g-behind">
-      {(packet.notes || []).length ? (
+      {showNotes ? (
         <Disclosure summary="What this answer does not cover">
           {/* g-notes is the region the provenance audit names for the turn's own notes and assumptions, such
               as "morning defaults to 06:30-12:30 IST": a note states how a word was read, not a value read
@@ -361,7 +492,7 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
         </Disclosure>
       ) : null}
 
-      {steps.length ? (
+      {showWork ? (
         <Work
           testId="work"
           steps={steps}
@@ -374,8 +505,9 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
         />
       ) : null}
 
-      <TaskAccounting packet={packet} />
-      {(packet.task_results || []).length ? (
+      {showTally ? <TaskAccounting packet={packet} /> : null}
+
+      {showTasks ? (
         <Disclosure summary="Requested tasks" count={(packet.task_results || []).length}>
           <ul className="tasks g-list">
             {(packet.task_results || []).map(task => (
@@ -392,15 +524,76 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
         </Disclosure>
       ) : null}
 
-      <details className="g-fold">
-        <summary onClick={() => setRecordOpen(true)}>Machine record (the exact response)</summary>
-        <div className="g-fold-body">
-          <p className="g-claim-note">The complete response this card was rendered from, for audit.</p>
-          {recordOpen ? <pre className="machine-record">{JSON.stringify(packet, null, 2)}</pre> : null}
-        </div>
-      </details>
+      {showChoices ? (
+        <Disclosure summary="Which tool read it, and why" count={(packet.retrieval_plan || []).length}>
+          {/* The engine's own record of the retrieval choices: one row per candidate tool per task, with
+              the reason in the engine's words. It is the answer to "why this tool and not the other one",
+              and until now it reached no screen in any register. */}
+          <ul className="tasks g-list">
+            {(packet.retrieval_plan || []).map((entry, index) => (
+              <li key={String(entry.task_id || index)} className="task">
+                <p style={{ margin: 0, fontWeight: 500 }}>
+                  {entry.task_id || 'task'} · {entry.operation || 'operation'} · {entry.kind || 'kind'}
+                  {entry.status ? ' · ' + entry.status : ''}
+                </p>
+                {(entry.candidates || []).length ? (
+                  <ul className="g-notes g-list">
+                    {(entry.candidates || []).map((candidate, at) => (
+                      <li key={String(candidate.tool || at)}>
+                        {candidate.tool || 'tool'} · {candidate.selected ? 'selected' : 'not selected'} · {candidate.available === false ? 'not available here' : 'available'}
+                        {candidate.reason ? ' — ' + candidate.reason : ''}
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+                {(entry.returned_source_ids || []).length ? (
+                  <p className="g-claim-source">read from {(entry.returned_source_ids || []).join(', ')}</p>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        </Disclosure>
+      ) : null}
+
+      {showRecord ? (
+        <details className="g-fold">
+          <summary onClick={() => setRecordOpen(true)}>Machine record (the exact response)</summary>
+          <div className="g-fold-body">
+            <p className="g-claim-note">The complete response this card was rendered from, for audit.</p>
+            {recordOpen ? <pre className="machine-record">{JSON.stringify(packet, null, 2)}</pre> : null}
+          </div>
+        </details>
+      ) : null}
 
       </div>
+      ) : null}
+
+      {/* How much of the card is unfolded, and the reader's own choice about it. It is a fold rather than a
+          row of chips because a preference is not a control the answer depends on, and it writes the
+          register the whole transcript reads, not this one card. */}
+      <details className="g-fold answer-depth no-print" data-print="drop">
+        <summary>How much this card unfolds: {REGISTER_LABEL[register]}</summary>
+        <div className="g-fold-body">
+          <div className="g-chips">
+            {REGISTER_ORDER.map(option => (
+              <button
+                key={option}
+                type="button"
+                className="g-chip"
+                aria-pressed={option === register}
+                title={'Sets every answer on this machine to ' + REGISTER_LABEL[option] + ' — ' + REGISTER_NOTE[option] + '.'}
+                onClick={() => writeRegister(option)}
+              >
+                {REGISTER_LABEL[option]}
+              </button>
+            ))}
+          </div>
+          <p className="g-claim-note" style={{ marginTop: 6 }}>
+            This changes how much evidence is unfolded under an answer. It changes no value, no source, no
+            kind and no warning: {REGISTER_NOTE[register]}.
+          </p>
+        </div>
+      </details>
 
       <div className="g-chips no-print" data-print="drop">
         <button

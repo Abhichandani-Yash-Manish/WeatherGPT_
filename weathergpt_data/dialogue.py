@@ -130,6 +130,11 @@ def _window_moved_past(task,prior,now=None):
     except TypeError:return False
 
 
+# The measures a reader means by "the weather" when they name none. See the repair at the end of
+# reconcile() for why this is here and where the list came from.
+CORE_FORECAST_MEASURES=('precipitation','temperature_2m','relative_humidity_2m','wind_speed_10m')
+
+
 def reconcile(plan,state,question,now=None):
     """Apply only model-declared context edits, checked against retained typed tasks."""
     plan=copy.deepcopy(plan);plan['language']=language_style(question,plan['language'])
@@ -245,11 +250,45 @@ def reconcile(plan,state,question,now=None):
                         if field in changed:t['document_request'][field]=completed['document_request'][field]
                 for k in ['start_local','end_local']:
                     if not t[k]:t[k]=completed[k]
+    # A point forecast that names no measure is a real question and must not reach a task that answers
+    # "No supported parameters requested". Measured 21 September 2026: "What is it like right now in
+    # Surat?" is an observation, whose task reads a fixed station field set and carries an empty
+    # parameter list; "and tomorrow?" correctly turns it into a forecast, inherited the empty list with
+    # it, and the reader's follow-up came back as a retrieval failure in 2.3 seconds. The set below is
+    # the one the model planner chooses for exactly these phrasings - measured across "What's the
+    # weather in Pune tomorrow?", "Weather in Jaipur this weekend?", "Tell me about the weather in
+    # Chennai." - and it is applied here rather than left to the planner because the repair has to hold
+    # on the turn after a turn, which is where it failed.
+    for task in plan.get('tasks') or []:
+        if task.get('kind')=='forecast' and not task.get('parameters'):
+            task['parameters']=list(CORE_FORECAST_MEASURES)
+    # A bare explanation request after a turn that retrieved something is an explanation request
+    # and not small talk. Measured 21 September 2026: "why?" and "since when?" after a warning
+    # answer both fell to the conversational path, which carries no evidence by construction, and
+    # the reader was told the previous turn's reasoning could not be seen - about a turn whose
+    # evidence this workspace had just stored. The planner does classify "What does that mean?"
+    # correctly; "why?" is that question asked in one word, which is what a rule can recognise.
+    # It runs AFTER the inheritance block above, because that block copies the prior task's kind
+    # over this one: placed before it, the repair was silently undone. Found by running it.
+    if previous.get('tasks') and EXPLAIN_ONLY.match(str(question or '').strip()):
+        plan['context_action']='explain_previous';plan['intent']='explanation'
+        for task in plan.get('tasks') or []:
+            if task.get('kind')!='explanation':task['kind']='explanation'
+
     from .language import expand_request,DIALOGUE_REQUEST_SCHEMA,REQUEST_SCHEMA
     fields=DIALOGUE_REQUEST_SCHEMA['properties'] if 'context_action' in plan else REQUEST_SCHEMA['properties']
     plan=expand_request({k:plan[k] for k in fields}) if plan.get('tasks') else plan
     plan['_context_resolution']={'action':action,'changed_fields':sorted(changed),'inherited_fields':inherited}
     return mark_journeys(plan,question)
+
+
+# A bare explanation request. Narrow on purpose: it must match the WHOLE question, not a clause
+# inside one, so "why is it raining in Surat" stays a weather question and only "why?" is read
+# as one. See the repair in reconcile() for what this exists to fix.
+EXPLAIN_ONLY=re.compile(r'^\s*(?:why(?:\s+(?:is|was|are|were|did|do|does)\s+(?:that|it|this))?|'
+                        r'how\s+do\s+you\s+know(?:\s+that)?|what\s+does\s+that\s+mean|'
+                        r'explain(?:\s+(?:that|it))?|sources?|where\s+did\s+(?:that|this)\s+come\s+from|'
+                        r'since\s+when|how\s+come)\s*[?.!]*\s*$',re.I)
 
 
 JOURNEY=re.compile(r'\b(driv\w*|travel\w*|journey|road ?trip|en route|on the way|commut\w*|'

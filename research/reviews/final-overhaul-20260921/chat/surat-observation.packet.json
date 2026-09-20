@@ -1,0 +1,235 @@
+{
+ "schema_version": "weather-conversation-v1",
+ "conversation_id": "c9d4fc98-2e66-4875-9f6e-846d41a88b41",
+ "question": "What is it like right now in Surat?",
+ "status": "answered",
+ "answer": "At the SURAT station, 13.37 km from the requested point, the observed wind speed was 0.0 and the observed wind direction was 0.0 at 20 Sep 2026 22:00 IST, with an observed station pressure of 1009.0. That is the whole of what this turn establishes: a station report describes that station at its own instant, so it is not a district average, not a forecast, and not a statement about whether a warning applies.",
+ "facts": [
+  {
+   "id": "t1-f1",
+   "parameter": "wind_speed_kt",
+   "label": "Observed station wind speed",
+   "value": "0.0",
+   "unit": null,
+   "place": "SURAT · 13.37 km from the requested point",
+   "entity_id": "station:VASU",
+   "observed_at": "2026-09-20T22:00:00+00:00",
+   "start": "2026-09-20T22:00:00+00:00",
+   "end": "2026-09-20T22:00:00+00:00",
+   "sample_at": "2026-09-20T22:00:00+00:00",
+   "source_id": "S63",
+   "evidence_kind": "observation",
+   "evidence_version": "S63",
+   "citation_ids": [],
+   "source_locators": [],
+   "method": "reported_station_observation",
+   "task_id": "t1"
+  },
+  {
+   "id": "t1-f2",
+   "parameter": "wind_direction",
+   "label": "Observed station wind direction",
+   "value": "0.0",
+   "unit": null,
+   "place": "SURAT · 13.37 km from the requested point",
+   "entity_id": "station:VASU",
+   "observed_at": "2026-09-20T22:00:00+00:00",
+   "start": "2026-09-20T22:00:00+00:00",
+   "end": "2026-09-20T22:00:00+00:00",
+   "sample_at": "2026-09-20T22:00:00+00:00",
+   "source_id": "S63",
+   "evidence_kind": "observation",
+   "evidence_version": "S63",
+   "citation_ids": [],
+   "source_locators": [],
+   "method": "reported_station_observation",
+   "task_id": "t1"
+  },
+  {
+   "id": "t1-f3",
+   "parameter": "mslp",
+   "label": "Observed station pressure",
+   "value": "1009.0",
+   "unit": null,
+   "place": "SURAT · 13.37 km from the requested point",
+   "entity_id": "station:VASU",
+   "observed_at": "2026-09-20T22:00:00+00:00",
+   "start": "2026-09-20T22:00:00+00:00",
+   "end": "2026-09-20T22:00:00+00:00",
+   "sample_at": "2026-09-20T22:00:00+00:00",
+   "source_id": "S63",
+   "evidence_kind": "observation",
+   "evidence_version": "S63",
+   "citation_ids": [],
+   "source_locators": [],
+   "method": "reported_station_observation",
+   "task_id": "t1"
+  }
+ ],
+ "citations": [],
+ "notes": [
+  "Place read as Surat, Sūrat, State of Gujarāt — the only administrative seat among the places that share this name.",
+  "METAR SURAT observed 2026-09-20T22:00:00+00:00, 11.0 minutes old at retrieval.",
+  "AWS SURAT_KVK observed 2026-09-20T00:00:00+00:00, 1331.0 minutes old at retrieval.",
+  "A station report describes that station at its own instant. It is not a district average, not a forecast, and not a statement about whether a warning applies."
+ ],
+ "choices": [],
+ "follow_up": null,
+ "operational_eligible": false,
+ "answered_at_utc": "2026-09-20T22:10:57.168931+00:00",
+ "expires_at_utc": null,
+ "trace": {
+  "planning": {
+   "provider": "deepseek",
+   "model": "deepseek-chat",
+   "attempts": 1,
+   "latency_ms": 1924,
+   "input_tokens": 6954,
+   "output_tokens": 138,
+   "cache_hit_tokens": 4352,
+   "provider_policy": "deepseek_first",
+   "failover": [],
+   "planner_policy": "model"
+  },
+  "generation": {
+   "provider": "deepseek",
+   "model": "deepseek-chat",
+   "attempts": 1,
+   "latency_ms": 1411,
+   "input_tokens": 1400,
+   "output_tokens": 130,
+   "cache_hit_tokens": 1152,
+   "provider_policy": "deepseek_first",
+   "failover": [],
+   "authored_by": "model",
+   "floor": "tool_owned_renderer",
+   "validation": "numbers, units, evidence references, links, certainty and output language all checked against the retrieved facts; the fact rows, ruler and receipt stay tool-owned",
+   "evidence_ids": [
+    "t1-f1",
+    "t1-f2",
+    "t1-f3"
+   ],
+   "requested_language": "en",
+   "language_selection": "inferred_from_question",
+   "language_adherence": "not_applicable"
+  },
+  "tools": [
+   {
+    "name": "right_now_reading",
+    "station_rows": 2,
+    "hours": 2,
+    "source_id": "S63"
+   },
+   {
+    "name": "observation",
+    "task_id": "t1",
+    "status": "answered"
+   }
+  ],
+  "provider": "local_ollama",
+  "context_resolution": {
+   "action": "new",
+   "changed_fields": [
+    "parameters",
+    "places",
+    "time"
+   ],
+   "inherited_fields": []
+  },
+  "duration_seconds": 6.808
+ },
+ "plan": {
+  "language": "en",
+  "places": [
+   {
+    "name": "Surat",
+    "state": "",
+    "district": "",
+    "kind": "settlement"
+   }
+  ],
+  "assumptions": [],
+  "clarification": "",
+  "explicit_times": false,
+  "tasks": [
+   {
+    "request_quote": "What is it like right now in Surat?",
+    "kind": "observation",
+    "operation": "lookup",
+    "parameters": [],
+    "years": [],
+    "period": "annual",
+    "start_local": "",
+    "end_local": "",
+    "place_indices": [
+     0
+    ]
+   }
+  ],
+  "context_action": "new",
+  "changed_fields": [
+   "parameters",
+   "places",
+   "time"
+  ],
+  "intent": "observation",
+  "start_local": "",
+  "end_local": "",
+  "variables": [],
+  "year": 0,
+  "period": "annual",
+  "history_parameter": "rainfall",
+  "unsupported_parameters": [],
+  "requested_outcome": "Complete all explicitly requested tasks"
+ },
+ "task_results": [
+  {
+   "id": "t1",
+   "request": {
+    "request_quote": "What is it like right now in Surat?",
+    "kind": "observation",
+    "operation": "lookup",
+    "parameters": [],
+    "years": [],
+    "period": "annual",
+    "start_local": "",
+    "end_local": "",
+    "place_indices": [
+     0
+    ]
+   },
+   "status": "answered",
+   "answer": "The nearest station to Surat, SURAT 13.4 km away, reported 0.0 kt wind and 1009.0 pressure at 21 Sep, 03:30 IST.\n\nFreshest station report here: SURAT, 13.37 km away, reported 2026-09-20T22:00:00+00:00, 11.0 minutes before retrieval. The nearest station (SURAT_KVK at 4.21 km) reported 1331.0 minutes before retrieval, so the fresher report leads. Official district product for SURAT: No warning in this product for this district-day (green). (issued 2026-09-20T06:00:00+00:00). Model hours next, 2026-09-20T22:00:00+00:00 to 2026-09-20T23:00:00+00:00: 2026-09-20T22:00:00+00:00 25.5 °C, rain chance 0%; 2026-09-20T23:00:00+00:00 25.4 °C, rain chance 0%. Not connected here: radar and satellite imagery; sub-hourly refresh between source hours; any push or notification: this workspace answers when it is asked.",
+   "fact_ids": [
+    "t1-f1",
+    "t1-f2",
+    "t1-f3"
+   ],
+   "passage_ids": []
+  }
+ ],
+ "charts": [],
+ "calculations": [],
+ "pending_slots": [],
+ "retrieval_coverage": [],
+ "retrieval_plan": [
+  {
+   "task_id": "t1",
+   "operation": "lookup",
+   "kind": "observation",
+   "parameters": [],
+   "candidates": [],
+   "status": "answered",
+   "returned_source_ids": []
+  }
+ ],
+ "document_evidence": [],
+ "resolved_points": {},
+ "lead": "The nearest station to Surat, SURAT 13.4 km away, reported 0.0 kt wind and 1009.0 pressure at 21 Sep, 03:30 IST.",
+ "task_coverage": {
+  "requested": 1,
+  "completed": 1,
+  "incomplete_ids": []
+ },
+ "tool_answer": "The nearest station to Surat, SURAT 13.4 km away, reported 0.0 kt wind and 1009.0 pressure at 21 Sep, 03:30 IST.\n\nFreshest station report here: SURAT, 13.37 km away, reported 2026-09-20T22:00:00+00:00, 11.0 minutes before retrieval. The nearest station (SURAT_KVK at 4.21 km) reported 1331.0 minutes before retrieval, so the fresher report leads. Official district product for SURAT: No warning in this product for this district-day (green). (issued 2026-09-20T06:00:00+00:00). Model hours next, 2026-09-20T22:00:00+00:00 to 2026-09-20T23:00:00+00:00: 2026-09-20T22:00:00+00:00 25.5 °C, rain chance 0%; 2026-09-20T23:00:00+00:00 25.4 °C, rain chance 0%. Not connected here: radar and satellite imagery; sub-hourly refresh between source hours; any push or notification: this workspace answers when it is asked."
+}

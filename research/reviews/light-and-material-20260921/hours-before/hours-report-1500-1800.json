@@ -1,0 +1,69 @@
+{
+  "base": "http://127.0.0.1:8790",
+  "route": "assistant",
+  "place": null,
+  "date": "2026-09-21",
+  "timezone": "Asia/Kolkata",
+  "frames": [
+    {
+      "hour": 15,
+      "theme": "dark",
+      "file": "assistant@1440-15-dark.png",
+      "dataHour": "noon",
+      "bg": "#f2f6fb",
+      "paper": "#121a27",
+      "accent": "#1f5ccc",
+      "sky": "#737791",
+      "railTint": "rgba(118, 133, 219, 0.045)",
+      "barTint": "rgba(176, 158, 159, 0.055)",
+      "bubbleTint": "rgba(132, 130, 195, 0.055)",
+      "halo": "71.4% ",
+      "title": "WeatherGPT — Ask"
+    },
+    {
+      "hour": 16,
+      "theme": "dark",
+      "file": "assistant@1440-16-dark.png",
+      "dataHour": "noon",
+      "bg": "#f2f6fb",
+      "paper": "#121a27",
+      "accent": "#1f5ccc",
+      "sky": "#4e4b64",
+      "railTint": "rgba(157, 152, 225, 0.048)",
+      "barTint": "rgba(201, 153, 127, 0.058)",
+      "bubbleTint": "rgba(151, 130, 192, 0.058)",
+      "halo": "74.7% ",
+      "title": "WeatherGPT — Ask"
+    },
+    {
+      "hour": 17,
+      "theme": "dark",
+      "file": "assistant@1440-17-dark.png",
+      "dataHour": "noon",
+      "bg": "#f2f6fb",
+      "paper": "#121a27",
+      "accent": "#1f5ccc",
+      "sky": "#332a43",
+      "railTint": "rgba(185, 165, 230, 0.049)",
+      "barTint": "rgba(220, 149, 104, 0.059)",
+      "bubbleTint": "rgba(165, 130, 191, 0.059)",
+      "halo": "77.2% ",
+      "title": "WeatherGPT — Ask"
+    },
+    {
+      "hour": 18,
+      "theme": "dark",
+      "file": "assistant@1440-18-dark.png",
+      "dataHour": "golden",
+      "bg": "#0d0f1b",
+      "paper": "#eff0f6",
+      "accent": "#afc0f5",
+      "sky": "#2a1f38",
+      "railTint": "rgba(195, 170, 232, 0.05)",
+      "barTint": "rgba(226, 148, 96, 0.06)",
+      "bubbleTint": "rgba(170, 130, 190, 0.06)",
+      "halo": "78.0% ",
+      "title": "WeatherGPT — Ask"
+    }
+  ]
+}

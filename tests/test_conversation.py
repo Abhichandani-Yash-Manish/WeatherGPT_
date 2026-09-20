@@ -204,7 +204,11 @@ class AuthoredAnswerChecksTests(unittest.TestCase):
     def test_a_number_that_is_not_in_the_evidence_is_refused(self):
         problem = self.engine().generated_answer_problem(
             'Ahmedabad is forecast 12.0 mm of rain.', ['f1'], self.result())
-        self.assertEqual(problem, 'it introduced a number that is not in the retrieved facts')
+        # The reason NAMES the number. It was silent while it was wrong: on 21 September 2026 the
+        # Ahmedabad climate turn was refused for repeating 54.7 mm/decade - a figure this product's own
+        # sentence had just printed, at a precision its calculation record keeps finer - and the reason
+        # as written gave a reader no way to see that, or to see when it was fixed.
+        self.assertEqual(problem, 'it introduced a number that is not in the retrieved facts: 12.0')
 
     def test_a_changed_unit_is_refused(self):
         """0.4 is in the evidence; 0.4 INCHES is not what the source said."""

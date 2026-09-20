@@ -22,12 +22,20 @@
    across the middle of the greeting.
 
    The hour used to be the finest grain this page moved in: four palettes, a hard edge between each. It still
-   decides the STRUCTURE of the page — `[data-hour]` in tokens.css is what a reader with JavaScript off sees,
-   and what every colour below still falls back to — but with JavaScript on, this component repaints the
-   twenty-four custom properties spectrum.ts owns every minute, from the sun's own position at the reader's
-   own place, so the page drifts continuously through the day instead of stepping between four rooms. The
-   place is read the same way Welcome.tsx reads it — this browser's held place, or the national default — so
-   the two screens are never lit from two different suns. */
+   decides the STRUCTURE of the page — `:root[data-hour]` in tokens.css is what a reader with JavaScript off
+   sees, and what every colour below still falls back to — but with JavaScript on, this component repaints the
+   thirty-two custom properties spectrum.ts owns every minute, from the sun's own position at the reader's own
+   place, so the page drifts continuously through the day instead of stepping between four rooms. The place is
+   read the same way Welcome.tsx reads it — this browser's held place, or the national default — so the two
+   screens are never lit from two different suns.
+
+   The element this paints is the document element, and that is exact rather than convenient: the four static
+   hour blocks are declared as `:root[data-hour]`, so `<html>` is the one owner of every property in the list
+   and this is its one writer. The `.g` element carries the same attribute for the scripts that read it and
+   for the structural selectors that key off it, and it declares none of these properties — which is what
+   makes the inline palette reach the reader. (It did not, before: a bare `[data-hour]` block matched `.g`
+   too, and a declaration on the element beats its parent's inline style. docs/134 has the two values side by
+   side.) */
 
 import { useEffect } from 'react';
 import { SkyGlyphIcon, type SkyGlyph } from '../shell/icons';

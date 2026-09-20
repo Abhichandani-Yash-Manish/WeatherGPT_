@@ -1,0 +1,668 @@
+[
+ {
+  "width": 1440,
+  "question": "Will it rain in Ahmedabad tomorrow?",
+  "follow": null,
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/chat/after-1440.png",
+  "cardFile": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/chat/after-card-1440.png",
+  "axe": [],
+  "failures": [],
+  "outline": [
+   {
+    "tag": "H2",
+    "cls": "g-eyebrow",
+    "text": "Answer",
+    "top": 55,
+    "h": 19
+   },
+   {
+    "tag": "P",
+    "cls": "g-prose answer-lead",
+    "text": "No rain is forecast for Ahmedabad tomorrow — 0.0 mm of rainfall across the whole day, 22 Sep 2026 00:30 to 23 ",
+    "top": 91,
+    "h": 57
+   },
+   {
+    "tag": "P",
+    "cls": "g-prose answer-caveat",
+    "text": "These are model forecasts for the selected points, not observed conditions or district averages.",
+    "top": 159,
+    "h": 43
+   },
+   {
+    "tag": "DETAILS",
+    "cls": "g-fold answer-rest",
+    "text": "The rest of the answer (2 sentences)That figure is a GFS model forecast for the city point, not an observation",
+    "top": 217,
+    "h": 23
+   },
+   {
+    "tag": "SUMMARY",
+    "cls": "",
+    "text": "The rest of the answer",
+    "top": 220,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "g-prose",
+    "text": "That figure is a GFS model forecast for the city point, not an observation or a district average, and conditio",
+    "top": 252,
+    "h": 49
+   },
+   {
+    "tag": "P",
+    "cls": "g-prose",
+    "text": "Source: GFS forecast.",
+    "top": 309,
+    "h": 25
+   },
+   {
+    "tag": "P",
+    "cls": "answer-by",
+    "text": "Written by a model from the retrieved facts and checked against them; the value, window and source line below ",
+    "top": 256,
+    "h": 38
+   },
+   {
+    "tag": "SECTION",
+    "cls": "g-claim ",
+    "text": "Forecast rainfall · 22 Sep 2026, 00:30-23 Sep 2026, 00:30 IST0.0mmModel forecast · Ahmedabad, Ahmadābād, State",
+    "top": 310,
+    "h": 268
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "g-claim-copy no-print",
+    "text": "",
+    "top": 318,
+    "h": 26
+   },
+   {
+    "tag": "P",
+    "cls": "g-claim-note",
+    "text": "Model forecast · Ahmedabad, Ahmadābād, State of Gujarāt",
+    "top": 394,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "g-claim-source",
+    "text": "source S21 · geonames:1279233 · read 21 Sep 2026, 03:54 IST",
+    "top": 419,
+    "h": 17
+   },
+   {
+    "tag": "P",
+    "cls": "g-claim-note",
+    "text": "Read at Ahmedabad, Ahmadābād, State of Gujarāt. Another place shares this name: Ahmedābād, District Rampur, Ut",
+    "top": 449,
+    "h": 20
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "g-chip",
+    "text": "Read it at Ahmedābād, District Rampur, Uttar Pradesh",
+    "top": 476,
+    "h": 34
+   },
+   {
+    "tag": "DETAILS",
+    "cls": "g-fold",
+    "text": "how much of the window this covers · every part of it covered00:3012:3000:3022 Sep · 24 hFocus a part of the w",
+    "top": 517,
+    "h": 23
+   },
+   {
+    "tag": "SUMMARY",
+    "cls": "",
+    "text": "how much of the window this covers · every part of it covered",
+    "top": 521,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "mt-1 text-xs text-ink-soft",
+    "text": "Focus a part of the window to read what the evidence covers there.",
+    "top": 646,
+    "h": 16
+   },
+   {
+    "tag": "P",
+    "cls": "mt-1 text-[11px] quiet",
+    "text": "1 retrieved sample over 24 hours. Source hours start on UTC boundaries, which are :30 in IST. Values are sampl",
+    "top": 666,
+    "h": 17
+   },
+   {
+    "tag": "DETAILS",
+    "cls": "g-fold",
+    "text": "where this came fromEvidence receiptCopy this receiptMeasureForecast rainfall (precipitation)Value0.0 mm · met",
+    "top": 547,
+    "h": 23
+   },
+   {
+    "tag": "SUMMARY",
+    "cls": "",
+    "text": "where this came from",
+    "top": 551,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "eyebrow",
+    "text": "Evidence receipt",
+    "top": 607,
+    "h": 20
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "btn btn-ghost",
+    "text": "Copy this receipt",
+    "top": 600,
+    "h": 34
+   },
+   {
+    "tag": "P",
+    "cls": "mt-2 text-[11px] quiet",
+    "text": "A receipt for the moment it was retrieved, not a standing fact. Model output is not an observation and not a d",
+    "top": 1123,
+    "h": 17
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "g-chip",
+    "text": "Any warnings for Ahmedabad?",
+    "top": 595,
+    "h": 36
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "g-chip",
+    "text": "Keep me posted",
+    "top": 595,
+    "h": 36
+   },
+   {
+    "tag": "DETAILS",
+    "cls": "g-fold",
+    "text": "What this answer does not coverTomorrow is 2026-09-22; no time of day was given, so the upcoming twelve hours ",
+    "top": 685,
+    "h": 23
+   },
+   {
+    "tag": "SUMMARY",
+    "cls": "",
+    "text": "What this answer does not cover",
+    "top": 689,
+    "h": 20
+   },
+   {
+    "tag": "DETAILS",
+    "cls": "g-work",
+    "text": "How this was answered · 6 steps · 7.18 s · nothing refused✓Planned the turndeepseek · deepseek-chat · model po",
+    "top": 720,
+    "h": 23
+   },
+   {
+    "tag": "SUMMARY",
+    "cls": "",
+    "text": "How this was answered · 6 steps · 7.18 s · nothing refused",
+    "top": 724,
+    "h": 19
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-title",
+    "text": "Planned the turn",
+    "top": 748,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-detail",
+    "text": "deepseek · deepseek-chat · model policy",
+    "top": 768,
+    "h": 17
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-title",
+    "text": "gazetteer_search",
+    "top": 795,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-title",
+    "text": "point_forecast",
+    "top": 824,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-detail",
+    "text": "prototype_answer",
+    "top": 844,
+    "h": 17
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-title",
+    "text": "forecast",
+    "top": 871,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-detail",
+    "text": "answered",
+    "top": 891,
+    "h": 17
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-title",
+    "text": "forecast · lookup",
+    "top": 918,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-title",
+    "text": "Wrote the sentence",
+    "top": 947,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-detail",
+    "text": "deepseek · not_applicable",
+    "top": 967,
+    "h": 17
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-detail",
+    "text": "Asked 1, answered 1. A task counts as answered only when it returned evidence.",
+    "top": 997,
+    "h": 17
+   },
+   {
+    "tag": "P",
+    "cls": "g-eyebrow",
+    "text": "Task accounting",
+    "top": 755,
+    "h": 19
+   },
+   {
+    "tag": "P",
+    "cls": "mt-1 text-[11px] quiet",
+    "text": "The engine counts a task answered only when it returned evidence; a clarification or abstention is not counted",
+    "top": 802,
+    "h": 17
+   },
+   {
+    "tag": "DETAILS",
+    "cls": "g-fold answer-depth no-print",
+    "text": "How much this card unfolds: ConversationalBriefConversationalFull evidenceThis changes how much evidence is un",
+    "top": 836,
+    "h": 23
+   },
+   {
+    "tag": "SUMMARY",
+    "cls": "",
+    "text": "How much this card unfolds: Conversational",
+    "top": 840,
+    "h": 20
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "g-chip",
+    "text": "Brief",
+    "top": 872,
+    "h": 36
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "g-chip",
+    "text": "Conversational",
+    "top": 872,
+    "h": 36
+   }
+  ]
+ },
+ {
+  "width": 390,
+  "question": "Will it rain in Ahmedabad tomorrow?",
+  "follow": null,
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/chat/after-390.png",
+  "cardFile": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/chat/after-card-390.png",
+  "axe": [],
+  "failures": [],
+  "outline": [
+   {
+    "tag": "H2",
+    "cls": "g-eyebrow",
+    "text": "Answer",
+    "top": 54,
+    "h": 19
+   },
+   {
+    "tag": "P",
+    "cls": "g-prose answer-lead",
+    "text": "No rain is forecast for Ahmedabad tomorrow — 0.0 mm of rainfall is expected over the whole day, 22 Sep 2026 00",
+    "top": 117,
+    "h": 85
+   },
+   {
+    "tag": "P",
+    "cls": "g-prose answer-caveat",
+    "text": "These are model forecasts for the selected points, not observed conditions or district averages.",
+    "top": 214,
+    "h": 43
+   },
+   {
+    "tag": "DETAILS",
+    "cls": "g-fold answer-rest",
+    "text": "The rest of the answer (3 sentences)That figure comes from a GFS forecast, so it is a model output rather than",
+    "top": 272,
+    "h": 23
+   },
+   {
+    "tag": "SUMMARY",
+    "cls": "",
+    "text": "The rest of the answer",
+    "top": 275,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "g-prose",
+    "text": "That figure comes from a GFS forecast, so it is a model output rather than an observation, and conditions can ",
+    "top": 307,
+    "h": 74
+   },
+   {
+    "tag": "P",
+    "cls": "g-prose",
+    "text": "It is also a point forecast for Ahmedabad, not a district average.",
+    "top": 389,
+    "h": 49
+   },
+   {
+    "tag": "P",
+    "cls": "g-prose",
+    "text": "Source: GFS forecast.",
+    "top": 446,
+    "h": 25
+   },
+   {
+    "tag": "P",
+    "cls": "answer-by",
+    "text": "Written by a model from the retrieved facts and checked against them; the value, window and source line below ",
+    "top": 311,
+    "h": 38
+   },
+   {
+    "tag": "SECTION",
+    "cls": "g-claim ",
+    "text": "Forecast rainfall · 22 Sep 2026, 00:30-23 Sep 2026, 00:30 IST0.0mmModel forecast · Ahmedabad, Ahmadābād, State",
+    "top": 365,
+    "h": 290
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "g-claim-copy no-print",
+    "text": "",
+    "top": 373,
+    "h": 26
+   },
+   {
+    "tag": "P",
+    "cls": "g-claim-note",
+    "text": "Model forecast · Ahmedabad, Ahmadābād, State of Gujarāt",
+    "top": 434,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "g-claim-source",
+    "text": "source S21 · geonames:1279233 · read 21 Sep 2026, 03:54 IST",
+    "top": 458,
+    "h": 34
+   },
+   {
+    "tag": "P",
+    "cls": "g-claim-note",
+    "text": "Read at Ahmedabad, Ahmadābād, State of Gujarāt. Another place shares this name: Ahmedābād, District Rampur, Ut",
+    "top": 505,
+    "h": 39
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "g-chip",
+    "text": "Read it at Ahmedābād, District Rampur, Uttar Pradesh",
+    "top": 552,
+    "h": 34
+   },
+   {
+    "tag": "DETAILS",
+    "cls": "g-fold",
+    "text": "how much of the window this covers · every part of it covered00:3012:3000:3022 Sep · 24 hFocus a part of the w",
+    "top": 593,
+    "h": 23
+   },
+   {
+    "tag": "SUMMARY",
+    "cls": "",
+    "text": "how much of the window this covers · every part of it covered",
+    "top": 597,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "mt-1 text-xs text-ink-soft",
+    "text": "Focus a part of the window to read what the evidence covers there.",
+    "top": 677,
+    "h": 16
+   },
+   {
+    "tag": "P",
+    "cls": "mt-1 text-[11px] quiet",
+    "text": "1 retrieved sample over 24 hours. Source hours start on UTC boundaries, which are :30 in IST. Values are sampl",
+    "top": 697,
+    "h": 33
+   },
+   {
+    "tag": "DETAILS",
+    "cls": "g-fold",
+    "text": "where this came fromEvidence receiptCopy this receiptMeasureForecast rainfall (precipitation)Value0.0 mm · met",
+    "top": 624,
+    "h": 23
+   },
+   {
+    "tag": "SUMMARY",
+    "cls": "",
+    "text": "where this came from",
+    "top": 627,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "eyebrow",
+    "text": "Evidence receipt",
+    "top": 683,
+    "h": 20
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "btn btn-ghost",
+    "text": "Copy this receipt",
+    "top": 676,
+    "h": 34
+   },
+   {
+    "tag": "P",
+    "cls": "mt-2 text-[11px] quiet",
+    "text": "A receipt for the moment it was retrieved, not a standing fact. Model output is not an observation and not a d",
+    "top": 1595,
+    "h": 33
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "g-chip",
+    "text": "Any warnings for Ahmedabad?",
+    "top": 671,
+    "h": 36
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "g-chip",
+    "text": "Keep me posted",
+    "top": 671,
+    "h": 36
+   },
+   {
+    "tag": "DETAILS",
+    "cls": "g-fold",
+    "text": "What this answer does not coverTomorrow is 2026-09-22; no time of day was given, so the upcoming twelve hours ",
+    "top": 761,
+    "h": 23
+   },
+   {
+    "tag": "SUMMARY",
+    "cls": "",
+    "text": "What this answer does not cover",
+    "top": 765,
+    "h": 20
+   },
+   {
+    "tag": "DETAILS",
+    "cls": "g-work",
+    "text": "How this was answered · 6 steps · 6.654 s · nothing refused✓Planned the turndeepseek · deepseek-chat · model p",
+    "top": 797,
+    "h": 23
+   },
+   {
+    "tag": "SUMMARY",
+    "cls": "",
+    "text": "How this was answered · 6 steps · 6.654 s · nothing refused",
+    "top": 801,
+    "h": 19
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-title",
+    "text": "Planned the turn",
+    "top": 824,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-detail",
+    "text": "deepseek · deepseek-chat · model policy",
+    "top": 844,
+    "h": 17
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-title",
+    "text": "gazetteer_search",
+    "top": 871,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-title",
+    "text": "point_forecast",
+    "top": 901,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-detail",
+    "text": "prototype_answer",
+    "top": 920,
+    "h": 17
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-title",
+    "text": "forecast",
+    "top": 947,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-detail",
+    "text": "answered",
+    "top": 967,
+    "h": 17
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-title",
+    "text": "forecast · lookup",
+    "top": 994,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-title",
+    "text": "Wrote the sentence",
+    "top": 1024,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-detail",
+    "text": "deepseek · not_applicable",
+    "top": 1043,
+    "h": 17
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-detail",
+    "text": "Asked 1, answered 1. A task counts as answered only when it returned evidence.",
+    "top": 1073,
+    "h": 35
+   },
+   {
+    "tag": "P",
+    "cls": "g-eyebrow",
+    "text": "Task accounting",
+    "top": 831,
+    "h": 19
+   },
+   {
+    "tag": "P",
+    "cls": "mt-1 text-[11px] quiet",
+    "text": "The engine counts a task answered only when it returned evidence; a clarification or abstention is not counted",
+    "top": 898,
+    "h": 33
+   },
+   {
+    "tag": "DETAILS",
+    "cls": "g-fold answer-depth no-print",
+    "text": "How much this card unfolds: ConversationalBriefConversationalFull evidenceThis changes how much evidence is un",
+    "top": 949,
+    "h": 23
+   },
+   {
+    "tag": "SUMMARY",
+    "cls": "",
+    "text": "How much this card unfolds: Conversational",
+    "top": 953,
+    "h": 20
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "g-chip",
+    "text": "Brief",
+    "top": 984,
+    "h": 36
+   }
+  ]
+ }
+]

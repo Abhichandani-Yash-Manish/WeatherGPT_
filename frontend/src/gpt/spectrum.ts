@@ -1,33 +1,47 @@
 /* The spectrum: a continuous palette, not four rooms with doors between them.
    ============================================================================
-   tokens.css still holds four complete palettes, keyed by `[data-hour]`, and it is right to: they are the
+   tokens.css still holds four complete palettes, keyed by `:root[data-hour]`, and it is right to: they are the
    hand-tuned, AA-measured anchors this file blends between, and they remain the correct page for a reader
    with JavaScript off or for a route this file does not reach (the place page has its own frame). What this
    file adds is what a static attribute cannot: the page a reader is actually looking at drifts continuously
    with the sun's own position, so 11:58 and 12:02 differ by two minutes of light rather than by nothing at
-   all, and a long afternoon is not one frozen slide.
+   all.
 
-   Two different questions get two different answers here, because they carry two different risks:
+   THREE QUESTIONS, THREE ANSWERS — because they carry three different risks.
 
-   1. INK AGAINST GROUND — paper, mist, the surfaces glass sits on, the accent that has to read against both.
-      A text colour that is halfway between "near-white on near-black" and "near-black on near-white" is a
-      grey ink on a grey ground: contrast collapses to about 1:1 at the midpoint of any naive blend across
-      that divide. So this group changes REGIME (which of the two ink families is in force) at exactly two
-      altitudes — the same −6° and +8° fieldPaint.ts already uses to decide dawn and dusk — and blends
-      CONTINUOUSLY on either side of each, connecting smoothly into the palette it is leaving and switching
-      cleanly into the one it is entering. The switch itself is not softened, because softening it is exactly
-      what would put a reader's eyes on a grey page for the two or three minutes either side of it.
+   1. INK AGAINST GROUND. A text colour halfway between "near-white on near-black" and "near-black on
+      near-white" is a grey ink on a grey ground. So this group changes REGIME at exactly two altitudes — the
+      same −6° and +8° fieldPaint.ts uses to decide dawn and dusk — and blends continuously on either side of
+      each. The switch is a clean flip rather than a smear, which is the point.
 
-   2. THE ATMOSPHERE — the sky gradient, the two drifting auras, the vignette, where the light stands across
-      the halo. Nothing here is read as text and nothing here is compared against ink, so nothing here needs
-      a regime: it drifts on a full 24-hour cycle, keyed to the sun's own hour angle rather than to altitude,
-      which is what lets a long, high, bright afternoon keep moving instead of sitting on one frozen value
-      the way the old four-band page did.
+   2. THE GROUND ITSELF. This group used to drift on the hour angle while the ink flipped on altitude, and the
+      two clocks disagreed for up to an hour and a half at a time: at 18:00 IST on 21 June at Nagpur the sky
+      was already GOLDEN_D's violet while the ink was still NOON_C's near-black, a measured 1.001:1. The
+      disagreement is not a tuning error and cannot be tuned away — with a near-black paper (L 0.012) and a
+      near-white one (L 0.85) there is no ground luminance at which BOTH clear 4.5:1 (the crossover sits at
+      3.84:1), so a ground that drifts across that band is unreadable whichever ink is in force. The ground is
+      therefore bimodal by construction: it shares the ink's two altitudes, it flips with it, and inside each
+      regime it still drifts — the day from a high-sun blue toward a low-sun warm, the night from a deep sky
+      toward first light. Nothing about the ground's structure changed: the same five layers, the same
+      gradient, the same auras, grain, vignette and one mark.
+
+   3. THE ATMOSPHERE. The auras, where the light stands across the halo, how much of a printed condition the
+      ground takes, and how strong the watermark is, are not read as text and are not compared against ink, so
+      they keep the 24-hour clock keyed to the sun's own hour angle.
+
+   AND THE MATERIALS. A fourth group: the rail, the top bar, the reader's own bubble and the machine's own pane
+   each take their own film out of the same hour, so a reader can see four different materials lit by one sun
+   rather than one grey repeated four times. Each is a translucent film over the ground, which is what makes it
+   glass rather than paint: the sky reads through all four and the film only says how much of the hour's light
+   that material catches, at what temperature. The rail is the shade (deepest, densest, coolest); the bar is
+   the light (the thinnest film, and the one that is least the ground's own colour); the bubble is the warmth;
+   the pane is the instrument's own surface. They are keyed to the SAME two altitudes as the ink, so each
+   material's identity survives the regime flip rather than being re-chosen by it.
 
    Nothing published — none of the four hazard colours a bulletin can print — is touched by any of this: this
    module never reads or writes --g-red, --g-orange, --g-yellow or --g-green, and Claim.tsx's --g-lit is set
    inline on the one element that carries a source, which this module's root-level custom properties cannot
-   reach or override. */
+   reach or override. materials.test.ts holds that to the computed values rather than to the names. */
 
 import { HORIZON, NIGHT_BELOW, type SolarPosition } from './fieldPaint';
 
@@ -66,6 +80,135 @@ const round3 = (n: number) => Math.round(n * 1000) / 1000;
 const toRgba = (c: RGBA) => 'rgba(' + Math.round(c.r) + ', ' + Math.round(c.g) + ', ' + Math.round(c.b) + ', ' + round3(c.a) + ')';
 
 const mixHexValue = (a: string, b: string, t: number) => toHex(mixRgba(parseHex(a), parseHex(b), t));
+
+/* ---- perceptual arithmetic, so a drift does not pass through the neutral it would have to cross --------
+   Mixing two colours in sRGB is a straight line through the RGB cube, and a straight line between a warm
+   cream and a blue runs through grey. That is not a taste problem, it is a measurement one: the dawn sky
+   (#f6dcc0, chroma 0.047) and the noon sky (#c4d9f5, chroma 0.045) sit on opposite sides of the neutral
+   axis, and every sRGB blend between them lands near chroma 0.005 halfway. Two consequences, both measured
+   before this was written: the page went grey in the middle of a sunrise, and a material whose chroma was
+   close to the ground's stopped being a different material at exactly that instant (rail vs ground came
+   within 0.0001 of each other in OKLab chroma at Nagpur on 21 June).
+
+   So the atmosphere and the materials drift in OKLab's own polar form — lightness, chroma and hue angle,
+   with the hue taking the short way round — and the hue sweep keeps its chroma instead of losing it, which
+   is also what a real sunrise does: a dawn sky goes cream, then rose, then lavender, then blue, and it is
+   never grey on the way.
+
+   This is the one place in this file that has to be more than arithmetic between two hex strings, and it is
+   the arithmetic the test in materials.test.ts re-implements from scratch (the test carries no dependency on
+   this module beyond spectrumAt itself, and no colour library either). */
+
+type Lab = { L: number; a: number; b: number };
+
+const toLinear = (v: number) => { const x = v / 255; return x <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); };
+const fromLinear = (v: number) => { const x = v <= 0.0031308 ? 12.92 * v : 1.055 * Math.pow(Math.max(0, v), 1 / 2.4) - 0.055; return Math.min(255, Math.max(0, x * 255)); };
+
+function okLabOf(hex: string): Lab {
+  const c = parseHex(hex);
+  const r = toLinear(c.r), g = toLinear(c.g), b = toLinear(c.b);
+  const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b);
+  const m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b);
+  const s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
+  return {
+    L: 0.2104542553 * l + 0.7936177850 * m - 0.0040720468 * s,
+    a: 1.9779984951 * l - 2.4285922050 * m + 0.4505937099 * s,
+    b: 0.0259040371 * l + 0.7827717662 * m - 0.8086757660 * s,
+  };
+}
+
+function rgbOfOkLab(L: number, a: number, b: number): string {
+  const l = L + 0.3963377774 * a + 0.2158037573 * b;
+  const m = L - 0.1055613458 * a - 0.0638541728 * b;
+  const s = L - 0.0894841775 * a - 1.2914855480 * b;
+  const l3 = l * l * l, m3 = m * m * m, s3 = s * s * s;
+  return toHex({
+    r: fromLinear(4.0767416621 * l3 - 3.3077115913 * m3 + 0.2309699292 * s3),
+    g: fromLinear(-1.2684380046 * l3 + 2.6097574011 * m3 - 0.3413193965 * s3),
+    b: fromLinear(-0.0041960863 * l3 - 0.7034186147 * m3 + 1.7076147010 * s3),
+    a: 1,
+  });
+}
+
+/** Whether sRGB can show this colour at all. Every other function here clamps silently, which is right for a
+    gradient stop and wrong for a target: a target that had to be clamped is a material that will not look
+    like the material it was asked for. */
+function inGamut(L: number, a: number, b: number): boolean {
+  const l = L + 0.3963377774 * a + 0.2158037573 * b;
+  const m = L - 0.1055613458 * a - 0.0638541728 * b;
+  const s = L - 0.0894841775 * a - 1.2914855480 * b;
+  const l3 = l * l * l, m3 = m * m * m, s3 = s * s * s;
+  const channels = [
+    4.0767416621 * l3 - 3.3077115913 * m3 + 0.2309699292 * s3,
+    -1.2684380046 * l3 + 2.6097574011 * m3 - 0.3413193965 * s3,
+    -0.0041960863 * l3 - 0.7034186147 * m3 + 1.7076147010 * s3,
+  ];
+  return channels.every(v => v >= -0.001 && v <= 1.001);
+}
+
+/** The most chroma a screen can show at this lightness and hue. Below about L 0.2 it is the constraint that
+    actually binds: a dark blue-violet cannot hold a saturated colour, and a material defined without asking
+    came out at 0.9 alpha — a film so dense it had stopped being glass — while still landing short of the
+    colour asked for. Bisection, eight steps, once a minute. */
+function maxChromaAt(L: number, h: number): number {
+  const rad = h * Math.PI / 180;
+  let low = 0, high = 0.20;
+  for (let i = 0; i < 14; i++) {
+    const mid = (low + high) / 2;
+    if (inGamut(L, mid * Math.cos(rad), mid * Math.sin(rad))) low = mid; else high = mid;
+  }
+  return low;
+}
+
+/** One colour moved by a lightness, a chroma and a hue offset — how a material is defined against the ground
+    it sits on rather than against an absolute value of its own. */
+
+const hueOf = (lab: Lab) => { const h = Math.atan2(lab.b, lab.a) * 180 / Math.PI; return h < 0 ? h + 360 : h; };
+
+/** A colour at a lightness, a chroma and a hue — clamped into what sRGB can actually show, because a chroma
+    that a screen cannot draw is not a colour and asking for one silently darkens the hue instead. */
+function chromaTo(L: number, C: number, h: number, maxC = 0.16): string {
+  const clamped = Math.min(Math.max(C, 0), maxC);
+  return rgbOfOkLab(L, clamped * Math.cos(h * Math.PI / 180), clamped * Math.sin(h * Math.PI / 180));
+}
+
+/** Lightness and chroma straight, hue the short way round — a drift that keeps its colour. */
+function polarMix(from: string, to: string, t: number): string {
+  const A = okLabOf(from), B = okLabOf(to);
+  const ca = Math.hypot(A.a, A.b), cb = Math.hypot(B.a, B.b);
+  const ha = hueOf(A), hb = hueOf(B);
+  let delta = ((hb - ha) % 360 + 540) % 360 - 180;
+  return chromaTo(mix(A.L, B.L, t), mix(ca, cb, t), ha + delta * t);
+}
+
+/** One colour moved by a lightness, a chroma and a hue offset — how a material is defined against the ground
+    it sits on rather than against an absolute value of its own. */
+function shifted(hex: string, dL: number, dC: number, dH: number): { hex: string; C: number; h: number } {
+  const lab = okLabOf(hex);
+  const C = Math.max(0, Math.hypot(lab.a, lab.b) + dC);
+  const h = hueOf(lab) + dH;
+  return { hex: chromaTo(lab.L + dL, C, h), C, h: ((h % 360) + 360) % 360 };
+}
+
+/** The film that puts `target` over `ground`: the inverse of the ordinary over() composite, which is what a
+    translucent surface can actually be. Alpha is chosen by search rather than fixed, because a target that is
+    darker than the ground needs a denser film than one that is lighter, and a fixed alpha would silently
+    clamp the film into a different colour than the one asked for. */
+function filmOver(target: string, ground: string, preferred: number): string {
+  const t = parseHex(target), g = parseHex(ground);
+  const candidates = [preferred, preferred * 0.8, preferred * 1.25, preferred * 0.6, preferred * 1.6, preferred * 0.45, 0.75, 0.35];
+  let best: RGBA | null = null, bestError = Infinity;
+  for (const raw of candidates) {
+    const a = Math.min(0.9, Math.max(0.08, raw));
+    const film = { r: (t.r - g.r * (1 - a)) / a, g: (t.g - g.g * (1 - a)) / a, b: (t.b - g.b * (1 - a)) / a, a };
+    const clipped = { r: Math.min(255, Math.max(0, film.r)), g: Math.min(255, Math.max(0, film.g)), b: Math.min(255, Math.max(0, film.b)), a };
+    const error = Math.abs(film.r - clipped.r) + Math.abs(film.g - clipped.g) + Math.abs(film.b - clipped.b);
+    if (error < bestError) { bestError = error; best = clipped; }
+    if (error < 0.5) break;
+  }
+  const f = best as RGBA;
+  return toRgba({ r: f.r, g: f.g, b: f.b, a: round3(f.a) });
+}
 const mixRgbaValue = (a: string, b: string, t: number) => toRgba(mixRgba(parseRgba(a), parseRgba(b), t));
 
 /* ---- the ink-and-ground family, the four hand-tuned anchors verbatim from tokens.css --------------- */
@@ -154,49 +297,221 @@ function criticalAt(altitude: number, ascending: boolean): CriticalPalette {
   return ascending ? mixCritical(DAYBREAK_C, NOON_C, t) : mixCritical(GOLDEN_C, NIGHT_C, 1 - t);
 }
 
+/* ---- the ground: the sky, on the ink's own two altitudes ---------------------------------------------
+   Four sky anchors rather than one 24-hour drift, because the ground has to change regime exactly when the
+   ink does (see the header). Inside a regime it still moves: the light family drifts from a warm low sun to a
+   cool high one, and the dark family from the deep sky of the night toward first light. Both ends of each
+   drift are on the same side of the readable line, which is what makes the drift safe to have. */
+
+type Sky = { sky1: string; sky2: string; vignette: string };
+
+/* Below the horizon and well before first light: the deepest sky of the night. */
+const NIGHT_SKY_DEEP: Sky = { sky1: '#080f21', sky2: '#060a16', vignette: 'rgba(2, 4, 10, 0.52)' };
+/* The sun at −6°, arriving or leaving. NIGHT_D's own values, unchanged. */
+const NIGHT_SKY: Sky = { sky1: '#0a1124', sky2: '#070b15', vignette: 'rgba(3, 6, 12, 0.46)' };
+/* First light: DAYBREAK_D's own values, unchanged — the warm cream the old dawn anchor held. */
+const DAWN_SKY: Sky = { sky1: '#f6dcc0', sky2: '#fcf1e6', vignette: 'rgba(146, 126, 104, 0.14)' };
+/* The high-sun sky: NOON_D's own values, unchanged. */
+const DAY_HIGH_SKY: Sky = { sky1: '#c4d9f5', sky2: '#e4eefb', vignette: 'rgba(94, 118, 158, 0.11)' };
+/* The light's own two ends, and both of them blue. The day's change is clarity rather than hue: a dull,
+   wide morning or evening (chroma 0.017) clearing to a saturated noon (0.045). The warmth of a low sun is
+   not here — it is in the auras and the vignette below, which the hour angle drives, and in the twilight
+   palettes. That separation is deliberate and measured: an sRGB blend from a warm sky to a blue one passes
+   through grey, and a grey sky is a sky whose own chroma has vanished, which is what let a material and its
+   ground collapse onto the same colour at midday (docs/134). */
+const DAY_LOW_SKY: Sky = { sky1: '#dbe4f0', sky2: '#eef3fa', vignette: 'rgba(104, 120, 148, 0.12)' };
+/* Dusk: GOLDEN_D's own values, unchanged — the violet the sun leaves behind. */
+const DUSK_SKY: Sky = { sky1: '#2a1f38', sky2: '#14101c', vignette: 'rgba(8, 5, 14, 0.48)' };
+
+function mixSky(a: Sky, b: Sky, t: number): Sky {
+  return {
+    /* The two stops drift in OKLab's polar form so the sky keeps its chroma the whole way: an sRGB line from
+       the dawn's cream to the day's blue would spend the middle of every sunrise at chroma 0.005, and a
+       neutral sky is a sky that erases the difference between the surfaces standing on it. */
+    sky1: polarMix(a.sky1, b.sky1, t),
+    sky2: polarMix(a.sky2, b.sky2, t),
+    vignette: mixRgbaValue(a.vignette, b.vignette, t),
+  };
+}
+
+/** The light family, drifting from a warm low sun to a cool high one. The altitude decides and the hour angle
+    keeps the middle hours of a long afternoon moving: at 45° the altitude alone would have settled on one
+    value from eleven until four, so the drift is damped rather than stopped as the light swings west. Both
+    ends of it are light pages, so the ink never has to follow. */
+function daySky(altitude: number, hourAngle: number): Sky {
+  const high = smoothstep(HORIZON, 55, altitude);
+  const swung = 0.55 + 0.45 * (1 - Math.min(1, Math.abs(hourAngle) / 95));
+  return mixSky(DAY_LOW_SKY, DAY_HIGH_SKY, clamp01(high * swung));
+}
+
+/** The dark family, drifting from the deep sky of the night toward first light as the sun comes back up to
+    −6°. Symmetric about midnight, because the same sky is above a reader at both ends of the night. */
+function nightSky(altitude: number): Sky {
+  return mixSky(NIGHT_SKY_DEEP, NIGHT_SKY, smoothstep(-32, NIGHT_BELOW, altitude));
+}
+
+
+function skyAt(altitude: number, hourAngle: number, ascending: boolean): Sky {
+  if (altitude >= HORIZON) return daySky(altitude, hourAngle);
+  if (altitude < NIGHT_BELOW) return nightSky(altitude);
+  const w = smoothstep(NIGHT_BELOW, HORIZON, altitude);
+  /* Ascending, the twilight runs from first light into the day family's own value at this altitude — the very
+     value the plateau above +8° holds, so there is no step at the top of the ramp.
+     Descending, it runs from the dusk sky into the night family's, which is what the plateau below −6° holds.
+     What is left is two flips, at −6° climbing and at +8° falling, and the ink flips at both of them too. */
+  return ascending ? mixSky(DAWN_SKY, daySky(altitude, hourAngle), w) : mixSky(DUSK_SKY, nightSky(altitude), 1 - w);
+}
+
+/* ---- the material family: four films over that ground, on the same two altitudes ---------------------- */
+
+type Materials = {
+  /* The rail is the shade: denser than the others and the deepest thing on the page. The bar is the light:
+     the thinnest film, and the least the ground's own colour. The bubble is the reader's own words and the
+     warmest surface in the product. The pane is the machine's own glass — the instrument's surface rather
+     than the reader's. */
+  rail: string; bar: string; bubble: string; pane: string;
+  /* The two icon inks: the surrounding quiet ink with the material's own temperature in it, so a glyph in the
+     rail and a glyph in the bar are not the same grey. Kept near their base ink, because an icon still has to
+     be found — materials.test.ts checks them against the fill they are drawn on at the non-text floor. */
+  railIcon: string; barIcon: string;
+};
+
+/* ---- the rules the four materials follow -----------------------------------------------------------
+   Each material is defined against the ground it is drawn on rather than by an absolute colour of its own: a
+   lightness offset, a chroma offset, and a hue. That is what makes the separation structural instead of
+   incidental — two films picked by hand at four hours drifted past each other between the anchors (the rail
+   and the bar came within 0.0005 of each other in OKLab chroma at Kanyakumari on 21 June, and the rail and
+   the ground within 0.0001 at Nagpur), because a hand-picked film and a moving sky are two clocks.
+
+   The hues are placed in the arc the ground's own hue never enters. Through a day the sky's hue runs from the
+   dawn's cream (69°) down through red and violet to the night's blue-violet (265°) and the dusk's (304°); it
+   never enters the range between 70° and 250°. So the rail sits at 235° and the bar at 205° — cool, the two
+   materials that are not the reader's — and the reader's own bubble sits at 95°, which is the only warm hue
+   inside that arc: a gold rather than an amber, because an amber is a hue the sky passes through on the way
+   to dawn, and two colours with the same hue are not two materials. It is the one place in this palette where
+   the design gives something up to the measurement, and it is recorded as such. */
+type MaterialRule = {
+  /** How far above or below the ground's own lightness this material sits. */
+  dL: number;
+  /** What share of the ground's chroma it keeps, and how much is added. */
+  ck: number; dc: number;
+  /** Its hue in OKLab degrees, the accent's own hue for the instrument's surface, or 'shade' for the ground's
+      own hue turned 30° cool. The shade is the only material defined by rotation rather than by an absolute
+      hue, and it is the one that needs it: on the dark hours the ground's own hue swings 39° between the
+      night's blue-violet and the dusk's violet, and a rail holding one fixed hue would be sixty degrees away
+      from the sky at one end of that swing and twenty-five at the other — which is a film at 0.9 alpha, a pane
+      that has stopped being glass. Turned 30° from wherever the sky is, the same separation holds at both ends
+      and the film stays thin enough to read the sky through. */
+  h: number | 'accent' | 'shade';
+  /** The alpha the film is solved at, before the gamut search moves it. */
+  a: number;
+};
+type MaterialRules = { rail: MaterialRule; bar: MaterialRule; bubble: MaterialRule; pane: MaterialRule };
+
+const LIGHT_RULES: MaterialRules = {
+  rail: { dL: -0.040, ck: 1, dc: 0.018, h: 235, a: 0.52 },
+  bar: { dL: 0.036, ck: 0.30, dc: 0, h: 205, a: 0.26 },
+  bubble: { dL: -0.012, ck: 1, dc: 0.038, h: 95, a: 0.46 },
+  pane: { dL: 0.014, ck: 0.60, dc: 0, h: 'accent', a: 0.18 },
+};
+
+const DARK_RULES: MaterialRules = {
+  rail: { dL: 0.076, ck: 1, dc: 0.020, h: 'shade', a: 0.5 },
+  bar: { dL: 0.072, ck: 0.30, dc: 0, h: 208, a: 0.20 },
+  bubble: { dL: 0.160, ck: 1, dc: 0.038, h: 55, a: 0.42 },
+  pane: { dL: 0.030, ck: 0.60, dc: 0, h: 'accent', a: 0.16 },
+};
+
+/** Which family of rules is in force: the ink's own two altitudes again, so a material flips when the page
+    flips and not at some third moment of its own. */
+function rulesFor(altitude: number, ascending: boolean): MaterialRules {
+  if (altitude >= HORIZON) return LIGHT_RULES;
+  if (altitude < NIGHT_BELOW) return DARK_RULES;
+  return ascending ? LIGHT_RULES : DARK_RULES;
+}
+
+/** How far an icon ink turns from its base ink: a third of the way to the material's own temperature, and
+    nothing at all for the two hues that are not a temperature (the shade follows the ground, the pane follows
+    the accent). */
+function iconTurn(rule: MaterialRule, mist: string): number {
+  if (rule.h === 'accent' || rule.h === 'shade') return 0;
+  return (rule.h - hueOf(okLabOf(mist))) * 0.35;
+}
+
+/** What one material should look like over one ground, before the film that gets it there is solved. */
+function lookOf(ground: string, rule: MaterialRule, accentHue: number): string {
+  const lab = okLabOf(ground);
+  const groundHue = hueOf(lab);
+  const hue = rule.h === 'accent' ? accentHue : rule.h === 'shade' ? groundHue - 30 : rule.h;
+  const lightness = lab.L + rule.dL;
+  const wanted = Math.max(0, Math.hypot(lab.a, lab.b) * rule.ck + rule.dc);
+  /* Clamped to what the screen can show at this lightness, so the film below can reach the colour asked for
+     with a film thin enough to still be glass. */
+  return chromaTo(lightness, Math.min(wanted, maxChromaAt(lightness, hue)), hue);
+}
+
+/** The four films at one solar position, and the two icon inks with them. Each film is solved from a target
+    over the exact ground the element is drawn on — the rail and the bar over the top of the sky, the bubble
+    and the pane over the middle of it, which is where they sit. */
+export function materialsAt(
+  sky1: string, skyMid: string, accent: string, mist: string,
+  altitude: number, ascending: boolean,
+): Materials {
+  const rules = rulesFor(altitude, ascending);
+  const accentHue = hueOf(okLabOf(accent));
+  /* Every material's LOOK is defined against the sky's own top colour, and only the film that gets there is
+     solved against the band the element is actually drawn on. That distinction is the whole reason the gaps
+     hold all day: with each material referenced to its own band, two of them converged as soon as their two
+     bands differed — the rail against the top stop and the reader's bubble against the middle of the same
+     gradient came within 0.0019 of each other in OKLab chroma at Kanyakumari on 21 December, because the
+     gradient's own two stops differ by more than the gap between the materials. One reference, four offsets. */
+  const film = (band: string, rule: MaterialRule) => filmOver(lookOf(sky1, rule, accentHue), band, rule.a);
+  return {
+    rail: film(sky1, rules.rail),
+    bar: film(sky1, rules.bar),
+    bubble: film(skyMid, rules.bubble),
+    pane: film(skyMid, rules.pane),
+    /* The icon inks are their base ink with a little of the material's own temperature in it, at the base
+       ink's own lightness — which is what keeps a glyph in the rail findable (3:1) while making it not the
+       same grey as a glyph in the bar. */
+    railIcon: shifted(mist, 0, 0.008, iconTurn(rules.rail, mist)).hex,
+    barIcon: shifted(mist, 0, 0.008, iconTurn(rules.bar, mist)).hex,
+  };
+}
+
 /* ---- the atmosphere, on its own 24-hour clock -------------------------------------------------------- */
 
 type DecorativePalette = {
-  sky1: string; sky2: string; aura1: string; aura2: string; haloX: number; vignette: string;
-  /* The three washes that end the monotony task 3 named by name: the rail, the bar and a reader's own
-     bubble each read their colour from a different part of the SAME hour rather than from one grey repeated
-     three times. All three are low-alpha atmosphere, layered under a component's existing fill, never text —
-     so, like sky/aura/vignette, they carry no contrast obligation and are free to be genuinely decorative. */
-  railTint: string; barTint: string; bubbleTint: string;
+  aura1: string; aura2: string; haloX: number;
+  /* How much of a station's printed condition the ground takes. A dark ground has less light in it to move,
+     so the dark hours take less. Read from the regime now rather than from the `[data-hour]` attribute, which
+     no longer decides anything this module owns. */
+  moodK: number;
+  /* The condition watermark's own strength. A pale mark on a dark ground carries further than a dark one on
+     paper, so the dark hours hold less. */
+  markA: number;
 };
 
 const NIGHT_D: DecorativePalette = {
-  sky1: '#0a1124', sky2: '#070b15', aura1: 'rgba(120, 148, 210, 0.11)', aura2: 'rgba(96, 116, 176, 0.08)',
-  haloX: 32, vignette: 'rgba(3, 6, 12, 0.46)',
-  railTint: 'rgba(168, 199, 250, 0.05)', barTint: 'rgba(150, 176, 230, 0.06)', bubbleTint: 'rgba(180, 168, 220, 0.07)',
+  aura1: 'rgba(120, 148, 210, 0.11)', aura2: 'rgba(96, 116, 176, 0.08)', haloX: 32, moodK: 0.62, markA: 0.035,
 };
 const DAYBREAK_D: DecorativePalette = {
-  sky1: '#f6dcc0', sky2: '#fcf1e6', aura1: 'rgba(240, 166, 102, 0.36)', aura2: 'rgba(184, 166, 226, 0.22)',
-  haloX: 22, vignette: 'rgba(146, 126, 104, 0.14)',
-  railTint: 'rgba(47, 95, 192, 0.045)', barTint: 'rgba(224, 158, 96, 0.05)', bubbleTint: 'rgba(150, 120, 190, 0.05)',
+  aura1: 'rgba(240, 166, 102, 0.36)', aura2: 'rgba(184, 166, 226, 0.22)', haloX: 22, moodK: 1, markA: 0.045,
 };
 const NOON_D: DecorativePalette = {
-  sky1: '#c4d9f5', sky2: '#e4eefb', aura1: 'rgba(124, 170, 238, 0.34)', aura2: 'rgba(150, 186, 240, 0.22)',
-  haloX: 64, vignette: 'rgba(94, 118, 158, 0.11)',
-  railTint: 'rgba(31, 92, 204, 0.04)', barTint: 'rgba(120, 170, 230, 0.05)', bubbleTint: 'rgba(90, 130, 200, 0.05)',
+  aura1: 'rgba(124, 170, 238, 0.34)', aura2: 'rgba(150, 186, 240, 0.22)', haloX: 64, moodK: 1, markA: 0.045,
 };
 const GOLDEN_D: DecorativePalette = {
-  sky1: '#2a1f38', sky2: '#140f1c', aura1: 'rgba(226, 138, 86, 0.22)', aura2: 'rgba(150, 110, 200, 0.16)',
-  haloX: 78, vignette: 'rgba(8, 5, 14, 0.48)',
-  railTint: 'rgba(195, 170, 232, 0.05)', barTint: 'rgba(226, 148, 96, 0.06)', bubbleTint: 'rgba(170, 130, 190, 0.06)',
+  aura1: 'rgba(226, 138, 86, 0.22)', aura2: 'rgba(150, 110, 200, 0.16)', haloX: 78, moodK: 0.62, markA: 0.035,
 };
 
 function mixDecorative(a: DecorativePalette, b: DecorativePalette, t: number): DecorativePalette {
   return {
-    sky1: mixHexValue(a.sky1, b.sky1, t),
-    sky2: mixHexValue(a.sky2, b.sky2, t),
     aura1: mixRgbaValue(a.aura1, b.aura1, t),
     aura2: mixRgbaValue(a.aura2, b.aura2, t),
     haloX: mix(a.haloX, b.haloX, t),
-    vignette: mixRgbaValue(a.vignette, b.vignette, t),
-    railTint: mixRgbaValue(a.railTint, b.railTint, t),
-    barTint: mixRgbaValue(a.barTint, b.barTint, t),
-    bubbleTint: mixRgbaValue(a.bubbleTint, b.bubbleTint, t),
+    moodK: mix(a.moodK, b.moodK, t),
+    markA: mix(a.markA, b.markA, t),
   };
 }
 
@@ -204,7 +519,8 @@ function mixDecorative(a: DecorativePalette, b: DecorativePalette, t: number): D
     the hour angle, whatever the latitude or the season, which is exactly why the atmosphere is keyed to this
     rather than to the wall clock. The quarter-points either side of noon stand in for dawn and dusk: an
     approximation (real sunrise is not always six solar hours from noon), and an acceptable one, because
-    nothing this clock drives is ever asked to carry contrast — it is sky, haze and the drift of a halo. */
+    nothing this clock drives is ever asked to carry contrast — it is haze, the drift of a halo, and where the
+    catch-light stands. */
 function dayClockOf(hourAngle: number): number {
   return (((hourAngle + 180) % 360) + 360) % 360 / 360;
 }
@@ -226,28 +542,41 @@ function decorativeAt(hourAngle: number): DecorativePalette {
   return NIGHT_D;
 }
 
-/* ---- the twenty-seven custom properties this module owns ---------------------------------------------- */
+/* ---- the thirty-two custom properties this module owns ------------------------------------------------ */
 
 const SPECTRUM_PROPERTIES = [
   '--g-void', '--g-bg', '--g-raise', '--g-raise-2', '--g-line', '--g-line-soft',
   '--g-paper', '--g-mist', '--g-mist-2',
   '--g-accent', '--g-accent-2', '--g-accent-wash', '--g-mark-2',
   '--g-glass', '--g-glass-2', '--g-scrim', '--g-rail-bg', '--g-grain-a',
-  '--g-sky-1', '--g-sky-2', '--g-aura-1', '--g-aura-2', '--g-halo-x', '--g-vignette',
-  '--g-rail-tint', '--g-bar-tint', '--g-bubble-tint',
+  '--g-sky-1', '--g-sky-2', '--g-vignette',
+  '--g-aura-1', '--g-aura-2', '--g-halo-x', '--g-mood-k', '--g-mark-a',
+  '--g-rail-fill', '--g-bar-fill', '--g-bubble-fill', '--g-pane-fill',
+  '--g-rail-icon', '--g-bar-icon',
 ] as const;
 
 export type SpectrumProperty = (typeof SPECTRUM_PROPERTIES)[number];
 export type Spectrum = Record<SpectrumProperty, string>;
 
 /** The continuous palette at one solar position. Every value here is a plain colour or gradient string,
-    ready for `style.setProperty` — never a class, never an attribute, because an inline style is the one
-    layer of the cascade that reliably outranks the four `[data-hour]` blocks in tokens.css without having to
-    delete or rewrite them. Those blocks stay exactly as measured: they are what a reader with JavaScript off
-    sees, and what this function's own two regime snaps agree with at every boundary. */
+    ready for `style.setProperty` — never a class, never an attribute. It is written on the document element,
+    which is the one element that declares the four `:root[data-hour]` blocks, so an inline value outranks the
+    static palette and an element below it that also carries `data-hour` cannot shadow it. It could, and did,
+    while those blocks were written as a bare `[data-hour]`: a declaration on the element beats its parent's
+    inline style, so every value here reached the root and nothing below it — the module worked, and the page
+    showed the four static rooms. */
 export function spectrumAt(position: SolarPosition): Spectrum {
-  const c = criticalAt(position.altitude, position.hourAngle < 0);
+  const ascending = position.hourAngle < 0;
+  const c = criticalAt(position.altitude, ascending);
+  const s = skyAt(position.altitude, position.hourAngle, ascending);
   const d = decorativeAt(position.hourAngle);
+  /* The middle of the page is not the top of it: the gradient's second stop dominates the band the reader's
+     own bubble and the machine's pane sit in, so a film over that band is solved against the mid colour
+     rather than against the top stop. */
+  /* In sRGB, because that is what the gradient itself does between its two stops: the film is solved
+     against the colour actually behind the element, not against a perceptual ideal of it. */
+  const mid = mixHexValue(s.sky1, s.sky2, 0.6);
+  const m = materialsAt(s.sky1, mid, c.accent, c.mist, position.altitude, ascending);
   return {
     '--g-void': c.voidHex, '--g-bg': c.bg, '--g-raise': c.raise, '--g-raise-2': c.raise2,
     '--g-line': c.line, '--g-line-soft': c.lineSoft,
@@ -256,21 +585,25 @@ export function spectrumAt(position: SolarPosition): Spectrum {
     '--g-glass': c.glass, '--g-glass-2': c.glass2, '--g-scrim': c.scrim,
     '--g-rail-bg': 'linear-gradient(180deg, ' + c.railStop1 + ', ' + c.railStop2 + ')',
     '--g-grain-a': String(round3(c.grainA)),
-    '--g-sky-1': d.sky1, '--g-sky-2': d.sky2, '--g-aura-1': d.aura1, '--g-aura-2': d.aura2,
-    '--g-halo-x': round3(d.haloX).toFixed(1) + '%', '--g-vignette': d.vignette,
-    '--g-rail-tint': d.railTint, '--g-bar-tint': d.barTint, '--g-bubble-tint': d.bubbleTint,
+    '--g-sky-1': s.sky1, '--g-sky-2': s.sky2, '--g-vignette': s.vignette,
+    '--g-aura-1': d.aura1, '--g-aura-2': d.aura2,
+    '--g-halo-x': round3(d.haloX).toFixed(1) + '%',
+    '--g-mood-k': String(round3(d.moodK)), '--g-mark-a': String(round3(d.markA)),
+    '--g-rail-fill': m.rail, '--g-bar-fill': m.bar, '--g-bubble-fill': m.bubble, '--g-pane-fill': m.pane,
+    '--g-rail-icon': m.railIcon, '--g-bar-icon': m.barIcon,
   };
 }
 
-/** Paints the continuous spectrum onto an element — the document element in practice, so every hour block in
-    every one of this product's stylesheets inherits it the way `[data-hour]` already does. */
+/** Paints the continuous spectrum onto an element — the document element in practice, which is the element
+    the `:root[data-hour]` blocks declare on, making this the single writer of every property in
+    SPECTRUM_PROPERTIES and a `:root[data-hour]` block its single static owner. */
 export function applySpectrum(el: HTMLElement, spectrum: Spectrum): void {
   SPECTRUM_PROPERTIES.forEach(name => el.style.setProperty(name, spectrum[name]));
 }
 
 /** Undoes exactly what applySpectrum set, so an element that stops painting the spectrum (Field unmounting)
-    falls back to whatever `[data-hour]` or the base `:root` was already declaring, rather than freezing on
-    the last instant it painted. */
+    falls back to whatever `:root[data-hour]` or the base `:root` was already declaring, rather than freezing
+    on the last instant it painted. */
 export function clearSpectrum(el: HTMLElement): void {
   SPECTRUM_PROPERTIES.forEach(name => el.style.removeProperty(name));
 }

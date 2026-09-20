@@ -50,8 +50,10 @@ const WARNING_DAY: AnswerPacket = {
   }],
 };
 
-function mountCard(packet: AnswerPacket, _register: 'conversational' | 'full' = 'conversational') {
-  return render(<AnswerTurn packet={packet} onFollowUp={() => {}} />);
+/* The register is passed through rather than ignored: the requested tasks are the deepest register's own
+   addition (docs/136), and this spec says which unfolding it is reading. */
+function mountCard(packet: AnswerPacket, register: 'conversational' | 'full' = 'conversational') {
+  return render(<AnswerTurn packet={packet} onFollowUp={() => {}} register={register} />);
 }
 
 describe('the calculations the engine returned', () => {

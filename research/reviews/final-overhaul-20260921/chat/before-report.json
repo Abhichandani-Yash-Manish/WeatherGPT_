@@ -1,0 +1,337 @@
+[
+ {
+  "width": 1440,
+  "question": "Will it rain in Ahmedabad tomorrow?",
+  "follow": null,
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/chat/before-1440.png",
+  "cardFile": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/final-overhaul-20260921/chat/before-card-1440.png",
+  "axe": [
+   "nested-interactive (1)"
+  ],
+  "failures": [],
+  "outline": [
+   {
+    "tag": "H2",
+    "cls": "g-eyebrow",
+    "text": "Answer",
+    "top": 55,
+    "h": 19
+   },
+   {
+    "tag": "P",
+    "cls": "",
+    "text": "No rain is forecast for Ahmedabad tomorrow: rainfall of 0.0 mm is expected over the whole day, 22 Sep 2026 00:",
+    "top": 91,
+    "h": 213
+   },
+   {
+    "tag": "SECTION",
+    "cls": "g-claim ",
+    "text": "Forecast rainfall · 22 Sep 2026, 00:30-23 Sep 2026, 00:30 IST0.0mmAhmedabad, Ahmadābād, State of Gujarātsource",
+    "top": 320,
+    "h": 394
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "g-claim-copy no-print",
+    "text": "",
+    "top": 328,
+    "h": 26
+   },
+   {
+    "tag": "P",
+    "cls": "g-claim-note",
+    "text": "Ahmedabad, Ahmadābād, State of Gujarāt",
+    "top": 404,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "g-claim-source",
+    "text": "source S21 · geonames:1279233 · read 21 Sep 2026, 02:49 IST",
+    "top": 428,
+    "h": 17
+   },
+   {
+    "tag": "P",
+    "cls": "eyebrow",
+    "text": "Window covered by the evidence",
+    "top": 467,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "mt-1 text-xs text-ink-soft",
+    "text": "Focus a part of the window to read what the evidence covers there.",
+    "top": 610,
+    "h": 16
+   },
+   {
+    "tag": "P",
+    "cls": "mt-1 text-[11px] quiet",
+    "text": "1 retrieved sample over 24 hours. Source hours start on UTC boundaries, which are :30 in IST. Values are sampl",
+    "top": 642,
+    "h": 17
+   },
+   {
+    "tag": "DETAILS",
+    "cls": "g-fold",
+    "text": "where this came fromEvidence receiptCopy this receiptMeasureForecast rainfall (precipitation)Value0.0 mm · met",
+    "top": 683,
+    "h": 23
+   },
+   {
+    "tag": "SUMMARY",
+    "cls": "",
+    "text": "where this came from",
+    "top": 687,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "eyebrow",
+    "text": "Evidence receipt",
+    "top": 742,
+    "h": 20
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "btn btn-ghost",
+    "text": "Copy this receipt",
+    "top": 735,
+    "h": 34
+   },
+   {
+    "tag": "P",
+    "cls": "mt-2 text-[11px] quiet",
+    "text": "A receipt for the moment it was retrieved, not a standing fact. Model output is not an observation and not a d",
+    "top": 1259,
+    "h": 17
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "g-chip",
+    "text": "Any warnings for Ahmedabad?",
+    "top": 730,
+    "h": 36
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "g-chip",
+    "text": "Keep me posted",
+    "top": 730,
+    "h": 36
+   },
+   {
+    "tag": "DETAILS",
+    "cls": "g-fold",
+    "text": "What this answer does not coverTomorrow is 2026-09-22; no time of day was given, so the upcoming twelve hours ",
+    "top": 821,
+    "h": 23
+   },
+   {
+    "tag": "SUMMARY",
+    "cls": "",
+    "text": "What this answer does not cover",
+    "top": 824,
+    "h": 20
+   },
+   {
+    "tag": "DETAILS",
+    "cls": "g-work",
+    "text": "How this was answered · 6 steps · 7.236 s · nothing refused✓Planned the turndeepseek · deepseek-chat · model p",
+    "top": 856,
+    "h": 23
+   },
+   {
+    "tag": "SUMMARY",
+    "cls": "",
+    "text": "How this was answered · 6 steps · 7.236 s · nothing refused",
+    "top": 860,
+    "h": 19
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-title",
+    "text": "Planned the turn",
+    "top": 884,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-detail",
+    "text": "deepseek · deepseek-chat · model policy",
+    "top": 903,
+    "h": 17
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-title",
+    "text": "gazetteer_search",
+    "top": 930,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-title",
+    "text": "point_forecast",
+    "top": 960,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-detail",
+    "text": "prototype_answer",
+    "top": 979,
+    "h": 17
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-title",
+    "text": "forecast",
+    "top": 1007,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-detail",
+    "text": "answered",
+    "top": 1026,
+    "h": 17
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-title",
+    "text": "forecast · lookup",
+    "top": 1053,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-title",
+    "text": "Wrote the sentence",
+    "top": 1083,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-detail",
+    "text": "deepseek · not_applicable",
+    "top": 1102,
+    "h": 17
+   },
+   {
+    "tag": "P",
+    "cls": "g-work-detail",
+    "text": "Asked 1, answered 1. A task counts as answered only when it returned evidence.",
+    "top": 1133,
+    "h": 17
+   },
+   {
+    "tag": "P",
+    "cls": "g-eyebrow",
+    "text": "Task accounting",
+    "top": 891,
+    "h": 19
+   },
+   {
+    "tag": "P",
+    "cls": "mt-1 text-[11px] quiet",
+    "text": "The engine counts a task answered only when it returned evidence; a clarification or abstention is not counted",
+    "top": 937,
+    "h": 17
+   },
+   {
+    "tag": "DETAILS",
+    "cls": "g-fold",
+    "text": "Requested tasks (1)t1 · forecast · answered · lookup“Will it rain in Ahmedabad tomorrow?”Ahmedabad: rainfall o",
+    "top": 968,
+    "h": 23
+   },
+   {
+    "tag": "SUMMARY",
+    "cls": "",
+    "text": "Requested tasks",
+    "top": 972,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "",
+    "text": "t1 · forecast · answered · lookup",
+    "top": 1003,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "g-claim-source",
+    "text": "“ Will it rain in Ahmedabad tomorrow? ”",
+    "top": 1023,
+    "h": 17
+   },
+   {
+    "tag": "P",
+    "cls": "g-claim-note",
+    "text": "Ahmedabad: rainfall of 0.0 mm is forecast tomorrow. Forecast precipitation: 0.0 mm. Source: GFS forecast; cond",
+    "top": 1040,
+    "h": 39
+   },
+   {
+    "tag": "DETAILS",
+    "cls": "g-fold",
+    "text": "Machine record (the exact response)The complete response this card was rendered from, for audit.",
+    "top": 1005,
+    "h": 23
+   },
+   {
+    "tag": "SUMMARY",
+    "cls": "",
+    "text": "Machine record (the exact response)",
+    "top": 1009,
+    "h": 20
+   },
+   {
+    "tag": "P",
+    "cls": "g-claim-note",
+    "text": "The complete response this card was rendered from, for audit.",
+    "top": 1040,
+    "h": 20
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "g-chip g-chip-lead",
+    "text": "Copy the answer",
+    "top": 1044,
+    "h": 36
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "g-chip",
+    "text": "Save this turn as Markdown",
+    "top": 1044,
+    "h": 36
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "g-chip",
+    "text": "Download this answer as JSON",
+    "top": 1044,
+    "h": 36
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "g-chip",
+    "text": "Print this answer",
+    "top": 1044,
+    "h": 36
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "g-chip",
+    "text": "Collect fresh evidence",
+    "top": 1088,
+    "h": 36
+   }
+  ]
+ }
+]

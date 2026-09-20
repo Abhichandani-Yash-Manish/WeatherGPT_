@@ -206,9 +206,47 @@ export function AirportReports({ packet }: { packet: AnswerPacket }) {
 /* ---- the validity ruler --------------------------------------------------------------------- */
 type Span = { start: number; end: number; covered: boolean; samples: number };
 
+/* Two retrieved hours more than this apart are a gap rather than a rounding of one continuous cover. It is
+   one constant because the ruler draws the gap and the fold's own label states it, and two copies of 15
+   minutes is how the label starts disagreeing with the picture underneath it. */
+const GAP_MS = 15 * 60 * 1000;
+
+/* What the retrieved evidence covers of a window: the span, and how many stretches of it nothing covers.
+   Exported so a caller can state the coverage WITHOUT drawing it - the card names a gap on the closed fold,
+   which is the one thing that must not become invisible when the ruler is folded away. */
+export function windowCoverage(packet: AnswerPacket): { from: number; to: number; samples: number; gaps: number } | null {
+  const spans = windowFacts(packet)
+    .map(fact => ({ start: Date.parse(String(fact.start)), end: Date.parse(String(fact.end)) }))
+    .filter(entry => Number.isFinite(entry.start) && Number.isFinite(entry.end) && entry.end > entry.start);
+  if (!spans.length) return null;
+  const from = Math.min(...spans.map(entry => entry.start));
+  const to = Math.max(...spans.map(entry => entry.end));
+  if (!(to > from)) return null;
+  const merged: [number, number][] = spans
+    .map(entry => [entry.start, entry.end] as [number, number])
+    .sort((left, right) => left[0] - right[0])
+    .reduce((accumulator, span) => {
+      const last = accumulator[accumulator.length - 1];
+      if (last && span[0] <= last[1]) last[1] = Math.max(last[1], span[1]);
+      else accumulator.push([span[0], span[1]]);
+      return accumulator;
+    }, [] as [number, number][]);
+  let gaps = 0;
+  let cursor = from;
+  merged.forEach(span => {
+    if (span[0] - cursor > GAP_MS) gaps += 1;
+    cursor = Math.max(cursor, span[1]);
+  });
+  if (to - cursor > GAP_MS) gaps += 1;
+  return { from, to, samples: spans.length, gaps };
+}
+
 /* The ruler is the answer's window made legible. Every part of it is reachable by keyboard, and a part
    with no retrieved evidence is drawn as a hatched gap rather than left blank, because blank space
-   reads as coverage. */
+   reads as coverage.
+
+   It is a block, not a card, and it carries no eyebrow: the fold that owns it states what it is, and a
+   bordered box inside a fold is the nested card the design contract refuses. Its own picture is unchanged. */
 export function ValidityRuler({ packet }: { packet: AnswerPacket }) {
   const [readout, setReadout] = useState('Focus a part of the window to read what the evidence covers there.');
   const facts = windowFacts(packet);
@@ -238,10 +276,10 @@ export function ValidityRuler({ packet }: { packet: AnswerPacket }) {
   const sampleCount = (start: number, end: number) => spans.filter(entry => entry.start < end && entry.end > start).length;
   let cursor = from;
   merged.forEach(span => {
-    if (span[0] - cursor > 15 * 60 * 1000) segments.push({ start: cursor, end: span[0], covered: false, samples: 0 });
+    if (span[0] - cursor > GAP_MS) segments.push({ start: cursor, end: span[0], covered: false, samples: 0 });
     cursor = Math.max(cursor, span[1]);
   });
-  if (to - cursor > 15 * 60 * 1000) segments.push({ start: cursor, end: to, covered: false, samples: 0 });
+  if (to - cursor > GAP_MS) segments.push({ start: cursor, end: to, covered: false, samples: 0 });
   merged.forEach(span => segments.push({ start: span[0], end: span[1], covered: true, samples: sampleCount(span[0], span[1]) }));
   segments.sort((left, right) => left.start - right.start);
 
@@ -252,8 +290,7 @@ export function ValidityRuler({ packet }: { packet: AnswerPacket }) {
   };
 
   return (
-    <div className="card px-3 py-3">
-      <p className="eyebrow">Window covered by the evidence</p>
+    <div className="ruler">
       <svg viewBox={'0 0 ' + width + ' ' + (y + height + 34)} role="img" className="mt-2 w-full"
            aria-label={
              'Requested window ' + istWindow(String(facts[0].start), String(facts[0].end)) + ', covering ' + hours + ' hours across ' +

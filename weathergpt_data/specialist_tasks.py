@@ -135,9 +135,11 @@ def execute_specialist(engine,result,plan,task,resolved,coordinates):
                                              'probed':len(tried)+(1 if chosen else 0),'source_id':profile.get('source_id')})
             if chosen is not None:
                 others=[candidate['label'] for candidate in candidates if candidate.get('id')!=chosen.get('id')]
+                # The namesakes are on the resolved point and the card offers them as asks; the
+                # sentence here keeps only which place was read and why.
                 result['notes'].append('Place read as '+str(chosen.get('label'))+' — the connected '+profile['product_label']+
-                                       ' returned a cell for it and nothing for the other place(s) with this name' +
-                                       (': '+'; '.join(others)+'. Say which one you meant to switch.' if others else '.'))
+                                       ' returned a cell for it and nothing for the other place(s) with this name.')
+                chosen['alternatives']=others
                 points=[chosen]
                 result['resolved_points']={**(result.get('resolved_points') or {}),place['name']:chosen}
             else:

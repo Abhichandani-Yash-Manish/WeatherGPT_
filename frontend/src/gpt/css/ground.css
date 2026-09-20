@@ -1,9 +1,12 @@
 /* ---- the ground -----------------------------------------------------------------------------------
-   Five layers, all of them slow and none of them a subject:
+   Five layers, all of them slow and none of them a subject. Every colour here is painted by spectrum.ts from
+   the sun's own position (docs/134): the gradient changes regime with the ink, at −6° climbing and +8°
+   falling, and drifts inside each regime; the auras and the halo keep the 24-hour clock.
 
    1. the gradient, keyed to the hour;
    2. two auras — broad, soft, low-opacity fields of the hour's own light that drift on long irrational
-      periods (67s and 89s) so the pair never visibly repeats;
+      periods (67s and 89s) so the pair never visibly repeats, and are keyed to the sun's hour angle rather
+      than to its altitude because nothing here carries contrast;
    3. grain, which is the layer that actually matters: a large flat gradient on an 8-bit display bands into
       visible steps, and the bands are a strong part of what reads as cheap. Three percent of monochrome
       turbulence removes them.
@@ -73,7 +76,7 @@
    A dark ground has less light in it to shift, which is what --g-mood-k is: the same reading, a smaller
    change, so nine o'clock at night stays night. */
 .g-field {
-  --g-mood-h: 218; --g-mood-s: 12%; --g-mood-a: 0; --g-mood-k: 1;
+  --g-mood-h: 218; --g-mood-s: 12%; --g-mood-a: 0;
 }
 .g-field[data-sky='cloud'] { --g-mood-h: 219; --g-mood-s: 13%; --g-mood-a: 0.18; }
 .g-field[data-sky='rain'] { --g-mood-h: 213; --g-mood-s: 26%; --g-mood-a: 0.24; }
@@ -82,9 +85,11 @@
 /* Clear is the absence of a wash: a clear sky is what the hour's own palette already draws, and adding
    light to it would make the one condition that needs no help the loudest thing on the page. */
 .g-field[data-sky='clear'] { --g-mood-a: 0; }
-/* Night and dusk: the same reading, a smaller change, because a dark ground has less light in it to move
-   and nine o'clock at night has to stay night. */
-.g[data-hour='night'] .g-field, .g[data-hour='golden'] .g-field { --g-mood-k: 0.62; }
+/* How much of a printed condition the ground takes is --g-mood-k, and it is a spectrum property: the dark
+   regime holds less of the wash than the light one, because a dark ground has less light in it to move and
+   nine o'clock at night has to stay night. It used to be a `.g[data-hour='night']` selector, which was the
+   static attribute deciding a value the continuous palette had already moved past — the attribute tracks the
+   regime exactly, so nothing looked wrong, and the token is the honest form of the same fact. */
 
 .g-field-mood {
   position: absolute; inset: 0; opacity: 1;
@@ -99,14 +104,14 @@
    rather than a picture of the weather; the column is 740px wide and never sits under it. */
 .g-field-mark {
   position: absolute; right: -2%; top: 50%; transform: translateY(-50%);
-  color: var(--g-paper); opacity: 0.045; pointer-events: none;
+  color: var(--g-paper); opacity: var(--g-mark-a, 0.045); pointer-events: none;
   /* It emerges from the right edge and does not exist on the left, so the ground behind the reading
      column is never at a different shade from the ground beside it. */
   mask-image: linear-gradient(90deg, transparent 4%, #000 46%, #000 100%);
   -webkit-mask-image: linear-gradient(90deg, transparent 4%, #000 46%, #000 100%);
 }
-/* A pale mark on a dark ground carries further than a dark one on paper, so the dark hours hold less. */
-.g[data-hour='night'] .g-field-mark, .g[data-hour='golden'] .g-field-mark { opacity: 0.035; }
+/* A pale mark on a dark ground carries further than a dark one on paper, so the dark regime holds less —
+   the same --g-mark-a the spectrum already set, for the same reason as --g-mood-k above. */
 .g-field[data-expanded='false'] .g-field-mark { display: none; }
 @media (max-width: 1180px) { .g-field-mark { display: none; } }
 

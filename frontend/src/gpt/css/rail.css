@@ -2,20 +2,32 @@
    One column for the whole product: the four homes, the place, and the reader's conversations. It is the
    only navigation surface, and it collapses to 60px so a reader who is reading can give the column its width
    back. The widths are the two the shell moves between, and the transition is the one the layout animates. */
-/* The rail's own identity in the family task 3 asked for: a faint wash of --g-rail-tint under the ground
-   glass everything else in this column already had, so the navigation reads as its own instrument rather
-   than the same grey the bar and a bubble also use. It is layered, not swapped — --g-rail-bg keeps doing
-   the work of separating the rail from the ground behind it, and the tint just says which one this is. */
+/* The rail is the shade: the densest of the four materials and the deepest thing on the page, once the sky
+   is under it. Its fill is --g-rail-fill and nothing else — no opaque base layer, because a pane at 86%
+   opacity is a panel with a blur nobody can see through, which is decoration rather than an effect. What
+   makes this glass rather than paint is that the sky's own gradient reads through it: the film is constant
+   down the column and the ground under it is not, so the rail is visibly lit at its bottom and shaded at its
+   top, exactly like the pane it is. The gradient below only stops the fill being flat.
+
+   --g-rail-bg is still the fill for the dialogs and the menus, which sit over a scrim and want to be more
+   opaque than a column a reader reads through. */
 .g-rail {
   position: sticky; top: 0; z-index: 3;
   width: var(--g-rail-w); flex: 0 0 var(--g-rail-w); height: 100dvh;
-  background: linear-gradient(180deg, var(--g-rail-tint), transparent 55%), var(--g-rail-bg);
-  backdrop-filter: blur(24px) saturate(1.3); -webkit-backdrop-filter: blur(24px) saturate(1.3);
+  background: linear-gradient(180deg, var(--g-rail-fill), color-mix(in srgb, var(--g-rail-fill) 74%, transparent));
+  backdrop-filter: blur(28px) saturate(1.28); -webkit-backdrop-filter: blur(28px) saturate(1.28);
   border-right: 1px solid var(--g-line-soft);
   display: flex; flex-direction: column;
-  transition: width var(--g-slow) var(--g-ease), flex-basis var(--g-slow) var(--g-ease), background 900ms var(--g-ease);
+  /* Opening a column and closing it are not the same motion: the open is what a reader is waiting for and
+     takes --g-enter, the close gives the width back immediately and takes --g-exit. (transitions.dev panel
+     reveal, pattern 07 — the duration pair and the ease family, re-authored on this product's own tokens.) */
+  transition: width var(--g-exit) var(--g-ease-out), flex-basis var(--g-exit) var(--g-ease-out),
+              background 900ms var(--g-ease);
 }
-.g-rail[data-collapsed='true'] { width: 60px; flex-basis: 60px; }
+.g-rail[data-collapsed='true'] {
+  width: 60px; flex-basis: 60px;
+  transition: width var(--g-enter) var(--g-ease-out), flex-basis var(--g-enter) var(--g-ease-out);
+}
 .g-rail-head {
   display: flex; align-items: center; gap: var(--g-1);
   padding: var(--g-3) var(--g-2) var(--g-2) var(--g-3);
@@ -58,6 +70,16 @@
 .g-home[aria-current='page'] { background: var(--g-accent-wash); color: var(--g-accent); }
 .g-rail[data-collapsed='true'] .g-home { justify-content: center; padding: 8px 0; }
 .g-rail[data-collapsed='true'] .g-home-label { display: none; }
+
+/* The rail's glyphs carry the rail's own temperature. A mark is a small thing and this is a small change —
+   --g-rail-icon is its base ink with enough of the material in it to be that material's mark and not the
+   same grey the bar draws — and the current home keeps the accent, because being here is a state and state
+   outranks material. */
+.g-rail .g-home:not([aria-current='page']) svg,
+.g-rail .g-rail-action svg,
+.g-rail .g-new svg,
+.g-rail .g-act { color: var(--g-rail-icon); }
+.g-rail .g-home:not([aria-current='page']):hover svg { color: var(--g-paper); }
 
 .g-rail-body { flex: 1; min-height: 0; overflow-y: auto; padding: 0 var(--g-2) var(--g-5); scrollbar-width: thin; scrollbar-color: var(--g-line) transparent; }
 .g-rail-body::-webkit-scrollbar { width: 8px; }
@@ -130,7 +152,9 @@
   transition: border-color var(--g-fast) var(--g-ease), background var(--g-fast) var(--g-ease),
               box-shadow var(--g-fast) var(--g-ease);
 }
-.g-search::placeholder { color: var(--g-mist-2); }
+/* The placeholder is text in a reader's field and takes the quiet ink, not the tertiary step: measured on the
+   rail's own glass at the twilight the tertiary step came to 2.85:1 there. */
+.g-search::placeholder { color: var(--g-mist); }
 .g-search:focus {
   border-color: color-mix(in srgb, var(--g-accent) 34%, var(--g-line));
   background: var(--g-t3);
@@ -163,8 +187,11 @@
 .g-row[aria-current='true'] { background: var(--g-t3); color: var(--g-paper); }
 .g-row[aria-current='true']::before { transform: scaleY(1); opacity: 1; }
 .g-row-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* The row's own control took the tertiary step, which is the edge and metadata ink: measured on the rail at
+   the twilight it came to 2.85:1, under the 3:1 a control's glyph needs. The rail's quiet ink is the mist
+   step — every other quiet thing in this column already uses it — so the glyph does too. */
 .g-row-drop {
-  opacity: 0; border: 0; background: transparent; color: var(--g-mist-2); cursor: pointer;
+  opacity: 0; border: 0; background: transparent; color: var(--g-mist); cursor: pointer;
   padding: 4px; border-radius: 6px; display: inline-flex;
   transition: opacity var(--g-fast), color var(--g-fast), background var(--g-fast);
 }

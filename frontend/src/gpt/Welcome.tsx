@@ -102,7 +102,13 @@ export function Welcome({ hour }: { hour: Hour }) {
         )}
       </div>
 
-      <h1 className="w-greeting">{t(greetingKey(at))}</h1>
+      {/* Keyed on the greeting, so the one thing on this screen that the hour changes is the one thing that
+          animates when it changes: "Good afternoon" becomes "Good evening" on the element the reader is
+          looking at rather than on a container around it. (transitions.dev text-states swap, pattern 04 —
+          the decision that a state change is expressed on the changed element, its translate-and-blur shape
+          and its short duration, re-authored here on --g-enter.) The exit half of that pattern animates the
+          outgoing text; React replaces the text node in one commit, so what this takes is the entrance. */}
+      <h1 className="w-greeting" key={t(greetingKey(at))}>{t(greetingKey(at))}</h1>
 
       {/* The place, and the one control on this screen that can change what everything else is about. A
           reader who has no place is shown the hour and the sun, and this is how they get their own sky. */}

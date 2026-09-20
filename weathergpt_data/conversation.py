@@ -43,6 +43,112 @@ RESULT_FATE_SECONDS=6*3600.0
 # holds its own budget, and when it runs out the retrieved facts are stated as they always were.
 NARRATIVE_TIMEOUT=float(os.getenv('WEATHERGPT_NARRATIVE_TIMEOUT') or 25.0)
 
+# What the composer is given, and in what order. The evidence a turn retrieves is a database; the
+# material an answer is written from is a short list. Handing the composer all nineteen rows of a
+# station reading produced an answer that named ten separate measures (measured 21 September 2026) and
+# a second attempt that did the same, because there is no way to write a sentence from a database
+# without sounding like one. So the payload carries the measures that answer THIS question, ranked, and
+# names the rest as what they are - evidence on the receipt, not material for the sentence.
+#
+# The order is the order a reader asks in. A question that named no measure ("what is it like") is
+# answered by the temperature and the sky before the pressure, and the station layers return their rows
+# in no order at all. A measure the question DID name always leads, whatever this tuple says.
+COMPOSER_MEASURE_ORDER=('temperature_c','temperature_2m','apparent_temperature','temperature_2m_max',
+                        'temperature_2m_min','present_weather','precipitation','relative_humidity_2m',
+                        'precipitation_probability','precipitation_sum','rainfall',
+                        'wind_speed_kt','wind_speed_10m','wind_gusts_10m','wave_height','river_discharge',
+                        'visibility','wind_direction','dew_point_2m','sky_condition','mslp','pm2_5','pm10','us_aqi',
+                        'european_aqi','nitrogen_dioxide','ozone','carbon_monoxide','sulphur_dioxide')
+MAX_COMPOSER_MEASURES=6
+# A series longer than this reaches the composer as its range. Two or three rows are a reading; seven
+# are a table, and a table in a payload becomes a table in the sentence.
+COMPOSER_SERIES_ROWS=3
+
+
+def composer_evidence(result):
+    """The evidence as the answer's own material: the measures that answer this question, ranked.
+
+    Returns `(facts, further)` - the rows the sentence is written from, and the rest of what the turn
+    retrieved. `further` is not withheld: it travels in the payload so the model can see how much is
+    behind the answer and can cite it, and the packet still carries every row for the receipt. What it
+    is not is a list to be read out.
+
+    A parameter the question named leads. After that the order is the reader's - temperature and sky
+    before pressure - and a series longer than three rows arrives as the range the renderers already
+    compute, so the sentence states a range where it would otherwise have stated seven hours.
+    """
+    from .leadline import value_words
+    facts=[fact for fact in (result.get('facts') or []) if isinstance(fact,dict) and fact.get('id')]
+    if not facts:
+        return [],[]
+    named=[]
+    for task in ((result.get('plan') or {}).get('tasks') or []):
+        for name in (task or {}).get('parameters') or []:
+            if name not in named:
+                named.append(name)
+    order={name:index for index,name in enumerate(COMPOSER_MEASURE_ORDER)}
+    groups={}
+    for fact in facts:
+        groups.setdefault(str(fact.get('parameter') or ''),[]).append(fact)
+    def rank(parameter):
+        return (0 if parameter in named else 1,named.index(parameter) if parameter in named else 0,
+                order.get(parameter, len(order)),parameter)
+    chosen=[];shown=set()
+    for parameter in sorted(groups,key=rank)[:MAX_COMPOSER_MEASURES]:
+        rows=groups[parameter]
+        shown.update(row.get('id') for row in rows)
+        if len(rows)>COMPOSER_SERIES_ROWS:
+            value,row=value_words(rows)
+            if value is not None and row is not None:
+                # The range wears the freshest row's own metadata and keeps the first row's id, so a
+                # number the model cites is still a number this product retrieved.
+                chosen.append({**row,'value':value,'id':rows[0].get('id'),
+                               'label':str(row.get('label') or parameter)+' (range across the retrieved rows)'})
+                continue
+        chosen.extend(rows[:COMPOSER_SERIES_ROWS])
+    # Every row a range stands for counts as shown. Without this the four temperatures the range
+    # replaced came straight back in `further` - the composer was handed the summary AND the series it
+    # summarised, which is the recitation the range exists to prevent. Found by the spec below.
+    return chosen,[fact for fact in facts if fact.get('id') not in shown]
+
+
+def composer_fact(row):
+    """One evidence row as the composer sees it: a window in words, not the raw instant.
+
+    The payload used to carry `start`, `end`, `sample_at` and `observed_at` as ISO strings, and a
+    model told to copy a window exactly will copy the field it can see: measured 21 September
+    2026, an answer about Surat opened "The model hour for Surat at 2026-09-20T23:00:00+00:00
+    gives 25.4 °C". Every number in that sentence is in the evidence and none of it is a window a
+    reader wants. The row keeps a single human label in IST, which is the same label the claim's
+    own ruler prints, so the sentence and the card cannot disagree about when the value is for.
+    """
+    shown = {key: value for key, value in row.items() if key != 'source_locators'}
+    start, end = row.get('start'), row.get('end')
+    stamp = window_label(start, end) or window_label(row.get('sample_at'), row.get('sample_at'))
+    if stamp:
+        shown['window'] = stamp
+    for key in ('start', 'end', 'sample_at', 'observed_at'):
+        shown.pop(key, None)
+    return shown
+
+
+def composer_floor(result):
+    """The tool-owned text the composer may repeat, minus the clauses the engine appends itself.
+
+    Two mechanisms put the same sentence in front of a reader: the model may write a caveat from the
+    limits it was given, and the engine appends the held clause afterwards if the prose did not already
+    carry it. Passing the floor WHOLE handed the model the held clauses to echo verbatim, so the guard
+    in written_answer saw them as carried and skipped its own append - and the reader got the sentence
+    either way. Stripping them leaves what the floor is for: the values, their windows and the
+    renderer's own phrasing, including a derived figure stated at the precision the sentence carries.
+    """
+    text=str(result.get('tool_answer') or result.get('lead') or '').strip()
+    for clause in result.get('held_clauses') or []:
+        clause=str(clause or '').strip()
+        if clause:
+            text=text.replace(clause,'')
+    return text.strip() or result.get('lead') or None
+
 
 def window_label(start_iso,end_iso):
     """A human IST window label, produced here so a written answer never reformats a boundary.
@@ -655,9 +761,21 @@ class ConversationEngine:
                 result['notes'].append('Explaining the previous verified evidence; no new observation or forecast was fetched.')
                 result['trace']['tools'].append({'name':'previous_evidence','freshness':'within_original_lifetime'})
                 from .briefing import render_brief
-                result['answer']=render_brief(result)
                 from .briefing import explain_evidence
-                result['answer']+='\n\n'+explain_evidence(result)
+                # The explanation is written for the reader from the SAME stored packet, behind the same
+                # checks. It used to be the renderer's own dump plus a fixed semantics paragraph, and on
+                # a warning turn that read "PATNA (Patna · 20 Sep, 18:30-24 Sep, 18:30 IST: Day 2 ·
+                # 21 Sep 2026 · Thunderstorm/lightning/squall, Strong surface winds: yellow IMD district
+                # warning colour. The values apply only to their stated place, period and source." -
+                # measured 21 September 2026 on the question "why?". The values are right and the
+                # sentence is not an explanation. Nothing new is retrieved here: the floor below is
+                # exactly what a reader got before, and the model may only re-express it.
+                floor=render_brief(result)+chr(10)+chr(10)+explain_evidence(result)
+                result['tool_answer']=floor
+                if self.written_answer_applies(result,floor):
+                    result=self.written_answer(result,floor=floor)
+                else:
+                    result['answer']=floor
             else:
                 result.update(status='needs_clarification',answer='The previous topic was: '+state.get('dialogue_state',{}).get('topic_summary','No weather evidence has been retrieved yet.')+' The earlier evidence is missing or expired; ask for a fresh retrieval to discuss current values.')
         elif plan.get('tasks'):
@@ -910,6 +1028,14 @@ class ConversationEngine:
             return True
         except (SourceError,TypeError,KeyError,ValueError):return False
 
+    # A false capability claim is not a weather claim and no other check catches it: it carries no
+    # number, unit, date, warning word or source id. Narrow on purpose - it matches an assertion that
+    # there are no sources, not a sentence that merely mentions them.
+    CHAT_WIRING=re.compile(r'\bno\s+(?:data\s+)?sources?\b|\b(?:sources?|nothing)\s+(?:is|are)\s+not\s+'
+                           r'(?:wired|connected)\b|\bnot\s+(?:wired|connected)\s+to\s+(?:this|any)\b|'
+                           r'\bno\s+source\s+(?:is|are)\s+wired\b|\bI\s+(?:have|do)\s+no\s+access\s+to\s+'
+                           r'(?:any\s+)?(?:sources?|data)\b',re.I)
+
     def chat_turn(self,result,plan):
         """Answer a conversational message: no tool runs, no fact is written, and the model writes the reply.
 
@@ -962,6 +1088,11 @@ class ConversationEngine:
         if self.CHAT_WARNING.search(text):return 'used warning language, and this turn cannot verify any warning'
         if self.CHAT_SOURCE.search(text):return 'named a source or a link it did not read'
         if self.CHAT_CLAIM.search(text):return 'described the weather at a place'
+        # A reply may not explain the absence of evidence with a false statement about this workspace.
+        # The check is conditional on the truth: a workspace with nothing wired may say so.
+        if self.CHAT_WIRING.search(text):
+            from .workspace_brief import wired_source_ids
+            if wired_source_ids():return 'claimed this workspace has no sources wired, which is not true of this one'
         return None
 
     def compose_chat_reply(self,question,plan,problem=None):
@@ -970,7 +1101,10 @@ class ConversationEngine:
         system=("You are WeatherGPT, a local weather workspace, answering one conversational message. This "
                 "turn reads no source: there is no evidence, and you must not state any weather value, forecast, "
                 "warning, observation, date, time or place-specific fact. Use only the workspace picture "
-                "supplied. Be brief, natural and useful, under 90 words, plain paragraphs without Markdown. "
+                "supplied. Never describe what this workspace can or cannot do, what is or is not connected, or "
+                "why a value was not retrieved: the workspace picture above is what it holds, and a claim about "
+                "its own wiring is one you cannot check and one this check refuses. Be brief, natural and useful, "
+                "under 90 words, plain paragraphs without Markdown. "
                 "Write in the language of the message: "+str((plan or {}).get('language') or 'en')+". If the "
                 "message asks for weather, say plainly that you can check it, and ask for the place and day only "
                 "when they are not already established. General questions that need no source - arithmetic, a "
@@ -1160,9 +1294,7 @@ class ConversationEngine:
                                 if match['id']!=chosen['id']][:4]
                         chosen['accepted_because']=why
                         chosen['alternatives']=others
-                        result['notes'].append('Place read as '+chosen['label']+' — '+why+'.'+
-                                               (' Other places share this name: '+'; '.join(others)+
-                                                '. Say which one you meant to switch.' if others else ''))
+                        result['notes'].append('Place read as '+chosen['label']+' — '+why+'.')
                         points.append(chosen);resolved[p['name']]=chosen
                         continue
                     from .gazetteer import rank_matches as rank_places_for_choices
@@ -1412,7 +1544,7 @@ class ConversationEngine:
     # which meant the answers a reader is most likely to find stiff - an advisory, a warning, a
     # historical lookup - were the ones that could never be written for them. Measured across eleven
     # intents that morning, exactly one answer in eleven was model-authored; the rest were templates.
-    WRITTEN_ANSWER_INTENTS={'forecast','observation','marine','river','air_quality','ensemble',
+    WRITTEN_ANSWER_INTENTS={'forecast','observation','marine','river','air_quality','ensemble','explanation',
                             'verification','aviation','history','warning','agriculture','document',
                             'climate','comparison','research'}
 
@@ -1456,6 +1588,7 @@ class ConversationEngine:
         # if the model is refused, it is what the renderers' own tests assert against, and it lets a
         # reader compare the sentence they were given with the values the tools produced.
         result['tool_answer']=floor
+        shape=None
         try:
             # The model writes the whole answer now, not a tail after a fixed opening. What is checked
             # is exactly what a reader would see, so an acceptance can never be about a fragment.
@@ -1466,18 +1599,56 @@ class ConversationEngine:
             problem=(self.generated_answer_problem(generated['answer'],generated['evidence_ids'],result,
                                                    supplied=generated.get('supplied'))
                      if generated else 'the model returned no usable narrative')
+            if generated and problem is None:
+                # docs/117 §3.3: a retrieval is summarised, never recited. The first attempt is given
+                # the evidence and asked to answer; measured 21 September 2026, a turn holding nineteen
+                # facts came back naming eleven separate measures, which is a spreadsheet read aloud.
+                # The model is told what its own draft did rather than being abandoned for it: one
+                # second attempt with the shape in front of it, and the floor if that also recites.
+                from .leadline import prose_shape,series_recited
+                shape=prose_shape(generated['answer'],generated.get('supplied'))
+                if series_recited(generated['answer'],generated.get('supplied')):
+                    try:
+                        retry=self.authored_answer(result,shape=shape)
+                    except (SourceError,OSError,TimeoutError):
+                        retry=None
+                    if retry:
+                        retried=self.generated_answer_problem(retry['answer'],retry['evidence_ids'],result,
+                                                              supplied=retry.get('supplied'))
+                        if retried is None and not series_recited(retry['answer'],retry.get('supplied')):
+                            generated=retry;shape=prose_shape(retry['answer'],retry.get('supplied'))
+                            problem=None
+                        else:
+                            problem=retried or 'it recited the retrieval rather than answering from it'
         if generated and problem is None:
             # The source clause is tool-owned text, so it is carried into the written answer rather
             # than left only in the receipt: a reader should not have to open a drawer to see it.
+            from .leadline import carried_by
+            answer=generated['answer'].strip()
             source_line=next((line.strip() for line in floor.split(chr(10)) if 'Source:' in line),'')
             source_clause=('Source:'+source_line.split('Source:',1)[1]).strip() if source_line else ''
-            answer=generated['answer'].strip()
+            if source_clause and ';' in source_clause:
+                # The clause after the semicolon is a caveat, not a receipt: "conditions can change"
+                # belongs in the answer only if the answer has not already said it. Measured 21
+                # September 2026, the tail of a forecast answer read "...the model run time and local
+                # representativeness are unverified, so conditions can still change. Source: GFS
+                # forecast; conditions can change." The receipt is the source name; the caveat was a
+                # second copy of the sentence above it.
+                head,rest=source_clause.split(';',1)
+                if carried_by(rest,answer):source_clause=head.strip().rstrip('.')+'.'
             # Semantic-safety sentences and derived totals are tool-owned as well: the model's prose
             # may stand as the answer, but never at the cost of the clause that says what the values
             # are not (measured 20 September 2026: the hourly-probability semantics were dropped).
+            # A clause the prose ALREADY carries is not appended again: the same sentence twice in one
+            # paragraph is how a product teaches a reader to stop reading its second half.
             for clause in result.get('held_clauses') or []:
-                if clause.strip() and clause.strip() not in answer:
-                    answer=answer.rstrip()+' '+clause.strip()
+                if not clause.strip() or clause.strip() in answer:continue
+                if carried_by(clause,answer):
+                    record=result['trace'].get('generation')
+                    if not isinstance(record,dict):record={};result['trace']['generation']=record
+                    record.setdefault('carried_clauses',[]).append(clause.strip())
+                    continue
+                answer=answer.rstrip()+' '+clause.strip()
             # A passage the model CITED must reach the reader in the publisher's own words: citing a
             # bulletin and then paraphrasing it is the substitution this product refuses to make. A
             # passage it did not cite is a selection - the model judged it did not answer the question -
@@ -1494,11 +1665,11 @@ class ConversationEngine:
             result['answer']=answer
             result['trace']['generation']={**generated['meta'],'authored_by':'model','floor':'tool_owned_renderer',
                                            'validation':'numbers, units, evidence references, links, certainty and output language all checked against the retrieved facts; the fact rows, ruler and receipt stay tool-owned',
-                                           'evidence_ids':generated['evidence_ids']}
+                                           'prose_shape':shape,'evidence_ids':generated['evidence_ids']}
             return result
         result['trace']['generation']={'provider':'verified_fact_renderer',
                                        'status':'narrative_refused' if generated else 'narrative_unavailable',
-                                       'reason':problem,
+                                       'reason':problem,'prose_shape':shape,
                                        'validation':'Entity, parameter, time, value, unit and citation stay in the same tool-owned record.',
                                        'evidence_ids':[f.get('id') for f in result['facts'] if f.get('id')]}
         if generated:result['notes'].append('The written answer was refused and the retrieved facts are stated instead: '+problem+'.')
@@ -1533,7 +1704,12 @@ class ConversationEngine:
             try:basis.append(parsed(result['plan'][field]).isoformat())
             except (ValueError,TypeError,KeyError):pass
         numbers=set(re.findall(r'\d+(?:\.\d+)?',json.dumps(basis,ensure_ascii=False)))
-        if set(re.findall(r'\d+(?:\.\d+)?',text))-numbers:return 'it introduced a number that is not in the retrieved facts'
+        # The refusal names the number. A reason a reader cannot act on is a reason they cannot check,
+        # and this one was silent while it was wrong: the 21 September climate turn was refused for a
+        # figure the payload had supplied, and nothing said which figure it meant.
+        stranger=sorted(set(re.findall(r'\d+(?:\.\d+)?',text))-numbers)
+        if stranger:return ('it introduced a number that is not in the retrieved facts: '
+                             + ', '.join(stranger[:4]))
         unit_values=set()
         for fact in result['facts']:
             for value in re.findall(r'-?\d+(?:\.\d+)?',str(fact['value'])):
@@ -1656,7 +1832,7 @@ class ConversationEngine:
                                           'validation':'asks for the same thing, adds no digit the tool did not write, stays a question'}
         return result
 
-    def authored_answer(self,result):
+    def authored_answer(self,result,shape=None):
         """The whole answer, written by the model from what this turn actually retrieved.
 
         This replaces a continuation. The previous design handed the model a finished opening sentence
@@ -1672,6 +1848,12 @@ class ConversationEngine:
         against the same facts it was given: a number that is not in the evidence, a unit that does not
         match its source, a missing place, an invented link or certainty, or the wrong language all
         send the turn back to the floor.
+
+        `shape` is what the model's OWN draft did with the evidence, passed back on a second attempt.
+        It is a correction, not a constraint: the model is told which parameter it recited and how
+        many measures it named, and it is free to answer any way it likes as long as the answer is an
+        answer. Widening what the model could SEE (21 September 2026) made the answers right and long
+        at the same time, and the fix for that is feedback rather than a smaller payload.
         """
         schema=obj({'answer':string(),'evidence_ids':{'type':'array','items':string()}})
         system=(
@@ -1679,6 +1861,12 @@ class ConversationEngine:
             "itself - not a summary of what you retrieved, and not a description of your own process.\n\n"
             "ANSWER FIRST. The reader's question gets its answer in the first sentence: the value they "
             "asked for, where, and when. Everything else follows that sentence or is left out.\n\n"
+            "DO NOT RECITE THE RETRIEVAL. The evidence is often a series and often wider than the "
+            "question. State the measure the reader asked about and the value that answers it; state a "
+            "RANGE, a peak or a direction rather than the hours one by one; never list every measure a "
+            "station reported as a run of numbers. Three to five sentences, and at most six separate "
+            "measures. The rest of the evidence is not lost - it is on the receipt under the answer, "
+            "where a reader who wants it will find it - so the sentence does not have to carry it.\n\n"
             "USE ONLY THE SUPPLIED EVIDENCE. Copy every number, unit, place label and window label "
             "EXACTLY as supplied - no arithmetic, no rounding, no unit conversion, no reformatting a "
             "date or a place. If a number is not in the evidence, it does not go in the answer. Cite "
@@ -1689,7 +1877,8 @@ class ConversationEngine:
             "words the publisher printed, not your account of them.\n\n"
             "SAY WHAT IS NOT KNOWN. `limits` carries what this turn could not establish and what the "
             "values are not. Where one of those changes what the reader should take from the answer, "
-            "say it in your own words, plainly, without hedging everything.\n\n"
+            "say it in your own words, plainly, without hedging everything. Say each limit ONCE: a "
+            "caveat repeated in different words reads as a hedge and stops being read at all.\n\n"
             "NEVER: add a link or a source id; state a probability, risk, confidence or score the "
             "evidence does not carry; turn a model forecast into an observation or a warning; turn an "
             "absence of official guidance into an all-clear; give an instruction to act; promise "
@@ -1701,17 +1890,37 @@ class ConversationEngine:
             "offering further help.\n\n"
             "Write in the supplied language code. Return JSON."
         )
+        if shape:
+            system += ("\n\nYOUR PREVIOUS ATTEMPT WAS SENT BACK. It named " + str(shape.get('measures_stated'))
+                       + " separate measures" +
+                       (" and recited " + str(shape.get('deepest')) + " values from one of them"
+                        if shape.get('deepest', 0) > 3 else '')
+                       + ", which is the retrieval read aloud rather than an answer to the question that "
+                       "was asked. Write it again: the finding in the first sentence, a range instead of "
+                       "the hours, and the measures the question did not ask about left to the receipt.")
         plan=result.get('plan') or {}
         facts=result.get('facts') or []
         primary=(facts or [{}])[0]
         passages=[{k:v for k,v in p.items() if k in {'id','text','document','page','issued','district','state'}}
                   for p in (result.get('passages') or [])[:self.MAX_AUTHORED_PASSAGES]]
+        # The material, not the database. `facts` is what the sentence is written from and `further`
+        # is what else this turn holds, named so the model knows it exists and can cite it if the
+        # question turns out to be about it.
+        material,further=composer_evidence(result)
         payload={'question':result.get('question',''),
                  'language':plan.get('language'),
-                 'what_the_tools_already_state':result.get('lead') or None,
+                 # The tool-owned text in full, not only its opening sentence. The renderers state
+                 # some values at a stated precision the record keeps finer - a linear trend is
+                 # "54.7 mm/decade" in the sentence and 54.654 in the calculation - and a check that
+                 # allowed only the record refused the model for repeating this product's own
+                 # sentence back at it (measured 21 September 2026, the Ahmedabad climate turn).
+                 'what_the_tools_already_state':composer_floor(result),
                  'place_label':str(primary.get('place') or '').split(',')[0].strip() or None,
                  'window_label':window_label(primary.get('start'),primary.get('end')) or None,
-                 'facts':[{k:v for k,v in f.items() if k!='source_locators'} for f in facts],
+                 'facts':[composer_fact(f) for f in (material or facts)],
+                 'further_evidence':([{'id':f.get('id'),'parameter':f.get('parameter'),
+                                        'why':'retrieved and on the receipt; not needed in the sentence'}
+                                       for f in further][:12] or None),
                  'passages':passages or None,
                  'calculations':[{k:v for k,v in c.items() if k in {'label','value','unit','method'}}
                                  for c in (result.get('calculations') or [])[:4]] or None,
@@ -1722,13 +1931,16 @@ class ConversationEngine:
         if not isinstance(generated,dict):return None
         text=generated.get('answer');ids=generated.get('evidence_ids')
         if not isinstance(text,str) or not text.strip():return None
+        # The system prompt travels with the payload, because the second attempt's system text is not
+        # the first attempt's and a check that re-read only the payload would not know which one wrote
+        # the answer it is judging. It is a record, not an input.
         # The payload travels back with the answer. The check that follows must allow exactly the
         # evidence the model was given - no more, and no less. Measured 21 September 2026: widening
         # what the composer supplies without widening the check refused most turns for "introduced a
         # number that is not in the retrieved facts", where the number came from a calculation or a
         # limit this very payload had handed it.
         return {'answer':text.strip(),'evidence_ids':ids if isinstance(ids,list) else [],
-                'meta':meta or {},'supplied':payload}
+                'meta':meta or {},'supplied':payload,'retry':bool(shape)}
 
     def evidence_narrative(self,result):
         """Ask the model for the reader's answer to a turn that has retrieved facts."""

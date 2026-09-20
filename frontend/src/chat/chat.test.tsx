@@ -219,6 +219,9 @@ describe('the transcript', () => {
 
   it('keeps the receipt and the machine record reachable as depth under the answer', async () => {
     server.use(...handlers(FORECAST));
+    /* The machine record is the deepest register's own addition (docs/136): it is on the card at `full`,
+       and at that register this is the check that it is still depth rather than the answer. */
+    window.localStorage.setItem(REGISTER_KEY, 'full');
     renderAsk();
     await ask('Will it rain in Ahmedabad?');
     await screen.findByText('Evidence receipt');

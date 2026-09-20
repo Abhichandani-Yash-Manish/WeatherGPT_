@@ -42,12 +42,15 @@
 }
 
 /* ---- the pane -------------------------------------------------------------------------------------- */
+/* A pane is the machine's own material: --g-pane-fill is a translucent film, so what the lit border frames is
+   the sky seen through it rather than a grey rectangle. A pane that took an opaque fill would be a card with a
+   highlight, which is the thing this whole file exists to avoid. */
 .g-pane {
   position: relative;
   border: 1px solid transparent;
   border-radius: var(--g-r-lg);
   background:
-    var(--g-fill) padding-box,
+    linear-gradient(180deg, var(--g-pane-fill), color-mix(in srgb, var(--g-pane-fill) 76%, transparent)) padding-box,
     linear-gradient(var(--g-light-angle), var(--g-catch) 0%, var(--g-catch-soft) 38%, transparent 72%) border-box;
   box-shadow:
     calc(var(--g-light-shadow-x) * 0.6) calc(2px + 4px * (1 - var(--g-light-height))) 10px -6px rgba(0, 0, 0, 0.32),
@@ -58,7 +61,7 @@
    inside one does not, because stacking backdrop filters costs a paint each and buys nothing. */
 .g-pane-glass {
   background:
-    linear-gradient(180deg, var(--g-t3), var(--g-t1)) padding-box,
+    linear-gradient(180deg, var(--g-pane-fill), color-mix(in srgb, var(--g-pane-fill) 64%, transparent)) padding-box,
     linear-gradient(var(--g-light-angle), var(--g-catch) 0%, var(--g-catch-soft) 38%, transparent 72%) border-box;
   backdrop-filter: blur(var(--g-pane-blur)) saturate(1.35);
   -webkit-backdrop-filter: blur(var(--g-pane-blur)) saturate(1.35);
@@ -97,14 +100,20 @@
   .g-pane, .g-raised { transition: none; }
 }
 
+/* The one motion this batch adds beyond the palette, and it is a state change expressed on the element that
+   changed rather than on its container: a reader who collapses the rail or opens the reading panel is
+   answered by the thing they acted on. Both directions are in rail.css and panel.css; both are stilled here
+   for a reader who has asked for less motion, exactly as surfaces.css already does for the transitions this
+   file's panes carry. */
+
 
 /* The question, under the place it was asked about. Sans rather than mono: a question is what a person
    wrote, and mono in this system belongs to values a tool owns. */
 .g-row-sub {
   max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  font-size: 11.5px; color: var(--g-mist-2);
+  font-size: 11.5px; color: var(--g-mist);
 }
-.g-row:hover .g-row-sub, .g-row[aria-current='true'] .g-row-sub { color: var(--g-mist); }
+.g-row:hover .g-row-sub, .g-row[aria-current='true'] .g-row-sub { color: var(--g-paper); }
 
 /* ---- what this conversation has read ----------------------------------------------------------------
    A list, not a claim. The id is the machine's own handle for the source and stays in the machine voice;

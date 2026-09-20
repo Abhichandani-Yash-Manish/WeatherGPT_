@@ -72,8 +72,11 @@ const partial = (status: string): AnswerPacket => ({
   conversation_id: 'partial', question: 'A partial packet', status, answer: 'A partial packet, for the title rule only.',
 });
 
-function mountCard(packet: AnswerPacket, _register: 'brief' | 'conversational' | 'full' = 'conversational') {
-  return render(<AnswerTurn packet={packet} onFollowUp={() => {}} />);
+/* The register is passed in rather than read from storage, so a spec can say which unfolding it is
+   checking. It is passed through now for real: the parameter was here and ignored, which is how the
+   register stayed a preference no card honoured. */
+function mountCard(packet: AnswerPacket, register: 'brief' | 'conversational' | 'full' = 'conversational') {
+  return render(<AnswerTurn packet={packet} onFollowUp={() => {}} register={register} />);
 }
 
 describe('the answer card, held against the vanilla checks', () => {
@@ -269,14 +272,19 @@ describe('the answer card, held against the vanilla checks', () => {
   });
 
   it('keeps every disclosure reachable on one shape of card, and never changes what the card says', () => {
-    const { container } = mountCard(RECORDED.forecast);
+    const { container } = mountCard(RECORDED.forecast, 'full');
     const summaries = Array.from(container.querySelectorAll('summary')).map(summary => summary.textContent || '');
     expect(summaries).toContain('where this came from');
     expect(summaries.some(text => /Machine record/.test(text))).toBe(true);
     /* Case-insensitive on purpose: what this guards is that the work disclosure is reachable, not how the
        label is cased. Sentence case is the system's rule, and a parity check should not pin presentation. */
     expect(summaries.some(text => /how this was answered/i.test(text))).toBe(true);
-    expect(container.querySelector('.g-prose')?.textContent).toBe(RECORDED.forecast.answer);
+    /* The reply the engine returned reaches the card, word for word and in order. It is no longer one
+       paragraph: docs/136 prints the finding as the answer and unfolds the rest under it, so the check
+       reads every `.g-prose` the card draws, in document order, and compares the words. Whitespace is
+       normalised because the split is at sentence ends, which is where the engine already had a space. */
+    const shown = Array.from(container.querySelectorAll('.g-prose')).map(node => node.textContent || '').join(' ');
+    expect(shown.replace(/\s+/g, ' ').trim()).toBe(RECORDED.forecast.answer.replace(/\s+/g, ' ').trim());
     expect(container.querySelector('.lead-value')).not.toBeNull();
   });
 

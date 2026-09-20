@@ -298,8 +298,8 @@
    "prerequisite": "Reviewed domain tools; no unsupported risk scores"
   }
  ],
- "latest_batch": "docs/93-ps-closure-queue.md",
- "next_batch_note": "docs/93 (17 September 2026) is the current review: the React frontend overhaul closed at R6, the port ledger is 110 of 110 and audited on every gate run, and the closure queue names the artefact each remaining feature row owes. Q1 is the corpus chat path (whole-document recall and contradiction handling); Q2 is the live Feature 4 device journey.",
+ "latest_batch": "docs/133-the-message-the-reader-gets.md",
+ "next_batch_note": "docs/133 (21 September 2026) is the current batch: the message a reader gets. The composer is handed the material rather than the database, the station layers are read for the fields a reader means, a point forecast with no named measure gets the measures a reader means, a bare explanation request reaches the stored evidence, and a caveat the answer already carries is not appended under it. 14 of 14 answers in the battery are model-written. docs/134 holds the palette and materials beneath the answer, docs/135 the guided surfaces, docs/136 the answer card. The unmeasured remains: non-English held-clause dedupe, reader acceptance, and the mobile surface.",
  "open_paths": [
   {
    "path": "source_and_document",
