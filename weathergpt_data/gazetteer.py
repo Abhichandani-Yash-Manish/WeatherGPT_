@@ -127,6 +127,14 @@ def preferred_match(matches):
     same_district=[match for match in ranked if district_carries_the_name(match)]
     if len(same_district)==1:
         return same_district[0],'its district carries the same name, and no other place that shares this name does'
+    # Neither structural rule reaches a city that is not a seat in this extract and whose district
+    # carries another name: Kochi (Ernakulam), Manali (Kulu), Vijayawada (NTR) were all asked about
+    # while the right place sat first in the list. The reviewed crosswalk decides those, and only
+    # ever by choosing among the candidates already returned.
+    from .settlement_aliases import prefer
+    chosen,why=prefer(ranked[0].get('name'),ranked,norm)
+    if chosen is not None:
+        return chosen,why
     return None,'more than one place shares this name at the same order'
 
 def build(archive,output=DEFAULT):
@@ -233,6 +241,24 @@ class Gazetteer:
         try:
             rows=[dict(r) for r in con.execute('SELECT p.* FROM places p JOIN aliases a ON p.id=a.id WHERE a.name=? ORDER BY p.id',(norm(name),))]
             approximate=False
+            # A former name the catalogue does not index matches only unrelated villages, and for
+            # "Calicut" it matched exactly one - a village in South Andaman, answered confidently
+            # and wrongly. The reviewed crosswalk retries under the current name and the answer says
+            # it did; the places that matched the old name are kept as the alternatives.
+            renamed=None
+            from .settlement_aliases import rename_for
+            found=rename_for(name)
+            if found:
+                current,basis=found
+                under_current=[dict(r) for r in con.execute(
+                    'SELECT p.* FROM places p JOIN aliases a ON p.id=a.id WHERE a.name=? ORDER BY p.id',(norm(current),))]
+                # Any candidate under the current name beats every candidate under a name the table
+                # says is no longer this place's. "Simla" returns thirteen unrelated villages while
+                # "Shimla" returns three that the district-name rule then settles.
+                if under_current:
+                    renamed={'was':name,'now':current,'basis':basis,
+                             'also_matched':[r.get('name') for r in rows][:4]}
+                    rows=under_current
             if not rows and len(norm(name))>=4:
                 import difflib
                 possibilities=con.execute('SELECT DISTINCT p.*,a.name AS matched_alias FROM places p JOIN aliases a ON p.id=a.id WHERE a.name LIKE ? LIMIT 2500',(norm(name)[:3]+'%',)).fetchall()
@@ -274,11 +300,15 @@ class Gazetteer:
             rows = against_state
         if district:rows=[r for r in rows if same(r['admin2'],district)]
         rows=list({r['id']:r for r in rows}.values())
-        canonical=[r for r in rows if norm(r['name'])==norm(name)]
+        # Under a rename the requested name is not the indexed one, so canonical-name filtering
+        # would empty the list it just filled.
+        canonical=[r for r in rows if norm(r['name'])==norm(renamed['now'] if renamed else name)]
         alias_alternatives=len(rows)-len(canonical) if canonical else 0
         if canonical and not approximate:rows=canonical
         if approximate:rows=rows[:20]
-        return [{**r,'name_match_basis':'canonical' if norm(r['name'])==norm(name) else 'alias_or_approximate',
+        return [{**r,'rename_basis':(('"'+str(renamed['was'])+'" is read as '+str(renamed['now'])+': '+
+                                      str(renamed['basis'])) if renamed else ''),
+                 'name_match_basis':'canonical' if norm(r['name'])==norm(renamed['now'] if renamed else name) else 'alias_or_approximate',
                  'state_match_basis':state_basis,'other_alias_matches':alias_alternatives,'match_type':'approximate_name_requires_confirmation' if approximate else 'source_name_or_alias','selection_id':'geonames:'+r['id'],'label':', '.join(part for part in (r['name'],r['admin2'],r['admin1']) if str(part or '').strip()),
                  'coordinates':{'latitude':r['latitude'],'longitude':r['longitude']},'source_id':'S61',
                  'citation':{'source_id':'S61','url':'https://www.geonames.org/'+r['id'],'provider':'GeoNames','product':'India place catalogue','sha256':meta['archive_sha256'],'retrieved_at_utc':meta['retrieved_at_utc']},

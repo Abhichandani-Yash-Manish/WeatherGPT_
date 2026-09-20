@@ -60,8 +60,35 @@ class SeatPreferenceTests(unittest.TestCase):
         self.assertIn('administrative seat', why)
 
     def test_peer_places_of_the_same_order_still_ask(self):
-        chosen, why = self.choose('Kochi')
+        """Changed 20 September 2026: the example moved, the rule did not.
+
+        This used Kochi, which stopped being an example of an undecidable name when the reviewed
+        settlement crosswalk gained an entry for it - Kochi is a port city of a million people that
+        the catalogue records as a plain PPL in Ernakulam, so neither structural rule could tell it
+        from four Maharashtra villages. Ramnagar is a real peer case: 473 places carry the name, none
+        is an administrative seat, no district is named for it, and nothing is reviewed about it. It
+        must still ask, and the test that says so is worth keeping.
+        """
+        chosen, why = self.choose('Ramnagar')
+        self.assertGreater(len(self.matches_for('Ramnagar')), 1, 'the fixture must be a shared name')
         self.assertIsNone(chosen, 'villages sharing a name must not be guessed')
+        self.assertIn('same order', why)
+
+    def test_a_reviewed_preference_decides_a_name_the_structural_rules_cannot(self):
+        """Kochi: not a seat in this extract, and its district is Ernakulam, so it was asked about."""
+        chosen, why = self.choose('Kochi')
+        self.assertIsNotNone(chosen, 'the reviewed crosswalk decides this one')
+        self.assertEqual(chosen['admin1'], 'State of Kerala')
+        self.assertEqual(chosen['admin2'], 'Ernākulam')
+        self.assertIn('settlement-crosswalk-v1', why, 'the basis and its version are disclosed')
+
+    def test_a_preference_only_ever_chooses_among_the_candidates_given(self):
+        """It must never introduce a place. With the Kerala row absent, it decides nothing."""
+        from weathergpt_data.gazetteer import preferred_match
+        matches = [m for m in self.matches_for('Kochi') if m['admin1'] != 'State of Kerala']
+        self.assertGreater(len(matches), 1)
+        chosen, why = preferred_match(matches)
+        self.assertIsNone(chosen)
         self.assertIn('same order', why)
 
     def test_a_lone_place_is_the_only_match(self):
