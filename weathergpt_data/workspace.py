@@ -5,6 +5,7 @@ import json
 import re
 import secrets
 import sqlite3
+import sys
 import threading
 import time
 from datetime import datetime, timezone
@@ -1147,6 +1148,22 @@ def make_server(workspace, port=8765):
     class Handler(BaseHTTPRequestHandler):
         def log_message(self,*args):pass  # Do not log private questions or coordinates.
 
+        def store_failure(self, exc):
+            """Record WHY the evidence store failed, without recording what was asked.
+
+            log_message is suppressed so a reader's question and coordinates never reach a log file,
+            and that is right. But the store handlers below caught OSError and sqlite3.Error, replaced
+            them with one generic sentence and dropped the cause, so a failure left no trace anywhere:
+            during a 306-turn run on 20 September 2026 thirty-three turns returned 503 and the log
+            recorded only the broken pipes that followed. The exception's type and message are
+            infrastructure - a file path, a lock timeout - and are kept; the request is not.
+            """
+            sys.stderr.write('[%s] evidence store failed on %s: %s: %s\n' % (
+                datetime.now(timezone.utc).isoformat(timespec='seconds'),
+                str(getattr(self, 'path', '') or '').split('?')[0],
+                type(exc).__name__, str(exc)[:300]))
+            sys.stderr.flush()
+
         def respond(self, code, data, kind='application/json', filename=None, csp=None, cache=None):
             if kind=='application/json':data=json.dumps(data,ensure_ascii=False,allow_nan=False).encode()
             elif isinstance(data,str):data=data.encode()
@@ -1226,7 +1243,9 @@ def make_server(workspace, port=8765):
                     if view is None:return self.respond(404,{'error':'Not found'})
                     return self.respond(200,view)
                 except ValueError as exc:return self.respond(400,{'error':str(exc)})
-                except (OSError,sqlite3.Error):return self.respond(503,{'error':'The local evidence store is unavailable. Check its files and retry.'})
+                except (OSError,sqlite3.Error) as exc:
+                    self.store_failure(exc)
+                    return self.respond(503,{'error':'The local evidence store is unavailable. Check its files and retry.'})
             if getattr(workspace,'frontend','react')=='react':
                 # The React build: one HTML entry with the session token injected, and the hashed
                 # assets beside it. A missing build is refused in words, never served as a blank page.
@@ -1267,7 +1286,9 @@ def make_server(workspace, port=8765):
             if not path.startswith('/api/conversations/'):return self.respond(404,{'error':'Not found'})
             try:return self.respond(200,workspace.delete_conversation(path.removeprefix('/api/conversations/')))
             except ValueError as exc:return self.respond(400,{'error':str(exc)})
-            except (OSError,sqlite3.Error):return self.respond(503,{'error':'The local evidence store is unavailable. Check its files and retry.'})
+            except (OSError,sqlite3.Error) as exc:
+                self.store_failure(exc)
+                return self.respond(503,{'error':'The local evidence store is unavailable. Check its files and retry.'})
 
         def do_POST(self):
             origin='http://127.0.0.1:'+str(self.server.server_port)
@@ -1291,7 +1312,9 @@ def make_server(workspace, port=8765):
             except LanguageServiceUnavailable as exc:self.respond(503,{'error':str(exc)})
             except RateLimited as exc:self.respond(429,{'error':str(exc)})
             except (ValueError,TypeError,KeyError) as exc:self.respond(400,{'error':str(exc)})
-            except (OSError,sqlite3.Error):self.respond(503,{'error':'The local evidence store is unavailable. Check its files and retry.'})
+            except (OSError,sqlite3.Error) as exc:
+                self.store_failure(exc)
+                self.respond(503,{'error':'The local evidence store is unavailable. Check its files and retry.'})
 
     return ThreadingHTTPServer(('127.0.0.1',port),Handler)
 
