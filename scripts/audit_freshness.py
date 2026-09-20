@@ -17,7 +17,7 @@ there and the point is to find out what is.
 A budget here is a serving expectation, not a publisher SLA: it is how old this product is willing to let
 a thing get before it says so.
 """
-import argparse, json, sqlite3, sys, time
+import argparse, json, os, sqlite3, sys, time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -113,28 +113,74 @@ def publisher_date():
             'features': sum(dates.values())}
 
 
-def scheduler_state():
-    """Whether the refresh is scheduled, and what happened the last time it ran.
+# A schedule that skips a slot every day is worth less than no schedule, because it looks like one.
+# The refresh runs twice daily, so a gap past this without a run means the schedule is not firing.
+FIRING_BUDGET_HOURS = 24
 
-    A shelf being current does not mean the schedule works - someone may simply have run it by hand, which
-    is exactly what happened here for five days before anyone noticed it had stopped. So the report says
-    both: how old the data is, and whether anything is arranged to keep it that way.
+
+def scheduler_state():
+    """Whether the refresh is scheduled, whether it is actually FIRING, and what it last did.
+
+    A shelf being current does not mean the schedule works - someone may simply have run it by hand,
+    which is exactly what happened here for five days before anyone noticed it had stopped.
+
+    Measured 20 September 2026, and the reason this function now reports three things instead of two:
+    the crontab entries were installed and correct, and neither of that day's slots ran. The laptop
+    entered sleep at 07:00:41, ten minutes before the morning slot, and macOS cron does not run a job
+    it missed while asleep - it skips it. `scheduled` was True the whole time and the data was going
+    stale underneath it. So "installed" and "firing" are now separate questions, and the second one
+    is answered from when the refresh last actually ran rather than from what is configured.
     """
-    import subprocess
-    state = {'scheduled': False, 'entries': [], 'last_run': None}
+    import subprocess, platform
+    from datetime import datetime, timezone
+    state = {'scheduled': False, 'mechanism': None, 'entries': [], 'last_run': None,
+             'firing': None, 'hours_since_last_run': None}
+
+    if platform.system() == 'Darwin':
+        # launchd is the mechanism that survives a sleeping laptop: a missed slot runs on wake.
+        try:
+            printed = subprocess.run(['launchctl', 'print', 'gui/%d/com.weathergpt.refresh' % os.getuid()],
+                                     capture_output=True, text=True, timeout=15)
+            if printed.returncode == 0:
+                state['scheduled'] = True
+                state['mechanism'] = 'launchd'
+                state['entries'] = [line.strip() for line in printed.stdout.splitlines()
+                                    if 'state =' in line or 'runs =' in line]
+        except Exception:
+            pass
     try:
         crontab = subprocess.run(['crontab', '-l'], capture_output=True, text=True, timeout=15).stdout
-        state['entries'] = [line.strip() for line in crontab.splitlines()
-                            if 'daily_refresh.sh' in line and not line.strip().startswith('#')]
-        state['scheduled'] = bool(state['entries'])
+        cron_entries = [line.strip() for line in crontab.splitlines()
+                        if 'daily_refresh.sh' in line and not line.strip().startswith('#')]
+        if cron_entries:
+            state['entries'] += cron_entries
+            state['scheduled'] = True
+            state['mechanism'] = 'launchd+cron' if state['mechanism'] else 'cron'
+            if platform.system() == 'Darwin':
+                state['warning'] = ('cron entries are present on macOS, where a slot the machine slept '
+                                    'through is skipped rather than run on wake. Prefer the LaunchAgent: '
+                                    'scripts/install_daily_schedule.sh')
     except Exception:
         pass
+
     record = ROOT / 'data/runtime/refresh/last-run.json'
     if record.exists():
         try:
             state['last_run'] = json.loads(record.read_text())
         except ValueError:
             state['last_run'] = {'unreadable': True}
+
+    started = (state['last_run'] or {}).get('started_at_utc')
+    if started:
+        try:
+            when = datetime.strptime(started, '%Y-%m-%dT%H:%M:%SZ').replace(tzinfo=timezone.utc)
+            hours = (datetime.now(timezone.utc) - when).total_seconds() / 3600
+            state['hours_since_last_run'] = round(hours, 1)
+            state['firing'] = hours <= FIRING_BUDGET_HOURS
+        except ValueError:
+            pass
+    elif state['scheduled']:
+        state['firing'] = False
     return state
 
 
@@ -188,13 +234,25 @@ def main():
             print(f'\ningestion jobs: {jobs}')
         run = schedule.get('last_run') or {}
         if schedule.get('scheduled'):
-            print(f'\nschedule: {len(schedule["entries"])} cron entr'
-                  f'{"y" if len(schedule["entries"]) == 1 else "ies"} installed')
+            print(f'\nschedule: installed via {schedule.get("mechanism") or "unknown"}')
             for entry in schedule['entries']:
                 print(f'          {entry[:74]}')
+            if schedule.get('warning'):
+                print(f'          WARNING: {schedule["warning"]}')
         else:
             print('\nschedule: NOT SCHEDULED - nothing keeps this store current on its own')
-            print('          install with: scripts/install_daily_cron.sh')
+            print('          install with: scripts/install_daily_schedule.sh')
+        # Installed and firing are different questions, and only the second one keeps data fresh.
+        # On 20 September 2026 this was installed, correct, and had not run once: the laptop slept
+        # through both slots and macOS cron skips what it missed.
+        hours = schedule.get('hours_since_last_run')
+        if schedule.get('firing') is False:
+            print('          NOT FIRING - installed, but the refresh last ran '
+                  + (f'{hours}h ago' if hours is not None else 'never')
+                  + f', past the {FIRING_BUDGET_HOURS}h budget.')
+            print('          A schedule that skips is worth less than none, because it looks like one.')
+        elif schedule.get('firing') and hours is not None:
+            print(f'          firing: last run {hours}h ago, inside the {FIRING_BUDGET_HOURS}h budget')
         if run.get('finished_at_utc'):
             failed = run.get('failed_steps') or []
             print(f'last run: {run["finished_at_utc"]} '
