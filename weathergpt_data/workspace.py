@@ -2,6 +2,7 @@
 import argparse
 import hmac
 import json
+import os
 import re
 import secrets
 import sqlite3
@@ -1143,7 +1144,7 @@ def post_routes(workspace):
             '/api/speech/transcribe':workspace.transcribe,'/api/speech/speak':workspace.speak}
 
 
-def make_server(workspace, port=8765):
+def make_server(workspace, port=8765, host='127.0.0.1', public_hosts=(), access_key=''):
     token=secrets.token_urlsafe(32)
     class Handler(BaseHTTPRequestHandler):
         def log_message(self,*args):pass  # Do not log private questions or coordinates.
@@ -1178,13 +1179,66 @@ def make_server(workspace, port=8765):
             self.end_headers();self.wfile.write(data)
 
         def allowed_host(self):
-            return self.headers.get('Host')=='127.0.0.1:'+str(self.server.server_port)
+            # A DNS-rebinding guard: a page on another origin must not be able to drive this server
+            # through the reader's browser. Loopback is the default and stays the default; a
+            # deployment adds its own hostname explicitly with --public-host.
+            supplied=self.headers.get('Host','')
+            port=str(self.server.server_port)
+            allowed={'127.0.0.1:'+port,'localhost:'+port}
+            for name in (getattr(self.server,'public_hosts',None) or ()):
+                allowed.add(name)
+                allowed.add(name+':'+port)
+            return supplied in allowed
+
+        def access_granted(self):
+            """The shared-secret gate for a deployed workspace. Absent locally.
+
+            This is a door key for a demo, not user authentication: everyone who has it is the same
+            anonymous visitor, and it exists so a public URL cannot spend this workspace's provider
+            budget on anyone who finds it. WEATHERGPT_ACCESS_KEY unset - the local case - leaves the
+            server exactly as it was.
+            """
+            required=getattr(self.server,'access_key','') or ''
+            if not required:
+                return True
+            supplied=''
+            cookie=self.headers.get('Cookie') or ''
+            for part in cookie.split(';'):
+                name,_,value=part.strip().partition('=')
+                if name=='wgpt_access':
+                    supplied=value
+            if not supplied:
+                supplied=(parse_qs(urlsplit(self.path).query).get('k') or [''])[0]
+            return hmac.compare_digest(supplied,required)
+
+        def demand_access(self):
+            """Ask for the key once, in words, without hinting at what it is."""
+            page=('<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,'
+                  'initial-scale=1"><title>WeatherGPT</title>'
+                  '<style>body{font:16px/1.6 system-ui,sans-serif;margin:0;display:grid;place-items:center;'
+                  'min-height:100vh;background:#eef1f0;color:#14201e}main{max-width:26rem;padding:24px}'
+                  'input,button{font:inherit;padding:.5rem .6rem;border-radius:6px;border:1px solid #cdd6d4}'
+                  'button{background:#0d6d77;color:#fff;border-color:#0d6d77;cursor:pointer}</style>'
+                  '<main><h1>WeatherGPT</h1><p>This deployment is closed. Enter the access key you were '
+                  'given.</p><form method="GET" action="/"><input name="k" type="password" '
+                  'autocomplete="current-password" aria-label="Access key" required> '
+                  '<button type="submit">Open</button></form></main>')
+            self.respond(401,page,kind='text/html; charset=utf-8')
 
         def authorized(self):
             return hmac.compare_digest(self.headers.get('X-WeatherGPT-Token',''),token)
 
         def do_GET(self):
             if not self.allowed_host():return self.respond(403,{'error':'Use the loopback URL printed by the server'})
+            if not self.access_granted():return self.demand_access()
+            # The key arrived in the URL: move it into a cookie and get it out of the address bar,
+            # so it is not left in history, in a screenshot, or in a shared link.
+            if (parse_qs(urlsplit(self.path).query).get('k') or [''])[0]:
+                self.send_response(302)
+                self.send_header('Location',urlsplit(self.path).path or '/')
+                self.send_header('Set-Cookie','wgpt_access='+getattr(self.server,'access_key','')+
+                                 '; Path=/; HttpOnly; SameSite=Lax; Secure; Max-Age=604800')
+                self.send_header('Content-Length','0');self.end_headers();return
             path=urlsplit(self.path).path
             if path.startswith('/api/documents/'):
                 sha=path.removeprefix('/api/documents/')
@@ -1291,9 +1345,16 @@ def make_server(workspace, port=8765):
                 return self.respond(503,{'error':'The local evidence store is unavailable. Check its files and retry.'})
 
         def do_POST(self):
-            origin='http://127.0.0.1:'+str(self.server.server_port)
+            port=str(self.server.server_port)
+            origin='http://127.0.0.1:'+port
+            # Same guard, widened to whatever hostname this workspace was deployed under. A request
+            # carrying no Origin at all is a same-origin navigation and keeps its existing pass.
+            origins={origin,'http://localhost:'+port}
+            for name in (getattr(self.server,'public_hosts',None) or ()):
+                origins.update({'https://'+name,'http://'+name,'https://'+name+':'+port,'http://'+name+':'+port})
             supplied=self.headers.get('X-WeatherGPT-Token','')
-            if (not self.allowed_host() or self.headers.get('Origin',origin)!=origin
+            if (not self.allowed_host() or not self.access_granted()
+                    or self.headers.get('Origin',origin) not in origins
                     or not hmac.compare_digest(supplied,token)):
                 return self.respond(403,{'error':'Reload this local workspace before sending a request'})
             routes=post_routes(workspace)
@@ -1316,12 +1377,20 @@ def make_server(workspace, port=8765):
                 self.store_failure(exc)
                 self.respond(503,{'error':'The local evidence store is unavailable. Check its files and retry.'})
 
-    return ThreadingHTTPServer(('127.0.0.1',port),Handler)
+    server=ThreadingHTTPServer((host,port),Handler)
+    server.public_hosts=tuple(public_hosts or ())
+    server.access_key=access_key or ''
+    return server
 
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--port',type=int,default=8765)
+    # Loopback is the default and binding anywhere else is a deliberate act, announced at startup.
+    p.add_argument('--host',default='127.0.0.1',
+                   help='address to bind (default 127.0.0.1; use 0.0.0.0 only inside a container)')
+    p.add_argument('--public-host',action='append',default=[],
+                   help='hostname this workspace is served under, repeatable; needed when it is not loopback')
     p.add_argument('--database',type=Path,default=DEFAULT_DATABASE)
     p.add_argument('--raw-root',type=Path,default=DEFAULT_RAW)
     p.add_argument('--geography-database',type=Path,default=DEFAULT_GEOGRAPHY)
@@ -1337,8 +1406,17 @@ def main():
         raise SystemExit(2)
     workspace=Workspace(a.database,a.raw_root,a.geography_database,frontend=a.frontend)
     if not a.no_warm:workspace.start_warming()
-    server=make_server(workspace,a.port)
+    access_key=os.environ.get('WEATHERGPT_ACCESS_KEY','').strip()
+    server=make_server(workspace,a.port,host=a.host,public_hosts=tuple(a.public_host),access_key=access_key)
     print('WeatherGPT: http://127.0.0.1:'+str(server.server_port)+' — local prototype; Ctrl-C to stop.',flush=True)
+    if a.host!='127.0.0.1':
+        print('Bound to '+a.host+':'+str(server.server_port)+' — reachable beyond this machine.',flush=True)
+        if not access_key:
+            print('WARNING: WEATHERGPT_ACCESS_KEY is not set, so anyone who reaches this address can '
+                  'use this workspace and spend its provider budget.',flush=True)
+    if access_key:
+        print('Access key required (WEATHERGPT_ACCESS_KEY): open /?k=<key> once and it is remembered '
+              'in a cookie.',flush=True)
     print('Frontend: react (web/dist, the only surface since R6)',flush=True)
     if not a.no_plan_watcher:
         workspace.plan_watcher().start()

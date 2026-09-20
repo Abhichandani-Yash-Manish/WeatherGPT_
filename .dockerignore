@@ -1,0 +1,18 @@
+# Everything that accumulates rather than ships. data/runtime holds roughly four gigabytes of
+# collected evidence on a developer machine and is mounted as a volume, not baked into a layer.
+data/runtime/
+data/raw/
+data/processed/checkpoints/
+data/processed/hardening/
+data/processed/bulletins/
+research/
+docs/
+tests/
+frontend/node_modules/
+frontend/
+.git/
+.github/
+*.pyc
+__pycache__/
+.venv/
+.pytest_cache/

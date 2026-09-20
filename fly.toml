@@ -1,0 +1,54 @@
+# Fly.io deployment for the WeatherGPT workspace.
+#
+# Fly is chosen for three properties this product actually needs, not for preference: HTTPS on a
+# real hostname without any certificate work (the Web Push API requires a secure context, so the
+# notification journey cannot be demonstrated over a plain LAN address); a persistent volume, so the
+# evidence the workspace collects survives a redeploy; and a single always-on machine, because the
+# plan watcher checks saved plans on a schedule and a scale-to-zero host would stop it.
+#
+# Before the first deploy, set the secrets - they are never in this file and never in the image:
+#
+#   fly secrets set WEATHERGPT_ACCESS_KEY="$(python3 -c 'import secrets;print(secrets.token_urlsafe(24))')"
+#   fly secrets set DEEPSEEK_API_KEY=...      # or OPENROUTER_API_KEY
+#
+# WEATHERGPT_ACCESS_KEY is a door key for a demo, not user authentication: everyone holding it is
+# the same anonymous visitor. It exists so a public URL cannot spend this workspace's provider
+# budget on anyone who finds it. Without it the server still starts and says, at startup, that it is
+# open to anyone who can reach it.
+
+app = "weathergpt"
+primary_region = "bom"          # Mumbai: the data, the readers and the sources are all in India.
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT = "8765"
+  PUBLIC_HOST = "weathergpt.fly.dev"   # must match the hostname actually served, or every request is refused
+
+[http_service]
+  internal_port = 8765
+  force_https = true
+  # Never scale to zero: the plan watcher checks saved plans every thirty minutes, and a stopped
+  # machine is a watch that silently does not run.
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [http_service.concurrency]
+    type = "requests"
+    # A turn can hold a connection for a while - it may fetch from several sources and call a model -
+    # and the stores are SQLite. Measured on 20 September 2026: a 306-question run alongside the test
+    # suite produced "database is locked" and thirty-three 503s. A low ceiling is the honest setting
+    # for this architecture rather than a throughput target it cannot meet.
+    soft_limit = 8
+    hard_limit = 16
+
+[[vm]]
+  # The document index and the embedding stack are the memory floor here, not the request load.
+  size = "shared-cpu-2x"
+  memory = "2gb"
+
+[[mounts]]
+  source = "weathergpt_runtime"
+  destination = "/app/data/runtime"
