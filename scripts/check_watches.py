@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
 """Check locally registered watches once, in the foreground, and dispatch the outbox.
 
-There is no daemon and no push. This script runs the official warning tool for every
-open watch on demand, enqueues a notification only when the observed official state
-changed since the last check, dispatches due outbox rows to the local inbox, and says
-plainly that a no-match is not an all-clear.
+There is no daemon: this runs once, in the foreground. It runs the official warning
+tool for every open watch on demand, enqueues a notification only when the observed
+official state changed since the last check, dispatches due outbox rows through their
+own channels, and says plainly that a no-match is not an all-clear.
+
+It DOES send web push. This docstring said "no push" and the run summary reported
+'local_inbox_only_no_push' while the code called channel_sender, which pushes to every
+active subscription for the watch. Corrected 20 September 2026: a machine-readable field
+asserting the opposite of what the code does is worse than no field, and this one would
+have been read as proof that the notification journey had never run.
 
     python3 scripts/check_watches.py
 """
@@ -43,8 +49,14 @@ def main():
                                   'notifications_enqueued': notified,
                                   'dispatched': len(dispatched),
                                   'escalated': len(escalated)}, now=workspace.clock())
+    channels = {}
+    for row in dispatched:
+        name = str(row.get('channel') or 'unknown')
+        channels[name] = channels.get(name, 0) + 1
     packet = {'schema_version': 'watch-check-run-v1', 'checked': len(results),
-              'delivery': 'local_inbox_only_no_push',
+              # What was actually dispatched, by channel, rather than a fixed claim about it.
+              'delivery_by_channel': channels,
+              'web_push_attempted': bool(channels.get('web_push')),
               'no_match_is_not_an_all_clear': True,
               'notifications_enqueued': notified,
               'results': results,
@@ -55,6 +67,8 @@ def main():
     else:
         print('Checked %d local watch(es) in the foreground; %d notification(s) enqueued, %d dispatched, %d escalated. '
               'No daemon is installed.' % (len(results), notified, len(dispatched), len(escalated)))
+        if channels:
+            print('Dispatched by channel: ' + ', '.join('%s=%d' % pair for pair in sorted(channels.items())))
         for row in results:
             print('%-38s %-22s matched=%s %s' % (row['id'], row['state'], row['matched'], (row.get('detail') or '')[:80]))
     return 0
