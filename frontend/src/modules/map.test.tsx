@@ -364,10 +364,10 @@ describe('the What changed surface', () => {
     const count = screen.getByTestId('changes-count');
     expect(count).toHaveAttribute('role', 'status');
     expect(count).toHaveTextContent('2 parameters with a comparison this read returned, across 2 stored retrievals.');
-    // The payload's own statements are rendered verbatim, not summarised away.
-    const statements = within(screen.getByTestId('changes-statements'));
-    expect(statements.getByText('interpretation')).toBeInTheDocument();
-    expect(statements.getByText('vintage_variance_not_skill')).toBeInTheDocument();
+    // The read's own interpretation is a Facts row, not a second, un-curated scan of the payload.
+    expect(screen.getByText('vintage_variance_not_skill')).toBeInTheDocument();
+    // The envelope's own limitation and not-established lines still reach the reader, in the one
+    // "What this read returned" footer every surface carries.
     expect(
       screen.getByText(
         'This compares stored retrievals of the same valid hour; it conflates model updates with shorter horizons because run identity is not exposed.',

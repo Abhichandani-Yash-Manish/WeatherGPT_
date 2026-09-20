@@ -96,6 +96,7 @@ export function Surface(): JSX.Element {
       busy={place !== null && read.isPending}
       error={place ? read.error : undefined}
       onRetry={() => read.refetch()}
+      intents={intents}
     >
       <section className="module-section">
         <h2>What a member and a spread are here</h2>

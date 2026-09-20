@@ -266,6 +266,7 @@ export function Surface(): JSX.Element {
       busy={warnings.isPending}
       error={warnings.error}
       onRetry={() => warnings.refetch()}
+      intents={intents}
     >
       <section className="module-section">
         <h2>Filter</h2>

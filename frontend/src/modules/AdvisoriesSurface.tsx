@@ -142,7 +142,7 @@ export function Surface(): JSX.Element {
       title="Farm advisories"
       lead="The publisher's district crop-advisory directory this machine read, and the published brief for one district you name, with the model forecast kept apart as context."
       what="the advisory directory" envelope={states.data} busy={states.isPending} error={states.error}
-      onRetry={() => states.refetch()}
+      onRetry={() => states.refetch()} intents={intents}
     >
       <section className="module-section">
         <h2>The published directory</h2>

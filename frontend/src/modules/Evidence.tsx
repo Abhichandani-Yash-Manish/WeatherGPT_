@@ -298,7 +298,28 @@ export function EvidenceFooter({ envelope }: { envelope: Envelope<unknown> }): J
   );
 }
 
-export function SurfaceShell({ title, lead, what, envelope, busy, error, onRetry, children, className }: {
+/* The reader may not want to operate the instrument at all: the same question, asked in the conversation,
+   comes back answered with its sources attached and needs no place picked, no control set and no table
+   read. Every surface already states the questions it answers (its own `intents` export, docs/108 §2's
+   'depth unfolds' in reverse — a way back to the front door from the instrument); until this batch nothing
+   rendered them once a surface was ported; `moduleFor(id).intents` had no reader. It is a link, not a
+   button, so the digit-bearing tables beneath it stay the only place a value is asserted. */
+export function AskInstead({ intents }: { intents?: string[] }): JSX.Element | null {
+  const asked = (intents || []).filter(intent => intent.trim());
+  if (!asked.length) return null;
+  return (
+    <nav className="module-controls" aria-label="Ask this in the conversation instead">
+      <span className="module-fact-label">Ask instead:</span>
+      {asked.map(intent => (
+        <a key={intent} className="btn btn-ghost" href={'#/assistant?ask=' + encodeURIComponent(intent)}>
+          {intent}
+        </a>
+      ))}
+    </nav>
+  );
+}
+
+export function SurfaceShell({ title, lead, what, envelope, busy, error, onRetry, children, className, intents }: {
   title: string;
   lead: string;
   what: string;
@@ -309,6 +330,10 @@ export function SurfaceShell({ title, lead, what, envelope, busy, error, onRetry
   children: ReactNode;
   /* A surface may ask for its own layout class (the workspace dashboard composes its own grid). */
   className?: string;
+  /** The questions this surface answers, in the reader's own words (the surface's own `intents` export).
+      Rendered once, under the lead, as one-tap links into the conversation: a reader who would rather ask
+      than operate the instrument is never left with only the instrument. */
+  intents?: string[];
 }): JSX.Element {
   /* The header of every surface: the icon the rail uses, the surface's own name, its lead, and the
      envelope's own line as chips. Nothing here is a status the envelope did not state. */
@@ -336,6 +361,7 @@ export function SurfaceShell({ title, lead, what, envelope, busy, error, onRetry
           </p>
         ) : null}
       </header>
+      <AskInstead intents={intents} />
       {busy ? <Reading what={what} /> : null}
       {!busy && error ? <Failure error={error} what={what} onRetry={onRetry} /> : null}
       {!busy && !error ? <div className="flex flex-col gap-5">{children}</div> : null}

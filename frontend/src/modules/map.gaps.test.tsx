@@ -172,6 +172,8 @@ describe('the map pointer readout', () => {
     expect(paths[0]).toHaveAttribute('tabindex', '0');
     expect(paths[1]).toHaveAttribute('tabindex', '-1');
 
+    await userEvent.tab(); // the surface's own 'ask instead' link
+    await userEvent.tab(); // the shared-view-registry 'ask instead' link
     await userEvent.tab(); // the layer selector
     await userEvent.tab(); // the figure's one tab stop
     expect(document.activeElement).toBe(paths[0]);

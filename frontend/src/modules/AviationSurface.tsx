@@ -135,7 +135,7 @@ export function Surface(): JSX.Element {
       title="Aviation"
       lead="Airport reports for the ICAO codes you name, read kind by kind: the station, the raw report as the source transmitted it, the decoded values with their own time basis, and the age of the report."
       what="the airport reports" envelope={asked ? read.data : undefined} busy={asked !== null && read.isPending}
-      error={asked ? read.error : undefined} onRetry={() => read.refetch()}
+      error={asked ? read.error : undefined} onRetry={() => read.refetch()} intents={intents}
     >
       <section className="module-section">
         <h2>What these reports are</h2>

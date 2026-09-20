@@ -80,6 +80,7 @@ export function Surface(): JSX.Element {
       busy={place !== null && forecast.isPending}
       error={place ? forecast.error : undefined}
       onRetry={() => forecast.refetch()}
+      intents={intents}
     >
       <section className="module-section">
         <h2>The point</h2>

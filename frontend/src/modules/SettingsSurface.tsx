@@ -47,6 +47,7 @@ export function Surface(): JSX.Element {
       busy={capabilities.isPending}
       error={capabilities.error}
       onRetry={() => capabilities.refetch()}
+      intents={intents}
     >
       <section className="module-section">
         <h2>What this suite can answer</h2>

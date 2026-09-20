@@ -341,6 +341,7 @@ export function Surface(): JSX.Element {
       busy={layers.isPending}
       error={layers.error}
       onRetry={() => layers.refetch()}
+      intents={intents}
     >
       <section className="module-section">
         <h2>The layers this machine can draw</h2>

@@ -138,6 +138,7 @@ export function Surface(): JSX.Element {
       lead="Modelled waves for the sea cell answering one point, and modelled discharge for the river cell answering another: two separate reads, each with its own cell, the distance the payload states, model, unit and source rows. Neither is an observation, a bulletin or a warning."
       what="the wave and river reads"
       busy={false}
+      intents={intents}
     >
       <section className="module-section">
         <h2>The two reads</h2>

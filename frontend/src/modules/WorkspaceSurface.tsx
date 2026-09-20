@@ -790,6 +790,7 @@ export function Surface({ onAsk, query }: SurfaceProps = {}): JSX.Element {
       error={undefined}
       onRetry={() => { void now.refetch(); }}
       className="module-dashboard"
+      intents={intents}
     >
       <div className="dash">
         <Hero place={point} forecast={forecast} now={now} onPlace={place => { rememberPlace(place); setPoint(place); }} now_ms={nowMs} />

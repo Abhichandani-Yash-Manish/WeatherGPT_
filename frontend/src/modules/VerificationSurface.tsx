@@ -96,6 +96,7 @@ export function Surface(): JSX.Element {
       busy={ready && read.isPending}
       error={ready ? read.error : undefined}
       onRetry={() => read.refetch()}
+      intents={intents}
     >
       <section className="module-section">
         <h2>What this comparison is</h2>

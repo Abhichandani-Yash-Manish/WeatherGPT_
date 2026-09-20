@@ -129,6 +129,7 @@ export function Surface(): JSX.Element {
       busy={kept.isPending}
       error={kept.error}
       onRetry={() => { void kept.refetch(); }}
+      intents={intents}
     >
       <section className="module-section">
         <h2>Kept briefs</h2>

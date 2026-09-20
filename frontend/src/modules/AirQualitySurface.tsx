@@ -66,7 +66,7 @@ export function Surface(): JSX.Element {
       title="Air quality"
       lead="Modelled CAMS air quality for one grid cell: the parameters this read returned, in the source's own units, with the cell the values describe and its distance from the point you named."
       what="the modelled air-quality read" envelope={place ? read.data : undefined} busy={place !== null && read.isPending}
-      error={place ? read.error : undefined} onRetry={() => read.refetch()}
+      error={place ? read.error : undefined} onRetry={() => read.refetch()} intents={intents}
     >
       <section className="module-section">
         <h2>The point and the cell</h2>

@@ -271,6 +271,7 @@ export function Surface(): JSX.Element {
       busy={overview.isPending}
       error={overview.error}
       onRetry={() => overview.refetch()}
+      intents={intents}
     >
       <section className="dash-bar" data-testid="today-filters">
         <div className="dash-bar-fields">

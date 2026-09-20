@@ -144,6 +144,7 @@ export function Surface(): JSX.Element {
       lead="Two model point forecasts from two separate reads, one per place, held side by side with each read's own instant, unit and source rows. Model hours are not observations. A comparison of two printed outputs, not a ranking and not a skill claim."
       what="the two point forecasts"
       busy={false}
+      intents={intents}
     >
       <section className="module-section">
         <h2>The two reads</h2>

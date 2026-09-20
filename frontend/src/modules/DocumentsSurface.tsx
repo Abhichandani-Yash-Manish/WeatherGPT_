@@ -80,6 +80,7 @@ export function Surface(): JSX.Element {
       busy={corpus.isPending}
       error={corpus.error}
       onRetry={() => corpus.refetch()}
+      intents={intents}
     >
       <section className="module-section">
         <h2>Filters and counts</h2>

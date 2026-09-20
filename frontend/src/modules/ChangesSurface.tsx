@@ -1,9 +1,11 @@
 /* What changed: the stored forecast retrievals for one point, read as two printed editions of the same
    valid hour, plus the published district product the change is about. A change between retrievals is
    vintage variance: not skill, not accuracy and not a correction. Where an entry states no delta the two
-   printed values stand beside each other and nothing is computed here, and every field the payload named
-   like a note, an interpretation, a limitation or a not-established line is rendered verbatim. */
-import { useMemo, useState } from 'react';
+   printed values stand beside each other and nothing is computed here. The read's own interpretation is a
+   Facts row below, and its own limitation and not-established lines are the standard "What this read
+   returned" footer every surface carries — this surface does not scan the payload a second time for a
+   field that merely sounds like a note; a generic key-name scan is not a decision about what matters. */
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getJson, withQuery } from '../api/client';
 import type { Envelope } from '../api/types';
@@ -22,27 +24,6 @@ type ChangeEntry = { unit?: string | null; valid_hours?: number | null; mean_abs
 type ChangesData = { point?: Point | null; requested_point?: Point | null; retrievals?: Retrieval[]; retrieval_count?: number | null; parameters?: Record<string, ChangeEntry>; overlapping_valid_hours?: number | null; interpretation?: string | null; [key: string]: unknown };
 type DayRow = { day?: number; day_label?: string | null; date_utc?: string | null; date_local?: string | null; colour?: string | null; hazards?: string[]; wording?: string | null; source_text?: string | null };
 type PlaceData = { district?: string | null; state?: string | null; headline?: string | null; severity?: string | null; issued_at_utc?: string | null; days?: DayRow[]; [key: string]: unknown };
-
-/* A field named like one of these is the payload's own statement about its own meaning or limits, so it
-   is collected wherever it sits in the data (bounded depth) and printed exactly as returned. */
-const STATEMENT_KEYS = ['interpretation', 'note', 'notes', 'limitations', 'not_established', 'vintage_variance_not_skill'];
-type Statement = { field: string; text: string };
-
-function statementTexts(item: unknown): string[] {
-  if (typeof item === 'string') return item.trim() ? [item] : [];
-  if (typeof item === 'number' || typeof item === 'boolean') return [String(item)];
-  if (Array.isArray(item)) return item.flatMap(statementTexts);
-  return item && typeof item === 'object' ? [JSON.stringify(item)] : [];
-}
-
-function collectStatements(value: unknown, path: string, out: Statement[], depth = 0): void {
-  if (depth > 3 || !value || typeof value !== 'object') return;
-  Object.entries(value as Record<string, unknown>).forEach(([key, item]) => {
-    const field = path ? path + '.' + key : key;
-    if (STATEMENT_KEYS.includes(key.toLowerCase())) { statementTexts(item).forEach(text => out.push({ field, text })); return; }
-    if (item && typeof item === 'object') collectStatements(item, field, out, depth + 1);
-  });
-}
 
 function valueText(value: unknown): string {
   return value === null || value === undefined || value === '' ? NOT_RECORDED : String(value);
@@ -99,11 +80,6 @@ export function Surface(): JSX.Element {
     queryFn: () => getJson<Envelope<PlaceData>>(withQuery('/api/warnings/place', point)) });
   const changeData = changes.data?.data;
   const parameters = Object.entries(changeData?.parameters || {});
-  const statements = useMemo(() => {
-    const found: Statement[] = [];
-    collectStatements(changeData, '', found);
-    return found;
-  }, [changeData]);
 
   return (
     <SurfaceShell
@@ -114,6 +90,7 @@ export function Surface(): JSX.Element {
       busy={place !== null && changes.isPending}
       error={place ? changes.error : undefined}
       onRetry={() => changes.refetch()}
+      intents={intents}
     >
       <section className="module-section">
         <h2>The point</h2>
@@ -172,17 +149,6 @@ export function Surface(): JSX.Element {
             <DataTable testId="changes-retrievals" caption="The stored retrievals this comparison used, as the store recorded them."
               columns={['Retrieved (IST)', 'Product as returned', 'Requested date', 'Response sha256 prefix']}
               rows={(changeData?.retrievals || []).map(row => [stampText(row.retrieved_at_utc), orNot(row.product), orNot(row.request_date), orNot(row.response_sha256_prefix)])} />
-          </section>
-
-          <section className="module-section">
-            <h2>Statements carried in this payload</h2>
-            <p className="module-note">
-              Every field this payload's data named like a note, an interpretation, a limitation or a not-established line is set
-              out below exactly as returned, not summarised away. The envelope's own limits follow in "What this read returned".
-            </p>
-            <DataTable testId="changes-statements" caption="Fields named like note, interpretation, limitations or not_established, verbatim."
-              columns={['Field as returned', 'Text exactly as returned']}
-              rows={statements.map(statement => [statement.field, statement.text])} />
           </section>
 
           <section className="module-section">

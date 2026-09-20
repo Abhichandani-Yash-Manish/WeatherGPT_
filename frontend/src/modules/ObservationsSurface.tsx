@@ -122,6 +122,7 @@ export function Surface(): JSX.Element {
       busy={place !== null && near.isPending}
       error={place ? near.error : undefined}
       onRetry={() => near.refetch()}
+      intents={intents}
     >
       <section className="module-section">
         <h2>The point</h2>

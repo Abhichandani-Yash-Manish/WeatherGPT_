@@ -129,6 +129,7 @@ export function Surface(): JSX.Element {
       title="Climate records"
       lead="The stored district rainfall record as this machine holds it: the index says what the collection covers, and the series shows the published annual totals for one district you choose, year by year."
       what="climate record index" envelope={index.data} busy={index.isPending} error={index.error} onRetry={() => index.refetch()}
+      intents={intents}
     >
       <section className="module-section">
         <h2>What this record is</h2>
