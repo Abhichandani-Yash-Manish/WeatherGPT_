@@ -1,0 +1,71 @@
+# The gate that scripts/verify_all.py runs locally, run on every push and pull request.
+#
+# "No CI" was one of the named reasons this project still felt like a prototype. The point of
+# running it here is not decoration: the suite is deliberately network-free (tests/conftest.py
+# fails any test that reaches a provider), so a green run here means the same thing a green run
+# on a laptop means, on a machine that has never seen this code before.
+name: gate
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      # 3.9 is the floor the product supports and the version the demo machine runs, so it is the
+      # version the gate runs. A newer interpreter passing here would not prove the demo passes.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+          cache: pip
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          for file in requirements-foundation.txt requirements-bulletins.txt requirements.txt requirements-dev.txt; do
+            [ -f "$file" ] && pip install -r "$file"
+          done
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      # The React audits read the BUILT files, because that is what a browser receives. Without a
+      # build they report a skip, and a skip in CI is a check that is not running.
+      - name: Build the frontend
+        working-directory: frontend
+        run: npm run build
+
+      - name: Typecheck the frontend
+        working-directory: frontend
+        run: npm run typecheck
+
+      - name: Frontend suites
+        working-directory: frontend
+        run: npm test
+
+      - name: Gate
+        run: python3 scripts/verify_all.py
+
+      # The gate prints a summary and exits non-zero on the first failure; this keeps the whole
+      # summary readable in the job log even when an earlier step failed.
+      - name: Gate summary
+        if: always()
+        run: python3 scripts/verify_all.py --skip-tests || true
