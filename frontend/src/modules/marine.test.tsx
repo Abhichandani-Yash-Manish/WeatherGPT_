@@ -7,6 +7,7 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { server } from '../test/msw';
+import { provenanceOffenders } from '../flagship/provenance';
 import { Surface as MarineSurface } from './MarineSurface';
 
 function mount(node: JSX.Element) {
@@ -132,6 +133,12 @@ describe('the Sea and rivers surface', () => {
     const waveFacts = within(screen.getByTestId('marine-wave-facts'));
     expect(waveFacts.getByText('Answering cell as returned').nextElementSibling).toHaveTextContent('latitude 9.75, longitude 76');
     expect(waveFacts.getByText('Distance as returned for that cell').nextElementSibling).toHaveTextContent('not recorded');
+    // The first-screen reading: the most recent modelled wave value this read states, before the series
+    // table that proves it, in a region carrying the same provenance shape as a conversation claim.
+    const waveHeadline = screen.getByTestId('marine-wave-headline');
+    expect(waveHeadline).toHaveTextContent('The most recent modelled wave height this read states is 1.2 m, at');
+    expect(waveHeadline.querySelector('.g-claim-source')).toHaveTextContent(MARINE_MODEL);
+    expect(provenanceOffenders(waveHeadline)).toEqual([]);
     expect(screen.getByTestId('marine-wave-model-wave_height')).toHaveTextContent('Model as returned: ' + MARINE_MODEL);
     expect(screen.getByRole('heading', { level: 3, name: 'wave_height (m)' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 3, name: 'wave_direction (°)' })).toBeInTheDocument();
@@ -149,6 +156,11 @@ describe('the Sea and rivers surface', () => {
     expect(riverFacts.getByText('Answering cell as returned').nextElementSibling).toHaveTextContent('latitude 21.25, longitude 72.75');
     expect(riverFacts.getByText('Distance as returned for that cell').nextElementSibling).toHaveTextContent('12.5 km');
     expect(riverFacts.getByText('Time basis as returned').nextElementSibling).toHaveTextContent('UTC');
+    const riverHeadline = screen.getByTestId('marine-river-headline');
+    expect(riverHeadline).toHaveTextContent('The most recent modelled river discharge this read states is 210 m³/s, at');
+    expect(riverHeadline.querySelector('.g-claim-source')).toHaveTextContent(RIVER_MODEL);
+    expect(riverHeadline.querySelector('.g-claim-source')).toHaveTextContent('12.5 km');
+    expect(provenanceOffenders(riverHeadline)).toEqual([]);
     expect(screen.getByTestId('marine-river-model-river_discharge')).toHaveTextContent('Model as returned: ' + RIVER_MODEL);
     expect(screen.getByRole('heading', { level: 3, name: 'river_discharge (m³/s)' })).toBeInTheDocument();
     const discharge = within(screen.getByTestId('marine-river-series-river_discharge'));

@@ -1597,10 +1597,13 @@ class ConversationEngine:
             return 'it cited no published passage on a turn whose evidence is a published document'
         if result['facts']:
             primary=str((result['facts'][0] or {}).get('place') or '')
-            # The place may be named by the tool-owned opening the model was told not to repeat, so the
-            # whole answer is what is checked, never the continuation alone.
+            # The place NAME, not the whole label. An observation fact is placed at its station and
+            # reads "MUMBAI · 2.32 km from the requested point"; splitting on the comma alone left
+            # that entire string as the thing the prose had to contain, so a perfectly good answer
+            # naming Mumbai was refused for not naming Mumbai.
+            named=re.split(r'[,·(]', primary)[0].strip()
             whole=((result.get('lead') or '')+' '+text).strip()
-            if primary and primary.split(',')[0].strip().lower() not in whole.lower():
+            if named and named.lower() not in whole.lower():
                 return 'it did not name the place the facts belong to'
         problem=self._non_measurement_problem(text,result)
         if problem:return problem

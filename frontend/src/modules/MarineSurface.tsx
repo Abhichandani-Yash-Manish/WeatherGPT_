@@ -9,7 +9,7 @@ import type { Envelope } from '../api/types';
 import { count, orNot } from '../lib/format';
 import { istStamp } from '../lib/time';
 import { viewById } from '../shell/views';
-import { DataTable, EvidenceFooter, Facts, Failure, NO_ROW, NOT_RECORDED, PlacePicker, Reading, SurfaceShell, type Fact, type PlaceChoice } from './Evidence';
+import { DataTable, EvidenceFooter, Facts, Failure, Headline, NO_ROW, NOT_RECORDED, PlacePicker, Reading, SurfaceShell, type Fact, type PlaceChoice } from './Evidence';
 
 type SeriesPoint = { t?: string | null; v?: number | string | null };
 type Series = { unit?: string | null; model?: string | null; points?: SeriesPoint[]; quality_flags?: string[] };
@@ -39,6 +39,23 @@ function cellsDiffer(waveCell: Cell, riverCell: Cell): boolean {
   return Boolean(waveCell && riverCell && typeof waveCell.latitude === 'number' && typeof waveCell.longitude === 'number' &&
     typeof riverCell.latitude === 'number' && typeof riverCell.longitude === 'number' &&
     (waveCell.latitude !== riverCell.latitude || waveCell.longitude !== riverCell.longitude));
+}
+
+/* The first-screen reading: the most recent value this read stated for its first-named parameter — waves
+   for the sea read, discharge for the river read — in the read's own unit, with the cell and the distance
+   the payload states. A coastal reader opens this surface for one number: what the sea or the river is
+   doing right now, as this model states it. Never an observation, never a bulletin, never a warning. */
+function latestValueHeadline(data: MarineData | undefined): { statement: string; source: string } {
+  const [name, series] = Object.entries(data?.parameters || {})[0] || [];
+  const source = orNot(series?.model) + ' · cell ' + cellText(data?.grid) + ' · distance ' + distanceText(data?.grid_distance_km);
+  if (!name) return { statement: 'This read returned no parameter series for its answering cell.', source };
+  const point = (series.points || []).find(p => p.v !== null && p.v !== undefined);
+  if (!point) return { statement: 'This read named ' + name + ' but stated no value for it in the points it returned.', source };
+  return {
+    statement: 'The most recent modelled ' + name.replace(/_/g, ' ') + ' this read states is ' + point.v
+      + (series.unit ? ' ' + series.unit : '') + ', at ' + (point.t ? istStamp(point.t) : NOT_RECORDED) + '.',
+    source,
+  };
 }
 
 function seriesNote(series: Series): string {
@@ -102,6 +119,10 @@ function ReadSection({ heading, testId, place, query, what, route, timeBasisRow 
       ) : (
         <>
           <Facts testId={testId + '-facts'} rows={rows} />
+          {(() => {
+            const headline = latestValueHeadline(data);
+            return <Headline testId={testId + '-headline'} statement={headline.statement} source={headline.source} />;
+          })()}
           <ParameterSeries data={data} testIdPrefix={testId} />
           {envelope ? <EvidenceFooter envelope={envelope} /> : null}
         </>

@@ -9,7 +9,7 @@ import { getJson, withQuery } from '../api/client';
 import type { Envelope } from '../api/types';
 import { count, orNot } from '../lib/format';
 import { viewById } from '../shell/views';
-import { DataTable, Facts, NO_ROW, NOT_RECORDED, PlacePicker, SurfaceShell, type PlaceChoice } from './Evidence';
+import { DataTable, Facts, Headline, NO_ROW, NOT_RECORDED, PlacePicker, SurfaceShell, type PlaceChoice } from './Evidence';
 
 type Series = { unit?: string | null; aggregation?: string | null; model?: string | null; quality_flags?: string[]; category?: string | null;
   points?: { t?: string | null; v?: number | null }[] };
@@ -37,6 +37,25 @@ function pair(point?: { latitude?: number | null; longitude?: number | null } | 
   if (!point || point.latitude === null || point.latitude === undefined) return NOT_RECORDED;
   if (point.longitude === null || point.longitude === undefined) return NOT_RECORDED;
   return point.latitude + ', ' + point.longitude;
+}
+
+/* The first-screen reading: the first parameter's own current-hour value and the source's own category
+   word for it, and nothing else. This is the one line X1 forbids this surface from writing itself:
+   "report the index and the provider's own category, never health advice or a protective action." A
+   category is printed only when the payload itself states one; a reading with none says so rather than
+   inventing a plain-language band. */
+function indexHeadline(names: string[], data: AirData | undefined, cellValue: (name: string) => string): { statement: string; source: string } {
+  const source = 'domain ' + orNot(data?.domain) + ' · cell ' + pair(data?.grid);
+  const name = names[0];
+  if (!name) return { statement: 'This read returned no air-quality parameter for this cell.', source };
+  const series = data?.parameters?.[name];
+  const category = typeof series?.category === 'string' && series.category.trim() ? series.category.trim() : '';
+  const value = cellValue(name);
+  return {
+    statement: 'This read’s current ' + name + ' for this cell is ' + value
+      + (category ? ', which the source itself categorises as “' + category + '”' : ' — the source states no category for this reading') + '.',
+    source,
+  };
 }
 
 export function Surface(): JSX.Element {
@@ -104,6 +123,10 @@ export function Surface(): JSX.Element {
         <section className="module-section">
           <h2>The parameters</h2>
           <p className="module-note" data-testid="air-quality-model-not-monitor">{MODEL_NOT_MONITOR}</p>
+          {(() => {
+            const headline = indexHeadline(names, data, cellValue);
+            return <Headline testId="air-quality-headline" statement={headline.statement} source={headline.source} />;
+          })()}
           <p className="module-note" role="status" data-testid="air-quality-count">
             {count(names.length, 'parameter row')} returned for this cell. A parameter this payload returned without a value
             reads as &lsquo;{CELL_MISSING}&rsquo;: never a zero, and never clean air.

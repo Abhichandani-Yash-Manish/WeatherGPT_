@@ -10,6 +10,7 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { server } from '../test/msw';
+import { provenanceOffenders } from '../flagship/provenance';
 import { Surface as EnsembleSurface } from './EnsembleSurface';
 
 function mount(node: JSX.Element) {
@@ -124,6 +125,15 @@ describe('the Ensemble spread surface', () => {
     expect(screen.getByText('No point was named, so no ensemble read was requested.')).toBeInTheDocument();
     await nameAPlace();
 
+    // The first-screen reading: the read's own spread for the chosen variable, stated before the tables
+    // that prove it, in a region that carries the same provenance shape as the conversation's own claims.
+    const headline = screen.getByTestId('ensemble-headline');
+    expect(headline).toHaveTextContent('For temperature_2m, this read states a spread of 0.912 °C at');
+    expect(headline).toHaveTextContent('across 31 returned members.');
+    expect(headline.querySelector('.g-claim-source')).toHaveTextContent('gfs025');
+    expect(headline.querySelector('.g-claim-source')).toHaveTextContent('population standard deviation across the returned members');
+    expect(provenanceOffenders(headline)).toEqual([]);
+
     // The member counts the payload stated, per variable, exactly as returned.
     const members = within(await screen.findByTestId('ensemble-member-total'));
     expect(members.getByRole('rowheader', { name: 'temperature_2m' }).nextSibling).toHaveTextContent('31');
@@ -183,6 +193,8 @@ describe('the Ensemble spread surface', () => {
 
     expect(await screen.findByText(/The count of returned members is not recorded in this read/)).toBeInTheDocument();
     expect(screen.queryByTestId('ensemble-member-total')).toBeNull();
+    // The headline states the same absence honestly rather than silently dropping the member clause.
+    expect(screen.getByTestId('ensemble-headline')).toHaveTextContent('across a member count this read did not state.');
     const point = within(screen.getByTestId('ensemble-point'));
     expect(point.getByText('Time basis').nextSibling).toHaveTextContent('not recorded');
     expect(point.getByText('Cell identity as returned').nextSibling).toHaveTextContent('not recorded');

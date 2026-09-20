@@ -7,6 +7,7 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { server } from '../test/msw';
+import { provenanceOffenders } from '../flagship/provenance';
 import { Surface as CompareSurface } from './CompareSurface';
 
 function mount(node: JSX.Element) {
@@ -136,6 +137,14 @@ describe('the Compare places surface', () => {
     expect(secondRead.getByText('S21')).toBeInTheDocument();
     expect(firstRead.getByText('Run identity is not exposed; retrieval time is not model issue time.')).toBeInTheDocument();
     expect(secondRead.getByText('Modelled grid values are not direct local measurements.')).toBeInTheDocument();
+
+    // The first-screen reading: both reads' own latest value for the first shared parameter, held side by
+    // side and never resolved into which one is right, before the table that proves it.
+    const headline = screen.getByTestId('compare-headline');
+    expect(headline).toHaveTextContent('For temperature_2m: Surat, Surat, Gujarat’s own read reads 29.4 °C');
+    expect(headline).toHaveTextContent('Vadodara, Vadodara, Gujarat’s own read reads 30.1 °C');
+    expect(headline).toHaveTextContent('not a ranking, an average or a confidence');
+    expect(provenanceOffenders(headline)).toEqual([]);
 
     // The counts the payloads gave, one line per read, kept separate.
     const counts = screen.getByTestId('compare-count-temperature_2m');

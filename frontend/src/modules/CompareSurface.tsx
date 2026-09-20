@@ -8,7 +8,7 @@ import type { Envelope } from '../api/types';
 import { count, orNot } from '../lib/format';
 import { istStamp } from '../lib/time';
 import { viewById } from '../shell/views';
-import { DataTable, EvidenceFooter, Facts, Failure, NO_ROW, NOT_RECORDED, PlacePicker, Reading, SurfaceShell, type PlaceChoice } from './Evidence';
+import { DataTable, EvidenceFooter, Facts, Failure, Headline, NO_ROW, NOT_RECORDED, PlacePicker, Reading, SurfaceShell, type PlaceChoice } from './Evidence';
 
 type SeriesPoint = { t?: string | null; v?: number | string | null };
 type Series = { unit?: string | null; model?: string | null; aggregation?: string | null; points?: SeriesPoint[]; quality_flags?: string[] };
@@ -69,6 +69,34 @@ function valueText(point: SeriesPoint | undefined, series: Series | undefined, s
   if (!point) return 'no point returned for this instant';
   if (point.v === null || point.v === undefined) return 'no value returned for this point';
   return String(point.v) + (series.unit ? ' ' + series.unit : ' · unit ' + NOT_RECORDED);
+}
+
+/* The first-screen reading: both reads' own latest value for the first shared parameter, named side by
+   side and never resolved into which one is right. This is the whole point of this surface, stated once
+   instead of left for a reader to find by scanning two columns of a table: two separate reads, each with
+   its own instant, held next to each other. Not an average, not a confidence, not a better-or-worse
+   judgement — the two hard constraints for this surface hold here too. */
+function sideBySideHeadline(
+  names: string[], firstData: ForecastData | undefined, secondData: ForecastData | undefined,
+  first: PlaceChoice | null, second: PlaceChoice | null, firstState: ReadState, secondState: ReadState,
+): { statement: string; source: string } {
+  const source = 'first ' + orNot(firstData?.source_family) + ' · second ' + orNot(secondData?.source_family);
+  const name = names[0];
+  if (!name) return { statement: 'Neither read has returned a parameter to hold side by side yet.', source };
+  const sideText = (series: Series | undefined, state: ReadState): string => {
+    if (state === 'pending') return 'has not answered yet';
+    if (state === 'failed') return 'did not answer';
+    const point = (series?.points || []).find(p => p.v !== null && p.v !== undefined);
+    if (!series) return NO_ROW + ' for ' + name;
+    if (!point) return 'stated no value for ' + name;
+    return 'reads ' + point.v + (series.unit ? ' ' + series.unit : '') + (point.t ? ' at ' + istStamp(point.t) : '');
+  };
+  return {
+    statement: 'For ' + name + ': ' + placeName(first, 'first') + '’s own read ' + sideText(firstData?.parameters?.[name], firstState)
+      + '; ' + placeName(second, 'second') + '’s own read ' + sideText(secondData?.parameters?.[name], secondState)
+      + '. Two separate reads, held side by side — not a ranking, an average or a confidence.',
+    source,
+  };
 }
 
 function noRowsReason(firstState: ReadState, secondState: ReadState): string {
@@ -185,6 +213,10 @@ export function Surface(): JSX.Element {
           <p className="module-note">
             Rows are every instant either read returned for that parameter. Each value keeps the unit its own read stated, and each read's own source rows are listed in its section below.
           </p>
+          {(() => {
+            const headline = sideBySideHeadline(names, firstData, secondData, first, second, firstState, secondState);
+            return <Headline testId="compare-headline" statement={headline.statement} source={headline.source} />;
+          })()}
 
           {names.length ? names.map(name => {
             const firstSeries = firstData?.parameters?.[name];

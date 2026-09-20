@@ -11,6 +11,7 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { server } from '../test/msw';
+import { provenanceOffenders } from '../flagship/provenance';
 import { Surface as VerificationSurface } from './VerificationSurface';
 
 function mount(node: JSX.Element) {
@@ -122,6 +123,16 @@ describe('the Forecast verification surface', () => {
     expect(windowFacts.getByText('Reference side as returned').nextSibling).toHaveTextContent('S22');
     expect(windowFacts.getByText('Minimum matched hours for a measured lead').nextSibling).toHaveTextContent('24');
 
+    // The first-screen reading: the shortest measured lead's own mean absolute error, stated before the
+    // per-lead tables that prove it, and carrying the same provenance shape as a conversation claim.
+    const headline = screen.getByTestId('verification-headline');
+    expect(headline).toHaveTextContent(
+      'At a 1-day lead, this read’s temperature_2m forecast differed from the reference by a mean absolute error of 1.870 °C over 120 matched hours.',
+    );
+    expect(headline.querySelector('.g-claim-source')).toHaveTextContent('S70');
+    expect(headline.querySelector('.g-claim-source')).toHaveTextContent('S22');
+    expect(provenanceOffenders(headline)).toEqual([]);
+
     expect(screen.getByRole('heading', { level: 3, name: 'temperature_2m (°C)' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 3, name: 'precipitation (mm)' })).toBeInTheDocument();
 
@@ -192,6 +203,12 @@ describe('the Forecast verification surface', () => {
     expect(windowFacts.getByText('Model as returned').nextSibling).toHaveTextContent('not recorded');
     expect(windowFacts.getByText('Forecast cell as returned').nextSibling).toHaveTextContent('not recorded');
     expect(windowFacts.getByText('Reference cell as returned').nextSibling).toHaveTextContent('not recorded');
+
+    // No lead in this fixture states a mae value, so the headline says that plainly rather than reporting
+    // a metric from a lead that has none.
+    expect(screen.getByTestId('verification-headline')).toHaveTextContent(
+      'This read measured no lead with a stated mean absolute error for this window',
+    );
 
     const table = within(screen.getByTestId('verification-temperature_2m'));
     expect(table.getAllByText('not recorded')).toHaveLength(3);

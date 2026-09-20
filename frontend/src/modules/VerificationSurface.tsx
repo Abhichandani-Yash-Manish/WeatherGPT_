@@ -9,7 +9,7 @@ import { getJson, withQuery } from '../api/client';
 import type { Envelope } from '../api/types';
 import { count, orNot } from '../lib/format';
 import { viewById } from '../shell/views';
-import { DataTable, Facts, NO_ROW, NOT_RECORDED, PlacePicker, SurfaceShell, type PlaceChoice } from './Evidence';
+import { DataTable, Facts, Headline, NO_ROW, NOT_RECORDED, PlacePicker, SurfaceShell, type PlaceChoice } from './Evidence';
 
 type Coords = { latitude?: number | null; longitude?: number | null };
 type LeadRow = {
@@ -55,6 +55,34 @@ function pair(point?: Coords | null): string {
   if (!point || point.latitude === null || point.latitude === undefined) return NOT_RECORDED;
   if (point.longitude === null || point.longitude === undefined) return NOT_RECORDED;
   return point.latitude + ', ' + point.longitude;
+}
+
+/* The first-screen reading: the shortest measured lead's mean absolute error, in the read's own unit and
+   the read's own words for what "mae" means. This is the trust-building line this surface has always
+   buried in a table: it states what the sample measured, never forecast skill, never a confidence and
+   never a ranking of one model against another. A window with no measured lead states that plainly
+   instead of leaving a reader to find it by scanning every row for "unmeasured". */
+function metricHeadline(variables: [string, LeadRow[]][], data?: VerificationData): { statement: string; source: string } {
+  const sourceLine = 'forecast ' + orNot(data?.forecast?.source_id) + ' vs reference ' + orNot(data?.reference?.source_id)
+    + ' · mae: ' + orNot(data?.method?.mae, 'definition not stated');
+  for (const [name, rows] of variables) {
+    const measured = rows
+      .filter(row => row.status === 'measured' && row.mae !== null && row.mae !== undefined)
+      .sort((a, b) => (a.lead_days ?? Infinity) - (b.lead_days ?? Infinity))[0];
+    if (!measured) continue;
+    const unit = data?.units?.[name];
+    return {
+      statement: 'At a ' + orNot(measured.lead_days) + '-day lead, this read’s ' + name + ' forecast differed from the reference by a '
+        + 'mean absolute error of ' + measured.mae + (unit ? ' ' + unit : '') + ' over ' + count(measured.n, 'matched hour') + '.',
+      source: sourceLine,
+    };
+  }
+  return {
+    statement: variables.length
+      ? 'This read measured no lead with a stated mean absolute error for this window: every lead below is unmeasured, or measured with no mae value.'
+      : 'This read returned no measured comparison for this point and window.',
+    source: sourceLine,
+  };
 }
 
 function metric(row: LeadRow, key: 'bias' | 'mae' | 'rmse' | 'correlation'): string {
@@ -160,6 +188,10 @@ export function Surface(): JSX.Element {
             This payload returns the matched, forecast and unmatched counts per lead, not the individual paired hours; a
             pair-level list is not part of this view.
           </p>
+          {(() => {
+            const headline = metricHeadline(variables, data);
+            return <Headline testId="verification-headline" statement={headline.statement} source={headline.source} />;
+          })()}
           <DataTable
             testId="verification-method"
             caption="What each metric name means, in the read's own words."

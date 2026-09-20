@@ -95,6 +95,23 @@
    answer the pointer. */
 .module-section h2, .module-section h3 { align-self: start; }
 
+/* ---- the first-screen reading -------------------------------------------------------------------
+   Ensemble, Verification, Marine, Compare, Aviation and Air quality each open a place, a window or a
+   station code onto a dense instrument table with nothing above it stating what the values mean. This is
+   that reading: the `.g-claim` shape (Evidence.tsx's `Headline`), so it takes the claim's own card, edge
+   and source-line treatment rather than a second card language. The only rule of its own is the statement
+   line, because a full sentence is not the value-plus-unit pair `.g-claim-value` was built for. */
+.module-headline { margin: 0; }
+.module-headline-statement {
+  display: block;
+  font-family: var(--g-sans);
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--g-paper);
+  max-width: 62ch;
+}
+
 /* ---- controls ----------------------------------------------------------------------------------- */
 .module-controls { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--g-3); }
 .module-field { display: flex; flex-direction: column; gap: var(--g-1); font-size: 12.5px; color: var(--g-mist); }

@@ -174,3 +174,82 @@ class ConversationTests(unittest.TestCase):
         with self.assertRaises(SourceError):validate_plan(p)
 
 if __name__=='__main__':unittest.main()
+
+
+class AuthoredAnswerChecksTests(unittest.TestCase):
+    """What the model may write, and what sends the turn back to the deterministic floor.
+
+    These are the checks that make it safe to let a model write the reader's answer, so each one is
+    asserted from both sides: it must catch the thing it exists to catch, and it must not catch a
+    correct answer. Every case here was measured against the live engine on 21 September 2026.
+    """
+
+    def engine(self):
+        from weathergpt_data.conversation import ConversationEngine
+        return ConversationEngine.__new__(ConversationEngine)
+
+    def result(self, **over):
+        base = {'facts': [{'id': 'f1', 'value': '0.4', 'unit': 'mm', 'place': 'Ahmedabad, Gujarat',
+                           'parameter': 'precipitation'}],
+                'plan': {'language': 'en', 'start_local': '', 'end_local': ''},
+                'notes': [], 'calculations': [], 'passages': [], 'lead': ''}
+        base.update(over)
+        return base
+
+    def test_a_correct_answer_passes(self):
+        problem = self.engine().generated_answer_problem(
+            'Ahmedabad is forecast 0.4 mm of rain.', ['f1'], self.result())
+        self.assertIsNone(problem)
+
+    def test_a_number_that_is_not_in_the_evidence_is_refused(self):
+        problem = self.engine().generated_answer_problem(
+            'Ahmedabad is forecast 12.0 mm of rain.', ['f1'], self.result())
+        self.assertEqual(problem, 'it introduced a number that is not in the retrieved facts')
+
+    def test_a_changed_unit_is_refused(self):
+        """0.4 is in the evidence; 0.4 INCHES is not what the source said."""
+        problem = self.engine().generated_answer_problem(
+            'Ahmedabad is forecast 0.4 cm of rain.', ['f1'], self.result())
+        self.assertEqual(problem, 'a measurement does not match its source unit')
+
+    def test_the_place_name_is_taken_from_the_label_not_the_whole_label(self):
+        """An observation fact is placed at its station: "MUMBAI · 2.32 km from the requested point".
+
+        Splitting on the comma alone left that entire string as the thing the prose had to contain,
+        so an answer that named Mumbai was refused for not naming Mumbai.
+        """
+        result = self.result(facts=[{'id': 'f1', 'value': '5.0', 'unit': 'kt',
+                                     'place': 'MUMBAI · 2.32 km from the requested point',
+                                     'parameter': 'wind_speed'}])
+        self.assertIsNone(self.engine().generated_answer_problem(
+            'At Mumbai the station reported 5.0 kt of wind.', ['f1'], result))
+        self.assertEqual(self.engine().generated_answer_problem(
+            'The station reported 5.0 kt of wind.', ['f1'], result),
+            'it did not name the place the facts belong to')
+
+    def test_a_derived_total_may_be_quoted_with_its_own_unit(self):
+        result = self.result(calculations=[{'label': 'total', 'value': '154.3', 'unit': 'mm',
+                                            'method': 'sum'}])
+        self.assertIsNone(self.engine().generated_answer_problem(
+            'Ahmedabad had 154.3 mm in total; 0.4 mm fell on the last day.', ['f1'], result))
+
+    def test_a_turn_whose_evidence_is_a_bulletin_must_cite_the_bulletin(self):
+        result = self.result(facts=[], passages=[{'id': 'p1', 'text': 'Spray acephate 75 % SP.'}])
+        self.assertEqual(self.engine().generated_answer_problem(
+            'The advisory says to spray.', [], result), 'it omitted every evidence reference')
+        self.assertEqual(self.engine().generated_answer_problem(
+            'The advisory says to spray.', ['f1'], result),
+            'it referenced evidence that is not in this turn')
+
+    def test_a_pesticide_concentration_is_not_a_weather_measurement(self):
+        """Every cotton advisory was refused over "acephate 75 % SP" - a dosage printed in the
+        publisher's own bulletin, policed as though it were a rainfall figure. A turn that retrieved
+        no measurement has none to protect."""
+        result = self.result(facts=[], passages=[{'id': 'p1', 'text': 'Spray acephate 75 % SP.'}])
+        self.assertIsNone(self.engine().generated_answer_problem(
+            'The bulletin says: "Spray acephate 75 % SP."', ['p1'], result))
+
+    def test_an_invented_certainty_is_refused(self):
+        self.assertEqual(self.engine().generated_answer_problem(
+            'Ahmedabad is forecast 0.4 mm of rain and it is definitely safe to travel.', ['f1'],
+            self.result()), 'it contained an unsupported link or certainty')

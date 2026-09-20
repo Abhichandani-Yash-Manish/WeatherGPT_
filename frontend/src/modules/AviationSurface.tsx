@@ -11,7 +11,7 @@ import type { Envelope } from '../api/types';
 import { count, orNot } from '../lib/format';
 import { elapsedWords, istStamp, istWindow } from '../lib/time';
 import { viewById } from '../shell/views';
-import { DataTable, Facts, NO_ROW, NOT_RECORDED, SurfaceShell } from './Evidence';
+import { DataTable, Facts, Headline, NO_ROW, NOT_RECORDED, SurfaceShell } from './Evidence';
 
 type RawFields = { name?: string | null; lat?: number | null; lon?: number | null; elev?: number | null; metarType?: string | null };
 type Report = {
@@ -62,6 +62,38 @@ function ageText(report: Report): string {
   return report.age_seconds === null || report.age_seconds === undefined
     ? NOT_RECORDED
     : report.age_seconds + ' s as returned \u00B7 ' + elapsedWords(report.age_seconds);
+}
+
+/* The first-screen reading: the most recently returned station's own report, decoded into a sentence
+   alongside the coded string — never instead of it, since the raw report stays verbatim in its own
+   section below. A METAR reports what a station observed; a TAF states what it forecasts and when that
+   forecast is valid. Neither becomes a clearance, a runway state or any other operational advice: it
+   states only the fields the read itself decoded, in the read's own freshness or activity word. */
+function decodeHeadline(kind: string, report: Report | undefined): { statement: string; source: string } {
+  if (!report) return { statement: 'This read returned no station report to decode.', source: 'kind: ' + orNot(kind) };
+  const id = orNot(report.station_id, 'station id not recorded');
+  if (kind === 'taf') {
+    const window = report.valid_start_utc && report.valid_end_utc ? istWindow(report.valid_start_utc, report.valid_end_utc) : NOT_RECORDED;
+    const active = report.active_by_time === null || report.active_by_time === undefined ? NOT_RECORDED : String(report.active_by_time);
+    return {
+      statement: id + '’s TAF forecasts for ' + window + ': ' + orNot(report.interpretation, 'this read stated no interpretation for it') + '.',
+      source: 'issued ' + orNot(report.issued_at_raw) + ' · active at retrieval by the read’s own test: ' + active,
+    };
+  }
+  const parts: string[] = [];
+  if (report.temperature_c !== null && report.temperature_c !== undefined) parts.push('temperature ' + report.temperature_c + '°C');
+  if (report.dewpoint_c !== null && report.dewpoint_c !== undefined) parts.push('dewpoint ' + report.dewpoint_c + '°C');
+  if (report.wind_speed_kt !== null && report.wind_speed_kt !== undefined) {
+    const direction = report.wind_direction_native !== null && report.wind_direction_native !== undefined ? ' from ' + report.wind_direction_native : '';
+    parts.push('wind ' + report.wind_speed_kt + ' kt' + direction);
+  }
+  const freshWord = typeof report.freshness === 'string' && report.freshness.trim() ? report.freshness.trim() : 'freshness not recorded';
+  const instant = report.observed_at_utc ? istStamp(report.observed_at_utc) : NOT_RECORDED;
+  return {
+    statement: id + '’s most recent METAR (' + instant + ') reports ' + (parts.length ? parts.join(', ') : 'no decoded field') + '. This read’s own '
+      + 'freshness word for it: ' + freshWord + '.',
+    source: 'age ' + ageText(report) + ' · ' + (report.source_locator ? 'locator ' + report.source_locator : 'locator not recorded'),
+  };
 }
 
 function StationReport({ report, kind, index }: { report: Report; kind: string; index: number }): JSX.Element {
@@ -171,6 +203,10 @@ export function Surface(): JSX.Element {
             ['Requested stations with no report', missing === null ? NOT_RECORDED
               : missing.length ? missing.join(', ') : 'every station this read was asked for answered'],
           ]} />
+          {(() => {
+            const headline = decodeHeadline(kindWord, stations[0]);
+            return <Headline testId="aviation-headline" statement={headline.statement} source={headline.source} />;
+          })()}
           <p className="module-note" role="status" aria-live="polite" data-testid="aviation-count">
             {count(stations.length, 'station report')} returned for {kindWord}; {stale
               ? count(stale, 'row') + ' carry the read\u2019s own stale word and must not be read as current weather'

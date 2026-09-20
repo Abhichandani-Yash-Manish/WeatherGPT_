@@ -12,7 +12,7 @@ import { istStamp } from '../lib/time';
 import { viewById } from '../shell/views';
 import { VizFigure } from '../charts/VizFigure';
 import { ensembleFanSpec } from '../charts/vizSpecs';
-import { DataTable, Facts, NO_ROW, NOT_RECORDED, PlacePicker, SurfaceShell, type PlaceChoice } from './Evidence';
+import { DataTable, Facts, Headline, NO_ROW, NOT_RECORDED, PlacePicker, SurfaceShell, type PlaceChoice } from './Evidence';
 
 type Point = { t?: string | null; v?: number | string | null; start?: string | null; end?: string | null };
 type Series = { unit?: string | null; aggregation?: string | null; model?: string | null; quality_flags?: string[]; points?: Point[] };
@@ -53,6 +53,28 @@ function pair(point?: Coords | null): string {
    name itself, so an unmatched series is never relabelled with a name the read did not return. */
 function variableFor(parameter: string, totals?: Record<string, number> | null): string {
   return Object.keys(totals || {}).find(name => parameter.startsWith(name + '_')) || parameter;
+}
+
+/* The first-screen reading: the most recent spread point this read stated for the chosen variable, in
+   the read's own unit, from the members it actually returned. A spread the read has not yet stated for
+   any instant is named as such rather than borrowed from an adjacent point or computed here. "Disagree by
+   a spread of X" restates the read's own statistic; it is never turned into a probability, a confidence
+   or a skill measure — those stay refused in the meaning section above. */
+function spreadHeadline(chosen: string, data: EnsembleData | undefined, totals: Record<string, number> | null | undefined):
+  { statement: string; source: string } | null {
+  if (!chosen) return null;
+  const series = data?.parameters?.[chosen + '_spread'];
+  const point = (series?.points || []).find(p => p.v !== null && p.v !== undefined);
+  const memberPhrase = typeof totals?.[chosen] === 'number' ? count(totals[chosen], 'returned member') : 'a member count this read did not state';
+  const source = orNot(data?.model) + ' · grid ' + pair(data?.grid) + ' · statistic: ' + orNot(data?.statistics?.spread, 'spread definition not stated');
+  if (!point) {
+    return { statement: 'This read named ' + chosen + ' but stated no measurable spread value for it, across ' + memberPhrase + '.', source };
+  }
+  return {
+    statement: 'For ' + chosen + ', this read states a spread of ' + point.v + (series?.unit ? ' ' + series.unit : '')
+      + ' at ' + (point.t ? istStamp(point.t) : NOT_RECORDED) + ', across ' + memberPhrase + '.',
+    source,
+  };
 }
 
 export function Surface(): JSX.Element {
@@ -135,6 +157,12 @@ export function Surface(): JSX.Element {
                 ['Days requested', orNot(data?.days, days)],
               ]}
             />
+            {!read.isPending && !read.isError && chosen ? (
+              (() => {
+                const headline = spreadHeadline(chosen, data, totals);
+                return headline ? <Headline testId="ensemble-headline" statement={headline.statement} source={headline.source} /> : null;
+              })()
+            ) : null}
             {Object.keys(totals || {}).length ? (
               <DataTable
                 testId="ensemble-member-total"
