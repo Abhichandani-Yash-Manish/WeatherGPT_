@@ -21,6 +21,11 @@ from .transport import Store, SourceError, parsed, stamp, utcnow
 from .foundation import Foundation
 from .adapters import FORECAST,MARINE,EXTENDED,HISTORY_LOCAL,REANALYSIS_MODELS,reanalysis_variables,temporal_support
 
+# The most forecast days one collection may request. This is the real forecast horizon of the
+# point products, and adapters.FORECAST_HORIZON_DAYS must equal it - a question past this date
+# has no forecast to retrieve, and should be told so rather than handed a worker error.
+WORKER_MAX_FORECAST_DAYS = 7
+
 PRODUCTS = {'forecast': ('S21', 'weather_forecast', 'api.open-meteo.com', '/v1/gfs', 4),
             'marine': ('S56', 'marine_forecast', 'marine-api.open-meteo.com', '/v1/marine', 3),
             'river': ('S37', 'river_discharge', 'flood-api.open-meteo.com', '/v1/flood', 1)}
@@ -131,7 +136,7 @@ class IngestionDB:
     def enqueue(self, product, latitude, longitude, days, cycle_at, max_attempts=4, *, start_date=None, end_date=None, models=None):
         if product not in PRODUCTS: raise ValueError('Unsupported governed numeric product')
         point(latitude,longitude)
-        if type(days) is not int or not 1 <= days <= 7: raise ValueError('Worker supports 1–7 whole days')
+        if type(days) is not int or not 1 <= days <= WORKER_MAX_FORECAST_DAYS: raise ValueError('Worker supports 1–%d whole days' % WORKER_MAX_FORECAST_DAYS)
         if type(max_attempts) is not int or not 1 <= max_attempts <= 6: raise ValueError('Use 1–6 attempts')
         cycle = epoch(cycle_at); dt = datetime.fromtimestamp(cycle,timezone.utc)
         end = dt.replace(hour=0,minute=0,second=0,microsecond=0)+timedelta(days=1)

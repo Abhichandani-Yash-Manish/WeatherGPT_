@@ -1,9 +1,11 @@
 """Product-scoped semantic validation. Unknown data never becomes zero or all-clear."""
 import json,math,re
-from datetime import datetime,timedelta,timezone
+from datetime import datetime,time as dt_time,timedelta,timezone
 from decimal import Decimal,localcontext
 from .transport import SourceError,parsed,stamp,digest
 from zoneinfo import ZoneInfo
+
+IST_ZONE=ZoneInfo('Asia/Kolkata')
 from .district_warnings import DAY_BOUNDARY_BASIS, DAY_BOUNDARY_DAY_KIND
 
 IST=ZoneInfo('Asia/Kolkata')
@@ -113,6 +115,51 @@ EXTENDED={**FORECAST,'precipitation_probability':('%','preceding_hour_probabilit
 # with null instead of an error, so "the field came back" is not "the model supports it".
 # Evidence: research/implementation/reanalysis-depth-<date>/catalogue-probe.json.
 REANALYSIS_MODELS=('era5','era5_land','era5_seamless')
+# How far ahead the model forecast products actually run. Beyond it there is nothing to retrieve,
+# which is a different thing from a retrieval that failed, and the reader is told which one it is.
+# This is the ingestion worker's own cap (ingestion.WORKER_MAX_FORECAST_DAYS); the two are asserted
+# equal by test, because a horizon larger than the worker's only moves the failure later and makes it
+# less legible - the reader gets "Worker supports 1-7 whole days" instead of an answer.
+FORECAST_HORIZON_DAYS=7
+
+
+def forecast_horizon_limit(start,end,now):
+    """What to do with a window that runs past the end of forecasting.
+
+    Returns None when the whole window is reachable, ('decline', (answer, follow_up)) when even its
+    start is past the horizon, or ('trim', (end, note)) when the window starts inside the horizon and
+    only its tail falls outside. A week-long question whose first days exist is served for those days
+    and told where the forecast stops - refusing all of it would throw away real evidence, which is
+    the same mistake the daily-history path used to make with its publication delay.
+
+    The test is on UTC dates because that is exactly how the collection's day count is derived, and
+    the trim removes whole days so the window keeps its source-day alignment.
+    """
+    utc_last=now.astimezone(timezone.utc).date()+timedelta(days=FORECAST_HORIZON_DAYS-1)
+    if end.astimezone(timezone.utc).date()<=utc_last:return None
+    readable=datetime.combine(utc_last,dt_time(12,0),tzinfo=timezone.utc).astimezone(IST_ZONE).strftime('%d %B %Y')
+    if start.astimezone(timezone.utc).date()>utc_last:
+        return ('decline',
+                ('A forecast does not reach '+start.strftime('%d %B %Y')+'. The model forecast in this workspace '
+                 'runs '+str(FORECAST_HORIZON_DAYS)+' days ahead, through '+readable+', so there is no forecast for '
+                 'that date to retrieve - this is the limit of the product, not a failed request. For a date that '
+                 'far out, ask what that time of year is typically like at this place and I can read the historical '
+                 'record instead; a climate average is not a forecast.',
+                 'A date within the next '+str(FORECAST_HORIZON_DAYS)+' days, or a question about the typical '
+                 'climate for that time of year'))
+    asked=end
+    while end.astimezone(timezone.utc).date()>utc_last:end-=timedelta(days=1)
+    if end<=start:
+        return ('decline',
+                ('The forecast runs '+str(FORECAST_HORIZON_DAYS)+' days ahead, through '+readable+', and no whole '
+                 'forecast day of the window you asked about falls inside that. Ask for a day on or before '+
+                 readable+'.',
+                 'A date on or before '+readable))
+    return ('trim',(end,'Asked through '+asked.strftime('%d %B %Y')+', but the forecast runs '+
+                    str(FORECAST_HORIZON_DAYS)+' days ahead and stops after '+readable+'. What follows covers '+
+                    end.strftime('%d %B %Y')+' and earlier only.'))
+
+
 REANALYSIS_MIN_YEAR={'era5':1940,'era5_land':1950,'era5_seamless':1950}
 # The reanalysis lags real time. The last published IST day is (today - REANALYSIS_DELAY_DAYS),
 # so a daily window may run up to midnight after it and no further.

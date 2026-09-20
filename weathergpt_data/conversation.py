@@ -8,6 +8,7 @@ from datetime import datetime,timedelta,timezone
 from decimal import Decimal
 from zoneinfo import ZoneInfo
 from pathlib import Path
+from .adapters import forecast_horizon_limit
 from .answers import ROOT
 from .language import LocalModel,VARIABLES,obj,string
 from .providers import default_model
@@ -1000,12 +1001,24 @@ class ConversationEngine:
         if not plan['start_local'] or not plan['end_local']:
             result.update(answer='When should I check the weather for this plan? A day and approximate time are enough.',follow_up='Departure or activity date/time');return result
         start,end=parsed(plan['start_local']),parsed(plan['end_local'])
-        if start.utcoffset()!=timedelta(hours=5,minutes=30) or end.utcoffset()!=timedelta(hours=5,minutes=30) or end<=start or end-start>timedelta(days=7):raise SourceError('The interpreted time window is invalid; please specify the day and approximate hours')
+        if start.utcoffset()!=timedelta(hours=5,minutes=30) or end.utcoffset()!=timedelta(hours=5,minutes=30) or end<=start:raise SourceError('The interpreted time window is invalid; please specify the day and approximate hours')
         aligned_start,aligned_end,aligned_note=align_source_day(start,end)
         if aligned_note:
             start,end=aligned_start,aligned_end
             plan['start_local']=start.isoformat();plan['end_local']=end.isoformat()
             result['notes'].append(aligned_note)
+        # Nothing exists past the end of forecasting, which is a different answer from a fetch that
+        # failed. Measured 20 September 2026: "the weather in Surat on 1 January 2030" came back as
+        # "I could not retrieve a usable forecast for that window".
+        limit=forecast_horizon_limit(start,end,now)
+        if limit and limit[0]=='decline':
+            result.update(status='outside_validity',answer=limit[1][0],follow_up=limit[1][1]);return result
+        if limit:
+            end=limit[1][0];plan['end_local']=end.isoformat();result['notes'].append(limit[1][1])
+        # Checked after the horizon, not before it: "the next two weeks" is an ordinary question, and
+        # it was being refused as an invalid window when the honest answer is that the forecast stops
+        # partway through it. What survives the trim can still be too long to serve in one turn.
+        if end-start>timedelta(days=7):raise SourceError('That window is longer than one week of forecast; please ask about a shorter period')
         if start<=now:
             if plan['explicit_times'] or end<=now:
                 result.update(status='outside_validity',answer='That time window has already started or passed. I can check upcoming forecast hours; past observed conditions need a historical observation source.');return result

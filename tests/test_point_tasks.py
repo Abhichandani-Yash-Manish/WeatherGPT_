@@ -143,6 +143,51 @@ class PointJourneys(unittest.TestCase):
         self.assertEqual(self.calls,0,'nothing is fetched for a window the source cannot have')
         self.assertIn('five-day',r['answer'])
 
+    def test_a_date_past_the_end_of_forecasting_names_the_limit(self):
+        """"I could not retrieve" is retrieval language for something no retrieval could produce.
+
+        Measured 20 September 2026: "what will the weather be in Surat on 1 January 2030?" came back
+        as "I could not retrieve a usable forecast for that window", which reads as a fetch that
+        failed. Nothing exists that far ahead. The answer now says so, names the horizon, and points
+        at the historical record - which is a different product, and is labelled as one.
+        """
+        t=self.setup_product()
+        t.update(start_local='2030-01-01T06:30:00+05:30',end_local='2030-01-01T12:30:00+05:30')
+        r=self.chat()
+        self.assertEqual(r['status'],'outside_validity')
+        self.assertEqual(self.calls,0,'nothing is fetched for a date no product covers')
+        self.assertIn('does not reach 01 January 2030',r['answer'])
+        self.assertIn('7 days ahead',r['answer'])
+        self.assertIn('not a failed request',r['answer'])
+        self.assertIn('a climate average is not a forecast',r['answer'])
+
+    def test_a_date_inside_the_horizon_is_still_fetched(self):
+        """The guard is a horizon, not a narrowing of what the product actually serves."""
+        t=self.setup_product()
+        t.update(start_local='2026-09-16T06:30:00+05:30',end_local='2026-09-16T12:30:00+05:30')
+        self.chat();self.assertEqual(self.calls,1)
+
+    def test_the_horizon_is_the_workers_own_limit(self):
+        """A horizon larger than the worker's cap only moves the failure later and makes it worse.
+
+        Measured while writing this: a 16-day horizon let a 12-day-out question through to
+        "Worker supports 1-7 whole days" - an internal message, shown to a reader, in place of an
+        answer. The two constants are pinned together so they cannot drift apart again.
+        """
+        from weathergpt_data.adapters import FORECAST_HORIZON_DAYS
+        from weathergpt_data.ingestion import WORKER_MAX_FORECAST_DAYS
+        self.assertEqual(FORECAST_HORIZON_DAYS,WORKER_MAX_FORECAST_DAYS)
+
+    def test_the_last_reachable_day_is_served_and_the_next_one_is_named(self):
+        """The boundary is asserted from both sides, so the horizon is neither short nor optimistic."""
+        t=self.setup_product()
+        t.update(start_local='2026-09-18T06:30:00+05:30',end_local='2026-09-18T12:30:00+05:30')
+        self.assertNotEqual(self.chat()['status'],'outside_validity')
+        t=self.setup_product()
+        t.update(start_local='2026-09-19T06:30:00+05:30',end_local='2026-09-19T12:30:00+05:30')
+        r=self.chat();self.assertEqual(r['status'],'outside_validity')
+        self.assertEqual(self.calls,0)
+
     def test_repeated_queries_reuse_collection_and_shared_budget(self):
         self.setup_product();self.chat();self.chat();self.assertEqual(self.calls,1)
         self.assertEqual(self.db.status()['network_attempts_reserved'],2)

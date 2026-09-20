@@ -10,7 +10,7 @@ from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 from zoneinfo import ZoneInfo
 
-from .adapters import (EXTENDED, HISTORY_LOCAL, MARINE, RIVER, hourly, json_payload,
+from .adapters import (EXTENDED, forecast_horizon_limit, HISTORY_LOCAL, MARINE, RIVER, hourly, json_payload,
                        REANALYSIS_DELAY_DAYS, REANALYSIS_MIN_YEAR, REANALYSIS_MODELS, reanalysis_fields, reanalysis_label,
                        reanalysis_model_for, reanalysis_supported)
 from .answers import distance_km, MAX_GRID_DISTANCE_KM
@@ -193,6 +193,15 @@ def execute_point_task(engine, result, plan, task, resolved, coordinates):
             start=now.astimezone(IST).replace(minute=30,second=0,microsecond=0)
             if start<=now:start+=timedelta(hours=1)
             result['notes'].append('Only the remaining forecast period is included, starting '+start.isoformat()+'.')
+        # Measured 20 September 2026: "what will the weather be in Surat on 1 January 2030?" was refused
+        # with "I could not retrieve a usable forecast" - retrieval language for something no retrieval
+        # could ever have produced. Nothing exists that far ahead, and saying so is a different answer
+        # from saying the fetch failed.
+        limit=forecast_horizon_limit(start,end,now)
+        if limit and limit[0]=='decline':
+            result.update(status='outside_validity',answer=limit[1][0],follow_up=limit[1][1]);return result
+        if limit:
+            end=limit[1][0];plan['end_local']=end.isoformat();result['notes'].append(limit[1][1])
         if end<=start or end-start>timedelta(hours=48):raise SourceError('Hourly detail supports up to 48 hours per task; please narrow the window')
         requested=list(dict.fromkeys({'rainfall':'precipitation','temperature':'temperature_2m','rain_probability':'precipitation_probability'}.get(p,p) for p in task['parameters']))
         allowed=EXTENDED
