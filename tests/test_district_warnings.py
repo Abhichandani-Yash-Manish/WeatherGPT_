@@ -355,3 +355,95 @@ class PlaceDayKeyTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
+
+
+class NationalSweepTests(unittest.TestCase):
+    """"Which districts are under a red warning today?" names no place, and is still a real question.
+
+    Added 20 September 2026. The per-place path had nothing to resolve, so the turn fell through to a
+    CAP-relay refusal that spoke about "this place" - a place the reader never mentioned - and never
+    mentioned the 742-district store it was holding at the time. The district product is national by
+    construction, so this question is answered from it.
+    """
+
+    class Engine:
+        def __init__(self, clock):
+            self.workspace = type('W', (), {'clock': staticmethod(lambda: clock)})()
+
+    def sweep(self, records, colours, clock=CLOCK):
+        result = {'facts': [], 'notes': [], 'citations': [], 'trace': {'tools': []}}
+        cap = {'records': [], 'assessment': {'eligible_by_lifecycle': 0}, 'latest_sent': None,
+               'coverage': {}, 'meta': {'url': 'https://example.invalid/rss.xml', 'sha256': 'a' * 64,
+                                        'retrieved_at_utc': '2026-09-14T06:00:00+00:00', 'delivery': 'live'}}
+        return wt.national_sweep(self.Engine(clock), result, {'places': [], 'requested_outcome': ''},
+                                 {}, records, {'url': 'u', 'sha256': 'b' * 64, 'retrieved_at_utc': 'r'}, cap, colours)
+
+    def red(self, label, day=1):
+        return record(label=label, days=[{'source_day': day, 'hazard_codes': [4],
+                                          'hazards': ['Thunderstorm/lightning/squall'], 'colour': 'red',
+                                          'colour_code': 1, 'source_text': ''}])
+
+    def test_the_colour_is_read_from_the_readers_own_words(self):
+        self.assertEqual(wt.requested_colours('Which districts are under a red warning today?'), ['red'])
+        self.assertEqual(wt.requested_colours('any amber alerts?'), ['orange'])
+        self.assertEqual(wt.requested_colours('red and orange districts'), ['orange', 'red'])
+        # No colour named is not a colour guessed: it means every hazard colour.
+        self.assertIsNone(wt.requested_colours('which districts have a warning?'))
+
+    def test_matching_districts_are_named_with_a_fact_each(self):
+        out = self.sweep([self.red('KACHCHH'), self.red('PATNA'), record(label='SURAT')], ['red'])
+        self.assertEqual(out['status'], 'answered')
+        self.assertIn('2 districts carry red', out['answer'])
+        self.assertIn('KACHCHH', out['answer'])
+        self.assertIn('PATNA', out['answer'])
+        self.assertNotIn('SURAT', out['answer'], 'a green district is not reported as a warning')
+        self.assertTrue(out['facts'], 'each matching district carries its own fact')
+        self.assertTrue(all(f['value'] == 'red' for f in out['facts']))
+        swept = out['warning_evidence']['national_sweep']
+        self.assertEqual(swept['districts_in_store'], 3)
+        self.assertEqual(len(swept['matched_districts']), 2)
+
+    def test_none_today_is_an_answer_when_the_bulletin_is_current(self):
+        """A current bulletin with no red district answers the question; it does not fail it."""
+        out = self.sweep([record(label='SURAT'), record(label='PATNA')], ['red'])
+        self.assertEqual(out['status'], 'answered')
+        self.assertIn('No district carries red', out['answer'])
+        self.assertIn('2 districts have a day that has not yet passed', out['answer'])
+        self.assertIn('not a statement that nothing will happen', out['answer'])
+        self.assertFalse(out['facts'])
+
+    def test_a_wholly_lapsed_store_is_stale_and_never_an_all_clear(self):
+        """Measured 20 September 2026 against the live store: 742 districts, newest edition 15 Sep,
+        every published day passed. The reader is told the edition and its date, not 'no warnings'."""
+        late = CLOCK + timedelta(days=9)
+        out = self.sweep([self.red('KACHCHH'), record(label='SURAT')], ['red'], clock=late)
+        self.assertEqual(out['status'], 'stale')
+        self.assertIn('newest stored edition is dated 2026-09-14', out['answer'])
+        self.assertIn('covers 2 districts', out['answer'])
+        self.assertIn('not an all-clear', out['answer'])
+        # The lapsed red is reported as a past bulletin state, explicitly and without facts.
+        self.assertIn('KACHCHH', out['answer'])
+        self.assertIn('has now passed', out['answer'])
+        self.assertFalse(out['facts'], 'a lapsed bulletin contributes no current fact')
+
+    def test_an_unnamed_colour_sweeps_every_hazard_but_not_green(self):
+        # The default fixture record carries yellow on day 2, so a genuinely quiet district is
+        # spelled out here rather than assumed.
+        quiet = record(label='SURAT', days=[{'source_day': 1, 'hazard_codes': [1],
+                                             'hazards': ['No warning in this product'], 'colour': 'green',
+                                             'colour_code': 4, 'source_text': ''}])
+        out = self.sweep([quiet, self.red('KACHCHH')], None)
+        self.assertEqual(out['status'], 'answered')
+        self.assertIn('KACHCHH', out['answer'])
+        self.assertNotIn('SURAT', out['answer'])
+        self.assertEqual(out['warning_evidence']['national_sweep']['colours'], ['red', 'orange', 'yellow'])
+        self.assertFalse(out['warning_evidence']['national_sweep']['colours_named_by_reader'])
+
+    def test_a_nationwide_match_is_capped_and_says_that_it_is(self):
+        out = self.sweep([self.red('D%03d' % i) for i in range(wt.FACT_CAP + 7)], ['red'])
+        self.assertEqual(out['status'], 'answered')
+        self.assertIn('and 7 more', out['answer'])
+        self.assertIn('capped at ' + str(wt.FACT_CAP), out['answer'])
+        self.assertEqual(len(out['facts']), wt.FACT_CAP)
+        # The cap is a display limit, never a measurement limit: the evidence keeps every match.
+        self.assertEqual(len(out['warning_evidence']['national_sweep']['matched_districts']), wt.FACT_CAP + 7)

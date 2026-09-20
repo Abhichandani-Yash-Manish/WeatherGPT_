@@ -199,6 +199,10 @@ def execute_plan(engine,result,plan,resolved,coordinates):
         if statuses==['explanation']:result['status']='explanation'
         # A window the user can correct must not be reported as a missing source.
         elif set(statuses)=={'outside_validity'}:result['status']='outside_validity'
+        # Nor must a source that published and then lapsed. "Unavailable" reads as "nothing was
+        # retrieved"; stale means the opposite - an edition exists, is named and dated, and every day
+        # it covers has passed. The reader needs that difference to know whether to ask again.
+        elif set(statuses)=={'stale'}:result['status']='stale'
     if hasattr(engine,'check_cancelled'):engine.check_cancelled()
     result['notes']=list(dict.fromkeys(result['notes']));result['resolved_points']=resolved
     result['answer']='\n\n'.join((f"Task {i+1}: " if len(plan['tasks'])>1 else '')+text for i,text in enumerate(chunks))
