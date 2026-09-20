@@ -15,6 +15,55 @@ GAPS={
  'aviation':'The airport report adapter exists, but its conversational tool is not connected yet. No METAR, TAF or flight status has been retrieved.',
  'research':'The requested research dataset or operation is not connected. Historical rainfall and national temperature analysis are available.'}
 
+def recent_year_for_reanalysis(plan, task, engine=None):
+    """The single calendar year this history task asks for that the curated series cannot supply.
+
+    Returns the year, or None when the annual table is the right product (or when the question is not
+    the narrow shape this handles). Deliberately narrow: exactly one year, a plain lookup, and a year
+    the stored series ends before. A multi-year series or trend that straddles the two products would
+    be mixing a published district record with a modelled reanalysis in one line, which this product
+    does not do silently - so those keep the existing refusal, which names the coverage.
+    """
+    if task.get('kind') != 'history' or task.get('operation') != 'lookup':
+        return None
+    from .tasks import expanded_years
+    try:
+        years = expanded_years(task)
+    except Exception:
+        return None
+    if len(years) != 1:
+        return None
+    year = years[0]
+    from datetime import datetime, timezone
+    now_year = (engine.workspace.clock() if engine is not None else datetime.now(timezone.utc)).year
+    # ERA5 starts in 1940; the current year is incomplete and is left to the month/day paths.
+    if not 1940 <= year < now_year:
+        return None
+    indices = task.get('place_indices') or []
+    if not indices:
+        return None
+    # A national or state-level measure is a different product entirely - the India series is not a
+    # point, and ERA5 at one grid cell is not a national average. Rerouting those turned three
+    # answered national questions into "which place?" (caught by the suite, 20 September 2026).
+    for index in indices:
+        if (plan['places'][index] or {}).get('kind') in {'country', 'state', 'relative'}:
+            return None
+    from .research_answers import series_range
+    for index in indices:
+        try:
+            info = series_range({**plan, 'places': [plan['places'][index]]})
+        except Exception:
+            return None
+        # Reroute only on positive evidence that this place HAS a series and it stops short of the
+        # year asked for. No series information at all is not evidence of anything, and the existing
+        # path - which explains the coverage it does have - is the better answer.
+        if not info or info.get('last_year') is None:
+            return None
+        if year <= info['last_year']:
+            return None
+    return year
+
+
 def execute_plan(engine,result,plan,resolved,coordinates):
     validate_tasks(plan['tasks'],plan['places'])
     result.update(task_results=[],charts=[],calculations=[],pending_slots=[],retrieval_coverage=[],retrieval_plan=retrieval_plan(plan,result.get('retrieval_preferences')))
@@ -27,6 +76,21 @@ def execute_plan(engine,result,plan,resolved,coordinates):
              'start_local':task['start_local'],'end_local':task['end_local']}
         packet=None
         try:
+            # A year the curated series cannot reach is answered from the reanalysis instead of refused.
+            # Measured 20 September 2026: "How much rain did Pune get in 2019?" replied "The stored Pune,
+            # Maharashtra series covers 1901-2010 ... It cannot supply 2019" - true about that table, and
+            # the wrong product. ERA5 runs from 1940 to within days of now, and a daily task may cover a
+            # whole calendar year, so the question is answerable and was only unroutable.
+            reanalysis_year=recent_year_for_reanalysis(plan,task,engine)
+            if reanalysis_year:
+                task=dict(task,operation='daily',
+                          start_local='%d-01-01T00:00:00+05:30'%reanalysis_year,
+                          end_local='%d-01-01T00:00:00+05:30'%(reanalysis_year+1))
+                sub=dict(sub,start_local=task['start_local'],end_local=task['end_local'])
+                result.setdefault('notes',[]).append(
+                    'The published district series ends before %d, so this year is read from the ERA5 '
+                    'reanalysis instead: modelled daily values summed over the calendar year, not the '
+                    'published district record.'%reanalysis_year)
             new_point=(task['kind']=='history' and task['operation']=='daily') or (task['kind']=='forecast' and forecast_tool(task,result.get('retrieval_preferences'))=='hourly_forecast')
             if new_point and task['kind']=='forecast' and hourly_horizon_exceeded(task):
                 # A window beyond the hourly horizon is answered from the daily product rather than refused.
