@@ -2,9 +2,10 @@
 
 These are component checks over stub endpoints and local configuration. They take no
 measurement of any provider: what they pin is the behaviour the architecture promises -
-the model plans every turn by default, the deterministic rules plan only when the policy asks
-for them, a provider failure is named and routed around rather than answered from the rules
-floor, and nothing in this layer can put a value into an answer.
+the model plans every turn by default, a provider failure is routed around, and a total provider
+outage falls back to the deterministic rules planner while SAYING it did - never silently, and
+never at all for a question the rules cannot read. Nothing in this layer can put a value into an
+answer: the fallback changes how a question is read, never where a number comes from.
 """
 import json
 import threading
@@ -262,17 +263,33 @@ class RouterTests(unittest.TestCase):
         self.assertEqual([task['kind'] for task in plan['tasks']], ['forecast'])
         self.assertEqual(plan['places'][0]['name'], 'Ahmedabad')
 
-    def test_a_provider_outage_is_named_and_never_answered_from_the_rules_floor(self):
+    def test_a_provider_outage_is_answered_from_the_rules_floor_and_says_so(self):
+        """The floor catches the fall, and the turn declares which planner read the question.
+
+        This asserted the opposite until 20 September: a provider outage refused outright, on the
+        principle that the rules planner must not be a SILENT substitute for the model planner. That
+        principle is right and the refusal was the wrong way to keep it - the objection is to the silence,
+        not to the substitute. Measured against a corpus of fifty-one real questions, the largest single
+        cause of an avoidable refusal was a cloud provider blinking during "will it rain in Ahmedabad
+        tomorrow", the most ordinary shape this product has.
+
+        So the floor answers, and `planner_policy` says it did. The companion test below keeps the other
+        half: a question the rules cannot read still refuses, and names both failures.
+        """
         stub = Stub([])
         self.addCleanup(stub.close)
         router = ModelRouter(clients=[OpenRouterClient(key='k', models=('first/model:free',), base=stub.base)],
                              policy='model', router=False)
-        with self.assertRaises(SourceError) as raised:
-            router.plan('Will it rain in Ahmedabad, Gujarat tomorrow morning?', NOW, [])
-        message = str(raised.exception)
-        self.assertIn('No model provider could answer', message)
-        self.assertIn('not used as a silent substitute', message)
-        self.assertIn('WEATHERGPT_PLANNER=rules', message)
+        plan, meta = router.plan('Will it rain in Ahmedabad, Gujarat tomorrow morning?', NOW, [])
+
+        self.assertEqual(plan['intent'], 'forecast')
+        self.assertEqual(plan['places'][0]['name'], 'Ahmedabad')
+        # Substituted, and never silently: the turn carries which planner read it and why.
+        self.assertEqual(meta['planner_policy'], 'rules_fallback')
+        self.assertEqual(meta['provider'], 'deterministic_rules')
+        self.assertIn('unavailable', meta['fallback_reason'])
+        self.assertTrue(meta['failover'], 'the provider failure that caused the fallback is recorded')
+
 
     def test_a_follow_up_falls_through_to_a_provider(self):
         stub = Stub([reply('{"language": "en", "places": [], "assumptions": [], "clarification": "", '

@@ -462,6 +462,14 @@ class ConversationEngine:
                                                    'planner_policy':getattr(self.model,'policy','model')}
                     degraded=str(exc)
             result['trace']['planning']=meta
+            # Which planner read the question, where a reader will see it. The deterministic planner
+            # answering in place of the model one is a real difference in how the question was
+            # interpreted, and the objection this product has always had is to substituting SILENTLY.
+            if meta.get('planner_policy')=='rules_fallback':
+                result['notes'].append(
+                    'The model planner was unavailable for this turn, so the question was interpreted by '
+                    'the deterministic rules planner. The values and their sources are unchanged; what '
+                    'differs is how the question itself was read.')
             if degraded is None:
                 result['trace']['context_resolution']=plan.pop('_context_resolution')
                 # Reuse a source-backed accepted identity only if the new interpretation

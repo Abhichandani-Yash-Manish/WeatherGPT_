@@ -640,9 +640,31 @@ class ModelRouter:
         try:
             plan, meta = interpret_plan(self.complete, question, now, history)
         except ProviderUnavailable as error:
-            raise SourceError('No model provider could answer: ' + str(error) +
-                              ' The rules planner is not used as a silent substitute; set ' +
-                              PLANNER_POLICY_ENV + '=rules to run this workspace offline.') from error
+            # The floor catches the fall, and says that it did.
+            #
+            # This used to refuse outright, on the principle that the rules planner must not be a SILENT
+            # substitute for the model planner - which is right, and which is an objection to the silence
+            # rather than to the substitute. The cost of refusing instead was a reader asking "will it
+            # rain in Ahmedabad tomorrow", the most ordinary shape this product has, and being told the
+            # question was not interpreted because a cloud provider blinked.
+            #
+            # So the deterministic planner answers when the model planner cannot, and the turn carries
+            # which planner read it. A reader is never left to infer that; an answer planned by rules says
+            # so on the card, the way every other substitution in this product does. When the rules cannot
+            # read the question either, the turn still refuses, and now it can say both things went.
+            seed = rule_request(question, now, history) if self.rules else None
+            if seed is None:
+                raise SourceError('No model provider could answer: ' + str(error) +
+                                  ' The deterministic rules could not read this question either, so it '
+                                  'was not interpreted.') from error
+            plan, meta = interpret_plan(None, question, now, history, seed=seed)
+            meta = dict(meta or {})
+            meta.update(provider='deterministic_rules', model=RULE_MODEL,
+                        planner_policy='rules_fallback', attempts=0, latency_ms=0,
+                        failover=[str(error)[:300]],
+                        fallback_reason='the model planner was unavailable for this turn')
+            self.trace.append(meta)
+            return plan, meta
         meta = dict(meta or {})
         meta['planner_policy'] = 'model'
         return plan, meta

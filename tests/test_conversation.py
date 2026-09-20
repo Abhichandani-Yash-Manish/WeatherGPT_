@@ -37,8 +37,8 @@ def plan():return {'intent':'forecast','language':'en','places':[{'name':'Ahmeda
  'assumptions':['Morning means 06:30–12:30 IST.'],'clarification':'','requested_outcome':'Rain forecast'}
 
 class Model:
-    def __init__(self):self.value=plan();self.histories=[];self.bad=False
-    def plan(self,q,now,history):self.histories.append(copy.deepcopy(history));return copy.deepcopy(self.value),{'provider':'fixture'}
+    def __init__(self):self.value=plan();self.histories=[];self.bad=False;self.meta={'provider':'fixture'}
+    def plan(self,q,now,history):self.histories.append(copy.deepcopy(history));return copy.deepcopy(self.value),dict(self.meta)
     def complete(self,system,user,schema,**kwargs):
         p=json.loads(user)
         return {'answer':'9999 mm of rain.' if self.bad else 'Here is the retrieved weather evidence.','evidence_ids':[f['id'] for f in p['facts']]},{'provider':'fixture'}
@@ -64,6 +64,26 @@ class ConversationTests(unittest.TestCase):
         r=self.chat();self.assertEqual(r['status'],'answered');self.assertEqual(r['facts'][0]['value'],'6.0')
         self.assertEqual(r['facts'][0]['unit'],'mm');self.assertEqual(self.calls,0);self.assertFalse(r['operational_eligible'])
         self.assertTrue(r['citations']);self.assertTrue(r['expires_at_utc'])
+
+    def test_a_rules_fallback_turn_tells_the_reader_which_planner_read_the_question(self):
+        """The substitute planner is disclosed in the answer, not only in the trace.
+
+        A provider outage now falls back to the deterministic rules planner instead of refusing
+        (see test_providers). That is only acceptable while the fallback is visible: a substitution
+        recorded in a trace nobody reads is the silent substitution this product refuses to make.
+        """
+        self.model.meta = {'provider': 'deterministic_rules', 'planner_policy': 'rules_fallback',
+                           'fallback_reason': 'the model planner was unavailable for this turn'}
+        r = self.chat()
+        self.assertEqual(r['status'], 'answered', 'the outage is survived, not refused')
+        note = [n for n in r['notes'] if 'deterministic rules planner' in n]
+        self.assertTrue(note, 'the reader is told which planner read the question: %r' % (r['notes'],))
+        self.assertIn('values and their sources are unchanged', note[0])
+        self.assertEqual(r['trace']['planning']['planner_policy'], 'rules_fallback')
+
+    def test_an_ordinary_turn_carries_no_planner_note(self):
+        """The note marks a real difference, so it stays absent when there is none to report."""
+        self.assertFalse([n for n in self.chat()['notes'] if 'planner' in n])
 
     def test_ambiguous_and_approximate_places_require_confirmed_choice(self):
         for approximate in (False,True):
