@@ -13,6 +13,7 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { server } from '../test/msw';
+import { provenanceOffenders } from '../flagship/provenance';
 import { Surface as AviationSurface } from './AviationSurface';
 
 function mount(node: JSX.Element) {
@@ -144,6 +145,17 @@ describe('the Aviation surface', () => {
     expect(read.getByText('VAAH')).toBeInTheDocument();
     expect(read.getByText('every station this read was asked for answered')).toBeInTheDocument();
 
+    // The first-screen reading: the most recent station's own METAR decoded into a sentence, alongside
+    // (never instead of) the raw report further down, before the per-station tables that prove it.
+    const headline = screen.getByTestId('aviation-headline');
+    expect(headline).toHaveTextContent(
+      'VAAH’s most recent METAR (14 Sep 2026, 23:00 IST) reports temperature 25°C, dewpoint 23°C, wind 6 kt from 140',
+    );
+    expect(headline).toHaveTextContent('within_prototype_age_limit');
+    expect(headline.querySelector('.g-claim-source')).toHaveTextContent('900 s as returned');
+    expect(headline.querySelector('.g-claim-source')).toHaveTextContent('$[0]');
+    expect(provenanceOffenders(headline)).toEqual([]);
+
     const station = within(screen.getByTestId('aviation-station-0'));
     expect(within(stationBlock(0)).getByRole('heading', { level: 3, name: 'VAAH · Ahmadabad/Patel Intl, GJ, IN' })).toBeInTheDocument();
     expect(station.getByText('23.077, 72.635')).toBeInTheDocument();
@@ -203,6 +215,12 @@ describe('the Aviation surface', () => {
     // A forecast is not decoded into point values, and the surface says why rather than inventing a table.
     expect(screen.queryByTestId('aviation-decoded-0')).toBeNull();
     expect(screen.getByText(/a forecast is not an observation from the station/)).toBeInTheDocument();
+
+    // The headline decodes a TAF as a forecast window and the read's own interpretation, not an observation.
+    const tafHeadline = screen.getByTestId('aviation-headline');
+    expect(tafHeadline).toHaveTextContent('VAAH’s TAF forecasts for');
+    expect(tafHeadline).toHaveTextContent('Original TAF and native change groups preserved; no flight-safety decision generated.');
+    expect(provenanceOffenders(tafHeadline)).toEqual([]);
   });
 
   it('says in its own voice what a METAR and a TAF are, and what neither of them is', async () => {

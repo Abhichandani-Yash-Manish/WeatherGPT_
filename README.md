@@ -160,6 +160,29 @@ Try *“Will it rain in Ahmedabad, Gujarat tomorrow morning?”*, then *“And w
 Or *“Show the annual rainfall trend for Ahmedabad district, Gujarat from 1981 to 2010.”*, or
 *“कल अहमदाबाद में बारिश होगी क्या?”*.
 
+## The answer a reader gets
+
+The model writes it. Not a sentence appended to a template's opening — the reply itself, from the
+evidence this turn retrieved and the question that was asked ([docs/132](docs/132-the-model-writes-the-answer.md)).
+Measured across eleven intents on 21 September, one answer in eleven had been written for the
+reader; the rest were templates, and the two answers most likely to feel stiff — an official warning
+and an agricultural advisory — could never be written for one, by construction.
+
+**What keeps that safe is the check, not the prompt.** Every number in the prose must come from the
+evidence the model was shown, every unit must match its source, the place must be named, an invented
+link or certainty is refused, and the language must be the one asked for. When any of it fails the
+deterministic renderer's text stands instead, and the reason is recorded on the turn. That text is
+kept on every turn as `tool_answer` whether or not the prose replaced it.
+
+Three things a rewrite can never drop: a published passage the answer cites is quoted verbatim, in
+the publisher's own words; the safety clauses are *held* and put back if the prose loses them — that
+an absence of official guidance is not an all-clear, that a warning reading is not an instruction,
+that two sources agreeing is not confirmation when one may feed the other; and a turn whose evidence
+is a bulletin must cite the bulletin or keep the floor.
+
+A turn that has to ask something back is written too, under a stricter rule: it may not state a
+value, name a place the tool did not name, or introduce a digit the tool did not write.
+
 ## Ask it anything — how the conversation decides
 
 **The model plans every turn** (`WEATHERGPT_PLANNER=model`, recorded on the turn as
