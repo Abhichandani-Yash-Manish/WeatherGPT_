@@ -549,6 +549,16 @@ class ModelRouter:
                 'chat_router': self.router, 'providers': self.describe(),
                 'last_failure': self.last_failure}
 
+    # Every provider this workspace knows how to talk to, in the order it would try them. A machine
+    # with no keys builds no clients, so describing only the built clients returned an empty list -
+    # which tells a reader nothing at the exact moment they most need to be told something, namely
+    # "why will this not answer?". Found by CI on 20 September 2026: the settings test passed on a
+    # laptop that had keys and failed on a runner that had none.
+    KNOWN_PROVIDERS = (
+        ('deepseek', 'no DEEPSEEK_API_KEY and no deepseek_api_key in model-config.json'),
+        ('openrouter', 'no OPENROUTER_API_KEY and no openrouter_api_key in model-config.json'),
+        ('ollama', 'no local Ollama endpoint configured on this machine'))
+
     def describe(self):
         rows = []
         for client in self.clients:
@@ -557,7 +567,13 @@ class ModelRouter:
                 available, reason = client.available()
             rows.append({'provider': client.name, 'model': getattr(client, 'model', None),
                          'models': list(getattr(client, 'models', ()) or []),
-                         'available': available, 'reason': reason})
+                         'available': available, 'reason': reason,
+                         'configured': True})
+        built = {row['provider'] for row in rows}
+        for name, reason in self.KNOWN_PROVIDERS:
+            if name not in built:
+                rows.append({'provider': name, 'model': None, 'models': [],
+                             'available': False, 'reason': reason, 'configured': False})
         return rows
 
     def complete(self, system, user, schema, max_tokens=1100, timeout=None):

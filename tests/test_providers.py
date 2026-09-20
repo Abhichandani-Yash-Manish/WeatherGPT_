@@ -317,13 +317,18 @@ class RouterTests(unittest.TestCase):
         self.assertIn('openrouter', str(raised.exception))
 
     def test_describe_reports_availability_without_exposing_the_key(self):
-        router = ModelRouter(clients=[OpenRouterClient(key='', models=('a/b:free',)), OllamaClient()])
+        router = ModelRouter(clients=[OpenRouterClient(key='secret-value-abc', models=('a/b:free',)),
+                                      OllamaClient()])
         rows = router.describe()
-        self.assertEqual(len(rows), 2)
-        self.assertEqual(rows[0]['provider'], 'openrouter')
-        self.assertFalse(rows[0]['available'])
-        self.assertIn('key', rows[0]['reason'])
-        self.assertNotIn('key', json.dumps(rows[1]))
+        built = [row for row in rows if row['configured']]
+        self.assertEqual([row['provider'] for row in built], ['openrouter', 'ollama'],
+                         'the built clients come first, in the order they will be tried')
+        # Changed 20 September 2026: describe() now also lists the providers this workspace knows
+        # how to talk to but has not built, so a machine with no keys still shows the order and
+        # says what is missing. They follow the built ones and are marked unconfigured.
+        self.assertEqual([row['provider'] for row in rows if not row['configured']], ['deepseek'])
+        self.assertNotIn('secret-value-abc', json.dumps(rows), 'no key value appears in the view')
+
 
 
 class DeepSeekTests(unittest.TestCase):
