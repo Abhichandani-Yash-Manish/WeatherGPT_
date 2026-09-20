@@ -94,8 +94,25 @@ def execute_specialist(engine,result,plan,task,resolved,coordinates):
     if start<now:
         start=now
         result['notes'].append('Only the remaining forecast period is included, starting '+start.astimezone(IST).isoformat()+'.')
+    # Both products are model forecasts and stop where the model stops. Measured 20 September 2026,
+    # "What is the wave height off Mumbai this weekend?" passed the window-length check (a weekend is
+    # 48 hours) and then failed inside the collector with "Worker supports 1-7 whole days for marine" -
+    # an internal message, shown to a reader, for a question that simply reaches past the horizon.
+    from .adapters import forecast_horizon_limit
+    limit=forecast_horizon_limit(start,end,now)
+    if limit and limit[0]=='decline':
+        result.update(status='outside_validity',answer=limit[1][0],follow_up=limit[1][1]);return result
+    if limit:
+        end=limit[1][0];result['notes'].append(limit[1][1])
+    hours=int(profile['max_window'].total_seconds()//3600)
     if end-start>profile['max_window']:
-        raise SourceError('This tool supports up to '+str(profile['max_window'])+' per request; please narrow the window')
+        asked_end=end
+        end=start+profile['max_window']
+        window=(str(hours)+' hours') if hours<48 else (str(hours//24)+' days')
+        result['notes'].append('Asked through '+asked_end.astimezone(IST).strftime('%d %b %Y %H:%M')+' IST, but this '
+                               'product serves '+window+' per request. What follows covers '+
+                               start.astimezone(IST).strftime('%d %b %H:%M')+' to '+
+                               end.astimezone(IST).strftime('%d %b %H:%M')+' IST only.')
     points=None
     place=(plan.get('places') or [None])[0]
     if place and len(plan.get('places') or [])==1 and not (resolved or {}).get(place.get('name')):

@@ -31,8 +31,20 @@ PRODUCTS = {'forecast': ('S21', 'weather_forecast', 'api.open-meteo.com', '/v1/g
             'river': ('S37', 'river_discharge', 'flood-api.open-meteo.com', '/v1/flood', 1)}
 PRODUCTS.update(extended_forecast=('S62','extended_weather_forecast','api.open-meteo.com','/v1/forecast',len(EXTENDED)),
                 history_local=('S22','reanalysis','archive-api.open-meteo.com','/v1/archive',len(HISTORY_LOCAL)))
-# Local prototype ceilings shared by all supported Open-Meteo endpoints. Not provider entitlements.
-LIMITS = ((60, 20), (3600, 100), (86400, 200), (31*86400, 1000))
+# Local ceilings shared by all supported Open-Meteo endpoints. These are OURS, not the provider's
+# entitlement: they exist so a runaway loop cannot hammer a free public API from this machine.
+#
+# Raised 20 September 2026. The previous ceilings (20/min, 100/hour, 200/day, 1000/month) were set
+# when this workspace was answering a handful of questions by hand. Running the 306-turn scenario
+# atlas put reserved attempts at 1118 against a monthly ceiling of 1000, and from then on every
+# marine, river and point question failed with "Collection is not healthy" - not because anything
+# was wrong, but because this machine had refused itself. The measurement was also contaminated:
+# scenarios late in a run were failing for budget reasons and being counted as product defects.
+#
+# Open-Meteo publishes 600/minute, 5,000/hour, 10,000/day and 300,000/month for non-commercial use.
+# These sit at roughly a third of that, which leaves the guard meaningful while letting a full atlas
+# run, a demo and a day's development share one machine.
+LIMITS = ((60, 200), (3600, 1500), (86400, 3000), (31*86400, 60000))
 
 
 def request_parameters(spec):
@@ -271,7 +283,10 @@ class IngestionDB:
             for window,limit in limits:
                 rows = self.db.execute('SELECT at FROM requests WHERE provider=? AND at>? ORDER BY at',(provider,now-window)).fetchall()
                 if len(rows)>=limit: waits.append(rows[len(rows)-limit][0]+window)
-            if waits: raise SourceError('Provider budget, cooldown or concurrency slot unavailable',retryable=True,deferred=True,retry_at=max(waits))
+            if waits: raise SourceError('This workspace has reached its own request ceiling for the weather '
+                                        'provider and is pausing rather than hammering a free public API. '
+                                        'Nothing is wrong with the source; try again shortly.',
+                                        retryable=True,deferred=True,retry_at=max(waits))
             rid = uuid.uuid4().hex
             self.db.execute('INSERT INTO requests(id,provider,at,lease_until) VALUES (?,?,?,?)',(rid,provider,now,now+lease_seconds))
         return rid

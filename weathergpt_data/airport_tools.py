@@ -49,10 +49,55 @@ def fetch(workspace,station,kind):
     finally:db.close()
 
 
+# The six stations whose reports are connected here, and the city names a reader uses for them.
+# A closed, hand-checked list rather than a fuzzy search: attaching one airport's report to another
+# city would be the same class of error as attaching a warning to the wrong district. Each entry is
+# the city this airport actually serves, including the name it was called before it was renamed.
+AIRPORT_CITIES = {
+    'VAAH': ('Ahmedabad', ('ahmedabad', 'ahmadabad', 'amdavad')),
+    'VABB': ('Mumbai', ('mumbai', 'bombay')),
+    'VECC': ('Kolkata', ('kolkata', 'calcutta')),
+    'VEGT': ('Guwahati', ('guwahati', 'gauhati')),
+    'VIDP': ('Delhi', ('delhi', 'new delhi', 'ncr')),
+    'VOMM': ('Chennai', ('chennai', 'madras')),
+}
+
+
+def airport_code(name):
+    """The ICAO code a reader's words name, or None. A code is taken as itself; a city is looked up."""
+    text = str(name or '').strip()
+    if re.fullmatch('V[A-Z]{3}', text.upper()):
+        return text.upper()
+    # "Delhi airport", "the airport at Chennai", "Mumbai international airport".
+    key = re.sub(r'[^a-z ]+', ' ', text.lower())
+    key = re.sub(r'\b(international|intl|airport|the|at|in|of)\b', ' ', key)
+    key = ' '.join(key.split())
+    for code, (_city, aliases) in AIRPORT_CITIES.items():
+        if key in aliases:
+            return code
+    return None
+
+
 def execute_airport(engine,result,plan,task):
-    names=[p['name'].upper() for p in plan['places']]
-    if not names or any(not re.fullmatch('V[A-Z]{3}',n) for n in names):
-        result.update(answer='Which Indian airport? Give its four-letter ICAO code, such as VAAH for Ahmedabad airport. An airport report cannot stand in for conditions across a city.',follow_up='Four-letter ICAO airport code');return result
+    # A reader says "Delhi airport", not "VIDP". Demanding the code was turning an answerable
+    # question into a quiz: measured 20 September 2026, "What is the current weather at Delhi
+    # airport?" and "TAF for Bengaluru airport" both came back asking for a four-letter code.
+    resolved = [(p['name'], airport_code(p['name'])) for p in plan['places']]
+    names=[code for _name, code in resolved if code]
+    unmatched=[name for name, code in resolved if not code]
+    served = ', '.join(sorted(city + ' (' + code + ')' for code, (city, _a) in AIRPORT_CITIES.items()))
+    if unmatched:
+        result.update(answer='Airport reports here come from six stations: ' + served + '. I could not match ' +
+                             ', '.join(str(n) for n in unmatched) + ' to one of them. Name one of those airports, '
+                             'or give a four-letter ICAO code. An airport report cannot stand in for conditions '
+                             'across a city.',
+                      follow_up='One of the six connected airports, or a four-letter ICAO code')
+        return result
+    if not names:
+        result.update(answer='Which airport? Reports here come from six stations: ' + served + '. An airport '
+                             'report cannot stand in for conditions across a city.',
+                      follow_up='One of the six connected airports, or a four-letter ICAO code')
+        return result
     if 'metar' in task['parameters'] and plan.get('start_local'):
         result.update(status='unavailable',answer='METAR reports current or recent airport observations. A requested future or historical window needs a different product; it cannot be answered with the latest report.')
         return result

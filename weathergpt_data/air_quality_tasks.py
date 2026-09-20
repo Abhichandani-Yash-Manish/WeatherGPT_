@@ -58,8 +58,21 @@ def execute_air_quality(engine, result, plan, task, resolved, coordinates):
         result.update(status='needs_clarification', answer='Which day or window should the air quality cover?',
                       follow_up='A day or an ordered time window'); return result
     start, end = parsed(plan['start_local']).astimezone(timezone.utc), parsed(plan['end_local']).astimezone(timezone.utc)
-    if end <= start or end - start > timedelta(hours=MAX_HOURS):
-        raise SourceError('Air-quality detail supports up to %d hours per task; please narrow the window' % MAX_HOURS)
+    if end <= start:
+        raise SourceError('Use an ordered time window')
+    # "PM2.5 in Lucknow this week" was refused outright for being longer than the product serves.
+    # A week that starts now contains 48 answerable hours, and refusing all of them to avoid
+    # overstating the rest throws away the part that exists. The window is trimmed and the answer
+    # says where it stops - the same rule the forecast and daily-history paths follow.
+    if end - start > timedelta(hours=MAX_HOURS):
+        asked_end = end
+        end = start + timedelta(hours=MAX_HOURS)
+        plan['end_local'] = end.astimezone(IST).isoformat()
+        result.setdefault('notes', []).append(
+            'Asked through ' + asked_end.astimezone(IST).strftime('%d %b %Y %H:%M') + ' IST, but air-quality '
+            'detail runs ' + str(MAX_HOURS) + ' hours ahead. What follows covers ' +
+            start.astimezone(IST).strftime('%d %b %H:%M') + ' to ' + end.astimezone(IST).strftime('%d %b %H:%M') +
+            ' IST only, and says nothing about the rest of the period asked about.')
     days = max(1, min(7, (end.date() - now.date()).days + 1))
     points = engine.resolve_points(result, plan, resolved, coordinates)
     if points is None:
