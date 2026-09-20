@@ -253,15 +253,22 @@ def translate_one(sentence, target, translator, identities, source='en-IN'):
 
 
 def _transient(failure):
-    """True when a failure is the service rather than the rendering's own content.
+    """True when a failure is worth one more call.
 
-    A sentence whose protected values did not survive, or whose rendering came back in another
-    script, is a content failure and is never retried: the same call would produce the same
-    answer. A service that could not be reached is worth one more try, because otherwise a single
-    flaky call discards every sentence that did render.
+    This used to exclude content failures - values that did not survive, a rendering that came back
+    in the wrong script - on the reasoning that the same call would produce the same answer.
+
+    That reasoning assumed a deterministic translator, and measurement on 20 September 2026 says it
+    is not one. The same sixteen questions, asked twice a few minutes apart against unchanged code,
+    rendered a different subset each time: "सूरत में अभी तापमान कितना है?" came back in Devanagari on
+    one run and in English on the next. A content failure here is usually one bad sample from a
+    model, not a property of the sentence, so it gets exactly one more try.
+
+    The floor is unchanged and is what makes this safe: if the second call also fails, the
+    source-language answer is kept and the turn is downgraded. A retry can rescue a rendering; it
+    can never lower the bar for presenting one.
     """
-    reason = str((failure or {}).get('reason') or '')
-    return bool(reason) and 'did not survive' not in reason and 'mixed scripts' not in reason
+    return bool(str((failure or {}).get('reason') or ''))
 
 
 def render_many(sentences, target, translator, identities, source='en-IN'):

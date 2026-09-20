@@ -87,7 +87,18 @@ class RetryTests(unittest.TestCase):
         self.assertEqual(report['ok'], True)
         self.assertEqual(calls['count'], 2)
 
-    def test_a_damaged_value_is_never_retried(self):
+    def test_a_damaged_value_is_tried_once_more_and_then_kept_in_its_source_language(self):
+        """Changed 20 September 2026. This asserted a value failure is never retried.
+
+        The reasoning was that the same call would produce the same answer. That assumed a
+        deterministic translator, and it is not one: the same sixteen questions, asked twice a few
+        minutes apart against unchanged code, rendered a different subset each time. A content
+        failure here is usually one bad sample from a model, not a property of the sentence.
+
+        What must not change is the floor, and this asserts it: a translator that damages values
+        every time still never reaches the reader, and the source-language answer is kept. A retry
+        can rescue a rendering; it can never lower the bar for presenting one.
+        """
         answer = 'Rainfall of 35 mm was recorded in Ahmedabad.'
         calls = {'count': 0}
 
@@ -96,9 +107,26 @@ class RetryTests(unittest.TestCase):
             return 'अनुवाद जो मान बदल देता है'
 
         text, report = rendering.render(answer, 'hi', damaging)
-        self.assertEqual(report['ok'], False)
-        self.assertEqual(calls['count'], 1, 'a value failure is a content failure, not a transient one')
-        self.assertIn('35 mm', text)
+        self.assertEqual(report['ok'], False, 'a damaged rendering is still never presented')
+        self.assertEqual(calls['count'], 2, 'one retry, not an unbounded loop')
+        self.assertIn('35 mm', text, 'the source-language answer is what the reader gets')
+
+    def test_a_rendering_that_fails_once_and_then_succeeds_is_kept(self):
+        """The case the retry exists for: one bad sample, not a broken sentence."""
+        answer = 'Rainfall of 35 mm was recorded in Ahmedabad.'
+        calls = {'count': 0}
+
+        def flaky_once(text, target, source='en-IN'):
+            calls['count'] += 1
+            if calls['count'] == 1:
+                return 'अनुवाद जो मान बदल देता है'
+            kept = ' '.join(m.group(0) for m in rendering.SENTINEL_PATTERN.finditer(text))
+            return 'अहमदाबाद में दर्ज की गई वर्षा इस प्रकार रही ' + kept
+
+        text, report = rendering.render(answer, 'hi', flaky_once)
+        self.assertEqual(report['ok'], True)
+        self.assertEqual(calls['count'], 2)
+        self.assertIn('35 mm', text, 'the value is restored as its original characters')
 
 
 class CacheTests(unittest.TestCase):
