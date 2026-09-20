@@ -84,7 +84,13 @@
   box-shadow: var(--g-e1);
 }
 .g-answer { display: flex; flex-direction: column; gap: var(--g-4); }
-.g-prose { margin: 0; font-size: 15.5px; line-height: 1.72; color: var(--g-paper); max-width: 68ch; text-wrap: pretty; }
+.g-prose { font-size: 15.5px; line-height: 1.72; color: var(--g-paper); max-width: 68ch; text-wrap: pretty; }
+.g-prose p { margin: 0; }
+.g-prose p + p { margin-top: .7em; }
+/* Somebody else's words. A held passage is the publisher's own text, and it should read as a
+   quotation rather than as our sentence: set back from the margin, in the quieter ink. */
+.g-prose .g-prose-quote { border-inline-start: 2px solid var(--g-line); padding-inline-start: .8em;
+                          color: var(--g-mist); font-style: normal; }
 
 /* The quiet label above a turn's title or a choice prompt. .g-eyebrow was used in three places and defined
    in none, which is why "restored from the local store" rendered at body weight like console output. */

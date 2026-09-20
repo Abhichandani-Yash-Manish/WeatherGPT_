@@ -212,6 +212,28 @@ function coverageValue(value: unknown): string {
   return String(value);
 }
 
+/* The first-screen reading: what this surface's own values mean, stated once in the evidence's own terms,
+   before the table that proves it. Six surfaces (Ensemble, Verification, Marine, Compare, Aviation, Air
+   quality) were dense instrument tables with no reading at the top — every value technically correct, and
+   a reader left to compute the meaning themselves. This is that meaning, computed from nothing the read did
+   not itself state: a spread the ensemble named, a metric the verification read measured, the most recent
+   modelled wave or discharge value, two forecasts' own readings held side by side, a METAR's or TAF's own
+   fields in a sentence instead of only a coded string, an index with the source's own category. Never a
+   forecast, never a ranking, never a skill judgement, never health advice.
+
+   It carries provenance the same shape flagship/provenance.ts checks for the conversation's own claims —
+   `.g-claim` with a `.g-claim-source` child — so this region reads exactly as provenance-carrying as
+   everything else in this product, and the same audit that walks the answer card can walk it too. */
+export function Headline({ testId, statement, source }: { testId?: string; statement: ReactNode; source: ReactNode }): JSX.Element {
+  return (
+    <section className="g-claim module-headline" data-testid={testId} role="group" aria-label="What this read states">
+      <p className="g-claim-eyebrow">What this read states</p>
+      <p className="g-claim-value module-headline-statement">{statement}</p>
+      <p className="g-claim-source">{source}</p>
+    </section>
+  );
+}
+
 export function Coverage({ coverage }: { coverage?: Record<string, unknown> }): JSX.Element {
   const names = Object.keys(coverage || {});
   return (

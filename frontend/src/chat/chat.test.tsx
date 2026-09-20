@@ -265,3 +265,27 @@ describe('voice language rules', () => {
     expect(isSpeakable(hindi)).toBe(true);
   });
 });
+
+describe('an answer that carries somebody else’s words', () => {
+  it('renders each paragraph separately, so a quoted passage does not run on from our sentence', async () => {
+    const { answerParagraphs } = await import('./AnswerTurn');
+    const parts = answerParagraphs('The cotton advisory for Rajkot is below.\n\n“Spray acephate 75 % SP.”');
+    expect(parts).toHaveLength(2);
+    expect(parts[0].quoted).toBe(false);
+    expect(parts[1].quoted).toBe(true);
+  });
+
+  it('treats only a leading quotation mark as a quotation, not a sentence that mentions one', async () => {
+    const { answerParagraphs } = await import('./AnswerTurn');
+    const parts = answerParagraphs('The bulletin says “spray acephate” in its cotton section.');
+    expect(parts).toHaveLength(1);
+    expect(parts[0].quoted).toBe(false);
+  });
+
+  it('is empty for an empty answer rather than rendering a blank paragraph', async () => {
+    const { answerParagraphs } = await import('./AnswerTurn');
+    expect(answerParagraphs('')).toEqual([]);
+    expect(answerParagraphs(null)).toEqual([]);
+    expect(answerParagraphs('   \n\n   ')).toEqual([]);
+  });
+});

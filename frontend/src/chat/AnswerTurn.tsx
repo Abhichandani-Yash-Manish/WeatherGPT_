@@ -159,6 +159,19 @@ function warningLine(packet: AnswerPacket, fact: Fact): string {
   ].filter(Boolean).join(' · ');
 }
 
+/* The answer's paragraphs, and which of them are somebody else's words.
+   ============================================================================
+   A quoted passage is a publisher's own text, held verbatim by the engine and never paraphrased. On
+   screen it should look like a quotation rather than like our sentence, so a reader can tell at a
+   glance which words this product wrote and which it is passing on. */
+export function answerParagraphs(answer: string | null | undefined): { text: string; quoted: boolean }[] {
+  return String(answer || '')
+    .split(/\n{2,}/)
+    .map(part => part.trim())
+    .filter(Boolean)
+    .map(text => ({ text, quoted: /^[“"]/.test(text) }));
+}
+
 export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTurnProps) {
   const [copied, setCopied] = useState<'idle' | 'copied' | 'unsupported'>('idle');
   /* The exact response is rendered only when opened: it is an audit artefact, and it must not sit in the
@@ -209,10 +222,18 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
       {coverage ? <p className="g-claim-note">{coverage}</p> : null}
       {carried ? <p className="g-claim-source" data-testid="carried-context">{carried}</p> : null}
 
-      {/* The sentence first. dir="auto" lets the browser read an Urdu or mixed-script answer correctly. */}
-      <p className="g-prose" data-long={(packet.answer || '').length > 240 ? 'true' : 'false'} dir="auto">
-        {packet.answer}
-      </p>
+      {/* The answer first. dir="auto" lets the browser read an Urdu or mixed-script answer correctly.
+          Rendered paragraph by paragraph: since the model began writing whole answers, one of them can
+          carry a quoted bulletin passage after its own framing sentence, and a single <p> collapsed the
+          blank line between them into a space - the publisher's words ran straight on from ours. */}
+      <div className="g-prose" data-long={(packet.answer || '').length > 240 ? 'true' : 'false'}>
+        {answerParagraphs(packet.answer).map((paragraph, index) => (
+          /* dir on each paragraph, not on the block: dir="auto" resolves from the first strong
+             character of the element carrying it, so a quoted English bulletin inside an Urdu answer
+             reads left-to-right on its own rather than inheriting the answer's direction. */
+          <p key={index} className={paragraph.quoted ? 'g-prose-quote' : undefined} dir="auto">{paragraph.text}</p>
+        ))}
+      </div>
 
       {/* The claims the tools own. */}
       {(primary && !conversational) || warnings.length || rest.length ? (
