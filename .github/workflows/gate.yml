@@ -36,12 +36,22 @@ jobs:
           cache: npm
           cache-dependency-path: frontend/package-lock.json
 
-      - name: Install Python dependencies
+      # sentence-transformers pulls torch, and torch from PyPI brings the whole CUDA stack - about
+      # 3 GB of nvidia-* wheels that filled the runner's disk on the first run ("No space left on
+      # device"). A hosted runner has no GPU, so the CPU build is the honest one to install. Ordering
+      # matters: torch is resolved here, and the requirements install below then finds it satisfied.
+      - name: Install PyTorch (CPU build)
         run: |
           python -m pip install --upgrade pip
-          for file in requirements-foundation.txt requirements-bulletins.txt requirements.txt requirements-dev.txt; do
-            [ -f "$file" ] && pip install -r "$file"
-          done
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Install Python dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Disk and dependency report
+        run: |
+          df -h / | tail -1
+          pip --version && python -c "import torch; print('torch', torch.__version__)" || true
 
       - name: Install frontend dependencies
         working-directory: frontend
