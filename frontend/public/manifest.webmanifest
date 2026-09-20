@@ -1,0 +1,19 @@
+{
+  "name": "WeatherGPT",
+  "short_name": "WeatherGPT",
+  "description": "An evidence-first conversational weather workspace for India. Every value keeps its source, its window and the time it was retrieved.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0b1216",
+  "theme_color": "#0d6d77",
+  "lang": "en-IN",
+  "dir": "ltr",
+  "categories": ["weather", "utilities"],
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
