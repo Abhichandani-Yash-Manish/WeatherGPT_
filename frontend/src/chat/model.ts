@@ -4,7 +4,7 @@
    wording a reader has already been shown is part of the product, not a detail of its markup. */
 
 import type { AnswerPacket, Calculation, ChatPreview, ChatProgress, Fact, ResolvedPoint } from '../api/types';
-import { istWindow } from '../lib/time';
+import { istStamp, istWindow } from '../lib/time';
 
 export const STATUS_LABELS: Record<string, string> = {
   answered: 'Evidence retrieved',
@@ -246,13 +246,28 @@ export function stageLabel(stage?: string | null): string {
 
 /* ---- turns --------------------------------------------------------------------------------- */
 
+/* Something the reader changed about a turn that the sentence does not say: the place it is read at,
+   or the window it is read for. The surface states it, so a changed turn never looks like the same
+   question answered about somewhere else. */
+export type TurnChange = { field: 'place' | 'window'; to: string };
+
 export type UserTurn = { key: string; role: 'user'; text: string; at: string };
-export type AnswerTurn = { key: string; role: 'answer'; packet: AnswerPacket; at: string; restored?: boolean };
+export type AnswerTurn = {
+  key: string;
+  role: 'answer';
+  packet: AnswerPacket;
+  at: string;
+  restored?: boolean;
+  /* What this answer says about its own freshness, when it replaced an earlier answer: measured from
+     the two packets' retrieval instants, never assumed. */
+  freshness?: string;
+  changed?: TurnChange;
+};
 /* The kind a failed read came back as, kept so the transcript can name the state the reader is in rather
    than only repeating the server's sentence. */
 export type NoticeKind = 'offline' | 'busy' | 'unavailable' | 'refused' | 'server';
 
-export type NoticeTurn = { key: string; role: 'notice'; tone: 'calm' | 'error'; text: string; at: string; kind?: NoticeKind };
+export type NoticeTurn = { key: string; role: 'notice'; tone: 'calm' | 'error'; text: string; at: string; kind?: NoticeKind; changed?: TurnChange };
 
 /* What each state means, in the reader's terms, and never a claim about what the server did. */
 export const NOTICE_HINTS: Record<NoticeKind, string> = {
@@ -283,6 +298,118 @@ export type Working = {
   stopRequested: boolean;
   stopDetail: string | null;
 };
+
+/* ---- the affordances a turn can carry -------------------------------------------------------- */
+
+/* The window choices a reader may move a turn to, in the engine's own words. Each phrase is one
+   the engine's day and part-of-day tables resolve; the question text is never rewritten, so nothing
+   here has to hope the planner reads a different sentence. `day after tomorrow` is deliberately
+   absent: it contains the shorter word `tomorrow`, the shared compiler finds two days in it and
+   declines to choose, and offering a button that reports "not applied" would be worse than not
+   offering it. */
+export const WINDOW_CHOICES: { label: string; phrase: string }[] = [
+  { label: 'Today', phrase: 'today' },
+  { label: 'Tonight', phrase: 'tonight' },
+  { label: 'Tomorrow', phrase: 'tomorrow' },
+  { label: 'Tomorrow morning', phrase: 'tomorrow morning' },
+  { label: 'Tomorrow evening', phrase: 'tomorrow evening' },
+];
+
+/* The question a turn belongs to: the nearest user turn at or before it. Used by the re-ask controls,
+   which must send the question that answer was an answer to and nothing else. */
+export function questionFor(turns: Turn[], key: string): string | null {
+  const index = turns.findIndex(turn => turn.key === key);
+  if (index < 0) return null;
+  for (let cursor = index; cursor >= 0; cursor -= 1) {
+    const turn = turns[cursor];
+    if (turn.role === 'user') return turn.text;
+  }
+  return null;
+}
+
+/* The newest instant any citation in this packet states its evidence was retrieved at. Null when the
+   packet states none: an absent retrieval time is not a fresh one. */
+export function latestRead(packet: AnswerPacket): string | null {
+  const stamps = (packet.citations || [])
+    .map(citation => citation.retrieved_at_utc)
+    .filter((value): value is string => Boolean(value));
+  if (!stamps.length) return null;
+  return stamps.sort().slice(-1)[0];
+}
+
+/* What a re-asked answer says about whether the workspace read again. Measured from the two packets'
+   own retrieval instants: this states which of the two things happened, in the engine's own words
+   where it said anything, and claims neither when neither packet recorded it. */
+export function freshnessNote(previous: AnswerPacket | null, next: AnswerPacket): string {
+  const before = previous ? latestRead(previous) : null;
+  const after = latestRead(next);
+  if (!after) return 'Neither this answer nor the one before it records when its evidence was retrieved, so nothing here says whether the sources were read again.';
+  if (after && !before) return 'This answer\'s evidence was retrieved ' + istStamp(after) + '. The previous answer recorded no retrieval time, so this does not say whether anything was fetched again.';
+  if (after === before) {
+    return 'This answer rests on the same read the previous answer used (retrieved ' + istStamp(after) +
+      '): the workspace served the evidence it already held rather than fetching it again.';
+  }
+  return 'This answer\'s evidence was retrieved ' + istStamp(after) + ', later than the previous answer\'s ' +
+    istStamp(before as string) + '. The retrieval instants differ; that is what this states.';
+}
+
+/* What the reader changed on this turn, from the engine's own record of it. The engine states whether
+   the change was applied, so an unresolved window is said here rather than looking like a quiet day. */
+export function changeNote(packet: AnswerPacket | null, change?: TurnChange): string | null {
+  const records = packet?.reader_changes || [];
+  const record = records.find(entry => entry.field === change?.field) || records[0];
+  if (!record) {
+    return change
+      ? 'Asked again with the ' + (change.field === 'place' ? 'place' : 'window') + ' changed to ' + change.to +
+        '; the question itself is unchanged.'
+      : null;
+  }
+  if (record.field === 'place') {
+    return 'Asked again at ' + (record.label || change?.to || 'the place the reader chose') +
+      ' — the reader supplied that place, and the engine did not read it out of the sentence. The question itself is unchanged.';
+  }
+  if (record.applied) {
+    return 'Asked again for ' + (record.label || record.requested) + ' instead of the window written in the sentence. ' +
+      'The window was resolved by the engine\'s own day tables, and the question itself is unchanged.';
+  }
+  return 'The reader asked for the window “' + String(record.requested || change?.to || '') + '”, and the workspace could not resolve it (' +
+    String(record.detail || 'no day came out of the phrase') + '). The window written in the question is what was read.';
+}
+
+/* ---- a turn in flight across a reload -------------------------------------------------------- */
+
+/* The request id a turn in flight was minted with, kept in this tab so a reload can ask the workspace
+   what happened to that exact turn. It is a pointer, not a result: nothing here is an answer. */
+export type Inflight = { request_id: string; question: string; at: string; conversation_id: string | null };
+export const INFLIGHT_KEY = 'weathergpt.inflight';
+
+export function readInflight(): Inflight | null {
+  try {
+    const stored = window.sessionStorage.getItem(INFLIGHT_KEY);
+    if (!stored) return null;
+    const parsed = JSON.parse(stored) as Inflight;
+    return parsed && typeof parsed.request_id === 'string' && typeof parsed.question === 'string' ? parsed : null;
+  } catch {
+    /* unreadable or refused storage: the reload simply has nothing to resume */
+    return null;
+  }
+}
+
+export function writeInflight(value: Inflight): void {
+  try {
+    window.sessionStorage.setItem(INFLIGHT_KEY, JSON.stringify(value));
+  } catch {
+    /* the turn still runs; only its ability to survive a reload is lost */
+  }
+}
+
+export function clearInflight(): void {
+  try {
+    window.sessionStorage.removeItem(INFLIGHT_KEY);
+  } catch {
+    /* nothing stored to clear */
+  }
+}
 
 /* The register a reader chooses. It changes how much of the evidence is unfolded on a card; it never
    changes a value, a source or a warning level, and the transcript's default is conversational. */

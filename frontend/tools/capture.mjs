@@ -25,6 +25,18 @@ const ROUTES = ['assistant', 'workspace', 'overview', 'warnings', 'map', 'foreca
   'climate', 'advisories', 'air-quality', 'aviation', 'ensemble', 'verification', 'compare', 'marine',
   'documents', 'briefcase', 'settings'];
 
+/* The place's own page is a shell route rather than a surface (docs/122): it is reached by an address that
+   names a place, it has no rail row, and the registry above cannot derive it. It is named here by address,
+   in both the states a reader can land on, because a page the evidence tool cannot see is a page with no
+   evidence - and this one is the destination every place link in the product points at.
+
+   An entry is a hash fragment plus the name its files take: an address carries a question mark and a file
+   name should not. */
+const ADDRESSES = [
+  { name: 'place', hash: 'place?place=Kochi,%20Kerala&plat=9.93&plon=76.26' },
+  { name: 'place-refused', hash: 'place?place=Kochi,%20Kerala&plat=9.93' },
+];
+
 function arg(name, fallback = null) {
   const index = process.argv.indexOf('--' + name);
   return index === -1 ? fallback : (process.argv[index + 1] ?? true);
@@ -33,7 +45,8 @@ function arg(name, fallback = null) {
 const only = String(arg('only', '') || '').split(',').map(part => part.trim()).filter(Boolean);
 const outDir = path.resolve(String(arg('out', OUT)));
 const colourSchemes = arg('light-only', false) ? ['light'] : ['light', 'dark'];
-const routes = only.length ? ROUTES.filter(route => only.includes(route)) : ROUTES;
+const targets = ROUTES.map(id => ({ name: id, hash: id })).concat(ADDRESSES);
+const routes = only.length ? targets.filter(target => only.includes(target.name)) : targets;
 
 /* UI_CHANNEL=chrome drives the browser installed on this machine; otherwise Playwright's own Chromium. */
 const CHANNEL = process.env.UI_CHANNEL || undefined;
@@ -50,7 +63,7 @@ for (const scheme of colourSchemes) {
     page.on('console', message => { if (message.type() === 'error') failures.push('console: ' + message.text().slice(0, 120)); });
     page.on('response', response => { if (response.status() >= 400) failures.push(response.status() + ' ' + response.url().replace(BASE, '')); });
     for (const route of routes) {
-      await page.goto(BASE + '/#/' + route, { waitUntil: 'domcontentloaded' });
+      await page.goto(BASE + '/#/' + route.hash, { waitUntil: 'domcontentloaded' });
       await page.waitForSelector('main', { timeout: 30_000 }).catch(() => {});
       await page.waitForTimeout(1200);
       /* The workspace reads some sections only as they near the screen; a full-page shot must show them. */
@@ -61,7 +74,7 @@ for (const scheme of colourSchemes) {
         window.scrollTo(0, 0);
       });
       await page.waitForTimeout(600);
-      const file = path.join(outDir, scheme + '-' + route + '@' + view.name + '.png');
+      const file = path.join(outDir, scheme + '-' + route.name + '@' + view.name + '.png');
       await mkdir(path.dirname(file), { recursive: true });
       await page.screenshot({ path: file, fullPage: false });
       const metrics = await page.evaluate(() => ({
@@ -71,8 +84,8 @@ for (const scheme of colourSchemes) {
         sections: document.querySelectorAll('main section').length,
       }));
       const overflow = metrics.scrollWidth - metrics.clientWidth;
-      report.push({ scheme, width: view.width, route, file, overflow, heading: (metrics.heading || '').slice(0, 40), sections: metrics.sections, failures });
-      console.log(scheme.padEnd(5), String(view.width).padStart(4), route.padEnd(13), 'overflow', String(overflow).padStart(3), '| sections', String(metrics.sections).padStart(2), '| failures', failures.length);
+      report.push({ scheme, width: view.width, route: route.name, file, overflow, heading: (metrics.heading || '').slice(0, 40), sections: metrics.sections, failures });
+      console.log(scheme.padEnd(5), String(view.width).padStart(4), route.name.padEnd(13), 'overflow', String(overflow).padStart(3), '| sections', String(metrics.sections).padStart(2), '| failures', failures.length);
     }
     await context.close();
   }

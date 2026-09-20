@@ -322,6 +322,10 @@ describe('the answer card, held against the vanilla checks', () => {
     await user.click(await screen.findByRole('button', { name: String(first.label) }));
     await waitFor(() => expect(bodies).toHaveLength(2));
     expect(bodies[1].selection_id).toBe(first.selection_id);
-    expect(bodies[1].question).toBe(String(first.label));
+    /* The question the choice belongs to, not the choice's own label. The engine binds a selection to
+       the question it was offered for and refuses the label as a question: measured against the running
+       engine on 20 September 2026, sending "Ahmedabad, Gujarat" with a valid selection id answered
+       "This place choice belongs to another question. Ask again to select a place." */
+    expect(bodies[1].question).toBe(RECORDED.clarification.question);
   });
 });

@@ -38,6 +38,16 @@ export const server = setupServer(
     HttpResponse.json({ schema_version: 'plan-view-v1', status: 'ok', plans: [], note: 'no plans' })),
   http.get('/api/conversations', () =>
     HttpResponse.json({ schema_version: 'conversation-ledger-v1', total: 0, limit: 40, conversations: [], note: 'stored locally' })),
+  /* A turn left in flight restores its own result when the shell mounts, so a suite that leaves one running
+     asks this route with the identifier it minted. The default says the workspace has never heard of that
+     identifier - which is the honest answer for a mocked workspace and leaves nothing on screen, since a
+     restored turn is shown only once the workspace confirms it. The identifier is echoed rather than
+     invented: the client tells its own read from another turn's by the echo. A suite testing resume
+     installs its own handler. */
+  http.get('/api/chat/result', ({ request }) =>
+    HttpResponse.json({ schema_version: 'chat-result-v1', request_id: new URL(request.url).searchParams.get('request_id') || '',
+      kept_seconds: 900, checked_at_utc: '2026-09-19T06:30:00+00:00', state: 'unknown', packet: null,
+      detail: 'This workspace has no turn with this identifier.' })),
   // A conversation makes two reads of its own while a turn runs: the provisional first line, and the stage
   // the engine is on. They are part of mounting the conversation, so they have defaults here rather than in
   // every suite — a spec that cares about either overrides its handler.

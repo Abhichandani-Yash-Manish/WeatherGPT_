@@ -268,7 +268,7 @@ export function EditionBars({ editions }: { editions: { date: string; rows: numb
           const left = 30 + index * slot;
           return (
             <g key={edition.date}>
-              <rect className="dash-bar" x={left} y={110 - height} width={Math.max(6, slot - 10)} height={height} />
+              <rect className="dash-chart-bar" x={left} y={110 - height} width={Math.max(6, slot - 10)} height={height} />
               <text className="dash-value" x={left + Math.max(6, slot - 10) / 2} y={104 - height}>{edition.rows}</text>
               <text className="dash-axis" x={left + Math.max(6, slot - 10) / 2} y="126" textAnchor="middle">{edition.date.slice(5)}</text>
             </g>

@@ -239,6 +239,9 @@ export type AnswerPacket = {
   retrieval_plan?: RetrievalPlanEntry[];
   retrieval_coverage?: unknown[];
   resolved_points?: Record<string, ResolvedPoint>;
+  /* Changes the reader made to this turn beyond the sentence: a place substituted, a window moved.
+     Additive and absent on every packet that has none, so a recorded packet still renders. */
+  reader_changes?: ReaderChange[];
   pending_slots?: { name?: string; question?: string; [key: string]: unknown }[];
   charts?: Chart[];
   calculations?: Calculation[];
@@ -285,7 +288,11 @@ export type Trace = {
 
 export type ChatProgress = {
   schema_version: string;
-  state: 'idle' | 'working' | 'done' | string;
+  /* `queued` is a turn the workspace has accepted and not started; `not_running` is this read's own
+     answer for an identifier it is not running, which is never another turn's stage. */
+  state: 'idle' | 'queued' | 'running' | 'not_running' | 'working' | 'done' | string;
+  /* The turn this read is about, echoed by the engine so a page can check it is reading its own. */
+  request_id?: string | null;
   stage: string | null;
   stage_label: string | null;
   stages_seen: string[];
@@ -297,6 +304,38 @@ export type ChatProgress = {
   stages_are_facts_not_progress?: boolean;
   checked_at_utc?: string | null;
   turn_id?: string | null;
+};
+
+/* One finished turn, collected by the request id the client minted. The states are the server's own:
+   `pending` (still running here), `ready` (the packet below), `cancelled` (the stopped turn's own
+   packet), `expired` (this process held it and let it go), `unknown` (it never held it). A refresh
+   mid-turn uses this; none of the five is an empty success. */
+export type ChatResult = {
+  schema_version: string;
+  request_id: string;
+  state: 'pending' | 'ready' | 'cancelled' | 'expired' | 'unknown';
+  detail: string;
+  kept_seconds?: number | null;
+  checked_at_utc?: string | null;
+  packet?: AnswerPacket | null;
+};
+
+/* A change the reader made to a turn that the sentence itself does not state — the place or the
+   window. The engine records it, including whether it was applied, so the surface states the change
+   from the engine's own record rather than from what the interface believes it sent. */
+export type ReaderChange = {
+  field: 'place' | 'window' | string;
+  requested?: string | null;
+  applied?: boolean;
+  label?: string | null;
+  start_local?: string | null;
+  end_local?: string | null;
+  latitude?: number;
+  longitude?: number;
+  named_in_question?: string | null;
+  detail?: string | null;
+  basis?: string | null;
+  [key: string]: unknown;
 };
 
 export type ChatPreview = {

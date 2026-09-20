@@ -1,0 +1,162 @@
+[
+ {
+  "scheme": "light",
+  "width": 1440,
+  "route": "place",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/frontend-batch-20260920/shots/light-place@1440.png",
+  "overflow": 0,
+  "heading": "Kochi, Kerala",
+  "sections": 6,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1440,
+  "route": "place-refused",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/frontend-batch-20260920/shots/light-place-refused@1440.png",
+  "overflow": 0,
+  "heading": "No place to show",
+  "sections": 1,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1024,
+  "route": "place",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/frontend-batch-20260920/shots/light-place@1024.png",
+  "overflow": 0,
+  "heading": "Kochi, Kerala",
+  "sections": 6,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 1024,
+  "route": "place-refused",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/frontend-batch-20260920/shots/light-place-refused@1024.png",
+  "overflow": 0,
+  "heading": "No place to show",
+  "sections": 1,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 768,
+  "route": "place",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/frontend-batch-20260920/shots/light-place@768.png",
+  "overflow": 0,
+  "heading": "Kochi, Kerala",
+  "sections": 6,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 768,
+  "route": "place-refused",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/frontend-batch-20260920/shots/light-place-refused@768.png",
+  "overflow": 0,
+  "heading": "No place to show",
+  "sections": 1,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 390,
+  "route": "place",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/frontend-batch-20260920/shots/light-place@390.png",
+  "overflow": 0,
+  "heading": "Kochi, Kerala",
+  "sections": 6,
+  "failures": []
+ },
+ {
+  "scheme": "light",
+  "width": 390,
+  "route": "place-refused",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/frontend-batch-20260920/shots/light-place-refused@390.png",
+  "overflow": 0,
+  "heading": "No place to show",
+  "sections": 1,
+  "failures": []
+ },
+ {
+  "scheme": "dark",
+  "width": 1440,
+  "route": "place",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/frontend-batch-20260920/shots/dark-place@1440.png",
+  "overflow": 0,
+  "heading": "Kochi, Kerala",
+  "sections": 6,
+  "failures": []
+ },
+ {
+  "scheme": "dark",
+  "width": 1440,
+  "route": "place-refused",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/frontend-batch-20260920/shots/dark-place-refused@1440.png",
+  "overflow": 0,
+  "heading": "No place to show",
+  "sections": 1,
+  "failures": []
+ },
+ {
+  "scheme": "dark",
+  "width": 1024,
+  "route": "place",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/frontend-batch-20260920/shots/dark-place@1024.png",
+  "overflow": 0,
+  "heading": "Kochi, Kerala",
+  "sections": 6,
+  "failures": []
+ },
+ {
+  "scheme": "dark",
+  "width": 1024,
+  "route": "place-refused",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/frontend-batch-20260920/shots/dark-place-refused@1024.png",
+  "overflow": 0,
+  "heading": "No place to show",
+  "sections": 1,
+  "failures": []
+ },
+ {
+  "scheme": "dark",
+  "width": 768,
+  "route": "place",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/frontend-batch-20260920/shots/dark-place@768.png",
+  "overflow": 0,
+  "heading": "Kochi, Kerala",
+  "sections": 6,
+  "failures": []
+ },
+ {
+  "scheme": "dark",
+  "width": 768,
+  "route": "place-refused",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/frontend-batch-20260920/shots/dark-place-refused@768.png",
+  "overflow": 0,
+  "heading": "No place to show",
+  "sections": 1,
+  "failures": []
+ },
+ {
+  "scheme": "dark",
+  "width": 390,
+  "route": "place",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/frontend-batch-20260920/shots/dark-place@390.png",
+  "overflow": 0,
+  "heading": "Kochi, Kerala",
+  "sections": 6,
+  "failures": []
+ },
+ {
+  "scheme": "dark",
+  "width": 390,
+  "route": "place-refused",
+  "file": "/Users/yashabhichandani/Desktop/WeatherGPT/research/reviews/frontend-batch-20260920/shots/dark-place-refused@390.png",
+  "overflow": 0,
+  "heading": "No place to show",
+  "sections": 1,
+  "failures": []
+ }
+]

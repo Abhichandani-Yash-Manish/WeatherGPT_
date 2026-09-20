@@ -1,369 +1,459 @@
-/* Module surfaces. Everything here is built from the existing token layer in web/tokens.css and the
-   class vocabulary in styles/app.css: no new colour, no new typeface, and no shape that reads as a
-   measurement. The hazard ramp is drawn only through .chip-colour[data-colour], which Evidence.tsx
-   sets only when the payload stated a colour, so a surface cannot imply a warning state by styling. */
+/* The guided module surfaces, on the workspace's design system.
+   ============================================================================
+   Eighteen surfaces, one stylesheet. Each of them states what a read returned and nothing else: a value
+   with its unit, the window it covers, the source line under it. That contract is not in this file. What
+   is in this file is the dress.
 
+   The dress was written for the instrument design (docs/97, docs/98): a fluid type scale and a light
+   paper token layer, a display serif for a masthead and for every value, glass cards on a backdrop blur,
+   a tracked-out all-caps label above every heading, and a hazard ramp mixed to sit on white. docs/111
+   repointed the tokens so the palette arrived; the dress did not. This file moves the dress itself onto
+   the system — every declaration below reads --g-*: the 4px rhythm, the three elevations, the gradient
+   fill a raised thing takes, one pale instrument accent, IBM Plex Mono for a value or its provenance and
+   nowhere else, and no type under eleven pixels.
+
+   Three things do not move, because they are the product rather than the dress:
+
+   - a value keeps its unit on its own line, and an absence keeps being stated in words (NOT_RECORDED,
+     NO_ROW, 'colour not stated'). No rule here hides, zeroes or empties one: a surface with nothing to
+     show is a surface with a sentence in it.
+   - the four published hazard colours are reached only through .chip-colour[data-colour], .dash-strip-*,
+     .district-* and .dash-day-flag, and the payload is what sets those attributes. No colour is chosen
+     here, an absence never takes a hue that could read as a severity, and a district with no published
+     day is never drawn green.
+   - a source's own wording — a hazard phrase, a place name, a unit, a source id — is set in the system's
+     type and is never re-cased or rewritten by a rule.
+
+   Every size here is a literal pixel value. It used to be clamp() behind a variable, which put the
+   smallest type on these surfaces outside the 11px floor check rather than above it — the check reads
+   stylesheets and a variable is not a size. The floor measures them now.
+
+   The dashboard's own names in this file (dash-*, district-*, inspector-*, map-tip-*) are the shared
+   chart, map and KPI vocabulary the Today, Map and Workspace surfaces draw with; they are on the same
+   tokens as the rest, so one system dresses all of them. */
+
+/* ---- the frame ---------------------------------------------------------------------------------- */
+/* The host supplies the frame's own inset (px-6 py-5 on the scrolling region) and this is the rhythm
+   inside it; the old rule added a second, wider padding of its own on top and the surface read as a
+   page floating in a page. */
 .module {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
-  padding: var(--pad);
+  gap: var(--g-6);
+  padding: 0 0 var(--g-6);
   width: 100%;
   max-width: 88rem;
   margin-inline: auto;
 }
 
-.module-head { display: flex; flex-direction: column; gap: 10px; }
+.module-head { display: flex; flex-direction: column; gap: var(--g-3); }
 .module h1 {
   margin: 0;
-  font-family: var(--serif);
-  font-size: var(--step-4);
-  line-height: 1.08;
-  letter-spacing: var(--track-tight);
+  font-family: var(--g-sans);
+  font-size: 1.7rem;
+  font-weight: 600;
+  line-height: 1.16;
+  letter-spacing: -0.024em;
+  color: var(--g-paper);
   text-wrap: balance;
 }
+/* A section heading is a heading, not a sign: sentence case at label size, with no rule drawn in front of
+   it and nothing shouted. The word is found by its position above its own block. */
 .module h2 {
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: var(--step--1);
-  font-weight: 700;
-  letter-spacing: var(--track-wide);
-  text-transform: uppercase;
-  color: var(--mute);
+  gap: var(--g-2);
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--g-mist);
 }
-.module h2::before {
-  content: '';
-  width: 14px;
-  height: 2px;
-  border-radius: var(--r-pill);
-  background: var(--data);
-  opacity: .7;
-}
-.module h3 { margin: 0; font-size: var(--step-0); }
-.module-lead { margin: 0; max-width: var(--measure); color: var(--ink-soft); }
-.module-note { margin: 0; max-width: var(--measure); color: var(--mute); font-size: var(--step--1); }
-.module-envelope { margin: 0; color: var(--mute); font-size: var(--step--1); }
+.module h3 { margin: 0; font-size: 13.5px; font-weight: 600; color: var(--g-mist); }
+.module-lead { margin: 0; max-width: 68ch; color: var(--g-mist); font-size: 14.5px; }
+/* The absence line and the limitation line are the same voice: a sentence a reader is meant to read, in
+   the secondary ink, never the tertiary step that carries provenance. */
+.module-note { margin: 0; max-width: 68ch; color: var(--g-mist); font-size: 13.5px; }
+.module-envelope { margin: 0; color: var(--g-mist); font-size: 12.5px; }
 
+/* A section is a card: the gradient fill, the one-pixel top-edge light and the shadow underneath that
+   --g-e1 carries in the same declaration, so it can never take one and forget the other. */
 .module-section {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  background: var(--glass-1);
-  border: 1px solid var(--glass-line);
-  border-radius: var(--r-2xl);
-  box-shadow: var(--glass-shadow);
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  padding: clamp(var(--space-4), 2vw, var(--space-5));
-  transition: box-shadow var(--motion-base) var(--ease-out-soft), border-color var(--motion-base) var(--ease-out-soft);
+  gap: var(--g-4);
+  background: var(--g-fill);
+  border: 1px solid var(--g-line-soft);
+  border-radius: var(--g-r-lg);
+  box-shadow: var(--g-e1);
+  padding: var(--g-5);
 }
-.module-section:hover { border-color: color-mix(in oklab, var(--data) 24%, var(--glass-line)); box-shadow: var(--glass-shadow-lg); }
+/* No hover state, deliberately. A section is not a control, and the system's own `.g .module-section`
+   rule fixes its border colour at equal specificity from later in the cascade — so a hover edge declared
+   here would be a value the browser never used. A block that states what a read returned does not need to
+   answer the pointer. */
 .module-section h2, .module-section h3 { align-self: start; }
 
-/* ---- controls ------------------------------------------------------------------------------- */
-.module-controls { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--space-3); }
-.module-field { display: flex; flex-direction: column; gap: 4px; font-size: var(--step--1); color: var(--mute); }
+/* ---- controls ----------------------------------------------------------------------------------- */
+.module-controls { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--g-3); }
+.module-field { display: flex; flex-direction: column; gap: var(--g-1); font-size: 12.5px; color: var(--g-mist); }
+/* The raised fill, not a translucent glass: a field is something a reader types into and it should sit
+   on the card rather than in it. */
 .module-field :where(input, select) {
-  border: 1px solid var(--glass-line);
-  border-radius: var(--r-pill);
-  background: var(--glass-2);
-  color: var(--ink);
+  border: 1px solid var(--g-line);
+  border-radius: var(--g-r-sm);
+  background: var(--g-raise);
+  color: var(--g-paper);
   font: inherit;
-  font-size: var(--step-0);
-  padding: 8px 12px;
+  font-size: 13.5px;
+  padding: var(--g-2) var(--g-3);
   min-width: 12rem;
-  backdrop-filter: blur(10px) saturate(1.15);
-  -webkit-backdrop-filter: blur(10px) saturate(1.15);
-  transition: border-color var(--motion-fast) var(--ease-out-soft), background var(--motion-fast) var(--ease-out-soft);
+  transition: border-color var(--g-fast) var(--g-ease), background var(--g-fast) var(--g-ease);
 }
-.module-field :where(input, select):hover { border-color: var(--line-strong); background: var(--glass-1); }
-.module-place { display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: flex-start; }
-.module-place-results { flex: 1 1 22rem; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
-.module-place-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.module-field :where(input, select):hover { border-color: var(--g-mist-2); }
+.module-place { display: flex; flex-wrap: wrap; gap: var(--g-4); align-items: flex-start; }
+.module-place-results { flex: 1 1 22rem; min-width: 0; display: flex; flex-direction: column; gap: var(--g-2); }
+.module-place-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--g-1); }
 .module-place-button { width: 100%; justify-content: flex-start; text-align: left; }
 
-/* ---- tabular data: real tables and definition lists, never divs pretending ------------------ */
-.module-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: var(--step--1); }
-.module-table caption { padding-bottom: 8px; text-align: left; color: var(--mute); }
-.module-table :where(th, td) {
-  padding: 7px 10px 7px 8px;
-  border-bottom: 1px solid var(--glass-line);
-  text-align: left;
-  vertical-align: top;
+/* ---- tabular data: real tables and definition lists, never divs pretending ----------------------
+   A table on a module surface is the workspace's table. The shared atoms (`.g table`, `.g th`, `.g td`)
+   already carry its type, its rule, its row hover and its cell padding, and they win — every one of them
+   is scoped to `.g`, this stylesheet loads before the workspace's, and the workspace's rules are the more
+   specific. Restating them here is how a stylesheet ends up claiming a size or a padding the browser
+   never used, so what is left is what is this table's own. */
+/* The caption is text on a raised card, so it takes the mist step for the reason the table headers do: the
+   tertiary step measures about 4.2:1 there and axe reports it as a serious violation, while mist clears AA. */
+.module-table caption { padding-bottom: var(--g-2); text-align: left; color: var(--g-mist); font-size: 12.5px; }
+/* A source id must not be broken mid-token across two lines, and a value cell keeps the machine voice
+   the system gives every piece of provenance. */
+.module-table :where(th, td) { hyphens: none; }
+.module-table .evidence, .module-table th.evidence, .module-table td.evidence {
+  font-family: var(--g-mono);
+  font-variant-numeric: tabular-nums;
 }
-.module-table tbody tr { transition: background var(--motion-fast) var(--ease-out-soft); }
-.module-table tbody tr:hover { background: color-mix(in oklab, var(--data) 8%, transparent); }
-.module-table thead th {
-  color: var(--mute);
-  font-weight: 700;
-  font-size: var(--step--1);
-  letter-spacing: .04em;
-  text-transform: uppercase;
-  border-bottom: 1px solid var(--line-strong);
-}
-.module-table tbody th { font-weight: 600; }
-.module-table td.evidence, .module-table th.evidence, .module-table .evidence { font-family: var(--mono); font-variant-numeric: tabular-nums; }
 
 .module-facts { display: grid; gap: 0; margin: 0; }
-.module-facts > .fact-row + .fact-row { border-top: 1px solid var(--glass-line); }
-.module-fact-label { color: var(--ink-soft); }
+.module-facts > .fact-row + .fact-row { border-top: 1px solid var(--g-line-soft); }
+.module-fact-label { color: var(--g-mist); }
 
-/* ---- evidence footer ------------------------------------------------------------------------ */
+/* ---- evidence footer ---------------------------------------------------------------------------- */
 .module-evidence {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
-  border-top: 1px solid var(--line-strong);
-  padding-top: var(--space-4);
+  gap: var(--g-4);
+  border-top: 1px solid var(--g-line);
+  padding-top: var(--g-5);
 }
-.module-coverage, .module-limits, .module-sources { display: flex; flex-direction: column; gap: 6px; }
-.module-limits ul { margin: 0; padding-left: 18px; max-width: var(--measure); }
-.module-limits li { margin-bottom: 3px; }
-.module-counts { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 4px var(--space-3); margin: 0; }
+.module-coverage, .module-limits, .module-sources { display: flex; flex-direction: column; gap: var(--g-2); }
+.module-limits ul { margin: 0; padding-left: var(--g-5); max-width: 68ch; }
+.module-limits li { margin-bottom: var(--g-1); }
+.module-counts { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: var(--g-1) var(--g-3); margin: 0; }
 .module-count {
   display: flex;
   justify-content: space-between;
-  gap: var(--space-2);
-  padding: 4px 8px;
-  border-radius: var(--r);
-  background: color-mix(in oklab, var(--sunk) 42%, transparent);
+  gap: var(--g-2);
+  padding: var(--g-1) var(--g-2);
+  border-radius: var(--g-r-sm);
+  background: var(--g-t2);
 }
-.module-count dt { color: var(--ink-soft); }
+.module-count dt { color: var(--g-mist); }
 .module-count dd { margin: 0; }
 
-/* A failed read looks like a failed read, and it is not styled like evidence. */
+/* A failed read looks like a failed read, and it is not dressed as evidence. The red is the system's own
+   alert step and it is carried by an edge and a six percent wash, so the sentence stays the loudest part. */
 .module-failure {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--space-3);
-  border: 1px solid color-mix(in oklab, var(--red) 32%, var(--glass-line));
-  border-left: 3px solid var(--red);
-  border-radius: var(--r-2xl);
-  background: color-mix(in oklab, var(--red) 6%, transparent);
-  padding: var(--space-4);
+  gap: var(--g-3);
+  border: 1px solid color-mix(in srgb, var(--g-red) 32%, var(--g-line));
+  border-left: 3px solid var(--g-red);
+  border-radius: var(--g-r-lg);
+  background: color-mix(in srgb, var(--g-red) 6%, transparent);
+  padding: var(--g-4);
 }
 
-/* ---- state chips: palette assigned by the payload, never by the surface --------------------- */
-.chip-colour { font-weight: 600; }
-.chip-colour[data-colour='red'] { background: var(--red-wash); border-color: var(--red); color: var(--red); }
-.chip-colour[data-colour='orange'] { background: var(--orange-wash); border-color: var(--orange); color: var(--orange); }
-.chip-colour[data-colour='yellow'] { background: var(--yellow-wash); border-color: var(--yellow); color: var(--yellow); }
-.chip-colour[data-colour='green'] { background: var(--green-wash); border-color: var(--green); color: var(--green); }
-.chip-unstated { border-style: dashed; color: var(--mute); }
-.chip.is-stale { background: var(--red-wash); border-color: var(--red); color: var(--red); }
-.chip.is-current { background: var(--green-wash); border-color: var(--green); color: var(--green); }
-.chip.is-unknown { border-style: dashed; color: var(--mute); }
-.module-gap { color: var(--mute); }
+/* The loading state's two shapes. A read that is still working reserves the room its result will occupy,
+   and the shape is this module layer's own — the workspace has no skeleton, and a bar drawn inline was an
+   arbitrary value with no name. The wash is the same 38 percent of the line colour it was, in the same
+   colour space, so the skeleton is the same grey it was. */
+.module-skeleton-bar { background: color-mix(in oklab, var(--g-line) 38%, transparent); }
 
-@media (max-width: 60rem) {
-  .module-table { font-size: var(--step--1); }
-  .module-table :where(th, td) { padding-right: 8px; }
-}
-/* ---- dashboard (docs/97) ------------------------------------------------------------------------
-   The command view on the Today surface. Everything here is built from the token layer in
-   web/tokens.css: no new colour, no new typeface, no shape that reads as a measurement. Hazard
-   colours appear only on elements that carry a published colour, through the same data-colour
-   attributes the chip vocabulary uses, so a surface cannot imply a warning state by styling. */
+/* ---- state chips: palette assigned by the payload, never by the surface --------------------------
+   The wash is the system's own sixteen percent mix of the colour the payload named — the pair FE16
+   measures — and the ink is that same colour. Both the chip's base rule (`.g .chip`, the shared atom)
+   and the rule that fixes its neutral edge are scoped to `.g` and load after this stylesheet, so a
+   published chip's own colour has to be stated at a specificity that cannot be lost to source order.
+   It was lost: the edge the design calls for printed as a neutral line on every surface. The selector is
+   scoped to `.g` the way the system's own repaired rules are, so the outcome no longer depends on which
+   of the two files the bundler emits first. */
+/* A published hazard colour is read as the source printed it, so the ink IS that colour - which means its field
+   has to be dark enough for it to clear AA, and `--*-wash` (a 16 percent mix over TRANSPARENT) composites over
+   whatever card it happens to sit on. Measured in a real browser, 20 September 2026: a card's own fill is a few
+   percent of white, and that was enough to put green ink at 4.07:1 where the page ground gives it 5.1:1 - axe
+   reported it as a serious violation on the Today surface at every width while FE16, which measures the colour
+   against its wash and never composites the card, passed. Mixing the wash over the product's own ground instead
+   makes the chip's field a value this file decides rather than one its container does. */
+.g .chip-colour[data-colour='red'] { background: color-mix(in srgb, var(--g-red) 16%, var(--g-void)); border-color: var(--g-red); color: var(--g-red); }
+.g .chip-colour[data-colour='orange'] { background: color-mix(in srgb, var(--g-orange) 16%, var(--g-void)); border-color: var(--g-orange); color: var(--g-orange); }
+.g .chip-colour[data-colour='yellow'] { background: color-mix(in srgb, var(--g-yellow) 16%, var(--g-void)); border-color: var(--g-yellow); color: var(--g-yellow); }
+.g .chip-colour[data-colour='green'] { background: color-mix(in srgb, var(--g-green) 16%, var(--g-void)); border-color: var(--g-green); color: var(--g-green); }
+/* An unstated colour, and a station's unknown state, are a dashed edge and a grey: a shape a reader can
+   tell from a published colour at a glance, and never a grey that could be read as the quiet end of the
+   ramp. Stated at the same specificity as the rule above, for the same reason. */
+.g .chip.chip-unstated, .g .chip.is-unknown { border-style: dashed; color: var(--g-mist-2); }
+/* Two rules are gone from here rather than repaired: `.chip.is-stale` and `.chip.is-current` painted a
+   read's age red and green. They never applied — the shared `.g .chip` atom overrode the fill and the ink
+   at equal specificity from later in the cascade — so nothing a reader saw changes by removing them, and
+   what is removed is the only place this stylesheet asked for a hazard hue where no source printed one.
+   The age is not lost: the chip prints the source's own word for it ('stale', 'within_prototype_age_limit'),
+   which is what a reader reads. */
+.module-gap { color: var(--g-mist-2); }
+
+/* A chip is one word or two, and it is a chip wherever it sits: two lines inside a table cell is what
+   made a 'colour not stated' row read as a broken table. */
+.chip { white-space: nowrap; }
+.module-table td .chip { vertical-align: middle; }
+
+/* ---- the Today command view: filters, counted values and the printed-day strip -------------------
+   docs/97. Everything below is the same system as the section above: no separate colour, no separate
+   typeface, no shape that reads as a measurement. A hazard colour appears only on an element that
+   carries a published colour, through the same data attributes the chip vocabulary uses. */
 
 .dash-bar {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--r-card);
-  box-shadow: var(--lift-1);
-  padding: var(--space-4);
+  gap: var(--g-3);
+  background: var(--g-fill);
+  border: 1px solid var(--g-line-soft);
+  border-radius: var(--g-r-lg);
+  box-shadow: var(--g-e1);
+  padding: var(--g-4);
 }
-.dash-bar-fields { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--space-3); }
+.dash-bar-fields { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--g-3); }
 .dash-bar-fields .module-field :where(input, select) { min-width: 10rem; }
-.dash-toggles { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.dash-toggles { display: flex; flex-wrap: wrap; align-items: center; gap: var(--g-3); }
 .dash-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--g-2);
   min-height: 44px;
-  padding: 0 10px;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--r-pill);
-  background: var(--paper);
-  color: var(--ink-soft);
-  font-size: var(--step--1);
+  padding: 0 var(--g-3);
+  border: 1px solid var(--g-line);
+  border-radius: var(--g-r-pill);
+  background: var(--g-fill);
+  color: var(--g-mist);
+  font-size: 12.5px;
   cursor: pointer;
+  transition: color var(--g-fast) var(--g-ease), border-color var(--g-fast) var(--g-ease);
 }
-.dash-toggle:has(input:checked) { border-color: var(--data); color: var(--ink); background: var(--data-wash); }
-.dash-toggle input { accent-color: var(--data); }
+.dash-toggle:has(input:checked) { border-color: var(--g-accent); color: var(--g-paper); background: var(--g-accent-wash); }
+.dash-toggle input { accent-color: var(--g-accent); }
 
-/* KPI row --------------------------------------------------------------------------------------- */
-.dash-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); }
+/* KPI row ------------------------------------------------------------------------------------------ */
+.dash-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--g-3); }
 .dash-kpi {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--g-2);
   min-height: 11rem;
-  background: var(--glass-1);
-  border: 1px solid var(--glass-line);
-  border-radius: var(--r-2xl);
-  box-shadow: var(--glass-shadow);
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  padding: var(--space-4);
-  transition: transform var(--motion-base) var(--ease-spring), box-shadow var(--motion-base) var(--ease-out-soft);
+  background: var(--g-fill);
+  border: 1px solid var(--g-line-soft);
+  border-radius: var(--g-r-lg);
+  box-shadow: var(--g-e1);
+  padding: var(--g-4);
+  transition: transform var(--g-fast) var(--g-ease), box-shadow var(--g-fast) var(--g-ease);
 }
-.dash-kpi:hover { transform: translateY(-2px); box-shadow: var(--glass-shadow-lg); }
-.dash-kpi-label { margin: 0; color: var(--mute); font-size: var(--step--1); letter-spacing: .02em; }
-.dash-kpi-value { margin: 0; display: flex; align-items: baseline; gap: 6px; }
-.dash-kpi-number { font-family: var(--serif); font-size: var(--step-5); line-height: 1; letter-spacing: var(--track-tight); font-variant-numeric: tabular-nums; }
-.dash-kpi-unit { color: var(--ink-soft); font-size: var(--step-0); }
+.dash-kpi:hover { transform: translateY(-2px); box-shadow: var(--g-e2); }
+/* The counted value itself: mono, because mono here means a value a tool owns, and tabular so a count
+   that changes between two looks does not shuffle its line. It scales with its card so a four-figure
+   count cannot run into its neighbour. */
+.dash-kpi-number {
+  font-family: var(--g-mono);
+  font-size: clamp(1.9rem, 1.1rem + 2.2vw, 3rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+  color: var(--g-paper);
+}
+.dash-kpi-label { margin: 0; color: var(--g-mist); font-size: 12.5px; letter-spacing: 0; }
+.dash-kpi-unit { color: var(--g-mist); font-size: 13.5px; }
 .dash-kpi-micro { margin-top: auto; }
-.dash-kpi-caption { margin: 0; color: var(--mute); font-size: var(--step--1); }
+.dash-kpi-caption { margin: 0; color: var(--g-mist); font-size: 12.5px; }
+/* The value slot itself (`.dash-kpi-value`, `.dash-kpis`, `.dash-kpi`) is the workspace's: its layout,
+   its baseline gap and its alignment are stated in the system's stylesheet, which is the more specific
+   and the later. What is this surface's own is the word-shaped value, below. */
+.dash-kpi[data-value-kind='word'] .dash-kpi-value { align-items: flex-start; }
 
-/* micro-visuals --------------------------------------------------------------------------------- */
-.dash-strip { display: flex; height: 14px; border: 1px solid var(--glass-line); border-radius: var(--r-pill); overflow: hidden; }
-.dash-strip-part { display: block; min-width: 4px; background: var(--sunk); }
-.dash-strip-red { background: color-mix(in oklab, var(--red) 72%, transparent); }
-.dash-strip-orange { background: color-mix(in oklab, var(--orange) 72%, transparent); }
-.dash-strip-yellow { background: color-mix(in oklab, var(--yellow) 68%, transparent); }
-.dash-strip-green { background: color-mix(in oklab, var(--green) 62%, transparent); }
+/* micro-visuals ----------------------------------------------------------------------------------- */
+.dash-strip { display: flex; height: 14px; border: 1px solid var(--g-line-soft); border-radius: var(--g-r-pill); overflow: hidden; }
+.dash-strip-part { display: block; min-width: 4px; background: var(--g-void); }
+.dash-strip-red { background: color-mix(in srgb, var(--g-red) 92%, transparent); }
+.dash-strip-orange { background: color-mix(in srgb, var(--g-orange) 92%, transparent); }
+.dash-strip-yellow { background: color-mix(in srgb, var(--g-yellow) 95%, transparent); }
+.dash-strip-green { background: color-mix(in srgb, var(--g-green) 85%, transparent); }
+/* A day with no published colour is hatched, not filled: an absence never takes a hue. */
 .dash-strip-unset {
-  background: repeating-linear-gradient(45deg, var(--line) 0 4px, transparent 4px 8px);
-  box-shadow: inset 0 0 0 1px var(--line-strong);
+  background: repeating-linear-gradient(45deg, var(--g-line) 0 4px, transparent 4px 8px);
+  box-shadow: inset 0 0 0 1px var(--g-line);
 }
-.dash-minibars { display: flex; flex-direction: column; gap: 4px; }
-.dash-minibar { display: flex; align-items: center; gap: 6px; }
-.dash-minibar-bar { display: block; height: 10px; min-width: 2px; border-radius: var(--r-pill); }
-.dash-minibar-label { font-size: var(--step--1); font-variant-numeric: tabular-nums; }
+.dash-minibars { display: flex; flex-direction: column; gap: var(--g-1); }
+.dash-minibar { display: flex; align-items: center; gap: var(--g-2); }
+.dash-minibar-bar { display: block; height: 10px; min-width: 2px; border-radius: var(--g-r-pill); }
+.dash-minibar-label { font-family: var(--g-mono); font-size: 11.5px; font-variant-numeric: tabular-nums; color: var(--g-mist); }
 .dash-ring { width: 48px; height: 48px; }
-.dash-ring-track { fill: none; stroke: var(--sunk); stroke-width: 6; }
-.dash-ring-arc { fill: none; stroke: var(--data); stroke-width: 6; stroke-linecap: round; }
-.dash-ruler { display: flex; align-items: center; gap: 6px; margin: 0; padding-top: 6px; border-top: 1px dashed var(--line); }
-.dash-ruler-mark { width: 10px; height: 10px; border-radius: 2px; background: var(--sand); }
-.dash-ruler-label { font-size: var(--step--1); font-variant-numeric: tabular-nums; }
-.dash-gap { margin: 0; color: var(--mute); font-size: var(--step--1); }
+.dash-ring-track { fill: none; stroke: var(--g-void); stroke-width: 6; }
+.dash-ring-arc { fill: none; stroke: var(--g-accent); stroke-width: 6; stroke-linecap: round; }
+.dash-gap { margin: 0; color: var(--g-mist-2); font-size: 12.5px; }
 
-/* bands and cards ------------------------------------------------------------------------------ */
-.dash-band { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-3); align-items: start; }
-.dash-column { display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; }
+/* bands and cards --------------------------------------------------------------------------------- */
+.dash-band { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--g-3); align-items: start; }
+.dash-column { display: flex; flex-direction: column; gap: var(--g-3); min-width: 0; }
+/* The card's own fill and shadow are the workspace's: `.g .glass, .g .glass-soft, .g .glass-strong,
+   .g .dash-card, .g .planwatch` states a translucent raise on an eighteen-pixel blur for this class
+   from the workspace's stylesheet, which is scoped to `.g` and loads later. A fill and a shadow restated
+   here would be two values the browser never used, so this file keeps what is this card's own: its
+   column, its radius, its inset and its edge width. The map card's second elevation went with them —
+   it was claimed here and never reached the page. */
 .dash-card {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--g-3);
   min-width: 0;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--r-card);
-  box-shadow: var(--lift-1);
-  padding: var(--space-4);
+  border: 1px solid var(--g-line-soft);
+  border-radius: var(--g-r-lg);
+  padding: var(--g-4);
 }
-.dash-card-map { background: var(--raiser); box-shadow: var(--lift-2); }
-.dash-card-head { display: flex; flex-direction: column; gap: 4px; }
-.dash-card-head h2 { margin: 0; font-size: var(--step--1); font-weight: 600; letter-spacing: var(--track-wide); text-transform: uppercase; color: var(--mute); }
+/* The map card is the one card that takes the raised treatment (docs/97): a map is the subject of the
+   block it sits in, so it lifts off the column rather than sitting in it. Stated at three parts for the
+   reason the chip block above gives — the shared card rule is two parts and loads later, so the elevation
+   claimed here never reached the page. */
+.g .dash-card.dash-card-map { background: var(--g-raise-2); box-shadow: var(--g-e2); }
+.dash-card-head { display: flex; flex-direction: column; gap: var(--g-1); }
+.dash-card-head h2 { margin: 0; font-size: 13.5px; font-weight: 600; letter-spacing: 0; text-transform: none; color: var(--g-mist); }
 
-/* map ------------------------------------------------------------------------------------------ */
-.dash-map { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
-.dash-map-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+/* map -------------------------------------------------------------------------------------------- */
+.dash-map { display: flex; flex-direction: column; gap: var(--g-2); min-width: 0; }
+.dash-map-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--g-2); }
 .dash-map-controls .btn { min-width: 44px; min-height: 44px; justify-content: center; }
-.dash-map-zoom { font-size: var(--step--1); }
+.dash-map-zoom { font-size: 12.5px; }
+/* A frame with nothing in it yet, or with a read that failed: a dashed edge and the void, never a blank. */
 .dash-map-frame {
   display: grid;
   place-items: center;
   min-height: 22rem;
-  border: 1px dashed var(--line-strong);
-  border-radius: var(--r-card);
-  background: var(--sunk);
-  padding: var(--space-4);
+  border: 1px dashed var(--g-line);
+  border-radius: var(--g-r);
+  background: var(--g-void);
+  padding: var(--g-4);
   text-align: center;
 }
-.dash-map-skeleton { background: repeating-linear-gradient(90deg, var(--sunk) 0 28px, var(--paper) 28px 56px); }
-.dash-map-figure { margin: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+.dash-map-skeleton { background: repeating-linear-gradient(90deg, var(--g-void) 0 28px, var(--g-raise) 28px 56px); }
+.dash-map-figure { margin: 0; display: flex; flex-direction: column; gap: var(--g-2); }
 .dash-map-svg {
   width: 100%;
   height: auto;
   aspect-ratio: 16 / 11;
   max-height: 34rem;
-  border: 1px solid var(--line);
-  border-radius: var(--r-card);
-  background: linear-gradient(var(--paper), var(--ground));
+  border: 1px solid var(--g-line-soft);
+  border-radius: var(--g-r);
+  background: linear-gradient(var(--g-raise), var(--g-bg));
 }
-.dash-map-svg:focus-visible { outline: 2px solid var(--data); outline-offset: 2px; }
-.dash-map-caption { color: var(--mute); font-size: var(--step--1); }
+.dash-map-svg:focus-visible { outline: 2px solid var(--g-accent); outline-offset: 2px; }
+/* The schematic figure's own ink: the paths draw in currentColor, so the whole drawing takes the line
+   colour from here. It is not .dash-map-svg — that is a bordered frame with an aspect ratio, and this is
+   a line drawing that has no frame. */
+.dash-map-ink { color: var(--g-line); }
+/* On a raised card the tertiary step is not legible: a few percent of white in the card's fill drops it to
+   about 4.2:1, which axe reported. The ladder's own rule is that the tertiary step is a SURFACE ink - for the
+   page ground - and that text over a raised surface takes mist. Same reason for the zoom control below, which
+   inherits the tertiary step from `.quiet`. */
+.dash-map-caption { color: var(--g-mist); font-size: 12.5px; }
 .dash-map-readout { min-height: 2.6em; }
-.dash-map-legend { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-3); }
-.dash-map-legend li { display: inline-flex; align-items: center; gap: 6px; font-size: var(--step--1); }
+.dash-map-legend { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--g-3); }
+.dash-map-legend li { display: inline-flex; align-items: center; gap: var(--g-2); font-size: 12.5px; }
 /* A filled district is filled with the colour its own row published, at a low fill-opacity so the shape of
    the country still reads through the colours. Fill-opacity is a presentation property rather than a colour
    of this surface's own making: the hue is the product's, and only for a district that published one. */
-.district { fill: var(--ground); stroke: var(--line-strong); stroke-width: .01; vector-effect: non-scaling-stroke; }
-.district-quiet { fill: var(--green); fill-opacity: .22; }
-.district-red { fill: var(--red); fill-opacity: .88; stroke: var(--red); stroke-opacity: 1; stroke-width: .06; }
-.district-orange { fill: var(--orange); fill-opacity: .85; stroke: var(--orange); stroke-opacity: 1; stroke-width: .06; }
-.district-yellow { fill: var(--yellow); fill-opacity: .78; stroke: var(--yellow); stroke-opacity: 1; stroke-width: .06; }
-.district-green { fill: var(--green); fill-opacity: .62; stroke: var(--green); stroke-opacity: 1; stroke-width: .06; }
-.district-stated-not-on-ramp { fill: var(--sunk); stroke: var(--slate); stroke-dasharray: 2 2; }
+.district { fill: var(--g-bg); stroke: var(--g-line); stroke-width: .01; vector-effect: non-scaling-stroke; }
+.district-quiet { fill: var(--g-green); fill-opacity: .22; }
+.district-red { fill: var(--g-red); fill-opacity: .88; stroke: var(--g-red); stroke-opacity: 1; stroke-width: .06; }
+.district-orange { fill: var(--g-orange); fill-opacity: .85; stroke: var(--g-orange); stroke-opacity: 1; stroke-width: .06; }
+.district-yellow { fill: var(--g-yellow); fill-opacity: .78; stroke: var(--g-yellow); stroke-opacity: 1; stroke-width: .06; }
+.district-green { fill: var(--g-green); fill-opacity: .62; stroke: var(--g-green); stroke-opacity: 1; stroke-width: .06; }
+/* Stated, and off the ramp: one of the absences, so it takes a grey and a dash rather than a hue. */
+.district-stated-not-on-ramp { fill: var(--g-absent-2); stroke: var(--g-mist-2); stroke-dasharray: 2 2; }
 .district-muted { opacity: .3; }
 .district-cursor { stroke-width: .05; }
-.district-selected { stroke: var(--data); stroke-width: .12; }
+.district-selected { stroke: var(--g-accent); stroke-width: .12; }
 
-/* charts --------------------------------------------------------------------------------------- */
-.dash-chart { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+/* charts ----------------------------------------------------------------------------------------- */
+.dash-chart { display: flex; flex-direction: column; gap: var(--g-2); min-width: 0; }
 .dash-chart-svg { width: 100%; height: auto; max-height: 15rem; }
-.dash-axis { fill: var(--mute); font-size: 11px; font-family: var(--mono); }
-.dash-value { fill: var(--ink); font-size: 11px; font-family: var(--mono); text-anchor: middle; }
-.dash-gridline { stroke: var(--line); stroke-width: .5; }
-/* An SVG shape cannot take an HTML background: the hazard ramp is restated here as fill/stroke for the two
-   shapes that are SVG (a matrix bubble and a donut slice), from the same tokens and only for a published
-   colour. A shape with no published colour stays neutral. */
-.dash-bubble { fill: var(--line); fill-opacity: .55; stroke: var(--line-strong); stroke-width: .3; }
-.dash-bubble.dash-strip-red { fill: var(--red); fill-opacity: .55; stroke: var(--red); }
-.dash-bubble.dash-strip-orange { fill: var(--orange); fill-opacity: .55; stroke: var(--orange); }
-.dash-bubble.dash-strip-yellow { fill: var(--yellow); fill-opacity: .5; stroke: var(--yellow); }
-.dash-bubble.dash-strip-green { fill: var(--green); fill-opacity: .4; stroke: var(--green); }
-.dash-bubble.dash-strip-unset { fill: var(--line); fill-opacity: .5; stroke: var(--line-strong); stroke-dasharray: 1 1; }
-.dash-bar { fill: var(--data-wash); stroke: var(--data); stroke-width: .5; }
-.dash-donut-wrap { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); }
+.dash-axis { fill: var(--g-mist-2); font-size: 11px; font-family: var(--g-mono); }
+.dash-value { fill: var(--g-paper); font-size: 11px; font-family: var(--g-mono); text-anchor: middle; }
+.dash-gridline { stroke: var(--g-line); stroke-width: .5; }
+/* An SVG shape cannot take an HTML background: the hazard ramp is restated here as fill and stroke for the
+   two shapes that are SVG (a matrix bubble and a donut slice), from the same tokens and only for a published
+   colour. A shape with no published colour stays neutral, dashed where it is a hole in the record. */
+.dash-bubble { fill: var(--g-line-soft); fill-opacity: .55; stroke: var(--g-line); stroke-width: .3; }
+.dash-bubble.dash-strip-red { fill: var(--g-red); fill-opacity: .55; stroke: var(--g-red); }
+.dash-bubble.dash-strip-orange { fill: var(--g-orange); fill-opacity: .55; stroke: var(--g-orange); }
+.dash-bubble.dash-strip-yellow { fill: var(--g-yellow); fill-opacity: .5; stroke: var(--g-yellow); }
+.dash-bubble.dash-strip-green { fill: var(--g-green); fill-opacity: .4; stroke: var(--g-green); }
+.dash-bubble.dash-strip-unset { fill: var(--g-line-soft); fill-opacity: .5; stroke: var(--g-line); stroke-dasharray: 1 1; }
+/* The editions bar. It used to share the name .dash-bar with the Today filter row above, so a rect took
+   the filter row's flex, border, radius, padding and shadow as well as its own fill — the same collision
+   docs/111 records for .dash-strip and .dash-bubble, and answered the same way: renamed rather than made
+   to fight. */
+.dash-chart-bar { fill: var(--g-accent-wash); stroke: var(--g-accent); stroke-width: .5; }
+.dash-donut-wrap { display: flex; flex-wrap: wrap; align-items: center; gap: var(--g-4); }
 .dash-donut { width: 8.5rem; height: 8.5rem; }
-.dash-donut-slice { fill: none; stroke-width: 14; stroke: var(--line); }
-.dash-donut-slice.dash-strip-red { stroke: var(--red); }
-.dash-donut-slice.dash-strip-orange { stroke: var(--orange); }
-.dash-donut-slice.dash-strip-yellow { stroke: var(--yellow); }
-.dash-donut-slice.dash-strip-green { stroke: var(--green); }
-.dash-donut-slice.dash-strip-unset { stroke: var(--line-strong); stroke-dasharray: 3 2; }
-.dash-legend { display: flex; flex-direction: column; gap: 4px; margin: 0; }
-.dash-legend-row { display: flex; align-items: center; gap: var(--space-2); }
-.dash-legend-row dt { display: inline-flex; align-items: center; gap: 6px; margin: 0; color: var(--ink-soft); font-size: var(--step--1); }
-.dash-legend-row dd { margin: 0; font-size: var(--step--1); }
-.dash-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; border: 1px solid var(--line-strong); }
-.dash-swatch-empty { background: repeating-linear-gradient(45deg, var(--line) 0 3px, transparent 3px 6px); }
+.dash-donut-slice { fill: none; stroke-width: 14; stroke: var(--g-line-soft); }
+.dash-donut-slice.dash-strip-red { stroke: var(--g-red); }
+.dash-donut-slice.dash-strip-orange { stroke: var(--g-orange); }
+.dash-donut-slice.dash-strip-yellow { stroke: var(--g-yellow); }
+.dash-donut-slice.dash-strip-green { stroke: var(--g-green); }
+.dash-donut-slice.dash-strip-unset { stroke: var(--g-line); stroke-dasharray: 3 2; }
+.dash-legend { display: flex; flex-direction: column; gap: var(--g-1); margin: 0; }
+.dash-legend-row { display: flex; align-items: center; gap: var(--g-2); }
+.dash-legend-row dt { display: inline-flex; align-items: center; gap: var(--g-2); margin: 0; color: var(--g-mist); font-size: 12.5px; }
+.dash-legend-row dd { margin: 0; font-size: 12px; }
+.dash-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; border: 1px solid var(--g-line); }
+.dash-swatch-empty { background: repeating-linear-gradient(45deg, var(--g-line) 0 3px, transparent 3px 6px); }
 
-/* warned-district list ------------------------------------------------------------------------- */
-.dash-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+/* warned-district list ---------------------------------------------------------------------------- */
+.dash-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--g-1); }
 .dash-list-row {
   display: grid;
   grid-template-columns: auto minmax(7rem, 14rem) minmax(0, 1fr) auto;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--g-3);
   width: 100%;
   min-height: 44px;
-  padding: 8px 10px;
+  padding: var(--g-2) var(--g-3);
   text-align: left;
   background: transparent;
   border: 1px solid transparent;
-  border-radius: var(--r-card);
+  border-radius: var(--g-r);
   color: inherit;
   font: inherit;
   cursor: pointer;
+  transition: background var(--g-fast) var(--g-ease), border-color var(--g-fast) var(--g-ease);
 }
-.dash-list-row:hover { background: var(--sunk); }
-.dash-list-row:focus-visible { outline: 2px solid var(--data); outline-offset: 1px; }
-.dash-list-row-active { border-color: var(--data); background: var(--data-wash); }
-.dash-list-name { font-weight: 600; }
+.dash-list-row:hover { background: var(--g-t2); }
+.dash-list-row:focus-visible { outline: 2px solid var(--g-accent); outline-offset: 1px; }
+.dash-list-row-active { border-color: var(--g-accent); background: var(--g-accent-wash); }
+.dash-list-name { font-weight: 600; color: var(--g-paper); }
 .dash-list-wording { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.dash-list-meta { font-size: var(--step--1); white-space: nowrap; }
+/* The district's own printed wording, the date it came from and the edition: provenance, so it prints in
+   the system's machine voice at its 12px — the size .evidence already sets, stated here rather than
+   fought with a second value. */
+.dash-list-meta { font-size: 12px; white-space: nowrap; }
 
-/* responsive ----------------------------------------------------------------------------------- */
+/* responsive -------------------------------------------------------------------------------------- */
 @media (max-width: 87.5rem) {
   .dash-band { grid-template-columns: minmax(0, 1fr); }
   .dash-column { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -377,7 +467,6 @@
   .dash-bar-fields { flex-direction: column; align-items: stretch; }
   .dash-bar-fields .module-field :where(input, select) { min-width: 0; width: 100%; }
   .dash-kpi { min-height: 9rem; }
-  .dash-kpi-number { font-size: var(--step-4); }
   .dash-map-svg { aspect-ratio: 4 / 5; max-height: none; }
   .dash-list-row { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: 'colour name' 'wording wording' 'meta meta'; }
   .dash-list-row > :nth-child(1) { grid-area: colour; }
@@ -386,110 +475,108 @@
   .dash-list-row > :nth-child(4) { grid-area: meta; }
 }
 
-/* ---- dashboard v3: the value slot, the edition profile, the matrix and the map inspector ----------- */
+/* ---- the value slot, the edition profile, the matrix and the map inspector ----------------------- */
 
-/* A numeral keeps the display size; a word steps down and balances. The slot is measured by the card, so a
-   long word can never push the layout or spill over the card edge. */
-.dash-kpi-number-word {
-  font-family: var(--serif);
-  font-size: var(--step-2);
+/* A numeral keeps the display size and a word steps down and balances. The slot is measured by the card,
+   so a long word can never push the layout or spill over the card edge.
+   This is stated at three parts rather than one for the reason the chip block above gives: the numeral's
+   own size on these cards is set by the workspace's stylesheet at two parts, and it loads later. The rule
+   was lost that way, so 'not recorded' — the sentence this class exists to set — still printed at the
+   numeral size, which is what the component's own comment records as fixed. It is fixed here. */
+.g .dash-kpi .dash-kpi-number-word {
+  font-size: clamp(1.125rem, 1.1rem + 0.4vw, 1.375rem);
+  font-weight: 600;
   line-height: 1.14;
   letter-spacing: 0;
   font-variant-numeric: normal;
+  color: var(--g-paper);
   text-wrap: balance;
   overflow-wrap: anywhere;
   max-width: 100%;
 }
-.dash-kpi[data-value-kind='word'] .dash-kpi-value { align-items: flex-start; }
-.dash-kpi-value { min-width: 0; flex-wrap: wrap; }
 
 /* The edition profile: one bar per printed date the read returned, the newest marked with the accent. */
-.dash-edition-bar { fill: color-mix(in oklab, var(--slate) 42%, transparent); stroke: var(--line-strong); stroke-width: .5; }
-.dash-edition-newest { fill: color-mix(in oklab, var(--data) 55%, transparent); stroke: var(--data); }
+.dash-edition-bar { fill: color-mix(in srgb, var(--g-mist) 42%, transparent); stroke: var(--g-line); stroke-width: .5; }
+.dash-edition-newest { fill: color-mix(in srgb, var(--g-accent) 55%, transparent); stroke: var(--g-accent); }
+/* An older printed date is still a printed date: it is dashed rather than given a hue of its own. */
+.dash-edition-old { fill: color-mix(in srgb, var(--g-mist) 38%, transparent); stroke: var(--g-mist-2); stroke-dasharray: 2 1.5; }
 
 /* The matrix: vertical day guides, quiet second-line date labels, and a hover that states the cell. */
-.dash-gridline-vertical { stroke: var(--line); stroke-width: .5; stroke-dasharray: 3 4; opacity: .7; }
-.dash-axis-quiet { fill: var(--mute); font-size: 11px; }
+.dash-gridline-vertical { stroke: var(--g-line); stroke-width: .5; stroke-dasharray: 3 4; opacity: .7; }
+.dash-axis-quiet { fill: var(--g-mist-2); font-size: 11px; }
 .dash-bubble-cell:hover .dash-bubble { stroke-width: 1.6; }
-.dash-bubble-cell:hover .dash-value { font-weight: 700; }
+.dash-bubble-cell:hover .dash-value { font-weight: 600; }
 
-/* ---- the map inspector and the hover tip ---------------------------------------------------------- */
-.dash-map-layout { display: grid; gap: var(--space-3); grid-template-columns: minmax(0, 1.55fr) minmax(17rem, 1fr); align-items: start; }
-.dash-map-side { display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; }
-.dash-map-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
-.dash-map-hint { flex: 1 1 12rem; min-width: 0; }
+/* ---- the map inspector and the hover tip --------------------------------------------------------- */
+.dash-map-layout { display: grid; gap: var(--g-3); grid-template-columns: minmax(0, 1.55fr) minmax(17rem, 1fr); align-items: start; }
+.dash-map-side { display: flex; flex-direction: column; gap: var(--g-3); min-width: 0; }
 
+/* The tip sits over the map rather than in it, so it is one of the few things that keeps a top-layer
+   shadow: --g-e3, and the raised fill rather than a blur behind the pointer. */
 .map-tip {
   position: fixed;
   z-index: 50;
   pointer-events: none;
   max-width: 20rem;
-  padding: 8px 10px;
-  border-radius: var(--r-xl);
-  background: var(--glass-2);
-  border: 1px solid var(--glass-line);
-  box-shadow: var(--glass-shadow-lg);
-  backdrop-filter: blur(18px) saturate(1.3);
-  -webkit-backdrop-filter: blur(18px) saturate(1.3);
-  color: var(--ink);
-  font-size: var(--step--1);
+  padding: var(--g-2) var(--g-3);
+  border-radius: var(--g-r);
+  background: var(--g-raise-2);
+  border: 1px solid var(--g-line);
+  box-shadow: var(--g-e3);
+  color: var(--g-paper);
+  font-size: 12.5px;
 }
-.map-tip-name { font-weight: 700; }
-.map-tip-line { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 4px; color: var(--ink-soft); }
-.map-tip-code { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--mute); }
-.map-tip-fixed { position: absolute; inset: auto 8px 8px auto; }
+.map-tip-name { font-weight: 600; }
+.map-tip-line { display: flex; flex-wrap: wrap; align-items: center; gap: var(--g-2); margin-top: var(--g-1); color: var(--g-mist); }
+.map-tip-code { font-family: var(--g-mono); font-variant-numeric: tabular-nums; color: var(--g-mist-2); }
 
 /* The inspector panel: a real detail card, so the side of the map is never blank. */
-.inspector { display: flex; flex-direction: column; gap: var(--space-3); }
-.inspector-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-2); }
-.inspector-title { font-family: var(--serif); font-size: var(--step-2); line-height: 1.15; margin: 0; text-wrap: balance; }
-.inspector-days { display: flex; flex-direction: column; gap: 6px; }
+.inspector { display: flex; flex-direction: column; gap: var(--g-3); }
+.inspector-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--g-2); }
+.inspector-title { font-size: clamp(1.125rem, 1.1rem + 0.4vw, 1.375rem); font-weight: 600; line-height: 1.15; margin: 0; color: var(--g-paper); text-wrap: balance; }
+.inspector-days { display: flex; flex-direction: column; gap: var(--g-2); }
 .inspector-day {
   display: grid;
   grid-template-columns: 4.5rem auto 1fr;
-  gap: 8px;
+  gap: var(--g-2);
   align-items: center;
-  padding: 7px 9px;
-  border-radius: var(--r-card);
-  border: 1px solid var(--glass-line);
-  background: var(--glass-3);
+  padding: var(--g-2) var(--g-3);
+  border-radius: var(--g-r);
+  border: 1px solid var(--g-line-soft);
+  background: var(--g-t2);
 }
-.inspector-day[data-today='true'] { border-color: color-mix(in oklab, var(--data) 45%, var(--glass-line)); background: color-mix(in oklab, var(--data) 8%, transparent); }
-.inspector-day-when { font-family: var(--mono); font-size: var(--step--1); color: var(--mute); }
-.inspector-day-text { font-size: var(--step--1); color: var(--ink-soft); overflow-wrap: anywhere; }
-.inspector-list { display: flex; flex-direction: column; gap: 4px; max-height: 18rem; overflow-y: auto; }
+.inspector-day[data-today='true'] { border-color: color-mix(in srgb, var(--g-accent) 45%, var(--g-line)); background: var(--g-accent-wash); }
+/* The day a bulletin printed for, in the machine voice, and the day's own wording beside it. */
+.inspector-day-when { font-family: var(--g-mono); font-size: 11.5px; color: var(--g-mist-2); }
+.inspector-day-text { font-size: 12.5px; color: var(--g-mist); overflow-wrap: anywhere; }
+.inspector-list { display: flex; flex-direction: column; gap: var(--g-1); max-height: 18rem; overflow-y: auto; }
 .inspector-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--g-2);
   width: 100%;
-  padding: 6px 8px;
-  border-radius: var(--r);
+  padding: var(--g-2);
+  border-radius: var(--g-r-sm);
   border: 1px solid transparent;
   background: transparent;
   text-align: left;
-  font-size: var(--step--1);
-  color: var(--ink-soft);
-  transition: background var(--motion-fast) var(--ease-out-soft), border-color var(--motion-fast) var(--ease-out-soft);
+  font-size: 12.5px;
+  color: var(--g-mist);
+  transition: background var(--g-fast) var(--g-ease), border-color var(--g-fast) var(--g-ease);
 }
-.inspector-row:hover { background: var(--glass-3); border-color: var(--glass-line); color: var(--ink); }
-.inspector-row[aria-current='true'] { background: color-mix(in oklab, var(--data) 14%, transparent); border-color: color-mix(in oklab, var(--data) 35%, transparent); color: var(--ink); font-weight: 600; }
-.inspector-count { margin-left: auto; font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--mute); }
-.inspector-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.inspector-row:hover { background: var(--g-t3); border-color: var(--g-line-soft); color: var(--g-paper); }
+.inspector-row[aria-current='true'] { background: var(--g-accent-wash); border-color: color-mix(in srgb, var(--g-accent) 35%, transparent); color: var(--g-paper); font-weight: 600; }
+/* The inspector's rows sit on a raised card, where the tertiary step does not clear AA (see the caption rule
+   above): the count and the edition date take the mist step instead. */
+.inspector-count { margin-left: auto; font-family: var(--g-mono); font-variant-numeric: tabular-nums; color: var(--g-mist); }
+.inspector-actions { display: flex; flex-wrap: wrap; gap: var(--g-2); }
 
 @media (max-width: 87.5rem) {
   .dash-map-layout { grid-template-columns: minmax(0, 1fr); }
 }
 
-/* A chip always reads on one line: 'no colour stated' over two lines made the table look broken. */
-.chip { white-space: nowrap; }
-.module-table :where(th, td) { hyphens: none; }
-.module-table td .chip { vertical-align: middle; }
-
-/* The strip and the profile read at full strength: these are published colours and printed dates, and a
-   pale yellow over a glass card read as an empty bar. */
-.dash-strip-red { background: color-mix(in oklab, var(--red) 92%, transparent); }
-.dash-strip-orange { background: color-mix(in oklab, var(--orange) 92%, transparent); }
-.dash-strip-yellow { background: color-mix(in oklab, var(--yellow) 95%, transparent); }
-.dash-strip-green { background: color-mix(in oklab, var(--green) 85%, transparent); }
-.dash-edition-old { fill: color-mix(in oklab, var(--orange) 38%, transparent); stroke: var(--orange); stroke-dasharray: 2 1.5; }
+/* Motion answers an action and nothing loops. The system collapses durations; this takes the pointer
+   lift out entirely for a reader who asked for less movement. */
+@media (prefers-reduced-motion: reduce) {
+  .dash-kpi:hover { transform: none; }
+}

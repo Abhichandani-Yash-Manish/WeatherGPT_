@@ -17,6 +17,8 @@ import type { Envelope, Languages } from '../api/types';
 import { failureSentence } from '../modules/Evidence';
 import { allLanguages, measuredFor } from '../chat/voice';
 import { useSky } from './sky';
+import { placeHref } from '../place/place';
+import { stationSource } from './Welcome';
 import { istClock, istStamp, istWindow } from '../lib/time';
 import { SkyGlyphIcon } from '../shell/icons';
 import { useWorkingPlace } from '../modules/Evidence';
@@ -28,14 +30,19 @@ import type { Persona } from '../api/types';
    with nothing published is not a quiet district, and a missing hour is not a zero.
 
    The forecast block is a strip of the first hours the read returned, not a chart: the panel is 300px, and a
-   300px chart is a decoration. Every number keeps the unit and the source the payload stated. */
+   300px chart is a decoration. Every number keeps the unit and the source the payload stated.
+
+   The station, the district and the hours are exported because the place's own page (src/place/PlacePage.tsx)
+   is the destination this glance points at: the page renders these same blocks for its own point rather than
+   a second rendering of the same reads, so a fix here reaches both, and the panel and the page cannot state
+   the same read differently. */
 
 type PlaceWarningDay = { date_local?: string; colour?: string | null; hazards?: string[]; quiet?: boolean; source_text?: string; label?: string };
 type PlaceWarnings = { district?: string; state?: string; issued_at_utc?: string; days?: PlaceWarningDay[] };
 type HourRow = { at?: string; temperature_2m?: number | null; precipitation_probability?: number | null; precipitation?: number | null };
 type HoursView = { status?: string; rows?: HourRow[]; source_id?: string; model?: string; unit?: Record<string, string>; starts?: string; ends?: string };
 
-function DistrictBlock({ place, onOpen }: { place: { latitude: number; longitude: number }; onOpen: (viewId: string) => void }) {
+export function DistrictBlock({ place, onOpen }: { place: { latitude: number; longitude: number }; onOpen: (viewId: string) => void }) {
   const read = useQuery({
     queryKey: ['panel-warnings', place.latitude, place.longitude],
     queryFn: () => getJson<Envelope<PlaceWarnings>>(withQuery('/api/warnings/place', { lat: place.latitude, lon: place.longitude })),
@@ -43,6 +50,12 @@ function DistrictBlock({ place, onOpen }: { place: { latitude: number; longitude
   });
   const published = read.data?.data;
   const days = (published?.days || []).filter(day => day && (day.colour || day.hazards?.length || day.quiet));
+  /* The district block's own source line, from the envelope the read returned: the district name and issue
+     instant say which bulletin, and this says which registered source it came through. Without it the block
+     stated a hazard and a colour with nothing to check them against. */
+  const sources = [...new Set((read.data?.sources || [])
+    .filter(entry => entry.source_id)
+    .map(entry => [entry.source_id, entry.layer].filter(Boolean).join(' ')))];
 
   return (
     <section className="g-side-block">
@@ -87,11 +100,12 @@ function DistrictBlock({ place, onOpen }: { place: { latitude: number; longitude
           )}
         </>
       ) : null}
+      {sources.length ? <p className="g-side-source">{sources.join(' · ')}</p> : null}
     </section>
   );
 }
 
-function HoursBlock({ place, onOpen }: { place: { latitude: number; longitude: number }; onOpen: (viewId: string) => void }) {
+export function HoursBlock({ place, onOpen }: { place: { latitude: number; longitude: number }; onOpen: (viewId: string) => void }) {
   const read = useQuery({
     queryKey: ['panel-hours', place.latitude, place.longitude],
     queryFn: () => getJson<Envelope<HoursView>>(withQuery('/api/forecast', { lat: place.latitude, lon: place.longitude, days: 2 })),
@@ -134,6 +148,52 @@ function HoursBlock({ place, onOpen }: { place: { latitude: number; longitude: n
   );
 }
 
+/* The nearest station's own report for the place this browser holds: the station's wording, its source id,
+   when it was read and how far away it is. Extracted so the place's page states the station exactly as the
+   panel does — one rendering of one read. */
+export function StationBlock() {
+  const place = useWorkingPlace();
+  const sky = useSky();
+  const reading = sky.data;
+
+  return (
+    <section className="g-side-block">
+      <p className="g-side-label">The nearest station</p>
+      {sky.isPending ? <p className="g-side-note">Reading the nearest station report…</p> : null}
+      {sky.isError ? <p className="g-side-note">The station read did not answer. Nothing is shown rather than a value being filled in.</p> : null}
+      {/* Two different silences, said differently: no place held means no read was made, and a read that
+          returned no station is a read that came back empty. One sentence for both would state the first
+          when the second happened, which is a fact the surface never measured. */}
+      {!sky.isPending && !sky.isError && !reading ? (
+        place
+          ? <p className="g-side-note">This read returned no station for the point, so nothing is shown rather than a value being filled in.</p>
+          : <p className="g-side-note">No place is held, so no station was read.</p>
+      ) : null}
+      {reading ? (
+        /* The reading and its source line are ONE claim region: the product's own atom, so the provenance audit's
+           shape check resolves here the way it does on the welcome, the bar and the rail. display: contents keeps
+           the block's layout exactly as it was - the wrapper is a region, not a box. */
+        <div className="g-claim" style={{ display: 'contents' }}>
+          <p className="g-side-reading">
+            {reading.glyph ? <SkyGlyphIcon glyph={reading.glyph} size={22} strokeWidth={1.5} aria-hidden="true" /> : null}
+            {reading.temperature ? (
+              <span className="g-side-temp">
+                {reading.temperature}
+                {reading.unit ? <span className="g-side-unit">{reading.unit}</span> : null}
+              </span>
+            ) : null}
+            {reading.condition ? <span className="g-side-cond">{reading.condition}</span> : null}
+          </p>
+          <p className="g-side-source g-claim-source">
+            {stationSource(reading, { includeStale: false })}
+          </p>
+          {reading.stale ? <p className="g-side-warn">The source marks this report stale.</p> : null}
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
 /* One source, as this conversation reached it: the id a claim cites, who published it, and when this
    machine last read it. The panel aggregates these across every answer in the thread. */
 export type SourceRead = {
@@ -162,8 +222,6 @@ export function ReadingPanel({
   sources, language, onLanguage, persona, onPersona, personas, onFindPlace, onOpenView, onClose,
 }: ReadingPanelProps) {
   const place = useWorkingPlace();
-  const sky = useSky();
-  const reading = sky.data;
   const languages = useQuery({ queryKey: ['languages'], queryFn: () => getJson<Languages>('/api/languages'), staleTime: 300_000 });
   const live = allLanguages(languages.data);
 
@@ -185,6 +243,14 @@ export function ReadingPanel({
         <button type="button" className="g-quiet" onClick={onFindPlace}>
           {place ? 'Change the place' : 'Set a place'}
         </button>
+        {/* The glance and the destination: docs/115 left the place with no page of its own. The anchor is a
+            real link — bookmarkable, copyable, openable in a new tab — because "a page a reader can bookmark"
+            cannot be a button that rewrites the address. */}
+        {place?.label ? (
+          <a className="g-quiet" href={placeHref({ label: String(place.label), latitude: place.latitude, longitude: place.longitude })}>
+            The place’s own page →
+          </a>
+        ) : null}
         <p className="g-side-note">
           {place
             ? 'The place is held in this browser and answers about it are read from the sources nearest to it.'
@@ -192,36 +258,7 @@ export function ReadingPanel({
         </p>
       </section>
 
-      <section className="g-side-block">
-        <p className="g-side-label">The nearest station</p>
-        {sky.isPending ? <p className="g-side-note">Reading the nearest station report…</p> : null}
-        {sky.isError ? <p className="g-side-note">The station read did not answer. Nothing is shown rather than a value being filled in.</p> : null}
-        {!sky.isPending && !sky.isError && !reading ? (
-          <p className="g-side-note">No place is held, so no station was read.</p>
-        ) : null}
-        {reading ? (
-          <>
-            <p className="g-side-reading">
-              {reading.glyph ? <SkyGlyphIcon glyph={reading.glyph} size={22} strokeWidth={1.5} aria-hidden="true" /> : null}
-              {reading.temperature ? (
-                <span className="g-side-temp">
-                  {reading.temperature}
-                  {reading.unit ? <span className="g-side-unit">{reading.unit}</span> : null}
-                </span>
-              ) : null}
-              {reading.condition ? <span className="g-side-cond">{reading.condition}</span> : null}
-            </p>
-            <p className="g-side-source">
-              {[reading.station, reading.sourceId,
-                reading.observedAt ? 'read ' + istStamp(reading.observedAt) : null,
-                reading.distanceKm !== null ? reading.distanceKm.toFixed(1) + ' km away' : null,
-                reading.temperature && !reading.unit ? 'no unit in the source' : null,
-              ].filter(Boolean).join(' · ')}
-            </p>
-            {reading.stale ? <p className="g-side-warn">The source marks this report stale.</p> : null}
-          </>
-        ) : null}
-      </section>
+      <StationBlock />
 
       {place && typeof place.latitude === 'number' && typeof place.longitude === 'number' ? (
         <>

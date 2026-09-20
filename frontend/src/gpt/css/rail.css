@@ -67,6 +67,10 @@
 }
 .g-place svg { flex: 0 0 auto; color: var(--g-accent); }
 .g-place-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* The way from the row to the place's own page (docs/122). It sits with the row's other controls rather than in
+   the text, because the row's text is the place and pressing it holds the place rather than opening anything. */
+.g-place-open { display: inline-flex; align-items: center; padding: 2px; border-radius: var(--g-r-sm); color: var(--g-mist); }
+.g-place-open:hover { color: var(--g-accent); background: var(--g-t2); }
 .g-rail-actions { display: flex; align-items: center; gap: 2px; padding: 0 var(--g-2); flex-wrap: wrap; }
 .g-rail-actions-lead { padding: 0 0 var(--g-1); flex-direction: column; align-items: stretch; }
 .g-rail-action { display: flex; align-items: center; gap: var(--g-2); width: 100%; font-size: 13px; color: var(--g-mist); padding: 7px var(--g-2); border-radius: var(--g-r-sm); }

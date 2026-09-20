@@ -25,6 +25,20 @@ STAGE_LABELS={'started':'Reading the question','planned':'Planning the tasks','r
               'retrieving':'Retrieving evidence','assembling':'Assembling the answer','finalising':'Final check',
               'task boundary':'Stopping at the task boundary'}
 STAGE_NOTE='A stage names the work the server is in now. It is not a completion estimate.'
+# A progress read naming a turn this process is not running is answered as that, never with
+# whichever turn happens to be running: substituting one turn's stage for another's is the
+# defect a request identifier on this route removes.
+STAGE_NOTE_NOT_RUNNING=('No turn with this identifier is running here. It may have finished, it may be '
+                        'waiting to start, or it may never have run on this process; this read says nothing about it.')
+# A stage that has not been reached yet is not a stage. A turn accepted but still waiting for the
+# single answering slot is reported as queued, which is what it is.
+STAGE_NOTE_QUEUED='This turn has been accepted and is waiting for the workspace to start it. The queue counters below say how many turns are ahead.'
+# How long a finished turn's own packet is held, so a page that lost its connection can still
+# collect it. Past this the identifier is remembered as expired rather than answered as unknown:
+# "the workspace let it go" and "this workspace never had it" are different sentences to a reader.
+RESULT_KEEP_SECONDS=float(os.getenv('WEATHERGPT_RESULT_KEEP_SECONDS') or 900.0)
+RESULT_CAPACITY=int(os.getenv('WEATHERGPT_RESULT_CAPACITY') or 40)
+RESULT_FATE_SECONDS=6*3600.0
 # A written answer is a bonus over the tool-owned facts, never a reason to wait: the narrative call
 # holds its own budget, and when it runs out the retrieved facts are stated as they always were.
 NARRATIVE_TIMEOUT=float(os.getenv('WEATHERGPT_NARRATIVE_TIMEOUT') or 25.0)
@@ -159,6 +173,11 @@ class ConversationEngine:
         self.database.parent.mkdir(parents=True,exist_ok=True)
         self.gate=gate or BoundedGate()
         self.cancel_lock=threading.Lock();self.active={};self.cancelled=set();self._local=threading.local()
+        # Finished turns, kept by their own request id so a page that lost its connection can still
+        # collect the answer. In memory only: a restart forgets every one of them, and the route says
+        # so rather than pretending the turn never existed.
+        self.results={};self.result_fates={}
+        self.result_keep_seconds=RESULT_KEEP_SECONDS;self.result_capacity=RESULT_CAPACITY
         with sqlite3.connect(self.database) as db:db.execute('CREATE TABLE IF NOT EXISTS conversations (id TEXT PRIMARY KEY,payload TEXT,updated TEXT)')
 
     def state(self,cid):
@@ -176,7 +195,7 @@ class ConversationEngine:
                        (cid,json.dumps(state,ensure_ascii=False),self.workspace.clock().isoformat()))
 
     def ask(self,body):
-        if not isinstance(body,dict) or set(body)-{'question','conversation_id','selection_id','coordinates','output_language','request_id','persona'}:raise SourceError('Send a question and optional conversation/place/language selection')
+        if not isinstance(body,dict) or set(body)-{'question','conversation_id','selection_id','coordinates','output_language','request_id','persona','place','window'}:raise SourceError('Send a question and optional conversation/place/language selection')
         # A persona is a reading position: it is checked before any work is done and it
         # changes no evidence, so an unknown one is refused rather than guessed.
         from .personas import get as persona_of
@@ -190,13 +209,115 @@ class ConversationEngine:
             try:uuid.UUID(str(supplied))
             except (ValueError,TypeError,AttributeError):raise SourceError('Invalid request identifier; start a new turn')
         request_id=str(supplied) if supplied else str(uuid.uuid4())
-        self.gate.acquire()
+        self._validate_reader_changes(body)
+        # The turn is registered before it takes the single answering slot, so a page waiting on a
+        # queued turn reads "queued" rather than "no such turn here", and a stop arriving while it
+        # waits is honoured at the first checkpoint instead of being answered as not running.
+        with self.cancel_lock:
+            self.active[request_id]={'request_id':request_id,'history':[],
+                                     'accepted_utc':self.workspace.clock().isoformat(),
+                                     'accepted_monotonic':time.monotonic()}
         try:
-            try:return self._ask(body,q,request_id)
-            except ConversationCancelled as stopped:return self._cancelled(body,q,request_id,stopped.stage)
-        finally:
+            self.gate.acquire()
+        except SourceError:
             self._forget(request_id)
+            self._local.reader_place=None
+            self._local.reader_changes=None
+            raise
+        try:
+            try:return self._remember(request_id,self._ask(body,q,request_id))
+            except ConversationCancelled as stopped:return self._remember(request_id,self._cancelled(body,q,request_id,stopped.stage))
+            finally:
+                self._forget(request_id)
+        finally:
             self.gate.release()
+            self._local.reader_place=None
+            self._local.reader_changes=None
+
+    def _validate_reader_changes(self,body):
+        """The two things a reader may change on a turn the sentence does not state.
+
+        Both are refusals rather than repairs: a window phrase that is not a string, or a place
+        without a usable point, is refused before any work, because a silent fallback here would
+        answer a question nobody asked. The window phrase is resolved against the engine's own day
+        tables later, so an unrecognised phrase is reported as not applied, not guessed at.
+        """
+        place=body.get('place')
+        if place is not None:
+            label=str((isinstance(place,dict) and (place.get('label') or place.get('name'))) or '').strip()
+            if not isinstance(place,dict) or set(place)-{'label','name','latitude','longitude','state','district'} or not label or len(label)>120:
+                raise SourceError('Send the place to use as a label with latitude and longitude')
+            from .geography import point
+            try:point(place.get('latitude'),place.get('longitude'))
+            except ValueError:raise SourceError('The place to use needs a latitude within ±90 and a longitude within ±180')
+            self._local.reader_place={'label':label,'latitude':float(place['latitude']),'longitude':float(place['longitude']),
+                                      'state':str(place.get('state') or ''),'district':str(place.get('district') or '')}
+        phrase=body.get('window')
+        if phrase is not None:
+            if not isinstance(phrase,str) or not 1<=len(phrase.strip())<=60:raise SourceError('Name the window to use in up to 60 characters')
+
+    def _remember(self,request_id,result):
+        """Keep a finished turn's own packet against its request id, and say how long it is kept."""
+        now=time.monotonic()
+        with self.cancel_lock:
+            self.results[request_id]={'packet':result,'stored_monotonic':now,
+                                      'stored_utc':self.workspace.clock().isoformat()}
+            for key,entry in list(self.results.items()):
+                if key!=request_id and now-entry['stored_monotonic']>self.result_keep_seconds:
+                    self.results.pop(key,None);self._fate(key,'expired')
+            # Oldest first: dicts keep insertion order, so the front of the list is the oldest turn.
+            excess=len(self.results)-self.result_capacity
+            for key in (list(self.results)[:excess] if excess>0 else []):
+                if key!=request_id:
+                    self.results.pop(key,None);self._fate(key,'expired')
+            for key,entry in list(self.result_fates.items()):
+                if now-entry[0]>RESULT_FATE_SECONDS:self.result_fates.pop(key,None)
+        return result
+
+    def _fate(self,request_id,state):
+        """Remember that this identifier did produce a turn, so expiry is not reported as absence."""
+        self.result_fates[request_id]=(time.monotonic(),state)
+
+    def result(self,request_id):
+        """The packet a finished turn produced, or the honest reason there is none.
+
+        Distinct states, never an empty success: `pending` is a turn this process still holds,
+        `ready` carries the packet, `cancelled` carries the stopped turn's own packet, `expired`
+        is one this process held and has let go, and `unknown` is one it never had. A restart
+        forgets every identifier, which is why `unknown` names the process rather than the reader.
+        """
+        if request_id in (None,''):raise SourceError('Give the request identifier of the turn to collect')
+        try:uuid.UUID(str(request_id))
+        except (ValueError,TypeError,AttributeError):raise SourceError('Invalid request identifier')
+        request_id=str(request_id)
+        now=time.monotonic()
+        with self.cancel_lock:
+            for key,entry in list(self.results.items()):
+                if now-entry['stored_monotonic']>self.result_keep_seconds:
+                    self.results.pop(key,None);self._fate(key,'expired')
+            entry=self.results.get(request_id)
+            running=request_id in self.active
+            fate=self.result_fates.get(request_id)
+        common={'schema_version':'chat-result-v1','request_id':request_id,'kept_seconds':self.result_keep_seconds,
+                'checked_at_utc':self.workspace.clock().isoformat()}
+        if entry is not None:
+            packet=entry['packet']
+            state='cancelled' if packet.get('status')=='cancelled' else 'ready'
+            detail=('This turn is finished; its own response is below. It was retrieved '
+                    +str(entry['stored_utc'])+' and the workspace keeps it for '
+                    +str(int(self.result_keep_seconds))+' seconds.') if state=='ready' else (
+                    'This turn was stopped at the reader\'s request; the engine\'s own stopped turn is below.')
+            return dict(common,state=state,detail=detail,**{'packet':packet})
+        if running:
+            return dict(common,state='pending',packet=None,
+                        detail='This turn has been accepted and has not finished; nothing of it is being held back or pre-announced.')
+        if fate is not None:
+            state=fate[1]
+            return dict(common,state=state,packet=None,
+                        detail=('This turn finished on this workspace, but the workspace let its response go after '
+                                +str(int(self.result_keep_seconds))+' seconds. Ask again for a fresh answer.'))
+        return dict(common,state='unknown',packet=None,
+                    detail='This workspace has no turn with this identifier. It may never have run here, or the workspace may have been restarted since; nothing is being held back.')
 
     def cancel(self,request_id):
         """Ask a running turn to stop at its next stage boundary. Never claims it stopped."""
@@ -225,6 +346,10 @@ class ConversationEngine:
         with self.cancel_lock:
             entry=self.active.get(request_id) or {'request_id':request_id,'history':[],
                                                   'started_utc':now.isoformat(),'started_monotonic':time.monotonic()}
+            # A turn registered when it was accepted has no start time yet. It starts here, so the
+            # clock a reader sees is the time this turn spent being worked on, not the queue wait.
+            if 'started_monotonic' not in entry:
+                entry['started_utc']=now.isoformat();entry['started_monotonic']=time.monotonic()
             entry['stage']=stage
             if not entry['history'] or entry['history'][-1]!=stage:entry['history'].append(stage)
             entry['since_utc']=now.isoformat()
@@ -248,28 +373,52 @@ class ConversationEngine:
         if not known:return
         self._checkpoint(request_id,stage)
 
-    def progress(self):
-        """What the server is doing now: the running turn's stage and the queue.
+    def progress(self,request_id=None):
+        """What one turn is doing now, or without an identifier what the workspace last started.
 
         Deliberately no completion fraction, no ETA and no confidence: the stage list is
         the engine's own checkpoints, and the queue numbers are the gate's own counters.
+
+        A request id is what makes this a read of ONE turn. Read as the workspace's newest turn,
+        a second page waiting on its own question was told the other one's stage: measured
+        20 September 2026, two turns overlapping read each other's work. An identifier this
+        process is not running is answered as not_running with its own sentence, never as
+        another turn's stage and never as an idle workspace.
         """
+        if request_id is not None:
+            request_id=str(request_id)
+            try:uuid.UUID(request_id)
+            except (ValueError,TypeError,AttributeError):raise SourceError('Invalid request identifier')
         with self.cancel_lock:
-            entries=[dict(entry) for entry in self.active.values()]
-        entry=entries[-1] if entries else None
+            if request_id is None:
+                entries=[dict(entry) for entry in self.active.values()]
+                entry=entries[-1] if entries else None
+            else:
+                held=self.active.get(request_id)
+                entry=dict(held) if held else None
         queue={'waiting':0,'active':0,'capacity':None,'wait_seconds_before_refusal':None}
         if hasattr(self.gate,'status'):
             try:queue=self.gate.status()
             except Exception:pass
         now=time.monotonic()
         stage=entry.get('stage') if entry else None
-        return {'schema_version':'chat-progress-v1','state':'running' if entry else 'idle',
+        if request_id is None:
+            # The newest turn, read the same way: a turn accepted and not yet started is queued
+            # rather than reported as running, so this read never names a stage nobody reached.
+            state='running' if stage else ('queued' if entry else 'idle')
+        else:
+            state='running' if stage else ('queued' if entry else 'not_running')
+        note=STAGE_NOTE
+        if state=='not_running':note=STAGE_NOTE_NOT_RUNNING
+        elif state=='queued':note=STAGE_NOTE_QUEUED
+        elif state=='idle' and request_id is None:note='No turn is running on this workspace.'
+        return {'schema_version':'chat-progress-v1','request_id':request_id,'state':state,
                 'stage':stage,'stage_label':STAGE_LABELS.get(stage,stage) if stage else None,
                 'stages_seen':[STAGE_LABELS.get(item,item) for item in (entry.get('history') if entry else [])],
                 'stage_since_utc':entry.get('since_utc') if entry else None,
                 'stage_seconds':round(now-entry['since_monotonic'],1) if entry and entry.get('since_monotonic') else None,
                 'turn_seconds':round(now-entry['started_monotonic'],1) if entry and entry.get('started_monotonic') else None,
-                'queue':queue,'stage_note':STAGE_NOTE,'stages_are_facts_not_progress':True,
+                'queue':queue,'stage_note':note,'stages_are_facts_not_progress':True,
                 'checked_at_utc':datetime.now(timezone.utc).isoformat()}
 
     def _forget(self,request_id):
@@ -483,6 +632,11 @@ class ConversationEngine:
                         if all(not p[k] or norm(p[k]) in label for k in ['state','district']):resolved[p['name']]=previous
         from .dialogue import apply_historical_choice
         plan=apply_historical_choice(plan,selected) if selected else plan
+        # The reader may have changed just the window on a turn the sentence states a window for.
+        # It is applied here, after inheritance and after any clarification reuse, so nothing below
+        # can copy the old window back over it.
+        if body.get('window'):
+            plan=self._window_from_phrase(plan,str(body.get('window')).strip(),result,self.workspace.clock())
         if plan.get('context_action') in {'follow_up','correction','clarification_answer'}:
             prior_sources={f['source_id'] for f in state.get('last_evidence',{}).get('facts',[]) if f['source_id'] in {'S21','S62'}}
             if prior_sources=={'S62'}:result['retrieval_preferences']={'forecast_source':'S62','reason':'Continue the established forecast product for follow-up measures.'}
@@ -569,6 +723,12 @@ class ConversationEngine:
             if sentence and sentence not in (result.get('answer') or ''):
                 result['answer']=(result.get('answer') or '').rstrip()+chr(10)+chr(10)+sentence
         self._offer_plan(state,result,q)
+        # A change the reader made that was resolved inside a task is carried on this thread until here,
+        # where it belongs on the turn's own packet whatever packet the resolution happened against.
+        for record in (getattr(self._local,'reader_changes',None) or []):
+            changes=result.setdefault('reader_changes',[])
+            if record not in changes:changes.append(record)
+        self._local.reader_changes=None
         # The engine own next questions, after the plan offer so a saved plan stays visible, and
         # only in shapes the deterministic rules read as standalone questions.
         replies=self.follow_up_replies(result,result.get('plan') or {})
@@ -914,6 +1074,9 @@ class ConversationEngine:
     def resolve_points(self,result,plan,resolved,coordinates):
         self._stage('resolving')
         places=plan['places']
+        reader_place=self._take_reader_place()
+        if reader_place is not None:
+            return self._reader_place(reader_place,result,plan,resolved)
         if coordinates is not None:
             from .geography import point
             if not isinstance(coordinates,dict) or set(coordinates)!={'latitude','longitude'}:raise SourceError('Enter both latitude and longitude')
@@ -1010,6 +1173,107 @@ class ConversationEngine:
                                        'official sea-area and coastal bulletins are registered but not connected to this '
                                        'conversation.')
         return points
+
+    def _take_reader_place(self):
+        """The place the reader set on this turn, taken once.
+
+        Thread-local, for the reason the running request's id is thread-local: the engine answers
+        one turn at a time but not on one thread. Taking it clears it, so a second resolution
+        inside the same turn cannot silently reuse the reader's point for another part of it.
+        """
+        chosen=getattr(self._local,'reader_place',None)
+        self._local.reader_place=None
+        return chosen
+
+    def _reader_place(self,chosen,result,plan,resolved):
+        """Answer this turn at the place the reader chose, not at the place the sentence names.
+
+        The reader (or the surface acting for them) supplies the label and the point, so the engine
+        does not search the name: searching it again is exactly the ambiguity the reader just
+        resolved. The label is therefore recorded as theirs and never as a match of ours, and the
+        answer states which place it read. A question naming more than one place is refused rather
+        than silently read at one of them.
+        """
+        named=[str(place.get('name')) for place in (plan.get('places') or []) if place.get('name')]
+        if len(named)>1:
+            result.update(status='needs_clarification',
+                          answer=('This question names more than one place ('+', '.join(named[:4])+'), so changing '
+                                  '“the place” would pick one of them for you. Ask again naming the place you want.'),
+                          follow_up='Ask again with the one place in the sentence')
+            return None
+        label=chosen['label']
+        point={'name':label,'label':label,'for_place_name':label,
+               'coordinates':{'latitude':chosen['latitude'],'longitude':chosen['longitude']},
+               'name_match_basis':'supplied by the reader for this turn, not resolved from the sentence'}
+        if chosen.get('state'):point['admin1']=chosen['state']
+        if chosen.get('district'):point['admin2']=chosen['district']
+        plan['places']=[{'name':label,'state':chosen.get('state') or '','district':chosen.get('district') or '','kind':'settlement'}]
+        for task in plan.get('tasks') or []:task['place_indices']=[0]
+        resolved[label]=point
+        result['resolved_points']=resolved
+        where=(' — the question named '+named[0] if named and named[0].casefold()!=label.casefold() else '')
+        result.setdefault('notes',[]).append(
+            'Place read this turn: '+label+' at '+str(chosen['latitude'])+', '+str(chosen['longitude'])+where
+            +'. The reader supplied it and the workspace did not resolve the name, so it is not a gazetteer match '
+            +'of ours; the measure and the window are the question\'s.')
+        result.setdefault('reader_changes',[]).append(
+            {'field':'place','label':label,'latitude':chosen['latitude'],'longitude':chosen['longitude'],
+             'named_in_question':named[0] if named else None,'basis':'supplied by the reader for this turn'})
+        # The task dispatcher resolves a point against its own task packet and merges a named set of
+        # fields back, so a structured record written only on `result` here can be dropped. Measured
+        # 20 September 2026 against the running workspace: the note reached the packet and the record
+        # did not, because the point was resolved inside a task. It is therefore also held for this
+        # thread and merged into the turn's own packet at the end.
+        self._local.reader_changes=list(getattr(self._local,'reader_changes',None) or [])+[
+            {'field':'place','label':label,'latitude':chosen['latitude'],'longitude':chosen['longitude'],
+             'named_in_question':named[0] if named else None,'basis':'supplied by the reader for this turn'}]
+        return [point]
+
+    def _window_from_phrase(self,plan,phrase,result,now):
+        """Move every windowed task in the plan to the day (and part of day) the reader chose.
+
+        Deterministic, and deliberately not the planner's: the phrase is resolved by the same
+        calendar compiler the rules floor uses, on a copy of the plan, and the plan is replaced
+        only when a window actually came out of it. A phrase those tables cannot resolve leaves
+        the question's own window in place and says so on the turn — answering the old window
+        while the reader believes they changed it is worse than refusing the change.
+        """
+        from .dialogue import ground_relative_slots
+        def miss(detail):
+            result.setdefault('notes',[]).append('The window you asked for (“'+phrase+'”) was not applied: '+detail+'. The window stated in the question is what was read.')
+            result.setdefault('reader_changes',[]).append({'field':'window','requested':phrase,'applied':False,
+                                                           'detail':detail,'basis':'not resolved by the engine\'s day tables'})
+            return plan
+        windowed=[task for task in (plan.get('tasks') or []) if task.get('kind') in {'forecast','history','agriculture'}]
+        candidate=copy.deepcopy(plan)
+        # A settled plan normally carries its tasks; the deterministic fixture shape carries the
+        # window on the plan itself. The compiler reads tasks, so one is lent to it and taken back:
+        # leaving it behind would move the turn onto the task-dispatch path, which is a different set
+        # of tools from the one this plan already chose.
+        borrowed=not candidate.get('tasks')
+        if borrowed:
+            candidate['tasks']=[{'id':'reader-window','kind':'history' if candidate.get('intent')=='history' else 'forecast',
+                                 'operation':'daily' if candidate.get('intent')=='history' else 'lookup',
+                                 'parameters':list(candidate.get('variables') or []),'place_indices':[0],
+                                 'request_quote':phrase,'start_local':'','end_local':''}]
+        else:
+            if not windowed:
+                return miss('this turn reads no product that carries a window')
+            for task in candidate['tasks']:
+                if task.get('kind') in {'forecast','history','agriculture'}:
+                    task['start_local']='';task['end_local']='';task['request_quote']=phrase
+        candidate['start_local']='';candidate['end_local']='';candidate['explicit_times']=False
+        ground_relative_slots(candidate,phrase,now)
+        moved=[task for task in candidate['tasks'] if task.get('start_local') and task.get('end_local')]
+        if not moved:return miss('the phrase does not name a day the engine can resolve')
+        start,end=moved[0]['start_local'],moved[0]['end_local']
+        if borrowed:candidate.pop('tasks')
+        candidate['start_local']=start;candidate['end_local']=end
+        result.setdefault('reader_changes',[]).append({'field':'window','requested':phrase,'applied':True,
+                                                       'start_local':start,'end_local':end,
+                                                       'label':window_label(start,end) or None,
+                                                       'basis':'resolved from the engine\'s own day tables, not by the planner'})
+        return candidate
 
     def forecasts(self,result,plan,resolved,coordinates):
         now=self.workspace.clock()

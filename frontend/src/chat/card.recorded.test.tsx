@@ -91,6 +91,12 @@ describe('the calculations the engine returned', () => {
     expect(trend?.textContent).toContain('Descriptive trend');
     expect(trend?.textContent).toContain('OLS against actual calendar year; slope multiplied by 10; rounded to 0.001');
     expect(trend?.textContent).toContain('Descriptive source-series slope, not homogenized climate change attribution or a future projection');
+    /* The recorded trend states its thirty inputs and no source id of its own, so the source the card
+       prints is read from the facts those inputs name. A computed value with nothing behind it is the
+       defect this pins against. */
+    expect(HISTORICAL.calculations?.[0]?.source_ids).toBeUndefined();
+    expect(trend?.textContent).toContain('30 input values');
+    expect(trend?.textContent).toContain('from S27');
   });
 });
 
@@ -162,6 +168,15 @@ describe('task accounting', () => {
     expect(tasks?.textContent).toContain('t2');
     expect(tasks?.textContent).toContain('forecast');
     expect(tasks?.textContent).toContain('crosscheck');
+
+    /* The count in the fold's own header is the number of rows inside it, which is what the provenance
+       audit's exclusion for that count claims it is. A count that drifts from its rows is a number on
+       screen with nothing behind it. */
+    const fold = Array.from(full.container.querySelectorAll('details.g-fold'))
+      .find(node => /Requested tasks/.test(node.querySelector('summary')?.textContent || ''));
+    expect(fold, 'the requested-tasks fold').toBeDefined();
+    expect(fold?.querySelectorAll('li.task')).toHaveLength(2);
+    expect(fold?.querySelector('.g-fold-count')?.textContent?.trim()).toBe('(' + (fold?.querySelectorAll('li.task').length || 0) + ')');
   });
 });
 

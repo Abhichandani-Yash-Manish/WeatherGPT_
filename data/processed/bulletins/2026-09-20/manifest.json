@@ -1,0 +1,2599 @@
+{
+ "day": "2026-09-20",
+ "district_sweep": {
+  "change_detection": {
+   "conditional_requests": "not_available",
+   "evidence": "research/discovery/evidence/district-change-detection-20260914T191404Z",
+   "signal": "sha256 of the downloaded body against the recorded head"
+  },
+  "directory": {
+   "indexed_at_utc": "2026-09-11T19:41:43.199657+00:00",
+   "listed_district_entries": 698,
+   "listed_regions": 36,
+   "snapshot": "data/processed/foundation/advisory-directory.json"
+  },
+  "extraction_version": "document-passages-v1",
+  "family": "district_agromet",
+  "outcome_vocabulary": {
+   "failed": "Selection, transport or extraction raised an error. The error text is preserved.",
+   "fetched_new": "The body differs from the recorded head; it was extracted and indexed.",
+   "layout_unrecognised": "The front page does not carry the reviewed family marker; the edition is held, not indexed.",
+   "no_text_layer": "Every page needs OCR, which is not part of the reviewed path; the edition is held.",
+   "not_issued": "The publisher states no bulletin is issued for this district. This is not a failure.",
+   "unchanged": "The downloaded body hashes to the recorded head, so nothing was re-extracted."
+  },
+  "passes": [
+   {
+    "already_recorded_today": 0,
+    "bytes_downloaded": 535118,
+    "completed": true,
+    "counts": {
+     "failed": 0,
+     "fetched_new": 1,
+     "layout_unrecognised": 0,
+     "no_text_layer": 0,
+     "not_issued": 0,
+     "unchanged": 0
+    },
+    "deferred_by_limit": 0,
+    "elapsed_s": 8.5,
+    "finished_at_utc": "2026-09-19T19:20:07.108651+00:00",
+    "free_bytes_at_start": 1082083028992,
+    "listed": 1,
+    "mode": "resume",
+    "passages_indexed": 7,
+    "quarantined_pages": 0,
+    "queued": 1,
+    "started_at_utc": "2026-09-19T19:19:58.596805+00:00",
+    "stopped_at": null
+   },
+   {
+    "already_recorded_today": 1,
+    "bytes_downloaded": 16125987,
+    "completed": true,
+    "counts": {
+     "failed": 6,
+     "fetched_new": 30,
+     "layout_unrecognised": 2,
+     "no_text_layer": 0,
+     "not_issued": 0,
+     "unchanged": 2
+    },
+    "deferred_by_limit": 657,
+    "elapsed_s": 107.7,
+    "finished_at_utc": "2026-09-19T19:33:17.687442+00:00",
+    "free_bytes_at_start": 1082073645056,
+    "listed": 698,
+    "mode": "resume",
+    "passages_indexed": 290,
+    "quarantined_pages": 0,
+    "queued": 40,
+    "started_at_utc": "2026-09-19T19:31:30.031075+00:00",
+    "stopped_at": null
+   }
+  ],
+  "source_id": "S57",
+  "targets": {
+   "Anantpur": {
+    "age_days": 2,
+    "blob": "blobs/10d5182ba0efa4480348b07b86c68c9bdf7feca8aec865d4f74487b837ab0136.bin",
+    "bytes": 652483,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "Anantpur",
+    "elapsed_s": 4.869,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "named:india meteorological department",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 3,
+    "passages": 12,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST of the next 5"
+    },
+    "quarantined_pages": 0,
+    "sha256": "10d5182ba0efa4480348b07b86c68c9bdf7feca8aec865d4f74487b837ab0136",
+    "started_at_utc": "2026-09-19T19:31:48.579747+00:00",
+    "state": "Andhra Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Andhra+Pradesh&district=Anantpur&language=English"
+   },
+   "Anjaw": {
+    "age_days": 2,
+    "blob": "blobs/241d24ac28f39326863a1955a1ff7e0baffdd00a021d50de50b1e91e12acb258.bin",
+    "bytes": 331403,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "Anjaw",
+    "elapsed_s": 3.277,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "marker_only",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 3,
+    "passages": 8,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST of the next 5days)"
+    },
+    "quarantined_pages": 0,
+    "sha256": "241d24ac28f39326863a1955a1ff7e0baffdd00a021d50de50b1e91e12acb258",
+    "started_at_utc": "2026-09-19T19:32:34.769146+00:00",
+    "state": "Arunachal Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Arunachal+Pradesh&district=Anjaw&language=English"
+   },
+   "Baksa": {
+    "blob": "blobs/6e62eb9d055eefec59180094e69f614f244d637bd1e54fe787a682b528ba6a61.bin",
+    "bytes": 329749,
+    "district": "Baksa",
+    "elapsed_s": 1.389,
+    "head_checked_at": "2026-09-14T19:26:49.856188+00:00",
+    "outcome": "unchanged",
+    "sha256": "6e62eb9d055eefec59180094e69f614f244d637bd1e54fe787a682b528ba6a61",
+    "started_at_utc": "2026-09-19T19:33:14.724823+00:00",
+    "state": "Assam",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Assam&district=Baksa&language=English"
+   },
+   "Barpeta": {
+    "blob": "blobs/04278c3a231ab4b253e5943ae01b279f6c10424f2997a9249f9ef45f75eb9b43.bin",
+    "bytes": 330211,
+    "district": "Barpeta",
+    "elapsed_s": 1.571,
+    "head_checked_at": "2026-09-14T19:26:51.193705+00:00",
+    "outcome": "unchanged",
+    "sha256": "04278c3a231ab4b253e5943ae01b279f6c10424f2997a9249f9ef45f75eb9b43",
+    "started_at_utc": "2026-09-19T19:33:16.114068+00:00",
+    "state": "Assam",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Assam&district=Barpeta&language=English"
+   },
+   "Changlang": {
+    "age_days": 2,
+    "blob": "blobs/a32959bccd4f5d433add6b23907ce76f27a0bdc4cb266df72fc82a75c3c532f3.bin",
+    "bytes": 331451,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "Changlang",
+    "elapsed_s": 1.949,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "marker_only",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 3,
+    "passages": 8,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST of thenext 5 days)"
+    },
+    "quarantined_pages": 0,
+    "sha256": "a32959bccd4f5d433add6b23907ce76f27a0bdc4cb266df72fc82a75c3c532f3",
+    "started_at_utc": "2026-09-19T19:32:38.046683+00:00",
+    "state": "Arunachal Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Arunachal+Pradesh&district=Changlang&language=English"
+   },
+   "Chittoor": {
+    "blob": "blobs/c27054a0ff1ef6d9e502b75545318fa1594f6232d8bfc4aeb0cfa5773e86be3d.bin",
+    "bytes": 844743,
+    "district": "Chittoor",
+    "elapsed_s": 8.5,
+    "error": "Front matter does not carry any reviewed family marker for district_agromet",
+    "outcome": "layout_unrecognised",
+    "pages": 3,
+    "sha256": "c27054a0ff1ef6d9e502b75545318fa1594f6232d8bfc4aeb0cfa5773e86be3d",
+    "stage": "metadata",
+    "started_at_utc": "2026-09-19T19:31:53.448980+00:00",
+    "state": "Andhra Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Andhra+Pradesh&district=Chittoor&language=English"
+   },
+   "East Godavari": {
+    "age_days": 2,
+    "blob": "blobs/aaff88b25a13eaee44b584d2580ef6ff05c740503922b0c91be539d50b60401f.bin",
+    "bytes": 657008,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "East Godavari",
+    "elapsed_s": 3.409,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "named:india meteorological department",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 4,
+    "passages": 12,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST of thenext 5 days)"
+    },
+    "quarantined_pages": 0,
+    "sha256": "aaff88b25a13eaee44b584d2580ef6ff05c740503922b0c91be539d50b60401f",
+    "started_at_utc": "2026-09-19T19:32:01.949400+00:00",
+    "state": "Andhra Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Andhra+Pradesh&district=East+Godavari&language=English"
+   },
+   "East Kameng": {
+    "age_days": 2,
+    "blob": "blobs/d385012cfb96fd45d6362c407413d2f7b67a78cf2fee5250a8d3732afe946567.bin",
+    "bytes": 331262,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "East Kameng",
+    "elapsed_s": 1.601,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "marker_only",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 3,
+    "passages": 8,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST of thenext 5 days)"
+    },
+    "quarantined_pages": 0,
+    "sha256": "d385012cfb96fd45d6362c407413d2f7b67a78cf2fee5250a8d3732afe946567",
+    "started_at_utc": "2026-09-19T19:32:39.995625+00:00",
+    "state": "Arunachal Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Arunachal+Pradesh&district=East+Kameng&language=English"
+   },
+   "East Siang": {
+    "age_days": 2,
+    "blob": "blobs/2c69b820accbc4f8be643c7f47c042a12cdc5b7feface4ce9b317ac484732886.bin",
+    "bytes": 330764,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "East Siang",
+    "elapsed_s": 3.063,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "marker_only",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 3,
+    "passages": 8,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST of thenext 5 days)"
+    },
+    "quarantined_pages": 0,
+    "sha256": "2c69b820accbc4f8be643c7f47c042a12cdc5b7feface4ce9b317ac484732886",
+    "started_at_utc": "2026-09-19T19:32:41.596431+00:00",
+    "state": "Arunachal Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Arunachal+Pradesh&district=East+Siang&language=English"
+   },
+   "Guntur": {
+    "age_days": 2,
+    "blob": "blobs/62646770d9d2924cbee772f082655d5772abd936d987c764f3d4dc32ab3bf203.bin",
+    "bytes": 669802,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "Guntur",
+    "elapsed_s": 4.241,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "marker_only",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 5,
+    "passages": 17,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST of the next 5"
+    },
+    "quarantined_pages": 0,
+    "sha256": "62646770d9d2924cbee772f082655d5772abd936d987c764f3d4dc32ab3bf203",
+    "started_at_utc": "2026-09-19T19:32:05.358893+00:00",
+    "state": "Andhra Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Andhra+Pradesh&district=Guntur&language=English"
+   },
+   "Itanagar": {
+    "bytes": 96,
+    "district": "Itanagar",
+    "elapsed_s": 1.409,
+    "error": "District address did not deliver a PDF",
+    "outcome": "failed",
+    "stage": "fetch",
+    "started_at_utc": "2026-09-19T19:32:44.661258+00:00",
+    "state": "Arunachal Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Arunachal+Pradesh&district=Itanagar&language=English"
+   },
+   "Kadapa": {
+    "bytes": 96,
+    "district": "Kadapa",
+    "elapsed_s": 1.123,
+    "error": "District address did not deliver a PDF",
+    "outcome": "failed",
+    "stage": "fetch",
+    "started_at_utc": "2026-09-19T19:32:09.600135+00:00",
+    "state": "Andhra Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Andhra+Pradesh&district=Kadapa&language=English"
+   },
+   "Kamle": {
+    "bytes": 96,
+    "district": "Kamle",
+    "elapsed_s": 1.001,
+    "error": "District address did not deliver a PDF",
+    "outcome": "failed",
+    "stage": "fetch",
+    "started_at_utc": "2026-09-19T19:32:46.070529+00:00",
+    "state": "Arunachal Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Arunachal+Pradesh&district=Kamle&language=English"
+   },
+   "Krishna": {
+    "age_days": 2,
+    "blob": "blobs/a6f2c3c05d9f07e2c3503dd8c9c136990eb0c7471c0c397c35e8e85e2e3246b4.bin",
+    "bytes": 669814,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "Krishna",
+    "elapsed_s": 4.4,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "marker_only",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 5,
+    "passages": 17,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST of the next 5"
+    },
+    "quarantined_pages": 0,
+    "sha256": "a6f2c3c05d9f07e2c3503dd8c9c136990eb0c7471c0c397c35e8e85e2e3246b4",
+    "started_at_utc": "2026-09-19T19:32:10.723004+00:00",
+    "state": "Andhra Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Andhra+Pradesh&district=Krishna&language=English"
+   },
+   "Kurnool": {
+    "age_days": 2,
+    "blob": "blobs/263ff42874aa097a7cc0722c3820dfbdc64621ee539f62218d1b3e47088f6fb6.bin",
+    "bytes": 650839,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "Kurnool",
+    "elapsed_s": 2.438,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "named:india meteorological department",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 3,
+    "passages": 11,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST of the next 5"
+    },
+    "quarantined_pages": 0,
+    "sha256": "263ff42874aa097a7cc0722c3820dfbdc64621ee539f62218d1b3e47088f6fb6",
+    "started_at_utc": "2026-09-19T19:32:15.122999+00:00",
+    "state": "Andhra Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Andhra+Pradesh&district=Kurnool&language=English"
+   },
+   "Kurung Kumey": {
+    "age_days": 2,
+    "blob": "blobs/8ebd0b8958bba4a02b909b942d398eb6d2eec47bf75ae02819203468715e18ad.bin",
+    "bytes": 330942,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "Kurung Kumey",
+    "elapsed_s": 1.671,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "marker_only",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 3,
+    "passages": 8,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST ofthe next 5 days)"
+    },
+    "quarantined_pages": 0,
+    "sha256": "8ebd0b8958bba4a02b909b942d398eb6d2eec47bf75ae02819203468715e18ad",
+    "started_at_utc": "2026-09-19T19:32:47.071438+00:00",
+    "state": "Arunachal Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Arunachal+Pradesh&district=Kurung+Kumey&language=English"
+   },
+   "Lepa Rada": {
+    "bytes": 96,
+    "district": "Lepa Rada",
+    "elapsed_s": 0.935,
+    "error": "District address did not deliver a PDF",
+    "outcome": "failed",
+    "stage": "fetch",
+    "started_at_utc": "2026-09-19T19:32:48.742572+00:00",
+    "state": "Arunachal Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Arunachal+Pradesh&district=Lepa+Rada&language=English"
+   },
+   "Lohit": {
+    "age_days": 2,
+    "blob": "blobs/b9ccaa9c65f0a264ea0cc93bb2407fc583d5131857312ca9f0c97c4d17085c68.bin",
+    "bytes": 330859,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "Lohit",
+    "elapsed_s": 1.631,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "marker_only",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 3,
+    "passages": 7,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST of the next 5days)"
+    },
+    "quarantined_pages": 0,
+    "sha256": "b9ccaa9c65f0a264ea0cc93bb2407fc583d5131857312ca9f0c97c4d17085c68",
+    "started_at_utc": "2026-09-19T19:32:49.677309+00:00",
+    "state": "Arunachal Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Arunachal+Pradesh&district=Lohit&language=English"
+   },
+   "Longding": {
+    "age_days": 2,
+    "blob": "blobs/c24a4bd6803c623acdd9854ea4d8fd2d434a24ff7668185f6aa14695e40a8873.bin",
+    "bytes": 330121,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "Longding",
+    "elapsed_s": 2.362,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "marker_only",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 3,
+    "passages": 7,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST of thenext 5 days)"
+    },
+    "quarantined_pages": 0,
+    "sha256": "c24a4bd6803c623acdd9854ea4d8fd2d434a24ff7668185f6aa14695e40a8873",
+    "started_at_utc": "2026-09-19T19:32:51.308129+00:00",
+    "state": "Arunachal Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Arunachal+Pradesh&district=Longding&language=English"
+   },
+   "Lower Dibang Valley": {
+    "age_days": 2,
+    "blob": "blobs/312caa924c9f39607b71c26c071ce461574b61307025b9d8b10d506a28c58869.bin",
+    "bytes": 331325,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "Lower Dibang Valley",
+    "elapsed_s": 1.972,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "marker_only",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 3,
+    "passages": 8,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till08:30 IST of the next 5 days)"
+    },
+    "quarantined_pages": 0,
+    "sha256": "312caa924c9f39607b71c26c071ce461574b61307025b9d8b10d506a28c58869",
+    "started_at_utc": "2026-09-19T19:32:53.670468+00:00",
+    "state": "Arunachal Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Arunachal+Pradesh&district=Lower+Dibang+Valley&language=English"
+   },
+   "Lower Subansiri": {
+    "age_days": 2,
+    "blob": "blobs/2b651aa91c096c2779fe0025f503accbdd4e691bda8bb27a016bf38b44ed85de.bin",
+    "bytes": 330539,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "Lower Subansiri",
+    "elapsed_s": 2.627,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "marker_only",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 3,
+    "passages": 8,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 ISTof the next 5 days)"
+    },
+    "quarantined_pages": 0,
+    "sha256": "2b651aa91c096c2779fe0025f503accbdd4e691bda8bb27a016bf38b44ed85de",
+    "started_at_utc": "2026-09-19T19:32:55.642618+00:00",
+    "state": "Arunachal Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Arunachal+Pradesh&district=Lower+Subansiri&language=English"
+   },
+   "Nellore": {
+    "blob": "blobs/37c21db013ab0ee55a965847bfc2cb219acce14dda9bc55e745582ba1729581d.bin",
+    "bytes": 938038,
+    "district": "Nellore",
+    "elapsed_s": 5.435,
+    "error": "Front matter does not carry any reviewed family marker for district_agromet",
+    "outcome": "layout_unrecognised",
+    "pages": 4,
+    "sha256": "37c21db013ab0ee55a965847bfc2cb219acce14dda9bc55e745582ba1729581d",
+    "stage": "metadata",
+    "started_at_utc": "2026-09-19T19:32:17.561017+00:00",
+    "state": "Andhra Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Andhra+Pradesh&district=Nellore&language=English"
+   },
+   "Nicobar": {
+    "age_days": 2,
+    "blob": "blobs/a4ffcc1780cc98f70a5b0c2c24cc35a61c09b1ef6e8be44726606dc671cca631.bin",
+    "bytes": 465540,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "Nicobar",
+    "elapsed_s": 10.951,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "named:institute",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 3,
+    "passages": 10,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST of the next 5 days)"
+    },
+    "quarantined_pages": 0,
+    "sha256": "a4ffcc1780cc98f70a5b0c2c24cc35a61c09b1ef6e8be44726606dc671cca631",
+    "started_at_utc": "2026-09-19T19:31:30.032643+00:00",
+    "state": "Andaman and Nicobar",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=A+And+N+Islands&district=Nicobar&language=English"
+   },
+   "North And Middle Andaman": {
+    "age_days": 2,
+    "blob": "blobs/79ddf014c2ae68a42da2e5d6f6cad8d7b9db6cd85efc42b90d9cb72bf4a41a3e.bin",
+    "bytes": 467750,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "North And Middle Andaman",
+    "elapsed_s": 4.555,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "named:institute",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 3,
+    "passages": 11,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST of the"
+    },
+    "quarantined_pages": 0,
+    "sha256": "79ddf014c2ae68a42da2e5d6f6cad8d7b9db6cd85efc42b90d9cb72bf4a41a3e",
+    "started_at_utc": "2026-09-19T19:31:40.984183+00:00",
+    "state": "Andaman and Nicobar",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=A+And+N+Islands&district=North+And+Middle+Andaman&language=English"
+   },
+   "Pakke Kasang": {
+    "bytes": 96,
+    "district": "Pakke Kasang",
+    "elapsed_s": 0.672,
+    "error": "District address did not deliver a PDF",
+    "outcome": "failed",
+    "stage": "fetch",
+    "started_at_utc": "2026-09-19T19:32:58.269747+00:00",
+    "state": "Arunachal Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Arunachal+Pradesh&district=Pakke+Kasang&language=English"
+   },
+   "Papumpare": {
+    "age_days": 2,
+    "blob": "blobs/072e7948782ee2a3f5cf211df32a2d2a92f340bed4edd8084a859636ee9bd49b.bin",
+    "bytes": 331111,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "Papumpare",
+    "elapsed_s": 1.801,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "marker_only",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 3,
+    "passages": 8,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST of thenext 5 days)"
+    },
+    "quarantined_pages": 0,
+    "sha256": "072e7948782ee2a3f5cf211df32a2d2a92f340bed4edd8084a859636ee9bd49b",
+    "started_at_utc": "2026-09-19T19:32:58.941641+00:00",
+    "state": "Arunachal Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Arunachal+Pradesh&district=Papumpare&language=English"
+   },
+   "Patna": {
+    "age_days": 2,
+    "blob": "blobs/7906f441b9575d6f61f01bc8ca2cba2eb53895b5e310e93e1f22357b63b353c5.bin",
+    "bytes": 535118,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "Patna",
+    "elapsed_s": 8.51,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "named:india meteorological department",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 2,
+    "passages": 7,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST of the next 5 days)"
+    },
+    "quarantined_pages": 0,
+    "sha256": "7906f441b9575d6f61f01bc8ca2cba2eb53895b5e310e93e1f22357b63b353c5",
+    "started_at_utc": "2026-09-19T19:19:58.598208+00:00",
+    "state": "Bihar",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Bihar&district=Patna&language=English"
+   },
+   "Prakasam": {
+    "age_days": 2,
+    "blob": "blobs/31070da18fae8f6fb313b469ed5e16e810fa201dc62b8ad7de4add8a58126037.bin",
+    "bytes": 669850,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "Prakasam",
+    "elapsed_s": 2.213,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "marker_only",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 5,
+    "passages": 17,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST of the next 5"
+    },
+    "quarantined_pages": 0,
+    "sha256": "31070da18fae8f6fb313b469ed5e16e810fa201dc62b8ad7de4add8a58126037",
+    "started_at_utc": "2026-09-19T19:32:22.996176+00:00",
+    "state": "Andhra Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Andhra+Pradesh&district=Prakasam&language=English"
+   },
+   "Shiyami": {
+    "bytes": 96,
+    "district": "Shiyami",
+    "elapsed_s": 0.756,
+    "error": "District address did not deliver a PDF",
+    "outcome": "failed",
+    "stage": "fetch",
+    "started_at_utc": "2026-09-19T19:33:00.742739+00:00",
+    "state": "Arunachal Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Arunachal+Pradesh&district=Shiyami&language=English"
+   },
+   "South Andaman": {
+    "age_days": 2,
+    "blob": "blobs/495b5871de7813bd604a42bf13dc17520a8df703c722e30335caba0eaf42000d.bin",
+    "bytes": 468256,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "South Andaman",
+    "elapsed_s": 3.041,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "named:institute",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 3,
+    "passages": 11,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST of the"
+    },
+    "quarantined_pages": 0,
+    "sha256": "495b5871de7813bd604a42bf13dc17520a8df703c722e30335caba0eaf42000d",
+    "started_at_utc": "2026-09-19T19:31:45.538775+00:00",
+    "state": "Andaman and Nicobar",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=A+And+N+Islands&district=South+Andaman&language=English"
+   },
+   "Srikakulam": {
+    "age_days": 2,
+    "blob": "blobs/3a130a8b31dbd5562fd510b4b10ebfa525f6b4722426ee02e5bfe89f79aec241.bin",
+    "bytes": 673818,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "Srikakulam",
+    "elapsed_s": 2.574,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "marker_only",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 3,
+    "passages": 8,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST of the"
+    },
+    "quarantined_pages": 0,
+    "sha256": "3a130a8b31dbd5562fd510b4b10ebfa525f6b4722426ee02e5bfe89f79aec241",
+    "started_at_utc": "2026-09-19T19:32:25.208888+00:00",
+    "state": "Andhra Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Andhra+Pradesh&district=Srikakulam&language=English"
+   },
+   "Tawang": {
+    "age_days": 2,
+    "blob": "blobs/9d67d34b84a23b74557510f17f9dea4202e527e74a604df0c431a091916f3862.bin",
+    "bytes": 330142,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "Tawang",
+    "elapsed_s": 1.848,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "marker_only",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 3,
+    "passages": 7,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST of the next 5days)"
+    },
+    "quarantined_pages": 0,
+    "sha256": "9d67d34b84a23b74557510f17f9dea4202e527e74a604df0c431a091916f3862",
+    "started_at_utc": "2026-09-19T19:33:01.498689+00:00",
+    "state": "Arunachal Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Arunachal+Pradesh&district=Tawang&language=English"
+   },
+   "Tirap": {
+    "age_days": 2,
+    "blob": "blobs/bef0411e3585354f77538f3684dec8697795ec93f1bc1828d9eeda3151343a14.bin",
+    "bytes": 331412,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "Tirap",
+    "elapsed_s": 1.655,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "marker_only",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 3,
+    "passages": 8,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST of the next 5days)"
+    },
+    "quarantined_pages": 0,
+    "sha256": "bef0411e3585354f77538f3684dec8697795ec93f1bc1828d9eeda3151343a14",
+    "started_at_utc": "2026-09-19T19:33:03.346675+00:00",
+    "state": "Arunachal Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Arunachal+Pradesh&district=Tirap&language=English"
+   },
+   "Upper Dibang Valley": {
+    "age_days": 2,
+    "blob": "blobs/47ce167ee2c0c70d2eb61b537c49028031e583cbc24f406454300a9bb5bb2e9f.bin",
+    "bytes": 331022,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "Upper Dibang Valley",
+    "elapsed_s": 1.766,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "marker_only",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 3,
+    "passages": 8,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST ofthe next 5 days)"
+    },
+    "quarantined_pages": 0,
+    "sha256": "47ce167ee2c0c70d2eb61b537c49028031e583cbc24f406454300a9bb5bb2e9f",
+    "started_at_utc": "2026-09-19T19:33:05.001811+00:00",
+    "state": "Arunachal Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Arunachal+Pradesh&district=Upper+Dibang+Valley&language=English"
+   },
+   "Upper Siang": {
+    "age_days": 2,
+    "blob": "blobs/4bcbc551e99894a4254e729d5e2c46665376378f51b769c5d28c14bdf3c7be44.bin",
+    "bytes": 330536,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "Upper Siang",
+    "elapsed_s": 1.553,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "marker_only",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 3,
+    "passages": 8,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST of thenext 5 days)"
+    },
+    "quarantined_pages": 0,
+    "sha256": "4bcbc551e99894a4254e729d5e2c46665376378f51b769c5d28c14bdf3c7be44",
+    "started_at_utc": "2026-09-19T19:33:06.767692+00:00",
+    "state": "Arunachal Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Arunachal+Pradesh&district=Upper+Siang&language=English"
+   },
+   "Upper Subansiri": {
+    "age_days": 2,
+    "blob": "blobs/351a76d84a5116d7ca55033dc441e3dbb45ac31f651f2d0a5070d9ecef120004.bin",
+    "bytes": 330446,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "Upper Subansiri",
+    "elapsed_s": 1.751,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "marker_only",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 3,
+    "passages": 8,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST ofthe next 5 days)"
+    },
+    "quarantined_pages": 0,
+    "sha256": "351a76d84a5116d7ca55033dc441e3dbb45ac31f651f2d0a5070d9ecef120004",
+    "started_at_utc": "2026-09-19T19:33:08.321129+00:00",
+    "state": "Arunachal Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Arunachal+Pradesh&district=Upper+Subansiri&language=English"
+   },
+   "Visakhapatnam": {
+    "age_days": 2,
+    "blob": "blobs/f6ad99205a3c1748b2afcb7555a22e588913eb84fc17d0c2b30b1185c2d58fc1.bin",
+    "bytes": 672412,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "Visakhapatnam",
+    "elapsed_s": 2.052,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "marker_only",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 3,
+    "passages": 8,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST of"
+    },
+    "quarantined_pages": 0,
+    "sha256": "f6ad99205a3c1748b2afcb7555a22e588913eb84fc17d0c2b30b1185c2d58fc1",
+    "started_at_utc": "2026-09-19T19:32:27.782478+00:00",
+    "state": "Andhra Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Andhra+Pradesh&district=Visakhapatnam&language=English"
+   },
+   "Vizianagaram": {
+    "age_days": 2,
+    "blob": "blobs/5b7560456caa91a4fea6dfc389636cd73a3aa7a8a30fe74aeaf537af519cc197.bin",
+    "bytes": 672990,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "Vizianagaram",
+    "elapsed_s": 2.46,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "marker_only",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 3,
+    "passages": 8,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST of the"
+    },
+    "quarantined_pages": 0,
+    "sha256": "5b7560456caa91a4fea6dfc389636cd73a3aa7a8a30fe74aeaf537af519cc197",
+    "started_at_utc": "2026-09-19T19:32:29.834678+00:00",
+    "state": "Andhra Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Andhra+Pradesh&district=Vizianagaram&language=English"
+   },
+   "West Godavari": {
+    "age_days": 2,
+    "blob": "blobs/27b2350ef87fffd35ff6891631b8cf141d260ebd84b1fd2b65ca0551d618dd78.bin",
+    "bytes": 668112,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "West Godavari",
+    "elapsed_s": 2.474,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "marker_only",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 5,
+    "passages": 15,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST of the"
+    },
+    "quarantined_pages": 0,
+    "sha256": "27b2350ef87fffd35ff6891631b8cf141d260ebd84b1fd2b65ca0551d618dd78",
+    "started_at_utc": "2026-09-19T19:32:32.295226+00:00",
+    "state": "Andhra Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Andhra+Pradesh&district=West+Godavari&language=English"
+   },
+   "West Kameng": {
+    "age_days": 2,
+    "blob": "blobs/1e998377eb8859d030d42b65b61d750952f8b4dbb7714bc22949230500597d86.bin",
+    "bytes": 329875,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "West Kameng",
+    "elapsed_s": 2.062,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "marker_only",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 3,
+    "passages": 8,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST ofthe next 5 days)"
+    },
+    "quarantined_pages": 0,
+    "sha256": "1e998377eb8859d030d42b65b61d750952f8b4dbb7714bc22949230500597d86",
+    "started_at_utc": "2026-09-19T19:33:10.071909+00:00",
+    "state": "Arunachal Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Arunachal+Pradesh&district=West+Kameng&language=English"
+   },
+   "West Siang": {
+    "age_days": 2,
+    "blob": "blobs/0c30e00318d92b59487b078b12d54b12dc9ff5a9f505012481f50272fb74037f.bin",
+    "bytes": 330786,
+    "currency": "printed_issue_differs_from_retrieval_date",
+    "district": "West Siang",
+    "elapsed_s": 2.59,
+    "issue_date": "2026-09-18",
+    "issue_date_basis": "family_rule:iso_issued_on",
+    "issuer_basis": "marker_only",
+    "marker_basis": "matched:gramin krishi mausam sewa",
+    "outcome": "fetched_new",
+    "pages": 3,
+    "passages": 8,
+    "previously_indexed": false,
+    "printed_times": {
+     "validity": "Valid Till 08:30 IST of thenext 5 days)"
+    },
+    "quarantined_pages": 0,
+    "sha256": "0c30e00318d92b59487b078b12d54b12dc9ff5a9f505012481f50272fb74037f",
+    "started_at_utc": "2026-09-19T19:33:12.134369+00:00",
+    "state": "Arunachal Pradesh",
+    "url": "https://imdagrimet.gov.in/Services/DistrictBulletin.php?state=Arunachal+Pradesh&district=West+Siang&language=English"
+   }
+  }
+ },
+ "documents": [
+  {
+   "blob": "blobs/528ad169dcd8ac744691041f499702ee8e88f036e2d8a0db51de69e66c6a8a87.bin",
+   "bytes": 1164681,
+   "currency": "printed_issue_differs_from_retrieval_date",
+   "family": "state_district_bulletin",
+   "first_seen_at_utc": "2026-09-19T19:12:38.717807+00:00",
+   "issue_date": "2026-09-19",
+   "issue_date_basis": "family_rule:printed",
+   "pages": 5,
+   "passages": 28,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "528ad169dcd8ac744691041f499702ee8e88f036e2d8a0db51de69e66c6a8a87",
+   "url": "https://mausam.imd.gov.in/ahmedabad/mcdata/district.pdf"
+  },
+  {
+   "blob": "blobs/8cb651073d7b27872e3e3cf8068520a88ab669a3071bcea3b62331fc4f6b3fb6.bin",
+   "bytes": 327578,
+   "currency": "printed_issue_differs_from_retrieval_date",
+   "family": "coastal_bulletin",
+   "first_seen_at_utc": "2026-09-19T19:12:56.853511+00:00",
+   "issue_date": "2026-09-19",
+   "issue_date_basis": "generic_scan",
+   "pages": 1,
+   "passages": 3,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "8cb651073d7b27872e3e3cf8068520a88ab669a3071bcea3b62331fc4f6b3fb6",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_854a4b_coastal.pdf"
+  },
+  {
+   "blob": "blobs/b97d0dc1e5ca802a399139b4e9ee6da7e368973a6b0cb8c995ec375d6a792715.bin",
+   "bytes": 173036,
+   "currency": "printed_issue_differs_from_retrieval_date",
+   "family": "coastal_bulletin",
+   "first_seen_at_utc": "2026-09-19T19:12:56.853511+00:00",
+   "issue_date": "2026-09-19",
+   "issue_date_basis": "generic_scan",
+   "pages": 2,
+   "passages": 5,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "b97d0dc1e5ca802a399139b4e9ee6da7e368973a6b0cb8c995ec375d6a792715",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_08d55b_DTB19.pdf"
+  },
+  {
+   "blob": "blobs/31d60833570387494a66fab4a64fb32702ab72e7de847084e5f6c0a590b5701c.bin",
+   "bytes": 172346,
+   "currency": "printed_issue_differs_from_retrieval_date",
+   "family": "coastal_bulletin",
+   "first_seen_at_utc": "2026-09-19T19:12:56.853511+00:00",
+   "issue_date": "2026-09-19",
+   "issue_date_basis": "generic_scan",
+   "pages": 1,
+   "passages": 5,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "31d60833570387494a66fab4a64fb32702ab72e7de847084e5f6c0a590b5701c",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_eeb073_TWO_BULLETIN_STN.pdf"
+  },
+  {
+   "blob": "blobs/9904a089bd0b522b412757a13695d40600a5918249146de84bd24af3fc892bc8.bin",
+   "bytes": 163135,
+   "currency": "printed_issue_differs_from_retrieval_date",
+   "family": "coastal_bulletin",
+   "first_seen_at_utc": "2026-09-19T19:12:56.853511+00:00",
+   "issue_date": "2026-09-19",
+   "issue_date_basis": "generic_scan",
+   "pages": 1,
+   "passages": 3,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "9904a089bd0b522b412757a13695d40600a5918249146de84bd24af3fc892bc8",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_a0380a_TWO_BULLETIN_NTN.pdf"
+  },
+  {
+   "blob": "blobs/f17ffcbdcf4610f77a02cb37dc564cacfd7d4b2ad73c99453572a66e79ba9b5d.bin",
+   "bytes": 207115,
+   "currency": "printed_issue_differs_from_retrieval_date",
+   "family": "coastal_bulletin",
+   "first_seen_at_utc": "2026-09-19T19:12:56.853511+00:00",
+   "issue_date": "2026-09-19",
+   "issue_date_basis": "generic_scan",
+   "pages": 2,
+   "passages": 4,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "f17ffcbdcf4610f77a02cb37dc564cacfd7d4b2ad73c99453572a66e79ba9b5d",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_d92839_coastal_bulletin.pdf"
+  },
+  {
+   "blob": "blobs/a58883ce411879d3169028034df398ec9806be89ba159c725ab1995d072b1774.bin",
+   "bytes": 172344,
+   "currency": "printed_issue_differs_from_retrieval_date",
+   "family": "coastal_bulletin",
+   "first_seen_at_utc": "2026-09-19T19:12:56.853511+00:00",
+   "issue_date": "2026-09-19",
+   "issue_date_basis": "generic_scan",
+   "pages": 2,
+   "passages": 3,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "a58883ce411879d3169028034df398ec9806be89ba159c725ab1995d072b1774",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_0d3453_coastal_rsmc.pdf"
+  },
+  {
+   "blob": "blobs/599f9d04421b3eef5408d7e8a7fdda7908368c53931384d2a3ca0de3669aea21.bin",
+   "bytes": 194149,
+   "currency": "printed_issue_differs_from_retrieval_date",
+   "family": "coastal_bulletin",
+   "first_seen_at_utc": "2026-09-19T19:12:56.853511+00:00",
+   "issue_date": "2026-09-19",
+   "issue_date_basis": "generic_scan",
+   "pages": 1,
+   "passages": 2,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "599f9d04421b3eef5408d7e8a7fdda7908368c53931384d2a3ca0de3669aea21",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_710777_coastal_bln.pdf"
+  },
+  {
+   "blob": "blobs/69f511104ad66e6c8dd70861bbc5a96462ed3e70abfff02a5eee233ae9290991.bin",
+   "bytes": 173017,
+   "currency": "printed_issue_differs_from_retrieval_date",
+   "family": "coastal_bulletin",
+   "first_seen_at_utc": "2026-09-19T19:12:56.853511+00:00",
+   "issue_date": "2026-09-19",
+   "issue_date_basis": "generic_scan",
+   "pages": 2,
+   "passages": 5,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "69f511104ad66e6c8dd70861bbc5a96462ed3e70abfff02a5eee233ae9290991",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_18f3d9_coastal.pdf"
+  },
+  {
+   "blob": "blobs/46033486d26214d463ab5854377fe8356f21a162b2e7910c6cc00ede4b52a918.bin",
+   "bytes": 907719,
+   "currency": "printed_issue_differs_from_retrieval_date",
+   "family": "erf_marquee",
+   "first_seen_at_utc": "2026-09-19T19:13:15.709302+00:00",
+   "issue_date": "2026-09-10",
+   "issue_date_basis": "generic_scan",
+   "pages": 10,
+   "passages": 32,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "46033486d26214d463ab5854377fe8356f21a162b2e7910c6cc00ede4b52a918",
+   "url": "https://mausam.imd.gov.in/Forecast/marquee_data/ERF%2017.09.26.pdf"
+  },
+  {
+   "blob": "blobs/ebc62f68a35aa432559524a1a95e4878f40d22d26f72c5cd7c2527b1edfb697c.bin",
+   "bytes": 438240,
+   "currency": "printed_issue_differs_from_retrieval_date",
+   "family": "flash_flood_national",
+   "first_seen_at_utc": "2026-09-19T19:13:18.521934+00:00",
+   "issue_date": "2026-09-19",
+   "issue_date_basis": "family_rule:printed",
+   "pages": 3,
+   "passages": 6,
+   "quarantined_pages": 1,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "ebc62f68a35aa432559524a1a95e4878f40d22d26f72c5cd7c2527b1edfb697c",
+   "url": "https://mausam.imd.gov.in/Rainfall/national.pdf"
+  },
+  {
+   "blob": "blobs/98444ef95bb94d5e97c2c37cf3007d315c2136df17830da855aba4a150b07154.bin",
+   "bytes": 527558,
+   "currency": "printed_issue_differs_from_retrieval_date",
+   "family": "flash_flood_sasia",
+   "first_seen_at_utc": "2026-09-19T19:13:19.527569+00:00",
+   "issue_date": "2026-09-19",
+   "issue_date_basis": "family_rule:printed",
+   "pages": 3,
+   "passages": 6,
+   "quarantined_pages": 1,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "98444ef95bb94d5e97c2c37cf3007d315c2136df17830da855aba4a150b07154",
+   "url": "https://mausam.imd.gov.in/Rainfall/sasia.pdf"
+  },
+  {
+   "blob": "blobs/045d7008eb8f2f52fe36af70111d7d8269de5c171c358029e56b92e4198c6711.bin",
+   "bytes": 6385514,
+   "currency": "printed_issue_differs_from_retrieval_date",
+   "family": "national_bulletin",
+   "first_seen_at_utc": "2026-09-19T19:13:21.253189+00:00",
+   "issue_date": "2026-09-19",
+   "issue_date_basis": "family_rule:printed",
+   "pages": 25,
+   "passages": 54,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "045d7008eb8f2f52fe36af70111d7d8269de5c171c358029e56b92e4198c6711",
+   "url": "https://mausam.imd.gov.in/backend/assets/aiwfb_pdf/c0054418fa4532a9cfceb7a2693d6996.pdf"
+  },
+  {
+   "blob": "blobs/55d749d88a101b4372c86727dc3c27be4cf189faf58e1761c34038dc9f97441e.bin",
+   "bytes": 729268,
+   "currency": "printed_issue_differs_from_retrieval_date",
+   "family": "press_release",
+   "first_seen_at_utc": "2026-09-19T19:13:30.755161+00:00",
+   "issue_date": "2026-09-19",
+   "issue_date_basis": "filename",
+   "pages": 13,
+   "passages": 35,
+   "quarantined_pages": 2,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "55d749d88a101b4372c86727dc3c27be4cf189faf58e1761c34038dc9f97441e",
+   "url": "https://mausam.imd.gov.in/Forecast/marquee_data/Press%20Release%2019-09-2026.pdf"
+  },
+  {
+   "blob": "blobs/8017fae50b134c7884c75f4d862178fcebf951fb8c6b0a4f3831644022bb999c.bin",
+   "bytes": 3207898,
+   "currency": "printed_issue_differs_from_retrieval_date",
+   "family": "sea_area_bulletin",
+   "first_seen_at_utc": "2026-09-19T19:13:33.234647+00:00",
+   "issue_date": "2026-09-19",
+   "issue_date_basis": "generic_scan",
+   "pages": 3,
+   "passages": 8,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "8017fae50b134c7884c75f4d862178fcebf951fb8c6b0a4f3831644022bb999c",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/59/59_34ef52_sab_rsmc.pdf"
+  },
+  {
+   "blob": "blobs/715d53bbe5f6ab71676e7c6244e4fcbb16ac3490531bcb323c282115d9617aa1.bin",
+   "bytes": 3206862,
+   "currency": "printed_issue_differs_from_retrieval_date",
+   "family": "sea_area_bulletin",
+   "first_seen_at_utc": "2026-09-19T19:13:33.234647+00:00",
+   "issue_date": "2026-09-19",
+   "issue_date_basis": "generic_scan",
+   "pages": 3,
+   "passages": 6,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "715d53bbe5f6ab71676e7c6244e4fcbb16ac3490531bcb323c282115d9617aa1",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/60/60_26bc86_sab.pdf"
+  },
+  {
+   "blob": "blobs/6593a51b65554dfd8f89d37f208f621c625101a612a5b67a5f099e9442479667.bin",
+   "bytes": 426667,
+   "currency": "printed_issue_differs_from_retrieval_date",
+   "family": "special_advisory",
+   "first_seen_at_utc": "2026-09-19T19:13:41.069499+00:00",
+   "issue_date": "2025-11-29",
+   "issue_date_basis": "generic_scan",
+   "pages": 5,
+   "passages": 18,
+   "quarantined_pages": 0,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "6593a51b65554dfd8f89d37f208f621c625101a612a5b67a5f099e9442479667",
+   "url": "https://rsmcnewdelhi.imd.gov.in/uploads/special_advisory.pdf"
+  },
+  {
+   "blob": "blobs/52840df7cf37dfff12c239c3f727587856450973e1ddef0d2fc5bb2b1e008e43.bin",
+   "bytes": 3025970,
+   "currency": "printed_issue_differs_from_retrieval_date",
+   "family": "state_agromet",
+   "first_seen_at_utc": "2026-09-19T19:13:42.259281+00:00",
+   "issue_date": "2026-09-19",
+   "issue_date_basis": "family_rule:printed",
+   "pages": 60,
+   "passages": 216,
+   "quarantined_pages": 1,
+   "retention": {
+    "body_retained_until": null,
+    "policy": "document bodies are pruned after 7 days; passages and this manifest remain"
+   },
+   "sha256": "52840df7cf37dfff12c239c3f727587856450973e1ddef0d2fc5bb2b1e008e43",
+   "url": "https://mausam.imd.gov.in/ahmedabad/mcdata/agromet.pdf"
+  }
+ ],
+ "rejected": [],
+ "runs": [
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/528ad169dcd8ac744691041f499702ee8e88f036e2d8a0db51de69e66c6a8a87.bin",
+     "bytes": 1164681,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "state_district_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "marker_only",
+     "pages": 5,
+     "passages": 28,
+     "quarantined_pages": 0,
+     "sha256": "528ad169dcd8ac744691041f499702ee8e88f036e2d8a0db51de69e66c6a8a87",
+     "url": "https://mausam.imd.gov.in/ahmedabad/mcdata/district.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/ahmedabad/mcdata/district.pdf"
+   ],
+   "family": "state_district_bulletin",
+   "generated_at_utc": "2026-09-19T19:12:38.717807+00:00",
+   "rejected": [],
+   "source_id": "S08",
+   "started_at_utc": "2026-09-19T19:12:38.717807+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/8cb651073d7b27872e3e3cf8068520a88ab669a3071bcea3b62331fc4f6b3fb6.bin",
+     "bytes": 327578,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 1,
+     "passages": 3,
+     "quarantined_pages": 0,
+     "sha256": "8cb651073d7b27872e3e3cf8068520a88ab669a3071bcea3b62331fc4f6b3fb6",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_854a4b_coastal.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/b97d0dc1e5ca802a399139b4e9ee6da7e368973a6b0cb8c995ec375d6a792715.bin",
+     "bytes": 173036,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 2,
+     "passages": 5,
+     "quarantined_pages": 0,
+     "sha256": "b97d0dc1e5ca802a399139b4e9ee6da7e368973a6b0cb8c995ec375d6a792715",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_08d55b_DTB19.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/31d60833570387494a66fab4a64fb32702ab72e7de847084e5f6c0a590b5701c.bin",
+     "bytes": 172346,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "marker_only",
+     "pages": 1,
+     "passages": 5,
+     "quarantined_pages": 0,
+     "sha256": "31d60833570387494a66fab4a64fb32702ab72e7de847084e5f6c0a590b5701c",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_eeb073_TWO_BULLETIN_STN.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/9904a089bd0b522b412757a13695d40600a5918249146de84bd24af3fc892bc8.bin",
+     "bytes": 163135,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "marker_only",
+     "pages": 1,
+     "passages": 3,
+     "quarantined_pages": 0,
+     "sha256": "9904a089bd0b522b412757a13695d40600a5918249146de84bd24af3fc892bc8",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_a0380a_TWO_BULLETIN_NTN.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/f17ffcbdcf4610f77a02cb37dc564cacfd7d4b2ad73c99453572a66e79ba9b5d.bin",
+     "bytes": 207115,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 2,
+     "passages": 4,
+     "quarantined_pages": 0,
+     "sha256": "f17ffcbdcf4610f77a02cb37dc564cacfd7d4b2ad73c99453572a66e79ba9b5d",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_d92839_coastal_bulletin.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/a58883ce411879d3169028034df398ec9806be89ba159c725ab1995d072b1774.bin",
+     "bytes": 172344,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 2,
+     "passages": 3,
+     "quarantined_pages": 0,
+     "sha256": "a58883ce411879d3169028034df398ec9806be89ba159c725ab1995d072b1774",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_0d3453_coastal_rsmc.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/599f9d04421b3eef5408d7e8a7fdda7908368c53931384d2a3ca0de3669aea21.bin",
+     "bytes": 194149,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 1,
+     "passages": 2,
+     "quarantined_pages": 0,
+     "sha256": "599f9d04421b3eef5408d7e8a7fdda7908368c53931384d2a3ca0de3669aea21",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_710777_coastal_bln.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/69f511104ad66e6c8dd70861bbc5a96462ed3e70abfff02a5eee233ae9290991.bin",
+     "bytes": 173017,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 2,
+     "passages": 5,
+     "quarantined_pages": 0,
+     "sha256": "69f511104ad66e6c8dd70861bbc5a96462ed3e70abfff02a5eee233ae9290991",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_18f3d9_coastal.pdf"
+    }
+   ],
+   "candidates": [
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_854a4b_coastal.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_18c0f2_coastal.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_08d55b_DTB19.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_3b21b6_DTB19.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_eeb073_TWO_BULLETIN_STN.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_a0380a_TWO_BULLETIN_NTN.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_d92839_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_425900_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_34bb85_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_0d3453_coastal_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_a8abc1_coastal_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_710777_coastal_bln.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_be55dd_coastal_bln.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_226884_coastal_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_18f3d9_coastal.pdf"
+   ],
+   "family": "coastal_bulletin",
+   "generated_at_utc": "2026-09-19T19:12:56.853511+00:00",
+   "rejected": [],
+   "source_id": "S59",
+   "started_at_utc": "2026-09-19T19:12:56.853511+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/46033486d26214d463ab5854377fe8356f21a162b2e7910c6cc00ede4b52a918.bin",
+     "bytes": 907719,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "erf_marquee",
+     "issue_date": "2026-09-10",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 10,
+     "passages": 32,
+     "quarantined_pages": 0,
+     "sha256": "46033486d26214d463ab5854377fe8356f21a162b2e7910c6cc00ede4b52a918",
+     "url": "https://mausam.imd.gov.in/Forecast/marquee_data/ERF%2017.09.26.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Forecast/marquee_data/ERF%2017.09.26.pdf"
+   ],
+   "family": "erf_marquee",
+   "generated_at_utc": "2026-09-19T19:13:15.709302+00:00",
+   "rejected": [],
+   "source_id": "S66",
+   "started_at_utc": "2026-09-19T19:13:15.709302+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/ebc62f68a35aa432559524a1a95e4878f40d22d26f72c5cd7c2527b1edfb697c.bin",
+     "bytes": 438240,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "flash_flood_national",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 3,
+     "passages": 6,
+     "quarantined_pages": 1,
+     "sha256": "ebc62f68a35aa432559524a1a95e4878f40d22d26f72c5cd7c2527b1edfb697c",
+     "url": "https://mausam.imd.gov.in/Rainfall/national.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Rainfall/national.pdf"
+   ],
+   "family": "flash_flood_national",
+   "generated_at_utc": "2026-09-19T19:13:18.521934+00:00",
+   "rejected": [],
+   "source_id": "S65",
+   "started_at_utc": "2026-09-19T19:13:18.521934+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/98444ef95bb94d5e97c2c37cf3007d315c2136df17830da855aba4a150b07154.bin",
+     "bytes": 527558,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "flash_flood_sasia",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 3,
+     "passages": 6,
+     "quarantined_pages": 1,
+     "sha256": "98444ef95bb94d5e97c2c37cf3007d315c2136df17830da855aba4a150b07154",
+     "url": "https://mausam.imd.gov.in/Rainfall/sasia.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Rainfall/sasia.pdf"
+   ],
+   "family": "flash_flood_sasia",
+   "generated_at_utc": "2026-09-19T19:13:19.527569+00:00",
+   "rejected": [],
+   "source_id": "S65",
+   "started_at_utc": "2026-09-19T19:13:19.527569+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/045d7008eb8f2f52fe36af70111d7d8269de5c171c358029e56b92e4198c6711.bin",
+     "bytes": 6385514,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "national_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "marker_only",
+     "pages": 25,
+     "passages": 54,
+     "quarantined_pages": 0,
+     "sha256": "045d7008eb8f2f52fe36af70111d7d8269de5c171c358029e56b92e4198c6711",
+     "url": "https://mausam.imd.gov.in/backend/assets/aiwfb_pdf/c0054418fa4532a9cfceb7a2693d6996.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/backend/assets/aiwfb_pdf/c0054418fa4532a9cfceb7a2693d6996.pdf"
+   ],
+   "family": "national_bulletin",
+   "generated_at_utc": "2026-09-19T19:13:21.253189+00:00",
+   "rejected": [],
+   "source_id": "S64",
+   "started_at_utc": "2026-09-19T19:13:21.253189+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/55d749d88a101b4372c86727dc3c27be4cf189faf58e1761c34038dc9f97441e.bin",
+     "bytes": 729268,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "press_release",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "filename",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 13,
+     "passages": 35,
+     "quarantined_pages": 2,
+     "sha256": "55d749d88a101b4372c86727dc3c27be4cf189faf58e1761c34038dc9f97441e",
+     "url": "https://mausam.imd.gov.in/Forecast/marquee_data/Press%20Release%2019-09-2026.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Forecast/marquee_data/Press%20Release%2019-09-2026.pdf"
+   ],
+   "family": "press_release",
+   "generated_at_utc": "2026-09-19T19:13:30.755161+00:00",
+   "rejected": [],
+   "source_id": "S66",
+   "started_at_utc": "2026-09-19T19:13:30.755161+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/8017fae50b134c7884c75f4d862178fcebf951fb8c6b0a4f3831644022bb999c.bin",
+     "bytes": 3207898,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "sea_area_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 3,
+     "passages": 8,
+     "quarantined_pages": 0,
+     "sha256": "8017fae50b134c7884c75f4d862178fcebf951fb8c6b0a4f3831644022bb999c",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/59/59_34ef52_sab_rsmc.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/715d53bbe5f6ab71676e7c6244e4fcbb16ac3490531bcb323c282115d9617aa1.bin",
+     "bytes": 3206862,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "sea_area_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 3,
+     "passages": 6,
+     "quarantined_pages": 0,
+     "sha256": "715d53bbe5f6ab71676e7c6244e4fcbb16ac3490531bcb323c282115d9617aa1",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/60/60_26bc86_sab.pdf"
+    }
+   ],
+   "candidates": [
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/59/59_34ef52_sab_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/60/60_26bc86_sab.pdf"
+   ],
+   "family": "sea_area_bulletin",
+   "generated_at_utc": "2026-09-19T19:13:33.234647+00:00",
+   "rejected": [],
+   "source_id": "S58",
+   "started_at_utc": "2026-09-19T19:13:33.234647+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": true,
+     "blob": "blobs/6593a51b65554dfd8f89d37f208f621c625101a612a5b67a5f099e9442479667.bin",
+     "bytes": 426667,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "special_advisory",
+     "issue_date": "2025-11-29",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 5,
+     "passages": 18,
+     "quarantined_pages": 0,
+     "sha256": "6593a51b65554dfd8f89d37f208f621c625101a612a5b67a5f099e9442479667",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/special_advisory.pdf"
+    }
+   ],
+   "candidates": [
+    "https://rsmcnewdelhi.imd.gov.in/uploads/special_advisory.pdf"
+   ],
+   "family": "special_advisory",
+   "generated_at_utc": "2026-09-19T19:13:41.069499+00:00",
+   "rejected": [],
+   "source_id": "S67",
+   "started_at_utc": "2026-09-19T19:13:41.069499+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/52840df7cf37dfff12c239c3f727587856450973e1ddef0d2fc5bb2b1e008e43.bin",
+     "bytes": 3025970,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": false,
+     "family": "state_agromet",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "named:amfu",
+     "pages": 60,
+     "passages": 216,
+     "quarantined_pages": 1,
+     "sha256": "52840df7cf37dfff12c239c3f727587856450973e1ddef0d2fc5bb2b1e008e43",
+     "url": "https://mausam.imd.gov.in/ahmedabad/mcdata/agromet.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/ahmedabad/mcdata/agromet.pdf"
+   ],
+   "family": "state_agromet",
+   "generated_at_utc": "2026-09-19T19:13:42.259281+00:00",
+   "rejected": [],
+   "source_id": "S07",
+   "started_at_utc": "2026-09-19T19:13:42.259281+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": true,
+     "blob": "blobs/528ad169dcd8ac744691041f499702ee8e88f036e2d8a0db51de69e66c6a8a87.bin",
+     "bytes": 1164681,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "state_district_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "marker_only",
+     "pages": 5,
+     "passages": 28,
+     "quarantined_pages": 0,
+     "sha256": "528ad169dcd8ac744691041f499702ee8e88f036e2d8a0db51de69e66c6a8a87",
+     "url": "https://mausam.imd.gov.in/ahmedabad/mcdata/district.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/ahmedabad/mcdata/district.pdf"
+   ],
+   "family": "state_district_bulletin",
+   "generated_at_utc": "2026-09-19T19:13:52.387539+00:00",
+   "rejected": [],
+   "source_id": "S08",
+   "started_at_utc": "2026-09-19T19:13:52.387539+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/8cb651073d7b27872e3e3cf8068520a88ab669a3071bcea3b62331fc4f6b3fb6.bin",
+     "bytes": 327578,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 1,
+     "passages": 3,
+     "quarantined_pages": 0,
+     "sha256": "8cb651073d7b27872e3e3cf8068520a88ab669a3071bcea3b62331fc4f6b3fb6",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_854a4b_coastal.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/b97d0dc1e5ca802a399139b4e9ee6da7e368973a6b0cb8c995ec375d6a792715.bin",
+     "bytes": 173036,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 2,
+     "passages": 5,
+     "quarantined_pages": 0,
+     "sha256": "b97d0dc1e5ca802a399139b4e9ee6da7e368973a6b0cb8c995ec375d6a792715",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_08d55b_DTB19.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/31d60833570387494a66fab4a64fb32702ab72e7de847084e5f6c0a590b5701c.bin",
+     "bytes": 172346,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "marker_only",
+     "pages": 1,
+     "passages": 5,
+     "quarantined_pages": 0,
+     "sha256": "31d60833570387494a66fab4a64fb32702ab72e7de847084e5f6c0a590b5701c",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_eeb073_TWO_BULLETIN_STN.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/9904a089bd0b522b412757a13695d40600a5918249146de84bd24af3fc892bc8.bin",
+     "bytes": 163135,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "marker_only",
+     "pages": 1,
+     "passages": 3,
+     "quarantined_pages": 0,
+     "sha256": "9904a089bd0b522b412757a13695d40600a5918249146de84bd24af3fc892bc8",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_a0380a_TWO_BULLETIN_NTN.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/f17ffcbdcf4610f77a02cb37dc564cacfd7d4b2ad73c99453572a66e79ba9b5d.bin",
+     "bytes": 207115,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 2,
+     "passages": 4,
+     "quarantined_pages": 0,
+     "sha256": "f17ffcbdcf4610f77a02cb37dc564cacfd7d4b2ad73c99453572a66e79ba9b5d",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_d92839_coastal_bulletin.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/a58883ce411879d3169028034df398ec9806be89ba159c725ab1995d072b1774.bin",
+     "bytes": 172344,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 2,
+     "passages": 3,
+     "quarantined_pages": 0,
+     "sha256": "a58883ce411879d3169028034df398ec9806be89ba159c725ab1995d072b1774",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_0d3453_coastal_rsmc.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/599f9d04421b3eef5408d7e8a7fdda7908368c53931384d2a3ca0de3669aea21.bin",
+     "bytes": 194149,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 1,
+     "passages": 2,
+     "quarantined_pages": 0,
+     "sha256": "599f9d04421b3eef5408d7e8a7fdda7908368c53931384d2a3ca0de3669aea21",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_710777_coastal_bln.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/69f511104ad66e6c8dd70861bbc5a96462ed3e70abfff02a5eee233ae9290991.bin",
+     "bytes": 173017,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 2,
+     "passages": 5,
+     "quarantined_pages": 0,
+     "sha256": "69f511104ad66e6c8dd70861bbc5a96462ed3e70abfff02a5eee233ae9290991",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_18f3d9_coastal.pdf"
+    }
+   ],
+   "candidates": [
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_854a4b_coastal.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_18c0f2_coastal.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_08d55b_DTB19.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_3b21b6_DTB19.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_eeb073_TWO_BULLETIN_STN.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_a0380a_TWO_BULLETIN_NTN.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_d92839_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_425900_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_34bb85_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_0d3453_coastal_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_a8abc1_coastal_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_710777_coastal_bln.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_be55dd_coastal_bln.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_226884_coastal_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_18f3d9_coastal.pdf"
+   ],
+   "family": "coastal_bulletin",
+   "generated_at_utc": "2026-09-19T19:14:01.127671+00:00",
+   "rejected": [],
+   "source_id": "S59",
+   "started_at_utc": "2026-09-19T19:14:01.127671+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": true,
+     "blob": "blobs/46033486d26214d463ab5854377fe8356f21a162b2e7910c6cc00ede4b52a918.bin",
+     "bytes": 907719,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "erf_marquee",
+     "issue_date": "2026-09-10",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 10,
+     "passages": 32,
+     "quarantined_pages": 0,
+     "sha256": "46033486d26214d463ab5854377fe8356f21a162b2e7910c6cc00ede4b52a918",
+     "url": "https://mausam.imd.gov.in/Forecast/marquee_data/ERF%2017.09.26.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Forecast/marquee_data/ERF%2017.09.26.pdf"
+   ],
+   "family": "erf_marquee",
+   "generated_at_utc": "2026-09-19T19:14:17.655497+00:00",
+   "rejected": [],
+   "source_id": "S66",
+   "started_at_utc": "2026-09-19T19:14:17.655497+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": true,
+     "blob": "blobs/ebc62f68a35aa432559524a1a95e4878f40d22d26f72c5cd7c2527b1edfb697c.bin",
+     "bytes": 438240,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "flash_flood_national",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 3,
+     "passages": 6,
+     "quarantined_pages": 1,
+     "sha256": "ebc62f68a35aa432559524a1a95e4878f40d22d26f72c5cd7c2527b1edfb697c",
+     "url": "https://mausam.imd.gov.in/Rainfall/national.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Rainfall/national.pdf"
+   ],
+   "family": "flash_flood_national",
+   "generated_at_utc": "2026-09-19T19:14:22.692839+00:00",
+   "rejected": [],
+   "source_id": "S65",
+   "started_at_utc": "2026-09-19T19:14:22.692839+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": true,
+     "blob": "blobs/98444ef95bb94d5e97c2c37cf3007d315c2136df17830da855aba4a150b07154.bin",
+     "bytes": 527558,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "flash_flood_sasia",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 3,
+     "passages": 6,
+     "quarantined_pages": 1,
+     "sha256": "98444ef95bb94d5e97c2c37cf3007d315c2136df17830da855aba4a150b07154",
+     "url": "https://mausam.imd.gov.in/Rainfall/sasia.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Rainfall/sasia.pdf"
+   ],
+   "family": "flash_flood_sasia",
+   "generated_at_utc": "2026-09-19T19:14:26.655574+00:00",
+   "rejected": [],
+   "source_id": "S65",
+   "started_at_utc": "2026-09-19T19:14:26.655574+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": true,
+     "blob": "blobs/045d7008eb8f2f52fe36af70111d7d8269de5c171c358029e56b92e4198c6711.bin",
+     "bytes": 6385514,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "national_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "marker_only",
+     "pages": 25,
+     "passages": 54,
+     "quarantined_pages": 0,
+     "sha256": "045d7008eb8f2f52fe36af70111d7d8269de5c171c358029e56b92e4198c6711",
+     "url": "https://mausam.imd.gov.in/backend/assets/aiwfb_pdf/c0054418fa4532a9cfceb7a2693d6996.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/backend/assets/aiwfb_pdf/c0054418fa4532a9cfceb7a2693d6996.pdf"
+   ],
+   "family": "national_bulletin",
+   "generated_at_utc": "2026-09-19T19:14:28.943308+00:00",
+   "rejected": [],
+   "source_id": "S64",
+   "started_at_utc": "2026-09-19T19:14:28.943308+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": true,
+     "blob": "blobs/55d749d88a101b4372c86727dc3c27be4cf189faf58e1761c34038dc9f97441e.bin",
+     "bytes": 729268,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "press_release",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "filename",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 13,
+     "passages": 35,
+     "quarantined_pages": 2,
+     "sha256": "55d749d88a101b4372c86727dc3c27be4cf189faf58e1761c34038dc9f97441e",
+     "url": "https://mausam.imd.gov.in/Forecast/marquee_data/Press%20Release%2019-09-2026.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Forecast/marquee_data/Press%20Release%2019-09-2026.pdf"
+   ],
+   "family": "press_release",
+   "generated_at_utc": "2026-09-19T19:14:46.072787+00:00",
+   "rejected": [],
+   "source_id": "S66",
+   "started_at_utc": "2026-09-19T19:14:46.072787+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/8017fae50b134c7884c75f4d862178fcebf951fb8c6b0a4f3831644022bb999c.bin",
+     "bytes": 3207898,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "sea_area_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 3,
+     "passages": 8,
+     "quarantined_pages": 0,
+     "sha256": "8017fae50b134c7884c75f4d862178fcebf951fb8c6b0a4f3831644022bb999c",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/59/59_34ef52_sab_rsmc.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/715d53bbe5f6ab71676e7c6244e4fcbb16ac3490531bcb323c282115d9617aa1.bin",
+     "bytes": 3206862,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "sea_area_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 3,
+     "passages": 6,
+     "quarantined_pages": 0,
+     "sha256": "715d53bbe5f6ab71676e7c6244e4fcbb16ac3490531bcb323c282115d9617aa1",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/60/60_26bc86_sab.pdf"
+    }
+   ],
+   "candidates": [
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/59/59_34ef52_sab_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/60/60_26bc86_sab.pdf"
+   ],
+   "family": "sea_area_bulletin",
+   "generated_at_utc": "2026-09-19T19:15:11.457938+00:00",
+   "rejected": [],
+   "source_id": "S58",
+   "started_at_utc": "2026-09-19T19:15:11.457938+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": true,
+     "blob": "blobs/6593a51b65554dfd8f89d37f208f621c625101a612a5b67a5f099e9442479667.bin",
+     "bytes": 426667,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "special_advisory",
+     "issue_date": "2025-11-29",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 5,
+     "passages": 18,
+     "quarantined_pages": 0,
+     "sha256": "6593a51b65554dfd8f89d37f208f621c625101a612a5b67a5f099e9442479667",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/special_advisory.pdf"
+    }
+   ],
+   "candidates": [
+    "https://rsmcnewdelhi.imd.gov.in/uploads/special_advisory.pdf"
+   ],
+   "family": "special_advisory",
+   "generated_at_utc": "2026-09-19T19:15:20.391108+00:00",
+   "rejected": [],
+   "source_id": "S67",
+   "started_at_utc": "2026-09-19T19:15:20.391108+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": true,
+     "blob": "blobs/52840df7cf37dfff12c239c3f727587856450973e1ddef0d2fc5bb2b1e008e43.bin",
+     "bytes": 3025970,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "state_agromet",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "named:amfu",
+     "pages": 60,
+     "passages": 216,
+     "quarantined_pages": 1,
+     "sha256": "52840df7cf37dfff12c239c3f727587856450973e1ddef0d2fc5bb2b1e008e43",
+     "url": "https://mausam.imd.gov.in/ahmedabad/mcdata/agromet.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/ahmedabad/mcdata/agromet.pdf"
+   ],
+   "family": "state_agromet",
+   "generated_at_utc": "2026-09-19T19:15:21.682895+00:00",
+   "rejected": [],
+   "source_id": "S07",
+   "started_at_utc": "2026-09-19T19:15:21.682895+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": true,
+     "blob": "blobs/528ad169dcd8ac744691041f499702ee8e88f036e2d8a0db51de69e66c6a8a87.bin",
+     "bytes": 1164681,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "state_district_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "marker_only",
+     "pages": 5,
+     "passages": 28,
+     "quarantined_pages": 0,
+     "sha256": "528ad169dcd8ac744691041f499702ee8e88f036e2d8a0db51de69e66c6a8a87",
+     "url": "https://mausam.imd.gov.in/ahmedabad/mcdata/district.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/ahmedabad/mcdata/district.pdf"
+   ],
+   "family": "state_district_bulletin",
+   "generated_at_utc": "2026-09-19T19:15:29.039192+00:00",
+   "rejected": [],
+   "source_id": "S08",
+   "started_at_utc": "2026-09-19T19:15:29.039192+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/8cb651073d7b27872e3e3cf8068520a88ab669a3071bcea3b62331fc4f6b3fb6.bin",
+     "bytes": 327578,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 1,
+     "passages": 3,
+     "quarantined_pages": 0,
+     "sha256": "8cb651073d7b27872e3e3cf8068520a88ab669a3071bcea3b62331fc4f6b3fb6",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_854a4b_coastal.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/b97d0dc1e5ca802a399139b4e9ee6da7e368973a6b0cb8c995ec375d6a792715.bin",
+     "bytes": 173036,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 2,
+     "passages": 5,
+     "quarantined_pages": 0,
+     "sha256": "b97d0dc1e5ca802a399139b4e9ee6da7e368973a6b0cb8c995ec375d6a792715",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_08d55b_DTB19.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/31d60833570387494a66fab4a64fb32702ab72e7de847084e5f6c0a590b5701c.bin",
+     "bytes": 172346,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "marker_only",
+     "pages": 1,
+     "passages": 5,
+     "quarantined_pages": 0,
+     "sha256": "31d60833570387494a66fab4a64fb32702ab72e7de847084e5f6c0a590b5701c",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_eeb073_TWO_BULLETIN_STN.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/9904a089bd0b522b412757a13695d40600a5918249146de84bd24af3fc892bc8.bin",
+     "bytes": 163135,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "marker_only",
+     "pages": 1,
+     "passages": 3,
+     "quarantined_pages": 0,
+     "sha256": "9904a089bd0b522b412757a13695d40600a5918249146de84bd24af3fc892bc8",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_a0380a_TWO_BULLETIN_NTN.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/f17ffcbdcf4610f77a02cb37dc564cacfd7d4b2ad73c99453572a66e79ba9b5d.bin",
+     "bytes": 207115,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 2,
+     "passages": 4,
+     "quarantined_pages": 0,
+     "sha256": "f17ffcbdcf4610f77a02cb37dc564cacfd7d4b2ad73c99453572a66e79ba9b5d",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_d92839_coastal_bulletin.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/a58883ce411879d3169028034df398ec9806be89ba159c725ab1995d072b1774.bin",
+     "bytes": 172344,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 2,
+     "passages": 3,
+     "quarantined_pages": 0,
+     "sha256": "a58883ce411879d3169028034df398ec9806be89ba159c725ab1995d072b1774",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_0d3453_coastal_rsmc.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/599f9d04421b3eef5408d7e8a7fdda7908368c53931384d2a3ca0de3669aea21.bin",
+     "bytes": 194149,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 1,
+     "passages": 2,
+     "quarantined_pages": 0,
+     "sha256": "599f9d04421b3eef5408d7e8a7fdda7908368c53931384d2a3ca0de3669aea21",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_710777_coastal_bln.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/69f511104ad66e6c8dd70861bbc5a96462ed3e70abfff02a5eee233ae9290991.bin",
+     "bytes": 173017,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "coastal_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 2,
+     "passages": 5,
+     "quarantined_pages": 0,
+     "sha256": "69f511104ad66e6c8dd70861bbc5a96462ed3e70abfff02a5eee233ae9290991",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_18f3d9_coastal.pdf"
+    }
+   ],
+   "candidates": [
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_854a4b_coastal.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_18c0f2_coastal.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_08d55b_DTB19.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_3b21b6_DTB19.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_eeb073_TWO_BULLETIN_STN.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_a0380a_TWO_BULLETIN_NTN.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_d92839_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_425900_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_34bb85_coastal_bulletin.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_0d3453_coastal_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_a8abc1_coastal_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_710777_coastal_bln.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_be55dd_coastal_bln.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_226884_coastal_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/49/49_18f3d9_coastal.pdf"
+   ],
+   "family": "coastal_bulletin",
+   "generated_at_utc": "2026-09-19T19:29:20.004591+00:00",
+   "rejected": [],
+   "source_id": "S59",
+   "started_at_utc": "2026-09-19T19:29:20.004591+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": true,
+     "blob": "blobs/46033486d26214d463ab5854377fe8356f21a162b2e7910c6cc00ede4b52a918.bin",
+     "bytes": 907719,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "erf_marquee",
+     "issue_date": "2026-09-10",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 10,
+     "passages": 32,
+     "quarantined_pages": 0,
+     "sha256": "46033486d26214d463ab5854377fe8356f21a162b2e7910c6cc00ede4b52a918",
+     "url": "https://mausam.imd.gov.in/Forecast/marquee_data/ERF%2017.09.26.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Forecast/marquee_data/ERF%2017.09.26.pdf"
+   ],
+   "family": "erf_marquee",
+   "generated_at_utc": "2026-09-19T19:29:52.269149+00:00",
+   "rejected": [],
+   "source_id": "S66",
+   "started_at_utc": "2026-09-19T19:29:52.269149+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": true,
+     "blob": "blobs/ebc62f68a35aa432559524a1a95e4878f40d22d26f72c5cd7c2527b1edfb697c.bin",
+     "bytes": 438240,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "flash_flood_national",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 3,
+     "passages": 6,
+     "quarantined_pages": 1,
+     "sha256": "ebc62f68a35aa432559524a1a95e4878f40d22d26f72c5cd7c2527b1edfb697c",
+     "url": "https://mausam.imd.gov.in/Rainfall/national.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Rainfall/national.pdf"
+   ],
+   "family": "flash_flood_national",
+   "generated_at_utc": "2026-09-19T19:29:57.159947+00:00",
+   "rejected": [],
+   "source_id": "S65",
+   "started_at_utc": "2026-09-19T19:29:57.159947+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": true,
+     "blob": "blobs/98444ef95bb94d5e97c2c37cf3007d315c2136df17830da855aba4a150b07154.bin",
+     "bytes": 527558,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "flash_flood_sasia",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 3,
+     "passages": 6,
+     "quarantined_pages": 1,
+     "sha256": "98444ef95bb94d5e97c2c37cf3007d315c2136df17830da855aba4a150b07154",
+     "url": "https://mausam.imd.gov.in/Rainfall/sasia.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Rainfall/sasia.pdf"
+   ],
+   "family": "flash_flood_sasia",
+   "generated_at_utc": "2026-09-19T19:29:59.273454+00:00",
+   "rejected": [],
+   "source_id": "S65",
+   "started_at_utc": "2026-09-19T19:29:59.273454+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": true,
+     "blob": "blobs/045d7008eb8f2f52fe36af70111d7d8269de5c171c358029e56b92e4198c6711.bin",
+     "bytes": 6385514,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "national_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "marker_only",
+     "pages": 25,
+     "passages": 54,
+     "quarantined_pages": 0,
+     "sha256": "045d7008eb8f2f52fe36af70111d7d8269de5c171c358029e56b92e4198c6711",
+     "url": "https://mausam.imd.gov.in/backend/assets/aiwfb_pdf/c0054418fa4532a9cfceb7a2693d6996.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/backend/assets/aiwfb_pdf/c0054418fa4532a9cfceb7a2693d6996.pdf"
+   ],
+   "family": "national_bulletin",
+   "generated_at_utc": "2026-09-19T19:30:01.758333+00:00",
+   "rejected": [],
+   "source_id": "S64",
+   "started_at_utc": "2026-09-19T19:30:01.758333+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": true,
+     "blob": "blobs/55d749d88a101b4372c86727dc3c27be4cf189faf58e1761c34038dc9f97441e.bin",
+     "bytes": 729268,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "press_release",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "filename",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 13,
+     "passages": 35,
+     "quarantined_pages": 2,
+     "sha256": "55d749d88a101b4372c86727dc3c27be4cf189faf58e1761c34038dc9f97441e",
+     "url": "https://mausam.imd.gov.in/Forecast/marquee_data/Press%20Release%2019-09-2026.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/Forecast/marquee_data/Press%20Release%2019-09-2026.pdf"
+   ],
+   "family": "press_release",
+   "generated_at_utc": "2026-09-19T19:30:31.763457+00:00",
+   "rejected": [],
+   "source_id": "S66",
+   "started_at_utc": "2026-09-19T19:30:31.763457+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": false,
+     "blob": "blobs/8017fae50b134c7884c75f4d862178fcebf951fb8c6b0a4f3831644022bb999c.bin",
+     "bytes": 3207898,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "sea_area_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 3,
+     "passages": 8,
+     "quarantined_pages": 0,
+     "sha256": "8017fae50b134c7884c75f4d862178fcebf951fb8c6b0a4f3831644022bb999c",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/59/59_34ef52_sab_rsmc.pdf"
+    },
+    {
+     "already_indexed": false,
+     "blob": "blobs/715d53bbe5f6ab71676e7c6244e4fcbb16ac3490531bcb323c282115d9617aa1.bin",
+     "bytes": 3206862,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "sea_area_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 3,
+     "passages": 6,
+     "quarantined_pages": 0,
+     "sha256": "715d53bbe5f6ab71676e7c6244e4fcbb16ac3490531bcb323c282115d9617aa1",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/archive/60/60_26bc86_sab.pdf"
+    }
+   ],
+   "candidates": [
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/59/59_34ef52_sab_rsmc.pdf",
+    "https://rsmcnewdelhi.imd.gov.in/uploads/archive/60/60_26bc86_sab.pdf"
+   ],
+   "family": "sea_area_bulletin",
+   "generated_at_utc": "2026-09-19T19:30:36.024512+00:00",
+   "rejected": [],
+   "source_id": "S58",
+   "started_at_utc": "2026-09-19T19:30:36.024512+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": true,
+     "blob": "blobs/6593a51b65554dfd8f89d37f208f621c625101a612a5b67a5f099e9442479667.bin",
+     "bytes": 426667,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "special_advisory",
+     "issue_date": "2025-11-29",
+     "issue_date_basis": "generic_scan",
+     "issuer_basis": "named:india meteorological department",
+     "pages": 5,
+     "passages": 18,
+     "quarantined_pages": 0,
+     "sha256": "6593a51b65554dfd8f89d37f208f621c625101a612a5b67a5f099e9442479667",
+     "url": "https://rsmcnewdelhi.imd.gov.in/uploads/special_advisory.pdf"
+    }
+   ],
+   "candidates": [
+    "https://rsmcnewdelhi.imd.gov.in/uploads/special_advisory.pdf"
+   ],
+   "family": "special_advisory",
+   "generated_at_utc": "2026-09-19T19:30:58.118627+00:00",
+   "rejected": [],
+   "source_id": "S67",
+   "started_at_utc": "2026-09-19T19:30:58.118627+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": true,
+     "blob": "blobs/52840df7cf37dfff12c239c3f727587856450973e1ddef0d2fc5bb2b1e008e43.bin",
+     "bytes": 3025970,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "state_agromet",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "named:amfu",
+     "pages": 60,
+     "passages": 216,
+     "quarantined_pages": 1,
+     "sha256": "52840df7cf37dfff12c239c3f727587856450973e1ddef0d2fc5bb2b1e008e43",
+     "url": "https://mausam.imd.gov.in/ahmedabad/mcdata/agromet.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/ahmedabad/mcdata/agromet.pdf"
+   ],
+   "family": "state_agromet",
+   "generated_at_utc": "2026-09-19T19:30:59.440503+00:00",
+   "rejected": [],
+   "source_id": "S07",
+   "started_at_utc": "2026-09-19T19:30:59.440503+00:00",
+   "status": "accepted"
+  },
+  {
+   "accepted": [
+    {
+     "already_indexed": true,
+     "blob": "blobs/528ad169dcd8ac744691041f499702ee8e88f036e2d8a0db51de69e66c6a8a87.bin",
+     "bytes": 1164681,
+     "currency": "printed_issue_differs_from_retrieval_date",
+     "duplicate": true,
+     "family": "state_district_bulletin",
+     "issue_date": "2026-09-19",
+     "issue_date_basis": "family_rule:printed",
+     "issuer_basis": "marker_only",
+     "pages": 5,
+     "passages": 28,
+     "quarantined_pages": 0,
+     "sha256": "528ad169dcd8ac744691041f499702ee8e88f036e2d8a0db51de69e66c6a8a87",
+     "url": "https://mausam.imd.gov.in/ahmedabad/mcdata/district.pdf"
+    }
+   ],
+   "candidates": [
+    "https://mausam.imd.gov.in/ahmedabad/mcdata/district.pdf"
+   ],
+   "family": "state_district_bulletin",
+   "generated_at_utc": "2026-09-19T19:31:17.087663+00:00",
+   "rejected": [],
+   "source_id": "S08",
+   "started_at_utc": "2026-09-19T19:31:17.087663+00:00",
+   "status": "accepted"
+  }
+ ],
+ "schema_version": "document-intake-day-v1"
+}

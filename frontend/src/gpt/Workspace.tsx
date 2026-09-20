@@ -9,15 +9,14 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { ArrowDown, ArrowLeft } from 'lucide-react';
+import { ArrowDown, ArrowLeft, MapPin } from 'lucide-react';
 
-import { postJson } from '../api/client';
-import { istStamp } from '../lib/time';
-import type { AnswerPacket } from '../api/types';
-import { personas as readPersonas } from '../chat/api';
+import { collectEvidence, personas as readPersonas, searchPlaces, type PlaceMatch } from '../chat/api';
 import { useConversation } from '../chat/useConversation';
 import { downloadFile, markdownTurn, stampName } from '../chat/actions';
-import { noticeHint, readingLine } from '../chat/model';
+import { changeNote, isHeld, noticeHint, questionFor, readingLine, WINDOW_CHOICES } from '../chat/model';
+import { istStamp, istWindow } from '../lib/time';
+import type { AnswerPacket } from '../api/types';
 import { SurfaceHost } from '../shell/SurfaceHost';
 import { viewById, type ViewEntry } from '../shell/views';
 import { AnswerTurn } from '../chat/AnswerTurn';
@@ -45,6 +44,81 @@ const STARTERS = [
 ]
   .map(entry => ({ label: entry.label, question: viewById(entry.id)?.intents?.[0] || '' }))
   .filter(entry => Boolean(entry.question));
+
+/* Changing one thing about a turn, not the whole sentence.
+   ============================================================================
+   The place a question is read at and the window its claim covers are the two things a reader most often
+   wants to move, and the only way to move either was to type the sentence again and hope the planner read
+   it the same way. Both controls send the SAME question with the change carried as its own field: the
+   engine resolves the change deterministically, records whether it applied it, and the line above the
+   answer is written from the engine's own record rather than from what this interface believed it sent.
+   Neither control rewrites the sentence.
+
+   A control that sends a sentence carries that sentence in its title — the rule the notify chip already
+   follows — so what a reader is about to ask is readable before it is sent. */
+
+/* The place catalogue, read inside the turn being changed. A row that states coordinates can be chosen; a
+   row that states none is shown as one rather than resolved somewhere else. */
+function PlaceChoice({ onPick, onClose }: { onPick: (row: PlaceMatch) => void; onClose: () => void }) {
+  const [term, setTerm] = useState('');
+  const query = term.trim();
+  const search = useQuery({
+    queryKey: ['places', query],
+    queryFn: () => searchPlaces(query),
+    enabled: query.length >= 2,
+    retry: false,
+  });
+  const rows = search.data?.data?.matches || [];
+  return (
+    <div className="g-picker-results" role="listbox" aria-label="Places">
+      <label className="sr-only" htmlFor="turn-place">Place</label>
+      <input
+        id="turn-place"
+        className="g-search"
+        type="search"
+        value={term}
+        autoComplete="off"
+        autoFocus
+        onChange={event => setTerm(event.target.value)}
+        placeholder="Type at least two characters"
+      />
+      {search.isFetching ? <p className="g-empty-note">Reading the place catalogue…</p> : null}
+      {search.isError ? <p className="g-empty-note">The place catalogue did not answer, so nothing is listed. That is a read failure, not an empty catalogue.</p> : null}
+      {!search.isFetching && !search.isError && query.length >= 2 && !rows.length ? (
+        <p className="g-empty-note">The catalogue returned no place matching “{query}”.</p>
+      ) : null}
+      {rows.slice(0, 6).map((row, index) => {
+        const latitude = typeof row.latitude === 'number' ? row.latitude : Number.NaN;
+        const longitude = typeof row.longitude === 'number' ? row.longitude : Number.NaN;
+        const usable = Number.isFinite(latitude) && Number.isFinite(longitude);
+        const name = String(row.label || row.name || 'Unnamed row');
+        return (
+          <button
+            key={name + index}
+            type="button"
+            className="g-picker-row"
+            role="option"
+            aria-selected={false}
+            disabled={!usable}
+            title={usable ? 'Asks the same question again, at ' + name + ' · ' + latitude + ', ' + longitude : 'This row states no coordinates'}
+            onClick={() => onPick(row)}
+          >
+            <MapPin size={13} aria-hidden="true" />
+            <span className="g-picker-name">{name}</span>
+            <span className="g-picker-where">{usable ? 'coordinates in this row' : 'no coordinates in this row'}</span>
+          </button>
+        );
+      })}
+      <button type="button" className="g-quiet" onClick={onClose}>Close the place list</button>
+    </div>
+  );
+}
+
+/** The window a claim currently covers, in the engine's own label, for the control that moves it. */
+function claimWindow(packet: AnswerPacket): string | null {
+  const fact = (packet.facts || []).find(entry => entry.start && entry.end);
+  return fact ? istWindow(String(fact.start), String(fact.end)) : null;
+}
 
 export type WorkspaceProps = {
   onOpen: (id: string) => void;
@@ -197,6 +271,18 @@ export function Workspace({
     void conversation.send(seed.question);
   }, [seed, conversation]);
 
+  /* A turn that outlived the page: the tab kept the request id it minted, and this asks the workspace
+     what became of that exact turn. Once per mount, because the question it restores is a turn. */
+  const resumed = useRef(false);
+  useEffect(() => {
+    if (resumed.current) return;
+    resumed.current = true;
+    void conversation.resume();
+  }, [conversation]);
+
+  /* Which turn has one of the two change controls open, and which one. */
+  const [changing, setChanging] = useState<{ key: string; kind: 'place' | 'window' } | null>(null);
+
   const chatting = conversation.turns.length > 0 || Boolean(conversation.working);
 
   /* The thread follows the newest turn, the way a chat should — unless a reader arrived from a search, in
@@ -262,43 +348,98 @@ export function Workspace({
     thread.current?.scrollTo({ top: thread.current.scrollHeight, behavior: 'smooth' });
   }, []);
 
-  const followUp = (text: string) => {
-    const last = [...conversation.turns].reverse().find(turn => turn.role === 'answer') as { packet: AnswerPacket } | undefined;
-    const match = (last?.packet.choices || []).find(choice => {
+  /* A chip on the card. A place choice the engine offered is resolved inside the turn that offered it —
+     the engine binds the choice to the question it was offered for, so the client sends that same
+     question and the turn keeps one answer instead of growing a second turn. Anything else a chip sends
+     (a quick reply, a follow-up sentence) is an ordinary new question. */
+  const followUp = (turnKey: string, text: string) => {
+    const turn = conversation.turns.find(entry => entry.key === turnKey);
+    const packet = turn && turn.role === 'answer' ? turn.packet : null;
+    const match = (packet?.choices || []).find(choice => {
       const record = choice as Record<string, unknown>;
       return String(record.value || record.label || record.place || '') === text;
     }) as Record<string, unknown> | undefined;
     const selectionId = match?.selection_id ? String(match.selection_id) : undefined;
-    void conversation.send(text, selectionId ? { selectionId } : undefined);
+    if (selectionId && packet) void conversation.resolveSelection(selectionId, turnKey, packet.question);
+    else void conversation.send(text);
   };
 
   /* Collect fresh evidence. The answer card has always offered it, and the shell that replaced the old Ask
      surface dropped the wire: the control was drawn only when a handler was passed, and none was, so the
      feature existed in the component and nowhere in the product. It is re-connected here, with the same two
      conditions the old surface held it to — the answer must have resolved exactly one point, and a failure is
-     the server's own sentence rather than a generic one. */
-  const collect = async (packet: AnswerPacket) => {
+     the server's own sentence rather than a generic one. It returns that sentence, because "ask the sources
+     again" needs to say what the workspace was asked and what it answered. */
+  const collect = async (packet: AnswerPacket): Promise<{ text: string; tone: 'calm' | 'error' }> => {
     const point = Object.values(packet.resolved_points || {})[0];
     const latitude = point?.coordinates?.latitude ?? point?.latitude;
     const longitude = point?.coordinates?.longitude ?? point?.longitude;
     if (typeof latitude !== 'number' || typeof longitude !== 'number') {
-      conversation.notify('This answer did not resolve a single place point, so a collection cannot be requested for it.', 'error');
-      return;
+      return { text: 'This answer did not resolve a single place point, so a collection cannot be requested for it.', tone: 'error' };
     }
     try {
-      const result = await postJson<{ refresh?: { message?: string; state?: string } }>('/api/refresh', {
-        question: packet.question,
-        coordinates: { latitude, longitude },
-      });
+      const result = await collectEvidence({ question: packet.question, coordinates: { latitude, longitude } });
       const refresh = result.refresh || {};
-      conversation.notify(
-        (refresh.message || 'A collection was requested.') +
+      return {
+        text: (refresh.message || 'A collection was requested.') +
           (refresh.state === 'already_fresh' ? ' Nothing had to be collected: the stored evidence is still within its serving lifetime.' : ''),
-        'calm',
-      );
+        tone: 'calm',
+      };
     } catch (error) {
-      conversation.notify(String((error as Error)?.message || error), 'error');
+      return { text: String((error as Error)?.message || error), tone: 'error' };
     }
+  };
+
+  /* Asking the same question again in place of the answer it had. For a refusal that is the whole of it;
+     for an answer the sources are asked for fresh evidence first, because that is the point of the button
+     — and the answer that comes back states, from its own retrieval instant and the collection's reply,
+     whether anything was actually read again. */
+  const reask = async (turnKey: string, question: string, packet: AnswerPacket | null) => {
+    setChanging(null);
+    if (!packet) {
+      await conversation.reask(turnKey, question);
+      return;
+    }
+    const outcome = await collect(packet);
+    await conversation.reask(turnKey, question, { previous: packet, freshNote: outcome.text });
+  };
+
+  /* Just the place: the reader picks a catalogue row (or the place the panel already holds) and the same
+     question is asked again there. The sentence is untouched, and the answer states the change from the
+     engine's own record of it. */
+  const changePlace = (turnKey: string, question: string, packet: AnswerPacket | null, place: { label: string; latitude: number; longitude: number; state?: string; district?: string }) => {
+    setChanging(null);
+    void conversation.reask(turnKey, question, {
+      previous: packet || undefined,
+      change: { field: 'place', to: place.label },
+      place,
+    });
+  };
+
+  const acceptPlaceRow = (turnKey: string, question: string, packet: AnswerPacket | null) => (row: PlaceMatch) => {
+    const latitude = typeof row.latitude === 'number' ? row.latitude : Number.NaN;
+    const longitude = typeof row.longitude === 'number' ? row.longitude : Number.NaN;
+    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+      conversation.notify('That row states no coordinates, so the question cannot be re-read there.', 'error');
+      return;
+    }
+    changePlace(turnKey, question, packet, {
+      label: String(row.label || row.name || '').trim() || 'the place the reader chose',
+      latitude, longitude,
+      state: row.state ? String(row.state) : undefined,
+      district: row.district ? String(row.district) : undefined,
+    });
+  };
+
+  /* Just the window: the phrase is one of the engine's own, sent beside the unchanged question. The engine
+     resolves it from its own day tables and says whether it applied it. */
+  const changeWindow = (turnKey: string, question: string, packet: AnswerPacket | null, phrase: string) => {
+    setChanging(null);
+    void conversation.reask(turnKey, question, {
+      previous: packet || undefined,
+      change: { field: 'window', to: phrase },
+      window: phrase,
+    });
   };
 
   const working = conversation.working;
@@ -317,6 +458,12 @@ export function Workspace({
         queue.wait_seconds_before_refusal ? 'a wait longer than ' + queue.wait_seconds_before_refusal + ' s is refused rather than queued' : '',
       ].filter(Boolean).join(' · ') + '.'
     : '';
+  /* The server's own sentence about a turn that is not running yet — accepted and waiting, or not on this
+     process at all. It is stated in the server's words rather than left to look like a turn that started,
+     and it rides the fold that already holds the queue's facts. Nothing is added while the turn runs: the
+     stage line above is then the whole of what the server has said. */
+  const stateLine = progress && progress.state !== 'running' && progress.stage_note ? progress.stage_note : '';
+  const waitFacts = [stateLine, queueLine].filter(Boolean).join(' ');
 
   const composer = (
     <div className="g-dock">
@@ -461,11 +608,33 @@ export function Workspace({
               </div>
             ) : (
               <>
-                {turns.map(turn => {
+                {turns.map((turn, index) => {
+                  /* The affordances belong to the newest turn: a reader corrects, retries or re-reads the
+                     question they just asked. An older turn's controls would rewrite a transcript that has
+                     already moved on. Editing the question is offered while its turn is still running —
+                     that is when a reader most often wants to correct it — and the request in flight is
+                     abandoned at the same moment, so what answers next answers the corrected question. */
+                  const newest = index === turns.length - 1;
+                  const settled = newest && !working;
+                  /* Editing belongs to the newest QUESTION, which is not the newest turn once its answer
+                     has landed. */
+                  const lastQuestion = [...turns].reverse().find(entry => entry.role === 'user')?.key;
                   if (turn.role === 'user') {
                     return (
                       <div key={turn.key} className="g-turn g-in">
                         <div className="g-you"><p>{turn.text}</p></div>
+                        {turn.key === lastQuestion ? (
+                          <div className="g-chips no-print" data-print="drop">
+                            <button
+                              type="button"
+                              className="g-chip"
+                              title={'Puts this question back in the box and removes its answer, so the corrected question is what is asked next: “' + turn.text + '”'}
+                              onClick={() => conversation.edit(turn.key)}
+                            >
+                              Edit this question
+                            </button>
+                          </div>
+                        ) : null}
                       </div>
                     );
                   }
@@ -475,11 +644,25 @@ export function Workspace({
                        not answer — they call for different actions — and it was carried by the surface this
                        shell replaced but never rendered by the shell itself. */
                     const hint = noticeHint(turn.kind);
+                    const question = questionFor(turns, turn.key) || '';
                     return (
                       <div key={turn.key} className="g-turn g-in" data-tone={turn.tone}>
+                        {turn.changed ? <p className="g-claim-note">{changeNote(null, turn.changed)}</p> : null}
                         <p className="g-notice">{turn.text}</p>
                         {hint ? <p className="g-claim-note">{hint}</p> : null}
                         <p className="g-claim-note">Your question is back in the box so it stays editable.</p>
+                        {settled && question ? (
+                          <div className="g-chips no-print" data-print="drop">
+                            <button
+                              type="button"
+                              className="g-chip"
+                              title={'Asks this question again, unchanged: “' + question + '”'}
+                              onClick={() => void reask(turn.key, question, null)}
+                            >
+                              Ask again
+                            </button>
+                          </div>
+                        ) : null}
                       </div>
                     );
                   }
@@ -491,9 +674,87 @@ export function Workspace({
                       </div>
                     );
                   }
+                  const question = questionFor(turns, turn.key) || turn.packet.question;
+                  const denied = isHeld(turn.packet.status);
+                  const window = claimWindow(turn.packet);
                   return (
                     <div key={turn.key} className="g-turn g-in">
-                      <AnswerTurn packet={turn.packet} onFollowUp={followUp} onRefresh={packet => void collect(packet)} />
+                      {/* What the reader changed beyond the sentence, from the engine's own record of it —
+                          so a re-asked turn never looks like the same question answered about elsewhere. */}
+                      {turn.changed ? <p className="g-claim-note">{changeNote(turn.packet, turn.changed)}</p> : null}
+                      <AnswerTurn
+                        packet={turn.packet}
+                        onFollowUp={text => followUp(turn.key, text)}
+                        onRefresh={packet => void collect(packet).then(outcome => conversation.notify(outcome.text, outcome.tone))}
+                      />
+                      {turn.freshness ? <p className="g-claim-note">{turn.freshness}</p> : null}
+                      {settled ? (
+                        <div className="g-chips no-print" data-print="drop">
+                          <button
+                            type="button"
+                            className="g-chip"
+                            title={'Asks the sources again: requests a fresh collection for the point this answer read' +
+                              (window ? ' (its window is ' + window + ')' : '') + ', then sends: “' + question + '”. The answer says whether anything was read again.'}
+                            onClick={() => void reask(turn.key, question, turn.packet)}
+                          >
+                            {denied ? 'Ask again' : 'Ask the sources again'}
+                          </button>
+                          <button
+                            type="button"
+                            className="g-chip"
+                            title={'Asks the same question again at a place you choose, without rewriting the sentence: “' + question + '”'}
+                            aria-expanded={changing?.key === turn.key && changing.kind === 'place'}
+                            onClick={() => setChanging(changing?.key === turn.key && changing.kind === 'place' ? null : { key: turn.key, kind: 'place' })}
+                          >
+                            Change the place
+                          </button>
+                          <button
+                            type="button"
+                            className="g-chip"
+                            title={'Asks the same question again for a different window' + (window ? ', where this answer covers ' + window : '') + ': “' + question + '”'}
+                            aria-expanded={changing?.key === turn.key && changing.kind === 'window'}
+                            onClick={() => setChanging(changing?.key === turn.key && changing.kind === 'window' ? null : { key: turn.key, kind: 'window' })}
+                          >
+                            Change the window
+                          </button>
+                        </div>
+                      ) : null}
+                      {changing?.key === turn.key && changing.kind === 'place' ? (
+                        <div className="g-chips no-print" data-print="drop">
+                          {workingPlace ? (
+                            <button
+                              type="button"
+                              className="g-chip"
+                              title={'Asks the same question again at ' + (workingPlace.label || 'the place the panel holds') + ' (' + workingPlace.latitude + ', ' + workingPlace.longitude + '), the place the panel already holds: “' + question + '”'}
+                              onClick={() => changePlace(turn.key, question, turn.packet, {
+                                label: String(workingPlace.label || 'the place the panel holds'),
+                                latitude: workingPlace.latitude, longitude: workingPlace.longitude,
+                              })}
+                            >
+                              Use the place the panel holds: {workingPlace.label || 'unnamed'}
+                            </button>
+                          ) : null}
+                          <PlaceChoice
+                            onPick={acceptPlaceRow(turn.key, question, turn.packet)}
+                            onClose={() => setChanging(null)}
+                          />
+                        </div>
+                      ) : null}
+                      {changing?.key === turn.key && changing.kind === 'window' ? (
+                        <div className="g-chips no-print" data-print="drop">
+                          {WINDOW_CHOICES.map(choice => (
+                            <button
+                              key={choice.phrase}
+                              type="button"
+                              className="g-chip"
+                              title={'Sends the same question with the window set to ' + choice.label + ': “' + question + '”'}
+                              onClick={() => changeWindow(turn.key, question, turn.packet, choice.phrase)}
+                            >
+                              {choice.label}
+                            </button>
+                          ))}
+                        </div>
+                      ) : null}
                     </div>
                   );
                 })}
@@ -503,7 +764,7 @@ export function Workspace({
                     current={current}
                     stages={stages}
                     firstReading={firstReading}
-                    queueLine={queueLine}
+                    queueLine={waitFacts}
                   />
                 ) : null}
               </>

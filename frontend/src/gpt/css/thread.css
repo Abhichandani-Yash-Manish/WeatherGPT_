@@ -167,6 +167,12 @@
 }
 .g-fold[open] > summary::before, .g-work[open] > summary::before { transform: rotate(45deg); }
 .g-fold-body { margin-top: var(--g-3); padding-left: var(--g-3); border-left: 1px solid var(--g-line-soft); animation: g-rise var(--g-mid) var(--g-ease) both; }
+/* The count in a fold's own header, and the receipt under a plotted series. The count is metadata - how many
+   rows the fold holds - so it is set in the mist step at the small size rather than in the value face; tabular
+   figures keep it from shifting as it changes. The receipt is the provenance of the chart above it, separated
+   by a hairline rather than by another box drawn like the evidence it explains. */
+.g-fold-count { color: var(--g-mist-2); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+.g-series-receipt { margin-top: var(--g-3); padding-top: var(--g-2); border-top: 1px solid var(--g-line-soft); }
 /* ---- behind the answer ----------------------------------------------------------------------------
    What the answer says is the subject. How it was reached is provenance, and provenance belongs behind a
    hairline in one region — not in four boxes drawn like the evidence they explain. Four identical cards
@@ -214,20 +220,15 @@
 .g-work-ms { font-family: var(--g-mono); font-size: 11px; color: var(--g-mist-2); }
 
 /* ---- the engine at work ---------------------------------------------------------------------------
-   Three dots and the engine's own word for the stage it is in. .g-dots had no rule before this, so the
-   three <i> elements were zero-sized and the indicator was a bare line of text. */
+   The orb and the engine's own word for the stage it is in. The orb replaced three hand-rolled pulsing dots:
+   those could say only that something was happening, and this says which thing, in the engine's own vocabulary
+   (the mapping is src/gpt/orb.ts and it never invents a stage). The stage word beside it is the single
+   announcement - the canvas is aria-hidden - and the orb draws a static frame under reduced motion and pauses
+   itself when the tab is hidden or it scrolls out of view, which the library does. The box is fixed at the 20px
+   preset so the line cannot shift as the state changes. */
 .g-stream { display: flex; align-items: center; gap: var(--g-3); color: var(--g-mist); font-size: 14px; }
-.g-dots { display: inline-flex; align-items: center; gap: 4px; }
-.g-dots i {
-  width: 6px; height: 6px; border-radius: 50%; background: var(--g-accent);
-  animation: g-dot 1.25s var(--g-ease) infinite;
-}
-.g-dots i:nth-child(2) { animation-delay: 0.16s; }
-.g-dots i:nth-child(3) { animation-delay: 0.32s; }
-@keyframes g-dot {
-  0%, 62%, 100% { opacity: 0.28; transform: translateY(0) scale(0.84); }
-  30% { opacity: 1; transform: translateY(-3px) scale(1); }
-}
+.g-orb { display: inline-flex; width: 20px; height: 20px; flex: 0 0 auto; }
+.g-orb canvas { display: block; }
 /* The stage word is the thing that changes, so it is the thing that is lit. */
 .g-stream > span:last-child {
   background: linear-gradient(90deg, var(--g-mist) 20%, var(--g-paper) 48%, var(--g-mist) 76%);

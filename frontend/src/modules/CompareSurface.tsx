@@ -162,7 +162,7 @@ export function Surface(): JSX.Element {
           the point-forecast product's own model output, not an observation. A parameter or an instant that one read did not return
           is stated as absent for that read, never omitted from the row and never filled with a zero.
         </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-4)', alignItems: 'flex-start' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--g-4)', alignItems: 'flex-start' }}>
           <div style={{ flex: '1 1 24rem', minWidth: 0 }}>
             <h3>First read</h3>
             <PlacePicker onPick={setFirst} hint="Name the first place and choose a row; this read asks GET /api/forecast for that point alone." />

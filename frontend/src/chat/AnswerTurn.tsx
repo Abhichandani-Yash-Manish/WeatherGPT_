@@ -328,7 +328,11 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer }: AnswerTu
       <div className="g-behind">
       {(packet.notes || []).length ? (
         <Disclosure summary="What this answer does not cover">
-          <ul className="g-list">
+          {/* g-notes is the region the provenance audit names for the turn's own notes and assumptions, such
+              as "morning defaults to 06:30-12:30 IST": a note states how a word was read, not a value read
+              from a source. The class was named in the audit and missing here, so the notes were audited as
+              if they were values. */}
+          <ul className="g-notes g-list">
             {(packet.notes || []).map(note => (
               <li key={note}>{note}</li>
             ))}

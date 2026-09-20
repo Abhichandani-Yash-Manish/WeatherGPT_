@@ -162,6 +162,16 @@
 .imap-selected-name { margin: 0; font-size: 13.5px; font-weight: 600; color: var(--g-paper); }
 .imap-days { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 5px; }
 .imap-days li { display: flex; align-items: baseline; gap: var(--g-2); font-size: 12px; color: var(--g-mist); }
+/* The day the map is showing. The component marks it with `is-current`, and nothing declared that class:
+   it was written as `.chip.is-current`, which needs a chip, and this is a list row — so the day a reader
+   had open looked exactly like the days beside it. The marker is the accent and never a hazard hue: it
+   says which day is being looked at, not how bad the day is. */
+.imap-days .is-current {
+  border-left: 2px solid var(--g-accent);
+  padding-left: var(--g-2);
+  color: var(--g-paper);
+  font-weight: 600;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .imap-district { transition: none; }

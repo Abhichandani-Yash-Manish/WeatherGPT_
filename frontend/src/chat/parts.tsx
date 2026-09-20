@@ -7,8 +7,17 @@ import { istClock, istDay, istStamp, istWindow } from '../lib/time';
 import { copyText, receiptRows, receiptText } from './actions';
 import { calculationKind, chartEvidenceIds, coverageFacts, isHeld, kindOf, parameterName, placeOf, statusLabel, windowFacts } from './model';
 
-export function Tag({ children, tone = 'default', title }: { children: ReactNode; tone?: 'default' | 'quiet' | 'held' | 'good'; title?: string }) {
+/* A tag is a chip of metadata, never a value. A tag that carries an instant is drawn as <time>, which is
+   what a timestamp is: the moment stays machine-readable, and a date in a span would only look like one. */
+export function Tag({ children, tone = 'default', title, at }: { children: ReactNode; tone?: 'default' | 'quiet' | 'held' | 'good'; title?: string; at?: string }) {
   const cls = tone === 'quiet' ? 'tag tag-quiet' : tone === 'held' ? 'tag tag-held' : tone === 'good' ? 'tag tag-good' : 'tag';
+  if (at) {
+    return (
+      <time className={cls} title={title} dateTime={at}>
+        {children}
+      </time>
+    );
+  }
   return (
     <span className={cls} title={title}>
       {children}
@@ -26,7 +35,7 @@ export function Disclosure({ summary, children, count, open = false }: { summary
     <details className="g-fold" open={open}>
       <summary>
         {summary}
-        {typeof count === 'number' ? <span className="quiet"> ({count})</span> : null}
+        {typeof count === 'number' ? <span className="quiet g-fold-count"> ({count})</span> : null}
       </summary>
       <div className="g-fold-body">{children}</div>
     </details>
@@ -41,7 +50,7 @@ export function StatusTags({ packet }: { packet: AnswerPacket }) {
       {requested && requested !== 'en' ? <Tag tone="quiet">Requested output: {requested}</Tag> : null}
       {/* A conversational turn read no source. The tag says so beside the answer, not only in a disclosure. */}
       {packet.answer_basis === 'conversation' ? <Tag tone="quiet" title="This reply read no source; it states no measurement">No source read</Tag> : null}
-      <Tag tone="quiet">{packet.answered_at_utc ? istStamp(packet.answered_at_utc) : 'Time not recorded'}</Tag>
+      {packet.answered_at_utc ? <Tag tone="quiet" at={packet.answered_at_utc}>{istStamp(packet.answered_at_utc)}</Tag> : <Tag tone="quiet">Time not recorded</Tag>}
     </div>
   );
 }
@@ -104,7 +113,22 @@ export function FactsTable({ packet, facts }: { packet: AnswerPacket; facts: Fac
 /* A value the engine computed is evidence with its own provenance, not a measurement of ours: it is shown
    in its own block, with the engine's own classification, method and input/source counts. It is never
    promoted to the card's lead reading, and a difference between two sources is stated as a difference
-   rather than as skill, accuracy or confidence. */
+   rather than as skill, accuracy or confidence.
+
+   The source of a computation is the source of its inputs. The engine names its input ids for every
+   computation and its source ids for most of them, but the recorded historical trend states only its thirty
+   inputs - so the source is read from the facts those inputs name, and a computation whose sources cannot
+   be resolved says "source not stated" rather than showing its number with nothing behind it. */
+function calculationSources(packet: AnswerPacket, calculation: Calculation): string[] {
+  if ((calculation.source_ids || []).length) return calculation.source_ids || [];
+  const inputs = new Set(calculation.input_ids || []);
+  const sources: string[] = [];
+  (packet.facts || []).forEach(fact => {
+    if (inputs.has(fact.id) && fact.source_id && sources.indexOf(fact.source_id) < 0) sources.push(fact.source_id);
+  });
+  return sources;
+}
+
 export function Calculations({ packet }: { packet: AnswerPacket }) {
   const calculations: Calculation[] = packet.calculations || [];
   if (!calculations.length) return null;
@@ -113,10 +137,10 @@ export function Calculations({ packet }: { packet: AnswerPacket }) {
       {calculations.map((calculation, index) => {
         const comparison = calculation.kind === 'source_comparison';
         const inputs = calculation.input_ids || [];
-        const sources = calculation.source_ids || [];
+        const sources = calculationSources(packet, calculation);
         const words = [
           inputs.length + ' input value' + (inputs.length === 1 ? '' : 's'),
-          sources.length ? 'from ' + sources.join(', ') : null,
+          sources.length ? 'from ' + sources.join(', ') : 'source not stated',
           calculation.method || null,
           calculation.interpretation || null,
         ].filter(Boolean).join(' \u00b7 ');
@@ -161,7 +185,7 @@ export function AirportReports({ packet }: { packet: AnswerPacket }) {
           <section key={(report.station || 'station') + '-' + index} className="capability card px-3 py-2">
             <div className="capability-head flex flex-wrap items-baseline justify-between gap-2">
               <h3 className="font-semibold">{(report.station || 'station not stated') + ' \u00b7 ' + kindWords}</h3>
-              <Tag tone="quiet">{at ? istStamp(at) : 'Time not supplied'}</Tag>
+              {at ? <Tag tone="quiet" at={String(at)}>{istStamp(at)}</Tag> : <Tag tone="quiet">Time not supplied</Tag>}
             </div>
             {report.raw_report ? (
               <pre className="raw-report mt-2 whitespace-pre-wrap font-mono text-xs">{report.raw_report}</pre>
@@ -339,7 +363,11 @@ export function EvidenceReceipt({ packet, fact }: { packet: AnswerPacket; fact: 
 /* A series whose every value is already drawn still carries a receipt: how many values were retrieved, from
    which source and when, and the sentence that a reading of the record is descriptive rather than a
    projection or an attribution. It is drawn only where the payload plotted the values; a fact that is not
-   drawn keeps its own row. */
+   drawn keeps its own row.
+
+   Every row here is provenance and none is a measurement: the count that was plotted, the cell it was read
+   at, the source, the retrieval time, the record locator and the evidence id. A measured value belongs in
+   the chart's own evidence-id table or in a claim, never in this block. */
 export function SeriesReceipt({ packet }: { packet: AnswerPacket }) {
   const charts = packet.charts || [];
   if (!charts.length) return null;
@@ -361,7 +389,7 @@ export function SeriesReceipt({ packet }: { packet: AnswerPacket }) {
     ? [citation.page ? 'page ' + citation.page : null, citation.row ? 'row ' + citation.row : null, citation.column || null].filter(Boolean).join(' \u00b7 ')
     : '';
   return (
-    <div className="receipt px-3 py-3">
+    <div className="receipt g-series-receipt px-3 py-3">
       <p className="eyebrow">Evidence receipt</p>
       <div className="mt-2">
         <div className="receipt-row">
@@ -449,7 +477,9 @@ export function WarningPanel({ packet }: { packet: AnswerPacket }) {
           <section key={(district.district || district.place || 'district') + '-' + index} className="warning-panel card px-3 py-2">
             <div className="warning-head flex flex-wrap items-baseline justify-between gap-2">
               <h3 className="font-semibold">{'IMD district warning \u00b7 ' + (district.district || district.place || 'district not named')}</h3>
-              <Tag tone="quiet">{'Bulletin ' + (district.issued_at_utc ? istStamp(district.issued_at_utc) : 'time not recorded')}</Tag>
+              {district.issued_at_utc
+                ? <Tag tone="quiet" at={district.issued_at_utc}>{'Bulletin ' + istStamp(district.issued_at_utc)}</Tag>
+                : <Tag tone="quiet">Bulletin time not recorded</Tag>}
             </div>
             {days.length ? (
               <table className="warning-days mt-2 w-full text-left text-xs">

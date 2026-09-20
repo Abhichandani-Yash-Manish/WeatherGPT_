@@ -9,6 +9,7 @@ import sqlite3
 import sys
 import threading
 import time
+import uuid
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -546,19 +547,89 @@ class Workspace:
         result=replay(self.plan_store(),self.plan_store(replay=True),recorded_editions())
         return {'schema_version':'plan-replay-v1','result':result,'inbox':self.plans({'replay':True})}
 
-    def chat_progress(self):
-        """What the engine is doing now, for a page that is waiting on a turn.
+    def chat_progress(self,params=None):
+        """What one turn is doing now, for a page that is waiting on it.
 
-        Read-only and cheap: the running turn's stage names and the gate's own queue
-        counters. No question text, no completion fraction, no confidence.
+        Read-only and cheap: the turn's own stage names and the gate's own queue counters. No
+        question text, no completion fraction, no confidence, and no other turn's stage —
+        `request_id` is what scopes the read, and a page that sends none gets the workspace's
+        newest turn the way it always did.
         """
+        request_id=first_param(params,'request_id')
         if self.conversation is None:
-            return {'schema_version':'chat-progress-v1','state':'idle','stage':None,'stage_label':None,
+            # No engine exists because no turn has ever run on this process, so a named turn is
+            # answered as one this process is not running rather than as an idle workspace.
+            from .conversation import STAGE_NOTE_NOT_RUNNING
+            return {'schema_version':'chat-progress-v1','request_id':request_id,
+                    'state':'not_running' if request_id else 'idle','stage':None,'stage_label':None,
                     'stages_seen':[],'stage_since_utc':None,'stage_seconds':None,'turn_seconds':None,
                     'queue':{'waiting':0,'active':0,'capacity':None,'wait_seconds_before_refusal':None},
-                    'stage_note':'No turn has run on this workspace yet.','stages_are_facts_not_progress':True,
+                    'stage_note':STAGE_NOTE_NOT_RUNNING if request_id else 'No turn has run on this workspace yet.',
+                    'stages_are_facts_not_progress':True,
                     'checked_at_utc':self.clock().isoformat() if hasattr(self,'clock') else None}
-        return self.conversation.progress()
+        return self.conversation.progress(request_id)
+
+
+    # How long a stream will wait for a turn before it closes with a sentence rather than silence.
+    stream_wait_seconds = 120
+    stream_poll_seconds = 0.4
+
+    def stream_turn(self, request_id):
+        '''One turn, as it happens, for a page waiting on it.
+
+        Every frame is a payload the two read routes already answer with: the progress of THIS turn, and its
+        result when the turn is over. Nothing new is claimed here - a stream cannot state a stage, a percentage
+        or a confidence the poll would not have stated, because it is the poll, written as it arrives. The frames
+        carry no question text and no completion fraction, exactly as the poll does not.
+
+        The identifier is validated BEFORE the first frame: a stream has already sent its status line by the time
+        it could refuse, so an identifier this workspace cannot have is answered as a normal 400 instead.
+        '''
+        params={'request_id':[request_id] if request_id else []}
+        if not request_id: raise ValueError('Give the request identifier of the turn to follow')
+        # Validated HERE and not inside the frame loop: a generator's body does not run until its first frame is
+        # asked for, which is after the status line has already been sent - so a bad identifier would answer 200
+        # and then die mid-stream instead of answering 400 in words.
+        self.chat_result(params)
+
+        def frames():
+            deadline=time.monotonic()+self.stream_wait_seconds
+            seen=None
+            while time.monotonic()<deadline:
+                progress=self.chat_progress(params)
+                marker=(progress.get('state'),progress.get('stage'))
+                if marker!=seen:
+                    seen=marker
+                    yield {'kind':'progress','progress':progress}
+                if self.conversation is not None:
+                    answer=self.conversation.result(request_id)
+                    if answer.get('state')!='pending':
+                        yield {'kind':'result','result':answer}
+                        return
+                time.sleep(self.stream_poll_seconds)
+            yield {'kind':'timeout','note':'The turn did not finish within ' + str(self.stream_wait_seconds) + ' seconds. The turn is still the workspace\u2019s to run; read /api/chat/progress with this identifier.'}
+
+        return frames()
+
+    def chat_result(self,params):
+        """The packet one finished turn produced, for a page that lost its connection mid-turn.
+
+        The identifier is the one the client minted and sent to /api/chat, so this route is a
+        lookup rather than a second identity. Every state is named: a turn still running is
+        `pending`, a finished one is `ready` or `cancelled`, one this process held and let go is
+        `expired`, and one it never had is `unknown`. None of them is an empty success. The
+        identifier is checked before the engine is consulted, and a workspace that has run no turn
+        yet answers `unknown` rather than an error: it never had this turn, which is a fact.
+        """
+        request_id=first_param(params,'request_id')
+        if request_id in (None,''):raise ValueError('Give the request identifier of the turn to collect')
+        try:uuid.UUID(str(request_id))
+        except (ValueError,TypeError,AttributeError):raise ValueError('Invalid request identifier')
+        if self.conversation is None:
+            return {'schema_version':'chat-result-v1','request_id':request_id,'state':'unknown','packet':None,
+                    'kept_seconds':None,'checked_at_utc':self.clock().isoformat() if hasattr(self,'clock') else None,
+                    'detail':'This workspace has no turn with this identifier: no turn has ever run on this process.'}
+        return self.conversation.result(request_id)
 
     def advisory_brief(self,params):
         """Compose the advisory brief: published crop advice for a district, with forecast context.
@@ -1127,6 +1198,13 @@ def failure_detail(state,attempts,max_attempts,due,last_error):
             'due_utc':stamp(due) if due else None}
 
 
+def first_param(params,name,default=None):
+    """One query parameter, as a string. A repeated parameter takes the first, as the read routes do."""
+    value=(params or {}).get(name)
+    if isinstance(value,(list,tuple)):value=value[0] if value else None
+    return default if value in (None,'') else str(value)
+
+
 def post_routes(workspace):
     """The POST route table, at module scope so a test and the surface audit can read it.
 
@@ -1189,6 +1267,31 @@ def make_server(workspace, port=8765, host='127.0.0.1', public_hosts=(), access_
             self.send_header('Referrer-Policy','no-referrer')
             self.send_header('Content-Security-Policy',csp or STRICT_CSP)
             self.end_headers();self.wfile.write(data)
+
+        def stream(self, frames, kind='text/event-stream'):
+            '''A response with no body length: it ends when the turn does.
+
+            This server speaks HTTP/1.0, so a body with no Content-Length is close-delimited - which is what a
+            stream is here. Each frame is written and flushed as it is produced, so a reader sees a stage when the
+            engine reaches it rather than when the answer lands. A reader who hangs up mid-turn closes the socket;
+            there is nobody left to answer, so the write is abandoned rather than reported as a store failure - the
+            same distinction `client_gone` makes for the polled routes.
+            '''
+            self.send_response(200)
+            self.send_header('Content-Type',kind+'; charset=utf-8')
+            self.send_header('Cache-Control','no-store')
+            self.send_header('X-Content-Type-Options','nosniff')
+            self.send_header('Referrer-Policy','no-referrer')
+            self.send_header('Content-Security-Policy',STRICT_CSP)
+            self.send_header('Connection','close')
+            self.end_headers()
+            self.close_connection=True
+            try:
+                for frame in frames:
+                    self.wfile.write(('data: '+json.dumps(frame,ensure_ascii=False,allow_nan=False)+'\n\n').encode())
+                    self.wfile.flush()
+            except (BrokenPipeError,ConnectionResetError):
+                return
 
         def allowed_host(self):
             # A DNS-rebinding guard: a page on another origin must not be able to drive this server
@@ -1272,6 +1375,7 @@ def make_server(workspace, port=8765, host='127.0.0.1', public_hosts=(), access_
             if path.startswith('/api/'):
                 known=(workspace.is_product(path) or path=='/api/conversations' or path=='/api/health'
                        or path=='/api/languages' or path=='/api/watches' or path=='/api/watches/dma' or path=='/api/outbox' or path=='/api/plans' or path=='/api/chat/progress'
+                        or path=='/api/chat/result' or path=='/api/chat/stream'
                         or path=='/api/push/vapid-key' or path=='/api/push/state' or path=='/api/watch-health'
                        or path=='/api/advisories/brief' or path=='/api/briefs' or path=='/api/briefing/latest'
                        or path.startswith('/api/briefs/')
@@ -1292,7 +1396,10 @@ def make_server(workspace, port=8765, host='127.0.0.1', public_hosts=(), access_
                     if path=='/api/push/state':return self.respond(200,workspace.push_state(parse_qs(urlsplit(self.path).query)))
                     if path=='/api/watch-health':return self.respond(200,workspace.watch_health())
                     if path=='/api/plans':return self.respond(200,workspace.plans(parse_qs(urlsplit(self.path).query)))
-                    if path=='/api/chat/progress':return self.respond(200,workspace.chat_progress())
+                    if path=='/api/chat/progress':return self.respond(200,workspace.chat_progress(parse_qs(urlsplit(self.path).query)))
+                    if path=='/api/chat/result':return self.respond(200,workspace.chat_result(parse_qs(urlsplit(self.path).query)))
+                    if path=='/api/chat/stream':
+                        return self.stream(workspace.stream_turn(first_param(parse_qs(urlsplit(self.path).query),'request_id')))
                     if path=='/api/advisories/brief':return self.respond(200,workspace.advisory_brief(parse_qs(urlsplit(self.path).query)))
                     if path=='/api/briefing/latest':return self.respond(200,workspace.latest_briefing())
                     if path=='/api/briefs':return self.respond(200,workspace.briefs())
@@ -1342,6 +1449,25 @@ def make_server(workspace, port=8765, host='127.0.0.1', public_hosts=(), access_
                         return self.respond(404,{'error':'Not found'})
                     return self.respond(200,target.read_bytes(),REACT_ASSET_TYPES.get(target.suffix,'application/octet-stream'),
                                         csp=REACT_CSP,cache='public, max-age=31536000, immutable')
+                # The manifest and the icons are the installable app, and the page names them: index.html asks for
+                # /manifest.webmanifest and /icon-192.png, and the manifest lists three icons. The build copies all
+                # of them into web/dist - the directory the page itself comes from - and nothing served them, so a
+                # phone got a 404 for the four files that make it a PWA. Measured 20 September 2026: not one of
+                # them answered, and this is not the HTTPS gate docs/118 described - on loopback, already a secure
+                # context, the manifest was missing too. Neither file is content-hashed, so neither is cached
+                # immutably. The icon name is a character class rather than a path, so a name cannot walk out of
+                # the directory.
+                if path=='/manifest.webmanifest':
+                    manifest=root/'manifest.webmanifest'
+                    if not manifest.exists():
+                        return self.respond(503,'The React frontend has not been built. Run: cd frontend && npm install && npm run build.','text/plain')
+                    return self.respond(200,manifest.read_text(),'application/manifest+json',csp=REACT_CSP)
+                icon=_re.fullmatch(r'/icon-([A-Za-z0-9-]+)\.png',path)
+                if icon:
+                    target=root/('icon-'+icon[1]+'.png')
+                    if not target.exists():
+                        return self.respond(404,{'error':'Not found'})
+                    return self.respond(200,target.read_bytes(),'image/png',csp=REACT_CSP)
             # The vanilla surface was removed in R6. Everything a reader can reach is served from
             # web/dist above, with the chart engine and the notification worker from their tracked copies.
             return self.respond(404,{'error':'Not found'})

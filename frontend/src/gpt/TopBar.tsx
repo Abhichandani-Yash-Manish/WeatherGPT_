@@ -5,14 +5,15 @@
    rail, which put the same action on screen twice.
 
    The skyline is a statement, not a control: the place the answers are about and what the nearest station
-   last printed there, with the station, its id and its read time in the title. The panel beside this bar
-   is where a place is changed. */
+   last printed there. It states the source line too, under the value rather than in a title attribute: a
+   reading is the one number in this bar, and a tooltip is not provenance for a reader who never hovers.
+   The panel beside this bar is where a place is changed. */
 
 import { useTranslation } from 'react-i18next';
 import { Download, PanelLeft, SlidersHorizontal } from 'lucide-react';
-import { istStamp } from '../lib/time';
 import { SkyGlyphIcon } from '../shell/icons';
 import type { SkyReading } from './sky';
+import { stationSource } from './Welcome';
 
 export type TopBarProps = {
   /** The question this conversation opened with, which is the only name it has ever had. */
@@ -43,17 +44,22 @@ export function TopBar({ title, chatting, sky, panelOpen, onTogglePanel, onToggl
           : <p className="g-top-title" title={title}>{title}</p>}
       </div>
 
+      {/* The value and the line that owns it, in one region the audit checks by content. `data-lead` is the
+          product's own reset for a claim that is a statement on the ground rather than a card in a grid —
+          no border, no fill, no shadow — and the two inline properties put the source line on its own row
+          under the reading instead of beside it in the 264px the rail takes. */}
       {hasSky ? (
         <p
-          className="g-skyline"
+          className="g-skyline g-claim"
+          data-lead="true"
           data-testid="skyline"
-          title={[sky?.place, sky?.station, sky?.sourceId, sky?.observedAt ? 'read ' + istStamp(sky.observedAt) : null]
-            .filter(Boolean).join(' · ')}
+          style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-end', columnGap: '7px', rowGap: '2px', padding: 0 }}
         >
           {sky?.glyph ? <SkyGlyphIcon glyph={sky.glyph} size={15} strokeWidth={1.5} aria-hidden="true" /> : null}
           {sky?.place ? <span className="g-skyline-place">{sky.place}</span> : null}
           {sky?.temperature ? <span className="g-skyline-value">{sky.temperature}{sky.unit || ''}</span> : null}
           {sky?.condition ? <span className="g-skyline-cond">{sky.condition}</span> : null}
+          {sky ? <span className="g-claim-source" style={{ flexBasis: '100%', textAlign: 'right' }}>{stationSource(sky)}</span> : null}
         </p>
       ) : null}
 

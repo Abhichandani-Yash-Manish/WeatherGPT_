@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="workspace-token" content="__WORKSPACE_TOKEN__" />
     <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ecf0ec" />
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b1216" />
+    <!-- The colour the browser paints its own chrome with, before the page has run. Each value is a ground
+         this product actually draws, read from the hour tokens: daybreak is #fdfaf6 and the night ground is
+         #0a0f1a. It is keyed on the operating system here because a static file cannot know the hour, which is
+         why the real fix is the runtime update below the hour that is resolved - see docs/123. -->
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fdfaf6" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0a0f1a" />
     <meta
       name="description"
       content="WeatherGPT: a local, evidence-first conversational weather workspace for India. Every value keeps its source, its window and the time it was retrieved."

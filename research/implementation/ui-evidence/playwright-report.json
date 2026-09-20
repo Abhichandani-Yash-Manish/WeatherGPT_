@@ -4,10 +4,9 @@
       "/opt/homebrew/Cellar/node/26.8.2/bin/node",
       "/Users/yashabhichandani/Desktop/WeatherGPT/frontend/node_modules/.bin/playwright",
       "test",
-      "tests/ui/visual.spec.ts",
-      "--project=desktop-1440",
-      "-g",
-      "#overview"
+      "tests/ui/a11y.spec.ts",
+      "--grep",
+      "overview"
     ],
     "configFile": "/Users/yashabhichandani/Desktop/WeatherGPT/frontend/playwright.config.ts",
     "rootDir": "/Users/yashabhichandani/Desktop/WeatherGPT/frontend/tests/ui",
@@ -117,28 +116,19 @@
   },
   "suites": [
     {
-      "title": "visual.spec.ts",
-      "file": "visual.spec.ts",
+      "title": "a11y.spec.ts",
+      "file": "a11y.spec.ts",
       "column": 0,
       "line": 0,
       "specs": [
         {
-          "title": "#overview matches its visual baseline",
+          "title": "#overview has no axe violation",
           "ok": true,
           "tags": [],
           "tests": [
             {
               "timeout": 90000,
-              "annotations": [
-                {
-                  "type": "serial",
-                  "location": {
-                    "file": "/Users/yashabhichandani/Desktop/WeatherGPT/frontend/tests/ui/visual.spec.ts",
-                    "line": 0,
-                    "column": 0
-                  }
-                }
-              ],
+              "annotations": [],
               "expectedStatus": "passed",
               "projectId": "desktop-1440",
               "projectName": "desktop-1440",
@@ -147,31 +137,124 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 4176,
+                  "duration": 3427,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-18T12:14:38.228Z",
-                  "annotations": [
-                    {
-                      "type": "serial",
-                      "location": {
-                        "file": "/Users/yashabhichandani/Desktop/WeatherGPT/frontend/tests/ui/visual.spec.ts",
-                        "line": 0,
-                        "column": 0
-                      }
-                    }
-                  ],
+                  "startTime": "2026-09-20T20:21:41.792Z",
+                  "annotations": [],
                   "attachments": []
                 }
               ],
               "status": "expected"
             }
           ],
-          "id": "8324bb52c49185e48ff4-cda84b7c191f863ae4f7",
-          "file": "visual.spec.ts",
-          "line": 9,
+          "id": "aa3ad05f8c0e05077efb-0c6438ce6a93870892fa",
+          "file": "a11y.spec.ts",
+          "line": 25,
+          "column": 3
+        },
+        {
+          "title": "#overview has no axe violation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "laptop-1024",
+              "projectName": "laptop-1024",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3351,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-20T20:21:45.504Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa3ad05f8c0e05077efb-30b3c262046348fc25df",
+          "file": "a11y.spec.ts",
+          "line": 25,
+          "column": 3
+        },
+        {
+          "title": "#overview has no axe violation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "tablet-768",
+              "projectName": "tablet-768",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3353,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-20T20:21:49.123Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa3ad05f8c0e05077efb-4473648a8ceab547924a",
+          "file": "a11y.spec.ts",
+          "line": 25,
+          "column": 3
+        },
+        {
+          "title": "#overview has no axe violation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "phone-390",
+              "projectName": "phone-390",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3266,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-20T20:21:52.747Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa3ad05f8c0e05077efb-f1a50d1e415d56989df9",
+          "file": "a11y.spec.ts",
+          "line": 25,
           "column": 3
         }
       ]
@@ -179,9 +262,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-09-18T12:14:38.050Z",
-    "duration": 4585.773999999999,
-    "expected": 1,
+    "startTime": "2026-09-20T20:21:41.598Z",
+    "duration": 14516.706,
+    "expected": 4,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0

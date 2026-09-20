@@ -6,6 +6,19 @@ export type ViewId =
   | 'changes' | 'climate' | 'advisories' | 'air-quality' | 'aviation' | 'ensemble' | 'verification'
   | 'compare' | 'marine' | 'documents' | 'briefcase' | 'settings';
 
+/* A route that is a destination rather than a surface.
+   ============================================================================
+   The place's own page (docs/122) is reached by `#/place?place=…&plat=…&plon=…` and rendered by the shell,
+   the way the front door and the owner gate are. It is NOT a `VIEWS` entry, and that is deliberate: a
+   surface is a peer in the rail with a module renderer, and the place page is neither — it is where a place
+   link lands, it is rendered for one place, and listing it in the rail would offer a page that can only
+   refuse when no place is named. It is named here, in the registry file, so the route still has one declared
+   home and the shell reads it rather than repeating the string.
+
+   If the surface audit is to cover it (routes.spec, the axe spec and the visual spec all iterate `VIEWS`),
+   the orchestrator adds it to `scripts/audit_surface_registry.py` — see docs/122 §"What is not covered". */
+export const PLACE_ROUTE = 'place';
+
 export type ViewEntry = {
   id: ViewId;
   label: string;

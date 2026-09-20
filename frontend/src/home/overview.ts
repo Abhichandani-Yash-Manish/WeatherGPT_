@@ -11,6 +11,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { getJson } from '../api/client';
 import type { Envelope } from '../api/types';
+import { istClock, monthName } from '../lib/time';
 
 export type TodayBlock = { counts?: Record<string, number>; districts_with_no_day_covering_today?: number };
 /* The whole of what GET /api/overview answers, in one place: the description below and the Today surface both
@@ -31,21 +32,21 @@ export type OverviewData = {
   places?: unknown[];
 };
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
+/* The month table moved to lib/time.ts, where the locale lives. This file had its own copy of it plus a
+   second hardcoded 'en-GB', which is how one interface ends up formatting in two conventions: the edition
+   line and the read clock must state the same month the same way. The day stays unpadded here - an edition
+   label reads "5 Sep", not "05 Sep" - so the composition stays local and only the month is shared. */
 export function editionLabel(iso: string | null | undefined): string | null {
   if (!iso) return null;
   const parts = String(iso).split('-');
   if (parts.length !== 3) return String(iso);
-  const month = MONTHS[Number(parts[1]) - 1];
+  const month = monthName(Number(parts[1]));
   return month ? `${Number(parts[2])} ${month}` : String(iso);
 }
 
 export function readClock(iso: string | null | undefined): string | null {
-  if (!iso) return null;
-  const when = new Date(iso);
-  if (Number.isNaN(when.getTime())) return null;
-  return when.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Kolkata' }) + ' IST';
+  const clock = istClock(iso);
+  return clock ? clock + ' IST' : null;
 }
 
 export function useOverview() {

@@ -15,6 +15,7 @@ import { closeGate, hasOwnerVerifier, isGateOpen } from './landing/owner';
 import { ErrorBoundary } from './shell/ErrorBoundary';
 import { PlanWatch } from './plans/PlanWatch';
 import { Palette } from './shell/Palette';
+import { PlacePage } from './place/PlacePage';
 import { useHashRoute } from './shell/useHashRoute';
 
 /* One client for the whole app: the engine answers from a local store and every read is a snapshot with its
@@ -119,10 +120,12 @@ function Shell() {
   }, [query, go]);
 
   /* The document title follows the surface, so a deep link is identifiable in the tab, in the history and in
-     a bookmark. It names the product first for the same reason the rail does. */
+     a bookmark. It names the product first for the same reason the rail does. The place page sets its own:
+     only it knows whether the address named a place or was refused. */
   useEffect(() => {
     if (shell === 'landing') document.title = 'WeatherGPT';
     else if (shell === 'signin') document.title = 'WeatherGPT — owner gate';
+    else if (shell === 'place') return;
     else if (view.id === 'assistant') document.title = 'WeatherGPT — Ask';
     else document.title = 'WeatherGPT — ' + view.label;
   }, [shell, view.id, view.label]);
@@ -167,6 +170,17 @@ function Shell() {
 
   if (shell === 'signin' || locked) {
     return <OwnerGate onOpen={() => go('assistant')} onSkip={() => go('assistant')} onEnter={() => go('assistant')} />;
+  }
+
+  /* A place's own page (docs/122): the destination the panel's place row and any place link already point at.
+     It is the place stated by sources, so it is not the conversation frame — but it carries the two links
+     that matter, back to the conversation and to the conversation about this place. Its own title and its own
+     skip-link target are the page's, so the shell does not name it "Ask" in the tab or point a skip link at a
+     question box that is not on it. */
+  if (shell === 'place') {
+    return (
+      <PlacePage params={{ label: query.get('place'), latitude: query.get('plat'), longitude: query.get('plon') }} />
+    );
   }
 
   /* The surfaces that carry a question box are the two the skip link can point at; every other surface

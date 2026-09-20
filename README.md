@@ -373,9 +373,9 @@ The interface states these limits instead of filling them:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 1439 Python tests
-cd frontend && npx tsc --noEmit && npm test          # 62 React suites, 360 component checks
-python3 scripts/audit_react_frontend.py              # 18 checks over the built page and its sources
+python3 -m pytest tests/ -q                          # 1477 Python tests
+cd frontend && npx tsc --noEmit && npm test          # 75 React suites, 475 component checks
+python3 scripts/audit_react_frontend.py              # 19 checks over the built page and its sources
 python3 scripts/audit_react_build.py                 # 11 checks over the built output
 python3 scripts/audit_port_ledger.py                 # every component check the ledger names, verified in its spec
 python3 scripts/audit_surface_registry.py            # the served surfaces against the frozen registry
@@ -383,7 +383,7 @@ python3 scripts/decommission_vanilla.py              # dry run: what remains of 
 python3 scripts/doctor.py                            # environment, providers and corpus presence
 python3 scripts/models.py --check                    # the rules-first floor and the configured providers
 python3 scripts/models.py --probe-free               # the curated free ranking measured against the live catalogue
-python3 scripts/verify_all.py                        # environment, registries, drift guard, Python tests, the four React gates
+python3 scripts/verify_all.py                        # environment, registries, drift guard, Python tests, the React specs, four built-output gates
 python3 scripts/run_atlas.py --base http://127.0.0.1:8765   # 276 scenarios over all eight features
 python3 scripts/audit_freshness.py                   # what each shelf covers, and whether the schedule is FIRING
 ```

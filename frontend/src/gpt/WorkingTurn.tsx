@@ -14,9 +14,11 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ThinkingOrb } from 'thinking-orbs';
 import { elapsedWords } from '../lib/time';
 import { stageLabel } from '../chat/model';
 import type { Working } from '../chat/model';
+import { currentGroundTheme, orbStateFor } from './orb';
 
 export type WorkingTurnProps = {
   working: Working;
@@ -43,7 +45,17 @@ export function WorkingTurn({ working, current, stages, firstReading, queueLine 
   return (
     <div className="g-turn g-working" data-testid="working-turn">
       <p className="g-working-head">
-        <span className="g-dots" aria-hidden="true"><i /><i /><i /></span>
+        {/* The orb and the stage word are one statement, drawn and said. The canvas is aria-hidden because the
+            stage word beside it is a live region: a reader using a screen reader hears the stage once, not twice.
+            It freezes when the reader has asked to stop, because a stopped turn is not a turn at work. */}
+        <span className="g-orb" aria-hidden="true">
+          <ThinkingOrb
+            state={orbStateFor(current)}
+            size={20}
+            theme={currentGroundTheme()}
+            paused={working.stopRequested}
+          />
+        </span>
         <span className="g-working-stage" role="status" aria-live="polite">
           {current ? stageLabel(current) : t('working.default')}
         </span>

@@ -142,7 +142,10 @@ export function OwnerGate({ onOpen, onSkip, onEnter }: { onOpen: () => void; onS
             This gate exists so a shared machine does not show the workspace to whoever sits down at it. It is a
             shoulder-surfing barrier on this machine's screen; the workspace itself is unchanged by it.
           </p>
-          <ul className="mt-4 space-y-3 text-sm text-ink-soft">
+          {/* `gate-explains` is the class the X1 audit names for this list: the gate describing what it
+              stores on this machine — including the name of the key-derivation function, which contains
+              digits and is not a value anything read. */}
+          <ul className="gate-explains mt-4 space-y-3 text-sm text-ink-soft">
             <li>
               <strong>What it is.</strong> A passphrase whose verifier is derived in this browser and kept in this
               browser's local storage. Nothing about it leaves the machine.
@@ -285,7 +288,9 @@ export function OwnerGate({ onOpen, onSkip, onEnter }: { onOpen: () => void; onS
         {message}
       </p>
       {paused ? (
-        <p className="evidence mt-2 text-xs text-mute" data-testid="gate-countdown">
+        /* `gate-countdown` is the class the X1 audit names here: the number is the pause this gate imposed
+           on itself, and the sentence says in the same breath what it is and is not. */
+        <p className="evidence gate-countdown mt-2 text-xs text-mute" data-testid="gate-countdown">
           Paused: {secondsLeft} seconds remaining. Local only: this pause is a courtesy, not a security control.
         </p>
       ) : null}

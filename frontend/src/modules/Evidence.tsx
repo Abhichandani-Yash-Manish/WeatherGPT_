@@ -55,9 +55,9 @@ function subject(what: string): string {
 export function Skeleton(): JSX.Element {
   return (
     <div className="mt-2 flex flex-col gap-2" data-testid="skeleton" aria-hidden="true">
-      <span className="pulse-soft h-2.5 w-[82%] rounded-full bg-[color-mix(in_oklab,var(--line-strong)_38%,transparent)]" data-skeleton="bar" />
-      <span className="pulse-soft h-2.5 w-full rounded-full bg-[color-mix(in_oklab,var(--line-strong)_38%,transparent)]" data-skeleton="bar" />
-      <span className="pulse-soft h-2.5 w-[46%] rounded-full bg-[color-mix(in_oklab,var(--line-strong)_38%,transparent)]" data-skeleton="bar" />
+      <span className="pulse-soft h-2.5 w-[82%] rounded-full module-skeleton-bar" data-skeleton="bar" />
+      <span className="pulse-soft h-2.5 w-full rounded-full module-skeleton-bar" data-skeleton="bar" />
+      <span className="pulse-soft h-2.5 w-[46%] rounded-full module-skeleton-bar" data-skeleton="bar" />
       <span className="glass-soft mt-1 block h-24 border-dashed" data-skeleton="frame" />
     </div>
   );

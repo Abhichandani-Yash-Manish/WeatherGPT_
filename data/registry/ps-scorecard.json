@@ -194,9 +194,10 @@
    "id": "F6d",
    "feature": "6 Indian-language support",
    "criterion": "the interface itself is localised (labels, dates, numerals)",
-   "state": "open",
-   "evidence": null,
-   "phase": "P4"
+   "state": "partial",
+   "evidence": "research/reviews/frontend-batch-20260920/f6d-baseline.md",
+   "phase": "P4",
+   "note": "Measured 20 Sep 2026: the labels were translated into four catalogues, and the dates and numerals were not - lib/time.ts hardcoded 'en-GB' and lib/format.ts formatted no number at all. Dates and numbers now format in the reader's locale through lib/locale.ts, wired on i18next's own languageChanged event, with the English rendering held byte-identical by spec (23 tests). NOT covered: the prose ('4 min 30 s' in elapsedWords) is still English and belongs in a catalogue; the surfaces that print a retrieved value still let React stringify it; no native speaker has read any of it; and for the four Indian locales the visible numeral difference is grouping, not glyphs."
   },
   {
    "id": "F7a",
@@ -260,10 +261,10 @@
    "id": "M2",
    "feature": "Mobile-based platform",
    "criterion": "the app is reachable behind a real URL and installs as a PWA",
-   "state": "open",
-   "evidence": null,
+   "state": "partial",
+   "evidence": "docs/123-the-installable-app.md",
    "phase": "P2",
-   "blocked_on": "The manifest and icons did not exist until 20 Sep 2026. docs/118 and Dockerfile/fly.toml make a real URL deployable; the image is unbuilt and nothing is deployed yet."
+   "blocked_on": "Measured 20 Sep 2026: the server answered 404 for /manifest.webmanifest and all three icons index.html and the manifest name, so the app was not installable on any surface over any transport - which is NOT the HTTPS gate, because loopback is already a secure context and the manifest was missing there too. Those four routes are served now, one worker is served while the second copy was removed, and tests/test_shell_assets_served.py holds all of it (6 tests). What is still missing is the URL half: no deployment, no secure context beyond loopback, no install and no push delivery done by a person - scripts/demo_on_phone.sh exists and that journey has not been taken."
   },
   {
    "id": "I1",
@@ -302,9 +303,10 @@
    "id": "X1",
    "feature": "Beyond the PS: provenance on screen",
    "criterion": "no number appears on any screen outside a Claim with its source line (audit_claims in the gate)",
-   "state": "open",
-   "evidence": null,
-   "phase": "P1"
+   "state": "partial",
+   "evidence": "docs/127-x1-across-every-surface.md",
+   "phase": "P1",
+   "note": "docs/120 holds the answer card's audit (eight recorded packets, eleven checks); docs/127 holds its extraction into one rule and its extension to the welcome, bar, rail, field, working turn, plan panel, owner gate, component kit and national read, and this batch added the reading panel's station block. research/reviews/frontend-batch-20260920/x1-verification.md holds an INDEPENDENT check of the first against a snapshot of what the audit meant before it was touched. The audit runs in the gate now - scripts/verify_all.py's 'react component specs' step, which is what 'audit_claims in the gate' asks for, and which nothing ran before 20 Sep 2026. NOT covered: frontend/src/modules/** (all eighteen surfaces), gpt/Workspace.tsx, gpt/Composer.tsx, gpt/PlacePicker.tsx, shell/** and chat/**."
   },
   {
    "id": "X2",

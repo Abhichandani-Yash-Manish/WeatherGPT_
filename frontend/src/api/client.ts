@@ -61,6 +61,43 @@ async function failure(response: Response): Promise<ApiError> {
 
 export type RequestOptions = { signal?: AbortSignal; timeoutMs?: number };
 
+/* A response read as it arrives, for the one route that answers that way.
+
+   This belongs here rather than in the module that wants it, because this file is the one place that talks to the
+   workspace: it carries the session token, and it turns a refusal into an ApiError that keeps the server's own
+   words. A streaming reader written beside its caller would be a second place, with its own token handling and its
+   own idea of what a failure says - which is what the collection check refuses ("every request goes through one
+   place"), and it refused this one when the reader was first written in chat/api.ts.
+
+   Frames are the form this server writes: lines beginning `data: ` holding one JSON object, separated by a blank
+   line. A chunk that arrives half a frame is the normal case rather than an error, so an incomplete tail is kept
+   until the rest of it lands. */
+export async function streamFrames(path: string, onFrame: (frame: Record<string, unknown>) => void, options: RequestOptions = {}): Promise<void> {
+  const response = await fetch(path, {
+    headers: { 'X-WeatherGPT-Token': sessionToken() },
+    signal: options.signal,
+    credentials: 'same-origin',
+  });
+  if (!response.ok) throw await failure(response);
+  if (!response.body) throw new ApiError('The workspace answered without a body to read.', response.status, 'unavailable');
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+  for (;;) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    const parts = buffer.split('\n\n');
+    buffer = parts.pop() || '';
+    for (const part of parts) {
+      const line = part.split('\n').find(entry => entry.startsWith('data: '));
+      if (!line) continue;
+      try { onFrame(JSON.parse(line.slice(6)) as Record<string, unknown>); } catch { /* a frame this build cannot read is skipped, never guessed at */ }
+    }
+  }
+}
+
+
 export async function api<T>(path: string, init: RequestInit = {}, options: RequestOptions = {}): Promise<T> {
   const headers = new Headers(init.headers || {});
   headers.set('X-WeatherGPT-Token', sessionToken());

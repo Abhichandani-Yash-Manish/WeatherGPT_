@@ -23,7 +23,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { istStamp } from '../lib/time';
 import { SkyGlyphIcon } from '../shell/icons';
-import { greetingKey, useSky } from './sky';
+import { greetingKey, useSky, type SkyReading } from './sky';
 import { solarPosition, type Hour } from './fieldPaint';
 import { QuoteLine } from './QuoteLine';
 import { PlacePicker } from './PlacePicker';
@@ -35,6 +35,28 @@ import { useTranslation } from 'react-i18next';
    sun either way, and what changes is where it stands over the page. */
 const DEFAULT_LATITUDE = 23.0;
 const DEFAULT_LONGITUDE = 82.5;
+
+/* The station's own source line for a reading: who reported it, the id the registry knows it by, when it
+   was read, how far it is, and the two absences a reader has to be told about — a value with no unit in the
+   source, and a report the source itself marks stale. Exported because the bar and the rail state the same
+   station's reading, and one reading means one line: a second composition of it is how the same report
+   starts saying two different things about itself. */
+export function stationSource(reading: SkyReading, options: { includeStale?: boolean } = {}): string {
+  /* One composition of one line, so four surfaces cannot state the same reading four ways. The staleness clause
+     is the one part a caller may leave out: the panel states it in its own sentence below the line, and a fact
+     said twice is the failure this product refuses - it would read as two silences rather than one. */
+  return [
+    reading.station,
+    reading.sourceId,
+    reading.observedAt ? 'read ' + istStamp(reading.observedAt) : null,
+    /* 'away' rather than a bare distance: it states the relation the number has, and it is the wording both the
+       plan's own drawn claim line (docs/108 section 3.5) and the place page's station block (docs/122) use. One
+       reading means one line, and that includes its wording. */
+    reading.distanceKm !== null ? reading.distanceKm.toFixed(1) + ' km away' : null,
+    reading.temperature && !reading.unit ? 'no unit in the source' : null,
+    options.includeStale === false ? null : reading.stale ? 'the source marks this report stale' : null,
+  ].filter(Boolean).join(' · ');
+}
 
 export function Welcome({ hour }: { hour: Hour }) {
   const { t } = useTranslation();
@@ -56,18 +78,7 @@ export function Welcome({ hour }: { hour: Hour }) {
   /* The reader's own name for this place, if they gave it one. A display name only: what is sent to the
      engine is the label the catalogue returned, and the title above says so. */
   const alias = place ? prefs.aliases[place] : '';
-  /* The station's own number, and its own unit only where the source stated one. A value with no unit is
-     printed without a unit and said so below, rather than being given a scale the source never wrote. */
-  const source = reading
-    ? [
-        reading.station,
-        reading.sourceId,
-        reading.observedAt ? 'read ' + istStamp(reading.observedAt) : null,
-        reading.distanceKm !== null ? reading.distanceKm.toFixed(1) + ' km' : null,
-        reading.temperature && !reading.unit ? 'no unit in the source' : null,
-        reading.stale ? 'the source marks this report stale' : null,
-      ].filter(Boolean).join(' · ')
-    : '';
+  const source = reading ? stationSource(reading) : '';
 
   return (
     <div className="w" data-testid="welcome">
@@ -109,23 +120,32 @@ export function Welcome({ hour }: { hour: Hour }) {
         </p>
       )}
 
-      {/* The reading, as the station printed it. Absent stays absent: no placeholder value is ever shown
-          where a source said nothing. */}
-      {reading && (reading.temperature || reading.condition) ? (
-        <p className="w-reading">
-          {reading.temperature ? (
-            <span className="w-temp">
-              {reading.temperature}
-              {reading.unit ? <span className="w-unit">{reading.unit}</span> : null}
-            </span>
+      {/* The reading, as the station printed it, and the source line that owns it — ONE region, because a
+          number and its provenance printed as two adjacent paragraphs are still a number a reader has to
+          take on trust. The region is the shape the audit checks by content (a claim, with its source
+          line inside it), and it carries no box of its own: display:contents leaves the value and the line
+          exactly where they were in the column, because on this screen the ground is doing the decorating.
+          Absent stays absent: no placeholder value is ever shown where a source said nothing. */}
+      {reading && (reading.temperature || reading.condition || source) ? (
+        <div className="g-claim" style={{ display: 'contents' }}>
+          {reading.temperature || reading.condition ? (
+            <p className="w-reading">
+              {reading.temperature ? (
+                <span className="w-temp">
+                  {reading.temperature}
+                  {reading.unit ? <span className="w-unit">{reading.unit}</span> : null}
+                </span>
+              ) : null}
+              {reading.condition ? <span className="w-cond">{reading.condition}</span> : null}
+            </p>
           ) : null}
-          {reading.condition ? <span className="w-cond">{reading.condition}</span> : null}
-        </p>
+          {source ? <p className="w-source g-claim-source">{source}</p> : null}
+        </div>
       ) : null}
 
-      {source || sky.isPending ? (
-        <p className="w-source">{sky.isPending ? t('welcome.readingStation') : source}</p>
-      ) : null}
+      {/* No place held means no read was made: the screen says it is reading rather than showing a
+          placeholder value, and once it has answered it says nothing at all. */}
+      {!reading && sky.isPending ? <p className="w-source">{t('welcome.readingStation')}</p> : null}
 
       {/* The one thing on this screen that is not about today's weather, and the only thing on it a reader
           can change. It sits under everything the sky has said, so the page reads as a fact and then a

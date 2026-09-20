@@ -26,14 +26,16 @@ import { useEffect, useMemo, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   Bell, CornerDownLeft, History, KeyRound, Keyboard, LayoutGrid, MapPin, MessageSquare,
-  MessageSquarePlus, PanelLeft, Pencil, Pin, PinOff, Search, Settings, Trash2, TriangleAlert, X,
+  MessageSquarePlus, PanelLeft, Pencil, Pin, PinOff, Search, Settings, Trash2, TriangleAlert, X, ArrowUpRight,
 } from 'lucide-react';
+import { placeHref } from '../place/place';
 import { useTranslation } from 'react-i18next';
 import { forgetConversation, ledger } from '../chat/api';
 import type { ConversationRow } from '../api/types';
 import { HOMES, viewsOf, type Home, type HomeId } from '../shell/homes';
 import { pinPlace, rememberPlace, unpinPlace, usePinnedPlaces, useWorkingPlace, type PlaceChoice } from '../modules/Evidence';
 import { useSky } from './sky';
+import { stationSource } from './Welcome';
 import { SkyGlyphIcon } from '../shell/icons';
 import { ShortcutDialog } from './Shortcuts';
 
@@ -164,7 +166,15 @@ export function Rail({
     found.forEach(row => {
       const label = row.place?.label;
       if (!label) return;
-      upsert(label, row.place?.latitude ?? 0, row.place?.longitude ?? 0, false);
+      /* A conversation that resolved a place carries that place's coordinates; one that resolved nothing carries
+         no place at all (docs/114). A label with no coordinates is therefore not a place this rail may offer to
+         hold, to send, or to open: the old default of 0,0 is a real address in the Gulf of Guinea, so a row that
+         said "Kochi" while holding 0,0 would substitute one place for another in silence - first in the address
+         bar, and then in a page about the Gulf of Guinea. */
+      const latitude = row.place?.latitude;
+      const longitude = row.place?.longitude;
+      if (typeof latitude !== 'number' || typeof longitude !== 'number') return;
+      upsert(label, latitude, longitude, false);
       const name = aliases[label] || label;
       const entry = known.get(name);
       if (entry) entry.count += 1;
@@ -356,18 +366,27 @@ export function Rail({
 
         {/* The place the answers are about. It is the shell's own fact — the composer reads it, the welcome
             reads it, the panel reads it — so the rail states it, with what the nearest station last printed
-            there, rather than leaving a reader to infer it from the answers. */}
+            there, rather than leaving a reader to infer it from the answers.
+
+            The reading and the line that owns it are one region — the place row and its source line — and
+            the region is `display:contents`, so the row is laid out by the rail exactly as it was and only
+            the provenance is new. It was in a title attribute before, which is not a line a reader who does
+            not hover ever sees. */}
         <section className="g-section" aria-label="Place">
           <p className="g-rail-label">{t('rail.thisPlace')}</p>
-          <div className="g-place" aria-current={place ? 'true' : undefined}>
-            <MapPin size={14} aria-hidden="true" />
-            <span className="g-place-name">{place?.label || t('rail.noPlace')}</span>
-            {reading && (reading.temperature || reading.glyph) ? (
-              <span className="g-place-reading" title={[reading.station, reading.sourceId,
-                reading.observedAt ? 'read ' + reading.observedAt : null].filter(Boolean).join(' · ')}>
-                {reading.glyph ? <SkyGlyphIcon glyph={reading.glyph} size={13} strokeWidth={1.6} aria-hidden="true" /> : null}
-                {reading.temperature ? reading.temperature + (reading.unit || '') : null}
-              </span>
+          <div className="g-claim" style={{ display: 'contents' }}>
+            <div className="g-place" aria-current={place ? 'true' : undefined}>
+              <MapPin size={14} aria-hidden="true" />
+              <span className="g-place-name">{place?.label || t('rail.noPlace')}</span>
+              {reading && (reading.temperature || reading.glyph) ? (
+                <span className="g-place-reading">
+                  {reading.glyph ? <SkyGlyphIcon glyph={reading.glyph} size={13} strokeWidth={1.6} aria-hidden="true" /> : null}
+                  {reading.temperature ? reading.temperature + (reading.unit || '') : null}
+                </span>
+              ) : null}
+            </div>
+            {reading && (reading.temperature || reading.condition) ? (
+              <p className="g-claim-source">{stationSource(reading)}</p>
             ) : null}
           </div>
           <div className="g-rail-actions">
@@ -416,6 +435,17 @@ export function Rail({
                   {known.pinned ? <Pin size={11} aria-hidden="true" className="g-place-pinned" /> : null}
                 </button>
                 {known.count ? <span className="g-place-count">{known.count}</span> : null}
+                {/* The glance and the destination: the panel is a link to the place's own page (docs/115) and the
+                    page itself is docs/122. A real anchor rather than a button that rewrites the address, because
+                    "a link somebody can send" has to be copyable and openable in a new tab. */}
+                <a
+                  className="g-place-open"
+                  href={placeHref({ label: known.label, latitude: known.latitude, longitude: known.longitude })}
+                  aria-label={'Open the page for ' + known.name}
+                  title={'Open the page for ' + known.name}
+                >
+                  <ArrowUpRight size={11} aria-hidden="true" />
+                </a>
                 <button
                   type="button"
                   className="g-row-drop"

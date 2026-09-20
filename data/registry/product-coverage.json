@@ -1,0 +1,145 @@
+{
+ "schema_version": "product-coverage-v1",
+ "as_of": "2026-09-20",
+ "rule": "Coverage is stated per product, from the code constants and registries that govern it - never implied nationwide. scripts/audit_product_coverage.py validates this file against the code it describes, and a row may not lose its not_covered list. A reachable address or a registered source is not coverage.",
+ "products": [
+  {
+   "id": "gfs_exact_window",
+   "sources": ["S21"],
+   "kind": "forecast",
+   "geography": "any named settlement or point in India, answered by the model grid cell with its distance stated",
+   "time": "model forecast up to 7 days ahead; one task's window may not exceed 7 days",
+   "granularity": "exact-window totals and ranges for precipitation, temperature, wind speed and relative humidity",
+   "cadence": "refreshed by the ingestion worker per collected day",
+   "not_covered": ["hourly onset time", "whole-period rain probability", "windows beyond 7 days", "observed conditions"],
+   "constants": {"horizon_days": 7}
+  },
+  {
+   "id": "hourly_best_match",
+   "sources": ["S62"],
+   "kind": "forecast",
+   "geography": "any named settlement or point in India, answered by the nearest model cell with its distance stated",
+   "time": "hourly values up to 48 hours per task",
+   "granularity": "hourly precipitation, hourly precipitation probability, temperatures, wind, gusts, visibility and humidity",
+   "cadence": "refreshed per request cycle",
+   "not_covered": ["windows beyond 48 hours in one task", "an exact rain-start minute", "a probability for a whole period"],
+   "constants": {"horizon_hours": 48}
+  },
+  {
+   "id": "era5_daily_reanalysis",
+   "sources": ["S22"],
+   "kind": "history",
+   "geography": "any named settlement or point in India at the reanalysis cell",
+   "time": "1 to 7 whole IST days per request, published about 5 days behind; years from 1950 for the served models",
+   "granularity": "daily reanalysis values on Indian calendar days",
+   "cadence": "published by the source with about a five-day delay",
+   "not_covered": ["station observations", "district averages", "the most recent five days", "sub-daily history"],
+   "constants": {"delay_days": 5, "min_year": 1950}
+  },
+  {
+   "id": "published_national_history",
+   "sources": ["S25", "S26"],
+   "kind": "history",
+   "geography": "All India aggregate only; it describes no individual village or district",
+   "time": "published annual and monthly records, 1901 to 2024",
+   "granularity": "national rainfall and national mean temperature aggregates",
+   "cadence": "static published tables",
+   "not_covered": ["district or village values", "daily values", "the current year"],
+   "constants": {"first_year": 1901, "last_year": 2024}
+  },
+  {
+   "id": "published_district_rainfall",
+   "sources": ["S27"],
+   "kind": "history",
+   "geography": "the historical districts the publication carries, resolved with their state",
+   "time": "published annual and monthly district rainfall",
+   "granularity": "one district's published rainfall rows with page, row and file provenance",
+   "cadence": "static published tables",
+   "not_covered": ["district temperature", "current district rainfall", "a district the publication does not carry"]
+  },
+  {
+   "id": "district_warnings",
+   "sources": ["S01", "S06", "S15"],
+   "kind": "warning",
+   "geography": "IMD district warning geometry resolved by point-in-polygon for a named place",
+   "time": "the day windows the current bulletin edition prints; freshness follows the latest fetched edition",
+   "granularity": "district-day hazard and colour as printed; a separate CAP relay source assessment is reported beside it, never merged",
+   "cadence": "follows the fetched bulletin editions",
+   "not_covered": ["block or village granularity", "an all-clear", "dissemination", "a district outside the published geometry"]
+  },
+  {
+   "id": "agromet_advisories",
+   "sources": ["S57"],
+   "kind": "agriculture",
+   "geography": "the publisher's 698-entry district directory across the states and union territories; a listing is not an issuance, and a district's latest edition may be missing, stale or held",
+   "time": "each edition's printed issue date, with currency measured against the retrieval date",
+   "granularity": "crop and stage passages quoted from the district edition",
+   "cadence": "as the publisher issues district editions",
+   "not_covered": ["field-level decisions", "a district the directory does not list", "advice newer than the printed edition"],
+   "constants": {"directory_entries": 698}
+  },
+  {
+   "id": "marine_waves",
+   "sources": ["S56"],
+   "kind": "marine",
+   "geography": "a verified sea grid cell within 50 km of a named coastal place; an inland place is not answered with a distant cell",
+   "time": "the model wave forecast within the product's horizon",
+   "granularity": "significant wave height, period and direction at the answering cell",
+   "cadence": "model runs",
+   "not_covered": ["named sea-area bulletins", "tides", "currents", "sea-surface temperature", "an inland place", "a navigation or fishing clearance"],
+   "constants": {"cell_guard_km": 50}
+  },
+  {
+   "id": "river_discharge",
+   "sources": ["S37"],
+   "kind": "river",
+   "geography": "a verified GloFAS river cell within 50 km of the named place",
+   "time": "daily UTC days within the product horizon",
+   "granularity": "modelled discharge at the answering cell",
+   "cadence": "daily model runs",
+   "not_covered": ["observed water level", "gauge readings", "danger or warning levels", "flood extent", "an official flood warning"],
+   "constants": {"cell_guard_km": 50}
+  },
+  {
+   "id": "airport_reports",
+   "sources": ["S18", "S19", "S20"],
+   "kind": "aviation",
+   "geography": "Indian ICAO airports with a currently valid report",
+   "time": "the report's own validity; a stale METAR is dropped, a TAF must cover the asked window",
+   "granularity": "METAR and TAF as issued",
+   "cadence": "as issued by the stations",
+   "not_covered": ["flight status", "city-wide weather", "an airport outside India", "an operational clearance"]
+  },
+  {
+   "id": "ensemble_spread",
+   "sources": ["S68"],
+   "kind": "ensemble",
+   "geography": "one point in India at the ensemble cells",
+   "time": "within the forecast horizon",
+   "granularity": "member range and percentiles for temperature, precipitation and wind at the returned cells, one measure at a time",
+   "cadence": "model runs",
+   "not_covered": ["a probability", "a confidence or skill score", "a ranking of models"]
+  },
+  {
+   "id": "air_quality",
+   "sources": ["S69"],
+   "kind": "air_quality",
+   "geography": "a CAMS modelled cell for a named place",
+   "time": "hourly modelled values within the product horizon",
+   "granularity": "pollutant concentrations and the source's own US and European indices",
+   "cadence": "model runs",
+   "not_covered": ["a ground-monitor reading", "a health assessment", "an official air-quality warning"]
+  },
+  {
+   "id": "forecast_verification",
+   "sources": ["S70", "S22"],
+   "kind": "verification",
+   "geography": "points where archived model runs and the ERA5 reference overlap",
+   "time": "completed windows of 1 to 31 completed days, never inside the five-day reanalysis delay",
+   "granularity": "bias, mean absolute error, root mean square error and correlation by lead time over matched hours",
+   "cadence": "computed on request from archived runs",
+   "not_covered": ["forecast skill", "a confidence or risk", "a ranking of models"],
+   "constants": {"delay_days": 5, "max_days": 31}
+  }
+ ]
+}

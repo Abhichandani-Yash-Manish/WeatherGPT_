@@ -145,7 +145,7 @@ export function Surface(): JSX.Element {
           One point is named for the wave read and another for the river read; they are separate calls, and neither read answers for
           the other read's cell.
         </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-4)', alignItems: 'flex-start' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--g-4)', alignItems: 'flex-start' }}>
           <div style={{ flex: '1 1 24rem', minWidth: 0 }}>
             <h3>Wave read · sea point</h3>
             <PlacePicker onPick={setSeaPoint} hint="Name a sea or coastal point and choose a row; GET /api/marine then answers for that point's sea cell." />

@@ -18,6 +18,12 @@ ROOT = Path(__file__).resolve().parents[1]
 # The vanilla component suites were removed in R6. Their checks are named against React specs in
 # research/reviews/frontend-react-r2-20260917/check-port.json, and the React specs are the net now.
 NODE_SUITES = []
+# The vanilla suites left this list empty, and nothing replaced them here: NODE_SUITES is iterated, not
+# populated, so the React specs - which the comment above says are the net now - were run by nobody. A spec
+# could fail while this clean-machine entry point still printed a pass. Measured 20 September 2026: the X1
+# provenance audit was failing six of its nine cases and this file was green. A missing toolchain is a
+# reported skip below, not a pass, exactly as the build audits treat a missing build.
+FRONTEND_SPECS = ['npx', 'vitest', 'run', '--reporter=dot']
 
 REGISTRIES = ['data/registry/sources.json', 'data/registry/source-review.json', 'data/registry/product-progress.json',
               'data/registry/hardening-progress.json', 'data/registry/language-support.json',
@@ -34,9 +40,34 @@ def run(command):
     return result.returncode == 0, tail, result.stderr.strip()
 
 
+def run_frontend_specs():
+    """The React specs, run from the frontend directory, reported with vitest's own counts.
+
+    The detail line is vitest's summary ("Test Files  62 passed (62)") rather than its last line, which is a
+    duration - a number about this machine rather than about the product.
+    """
+    if not shutil.which('npx'):
+        return True, 'npx not found: the React specs did not run (a skip, not a pass)', ''
+    result = subprocess.run(FRONTEND_SPECS, cwd=str(ROOT / 'frontend'), capture_output=True, text=True)
+    combined = result.stdout + result.stderr
+    if result.returncode:
+        print(combined[-6000:], end='')
+    summary = ''
+    for line in combined.splitlines():
+        if line.strip().startswith('Test Files'):
+            summary = line.strip()
+            break
+    if not summary:
+        summary = (result.stderr.strip().splitlines() or ['no output'])[-1]
+    # Three values, like run(): the step table unpacks (ok, detail, error) and a two-tuple here fails the gate
+    # itself with "not enough values to unpack" - which is how this was caught, by running the whole thing
+    # rather than the --skip-tests path that never reaches this line.
+    return result.returncode == 0, summary, ''
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('--skip-tests', action='store_true', help='skip pytest and the node component suites')
+    parser.add_argument('--skip-tests', action='store_true', help='skip pytest and the React component suites')
     args = parser.parse_args()
     steps = []
 
@@ -63,6 +94,8 @@ def main():
         for suite in NODE_SUITES:
             ok, tail, err = run(['node', suite])
             steps.append(('node ' + Path(suite).name, ok, tail or err))
+        ok, tail, err = run_frontend_specs()
+        steps.append(('react component specs', ok, tail or err))
     # The React build is audited from the built files, since that is what a browser receives. A missing
     # build is a reported skip while the vanilla frontend is still the default.
     ok, tail, err = run([sys.executable, 'scripts/audit_react_build.py'])

@@ -22,6 +22,7 @@
 
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import { setLocale } from '../lib/locale';
 
 import en from './en.json';
 import hi from './hi.json';
@@ -60,5 +61,13 @@ void i18next.use(initReactI18next).init({
   returnEmptyString: false,
   interpolation: { escapeValue: false },
 });
+
+/* Rule 2 above is a promise about formatters, and a catalogue cannot keep it: the catalogue holds words,
+   and a number or an instant that arrived through one would be a translated value rather than a formatted
+   one. So the language change is also where the FORMATTING locale changes, and it happens on the i18next
+   event rather than at each of the places that call changeLanguage - one place, and no call site can
+   forget it. */
+setLocale(i18next.language);
+i18next.on('languageChanged', language => setLocale(language));
 
 export const i18n = i18next;

@@ -107,7 +107,7 @@ export function DocumentViewer({ sha, title, onClose, body = null, page = null }
               src={anchored}
               title={'Saved source document ' + shortHash(sha)}
               loading="lazy"
-              style={{ width: '100%', height: 'min(76vh, 44rem)', border: '1px solid var(--line)', borderRadius: 'var(--r-card)', background: 'var(--paper)' }}
+              style={{ width: '100%', height: 'min(76vh, 44rem)', border: '1px solid var(--g-line-soft)', borderRadius: 'var(--g-r)', background: 'var(--g-raise)' }}
             />
           </div>
           <p className="module-note">

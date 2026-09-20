@@ -378,7 +378,7 @@ export function Surface(): JSX.Element {
                 <figure className="glass-soft m-0 flex min-w-0 flex-[1_1_28rem] flex-col p-3">
                   <svg data-testid="map-figure" role="group" viewBox={plan.viewBox} preserveAspectRatio="xMidYMid meet"
                     aria-label={'Schematic of the ' + chosen + ' layer: ' + count(plan.drawn, 'feature') + ' drawn from the served coordinates. Not a cartographic basemap.'}
-                    className="h-auto w-full max-w-[46rem] text-[color:var(--line-strong)]">
+                    className="h-auto w-full max-w-[46rem] dash-map-ink">
                     <g transform={zoom === 1 ? undefined : 'translate(' + plan.centreX + ' ' + plan.centreY + ') scale(' + zoom + ') translate(' + -plan.centreX + ' ' + -plan.centreY + ')'}>
                     {plan.shapes.map((shape, index) => shape.d ? (
                       <path
@@ -432,13 +432,13 @@ export function Surface(): JSX.Element {
                     <span className="pill pill-quiet">zoom {zoom}x</span>
                     {join ? (
                       <>
-                        <label className="flex items-center gap-2 text-[length:var(--step--1)] quiet" htmlFor="map-day">
+                        <label className="flex items-center gap-2 text-[12px] quiet" htmlFor="map-day">
                           Day to inspect
                           <select
                             id="map-day"
                             value={dayPick}
                             onChange={event => setDayPick(event.target.value)}
-                            className="rounded-full border border-glass-line bg-glass-2 px-2 py-1 text-[length:var(--step--1)] text-ink"
+                            className="rounded-full border border-glass-line bg-glass-2 px-2 py-1 text-[12px] text-ink"
                           >
                             <option value="today">the day covering today</option>
                             {[1, 2, 3, 4, 5].map(day => <option key={day} value={day}>{'day ' + day}</option>)}
@@ -450,14 +450,14 @@ export function Surface(): JSX.Element {
                         </label>
                       </>
                     ) : null}
-                    <label className="ml-auto flex items-center gap-2 text-[length:var(--step--1)] quiet" htmlFor="map-find">
+                    <label className="ml-auto flex items-center gap-2 text-[12px] quiet" htmlFor="map-find">
                       Find a feature
                       <input
                         id="map-find"
                         type="search"
                         value={find}
                         placeholder="e.g. Patna"
-                        className="rounded-full border border-glass-line bg-glass-2 px-2.5 py-1 text-[length:var(--step--1)] text-ink"
+                        className="rounded-full border border-glass-line bg-glass-2 px-2.5 py-1 text-[12px] text-ink"
                         onChange={event => {
                           const value = event.target.value;
                           setFind(value);
@@ -476,13 +476,13 @@ export function Surface(): JSX.Element {
                       const shown = plan.shapes.filter(shape => shape.colour === colour).length;
                       if (!shown) return null;
                       return (
-                        <li key={colour} className="flex items-center gap-2 text-[length:var(--step--1)]">
+                        <li key={colour} className="flex items-center gap-2 text-[12px]">
                           <ColourTag colour={colour} text={colour} />
                           <span className="quiet evidence">{shown}</span>
                         </li>
                       );
                     })}
-                    <li className="flex items-center gap-2 text-[length:var(--step--1)]">
+                    <li className="flex items-center gap-2 text-[12px]">
                       <ColourTag colour={null} text="outline only" />
                       <span className="quiet evidence">{plan.drawn - plan.coloured}</span>
                     </li>
@@ -556,7 +556,7 @@ export function Surface(): JSX.Element {
             </div>
             {/* The accessible equivalent stays on the page, collapsed: the table is the same read the figure draws. */}
             <details className="mt-2">
-              <summary className="cursor-pointer text-[length:var(--step--1)] quiet">
+              <summary className="cursor-pointer text-[12px] quiet">
                 The table behind the figure ({plan.drawn ? count(plan.drawn, 'row') : 'no rows'})
               </summary>
               <div className="mt-2">
