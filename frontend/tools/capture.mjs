@@ -32,6 +32,11 @@ const ROUTES = ['assistant', 'workspace', 'overview', 'warnings', 'map', 'foreca
 
    An entry is a hash fragment plus the name its files take: an address carries a question mark and a file
    name should not. */
+/* What "still reading" looks like on any surface: the shared skeleton the Evidence module draws, and the
+   district map's own pending frame, which is a different element because it waits on geometry rather than
+   on a reading. A capture waits for both to leave the page. */
+const PENDING = '[data-testid="skeleton"], [data-testid="risk-map-pending"]';
+
 const ADDRESSES = [
   { name: 'place', hash: 'place?place=Kochi,%20Kerala&plat=9.93&plon=76.26' },
   { name: 'place-refused', hash: 'place?place=Kochi,%20Kerala&plat=9.93' },
@@ -83,6 +88,17 @@ for (const scheme of colourSchemes) {
       if (route.settleGone) {
         await page.waitForSelector(route.settleGone, { state: 'detached', timeout: 120_000 }).catch(() => {});
       }
+      /* And EVERY route waits for its read to land, named or not. Measured 21 September 2026: the fixed
+         1200 ms below is shorter than a surface's first read of the local store, so every module capture
+         in the evidence directory - all eighteen of them, in both schemes and four widths - photographed
+         the skeleton bars and the "Reading ... from the local store" line rather than the surface. Two
+         sessions reviewed those files as if they showed the product.
+
+         The short pause first is the point: `state: 'detached'` is satisfied by a selector that has not
+         mounted YET, so checking the instant the route changes returns before React has rendered the
+         pending state and waits for nothing. */
+      await page.waitForTimeout(500);
+      await page.waitForSelector(PENDING, { state: 'detached', timeout: 60_000 }).catch(() => {});
       await page.waitForTimeout(1200);
       /* The workspace reads some sections only as they near the screen; a full-page shot must show them. */
       await page.evaluate(async () => {

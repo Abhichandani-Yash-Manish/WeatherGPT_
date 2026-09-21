@@ -89,6 +89,33 @@ export function EditionHistogram({ dates, newest, oldestAge, behind }: {
   /* A printed edition more than a year behind the newest in the same read is drawn as stale: it is the
      reason this card exists, and one district sitting 1047 days back should not look like the other bars. */
   const ageDays = (date: string) => (Number.isNaN(newestTime) ? null : Math.round((newestTime - Date.parse(date)) / 86_400_000));
+  /* Which bars get a date under them.
+
+     Every bar used to get one, and the labels ran into each other: "26-09-21" is eight characters of
+     11px mono, about 53 user units wide, and six dates in a 300-unit viewBox leave 50 units each. The
+     axis read as one smear of digits - measured 21 September 2026 on the Today surface at 1440.
+
+     A label is drawn only where there is room for it since the last one drawn, walking left to right;
+     the newest edition is always labelled, because it is the date the card exists to report, and the
+     label before it is dropped rather than allowed to collide with it. Every date stays in the SVG's
+     aria-label and in the sentence under the chart, so thinning the axis hides nothing. */
+  const LABEL_UNITS = 56;
+  const centreOf = (index: number) => index * slot + slot * 0.15 + Math.max(6, slot * 0.7) / 2;
+  const labelled = new Set<number>();
+  let lastCentre = -Infinity;
+  rows.forEach((_row, index) => {
+    if (centreOf(index) - lastCentre < LABEL_UNITS) return;
+    labelled.add(index);
+    lastCentre = centreOf(index);
+  });
+  const newestIndex = rows.findIndex(row => row.date === newest);
+  const anchor = newestIndex === -1 ? rows.length - 1 : newestIndex;
+  if (!labelled.has(anchor)) {
+    for (const index of Array.from(labelled)) {
+      if (Math.abs(centreOf(index) - centreOf(anchor)) < LABEL_UNITS) labelled.delete(index);
+    }
+    labelled.add(anchor);
+  }
   return (
     <div className="dash-chart">
       <svg data-testid="today-edition-profile" className="dash-chart-svg" viewBox={'0 0 ' + width + ' ' + height} role="img"
@@ -111,7 +138,9 @@ export function EditionHistogram({ dates, newest, oldestAge, behind }: {
               <text className="dash-value" x={left + barWidth / 2} y={60 - barHeight}>{row.value}</text>
               {/* The year is part of the label: one district 1047 days behind prints a date three years back,
                   and a bare month-day would read as this year's edition. */}
-              <text className="dash-axis" x={left + barWidth / 2} y="78" textAnchor="middle">{row.date.slice(2)}</text>
+              {labelled.has(index)
+                ? <text className="dash-axis" x={left + barWidth / 2} y="78" textAnchor="middle">{row.date.slice(2)}</text>
+                : null}
             </g>
           );
         })}
