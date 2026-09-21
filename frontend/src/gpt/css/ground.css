@@ -132,24 +132,41 @@
 
    Nothing in here is interactive and nothing in here states anything, so the whole layer is inert:
    pointer-events none, aria-hidden on the element itself. */
+/* The horizon sits high enough that there is LAND under it. A skyline flush to the bottom edge of the
+   window is a footer; a skyline with ground beneath it is a place you are standing in. The box is a
+   quarter of the viewport and the roofline sits at its top, so the ground fills the rest. */
 .g-horizon {
-  position: absolute; inset: auto 0 0 0; height: 168px;
+  position: absolute; inset: auto 0 0 0; height: clamp(168px, 26vh, 280px);
   pointer-events: none; overflow: hidden;
   color: var(--g-paper);
   /* Under the grain and the vignette, over the sky: the city is IN the weather, not on top of it. */
   z-index: 0;
 }
 
+/* Land: the ink at a whisper, fading upward so it meets the roofline rather than butting against it.
+   It is the same colour in both families for the same reason the buildings are - it is the ground's own
+   ink, so it follows the sun without a second palette. */
+.g-horizon-ground {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: calc(100% - 118px);
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--g-paper) 4%, transparent) 0%,
+    color-mix(in srgb, var(--g-paper) 8%, transparent) 42%,
+    color-mix(in srgb, var(--g-paper) 11%, transparent) 100%);
+}
+
 .g-horizon-far,
-.g-horizon-near { position: absolute; left: 0; bottom: 0; width: 100%; display: block; }
+.g-horizon-near { position: absolute; left: 0; width: 100%; display: block; }
+.g-horizon-far { bottom: calc(100% - 118px - 4px); }
+.g-horizon-near { bottom: calc(100% - 118px); }
 
 /* The far ridge is paler, shorter, and the one that moves - a slow parallax breath rather than a slide.
    The near ridge never moves: something has to be still or the whole horizon reads as a carousel. */
 .g-horizon-far {
-  height: 104px; opacity: 0.045;
+  height: 96px; opacity: 0.05;
   animation: g-ridge-drift 90s ease-in-out infinite alternate;
 }
-.g-horizon-near { height: 132px; opacity: 0.075; }
+.g-horizon-near { height: 118px; opacity: 0.085; }
 
 @keyframes g-ridge-drift {
   from { transform: translate3d(-10px, 0, 0); }
@@ -189,8 +206,9 @@
 /* On a phone the roofline is most of the visible sky, so it steps back and the birds go: a decoration
    that competes with the answer on a 390px screen has stopped being a decoration. */
 @media (max-width: 640px) {
-  .g-horizon { height: 108px; }
-  .g-horizon-far { height: 66px; opacity: 0.035; }
-  .g-horizon-near { height: 84px; opacity: 0.055; }
+  .g-horizon { height: 132px; }
+  .g-horizon-far { height: 54px; opacity: 0.04; bottom: calc(100% - 68px - 3px); }
+  .g-horizon-near { height: 68px; opacity: 0.065; bottom: calc(100% - 68px); }
+  .g-horizon-ground { height: calc(100% - 68px); }
   .g-bird { display: none; }
 }

@@ -105,6 +105,12 @@ export function Horizon() {
         </g>
       </svg>
 
+      {/* The ground. Without it the skyline was a row of buildings standing on the bottom edge of the
+          window - a footer graphic, not a horizon. Land beneath the roofline is what makes the sky a
+          sky: the page becomes somewhere you are standing rather than a gradient with decoration at
+          the foot of it. */}
+      <div className="g-horizon-ground" />
+
       <Bird className="g-bird g-bird-1" />
       <Bird className="g-bird g-bird-2" />
       <Bird className="g-bird g-bird-3" />

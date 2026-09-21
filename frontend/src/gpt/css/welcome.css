@@ -76,14 +76,23 @@
 }
 
 .w-reading {
-  display: flex; align-items: baseline; justify-content: center; gap: var(--g-4);
-  flex-wrap: wrap; margin: var(--g-5) 0 0;
+  display: flex; align-items: baseline; justify-content: center; gap: var(--g-3);
+  flex-wrap: wrap; margin: var(--g-4) 0 0;
   animation: w-arrive 720ms var(--g-ease) 200ms both;
 }
 /* The numeral is the one place the display face earns its keep at size, and it stays under the greeting:
    this is a conversation, so the greeting leads and the reading follows it. Tabular figures, so a value
    that changes between one look and the next does not shuffle the line it sits on. */
-/* THE SCALE, which is the thing this screen did not have.
+/* THE SCALE - stepped back once it was measured on a real screen.
+
+   The first cut of this hierarchy was right about the ORDER and wrong about the volume: a 5.25rem
+   reading over a 2.1rem place, stacked in the middle of the viewport, turned the front door into a
+   billboard. An empty state is a room somebody is about to start working in, not a poster - what a
+   reader is there to do is type a question, and every point of type size the greeting takes is a point
+   of attention the composer does not get. The ranks below are the same ranks; all of them are quieter,
+   and the whole cluster occupies about a third less of the screen.
+
+   THE SCALE, which is the thing this screen did not have.
    Every element on the front door used to be within a few points of every other - greeting 2.3rem,
    place 1.06rem, value 1.9rem, condition 1.06rem, quote 1rem - so a reader's eye arrived and had
    nowhere to land. Seven objects of the same importance is the same as none.
@@ -93,8 +102,8 @@
    line above, the place is the subject at half the hero's size, and the source is a whisper. Four
    sizes, each clearly a different rank. */
 .w-temp {
-  font-family: var(--g-display); font-size: clamp(3.4rem, 2.2rem + 4.4vw, 5.25rem);
-  font-weight: 600; letter-spacing: -0.042em; line-height: 0.92; color: var(--g-paper);
+  font-family: var(--g-display); font-size: clamp(2.4rem, 1.8rem + 2.2vw, 3.3rem);
+  font-weight: 550; letter-spacing: -0.032em; line-height: 0.96; color: var(--g-paper);
   font-variant-numeric: tabular-nums;
 }
 .w-unit {
@@ -102,7 +111,7 @@
   letter-spacing: 0; vertical-align: 0.62em;
 }
 /* The station's own word, verbatim and lower case as it printed it, sitting on the value's baseline. */
-.w-cond { font-size: 1.25rem; color: var(--g-mist); letter-spacing: -0.004em; }
+.w-cond { font-size: 1.05rem; color: var(--g-mist); letter-spacing: -0.004em; }
 /* And the same word promoted to the hero, for a reading whose unit the source never stated. */
 .w-cond-lead {
   font-family: var(--g-display); font-size: clamp(2.6rem, 1.8rem + 3.2vw, 4rem);
@@ -190,7 +199,7 @@
    literary voice at 300 weight on a wider measure reads as a different kind of text at a glance, which
    is the distinction that matters - this is the one thing on the page nobody retrieved. */
 .w-quote {
-  margin: var(--g-9) 0 0;
+  margin: var(--g-7) 0 0;
   max-width: 44ch;
   position: relative;
   animation: w-arrive 720ms var(--g-ease) 320ms both;
