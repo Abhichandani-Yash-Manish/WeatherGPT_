@@ -46,6 +46,15 @@ try: print(json.load(open('$ROOT/data/runtime/refresh/last-run.json'))['started_
 except Exception: print('none')
 " 2>/dev/null || echo none)"
   echo "verifying by running the job through launchd (this takes a few minutes)..."
+  # How long the error log already is, BEFORE the job is kicked. Everything after this mark is what
+  # THIS run said; everything before it is history. Without the mark, a verify run reports whatever
+  # the last failure happened to leave behind - measured 21 September 2026, immediately after moving
+  # the project out of ~/Desktop, when it printed a TCC refusal naming the OLD path and dated 07:10
+  # that morning, and called a freshly-installed job broken on the strength of it.
+  local mark=0
+  if [ -f "$ROOT/data/runtime/refresh/launchd.err.log" ]; then
+    mark="$(wc -l < "$ROOT/data/runtime/refresh/launchd.err.log" | tr -d ' ')"
+  fi
   launchctl kickstart "gui/$UID/$LABEL" > /dev/null 2>&1 || true
   while launchctl print "gui/$UID/$LABEL" 2> /dev/null | grep -q 'state = running'; do sleep 10; done
   after="$(python3 -c "
@@ -61,9 +70,13 @@ except Exception: print('none')
   fi
   echo "NOT VERIFIED: launchd ran the job (last exit code ${code:-unknown}) and the refresh record did"
   echo "              not move. It is still $before."
-  if [ -s "$ROOT/data/runtime/refresh/launchd.err.log" ]; then
-    echo "              launchd said:"
-    tail -3 "$ROOT/data/runtime/refresh/launchd.err.log" | sed 's/^/                /'
+  local said
+  said="$(tail -n "+$((mark + 1))" "$ROOT/data/runtime/refresh/launchd.err.log" 2>/dev/null | tail -3 || true)"
+  if [ -n "$said" ]; then
+    echo "              launchd said, on this run:"
+    printf '%s\n' "$said" | sed 's/^/                /'
+  else
+    echo "              launchd wrote nothing to the error log on this run."
   fi
   case "$ROOT" in
     "$HOME"/Desktop/*|"$HOME"/Documents/*|"$HOME"/Downloads/*)
