@@ -98,9 +98,11 @@ twenty-three.
 | ![The Ask screen at 06:00: a dawn sky in pink and lavender, the rail a tinted glass panel, the greeting large and dark](docs/images/overhaul/day-06.png) | ![The Ask screen at 10:00: a warm pale sky, the rail a cool tinted glass, the greeting dark on light](docs/images/overhaul/day-10.png) | ![The Ask screen at 14:00: a pale blue sky, the rail a deeper blue tint, the greeting dark on light](docs/images/overhaul/day-14.png) | ![The Ask screen at 18:00: a violet dusk sky, the rail a warm tinted glass, the greeting in pale ink](docs/images/overhaul/day-18.png) | ![The Ask screen at 22:00: the night sky, the rail a blue glass, the greeting in pale ink](docs/images/overhaul/day-22.png) |
 
 The rail, the top bar, the reader's own bubble and a pane each take their own material from the same hour:
-how much of the hour's light each surface catches, warm or cool, how opaque. Both numbers that hold the
-design are measured in vitest against computed colours rather than against the four old phase anchors, which
-is why they can be checked at all — jsdom has no layout engine for axe's own contrast rule.
+how much of the hour's light each surface catches, warm or cool, how opaque. The numbers that hold the design
+are measured in vitest against computed colours rather than against the four old phase anchors, which is why
+they can be checked at all — jsdom has no layout engine for axe's own contrast rule — and the hazard distance
+is measured in a browser as well, because a translucent film has to be composited before it can be compared
+with anything.
 
 | What was measured | Result |
 | --- | --- |
