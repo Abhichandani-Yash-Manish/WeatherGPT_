@@ -214,7 +214,14 @@ function Shell() {
           system-theme control — is no longer mounted. The conversation is the page, every module opens beside it
           in the same frame, and the light engine decides the theme rather than a switch. Those components remain
           in the tree, unreferenced here, until their tests are retired with them. */}
-      <section id="main" tabIndex={-1} className="flex min-h-0 flex-1 flex-col focus:outline-none">
+      {/* min-w-0 is load-bearing, not tidying. A flex item's min-width is `auto`, which means it refuses to
+          shrink below the intrinsic width of its widest content, and the surfaces hold wide things: a
+          district x day matrix, tables of published rows. Measured 21 September 2026 at 390px on the
+          Warnings surface, this section was 812px wide inside a 390px viewport and every one of its 2306
+          descendants sat on that width, so a phone reader saw sentences cut off mid-word at the right edge.
+          The page itself did not overflow - the section scrolls inside the viewport - which is why the
+          capture tool's own overflow metric, which reads documentElement, reported zero on all of them. */}
+      <section id="main" tabIndex={-1} className="flex min-h-0 min-w-0 flex-1 flex-col focus:outline-none">
         <ErrorBoundary onReset={() => open('assistant')}>
           <Workspace
             view={view}

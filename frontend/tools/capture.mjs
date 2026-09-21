@@ -111,15 +111,53 @@ for (const scheme of colourSchemes) {
       const file = path.join(outDir, scheme + '-' + route.name + '@' + view.name + '.png');
       await mkdir(path.dirname(file), { recursive: true });
       await page.screenshot({ path: file, fullPage: false });
-      const metrics = await page.evaluate(() => ({
-        clientWidth: document.documentElement.clientWidth,
-        scrollWidth: document.documentElement.scrollWidth,
-        heading: (document.querySelector('main h1') || {}).textContent || null,
-        sections: document.querySelectorAll('main section').length,
-      }));
-      const overflow = metrics.scrollWidth - metrics.clientWidth;
-      report.push({ scheme, width: view.width, route: route.name, file, overflow, heading: (metrics.heading || '').slice(0, 40), sections: metrics.sections, failures });
-      console.log(scheme.padEnd(5), String(view.width).padStart(4), route.name.padEnd(13), 'overflow', String(overflow).padStart(3), '| sections', String(metrics.sections).padStart(2), '| failures', failures.length);
+      const metrics = await page.evaluate(() => {
+        const clientWidth = document.documentElement.clientWidth;
+        /* The document's own scrollWidth is not enough, and believing it cost this product a broken phone
+           layout for as long as the tool has existed. Measured 21 September 2026: `#main` is a flex item
+           and a flex item's min-width is `auto`, so it refused to shrink under the district x day matrix
+           and stood 812px wide inside a 390px viewport. It SCROLLS inside the viewport rather than pushing
+           the document, so documentElement.scrollWidth equalled clientWidth and this line printed 0 while
+           every sentence on the surface was cut off mid-word.
+
+           So the measure is the widest right edge of anything the reader can see, counted against the
+           viewport. Two things are not defects and are not counted. An element deliberately parked
+           off-screen, hence the left >= 0 test. And a wide table inside a scroll box: it is SUPPOSED to
+           extend past its container, that is what the box is for, and the reader scrolls it - so every
+           right edge is first clipped by each ancestor the reader can SCROLL - `auto` or `scroll`, and
+           only those.
+
+           `hidden` and `clip` are deliberately not in that list, and the difference is the whole point of
+           the measure. A scroll box means the reader can reach the rest of the table. A clipping ancestor
+           means the rest is simply gone off the edge, which is the defect being looked for - the shell's
+           own wrapper carries `overflow-x: clip`, so counting it as containment made this check report a
+           clean zero for the exact broken layout it was written to catch. */
+        let spill = 0;
+        let widest = null;
+        for (const node of document.querySelectorAll('main *')) {
+          const box = node.getBoundingClientRect();
+          if (box.width === 0 || box.height === 0 || box.left < 0) continue;
+          let right = box.right;
+          for (let parent = node.parentElement; parent && parent !== document.body; parent = parent.parentElement) {
+            const flow = getComputedStyle(parent).overflowX;
+            if (flow !== 'auto' && flow !== 'scroll') continue;
+            right = Math.min(right, parent.getBoundingClientRect().right);
+          }
+          const over = Math.round(right - clientWidth);
+          if (over > spill) { spill = over; widest = node.tagName.toLowerCase() + '.' + String(node.className || '').slice(0, 40); }
+        }
+        return {
+          clientWidth,
+          scrollWidth: document.documentElement.scrollWidth,
+          spill, widest,
+          heading: (document.querySelector('main h1') || {}).textContent || null,
+          sections: document.querySelectorAll('main section').length,
+        };
+      });
+      /* Whichever is worse: the document pushed wide, or content spilling past the edge inside it. */
+      const overflow = Math.max(metrics.scrollWidth - metrics.clientWidth, metrics.spill);
+      report.push({ scheme, width: view.width, route: route.name, file, overflow, spilledFrom: metrics.widest, heading: (metrics.heading || '').slice(0, 40), sections: metrics.sections, failures });
+      console.log(scheme.padEnd(5), String(view.width).padStart(4), route.name.padEnd(13), 'overflow', String(overflow).padStart(4), '| sections', String(metrics.sections).padStart(2), '| failures', failures.length, overflow > 0 ? '| from ' + metrics.widest : '');
     }
     await context.close();
   }
