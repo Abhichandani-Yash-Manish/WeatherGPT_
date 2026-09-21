@@ -1,46 +1,170 @@
 # WeatherGPT — SIH26068
 
-A local, evidence-first conversational weather workspace for India. Ask about a place and a time in
-your own words — the model decides whether to retrieve and which tools to use, and the answer keeps its
-**entity, window, unit and source attached to every value**. A greeting is answered as a conversation, with
-no source read and no fact invented.
+A local, evidence-first conversational weather workspace for India. Ask about a place and a time in your
+own words; **the model decides what to retrieve and writes the answer**, and every value it writes keeps its
+**entity, window, unit and source** attached. A greeting is answered as a conversation, with no source read
+and no fact invented.
 
-![The Ask surface after the shell batch: one rail with the four homes, the place and the conversations; the greeting, the station's reading and a line for the hour; the question box under them](docs/images/shell/01-ask-welcome.png)
+![The answer card: the finding in the first sentence, the engine's one caveat under it, the remaining sentences behind a closed fold, the byline, then the claim — 0.0 mm with its window, its place, its kind ("Model forecast") and its source line — and the chip that offers the other place of the same name](docs/images/overhaul/answer-card.png)
 
 **Operational acceptance is not achieved.** This is a working prototype whose limits are part of the
-interface: it says what it did not read, which state is unknown, and when a value is model output,
-published wording, an observation or an official warning. The requirement-by-requirement verdict is
-[the PS progress assessment](docs/84-ps-progress-and-pictures.md); the current review and the ordered
-closure queue are in [docs/93](docs/93-ps-closure-queue.md).
+interface: it says what it did not read, which state is unknown, and when a value is model output, published
+wording, an observation or an official warning. The requirement-by-requirement verdict is
+[the PS progress assessment](docs/84-ps-progress-and-pictures.md); the current review and the ordered closure
+queue are in [docs/93](docs/93-ps-closure-queue.md).
 
 **How the conversation is measured.** 276 scenarios across the eight features, multi-turn context and
-adversarial boundaries (`data/registry/chat-atlas.json`), each declaring the outcomes that would be
-honest for it. The number that matters is the **avoidable** refusal rate — a refusal because a
-publisher issued nothing is the product working, and is counted separately from one caused by a
-failed fetch, a bad route or a mishandled window. On the smaller 51-question corpus that rate went
-from 19% to 13% on 20 September, with avoidable refusals down from six to one. The atlas run is
-larger and slower and its current figures are in
-[docs/119](docs/119-what-the-atlas-measured.md).
+adversarial boundaries (`data/registry/chat-atlas.json`), each declaring the outcomes that would be honest for
+it, and a twelve-question battery across twelve intents on the live engine (`tmp/battery.py`). The number that
+matters is the **avoidable** refusal rate — a refusal because a publisher issued nothing is the product
+working, and is counted separately from one caused by a failed fetch, a bad route or a mishandled window. On
+the smaller 51-question corpus that rate went from 19% to 13% on 20 September; the atlas run is larger and
+slower and its figures are in [docs/119](docs/119-what-the-atlas-measured.md).
+
+## The answer
+
+The chat is the front door, so this is the part that matters. On 21 September 2026 the engine was measured
+against itself and three things were wrong: what the model was *given* was a database, what it was *allowed*
+was narrower than what it was shown, and what it was *told to append* repeated itself.
+
+| Question | Before | After |
+| --- | --- | --- |
+| *What is it like right now in Surat?* | "wind speed 0.0, wind direction 0.0, pressure 1009.0" | 26 °C, mist, 94.0 % humidity — and the model's own next hours, said to be grid-cell output |
+| *and tomorrow?* (the very next turn) | 2.3 s, `unavailable`, "No supported parameters requested" | answered: 5.3 mm, 26.3–31.1 °C, 72–94 % humidity over the window |
+| *why?* (after a warning turn) | "no source is wired to this chat" | a real explanation of the day-2 row, 2.8 s |
+| *Will it rain in Ahmedabad tomorrow?* | 109 words, the same caveat twice | **45–61 words**, the finding first, the source named once |
+| *Air quality in Delhi today?* | 199 words, 41 numerals, opening on a place label | 111 words: the index, its 24-hour range, PM2.5 and PM10, the rest as ranges |
+
+Three repairs carry that table, and each is recorded with its measurement in
+[docs/133](docs/133-the-message-the-reader-gets.md):
+
+- **The station fields a reader means are read.** The two station layers spell the same measurement
+  differently and neither says so — the METAR layer prints `temp`, `rh`, `windsp` — and the reader that
+  consumed them accepted the product's own spellings, which neither layer emits. Temperature and humidity
+  could not be produced by any METAR. Wind and pressure matched only because their spellings happened to be
+  the layer's, which is why a question about the weather was answered with an air-pressure reading.
+- **The composer is handed the answer's material, not the database.** Widening what the model could see made
+  the answers right and long — nineteen facts produced an answer naming eleven separate measures, while the
+  numeral budget sat happily at 0.20 numerals per word. The composer now receives the measures that answer the
+  question, ranked, with a series longer than three rows arriving as its range and the rest travelling as
+  citable further evidence; a draft that still recites is sent back to the model once with its own shape
+  quoted at it.
+- **A caveat the answer already carries is not appended under it.** Two mechanisms put a caveat in front of a
+  reader — the model writes it, and the engine appended a held clause when the prose did not carry it
+  *verbatim*. The Ahmedabad answer said "not an observation or a district average" and then "not observed
+  conditions or district averages"; the card batch measured **481 of that reply's 667 characters (72 %)** as
+  caveat-said-twice or a place note the packet already carried as fields.
+
+Measured at the end of the batch: **14 of 14 answers in the battery are model-written**, median 4.7 s. The
+answer card is [docs/136](docs/136-the-answer-as-a-page.md): the finding first, the engine's clause once under
+a hairline, the remaining sentences behind a closed fold whose label carries the ruler's own finding, a byline
+that says whether a model wrote it or the tools did, the claim stating **which kind of thing** its value is,
+and the register — brief, conversational, full — wired to something a reader can actually reach.
+
+**What keeps that safe is the check, not the prompt.** Every number in the prose must come from the
+evidence the model was shown, every unit must match its source, the place must be named, an invented
+link or certainty is refused, and the language must be the one asked for. When any of it fails the
+deterministic renderer's text stands instead, and the reason is recorded on the turn. That text is
+kept on every turn as `tool_answer` whether or not the prose replaced it.
+
+Three things a rewrite can never drop: a published passage the answer cites is quoted verbatim, in
+the publisher's own words; the safety clauses are *held* and put back if the prose loses them — that
+an absence of official guidance is not an all-clear, that a warning reading is not an instruction,
+that two sources agreeing is not confirmation when one may feed the other; and a turn whose evidence
+is a bulletin must cite the bulletin or keep the floor.
+
+A turn that has to ask something back is written too, under a stricter rule: it may not state a
+value, name a place the tool did not name, or introduce a digit the tool did not write.
+
+**The check also has to know when it is not needed.** The mechanism that puts a held safety clause back
+could not tell a paraphrase from an omission, so it appended a statement the answer had already made:
+"not an observation or a district average" and then "not observed conditions or district averages", in one
+paragraph. A clause the prose already carries is no longer appended — the comparison runs over the clause's
+own content words with a prefix match, so `forecast`/`forecasts` and `observed`/`observation` count as the
+same claim — and the clauses it did carry are recorded on the turn rather than silently dropped.
+
+## The day
+
+The palette is not a theme. It is computed from the sun's real altitude and hour angle at the reader's own
+latitude, once a minute, and the ground is bimodal because it has to be: with these inks there is no ground
+luminance at which both the dark and the light ink clear 4.5:1 — the crossover is 3.84:1 — so the page flips
+between the two ink families at the same two altitudes the ink does (sun at −6° and +8°) and drifts only
+inside each regime. `frontend/tools/hours.mjs` installs a fixed clock in the page and captures the same route
+across the day, because a screenshot at the hour this machine happens to be in proves nothing about the other
+twenty-three.
+
+| 06:00 — daybreak | 10:00 — morning | 14:00 — afternoon | 18:00 — golden | 22:00 — night |
+| --- | --- | --- | --- | --- |
+| ![The Ask screen at 06:00: a dawn sky in pink and lavender, the rail a tinted glass panel, the greeting large and dark](docs/images/overhaul/day-06.png) | ![The Ask screen at 10:00: a warm pale sky, the rail a cool tinted glass, the greeting dark on light](docs/images/overhaul/day-10.png) | ![The Ask screen at 14:00: a pale blue sky, the rail a deeper blue tint, the greeting dark on light](docs/images/overhaul/day-14.png) | ![The Ask screen at 18:00: a violet dusk sky, the rail a warm tinted glass, the greeting in pale ink](docs/images/overhaul/day-18.png) | ![The Ask screen at 22:00: the night sky, the rail a blue glass, the greeting in pale ink](docs/images/overhaul/day-22.png) |
+
+The rail, the top bar, the reader's own bubble and a pane each take their own material from the same hour:
+how much of the hour's light each surface catches, warm or cool, how opaque. Both numbers that hold the
+design are measured in vitest against computed colours rather than against the four old phase anchors, which
+is why they can be checked at all — jsdom has no layout engine for axe's own contrast rule.
+
+| What was measured | Result |
+| --- | --- |
+| Ink on the gradient band the text actually sits on, 3 latitudes × both solstices × every 15 solar-minutes, plus minute sweeps through both regime flips | worst **12.13:1** for paper, **5.55:1** for mist |
+| The same sweep *before* the batch | **22,619 readings under 4.5:1, worst 1.001:1** — near-black ink on a violet sky at 8.1° solar altitude |
+| Separation between the four materials, in OKLab | rail/bar 0.0303 chroma and 21.3° hue; bar/bubble 0.0508 and 98.8°; the floors in the test are 0.010 and 15°, set from the measurement |
+| How far any material stands from the four published IMD hazard colours (`tools/hazard-distance.mjs`, composited, OKLab) | **nothing within 39 ΔE of a hazard colour** — and the honest residue: the reader's own bubble sits in the *same chroma and hue family* as IMD yellow for 12 of 66 material-hours, as close as 0.7 chroma and 1.0° at noon, separated from it by lightness alone |
+
+Two faults were found and repaired on the way, and the first is worth stating plainly because it is the shape
+of most of this repository's defects: **the continuous spectrum was written on the document element while
+`data-hour` sat on two, so `.g`'s match on the static hour block beat the parent's inline style.** At 17:00
+IST the root computed `--g-sky-1 #332a43` and the sky the reader was looking at read `#c4d9f5` — the static
+noon palette. The previous batch's claim was true of the function and false of the page. That is recorded in
+[docs/134](docs/134-light-and-material.md), together with what was refused: `transitions.dev` was fetched whole
+(32 patterns, the author of the thinking-orbs docs/130 already integrated) and read as a set of decisions
+about duration, easing and asymmetry, **not copied** — that repository carries no licence file; `rareui.com`,
+`obsidianui.dev` and `21st.dev` were browsed as interaction references and no component library was adopted;
+`designspells.com` sits behind a bot check from this machine and was not used.
 
 ## What it looks like
 
+The eighteen guided surfaces are the other half of the product, and the judgement they were reworked against
+was not "is this correct" — it is — but **would anybody choose to open it, and would it tell them something
+the chat would not**. Measured before anything changed: **eight of the eighteen printed "No point was named,
+so no … was requested."** where the answer belongs, and a ninth opened on "Choose your place". The six that a
+previous pass had called "dense, honest instrument tables" opened on their own disclaimers — the
+forecast-verification surface spent its first screen on *"What this comparison is"*.
+
+![Forecast verification, reworked: "What this read states — At a 1-day lead, this read's temperature_2m forecast differed from the reference by a mean absolute error of 1.254 °C over 168 matched hours", the source pair it came from, and the window fields already filled at the seven completed days](docs/images/overhaul/surface-verification.png)
+
 |  |  |
 | --- | --- |
-| ![Ask: one rail with the four homes, the place the answers are about and the stored conversations, beside the greeting, the station's reading and a line for the hour](docs/images/shell/01-ask-welcome.png) | ![The reading panel open beside the conversation: the place, the nearest station's own report, the answer language and the reading persona](docs/images/shell/02-reading-panel.png) |
-| **Ask is the front door, and the rail is the navigation.** Four homes, the place the answers are about, the reader's conversations with their own pins above the recency groups, and a line of verse under the reading — each line checked against the edition it came from. | **The reading panel** is the place's own page in miniature: the place, the nearest station, what is published for its district with the colours the product printed, and the model hours, each keeping its own source line ([docs/115](docs/115-panel-and-claim-copy.md)). Every claim carries its own copy action, which puts the claim's line — measure, value with unit, place, window, source — on the clipboard. |
-| ![The React Warnings surface: the district filter and the district-day rows with the colour the product printed](docs/images/03-warnings.png) | ![The React Today dashboard: the four counted KPIs, the district map filled only where a colour was published, and the published-colour by published-day matrix](docs/images/04-today.png) |
-| **Warnings as printed.** One row per district-day, keeping the colour and hazard wording the product itself published. | **Today, composed.** The national picture this machine read: districts, source features without a district name, radar stations and the colour tallies. |
-| ![The React Forecast surface: the point entry with no place named](docs/images/05-forecast.png) | ![The React Published documents surface: filters, index counts and the editions indexed](docs/images/06-documents.png) |
-| **Forecast states its own limit.** A route capture with no place named, so the surface says no series was requested rather than drawing one. | **Documents keep their issue and currency.** Filters and counts over the indexed editions, each with printed issue date, pages, passages and saved-body state. |
-| ![The React Sources and settings surface: the capability table with tool, kind, operations and stated purpose](docs/images/07-settings.png) | ![The React Map surface: the layer files with byte counts, the figure deck with zoom, find-a-feature and a legend drawn from the features on screen](docs/images/08-map.png) |
-| **Who answers, and for what.** Each capability as the read returned it: tool, kind, operations and stated purpose. | **The Map draws what it can name.** Layer files, byte counts and budgets exactly as returned; the figure is a schematic, not a cartographic basemap. |
+| ![Ensemble spread: the reading first — a spread in °C at a stated instant across the members the read returned](docs/images/overhaul/surface-ensemble.png) | ![Compare places: both places' own readings side by side, with the sentence saying this is not a ranking, an average or a confidence](docs/images/overhaul/surface-compare.png) |
+| **Ensemble** opens on the spread the read states, at an instant, across the members it returned — and says the spread is not a probability, a confidence or a skill score. | **Compare** opens on both places' own readings, side by side, with the boundary stated once: not a ranking, not an average, not a confidence. |
+| ![Air quality: both indices the source returns with their concentrations, and the sentence that the source states no category](docs/images/overhaul/surface-air-quality.png) | ![Aviation: the decoded report in words leading, with the raw METAR string kept verbatim beside it](docs/images/overhaul/surface-aviation.png) |
+| **Air quality** names both indices and the concentrations, and says the source states **no category** for this hour rather than grading it — no health advice, no protective action. | **Aviation** leads with the report decoded into words and keeps the raw METAR string verbatim beside it, because the publisher's own characters are the evidence. |
+| ![Sea and rivers: the latest modelled wave height, the answering cell and its distance](docs/images/overhaul/surface-marine.png) | ![The Ask screen: one rail with the four homes, the place and the conversations; the greeting, the station's reading and a line for the hour; the question box under them](docs/images/overhaul/ask-welcome.png) |
+| **Sea and rivers** opens on the most recent wave height the read states, the answering cell and its distance — never an observed water level, a gauge reading, a tide or a current. | **Ask is the front door.** One rail: the four homes, the place the answers are about, the reader's conversations with their own pins above the recency groups. |
 
-The eight surface pictures are this machine's React build — the only served surface after R6 — captured 17
-September 2026 at 1440×900 in headless Chrome on loopback against a throwaway copy of the store, so no reader
-conversation appears in them. The first two are **19 September 2026**, after the shell was rebuilt as one rail
-with a reading panel ([docs/113](docs/113-shell-and-chat-surface.md)), and were taken the same way. The earlier
-pre-R6 picture set and its per-file captions stay in
-[docs/84](docs/84-ps-progress-and-pictures.md#the-picture-set).
+**Where these pictures come from.** The five guided surfaces are this machine's React build, captured
+21 September 2026 through `frontend/tools/capture.mjs` at 1440×900 in headless Chrome on loopback with a place
+held in the rail, so no reader's own question appears in them; the full set — both themes, four widths, and a
+held-place set — is in `research/reviews/final-overhaul-20260921/modules-batch/` with its own report, and it
+reports 48 captures with zero overflow and zero failed requests. The answer card is a recorded live turn
+(`research/reviews/final-overhaul-20260921/chat/`), with the packet it was rendered from beside it and the
+printed page measured with `pypdf`. The two Ask screens are `frontend/tools/journey.mjs` (a real question typed,
+a real answer waited for) and the day strip is `frontend/tools/hours.mjs`, which installs a fixed clock so the
+hour in the picture is the hour the sun is at rather than the hour the capture ran. Every one of those tools is
+in the repository and prints what it measured.
+
+Each surface's verdict — INVEST, LEAVE or CUT, with the reader's own question beside it, what was deleted and
+what was left alone — is [docs/135](docs/135-what-each-surface-is-for.md). Ten blocks were deleted from first
+screens and moved word-for-word into a `<details>` under the evidence rather than rewritten, with the same
+test ids: the five disclaimer cards, Map's build manifest (file names and byte budgets, which left the opening
+of the map surface), Aviation's route note, and the "No point was named" sentence on eight surfaces. One
+written decision was reversed and said so: a *held* place is a request the reader already made, so the
+point-taking surfaces now start from it — and nothing is fetched when none is held.
+
+Two defects the surfaces lane found outside its own files are repaired in the same batch: `GET /api/marine`
+answered `status ok` for **inland Patna** with a "sea cell" 3.66 km away and `wave_height` null at all 216
+points (the 50 km guard tests distance, and the provider answers with the nearest grid point whether or not it
+is sea — a series view that states no value anywhere is now `unavailable`, while a genuine zero still counts
+as a value); and the welcome screen was rendered underneath an open module, so a reader saw the module and
+then "Good morning" below it.
 
 ## Status at a glance
 
@@ -141,7 +265,13 @@ stages, its provisional first reading and the elapsed time, the validity ruler, 
 reading register, stored conversations, and a voice path that keeps the measured-language rules and reads the
 recogniser's own report back as recognition only), eighteen real modules
 (Today, Warnings, Forecast, Observations, Published documents, Sources and settings, Map, What changed,
-Farm advisories, Air quality, Climate records, Aviation, Ensemble spread, Forecast verification, Compare places, Sea and rivers, Briefcase, Workspace), the chart block, a command palette, the
+Farm advisories, Air quality, Climate records, Aviation, Ensemble spread, Forecast verification, Compare places, Sea and rivers, Briefcase, Workspace).
+**Each of the eighteen now opens on a reading of its own** rather than on a card of disclaimers or a request for
+a place ([docs/135](docs/135-what-each-surface-is-for.md)): verification on the error this read measured, ensemble on
+the spread and the member count, sea and rivers on the latest wave height with the answering cell and its distance,
+air quality on both indices the source returns and the category it does NOT state, aviation on the report decoded
+into words with the raw string kept verbatim beside it, and compare on both places' readings with the boundary
+stated once., the chart block, a command palette, the
 front door and the local owner gate. Every surface in the frozen registry is a real module — eighteen of them, with Ask as the conversation
 itself, and `scripts/audit_surface_registry.py` holds the served surfaces against the same ids the vanilla build
 answered ([docs/91](91-frontend-r3-r5-all-surfaces.md)). Renderings: [docs/90](90-frontend-r2-flagship-transcript.md),
@@ -159,29 +289,6 @@ dependencies, and the preflight names that state too.
 Try *“Will it rain in Ahmedabad, Gujarat tomorrow morning?”*, then *“And what about the evening?”*.
 Or *“Show the annual rainfall trend for Ahmedabad district, Gujarat from 1981 to 2010.”*, or
 *“कल अहमदाबाद में बारिश होगी क्या?”*.
-
-## The answer a reader gets
-
-The model writes it. Not a sentence appended to a template's opening — the reply itself, from the
-evidence this turn retrieved and the question that was asked ([docs/132](docs/132-the-model-writes-the-answer.md)).
-Measured across eleven intents on 21 September, one answer in eleven had been written for the
-reader; the rest were templates, and the two answers most likely to feel stiff — an official warning
-and an agricultural advisory — could never be written for one, by construction.
-
-**What keeps that safe is the check, not the prompt.** Every number in the prose must come from the
-evidence the model was shown, every unit must match its source, the place must be named, an invented
-link or certainty is refused, and the language must be the one asked for. When any of it fails the
-deterministic renderer's text stands instead, and the reason is recorded on the turn. That text is
-kept on every turn as `tool_answer` whether or not the prose replaced it.
-
-Three things a rewrite can never drop: a published passage the answer cites is quoted verbatim, in
-the publisher's own words; the safety clauses are *held* and put back if the prose loses them — that
-an absence of official guidance is not an all-clear, that a warning reading is not an instruction,
-that two sources agreeing is not confirmation when one may feed the other; and a turn whose evidence
-is a bulletin must cite the bulletin or keep the floor.
-
-A turn that has to ask something back is written too, under a stricter rule: it may not state a
-value, name a place the tool did not name, or introduce a digit the tool did not write.
 
 ## Ask it anything — how the conversation decides
 
@@ -409,6 +516,8 @@ python3 scripts/models.py --probe-free               # the curated free ranking 
 python3 scripts/verify_all.py                        # environment, registries, drift guard, Python tests, the React specs, four built-output gates
 python3 scripts/run_atlas.py --base http://127.0.0.1:8765   # 276 scenarios over all eight features
 python3 scripts/audit_freshness.py                   # what each shelf covers, and whether the schedule is FIRING
+cd frontend && node tools/journey.mjs                # arrive, ask, open every fold, click every control, then do it at 390px
+cd frontend && node tools/hours.mjs --hours 6,9,12,15,18,21  # the same route across the day, at a clock the sun stands at
 ```
 
 **The gate also runs on every push.** [`.github/workflows/gate.yml`](.github/workflows/gate.yml) runs
@@ -459,9 +568,10 @@ provider, ten language deliveries, four continuity journeys, three browser runs)
 
 Open the workspace and it lands on **Ask**. Say *hello* and the turn is answered as a conversation, with no
 source read. Ask *Will it rain in Surat tomorrow morning?* and the first reading appears while the work runs,
-then a written sentence with the tool-owned fact, the validity ruler and the receipt beneath it; the next
-questions are offered as chips, and the register switch decides whether you read the brief card or the full
-evidence. Switch the language selector to Hindi and ask again: the reply is written in Devanagari, and an
+then the finding as a sentence, the engine's one caveat under it, and the rest of the answer behind a closed
+fold whose label carries the ruler's own finding. The next questions are offered as chips, the claim states
+which kind of thing its value is, and a one-line fold at the card's foot is the register's own control —
+*brief*, *conversational* or *full* — which changes how much unfolds and no value at all. Switch the language selector to Hindi and ask again: the reply is written in Devanagari, and an
 evidence answer is only rewritten when the value-protecting gate passes.
 
 Every guided surface is still there beside the conversation: open **Today** and it shows the working place, the
@@ -510,7 +620,12 @@ recorded journeys, fast and slow.
 
 ### Batch records, newest first
 
-Each links to the batch that recorded it. Older entries are **historical evidence, not completion
+Each links to the batch that recorded it.
+
+- [The message the reader gets](docs/133-the-message-the-reader-gets.md) — the station fields a reader means were never read, the composer is handed the answer's material rather than the database, a caveat the answer already carries is not appended under it, and the two follow-ups that broke the conversation. 14 of 14 answers in the battery are model-written, median 4.7 s.
+- [Light and material](docs/134-light-and-material.md) — the continuous spectrum never reached a rendered pixel because `.g`'s match on the static hour block beat the parent's inline style; the reader had been getting four static rooms. Repairing it exposed 22,619 contrast readings under 4.5:1, worst 1.001:1, and the ground is bimodal because with these inks the crossover is 3.84:1.
+- [What each surface is for](docs/135-what-each-surface-is-for.md) — the verdict per surface (INVEST / LEAVE / CUT) with the reader's own question beside it, ten blocks moved off first screens rather than rewritten, and the two defects this lane found outside its own files.
+- [The answer as a page](docs/136-the-answer-as-a-page.md) — the finding first, the engine's clause once under a hairline, the remaining sentences behind a closed fold, a byline that says whether a model wrote it, and the register wired to something a reader can reach. Older entries are **historical evidence, not completion
 claims**, and the test counts in them are the counts of their own checkpoint.
 
 - [Mentor status brief](docs/94-mentor-status-brief.md) — what runs today and how to see it in ten minutes, the SIH26068 status, the source position (70 registered addresses, 15 of them blocked IMD APIs), why those blocked rows matter and which ones keep journeys closed, the five specific asks, and the falsifiable limits.
@@ -522,7 +637,7 @@ claims**, and the test counts in them are the counts of their own checkpoint.
 - [The React overhaul: research and stack](docs/87-frontend-research-and-inspiration.md) — the component landscape read from primary sources (assistant-ui, React Spectrum S2 AI components, Radix, shadcn/ui, Mantine, Motion, TanStack, MapLibre, Tremor, Lucide, axe-core, Noto, AI SDK), the licence table, the chosen stack, the **chat-first module architecture** (one backend-derived registry; every module has a compact Block, a full Surface and its intents) and the one CSP cost it forces.
 - [The React frontend overhaul: plan](docs/86-react-frontend-overhaul-plan.md) — a plan, not a build: Vite + React + TypeScript, the same CSP, the 110 checks ported one-for-one (the nine chart-engine checks forked in docs/92 §4d.2), six independently shippable stages (R0 groundwork, R1 shell, R2 the transcript, R3 the guided surfaces, R4 charts/map/print, R5 accessibility/i18n/voice, R6 decommission) and the exit check each one must meet.
 - [The Feature 4 dissemination backbone](docs/85-feature4-dissemination-backbone.md) — canon-v1 warning state and a named change detector, a claim/lease outbox with a retry taxonomy, a supervised cycle with a heartbeat and GET /api/watch-health, route budgets, the CAP geographic matcher and district aliases. Live-device push and a sustained live-IMD run stay explicitly not claimed.
-- [PS progress and the picture set](docs/84-ps-progress-and-pictures.md) — the current requirement-by-requirement reading, and the pre-R6 picture set with its provenance (the React set is in `docs/images/` and the gallery above).
+- [PS progress and the picture set](docs/84-ps-progress-and-pictures.md) — the current requirement-by-requirement reading, and the pre-R6 picture set with its provenance (the current set is `docs/images/overhaul/`, and the pre-R6 React set stays in `docs/images/`).
 - [The intelligent-chat overhaul](docs/83-intelligent-chat-overhaul.md) — the model plans every turn, a conversation is a real answer, a cheap first look, the written answer, language breadth, provider visibility, and the continuity journeys.
 - [The chatbot experience](docs/82-chatbot-experience.md) — the first reading, the conversation's own receipt, next-question chips and the reader-chosen register.
 - [Forecast verification](docs/80-forecast-verification.md) — archived model runs measured against ERA5 reanalysis, with the method, sample floor and no-skill-claim limit attached.
