@@ -667,6 +667,7 @@ const SPECTRUM_PROPERTIES = [
   '--g-rail-fill', '--g-bar-fill', '--g-bubble-fill', '--g-pane-fill',
   '--g-rail-icon', '--g-bar-icon',
   '--g-t1', '--g-t2', '--g-t3', '--g-t4', '--g-t5',
+  '--g-fill', '--g-e1', '--g-e2', '--g-e3',
 ] as const;
 
 export type SpectrumProperty = (typeof SPECTRUM_PROPERTIES)[number];
@@ -703,6 +704,29 @@ export function spectrumAt(position: SolarPosition, scheme: Scheme = 'system'): 
   const washAlpha = rules === DARK_RULES
     ? ['0.015', '0.04', '0.055', '0.08', '0.10']
     : ['0.022', '0.038', '0.055', '0.08', '0.105'];
+  const t1 = 'rgba(' + wash + ', ' + washAlpha[0] + ')';
+  const t2 = 'rgba(' + wash + ', ' + washAlpha[1] + ')';
+  /* --g-fill and the three elevation shadows are the same trap the ladder above was just pulled out of:
+     tokens.css declares them only inside the static `[data-hour]` blocks, which still follow the sun, so a
+     forced scheme disagreeing with the sun's own hour got the WRONG family's card. `--g-fill` is a light-hour
+     near-opaque white gradient on a light page, and the same value under a forced dark scheme at an actual
+     light sun-hour is exactly the pale slab this ticket reported under the rail's "New conversation" row — a
+     dark reader's pale ink landing on a card painted for paper. The three shadows carry the same two-value
+     split (a bright inset highlight for a white card, a darker inset for a dark one) and were never reported
+     only because a wrong highlight reads as an odd edge rather than as unreadable text — but it is the same
+     bug, on every raised surface in the product, so it is fixed the same way and in the same commit. Two
+     family values each, taken from the hand-tuned static blocks verbatim (dark: NIGHT_C's and GOLDEN_C's own
+     values, which already agree; light: the shared daybreak/noon block's), so the fallback a reader with
+     JavaScript off sees is unchanged — only which one a forced scheme's *inline* value now takes over. */
+  const isDark = rules === DARK_RULES;
+  const fill = isDark ? 'linear-gradient(180deg, ' + t2 + ', ' + t1 + ')'
+    : 'linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.52))';
+  const e1 = isDark ? 'inset 0 1px 0 rgba(255,255,255,0.045), 0 1px 2px rgba(0,0,0,0.30)'
+    : 'inset 0 1px 0 rgba(255,255,255,0.9), 0 1px 2px rgba(16,24,40,0.06)';
+  const e2 = isDark ? 'inset 0 1px 0 rgba(255,255,255,0.055), 0 2px 4px rgba(0,0,0,0.24), 0 8px 18px -8px rgba(0,0,0,0.50)'
+    : 'inset 0 1px 0 rgba(255,255,255,0.9), 0 1px 3px rgba(16,24,40,0.07), 0 6px 16px -6px rgba(16,24,40,0.12)';
+  const e3 = isDark ? 'inset 0 1px 0 rgba(255,255,255,0.07), 0 4px 10px rgba(0,0,0,0.28), 0 20px 48px -20px rgba(0,0,0,0.72)'
+    : 'inset 0 1px 0 rgba(255,255,255,0.9), 0 4px 10px rgba(16,24,40,0.08), 0 20px 44px -20px rgba(16,24,40,0.22)';
   const d = decorativeAt(position.hourAngle);
   /* The middle of the page is not the top of it: the gradient's second stop dominates the band the reader's
      own bubble and the machine's pane sit in, so a film over that band is solved against the mid colour
@@ -725,11 +749,12 @@ export function spectrumAt(position: SolarPosition, scheme: Scheme = 'system'): 
     '--g-mood-k': String(round3(d.moodK)), '--g-mark-a': String(round3(d.markA)),
     '--g-rail-fill': m.rail, '--g-bar-fill': m.bar, '--g-bubble-fill': m.bubble, '--g-pane-fill': m.pane,
     '--g-rail-icon': m.railIcon, '--g-bar-icon': m.barIcon,
-    '--g-t1': 'rgba(' + wash + ', ' + washAlpha[0] + ')',
-    '--g-t2': 'rgba(' + wash + ', ' + washAlpha[1] + ')',
+    '--g-t1': t1,
+    '--g-t2': t2,
     '--g-t3': 'rgba(' + wash + ', ' + washAlpha[2] + ')',
     '--g-t4': 'rgba(' + wash + ', ' + washAlpha[3] + ')',
     '--g-t5': 'rgba(' + wash + ', ' + washAlpha[4] + ')',
+    '--g-fill': fill, '--g-e1': e1, '--g-e2': e2, '--g-e3': e3,
   };
 }
 

@@ -340,4 +340,11 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
      a declaration on this element would beat the root's inline style and the washes would go back to
      following the sun while the palette follows the reader's theme. */
   --g-t1: inherit; --g-t2: inherit; --g-t3: inherit; --g-t4: inherit; --g-t5: inherit;
+  /* --g-fill and the three elevation shadows had the identical bug and were caught chasing the same defect:
+     each was declared only inside a static `[data-hour]` block (a light-family value and a dark-family value,
+     never chosen by anything but the sun), so a forced scheme disagreeing with the sun's own hour drew a
+     light-hour card — a near-opaque white gradient, a bright inset highlight meant for paper — under ink
+     painted for a dark page. spectrum.ts now emits both by family instead of by hour; deferred here for the
+     same reason as every property above it. */
+  --g-fill: inherit; --g-e1: inherit; --g-e2: inherit; --g-e3: inherit;
 }
