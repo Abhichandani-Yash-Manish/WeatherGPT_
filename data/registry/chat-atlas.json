@@ -1661,9 +1661,10 @@
    "want": "asked",
    "assert": {
     "answer_contains": [
-     "could not find"
+     "Zzyzxville"
     ]
-   }
+   },
+   "why": "The property is that the turn asks back AND names the place it could not find. The assertion used to be the literal phrase \"could not find\", which the answer stopped containing on 21 September when clarifications began to be written rather than templated - it now says \"I couldn’t find a place called Zzyzxville\". Naming the unfound place survives rephrasing; a contraction does not."
   },
   {
    "id": "ADV-002",
