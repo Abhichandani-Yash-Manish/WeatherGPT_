@@ -1,6 +1,9 @@
 import sys
 from pathlib import Path
-ROOT = Path('/Users/yashabhichandani/Desktop/WeatherGPT')
+# The repository this script lives in, found from the script itself. It used to be one machine's
+# absolute path, which meant the script worked on exactly that machine with the repository in
+# exactly that folder - and silently addressed the wrong tree the moment either changed.
+ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 from weathergpt_data.bulletin_index import BulletinIndex, EXTRACTION_VERSION
 index = BulletinIndex(ROOT / 'data' / 'runtime' / 'ingestion' / 'bulletins' / EXTRACTION_VERSION / 'index.sqlite')
