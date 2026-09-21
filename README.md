@@ -33,6 +33,47 @@ The part most demos skip is the part this one leads with: **it says no.**
 Nothing on the page is a guess dressed as a reading. When the publisher issued nothing, it says the
 publisher issued nothing — which is not the same as a quiet day, and it says that too.
 
+---
+
+### If you have ten minutes
+
+1. **[The scorecard](#the-scorecard-every-requirement-sih26068-names)** — every requirement, with an honest state.
+2. **[Where this stands](#where-this-stands)** — the numbers, and the weak spots named before you find them.
+3. **[See it run](#see-it-run)** — one command drives ten live turns and records them.
+4. **[How it is checked](#how-it-is-checked)** — `python3 scripts/verify_all.py`, 21 steps, on your machine.
+
+If you have two minutes, read the scorecard and ask it `Is flight AI-101 on time?`
+
+---
+
+## The scorecard: every requirement SIH26068 names
+
+**Start here.** This is the problem statement read line by line against this repository today, with the
+honest state of each. It is first in this document on purpose — it is what the project should be judged
+on, and burying it under an account of how the work went would be a way of not being judged on it.
+
+Three words are used, and they mean different things. **Delivered in scope** — the capability works and
+its boundary is stated. **Partial** — it works for real cases and there are named cases it does not
+cover. **Not accepted / not demonstrated** — the code exists and nobody has proved it against reality.
+No row is upgraded by a passing test, a screenshot, or a count.
+
+The full assessment with the evidence and explicit gaps behind each row is
+[docs/84](docs/84-ps-progress-and-pictures.md).
+
+| PS requirement | State | One line |
+| --- | --- | --- |
+| 1 Real-time weather information | **partial** | Refreshable forecasts, station reports, published warning days and a composed Now reading; coverage, freshness and station quality vary by place. |
+| 2 Natural-language querying | **delivered in scope, partial overall** | The model plans every turn, a conversation is answered without retrieval, and a fact turn gets a written answer behind checks; unfamiliar compound requests are not independently adjudicated. |
+| 3 NWP integration (GFS/WRF named) | **delivered in scope** | Governed GFS and best-match products with comparison and provenance; WRF is not connected, and a comparison can share lineage. |
+| 4 Alerts and early-warning dissemination | **partial — reachable now, still not demonstrated** | District warning applicability, plans, an outbox and consented push exist, and so, since 20 Sep, does the service worker the app had always registered but this repository never contained — until then no push could have arrived in any browser. A question naming a state now sweeps that state's districts. No live changed-edition to a real device has been demonstrated, and CAP reference resolution never authorises dissemination. |
+| 5 Location-based forecasts and advisories | **partial** | Place resolution, district identity, crop/stage intake and cited bulletins; nationwide advisory acceptance and field applicability remain open. |
+| 6 Indian-language support | **partial, measured, awaiting a speaker** | 22 measurable languages are checked. Two rendering defects were found and fixed on 20 Sep: a bare metre unit ate the first letter of the following word, and the value placeholders were numbered in a sequence the translator would happily continue past the end. Sixteen live Hindi and Gujarati answers now render 15/16 in the requested script, and are with a native speaker for acceptance. |
+| 7 Climate trends and historical analysis | **partial** | Published history, source-constrained trends and charts, and reanalysis windows up to a year — a month or a season is one question since 20 Sep, where the seven-day cap used to push "rain in August 2026" onto an annual series that ends in 2010 and could only refuse. Not a climate-research workspace, and no attribution claims. |
+| 8 Voice for rural accessibility | **path implemented, not accepted** | Transcription, spoken output, Hindi/Gujarati round trips and a Listen control; no noisy-field or native-speaker validation. |
+| Mobile-based platform | **not accepted** | Responsive layouts are checked; the desktop web is the current surface by user direction, and touch/permission/low-bandwidth journeys remain open. |
+| Met databases/APIs and an LLM query engine | **delivered in scope, breadth partial** | 70 ledger entries with a recorded status and probe; governed tools, an index and provenance; registration is not selection. |
+| Scalable real-time ingestion | **not demonstrated at service scale** | Bounded queues, leases, retries and retention, and the gate now runs on every push. No load, uptime or fresh-machine acceptance. The stores are SQLite and a 306-question run alongside the test suite is enough to make them contend, which is the honest ceiling of this architecture rather than a tuning problem. |
+
 ## Where this stands
 
 **This is a working prototype. Operational acceptance is not achieved, and the interface says so out loud.**
@@ -97,220 +138,6 @@ cd frontend && node tools/demo.mjs                 # drives it live and records 
 every turn in the video is planned, retrieved and written live. [docs/138](docs/138-demo-runbook.md) is the
 runbook: the running order, what to point at in each beat, the measured timing of each, and the rough edges
 worth volunteering before anyone asks.
-
-## The light is real
-
-<table>
-<tr>
-<td width="50%"><img src="docs/images/v2/door-light.png" alt="The front door on the light hours: a white frosted rail, the greeting, and the composer as a white card floating on a lavender field"></td>
-<td width="50%"><img src="docs/images/v2/door-dark.png" alt="The same door after dark: deep midnight ground, charcoal rail, the composer defined by a one-pixel inner ring rather than a shadow"></td>
-</tr>
-</table>
-
-The palette is not a theme switch. It is computed from **the sun's real altitude and hour angle at the
-reader's own latitude**, once a minute. Dawn in Kochi and dawn in Leh are not the same colour, because they
-are not the same dawn.
-
-Everything above the field is glass lit from the direction the sun is actually in — the catch-light sits on
-the left edge at daybreak, the top at noon, the right at dusk. The two families state depth differently
-because the two grounds allow different things: on paper a card floats by casting a wide faint shadow; after
-dark a shadow has nothing to fall on, so each surface takes a one-pixel inner ring of light instead.
-
-That the four materials stay *measurably* distinct all day is not a matter of taste — it is
-[checked](frontend/src/gpt/materials.test.ts) across 576 instants at three latitudes and both solstices,
-against the distance an eye actually travels in OKLab.
-
-<table>
-<tr>
-<td width="50%"><img src="docs/images/v2/today-light.png" alt="The Today surface: 756 districts in this read, 1720 district-days with a published colour, 422 districts behind the newest edition, 39 of 39 radar stations reporting"></td>
-<td width="50%"><img src="docs/images/v2/warnings-dark.png" alt="The Warnings surface after dark: what this read states, the district by day matrix, and the publisher's own four colours"></td>
-</tr>
-</table>
-
-Eighteen guided surfaces sit beside the conversation for the questions a sentence is a clumsy way to ask.
-They are the same evidence, laid out.
-
-## Inside the chat: what was wrong, and what was done about it
-
-The chat is the front door, so this is the part that matters, and the honest way to describe it is to say
-what it got wrong first. On 21 September 2026 the engine was measured
-against itself and three things were wrong: what the model was *given* was a database, what it was *allowed*
-was narrower than what it was shown, and what it was *told to append* repeated itself.
-
-| Question | Before | After |
-| --- | --- | --- |
-| *What is it like right now in Surat?* | "wind speed 0.0, wind direction 0.0, pressure 1009.0" | 26 °C, mist, 94.0 % humidity — and the model's own next hours, said to be grid-cell output |
-| *and tomorrow?* (the very next turn) | 2.3 s, `unavailable`, "No supported parameters requested" | answered: 5.3 mm, 26.3–31.1 °C, 72–94 % humidity over the window |
-| *why?* (after a warning turn) | "no source is wired to this chat" | a real explanation of the day-2 row, 2.8 s |
-| *Will it rain in Ahmedabad tomorrow?* | 109 words, the same caveat twice | **45–61 words**, the finding first, the source named once |
-| *Air quality in Delhi today?* | 199 words, 41 numerals, opening on a place label | 111 words: the index, its 24-hour range, PM2.5 and PM10, the rest as ranges |
-
-Three repairs carry that table, and each is recorded with its measurement in
-[docs/133](docs/133-the-message-the-reader-gets.md):
-
-- **The station fields a reader means are read.** The two station layers spell the same measurement
-  differently and neither says so — the METAR layer prints `temp`, `rh`, `windsp` — and the reader that
-  consumed them accepted the product's own spellings, which neither layer emits. Temperature and humidity
-  could not be produced by any METAR. Wind and pressure matched only because their spellings happened to be
-  the layer's, which is why a question about the weather was answered with an air-pressure reading.
-- **The composer is handed the answer's material, not the database.** Widening what the model could see made
-  the answers right and long — nineteen facts produced an answer naming eleven separate measures, while the
-  numeral budget sat happily at 0.20 numerals per word. The composer now receives the measures that answer the
-  question, ranked, with a series longer than three rows arriving as its range and the rest travelling as
-  citable further evidence; a draft that still recites is sent back to the model once with its own shape
-  quoted at it.
-- **A caveat the answer already carries is not appended under it.** Two mechanisms put a caveat in front of a
-  reader — the model writes it, and the engine appended a held clause when the prose did not carry it
-  *verbatim*. The Ahmedabad answer said "not an observation or a district average" and then "not observed
-  conditions or district averages"; the card batch measured **481 of that reply's 667 characters (72 %)** as
-  caveat-said-twice or a place note the packet already carried as fields.
-
-Measured at the end of the batch: **14 of 14 answers in the battery are model-written**, median 4.7 s. The
-answer card is [docs/136](docs/136-the-answer-as-a-page.md): the finding first, the engine's clause once under
-a hairline, the remaining sentences behind a closed fold whose label carries the ruler's own finding, a byline
-that says whether a model wrote it or the tools did, the claim stating **which kind of thing** its value is,
-and the register — brief, conversational, full — wired to something a reader can actually reach.
-
-**What keeps that safe is the check, not the prompt.** Every number in the prose must come from the
-evidence the model was shown, every unit must match its source, the place must be named, an invented
-link or certainty is refused, and the language must be the one asked for. When any of it fails the
-deterministic renderer's text stands instead, and the reason is recorded on the turn. That text is
-kept on every turn as `tool_answer` whether or not the prose replaced it.
-
-Three things a rewrite can never drop: a published passage the answer cites is quoted verbatim, in
-the publisher's own words; the safety clauses are *held* and put back if the prose loses them — that
-an absence of official guidance is not an all-clear, that a warning reading is not an instruction,
-that two sources agreeing is not confirmation when one may feed the other; and a turn whose evidence
-is a bulletin must cite the bulletin or keep the floor.
-
-A turn that has to ask something back is written too, under a stricter rule: it may not state a
-value, name a place the tool did not name, or introduce a digit the tool did not write.
-
-**The check also has to know when it is not needed.** The mechanism that puts a held safety clause back
-could not tell a paraphrase from an omission, so it appended a statement the answer had already made:
-"not an observation or a district average" and then "not observed conditions or district averages", in one
-paragraph. A clause the prose already carries is no longer appended — the comparison runs over the clause's
-own content words with a prefix match, so `forecast`/`forecasts` and `observed`/`observation` count as the
-same claim — and the clauses it did carry are recorded on the turn rather than silently dropped.
-
-## The light, in detail
-
-Why the ground is bimodal, and how a design that changes all day is checked at all.
-
-The palette is not a theme. It is computed from the sun's real altitude and hour angle at the reader's own
-latitude, once a minute, and the ground is bimodal because it has to be: with these inks there is no ground
-luminance at which both the dark and the light ink clear 4.5:1 — the crossover is 3.84:1 — so the page flips
-between the two ink families at the same two altitudes the ink does (sun at −6° and +8°) and drifts only
-inside each regime. `frontend/tools/hours.mjs` installs a fixed clock in the page and captures the same route
-across the day, because a screenshot at the hour this machine happens to be in proves nothing about the other
-twenty-three.
-
-| 06:00 — daybreak | 10:00 — morning | 14:00 — afternoon | 18:00 — golden | 22:00 — night |
-| --- | --- | --- | --- | --- |
-| ![The Ask screen at 06:00: a dawn sky in pink and lavender, the rail a tinted glass panel, the greeting large and dark](docs/images/overhaul/day-06.png) | ![The Ask screen at 10:00: a warm pale sky, the rail a cool tinted glass, the greeting dark on light](docs/images/overhaul/day-10.png) | ![The Ask screen at 14:00: a pale blue sky, the rail a deeper blue tint, the greeting dark on light](docs/images/overhaul/day-14.png) | ![The Ask screen at 18:00: a violet dusk sky, the rail a warm tinted glass, the greeting in pale ink](docs/images/overhaul/day-18.png) | ![The Ask screen at 22:00: the night sky, the rail a blue glass, the greeting in pale ink](docs/images/overhaul/day-22.png) |
-
-The rail, the top bar, the reader's own bubble and a pane each take their own material from the same hour:
-how much of the hour's light each surface catches, warm or cool, how opaque. The numbers that hold the design
-are measured in vitest against computed colours rather than against the four old phase anchors, which is why
-they can be checked at all — jsdom has no layout engine for axe's own contrast rule — and the hazard distance
-is measured in a browser as well, because a translucent film has to be composited before it can be compared
-with anything.
-
-| What was measured | Result |
-| --- | --- |
-| Ink on the gradient band the text actually sits on, 3 latitudes × both solstices × every 15 solar-minutes, plus minute sweeps through both regime flips | worst **12.13:1** for paper, **5.55:1** for mist |
-| The same sweep *before* the batch | **22,619 readings under 4.5:1, worst 1.001:1** — near-black ink on a violet sky at 8.1° solar altitude |
-| Separation between the four materials, in OKLab | rail/bar 0.0303 chroma and 21.3° hue; bar/bubble 0.0508 and 98.8°; the floors in the test are 0.010 and 15°, set from the measurement |
-| How far any material stands from the four published IMD hazard colours (`tools/hazard-distance.mjs`, composited, OKLab) | **nothing within 39 ΔE of a hazard colour** — and the honest residue: the reader's own bubble sits in the *same chroma and hue family* as IMD yellow for 12 of 66 material-hours, as close as 0.7 chroma and 1.0° at noon, separated from it by lightness alone |
-
-Two faults were found and repaired on the way, and the first is worth stating plainly because it is the shape
-of most of this repository's defects: **the continuous spectrum was written on the document element while
-`data-hour` sat on two, so `.g`'s match on the static hour block beat the parent's inline style.** At 17:00
-IST the root computed `--g-sky-1 #332a43` and the sky the reader was looking at read `#c4d9f5` — the static
-noon palette. The previous batch's claim was true of the function and false of the page. That is recorded in
-[docs/134](docs/134-light-and-material.md), together with what was refused: `transitions.dev` was fetched whole
-(32 patterns, the author of the thinking-orbs docs/130 already integrated) and read as a set of decisions
-about duration, easing and asymmetry, **not copied** — that repository carries no licence file; `rareui.com`,
-`obsidianui.dev` and `21st.dev` were browsed as interaction references and no component library was adopted;
-`designspells.com` sits behind a bot check from this machine and was not used.
-
-## What it looks like
-
-The eighteen guided surfaces are the other half of the product, and the judgement they were reworked against
-was not "is this correct" — it is — but **would anybody choose to open it, and would it tell them something
-the chat would not**. Measured before anything changed: **eight of the eighteen printed "No point was named,
-so no … was requested."** where the answer belongs, and a ninth opened on "Choose your place". The six that a
-previous pass had called "dense, honest instrument tables" opened on their own disclaimers — the
-forecast-verification surface spent its first screen on *"What this comparison is"*.
-
-![Forecast verification, reworked: "What this read states — At a 1-day lead, this read's temperature_2m forecast differed from the reference by a mean absolute error of 1.254 °C over 168 matched hours", the source pair it came from, and the window fields already filled at the seven completed days](docs/images/overhaul/surface-verification.png)
-
-|  |  |
-| --- | --- |
-| ![Ensemble spread: the reading first — a spread in °C at a stated instant across the members the read returned](docs/images/overhaul/surface-ensemble.png) | ![Compare places: both places' own readings side by side, with the sentence saying this is not a ranking, an average or a confidence](docs/images/overhaul/surface-compare.png) |
-| **Ensemble** opens on the spread the read states, at an instant, across the members it returned — and says the spread is not a probability, a confidence or a skill score. | **Compare** opens on both places' own readings, side by side, with the boundary stated once: not a ranking, not an average, not a confidence. |
-| ![Air quality: both indices the source returns with their concentrations, and the sentence that the source states no category](docs/images/overhaul/surface-air-quality.png) | ![Aviation: the decoded report in words leading, with the raw METAR string kept verbatim beside it](docs/images/overhaul/surface-aviation.png) |
-| **Air quality** names both indices and the concentrations, and says the source states **no category** for this hour rather than grading it — no health advice, no protective action. | **Aviation** leads with the report decoded into words and keeps the raw METAR string verbatim beside it, because the publisher's own characters are the evidence. |
-| ![Sea and rivers: the latest modelled wave height, the answering cell and its distance](docs/images/overhaul/surface-marine.png) | ![The Ask screen: one rail with the four homes, the place and the conversations; the greeting, the station's reading and a line for the hour; the question box under them](docs/images/overhaul/ask-welcome.png) |
-| **Sea and rivers** opens on the most recent wave height the read states, the answering cell and its distance — never an observed water level, a gauge reading, a tide or a current. | **Ask is the front door.** One rail: the four homes, the place the answers are about, the reader's conversations with their own pins above the recency groups. |
-
-**Where these pictures come from.** The five guided surfaces are this machine's React build, captured
-21 September 2026 through `frontend/tools/capture.mjs` at 1440×900 in headless Chrome on loopback with a place
-held in the rail, so no reader's own question appears in them; the full set — both themes, four widths, and a
-held-place set — is in `research/reviews/final-overhaul-20260921/modules-batch/` with its own report, and it
-reports 48 captures with zero overflow and zero failed requests. The answer card is a recorded live turn
-(`research/reviews/final-overhaul-20260921/chat/`), with the packet it was rendered from beside it and the
-printed page measured with `pypdf`. The two Ask screens are `frontend/tools/journey.mjs` (a real question typed,
-a real answer waited for) and the day strip is `frontend/tools/hours.mjs`, which installs a fixed clock so the
-hour in the picture is the hour the sun is at rather than the hour the capture ran. Every one of those tools is
-in the repository and prints what it measured.
-
-Each surface's verdict — INVEST, LEAVE or CUT, with the reader's own question beside it, what was deleted and
-what was left alone — is [docs/135](docs/135-what-each-surface-is-for.md). Ten blocks were deleted from first
-screens and moved word-for-word into a `<details>` under the evidence rather than rewritten, with the same
-test ids: the five disclaimer cards, Map's build manifest (file names and byte budgets, which left the opening
-of the map surface), Aviation's route note, and the "No point was named" sentence on eight surfaces. One
-written decision was reversed and said so: a *held* place is a request the reader already made, so the
-point-taking surfaces now start from it — and nothing is fetched when none is held.
-
-Two defects the surfaces lane found outside its own files are repaired in the same batch: `GET /api/marine`
-answered `status ok` for **inland Patna** with a "sea cell" 3.66 km away and `wave_height` null at all 216
-points (the 50 km guard tests distance, and the provider answers with the nearest grid point whether or not it
-is sea — a series view that states no value anywhere is now `unavailable`, while a genuine zero still counts
-as a value); and the welcome screen was rendered underneath an open module, so a reader saw the module and
-then "Good morning" below it.
-
-## Status at a glance
-
-The scope categories behind the numbers above: what is delivered, what is partial, what is not connected
-at all, and what exists but has never been accepted by anyone outside this machine.
-
-| | |
-|---|---|
-| **Delivered in scope** | Point forecasts and cross-source comparison, published historical and climate records, official district-warning applicability resolved against IMD's own geometry, plan monitoring with a local inbox, published-document retrieval with page/issue/currency attached, marine and river point products, airport reports, air quality, ensemble spread, archived-run forecast verification against reanalysis, farming advisories, a desktop workspace with eighteen guided surfaces beside Ask, and a model-planned conversation that decides when to retrieve, answers a greeting without inventing anything, writes the sentence around tool-owned facts, and carries its artefacts. |
-| **Partial** | Warning delivery (canonical warning state with a named change detector, a claim/lease outbox with a retry taxonomy, consented Web Push, acknowledgements and a supervision heartbeat exist, and since 20 Sep the service worker and manifest that make them reachable in a real browser; **no live device journey and no sustained live-IMD run have been demonstrated**), language output and voice (measured per direction, not accepted by native speakers), retrieval breadth (whole-document and contradiction handling remain open). |
-| **Not connected** | Radar/satellite **imagery**, official sea-area and coastal bulletins as live products, observed water level or gauge readings, danger levels, flood extent, tide, current, sea-surface temperature, ground air-quality monitors, SMS/IVR/WhatsApp delivery, road or route clearance, crop diagnosis or pesticide dosage, and any confidence, risk or skill score. |
-| **Not accepted** | Nationwide corpus acceptance, mobile and rural journeys, noisy-input and native-speaker review, live changed-edition to device notification, fresh-machine and cross-platform installation, sustained load. Hosting is no longer held — `Dockerfile`, `fly.toml` and [docs/118](docs/118-deploying-this-workspace.md) exist — but **the image is unbuilt and nothing is deployed**. |
-
-## Progress against the problem statement
-
-The eight features SIH26068 names, read against this repository today. The full assessment, with the evidence and
-the explicit gaps for each row, is [docs/84](docs/84-ps-progress-and-pictures.md); no row claims acceptance from a
-check, a count or a screenshot.
-
-| PS requirement | State | One line |
-| --- | --- | --- |
-| 1 Real-time weather information | **partial** | Refreshable forecasts, station reports, published warning days and a composed Now reading; coverage, freshness and station quality vary by place. |
-| 2 Natural-language querying | **delivered in scope, partial overall** | The model plans every turn, a conversation is answered without retrieval, and a fact turn gets a written answer behind checks; unfamiliar compound requests are not independently adjudicated. |
-| 3 NWP integration (GFS/WRF named) | **delivered in scope** | Governed GFS and best-match products with comparison and provenance; WRF is not connected, and a comparison can share lineage. |
-| 4 Alerts and early-warning dissemination | **partial — reachable now, still not demonstrated** | District warning applicability, plans, an outbox and consented push exist, and so, since 20 Sep, does the service worker the app had always registered but this repository never contained — until then no push could have arrived in any browser. A question naming a state now sweeps that state's districts. No live changed-edition to a real device has been demonstrated, and CAP reference resolution never authorises dissemination. |
-| 5 Location-based forecasts and advisories | **partial** | Place resolution, district identity, crop/stage intake and cited bulletins; nationwide advisory acceptance and field applicability remain open. |
-| 6 Indian-language support | **partial, measured, awaiting a speaker** | 22 measurable languages are checked. Two rendering defects were found and fixed on 20 Sep: a bare metre unit ate the first letter of the following word, and the value placeholders were numbered in a sequence the translator would happily continue past the end. Sixteen live Hindi and Gujarati answers now render 15/16 in the requested script, and are with a native speaker for acceptance. |
-| 7 Climate trends and historical analysis | **partial** | Published history, source-constrained trends and charts, and reanalysis windows up to a year — a month or a season is one question since 20 Sep, where the seven-day cap used to push "rain in August 2026" onto an annual series that ends in 2010 and could only refuse. Not a climate-research workspace, and no attribution claims. |
-| 8 Voice for rural accessibility | **path implemented, not accepted** | Transcription, spoken output, Hindi/Gujarati round trips and a Listen control; no noisy-field or native-speaker validation. |
-| Mobile-based platform | **not accepted** | Responsive layouts are checked; the desktop web is the current surface by user direction, and touch/permission/low-bandwidth journeys remain open. |
-| Met databases/APIs and an LLM query engine | **delivered in scope, breadth partial** | 70 ledger entries with a recorded status and probe; governed tools, an index and provenance; registration is not selection. |
-| Scalable real-time ingestion | **not demonstrated at service scale** | Bounded queues, leases, retries and retention, and the gate now runs on every push. No load, uptime or fresh-machine acceptance. The stores are SQLite and a 306-question run alongside the test suite is enough to make them contend, which is the honest ceiling of this architecture rather than a tuning problem. |
 
 ## Run it
 
@@ -407,118 +234,69 @@ Try *“Will it rain in Ahmedabad, Gujarat tomorrow morning?”*, then *“And w
 Or *“Show the annual rainfall trend for Ahmedabad district, Gujarat from 1981 to 2010.”*, or
 *“कल अहमदाबाद में बारिश होगी क्या?”*.
 
-## Ask it anything — how the conversation decides
-
-**The model plans every turn** (`WEATHERGPT_PLANNER=model`, recorded on the turn as
-`trace.planning.planner_policy`). The deterministic rules are not a silent fallback: they plan only when
-the policy asks for them, and a provider outage is reported by name instead of being answered from a floor.
-
-- **It decides when to retrieve.** A short first look (`WEATHERGPT_ROUTER`) asks *conversation or task*.
-  A conversation is answered in that same call; a task goes to the full planner, which owns every task.
-  A route the model cannot decide is a task, so the safe path is the default.
-- **It talks.** Greetings, thank-yous, capability questions, meta questions, general reasoning and
-  off-topic messages are answered from a deterministic picture of this workspace — the clock, the callable
-  tools, the source-ledger counts and what it does not do — with **no tool run**. The turn carries
-  `status: conversation`, no fact and no citation, and the card says *No source read*.
-- **Nothing is invented.** A conversational reply is rejected if it states a measurement unit, a date or a
-  time, a number beside a weather word, a warning claim, a source identifier, a link or present weather at a
-  place. One repair is attempted with the violation named; a reply that still fails is withheld and the turn
-  says so.
-- **A turn with facts gets a written answer** from those facts, behind number, unit, evidence-id, place,
-  link, certainty and language checks. Any failure leaves the tool-owned renderer stating the facts, with the
-  refusal recorded in `trace.generation`. The fact row, the ruler and the receipt stay tool-owned.
-- **The conversation carries.** A continuation inherited from the last turn says what it kept and what
-  changed (*"Continuing from your last message · changed: time. Context the engine kept. Not new evidence."*),
-  and the four continuity journeys are measured end to end.
-
-| Message | Provider | Result |
-| --- | --- | --- |
-| "hello" | DeepSeek | 0.93 s, a conversational reply, no source read |
-| "what can you do?" | DeepSeek | 1.11 s, the real tools and limits, from the workspace ledger |
-| "what is 17 times 3?" | DeepSeek | 0.89 s, "51", stated as general knowledge |
-| "नमस्ते" | DeepSeek | 1.14 s, answered in Devanagari |
-| "Will it rain in Surat tomorrow morning?" | DeepSeek | 5.9 s, one tool-owned fact (0.4 mm, GFS) with a written sentence |
-| "thanks!" | DeepSeek | 0.73 s, continuity kept |
-
-## Providers: free cloud models, the reader's key first
-
-The configured order is stated on the **Sources and settings** surface, with each provider's availability and
-the last failure, so a reader never has to guess who answered or why something was slow.
-
-- **`WEATHERGPT_PROVIDERS`** takes `deepseek_first` (the configured default when a DeepSeek key is
-  present), `deepseek`, `cloud_free` or `local`. `deepseek_first` answers from the paid DeepSeek endpoint
-  and keeps the curated free OpenRouter ids behind it as failover.
-- **Keys live in local configuration only** — `data/runtime/model-config.json`, git-ignored, mode 0600,
-  never printed and never logged. Only ids ending in `:free` are ever routed on OpenRouter, so that
-  configuration cannot bill an account.
-- **The local model is frozen**, not a fallback that runs by itself: it is used only under
-  `WEATHERGPT_PROVIDERS=local`, which exists to diagnose an offline machine.
-- **Whole-step budgets** bound every call (12 s for the first look, 25 s for a written answer, 45 s for a
-  plan), so a refused endpoint reaches the reader with an honest error instead of a two-minute retry loop.
+## How it is checked
 
 ```sh
-python3 scripts/models.py                     # routing order, availability, key source
-python3 scripts/models.py --set-key deepseek  # hidden prompt; writes the local config at mode 0600
-python3 scripts/models.py --set-key           # the same, for OpenRouter
-python3 scripts/models.py --check             # plan two questions through the router and print the trace
+python3 -m pytest tests/ -q                          # 1539 Python tests
+cd frontend && npx tsc --noEmit && npm test          # 81 React suites, 538 component checks
+python3 scripts/audit_react_frontend.py              # 19 checks over the built page and its sources
+python3 scripts/audit_react_build.py                 # 11 checks over the built output
+python3 scripts/audit_port_ledger.py                 # every component check the ledger names, verified in its spec
+python3 scripts/audit_surface_registry.py            # the served surfaces against the frozen registry
+python3 scripts/decommission_vanilla.py              # dry run: what remains of the vanilla tree, and why
+python3 scripts/doctor.py                            # environment, providers and corpus presence
+python3 scripts/models.py --check                    # the rules-first floor and the configured providers
+python3 scripts/models.py --probe-free               # the curated free ranking measured against the live catalogue
+python3 scripts/verify_all.py                        # environment, registries, drift guard, Python tests, the React specs, four built-output gates
+python3 scripts/run_atlas.py --base http://127.0.0.1:8765   # 276 scenarios over all eight features
+python3 scripts/audit_freshness.py                   # what each shelf covers, and whether the schedule is FIRING
+cd frontend && node tools/journey.mjs                # arrive, ask, open every fold, click every control, then do it at 390px
+cd frontend && node tools/hours.mjs --hours 6,9,12,15,18,21  # the same route across the day, at a clock the sun stands at
 ```
 
-Whichever provider plans a turn, it supplies **candidates only**: model output never executes code, never
-supplies a measurement, and never decides an entity, window, unit or source. Every answer's trace names the
-provider, the model and any failover. Routing a question to a hosted model is a stated trade — the question
-text leaves this machine, and the paid endpoint is billed to the key the reader configured.
+**The gate also runs on every push.** [`.github/workflows/gate.yml`](.github/workflows/gate.yml) runs
+all of the above on Python 3.9 — the version the demo machine runs — after building the frontend, so
+the React audits audit something instead of reporting a skip. The suite is deliberately network-free
+(`tests/conftest.py` fails any test that reaches a provider), so a green run on a machine that has
+never seen this code means what a green run here means. It has already caught two defects a laptop
+hid: a test that passed only because this machine had API keys, and a stale test count in this file.
 
-## Watch delivery, and the supervision truth
+**The scenario atlas is the chat measurement.** `data/registry/chat-atlas.json` holds 276 scenarios
+across the eight features, multi-turn context and adversarial boundaries, each declaring the
+outcomes that would be *honest* for it — a correct refusal is a pass, because a corpus that expects
+an answer to an unanswerable question teaches the wrong lesson. The number it exists to produce is
+the **avoidable** refusal rate, split from the publisher's own gaps and from the honest edge of what
+any product could answer. Three traps make it easy to measure the wrong thing, and all three were
+hit before they were understood: it talks to a *running* server, so an unrestarted one reports the
+behaviour your edit replaced; other work against the same store makes SQLite contend; and the shared
+provider ceiling, once spent, makes unrelated tools fail in ways that read as product defects.
 
-Watches are checked in the foreground: by the API when you ask, by `scripts/check_watches.py`, or by
-the supervised loop below. **No hosted daemon is installed**, and the product says so rather than
-implying a service. An OS schedule now exists for the daily data refresh — see below — but it is a
-refresh schedule, not a delivery service:
+These are regression checks, not acceptance. The React component checks run in jsdom (Vitest with Testing
+Library and MSW), so they are **not** browser, visual, load or fluent-language acceptance. What they do hold is specific: every displayed number must come from the
+returned packet with no arithmetic applied, no renderer may leak a stylesheet class name into visible
+text, a clarification must offer every candidate, an unverified warning must stay held, and every
+request must carry the workspace token. The suite counts measure regression coverage, not completion.
 
-    python3 scripts/watch_daemon.py --interval 900   # check, dispatch, escalate, heartbeat
-    curl -s -H "X-WeatherGPT-Token: $TOKEN" http://127.0.0.1:8765/api/watch-health
+All 110 vanilla component checks are named against a React spec now, and the ledger is held to account rather
+than trusted: `research/reviews/frontend-react-r2-20260917/check-port.json` records 110 of 110, and
+`scripts/audit_port_ledger.py` — a gate step — re-reads it and refuses any claimed test name that is not written in
+the spec it names (199 names across 33 spec files at this writing; three checks moved with the rail that drives
+them on 19 September 2026, and the ledger was repointed rather than loosened). The last nine are the chart-engine checks:
+`frontend/src/charts/viz.parity.test.ts` reads the served `web/viz.js` from disk and runs it in the stand-in DOM the
+vanilla suite used, so those checks exercise the same bytes a React chart draws with.
+[docs/92](docs/92-r6-decommission-readiness.md) §4d.2 records the fork and §4d.3 its closure. A named spec is
+regression coverage, not acceptance — the stand-in DOM is not a browser.
 
-GET /api/watch-health reports the supervision mode (foreground-supervised when a fresh daemon heartbeat is
-present, manual-recent after a manual run, otherwise manual-only), the heartbeat and its freshness, the
-outbox counts by state (including claimed and dead), the watch counts and the plan watcher. The **Plans &
-inbox** panel renders the same truth, including dead-letter rows with their last error, so a queue is never
-read as a delivery service. For unattended operation the loop belongs under an OS supervisor; a stale
-heartbeat is what would prove it stopped.
-
-## Keeping the data current, and knowing when it is not
-
-    scripts/install_daily_schedule.sh            # install or update the twice-daily refresh
-    scripts/install_daily_schedule.sh --show     # what is installed, and when it LAST ACTUALLY RAN
-    python3 scripts/audit_freshness.py           # what each shelf covers, and whether it is firing
-
-Twice a day, not once: a weather product refreshed once is stale for most of the day, and IMD
-publishes the district bulletins in the morning and updates the warning layer through the afternoon.
-
-**On macOS this is a LaunchAgent, not a crontab, and the reason matters.** The crontab entries were
-installed on 20 September and both of that day's slots passed without running — the laptop entered
-sleep ten minutes before the first one and cycled sleep/wake all morning, and macOS cron skips a job
-it missed while asleep rather than running it on wake. `crontab -l` showed two correct entries the
-whole time. On a laptop, that is worse than no schedule: it looks like one. launchd's
-`StartCalendarInterval` runs a missed slot as soon as the machine wakes, which is the behaviour a
-daily refresh actually needs. On Linux, where a server does not sleep, it stays a crontab.
-
-**And installed is still not running.** Proving it exposed a second, larger blocker: with this
-project on the **Desktop**, the scheduled job cannot run at all. macOS protects Desktop, Documents
-and Downloads, and a launchd- or cron-spawned process does not inherit the Full Disk Access your
-terminal has — launchd fired the job, bash could not `getcwd` into the directory, and it exited 126
-having done nothing. Two ways out, the first needing no permission grant:
-
-1. Move the project somewhere unprotected (`~/WeatherGPT`) and re-run the installer.
-2. System Settings › Privacy & Security › Full Disk Access, add `/bin/bash`, re-run with `--verify`.
-
-`scripts/install_daily_schedule.sh --verify` runs the job through launchd and checks whether the
-refresh record actually moved, so this failure is loud instead of silent. **Until one of those two
-is done, the daily refresh on this machine runs only when someone runs it by hand.**
-
-That episode also changed what the audit asks. Reporting *scheduled* was true throughout the
-failure. It now reports **installed**, **by what mechanism**, and whether it is **firing** — judged
-from when the refresh last ran, not from what is configured — and says `NOT FIRING` past a
-twenty-four hour budget.
+The saved bulletin layout fixtures resolve from tracked curated evidence under
+`research/implementation/*` (see `tests/source_fixtures.py`), not from the git-ignored
+`data/runtime` cache, so the layout tests run on a clean checkout. The test runner and the remaining
+development dependencies are declared in `requirements-dev.txt`; the optional multilingual embedding
+stack (`requirements-bulletins.txt`) is only needed to build the real indexed corpus. Recorded real
+journeys, accessibility scans and viewport measurements live in
+[the frontend batch evidence](research/reviews/frontend-v2-20260915/after/live-checks.json), and the
+most recent chat records in `research/reviews/chat-overhaul-20260916/` (six live journeys on the configured
+provider, ten language deliveries, four continuity journeys, three browser runs) and the newest screenshots in
+`docs/images/`.
 
 ## What it answers today
 
@@ -617,69 +395,312 @@ The interface states these limits instead of filling them:
 - **No universal language claim.** Coverage is per direction and measured; the four refused languages
   are named with their reasons.
 
-## How it is checked
+## Status at a glance
+
+The scope categories behind the numbers above: what is delivered, what is partial, what is not connected
+at all, and what exists but has never been accepted by anyone outside this machine.
+
+| | |
+|---|---|
+| **Delivered in scope** | Point forecasts and cross-source comparison, published historical and climate records, official district-warning applicability resolved against IMD's own geometry, plan monitoring with a local inbox, published-document retrieval with page/issue/currency attached, marine and river point products, airport reports, air quality, ensemble spread, archived-run forecast verification against reanalysis, farming advisories, a desktop workspace with eighteen guided surfaces beside Ask, and a model-planned conversation that decides when to retrieve, answers a greeting without inventing anything, writes the sentence around tool-owned facts, and carries its artefacts. |
+| **Partial** | Warning delivery (canonical warning state with a named change detector, a claim/lease outbox with a retry taxonomy, consented Web Push, acknowledgements and a supervision heartbeat exist, and since 20 Sep the service worker and manifest that make them reachable in a real browser; **no live device journey and no sustained live-IMD run have been demonstrated**), language output and voice (measured per direction, not accepted by native speakers), retrieval breadth (whole-document and contradiction handling remain open). |
+| **Not connected** | Radar/satellite **imagery**, official sea-area and coastal bulletins as live products, observed water level or gauge readings, danger levels, flood extent, tide, current, sea-surface temperature, ground air-quality monitors, SMS/IVR/WhatsApp delivery, road or route clearance, crop diagnosis or pesticide dosage, and any confidence, risk or skill score. |
+| **Not accepted** | Nationwide corpus acceptance, mobile and rural journeys, noisy-input and native-speaker review, live changed-edition to device notification, fresh-machine and cross-platform installation, sustained load. Hosting is no longer held — `Dockerfile`, `fly.toml` and [docs/118](docs/118-deploying-this-workspace.md) exist — but **the image is unbuilt and nothing is deployed**. |
+
+## The light is real
+
+<table>
+<tr>
+<td width="50%"><img src="docs/images/v2/door-light.png" alt="The front door on the light hours: a white frosted rail, the greeting, and the composer as a white card floating on a lavender field"></td>
+<td width="50%"><img src="docs/images/v2/door-dark.png" alt="The same door after dark: deep midnight ground, charcoal rail, the composer defined by a one-pixel inner ring rather than a shadow"></td>
+</tr>
+</table>
+
+The palette is not a theme switch. It is computed from **the sun's real altitude and hour angle at the
+reader's own latitude**, once a minute. Dawn in Kochi and dawn in Leh are not the same colour, because they
+are not the same dawn.
+
+Everything above the field is glass lit from the direction the sun is actually in — the catch-light sits on
+the left edge at daybreak, the top at noon, the right at dusk. The two families state depth differently
+because the two grounds allow different things: on paper a card floats by casting a wide faint shadow; after
+dark a shadow has nothing to fall on, so each surface takes a one-pixel inner ring of light instead.
+
+That the four materials stay *measurably* distinct all day is not a matter of taste — it is
+[checked](frontend/src/gpt/materials.test.ts) across 576 instants at three latitudes and both solstices,
+against the distance an eye actually travels in OKLab.
+
+<table>
+<tr>
+<td width="50%"><img src="docs/images/v2/today-light.png" alt="The Today surface: 756 districts in this read, 1720 district-days with a published colour, 422 districts behind the newest edition, 39 of 39 radar stations reporting"></td>
+<td width="50%"><img src="docs/images/v2/warnings-dark.png" alt="The Warnings surface after dark: what this read states, the district by day matrix, and the publisher's own four colours"></td>
+</tr>
+</table>
+
+Eighteen guided surfaces sit beside the conversation for the questions a sentence is a clumsy way to ask.
+They are the same evidence, laid out.
+
+## What it looks like
+
+The eighteen guided surfaces are the other half of the product, and the judgement they were reworked against
+was not "is this correct" — it is — but **would anybody choose to open it, and would it tell them something
+the chat would not**. Measured before anything changed: **eight of the eighteen printed "No point was named,
+so no … was requested."** where the answer belongs, and a ninth opened on "Choose your place". The six that a
+previous pass had called "dense, honest instrument tables" opened on their own disclaimers — the
+forecast-verification surface spent its first screen on *"What this comparison is"*.
+
+![Forecast verification, reworked: "What this read states — At a 1-day lead, this read's temperature_2m forecast differed from the reference by a mean absolute error of 1.254 °C over 168 matched hours", the source pair it came from, and the window fields already filled at the seven completed days](docs/images/overhaul/surface-verification.png)
+
+|  |  |
+| --- | --- |
+| ![Ensemble spread: the reading first — a spread in °C at a stated instant across the members the read returned](docs/images/overhaul/surface-ensemble.png) | ![Compare places: both places' own readings side by side, with the sentence saying this is not a ranking, an average or a confidence](docs/images/overhaul/surface-compare.png) |
+| **Ensemble** opens on the spread the read states, at an instant, across the members it returned — and says the spread is not a probability, a confidence or a skill score. | **Compare** opens on both places' own readings, side by side, with the boundary stated once: not a ranking, not an average, not a confidence. |
+| ![Air quality: both indices the source returns with their concentrations, and the sentence that the source states no category](docs/images/overhaul/surface-air-quality.png) | ![Aviation: the decoded report in words leading, with the raw METAR string kept verbatim beside it](docs/images/overhaul/surface-aviation.png) |
+| **Air quality** names both indices and the concentrations, and says the source states **no category** for this hour rather than grading it — no health advice, no protective action. | **Aviation** leads with the report decoded into words and keeps the raw METAR string verbatim beside it, because the publisher's own characters are the evidence. |
+| ![Sea and rivers: the latest modelled wave height, the answering cell and its distance](docs/images/overhaul/surface-marine.png) | ![The Ask screen: one rail with the four homes, the place and the conversations; the greeting, the station's reading and a line for the hour; the question box under them](docs/images/overhaul/ask-welcome.png) |
+| **Sea and rivers** opens on the most recent wave height the read states, the answering cell and its distance — never an observed water level, a gauge reading, a tide or a current. | **Ask is the front door.** One rail: the four homes, the place the answers are about, the reader's conversations with their own pins above the recency groups. |
+
+**Where these pictures come from.** The five guided surfaces are this machine's React build, captured
+21 September 2026 through `frontend/tools/capture.mjs` at 1440×900 in headless Chrome on loopback with a place
+held in the rail, so no reader's own question appears in them; the full set — both themes, four widths, and a
+held-place set — is in `research/reviews/final-overhaul-20260921/modules-batch/` with its own report, and it
+reports 48 captures with zero overflow and zero failed requests. The answer card is a recorded live turn
+(`research/reviews/final-overhaul-20260921/chat/`), with the packet it was rendered from beside it and the
+printed page measured with `pypdf`. The two Ask screens are `frontend/tools/journey.mjs` (a real question typed,
+a real answer waited for) and the day strip is `frontend/tools/hours.mjs`, which installs a fixed clock so the
+hour in the picture is the hour the sun is at rather than the hour the capture ran. Every one of those tools is
+in the repository and prints what it measured.
+
+Each surface's verdict — INVEST, LEAVE or CUT, with the reader's own question beside it, what was deleted and
+what was left alone — is [docs/135](docs/135-what-each-surface-is-for.md). Ten blocks were deleted from first
+screens and moved word-for-word into a `<details>` under the evidence rather than rewritten, with the same
+test ids: the five disclaimer cards, Map's build manifest (file names and byte budgets, which left the opening
+of the map surface), Aviation's route note, and the "No point was named" sentence on eight surfaces. One
+written decision was reversed and said so: a *held* place is a request the reader already made, so the
+point-taking surfaces now start from it — and nothing is fetched when none is held.
+
+Two defects the surfaces lane found outside its own files are repaired in the same batch: `GET /api/marine`
+answered `status ok` for **inland Patna** with a "sea cell" 3.66 km away and `wave_height` null at all 216
+points (the 50 km guard tests distance, and the provider answers with the nearest grid point whether or not it
+is sea — a series view that states no value anywhere is now `unavailable`, while a genuine zero still counts
+as a value); and the welcome screen was rendered underneath an open module, so a reader saw the module and
+then "Good morning" below it.
+
+## Ask it anything — how the conversation decides
+
+**The model plans every turn** (`WEATHERGPT_PLANNER=model`, recorded on the turn as
+`trace.planning.planner_policy`). The deterministic rules are not a silent fallback: they plan only when
+the policy asks for them, and a provider outage is reported by name instead of being answered from a floor.
+
+- **It decides when to retrieve.** A short first look (`WEATHERGPT_ROUTER`) asks *conversation or task*.
+  A conversation is answered in that same call; a task goes to the full planner, which owns every task.
+  A route the model cannot decide is a task, so the safe path is the default.
+- **It talks.** Greetings, thank-yous, capability questions, meta questions, general reasoning and
+  off-topic messages are answered from a deterministic picture of this workspace — the clock, the callable
+  tools, the source-ledger counts and what it does not do — with **no tool run**. The turn carries
+  `status: conversation`, no fact and no citation, and the card says *No source read*.
+- **Nothing is invented.** A conversational reply is rejected if it states a measurement unit, a date or a
+  time, a number beside a weather word, a warning claim, a source identifier, a link or present weather at a
+  place. One repair is attempted with the violation named; a reply that still fails is withheld and the turn
+  says so.
+- **A turn with facts gets a written answer** from those facts, behind number, unit, evidence-id, place,
+  link, certainty and language checks. Any failure leaves the tool-owned renderer stating the facts, with the
+  refusal recorded in `trace.generation`. The fact row, the ruler and the receipt stay tool-owned.
+- **The conversation carries.** A continuation inherited from the last turn says what it kept and what
+  changed (*"Continuing from your last message · changed: time. Context the engine kept. Not new evidence."*),
+  and the four continuity journeys are measured end to end.
+
+| Message | Provider | Result |
+| --- | --- | --- |
+| "hello" | DeepSeek | 0.93 s, a conversational reply, no source read |
+| "what can you do?" | DeepSeek | 1.11 s, the real tools and limits, from the workspace ledger |
+| "what is 17 times 3?" | DeepSeek | 0.89 s, "51", stated as general knowledge |
+| "नमस्ते" | DeepSeek | 1.14 s, answered in Devanagari |
+| "Will it rain in Surat tomorrow morning?" | DeepSeek | 5.9 s, one tool-owned fact (0.4 mm, GFS) with a written sentence |
+| "thanks!" | DeepSeek | 0.73 s, continuity kept |
+
+## Inside the chat: what was wrong, and what was done about it
+
+The chat is the front door, so this is the part that matters, and the honest way to describe it is to say
+what it got wrong first. On 21 September 2026 the engine was measured
+against itself and three things were wrong: what the model was *given* was a database, what it was *allowed*
+was narrower than what it was shown, and what it was *told to append* repeated itself.
+
+| Question | Before | After |
+| --- | --- | --- |
+| *What is it like right now in Surat?* | "wind speed 0.0, wind direction 0.0, pressure 1009.0" | 26 °C, mist, 94.0 % humidity — and the model's own next hours, said to be grid-cell output |
+| *and tomorrow?* (the very next turn) | 2.3 s, `unavailable`, "No supported parameters requested" | answered: 5.3 mm, 26.3–31.1 °C, 72–94 % humidity over the window |
+| *why?* (after a warning turn) | "no source is wired to this chat" | a real explanation of the day-2 row, 2.8 s |
+| *Will it rain in Ahmedabad tomorrow?* | 109 words, the same caveat twice | **45–61 words**, the finding first, the source named once |
+| *Air quality in Delhi today?* | 199 words, 41 numerals, opening on a place label | 111 words: the index, its 24-hour range, PM2.5 and PM10, the rest as ranges |
+
+Three repairs carry that table, and each is recorded with its measurement in
+[docs/133](docs/133-the-message-the-reader-gets.md):
+
+- **The station fields a reader means are read.** The two station layers spell the same measurement
+  differently and neither says so — the METAR layer prints `temp`, `rh`, `windsp` — and the reader that
+  consumed them accepted the product's own spellings, which neither layer emits. Temperature and humidity
+  could not be produced by any METAR. Wind and pressure matched only because their spellings happened to be
+  the layer's, which is why a question about the weather was answered with an air-pressure reading.
+- **The composer is handed the answer's material, not the database.** Widening what the model could see made
+  the answers right and long — nineteen facts produced an answer naming eleven separate measures, while the
+  numeral budget sat happily at 0.20 numerals per word. The composer now receives the measures that answer the
+  question, ranked, with a series longer than three rows arriving as its range and the rest travelling as
+  citable further evidence; a draft that still recites is sent back to the model once with its own shape
+  quoted at it.
+- **A caveat the answer already carries is not appended under it.** Two mechanisms put a caveat in front of a
+  reader — the model writes it, and the engine appended a held clause when the prose did not carry it
+  *verbatim*. The Ahmedabad answer said "not an observation or a district average" and then "not observed
+  conditions or district averages"; the card batch measured **481 of that reply's 667 characters (72 %)** as
+  caveat-said-twice or a place note the packet already carried as fields.
+
+Measured at the end of the batch: **14 of 14 answers in the battery are model-written**, median 4.7 s. The
+answer card is [docs/136](docs/136-the-answer-as-a-page.md): the finding first, the engine's clause once under
+a hairline, the remaining sentences behind a closed fold whose label carries the ruler's own finding, a byline
+that says whether a model wrote it or the tools did, the claim stating **which kind of thing** its value is,
+and the register — brief, conversational, full — wired to something a reader can actually reach.
+
+**What keeps that safe is the check, not the prompt.** Every number in the prose must come from the
+evidence the model was shown, every unit must match its source, the place must be named, an invented
+link or certainty is refused, and the language must be the one asked for. When any of it fails the
+deterministic renderer's text stands instead, and the reason is recorded on the turn. That text is
+kept on every turn as `tool_answer` whether or not the prose replaced it.
+
+Three things a rewrite can never drop: a published passage the answer cites is quoted verbatim, in
+the publisher's own words; the safety clauses are *held* and put back if the prose loses them — that
+an absence of official guidance is not an all-clear, that a warning reading is not an instruction,
+that two sources agreeing is not confirmation when one may feed the other; and a turn whose evidence
+is a bulletin must cite the bulletin or keep the floor.
+
+A turn that has to ask something back is written too, under a stricter rule: it may not state a
+value, name a place the tool did not name, or introduce a digit the tool did not write.
+
+**The check also has to know when it is not needed.** The mechanism that puts a held safety clause back
+could not tell a paraphrase from an omission, so it appended a statement the answer had already made:
+"not an observation or a district average" and then "not observed conditions or district averages", in one
+paragraph. A clause the prose already carries is no longer appended — the comparison runs over the clause's
+own content words with a prefix match, so `forecast`/`forecasts` and `observed`/`observation` count as the
+same claim — and the clauses it did carry are recorded on the turn rather than silently dropped.
+
+## Providers: free cloud models, the reader's key first
+
+The configured order is stated on the **Sources and settings** surface, with each provider's availability and
+the last failure, so a reader never has to guess who answered or why something was slow.
+
+- **`WEATHERGPT_PROVIDERS`** takes `deepseek_first` (the configured default when a DeepSeek key is
+  present), `deepseek`, `cloud_free` or `local`. `deepseek_first` answers from the paid DeepSeek endpoint
+  and keeps the curated free OpenRouter ids behind it as failover.
+- **Keys live in local configuration only** — `data/runtime/model-config.json`, git-ignored, mode 0600,
+  never printed and never logged. Only ids ending in `:free` are ever routed on OpenRouter, so that
+  configuration cannot bill an account.
+- **The local model is frozen**, not a fallback that runs by itself: it is used only under
+  `WEATHERGPT_PROVIDERS=local`, which exists to diagnose an offline machine.
+- **Whole-step budgets** bound every call (12 s for the first look, 25 s for a written answer, 45 s for a
+  plan), so a refused endpoint reaches the reader with an honest error instead of a two-minute retry loop.
 
 ```sh
-python3 -m pytest tests/ -q                          # 1539 Python tests
-cd frontend && npx tsc --noEmit && npm test          # 81 React suites, 538 component checks
-python3 scripts/audit_react_frontend.py              # 19 checks over the built page and its sources
-python3 scripts/audit_react_build.py                 # 11 checks over the built output
-python3 scripts/audit_port_ledger.py                 # every component check the ledger names, verified in its spec
-python3 scripts/audit_surface_registry.py            # the served surfaces against the frozen registry
-python3 scripts/decommission_vanilla.py              # dry run: what remains of the vanilla tree, and why
-python3 scripts/doctor.py                            # environment, providers and corpus presence
-python3 scripts/models.py --check                    # the rules-first floor and the configured providers
-python3 scripts/models.py --probe-free               # the curated free ranking measured against the live catalogue
-python3 scripts/verify_all.py                        # environment, registries, drift guard, Python tests, the React specs, four built-output gates
-python3 scripts/run_atlas.py --base http://127.0.0.1:8765   # 276 scenarios over all eight features
-python3 scripts/audit_freshness.py                   # what each shelf covers, and whether the schedule is FIRING
-cd frontend && node tools/journey.mjs                # arrive, ask, open every fold, click every control, then do it at 390px
-cd frontend && node tools/hours.mjs --hours 6,9,12,15,18,21  # the same route across the day, at a clock the sun stands at
+python3 scripts/models.py                     # routing order, availability, key source
+python3 scripts/models.py --set-key deepseek  # hidden prompt; writes the local config at mode 0600
+python3 scripts/models.py --set-key           # the same, for OpenRouter
+python3 scripts/models.py --check             # plan two questions through the router and print the trace
 ```
 
-**The gate also runs on every push.** [`.github/workflows/gate.yml`](.github/workflows/gate.yml) runs
-all of the above on Python 3.9 — the version the demo machine runs — after building the frontend, so
-the React audits audit something instead of reporting a skip. The suite is deliberately network-free
-(`tests/conftest.py` fails any test that reaches a provider), so a green run on a machine that has
-never seen this code means what a green run here means. It has already caught two defects a laptop
-hid: a test that passed only because this machine had API keys, and a stale test count in this file.
+Whichever provider plans a turn, it supplies **candidates only**: model output never executes code, never
+supplies a measurement, and never decides an entity, window, unit or source. Every answer's trace names the
+provider, the model and any failover. Routing a question to a hosted model is a stated trade — the question
+text leaves this machine, and the paid endpoint is billed to the key the reader configured.
 
-**The scenario atlas is the chat measurement.** `data/registry/chat-atlas.json` holds 276 scenarios
-across the eight features, multi-turn context and adversarial boundaries, each declaring the
-outcomes that would be *honest* for it — a correct refusal is a pass, because a corpus that expects
-an answer to an unanswerable question teaches the wrong lesson. The number it exists to produce is
-the **avoidable** refusal rate, split from the publisher's own gaps and from the honest edge of what
-any product could answer. Three traps make it easy to measure the wrong thing, and all three were
-hit before they were understood: it talks to a *running* server, so an unrestarted one reports the
-behaviour your edit replaced; other work against the same store makes SQLite contend; and the shared
-provider ceiling, once spent, makes unrelated tools fail in ways that read as product defects.
+## The light, in detail
 
-These are regression checks, not acceptance. The React component checks run in jsdom (Vitest with Testing
-Library and MSW), so they are **not** browser, visual, load or fluent-language acceptance. What they do hold is specific: every displayed number must come from the
-returned packet with no arithmetic applied, no renderer may leak a stylesheet class name into visible
-text, a clarification must offer every candidate, an unverified warning must stay held, and every
-request must carry the workspace token. The suite counts measure regression coverage, not completion.
+Why the ground is bimodal, and how a design that changes all day is checked at all.
 
-All 110 vanilla component checks are named against a React spec now, and the ledger is held to account rather
-than trusted: `research/reviews/frontend-react-r2-20260917/check-port.json` records 110 of 110, and
-`scripts/audit_port_ledger.py` — a gate step — re-reads it and refuses any claimed test name that is not written in
-the spec it names (199 names across 33 spec files at this writing; three checks moved with the rail that drives
-them on 19 September 2026, and the ledger was repointed rather than loosened). The last nine are the chart-engine checks:
-`frontend/src/charts/viz.parity.test.ts` reads the served `web/viz.js` from disk and runs it in the stand-in DOM the
-vanilla suite used, so those checks exercise the same bytes a React chart draws with.
-[docs/92](docs/92-r6-decommission-readiness.md) §4d.2 records the fork and §4d.3 its closure. A named spec is
-regression coverage, not acceptance — the stand-in DOM is not a browser.
+The palette is not a theme. It is computed from the sun's real altitude and hour angle at the reader's own
+latitude, once a minute, and the ground is bimodal because it has to be: with these inks there is no ground
+luminance at which both the dark and the light ink clear 4.5:1 — the crossover is 3.84:1 — so the page flips
+between the two ink families at the same two altitudes the ink does (sun at −6° and +8°) and drifts only
+inside each regime. `frontend/tools/hours.mjs` installs a fixed clock in the page and captures the same route
+across the day, because a screenshot at the hour this machine happens to be in proves nothing about the other
+twenty-three.
 
-The saved bulletin layout fixtures resolve from tracked curated evidence under
-`research/implementation/*` (see `tests/source_fixtures.py`), not from the git-ignored
-`data/runtime` cache, so the layout tests run on a clean checkout. The test runner and the remaining
-development dependencies are declared in `requirements-dev.txt`; the optional multilingual embedding
-stack (`requirements-bulletins.txt`) is only needed to build the real indexed corpus. Recorded real
-journeys, accessibility scans and viewport measurements live in
-[the frontend batch evidence](research/reviews/frontend-v2-20260915/after/live-checks.json), and the
-most recent chat records in `research/reviews/chat-overhaul-20260916/` (six live journeys on the configured
-provider, ten language deliveries, four continuity journeys, three browser runs) and the newest screenshots in
-`docs/images/`.
+| 06:00 — daybreak | 10:00 — morning | 14:00 — afternoon | 18:00 — golden | 22:00 — night |
+| --- | --- | --- | --- | --- |
+| ![The Ask screen at 06:00: a dawn sky in pink and lavender, the rail a tinted glass panel, the greeting large and dark](docs/images/overhaul/day-06.png) | ![The Ask screen at 10:00: a warm pale sky, the rail a cool tinted glass, the greeting dark on light](docs/images/overhaul/day-10.png) | ![The Ask screen at 14:00: a pale blue sky, the rail a deeper blue tint, the greeting dark on light](docs/images/overhaul/day-14.png) | ![The Ask screen at 18:00: a violet dusk sky, the rail a warm tinted glass, the greeting in pale ink](docs/images/overhaul/day-18.png) | ![The Ask screen at 22:00: the night sky, the rail a blue glass, the greeting in pale ink](docs/images/overhaul/day-22.png) |
+
+The rail, the top bar, the reader's own bubble and a pane each take their own material from the same hour:
+how much of the hour's light each surface catches, warm or cool, how opaque. The numbers that hold the design
+are measured in vitest against computed colours rather than against the four old phase anchors, which is why
+they can be checked at all — jsdom has no layout engine for axe's own contrast rule — and the hazard distance
+is measured in a browser as well, because a translucent film has to be composited before it can be compared
+with anything.
+
+| What was measured | Result |
+| --- | --- |
+| Ink on the gradient band the text actually sits on, 3 latitudes × both solstices × every 15 solar-minutes, plus minute sweeps through both regime flips | worst **12.13:1** for paper, **5.55:1** for mist |
+| The same sweep *before* the batch | **22,619 readings under 4.5:1, worst 1.001:1** — near-black ink on a violet sky at 8.1° solar altitude |
+| Separation between the four materials, in OKLab | rail/bar 0.0303 chroma and 21.3° hue; bar/bubble 0.0508 and 98.8°; the floors in the test are 0.010 and 15°, set from the measurement |
+| How far any material stands from the four published IMD hazard colours (`tools/hazard-distance.mjs`, composited, OKLab) | **nothing within 39 ΔE of a hazard colour** — and the honest residue: the reader's own bubble sits in the *same chroma and hue family* as IMD yellow for 12 of 66 material-hours, as close as 0.7 chroma and 1.0° at noon, separated from it by lightness alone |
+
+Two faults were found and repaired on the way, and the first is worth stating plainly because it is the shape
+of most of this repository's defects: **the continuous spectrum was written on the document element while
+`data-hour` sat on two, so `.g`'s match on the static hour block beat the parent's inline style.** At 17:00
+IST the root computed `--g-sky-1 #332a43` and the sky the reader was looking at read `#c4d9f5` — the static
+noon palette. The previous batch's claim was true of the function and false of the page. That is recorded in
+[docs/134](docs/134-light-and-material.md), together with what was refused: `transitions.dev` was fetched whole
+(32 patterns, the author of the thinking-orbs docs/130 already integrated) and read as a set of decisions
+about duration, easing and asymmetry, **not copied** — that repository carries no licence file; `rareui.com`,
+`obsidianui.dev` and `21st.dev` were browsed as interaction references and no component library was adopted;
+`designspells.com` sits behind a bot check from this machine and was not used.
+
+## Watch delivery, and the supervision truth
+
+Watches are checked in the foreground: by the API when you ask, by `scripts/check_watches.py`, or by
+the supervised loop below. **No hosted daemon is installed**, and the product says so rather than
+implying a service. An OS schedule now exists for the daily data refresh — see below — but it is a
+refresh schedule, not a delivery service:
+
+    python3 scripts/watch_daemon.py --interval 900   # check, dispatch, escalate, heartbeat
+    curl -s -H "X-WeatherGPT-Token: $TOKEN" http://127.0.0.1:8765/api/watch-health
+
+GET /api/watch-health reports the supervision mode (foreground-supervised when a fresh daemon heartbeat is
+present, manual-recent after a manual run, otherwise manual-only), the heartbeat and its freshness, the
+outbox counts by state (including claimed and dead), the watch counts and the plan watcher. The **Plans &
+inbox** panel renders the same truth, including dead-letter rows with their last error, so a queue is never
+read as a delivery service. For unattended operation the loop belongs under an OS supervisor; a stale
+heartbeat is what would prove it stopped.
+
+## Keeping the data current, and knowing when it is not
+
+    scripts/install_daily_schedule.sh            # install or update the twice-daily refresh
+    scripts/install_daily_schedule.sh --show     # what is installed, and when it LAST ACTUALLY RAN
+    python3 scripts/audit_freshness.py           # what each shelf covers, and whether it is firing
+
+Twice a day, not once: a weather product refreshed once is stale for most of the day, and IMD
+publishes the district bulletins in the morning and updates the warning layer through the afternoon.
+
+**On macOS this is a LaunchAgent, not a crontab, and the reason matters.** The crontab entries were
+installed on 20 September and both of that day's slots passed without running — the laptop entered
+sleep ten minutes before the first one and cycled sleep/wake all morning, and macOS cron skips a job
+it missed while asleep rather than running it on wake. `crontab -l` showed two correct entries the
+whole time. On a laptop, that is worse than no schedule: it looks like one. launchd's
+`StartCalendarInterval` runs a missed slot as soon as the machine wakes, which is the behaviour a
+daily refresh actually needs. On Linux, where a server does not sleep, it stays a crontab.
+
+**And installed is still not running.** Proving it exposed a second, larger blocker: with this
+project on the **Desktop**, the scheduled job cannot run at all. macOS protects Desktop, Documents
+and Downloads, and a launchd- or cron-spawned process does not inherit the Full Disk Access your
+terminal has — launchd fired the job, bash could not `getcwd` into the directory, and it exited 126
+having done nothing. Two ways out, the first needing no permission grant:
+
+1. Move the project somewhere unprotected (`~/WeatherGPT`) and re-run the installer.
+2. System Settings › Privacy & Security › Full Disk Access, add `/bin/bash`, re-run with `--verify`.
+
+`scripts/install_daily_schedule.sh --verify` runs the job through launchd and checks whether the
+refresh record actually moved, so this failure is loud instead of silent. **Until one of those two
+is done, the daily refresh on this machine runs only when someone runs it by hand.**
+
+That episode also changed what the audit asks. Reporting *scheduled* was true throughout the
+failure. It now reports **installed**, **by what mechanism**, and whether it is **firing** — judged
+from when the refresh last ran, not from what is configured — and says `NOT FIRING` past a
+twenty-four hour budget.
 
 ## What it feels like to use
 
@@ -700,6 +721,40 @@ agromet advisory and it offers **Write the advisory brief**. Every answer can sh
 and what is missing*: pending questions, search counts, the editions read with their printed issue dates
 and currency, and the source of every value. [docs/63](docs/63-product-walkthrough.md) walks the
 recorded journeys, fast and slow.
+
+## What this took
+
+Numbers, because "a lot of work" is not a claim anybody can check.
+
+| | |
+|---|---|
+| Commits | 391 |
+| Python engine | 25,495 lines across 83 modules |
+| Frontend | 37,801 lines of TypeScript and React |
+| Tests | 109 Python files (1,539 checks) and 83 frontend suites (547 checks) |
+| Sources in the ledger | 70, each with a recorded status and a probe |
+| Scenario atlas | 276 scenarios across the eight features, multi-turn context and adversarial boundaries |
+| Engineering documents | 145 in `docs/`, each one a decision with its measurement |
+
+The document count is the part worth a second look. `docs/` is not a folder of plans — it is the record of
+what was measured, what broke, and what was done about it, written as the work happened. Nearly every
+non-obvious line in this codebase has a document behind it explaining what it is defending against, and
+most of those defences exist because something failed first and the failure is written down next to the
+fix.
+
+Three examples of what that discipline actually catches, all from the last week:
+
+- A check that had been passing for a day was computing `NaN` and comparing it to a floor. `NaN < x` is
+  false, so it reported success on every input by failing to compute anything at all.
+- A verifier printed the last three lines of an error log without checking when they were written, so a
+  freshly installed job was declared broken on the strength of a failure from that morning.
+- Every screenshot in the evidence directory — eighteen surfaces, two colour schemes, four widths — had
+  been photographing a loading skeleton, because the capture tool waited a fixed 1.2 seconds and the
+  first read of the local store takes longer. Two review passes had looked at those files and drawn
+  conclusions from them.
+
+None of those are exotic. They are the ordinary way software lies to the people building it, and the
+reason this repository is so heavily instrumented is that it has been caught doing all three.
 
 ## Repository map
 
