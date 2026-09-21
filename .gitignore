@@ -64,3 +64,8 @@ data/runtime/refresh/
 # Scratch scripts from working sessions. Never part of the product, and one of them had a real API key
 # in it on a public remote. Keep them on disk; keep them out of the repository.
 tmp/
+
+# Demo recordings. `frontend/tools/demo.mjs` writes a webm of a real run here, which is the point -
+# it is a recording of the demo, not an artefact of the product. A three-minute run is about 15 MB
+# and a new one is made every rehearsal, so they live on disk and not in the history.
+research/demo/*.webm
