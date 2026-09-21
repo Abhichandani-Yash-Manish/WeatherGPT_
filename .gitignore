@@ -69,3 +69,7 @@ tmp/
 # it is a recording of the demo, not an artefact of the product. A three-minute run is about 15 MB
 # and a new one is made every rehearsal, so they live on disk and not in the history.
 research/demo/*.webm
+
+# Daily-refresh output. The scheduled job writes a dated folder here on every run; the product reads the
+# current one and git does not need a copy of each day's.
+data/processed/bulletins/
