@@ -666,6 +666,7 @@ const SPECTRUM_PROPERTIES = [
   '--g-aura-1', '--g-aura-2', '--g-halo-x', '--g-mood-k', '--g-mark-a',
   '--g-rail-fill', '--g-bar-fill', '--g-bubble-fill', '--g-pane-fill',
   '--g-rail-icon', '--g-bar-icon',
+  '--g-t1', '--g-t2', '--g-t3', '--g-t4', '--g-t5',
 ] as const;
 
 export type SpectrumProperty = (typeof SPECTRUM_PROPERTIES)[number];
@@ -692,6 +693,16 @@ export function spectrumAt(position: SolarPosition, scheme: Scheme = 'system'): 
     : scheme === 'light' ? atClock(position.hourAngle, LIGHT_SKY_ANCHORS, mixSky)
     : skyAt(position.altitude, position.hourAngle, ascending);
   const rules = scheme === 'dark' ? DARK_RULES : scheme === 'light' ? LIGHT_RULES : rulesFor(position.altitude, ascending);
+  /* The translucent ladder belongs to whoever decides whether this page is dark or light, and since the
+     scheme arrived that is no longer the sun. It used to live only in the `[data-hour]` blocks, which
+     still follow the sun - so a reader who forced dark at daybreak got a page painted dark by the
+     spectrum and washes cut for a light one. On the welcome screen that showed as a pale slab across
+     the "New conversation" row with its own shortcut invisible inside it. Same alphas as the static
+     blocks; only the direction is decided here. */
+  const wash = rules === DARK_RULES ? '255, 255, 255' : '16, 24, 40';
+  const washAlpha = rules === DARK_RULES
+    ? ['0.015', '0.04', '0.055', '0.08', '0.10']
+    : ['0.022', '0.038', '0.055', '0.08', '0.105'];
   const d = decorativeAt(position.hourAngle);
   /* The middle of the page is not the top of it: the gradient's second stop dominates the band the reader's
      own bubble and the machine's pane sit in, so a film over that band is solved against the mid colour
@@ -714,6 +725,11 @@ export function spectrumAt(position: SolarPosition, scheme: Scheme = 'system'): 
     '--g-mood-k': String(round3(d.moodK)), '--g-mark-a': String(round3(d.markA)),
     '--g-rail-fill': m.rail, '--g-bar-fill': m.bar, '--g-bubble-fill': m.bubble, '--g-pane-fill': m.pane,
     '--g-rail-icon': m.railIcon, '--g-bar-icon': m.barIcon,
+    '--g-t1': 'rgba(' + wash + ', ' + washAlpha[0] + ')',
+    '--g-t2': 'rgba(' + wash + ', ' + washAlpha[1] + ')',
+    '--g-t3': 'rgba(' + wash + ', ' + washAlpha[2] + ')',
+    '--g-t4': 'rgba(' + wash + ', ' + washAlpha[3] + ')',
+    '--g-t5': 'rgba(' + wash + ', ' + washAlpha[4] + ')',
   };
 }
 

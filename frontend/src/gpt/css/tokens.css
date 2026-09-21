@@ -336,4 +336,8 @@ html, body { background: var(--g-bg); transition: background var(--g-slow) ease;
   --g-mood-k: inherit; --g-mark-a: inherit;
   --g-rail-fill: inherit; --g-bar-fill: inherit; --g-bubble-fill: inherit; --g-pane-fill: inherit;
   --g-rail-icon: inherit; --g-bar-icon: inherit;
+  /* The translucent ladder is spectrum-owned now, so it inherits here for the same reason as the rest:
+     a declaration on this element would beat the root's inline style and the washes would go back to
+     following the sun while the palette follows the reader's theme. */
+  --g-t1: inherit; --g-t2: inherit; --g-t3: inherit; --g-t4: inherit; --g-t5: inherit;
 }
