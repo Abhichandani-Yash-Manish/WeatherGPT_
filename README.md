@@ -1,29 +1,139 @@
-# WeatherGPT — SIH26068
+<div align="center">
 
-A local, evidence-first conversational weather workspace for India. Ask about a place and a time in your
-own words; **the model decides what to retrieve and writes the answer**, and every value it writes keeps its
-**entity, window, unit and source** attached. A greeting is answered as a conversation, with no source read
-and no fact invented.
+# WeatherGPT
 
-![The answer card: the finding in the first sentence, the engine's one caveat under it, the remaining sentences behind a closed fold, the byline, then the claim — 0.0 mm with its window, its place, its kind ("Model forecast") and its source line — and the chip that offers the other place of the same name](docs/images/overhaul/answer-card.png)
+### Ask about the weather in your own words. Get an answer that shows its working.
 
-**Operational acceptance is not achieved.** This is a working prototype whose limits are part of the
-interface: it says what it did not read, which state is unknown, and when a value is model output, published
-wording, an observation or an official warning. The requirement-by-requirement verdict is
-[the PS progress assessment](docs/84-ps-progress-and-pictures.md); the current review and the ordered closure
-queue are in [docs/93](docs/93-ps-closure-queue.md).
+**Smart India Hackathon · Problem Statement SIH26068 · Ministry of Earth Sciences / IMD**
+Team **Void Pointer** (ID 18) · Theme: Disaster Management
 
-**How the conversation is measured.** 276 scenarios across the eight features, multi-turn context and
-adversarial boundaries (`data/registry/chat-atlas.json`), each declaring the outcomes that would be honest for
-it, and a twelve-question battery across twelve intents on the live engine (`tmp/battery.py`). The number that
-matters is the **avoidable** refusal rate — a refusal because a publisher issued nothing is the product
-working, and is counted separately from one caused by a failed fetch, a bad route or a mishandled window. On
-the smaller 51-question corpus that rate went from 19% to 13% on 20 September; the atlas run is larger and
-slower and its figures are in [docs/119](docs/119-what-the-atlas-measured.md).
+</div>
 
-## The answer
+![The answer card: the finding in the first sentence, the engine's one caveat under it, the rest of the reply behind a closed fold, then the claim the tools own — 0.0 mm with its window, its place, its kind and its source line](docs/images/v2/answer-light.png)
 
-The chat is the front door, so this is the part that matters. On 21 September 2026 the engine was measured
+---
+
+India's weather is published, in the open, by people who know what they are doing. It is also scattered
+across portals, PDFs, bulletins and model grids, in formats that assume you already know which product
+answers your question. WeatherGPT is a conversation over that material.
+
+You type a sentence. A model decides what to retrieve, the tools go and get it, and the model writes the
+answer from what came back — **and every number it writes keeps the entity, window, unit and source it came
+from.** Ask where a figure came from and it will tell you, because it kept the receipt.
+
+The part most demos skip is the part this one leads with: **it says no.**
+
+> **Is flight AI-101 on time?**
+> I can't check flight status or whether a specific flight is on time — this workspace has no flight source.
+
+> **Is it safe to go out in Chennai right now?**
+> There is an official district warning in force for CHENNAI … *(conditions, in full)* … Whether that is
+> safe for you depends on where you are going and how, which I can't judge.
+
+Nothing on the page is a guess dressed as a reading. When the publisher issued nothing, it says the
+publisher issued nothing — which is not the same as a quiet day, and it says that too.
+
+## Where this stands
+
+**This is a working prototype. Operational acceptance is not achieved, and the interface says so out loud.**
+
+That sentence is the design, not a disclaimer bolted to it. A workspace that hedges everything is useless
+and a workspace that hedges nothing is dangerous, so this one states, per answer, what it did not read,
+which state is unknown, and whether a value is model output, published wording, an observation or an
+official warning.
+
+| | |
+|---|---|
+| **Scenario atlas** | **273 / 306 (89%)** — 306 turns across the eight features, multi-turn context and adversarial boundaries |
+| **Refusal rate** | **9%** — 11 upstream (the publisher has no such data), 1 product limit, 16 avoidable |
+| **Python tests** | 1539 |
+| **Frontend specs** | 82 suites, 544 checks |
+| **Verification gate** | `python3 scripts/verify_all.py` — 21 steps, 0 failed |
+
+The refusal breakdown is the number worth reading twice. **Most refusals are the publisher having nothing,
+not the product failing** — and the two are counted apart, because collapsing them would let a data gap
+quietly flatter the engineering.
+
+Known weak spots, stated here rather than left to be found: agromet and advisories are the weakest atlas
+group (60–76% against 89% overall); warning delivery to a real device has never been demonstrated end to
+end; language output is measured per direction but not yet accepted by a native speaker; **WRF is not
+connected** — GFS is, and the problem statement names both.
+
+The requirement-by-requirement verdict is [the PS progress assessment](docs/84-ps-progress-and-pictures.md);
+the ordered closure queue is [docs/93](docs/93-ps-closure-queue.md); what the atlas measured is
+[docs/119](docs/119-what-the-atlas-measured.md).
+
+## How a turn actually works
+
+```mermaid
+flowchart LR
+    Q["Your sentence"] --> P["Model plans<br/>the turn"]
+    P --> T["Tools retrieve<br/>only what it asked for"]
+    T --> E[("Local evidence store<br/>stations · GFS · warnings<br/>bulletins · climate record")]
+    E --> C["Model writes the answer<br/>from what came back"]
+    C --> V{"Checked against<br/>the evidence"}
+    V -->|"states a figure<br/>the evidence does<br/>not support"| R["Rejected,<br/>never shown"]
+    V -->|"holds up"| A["Answer, with every value<br/>carrying its source"]
+
+    style E fill:#1e293b,stroke:#475569,color:#e2e8f0
+    style R fill:#7f1d1d,stroke:#b91c1c,color:#fee2e2
+    style A fill:#14532d,stroke:#16a34a,color:#dcfce7
+```
+
+The model never supplies a number. It decides *what to ask for* and *how to say it*; the values come from
+retrievals and stay tool-owned all the way to the screen. That last diamond is the load-bearing one — an
+answer that states a figure the evidence does not support does not get softened or flagged. It does not get
+shown.
+
+## See it run
+
+```bash
+python3 -m weathergpt_data.workspace --port 8765   # then open http://127.0.0.1:8765
+cd frontend && node tools/demo.mjs --list          # the ten-beat demo, one per key feature
+cd frontend && node tools/demo.mjs                 # drives it live and records a webm (~3m20s)
+```
+
+`tools/demo.mjs` is not a slideshow. It drives the real engine and records whatever actually happens —
+every turn in the video is planned, retrieved and written live. [docs/138](docs/138-demo-runbook.md) is the
+runbook: the running order, what to point at in each beat, the measured timing of each, and the rough edges
+worth volunteering before anyone asks.
+
+## The light is real
+
+<table>
+<tr>
+<td width="50%"><img src="docs/images/v2/door-light.png" alt="The front door on the light hours: a white frosted rail, the greeting, and the composer as a white card floating on a lavender field"></td>
+<td width="50%"><img src="docs/images/v2/door-dark.png" alt="The same door after dark: deep midnight ground, charcoal rail, the composer defined by a one-pixel inner ring rather than a shadow"></td>
+</tr>
+</table>
+
+The palette is not a theme switch. It is computed from **the sun's real altitude and hour angle at the
+reader's own latitude**, once a minute. Dawn in Kochi and dawn in Leh are not the same colour, because they
+are not the same dawn.
+
+Everything above the field is glass lit from the direction the sun is actually in — the catch-light sits on
+the left edge at daybreak, the top at noon, the right at dusk. The two families state depth differently
+because the two grounds allow different things: on paper a card floats by casting a wide faint shadow; after
+dark a shadow has nothing to fall on, so each surface takes a one-pixel inner ring of light instead.
+
+That the four materials stay *measurably* distinct all day is not a matter of taste — it is
+[checked](frontend/src/gpt/materials.test.ts) across 576 instants at three latitudes and both solstices,
+against the distance an eye actually travels in OKLab.
+
+<table>
+<tr>
+<td width="50%"><img src="docs/images/v2/today-light.png" alt="The Today surface: 756 districts in this read, 1720 district-days with a published colour, 422 districts behind the newest edition, 39 of 39 radar stations reporting"></td>
+<td width="50%"><img src="docs/images/v2/warnings-dark.png" alt="The Warnings surface after dark: what this read states, the district by day matrix, and the publisher's own four colours"></td>
+</tr>
+</table>
+
+Eighteen guided surfaces sit beside the conversation for the questions a sentence is a clumsy way to ask.
+They are the same evidence, laid out.
+
+## Inside the chat: what was wrong, and what was done about it
+
+The chat is the front door, so this is the part that matters, and the honest way to describe it is to say
+what it got wrong first. On 21 September 2026 the engine was measured
 against itself and three things were wrong: what the model was *given* was a database, what it was *allowed*
 was narrower than what it was shown, and what it was *told to append* repeated itself.
 
@@ -83,7 +193,9 @@ paragraph. A clause the prose already carries is no longer appended — the comp
 own content words with a prefix match, so `forecast`/`forecasts` and `observed`/`observation` count as the
 same claim — and the clauses it did carry are recorded on the turn rather than silently dropped.
 
-## The day
+## The light, in detail
+
+Why the ground is bimodal, and how a design that changes all day is checked at all.
 
 The palette is not a theme. It is computed from the sun's real altitude and hour angle at the reader's own
 latitude, once a minute, and the ground is bimodal because it has to be: with these inks there is no ground
@@ -169,6 +281,9 @@ as a value); and the welcome screen was rendered underneath an open module, so a
 then "Good morning" below it.
 
 ## Status at a glance
+
+The scope categories behind the numbers above: what is delivered, what is partial, what is not connected
+at all, and what exists but has never been accepted by anyone outside this machine.
 
 | | |
 |---|---|
