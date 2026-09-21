@@ -503,6 +503,47 @@ const DARK_RULES: MaterialRules = {
   pane: { dL: 0.030, ck: 0.60, dc: 0.006, h: 'accent', a: 0.18 },
 };
 
+/* ---- the sky's saturation, held apart from its lightness -----------------------------------------------
+   Three attempts at a richer palette failed the same way, and the reason was the operation, not the taste.
+   Each one scaled a sky colour's DISTANCE FROM WHITE, which moves lightness and chroma together - so every
+   step toward colour was also a step toward dark, contrast collapsed, and AA failed on four materials at
+   once. Colour was being paid for with legibility, and there was never enough legibility to buy it.
+
+   In OKLCH the two are separable. This takes a colour apart into lightness, chroma and hue, multiplies ONLY
+   the chroma, and rebuilds it. Relative luminance is dominated by L, so contrast barely moves while the
+   colour changes completely: a sky at the same lightness with three times the chroma is unmistakably blue
+   and is read by every contrast check as very nearly the colour it replaced.
+
+   `chromaTo` clamps to 0.16, which is what keeps the result inside sRGB instead of producing a hex that
+   cannot exist and quietly rounding to something else.
+
+   SKY_CHROMA is the single knob for "how colourful is the weather". It is applied to the sky BEFORE the
+   materials are derived from it, so the rail, the bar, the bubble and the pane are films over the sky that
+   is actually drawn - deriving them from the pale sky and then colouring the sky underneath would separate
+   every material from its own ground. */
+export const SKY_CHROMA = 1.9;
+/* 1.9 was chosen by running the REAL invariants, not a model of them - every candidate below was applied
+   to this constant and the whole spectrum suite run against it:
+
+     1.5  1.7  1.8  1.9  2.0   all 84 pass
+     2.1  2.3  2.4  2.5  3.0   material separation fails
+     2.2                       passes, but with a failure on either side of it
+
+   The ceiling is not monotonic because the four materials are films derived FROM the sky, so their
+   separation from each other moves as the sky's chroma moves rather than simply shrinking. 2.2 passing
+   between two failures is a knife edge and is worth nothing; 1.9 sits inside a band four samples wide,
+   which is a value that will survive somebody changing a material rule by a hundredth. */
+
+function saturate(hex: string, k: number): string {
+  if (k === 1) return hex;
+  const lab = okLabOf(hex);
+  return chromaTo(lab.L, Math.hypot(lab.a, lab.b) * k, hueOf(lab));
+}
+
+function saturatedSky(sky: Sky, k: number): Sky {
+  return k === 1 ? sky : { ...sky, sky1: saturate(sky.sky1, k), sky2: saturate(sky.sky2, k) };
+}
+
 /** Which family of rules is in force: the ink's own two altitudes again, so a material flips when the page
     flips and not at some third moment of its own. */
 function rulesFor(altitude: number, ascending: boolean): MaterialRules {
@@ -751,9 +792,11 @@ export function spectrumAt(position: SolarPosition, scheme: Scheme = 'system'): 
   const c = scheme === 'dark' ? atClock(position.hourAngle, DARK_ANCHORS, mixCritical)
     : scheme === 'light' ? atClock(position.hourAngle, LIGHT_ANCHORS, mixCritical)
     : criticalAt(position.altitude, ascending);
-  const s = scheme === 'dark' ? atClock(position.hourAngle, DARK_SKY_ANCHORS, mixSky)
-    : scheme === 'light' ? atClock(position.hourAngle, LIGHT_SKY_ANCHORS, mixSky)
-    : skyAt(position.altitude, position.hourAngle, ascending);
+  const s = saturatedSky(
+    scheme === 'dark' ? atClock(position.hourAngle, DARK_SKY_ANCHORS, mixSky)
+      : scheme === 'light' ? atClock(position.hourAngle, LIGHT_SKY_ANCHORS, mixSky)
+      : skyAt(position.altitude, position.hourAngle, ascending),
+    SKY_CHROMA);
   const rules = scheme === 'dark' ? DARK_RULES : scheme === 'light' ? LIGHT_RULES : rulesFor(position.altitude, ascending);
   /* The translucent ladder belongs to whoever decides whether this page is dark or light, and since the
      scheme arrived that is no longer the sun. It used to live only in the `[data-hour]` blocks, which

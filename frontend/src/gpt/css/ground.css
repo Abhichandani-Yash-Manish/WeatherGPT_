@@ -120,95 +120,67 @@
 .g-field[data-expanded='true'] .g-field-halo { opacity: 0.52; transition: opacity 900ms var(--g-ease); }
 
 /* ============================================================================
-   THE HORIZON — a city under the sky, and birds over it
+   THE HORIZON — the column's last line
    ============================================================================
-   The ground is astronomy. This is place: a hand-drawn Indian roofline along the bottom edge, in the
-   ground's own ink, at four to seven per cent. It should be felt before it is seen — a reader who never
-   consciously notices it should still not mistake this page for one about anywhere else.
+   Not a background layer any more. It is the final element of the welcome column, so it takes the
+   column's width, sits under everything, and nothing can be drawn over it. See Horizon.tsx for why that
+   move mattered more than any amount of tuning the old band.
 
-   `currentColor` throughout, set once here from --g-paper, so the silhouette is dark on the light hours
-   and light on the dark ones without a second palette to maintain. It follows the sun because the ink
-   does.
+   `currentColor` from --g-paper, so the etching is dark ink on the light hours and light ink on the dark
+   ones without a second palette. It follows the sun because the ink does.
 
-   Nothing in here is interactive and nothing in here states anything, so the whole layer is inert:
-   pointer-events none, aria-hidden on the element itself. */
-/* The horizon sits high enough that there is LAND under it. A skyline flush to the bottom edge of the
-   window is a footer; a skyline with ground beneath it is a place you are standing in. The box is a
-   quarter of the viewport and the roofline sits at its top, so the ground fills the rest. */
+   Eighteen per cent, not four. A filled silhouette at four per cent is a grey smear; a 1.25px stroke at
+   eighteen is a line you can actually see the shape of, and it still sits well below the type above it. */
 .g-horizon {
-  position: absolute; inset: auto 0 0 0; height: clamp(168px, 26vh, 280px);
-  pointer-events: none; overflow: hidden;
+  position: relative;
+  width: 100%;
+  margin: var(--g-7) 0 0;
+  pointer-events: none;
   color: var(--g-paper);
-  /* Under the grain and the vignette, over the sky: the city is IN the weather, not on top of it. */
-  z-index: 0;
 }
 
-/* Land: the ink at a whisper, fading upward so it meets the roofline rather than butting against it.
-   It is the same colour in both families for the same reason the buildings are - it is the ground's own
-   ink, so it follows the sun without a second palette. */
-.g-horizon-ground {
-  position: absolute; left: 0; right: 0; bottom: 0;
-  height: calc(100% - 118px);
-  background: linear-gradient(180deg,
-    color-mix(in srgb, var(--g-paper) 4%, transparent) 0%,
-    color-mix(in srgb, var(--g-paper) 8%, transparent) 42%,
-    color-mix(in srgb, var(--g-paper) 11%, transparent) 100%);
+.g-horizon-city {
+  display: block; width: 100%; height: auto;
+  opacity: 0.18;
+  /* The drawing fades out at its left and right ends rather than stopping at a hard edge, so the city
+     recedes into the page instead of being a cropped rectangle of buildings. */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
 }
 
-.g-horizon-far,
-.g-horizon-near { position: absolute; left: 0; width: 100%; display: block; }
-.g-horizon-far { bottom: calc(100% - 118px - 4px); }
-.g-horizon-near { bottom: calc(100% - 118px); }
-
-/* The far ridge is paler, shorter, and the one that moves - a slow parallax breath rather than a slide.
-   The near ridge never moves: something has to be still or the whole horizon reads as a carousel. */
-.g-horizon-far {
-  height: 96px; opacity: 0.05;
-  animation: g-ridge-drift 90s ease-in-out infinite alternate;
-}
-.g-horizon-near { height: 118px; opacity: 0.085; }
-
-@keyframes g-ridge-drift {
-  from { transform: translate3d(-10px, 0, 0); }
-  to   { transform: translate3d(10px, 0, 0); }
-}
-
-/* The birds. Four strokes crossing on their own clocks, low and slow, with a vertical drift so the path
-   is not a ruled line. The offsets are prime-ish against each other so they do not fall into step and
-   start reading as a formation. */
+/* The birds cross the sky ABOVE the roofline, which is the only place a bird makes sense. Four of them,
+   on four clocks that do not divide into each other, so they never fall into step and start reading as a
+   formation rather than as weather. */
 .g-bird {
-  position: absolute; left: -40px;
+  position: absolute; left: 0; bottom: 100%;
   color: var(--g-paper); opacity: 0;
   will-change: transform, opacity;
 }
-.g-bird-1 { bottom: 126px; animation: g-bird-cross 104s linear infinite; }
-.g-bird-2 { bottom: 148px; animation: g-bird-cross 131s linear -37s infinite; transform: scale(0.76); }
-.g-bird-3 { bottom: 112px; animation: g-bird-cross 89s linear -61s infinite; transform: scale(0.62); }
-.g-bird-4 { bottom: 158px; animation: g-bird-cross 157s linear -104s infinite; transform: scale(0.52); }
+.g-bird-1 { margin-bottom: 18px; animation: g-bird-cross 104s linear infinite; }
+.g-bird-2 { margin-bottom: 44px; animation: g-bird-cross 131s linear -37s infinite; transform: scale(0.78); }
+.g-bird-3 { margin-bottom: 9px;  animation: g-bird-cross 89s linear -61s infinite; transform: scale(0.64); }
+.g-bird-4 { margin-bottom: 62px; animation: g-bird-cross 157s linear -104s infinite; transform: scale(0.54); }
 
 @keyframes g-bird-cross {
-  0%   { transform: translate3d(0, 0, 0); opacity: 0; }
-  8%   { opacity: 0.10; }
-  30%  { transform: translate3d(32vw, -14px, 0); }
-  55%  { transform: translate3d(58vw, 4px, 0); opacity: 0.12; }
-  80%  { transform: translate3d(84vw, -9px, 0); }
-  92%  { opacity: 0; }
-  100% { transform: translate3d(108vw, 0, 0); opacity: 0; }
+  0%   { transform: translate3d(-6%, 0, 0); opacity: 0; }
+  10%  { opacity: 0.16; }
+  35%  { transform: translate3d(30%, -11px, 0); }
+  60%  { transform: translate3d(58%, 5px, 0); opacity: 0.18; }
+  85%  { transform: translate3d(84%, -7px, 0); }
+  94%  { opacity: 0; }
+  100% { transform: translate3d(106%, 0, 0); opacity: 0; }
 }
 
 /* The city stays; only the motion goes. A silhouette is information about where you are - removing it
-   under reduced motion would take away the thing, not the animation. */
+   under reduced motion would take away the thing rather than the animation. */
 @media (prefers-reduced-motion: reduce) {
-  .g-horizon-far { animation: none; }
   .g-bird { display: none; }
 }
 
-/* On a phone the roofline is most of the visible sky, so it steps back and the birds go: a decoration
-   that competes with the answer on a 390px screen has stopped being a decoration. */
+/* On a phone the column is the screen, so the drawing gets quieter and the birds go: an ornament that
+   competes with the answer on a 390px screen has stopped being an ornament. */
 @media (max-width: 640px) {
-  .g-horizon { height: 132px; }
-  .g-horizon-far { height: 54px; opacity: 0.04; bottom: calc(100% - 68px - 3px); }
-  .g-horizon-near { height: 68px; opacity: 0.065; bottom: calc(100% - 68px); }
-  .g-horizon-ground { height: calc(100% - 68px); }
+  .g-horizon { margin-top: var(--g-5); }
+  .g-horizon-city { opacity: 0.13; }
   .g-bird { display: none; }
 }

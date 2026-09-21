@@ -21,10 +21,18 @@ describe('the city under the sky', () => {
     }
   });
 
-  it('draws two ridges, because one flat silhouette reads as a sticker', () => {
+  it('is drawn as strokes, never filled', () => {
+    /* The two-ridge filled band this replaced was a grey smear at four per cent and a wall of blocks at
+       anything higher. As 1.25px strokes the same buildings are an etching - legible at a glance and
+       quiet at the same time. A `fill` other than none here would put the smear back. */
     const { container } = render(<Horizon />);
-    expect(container.querySelector('.g-horizon-far')).not.toBeNull();
-    expect(container.querySelector('.g-horizon-near')).not.toBeNull();
+    const city = container.querySelector('.g-horizon-city')!;
+    expect(city).not.toBeNull();
+    const group = city.querySelector('g')!;
+    expect(group.getAttribute('fill')).toBe('none');
+    expect(group.getAttribute('stroke')).toBe('currentColor');
+    expect(city.querySelectorAll('[fill]:not([fill="none"])').length,
+      'a filled shape crept back into the drawing').toBe(0);
   });
 
   it('flies four birds, on four separate clocks', () => {

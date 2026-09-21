@@ -26,6 +26,7 @@ import { SkyGlyphIcon } from '../shell/icons';
 import { greetingKey, useSky, type SkyReading } from './sky';
 import { solarPosition, type Hour } from './fieldPaint';
 import { QuoteLine } from './QuoteLine';
+import { Horizon } from './Horizon';
 import { PlacePicker } from './PlacePicker';
 import { useShellPrefs } from './shellState';
 import { useWorkingPlace } from '../modules/Evidence';
@@ -190,6 +191,12 @@ export function Welcome({ hour }: { hour: Hour }) {
           can change. It sits under everything the sky has said, so the page reads as a fact and then a
           thought rather than the other way round. */}
       <QuoteLine at={at} hour={hour} />
+
+      {/* The city ends the column. It is here rather than in the background layer because a decoration
+          the content is drawn ON TOP OF is not a decoration - the chips used to sit across the roofs and
+          "Today across India" landed in the middle of a tower. As the column's last element it is at the
+          column's own width, nothing is drawn after it, and it cannot collide with anything. */}
+      <Horizon />
 
       {picking ? <PlacePicker onClose={() => setPicking(false)} /> : null}
     </div>

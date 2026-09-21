@@ -1,34 +1,41 @@
-/* The horizon: a city the page is standing in, and birds over it.
+/* The horizon: where the weather stops and the asking starts.
    ============================================================================
-   The ground is astronomy — the sun's real altitude at the reader's own latitude, drifting all day. What it
-   had no sense of was PLACE. This is the other half of "where am I": a skyline along the bottom edge, drawn
-   in the ground's own ink at four to seven per cent, so it is felt before it is seen.
+   This began as a full-bleed band of filled buildings across the bottom of the window. It was wrong in
+   three ways at once and all three came from the same mistake - it was placed BEHIND the interface
+   rather than composed WITH it. The chips sat on top of the roofs, "Today across India" landed in the
+   middle of a tower, and the whole thing was cut off by the window's edge. Ornament that content has to
+   be read through is not ornament, it is noise.
 
-   It is an INDIAN skyline and that is the whole point of drawing one by hand rather than reaching for a
-   stock silhouette. A shikhara with its finial, a dome between two minarets, rooftop water tanks on legs,
-   mid-rise blocks with setbacks, and two towers — the roofline of an actual Indian city rather than the
-   Manhattan outline every weather template ships with. A judge from the Ministry of Earth Sciences should
-   recognise the country before they read a word.
+   So it is not in the background layer any more. It is the last element of the welcome column, at the
+   column's own width, and nothing overlaps it because nothing is drawn after it. It ends the front door
+   the way a rule ends a page - except that this rule means something: everything above it is what the
+   sky is doing, and the composer above it is where you ask about that. It appears on the front door and
+   nowhere else, because during a conversation the answer is the subject and a skyline is furniture.
 
-   Two layers, because one flat silhouette reads as a sticker. The far ridge is fainter, shorter and drifts
-   a few pixels; the near ridge is darker and still. That difference is the entire depth effect and it costs
-   two divs.
+   AND IT IS DRAWN, NOT FILLED. Solid silhouettes at four per cent are a grey smear; the same buildings
+   as 1.25px strokes at eighteen per cent are an etching - the line stays crisp, the shape stays legible
+   at a glance, and it reads as something someone drew rather than as a texture. A weather instrument
+   should look like it was engraved, not airbrushed.
 
-   THE BIRDS are four strokes on a long, slow crossing — around a hundred seconds to traverse, with a small
-   vertical drift so the path is not a ruled line. They are the one moving thing on the page that is not the
-   sun, and they are deliberately hard to catch: the page should feel inhabited when you glance up from an
-   answer, not perform for you while you read one.
+   It is an INDIAN roofline, hand-drawn, and that is the point of not reaching for a stock silhouette: a
+   shikhara with its finial, a dome between two minarets, rooftop water tanks on legs, mid-rises with
+   setbacks. Every weather template ships with the same Manhattan outline. Somebody from the Ministry of
+   Earth Sciences should recognise the country before they read a word.
 
-   Everything here is aria-hidden and pointer-events: none. It states nothing, so it must never be read out
-   and must never be in the way. Under `prefers-reduced-motion` the birds are not drawn at all and the ridge
-   does not drift — a decorative animation is exactly what that preference is for.
+   THE BIRDS cross above it, slowly, on four separate clocks. They are the one moving thing on the page
+   that is not the sun. Under `prefers-reduced-motion` they are not drawn at all; the city stays, because
+   a silhouette is information about where you are and removing it would take away the thing rather than
+   the animation.
+
+   Everything here is aria-hidden and pointer-events: none. It states nothing, so it must never be read
+   out and must never be in the way.
 */
 
 /** One bird: the two-arc gull every child draws, which is the only shape that reads as a bird at 9px. */
 function Bird({ className }: { className: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 10" width="18" height="8" aria-hidden="true" focusable="false">
-      <path d="M1 6 Q6 0 11 5 Q16 0 23 6" fill="none" stroke="currentColor" strokeWidth="1.3"
+    <svg className={className} viewBox="0 0 24 10" width="16" height="7" aria-hidden="true" focusable="false">
+      <path d="M1 6 Q6 0 11 5 Q16 0 23 6" fill="none" stroke="currentColor" strokeWidth="1.4"
         strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
@@ -37,84 +44,57 @@ function Bird({ className }: { className: string }) {
 export function Horizon() {
   return (
     <div className="g-horizon" aria-hidden="true">
-      {/* The far ridge: lower, paler, and the layer that drifts. */}
-      <svg className="g-horizon-far" viewBox="0 0 1440 120" preserveAspectRatio="none" focusable="false">
-        <path fill="currentColor" d="
-          M0 120 V96 h44 v-14 h30 v14 h38 V72 h52 v48 h26 V84 h34 v-10 h28 v10 h30 v46 h24 V66 h46 v54 h30
-          V88 h58 v-16 h26 v16 h40 v48 h28 V78 h50 v42 h34 V92 h36 v-12 h30 v12 h44 v40 h30 V70 h44 v50 h28
-          V86 h54 v34 h30 V74 h40 v46 h26 V94 h48 v26 h32 V80 h42 v40 h30 V90 h56 v30 h28 V76 h46 v44 h30
-          V98 h40 v22 h34 V84 h44 v36 h30 V92 h52 v28 h30 V88 h38 v32 Z" />
-      </svg>
-
-      {/* The near ridge, with the buildings that make it this country. */}
-      <svg className="g-horizon-near" viewBox="0 0 1440 140" preserveAspectRatio="none" focusable="false">
-        <g fill="currentColor">
-          {/* Low roofline running the whole width, so nothing floats. */}
-          <rect x="0" y="112" width="1440" height="28" />
-
-          {/* Rooftop water tanks on legs — the most Indian rooftop object there is. */}
-          <rect x="66" y="96" width="26" height="12" rx="2" />
-          <rect x="72" y="108" width="3" height="6" />
-          <rect x="84" y="108" width="3" height="6" />
-          <rect x="612" y="92" width="22" height="10" rx="2" />
-          <rect x="617" y="102" width="3" height="10" />
-          <rect x="627" y="102" width="3" height="10" />
-
-          {/* Mid-rise blocks with setbacks. */}
-          <rect x="130" y="74" width="62" height="42" />
-          <rect x="146" y="62" width="30" height="14" />
-          <rect x="232" y="88" width="48" height="28" />
-          <rect x="300" y="68" width="40" height="48" />
-
-          {/* A temple shikhara: tapered tower, capped, with its finial. */}
-          <path d="M392 116 L400 58 Q406 44 412 58 L420 116 Z" />
-          <rect x="398" y="50" width="16" height="6" rx="2" />
-          <rect x="404" y="38" width="4" height="12" />
-          <circle cx="406" cy="35" r="4" />
-
-          {/* A dome between two minarets. */}
-          <rect x="520" y="60" width="9" height="56" />
-          <circle cx="524.5" cy="56" r="6" />
-          <rect x="604" y="60" width="9" height="56" />
-          <circle cx="608.5" cy="56" r="6" />
-          <path d="M534 116 V88 Q534 58 568 58 Q602 58 602 88 V116 Z" />
-          <rect x="564" y="44" width="4" height="14" />
-          <circle cx="566" cy="41" r="4" />
-
-          {/* The towers. */}
-          <rect x="700" y="34" width="54" height="82" />
-          <rect x="714" y="22" width="26" height="14" />
-          <rect x="725" y="6" width="4" height="18" />
-          <rect x="778" y="56" width="44" height="60" />
-          <rect x="848" y="44" width="50" height="72" />
-          <rect x="862" y="32" width="22" height="14" />
-
-          {/* A stepped block, then housing, then a second shikhara further off. */}
-          <rect x="930" y="80" width="70" height="36" />
-          <rect x="948" y="66" width="36" height="16" />
-          <rect x="1034" y="92" width="56" height="24" />
-          <rect x="1050" y="82" width="24" height="12" />
-          <path d="M1130 116 L1136 74 Q1141 62 1146 74 L1152 116 Z" />
-          <rect x="1136" y="60" width="4" height="14" />
-
-          {/* And the far edge back down to low roofs, so the city ends rather than stops. */}
-          <rect x="1196" y="88" width="52" height="28" />
-          <rect x="1214" y="76" width="18" height="14" />
-          <rect x="1290" y="98" width="64" height="18" />
-          <rect x="1386" y="92" width="44" height="24" />
-        </g>
-      </svg>
-
-      {/* The ground. Without it the skyline was a row of buildings standing on the bottom edge of the
-          window - a footer graphic, not a horizon. Land beneath the roofline is what makes the sky a
-          sky: the page becomes somewhere you are standing rather than a gradient with decoration at
-          the foot of it. */}
-      <div className="g-horizon-ground" />
-
       <Bird className="g-bird g-bird-1" />
       <Bird className="g-bird g-bird-2" />
       <Bird className="g-bird g-bird-3" />
       <Bird className="g-bird g-bird-4" />
+
+      <svg className="g-horizon-city" viewBox="0 0 960 96" preserveAspectRatio="xMidYEnd meet" focusable="false">
+        {/* One stroke weight for the whole drawing, so it reads as one hand. The ground line runs the full
+            width and every building stands on it; nothing floats. */}
+        <g fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinejoin="round" strokeLinecap="round">
+          <path d="M0 92 H960" />
+
+          {/* Low roofs, and a water tank on legs - the most Indian rooftop object there is. */}
+          <path d="M18 92 V78 H60 V92" />
+          <path d="M60 92 V70 H96 V92" />
+          <path d="M70 70 V62 H86 V70 M74 62 V56 H82 V62" />
+          <path d="M104 92 V74 H150 V92" />
+
+          {/* A mid-rise with a setback, and windows enough to say it is lived in. */}
+          <path d="M162 92 V52 H214 V92 M176 52 V42 H200 V52" />
+          <path d="M172 62 h8 M190 62 h8 M172 74 h8 M190 74 h8" />
+
+          {/* A temple shikhara: the tapered tower, its cap, and the finial above it. */}
+          <path d="M240 92 L250 44 Q256 30 262 44 L272 92" />
+          <path d="M246 44 H266 M256 44 V30 M256 30 l-5 -6 h10 Z" />
+
+          {/* A dome between two minarets - drawn, not blocked in. */}
+          <path d="M322 92 V38 M322 38 a5 5 0 0 1 10 0 V92" />
+          <path d="M416 92 V38 M416 38 a5 5 0 0 1 10 0 V92" />
+          <path d="M340 92 V64 Q340 34 374 34 Q408 34 408 64 V92" />
+          <path d="M374 34 V22 M374 22 l-4 -6 h8 Z" />
+
+          {/* The towers. The tallest thing on the page, with its mast. */}
+          <path d="M452 92 V18 H502 V92 M466 18 V8 H488 V18 M477 8 V0" />
+          <path d="M462 34 h10 M482 34 h10 M462 50 h10 M482 50 h10 M462 66 h10 M482 66 h10" />
+          <path d="M516 92 V46 H556 V92" />
+          <path d="M526 58 h8 M540 58 h8 M526 72 h8 M540 72 h8" />
+
+          {/* A stepped block, then housing, then a second shikhara further off and smaller. */}
+          <path d="M572 92 V60 H630 V92 M588 60 V48 H616 V60" />
+          <path d="M646 92 V72 H698 V92" />
+          <path d="M660 72 V64 H682 V72" />
+          <path d="M724 92 L731 56 Q736 46 741 56 L748 92" />
+          <path d="M729 56 H743 M736 56 V46" />
+
+          {/* And the roofline falls away to low buildings, so the city ends rather than stops. */}
+          <path d="M770 92 V68 H816 V92" />
+          <path d="M828 92 V78 H876 V92" />
+          <path d="M840 78 V70 H858 V78" />
+          <path d="M888 92 V74 H942 V92" />
+        </g>
+      </svg>
     </div>
   );
 }
