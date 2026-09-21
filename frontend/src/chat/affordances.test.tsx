@@ -206,11 +206,22 @@ describe('retrying a refusal and asking the sources again', () => {
   });
 
   it('keeps the pointer for the turn in flight and spends it when the answer lands', async () => {
-    const sent = base([EARLIER], 60);
-    server.use(...sent.handlers);
+    let release!: () => void;
+    const held = new Promise<void>(resolve => { release = resolve; });
+    const sent = base([EARLIER]);
+    const chatHandler = sent.handlers.find(handler => handler.info.header === 'POST /api/chat');
+    server.use(
+      ...sent.handlers.filter(handler => handler !== chatHandler),
+      http.post('/api/chat', async ({ request }) => {
+        sent.bodies.push((await request.json()) as Record<string, unknown>);
+        await held;
+        return HttpResponse.json(EARLIER);
+      }),
+    );
     renderAsk();
     await ask('Will it rain in Ahmedabad?');
     await waitFor(() => expect(window.sessionStorage.getItem(INFLIGHT_KEY)).not.toBeNull());
+    release();
     await screen.findByText('THE FIRST ANSWER.');
     await waitFor(() => expect(window.sessionStorage.getItem(INFLIGHT_KEY)).toBeNull());
     /* And the copy the card draws is not a second reader of the answer. */

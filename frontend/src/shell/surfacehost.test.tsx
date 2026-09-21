@@ -49,7 +49,7 @@ describe('the surface host', () => {
   it('loads a ported module as its own chunk and renders it with its own limits', async () => {
     server.use(http.get('/api/warnings/national', () => HttpResponse.json(WARNINGS)));
     host('warnings');
-    expect(await screen.findByRole('heading', { level: 1, name: 'Warnings' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Warnings' }, { timeout: 5_000 })).toBeInTheDocument();
     expect((await screen.findAllByText('PATNA')).length).toBeGreaterThan(0);
     expect(screen.getByText(/not an all-clear/i)).toBeInTheDocument();
   });

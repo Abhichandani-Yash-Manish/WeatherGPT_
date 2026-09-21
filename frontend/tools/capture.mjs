@@ -74,19 +74,24 @@ for (const scheme of colourSchemes) {
       colorScheme: scheme, reducedMotion: 'reduce', locale: 'en-IN', timezoneId: 'Asia/Kolkata',
     });
     const page = await context.newPage();
-    const failures = [];
+    let failures = [];
     page.on('console', message => { if (message.type() === 'error') failures.push('console: ' + message.text().slice(0, 120)); });
     page.on('response', response => { if (response.status() >= 400) failures.push(response.status() + ' ' + response.url().replace(BASE, '')); });
     for (const route of routes) {
+      failures = [];
       await page.goto(BASE + '/#/' + route.hash, { waitUntil: 'domcontentloaded' });
-      await page.waitForSelector('main', { timeout: 30_000 }).catch(() => {});
+      await page.waitForSelector('main', { timeout: 30_000 }).catch(() => {
+        failures.push('main did not appear within 30 seconds');
+      });
       /* A route that names what it is waiting for waits for that. A turn takes as long as the model
          and the sources take, and a fixed delay photographs the thinking state instead - which is
          exactly what the first version of this did. It waits for the WORKING state to go away rather
          than for a claim to appear, because a restored conversation already has claims on the page
          and the wait returned instantly against one of those. */
       if (route.settleGone) {
-        await page.waitForSelector(route.settleGone, { state: 'detached', timeout: 120_000 }).catch(() => {});
+        await page.waitForSelector(route.settleGone, { state: 'detached', timeout: 120_000 }).catch(() => {
+          failures.push(route.settleGone + ' did not settle within 120 seconds');
+        });
       }
       /* And EVERY route waits for its read to land, named or not. Measured 21 September 2026: the fixed
          1200 ms below is shorter than a surface's first read of the local store, so every module capture
@@ -98,7 +103,9 @@ for (const scheme of colourSchemes) {
          mounted YET, so checking the instant the route changes returns before React has rendered the
          pending state and waits for nothing. */
       await page.waitForTimeout(500);
-      await page.waitForSelector(PENDING, { state: 'detached', timeout: 60_000 }).catch(() => {});
+      await page.waitForSelector(PENDING, { state: 'detached', timeout: 60_000 }).catch(() => {
+        failures.push('pending state did not settle within 60 seconds');
+      });
       await page.waitForTimeout(1200);
       /* The workspace reads some sections only as they near the screen; a full-page shot must show them. */
       await page.evaluate(async () => {
@@ -156,7 +163,7 @@ for (const scheme of colourSchemes) {
       });
       /* Whichever is worse: the document pushed wide, or content spilling past the edge inside it. */
       const overflow = Math.max(metrics.scrollWidth - metrics.clientWidth, metrics.spill);
-      report.push({ scheme, width: view.width, route: route.name, file, overflow, spilledFrom: metrics.widest, heading: (metrics.heading || '').slice(0, 40), sections: metrics.sections, failures });
+      report.push({ scheme, width: view.width, route: route.name, file, overflow, spilledFrom: metrics.widest, heading: (metrics.heading || '').slice(0, 40), sections: metrics.sections, failures: [...failures] });
       console.log(scheme.padEnd(5), String(view.width).padStart(4), route.name.padEnd(13), 'overflow', String(overflow).padStart(4), '| sections', String(metrics.sections).padStart(2), '| failures', failures.length, overflow > 0 ? '| from ' + metrics.widest : '');
     }
     await context.close();

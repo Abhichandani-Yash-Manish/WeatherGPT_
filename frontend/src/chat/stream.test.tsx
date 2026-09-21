@@ -118,7 +118,7 @@ describe('the turn, followed as a stream', () => {
     /* The answer still arrives on the POST, and this is the assertion that says a streamed turn did not break
        that path. The timeout is the test's own POST delay plus room, not a longer wait for the product. */
     expect(await screen.findByRole('article', {}, { timeout: 6000 })).toBeInTheDocument();
-  });
+  }, 8_000);
 
   it('falls back to the poll when the stream cannot be opened, rather than losing the stage', async () => {
     const polled: string[] = [];

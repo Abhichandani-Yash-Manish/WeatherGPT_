@@ -43,6 +43,12 @@ class TableTests(unittest.TestCase):
         # The current name is not itself renamed, and neither is the spelling the catalogue indexes.
         self.assertIsNone(aliases.rename_for('Ahilyanagar'))
 
+        from weathergpt_data.workspace import Workspace
+        from weathergpt_data.conversation import ConversationEngine
+        matches = ConversationEngine(Workspace()).gazetteer.search('Ahilyanagar')
+        self.assertEqual(len(matches), 1, 'the replacement name must identify one catalogue place')
+        self.assertEqual(matches[0]['admin1'], 'State of Mahārāshtra')
+
     def test_a_rename_resolves_only_the_names_it_lists(self):
         self.assertEqual(aliases.rename_for('Calicut')[0], 'Kozhikode')
         self.assertEqual(aliases.rename_for('gurgaon')[0], 'Gurugram')

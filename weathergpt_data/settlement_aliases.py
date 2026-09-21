@@ -26,7 +26,7 @@ import re
 import unicodedata
 
 CROSSWALK_VERSION = 'settlement-crosswalk-v1'
-CROSSWALK_DATE = '2026-09-20'
+CROSSWALK_DATE = '2026-09-21'
 
 # A name whose place the catalogue indexes under a different, current name. `now` must itself
 # resolve to exactly one place, which is asserted by test.
@@ -55,9 +55,10 @@ RENAMES = (
     # Maharashtra city under its current name and under 'Ahmadnagar' with an a; only the everyday
     # spelling with an e misses.
     {'was': 'Ahmednagar', 'now': 'Ahilyanagar',
-     'basis': 'Renamed Ahilyanagar in 2023 after Ahilyabai Holkar; the catalogue indexes the current '
-              'name and the older Ahmadnagar spelling, while the common Ahmednagar spelling ranks '
-              'Himatnagar in Gujarat first',
+     'basis': 'The Maharashtra Rural Development and Panchayat Raj Department published its '
+              'notification changing Ahmednagar to Ahilyanagar on 13 March 2025; the catalogue '
+              'indexes the current name and the older Ahmadnagar spelling, while the common '
+              'Ahmednagar spelling ranks Himatnagar in Gujarat first',
      'confidence': 'high'},
 )
 
