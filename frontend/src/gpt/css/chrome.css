@@ -90,10 +90,22 @@ p.g-top-title { color: var(--g-mist); font-weight: 400; }
 
 .g-composer {
   position: relative;
-  border: 1px solid var(--g-line); border-radius: var(--g-r-xl);
-  background: linear-gradient(180deg, var(--g-t2), var(--g-t1)), var(--g-glass);
+  border: 1px solid var(--g-line-strong, var(--g-line)); border-radius: var(--g-r-xl);
+  /* The card surface, which is the one token in this system that is WHITE on the light hours and dark
+     slate on the dark ones rather than a translucent wash of the sky.
+
+     Two wrong answers were tried before this one, and both failed for the same reason. The washes
+     (--g-t1/--g-t2) are INK on the light hours: they darken what they cover, so the one control a reader
+     came to use was tinted faintly grey against a near-white field. The instrument pane is the accent's
+     own hue at 46% - better, but a lavender film over a lavender sky is still the sky. What separates a
+     card from this field is being whiter than it, because the field is never actually white: it is
+     lavender at dawn, blue at noon, amber at dusk. White is the one colour the sky never is. */
+  background: var(--g-fill);
   backdrop-filter: blur(24px) saturate(1.3); -webkit-backdrop-filter: blur(24px) saturate(1.3);
-  box-shadow: var(--g-e2);
+  /* The composer takes the TOP elevation, not the middle one. It is the primary control on the page and
+     it was drawn at the same height as a card - measured against the palest hour, it read as an outline
+     on a white field and a reader had to look for the one thing they came to use. */
+  box-shadow: var(--g-e3);
   padding: var(--g-3) var(--g-3) var(--g-2);
   display: flex; flex-direction: column;
   transition: border-color var(--g-mid) var(--g-ease), box-shadow var(--g-mid) var(--g-ease),
@@ -195,18 +207,28 @@ p.g-top-title { color: var(--g-mist); font-weight: 400; }
 /* An opening is a question a reader could have asked, and it is not a button in a form: no fill, no
    shadow, one hairline. Four filled pills with elevation under a composer that already carries the page's
    highest elevation read as a second row of buttons, which is most of what made this row feel busy. */
+/* A chip is a thing you press, so it is drawn as one: a filled pill, not an outline.
+   It used to be `background: transparent` inside a hairline border, which on a pale field is the
+   drawing convention for a DISABLED control - the three openings on the front door, which exist so
+   that somebody who does not know what to type has somewhere to start, read as three things that
+   could not be pressed. The fill is the reader's own translucent wash, so it still belongs to the
+   hour, and the border is gone because a filled shape does not need one to have an edge. */
 .g-chip {
   display: inline-flex; align-items: center; gap: 6px;
-  padding: 7px var(--g-4); border-radius: var(--g-r-pill);
-  border: 1px solid var(--g-line-soft); background: transparent;
-  color: var(--g-mist); font: inherit; font-size: 13px; cursor: pointer;
+  padding: 8px var(--g-4); border-radius: var(--g-r-pill);
+  border: 1px solid transparent;
+  background: var(--g-t2);
+  color: var(--g-paper); font: inherit; font-size: 13px; font-weight: 450; cursor: pointer;
+  box-shadow: var(--g-e1);
   transition: background var(--g-fast) var(--g-ease), color var(--g-fast) var(--g-ease),
-              border-color var(--g-fast) var(--g-ease), transform var(--g-fast) var(--g-ease);
+              border-color var(--g-fast) var(--g-ease), transform var(--g-fast) var(--g-ease),
+              box-shadow var(--g-fast) var(--g-ease);
 }
 .g-chip:hover {
   color: var(--g-paper); transform: translateY(-1px);
-  border-color: color-mix(in srgb, var(--g-accent) 34%, var(--g-line));
-  background: var(--g-accent-wash);
+  border-color: color-mix(in srgb, var(--g-accent) 30%, transparent);
+  background: var(--g-t3);
+  box-shadow: var(--g-e2);
 }
 .g-chip:active { transform: translateY(0); }
 

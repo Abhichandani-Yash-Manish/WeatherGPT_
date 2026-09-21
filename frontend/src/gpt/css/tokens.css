@@ -57,12 +57,13 @@
   --g-mood-k: 0.62;
   --g-mark-a: 0.035;
 
-  --g-sans: 'Anek Latin Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --g-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  /* Inter first for Latin, Anek behind it for every Indic script Inter does not draw. */
+  --g-sans: 'Inter Variable', 'Anek Latin Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --g-mono: 'JetBrains Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
   /* The display voice: rounded geometric, Latin only, display sizes only. It sets the greeting, the hour
      and the reading's own numeral — never a sentence, and never a script it does not cover. The warmth in
      a weather interface lives in the roundness of the face more than in the colour. */
-  --g-display: 'Nunito Variable', 'Nunito', var(--g-sans);
+  --g-display: 'Outfit Variable', var(--g-sans);
 
   /* a 4px rhythm, used religiously */
   --g-1: 4px; --g-2: 8px; --g-3: 12px; --g-4: 16px; --g-5: 20px;

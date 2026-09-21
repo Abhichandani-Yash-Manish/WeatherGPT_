@@ -88,11 +88,24 @@
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.30);
 }
 
-/* The composer and the rail are the two panes a reader looks at longest, so they take the glass. */
+/* The composer and the rail are the two panes a reader looks at longest, so they take the glass.
+
+   AT REST the fill is the card surface - white on the light hours, dark slate on the dark ones - and not
+   the translucent washes this rule used to carry. Those washes are ink when the sun is up: they darken
+   what they cover, so the one control a reader came to use was a faintly grey rectangle on a pale field
+   and could not be found without looking for it. The white is what separates it, because the field is
+   never white - it is lavender at dawn, blue at noon, amber at dusk.
+
+   The lit border stays exactly as it was. That is the part of this rule that was always right: the
+   catch-light sits on the edge the sun is actually on, so the composer is lit from the same direction as
+   everything else on the page.
+
+   This selector is (0,2,1) and glass.css loads after chrome.css, so it wins at rest and chrome.css's own
+   fill only ever showed on focus - which is why changing it there alone did nothing. */
 .g-composer { border-color: transparent; }
 .g-composer:not(:focus-within) {
   background:
-    linear-gradient(180deg, var(--g-t3), var(--g-t1)) padding-box,
+    var(--g-fill) padding-box,
     linear-gradient(var(--g-light-angle), var(--g-catch) 0%, var(--g-catch-soft) 38%, transparent 72%) border-box;
 }
 

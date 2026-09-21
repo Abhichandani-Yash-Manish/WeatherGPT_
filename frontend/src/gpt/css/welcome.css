@@ -109,7 +109,9 @@
 .w-place-button {
   border: 0; background: transparent; font: inherit; color: inherit; cursor: pointer;
   padding: 2px 6px; border-radius: var(--g-r-sm);
-  border-bottom: 1px dashed color-mix(in srgb, var(--g-mist) 42%, transparent);
+  /* Solid, not dashed. A dashed underline under two words in a sentence is the convention browsers and
+     word processors use for "this is misspelled", and "Set your place" is an invitation, not an error. */
+  border-bottom: 1px solid color-mix(in srgb, var(--g-mist) 38%, transparent);
   transition: color var(--g-fast) var(--g-ease), border-color var(--g-fast) var(--g-ease), background var(--g-fast) var(--g-ease);
 }
 .w-place-button:hover { color: var(--g-paper); border-bottom-color: var(--g-accent); background: var(--g-t2); }
@@ -144,30 +146,42 @@
    The quietest thing on the welcome screen, and the only thing on it a reader can change. It opens with a
    short rule rather than a heading, because it is a change of voice on the same page: the reading above it
    is what a source said, and this is what somebody wrote a hundred years ago. */
+/* THE SECOND CLUSTER, and the space above it is what makes it one.
+
+   The front door used to be six things at even intervals - glyph, greeting, place, a rule, the quote,
+   the attribution - so a reader's eye had nowhere to land first. It is two groups now. The greeting and
+   the place are one thing and sit tight together; the quote is a separate voice and is pushed a long way
+   clear of them. Distance does the separating, which is why the little accent rule that used to sit
+   between them is gone: it was a third focal point doing a job that white space does better.
+
+   The quote is lighter and larger than the interface around it rather than the same size in grey. A
+   literary voice at 300 weight on a wider measure reads as a different kind of text at a glance, which
+   is the distinction that matters - this is the one thing on the page nobody retrieved. */
 .w-quote {
-  margin: var(--g-6) 0 0;
-  padding-top: var(--g-4);
-  max-width: 40ch;
+  margin: var(--g-9) 0 0;
+  max-width: 44ch;
   position: relative;
   animation: w-arrive 720ms var(--g-ease) 320ms both;
 }
-.w-quote::before {
-  content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-  width: 28px; height: 1px; border-radius: 1px;
-  background: color-mix(in srgb, var(--g-accent) 46%, transparent);
-}
 .w-quote blockquote { margin: 0; animation: w-quote-in 520ms var(--g-ease) both; }
 .w-quote blockquote p {
-  margin: 0; font-size: 1rem; line-height: 1.62; color: var(--g-mist);
+  margin: 0;
+  font-size: 1.125rem; font-weight: 300; line-height: 1.72; letter-spacing: -0.006em;
+  color: var(--g-mist);
   text-wrap: pretty;
 }
+/* NOT the mono face. In this system mono is the machine's voice - a value, a unit, a source id, a
+   locator - and it is the one typographic promise the product makes about where a number came from.
+   Rabindranath Tagore, 1916, is the furthest thing on this page from machine output, and setting his
+   name in the face reserved for retrieved values quietly spends that promise on decoration. */
 .w-quote figcaption {
-  display: flex; align-items: baseline; justify-content: center; gap: 6px; flex-wrap: wrap;
-  margin-top: var(--g-3);
-  font-family: var(--g-mono); font-size: 11px; line-height: 1.5; color: var(--g-mist);
+  display: flex; align-items: baseline; justify-content: center; gap: 7px; flex-wrap: wrap;
+  margin-top: var(--g-4);
+  font-size: 12.5px; line-height: 1.5; color: var(--g-mist-2);
+  letter-spacing: 0.002em;
 }
 .w-quote-author { font-weight: 500; }
-.w-quote-work { color: var(--g-mist); }
+.w-quote-work { color: var(--g-mist-2); font-style: italic; }
 /* The turn. It is a control, so it says so on hover and takes a ring on focus — but at rest it is a mark
    beside a citation rather than a button on a poster. */
 .w-quote-next {

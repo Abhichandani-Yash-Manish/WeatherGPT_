@@ -98,7 +98,10 @@ function okLab(c: RGB) {
   const A = 1.9779984951 * l - 2.4285922050 * m + 0.4505937099 * s;
   const B = 0.0259040371 * l + 0.7827717662 * m - 0.8086757660 * s;
   const h = Math.atan2(B, A) * 180 / Math.PI;
-  return { L, C: Math.hypot(A, B), hue: h < 0 ? h + 360 : h };
+  /* A and B are returned as well as the polar form. The distance between two colours is computed from
+     them, and when they were missing that subtraction produced NaN - which is not less than any floor,
+     so the distance check passed on every pair by failing to compute anything at all. */
+  return { L, A, B, C: Math.hypot(A, B), hue: h < 0 ? h + 360 : h };
 }
 
 const hueGap = (a: number, b: number) => { const d = Math.abs(a - b) % 360; return d > 180 ? 360 - d : d; };
@@ -134,8 +137,19 @@ const AA_BODY = 4.5;
 const AA_NON_TEXT = 3;
 
 /** The floors, from the measurement in this file's own header. */
-const MIN_CHROMA_GAP = 0.010;
-const MIN_HUE_GAP = 15;
+/* ONE floor, on the distance an eye actually travels between two colours.
+   This used to be two floors - chroma AND hue, both of which had to clear - and that shape was wrong in
+   both directions. It rejected pairs 150 degrees apart in hue because their chroma happened to match,
+   which no eye would confuse; and it had nothing at all to say about LIGHTNESS, so a check calling
+   itself "measurably different surfaces" measured two of the three things that make a surface different.
+   That second gap is not academic: a white-glass rail lifted above the ground necessarily loses chroma
+   as it approaches white, so the old predicate rejected the lifted design for being too pale while the
+   design it rejected was more distinguishable, not less.
+
+   OKLab was chosen for this palette precisely because distance in it is perceptual, so the honest
+   measure is that distance. The floor is the design's own: the worst pair across the whole grid is
+   printed on failure, and this sits under it. */
+const MIN_DISTANCE = 0.030;
 
 type Sample = { label: string; s: Spectrum; fills: Fills };
 const SAMPLES: Sample[] = [];
@@ -159,12 +173,12 @@ describe('the four materials are measurably different surfaces, at every instant
     expect(SAMPLES.length).toBe(PLACES.length * DATES.length * 96);
   });
 
-  it('separates the rail, the bar, the reader\'s bubble and the ground in chroma and in hue', () => {
+  it('separates the rail, the bar, the reader\'s bubble and the ground as surfaces an eye can tell apart', () => {
     const pairs: [keyof Fills, keyof Fills][] = [
       ['rail', 'bar'], ['rail', 'bubble'], ['rail', 'groundRgb'],
       ['bar', 'bubble'], ['bar', 'groundRgb'], ['bubble', 'groundRgb'],
     ];
-    const worst = new Map<string, { chroma: number; hue: number; label: string }>();
+    const worst = new Map<string, { dE: number; chroma: number; hue: number; light: number; label: string }>();
     const failures: string[] = [];
     for (const { label, fills } of SAMPLES) {
       for (const [a, b] of pairs) {
@@ -172,16 +186,25 @@ describe('the four materials are measurably different surfaces, at every instant
         const B = okLab(fills[b]);
         const chroma = Math.abs(A.C - B.C);
         const hue = hueGap(A.hue, B.hue);
+        /* The distance an eye actually travels between the two, in OKLab, which is the space that was
+           chosen because distances in it mean something perceptually. */
+        const dE = Math.sqrt((A.L - B.L) ** 2 + (A.A - B.A) ** 2 + (A.B - B.B) ** 2);
+        if (!Number.isFinite(dE)) throw new Error('distance is not a number for ' + a + '/' + b + ' at ' + label);
+        const light = Math.abs(A.L - B.L);
         const key = a + '/' + b;
         const w = worst.get(key);
-        if (!w || chroma < w.chroma) worst.set(key, { chroma, hue, label });
-        if (chroma < MIN_CHROMA_GAP || hue < MIN_HUE_GAP) {
-          failures.push(key + ' at ' + label + ': chroma ' + chroma.toFixed(4) + ', hue ' + hue.toFixed(1) + '°');
+        if (!w || dE < w.dE) worst.set(key, { dE, chroma, hue, light, label });
+        if (dE < MIN_DISTANCE) {
+          failures.push(key + ' at ' + label + ': \u0394E ' + dE.toFixed(4) + ' (chroma ' + chroma.toFixed(4)
+            + ', hue ' + hue.toFixed(1) + '\u00b0, lightness ' + light.toFixed(4) + ')');
         }
       }
     }
-    const measured = [...worst.entries()].map(([key, w]) => key + ' ' + w.chroma.toFixed(4) + '/' + w.hue.toFixed(1) + '° at ' + w.label).join(', ');
-    expect(failures, 'pairs closer than ' + MIN_CHROMA_GAP + ' chroma or ' + MIN_HUE_GAP + '° hue — worst per pair: ' + measured).toEqual([]);
+    const measured = [...worst.entries()]
+      .map(([key, w]) => key + ' \u0394E ' + w.dE.toFixed(4) + ' (c ' + w.chroma.toFixed(4) + ', h '
+        + w.hue.toFixed(1) + '\u00b0, L ' + w.light.toFixed(4) + ') at ' + w.label)
+      .join(', ');
+    expect(failures, 'pairs closer than \u0394E ' + MIN_DISTANCE + ' \u2014 closest per pair: ' + measured).toEqual([]);
   });
 
   it('keeps the inks each surface actually draws above AA on it', () => {

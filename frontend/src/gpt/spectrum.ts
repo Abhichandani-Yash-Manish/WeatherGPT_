@@ -433,11 +433,27 @@ type MaterialRules = { rail: MaterialRule; bar: MaterialRule; bubble: MaterialRu
    own colour and none it was given. Raising rail and bubble's dc and giving the bar some of its own moves the
    worst pair further from the floor without moving any hue, so the family the rail/bar/bubble/pane read as
    together is unchanged — they are simply no longer whispering it. */
+/* REFINED FROST. On the light hours every material now sits ABOVE the ground rather than below it, and
+   that single sign change is most of what was wrong with this page.
+
+   The rail used to be 4.8% DARKER than the field it sits beside (dL -0.048) and carried all of the
+   ground's chroma. On a pale lilac field that produces a flat, muted blue slab which reads as a
+   different application bolted to the left-hand edge - the gradient does not pass through it, and the
+   sun's work on the field is invisible on the one surface a reader looks at most. It is white glass now:
+   lifted well above the ground, holding only a third of its chroma, thin enough that the field's colour
+   still moves underneath it through the day.
+
+   The pane - the composer, the cards - is lifted and thickened for the opposite reason. It was 0.20
+   alpha, which is not a surface, it is a tint; the primary control on the page had no more presence than
+   the air around it. At 0.46 it is a white card the field shows through rather than a suggestion of one.
+
+   The reader's own bubble takes the accent's hue instead of a fixed yellow-green, so the one thing on the
+   page that is the reader's is coloured by the product's accent rather than by an unrelated third hue. */
 const LIGHT_RULES: MaterialRules = {
-  rail: { dL: -0.048, ck: 1, dc: 0.030, h: 235, a: 0.58 },
-  bar: { dL: 0.036, ck: 0.46, dc: 0, h: 170, a: 0.38 },
-  bubble: { dL: -0.014, ck: 1, dc: 0.050, h: 95, a: 0.50 },
-  pane: { dL: 0.014, ck: 0.60, dc: 0.006, h: 'accent', a: 0.20 },
+  rail: { dL: 0.032, ck: 1, dc: 0.044, h: 235, a: 0.66 },
+  bar: { dL: 0.104, ck: 0.46, dc: 0.010, h: 170, a: 0.40 },
+  bubble: { dL: 0.022, ck: 1, dc: 0.050, h: 95, a: 0.50 },
+  pane: { dL: 0.026, ck: 0.60, dc: 0.006, h: 'accent', a: 0.46 },
 };
 
 const DARK_RULES: MaterialRules = {
@@ -721,12 +737,27 @@ export function spectrumAt(position: SolarPosition, scheme: Scheme = 'system'): 
   const isDark = rules === DARK_RULES;
   const fill = isDark ? 'linear-gradient(180deg, ' + t2 + ', ' + t1 + ')'
     : 'linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.52))';
-  const e1 = isDark ? 'inset 0 1px 0 rgba(255,255,255,0.045), 0 1px 2px rgba(0,0,0,0.30)'
-    : 'inset 0 1px 0 rgba(255,255,255,0.9), 0 1px 2px rgba(16,24,40,0.06)';
-  const e2 = isDark ? 'inset 0 1px 0 rgba(255,255,255,0.055), 0 2px 4px rgba(0,0,0,0.24), 0 8px 18px -8px rgba(0,0,0,0.50)'
-    : 'inset 0 1px 0 rgba(255,255,255,0.9), 0 1px 3px rgba(16,24,40,0.07), 0 6px 16px -6px rgba(16,24,40,0.12)';
-  const e3 = isDark ? 'inset 0 1px 0 rgba(255,255,255,0.07), 0 4px 10px rgba(0,0,0,0.28), 0 20px 48px -20px rgba(0,0,0,0.72)'
-    : 'inset 0 1px 0 rgba(255,255,255,0.9), 0 4px 10px rgba(16,24,40,0.08), 0 20px 44px -20px rgba(16,24,40,0.22)';
+  /* THE THREE ELEVATIONS, and the two families state depth in completely different ways because the two
+     grounds allow completely different things.
+
+     On PAPER a surface floats by casting. The shadows are faint and WIDE - the far layer is a 30-80px
+     blur at eight to thirty per cent - because a tight dark shadow under a white card on a pale field
+     reads as a border, and a border does not lift anything. Measured on this page at the hour where the
+     sky is palest: the rail, the field and the composer all sat within a few per cent of white, and with
+     the old tight shadows nothing on the page had any height at all.
+
+     In the DARK a shadow has nothing to fall on: black on near-black is invisible, so depth has to be
+     drawn on the object itself. Each level takes a 1px inset ring of white - 6%, 8%, 10% - which defines
+     the card's edge without lightening its middle. That is the difference between a dark card and a card
+     that has been washed grey, which is what happens when you try to separate dark surfaces with fills.
+
+     Both families keep the paper highlight on the top edge only where it belongs: on paper. */
+  const e1 = isDark ? 'inset 0 0 0 1px rgba(255,255,255,0.06), 0 1px 2px rgba(0,0,0,0.34)'
+    : 'inset 0 1px 0 rgba(255,255,255,0.95), 0 1px 2px rgba(16,24,40,0.05), 0 4px 12px -4px rgba(16,24,40,0.07)';
+  const e2 = isDark ? 'inset 0 0 0 1px rgba(255,255,255,0.08), 0 2px 6px rgba(0,0,0,0.30), 0 14px 32px -12px rgba(0,0,0,0.55)'
+    : 'inset 0 1px 0 rgba(255,255,255,0.95), 0 2px 6px rgba(16,24,40,0.06), 0 14px 34px -10px rgba(16,24,40,0.15)';
+  const e3 = isDark ? 'inset 0 0 0 1px rgba(255,255,255,0.10), 0 6px 16px rgba(0,0,0,0.34), 0 36px 80px -30px rgba(0,0,0,0.76)'
+    : 'inset 0 1px 0 rgba(255,255,255,0.95), 0 6px 16px rgba(16,24,40,0.07), 0 34px 76px -28px rgba(16,24,40,0.28)';
   const d = decorativeAt(position.hourAngle);
   /* The middle of the page is not the top of it: the gradient's second stop dominates the band the reader's
      own bubble and the machine's pane sit in, so a film over that band is solved against the mid colour

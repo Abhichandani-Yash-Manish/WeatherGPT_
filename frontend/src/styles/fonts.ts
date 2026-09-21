@@ -1,27 +1,30 @@
-/* The two voices, self-hosted.
+/* The three voices, self-hosted.
    ============================================================================
    The workspace serves under default-src 'self', so every face is bundled from node_modules and served
    from this origin; no font stylesheet can load from a CDN here.
 
-   - Nunito is the DISPLAY voice: the greeting, the hour, the reading's own numeral, the labels under a
-     condition glyph. It is a rounded geometric, and roundness is where the warmth in a weather interface
-     actually lives — the reference this direction came from gets most of its softness from the face
-     rather than from the colour. It is used only at display size and only for Latin; it never sets a
-     sentence, and it never sets a script it does not cover.
-   - Anek is the HUMAN voice: what a model wrote. It is a pan-Indic family drawn per script, so a Hindi or
-     Tamil answer is set in a face made for it rather than a fallback. The Latin face loads here; the
-     script faces load on demand below, so a reader who never asks for Tamil never pays for a Tamil face.
-   - IBM Plex Mono is the MACHINE voice: every value, unit, source id, locator and timestamp — what a tool
-     owns and a model may never write. It replaced Martian Mono, which was mannered enough to make a serious
-     product read as a toy.
+   - OUTFIT is the DISPLAY voice: the greeting, the hour, a reading's own numeral, a surface title. A
+     geometric sans with a high x-height and flat terminals - warm without being soft. It replaced
+     Nunito, whose roundness read as a children's product rather than as an instrument, which is a real
+     problem for something presented to a meteorological department.
+   - INTER is the INTERFACE voice: the rail, the controls, the chips, and the sentences a model wrote.
+     It is drawn for screens at small sizes, and this product is mostly small text that has to be read
+     exactly - a source id, a district name, a caveat.
+   - ANEK sits BEHIND Inter in the same stack rather than being replaced by it, and that is deliberate.
+     It is a pan-Indic family drawn per script, so a Hindi or Gujarati answer is set in a face made for
+     it. Inter carries no Devanagari, so Latin resolves to Inter and Indic scripts fall through to Anek
+     and then to the per-script faces below. One stack, both jobs, nothing lost.
+   - JETBRAINS MONO is the MACHINE voice: every value, unit, source id, locator and timestamp - what a
+     tool owns and a model may never write. Its figures are unambiguous at 11px, which is the size this
+     product states most of its evidence at.
 
    Loading a face is never a claim that the product can WRITE the language: that stays the engine's
    adherence gate, measured per direction. */
 
-import '@fontsource-variable/nunito';
+import '@fontsource-variable/outfit';
+import '@fontsource-variable/inter';
 import '@fontsource-variable/anek-latin';
-import '@fontsource/ibm-plex-mono/400.css';
-import '@fontsource/ibm-plex-mono/500.css';
+import '@fontsource-variable/jetbrains-mono';
 
 /* Script faces. Anek's own per-script faces are used where installed; the Tiro/Noto faces already in the
    tree cover the rest. Unknown tags are a no-op, never an error. */
