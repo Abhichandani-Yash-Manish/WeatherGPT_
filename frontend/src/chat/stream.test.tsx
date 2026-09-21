@@ -9,7 +9,7 @@
    opened only when the stream cannot be (a workspace that cannot stream must still say which stage it is in,
    and a healthy stream must not double the reads); and the stream names the turn's own identifier. */
 
-import { screen, waitFor } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { renderAsk } from '../test/ask';
@@ -72,6 +72,20 @@ function preview() {
   return http.post('/api/chat/preview', () => HttpResponse.json({ schema_version: 'chat-preview-v1', provisional: true, reading: null }));
 }
 
+/* A stage the reader can see, named where it is said.
+   Each stage now appears TWICE on a working turn, and both are deliberate: once in `.g-working-stage`,
+   the polite live region that states what the turn is doing now, and once in the open trail of every
+   stage it has reached. A bare findByText matches both, so these assertions say which they mean - the
+   live region for "the stream reported this stage", and the trail for "the reader can see the sequence". */
+async function stageSaid(label: string | RegExp) {
+  await waitFor(() => expect(document.querySelector('.g-working-stage')).toHaveTextContent(label));
+}
+
+async function stageTrailed(label: string) {
+  const trail = await screen.findByTestId('live-stages');
+  await waitFor(() => expect(within(trail).getByText(label)).toBeInTheDocument());
+}
+
 describe('the turn, followed as a stream', () => {
   afterEach(() => {
     try { window.sessionStorage.clear(); } catch { /* storage is optional */ }
@@ -108,8 +122,9 @@ describe('the turn, followed as a stream', () => {
     await user.type(askBox(), 'Will it rain in Ahmedabad?');
     await user.click(screen.getByTestId('send-question'));
 
-    await screen.findByText('Retrieving evidence');
-    await screen.findByText('Assembling the answer');
+    await stageSaid('Retrieving evidence');
+    await stageTrailed('Retrieving evidence');
+    await stageSaid('Assembling the answer');
     expect(followed).toHaveLength(1);
     expect(followed[0], 'the stream names the turn it is following').toBeTruthy();
     /* Longer than the poll's own interval: if the fallback had started, this is when it would show. */
@@ -140,7 +155,7 @@ describe('the turn, followed as a stream', () => {
     await user.type(askBox(), 'Will it rain in Ahmedabad?');
     await user.click(screen.getByTestId('send-question'));
 
-    await screen.findByText('Assembling the answer');
+    await stageSaid('Assembling the answer');
     await waitFor(() => expect(polled.length).toBeGreaterThan(0));
     expect(await screen.findByRole('article')).toBeInTheDocument();
   });

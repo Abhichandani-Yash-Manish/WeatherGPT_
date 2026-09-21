@@ -197,12 +197,22 @@ describe('the transcript', () => {
     await ask('Will it rain in Ahmedabad?');
     expect(await screen.findByTestId('working-turn')).toBeInTheDocument();
     expect(await screen.findByTestId('reading-line')).toHaveTextContent(/place: Ahmedabad/);
-    expect(await screen.findByText('Resolving the place')).toBeInTheDocument();
-    /* The wait states the stage it is on, once, in the line a reader is looking at. It used to print five
-       paragraphs of pipeline, planner and queue detail here; those are still reached, but from a fold, so
-       waiting for an answer about rain is not also a briefing on the retrieval architecture. */
+    /* The wait states the stage it is on, once, in the line a reader is looking at. */
     expect(document.querySelector('.g-working-stage')).toHaveTextContent(/Retrieving evidence/);
-    expect(screen.getByText('Resolving the place').closest('details'), 'the machinery belongs behind a fold').not.toBeNull();
+
+    /* And the TRAIL of stages is in the open, beneath it.
+       It used to be folded away with everything else, on the reasoning that a reader waiting to learn
+       whether it will rain is not served by a briefing on the retrieval architecture. That reasoning was
+       right about the PROSE and wrong about the trail: a wait showing one word reads as a spinner, and a
+       spinner is the one thing that tells a reader nothing. Every line in it is a stage the engine
+       reported as it reached it, so this is disclosure rather than decoration.
+
+       The line below is the half of the old assertion that still holds, and it is what keeps the fold
+       from quietly becoming the place everything lives again: the first reading - a planner's guess, not
+       evidence - stays available rather than imposed. */
+    const trail = within(screen.getByTestId('live-stages'));
+    expect(trail.getByText('Resolving the place'), 'the stage trail is in the open').toBeInTheDocument();
+    expect(screen.getByTestId('live-stages').closest('details'), 'the trail is not behind a fold').toBeNull();
     expect(screen.getByTestId('reading-line').closest('details'), 'the first reading is available, not imposed').not.toBeNull();
     await userEvent.click(screen.getByTestId('stop-turn'));
     await waitFor(() => expect(cancelled.length).toBe(1));

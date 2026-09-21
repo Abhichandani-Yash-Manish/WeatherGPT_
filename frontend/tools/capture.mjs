@@ -49,7 +49,10 @@ const ADDRESSES = [
      It costs a live turn: the model plans it, the tools retrieve it and the model writes it, which
      is why this one entry waits for a claim to appear rather than for a fixed delay. */
   { name: 'answer', hash: 'assistant?ask=' + encodeURIComponent('Will it rain in Ahmedabad tomorrow?'),
-    settleGone: '.g-working' },
+    /* Both, in this order: the turn stops working, and THEN the answer finishes being written onto the
+       page. An answer arrives whole and checked and is revealed at reading pace, so waiting only for the
+       working state to detach photographs a sentence caught halfway through. */
+    settleGone: '.g-working, [data-revealing]' },
 ];
 
 function arg(name, fallback = null) {

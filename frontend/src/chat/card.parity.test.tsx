@@ -251,6 +251,7 @@ describe('the answer card, held against the vanilla checks', () => {
     expect(text).toContain('S21');
     expect(text).toContain('not an observation');
     expect(within(receipt as HTMLElement).getByRole('button', { name: 'Copy this receipt' })).toBeInTheDocument();
+    fireEvent.click(screen.getByText('More ways to use this answer'));
     expect(screen.getByRole('button', { name: 'Print this answer' })).toBeInTheDocument();
   });
 

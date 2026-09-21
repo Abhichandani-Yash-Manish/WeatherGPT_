@@ -174,10 +174,12 @@ describe('the register a reader chooses', () => {
     expect(has(container, '[data-testid="lead-claim"]'), 'the leading value is the register\'s floor').toBe(true);
     expect(has(container, '.answer-rest'), 'the rest of the answer is the answer, not evidence').toBe(true);
     expect(container.querySelector('.place-read'), 'the place line is evidence depth').toBeNull();
-    /* Two folds are left and both belong to the reader rather than to the evidence: the rest of the answer
-       itself, and the line that changes the register. */
+    /* Three folds are left and every one of them belongs to the READER rather than to the evidence: the
+       rest of the answer itself, the line that changes the register, and the ways to take the answer
+       away with you. None of them holds a value, a source, a kind or a warning, which is the rule this
+       assertion exists to enforce - brief hides evidence depth, not the reader's own controls. */
     const folds = Array.from(container.querySelectorAll('details.g-fold')).map(node => node.className);
-    expect(folds.every(name => /answer-rest|answer-depth/.test(name)), 'brief has folds it should not: ' + folds.join(', ')).toBe(true);
+    expect(folds.every(name => /answer-rest|answer-depth|answer-more/.test(name)), 'brief has folds it should not: ' + folds.join(', ')).toBe(true);
     expect(container.textContent).not.toContain('where this came from');
     expect(container.textContent).not.toContain('Machine record');
   });

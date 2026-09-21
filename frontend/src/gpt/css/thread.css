@@ -260,3 +260,43 @@
    One entrance, used by every turn. It answers a send, so it is motion that reports something changed. */
 @keyframes g-in { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
 .g-in { animation: g-in 320ms var(--g-ease) both; }
+
+/* Room beneath the last turn, so the newest question can actually reach the top of the frame.
+   ------------------------------------------------------------------------------------------------
+   The thread anchors the newest question at the top and lets the answer grow underneath it. A thread
+   can only scroll as far as its content allows, so without this the anchor works for a long answer and
+   silently fails for a short one - the question stops halfway up and the effect looks like a bug that
+   comes and goes. The padding is inside the scrolling column, so it is reachable only at the very end
+   of the scroll and is never a gap anyone sees while reading.
+
+   Only while there is a conversation: on the front door this same column holds the greeting and the
+   composer, and half a screen of air under those would push them off centre. */
+.g-panel[data-chatting='true'] .g-thread > .g-col { padding-bottom: 55vh; }
+
+/* The stage trail while a turn is working.
+   ------------------------------------------------------------------------------------------------
+   The same list as the folded one, in the open and given room to read as a sequence rather than as a
+   caption. Each stage fades in as it is reported, the one in progress carries a slow pulse, and the
+   ones behind it stay legible rather than greying out - a reader glancing up should be able to see
+   what it has already done, which is the whole reason the trail is worth showing.
+
+   The pulse is the only motion, it is on one element, and it stops entirely under reduced motion. */
+.g-stages-live { margin-top: var(--g-3); gap: 5px; }
+.g-stages-live li { animation: g-stage-in var(--g-quick, 220ms) var(--g-ease, ease-out) both; }
+.g-stages-live li[data-state='done'] { color: var(--g-mist-2); }
+.g-stages-live li[data-state='now'] { color: var(--g-paper); font-weight: 500; }
+.g-stages-live li[data-state='now']::before { animation: g-stage-pulse 1.4s ease-in-out infinite; }
+
+@keyframes g-stage-in {
+  from { opacity: 0; transform: translateY(-3px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes g-stage-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.72); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .g-stages-live li,
+  .g-stages-live li[data-state='now']::before { animation: none; }
+}

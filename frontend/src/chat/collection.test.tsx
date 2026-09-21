@@ -36,6 +36,10 @@ function mount(node: React.ReactElement) {
 }
 
 describe('a bounded collection is reachable from a card', () => {
+  /* The control's own words. It sits under "More ways to use this answer" and says what it does not do,
+     because the thing a reader fears about a refresh is that it will take the answer away. */
+  const COLLECT = 'Collect fresh evidence without replacing this answer';
+
   it('offers Collect fresh evidence for an answer with a resolved point, and asks for that exact point', async () => {
     const asked: unknown[] = [];
     server.use(
@@ -53,14 +57,14 @@ describe('a bounded collection is reachable from a card', () => {
       });
     };
     mount(<AnswerTurn packet={PACKET as never} onFollowUp={() => {}} onRefresh={onRefresh} />);
-    await userEvent.click(screen.getByRole('button', { name: 'Collect fresh evidence' }));
+    await userEvent.click(screen.getByRole('button', { name: COLLECT }));
     await waitFor(() => expect(asked).toHaveLength(1));
     expect(asked[0]).toEqual({ question: 'Will it rain in Ahmedabad tomorrow?', coordinates: { latitude: 23.02579, longitude: 72.58727 } });
   });
 
   it('offers no collection control for an answer with no resolved point', () => {
     mount(<AnswerTurn packet={{ ...PACKET, resolved_points: {} } as never} onFollowUp={() => {}} onRefresh={() => {}} />);
-    expect(screen.queryByRole('button', { name: 'Collect fresh evidence' })).toBeNull();
+    expect(screen.queryByRole('button', { name: COLLECT })).toBeNull();
   });
 });
 

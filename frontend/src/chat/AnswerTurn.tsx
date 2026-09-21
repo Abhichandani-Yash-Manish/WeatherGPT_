@@ -17,6 +17,7 @@ import { Passages } from './Passages';
 import { istStamp, istWindow } from '../lib/time';
 import { answerText, claimLine, copyText, downloadFile, markdownTurn, stampName } from './actions';
 import { alternativeAsk, answerShape, authorshipNote, placeRead } from './answer';
+import { useRevealed } from './reveal';
 import {
   coverageNote, firstPoint, hasWarningDays, kindOf, languageDowngradeNote, parameterName, placeOf,
   readRegister, REGISTER_LABEL, REGISTER_NOTE, REGISTER_ORDER, sequenceFacts, subscribeRegister, turnTitle,
@@ -34,6 +35,10 @@ export type AnswerTurnProps = {
   /* The reading register. Absent means the reader's stored choice; a spec passes one in so the three
      unfoldings are checked without writing to storage. */
   register?: Register;
+  /* Whether this answer is the one the page just watched being worked on, and so the one to write out
+     at reading pace. False for every restored, reloaded or older turn: a conversation opened from the
+     rail must show what it said, not perform it again. */
+  reveal?: boolean;
 };
 
 function choiceText(choice: Record<string, unknown>): string {
@@ -235,7 +240,7 @@ function warningLine(packet: AnswerPacket, fact: Fact): string {
    spec that pins it keeps reading it from the card it belongs to. */
 export { answerParagraphs } from './answer';
 
-export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer, register: givenRegister }: AnswerTurnProps) {
+export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer, register: givenRegister, reveal }: AnswerTurnProps) {
   const [copied, setCopied] = useState<'idle' | 'copied' | 'unsupported'>('idle');
   /* The exact response is rendered only when opened: it is an audit artefact, and it must not sit in the
      page text beside the answer it records. */
@@ -251,11 +256,19 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer, register: 
   const coverage = coverageNote(packet);
   const point = firstPoint(packet);
   const conversational = packet.status === 'conversation';
-  const shape = answerShape(packet.answer, packet.held_clauses as string[] | null | undefined);
+  /* The answer arrives whole and checked, and is then paced onto the page (see chat/reveal.ts). The shape
+     is computed from the VISIBLE prefix, so the sentence that answers is written out first and the rest
+     follows it, the way it would have been written. Once the reveal finishes, `shown` is `packet.answer`
+     and every line below is identical to what it was before any of this existed. */
+  const { shown, revealing } = useRevealed(packet.answer || '', Boolean(reveal));
+  const shape = answerShape(shown, packet.held_clauses as string[] | null | undefined);
   /* The fold exists where there is something for the answer to stand on: a claim the tools own. Where
      there is none - a greeting, a refusal, a question asked back - the whole reply is the answer and
-     folding half of it away would hide the only thing the turn says. */
-  const foldsRest = Boolean((primary && !conversational) || warnings.length);
+     folding half of it away would hide the only thing the turn says.
+
+     It is also not drawn WHILE the answer is arriving: the rest of the prose crosses the fold's threshold
+     mid-reveal, so a details box would appear, swallow the text being written, and reopen a moment later. */
+  const foldsRest = !revealing && Boolean((primary && !conversational) || warnings.length);
   const byline = authorshipNote(packet);
   const placeAt = primary && !conversational ? placeRead(packet, primary) : null;
   const windowCovered = windowCoverage(packet);
@@ -280,8 +293,11 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer, register: 
   const showRecord = register === 'full';
   /* An empty region is a defect, so the machine's-own-work block is drawn only when it holds something. */
   const behindFilled = showNotes || showWork || showTally || showTasks || showChoices || showRecord;
+  /* `data-revealing` is not decoration: the evidence tool photographs a turn once the working state
+     detaches, and without a second thing to wait for it would photograph an answer caught mid-sentence.
+     It is also what a spec asserts against, rather than a timer. */
   return (
-    <article className="g-answer" data-turn-status={packet.status}>
+    <article className="g-answer" data-turn-status={packet.status} data-revealing={revealing ? 'true' : undefined}>
       <header className="g-chips" style={{ alignItems: 'baseline', justifyContent: 'space-between' }}>
         <h2 className="g-eyebrow" style={{ margin: 0 }}>{turnTitle(packet)}</h2>
         <StatusTags packet={packet} />
@@ -575,7 +591,7 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer, register: 
         </div>
       </details>
 
-      <div className="g-chips no-print" data-print="drop">
+      <div className="g-chips no-print answer-actions" data-print="drop">
         <button
           type="button"
           className="g-chip g-chip-lead"
@@ -587,20 +603,25 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer, register: 
         >
           {copied === 'copied' ? 'Copied' : copied === 'unsupported' ? 'Copy refused by this browser' : 'Copy the answer'}
         </button>
-        <button type="button" className="g-chip" onClick={() => downloadFile(stampName('weathergpt-turn', 'md'), markdownTurn(packet))}>
-          Save this turn as Markdown
-        </button>
-        <button type="button" className="g-chip" onClick={() => downloadFile(stampName('weathergpt-answer', 'json'), JSON.stringify(packet, null, 2), 'application/json')}>
-          Download this answer as JSON
-        </button>
-        <button type="button" className="g-chip" onClick={() => window.print()}>
-          Print this answer
-        </button>
-        {point && onRefresh ? (
-          <button type="button" className="g-chip" onClick={() => onRefresh(packet)}>
-            Collect fresh evidence
-          </button>
-        ) : null}
+        <details className="g-fold answer-more">
+          <summary>More ways to use this answer</summary>
+          <div className="g-fold-body g-chips">
+            <button type="button" className="g-chip" onClick={() => downloadFile(stampName('weathergpt-turn', 'md'), markdownTurn(packet))}>
+              Save this turn as Markdown
+            </button>
+            <button type="button" className="g-chip" onClick={() => downloadFile(stampName('weathergpt-answer', 'json'), JSON.stringify(packet, null, 2), 'application/json')}>
+              Download this answer as JSON
+            </button>
+            <button type="button" className="g-chip" onClick={() => window.print()}>
+              Print this answer
+            </button>
+            {point && onRefresh ? (
+              <button type="button" className="g-chip" onClick={() => onRefresh(packet)}>
+                Collect fresh evidence without replacing this answer
+              </button>
+            ) : null}
+          </div>
+        </details>
       </div>
     </article>
   );

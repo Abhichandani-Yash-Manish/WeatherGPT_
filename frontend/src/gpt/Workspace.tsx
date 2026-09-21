@@ -35,6 +35,10 @@ import { WorkingTurn } from './WorkingTurn';
 import { TopBar } from './TopBar';
 import './gpt.css';
 
+/* The gap kept above the anchored question, so it reads as the top of a page rather than as a line
+   jammed against the frame's edge. */
+const ANCHOR_INSET = 12;
+
 /* Three, not eight. The openings are a way in for someone who does not know what to type, not a menu of
    everything the machine can read — that is what the Board home is for. */
 const STARTERS = [
@@ -285,6 +289,35 @@ export function Workspace({
 
   const chatting = conversation.turns.length > 0 || Boolean(conversation.working);
 
+  /* Which answer is written out at reading pace, and which is simply shown.
+     ------------------------------------------------------------------------------------------------
+     Exactly one qualifies: the answer that landed while THIS page was watching the turn work. A
+     conversation restored from the rail, a reload, and every older turn in the thread are shown whole and
+     at once - performing a transcript the reader has already read would be a trick rather than a feature.
+
+     Decided DURING RENDER, which is the only place it can be decided correctly. The answer turn and the
+     end of the working state arrive in one commit, so an effect - passive or layout - necessarily runs
+     after the answer card has already rendered itself whole. Measured 21 September 2026 at frame rate:
+     the lead painted its full 96 characters, then dropped to 3 and typed back up. Setting state while
+     rendering is React's own answer to this: it re-renders before committing anything, so the card's
+     FIRST render already knows, and the first frame a reader sees is the first word.
+
+     `seen` makes it idempotent, which is what keeps a render-phase update honest: a key is acted on once,
+     so a double-invoked render in development reaches the same state as a single one. */
+  const [revealKey, setRevealKey] = useState<string | null>(null);
+  const [seen, setSeen] = useState<Set<string>>(() => new Set());
+  const watched = useRef(false);
+  if (conversation.working) watched.current = true;
+  const answered = conversation.turns.filter(entry => entry.role === 'answer');
+  const newestAnswer = answered[answered.length - 1];
+  if (newestAnswer && !seen.has(newestAnswer.key)) {
+    setSeen(previous => new Set(previous).add(newestAnswer.key));
+    if (watched.current && newestAnswer.role === 'answer' && !newestAnswer.restored) {
+      setRevealKey(newestAnswer.key);
+    }
+    watched.current = false;
+  }
+
   /* The thread follows the newest turn, the way a chat should — unless a reader arrived from a search, in
      which case it follows the turn they were looking for and holds it for a moment. Landing at the foot of a
      long conversation when the search said the match is in the middle is a worse answer than the search. */
@@ -300,6 +333,25 @@ export function Workspace({
         const timer = window.setTimeout(() => target.classList.remove('g-found'), 2600);
         return () => window.clearTimeout(timer);
       }
+    }
+    /* The thread follows the newest QUESTION to the top of the frame, not the foot of the newest answer.
+       It used to scroll to scrollHeight, which put the reader at the END of a reply they had not read a
+       word of: a seven-paragraph marine briefing landed with its last sentence on screen and the reader
+       had to scroll back up to find where it started. Anchoring the question at the top means the answer
+       grows downward underneath it and is read in the order it was written, which is what every
+       conversational product does and what this one was measured against.
+
+       The question, not the answer: the question is short and fixed in height, so it is a stable anchor
+       from the moment the turn begins until the answer has finished arriving, and the view does not jump
+       when the reply replaces the working state. */
+    /* `.g-you` and then its turn, rather than a `:has()` selector: jsdom does not implement `:has()` and
+       throws on it, which would take the whole effect down inside every component spec. */
+    const questions = node.querySelectorAll('.g-you');
+    const anchor = questions[questions.length - 1]?.closest('.g-turn') as HTMLElement | null;
+    if (anchor && typeof anchor.getBoundingClientRect === 'function') {
+      const top = anchor.getBoundingClientRect().top - node.getBoundingClientRect().top + node.scrollTop;
+      node.scrollTo({ top: Math.max(0, top - ANCHOR_INSET), behavior: 'smooth' });
+      return;
     }
     node.scrollTo({ top: node.scrollHeight, behavior: 'smooth' });
   }, [conversation.turns.length, conversation.working?.key, chatting, spotlight]);
@@ -707,6 +759,7 @@ export function Workspace({
                       {turn.changed ? <p className="g-claim-note">{changeNote(turn.packet, turn.changed)}</p> : null}
                       <AnswerTurn
                         packet={turn.packet}
+                        reveal={turn.key === revealKey}
                         onFollowUp={text => followUp(turn.key, text)}
                         onRefresh={packet => void collect(packet).then(outcome => conversation.notify(outcome.text, outcome.tone))}
                       />

@@ -72,6 +72,30 @@ export function WorkingTurn({ working, current, stages, firstReading, queueLine 
         <p className="g-working-note">{working.stopDetail || t('working.stopRequested')}</p>
       ) : null}
 
+      {/* The trail of what it has actually done, in the open.
+          ------------------------------------------------------------------------------------------
+          This list used to live inside the fold below, on the reasoning that a reader waiting to learn
+          whether it will rain is not served by a lecture about the pipeline. That reasoning holds for the
+          PROSE that was folded with it - the paragraph about local models, the queue depth, the server
+          seconds - and all of it is still folded.
+
+          It does not hold for the trail itself. A wait with one word on it reads as a spinner, and a
+          spinner is the one thing that tells a reader nothing; the same wait showing that it has resolved
+          the place, chosen the products and is now retrieving reads as work. Every line here is a stage
+          the engine reported through /api/chat/stream as it reached it. Nothing is simulated, nothing is
+          predicted, and a stage that never happens is never drawn.
+
+          aria-hidden, and deliberately: the stage word above is already a polite live region, and a list
+          that grows a row per stage would otherwise interrupt a screen-reader user four times a turn to
+          say what that one live region has already said. */}
+      {stages.length ? (
+        <ol className="g-stages g-stages-live" data-testid="live-stages" aria-hidden="true">
+          {stages.map(entry => (
+            <li key={entry} data-state={entry === current ? 'now' : 'done'}>{stageLabel(entry)}</li>
+          ))}
+        </ol>
+      ) : null}
+
       <details className="g-fold g-working-more">
         <summary>{t('working.whatItsDoing')}</summary>
         <div className="g-fold-body">
@@ -79,13 +103,6 @@ export function WorkingTurn({ working, current, stages, firstReading, queueLine 
             Resolving the place and window, then retrieving evidence. A local model is interpreting your
             question, so this can take up to about a minute.
           </p>
-          <ol className="g-stages">
-            {stages.map(entry => (
-              <li key={entry} data-state={entry === current ? 'now' : 'done'}>
-                {stageLabel(entry)}{entry === current ? ' — now' : ''}
-              </li>
-            ))}
-          </ol>
           {firstReading ? (
             <p className="g-reading-line" data-testid="reading-line">
               <span>First reading: </span>{firstReading}
