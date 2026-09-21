@@ -65,6 +65,38 @@ MAX_COMPOSER_MEASURES=6
 COMPOSER_SERIES_ROWS=3
 
 
+# Below this a series is short enough that its range already shows the reader everything: the highest
+# and lowest of four hourly temperatures ARE most of those four, and sending them is the recitation the
+# range exists to prevent. Above it - a day of hours, a century of years - the extreme is a row the
+# reader may be asking for by name, and the range alone cannot answer them.
+EXTREMES_WORTH_KEEPING_ABOVE=12
+
+
+def extreme_rows(rows):
+    """The highest and lowest rows of a series, labelled as such, or nothing when they cannot be read.
+
+    A superlative question - which year was the wettest, when was it hottest - is answered by ONE row,
+    and the range that replaces a long series to stop the model reciting it removes the very row the
+    reader is asking for. These two travel with the range so the question stays answerable without the
+    other hundred and eight coming too.
+    """
+    from decimal import InvalidOperation
+    numeric = []
+    for row in rows:
+        try:
+            numeric.append((Decimal(str(row.get('value'))), row))
+        except (InvalidOperation, TypeError, ValueError):
+            continue
+    if len(numeric) <= EXTREMES_WORTH_KEEPING_ABOVE:
+        return []
+    low = min(numeric, key=lambda pair: pair[0])[1]
+    high = max(numeric, key=lambda pair: pair[0])[1]
+    if low.get('id') == high.get('id'):
+        return []
+    return [{**high, 'label': str(high.get('label') or '') + ' (highest of the retrieved rows)'},
+            {**low, 'label': str(low.get('label') or '') + ' (lowest of the retrieved rows)'}]
+
+
 def composer_evidence(result):
     """The evidence as the answer's own material: the measures that answer this question, ranked.
 
@@ -104,6 +136,12 @@ def composer_evidence(result):
                 # number the model cites is still a number this product retrieved.
                 chosen.append({**row,'value':value,'id':rows[0].get('id'),
                                'label':str(row.get('label') or parameter)+' (range across the retrieved rows)'})
+                # The two rows the range is made of travel with it. A range answers "how much does this
+                # vary"; it cannot answer "which year was the wettest", and that question was being
+                # given 110 published years, collapsed to "923.7-1488.8 mm", and replying that the
+                # evidence did not identify the year. Two extra rows out of a hundred and ten is not
+                # recitation, and each is a real retrieved row carrying its own id and its own year.
+                chosen.extend(extreme_rows(rows))
                 continue
         chosen.extend(rows[:COMPOSER_SERIES_ROWS])
     # Every row a range stands for counts as shown. Without this the four temperatures the range
@@ -1890,6 +1928,13 @@ class ConversationEngine:
             "exactly and in full, inside quotation marks, at the point in your answer where it belongs. "
             "Never paraphrase, shorten, summarise or translate a passage: a reader is entitled to the "
             "words the publisher printed, not your account of them.\n\n"
+            "ANSWER A 'WHICH' QUESTION WITH THE ONE THAT ANSWERS IT. If the reader asks which, when, "
+            "the highest, the lowest, the wettest, the hottest, the first or the last, find the fact "
+            "among those supplied that answers it and name it - its own label and its own value. A "
+            "range is not an answer to that question. Measured 21 September 2026: \"Which was India's "
+            "wettest year on record?\" was given all 110 published years and replied with the range "
+            "they span. You are selecting from the evidence, which is allowed; you are not computing "
+            "anything, which is not.\n\n"
             "SAY WHAT IS NOT KNOWN. `limits` carries what this turn could not establish and what the "
             "values are not. Where one of those changes what the reader should take from the answer, "
             "say it in your own words, plainly, without hedging everything. Say each limit ONCE: a "

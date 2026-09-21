@@ -33,7 +33,7 @@
 
 import { describe, expect, it } from 'vitest';
 import { solarPosition } from './fieldPaint';
-import { spectrumAt, type Spectrum } from './spectrum';
+import { spectrumAt, type Scheme, type Spectrum } from './spectrum';
 
 type RGB = [number, number, number];
 
@@ -96,7 +96,7 @@ export const GROUND_POINTS: [number, number][] = [0.5, 0.08].flatMap(fx =>
 
 type Sample = { label: string; spectrum: Spectrum };
 
-function sampleDay(stepMinutes: number): Sample[] {
+function sampleDay(stepMinutes: number, scheme: Scheme = 'system'): Sample[] {
   const samples: Sample[] = [];
   for (const place of PLACES) {
     for (const midnightUtc of DATES) {
@@ -105,7 +105,7 @@ function sampleDay(stepMinutes: number): Sample[] {
         const position = solarPosition(place.latitude, place.longitude, at);
         samples.push({
           label: place.name + ' ' + new Date(midnightUtc).toISOString().slice(0, 10) + ' +' + minutes + 'min (alt ' + position.altitude.toFixed(1) + '°)',
-          spectrum: spectrumAt(position),
+          spectrum: spectrumAt(position, scheme),
         });
       }
     }
@@ -114,6 +114,64 @@ function sampleDay(stepMinutes: number): Sample[] {
 }
 
 const SAMPLES = sampleDay(15);
+
+/** The AA floors this module has to hold everywhere, at any scheme: paper and mist readable on the gradient
+    itself, both inks readable on the two raised surfaces, the accent usable as an icon and a focus ring, and
+    no published hazard colour ever touched. Run once for 'system' (the describe block below, which also holds
+    the two checks unique to it: the deliberate ink snap at dawn and dusk, and the regime-flip sweep — neither
+    is a meaningful question of a forced scheme, which has no regime to flip) and again, at the same
+    ninety-six-samples-per-place-and-date resolution, for 'dark' and 'light' below. */
+function registerAAFloorChecks(schemeLabel: string, samples: Sample[]) {
+  it(schemeLabel + ': samples more than the four old anchors ever could', () => {
+    /* Three places * two dates * ninety-six quarter-hours. If this number ever drops, the floor below it is
+       being proven over a thinner day than it claims. */
+    expect(samples.length).toBe(PLACES.length * DATES.length * 96);
+  });
+
+  it(schemeLabel + ': keeps the primary ink readable on the gradient band it is actually drawn on', () => {
+    const failures = samples.flatMap(({ label, spectrum }) =>
+      GROUND_POINTS.map(([fx, fy]) => ({ where: `at ${fx}×${fy}`, ratio: contrastRgb(parseHex(spectrum['--g-paper']), groundAt(spectrum, fx, fy)) }))
+        .filter(({ ratio }) => ratio < AA_NORMAL_TEXT)
+        .map(({ where, ratio }) => label + ' ' + where + ': ' + ratio.toFixed(3)));
+    expect(failures, schemeLabel + ' — instants where --g-paper fails AA on the sky itself: ' + failures.slice(0, 5).join(' | ')).toEqual([]);
+  });
+
+  it(schemeLabel + ': keeps the quiet ink readable on the gradient band it is actually drawn on', () => {
+    const failures = samples.flatMap(({ label, spectrum }) =>
+      GROUND_POINTS.map(([fx, fy]) => ({ where: `at ${fx}×${fy}`, ratio: contrastRgb(parseHex(spectrum['--g-mist']), groundAt(spectrum, fx, fy)) }))
+        .filter(({ ratio }) => ratio < AA_NORMAL_TEXT)
+        .map(({ where, ratio }) => label + ' ' + where + ': ' + ratio.toFixed(3)));
+    expect(failures, schemeLabel + ' — instants where --g-mist fails AA on the sky itself: ' + failures.slice(0, 5).join(' | ')).toEqual([]);
+  });
+
+  it(schemeLabel + ': keeps the primary and quiet inks readable on the raised surfaces', () => {
+    const failures = samples.filter(({ spectrum }) => {
+      const onRaised = contrastRatio(spectrum['--g-paper'], spectrum['--g-raise']);
+      const onRaised2 = contrastRatio(spectrum['--g-paper'], spectrum['--g-raise-2']);
+      const quiet = contrastRatio(spectrum['--g-mist'], spectrum['--g-raise']);
+      return onRaised < AA_NORMAL_TEXT || onRaised2 < AA_NORMAL_TEXT || quiet < AA_NORMAL_TEXT;
+    }).map(({ label, spectrum }) => label + ': paper/raise ' + contrastRatio(spectrum['--g-paper'], spectrum['--g-raise']).toFixed(2) +
+      ', paper/raise-2 ' + contrastRatio(spectrum['--g-paper'], spectrum['--g-raise-2']).toFixed(2) +
+      ', mist/raise ' + contrastRatio(spectrum['--g-mist'], spectrum['--g-raise']).toFixed(2));
+    expect(failures, schemeLabel + ' — instants where the raised surfaces fail AA: ' + failures.slice(0, 5).join(' | ')).toEqual([]);
+  });
+
+  it(schemeLabel + ': keeps the accent usable as an icon and a focus ring against the ground and a raised surface', () => {
+    const failures = samples.filter(({ spectrum }) => {
+      const onGround = contrastRatio(spectrum['--g-accent'], spectrum['--g-bg']);
+      const onRaised = contrastRatio(spectrum['--g-accent'], spectrum['--g-raise']);
+      return onGround < AA_NON_TEXT || onRaised < AA_NON_TEXT;
+    }).map(({ label }) => label);
+    expect(failures, schemeLabel + ' — instants where --g-accent fails the non-text floor: ' + failures.slice(0, 5).join(' | ')).toEqual([]);
+  });
+
+  it(schemeLabel + ': never touches a published hazard colour', () => {
+    const forbidden = ['--g-red', '--g-orange', '--g-yellow', '--g-green', '--g-lit'];
+    const spectrum = samples[0].spectrum as unknown as Record<string, string>;
+    const leaked = forbidden.filter(name => name in spectrum);
+    expect(leaked).toEqual([]);
+  });
+}
 
 describe('the continuous spectrum holds AA at every fifteen solar minutes of the day', () => {
   it('samples more than the four old anchors ever could', () => {
@@ -224,5 +282,62 @@ describe('the continuous spectrum holds AA at every fifteen solar minutes of the
       }
     }
     expect(flips, 'readings under AA around a regime flip: ' + flips.slice(0, 6).join(' | ')).toEqual([]);
+  });
+});
+
+/* ---- the scheme axis: a reader's explicit dark or light choice, holding AA and its own family ---------
+   'system' above is the sun alone, exactly as this module has always computed it — that describe block is
+   untouched. A reader who told their OS or browser dark or light has made a stronger statement than the sun's
+   position at one instant, so spectrumAt(position, 'dark') and spectrumAt(position, 'light') pick the family
+   outright (spectrum.ts's own header, section 4) and let the sun drift inside it. Two things a forced scheme
+   promises that 'system' does not, and both are checked below at the same resolution as every other check in
+   this file: the family never flips — a dark reader never gets a white page at noon, nor a light reader a
+   black one at midnight — and the page still visibly drifts across the day rather than sitting on one frozen
+   frame with the sun's hour angle ignored. */
+
+const DARK_SAMPLES = sampleDay(15, 'dark');
+const LIGHT_SAMPLES = sampleDay(15, 'light');
+
+describe('an explicit dark scheme holds AA at every fifteen solar minutes of the day, in the dark family throughout', () => {
+  registerAAFloorChecks('dark', DARK_SAMPLES);
+
+  it('dark: never lets the ground go light, at any hour of the sampled day', () => {
+    /* The ink and the ground disagree at chroma-neutral if they land on the same side, so the cheapest,
+       strongest proof the family never flipped is the ink's own token: --g-paper is the pale ink of the dark
+       family (relative luminance well above the near-black light family ever reaches) at every sample, and
+       --g-bg stays dark (relative luminance well below the near-white light family ever reaches). */
+    const failures = DARK_SAMPLES.filter(({ spectrum }) =>
+      relativeLuminanceRgb(parseHex(spectrum['--g-paper'])) < 0.6 || relativeLuminanceRgb(parseHex(spectrum['--g-bg'])) > 0.2,
+    ).map(({ label, spectrum }) => label + ': paper L ' + relativeLuminanceRgb(parseHex(spectrum['--g-paper'])).toFixed(3) +
+      ', bg L ' + relativeLuminanceRgb(parseHex(spectrum['--g-bg'])).toFixed(3));
+    expect(failures, 'instants where a forced dark scheme drifted into the light family: ' + failures.slice(0, 5).join(' | ')).toEqual([]);
+  });
+
+  it('dark: still drifts — the sky is not the same colour all day', () => {
+    /* One place, one day, every fifteen minutes: if a forced scheme were secretly frozen on its 'night' anchor
+       (the failure mode the header's section 4 names: "so dark mode across a whole day would sit still"),
+       every sample would share the same --g-sky-1. A continuous function sampled 96 times a day is not going
+       to coincide by chance, so a low count here is the bug, not noise. */
+    const oneDay = DARK_SAMPLES.filter(({ label }) => label.startsWith('Nagpur 2026-06-21'));
+    const distinctSkies = new Set(oneDay.map(({ spectrum }) => spectrum['--g-sky-1']));
+    expect(distinctSkies.size, 'a forced dark scheme sampled ' + oneDay.length + ' times across one day produced only ' + distinctSkies.size + ' distinct --g-sky-1 values').toBeGreaterThan(50);
+  });
+});
+
+describe('an explicit light scheme holds AA at every fifteen solar minutes of the day, in the light family throughout', () => {
+  registerAAFloorChecks('light', LIGHT_SAMPLES);
+
+  it('light: never lets the ground go dark, at any hour of the sampled day', () => {
+    const failures = LIGHT_SAMPLES.filter(({ spectrum }) =>
+      relativeLuminanceRgb(parseHex(spectrum['--g-paper'])) > 0.2 || relativeLuminanceRgb(parseHex(spectrum['--g-bg'])) < 0.6,
+    ).map(({ label, spectrum }) => label + ': paper L ' + relativeLuminanceRgb(parseHex(spectrum['--g-paper'])).toFixed(3) +
+      ', bg L ' + relativeLuminanceRgb(parseHex(spectrum['--g-bg'])).toFixed(3));
+    expect(failures, 'instants where a forced light scheme drifted into the dark family: ' + failures.slice(0, 5).join(' | ')).toEqual([]);
+  });
+
+  it('light: still drifts — the sky is not the same colour all day', () => {
+    const oneDay = LIGHT_SAMPLES.filter(({ label }) => label.startsWith('Nagpur 2026-06-21'));
+    const distinctSkies = new Set(oneDay.map(({ spectrum }) => spectrum['--g-sky-1']));
+    expect(distinctSkies.size, 'a forced light scheme sampled ' + oneDay.length + ' times across one day produced only ' + distinctSkies.size + ' distinct --g-sky-1 values').toBeGreaterThan(50);
   });
 });

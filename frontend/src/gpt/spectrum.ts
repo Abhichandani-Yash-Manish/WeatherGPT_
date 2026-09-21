@@ -41,7 +41,25 @@
    Nothing published — none of the four hazard colours a bulletin can print — is touched by any of this: this
    module never reads or writes --g-red, --g-orange, --g-yellow or --g-green, and Claim.tsx's --g-lit is set
    inline on the one element that carries a source, which this module's root-level custom properties cannot
-   reach or override. materials.test.ts holds that to the computed values rather than to the names. */
+   reach or override. materials.test.ts holds that to the computed values rather than to the names.
+
+   4. THE SCHEME. Everything above describes what a reader gets when the browser has stated no colour-scheme
+      preference of its own: the family (light ink, dark ink) is chosen by the sun's altitude, exactly as
+      before. A reader who has told their OS or browser they want dark, or light, has made a stronger and more
+      durable statement than the sun's position at this one instant — a farmer checking an advisory at noon in
+      dark mode does not want the page to go white on them — so that choice picks the FAMILY outright and the
+      sun is left to do only what it has always done inside a family: drift. `criticalAt`/`skyAt` above are
+      therefore untouched — they are exactly the 'system' path, byte-for-byte what this module has always
+      computed — and a forced scheme instead walks a second, independent set of anchors keyed to `dayClockOf`
+      (the same 0-at-midnight, 0.5-at-noon clock the atmosphere already uses), rather than to altitude: a
+      forced palette has no regime to flip between, so it has nothing for an altitude threshold to decide.
+      Two of the four anchors each forced family needs already existed — NIGHT_C/NIGHT_SKY for the dark family,
+      GOLDEN_C/DUSK_SKY for its evening, DAYBREAK_C/DAWN_SKY for the light family's morning, NOON_C/DAY_HIGH_SKY
+      for its midday — and this section adds the two each was missing: a dark morning and a dark high sun
+      (DARK_DAWN_C, DARK_NOON_C), and a light night and a light dusk (LIGHT_NIGHT_C, LIGHT_DUSK_C). Each is
+      hand-tuned in the same register as the four it joins — the same near-black-or-near-white ink, the same
+      five-to-eight-percent line opacity, the same low-chroma void — so a forced family reads as one more hour
+      of the same product rather than a fifth, unrelated palette. */
 
 import { HORIZON, NIGHT_BELOW, type SolarPosition } from './fieldPaint';
 
@@ -408,18 +426,25 @@ type MaterialRule = {
 };
 type MaterialRules = { rail: MaterialRule; bar: MaterialRule; bubble: MaterialRule; pane: MaterialRule };
 
+/* Widened from the first cut of this palette (rail dc 0.018, bar dc 0, bubble dc 0.038): materials.test.ts's
+   own header records the worst measured gap at 0.0128 chroma against a 0.010 floor — passing, but by less than
+   a third of the floor itself, which is what "the four materials read as one wash" measures as. The bar was
+   the thinnest offender: ck 0.30 and no chroma of its own at all, so it carried almost none of the ground's
+   own colour and none it was given. Raising rail and bubble's dc and giving the bar some of its own moves the
+   worst pair further from the floor without moving any hue, so the family the rail/bar/bubble/pane read as
+   together is unchanged — they are simply no longer whispering it. */
 const LIGHT_RULES: MaterialRules = {
-  rail: { dL: -0.040, ck: 1, dc: 0.018, h: 235, a: 0.52 },
-  bar: { dL: 0.036, ck: 0.30, dc: 0, h: 205, a: 0.26 },
-  bubble: { dL: -0.012, ck: 1, dc: 0.038, h: 95, a: 0.46 },
-  pane: { dL: 0.014, ck: 0.60, dc: 0, h: 'accent', a: 0.18 },
+  rail: { dL: -0.048, ck: 1, dc: 0.030, h: 235, a: 0.58 },
+  bar: { dL: 0.036, ck: 0.46, dc: 0, h: 170, a: 0.38 },
+  bubble: { dL: -0.014, ck: 1, dc: 0.050, h: 95, a: 0.50 },
+  pane: { dL: 0.014, ck: 0.60, dc: 0.006, h: 'accent', a: 0.20 },
 };
 
 const DARK_RULES: MaterialRules = {
-  rail: { dL: 0.076, ck: 1, dc: 0.020, h: 'shade', a: 0.5 },
-  bar: { dL: 0.072, ck: 0.30, dc: 0, h: 208, a: 0.20 },
-  bubble: { dL: 0.160, ck: 1, dc: 0.038, h: 55, a: 0.42 },
-  pane: { dL: 0.030, ck: 0.60, dc: 0, h: 'accent', a: 0.16 },
+  rail: { dL: 0.084, ck: 1, dc: 0.032, h: 'shade', a: 0.56 },
+  bar: { dL: 0.072, ck: 0.46, dc: 0, h: 208, a: 0.32 },
+  bubble: { dL: 0.168, ck: 1, dc: 0.050, h: 55, a: 0.46 },
+  pane: { dL: 0.030, ck: 0.60, dc: 0.006, h: 'accent', a: 0.18 },
 };
 
 /** Which family of rules is in force: the ink's own two altitudes again, so a material flips when the page
@@ -452,12 +477,14 @@ function lookOf(ground: string, rule: MaterialRule, accentHue: number): string {
 
 /** The four films at one solar position, and the two icon inks with them. Each film is solved from a target
     over the exact ground the element is drawn on — the rail and the bar over the top of the sky, the bubble
-    and the pane over the middle of it, which is where they sit. */
+    and the pane over the middle of it, which is where they sit. `rules` is which family of offsets applies —
+    LIGHT_RULES or DARK_RULES — decided by the caller: `rulesFor` for the system path, which reads it off the
+    same altitude the ink and the ground just flipped on, or a scheme forced outright by the reader's own
+    choice (spectrumAt below), which is never a function of altitude because a forced family has no altitude
+    threshold to flip at. */
 export function materialsAt(
-  sky1: string, skyMid: string, accent: string, mist: string,
-  altitude: number, ascending: boolean,
+  sky1: string, skyMid: string, accent: string, mist: string, rules: MaterialRules,
 ): Materials {
-  const rules = rulesFor(altitude, ascending);
   const accentHue = hueOf(okLabOf(accent));
   /* Every material's LOOK is defined against the sky's own top colour, and only the film that gets there is
      solved against the band the element is actually drawn on. That distinction is the whole reason the gaps
@@ -525,22 +552,108 @@ function dayClockOf(hourAngle: number): number {
   return (((hourAngle + 180) % 360) + 360) % 360 / 360;
 }
 
+/** Four quarter-anchors — midnight, dawn, noon, dusk, and midnight again — blended by `dayClockOf` rather than
+    by altitude. This is what a FORCED scheme walks (see the header's section 4): it has no regime to flip
+    between, so the whole day is one continuous smoothstep chain through its own four keyframes, exactly the
+    shape `decorativeAt` below already uses for the atmosphere. Generalised here so the ink, the ground and the
+    atmosphere all walk the same shape of clock rather than three near-identical copies of the same loop. */
+function atClock<T>(hourAngle: number, anchors: readonly (readonly [number, T])[], mix: (a: T, b: T, t: number) => T): T {
+  const clock = dayClockOf(hourAngle);
+  for (let i = 0; i < anchors.length - 1; i++) {
+    const [from, fromValue] = anchors[i];
+    const [to, toValue] = anchors[i + 1];
+    if (clock >= from && clock <= to) return mix(fromValue, toValue, smoothstep(from, to, clock));
+  }
+  /* Unreachable — dayClockOf always returns a value in [0, 1] and the anchors span exactly that — but a
+     function with a documented return type does not get to return undefined if the loop's own logic ever
+     drifts, so the first anchor (always midnight, in every table this is called with) is the floor rather
+     than a crash. */
+  return anchors[0][1];
+}
+
 const DECO_ANCHORS: [number, DecorativePalette][] = [
   [0, NIGHT_D], [0.25, DAYBREAK_D], [0.5, NOON_D], [0.75, GOLDEN_D], [1, NIGHT_D],
 ];
 
 function decorativeAt(hourAngle: number): DecorativePalette {
-  const clock = dayClockOf(hourAngle);
-  for (let i = 0; i < DECO_ANCHORS.length - 1; i++) {
-    const [from, fromPalette] = DECO_ANCHORS[i];
-    const [to, toPalette] = DECO_ANCHORS[i + 1];
-    if (clock >= from && clock <= to) return mixDecorative(fromPalette, toPalette, smoothstep(from, to, clock));
-  }
-  /* Unreachable — dayClockOf always returns a value in [0, 1] and the anchors span exactly that — but a
-     function with a documented return type does not get to return undefined if the loop's own logic ever
-     drifts, so night is the floor rather than a crash. */
-  return NIGHT_D;
+  return atClock(hourAngle, DECO_ANCHORS, mixDecorative);
 }
+
+/* ---- the two forced-scheme families: a whole day of dark, a whole day of light -------------------------
+   Six of the eight anchors a forced scheme needs already exist above, doing double duty: NIGHT_C/NIGHT_SKY_DEEP
+   anchor the dark family's midnight, GOLDEN_C/DUSK_SKY its evening; DAYBREAK_C/DAWN_SKY anchor the light
+   family's morning, NOON_C/DAY_HIGH_SKY its midday. The four new ones fill the two gaps the system path never
+   needed to fill, because the system path never asks the dark family what noon looks like or the light family
+   what midnight looks like — a forced scheme asks exactly that. Each is hand-tuned against the ink-and-ground
+   rules the header's section 1 states (near-black-or-near-white ink, a ground on the same side of the readable
+   line at every point this file's own test sweeps), not against a formula, for the same reason the original
+   four were: a target this file has to hit exactly is a target worth choosing by eye and then measuring,
+   rather than deriving and hoping. */
+
+/* Dark family, first light: a cool, quiet teal-blue rather than the night's blue-violet or the evening's
+   violet — the third point on the same arc, so all three dark hours read as one family without repeating. */
+const DARK_DAWN_C: CriticalPalette = {
+  voidHex: '#050e12', bg: '#0a1a20', raise: '#0f242c', raise2: '#152e37', line: '#1e3944', lineSoft: '#152a33',
+  paper: '#eef6f5', mist: '#9dc0bf', mist2: '#729695',
+  accent: '#8fd6dc', accent2: '#69b8c0', accentWash: 'rgba(143, 214, 220, 0.10)', mark2: '#2b6b73',
+  glass: 'rgba(11, 26, 33, 0.82)', glass2: 'rgba(12, 29, 37, 0.60)', scrim: 'rgba(4, 11, 14, 0.62)',
+  railStop1: 'rgba(8, 19, 24, 0.86)', railStop2: 'rgba(5, 13, 17, 0.92)', grainA: 0.032,
+};
+/* Dark family, high sun: the dark register's own version of NOON_C's crisp, saturated blue — a page that
+   reads as full day while staying dark, rather than the pale near-neutral NIGHT_C plateau standing in for
+   noon because it is the only dark anchor there has ever been. */
+const DARK_NOON_C: CriticalPalette = {
+  voidHex: '#050a14', bg: '#0a1428', raise: '#0f1d34', raise2: '#13253f', line: '#20355c', lineSoft: '#172746',
+  paper: '#eef2fb', mist: '#9fb1d1', mist2: '#7183a6',
+  accent: '#7fb0f5', accent2: '#5a90e8', accentWash: 'rgba(127, 176, 245, 0.12)', mark2: '#2f5fb0',
+  glass: 'rgba(10, 18, 34, 0.82)', glass2: 'rgba(11, 20, 36, 0.60)', scrim: 'rgba(3, 7, 15, 0.62)',
+  railStop1: 'rgba(7, 13, 25, 0.86)', railStop2: 'rgba(4, 9, 18, 0.92)', grainA: 0.032,
+};
+/* Light family, night: a pale, cool, moonlit paper rather than daylight white — the same near-black ink the
+   light family always carries, and an indigo accent in place of the day's blue, so a reader who reads at
+   midnight in light mode is never told it is noon. */
+const LIGHT_NIGHT_C: CriticalPalette = {
+  voidHex: '#e7ebf6', bg: '#f0f2fa', raise: '#ffffff', raise2: '#ebeef8', line: '#d5dbee', lineSoft: '#e5e8f4',
+  paper: '#171a2e', mist: '#4b5274', mist2: '#5f6688',
+  accent: '#3d4cb0', accent2: '#2e3b93', accentWash: 'rgba(61, 76, 176, 0.10)', mark2: '#232d78',
+  glass: 'rgba(255, 255, 255, 0.86)', glass2: 'rgba(255, 255, 255, 0.72)', scrim: 'rgba(20, 22, 42, 0.40)',
+  railStop1: 'rgba(233, 236, 248, 0.86)', railStop2: 'rgba(225, 229, 245, 0.92)', grainA: 0.022,
+};
+/* Light family, dusk: pale and warm without ever being amber — the same "violet, not amber" rule GOLDEN_C
+   keeps, so the light family's own dusk does not reach for a hue the dark family's already claimed. */
+const LIGHT_DUSK_C: CriticalPalette = {
+  voidHex: '#f2e9ee', bg: '#fdf6f8', raise: '#ffffff', raise2: '#f9eef2', line: '#e7d4dd', lineSoft: '#f1e2e8',
+  paper: '#251527', mist: '#5d4a5f', mist2: '#715e73',
+  accent: '#8054b8', accent2: '#68409c', accentWash: 'rgba(128, 84, 184, 0.10)', mark2: '#4f3080',
+  glass: 'rgba(255, 252, 253, 0.86)', glass2: 'rgba(255, 253, 254, 0.72)', scrim: 'rgba(32, 20, 36, 0.40)',
+  railStop1: 'rgba(247, 234, 238, 0.86)', railStop2: 'rgba(240, 224, 230, 0.92)', grainA: 0.022,
+};
+
+const DARK_DAWN_SKY: Sky = { sky1: '#0c1f26', sky2: '#08151a', vignette: 'rgba(4, 12, 15, 0.50)' };
+const DARK_NOON_SKY: Sky = { sky1: '#0a1832', sky2: '#061020', vignette: 'rgba(3, 8, 17, 0.48)' };
+const LIGHT_NIGHT_SKY: Sky = { sky1: '#dde3f3', sky2: '#eef1fa', vignette: 'rgba(118, 126, 162, 0.12)' };
+const LIGHT_DUSK_SKY: Sky = { sky1: '#f4dce8', sky2: '#fbeef4', vignette: 'rgba(150, 108, 138, 0.13)' };
+
+/** midnight, dawn, noon, dusk, midnight — the dark family never leaving its own register. */
+const DARK_ANCHORS: [number, CriticalPalette][] = [
+  [0, NIGHT_C], [0.25, DARK_DAWN_C], [0.5, DARK_NOON_C], [0.75, GOLDEN_C], [1, NIGHT_C],
+];
+const DARK_SKY_ANCHORS: [number, Sky][] = [
+  [0, NIGHT_SKY_DEEP], [0.25, DARK_DAWN_SKY], [0.5, DARK_NOON_SKY], [0.75, DUSK_SKY], [1, NIGHT_SKY_DEEP],
+];
+/** midnight, dawn, noon, dusk, midnight — the light family never leaving its own register. */
+const LIGHT_ANCHORS: [number, CriticalPalette][] = [
+  [0, LIGHT_NIGHT_C], [0.25, DAYBREAK_C], [0.5, NOON_C], [0.75, LIGHT_DUSK_C], [1, LIGHT_NIGHT_C],
+];
+const LIGHT_SKY_ANCHORS: [number, Sky][] = [
+  [0, LIGHT_NIGHT_SKY], [0.25, DAWN_SKY], [0.5, DAY_HIGH_SKY], [0.75, LIGHT_DUSK_SKY], [1, LIGHT_NIGHT_SKY],
+];
+
+/** A reader's colour-scheme choice. 'system' is every reader who has not overridden anything: the sun alone
+    decides the family, exactly as this module always has. 'dark' and 'light' are an explicit, durable choice
+    that outranks the sun's own position for the family — but never for the drift within it; see the header's
+    section 4. */
+export type Scheme = 'light' | 'dark' | 'system';
 
 /* ---- the thirty-two custom properties this module owns ------------------------------------------------ */
 
@@ -565,10 +678,20 @@ export type Spectrum = Record<SpectrumProperty, string>;
     while those blocks were written as a bare `[data-hour]`: a declaration on the element beats its parent's
     inline style, so every value here reached the root and nothing below it — the module worked, and the page
     showed the four static rooms. */
-export function spectrumAt(position: SolarPosition): Spectrum {
+export function spectrumAt(position: SolarPosition, scheme: Scheme = 'system'): Spectrum {
   const ascending = position.hourAngle < 0;
-  const c = criticalAt(position.altitude, ascending);
-  const s = skyAt(position.altitude, position.hourAngle, ascending);
+  /* 'system' walks the altitude-keyed regime exactly as this module always has — criticalAt and skyAt below
+     are untouched by the scheme axis. A forced scheme instead walks its own four-anchor clock (see the
+     header's section 4), which never flips regime because it never leaves its own family, and hands the
+     material rules straight to materialsAt rather than deriving them from an altitude a forced family does
+     not consult for anything else either. */
+  const c = scheme === 'dark' ? atClock(position.hourAngle, DARK_ANCHORS, mixCritical)
+    : scheme === 'light' ? atClock(position.hourAngle, LIGHT_ANCHORS, mixCritical)
+    : criticalAt(position.altitude, ascending);
+  const s = scheme === 'dark' ? atClock(position.hourAngle, DARK_SKY_ANCHORS, mixSky)
+    : scheme === 'light' ? atClock(position.hourAngle, LIGHT_SKY_ANCHORS, mixSky)
+    : skyAt(position.altitude, position.hourAngle, ascending);
+  const rules = scheme === 'dark' ? DARK_RULES : scheme === 'light' ? LIGHT_RULES : rulesFor(position.altitude, ascending);
   const d = decorativeAt(position.hourAngle);
   /* The middle of the page is not the top of it: the gradient's second stop dominates the band the reader's
      own bubble and the machine's pane sit in, so a film over that band is solved against the mid colour
@@ -576,7 +699,7 @@ export function spectrumAt(position: SolarPosition): Spectrum {
   /* In sRGB, because that is what the gradient itself does between its two stops: the film is solved
      against the colour actually behind the element, not against a perceptual ideal of it. */
   const mid = mixHexValue(s.sky1, s.sky2, 0.6);
-  const m = materialsAt(s.sky1, mid, c.accent, c.mist, position.altitude, ascending);
+  const m = materialsAt(s.sky1, mid, c.accent, c.mist, rules);
   return {
     '--g-void': c.voidHex, '--g-bg': c.bg, '--g-raise': c.raise, '--g-raise-2': c.raise2,
     '--g-line': c.line, '--g-line-soft': c.lineSoft,

@@ -112,6 +112,31 @@ class ComposerEvidenceTests(unittest.TestCase):
         self.assertEqual(len(temperatures), 1)
         self.assertIn('–', temperatures[0]['value'])
 
+    def test_a_long_series_keeps_the_rows_its_range_is_made_of(self):
+        """A range answers "how much does this vary". It cannot answer "which year was the wettest".
+
+        Measured 21 September 2026: that question retrieved all 110 published years, the collapse
+        replaced them with "923.7–1488.8 mm", and the answer said the evidence did not identify the
+        year. The highest and lowest rows now travel with the range - two rows out of a hundred and
+        ten, each a real retrieved row carrying its own id and year.
+        """
+        from weathergpt_data.conversation import EXTREMES_WORTH_KEEPING_ABOVE
+        rows = [fact('y%d' % year, 'rainfall', str(900 + year)) for year in range(1, 40)]
+        material, _further = composer_evidence({**self.result(), 'facts': rows})
+        rainfall = [row for row in material if row['parameter'] == 'rainfall']
+        self.assertEqual(len(rainfall), 3, 'the range, the highest and the lowest')
+        self.assertIn('–', rainfall[0]['value'])
+        self.assertIn('highest', rainfall[1]['label'])
+        self.assertIn('lowest', rainfall[2]['label'])
+        self.assertEqual(rainfall[1]['value'], '939')
+        self.assertEqual(rainfall[2]['value'], '901')
+        self.assertGreater(len(rows), EXTREMES_WORTH_KEEPING_ABOVE)
+
+    def test_a_short_series_does_not_get_them(self):
+        """The highest and lowest of four hourly temperatures ARE most of those four."""
+        material, _further = composer_evidence(self.result())
+        self.assertEqual(len([r for r in material if r['parameter'] == 'temperature_2m']), 1)
+
     def test_the_rest_travels_with_the_answer_rather_than_being_withheld(self):
         """Nothing is silently dropped: every retrieved row is either material or named as further."""
         result = self.result()
