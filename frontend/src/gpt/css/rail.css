@@ -208,3 +208,12 @@
 .g-rail[data-collapsed='true'] .g-rail-note { display: none; }
 .g-rail-note { margin: 0; padding: 0 var(--g-3) var(--g-3); font-size: 11px; color: var(--g-mist); line-height: 1.5; }
 .g-empty-note { padding: var(--g-3) var(--g-2); font-size: 12.5px; color: var(--g-mist); line-height: 1.55; }
+
+/* The held place's source line: present, because the row above it prints a value, and quiet, because a
+   268px column cannot afford three wrapped lines of monospace. One line, clipped, in the interface face
+   rather than the machine one - the full string is on the element's title. */
+.g-place-source {
+  margin: 3px 0 0; padding-left: 22px;
+  font-family: var(--g-sans); font-size: 11.5px; line-height: 1.45; color: var(--g-mist-2);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}

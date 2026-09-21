@@ -50,6 +50,7 @@
 
 import { useEffect, useState } from 'react';
 import { SkyGlyphIcon, type SkyGlyph } from '../shell/icons';
+import { Horizon } from './Horizon';
 import { solarPosition } from './fieldPaint';
 import { applySpectrum, clearSpectrum, spectrumAt, type Scheme } from './spectrum';
 import { useWorkingPlace } from '../modules/Evidence';
@@ -123,6 +124,7 @@ export function Field({ expanded, sky = null }: { expanded: boolean; sky?: SkyGl
       <div className="g-field-sky" />
       <div className="g-field-halo" />
       <div className="g-field-mood" />
+      <Horizon />
       <div className="g-field-grain" />
       <div className="g-field-vignette" />
       {sky ? (

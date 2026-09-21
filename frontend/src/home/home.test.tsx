@@ -107,7 +107,7 @@ describe('the front door', () => {
     expect(source?.textContent).toContain('S63');
     expect(source?.textContent).toContain('read 19 Sep 2026, 12:00 IST');
     /* The unit was not in the source, so no unit is printed and the absence is said. */
-    expect(source?.textContent).toContain('no unit in the source');
+    expect(source?.textContent).toContain('no unit stated by the source');
     expect(document.querySelector('.w-unit')).toBeNull();
   });
 
@@ -121,7 +121,7 @@ describe('the front door', () => {
     const welcome = await screen.findByTestId('welcome');
     expect(await within(welcome).findByText('thunderstorm')).toBeInTheDocument();
     expect(document.querySelector('.w-unit')?.textContent).toBe('°C');
-    expect(document.querySelector('.w-source')?.textContent).not.toContain('no unit in the source');
+    expect(document.querySelector('.w-source')?.textContent).not.toContain('no unit stated by the source');
     expect(document.querySelector('.w-glyph')?.getAttribute('data-kind')).toBe('condition');
   });
 

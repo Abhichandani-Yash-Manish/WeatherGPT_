@@ -53,13 +53,31 @@ export function TopBar({ title, chatting, sky, panelOpen, onTogglePanel, onToggl
           className="g-skyline g-claim"
           data-lead="true"
           data-testid="skyline"
+          title={sky ? stationSource(sky) : undefined}
           style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-end', columnGap: '7px', rowGap: '2px', padding: 0 }}
         >
           {sky?.glyph ? <SkyGlyphIcon glyph={sky.glyph} size={15} strokeWidth={1.5} aria-hidden="true" /> : null}
           {sky?.place ? <span className="g-skyline-place">{sky.place}</span> : null}
           {sky?.temperature ? <span className="g-skyline-value">{sky.temperature}{sky.unit || ''}</span> : null}
           {sky?.condition ? <span className="g-skyline-cond">{sky.condition}</span> : null}
-          {sky ? <span className="g-claim-source" style={{ flexBasis: '100%', textAlign: 'right' }}>{stationSource(sky)}</span> : null}
+          {/* The station's source line, here ONLY while the front door is not on screen.
+
+              It used to be on three surfaces at once - this bar, the rail's place block, and under the
+              reading on the welcome - so somebody opening the product met the same monospace string
+              three times before they met a single sentence of weather. Provenance that repeats stops
+              reading as rigour and starts reading as instrumentation left switched on.
+
+              Deleting it outright was the wrong correction and a spec caught it: during a conversation
+              the welcome is gone, so the bar would have been showing a value with its source nowhere
+              on the page but a tooltip. A value whose provenance is only reachable by hovering is a
+              value a reader has to take on trust, which is the one thing this product does not ask.
+
+              So it is stated exactly once, and which surface says it depends on which surface is
+              there: the welcome owns it on the front door, the bar owns it once a conversation
+              starts. */}
+          {sky && chatting ? (
+            <span className="g-claim-source g-skyline-source">{stationSource(sky)}</span>
+          ) : null}
         </p>
       ) : null}
 

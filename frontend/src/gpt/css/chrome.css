@@ -242,3 +242,11 @@ p.g-top-title { color: var(--g-mist); font-weight: 400; }
   transition: color var(--g-fast) var(--g-ease), background var(--g-fast) var(--g-ease);
 }
 .g-quiet:hover { color: var(--g-paper); background: var(--g-t2); }
+
+/* The bar's source line: one line, clipped rather than wrapped. It used to take a full second row of
+   the header at 100% flex-basis, which on a 1440px screen put a 96-character monospace string across
+   the top of the page as the second-largest block of text on it. */
+.g-skyline-source {
+  flex: 0 1 auto; min-width: 0; max-width: 46ch;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}

@@ -47,7 +47,7 @@ official warning.
 | **Scenario atlas** | **273 / 306 (89%)** — 306 turns across the eight features, multi-turn context and adversarial boundaries |
 | **Refusal rate** | **9%** — 11 upstream (the publisher has no such data), 1 product limit, 16 avoidable |
 | **Python tests** | 1539 |
-| **Frontend specs** | 82 suites, 544 checks |
+| **Frontend specs** | 83 suites, 547 checks |
 | **Verification gate** | `python3 scripts/verify_all.py` — 21 steps, 0 failed |
 
 The refusal breakdown is the number worth reading twice. **Most refusals are the publisher having nothing,

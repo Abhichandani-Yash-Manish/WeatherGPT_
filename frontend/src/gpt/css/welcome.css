@@ -55,8 +55,10 @@
 
 .w-greeting {
   font-family: var(--g-display);
-  font-size: clamp(2.3rem, 1.4rem + 3.1vw, 3.35rem);
-  font-weight: 700; letter-spacing: -0.028em; line-height: 1.04;
+  /* Stepped down hard. It used to be the largest thing here, which meant the page's most prominent
+     statement was the time of day - something the reader's own clock already told them. */
+  font-size: clamp(1.0625rem, 0.95rem + 0.5vw, 1.25rem);
+  font-weight: 450; letter-spacing: 0.002em; line-height: 1.3;
   margin: 0; color: var(--g-paper);
   /* The hour changes under the reader's feet, and this is the change's own expression: the greeting rises
      out of a 3px blur rather than appearing, on the entrance duration. (transitions.dev text-states swap,
@@ -68,29 +70,54 @@
   to   { opacity: 1; transform: none; filter: blur(0); }
 }
 .w-place {
-  margin: var(--g-2) 0 0; font-size: 1.0625rem; color: var(--g-mist);
+  margin: 2px 0 0; font-size: clamp(1.2rem, 1rem + 0.8vw, 1.5rem); color: var(--g-paper);
+  font-family: var(--g-display); font-weight: 500; letter-spacing: -0.014em; line-height: 1.2;
   animation: w-arrive 720ms var(--g-ease) 140ms both;
 }
 
 .w-reading {
-  display: flex; align-items: baseline; justify-content: center; gap: var(--g-3);
+  display: flex; align-items: baseline; justify-content: center; gap: var(--g-4);
   flex-wrap: wrap; margin: var(--g-5) 0 0;
   animation: w-arrive 720ms var(--g-ease) 200ms both;
 }
 /* The numeral is the one place the display face earns its keep at size, and it stays under the greeting:
    this is a conversation, so the greeting leads and the reading follows it. Tabular figures, so a value
    that changes between one look and the next does not shuffle the line it sits on. */
+/* THE SCALE, which is the thing this screen did not have.
+   Every element on the front door used to be within a few points of every other - greeting 2.3rem,
+   place 1.06rem, value 1.9rem, condition 1.06rem, quote 1rem - so a reader's eye arrived and had
+   nowhere to land. Seven objects of the same importance is the same as none.
+
+   There is one hero now and it is the READING, because that is the only thing on this screen that is
+   true right now and true only right now. Everything else is set against it: the greeting is a quiet
+   line above, the place is the subject at half the hero's size, and the source is a whisper. Four
+   sizes, each clearly a different rank. */
 .w-temp {
-  font-family: var(--g-display); font-size: clamp(1.9rem, 1.4rem + 1.6vw, 2.5rem);
-  font-weight: 700; letter-spacing: -0.03em; line-height: 1; color: var(--g-paper);
+  font-family: var(--g-display); font-size: clamp(3.4rem, 2.2rem + 4.4vw, 5.25rem);
+  font-weight: 600; letter-spacing: -0.042em; line-height: 0.92; color: var(--g-paper);
   font-variant-numeric: tabular-nums;
 }
-.w-unit { font-size: 0.42em; font-weight: 600; margin-left: 3px; color: var(--g-mist); letter-spacing: 0; }
-/* The station's own word, verbatim and lower case as it printed it. */
-.w-cond { font-size: 1.0625rem; color: var(--g-mist); }
+.w-unit {
+  font-size: 0.30em; font-weight: 500; margin-left: 4px; color: var(--g-mist);
+  letter-spacing: 0; vertical-align: 0.62em;
+}
+/* The station's own word, verbatim and lower case as it printed it, sitting on the value's baseline. */
+.w-cond { font-size: 1.25rem; color: var(--g-mist); letter-spacing: -0.004em; }
+/* And the same word promoted to the hero, for a reading whose unit the source never stated. */
+.w-cond-lead {
+  font-family: var(--g-display); font-size: clamp(2.6rem, 1.8rem + 3.2vw, 4rem);
+  font-weight: 500; letter-spacing: -0.03em; line-height: 1; color: var(--g-paper);
+  text-transform: lowercase;
+}
+/* A whisper, and not in the machine face. Mono is this product's promise about where a NUMBER came
+   from; spending it on a line of station metadata under a heading made the smallest text on the page
+   also the most typographically insistent. */
+/* Wins over .g-claim-source, which this element also carries as the provenance audit's marker. */
+.w-source.g-claim-source,
 .w-source {
-  font-family: var(--g-mono); font-size: 11px; line-height: 1.7; color: var(--g-mist);
-  margin: var(--g-4) 0 0; max-width: 78ch; overflow-wrap: anywhere;
+  font-family: var(--g-sans);
+  font-size: 12px; line-height: 1.65; color: var(--g-mist-2);
+  margin: var(--g-4) 0 0; max-width: 62ch; overflow-wrap: anywhere;
   animation: w-arrive 720ms var(--g-ease) 260ms both;
 }
 
@@ -111,12 +138,17 @@
   padding: 2px 6px; border-radius: var(--g-r-sm);
   /* Solid, not dashed. A dashed underline under two words in a sentence is the convention browsers and
      word processors use for "this is misspelled", and "Set your place" is an invitation, not an error. */
-  border-bottom: 1px solid color-mix(in srgb, var(--g-mist) 38%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--g-mist) 26%, transparent);
   transition: color var(--g-fast) var(--g-ease), border-color var(--g-fast) var(--g-ease), background var(--g-fast) var(--g-ease);
 }
 .w-place-button:hover { color: var(--g-paper); border-bottom-color: var(--g-accent); background: var(--g-t2); }
 .w-place-button:focus-visible { outline: 2px solid var(--g-accent); outline-offset: 2px; }
-.w-place-none { color: var(--g-mist); }
+/* The invitation is not a place name and must not be set as one. `.w-place` is sized for "Mumbai,
+   State of Maharashtra" - the subject of everything else on the screen - and at that size the words
+   "Set your place" become a headline demanding an action, with a two-pixel rule under them. It is an
+   offer: the reader has no place yet, and the screen should say so without shouting. */
+.w-place-none { color: var(--g-mist); font-size: 1.25rem; font-weight: 500; letter-spacing: -0.008em; }
+.w-place-none .w-place-button { border-bottom-width: 1px; }
 
 /* ---- naming a place ---------------------------------------------------------------------------------- */
 .g-picker {

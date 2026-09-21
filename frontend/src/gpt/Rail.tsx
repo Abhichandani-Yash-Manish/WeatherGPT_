@@ -377,7 +377,7 @@ export function Rail({
           <div className="g-claim" style={{ display: 'contents' }}>
             <div className="g-place" aria-current={place ? 'true' : undefined}>
               <MapPin size={14} aria-hidden="true" />
-              <span className="g-place-name">{place?.label || t('rail.noPlace')}</span>
+              <span className="g-place-name" title={reading ? stationSource(reading) : undefined}>{place?.label || t('rail.noPlace')}</span>
               {reading && (reading.temperature || reading.glyph) ? (
                 <span className="g-place-reading">
                   {reading.glyph ? <SkyGlyphIcon glyph={reading.glyph} size={13} strokeWidth={1.6} aria-hidden="true" /> : null}
@@ -385,8 +385,20 @@ export function Rail({
                 </span>
               ) : null}
             </div>
+            {/* The station's source line, kept, because the rail PRINTS A VALUE - "29°C" sits in the row
+                above - and a value this product shows without its source is the one thing it may never
+                do. Deleting this was the wrong correction and the provenance audit caught it: the
+                number would have been left in a claim region with nothing owning it.
+
+                What was actually wrong was its WEIGHT, not its presence. In a 268px column a 96-
+                character monospace string wrapped to three lines and became the largest object in the
+                rail - louder than the place it describes and louder than anything a reader came here
+                to do. It is one quiet clipped line now, in the interface face, with the whole of it on
+                hover. Same fact, same rigour, a tenth of the noise. */}
             {reading && (reading.temperature || reading.condition) ? (
-              <p className="g-claim-source">{stationSource(reading)}</p>
+              <p className="g-claim-source g-place-source" title={stationSource(reading)}>
+                {stationSource(reading)}
+              </p>
             ) : null}
           </div>
           <div className="g-rail-actions">

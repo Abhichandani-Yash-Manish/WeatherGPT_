@@ -335,7 +335,7 @@ describe('X1 — the surfaces around the answer', () => {
     await screen.findByText('haze');
 
     expect(container.querySelector('.w-unit')).toBeNull();
-    expect(container.querySelector('.g-claim-source')).toHaveTextContent('no unit in the source');
+    expect(container.querySelector('.g-claim-source')).toHaveTextContent('no unit stated by the source');
     expect(clean(container)).toEqual([]);
   });
 

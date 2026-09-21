@@ -41,7 +41,7 @@ const DEFAULT_LONGITUDE = 82.5;
    source, and a report the source itself marks stale. Exported because the bar and the rail state the same
    station's reading, and one reading means one line: a second composition of it is how the same report
    starts saying two different things about itself. */
-export function stationSource(reading: SkyReading, options: { includeStale?: boolean } = {}): string {
+export function stationSource(reading: SkyReading, options: { includeStale?: boolean; includeUnitGap?: boolean } = {}): string {
   /* One composition of one line, so four surfaces cannot state the same reading four ways. The staleness clause
      is the one part a caller may leave out: the panel states it in its own sentence below the line, and a fact
      said twice is the failure this product refuses - it would read as two silences rather than one. */
@@ -53,7 +53,13 @@ export function stationSource(reading: SkyReading, options: { includeStale?: boo
        plan's own drawn claim line (docs/108 section 3.5) and the place page's station block (docs/122) use. One
        reading means one line, and that includes its wording. */
     reading.distanceKm !== null ? reading.distanceKm.toFixed(1) + ' km away' : null,
-    reading.temperature && !reading.unit ? 'no unit in the source' : null,
+    /* Left out where the CALLER has already said it in its own words. The front door leads with
+       "27 reported, with no unit stated by the source", and this line then appended "no unit in the
+       source" to the end of the same sentence - the identical absence, stated twice, eleven words
+       apart. That is the exact failure this module's header calls out for staleness, in a second
+       place. */
+    options.includeUnitGap === false ? null
+      : reading.temperature && !reading.unit ? 'no unit in the source' : null,
     options.includeStale === false ? null : reading.stale ? 'the source marks this report stale' : null,
   ].filter(Boolean).join(' · ');
 }
@@ -134,6 +140,22 @@ export function Welcome({ hour }: { hour: Hour }) {
           Absent stays absent: no placeholder value is ever shown where a source said nothing. */}
       {reading && (reading.temperature || reading.condition || source) ? (
         <div className="g-claim" style={{ display: 'contents' }}>
+          {/* THE HERO, and which thing is the hero depends on what the source actually stated.
+
+              A number whose unit nobody stated is not a reading, it is a digit. This screen used to set
+              "27" at display size beside the word "mist" because the station printed a temperature and
+              no unit, and a reader has no way to know whether that is Celsius, Fahrenheit, or a typo.
+              Where the unit IS stated the value leads, as it should. Where it is not, the CONDITION
+              leads - a word the source really did print - and the bare number steps down to the line
+              below with the absence named. Nothing is hidden either way; what changes is which of the
+              two honest facts is allowed to be the largest thing on the page. */}
+          {/* The value leads and the condition sits beside it, which is what somebody opening a weather
+              workspace came to see.
+
+              This briefly promoted the CONDITION to display size whenever the source stated no unit -
+              defensible logic, ridiculous on screen: the largest thing on the page became the word
+              "mist". The unit being unstated is a real gap and it is named in the line below, where a
+              caveat belongs. It is not a reason to refuse to show the reading. */}
           {reading.temperature || reading.condition ? (
             <p className="w-reading">
               {reading.temperature ? (
@@ -145,7 +167,18 @@ export function Welcome({ hour }: { hour: Hour }) {
               {reading.condition ? <span className="w-cond">{reading.condition}</span> : null}
             </p>
           ) : null}
-          {source ? <p className="w-source g-claim-source">{source}</p> : null}
+          {source ? (
+            /* `g-claim-source` stays on this element even though `w-source` overrides every one of its
+               visual properties. It is not styling: it is the marker the provenance audit uses to find
+               every source line in the product, and dropping it to change a font would have made the
+               front door's provenance invisible to the check that exists to prove it is there. */
+            <p className="w-source g-claim-source" title={source}>
+              {reading.temperature && !reading.unit
+                ? reading.temperature + ' reported, with no unit stated by the source · '
+                  + stationSource(reading, { includeUnitGap: false })
+                : source}
+            </p>
+          ) : null}
         </div>
       ) : null}
 

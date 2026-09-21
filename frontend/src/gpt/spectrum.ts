@@ -324,13 +324,36 @@ function criticalAt(altitude: number, ascending: boolean): CriticalPalette {
 type Sky = { sky1: string; sky2: string; vignette: string };
 
 /* Below the horizon and well before first light: the deepest sky of the night. */
+/* ---- the sky, in a matte mineral register, with somewhere to stand -----------------------------------
+   The second half of this was the bigger mistake, and it took a screenshot to see it. Taking the chroma
+   out of four sugared pastels was right. Leaving them all at 92-96% lightness was not: a ground that pale
+   is a ground nothing can float ABOVE. Every white card, every frosted pane, every lifted rail had at most
+   four points of lightness to work with, so the whole page flattened into one bright wash and read as
+   unfinished rather than as calm. Desaturating it only changed the flavour of the flatness.
+
+   Each sky drops five to eight points and takes a clear TEMPERATURE instead of a hue: dawn is warm because
+   the light at dawn is warm, noon is cool and bright, dusk is dimmed and faintly warm the way a room is
+   before the lamps go on, and the night is cool ash. That is what gives a white card somewhere to be.
+   ---- and the original note, which still stands -----------------------------------------------------------
+   The four light skies used to be sugared almonds: periwinkle #dde3f3, PINK #f4dce8, peach #f6dcc0 and
+   baby blue #c4d9f5. Individually defensible as "soft"; together they are the palette of a children's
+   weather app, and this one is presented to a meteorological department.
+
+   Every one of them has had most of its chroma taken out and what is left pushed toward a mineral - ash,
+   oat, stone, graphite. The HUES are kept, because they are the ones the sun actually makes: morning is
+   still warmer than noon and dusk is still cooler than morning. What is gone is the saturation that made
+   them sweet. A sky at 4% chroma still reads unmistakably as morning beside a noon at 3%; it just stops
+   looking like an illustration of morning.
+
+   The dark skies were already in this register and are barely touched - dusk lost the purple that was
+   the one sugared note left after dark. */
 const NIGHT_SKY_DEEP: Sky = { sky1: '#080f21', sky2: '#060a16', vignette: 'rgba(2, 4, 10, 0.52)' };
 /* The sun at −6°, arriving or leaving. NIGHT_D's own values, unchanged. */
 const NIGHT_SKY: Sky = { sky1: '#0a1124', sky2: '#070b15', vignette: 'rgba(3, 6, 12, 0.46)' };
 /* First light: DAYBREAK_D's own values, unchanged — the warm cream the old dawn anchor held. */
-const DAWN_SKY: Sky = { sky1: '#f6dcc0', sky2: '#fcf1e6', vignette: 'rgba(146, 126, 104, 0.14)' };
+const DAWN_SKY: Sky = { sky1: '#ddd2c2', sky2: '#efe9df', vignette: 'rgba(122, 106, 86, 0.17)' };
 /* The high-sun sky: NOON_D's own values, unchanged. */
-const DAY_HIGH_SKY: Sky = { sky1: '#c4d9f5', sky2: '#e4eefb', vignette: 'rgba(94, 118, 158, 0.11)' };
+const DAY_HIGH_SKY: Sky = { sky1: '#c3cdd6', sky2: '#e4e9ee', vignette: 'rgba(84, 99, 118, 0.14)' };
 /* The light's own two ends, and both of them blue. The day's change is clarity rather than hue: a dull,
    wide morning or evening (chroma 0.017) clearing to a saturated noon (0.045). The warmth of a low sun is
    not here — it is in the auras and the vignette below, which the hour angle drives, and in the twilight
@@ -339,7 +362,7 @@ const DAY_HIGH_SKY: Sky = { sky1: '#c4d9f5', sky2: '#e4eefb', vignette: 'rgba(94
    ground collapse onto the same colour at midday (docs/134). */
 const DAY_LOW_SKY: Sky = { sky1: '#dbe4f0', sky2: '#eef3fa', vignette: 'rgba(104, 120, 148, 0.12)' };
 /* Dusk: GOLDEN_D's own values, unchanged — the violet the sun leaves behind. */
-const DUSK_SKY: Sky = { sky1: '#2a1f38', sky2: '#14101c', vignette: 'rgba(8, 5, 14, 0.48)' };
+const DUSK_SKY: Sky = { sky1: '#241e2b', sky2: '#131117', vignette: 'rgba(8, 6, 11, 0.48)' };
 
 function mixSky(a: Sky, b: Sky, t: number): Sky {
   return {
@@ -450,15 +473,32 @@ type MaterialRules = { rail: MaterialRule; bar: MaterialRule; bubble: MaterialRu
    The reader's own bubble takes the accent's hue instead of a fixed yellow-green, so the one thing on the
    page that is the reader's is coloured by the product's accent rather than by an unrelated third hue. */
 const LIGHT_RULES: MaterialRules = {
-  rail: { dL: 0.032, ck: 1, dc: 0.044, h: 235, a: 0.66 },
-  bar: { dL: 0.104, ck: 0.46, dc: 0.010, h: 170, a: 0.40 },
+  rail: { dL: 0.044, ck: 0.58, dc: 0.016, h: 232, a: 0.68 },
+  /* The top bar sits CLOSE to the ground rather than above it, and is the one material that does.
+     Lifting it was the obvious move and it does not work: to reach +0.11 lightness through a 40% film
+     the film itself has to be lighter than white, so it clamps - and a clamped film stops responding to
+     its own hue and chroma entirely. Three separate edits to this rule moved the measured distance by
+     exactly nothing before that was understood. A thin strip holding one line of text does not need to
+     be a raised surface; it needs an edge, which it has. */
+  /* Separated from the rail by VALUE, in the rail's own hue family, rather than by being a different
+     colour. Pushing them apart on the colour wheel is the easy way to satisfy a distinctness check and
+     the wrong way to satisfy an eye: a teal strip above a blue column reads as two unrelated components,
+     which is precisely the "nothing was considered" look this palette is being rebuilt out of. A header
+     that sits slightly BELOW its page is an ordinary, quiet thing - and unlike the rail, which is a
+     full-height column, a thin strip carrying one line of text loses nothing by being recessive. */
+  bar: { dL: -0.024, ck: 0.50, dc: 0.040, h: 232, a: 0.46 },
   bubble: { dL: 0.022, ck: 1, dc: 0.050, h: 95, a: 0.50 },
   pane: { dL: 0.026, ck: 0.60, dc: 0.006, h: 'accent', a: 0.46 },
 };
 
 const DARK_RULES: MaterialRules = {
-  rail: { dL: 0.084, ck: 1, dc: 0.032, h: 'shade', a: 0.56 },
-  bar: { dL: 0.072, ck: 0.46, dc: 0, h: 208, a: 0.32 },
+  /* The rail lifts to charcoal off a near-black ground; the top bar drops back toward the ground and is
+     thinner, so the two stop competing. They used to sit 0.012 of lightness apart - closer to each other
+     than either was to anything else on the page - and at Leh in the deep night that was the tightest
+     pair in the whole palette at any hour, in either family. A rail and the bar directly above it are the
+     two surfaces most often seen touching, so of all the pairs to let converge it was the worst one. */
+  rail: { dL: 0.096, ck: 1, dc: 0.034, h: 'shade', a: 0.58 },
+  bar: { dL: 0.040, ck: 0.46, dc: 0.012, h: 208, a: 0.30 },
   bubble: { dL: 0.168, ck: 1, dc: 0.050, h: 55, a: 0.46 },
   pane: { dL: 0.030, ck: 0.60, dc: 0.006, h: 'accent', a: 0.18 },
 };
@@ -535,17 +575,22 @@ type DecorativePalette = {
   markA: number;
 };
 
+/* The auras are the two soft lights that sit behind the greeting, and they were carrying more colour than
+   the sky itself: a 36% orange at daybreak and a 34% blue at noon, which is where most of the sweetness in
+   the old palette actually came from - the sky was pale and the aura painted over it. They are mineral now
+   and roughly half as strong. A glow you can name the colour of is a decoration; a glow you can only
+   notice is light. */
 const NIGHT_D: DecorativePalette = {
-  aura1: 'rgba(120, 148, 210, 0.11)', aura2: 'rgba(96, 116, 176, 0.08)', haloX: 32, moodK: 0.62, markA: 0.035,
+  aura1: 'rgba(128, 146, 184, 0.10)', aura2: 'rgba(104, 118, 148, 0.07)', haloX: 32, moodK: 0.62, markA: 0.035,
 };
 const DAYBREAK_D: DecorativePalette = {
-  aura1: 'rgba(240, 166, 102, 0.36)', aura2: 'rgba(184, 166, 226, 0.22)', haloX: 22, moodK: 1, markA: 0.045,
+  aura1: 'rgba(206, 174, 138, 0.20)', aura2: 'rgba(166, 158, 178, 0.13)', haloX: 22, moodK: 1, markA: 0.045,
 };
 const NOON_D: DecorativePalette = {
-  aura1: 'rgba(124, 170, 238, 0.34)', aura2: 'rgba(150, 186, 240, 0.22)', haloX: 64, moodK: 1, markA: 0.045,
+  aura1: 'rgba(146, 166, 190, 0.19)', aura2: 'rgba(166, 180, 198, 0.13)', haloX: 64, moodK: 1, markA: 0.045,
 };
 const GOLDEN_D: DecorativePalette = {
-  aura1: 'rgba(226, 138, 86, 0.22)', aura2: 'rgba(150, 110, 200, 0.16)', haloX: 78, moodK: 0.62, markA: 0.035,
+  aura1: 'rgba(192, 150, 118, 0.15)', aura2: 'rgba(132, 118, 150, 0.10)', haloX: 78, moodK: 0.62, markA: 0.035,
 };
 
 function mixDecorative(a: DecorativePalette, b: DecorativePalette, t: number): DecorativePalette {
@@ -647,8 +692,8 @@ const LIGHT_DUSK_C: CriticalPalette = {
 
 const DARK_DAWN_SKY: Sky = { sky1: '#0c1f26', sky2: '#08151a', vignette: 'rgba(4, 12, 15, 0.50)' };
 const DARK_NOON_SKY: Sky = { sky1: '#0a1832', sky2: '#061020', vignette: 'rgba(3, 8, 17, 0.48)' };
-const LIGHT_NIGHT_SKY: Sky = { sky1: '#dde3f3', sky2: '#eef1fa', vignette: 'rgba(118, 126, 162, 0.12)' };
-const LIGHT_DUSK_SKY: Sky = { sky1: '#f4dce8', sky2: '#fbeef4', vignette: 'rgba(150, 108, 138, 0.13)' };
+const LIGHT_NIGHT_SKY: Sky = { sky1: '#ccd1d9', sky2: '#e4e7ec', vignette: 'rgba(98, 105, 122, 0.15)' };
+const LIGHT_DUSK_SKY: Sky = { sky1: '#d8ccce', sky2: '#ece5e6', vignette: 'rgba(120, 100, 108, 0.16)' };
 
 /** midnight, dawn, noon, dusk, midnight — the dark family never leaving its own register. */
 const DARK_ANCHORS: [number, CriticalPalette][] = [
