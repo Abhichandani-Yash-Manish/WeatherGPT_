@@ -47,8 +47,15 @@ def parent_context(document):
         nonlocal active
         if active is None:
             return
-        text = clean(' '.join(line['text'] for _, line in active['lines']))
-        if not text or re.search(r'\(cid:\d+\)|\ufffd', text) or len(text) > 6000:
+        # The judgement is made on the RAW join, before cleaning, and that order is the whole rule.
+        # `clean` now substitutes an unmapped glyph rather than leaving "(cid:0)" in the text a reader
+        # is shown, which is right for a quoted passage and wrong here: this is the reviewed parent
+        # context, where a section the extractor could not read whole is OMITTED and named in the
+        # coverage record rather than repaired. Reading the cleaned text would let a damaged section
+        # pass as sound because the evidence of the damage had just been tidied away.
+        raw = ' '.join(line['text'] for _, line in active['lines'])
+        text = clean(raw)
+        if not text or re.search(r'\(cid:\d+\)|\ufffd', raw) or len(text) > 6000:
             omitted.append({'section': active['section'], 'page': active['heading_page'],
                             'reason': 'Empty, unreadable or oversized section; source review required'})
         else:

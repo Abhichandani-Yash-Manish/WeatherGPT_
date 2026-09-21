@@ -210,6 +210,21 @@ class ExtractionTests(unittest.TestCase):
         self.assertNotIn(chr(1), cleaned)
         self.assertEqual(strip_controls('ordinary advisory text')[1], False)
 
+    def test_a_glyph_the_font_never_mapped_is_replaced_and_the_damage_is_flagged(self):
+        """Measured 21 September 2026: the Shimla apple advisory was quoted to the reader as
+        "(cid:0) Collect and dispose of fallen and diseased fruit". That token is what the extractor
+        prints when a glyph has no ToUnicode entry - the publisher's bullet, arriving as debris. Every
+        character in it is printable, so the control-code loop could not see it."""
+        cleaned, damaged = strip_controls('(cid:0) Collect and dispose of fallen fruit')
+        self.assertTrue(damaged)
+        self.assertNotIn('cid:', cleaned)
+        self.assertIn('Collect and dispose of fallen fruit', cleaned)
+
+    def test_ordinary_advisory_text_is_not_flagged_as_damaged(self):
+        """The check must not report damage on a clean passage: a false flag on every bulletin would
+        make the flag worthless, and parenthesised text is ordinary in these documents."""
+        self.assertEqual(strip_controls('Spray (2 ml per litre) at the flowering stage.')[1], False)
+
     def test_a_damaged_passage_says_so_in_its_own_record(self):
         pages = [page('Apply irrigation' + chr(1) + ' to the standing crop before the forecast dry spell arrives.', 1)]
         passages, _ = di.passages_of(pages, self.meta(), 'district_agromet')

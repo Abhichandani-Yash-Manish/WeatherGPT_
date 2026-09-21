@@ -47,6 +47,18 @@ RENAMES = (
     {'was': 'Simla', 'now': 'Shimla',
      'basis': 'Shimla is the current spelling; the older Simla is not indexed for the Himachal town',
      'confidence': 'high'},
+    # Measured 21 September 2026, from the scenario atlas: "Should I delay sowing rabi onion in
+    # Ahmednagar given the forecast?" was answered about HIMATNAGAR, a different city in a different
+    # state, 500 km away. The search returns two candidates for the common spelling and ranks the
+    # Gujarat town above the right one - the Calicut failure exactly, and the kind this table exists
+    # for, because a confident wrong place is worse than a question. The catalogue indexes the
+    # Maharashtra city under its current name and under 'Ahmadnagar' with an a; only the everyday
+    # spelling with an e misses.
+    {'was': 'Ahmednagar', 'now': 'Ahilyanagar',
+     'basis': 'Renamed Ahilyanagar in 2023 after Ahilyabai Holkar; the catalogue indexes the current '
+              'name and the older Ahmadnagar spelling, while the common Ahmednagar spelling ranks '
+              'Himatnagar in Gujarat first',
+     'confidence': 'high'},
 )
 
 # A name several places share, where one is what a reader means by it. state and district must both

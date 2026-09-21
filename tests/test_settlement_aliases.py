@@ -33,6 +33,16 @@ class TableTests(unittest.TestCase):
         self.assertIsNotNone(aliases.preference_for('MANALI'))
         self.assertIsNotNone(aliases.preference_for('  manali '))
 
+    def test_the_city_renamed_ahilyanagar_is_not_answered_about_a_town_in_another_state(self):
+        """Measured 21 September 2026 from the scenario atlas: "Should I delay sowing rabi onion in
+        Ahmednagar given the forecast?" was answered about Himatnagar, in Gujarat, 500 km from the
+        Maharashtra city asked about. The search returns two candidates for the everyday spelling and
+        ranks the wrong one first. A confident wrong place is the failure this table exists for."""
+        self.assertEqual(aliases.rename_for('Ahmednagar')[0], 'Ahilyanagar')
+        self.assertEqual(aliases.rename_for('AHMEDNAGAR')[0], 'Ahilyanagar')
+        # The current name is not itself renamed, and neither is the spelling the catalogue indexes.
+        self.assertIsNone(aliases.rename_for('Ahilyanagar'))
+
     def test_a_rename_resolves_only_the_names_it_lists(self):
         self.assertEqual(aliases.rename_for('Calicut')[0], 'Kozhikode')
         self.assertEqual(aliases.rename_for('gurgaon')[0], 'Gurugram')

@@ -1,5 +1,6 @@
 """Bounded PDF text extraction; extracted text never establishes current validity."""
 import io
+import re
 from .transport import SourceError
 
 
@@ -16,9 +17,24 @@ class DocumentPruned(Exception):
         self.detail = detail
 
 
+UNMAPPED_GLYPH = re.compile(r'\(cid:\d+\)')
+
+
 def strip_controls(value):
-    """Publisher fonts can map to unprintable or surrogate code points; substitute and flag."""
-    out=[];damaged=False
+    """Publisher fonts can map to unprintable or surrogate code points; substitute and flag.
+
+    An unmapped glyph arrives in two different shapes and both are the same failure. A code point the
+    font maps to nothing is caught by the loop below. A glyph with no ToUnicode entry at all is handed
+    over by the extractor as the literal ASCII text "(cid:0)", which the loop cannot see because every
+    one of those characters is printable.
+
+    Measured 21 September 2026: asked for the apple advisory in Shimla, the answer quoted the bulletin
+    as "(cid:0) Collect and dispose of fallen and diseased fruit" - the publisher's own bullet, printed
+    to the reader as extractor debris. It is substituted like any other unmapped glyph, and it sets the
+    same damaged flag, so a passage that lost characters still says so rather than passing as clean.
+    """
+    value,replaced=UNMAPPED_GLYPH.subn(' ',value)
+    out=[];damaged=bool(replaced)
     for character in value:
         code=ord(character)
         if code<9 or 11<=code<=12 or 14<=code<=31 or code==127 or 0xd800<=code<=0xdfff:
