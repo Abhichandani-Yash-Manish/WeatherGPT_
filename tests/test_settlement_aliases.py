@@ -94,3 +94,40 @@ class CatalogueTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class AliasDisclosureTests(unittest.TestCase):
+    """A place read under a name other than the one asked for says so.
+
+    Measured 21 September 2026: "What is the weather in London tomorrow?" answered "The forecast for
+    Ban Sarkāri, Hoshiarpur, State of Punjab ..." with no mention of London anywhere in it. The
+    catalogue records "London" as an alternative name for that hamlet, and a single exact alias match
+    was accepted in silence.
+
+    Accepting it is right - "Bombay" is Mumbai and a reader should not be interrogated about it. Doing
+    so silently is not, because the catalogue also holds aliases nobody would predict. Read under
+    another name, and quiet about it, is the one combination that cannot stand.
+    """
+
+    def engine(self):
+        from weathergpt_data.workspace import Workspace
+        from weathergpt_data.conversation import ConversationEngine
+        return ConversationEngine(Workspace())
+
+    def test_the_catalogue_really_does_hold_this_alias(self):
+        """The premise of the test above, asserted rather than assumed."""
+        rows = self.engine().gazetteer.search('London')
+        self.assertEqual(len(rows), 1, 'London is a single exact alias match, which is why it was silent')
+        self.assertNotIn('london', rows[0]['name'].lower())
+
+    def test_a_place_read_under_another_name_is_disclosed(self):
+        result = self.engine().ask({'question': 'What is the weather in London tomorrow?'})
+        disclosed = [note for note in result['notes'] if '"London" is read as' in note]
+        self.assertTrue(disclosed, 'the reader must be told: %r' % (result['notes'],))
+        self.assertIn('Say which place you meant', disclosed[0])
+
+    def test_a_familiar_former_name_is_still_accepted(self):
+        """The disclosure must not turn every alias into an interrogation."""
+        result = self.engine().ask({'question': 'Will it rain in Bombay tomorrow?'})
+        self.assertNotEqual(result['status'], 'needs_selection')
+        self.assertTrue([note for note in result['notes'] if 'Mumbai' in note])

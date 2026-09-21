@@ -1299,7 +1299,22 @@ class ConversationEngine:
                         continue
                     from .gazetteer import rank_matches as rank_places_for_choices
                     result.update(status='needs_selection',answer=f"I found {len(matches)} possible places for {p['name']}. Please confirm the intended location and spelling.",choices=rank_places_for_choices(matches)[:20],follow_up='Choose a place, or add its district and state.');return None
-                points.append(matches[0]);resolved[p['name']]=matches[0]
+                # A single match whose own name is not the name that was asked for is an ALIAS match,
+                # and it is accepted - "Bombay" is Mumbai and a reader should not be interrogated about
+                # it. But it is said, because the catalogue also records aliases nobody would predict:
+                # measured 21 September 2026, "What is the weather in London tomorrow?" was answered
+                # "The forecast for Ban Sarkāri, Hoshiarpur, State of Punjab ..." with no mention of
+                # London anywhere in it. Read under another name, and silent about it, is the one
+                # combination that cannot stand.
+                from .gazetteer import norm as norm_place
+                only=matches[0]
+                if norm_place(only.get('name') or '')!=norm_place(p['name'] or ''):
+                    only=dict(only,accepted_because='the place catalogue records it as another name for '
+                                                    +str(p['name']))
+                    result['notes'].append('"'+str(p['name'])+'" is read as '+str(only['label'])+
+                                           ' — the place catalogue records that as another name for it. '
+                                           'Say which place you meant if that is not the one.')
+                points.append(only);resolved[p['name']]=only
             if not points and sea_areas:
                 result.update(status='needs_clarification',
                               answer=('A coast or a sea area is a long stretch, so there is no single point to '
