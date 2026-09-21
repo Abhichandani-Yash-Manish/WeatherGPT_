@@ -35,6 +35,16 @@ const ROUTES = ['assistant', 'workspace', 'overview', 'warnings', 'map', 'foreca
 const ADDRESSES = [
   { name: 'place', hash: 'place?place=Kochi,%20Kerala&plat=9.93&plon=76.26' },
   { name: 'place-refused', hash: 'place?place=Kochi,%20Kerala&plat=9.93' },
+  /* An ANSWERED TURN. Every other entry here photographs a surface at rest, so until now the one
+     thing this product actually is - a question with an answer under it - had no picture anywhere in
+     the evidence, and two sessions in a row reported a colour change they could not check against
+     the reader's own bubble or the answer's claims. `ask=` is the same seeding address every place
+     link and every surface's "Ask instead" row already uses, so this captures the real path.
+
+     It costs a live turn: the model plans it, the tools retrieve it and the model writes it, which
+     is why this one entry waits for a claim to appear rather than for a fixed delay. */
+  { name: 'answer', hash: 'assistant?ask=' + encodeURIComponent('Will it rain in Ahmedabad tomorrow?'),
+    settleGone: '.g-working' },
 ];
 
 function arg(name, fallback = null) {
@@ -65,6 +75,14 @@ for (const scheme of colourSchemes) {
     for (const route of routes) {
       await page.goto(BASE + '/#/' + route.hash, { waitUntil: 'domcontentloaded' });
       await page.waitForSelector('main', { timeout: 30_000 }).catch(() => {});
+      /* A route that names what it is waiting for waits for that. A turn takes as long as the model
+         and the sources take, and a fixed delay photographs the thinking state instead - which is
+         exactly what the first version of this did. It waits for the WORKING state to go away rather
+         than for a claim to appear, because a restored conversation already has claims on the page
+         and the wait returned instantly against one of those. */
+      if (route.settleGone) {
+        await page.waitForSelector(route.settleGone, { state: 'detached', timeout: 120_000 }).catch(() => {});
+      }
       await page.waitForTimeout(1200);
       /* The workspace reads some sections only as they near the screen; a full-page shot must show them. */
       await page.evaluate(async () => {

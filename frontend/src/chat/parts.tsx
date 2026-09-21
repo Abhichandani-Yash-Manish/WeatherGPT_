@@ -482,6 +482,14 @@ export function TaskAccounting({ packet }: { packet: AnswerPacket }) {
   const incomplete = coverage ? (coverage.incomplete_ids || []) : results.filter(task => task.status !== 'answered').map(task => task.id);
   const ids = results.map(task => task.id).filter(Boolean);
   const answeredIds = results.filter(task => task.status === 'answered').map(task => task.id).filter(Boolean);
+  /* This block exists so a turn cannot read as wholly answered when part of it was not - which is a
+     job only on a turn where part of it was not, or where there was more than one part to lose. On a
+     single question that was answered it says "Asked: 1 · t1  Answered: 1 · t1  Incomplete: 0 · none
+     named" under every reply, which is the machine counting itself out loud in front of a reader who
+     asked whether it would rain. docs/108: speak from the reader's position, never of the machine's
+     own act. Nothing is hidden that carries information: the moment anything is incomplete, or there
+     was more than one task, it is back and unfolded. */
+  if (!incomplete.length && asked <= 1) return null;
   return (
     <div className="g-tally">
       <p className="g-eyebrow">Task accounting</p>

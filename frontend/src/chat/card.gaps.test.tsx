@@ -176,3 +176,26 @@ describe('the published colour on a warning claim', () => {
     expect(lit, 'a colour must be reached only through a published value').toBeNull();
   });
 });
+
+describe('task accounting is shown where it does its job', () => {
+  it('says nothing under a single question that was answered', () => {
+    /* It exists so a turn cannot read as wholly answered when part of it was not. Under a single
+       answered question it read "Asked: 1 · t1  Answered: 1 · t1  Incomplete: 0 · none named" —
+       the machine counting itself out loud to a reader who asked whether it would rain. */
+    mount(packet({
+      task_results: [{ id: 't1', status: 'answered', answer: 'x', fact_ids: [], passage_ids: [] }],
+      task_coverage: { requested: 1, completed: 1, incomplete_ids: [] },
+    } as unknown as Partial<AnswerPacket>));
+    expect(screen.queryByText('Task accounting')).toBeNull();
+  });
+
+  it('is back the moment a task was left incomplete', () => {
+    mount(packet({
+      task_results: [{ id: 't1', status: 'answered', answer: 'x', fact_ids: [], passage_ids: [] },
+                     { id: 't2', status: 'partial', answer: 'y', fact_ids: [], passage_ids: [] }],
+      task_coverage: { requested: 2, completed: 1, incomplete_ids: ['t2'] },
+    } as unknown as Partial<AnswerPacket>));
+    expect(screen.getByText('Task accounting')).toBeTruthy();
+    expect(screen.getByText(/Incomplete: 1/)).toBeTruthy();
+  });
+});
