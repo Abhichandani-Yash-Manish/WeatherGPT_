@@ -251,3 +251,31 @@ class AirQualityChatTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class ServingHorizonTests(unittest.TestCase):
+    """A reading of the hour that is happening does not expire when that hour begins.
+
+    Measured 21 September 2026: "What is the AQI in Pune right now?" came back stale about half the
+    time, with an expiry three seconds in the past, having retrieved every value correctly first. The
+    window start is a limit only on a window that has NOT begun - a forecast stops being a forecast
+    once its period is underway - and a window that is already running has no such moment.
+    """
+
+    def test_a_window_already_running_is_not_clamped_to_its_own_start(self):
+        from datetime import datetime, timedelta, timezone
+        from weathergpt_data.answers import serving_horizon
+        retrieved = datetime(2026, 9, 21, 2, 0, tzinfo=timezone.utc)
+        began = retrieved + timedelta(minutes=30)   # the hour the reader is asking about, now underway
+        # This is what the air-quality path used to pass, and what made the answer expire on delivery.
+        self.assertEqual(serving_horizon(retrieved, began), began)
+        # Passing None for a window that has begun leaves the evidence its own age ceiling.
+        self.assertGreater(serving_horizon(retrieved, None), began)
+
+    def test_a_window_still_ahead_is_still_clamped(self):
+        """The rule this protects: a forecast stops being one once its period starts."""
+        from datetime import datetime, timedelta, timezone
+        from weathergpt_data.answers import serving_horizon
+        retrieved = datetime(2026, 9, 21, 2, 0, tzinfo=timezone.utc)
+        ahead = retrieved + timedelta(minutes=20)
+        self.assertEqual(serving_horizon(retrieved, ahead), ahead)

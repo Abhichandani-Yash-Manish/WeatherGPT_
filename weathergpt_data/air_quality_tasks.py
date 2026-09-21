@@ -97,7 +97,14 @@ def execute_air_quality(engine, result, plan, task, resolved, coordinates):
             result['citations'].append(place['citation'])
         # The same serving rule the forecast path uses, and for the same reason: clamping to the window's
         # start regardless of whether it had begun made every "today" question expire in the past.
-        expiry = serving_horizon(parsed(meta['retrieved_at_utc']), start)
+        #
+        # The window start is only a limit on a window that has NOT begun - then the evidence stops
+        # being a forecast once its period is underway. A window that is already running has no such
+        # moment, and passing it anyway expired the answer the instant it was served: measured 21
+        # September 2026, "What is the AQI in Pune right now?" came back stale about half the time
+        # with an expiry three seconds in the past, having retrieved every value correctly first.
+        ahead = start if start > now else None
+        expiry = serving_horizon(parsed(meta['retrieved_at_utc']), ahead)
         if result['expires_at_utc'] is None or expiry < parsed(result['expires_at_utc']):
             result['expires_at_utc'] = stamp(expiry)
         result['trace']['tools'].append({'name': 'air_quality', 'variables': variables,
