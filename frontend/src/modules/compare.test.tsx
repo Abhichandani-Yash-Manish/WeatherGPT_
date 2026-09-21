@@ -8,7 +8,14 @@ import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { server } from '../test/msw';
 import { provenanceOffenders } from '../flagship/provenance';
+import { forgetWorkingPlace } from './Evidence';
 import { Surface as CompareSurface } from './CompareSurface';
+
+/* The held place is process-wide state: a place named by one case would otherwise be held by the next and
+   these surfaces read it on arrival. Each case states its own premise instead of inheriting one, and the
+   held-place start itself is covered by opening.audit.test.tsx. */
+beforeEach(() => { forgetWorkingPlace(); });
+
 
 function mount(node: JSX.Element) {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } });
@@ -123,7 +130,9 @@ describe('the Compare places surface', () => {
     expect(boundary).toHaveTextContent('may have been retrieved at different times');
     expect(boundary).toHaveTextContent('not a ranking, a recommendation, a better-or-worse judgement or a claim about forecast skill');
     expect(boundary).toHaveTextContent("the point-forecast product's own model output, not an observation");
-    expect(screen.getByText('No place has been chosen for the first read, so no forecast was requested for it.')).toBeInTheDocument();
+    // Nothing is read before a place is named: the surface states what it will do, not what it did not.
+    expect(screen.getByTestId('compare-awaiting')).toHaveTextContent('Nothing has been read yet.');
+    expect(screen.queryByTestId('compare-headline')).toBeNull();
 
     await chooseTwoPlaces();
 

@@ -12,7 +12,14 @@ import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { server } from '../test/msw';
 import { provenanceOffenders } from '../flagship/provenance';
+import { forgetWorkingPlace } from './Evidence';
 import { Surface as VerificationSurface } from './VerificationSurface';
+
+/* The held place is process-wide state: a place named by one case would otherwise be held by the next and
+   these surfaces read it on arrival. Each case states its own premise instead of inheriting one, and the
+   held-place start itself is covered by opening.audit.test.tsx. */
+beforeEach(() => { forgetWorkingPlace(); });
+
 
 function mount(node: JSX.Element) {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } });
@@ -110,9 +117,13 @@ describe('the Forecast verification surface', () => {
 
     expect(await screen.findByRole('heading', { level: 1, name: 'Forecast verification' })).toBeInTheDocument();
     await screen.findByLabelText('Name a place');
-    expect(screen.getByText('No point was named, so no verification read was requested.')).toBeInTheDocument();
+    expect(screen.getByTestId('verification-awaiting')).toHaveTextContent('Nothing has been read yet.');
+    // The window arrives filled, and it arrives where the read's own refusal sentence says it has to:
+    // the reference is published with about a five-day delay, so the default ends six days ago.
+    const daysAgo = (n: number) => new Date(Date.now() - n * 86_400_000).toISOString().slice(0, 10);
+    expect((screen.getByLabelText('Window end (completed date)') as HTMLInputElement).value).toBe(daysAgo(6));
+    expect((screen.getByLabelText('Window start (completed date)') as HTMLInputElement).value).toBe(daysAgo(12));
     await nameAPlace();
-    expect(screen.getByText('Give both completed dates to read the comparison for this point; the read is not requested before then.')).toBeInTheDocument();
     pickWindow();
 
     const windowFacts = within(await screen.findByTestId('verification-window'));

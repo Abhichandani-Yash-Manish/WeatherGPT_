@@ -12,7 +12,10 @@ import type { Envelope } from '../api/types';
 import { count, orNot } from '../lib/format';
 import { istStamp } from '../lib/time';
 import { viewById } from '../shell/views';
-import { ColourTag, DataTable, EvidenceFooter, Failure, Facts, NO_ROW, NOT_RECORDED, PlacePicker, Reading, SurfaceShell, type PlaceChoice } from './Evidence';
+import {
+  Awaiting, ColourTag, DataTable, EvidenceFooter, Failure, Facts, NO_ROW, NOT_RECORDED, PlacePicker, Reading,
+  ReadingFor, SurfaceShell, readWorkingPlace, type PlaceChoice,
+} from './Evidence';
 
 export const intents: string[] = (viewById('changes')?.intents ?? []).concat([
   'What did the earlier and later printed editions say for this point?']);
@@ -72,7 +75,7 @@ function PublishedDistrict({ view }: { view: Envelope<PlaceData> }): JSX.Element
 }
 
 export function Surface(): JSX.Element {
-  const [place, setPlace] = useState<PlaceChoice | null>(null);
+  const [place, setPlace] = useState<PlaceChoice | null>(() => readWorkingPlace());
   const point = { lat: place?.latitude, lon: place?.longitude };
   const changes = useQuery({ queryKey: ['changes-point', point.lat, point.lon], enabled: place !== null, retry: false,
     queryFn: () => getJson<Envelope<ChangesData>>(withQuery('/api/forecast/changes', point)) });
@@ -80,25 +83,24 @@ export function Surface(): JSX.Element {
     queryFn: () => getJson<Envelope<PlaceData>>(withQuery('/api/warnings/place', point)) });
   const changeData = changes.data?.data;
   const parameters = Object.entries(changeData?.parameters || {});
+  const answered = place !== null && !changes.isPending && !changes.isError;
 
-  return (
-    <SurfaceShell
-      title="What changed"
-      lead="Two printed editions of the same stored forecast for one point, and the published district product that change is about. A change between retrievals is vintage variance, not a correction."
-      what="the changed-edition view"
-      envelope={place ? changes.data : undefined}
-      busy={place !== null && changes.isPending}
-      error={place ? changes.error : undefined}
-      onRetry={() => changes.refetch()}
-      intents={intents}
-    >
-      <section className="module-section">
-        <h2>The point</h2>
-        <PlacePicker onPick={setPlace} hint="Name a place and choose a row; the stored retrievals are compared for those coordinates." />
-        {!place ? (
-          <p className="module-note">No point was named, so no stored retrieval was compared and no district product was read.</p>
-        ) : (
-          <Facts testId="changes-point" rows={[
+  /* The control a reader used to ask for these reads, rendered in every state: the point survives a read in
+     flight and survives a failed one, which is where a reader who named the wrong place needs it. */
+  const ask = (
+    <section className="module-section">
+      <h2>The point</h2>
+      {place ? <ReadingFor place={place} /> : null}
+      <PlacePicker onPick={setPlace} hint="Name a place and choose a row; the stored retrievals are compared for those coordinates." />
+      {!place ? (
+        <Awaiting testId="changes-awaiting">
+          Nothing has been read yet. Name a place below and this surface holds the stored retrievals for it side by side —
+          what the earlier and the later edition printed for the same valid hour — with the published district product the
+          change is about.
+        </Awaiting>
+      ) : null}
+      {answered ? (
+        <Facts testId="changes-point" rows={[
             ['Requested place', place.label ? place.label : 'label not recorded'],
             ['Requested coordinates', place.latitude + ', ' + place.longitude],
             ['Stored point the comparison used', changeData?.point ? orNot(changeData.point.latitude) + ', ' + orNot(changeData.point.longitude) : NOT_RECORDED],
@@ -106,9 +108,22 @@ export function Surface(): JSX.Element {
             ['Valid hours retrieved more than once', valueText(changeData?.overlapping_valid_hours)],
             ['Interpretation as returned', orNot(changeData?.interpretation)],
           ]} />
-        )}
-      </section>
+      ) : null}
+    </section>
+  );
 
+  return (
+    <SurfaceShell
+      title="What changed"
+      lead="What the earlier and the later stored edition printed for the same valid hour, at one point, with the published district product the change is about."
+      what="the changed-edition view"
+      envelope={place ? changes.data : undefined}
+      busy={place !== null && changes.isPending}
+      error={place ? changes.error : undefined}
+      onRetry={() => changes.refetch()}
+      intents={intents}
+      hold={ask}
+    >
       {place ? (
         <>
           <section className="module-section">

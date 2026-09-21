@@ -396,7 +396,7 @@ The interface states these limits instead of filling them:
 ## How it is checked
 
 ```sh
-python3 -m pytest tests/ -q                          # 1521 Python tests
+python3 -m pytest tests/ -q                          # 1526 Python tests
 cd frontend && npx tsc --noEmit && npm test          # 80 React suites, 516 component checks
 python3 scripts/audit_react_frontend.py              # 19 checks over the built page and its sources
 python3 scripts/audit_react_build.py                 # 11 checks over the built output

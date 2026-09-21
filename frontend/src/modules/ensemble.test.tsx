@@ -11,7 +11,14 @@ import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { server } from '../test/msw';
 import { provenanceOffenders } from '../flagship/provenance';
+import { forgetWorkingPlace } from './Evidence';
 import { Surface as EnsembleSurface } from './EnsembleSurface';
+
+/* The held place is process-wide state: a place named by one case would otherwise be held by the next and
+   these surfaces read it on arrival. Each case states its own premise instead of inheriting one, and the
+   held-place start itself is covered by opening.audit.test.tsx. */
+beforeEach(() => { forgetWorkingPlace(); });
+
 
 function mount(node: JSX.Element) {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } });
@@ -122,7 +129,10 @@ describe('the Ensemble spread surface', () => {
 
     expect(await screen.findByRole('heading', { level: 1, name: 'Ensemble spread' })).toBeInTheDocument();
     await screen.findByLabelText('Name a place');
-    expect(screen.getByText('No point was named, so no ensemble read was requested.')).toBeInTheDocument();
+    // Nothing is read before a place is named. The invitation names the one action that produces a reading;
+    // it no longer answers the reader's arrival with a sentence about the machine's own state.
+    expect(screen.getByTestId('ensemble-awaiting')).toHaveTextContent('Nothing has been read yet.');
+    expect(screen.queryByTestId('ensemble-headline')).toBeNull();
     await nameAPlace();
 
     // The first-screen reading: the read's own spread for the chosen variable, stated before the tables

@@ -17,7 +17,14 @@ import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { server } from '../test/msw';
 import { provenanceOffenders } from '../flagship/provenance';
+import { forgetWorkingPlace } from './Evidence';
 import { Surface as AirQualitySurface } from './AirQualitySurface';
+
+/* The held place is process-wide state: a place named by one case would otherwise be held by the next and
+   these surfaces read it on arrival. Each case states its own premise instead of inheriting one, and the
+   held-place start itself is covered by opening.audit.test.tsx. */
+beforeEach(() => { forgetWorkingPlace(); });
+
 
 function mount(node: JSX.Element) {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } });
@@ -60,8 +67,9 @@ async function nameAPlace(name = 'Kanpur Nagar') {
 const MODEL = 'CAMS European air quality forecast';
 
 /* us_aqi is named before pm2_5 deliberately: it is the fixture's only parameter carrying a stated
-   category, and the surface's headline reads the first-named parameter, so this is what proves the
-   category is printed without being turned into advice. */
+   category, so this is what proves the source's own category word is printed beside the index without
+   being turned into advice. The surface's reading names every index the read returned and then the
+   concentrations that same hour was built from; pm2_5 is the concentration half of that sentence. */
 const airQualityPayload = {
   ...HEAD,
   view: 'air-quality.point',
@@ -99,7 +107,8 @@ describe('the Air quality surface', () => {
 
     expect(await screen.findByRole('heading', { level: 1, name: 'Air quality' })).toBeInTheDocument();
     await screen.findByLabelText('Name a place');
-    expect(screen.getByText('No point was named, so no air-quality read was requested.')).toBeInTheDocument();
+    expect(screen.getByTestId('air-quality-awaiting')).toHaveTextContent('Nothing has been read yet.');
+    expect(screen.queryByTestId('air-quality-headline')).toBeNull();
     await nameAPlace();
 
     const cell = within(await screen.findByTestId('air-quality-cell'));
@@ -110,7 +119,10 @@ describe('the Air quality surface', () => {
     // The first-screen reading: the first-named parameter's own current value and the source's own
     // category word for it, stated before the table that proves it, and never turned into advice.
     const headline = screen.getByTestId('air-quality-headline');
-    expect(headline).toHaveTextContent('This read’s current us_aqi for this cell is 168, which the source itself categorises as “Unhealthy”.');
+    expect(headline).toHaveTextContent(
+      'For this cell at the read’s current hour the source returns us_aqi 168 AQI (the source’s own category for it: “Unhealthy”). '
+      + 'The concentrations it returns for the same hour are pm2_5 118 µg/m³.',
+    );
     expect(headline).not.toHaveTextContent(/should|avoid|mask|stay indoors|sensitive group/i);
     expect(headline.querySelector('.g-claim-source')).toHaveTextContent('india');
     expect(headline.querySelector('.g-claim-source')).toHaveTextContent('26.5, 80.25');
@@ -161,7 +173,10 @@ describe('the Air quality surface', () => {
     expect(cell.getByText('Cell distance from the requested point').nextSibling).toHaveTextContent('not recorded');
 
     const headline = screen.getByTestId('air-quality-headline');
-    expect(headline).toHaveTextContent('This read’s current us_aqi for this cell is not recorded for this cell — the source states no category for this reading.');
+    expect(headline).toHaveTextContent(
+      'For this cell at the read’s current hour the source returns us_aqi not recorded for this cell. '
+      + 'The source states no category for this reading, so none is printed here and this product adds none.',
+    );
     expect(provenanceOffenders(headline)).toEqual([]);
 
     const table = within(screen.getByTestId('air-quality-table'));

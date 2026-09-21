@@ -2,7 +2,14 @@
    the product view passed them through. An ensemble member is one model run; the spread is a property of
    those runs at that cell and instant, and it is not a probability of the outcome at your place, not a
    confidence in the answer and not a skill score. The member count is the read's own count, never a
-   completeness percentage computed here, and a member the payload did not return is absent. */
+   completeness percentage computed here, and a member the payload did not return is absent.
+
+   Who this surface is for, and the decision it serves: a reader who is about to act on ONE point forecast
+   and wants to know how far the model runs disagreed about that point before trusting a single number.
+   "Models disagree by 8 mm at 15:00" is the interpretation this surface owes them and it is inside the
+   evidence; "expect heavy rain" is a forecast it is not entitled to make, and a probability is not what a
+   spread is. So the reading leads, the distribution proves it, and what a member and a spread ARE is
+   stated under them rather than in front of them. */
 import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getJson, withQuery } from '../api/client';
@@ -12,7 +19,10 @@ import { istStamp } from '../lib/time';
 import { viewById } from '../shell/views';
 import { VizFigure } from '../charts/VizFigure';
 import { ensembleFanSpec } from '../charts/vizSpecs';
-import { DataTable, Facts, Headline, NO_ROW, NOT_RECORDED, PlacePicker, SurfaceShell, type PlaceChoice } from './Evidence';
+import {
+  Awaiting, DataTable, Facts, Meaning, NO_ROW, NOT_RECORDED, PlacePicker, ReadingFor, SurfaceShell,
+  readWorkingPlace, type PlaceChoice,
+} from './Evidence';
 
 type Point = { t?: string | null; v?: number | string | null; start?: string | null; end?: string | null };
 type Series = { unit?: string | null; aggregation?: string | null; model?: string | null; quality_flags?: string[]; points?: Point[] };
@@ -78,7 +88,7 @@ function spreadHeadline(chosen: string, data: EnsembleData | undefined, totals: 
 }
 
 export function Surface(): JSX.Element {
-  const [place, setPlace] = useState<PlaceChoice | null>(null);
+  const [place, setPlace] = useState<PlaceChoice | null>(() => readWorkingPlace());
   const [days, setDays] = useState('3');
   const read = useQuery({
     queryKey: ['ensemble', place?.latitude, place?.longitude, days],
@@ -108,78 +118,83 @@ export function Surface(): JSX.Element {
     () => (chosen ? ensembleFanSpec(data?.parameters || {}, chosen, data?.model || null, totals?.[chosen], data?.statistics) : null),
     [data, chosen, totals],
   );
+  const ready = place !== null && !read.isPending && !read.isError;
+  const headline = ready && chosen ? spreadHeadline(chosen, data, totals) : null;
+
+  /* The controls a reader used to ask for this read. They are rendered in every state — while the
+     read is in flight and after it has failed — so the place a reader just chose, and the window or the
+     code they typed beside it, cannot disappear from under them at the moment they act. */
+  const ask = (
+    <section className="module-section">
+      <h2>The point this read used</h2>
+      {place ? <ReadingFor place={place} /> : null}
+      <PlacePicker onPick={setPlace} hint="Name a place and choose a row; the ensemble is then read for the cell that answers those coordinates." />
+      <div className="module-controls">
+        <label className="module-field" htmlFor="ensemble-days">
+          <span>Days requested</span>
+          <select id="ensemble-days" value={days} onChange={event => setDays(event.target.value)}>
+            {DAY_CHOICES.map(value => (
+              <option key={value} value={value}>
+                {value} day{value === '1' ? '' : 's'}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+      {!place ? (
+        <Awaiting testId="ensemble-awaiting">
+          Nothing has been read yet. Name a place below and this surface reads the ensemble cell that answers it: the
+          spread the model states for that cell, and how many members came back with it.
+        </Awaiting>
+      ) : null}
+      {/* The control block survives a read in flight, so the facts below it are drawn only once this read has
+          answered: a coordinate printed while the read is working would be an absence this surface has not
+          established. */}
+      {place && !read.isPending && !read.isError ? (
+        <>
+          <Facts
+            testId="ensemble-point"
+            rows={[
+              ['Requested place', place.label ? place.label : 'label not recorded'],
+              ['Requested coordinates', place.latitude + ', ' + place.longitude],
+              ['Coordinates as the reading returned them', pair(data?.requested)],
+              ['Cell identity as returned', pair(data?.grid)],
+              ['Model as returned', orNot(data?.model)],
+              ['Time basis', orNot(data?.time_basis)],
+              ['Days requested', orNot(data?.days, days)],
+            ]}
+          />
+          {Object.keys(totals || {}).length ? (
+            <DataTable
+              testId="ensemble-member-total"
+              caption="The member count per named variable, exactly as this read returned it; no percentage of a member set is computed here."
+              columns={['Variable as returned', 'Members this read returned']}
+              rows={Object.keys(totals || {}).map(variable => [variable, orNot(totals?.[variable])])}
+            />
+          ) : (
+            <p className="module-note">
+              The count of returned members is {NOT_RECORDED} in this read: the payload carried no member-total field for any
+              variable. An absent count is not a zero.
+            </p>
+          )}
+        </>
+      ) : null}
+    </section>
+  );
 
   return (
     <SurfaceShell
       title="Ensemble spread"
-      lead="The member-summary series one ensemble model returned for one grid cell: the spread it states, the members it returned and every point as the read returned it. Modelled output, not an observation."
+      lead="How far apart the model runs were about one point: the spread the read states for a cell, and the members it returned."
       what="the ensemble spread read"
       envelope={place ? read.data : undefined}
       busy={place !== null && read.isPending}
       error={place ? read.error : undefined}
       onRetry={() => read.refetch()}
       intents={intents}
+      reading={headline ? { testId: 'ensemble-headline', statement: headline.statement, source: headline.source } : undefined}
+      hold={ask}
     >
-      <section className="module-section">
-        <h2>What a member and a spread are here</h2>
-        <p className="module-note" data-testid="ensemble-meaning">{MEMBER_IS_ONE_RUN}</p>
-        <p className="module-note" data-testid="ensemble-members-stated">{RETURNED_MEMBERS}</p>
-      </section>
-
-      <section className="module-section">
-        <h2>The point this read used</h2>
-        <PlacePicker onPick={setPlace} hint="Name a place and choose a row; the ensemble is then read for those coordinates." />
-        <div className="module-controls">
-          <label className="module-field" htmlFor="ensemble-days">
-            <span>Days requested</span>
-            <select id="ensemble-days" value={days} onChange={event => setDays(event.target.value)}>
-              {DAY_CHOICES.map(value => (
-                <option key={value} value={value}>
-                  {value} day{value === '1' ? '' : 's'}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-        {!place ? (
-          <p className="module-note">No point was named, so no ensemble read was requested.</p>
-        ) : (
-          <>
-            <Facts
-              testId="ensemble-point"
-              rows={[
-                ['Requested place', place.label ? place.label : 'label not recorded'],
-                ['Requested coordinates', place.latitude + ', ' + place.longitude],
-                ['Coordinates as the reading returned them', pair(data?.requested)],
-                ['Cell identity as returned', pair(data?.grid)],
-                ['Model as returned', orNot(data?.model)],
-                ['Time basis', orNot(data?.time_basis)],
-                ['Days requested', orNot(data?.days, days)],
-              ]}
-            />
-            {!read.isPending && !read.isError && chosen ? (
-              (() => {
-                const headline = spreadHeadline(chosen, data, totals);
-                return headline ? <Headline testId="ensemble-headline" statement={headline.statement} source={headline.source} /> : null;
-              })()
-            ) : null}
-            {Object.keys(totals || {}).length ? (
-              <DataTable
-                testId="ensemble-member-total"
-                caption="The member count per named variable, exactly as this read returned it; no percentage of a member set is computed here."
-                columns={['Variable as returned', 'Members this read returned']}
-                rows={Object.keys(totals || {}).map(variable => [variable, orNot(totals?.[variable])])}
-              />
-            ) : (
-              <p className="module-note">
-                The count of returned members is {NOT_RECORDED} in this read: the payload carried no member-total field for any
-                variable. An absent count is not a zero.
-              </p>
-            )}
-          </>
-        )}
-      </section>
-
       {place && !read.isPending && !read.isError && fan ? (
         <section className="module-section" data-testid="ensemble-fan-section">
           <h2>Member distribution</h2>
@@ -262,6 +277,17 @@ export function Surface(): JSX.Element {
           )}
         </section>
       ) : null}
+
+      {/* Under the evidence, folded: the sentences this surface must say in its own voice, and the
+          definitions the tables above them rely on. They used to be the first thing on the page. */}
+      <Meaning
+        testId="ensemble-meaning"
+        summary="What a member and a spread mean here, and what this surface does not compute"
+        lines={[
+          { text: MEMBER_IS_ONE_RUN },
+          { text: RETURNED_MEMBERS, testId: 'ensemble-members-stated' },
+        ]}
+      />
     </SurfaceShell>
   );
 }

@@ -1,7 +1,15 @@
 /* Sea and rivers: modelled waves for the sea cell answering one point, and modelled river discharge for
    the river cell answering another, each fetched by its own route read. The cell, the distance the
    payload states, the model, the unit and the source rows stay with the read that returned them. A wave
-   value is modelled sea state, not an observation or a bulletin; a discharge is modelled volume flow. */
+   value is modelled sea state, not an observation or a bulletin; a discharge is modelled volume flow.
+
+   Who this surface is for: a coastal reader who wants to know what the sea is doing at their own coast
+   before going out on it, and a river reader who wants the modelled flow. One number is what they came
+   for, so the wave read's own latest value leads the page and the cell, its distance and the source line
+   sit under it. Measured 21 September 2026: the first screen was two empty place boxes and a card headed
+   "What these values are not" with four bullets — including the one that matters most, that a discharge
+   is not an observed water level and not a flood warning. That clause is kept word for word; it is under
+   the evidence now instead of in front of it. */
 import { useState } from 'react';
 import { useQuery, type UseQueryResult } from '@tanstack/react-query';
 import { getJson, withQuery } from '../api/client';
@@ -9,7 +17,10 @@ import type { Envelope } from '../api/types';
 import { count, orNot } from '../lib/format';
 import { istStamp } from '../lib/time';
 import { viewById } from '../shell/views';
-import { DataTable, EvidenceFooter, Facts, Failure, Headline, NO_ROW, NOT_RECORDED, PlacePicker, Reading, SurfaceShell, type Fact, type PlaceChoice } from './Evidence';
+import {
+  Awaiting, DataTable, EvidenceFooter, Facts, Failure, Headline, Meaning, NO_ROW, NOT_RECORDED, PlacePicker,
+  Reading, ReadingFor, SurfaceShell, readWorkingPlace, type Fact, type PlaceChoice,
+} from './Evidence';
 
 type SeriesPoint = { t?: string | null; v?: number | string | null };
 type Series = { unit?: string | null; model?: string | null; points?: SeriesPoint[]; quality_flags?: string[] };
@@ -89,9 +100,13 @@ function ParameterSeries({ data, testIdPrefix }: { data?: MarineData; testIdPref
   );
 }
 
-function ReadSection({ heading, testId, place, query, what, route, timeBasisRow }: {
+function ReadSection({ heading, testId, place, query, what, route, timeBasisRow, hoistHeadline }: {
   heading: string; testId: string; place: PlaceChoice; query: UseQueryResult<MarineEnvelope, Error>;
   what: string; route: string; timeBasisRow?: Fact;
+  /* The wave read is this surface's first subject, so its own latest value is rendered once, at the top
+     of the page, through SurfaceShell's `reading` slot. The river read is a second read the same page
+     holds and keeps its line with itself, under its own facts. */
+  hoistHeadline?: boolean;
 }): JSX.Element {
   const envelope = query.data;
   const data = envelope?.data;
@@ -119,7 +134,7 @@ function ReadSection({ heading, testId, place, query, what, route, timeBasisRow 
       ) : (
         <>
           <Facts testId={testId + '-facts'} rows={rows} />
-          {(() => {
+          {hoistHeadline ? null : (() => {
             const headline = latestValueHeadline(data);
             return <Headline testId={testId + '-headline'} statement={headline.statement} source={headline.source} />;
           })()}
@@ -132,7 +147,7 @@ function ReadSection({ heading, testId, place, query, what, route, timeBasisRow 
 }
 
 export function Surface(): JSX.Element {
-  const [seaPoint, setSeaPoint] = useState<PlaceChoice | null>(null);
+  const [seaPoint, setSeaPoint] = useState<PlaceChoice | null>(() => readWorkingPlace());
   const [riverPoint, setRiverPoint] = useState<PlaceChoice | null>(null);
 
   const waveRead = useQuery({
@@ -153,55 +168,73 @@ export function Surface(): JSX.Element {
   const bothAnswered = seaPoint !== null && riverPoint !== null && waveRead.isSuccess && riverRead.isSuccess;
   const riverTimeBasisRow: Fact = ['Time basis as returned', orNot(riverRead.data?.coverage?.time_basis)];
 
+  const waveAnswered = seaPoint !== null && waveRead.isSuccess;
+  const waveHeadline = waveAnswered ? latestValueHeadline(waveRead.data?.data) : null;
+
+  /* The controls a reader used to ask for these reads. They are rendered in every state, so the point a
+     reader chose for the wave read is still named and still changeable while the read is in flight. */
+  const ask = (
+    <section className="module-section">
+      <h2>The two reads</h2>
+      <p className="module-note">
+        One point is named for the wave read and another for the river read; they are separate calls, and neither read answers for
+        the other read's cell.
+      </p>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--g-4)', alignItems: 'flex-start' }}>
+        <div style={{ flex: '1 1 24rem', minWidth: 0 }}>
+          <h3>Wave read · sea point</h3>
+          {seaPoint ? <ReadingFor place={seaPoint} /> : null}
+          <PlacePicker onPick={setSeaPoint} hint="Name a sea or coastal point and choose a row; GET /api/marine then answers for that point's sea cell." />
+        </div>
+        <div style={{ flex: '1 1 24rem', minWidth: 0 }}>
+          <h3>River read · river point</h3>
+          {riverPoint ? <ReadingFor place={riverPoint} /> : null}
+          <PlacePicker onPick={setRiverPoint} hint="Name a river point and choose a row; GET /api/river then answers for that point's river cell." />
+        </div>
+      </div>
+      {seaPoint && riverPoint ? null : (
+        <Awaiting testId="marine-awaiting">
+          {seaPoint
+            ? 'The wave read is for the point above. Name a river point as well to read the modelled discharge for its own cell — the two are separate reads.'
+            : 'Nothing has been read yet. Name a sea or coastal point below and this surface reads the modelled waves for the cell that answers it; a river point reads the modelled discharge for its own cell.'}
+        </Awaiting>
+      )}
+      {bothAnswered ? (
+        <p className="module-note" role="status" data-testid="marine-cells">
+          The wave read answered for cell {cellText(waveData?.grid)}; the distance it stated is {distanceText(waveData?.grid_distance_km)}.
+          The river read answered for cell {cellText(riverData?.grid)}; the distance it stated is {distanceText(riverData?.grid_distance_km)}.
+          {cellsDiffer(waveData?.grid, riverData?.grid) ? ' They are two different cells: the wave values apply to the sea cell named first, and the discharge to the river cell named second.' : ''}
+        </p>
+      ) : null}
+    </section>
+  );
+
   return (
     <SurfaceShell
       title="Sea and rivers"
-      lead="Modelled waves for the sea cell answering one point, and modelled discharge for the river cell answering another: two separate reads, each with its own cell, the distance the payload states, model, unit and source rows. Neither is an observation, a bulletin or a warning."
+      lead="What the sea is doing at the cell that answers your coast, and what flow the river model states for a river point."
       what="the wave and river reads"
       busy={false}
       intents={intents}
+      reading={seaPoint && waveHeadline ? { testId: 'marine-wave-headline', ...waveHeadline } : undefined}
+      hold={ask}
     >
-      <section className="module-section">
-        <h2>The two reads</h2>
-        <p className="module-note">
-          One point is named for the wave read and another for the river read; they are separate calls, and neither read answers for
-          the other read's cell.
-        </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--g-4)', alignItems: 'flex-start' }}>
-          <div style={{ flex: '1 1 24rem', minWidth: 0 }}>
-            <h3>Wave read · sea point</h3>
-            <PlacePicker onPick={setSeaPoint} hint="Name a sea or coastal point and choose a row; GET /api/marine then answers for that point's sea cell." />
-            {seaPoint ? <p className="module-note" role="status">Chosen for the wave read: {placeName(seaPoint)} · {seaPoint.latitude}, {seaPoint.longitude}</p>
-              : <p className="module-note">No point has been chosen for the wave read, so no sea cell was requested.</p>}
-          </div>
-          <div style={{ flex: '1 1 24rem', minWidth: 0 }}>
-            <h3>River read · river point</h3>
-            <PlacePicker onPick={setRiverPoint} hint="Name a river point and choose a row; GET /api/river then answers for that point's river cell." />
-            {riverPoint ? <p className="module-note" role="status">Chosen for the river read: {placeName(riverPoint)} · {riverPoint.latitude}, {riverPoint.longitude}</p>
-              : <p className="module-note">No point has been chosen for the river read, so no river cell was requested.</p>}
-          </div>
-        </div>
-        {bothAnswered ? (
-          <p className="module-note" role="status" data-testid="marine-cells">
-            The wave read answered for cell {cellText(waveData?.grid)}; the distance it stated is {distanceText(waveData?.grid_distance_km)}.
-            The river read answered for cell {cellText(riverData?.grid)}; the distance it stated is {distanceText(riverData?.grid_distance_km)}.
-            {cellsDiffer(waveData?.grid, riverData?.grid) ? ' They are two different cells: the wave values apply to the sea cell named first, and the discharge to the river cell named second.' : ''}
-          </p>
-        ) : null}
-      </section>
-
-      <section className="module-section" data-testid="marine-boundary">
-        <h2>What these values are not</h2>
-        <ul>
-          <li>A wave height is a modelled sea-state value for a grid cell. It is not an observation, not a sea-area bulletin and not a coastal or marine safety warning.</li>
-          <li>A discharge is modelled volume flow. It is not an observed water level, not a gauge reading, not a danger level, not an inundation extent or a flood warning.</li>
-          <li>The official sea-area and coastal bulletins S58 and S59 are not connected here: this surface reads neither of them, and states no bulletin, advisory or warning from them.</li>
-          <li>Where the payload states no distance for the answering cell, that distance reads as not recorded; this surface never computes one.</li>
-        </ul>
-      </section>
-
-      {seaPoint ? <ReadSection heading="Modelled waves for the answering sea cell" testId="marine-wave" route="GET /api/marine" place={seaPoint} query={waveRead} what="waves" /> : null}
+      {seaPoint ? <ReadSection heading="Modelled waves for the answering sea cell" testId="marine-wave" route="GET /api/marine" place={seaPoint} query={waveRead} what="waves" hoistHeadline /> : null}
       {riverPoint ? <ReadSection heading="Modelled river discharge for the answering river cell" testId="marine-river" route="GET /api/river" place={riverPoint} query={riverRead} what="discharge" timeBasisRow={riverTimeBasisRow} /> : null}
+
+      {/* Under the evidence, folded. Every bullet is kept word for word, including the two that the
+          language rules of this product exist for: a discharge is not an observed water level, and the
+          official sea-area and coastal bulletins are not connected here. */}
+      <Meaning
+        testId="marine-boundary"
+        summary="What these values are, and what they are not"
+        lines={[
+          { text: 'A wave height is a modelled sea-state value for a grid cell. It is not an observation, not a sea-area bulletin and not a coastal or marine safety warning.' },
+          { text: 'A discharge is modelled volume flow. It is not an observed water level, not a gauge reading, not a danger level, not an inundation extent or a flood warning.' },
+          { text: 'The official sea-area and coastal bulletins S58 and S59 are not connected here: this surface reads neither of them, and states no bulletin, advisory or warning from them.' },
+          { text: 'Where the payload states no distance for the answering cell, that distance reads as not recorded; this surface never computes one.' },
+        ]}
+      />
     </SurfaceShell>
   );
 }

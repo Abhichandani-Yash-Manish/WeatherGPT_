@@ -587,24 +587,29 @@ export function Workspace({
             ) : null}
 
             {!chatting ? (
-              <div className="g-welcome">
-                <Welcome hour={hour} />
+              <div className="g-welcome" data-surface={sheet ? 'true' : 'false'}>
+                {/* A module page carries its own title and its own first reading, so the greeting, the
+                    verse and the starters are not drawn under it. The composer is, because the front
+                    door is the front door on every page. */}
+                {sheet ? null : <Welcome hour={hour} />}
                 {composer}
-                <div className="g-chips">
+                {sheet ? null : (<div className="g-chips">
                   {STARTERS.map(starter => (
                     <button key={starter.label} type="button" className="g-chip" title={starter.question} onClick={() => void conversation.send(starter.question)}>
                       {starter.label}
                     </button>
                   ))}
-                </div>
+                </div>)}
                 {/* The national reading, which used to be the headline here. A way into the Warnings home
                     for a reader who wants it, set as a way in rather than as a fourth question: it opens a
                     surface, and it is not something a reader would ever type. */}
-                <p className="g-welcome-foot">
-                  <button type="button" className="g-quiet" onClick={() => onOpen('overview')}>
-                    Today across India
-                  </button>
-                </p>
+                {sheet ? null : (
+                  <p className="g-welcome-foot">
+                    <button type="button" className="g-quiet" onClick={() => onOpen('overview')}>
+                      Today across India
+                    </button>
+                  </p>
+                )}
               </div>
             ) : (
               <>

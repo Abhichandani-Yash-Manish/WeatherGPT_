@@ -1,0 +1,129 @@
+{
+  "base": "http://127.0.0.1:8790",
+  "question": "Will it rain in Ahmedabad tomorrow?",
+  "width": 1440,
+  "steps": [
+    {
+      "step": "arrive",
+      "detail": "title=\"WeatherGPT — Ask\" h1=\"Good morning\""
+    },
+    {
+      "step": "wait",
+      "detail": "after 2.5s the page says \"2 s since you asked | What it’s doing | Your question | Every value keeps its source and the time it was read.\""
+    },
+    {
+      "step": "answer",
+      "detail": "9.7s, 699 words on the page"
+    },
+    {
+      "step": "folds",
+      "detail": "6 <details> on the screen"
+    },
+    {
+      "step": "fold",
+      "detail": "\"The rest of the answer (2 sentences)\" open=true"
+    },
+    {
+      "step": "fold",
+      "detail": "\"how much of the window this covers · every part of it covered\" open=true"
+    },
+    {
+      "step": "fold",
+      "detail": "\"where this came from\" open=true"
+    },
+    {
+      "step": "fold",
+      "detail": "\"What this answer does not cover\" open=true"
+    },
+    {
+      "step": "fold",
+      "detail": "\"How this was answered · 6 steps · 8.429 s · nothing refused\" open=true"
+    },
+    {
+      "step": "fold",
+      "detail": "\"How much this card unfolds: Conversational\" open=true"
+    },
+    {
+      "step": "opened",
+      "detail": "6 of 6 folds opened"
+    },
+    {
+      "step": "controls",
+      "detail": "170 visible buttons"
+    },
+    {
+      "step": "click",
+      "detail": "\"Search conversations\" changed=true"
+    },
+    {
+      "step": "click",
+      "detail": "\"Collapse the rail\" changed=true"
+    },
+    {
+      "step": "click",
+      "detail": "\"?\" changed=true"
+    },
+    {
+      "step": "click",
+      "detail": "\"?\" changed=true"
+    },
+    {
+      "step": "click",
+      "detail": "\"?\" changed=true"
+    },
+    {
+      "step": "click",
+      "detail": "\"New conversation ⌥N\" changed=true"
+    },
+    {
+      "step": "click",
+      "detail": "\"Watch\" changed=true"
+    },
+    {
+      "step": "click",
+      "detail": "\"?\" changed=false"
+    },
+    {
+      "step": "click",
+      "detail": "\"Keyboard shortcuts\" changed=false"
+    },
+    {
+      "step": "click",
+      "detail": "\"Owner gate\" changed=false"
+    },
+    {
+      "step": "click",
+      "detail": "\"Open the reading panel\" changed=false"
+    },
+    {
+      "step": "click",
+      "detail": "\"Set your place\" changed=false"
+    },
+    {
+      "step": "click",
+      "detail": "\"Another line\" changed=false"
+    },
+    {
+      "step": "click",
+      "detail": "\"Record a question\" changed=false"
+    },
+    {
+      "step": "skip",
+      "detail": "\"Send\""
+    },
+    {
+      "step": "click",
+      "detail": "\"Will it rain tomorrow?\" changed=false"
+    },
+    {
+      "step": "note",
+      "detail": "8 controls produced no visible change (some are copy/tooltip actions)"
+    },
+    {
+      "step": "phone",
+      "detail": "horizontal overflow 0px"
+    }
+  ],
+  "defects": [],
+  "failed": []
+}

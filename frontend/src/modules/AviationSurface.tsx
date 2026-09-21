@@ -3,7 +3,14 @@
    observation; neither is a flight-safety clearance, a runway state, a turbulence or icing determination
    or any operational advice. Every value here is a field this read returned, with its own unit, its own
    instant or window, its own age and the read's own freshness word beside it, and a station the read did
-   not return is stated as missing rather than dropped. */
+   not return is stated as missing rather than dropped.
+
+   Who this surface is for: a non-pilot holding a four-letter code, and a pilot who knows the coded string
+   and still wants the fields beside it. Measured 21 September 2026: the first screen was four sentences
+   about what a METAR and a TAF are not, then the form — a reader met the disclaimer before the control
+   that produces the thing disclaimed. The form is first now, the decode leads the page the moment a code
+   is given, and the four sentences are under the report they qualify.
+   The raw report stays verbatim and the decoded fields sit ALONGSIDE it, never instead of it. */
 import { useState, type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getJson, withQuery } from '../api/client';
@@ -11,7 +18,7 @@ import type { Envelope } from '../api/types';
 import { count, orNot } from '../lib/format';
 import { elapsedWords, istStamp, istWindow } from '../lib/time';
 import { viewById } from '../shell/views';
-import { DataTable, Facts, Headline, NO_ROW, NOT_RECORDED, SurfaceShell } from './Evidence';
+import { Awaiting, DataTable, Facts, Meaning, NO_ROW, NOT_RECORDED, SurfaceShell } from './Evidence';
 
 type RawFields = { name?: string | null; lat?: number | null; lon?: number | null; elev?: number | null; metarType?: string | null };
 type Report = {
@@ -162,37 +169,49 @@ export function Surface(): JSX.Element {
   const missing = Array.isArray(data?.missing) ? data?.missing : null;
   const stale = stations.filter(report => report.freshness === 'stale').length;
 
+  const answered = asked !== null && read.isSuccess;
+  const headline = answered ? decodeHeadline(kindWord, stations[0]) : null;
+
+  /* The controls a reader used to ask for this read. They are rendered in every state — while the read is
+     in flight and after it has failed — so the codes a reader typed cannot disappear under them, and a
+     refusal that names a bad code can be corrected where the code is. */
+  const ask = (
+    <section className="module-section">
+      <h2>The station and the kind</h2>
+      <div className="module-controls">
+        <label className="module-field" htmlFor="aviation-icao">
+          <span>ICAO codes to read, comma separated</span>
+          <input id="aviation-icao" type="search" value={codes} placeholder="e.g. VOBL or VOBL,VAAH" onChange={event => setCodes(event.target.value)} />
+        </label>
+        <label className="module-field" htmlFor="aviation-kind">
+          <span>Report kind to read</span>
+          <select id="aviation-kind" value={kind} onChange={event => setKind(event.target.value)}>
+            {KINDS.map(name => <option key={name} value={name}>{name}</option>)}
+          </select>
+        </label>
+        <button type="button" className="btn" disabled={!codes.trim()} onClick={() => setAsked({ codes: codes.trim(), kind })}>
+          Read these reports
+        </button>
+      </div>
+      {asked ? null : (
+        <Awaiting testId="aviation-awaiting">
+          Nothing has been read yet. Type the four letters of an airport's ICAO code — VOBL for Bengaluru, VAAH for
+          Ahmedabad — and this surface reads the report the source published for it, then prints the coded string
+          exactly as transmitted with the fields beside it.
+        </Awaiting>
+      )}
+    </section>
+  );
+
   return (
     <SurfaceShell
       title="Aviation"
-      lead="Airport reports for the ICAO codes you name, read kind by kind: the station, the raw report as the source transmitted it, the decoded values with their own time basis, and the age of the report."
+      lead="The airport report for the codes you name, decoded beside the source's own coded string."
       what="the airport reports" envelope={asked ? read.data : undefined} busy={asked !== null && read.isPending}
       error={asked ? read.error : undefined} onRetry={() => read.refetch()} intents={intents}
+      reading={headline ? { testId: 'aviation-headline', statement: headline.statement, source: headline.source } : undefined}
+      hold={ask}
     >
-      <section className="module-section">
-        <h2>What these reports are</h2>
-        <p className="module-note" data-testid="aviation-standing">{REPORTS}</p>
-        <div className="module-controls">
-          <label className="module-field" htmlFor="aviation-icao">
-            <span>ICAO codes to read, comma separated</span>
-            <input id="aviation-icao" type="search" value={codes} placeholder="e.g. VOBL or VOBL,VAAH" onChange={event => setCodes(event.target.value)} />
-          </label>
-          <label className="module-field" htmlFor="aviation-kind">
-            <span>Report kind to read</span>
-            <select id="aviation-kind" value={kind} onChange={event => setKind(event.target.value)}>
-              {KINDS.map(name => <option key={name} value={name}>{name}</option>)}
-            </select>
-          </label>
-          <button type="button" className="btn" disabled={!codes.trim()} onClick={() => setAsked({ codes: codes.trim(), kind })}>
-            Read these reports
-          </button>
-        </div>
-        <p className="module-note">
-          The route answers these two kinds and refuses a code that is not four letters; its own refusal sentence is shown
-          here when it refuses, and a kind this route does not answer is never offered.
-        </p>
-      </section>
-
       {asked && !read.isPending && !read.isError ? (
         <section className="module-section">
           <h2>The reports this read returned</h2>
@@ -203,10 +222,6 @@ export function Surface(): JSX.Element {
             ['Requested stations with no report', missing === null ? NOT_RECORDED
               : missing.length ? missing.join(', ') : 'every station this read was asked for answered'],
           ]} />
-          {(() => {
-            const headline = decodeHeadline(kindWord, stations[0]);
-            return <Headline testId="aviation-headline" statement={headline.statement} source={headline.source} />;
-          })()}
           <p className="module-note" role="status" aria-live="polite" data-testid="aviation-count">
             {count(stations.length, 'station report')} returned for {kindWord}; {stale
               ? count(stale, 'row') + ' carry the read\u2019s own stale word and must not be read as current weather'
@@ -223,6 +238,19 @@ export function Surface(): JSX.Element {
           )}
         </section>
       ) : null}
+
+      {/* Under the report it qualifies, folded. Word for word, including the two refusals this surface
+          exists to keep: a METAR is not a forecast and a TAF is not an observation, and neither is a
+          clearance, a runway state or any other operational advice. */}
+      <Meaning
+        testId="aviation-standing"
+        summary="What a METAR and a TAF are, and what neither of them is"
+        lines={[
+          { text: REPORTS },
+          { text: 'The route answers these two kinds and refuses a code that is not four letters; its own refusal '
+            + 'sentence is shown when it refuses, and a kind this route does not answer is never offered.' },
+        ]}
+      />
     </SurfaceShell>
   );
 }

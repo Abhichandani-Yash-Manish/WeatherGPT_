@@ -335,7 +335,7 @@ export function Surface(): JSX.Element {
   return (
     <SurfaceShell
       title="Map"
-      lead="The layers this machine can draw, and one of them drawn from the served feature geometry. The figure is a schematic fit of the coordinates that read returned; the table beside it is the accessible equivalent."
+      lead="The published warning picture drawn for one layer, with the table beside it as the accessible equivalent. The figure is a schematic fit of the coordinates that read returned."
       what="the map layer manifest"
       envelope={layers.data}
       busy={layers.isPending}
@@ -343,15 +343,6 @@ export function Surface(): JSX.Element {
       onRetry={() => layers.refetch()}
       intents={intents}
     >
-      <section className="module-section">
-        <h2>The layers this machine can draw</h2>
-        <p className="module-note" data-testid="map-manifest">Build {orNot(manifest?.build_id)}, join file {orNot(manifest?.join_file)}; district polygons written {orNot(manifest?.district_polygons)}. Attribution as returned: {orNot(manifest?.attribution)}</p>
-        <DataTable testId="map-layers"
-          caption="One row per layer the manifest returned. A field the manifest did not state is shown as not recorded, never filled in from a list this surface keeps."
-          columns={['Layer', 'Kind as stated', 'File', 'Bytes as returned', 'Budget bytes as returned']}
-          rows={listed.map(row => [orNot(row.name, 'name not stated in this row'), orNot(row.kind), orNot(row.file), orNot(row.bytes), orNot(row.budget_bytes)])} />
-      </section>
-
       <section className="module-section">
         <h2>The figure</h2>
         <p className="module-note">
@@ -581,6 +572,20 @@ export function Surface(): JSX.Element {
           </>
         )}
       </section>
+
+      {/* The layer manifest, folded and below the figure. Measured 21 September 2026 on the captured first
+          screen (light-map@1440): the surface opened on a table of file names, byte counts and byte budgets —
+          a build manifest, read out to a reader who came to see which districts are under a warning. It is
+          the read's own evidence and every row of it is still here, under the answer instead of in front of
+          the question. */}
+      <details className="module-meaning">
+        <summary>The layers this machine can draw, and the files they came from</summary>
+        <p className="module-note" data-testid="map-manifest">Build {orNot(manifest?.build_id)}, join file {orNot(manifest?.join_file)}; district polygons written {orNot(manifest?.district_polygons)}. Attribution as returned: {orNot(manifest?.attribution)}</p>
+        <DataTable testId="map-layers"
+          caption="One row per layer the manifest returned. A field the manifest did not state is shown as not recorded, never filled in from a list this surface keeps."
+          columns={['Layer', 'Kind as stated', 'File', 'Bytes as returned', 'Budget bytes as returned']}
+          rows={listed.map(row => [orNot(row.name, 'name not stated in this row'), orNot(row.kind), orNot(row.file), orNot(row.bytes), orNot(row.budget_bytes)])} />
+      </details>
 
       {place ? (
         <section className="module-section">

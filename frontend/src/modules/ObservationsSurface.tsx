@@ -10,7 +10,10 @@ import type { Envelope } from '../api/types';
 import { count, orNot } from '../lib/format';
 import { istStamp } from '../lib/time';
 import { viewById } from '../shell/views';
-import { DataTable, EvidenceFooter, Failure, Facts, NO_ROW, NOT_RECORDED, PlacePicker, Reading, SurfaceShell, type PlaceChoice } from './Evidence';
+import {
+  Awaiting, DataTable, EvidenceFooter, Failure, Facts, NO_ROW, NOT_RECORDED, PlacePicker, Reading, ReadingFor,
+  SurfaceShell, readWorkingPlace, type PlaceChoice,
+} from './Evidence';
 
 type StationParameter = {
   field?: string | null;
@@ -90,7 +93,7 @@ function stationRows(stations: StationRow[], network: string): ReactNode[][] {
 const STATION_COLUMNS = ['Station', 'Network', 'Kind', 'Distance', 'Observed at', 'Age at retrieval', 'Source', 'State of the report', 'What the station reported'];
 
 export function Surface(): JSX.Element {
-  const [place, setPlace] = useState<PlaceChoice | null>(null);
+  const [place, setPlace] = useState<PlaceChoice | null>(() => readWorkingPlace());
   const point = { lat: place?.latitude, lon: place?.longitude };
 
   const near = useQuery({
@@ -113,32 +116,43 @@ export function Surface(): JSX.Element {
     ? byNetwork.flatMap(([kind, rows]) => stationRows(rows || [], kind))
     : stationRows(nearData?.stations || [], '');
 
+  /* The control a reader used to ask for these reads, rendered in every state: the point survives a read
+     in flight and survives a failed one, which is where a reader who named the wrong place needs it. */
+  const ask = (
+    <section className="module-section">
+      <h2>The point</h2>
+      {place ? <ReadingFor place={place} /> : null}
+      <PlacePicker onPick={setPlace} hint="Name a place and choose a row; stations are then found by great-circle distance from those coordinates." />
+      {!place ? (
+        <Awaiting testId="observations-awaiting">
+          Nothing has been read yet. Name a place below and this surface finds the stations near it, each with its own
+          instant, its own age and the distance the read stated for it.
+        </Awaiting>
+      ) : null}
+      {place && !near.isPending && !near.isError ? (
+        <Facts
+          testId="observations-point"
+          rows={[
+            ['Place named', place.label ? place.label : 'label not recorded'],
+            ['Coordinates read', place.latitude + ', ' + place.longitude],
+          ]}
+        />
+      ) : null}
+    </section>
+  );
+
   return (
     <SurfaceShell
       title="Observations"
-      lead="Station reports near one point, with each station's own instant, age and distance. A station describes itself; it is not a district average and not a forecast."
+      lead="The stations near one point, each with its own instant, its own age and the distance the read stated for it."
       what="the station networks"
       envelope={place ? near.data : undefined}
       busy={place !== null && near.isPending}
       error={place ? near.error : undefined}
       onRetry={() => near.refetch()}
       intents={intents}
+      hold={ask}
     >
-      <section className="module-section">
-        <h2>The point</h2>
-        <PlacePicker onPick={setPlace} hint="Name a place and choose a row; stations are then found by great-circle distance from those coordinates." />
-        {!place ? (
-          <p className="module-note">No point was named, so no station layer was searched.</p>
-        ) : (
-          <Facts
-            testId="observations-point"
-            rows={[
-              ['Place named', place.label ? place.label : 'label not recorded'],
-              ['Coordinates read', place.latitude + ', ' + place.longitude],
-            ]}
-          />
-        )}
-      </section>
 
       {place && !near.isPending && !near.isError ? (
         <section className="module-section">

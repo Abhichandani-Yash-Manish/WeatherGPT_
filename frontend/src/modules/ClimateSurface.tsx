@@ -11,7 +11,7 @@ import type { Envelope } from '../api/types';
 import { ChartBlock } from '../charts/ChartBlock';
 import { count, orNot } from '../lib/format';
 import { viewById } from '../shell/views';
-import { DataTable, EvidenceFooter, Failure, Facts, NO_ROW, NOT_RECORDED, Reading, SurfaceShell } from './Evidence';
+import { DataTable, EvidenceFooter, Failure, Facts, Meaning, NO_ROW, NOT_RECORDED, Reading, SurfaceShell } from './Evidence';
 
 type IndexGroup = { state?: string; districts?: { district?: string; years?: number | null; first_year?: number | null; last_year?: number | null }[] };
 type IndexData = { states?: IndexGroup[]; districts?: number };
@@ -132,11 +132,6 @@ export function Surface(): JSX.Element {
       intents={intents}
     >
       <section className="module-section">
-        <h2>What this record is</h2>
-        <p className="module-note" data-testid="climate-standing">{STORED_RECORD}</p>
-      </section>
-
-      <section className="module-section">
         <h2>What the record holds</h2>
         <p className="module-note">One index row for every district this collection carries, with the years the index counted for it. The picker below offers these districts and nothing else.</p>
         <Facts testId="climate-index" rows={[
@@ -212,6 +207,16 @@ export function Surface(): JSX.Element {
           </>
         )}
       </section>
+
+      {/* Under the evidence, folded. Measured 21 September 2026 on the captured first screen
+          (light-climate@1440): the surface opened on a card headed "What this record is", three sentences
+          about what the record is not, and the index it describes only came after it. Unchanged, and now
+          where the series above it is defined. */}
+      <Meaning
+        testId="climate-standing"
+        summary="What this record is, transcription and all"
+        lines={[{ text: STORED_RECORD }]}
+      />
     </SurfaceShell>
   );
 }

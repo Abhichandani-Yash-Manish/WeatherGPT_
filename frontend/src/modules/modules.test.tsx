@@ -10,11 +10,16 @@ import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { server } from '../test/msw';
 import { Surface as DocumentsSurface } from './DocumentsSurface';
+import { forgetWorkingPlace } from './Evidence';
 import { Surface as ForecastSurface } from './ForecastSurface';
 import { Surface as ObservationsSurface } from './ObservationsSurface';
 import { Surface as SettingsSurface } from './SettingsSurface';
 import { Surface as TodaySurface } from './TodaySurface';
 import { Surface as WarningsSurface } from './WarningsSurface';
+
+/* The held place is process-wide state: a place named by one case would otherwise be held by the next,
+   and these surfaces read it on arrival. Each case states its own premise instead of inheriting one. */
+beforeEach(() => { forgetWorkingPlace(); });
 
 function mount(node: JSX.Element) {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } });
@@ -394,7 +399,7 @@ describe('the Forecast surface', () => {
     );
     mount(<ForecastSurface />);
     await screen.findByLabelText('Name a place');
-    expect(screen.getByText('No point was named, so no forecast series was requested.')).toBeInTheDocument();
+    expect(screen.getByTestId('forecast-awaiting')).toHaveTextContent('Nothing has been read yet.');
 
     await nameAPlace();
 
@@ -471,7 +476,7 @@ describe('the Observations surface', () => {
     );
     mount(<ObservationsSurface />);
     await screen.findByLabelText('Name a place');
-    expect(screen.getByText('No point was named, so no station layer was searched.')).toBeInTheDocument();
+    expect(screen.getByTestId('observations-awaiting')).toHaveTextContent('Nothing has been read yet.');
 
     await nameAPlace();
 

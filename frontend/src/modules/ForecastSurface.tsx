@@ -11,7 +11,10 @@ import { viewById } from '../shell/views';
 import { ChartBlock } from '../charts/ChartBlock';
 import { VizFigure } from '../charts/VizFigure';
 import { meteogramSpec } from '../charts/vizSpecs';
-import { DataTable, EvidenceFooter, Failure, Facts, NO_ROW, NOT_RECORDED, PlacePicker, Reading, SurfaceShell, type PlaceChoice } from './Evidence';
+import {
+  Awaiting, DataTable, EvidenceFooter, Failure, Facts, NO_ROW, NOT_RECORDED, PlacePicker, Reading, ReadingFor,
+  SurfaceShell, readWorkingPlace, type PlaceChoice,
+} from './Evidence';
 
 type Point = { unit?: string | null; points?: { t?: string | null; v?: number | null }[] };
 
@@ -46,7 +49,7 @@ export const intents: string[] = (viewById('forecast')?.intents ?? []).concat([
 const DAY_CHOICES = ['1', '2', '3', '5', '7'];
 
 export function Surface(): JSX.Element {
-  const [place, setPlace] = useState<PlaceChoice | null>(null);
+  const [place, setPlace] = useState<PlaceChoice | null>(() => readWorkingPlace());
   const [days, setDays] = useState('3');
   const point = { lat: place?.latitude, lon: place?.longitude };
 
@@ -70,51 +73,63 @@ export function Surface(): JSX.Element {
   const meteogram = useMemo(() => meteogramSpec(data?.parameters || {}), [data]);
   const parameters = Object.entries(data?.parameters || {});
   const changeData = changes.data?.data;
+  const answered = place !== null && !forecast.isPending && !forecast.isError;
+
+  /* The controls a reader used to ask for these reads, rendered in every state: the place survives a read
+     in flight and survives a failed one, which is where a reader who named the wrong place needs it. */
+  const ask = (
+    <section className="module-section">
+      <h2>The point</h2>
+      {place ? <ReadingFor place={place} /> : null}
+      <div className="module-controls">
+        <label className="module-field" htmlFor="forecast-days">
+          <span>Days requested</span>
+          <select id="forecast-days" value={days} onChange={event => setDays(event.target.value)}>
+            {DAY_CHOICES.map(value => (
+              <option key={value} value={value}>
+                {value} day{value === '1' ? '' : 's'}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+      <PlacePicker onPick={setPlace} hint="Name a place and choose a row; the forecast is read for those coordinates." />
+      {!place ? (
+        <Awaiting testId="forecast-awaiting">
+          Nothing has been read yet. Name a place below and this surface reads the model series for the cell that answers
+          it: one table per parameter, with the unit and the instant each value is valid for.
+        </Awaiting>
+      ) : null}
+      {answered ? (
+        <Facts
+          testId="forecast-requested"
+          rows={[
+            ['Requested place', place.label ? place.label : 'label not recorded'],
+            ['Requested coordinates', place.latitude + ', ' + place.longitude],
+            ['Label as the reading returned it', orNot(data?.requested?.label)],
+            ['Coordinates as the reading returned them', data?.requested?.latitude === undefined || data?.requested?.longitude === undefined
+              ? NOT_RECORDED
+              : data.requested.latitude + ', ' + data.requested.longitude],
+            ['Days requested', orNot(data?.days, days)],
+            ['Time basis', orNot(data?.time_basis)],
+          ]}
+        />
+      ) : null}
+    </section>
+  );
 
   return (
     <SurfaceShell
       title="Forecast"
-      lead="Model output for one grid cell, one table per parameter, with the unit the product stated and the instant each value is valid for. Model hours are not observations."
+      lead="The model series for one point, one table per parameter, with the unit the source stated and the instant each value is valid for."
       what="the point forecast"
       envelope={place ? forecast.data : undefined}
       busy={place !== null && forecast.isPending}
       error={place ? forecast.error : undefined}
       onRetry={() => forecast.refetch()}
       intents={intents}
+      hold={ask}
     >
-      <section className="module-section">
-        <h2>The point</h2>
-        <div className="module-controls">
-          <label className="module-field" htmlFor="forecast-days">
-            <span>Days requested</span>
-            <select id="forecast-days" value={days} onChange={event => setDays(event.target.value)}>
-              {DAY_CHOICES.map(value => (
-                <option key={value} value={value}>
-                  {value} day{value === '1' ? '' : 's'}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-        <PlacePicker onPick={setPlace} hint="Name a place and choose a row; the forecast is read for those coordinates." />
-        {!place ? (
-          <p className="module-note">No point was named, so no forecast series was requested.</p>
-        ) : (
-          <Facts
-            testId="forecast-requested"
-            rows={[
-              ['Requested place', place.label ? place.label : 'label not recorded'],
-              ['Requested coordinates', place.latitude + ', ' + place.longitude],
-              ['Label as the reading returned it', orNot(data?.requested?.label)],
-              ['Coordinates as the reading returned them', data?.requested?.latitude === undefined || data?.requested?.longitude === undefined
-                ? NOT_RECORDED
-                : data.requested.latitude + ', ' + data.requested.longitude],
-              ['Days requested', orNot(data?.days, days)],
-              ['Time basis', orNot(data?.time_basis)],
-            ]}
-          />
-        )}
-      </section>
 
       {place && !forecast.isPending && !forecast.isError && meteogram ? (
   <section className="module-section">

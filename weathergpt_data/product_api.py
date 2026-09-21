@@ -492,11 +492,25 @@ def _grid_distance(coverage, latitude, longitude):
     return round(distance_km(requested, point), 3)
 
 
+def carries_a_value(parameters):
+    """Whether a series payload states a value anywhere, rather than a shape with nulls in it.
+
+    The marine provider returns the nearest grid point whether or not it is sea, so an inland place gets
+    a cell inside the distance guard whose every value is null. `parameters` is non-empty in that
+    payload, which made every series view report `ok` for a read that retrieved nothing.
+    """
+    for entry in (parameters or {}).values():
+        for point in (entry or {}).get('points') or []:
+            if isinstance(point, dict) and point.get('v') is not None:
+                return True
+    return False
+
+
 def _series_view(view, packet, extra, sources, limitations, not_established):
     parameters = series_from_packet(packet)
     data = {'parameters': parameters}
     data.update(extra)
-    return envelope(view, 'ok' if parameters else 'unavailable', data,
+    return envelope(view, 'ok' if carries_a_value(parameters) else 'unavailable', data,
                     sources=[source_entry(packet.get('source_id'), packet.get('provenance'), product=packet.get('family'))],
                     coverage=packet.get('coverage'),
                     limitations=list(packet.get('limitations') or []) + list(limitations),

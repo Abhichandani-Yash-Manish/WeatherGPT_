@@ -52,6 +52,7 @@ import { parseHash } from '../shell/useHashRoute';
 import { VIEWS } from '../shell/views';
 import { server } from '../test/msw';
 import { Surface as CompareSurface } from './CompareSurface';
+import { forgetWorkingPlace } from './Evidence';
 import { Surface as ForecastSurface } from './ForecastSurface';
 import { Surface as TodaySurface } from './TodaySurface';
 import { Surface as WarningsSurface } from './WarningsSurface';
@@ -69,6 +70,9 @@ beforeEach(() => {
   } catch {
     /* storage is optional */
   }
+  /* Clearing storage is not enough: the held place is kept in the module as well, so a place named by one
+     case would still be held by the next — and these surfaces read the held place on arrival. */
+  forgetWorkingPlace();
 });
 
 afterEach(() => {
@@ -485,8 +489,8 @@ describe('the compare surface', () => {
 
   it('states its own emptiness when no place has been named on either side', async () => {
     mount(<CompareSurface />);
-    expect(await screen.findByText('No place has been chosen for the first read, so no forecast was requested for it.')).toBeInTheDocument();
-    expect(screen.getByText('No place has been chosen for the second read, so no forecast was requested for it.')).toBeInTheDocument();
+    expect(await screen.findByTestId('compare-awaiting')).toHaveTextContent('Nothing has been read yet.');
+    expect(screen.queryByTestId('compare-headline')).toBeNull();
     expect(screen.queryByTestId('compare-parameter-temperature_2m')).toBeNull();
   });
 });

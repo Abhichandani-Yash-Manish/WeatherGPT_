@@ -15,9 +15,17 @@ import { viewById } from '../shell/views';
 import { VizFigure } from '../charts/VizFigure';
 import { warningMatrixSpec } from '../charts/vizSpecs';
 import {
-  ColourTag, DataTable, Failure, Facts, Limits, NO_ROW, NOT_RECORDED, PlacePicker, Reading, SurfaceShell,
-  type PlaceChoice,
+  ColourTag, DataTable, Failure, Facts, HAZARD_COLOURS, Limits, NO_ROW, NOT_RECORDED, PlacePicker, Reading,
+  SurfaceShell, type PlaceChoice,
 } from './Evidence';
+
+/* A tally slot is a number the read returned, or nothing. It is never defaulted to zero here: a colour the
+   product did not print for any day is absent from the tally, and the reading says what was published
+   rather than printing four zeroes as if the day had been measured quiet in each of them. */
+function numeric(value: unknown): number {
+  const number = typeof value === 'number' ? value : Number(value);
+  return Number.isFinite(number) ? number : 0;
+}
 
 type WarningDay = {
   day?: number;
@@ -257,6 +265,27 @@ export function Surface(): JSX.Element {
   const issuer = briefData?.issuer || {};
   const relay = briefData?.relay || {};
 
+  /* The first-screen reading: what the national product actually published in this read, in the product's
+     own four colour words, so a reader knows before they filter whether today is a quiet national day or a
+     red one. Measured 21 September 2026 on the captured first screen (light-warnings@1440): the surface
+     opened on a filter box and a sentence about how many rows were being listed. A colour here is a count
+     of rows that printed that colour — never a verdict, never a severity this surface chose, and never an
+     alert; a colour the product did not print for any day is not shown as a zero, it is absent from the
+     sentence. */
+  const tally = warnings.data?.data?.tally || {};
+  const printed = HAZARD_COLOURS.filter(colour => numeric(tally[colour]) > 0);
+  const nationalReading = warnings.isSuccess ? {
+    statement: districts.length
+      ? 'This read returned ' + count(districts.length, 'district') + ' and ' + count(rows.length, 'district-day row') + '. '
+        + (printed.length
+          ? 'The colours the product itself printed are ' + printed.map(colour => colour + ' on ' + count(numeric(tally[colour]), 'day')).join(', ') + '.'
+          : 'The product printed no hazard colour for any district-day in this read.')
+      : 'This read returned no district row at all: that is an empty read, not a quiet day.',
+    source: 'view ' + orNot(warnings.data?.view) + ' · status ' + orNot(warnings.data?.status)
+      + ' · read ' + (warnings.data?.generated_at_utc ? istStamp(warnings.data.generated_at_utc) : NOT_RECORDED)
+      + ' · source ' + orNot(source?.source_id),
+  } : null;
+
   return (
     <SurfaceShell
       title="Warnings"
@@ -267,6 +296,7 @@ export function Surface(): JSX.Element {
       error={warnings.error}
       onRetry={() => warnings.refetch()}
       intents={intents}
+      reading={nationalReading ? { testId: 'warnings-headline', statement: nationalReading.statement, source: nationalReading.source } : undefined}
     >
       <section className="module-section">
         <h2>Filter</h2>

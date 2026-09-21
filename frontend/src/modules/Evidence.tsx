@@ -234,6 +234,61 @@ export function Headline({ testId, statement, source }: { testId?: string; state
   );
 }
 
+/* What the numbers on this surface MEAN — its own standing sentences about what a member, a spread, a
+   metric, a modelled wave or an index is. Folded, and printed after the evidence rather than before it.
+   ============================================================================
+   Measured on 21 September 2026 against the captured first screens: five of this lane's six worked
+   surfaces opened with a card of standing sentences that named nothing the read had returned, so the
+   first screen of forecast verification contained no verification (light-verification@1440) and the first
+   screen of the ensemble surface contained no spread (dark-ensemble@1440). The sentences were not wrong
+   and not one of them is dropped here — every one stays, in its own words, under the same test id. What
+   changed is where a reader meets it: after the reading it qualifies, as the definition of the numbers
+   above it.
+
+   The envelope's own limitations and not-established lines do NOT move, because they are not this
+   surface's standing sentences: EvidenceFooter prints them unfolded, from the read itself, on every
+   surface that has one. This component is only for the sentences a surface says in its own voice
+   whichever read answered. */
+export type MeaningLine = { text: string; testId?: string };
+
+export function Meaning({ summary, lines, testId }: { summary: string; lines: MeaningLine[]; testId?: string }): JSX.Element {
+  return (
+    <details className="module-meaning" data-testid={testId}>
+      <summary>{summary}</summary>
+      <ul>
+        {lines.map(line => (
+          <li key={line.text} data-testid={line.testId}>
+            {line.text}
+          </li>
+        ))}
+      </ul>
+    </details>
+  );
+}
+
+/* A surface that has nothing to state yet. An invitation, not a blank shell and not a disclaimer: it names
+   the one action that produces a reading, and says nothing about what the reading will refuse. Measured
+   21 September 2026: five of these six surfaces answered a reader's arrival with "No point was named, so
+   no ... read was requested." — a sentence about the machine's state, printed where a sentence about the
+   reader's next move belongs. */
+export function Awaiting({ children, testId }: { children: ReactNode; testId?: string }): JSX.Element {
+  return <p className="module-note module-awaiting" data-testid={testId}>{children}</p>;
+}
+
+/* The place this surface read, named as the offer it is: what is being read, and where to change it. It is
+   drawn only where a surface actually read a place, so a surface that started from the held place says so
+   before its first number rather than after it. */
+export function ReadingFor({ place, onClear }: { place: PlaceChoice; onClear?: () => void }): JSX.Element {
+  return (
+    <p className="module-reading-for" data-testid="reading-for">
+      <span className="module-fact-label">Reading</span>
+      <span className="evidence">{orNot(place.label, 'place name not recorded')}</span>
+      <span className="evidence text-mute">{place.latitude}, {place.longitude}</span>
+      {onClear ? <button type="button" className="btn btn-ghost" onClick={onClear}>Read a different place</button> : null}
+    </p>
+  );
+}
+
 export function Coverage({ coverage }: { coverage?: Record<string, unknown> }): JSX.Element {
   const names = Object.keys(coverage || {});
   return (
@@ -341,7 +396,7 @@ export function AskInstead({ intents }: { intents?: string[] }): JSX.Element | n
   );
 }
 
-export function SurfaceShell({ title, lead, what, envelope, busy, error, onRetry, children, className, intents }: {
+export function SurfaceShell({ title, lead, what, envelope, busy, error, onRetry, children, className, intents, reading, hold }: {
   title: string;
   lead: string;
   what: string;
@@ -356,6 +411,24 @@ export function SurfaceShell({ title, lead, what, envelope, busy, error, onRetry
       Rendered once, under the lead, as one-tap links into the conversation: a reader who would rather ask
       than operate the instrument is never left with only the instrument. */
   intents?: string[];
+  /** The surface's own reading of the read it holds — what the numbers below it mean, in the evidence's own
+      terms. Rendered directly under the title, ABOVE the way to read again and above every table, which is
+      the order the brief for this batch names: a first screen states what the numbers mean before the table
+      that proves it. A surface whose reading only exists inside a section cannot be read in one screen, so
+      the slot is here rather than in `children`: a surface that cannot hoist its own reading would have to
+      move its columns of controls above it, and that is the shape this batch is repairing.
+      It is drawn only when the surface has a reading and no read is in flight: a skeleton and a reading
+      together would state a value this read has not returned yet. */
+  reading?: { testId?: string; statement: ReactNode; source: ReactNode };
+  /** The controls a reader used to ask for this read — the place, the window, the station code. Rendered in
+      every state, including while a read is in flight and after one has failed.
+      Measured 21 September 2026, before this slot existed: `busy` and `error` replaced the whole surface,
+      so a reader who picked a place watched the surface blink to a skeleton WITH THE PICKER GONE, and a
+      reader whose read failed lost the control that would let them ask about somewhere else — the one
+      action the failure makes them want. It was survivable while every surface needed two or three
+      deliberate actions before it read anything; it is not survivable now that a surface reads as soon as
+      it has a place, because the first thing a reader does is the thing that removes the controls. */
+  hold?: ReactNode;
 }): JSX.Element {
   /* The header of every surface: the icon the rail uses, the surface's own name, its lead, and the
      envelope's own line as chips. Nothing here is a status the envelope did not state. */
@@ -383,10 +456,14 @@ export function SurfaceShell({ title, lead, what, envelope, busy, error, onRetry
           </p>
         ) : null}
       </header>
+      {!busy && !error && reading ? <Headline testId={reading.testId} statement={reading.statement} source={reading.source} /> : null}
       <AskInstead intents={intents} />
-      {busy ? <Reading what={what} /> : null}
-      {!busy && error ? <Failure error={error} what={what} onRetry={onRetry} /> : null}
-      {!busy && !error ? <div className="flex flex-col gap-5">{children}</div> : null}
+      <div className="flex flex-col gap-5">
+        {hold}
+        {busy ? <Reading what={what} /> : null}
+        {!busy && error ? <Failure error={error} what={what} onRetry={onRetry} /> : null}
+        {!busy && !error ? children : null}
+      </div>
       {!busy && !error && envelope ? <EvidenceFooter envelope={envelope} /> : null}
     </section>
   );
@@ -574,10 +651,22 @@ export function PinnedPlaces(): JSX.Element {
    can be read as a point. A row without coordinates is shown as one rather than resolved elsewhere. */
 /* ---- the working place -------------------------------------------------------------------------
    The vanilla frontend carried one working place across every surface; the port asks each surface for
-   its own, so a reader who has just read Pune on the dashboard has to name it again on Forecast. The
-   place this browser last resolved is remembered here and offered as a one-click choice beside the
-   search box (with the pins). It is an offer, never an automatic read: a surface still reads only when
-   the reader chooses a place, so nothing is fetched behind the reader's back. */
+   its own, so a reader who has just read Pune on the dashboard has to name it again on Forecast.
+
+   Until this batch the place this browser last resolved was only an offer beside the search box, and the
+   comment here said why: "It is an offer, never an automatic read: a surface still reads only when the
+   reader chooses a place, so nothing is fetched behind the reader's back." That was written when the only
+   way a place got here was a previous read — a memory of where the reader had been. It is no longer only
+   that. The rail holds a place on purpose (`gpt/Rail.tsx`'s own `hold`, which calls `rememberPlace`) and
+   labels it "This place", printing "No place held" when there is none; the front door's own picker says
+   "The place is held in this browser. The welcome screen, the station reading, the ground's colour and the
+   answers all follow it"; and `WorkspaceSurface` has started from it since the port. A page that is titled
+   with the place the reader is looking at, and that reads nothing for it, is the defect — measured on
+   21 September 2026: eleven of the eighteen surfaces opened on "No point was named, so no ... read was
+   requested." for a reader whose place was already held.
+
+   So a surface now starts from the held place and names it (`ReadingFor`), and it still reads nothing at
+   all when no place is held. Nothing is fetched for a place the reader has not given. */
 export const PLACE_KEY = 'weathergpt.place';
 
 let sessionPlace: PlaceChoice | null = null;
@@ -603,6 +692,17 @@ export function rememberPlace(place: PlaceChoice | null | undefined): void {
     window.localStorage.setItem(PLACE_KEY, JSON.stringify(next));
   } catch {
     /* the browser refused storage: the place still serves this page load */
+  }
+  placeListeners.forEach(listener => listener());
+}
+
+/** Let the held place go, on this machine and for this page load: the rail's "No place held" again. */
+export function forgetWorkingPlace(): void {
+  sessionPlace = null;
+  try {
+    window.localStorage.removeItem(PLACE_KEY);
+  } catch {
+    /* the browser refused storage: nothing was stored and nothing has to be removed */
   }
   placeListeners.forEach(listener => listener());
 }

@@ -1,6 +1,15 @@
 /* Compare places: two point forecasts, each fetched by its own read of GET /api/forecast for its own
    place and the chosen window, held side by side. Each read keeps its own instant, coverage, limits and
-   source rows; an absent parameter or point is stated for that read. Not a ranking or a skill claim. */
+   source rows; an absent parameter or point is stated for that read. Not a ranking or a skill claim.
+
+   Who this surface is for, and the one thing it must never become: a reader with two places in mind —
+   home and the field, here and where they are going — who wants both printed outputs next to each other,
+   each with its own retrieval instant and its own source rows. Two sources agreeing does not establish
+   accuracy and one may feed the other, so the reading states both numbers and stops: no average, no
+   "which is right", no confidence, no ranking. Measured 21 September 2026: the first screen was a control,
+   a four-sentence paragraph beginning "It is not a ranking, a recommendation, a better-or-worse judgement"
+   and two empty place boxes. The paragraph is now under the evidence it qualifies, and the first read
+   starts from the place this browser already holds. */
 import { useState } from 'react';
 import { useQuery, type UseQueryResult } from '@tanstack/react-query';
 import { getJson, withQuery } from '../api/client';
@@ -8,7 +17,10 @@ import type { Envelope } from '../api/types';
 import { count, orNot } from '../lib/format';
 import { istStamp } from '../lib/time';
 import { viewById } from '../shell/views';
-import { DataTable, EvidenceFooter, Facts, Failure, Headline, NO_ROW, NOT_RECORDED, PlacePicker, Reading, SurfaceShell, type PlaceChoice } from './Evidence';
+import {
+  Awaiting, DataTable, EvidenceFooter, Facts, Failure, Meaning, NO_ROW, NOT_RECORDED, PlacePicker, Reading,
+  ReadingFor, SurfaceShell, readWorkingPlace, type PlaceChoice,
+} from './Evidence';
 
 type SeriesPoint = { t?: string | null; v?: number | string | null };
 type Series = { unit?: string | null; model?: string | null; aggregation?: string | null; points?: SeriesPoint[]; quality_flags?: string[] };
@@ -142,7 +154,7 @@ function ReadEvidence({ ordinal, testId, place, query, days, what }: { ordinal: 
 }
 
 export function Surface(): JSX.Element {
-  const [first, setFirst] = useState<PlaceChoice | null>(null);
+  const [first, setFirst] = useState<PlaceChoice | null>(() => readWorkingPlace());
   const [second, setSecond] = useState<PlaceChoice | null>(null);
   const [days, setDays] = useState('3');
 
@@ -166,57 +178,58 @@ export function Surface(): JSX.Element {
   const names = Array.from(new Set([...Object.keys(firstData?.parameters || {}), ...Object.keys(secondData?.parameters || {})]));
   const bothChosen = first !== null && second !== null;
 
+  /* The controls a reader used to ask for this read. They are rendered in every state — while the
+     read is in flight and after it has failed — so the place a reader just chose, and the window or the
+     code they typed beside it, cannot disappear from under them at the moment they act. */
+  const ask = (
+    <section className="module-section">
+      <h2>The two reads</h2>
+      <div className="module-controls">
+        <label className="module-field" htmlFor="compare-days">
+          <span>Days requested from each read</span>
+          <select id="compare-days" value={days} onChange={event => setDays(event.target.value)}>
+            {DAY_CHOICES.map(value => <option key={value} value={value}>{value} day{value === '1' ? '' : 's'}</option>)}
+          </select>
+        </label>
+      </div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--g-4)', alignItems: 'flex-start' }}>
+        <div style={{ flex: '1 1 24rem', minWidth: 0 }}>
+          <h3>First read</h3>
+          {first ? <ReadingFor place={first} /> : null}
+          <PlacePicker onPick={setFirst} hint="Name the first place and choose a row; this read asks GET /api/forecast for that point alone." />
+        </div>
+        <div style={{ flex: '1 1 24rem', minWidth: 0 }}>
+          <h3>Second read</h3>
+          {second ? <ReadingFor place={second} /> : null}
+          <PlacePicker onPick={setSecond} hint="Name the second place and choose a row; this read asks GET /api/forecast for that point alone." />
+        </div>
+      </div>
+      {first && second ? null : (
+        <Awaiting testId="compare-awaiting">
+          {first
+            ? 'One place is chosen. Name a second one and this surface reads its point forecast too, then holds the two side by side, instant by instant.'
+            : 'Nothing has been read yet. Name two places below and this surface reads each one’s own point forecast and holds the two side by side.'}
+        </Awaiting>
+      )}
+    </section>
+  );
+
   return (
     <SurfaceShell
       title="Compare places"
-      lead="Two model point forecasts from two separate reads, one per place, held side by side with each read's own instant, unit and source rows. Model hours are not observations. A comparison of two printed outputs, not a ranking and not a skill claim."
+      lead="Two places' point forecasts, side by side, each read from its own request and each with its own retrieval instant."
       what="the two point forecasts"
       busy={false}
       intents={intents}
+      reading={bothChosen ? { testId: 'compare-headline', ...sideBySideHeadline(names, firstData, secondData, first, second, firstState, secondState) } : undefined}
+      hold={ask}
     >
-      <section className="module-section">
-        <h2>The two reads</h2>
-        <div className="module-controls">
-          <label className="module-field" htmlFor="compare-days">
-            <span>Days requested from each read</span>
-            <select id="compare-days" value={days} onChange={event => setDays(event.target.value)}>
-              {DAY_CHOICES.map(value => <option key={value} value={value}>{value} day{value === '1' ? '' : 's'}</option>)}
-            </select>
-          </label>
-        </div>
-        <p className="module-note" data-testid="compare-boundary">
-          The two columns below come from two separate reads of GET /api/forecast, one per place, that may have been retrieved at
-          different times; each read states its own generated_at_utc in its own section below. This is a comparison of two printed
-          outputs. It is not a ranking, a recommendation, a better-or-worse judgement or a claim about forecast skill. Each value is
-          the point-forecast product's own model output, not an observation. A parameter or an instant that one read did not return
-          is stated as absent for that read, never omitted from the row and never filled with a zero.
-        </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--g-4)', alignItems: 'flex-start' }}>
-          <div style={{ flex: '1 1 24rem', minWidth: 0 }}>
-            <h3>First read</h3>
-            <PlacePicker onPick={setFirst} hint="Name the first place and choose a row; this read asks GET /api/forecast for that point alone." />
-            {first ? <p className="module-note" role="status">Chosen for the first read: {placeName(first, 'first')} · {first.latitude}, {first.longitude}</p>
-              : <p className="module-note">No place has been chosen for the first read, so no forecast was requested for it.</p>}
-          </div>
-          <div style={{ flex: '1 1 24rem', minWidth: 0 }}>
-            <h3>Second read</h3>
-            <PlacePicker onPick={setSecond} hint="Name the second place and choose a row; this read asks GET /api/forecast for that point alone." />
-            {second ? <p className="module-note" role="status">Chosen for the second read: {placeName(second, 'second')} · {second.latitude}, {second.longitude}</p>
-              : <p className="module-note">No place has been chosen for the second read, so no forecast was requested for it.</p>}
-          </div>
-        </div>
-      </section>
-
       {bothChosen ? (
         <section className="module-section">
           <h2>Side by side, parameter by parameter</h2>
           <p className="module-note">
             Rows are every instant either read returned for that parameter. Each value keeps the unit its own read stated, and each read's own source rows are listed in its section below.
           </p>
-          {(() => {
-            const headline = sideBySideHeadline(names, firstData, secondData, first, second, firstState, secondState);
-            return <Headline testId="compare-headline" statement={headline.statement} source={headline.source} />;
-          })()}
 
           {names.length ? names.map(name => {
             const firstSeries = firstData?.parameters?.[name];
@@ -245,6 +258,21 @@ export function Surface(): JSX.Element {
 
       {first ? <ReadEvidence ordinal="first" testId="compare-read-first" place={first} query={firstRead} days={days} what="first point forecast" /> : null}
       {second ? <ReadEvidence ordinal="second" testId="compare-read-second" place={second} query={secondRead} days={days} what="second point forecast" /> : null}
+
+      {/* Under the evidence, folded: the boundary that used to be the second thing on the page, before
+          either read had returned anything for it to be a boundary of. */}
+      <Meaning
+        testId="compare-boundary"
+        summary="What these two columns are, and what they are not"
+        lines={[{
+          text: 'The two columns come from two separate reads of GET /api/forecast, one per place, that may have been '
+            + 'retrieved at different times; each read states its own generated_at_utc in its own section below. This is a '
+            + 'comparison of two printed outputs. It is not a ranking, a recommendation, a better-or-worse judgement or a '
+            + 'claim about forecast skill. Each value is the point-forecast product\'s own model output, not an observation. '
+            + 'A parameter or an instant that one read did not return is stated as absent for that read, never omitted from '
+            + 'the row and never filled with a zero.',
+        }]}
+      />
     </SurfaceShell>
   );
 }

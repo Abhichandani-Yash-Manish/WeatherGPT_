@@ -112,6 +112,59 @@
   max-width: 62ch;
 }
 
+/* ---- what the numbers mean ----------------------------------------------------------------------
+   The surface's own standing sentences — what a member, a spread, a metric, a modelled wave or an index
+   IS — folded under one summary and printed after the evidence they qualify. Measured 21 September 2026:
+   printed above it, they were the whole first screen of five surfaces and the reader met four paragraphs
+   about what the surface does not claim before the surface had claimed anything. They are not deleted and
+   not reworded; a closed fold is the same sentence one action away, under a summary that names it.
+   Not a card: a rule above and a disclosure marker, so it cannot read as a second panel beside the
+   section it belongs to. */
+.module-meaning {
+  border-top: 1px solid var(--g-line-soft);
+  padding-top: var(--g-3);
+}
+.module-meaning > summary {
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--g-mist);
+  min-height: 24px;
+}
+.module-meaning > summary:focus-visible { outline: 2px solid var(--g-accent); outline-offset: 2px; }
+.module-meaning ul {
+  margin: var(--g-3) 0 0;
+  padding-left: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--g-2);
+  max-width: 68ch;
+  color: var(--g-mist);
+  font-size: 13px;
+}
+
+/* ---- the empty state, as an invitation -----------------------------------------------------------
+   A surface with nothing to state yet says which one action produces a reading. It is set apart from the
+   running notes around it so it reads as the reader's next move rather than as another line about the
+   machine — an accent edge on the left, one pixel, never a hazard hue. */
+.module-awaiting {
+  border-left: 1px solid var(--g-accent);
+  padding-left: var(--g-3);
+}
+
+/* ---- the place a surface read --------------------------------------------------------------------
+   One line naming the place the numbers below are about, drawn before them. The label is the product's
+   own word for it, so the line reads as the offer it is and the control beside it is the way to change it. */
+.module-reading-for {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--g-2) var(--g-3);
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--g-mist);
+}
+
 /* ---- controls ----------------------------------------------------------------------------------- */
 .module-controls { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--g-3); }
 .module-field { display: flex; flex-direction: column; gap: var(--g-1); font-size: 12.5px; color: var(--g-mist); }

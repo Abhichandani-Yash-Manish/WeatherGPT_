@@ -10,7 +10,12 @@ import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { server } from '../test/msw';
 import { Surface as ChangesSurface } from './ChangesSurface';
+import { forgetWorkingPlace } from './Evidence';
 import { Surface as MapSurface } from './MapSurface';
+
+/* The held place is process-wide state: a place named by one case would otherwise be held by the next,
+   and these surfaces read it on arrival. Each case states its own premise instead of inheriting one. */
+beforeEach(() => { forgetWorkingPlace(); });
 
 function mount(node: JSX.Element) {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } });
@@ -340,9 +345,7 @@ describe('the What changed surface', () => {
     mount(<ChangesSurface />);
 
     expect(await screen.findByRole('heading', { level: 1, name: 'What changed' })).toBeInTheDocument();
-    expect(
-      screen.getByText('No point was named, so no stored retrieval was compared and no district product was read.'),
-    ).toBeInTheDocument();
+    expect(screen.getByTestId('changes-awaiting')).toHaveTextContent('Nothing has been read yet.');
 
     await nameAPlace();
 

@@ -8,7 +8,14 @@ import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { server } from '../test/msw';
 import { provenanceOffenders } from '../flagship/provenance';
+import { forgetWorkingPlace } from './Evidence';
 import { Surface as MarineSurface } from './MarineSurface';
+
+/* The held place is process-wide state: a place named by one case would otherwise be held by the next and
+   these surfaces read it on arrival. Each case states its own premise instead of inheriting one, and the
+   held-place start itself is covered by opening.audit.test.tsx. */
+beforeEach(() => { forgetWorkingPlace(); });
+
 
 function mount(node: JSX.Element) {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } });
@@ -123,8 +130,9 @@ describe('the Sea and rivers surface', () => {
     expect(boundary).toHaveTextContent('not an observed water level, not a gauge reading, not a danger level, not an inundation extent or a flood warning');
     expect(boundary).toHaveTextContent('S58 and S59 are not connected here');
     expect(boundary).toHaveTextContent('this surface never computes one');
-    expect(screen.getByText('No point has been chosen for the wave read, so no sea cell was requested.')).toBeInTheDocument();
-    expect(screen.getByText('No point has been chosen for the river read, so no river cell was requested.')).toBeInTheDocument();
+    // Nothing is read before a point is named: the surface invites the one action that produces a reading.
+    expect(screen.getByTestId('marine-awaiting')).toHaveTextContent('Nothing has been read yet.');
+    expect(screen.queryByTestId('marine-wave-headline')).toBeNull();
 
     await chooseSeaAndRiver();
 
