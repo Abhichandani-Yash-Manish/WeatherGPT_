@@ -338,6 +338,28 @@ class ConversationEngine:
             db.execute('INSERT INTO conversations VALUES (?,?,?) ON CONFLICT(id) DO UPDATE SET payload=excluded.payload,updated=excluded.updated',
                        (cid,json.dumps(state,ensure_ascii=False),self.workspace.clock().isoformat()))
 
+    @staticmethod
+    def record_answer(state,question,packet,include_question=True):
+        """Keep the public answer packet beside the bounded planning history.
+
+        The planner still receives the small role/content history it always did: packets live in a
+        separate receipt map and history carries only their identifier.  That preserves the exact
+        answer surface for a later reopen without feeding facts, traces and source records back into
+        the next model prompt.  When the twelve-message history window moves, receipts no longer
+        referenced by that window move with it.
+        """
+        if include_question:state['history'].append({'role':'user','content':question})
+        receipt_id=str(uuid.uuid4())
+        # The HTTP answer is already the public contract.  A JSON round trip proves the stored copy is
+        # the same serialisable object the route can return, rather than a reference later code mutates.
+        public_packet=json.loads(json.dumps(packet,ensure_ascii=False))
+        state.setdefault('answer_packets',{})[receipt_id]=public_packet
+        state['history'].append({'role':'assistant','content':str(packet.get('answer') or '')[:2000],
+                                 'receipt_id':receipt_id})
+        state['history']=state['history'][-12:]
+        live={turn.get('receipt_id') for turn in state['history'] if turn.get('receipt_id')}
+        state['answer_packets']={key:value for key,value in state['answer_packets'].items() if key in live}
+
     def ask(self,body):
         if not isinstance(body,dict) or set(body)-{'question','conversation_id','selection_id','coordinates','output_language','request_id','persona','place','window'}:raise SourceError('Send a question and optional conversation/place/language selection')
         # A persona is a reading position: it is checked before any work is done and it
@@ -692,9 +714,7 @@ class ConversationEngine:
                 'answered_at_utc':self.workspace.clock().isoformat(),'expires_at_utc':None,
                 'trace':{'planning':None,'generation':None,'tools':[],'provider':'local_ollama',
                          'cancelled':{'request_id':request_id,'stage':stage}}}
-        state['history'].append({'role':'user','content':q})
-        state['history'].append({'role':'assistant','content':result['answer']})
-        state['history']=state['history'][-12:]
+        self.record_answer(state,q,result)
         self.save(cid,state)
         return result
 
@@ -930,14 +950,13 @@ class ConversationEngine:
         from .dialogue import save_focus
         save_focus(state,result)
         state['last_question']=q;state['last_plan']=state.get('last_plan',plan) if plan.get('context_action')=='explain_previous' else plan;state['choices']=result['choices'];state['resolved_points']=result.get('resolved_points',{})
-        if not body.get('selection_id'):state['history'].append({'role':'user','content':q})
-        state['history'].append({'role':'assistant','content':result['answer'][:2000]})
-        state['history']=state['history'][-12:];self.save(cid,state)
         # The persona the answer was read under travels with the answer, so the framing
         # can never be mistaken for the finding.
         from .personas import annotate as persona_block
         block=persona_block(body.get('persona'))
         if block:result['persona']=block
+        self.record_answer(state,q,result,include_question=not body.get('selection_id'))
+        self.save(cid,state)
         return result
 
     def _ensure_coverage(self,result):
@@ -992,9 +1011,7 @@ class ConversationEngine:
 
     def _plan_turn(self,cid,state,body,q,packet):
         packet['conversation_id']=cid
-        if not body.get('selection_id'):state['history'].append({'role':'user','content':q})
-        state['history'].append({'role':'assistant','content':packet['answer'][:2000]})
-        state['history']=state['history'][-12:]
+        self.record_answer(state,q,packet,include_question=not body.get('selection_id'))
         # Place candidates for a plan live in the plan draft, so an ordinary selection on a later
         # question can never pick up a plan's candidate list.
         state['last_question']=q;state['choices']=[]

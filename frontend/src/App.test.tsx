@@ -84,15 +84,26 @@ describe('the shell', () => {
     const { server } = await import('./test/msw');
     server.use(
       http.get('/api/conversations/:id', () =>
-        HttpResponse.json({ schema_version: 'conversation-transcript-v1', id: '11111111-1111-4111-8111-111111111111',
+        HttpResponse.json({ schema_version: 'conversation-transcript-v2', id: '11111111-1111-4111-8111-111111111111',
           updated: '2026-09-17T10:00:00+00:00', turns: [
             { role: 'user', content: 'Will it rain in Surat tomorrow?' },
-            { role: 'assistant', content: 'Surat: forecast precipitation 0.3 mm.' },
-          ], note: 'Restored transcript.' })),
+            { role: 'assistant', content: 'Surat: forecast precipitation 0.3 mm.', packet: {
+              schema_version: 'weather-conversation-v1', conversation_id: '11111111-1111-4111-8111-111111111111',
+              question: 'Will it rain in Surat tomorrow?', status: 'answered',
+              answer: 'Surat: forecast precipitation 0.3 mm.', answered_at_utc: '2026-09-17T09:59:00+00:00',
+              facts: [{ id: 'f1', parameter: 'precipitation', value: '0.3', unit: 'mm', place: 'Surat, Gujarat',
+                source_id: 'S62', evidence_kind: 'model_forecast', citation_ids: ['c1'] }],
+              citations: [{ id: 'c1', source_id: 'S62', retrieved_at_utc: '2026-09-17T09:58:00+00:00' }],
+              notes: [], choices: [], task_results: [], trace: {}, retrieval_plan: [],
+            } },
+          ], note: 'Stored answer packets keep their original receipt.' })),
     );
     window.location.hash = '#/assistant?conversation=11111111-1111-4111-8111-111111111111';
     render(<App />);
     expect(await screen.findByText(/Surat: forecast precipitation 0.3 mm/)).toBeInTheDocument();
+    expect(screen.getByText(/Restored with its original answer receipt/)).toBeInTheDocument();
+    expect(screen.getByText(/source S62/)).toBeInTheDocument();
+    expect(screen.getByLabelText('Copy this value with its place, window and source')).toBeInTheDocument();
   });
 
   it('honours a deep link, and keeps the conversation available beside the module', async () => {

@@ -306,7 +306,7 @@ describe('the shell', () => {
     expect(document.querySelector('.g-turn.g-found')?.textContent).toContain('coastal districts');
   });
 
-  it('offers the save on a restored conversation too, which holds no packet of its own', async () => {
+  it('marks a legacy restored answer as missing its receipt and offers a fresh read', async () => {
     server.use(http.get('/api/conversations', () => HttpResponse.json({
       schema_version: 'conversation-ledger-v1', total: 1, limit: 40,
       conversations: [{ id: 'r1', updated: new Date().toISOString(), turns: 2, asked: 1, opening_question: 'Any warning for Patna?' }],
@@ -322,6 +322,9 @@ describe('the shell', () => {
     mount();
     await userEvent.click(await screen.findByText('Any warning for Patna?'));
     await waitFor(() => expect(document.querySelector('.g-turn')).not.toBeNull());
+    expect(screen.getByText(/receipt unavailable/i)).toBeInTheDocument();
+    expect(screen.getByText(/sources, reading time and limits cannot be reconstructed/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Read it again' })).toBeInTheDocument();
     expect(screen.getByLabelText('Save this conversation as Markdown')).toBeInTheDocument();
   });
 
@@ -464,7 +467,7 @@ describe('the shell', () => {
     expect(line).toContain('source S15');
   });
 
-  it('offers a watch only when the answer named a place and something watchable, and sends the sentence', async () => {
+  it('offers a watch only when the engine supplies its exact next question', async () => {
     const asked: string[] = [];
     const packet = {
       conversation_id: '44444444-4444-4444-8444-444444444444', question: 'Any warning in force for Patna?',
@@ -472,7 +475,7 @@ describe('the shell', () => {
       facts: [{ id: 'w1', label: 'Heavy rain', value: 'Heavy rain', place: 'Patna, Patna, Bihar',
                 source_id: 'S15', parameter: 'official_district_warning', evidence_kind: 'warning', citation_ids: [], task_id: 't1' }],
       citations: [], warning_evidence: [{ district_warnings: [{ days: [{ colour: 'orange', hazards: ['Heavy rain'], wording: 'Heavy rain' }] }] }],
-      notes: [], choices: [], quick_replies: [], charts: [], task_results: [], answered_at_utc: '2026-09-19T07:00:00+00:00',
+      notes: [], choices: [], quick_replies: [{ label: 'Keep me posted', reply: 'Notify me if a heavy rain warning is issued for Patna, Bihar tomorrow' }], charts: [], task_results: [], answered_at_utc: '2026-09-19T07:00:00+00:00',
       resolved_points: { patna: { label: 'Patna, Bihar', latitude: 25.59, longitude: 85.14 } }, trace: {}, retrieval_plan: [],
     };
     server.use(http.post('/api/chat', async ({ request }) => {
@@ -484,28 +487,27 @@ describe('the shell', () => {
     await userEvent.click(screen.getByTestId('send-question'));
     await screen.findByText('Patna is under the orange warning published for Day 2.');
     const chip = screen.getByRole('button', { name: /Keep me posted/ });
-    /* The chip says what it will ask, and asking it sends exactly that sentence — no watch is created here. */
-    expect(chip).toHaveAttribute('title', 'Notify me if a heavy rain warning is issued for Patna, Bihar tomorrow');
+    /* The label and sentence came from the packet; the renderer inferred neither from a warning fact. */
     await userEvent.click(chip);
     await waitFor(() => expect(asked).toContain('Notify me if a heavy rain warning is issued for Patna, Bihar tomorrow'));
   });
 
-  it('offers no watch on an answer that named a place but nothing watchable', async () => {
+  it('does not invent a watch from a place and a weather fact', async () => {
     const packet = {
-      conversation_id: '44444444-4444-4444-8444-444444444444', question: 'How much rain fell in 1997?',
-      status: 'answered', answer: 'The 1997 record for Ahmedabad is 12 mm in July.',
-      facts: [{ id: 'f1', label: 'Rainfall', value: '12', unit: 'mm', place: 'Ahmedabad, Gujarat', source_id: 'S27',
-                parameter: 'rainfall', evidence_kind: 'history', citation_ids: [], task_id: 't1' }],
+      conversation_id: '44444444-4444-4444-8444-444444444444', question: 'Will it rain in Ahmedabad tomorrow?',
+      status: 'answered', answer: 'Ahmedabad is forecast 12 mm tomorrow.',
+      facts: [{ id: 'f1', label: 'Rainfall', value: '12', unit: 'mm', place: 'Ahmedabad, Gujarat', source_id: 'S62',
+                parameter: 'precipitation', evidence_kind: 'model_forecast', citation_ids: [], task_id: 't1' }],
       citations: [], notes: [], choices: [], quick_replies: [], charts: [], task_results: [],
       answered_at_utc: '2026-09-19T07:00:00+00:00',
       resolved_points: { ahmedabad: { label: 'Ahmedabad, Gujarat', latitude: 23.02, longitude: 72.57 } }, trace: {}, retrieval_plan: [],
     };
     server.use(http.post('/api/chat', () => HttpResponse.json(packet)));
     mount();
-    await userEvent.type(screen.getByLabelText('Your question'), 'How much rain fell in 1997?');
+    await userEvent.type(screen.getByLabelText('Your question'), 'Will it rain in Ahmedabad tomorrow?');
     await userEvent.click(screen.getByTestId('send-question'));
-    await screen.findByText('The 1997 record for Ahmedabad is 12 mm in July.');
-    /* A record is not watchable: there is nothing to be notified about. */
+    await screen.findByText('Ahmedabad is forecast 12 mm tomorrow.');
+    /* A forecast fact is not permission for the client to synthesize a heavy-rain watch. */
     expect(screen.queryByRole('button', { name: /Keep me posted/ })).toBeNull();
   });
 

@@ -504,7 +504,10 @@ export function Workspace({
     turns.forEach(turn => {
       if (turn.role === 'user') parts.push('## ' + turn.text);
       else if (turn.role === 'answer') parts.push(markdownTurn(turn.packet));
-      else if (turn.role === 'restored') parts.push('### Restored from this machine', '', turn.text);
+      else if (turn.role === 'restored') parts.push(
+        '### Older answer · receipt unavailable', '', turn.text, '',
+        '_Its sources, reading time and limits were not stored. Ask it again before relying on it._',
+      );
       else if (turn.role === 'notice') parts.push('> ' + turn.text);
     });
     downloadFile(stampName('weathergpt-conversation', 'md'), parts.join('\n\n---\n\n'));
@@ -672,10 +675,24 @@ export function Workspace({
                     );
                   }
                   if (turn.role === 'restored') {
+                    const question = questionFor(turns, turn.key) || '';
                     return (
                       <div key={turn.key} className="g-turn g-in">
-                        <p className="g-eyebrow">Restored from this machine</p>
+                        <p className="g-eyebrow">Older answer · receipt unavailable</p>
                         <p className="g-prose">{turn.text}</p>
+                        <p className="g-claim-note">This stored sentence predates answer receipts, so its sources, reading time and limits cannot be reconstructed. Ask it again before relying on it.</p>
+                        {settled && question ? (
+                          <div className="g-chips no-print" data-print="drop">
+                            <button
+                              type="button"
+                              className="g-chip"
+                              title={'Retrieves a new answer for this older stored question: “' + question + '”'}
+                              onClick={() => void reask(turn.key, question, null)}
+                            >
+                              Read it again
+                            </button>
+                          </div>
+                        ) : null}
                       </div>
                     );
                   }
@@ -684,6 +701,7 @@ export function Workspace({
                   const window = claimWindow(turn.packet);
                   return (
                     <div key={turn.key} className="g-turn g-in">
+                      {turn.restored ? <p className="g-claim-note">Restored with its original answer receipt. Values below keep the sources and reading time recorded for that turn.</p> : null}
                       {/* What the reader changed beyond the sentence, from the engine's own record of it —
                           so a re-asked turn never looks like the same question answered about elsewhere. */}
                       {turn.changed ? <p className="g-claim-note">{changeNote(turn.packet, turn.changed)}</p> : null}

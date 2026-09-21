@@ -93,7 +93,13 @@ export function ledger(q?: string): Promise<Ledger> {
   return getJson<Ledger>(term ? withQuery('/api/conversations', { q: term }) : '/api/conversations');
 }
 
-export type Transcript = { schema_version: string; id: string; updated?: string; turns: { role: string; content: string }[]; note?: string };
+export type Transcript = {
+  schema_version: string;
+  id: string;
+  updated?: string;
+  turns: { role: string; content: string; packet?: AnswerPacket; receipt_unavailable?: boolean }[];
+  note?: string;
+};
 
 export function transcript(id: string): Promise<Transcript> {
   return getJson<Transcript>('/api/conversations/' + encodeURIComponent(id));

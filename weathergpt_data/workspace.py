@@ -1016,9 +1016,17 @@ class Workspace:
         if row is None:raise SourceError('This conversation is not in the local store. Start a new conversation.')
         try:state=json.loads(row[0]) if row[0] else {}
         except ValueError:state={}
-        turns=[{'role':turn.get('role'),'content':turn.get('content')} for turn in (state.get('history') or []) if turn.get('content')]
-        return {'schema_version':'conversation-transcript-v1','id':cid,'updated':row[1],'turns':turns,
-                'note':'Restored transcript. Earlier answers are timestamped receipts from the moment they were retrieved; ask again before relying on one.'}
+        packets=state.get('answer_packets') if isinstance(state.get('answer_packets'),dict) else {}
+        turns=[]
+        for turn in state.get('history') or []:
+            if not turn.get('content'):continue
+            restored={'role':turn.get('role'),'content':turn.get('content')}
+            packet=packets.get(turn.get('receipt_id')) if turn.get('role')=='assistant' else None
+            if isinstance(packet,dict):restored['packet']=packet
+            elif turn.get('role')=='assistant':restored['receipt_unavailable']=True
+            turns.append(restored)
+        return {'schema_version':'conversation-transcript-v2','id':cid,'updated':row[1],'turns':turns,
+                'note':'Stored answer packets keep their original sources, reading times and limits. Text-only answers from older conversations are marked as missing their receipt and should be asked again before use.'}
 
     def delete_conversation(self,cid):
         _conversation_id(cid)

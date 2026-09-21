@@ -67,6 +67,17 @@ class ConversationTests(unittest.TestCase):
         self.assertEqual(r['facts'][0]['unit'],'mm');self.assertEqual(self.calls,0);self.assertFalse(r['operational_eligible'])
         self.assertTrue(r['citations']);self.assertTrue(r['expires_at_utc'])
 
+    def test_the_public_answer_packet_is_kept_as_a_receipt_without_entering_planner_history(self):
+        packet=self.chat()
+        _cid,state=self.engine.state(packet['conversation_id'])
+        assistant=state['history'][-1]
+        self.assertEqual(assistant['role'],'assistant')
+        self.assertNotIn('packet',assistant,'the bounded planner history must stay small')
+        stored=state['answer_packets'][assistant['receipt_id']]
+        self.assertEqual(stored,packet)
+        self.assertEqual(stored['facts'][0]['source_id'],packet['facts'][0]['source_id'])
+        self.assertEqual(stored['answered_at_utc'],packet['answered_at_utc'])
+
     def test_a_rules_fallback_turn_tells_the_reader_which_planner_read_the_question(self):
         """The substitute planner is disclosed in the answer, not only in the trace.
 
@@ -102,6 +113,7 @@ class ConversationTests(unittest.TestCase):
     def test_followup_passes_bounded_conversation_to_planner(self):
         first=self.chat();self.chat(conversation_id=first['conversation_id'],question='And tomorrow afternoon?')
         self.assertTrue(self.model.histories[-1]);self.assertEqual(self.model.histories[-1][0]['role'],'user')
+        self.assertFalse(any('facts' in message or 'packet' in message for message in self.model.histories[-1]))
 
     def test_stale_evidence_is_automatically_refreshed_once(self):
         self.now+=timedelta(minutes=61)

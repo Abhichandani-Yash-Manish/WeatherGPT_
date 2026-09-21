@@ -288,7 +288,7 @@ export function noticeHint(kind?: NoticeKind): string | null {
 }
 /* A restored transcript is the stored sentence, not a receipt: the engine keeps the text of past turns
    and a restored turn says so rather than pretending to be a freshly retrieved answer. */
-export type RestoredTurn = { key: string; role: 'restored'; text: string; at: string };
+export type RestoredTurn = { key: string; role: 'restored'; text: string; at: string; receiptUnavailable: true };
 
 export type Turn = UserTurn | AnswerTurn | NoticeTurn | RestoredTurn;
 

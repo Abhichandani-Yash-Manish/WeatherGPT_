@@ -394,7 +394,22 @@ export function useConversation(options: ConversationOptions = {}) {
     const stored = await chat.transcript(id);
     const turns: Turn[] = (stored.turns || []).map((turn, index) => {
       if (turn.role === 'user') return { key: 'restored-user-' + index, role: 'user' as const, text: turn.content, at: '' };
-      return { key: 'restored-answer-' + index, role: 'restored' as const, text: turn.content, at: '' };
+      if (turn.packet) {
+        return {
+          key: 'restored-answer-' + index,
+          role: 'answer' as const,
+          packet: turn.packet,
+          at: turn.packet.answered_at_utc || stored.updated || '',
+          restored: true,
+        };
+      }
+      return {
+        key: 'restored-answer-' + index,
+        role: 'restored' as const,
+        text: turn.content,
+        at: stored.updated || '',
+        receiptUnavailable: true as const,
+      };
     });
     dispatch({ type: 'restore', turns, conversationId: stored.id, note: stored.note || null });
   }, [stopPolling]);

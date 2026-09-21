@@ -88,6 +88,42 @@ class LedgerTests(unittest.TestCase):
         self.assertEqual(report['query'], 'Surat season')
         self.assertEqual(report['conversations'], [])
 
+    def test_a_stored_packet_reopens_as_the_same_answer_receipt(self):
+        cid = '11111111-1111-4111-8111-111111111111'
+        packet = {
+            'schema_version': 'weather-conversation-v1', 'conversation_id': cid,
+            'question': 'Will it rain in Ahmedabad tomorrow?', 'status': 'answered',
+            'answer': 'Ahmedabad is forecast 12 mm tomorrow.',
+            'facts': [{'id': 'f1', 'parameter': 'precipitation', 'value': '12', 'unit': 'mm',
+                       'place': 'Ahmedabad, Gujarat', 'source_id': 'S62'}],
+            'citations': [{'id': 'c1', 'source_id': 'S62',
+                           'retrieved_at_utc': '2026-09-19T05:00:00+00:00'}],
+            'answered_at_utc': '2026-09-19T05:01:00+00:00',
+        }
+        self.write(cid, {
+            'history': [
+                {'role': 'user', 'content': packet['question']},
+                {'role': 'assistant', 'content': packet['answer'], 'receipt_id': 'receipt-1'},
+            ],
+            'answer_packets': {'receipt-1': packet},
+        }, '2026-09-19T05:01:00+00:00')
+        transcript = self.app.conversation_transcript(cid)
+        self.assertEqual(transcript['schema_version'], 'conversation-transcript-v2')
+        self.assertEqual(transcript['turns'][1]['packet'], packet)
+        self.assertNotIn('receipt_unavailable', transcript['turns'][1])
+
+    def test_a_legacy_text_answer_names_the_missing_receipt(self):
+        cid = '22222222-2222-4222-8222-222222222222'
+        self.write(cid, {'history': [
+            {'role': 'user', 'content': 'Any warning for Patna?'},
+            {'role': 'assistant', 'content': 'Patna has nothing flagged today.'},
+        ]}, '2026-09-19T05:01:00+00:00')
+        transcript = self.app.conversation_transcript(cid)
+        answer = transcript['turns'][1]
+        self.assertTrue(answer['receipt_unavailable'])
+        self.assertNotIn('packet', answer)
+        self.assertIn('should be asked again', transcript['note'])
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -280,17 +280,6 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer, register: 
   const showRecord = register === 'full';
   /* An empty region is a defect, so the machine's-own-work block is drawn only when it holds something. */
   const behindFilled = showNotes || showWork || showTally || showTasks || showChoices || showRecord;
-  /* The watch this answer makes possible, as the sentence that would create it, or null. It needs both halves:
-     a place the engine resolved for this turn, and something that can actually be watched — a warning product
-     or a forecast. An answer about 1997 rainfall resolved a place and offers no watch, and the chip is absent
-     rather than present and useless. */
-  const watchPlace = firstPoint(packet)?.label || null;
-  const watchable = packet.facts || [];
-  const keepPosted = watchPlace && watchable.some(fact =>
-    ['official_district_warning', 'precipitation', 'precipitation_probability', 'temperature_2m'].includes(String(fact.parameter || '')))
-    ? 'Notify me if a heavy rain warning is issued for ' + watchPlace + ' tomorrow'
-    : null;
-
   return (
     <article className="g-answer" data-turn-status={packet.status}>
       <header className="g-chips" style={{ alignItems: 'baseline', justifyContent: 'space-between' }}>
@@ -451,22 +440,13 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer, register: 
         </div>
       ) : null}
 
-      {(packet.quick_replies || []).length || keepPosted ? (
+      {(packet.quick_replies || []).length ? (
         <div className="g-chips">
           {(packet.quick_replies || []).map(reply => (
             <button key={reply.reply} type="button" className="g-chip" onClick={() => onFollowUp(reply.reply)}>
               {reply.label}
             </button>
           ))}
-          {/* A watch is a question this product already knows how to plan — "notify me if …" is the notify
-              form the engine reads, and the reader must be able to read it back before it is sent. So the
-              chip carries the whole sentence, and pressing it asks that sentence and nothing else. No watch
-              is created here: the engine plans one, or refuses. */}
-          {keepPosted ? (
-            <button type="button" className="g-chip" title={keepPosted} onClick={() => onFollowUp(keepPosted)}>
-              Keep me posted
-            </button>
-          ) : null}
         </div>
       ) : null}
 
