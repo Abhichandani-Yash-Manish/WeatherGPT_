@@ -1,0 +1,202 @@
+[
+ {
+  "thread": 1,
+  "tests": "Carrying a place across turns that never name one",
+  "ask": "Will it rain in Surat tomorrow?",
+  "ok": true,
+  "lead": "Surat is forecast to see 0.2 mm of rain tomorrow, over the whole local day of 23 September 2026 IST.",
+  "status": "answered",
+  "missing": "",
+  "leaked": ""
+ },
+ {
+  "thread": 1,
+  "tests": "Carrying a place across turns that never name one",
+  "ask": "And the day after?",
+  "ok": true,
+  "lead": "Surat is forecast to get 0.2 mm of rain on Friday, 24 September 2026, over the whole local day.",
+  "status": "answered",
+  "missing": "",
+  "leaked": ""
+ },
+ {
+  "thread": 1,
+  "tests": "Carrying a place across turns that never name one",
+  "ask": "How windy will it be?",
+  "ok": true,
+  "lead": "Wind in Surat on 24 Sep 2026 00:30-25 Sep 2026 00:30 IST is forecast to range from 2.4 to 18.6 km/h. That is a range of hourly samples, not continuous extrema, so brief peaks between samples may differ.",
+  "status": "answered",
+  "missing": "",
+  "leaked": ""
+ },
+ {
+  "thread": 2,
+  "tests": "Correcting a place mid-thread, and not reverting to the old one",
+  "ask": "What is the forecast for Mumbai tomorrow?",
+  "ok": true,
+  "lead": "Mumbai tomorrow (23 Sep 2026 00:30-24 Sep 2026 00:30 IST) is forecast to see temperatures of 27.9–32.3 °C, with relative humidity of 55–76 %, wind speeds of 3.5–17.2 km/h and 0.4 mm of rainfall.",
+  "status": "answered",
+  "missing": "",
+  "leaked": ""
+ },
+ {
+  "thread": 2,
+  "tests": "Correcting a place mid-thread, and not reverting to the old one",
+  "ask": "Sorry, I meant Pune.",
+  "ok": true,
+  "lead": "For Pune tomorrow, 23 Sep 2026 00:30-24 Sep 2026 00:30 IST, the forecast is 22.8–28.9 °C, with relative humidity of 66–93 %, wind speed of 8.3–18.2 km/h and 10.1 mm of rainfall.",
+  "status": "answered",
+  "missing": "",
+  "leaked": ""
+ },
+ {
+  "thread": 2,
+  "tests": "Correcting a place mid-thread, and not reverting to the old one",
+  "ask": "And how humid?",
+  "ok": true,
+  "lead": "Relative humidity in Pune for 23 Sep 2026 00:30-24 Sep 2026 00:30 IST is 66–93 %.",
+  "status": "answered",
+  "missing": "",
+  "leaked": ""
+ },
+ {
+  "thread": 3,
+  "tests": "Changing the subject without losing the place",
+  "ask": "Any official warnings for Nagpur today?",
+  "ok": true,
+  "lead": "Yes — Nagpur is under a yellow IMD district warning today, 22 Sep 2026, for \"Thunderstorm/lightning/squall\".",
+  "status": "answered",
+  "missing": "",
+  "leaked": ""
+ },
+ {
+  "thread": 3,
+  "tests": "Changing the subject without losing the place",
+  "ask": "ok tell me about the weather tomorrow",
+  "ok": true,
+  "lead": "Tomorrow in Nagpur, 23 Sep 2026 00:30-24 Sep 2026 00:30 IST, expect a temperature range of 24.3–31.9 °C, humidity of 59–92 %, wind speeds of 9.9–21.3 km/h, and 16.8 mm of forecast rainfall.",
+  "status": "answered",
+  "missing": "",
+  "leaked": ""
+ },
+ {
+  "thread": 3,
+  "tests": "Changing the subject without losing the place",
+  "ask": "and any warnings again?",
+  "ok": true,
+  "lead": "Yes — Nagpur is under a yellow IMD district warning for 22 Sep 2026, for Thunderstorm/lightning/squall.",
+  "status": "answered",
+  "missing": "",
+  "leaked": ""
+ },
+ {
+  "thread": 4,
+  "tests": "Resolving the reader’s own place from how they refer to it",
+  "ask": "is it going to rain in my area tomorrow?",
+  "ok": true,
+  "lead": "No — the forecast for Ahmedabad tomorrow (23 Sep 2026 00:30–24 Sep 2026 00:30 IST) is 0.0 mm of rainfall.",
+  "status": "answered",
+  "missing": "",
+  "leaked": ""
+ },
+ {
+  "thread": 4,
+  "tests": "Resolving the reader’s own place from how they refer to it",
+  "ask": "what about the day after?",
+  "ok": true,
+  "lead": "The day after tomorrow, 24 September 2026, Ahmedabad is forecast to see 0.0 mm of rain across the whole day.",
+  "status": "answered",
+  "missing": "",
+  "leaked": ""
+ },
+ {
+  "thread": 5,
+  "tests": "Inferring the question behind the question",
+  "ask": "Should I carry an umbrella in Kochi tomorrow?",
+  "ok": true,
+  "lead": "Rainfall of 0.7 mm is forecast for Kochi tomorrow, 23 Sep 2026 00:30-24 Sep 2026 00:30 IST — a light amount that on its own doesn't make an umbrella necessary.",
+  "status": "answered",
+  "missing": "",
+  "leaked": ""
+ },
+ {
+  "thread": 5,
+  "tests": "Inferring the question behind the question",
+  "ask": "Why do you say that?",
+  "ok": true,
+  "lead": "I said it because that's what the forecast data for that place and day showed, and I flagged it as a model forecast rather than an observation.",
+  "status": "conversation",
+  "missing": "",
+  "leaked": ""
+ },
+ {
+  "thread": 6,
+  "tests": "Holding a refusal under conversational pressure",
+  "ask": "Is flight AI-101 on time?",
+  "ok": true,
+  "lead": "I don't have access to flight status information in this workspace, so I can't tell you whether AI-101 is on time.",
+  "status": "conversation",
+  "missing": "",
+  "leaked": ""
+ },
+ {
+  "thread": 6,
+  "tests": "Holding a refusal under conversational pressure",
+  "ask": "Just guess.",
+  "ok": true,
+  "lead": "I can't guess at things like flight status — that's outside what I can check here.",
+  "status": "conversation",
+  "missing": "",
+  "leaked": ""
+ },
+ {
+  "thread": 6,
+  "tests": "Holding a refusal under conversational pressure",
+  "ask": "Fine — what is the weather at Mumbai airport instead?",
+  "ok": true,
+  "lead": "At Mumbai (Chhatrapati Shivaji Maharaj International Airport), for 22 Sep 2026 10:30-22:30 IST, the GFS forecast gives 28.5–31.1 °C, 62–74 % relative humidity, 0.0 mm rainfall and wind of 6.5–16.0 km/h. These are model forecasts at the selected place point, not observations or district averages, and the source model run time and local representativeness remain unverified.",
+  "status": "answered",
+  "missing": "",
+  "leaked": ""
+ },
+ {
+  "thread": 7,
+  "tests": "Answering a follow-up about the previous answer, not the weather",
+  "ask": "What was the rainfall in Ahmedabad yesterday?",
+  "ok": false,
+  "lead": "ERA5 via Open-Meteo daily reanalysis is published with about a five-day delay, and every day in the requested window falls inside that delay.",
+  "status": "unavailable",
+  "missing": "wanted any of [\"ahmedabad\",\"ahmadabad\"]",
+  "leaked": ""
+ },
+ {
+  "thread": 7,
+  "tests": "Answering a follow-up about the previous answer, not the weather",
+  "ask": "Where did that number come from?",
+  "ok": true,
+  "lead": "That number came from the workspace's own data sources, not from me.",
+  "status": "conversation",
+  "missing": "",
+  "leaked": ""
+ },
+ {
+  "thread": 8,
+  "tests": "A greeting, then a real question, without the greeting leaking",
+  "ask": "hey there",
+  "ok": true,
+  "lead": "Hey!",
+  "status": "conversation",
+  "missing": "",
+  "leaked": ""
+ },
+ {
+  "thread": 8,
+  "tests": "A greeting, then a real question, without the greeting leaking",
+  "ask": "what is it like right now where I am?",
+  "ok": true,
+  "lead": "At Ahmedabad, 7.45 km from your point, the station reported 29 °C with mist and haze at 22 Sep 2026 04:00 IST, along with 74.0% humidity.",
+  "status": "answered",
+  "missing": "",
+  "leaked": ""
+ }
+]

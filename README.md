@@ -121,17 +121,24 @@ The eight features SIH26068 names. **Delivered in scope** = it works and its bou
 306 turns across the eight features, multi-turn context and adversarial boundaries — run against the live engine, not fixtures.
 
 ```
-ANSWERED  ████████████████████████████████████████████░░░░  273 / 306   89%
+ANSWERED  ███████████████████████████████████████████░░░░░  272 / 306   89%
 
-refusals, 28 total — and which kind matters more than the count:
-  the publisher has no such data   ███████████████████████░░░░░░░░░░  11
+refusals, 27 total — and which kind matters more than the count:
+  the publisher has no such data   █████████████████████░░░░░░░░░░░░  10
   a stated product limit           ██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   1
   ours to fix                      ████████████████████████████████░  16
 ```
 
 **Most refusals are the publisher having nothing, not the product failing** — and the two are counted apart, because collapsing them would let a data gap quietly flatter the engineering.
 
-Weakest group, stated plainly: **agromet and advisories at 60–76%** against 89% overall.
+Weakest group, stated plainly: **agromet at 60%, advisories at 79%** against 89% overall. The cause is
+measured and it is not reasoning — the daily sweep covered 40 of India's 756 districts, so the corpus
+simply did not hold most districts' bulletins ([docs/141](docs/141-fetching-documents-when-they-are-asked-for.md)).
+
+**The atlas is 306 single questions, so it cannot tell you whether a conversation holds together.**
+That is measured separately: `node tools/conversation-probe.mjs` runs eight multi-turn threads where
+each turn is meaningless alone — *"and the day after?"*, *"sorry, I meant Pune"*, *"just guess"*.
+**7 of 8 threads held**, end to end.
 
 ---
 

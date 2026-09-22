@@ -128,24 +128,32 @@ for (const thread of threads) {
     await page.waitForSelector('.g-working', { state: 'detached', timeout: 180_000 }).catch(() => {});
     await page.waitForSelector('[data-revealing]', { state: 'detached', timeout: 30_000 }).catch(() => {});
 
-    /* The whole card, because an answer's place often sits in the claim rather than the sentence. */
+    /* `want` is checked against the whole card, because an answer's place often sits in the claim
+       rather than in the sentence. `avoid` is checked against the PROSE only, and that distinction is
+       not fussiness - it was wrong the first time this ran. Correcting "Mumbai" to "Pune" produced a
+       perfect answer whose card also carried the engine's own note that the place had changed from
+       Mumbai. Scanning the whole card for the old name marked a correct disclosure as a leak, which
+       would have had me fixing the one thing that was working. */
     const said = await page.evaluate(() => {
       const cards = document.querySelectorAll('.g-answer');
       const last = cards[cards.length - 1];
+      const prose = Array.from(last?.querySelectorAll('.answer-lead, .g-prose, .answer-caveat') || [])
+        .map(node => node.textContent || '').join(' ');
       return {
         lead: last?.querySelector('.answer-lead')?.textContent || '',
+        prose,
         all: (last?.textContent || '').slice(0, 4000),
         status: last?.getAttribute('data-turn-status') || '',
       };
     });
     const hay = said.all.toLowerCase();
     const wanted = !turn.want || turn.want.some(w => hay.includes(w.toLowerCase()));
-    const avoided = !turn.avoid || !turn.avoid.some(a => hay.includes(a.toLowerCase()));
+    const avoided = !turn.avoid || !turn.avoid.some(a => said.prose.toLowerCase().includes(a.toLowerCase()));
     const ok = wanted && avoided;
     if (!ok) threadOk = false;
 
     const missing = !wanted ? 'wanted any of ' + JSON.stringify(turn.want) : '';
-    const leaked = !avoided ? 'found ' + JSON.stringify((turn.avoid || []).filter(a => hay.includes(a.toLowerCase()))) : '';
+    const leaked = !avoided ? 'found in the prose ' + JSON.stringify((turn.avoid || []).filter(a => said.prose.toLowerCase().includes(a.toLowerCase()))) : '';
     console.log('   ' + (ok ? 'ok  ' : 'FAIL') + '  ' + turn.ask);
     console.log('         ' + said.lead.slice(0, 130).replace(/\s+/g, ' '));
     if (!ok) console.log('         -> ' + [missing, leaked].filter(Boolean).join('; '));
