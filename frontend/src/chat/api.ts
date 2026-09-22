@@ -16,6 +16,10 @@ export type AskBody = {
   /* The place the reader set for this turn: a label with its own point, which the engine records as
      supplied by the reader rather than resolved from the sentence. */
   place?: { label: string; latitude: number; longitude: number; state?: string; district?: string };
+  /* Where the reader is, as context rather than as an instruction. `place` above answers THIS turn
+     about somewhere specific and overrides the question; `home` is handed to the planner, which
+     decides whether the question is about it. A question naming another place is unaffected. */
+  home?: { label: string; latitude: number; longitude: number; state?: string; district?: string };
   /* One of the engine's own day or part-of-day phrases. The engine resolves it from its own tables
      and reports whether it applied; the question text is never rewritten to carry it. */
   window?: string;

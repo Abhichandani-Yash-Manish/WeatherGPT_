@@ -361,7 +361,7 @@ class ConversationEngine:
         state['answer_packets']={key:value for key,value in state['answer_packets'].items() if key in live}
 
     def ask(self,body):
-        if not isinstance(body,dict) or set(body)-{'question','conversation_id','selection_id','coordinates','output_language','request_id','persona','place','window'}:raise SourceError('Send a question and optional conversation/place/language selection')
+        if not isinstance(body,dict) or set(body)-{'question','conversation_id','selection_id','coordinates','output_language','request_id','persona','place','window','home'}:raise SourceError('Send a question and optional conversation/place/language selection')
         # A persona is a reading position: it is checked before any work is done and it
         # changes no evidence, so an unknown one is refused rather than guessed.
         from .personas import get as persona_of
@@ -388,6 +388,7 @@ class ConversationEngine:
         except SourceError:
             self._forget(request_id)
             self._local.reader_place=None
+            self._local.reader_home=None
             self._local.reader_changes=None
             raise
         try:
@@ -398,6 +399,7 @@ class ConversationEngine:
         finally:
             self.gate.release()
             self._local.reader_place=None
+            self._local.reader_home=None
             self._local.reader_changes=None
 
     def _validate_reader_changes(self,body):
@@ -418,6 +420,25 @@ class ConversationEngine:
             except ValueError:raise SourceError('The place to use needs a latitude within ±90 and a longitude within ±180')
             self._local.reader_place={'label':label,'latitude':float(place['latitude']),'longitude':float(place['longitude']),
                                       'state':str(place.get('state') or ''),'district':str(place.get('district') or '')}
+        # WHERE THE READER IS, which is a different thing from the place they picked for this turn.
+        # `place` above is the "Change the place" control: an instruction to answer about somewhere
+        # specific, which overrides everything. `home` is the place held in the rail - context, not an
+        # instruction. It is handed to the planner and the planner decides whether the question is about
+        # it, so a question naming Mumbai is still about Mumbai. Measured 22 September 2026, before this
+        # existed: "are there any warnings in place for my region?" with Ahmedabad held was answered about
+        # ARWAL, a district in Bihar, because the model had nothing to resolve "my region" against and the
+        # engine had no reason to prefer one district over another.
+        home=body.get('home')
+        if home is not None:
+            label=str((isinstance(home,dict) and (home.get('label') or home.get('name'))) or '').strip()
+            if not isinstance(home,dict) or set(home)-{'label','name','latitude','longitude','state','district'} or not label or len(label)>120:
+                raise SourceError('Send the place you are in as a label with latitude and longitude')
+            from .geography import point
+            try:point(home.get('latitude'),home.get('longitude'))
+            except ValueError:raise SourceError('The place you are in needs a latitude within ±90 and a longitude within ±180')
+            self._local.reader_home={'label':label,'name':label.split(',')[0].strip(),
+                                     'latitude':float(home['latitude']),'longitude':float(home['longitude']),
+                                     'state':str(home.get('state') or ''),'district':str(home.get('district') or '')}
         phrase=body.get('window')
         if phrase is not None:
             if not isinstance(phrase,str) or not 1<=len(phrase.strip())<=60:raise SourceError('Name the window to use in up to 60 characters')
@@ -616,6 +637,10 @@ class ConversationEngine:
             from .dialogue import context_message
             context=context_message(state)
             if context:history.append({'role':'assistant','content':'Structured conversation focus','context_state':context})
+            home=getattr(self._local,'reader_home',None)
+            if home:history.append({'role':'assistant','content':'The place this reader has set for themselves',
+                                    'reader_place':{'label':home['label'],'name':home['name'],
+                                                    'state':home['state'],'district':home['district']}})
         from .language import interpret_plan
         from .rule_planner import rule_request
         try:
@@ -728,7 +753,8 @@ class ConversationEngine:
         # on a saved plan. It runs before any model call and returns None for every other turn.
         from .plan_intake import take_turn
         planned=take_turn(self,state,body,q,result)
-        if planned is not None:return self._plan_turn(cid,state,body,q,planned)
+        if planned is not None:
+            return self._plan_turn(cid,state,body,q,planned)
         state.pop('plan_focus',None)
         selected=None
         from .document_context import direct_reply
@@ -760,6 +786,10 @@ class ConversationEngine:
             history=list(state['history'])
             context=context_message(state)
             if context:history.append({'role':'assistant','content':'Structured conversation focus','context_state':context})
+            home=getattr(self._local,'reader_home',None)
+            if home:history.append({'role':'assistant','content':'The place this reader has set for themselves',
+                                    'reader_place':{'label':home['label'],'name':home['name'],
+                                                    'state':home['state'],'district':home['district']}})
             degraded=None
             try:
                 plan,meta=self.model.plan(q,self.workspace.clock(),history)
@@ -970,9 +1000,24 @@ class ConversationEngine:
         if result.get('task_coverage'):return result
         tasks=(result.get('plan') or {}).get('tasks') or []
         results=result.get('task_results') or []
-        result['task_coverage']={'requested':len(tasks),
-                                 'completed':sum(t.get('status') in {'answered','explanation'} for t in results),
-                                 'incomplete_ids':[t['id'] for t in results if t.get('status') not in {'answered','explanation'}]}
+        # 'reply' counts as done, and leaving it out was a small bug with a loud symptom. A chat task is
+        # a greeting, a thank-you or a question about this workspace; it completes by being answered in
+        # words, not by retrieving anything. Counting it as incomplete put "0 of 1 requested task
+        # completed in this turn." under the word "Hi!" - the machine reporting a failure at the one
+        # moment nothing had been asked of it.
+        DONE={'answered','explanation'}
+        # A CHAT TASK IS NOT A REQUESTED RETRIEVAL. This count answers "how much of what you asked for
+        # did the tools get", and a greeting asks the tools for nothing: it is answered in words, it
+        # produces no task result, and counting it as requested-but-not-completed printed "0 of 1
+        # requested task completed in this turn." directly under the word "Hi!" - the machine reporting
+        # a failure at the one moment nothing had been asked of it.
+        #
+        # Excluding it from `requested` rather than adding it to `completed` keeps the rule that
+        # `completed` counts task RESULTS, which the coverage battery holds across every turn shape.
+        retrievable=[t for t in tasks if not (isinstance(t,dict) and t.get('kind')=='chat')]
+        result['task_coverage']={'requested':len(retrievable),
+                                 'completed':sum(t.get('status') in DONE for t in results),
+                                 'incomplete_ids':[t['id'] for t in results if t.get('status') not in DONE]}
         return result
 
     def plan_store(self):
@@ -1849,11 +1894,100 @@ class ConversationEngine:
             # naming Mumbai was refused for not naming Mumbai.
             named=re.split(r'[,·(]', primary)[0].strip()
             whole=((result.get('lead') or '')+' '+text).strip()
-            if named and named.lower() not in whole.lower():
+            if named and not self._names_the_place(named,whole,result):
                 return 'it did not name the place the facts belong to'
         problem=self._non_measurement_problem(text,result)
         if problem:return problem
         return None
+
+    # The phrases a reader uses for the place they themselves set. Deliberately possessive: "your
+    # district" is anchored to a choice the reader made, while a bare "the district" or "here" is not.
+    OWN_PLACE=re.compile(r"\byour (?:district|region|area|city|town|village|place|location)\b|\bwhere you are\b",re.I)
+
+    def _names_the_place(self,named,prose,result):
+        """Whether the prose identifies the place THESE facts belong to.
+
+        The rule is that an answer about one place must not read as though it were about another. What
+        this used to check was narrower and wrong: that the prose contained the exact string the primary
+        FACT carries, which is whichever spelling the source product happens to print.
+
+        Measured 22 September 2026, asking about warnings with Ahmedabad held. The IMD district product
+        spells the district AHMADABAD. The model wrote "No - for Ahmedabad, the IMD district warning
+        colour is ...", naming the place three times. The check compared "ahmadabad" against prose
+        containing "ahmedabad", found one vowel different, discarded the answer and printed the tool
+        floor: "Ahmedabad: today the forecast value is No warning in this product IMD district warning
+        colour." That is not a warning-specific bug - any place whose published spelling differs from
+        the one people write loses its answer the same way, which across Indian place names is constant.
+
+        So the prose is held against every name this turn knows THIS place by. The link between two
+        spellings is never a fuzzy comparison - AHMADABAD and Ahmedabad differ by a vowel, and so do
+        genuinely different places. It is a label that carries both: the reader's held place reads
+        "Ahmedabad, Ahmadābād, State of Gujarāt", so a label containing the primary's own name vouches
+        for every other name in it.
+
+        Only the PRIMARY place's names are collected. A turn holding facts for Ahmedabad and Delhi must
+        still refuse an answer that attributes Ahmedabad's value to Delhi, which is what accepting any
+        place in the turn would have allowed.
+        """
+        import unicodedata
+        def fold(value):
+            stripped=unicodedata.normalize('NFKD',str(value or ''))
+            return ''.join(ch for ch in stripped if not unicodedata.combining(ch)).strip().lower()
+        def parts(value):
+            return {p for p in (fold(x) for x in re.split(r'[,·(/]',str(value or ''))) if len(p)>2}
+
+        known=parts(named)
+        if not known:return True
+        # A label vouches for its own other spellings only when it contains the primary's own name.
+        candidates=[]
+        home=getattr(getattr(self,'_local',None),'reader_home',None)
+        if home:candidates.append(home.get('label'))
+        for entry in (result.get('resolved_points') or {}).values():
+            if isinstance(entry,dict):candidates.append(entry.get('label') or entry.get('name'))
+        for fact in result.get('facts') or []:
+            if isinstance(fact,dict):candidates.append(fact.get('place'))
+        for label in candidates:
+            segments=parts(label)
+            if segments & known:known|=segments
+
+        said=fold(prose)
+        if any(name in said for name in known):return True
+        # And a reader who set the place may be answered about "your district" without it being spelled.
+        return self._reader_own_place(named,prose)
+
+    def _reader_own_place(self,named,prose):
+        """Whether the prose may point at the place possessively instead of naming it.
+
+        The rule above exists so an answer about Ahmedabad cannot read as though it were about wherever
+        the reader assumed. That risk disappears when the place IS the reader own: they set it in this
+        workspace, it is shown in the rail and the top bar while they read, and the claim under the
+        answer names it in full.
+
+        The strict form actively damages the product. Measured 22 September 2026: asked "are there any
+        warnings in place for my region?" with Ahmedabad held, the model wrote a fluent answer, this
+        check refused it for not containing the word "Ahmedabad", and the reader was handed the tool
+        floor instead - "Ahmedabad: today the forecast value is No warning in this product IMD district
+        warning colour." Somebody who asks about their own region is answered about "your district", and
+        refusing that sentence buys nothing while costing the entire answer.
+
+        Both halves are required: the place must be the one the reader set, AND the prose must point at
+        it possessively. A draft that does neither is still refused.
+        """
+        home=getattr(getattr(self,'_local',None),'reader_home',None)
+        if not home:return False
+        # Diacritics are folded on both sides. The fact carries the district as the warning product
+        # spells it - "AHMADABAD" - while the held place carries the catalogue's "Ahmadābād", and a
+        # straight comparison reads those as two different places, which is how this allowance did
+        # nothing at all on its first run.
+        import unicodedata
+        def fold(value):
+            stripped=unicodedata.normalize('NFKD',str(value or ''))
+            return ''.join(ch for ch in stripped if not unicodedata.combining(ch)).strip().lower()
+        label=str(home.get('label') or '')
+        mine={fold(label),fold(home.get('name')),fold(home.get('district'))}
+        mine|={fold(part) for part in label.split(',')}
+        if fold(named) not in {m for m in mine if m}:return False
+        return bool(self.OWN_PLACE.search(prose))
 
     def _non_measurement_problem(self,text,result):
         """The checks that apply whether or not this turn retrieved a measurement."""

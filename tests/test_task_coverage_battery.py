@@ -22,7 +22,15 @@ def assert_coverage_consistent(case, r):
     cov = r.get('task_coverage')
     case.assertIsInstance(cov, dict, 'the turn carries no task-coverage record: %r' % (r.get('status'),))
     tasks = (r.get('plan') or {}).get('tasks') or []
-    case.assertEqual(cov.get('requested'), len(tasks), 'requested must count the plan tasks')
+    # A CHAT TASK IS NOT A REQUESTED RETRIEVAL, so it is not counted here. This record answers "how much
+    # of what you asked for did the tools get"; a greeting asks the tools for nothing, is answered in
+    # words, and produces no task result. Counting it made a greeting report "0 of 1 requested task
+    # completed in this turn." under the word "Hi!" - the machine announcing a failure at the one moment
+    # nothing had been asked of it. The alternative, counting it as completed, would have broken the
+    # stronger rule below that `completed` counts task RESULTS, of which a chat task has none.
+    retrievable = [t for t in tasks if not (isinstance(t, dict) and t.get('kind') == 'chat')]
+    case.assertEqual(cov.get('requested'), len(retrievable),
+                     'requested must count the plan tasks that ask the tools for something')
     results = r.get('task_results') or []
     completed = sum(t.get('status') in {'answered', 'explanation'} for t in results)
     case.assertEqual(cov.get('completed'), completed,

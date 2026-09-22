@@ -15,6 +15,7 @@ import { useCallback, useEffect, useMemo, useReducer, useRef } from 'react';
 import { ApiError } from '../api/client';
 import type { AnswerPacket, ChatPreview, ChatProgress } from '../api/types';
 import * as chat from './api';
+import { readWorkingPlace } from '../modules/Evidence';
 import {
   clearInflight, freshnessNote, readInflight, readRegister, writeInflight, writeRegister,
   type Register, type Turn, type TurnChange, type Working,
@@ -183,6 +184,28 @@ export function useConversation(options: ConversationOptions = {}) {
     if (conversationRef.current) payload.conversation_id = conversationRef.current;
     if (languageRef.current) payload.output_language = languageRef.current;
     if (personaRef.current) payload.persona = personaRef.current;
+    /* WHERE THE READER IS, on every turn.
+
+       This is the fix for the worst defect this chat has had. The place a reader sets is shown in the
+       rail and in the top bar, and it was never sent to the engine on an ordinary question - the
+       `place` field existed but only the "Change the place" control ever filled it. So the model had
+       nothing to resolve "my region" against. Measured 22 September 2026 with Ahmedabad held: "are
+       there any warnings in place for my region?" was answered about ARWAL, a district in Bihar, and
+       the next turn asked which city to check.
+
+       It is sent as `home` rather than `place` because the two mean different things. `place` is an
+       instruction - answer about this - and overrides the question. `home` is context: it goes to the
+       planner, which decides whether the question is about it, so "what about Mumbai?" is still about
+       Mumbai. */
+    const held = readWorkingPlace();
+    if (held && Number.isFinite(held.latitude) && Number.isFinite(held.longitude)) {
+      payload.home = {
+        label: String(held.label || ''),
+        latitude: Number(held.latitude),
+        longitude: Number(held.longitude),
+      };
+      if (!payload.home.label) delete (payload as { home?: unknown }).home;
+    }
     return payload;
   }, []);
 
