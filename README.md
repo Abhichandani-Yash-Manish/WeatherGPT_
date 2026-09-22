@@ -7,7 +7,7 @@
 **Smart India Hackathon · SIH26068 · Ministry of Earth Sciences / IMD**
 Team **Void Pointer** (18) · Disaster Management
 
-`1,557` Python checks · `547` frontend checks · `21`-step gate, `0` failed · `276`-scenario atlas · `70` governed sources · `100%` local
+`1,630` Python checks · `547` frontend checks · `21`-step gate, `0` failed · `276`-scenario atlas · `70` governed sources · `100%` local
 
 </div>
 
@@ -50,21 +50,79 @@ Ask a weather chatbot whether a flight is on time and it will usually tell you. 
 </tr>
 </table>
 
-The model never supplies a number. It decides **what to retrieve** and **how to say it**; every value comes from a retrieval and stays tool-owned all the way to the screen. An answer stating a figure the evidence does not support is **rejected, not softened**.
+The model never supplies a number. It decides **what to retrieve**, **which sources to weigh**, and **how to say it**; every value comes from a retrieval and stays tool-owned all the way to the screen. An answer stating a figure the evidence does not support is **rejected, not softened**.
+
+---
+
+## ⭐ It answers from IMD's own data
+
+Fifteen `api.imd.gov.in` products sit behind a credential this project does not have. The easy move is to serve global models and call it Indian weather. Instead, every blocked product was probed for a **public route to the same thing** — and the most important ones had one.
+
+<table>
+<tr>
+<th align="left">Blocked product</th>
+<th align="left">Public route found</th>
+<th align="left">Status</th>
+</tr>
+<tr><td><code>S02</code> IMD City Forecast</td><td><b>Mausamgram</b> multi-model, no credential</td><td>🟢 <b>connected</b></td></tr>
+<tr><td><code>S03</code> IMD District Nowcast</td><td><code>imd:NowcastWarningDistrict</code> — 764 districts</td><td>🟢 <b>connected</b></td></tr>
+<tr><td><code>S39</code> IMD AWS/ARG stations</td><td><code>imd:aws_data_layer</code> — 2,071 stations</td><td>🟢 connected</td></tr>
+<tr><td><code>S04</code> IMD District Warning</td><td><code>imd:district_warnings_india</code> WFS</td><td>🟢 connected</td></tr>
+<tr><td><code>S52–54</code> marine warnings</td><td>RSMC sea-area + coastal bulletin PDFs</td><td>🟢 connected</td></tr>
+<tr><td><code>S41</code> district rainfall</td><td><code>imd:subdiv_rainfall_now</code> — subdivision only</td><td>🟡 probed, not built</td></tr>
+<tr><td><code>S43–45</code> cyclone track / cone</td><td>RSMC bulletins are <b>image-only PDFs</b></td><td>🔴 needs OCR — not claimed</td></tr>
+</table>
+
+**Ask what IMD itself forecasts, and it answers from IMD:**
+
+> **What does IMD itself forecast for Pune tomorrow?**
+>
+> IMD's own multi-model output for Pune on 23 September 2026 gives a temperature range of **22.8–28.5 °C**, or **24.4–32.2 °C** on the bias-corrected series, with precipitation of 0.0–2.3 mm per step and **5.6 mm total** across the eight three-hourly steps…
+>
+> *Served from the IMD Mausamgram cell at 18.5, 73.875, **3.0 km** from the requested point: the publisher answers only on its own 0.125° grid. Initialisation 2026-09-22T00:00Z; each valid time is **derived** from that initialisation and the three-hour step, because the payload carries no time axis.*
+
+Two things that source does not supply — a grid identity and a time axis — are **named as derived rather than filled in silently**. That is the whole discipline in one answer.
+
+<sub>📄 **[docs/144](docs/144-the-model-answers-and-the-sources-open-up.md)** — every probe, every address, and the two cyclone families **deliberately not registered** because their PDFs carry no text layer. A family that can never produce a passage is not coverage.</sub>
+
+---
+
+## ⭐ How one answer is made
+
+Not a retrieval wrapper. Five stages, three of which can send the turn back.
 
 ```mermaid
-flowchart LR
-    Q["Your sentence"] --> P["Model plans<br/>the turn"]
-    P --> T["Tools retrieve<br/>only what it asked for"]
-    T --> E[("Local evidence store")]
-    E --> C["Model writes the answer<br/>from what came back"]
-    C --> V{"Checked against<br/>the evidence"}
-    V -->|"states a figure the<br/>evidence does not support"| R["Rejected.<br/>Never shown."]
+flowchart TB
+    Q["Your sentence"] --> P["1 · PLAN<br/>model chooses tools,<br/>sources and window"]
+    P2["repair, once"]
+    P -->|invalid plan| P2
+    P2 --> P
+    P --> T["2 · RETRIEVE<br/>governed tools, one per product"]
+    T --> M[("IMD Mausamgram")]
+    T --> G[("GFS / best-match")]
+    T --> D[("11,721 bulletin passages")]
+    M --> W["3 · WEIGH<br/>sources compared — never averaged,<br/>never ranked, never voted on"]
+    G --> W
+    D --> W
+    W --> C["4 · COMPOSE<br/>model writes the answer<br/>from what came back"]
+    C --> V{"5 · VERIFY<br/>every number, unit, place,<br/>link, language, held clause"}
+    V -->|"states what the<br/>evidence does not"| R["Rejected.<br/>Tool-owned floor stands."]
     V -->|"holds up"| A["Answer, every value<br/>carrying its source"]
-    style E fill:#1e293b,stroke:#475569,color:#e2e8f0
+    T -.->|"retrieved nothing"| RP{"re-plan?"}
+    RP -.->|"the framing was wrong"| P
+    RP -.->|"the absence is real"| HON["An honest 'not held'<br/>is a correct answer"]
+    style M fill:#1e3a5f,stroke:#3b82f6,color:#dbeafe
+    style D fill:#1e293b,stroke:#475569,color:#e2e8f0
     style R fill:#7f1d1d,stroke:#b91c1c,color:#fee2e2
     style A fill:#14532d,stroke:#16a34a,color:#dcfce7
+    style HON fill:#14532d,stroke:#16a34a,color:#dcfce7
 ```
+
+**Stage 3 runs whether or not you ask for it.** A reader does not know the architecture, so an ordinary *"will it rain in Pune tomorrow?"* retrieves IMD **and** the global model, and says which is which:
+
+> IMD's multi-model forecast gives a precipitation total of **5.6 mm** for the window, while the global model (GFS) gives **7.4 mm**; the two broadly agree.
+
+**Stage 5 is what makes the rest safe.** The draft is checked against the evidence it was handed — every number, every unit against its source, the place named, no invented link, the requested language, and safety clauses it is not allowed to drop. When it fails, the deterministic floor stands and the reason is recorded on the turn.
 
 ---
 
@@ -103,11 +161,11 @@ The eight features SIH26068 names. **Delivered in scope** = it works and its bou
 
 | # | Requirement | State | |
 |---|---|---|---|
-| 1 | Real-time weather retrieval | 🟡 Partial | Forecasts, station reports, warning days, a composed Now reading. Coverage and station quality vary by place. |
-| 2 | Natural-language querying | 🟢 **In scope** | The model plans every turn; a greeting is answered without retrieval; a fact turn is written behind checks. |
-| 3 | NWP models (GFS / WRF) | 🟢 **In scope** | Governed GFS and best-match, with comparison and provenance. **WRF is not connected** — the PS names both; only one is true. |
-| 4 | Alerts & early warning | 🟡 Partial | District applicability, plans, outbox, consented Web Push, service worker. **No live delivery to a real device has been demonstrated.** |
-| 5 | Location-based advisories | 🟡 Partial | Place resolution, district identity, crop/stage intake, cited bulletins. Nationwide acceptance open. |
+| 1 | Real-time weather retrieval | 🟡 Partial | Forecasts, station reports, warning days, **IMD's own district nowcast**, a composed Now reading. Coverage and station quality vary by place. |
+| 2 | Natural-language querying | 🟢 **In scope** | The model plans every turn, weighs the sources it retrieved, and re-plans once when a retrieval comes back empty. |
+| 3 | NWP models (GFS / WRF) | 🟢 **In scope** | Governed GFS, best-match **and IMD's own Mausamgram multi-model**, compared with provenance. **WRF is not connected** — the PS names both; only one is true. |
+| 4 | Alerts & early warning | 🟡 Partial | District applicability, nowcast, plans, outbox, consented Web Push, service worker. **No live delivery to a real device has been demonstrated.** |
+| 5 | Location-based advisories | 🟡 Partial | Place resolution, district identity, crop/stage intake, cited bulletins across **575 districts**. Nationwide acceptance open. |
 | 6 | Indian languages | 🟡 Partial | 22 languages measured per direction. 16 live Hindi/Gujarati answers render 15/16 in the requested script. **Awaiting a native speaker.** |
 | 7 | Climate & historical analysis | 🟡 Partial | Published history, source-constrained trends, reanalysis to a year. Not a research workspace; no attribution claims. |
 | 8 | Voice for rural access | 🟠 Path built | Transcription, spoken output, Hindi/Gujarati round trips. **No noisy-field or speaker validation.** |
@@ -121,26 +179,97 @@ The eight features SIH26068 names. **Delivered in scope** = it works and its bou
 306 turns across the eight features, multi-turn context and adversarial boundaries — run against the live engine, not fixtures.
 
 ```
-ANSWERED  ███████████████████████████████████████████░░░░░  272 / 306   89%
+ANSWERED  ███████████████████████████████████████████░░░░░  276 / 306   90%
 
-refusals, 27 total — and which kind matters more than the count:
-  the publisher has no such data   █████████████████████░░░░░░░░░░░░  10
+refusals, 21 total — and which kind matters more than the count:
+  the publisher has no such data   ██████████████░░░░░░░░░░░░░░░░░░░   7
   a stated product limit           ██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   1
-  ours to fix                      ████████████████████████████████░  16
+  ours to fix                      ██████████████████████████░░░░░░░  13
 ```
 
 **Most refusals are the publisher having nothing, not the product failing** — and the two are counted apart, because collapsing them would let a data gap quietly flatter the engineering.
 
-Weakest group, stated plainly: **agromet at 60%, advisories at 79%** against 89% overall. Of those
-sixteen failures, the number caused by a missing document is **zero** — the corpus holds district
-agromet passages for 571 regions. They are good answers scored `partial`, an engine asking for a detail
-the question already gave, and raw index metadata printed where prose belongs
-([docs/141](docs/141-fetching-documents-when-they-are-asked-for.md)).
+**The atlas is 306 single questions, so it cannot tell you whether a conversation holds together.** That is measured separately: `node tools/conversation-probe.mjs` runs eight multi-turn threads where each turn is meaningless alone — *"and the day after?"*, *"sorry, I meant Pune"*, *"just guess"*. **7 of 8 threads held**, end to end.
 
-**The atlas is 306 single questions, so it cannot tell you whether a conversation holds together.**
-That is measured separately: `node tools/conversation-probe.mjs` runs eight multi-turn threads where
-each turn is meaningless alone — *"and the day after?"*, *"sorry, I meant Pune"*, *"just guess"*.
-**7 of 8 threads held**, end to end.
+---
+
+## ⭐ The engine that corrects itself
+
+Three defects found this week by **measuring**, not by reading code. Every one of them had been reporting success.
+
+<table>
+<tr><td width="33%" valign="top">
+
+### 🔴 A refresh doing nothing
+
+The scheduled sweep took its "already done" set from the **day's** manifest, so every run restarted at the alphabet.
+
+```
+20 Sep  40 swept · 290 passages
+21 Sep  40 swept ·   0 passages
+22 Sep  40 swept ·   0 passages
+```
+
+The same forty districts, twice a day, forever. **541 of 667** district heads unread since the 14th — while the job exited zero.
+
+**Now:** a resident worker ordered by *what readers asked for* and *how long unread*, running for as long as the machine is on.
+
+</td><td width="33%" valign="top">
+
+### 🔴 The model locked out
+
+The composer refused to write whenever a turn carried **more than six passages** — so the richer the retrieval, the likelier the reader got a table.
+
+```
+All India Summary  12 → TEMPLATE
+Extended range      8 → TEMPLATE
+Rajkot advisory     3 → model
+```
+
+The two "big picture" questions lost *because* they retrieved the most.
+
+**Now:** leading passages in full, the rest **by name**, and the model writes them — 7 of 8.
+
+</td><td width="33%" valign="top">
+
+### 🔴 Two sources, one range
+
+Given IMD *and* a global model, the answer read **"IMD gives 0.0–7.4 mm"** — IMD's floor, GFS's ceiling, the span credited to IMD.
+
+```
+S21  7.4 mm    (whole day)
+S16  0.0–2.3   (eight steps)
+```
+
+A number attributed to a publisher that never printed it. Telling the model not to merge ranges **did not stop it.**
+
+**Now:** accumulations are summed to the window total the other source reports — comparable *before* they are compared.
+
+</td></tr>
+</table>
+
+The third is the instructive one: **the fault was in the evidence, not in the reading of it.** No amount of prompting fixes a comparison between two shapes that were never comparable.
+
+<sub>📄 **[docs/142](docs/142-fetching-what-a-reader-asked-for.md)** · **[docs/143](docs/143-the-refresh-that-never-stops.md)** · **[docs/144](docs/144-the-model-answers-and-the-sources-open-up.md)** · **[docs/145](docs/145-asking-again-when-the-first-answer-was-nothing.md)**</sub>
+
+---
+
+## ⭐ When it finds nothing, it asks again — once
+
+The engine planned **once**, before seeing a single result. A plan one notch too narrow ended the turn telling the reader something was not held, when it was the *asking* that was wrong.
+
+Now the model is shown what each tool actually said and gets **one** more attempt. The hard part is not the retry — it is refusing to fish:
+
+| Question | Decision | Why |
+|---|---|---|
+| Sea surface temperature off Chennai? | ⛔ **no retry** | *"the absence was judged real"* — not a connected quantity |
+| Agromet advisory for **wheat** in Ludhiana? | ⛔ **no retry** | the edition genuinely has no wheat row — it names the eleven crops it **does** carry |
+| Flash flood risk for **Assam**? | ✅ **retried** | first plan found nothing; the second reached the district warning product and answered |
+| Flash flood risk for **Kerala**? | ✅ **retried** | same |
+
+Four ways it cannot make a turn worse: **exactly one attempt**; an invalid second plan is dropped, not retried again; a second retrieval that also finds nothing **keeps the first answer** (two honest absences are still one absence); and one that raises keeps it too. **Fourteen tests pin this — nine on when it must *not* fire.**
+
+> An honest *"the publisher has not issued this"* is a **correct answer**, not a failure to work around. A retry loop is the obvious way to destroy that, which is why most of the work went into the refusal.
 
 ---
 
@@ -158,6 +287,10 @@ cd frontend && node tools/demo.mjs                   # 10 live turns, recorded, 
 <td width="50%"><img src="docs/images/readme/door-light.png" alt="The front door on the light hours: the live reading, and a fine-line Indian skyline dividing the sky from the composer"></td>
 <td width="50%"><img src="docs/images/readme/door-dark.png" alt="The same door after dark: deep sea-blue ground, the skyline etched in light ink"></td>
 </tr>
+<tr>
+<td width="50%"><img src="docs/images/readme/surface-warnings.png" alt="The warnings surface: district rows in the publisher's own hazard colours with their day windows"></td>
+<td width="50%"><img src="docs/images/readme/surface-climate.png" alt="The climate surface: a published series with its source line and the years the source could not supply"></td>
+</tr>
 </table>
 
 **The page is lit by the real sun.** The palette is computed from solar altitude and hour angle *at the reader's own latitude*, once a minute — dawn in Kochi and dawn in Leh are different colours because they are different dawns. The skyline between the reading and the composer is the horizon: what the sky is doing above it, what you ask about it below.
@@ -168,25 +301,29 @@ cd frontend && node tools/demo.mjs                   # 10 live turns, recorded, 
 
 ```mermaid
 flowchart TB
-    subgraph PUB["Published sources · 70 governed, each with a recorded probe"]
+    subgraph PUB["Published sources · 70 governed, 21 active, each with a recorded probe"]
         direction LR
-        IMD["IMD district warnings<br/>· bulletins · radar status"]
+        IMDF["IMD Mausamgram<br/>multi-model forecast"]
+        IMDW["IMD warnings<br/>· nowcast · AWS"]
         GFS["GFS / best-match<br/>NWP grids"]
-        STN["Station reports<br/>METAR + synoptic"]
         CLI["Climate record<br/>1901– · reanalysis"]
-        DOC["Agromet & marine<br/>bulletin PDFs"]
+        DOC["Agromet, marine &<br/>national bulletin PDFs"]
     end
-    PUB --> ING["Bounded ingestion<br/>leases · retries · retention"]
-    ING --> STORE[("Local evidence store<br/>SQLite · every row keeps<br/>entity, window, unit, source, retrieved-at")]
-    STORE --> TOOLS["Governed tools<br/>one per product"]
-    TOOLS --> ENG["Conversation engine<br/>plan → retrieve → compose → check"]
+    PUB --> ING["Bounded ingestion<br/>leases · retries · retention · hash-verified"]
+    ING --> STORE[("Local evidence store · SQLite<br/>11,721 passages · 971 documents · 13 families<br/>every row keeps entity, window, unit, source, retrieved-at")]
+    STORE --> TOOLS["16 governed tools, one per product"]
+    TOOLS --> ENG["Conversation engine<br/>plan → retrieve → weigh → compose → verify"]
     ENG --> UI["Chat + 18 guided surfaces"]
     STORE --> UI
+    WORK["Resident refresh worker<br/>demand-ordered · yields to any reader"] --> ING
     style STORE fill:#1e293b,stroke:#475569,color:#e2e8f0
     style ENG fill:#1e3a5f,stroke:#3b82f6,color:#dbeafe
+    style WORK fill:#3f2d0f,stroke:#b45309,color:#fef3c7
 ```
 
 Everything runs **on this machine**. No telemetry, no account, no cloud store. The only outbound calls are to the publishers themselves and to whichever model provider you configure.
+
+**A reader always outranks the refresh.** A live question raises a lease while it fetches and the worker stands down — bounded, so a workspace busy enough to never refresh does not quietly rot while looking healthy.
 
 ---
 
@@ -194,20 +331,20 @@ Everything runs **on this machine**. No telemetry, no account, no cloud store. T
 
 ```bash
 python3 scripts/verify_all.py                        # 21 steps, 0 failed
-python3 -m pytest tests/ -q                          # 1557 Python tests
+python3 -m pytest tests/ -q                          # 1630 Python tests
 cd frontend && npx vitest run                        # 547 checks, 83 suites
 ```
 
 21 steps: the Python suite, the frontend suites, a typecheck, a production build, and audits that read the built stylesheet and the served DOM rather than the source. **0 failed.**
 
-<sub>That first comment is load-bearing. `scripts/check_status_drift.py` parses this README for the number and fails the gate if it disagrees with what pytest actually collects — so this document cannot quietly claim a count it no longer has.</sub>
+<sub>That second comment is load-bearing. `scripts/check_status_drift.py` parses this README for the number and fails the gate if it disagrees with what pytest actually collects — so this document cannot quietly claim a count it no longer has.</sub>
 
 <table>
 <tr><td>
 
 | | |
 |---|---|
-| Python | **1,539** checks, 109 files |
+| Python | **1,630** checks, 113 files |
 | Frontend | **547** checks, 83 suites |
 | Gate | **21** steps, **0** failed |
 | Scenario atlas | **276** scenarios / 306 turns |
@@ -216,15 +353,15 @@ cd frontend && npx vitest run                        # 547 checks, 83 suites
 
 | | |
 |---|---|
-| Engine | **25,495** lines, 83 modules |
-| Interface | **37,801** lines, TS + React |
-| Sources | **70**, each with a probe |
+| Engine | **27,778** lines, 87 modules |
+| Interface | **38,058** lines, TS + React |
+| Sources | **70** governed, **21** active |
 | Decision records | **145** in `docs/` |
 
 </td></tr>
 </table>
 
-`docs/` is not a folder of plans. It is what was measured, what broke, and what was done — written as the work happened. Three defects it caught this week, none exotic:
+`docs/` is not a folder of plans. It is what was measured, what broke, and what was done — written as the work happened. Three defects it caught, none exotic:
 
 - A check had been **passing for a day while computing `NaN`**. `NaN < floor` is false, so it reported success on every input by failing to compute anything at all.
 - A verifier printed the last lines of an error log without checking *when they were written*, and declared a freshly installed job broken on the strength of a failure from that morning.
@@ -242,8 +379,9 @@ Not missing features — **refusals by design**, each one a place where being us
 |---|---|
 | ❌ Invent a value the sources did not state | ❌ Draw a district green because nothing was published |
 | ❌ Give a confidence, risk or skill score | ❌ Tell you whether something is *safe* |
-| ❌ Convert between units a source did not state | ❌ Rank or recommend a model |
+| ❌ Convert between units a source did not state | ❌ Rank, average or vote between two models |
 | ❌ Offer medical, health or evacuation advice | ❌ Treat a CAP reference as authority to disseminate |
+| ❌ Name a hazard code no legend was published for | ❌ Widen a search until something comes back |
 
 ---
 
@@ -253,7 +391,9 @@ Not missing features — **refusals by design**, each one a place where being us
 |---|---|
 | 🎯 **[The demo runbook](docs/138-demo-runbook.md)** | Running order, what to point at, measured timing per beat, what to say when asked "is it just an LLM wrapper?" |
 | 📋 **[Requirement-by-requirement](docs/84-ps-progress-and-pictures.md)** | Every PS line, its evidence, its explicit gap |
-| 📚 **[The full account](docs/140-the-full-account.md)** | The complete reference: every subsystem, every limit, how the chat and palette were reworked |
+| 📚 **[The full account](docs/140-the-full-account.md)** | The complete reference: every subsystem, every limit |
+| ⭐ **[Opening the data layer](docs/144-the-model-answers-and-the-sources-open-up.md)** | How the blocked IMD products were routed around, and what was refused |
+| ⭐ **[Asking again](docs/145-asking-again-when-the-first-answer-was-nothing.md)** | The one re-plan, and the nine tests on when it must not fire |
 | 🔬 **[What the atlas measured](docs/119-what-the-atlas-measured.md)** | The 306-turn run, by group |
 | 🚀 **[Deploying it](docs/118-deploying-this-workspace.md)** | Dockerfile, fly.toml, and what is not yet proved |
 | 📐 **[Problem statement](docs/00-problem-statement.md)** | SIH26068 as captured |
