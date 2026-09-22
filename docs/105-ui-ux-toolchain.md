@@ -42,7 +42,7 @@ npm run ui:diff       # compare captures against a reference directory and write
 ```
 
 Environment: `UI_BASE_URL` (default `http://127.0.0.1:8765`), `UI_REFERENCE_DIR` (default
-`research/design-references`), `UI_EVIDENCE_DIR` (default `research/implementation/ui-evidence`).
+`research/reviews/<dated-folder>`), `UI_EVIDENCE_DIR` (default `research/implementation/ui-evidence`).
 
 ## 4. The replication workflow, and what "flawless" means here
 

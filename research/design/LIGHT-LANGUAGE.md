@@ -83,7 +83,10 @@ real dependencies of the frontend.
 
 The user supplied an AI-chat reference (Omago AI, Dribbble 26622820) and asked to make **its layout** work
 for WeatherGPT, taking the vibe and background philosophy from the pixel-art weather widgets already in
-`research/design-references/`.
+`research/design-references/`, which is no longer in this repository. Those were third-party product
+screenshots kept as visual reference while the light language was being worked out; the language itself
+is written down here and in the spectrum's own source, so the borrowed imagery had done its job and
+shipping other people's interface art in a public repository is not something this project should do.
 
 ## What was measured in the reference
 

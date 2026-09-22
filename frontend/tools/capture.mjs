@@ -3,7 +3,7 @@
 
      node tools/capture.mjs                     # all routes, all widths -> UI_EVIDENCE_DIR
      node tools/capture.mjs --only overview,map  # a subset
-     node tools/capture.mjs --out research/design-references --light-only
+     node tools/capture.mjs --out research/reviews/<dated-folder> --light-only
 
    The app must already be running (python3 -m weathergpt_data.workspace --port 8765): the page carries the
    per-process session token, so this script never starts its own server. */

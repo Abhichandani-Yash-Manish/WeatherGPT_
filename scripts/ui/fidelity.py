@@ -1,6 +1,6 @@
 """Compare a rebuilt page against the design it replicates, with real pixels.
 
-    python3 scripts/ui/fidelity.py --reference research/design-references/overview@1440.png \
+    python3 scripts/ui/fidelity.py --reference research/reviews/<dated-folder>/overview@1440.png \
                                    --capture   research/implementation/ui-evidence/light-overview@1440.png \
                                    --out       research/implementation/ui-evidence/diff-overview@1440
 
